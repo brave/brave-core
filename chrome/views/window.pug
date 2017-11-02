@@ -1,0 +1,11 @@
+doctype html
+
+html
+  head
+    meta(charset='UTF-8')
+    title Redux TodoMVC Example (Window)
+  body
+    #root
+    if env !== 'prod'
+      script(src='chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/js/redux-devtools-extension.js')
+    script(src=env == 'prod' ? '/js/todoapp.bundle.js' : 'http://localhost:3000/js/todoapp.bundle.js')
