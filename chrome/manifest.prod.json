@@ -1,10 +1,10 @@
 {
-  "version": "0.0.0",
-  "name": "react-chrome-extension-example",
+  "version": "1.0.0",
+  "name": "Brave",
   "manifest_version": 2,
-  "description": "Example for react-chrome-extension-boilerplate",
+  "description": "Brave UI",
   "browser_action": {
-    "default_title": "React Chrome Extension Example",
+    "default_title": "Brave Shields",
     "default_popup": "popup.html"
   },
   "icons": {
