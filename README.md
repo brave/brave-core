@@ -11,7 +11,7 @@
 $ git clone https://github.com/brave/brave-extension.git
 
 # Install dependencies
-$ npm install
+$ yarn install
 ```
 
 ## Development
@@ -20,7 +20,7 @@ $ npm install
 ```bash
 # Build files will appear in './dev'
 # Start webpack development server
-$ npm run dev
+$ yarn run dev
 ```
 
 #### Building release
@@ -29,15 +29,15 @@ $ npm run dev
 
 ```bash
 # build files to './build'
-$ npm run build
+$ yarn run build
 ```
 
 ## Compress
 
 ```bash
 # compress build folder to {manifest.name}.zip and crx
-$ npm run build
-$ npm run compress -- [options]
+$ yarn run build
+$ yarn run compress -- [options]
 ```
 
 ## Test
@@ -47,13 +47,13 @@ $ npm run compress -- [options]
 
 ```bash
 # lint
-$ npm run lint
+$ yarn run lint
 # test/app
-$ npm test
-$ npm test -- --watch  # watch files
+$ yarn test
+$ yarn test -- --watch  # watch files
 # test/e2e
-$ npm run build
-$ npm run test-e2e
+$ yarn run build
+$ yarn run test-e2e
 ```
 
 ## LICENSE
