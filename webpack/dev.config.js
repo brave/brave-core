@@ -29,9 +29,6 @@ const baseDevConfig = () => ({
     filename: '[name].bundle.js',
     chunkFilename: '[id].chunk.js'
   },
-  postcss () {
-    return postCSSConfig
-  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
@@ -45,12 +42,12 @@ const baseDevConfig = () => ({
     })
   ],
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['.js']
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
-      loader: 'babel',
+      loader: 'babel-loader',
       exclude: /node_modules/,
       query: {
         presets: ['react-hmre']
@@ -58,9 +55,9 @@ const baseDevConfig = () => ({
     }, {
       test: /\.css$/,
       loaders: [
-        'style',
-        'css?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-        'postcss'
+        'style-loader',
+        'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+        {loader: 'postcss-loader', options: postCSSConfig}
       ]
     }]
   }
@@ -72,7 +69,6 @@ injectPageConfig.entry = [
   path.join(__dirname, '../chrome/extension/inject')
 ]
 delete injectPageConfig.hotMiddleware
-delete injectPageConfig.module.loaders[0].query
 injectPageConfig.plugins.shift() // remove HotModuleReplacementPlugin
 injectPageConfig.output = {
   path: path.join(__dirname, '../dev/js'),

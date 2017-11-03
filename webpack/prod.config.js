@@ -15,13 +15,9 @@ module.exports = {
     filename: '[name].bundle.js',
     chunkFilename: '[id].chunk.js'
   },
-  postcss () {
-    return postCSSConfig
-  },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.IgnorePlugin(/[^/]+\/[\S]+.dev$/),
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       comments: false,
       compressor: {
@@ -35,12 +31,12 @@ module.exports = {
     })
   ],
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['.js']
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
-      loader: 'babel',
+      loader: 'babel-loader',
       exclude: /node_modules/,
       query: {
         presets: ['react-optimize']
@@ -48,9 +44,9 @@ module.exports = {
     }, {
       test: /\.css$/,
       loaders: [
-        'style',
-        'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-        'postcss'
+        'style-loader',
+        'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+        {loader: 'postcss-loader', options: postCSSConfig}
       ]
     }]
   }
