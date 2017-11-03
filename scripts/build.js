@@ -1,10 +1,12 @@
-const tasks = require('./tasks');
+/* global exec */
 
-tasks.replaceWebpack();
-console.log('[Copy assets]');
-console.log('-'.repeat(80));
-tasks.copyAssets('build');
+const tasks = require('./tasks')
 
-console.log('[Webpack Build]');
-console.log('-'.repeat(80));
-exec('webpack --config webpack/prod.config.js --progress --profile --colors');
+tasks.replaceWebpack()
+console.log('[Copy assets]')
+console.log('-'.repeat(80))
+tasks.copyAssets('build')
+
+console.log('[Webpack Build]')
+console.log('-'.repeat(80))
+exec('webpack --config webpack/prod.config.js --progress --profile --colors')

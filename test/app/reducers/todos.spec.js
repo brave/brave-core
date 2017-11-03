@@ -1,6 +1,8 @@
-import { expect } from 'chai';
-import * as types from '../../../app/constants/ActionTypes';
-import todos from '../../../app/reducers/todos';
+/* global describe, it */
+
+import { expect } from 'chai'
+import * as types from '../../../app/constants/ActionTypes'
+import todos from '../../../app/reducers/todos'
 
 describe('todoapp todos reducer', () => {
   it('should handle initial state', () => {
@@ -10,8 +12,8 @@ describe('todoapp todos reducer', () => {
       text: 'Use Redux',
       completed: false,
       id: 0
-    }]);
-  });
+    }])
+  })
 
   it('should handle ADD_TODO', () => {
     expect(
@@ -23,7 +25,7 @@ describe('todoapp todos reducer', () => {
       text: 'Run the tests',
       completed: false,
       id: 0
-    }]);
+    }])
 
     expect(
       todos([{
@@ -42,7 +44,7 @@ describe('todoapp todos reducer', () => {
       text: 'Use Redux',
       completed: false,
       id: 0
-    }]);
+    }])
 
     expect(
       todos([{
@@ -69,8 +71,8 @@ describe('todoapp todos reducer', () => {
       text: 'Use Redux',
       completed: false,
       id: 0
-    }]);
-  });
+    }])
+  })
 
   it('should handle DELETE_TODO', () => {
     expect(
@@ -90,8 +92,8 @@ describe('todoapp todos reducer', () => {
       text: 'Use Redux',
       completed: false,
       id: 0
-    }]);
-  });
+    }])
+  })
 
   it('should handle EDIT_TODO', () => {
     expect(
@@ -116,8 +118,8 @@ describe('todoapp todos reducer', () => {
       text: 'Use Redux',
       completed: false,
       id: 0
-    }]);
-  });
+    }])
+  })
 
   it('should handle COMPLETE_TODO', () => {
     expect(
@@ -141,8 +143,8 @@ describe('todoapp todos reducer', () => {
       text: 'Use Redux',
       completed: false,
       id: 0
-    }]);
-  });
+    }])
+  })
 
   it('should handle COMPLETE_ALL', () => {
     expect(
@@ -165,7 +167,7 @@ describe('todoapp todos reducer', () => {
       text: 'Use Redux',
       completed: true,
       id: 0
-    }]);
+    }])
 
     // Unmark if all todos are currently completed
     expect(
@@ -188,8 +190,8 @@ describe('todoapp todos reducer', () => {
       text: 'Use Redux',
       completed: false,
       id: 0
-    }]);
-  });
+    }])
+  })
 
   it('should handle CLEAR_COMPLETED', () => {
     expect(
@@ -208,8 +210,8 @@ describe('todoapp todos reducer', () => {
       text: 'Use Redux',
       completed: false,
       id: 0
-    }]);
-  });
+    }])
+  })
 
   it('should not generate duplicate ids after CLEAR_COMPLETED', () => {
     expect(
@@ -238,6 +240,6 @@ describe('todoapp todos reducer', () => {
       text: 'Write tests',
       completed: false,
       id: 1
-    }]);
-  });
-});
+    }])
+  })
+})

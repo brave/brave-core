@@ -1,8 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
-const postCSSConfig = require('./postcss.config');
+const path = require('path')
+const webpack = require('webpack')
+const postCSSConfig = require('./postcss.config')
 
-const customPath = path.join(__dirname, './customPublicPath');
+const customPath = path.join(__dirname, './customPublicPath')
 
 module.exports = {
   entry: {
@@ -15,8 +15,8 @@ module.exports = {
     filename: '[name].bundle.js',
     chunkFilename: '[id].chunk.js'
   },
-  postcss() {
-    return postCSSConfig;
+  postcss () {
+    return postCSSConfig
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -54,4 +54,4 @@ module.exports = {
       ]
     }]
   }
-};
+}

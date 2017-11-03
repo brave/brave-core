@@ -1,52 +1,48 @@
-import React, { Component, PropTypes } from 'react';
-import classnames from 'classnames';
-import TodoTextInput from './TodoTextInput';
-import style from './TodoItem.css';
+import React, { Component, PropTypes } from 'react'
+import classnames from 'classnames'
+import TodoTextInput from './TodoTextInput'
+import style from './TodoItem.css'
 
 export default class TodoItem extends Component {
-
-  static propTypes = {
-    todo: PropTypes.object.isRequired,
-    editTodo: PropTypes.func.isRequired,
-    deleteTodo: PropTypes.func.isRequired,
-    completeTodo: PropTypes.func.isRequired
-  };
-
-  constructor(props, context) {
-    super(props, context);
+  constructor (props, context) {
+    super(props, context)
     this.state = {
       editing: false
-    };
+    }
+    this.handleDoubleClick = this.handleDoubleClick.bind(this)
+    this.handleSave = this.handleSave.bind(this)
+    this.handleComplete = this.handleComplete.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
-  handleDoubleClick = () => {
-    this.setState({ editing: true });
-  };
+  handleDoubleClick () {
+    this.setState({ editing: true })
+  }
 
-  handleSave = (text) => {
-    const { todo, deleteTodo, editTodo } = this.props;
+  handleSave (text) {
+    const { todo, deleteTodo, editTodo } = this.props
     if (text.length === 0) {
-      deleteTodo(todo.id);
+      deleteTodo(todo.id)
     } else {
-      editTodo(todo.id, text);
+      editTodo(todo.id, text)
     }
-    this.setState({ editing: false });
-  };
+    this.setState({ editing: false })
+  }
 
-  handleComplete = () => {
-    const { todo, completeTodo } = this.props;
-    completeTodo(todo.id);
-  };
+  handleComplete () {
+    const { todo, completeTodo } = this.props
+    completeTodo(todo.id)
+  }
 
-  handleDelete = () => {
-    const { todo, deleteTodo } = this.props;
-    deleteTodo(todo.id);
-  };
+  handleDelete () {
+    const { todo, deleteTodo } = this.props
+    deleteTodo(todo.id)
+  }
 
-  render() {
-    const { todo } = this.props;
+  render () {
+    const { todo } = this.props
 
-    let element;
+    let element
     if (this.state.editing) {
       element = (
         <TodoTextInput
@@ -54,13 +50,13 @@ export default class TodoItem extends Component {
           editing={this.state.editing}
           onSave={this.handleSave}
         />
-      );
+      )
     } else {
       element = (
         <div className={style.view}>
           <input
             className={style.toggle}
-            type="checkbox"
+            type='checkbox'
             checked={todo.completed}
             onChange={this.handleComplete}
           />
@@ -72,7 +68,7 @@ export default class TodoItem extends Component {
             onClick={this.handleDelete}
           />
         </div>
-      );
+      )
     }
 
     return (
@@ -85,6 +81,13 @@ export default class TodoItem extends Component {
       >
         {element}
       </li>
-    );
+    )
   }
+}
+
+TodoItem.propTypes = {
+  todo: PropTypes.object.isRequired,
+  editTodo: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  completeTodo: PropTypes.func.isRequired
 }
