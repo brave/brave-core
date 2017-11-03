@@ -18,6 +18,9 @@
   "background": {
     "page": "background.html"
   },
+  "chrome_url_overrides" : {
+    "newtab": "newtab.html"
+  },
   "permissions": [ "contextMenus", "management", "tabs", "storage", "https://github.com/*" ],
   "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 https://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 https://localhost:3000; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:;"
 }
