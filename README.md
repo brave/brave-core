@@ -8,9 +8,10 @@
 
 ```bash
 # clone it
-$ git clone https://github.com/brave/brave-extension.git
+$ git clone git@github.com:brave/brave-extension.git
 
 # Install dependencies
+$ cd brave-extension
 $ yarn install
 ```
 
