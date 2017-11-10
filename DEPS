@@ -15,6 +15,6 @@ hooks = [
     # Apply patches to chromium src
     'name': 'apply_patches',
     'pattern': '.',
-    'action': ['python', 'src/electron/script/apply-patches.py'],
+    'action': ['python', 'src/brave/script/apply-patches.py'],
   }
 ]
