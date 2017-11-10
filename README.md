@@ -10,14 +10,11 @@ Antimuon is the antiparticle to muon with opposite charge but equal mass.
 Follow [@brave](https://twitter.com/brave) on Twitter for important
 announcements.
 
-## Downloads
+## Resources
 
-Prebuilt binaries and debug symbols of Muon for Linux, Windows and macOS can
-be found on the [releases](https://github.com/brave/brave/releases) page.
-
-## Documentation
-
-You can also [see our wiki](https://github.com/brave/brave/wiki) for tips on building Brave.
+- [Issues](https://github.com/brave/brave/issues)
+- [Releases](https://github.com/brave/brave/releases)
+- [Documentation wiki](https://github.com/brave/brave/wiki)
 
 ## Versions
 
