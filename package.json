@@ -1,0 +1,27 @@
+{
+  "name": "antimuon",
+  "version": "1.0.0",
+  "description": "Antimuon is a set of changes, APIs, and scripts used for customizing Chromium to make Brave. Unlike brave/muon, brave/antimuon shares virtually no original code with electron.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brave/antimuon.git"
+  },
+  "author": {
+    "name": "Brave Software <support+laptop@brave.com>"
+  },
+  "contributors": [
+    {
+      "name": "Brian R. Bondy",
+      "email": "brian@brave.com"
+    }
+  ],
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/brave/antimuon/issues"
+  },
+  "homepage": "https://github.com/brave/antimuon#readme"
+}
