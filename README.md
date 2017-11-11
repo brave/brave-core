@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/brave/brave-extension.svg?branch=master)](https://travis-ci.org/brave/brave-extension)
 
-> Chromium extension providing custom Brave functionality.
+> Experiment moving part of the Brave UI into an extension for use in Brave only (Not Chrome, it will use APIs not available in Chrome)
 
 ## Installation
 
