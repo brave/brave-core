@@ -1,0 +1,17 @@
+source_set("brave_shields") {
+  sources = [
+    "brave_shields_service.cc",
+    "brave_shields_service.h",
+    "brave_shields_resource_throttle.cc",
+    "brave_shields_resource_throttle.h",
+    "brave_resource_dispatcher_host_delegate.cc",
+    "brave_resource_dispatcher_host_delegate.h",
+  ]
+  deps = [
+    "//brave/vendor/ad-block/antimuon:ad-block",
+    "//brave/vendor/tracking-protection/antimuon:tracking-protection",
+  ]
+  public_deps = [
+    "//chrome/common",
+  ]
+}
