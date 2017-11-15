@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/brave_shields_service.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 
 #include <algorithm>
 #include <string>
@@ -25,26 +25,19 @@
 
 namespace brave_shields {
 
-BraveShieldsService::BraveShieldsService() :
-    initialized_(false),
+AdBlockService::AdBlockService() :
     ad_block_client_(new AdBlockClient()) {
-  Start();
 }
 
-BraveShieldsService::~BraveShieldsService() {
+AdBlockService::~AdBlockService() {
+  Cleanup();
 }
 
-bool BraveShieldsService::Start() {
-  if (initialized_) {
-    return true;
-  }
-  return InitAdBlock();
+void AdBlockService::Cleanup() {
+  ad_block_client_.reset();
 }
 
-void BraveShieldsService::Stop() {
-}
-
-bool BraveShieldsService::Check(const std::string &spec,
+bool AdBlockService::Check(const std::string &spec,
     content::ResourceType resource_type,
     const std::string &initiator_host) {
 
@@ -61,7 +54,7 @@ bool BraveShieldsService::Check(const std::string &spec,
   if (ad_block_client_->matches(spec.c_str(),
         currentOption,
         initiator_host.c_str())) {
-    // LOG(ERROR) << "BraveShieldsService::Check(), host: " << initiator_host
+    // LOG(ERROR) << "AdBlockService::Check(), host: " << initiator_host
     //  << ", resource type: " << resource_type
     //  << ", spec: " << spec;
     return true;
@@ -70,27 +63,17 @@ bool BraveShieldsService::Check(const std::string &spec,
   return false;
 }
 
-bool BraveShieldsService::InitAdBlock() {
-  base::ThreadRestrictions::AssertIOAllowed();
-  std::lock_guard<std::mutex> guard(adblock_init_mutex_);
-  if (!GetDATFileData(AD_BLOCK_DATA_FILE, adblock_buffer_)) {
+bool AdBlockService::Init() {
+   if (!GetDATFileData(AD_BLOCK_DATA_FILE, adblock_buffer_)) {
     LOG(ERROR) << "Could not obtain ad block data file";
     return false;
   }
-
   if (!ad_block_client_->deserialize((char*)&adblock_buffer_.front())) {
     ad_block_client_.reset();
-    LOG(ERROR) << "BraveShieldsService::InitAdBlock deserialize failed";
+    LOG(ERROR) << "AdBlockService::InitAdBlock deserialize failed";
     return false;
   }
-
-  set_adblock_initialized();
   return true;
-}
-
-void BraveShieldsService::set_adblock_initialized() {
-  std::lock_guard<std::mutex> guard(initialized_mutex_);
-  initialized_ = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -98,8 +81,8 @@ void BraveShieldsService::set_adblock_initialized() {
 // The brave sheilds factory. Using the Brave Sheilds as a singleton
 // is the job of the browser process.
 // TODO(bbondy): consider making this a singleton.
-std::unique_ptr<BraveShieldsService> BraveShieldsServiceFactory() {
-  return base::MakeUnique<BraveShieldsService>();
+std::unique_ptr<BaseBraveShieldsService> AdBlockServiceFactory() {
+  return base::MakeUnique<AdBlockService>();
 }
 
 }  // namespace brave_shields

@@ -153,7 +153,7 @@ index 27e5f84cb1f06d0a1cd766beace97d5b20317928..23841a71e3e7060727dab6f47b90356c
  
    # Android does in-process PAC, so must link against V8 directly. Other
 diff --git a/chrome/browser/browser_process.h b/chrome/browser/browser_process.h
-index 77cd9e948514e875e636da465f60136ebd510491..25ad0a5f72abf73c83227fcf59338ab6a8eb00e6 100644
+index 77cd9e948514e875e636da465f60136ebd510491..71227c22c4ec60ef23ea74d6e39ed0b7747d11fb 100644
 --- a/chrome/browser/browser_process.h
 +++ b/chrome/browser/browser_process.h
 @@ -47,6 +47,10 @@ namespace safe_browsing {
@@ -161,7 +161,7 @@ index 77cd9e948514e875e636da465f60136ebd510491..25ad0a5f72abf73c83227fcf59338ab6
  }
  
 +namespace brave_shields {
-+class BraveShieldsService;
++class BaseBraveShieldsService;
 +}
 +
  namespace subresource_filter {
@@ -171,13 +171,13 @@ index 77cd9e948514e875e636da465f60136ebd510491..25ad0a5f72abf73c83227fcf59338ab6
  
    virtual net_log::ChromeNetLog* net_log() = 0;
  
-+  virtual brave_shields::BraveShieldsService* brave_shields_service() = 0;
++  virtual brave_shields::BaseBraveShieldsService* ad_block_service() = 0;
 +
    virtual component_updater::ComponentUpdateService* component_updater() = 0;
  
    virtual CRLSetFetcher* crl_set_fetcher() = 0;
 diff --git a/chrome/browser/browser_process_impl.cc b/chrome/browser/browser_process_impl.cc
-index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..c678d2f05ab154c5035eaa8d0a341678c0259d8c 100644
+index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..9b6415a4f96abfabc0a8237226395dcd722d05eb 100644
 --- a/chrome/browser/browser_process_impl.cc
 +++ b/chrome/browser/browser_process_impl.cc
 @@ -34,7 +34,9 @@
@@ -186,7 +186,7 @@ index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..c678d2f05ab154c5035eaa8d0a341678
  #include "base/trace_event/trace_event.h"
 +#include "brave/components/brave_shields/browser/brave_resource_dispatcher_host_delegate.h"
  #include "build/build_config.h"
-+#include "brave/components/brave_shields/browser/brave_shields_service.h"
++#include "brave/components/brave_shields/browser/ad_block_service.h"
  #include "chrome/browser/chrome_browser_main.h"
  #include "chrome/browser/chrome_child_process_watcher.h"
  #include "chrome/browser/chrome_content_browser_client.h"
@@ -194,13 +194,13 @@ index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..c678d2f05ab154c5035eaa8d0a341678
    return net_log_.get();
  }
  
-+brave_shields::BraveShieldsService*
-+BrowserProcessImpl::brave_shields_service() {
-+  if (brave_shields_service_)
-+    return brave_shields_service_.get();
++brave_shields::BaseBraveShieldsService*
++BrowserProcessImpl::ad_block_service() {
++  if (ad_block_service_)
++    return ad_block_service_.get();
 +
-+  brave_shields_service_ = brave_shields::BraveShieldsServiceFactory();
-+  return brave_shields_service_.get();
++  ad_block_service_ = brave_shields::AdBlockServiceFactory();
++  return ad_block_service_.get();
 +}
 +
  component_updater::ComponentUpdateService*
@@ -216,14 +216,14 @@ index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..c678d2f05ab154c5035eaa8d0a341678
        resource_dispatcher_host_delegate_.get());
  
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index 454080193dbbb41b6bea01416f28f210b26aaff0..d465b417886f49ea08835b6fe7629e34500a499e 100644
+index 454080193dbbb41b6bea01416f28f210b26aaff0..c25eca90a1b7d5caf867adcb847860e9c1f79ef5 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
 @@ -143,6 +143,7 @@ class BrowserProcessImpl : public BrowserProcess,
  #endif
  
    net_log::ChromeNetLog* net_log() override;
-+  brave_shields::BraveShieldsService* brave_shields_service() override;
++  brave_shields::BaseBraveShieldsService* ad_block_service() override;
    component_updater::ComponentUpdateService* component_updater() override;
    CRLSetFetcher* crl_set_fetcher() override;
    component_updater::PnaclComponentInstaller* pnacl_component_installer()
@@ -239,7 +239,7 @@ index 454080193dbbb41b6bea01416f28f210b26aaff0..d465b417886f49ea08835b6fe7629e34
    void RestartBackgroundInstance();
  #endif  // defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS))
  
-+  std::unique_ptr<brave_shields::BraveShieldsService> brave_shields_service_;
++  std::unique_ptr<brave_shields::BaseBraveShieldsService> ad_block_service_;
 +
    // component updater is normally not used under ChromeOS due
    // to concerns over integrity of data shared between profiles,

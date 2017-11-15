@@ -1,7 +1,9 @@
 source_set("brave_shields") {
   sources = [
-    "brave_shields_service.cc",
-    "brave_shields_service.h",
+    "ad_block_service.cc",
+    "ad_block_service.h",
+    "base_brave_shields_service.cc",
+    "base_brave_shields_service.h",
     "brave_shields_resource_throttle.cc",
     "brave_shields_resource_throttle.h",
     "brave_resource_dispatcher_host_delegate.cc",

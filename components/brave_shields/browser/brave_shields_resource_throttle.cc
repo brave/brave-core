@@ -5,7 +5,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_resource_throttle.h"
 #include "net/url_request/url_request.h"
 #include "chrome/browser/browser_process.h"
-#include "brave/components/brave_shields/browser/brave_shields_service.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 
 content::ResourceThrottle* MaybeCreateBraveShieldsResourceThrottle(
     net::URLRequest* request,
@@ -28,7 +28,7 @@ const char* BraveShieldsResourceThrottle::GetNameForLogging() const {
 
 
 void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
-  if (g_browser_process->brave_shields_service()->Check(request_->url().spec(),
+  if (g_browser_process->ad_block_service()->Check(request_->url().spec(),
       resource_type_,
       request_->initiator()->host())) {
     Cancel();
