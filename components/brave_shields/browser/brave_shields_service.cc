@@ -13,19 +13,15 @@
 #include "base/bind.h"
 #include "base/bind_helpers.h"
 #include "base/callback.h"
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
-#include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
-#include "chrome/common/chrome_paths.h"
-#include "url/gurl.h"
 
-#define ADBLOCK_DATA_FILE "ABPFilterParserData.dat"
+#define AD_BLOCK_DATA_FILE "ABPFilterParserData.dat"
 
 namespace brave_shields {
 
@@ -77,7 +73,7 @@ bool BraveShieldsService::Check(const std::string &spec,
 bool BraveShieldsService::InitAdBlock() {
   base::ThreadRestrictions::AssertIOAllowed();
   std::lock_guard<std::mutex> guard(adblock_init_mutex_);
-  if (!GetData(ADBLOCK_DATA_FILE, adblock_buffer_)) {
+  if (!GetDATFileData(AD_BLOCK_DATA_FILE, adblock_buffer_)) {
     LOG(ERROR) << "Could not obtain ad block data file";
     return false;
   }
@@ -96,34 +92,6 @@ void BraveShieldsService::set_adblock_initialized() {
   std::lock_guard<std::mutex> guard(initialized_mutex_);
   initialized_ = true;
 }
-
-bool BraveShieldsService::GetData(
-      const std::string& fileName,
-      std::vector<unsigned char>& buffer) {
-    base::FilePath app_data_path;
-    PathService::Get(chrome::DIR_USER_DATA, &app_data_path);
-
-  base::FilePath dataFilePath = app_data_path.Append(fileName);
-  int64_t size = 0;
-  if (!base::PathExists(dataFilePath)
-      || !base::GetFileSize(dataFilePath, &size)
-      || 0 == size) {
-    LOG(ERROR) << "BraveShieldsService::GetData:"
-      << "the dat file is not found or corrupted "
-      << dataFilePath;
-    return false;
-  }
-  buffer.resize(size);
-  if (size != base::ReadFile(dataFilePath, (char*)&buffer.front(), size)) {
-    LOG(ERROR) << "BraveShieldsService::GetData: cannot "
-      << "read dat file " << fileName;
-     return false;
-  }
-
-  LOG(ERROR) << "Initialized brave shields service correctly";
-  return true;
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////
 

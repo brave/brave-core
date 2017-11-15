@@ -6,6 +6,8 @@ source_set("brave_shields") {
     "brave_shields_resource_throttle.h",
     "brave_resource_dispatcher_host_delegate.cc",
     "brave_resource_dispatcher_host_delegate.h",
+    "dat_file_util.cc",
+    "dat_file_util.h",
   ]
   deps = [
     "//brave/vendor/ad-block/antimuon:ad-block",
