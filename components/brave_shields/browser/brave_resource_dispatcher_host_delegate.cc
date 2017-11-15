@@ -4,11 +4,16 @@
 
 #include "brave/components/brave_shields/browser/brave_resource_dispatcher_host_delegate.h"
 
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_resource_throttle.h"
+#include "brave/components/brave_shields/browser/tracking_protection_service.h"
+#include "chrome/browser/browser_process.h"
 
 using content::ResourceType;
 
 BraveResourceDispatcherHostDelegate::BraveResourceDispatcherHostDelegate() {
+  g_browser_process->tracking_protection_service()->Start();
+  g_browser_process->ad_block_service()->Start();
 }
 
 BraveResourceDispatcherHostDelegate::~BraveResourceDispatcherHostDelegate() {

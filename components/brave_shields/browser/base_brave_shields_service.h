@@ -13,6 +13,7 @@
 #include <mutex>
 
 #include "content/public/common/resource_type.h"
+#include "url/gurl.h"
 
 namespace brave_shields {
 
@@ -20,17 +21,17 @@ namespace brave_shields {
 // tracking protection, etc.
 class BaseBraveShieldsService {
  public:
-   BaseBraveShieldsService();
-   virtual ~BaseBraveShieldsService();
-   bool Start();
-   void Stop();
-   virtual bool Check(const std::string &spec,
+  BaseBraveShieldsService();
+  virtual ~BaseBraveShieldsService();
+  bool Start();
+  void Stop();
+  virtual bool Check(const GURL &url,
     content::ResourceType resource_type,
     const std::string &initiator_host) = 0;
 
  protected:
-   virtual bool Init() = 0;
-   virtual void Cleanup() = 0;
+  virtual bool Init() = 0;
+  virtual void Cleanup() = 0;
 
  private:
   bool initialized_;

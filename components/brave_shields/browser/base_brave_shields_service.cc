@@ -23,7 +23,6 @@ namespace brave_shields {
 
 BaseBraveShieldsService::BaseBraveShieldsService() :
     initialized_(false) {
-  Start();
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {

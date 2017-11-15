@@ -21,14 +21,14 @@ bool GetDATFileData(const std::string& fileName,
   if (!base::PathExists(dataFilePath)
       || !base::GetFileSize(dataFilePath, &size)
       || 0 == size) {
-    LOG(ERROR) << "BraveShieldsService::GetData:"
+    LOG(ERROR) << "GetDATFileData: "
       << "the dat file is not found or corrupted "
       << dataFilePath;
     return false;
   }
   buffer.resize(size);
   if (size != base::ReadFile(dataFilePath, (char*)&buffer.front(), size)) {
-    LOG(ERROR) << "BraveShieldsService::GetData: cannot "
+    LOG(ERROR) << "GetDATFileData: cannot "
       << "read dat file " << fileName;
      return false;
   }

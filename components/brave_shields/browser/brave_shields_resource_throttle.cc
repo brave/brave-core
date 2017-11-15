@@ -6,6 +6,7 @@
 #include "net/url_request/url_request.h"
 #include "chrome/browser/browser_process.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/tracking_protection_service.h"
 
 content::ResourceThrottle* MaybeCreateBraveShieldsResourceThrottle(
     net::URLRequest* request,
@@ -26,9 +27,13 @@ const char* BraveShieldsResourceThrottle::GetNameForLogging() const {
   return "BraveShieldsResourceThrottle";
 }
 
-
 void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
-  if (g_browser_process->ad_block_service()->Check(request_->url().spec(),
+  if (g_browser_process->tracking_protection_service()->Check(request_->url(),
+      resource_type_,
+      request_->initiator()->host())) {
+    Cancel();
+  }
+  if (g_browser_process->ad_block_service()->Check(request_->url(),
       resource_type_,
       request_->initiator()->host())) {
     Cancel();

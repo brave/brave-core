@@ -25,16 +25,16 @@ class AdBlockService : public BaseBraveShieldsService {
    AdBlockService();
    ~AdBlockService() override;
 
-   bool Check(const std::string &spec,
+  bool Check(const GURL &url,
     content::ResourceType resource_type,
     const std::string &initiator_host) override;
 
  protected:
-   bool Init() override;
-   void Cleanup() override;
+  bool Init() override;
+  void Cleanup() override;
 
  private:
-  std::vector<unsigned char> adblock_buffer_;
+  std::vector<unsigned char> buffer_;
   std::unique_ptr<AdBlockClient> ad_block_client_;
 };
 

@@ -21,7 +21,7 @@
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 
-#define AD_BLOCK_DATA_FILE "ABPFilterParserData.dat"
+#define DATA_FILE "ABPFilterParserData.dat"
 
 namespace brave_shields {
 
@@ -37,7 +37,7 @@ void AdBlockService::Cleanup() {
   ad_block_client_.reset();
 }
 
-bool AdBlockService::Check(const std::string &spec,
+bool AdBlockService::Check(const GURL& url,
     content::ResourceType resource_type,
     const std::string &initiator_host) {
 
@@ -51,12 +51,12 @@ bool AdBlockService::Check(const std::string &spec,
     currentOption = FOScript;
   }
 
-  if (ad_block_client_->matches(spec.c_str(),
+  if (ad_block_client_->matches(url.spec().c_str(),
         currentOption,
         initiator_host.c_str())) {
     // LOG(ERROR) << "AdBlockService::Check(), host: " << initiator_host
     //  << ", resource type: " << resource_type
-    //  << ", spec: " << spec;
+    //  << ", url.spec(): " << url.spec();
     return true;
   }
 
@@ -64,11 +64,11 @@ bool AdBlockService::Check(const std::string &spec,
 }
 
 bool AdBlockService::Init() {
-   if (!GetDATFileData(AD_BLOCK_DATA_FILE, adblock_buffer_)) {
+   if (!GetDATFileData(DATA_FILE, buffer_)) {
     LOG(ERROR) << "Could not obtain ad block data file";
     return false;
   }
-  if (!ad_block_client_->deserialize((char*)&adblock_buffer_.front())) {
+  if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
     ad_block_client_.reset();
     LOG(ERROR) << "AdBlockService::InitAdBlock deserialize failed";
     return false;
