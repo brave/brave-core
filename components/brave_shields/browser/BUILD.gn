@@ -10,6 +10,8 @@ source_set("brave_shields") {
     "brave_resource_dispatcher_host_delegate.h",
     "dat_file_util.cc",
     "dat_file_util.h",
+    "dat_file_web_request.cc",
+    "dat_file_web_request.h",
     "tracking_protection_service.cc",
     "tracking_protection_service.h",
   ]

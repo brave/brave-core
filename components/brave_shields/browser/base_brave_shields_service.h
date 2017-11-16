@@ -17,11 +17,13 @@
 
 namespace brave_shields {
 
+class DATFileWebRequest;
+
 // The brave shields service in charge of checking brave shields like ad-block,
 // tracking protection, etc.
 class BaseBraveShieldsService {
  public:
-  BaseBraveShieldsService();
+  BaseBraveShieldsService(const std::string &file_name, const GURL &url);
   virtual ~BaseBraveShieldsService();
   bool Start();
   void Stop();
@@ -34,7 +36,15 @@ class BaseBraveShieldsService {
   virtual void Cleanup() = 0;
 
  private:
+  void DownloadDATFile();
+  void InitShields();
+
+  void DATFileResponse(bool success);
+
+  const std::string file_name_;
+  const GURL url_;
   bool initialized_;
+  std::unique_ptr<DATFileWebRequest> web_request_;
   std::mutex init_mutex_;
   std::mutex initialized_mutex_;
 };

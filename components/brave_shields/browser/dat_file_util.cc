@@ -11,25 +11,29 @@
 
 namespace brave_shields {
 
-bool GetDATFileData(const std::string& fileName,
-    std::vector<unsigned char>& buffer) {
+base::FilePath GetDATFilePath(const std::string &file_name) {
   base::FilePath app_data_path;
   PathService::Get(chrome::DIR_USER_DATA, &app_data_path);
+  base::FilePath dat_file_path = app_data_path.Append(file_name);
+  return dat_file_path;
+}
 
-  base::FilePath dataFilePath = app_data_path.Append(fileName);
+bool GetDATFileData(const std::string& file_name,
+    std::vector<unsigned char>& buffer) {
+  base::FilePath dat_file_path = GetDATFilePath(file_name);
   int64_t size = 0;
-  if (!base::PathExists(dataFilePath)
-      || !base::GetFileSize(dataFilePath, &size)
+  if (!base::PathExists(dat_file_path)
+      || !base::GetFileSize(dat_file_path, &size)
       || 0 == size) {
     LOG(ERROR) << "GetDATFileData: "
       << "the dat file is not found or corrupted "
-      << dataFilePath;
+      << dat_file_path;
     return false;
   }
   buffer.resize(size);
-  if (size != base::ReadFile(dataFilePath, (char*)&buffer.front(), size)) {
+  if (size != base::ReadFile(dat_file_path, (char*)&buffer.front(), size)) {
     LOG(ERROR) << "GetDATFileData: cannot "
-      << "read dat file " << fileName;
+      << "read dat file " << file_name;
      return false;
   }
 

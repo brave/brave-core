@@ -22,12 +22,15 @@
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/tracking-protection/TPParser.h"
 
-#define DATA_FILE "TrackingProtection.dat"
+#define DAT_FILE "TrackingProtection.dat"
 #define THIRD_PARTY_HOSTS_CACHE_SIZE 20
+// TODO: Repalce this with the real version at runtime
+#define DAT_FILE_URL "https://s3.amazonaws.com/tracking-protection-data/1/TrackingProtection.dat"
 
 namespace brave_shields {
 
 TrackingProtectionService::TrackingProtectionService() :
+    BaseBraveShieldsService(DAT_FILE, GURL(DAT_FILE_URL)),
     tracking_protection_client_(new CTPParser()),
     // See comment in tracking_protection_service.h for white_list_
     white_list_({
@@ -85,7 +88,7 @@ bool TrackingProtectionService::Check(const GURL& url,
 }
 
 bool TrackingProtectionService::Init() {
-   if (!GetDATFileData(DATA_FILE, buffer_)) {
+   if (!GetDATFileData(DAT_FILE, buffer_)) {
     LOG(ERROR) << "Could not obtain ad block data file";
     return false;
   }

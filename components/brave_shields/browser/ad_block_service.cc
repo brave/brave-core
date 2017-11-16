@@ -21,11 +21,14 @@
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 
-#define DATA_FILE "ABPFilterParserData.dat"
+#define DAT_FILE "ABPFilterParserData.dat"
+// TODO: Repalce this with the real version at runtime
+#define DAT_FILE_URL "https://s3.amazonaws.com/adblock-data/3/ABPFilterParserData.dat"
 
 namespace brave_shields {
 
 AdBlockService::AdBlockService() :
+    BaseBraveShieldsService(DAT_FILE, GURL(DAT_FILE_URL)),
     ad_block_client_(new AdBlockClient()) {
 }
 
@@ -64,7 +67,7 @@ bool AdBlockService::Check(const GURL& url,
 }
 
 bool AdBlockService::Init() {
-   if (!GetDATFileData(DATA_FILE, buffer_)) {
+   if (!GetDATFileData(DAT_FILE, buffer_)) {
     LOG(ERROR) << "Could not obtain ad block data file";
     return false;
   }
