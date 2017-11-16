@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings-specific Brave strings (included from chromium_strings.grd). -->
+<grit-part>
+  <!-- About Page -->
+  <if expr="not chromeos">
+    <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave page.">
+      About Brave
+    </message>
+    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Chrome help page.">
+      Get help with Brave
+    </message>
+    <message name="IDS_SETTINGS_UPGRADE_UPDATING" desc="Status label: Updating Brave">
+      Updating Brave
+    </message>
+    <message name="IDS_SETTINGS_UPGRADE_UPDATING_PERCENT" desc="Status label: Updating Brave (90%)">
+      Updating Brave (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
+    </message>
+    <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated Brave">
+      Nearly up to date! Relaunch Brave to finish updating.
+    </message>
+    <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (Brave)">
+      Brave is up to date
+    </message>
+  </if>
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave page.">
+      About Brave OS
+    </message>
+    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Chrome help page.">
+      Get help with Brave OS
+    </message>
+  </if>
+
+  <!-- Autofill Page -->
+  <message name="IDS_SETTINGS_GOOGLE_PAYMENTS_CACHED" desc="Label that will be used to show that a credit card comes from Google Payments and is saved locally. This should follow the casing of the 'Google Payments' and 'Chrome' brands. 'Copied to Brave' is short for 'The credit card is copied to Brave'">
+    Google Payments (copied to Brave)
+  </message>
+
+  <!-- Default Browser Page -->
+  <if expr="not chromeos">
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_DEFAULT" desc="The text displayed when Chrome is the default browser">
+      Brave is your default browser
+    </message>
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT" desc="Default browser checkbox label">
+      Make Brave the default browser
+    </message>
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_ERROR" desc="The text displayed when Chrome cannot determine or set the default browser">
+      Brave cannot determine or set the default browser
+    </message>
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_SECONDARY" desc="The text displayed when Brave is installed in side-by-side mode, which does not support setting as the default browser.">
+      This is a secondary installation of Brave, and cannot be made your default browser.
+    </message>
+  </if>
+
+  <!-- Privacy Page -->
+  <message name="IDS_SETTINGS_IMPROVE_BROWSING_EXPERIENCE" desc="The text in the options panel that describes how we use web services to improve browsing experience.">
+    Brave may use web services to improve your browsing experience. You may optionally disable these services. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+
+  <!-- People Page -->
+  <message name="IDS_SETTINGS_SYNC_DISABLED_BY_ADMINISTRATOR" desc="The text to display when sync is disabled by administrator policy.">
+    Sign in to Brave is disabled by the administrator of this device.
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_SINGULAR" desc="Warning message displayed in the Sign out of Chrome dialog that indicates profile browsing data will be removed from the device.">
+    This will delete 1 item from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_PLURAL" desc="Warning message displayed in the Sign out of Chrome dialog that indicates profile browsing data will be removed from the device.">
+    This will delete <ph name="ITEMS_COUNT">$1<ex>66</ex></ph> items from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITHOUT_COUNTS" desc="Warning message displayed in the Sign out of Chrome dialog that indicates profile browsing data will be removed from the device.">
+    This will delete your browsing data from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>.
+  </message>
+
+  <!-- Sync Page -->
+  <message name="IDS_SETTINGS_SYNC_SIGNIN" desc="The label that appears on the sync button in the options dialog when sync has not been set up by the user.">
+    Sign in to Brave
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DATA_ENCRYPTED_TEXT" desc="Text alerting the user that synced data is encrypted.">
+    For added security, Brave will encrypt your data.
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_TITLE" desc="The title of the dialog to stop syncing and sign out.">
+    Sign out of Brave
+  </message>
+
+  <!-- Languages Page -->
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
+      Brave OS is displayed in this language
+    </message>
+    <message name="IDS_SETTINGS_LANGUAGES_DISPLAY_IN_THIS_LANGUAGE" desc="The label used for a button that changes the UI language.">
+      Display Brave OS in this language
+    </message>
+  </if>
+  <if expr="not chromeos">
+    <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
+      Brave is displayed in this language
+    </message>
+    <message name="IDS_SETTINGS_LANGUAGES_DISPLAY_IN_THIS_LANGUAGE" desc="The label used for a button that changes the UI language.">
+      Display Brave in this language
+    </message>
+  </if>
+
+  <!-- System Page -->
+  <if expr="not chromeos">
+    <message name="IDS_SETTINGS_SYSTEM_BACKGROUND_APPS_LABEL" desc="Label for the checkbox to allow apps to run in the background, when Chrome is closed.">
+      Continue running background apps when Brave is closed
+    </message>
+  </if>
+
+  <!-- Reset Page -->
+  <message name="IDS_SETTINGS_RESET_PROFILE_FEEDBACK" desc="Feedback label in the Reset Profile Settings dialog">
+    Help make Brave better by reporting the <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph>current settings<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+</grit-part>

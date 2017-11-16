@@ -1,0 +1,3 @@
+import("//build/config/features.gni")
+
+group("app") {}

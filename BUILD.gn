@@ -1,0 +1,18 @@
+group("child_dependencies") {
+  public_deps = [
+    "//brave/renderer",
+    "//brave/utility",
+  ]
+}
+
+group("browser_dependencies") {
+  public_deps = [
+    "//brave/browser",
+  ]
+}
+
+group("brave") {
+  public_deps = [
+    "//chrome",
+  ]
+}

@@ -1,0 +1,17 @@
+import("//build/config/features.gni")
+
+source_set("renderer") {
+  sources = [
+    "brave_content_renderer_client.cc",
+    "brave_content_renderer_client.h",
+  ]
+
+  public_deps = [
+    "//chrome/renderer",
+  ]
+
+  deps = [
+    "//skia",
+    "//third_party/WebKit/public:blink",
+  ]
+}

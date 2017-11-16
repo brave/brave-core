@@ -1,0 +1,23 @@
+import("//build/config/features.gni")
+
+source_set("browser_process") {
+  sources = [
+    "brave_browser_process_impl.cc",
+    "brave_browser_process_impl.h",
+  ]
+
+  deps = [
+    "//content/public/browser"
+  ]
+}
+
+source_set("browser") {
+  sources = [
+    "brave_content_browser_client.cc",
+    "brave_content_browser_client.h",
+  ]
+
+  public_deps = [
+    "//chrome/browser",
+  ]
+}

@@ -1,0 +1,12 @@
+import("//build/config/features.gni")
+
+source_set("utility") {
+  sources = [
+    "brave_content_utility_client.cc",
+    "brave_content_utility_client.h",
+  ]
+
+  public_deps = [
+    "//chrome/utility",
+  ]
+}
