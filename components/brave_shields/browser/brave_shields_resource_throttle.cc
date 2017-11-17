@@ -28,19 +28,16 @@ const char* BraveShieldsResourceThrottle::GetNameForLogging() const {
 }
 
 void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
-  if (g_browser_process->tracking_protection_service()->Check(request_->url(),
+  if (!g_browser_process->tracking_protection_service()->
+      ShouldStartRequest(request_->url(),
       resource_type_,
       request_->initiator()->host())) {
     Cancel();
   }
-  if (g_browser_process->ad_block_service()->Check(request_->url(),
+  if (!g_browser_process->ad_block_service()->
+      ShouldStartRequest(request_->url(),
       resource_type_,
       request_->initiator()->host())) {
     Cancel();
   }
-}
-
-void BraveShieldsResourceThrottle::WillRedirectRequest(
-    const net::RedirectInfo& redirect_info,
-    bool* defer) {
 }

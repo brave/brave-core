@@ -25,7 +25,7 @@ class AdBlockService : public BaseBraveShieldsService {
    AdBlockService();
    ~AdBlockService() override;
 
-  bool Check(const GURL &url,
+  bool ShouldStartRequest(const GURL &url,
     content::ResourceType resource_type,
     const std::string &initiator_host) override;
 

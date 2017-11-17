@@ -36,8 +36,6 @@ class BraveShieldsResourceThrottle
 
   // content::ResourceThrottle:
   void WillStartRequest(bool* defer) override;
-  void WillRedirectRequest(const net::RedirectInfo& redirect_info,
-                           bool* defer) override;
   const char* GetNameForLogging() const override;
 
   const net::URLRequest* request_;

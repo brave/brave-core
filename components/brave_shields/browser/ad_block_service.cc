@@ -40,7 +40,7 @@ void AdBlockService::Cleanup() {
   ad_block_client_.reset();
 }
 
-bool AdBlockService::Check(const GURL& url,
+bool AdBlockService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string &initiator_host) {
 
@@ -60,10 +60,10 @@ bool AdBlockService::Check(const GURL& url,
     // LOG(ERROR) << "AdBlockService::Check(), host: " << initiator_host
     //  << ", resource type: " << resource_type
     //  << ", url.spec(): " << url.spec();
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 }
 
 bool AdBlockService::Init() {
@@ -81,7 +81,7 @@ bool AdBlockService::Init() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// The brave sheilds factory. Using the Brave Sheilds as a singleton
+// The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 // TODO(bbondy): consider making this a singleton.
 std::unique_ptr<BaseBraveShieldsService> AdBlockServiceFactory() {

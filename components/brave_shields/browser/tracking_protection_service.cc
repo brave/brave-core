@@ -55,20 +55,20 @@ void TrackingProtectionService::Cleanup() {
   tracking_protection_client_.reset();
 }
 
-bool TrackingProtectionService::Check(const GURL& url,
+bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string &initiator_host) {
   std::string host = url.host();
   if (!tracking_protection_client_->matchesTracker(
         initiator_host.c_str(), host.c_str())) {
-    return false;
+    return true;
   }
 
   std::vector<std::string> hosts(GetThirdPartyHosts(initiator_host));
   for (size_t i = 0; i < hosts.size(); i++) {
     if (host == hosts[i] ||
         host.find((std::string)"." + hosts[i]) != std::string::npos) {
-      return false;
+      return true;
     }
     size_t iPos = host.find((std::string)"." + hosts[i]);
     if (iPos == std::string::npos) {
@@ -76,15 +76,15 @@ bool TrackingProtectionService::Check(const GURL& url,
     }
     if (hosts[i].length() + ((std::string)".").length() + iPos ==
         host.length()) {
-      return false;
+      return true;
     }
   }
 
   if (std::find(white_list_.begin(), white_list_.end(), host) !=
       white_list_.end()) {
-    return false;
+    return true;
   }
-  return true;
+  return false;
 }
 
 bool TrackingProtectionService::Init() {
@@ -158,7 +158,7 @@ TrackingProtectionService::GetThirdPartyHosts(const std::string& base_host) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// The brave sheilds factory. Using the Brave Sheilds as a singleton
+// The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 // TODO(bbondy): consider making this a singleton.
 std::unique_ptr<BaseBraveShieldsService> TrackingProtectionServiceFactory() {

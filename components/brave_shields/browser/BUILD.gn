@@ -12,6 +12,9 @@ source_set("brave_shields") {
     "dat_file_util.h",
     "dat_file_web_request.cc",
     "dat_file_web_request.h",
+    "https_everywhere_recently_used_cache.h",
+    "https_everywhere_service.cc",
+    "https_everywhere_service.h",
     "tracking_protection_service.cc",
     "tracking_protection_service.h",
   ]
@@ -21,5 +24,6 @@ source_set("brave_shields") {
   ]
   public_deps = [
     "//chrome/common",
+    "//third_party/leveldatabase",
   ]
 }

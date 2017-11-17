@@ -76,4 +76,10 @@ void BaseBraveShieldsService::Stop() {
   initialized_ = false;
 }
 
+bool BaseBraveShieldsService::ShouldStartRequest(const GURL &url,
+    content::ResourceType resource_type,
+    const std::string &initiator_host) {
+  return true;
+}
+
 }  // namespace brave_shields
