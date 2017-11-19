@@ -28,6 +28,6 @@ void BraveResourceDispatcherHostDelegate::AppendStandardResourceThrottles(
     request, resource_context, resource_type, throttles);
 
   content::ResourceThrottle* throttle = MaybeCreateBraveShieldsResourceThrottle(
-    request, resource_type);
+    request, resource_context, resource_type);
   throttles->push_back(base::WrapUnique(throttle));
 }
