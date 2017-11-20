@@ -312,6 +312,50 @@ index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5
  #else
  #error Unknown branding
  #endif
+diff --git a/chrome/common/extensions/api/content_settings.json b/chrome/common/extensions/api/content_settings.json
+index 9c0927abbb6127eae9f4e3143f6d508aa9d81f72..2e1df067e514b2c67c86866ed18a97b9eec02697 100644
+--- a/chrome/common/extensions/api/content_settings.json
++++ b/chrome/common/extensions/api/content_settings.json
+@@ -238,6 +238,16 @@
+         "id": "MultipleAutomaticDownloadsContentSetting",
+         "type": "string",
+         "enum": ["allow", "block", "ask"]
++      },
++      {
++        "id": "BraveAdBlockContentSetting",
++        "type": "string",
++        "enum": ["allow", "block"]
++      },
++      {
++        "id": "BraveTrackingProtectionContentSetting",
++        "type": "string",
++        "enum": ["allow", "block"]
+       }
+     ],
+     "properties": {
+@@ -344,6 +354,22 @@
+           "automatic-downloads",
+           {"$ref":"MultipleAutomaticDownloadsContentSetting"}
+         ]
++      },
++      "braveAdBlock": {
++        "$ref": "ContentSetting",
++        "description": "Whether to allow sites to use Brave's ad-block. One of<br><var>allow</var>: Allow sites to use ad-block,<br><var>block</var>: Don't allow sites to use ad-block. <br>Default is <var>allow</var>.<br>The primary URL is the URL of the top-level frame. The secondary URL is not used.",
++        "value": [
++          "braveAdBlock",
++          {"$ref":"BraveAdBlockContentSetting"}
++        ]
++      },
++      "braveTrackingProtection": {
++        "$ref": "ContentSetting",
++        "description": "Whether to allow sites to use Brave's tracking-protection. One of<br><var>allow</var>: Allow sites to use tracking-protection,<br><var>block</var>: Don't allow sites to use tracking-protection. <br>Default is <var>allow</var>.<br>The primary URL is the URL of the top-level frame. The secondary URL is not used.",
++        "value": [
++          "braveTrackingProtection",
++          {"$ref":"BraveTrackingProtectionContentSetting"}
++        ]
+       }
+     }
+   }
 diff --git a/chrome/common/mac/app_mode_chrome_locator.mm b/chrome/common/mac/app_mode_chrome_locator.mm
 index efd272e706ba56b748e4b76b96d76cbd03aa07ac..5ce343302a2ab3a18a9149a33203f5a2fe301b23 100644
 --- a/chrome/common/mac/app_mode_chrome_locator.mm
@@ -348,6 +392,47 @@ index c0132fecb0b9e8a91f288d6e6ecaad9dfdbec247..a6e307d6ddcee3ca0f75a91c459a6903
    // IPC message handlers.
    using Handlers = std::vector<std::unique_ptr<UtilityMessageHandler>>;
    Handlers handlers_;
+diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
+index fe84151f52ddeabef91f80d618c78aae1e22e10e..660232e228e783bd67079f33293d124de900c839 100644
+--- a/components/content_settings/core/browser/content_settings_registry.cc
++++ b/components/content_settings/core/browser/content_settings_registry.cc
+@@ -335,6 +335,23 @@ void ContentSettingsRegistry::Init() {
+            WebsiteSettingsRegistry::DESKTOP |
+                WebsiteSettingsRegistry::PLATFORM_ANDROID,
+            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE);
++
++  Register(CONTENT_SETTINGS_TYPE_BRAVEADBLOCK, "braveAdBlock", CONTENT_SETTING_ALLOW,
++           WebsiteSettingsInfo::SYNCABLE,
++           WhitelistedSchemes(kChromeUIScheme, kChromeDevToolsScheme,
++                              kExtensionScheme),
++           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
++           WebsiteSettingsInfo::TOP_LEVEL_ORIGIN_ONLY_SCOPE,
++           WebsiteSettingsRegistry::ALL_PLATFORMS,
++           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE);
++  Register(CONTENT_SETTINGS_TYPE_BRAVETRACKINGPROTECTION, "braveTrackingProtection", CONTENT_SETTING_ALLOW,
++           WebsiteSettingsInfo::SYNCABLE,
++           WhitelistedSchemes(kChromeUIScheme, kChromeDevToolsScheme,
++                              kExtensionScheme),
++           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
++           WebsiteSettingsInfo::TOP_LEVEL_ORIGIN_ONLY_SCOPE,
++           WebsiteSettingsRegistry::ALL_PLATFORMS,
++           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE);
+ }
+ 
+ void ContentSettingsRegistry::Register(
+diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
+index 6781f84119866016a4610cdfc187b25d82e442e9..196b3accc9cb5f328257fa50116bbf4321cb0d62 100644
+--- a/components/content_settings/core/common/content_settings_types.h
++++ b/components/content_settings/core/common/content_settings_types.h
+@@ -100,6 +100,8 @@ enum ContentSettingsType {
+   CONTENT_SETTINGS_TYPE_ACCESSIBILITY_EVENTS,
+ 
+   CONTENT_SETTINGS_NUM_TYPES,
++  CONTENT_SETTINGS_TYPE_BRAVEADBLOCK,
++  CONTENT_SETTINGS_TYPE_BRAVETRACKINGPROTECTION,
+ };
+ 
+ struct ContentSettingsTypeHash {
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
 index a299d38baf7f0c82dad33dc37764eba5db4ba856..218b83b4c65fe269dd4c3e5b7b51aa44fc4119ac 100644
 --- a/components/strings/BUILD.gn
