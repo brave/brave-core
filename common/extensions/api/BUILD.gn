@@ -1,0 +1,12 @@
+import("//extensions/common/api/schema.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+json_schema_api("api") {
+  root_namespace = extensions_api_root_namespace
+  schemas = true
+  bundle = true
+  bundle_name = ""
+  sources = [
+    "brave_shields.json"
+  ]
+}

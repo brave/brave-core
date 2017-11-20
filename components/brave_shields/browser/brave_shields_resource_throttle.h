@@ -35,7 +35,7 @@ class BraveShieldsResourceThrottle
       content::ResourceContext* resource_context,
       content::ResourceType resource_type);
 
-  BraveShieldsResourceThrottle(const net::URLRequest* request,
+  BraveShieldsResourceThrottle(net::URLRequest* request,
                                content::ResourceContext* resource_context,
                                content::ResourceType resource_type);
 
@@ -45,7 +45,7 @@ class BraveShieldsResourceThrottle
   void WillStartRequest(bool* defer) override;
   const char* GetNameForLogging() const override;
 
-  const net::URLRequest* request_;
+  net::URLRequest* request_;
   content::ResourceContext* resource_context_;
   content::ResourceType resource_type_;
 

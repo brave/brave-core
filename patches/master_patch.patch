@@ -294,6 +294,28 @@ index 9361b28fb3ac91e61837d7c707e9f4a9ec73c7c6..c5eee899ae5f42b974645240f17aabeb
    friend class DisableWebRtcEncryptionFlagTest;
    friend class InProcessBrowserTest;
  
+diff --git a/chrome/browser/extensions/tab_helper.cc b/chrome/browser/extensions/tab_helper.cc
+index 21cbe22a4480f24c6793ef5c4d1db1d22329bafe..2f57dc0636ab2947a401b9fc11896c83074c2bdf 100644
+--- a/chrome/browser/extensions/tab_helper.cc
++++ b/chrome/browser/extensions/tab_helper.cc
+@@ -47,6 +47,7 @@
+ #include "content/public/browser/web_contents.h"
+ #include "content/public/common/frame_navigate_params.h"
+ #include "extensions/browser/api/declarative/rules_registry_service.h"
++#include "extensions/browser/extension_api_frame_id_map.h"
+ #include "extensions/browser/extension_prefs.h"
+ #include "extensions/browser/extension_registry.h"
+ #include "extensions/browser/extension_system.h"
+@@ -286,6 +287,9 @@ void TabHelper::FinishCreateBookmarkApp(
+ 
+ void TabHelper::RenderFrameCreated(content::RenderFrameHost* host) {
+   SetTabId(host);
++  // Look up the extension API frame ID to force the mapping to be cached.
++  // This is needed so that cached information is available for tabId.
++  ExtensionApiFrameIdMap::Get()->CacheFrameData(host);
+ }
+ 
+ void TabHelper::DidFinishNavigation(
 diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
 index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5afcf04ad 100644
 --- a/chrome/common/chrome_constants.cc
@@ -312,6 +334,42 @@ index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5
  #else
  #error Unknown branding
  #endif
+diff --git a/chrome/common/extensions/api/BUILD.gn b/chrome/common/extensions/api/BUILD.gn
+index ad3703177d68941b91d570bcfa001848ffa179a9..a6eb9e854322f84a0d37c91218fd3bd93b412573 100644
+--- a/chrome/common/extensions/api/BUILD.gn
++++ b/chrome/common/extensions/api/BUILD.gn
+@@ -83,6 +83,8 @@ schema_sources = [
+   "webstore_private.json",
+   "webstore_widget_private.idl",
+   "windows.json",
++
++  "//brave/common/extensions/api/brave_shields.json",
+ ]
+ if (!is_android) {
+   schema_sources += [ "processes.idl" ]
+@@ -194,6 +196,7 @@ json_schema_api("api") {
+   root_namespace = extensions_api_root_namespace
+   deps = [
+     "//extensions/common/api",
++    "//brave/common/extensions/api",
+   ]
+ }
+ 
+diff --git a/chrome/common/extensions/api/_api_features.json b/chrome/common/extensions/api/_api_features.json
+index 8ec1de091af1a17127e66bc67c6ee7cb8b5c2be3..0686739f34df6198129d2a9a363fba00da4a537e 100644
+--- a/chrome/common/extensions/api/_api_features.json
++++ b/chrome/common/extensions/api/_api_features.json
+@@ -826,5 +826,9 @@
+     "matches": [
+       "chrome://bookmarks/*"
+     ]
+-  }]
++  }],
++  "braveShields": {
++    "dependencies": ["permission:contentSettings"],
++    "contexts": ["blessed_extension"]
++  }
+ }
 diff --git a/chrome/common/extensions/api/content_settings.json b/chrome/common/extensions/api/content_settings.json
 index 9c0927abbb6127eae9f4e3143f6d508aa9d81f72..2e1df067e514b2c67c86866ed18a97b9eec02697 100644
 --- a/chrome/common/extensions/api/content_settings.json
@@ -446,6 +504,21 @@ index a299d38baf7f0c82dad33dc37764eba5db4ba856..218b83b4c65fe269dd4c3e5b7b51aa44
    outputs = [
      "grit/components_chromium_strings.h",
    ]
+diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
+index 6b388cec2f2f769ebfec1aced038713932fd8a2e..b6198d06761a701b80d82b1bb6e11b121fa4aa56 100644
+--- a/extensions/browser/extension_event_histogram_value.h
++++ b/extensions/browser/extension_event_histogram_value.h
+@@ -428,6 +428,10 @@ enum HistogramValue {
+   LOCK_SCREEN_DATA_ON_DATA_ITEMS_AVAILABLE,
+   WEB_VIEW_INTERNAL_ON_AUDIO_STATE_CHANGED,
+   AUTOMATION_INTERNAL_ON_ACTION_RESULT,
++
++  BRAVE_START = 5000,
++  BRAVE_AD_BLOCKED,
++
+   // Last entry: Add new entries above, then run:
+   // python tools/metrics/histograms/update_extension_histograms.py
+   ENUM_BOUNDARY
 diff --git a/third_party/widevine/cdm/BUILD.gn b/third_party/widevine/cdm/BUILD.gn
 index a3eac59cc2ebdb1f9d2bb7af8a7db0d44ab315a9..11d0c86fb7cdfc1881f563552fb6f5c5abdabae4 100644
 --- a/third_party/widevine/cdm/BUILD.gn

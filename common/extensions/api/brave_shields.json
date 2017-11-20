@@ -1,0 +1,28 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "braveShields",
+    "description": "Use the <code>chrome.braveShields</code> API to receive notifications about the status of brave shields.",
+    "events": [
+      {
+        "name": "onBlocked",
+        "type": "function",
+        "description": "Fired when an ad or tracker is blocked.",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "details",
+            "properties": {
+              "tabId": {"type": "integer", "description": "The ID of the tab in which the action occurs."},
+              "blockType": {"type": "string", "description": "\"adBlock\" or \"trackingProtection\"."},
+              "url": {"type": "string"}
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
