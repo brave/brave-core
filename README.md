@@ -1,4 +1,4 @@
-# Brave Chromium Extension
+# Brave Only Extension
 
 [![Build Status](https://travis-ci.org/brave/brave-extension.svg?branch=master)](https://travis-ci.org/brave/brave-extension)
 
@@ -7,7 +7,7 @@
 ## Installation
 
 ```bash
-# clone it
+# clone brave-extension
 $ git clone git@github.com:brave/brave-extension.git
 
 # Install dependencies
@@ -21,24 +21,25 @@ $ yarn install
 ```bash
 # Build files will appear in './dev'
 # Start webpack development server
-$ yarn run dev
+$ yarn dev
 ```
 
-#### Building release
+#### Release
 
 ## Build
 
 ```bash
 # build files to './build'
-$ yarn run build
+$ yarn build
 ```
 
-## Compress
+## Packaging
+
 
 ```bash
-# compress build folder to {manifest.name}.zip and crx
-$ yarn run build
-$ yarn run compress -- [options]
+# compress release into a brave.zip and brave.crx.
+$ yarn build
+$ yarn compress -- [options]
 ```
 
 ## Test
@@ -48,13 +49,15 @@ $ yarn run compress -- [options]
 
 ```bash
 # lint
-$ yarn run lint
+$ yarn lint
+
 # test/app
 $ yarn test
 $ yarn test -- --watch  # watch files
+
 # test/e2e
-$ yarn run build
-$ yarn run test-e2e
+$ yarn build
+$ yarn test-e2e
 ```
 
 ## LICENSE

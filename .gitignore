@@ -41,9 +41,6 @@ typings/
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
-.eslintcache
-
 # Optional REPL history
 .node_repl_history
 
@@ -61,3 +58,6 @@ dev/
 
 # macOS files
 .DS_Store
+
+# Release
+build/

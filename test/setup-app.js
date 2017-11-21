@@ -1,12 +1,51 @@
-import { jsdom } from 'jsdom'
-import hook from 'css-modules-require-hook'
-import postCSSConfig from '../webpack/postcss.config'
-
-global.document = jsdom('<!doctype html><html><body></body></html>')
+import jsdom from 'jsdom'
+const {JSDOM} = jsdom
+const {document} = (new JSDOM('<!doctype html><html><body></body></html>')).window
+global.document = document
 global.window = document.defaultView
 global.navigator = global.window.navigator
+global.HTMLElement = global.window.HTMLElement
 
-hook({
-  generateScopedName: '[name]__[local]___[hash:base64:5]',
-  prepend: postCSSConfig.plugins
-})
+if (global.chrome === undefined) {
+  global.chrome = {
+    runtime: {
+      onMessage: {
+        addListener: function () {
+        }
+      },
+      onConnect: {
+        addListener: function () {
+        }
+      }
+    },
+    tabs: {
+      queryAsync: function () {
+        return Promise.resolve([{
+          url: 'https://www.brave.com'
+        }])
+      }
+    },
+    contentSettings: {
+      braveAdBlock: {
+        setAsync: function () {
+          return Promise.resolve()
+        },
+        getAsync: function () {
+          return Promise.resolve({
+            setting: 'block'
+          })
+        }
+      },
+      braveTrackingProtection: {
+        setAsync: function () {
+          return Promise.resolve()
+        },
+        getAsync: function () {
+          return Promise.resolve({
+            setting: 'block'
+          })
+        }
+      }
+    }
+  }
+}
