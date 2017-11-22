@@ -11,12 +11,12 @@ import assert from 'assert'
 
 const extensionName = manifest.name
 
-const findShieldsPanel = async driver => {
+const findNewTabPageContainer = async driver => {
   await delay(1000)
-  return (await driver.findElements(webdriver.By.css(`[data-test-id="brave-shields-panel"]`)))[0]
+  return (await driver.findElements(webdriver.By.css(`[data-test-id="new-tab-page"]`)))[0]
 }
 
-describe('browser action page', function test () {
+describe('new tab page', function test () {
   let driver
   this.timeout(15000)
 
@@ -30,7 +30,7 @@ describe('browser action page', function test () {
       `.//h2[contains(text(), "${extensionName}")]]`
     ))
     const extensionId = await elems[0].getAttribute('id')
-    await driver.get(`chrome-extension://${extensionId}/braveShieldsPanel.html`)
+    await driver.get(`chrome-extension://${extensionId}/newTabPage.html`)
   })
 
   after(async () => {
@@ -38,14 +38,14 @@ describe('browser action page', function test () {
     process.exit()
   })
 
-  it('opens Brave Shields Panel', async () => {
+  it('opens new tab page', async () => {
     const title = await driver.getTitle()
-    assert.equal(title, 'Brave Shields Panel')
+    assert.equal(title, 'Brave New Tab Page')
   })
 
-  it('contains adBlock:allow', async () => {
-    const shieldsPanel = await findShieldsPanel(driver)
-    const text = await shieldsPanel.getText()
-    assert(text.includes('adBlock: allow'))
+  it('contains \'Settings\'', async () => {
+    const newTabPageContainer = await findNewTabPageContainer(driver)
+    const text = await newTabPageContainer.getText()
+    assert(text.includes('Settings'))
   })
 })

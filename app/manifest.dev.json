@@ -18,7 +18,7 @@
     "page": "background.html"
   },
   "chrome_url_overrides" : {
-    "newtab": "newtab.html"
+    "newtab": "newTabPage.html"
   },
   "permissions": [ "contentSettings", "management", "tabs", "storage" ],
   "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 https://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 https://localhost:3000; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:;"
