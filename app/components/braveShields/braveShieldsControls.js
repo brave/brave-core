@@ -6,10 +6,10 @@ import React, { Component } from 'react'
 
 export default class BraveShieldsControls extends Component {
   render () {
-    const { adBlock, trackingProtection, toggleAdBlock, toggleTrackingProtection } = this.props
+    const { adBlock, trackingProtection, adBlockToggled, trackingProtectionToggled } = this.props
     return <header>
-      <h1 onClick={toggleAdBlock}>adBlock: {adBlock}</h1>
-      <h1 onClick={toggleTrackingProtection}>trackingProtection: {trackingProtection}</h1>
+      <h1 onClick={adBlockToggled}>adBlock: {adBlock}</h1>
+      <h1 onClick={trackingProtectionToggled}>trackingProtection: {trackingProtection}</h1>
     </header>
   }
 }

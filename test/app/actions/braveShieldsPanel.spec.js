@@ -18,21 +18,21 @@ describe('shieldsPanelActions', () => {
     })
   })
 
-  it('toggleShields', () => {
-    assert.deepEqual(actions.toggleShields(), {
-      type: types.TOGGLE_SHIELDS
+  it('shieldsToggled', () => {
+    assert.deepEqual(actions.shieldsToggled(), {
+      type: types.SHIELDS_TOGGLED
     })
   })
 
-  it('toggleAdBlock action', () => {
-    assert.deepEqual(actions.toggleAdBlock(), {
-      type: types.TOGGLE_AD_BLOCK
+  it('adBlockToggled action', () => {
+    assert.deepEqual(actions.adBlockToggled(), {
+      type: types.AD_BLOCK_TOGGLED
     })
   })
 
-  it('toggleTrackingProtection action', () => {
-    assert.deepEqual(actions.toggleTrackingProtection(), {
-      type: types.TOGGLE_TRACKING_PROTECTION
+  it('trackingProtectionToggled action', () => {
+    assert.deepEqual(actions.trackingProtectionToggled(), {
+      type: types.TRACKING_PROTECTION_TOGGLED
     })
   })
 

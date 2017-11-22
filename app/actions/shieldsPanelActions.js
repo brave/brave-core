@@ -8,16 +8,16 @@ export function shieldsPanelDataUpdated (details) {
   return { type: types.SHIELDS_PANEL_DATA_UPDATED, details }
 }
 
-export function toggleShields () {
-  return { type: types.TOGGLE_SHIELDS }
+export function shieldsToggled () {
+  return { type: types.SHIELDS_TOGGLED }
 }
 
-export function toggleAdBlock () {
-  return { type: types.TOGGLE_AD_BLOCK }
+export function adBlockToggled () {
+  return { type: types.AD_BLOCK_TOGGLED }
 }
 
-export function toggleTrackingProtection () {
-  return { type: types.TOGGLE_TRACKING_PROTECTION }
+export function trackingProtectionToggled () {
+  return { type: types.TRACKING_PROTECTION_TOGGLED }
 }
 
 export function resourceBlocked (details) {

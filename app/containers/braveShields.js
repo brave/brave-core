@@ -23,8 +23,8 @@ class BraveShields extends Component {
       <BraveShieldsControls
         adBlock={shieldsPanel.adBlock}
         trackingProtection={shieldsPanel.trackingProtection}
-        toggleAdBlock={actions.toggleAdBlock}
-        toggleTrackingProtection={actions.toggleTrackingProtection}
+        adBlockToggled={actions.adBlockToggled}
+        trackingProtectionToggled={actions.trackingProtectionToggled}
         />
       <BraveShieldsFooter />
     </div>

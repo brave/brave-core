@@ -11,14 +11,14 @@ export default function shieldsPanelReducer (state = {tabs: {}}, action) {
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED:
       state = {...state, ...action.details}
       break
-    case shieldsPanelTypes.TOGGLE_SHIELDS:
+    case shieldsPanelTypes.SHIELDS_TOGGLED:
       setAllowAdBlock(state.origin, toggleShieldsValue(state.adBlock))
       setAllowTrackingProtection(state.origin, toggleShieldsValue(state.trackingProtection))
       break
-    case shieldsPanelTypes.TOGGLE_AD_BLOCK:
+    case shieldsPanelTypes.AD_BLOCK_TOGGLED:
       setAllowAdBlock(state.origin, toggleShieldsValue(state.adBlock))
       break
-    case shieldsPanelTypes.TOGGLE_TRACKING_PROTECTION:
+    case shieldsPanelTypes.TRACKING_PROTECTION_TOGGLED:
       setAllowTrackingProtection(state.origin, toggleShieldsValue(state.trackingProtection))
       break
     case shieldsPanelTypes.RESOURCE_BLOCKED:

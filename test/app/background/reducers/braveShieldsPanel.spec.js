@@ -61,33 +61,33 @@ describe('braveShieldsPanelReducer', () => {
     tabs: {}
   }
 
-  describe('TOGGLE_SHIELDS', function () {
+  describe('SHIELDS_TOGGLED', function () {
     it('should call setAllowAdBlock and setAllowTrackingProtection', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
-          type: types.TOGGLE_SHIELDS
+          type: types.SHIELDS_TOGGLED
         }), state)
       assert.equal(this.setAllowAdBlockSpy.withArgs(origin, 'allow').calledOnce, true)
       assert.equal(this.setAllowTrackingProtectionSpy.withArgs(origin, 'allow').calledOnce, true)
     })
   })
 
-  describe('TOGGLE_AD_BLOCK', function () {
+  describe('AD_BLOCK_TOGGLED', function () {
     it('should call setAllowAdBlock', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
-          type: types.TOGGLE_AD_BLOCK
+          type: types.AD_BLOCK_TOGGLED
         }), state)
       assert.equal(this.setAllowAdBlockSpy.withArgs(origin, 'allow').calledOnce, true)
       assert.equal(this.setAllowTrackingProtectionSpy.notCalled, true)
     })
   })
 
-  describe('TOGGLE_TRACKING_PROTECTION', function () {
+  describe('TRACKING_PROTECTION_TOGGLED', function () {
     it('should call setAllowTrackingProtection', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
-          type: types.TOGGLE_TRACKING_PROTECTION
+          type: types.TRACKING_PROTECTION_TOGGLED
         }), state)
       assert.equal(this.setAllowAdBlockSpy.notCalled, true)
       assert.equal(this.setAllowTrackingProtectionSpy.withArgs(origin, 'allow').calledOnce, true)
