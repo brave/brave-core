@@ -5,7 +5,7 @@
 
 import sinon from 'sinon'
 import assert from 'assert'
-import * as tabsAPI from '../../../../app/background/api/tabs'
+import * as tabsAPI from '../../../../app/background/api/tabsAPI'
 
 describe('tabs API', () => {
   describe('createTab', function () {

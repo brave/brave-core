@@ -6,7 +6,7 @@
 import sinon from 'sinon'
 import assert from 'assert'
 import actions from '../../../../app/background/actions/shieldsPanelActions'
-import * as shieldsAPI from '../../../../app/background/api/shields'
+import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
 import { activeTabData, activeTabShieldsData, blockedResource } from '../../../testData'
 
 describe('shields API', () => {

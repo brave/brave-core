@@ -7,7 +7,7 @@ import sinon from 'sinon'
 import assert from 'assert'
 import * as types from '../../../../app/constants/shieldsPanelTypes'
 import shieldsPanelReducer from '../../../../app/background/reducers/shieldsPanelReducer'
-import * as shieldsAPI from '../../../../app/background/api/shields'
+import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
 
 describe('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {

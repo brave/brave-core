@@ -5,7 +5,7 @@
 
 import sinon from 'sinon'
 import assert from 'assert'
-import * as badgeAPI from '../../../../app/background/api/badge'
+import * as badgeAPI from '../../../../app/background/api/badgeAPI'
 
 describe('badge API', () => {
   describe('setBadgeText', function () {

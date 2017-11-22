@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as newTabPageTypes from '../../constants/newTabPageTypes'
-import {createTab} from '../api/tabs'
+import {createTab} from '../api/tabsAPI'
 
 export default function shieldsPanelReducer (state = {}, action) {
   switch (action.type) {

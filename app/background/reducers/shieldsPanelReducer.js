@@ -3,8 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
-import {setAllowAdBlock, setAllowTrackingProtection, toggleShieldsValue} from '../api/shields'
-import {setBadgeText} from '../api/badge'
+import {setAllowAdBlock, setAllowTrackingProtection, toggleShieldsValue} from '../api/shieldsAPI'
+import {setBadgeText} from '../api/badgeAPI'
 
 export default function shieldsPanelReducer (state = {tabs: {}}, action) {
   switch (action.type) {
