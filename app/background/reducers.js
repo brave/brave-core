@@ -5,7 +5,9 @@
 import {combineReducers} from 'redux'
 
 import shieldsPanelReducer from './reducers/shieldsPanelReducer'
+import newTabPageReducer from './reducers/newTabPageReducer'
 
 export default combineReducers({
-  shieldsPanel: shieldsPanelReducer
+  shieldsPanel: shieldsPanelReducer,
+  newTabPage: newTabPageReducer
 })

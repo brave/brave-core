@@ -7,6 +7,7 @@ const customPath = path.join(__dirname, './customPublicPath')
 module.exports = {
   entry: {
     braveShieldsPanel: [customPath, path.join(__dirname, '../app/braveShieldsPanel')],
+    newTabPage: [customPath, path.join(__dirname, '../app/newTabPage')],
     background: [customPath, path.join(__dirname, '../app/background')]
   },
   output: {
