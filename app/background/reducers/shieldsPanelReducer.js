@@ -3,11 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
-import {setAllowAdBlock, setAllowTrackingProtection} from '../api/shields'
+import {setAllowAdBlock, setAllowTrackingProtection, toggleShieldsValue} from '../api/shields'
 import {setBadgeText} from '../api/badge'
-
-const toggleValue = (value) => value === 'allow' ? 'block' : 'allow'
-const defaultState = { tabs: {} }
 
 export default function shieldsPanelReducer (state = {tabs: {}}, action) {
   switch (action.type) {
@@ -15,14 +12,14 @@ export default function shieldsPanelReducer (state = {tabs: {}}, action) {
       state = {...state, ...action.details}
       break
     case shieldsPanelTypes.TOGGLE_SHIELDS:
-      setAllowAdBlock(state.origin, toggleValue(state.adBlock))
-      setAllowTrackingProtection(state.origin, toggleValue(state.trackingProtection))
+      setAllowAdBlock(state.origin, toggleShieldsValue(state.adBlock))
+      setAllowTrackingProtection(state.origin, toggleShieldsValue(state.trackingProtection))
       break
     case shieldsPanelTypes.TOGGLE_AD_BLOCK:
-      setAllowAdBlock(state.origin, toggleValue(state.adBlock))
+      setAllowAdBlock(state.origin, toggleShieldsValue(state.adBlock))
       break
     case shieldsPanelTypes.TOGGLE_TRACKING_PROTECTION:
-      setAllowTrackingProtection(state.origin, toggleValue(state.trackingProtection))
+      setAllowTrackingProtection(state.origin, toggleShieldsValue(state.trackingProtection))
       break
     case shieldsPanelTypes.RESOURCE_BLOCKED:
       const tabId = action.details.tabId

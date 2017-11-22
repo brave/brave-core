@@ -7,7 +7,7 @@ import store from '../store'
 import * as shieldsPanelActions from '../../actions/shieldsPanelActions'
 const actions = bindActionCreators(shieldsPanelActions, store.dispatch)
 
-chrome.braveShields.onBlocked.addListener(function(detail) {
+chrome.braveShields.onBlocked.addListener(function (detail) {
   actions.resourceBlocked(detail)
 })
 
@@ -66,3 +66,6 @@ export const setAllowTrackingProtection = (origin, setting) => {
     updateShieldsSettings()
   })
 }
+
+export const toggleShieldsValue = (value) =>
+  value === 'allow' ? 'block' : 'allow'
