@@ -2,8 +2,7 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - "6"
-  - "7"
+  - "8.9"
 cache:
   directories:
     - $HOME/.yarn-cache
@@ -32,5 +31,6 @@ before_script:
 script:
   - yarn run lint
   - yarn test
-  - yarn run build
-  - yarn run test-e2e
+#  - yarn run build
+# We need to pre-package a Brave build for this
+# - yarn run test-e2e
