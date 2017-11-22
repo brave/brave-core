@@ -25,6 +25,12 @@ if (global.chrome === undefined) {
         }])
       }
     },
+    braveShields: {
+      onBlocked: {
+        addListener: function () {
+        }
+      }
+    },
     contentSettings: {
       braveAdBlock: {
         setAsync: function () {

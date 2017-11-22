@@ -19,3 +19,7 @@ export function toggleAdBlock () {
 export function toggleTrackingProtection () {
   return { type: types.TOGGLE_TRACKING_PROTECTION }
 }
+
+export function resourceBlocked (details) {
+  return { type: types.RESOURCE_BLOCKED, details }
+}

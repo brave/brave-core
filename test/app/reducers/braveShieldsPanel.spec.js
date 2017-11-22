@@ -10,7 +10,7 @@ describe('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {
     assert.deepEqual(
       shieldsPanelReducer(undefined, {})
-    , {})
+    , {tabs: {}})
   })
 
   before(function () {
@@ -31,6 +31,7 @@ describe('braveShieldsPanelReducer', () => {
   describe('SHIELDS_PANEL_DATA_UPDATED', function () {
     it('updates state detail', function () {
       const state = {
+        tabs: {},
         hostname: 'brave.com',
         url: 'https://brave.com',
         adBlock: 'allow',
@@ -40,7 +41,8 @@ describe('braveShieldsPanelReducer', () => {
         hostname: 'brianbondy.com',
         url: 'https://brianbondy.com',
         adBlock: 'block',
-        trackingProtection: 'block'
+        trackingProtection: 'block',
+        tabs: {}
       }
       assert.deepEqual(
         shieldsPanelReducer(state, {
@@ -55,7 +57,8 @@ describe('braveShieldsPanelReducer', () => {
   const origin = 'https://brave.com'
   const state = {
     origin,
-    hostname: 'brave.com'
+    hostname: 'brave.com',
+    tabs: {}
   }
 
   describe('TOGGLE_SHIELDS', function () {
@@ -88,6 +91,124 @@ describe('braveShieldsPanelReducer', () => {
         }), state)
       assert.equal(this.setAllowAdBlockSpy.notCalled, true)
       assert.equal(this.setAllowTrackingProtectionSpy.withArgs(origin, 'allow').calledOnce, true)
+    })
+  })
+
+  describe('RESOURCE_BLOCKED', function () {
+    it('increases same count consecutively', function () {
+      let nextState = shieldsPanelReducer(state, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'adBlock',
+          tabId: 2
+        }
+      })
+      assert.deepEqual(nextState, {
+        origin: 'https://brave.com',
+        hostname: 'brave.com',
+        tabs: {
+          2: {
+            adsBlocked: 1,
+            trackingProtectionBlocked: 0
+          }
+        }
+      })
+
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'adBlock',
+          tabId: 2
+        }
+      })
+      assert.deepEqual(nextState, {
+        origin: 'https://brave.com',
+        hostname: 'brave.com',
+        tabs: {
+          2: {
+            adsBlocked: 2,
+            trackingProtectionBlocked: 0
+          }
+        }
+      })
+    })
+    it('increases different tab counts separately', function () {
+      let nextState = shieldsPanelReducer(state, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'adBlock',
+          tabId: 2
+        }
+      })
+      assert.deepEqual(nextState, {
+        origin: 'https://brave.com',
+        hostname: 'brave.com',
+        tabs: {
+          2: {
+            adsBlocked: 1,
+            trackingProtectionBlocked: 0
+          }
+        }
+      })
+
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'adBlock',
+          tabId: 3
+        }
+      })
+      assert.deepEqual(nextState, {
+        origin: 'https://brave.com',
+        hostname: 'brave.com',
+        tabs: {
+          2: {
+            adsBlocked: 1,
+            trackingProtectionBlocked: 0
+          },
+          3: {
+            adsBlocked: 1,
+            trackingProtectionBlocked: 0
+          }
+        }
+      })
+    })
+    it('increases different resource types separately', function () {
+      let nextState = shieldsPanelReducer(state, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'adBlock',
+          tabId: 2
+        }
+      })
+      assert.deepEqual(nextState, {
+        origin: 'https://brave.com',
+        hostname: 'brave.com',
+        tabs: {
+          2: {
+            adsBlocked: 1,
+            trackingProtectionBlocked: 0
+          }
+        }
+      })
+
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'trackingProtection',
+          tabId: 2
+        }
+      })
+      assert.deepEqual(nextState, {
+        origin: 'https://brave.com',
+        hostname: 'brave.com',
+        tabs: {
+          2: {
+            adsBlocked: 1,
+            trackingProtectionBlocked: 1
+          }
+        }
+      })
     })
   })
 })

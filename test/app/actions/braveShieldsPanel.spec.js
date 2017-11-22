@@ -4,7 +4,7 @@ import assert from 'assert'
 import * as types from '../../../app/constants/shieldsPanelTypes'
 import * as actions from '../../../app/actions/shieldsPanelActions'
 
-describe('shieldsPanelActions actions', () => {
+describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
     const details = {
       adBlock: 'allow',
@@ -33,6 +33,17 @@ describe('shieldsPanelActions actions', () => {
   it('toggleTrackingProtection action', () => {
     assert.deepEqual(actions.toggleTrackingProtection(), {
       type: types.TOGGLE_TRACKING_PROTECTION
+    })
+  })
+
+  it('resourceBlocked action', () => {
+    const details = {
+      blockType: 'adBlock',
+      tabId: 2
+    }
+    assert.deepEqual(actions.resourceBlocked(details), {
+      type: types.RESOURCE_BLOCKED,
+      details
     })
   })
 })

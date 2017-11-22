@@ -4,6 +4,6 @@
 
 export const setBadgeText = (text) => {
   if (chrome.browserAction) {
-    chrome.browserAction.setBadgeText({ text })
+    chrome.browserAction.setBadgeText({ text: String(text) })
   }
 }

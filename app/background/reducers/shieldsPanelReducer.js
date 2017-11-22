@@ -4,10 +4,12 @@
 
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
 import {setAllowAdBlock, setAllowTrackingProtection} from '../api/shields'
+import {setBadgeText} from '../api/badge'
 
 const toggleValue = (value) => value === 'allow' ? 'block' : 'allow'
+const defaultState = { tabs: {} }
 
-export default function shieldsPanelReducer (state = {}, action) {
+export default function shieldsPanelReducer (state = {tabs: {}}, action) {
   switch (action.type) {
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED:
       state = {...state, ...action.details}
@@ -21,6 +23,23 @@ export default function shieldsPanelReducer (state = {}, action) {
       break
     case shieldsPanelTypes.TOGGLE_TRACKING_PROTECTION:
       setAllowTrackingProtection(state.origin, toggleValue(state.trackingProtection))
+      break
+    case shieldsPanelTypes.RESOURCE_BLOCKED:
+      const tabId = action.details.tabId
+      const tabs = {...state.tabs}
+      tabs[tabId] = state.tabs[tabId] || { adsBlocked: 0, trackingProtectionBlocked: 0 }
+      if (action.details.blockType === 'adBlock') {
+        tabs[tabId].adsBlocked++
+      } else if (action.details.blockType === 'trackingProtection') {
+        tabs[tabId].trackingProtectionBlocked++
+      }
+      state = {
+        ...state,
+        tabs
+      }
+      if (tabId === state.tabId) {
+        setBadgeText(state.tabs[tabId].adsBlocked + state.tabs[tabId].trackingProtectionBlocked)
+      }
       break
   }
   return state

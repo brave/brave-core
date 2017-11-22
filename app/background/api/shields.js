@@ -7,11 +7,15 @@ import store from '../store'
 import * as shieldsPanelActions from '../../actions/shieldsPanelActions'
 const actions = bindActionCreators(shieldsPanelActions, store.dispatch)
 
-const getShieldSettingsForURL = (urlStr) => {
-  if (urlStr == null) {
-    return Promise.reject(new Error('No URL specified'))
+chrome.braveShields.onBlocked.addListener(function(detail) {
+  actions.resourceBlocked(detail)
+})
+
+const getShieldSettingsForTabData = (tabData) => {
+  if (tabData == null) {
+    return Promise.reject(new Error('No tab specified'))
   }
-  const url = new window.URL(urlStr)
+  const url = new window.URL(tabData.url)
   const origin = url.origin
   const hostname = url.hostname
   return Promise.all([
@@ -22,23 +26,27 @@ const getShieldSettingsForURL = (urlStr) => {
       origin,
       hostname,
       adBlock: details[0].setting,
-      trackingProtection: details[1].setting
+      trackingProtection: details[1].setting,
+      tabId: tabData.id
     }
   })
 }
 
-const getActiveTabURL = () => {
+const getActiveTabData = () => {
   return chrome.tabs.queryAsync({'active': true, 'lastFocusedWindow': true})
     .then((tabs) => {
-      return (tabs.length && tabs[0].url) || undefined
+      return (tabs.length && tabs[0]) || undefined
     })
 }
 
 export const updateShieldsSettings = () =>
-  getActiveTabURL()
-    .then(getShieldSettingsForURL)
+  getActiveTabData()
+    .then(getShieldSettingsForTabData)
     .then((details) => {
       actions.shieldsPanelDataUpdated(details)
+    })
+    .catch((e) => {
+      console.error('updateShieldsSettings:', e)
     })
 
 export const setAllowAdBlock = (origin, setting) => {
