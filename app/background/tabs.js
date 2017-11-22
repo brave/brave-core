@@ -6,8 +6,14 @@ import {updateShieldsSettings} from './api/shields'
 
 chrome.tabs.onActivated.addListener(() => {
   updateShieldsSettings()
+    .catch(() => {
+      console.error('could not update shields settings')
+    })
 })
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   updateShieldsSettings()
+    .catch(() => {
+      console.error('could not update shields settings')
+    })
 })

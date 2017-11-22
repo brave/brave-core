@@ -9,8 +9,8 @@
     "compress-keygen": "crx keygen",
     "clean": "rimraf build/ dev/ *.zip *.crx",
     "lint": "standard",
-    "test-e2e": "cross-env NODE_ENV=test mocha -r ./test/setup-app test/e2e",
-    "test": "cross-env NODE_ENV=test mocha -r ./test/setup-app test/app"
+    "test-e2e": "cross-env NODE_ENV=test mocha -r ./test/setupApp test/e2e",
+    "test": "cross-env NODE_ENV=test mocha -r ./test/setupApp test/app"
   },
   "repository": {
     "type": "git",

@@ -13,13 +13,25 @@ export default function shieldsPanelReducer (state = {tabs: {}}, action) {
       break
     case shieldsPanelTypes.SHIELDS_TOGGLED:
       setAllowAdBlock(state.origin, toggleShieldsValue(state.adBlock))
+        .catch(() => {
+          console.error('Could not set ad block setting')
+        })
       setAllowTrackingProtection(state.origin, toggleShieldsValue(state.trackingProtection))
+        .catch(() => {
+          console.error('Could not set tracking protection setting')
+        })
       break
     case shieldsPanelTypes.AD_BLOCK_TOGGLED:
       setAllowAdBlock(state.origin, toggleShieldsValue(state.adBlock))
+        .catch(() => {
+          console.error('Could not set ad block setting')
+        })
       break
     case shieldsPanelTypes.TRACKING_PROTECTION_TOGGLED:
       setAllowTrackingProtection(state.origin, toggleShieldsValue(state.trackingProtection))
+        .catch(() => {
+          console.error('Could not set tracking protection setting')
+        })
       break
     case shieldsPanelTypes.RESOURCE_BLOCKED:
       const tabId = action.details.tabId
