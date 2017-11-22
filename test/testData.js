@@ -83,3 +83,10 @@ export const getMockChrome = () => {
     }
   }
 }
+
+export const initialState = {
+  shieldsPanel: {
+    tabs: {}
+  },
+  newTabPage: {}
+}

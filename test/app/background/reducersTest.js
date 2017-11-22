@@ -5,14 +5,9 @@
 
 import assert from 'assert'
 import reducers from '../../../app/background/reducers'
+import {initialState} from '../../testData'
 
 describe('reducers test', () => {
-  const initialState = {
-    newTabPage: {},
-    shieldsPanel: {
-      tabs: {}
-    }
-  }
   it('reduers is a combined reducer function', function () {
     assert.equal(typeof reducers, 'function')
   })

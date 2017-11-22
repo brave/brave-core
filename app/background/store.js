@@ -13,8 +13,7 @@ const logger = createLogger({
   collapsed: true
 })
 
-const initialState = {
-}
+const initialState = {}
 
 const getMiddleware = () => {
   const args = [thunk]
