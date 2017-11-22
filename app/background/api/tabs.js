@@ -2,6 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const createTab = (createProperties, cb) => {
-  chrome.tabs.create(createProperties, cb)
-}
+/**
+ * Creates a tab with the specified createProperties
+ * @param {Object} createProperties as per the chrome extension API
+ * @return a promise which resolves when the callback is called
+ */
+export const createTab = (createProperties) =>
+  new Promise((resolve) => {
+    chrome.tabs.create(createProperties, (tab) => {
+      resolve(tab)
+    })
+  })

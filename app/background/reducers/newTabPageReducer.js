@@ -10,6 +10,8 @@ export default function shieldsPanelReducer (state = {}, action) {
     case newTabPageTypes.SETTINGS_ICON_CLICKED:
       createTab({
         url: 'chrome://settings/'
+      }).catch(() => {
+        console.error('Could not create settings tab')
       })
       break
   }

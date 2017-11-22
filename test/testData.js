@@ -40,6 +40,9 @@ export const getMockChrome = () => {
     tabs: {
       queryAsync: function () {
         return Promise.resolve([activeTabData])
+      },
+      create: function (createProperties, cb) {
+        setImmediate(cb)
       }
     },
     braveShields: {
