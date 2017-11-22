@@ -25,8 +25,7 @@ function promisifyAll (obj, list) {
 promisifyAll(chrome, [
   'tabs',
   'windows',
-  'browserAction',
-  'contextMenus'
+  'browserAction'
 ])
 promisifyAll(chrome.storage, [
   'local'
@@ -37,6 +36,5 @@ promisifyAll(chrome.contentSettings, [
   'braveTrackingProtection'
 ])
 
-require('./background/contextMenus')
 require('./background/tabs')
 require('./background/store')

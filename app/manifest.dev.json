@@ -5,7 +5,7 @@
   "description": "Brave UI",
   "browser_action": {
     "default_title": "Brave Shields",
-    "default_popup": "popup.html"
+    "default_popup": "braveShieldsPanel.html"
   },
   "icons": {
     "16": "img/icon-16.png",
@@ -20,6 +20,6 @@
   "chrome_url_overrides" : {
     "newtab": "newtab.html"
   },
-  "permissions": [ "contentSettings", "contextMenus", "management", "tabs", "storage", "https://github.com/*" ],
+  "permissions": [ "contentSettings", "management", "tabs", "storage" ],
   "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 https://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 https://localhost:3000; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:;"
 }

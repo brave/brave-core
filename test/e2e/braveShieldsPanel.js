@@ -19,7 +19,7 @@ const toggleShields = async (driver) => {
   return (await findShieldsPanel(driver))[0]
 }
 
-describe('window (popup) page', function test () {
+describe('browser action page', function test () {
   let driver
   this.timeout(15000)
 
@@ -33,7 +33,7 @@ describe('window (popup) page', function test () {
       `.//h2[contains(text(), "${extensionName}")]]`
     ))
     const extensionId = await elems[0].getAttribute('id')
-    await driver.get(`chrome-extension://${extensionId}/window.html`)
+    await driver.get(`chrome-extension://${extensionId}/braveShieldsPanel.html`)
   })
 
   after(async () => {
