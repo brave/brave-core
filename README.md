@@ -17,23 +17,22 @@ $ yarn install
 
 ## Development
 
-* Run script
 ```bash
 # Build files will appear in './dev'
 # Start webpack development server
 $ yarn dev
 ```
 
-#### Release
+## Release
 
-## Build
+### Build
 
 ```bash
 # build files to './build'
 $ yarn build
 ```
 
-## Packaging
+### Packaging
 
 
 ```bash
