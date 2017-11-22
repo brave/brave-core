@@ -37,6 +37,10 @@ export const getMockChrome = () => {
         }
       }
     },
+    browserAction: {
+      setBadgeText: function (text) {
+      }
+    },
     tabs: {
       queryAsync: function () {
         return Promise.resolve([activeTabData])
