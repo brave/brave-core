@@ -1,10 +1,10 @@
 /* global describe, it, before, after, afterEach */
 
-import * as types from '../../../app/constants/shieldsPanelTypes'
-import shieldsPanelReducer from '../../../app/background/reducers/shieldsPanelReducer'
 import sinon from 'sinon'
-import * as shieldsAPI from '../../../app/background/api/shields'
 import assert from 'assert'
+import * as types from '../../../../app/constants/shieldsPanelTypes'
+import shieldsPanelReducer from '../../../../app/background/reducers/shieldsPanelReducer'
+import * as shieldsAPI from '../../../../app/background/api/shields'
 
 describe('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {
