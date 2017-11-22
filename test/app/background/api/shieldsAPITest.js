@@ -7,21 +7,9 @@ import sinon from 'sinon'
 import assert from 'assert'
 import actions from '../../../../app/background/actions/shieldsPanelActions'
 import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
-import { activeTabData, activeTabShieldsData, blockedResource } from '../../../testData'
+import { activeTabData, activeTabShieldsData } from '../../../testData'
 
 describe('shields API', () => {
-  describe('chrome.braveShields.onBlocked listener', function () {
-    before(function () {
-      this.stub = sinon.stub(actions, 'resourceBlocked')
-    })
-    it('forward details to actions.resourceBlocked', function (cb) {
-      chrome.braveShields.onBlocked.addListener((details) => {
-        assert.deepEqual(details, blockedResource)
-        cb()
-      })
-      chrome.braveShields.onBlocked.emit()
-    })
-  })
   describe('getShieldSettingsForTabData', function () {
     it('returns a rejected promise when no tab data is specified', function (cb) {
       shieldsAPI.getShieldSettingsForTabData(undefined)

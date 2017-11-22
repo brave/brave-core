@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const bluebird = require('bluebird')
-
 global.Promise = bluebird
 
 function promisifier (method) {
@@ -36,5 +35,6 @@ promisifyAll(chrome.contentSettings, [
   'braveTrackingProtection'
 ])
 
-require('./background/tabs')
+require('./background/events/tabsEvents')
+require('./background/events/shieldsEvents')
 require('./background/store')

@@ -4,11 +4,6 @@
 
 import actions from '../actions/shieldsPanelActions'
 
-// Listen to onBlocked events and forward them to the resourceBlocked action
-chrome.braveShields.onBlocked.addListener(function (detail) {
-  actions.resourceBlocked(detail)
-})
-
 /**
  * Obtains the shields panel data for the specified tab data
  * @param {Object} tabData the details of the tab

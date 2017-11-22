@@ -20,22 +20,24 @@ export const blockedResource = {
   tabId: 2
 }
 
+class ChromeEvent {
+  constructor () {
+    this.listeners = []
+  }
+  emit () {
+    this.listeners.forEach((cb) => cb())
+  }
+  addListener (cb) {
+    this.listeners.push(cb)
+  }
+}
+
 export const getMockChrome = () => {
   const onBlockedListeners = []
-  const onConnectListeners = []
-  const onMessageListeners = []
   return {
     runtime: {
-      onMessage: {
-        addListener: function (cb) {
-          onMessageListeners.push(cb)
-        }
-      },
-      onConnect: {
-        addListener: function (cb) {
-          onConnectListeners.push(cb)
-        }
-      }
+      onMessage: new ChromeEvent(),
+      onConnect: new ChromeEvent()
     },
     browserAction: {
       setBadgeText: function (text) {
@@ -47,7 +49,9 @@ export const getMockChrome = () => {
       },
       create: function (createProperties, cb) {
         setImmediate(cb)
-      }
+      },
+      onActivated: new ChromeEvent(),
+      onUpdated: new ChromeEvent()
     },
     braveShields: {
       onBlocked: {
