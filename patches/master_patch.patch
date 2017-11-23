@@ -335,26 +335,22 @@ index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5
  #error Unknown branding
  #endif
 diff --git a/chrome/common/extensions/api/BUILD.gn b/chrome/common/extensions/api/BUILD.gn
-index ad3703177d68941b91d570bcfa001848ffa179a9..a6eb9e854322f84a0d37c91218fd3bd93b412573 100644
+index ad3703177d68941b91d570bcfa001848ffa179a9..727d534ae2bce1e5f1105cf2c3a2318f10302b6d 100644
 --- a/chrome/common/extensions/api/BUILD.gn
 +++ b/chrome/common/extensions/api/BUILD.gn
-@@ -83,6 +83,8 @@ schema_sources = [
-   "webstore_private.json",
+@@ -84,6 +84,12 @@ schema_sources = [
    "webstore_widget_private.idl",
    "windows.json",
-+
-+  "//brave/common/extensions/api/brave_shields.json",
  ]
++
++# Add Brave extension resources here
++schema_sources += [
++  "brave_shields.json"
++]
++
  if (!is_android) {
    schema_sources += [ "processes.idl" ]
-@@ -194,6 +196,7 @@ json_schema_api("api") {
-   root_namespace = extensions_api_root_namespace
-   deps = [
-     "//extensions/common/api",
-+    "//brave/common/extensions/api",
-   ]
  }
- 
 diff --git a/chrome/common/extensions/api/_api_features.json b/chrome/common/extensions/api/_api_features.json
 index 8ec1de091af1a17127e66bc67c6ee7cb8b5c2be3..0686739f34df6198129d2a9a363fba00da4a537e 100644
 --- a/chrome/common/extensions/api/_api_features.json
