@@ -7,6 +7,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/extensions/api/brave_shields.h"
@@ -16,6 +17,7 @@
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/browser/resource_context.h"
 #include "content/public/browser/resource_request_info.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/websocket_handshake_request_info.h"
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
@@ -59,12 +61,10 @@ int GetTabId(net::URLRequest* request) {
 
 void DispatchBlockedEvent(const std::string &block_type,
     net::URLRequest* request) {
-  GURL url = request->initiator()->GetURL();
   Profile* profile = ProfileManager::GetActiveUserProfile();
   EventRouter* event_router = EventRouter::Get(profile);
   if (profile && event_router) {
     extensions::api::brave_shields::OnBlocked::Details details;
-    details.url = url.spec();
     details.tab_id = GetTabId(request);
     details.block_type = block_type;
     std::unique_ptr<base::ListValue> args(
@@ -75,6 +75,30 @@ void DispatchBlockedEvent(const std::string &block_type,
           extensions::api::brave_shields::OnBlocked::kEventName,
           std::move(args)));
     event_router->BroadcastEvent(std::move(event));
+  }
+}
+
+// true if able to perform the lookup.  The URL is stored to *url, and
+// *is_incognito is set to indicate whether the URL is for an incognito tab.
+bool GetUrlForTabId(int tab_id,
+                    GURL* url) {
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  content::WebContents* contents = NULL;
+  Browser* browser = NULL;
+  bool found = extensions::ExtensionTabUtil::GetTabById(
+      tab_id,
+      profile,
+      true,  // Search incognito tabs, too.
+      &browser,
+      NULL,
+      &contents,
+      NULL);
+
+  if (found) {
+    *url = contents->GetURL();
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -108,9 +132,17 @@ void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
   content_settings::SettingInfo info;
   ProfileIOData* io_data = ProfileIOData::FromResourceContext(
       resource_context_);
+
+
+  int tab_id = GetTabId(request_);
+  GURL tab_origin;
+  if (tab_id != -1 && GetUrlForTabId(tab_id, &tab_origin)) {
+    tab_origin = tab_origin.GetOrigin();
+  }
+
   std::unique_ptr<base::Value> adBlockValue =
       io_data->GetHostContentSettingsMap()->GetWebsiteSetting(
-          request_->initiator()->GetURL(), request_->initiator()->GetURL(),
+          tab_origin, tab_origin,
           CONTENT_SETTINGS_TYPE_BRAVEADBLOCK,
           std::string(), &info);
   ContentSetting adBlockSetting =
@@ -119,7 +151,7 @@ void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
 
   std::unique_ptr<base::Value> trackingProtectionValue =
       io_data->GetHostContentSettingsMap()->GetWebsiteSetting(
-          request_->initiator()->GetURL(), request_->initiator()->GetURL(),
+          tab_origin, tab_origin,
           CONTENT_SETTINGS_TYPE_BRAVETRACKINGPROTECTION,
           std::string(), &info);
   ContentSetting trackingProtectionSetting =
@@ -130,14 +162,16 @@ void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
   if (allow_ad_block && !g_browser_process->tracking_protection_service()->
       ShouldStartRequest(request_->url(),
       resource_type_,
-      request_->initiator()->host())) {
+      tab_origin.host())) {
+    LOG(ERROR) << "adblock block" << tab_origin.spec();
     Cancel();
     DispatchBlockedEvent("adBlock", request_);
   }
   if (allow_tracking_protection && !g_browser_process->ad_block_service()->
       ShouldStartRequest(request_->url(),
       resource_type_,
-      request_->initiator()->host())) {
+      tab_origin.host())) {
+    LOG(ERROR) << "TP block" << tab_origin.spec();
     Cancel();
     DispatchBlockedEvent("trackingProtection", request_);
   }

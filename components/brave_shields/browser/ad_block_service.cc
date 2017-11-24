@@ -42,22 +42,22 @@ void AdBlockService::Cleanup() {
 
 bool AdBlockService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
-    const std::string &initiator_host) {
+    const std::string &tab_host) {
 
-  FilterOption currentOption = FONoFilterOption;
+  FilterOption current_option = FONoFilterOption;
   content::ResourceType internalResource = (content::ResourceType)resource_type;
   if (content::RESOURCE_TYPE_STYLESHEET == internalResource) {
-    currentOption = FOStylesheet;
+    current_option = FOStylesheet;
   } else if (content::RESOURCE_TYPE_IMAGE == internalResource) {
-    currentOption = FOImage;
+    current_option = FOImage;
   } else if (content::RESOURCE_TYPE_SCRIPT == internalResource) {
-    currentOption = FOScript;
+    current_option = FOScript;
   }
 
   if (ad_block_client_->matches(url.spec().c_str(),
-        currentOption,
-        initiator_host.c_str())) {
-    // LOG(ERROR) << "AdBlockService::Check(), host: " << initiator_host
+        current_option,
+        tab_host.c_str())) {
+    // LOG(ERROR) << "AdBlockService::Check(), host: " << tab_host
     //  << ", resource type: " << resource_type
     //  << ", url.spec(): " << url.spec();
     return false;

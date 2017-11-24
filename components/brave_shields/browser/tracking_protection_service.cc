@@ -57,14 +57,14 @@ void TrackingProtectionService::Cleanup() {
 
 bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
-    const std::string &initiator_host) {
+    const std::string &tab_host) {
   std::string host = url.host();
   if (!tracking_protection_client_->matchesTracker(
-        initiator_host.c_str(), host.c_str())) {
+        tab_host.c_str(), host.c_str())) {
     return true;
   }
 
-  std::vector<std::string> hosts(GetThirdPartyHosts(initiator_host));
+  std::vector<std::string> hosts(GetThirdPartyHosts(tab_host));
   for (size_t i = 0; i < hosts.size(); i++) {
     if (host == hosts[i] ||
         host.find((std::string)"." + hosts[i]) != std::string::npos) {

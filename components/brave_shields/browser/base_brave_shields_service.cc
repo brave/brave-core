@@ -78,7 +78,7 @@ void BaseBraveShieldsService::Stop() {
 
 bool BaseBraveShieldsService::ShouldStartRequest(const GURL &url,
     content::ResourceType resource_type,
-    const std::string &initiator_host) {
+    const std::string& tab_host) {
   return true;
 }
 

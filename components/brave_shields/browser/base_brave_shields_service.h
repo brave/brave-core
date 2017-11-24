@@ -23,13 +23,13 @@ class DATFileWebRequest;
 // tracking protection, etc.
 class BaseBraveShieldsService {
  public:
-  BaseBraveShieldsService(const std::string &file_name, const GURL &url);
+  BaseBraveShieldsService(const std::string& file_name, const GURL& url);
   virtual ~BaseBraveShieldsService();
   bool Start();
   void Stop();
-  virtual bool ShouldStartRequest(const GURL &url,
+  virtual bool ShouldStartRequest(const GURL& url,
       content::ResourceType resource_type,
-      const std::string &initiator_host);
+      const std::string& tab_host);
  protected:
   virtual bool Init() = 0;
   virtual void Cleanup() = 0;
