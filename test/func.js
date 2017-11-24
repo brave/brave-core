@@ -27,7 +27,7 @@ export function buildWebDriver (extPath) {
       chromeOptions: {
         args: [`load-extension=${extPath}`],
         // TODO: Set this properly for platforms other than macOS
-        binary: '../../../out/Release/Chromium.app/Contents/MacOS/Chromium'
+        binary: '../../../out/Release/Brave.app/Contents/MacOS/Brave'
       }
     })
     .forBrowser('chrome')
