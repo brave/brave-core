@@ -15,3 +15,6 @@ global.HTMLElement = global.window.HTMLElement
 if (global.chrome === undefined) {
   global.chrome = getMockChrome()
 }
+global.requestAnimationFrame = function (cb) {
+  return setTimeout(cb, 0)
+}
