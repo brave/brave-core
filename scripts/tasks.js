@@ -22,6 +22,7 @@ exports.copyAssets = (type) => {
   rm('-rf', type)
   mkdir(type)
   cp(`app/manifest.${env}.json`, `${type}/manifest.json`)
+  cp('-R', 'app/_locales/', type)
   cp('-R', 'app/assets/*', type)
   exec(`pug -O "{ env: '${env}' }" -o ${type} app/views/`)
 }

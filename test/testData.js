@@ -84,6 +84,10 @@ export const getMockChrome = () => {
           })
         }
       }
+    },
+    i18n: {
+      getMessage: function (message) {
+      }
     }
   }
 }
