@@ -6,13 +6,14 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as newTabPageActions from '../actions/newTabPageActions'
+import {getMessage} from '../background/api/localeAPI'
 
 class NewTab extends Component {
   render () {
     // const { newTabPage, actions } = this.props
     const { actions } = this.props
     return <div data-test-id='new-tab-page'>
-      <div>Brave New Tab!</div>
+      <div>Hello, {getMessage('newTab')} world!</div>
       <div onClick={actions.settingsIconClicked}>Settings</div>
     </div>
   }

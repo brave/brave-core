@@ -2,7 +2,8 @@
   "version": "1.0.0",
   "name": "Brave",
   "manifest_version": 2,
-  "description": "Brave UI",
+  "description": "__MSG_appName__",
+  "default_locale": "en_US",
   "browser_action": {
     "default_title": "Brave Shields",
     "default_popup": "braveShieldsPanel.html"
