@@ -35,6 +35,8 @@ promisifyAll(chrome.contentSettings, [
   'braveTrackingProtection'
 ])
 
+require('./background/events/windowsEvents')
 require('./background/events/tabsEvents')
 require('./background/events/shieldsEvents')
+require('./background/events/runtimeEvents')
 require('./background/store')

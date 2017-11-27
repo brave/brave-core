@@ -2,18 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const activeTabData = {
-  id: 2,
-  url: 'https://www.brave.com'
+export const tabs = {
+  2: {
+    id: 2,
+    url: 'https://www.brave.com/test',
+    origin: 'https://www.brave.com',
+    hostname: 'www.brave.com',
+    adBlock: 'block',
+    trackingProtection: 'block'
+  }
 }
 
-export const activeTabShieldsData = {
-  origin: 'https://www.brave.com',
-  hostname: 'www.brave.com',
-  adBlock: 'block',
-  trackingProtection: 'block',
-  tabId: 2
-}
+export const activeTabData = tabs[2]
 
 export const blockedResource = {
   blockType: 'adBlock',
@@ -24,8 +24,8 @@ class ChromeEvent {
   constructor () {
     this.listeners = []
   }
-  emit () {
-    this.listeners.forEach((cb) => cb())
+  emit (...args) {
+    this.listeners.forEach((cb) => cb.apply(null, args))
   }
   addListener (cb) {
     this.listeners.push(cb)
@@ -33,11 +33,11 @@ class ChromeEvent {
 }
 
 export const getMockChrome = () => {
-  const onBlockedListeners = []
   return {
     runtime: {
       onMessage: new ChromeEvent(),
-      onConnect: new ChromeEvent()
+      onConnect: new ChromeEvent(),
+      onStartup: new ChromeEvent()
     },
     browserAction: {
       setBadgeText: function (text) {
@@ -47,21 +47,29 @@ export const getMockChrome = () => {
       queryAsync: function () {
         return Promise.resolve([activeTabData])
       },
+      getAsync: function (tabId) {
+        return Promise.resolve(tabs[tabId])
+      },
       create: function (createProperties, cb) {
         setImmediate(cb)
       },
+      reload: function (tabId, bypassCache, cb) {
+        setImmediate(cb)
+      },
       onActivated: new ChromeEvent(),
+      onCreated: new ChromeEvent(),
       onUpdated: new ChromeEvent()
     },
-    braveShields: {
-      onBlocked: {
-        addListener: function (cb) {
-          onBlockedListeners.push(cb)
-        },
-        emit: function () {
-          onBlockedListeners.forEach((cb) => cb(blockedResource))
-        }
+    windows: {
+      onFocusChanged: new ChromeEvent(),
+      onCreated: new ChromeEvent(),
+      onRemoved: new ChromeEvent(),
+      getAllAsync: function () {
+        return new Promise([])
       }
+    },
+    braveShields: {
+      onBlocked: new ChromeEvent()
     },
     contentSettings: {
       braveAdBlock: {
@@ -90,7 +98,8 @@ export const getMockChrome = () => {
 
 export const initialState = {
   shieldsPanel: {
-    tabs: {}
+    tabs: {},
+    windows: {}
   },
   newTabPage: {}
 }

@@ -19,10 +19,11 @@ describe('shieldsEvents events', () => {
     })
     it('forward details to actions.resourceBlocked', function (cb) {
       chrome.braveShields.onBlocked.addListener((details) => {
-        assert.deepEqual(details, blockedResource)
+        assert.equal(details, blockedResource)
+        assert(this.stub.withArgs(details).calledOnce)
         cb()
       })
-      chrome.braveShields.onBlocked.emit()
+      chrome.braveShields.onBlocked.emit(blockedResource)
     })
   })
 })

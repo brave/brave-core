@@ -3,53 +3,125 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
-import {setAllowAdBlock, setAllowTrackingProtection, toggleShieldsValue} from '../api/shieldsAPI'
+import * as windowTypes from '../../constants/windowTypes'
+import * as tabTypes from '../../constants/tabTypes'
+import {setAllowAdBlock, setAllowTrackingProtection, toggleShieldsValue, requestShieldPanelData} from '../api/shieldsAPI'
 import {setBadgeText} from '../api/badgeAPI'
+import {reloadTab} from '../api/tabsAPI'
+import * as shieldsPanelState from '../../state/shieldsPanelState'
 
-export default function shieldsPanelReducer (state = {tabs: {}}, action) {
+const updateBadgeText = (state) => {
+  const tabId = shieldsPanelState.getActiveTabId(state)
+  if (state.tabs[tabId]) {
+    setBadgeText(state.tabs[tabId].adsBlocked + state.tabs[tabId].trackingProtectionBlocked)
+  }
+}
+
+const focusedWindowChanged = (state, windowId) => {
+  if (windowId !== -1) {
+    state = shieldsPanelState.updateFocusedWindow(state, windowId)
+    if (shieldsPanelState.getActiveTabId(state)) {
+      requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+      updateBadgeText(state)
+    } else {
+      console.warn('no tab id so cannot request shield data from window focus change!')
+    }
+  }
+  return state
+}
+
+const updateActiveTab = (state, windowId, tabId) => {
+  requestShieldPanelData(tabId)
+  return shieldsPanelState.updateActiveTab(state, windowId, tabId)
+}
+
+export default function shieldsPanelReducer (state = {tabs: {}, windows: {}}, action) {
   switch (action.type) {
+    case windowTypes.WINDOW_REMOVED:
+      state = shieldsPanelState.removeWindowInfo(state, action.windowId)
+      break
+    case windowTypes.WINDOW_CREATED:
+      if (action.window.focused || state.windows.length === 0) {
+        state = focusedWindowChanged(state, action.window.id)
+      }
+      break
+    case windowTypes.WINDOW_FOCUS_CHANGED:
+      state = focusedWindowChanged(state, action.windowId)
+      break
+    case tabTypes.ACTIVE_TAB_CHANGED: {
+      const windowId = action.windowId
+      const tabId = action.tabId
+      state = updateActiveTab(state, windowId, tabId)
+      updateBadgeText(state)
+      break
+    }
+    case tabTypes.TAB_DATA_CHANGED:
+      const tab = action.tab
+      if (tab.active) {
+        state = updateActiveTab(state, tab.windowId, tab.id)
+        updateBadgeText(state)
+      }
+      break
+    case tabTypes.TAB_CREATED: {
+      const tab = action.tab
+      if (tab.active) {
+        state = updateActiveTab(state, tab.windowId, tab.id)
+        updateBadgeText(state)
+      }
+      break
+    }
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED:
-      state = {...state, ...action.details}
+      state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
       break
-    case shieldsPanelTypes.SHIELDS_TOGGLED:
-      setAllowAdBlock(state.origin, toggleShieldsValue(state.adBlock))
+    case shieldsPanelTypes.SHIELDS_TOGGLED: {
+      const tabId = shieldsPanelState.getActiveTabId(state)
+      const tabData = shieldsPanelState.getActiveTabData(state)
+      const p1 = setAllowAdBlock(tabData.origin, toggleShieldsValue(tabData.adBlock))
         .catch(() => {
           console.error('Could not set ad block setting')
         })
-      setAllowTrackingProtection(state.origin, toggleShieldsValue(state.trackingProtection))
+      const p2 = setAllowTrackingProtection(tabData.origin, toggleShieldsValue(tabData.trackingProtection))
         .catch(() => {
           console.error('Could not set tracking protection setting')
         })
+      Promise.all([p1, p2]).then(() => {
+        reloadTab(tabId, true)
+        requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+      })
       break
-    case shieldsPanelTypes.AD_BLOCK_TOGGLED:
-      setAllowAdBlock(state.origin, toggleShieldsValue(state.adBlock))
+    }
+    case shieldsPanelTypes.AD_BLOCK_TOGGLED: {
+      const tabData = shieldsPanelState.getActiveTabData(state)
+      setAllowAdBlock(tabData.origin, toggleShieldsValue(tabData.adBlock))
+        .then(() => {
+          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          reloadTab(tabData.id, true)
+        })
         .catch(() => {
           console.error('Could not set ad block setting')
         })
       break
+    }
     case shieldsPanelTypes.TRACKING_PROTECTION_TOGGLED:
-      setAllowTrackingProtection(state.origin, toggleShieldsValue(state.trackingProtection))
+      const tabData = shieldsPanelState.getActiveTabData(state)
+      setAllowTrackingProtection(tabData.origin, toggleShieldsValue(tabData.trackingProtection))
+        .then(() => {
+          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          reloadTab(tabData.id, true)
+        })
         .catch(() => {
           console.error('Could not set tracking protection setting')
         })
       break
-    case shieldsPanelTypes.RESOURCE_BLOCKED:
+    case shieldsPanelTypes.RESOURCE_BLOCKED: {
       const tabId = action.details.tabId
-      const tabs = {...state.tabs}
-      tabs[tabId] = state.tabs[tabId] || { adsBlocked: 0, trackingProtectionBlocked: 0 }
-      if (action.details.blockType === 'adBlock') {
-        tabs[tabId].adsBlocked++
-      } else if (action.details.blockType === 'trackingProtection') {
-        tabs[tabId].trackingProtectionBlocked++
-      }
-      state = {
-        ...state,
-        tabs
-      }
-      if (tabId === state.tabId) {
-        setBadgeText(state.tabs[tabId].adsBlocked + state.tabs[tabId].trackingProtectionBlocked)
+      const currentTabId = shieldsPanelState.getActiveTabId(state)
+      state = shieldsPanelState.updateResourceBlocked(state, tabId, action.details.blockType)
+      if (tabId === currentTabId) {
+        updateBadgeText(state)
       }
       break
+    }
   }
   return state
 }

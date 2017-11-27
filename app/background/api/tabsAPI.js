@@ -5,11 +5,24 @@
 /**
  * Creates a tab with the specified createProperties
  * @param {Object} createProperties as per the chrome extension API
- * @return a promise which resolves when the callback is called
+ * @return a promise which resolves when the tab is created.
  */
 export const createTab = (createProperties) =>
   new Promise((resolve) => {
     chrome.tabs.create(createProperties, (tab) => {
       resolve(tab)
+    })
+  })
+
+/**
+ * Reloads the specified tab
+ * @param {number} tabId the tab ID
+ * @param {boolean} byPassCache true if the cache should be bypassed
+ * @return a promise which resolves when the tab is reloaded.
+ */
+export const reloadTab = (tabId, bypassCache) =>
+  new Promise((resolve) => {
+    chrome.tabs.reload(tabId, {bypassCache}, () => {
+      resolve()
     })
   })

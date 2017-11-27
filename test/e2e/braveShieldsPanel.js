@@ -25,6 +25,11 @@ describe('browser action page', function test () {
     const extPath = path.resolve('build')
     driver = buildWebDriver(extPath)
     await driver.get('chrome://extensions-frame')
+
+    await delay(1000)
+    const handle = await driver.getWindowHandle()
+    await driver.switchTo().window(handle)
+
     const elems = await driver.findElements(webdriver.By.xpath(
       '//div[contains(@class, "extension-list-item-wrapper") and ' +
       `.//h2[contains(text(), "${extensionName}")]]`

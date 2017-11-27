@@ -6,37 +6,65 @@
 import sinon from 'sinon'
 import assert from 'assert'
 import '../../../../app/background/events/tabsEvents'
-import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
+import actions from '../../../../app/background/actions/tabActions'
 
 describe('tabsEvents events', () => {
   describe('chrome.tabs.onActivated', function () {
     before(function () {
-      this.spy = sinon.spy(shieldsAPI, 'updateShieldsSettings')
+      this.stub = sinon.stub(actions, 'activeTabChanged')
     })
     after(function () {
-      this.spy.restore()
+      this.stub.restore()
     })
-    it('calls updateShieldsSettings', function (cb) {
-      chrome.tabs.onActivated.addListener(() => {
-        assert.equal(this.spy.calledOnce, true)
+    it('calls actions.activeTabChanged with the correct args', function (cb) {
+      const inputWindowId = 1
+      const inputTabId = 2
+      chrome.tabs.onActivated.addListener((activeInfo) => {
+        assert.equal(activeInfo.windowId, inputWindowId)
+        assert.equal(activeInfo.tabId, inputTabId)
+        assert.equal(this.stub.withArgs(inputWindowId, inputTabId).calledOnce, true)
         cb()
       })
-      chrome.tabs.onActivated.emit()
+      chrome.tabs.onActivated.emit({ windowId: inputWindowId, tabId: inputTabId })
     })
   })
-  describe('chrome.tabs.onUpdated', function () {
+  describe('chrome.tabs.onCreated', function () {
+    const inputTab = { id: 3 }
     before(function () {
-      this.spy = sinon.spy(shieldsAPI, 'updateShieldsSettings')
+      this.stub = sinon.stub(actions, 'tabCreated')
     })
     after(function () {
-      this.spy.restore()
+      this.stub.restore()
     })
-    it('calls updateShieldsSettings', function (cb) {
-      chrome.tabs.onUpdated.addListener(() => {
-        assert.equal(this.spy.calledOnce, true)
+    it('calls tabCreated with the correct args', function (cb) {
+      chrome.tabs.onCreated.addListener((tab) => {
+        assert.equal(tab, inputTab)
+        assert.equal(this.stub.withArgs(inputTab).calledOnce, true)
         cb()
       })
-      chrome.tabs.onUpdated.emit()
+      chrome.tabs.onCreated.emit(inputTab)
+    })
+  })
+
+  describe('chrome.tabs.onUpdated', function () {
+    const inputTabId = 3
+    const inputChangeInfo = {}
+    const inputTab = {id: 3}
+    before(function () {
+      this.stub = sinon.stub(actions, 'tabDataChanged')
+    })
+    after(function () {
+      this.stub.restore()
+    })
+    it('calls tabDataChanged', function (cb) {
+      chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+        assert.equal(tabId, inputTabId)
+        assert.equal(changeInfo, inputChangeInfo)
+        assert.equal(tab, inputTab)
+        assert.equal(this.stub.withArgs(tabId, changeInfo, tab).calledOnce, true)
+        cb()
+      })
+      chrome.tabs.onUpdated.emit(inputTabId, inputChangeInfo, inputTab)
     })
   })
 })

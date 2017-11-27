@@ -2,8 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import actions from '../actions/shieldsPanelActions'
-
-chrome.braveShields.onBlocked.addListener(function (detail) {
-  actions.resourceBlocked(detail)
-})
+import {bindActionCreators} from 'redux'
+import store from '../store'
+import * as tabActions from '../../actions/tabActions'
+export default bindActionCreators(tabActions, store.dispatch)

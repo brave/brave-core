@@ -2,8 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import actions from '../actions/shieldsPanelActions'
-
 /**
  * Obtains the shields panel data for the specified tab data
  * @param {Object} tabData the details of the tab
@@ -21,34 +19,42 @@ export const getShieldSettingsForTabData = (tabData) => {
     chrome.contentSettings.braveTrackingProtection.getAsync({primaryUrl: origin})
   ]).then((details) => {
     return {
+      url: url.href,
       origin,
       hostname,
+      id: tabData.id,
       adBlock: details[0].setting,
-      trackingProtection: details[1].setting,
-      tabId: tabData.id
+      trackingProtection: details[1].setting
+    }
+  }).catch(() => {
+    return {
+      url: url.href,
+      origin,
+      hostname,
+      id: tabData.id,
+      adBlock: 0,
+      trackingProtection: 0
     }
   })
 }
 
 /**
- * Obtains the active tab data
+ * Obtains specified tab data
  * @return a promise with the active tab data
  */
-export const getActiveTabData = () => {
-  return chrome.tabs.queryAsync({'active': true, 'lastFocusedWindow': true})
-    .then((tabs) => {
-      return (tabs.length && tabs[0]) || undefined
-    })
-}
+export const getTabData = (tabId) =>
+  chrome.tabs.getAsync(tabId)
 
 /**
- * Updates the shields settings from the active tab
+ * Obtains new information about the shields panel settings for the specified tabId
+ * @param {number} tabId the tabId of the tab who's content settings are of interest
  * @return a promise which resolves with the updated shields panel data.
  */
-export const updateShieldsSettings = () =>
-  getActiveTabData()
+export const requestShieldPanelData = (tabId) =>
+  getTabData(tabId)
     .then(getShieldSettingsForTabData)
     .then((details) => {
+      const actions = require('../actions/shieldsPanelActions')
       actions.shieldsPanelDataUpdated(details)
     })
 
@@ -56,26 +62,26 @@ export const updateShieldsSettings = () =>
  * Changes the ad block to be on (allow) or off (block)
  * @param {string} origin the origin of the site to change the setting for
  * @param {string} setting 'allow' or 'block'
- * @return a promise which resolves with the updated shields panel data.
+ * @return a promise which resolves when the setting is set
  */
 export const setAllowAdBlock = (origin, setting) => {
   return chrome.contentSettings.braveAdBlock.setAsync({
     primaryPattern: origin + '/*',
     setting
-  }).then(updateShieldsSettings)
+  })
 }
 
 /**
  * Changes the tracking protection to be on (allow) or off (block)
  * @param {string} origin the origin of the site to change the setting for
  * @param {string} setting 'allow' or 'block'
- * @return a promise which resolves with the updated shields panel data.
+ * @return a promise which resolves with the setting is set
  */
 export const setAllowTrackingProtection = (origin, setting) => {
   return chrome.contentSettings.braveTrackingProtection.setAsync({
     primaryPattern: origin + '/*',
     setting
-  }).then(updateShieldsSettings)
+  })
 }
 
 /**

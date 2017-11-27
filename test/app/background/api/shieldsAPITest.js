@@ -7,9 +7,9 @@ import sinon from 'sinon'
 import assert from 'assert'
 import actions from '../../../../app/background/actions/shieldsPanelActions'
 import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
-import { activeTabData, activeTabShieldsData } from '../../../testData'
+import { activeTabData, tabs } from '../../../testData'
 
-describe('shields API', () => {
+describe('Shields API', () => {
   describe('getShieldSettingsForTabData', function () {
     it('returns a rejected promise when no tab data is specified', function (cb) {
       shieldsAPI.getShieldSettingsForTabData(undefined)
@@ -18,37 +18,39 @@ describe('shields API', () => {
         })
     })
     it('resolves the returned promise with shield settings for the tab data', function (cb) {
-      shieldsAPI.getShieldSettingsForTabData({ url: 'https://www.brave.com/serg/dont/know/pokemon', id: 5 })
-        .then((data) => {
-          assert.deepEqual(data, {
-            origin: 'https://www.brave.com',
-            hostname: 'www.brave.com',
-            adBlock: 'block',
-            trackingProtection: 'block',
-            tabId: 5
-          })
-          cb()
+      shieldsAPI.getShieldSettingsForTabData({
+        url: 'https://www.brave.com/serg/dont/know/pokemon',
+        origin: 'https://www.brave.com',
+        hostname: 'www.brave.com',
+        id: 5
+      }).then((data) => {
+        assert.deepEqual(data, {
+          url: 'https://www.brave.com/serg/dont/know/pokemon',
+          origin: 'https://www.brave.com',
+          hostname: 'www.brave.com',
+          adBlock: 'block',
+          trackingProtection: 'block',
+          id: 5
         })
-        .catch((e) => {
-          console.error(e)
-        })
+        cb()
+      })
+      .catch((e) => {
+        console.error(e)
+      })
     })
   })
 
-  describe('getActiveTabData', function () {
+  describe('getTabData', function () {
     before(function () {
-      this.spy = sinon.spy(chrome.tabs, 'queryAsync')
-      this.p = shieldsAPI.getActiveTabData()
+      this.tabId = 2
+      this.spy = sinon.spy(chrome.tabs, 'getAsync')
+      this.p = shieldsAPI.getTabData(this.tabId)
     })
     after(function () {
       this.spy.restore()
     })
-    it('calls chrome.tabs for the ative tab', function () {
-      const arg0 = this.spy.getCall(0).args[0]
-      assert.deepEqual(arg0, {
-        active: true,
-        lastFocusedWindow: true
-      })
+    it('calls chrome.tabs.getAsync for the ative tab', function () {
+      assert(this.spy.withArgs(this.tabId).calledOnce)
     })
     it('resolves the promise with an array', function (cb) {
       this.p
@@ -62,16 +64,17 @@ describe('shields API', () => {
     })
   })
 
-  describe('updateShieldsSettings', function () {
+  describe('requestShieldPanelData', function () {
     before(function () {
+      this.tabId = 2
       this.spy = sinon.stub(actions, 'shieldsPanelDataUpdated')
-      this.p = shieldsAPI.updateShieldsSettings()
+      this.p = shieldsAPI.requestShieldPanelData(this.tabId)
     })
-    it('resolves and calls updateShieldsSettings', function (cb) {
+    it('resolves and calls requestShieldPanelData', function (cb) {
       this.p
         .then(() => {
           assert(this.spy.calledOnce)
-          assert.deepEqual(this.spy.getCall(0).args[0], activeTabShieldsData)
+          assert.deepEqual(this.spy.getCall(0).args[0], tabs[this.tabId])
           cb()
         })
         .catch((e) => {

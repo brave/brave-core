@@ -7,7 +7,7 @@ import sinon from 'sinon'
 import assert from 'assert'
 import * as badgeAPI from '../../../../app/background/api/badgeAPI'
 
-describe('badge API', () => {
+describe('Badge API', () => {
   describe('setBadgeText', function () {
     before(function () {
       this.spy = sinon.spy(chrome.browserAction, 'setBadgeText')

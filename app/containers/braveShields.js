@@ -10,19 +10,22 @@ import BraveShieldsHeader from '../components/braveShields/braveShieldsHeader'
 import BraveShieldsStats from '../components/braveShields/braveShieldsStats'
 import BraveShieldsControls from '../components/braveShields/braveShieldsControls'
 import BraveShieldsFooter from '../components/braveShields/braveShieldsFooter'
+import * as shieldsPanelState from '../state/shieldsPanelState'
 
 class BraveShields extends Component {
   render () {
-    const { shieldsPanel, actions } = this.props
+    const { shieldsPanelTabData, actions } = this.props
+    if (!shieldsPanelTabData) {
+      return null
+    }
     return <div data-test-id='brave-shields-panel'>
       <BraveShieldsHeader
-        hostname={shieldsPanel.hostname}
-        shieldsPanel={shieldsPanel.braveShields}
-        />
+        hostname={shieldsPanelTabData.hostname}
+      />
       <BraveShieldsStats />
       <BraveShieldsControls
-        adBlock={shieldsPanel.adBlock}
-        trackingProtection={shieldsPanel.trackingProtection}
+        adBlock={shieldsPanelTabData.adBlock}
+        trackingProtection={shieldsPanelTabData.trackingProtection}
         adBlockToggled={actions.adBlockToggled}
         trackingProtectionToggled={actions.trackingProtectionToggled}
         />
@@ -32,10 +35,10 @@ class BraveShields extends Component {
 }
 
 export default connect(
-  state => ({
-    shieldsPanel: state.shieldsPanel
+  (state) => ({
+    shieldsPanelTabData: shieldsPanelState.getActiveTabData(state.shieldsPanel)
   }),
-  dispatch => ({
+  (dispatch) => ({
     actions: bindActionCreators(shieldsPanelActions, dispatch)
   })
 )(BraveShields)
