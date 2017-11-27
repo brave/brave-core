@@ -8,6 +8,7 @@ import assert from 'assert'
 import * as types from '../../../../app/constants/shieldsPanelTypes'
 import * as windowTypes from '../../../../app/constants/windowTypes'
 import * as tabTypes from '../../../../app/constants/tabTypes'
+import * as webNavigationTypes from '../../../../app/constants/webNavigationTypes'
 import shieldsPanelReducer from '../../../../app/background/reducers/shieldsPanelReducer'
 import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
 import * as tabsAPI from '../../../../app/background/api/tabsAPI'
@@ -19,6 +20,38 @@ describe('braveShieldsPanelReducer', () => {
     assert.deepEqual(
       shieldsPanelReducer(undefined, {})
     , initialState.shieldsPanel)
+  })
+
+  describe('ON_BEFORE_NAVIGATION', function () {
+    before(function () {
+      this.spy = sinon.spy(shieldsPanelState, 'resetBlockingStats')
+      this.tabId = 1
+    })
+    after(function () {
+      this.spy.restore()
+    })
+    afterEach(function () {
+      this.spy.reset()
+    })
+    it('calls resetBlockingStats when isMainFrame is true', function () {
+      shieldsPanelReducer(initialState.shieldsPanel, {
+        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        tabId: this.tabId,
+        url: 'https://www.brave.com',
+        isMainFrame: true
+      })
+      assert.equal(this.spy.calledOnce, true)
+      assert.equal(this.spy.getCall(0).args[1], this.tabId)
+    })
+    it('does not call resetBlockingStats when isMainFrame is false', function () {
+      shieldsPanelReducer(initialState.shieldsPanel, {
+        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        tabId: this.tabId,
+        url: 'https://www.brave.com',
+        isMainFrame: false
+      })
+      assert.equal(this.spy.notCalled, true)
+    })
   })
 
   describe('WINDOW_REMOVED', function () {

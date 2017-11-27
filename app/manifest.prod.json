@@ -20,6 +20,6 @@
   "chrome_url_overrides" : {
     "newtab": "newTabPage.html"
   },
-  "permissions": [ "contentSettings", "tabs", "storage" ],
+  "permissions": [ "contentSettings", "tabs", "storage", "webNavigation" ],
   "content_security_policy": "default-src 'self'; script-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
 }

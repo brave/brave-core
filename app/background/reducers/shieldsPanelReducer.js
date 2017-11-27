@@ -5,6 +5,7 @@
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
 import * as windowTypes from '../../constants/windowTypes'
 import * as tabTypes from '../../constants/tabTypes'
+import * as webNavigationTypes from '../../constants/webNavigationTypes'
 import {setAllowAdBlock, setAllowTrackingProtection, toggleShieldsValue, requestShieldPanelData} from '../api/shieldsAPI'
 import {setBadgeText} from '../api/badgeAPI'
 import {reloadTab} from '../api/tabsAPI'
@@ -37,6 +38,11 @@ const updateActiveTab = (state, windowId, tabId) => {
 
 export default function shieldsPanelReducer (state = {tabs: {}, windows: {}}, action) {
   switch (action.type) {
+    case webNavigationTypes.ON_BEFORE_NAVIGATION:
+      if (action.isMainFrame) {
+        state = shieldsPanelState.resetBlockingStats(state, action.tabId)
+      }
+      break
     case windowTypes.WINDOW_REMOVED:
       state = shieldsPanelState.removeWindowInfo(state, action.windowId)
       break

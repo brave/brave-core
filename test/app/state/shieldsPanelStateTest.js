@@ -167,6 +167,94 @@ describe('shieldsPanelState test', () => {
       })
     })
   })
+  describe('resetBlockingStats', () => {
+    it('sets the specified stats back to 0 for the active tab', function () {
+      this.tabId = 2
+      const stateWithStats = {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            id: 2,
+            adBlock: 'block',
+            trackingProtection: 'block',
+            adsBlocked: 3,
+            trackingProtectionBlocked: 4444
+          },
+          3: {
+            id: 3
+          },
+          4: {
+            id: 4
+          }
+        },
+        windows: {1: 2, 2: 3}
+      }
+
+      stateWithStats.tabs[this.tabId].adsBlocked = 3
+      stateWithStats.tabs[this.tabId].trackingProtectionBlocked = 4
+      assert.deepEqual(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId), {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            id: 2,
+            adBlock: 'block',
+            trackingProtection: 'block',
+            adsBlocked: 0,
+            trackingProtectionBlocked: 0
+          },
+          3: {
+            id: 3
+          },
+          4: {
+            id: 4
+          }
+        },
+        windows: {1: 2, 2: 3}
+      })
+    })
+    it('sets the specified stats back to 0 for the a non active tab', function () {
+      this.tabId = 4
+      const stateWithStats = {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            id: 2,
+            adBlock: 'block',
+            trackingProtection: 'block'
+          },
+          3: {
+            id: 3
+          },
+          4: {
+            id: 4,
+            adsBlocked: 3,
+            trackingProtectionBlocked: 4444
+          }
+        },
+        windows: {1: 2, 2: 3}
+      }
+
+      assert.deepEqual(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId), {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            id: 2,
+            adBlock: 'block',
+            trackingProtection: 'block'
+          },
+          3: {
+            id: 3
+          },
+          4: {
+            id: 4,
+            adsBlocked: 0,
+            trackingProtectionBlocked: 0
+          }
+        },
+        windows: {1: 2, 2: 3}
+      })
+    })
+  })
   describe('updateResourceBlocked', () => {
     it('can update ads blocked count', function () {
       this.tabId = 2

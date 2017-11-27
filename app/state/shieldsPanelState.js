@@ -39,3 +39,11 @@ export const updateResourceBlocked = (state, tabId, blockType) => {
   }
   return { ...state, tabs }
 }
+
+export const resetBlockingStats = (state, tabId) => {
+  const tabs = {...state.tabs}
+  tabs[tabId] = {...tabs[tabId], ...{ adsBlocked: 0, trackingProtectionBlocked: 0 }}
+  tabs[tabId].adsBlocked = 0
+  tabs[tabId].trackingProtectionBlocked = 0
+  return { ...state, tabs }
+}
