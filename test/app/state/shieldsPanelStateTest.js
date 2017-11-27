@@ -4,9 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import assert from 'assert'
+import deepFreeze from 'deep-freeze-node'
 import * as shieldsPanelState from '../../../app/state/shieldsPanelState'
 
-const state = {
+const state = deepFreeze({
   currentWindowId: 1,
   tabs: {
     2: {
@@ -22,7 +23,7 @@ const state = {
     }
   },
   windows: {1: 2, 2: 3}
-}
+})
 
 describe('shieldsPanelState test', () => {
   describe('getActiveTabId', () => {

@@ -7,6 +7,7 @@
 import assert from 'assert'
 // import * as types from '../../../../app/constants/newTabPageTypes'
 import newTabPageReducer from '../../../../app/background/reducers/newTabPageReducer'
+// import deepFreeze from 'deep-freeze-node'
 
 describe('newTabPageReducer', () => {
   it('should handle initial state', () => {

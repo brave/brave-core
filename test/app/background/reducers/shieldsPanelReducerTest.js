@@ -14,6 +14,7 @@ import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
 import * as tabsAPI from '../../../../app/background/api/tabsAPI'
 import * as shieldsPanelState from '../../../../app/state/shieldsPanelState'
 import {initialState} from '../../../testData'
+import deepFreeze from 'deep-freeze-node'
 
 describe('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {
@@ -78,7 +79,7 @@ describe('braveShieldsPanelReducer', () => {
       this.requestShieldPanelDataSpy = sinon.spy(shieldsAPI, 'requestShieldPanelData')
       this.windowId = 1
       this.tabId = 2
-      const state = {...initialState.shieldsPanel, windows: {1: this.tabId}, tabs: {}}
+      const state = deepFreeze({...initialState.shieldsPanel, windows: {1: this.tabId}, tabs: {}})
       shieldsPanelReducer(state, {
         type: windowTypes.WINDOW_FOCUS_CHANGED,
         windowId: this.windowId
@@ -102,7 +103,7 @@ describe('braveShieldsPanelReducer', () => {
       this.updateActiveTabSpy = sinon.spy(shieldsPanelState, 'updateActiveTab')
       this.windowId = 1
       this.tabId = 2
-      this.state = {...initialState.shieldsPanel, windows: {1: this.tabId}, tabs: {}}
+      this.state = deepFreeze({...initialState.shieldsPanel, windows: {1: this.tabId}, tabs: {}})
     })
     after(function () {
       this.updateActiveTabSpy.restore()
@@ -203,7 +204,7 @@ describe('braveShieldsPanelReducer', () => {
   })
 
   const origin = 'https://brave.com'
-  const state = {
+  const state = deepFreeze({
     tabs: {
       2: {
         origin,
@@ -212,7 +213,7 @@ describe('braveShieldsPanelReducer', () => {
     },
     windows: {1: 2},
     currentWindowId: 1
-  }
+  })
 
   describe('SHIELDS_TOGGLED', function () {
     before(function () {
@@ -314,13 +315,13 @@ describe('braveShieldsPanelReducer', () => {
       })
     })
     it('increases different tab counts separately', function () {
-      let nextState = shieldsPanelReducer(state, {
+      let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'adBlock',
           tabId: 2
         }
-      })
+      }))
       assert.deepEqual(nextState, {
         currentWindowId: 1,
         tabs: {
@@ -359,13 +360,13 @@ describe('braveShieldsPanelReducer', () => {
       })
     })
     it('increases different resource types separately', function () {
-      let nextState = shieldsPanelReducer(state, {
+      let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'adBlock',
           tabId: 2
         }
-      })
+      }))
       assert.deepEqual(nextState, {
         currentWindowId: 1,
         tabs: {

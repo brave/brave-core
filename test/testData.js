@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import deepFreeze from 'deep-freeze-node'
+
 export const tabs = {
   2: {
     id: 2,
@@ -96,10 +98,10 @@ export const getMockChrome = () => {
   }
 }
 
-export const initialState = {
+export const initialState = deepFreeze({
   shieldsPanel: {
     tabs: {},
     windows: {}
   },
   newTabPage: {}
-}
+})
