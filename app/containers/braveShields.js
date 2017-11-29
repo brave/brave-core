@@ -20,15 +20,22 @@ class BraveShields extends Component {
     }
     return <div data-test-id='brave-shields-panel'>
       <BraveShieldsHeader
+        shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
+        shieldsToggled={actions.shieldsToggled}
         hostname={shieldsPanelTabData.hostname}
-      />
-      <BraveShieldsStats />
-      <BraveShieldsControls
-        adBlock={shieldsPanelTabData.adBlock}
-        trackingProtection={shieldsPanelTabData.trackingProtection}
-        adBlockToggled={actions.adBlockToggled}
-        trackingProtectionToggled={actions.trackingProtectionToggled}
         />
+      <BraveShieldsStats
+        shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
+        adsBlocked={shieldsPanelTabData.adsBlocked}
+        trackingProtectionBlocked={shieldsPanelTabData.trackingProtectionBlocked}
+      />
+      <BraveShieldsControls
+        shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
+        blockAdsTrackers={actions.blockAdsTrackers}
+        adsTrackers={shieldsPanelTabData.adsTrackers}
+        controlsToggled={actions.controlsToggled}
+        controlsOpen={shieldsPanelTabData.controlsOpen}
+      />
       <BraveShieldsFooter />
     </div>
   }

@@ -24,7 +24,16 @@ export const updateFocusedWindow = (state, windowId) =>
 
 export const updateTabShieldsData = (state, tabId, details) => {
   const tabs = {...state.tabs}
-  tabs[tabId] = {...{ adsBlocked: 0, trackingProtectionBlocked: 0 }, ...tabs[tabId], ...details}
+  tabs[tabId] = {...{
+    adsBlocked: 0,
+    trackingProtectionBlocked: 0,
+    shieldsEnabled: 'allow',
+    adsTrackers: true,
+    controlsOpen: true
+  },
+    ...tabs[tabId],
+    ...details
+  }
   state = {...state, tabs}
   return state
 }
