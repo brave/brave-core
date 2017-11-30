@@ -10,56 +10,47 @@ export default class BraveShieldsControls extends Component {
     super()
     this.onChangeAdControl = this.onChangeAdControl.bind(this)
     this.onChangeCookieControl = this.onChangeCookieControl.bind(this)
-    this.onToggleOpenShields = this.onToggleOpenShields.bind(this)
+    this.onToggleControls = this.onToggleControls.bind(this)
   }
 
-  onChangeAdControl () {
-    // TODO: @cezaraugusto
-
+  onChangeAdControl (e) {
+    const { props } = this
+    props.blockAdsTrackers(e.target.value)
   }
+
   onChangeCookieControl () {
     // TODO: @cezaraugusto
   }
 
-  onToggleOpenShields () {
-    // The popup size is hardcoded in braveShieldsPanel.pug
-    // to avoid flickering while opening.
-    // since there's no way to reduce its size we then
-    // set the body size per contentToggle setting
-
-    // TODO: @cezaraugusto pass down toggleOpenShields
-    // this just for checkbox testing
-    this.props.adBlockToggled()
-    this.props.adblock === 'allow'
-      ? document.body.style.height = '587px'
-      : document.body.style.height = '334px'
+  onToggleControls (e) {
+    const { props } = this
+    props.controlsToggled(!props.controlsOpen)
   }
 
   render () {
-    // /* , trackingProtection, trackingProtectionToggled */
-    const { adBlock, adBlockToggled } = this.props
+    const { shieldsEnabled, adsTrackers, controlsOpen } = this.props
     return (
       <Grid background='#eee' padding='10px 10px 0' gap='10px 5px'>
         <Column>
           <ContentToggle
-            defaultOpen
             withSeparator
+            open={controlsOpen}
             summary='Advanced Controls'
-            open={adBlock === 'allow'}
-            onClick={this.onToggleOpenShields}
+            onClick={this.onToggleControls}
           >
-            {/* TODO @cezaraugusto */}
             <BrowserSelect
+              disabled={shieldsEnabled === 'block'}
               titleName='add control'
-              value='someVALUE'
+              value={adsTrackers}
               onChange={this.onChangeAdControl}
             >
-              <option value='SOME'>Show Brave Ads</option>
-              <option value='SOME'>Block Ads</option>
-              <option value='SOME'>Allow Ads and Tracking</option>
+              {/* TODO needs "show brave ads" */}
+              <option value='allow'>Block Ads</option>
+              <option value='block'>Allow Ads and Tracking</option>
             </BrowserSelect>
             {/* TODO @cezaraugusto */}
             <BrowserSelect
+              disabled={shieldsEnabled === 'block'}
               titleName='cookie control'
               value='someVALUE'
               onChange={this.onChangeCookieControl}
@@ -73,15 +64,15 @@ export default class BraveShieldsControls extends Component {
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
                   id='httpsEverywhere'
+                  disabled={shieldsEnabled === 'block'}
                   rightText='HTTPS Everywhere'
-                  checked={adBlock === 'allow'}
-                  onChange={adBlockToggled}
                 />
               </Column>
               <Column>
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
                   id='blockScripts'
+                  disabled={shieldsEnabled === 'block'}
                   rightText='Block Scripts'
                 />
               </Column>
@@ -89,6 +80,7 @@ export default class BraveShieldsControls extends Component {
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
                   id='fingerprintingProtection'
+                  disabled={shieldsEnabled === 'block'}
                   rightText='Fingerprinting Protection'
                 />
               </Column>
@@ -96,6 +88,7 @@ export default class BraveShieldsControls extends Component {
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
                   id='blockPhishingMalware'
+                  disabled={shieldsEnabled === 'block'}
                   rightText='Block Phishing/Malware'
                 />
               </Column>
