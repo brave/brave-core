@@ -8,32 +8,34 @@ import { Grid, Column, Separator, SwitchButton, ActionButton, BrowserText } from
 export default class BraveShieldsHeader extends Component {
   constructor () {
     super()
+    this.onToggleShields = this.onToggleShields.bind(this)
     this.onClosePopup = this.onClosePopup.bind(this)
   }
+
+  onToggleShields (e) {
+    const shieldsOption = e.target.checked ? 'allow' : 'block'
+    this.props.shieldsToggled(shieldsOption)
+  }
+
   onClosePopup () {
     window.close()
   }
+
   render () {
-    const { shieldsToggled, hostname } = this.props
+    const { shieldsEnabled, hostname } = this.props
     return (
       <div>
-        <Grid
-          id='shieldsHeader'
-          background='#808080'
-          padding='10px'
-          gap='0'
-          textColor='#fafafa'
-        >
+        <Grid id='shieldsHeader' background='#808080' padding='10px' gap='0' textColor='#fafafa'>
           <Column size={4} verticalAlign='center'>
             <BrowserText noSelect fontSize='14px' text='Shields' />
           </Column>
           <Column size={6} verticalAlign='center'>
             <SwitchButton
               id='shieldsToggle'
-              leftText='Up'
-              rightText='Down'
-              checked={false}
-              onChange={shieldsToggled/* adBlockToggled */}
+              leftText='Down'
+              rightText='Up'
+              checked={shieldsEnabled === 'allow'}
+              onChange={this.onToggleShields}
             />
           </Column>
           <Column size={2} align='flex-end' verticalAlign='center'>
