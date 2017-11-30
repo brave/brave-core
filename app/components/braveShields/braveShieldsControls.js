@@ -30,7 +30,12 @@ export default class BraveShieldsControls extends Component {
   render () {
     const { shieldsEnabled, adsTrackers, controlsOpen } = this.props
     return (
-      <Grid background='#eee' padding='10px 10px 0' gap='10px 5px'>
+      <Grid
+        id='braveShieldsControls'
+        background='#eee'
+        padding='10px 10px 0'
+        gap='10px 5px'
+      >
         <Column>
           <ContentToggle
             withSeparator

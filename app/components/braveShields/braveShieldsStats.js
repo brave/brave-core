@@ -13,6 +13,7 @@ export default class BraveShieldsStats extends Component {
     const { shieldsEnabled } = this.props
     return (
       <Grid
+        id='braveShieldsStats'
         disabled={shieldsEnabled === 'block'}
         padding='10px'
         gap='7px'

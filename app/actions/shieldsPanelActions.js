@@ -8,7 +8,7 @@ export function shieldsPanelDataUpdated (details) {
   return { type: types.SHIELDS_PANEL_DATA_UPDATED, details }
 }
 
-export function shieldsToggled (setting = true) {
+export function shieldsToggled (setting = 'allow') {
   return { type: types.SHIELDS_TOGGLED, setting }
 }
 

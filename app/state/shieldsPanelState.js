@@ -28,7 +28,7 @@ export const updateTabShieldsData = (state, tabId, details) => {
     adsBlocked: 0,
     trackingProtectionBlocked: 0,
     shieldsEnabled: 'allow',
-    adsTrackers: true,
+    adsTrackers: 'allow',
     controlsOpen: true
   },
     ...tabs[tabId],

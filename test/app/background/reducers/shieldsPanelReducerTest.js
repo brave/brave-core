@@ -195,7 +195,10 @@ describe('braveShieldsPanelReducer', () => {
               trackingProtectionBlocked: 0,
               id: tabId,
               adBlock: 'block',
-              trackingProtection: 'block'
+              trackingProtection: 'block',
+              adsTrackers: 'allow',
+              controlsOpen: true,
+              shieldsEnabled: 'allow'
             }
           },
           windows: {}
@@ -208,7 +211,12 @@ describe('braveShieldsPanelReducer', () => {
     tabs: {
       2: {
         origin,
-        hostname: 'brave.com'
+        hostname: 'brave.com',
+        adsBlocked: 0,
+        adsTrackers: 'allow',
+        controlsOpen: true,
+        shieldsEnabled: 'allow',
+        trackingProtectionBlocked: 0
       }
     },
     windows: {1: 2},
@@ -229,7 +237,8 @@ describe('braveShieldsPanelReducer', () => {
     it('should call setAllowAdBlock and setAllowTrackingProtection', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
-          type: types.SHIELDS_TOGGLED
+          type: types.SHIELDS_TOGGLED,
+          setting: 'allow'
         }), state)
       assert.equal(this.setAllowAdBlockSpy.withArgs(origin, 'allow').calledOnce, true)
       assert.equal(this.setAllowTrackingProtectionSpy.withArgs(origin, 'allow').calledOnce, true)
@@ -288,7 +297,10 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0
+            trackingProtectionBlocked: 0,
+            adsTrackers: 'allow',
+            controlsOpen: true,
+            shieldsEnabled: 'allow'
           }
         },
         windows: {1: 2}
@@ -308,7 +320,10 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 2,
-            trackingProtectionBlocked: 0
+            trackingProtectionBlocked: 0,
+            adsTrackers: 'allow',
+            controlsOpen: true,
+            shieldsEnabled: 'allow'
           }
         },
         windows: {1: 2}
@@ -329,7 +344,10 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 1,
             trackingProtectionBlocked: 0,
             origin: 'https://brave.com',
-            hostname: 'brave.com'
+            hostname: 'brave.com',
+            adsTrackers: 'allow',
+            controlsOpen: true,
+            shieldsEnabled: 'allow'
           }
         },
         windows: {1: 2}
@@ -349,7 +367,10 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0
+            trackingProtectionBlocked: 0,
+            adsTrackers: 'allow',
+            controlsOpen: true,
+            shieldsEnabled: 'allow'
           },
           3: {
             adsBlocked: 1,
@@ -374,7 +395,10 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0
+            trackingProtectionBlocked: 0,
+            adsTrackers: 'allow',
+            controlsOpen: true,
+            shieldsEnabled: 'allow'
           }
         },
         windows: {1: 2}
@@ -394,11 +418,55 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 1
+            trackingProtectionBlocked: 1,
+            adsTrackers: 'allow',
+            controlsOpen: true,
+            shieldsEnabled: 'allow'
           }
         },
         windows: {1: 2}
       })
+    })
+  })
+
+  describe('BLOCK_ADS_TRACKERS', function () {
+    before(function () {
+      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
+      this.setAllowAdBlockSpy = sinon.spy(shieldsAPI, 'setAllowAdBlock')
+      this.setAllowTrackingProtectionSpy = sinon.spy(shieldsAPI, 'setAllowTrackingProtection')
+    })
+    after(function () {
+      this.reloadTabSpy.restore()
+      this.setAllowAdBlockSpy.restore()
+      this.setAllowTrackingProtectionSpy.restore()
+    })
+    it('should call setAllowAdBlock and setAllowTrackingProtection', function () {
+      assert.deepEqual(
+        shieldsPanelReducer(state, {
+          type: types.BLOCK_ADS_TRACKERS,
+          setting: 'allow'
+        }), state)
+      assert.equal(this.setAllowAdBlockSpy.withArgs(origin, 'allow').calledOnce, true)
+      assert.equal(this.setAllowTrackingProtectionSpy.withArgs(origin, 'allow').calledOnce, true)
+    })
+  })
+
+  describe('CONTROLS_TOGGLED', function () {
+    before(function () {
+      this.spy = sinon.spy(shieldsPanelState, 'updateTabShieldsData')
+    })
+    after(function () {
+      this.spy.restore()
+    })
+    it('should call updateTabShieldsData', function () {
+      assert.deepEqual(
+        shieldsPanelReducer(state, {
+          type: types.CONTROLS_TOGGLED,
+          setting: true
+        }), state)
+
+      assert.equal(this.spy.calledOnce, true)
+      assert.equal(this.spy.getCall(0).args[2].controlsOpen, true)
     })
   })
 })

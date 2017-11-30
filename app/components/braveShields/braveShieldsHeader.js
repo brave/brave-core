@@ -24,36 +24,34 @@ export default class BraveShieldsHeader extends Component {
   render () {
     const { shieldsEnabled, hostname } = this.props
     return (
-      <div>
-        <Grid id='shieldsHeader' background='#808080' padding='10px' gap='0' textColor='#fafafa'>
-          <Column size={4} verticalAlign='center'>
-            <BrowserText noSelect fontSize='14px' text='Shields' />
-          </Column>
-          <Column size={6} verticalAlign='center'>
-            <SwitchButton
-              id='shieldsToggle'
-              leftText='Down'
-              rightText='Up'
-              checked={shieldsEnabled === 'allow'}
-              onChange={this.onToggleShields}
-            />
-          </Column>
-          <Column size={2} align='flex-end' verticalAlign='center'>
-            <ActionButton
-              fontSize='20px'
-              text='&times;'
-              onClick={this.onClosePopup}
-            />
-          </Column>
-          <Column>
-            <Separator />
-            <BrowserText noSelect text='Site shield settings for' />
-          </Column>
-          <Column verticalAlign='center'>
-            <BrowserText noSelect fontSize='20px' text={hostname} />
-          </Column>
-        </Grid>
-      </div>
+      <Grid id='braveShieldsHeader' background='#808080' padding='10px' gap='0' textColor='#fafafa'>
+        <Column size={4} verticalAlign='center'>
+          <BrowserText noSelect fontSize='14px' text='Shields' />
+        </Column>
+        <Column size={6} verticalAlign='center'>
+          <SwitchButton
+            id='shieldsToggle'
+            leftText='Down'
+            rightText='Up'
+            checked={shieldsEnabled === 'allow'}
+            onChange={this.onToggleShields}
+          />
+        </Column>
+        <Column size={2} align='flex-end' verticalAlign='center'>
+          <ActionButton
+            fontSize='20px'
+            text='&times;'
+            onClick={this.onClosePopup}
+          />
+        </Column>
+        <Column>
+          <Separator />
+          <BrowserText noSelect text='Site shield settings for' />
+        </Column>
+        <Column verticalAlign='center'>
+          <BrowserText noSelect fontSize='20px' text={hostname} />
+        </Column>
+      </Grid>
     )
   }
 }

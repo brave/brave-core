@@ -8,7 +8,12 @@ import { Grid, Column, ActionButton, Anchor } from 'brave-ui'
 export default class BraveShieldsFooter extends Component {
   render () {
     return (
-      <Grid gap='10px' padding='0 10px 10px' background='#eee'>
+      <Grid
+        id='braveShieldsFooter'
+        gap='10px'
+        padding='0 10px 10px'
+        background='#eee'
+      >
         <Column align='flex-start' size={9}>
           <Anchor
             noStyle

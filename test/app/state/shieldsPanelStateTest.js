@@ -154,6 +154,9 @@ describe('shieldsPanelState test', () => {
             id: 2,
             adBlock: 'allow',
             trackingProtection: 'allow',
+            adsTrackers: 'allow',
+            controlsOpen: true,
+            shieldsEnabled: 'allow',
             adsBlocked: 0,
             trackingProtectionBlocked: 0
           },
