@@ -40,7 +40,7 @@ export default class BraveShieldsControls extends Component {
           >
             <BrowserSelect
               disabled={shieldsEnabled === 'block'}
-              titleName='add control'
+              titleName='Ad Control'
               value={adsTrackers}
               onChange={this.onChangeAdControl}
             >
@@ -51,7 +51,7 @@ export default class BraveShieldsControls extends Component {
             {/* TODO @cezaraugusto */}
             <BrowserSelect
               disabled={shieldsEnabled === 'block'}
-              titleName='cookie control'
+              titleName='Cookie Control'
               value='someVALUE'
               onChange={this.onChangeCookieControl}
             >

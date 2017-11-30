@@ -26,22 +26,42 @@ export default class BraveShieldsStats extends Component {
             color='#fe521d'
           />
         </Column>
-        <Column size={10} verticalAlign='center'>Ads and Trackers Blocked</Column>
+        <Column
+          id='adsTrackersBlockedStats'
+          size={10}
+          verticalAlign='center'>
+          Ads and Trackers Blocked
+        </Column>
 
         <Column align='flex-end' size={2}>
           <BrowserText noSelect text='0' fontSize='26px' color='#0796fa' />
         </Column>
-        <Column size={10} verticalAlign='center'>HTTPS Upgrades</Column>
+        <Column
+          id='httpsUpgradesStats'
+          size={10}
+          verticalAlign='center'>
+          HTTPS Upgrades
+        </Column>
 
         <Column align='flex-end' size={2}>
           <BrowserText noSelect text='0' fontSize='26px' color='#555555' />
         </Column>
-        <Column size={10} verticalAlign='center'>Scripts Blocked</Column>
+        <Column
+          id='scriptsBlockedStats'
+          size={10}
+          verticalAlign='center'>
+          Scripts Blocked
+        </Column>
 
         <Column align='flex-end' size={2}>
           <BrowserText noSelect text='0' fontSize='26px' color='#ffc000' />
         </Column>
-        <Column size={10} verticalAlign='center'>Fingerprinting Methods Blocked</Column>
+        <Column
+          id='fingerPrintingProtectionStats'
+          size={10}
+          verticalAlign='center'>
+            Fingerprinting Methods Blocked
+        </Column>
       </Grid>
     )
   }
