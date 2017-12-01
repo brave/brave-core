@@ -27,6 +27,7 @@ class BaseBraveShieldsService {
   virtual ~BaseBraveShieldsService();
   bool Start();
   void Stop();
+  bool IsInitialized() const;
   virtual bool ShouldStartRequest(const GURL& url,
       content::ResourceType resource_type,
       const std::string& tab_host);

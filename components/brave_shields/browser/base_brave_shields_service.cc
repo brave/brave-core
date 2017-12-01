@@ -33,6 +33,10 @@ BaseBraveShieldsService::BaseBraveShieldsService(
 BaseBraveShieldsService::~BaseBraveShieldsService() {
 }
 
+bool BaseBraveShieldsService::IsInitialized() const {
+  return initialized_;
+}
+
 void BaseBraveShieldsService::DownloadDATFile() {
   web_request_.reset(new DATFileWebRequest(
     file_name_,

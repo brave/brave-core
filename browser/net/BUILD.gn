@@ -1,0 +1,11 @@
+import("//build/config/features.gni")
+
+source_set("net") {
+  sources = [
+    "brave_network_delegate.cc",
+    "brave_network_delegate.h",
+  ]
+  public_deps = [
+    "//third_party/boringssl",
+  ]
+}

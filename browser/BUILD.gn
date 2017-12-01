@@ -24,5 +24,6 @@ source_set("browser") {
 
   deps = [
     "//brave/components/brave_shields/browser:brave_shields",
+    "net",
   ]
 }

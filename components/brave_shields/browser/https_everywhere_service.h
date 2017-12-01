@@ -38,6 +38,9 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
  public:
    HTTPSEverywhereService();
    ~HTTPSEverywhereService() override;
+  std::string GetHTTPSURL(const GURL* url, const uint64_t &request_id);
+  std::string GetHTTPSURLFromCacheOnly(const GURL* url,
+      const uint64_t &request_id);
 
  protected:
   bool Init() override;
@@ -45,9 +48,6 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
 
   void AddHTTPSEUrlToRedirectList(const uint64_t &request_id);
   bool ShouldHTTPSERedirect(const uint64_t &request_id);
-  std::string GetHTTPSURL(const GURL* url, const uint64_t &request_id);
-  std::string GetHTTPSURLFromCacheOnly(const GURL* url,
-      const uint64_t &request_id);
   std::string ApplyHTTPSRule(const std::string& originalUrl,
       const std::string& rule);
   std::string CorrecttoRuleToRE2Engine(const std::string& to);
@@ -60,7 +60,7 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
 };
 
 // Creates the HTTPSEverywhereService
-std::unique_ptr<BaseBraveShieldsService> HTTPSEverywhereServiceFactory();
+std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory();
 
 }  // namespace brave_shields
 

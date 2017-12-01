@@ -23,6 +23,7 @@
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "third_party/zlib/google/zip.h"
 
 #define DAT_FILE "httpse.leveldb.zip"
 // TODO: Repalce this with the real version at runtime
@@ -90,13 +91,18 @@ void HTTPSEverywhereService::Cleanup() {
 }
 
 bool HTTPSEverywhereService::Init() {
-   if (level_db_) {
-     return true;
-   }
-  base::FilePath db_file_path = GetDATFilePath(DAT_FILE);
+  base::FilePath zip_db_file_path = GetDATFilePath(DAT_FILE);
+
+  base::FilePath unzipped_level_db_path = zip_db_file_path.RemoveExtension();
+  base::FilePath destination = zip_db_file_path.DirName();
+  if (!zip::Unzip(zip_db_file_path, destination)) {
+    LOG(ERROR) << "Unzip error for HTTPSE";
+    return false;
+  }
+
   leveldb::Options options;
   leveldb::Status status = leveldb::DB::Open(options,
-      db_file_path.value().c_str(),
+      unzipped_level_db_path.value().c_str(),
       &level_db_);
   if (!status.ok() || !level_db_) {
     if (level_db_) {
@@ -104,17 +110,18 @@ bool HTTPSEverywhereService::Init() {
       level_db_ = nullptr;
     }
 
-    LOG(ERROR) << "level db open error " << db_file_path.value().c_str();
+    LOG(ERROR) << "Level db open error "
+      << unzipped_level_db_path.value().c_str()
+      << ", error: " << status.ToString();
     return false;
   }
-
   return true;
 }
 
 std::string HTTPSEverywhereService::GetHTTPSURL(
     const GURL* url, const uint64_t &request_identifier) {
   base::ThreadRestrictions::AssertIOAllowed();
-  if (nullptr == url || url->scheme() == "https") {
+  if (!IsInitialized() || url->scheme() == "https") {
     return url->spec();
   }
   if (!ShouldHTTPSERedirect(request_identifier)) {
@@ -145,7 +152,7 @@ std::string HTTPSEverywhereService::GetHTTPSURL(
 std::string HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
     const GURL* url,
     const uint64_t &request_identifier) {
-  if (nullptr == url || url->scheme() == "https") {
+  if (!IsInitialized() || url->scheme() == "https") {
     return url->spec();
   }
   if (!ShouldHTTPSERedirect(request_identifier)) {
@@ -207,7 +214,6 @@ std::string HTTPSEverywhereService::ApplyHTTPSRule(
     const std::string& rule) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(rule);
   if (nullptr == json_object.get()) {
-    LOG(ERROR) << "ApplyHTTPSRule: incorrect json rule";
     return "";
   }
 
@@ -326,7 +332,7 @@ std::string HTTPSEverywhereService::CorrecttoRuleToRE2Engine(
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 // TODO(bbondy): consider making this a singleton.
-std::unique_ptr<BaseBraveShieldsService> HTTPSEverywhereServiceFactory() {
+std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory() {
   return base::MakeUnique<HTTPSEverywhereService>();
 }
 
