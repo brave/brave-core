@@ -8,8 +8,8 @@ export function shieldsPanelDataUpdated (details) {
   return { type: types.SHIELDS_PANEL_DATA_UPDATED, details }
 }
 
-export function shieldsToggled () {
-  return { type: types.SHIELDS_TOGGLED }
+export function shieldsToggled (setting = 'allow') {
+  return { type: types.SHIELDS_TOGGLED, setting }
 }
 
 export function adBlockToggled () {
@@ -22,4 +22,12 @@ export function trackingProtectionToggled () {
 
 export function resourceBlocked (details) {
   return { type: types.RESOURCE_BLOCKED, details }
+}
+
+export function blockAdsTrackers (setting) {
+  return { type: types.BLOCK_ADS_TRACKERS, setting }
+}
+
+export function controlsToggled (setting = true) {
+  return { type: types.CONTROLS_TOGGLED, setting }
 }

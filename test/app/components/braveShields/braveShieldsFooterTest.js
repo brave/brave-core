@@ -15,12 +15,10 @@ function setup () {
   return { props, result, renderer }
 }
 
+// TODO: @cezaraugusto Implement Enzyme
 describe('BraveShieldsFooter component', () => {
   it('should render correctly', () => {
     const { result } = setup()
-    assert.equal(result.type, 'header')
-    const h1 = result.props.children
-    assert.equal(h1.type, 'h1')
-    assert.equal(h1.props.children, 'Footer')
+    assert.equal(result.props.id, 'braveShieldsFooter')
   })
 })

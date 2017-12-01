@@ -82,6 +82,7 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
+    "brave-ui": "^0.2.1",
     "classnames": "^2.2.5",
     "deep-freeze-node": "^1.1.3",
     "react": "^16.1.1",

@@ -48,9 +48,69 @@ describe('browser action page', function test () {
     assert.equal(title, 'Brave Shields Panel')
   })
 
-  it('contains adBlock:allow', async () => {
+  it('contains the shields header', async () => {
     const shieldsPanel = await findShieldsPanel(driver)
     const text = await shieldsPanel.getText()
-    assert(text.includes('adBlock: allow'))
+    assert(text.includes('Shields'))
+  })
+
+  it('contains Ads and Trackers Blocked stats', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('Ads and Trackers Blocked'))
+  })
+
+  it('contains HTTPS Upgrade stats', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('HTTPS Upgrades'))
+  })
+
+  it('contains Scripts Blocked stats', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('Scripts Blocked'))
+  })
+
+  it('contains the Advanced Controls toggle', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('Advanced Controls'))
+  })
+
+  it('contains Ad Control', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('Ad Control'))
+  })
+
+  it('contains Cookie Control', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('Cookie Control'))
+  })
+
+  it('contains HTTPS Everywhere', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('HTTPS Everywhere'))
+  })
+
+  it('contains Block Scripts', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('Block Scripts'))
+  })
+
+  it('contains Fingerprinting Protection', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('Fingerprinting Protection'))
+  })
+
+  it('contains Block Phishing/Malware', async () => {
+    const shieldsPanel = await findShieldsPanel(driver)
+    const text = await shieldsPanel.getText()
+    assert(text.includes('Block Phishing/Malware'))
   })
 })

@@ -6,7 +6,12 @@ import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
 import * as windowTypes from '../../constants/windowTypes'
 import * as tabTypes from '../../constants/tabTypes'
 import * as webNavigationTypes from '../../constants/webNavigationTypes'
-import {setAllowAdBlock, setAllowTrackingProtection, toggleShieldsValue, requestShieldPanelData} from '../api/shieldsAPI'
+import {
+  setAllowAdBlock,
+  setAllowTrackingProtection,
+  toggleShieldsValue,
+  requestShieldPanelData
+} from '../api/shieldsAPI'
 import {setBadgeText} from '../api/badgeAPI'
 import {reloadTab} from '../api/tabsAPI'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
@@ -82,11 +87,11 @@ export default function shieldsPanelReducer (state = {tabs: {}, windows: {}}, ac
     case shieldsPanelTypes.SHIELDS_TOGGLED: {
       const tabId = shieldsPanelState.getActiveTabId(state)
       const tabData = shieldsPanelState.getActiveTabData(state)
-      const p1 = setAllowAdBlock(tabData.origin, toggleShieldsValue(tabData.adBlock))
+      const p1 = setAllowAdBlock(tabData.origin, action.setting)
         .catch(() => {
           console.error('Could not set ad block setting')
         })
-      const p2 = setAllowTrackingProtection(tabData.origin, toggleShieldsValue(tabData.trackingProtection))
+      const p2 = setAllowTrackingProtection(tabData.origin, action.setting)
         .catch(() => {
           console.error('Could not set tracking protection setting')
         })
@@ -94,6 +99,8 @@ export default function shieldsPanelReducer (state = {tabs: {}, windows: {}}, ac
         reloadTab(tabId, true)
         requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
       })
+      state = shieldsPanelState
+        .updateTabShieldsData(state, tabId, { shieldsEnabled: action.setting })
       break
     }
     case shieldsPanelTypes.AD_BLOCK_TOGGLED: {
@@ -126,6 +133,31 @@ export default function shieldsPanelReducer (state = {tabs: {}, windows: {}}, ac
       if (tabId === currentTabId) {
         updateBadgeText(state)
       }
+      break
+    }
+    case shieldsPanelTypes.BLOCK_ADS_TRACKERS: {
+      const tabId = shieldsPanelState.getActiveTabId(state)
+      const tabData = shieldsPanelState.getActiveTabData(state)
+      const p1 = setAllowAdBlock(tabData.origin, action.setting)
+        .catch(() => {
+          console.error('Could not set ad block setting')
+        })
+      const p2 = setAllowTrackingProtection(tabData.origin, action.setting)
+        .catch(() => {
+          console.error('Could not set tracking protection setting')
+        })
+      Promise.all([p1, p2]).then(() => {
+        reloadTab(tabId, true)
+        requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+      })
+      state = shieldsPanelState
+        .updateTabShieldsData(state, tabId, { adsTrackers: action.setting })
+      break
+    }
+    case shieldsPanelTypes.CONTROLS_TOGGLED: {
+      const tabId = shieldsPanelState.getActiveTabId(state)
+      state = shieldsPanelState
+        .updateTabShieldsData(state, tabId, { controlsOpen: action.setting })
       break
     }
   }

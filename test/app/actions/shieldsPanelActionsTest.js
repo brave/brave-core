@@ -22,8 +22,10 @@ describe('shieldsPanelActions', () => {
   })
 
   it('shieldsToggled', () => {
+    const setting = 'allow'
     assert.deepEqual(actions.shieldsToggled(), {
-      type: types.SHIELDS_TOGGLED
+      type: types.SHIELDS_TOGGLED,
+      setting
     })
   })
 
@@ -47,6 +49,22 @@ describe('shieldsPanelActions', () => {
     assert.deepEqual(actions.resourceBlocked(details), {
       type: types.RESOURCE_BLOCKED,
       details
+    })
+  })
+
+  it('blockAdsTrackers action', () => {
+    const setting = 'allow'
+    assert.deepEqual(actions.blockAdsTrackers(setting), {
+      type: types.BLOCK_ADS_TRACKERS,
+      setting
+    })
+  })
+
+  it('controlsToggled action', () => {
+    const setting = true
+    assert.deepEqual(actions.controlsToggled(setting), {
+      type: types.CONTROLS_TOGGLED,
+      setting
     })
   })
 })

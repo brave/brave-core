@@ -1,11 +1,16 @@
+
 doctype html
 
 html
   head
     meta(charset='UTF-8')
     title Brave Shields Panel
+    link(rel='stylesheet', href=env == 'prod' ? '/bravelizer.css' : 'chrome-extension://naelnlokfbfcbonlpmkmbdkjogkpkigm/bravelizer.css')
     style.
-      body { width: 500px; }
+      body {
+        height: 587px; /* 600px is the max allowed chrome extension height */
+        width: 280px;
+      }
 
   body
     #root
