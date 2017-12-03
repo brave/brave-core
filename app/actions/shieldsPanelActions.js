@@ -31,3 +31,7 @@ export function blockAdsTrackers (setting) {
 export function controlsToggled (setting = true) {
   return { type: types.CONTROLS_TOGGLED, setting }
 }
+
+export function httpsEverywhereToggled () {
+  return { type: types.HTTPS_EVERYWHERE_TOGGLED }
+}

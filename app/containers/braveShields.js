@@ -28,12 +28,15 @@ class BraveShields extends Component {
         shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
         adsBlocked={shieldsPanelTabData.adsBlocked}
         trackingProtectionBlocked={shieldsPanelTabData.trackingProtectionBlocked}
+        httpsEverywhereRedirected={shieldsPanelTabData.httpsEverywhereRedirected}
       />
       <BraveShieldsControls
         shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
         blockAdsTrackers={actions.blockAdsTrackers}
         adsTrackers={shieldsPanelTabData.adsTrackers}
+        httpsEverywhere={shieldsPanelTabData.httpsEverywhere}
         controlsToggled={actions.controlsToggled}
+        httpsEverywhereToggled={actions.httpsEverywhereToggled}
         controlsOpen={shieldsPanelTabData.controlsOpen}
       />
       <BraveShieldsFooter />
