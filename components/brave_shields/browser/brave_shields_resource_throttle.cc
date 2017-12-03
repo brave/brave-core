@@ -39,10 +39,9 @@ const char* BraveShieldsResourceThrottle::GetNameForLogging() const {
 }
 
 void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
-  int tab_id = brave_shields::GetTabId(request_);
   GURL tab_origin;
-  if (tab_id != -1 && brave_shields::GetUrlForTabId(tab_id, &tab_origin)) {
-    tab_origin = tab_origin.GetOrigin();
+  if (!brave_shields::GetTabOrigin(request_, &tab_origin)) {
+    return;
   }
 
   bool allow_ad_block = brave_shields::IsAllowContentSetting(

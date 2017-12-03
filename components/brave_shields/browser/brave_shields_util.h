@@ -11,7 +11,6 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "url/gurl.h"
 
-class GURL;
 
 namespace content {
 class ResourceContext;
@@ -34,6 +33,7 @@ void DispatchBlockedEvent(const std::string &block_type,
     net::URLRequest* request);
 
 int GetTabId(net::URLRequest* request);
+bool GetTabOrigin(net::URLRequest* request, GURL *url);
 
 bool GetUrlForTabId(int tab_id, GURL* url);
 

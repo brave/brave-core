@@ -5,9 +5,12 @@
 #include "brave/browser/net/brave_network_delegate.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/url_request/url_request.h"
+
 
 struct OnBeforeURLRequestContext {
   OnBeforeURLRequestContext() {}
@@ -28,12 +31,14 @@ public:
     pending_requests_.erase(request_identifier);
   }
   bool IsPendingAndAlive(const uint64_t &request_identifier) {
-    bool isPending = pending_requests_.find(request_identifier) != pending_requests_.end();
+    bool isPending = pending_requests_.find(request_identifier) !=
+      pending_requests_.end();
     return isPending;
   }
 private:
   std::set<uint64_t> pending_requests_;
-  //no need synchronization, should be executed in the same thread content::BrowserThread::IO
+  // No need synchronization, should be executed in the same
+  // thread content::BrowserThread::IO
 };
 
 BraveNetworkDelegate::BraveNetworkDelegate(
@@ -49,7 +54,26 @@ BraveNetworkDelegate::~BraveNetworkDelegate() {
 int BraveNetworkDelegate::OnBeforeURLRequest(net::URLRequest* request,
     const net::CompletionCallback& callback,
     GURL* new_url) {
-  std::shared_ptr<OnBeforeURLRequestContext> ctx(new OnBeforeURLRequestContext());
+
+  GURL tab_origin;
+  if (!brave_shields::GetTabOrigin(request, &tab_origin)) {
+    return ChromeNetworkDelegate::OnBeforeURLRequest(request,
+        callback, new_url);
+  }
+
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  auto* resource_context = profile->GetResourceContext();
+  bool allow_https_everywhere = brave_shields::IsAllowContentSetting(
+      resource_context, tab_origin,
+      CONTENT_SETTINGS_TYPE_BRAVEHTTPSEVERYWHERE);
+
+  if (!allow_https_everywhere) {
+    return ChromeNetworkDelegate::OnBeforeURLRequest(request,
+        callback, new_url);
+  }
+
+  std::shared_ptr<OnBeforeURLRequestContext> ctx(
+      new OnBeforeURLRequestContext());
   if (request) {
     ctx->request_identifier = request->identifier();
   }
@@ -91,6 +115,8 @@ int BraveNetworkDelegate::OnBeforeURLRequest_HttpsePreFileWork(
           );
       pending_requests_->Insert(request->identifier());
       return net::ERR_IO_PENDING;
+    } else {
+      *new_url = GURL(ctx->new_url_spec);
     }
   }
 
@@ -121,7 +147,7 @@ int BraveNetworkDelegate::OnBeforeURLRequest_HttpsePostFileWork(
   if (!ctx->new_url_spec.empty() &&
     ctx->new_url_spec != request->url().spec()) {
     *new_url = GURL(ctx->new_url_spec);
-    // TODO: dispatch about HTTPS upgrade enabled
+    brave_shields::DispatchBlockedEvent("httpsEverywhere", request);
   }
 
   int rv =

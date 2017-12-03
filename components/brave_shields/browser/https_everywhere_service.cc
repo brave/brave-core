@@ -163,8 +163,7 @@ std::string HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
     AddHTTPSEUrlToRedirectList(request_identifier);
     return recently_used_cache_.data[url->spec()];
   }
-
-    return url->spec();
+  return url->spec();
 }
 
 bool HTTPSEverywhereService::ShouldHTTPSERedirect(

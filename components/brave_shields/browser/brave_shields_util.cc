@@ -67,6 +67,15 @@ int GetTabId(net::URLRequest* request) {
   return tab_id;
 }
 
+bool GetTabOrigin(net::URLRequest* request, GURL *tab_origin) {
+  int tab_id = brave_shields::GetTabId(request);
+  if (tab_id != 1 && brave_shields::GetUrlForTabId(tab_id, tab_origin)) {
+    *tab_origin = tab_origin->GetOrigin();
+    return true;
+  }
+  return false;
+}
+
 void DispatchBlockedEvent(const std::string &block_type,
     net::URLRequest* request) {
   Profile* profile = ProfileManager::GetActiveUserProfile();
