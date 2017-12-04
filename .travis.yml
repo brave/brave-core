@@ -3,12 +3,21 @@ dist: trusty
 language: node_js
 node_js:
   - "8.9"
+  
+branches:
+  only:
+    - master
+    - /\d+\.\d+\.x/
+
 cache:
   directories:
     - $HOME/.yarn-cache
     - node_modules
+
 env:
-  - CXX=g++-4.8
+  - CXX=g++-4.8 NODE_ENV=test ACTION=lint
+  - CXX=g++-4.8 NODE_ENV=test ACTION=test-unit
+
 addons:
   apt:
     sources:
@@ -29,8 +38,7 @@ before_script:
   - sleep 3
 
 script:
-  - yarn run lint
-  - yarn test
+  - yarn test-suite
 #  - yarn run build
 # We need to pre-package a Brave build for this
 # - yarn run test-e2e
