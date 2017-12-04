@@ -12,7 +12,8 @@ export const tabs = {
     hostname: 'www.brave.com',
     adBlock: 'block',
     trackingProtection: 'block',
-    httpsEverywhere: 'block'
+    httpsEverywhere: 'block',
+    javascript: 'block'
   }
 }
 
@@ -96,6 +97,16 @@ export const getMockChrome = () => {
         }
       },
       braveHTTPSEverywhere: {
+        setAsync: function () {
+          return Promise.resolve()
+        },
+        getAsync: function () {
+          return Promise.resolve({
+            setting: 'block'
+          })
+        }
+      },
+      javascript: {
         setAsync: function () {
           return Promise.resolve()
         },

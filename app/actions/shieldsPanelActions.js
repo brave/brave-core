@@ -35,3 +35,7 @@ export function controlsToggled (setting = true) {
 export function httpsEverywhereToggled () {
   return { type: types.HTTPS_EVERYWHERE_TOGGLED }
 }
+
+export function javascriptToggled () {
+  return { type: types.JAVASCRIPT_TOGGLED }
+}

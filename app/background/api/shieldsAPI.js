@@ -17,7 +17,8 @@ export const getShieldSettingsForTabData = (tabData) => {
   return Promise.all([
     chrome.contentSettings.braveAdBlock.getAsync({primaryUrl: origin}),
     chrome.contentSettings.braveTrackingProtection.getAsync({primaryUrl: origin}),
-    chrome.contentSettings.braveHTTPSEverywhere.getAsync({primaryUrl: origin})
+    chrome.contentSettings.braveHTTPSEverywhere.getAsync({primaryUrl: origin}),
+    chrome.contentSettings.javascript.getAsync({primaryUrl: origin})
   ]).then((details) => {
     return {
       url: url.href,
@@ -26,7 +27,8 @@ export const getShieldSettingsForTabData = (tabData) => {
       id: tabData.id,
       adBlock: details[0].setting,
       trackingProtection: details[1].setting,
-      httpsEverywhere: details[2].setting
+      httpsEverywhere: details[2].setting,
+      javascript: details[3].setting
     }
   }).catch(() => {
     return {
@@ -36,7 +38,8 @@ export const getShieldSettingsForTabData = (tabData) => {
       id: tabData.id,
       adBlock: 0,
       trackingProtection: 0,
-      httpsEverywhere: 0
+      httpsEverywhere: 0,
+      javascript: 0
     }
   })
 }
@@ -97,6 +100,19 @@ export const setAllowHTTPSEverywhere = (origin, setting) => {
   const primaryPattern = origin.replace(/^(http|https):\/\//, '*://') + '/*'
   return chrome.contentSettings.braveHTTPSEverywhere.setAsync({
     primaryPattern,
+    setting
+  })
+}
+
+/**
+ * Changes the Javascript to be on (allow) or off (block)
+ * @param {string} origin the origin of the site to change the setting for
+ * @param {string} setting 'allow' or 'block'
+ * @return a promise which resolves when the setting is set
+ */
+export const setAllowJavaScript = (origin, setting) => {
+  return chrome.contentSettings.javascript.setAsync({
+    primaryPattern: origin + '/*',
     setting
   })
 }

@@ -183,7 +183,8 @@ describe('braveShieldsPanelReducer', () => {
         id: tabId,
         adBlock: 'block',
         trackingProtection: 'block',
-        httpsEverywhere: 'block'
+        httpsEverywhere: 'block',
+        javascript: 'block'
       }
       assert.deepEqual(
         shieldsPanelReducer(initialState.shieldsPanel, {
@@ -195,10 +196,12 @@ describe('braveShieldsPanelReducer', () => {
               adsBlocked: 0,
               trackingProtectionBlocked: 0,
               httpsEverywhereRedirected: 0,
+              javascriptBlocked: 0,
               id: tabId,
               adBlock: 'block',
               trackingProtection: 'block',
               httpsEverywhere: 'block',
+              javascript: 'block',
               adsTrackers: 'allow',
               controlsOpen: true,
               shieldsEnabled: 'allow'
@@ -220,7 +223,8 @@ describe('braveShieldsPanelReducer', () => {
         controlsOpen: true,
         shieldsEnabled: 'allow',
         trackingProtectionBlocked: 0,
-        httpsEverywhereRedirected: 0
+        httpsEverywhereRedirected: 0,
+        javascriptBlocked: 0
       }
     },
     windows: {1: 2},
@@ -303,6 +307,24 @@ describe('braveShieldsPanelReducer', () => {
     })
   })
 
+  describe('JAVASCRIPT_TOGGLED', function () {
+    before(function () {
+      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
+      this.setAllowJavaScriptSpy = sinon.spy(shieldsAPI, 'setAllowJavaScript')
+    })
+    after(function () {
+      this.reloadTabSpy.restore()
+      this.setAllowJavaScriptSpy.restore()
+    })
+    it('should call setAllowJavaScript', function () {
+      assert.deepEqual(
+        shieldsPanelReducer(state, {
+          type: types.JAVASCRIPT_TOGGLED
+        }), state)
+      assert.equal(this.setAllowJavaScriptSpy.withArgs(origin, 'allow').calledOnce, true)
+    })
+  })
+
   describe('RESOURCE_BLOCKED', function () {
     it('increases same count consecutively', function () {
       let nextState = shieldsPanelReducer(state, {
@@ -321,6 +343,7 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 1,
             trackingProtectionBlocked: 0,
             httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
             shieldsEnabled: 'allow'
@@ -345,6 +368,7 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 2,
             trackingProtectionBlocked: 0,
             httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
             shieldsEnabled: 'allow'
@@ -368,6 +392,7 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 1,
             trackingProtectionBlocked: 0,
             httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0,
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsTrackers: 'allow',
@@ -385,6 +410,7 @@ describe('braveShieldsPanelReducer', () => {
           tabId: 3
         }
       })
+
       assert.deepEqual(nextState, {
         currentWindowId: 1,
         tabs: {
@@ -394,6 +420,7 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 1,
             trackingProtectionBlocked: 0,
             httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
             shieldsEnabled: 'allow'
@@ -401,7 +428,8 @@ describe('braveShieldsPanelReducer', () => {
           3: {
             adsBlocked: 1,
             trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0
+            httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0
           }
         },
         windows: {1: 2}
@@ -424,6 +452,7 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 1,
             trackingProtectionBlocked: 0,
             httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
             shieldsEnabled: 'allow'
@@ -448,6 +477,7 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 1,
             trackingProtectionBlocked: 1,
             httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
             shieldsEnabled: 'allow'
@@ -471,6 +501,31 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 1,
             trackingProtectionBlocked: 1,
             httpsEverywhereRedirected: 1,
+            javascriptBlocked: 0,
+            adsTrackers: 'allow',
+            controlsOpen: true,
+            shieldsEnabled: 'allow'
+          }
+        },
+        windows: {1: 2}
+      })
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'javascript',
+          tabId: 2
+        }
+      })
+      assert.deepEqual(nextState, {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            origin: 'https://brave.com',
+            hostname: 'brave.com',
+            adsBlocked: 1,
+            trackingProtectionBlocked: 1,
+            httpsEverywhereRedirected: 1,
+            javascriptBlocked: 1,
             adsTrackers: 'allow',
             controlsOpen: true,
             shieldsEnabled: 'allow'

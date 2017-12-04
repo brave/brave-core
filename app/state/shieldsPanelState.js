@@ -28,6 +28,7 @@ export const updateTabShieldsData = (state, tabId, details) => {
     adsBlocked: 0,
     trackingProtectionBlocked: 0,
     httpsEverywhereRedirected: 0,
+    javascriptBlocked: 0,
     shieldsEnabled: 'allow',
     adsTrackers: 'allow',
     controlsOpen: true
@@ -41,22 +42,25 @@ export const updateTabShieldsData = (state, tabId, details) => {
 
 export const updateResourceBlocked = (state, tabId, blockType) => {
   const tabs = {...state.tabs}
-  tabs[tabId] = {...{ adsBlocked: 0, trackingProtectionBlocked: 0, httpsEverywhereRedirected: 0 }, ...tabs[tabId]}
+  tabs[tabId] = {...{ adsBlocked: 0, trackingProtectionBlocked: 0, httpsEverywhereRedirected: 0, javascriptBlocked: 0 }, ...tabs[tabId]}
   if (blockType === 'adBlock') {
     tabs[tabId].adsBlocked++
   } else if (blockType === 'trackingProtection') {
     tabs[tabId].trackingProtectionBlocked++
   } else if (blockType === 'httpsEverywhere') {
     tabs[tabId].httpsEverywhereRedirected++
+  } else if (blockType === 'javascript') {
+    tabs[tabId].javascriptBlocked++
   }
   return { ...state, tabs }
 }
 
 export const resetBlockingStats = (state, tabId) => {
   const tabs = {...state.tabs}
-  tabs[tabId] = {...tabs[tabId], ...{ adsBlocked: 0, trackingProtectionBlocked: 0, httpsEverywhereRedirected: 0 }}
+  tabs[tabId] = {...tabs[tabId], ...{ adsBlocked: 0, trackingProtectionBlocked: 0, httpsEverywhereRedirected: 0, javascriptBlocked: 0 }}
   tabs[tabId].adsBlocked = 0
   tabs[tabId].trackingProtectionBlocked = 0
   tabs[tabId].httpsEverywhereRedirected = 0
+  tabs[tabId].javascriptBlocked = 0
   return { ...state, tabs }
 }

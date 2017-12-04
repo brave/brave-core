@@ -33,7 +33,8 @@ promisifyAll(chrome.storage, [
 promisifyAll(chrome.contentSettings, [
   'braveAdBlock',
   'braveTrackingProtection',
-  'braveHTTPSEverywhere'
+  'braveHTTPSEverywhere',
+  'javascript'
 ])
 
 require('./background/events')

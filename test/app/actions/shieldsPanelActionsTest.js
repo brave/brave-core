@@ -48,6 +48,12 @@ describe('shieldsPanelActions', () => {
     })
   })
 
+  it('javascriptToggled action', () => {
+    assert.deepEqual(actions.javascriptToggled(), {
+      type: types.JAVASCRIPT_TOGGLED
+    })
+  })
+
   it('resourceBlocked action', () => {
     const details = {
       blockType: 'adBlock',
