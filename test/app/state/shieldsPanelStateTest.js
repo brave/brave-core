@@ -13,7 +13,9 @@ const state = deepFreeze({
     2: {
       id: 2,
       adBlock: 'block',
-      trackingProtection: 'block'
+      trackingProtection: 'block',
+      httpsEverywhere: 'block',
+      javascript: 'block'
     },
     3: {
       id: 3
@@ -36,7 +38,9 @@ describe('shieldsPanelState test', () => {
       assert.deepEqual(shieldsPanelState.getActiveTabData(state), {
         id: 2,
         adBlock: 'block',
-        trackingProtection: 'block'
+        trackingProtection: 'block',
+        httpsEverywhere: 'block',
+        javascript: 'block'
       })
     })
   })
@@ -48,7 +52,9 @@ describe('shieldsPanelState test', () => {
           2: {
             id: 2,
             adBlock: 'block',
-            trackingProtection: 'block'
+            trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block'
           },
           3: {
             id: 3
@@ -67,7 +73,9 @@ describe('shieldsPanelState test', () => {
           2: {
             id: 2,
             adBlock: 'block',
-            trackingProtection: 'block'
+            trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block'
           },
           3: {
             id: 3
@@ -88,7 +96,9 @@ describe('shieldsPanelState test', () => {
           2: {
             id: 2,
             adBlock: 'block',
-            trackingProtection: 'block'
+            trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block'
           },
           3: {
             id: 3
@@ -107,7 +117,9 @@ describe('shieldsPanelState test', () => {
           2: {
             id: 2,
             adBlock: 'block',
-            trackingProtection: 'block'
+            trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block'
           },
           3: {
             id: 3
@@ -128,7 +140,9 @@ describe('shieldsPanelState test', () => {
           2: {
             id: 2,
             adBlock: 'block',
-            trackingProtection: 'block'
+            trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block'
           },
           3: {
             id: 3
@@ -146,7 +160,9 @@ describe('shieldsPanelState test', () => {
       this.tabId = 2
       assert.deepEqual(shieldsPanelState.updateTabShieldsData(state, this.tabId, {
         adBlock: 'allow',
-        trackingProtection: 'allow'
+        trackingProtection: 'allow',
+        httpsEverywhere: 'allow',
+        javascript: 'allow'
       }), {
         currentWindowId: 1,
         tabs: {
@@ -154,11 +170,15 @@ describe('shieldsPanelState test', () => {
             id: 2,
             adBlock: 'allow',
             trackingProtection: 'allow',
+            httpsEverywhere: 'allow',
+            javascript: 'allow',
             adsTrackers: 'allow',
             controlsOpen: true,
             shieldsEnabled: 'allow',
             adsBlocked: 0,
-            trackingProtectionBlocked: 0
+            trackingProtectionBlocked: 0,
+            httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0
           },
           3: {
             id: 3
@@ -181,8 +201,12 @@ describe('shieldsPanelState test', () => {
             id: 2,
             adBlock: 'block',
             trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block',
             adsBlocked: 3,
-            trackingProtectionBlocked: 4444
+            trackingProtectionBlocked: 4444,
+            httpsEverywhereRedirected: 5,
+            javascriptBlocked: 5
           },
           3: {
             id: 3
@@ -196,6 +220,8 @@ describe('shieldsPanelState test', () => {
 
       stateWithStats.tabs[this.tabId].adsBlocked = 3
       stateWithStats.tabs[this.tabId].trackingProtectionBlocked = 4
+      stateWithStats.tabs[this.tabId].httpsEverywhereRedirected = 5
+      stateWithStats.tabs[this.tabId].javascriptBlocked = 6
       assert.deepEqual(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId), {
         currentWindowId: 1,
         tabs: {
@@ -203,8 +229,12 @@ describe('shieldsPanelState test', () => {
             id: 2,
             adBlock: 'block',
             trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block',
             adsBlocked: 0,
-            trackingProtectionBlocked: 0
+            trackingProtectionBlocked: 0,
+            httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0
           },
           3: {
             id: 3
@@ -224,7 +254,9 @@ describe('shieldsPanelState test', () => {
           2: {
             id: 2,
             adBlock: 'block',
-            trackingProtection: 'block'
+            trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block'
           },
           3: {
             id: 3
@@ -232,7 +264,9 @@ describe('shieldsPanelState test', () => {
           4: {
             id: 4,
             adsBlocked: 3,
-            trackingProtectionBlocked: 4444
+            trackingProtectionBlocked: 4444,
+            httpsEverywhereRedirected: 5,
+            javascriptBlocked: 5
           }
         },
         windows: {1: 2, 2: 3}
@@ -244,7 +278,9 @@ describe('shieldsPanelState test', () => {
           2: {
             id: 2,
             adBlock: 'block',
-            trackingProtection: 'block'
+            trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block'
           },
           3: {
             id: 3
@@ -252,7 +288,9 @@ describe('shieldsPanelState test', () => {
           4: {
             id: 4,
             adsBlocked: 0,
-            trackingProtectionBlocked: 0
+            trackingProtectionBlocked: 0,
+            httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0
           }
         },
         windows: {1: 2, 2: 3}
@@ -269,8 +307,12 @@ describe('shieldsPanelState test', () => {
             id: 2,
             adBlock: 'block',
             trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0
+            trackingProtectionBlocked: 0,
+            httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0
           },
           3: {
             id: 3
@@ -291,8 +333,12 @@ describe('shieldsPanelState test', () => {
             id: 2,
             adBlock: 'block',
             trackingProtection: 'block',
+            httpsEverywhere: 'block',
+            javascript: 'block',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0
+            trackingProtectionBlocked: 0,
+            httpsEverywhereRedirected: 0,
+            javascriptBlocked: 0
           },
           3: {
             id: 3

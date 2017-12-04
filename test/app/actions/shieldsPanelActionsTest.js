@@ -12,6 +12,7 @@ describe('shieldsPanelActions', () => {
     const details = {
       adBlock: 'allow',
       trackingProtection: 'block',
+      httpsEverywhere: 'allow',
       origin: 'https://www.brave.com',
       hostname: 'www.brave.com'
     }
@@ -38,6 +39,18 @@ describe('shieldsPanelActions', () => {
   it('trackingProtectionToggled action', () => {
     assert.deepEqual(actions.trackingProtectionToggled(), {
       type: types.TRACKING_PROTECTION_TOGGLED
+    })
+  })
+
+  it('httpsEverywhereToggled action', () => {
+    assert.deepEqual(actions.httpsEverywhereToggled(), {
+      type: types.HTTPS_EVERYWHERE_TOGGLED
+    })
+  })
+
+  it('javascriptToggled action', () => {
+    assert.deepEqual(actions.javascriptToggled(), {
+      type: types.JAVASCRIPT_TOGGLED
     })
   })
 

@@ -11,6 +11,8 @@ export default class BraveShieldsControls extends Component {
     this.onChangeAdControl = this.onChangeAdControl.bind(this)
     this.onChangeCookieControl = this.onChangeCookieControl.bind(this)
     this.onToggleControls = this.onToggleControls.bind(this)
+    this.onToggleHTTPSEverywhere = this.onToggleHTTPSEverywhere.bind(this)
+    this.onToggleJavaScript = this.onToggleJavaScript.bind(this)
   }
 
   onChangeAdControl (e) {
@@ -27,8 +29,16 @@ export default class BraveShieldsControls extends Component {
     props.controlsToggled(!props.controlsOpen)
   }
 
+  onToggleHTTPSEverywhere (e) {
+    this.props.httpsEverywhereToggled()
+  }
+
+  onToggleJavaScript (e) {
+    this.props.javascriptToggled()
+  }
+
   render () {
-    const { shieldsEnabled, adsTrackers, controlsOpen } = this.props
+    const { shieldsEnabled, adsTrackers, controlsOpen, httpsEverywhere, javascript } = this.props
     return (
       <Grid
         id='braveShieldsControls'
@@ -71,6 +81,8 @@ export default class BraveShieldsControls extends Component {
                   id='httpsEverywhere'
                   disabled={shieldsEnabled === 'block'}
                   rightText='HTTPS Everywhere'
+                  checked={shieldsEnabled === 'allow' && httpsEverywhere === 'allow'}
+                  onChange={this.onToggleHTTPSEverywhere}
                 />
               </Column>
               <Column>
@@ -79,6 +91,8 @@ export default class BraveShieldsControls extends Component {
                   id='blockScripts'
                   disabled={shieldsEnabled === 'block'}
                   rightText='Block Scripts'
+                  checked={shieldsEnabled === 'allow' && javascript === 'block'}
+                  onChange={this.onToggleJavaScript}
                 />
               </Column>
               <Column>

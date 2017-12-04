@@ -30,6 +30,8 @@ describe('Shields API', () => {
           hostname: 'www.brave.com',
           adBlock: 'block',
           trackingProtection: 'block',
+          httpsEverywhere: 'block',
+          javascript: 'block',
           id: 5
         })
         cb()
@@ -126,6 +128,60 @@ describe('Shields API', () => {
       })
     })
     it('passes only 1 arg to chrome.contentSettings.braveTrackingProtection', function () {
+      assert(this.spy.getCall(0).args.length, 1)
+    })
+    it('resolves the returned promise', function (cb) {
+      this.p
+        .then(cb)
+        .catch((e) => {
+          console.error(e)
+        })
+    })
+  })
+
+  describe('setAllowHTTPSEverywhere', function () {
+    before(function () {
+      this.spy = sinon.spy(chrome.contentSettings.braveHTTPSEverywhere, 'setAsync')
+      this.p = shieldsAPI.setAllowHTTPSEverywhere('https://www.brave.com', 'block')
+    })
+    after(function () {
+      this.spy.restore()
+    })
+    it('calls chrome.contentSettings.braveHTTPSEverywhere with the correct args', function () {
+      const arg0 = this.spy.getCall(0).args[0]
+      assert.deepEqual(arg0, {
+        primaryPattern: '*://www.brave.com/*',
+        setting: 'block'
+      })
+    })
+    it('passes only 1 arg to chrome.contentSettings.braveHTTPSEverywhere', function () {
+      assert(this.spy.getCall(0).args.length, 1)
+    })
+    it('resolves the returned promise', function (cb) {
+      this.p
+        .then(cb)
+        .catch((e) => {
+          console.error(e)
+        })
+    })
+  })
+
+  describe('setAllowJavaScript', function () {
+    before(function () {
+      this.spy = sinon.spy(chrome.contentSettings.javascript, 'setAsync')
+      this.p = shieldsAPI.setAllowJavaScript('https://www.brave.com', 'block')
+    })
+    after(function () {
+      this.spy.restore()
+    })
+    it('calls chrome.contentSettings.javascript with the correct args', function () {
+      const arg0 = this.spy.getCall(0).args[0]
+      assert.deepEqual(arg0, {
+        primaryPattern: 'https://www.brave.com/*',
+        setting: 'block'
+      })
+    })
+    it('passes only 1 arg to chrome.contentSettings.javascript', function () {
       assert(this.spy.getCall(0).args.length, 1)
     })
     it('resolves the returned promise', function (cb) {

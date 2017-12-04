@@ -11,7 +11,9 @@ export const tabs = {
     origin: 'https://www.brave.com',
     hostname: 'www.brave.com',
     adBlock: 'block',
-    trackingProtection: 'block'
+    trackingProtection: 'block',
+    httpsEverywhere: 'block',
+    javascript: 'block'
   }
 }
 
@@ -85,6 +87,26 @@ export const getMockChrome = () => {
         }
       },
       braveTrackingProtection: {
+        setAsync: function () {
+          return Promise.resolve()
+        },
+        getAsync: function () {
+          return Promise.resolve({
+            setting: 'block'
+          })
+        }
+      },
+      braveHTTPSEverywhere: {
+        setAsync: function () {
+          return Promise.resolve()
+        },
+        getAsync: function () {
+          return Promise.resolve({
+            setting: 'block'
+          })
+        }
+      },
+      javascript: {
         setAsync: function () {
           return Promise.resolve()
         },

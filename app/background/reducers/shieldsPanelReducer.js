@@ -9,6 +9,8 @@ import * as webNavigationTypes from '../../constants/webNavigationTypes'
 import {
   setAllowAdBlock,
   setAllowTrackingProtection,
+  setAllowHTTPSEverywhere,
+  setAllowJavaScript,
   toggleShieldsValue,
   requestShieldPanelData
 } from '../api/shieldsAPI'
@@ -95,7 +97,15 @@ export default function shieldsPanelReducer (state = {tabs: {}, windows: {}}, ac
         .catch(() => {
           console.error('Could not set tracking protection setting')
         })
-      Promise.all([p1, p2]).then(() => {
+      const p3 = setAllowHTTPSEverywhere(tabData.origin, action.setting)
+        .catch(() => {
+          console.error('Could not set HTTPS Everywhere setting')
+        })
+      const p4 = setAllowJavaScript(tabData.origin, action.setting)
+        .catch(() => {
+          console.error('Could not set JavaScript setting')
+        })
+      Promise.all([p1, p2, p3, p4]).then(() => {
         reloadTab(tabId, true)
         requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
       })
@@ -112,6 +122,30 @@ export default function shieldsPanelReducer (state = {tabs: {}, windows: {}}, ac
         })
         .catch(() => {
           console.error('Could not set ad block setting')
+        })
+      break
+    }
+    case shieldsPanelTypes.HTTPS_EVERYWHERE_TOGGLED: {
+      const tabData = shieldsPanelState.getActiveTabData(state)
+      setAllowHTTPSEverywhere(tabData.origin, toggleShieldsValue(tabData.httpsEverywhere))
+        .then(() => {
+          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          reloadTab(tabData.id, true)
+        })
+        .catch(() => {
+          console.error('Could not set HTTPS Everywhere setting')
+        })
+      break
+    }
+    case shieldsPanelTypes.JAVASCRIPT_TOGGLED: {
+      const tabData = shieldsPanelState.getActiveTabData(state)
+      setAllowJavaScript(tabData.origin, toggleShieldsValue(tabData.javascript))
+        .then(() => {
+          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          reloadTab(tabData.id, true)
+        })
+        .catch(() => {
+          console.error('Could not set JavaScript setting')
         })
       break
     }
