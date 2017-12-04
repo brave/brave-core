@@ -2,12 +2,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Grid, Column, SwitchButton, BrowserSelect, ContentToggle } from 'brave-ui'
+import * as shieldActions from '../../types/actions/shieldsPanelActions'
 
-export default class BraveShieldsControls extends Component {
-  constructor () {
-    super()
+export interface Props {
+  controlsOpen: boolean
+  adsTrackers: string
+  shieldsEnabled: shieldActions.settings
+  httpsEverywhere: shieldActions.settings
+  javascript: shieldActions.settings
+  blockAdsTrackers: shieldActions.blockAdsTrackers
+  controlsToggled: shieldActions.controlsToggled
+  httpsEverywhereToggled: shieldActions.httpsEverywhereToggled
+  javascriptToggled: shieldActions.javascriptToggled
+}
+
+class BraveShieldsControls extends React.Component<Props, object> {
+  constructor (props: Props) {
+    super(props)
     this.onChangeAdControl = this.onChangeAdControl.bind(this)
     this.onChangeCookieControl = this.onChangeCookieControl.bind(this)
     this.onToggleControls = this.onToggleControls.bind(this)
@@ -15,25 +28,23 @@ export default class BraveShieldsControls extends Component {
     this.onToggleJavaScript = this.onToggleJavaScript.bind(this)
   }
 
-  onChangeAdControl (e) {
-    const { props } = this
-    props.blockAdsTrackers(e.target.value)
+  onChangeAdControl (e: HTMLSelectElement) {
+    this.props.blockAdsTrackers(e.target.value)
   }
 
   onChangeCookieControl () {
     // TODO: @cezaraugusto
   }
 
-  onToggleControls (e) {
-    const { props } = this
-    props.controlsToggled(!props.controlsOpen)
+  onToggleControls () {
+    this.props.controlsToggled(!this.props.controlsOpen)
   }
 
-  onToggleHTTPSEverywhere (e) {
+  onToggleHTTPSEverywhere () {
     this.props.httpsEverywhereToggled()
   }
 
-  onToggleJavaScript (e) {
+  onToggleJavaScript () {
     this.props.javascriptToggled()
   }
 
@@ -74,7 +85,10 @@ export default class BraveShieldsControls extends Component {
               <option value='SOME'>Allow All Cookies</option>
               <option value='SOME'>Block All Cookies</option>
             </BrowserSelect>
-            <Grid gap='10px 5px' padding='5px 0'>
+            <Grid
+              gap='10px 5px'
+              padding='5px 0'
+            >
               <Column>
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
@@ -118,3 +132,5 @@ export default class BraveShieldsControls extends Component {
     )
   }
 }
+
+export default BraveShieldsControls

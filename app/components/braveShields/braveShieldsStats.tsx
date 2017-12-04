@@ -2,16 +2,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Grid, Column, BrowserText } from 'brave-ui'
-export default class BraveShieldsStats extends Component {
+import * as shieldActions from '../../types/actions/shieldsPanelActions'
+
+export interface Props {
+  shieldsEnabled: shieldActions.settings
+  adsBlocked: number,
+  trackingProtectionBlocked: number,
+  httpsEverywhereRedirected: number,
+  javascriptBlocked: number
+}
+
+class BraveShieldsStats extends React.Component<Props, object> {
   get totalAdsTrackersBlocked () {
     const { adsBlocked, trackingProtectionBlocked } = this.props
     return adsBlocked + trackingProtectionBlocked
   }
+
   get httpsEverywhereRedirected () {
     return this.props.httpsEverywhereRedirected
   }
+
   render () {
     const { shieldsEnabled } = this.props
     return (
@@ -70,3 +82,5 @@ export default class BraveShieldsStats extends Component {
     )
   }
 }
+
+export default BraveShieldsStats

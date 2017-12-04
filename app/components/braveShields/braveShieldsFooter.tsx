@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Grid, Column, ActionButton, Anchor } from 'brave-ui'
 
-export default class BraveShieldsFooter extends Component {
+class BraveShieldsFooter extends React.Component {
   render () {
     return (
       <Grid
@@ -29,3 +29,5 @@ export default class BraveShieldsFooter extends Component {
     )
   }
 }
+
+export default BraveShieldsFooter

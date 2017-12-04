@@ -2,18 +2,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Grid, Column, Separator, SwitchButton, ActionButton, BrowserText } from 'brave-ui'
+import * as shieldActions from '../../types/actions/shieldsPanelActions'
 
-export default class BraveShieldsHeader extends Component {
-  constructor () {
-    super()
+export interface Props {
+  shieldsToggled: shieldActions.shieldsToggled
+  hostname: string,
+  shieldsEnabled: shieldActions.settings
+}
+
+class BraveShieldsHeader extends React.Component<Props, object> {
+  constructor (props: Props) {
+    super(props)
     this.onToggleShields = this.onToggleShields.bind(this)
     this.onClosePopup = this.onClosePopup.bind(this)
   }
 
-  onToggleShields (e) {
-    const shieldsOption = e.target.checked ? 'allow' : 'block'
+  onToggleShields (e: HTMLSelectElement) {
+    const shieldsOption: shieldActions.settings = e.target.checked ? 'allow' : 'block'
     this.props.shieldsToggled(shieldsOption)
   }
 
@@ -55,3 +62,5 @@ export default class BraveShieldsHeader extends Component {
     )
   }
 }
+
+export default BraveShieldsHeader
