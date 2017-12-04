@@ -9,6 +9,9 @@ export default class BraveShieldsStats extends Component {
     const { adsBlocked, trackingProtectionBlocked } = this.props
     return adsBlocked + trackingProtectionBlocked
   }
+  get httpsEverywhereRedirected () {
+    return this.props.httpsEverywhereRedirected
+  }
   render () {
     const { shieldsEnabled } = this.props
     return (
@@ -35,7 +38,7 @@ export default class BraveShieldsStats extends Component {
         </Column>
 
         <Column align='flex-end' size={2}>
-          <BrowserText noSelect text='0' fontSize='26px' color='#0796fa' />
+          <BrowserText noSelect text={this.httpsEverywhereRedirected} fontSize='26px' color='#0796fa' />
         </Column>
         <Column
           id='httpsUpgradesStats'
