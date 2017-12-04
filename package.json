@@ -10,7 +10,8 @@
     "clean": "rimraf build/ dev/ *.zip *.crx",
     "lint": "standard",
     "test-e2e": "cross-env NODE_ENV=test mocha ./test/setupApp test/e2e/braveShieldsPanel && mocha ./test/setupApp test/e2e/newTabPage.js",
-    "test": "cross-env NODE_ENV=test mocha -r ./test/setupApp test/app"
+    "test-unit": "cross-env NODE_ENV=test mocha -r ./test/setupApp test/app",
+    "test-suite": "node ./scripts/tests.js"
   },
   "repository": {
     "type": "git",
