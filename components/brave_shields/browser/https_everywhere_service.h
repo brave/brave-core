@@ -38,9 +38,10 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
  public:
    HTTPSEverywhereService();
    ~HTTPSEverywhereService() override;
-  std::string GetHTTPSURL(const GURL* url, const uint64_t &request_id);
-  std::string GetHTTPSURLFromCacheOnly(const GURL* url,
-      const uint64_t &request_id);
+  bool GetHTTPSURL(const GURL* url, const uint64_t &request_id,
+      std::string& new_url);
+  bool GetHTTPSURLFromCacheOnly(const GURL* url,
+      const uint64_t &request_id, std::string& cached_url);
 
  protected:
   bool Init() override;

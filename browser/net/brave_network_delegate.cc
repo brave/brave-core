@@ -100,9 +100,9 @@ int BraveNetworkDelegate::OnBeforeURLRequest_HttpsePreFileWork(
   }
 
   if (isValidURL) {
-    ctx->new_url_spec = g_browser_process->https_everywhere_service()
-      ->GetHTTPSURLFromCacheOnly(&request->url(), request->identifier());
-    if (ctx->new_url_spec == request->url().spec()) {
+    if (!g_browser_process->https_everywhere_service()->
+        GetHTTPSURLFromCacheOnly(&request->url(), request->identifier(),
+          ctx->new_url_spec)) {
       ctx->request_url = request->url();
       content::BrowserThread::PostTaskAndReply(
         content::BrowserThread::FILE, FROM_HERE,
@@ -116,7 +116,10 @@ int BraveNetworkDelegate::OnBeforeURLRequest_HttpsePreFileWork(
       pending_requests_->Insert(request->identifier());
       return net::ERR_IO_PENDING;
     } else {
-      *new_url = GURL(ctx->new_url_spec);
+      if (!ctx->new_url_spec.empty()) {
+        *new_url = GURL(ctx->new_url_spec);
+        brave_shields::DispatchBlockedEvent("httpsEverywhere", request);
+      }
     }
   }
 
@@ -128,8 +131,8 @@ void BraveNetworkDelegate::OnBeforeURLRequest_HttpseFileWork(
   base::ThreadRestrictions::AssertIOAllowed();
   DCHECK_CURRENTLY_ON(content::BrowserThread::FILE);
   DCHECK(ctx->request_identifier != 0);
-  ctx->new_url_spec = g_browser_process->https_everywhere_service()->
-    GetHTTPSURL(&ctx->request_url, ctx->request_identifier);
+  g_browser_process->https_everywhere_service()->
+    GetHTTPSURL(&ctx->request_url, ctx->request_identifier, ctx->new_url_spec);
 }
 
 int BraveNetworkDelegate::OnBeforeURLRequest_HttpsePostFileWork(

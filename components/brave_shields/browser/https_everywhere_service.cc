@@ -118,52 +118,56 @@ bool HTTPSEverywhereService::Init() {
   return true;
 }
 
-std::string HTTPSEverywhereService::GetHTTPSURL(
-    const GURL* url, const uint64_t &request_identifier) {
+bool HTTPSEverywhereService::GetHTTPSURL(
+    const GURL* url, const uint64_t& request_identifier,
+    std::string& new_url) {
   base::ThreadRestrictions::AssertIOAllowed();
   if (!IsInitialized() || url->scheme() == "https") {
-    return url->spec();
+    return false;
   }
   if (!ShouldHTTPSERedirect(request_identifier)) {
-    return url->spec();
+    return false;
   }
 
   if (recently_used_cache_.data.count(url->spec()) > 0) {
     AddHTTPSEUrlToRedirectList(request_identifier);
-    return recently_used_cache_.data[url->spec()];
+    new_url = recently_used_cache_.data[url->spec()];
+    return true;
   }
 
   const std::vector<std::string> domains = ExpandDomainForLookup(url->host());
   for (auto domain : domains) {
     std::string value = leveldbGet(level_db_, domain);
     if (!value.empty()) {
-      std::string newURL = ApplyHTTPSRule(url->spec(), value);
-      if (0 != newURL.length()) {
-        recently_used_cache_.data[url->spec()] = newURL;
+      new_url = ApplyHTTPSRule(url->spec(), value);
+      if (0 != new_url.length()) {
+        recently_used_cache_.data[url->spec()] = new_url;
         AddHTTPSEUrlToRedirectList(request_identifier);
-        return newURL;
+        return true;
       }
     }
   }
   recently_used_cache_.data[url->spec()] = "";
-  return url->spec();
+  return false;
 }
 
-std::string HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
+bool HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
     const GURL* url,
-    const uint64_t &request_identifier) {
+    const uint64_t& request_identifier,
+    std::string& cached_url) {
   if (!IsInitialized() || url->scheme() == "https") {
-    return url->spec();
+    return false;
   }
   if (!ShouldHTTPSERedirect(request_identifier)) {
-    return url->spec();
+    return false;
   }
 
   if (recently_used_cache_.data.count(url->spec()) > 0) {
     AddHTTPSEUrlToRedirectList(request_identifier);
-    return recently_used_cache_.data[url->spec()];
+    cached_url = recently_used_cache_.data[url->spec()];
+    return true;
   }
-  return url->spec();
+  return false;
 }
 
 bool HTTPSEverywhereService::ShouldHTTPSERedirect(
