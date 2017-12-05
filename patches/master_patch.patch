@@ -215,6 +215,32 @@ index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5
  #else
  #error Unknown branding
  #endif
+diff --git a/chrome/common/chrome_paths_linux.cc b/chrome/common/chrome_paths_linux.cc
+index fc47bd3f12418fdaed879e0b485bfc7cb572a6e8..cd65257afd0aa99de7ef07877691c72ea09f18f9 100644
+--- a/chrome/common/chrome_paths_linux.cc
++++ b/chrome/common/chrome_paths_linux.cc
+@@ -90,7 +90,7 @@ bool GetDefaultUserDataDirectory(base::FilePath* result) {
+ #if defined(GOOGLE_CHROME_BUILD)
+   *result = config_dir.Append("google-chrome" + GetChannelSuffixForDataDir());
+ #else
+-  *result = config_dir.Append("chromium");
++  *result = config_dir.Append("brave");
+ #endif
+   return true;
+ }
+diff --git a/chrome/common/chrome_paths_mac.mm b/chrome/common/chrome_paths_mac.mm
+index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..57e572feef4a8fea5f026cf2d7a526d524551915 100644
+--- a/chrome/common/chrome_paths_mac.mm
++++ b/chrome/common/chrome_paths_mac.mm
+@@ -59,7 +59,7 @@ char* ProductDirNameForBundle(NSBundle* chrome_bundle) {
+ #if defined(GOOGLE_CHROME_BUILD)
+     product_dir_name = "Google/Chrome";
+ #else
+-    product_dir_name = "Chromium";
++    product_dir_name = "Brave";
+ #endif
+   }
+ 
 diff --git a/chrome/common/mac/app_mode_chrome_locator.mm b/chrome/common/mac/app_mode_chrome_locator.mm
 index efd272e706ba56b748e4b76b96d76cbd03aa07ac..5ce343302a2ab3a18a9149a33203f5a2fe301b23 100644
 --- a/chrome/common/mac/app_mode_chrome_locator.mm
@@ -227,6 +253,19 @@ index efd272e706ba56b748e4b76b96d76cbd03aa07ac..5ce343302a2ab3a18a9149a33203f5a2
      @"Chromium": @"Chromium",
      @"Google Chrome": @"Google Chrome",
      @"Google Chrome Canary": @"Google Chrome",
+diff --git a/chrome/install_static/chromium_install_modes.cc b/chrome/install_static/chromium_install_modes.cc
+index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..eb39493404dc6e3f07fe7b6b43cdb628e5161329 100644
+--- a/chrome/install_static/chromium_install_modes.cc
++++ b/chrome/install_static/chromium_install_modes.cc
+@@ -14,7 +14,7 @@ namespace install_static {
+ 
+ const wchar_t kCompanyPathName[] = L"";
+ 
+-const wchar_t kProductPathName[] = L"Chromium";
++const wchar_t kProductPathName[] = L"Brave";
+ 
+ const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
+ 
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
 index 6de49b0d3dcecdd31370a85625c621cdd1935f90..47604d1e11fe40078a828db154a1f25ad5dc1d38 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
