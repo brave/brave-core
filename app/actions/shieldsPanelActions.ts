@@ -64,7 +64,7 @@ const javascriptToggled: actions.javascriptToggled = () => {
   }
 }
 
-export default {
+export {
   shieldsPanelDataUpdated,
   shieldsToggled,
   adBlockToggled,
