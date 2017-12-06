@@ -16,30 +16,44 @@
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
 
-
 using extensions::Event;
 using extensions::EventRouter;
+using content::ResourceContext;
+using content::BrowserThread;
+using content::ResourceRequestInfo;
+using net::URLRequest;
 
 namespace brave_shields {
 
-bool IsAllowContentSetting(content::ResourceContext* resource_context,
+bool IsAllowContentSettingFromIO(net::URLRequest* request,
     GURL tab_origin, ContentSettingsType setting_type) {
-  content_settings::SettingInfo info;
-  ProfileIOData* io_data = ProfileIOData::FromResourceContext(
-      resource_context);
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+
+  const content::ResourceRequestInfo* resource_info =
+      content::ResourceRequestInfo::ForRequest(request);
+  if (!resource_info) {
+    return false;
+  }
+  ProfileIOData* io_data =
+      ProfileIOData::FromResourceContext(resource_info->GetContext());
+  if (!io_data) {
+    return false;
+  }
+  content_settings::SettingInfo setting_info;
   std::unique_ptr<base::Value> value =
       io_data->GetHostContentSettingsMap()->GetWebsiteSetting(
           tab_origin, tab_origin,
           setting_type,
-          std::string(), &info);
+          std::string(), &setting_info);
   ContentSetting setting =
       content_settings::ValueToContentSetting(value.get());
   return setting == CONTENT_SETTING_ALLOW;
 }
 
-void GetRenderFrameIdAndProcessId(net::URLRequest* request,
+void GetRenderFrameIdAndProcessId(URLRequest* request,
     int* render_frame_id,
     int* render_process_id) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   *render_frame_id = -1;
   *render_process_id = -1;
   extensions::ExtensionApiFrameIdMap::FrameData frame_data;
@@ -54,7 +68,8 @@ void GetRenderFrameIdAndProcessId(net::URLRequest* request,
   }
 }
 
-int GetTabId(net::URLRequest* request) {
+int GetTabIdFromIO(URLRequest* request) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   int render_frame_id = -1;
   int render_process_id = -1;
   int tab_id = -1;
@@ -67,22 +82,14 @@ int GetTabId(net::URLRequest* request) {
   return tab_id;
 }
 
-bool GetTabOrigin(net::URLRequest* request, GURL *tab_origin) {
-  int tab_id = brave_shields::GetTabId(request);
-  if (tab_id != 1 && brave_shields::GetUrlForTabId(tab_id, tab_origin)) {
-    *tab_origin = tab_origin->GetOrigin();
-    return true;
-  }
-  return false;
-}
-
-void DispatchBlockedEvent(const std::string &block_type,
-    net::URLRequest* request) {
-  Profile* profile = ProfileManager::GetActiveUserProfile();
+void BlockEventFromUI(int tab_id,
+    const std::string& block_type) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+    Profile* profile = ProfileManager::GetActiveUserProfile();
   EventRouter* event_router = EventRouter::Get(profile);
   if (profile && event_router) {
     extensions::api::brave_shields::OnBlocked::Details details;
-    details.tab_id = GetTabId(request);
+    details.tab_id = tab_id;
     details.block_type = block_type;
     std::unique_ptr<base::ListValue> args(
         extensions::api::brave_shields::OnBlocked::Create(details)
@@ -94,28 +101,14 @@ void DispatchBlockedEvent(const std::string &block_type,
     event_router->BroadcastEvent(std::move(event));
   }
 }
-// true if able to perform the lookup.  The URL is stored to *url, and
-// *is_incognito is set to indicate whether the URL is for an incognito tab.
-bool GetUrlForTabId(int tab_id,
-                    GURL* url) {
-  Profile* profile = ProfileManager::GetActiveUserProfile();
-  content::WebContents* contents = NULL;
-  Browser* browser = NULL;
-  bool found = extensions::ExtensionTabUtil::GetTabById(
-      tab_id,
-      profile,
-      true,  // Search incognito tabs, too.
-      &browser,
-      NULL,
-      &contents,
-      NULL);
 
-  if (found) {
-    *url = contents->GetURL();
-    return true;
-  } else {
-    return false;
-  }
+void DispatchBlockedEventFromIO(URLRequest* request,
+    const std::string& block_type) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  int tab_id = GetTabIdFromIO(request);
+  BrowserThread::PostTask(BrowserThread::UI, FROM_HERE,
+                          base::BindOnce(BlockEventFromUI,
+                          tab_id, block_type));
 }
 
 }  // namespace brave_shields

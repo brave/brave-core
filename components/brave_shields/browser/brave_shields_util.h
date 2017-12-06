@@ -12,30 +12,17 @@
 #include "url/gurl.h"
 
 
-namespace content {
-class ResourceContext;
-}
-
 namespace net {
 class URLRequest;
 }
 
 namespace brave_shields {
 
-bool IsAllowContentSetting(content::ResourceContext* resource_context,
+bool IsAllowContentSettingFromIO(net::URLRequest* request,
     GURL tab_origin, ContentSettingsType setting_type);
 
-void GetRenderFrameIdAndProcessId(net::URLRequest* request,
-    int* render_frame_id,
-    int* render_process_id);
-
-void DispatchBlockedEvent(const std::string &block_type,
-    net::URLRequest* request);
-
-int GetTabId(net::URLRequest* request);
-bool GetTabOrigin(net::URLRequest* request, GURL *url);
-
-bool GetUrlForTabId(int tab_id, GURL* url);
+void DispatchBlockedEventFromIO(net::URLRequest* request,
+    const std::string &block_type);
 
 }  // namespace brave_shields
 

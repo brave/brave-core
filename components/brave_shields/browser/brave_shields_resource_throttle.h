@@ -9,20 +9,16 @@
 #include "content/public/browser/resource_throttle.h"
 #include "content/public/common/resource_type.h"
 
+
 namespace net {
 struct RedirectInfo;
 class URLRequest;
-}
-
-namespace content {
-class ResourceContext;
 }
 
 // Contructs a resource throttle for Brave shields like tracking protection
 // and adblock. It returns a
 content::ResourceThrottle* MaybeCreateBraveShieldsResourceThrottle(
     net::URLRequest* request,
-    content::ResourceContext* resource_context,
     content::ResourceType resource_type);
 
 // This check is done before requesting the original URL, and additionally
@@ -32,11 +28,9 @@ class BraveShieldsResourceThrottle
  private:
   friend content::ResourceThrottle* MaybeCreateBraveShieldsResourceThrottle(
       net::URLRequest* request,
-      content::ResourceContext* resource_context,
       content::ResourceType resource_type);
 
   BraveShieldsResourceThrottle(net::URLRequest* request,
-                               content::ResourceContext* resource_context,
                                content::ResourceType resource_type);
 
   ~BraveShieldsResourceThrottle() override;
@@ -46,7 +40,6 @@ class BraveShieldsResourceThrottle
   const char* GetNameForLogging() const override;
 
   net::URLRequest* request_;
-  content::ResourceContext* resource_context_;
   content::ResourceType resource_type_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveShieldsResourceThrottle);

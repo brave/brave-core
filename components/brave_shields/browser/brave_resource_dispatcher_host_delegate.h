@@ -10,9 +10,6 @@
 
 #include "chrome/browser/loader/chrome_resource_dispatcher_host_delegate.h"
 
-namespace net {
-class URLRequest;
-}
 
 class BraveResourceDispatcherHostDelegate
     : public ChromeResourceDispatcherHostDelegate {

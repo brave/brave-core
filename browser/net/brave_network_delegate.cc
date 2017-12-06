@@ -7,8 +7,9 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
-#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_io_data.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/resource_request_info.h"
 #include "net/url_request/url_request.h"
 
 
@@ -54,19 +55,9 @@ BraveNetworkDelegate::~BraveNetworkDelegate() {
 int BraveNetworkDelegate::OnBeforeURLRequest(net::URLRequest* request,
     const net::CompletionCallback& callback,
     GURL* new_url) {
-
-  GURL tab_origin;
-  if (!brave_shields::GetTabOrigin(request, &tab_origin)) {
-    return ChromeNetworkDelegate::OnBeforeURLRequest(request,
-        callback, new_url);
-  }
-
-  Profile* profile = ProfileManager::GetActiveUserProfile();
-  auto* resource_context = profile->GetResourceContext();
-  bool allow_https_everywhere = brave_shields::IsAllowContentSetting(
-      resource_context, tab_origin,
-      CONTENT_SETTINGS_TYPE_BRAVEHTTPSEVERYWHERE);
-
+  GURL tab_origin = request->site_for_cookies().GetOrigin();
+  bool allow_https_everywhere = brave_shields::IsAllowContentSettingFromIO(
+      request, tab_origin, CONTENT_SETTINGS_TYPE_BRAVEHTTPSEVERYWHERE);
   if (!allow_https_everywhere) {
     return ChromeNetworkDelegate::OnBeforeURLRequest(request,
         callback, new_url);
@@ -118,7 +109,7 @@ int BraveNetworkDelegate::OnBeforeURLRequest_HttpsePreFileWork(
     } else {
       if (!ctx->new_url_spec.empty()) {
         *new_url = GURL(ctx->new_url_spec);
-        brave_shields::DispatchBlockedEvent("httpsEverywhere", request);
+        brave_shields::DispatchBlockedEventFromIO(request, "httpsEverywhere");
       }
     }
   }
@@ -150,7 +141,7 @@ int BraveNetworkDelegate::OnBeforeURLRequest_HttpsePostFileWork(
   if (!ctx->new_url_spec.empty() &&
     ctx->new_url_spec != request->url().spec()) {
     *new_url = GURL(ctx->new_url_spec);
-    brave_shields::DispatchBlockedEvent("httpsEverywhere", request);
+    brave_shields::DispatchBlockedEventFromIO(request, "httpsEverywhere");
   }
 
   int rv =
