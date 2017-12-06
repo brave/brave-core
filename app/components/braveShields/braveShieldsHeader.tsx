@@ -5,15 +5,15 @@
 import * as React from 'react'
 import { Grid, Column, Separator, SwitchButton, ActionButton, BrowserText } from 'brave-ui'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
-import { BlockOptions } from '../../types/other/blockTypes';
+import { BlockOptions } from '../../types/other/blockTypes'
 
-export interface Props {
+interface Props {
   shieldsToggled: shieldActions.ShieldsToggled
   hostname: string
   shieldsEnabled: BlockOptions
 }
 
-class BraveShieldsHeader extends React.Component<Props, object> {
+export default class BraveShieldsHeader extends React.Component<Props, object> {
   constructor (props: Props) {
     super(props)
     this.onToggleShields = this.onToggleShields.bind(this)
@@ -63,5 +63,3 @@ class BraveShieldsHeader extends React.Component<Props, object> {
     )
   }
 }
-
-export default BraveShieldsHeader

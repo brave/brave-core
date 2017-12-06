@@ -6,15 +6,15 @@ import * as React from 'react'
 import { Grid, Column, BrowserText } from 'brave-ui'
 import { BlockOptions } from '../../types/other/blockTypes'
 
-export interface Props {
+interface Props {
   shieldsEnabled: BlockOptions
-  adsBlocked: number,
-  trackingProtectionBlocked: number,
-  httpsEverywhereRedirected: number,
+  adsBlocked: number
+  trackingProtectionBlocked: number
+  httpsEverywhereRedirected: number
   javascriptBlocked: number
 }
 
-class BraveShieldsStats extends React.Component<Props, object> {
+export default class BraveShieldsStats extends React.Component<Props, object> {
   get totalAdsTrackersBlocked (): number {
     const { adsBlocked, trackingProtectionBlocked } = this.props
     return adsBlocked + trackingProtectionBlocked
@@ -86,5 +86,3 @@ class BraveShieldsStats extends React.Component<Props, object> {
     )
   }
 }
-
-export default BraveShieldsStats

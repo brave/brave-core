@@ -7,19 +7,19 @@ import { Grid, Column, SwitchButton, BrowserSelect, ContentToggle } from 'brave-
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 
-export interface Props {
-  controlsOpen: boolean,
-  adsTrackers: string,
-  shieldsEnabled: BlockOptions,
-  httpsEverywhere: BlockOptions,
-  javascript: BlockOptions,
-  blockAdsTrackers: shieldActions.BlockAdsTrackers,
-  controlsToggled: shieldActions.ControlsToggled,
-  httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled,
+interface Props {
+  controlsOpen: boolean
+  adsTrackers: string
+  shieldsEnabled: BlockOptions
+  httpsEverywhere: BlockOptions
+  javascript: BlockOptions
+  blockAdsTrackers: shieldActions.BlockAdsTrackers
+  controlsToggled: shieldActions.ControlsToggled
+  httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
   javascriptToggled: shieldActions.JavascriptToggled
 }
 
-class BraveShieldsControls extends React.Component<Props, object> {
+export default class BraveShieldsControls extends React.Component<Props, object> {
   constructor (props: Props) {
     super(props)
     this.onChangeAdControl = this.onChangeAdControl.bind(this)
@@ -133,5 +133,3 @@ class BraveShieldsControls extends React.Component<Props, object> {
     )
   }
 }
-
-export default BraveShieldsControls

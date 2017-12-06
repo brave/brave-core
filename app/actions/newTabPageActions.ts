@@ -5,10 +5,8 @@
 import * as types from '../constants/newTabPageTypes'
 import * as actions from '../types/actions/newTabPageActions'
 
-const settingsIconClicked: actions.SettingsIconClicked = () => {
-  return { type: types.SETTINGS_ICON_CLICKED }
-}
-
-export {
-  settingsIconClicked
+export const settingsIconClicked: actions.SettingsIconClicked = () => {
+  return {
+    type: types.SETTINGS_ICON_CLICKED
+  }
 }

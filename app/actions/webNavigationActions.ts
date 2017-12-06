@@ -5,15 +5,11 @@
 import * as types from '../constants/webNavigationTypes'
 import * as actions from '../types/actions/webNavigationActions'
 
-const onBeforeNavigate: actions.OnBeforeNavigate = (tabId, url, isMainFrame) => {
+export const onBeforeNavigate: actions.OnBeforeNavigate = (tabId, url, isMainFrame) => {
   return {
     type: types.ON_BEFORE_NAVIGATION,
     tabId,
     url,
     isMainFrame
   }
-}
-
-export {
-  onBeforeNavigate
 }

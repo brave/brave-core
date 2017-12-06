@@ -6,13 +6,13 @@ import * as React from 'react'
 import { getMessage } from '../../background/api/localeAPI'
 import * as newTabActions from '../../types/actions/newTabPageActions'
 
-export interface Props {
+interface Props {
   actions: {
     settingsIconClicked: newTabActions.SettingsIconClicked
   }
 }
 
-class NewTab extends React.Component<Props, object> {
+export default class NewTab extends React.Component<Props, object> {
   render () {
     const { actions } = this.props
 
@@ -24,5 +24,3 @@ class NewTab extends React.Component<Props, object> {
     )
   }
 }
-
-export default NewTab

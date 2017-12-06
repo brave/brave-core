@@ -10,18 +10,18 @@ import BraveShieldsFooter from './braveShieldsFooter'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { Tab } from '../../types/state/shieldsPannelState'
 
-export interface Props {
+interface Props {
   actions: {
-    shieldsToggled: shieldActions.ShieldsToggled,
-    blockAdsTrackers: shieldActions.BlockAdsTrackers,
-    controlsToggled: shieldActions.ControlsToggled,
-    httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled,
+    shieldsToggled: shieldActions.ShieldsToggled
+    blockAdsTrackers: shieldActions.BlockAdsTrackers
+    controlsToggled: shieldActions.ControlsToggled
+    httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
     javascriptToggled: shieldActions.JavascriptToggled
-  },
+  }
   shieldsPanelTabData: Tab
 }
 
-class BraveShields extends React.Component<Props, object> {
+export default class BraveShields extends React.Component<Props, object> {
   render () {
     const { shieldsPanelTabData, actions } = this.props
 
@@ -59,5 +59,3 @@ class BraveShields extends React.Component<Props, object> {
     )
   }
 }
-
-export default BraveShields

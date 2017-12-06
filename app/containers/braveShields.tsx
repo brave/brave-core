@@ -11,7 +11,6 @@ import * as shieldsPanelState from '../state/shieldsPanelState'
 import BraveShields from '../components/braveShields/braveShields'
 import { State } from '../types/state/mainState'
 
-// TODO add state
 const mapStateToProps = (state: State) => ({
   shieldsPanelTabData: shieldsPanelState.getActiveTabData(state.shieldsPanel)
 })

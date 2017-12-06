@@ -8,7 +8,6 @@ import * as newTabPageActions from '../actions/newTabPageActions'
 import NewTab from '../components/newTab/newTab'
 import { State } from '../types/state/mainState'
 
-// TODO add state
 const mapStateToProps = (state: State) => ({
   newTabPage: state.newTabPage
 })
