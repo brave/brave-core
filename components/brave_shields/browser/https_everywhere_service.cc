@@ -32,7 +32,7 @@
 #define HTTPSE_URL_MAX_REDIRECTS_COUNT      5
 
 namespace {
-  std::vector<std::string> Split(const std::string &s, char delim) {
+  std::vector<std::string> Split(const std::string& s, char delim) {
     std::stringstream ss(s);
     std::string item;
     std::vector<std::string> result;
@@ -43,7 +43,7 @@ namespace {
   }
 
   // returns parts in reverse order, makes list of lookup domains like com.foo.*
-  std::vector<std::string> ExpandDomainForLookup(const std::string &domain) {
+  std::vector<std::string> ExpandDomainForLookup(const std::string& domain) {
     std::vector<std::string> resultDomains;
     std::vector<std::string> domainParts = Split(domain, '.');
     if (domainParts.empty()) {
@@ -171,7 +171,7 @@ bool HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
 }
 
 bool HTTPSEverywhereService::ShouldHTTPSERedirect(
-    const uint64_t &request_identifier) {
+    const uint64_t& request_identifier) {
   std::lock_guard<std::mutex> guard(httpse_get_urls_redirects_count_mutex_);
   for (size_t i = 0; i < httpse_urls_redirects_count_.size(); i++) {
     if (request_identifier ==
@@ -186,7 +186,7 @@ bool HTTPSEverywhereService::ShouldHTTPSERedirect(
 }
 
 void HTTPSEverywhereService::AddHTTPSEUrlToRedirectList(
-    const uint64_t &request_identifier) {
+    const uint64_t& request_identifier) {
   // Adding redirects count for the current request
   std::lock_guard<std::mutex> guard(httpse_get_urls_redirects_count_mutex_);
   bool hostFound = false;

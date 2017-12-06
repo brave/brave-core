@@ -11,7 +11,7 @@
 
 namespace brave_shields {
 
-base::FilePath GetDATFilePath(const std::string &file_name) {
+base::FilePath GetDATFilePath(const std::string& file_name) {
   base::FilePath app_data_path;
   PathService::Get(chrome::DIR_USER_DATA, &app_data_path);
   base::FilePath dat_file_path = app_data_path.Append(file_name);

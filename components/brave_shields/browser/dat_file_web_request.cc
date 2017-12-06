@@ -16,7 +16,7 @@ using content::BrowserThread;
 namespace brave_shields {
 
 DATFileWebRequest::DATFileWebRequest(
-    const std::string &dat_file_name,
+    const std::string& dat_file_name,
     const GURL& url,
     DATFileWebRequest::FetchCallback fetch_callback)
     : url_(url),

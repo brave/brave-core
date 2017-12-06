@@ -26,9 +26,9 @@ class TrackingProtectionService : public BaseBraveShieldsService {
   TrackingProtectionService();
   ~TrackingProtectionService() override;
 
-  bool ShouldStartRequest(const GURL &spec,
+  bool ShouldStartRequest(const GURL& spec,
     content::ResourceType resource_type,
-    const std::string &tab_host) override;
+    const std::string& tab_host) override;
 
  protected:
   bool Init() override;

@@ -16,7 +16,7 @@
 
 namespace brave_shields {
 
-base::FilePath GetDATFilePath(const std::string &file_name);
+base::FilePath GetDATFilePath(const std::string& file_name);
 bool GetDATFileData(const std::string& fileName,
   std::vector<unsigned char>& buffer);
 

@@ -42,7 +42,7 @@ void AdBlockService::Cleanup() {
 
 bool AdBlockService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
-    const std::string &tab_host) {
+    const std::string& tab_host) {
 
   FilterOption current_option = FONoFilterOption;
   content::ResourceType internalResource = (content::ResourceType)resource_type;

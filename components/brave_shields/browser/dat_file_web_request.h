@@ -24,7 +24,7 @@ class DATFileWebRequest : public net::URLFetcherDelegate {
  public:
   typedef base::Callback<void(bool)> FetchCallback;
 
-  DATFileWebRequest(const std::string &dat_file_name,
+  DATFileWebRequest(const std::string& dat_file_name,
     const GURL& url,
     FetchCallback fetch_callback);
   ~DATFileWebRequest() override;

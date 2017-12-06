@@ -25,13 +25,13 @@ struct OnBeforeURLRequestContext {
 
 class PendingRequests {
 public:
-  void Insert(const uint64_t &request_identifier) {
+  void Insert(const uint64_t& request_identifier) {
     pending_requests_.insert(request_identifier);
   }
-  void Destroy(const uint64_t &request_identifier) {
+  void Destroy(const uint64_t& request_identifier) {
     pending_requests_.erase(request_identifier);
   }
-  bool IsPendingAndAlive(const uint64_t &request_identifier) {
+  bool IsPendingAndAlive(const uint64_t& request_identifier) {
     bool isPending = pending_requests_.find(request_identifier) !=
       pending_requests_.end();
     return isPending;
@@ -78,19 +78,19 @@ int BraveNetworkDelegate::OnBeforeURLRequest_HttpsePreFileWork(
   std::shared_ptr<OnBeforeURLRequestContext> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
 
-  bool isValidURL = true;
+  bool is_valid_url = true;
   if (request) {
-    isValidURL = request->url().is_valid();
+    is_valid_url = request->url().is_valid();
     std::string scheme = request->url().scheme();
     if (scheme.length()) {
       std::transform(scheme.begin(), scheme.end(), scheme.begin(), ::tolower);
       if ("http" != scheme && "https" != scheme) {
-        isValidURL = false;
+        is_valid_url = false;
       }
     }
   }
 
-  if (isValidURL) {
+  if (is_valid_url) {
     if (!g_browser_process->https_everywhere_service()->
         GetHTTPSURLFromCacheOnly(&request->url(), request->identifier(),
           ctx->new_url_spec)) {

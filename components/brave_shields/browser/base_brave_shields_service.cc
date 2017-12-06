@@ -23,8 +23,8 @@
 namespace brave_shields {
 
 BaseBraveShieldsService::BaseBraveShieldsService(
-    const std::string &file_name,
-    const GURL &url) :
+    const std::string& file_name,
+    const GURL& url) :
       file_name_(file_name),
       url_(url),
     initialized_(false) {
@@ -80,7 +80,7 @@ void BaseBraveShieldsService::Stop() {
   initialized_ = false;
 }
 
-bool BaseBraveShieldsService::ShouldStartRequest(const GURL &url,
+bool BaseBraveShieldsService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string& tab_host) {
   return true;

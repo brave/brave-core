@@ -38,17 +38,17 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
  public:
    HTTPSEverywhereService();
    ~HTTPSEverywhereService() override;
-  bool GetHTTPSURL(const GURL* url, const uint64_t &request_id,
+  bool GetHTTPSURL(const GURL* url, const uint64_t& request_id,
       std::string& new_url);
   bool GetHTTPSURLFromCacheOnly(const GURL* url,
-      const uint64_t &request_id, std::string& cached_url);
+      const uint64_t& request_id, std::string& cached_url);
 
  protected:
   bool Init() override;
   void Cleanup() override;
 
-  void AddHTTPSEUrlToRedirectList(const uint64_t &request_id);
-  bool ShouldHTTPSERedirect(const uint64_t &request_id);
+  void AddHTTPSEUrlToRedirectList(const uint64_t& request_id);
+  bool ShouldHTTPSERedirect(const uint64_t& request_id);
   std::string ApplyHTTPSRule(const std::string& originalUrl,
       const std::string& rule);
   std::string CorrecttoRuleToRE2Engine(const std::string& to);
