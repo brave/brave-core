@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/shieldsPanelTypes'
+import { BlockedTypes, BlockOptions } from '../other/blockTypes'
 
 export interface ShieldDetails {
   adBlock: string,
@@ -13,11 +14,9 @@ export interface ShieldDetails {
 }
 
 export interface BlockedDetails {
-  blockedType: 'adblock',
+  blockedType: BlockedTypes,
   tabId: number
 }
-
-export type settings = 'allow' | 'block'
 
 export interface ShieldsPanelDataUpdated {
   (details: ShieldDetails): {
@@ -27,9 +26,9 @@ export interface ShieldsPanelDataUpdated {
 }
 
 export interface ShieldsToggled {
-  (setting: settings): {
+  (setting: BlockOptions): {
     type: types.SHIELDS_TOGGLED,
-    setting: settings
+    setting: BlockOptions
   }
 }
 
@@ -53,9 +52,9 @@ export interface ResourceBlocked {
 }
 
 export interface BlockAdsTrackers {
-  (setting: settings): {
+  (setting: BlockOptions): {
     type: types.BLOCK_ADS_TRACKERS,
-    setting: settings
+    setting: BlockOptions
   }
 }
 

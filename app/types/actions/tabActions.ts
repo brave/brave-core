@@ -3,11 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/tabTypes'
-
-// TODO @bbondy what else do we have inhere?
-export interface Tab {
-  id: number
-}
+import * as state from '../state/shieldsPannelState'
 
 export interface ActiveTabChanged {
   (windowId: number, tabId: number): {
@@ -18,17 +14,17 @@ export interface ActiveTabChanged {
 }
 
 export interface TabCreated {
-  (tab: Tab): {
+  (tab: state.Tab): {
     type: types.TAB_CREATED,
-    tab: Tab
+    tab: state.Tab
   }
 }
 
 export interface TabDataChanged {
-  (tabId: number, changeInfo: Tab, tab: Tab): {
+  (tabId: number, changeInfo: state.Tab, tab: state.Tab): {
     type: types.TAB_DATA_CHANGED,
     tabId: number,
-    changeInfo: Tab,
-    tab: Tab
+    changeInfo: state.Tab,
+    tab: state.Tab
   }
 }

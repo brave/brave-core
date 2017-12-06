@@ -8,6 +8,7 @@ import BraveShieldsStats from './braveShieldsStats'
 import BraveShieldsControls from './braveShieldsControls'
 import BraveShieldsFooter from './braveShieldsFooter'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
+import { Tab } from '../../types/state/shieldsPannelState'
 
 export interface Props {
   actions: {
@@ -17,18 +18,7 @@ export interface Props {
     httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled,
     javascriptToggled: shieldActions.JavascriptToggled
   },
-  shieldsPanelTabData: {
-    shieldsEnabled: shieldActions.settings,
-    httpsEverywhere: shieldActions.settings,
-    javascript: shieldActions.settings,
-    hostname: string,
-    adsBlocked: number,
-    trackingProtectionBlocked: number,
-    adsTrackers: string,
-    controlsOpen: boolean,
-    httpsEverywhereRedirected: number,
-    javascriptBlocked: number
-  }
+  shieldsPanelTabData: Tab
 }
 
 class BraveShields extends React.Component<Props, object> {

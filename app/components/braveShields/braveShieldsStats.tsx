@@ -4,10 +4,10 @@
 
 import * as React from 'react'
 import { Grid, Column, BrowserText } from 'brave-ui'
-import * as shieldActions from '../../types/actions/shieldsPanelActions'
+import { BlockOptions } from '../../types/other/blockTypes'
 
 export interface Props {
-  shieldsEnabled: shieldActions.settings
+  shieldsEnabled: BlockOptions
   adsBlocked: number,
   trackingProtectionBlocked: number,
   httpsEverywhereRedirected: number,

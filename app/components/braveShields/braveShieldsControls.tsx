@@ -5,16 +5,17 @@
 import * as React from 'react'
 import { Grid, Column, SwitchButton, BrowserSelect, ContentToggle } from 'brave-ui'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
+import { BlockOptions } from '../../types/other/blockTypes'
 
 export interface Props {
-  controlsOpen: boolean
-  adsTrackers: string
-  shieldsEnabled: shieldActions.settings
-  httpsEverywhere: shieldActions.settings
-  javascript: shieldActions.settings
-  blockAdsTrackers: shieldActions.BlockAdsTrackers
-  controlsToggled: shieldActions.ControlsToggled
-  httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
+  controlsOpen: boolean,
+  adsTrackers: string,
+  shieldsEnabled: BlockOptions,
+  httpsEverywhere: BlockOptions,
+  javascript: BlockOptions,
+  blockAdsTrackers: shieldActions.BlockAdsTrackers,
+  controlsToggled: shieldActions.ControlsToggled,
+  httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled,
   javascriptToggled: shieldActions.JavascriptToggled
 }
 

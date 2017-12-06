@@ -5,11 +5,12 @@
 import * as React from 'react'
 import { Grid, Column, Separator, SwitchButton, ActionButton, BrowserText } from 'brave-ui'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
+import { BlockOptions } from '../../types/other/blockTypes';
 
 export interface Props {
   shieldsToggled: shieldActions.ShieldsToggled
-  hostname: string,
-  shieldsEnabled: shieldActions.settings
+  hostname: string
+  shieldsEnabled: BlockOptions
 }
 
 class BraveShieldsHeader extends React.Component<Props, object> {
@@ -20,7 +21,7 @@ class BraveShieldsHeader extends React.Component<Props, object> {
   }
 
   onToggleShields (e: HTMLSelectElement) {
-    const shieldsOption: shieldActions.settings = e.target.checked ? 'allow' : 'block'
+    const shieldsOption: BlockOptions = e.target.checked ? 'allow' : 'block'
     this.props.shieldsToggled(shieldsOption)
   }
 
