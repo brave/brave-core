@@ -16,7 +16,7 @@ class BraveShieldsFooter extends React.Component {
       >
         <Column align='flex-start' size={9}>
           <Anchor
-            noStyle
+            noStyle={true}
             href='chrome://settings'
             target='_blank'
             text='Edit default shield settings...'

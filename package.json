@@ -8,7 +8,7 @@
     "compress": "node scripts/compress",
     "compress-keygen": "crx keygen",
     "clean": "rimraf build/ dev/ *.zip *.crx",
-    "lint": "standard",
+    "lint": "tslint --project tsconfig.json '{app, test}/**/*.{ts,tsx}'",
     "test-e2e": "cross-env NODE_ENV=test mocha ./test/setupApp test/e2e/braveShieldsPanel && mocha ./test/setupApp test/e2e/newTabPage.js",
     "test-unit": "cross-env NODE_ENV=test mocha -r ./test/setupApp test/app",
     "test-suite": "node ./scripts/tests.js"
@@ -33,10 +33,6 @@
       "__webpack_require__",
       "__webpack_public_path__",
       "$hotChunkFilename$"
-    ],
-    "ignore": [
-      "build/",
-      "dev/"
     ]
   },
   "pre-push": {
@@ -76,8 +72,10 @@
     "selenium-webdriver": "^3.6.0",
     "shelljs": "^0.7.8",
     "sinon": "^4.1.2",
-    "standard": "^10.0.3",
     "style-loader": "^0.19.0",
+    "tslint": "^5.8.0",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-react": "^3.2.0",
     "typescript": "^2.6.2",
     "webpack": "^3.8.1",
     "webpack-hot-middleware": "^2.20.0",

@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as shieldsPanelActions from '../actions/shieldsPanelActions'
 import * as shieldsPanelState from '../state/shieldsPanelState'
-import BraveShields from '../components/braveShields/braveShields';
+import BraveShields from '../components/braveShields/braveShields'
 
 const mapStateToProps = (state: {shieldsPanel: any}) => ({
   shieldsPanelTabData: shieldsPanelState.getActiveTabData(state.shieldsPanel)

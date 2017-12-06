@@ -12,10 +12,10 @@ export interface Props {
   shieldsEnabled: shieldActions.settings
   httpsEverywhere: shieldActions.settings
   javascript: shieldActions.settings
-  blockAdsTrackers: shieldActions.blockAdsTrackers
-  controlsToggled: shieldActions.controlsToggled
-  httpsEverywhereToggled: shieldActions.httpsEverywhereToggled
-  javascriptToggled: shieldActions.javascriptToggled
+  blockAdsTrackers: shieldActions.BlockAdsTrackers
+  controlsToggled: shieldActions.ControlsToggled
+  httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
+  javascriptToggled: shieldActions.JavascriptToggled
 }
 
 class BraveShieldsControls extends React.Component<Props, object> {
@@ -59,7 +59,7 @@ class BraveShieldsControls extends React.Component<Props, object> {
       >
         <Column>
           <ContentToggle
-            withSeparator
+            withSeparator={true}
             open={controlsOpen}
             summary='Advanced Controls'
             onClick={this.onToggleControls}

@@ -9,13 +9,13 @@ import BraveShieldsControls from './braveShieldsControls'
 import BraveShieldsFooter from './braveShieldsFooter'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 
- export interface Props {
-   actions: {
-    shieldsToggled: shieldActions.shieldsToggled,
-    blockAdsTrackers: shieldActions.blockAdsTrackers,
-    controlsToggled: shieldActions.controlsToggled,
-    httpsEverywhereToggled: shieldActions.httpsEverywhereToggled,
-    javascriptToggled: shieldActions.javascriptToggled
+export interface Props {
+  actions: {
+    shieldsToggled: shieldActions.ShieldsToggled,
+    blockAdsTrackers: shieldActions.BlockAdsTrackers,
+    controlsToggled: shieldActions.ControlsToggled,
+    httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled,
+    javascriptToggled: shieldActions.JavascriptToggled
   },
   shieldsPanelTabData: {
     shieldsEnabled: shieldActions.settings,
@@ -28,22 +28,23 @@ import * as shieldActions from '../../types/actions/shieldsPanelActions'
     controlsOpen: boolean,
     httpsEverywhereRedirected: number,
     javascriptBlocked: number
-   }
- }
+  }
+}
 
 class BraveShields extends React.Component<Props, object> {
-    render () {
-      const { shieldsPanelTabData, actions } = this.props
-      if (!shieldsPanelTabData) {
-        return null
-      }
+  render () {
+    const { shieldsPanelTabData, actions } = this.props
+    if (!shieldsPanelTabData) {
+      return null
+    }
 
-      return <div data-test-id='brave-shields-panel'>
+    return (
+      <div data-test-id='brave-shields-panel'>
         <BraveShieldsHeader
           shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
           shieldsToggled={actions.shieldsToggled}
           hostname={shieldsPanelTabData.hostname}
-          />
+        />
         <BraveShieldsStats
           shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
           adsBlocked={shieldsPanelTabData.adsBlocked}
@@ -64,7 +65,8 @@ class BraveShields extends React.Component<Props, object> {
         />
         <BraveShieldsFooter />
       </div>
-    }
+    )
   }
+}
 
-  export default BraveShields
+export default BraveShields

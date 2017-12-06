@@ -5,7 +5,7 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as newTabPageActions from '../actions/newTabPageActions'
-import NewTab from '../components/newTab/newTab';
+import NewTab from '../components/newTab/newTab'
 
 const mapStateToProps = (state: {newTabPage: any}) => ({
   newTabPage: state.newTabPage

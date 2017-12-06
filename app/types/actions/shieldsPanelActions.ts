@@ -1,6 +1,6 @@
 import * as types from '../constants/shieldsPanelTypes'
 
-export interface details {
+export interface Details {
   adBlock: string,
   trackingProtection: string,
   httpsEverywhere: string,
@@ -10,72 +10,72 @@ export interface details {
 
 export type settings = 'allow' | 'block'
 
-export interface shieldsPanelDataUpdated {
-  (details: details): {
+export interface ShieldsPanelDataUpdated {
+  (details: Details): {
     type: types.SHIELDS_PANEL_DATA_UPDATED,
-    details: details
+    details: Details
   }
 }
 
-export interface shieldsToggled {
+export interface ShieldsToggled {
   (setting: settings): {
     type: types.SHIELDS_TOGGLED,
     setting: settings
   }
 }
 
-export interface adBlockToggled {
+export interface AdBlockToggled {
   (): {
     type: types.AD_BLOCK_TOGGLED
   }
 }
 
-export interface trackingProtectionToggled {
+export interface TrackingProtectionToggled {
   (): {
     type: types.TRACKING_PROTECTION_TOGGLED
   }
 }
 
-export interface resourceBlocked {
-  (details: details): {
+export interface ResourceBlocked {
+  (details: Details): {
     type: types.RESOURCE_BLOCKED,
-    details: details
+    details: Details
   }
 }
 
-export interface blockAdsTrackers {
+export interface BlockAdsTrackers {
   (setting: settings): {
     type: types.BLOCK_ADS_TRACKERS,
     setting: settings
   }
 }
 
-export interface controlsToggled {
+export interface ControlsToggled {
   (setting: boolean): {
     type: types.CONTROLS_TOGGLED,
     setting: boolean
   }
 }
 
-export interface httpsEverywhereToggled {
+export interface HttpsEverywhereToggled {
   (): {
     type: types.HTTPS_EVERYWHERE_TOGGLED
   }
 }
 
-export interface javascriptToggled {
+export interface JavascriptToggled {
   (): {
     type: types.JAVASCRIPT_TOGGLED
   }
 }
 
 export type shieldPanelActions =
-  shieldsPanelDataUpdated |
-  shieldsToggled |
-  adBlockToggled |
-  trackingProtectionToggled |
-  resourceBlocked |
-  blockAdsTrackers |
-  controlsToggled |
-  httpsEverywhereToggled |
-  javascriptToggled
+  ShieldsPanelDataUpdated |
+  ShieldsToggled |
+  AdBlockToggled |
+  TrackingProtectionToggled |
+  ResourceBlocked |
+  BlockAdsTrackers |
+  ControlsToggled |
+  HttpsEverywhereToggled |
+  JavascriptToggled

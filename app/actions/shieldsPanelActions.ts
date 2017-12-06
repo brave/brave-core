@@ -5,60 +5,60 @@
 import * as types from '../constants/shieldsPanelTypes'
 import * as actions from '../types/actions/shieldsPanelActions'
 
-const shieldsPanelDataUpdated: actions.shieldsPanelDataUpdated = (details: actions.details) => {
+const shieldsPanelDataUpdated: actions.ShieldsPanelDataUpdated = (details: actions.Details) => {
   return {
     type: types.SHIELDS_PANEL_DATA_UPDATED,
     details
   }
 }
 
-const shieldsToggled: actions.shieldsToggled = (setting: actions.settings = 'allow') => {
+const shieldsToggled: actions.ShieldsToggled = (setting: actions.settings = 'allow') => {
   return {
     type: types.SHIELDS_TOGGLED,
     setting
   }
 }
 
-const adBlockToggled: actions.adBlockToggled = () => {
+const adBlockToggled: actions.AdBlockToggled = () => {
   return {
     type: types.AD_BLOCK_TOGGLED
   }
 }
 
-const trackingProtectionToggled: actions.trackingProtectionToggled = () => {
+const trackingProtectionToggled: actions.TrackingProtectionToggled = () => {
   return {
     type: types.TRACKING_PROTECTION_TOGGLED
   }
 }
 
-const resourceBlocked: actions.resourceBlocked = (details: actions.details) => {
+const resourceBlocked: actions.ResourceBlocked = (details: actions.Details) => {
   return {
     type: types.RESOURCE_BLOCKED,
     details
   }
 }
 
-const blockAdsTrackers: actions.blockAdsTrackers = (setting: actions.settings) => {
+const blockAdsTrackers: actions.BlockAdsTrackers = (setting: actions.settings) => {
   return {
     type: types.BLOCK_ADS_TRACKERS,
     setting
   }
 }
 
-const controlsToggled: actions.controlsToggled = (setting: boolean = true) => {
+const controlsToggled: actions.ControlsToggled = (setting: boolean = true) => {
   return {
     type: types.CONTROLS_TOGGLED,
     setting
   }
 }
 
-const httpsEverywhereToggled: actions.httpsEverywhereToggled = () => {
+const httpsEverywhereToggled: actions.HttpsEverywhereToggled = () => {
   return {
     type: types.HTTPS_EVERYWHERE_TOGGLED
   }
 }
 
-const javascriptToggled: actions.javascriptToggled = () => {
+const javascriptToggled: actions.JavascriptToggled = () => {
   return {
     type: types.JAVASCRIPT_TOGGLED
   }
