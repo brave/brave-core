@@ -34,6 +34,7 @@ export interface Props {
 class BraveShields extends React.Component<Props, object> {
   render () {
     const { shieldsPanelTabData, actions } = this.props
+
     if (!shieldsPanelTabData) {
       return null
     }

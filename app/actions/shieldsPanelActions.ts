@@ -5,14 +5,14 @@
 import * as types from '../constants/shieldsPanelTypes'
 import * as actions from '../types/actions/shieldsPanelActions'
 
-const shieldsPanelDataUpdated: actions.ShieldsPanelDataUpdated = (details: actions.Details) => {
+const shieldsPanelDataUpdated: actions.ShieldsPanelDataUpdated = (details) => {
   return {
     type: types.SHIELDS_PANEL_DATA_UPDATED,
     details
   }
 }
 
-const shieldsToggled: actions.ShieldsToggled = (setting: actions.settings = 'allow') => {
+const shieldsToggled: actions.ShieldsToggled = (setting = 'allow') => {
   return {
     type: types.SHIELDS_TOGGLED,
     setting
@@ -31,21 +31,21 @@ const trackingProtectionToggled: actions.TrackingProtectionToggled = () => {
   }
 }
 
-const resourceBlocked: actions.ResourceBlocked = (details: actions.Details) => {
+const resourceBlocked: actions.ResourceBlocked = (details) => {
   return {
     type: types.RESOURCE_BLOCKED,
     details
   }
 }
 
-const blockAdsTrackers: actions.BlockAdsTrackers = (setting: actions.settings) => {
+const blockAdsTrackers: actions.BlockAdsTrackers = (setting) => {
   return {
     type: types.BLOCK_ADS_TRACKERS,
     setting
   }
 }
 
-const controlsToggled: actions.ControlsToggled = (setting: boolean = true) => {
+const controlsToggled: actions.ControlsToggled = (setting = true) => {
   return {
     type: types.CONTROLS_TOGGLED,
     setting

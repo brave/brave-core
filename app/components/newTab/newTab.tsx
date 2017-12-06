@@ -4,10 +4,11 @@
 
 import * as React from 'react'
 import { getMessage } from '../../background/api/localeAPI'
+import * as newTabActions from '../../types/actions/newTabPageActions'
 
 export interface Props {
   actions: {
-    settingsIconClicked: () => {}
+    settingsIconClicked: newTabActions.SettingsIconClicked
   }
 }
 

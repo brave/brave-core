@@ -15,12 +15,12 @@ export interface Props {
 }
 
 class BraveShieldsStats extends React.Component<Props, object> {
-  get totalAdsTrackersBlocked () {
+  get totalAdsTrackersBlocked (): number {
     const { adsBlocked, trackingProtectionBlocked } = this.props
     return adsBlocked + trackingProtectionBlocked
   }
 
-  get httpsEverywhereRedirected () {
+  get httpsEverywhereRedirected (): number {
     return this.props.httpsEverywhereRedirected
   }
 

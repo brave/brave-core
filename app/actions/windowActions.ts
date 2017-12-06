@@ -3,15 +3,22 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/windowTypes'
+import * as actions from '../types/actions/winowActions'
 
-export function windowFocusChanged (windowId) {
+const windowFocusChanged: actions.WindowFocusChanged = (windowId) => {
   return { type: types.WINDOW_FOCUS_CHANGED, windowId }
 }
 
-export function windowCreated (window) {
+const windowCreated: actions.WindowCreated = (window) => {
   return { type: types.WINDOW_CREATED, window }
 }
 
-export function windowRemoved (windowId) {
+const windowRemoved: actions.WindowRemoved = (windowId) => {
   return { type: types.WINDOW_REMOVED, windowId }
+}
+
+export {
+  windowFocusChanged,
+  windowCreated,
+  windowRemoved
 }

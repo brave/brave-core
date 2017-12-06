@@ -1,6 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 import * as types from '../constants/shieldsPanelTypes'
 
-export interface Details {
+export interface ShieldDetails {
   adBlock: string,
   trackingProtection: string,
   httpsEverywhere: string,
@@ -8,12 +12,17 @@ export interface Details {
   hostname: string
 }
 
+export interface BlockedDetails {
+  blockedType: 'adblock',
+  tabId: number
+}
+
 export type settings = 'allow' | 'block'
 
 export interface ShieldsPanelDataUpdated {
-  (details: Details): {
+  (details: ShieldDetails): {
     type: types.SHIELDS_PANEL_DATA_UPDATED,
-    details: Details
+    details: ShieldDetails
   }
 }
 
@@ -37,9 +46,9 @@ export interface TrackingProtectionToggled {
 }
 
 export interface ResourceBlocked {
-  (details: Details): {
+  (details: BlockedDetails): {
     type: types.RESOURCE_BLOCKED,
-    details: Details
+    details: BlockedDetails
   }
 }
 
@@ -69,6 +78,7 @@ export interface JavascriptToggled {
   }
 }
 
+// TODO check if we need it
 export type shieldPanelActions =
   ShieldsPanelDataUpdated |
   ShieldsToggled |

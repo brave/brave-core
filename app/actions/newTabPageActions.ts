@@ -3,7 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/newTabPageTypes'
+import * as actions from '../types/actions/newTabPageActions'
 
-export function settingsIconClicked () {
+const settingsIconClicked: actions.SettingsIconClicked = () => {
   return { type: types.SETTINGS_ICON_CLICKED }
+}
+
+export {
+  settingsIconClicked
 }
