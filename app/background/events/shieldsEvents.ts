@@ -5,6 +5,6 @@
 import actions from '../actions/shieldsPanelActions'
 import { BlockDetails } from '../../types/actions/shieldsPanelActions'
 
-chrome.braveShields.onBlocked.addListener(function (detail: BlockDetails) {
+chrome.braveShields.onBlocked.addListener((detail: BlockDetails) => {
   actions.resourceBlocked(detail)
 })

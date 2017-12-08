@@ -62,7 +62,8 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
     case windowTypes.WINDOW_CREATED:
       {
-        if (action.window.focused || state.windows.length === 0) {
+        // TODO this is a dirty hack with <Window[]><any> can we improve this?
+        if (action.window.focused || (state.windows as any as Window[]).length === 0) {
           state = focusedWindowChanged(state, action.window.id)
         }
         break
@@ -82,8 +83,8 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
     case tabTypes.TAB_DATA_CHANGED:
       {
-        const tab: any = action.tab // TODO which tab are we sending in?
-        if (tab.active) {
+        const tab: chrome.tabs.Tab = action.tab
+        if (tab.active && tab.id) {
           state = updateActiveTab(state, tab.windowId, tab.id)
           updateBadgeText(state)
         }
@@ -91,8 +92,8 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
     case tabTypes.TAB_CREATED:
       {
-        const tab: any = action.tab  // TODO which tab are we sending in?
-        if (tab.active) {
+        const tab: chrome.tabs.Tab = action.tab
+        if (tab.active && tab.id) {
           state = updateActiveTab(state, tab.windowId, tab.id)
           updateBadgeText(state)
         }
