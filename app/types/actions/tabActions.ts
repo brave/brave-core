@@ -28,3 +28,8 @@ export interface TabDataChanged {
     tab: state.Tab
   }
 }
+
+export type tabActions =
+  ActiveTabChanged |
+  TabCreated |
+  TabDataChanged

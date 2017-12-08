@@ -9,3 +9,5 @@ export interface SettingsIconClicked {
     type: types.SETTINGS_ICON_CLICKED
   }
 }
+
+export type newTabPageActions = SettingsIconClicked

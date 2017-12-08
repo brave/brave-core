@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/windowTypes'
-import * as actions from '../types/actions/winowActions'
+import * as actions from '../types/actions/windowActions'
 
 export const windowFocusChanged: actions.WindowFocusChanged = (windowId) => {
   return { type: types.WINDOW_FOCUS_CHANGED, windowId }

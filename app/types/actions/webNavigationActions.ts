@@ -12,3 +12,6 @@ export interface OnBeforeNavigate {
     isMainFrame: boolean
   }
 }
+
+export type webNavigationActions =
+  OnBeforeNavigate

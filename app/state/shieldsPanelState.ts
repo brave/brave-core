@@ -9,9 +9,7 @@ export const getActiveTabId: shieldState.GetActiveTabId = (state) => state.windo
 export const getActiveTabData: shieldState.GetActiveTabData = (state) => state.tabs[getActiveTabId(state)]
 
 export const updateActiveTab: shieldState.UpdateActiveTab = (state, windowId, tabId) => {
-  const windows: shieldState.Windows = { ...state.windows }
-  // TODO not sure how this is working? we first assign windowId and then we overrider it with tabId?
-  windows[windowId] = windows[windowId] // TODO @bbondy we try to assign object to number, I needed to remove || {}
+  let windows: shieldState.Windows = { ...state.windows } || {}
   windows[windowId] = tabId
   return { ...state, windows }
 }

@@ -29,3 +29,8 @@ export interface WindowRemoved {
     windowId: number
   }
 }
+
+export type windowActions =
+  WindowFocusChanged |
+  WindowCreated |
+  WindowRemoved

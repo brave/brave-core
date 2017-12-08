@@ -4,16 +4,21 @@
 
 import * as newTabPageTypes from '../../constants/newTabPageTypes'
 import {createTab} from '../api/tabsAPI'
+import { State } from '../../types/state/mainState';
+import { Actions } from '../../types/actions';
 
-export default function shieldsPanelReducer (state = {}, action) {
+export default function shieldsPanelReducer (state: State = {}, action: Actions) {
   switch (action.type) {
     case newTabPageTypes.SETTINGS_ICON_CLICKED:
-      createTab({
-        url: 'chrome://settings/'
-      }).catch(() => {
-        console.error('Could not create settings tab')
-      })
-      break
+      {
+        createTab({
+          url: 'chrome://settings/'
+        }).catch(() => {
+          console.error('Could not create settings tab')
+        })
+        break
+      }
   }
+
   return state
 }
