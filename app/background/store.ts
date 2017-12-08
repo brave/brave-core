@@ -17,9 +17,11 @@ const initialState = {}
 
 const getMiddleware = () => {
   const args = [thunk]
+
   if (process.env.NODE_ENV === 'development') {
     args.push(logger)
   }
+
   return applyMiddleware.apply(this, args)
 }
 

@@ -5,31 +5,37 @@
 import * as types from '../constants/tabTypes'
 import * as state from '../state/shieldsPannelState'
 
+interface ActiveTabChangedReturn {
+  type: types.ACTIVE_TAB_CHANGED,
+  windowId: number,
+  tabId: number
+}
+
 export interface ActiveTabChanged {
-  (windowId: number, tabId: number): {
-    type: types.ACTIVE_TAB_CHANGED,
-    windowId: number,
-    tabId: number
-  }
+  (windowId: number, tabId: number): ActiveTabChangedReturn
+}
+
+interface TabCreatedReturn {
+  type: types.TAB_CREATED,
+  tab: state.Tab
 }
 
 export interface TabCreated {
-  (tab: state.Tab): {
-    type: types.TAB_CREATED,
-    tab: state.Tab
-  }
+  (tab: state.Tab): TabCreatedReturn
+}
+
+interface TabDataChangedReturn {
+  type: types.TAB_DATA_CHANGED,
+  tabId: number,
+  changeInfo: state.Tab,
+  tab: state.Tab
 }
 
 export interface TabDataChanged {
-  (tabId: number, changeInfo: state.Tab, tab: state.Tab): {
-    type: types.TAB_DATA_CHANGED,
-    tabId: number,
-    changeInfo: state.Tab,
-    tab: state.Tab
-  }
+  (tabId: number, changeInfo: state.Tab, tab: state.Tab): TabDataChangedReturn
 }
 
 export type tabActions =
-  ActiveTabChanged |
-  TabCreated |
-  TabDataChanged
+  ActiveTabChangedReturn |
+  TabCreatedReturn |
+  TabDataChangedReturn

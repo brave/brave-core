@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { BlockOptions, BlockedTypes } from '../other/blockTypes'
+import { BlockOptions, BlockTypes } from '../other/blockTypes'
 
 export interface Tab {
   adBlock: BlockOptions
@@ -15,6 +15,7 @@ export interface Tab {
   id: number
   javascript: BlockOptions
   javascriptBlocked: number
+  origin: string
   shieldsEnabled: BlockOptions
   trackingProtection: BlockOptions
   trackingProtectionBlocked: number
@@ -29,8 +30,8 @@ export interface Windows {
 }
 
 export interface State {
-  currentWindowId: number,
-  tabs: Tabs,
+  currentWindowId: number
+  tabs: Tabs
   windows: Windows
 }
 
@@ -55,11 +56,11 @@ export interface UpdateFocusedWindow {
 }
 
 export interface UpdateTabShieldsData {
-  (state: State, tabId: number, details: Tab): State
+  (state: State, tabId: number, details: Partial<Tab>): State
 }
 
 export interface UpdateResourceBlocked {
-  (state: State, tabId: number, blockType: BlockedTypes): State
+  (state: State, tabId: number, blockType: BlockTypes): State
 }
 
 export interface ResetBlockingStats {

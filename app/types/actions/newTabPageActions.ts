@@ -4,10 +4,12 @@
 
 import * as types from '../constants/newTabPageTypes'
 
-export interface SettingsIconClicked {
-  (): {
-    type: types.SETTINGS_ICON_CLICKED
-  }
+interface SettingsIconClickedReturn {
+  type: types.SETTINGS_ICON_CLICKED
 }
 
-export type newTabPageActions = SettingsIconClicked
+export interface SettingsIconClicked {
+  (): SettingsIconClickedReturn
+}
+
+export type newTabPageActions = SettingsIconClickedReturn

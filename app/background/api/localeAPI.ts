@@ -4,9 +4,9 @@
 
 /**
  * Gets the locale message specified in messages.json
- * @param {string} The locale string
+ * @param {string} message - The locale string
  */
-export const getMessage = (message) => {
+export const getMessage = (message: string) => {
   if (chrome.i18n) {
     return chrome.i18n.getMessage(message)
   }

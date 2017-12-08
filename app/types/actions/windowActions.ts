@@ -6,31 +6,38 @@ import * as types from '../constants/windowTypes'
 
 // TODO @bbondy what else do we have inhere?
 export interface Window {
-  id: number
+  id: number,
+  focused: boolean
+}
+
+interface WindowFocusChangedReturn {
+  type: types.WINDOW_FOCUS_CHANGED,
+  windowId: number
 }
 
 export interface WindowFocusChanged {
-  (windowId: number): {
-    type: types.WINDOW_FOCUS_CHANGED,
-    windowId: number
-  }
+  (windowId: number): WindowFocusChangedReturn
+}
+
+interface WindowCreatedReturn {
+  type: types.WINDOW_CREATED,
+  window: Window
 }
 
 export interface WindowCreated {
-  (window: Window): {
-    type: types.WINDOW_CREATED,
-    window: Window
-  }
+  (window: Window): WindowCreatedReturn
+}
+
+interface WindowRemovedReturn {
+  type: types.WINDOW_REMOVED,
+  windowId: number
 }
 
 export interface WindowRemoved {
-  (windowId: number): {
-    type: types.WINDOW_REMOVED,
-    windowId: number
-  }
+  (windowId: number): WindowRemovedReturn
 }
 
 export type windowActions =
-  WindowFocusChanged |
-  WindowCreated |
-  WindowRemoved
+  WindowFocusChangedReturn |
+  WindowCreatedReturn |
+  WindowRemovedReturn

@@ -4,9 +4,9 @@
 
 /**
  * Sets the badge text
- * @param {string} The text to put on the badge
+ * @param {string} text - The text to put on the badge
  */
-export const setBadgeText = (text) => {
+export const setBadgeText = (text: string) => {
   if (chrome.browserAction) {
     chrome.browserAction.setBadgeText({ text: String(text) })
   }

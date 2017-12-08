@@ -3,88 +3,107 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/shieldsPanelTypes'
-import { BlockedTypes, BlockOptions } from '../other/blockTypes'
+import { BlockTypes, BlockOptions } from '../other/blockTypes'
 
 export interface ShieldDetails {
-  adBlock: string,
-  trackingProtection: string,
-  httpsEverywhere: string,
-  origin: string,
+  id: number
+  adBlock: BlockOptions
+  trackingProtection: BlockOptions
+  httpsEverywhere: BlockOptions
+  origin: string
   hostname: string
 }
 
-export interface BlockedDetails {
-  blockedType: BlockedTypes,
+export interface BlockDetails {
+  blockType: BlockTypes
   tabId: number
 }
 
+interface ShieldsPanelDataUpdatedReturn {
+  type: types.SHIELDS_PANEL_DATA_UPDATED
+  details: ShieldDetails
+}
+
 export interface ShieldsPanelDataUpdated {
-  (details: ShieldDetails): {
-    type: types.SHIELDS_PANEL_DATA_UPDATED,
-    details: ShieldDetails
-  }
+  (details: ShieldDetails): ShieldsPanelDataUpdatedReturn
+}
+
+interface ShieldsToggledReturn {
+  type: types.SHIELDS_TOGGLED
+  setting: BlockOptions
 }
 
 export interface ShieldsToggled {
-  (setting: BlockOptions): {
-    type: types.SHIELDS_TOGGLED,
-    setting: BlockOptions
-  }
+  (setting: BlockOptions): ShieldsToggledReturn
+}
+
+interface AdBlockToggledReturn {
+  type: types.AD_BLOCK_TOGGLED
 }
 
 export interface AdBlockToggled {
-  (): {
-    type: types.AD_BLOCK_TOGGLED
-  }
+  (): AdBlockToggledReturn
+}
+
+interface TrackingProtectionToggledReturn {
+  type: types.TRACKING_PROTECTION_TOGGLED
 }
 
 export interface TrackingProtectionToggled {
-  (): {
-    type: types.TRACKING_PROTECTION_TOGGLED
-  }
+  (): TrackingProtectionToggledReturn
+}
+
+interface ResourceBlockedReturn {
+  type: types.RESOURCE_BLOCKED
+  details: BlockDetails
 }
 
 export interface ResourceBlocked {
-  (details: BlockedDetails): {
-    type: types.RESOURCE_BLOCKED,
-    details: BlockedDetails
-  }
+  (details: BlockDetails): ResourceBlockedReturn
+}
+
+interface BlockAdsTrackersReturn {
+  type: types.BLOCK_ADS_TRACKERS
+  setting: BlockOptions
 }
 
 export interface BlockAdsTrackers {
-  (setting: BlockOptions): {
-    type: types.BLOCK_ADS_TRACKERS,
-    setting: BlockOptions
-  }
+  (setting: BlockOptions): BlockAdsTrackersReturn
+}
+
+interface ControlsToggledReturn {
+  type: types.CONTROLS_TOGGLED
+  setting: boolean
 }
 
 export interface ControlsToggled {
-  (setting: boolean): {
-    type: types.CONTROLS_TOGGLED,
-    setting: boolean
-  }
+  (setting: boolean): ControlsToggledReturn
+}
+
+interface HttpsEverywhereToggledReturn {
+  type: types.HTTPS_EVERYWHERE_TOGGLED
 }
 
 export interface HttpsEverywhereToggled {
-  (): {
-    type: types.HTTPS_EVERYWHERE_TOGGLED
-  }
+  (): HttpsEverywhereToggledReturn
+}
+
+interface JavascriptToggledReturn {
+  type: types.JAVASCRIPT_TOGGLED
 }
 
 export interface JavascriptToggled {
-  (): {
-    type: types.JAVASCRIPT_TOGGLED
-  }
+  (): JavascriptToggledReturn
 }
 
 // TODO check if we need it
 export type shieldPanelActions =
-  ShieldsPanelDataUpdated |
-  ShieldsToggled |
-  AdBlockToggled |
-  TrackingProtectionToggled |
-  ResourceBlocked |
-  BlockAdsTrackers |
-  ControlsToggled |
-  HttpsEverywhereToggled |
-  JavascriptToggled
+  ShieldsPanelDataUpdatedReturn |
+  ShieldsToggledReturn |
+  AdBlockToggledReturn |
+  TrackingProtectionToggledReturn |
+  ResourceBlockedReturn |
+  BlockAdsTrackersReturn |
+  ControlsToggledReturn |
+  HttpsEverywhereToggledReturn |
+  JavascriptToggledReturn

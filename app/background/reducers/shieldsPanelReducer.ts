@@ -17,11 +17,11 @@ import {
 import {setBadgeText} from '../api/badgeAPI'
 import {reloadTab} from '../api/tabsAPI'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
-import { State } from '../../types/state/shieldsPannelState';
+import { State, Tab } from '../../types/state/shieldsPannelState';
 import { Actions } from '../../types/actions/index';
 
-const updateBadgeText = (state: State): void => {
-  const tabId = shieldsPanelState.getActiveTabId(state)
+const updateBadgeText = (state: State) => {
+  const tabId: number = shieldsPanelState.getActiveTabId(state)
   if (state.tabs[tabId]) {
     setBadgeText(state.tabs[tabId].adsBlocked + state.tabs[tabId].trackingProtectionBlocked)
   }
@@ -73,15 +73,15 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
       }
     case tabTypes.ACTIVE_TAB_CHANGED:
       {
-        const windowId = action.windowId
-        const tabId = action.tabId
+        const windowId: number = action.windowId
+        const tabId: number = action.tabId
         state = updateActiveTab(state, windowId, tabId)
         updateBadgeText(state)
         break
       }
     case tabTypes.TAB_DATA_CHANGED:
       {
-        const tab = action.tab
+        const tab: any = action.tab // TODO which tab are we sending in?
         if (tab.active) {
           state = updateActiveTab(state, tab.windowId, tab.id)
           updateBadgeText(state)
@@ -90,7 +90,7 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
       }
     case tabTypes.TAB_CREATED:
       {
-        const tab = action.tab
+        const tab: any = action.tab  // TODO which tab are we sending in?
         if (tab.active) {
           state = updateActiveTab(state, tab.windowId, tab.id)
           updateBadgeText(state)
@@ -104,8 +104,8 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
       }
     case shieldsPanelTypes.SHIELDS_TOGGLED:
       {
-        const tabId = shieldsPanelState.getActiveTabId(state)
-        const tabData = shieldsPanelState.getActiveTabData(state)
+        const tabId: number = shieldsPanelState.getActiveTabId(state)
+        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
         const p1 = setAllowAdBlock(tabData.origin, action.setting)
           .catch(() => {
             console.error('Could not set ad block setting')
@@ -144,7 +144,7 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
       }
     case shieldsPanelTypes.HTTPS_EVERYWHERE_TOGGLED:
       {
-        const tabData = shieldsPanelState.getActiveTabData(state)
+        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
         setAllowHTTPSEverywhere(tabData.origin, toggleShieldsValue(tabData.httpsEverywhere))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
@@ -157,7 +157,7 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
       }
     case shieldsPanelTypes.JAVASCRIPT_TOGGLED:
       {
-        const tabData = shieldsPanelState.getActiveTabData(state)
+        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
         setAllowJavaScript(tabData.origin, toggleShieldsValue(tabData.javascript))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
@@ -170,7 +170,7 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
       }
     case shieldsPanelTypes.TRACKING_PROTECTION_TOGGLED:
       {
-        const tabData = shieldsPanelState.getActiveTabData(state)
+        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
         setAllowTrackingProtection(tabData.origin, toggleShieldsValue(tabData.trackingProtection))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
@@ -183,8 +183,8 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
       }
     case shieldsPanelTypes.RESOURCE_BLOCKED:
       {
-        const tabId = action.details.tabId
-        const currentTabId = shieldsPanelState.getActiveTabId(state)
+        const tabId: number = action.details.tabId
+        const currentTabId: number = shieldsPanelState.getActiveTabId(state)
         state = shieldsPanelState.updateResourceBlocked(state, tabId, action.details.blockType)
         if (tabId === currentTabId) {
           updateBadgeText(state)
@@ -193,8 +193,8 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
       }
     case shieldsPanelTypes.BLOCK_ADS_TRACKERS:
       {
-        const tabId = shieldsPanelState.getActiveTabId(state)
-        const tabData = shieldsPanelState.getActiveTabData(state)
+        const tabId: number = shieldsPanelState.getActiveTabId(state)
+        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
         const p1 = setAllowAdBlock(tabData.origin, action.setting)
           .catch(() => {
             console.error('Could not set ad block setting')
@@ -213,7 +213,7 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
       }
     case shieldsPanelTypes.CONTROLS_TOGGLED:
       {
-        const tabId = shieldsPanelState.getActiveTabId(state)
+        const tabId: number = shieldsPanelState.getActiveTabId(state)
         state = shieldsPanelState
           .updateTabShieldsData(state, tabId, { controlsOpen: action.setting })
         break
