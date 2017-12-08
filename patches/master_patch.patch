@@ -22,9 +22,18 @@ index 93a04ceb27d04671efddc245fc4e57ec388112da..683d6dce475462785fd365e373ca090d
          r'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community'):
        if path and os.path.exists(path):
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0813b36a1 100644
+index cf36e40ee5426464cee670a11128a0e11ca49efd..7bfdc06edc046a60a587a6c41647a29992cab46c 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
+@@ -52,7 +52,7 @@ if (is_win) {
+       "$root_out_dir/initialexe/chrome.exe",
+     ]
+     outputs = [
+-      "$root_out_dir/chrome.exe",
++      "$root_out_dir/brave.exe",
+     ]
+     if (symbol_level != 0) {
+       outputs += [ "$root_out_dir/chrome.exe.pdb" ]
 @@ -253,6 +253,8 @@ if (!is_android && !is_mac) {
            "app/chrome_main.cc",
            "app/chrome_main_delegate.cc",
@@ -34,6 +43,15 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
          ]
  
          deps += [
+@@ -325,7 +327,7 @@ if (!is_android && !is_mac) {
+     if (is_win) {
+       output_name = "initialexe/chrome"
+     } else {
+-      output_name = "chrome"
++      output_name = "brave"
+     }
+ 
+     sources = []
 @@ -375,6 +377,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
