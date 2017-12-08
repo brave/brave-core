@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/tabTypes'
-import * as state from '../state/shieldsPannelState'
 
 interface ActiveTabChangedReturn {
   type: types.ACTIVE_TAB_CHANGED,
@@ -17,22 +16,22 @@ export interface ActiveTabChanged {
 
 interface TabCreatedReturn {
   type: types.TAB_CREATED,
-  tab: state.Tab
+  tab: chrome.tabs.Tab
 }
 
 export interface TabCreated {
-  (tab: state.Tab): TabCreatedReturn
+  (tab: chrome.tabs.Tab): TabCreatedReturn
 }
 
 interface TabDataChangedReturn {
   type: types.TAB_DATA_CHANGED,
   tabId: number,
-  changeInfo: state.Tab,
-  tab: state.Tab
+  changeInfo: chrome.tabs.TabChangeInfo,
+  tab: chrome.tabs.Tab
 }
 
 export interface TabDataChanged {
-  (tabId: number, changeInfo: state.Tab, tab: state.Tab): TabDataChangedReturn
+  (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab): TabDataChangedReturn
 }
 
 export type tabActions =

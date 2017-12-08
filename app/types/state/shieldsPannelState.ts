@@ -22,7 +22,7 @@ export interface Tab {
 }
 
 export interface Tabs {
-  [key: string]: Tab
+  [key: number]: Tab
 }
 
 export interface Windows {

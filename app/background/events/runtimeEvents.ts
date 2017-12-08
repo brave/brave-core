@@ -5,13 +5,15 @@
 import windowActions from '../actions/windowActions'
 import tabActions from '../actions/tabActions'
 
-chrome.runtime.onStartup.addListener((e) => {
-  chrome.windows.getAllAsync({ populate: true }).then((windows) => {
-    windows.forEach((win) => {
+chrome.runtime.onStartup.addListener(() => {
+  chrome.windows.getAllAsync({ populate: true }).then((windows: chrome.windows.Window[]) => {
+    windows.forEach((win: chrome.windows.Window) => {
       windowActions.windowCreated(win)
-      win.tabs.forEach((tab) => {
-        tabActions.tabCreated(tab)
-      })
+      if (win.tabs) {
+        win.tabs.forEach((tab: chrome.tabs.Tab) => {
+          tabActions.tabCreated(tab)
+        })
+      }
     })
   })
 })

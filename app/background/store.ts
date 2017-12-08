@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { applyMiddleware, createStore } from 'redux'
+import { applyMiddleware, createStore, Middleware } from 'redux'
 import { wrapStore } from 'react-chrome-redux'
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
@@ -16,13 +16,13 @@ const logger = createLogger({
 const initialState = {}
 
 const getMiddleware = () => {
-  const args = [thunk]
+  const args: Middleware[] = [thunk]
 
   if (process.env.NODE_ENV === 'development') {
     args.push(logger)
   }
 
-  return applyMiddleware.apply(this, args)
+  return applyMiddleware(...args)
 }
 
 const store = createStore(

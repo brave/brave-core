@@ -14,16 +14,17 @@ import {
   toggleShieldsValue,
   requestShieldPanelData
 } from '../api/shieldsAPI'
-import {setBadgeText} from '../api/badgeAPI'
-import {reloadTab} from '../api/tabsAPI'
+import { setBadgeText } from '../api/badgeAPI'
+import { reloadTab } from '../api/tabsAPI'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
-import { State, Tab } from '../../types/state/shieldsPannelState';
-import { Actions } from '../../types/actions/index';
+import { State, Tab } from '../../types/state/shieldsPannelState'
+import { Actions } from '../../types/actions/index'
 
 const updateBadgeText = (state: State) => {
   const tabId: number = shieldsPanelState.getActiveTabId(state)
   if (state.tabs[tabId]) {
-    setBadgeText(state.tabs[tabId].adsBlocked + state.tabs[tabId].trackingProtectionBlocked)
+    const total: string = (state.tabs[tabId].adsBlocked + state.tabs[tabId].trackingProtectionBlocked).toString()
+    setBadgeText(total)
   }
 }
 
@@ -45,7 +46,7 @@ const updateActiveTab = (state: State, windowId: number, tabId: number): State =
   return shieldsPanelState.updateActiveTab(state, windowId, tabId)
 }
 
-export default function shieldsPanelReducer (state: State = {tabs: {}, windows: {}, currentWindowId: -1}, action: Actions) {
+export default function shieldsPanelReducer (state: State = { tabs: {}, windows: {}, currentWindowId: -1 }, action: Actions) {
   switch (action.type) {
     case webNavigationTypes.ON_BEFORE_NAVIGATION:
       {
@@ -122,15 +123,20 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
           .catch(() => {
             console.error('Could not set JavaScript setting')
           })
-        Promise.all([p1, p2, p3, p4]).then(() => {
-          reloadTab(tabId, true)
-          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-        })
+        Promise.all([p1, p2, p3, p4])
+          .then(() => {
+            reloadTab(tabId, true)
+            requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          })
+          .catch(() => {
+            console.error('Could not set shields')
+          })
         state = shieldsPanelState
           .updateTabShieldsData(state, tabId, { shieldsEnabled: action.setting })
         break
       }
-      case shieldsPanelTypes.AD_BLOCK_TOGGLED: {
+    case shieldsPanelTypes.AD_BLOCK_TOGGLED:
+      {
         const tabData = shieldsPanelState.getActiveTabData(state)
         setAllowAdBlock(tabData.origin, toggleShieldsValue(tabData.adBlock))
           .then(() => {
@@ -203,10 +209,14 @@ export default function shieldsPanelReducer (state: State = {tabs: {}, windows: 
           .catch(() => {
             console.error('Could not set tracking protection setting')
           })
-        Promise.all([p1, p2]).then(() => {
-          reloadTab(tabId, true)
-          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-        })
+        Promise.all([p1, p2])
+          .then(() => {
+            reloadTab(tabId, true)
+            requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          })
+          .catch(() => {
+            console.error('Could not set blockers for tracking')
+          })
         state = shieldsPanelState
           .updateTabShieldsData(state, tabId, { adsTrackers: action.setting })
         break

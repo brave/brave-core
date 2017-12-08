@@ -4,14 +4,14 @@
 
 import tabActions from '../actions/tabActions'
 
-chrome.tabs.onActivated.addListener((activeInfo) => {
+chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.TabActiveInfo) => {
   tabActions.activeTabChanged(activeInfo.windowId, activeInfo.tabId)
 })
 
-chrome.tabs.onCreated.addListener(function (tab) {
+chrome.tabs.onCreated.addListener(function (tab: chrome.tabs.Tab) {
   tabActions.tabCreated(tab)
 })
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(function (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) {
   tabActions.tabDataChanged(tabId, changeInfo, tab)
 })

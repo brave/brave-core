@@ -4,7 +4,7 @@
 
 import actions from '../actions/webNavigationActions'
 
-chrome.webNavigation.onBeforeNavigate.addListener(function ({tabId, url, frameId}) {
-  const isMainFrame = frameId === 0
+chrome.webNavigation.onBeforeNavigate.addListener(function ({ tabId, url, frameId }: chrome.webNavigation.WebNavigationParentedCallbackDetails) {
+  const isMainFrame: boolean = frameId === 0
   actions.onBeforeNavigate(tabId, url, isMainFrame)
 })

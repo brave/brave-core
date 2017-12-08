@@ -2,23 +2,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { Tab } from '../../types/state/shieldsPannelState'
+import { BlockOptions } from '../../types/other/blockTypes'
+
 /**
  * Obtains the shields panel data for the specified tab data
  * @param {Object} tabData the details of the tab
  * @return a promise with the corresponding shields panel data for the input tabData
  */
-export const getShieldSettingsForTabData = (tabData) => {
-  if (tabData == null) {
-    return Promise.reject(new Error('No tab specified'))
+export const getShieldSettingsForTabData = (tabData: chrome.tabs.Tab) => {
+  if (!tabData.url) {
+    return Promise.reject(new Error('No tab url specified'))
   }
+
   const url = new window.URL(tabData.url)
   const origin = url.origin
   const hostname = url.hostname
+
   return Promise.all([
-    chrome.contentSettings.braveAdBlock.getAsync({primaryUrl: origin}),
-    chrome.contentSettings.braveTrackingProtection.getAsync({primaryUrl: origin}),
-    chrome.contentSettings.braveHTTPSEverywhere.getAsync({primaryUrl: origin}),
-    chrome.contentSettings.javascript.getAsync({primaryUrl: origin})
+    chrome.contentSettings.braveAdBlock.getAsync({ primaryUrl: origin }),
+    chrome.contentSettings.braveTrackingProtection.getAsync({ primaryUrl: origin }),
+    chrome.contentSettings.braveHTTPSEverywhere.getAsync({ primaryUrl: origin }),
+    chrome.contentSettings.javascript.getAsync({ primaryUrl: origin })
   ]).then((details) => {
     return {
       url: url.href,
@@ -48,7 +53,7 @@ export const getShieldSettingsForTabData = (tabData) => {
  * Obtains specified tab data
  * @return a promise with the active tab data
  */
-export const getTabData = (tabId) =>
+export const getTabData = (tabId: number) =>
   chrome.tabs.getAsync(tabId)
 
 /**
@@ -56,10 +61,10 @@ export const getTabData = (tabId) =>
  * @param {number} tabId the tabId of the tab who's content settings are of interest
  * @return a promise which resolves with the updated shields panel data.
  */
-export const requestShieldPanelData = (tabId) =>
+export const requestShieldPanelData = (tabId: number) =>
   getTabData(tabId)
     .then(getShieldSettingsForTabData)
-    .then((details) => {
+    .then((details: Tab) => {
       const actions = require('../actions/shieldsPanelActions')
       actions.shieldsPanelDataUpdated(details)
     })
@@ -70,12 +75,11 @@ export const requestShieldPanelData = (tabId) =>
  * @param {string} setting 'allow' or 'block'
  * @return a promise which resolves when the setting is set
  */
-export const setAllowAdBlock = (origin, setting) => {
-  return chrome.contentSettings.braveAdBlock.setAsync({
+export const setAllowAdBlock = (origin: string, setting: string) =>
+  chrome.contentSettings.braveAdBlock.setAsync({
     primaryPattern: origin + '/*',
     setting
   })
-}
 
 /**
  * Changes the tracking protection to be on (allow) or off (block)
@@ -83,20 +87,18 @@ export const setAllowAdBlock = (origin, setting) => {
  * @param {string} setting 'allow' or 'block'
  * @return a promise which resolves with the setting is set
  */
-export const setAllowTrackingProtection = (origin, setting) => {
-  return chrome.contentSettings.braveTrackingProtection.setAsync({
+export const setAllowTrackingProtection = (origin: string, setting: string) =>
+  chrome.contentSettings.braveTrackingProtection.setAsync({
     primaryPattern: origin + '/*',
     setting
   })
-}
 
 /**
  * Changes the HTTPS Everywhere to be on (allow) or off (block)
  * @param {string} origin the origin of the site to change the setting for
- * @param {string} setting 'allow' or 'block'
  * @return a promise which resolves when the setting is set
  */
-export const setAllowHTTPSEverywhere = (origin, setting) => {
+export const setAllowHTTPSEverywhere = (origin: string, setting: BlockOptions) => {
   const primaryPattern = origin.replace(/^(http|https):\/\//, '*://') + '/*'
   return chrome.contentSettings.braveHTTPSEverywhere.setAsync({
     primaryPattern,
@@ -110,16 +112,15 @@ export const setAllowHTTPSEverywhere = (origin, setting) => {
  * @param {string} setting 'allow' or 'block'
  * @return a promise which resolves when the setting is set
  */
-export const setAllowJavaScript = (origin, setting) => {
-  return chrome.contentSettings.javascript.setAsync({
+export const setAllowJavaScript = (origin: string, setting: string) =>
+  chrome.contentSettings.javascript.setAsync({
     primaryPattern: origin + '/*',
     setting
   })
-}
 
 /**
  * Toggles the input value between allow and block
  * @return the toggled value
  */
-export const toggleShieldsValue = (value) =>
+export const toggleShieldsValue = (value: BlockOptions) =>
   value === 'allow' ? 'block' : 'allow'
