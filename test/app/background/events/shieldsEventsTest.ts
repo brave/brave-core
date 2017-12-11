@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import sinon from 'sinon'
-import assert from 'assert'
+import 'mocha'
+import * as sinon from 'sinon'
+import * as assert from 'assert'
 import '../../../../app/background/events/shieldsEvents'
 import actions from '../../../../app/background/actions/shieldsPanelActions'
 import { blockedResource } from '../../../testData'

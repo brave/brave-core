@@ -3,7 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import assert from 'assert'
+import 'mocha'
+import * as assert from 'assert'
 import * as types from '../../../app/constants/tabTypes'
 import * as actions from '../../../app/actions/tabActions'
 
@@ -19,17 +20,36 @@ describe('tabActions', () => {
   })
 
   it('tabCreated', () => {
-    const tab = {id: 1}
+    const tab: chrome.tabs.Tab = {
+      id: 1,
+      index: 1,
+      pinned: false,
+      highlighted: false,
+      windowId: 1,
+      active: true,
+      incognito: false,
+      selected: false
+    }
+
     assert.deepEqual(actions.tabCreated(tab), {
       type: types.TAB_CREATED,
-      tab: {id: 1}
+      tab
     })
   })
 
   it('tabDataChanged', () => {
     const tabId = 1
     const changeInfo = {}
-    const tab = {id: 1}
+    const tab: chrome.tabs.Tab = {
+      id: 1,
+      index: 1,
+      pinned: false,
+      highlighted: false,
+      windowId: 1,
+      active: true,
+      incognito: false,
+      selected: false
+    }
     assert.deepEqual(actions.tabDataChanged(tabId, changeInfo, tab), {
       type: types.TAB_DATA_CHANGED,
       tabId,

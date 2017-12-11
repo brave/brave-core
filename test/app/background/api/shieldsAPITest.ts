@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import sinon from 'sinon'
-import assert from 'assert'
+import 'mocha'
+import * as sinon from 'sinon'
+import * as assert from 'assert'
 import actions from '../../../../app/background/actions/shieldsPanelActions'
 import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
-import { activeTabData, tabs } from '../../../testData'
+import { activeTabData } from '../../../testData'
+import { Tab as TabType } from '../../../../app/types/state/shieldsPannelState'
 
 describe('Shields API', () => {
   describe('getShieldSettingsForTabData', function () {
@@ -17,13 +19,21 @@ describe('Shields API', () => {
           cb()
         })
     })
+
     it('resolves the returned promise with shield settings for the tab data', function (cb) {
-      shieldsAPI.getShieldSettingsForTabData({
+      const tab: chrome.tabs.Tab = {
         url: 'https://www.brave.com/serg/dont/know/pokemon',
-        origin: 'https://www.brave.com',
-        hostname: 'www.brave.com',
-        id: 5
-      }).then((data) => {
+        id: 5,
+        index: 1,
+        pinned: false,
+        highlighted: false,
+        windowId: 1,
+        active: true,
+        incognito: false,
+        selected: false
+      }
+
+      shieldsAPI.getShieldSettingsForTabData(tab).then((data) => {
         assert.deepEqual(data, {
           url: 'https://www.brave.com/serg/dont/know/pokemon',
           origin: 'https://www.brave.com',
@@ -36,8 +46,8 @@ describe('Shields API', () => {
         })
         cb()
       })
-      .catch((e) => {
-        console.error(e)
+      .catch((e: Error) => {
+        console.error(e.toString())
       })
     })
   })
@@ -48,20 +58,23 @@ describe('Shields API', () => {
       this.spy = sinon.spy(chrome.tabs, 'getAsync')
       this.p = shieldsAPI.getTabData(this.tabId)
     })
+
     after(function () {
       this.spy.restore()
     })
+
     it('calls chrome.tabs.getAsync for the ative tab', function () {
       assert(this.spy.withArgs(this.tabId).calledOnce)
     })
+
     it('resolves the promise with an array', function (cb) {
       this.p
-        .then((tab) => {
+        .then((tab: chrome.tabs.Tab) => {
           assert.deepEqual(tab, activeTabData)
           cb()
         })
-        .catch((e) => {
-          console.error(e)
+        .catch((e: Error) => {
+          console.error(e.toString())
         })
     })
   })
@@ -73,14 +86,25 @@ describe('Shields API', () => {
       this.p = shieldsAPI.requestShieldPanelData(this.tabId)
     })
     it('resolves and calls requestShieldPanelData', function (cb) {
+      const tab: Partial<TabType> = {
+        url: 'https://www.brave.com/test',
+        origin: 'https://www.brave.com',
+        hostname: 'www.brave.com',
+        id: 2,
+        adBlock: 'block',
+        trackingProtection: 'block',
+        httpsEverywhere: 'block',
+        javascript: 'block'
+      }
+
       this.p
         .then(() => {
           assert(this.spy.calledOnce)
-          assert.deepEqual(this.spy.getCall(0).args[0], tabs[this.tabId])
+          assert.deepEqual(this.spy.getCall(0).args[0], tab)
           cb()
         })
-        .catch((e) => {
-          console.error(e)
+        .catch((e: Error) => {
+          console.error(e.toString())
         })
     })
   })
@@ -101,13 +125,13 @@ describe('Shields API', () => {
       })
     })
     it('passes only 1 arg to chrome.contentSettings.braveAdBlock', function () {
-      assert(this.spy.getCall(0).args.length, 1)
+      assert.equal(this.spy.getCall(0).args.length, 1)
     })
     it('resolves the returned promise', function (cb) {
       this.p
         .then(cb)
-        .catch((e) => {
-          console.error(e)
+        .catch((e: Error) => {
+          console.error(e.toString())
         })
     })
   })
@@ -128,13 +152,13 @@ describe('Shields API', () => {
       })
     })
     it('passes only 1 arg to chrome.contentSettings.braveTrackingProtection', function () {
-      assert(this.spy.getCall(0).args.length, 1)
+      assert.equal(this.spy.getCall(0).args.length, 1)
     })
     it('resolves the returned promise', function (cb) {
       this.p
         .then(cb)
-        .catch((e) => {
-          console.error(e)
+        .catch((e: Error) => {
+          console.error(e.toString())
         })
     })
   })
@@ -155,13 +179,13 @@ describe('Shields API', () => {
       })
     })
     it('passes only 1 arg to chrome.contentSettings.braveHTTPSEverywhere', function () {
-      assert(this.spy.getCall(0).args.length, 1)
+      assert.equal(this.spy.getCall(0).args.length, 1)
     })
     it('resolves the returned promise', function (cb) {
       this.p
         .then(cb)
-        .catch((e) => {
-          console.error(e)
+        .catch((e: Error) => {
+          console.error(e.toString())
         })
     })
   })
@@ -171,9 +195,11 @@ describe('Shields API', () => {
       this.spy = sinon.spy(chrome.contentSettings.javascript, 'setAsync')
       this.p = shieldsAPI.setAllowJavaScript('https://www.brave.com', 'block')
     })
+
     after(function () {
       this.spy.restore()
     })
+
     it('calls chrome.contentSettings.javascript with the correct args', function () {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
@@ -181,14 +207,16 @@ describe('Shields API', () => {
         setting: 'block'
       })
     })
+
     it('passes only 1 arg to chrome.contentSettings.javascript', function () {
-      assert(this.spy.getCall(0).args.length, 1)
+      assert.equal(this.spy.getCall(0).args.length, 1)
     })
+
     it('resolves the returned promise', function (cb) {
       this.p
         .then(cb)
-        .catch((e) => {
-          console.error(e)
+        .catch((e: Error) => {
+          console.error(e.toString())
         })
     })
   })

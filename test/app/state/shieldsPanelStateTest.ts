@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import assert from 'assert'
-import deepFreeze from 'deep-freeze-node'
+import 'mocha'
+import * as assert from 'assert'
+import * as deepFreeze from 'deep-freeze-node'
 import * as shieldsPanelState from '../../../app/state/shieldsPanelState'
+import { State } from '../../../app/types/state/shieldsPannelState';
 
-const state = deepFreeze({
+const state: State = deepFreeze({
   currentWindowId: 1,
   tabs: {
     2: {
@@ -24,7 +26,10 @@ const state = deepFreeze({
       id: 4
     }
   },
-  windows: {1: 2, 2: 3}
+  windows: {
+    1: 2,
+    2: 3
+  }
 })
 
 describe('shieldsPanelState test', () => {
@@ -63,7 +68,10 @@ describe('shieldsPanelState test', () => {
             id: 4
           }
         },
-        windows: {1: 4, 2: 3}
+        windows: {
+          1: 4,
+          2: 3
+        }
       })
     })
     it('can update a window which is not focused', function () {
@@ -84,7 +92,10 @@ describe('shieldsPanelState test', () => {
             id: 4
           }
         },
-        windows: {1: 2, 2: 4}
+        windows: {
+          1: 2,
+          2: 4
+        }
       })
     })
   })
@@ -107,7 +118,9 @@ describe('shieldsPanelState test', () => {
             id: 4
           }
         },
-        windows: {2: 3}
+        windows: {
+          2: 3
+        }
       })
     })
     it('can remove a window which is not focused', function () {
@@ -128,7 +141,9 @@ describe('shieldsPanelState test', () => {
             id: 4
           }
         },
-        windows: {1: 2}
+        windows: {
+          1: 2
+        }
       })
     })
   })
@@ -151,7 +166,10 @@ describe('shieldsPanelState test', () => {
             id: 4
           }
         },
-        windows: {1: 2, 2: 3}
+        windows: {
+          1: 2,
+          2: 3
+        }
       })
     })
   })
@@ -187,14 +205,17 @@ describe('shieldsPanelState test', () => {
             id: 4
           }
         },
-        windows: {1: 2, 2: 3}
+        windows: {
+          1: 2,
+          2: 3
+        }
       })
     })
   })
   describe('resetBlockingStats', () => {
     it('sets the specified stats back to 0 for the active tab', function () {
       this.tabId = 2
-      const stateWithStats = {
+      const stateWithStats: State = {
         currentWindowId: 1,
         tabs: {
           2: {
@@ -206,16 +227,53 @@ describe('shieldsPanelState test', () => {
             adsBlocked: 3,
             trackingProtectionBlocked: 4444,
             httpsEverywhereRedirected: 5,
-            javascriptBlocked: 5
+            javascriptBlocked: 5,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            url: 'https://brave.com'
           },
           3: {
-            id: 3
+            adBlock: 'block',
+            adsBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            httpsEverywhere: 'block',
+            httpsEverywhereRedirected: 0,
+            id: 3,
+            javascript: 'block',
+            javascriptBlocked: 0,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 0,
+            url: 'https://brave.com'
           },
           4: {
-            id: 4
+            adBlock: 'block',
+            adsBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            httpsEverywhere: 'block',
+            httpsEverywhereRedirected: 0,
+            id: 4,
+            javascript: 'block',
+            javascriptBlocked: 0,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 0,
+            url: 'https://brave.com'
           }
         },
-        windows: {1: 2, 2: 3}
+        windows: {
+          1: 2,
+          2: 3
+        }
       }
 
       stateWithStats.tabs[this.tabId].adsBlocked = 3
@@ -234,66 +292,177 @@ describe('shieldsPanelState test', () => {
             adsBlocked: 0,
             trackingProtectionBlocked: 0,
             httpsEverywhereRedirected: 0,
-            javascriptBlocked: 0
+            javascriptBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            url: 'https://brave.com'
           },
           3: {
-            id: 3
+            adBlock: 'block',
+            adsBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            httpsEverywhere: 'block',
+            httpsEverywhereRedirected: 0,
+            id: 3,
+            javascript: 'block',
+            javascriptBlocked: 0,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 0,
+            url: 'https://brave.com'
           },
           4: {
-            id: 4
+            adBlock: 'block',
+            adsBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            httpsEverywhere: 'block',
+            httpsEverywhereRedirected: 0,
+            id: 4,
+            javascript: 'block',
+            javascriptBlocked: 0,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 0,
+            url: 'https://brave.com'
           }
         },
-        windows: {1: 2, 2: 3}
+        windows: {
+          1: 2,
+          2: 3
+        }
       })
     })
     it('sets the specified stats back to 0 for the a non active tab', function () {
       this.tabId = 4
-      const stateWithStats = {
+      const stateWithStats: State = {
         currentWindowId: 1,
         tabs: {
           2: {
-            id: 2,
             adBlock: 'block',
-            trackingProtection: 'block',
+            adsBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
             httpsEverywhere: 'block',
-            javascript: 'block'
+            httpsEverywhereRedirected: 0,
+            id: 2,
+            javascript: 'block',
+            javascriptBlocked: 0,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 0,
+            url: 'https://brave.com'
           },
           3: {
-            id: 3
+            adBlock: 'block',
+            adsBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            httpsEverywhere: 'block',
+            httpsEverywhereRedirected: 0,
+            id: 3,
+            javascript: 'block',
+            javascriptBlocked: 0,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 0,
+            url: 'https://brave.com'
           },
           4: {
-            id: 4,
+            adBlock: 'block',
             adsBlocked: 3,
-            trackingProtectionBlocked: 4444,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            httpsEverywhere: 'block',
             httpsEverywhereRedirected: 5,
-            javascriptBlocked: 5
+            id: 4,
+            javascript: 'block',
+            javascriptBlocked: 5,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 4444,
+            url: 'https://brave.com'
           }
         },
-        windows: {1: 2, 2: 3}
+        windows: {
+          1: 2,
+          2: 3
+        }
       }
 
       assert.deepEqual(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId), {
         currentWindowId: 1,
         tabs: {
           2: {
-            id: 2,
             adBlock: 'block',
-            trackingProtection: 'block',
+            adsBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
             httpsEverywhere: 'block',
-            javascript: 'block'
+            httpsEverywhereRedirected: 0,
+            id: 2,
+            javascript: 'block',
+            javascriptBlocked: 0,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 0,
+            url: 'https://brave.com'
           },
           3: {
-            id: 3
+            adBlock: 'block',
+            adsBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            httpsEverywhere: 'block',
+            httpsEverywhereRedirected: 0,
+            id: 3,
+            javascript: 'block',
+            javascriptBlocked: 0,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 0,
+            url: 'https://brave.com'
           },
           4: {
-            id: 4,
+            adBlock: 'block',
             adsBlocked: 0,
-            trackingProtectionBlocked: 0,
+            adsTrackers: 'block',
+            controlsOpen: true,
+            hostname: 'https://brave.com',
+            httpsEverywhere: 'block',
             httpsEverywhereRedirected: 0,
-            javascriptBlocked: 0
+            id: 4,
+            javascript: 'block',
+            javascriptBlocked: 0,
+            origin: 'https://brave.com',
+            shieldsEnabled: 'block',
+            trackingProtection: 'block',
+            trackingProtectionBlocked: 0,
+            url: 'https://brave.com'
           }
         },
-        windows: {1: 2, 2: 3}
+        windows: {
+          1: 2,
+          2: 3
+        }
       })
     })
   })
@@ -321,7 +490,10 @@ describe('shieldsPanelState test', () => {
             id: 4
           }
         },
-        windows: {1: 2, 2: 3}
+        windows: {
+          1: 2,
+          2: 3
+        }
       })
     })
     it('can update tracking protection blocked count', function () {
@@ -347,7 +519,10 @@ describe('shieldsPanelState test', () => {
             id: 4
           }
         },
-        windows: {1: 2, 2: 3}
+        windows: {
+          1: 2,
+          2: 3
+        }
       })
     })
   })

@@ -3,28 +3,45 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import sinon from 'sinon'
-import assert from 'assert'
+import 'mocha'
+import * as sinon from 'sinon'
+import * as assert from 'assert'
 import '../../../../app/background/events/runtimeEvents'
 import windowActions from '../../../../app/background/actions/windowActions'
 import tabActions from '../../../../app/background/actions/tabActions'
+import { ChromeEvent } from '../../../testData'
+
+interface InputWindows {
+  id: number,
+  tabs: {
+    id: number
+  }[]
+}
+
+interface RuntimeEvent extends chrome.events.Event<() => void>, ChromeEvent {}
 
 describe('runtimeEvents events', () => {
   describe('chrome.runtime.onStartup listener', function () {
-    const inputWindows = [{
-      id: 1,
-      tabs: [{
-        id: 1
-      }, {
-        id: 2
-      }]
-    }, {
-      id: 2,
-      tabs: [{
-        id: 3
-      }]
-    }]
-    let deferred
+    const inputWindows: InputWindows[] = [
+      {
+        id: 1,
+        tabs: [
+          {
+            id: 1
+          },
+          {
+            id: 2
+          }
+        ]
+      },
+      {
+        id: 2,
+        tabs: [{
+          id: 3
+        }]
+      }
+    ]
+    let deferred: (inputWindows: InputWindows[]) => void
     const p = new Promise((resolve, reject) => {
       deferred = resolve
     })
@@ -35,8 +52,10 @@ describe('runtimeEvents events', () => {
         deferred(inputWindows)
         return p
       })
-      chrome.runtime.onStartup.addListener(cb)
-      chrome.runtime.onStartup.emit()
+
+      const event: RuntimeEvent = chrome.runtime.onStartup as RuntimeEvent
+      event.addListener(cb)
+      event.emit()
     })
     after(function () {
       this.windowCreatedStub.restore()

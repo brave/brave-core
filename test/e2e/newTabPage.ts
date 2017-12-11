@@ -3,21 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import path from 'path'
-import webdriver from 'selenium-webdriver'
+import * as path from 'path'
+import * as webdriver from 'selenium-webdriver'
+import * as assert from 'assert'
 import { delay, startChromeDriver, buildWebDriver } from '../func'
-import manifest from '../../app/manifest.prod.json'
-import assert from 'assert'
+const manifest = require('../../app/manifest.prod.json')
 
 const extensionName = manifest.name
 
-const findNewTabPageContainer = async driver => {
+const findNewTabPageContainer = async (driver: webdriver.ThenableWebDriver) => {
   await delay(1000)
   return (await driver.findElements(webdriver.By.css(`[data-test-id="new-tab-page"]`)))[0]
 }
 
 describe('new tab page', function test () {
-  let driver
+  let driver: webdriver.ThenableWebDriver
   this.timeout(15000)
 
   before(async () => {

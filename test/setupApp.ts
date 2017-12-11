@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import jsdom from 'jsdom'
+import * as jsdom from 'jsdom'
 import { getMockChrome } from './testData'
 
 const {JSDOM} = jsdom
@@ -16,6 +16,6 @@ if (global.chrome === undefined) {
   global.chrome = getMockChrome()
 }
 // mocks rAF to suppress React warning while testing
-global.requestAnimationFrame = function (cb) {
+global.requestAnimationFrame = function (cb: () => void) {
   return setTimeout(cb, 0)
 }

@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import chromedriver from 'chromedriver'
-import webdriver from 'selenium-webdriver'
+import * as chromedriver from 'chromedriver'
+import * as webdriver from 'selenium-webdriver'
 
-export function delay (time) {
+export function delay (time: number) {
   return new Promise(resolve => setTimeout(resolve, time))
 }
 
@@ -20,7 +20,7 @@ export function startChromeDriver () {
   return delay(1000)
 }
 
-export function buildWebDriver (extPath) {
+export function buildWebDriver (extPath: string) {
   return new webdriver.Builder()
     .usingServer('http://localhost:9515')
     .withCapabilities({

@@ -2,36 +2,56 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import deepFreeze from 'deep-freeze-node'
+import * as deepFreeze from 'deep-freeze-node'
+import { Tab } from '../app/types/state/shieldsPannelState';
 
-export const tabs = {
+interface CustomTab extends Tab {
+  url: string
+}
+
+interface Tabs {
+  [key: number]: CustomTab
+}
+
+export const tabs: Tabs = {
   2: {
     id: 2,
     url: 'https://www.brave.com/test',
     origin: 'https://www.brave.com',
     hostname: 'www.brave.com',
     adBlock: 'block',
+    adsBlocked: 0,
+    adsTrackers: 'allow',
     trackingProtection: 'block',
     httpsEverywhere: 'block',
-    javascript: 'block'
+    javascript: 'block',
+    controlsOpen: false,
+    httpsEverywhereRedirected: 0,
+    javascriptBlocked: 0,
+    shieldsEnabled: 'block',
+    trackingProtectionBlocked: 0
   }
 }
 
 export const activeTabData = tabs[2]
 
-export const blockedResource = {
+export const blockedResource: BlockDetails = {
   blockType: 'adBlock',
   tabId: 2
 }
 
-class ChromeEvent {
+export class ChromeEvent {
+  listeners: Array<() => void>
+
   constructor () {
     this.listeners = []
   }
-  emit (...args) {
-    this.listeners.forEach((cb) => cb.apply(null, args))
+
+  emit (...args: Array<() => void>) {
+    this.listeners.forEach((cb: () => void) => cb.apply(null, args))
   }
-  addListener (cb) {
+
+  addListener (cb: () => void) {
     this.listeners.push(cb)
   }
 }
@@ -44,20 +64,19 @@ export const getMockChrome = () => {
       onStartup: new ChromeEvent()
     },
     browserAction: {
-      setBadgeText: function (text) {
-      }
+      setBadgeText: function (text: string) { }
     },
     tabs: {
       queryAsync: function () {
         return Promise.resolve([activeTabData])
       },
-      getAsync: function (tabId) {
+      getAsync: function (tabId: number) {
         return Promise.resolve(tabs[tabId])
       },
-      create: function (createProperties, cb) {
+      create: function (createProperties: object, cb: () => void) {
         setImmediate(cb)
       },
-      reload: function (tabId, bypassCache, cb) {
+      reload: function (tabId: number, reloadProperties: object, cb: () => void) {
         setImmediate(cb)
       },
       onActivated: new ChromeEvent(),
@@ -69,7 +88,7 @@ export const getMockChrome = () => {
       onCreated: new ChromeEvent(),
       onRemoved: new ChromeEvent(),
       getAllAsync: function () {
-        return new Promise([])
+        return new Promise(() => [])
       }
     },
     braveShields: {
@@ -118,14 +137,14 @@ export const getMockChrome = () => {
       }
     },
     i18n: {
-      getMessage: function (message) {
-      }
+      getMessage: function (message: string) { }
     }
   }
 }
 
 export const initialState = deepFreeze({
   shieldsPanel: {
+    currentWindowId: -1,
     tabs: {},
     windows: {}
   },

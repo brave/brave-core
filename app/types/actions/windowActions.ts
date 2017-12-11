@@ -4,12 +4,6 @@
 
 import * as types from '../constants/windowTypes'
 
-// TODO @bbondy what else do we have inhere?
-export interface Window {
-  id: number,
-  focused: boolean
-}
-
 interface WindowFocusChangedReturn {
   type: types.WINDOW_FOCUS_CHANGED,
   windowId: number
@@ -21,11 +15,11 @@ export interface WindowFocusChanged {
 
 interface WindowCreatedReturn {
   type: types.WINDOW_CREATED,
-  window: Window
+  window: chrome.windows.Window
 }
 
 export interface WindowCreated {
-  (window: Window): WindowCreatedReturn
+  (window: chrome.windows.Window): WindowCreatedReturn
 }
 
 interface WindowRemovedReturn {

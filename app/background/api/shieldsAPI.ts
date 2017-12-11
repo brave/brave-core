@@ -10,8 +10,8 @@ import { BlockOptions } from '../../types/other/blockTypes'
  * @param {Object} tabData the details of the tab
  * @return a promise with the corresponding shields panel data for the input tabData
  */
-export const getShieldSettingsForTabData = (tabData: chrome.tabs.Tab) => {
-  if (!tabData.url) {
+export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
+  if (tabData === undefined || !tabData.url) {
     return Promise.reject(new Error('No tab url specified'))
   }
 
@@ -64,9 +64,9 @@ export const getTabData = (tabId: number) =>
 export const requestShieldPanelData = (tabId: number) =>
   getTabData(tabId)
     .then(getShieldSettingsForTabData)
-    .then((details: Tab) => {
+    .then((details: Partial<Tab>) => {
       const actions = require('../actions/shieldsPanelActions')
-      actions.shieldsPanelDataUpdated(details)
+      actions.default.shieldsPanelDataUpdated(details)
     })
 
 /**

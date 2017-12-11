@@ -3,10 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import sinon from 'sinon'
-import assert from 'assert'
+import 'mocha'
+import * as sinon from 'sinon'
+import * as assert from 'assert'
 import '../../../../app/background/events/windowsEvents'
 import actions from '../../../../app/background/actions/windowActions'
+
+interface WindowIdEvent extends chrome.events.Event<(windowId: number) => void> {
+  emit: (windowId: number) => void
+}
+
+interface WindowReferenceEvent extends chrome.events.Event<(window: chrome.windows.Window) => void> {
+  emit: (window: chrome.windows.Window) => void
+}
 
 describe('windowsEvents events', () => {
   describe('chrome.windows.onFocusChanged', function () {
@@ -18,16 +27,24 @@ describe('windowsEvents events', () => {
     })
     it('calls actions.windowFocusChanged', function (cb) {
       const inputWindowId = 1
-      chrome.windows.onFocusChanged.addListener((windowId) => {
+      const onFocusChanged = chrome.windows.onFocusChanged as WindowIdEvent
+      onFocusChanged.addListener((windowId) => {
         assert.equal(windowId, inputWindowId)
         assert.equal(this.stub.withArgs(inputWindowId).calledOnce, true)
         cb()
       })
-      chrome.windows.onFocusChanged.emit(inputWindowId)
+      onFocusChanged.emit(inputWindowId)
     })
   })
   describe('chrome.windows.onCreated', function () {
-    const inputWindowId = 1
+    const window = {
+      id: 1,
+      state: 'normal',
+      focused: true,
+      alwaysOnTop: false,
+      incognito: false,
+      type: 'normal'
+    }
     before(function () {
       this.stub = sinon.stub(actions, 'windowCreated')
     })
@@ -35,12 +52,14 @@ describe('windowsEvents events', () => {
       this.stub.restore()
     })
     it('calls windowCreated', function (cb) {
-      chrome.windows.onCreated.addListener((windowId) => {
-        assert.equal(windowId, inputWindowId)
-        assert.equal(this.stub.withArgs(inputWindowId).calledOnce, true)
+      const onCreated = chrome.windows.onCreated as WindowReferenceEvent
+
+      onCreated.addListener((windowId) => {
+        assert.equal(windowId, window)
+        assert.equal(this.stub.withArgs(window).calledOnce, true)
         cb()
       })
-      chrome.windows.onCreated.emit(inputWindowId)
+      onCreated.emit(window)
     })
   })
 
@@ -53,12 +72,14 @@ describe('windowsEvents events', () => {
     })
     it('calls updateShieldsSettings', function (cb) {
       const inputWindowId = 1
-      chrome.windows.onRemoved.addListener((windowId) => {
+      const onRemoved = chrome.windows.onRemoved as WindowIdEvent
+
+      onRemoved.addListener((windowId) => {
         assert.equal(windowId, inputWindowId)
         assert.equal(this.stub.withArgs(inputWindowId).calledOnce, true)
         cb()
       })
-      chrome.windows.onRemoved.emit(inputWindowId)
+      onRemoved.emit(inputWindowId)
     })
   })
 })

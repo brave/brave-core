@@ -7,7 +7,7 @@ import { Grid, Column, Separator, SwitchButton, ActionButton, BrowserText } from
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 
-interface Props {
+export interface Props {
   shieldsToggled: shieldActions.ShieldsToggled
   hostname: string
   shieldsEnabled: BlockOptions

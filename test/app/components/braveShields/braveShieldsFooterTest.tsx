@@ -3,15 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import assert from 'assert'
-import React from 'react'
-import ReactTestUtils from 'react-dom/test-utils'
+import 'mocha'
+import * as React from 'react'
+import * as assert from 'assert'
+import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsFooter from '../../../../app/components/braveShields/braveShieldsFooter'
+import { Props as UIProps } from 'brave-ui'
 
 function setup () {
   const props = {}
-  const renderer = ReactTestUtils.renderIntoDocument(<BraveShieldsFooter {...props} />)
-  const result = renderer.render()
+  const renderer = renderIntoDocument(<BraveShieldsFooter {...props} />) as React.Component<BraveShieldsFooter>
+  const result = renderer.render() as React.ReactElement<UIProps.Grid>
   return { props, result, renderer }
 }
 

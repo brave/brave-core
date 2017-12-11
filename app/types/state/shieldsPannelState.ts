@@ -19,6 +19,7 @@ export interface Tab {
   shieldsEnabled: BlockOptions
   trackingProtection: BlockOptions
   trackingProtectionBlocked: number
+  url: string
 }
 
 export interface Tabs {

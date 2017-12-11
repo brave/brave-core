@@ -10,6 +10,7 @@ export interface ShieldDetails {
   adBlock: BlockOptions
   trackingProtection: BlockOptions
   httpsEverywhere: BlockOptions
+  javascript: BlockOptions
   origin: string
   hostname: string
 }
@@ -96,7 +97,6 @@ export interface JavascriptToggled {
   (): JavascriptToggledReturn
 }
 
-// TODO check if we need it
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |

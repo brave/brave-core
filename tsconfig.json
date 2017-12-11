@@ -9,8 +9,10 @@
         "allowJs": true,
         "jsx": "react",
         "moduleResolution": "node",
-        "rootDir": "./app",
-        "typeRoots" : ["./node_modules/@types", "./app/types/global"],
+        "typeRoots" : [
+            "./node_modules/@types",
+            "./app/types/global"
+        ],
         // optional
         "forceConsistentCasingInFileNames": true,
         "noImplicitReturns": true,
@@ -19,6 +21,6 @@
         "noUnusedLocals": true
     },
     "include": [
-        "./app/**/*"
+       "./app/**/*"
     ]
 }

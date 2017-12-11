@@ -6,7 +6,7 @@ import * as React from 'react'
 import { Grid, Column, BrowserText } from 'brave-ui'
 import { BlockOptions } from '../../types/other/blockTypes'
 
-interface Props {
+export interface Props {
   shieldsEnabled: BlockOptions
   adsBlocked: number
   trackingProtectionBlocked: number

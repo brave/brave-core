@@ -3,18 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import assert from 'assert'
+import 'mocha'
+import * as assert from 'assert'
 import * as types from '../../../app/constants/shieldsPanelTypes'
 import * as actions from '../../../app/actions/shieldsPanelActions'
+import { ShieldDetails, BlockDetails } from '../../../app/types/actions/shieldsPanelActions';
+import { BlockOptions } from '../../../app/types/other/blockTypes';
 
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
-    const details = {
+    const details: ShieldDetails = {
       adBlock: 'allow',
       trackingProtection: 'block',
       httpsEverywhere: 'allow',
       origin: 'https://www.brave.com',
-      hostname: 'www.brave.com'
+      hostname: 'www.brave.com',
+      id: 1,
+      javascript: 'allow'
     }
     assert.deepEqual(actions.shieldsPanelDataUpdated(details), {
       type: types.SHIELDS_PANEL_DATA_UPDATED,
@@ -23,8 +28,8 @@ describe('shieldsPanelActions', () => {
   })
 
   it('shieldsToggled', () => {
-    const setting = 'allow'
-    assert.deepEqual(actions.shieldsToggled(), {
+    const setting: BlockOptions = 'allow'
+    assert.deepEqual(actions.shieldsToggled(setting), {
       type: types.SHIELDS_TOGGLED,
       setting
     })
@@ -55,7 +60,7 @@ describe('shieldsPanelActions', () => {
   })
 
   it('resourceBlocked action', () => {
-    const details = {
+    const details: BlockDetails = {
       blockType: 'adBlock',
       tabId: 2
     }
@@ -66,7 +71,7 @@ describe('shieldsPanelActions', () => {
   })
 
   it('blockAdsTrackers action', () => {
-    const setting = 'allow'
+    const setting: BlockOptions = 'allow'
     assert.deepEqual(actions.blockAdsTrackers(setting), {
       type: types.BLOCK_ADS_TRACKERS,
       setting
@@ -74,7 +79,7 @@ describe('shieldsPanelActions', () => {
   })
 
   it('controlsToggled action', () => {
-    const setting = true
+    const setting: boolean = true
     assert.deepEqual(actions.controlsToggled(setting), {
       type: types.CONTROLS_TOGGLED,
       setting

@@ -26,7 +26,6 @@ export const updateFocusedWindow: shieldState.UpdateFocusedWindow = (state, wind
 export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, tabId, details) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
 
-  // TODO @bbondy do we need to add other default values? like httpsEverywhere, trackingProtection?
   tabs[tabId] = { ...{
     adsBlocked: 0,
     trackingProtectionBlocked: 0,
@@ -34,6 +33,10 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
     javascriptBlocked: 0,
     shieldsEnabled: 'allow',
     adsTrackers: 'allow',
+    adBlock: 'allow',
+    trackingProtection: 'allow',
+    httpsEverywhere: 'allow',
+    javascript: 'allow',
     controlsOpen: true
   },
     ...tabs[tabId],

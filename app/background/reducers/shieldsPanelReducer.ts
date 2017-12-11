@@ -62,8 +62,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
     case windowTypes.WINDOW_CREATED:
       {
-        // TODO this is a dirty hack with <Window[]><any> can we improve this?
-        if (action.window.focused || (state.windows as any as Window[]).length === 0) {
+        if (action.window.focused || Object.keys(state.windows).length === 0) {
           state = focusedWindowChanged(state, action.window.id)
         }
         break
@@ -93,6 +92,10 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     case tabTypes.TAB_CREATED:
       {
         const tab: chrome.tabs.Tab = action.tab
+        if (!tab) {
+          break
+        }
+
         if (tab.active && tab.id) {
           state = updateActiveTab(state, tab.windowId, tab.id)
           updateBadgeText(state)
@@ -108,6 +111,11 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       {
         const tabId: number = shieldsPanelState.getActiveTabId(state)
         const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+
+        if (!tabData) {
+          break
+        }
+
         const p1 = setAllowAdBlock(tabData.origin, action.setting)
           .catch(() => {
             console.error('Could not set ad block setting')
@@ -141,6 +149,10 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     case shieldsPanelTypes.AD_BLOCK_TOGGLED:
       {
         const tabData = shieldsPanelState.getActiveTabData(state)
+        if (!tabData) {
+          break
+        }
+
         setAllowAdBlock(tabData.origin, toggleShieldsValue(tabData.adBlock))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
@@ -156,6 +168,10 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     case shieldsPanelTypes.HTTPS_EVERYWHERE_TOGGLED:
       {
         const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        if (!tabData) {
+          break
+        }
+
         setAllowHTTPSEverywhere(tabData.origin, toggleShieldsValue(tabData.httpsEverywhere))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
@@ -186,6 +202,10 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     case shieldsPanelTypes.TRACKING_PROTECTION_TOGGLED:
       {
         const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        if (!tabData) {
+          break
+        }
+
         setAllowTrackingProtection(tabData.origin, toggleShieldsValue(tabData.trackingProtection))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
@@ -212,6 +232,11 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       {
         const tabId: number = shieldsPanelState.getActiveTabId(state)
         const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+
+        if (!tabData) {
+          break
+        }
+
         const p1 = setAllowAdBlock(tabData.origin, action.setting)
           .catch(() => {
             console.error('Could not set ad block setting')

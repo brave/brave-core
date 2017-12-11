@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { Grid, Column, ActionButton, Anchor } from 'brave-ui'
 
-export default class BraveShieldsFooter extends React.Component {
+export default class BraveShieldsFooter extends React.Component<{}, object> {
   render () {
     return (
       <Grid

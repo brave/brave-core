@@ -7,6 +7,8 @@
 // import * as types from '../../../app/constants/newTabPageTypes'
 // import * as actions from '../../../app/actions/newTabPageActions'
 
+import 'mocha'
+
 describe('newTabPageActions', () => {
   it('settingsIconClicked', () => {
   })

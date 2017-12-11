@@ -7,7 +7,7 @@ import { Grid, Column, SwitchButton, BrowserSelect, ContentToggle } from 'brave-
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 
-interface Props {
+export interface Props {
   controlsOpen: boolean
   adsTrackers: string
   shieldsEnabled: BlockOptions

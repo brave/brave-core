@@ -3,16 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// import sinon from 'sinon'
-import assert from 'assert'
-// import * as types from '../../../../app/constants/newTabPageTypes'
+import 'mocha'
+import * as assert from 'assert'
 import newTabPageReducer from '../../../../app/background/reducers/newTabPageReducer'
-// import deepFreeze from 'deep-freeze-node'
+import * as actions from '../../../../app/actions/shieldsPanelActions'
 
 describe('newTabPageReducer', () => {
   it('should handle initial state', () => {
     assert.deepEqual(
-      newTabPageReducer(undefined, {})
+      newTabPageReducer(undefined, actions.adBlockToggled())
     , {})
   })
 

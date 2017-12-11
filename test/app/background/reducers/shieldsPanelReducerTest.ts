@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import sinon from 'sinon'
-import assert from 'assert'
+import 'mocha'
+import * as sinon from 'sinon'
+import * as assert from 'assert'
 import * as types from '../../../../app/constants/shieldsPanelTypes'
 import * as windowTypes from '../../../../app/constants/windowTypes'
 import * as tabTypes from '../../../../app/constants/tabTypes'
@@ -13,13 +14,16 @@ import shieldsPanelReducer from '../../../../app/background/reducers/shieldsPane
 import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
 import * as tabsAPI from '../../../../app/background/api/tabsAPI'
 import * as shieldsPanelState from '../../../../app/state/shieldsPanelState'
-import {initialState} from '../../../testData'
-import deepFreeze from 'deep-freeze-node'
+import { initialState } from '../../../testData'
+import * as deepFreeze from 'deep-freeze-node'
+import { ShieldDetails } from '../../../../app/types/actions/shieldsPanelActions';
+import * as actions from '../../../../app/actions/shieldsPanelActions'
+import { State } from '../../../../app/types/state/shieldsPannelState';
 
 describe('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {
     assert.deepEqual(
-      shieldsPanelReducer(undefined, {})
+      shieldsPanelReducer(undefined, actions.adBlockToggled())
     , initialState.shieldsPanel)
   })
 
@@ -79,7 +83,13 @@ describe('braveShieldsPanelReducer', () => {
       this.requestShieldPanelDataSpy = sinon.spy(shieldsAPI, 'requestShieldPanelData')
       this.windowId = 1
       this.tabId = 2
-      const state = deepFreeze({...initialState.shieldsPanel, windows: {1: this.tabId}, tabs: {}})
+      const state = deepFreeze({
+        ...initialState.shieldsPanel,
+        windows: {
+          1: this.tabId
+        },
+        tabs: {}
+      })
       shieldsPanelReducer(state, {
         type: windowTypes.WINDOW_FOCUS_CHANGED,
         windowId: this.windowId
@@ -114,11 +124,18 @@ describe('braveShieldsPanelReducer', () => {
     it('calls shieldsPanelState.updateActiveTab when the tab is active', function () {
       shieldsPanelReducer(this.state, {
         type: tabTypes.TAB_DATA_CHANGED,
+        tabId: this.tabId,
         tab: {
           active: true,
           id: this.tabId,
-          windowId: this.windowId
-        }
+          windowId: this.windowId,
+          index: 1,
+          pinned: false,
+          highlighted: false,
+          incognito: false,
+          selected: false
+        },
+        changeInfo: {}
       })
       assert.equal(this.updateActiveTabSpy.calledOnce, true)
       assert.equal(this.updateActiveTabSpy.getCall(0).args[1], this.windowId)
@@ -127,11 +144,18 @@ describe('braveShieldsPanelReducer', () => {
     it('does not call shieldsPanelState.updateActiveTab when the tab is not active', function () {
       shieldsPanelReducer(this.state, {
         type: tabTypes.TAB_DATA_CHANGED,
+        tabId: this.tabId,
         tab: {
           active: false,
           id: this.tabId,
-          windowId: this.windowId
-        }
+          windowId: this.windowId,
+          index: 1,
+          pinned: false,
+          highlighted: false,
+          incognito: false,
+          selected: false
+        },
+        changeInfo: {}
       })
       assert.equal(this.updateActiveTabSpy.notCalled, true)
     })
@@ -142,7 +166,13 @@ describe('braveShieldsPanelReducer', () => {
       this.updateActiveTabSpy = sinon.spy(shieldsPanelState, 'updateActiveTab')
       this.windowId = 1
       this.tabId = 2
-      this.state = {...initialState.shieldsPanel, windows: {1: this.tabId}, tabs: {}}
+      this.state = {
+        ...initialState.shieldsPanel,
+        windows: {
+          1: this.tabId
+        },
+        tabs: {}
+      }
     })
     after(function () {
       this.updateActiveTabSpy.restore()
@@ -156,7 +186,12 @@ describe('braveShieldsPanelReducer', () => {
         tab: {
           active: true,
           id: this.tabId,
-          windowId: this.windowId
+          windowId: this.windowId,
+          index: 1,
+          pinned: false,
+          highlighted: false,
+          incognito: false,
+          selected: false
         }
       })
       assert.equal(this.updateActiveTabSpy.calledOnce, true)
@@ -169,7 +204,12 @@ describe('braveShieldsPanelReducer', () => {
         tab: {
           active: false,
           id: this.tabId,
-          windowId: this.windowId
+          windowId: this.windowId,
+          index: 1,
+          pinned: false,
+          highlighted: false,
+          incognito: false,
+          selected: false
         }
       })
       assert.equal(this.updateActiveTabSpy.notCalled, true)
@@ -179,8 +219,10 @@ describe('braveShieldsPanelReducer', () => {
   describe('SHIELDS_PANEL_DATA_UPDATED', function () {
     it('updates state detail', function () {
       const tabId = 2
-      const details = {
+      const details: ShieldDetails = {
         id: tabId,
+        hostname: 'brave.com',
+        origin: 'brave.com',
         adBlock: 'block',
         trackingProtection: 'block',
         httpsEverywhere: 'block',
@@ -191,12 +233,15 @@ describe('braveShieldsPanelReducer', () => {
           type: types.SHIELDS_PANEL_DATA_UPDATED,
           details
         }), {
+          currentWindowId: -1,
           tabs: {
             [tabId]: {
               adsBlocked: 0,
               trackingProtectionBlocked: 0,
               httpsEverywhereRedirected: 0,
               javascriptBlocked: 0,
+              hostname: 'brave.com',
+              origin: 'brave.com',
               id: tabId,
               adBlock: 'block',
               trackingProtection: 'block',
@@ -213,7 +258,7 @@ describe('braveShieldsPanelReducer', () => {
   })
 
   const origin = 'https://brave.com'
-  const state = deepFreeze({
+  const state: State = deepFreeze({
     tabs: {
       2: {
         origin,
@@ -224,10 +269,17 @@ describe('braveShieldsPanelReducer', () => {
         shieldsEnabled: 'allow',
         trackingProtectionBlocked: 0,
         httpsEverywhereRedirected: 0,
-        javascriptBlocked: 0
+        javascriptBlocked: 0,
+        id: 2,
+        httpsEverywhere: 'block',
+        javascript: 'block',
+        trackingProtection: 'block',
+        adBlock: 'block'
       }
     },
-    windows: {1: 2},
+    windows: {
+      1: 2
+    },
     currentWindowId: 1
   })
 
@@ -346,10 +398,17 @@ describe('braveShieldsPanelReducer', () => {
             javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow'
+            shieldsEnabled: 'allow',
+            httpsEverywhere: 'block',
+            id: 2,
+            javascript: 'block',
+            trackingProtection: 'block',
+            adBlock: 'block'
           }
         },
-        windows: {1: 2}
+        windows: {
+          1: 2
+        }
       })
 
       nextState = shieldsPanelReducer(nextState, {
@@ -371,10 +430,17 @@ describe('braveShieldsPanelReducer', () => {
             javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow'
+            shieldsEnabled: 'allow',
+            httpsEverywhere: 'block',
+            id: 2,
+            javascript: 'block',
+            trackingProtection: 'block',
+            adBlock: 'block'
           }
         },
-        windows: {1: 2}
+        windows: {
+          1: 2
+        }
       })
     })
     it('increases different tab counts separately', function () {
@@ -397,10 +463,17 @@ describe('braveShieldsPanelReducer', () => {
             hostname: 'brave.com',
             adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow'
+            shieldsEnabled: 'allow',
+            httpsEverywhere: 'block',
+            id: 2,
+            javascript: 'block',
+            trackingProtection: 'block',
+            adBlock: 'block'
           }
         },
-        windows: {1: 2}
+        windows: {
+          1: 2
+        }
       })
 
       nextState = shieldsPanelReducer(nextState, {
@@ -423,7 +496,12 @@ describe('braveShieldsPanelReducer', () => {
             javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow'
+            shieldsEnabled: 'allow',
+            httpsEverywhere: 'block',
+            id: 2,
+            javascript: 'block',
+            trackingProtection: 'block',
+            adBlock: 'block'
           },
           3: {
             adsBlocked: 1,
@@ -432,7 +510,9 @@ describe('braveShieldsPanelReducer', () => {
             javascriptBlocked: 0
           }
         },
-        windows: {1: 2}
+        windows: {
+          1: 2
+        }
       })
     })
     it('increases different resource types separately', function () {
@@ -455,10 +535,17 @@ describe('braveShieldsPanelReducer', () => {
             javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow'
+            shieldsEnabled: 'allow',
+            httpsEverywhere: 'block',
+            id: 2,
+            javascript: 'block',
+            trackingProtection: 'block',
+            adBlock: 'block'
           }
         },
-        windows: {1: 2}
+        windows: {
+          1: 2
+        }
       })
 
       nextState = shieldsPanelReducer(nextState, {
@@ -480,10 +567,17 @@ describe('braveShieldsPanelReducer', () => {
             javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow'
+            shieldsEnabled: 'allow',
+            httpsEverywhere: 'block',
+            id: 2,
+            javascript: 'block',
+            trackingProtection: 'block',
+            adBlock: 'block'
           }
         },
-        windows: {1: 2}
+        windows: {
+          1: 2
+        }
       })
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
@@ -504,10 +598,17 @@ describe('braveShieldsPanelReducer', () => {
             javascriptBlocked: 0,
             adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow'
+            shieldsEnabled: 'allow',
+            httpsEverywhere: 'block',
+            id: 2,
+            javascript: 'block',
+            trackingProtection: 'block',
+            adBlock: 'block'
           }
         },
-        windows: {1: 2}
+        windows: {
+          1: 2
+        }
       })
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
@@ -528,10 +629,17 @@ describe('braveShieldsPanelReducer', () => {
             javascriptBlocked: 1,
             adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow'
+            shieldsEnabled: 'allow',
+            httpsEverywhere: 'block',
+            id: 2,
+            javascript: 'block',
+            trackingProtection: 'block',
+            adBlock: 'block'
           }
         },
-        windows: {1: 2}
+        windows: {
+          1: 2
+        }
       })
     })
   })

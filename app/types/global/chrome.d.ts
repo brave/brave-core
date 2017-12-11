@@ -58,5 +58,6 @@ declare namespace chrome.contentSettings {
 declare namespace chrome.braveShields {
   const onBlocked: {
     addListener: (callback: (detail: BlockDetails) => void) => void
+    emit: (detail: BlockDetails) => void
   }
 }
