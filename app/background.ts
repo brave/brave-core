@@ -2,21 +2,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const bluebird = require('bluebird')
+import * as bluebird from 'bluebird'
 global.Promise = bluebird
 
-function promisifier (method) {
+function promisifier (method: any) {
   // return a function
-  return function promisified (...args) {
+  return function promisified (...args: string[]) {
     // which returns a promise
-    return new Promise((resolve) => {
+    return new Promise((resolve: any) => {
       args.push(resolve)
       method.apply(this, args)
     })
   }
 }
 
-function promisifyAll (obj, list) {
+function promisifyAll (obj: object, list: string[]) {
   list.forEach(api => bluebird.promisifyAll(obj[api], { promisifier }))
 }
 

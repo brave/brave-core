@@ -126,7 +126,9 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
           })
         Promise.all([p1, p2, p3, p4])
           .then(() => {
-            reloadTab(tabId, true)
+            reloadTab(tabId, true).catch(() => {
+              console.error('Tab reload was not successful')
+            })
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
           })
           .catch(() => {
@@ -142,7 +144,9 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         setAllowAdBlock(tabData.origin, toggleShieldsValue(tabData.adBlock))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-            reloadTab(tabData.id, true)
+            reloadTab(tabData.id, true).catch(() => {
+              console.error('Tab reload was not successful')
+            })
           })
           .catch(() => {
             console.error('Could not set ad block setting')
@@ -155,7 +159,9 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         setAllowHTTPSEverywhere(tabData.origin, toggleShieldsValue(tabData.httpsEverywhere))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-            reloadTab(tabData.id, true)
+            reloadTab(tabData.id, true).catch(() => {
+              console.error('Tab reload was not successful')
+            })
           })
           .catch(() => {
             console.error('Could not set HTTPS Everywhere setting')
@@ -168,7 +174,9 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         setAllowJavaScript(tabData.origin, toggleShieldsValue(tabData.javascript))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-            reloadTab(tabData.id, true)
+            reloadTab(tabData.id, true).catch(() => {
+              console.error('Tab reload was not successful')
+            })
           })
           .catch(() => {
             console.error('Could not set JavaScript setting')
@@ -181,7 +189,9 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         setAllowTrackingProtection(tabData.origin, toggleShieldsValue(tabData.trackingProtection))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-            reloadTab(tabData.id, true)
+            reloadTab(tabData.id, true).catch(() => {
+              console.error('Tab reload was not successful')
+            })
           })
           .catch(() => {
             console.error('Could not set tracking protection setting')
@@ -212,7 +222,9 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
           })
         Promise.all([p1, p2])
           .then(() => {
-            reloadTab(tabId, true)
+            reloadTab(tabId, true).catch(() => {
+              console.error('Tab reload was not successful')
+            })
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
           })
           .catch(() => {

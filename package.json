@@ -43,6 +43,7 @@
   "author": "Brian Bondy <netzen@gmail.com>",
   "license": "MPL-2.0",
   "devDependencies": {
+    "@types/bluebird": "^3.5.18",
     "@types/chrome": "^0.0.55",
     "@types/node": "^8.0.54",
     "@types/react": "^16.0.26",
