@@ -6,8 +6,8 @@ source_set("net") {
     "brave_network_delegate.h",
   ]
   public_deps = [
-    "//content/public/common",
-    "//third_party/boringssl",
+    "//chrome/browser",
+    "//content/public/browser",
     "//net",
   ]
 }

@@ -9,18 +9,6 @@ index c649018a7a0aeb20caeb2bf37c60d57c48630f1b..9a320d8b5f46f2c7f2d269b7a1cc3b2c
 -  branding_path_component = "chromium"
 +  branding_path_component = "brave"
  }
-diff --git a/build/vs_toolchain.py b/build/vs_toolchain.py
-index 93a04ceb27d04671efddc245fc4e57ec388112da..683d6dce475462785fd365e373ca090de88e9799 100755
---- a/build/vs_toolchain.py
-+++ b/build/vs_toolchain.py
-@@ -153,6 +153,7 @@ def DetectVisualStudioPath():
-     # For now we use a hardcoded default with an environment variable override.
-     for path in (
-         os.environ.get('vs2017_install'),
-+        r'C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise',
-         r'C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional',
-         r'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community'):
-       if path and os.path.exists(path):
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
 index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0813b36a1 100644
 --- a/chrome/BUILD.gn
@@ -152,87 +140,19 @@ index 27e5f84cb1f06d0a1cd766beace97d5b20317928..23841a71e3e7060727dab6f47b90356c
    ]
  
    # Android does in-process PAC, so must link against V8 directly. Other
-diff --git a/chrome/browser/browser_process.h b/chrome/browser/browser_process.h
-index 77cd9e948514e875e636da465f60136ebd510491..ee7a2eeb61330c718036c04364251be7c59ce361 100644
---- a/chrome/browser/browser_process.h
-+++ b/chrome/browser/browser_process.h
-@@ -47,6 +47,11 @@ namespace safe_browsing {
- class SafeBrowsingService;
- }
- 
-+namespace brave_shields {
-+class BaseBraveShieldsService;
-+class HTTPSEverywhereService;
-+}
-+
- namespace subresource_filter {
- class ContentRulesetService;
- }
-@@ -271,6 +276,11 @@ class BrowserProcess {
- 
-   virtual net_log::ChromeNetLog* net_log() = 0;
- 
-+  virtual brave_shields::BaseBraveShieldsService* ad_block_service() = 0;
-+  virtual brave_shields::BaseBraveShieldsService*
-+    tracking_protection_service() = 0;
-+  virtual brave_shields::HTTPSEverywhereService* https_everywhere_service() = 0;
-+
-   virtual component_updater::ComponentUpdateService* component_updater() = 0;
- 
-   virtual CRLSetFetcher* crl_set_fetcher() = 0;
 diff --git a/chrome/browser/browser_process_impl.cc b/chrome/browser/browser_process_impl.cc
-index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..7a08cf341388d3c3b9b823a2800e4aa4450d63a6 100644
+index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..b84fa6b7fd7259217c7e9b0932c566ec65d9bac6 100644
 --- a/chrome/browser/browser_process_impl.cc
 +++ b/chrome/browser/browser_process_impl.cc
-@@ -34,7 +34,11 @@
+@@ -34,6 +34,7 @@
  #include "base/time/default_clock.h"
  #include "base/time/default_tick_clock.h"
  #include "base/trace_event/trace_event.h"
 +#include "brave/components/brave_shields/browser/brave_resource_dispatcher_host_delegate.h"
  #include "build/build_config.h"
-+#include "brave/components/brave_shields/browser/ad_block_service.h"
-+#include "brave/components/brave_shields/browser/https_everywhere_service.h"
-+#include "brave/components/brave_shields/browser/tracking_protection_service.h"
  #include "chrome/browser/chrome_browser_main.h"
  #include "chrome/browser/chrome_child_process_watcher.h"
- #include "chrome/browser/chrome_content_browser_client.h"
-@@ -954,6 +958,35 @@ net_log::ChromeNetLog* BrowserProcessImpl::net_log() {
-   return net_log_.get();
- }
- 
-+brave_shields::BaseBraveShieldsService*
-+BrowserProcessImpl::ad_block_service() {
-+  if (ad_block_service_)
-+    return ad_block_service_.get();
-+
-+  ad_block_service_ = brave_shields::AdBlockServiceFactory();
-+  return ad_block_service_.get();
-+}
-+
-+brave_shields::BaseBraveShieldsService*
-+  BrowserProcessImpl::tracking_protection_service() {
-+  if (tracking_protection_service_)
-+    return tracking_protection_service_.get();
-+
-+  tracking_protection_service_ =
-+    brave_shields::TrackingProtectionServiceFactory();
-+  return tracking_protection_service_.get();
-+}
-+
-+brave_shields::HTTPSEverywhereService*
-+BrowserProcessImpl::https_everywhere_service() {
-+  if (https_everywhere_service_)
-+    return https_everywhere_service_.get();
-+
-+  https_everywhere_service_ =
-+    brave_shields::HTTPSEverywhereServiceFactory();
-+  return https_everywhere_service_.get();
-+}
-+
- component_updater::ComponentUpdateService*
- BrowserProcessImpl::component_updater() {
-   if (component_updater_)
-@@ -1004,7 +1037,7 @@ BrowserProcessImpl::supervised_user_whitelist_installer() {
+@@ -1004,7 +1005,7 @@ BrowserProcessImpl::supervised_user_whitelist_installer() {
  
  void BrowserProcessImpl::ResourceDispatcherHostCreated() {
    resource_dispatcher_host_delegate_ =
@@ -242,22 +162,10 @@ index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..7a08cf341388d3c3b9b823a2800e4aa4
        resource_dispatcher_host_delegate_.get());
  
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index 454080193dbbb41b6bea01416f28f210b26aaff0..30908ed8044a258d268836815bd69c998357080b 100644
+index 454080193dbbb41b6bea01416f28f210b26aaff0..786de33e900d9c521de48ffe570651c347088a4e 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
-@@ -143,6 +143,11 @@ class BrowserProcessImpl : public BrowserProcess,
- #endif
- 
-   net_log::ChromeNetLog* net_log() override;
-+  brave_shields::BaseBraveShieldsService* ad_block_service() override;
-+  brave_shields::BaseBraveShieldsService*
-+      tracking_protection_service() override;
-+  brave_shields::HTTPSEverywhereService*
-+      https_everywhere_service() override;
-   component_updater::ComponentUpdateService* component_updater() override;
-   CRLSetFetcher* crl_set_fetcher() override;
-   component_updater::PnaclComponentInstaller* pnacl_component_installer()
-@@ -164,6 +169,7 @@ class BrowserProcessImpl : public BrowserProcess,
+@@ -164,6 +164,7 @@ class BrowserProcessImpl : public BrowserProcess,
    static void RegisterPrefs(PrefRegistrySimple* registry);
  
   private:
@@ -265,19 +173,6 @@ index 454080193dbbb41b6bea01416f28f210b26aaff0..30908ed8044a258d268836815bd69c99
    // KeepAliveStateObserver implementation
    void OnKeepAliveStateChanged(bool is_keeping_alive) override;
    void OnKeepAliveRestartStateChanged(bool can_restart) override;
-@@ -310,6 +316,12 @@ class BrowserProcessImpl : public BrowserProcess,
-   void RestartBackgroundInstance();
- #endif  // defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS))
- 
-+  std::unique_ptr<brave_shields::BaseBraveShieldsService> ad_block_service_;
-+  std::unique_ptr<brave_shields::BaseBraveShieldsService>
-+      tracking_protection_service_;
-+  std::unique_ptr<brave_shields::HTTPSEverywhereService>
-+      https_everywhere_service_;
-+
-   // component updater is normally not used under ChromeOS due
-   // to concerns over integrity of data shared between profiles,
-   // but some users of component updater only install per-user.
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
 index d9baddce633a13532837c1948f17d96fd98fad67..5c9169f61028b44194adcef083c427ae684edb6a 100644
 --- a/chrome/browser/chrome_browser_main.cc
@@ -311,28 +206,6 @@ index 9361b28fb3ac91e61837d7c707e9f4a9ec73c7c6..c5eee899ae5f42b974645240f17aabeb
    friend class DisableWebRtcEncryptionFlagTest;
    friend class InProcessBrowserTest;
  
-diff --git a/chrome/browser/extensions/tab_helper.cc b/chrome/browser/extensions/tab_helper.cc
-index 21cbe22a4480f24c6793ef5c4d1db1d22329bafe..2f57dc0636ab2947a401b9fc11896c83074c2bdf 100644
---- a/chrome/browser/extensions/tab_helper.cc
-+++ b/chrome/browser/extensions/tab_helper.cc
-@@ -47,6 +47,7 @@
- #include "content/public/browser/web_contents.h"
- #include "content/public/common/frame_navigate_params.h"
- #include "extensions/browser/api/declarative/rules_registry_service.h"
-+#include "extensions/browser/extension_api_frame_id_map.h"
- #include "extensions/browser/extension_prefs.h"
- #include "extensions/browser/extension_registry.h"
- #include "extensions/browser/extension_system.h"
-@@ -286,6 +287,9 @@ void TabHelper::FinishCreateBookmarkApp(
- 
- void TabHelper::RenderFrameCreated(content::RenderFrameHost* host) {
-   SetTabId(host);
-+  // Look up the extension API frame ID to force the mapping to be cached.
-+  // This is needed so that cached information is available for tabId.
-+  ExtensionApiFrameIdMap::Get()->CacheFrameData(host);
- }
- 
- void TabHelper::DidFinishNavigation(
 diff --git a/chrome/browser/io_thread.cc b/chrome/browser/io_thread.cc
 index 4161673ba0f9ec6a079436469e5a6579ff1e88cc..b1dfe5add2d5a69f8fc305610e591333e821ffdc 100644
 --- a/chrome/browser/io_thread.cc
@@ -379,6 +252,26 @@ index 1a41943ac2fd649665fd488b889b5a9dd3ec4512..c06d2aca1f0e183b7989d3bbe25ae64c
  #if BUILDFLAG(ENABLE_EXTENSIONS)
            io_thread_globals->extension_event_router_forwarder.get(),
  #else
+diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
+index d992488f5858af8378328a05e72e64a13ba388b9..2003b7336bd34d23f09c4ee77511a262ecc680ea 100644
+--- a/chrome/browser/ui/tab_helpers.cc
++++ b/chrome/browser/ui/tab_helpers.cc
+@@ -10,6 +10,7 @@
+ #include "base/command_line.h"
+ #include "base/feature_list.h"
+ #include "base/memory/ptr_util.h"
++#include "brave/browser/brave_tab_helpers.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+ #include "chrome/browser/browser_process.h"
+@@ -179,6 +180,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+   BookmarkLastVisitUpdater::MaybeCreateForWebContentsWithBookmarkModel(
+       web_contents, BookmarkModelFactory::GetForBrowserContext(
+                         web_contents->GetBrowserContext()));
++  brave::AttachTabHelpers(web_contents);
+   chrome_browser_net::NetErrorTabHelper::CreateForWebContents(web_contents);
+   chrome_browser_net::PredictorTabHelper::CreateForWebContents(web_contents);
+   if (base::FeatureList::IsEnabled(kDecoupleTranslateLanguageFeature)) {
 diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
 index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5afcf04ad 100644
 --- a/chrome/common/chrome_constants.cc
@@ -429,76 +322,6 @@ index 8ec1de091af1a17127e66bc67c6ee7cb8b5c2be3..0686739f34df6198129d2a9a363fba00
 +    "contexts": ["blessed_extension"]
 +  }
  }
-diff --git a/chrome/common/extensions/api/content_settings.json b/chrome/common/extensions/api/content_settings.json
-index 9c0927abbb6127eae9f4e3143f6d508aa9d81f72..0e14960a0abd5895714405058257750001164d63 100644
---- a/chrome/common/extensions/api/content_settings.json
-+++ b/chrome/common/extensions/api/content_settings.json
-@@ -238,6 +238,26 @@
-         "id": "MultipleAutomaticDownloadsContentSetting",
-         "type": "string",
-         "enum": ["allow", "block", "ask"]
-+      },
-+      {
-+        "id": "BraveShieldsContentSetting",
-+        "type": "string",
-+        "enum": ["allow", "block"]
-+      },
-+      {
-+        "id": "BraveAdBlockContentSetting",
-+        "type": "string",
-+        "enum": ["allow", "block"]
-+      },
-+      {
-+        "id": "BraveTrackingProtectionContentSetting",
-+        "type": "string",
-+        "enum": ["allow", "block"]
-+      },
-+      {
-+        "id": "BraveHTTPSEverywhereContentSetting",
-+        "type": "string",
-+        "enum": ["allow", "block"]
-       }
-     ],
-     "properties": {
-@@ -344,6 +364,38 @@
-           "automatic-downloads",
-           {"$ref":"MultipleAutomaticDownloadsContentSetting"}
-         ]
-+      },
-+      "braveShields": {
-+        "$ref": "ContentSetting",
-+        "description": "Whether to allow sites to use Brave shields. One of<br><var>allow</var>: Allow sites to use shields,<br><var>block</var>: Don't allow sites to use shields. <br>Default is <var>allow</var>.<br>The primary URL is the URL of the top-level frame. The secondary URL is not used.",
-+        "value": [
-+          "braveShields",
-+          {"$ref":"BraveShieldsContentSetting"}
-+        ]
-+      },
-+      "braveAdBlock": {
-+        "$ref": "ContentSetting",
-+        "description": "Whether to allow sites to use Brave's ad-block. One of<br><var>allow</var>: Allow sites to use ad-block,<br><var>block</var>: Don't allow sites to use ad-block. <br>Default is <var>allow</var>.<br>The primary URL is the URL of the top-level frame. The secondary URL is not used.",
-+        "value": [
-+          "braveAdBlock",
-+          {"$ref":"BraveAdBlockContentSetting"}
-+        ]
-+      },
-+      "braveTrackingProtection": {
-+        "$ref": "ContentSetting",
-+        "description": "Whether to allow sites to use Brave's tracking-protection. One of<br><var>allow</var>: Allow sites to use tracking-protection,<br><var>block</var>: Don't allow sites to use tracking-protection. <br>Default is <var>allow</var>.<br>The primary URL is the URL of the top-level frame. The secondary URL is not used.",
-+        "value": [
-+          "braveTrackingProtection",
-+          {"$ref":"BraveTrackingProtectionContentSetting"}
-+        ]
-+      },
-+      "braveHTTPSEverywhere": {
-+        "$ref": "ContentSetting",
-+        "description": "Whether to allow sites to use Brave's HTTPS Everywhere. One of<br><var>allow</var>: Allow sites to use HTTPS Everywhere,<br><var>block</var>: Don't allow sites to use HTTPS Everywhere. <br>Default is <var>allow</var>.<br>The primary URL is the URL of the top-level frame. The secondary URL is not used.",
-+        "value": [
-+          "braveHTTPSEverywhere",
-+          {"$ref":"BraveHTTPSEverywhereContentSetting"}
-+        ]
-       }
-     }
-   }
 diff --git a/chrome/common/mac/app_mode_chrome_locator.mm b/chrome/common/mac/app_mode_chrome_locator.mm
 index efd272e706ba56b748e4b76b96d76cbd03aa07ac..5ce343302a2ab3a18a9149a33203f5a2fe301b23 100644
 --- a/chrome/common/mac/app_mode_chrome_locator.mm
@@ -535,65 +358,6 @@ index c0132fecb0b9e8a91f288d6e6ecaad9dfdbec247..a6e307d6ddcee3ca0f75a91c459a6903
    // IPC message handlers.
    using Handlers = std::vector<std::unique_ptr<UtilityMessageHandler>>;
    Handlers handlers_;
-diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
-index fe84151f52ddeabef91f80d618c78aae1e22e10e..125597e0ffc0dd3240c9a26773ef58352a3ca800 100644
---- a/components/content_settings/core/browser/content_settings_registry.cc
-+++ b/components/content_settings/core/browser/content_settings_registry.cc
-@@ -335,6 +335,39 @@ void ContentSettingsRegistry::Init() {
-            WebsiteSettingsRegistry::DESKTOP |
-                WebsiteSettingsRegistry::PLATFORM_ANDROID,
-            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE);
-+
-+  Register(CONTENT_SETTINGS_TYPE_BRAVESHIELDS, "braveShields", CONTENT_SETTING_ALLOW,
-+           WebsiteSettingsInfo::SYNCABLE,
-+           WhitelistedSchemes(kChromeUIScheme, kChromeDevToolsScheme,
-+                              kExtensionScheme),
-+           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
-+           WebsiteSettingsInfo::TOP_LEVEL_ORIGIN_ONLY_SCOPE,
-+           WebsiteSettingsRegistry::ALL_PLATFORMS,
-+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE);
-+  Register(CONTENT_SETTINGS_TYPE_BRAVEADBLOCK, "braveAdBlock", CONTENT_SETTING_ALLOW,
-+           WebsiteSettingsInfo::SYNCABLE,
-+           WhitelistedSchemes(kChromeUIScheme, kChromeDevToolsScheme,
-+                              kExtensionScheme),
-+           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
-+           WebsiteSettingsInfo::TOP_LEVEL_ORIGIN_ONLY_SCOPE,
-+           WebsiteSettingsRegistry::ALL_PLATFORMS,
-+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE);
-+  Register(CONTENT_SETTINGS_TYPE_BRAVETRACKINGPROTECTION, "braveTrackingProtection", CONTENT_SETTING_ALLOW,
-+           WebsiteSettingsInfo::SYNCABLE,
-+           WhitelistedSchemes(kChromeUIScheme, kChromeDevToolsScheme,
-+                              kExtensionScheme),
-+           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
-+           WebsiteSettingsInfo::TOP_LEVEL_ORIGIN_ONLY_SCOPE,
-+           WebsiteSettingsRegistry::ALL_PLATFORMS,
-+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE);
-+  Register(CONTENT_SETTINGS_TYPE_BRAVEHTTPSEVERYWHERE, "braveHTTPSEverywhere", CONTENT_SETTING_ALLOW,
-+           WebsiteSettingsInfo::SYNCABLE,
-+           WhitelistedSchemes(kChromeUIScheme, kChromeDevToolsScheme,
-+                              kExtensionScheme),
-+           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
-+           WebsiteSettingsInfo::TOP_LEVEL_ORIGIN_ONLY_SCOPE,
-+           WebsiteSettingsRegistry::ALL_PLATFORMS,
-+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE);
- }
- 
- void ContentSettingsRegistry::Register(
-diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 6781f84119866016a4610cdfc187b25d82e442e9..a8a1fb899a60697f64f2ec4752900e58b4ef4fd4 100644
---- a/components/content_settings/core/common/content_settings_types.h
-+++ b/components/content_settings/core/common/content_settings_types.h
-@@ -100,6 +100,10 @@ enum ContentSettingsType {
-   CONTENT_SETTINGS_TYPE_ACCESSIBILITY_EVENTS,
- 
-   CONTENT_SETTINGS_NUM_TYPES,
-+  CONTENT_SETTINGS_TYPE_BRAVESHIELDS,
-+  CONTENT_SETTINGS_TYPE_BRAVEADBLOCK,
-+  CONTENT_SETTINGS_TYPE_BRAVETRACKINGPROTECTION,
-+  CONTENT_SETTINGS_TYPE_BRAVEHTTPSEVERYWHERE
- };
- 
- struct ContentSettingsTypeHash {
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
 index a299d38baf7f0c82dad33dc37764eba5db4ba856..218b83b4c65fe269dd4c3e5b7b51aa44fc4119ac 100644
 --- a/components/strings/BUILD.gn

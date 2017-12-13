@@ -57,7 +57,7 @@ int BraveNetworkDelegate::OnBeforeURLRequest(net::URLRequest* request,
     GURL* new_url) {
   GURL tab_origin = request->site_for_cookies().GetOrigin();
   bool allow_https_everywhere = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, CONTENT_SETTINGS_TYPE_BRAVEHTTPSEVERYWHERE);
+      request, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS, "https-everywhere");
   if (!allow_https_everywhere) {
     return ChromeNetworkDelegate::OnBeforeURLRequest(request,
         callback, new_url);
@@ -91,7 +91,7 @@ int BraveNetworkDelegate::OnBeforeURLRequest_HttpsePreFileWork(
   }
 
   if (is_valid_url) {
-    if (!g_browser_process->https_everywhere_service()->
+    if (!g_brave_browser_process->https_everywhere_service()->
         GetHTTPSURLFromCacheOnly(&request->url(), request->identifier(),
           ctx->new_url_spec)) {
       ctx->request_url = request->url();
@@ -122,7 +122,7 @@ void BraveNetworkDelegate::OnBeforeURLRequest_HttpseFileWork(
   base::ThreadRestrictions::AssertIOAllowed();
   DCHECK_CURRENTLY_ON(content::BrowserThread::FILE);
   DCHECK(ctx->request_identifier != 0);
-  g_browser_process->https_everywhere_service()->
+  g_brave_browser_process->https_everywhere_service()->
     GetHTTPSURL(&ctx->request_url, ctx->request_identifier, ctx->new_url_spec);
 }
 

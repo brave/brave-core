@@ -12,6 +12,7 @@
 #include <vector>
 #include <mutex>
 
+#include "base/sequenced_task_runner.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
@@ -47,6 +48,7 @@ class BaseBraveShieldsService {
   std::unique_ptr<DATFileWebRequest> web_request_;
   std::mutex init_mutex_;
   std::mutex initialized_mutex_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
 };
 
 }  // namespace brave_shields

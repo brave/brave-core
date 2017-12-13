@@ -17,6 +17,8 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task_runner_util.h"
+#include "base/task_scheduler/post_task.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_shields/browser/dat_file_web_request.h"
 
@@ -27,7 +29,9 @@ BaseBraveShieldsService::BaseBraveShieldsService(
     const GURL& url) :
       file_name_(file_name),
       url_(url),
-    initialized_(false) {
+    initialized_(false),
+    task_runner_(
+        base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {
@@ -53,7 +57,10 @@ void BaseBraveShieldsService::DATFileResponse(bool success) {
     LOG(ERROR) << "Could not download DAT file";
     return;
   }
-  InitShields();
+
+  task_runner_->PostTask(FROM_HERE,
+      base::Bind(&BaseBraveShieldsService::InitShields,
+          base::Unretained(this)));
 }
 
 void BaseBraveShieldsService::InitShields() {
@@ -64,7 +71,6 @@ void BaseBraveShieldsService::InitShields() {
 }
 
 bool BaseBraveShieldsService::Start() {
-  base::ThreadRestrictions::AssertIOAllowed();
   std::lock_guard<std::mutex> guard(init_mutex_);
   if (initialized_) {
     return true;

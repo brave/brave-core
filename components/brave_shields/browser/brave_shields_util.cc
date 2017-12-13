@@ -26,7 +26,8 @@ using net::URLRequest;
 namespace brave_shields {
 
 bool IsAllowContentSettingFromIO(net::URLRequest* request,
-    GURL tab_origin, ContentSettingsType setting_type) {
+    GURL tab_origin, ContentSettingsType setting_type,
+    const std::string& resource_identifier) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   const content::ResourceRequestInfo* resource_info =
@@ -44,10 +45,10 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
       io_data->GetHostContentSettingsMap()->GetWebsiteSetting(
           tab_origin, tab_origin,
           setting_type,
-          std::string(), &setting_info);
+          resource_identifier, &setting_info);
   ContentSetting setting =
       content_settings::ValueToContentSetting(value.get());
-  return setting == CONTENT_SETTING_ALLOW;
+  return setting != CONTENT_SETTING_BLOCK;
 }
 
 void GetRenderFrameIdAndProcessId(URLRequest* request,

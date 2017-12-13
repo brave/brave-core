@@ -4,10 +4,10 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_resource_throttle.h"
 
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
@@ -37,16 +37,18 @@ const char* BraveShieldsResourceThrottle::GetNameForLogging() const {
 void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
   GURL tab_origin = request_->site_for_cookies().GetOrigin();
   bool allow_ad_block = brave_shields::IsAllowContentSettingFromIO(
-      request_, tab_origin, CONTENT_SETTINGS_TYPE_BRAVEADBLOCK);
+      request_, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS, "ad-block");
   bool allow_tracking_protection = brave_shields::IsAllowContentSettingFromIO(
       request_, tab_origin,
-      CONTENT_SETTINGS_TYPE_BRAVETRACKINGPROTECTION);
-  if (allow_ad_block && !g_browser_process->tracking_protection_service()->
+      CONTENT_SETTINGS_TYPE_PLUGINS, "tracking-protection");
+  if (allow_ad_block &&
+      !g_brave_browser_process->tracking_protection_service()->
       ShouldStartRequest(request_->url(), resource_type_, tab_origin.host())) {
     Cancel();
     brave_shields::DispatchBlockedEventFromIO(request_, "adBlock");
   }
-  if (allow_tracking_protection && !g_browser_process->ad_block_service()->
+  if (allow_tracking_protection &&
+      !g_brave_browser_process->ad_block_service()->
       ShouldStartRequest(request_->url(), resource_type_, tab_origin.host())) {
     Cancel();
     brave_shields::DispatchBlockedEventFromIO(request_, "trackingProtection");

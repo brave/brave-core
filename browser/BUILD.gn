@@ -4,6 +4,8 @@ source_set("browser_process") {
   sources = [
     "brave_browser_process_impl.cc",
     "brave_browser_process_impl.h",
+    "brave_tab_helpers.cc",
+    "brave_tab_helpers.h",
   ]
 
   deps = [
@@ -19,7 +21,6 @@ source_set("browser") {
 
   public_deps = [
     "//chrome/browser",
-    "//chrome/common",
   ]
 
   deps = [
