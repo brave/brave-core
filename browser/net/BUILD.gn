@@ -4,6 +4,10 @@ source_set("net") {
   sources = [
     "brave_network_delegate.cc",
     "brave_network_delegate.h",
+    "brave_httpse_network_delegate.cc",
+    "brave_httpse_network_delegate.h",
+    "url_context.cc",
+    "url_context.h"
   ]
   public_deps = [
     "//chrome/browser",
