@@ -6,7 +6,7 @@
 
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/common/extensions/api/brave_shields.h"
+#include "brave/common/extensions/api/brave_shields.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"

@@ -206,18 +206,28 @@ index 9361b28fb3ac91e61837d7c707e9f4a9ec73c7c6..c5eee899ae5f42b974645240f17aabeb
    friend class DisableWebRtcEncryptionFlagTest;
    friend class InProcessBrowserTest;
  
-diff --git a/chrome/browser/io_thread.cc b/chrome/browser/io_thread.cc
-index 4161673ba0f9ec6a079436469e5a6579ff1e88cc..b1dfe5add2d5a69f8fc305610e591333e821ffdc 100644
---- a/chrome/browser/io_thread.cc
-+++ b/chrome/browser/io_thread.cc
-@@ -30,6 +30,7 @@
- #include "base/threading/thread.h"
- #include "base/time/time.h"
- #include "base/trace_event/trace_event.h"
-+#include "brave/browser/net/brave_network_delegate.h"
+diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+index 4398370da586e80f51b5e8517a49174236fa78c3..3b5d2a849aaa5c4d5bbd4feaaee640ccc0edefbd 100644
+--- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
++++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+@@ -10,6 +10,7 @@
+ #include "base/memory/ptr_util.h"
+ #include "base/version.h"
  #include "build/build_config.h"
++#include "brave/common/extensions/api/generated_api_registration.h"
+ #include "chrome/browser/app_mode/app_mode_utils.h"
  #include "chrome/browser/browser_process.h"
- #include "chrome/browser/data_usage/tab_id_annotator.h"
+ #include "chrome/browser/extensions/activity_log/activity_log.h"
+@@ -277,6 +278,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
+ 
+   // Generated APIs from Chrome.
+   api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);
++
++  // Generated APIs from Brave.
++  api::BraveGeneratedFunctionRegistry::RegisterAll(registry);
+ }
+ 
+ void ChromeExtensionsBrowserClient::RegisterExtensionInterfaces(
 diff --git a/chrome/browser/net/chrome_network_delegate.h b/chrome/browser/net/chrome_network_delegate.h
 index e055ef156da9ea78b1dee96ee04f9c061267c775..5ffcecf64f39f3ff593cd30d9c1ef551be5f1a27 100644
 --- a/chrome/browser/net/chrome_network_delegate.h
@@ -291,37 +301,89 @@ index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5
  #error Unknown branding
  #endif
 diff --git a/chrome/common/extensions/api/BUILD.gn b/chrome/common/extensions/api/BUILD.gn
-index ad3703177d68941b91d570bcfa001848ffa179a9..727d534ae2bce1e5f1105cf2c3a2318f10302b6d 100644
+index ad3703177d68941b91d570bcfa001848ffa179a9..deae657f78e081a46b551569e626d84d6cd76c2d 100644
 --- a/chrome/common/extensions/api/BUILD.gn
 +++ b/chrome/common/extensions/api/BUILD.gn
-@@ -84,6 +84,12 @@ schema_sources = [
+@@ -84,6 +84,7 @@ schema_sources = [
    "webstore_widget_private.idl",
    "windows.json",
  ]
 +
-+# Add Brave extension resources here
-+schema_sources += [
-+  "brave_shields.json"
-+]
-+
  if (!is_android) {
    schema_sources += [ "processes.idl" ]
  }
-diff --git a/chrome/common/extensions/api/_api_features.json b/chrome/common/extensions/api/_api_features.json
-index 8ec1de091af1a17127e66bc67c6ee7cb8b5c2be3..0686739f34df6198129d2a9a363fba00da4a537e 100644
---- a/chrome/common/extensions/api/_api_features.json
-+++ b/chrome/common/extensions/api/_api_features.json
-@@ -826,5 +826,9 @@
-     "matches": [
-       "chrome://bookmarks/*"
-     ]
--  }]
-+  }],
-+  "braveShields": {
-+    "dependencies": ["permission:contentSettings"],
-+    "contexts": ["blessed_extension"]
-+  }
+diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
+index c4b6d014fe94d37a0e16802e7c644a990326d6f4..86e4cd06c08af21c7ff8b664010316e3f304959c 100644
+--- a/chrome/common/extensions/chrome_extensions_client.cc
++++ b/chrome/common/extensions/chrome_extensions_client.cc
+@@ -13,6 +13,13 @@
+ #include "base/metrics/histogram_macros.h"
+ #include "base/strings/string_util.h"
+ #include "base/values.h"
++#include "brave/common/extensions/api/api_features.h"
++#include "brave/common/extensions/api/behavior_features.h"
++#include "brave/common/extensions/api/generated_api_registration.h"
++#include "brave/common/extensions/api/generated_schemas.h"
++#include "brave/common/extensions/api/grit/brave_api_resources.h"
++#include "brave/common/extensions/api/manifest_features.h"
++#include "brave/common/extensions/api/permission_features.h"
+ #include "chrome/common/chrome_content_client.h"
+ #include "chrome/common/chrome_switches.h"
+ #include "chrome/common/extensions/api/api_features.h"
+@@ -108,6 +115,7 @@ void ChromeExtensionsClient::Initialize() {
+   if (!ManifestHandler::IsRegistrationFinalized()) {
+     RegisterCommonManifestHandlers();
+     RegisterChromeManifestHandlers();
++    // RegisterBraveManifestHandlers();
+     ManifestHandler::FinalizeRegistration();
+   }
+ 
+@@ -142,13 +150,13 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
+     const std::string& name) const {
+   std::unique_ptr<FeatureProvider> provider;
+   if (name == "api") {
+-    provider.reset(new APIFeatureProvider());
++    provider.reset(new BraveAPIFeatureProvider());
+   } else if (name == "manifest") {
+-    provider.reset(new ManifestFeatureProvider());
++    provider.reset(new BraveManifestFeatureProvider());
+   } else if (name == "permission") {
+-    provider.reset(new PermissionFeatureProvider());
++    provider.reset(new BravePermissionFeatureProvider());
+   } else if (name == "behavior") {
+-    provider.reset(new BehaviorFeatureProvider());
++    provider.reset(new BraveBehaviorFeatureProvider());
+   } else {
+     NOTREACHED();
+   }
+@@ -161,6 +169,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
+       new JSONFeatureProviderSource("api"));
+   source->LoadJSON(IDR_EXTENSION_API_FEATURES);
+   source->LoadJSON(IDR_CHROME_EXTENSION_API_FEATURES);
++  source->LoadJSON(IDR_BRAVE_EXTENSION_API_FEATURES);
+   return source;
  }
+ 
+@@ -238,7 +247,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
+ bool ChromeExtensionsClient::IsAPISchemaGenerated(
+     const std::string& name) const {
+   // Test from most common to least common.
+-  return api::ChromeGeneratedSchemas::IsGenerated(name) ||
++  return api::BraveGeneratedSchemas::IsGenerated(name) ||
++         api::ChromeGeneratedSchemas::IsGenerated(name) ||
+          api::GeneratedSchemas::IsGenerated(name);
+ }
+ 
+@@ -248,6 +258,9 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
+   if (api::ChromeGeneratedSchemas::IsGenerated(name))
+     return api::ChromeGeneratedSchemas::Get(name);
+ 
++  if (api::BraveGeneratedSchemas::IsGenerated(name))
++    return api::BraveGeneratedSchemas::Get(name);
++
+   return api::GeneratedSchemas::Get(name);
+ }
+ 
 diff --git a/chrome/common/mac/app_mode_chrome_locator.mm b/chrome/common/mac/app_mode_chrome_locator.mm
 index efd272e706ba56b748e4b76b96d76cbd03aa07ac..5ce343302a2ab3a18a9149a33203f5a2fe301b23 100644
 --- a/chrome/common/mac/app_mode_chrome_locator.mm

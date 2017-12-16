@@ -8,6 +8,7 @@ group("child_dependencies") {
 group("browser_dependencies") {
   public_deps = [
     "//brave/browser",
+    "//brave/common/extensions/api"
   ]
 }
 
