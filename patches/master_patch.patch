@@ -9,18 +9,6 @@ index c649018a7a0aeb20caeb2bf37c60d57c48630f1b..9a320d8b5f46f2c7f2d269b7a1cc3b2c
 -  branding_path_component = "chromium"
 +  branding_path_component = "brave"
  }
-diff --git a/build/vs_toolchain.py b/build/vs_toolchain.py
-index 93a04ceb27d04671efddc245fc4e57ec388112da..683d6dce475462785fd365e373ca090de88e9799 100755
---- a/build/vs_toolchain.py
-+++ b/build/vs_toolchain.py
-@@ -153,6 +153,7 @@ def DetectVisualStudioPath():
-     # For now we use a hardcoded default with an environment variable override.
-     for path in (
-         os.environ.get('vs2017_install'),
-+        r'C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise',
-         r'C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional',
-         r'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community'):
-       if path and os.path.exists(path):
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
 index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0813b36a1 100644
 --- a/chrome/BUILD.gn
@@ -152,6 +140,27 @@ index 27e5f84cb1f06d0a1cd766beace97d5b20317928..23841a71e3e7060727dab6f47b90356c
    ]
  
    # Android does in-process PAC, so must link against V8 directly. Other
+diff --git a/chrome/browser/browser_process_impl.cc b/chrome/browser/browser_process_impl.cc
+index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..b84fa6b7fd7259217c7e9b0932c566ec65d9bac6 100644
+--- a/chrome/browser/browser_process_impl.cc
++++ b/chrome/browser/browser_process_impl.cc
+@@ -34,6 +34,7 @@
+ #include "base/time/default_clock.h"
+ #include "base/time/default_tick_clock.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/components/brave_shields/browser/brave_resource_dispatcher_host_delegate.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/chrome_browser_main.h"
+ #include "chrome/browser/chrome_child_process_watcher.h"
+@@ -1004,7 +1005,7 @@ BrowserProcessImpl::supervised_user_whitelist_installer() {
+ 
+ void BrowserProcessImpl::ResourceDispatcherHostCreated() {
+   resource_dispatcher_host_delegate_ =
+-      base::MakeUnique<ChromeResourceDispatcherHostDelegate>();
++      base::MakeUnique<BraveResourceDispatcherHostDelegate>();
+   ResourceDispatcherHost::Get()->SetDelegate(
+       resource_dispatcher_host_delegate_.get());
+ 
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
 index 454080193dbbb41b6bea01416f28f210b26aaff0..786de33e900d9c521de48ffe570651c347088a4e 100644
 --- a/chrome/browser/browser_process_impl.h
@@ -197,6 +206,82 @@ index 9361b28fb3ac91e61837d7c707e9f4a9ec73c7c6..c5eee899ae5f42b974645240f17aabeb
    friend class DisableWebRtcEncryptionFlagTest;
    friend class InProcessBrowserTest;
  
+diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+index 4398370da586e80f51b5e8517a49174236fa78c3..3b5d2a849aaa5c4d5bbd4feaaee640ccc0edefbd 100644
+--- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
++++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+@@ -10,6 +10,7 @@
+ #include "base/memory/ptr_util.h"
+ #include "base/version.h"
+ #include "build/build_config.h"
++#include "brave/common/extensions/api/generated_api_registration.h"
+ #include "chrome/browser/app_mode/app_mode_utils.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/extensions/activity_log/activity_log.h"
+@@ -277,6 +278,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
+ 
+   // Generated APIs from Chrome.
+   api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);
++
++  // Generated APIs from Brave.
++  api::BraveGeneratedFunctionRegistry::RegisterAll(registry);
+ }
+ 
+ void ChromeExtensionsBrowserClient::RegisterExtensionInterfaces(
+diff --git a/chrome/browser/net/chrome_network_delegate.h b/chrome/browser/net/chrome_network_delegate.h
+index e055ef156da9ea78b1dee96ee04f9c061267c775..5ffcecf64f39f3ff593cd30d9c1ef551be5f1a27 100644
+--- a/chrome/browser/net/chrome_network_delegate.h
++++ b/chrome/browser/net/chrome_network_delegate.h
+@@ -144,6 +144,8 @@ class ChromeNetworkDelegate : public net::NetworkDelegateImpl {
+   static void EnableAccessToAllFilesForTesting(bool enabled);
+ 
+  private:
++  friend class BraveNetworkDelegate;
++
+   // NetworkDelegate implementation.
+   int OnBeforeURLRequest(net::URLRequest* request,
+                          const net::CompletionCallback& callback,
+diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
+index 1a41943ac2fd649665fd488b889b5a9dd3ec4512..c06d2aca1f0e183b7989d3bbe25ae64c8bde0c95 100644
+--- a/chrome/browser/profiles/profile_io_data.cc
++++ b/chrome/browser/profiles/profile_io_data.cc
+@@ -25,6 +25,7 @@
+ #include "base/strings/string_util.h"
+ #include "base/task_scheduler/post_task.h"
+ #include "base/threading/thread_task_runner_handle.h"
++#include "brave/browser/net/brave_network_delegate.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/chrome_notification_types.h"
+@@ -1032,7 +1033,7 @@ void ProfileIOData::Init(
+   builder->set_enable_brotli(io_thread_globals->enable_brotli);
+ 
+   std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
+-      new ChromeNetworkDelegate(
++      new BraveNetworkDelegate(
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+           io_thread_globals->extension_event_router_forwarder.get(),
+ #else
+diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
+index d992488f5858af8378328a05e72e64a13ba388b9..2003b7336bd34d23f09c4ee77511a262ecc680ea 100644
+--- a/chrome/browser/ui/tab_helpers.cc
++++ b/chrome/browser/ui/tab_helpers.cc
+@@ -10,6 +10,7 @@
+ #include "base/command_line.h"
+ #include "base/feature_list.h"
+ #include "base/memory/ptr_util.h"
++#include "brave/browser/brave_tab_helpers.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+ #include "chrome/browser/browser_process.h"
+@@ -179,6 +180,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+   BookmarkLastVisitUpdater::MaybeCreateForWebContentsWithBookmarkModel(
+       web_contents, BookmarkModelFactory::GetForBrowserContext(
+                         web_contents->GetBrowserContext()));
++  brave::AttachTabHelpers(web_contents);
+   chrome_browser_net::NetErrorTabHelper::CreateForWebContents(web_contents);
+   chrome_browser_net::PredictorTabHelper::CreateForWebContents(web_contents);
+   if (base::FeatureList::IsEnabled(kDecoupleTranslateLanguageFeature)) {
 diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
 index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5afcf04ad 100644
 --- a/chrome/common/chrome_constants.cc
@@ -215,6 +300,90 @@ index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5
  #else
  #error Unknown branding
  #endif
+diff --git a/chrome/common/extensions/api/BUILD.gn b/chrome/common/extensions/api/BUILD.gn
+index ad3703177d68941b91d570bcfa001848ffa179a9..deae657f78e081a46b551569e626d84d6cd76c2d 100644
+--- a/chrome/common/extensions/api/BUILD.gn
++++ b/chrome/common/extensions/api/BUILD.gn
+@@ -84,6 +84,7 @@ schema_sources = [
+   "webstore_widget_private.idl",
+   "windows.json",
+ ]
++
+ if (!is_android) {
+   schema_sources += [ "processes.idl" ]
+ }
+diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
+index c4b6d014fe94d37a0e16802e7c644a990326d6f4..86e4cd06c08af21c7ff8b664010316e3f304959c 100644
+--- a/chrome/common/extensions/chrome_extensions_client.cc
++++ b/chrome/common/extensions/chrome_extensions_client.cc
+@@ -13,6 +13,13 @@
+ #include "base/metrics/histogram_macros.h"
+ #include "base/strings/string_util.h"
+ #include "base/values.h"
++#include "brave/common/extensions/api/api_features.h"
++#include "brave/common/extensions/api/behavior_features.h"
++#include "brave/common/extensions/api/generated_api_registration.h"
++#include "brave/common/extensions/api/generated_schemas.h"
++#include "brave/common/extensions/api/grit/brave_api_resources.h"
++#include "brave/common/extensions/api/manifest_features.h"
++#include "brave/common/extensions/api/permission_features.h"
+ #include "chrome/common/chrome_content_client.h"
+ #include "chrome/common/chrome_switches.h"
+ #include "chrome/common/extensions/api/api_features.h"
+@@ -108,6 +115,7 @@ void ChromeExtensionsClient::Initialize() {
+   if (!ManifestHandler::IsRegistrationFinalized()) {
+     RegisterCommonManifestHandlers();
+     RegisterChromeManifestHandlers();
++    // RegisterBraveManifestHandlers();
+     ManifestHandler::FinalizeRegistration();
+   }
+ 
+@@ -142,13 +150,13 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
+     const std::string& name) const {
+   std::unique_ptr<FeatureProvider> provider;
+   if (name == "api") {
+-    provider.reset(new APIFeatureProvider());
++    provider.reset(new BraveAPIFeatureProvider());
+   } else if (name == "manifest") {
+-    provider.reset(new ManifestFeatureProvider());
++    provider.reset(new BraveManifestFeatureProvider());
+   } else if (name == "permission") {
+-    provider.reset(new PermissionFeatureProvider());
++    provider.reset(new BravePermissionFeatureProvider());
+   } else if (name == "behavior") {
+-    provider.reset(new BehaviorFeatureProvider());
++    provider.reset(new BraveBehaviorFeatureProvider());
+   } else {
+     NOTREACHED();
+   }
+@@ -161,6 +169,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
+       new JSONFeatureProviderSource("api"));
+   source->LoadJSON(IDR_EXTENSION_API_FEATURES);
+   source->LoadJSON(IDR_CHROME_EXTENSION_API_FEATURES);
++  source->LoadJSON(IDR_BRAVE_EXTENSION_API_FEATURES);
+   return source;
+ }
+ 
+@@ -238,7 +247,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
+ bool ChromeExtensionsClient::IsAPISchemaGenerated(
+     const std::string& name) const {
+   // Test from most common to least common.
+-  return api::ChromeGeneratedSchemas::IsGenerated(name) ||
++  return api::BraveGeneratedSchemas::IsGenerated(name) ||
++         api::ChromeGeneratedSchemas::IsGenerated(name) ||
+          api::GeneratedSchemas::IsGenerated(name);
+ }
+ 
+@@ -248,6 +258,9 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
+   if (api::ChromeGeneratedSchemas::IsGenerated(name))
+     return api::ChromeGeneratedSchemas::Get(name);
+ 
++  if (api::BraveGeneratedSchemas::IsGenerated(name))
++    return api::BraveGeneratedSchemas::Get(name);
++
+   return api::GeneratedSchemas::Get(name);
+ }
+ 
 diff --git a/chrome/common/mac/app_mode_chrome_locator.mm b/chrome/common/mac/app_mode_chrome_locator.mm
 index efd272e706ba56b748e4b76b96d76cbd03aa07ac..5ce343302a2ab3a18a9149a33203f5a2fe301b23 100644
 --- a/chrome/common/mac/app_mode_chrome_locator.mm
@@ -264,6 +433,21 @@ index a299d38baf7f0c82dad33dc37764eba5db4ba856..218b83b4c65fe269dd4c3e5b7b51aa44
    outputs = [
      "grit/components_chromium_strings.h",
    ]
+diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
+index 6b388cec2f2f769ebfec1aced038713932fd8a2e..b6198d06761a701b80d82b1bb6e11b121fa4aa56 100644
+--- a/extensions/browser/extension_event_histogram_value.h
++++ b/extensions/browser/extension_event_histogram_value.h
+@@ -428,6 +428,10 @@ enum HistogramValue {
+   LOCK_SCREEN_DATA_ON_DATA_ITEMS_AVAILABLE,
+   WEB_VIEW_INTERNAL_ON_AUDIO_STATE_CHANGED,
+   AUTOMATION_INTERNAL_ON_ACTION_RESULT,
++
++  BRAVE_START = 5000,
++  BRAVE_AD_BLOCKED,
++
+   // Last entry: Add new entries above, then run:
+   // python tools/metrics/histograms/update_extension_histograms.py
+   ENUM_BOUNDARY
 diff --git a/third_party/widevine/cdm/BUILD.gn b/third_party/widevine/cdm/BUILD.gn
 index a3eac59cc2ebdb1f9d2bb7af8a7db0d44ab315a9..11d0c86fb7cdfc1881f563552fb6f5c5abdabae4 100644
 --- a/third_party/widevine/cdm/BUILD.gn

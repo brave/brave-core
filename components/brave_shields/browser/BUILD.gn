@@ -1,0 +1,33 @@
+source_set("brave_shields") {
+  sources = [
+    "ad_block_service.cc",
+    "ad_block_service.h",
+    "base_brave_shields_service.cc",
+    "base_brave_shields_service.h",
+    "brave_shields_resource_throttle.cc",
+    "brave_shields_resource_throttle.h",
+    "brave_shields_util.cc",
+    "brave_shields_util.h",
+    "brave_shields_web_contents_observer.cc",
+    "brave_shields_web_contents_observer.h",
+    "brave_resource_dispatcher_host_delegate.cc",
+    "brave_resource_dispatcher_host_delegate.h",
+    "dat_file_util.cc",
+    "dat_file_util.h",
+    "dat_file_web_request.cc",
+    "dat_file_web_request.h",
+    "https_everywhere_recently_used_cache.h",
+    "https_everywhere_service.cc",
+    "https_everywhere_service.h",
+    "tracking_protection_service.cc",
+    "tracking_protection_service.h",
+  ]
+  deps = [
+    "//brave/vendor/ad-block/antimuon:ad-block",
+    "//brave/vendor/tracking-protection/antimuon:tracking-protection",
+  ]
+  public_deps = [
+    "//chrome/common",
+    "//third_party/leveldatabase",
+  ]
+}
