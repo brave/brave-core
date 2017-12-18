@@ -10,10 +10,10 @@ index c649018a7a0aeb20caeb2bf37c60d57c48630f1b..9a320d8b5f46f2c7f2d269b7a1cc3b2c
 +  branding_path_component = "brave"
  }
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0813b36a1 100644
+index 5d0274b0424ecfd527962c5116370a7593d10d15..1328c557c15354b0505e294b6142b83354a53ddc 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -253,6 +253,8 @@ if (!is_android && !is_mac) {
+@@ -238,6 +238,8 @@ if (!is_android && !is_mac) {
            "app/chrome_main.cc",
            "app/chrome_main_delegate.cc",
            "app/chrome_main_delegate.h",
@@ -22,16 +22,16 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
          ]
  
          deps += [
-@@ -375,6 +377,8 @@ if (is_win) {
+@@ -357,6 +359,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
 +      "//brave/app/brave_main_delegate.cc",
 +      "//brave/app/brave_main_delegate.h",
-       "app/chrome_main_mac.h",
-       "app/chrome_main_mac.mm",
      ]
-@@ -488,6 +492,8 @@ if (is_win) {
+ 
+     output_name = "chrome"
+@@ -465,6 +469,8 @@ if (is_win) {
          "app/chrome_main.cc",
          "app/chrome_main_delegate.cc",
          "app/chrome_main_delegate.h",
@@ -40,7 +40,7 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
        ]
  
        configs += [ "//build/config/compiler:wexit_time_destructors" ]
-@@ -557,7 +563,9 @@ if (is_win) {
+@@ -534,7 +540,9 @@ if (is_win) {
  } else if (is_mac) {
    chrome_helper_name = chrome_product_full_name + " Helper"
    chrome_framework_name = chrome_product_full_name + " Framework"
@@ -51,7 +51,7 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
  
    group("chrome") {
      deps = [
-@@ -672,7 +680,7 @@ if (is_win) {
+@@ -649,7 +657,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -60,7 +60,7 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -1173,6 +1181,8 @@ if (is_win) {
+@@ -1150,6 +1158,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -69,7 +69,7 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
        "app/chrome_main_mac.h",
        "app/chrome_main_mac.mm",
      ]
-@@ -1416,6 +1426,7 @@ if (is_win) {
+@@ -1389,6 +1399,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -77,7 +77,7 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
      "//chrome/browser",
      "//chrome/common",
      "//components/sync",
-@@ -1452,6 +1463,7 @@ group("browser_dependencies") {
+@@ -1426,6 +1437,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -85,7 +85,7 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1739,6 +1751,8 @@ if (is_android) {
+@@ -1715,6 +1727,8 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -95,7 +95,7 @@ index cf36e40ee5426464cee670a11128a0e11ca49efd..1ddd819e9f7fc33515281035ce6488a0
  
      include_dirs = [ android_ndk_include_dir ]
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index f85f3d75cf76d8861a1f57ce9b799d60e830e878..0275be6c254d7cce443913ddc7f1fab14ff4dcc0 100644
+index 8896752d5b9faacff253afa54ae264417dbe3372..18c4df2427bb3ed0dffdf20faeeb71322200ed7c 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
 @@ -243,7 +243,7 @@ grit("google_chrome_strings") {
@@ -108,7 +108,7 @@ index f85f3d75cf76d8861a1f57ce9b799d60e830e878..0275be6c254d7cce443913ddc7f1fab1
    output_dir = "$root_gen_dir/chrome"
    outputs = [
 diff --git a/chrome/app/chrome_main.cc b/chrome/app/chrome_main.cc
-index e05f30380d9d06fb15a7922aead3f4f82abbe9f1..5464cf08b360bce105d4ece3d7b6e29a522f5849 100644
+index 90b02a13ed7674b5b4266ffd8e09fcca0392dfc3..0e182ac84efab144a310c6687996d59e4fbe3620 100644
 --- a/chrome/app/chrome_main.cc
 +++ b/chrome/app/chrome_main.cc
 @@ -7,6 +7,7 @@
@@ -129,19 +129,19 @@ index e05f30380d9d06fb15a7922aead3f4f82abbe9f1..5464cf08b360bce105d4ece3d7b6e29a
    content::ContentMainParams params(&chrome_main_delegate);
  
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 27e5f84cb1f06d0a1cd766beace97d5b20317928..23841a71e3e7060727dab6f47b90356cb985f733 100644
+index 3bb9e572d56851f54a973cda36ec1ea78c489279..e31a0397bdaa585e22f4becdcb922fc071785147 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -1760,6 +1760,7 @@ split_static_library("browser") {
+@@ -1769,6 +1769,7 @@ split_static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
 +    "//brave/browser:browser_process",
    ]
  
-   # Android does in-process PAC, so must link against V8 directly. Other
+   if (is_android) {
 diff --git a/chrome/browser/browser_process_impl.cc b/chrome/browser/browser_process_impl.cc
-index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..b84fa6b7fd7259217c7e9b0932c566ec65d9bac6 100644
+index 4d8b9911eb906dc2d691224eeb106a990c5d5215..2de52b498cadaa18d362333a19ba5ba5d0aaac75 100644
 --- a/chrome/browser/browser_process_impl.cc
 +++ b/chrome/browser/browser_process_impl.cc
 @@ -34,6 +34,7 @@
@@ -152,7 +152,7 @@ index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..b84fa6b7fd7259217c7e9b0932c566ec
  #include "build/build_config.h"
  #include "chrome/browser/chrome_browser_main.h"
  #include "chrome/browser/chrome_child_process_watcher.h"
-@@ -1004,7 +1005,7 @@ BrowserProcessImpl::supervised_user_whitelist_installer() {
+@@ -991,7 +992,7 @@ BrowserProcessImpl::supervised_user_whitelist_installer() {
  
  void BrowserProcessImpl::ResourceDispatcherHostCreated() {
    resource_dispatcher_host_delegate_ =
@@ -162,10 +162,10 @@ index 675e9220b5fe7b71240ac28ab4e4fb97fae6fd96..b84fa6b7fd7259217c7e9b0932c566ec
        resource_dispatcher_host_delegate_.get());
  
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index 454080193dbbb41b6bea01416f28f210b26aaff0..786de33e900d9c521de48ffe570651c347088a4e 100644
+index da85f01c59cf8a2b34dc7d189f3043580fd84e29..7c8c973f2639b6c4c43523939cca859ce36769aa 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
-@@ -164,6 +164,7 @@ class BrowserProcessImpl : public BrowserProcess,
+@@ -163,6 +163,7 @@ class BrowserProcessImpl : public BrowserProcess,
    static void RegisterPrefs(PrefRegistrySimple* registry);
  
   private:
@@ -174,10 +174,10 @@ index 454080193dbbb41b6bea01416f28f210b26aaff0..786de33e900d9c521de48ffe570651c3
    void OnKeepAliveStateChanged(bool is_keeping_alive) override;
    void OnKeepAliveRestartStateChanged(bool can_restart) override;
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index d9baddce633a13532837c1948f17d96fd98fad67..5c9169f61028b44194adcef083c427ae684edb6a 100644
+index 11c6e800349c9e5ba967c94f81a053efa387ec9a..372a4b846c919484762bc45623e815baf5010f0b 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
-@@ -43,6 +43,7 @@
+@@ -44,6 +44,7 @@
  #include "base/time/time.h"
  #include "base/trace_event/trace_event.h"
  #include "base/values.h"
@@ -185,7 +185,7 @@ index d9baddce633a13532837c1948f17d96fd98fad67..5c9169f61028b44194adcef083c427ae
  #include "build/build_config.h"
  #include "cc/base/switches.h"
  #include "chrome/browser/about_flags.h"
-@@ -961,7 +962,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+@@ -955,7 +956,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
    {
      TRACE_EVENT0("startup",
        "ChromeBrowserMainParts::PreCreateThreadsImpl:InitBrowswerProcessImpl");
@@ -195,10 +195,10 @@ index d9baddce633a13532837c1948f17d96fd98fad67..5c9169f61028b44194adcef083c427ae
    }
  
 diff --git a/chrome/browser/chrome_content_browser_client.h b/chrome/browser/chrome_content_browser_client.h
-index 9361b28fb3ac91e61837d7c707e9f4a9ec73c7c6..c5eee899ae5f42b974645240f17aabeb156a9ec5 100644
+index 9c4601f9cecefbf11af5ffd110aa7ba4f7c0f2e4..450454de247773495767fac28b038be588a888b5 100644
 --- a/chrome/browser/chrome_content_browser_client.h
 +++ b/chrome/browser/chrome_content_browser_client.h
-@@ -350,6 +350,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
+@@ -372,6 +372,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
                                   content::BrowserContext* browser_context);
  
   private:
@@ -207,18 +207,18 @@ index 9361b28fb3ac91e61837d7c707e9f4a9ec73c7c6..c5eee899ae5f42b974645240f17aabeb
    friend class InProcessBrowserTest;
  
 diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-index 4398370da586e80f51b5e8517a49174236fa78c3..3b5d2a849aaa5c4d5bbd4feaaee640ccc0edefbd 100644
+index 17c4ec23b3816b62f65e01a6f27397413272dd71..56d8602e422ed4e16e33f521b355dca4c0e2596c 100644
 --- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
 +++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-@@ -10,6 +10,7 @@
- #include "base/memory/ptr_util.h"
- #include "base/version.h"
- #include "build/build_config.h"
-+#include "brave/common/extensions/api/generated_api_registration.h"
- #include "chrome/browser/app_mode/app_mode_utils.h"
- #include "chrome/browser/browser_process.h"
+@@ -15,6 +15,7 @@
  #include "chrome/browser/extensions/activity_log/activity_log.h"
-@@ -277,6 +278,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
+ #include "chrome/browser/extensions/api/chrome_extensions_api_client.h"
+ #include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
++#include "brave/common/extensions/api/generated_api_registration.h"
+ #include "chrome/browser/extensions/api/generated_api_registration.h"
+ #include "chrome/browser/extensions/api/preference/preference_api.h"
+ #include "chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.h"
+@@ -284,6 +285,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
  
    // Generated APIs from Chrome.
    api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);
@@ -242,7 +242,7 @@ index e055ef156da9ea78b1dee96ee04f9c061267c775..5ffcecf64f39f3ff593cd30d9c1ef551
    int OnBeforeURLRequest(net::URLRequest* request,
                           const net::CompletionCallback& callback,
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index 1a41943ac2fd649665fd488b889b5a9dd3ec4512..c06d2aca1f0e183b7989d3bbe25ae64c8bde0c95 100644
+index 7bcc72f67676bf1bd388109e94bd0739cd588957..cd1cfd7930ace33eb1c6e72b39133c815a656be2 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
 @@ -25,6 +25,7 @@
@@ -253,8 +253,8 @@ index 1a41943ac2fd649665fd488b889b5a9dd3ec4512..c06d2aca1f0e183b7989d3bbe25ae64c
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -1032,7 +1033,7 @@ void ProfileIOData::Init(
-   builder->set_enable_brotli(io_thread_globals->enable_brotli);
+@@ -1020,7 +1021,7 @@ void ProfileIOData::Init(
+   builder->set_ssl_config_service(profile_params_->ssl_config_service);
  
    std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
 -      new ChromeNetworkDelegate(
@@ -263,18 +263,18 @@ index 1a41943ac2fd649665fd488b889b5a9dd3ec4512..c06d2aca1f0e183b7989d3bbe25ae64c
            io_thread_globals->extension_event_router_forwarder.get(),
  #else
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index d992488f5858af8378328a05e72e64a13ba388b9..2003b7336bd34d23f09c4ee77511a262ecc680ea 100644
+index ff3b6d2d23c6d785da2358bfac6723e1fce971a1..3eb0a4e6e813e65dd33fd4bfb750c3957311ed1f 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -10,6 +10,7 @@
- #include "base/command_line.h"
+@@ -11,6 +11,7 @@
  #include "base/feature_list.h"
  #include "base/memory/ptr_util.h"
+ #include "base/time/default_tick_clock.h"
 +#include "brave/browser/brave_tab_helpers.h"
  #include "build/build_config.h"
  #include "chrome/browser/bookmarks/bookmark_model_factory.h"
  #include "chrome/browser/browser_process.h"
-@@ -179,6 +180,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -184,6 +185,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
    BookmarkLastVisitUpdater::MaybeCreateForWebContentsWithBookmarkModel(
        web_contents, BookmarkModelFactory::GetForBrowserContext(
                          web_contents->GetBrowserContext()));
@@ -283,7 +283,7 @@ index d992488f5858af8378328a05e72e64a13ba388b9..2003b7336bd34d23f09c4ee77511a262
    chrome_browser_net::PredictorTabHelper::CreateForWebContents(web_contents);
    if (base::FeatureList::IsEnabled(kDecoupleTranslateLanguageFeature)) {
 diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
-index 99a3f816756039a628dc3032cbda3971dd415138..2cf32156411bd3a28e8c8096e25dcee5afcf04ad 100644
+index d4e0823a55994118bacfe4fd7f8ec1881640e8ac..84788c9cc020c756c45e96fab8ab2119df1b18f8 100644
 --- a/chrome/common/chrome_constants.cc
 +++ b/chrome/common/chrome_constants.cc
 @@ -10,11 +10,11 @@
@@ -326,20 +326,8 @@ index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..57e572feef4a8fea5f026cf2d7a526d5
  #endif
    }
  
-diff --git a/chrome/common/extensions/api/BUILD.gn b/chrome/common/extensions/api/BUILD.gn
-index ad3703177d68941b91d570bcfa001848ffa179a9..deae657f78e081a46b551569e626d84d6cd76c2d 100644
---- a/chrome/common/extensions/api/BUILD.gn
-+++ b/chrome/common/extensions/api/BUILD.gn
-@@ -84,6 +84,7 @@ schema_sources = [
-   "webstore_widget_private.idl",
-   "windows.json",
- ]
-+
- if (!is_android) {
-   schema_sources += [ "processes.idl" ]
- }
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index c4b6d014fe94d37a0e16802e7c644a990326d6f4..86e4cd06c08af21c7ff8b664010316e3f304959c 100644
+index b65abdff40e5fbca6eacf26bc3618a4ed60498ce..f2e1e7d2f41aa218b0c33fee8303cebefbcbb15c 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
 @@ -13,6 +13,13 @@
@@ -356,15 +344,7 @@ index c4b6d014fe94d37a0e16802e7c644a990326d6f4..86e4cd06c08af21c7ff8b664010316e3
  #include "chrome/common/chrome_content_client.h"
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/api/api_features.h"
-@@ -108,6 +115,7 @@ void ChromeExtensionsClient::Initialize() {
-   if (!ManifestHandler::IsRegistrationFinalized()) {
-     RegisterCommonManifestHandlers();
-     RegisterChromeManifestHandlers();
-+    // RegisterBraveManifestHandlers();
-     ManifestHandler::FinalizeRegistration();
-   }
- 
-@@ -142,13 +150,13 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
+@@ -156,13 +163,13 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
      const std::string& name) const {
    std::unique_ptr<FeatureProvider> provider;
    if (name == "api") {
@@ -382,7 +362,7 @@ index c4b6d014fe94d37a0e16802e7c644a990326d6f4..86e4cd06c08af21c7ff8b664010316e3
    } else {
      NOTREACHED();
    }
-@@ -161,6 +169,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
+@@ -175,6 +182,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
        new JSONFeatureProviderSource("api"));
    source->LoadJSON(IDR_EXTENSION_API_FEATURES);
    source->LoadJSON(IDR_CHROME_EXTENSION_API_FEATURES);
@@ -390,7 +370,7 @@ index c4b6d014fe94d37a0e16802e7c644a990326d6f4..86e4cd06c08af21c7ff8b664010316e3
    return source;
  }
  
-@@ -238,7 +247,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
+@@ -252,7 +260,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
  bool ChromeExtensionsClient::IsAPISchemaGenerated(
      const std::string& name) const {
    // Test from most common to least common.
@@ -400,9 +380,9 @@ index c4b6d014fe94d37a0e16802e7c644a990326d6f4..86e4cd06c08af21c7ff8b664010316e3
           api::GeneratedSchemas::IsGenerated(name);
  }
  
-@@ -248,6 +258,9 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
-   if (api::ChromeGeneratedSchemas::IsGenerated(name))
-     return api::ChromeGeneratedSchemas::Get(name);
+@@ -263,6 +272,9 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
+   if (!chrome_schema.empty())
+     return chrome_schema;
  
 +  if (api::BraveGeneratedSchemas::IsGenerated(name))
 +    return api::BraveGeneratedSchemas::Get(name);
@@ -411,17 +391,18 @@ index c4b6d014fe94d37a0e16802e7c644a990326d6f4..86e4cd06c08af21c7ff8b664010316e3
  }
  
 diff --git a/chrome/common/mac/app_mode_chrome_locator.mm b/chrome/common/mac/app_mode_chrome_locator.mm
-index efd272e706ba56b748e4b76b96d76cbd03aa07ac..5ce343302a2ab3a18a9149a33203f5a2fe301b23 100644
+index efd272e706ba56b748e4b76b96d76cbd03aa07ac..b5d8d8cfa223d276db7a328036deeef658bc0320 100644
 --- a/chrome/common/mac/app_mode_chrome_locator.mm
 +++ b/chrome/common/mac/app_mode_chrome_locator.mm
-@@ -79,6 +79,7 @@ bool GetChromeBundleInfo(const base::FilePath& chrome_bundle,
+@@ -79,7 +79,7 @@ bool GetChromeBundleInfo(const base::FilePath& chrome_bundle,
    // However, we want the shims to be agnostic to distribution and operate based
    // on the data in their plist, so encode the framework names here.
    NSDictionary* framework_for_exe = @{
+-    @"Chromium": @"Chromium",
 +    @"Brave": @"Brave",
-     @"Chromium": @"Chromium",
      @"Google Chrome": @"Google Chrome",
      @"Google Chrome Canary": @"Google Chrome",
+   };
 diff --git a/chrome/install_static/chromium_install_modes.cc b/chrome/install_static/chromium_install_modes.cc
 index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..eb39493404dc6e3f07fe7b6b43cdb628e5161329 100644
 --- a/chrome/install_static/chromium_install_modes.cc
@@ -436,10 +417,10 @@ index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..eb39493404dc6e3f07fe7b6b43cdb628
  const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
  
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
-index 6de49b0d3dcecdd31370a85625c621cdd1935f90..47604d1e11fe40078a828db154a1f25ad5dc1d38 100644
+index a5d593955f2c75bd50f773c7b615a5ee1a06bc3b..ec1cfa7203625f0bc6168ed88f1bba0aac0101aa 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
 +++ b/chrome/renderer/chrome_content_renderer_client.h
-@@ -231,6 +231,7 @@ class ChromeContentRendererClient : public content::ContentRendererClient {
+@@ -237,6 +237,7 @@ class ChromeContentRendererClient : public content::ContentRendererClient {
  #endif
  
   private:
@@ -473,22 +454,21 @@ index a299d38baf7f0c82dad33dc37764eba5db4ba856..218b83b4c65fe269dd4c3e5b7b51aa44
      "grit/components_chromium_strings.h",
    ]
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 6b388cec2f2f769ebfec1aced038713932fd8a2e..b6198d06761a701b80d82b1bb6e11b121fa4aa56 100644
+index 86dd1be9a41fb5f8215c7da13603c743994f2f00..fa028f73763a109a8e90038fa6e21d379826a0e5 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -428,6 +428,10 @@ enum HistogramValue {
-   LOCK_SCREEN_DATA_ON_DATA_ITEMS_AVAILABLE,
-   WEB_VIEW_INTERNAL_ON_AUDIO_STATE_CHANGED,
+@@ -430,6 +430,9 @@ enum HistogramValue {
    AUTOMATION_INTERNAL_ON_ACTION_RESULT,
+   OMNIBOX_ON_DELETE_SUGGESTION,
+   VIRTUAL_KEYBOARD_PRIVATE_ON_KEYBOARD_CONFIG_CHANGED,
 +
 +  BRAVE_START = 5000,
 +  BRAVE_AD_BLOCKED,
-+
    // Last entry: Add new entries above, then run:
    // python tools/metrics/histograms/update_extension_histograms.py
    ENUM_BOUNDARY
 diff --git a/third_party/widevine/cdm/BUILD.gn b/third_party/widevine/cdm/BUILD.gn
-index a3eac59cc2ebdb1f9d2bb7af8a7db0d44ab315a9..11d0c86fb7cdfc1881f563552fb6f5c5abdabae4 100644
+index a3eac59cc2ebdb1f9d2bb7af8a7db0d44ab315a9..bb31fe8035643b0f928a69e730cc608af6ee2441 100644
 --- a/third_party/widevine/cdm/BUILD.gn
 +++ b/third_party/widevine/cdm/BUILD.gn
 @@ -113,9 +113,10 @@ if (widevine_cdm_binary_files != []) {
@@ -498,28 +478,28 @@ index a3eac59cc2ebdb1f9d2bb7af8a7db0d44ab315a9..11d0c86fb7cdfc1881f563552fb6f5c5
 -        "-Wl,-exported_symbol,_PPP_GetInterface",
 -        "-Wl,-exported_symbol,_PPP_InitializeModule",
 -        "-Wl,-exported_symbol,_PPP_ShutdownModule",
-+        # "-Wl,-exported_symbol,_PPP_GetInterface",
-+        # "-Wl,-exported_symbol,_PPP_InitializeModule",
-+        # "-Wl,-exported_symbol,_PPP_ShutdownModule",
-+        "-Wl,-install_name,@loader_path/libwidevinecdm.dylib",
++        #"-Wl,-exported_symbol,_PPP_GetInterface",
++        #"-Wl,-exported_symbol,_PPP_InitializeModule",
++        #"-Wl,-exported_symbol,_PPP_ShutdownModule",
++        "-Wl,-install_name,@loader_path/libwidevinecdm.dylib"
        ]
        #TODO(jrummell) Mac: 'DYLIB_INSTALL_NAME_BASE': '@loader_path',
      } else if (is_posix && !is_mac) {
 diff --git a/tools/gritsettings/resource_ids b/tools/gritsettings/resource_ids
-index ee0116d1852ba4d7ab0ab65f2ef8a70fc20636de..9fda56edc3b5934bc2f48a30ac1b733367ae724c 100644
+index b0c2f87c10e6864fb88f564444a4325f1bd0e0c9..71bfeda0075e4481eeafb673d791b3a654f03973 100644
 --- a/tools/gritsettings/resource_ids
 +++ b/tools/gritsettings/resource_ids
-@@ -33,6 +33,9 @@
-   # Chromium strings and Google Chrome strings must start at the same id.
-   # We only use one file depending on whether we're building Chromium or
-   # Google Chrome.
-+  "chrome/app/brave_strings.grd": {
-+    "messages": [400],
-+  },
+@@ -36,6 +36,9 @@
    "chrome/app/chromium_strings.grd": {
      "messages": [400],
    },
-@@ -140,6 +143,9 @@
++  "chrome/app/brave_strings.grd": {
++    "messages": [400],
++  },
+   "chrome/app/google_chrome_strings.grd": {
+     "messages": [400],
+   },
+@@ -146,6 +149,9 @@
    # Chromium strings and Google Chrome strings must start at the same id.
    # We only use one file depending on whether we're building Chromium or
    # Google Chrome.
