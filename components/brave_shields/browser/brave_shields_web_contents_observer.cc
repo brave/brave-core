@@ -41,19 +41,22 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     const std::string& block_type,
     int render_process_id,
-    int render_frame_id) {
+    int render_frame_id,
+    int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (render_frame_id == -1 || render_process_id == -1) {
-    return;
+
+  content::WebContents* web_contents =
+      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
+  if (!web_contents) {
+    content::RenderFrameHost* rfh =
+        content::RenderFrameHost::FromID(render_process_id, render_frame_id);
+    if (!rfh) {
+      return;
+    }
+    web_contents =
+        content::WebContents::FromRenderFrameHost(rfh);
   }
 
-  content::RenderFrameHost* rfh =
-      content::RenderFrameHost::FromID(render_process_id, render_frame_id);
-  if (!rfh) {
-    return;
-  }
-  content::WebContents* web_contents =
-      content::WebContents::FromRenderFrameHost(rfh);
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   EventRouter* event_router = EventRouter::Get(profile);

@@ -22,7 +22,7 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   ~BraveShieldsWebContentsObserver() override;
 
   static void DispatchBlockedEvent(const std::string& block_type,
-      int render_process_id, int render_frame_id);
+      int render_process_id, int render_frame_id, int frame_tree_node_id);
 
   // content::WebContentsObserver overrides.
   void RenderFrameCreated(content::RenderFrameHost* host) override;
