@@ -43,24 +43,31 @@ const baseDevConfig = () => ({
     })
   ],
   resolve: {
-    extensions: ['.js']
+    extensions: ['.ts', '.tsx', '.js']
   },
   module: {
-    rules: [{
-      test: /\.js$/,
-      loader: 'babel-loader',
-      exclude: /node_modules/,
-      query: {
-        presets: ['react-hmre']
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: 'awesome-typescript-loader'
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+        query: {
+          presets: ['react-hmre']
+        }
+      },
+      {
+        test: /\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+          {loader: 'postcss-loader', options: postCSSConfig}
+        ]
       }
-    }, {
-      test: /\.css$/,
-      loaders: [
-        'style-loader',
-        'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-        {loader: 'postcss-loader', options: postCSSConfig}
-      ]
-    }]
+    ]
   }
 })
 

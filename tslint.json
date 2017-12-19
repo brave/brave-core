@@ -1,0 +1,9 @@
+{
+  "extends": ["tslint-react", "tslint-config-standard"],
+  "linterOptions": {
+    "exclude": [
+      "build/",
+      "dev/"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "outDir": "./build/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "lib": ["es6", "dom"],
+        "target": "es5",
+        "allowJs": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "typeRoots" : [
+            "./node_modules/@types",
+            "./app/types/global"
+        ],
+        // optional
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true
+    },
+    "include": [
+       "./app/**/*"
+    ]
+}
