@@ -127,7 +127,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
 
       <message name="IDS_PROFILES_DISCONNECT_MANAGED_PROFILE_TEXT" desc="Message explaining to the user what will happen if they disconnect the managed profile.">
-        Disconnecting <ph name="USERNAME">$1<ex>someone@example.com</ex></ph> will clear your history, bookmarks, settings, and other Brave data stored on this device. Data stored in your Google Account will not be cleared and can be managed on <ph name="GOOGLE_DASHBOARD_LINK">&lt;a target="_blank" href="$2"&gt;</ph>Google Dashboard<ph name="END_GOOGLE_DASHBOARD_LINK">&lt;/a&gt;</ph>.
+        Disconnecting <ph name="USERNAME">$1<ex>someone@example.com</ex></ph> will clear your history, bookmarks, settings, and other Brave data stored on this device. Data stored in your Brave Software Account will not be cleared and can be managed on <ph name="GOOGLE_DASHBOARD_LINK">&lt;a target="_blank" href="$2"&gt;</ph>Brave Software Dashboard<ph name="END_GOOGLE_DASHBOARD_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_PRODUCT_NAME" desc="The Brave application name">
         Brave
@@ -169,18 +169,18 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         Task Manager - Brave
       </message>
       <message name="IDS_SESSION_CRASHED_VIEW_UMA_OPTIN" desc="Text besides the checkbox to let users optin to UMA in the restore from previous crash bubble.">
-        Help make Brave better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Google
+        Help make Brave better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Brave Software
       </message>
       <if expr="not chromeos">
         <!-- Browser Window Title Format -->
         <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabs and popup windows">
-          <ph name="PAGE_TITLE">$1<ex>Google</ex></ph> - Brave
+          <ph name="PAGE_TITLE">$1<ex>Brave Software</ex></ph> - Brave
         </message>
       </if>
       <if expr="chromeos">
         <!-- Browser Window Title Format -->
         <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabbed browser windows">
-          Brave - <ph name="PAGE_TITLE">$1<ex>Google</ex></ph>
+          Brave - <ph name="PAGE_TITLE">$1<ex>Brave Software</ex></ph>
         </message>
       </if>
       <if expr="not chromeos">
@@ -213,21 +213,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_ABOUT_TERMS_OF_SERVICE" desc="The terms of service label in the About box." translateable="false">
         Not used in Brave. Placeholder to keep resource maps in sync. It expects one argument: <ph name="ARGUMENT">$1</ph>.
       </message>
-      <if expr="is_linux and not chromeos">
-        <!-- These messages are not actually used, but they are here as placeholders to match the Brave messages. -->
-        <message name="IDS_LINUX_WHEEZY_PRECISE_OBSOLETE_SOON" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using is about to become unsupported.">
-          Future versions of Brave will no longer support this Linux system.
-        </message>
-        <message name="IDS_LINUX_WHEEZY_PRECISE_OBSOLETE_NOW" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using is no longer supported.">
-          Brave may not function correctly because it is no longer supported on this Linux system.
-        </message>
-        <message name="IDS_LINUX_WHEEZY_PRECISE_OBSOLETE_SOON_CAN_UPGRADE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using is about to become unsupported, unless they upgrade to the 64-bit version.">
-          Future versions of 32-bit Brave will no longer support this Linux system, please upgrade to 64-bit Brave.
-        </message>
-        <message name="IDS_LINUX_WHEEZY_PRECISE_OBSOLETE_NOW_CAN_UPGRADE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using is no longer supported, unless they upgrade to the 64-bit version.">
-          32-bit Brave may not function correctly because it is no longer supported on this Linux system. Please upgrade to 64-bit Brave.
-        </message>
-      </if>
       <if expr="is_macosx">
         <message name="IDS_MAC_10_678_OBSOLETE_SOON" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using is about to become unsupported.">
           Future versions of Brave will no longer support Mac OS X 10.6, 10.7, or 10.8.
@@ -256,9 +241,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Brave is unresponsive. Relaunch now?
         </message>
       </if>
-      <message name="IDS_IMPORT_FIND_YOUR_BOOKMARKS" desc="Helpful reminder for where to find imported bookmarks">
-        Find your bookmarks in the Brave menu or on the bookmarks bar.
-      </message>
       <message name="IDS_IMPORTER_LOCK_TEXT" desc="The message to be displayed on dialog">
         Sadly, your Mozilla Firefox settings are not available while that browser is running. To import those settings to Brave, save your work and close all Firefox windows. Then click Continue.
       </message>
@@ -285,7 +267,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
       <if expr="not chromeos">
         <message name="IDS_NEW_TAB_CHROME_WELCOME_PAGE_TITLE"
-                 desc="Title for the hard-coded thumbnail that represents the Google Brave Welcome page.  This is used on the NTP when there aren't enough thumbnails to show.">
+                 desc="Title for the hard-coded thumbnail that represents the Brave Software Brave Welcome page.  This is used on the NTP when there aren't enough thumbnails to show.">
           Welcome to Brave
         </message>
       </if>
@@ -326,11 +308,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_CANT_WRITE_USER_DIRECTORY_SUMMARY" desc="Summary of problem displayed in dialog when we can't create a directory for this user.">
 Brave cannot read and write to its data directory:
 
-<ph name="USER_DATA_DIRECTORY">$1<ex>C:\Documents and Settings\devint\Local Settings\Application Data\Google\Brave</ex></ph>
+<ph name="USER_DATA_DIRECTORY">$1<ex>C:\Documents and Settings\devint\Local Settings\Application Data\Brave</ex></ph>
       </message>
       <if expr="chromeos">
         <message name="IDS_EULA_CHECKBOX_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
-          Optional: Help make Brave better by automatically sending usage statistics and crash reports to Google.
+          Optional: Help make Brave better by automatically sending usage statistics and crash reports to Brave Software.
         </message>
       </if>
       <message name="IDS_PROFILE_TOO_NEW_ERROR" desc="Error displayed on startup when the profile is from a newer version of the product and can not be read">
@@ -359,7 +341,7 @@ Brave is unable to recover your settings.
       </if>
       <!-- Password generation strings -->
       <message name="IDS_PASSWORD_GENERATION_PROMPT" desc="Autofill dropdown text describing password generation. The link text is a separate string in the translation console and appears here as placeholder text.">
-        Brave will save this password with <ph name="SAVED_PASSWORD_LINK">$1<ex>Google Smart Lock</ex></ph>. You don’t have to remember it.
+        Brave will save this password with <ph name="SAVED_PASSWORD_LINK">$1<ex>Brave Software Smart Lock</ex></ph>. You don’t have to remember it.
       </message>
       <message name="IDS_PASSWORD_GENERATION_SUGGESTION" desc="Text shown next to a generated password describing it as a suggestion.">
         Use a strong password generated by Brave
@@ -414,9 +396,6 @@ Brave is unable to recover your settings.
         </message>
       </if>
       <!-- Options Dialog -->
-      <message name="IDS_OPTIONS_IMPROVE_BROWSING_EXPERIENCE" desc="The text in the options panel that describes how we use web services to improve browsing experience.">
-        Brave may use web services to improve your browsing experience.
-      </message>
       <if expr="is_win">
         <message name="IDS_SHORTCUT_TOOLTIP" desc="Text for the hover-on tooltip for the Brave shortcuts.">
           Access the Internet
@@ -437,14 +416,6 @@ Brave is unable to recover your settings.
       <if expr="chromeos">
         <message name="IDS_SYNC_OVERVIEW" desc="Brave OS: The message that appears in the options dialog when sync has not been set up by the user.">
           Set up Sync to save your personalized browser features to the web and access them from Brave on any computer.
-        </message>
-        <message name="IDS_ABOUT_BUTTON" desc="The label for the button to open the about page.">
-          About Brave OS
-        </message>
-      </if>
-      <if expr="not chromeos">
-        <message name="IDS_ABOUT_BUTTON" desc="The label for the button to open the about page.">
-          About Brave
         </message>
       </if>
       <if expr="is_win">
@@ -528,9 +499,9 @@ Brave is unable to recover your settings.
          Brave has stopped updating and no longer supports this version of your operating system.
       </message>
 
-      <!-- Google API keys info bar -->
-      <message name="IDS_MISSING_GOOGLE_API_KEYS" desc="Message shown when Google API keys are missing. This message is followed by a 'Learn more' link.">
-        Google API keys are missing. Some functionality of Brave will be disabled.
+      <!-- Brave Software API keys info bar -->
+      <message name="IDS_MISSING_GOOGLE_API_KEYS" desc="Message shown when Brave Software API keys are missing. This message is followed by a 'Learn more' link.">
+        Brave Software API keys are missing. Some functionality of Brave will be disabled.
       </message>
 
       <!-- About Brave page -->
@@ -661,13 +632,13 @@ Brave is unable to recover your settings.
       </if>
 
       <if expr="is_macosx">
-        <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Brave, not Google Brave.">
+        <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Brave, not Brave Software Brave.">
           Brave
         </message>
-        <message name="IDS_HELPER_NAME" desc="The helper application's name.  Should contain the Brave application name (IDS_PRODUCT_NAME). Example: Google Brave Helper.">
+        <message name="IDS_HELPER_NAME" desc="The helper application's name.  Should contain the Brave application name (IDS_PRODUCT_NAME). Example: Brave Software Brave Helper.">
           Brave Helper
         </message>
-        <message name="IDS_SHORT_HELPER_NAME" desc="The helper application's short name, used for the Mac's application menu, activity monitor, etc. Example: Brave Helper, not Google Brave Helper.">
+        <message name="IDS_SHORT_HELPER_NAME" desc="The helper application's short name, used for the Mac's application menu, activity monitor, etc. Example: Brave Helper, not Brave Software Brave Helper.">
           Brave Helper
         </message>
       </if>
@@ -693,12 +664,12 @@ Brave is unable to recover your settings.
         After removing your account from Brave, you may need to reload your open tabs to take effect.
       </message>
       <message name="IDS_PROFILES_PRIMARY_ACCOUNT_REMOVAL_TEXT" desc="Main text of the account removal view when removing a primary account.">
-        You're using <ph name="PROFILE_EMAIL">$1<ex>jessica@gmail.com</ex></ph> to sync your Brave stuff. To update your sync preference or to use Brave without a Google account, visit <ph name="SETTINGS_LINK">$2<ex>settings</ex></ph>.
+        You're using <ph name="PROFILE_EMAIL">$1<ex>jessica@gmail.com</ex></ph> to sync your Brave stuff. To update your sync preference or to use Brave without a Brave Software account, visit <ph name="SETTINGS_LINK">$2<ex>settings</ex></ph>.
       </message>
 
       <!-- Switch user view in the avatar menu bubble -->
       <message name="IDS_PROFILES_NOT_YOU_CONTENT_TEXT" desc="Main text of the switch user view. for an upgrade user">
-        If you share this computer with <ph name="PROFILE_NAME">$1<ex>Claire</ex></ph>, add yourself to Brave to browse separately. Otherwise disconnect their Google Account.
+        If you share this computer with <ph name="PROFILE_NAME">$1<ex>Claire</ex></ph>, add yourself to Brave to browse separately. Otherwise disconnect their Brave Software Account.
       </message>
 
       <!-- One click sign-in infobar -->
@@ -731,11 +702,11 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         <message name="IDS_ENTERPRISE_SIGNIN_TITLE" desc="The title of the dialog to confirm linking the browser profile with the signed-in enterprise account">
           Link your Brave data to this account?
         </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITHOUT_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Google account. This message is followed by a 'Learn more' link.">
-          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Google Accounts Dashboard, but you will not be able to associate this data with another account. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
+        <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITHOUT_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave Software account. This message is followed by a 'Learn more' link.">
+          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Brave Software Accounts Dashboard, but you will not be able to associate this data with another account. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
         </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITH_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Google account. Additionally notifies the user that they can create a new profile instead. This message is followed by a 'Learn more' link.">
-          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Google Accounts Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Brave data separate. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
+        <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITH_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave Software account. Additionally notifies the user that they can create a new profile instead. This message is followed by a 'Learn more' link.">
+          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Brave Software Accounts Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Brave data separate. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
         </message>
       </if>
 
@@ -766,7 +737,7 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
       </if>
 
       <!-- Brave Cleanup prompt and web UI.
-           Note: these strings should only be used by Google Brave, but
+           Note: these strings should only be used by Brave Software Brave, but
                  omitting them brings up a hash collision error. -->
       <if expr="is_win">
         <message name="IDS_CHROME_CLEANUP_PROMPT_EXPLANATION" desc="Description in the Brave Cleanup dialog that Brave browser shows when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is found on the user's computer. Appears under the title asking 'Remove harmful software?' Actor is Brave; we are asking, Do you want Brave to remove harmful software? 'it' is harmful software. User has the option of clicking 'Remove' to proceed with a cleanup, or 'Details' to see more details. Preferrably, the translation for this string should have the same meaning as IDS_CHROME_CLEANUP_WEBUI_EXPLANATION.">
@@ -914,13 +885,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         </message>
       </if>
 
-      <!-- chrome://settings. Android uses native UI for settings -->
-      <if expr="not is_android">
-        <message name="IDS_OPTIONS_DEFAULTBROWSER_USEASDEFAULT" desc="The label of the 'Use Brave as default' browser button">
-          Make Brave the default browser
-        </message>
-      </if>
-
       <!-- Material Design User Manager -->
       <if expr="not is_android and not chromeos">
         <!-- Supervised user create confirmation page -->
@@ -943,7 +907,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
           Brave just got better
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_INTRO_TEXT" desc="Main text of the tutorial introduction slide">
-          Now it's easier to use Brave with your Google Account and on shared computers.
+          Now it's easier to use Brave with your Brave Software Account and on shared computers.
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_YOUR_CHROME_TITLE" desc="Title of the slide about personalizing the browser">
           This is your Brave
@@ -1010,9 +974,28 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
       </if>
 
       <if expr="not is_android">
-        <message name="IDS_CONTENT_CONTEXT_SPELLING_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the spelling service of Google to Brave.">
-          Brave can provide smarter spell-checking by sending what you type in the browser to Google servers, allowing you to use the same spell-checking technology used by Google search.
+        <message name="IDS_CONTENT_CONTEXT_SPELLING_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the spelling service of Brave Software to Brave.">
+          Brave can provide smarter spell-checking by sending what you type in the browser to Brave Software servers, allowing you to use the same spell-checking technology used by Brave Software search.
         </message>
+        <if expr="not use_titlecase">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB_INAPP" desc="The name of the command to open a link in a newly created browser tab when the user is in an app window">
+            Open link in new Brave &amp;tab
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="The name of the command to open a link in an incognito browser window when the user is in an app window">
+            Open link in Brave inco&amp;gnito window
+          </message>
+        </if>
+        <if expr="use_titlecase">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB_INAPP" desc="In Title Case: The name of the command to open a link in a newly created browser tab when the user is in an app window">
+            Open Link in New Brave &amp;tab
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="In Title Case: The name of the command to open a link in an incognito browser window when the user is in an app window">
+            Open Link in Brave Inco&amp;gnito Window
+          </message>
+        </if>
+      </if>
+
+      <if expr="not is_android">
         <message name="IDS_RESET_PROFILE_SETTINGS_FEEDBACK" desc="Feedback label in the Reset Profile Settings dialog">
           Help make Brave better by reporting the current settings
         </message>
@@ -1029,7 +1012,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         Touch to Search
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_PROMO_DESCRIPTION_2" desc="Part 2 of the description of the Contextual Search feature. See explanation in DESCRIPTION_1.">
-        sends a word and its surrounding context to Google Search, returning definitions, pictures, and other search results.
+        sends a word and its surrounding context to Brave Software Search, returning definitions, pictures, and other search results.
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_PROMO_OPTIN" desc="Text for the button the user clicks to opt in.">
         Accept &amp; Search
@@ -1074,13 +1057,10 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         </message>
       </if>
       <message name="IDS_UPGRADE_BUBBLE_TITLE" desc="Text for the title of the upgrade bubble view.">
-        Brave is out of date
+        Can't update Brave
       </message>
       <message name="IDS_UPGRADE_BUBBLE_TEXT" desc="Text for the upgrade bubble view full description.">
-        Brave could not update itself to the latest version, so you are missing out on awesome new features and security fixes. You need to manually reinstall Brave.
-      </message>
-      <message name="IDS_UPGRADE_BUBBLE_REENABLE_TEXT" desc="Text for the upgrade bubble view full description.">
-        Brave could not update itself to the latest version, so you are missing out on awesome new features and security fixes. You need to update Brave.
+        Brave couldn't update to the latest version, so you're missing out on new features and security fixes.
       </message>
 
       <!-- User menu errors -->
@@ -1142,10 +1122,10 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         Help make Brave better
       </message>
       <message name="IDS_FEEDBACK_SERVICE_DIALOG_EXPLANATION" desc="Explanation of the dialog asking whether the user wants to upload suspected malicious files for analysis">
-        You can help make Brave safer and easier to use by automatically reporting details of possible security incidents to Google.
+        You can help make Brave safer and easier to use by automatically reporting details of possible security incidents to Brave Software.
       </message>
       <message name="IDS_FEEDBACK_SERVICE_DIALOG_EXPLANATION_SCOUT" desc="Explanation of the dialog asking whether the user wants to upload some system information and page content for Safe Browsing analysis">
-        You can help make Brave safer and easier to use by automatically sending some system information and page content to Google to help detect dangerous apps and sites.
+        You can help make Brave safer and easier to use by automatically sending some system information and page content to Brave Software to help detect dangerous apps and sites.
       </message>
 
       <!-- Desktop Capture -->
@@ -1193,6 +1173,17 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         </message>
         <message name="IDS_MISSING_STORAGE_PERMISSION_DOWNLOAD_EDUCATION_TEXT" desc="Text shown educating the user that Brave is missing the Android storage permission, which is required to download files.">
           Brave needs storage access to download files.
+        </message>
+      </if>
+
+      <!-- Framebust / Blocked Redirection intervention message -->
+      <if expr="is_android">
+        <!-- TODO(https://crbug.com/754754) only implemented in Android for now. -->
+        <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirection was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
+           Brave stopped this site from taking you to
+        </message>
+        <message name="IDS_REDIRECT_BLOCKED_SHORT_MESSAGE" desc="The short message stating that a redirection was blocked on this page.">
+           Redirect blocked.
         </message>
       </if>
 
