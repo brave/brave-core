@@ -95,37 +95,7 @@ export const getMockChrome = () => {
       onBlocked: new ChromeEvent()
     },
     contentSettings: {
-      braveAdBlock: {
-        setAsync: function () {
-          return Promise.resolve()
-        },
-        getAsync: function () {
-          return Promise.resolve({
-            setting: 'block'
-          })
-        }
-      },
-      braveTrackingProtection: {
-        setAsync: function () {
-          return Promise.resolve()
-        },
-        getAsync: function () {
-          return Promise.resolve({
-            setting: 'block'
-          })
-        }
-      },
-      braveHTTPSEverywhere: {
-        setAsync: function () {
-          return Promise.resolve()
-        },
-        getAsync: function () {
-          return Promise.resolve({
-            setting: 'block'
-          })
-        }
-      },
-      javascript: {
+      plugins: {
         setAsync: function () {
           return Promise.resolve()
         },

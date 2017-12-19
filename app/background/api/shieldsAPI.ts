@@ -4,6 +4,7 @@
 
 import { Tab } from '../../types/state/shieldsPannelState'
 import { BlockOptions } from '../../types/other/blockTypes'
+import * as resourceIdentifiers from '../../constants/resourceIdentifiers'
 
 /**
  * Obtains the shields panel data for the specified tab data
@@ -20,10 +21,10 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
   const hostname = url.hostname
 
   return Promise.all([
-    chrome.contentSettings.braveAdBlock.getAsync({ primaryUrl: origin }),
-    chrome.contentSettings.braveTrackingProtection.getAsync({ primaryUrl: origin }),
-    chrome.contentSettings.braveHTTPSEverywhere.getAsync({ primaryUrl: origin }),
-    chrome.contentSettings.javascript.getAsync({ primaryUrl: origin })
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_AD_BLOCK } }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKING_PROTECTION } }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTPS_EVERYWHERE } }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_JAVASCRIPT_BLOCKING } })
   ]).then((details) => {
     return {
       url: url.href,
@@ -76,8 +77,9 @@ export const requestShieldPanelData = (tabId: number) =>
  * @return a promise which resolves when the setting is set
  */
 export const setAllowAdBlock = (origin: string, setting: string) =>
-  chrome.contentSettings.braveAdBlock.setAsync({
+  chrome.contentSettings.plugins.setAsync({
     primaryPattern: origin + '/*',
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_AD_BLOCK },
     setting
   })
 
@@ -88,8 +90,9 @@ export const setAllowAdBlock = (origin: string, setting: string) =>
  * @return a promise which resolves with the setting is set
  */
 export const setAllowTrackingProtection = (origin: string, setting: string) =>
-  chrome.contentSettings.braveTrackingProtection.setAsync({
+  chrome.contentSettings.plugins.setAsync({
     primaryPattern: origin + '/*',
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKING_PROTECTION },
     setting
   })
 
@@ -100,8 +103,9 @@ export const setAllowTrackingProtection = (origin: string, setting: string) =>
  */
 export const setAllowHTTPSEverywhere = (origin: string, setting: BlockOptions) => {
   const primaryPattern = origin.replace(/^(http|https):\/\//, '*://') + '/*'
-  return chrome.contentSettings.braveHTTPSEverywhere.setAsync({
+  return chrome.contentSettings.plugins.setAsync({
     primaryPattern,
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTPS_EVERYWHERE },
     setting
   })
 }
@@ -113,8 +117,9 @@ export const setAllowHTTPSEverywhere = (origin: string, setting: BlockOptions) =
  * @return a promise which resolves when the setting is set
  */
 export const setAllowJavaScript = (origin: string, setting: string) =>
-  chrome.contentSettings.javascript.setAsync({
+  chrome.contentSettings.plugins.setAsync({
     primaryPattern: origin + '/*',
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_JAVASCRIPT_BLOCKING },
     setting
   })
 

@@ -6,30 +6,6 @@
 
 type BlockTypes = 'adBlock' | 'trackingProtection' | 'httpsEverywhere' | 'javascript'
 
-interface BraveAdBlock {
-  setAsync: any
-  getAsync: any
-}
-
-interface BraveTrackingProtection {
-  setAsync: any
-  getAsync: any
-}
-
-interface BraveHTTPSEverywhere {
-  setAsync: any
-  getAsync: any
-}
-
-interface BraveAdBlock {
-  setAsync: any
-  getAsync: any
-}
-
-interface BraveTrackingProtection {
-  getAsync: any
-}
-
 interface BlockDetails {
   blockType: BlockTypes
   tabId: number
@@ -45,10 +21,6 @@ declare namespace chrome.windows {
 }
 
 declare namespace chrome.contentSettings {
-  const braveAdBlock: BraveAdBlock
-  const braveTrackingProtection: BraveTrackingProtection
-  const braveHTTPSEverywhere: BraveHTTPSEverywhere
-
   interface ContentSetting {
     setAsync: any
     getAsync: any
