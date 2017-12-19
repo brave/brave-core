@@ -301,28 +301,34 @@ index d4e0823a55994118bacfe4fd7f8ec1881640e8ac..84788c9cc020c756c45e96fab8ab2119
  #error Unknown branding
  #endif
 diff --git a/chrome/common/chrome_paths_linux.cc b/chrome/common/chrome_paths_linux.cc
-index fc47bd3f12418fdaed879e0b485bfc7cb572a6e8..cd65257afd0aa99de7ef07877691c72ea09f18f9 100644
+index fc47bd3f12418fdaed879e0b485bfc7cb572a6e8..9f02b6d08385a175354831a8037cb7be933de7df 100644
 --- a/chrome/common/chrome_paths_linux.cc
 +++ b/chrome/common/chrome_paths_linux.cc
-@@ -90,7 +90,7 @@ bool GetDefaultUserDataDirectory(base::FilePath* result) {
+@@ -89,8 +89,10 @@ bool GetDefaultUserDataDirectory(base::FilePath* result) {
+ 
  #if defined(GOOGLE_CHROME_BUILD)
    *result = config_dir.Append("google-chrome" + GetChannelSuffixForDataDir());
++#elif defined(OFFICIAL_BUILD)
++  *result = config_dir.Append("brave");
  #else
 -  *result = config_dir.Append("chromium");
-+  *result = config_dir.Append("brave");
++  *result = config_dir.Append("brave-development");
  #endif
    return true;
  }
 diff --git a/chrome/common/chrome_paths_mac.mm b/chrome/common/chrome_paths_mac.mm
-index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..57e572feef4a8fea5f026cf2d7a526d524551915 100644
+index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..f231ca44af970aed896f3c62e0a39fc6e61d0b72 100644
 --- a/chrome/common/chrome_paths_mac.mm
 +++ b/chrome/common/chrome_paths_mac.mm
-@@ -59,7 +59,7 @@ char* ProductDirNameForBundle(NSBundle* chrome_bundle) {
+@@ -58,8 +58,10 @@ char* ProductDirNameForBundle(NSBundle* chrome_bundle) {
+   if (!product_dir_name) {
  #if defined(GOOGLE_CHROME_BUILD)
      product_dir_name = "Google/Chrome";
++#elif defined(OFFICIAL_BUILD)
++    product_dir_name = "Brave";
  #else
 -    product_dir_name = "Chromium";
-+    product_dir_name = "Brave";
++    product_dir_name = "Brave-Development";
  #endif
    }
  
@@ -404,15 +410,19 @@ index efd272e706ba56b748e4b76b96d76cbd03aa07ac..b5d8d8cfa223d276db7a328036deeef6
      @"Google Chrome Canary": @"Google Chrome",
    };
 diff --git a/chrome/install_static/chromium_install_modes.cc b/chrome/install_static/chromium_install_modes.cc
-index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..eb39493404dc6e3f07fe7b6b43cdb628e5161329 100644
+index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..e2067d6d42bd85f40c7a1487d09feda5b1bf1833 100644
 --- a/chrome/install_static/chromium_install_modes.cc
 +++ b/chrome/install_static/chromium_install_modes.cc
-@@ -14,7 +14,7 @@ namespace install_static {
+@@ -14,7 +14,11 @@ namespace install_static {
  
  const wchar_t kCompanyPathName[] = L"";
  
 -const wchar_t kProductPathName[] = L"Chromium";
++#if defined(OFFICIAL_BUILD)
 +const wchar_t kProductPathName[] = L"Brave";
++#else
++const wchar_t kProductPathName[] = L"Brave-Development";
++#endif
  
  const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
  
