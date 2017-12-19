@@ -47,12 +47,20 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
   return setting != CONTENT_SETTING_BLOCK;
 }
 
-void GetRenderFrameIdAndProcessId(URLRequest* request,
+void GetRenderFrameInfo(URLRequest* request,
     int* render_frame_id,
-    int* render_process_id) {
+    int* render_process_id,
+    int* frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   *render_frame_id = -1;
   *render_process_id = -1;
+  *frame_tree_node_id = -1;
+
+  // PlzNavigate requests have a frame_tree_node_id, but no render_process_id
+  auto* request_info = content::ResourceRequestInfo::ForRequest(request);
+  if (request_info) {
+    *frame_tree_node_id = request_info->GetFrameTreeNodeId();
+  }
   extensions::ExtensionApiFrameIdMap::FrameData frame_data;
   if (!content::ResourceRequestInfo::GetRenderFrameForRequest(
           request, render_process_id, render_frame_id)) {
@@ -65,28 +73,15 @@ void GetRenderFrameIdAndProcessId(URLRequest* request,
   }
 }
 
-int GetTabIdFromIO(URLRequest* request) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  int render_frame_id = -1;
-  int render_process_id = -1;
-  int tab_id = -1;
-  GetRenderFrameIdAndProcessId(request, &render_frame_id, &render_process_id);
-  extensions::ExtensionApiFrameIdMap::FrameData frame_data;
-  if (extensions::ExtensionApiFrameIdMap::Get()->GetCachedFrameDataOnIO(
-      render_process_id, render_frame_id, &frame_data)) {
-    tab_id = frame_data.tab_id;
-  }
-  return tab_id;
-}
-
 void DispatchBlockedEventFromIO(URLRequest* request,
     const std::string& block_type) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  int render_process_id, render_frame_id;
-  GetRenderFrameIdAndProcessId(request, &render_frame_id, &render_process_id);
+  int render_process_id, render_frame_id, frame_tree_node_id;
+  GetRenderFrameInfo(request, &render_frame_id, &render_process_id,
+      &frame_tree_node_id);
   BrowserThread::PostTask(BrowserThread::UI, FROM_HERE,
       base::BindOnce(&BraveShieldsWebContentsObserver::DispatchBlockedEvent,
-          block_type, render_process_id, render_frame_id));
+          block_type, render_process_id, render_frame_id, frame_tree_node_id));
 }
 
 }  // namespace brave_shields
