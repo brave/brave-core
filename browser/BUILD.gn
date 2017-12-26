@@ -25,6 +25,7 @@ source_set("browser") {
 
   deps = [
     "//brave/components/brave_shields/browser:brave_shields",
+    "//brave/components/omnibox/browser:brave_autocomplete",
     "net",
   ]
 }

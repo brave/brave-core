@@ -140,6 +140,41 @@ index 3bb9e572d56851f54a973cda36ec1ea78c489279..e31a0397bdaa585e22f4becdcb922fc0
    ]
  
    if (is_android) {
+diff --git a/chrome/browser/android/omnibox/autocomplete_controller_android.cc b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
+index 61c41d19e2fbf7c43bbf5ce9afb5ece667bfadb9..0e435a78c2a30bcf01391f99b79e68f8a43d0e2d 100644
+--- a/chrome/browser/android/omnibox/autocomplete_controller_android.cc
++++ b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
+@@ -90,7 +90,7 @@ class ZeroSuggestPrefetcher : public AutocompleteControllerDelegate {
+ };
+ 
+ ZeroSuggestPrefetcher::ZeroSuggestPrefetcher(Profile* profile)
+-    : controller_(new AutocompleteController(
++    : controller_(new BraveAutocompleteController(
+           base::MakeUnique<ChromeAutocompleteProviderClient>(profile),
+           this,
+           AutocompleteProvider::TYPE_ZERO_SUGGEST)) {
+diff --git a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+index 546f574bd2d3577413f2d13cfa058bf90c3c77bf..eb4364774a6f53e718d860e7ff533d6b666a86d0 100644
+--- a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
++++ b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+@@ -23,6 +23,8 @@
+ #include "extensions/browser/extensions_browser_client.h"
+ #endif
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ // static
+ AutocompleteClassifier* AutocompleteClassifierFactory::GetForProfile(
+     Profile* profile) {
+@@ -40,7 +42,7 @@ std::unique_ptr<KeyedService> AutocompleteClassifierFactory::BuildInstanceFor(
+     content::BrowserContext* context) {
+   Profile* profile = static_cast<Profile*>(context);
+   return base::MakeUnique<AutocompleteClassifier>(
+-      base::WrapUnique(new AutocompleteController(
++      base::WrapUnique(new BraveAutocompleteController(
+           base::WrapUnique(new ChromeAutocompleteProviderClient(profile)), NULL,
+           AutocompleteClassifier::DefaultOmniboxProviders())),
+       std::unique_ptr<AutocompleteSchemeClassifier>(
 diff --git a/chrome/browser/browser_process_impl.cc b/chrome/browser/browser_process_impl.cc
 index 4d8b9911eb906dc2d691224eeb106a990c5d5215..2de52b498cadaa18d362333a19ba5ba5d0aaac75 100644
 --- a/chrome/browser/browser_process_impl.cc
@@ -241,6 +276,19 @@ index e055ef156da9ea78b1dee96ee04f9c061267c775..5ffcecf64f39f3ff593cd30d9c1ef551
    // NetworkDelegate implementation.
    int OnBeforeURLRequest(net::URLRequest* request,
                           const net::CompletionCallback& callback,
+diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
+index 9bfac125046c9cc34f1e4440a1ebc5dfc2c93af2..243f176e3bc388d1b89760526a0639a408823ddf 100644
+--- a/chrome/browser/profiles/profile.cc
++++ b/chrome/browser/profiles/profile.cc
+@@ -136,7 +136,7 @@ const char Profile::kNoHostedDomainFound[] = "NO_HOSTED_DOMAIN";
+ void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterBooleanPref(
+       prefs::kSearchSuggestEnabled,
+-      true,
++      false,
+       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+ #if defined(OS_ANDROID)
+   registry->RegisterStringPref(
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
 index 7bcc72f67676bf1bd388109e94bd0739cd588957..cd1cfd7930ace33eb1c6e72b39133c815a656be2 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
@@ -262,6 +310,19 @@ index 7bcc72f67676bf1bd388109e94bd0739cd588957..cd1cfd7930ace33eb1c6e72b39133c81
  #if BUILDFLAG(ENABLE_EXTENSIONS)
            io_thread_globals->extension_event_router_forwarder.get(),
  #else
+diff --git a/chrome/browser/ui/app_list/search/omnibox_provider.cc b/chrome/browser/ui/app_list/search/omnibox_provider.cc
+index fbf7b26028ebd2a1d764c3494387ac1373be8b1f..70452222f03d4786070c0431e1876ad08462e04e 100644
+--- a/chrome/browser/ui/app_list/search/omnibox_provider.cc
++++ b/chrome/browser/ui/app_list/search/omnibox_provider.cc
+@@ -24,7 +24,7 @@ OmniboxProvider::OmniboxProvider(Profile* profile,
+                                  AppListControllerDelegate* list_controller)
+     : profile_(profile),
+       list_controller_(list_controller),
+-      controller_(new AutocompleteController(
++      controller_(new BraveAutocompleteController(
+           base::WrapUnique(new ChromeAutocompleteProviderClient(profile)),
+           this,
+           AutocompleteClassifier::DefaultOmniboxProviders() &
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
 index ff3b6d2d23c6d785da2358bfac6723e1fce971a1..3eb0a4e6e813e65dd33fd4bfb750c3957311ed1f 100644
 --- a/chrome/browser/ui/tab_helpers.cc
@@ -282,6 +343,28 @@ index ff3b6d2d23c6d785da2358bfac6723e1fce971a1..3eb0a4e6e813e65dd33fd4bfb750c395
    chrome_browser_net::NetErrorTabHelper::CreateForWebContents(web_contents);
    chrome_browser_net::PredictorTabHelper::CreateForWebContents(web_contents);
    if (base::FeatureList::IsEnabled(kDecoupleTranslateLanguageFeature)) {
+diff --git a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
+index 66dc8e32404e169cb40cd5a56cbfe166d9709dbe..028a37bad232a5f1691e5e6d20b4932399ccd866 100644
+--- a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
++++ b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
+@@ -34,6 +34,8 @@
+ #include "components/search_engines/template_url.h"
+ #include "content/public/browser/web_ui.h"
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ using bookmarks::BookmarkModel;
+ 
+ namespace mojo {
+@@ -209,7 +211,7 @@ void OmniboxPageHandler::StartOmniboxQuery(const std::string& input_string,
+ }
+ 
+ void OmniboxPageHandler::ResetController() {
+-  controller_.reset(new AutocompleteController(
++  controller_.reset(new BraveAutocompleteController(
+       base::MakeUnique<ChromeAutocompleteProviderClient>(profile_), this,
+       AutocompleteClassifier::DefaultOmniboxProviders()));
+ }
 diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
 index d4e0823a55994118bacfe4fd7f8ec1881640e8ac..84788c9cc020c756c45e96fab8ab2119df1b18f8 100644
 --- a/chrome/common/chrome_constants.cc
@@ -450,6 +533,38 @@ index c0132fecb0b9e8a91f288d6e6ecaad9dfdbec247..a6e307d6ddcee3ca0f75a91c459a6903
    // IPC message handlers.
    using Handlers = std::vector<std::unique_ptr<UtilityMessageHandler>>;
    Handlers handlers_;
+diff --git a/components/omnibox/browser/autocomplete_controller.h b/components/omnibox/browser/autocomplete_controller.h
+index 4cf270f246961ad1507b00e5e557b6b62e6bc227..3d90d66078c5da78f0f875a1b643c53d703dcb50 100644
+--- a/components/omnibox/browser/autocomplete_controller.h
++++ b/components/omnibox/browser/autocomplete_controller.h
+@@ -139,6 +139,7 @@ class AutocompleteController : public AutocompleteProviderListener {
+   }
+ 
+  private:
++  friend class BraveAutocompleteController;
+   friend class AutocompleteProviderTest;
+   FRIEND_TEST_ALL_PREFIXES(AutocompleteProviderTest,
+                            RedundantKeywordsIgnoredInResult);
+diff --git a/components/omnibox/browser/omnibox_controller.cc b/components/omnibox/browser/omnibox_controller.cc
+index 75a76658b52a64a1a3b142bfd26c57a311f8f4dc..98a21008d4867d7f465e64a7269ffe96fe9ed711 100644
+--- a/components/omnibox/browser/omnibox_controller.cc
++++ b/components/omnibox/browser/omnibox_controller.cc
+@@ -14,12 +14,14 @@
+ #include "components/omnibox/browser/omnibox_popup_view.h"
+ #include "ui/gfx/geometry/rect.h"
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ OmniboxController::OmniboxController(OmniboxEditModel* omnibox_edit_model,
+                                      OmniboxClient* client)
+     : omnibox_edit_model_(omnibox_edit_model),
+       client_(client),
+       popup_(nullptr),
+-      autocomplete_controller_(new AutocompleteController(
++      autocomplete_controller_(new BraveAutocompleteController(
+           client_->CreateAutocompleteProviderClient(),
+           this,
+           AutocompleteClassifier::DefaultOmniboxProviders())),
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
 index a299d38baf7f0c82dad33dc37764eba5db4ba856..218b83b4c65fe269dd4c3e5b7b51aa44fc4119ac 100644
 --- a/components/strings/BUILD.gn
@@ -477,6 +592,28 @@ index 86dd1be9a41fb5f8215c7da13603c743994f2f00..fa028f73763a109a8e90038fa6e21d37
    // Last entry: Add new entries above, then run:
    // python tools/metrics/histograms/update_extension_histograms.py
    ENUM_BOUNDARY
+diff --git a/ios/chrome/browser/autocomplete/autocomplete_classifier_factory.cc b/ios/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+index 11cdca53bd8c9e9c5d97715030f731226dde2984..f2aec7c949b201db1c06dd38226ee2ecf1aefb6f 100644
+--- a/ios/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
++++ b/ios/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+@@ -17,6 +17,8 @@
+ #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+ #include "ios/chrome/browser/search_engines/template_url_service_factory.h"
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ namespace ios {
+ namespace {
+ 
+@@ -25,7 +27,7 @@ std::unique_ptr<KeyedService> BuildAutocompleteClassifier(
+   ios::ChromeBrowserState* browser_state =
+       ios::ChromeBrowserState::FromBrowserState(context);
+   return base::MakeUnique<AutocompleteClassifier>(
+-      base::WrapUnique(new AutocompleteController(
++      base::WrapUnique(new BraveAutocompleteController(
+           base::WrapUnique(new AutocompleteProviderClientImpl(browser_state)),
+           nullptr, AutocompleteClassifier::DefaultOmniboxProviders())),
+       base::WrapUnique(new AutocompleteSchemeClassifierImpl));
 diff --git a/third_party/widevine/cdm/BUILD.gn b/third_party/widevine/cdm/BUILD.gn
 index a3eac59cc2ebdb1f9d2bb7af8a7db0d44ab315a9..bb31fe8035643b0f928a69e730cc608af6ee2441 100644
 --- a/third_party/widevine/cdm/BUILD.gn
