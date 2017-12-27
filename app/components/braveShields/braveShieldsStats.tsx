@@ -24,6 +24,10 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
     return this.props.httpsEverywhereRedirected
   }
 
+  get javascriptBlocked (): number {
+    return this.props.javascriptBlocked
+  }
+
   render () {
     const { shieldsEnabled } = this.props
     return (
@@ -62,7 +66,7 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
         </Column>
 
         <Column align='flex-end' size={2}>
-          <BrowserText noSelect={true} text='0' fontSize='26px' color='#555555' />
+          <BrowserText noSelect={true} text={this.javascriptBlocked} fontSize='26px' color='#555555' />
         </Column>
         <Column
           id='scriptsBlockedStats'

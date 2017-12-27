@@ -378,6 +378,40 @@ describe('braveShieldsPanelReducer', () => {
   })
 
   describe('RESOURCE_BLOCKED', function () {
+    it('increments for JS blocking', function () {
+      let nextState = shieldsPanelReducer(state, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'javascript',
+          tabId: 2
+        }
+      })
+      assert.deepEqual(nextState, {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            origin: 'https://brave.com',
+            hostname: 'brave.com',
+            adsBlocked: 0,
+            trackingProtectionBlocked: 0,
+            httpsEverywhereRedirected: 0,
+            javascriptBlocked: 1,
+            adsTrackers: 'allow',
+            controlsOpen: true,
+            shieldsEnabled: 'allow',
+            httpsEverywhere: 'block',
+            id: 2,
+            javascript: 'block',
+            trackingProtection: 'block',
+            adBlock: 'block'
+          }
+        },
+        windows: {
+          1: 2
+        }
+      })
+    })
+
     it('increases same count consecutively', function () {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
