@@ -9,6 +9,7 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/url_request/url_request.h"
 
 using content::BrowserThread;
