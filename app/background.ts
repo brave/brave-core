@@ -22,15 +22,16 @@ function promisifyAll (obj: object, list: string[]) {
 
 // let chrome extension api support Promise
 promisifyAll(chrome, [
+  'browserAction',
   'tabs',
-  'windows',
-  'browserAction'
+  'windows'
 ])
 promisifyAll(chrome.storage, [
   'local'
 ])
 
 promisifyAll(chrome.contentSettings, [
+  'javascript',
   'plugins'
 ])
 

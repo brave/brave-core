@@ -5,4 +5,3 @@
 export const RESOURCE_IDENTIFIER_AD_BLOCK = 'ad-block'
 export const RESOURCE_IDENTIFIER_TRACKING_PROTECTION = 'tracking-protection'
 export const RESOURCE_IDENTIFIER_HTTPS_EVERYWHERE = 'https-everywhere'
-export const RESOURCE_IDENTIFIER_JAVASCRIPT_BLOCKING = 'javascript-blocking'

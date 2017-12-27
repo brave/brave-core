@@ -196,7 +196,7 @@ describe('Shields API', () => {
 
   describe('setAllowJavaScript', function () {
     before(function () {
-      this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
+      this.spy = sinon.spy(chrome.contentSettings.javascript, 'setAsync')
       this.p = shieldsAPI.setAllowJavaScript('https://www.brave.com', 'block')
     })
 
@@ -208,7 +208,6 @@ describe('Shields API', () => {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_JAVASCRIPT_BLOCKING },
         setting: 'block'
       })
     })

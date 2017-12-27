@@ -24,7 +24,7 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
     chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_AD_BLOCK } }),
     chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKING_PROTECTION } }),
     chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTPS_EVERYWHERE } }),
-    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_JAVASCRIPT_BLOCKING } })
+    chrome.contentSettings.javascript.getAsync({ primaryUrl: origin })
   ]).then((details) => {
     return {
       url: url.href,
@@ -117,9 +117,8 @@ export const setAllowHTTPSEverywhere = (origin: string, setting: BlockOptions) =
  * @return a promise which resolves when the setting is set
  */
 export const setAllowJavaScript = (origin: string, setting: string) =>
-  chrome.contentSettings.plugins.setAsync({
+  chrome.contentSettings.javascript.setAsync({
     primaryPattern: origin + '/*',
-    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_JAVASCRIPT_BLOCKING },
     setting
   })
 

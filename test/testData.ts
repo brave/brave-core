@@ -104,6 +104,16 @@ export const getMockChrome = () => {
             setting: 'block'
           })
         }
+      },
+      javascript: {
+        setAsync: function () {
+          return Promise.resolve()
+        },
+        getAsync: function () {
+          return Promise.resolve({
+            setting: 'block'
+          })
+        }
       }
     },
     i18n: {
