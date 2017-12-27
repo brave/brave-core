@@ -426,6 +426,50 @@ index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..e2067d6d42bd85f40c7a1487d09feda5
  
  const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
  
+diff --git a/chrome/installer/util/prebuild/create_string_rc.py b/chrome/installer/util/prebuild/create_string_rc.py
+index d7734d8883c3e438ece3d509b7bb331931831178..6e6cdda19c271de7e5429db02b3e17b2d676b46f 100755
+--- a/chrome/installer/util/prebuild/create_string_rc.py
++++ b/chrome/installer/util/prebuild/create_string_rc.py
+@@ -109,6 +109,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_APP_SHORTCUTS_SUBDIR_NAME',
+     ],
++    'brave': [
++      'IDS_APP_SHORTCUTS_SUBDIR_NAME',
++    ],
+   },
+   'IDS_INBOUND_MDNS_RULE_DESCRIPTION': {
+     'google_chrome': [
+@@ -120,6 +123,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
+     ],
++    'brave': [
++      'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
++    ],
+   },
+   'IDS_INBOUND_MDNS_RULE_NAME': {
+     'google_chrome': [
+@@ -131,6 +137,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_INBOUND_MDNS_RULE_NAME',
+     ],
++    'brave': [
++      'IDS_INBOUND_MDNS_RULE_NAME',
++    ],
+   },
+   # In contrast to the strings above, this one (IDS_PRODUCT_NAME) is used
+   # throughout Chrome in mode-independent contexts. Within the installer (the
+@@ -146,6 +155,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_PRODUCT_NAME',
+     ],
++    'brave': [
++      'IDS_PRODUCT_NAME',
++    ],
+   },
+ }
+ # Note: Update the test expectations in GetBaseMessageIdForMode.GoogleStringIds
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
 index a5d593955f2c75bd50f773c7b615a5ee1a06bc3b..ec1cfa7203625f0bc6168ed88f1bba0aac0101aa 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
