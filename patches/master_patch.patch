@@ -10,9 +10,18 @@ index c649018a7a0aeb20caeb2bf37c60d57c48630f1b..9a320d8b5f46f2c7f2d269b7a1cc3b2c
 +  branding_path_component = "brave"
  }
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 5d0274b0424ecfd527962c5116370a7593d10d15..1328c557c15354b0505e294b6142b83354a53ddc 100644
+index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740c427de3e 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
+@@ -54,7 +54,7 @@ if (is_win) {
+       "$root_out_dir/initialexe/chrome.exe",
+     ]
+     outputs = [
+-      "$root_out_dir/chrome.exe",
++      "$root_out_dir/brave.exe",
+     ]
+     if (symbol_level != 0) {
+       outputs += [ "$root_out_dir/chrome.exe.pdb" ]
 @@ -238,6 +238,8 @@ if (!is_android && !is_mac) {
            "app/chrome_main.cc",
            "app/chrome_main_delegate.cc",
@@ -22,6 +31,15 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..1328c557c15354b0505e294b6142b833
          ]
  
          deps += [
+@@ -308,7 +310,7 @@ if (!is_android && !is_mac) {
+     if (is_win) {
+       output_name = "initialexe/chrome"
+     } else {
+-      output_name = "chrome"
++      output_name = "brave"
+     }
+ 
+     sources = []
 @@ -357,6 +359,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
@@ -94,6 +112,15 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..1328c557c15354b0505e294b6142b833
      ]
  
      include_dirs = [ android_ndk_include_dir ]
+@@ -1770,7 +1784,7 @@ if (is_linux) {
+       dump_syms_binary =
+           get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
+ 
+-      chrome_binary = "$root_out_dir/chrome"
++      chrome_binary = "$root_out_dir/brave"
+       if (current_cpu == "x86") {
+         # GYP used "ia32" so keep that naming for back-compat.
+         symbol_file = "$root_out_dir/chrome.breakpad.ia32"
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
 index 8896752d5b9faacff253afa54ae264417dbe3372..18c4df2427bb3ed0dffdf20faeeb71322200ed7c 100644
 --- a/chrome/app/BUILD.gn
@@ -426,6 +453,28 @@ index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..e2067d6d42bd85f40c7a1487d09feda5
  
  const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
  
+diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
+index 615f286e96f7adef5e713c31ed6abd26cf643bc7..e97ccd6744c2985e93badf50924addbe3d0d87a3 100644
+--- a/chrome/installer/linux/BUILD.gn
++++ b/chrome/installer/linux/BUILD.gn
+@@ -19,7 +19,7 @@ if (current_cpu == "x86" || current_cpu == "x64") {
+ assert(is_linux)
+ 
+ packaging_files_executables = [
+-  "$root_out_dir/chrome",
++  "$root_out_dir/brave",
+   "$root_out_dir/chrome_sandbox",
+ ]
+ packaging_files_shlibs = []
+@@ -153,7 +153,7 @@ action("merge_rpm_dependencies") {
+ }
+ 
+ action("strip_chrome_binary") {
+-  prog_name = "$root_out_dir/chrome"
++  prog_name = "$root_out_dir/brave"
+   debug_file = prog_name + ".debug"
+   stripped_file = prog_name + ".stripped"
+   deps = [
 diff --git a/chrome/installer/util/prebuild/create_string_rc.py b/chrome/installer/util/prebuild/create_string_rc.py
 index d7734d8883c3e438ece3d509b7bb331931831178..6e6cdda19c271de7e5429db02b3e17b2d676b46f 100755
 --- a/chrome/installer/util/prebuild/create_string_rc.py
