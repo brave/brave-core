@@ -519,6 +519,27 @@ index d7734d8883c3e438ece3d509b7bb331931831178..6e6cdda19c271de7e5429db02b3e17b2
    },
  }
  # Note: Update the test expectations in GetBaseMessageIdForMode.GoogleStringIds
+diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
+index 0459db65fee93a4f9c32dc83e7528b6bb8c8f653..d1ba50143543fa1acd3aff9b261ed9f45cacb804 100644
+--- a/chrome/renderer/chrome_content_renderer_client.cc
++++ b/chrome/renderer/chrome_content_renderer_client.cc
+@@ -20,6 +20,7 @@
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/time/time.h"
+ #include "base/values.h"
++#include "brave/renderer/brave_content_settings_observer.h"
+ #include "build/build_config.h"
+ #include "chrome/common/channel_info.h"
+ #include "chrome/common/chrome_content_client.h"
+@@ -543,7 +544,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+   ext_dispatcher =
+       ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher();
+ #endif
+-  ContentSettingsObserver* content_settings = new ContentSettingsObserver(
++  ContentSettingsObserver* content_settings = new BraveContentSettingsObserver(
+       render_frame, ext_dispatcher, should_whitelist_for_content_settings,
+       registry);
+   if (chrome_observer_.get()) {
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
 index a5d593955f2c75bd50f773c7b615a5ee1a06bc3b..ec1cfa7203625f0bc6168ed88f1bba0aac0101aa 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h

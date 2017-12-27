@@ -81,7 +81,8 @@ void DispatchBlockedEventFromIO(URLRequest* request,
       &frame_tree_node_id);
   BrowserThread::PostTask(BrowserThread::UI, FROM_HERE,
       base::BindOnce(&BraveShieldsWebContentsObserver::DispatchBlockedEvent,
-          block_type, render_process_id, render_frame_id, frame_tree_node_id));
+          block_type, request->url().spec(),
+          render_process_id, render_frame_id, frame_tree_node_id));
 }
 
 }  // namespace brave_shields

@@ -23,7 +23,7 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
     const std::string& resource_identifier);
 
 void DispatchBlockedEventFromIO(net::URLRequest* request,
-    const std::string &block_type);
+    const std::string& block_type);
 
 }  // namespace brave_shields
 

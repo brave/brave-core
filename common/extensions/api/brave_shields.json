@@ -17,7 +17,8 @@
             "name": "details",
             "properties": {
               "tabId": {"type": "integer", "description": "The ID of the tab in which the action occurs."},
-              "blockType": {"type": "string", "description": "\"adBlock\" or \"trackingProtection\"."}
+              "blockType": {"type": "string", "description": "\"adBlock\" or \"trackingProtection\"."},
+              "subresource": {"type": "string", "description": "The URL of the subresource in question."}
             }
           }
         ]

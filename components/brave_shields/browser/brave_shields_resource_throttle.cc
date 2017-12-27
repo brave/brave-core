@@ -7,6 +7,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/shield_types.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -45,12 +46,14 @@ void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
       !g_brave_browser_process->tracking_protection_service()->
       ShouldStartRequest(request_->url(), resource_type_, tab_origin.host())) {
     Cancel();
-    brave_shields::DispatchBlockedEventFromIO(request_, "adBlock");
+    brave_shields::DispatchBlockedEventFromIO(request_,
+        brave_shields::kAdBlock);
   }
   if (allow_tracking_protection &&
       !g_brave_browser_process->ad_block_service()->
       ShouldStartRequest(request_->url(), resource_type_, tab_origin.host())) {
     Cancel();
-    brave_shields::DispatchBlockedEventFromIO(request_, "trackingProtection");
+    brave_shields::DispatchBlockedEventFromIO(request_,
+        brave_shields::kTrackingProtection);
   }
 }
