@@ -44,7 +44,19 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
           resource_identifier, &setting_info);
   ContentSetting setting =
       content_settings::ValueToContentSetting(value.get());
-  return setting != CONTENT_SETTING_BLOCK;
+
+  if (setting == CONTENT_SETTING_DEFAULT) {
+    if (resource_identifier == "ads") {
+      return false;
+    } else if (resource_identifier == "trackers") {
+      return false;
+    } else if (resource_identifier == "httpUpgradableResources") {
+      return false;
+    } else if (resource_identifier == "braveShields") {
+      return true;
+    }
+  }
+  return setting == CONTENT_SETTING_ALLOW;
 }
 
 void GetRenderFrameInfo(URLRequest* request,
