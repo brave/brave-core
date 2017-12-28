@@ -21,9 +21,10 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
   const hostname = url.hostname
 
   return Promise.all([
-    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_AD_BLOCK } }),
-    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKING_PROTECTION } }),
-    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTPS_EVERYWHERE } }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_BRAVE_SHIELDS } }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_ADS } }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKERS } }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES } }),
     chrome.contentSettings.javascript.getAsync({ primaryUrl: origin })
   ]).then((details) => {
     return {
@@ -31,10 +32,11 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       origin,
       hostname,
       id: tabData.id,
-      adBlock: details[0].setting,
-      trackingProtection: details[1].setting,
-      httpsEverywhere: details[2].setting,
-      javascript: details[3].setting
+      braveShields: details[0].setting,
+      ads: details[1].setting,
+      trackers: details[2].setting,
+      httpUpgradableResources: details[3].setting,
+      javascript: details[4].setting
     }
   }).catch(() => {
     return {
@@ -42,9 +44,9 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       origin,
       hostname,
       id: tabData.id,
-      adBlock: 0,
-      trackingProtection: 0,
-      httpsEverywhere: 0,
+      ads: 0,
+      trackers: 0,
+      httpUpgradableResources: 0,
       javascript: 0
     }
   })
@@ -71,41 +73,57 @@ export const requestShieldPanelData = (tabId: number) =>
     })
 
 /**
- * Changes the ad block to be on (allow) or off (block)
+ * Changes the brave shields setting at origin to be allowed or blocked.
  * @param {string} origin the origin of the site to change the setting for
  * @param {string} setting 'allow' or 'block'
  * @return a promise which resolves when the setting is set
  */
-export const setAllowAdBlock = (origin: string, setting: string) =>
+export const setAllowBraveShields = (origin: string, setting: string) =>
   chrome.contentSettings.plugins.setAsync({
-    primaryPattern: origin + '/*',
-    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_AD_BLOCK },
+    primaryPattern: origin.replace(/^(http|https):\/\//, '*://') + '/*',
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_BRAVE_SHIELDS },
     setting
   })
 
 /**
- * Changes the tracking protection to be on (allow) or off (block)
+ * Changes the ads at origin to be allowed or blocked.
+ * The ad-block service will come into effect if the ad is marked as blocked.
+ * @param {string} origin the origin of the site to change the setting for
+ * @param {string} setting 'allow' or 'block'
+ * @return a promise which resolves when the setting is set
+ */
+export const setAllowAds = (origin: string, setting: string) =>
+  chrome.contentSettings.plugins.setAsync({
+    primaryPattern: origin + '/*',
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_ADS },
+    setting
+  })
+
+/**
+ * Changes the trackers at origin to be allowed or blocked.
+ * The tracking-protection service will come into effect if the tracker is marked as blocked.
  * @param {string} origin the origin of the site to change the setting for
  * @param {string} setting 'allow' or 'block'
  * @return a promise which resolves with the setting is set
  */
-export const setAllowTrackingProtection = (origin: string, setting: string) =>
+export const setAllowTrackers = (origin: string, setting: string) =>
   chrome.contentSettings.plugins.setAsync({
     primaryPattern: origin + '/*',
-    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKING_PROTECTION },
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKERS },
     setting
   })
 
 /**
- * Changes the HTTPS Everywhere to be on (allow) or off (block)
+ * Changes the http upgrdabable resources to be allows as is or blocked.
+ * The https-everywhere service will come into effect if the resource is marked as blocked.
  * @param {string} origin the origin of the site to change the setting for
  * @return a promise which resolves when the setting is set
  */
-export const setAllowHTTPSEverywhere = (origin: string, setting: BlockOptions) => {
+export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOptions) => {
   const primaryPattern = origin.replace(/^(http|https):\/\//, '*://') + '/*'
   return chrome.contentSettings.plugins.setAsync({
     primaryPattern,
-    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTPS_EVERYWHERE },
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES },
     setting
   })
 }

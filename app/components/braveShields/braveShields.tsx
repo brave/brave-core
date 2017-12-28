@@ -32,22 +32,23 @@ export default class BraveShields extends React.Component<Props, object> {
     return (
       <div data-test-id='brave-shields-panel'>
         <BraveShieldsHeader
-          shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
+          braveShields={shieldsPanelTabData.braveShields}
           shieldsToggled={actions.shieldsToggled}
           hostname={shieldsPanelTabData.hostname}
         />
         <BraveShieldsStats
-          shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
+          braveShields={shieldsPanelTabData.braveShields}
           adsBlocked={shieldsPanelTabData.adsBlocked}
-          trackingProtectionBlocked={shieldsPanelTabData.trackingProtectionBlocked}
-          httpsEverywhereRedirected={shieldsPanelTabData.httpsEverywhereRedirected}
+          trackersBlocked={shieldsPanelTabData.trackersBlocked}
+          httpsRedirected={shieldsPanelTabData.httpsRedirected}
           javascriptBlocked={shieldsPanelTabData.javascriptBlocked}
         />
         <BraveShieldsControls
-          shieldsEnabled={shieldsPanelTabData.shieldsEnabled}
+          braveShields={shieldsPanelTabData.braveShields}
           blockAdsTrackers={actions.blockAdsTrackers}
-          adsTrackers={shieldsPanelTabData.adsTrackers}
-          httpsEverywhere={shieldsPanelTabData.httpsEverywhere}
+          ads={shieldsPanelTabData.ads}
+          trackers={shieldsPanelTabData.trackers}
+          httpUpgradableResources={shieldsPanelTabData.httpUpgradableResources}
           javascript={shieldsPanelTabData.javascript}
           controlsToggled={actions.controlsToggled}
           httpsEverywhereToggled={actions.httpsEverywhereToggled}

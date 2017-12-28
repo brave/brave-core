@@ -13,9 +13,9 @@ import { BlockOptions } from '../../../app/types/other/blockTypes';
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
     const details: ShieldDetails = {
-      adBlock: 'allow',
-      trackingProtection: 'block',
-      httpsEverywhere: 'allow',
+      ads: 'allow',
+      trackers: 'block',
+      httpUpgradableResources: 'allow',
       origin: 'https://www.brave.com',
       hostname: 'www.brave.com',
       id: 1,
@@ -32,18 +32,6 @@ describe('shieldsPanelActions', () => {
     assert.deepEqual(actions.shieldsToggled(setting), {
       type: types.SHIELDS_TOGGLED,
       setting
-    })
-  })
-
-  it('adBlockToggled action', () => {
-    assert.deepEqual(actions.adBlockToggled(), {
-      type: types.AD_BLOCK_TOGGLED
-    })
-  })
-
-  it('trackingProtectionToggled action', () => {
-    assert.deepEqual(actions.trackingProtectionToggled(), {
-      type: types.TRACKING_PROTECTION_TOGGLED
     })
   })
 

@@ -11,7 +11,7 @@ import * as actions from '../../../../app/actions/shieldsPanelActions'
 describe('newTabPageReducer', () => {
   it('should handle initial state', () => {
     assert.deepEqual(
-      newTabPageReducer(undefined, actions.adBlockToggled())
+      newTabPageReducer(undefined, actions.blockAdsTrackers('allow'))
     , {})
   })
 

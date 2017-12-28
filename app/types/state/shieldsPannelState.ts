@@ -5,20 +5,19 @@
 import { BlockOptions, BlockTypes } from '../other/blockTypes'
 
 export interface Tab {
-  adBlock: BlockOptions
+  ads: BlockOptions
   adsBlocked: number
-  adsTrackers: BlockOptions
   controlsOpen: boolean
   hostname: string
-  httpsEverywhere: BlockOptions
-  httpsEverywhereRedirected: number
+  httpUpgradableResources: BlockOptions
+  httpsRedirected: number
   id: number
   javascript: BlockOptions
   javascriptBlocked: number
   origin: string
-  shieldsEnabled: BlockOptions
-  trackingProtection: BlockOptions
-  trackingProtectionBlocked: number
+  braveShields: BlockOptions
+  trackers: BlockOptions
+  trackersBlocked: number
   url: string
 }
 

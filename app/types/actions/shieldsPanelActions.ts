@@ -7,9 +7,9 @@ import { BlockTypes, BlockOptions } from '../other/blockTypes'
 
 export interface ShieldDetails {
   id: number
-  adBlock: BlockOptions
-  trackingProtection: BlockOptions
-  httpsEverywhere: BlockOptions
+  ads: BlockOptions
+  trackers: BlockOptions
+  httpUpgradableResources: BlockOptions
   javascript: BlockOptions
   origin: string
   hostname: string
@@ -36,22 +36,6 @@ interface ShieldsToggledReturn {
 
 export interface ShieldsToggled {
   (setting: BlockOptions): ShieldsToggledReturn
-}
-
-interface AdBlockToggledReturn {
-  type: types.AD_BLOCK_TOGGLED
-}
-
-export interface AdBlockToggled {
-  (): AdBlockToggledReturn
-}
-
-interface TrackingProtectionToggledReturn {
-  type: types.TRACKING_PROTECTION_TOGGLED
-}
-
-export interface TrackingProtectionToggled {
-  (): TrackingProtectionToggledReturn
 }
 
 interface ResourceBlockedReturn {
@@ -100,8 +84,6 @@ export interface JavascriptToggled {
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
-  AdBlockToggledReturn |
-  TrackingProtectionToggledReturn |
   ResourceBlockedReturn |
   BlockAdsTrackersReturn |
   ControlsToggledReturn |

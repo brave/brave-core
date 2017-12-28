@@ -9,9 +9,10 @@ import { BlockOptions } from '../../types/other/blockTypes'
 
 export interface Props {
   controlsOpen: boolean
-  adsTrackers: string
-  shieldsEnabled: BlockOptions
-  httpsEverywhere: BlockOptions
+  braveShields: BlockOptions
+  httpUpgradableResources: BlockOptions
+  ads: BlockOptions
+  trackers: BlockOptions
   javascript: BlockOptions
   blockAdsTrackers: shieldActions.BlockAdsTrackers
   controlsToggled: shieldActions.ControlsToggled
@@ -50,7 +51,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
   }
 
   render () {
-    const { shieldsEnabled, adsTrackers, controlsOpen, httpsEverywhere, javascript } = this.props
+    const { braveShields, ads, trackers, controlsOpen, httpUpgradableResources, javascript } = this.props
     return (
       <Grid
         id='braveShieldsControls'
@@ -66,9 +67,9 @@ export default class BraveShieldsControls extends React.Component<Props, object>
             onClick={this.onToggleControls}
           >
             <BrowserSelect
-              disabled={shieldsEnabled === 'block'}
+              disabled={braveShields === 'block'}
               titleName='Ad Control'
-              value={adsTrackers}
+              value={braveShields !== 'block' && ads !== 'allow' && trackers !== 'allow' ? 'allow' : 'block'}
               onChange={this.onChangeAdControl}
             >
               {/* TODO needs "show brave ads" */}
@@ -77,7 +78,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
             </BrowserSelect>
             {/* TODO @cezaraugusto */}
             <BrowserSelect
-              disabled={shieldsEnabled === 'block'}
+              disabled={braveShields === 'block'}
               titleName='Cookie Control'
               value='someVALUE'
               onChange={this.onChangeCookieControl}
@@ -94,9 +95,9 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
                   id='httpsEverywhere'
-                  disabled={shieldsEnabled === 'block'}
+                  disabled={braveShields === 'block'}
                   rightText='HTTPS Everywhere'
-                  checked={shieldsEnabled === 'allow' && httpsEverywhere === 'allow'}
+                  checked={braveShields !== 'block' && httpUpgradableResources !== 'allow'}
                   onChange={this.onToggleHTTPSEverywhere}
                 />
               </Column>
@@ -104,9 +105,9 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
                   id='blockScripts'
-                  disabled={shieldsEnabled === 'block'}
+                  disabled={braveShields === 'block'}
                   rightText='Block Scripts'
-                  checked={shieldsEnabled === 'allow' && javascript === 'block'}
+                  checked={braveShields !== 'block' && javascript !== 'allow'}
                   onChange={this.onToggleJavaScript}
                 />
               </Column>
@@ -114,7 +115,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
                   id='fingerprintingProtection'
-                  disabled={shieldsEnabled === 'block'}
+                  disabled={braveShields === 'block'}
                   rightText='Fingerprinting Protection'
                 />
               </Column>
@@ -122,7 +123,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
                   id='blockPhishingMalware'
-                  disabled={shieldsEnabled === 'block'}
+                  disabled={braveShields === 'block'}
                   rightText='Block Phishing/Malware'
                 />
               </Column>
