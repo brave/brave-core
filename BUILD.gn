@@ -2,13 +2,14 @@ group("child_dependencies") {
   public_deps = [
     "//brave/renderer",
     "//brave/utility",
+    "common"
   ]
 }
 
 group("browser_dependencies") {
   public_deps = [
     "//brave/browser",
-    "//brave/common/extensions/api"
+    "common",
   ]
 }
 
