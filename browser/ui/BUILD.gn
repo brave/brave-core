@@ -1,0 +1,8 @@
+import("//build/config/features.gni")
+
+source_set("ui") {
+  sources = [
+    "webui/brave_web_ui_controller_factory.cc",
+    "webui/brave_web_ui_controller_factory.h",
+  ]
+}
