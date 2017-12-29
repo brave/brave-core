@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
+index ff3b6d2d23c6d785da2358bfac6723e1fce971a1..3eb0a4e6e813e65dd33fd4bfb750c3957311ed1f 100644
+--- a/chrome/browser/ui/tab_helpers.cc
++++ b/chrome/browser/ui/tab_helpers.cc
+@@ -11,6 +11,7 @@
+ #include "base/feature_list.h"
+ #include "base/memory/ptr_util.h"
+ #include "base/time/default_tick_clock.h"
++#include "brave/browser/brave_tab_helpers.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+ #include "chrome/browser/browser_process.h"
+@@ -184,6 +185,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+   BookmarkLastVisitUpdater::MaybeCreateForWebContentsWithBookmarkModel(
+       web_contents, BookmarkModelFactory::GetForBrowserContext(
+                         web_contents->GetBrowserContext()));
++  brave::AttachTabHelpers(web_contents);
+   chrome_browser_net::NetErrorTabHelper::CreateForWebContents(web_contents);
+   chrome_browser_net::PredictorTabHelper::CreateForWebContents(web_contents);
+   if (base::FeatureList::IsEnabled(kDecoupleTranslateLanguageFeature)) {
