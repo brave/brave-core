@@ -1,0 +1,44 @@
+diff --git a/chrome/installer/util/prebuild/create_string_rc.py b/chrome/installer/util/prebuild/create_string_rc.py
+index d7734d8883c3e438ece3d509b7bb331931831178..6e6cdda19c271de7e5429db02b3e17b2d676b46f 100755
+--- a/chrome/installer/util/prebuild/create_string_rc.py
++++ b/chrome/installer/util/prebuild/create_string_rc.py
+@@ -109,6 +109,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_APP_SHORTCUTS_SUBDIR_NAME',
+     ],
++    'brave': [
++      'IDS_APP_SHORTCUTS_SUBDIR_NAME',
++    ],
+   },
+   'IDS_INBOUND_MDNS_RULE_DESCRIPTION': {
+     'google_chrome': [
+@@ -120,6 +123,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
+     ],
++    'brave': [
++      'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
++    ],
+   },
+   'IDS_INBOUND_MDNS_RULE_NAME': {
+     'google_chrome': [
+@@ -131,6 +137,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_INBOUND_MDNS_RULE_NAME',
+     ],
++    'brave': [
++      'IDS_INBOUND_MDNS_RULE_NAME',
++    ],
+   },
+   # In contrast to the strings above, this one (IDS_PRODUCT_NAME) is used
+   # throughout Chrome in mode-independent contexts. Within the installer (the
+@@ -146,6 +155,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_PRODUCT_NAME',
+     ],
++    'brave': [
++      'IDS_PRODUCT_NAME',
++    ],
+   },
+ }
+ # Note: Update the test expectations in GetBaseMessageIdForMode.GoogleStringIds

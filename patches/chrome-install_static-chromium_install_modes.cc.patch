@@ -1,0 +1,17 @@
+diff --git a/chrome/install_static/chromium_install_modes.cc b/chrome/install_static/chromium_install_modes.cc
+index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..e2067d6d42bd85f40c7a1487d09feda5b1bf1833 100644
+--- a/chrome/install_static/chromium_install_modes.cc
++++ b/chrome/install_static/chromium_install_modes.cc
+@@ -14,7 +14,11 @@ namespace install_static {
+ 
+ const wchar_t kCompanyPathName[] = L"";
+ 
+-const wchar_t kProductPathName[] = L"Chromium";
++#if defined(OFFICIAL_BUILD)
++const wchar_t kProductPathName[] = L"Brave";
++#else
++const wchar_t kProductPathName[] = L"Brave-Development";
++#endif
+ 
+ const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
+ 
