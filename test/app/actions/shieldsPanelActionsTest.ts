@@ -49,7 +49,7 @@ describe('shieldsPanelActions', () => {
 
   it('resourceBlocked action', () => {
     const details: BlockDetails = {
-      blockType: 'adBlock',
+      blockType: 'ads',
       tabId: 2
     }
     assert.deepEqual(actions.resourceBlocked(details), {

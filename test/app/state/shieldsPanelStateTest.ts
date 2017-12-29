@@ -456,7 +456,7 @@ describe('shieldsPanelState test', () => {
   describe('updateResourceBlocked', () => {
     it('can update ads blocked count', function () {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'adBlock'), {
+      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads'), {
         currentWindowId: 1,
         tabs: {
           2: {
@@ -485,7 +485,7 @@ describe('shieldsPanelState test', () => {
     })
     it('can update tracking protection blocked count', function () {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'adBlock'), {
+      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads'), {
         currentWindowId: 1,
         tabs: {
           2: {

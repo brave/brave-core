@@ -48,11 +48,11 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
 export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, tabId, blockType) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
   tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0 }, ...tabs[tabId] }
-  if (blockType === 'adBlock') {
+  if (blockType === 'ads') {
     tabs[tabId].adsBlocked++
-  } else if (blockType === 'trackingProtection') {
+  } else if (blockType === 'trackers') {
     tabs[tabId].trackersBlocked++
-  } else if (blockType === 'httpsEverywhere') {
+  } else if (blockType === 'httpUpgradableResources') {
     tabs[tabId].httpsRedirected++
   } else if (blockType === 'javascript') {
     tabs[tabId].javascriptBlocked++

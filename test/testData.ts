@@ -35,7 +35,7 @@ export const tabs: Tabs = {
 export const activeTabData = tabs[2]
 
 export const blockedResource: BlockDetails = {
-  blockType: 'adBlock',
+  blockType: 'ads',
   tabId: 2
 }
 

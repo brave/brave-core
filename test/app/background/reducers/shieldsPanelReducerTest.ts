@@ -374,7 +374,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 2
         }
       })
@@ -405,7 +405,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 2
         }
       })
@@ -437,7 +437,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 2
         }
       }))
@@ -468,7 +468,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 3
         }
       })
@@ -507,7 +507,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 2
         }
       }))
@@ -538,7 +538,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'trackingProtection',
+          blockType: 'trackers',
           tabId: 2
         }
       })
@@ -568,7 +568,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'httpsEverywhere',
+          blockType: 'httpUpgradableResources',
           tabId: 2
         }
       })
