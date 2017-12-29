@@ -1,0 +1,18 @@
+diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
+index d4e0823a55994118bacfe4fd7f8ec1881640e8ac..84788c9cc020c756c45e96fab8ab2119df1b18f8 100644
+--- a/chrome/common/chrome_constants.cc
++++ b/chrome/common/chrome_constants.cc
+@@ -10,11 +10,11 @@
+ #define FPL FILE_PATH_LITERAL
+ 
+ #if defined(OS_MACOSX)
+-#define CHROMIUM_PRODUCT_STRING "Chromium"
++#define CHROMIUM_PRODUCT_STRING "Brave"
+ #if defined(GOOGLE_CHROME_BUILD)
+ #define PRODUCT_STRING "Google Chrome"
+ #elif defined(CHROMIUM_BUILD)
+-#define PRODUCT_STRING "Chromium"
++#define PRODUCT_STRING "Brave"
+ #else
+ #error Unknown branding
+ #endif

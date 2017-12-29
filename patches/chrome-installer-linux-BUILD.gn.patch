@@ -1,0 +1,22 @@
+diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
+index 615f286e96f7adef5e713c31ed6abd26cf643bc7..e97ccd6744c2985e93badf50924addbe3d0d87a3 100644
+--- a/chrome/installer/linux/BUILD.gn
++++ b/chrome/installer/linux/BUILD.gn
+@@ -19,7 +19,7 @@ if (current_cpu == "x86" || current_cpu == "x64") {
+ assert(is_linux)
+ 
+ packaging_files_executables = [
+-  "$root_out_dir/chrome",
++  "$root_out_dir/brave",
+   "$root_out_dir/chrome_sandbox",
+ ]
+ packaging_files_shlibs = []
+@@ -153,7 +153,7 @@ action("merge_rpm_dependencies") {
+ }
+ 
+ action("strip_chrome_binary") {
+-  prog_name = "$root_out_dir/chrome"
++  prog_name = "$root_out_dir/brave"
+   debug_file = prog_name + ".debug"
+   stripped_file = prog_name + ".stripped"
+   deps = [

@@ -1,0 +1,12 @@
+diff --git a/chrome/utility/chrome_content_utility_client.h b/chrome/utility/chrome_content_utility_client.h
+index c0132fecb0b9e8a91f288d6e6ecaad9dfdbec247..a6e307d6ddcee3ca0f75a91c459a690324ee0f3a 100644
+--- a/chrome/utility/chrome_content_utility_client.h
++++ b/chrome/utility/chrome_content_utility_client.h
+@@ -35,6 +35,7 @@ class ChromeContentUtilityClient : public content::ContentUtilityClient {
+       const NetworkBinderCreationCallback& callback);
+ 
+  private:
++  friend class BraveContentUtilityClient;
+   // IPC message handlers.
+   using Handlers = std::vector<std::unique_ptr<UtilityMessageHandler>>;
+   Handlers handlers_;

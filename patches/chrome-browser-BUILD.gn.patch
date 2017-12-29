@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
+index 3bb9e572d56851f54a973cda36ec1ea78c489279..e31a0397bdaa585e22f4becdcb922fc071785147 100644
+--- a/chrome/browser/BUILD.gn
++++ b/chrome/browser/BUILD.gn
+@@ -1769,6 +1769,7 @@ split_static_library("browser") {
+     "//ui/strings",
+     "//ui/surface",
+     "//ui/web_dialogs",
++    "//brave/browser:browser_process",
+   ]
+ 
+   if (is_android) {

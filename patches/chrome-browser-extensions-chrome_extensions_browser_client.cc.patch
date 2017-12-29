@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+index 17c4ec23b3816b62f65e01a6f27397413272dd71..56d8602e422ed4e16e33f521b355dca4c0e2596c 100644
+--- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
++++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+@@ -15,6 +15,7 @@
+ #include "chrome/browser/extensions/activity_log/activity_log.h"
+ #include "chrome/browser/extensions/api/chrome_extensions_api_client.h"
+ #include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
++#include "brave/common/extensions/api/generated_api_registration.h"
+ #include "chrome/browser/extensions/api/generated_api_registration.h"
+ #include "chrome/browser/extensions/api/preference/preference_api.h"
+ #include "chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.h"
+@@ -284,6 +285,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
+ 
+   // Generated APIs from Chrome.
+   api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);
++
++  // Generated APIs from Brave.
++  api::BraveGeneratedFunctionRegistry::RegisterAll(registry);
+ }
+ 
+ void ChromeExtensionsBrowserClient::RegisterExtensionInterfaces(
