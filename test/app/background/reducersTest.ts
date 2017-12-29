@@ -17,7 +17,7 @@ describe('reducers test', () => {
     const unknownAction = {
       type: 'DA07BE00-43FB-44C3-B020-49308A0D3E78'
     }
-    const state = {...initialState, newTabPage: { a: 1 }}
+    const state = {...initialState }
     assert.equal(reducers(state, unknownAction), state)
   })
 })

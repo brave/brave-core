@@ -126,6 +126,5 @@ export const initialState = deepFreeze({
     currentWindowId: -1,
     tabs: {},
     windows: {}
-  },
-  newTabPage: {}
+  }
 })

@@ -5,6 +5,5 @@
 import * as shield from './shieldsPannelState'
 
 export interface State {
-  shieldsPanel: shield.State,
-  newTabPage: any // TODO add newTab state when added
+  shieldsPanel: shield.State
 }

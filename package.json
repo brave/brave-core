@@ -9,7 +9,7 @@
     "compress-keygen": "crx keygen",
     "clean": "rimraf build/ dev/ *.zip *.crx",
     "lint": "tslint --project tsconfig.json '{app, test}/**/*.{ts,tsx}'",
-    "test-e2e": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha ./test/setupApp.ts test/e2e/braveShieldsPanel.ts && mocha ./test/setupApp.ts test/e2e/newTabPage.ts",
+    "test-e2e": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha ./test/setupApp.ts test/e2e/braveShieldsPanel.ts && mocha ./test/setupApp.ts",
     "test-unit": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha -r ./test/setupApp.ts test/app/**/**/**/*.ts",
     "test-suite": "node ./scripts/tests.js"
   },

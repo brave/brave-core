@@ -11,7 +11,6 @@ const baseDevConfig = () => ({
   devtool: 'eval-cheap-module-source-map',
   entry: {
     braveShieldsPanel: [customPath, hotScript, path.join(__dirname, '../app/braveShieldsPanel')],
-    newTabPage: [customPath, hotScript, path.join(__dirname, '../app/newTabPage')],
     background: [customPath, hotScript, path.join(__dirname, '../app/background')]
   },
   devMiddleware: {
