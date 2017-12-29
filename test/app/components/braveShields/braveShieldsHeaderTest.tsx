@@ -21,7 +21,7 @@ function setup () {
         setting
       }
     },
-    shieldsEnabled: 'allow'
+    braveShields: 'allow'
   }
   const renderer = renderIntoDocument(<BraveShieldsHeader {...props} />) as React.Component<BraveShieldsHeader>
   const result= renderer.render() as React.ReactElement<UIProps.Grid>

@@ -10,7 +10,7 @@ import { BlockOptions } from '../../types/other/blockTypes'
 export interface Props {
   shieldsToggled: shieldActions.ShieldsToggled
   hostname: string
-  shieldsEnabled: BlockOptions
+  braveShields: BlockOptions
 }
 
 export default class BraveShieldsHeader extends React.Component<Props, object> {
@@ -30,7 +30,7 @@ export default class BraveShieldsHeader extends React.Component<Props, object> {
   }
 
   render () {
-    const { shieldsEnabled, hostname } = this.props
+    const { braveShields, hostname } = this.props
     return (
       <Grid id='braveShieldsHeader' background='#808080' padding='10px' gap='0' textColor='#fafafa'>
         <Column size={4} verticalAlign='center'>
@@ -41,7 +41,7 @@ export default class BraveShieldsHeader extends React.Component<Props, object> {
             id='shieldsToggle'
             leftText='Down'
             rightText='Up'
-            checked={shieldsEnabled === 'allow'}
+            checked={braveShields !== 'block'}
             onChange={this.onToggleShields}
           />
         </Column>

@@ -7,21 +7,21 @@ import { Grid, Column, BrowserText } from 'brave-ui'
 import { BlockOptions } from '../../types/other/blockTypes'
 
 export interface Props {
-  shieldsEnabled: BlockOptions
+  braveShields: BlockOptions
   adsBlocked: number
-  trackingProtectionBlocked: number
-  httpsEverywhereRedirected: number
+  trackersBlocked: number
+  httpsRedirected: number
   javascriptBlocked: number
 }
 
 export default class BraveShieldsStats extends React.Component<Props, object> {
   get totalAdsTrackersBlocked (): number {
-    const { adsBlocked, trackingProtectionBlocked } = this.props
-    return adsBlocked + trackingProtectionBlocked
+    const { adsBlocked, trackersBlocked } = this.props
+    return adsBlocked + trackersBlocked
   }
 
-  get httpsEverywhereRedirected (): number {
-    return this.props.httpsEverywhereRedirected
+  get httpsRedirected (): number {
+    return this.props.httpsRedirected
   }
 
   get javascriptBlocked (): number {
@@ -29,11 +29,11 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
   }
 
   render () {
-    const { shieldsEnabled } = this.props
+    const { braveShields } = this.props
     return (
       <Grid
         id='braveShieldsStats'
-        disabled={shieldsEnabled === 'block'}
+        disabled={braveShields === 'block'}
         padding='10px'
         gap='7px'
         background='#f7f7f7'
@@ -55,7 +55,7 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
         </Column>
 
         <Column align='flex-end' size={2}>
-          <BrowserText noSelect={true} text={this.httpsEverywhereRedirected} fontSize='26px' color='#0796fa' />
+          <BrowserText noSelect={true} text={this.httpsRedirected} fontSize='26px' color='#0796fa' />
         </Column>
         <Column
           id='httpsUpgradesStats'

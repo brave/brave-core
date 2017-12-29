@@ -19,24 +19,23 @@ export const tabs: Tabs = {
     url: 'https://www.brave.com/test',
     origin: 'https://www.brave.com',
     hostname: 'www.brave.com',
-    adBlock: 'block',
+    ads: 'block',
     adsBlocked: 0,
-    adsTrackers: 'allow',
-    trackingProtection: 'block',
-    httpsEverywhere: 'block',
+    trackers: 'block',
+    httpUpgradableResources: 'block',
     javascript: 'block',
     controlsOpen: false,
-    httpsEverywhereRedirected: 0,
+    httpsRedirected: 0,
     javascriptBlocked: 0,
-    shieldsEnabled: 'block',
-    trackingProtectionBlocked: 0
+    braveShields: 'block',
+    trackersBlocked: 0
   }
 }
 
 export const activeTabData = tabs[2]
 
 export const blockedResource: BlockDetails = {
-  blockType: 'adBlock',
+  blockType: 'ads',
   tabId: 2
 }
 

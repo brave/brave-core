@@ -15,9 +15,10 @@ import { Props as UIProps } from 'brave-ui'
 function setup () {
   const props: Props = {
     controlsOpen: false,
-    adsTrackers: 'allow',
-    shieldsEnabled: 'allow',
-    httpsEverywhere: 'allow',
+    braveShields: 'allow',
+    httpUpgradableResources: 'allow',
+    ads: 'allow',
+    trackers: 'allow',
     javascript: 'block',
     blockAdsTrackers: (setting: BlockOptions) => {
       return {

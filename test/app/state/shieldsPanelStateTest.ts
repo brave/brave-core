@@ -14,9 +14,9 @@ const state: State = deepFreeze({
   tabs: {
     2: {
       id: 2,
-      adBlock: 'block',
-      trackingProtection: 'block',
-      httpsEverywhere: 'block',
+      ads: 'block',
+      trackers: 'block',
+      httpUpgradableResources: 'block',
       javascript: 'block'
     },
     3: {
@@ -42,9 +42,9 @@ describe('shieldsPanelState test', () => {
     it('', function () {
       assert.deepEqual(shieldsPanelState.getActiveTabData(state), {
         id: 2,
-        adBlock: 'block',
-        trackingProtection: 'block',
-        httpsEverywhere: 'block',
+        ads: 'block',
+        trackers: 'block',
+        httpUpgradableResources: 'block',
         javascript: 'block'
       })
     })
@@ -56,9 +56,9 @@ describe('shieldsPanelState test', () => {
         tabs: {
           2: {
             id: 2,
-            adBlock: 'block',
-            trackingProtection: 'block',
-            httpsEverywhere: 'block',
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
             javascript: 'block'
           },
           3: {
@@ -80,9 +80,9 @@ describe('shieldsPanelState test', () => {
         tabs: {
           2: {
             id: 2,
-            adBlock: 'block',
-            trackingProtection: 'block',
-            httpsEverywhere: 'block',
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
             javascript: 'block'
           },
           3: {
@@ -106,9 +106,9 @@ describe('shieldsPanelState test', () => {
         tabs: {
           2: {
             id: 2,
-            adBlock: 'block',
-            trackingProtection: 'block',
-            httpsEverywhere: 'block',
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
             javascript: 'block'
           },
           3: {
@@ -129,9 +129,9 @@ describe('shieldsPanelState test', () => {
         tabs: {
           2: {
             id: 2,
-            adBlock: 'block',
-            trackingProtection: 'block',
-            httpsEverywhere: 'block',
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
             javascript: 'block'
           },
           3: {
@@ -154,9 +154,9 @@ describe('shieldsPanelState test', () => {
         tabs: {
           2: {
             id: 2,
-            adBlock: 'block',
-            trackingProtection: 'block',
-            httpsEverywhere: 'block',
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
             javascript: 'block'
           },
           3: {
@@ -177,25 +177,24 @@ describe('shieldsPanelState test', () => {
     it('updates the correct tabId data', function () {
       this.tabId = 2
       assert.deepEqual(shieldsPanelState.updateTabShieldsData(state, this.tabId, {
-        adBlock: 'allow',
-        trackingProtection: 'allow',
-        httpsEverywhere: 'allow',
+        ads: 'allow',
+        trackers: 'allow',
+        httpUpgradableResources: 'allow',
         javascript: 'allow'
       }), {
         currentWindowId: 1,
         tabs: {
           2: {
             id: 2,
-            adBlock: 'allow',
-            trackingProtection: 'allow',
-            httpsEverywhere: 'allow',
+            ads: 'allow',
+            trackers: 'allow',
+            httpUpgradableResources: 'allow',
             javascript: 'allow',
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
+            braveShields: 'allow',
             adsBlocked: 0,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0
           },
           3: {
@@ -220,53 +219,50 @@ describe('shieldsPanelState test', () => {
         tabs: {
           2: {
             id: 2,
-            adBlock: 'block',
-            trackingProtection: 'block',
-            httpsEverywhere: 'block',
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
             javascript: 'block',
             adsBlocked: 3,
-            trackingProtectionBlocked: 4444,
-            httpsEverywhereRedirected: 5,
+            trackersBlocked: 4444,
+            httpsRedirected: 5,
             javascriptBlocked: 5,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
+            braveShields: 'block',
             url: 'https://brave.com'
           },
           3: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 0,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 0,
             id: 3,
             javascript: 'block',
             javascriptBlocked: 0,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 0,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 0,
             url: 'https://brave.com'
           },
           4: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 0,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 0,
             id: 4,
             javascript: 'block',
             javascriptBlocked: 0,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 0,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 0,
             url: 'https://brave.com'
           }
         },
@@ -277,61 +273,58 @@ describe('shieldsPanelState test', () => {
       }
 
       stateWithStats.tabs[this.tabId].adsBlocked = 3
-      stateWithStats.tabs[this.tabId].trackingProtectionBlocked = 4
-      stateWithStats.tabs[this.tabId].httpsEverywhereRedirected = 5
+      stateWithStats.tabs[this.tabId].trackersBlocked = 4
+      stateWithStats.tabs[this.tabId].httpsRedirected = 5
       stateWithStats.tabs[this.tabId].javascriptBlocked = 6
       assert.deepEqual(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId), {
         currentWindowId: 1,
         tabs: {
           2: {
             id: 2,
-            adBlock: 'block',
-            trackingProtection: 'block',
-            httpsEverywhere: 'block',
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
             javascript: 'block',
             adsBlocked: 0,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
+            braveShields: 'block',
             url: 'https://brave.com'
           },
           3: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 0,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 0,
             id: 3,
             javascript: 'block',
             javascriptBlocked: 0,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 0,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 0,
             url: 'https://brave.com'
           },
           4: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 0,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 0,
             id: 4,
             javascript: 'block',
             javascriptBlocked: 0,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 0,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 0,
             url: 'https://brave.com'
           }
         },
@@ -347,54 +340,51 @@ describe('shieldsPanelState test', () => {
         currentWindowId: 1,
         tabs: {
           2: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 0,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 0,
             id: 2,
             javascript: 'block',
             javascriptBlocked: 0,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 0,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 0,
             url: 'https://brave.com'
           },
           3: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 0,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 0,
             id: 3,
             javascript: 'block',
             javascriptBlocked: 0,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 0,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 0,
             url: 'https://brave.com'
           },
           4: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 3,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 5,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 5,
             id: 4,
             javascript: 'block',
             javascriptBlocked: 5,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 4444,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 4444,
             url: 'https://brave.com'
           }
         },
@@ -408,54 +398,51 @@ describe('shieldsPanelState test', () => {
         currentWindowId: 1,
         tabs: {
           2: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 0,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 0,
             id: 2,
             javascript: 'block',
             javascriptBlocked: 0,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 0,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 0,
             url: 'https://brave.com'
           },
           3: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 0,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 0,
             id: 3,
             javascript: 'block',
             javascriptBlocked: 0,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 0,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 0,
             url: 'https://brave.com'
           },
           4: {
-            adBlock: 'block',
+            ads: 'block',
             adsBlocked: 0,
-            adsTrackers: 'block',
             controlsOpen: true,
             hostname: 'https://brave.com',
-            httpsEverywhere: 'block',
-            httpsEverywhereRedirected: 0,
+            httpUpgradableResources: 'block',
+            httpsRedirected: 0,
             id: 4,
             javascript: 'block',
             javascriptBlocked: 0,
             origin: 'https://brave.com',
-            shieldsEnabled: 'block',
-            trackingProtection: 'block',
-            trackingProtectionBlocked: 0,
+            braveShields: 'block',
+            trackers: 'block',
+            trackersBlocked: 0,
             url: 'https://brave.com'
           }
         },
@@ -469,18 +456,18 @@ describe('shieldsPanelState test', () => {
   describe('updateResourceBlocked', () => {
     it('can update ads blocked count', function () {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'adBlock'), {
+      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads'), {
         currentWindowId: 1,
         tabs: {
           2: {
             id: 2,
-            adBlock: 'block',
-            trackingProtection: 'block',
-            httpsEverywhere: 'block',
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
             javascript: 'block',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0
           },
           3: {
@@ -498,18 +485,18 @@ describe('shieldsPanelState test', () => {
     })
     it('can update tracking protection blocked count', function () {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'adBlock'), {
+      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads'), {
         currentWindowId: 1,
         tabs: {
           2: {
             id: 2,
-            adBlock: 'block',
-            trackingProtection: 'block',
-            httpsEverywhere: 'block',
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
             javascript: 'block',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0
           },
           3: {

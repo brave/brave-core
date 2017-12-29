@@ -39,10 +39,11 @@ describe('Shields API', () => {
           url: 'https://www.brave.com/serg/dont/know/pokemon',
           origin: 'https://www.brave.com',
           hostname: 'www.brave.com',
-          adBlock: 'block',
-          trackingProtection: 'block',
-          httpsEverywhere: 'block',
+          ads: 'block',
+          trackers: 'block',
+          httpUpgradableResources: 'block',
           javascript: 'block',
+          braveShields: 'block',
           id: 5
         })
         cb()
@@ -92,9 +93,10 @@ describe('Shields API', () => {
         origin: 'https://www.brave.com',
         hostname: 'www.brave.com',
         id: 2,
-        adBlock: 'block',
-        trackingProtection: 'block',
-        httpsEverywhere: 'block',
+        braveShields: 'block',
+        ads: 'block',
+        trackers: 'block',
+        httpUpgradableResources: 'block',
         javascript: 'block'
       }
 
@@ -110,10 +112,10 @@ describe('Shields API', () => {
     })
   })
 
-  describe('setAllowAdBlock', function () {
+  describe('setAllowAds', function () {
     before(function () {
       this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
-      this.p = shieldsAPI.setAllowAdBlock('https://www.brave.com', 'block')
+      this.p = shieldsAPI.setAllowAds('https://www.brave.com', 'block')
     })
     after(function () {
       this.spy.restore()
@@ -122,7 +124,7 @@ describe('Shields API', () => {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_AD_BLOCK },
+        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_ADS },
         setting: 'block'
       })
     })
@@ -138,10 +140,10 @@ describe('Shields API', () => {
     })
   })
 
-  describe('setAllowTrackingProtection', function () {
+  describe('setAllowTrackers', function () {
     before(function () {
       this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
-      this.p = shieldsAPI.setAllowTrackingProtection('https://www.brave.com', 'block')
+      this.p = shieldsAPI.setAllowTrackers('https://www.brave.com', 'block')
     })
     after(function () {
       this.spy.restore()
@@ -150,7 +152,7 @@ describe('Shields API', () => {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKING_PROTECTION },
+        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKERS },
         setting: 'block'
       })
     })
@@ -166,10 +168,10 @@ describe('Shields API', () => {
     })
   })
 
-  describe('setAllowHTTPSEverywhere', function () {
+  describe('setAllowHTTPUpgradableResource', function () {
     before(function () {
       this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
-      this.p = shieldsAPI.setAllowHTTPSEverywhere('https://www.brave.com', 'block')
+      this.p = shieldsAPI.setAllowHTTPUpgradableResources('https://www.brave.com', 'block')
     })
     after(function () {
       this.spy.restore()
@@ -178,7 +180,7 @@ describe('Shields API', () => {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: '*://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTPS_EVERYWHERE },
+        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES },
         setting: 'block'
       })
     })

@@ -4,7 +4,7 @@
 
  /// <reference path="../../../node_modules/@types/chrome/index.d.ts" />
 
-type BlockTypes = 'adBlock' | 'trackingProtection' | 'httpsEverywhere' | 'javascript'
+type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript'
 
 interface BlockDetails {
   blockType: BlockTypes

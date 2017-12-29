@@ -19,18 +19,6 @@ export const shieldsToggled: actions.ShieldsToggled = (setting = 'allow') => {
   }
 }
 
-export const adBlockToggled: actions.AdBlockToggled = () => {
-  return {
-    type: types.AD_BLOCK_TOGGLED
-  }
-}
-
-export const trackingProtectionToggled: actions.TrackingProtectionToggled = () => {
-  return {
-    type: types.TRACKING_PROTECTION_TOGGLED
-  }
-}
-
 export const resourceBlocked: actions.ResourceBlocked = (details) => {
   return {
     type: types.RESOURCE_BLOCKED,

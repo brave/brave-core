@@ -13,10 +13,10 @@ import { Props } from '../../../../app/components/braveShields/braveShieldsStats
 
 function setup () {
   const props: Props = {
-    shieldsEnabled: 'allow',
+    braveShields: 'allow',
     adsBlocked: 1,
-    trackingProtectionBlocked: 2,
-    httpsEverywhereRedirected: 3,
+    trackersBlocked: 2,
+    httpsRedirected: 3,
     javascriptBlocked: 4
   }
   const renderer = renderIntoDocument(<BraveShieldsStats {...props} />) as React.Component<BraveShieldsStats>

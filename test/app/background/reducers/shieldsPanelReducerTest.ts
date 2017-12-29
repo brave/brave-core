@@ -23,7 +23,7 @@ import { State } from '../../../../app/types/state/shieldsPannelState';
 describe('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {
     assert.deepEqual(
-      shieldsPanelReducer(undefined, actions.adBlockToggled())
+      shieldsPanelReducer(undefined, actions.blockAdsTrackers('allow'))
     , initialState.shieldsPanel)
   })
 
@@ -223,9 +223,9 @@ describe('braveShieldsPanelReducer', () => {
         id: tabId,
         hostname: 'brave.com',
         origin: 'brave.com',
-        adBlock: 'block',
-        trackingProtection: 'block',
-        httpsEverywhere: 'block',
+        ads: 'block',
+        trackers: 'block',
+        httpUpgradableResources: 'block',
         javascript: 'block'
       }
       assert.deepEqual(
@@ -237,19 +237,18 @@ describe('braveShieldsPanelReducer', () => {
           tabs: {
             [tabId]: {
               adsBlocked: 0,
-              trackingProtectionBlocked: 0,
-              httpsEverywhereRedirected: 0,
+              trackersBlocked: 0,
+              httpsRedirected: 0,
               javascriptBlocked: 0,
               hostname: 'brave.com',
               origin: 'brave.com',
               id: tabId,
-              adBlock: 'block',
-              trackingProtection: 'block',
-              httpsEverywhere: 'block',
+              ads: 'block',
+              trackers: 'block',
+              httpUpgradableResources: 'block',
               javascript: 'block',
-              adsTrackers: 'allow',
               controlsOpen: true,
-              shieldsEnabled: 'allow'
+              braveShields: 'allow'
             }
           },
           windows: {}
@@ -264,17 +263,16 @@ describe('braveShieldsPanelReducer', () => {
         origin,
         hostname: 'brave.com',
         adsBlocked: 0,
-        adsTrackers: 'allow',
         controlsOpen: true,
-        shieldsEnabled: 'allow',
-        trackingProtectionBlocked: 0,
-        httpsEverywhereRedirected: 0,
+        braveShields: 'allow',
+        trackersBlocked: 0,
+        httpsRedirected: 0,
         javascriptBlocked: 0,
         id: 2,
-        httpsEverywhere: 'block',
+        httpUpgradableResources: 'block',
         javascript: 'block',
-        trackingProtection: 'block',
-        adBlock: 'block'
+        trackers: 'block',
+        ads: 'block'
       }
     },
     windows: {
@@ -286,76 +284,37 @@ describe('braveShieldsPanelReducer', () => {
   describe('SHIELDS_TOGGLED', function () {
     before(function () {
       this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowAdBlockSpy = sinon.spy(shieldsAPI, 'setAllowAdBlock')
-      this.setAllowTrackingProtectionSpy = sinon.spy(shieldsAPI, 'setAllowTrackingProtection')
+      this.setAllowBraveShieldsSpy = sinon.spy(shieldsAPI, 'setAllowBraveShields')
     })
     after(function () {
       this.reloadTabSpy.restore()
-      this.setAllowAdBlockSpy.restore()
-      this.setAllowTrackingProtectionSpy.restore()
+      this.setAllowBraveShieldsSpy.restore()
     })
-    it('should call setAllowAdBlock and setAllowTrackingProtection', function () {
+    it('should call setAllowBraveShields', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
           type: types.SHIELDS_TOGGLED,
           setting: 'allow'
         }), state)
-      assert.equal(this.setAllowAdBlockSpy.withArgs(origin, 'allow').calledOnce, true)
-      assert.equal(this.setAllowTrackingProtectionSpy.withArgs(origin, 'allow').calledOnce, true)
-    })
-  })
-
-  describe('AD_BLOCK_TOGGLED', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowAdBlockSpy = sinon.spy(shieldsAPI, 'setAllowAdBlock')
-    })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowAdBlockSpy.restore()
-    })
-    it('should call setAllowAdBlock', function () {
-      assert.deepEqual(
-        shieldsPanelReducer(state, {
-          type: types.AD_BLOCK_TOGGLED
-        }), state)
-      assert.equal(this.setAllowAdBlockSpy.withArgs(origin, 'allow').calledOnce, true)
-    })
-  })
-
-  describe('TRACKING_PROTECTION_TOGGLED', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowTrackingProtectionSpy = sinon.spy(shieldsAPI, 'setAllowTrackingProtection')
-    })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowTrackingProtectionSpy.restore()
-    })
-    it('should call setAllowTrackingProtection', function () {
-      assert.deepEqual(
-        shieldsPanelReducer(state, {
-          type: types.TRACKING_PROTECTION_TOGGLED
-        }), state)
-      assert.equal(this.setAllowTrackingProtectionSpy.withArgs(origin, 'allow').calledOnce, true)
+      assert.equal(this.setAllowBraveShieldsSpy.withArgs(origin, 'allow').calledOnce, true)
     })
   })
 
   describe('HTTPS_EVERYWHERE_TOGGLED', function () {
     before(function () {
       this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowHTTPSEverywhereSpy = sinon.spy(shieldsAPI, 'setAllowHTTPSEverywhere')
+      this.setAllowHTTPUpgradableResourcesSpy = sinon.spy(shieldsAPI, 'setAllowHTTPUpgradableResources')
     })
     after(function () {
       this.reloadTabSpy.restore()
-      this.setAllowHTTPSEverywhereSpy.restore()
+      this.setAllowHTTPUpgradableResourcesSpy.restore()
     })
-    it('should call setAllowHTTPSEverywhere', function () {
+    it('should call setAllowHTTPUpgradableResources', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
           type: types.HTTPS_EVERYWHERE_TOGGLED
         }), state)
-      assert.equal(this.setAllowHTTPSEverywhereSpy.withArgs(origin, 'allow').calledOnce, true)
+      assert.equal(this.setAllowHTTPUpgradableResourcesSpy.withArgs(origin, 'allow').calledOnce, true)
     })
   })
 
@@ -393,17 +352,16 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 0,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 1,
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
-            httpsEverywhere: 'block',
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
             id: 2,
             javascript: 'block',
-            trackingProtection: 'block',
-            adBlock: 'block'
+            trackers: 'block',
+            ads: 'block'
           }
         },
         windows: {
@@ -416,7 +374,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 2
         }
       })
@@ -427,17 +385,16 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0,
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
-            httpsEverywhere: 'block',
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
             id: 2,
             javascript: 'block',
-            trackingProtection: 'block',
-            adBlock: 'block'
+            trackers: 'block',
+            ads: 'block'
           }
         },
         windows: {
@@ -448,7 +405,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 2
         }
       })
@@ -459,17 +416,16 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 2,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0,
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
-            httpsEverywhere: 'block',
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
             id: 2,
             javascript: 'block',
-            trackingProtection: 'block',
-            adBlock: 'block'
+            trackers: 'block',
+            ads: 'block'
           }
         },
         windows: {
@@ -481,7 +437,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 2
         }
       }))
@@ -490,19 +446,18 @@ describe('braveShieldsPanelReducer', () => {
         tabs: {
           2: {
             adsBlocked: 1,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0,
             origin: 'https://brave.com',
             hostname: 'brave.com',
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
-            httpsEverywhere: 'block',
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
             id: 2,
             javascript: 'block',
-            trackingProtection: 'block',
-            adBlock: 'block'
+            trackers: 'block',
+            ads: 'block'
           }
         },
         windows: {
@@ -513,7 +468,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 3
         }
       })
@@ -525,22 +480,21 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0,
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
-            httpsEverywhere: 'block',
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
             id: 2,
             javascript: 'block',
-            trackingProtection: 'block',
-            adBlock: 'block'
+            trackers: 'block',
+            ads: 'block'
           },
           3: {
             adsBlocked: 1,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0
           }
         },
@@ -553,7 +507,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'adBlock',
+          blockType: 'ads',
           tabId: 2
         }
       }))
@@ -564,17 +518,16 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 0,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
             javascriptBlocked: 0,
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
-            httpsEverywhere: 'block',
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
             id: 2,
             javascript: 'block',
-            trackingProtection: 'block',
-            adBlock: 'block'
+            trackers: 'block',
+            ads: 'block'
           }
         },
         windows: {
@@ -585,7 +538,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'trackingProtection',
+          blockType: 'trackers',
           tabId: 2
         }
       })
@@ -596,17 +549,16 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 1,
-            httpsEverywhereRedirected: 0,
+            trackersBlocked: 1,
+            httpsRedirected: 0,
             javascriptBlocked: 0,
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
-            httpsEverywhere: 'block',
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
             id: 2,
             javascript: 'block',
-            trackingProtection: 'block',
-            adBlock: 'block'
+            trackers: 'block',
+            ads: 'block'
           }
         },
         windows: {
@@ -616,7 +568,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'httpsEverywhere',
+          blockType: 'httpUpgradableResources',
           tabId: 2
         }
       })
@@ -627,17 +579,16 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 1,
-            httpsEverywhereRedirected: 1,
+            trackersBlocked: 1,
+            httpsRedirected: 1,
             javascriptBlocked: 0,
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
-            httpsEverywhere: 'block',
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
             id: 2,
             javascript: 'block',
-            trackingProtection: 'block',
-            adBlock: 'block'
+            trackers: 'block',
+            ads: 'block'
           }
         },
         windows: {
@@ -658,17 +609,16 @@ describe('braveShieldsPanelReducer', () => {
             origin: 'https://brave.com',
             hostname: 'brave.com',
             adsBlocked: 1,
-            trackingProtectionBlocked: 1,
-            httpsEverywhereRedirected: 1,
+            trackersBlocked: 1,
+            httpsRedirected: 1,
             javascriptBlocked: 1,
-            adsTrackers: 'allow',
             controlsOpen: true,
-            shieldsEnabled: 'allow',
-            httpsEverywhere: 'block',
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
             id: 2,
             javascript: 'block',
-            trackingProtection: 'block',
-            adBlock: 'block'
+            trackers: 'block',
+            ads: 'block'
           }
         },
         windows: {
@@ -681,22 +631,22 @@ describe('braveShieldsPanelReducer', () => {
   describe('BLOCK_ADS_TRACKERS', function () {
     before(function () {
       this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowAdBlockSpy = sinon.spy(shieldsAPI, 'setAllowAdBlock')
-      this.setAllowTrackingProtectionSpy = sinon.spy(shieldsAPI, 'setAllowTrackingProtection')
+      this.setAllowAdsSpy = sinon.spy(shieldsAPI, 'setAllowAds')
+      this.setAllowTrackersSpy = sinon.spy(shieldsAPI, 'setAllowTrackers')
     })
     after(function () {
       this.reloadTabSpy.restore()
-      this.setAllowAdBlockSpy.restore()
-      this.setAllowTrackingProtectionSpy.restore()
+      this.setAllowAdsSpy.restore()
+      this.setAllowTrackersSpy.restore()
     })
-    it('should call setAllowAdBlock and setAllowTrackingProtection', function () {
+    it('should call setAllowAds and setAllowTrackers', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
           type: types.BLOCK_ADS_TRACKERS,
           setting: 'allow'
         }), state)
-      assert.equal(this.setAllowAdBlockSpy.withArgs(origin, 'allow').calledOnce, true)
-      assert.equal(this.setAllowTrackingProtectionSpy.withArgs(origin, 'allow').calledOnce, true)
+      assert.equal(this.setAllowAdsSpy.withArgs(origin, 'block').calledOnce, true)
+      assert.equal(this.setAllowTrackersSpy.withArgs(origin, 'block').calledOnce, true)
     })
   })
 

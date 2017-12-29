@@ -28,14 +28,13 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
 
   tabs[tabId] = { ...{
     adsBlocked: 0,
-    trackingProtectionBlocked: 0,
-    httpsEverywhereRedirected: 0,
+    trackersBlocked: 0,
+    httpsRedirected: 0,
     javascriptBlocked: 0,
-    shieldsEnabled: 'allow',
-    adsTrackers: 'allow',
-    adBlock: 'allow',
-    trackingProtection: 'allow',
-    httpsEverywhere: 'allow',
+    braveShields: 'allow',
+    ads: 'allow',
+    trackers: 'allow',
+    httpUpgradableResources: 'allow',
     javascript: 'allow',
     controlsOpen: true
   },
@@ -48,13 +47,13 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
 
 export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, tabId, blockType) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...{ adsBlocked: 0, trackingProtectionBlocked: 0, httpsEverywhereRedirected: 0, javascriptBlocked: 0 }, ...tabs[tabId] }
-  if (blockType === 'adBlock') {
+  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0 }, ...tabs[tabId] }
+  if (blockType === 'ads') {
     tabs[tabId].adsBlocked++
-  } else if (blockType === 'trackingProtection') {
-    tabs[tabId].trackingProtectionBlocked++
-  } else if (blockType === 'httpsEverywhere') {
-    tabs[tabId].httpsEverywhereRedirected++
+  } else if (blockType === 'trackers') {
+    tabs[tabId].trackersBlocked++
+  } else if (blockType === 'httpUpgradableResources') {
+    tabs[tabId].httpsRedirected++
   } else if (blockType === 'javascript') {
     tabs[tabId].javascriptBlocked++
   }
@@ -63,10 +62,10 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
 
 export const resetBlockingStats: shieldState.ResetBlockingStats = (state, tabId) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...tabs[tabId], ...{ adsBlocked: 0, trackingProtectionBlocked: 0, httpsEverywhereRedirected: 0, javascriptBlocked: 0 } }
+  tabs[tabId] = { ...tabs[tabId], ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0 } }
   tabs[tabId].adsBlocked = 0
-  tabs[tabId].trackingProtectionBlocked = 0
-  tabs[tabId].httpsEverywhereRedirected = 0
+  tabs[tabId].trackersBlocked = 0
+  tabs[tabId].httpsRedirected = 0
   tabs[tabId].javascriptBlocked = 0
   return { ...state, tabs }
 }
