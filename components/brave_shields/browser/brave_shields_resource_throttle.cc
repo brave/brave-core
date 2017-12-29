@@ -7,7 +7,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/shield_types.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -37,23 +37,28 @@ const char* BraveShieldsResourceThrottle::GetNameForLogging() const {
 
 void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
   GURL tab_origin = request_->site_for_cookies().GetOrigin();
-  bool allow_ad_block = brave_shields::IsAllowContentSettingFromIO(
-      request_, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS, "ad-block");
-  bool allow_tracking_protection = brave_shields::IsAllowContentSettingFromIO(
+  bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
+      request_, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kBraveShields);
+  bool allow_ads = brave_shields::IsAllowContentSettingFromIO(
+      request_, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kAds);
+  bool allow_trackers = brave_shields::IsAllowContentSettingFromIO(
       request_, tab_origin,
-      CONTENT_SETTINGS_TYPE_PLUGINS, "tracking-protection");
-  if (allow_ad_block &&
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kTrackers);
+  if (allow_brave_shields &&
+      !allow_trackers &&
       !g_brave_browser_process->tracking_protection_service()->
       ShouldStartRequest(request_->url(), resource_type_, tab_origin.host())) {
     Cancel();
     brave_shields::DispatchBlockedEventFromIO(request_,
-        brave_shields::kAdBlock);
+        brave_shields::kTrackers);
   }
-  if (allow_tracking_protection &&
+  if (allow_brave_shields &&
+      !allow_ads &&
       !g_brave_browser_process->ad_block_service()->
       ShouldStartRequest(request_->url(), resource_type_, tab_origin.host())) {
     Cancel();
     brave_shields::DispatchBlockedEventFromIO(request_,
-        brave_shields::kTrackingProtection);
+        brave_shields::kAds);
   }
 }

@@ -3,15 +3,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_SHIELD_TYPES_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_SHIELD_TYPES_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_CONTENT_SETTING_TYPES_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_CONTENT_SETTING_TYPES_H_
 
 namespace brave_shields {
 
+const char kAds[] = "ads";
+const char kTrackers[] = "trackers";
+const char kHTTPUpgradableResources[] = "httpUpgradableResources";
 const char kJavaScript[] = "javascript";
-const char kAdBlock[] = "adBlock";
-const char kTrackingProtection[] = "trackingProtection";
-const char kHttpsEverywhere[] = "httpsEverywhere";
+const char kBraveShields[] = "braveShields";
 
 }  // brave_shields
 
