@@ -45,6 +45,8 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
   ContentSetting setting =
       content_settings::ValueToContentSetting(value.get());
 
+  // TODO(bbondy): Add a static RegisterUserPrefs method for shields and use
+  // prefs instead of simply returning true / false below.
   if (setting == CONTENT_SETTING_DEFAULT) {
     if (resource_identifier == "ads") {
       return false;

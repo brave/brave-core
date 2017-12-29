@@ -9,8 +9,7 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
-#include "brave/components/brave_shields/browser/content_setting_types.h"
-#include "brave/components/brave_shields/browser/shield_types.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/url_request/url_request.h"
 
@@ -41,7 +40,7 @@ void OnBeforeURLRequest_HttpsePostFileWork(
     ctx->new_url_spec != request->url().spec()) {
     *new_url = GURL(ctx->new_url_spec);
     brave_shields::DispatchBlockedEventFromIO(request,
-        brave_shields::kHttpsEverywhere);
+        brave_shields::kHTTPUpgradableResources);
   }
 
   next_callback.Run();
