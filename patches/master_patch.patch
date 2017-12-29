@@ -1,0 +1,635 @@
+diff --git a/build/config/chrome_build.gni b/build/config/chrome_build.gni
+index c649018a7a0aeb20caeb2bf37c60d57c48630f1b..9a320d8b5f46f2c7f2d269b7a1cc3b2cf91c07a7 100644
+--- a/build/config/chrome_build.gni
++++ b/build/config/chrome_build.gni
+@@ -18,5 +18,5 @@ declare_args() {
+ if (is_chrome_branded) {
+   branding_path_component = "google_chrome"
+ } else {
+-  branding_path_component = "chromium"
++  branding_path_component = "brave"
+ }
+diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
+index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740c427de3e 100644
+--- a/chrome/BUILD.gn
++++ b/chrome/BUILD.gn
+@@ -54,7 +54,7 @@ if (is_win) {
+       "$root_out_dir/initialexe/chrome.exe",
+     ]
+     outputs = [
+-      "$root_out_dir/chrome.exe",
++      "$root_out_dir/brave.exe",
+     ]
+     if (symbol_level != 0) {
+       outputs += [ "$root_out_dir/chrome.exe.pdb" ]
+@@ -238,6 +238,8 @@ if (!is_android && !is_mac) {
+           "app/chrome_main.cc",
+           "app/chrome_main_delegate.cc",
+           "app/chrome_main_delegate.h",
++          "//brave/app/brave_main_delegate.cc",
++          "//brave/app/brave_main_delegate.h",
+         ]
+ 
+         deps += [
+@@ -308,7 +310,7 @@ if (!is_android && !is_mac) {
+     if (is_win) {
+       output_name = "initialexe/chrome"
+     } else {
+-      output_name = "chrome"
++      output_name = "brave"
+     }
+ 
+     sources = []
+@@ -357,6 +359,8 @@ if (is_win) {
+       "app/chrome_main.cc",
+       "app/chrome_main_delegate.cc",
+       "app/chrome_main_delegate.h",
++      "//brave/app/brave_main_delegate.cc",
++      "//brave/app/brave_main_delegate.h",
+     ]
+ 
+     output_name = "chrome"
+@@ -465,6 +469,8 @@ if (is_win) {
+         "app/chrome_main.cc",
+         "app/chrome_main_delegate.cc",
+         "app/chrome_main_delegate.h",
++        "//brave/app/brave_main_delegate.cc",
++        "//brave/app/brave_main_delegate.h",
+       ]
+ 
+       configs += [ "//build/config/compiler:wexit_time_destructors" ]
+@@ -534,7 +540,9 @@ if (is_win) {
+ } else if (is_mac) {
+   chrome_helper_name = chrome_product_full_name + " Helper"
+   chrome_framework_name = chrome_product_full_name + " Framework"
+-  chrome_framework_version = "A"
++  # TODO(bridiver) - not sure why this has to be commented out, but otherwise
++  # it puts the framework in the wrong place for chrome_exe_main_mac.cc
++  # chrome_framework_version = "A"
+ 
+   group("chrome") {
+     deps = [
+@@ -649,7 +657,7 @@ if (is_win) {
+     args =
+         [
+           "-b",
+-          "${branding_path_component}_strings",
++          _strings_file,
+           "-v",
+           rebase_path(chrome_version_file, root_build_dir),
+           "-g",
+@@ -1150,6 +1158,8 @@ if (is_win) {
+       "app/chrome_main.cc",
+       "app/chrome_main_delegate.cc",
+       "app/chrome_main_delegate.h",
++      "//brave/app/brave_main_delegate.cc",
++      "//brave/app/brave_main_delegate.h",
+       "app/chrome_main_mac.h",
+       "app/chrome_main_mac.mm",
+     ]
+@@ -1389,6 +1399,7 @@ if (is_win) {
+ 
+ group("browser_dependencies") {
+   public_deps = [
++    "//brave:browser_dependencies",
+     "//chrome/browser",
+     "//chrome/common",
+     "//components/sync",
+@@ -1426,6 +1437,7 @@ group("browser_dependencies") {
+ 
+ group("child_dependencies") {
+   public_deps = [
++    "//brave:child_dependencies",
+     "//chrome/browser/devtools",
+     "//chrome/child",
+     "//chrome/common",
+@@ -1715,6 +1727,8 @@ if (is_android) {
+       "app/android/chrome_main_delegate_android.h",
+       "app/chrome_main_delegate.cc",
+       "app/chrome_main_delegate.h",
++      "//brave/app/brave_main_delegate.cc",
++      "//brave/app/brave_main_delegate.h",
+     ]
+ 
+     include_dirs = [ android_ndk_include_dir ]
+@@ -1770,7 +1784,7 @@ if (is_linux) {
+       dump_syms_binary =
+           get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
+ 
+-      chrome_binary = "$root_out_dir/chrome"
++      chrome_binary = "$root_out_dir/brave"
+       if (current_cpu == "x86") {
+         # GYP used "ia32" so keep that naming for back-compat.
+         symbol_file = "$root_out_dir/chrome.breakpad.ia32"
+diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
+index 8896752d5b9faacff253afa54ae264417dbe3372..18c4df2427bb3ed0dffdf20faeeb71322200ed7c 100644
+--- a/chrome/app/BUILD.gn
++++ b/chrome/app/BUILD.gn
+@@ -243,7 +243,7 @@ grit("google_chrome_strings") {
+ }
+ 
+ grit("chromium_strings") {
+-  source = "chromium_strings.grd"
++  source = "${branding_path_component}_strings.grd"
+   defines = chrome_grit_defines
+   output_dir = "$root_gen_dir/chrome"
+   outputs = [
+diff --git a/chrome/app/chrome_main.cc b/chrome/app/chrome_main.cc
+index 90b02a13ed7674b5b4266ffd8e09fcca0392dfc3..0e182ac84efab144a310c6687996d59e4fbe3620 100644
+--- a/chrome/app/chrome_main.cc
++++ b/chrome/app/chrome_main.cc
+@@ -7,6 +7,7 @@
+ #include "base/callback_helpers.h"
+ #include "base/command_line.h"
+ #include "base/time/time.h"
++#include "brave/app/brave_main_delegate.h"
+ #include "build/build_config.h"
+ #include "chrome/app/chrome_main_delegate.h"
+ #include "chrome/common/chrome_switches.h"
+@@ -60,7 +61,7 @@ int ChromeMain(int argc, const char** argv) {
+   install_static::InitializeFromPrimaryModule();
+ #endif
+ 
+-  ChromeMainDelegate chrome_main_delegate(
++  BraveMainDelegate chrome_main_delegate(
+       base::TimeTicks::FromInternalValue(exe_entry_point_ticks));
+   content::ContentMainParams params(&chrome_main_delegate);
+ 
+diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
+index 3bb9e572d56851f54a973cda36ec1ea78c489279..e31a0397bdaa585e22f4becdcb922fc071785147 100644
+--- a/chrome/browser/BUILD.gn
++++ b/chrome/browser/BUILD.gn
+@@ -1769,6 +1769,7 @@ split_static_library("browser") {
+     "//ui/strings",
+     "//ui/surface",
+     "//ui/web_dialogs",
++    "//brave/browser:browser_process",
+   ]
+ 
+   if (is_android) {
+diff --git a/chrome/browser/browser_process_impl.cc b/chrome/browser/browser_process_impl.cc
+index 4d8b9911eb906dc2d691224eeb106a990c5d5215..2de52b498cadaa18d362333a19ba5ba5d0aaac75 100644
+--- a/chrome/browser/browser_process_impl.cc
++++ b/chrome/browser/browser_process_impl.cc
+@@ -34,6 +34,7 @@
+ #include "base/time/default_clock.h"
+ #include "base/time/default_tick_clock.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/components/brave_shields/browser/brave_resource_dispatcher_host_delegate.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/chrome_browser_main.h"
+ #include "chrome/browser/chrome_child_process_watcher.h"
+@@ -991,7 +992,7 @@ BrowserProcessImpl::supervised_user_whitelist_installer() {
+ 
+ void BrowserProcessImpl::ResourceDispatcherHostCreated() {
+   resource_dispatcher_host_delegate_ =
+-      base::MakeUnique<ChromeResourceDispatcherHostDelegate>();
++      base::MakeUnique<BraveResourceDispatcherHostDelegate>();
+   ResourceDispatcherHost::Get()->SetDelegate(
+       resource_dispatcher_host_delegate_.get());
+ 
+diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
+index da85f01c59cf8a2b34dc7d189f3043580fd84e29..7c8c973f2639b6c4c43523939cca859ce36769aa 100644
+--- a/chrome/browser/browser_process_impl.h
++++ b/chrome/browser/browser_process_impl.h
+@@ -163,6 +163,7 @@ class BrowserProcessImpl : public BrowserProcess,
+   static void RegisterPrefs(PrefRegistrySimple* registry);
+ 
+  private:
++  friend class BraveBrowserProcessImpl;
+   // KeepAliveStateObserver implementation
+   void OnKeepAliveStateChanged(bool is_keeping_alive) override;
+   void OnKeepAliveRestartStateChanged(bool can_restart) override;
+diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
+index 11c6e800349c9e5ba967c94f81a053efa387ec9a..372a4b846c919484762bc45623e815baf5010f0b 100644
+--- a/chrome/browser/chrome_browser_main.cc
++++ b/chrome/browser/chrome_browser_main.cc
+@@ -44,6 +44,7 @@
+ #include "base/time/time.h"
+ #include "base/trace_event/trace_event.h"
+ #include "base/values.h"
++#include "brave/browser/brave_browser_process_impl.h"
+ #include "build/build_config.h"
+ #include "cc/base/switches.h"
+ #include "chrome/browser/about_flags.h"
+@@ -955,7 +956,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+   {
+     TRACE_EVENT0("startup",
+       "ChromeBrowserMainParts::PreCreateThreadsImpl:InitBrowswerProcessImpl");
+-    browser_process_.reset(new BrowserProcessImpl(local_state_task_runner.get(),
++    browser_process_.reset(new BraveBrowserProcessImpl(local_state_task_runner.get(),
+                                                   parsed_command_line()));
+   }
+ 
+diff --git a/chrome/browser/chrome_content_browser_client.h b/chrome/browser/chrome_content_browser_client.h
+index 9c4601f9cecefbf11af5ffd110aa7ba4f7c0f2e4..450454de247773495767fac28b038be588a888b5 100644
+--- a/chrome/browser/chrome_content_browser_client.h
++++ b/chrome/browser/chrome_content_browser_client.h
+@@ -372,6 +372,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
+                                  content::BrowserContext* browser_context);
+ 
+  private:
++  friend class BraveContentBrowserClient;
+   friend class DisableWebRtcEncryptionFlagTest;
+   friend class InProcessBrowserTest;
+ 
+diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+index 17c4ec23b3816b62f65e01a6f27397413272dd71..56d8602e422ed4e16e33f521b355dca4c0e2596c 100644
+--- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
++++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+@@ -15,6 +15,7 @@
+ #include "chrome/browser/extensions/activity_log/activity_log.h"
+ #include "chrome/browser/extensions/api/chrome_extensions_api_client.h"
+ #include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
++#include "brave/common/extensions/api/generated_api_registration.h"
+ #include "chrome/browser/extensions/api/generated_api_registration.h"
+ #include "chrome/browser/extensions/api/preference/preference_api.h"
+ #include "chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.h"
+@@ -284,6 +285,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
+ 
+   // Generated APIs from Chrome.
+   api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);
++
++  // Generated APIs from Brave.
++  api::BraveGeneratedFunctionRegistry::RegisterAll(registry);
+ }
+ 
+ void ChromeExtensionsBrowserClient::RegisterExtensionInterfaces(
+diff --git a/chrome/browser/net/chrome_network_delegate.h b/chrome/browser/net/chrome_network_delegate.h
+index e055ef156da9ea78b1dee96ee04f9c061267c775..5ffcecf64f39f3ff593cd30d9c1ef551be5f1a27 100644
+--- a/chrome/browser/net/chrome_network_delegate.h
++++ b/chrome/browser/net/chrome_network_delegate.h
+@@ -144,6 +144,8 @@ class ChromeNetworkDelegate : public net::NetworkDelegateImpl {
+   static void EnableAccessToAllFilesForTesting(bool enabled);
+ 
+  private:
++  friend class BraveNetworkDelegate;
++
+   // NetworkDelegate implementation.
+   int OnBeforeURLRequest(net::URLRequest* request,
+                          const net::CompletionCallback& callback,
+diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
+index 7bcc72f67676bf1bd388109e94bd0739cd588957..cd1cfd7930ace33eb1c6e72b39133c815a656be2 100644
+--- a/chrome/browser/profiles/profile_io_data.cc
++++ b/chrome/browser/profiles/profile_io_data.cc
+@@ -25,6 +25,7 @@
+ #include "base/strings/string_util.h"
+ #include "base/task_scheduler/post_task.h"
+ #include "base/threading/thread_task_runner_handle.h"
++#include "brave/browser/net/brave_network_delegate.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/chrome_notification_types.h"
+@@ -1020,7 +1021,7 @@ void ProfileIOData::Init(
+   builder->set_ssl_config_service(profile_params_->ssl_config_service);
+ 
+   std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
+-      new ChromeNetworkDelegate(
++      new BraveNetworkDelegate(
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+           io_thread_globals->extension_event_router_forwarder.get(),
+ #else
+diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
+index ff3b6d2d23c6d785da2358bfac6723e1fce971a1..3eb0a4e6e813e65dd33fd4bfb750c3957311ed1f 100644
+--- a/chrome/browser/ui/tab_helpers.cc
++++ b/chrome/browser/ui/tab_helpers.cc
+@@ -11,6 +11,7 @@
+ #include "base/feature_list.h"
+ #include "base/memory/ptr_util.h"
+ #include "base/time/default_tick_clock.h"
++#include "brave/browser/brave_tab_helpers.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+ #include "chrome/browser/browser_process.h"
+@@ -184,6 +185,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+   BookmarkLastVisitUpdater::MaybeCreateForWebContentsWithBookmarkModel(
+       web_contents, BookmarkModelFactory::GetForBrowserContext(
+                         web_contents->GetBrowserContext()));
++  brave::AttachTabHelpers(web_contents);
+   chrome_browser_net::NetErrorTabHelper::CreateForWebContents(web_contents);
+   chrome_browser_net::PredictorTabHelper::CreateForWebContents(web_contents);
+   if (base::FeatureList::IsEnabled(kDecoupleTranslateLanguageFeature)) {
+diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
+index d4e0823a55994118bacfe4fd7f8ec1881640e8ac..84788c9cc020c756c45e96fab8ab2119df1b18f8 100644
+--- a/chrome/common/chrome_constants.cc
++++ b/chrome/common/chrome_constants.cc
+@@ -10,11 +10,11 @@
+ #define FPL FILE_PATH_LITERAL
+ 
+ #if defined(OS_MACOSX)
+-#define CHROMIUM_PRODUCT_STRING "Chromium"
++#define CHROMIUM_PRODUCT_STRING "Brave"
+ #if defined(GOOGLE_CHROME_BUILD)
+ #define PRODUCT_STRING "Google Chrome"
+ #elif defined(CHROMIUM_BUILD)
+-#define PRODUCT_STRING "Chromium"
++#define PRODUCT_STRING "Brave"
+ #else
+ #error Unknown branding
+ #endif
+diff --git a/chrome/common/chrome_paths_linux.cc b/chrome/common/chrome_paths_linux.cc
+index fc47bd3f12418fdaed879e0b485bfc7cb572a6e8..9f02b6d08385a175354831a8037cb7be933de7df 100644
+--- a/chrome/common/chrome_paths_linux.cc
++++ b/chrome/common/chrome_paths_linux.cc
+@@ -89,8 +89,10 @@ bool GetDefaultUserDataDirectory(base::FilePath* result) {
+ 
+ #if defined(GOOGLE_CHROME_BUILD)
+   *result = config_dir.Append("google-chrome" + GetChannelSuffixForDataDir());
++#elif defined(OFFICIAL_BUILD)
++  *result = config_dir.Append("brave");
+ #else
+-  *result = config_dir.Append("chromium");
++  *result = config_dir.Append("brave-development");
+ #endif
+   return true;
+ }
+diff --git a/chrome/common/chrome_paths_mac.mm b/chrome/common/chrome_paths_mac.mm
+index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..f231ca44af970aed896f3c62e0a39fc6e61d0b72 100644
+--- a/chrome/common/chrome_paths_mac.mm
++++ b/chrome/common/chrome_paths_mac.mm
+@@ -58,8 +58,10 @@ char* ProductDirNameForBundle(NSBundle* chrome_bundle) {
+   if (!product_dir_name) {
+ #if defined(GOOGLE_CHROME_BUILD)
+     product_dir_name = "Google/Chrome";
++#elif defined(OFFICIAL_BUILD)
++    product_dir_name = "Brave";
+ #else
+-    product_dir_name = "Chromium";
++    product_dir_name = "Brave-Development";
+ #endif
+   }
+ 
+diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
+index b65abdff40e5fbca6eacf26bc3618a4ed60498ce..f2e1e7d2f41aa218b0c33fee8303cebefbcbb15c 100644
+--- a/chrome/common/extensions/chrome_extensions_client.cc
++++ b/chrome/common/extensions/chrome_extensions_client.cc
+@@ -13,6 +13,13 @@
+ #include "base/metrics/histogram_macros.h"
+ #include "base/strings/string_util.h"
+ #include "base/values.h"
++#include "brave/common/extensions/api/api_features.h"
++#include "brave/common/extensions/api/behavior_features.h"
++#include "brave/common/extensions/api/generated_api_registration.h"
++#include "brave/common/extensions/api/generated_schemas.h"
++#include "brave/common/extensions/api/grit/brave_api_resources.h"
++#include "brave/common/extensions/api/manifest_features.h"
++#include "brave/common/extensions/api/permission_features.h"
+ #include "chrome/common/chrome_content_client.h"
+ #include "chrome/common/chrome_switches.h"
+ #include "chrome/common/extensions/api/api_features.h"
+@@ -156,13 +163,13 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
+     const std::string& name) const {
+   std::unique_ptr<FeatureProvider> provider;
+   if (name == "api") {
+-    provider.reset(new APIFeatureProvider());
++    provider.reset(new BraveAPIFeatureProvider());
+   } else if (name == "manifest") {
+-    provider.reset(new ManifestFeatureProvider());
++    provider.reset(new BraveManifestFeatureProvider());
+   } else if (name == "permission") {
+-    provider.reset(new PermissionFeatureProvider());
++    provider.reset(new BravePermissionFeatureProvider());
+   } else if (name == "behavior") {
+-    provider.reset(new BehaviorFeatureProvider());
++    provider.reset(new BraveBehaviorFeatureProvider());
+   } else {
+     NOTREACHED();
+   }
+@@ -175,6 +182,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
+       new JSONFeatureProviderSource("api"));
+   source->LoadJSON(IDR_EXTENSION_API_FEATURES);
+   source->LoadJSON(IDR_CHROME_EXTENSION_API_FEATURES);
++  source->LoadJSON(IDR_BRAVE_EXTENSION_API_FEATURES);
+   return source;
+ }
+ 
+@@ -252,7 +260,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
+ bool ChromeExtensionsClient::IsAPISchemaGenerated(
+     const std::string& name) const {
+   // Test from most common to least common.
+-  return api::ChromeGeneratedSchemas::IsGenerated(name) ||
++  return api::BraveGeneratedSchemas::IsGenerated(name) ||
++         api::ChromeGeneratedSchemas::IsGenerated(name) ||
+          api::GeneratedSchemas::IsGenerated(name);
+ }
+ 
+@@ -263,6 +272,9 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
+   if (!chrome_schema.empty())
+     return chrome_schema;
+ 
++  if (api::BraveGeneratedSchemas::IsGenerated(name))
++    return api::BraveGeneratedSchemas::Get(name);
++
+   return api::GeneratedSchemas::Get(name);
+ }
+ 
+diff --git a/chrome/common/mac/app_mode_chrome_locator.mm b/chrome/common/mac/app_mode_chrome_locator.mm
+index efd272e706ba56b748e4b76b96d76cbd03aa07ac..b5d8d8cfa223d276db7a328036deeef658bc0320 100644
+--- a/chrome/common/mac/app_mode_chrome_locator.mm
++++ b/chrome/common/mac/app_mode_chrome_locator.mm
+@@ -79,7 +79,7 @@ bool GetChromeBundleInfo(const base::FilePath& chrome_bundle,
+   // However, we want the shims to be agnostic to distribution and operate based
+   // on the data in their plist, so encode the framework names here.
+   NSDictionary* framework_for_exe = @{
+-    @"Chromium": @"Chromium",
++    @"Brave": @"Brave",
+     @"Google Chrome": @"Google Chrome",
+     @"Google Chrome Canary": @"Google Chrome",
+   };
+diff --git a/chrome/install_static/chromium_install_modes.cc b/chrome/install_static/chromium_install_modes.cc
+index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..e2067d6d42bd85f40c7a1487d09feda5b1bf1833 100644
+--- a/chrome/install_static/chromium_install_modes.cc
++++ b/chrome/install_static/chromium_install_modes.cc
+@@ -14,7 +14,11 @@ namespace install_static {
+ 
+ const wchar_t kCompanyPathName[] = L"";
+ 
+-const wchar_t kProductPathName[] = L"Chromium";
++#if defined(OFFICIAL_BUILD)
++const wchar_t kProductPathName[] = L"Brave";
++#else
++const wchar_t kProductPathName[] = L"Brave-Development";
++#endif
+ 
+ const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
+ 
+diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
+index 615f286e96f7adef5e713c31ed6abd26cf643bc7..e97ccd6744c2985e93badf50924addbe3d0d87a3 100644
+--- a/chrome/installer/linux/BUILD.gn
++++ b/chrome/installer/linux/BUILD.gn
+@@ -19,7 +19,7 @@ if (current_cpu == "x86" || current_cpu == "x64") {
+ assert(is_linux)
+ 
+ packaging_files_executables = [
+-  "$root_out_dir/chrome",
++  "$root_out_dir/brave",
+   "$root_out_dir/chrome_sandbox",
+ ]
+ packaging_files_shlibs = []
+@@ -153,7 +153,7 @@ action("merge_rpm_dependencies") {
+ }
+ 
+ action("strip_chrome_binary") {
+-  prog_name = "$root_out_dir/chrome"
++  prog_name = "$root_out_dir/brave"
+   debug_file = prog_name + ".debug"
+   stripped_file = prog_name + ".stripped"
+   deps = [
+diff --git a/chrome/installer/util/prebuild/create_string_rc.py b/chrome/installer/util/prebuild/create_string_rc.py
+index d7734d8883c3e438ece3d509b7bb331931831178..6e6cdda19c271de7e5429db02b3e17b2d676b46f 100755
+--- a/chrome/installer/util/prebuild/create_string_rc.py
++++ b/chrome/installer/util/prebuild/create_string_rc.py
+@@ -109,6 +109,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_APP_SHORTCUTS_SUBDIR_NAME',
+     ],
++    'brave': [
++      'IDS_APP_SHORTCUTS_SUBDIR_NAME',
++    ],
+   },
+   'IDS_INBOUND_MDNS_RULE_DESCRIPTION': {
+     'google_chrome': [
+@@ -120,6 +123,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
+     ],
++    'brave': [
++      'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
++    ],
+   },
+   'IDS_INBOUND_MDNS_RULE_NAME': {
+     'google_chrome': [
+@@ -131,6 +137,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_INBOUND_MDNS_RULE_NAME',
+     ],
++    'brave': [
++      'IDS_INBOUND_MDNS_RULE_NAME',
++    ],
+   },
+   # In contrast to the strings above, this one (IDS_PRODUCT_NAME) is used
+   # throughout Chrome in mode-independent contexts. Within the installer (the
+@@ -146,6 +155,9 @@ MODE_SPECIFIC_STRINGS = {
+     'chromium': [
+       'IDS_PRODUCT_NAME',
+     ],
++    'brave': [
++      'IDS_PRODUCT_NAME',
++    ],
+   },
+ }
+ # Note: Update the test expectations in GetBaseMessageIdForMode.GoogleStringIds
+diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
+index 0459db65fee93a4f9c32dc83e7528b6bb8c8f653..d1ba50143543fa1acd3aff9b261ed9f45cacb804 100644
+--- a/chrome/renderer/chrome_content_renderer_client.cc
++++ b/chrome/renderer/chrome_content_renderer_client.cc
+@@ -20,6 +20,7 @@
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/time/time.h"
+ #include "base/values.h"
++#include "brave/renderer/brave_content_settings_observer.h"
+ #include "build/build_config.h"
+ #include "chrome/common/channel_info.h"
+ #include "chrome/common/chrome_content_client.h"
+@@ -543,7 +544,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+   ext_dispatcher =
+       ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher();
+ #endif
+-  ContentSettingsObserver* content_settings = new ContentSettingsObserver(
++  ContentSettingsObserver* content_settings = new BraveContentSettingsObserver(
+       render_frame, ext_dispatcher, should_whitelist_for_content_settings,
+       registry);
+   if (chrome_observer_.get()) {
+diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
+index a5d593955f2c75bd50f773c7b615a5ee1a06bc3b..ec1cfa7203625f0bc6168ed88f1bba0aac0101aa 100644
+--- a/chrome/renderer/chrome_content_renderer_client.h
++++ b/chrome/renderer/chrome_content_renderer_client.h
+@@ -237,6 +237,7 @@ class ChromeContentRendererClient : public content::ContentRendererClient {
+ #endif
+ 
+  private:
++  friend class BraveContentRendererClient;
+   FRIEND_TEST_ALL_PREFIXES(ChromeContentRendererClientTest, NaClRestriction);
+   FRIEND_TEST_ALL_PREFIXES(ChromeContentRendererClientTest,
+                            ShouldSuppressErrorPage);
+diff --git a/chrome/utility/chrome_content_utility_client.h b/chrome/utility/chrome_content_utility_client.h
+index c0132fecb0b9e8a91f288d6e6ecaad9dfdbec247..a6e307d6ddcee3ca0f75a91c459a690324ee0f3a 100644
+--- a/chrome/utility/chrome_content_utility_client.h
++++ b/chrome/utility/chrome_content_utility_client.h
+@@ -35,6 +35,7 @@ class ChromeContentUtilityClient : public content::ContentUtilityClient {
+       const NetworkBinderCreationCallback& callback);
+ 
+  private:
++  friend class BraveContentUtilityClient;
+   // IPC message handlers.
+   using Handlers = std::vector<std::unique_ptr<UtilityMessageHandler>>;
+   Handlers handlers_;
+diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
+index a299d38baf7f0c82dad33dc37764eba5db4ba856..218b83b4c65fe269dd4c3e5b7b51aa44fc4119ac 100644
+--- a/components/strings/BUILD.gn
++++ b/components/strings/BUILD.gn
+@@ -93,7 +93,7 @@ if (is_android) {
+ }
+ 
+ grit("components_chromium_strings") {
+-  source = "../components_chromium_strings.grd"
++  source = "../components_${branding_path_component}_strings.grd"
+   outputs = [
+     "grit/components_chromium_strings.h",
+   ]
+diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
+index 86dd1be9a41fb5f8215c7da13603c743994f2f00..fa028f73763a109a8e90038fa6e21d379826a0e5 100644
+--- a/extensions/browser/extension_event_histogram_value.h
++++ b/extensions/browser/extension_event_histogram_value.h
+@@ -430,6 +430,9 @@ enum HistogramValue {
+   AUTOMATION_INTERNAL_ON_ACTION_RESULT,
+   OMNIBOX_ON_DELETE_SUGGESTION,
+   VIRTUAL_KEYBOARD_PRIVATE_ON_KEYBOARD_CONFIG_CHANGED,
++
++  BRAVE_START = 5000,
++  BRAVE_AD_BLOCKED,
+   // Last entry: Add new entries above, then run:
+   // python tools/metrics/histograms/update_extension_histograms.py
+   ENUM_BOUNDARY
+diff --git a/third_party/widevine/cdm/BUILD.gn b/third_party/widevine/cdm/BUILD.gn
+index a3eac59cc2ebdb1f9d2bb7af8a7db0d44ab315a9..bb31fe8035643b0f928a69e730cc608af6ee2441 100644
+--- a/third_party/widevine/cdm/BUILD.gn
++++ b/third_party/widevine/cdm/BUILD.gn
+@@ -113,9 +113,10 @@ if (widevine_cdm_binary_files != []) {
+     if (is_mac) {
+       ldflags = [
+         # Not to strip important symbols by -Wl,-dead_strip.
+-        "-Wl,-exported_symbol,_PPP_GetInterface",
+-        "-Wl,-exported_symbol,_PPP_InitializeModule",
+-        "-Wl,-exported_symbol,_PPP_ShutdownModule",
++        #"-Wl,-exported_symbol,_PPP_GetInterface",
++        #"-Wl,-exported_symbol,_PPP_InitializeModule",
++        #"-Wl,-exported_symbol,_PPP_ShutdownModule",
++        "-Wl,-install_name,@loader_path/libwidevinecdm.dylib"
+       ]
+       #TODO(jrummell) Mac: 'DYLIB_INSTALL_NAME_BASE': '@loader_path',
+     } else if (is_posix && !is_mac) {
+diff --git a/tools/gritsettings/resource_ids b/tools/gritsettings/resource_ids
+index b0c2f87c10e6864fb88f564444a4325f1bd0e0c9..71bfeda0075e4481eeafb673d791b3a654f03973 100644
+--- a/tools/gritsettings/resource_ids
++++ b/tools/gritsettings/resource_ids
+@@ -36,6 +36,9 @@
+   "chrome/app/chromium_strings.grd": {
+     "messages": [400],
+   },
++  "chrome/app/brave_strings.grd": {
++    "messages": [400],
++  },
+   "chrome/app/google_chrome_strings.grd": {
+     "messages": [400],
+   },
+@@ -146,6 +149,9 @@
+   # Chromium strings and Google Chrome strings must start at the same id.
+   # We only use one file depending on whether we're building Chromium or
+   # Google Chrome.
++  "components/components_brave_strings.grd": {
++    "messages": [15000],
++  },
+   "components/components_chromium_strings.grd": {
+     "messages": [15000],
+   },
