@@ -2,6 +2,8 @@ source_set("common") {
   sources = [
     "common_message_generator.cc",
     "common_message_generator.h",
+    "url_constants.cc",
+    "url_constants.h",
   ]
   deps = [
     "extensions/api"

@@ -20,12 +20,12 @@ class BraveWebUIControllerFactory : public ChromeWebUIControllerFactory {
   content::WebUIController* CreateWebUIControllerForURL(
       content::WebUI* web_ui,
       const GURL& url) const override;
-  bool UseWebUIForURL(content::BrowserContext* browser_context,
-                      const GURL& url) const override;
 
   static BraveWebUIControllerFactory* GetInstance();
 
  protected:
+  friend struct base::DefaultSingletonTraits<BraveWebUIControllerFactory>;
+
   BraveWebUIControllerFactory();
   ~BraveWebUIControllerFactory() override;
 

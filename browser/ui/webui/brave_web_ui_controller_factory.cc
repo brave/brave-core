@@ -4,18 +4,76 @@
 
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
+#include "brave/common/url_constants.h"
+#include "chrome/browser/ui/webui/about_ui.h"
+
 using content::WebUI;
 using content::WebUIController;
 
+namespace {
+
+// A function for creating a new WebUI. The caller owns the return value, which
+// may be NULL (for example, if the URL refers to an non-existent extension).
+typedef WebUIController* (*WebUIFactoryFunction)(WebUI* web_ui,
+                                                 const GURL& url);
+
+// Template for defining WebUIFactoryFunction.
+template<class T>
+WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
+  return new T(web_ui);
+}
+
+template<>
+WebUIController* NewWebUI<AboutUI>(WebUI* web_ui, const GURL& url) {
+  return new AboutUI(web_ui, url.host());
+}
+
+// Returns a function that can be used to create the right type of WebUI for a
+// tab, based on its URL. Returns NULL if the URL doesn't have WebUI associated
+// with it.
+WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
+                                             const GURL& url) {
+  if (url.host_piece() == kPaymentsHost) {
+    return &NewWebUI<AboutUI>;
+  }
+
+  return nullptr;
+}
+
+}  // namespace
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
       content::BrowserContext* browser_context, const GURL& url) const {
+
+  WebUIFactoryFunction function = GetWebUIFactoryFunction(NULL, url);
+  if (function) {
+    return reinterpret_cast<WebUI::TypeID>(function);
+  }
   return ChromeWebUIControllerFactory::GetWebUIType(browser_context, url);
 }
 
 WebUIController* BraveWebUIControllerFactory::CreateWebUIControllerForURL(
     WebUI* web_ui,
     const GURL& url) const {
-  return ChromeWebUIControllerFactory::CreateWebUIControllerForURL(
-      web_ui, url);
+
+  WebUIFactoryFunction function = GetWebUIFactoryFunction(web_ui, url);
+  if (!function) {
+    return ChromeWebUIControllerFactory::CreateWebUIControllerForURL(
+        web_ui, url);
+  }
+
+  return (*function)(web_ui, url);
 }
+
+
+// static
+BraveWebUIControllerFactory* BraveWebUIControllerFactory::GetInstance() {
+  return base::Singleton<BraveWebUIControllerFactory>::get();
+}
+
+BraveWebUIControllerFactory::BraveWebUIControllerFactory() {
+}
+
+BraveWebUIControllerFactory::~BraveWebUIControllerFactory() {
+}
+
