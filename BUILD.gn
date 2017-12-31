@@ -1,3 +1,5 @@
+import("//tools/grit/repack.gni")
+
 group("child_dependencies") {
   public_deps = [
     "//brave/renderer",
@@ -10,6 +12,7 @@ group("browser_dependencies") {
   public_deps = [
     "//brave/browser",
     "common",
+    ":brave_framework_resources",
   ]
 }
 
@@ -17,4 +20,52 @@ group("brave") {
   public_deps = [
     "//chrome",
   ]
+}
+
+repack("packed_extra_resources") {
+  visibility = [ "./*" ]
+  sources = [
+    "$root_gen_dir/components/brave_components_resources.pak",
+  ]
+
+  deps = [
+    "//brave/components/resources:brave_components_resources_grit"
+  ]
+
+  deps += [
+    "//brave/common/extensions/api"
+  ]
+
+  if (is_mac) {
+    output = "$root_gen_dir/repack/brave_resources.pak"
+  } else {
+    output = "$root_out_dir/brave_resources.pak"
+  }
+}
+
+group("packed_resources") {
+  public_deps = [
+    ":packed_extra_resources",
+  ]
+}
+
+brave_framework_public_deps = [
+  ":packed_resources",
+]
+
+if (is_mac) {
+  bundle_data("brave_framework_resources") {
+    sources = [
+      "$root_gen_dir/repack/brave_resources.pak",
+    ]
+    public_deps = brave_framework_public_deps
+
+    outputs = [
+      "{{bundle_resources_dir}}/{{source_file_part}}",
+    ]
+  }
+} else {
+  group("brave_framework_resources") {
+    public_deps = brave_framework_public_deps
+  }
 }

@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index da85f01c59cf8a2b34dc7d189f3043580fd84e29..7c8c973f2639b6c4c43523939cca859ce36769aa 100644
+index da85f01c59cf8a2b34dc7d189f3043580fd84e29..60235c9faa665368e64c998a67765e9841549803 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
+@@ -79,7 +79,7 @@ class BrowserProcessImpl : public BrowserProcess,
+   // Called after the threads have been created but before the message loops
+   // starts running. Allows the browser process to do any initialization that
+   // requires all threads running.
+-  void PreMainMessageLoopRun();
++  virtual void PreMainMessageLoopRun();
+ 
+   // Most cleanup is done by these functions, driven from
+   // ChromeBrowserMain based on notifications from the content
 @@ -163,6 +163,7 @@ class BrowserProcessImpl : public BrowserProcess,
    static void RegisterPrefs(PrefRegistrySimple* registry);
  
