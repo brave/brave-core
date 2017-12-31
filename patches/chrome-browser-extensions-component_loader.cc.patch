@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/extensions/component_loader.cc b/chrome/browser/extensions/component_loader.cc
+index 7d26da7197e138678f357b9b3f44507327d60c2a..51b4522db7faeec3713b50ac297e4b11c3029791 100644
+--- a/chrome/browser/extensions/component_loader.cc
++++ b/chrome/browser/extensions/component_loader.cc
+@@ -14,7 +14,7 @@
+ #include "base/time/time.h"
+ #include "base/trace_event/trace_event.h"
+ #include "build/build_config.h"
+-#include "chrome/browser/extensions/component_extensions_whitelist/whitelist.h"
++#include "brave/browser/extensions/component_extensions_whitelist/whitelist.h"
+ #include "chrome/browser/extensions/data_deleter.h"
+ #include "chrome/browser/extensions/extension_service.h"
+ #include "chrome/browser/pdf/pdf_extension_util.h"
+@@ -182,7 +182,7 @@ std::unique_ptr<base::DictionaryValue> ComponentLoader::ParseManifest(
+ std::string ComponentLoader::Add(int manifest_resource_id,
+                                  const base::FilePath& root_directory) {
+   if (!ignore_whitelist_for_testing_ &&
+-      !IsComponentExtensionWhitelisted(manifest_resource_id))
++      !IsBraveComponentExtensionWhitelisted(manifest_resource_id))
+     return std::string();
+ 
+   base::StringPiece manifest_contents =
+@@ -215,7 +215,7 @@ std::string ComponentLoader::Add(
+   ComponentExtensionInfo info(std::move(parsed_manifest), root_directory);
+   if (!ignore_whitelist_for_testing_ &&
+       !skip_whitelist &&
+-      !IsComponentExtensionWhitelisted(info.extension_id))
++      !IsBraveComponentExtensionWhitelisted(info.extension_id))
+     return std::string();
+ 
+   component_extensions_.push_back(std::move(info));
+@@ -402,7 +402,7 @@ void ComponentLoader::AddWithNameAndDescription(
+     const std::string& name_string,
+     const std::string& description_string) {
+   if (!ignore_whitelist_for_testing_ &&
+-      !IsComponentExtensionWhitelisted(manifest_resource_id))
++      !IsBraveComponentExtensionWhitelisted(manifest_resource_id))
+     return;
+ 
+   base::StringPiece manifest_contents =
