@@ -2,7 +2,12 @@ import("//build/config/features.gni")
 
 source_set("ui") {
   sources = [
+    "webui/basic_ui.cc",
+    "webui/basic_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
     "webui/brave_web_ui_controller_factory.h",
+  ]
+  public_deps = [
+    "//content/public/browser",
   ]
 }

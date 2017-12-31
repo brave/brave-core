@@ -1,0 +1,15 @@
+import("//printing/features/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+grit("brave_components_resources_grit") {
+  source = "brave_components_resources.grd"
+
+  output_name = "brave_components_resources_new"
+  outputs = [
+    "grit/brave_components_resources.h",
+    "brave_components_resources.pak",
+  ]
+  output_dir = "$root_gen_dir/components"
+  resource_ids = "//brave/browser/resources/resource_ids"
+}
+

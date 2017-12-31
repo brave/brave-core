@@ -5,7 +5,8 @@
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
 #include "brave/common/url_constants.h"
-#include "chrome/browser/ui/webui/about_ui.h"
+#include "brave/browser/ui/webui/basic_ui.h"
+#include "url/gurl.h"
 
 using content::WebUI;
 using content::WebUIController;
@@ -24,8 +25,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 }
 
 template<>
-WebUIController* NewWebUI<AboutUI>(WebUI* web_ui, const GURL& url) {
-  return new AboutUI(web_ui, url.host());
+WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
+  return new BasicUI(web_ui, url.host());
 }
 
 // Returns a function that can be used to create the right type of WebUI for a
@@ -34,7 +35,7 @@ WebUIController* NewWebUI<AboutUI>(WebUI* web_ui, const GURL& url) {
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
   if (url.host_piece() == kPaymentsHost) {
-    return &NewWebUI<AboutUI>;
+    return &NewWebUI<BasicUI>;
   }
 
   return nullptr;
