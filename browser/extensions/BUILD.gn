@@ -2,6 +2,8 @@ import("//build/config/features.gni")
 
 source_set("extensions") {
   sources = [
+    "brave_component_extension_resource_manager.cc",
+    "brave_component_extension_resource_manager.h",
     "brave_component_loader.cc",
     "brave_component_loader.h",
     "component_extensions_whitelist/whitelist.cc",

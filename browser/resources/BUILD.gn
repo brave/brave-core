@@ -7,6 +7,8 @@ grit("brave_extension_grit") {
   # output_name = "brave_components_resources_new"
   outputs = [
     "grit/brave_extension.h",
+    "grit/brave_extension_resources_map.cc",
+    "grit/brave_extension_resources_map.h",
     "brave_extension.pak",
   ]
   output_dir = "$root_gen_dir/brave"
