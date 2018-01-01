@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit base_dir="../../vendor/brave-extension" latest_public_release="0" current_release="1" output_all_resource_defines="false">
+  <outputs>
+    <output filename="grit/brave_extension.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="brave_extension.pak" type="data_package" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <include name="IDR_BRAVE_EXTENSON_INJECT_HTML" file="build/inject.html" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_SHIELDS_BUNDLE_JS" file="build/js/braveShieldsPanel.bundle.js" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_BACKGROUND_BUNDLE_JS" file="build/js/background.bundle.js" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_16_PNG" file="build/img/icon-16.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_48_PNG" file="build/img/icon-48.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_128_PNG" file="build/img/icon-128.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_BACKGROUND_HTML" file="build/background.html" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_EN_US_MESSAGES_JSON" file="build/_locales/en_US/messages.json" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_BRAVE_SHIELDS_HTML" file="build/braveShieldsPanel.html" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_BRAVELIZER_JS" file="build/bravelizer.css" type="BINDATA" />
+    </includes>
+  </release>
+</grit>

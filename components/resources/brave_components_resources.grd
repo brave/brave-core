@@ -8,7 +8,10 @@
   </outputs>
   <release seq="1">
     <includes>
+      <!-- Browser resrouces -->
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
+
+      <!-- WebUI resrouces -->
       <include name="IDR_BRAVE_PAYMENTS_HTML" file="../brave_payments_ui/brave_payments.html" type="BINDATA" />
       <include name="IDR_BRAVE_PAYMENTS_JS" file="../brave_payments_ui/brave_payments.js" type="BINDATA" />
     </includes>

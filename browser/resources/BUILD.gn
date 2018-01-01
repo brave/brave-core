@@ -1,0 +1,15 @@
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+grit("brave_extension_grit") {
+  source = "brave_extension.grd"
+
+  # output_name = "brave_components_resources_new"
+  outputs = [
+    "grit/brave_extension.h",
+    "brave_extension.pak",
+  ]
+  output_dir = "$root_gen_dir/brave"
+  resource_ids = "//brave/browser/resources/resource_ids"
+}
+
