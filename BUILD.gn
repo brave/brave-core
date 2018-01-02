@@ -1,5 +1,11 @@
 import("//tools/grit/repack.gni")
 
+declare_args() {
+  if (is_mac) {
+    mac_signing_identifier = ""
+  }
+}
+
 group("child_dependencies") {
   public_deps = [
     "//brave/renderer",
@@ -69,5 +75,41 @@ if (is_mac) {
 } else {
   group("brave_framework_resources") {
     public_deps = brave_framework_public_deps
+  }
+}
+
+if (is_mac) {
+  action("create_dist") {
+    output = "$root_out_dir/Brave.dmg"
+    script = "//build/gn_run_binary.py"
+    shell_script = "//chrome/installer/mac/pkg-dmg"
+    inputs = [
+      script,
+      shell_script,
+    ]
+    outputs = [ output ]
+    args = [
+      rebase_path(shell_script, root_build_dir),
+      "--source",
+      "/var/empty",
+      "--target",
+      "Brave.dmg",
+      "--format",
+      "UDBZ",
+      "--verbosity",
+      "0",
+      "--volname",
+      "Brave",
+      "--copy",
+      "Brave.app",
+      "--tempdir",
+      "/tmp",
+    ]
+  }
+} else {
+  group("create_dist") {
+    deps = [
+      "//chrome/installer/mini_installer"
+    ]
   }
 }
