@@ -5,6 +5,7 @@
 #include "brave/common/resource_bundle_helper.h"
 
 #include "base/command_line.h"
+#include "base/path_service.h"
 #include "components/nacl/common/nacl_switches.h"
 #include "content/public/common/content_switches.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -21,12 +22,10 @@ base::FilePath GetResourcesPakFilePath() {
   return base::mac::PathForFrameworkBundleResource(
       CFSTR("brave_resources.pak"));
 #else
-  base::FilePath extensions_shell_and_test_pak_path;
-  PathService::Get(base::DIR_MODULE, &extensions_shell_and_test_pak_path);
-  extensions_shell_and_test_pak_path =
-      extensions_shell_and_test_pak_path.AppendASCII(
-          "brave_resources.pak");
-  return extensions_shell_and_test_pak_path;
+  base::FilePath pak_path;
+  PathService::Get(base::DIR_MODULE, &pak_path);
+  pak_path = pak_path.AppendASCII("brave_resources.pak");
+  return pak_path;
 #endif  // OS_MACOSX
 }
 

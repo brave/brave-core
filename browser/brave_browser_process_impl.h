@@ -25,9 +25,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::HTTPSEverywhereService*
       https_everywhere_service();
 
- protected:
-  void PreMainMessageLoopRun() override;
-
  private:
   std::unique_ptr<brave_shields::BaseBraveShieldsService> ad_block_service_;
   std::unique_ptr<brave_shields::BaseBraveShieldsService>

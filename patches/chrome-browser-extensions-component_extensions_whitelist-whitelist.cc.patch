@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
+index c81399a35a32e77271177642ff8e1d79089d8e11..9c086213abf05f4811dbfdbf20f0a5c41e266f7c 100644
+--- a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
++++ b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
+@@ -9,6 +9,7 @@
+ #include "base/logging.h"
+ #include "base/macros.h"
+ #include "build/build_config.h"
++#include "components/grit/brave_components_resources.h"
+ #include "chrome/common/extensions/extension_constants.h"
+ #include "chrome/common/features.h"
+ #include "chrome/grit/browser_resources.h"
+@@ -38,6 +39,7 @@ bool IsComponentExtensionWhitelisted(const std::string& extension_id) {
+     extension_misc::kZIPUnpackerExtensionId,
+     extension_misc::kZipArchiverExtensionId,
+ #endif
++     "mnojpmjdmbbfmejpflffifhffcmidifd"
+   };
+ 
+   for (size_t i = 0; i < arraysize(kAllowed); ++i) {
+@@ -61,6 +63,7 @@ bool IsComponentExtensionWhitelisted(int manifest_resource_id) {
+   switch (manifest_resource_id) {
+     // Please keep the list in alphabetical order.
+     case IDR_BOOKMARKS_MANIFEST:
++    case IDR_BRAVE_EXTENSON:
+ #if BUILDFLAG(ENABLE_APP_LIST)
+     case IDR_CHROME_APP_MANIFEST:
+ #endif

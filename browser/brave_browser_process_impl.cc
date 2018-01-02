@@ -4,7 +4,6 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 
-#include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
@@ -50,11 +49,4 @@ BraveBrowserProcessImpl::https_everywhere_service() {
   https_everywhere_service_ =
     brave_shields::HTTPSEverywhereServiceFactory();
   return https_everywhere_service_.get();
-}
-
-void BraveBrowserProcessImpl::PreMainMessageLoopRun() {
-  BrowserProcessImpl::PreMainMessageLoopRun();
-  // If we make subclasses for BorwserMainParts* then we can move this call there
-  // and we can remove the virtual patch for PreMainMessageLoopRun.
-  brave::InitializeResourceBundle();
 }

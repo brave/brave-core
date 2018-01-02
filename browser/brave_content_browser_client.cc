@@ -4,7 +4,16 @@
 
 #include "brave/browser/brave_content_browser_client.h"
 
-BraveContentBrowserClient::BraveContentBrowserClient()
-    : ChromeContentBrowserClient() {}
+#include "brave/browser/brave_browser_main_extra_parts.h"
+
+BraveContentBrowserClient::BraveContentBrowserClient() {}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
+
+content::BrowserMainParts* BraveContentBrowserClient::CreateBrowserMainParts(
+      const content::MainFunctionParams& parameters) {
+  ChromeBrowserMainParts* main_parts = (ChromeBrowserMainParts*)
+      ChromeContentBrowserClient::CreateBrowserMainParts(parameters);
+  main_parts->AddParts(new BraveBrowserMainExtraParts());
+  return main_parts;
+}
