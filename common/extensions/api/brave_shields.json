@@ -6,6 +6,9 @@
   {
     "namespace": "braveShields",
     "description": "Use the <code>chrome.braveShields</code> API to receive notifications about the status of brave shields.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/brave_shields_api.h"
+    },
     "events": [
       {
         "name": "onBlocked",
@@ -23,6 +26,19 @@
           }
         ]
       }
-    ]
+    ],
+   "functions": [
+     {
+       "name": "dummy",
+       "type": "function",
+       "description": "Remove me when there were actual fucntions implemented",
+       "properties": [
+         {
+         "type": "integer",
+         "name": "dummyArg"
+         }
+       ]
+     }
+   ]
   }
 ]
