@@ -102,7 +102,7 @@ bool HTTPSEverywhereService::Init() {
 
   leveldb::Options options;
   leveldb::Status status = leveldb::DB::Open(options,
-      unzipped_level_db_path.value().c_str(),
+      unzipped_level_db_path.AsUTF8Unsafe(),
       &level_db_);
   if (!status.ok() || !level_db_) {
     if (level_db_) {
