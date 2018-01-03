@@ -68,7 +68,6 @@
     "minimist": "^1.2.0",
     "mocha": "^4.0.1",
     "postcss-loader": "^2.0.8",
-    "pre-push": "^0.1.1",
     "pug-cli": "^1.0.0-alpha6",
     "react-addons-test-utils": "^15.6.2",
     "rimraf": "^2.6.2",
@@ -99,5 +98,8 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0"
+  },
+  "optionalDependencies": {
+    "pre-push": "^0.1.1"
   }
 }
