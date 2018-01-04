@@ -1,0 +1,20 @@
+diff --git a/components/omnibox/browser/omnibox_controller.cc b/components/omnibox/browser/omnibox_controller.cc
+index 75a76658b52a64a1a3b142bfd26c57a311f8f4dc..98a21008d4867d7f465e64a7269ffe96fe9ed711 100644
+--- a/components/omnibox/browser/omnibox_controller.cc
++++ b/components/omnibox/browser/omnibox_controller.cc
+@@ -14,12 +14,14 @@
+ #include "components/omnibox/browser/omnibox_popup_view.h"
+ #include "ui/gfx/geometry/rect.h"
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ OmniboxController::OmniboxController(OmniboxEditModel* omnibox_edit_model,
+                                      OmniboxClient* client)
+     : omnibox_edit_model_(omnibox_edit_model),
+       client_(client),
+       popup_(nullptr),
+-      autocomplete_controller_(new AutocompleteController(
++      autocomplete_controller_(new BraveAutocompleteController(
+           client_->CreateAutocompleteProviderClient(),
+           this,
+           AutocompleteClassifier::DefaultOmniboxProviders())),
