@@ -12,6 +12,6 @@ BraveBrowserMainExtraParts::BraveBrowserMainExtraParts() {
 BraveBrowserMainExtraParts::~BraveBrowserMainExtraParts() {
 }
 
-void BraveBrowserMainExtraParts::PostMainMessageLoopStart() {
+void BraveBrowserMainExtraParts::PreCreateThreads() {
   brave::InitializeResourceBundle();
 }

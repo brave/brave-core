@@ -16,7 +16,7 @@ class BraveBrowserMainExtraParts : public ChromeBrowserMainExtraParts {
   ~BraveBrowserMainExtraParts() override;
 
   // ChromeBrowserMainExtraParts overrides.
-  void PostMainMessageLoopStart() override;
+  void PreCreateThreads() override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainExtraParts);

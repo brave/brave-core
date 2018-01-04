@@ -22,7 +22,10 @@ BraveComponentLoader::~BraveComponentLoader() {
 void BraveComponentLoader::AddDefaultComponentExtensions(
     bool skip_session_components) {
   ComponentLoader::AddDefaultComponentExtensions(skip_session_components);
-  Add(IDR_BRAVE_EXTENSON, base::FilePath(FILE_PATH_LITERAL("${root_gen_dir}/brave_extension")));
+  base::FilePath brave_extension_path(FILE_PATH_LITERAL("${root_gen_dir}"));
+  brave_extension_path =
+      brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
+  Add(IDR_BRAVE_EXTENSON, brave_extension_path);
 }
 
 }  // namespace extensions
