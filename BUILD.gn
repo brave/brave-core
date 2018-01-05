@@ -2,7 +2,6 @@ import("//tools/grit/repack.gni")
 
 group("child_dependencies") {
   public_deps = [
-    "//brave/vendor/brave-extension",
     "//brave/renderer",
     "//brave/utility",
     "common"

@@ -16,8 +16,11 @@ grit("brave_extension_grit") {
     "grit/brave_extension_resources_map.h",
     "brave_extension.pak",
   ]
-  # The .grd contains references to generated files.
-  source_is_generated = true
+
+  deps = [
+    "//brave/vendor/brave-extension",
+  ]
+
   output_dir = "$root_gen_dir/brave"
   # Empty string means use value from the grit element
   resource_ids = ""
