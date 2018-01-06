@@ -1,5 +1,5 @@
 action("brave-extension") {
-  script = "//brave/script/build-brave-extension.py"
+  script = "py-scripts/build-brave-extension.py"
   outputs = [
     "$target_gen_dir/brave_extension/build/background.html",
     "$target_gen_dir/brave_extension/build/js/background.bundle.js",
