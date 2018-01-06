@@ -1,0 +1,28 @@
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+grit("brave_extension_grit") {
+  source = "brave_extension.grd"
+
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, "."),
+  ]
+
+  # output_name = "brave_components_resources_new"
+  outputs = [
+    "grit/brave_extension.h",
+    "grit/brave_extension_resources_map.cc",
+    "grit/brave_extension_resources_map.h",
+    "brave_extension.pak",
+  ]
+
+  deps = [
+    "//brave/vendor/brave-extension",
+  ]
+
+  output_dir = "$root_gen_dir/brave"
+  # Empty string means use value from the grit element
+  resource_ids = ""
+}
+

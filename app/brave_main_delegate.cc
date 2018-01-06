@@ -8,6 +8,7 @@
 #include "base/time/time.h"
 #include "build/build_config.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/common/resource_bundle_helper.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 
@@ -61,3 +62,9 @@ bool BraveMainDelegate::ShouldEnableProfilerRecording() {
   return false;
 }
 
+void BraveMainDelegate::PreSandboxStartup() {
+  ChromeMainDelegate::PreSandboxStartup();
+  if (brave::SubprocessNeedsResourceBundle()) {
+    brave::InitializeResourceBundle();
+  }
+}

@@ -4,4 +4,10 @@
   "brave/common/extensions/api/brave_api_resources.grd": {
     "includes": [32000],
   },
+  "brave/components/resources/brave_components_resources.grd": {
+    "includes": [33000],
+  },
+  "brave/browser/resources/brave_extension.grd": {
+    "includes": [34000],
+  },
 }

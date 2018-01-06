@@ -2,6 +2,8 @@ import("//build/config/features.gni")
 
 source_set("browser_process") {
   sources = [
+    "brave_browser_main_extra_parts.cc",
+    "brave_browser_main_extra_parts.h",
     "brave_browser_process_impl.cc",
     "brave_browser_process_impl.h",
     "brave_tab_helpers.cc",
@@ -20,11 +22,15 @@ source_set("browser") {
   ]
 
   public_deps = [
+    "//brave/components/resources:brave_components_resources_grit",
+    "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser",
   ]
 
   deps = [
     "//brave/components/brave_shields/browser:brave_shields",
+    "extensions",
     "net",
+    "ui",
   ]
 }
