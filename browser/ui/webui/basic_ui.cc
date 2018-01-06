@@ -4,7 +4,7 @@
 
 #include "brave/browser/ui/webui/basic_ui.h"
 
-#include "brave/common/url_constants.h"
+#include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_data_source.h"

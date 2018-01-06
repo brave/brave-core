@@ -4,7 +4,7 @@
 
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
-#include "brave/common/url_constants.h"
+#include "brave/common/webui_url_constants.h"
 #include "brave/browser/ui/webui/basic_ui.h"
 #include "url/gurl.h"
 
