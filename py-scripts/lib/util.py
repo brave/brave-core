@@ -162,13 +162,7 @@ def execute(argv, env=os.environ):
 
 
 def execute_stdout(argv, env=os.environ):
-    try:
-      subprocess.check_call(argv, env=env)
-    except subprocess.CalledProcessError as e:
-      print e.output
-      raise e
-  else:
-    execute(argv, env)
+  execute(argv, env)
 
 
 def parse_version(version):

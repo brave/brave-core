@@ -10,10 +10,9 @@ if sys.platform in ['win32', 'cygwin']:
 
 
 def main():
-  antimuon_dir = os.path.realpath(os.path.dirname(
+  brave_extension_dir = os.path.realpath(os.path.dirname(
       os.path.dirname(os.path.realpath(__file__))))
-  brave_extension_dir = os.path.join(
-      antimuon_dir, 'vendor', 'brave-extension')
+  antimuon_dir = os.path.dirname(os.path.dirname(brave_extension_dir))
   brave_extension_gen_dir = os.path.join(
       os.path.dirname(antimuon_dir), 'out', 'Release',
           'gen', 'brave_extension')

@@ -61,3 +61,6 @@ dev/
 
 # Release
 build/
+
+# Ignore python compiled files
+*.pyc
