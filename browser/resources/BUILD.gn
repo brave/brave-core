@@ -21,7 +21,8 @@ grit("brave_extension_grit") {
     "//brave/vendor/brave-extension",
   ]
 
-  output_dir = "$root_gen_dir/brave"
+  print("output dir is $target_gen_dir")
+  output_dir = "$target_gen_dir"
   # Empty string means use value from the grit element
   resource_ids = ""
 }
