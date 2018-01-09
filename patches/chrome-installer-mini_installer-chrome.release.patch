@@ -1,0 +1,12 @@
+diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
+index fe8c8c00e57dcf1cb154448d05eba6ac209ee3ed..5b5f05cbdf866ace7572066709e426b40e2e60ff 100644
+--- a/chrome/installer/mini_installer/chrome.release
++++ b/chrome/installer/mini_installer/chrome.release
+@@ -18,6 +18,7 @@ chrome.exe: %(ChromeDir)s\
+ # Chrome version dir entries, sorted alphabetically.
+ #
+ chrome.dll: %(VersionDir)s\
++brave_resources.pak: %(VersionDir)s\
+ chrome_100_percent.pak: %(VersionDir)s\
+ chrome_child.dll: %(VersionDir)s\
+ chrome_elf.dll: %(VersionDir)s\
