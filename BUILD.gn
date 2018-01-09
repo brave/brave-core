@@ -29,7 +29,6 @@ group("brave") {
 }
 
 repack("packed_extra_resources") {
-  visibility = [ "./*" ]
   sources = [
     "$root_gen_dir/components/brave_components_resources.pak",
     "$target_gen_dir/browser/resources/brave_extension.pak",

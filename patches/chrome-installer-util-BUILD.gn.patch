@@ -1,0 +1,12 @@
+diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
+index 2cf4027737f73cff9fcd061ed46b6b92f3587e84..ed50f727682cc228ddbed518a3271999fcda0403 100644
+--- a/chrome/installer/util/BUILD.gn
++++ b/chrome/installer/util/BUILD.gn
+@@ -239,6 +239,7 @@ action("generate_strings") {
+ 
+   inputs = [
+     grdfile,
++    "//chrome/app/brave_strings.grd",
+   ]
+ 
+   outputs = [

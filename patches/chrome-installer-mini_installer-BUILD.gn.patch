@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index cc3782f4a91da503a743d38740210f8f8a973e8d..b82f855146f80e8ffa4ad3a3ba438dcc5a3c1623 100644
+index cc3782f4a91da503a743d38740210f8f8a973e8d..e5da0757587fca503577892afd84ed4eaf35787e 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -130,7 +130,7 @@ template("generate_mini_installer") {
+@@ -130,11 +130,12 @@ template("generate_mini_installer") {
  
      inputs = [
        "$chrome_dll_file",
@@ -11,3 +11,16 @@ index cc3782f4a91da503a743d38740210f8f8a973e8d..b82f855146f80e8ffa4ad3a3ba438dcc
        "$root_out_dir/locales/en-US.pak",
        "$root_out_dir/setup.exe",
        "$root_out_dir/v8_context_snapshot.bin",
+       release_file,
++      "$root_out_dir/brave_resources.pak",
+     ]
+ 
+     outputs = [
+@@ -179,6 +180,7 @@ template("generate_mini_installer") {
+       "//third_party/icu:icudata",
+       "//tools/v8_context_snapshot",
+       chrome_dll_target,
++      "//brave:packed_extra_resources",
+     ]
+ 
+     if (enable_hidpi) {
