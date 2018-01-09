@@ -2,41 +2,33 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/net/brave_network_delegate.h"
+#include "brave/browser/net/brave_network_delegate_base.h"
 
 #include <algorithm>
 
-#include "brave/browser/net/brave_httpse_network_delegate.h"
 #include "brave/browser/net/url_context.h"
-
-//#include "chrome/browser/profiles/profile_io_data.h"
 #include "content/public/browser/browser_thread.h"
-//#include "content/public/browser/resource_request_info.h"
 #include "net/url_request/url_request.h"
 
 
 using content::BrowserThread;
 
-BraveNetworkDelegate::ResponseListenerInfo::ResponseListenerInfo() {
+BraveNetworkDelegateBase::ResponseListenerInfo::ResponseListenerInfo() {
 }
 
-BraveNetworkDelegate::ResponseListenerInfo::~ResponseListenerInfo() {
+BraveNetworkDelegateBase::ResponseListenerInfo::~ResponseListenerInfo() {
 }
 
-BraveNetworkDelegate::BraveNetworkDelegate(
+BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router,
     BooleanPrefMember* enable_referrers) :
     ChromeNetworkDelegate(event_router, enable_referrers) {
-  brave::OnBeforeURLRequestCallback callback =
-      base::Bind(
-          brave::OnBeforeURLRequest_HttpsePreFileWork);
-  before_url_request_callbacks_.push_back(callback);
 }
 
-BraveNetworkDelegate::~BraveNetworkDelegate() {
+BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {
 }
 
-int BraveNetworkDelegate::OnBeforeURLRequest(net::URLRequest* request,
+int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
     const net::CompletionCallback& callback,
     GURL* new_url) {
   if (before_url_request_callbacks_.empty() || !request) {
@@ -52,7 +44,7 @@ int BraveNetworkDelegate::OnBeforeURLRequest(net::URLRequest* request,
   return net::ERR_IO_PENDING;
 }
 
-void BraveNetworkDelegate::RunNextCallback(
+void BraveNetworkDelegateBase::RunNextCallback(
     net::URLRequest* request,
     GURL *new_url,
     std::shared_ptr<brave::OnBeforeURLRequestContext> ctx) {
@@ -67,7 +59,7 @@ void BraveNetworkDelegate::RunNextCallback(
     brave::OnBeforeURLRequestCallback callback =
         before_url_request_callbacks_[ctx->next_url_request_index++];
     brave::ResponseCallback next_callback =
-        base::Bind(&BraveNetworkDelegate::RunNextCallback,
+        base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
             base::Unretained(this), request, new_url, ctx);
     int rv = callback.Run(request, new_url, next_callback, ctx);
     if (rv == net::ERR_IO_PENDING) {
@@ -85,7 +77,7 @@ void BraveNetworkDelegate::RunNextCallback(
   }
 }
 
-void BraveNetworkDelegate::OnURLRequestDestroyed(net::URLRequest* request) {
+void BraveNetworkDelegateBase::OnURLRequestDestroyed(net::URLRequest* request) {
   if (!ContainsKey(callbacks_, request->identifier())) {
     return;
   }
