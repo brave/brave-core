@@ -10,6 +10,7 @@ source_set("extensions") {
     "brave_component_loader.h",
   ]
   deps = [
+    "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser"
   ]
 }
