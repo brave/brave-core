@@ -1,0 +1,31 @@
+diff --git a/chrome/install_static/BUILD.gn b/chrome/install_static/BUILD.gn
+index bebbab34ae8f822c33350214c8af8ea41690e3a0..ca682c64bce1fe0d25407f6309722a6ccd72d85b 100644
+--- a/chrome/install_static/BUILD.gn
++++ b/chrome/install_static/BUILD.gn
+@@ -22,7 +22,7 @@ static_library("install_static_util") {
+ 
+   sources = [
+     "../app/chrome_dll_resource.h",
+-    "../chrome/common/chrome_icon_resources_win.h",
++    "//brave/common/brave_icon_resources_win.h",
+     "install_constants.h",
+     "install_details.cc",
+     "install_details.h",
+@@ -40,13 +40,13 @@ static_library("install_static_util") {
+ 
+   if (is_chrome_branded) {
+     sources += [
+-      "google_chrome_install_modes.cc",
+-      "google_chrome_install_modes.h",
++      "//brave/install_static/brave_install_modes.cc",
++      "//brave/install_static/brave_install_modes.h",
+     ]
+   } else {
+     sources += [
+-      "chromium_install_modes.cc",
+-      "chromium_install_modes.h",
++      "//brave/install_static/brave_install_modes.cc",
++      "//brave/install_static/brave_install_modes.h",
+     ]
+   }
+ 

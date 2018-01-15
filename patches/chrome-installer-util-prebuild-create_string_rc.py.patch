@@ -1,44 +1,67 @@
 diff --git a/chrome/installer/util/prebuild/create_string_rc.py b/chrome/installer/util/prebuild/create_string_rc.py
-index d7734d8883c3e438ece3d509b7bb331931831178..6e6cdda19c271de7e5429db02b3e17b2d676b46f 100755
+index d7734d8883c3e438ece3d509b7bb331931831178..26d8cbe3484fed534e1e13fd6991abec327c0c0b 100755
 --- a/chrome/installer/util/prebuild/create_string_rc.py
 +++ b/chrome/installer/util/prebuild/create_string_rc.py
-@@ -109,6 +109,9 @@ MODE_SPECIFIC_STRINGS = {
+@@ -109,6 +109,12 @@ MODE_SPECIFIC_STRINGS = {
      'chromium': [
        'IDS_APP_SHORTCUTS_SUBDIR_NAME',
      ],
 +    'brave': [
 +      'IDS_APP_SHORTCUTS_SUBDIR_NAME',
++      'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
++      'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
++      'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
 +    ],
    },
    'IDS_INBOUND_MDNS_RULE_DESCRIPTION': {
      'google_chrome': [
-@@ -120,6 +123,9 @@ MODE_SPECIFIC_STRINGS = {
+@@ -120,6 +126,12 @@ MODE_SPECIFIC_STRINGS = {
      'chromium': [
        'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
      ],
 +    'brave': [
 +      'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
++      'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
++      'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV',
++      'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
 +    ],
    },
    'IDS_INBOUND_MDNS_RULE_NAME': {
      'google_chrome': [
-@@ -131,6 +137,9 @@ MODE_SPECIFIC_STRINGS = {
+@@ -131,6 +143,12 @@ MODE_SPECIFIC_STRINGS = {
      'chromium': [
        'IDS_INBOUND_MDNS_RULE_NAME',
      ],
 +    'brave': [
 +      'IDS_INBOUND_MDNS_RULE_NAME',
++      'IDS_INBOUND_MDNS_RULE_NAME_BETA',
++      'IDS_INBOUND_MDNS_RULE_NAME_DEV',
++      'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
 +    ],
    },
    # In contrast to the strings above, this one (IDS_PRODUCT_NAME) is used
    # throughout Chrome in mode-independent contexts. Within the installer (the
-@@ -146,6 +155,9 @@ MODE_SPECIFIC_STRINGS = {
+@@ -146,6 +164,12 @@ MODE_SPECIFIC_STRINGS = {
      'chromium': [
        'IDS_PRODUCT_NAME',
      ],
 +    'brave': [
 +      'IDS_PRODUCT_NAME',
++      'IDS_SHORTCUT_NAME_BETA',
++      'IDS_SHORTCUT_NAME_DEV',
++      'IDS_SXS_SHORTCUT_NAME',
 +    ],
    },
  }
  # Note: Update the test expectations in GetBaseMessageIdForMode.GoogleStringIds
+@@ -376,7 +400,9 @@ class StringRcMaker(object):
+     # Read the source (en-US) string from the .grd file.
+     grd_handler = GrdHandler(string_id_set)
+     sax_parser.setContentHandler(grd_handler)
+-    sax_parser.parse(grd_file)
++    # A base name is calculated from grd_file so that's why we don't
++    # just change that from chrome/installer/util/BUILD.gn
++    sax_parser.parse("../../chrome/app/brave_strings.grd")
+     source_strings = grd_handler.messages
+ 
+     # Manually put the source strings as en-US in the list of translated
