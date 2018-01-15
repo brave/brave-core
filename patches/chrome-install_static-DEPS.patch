@@ -1,0 +1,13 @@
+diff --git a/chrome/install_static/DEPS b/chrome/install_static/DEPS
+index f576e5a9226345c701f164dfac534e286c36bf81..dbb757c1f68be8ce690e91cf89b703bd8204f9f0 100644
+--- a/chrome/install_static/DEPS
++++ b/chrome/install_static/DEPS
+@@ -6,7 +6,7 @@ include_rules = [
+   # For the app icon resource identifiers.
+   "+chrome/app/chrome_dll_resource.h",
+   # For the app icon resource indices.
+-  "+chrome/common/chrome_icon_resources_win.h",
++  "+brave/common/brave_icon_resources_win.h",
+   # Anything from this dir.
+   "+chrome/install_static",
+   # All registry access should go through nt_registry.

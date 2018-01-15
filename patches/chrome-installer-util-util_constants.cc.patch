@@ -1,0 +1,17 @@
+diff --git a/chrome/installer/util/util_constants.cc b/chrome/installer/util/util_constants.cc
+index e8913e34bd4731886c2709db051ed9a0bf3115ac..aa7779e71a9772cd628ed20835a2d7ca0c56c7f7 100644
+--- a/chrome/installer/util/util_constants.cc
++++ b/chrome/installer/util/util_constants.cc
+@@ -184,9 +184,9 @@ const char kGoogleUpdateIsMachineEnvVar[] = "GoogleUpdateIsMachine";
+ const wchar_t kActiveSetupExe[] = L"chrmstp.exe";
+ const wchar_t kChromeDll[] = L"chrome.dll";
+ const wchar_t kChromeChildDll[] = L"chrome_child.dll";
+-const wchar_t kChromeExe[] = L"chrome.exe";
+-const wchar_t kChromeNewExe[] = L"new_chrome.exe";
+-const wchar_t kChromeOldExe[] = L"old_chrome.exe";
++const wchar_t kChromeExe[] = L"brave.exe";
++const wchar_t kChromeNewExe[] = L"new_brave.exe";
++const wchar_t kChromeOldExe[] = L"old_brave.exe";
+ const wchar_t kCmdOnOsUpgrade[] = L"on-os-upgrade";
+ const wchar_t kEULASentinelFile[] = L"EULA Accepted";
+ const wchar_t kInstallBinaryDir[] = L"Application";
