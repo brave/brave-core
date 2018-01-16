@@ -78,7 +78,7 @@ if (is_mac) {
 }
 
 if (is_mac) {
-  action("create_dist") {
+  action("create_dist_mac") {
     output = "$root_out_dir/Brave.dmg"
     script = "//build/gn_run_binary.py"
     shell_script = "//chrome/installer/mac/pkg-dmg"
@@ -105,10 +105,13 @@ if (is_mac) {
       "/tmp",
     ]
   }
-} else {
-  group("create_dist") {
-    deps = [
-      "//chrome/installer/mini_installer"
-    ]
+}
+
+group("create_dist") {
+  deps = [
+    "//chrome/installer/mini_installer"
+  ]
+  if (is_mac) {
+    deps += ":create_dist_mac"
   }
 }
