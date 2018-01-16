@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
+index 7eb6ac81040172c0739e62b3140120099ca32ffb..ca5bd3cc71109c5968b963da3e431170ee307e2e 100644
+--- a/chrome/browser/chrome_content_browser_client.cc
++++ b/chrome/browser/chrome_content_browser_client.cc
+@@ -2673,10 +2673,6 @@ void ChromeContentBrowserClient::BrowserURLHandlerCreated(
+   // Handler to rewrite chrome://newtab on Android.
+   handler->AddHandlerPair(&chrome::android::HandleAndroidNativePageURL,
+                           BrowserURLHandler::null_handler());
+-#else
+-  // Handler to rewrite chrome://newtab for InstantExtended.
+-  handler->AddHandlerPair(&search::HandleNewTabURLRewrite,
+-                          &search::HandleNewTabURLReverseRewrite);
+ #endif
+ 
+   // chrome: & friends.
