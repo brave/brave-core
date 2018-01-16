@@ -27,6 +27,9 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(const std::string& name) {
   } else if (name == chrome::kChromeUINewTabHost) {
     source->AddResourcePath(kBraveNewTabJS, IDR_BRAVE_NEW_TAB_JS);
     source->SetDefaultResource(IDR_BRAVE_NEW_TAB_HTML);
+  } else if (name == chrome::kChromeUIWelcomeHost) {
+    source->AddResourcePath(kWelcomeJS, IDR_BRAVE_WELCOME_JS);
+    source->SetDefaultResource(IDR_BRAVE_WELCOME_HTML);
   }
 
   return source;

@@ -16,6 +16,8 @@
       <include name="IDR_BRAVE_PAYMENTS_JS" file="../brave_payments_ui/brave_payments.js" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_JS" file="../brave_new_tab_ui/brave_new_tab.js" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_HTML" file="../welcome_ui/welcome.html" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_JS" file="../welcome_ui/welcome.js" type="BINDATA" />
     </includes>
   </release>
 </grit>

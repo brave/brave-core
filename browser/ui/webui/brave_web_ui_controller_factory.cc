@@ -39,6 +39,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
     return &NewWebUI<BasicUI>;
   } else if (url.host_piece() == chrome::kChromeUINewTabHost) {
     return &NewWebUI<BasicUI>;
+  } else if (url.host_piece() == chrome::kChromeUIWelcomeHost) {
+    return &NewWebUI<BasicUI>;
   }
 
   return nullptr;
