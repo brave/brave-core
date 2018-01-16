@@ -17,20 +17,14 @@ using content::WebUIMessageHandler;
 
 namespace {
 
-content::WebUIDataSource* CreateBasicUIHTMLSource(const std::string& name) {
+content::WebUIDataSource* CreateBasicUIHTMLSource(const std::string& name,
+                                                  const std::string& js_file,
+                                                  int js_resource_id,
+                                                  int html_resource_id) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
-
-  if (name == kPaymentsHost) {
-    source->AddResourcePath(kPaymentsJS, IDR_BRAVE_PAYMENTS_JS);
-    source->SetDefaultResource(IDR_BRAVE_PAYMENTS_HTML);
-  } else if (name == chrome::kChromeUINewTabHost) {
-    source->AddResourcePath(kBraveNewTabJS, IDR_BRAVE_NEW_TAB_JS);
-    source->SetDefaultResource(IDR_BRAVE_NEW_TAB_HTML);
-  } else if (name == chrome::kChromeUIWelcomeHost) {
-    source->AddResourcePath(kWelcomeJS, IDR_BRAVE_WELCOME_JS);
-    source->SetDefaultResource(IDR_BRAVE_WELCOME_HTML);
-  }
+  source->AddResourcePath(js_file, js_resource_id);
+  source->SetDefaultResource(html_resource_id);
 
   return source;
 }
@@ -59,7 +53,11 @@ void BasicDOMHandler::Init() {
 
 }  // namespace
 
-BasicUI::BasicUI(content::WebUI* web_ui, const std::string& name)
+BasicUI::BasicUI(content::WebUI* web_ui,
+    const std::string& name,
+    const std::string& js_file,
+    int js_resource_id,
+    int html_resource_id)
     : WebUIController(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
 
@@ -67,5 +65,6 @@ BasicUI::BasicUI(content::WebUI* web_ui, const std::string& name)
   BasicDOMHandler* handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));
   handler->Init();
-  content::WebUIDataSource::Add(profile, CreateBasicUIHTMLSource(name));
+  content::WebUIDataSource::Add(profile,
+      CreateBasicUIHTMLSource(name, js_file, js_resource_id, html_resource_id));
 }
