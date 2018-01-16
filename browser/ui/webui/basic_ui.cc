@@ -6,6 +6,7 @@
 
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -18,11 +19,14 @@ namespace {
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(const std::string& name) {
   content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(kPaymentsHost);
+      content::WebUIDataSource::Create(name);
 
   if (name == kPaymentsHost) {
     source->AddResourcePath(kPaymentsJS, IDR_BRAVE_PAYMENTS_JS);
     source->SetDefaultResource(IDR_BRAVE_PAYMENTS_HTML);
+  } else if (name == chrome::kChromeUINewTabHost) {
+    source->AddResourcePath(kBraveNewTabJS, IDR_BRAVE_NEW_TAB_JS);
+    source->SetDefaultResource(IDR_BRAVE_NEW_TAB_HTML);
   }
 
   return source;

@@ -14,6 +14,8 @@
       <!-- WebUI resrouces -->
       <include name="IDR_BRAVE_PAYMENTS_HTML" file="../brave_payments_ui/brave_payments.html" type="BINDATA" />
       <include name="IDR_BRAVE_PAYMENTS_JS" file="../brave_payments_ui/brave_payments.js" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_JS" file="../brave_new_tab_ui/brave_new_tab.js" type="BINDATA" />
     </includes>
   </release>
 </grit>

@@ -2,3 +2,4 @@
 
 const char kPaymentsHost[] = "payments";
 const char kPaymentsJS[] = "brave_payments.js";
+const char kBraveNewTabJS[] = "brave_new_tab.js";

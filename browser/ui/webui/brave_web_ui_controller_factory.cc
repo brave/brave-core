@@ -6,6 +6,7 @@
 
 #include "brave/common/webui_url_constants.h"
 #include "brave/browser/ui/webui/basic_ui.h"
+#include "chrome/common/url_constants.h"
 #include "url/gurl.h"
 
 using content::WebUI;
@@ -35,6 +36,8 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
   if (url.host_piece() == kPaymentsHost) {
+    return &NewWebUI<BasicUI>;
+  } else if (url.host_piece() == chrome::kChromeUINewTabHost) {
     return &NewWebUI<BasicUI>;
   }
 
