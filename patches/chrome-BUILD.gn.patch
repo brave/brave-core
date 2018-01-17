@@ -1,24 +1,7 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 5d0274b0424ecfd527962c5116370a7593d10d15..715022c22ed311ed40b80bf7d3d9f15a647dc437 100644
+index 5d0274b0424ecfd527962c5116370a7593d10d15..14cc90b470bcd639cdb2f6f0dfef0cbef6db5c1b 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -51,13 +51,13 @@ if (is_win) {
-     # See comment in chrome_dll.gypi in the hardlink_to_output
-     # target for why this cannot be 'initial' like the DLL.
-     inputs = [
--      "$root_out_dir/initialexe/chrome.exe",
-+      "$root_out_dir/initialexe/brave.exe",
-     ]
-     outputs = [
--      "$root_out_dir/chrome.exe",
-+      "$root_out_dir/brave.exe",
-     ]
-     if (symbol_level != 0) {
--      outputs += [ "$root_out_dir/chrome.exe.pdb" ]
-+      outputs += [ "$root_out_dir/brave.exe.pdb" ]
-     }
-     args = [
-       "-i",
 @@ -164,7 +164,7 @@ if (!is_android && !is_mac) {
  
        if (is_win) {
@@ -37,12 +20,9 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..715022c22ed311ed40b80bf7d3d9f15a
          ]
  
          deps += [
-@@ -306,9 +308,9 @@ if (!is_android && !is_mac) {
- 
-   chrome_binary("chrome_initial") {
+@@ -308,7 +310,7 @@ if (!is_android && !is_mac) {
      if (is_win) {
--      output_name = "initialexe/chrome"
-+      output_name = "initialexe/brave"
+       output_name = "initialexe/chrome"
      } else {
 -      output_name = "chrome"
 +      output_name = "brave"

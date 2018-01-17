@@ -4,8 +4,8 @@
 
 // Brand-specific types and constants for Google Chrome.
 
-#ifndef BRAVE_INSTALL_STATIC_BRAVE_INSTALL_MODES_H_
-#define BRAVE_INSTALL_STATIC_BRAVE_INSTALL_MODES_H_
+#ifndef CHROME_INSTALL_STATIC_CHROMIUM_INSTALL_MODES_H_
+#define CHROME_INSTALL_STATIC_CHROMIUM_INSTALL_MODES_H_
 
 namespace install_static {
 
@@ -25,4 +25,4 @@ enum InstallConstantIndex {
 
 }  // namespace install_static
 
-#endif  // BRAVE_INSTALL_STATIC_BRAVE_INSTALL_MODES_H_
+#endif  // CHROME_INSTALL_STATIC_CHROMIUM_INSTALL_MODES_H_

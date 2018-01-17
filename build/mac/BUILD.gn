@@ -1,0 +1,31 @@
+declare_args() {
+  mac_signing_identifier = ""
+}
+
+action("create_dist_mac") {
+  output = "$root_out_dir/Brave.dmg"
+  script = "//build/gn_run_binary.py"
+  shell_script = "//chrome/installer/mac/pkg-dmg"
+  inputs = [
+    script,
+    shell_script,
+  ]
+  outputs = [ output ]
+  args = [
+    rebase_path(shell_script, root_build_dir),
+    "--source",
+    "/var/empty",
+    "--target",
+    "Brave.dmg",
+    "--format",
+    "UDBZ",
+    "--verbosity",
+    "0",
+    "--volname",
+    "Brave",
+    "--copy",
+    "Brave.app",
+    "--tempdir",
+    "/tmp",
+  ]
+}

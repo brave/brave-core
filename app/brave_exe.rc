@@ -57,16 +57,5 @@ IDR_X004_DEV            ICON       "theme\\brave\\win\\brave_dev.ico"
 IDR_X005_BETA           ICON       "theme\\brave\\win\\brave_beta.ico"
 
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// GOOGLEUPDATEAPPLICATIONCOMMANDS is a "well-known" marker resource defined
-// by Omaha. Executables must both be signed by Google and contain the marker
-// in order to expose application commands.
-//
-#define IDR_GOOGLE_UPDATE_APP_COMMANDS_MARKUP 1
-
-IDR_GOOGLE_UPDATE_APP_COMMANDS_MARKUP GOOGLEUPDATEAPPLICATIONCOMMANDS { 1L }
-
-
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////

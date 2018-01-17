@@ -1,0 +1,28 @@
+copy("copy_exe") {
+  sources = [
+    "$root_out_dir/chrome.exe",
+  ]
+
+  outputs = [
+    "$root_out_dir/brave.exe",
+  ]
+
+  deps = [
+    "//chrome:reorder_imports"
+  ]
+}
+
+copy("copy_pdb") {
+  sources = [
+    "$root_out_dir/chrome.exe.pdb",
+  ]
+
+  outputs = [
+    "$root_out_dir/brave.exe.pdb",
+  ]
+
+  deps = [
+    "//chrome:reorder_imports"
+  ]
+}
+

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index cc3782f4a91da503a743d38740210f8f8a973e8d..2ebaff360ec65d2b43a74ba8a091057ad6ed50b3 100644
+index cc3782f4a91da503a743d38740210f8f8a973e8d..4a9df847907d149c3639ac31f871f6886f95cd2a 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -21,7 +21,7 @@ source_set("lib") {
@@ -25,11 +25,12 @@ index cc3782f4a91da503a743d38740210f8f8a973e8d..2ebaff360ec65d2b43a74ba8a091057a
      ]
  
      outputs = [
-@@ -179,6 +180,7 @@ template("generate_mini_installer") {
+@@ -179,6 +180,8 @@ template("generate_mini_installer") {
        "//third_party/icu:icudata",
        "//tools/v8_context_snapshot",
        chrome_dll_target,
 +      "//brave:packed_extra_resources",
++      "//brave/build/win:copy_exe",
      ]
  
      if (enable_hidpi) {

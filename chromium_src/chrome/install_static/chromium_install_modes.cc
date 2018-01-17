@@ -6,7 +6,7 @@
 
 #include <stdlib.h>
 
-#include "brave/common/brave_icon_resources_win.h"
+#include "chrome/common/chrome_icon_resources_win.h"
 #include "chrome/app/chrome_dll_resource.h"
 #include "chrome/install_static/install_modes.h"
 

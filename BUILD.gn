@@ -1,16 +1,14 @@
 import("//tools/grit/repack.gni")
 
-declare_args() {
-  if (is_mac) {
-    mac_signing_identifier = ""
-  }
-}
-
 group("child_dependencies") {
   public_deps = [
     "//brave/renderer",
     "//brave/utility",
     "common"
+  ]
+  deps = [
+    "chromium_src:common",
+    "chromium_src:renderer",
   ]
 }
 
@@ -19,6 +17,8 @@ group("browser_dependencies") {
     "//brave/browser",
     "common",
     ":brave_framework_resources",
+    "chromium_src:browser",
+    "chromium_src:common",
   ]
 }
 
@@ -26,6 +26,12 @@ group("brave") {
   public_deps = [
     "//chrome",
   ]
+  if (is_win) {
+    deps = [
+      "build/win:copy_exe",
+      "build/win:copy_pdb"
+    ]
+  }
 }
 
 repack("packed_extra_resources") {
@@ -77,41 +83,14 @@ if (is_mac) {
   }
 }
 
-if (is_mac) {
-  action("create_dist_mac") {
-    output = "$root_out_dir/Brave.dmg"
-    script = "//build/gn_run_binary.py"
-    shell_script = "//chrome/installer/mac/pkg-dmg"
-    inputs = [
-      script,
-      shell_script,
-    ]
-    outputs = [ output ]
-    args = [
-      rebase_path(shell_script, root_build_dir),
-      "--source",
-      "/var/empty",
-      "--target",
-      "Brave.dmg",
-      "--format",
-      "UDBZ",
-      "--verbosity",
-      "0",
-      "--volname",
-      "Brave",
-      "--copy",
-      "Brave.app",
-      "--tempdir",
-      "/tmp",
+group("create_dist") {
+  deps = []
+  if (is_win) {
+    deps += [
+      "//chrome/installer/mini_installer"
     ]
   }
-}
-
-group("create_dist") {
-  deps = [
-    "//chrome/installer/mini_installer"
-  ]
   if (is_mac) {
-    deps += ":create_dist_mac"
+    deps += [ "build/mac:create_dist_mac" ]
   }
 }
