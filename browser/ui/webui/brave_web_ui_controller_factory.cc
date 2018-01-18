@@ -6,6 +6,8 @@
 
 #include "brave/common/webui_url_constants.h"
 #include "brave/browser/ui/webui/basic_ui.h"
+#include "chrome/common/url_constants.h"
+#include "components/grit/brave_components_resources.h"
 #include "url/gurl.h"
 
 using content::WebUI;
@@ -26,7 +28,18 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 
 template<>
 WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
-  return new BasicUI(web_ui, url.host());
+  auto host = url.host_piece();
+  if (host == kPaymentsHost) {
+    return new BasicUI(web_ui, url.host(), kPaymentsJS,
+        IDR_BRAVE_PAYMENTS_JS, IDR_BRAVE_PAYMENTS_HTML);
+  } else if (host == kBraveNewTabHost) {
+    return new BasicUI(web_ui, url.host(), kBraveNewTabJS,
+        IDR_BRAVE_NEW_TAB_JS, IDR_BRAVE_NEW_TAB_HTML);
+  } else if (host == chrome::kChromeUIWelcomeHost) {
+    return new BasicUI(web_ui, url.host(), kWelcomeJS,
+        IDR_BRAVE_WELCOME_JS, IDR_BRAVE_WELCOME_HTML);
+  }
+  return nullptr;
 }
 
 // Returns a function that can be used to create the right type of WebUI for a
@@ -34,7 +47,9 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 // with it.
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
-  if (url.host_piece() == kPaymentsHost) {
+  if (url.host_piece() == kPaymentsHost ||
+      url.host_piece() == kBraveNewTabHost||
+      url.host_piece() == chrome::kChromeUIWelcomeHost) {
     return &NewWebUI<BasicUI>;
   }
 

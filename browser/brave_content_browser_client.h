@@ -15,6 +15,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
    // Overridden from ChromeContentBrowserClient:
   content::BrowserMainParts* CreateBrowserMainParts(
       const content::MainFunctionParams& parameters) override;
+  void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
