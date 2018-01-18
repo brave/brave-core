@@ -1,6 +1,34 @@
 import("//printing/features/features.gni")
 import("//tools/grit/grit_rule.gni")
 
+
+action("transpile_web_uis") {
+  script = "//brave/script/transpile-web-ui.py"
+  inputs = [
+    "../brave_new_tab_ui/brave_new_tab.html",
+    "../brave_new_tab_ui/brave_new_tab.js",
+    "../brave_payments_ui/brave_payments.html",
+    "../welcome_ui/welcome.html",
+    "../welcome_ui/welcome.js"
+  ]
+  outputs = [
+    "$target_out_dir/brave_new_tab.bundle.js",
+    "$target_out_dir/brave_payments.bundle.js",
+    "$target_out_dir/welcome.bundle.js"
+  ]
+  gen_dir = rebase_path(root_gen_dir, "//")
+  args = [
+    "--target_gen_dir=$gen_dir"
+  ]
+  if (is_official_build) {
+    args += [
+      "--production",
+    ]
+  }
+}
+
+
+
 grit("brave_components_resources_grit") {
   source = "brave_components_resources.grd"
 
@@ -8,6 +36,11 @@ grit("brave_components_resources_grit") {
   outputs = [
     "grit/brave_components_resources.h",
     "brave_components_resources.pak",
+  ]
+  deps = [ ":transpile_web_uis" ]
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
   ]
   output_dir = "$root_gen_dir/components"
   resource_ids = "//brave/browser/resources/resource_ids"
