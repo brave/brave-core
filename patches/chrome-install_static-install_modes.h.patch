@@ -1,0 +1,16 @@
+diff --git a/chrome/install_static/install_modes.h b/chrome/install_static/install_modes.h
+index c5207f5bfeab85e41f087fb514cbd4319b112db7..b25b61cb0212329d5c5f06c56afaec02cf345ad7 100644
+--- a/chrome/install_static/install_modes.h
++++ b/chrome/install_static/install_modes.h
+@@ -41,9 +41,9 @@
+ //   brand uses Chrome's integration with Google Update. Google Chrome does,
+ //   while Chromium does not.
+ #if defined(GOOGLE_CHROME_BUILD)
+-#include "chrome/install_static/google_chrome_install_modes.h"
++#include "brave/install_static/brave_install_modes.h"
+ #else
+-#include "chrome/install_static/chromium_install_modes.h"
++#include "brave/install_static/brave_install_modes.h"
+ #endif
+ 
+ namespace install_static {

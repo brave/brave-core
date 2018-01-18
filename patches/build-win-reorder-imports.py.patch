@@ -1,0 +1,24 @@
+diff --git a/build/win/reorder-imports.py b/build/win/reorder-imports.py
+index c4b294d33b2a0cd12a599ba65d957b815963bea0..478e90c1043ccc7f406290cbed21e9a995aad29f 100755
+--- a/build/win/reorder-imports.py
++++ b/build/win/reorder-imports.py
+@@ -23,8 +23,8 @@ def reorder_imports(input_dir, output_dir, architecture):
+   # correct executable in the first place, so that this script
+   # only needs to verify that and not write a whole new exe.
+ 
+-  input_image = os.path.join(input_dir, 'chrome.exe')
+-  output_image = os.path.join(output_dir, 'chrome.exe')
++  input_image = os.path.join(input_dir, 'brave.exe')
++  output_image = os.path.join(output_dir, 'brave.exe')
+ 
+   # pefile mmap()s the whole executable, and then parses parts of
+   # it into python data structures for ease of processing.
+@@ -72,7 +72,7 @@ def reorder_imports(input_dir, output_dir, architecture):
+ 
+   pe.write(filename=output_image)
+ 
+-  for fname in glob.iglob(os.path.join(input_dir, 'chrome.exe.*')):
++  for fname in glob.iglob(os.path.join(input_dir, 'brave.exe.*')):
+     shutil.copy(fname, os.path.join(output_dir, os.path.basename(fname)))
+   return 0
+ 

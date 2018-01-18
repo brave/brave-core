@@ -1,16 +1,33 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740c427de3e 100644
+index 5d0274b0424ecfd527962c5116370a7593d10d15..715022c22ed311ed40b80bf7d3d9f15a647dc437 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -54,7 +54,7 @@ if (is_win) {
-       "$root_out_dir/initialexe/chrome.exe",
+@@ -51,13 +51,13 @@ if (is_win) {
+     # See comment in chrome_dll.gypi in the hardlink_to_output
+     # target for why this cannot be 'initial' like the DLL.
+     inputs = [
+-      "$root_out_dir/initialexe/chrome.exe",
++      "$root_out_dir/initialexe/brave.exe",
      ]
      outputs = [
 -      "$root_out_dir/chrome.exe",
 +      "$root_out_dir/brave.exe",
      ]
      if (symbol_level != 0) {
-       outputs += [ "$root_out_dir/chrome.exe.pdb" ]
+-      outputs += [ "$root_out_dir/chrome.exe.pdb" ]
++      outputs += [ "$root_out_dir/brave.exe.pdb" ]
+     }
+     args = [
+       "-i",
+@@ -164,7 +164,7 @@ if (!is_android && !is_mac) {
+ 
+       if (is_win) {
+         sources += [
+-          "app/chrome_exe.rc",
++          "//brave/app/brave_exe.rc",
+           "app/chrome_exe_load_config_win.cc",
+           "app/chrome_exe_main_win.cc",
+           "app/chrome_watcher_client_win.cc",
 @@ -238,6 +238,8 @@ if (!is_android && !is_mac) {
            "app/chrome_main.cc",
            "app/chrome_main_delegate.cc",
@@ -20,9 +37,12 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
          ]
  
          deps += [
-@@ -308,7 +310,7 @@ if (!is_android && !is_mac) {
+@@ -306,9 +308,9 @@ if (!is_android && !is_mac) {
+ 
+   chrome_binary("chrome_initial") {
      if (is_win) {
-       output_name = "initialexe/chrome"
+-      output_name = "initialexe/chrome"
++      output_name = "initialexe/brave"
      } else {
 -      output_name = "chrome"
 +      output_name = "brave"
@@ -92,6 +112,15 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
+@@ -1447,7 +1459,7 @@ group("child_dependencies") {
+ if (is_win) {
+   process_version_rc_template("chrome_exe_version") {
+     sources = [
+-      "app/chrome_exe.ver",
++      "//brave/app/brave_exe.ver",
+     ]
+     output = "$target_gen_dir/chrome_exe_version.rc"
+   }
 @@ -1715,6 +1727,8 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
