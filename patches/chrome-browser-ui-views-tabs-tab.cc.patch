@@ -1,45 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 6d88fa75e31be381e66a9c1fb848dd95aaae45cf..2ec7af9e280e1b9175f43470c2df6ef6eead0741 100644
+index 6d88fa75e31be381e66a9c1fb848dd95aaae45cf..26abbdce98445dcb4400834b82ca7b908e63dda7 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -104,17 +104,6 @@ bool ShouldShowThrobber(TabRendererData::NetworkState state) {
- ////////////////////////////////////////////////////////////////////////////////
- // Drawing and utility functions
- 
--// Returns the width of the tab endcap in DIP.  More precisely, this is the
--// width of the curve making up either the outer or inner edge of the stroke;
--// since these two curves are horizontally offset by 1 px (regardless of scale),
--// the total width of the endcap from tab outer edge to the inside end of the
--// stroke inner edge is (GetUnscaledEndcapWidth() * scale) + 1.
--//
--// The value returned here must be at least Tab::kMinimumEndcapWidth.
--float GetTabEndcapWidth() {
+@@ -112,7 +112,10 @@ bool ShouldShowThrobber(TabRendererData::NetworkState state) {
+ //
+ // The value returned here must be at least Tab::kMinimumEndcapWidth.
+ float GetTabEndcapWidth() {
 -  return GetLayoutInsets(TAB).left() - 0.5f;
--}
--
- void DrawHighlight(gfx::Canvas* canvas,
-                    const SkPoint& p,
-                    SkScalar radius,
-@@ -635,22 +624,6 @@ int Tab::GetPinnedWidth() {
++  // Originally was `return GetLayoutInsets(TAB).left() - 0.5f`
++  // For rectangle tab shape forcing GetInverseDiagonalSlope give 0 by
++  // (GetTabEndcapWidth() - Tab::kMinimumEndcapWidth) == 0
++  return Tab::kMinimumEndcapWidth;
  }
  
- // static
--float Tab::GetInverseDiagonalSlope() {
--  // This is computed from the border path as follows:
--  // * The endcap width is enough for the whole stroke outer curve, i.e. the
--  //   side diagonal plus the curves on both its ends.
--  // * The bottom and top curve together are kMinimumEndcapWidth DIP wide, so
--  //   the diagonal is (endcap_width - kMinimumEndcapWidth) DIP wide.
--  // * The bottom and top curve are each 1.5 px high.  Additionally, there is an
--  //   extra 1 px below the bottom curve and (scale - 1) px above the top curve,
--  //   so the diagonal is ((height - 1.5 - 1.5) * scale - 1 - (scale - 1)) px
--  //   high.  Simplifying this gives (height - 4) * scale px, or (height - 4)
--  //   DIP.
--  return (GetTabEndcapWidth() - kMinimumEndcapWidth) /
--         (Tab::GetMinimumInactiveSize().height() - 4);
--}
--
--// static
- int Tab::GetOverlap() {
-   // We want to overlap the endcap portions entirely.
-   return gfx::ToCeiledInt(GetTabEndcapWidth());
+ void DrawHighlight(gfx::Canvas* canvas,

@@ -1,0 +1,43 @@
+diff --git a/chrome/browser/ui/layout_constants.cc b/chrome/browser/ui/layout_constants.cc
+index 06dbe30d30e72a9af6d0345ff314257d577d76c2..18fb76fa1f344952637c7e7b23e141c43b5a43f9 100644
+--- a/chrome/browser/ui/layout_constants.cc
++++ b/chrome/browser/ui/layout_constants.cc
+@@ -25,7 +25,12 @@ int GetLayoutConstant(LayoutConstant constant) {
+     case LOCATION_BAR_HEIGHT:
+       return hybrid ? 32 : 28;
+     case TABSTRIP_NEW_TAB_BUTTON_OVERLAP:
+-      return hybrid ? 6 : 5;
++      // Originally here was `return hybrid ? 6 : 5`
++      // This value means how the new tab button is moved to the most right tab
++      // from the position of rectangle shape.
++      // The was required to have beautiful positioning with inclided sides of
++      // tabs and new tab button. Does not required for rectangle tabs and button.
++      return hybrid ? 0 : 0;
+     case TAB_HEIGHT:
+       return hybrid ? 33 : 29;
+     case TOOLBAR_ELEMENT_PADDING:
+@@ -42,7 +47,12 @@ gfx::Insets GetLayoutInsets(LayoutInset inset) {
+                       ui::MaterialDesignController::MATERIAL_HYBRID;
+   switch (inset) {
+     case TAB:
+-      return gfx::Insets(1, hybrid ? 18 : 16);
++      // Originally here was `return gfx::Insets(1, hybrid ? 18 : 16)`
++      // Insets is a content border inside of the tab. When the tab has been
++      // changed to rectangle shape instead of trapezoid, then top part
++      // of the tab had more space. So reasonable to decrease the content
++      // border.
++      return gfx::Insets(1, hybrid ? 9 : 8);
+   }
+   NOTREACHED();
+   return gfx::Insets();
+@@ -53,7 +63,9 @@ gfx::Size GetLayoutSize(LayoutSize size) {
+                       ui::MaterialDesignController::MATERIAL_HYBRID;
+   switch (size) {
+     case NEW_TAB_BUTTON:
+-      return hybrid ? gfx::Size(39, 21) : gfx::Size(36, 18);
++      // Originally was 'return hybrid ? gfx::Size(39, 21) : gfx::Size(36, 18)'
++      // Making small square button for rectangle tabs
++      return hybrid ? gfx::Size(21, 21) : gfx::Size(18, 18);
+   }
+   NOTREACHED();
+   return gfx::Size();
