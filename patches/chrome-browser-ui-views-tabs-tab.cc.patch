@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
+index 6d88fa75e31be381e66a9c1fb848dd95aaae45cf..26abbdce98445dcb4400834b82ca7b908e63dda7 100644
+--- a/chrome/browser/ui/views/tabs/tab.cc
++++ b/chrome/browser/ui/views/tabs/tab.cc
+@@ -112,7 +112,10 @@ bool ShouldShowThrobber(TabRendererData::NetworkState state) {
+ //
+ // The value returned here must be at least Tab::kMinimumEndcapWidth.
+ float GetTabEndcapWidth() {
+-  return GetLayoutInsets(TAB).left() - 0.5f;
++  // Originally was `return GetLayoutInsets(TAB).left() - 0.5f`
++  // For rectangle tab shape forcing GetInverseDiagonalSlope give 0 by
++  // (GetTabEndcapWidth() - Tab::kMinimumEndcapWidth) == 0
++  return Tab::kMinimumEndcapWidth;
+ }
+ 
+ void DrawHighlight(gfx::Canvas* canvas,
