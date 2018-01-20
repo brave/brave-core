@@ -26,3 +26,20 @@ copy("copy_pdb") {
   ]
 }
 
+
+action("create_signed_installer") {
+  script = "//brave/script/create-signed-installer.py"
+  inputs = [
+    "$root_out_dir/mini_installer.exe"
+  ]
+  outputs = [
+    "$root_out_dir/brave_installer.exe",
+  ]
+  out_dir = rebase_path(root_out_dir, "//")
+  args = [
+    "--root_out_dir=$out_dir"
+  ]
+  deps = [
+    "//chrome/installer/mini_installer"
+  ]
+}

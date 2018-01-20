@@ -87,7 +87,8 @@ group("create_dist") {
   deps = []
   if (is_win) {
     deps += [
-      "//chrome/installer/mini_installer"
+      "//chrome/installer/mini_installer",
+      "build/win:create_signed_installer"
     ]
   }
   if (is_mac) {
