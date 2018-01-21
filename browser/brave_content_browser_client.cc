@@ -17,23 +17,17 @@ bool HandleNewTabURLRewrite(GURL* url,
   if (!url->SchemeIs(content::kChromeUIScheme) ||
       url->host() != chrome::kChromeUINewTabHost)
     return false;
-
-  *url = GURL(kBraveNewTabUrl);
+  // Disable new tab overrides, but keep it the same
   return true;
 }
 
 bool HandleNewTabURLReverseRewrite(GURL* url,
                                    content::BrowserContext* browser_context) {
-  // Do nothing in incognito.
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (profile && profile->IsOffTheRecord())
-    return false;
-
-  if (url->spec() == kBraveNewTabUrl) {
-    *url = GURL(kBraveNewTabUrl);
+  // Handle mapping new tab URL to ourselves
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->host() == chrome::kChromeUINewTabHost) {
     return true;
   }
-
   return false;
 }
 
@@ -52,7 +46,7 @@ content::BrowserMainParts* BraveContentBrowserClient::CreateBrowserMainParts(
 }
 
 void BraveContentBrowserClient::BrowserURLHandlerCreated(content::BrowserURLHandler* handler) {
-  // Handler to rewrite chrome://newtab
+  // Insert handler for chrome://newtab so that we handle it before anything else can
   handler->AddHandlerPair(&HandleNewTabURLRewrite,
                           &HandleNewTabURLReverseRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
