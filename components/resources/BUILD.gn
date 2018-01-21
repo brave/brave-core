@@ -5,9 +5,15 @@ import("//tools/grit/grit_rule.gni")
 action("transpile_web_uis") {
   script = "//brave/script/transpile-web-ui.py"
   inputs = [
+    # Brave new tab
     "../brave_new_tab_ui/brave_new_tab.html",
     "../brave_new_tab_ui/brave_new_tab.js",
+    "../brave_new_tab_ui/components/app.js",
+    "../brave_new_tab_ui/reducers/index.js",
+    "../brave_new_tab_ui/reducers/newTabReducer.js",
+    # Brave payments
     "../brave_payments_ui/brave_payments.html",
+    # Brave welcome page
     "../welcome_ui/welcome.html",
     "../welcome_ui/welcome.js"
   ]
