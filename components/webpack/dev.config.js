@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const postCSSConfig = require('./postcss.config')
 
 module.exports = {
+  devtool: '#inline-source-map',
   entry: {
     brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
     welcome: path.join(__dirname, '../welcome_ui/welcome'),
