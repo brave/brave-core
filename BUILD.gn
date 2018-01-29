@@ -13,6 +13,7 @@ group("browser_dependencies") {
     "//brave/browser",
     "common",
     ":brave_framework_resources",
+    "chromium_src:browser",
   ]
 }
 
@@ -20,10 +21,15 @@ group("brave") {
   public_deps = [
     "//chrome",
   ]
+  if (is_win) {
+    deps = [
+      "build/win:copy_exe",
+      "build/win:copy_pdb"
+    ]
+  }
 }
 
 repack("packed_extra_resources") {
-  visibility = [ "./*" ]
   sources = [
     "$root_gen_dir/components/brave_components_resources.pak",
     "$target_gen_dir/browser/resources/brave_extension.pak",
@@ -69,5 +75,18 @@ if (is_mac) {
 } else {
   group("brave_framework_resources") {
     public_deps = brave_framework_public_deps
+  }
+}
+
+group("create_dist") {
+  deps = []
+  if (is_win) {
+    deps += [
+      "//chrome/installer/mini_installer",
+      "build/win:create_signed_installer"
+    ]
+  }
+  if (is_mac) {
+    deps += [ "build/mac:create_dist_mac" ]
   }
 }

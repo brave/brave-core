@@ -1,0 +1,15 @@
+source_set("browser") {
+  sources = []
+  if (is_win) {
+    sources += [
+      "chrome/install_static/chromium_install_modes.cc",
+      "chrome/install_static/chromium_install_modes.h",
+    ]
+  }
+}
+source_set("common") {
+  sources = []
+}
+source_set("renderer") {
+  sources = []
+}
