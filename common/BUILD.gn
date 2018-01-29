@@ -8,6 +8,7 @@ source_set("common") {
     "webui_url_constants.h",
   ]
   deps = [
-    "extensions/api"
+    "extensions/api",
+    "//brave/chromium_src:common",
   ]
 }

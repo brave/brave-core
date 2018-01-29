@@ -6,10 +6,6 @@ group("child_dependencies") {
     "//brave/utility",
     "common"
   ]
-  deps = [
-    "chromium_src:common",
-    "chromium_src:renderer",
-  ]
 }
 
 group("browser_dependencies") {
@@ -18,7 +14,6 @@ group("browser_dependencies") {
     "common",
     ":brave_framework_resources",
     "chromium_src:browser",
-    "chromium_src:common",
   ]
 }
 
