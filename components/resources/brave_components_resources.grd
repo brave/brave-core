@@ -8,18 +8,42 @@
   </outputs>
   <release seq="1">
     <includes>
+      <!-- Common resources -->
+      <include name="IDR_BRAVE_COMMON_FONT_AWESOME_1" file="${root_gen_dir}/brave/af7ae505a9eed503f8b8e6982036873e.woff2" type="BINDATA" use_base_dir="false" />
+      <include name="IDR_BRAVE_COMMON_FONT_AWESOME_2" file="${root_gen_dir}/brave/fee66e712a8a08eef5805a46892932ad.woff" type="BINDATA" use_base_dir="false" />
+      <include name="IDR_BRAVE_COMMON_FONT_AWESOME_3" file="${root_gen_dir}/brave/b06871f281fee6b241d60582ae9369b9.ttf" type="BINDATA" use_base_dir="false" />
+      <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
+
       <!-- Browser resrouces -->
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
 
-      <!-- WebUI resrouces -->
+      <!-- WebUI payments resrouces -->
       <include name="IDR_BRAVE_PAYMENTS_HTML" file="../brave_payments_ui/brave_payments.html" type="BINDATA" />
       <include name="IDR_BRAVE_PAYMENTS_JS" file="${root_gen_dir}/brave/brave_payments.bundle.js" type="BINDATA" use_base_dir="false" />
 
-      <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_JS" file="${root_gen_dir}/brave/brave_new_tab.bundle.js" type="BINDATA" use_base_dir="false" />
-
+      <!-- WebUI welcome resrouces -->
       <include name="IDR_BRAVE_WELCOME_HTML" file="../welcome_ui/welcome.html" type="BINDATA" />
       <include name="IDR_BRAVE_WELCOME_JS" file="${root_gen_dir}/brave/welcome.bundle.js" type="BINDATA" use_base_dir="false" />
+
+      <!-- WebUI newtab resrouces -->
+      <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_JS" file="${root_gen_dir}/brave/brave_new_tab.bundle.js" type="BINDATA" use_base_dir="false" />
+      <include name="IDR_BRAVE_NEW_TAB_IMG1" file="../img/newtab/bookmarks_btn.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_IMG4" file="../img/newtab/history_btn.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_IMG14" file="../img/newtab/newtab_stock_image.jpg" type="BINDATA" />
+
     </includes>
+    <messages fallback_to_english="true">
+      <!-- WebUI newtab resrouces -->
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Ads Blocked</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_TRACKERS_BLOCKED" desc="total number of trackers blocked">Trackers Blocked</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED" desc="total time saved from blocking ads and trackers">Estimated Time Saved</message>
+      <message name="IDS_BRAVE_NEW_TAB_THUMB_REMOVED" desc="Shown when a thumbnail is removed from the new tab page">Thumb Removed.</message>
+      <message name="IDS_BRAVE_NEW_TAB_UNDO_REMOVED" desc="Shown when a user wants to undo removing a tile.">Undo</message>
+      <message name="IDS_BRAVE_NEW_TAB_RESTORE_ALL" desc="Allows restoring all top sites back to the original.">Restore All</message>
+    </messages>
+
   </release>
 </grit>

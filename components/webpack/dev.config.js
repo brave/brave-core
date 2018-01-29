@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const postCSSConfig = require('./postcss.config')
 
 module.exports = {
   devtool: '#inline-source-map',
@@ -12,7 +11,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '..', '..', '..', process.env.TARGET_GEN_DIR, 'brave'),
     filename: '[name].bundle.js',
-   chunkFilename: '[id].chunk.js'
+    chunkFilename: '[id].chunk.js'
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
@@ -59,4 +58,3 @@ module.exports = {
       }]
   }
 }
-

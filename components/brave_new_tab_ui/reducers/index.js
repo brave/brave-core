@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import newTabReducer from './newTabReducer'
 
 const combinedReducer = combineReducers({
-  newTabReducer
+  newTabData: newTabReducer
 })
 
 export default combinedReducer
