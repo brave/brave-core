@@ -38,6 +38,11 @@ const InstallConstants kInstallModes[] = {
         L"Brave HTML Document",                    // ProgID description.
         L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}",  // Active Setup GUID.
         L"{B1C5AAC5-2B7C-4C9D-9E96-774C53151B20}",  // CommandExecuteImpl CLSID.
+        { 0x6c9646d,
+          0x2807,
+          0x44c0,
+          { 0x97, 0xd2, 0x6d, 0xa0, 0xdb, 0x62, 0x3d,
+            0xb4 } },  // Toast activator CLSID.
         L"",  // The empty string means "stable".
         ChannelStrategy::ADDITIONAL_PARAMETERS,
         true,  // Supports system-level installs.
@@ -61,6 +66,11 @@ const InstallConstants kInstallModes[] = {
         L"Brave Beta HTML Document",               // ProgID description.
         L"{103BD053-949B-43A8-9120-2E424887DE11}",  // Active Setup GUID.
         L"",                                        // CommandExecuteImpl CLSID.
+        { 0x9560028d,
+          0xcca,
+          0x49f0,
+          { 0x8d, 0x47, 0xef, 0x22, 0xbb, 0xc4, 0xb,
+            0xa7 } },  // Toast activator CLSID.
         L"beta",                                    // Forced channel name.
         ChannelStrategy::FIXED,
         true,   // Supports system-level installs.
@@ -84,6 +94,11 @@ const InstallConstants kInstallModes[] = {
         L"Brave Dev HTML Document",                // ProgID description.
         L"{CB2150F2-595F-4633-891A-E39720CE0531}",  // Active Setup GUID.
         L"",                                        // CommandExecuteImpl CLSID.
+        { 0x20b22981,
+          0xf63a,
+          0x47a6,
+          { 0xa5, 0x47, 0x69, 0x1c, 0xc9, 0x4c, 0xae,
+            0xe0 } },  // Toast activator CLSID.
         L"dev",                                     // Forced channel name.
         ChannelStrategy::FIXED,
         true,   // Supports system-level installs.
@@ -107,6 +122,11 @@ const InstallConstants kInstallModes[] = {
         L"Brave Canary HTML Document",             // ProgID description.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // Active Setup GUID.
         L"{312ABB99-A176-4939-A39F-E8D34EA4D393}",  // CommandExecuteImpl CLSID.
+        { 0xf2edbc59,
+          0x7217,
+          0x4da5,
+          { 0xa2, 0x59, 0x3, 0x2, 0xda, 0x6a, 0x0,
+            0xe1 } },  // Toast activator CLSID.
         L"canary",                                  // Forced channel name.
         ChannelStrategy::FIXED,
         false,  // Does not support system-level installs.
