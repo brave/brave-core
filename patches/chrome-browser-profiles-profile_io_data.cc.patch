@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index 7bcc72f67676bf1bd388109e94bd0739cd588957..279794b6c6b52fd792f21b227ffdeb5850e3e700 100644
+index 07ca9b02950c5b690f1680628be3972522caf3c3..61c3269bdb09b8fca3317f4a64db723078f1e95b 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
 @@ -25,6 +25,7 @@
@@ -10,7 +10,7 @@ index 7bcc72f67676bf1bd388109e94bd0739cd588957..279794b6c6b52fd792f21b227ffdeb58
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -1020,7 +1021,7 @@ void ProfileIOData::Init(
+@@ -1062,7 +1063,7 @@ void ProfileIOData::Init(
    builder->set_ssl_config_service(profile_params_->ssl_config_service);
  
    std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(

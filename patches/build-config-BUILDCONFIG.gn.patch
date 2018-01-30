@@ -1,8 +1,8 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 6d705aa0f09dc8c9ff5985d851534fa98b17cdb0..44092a58ef13987c558d5f0be2a5209fe4694169 100644
+index 78038b04ddf6d2fe0def8bf726198d3fabefab98..7c8411a7c9eb248783f21d2d064cd691f758c2d5 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -151,6 +151,7 @@ declare_args() {
+@@ -152,6 +152,7 @@ declare_args() {
    host_toolchain = ""
  
    # DON'T ADD MORE FLAGS HERE. Read the comment above.

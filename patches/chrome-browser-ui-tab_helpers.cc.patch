@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index ff3b6d2d23c6d785da2358bfac6723e1fce971a1..3eb0a4e6e813e65dd33fd4bfb750c3957311ed1f 100644
+index 78fa05c87489a20335b642bf0b110b30e03513f4..3869cec0e36dd90aa64a3fb6bb7ce30336903952 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
 @@ -11,6 +11,7 @@
@@ -10,7 +10,7 @@ index ff3b6d2d23c6d785da2358bfac6723e1fce971a1..3eb0a4e6e813e65dd33fd4bfb750c395
  #include "build/build_config.h"
  #include "chrome/browser/bookmarks/bookmark_model_factory.h"
  #include "chrome/browser/browser_process.h"
-@@ -184,6 +185,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -189,6 +190,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
    BookmarkLastVisitUpdater::MaybeCreateForWebContentsWithBookmarkModel(
        web_contents, BookmarkModelFactory::GetForBrowserContext(
                          web_contents->GetBrowserContext()));

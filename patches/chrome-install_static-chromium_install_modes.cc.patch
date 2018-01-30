@@ -1,5 +1,5 @@
 diff --git a/chrome/install_static/chromium_install_modes.cc b/chrome/install_static/chromium_install_modes.cc
-index 816c6d90b3f8da1a6fe8b515be2bec0e76e99b8e..e2067d6d42bd85f40c7a1487d09feda5b1bf1833 100644
+index 1ba8cefa0770a66deaec2724a17f693755ab4e7c..d64dea20d575dd1738938b96fad596a5556a6ccd 100644
 --- a/chrome/install_static/chromium_install_modes.cc
 +++ b/chrome/install_static/chromium_install_modes.cc
 @@ -14,7 +14,11 @@ namespace install_static {

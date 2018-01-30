@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-index 17c4ec23b3816b62f65e01a6f27397413272dd71..04f5e4440debac0bf5f761729b40609f3773ea1e 100644
+index ecf563c9940d0d64e22c9903a77b4782e8e9d294..8aa669d7018427aef50a542b5a3b1b91243cd9c6 100644
 --- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
 +++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
 @@ -9,12 +9,14 @@
@@ -17,7 +17,7 @@ index 17c4ec23b3816b62f65e01a6f27397413272dd71..04f5e4440debac0bf5f761729b40609f
  #include "chrome/browser/extensions/api/generated_api_registration.h"
  #include "chrome/browser/extensions/api/preference/preference_api.h"
  #include "chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.h"
-@@ -82,7 +84,7 @@ ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient() {
+@@ -84,7 +86,7 @@ ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient() {
    process_manager_delegate_.reset(new ChromeProcessManagerDelegate);
    api_client_.reset(new ChromeExtensionsAPIClient);
    SetCurrentChannel(chrome::GetChannel());
@@ -26,7 +26,7 @@ index 17c4ec23b3816b62f65e01a6f27397413272dd71..04f5e4440debac0bf5f761729b40609f
  }
  
  ChromeExtensionsBrowserClient::~ChromeExtensionsBrowserClient() {}
-@@ -284,6 +286,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
+@@ -292,6 +294,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
  
    // Generated APIs from Chrome.
    api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);

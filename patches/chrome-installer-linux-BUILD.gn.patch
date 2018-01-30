@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 615f286e96f7adef5e713c31ed6abd26cf643bc7..e97ccd6744c2985e93badf50924addbe3d0d87a3 100644
+index 225c6fd2669818225e1877ef21774b04abb1a6f3..d2ff71f0034dd2185d486816935979a3842a3ef8 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -19,7 +19,7 @@ if (current_cpu == "x86" || current_cpu == "x64") {
