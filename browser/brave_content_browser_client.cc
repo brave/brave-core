@@ -14,11 +14,19 @@ namespace {
 
 bool HandleNewTabURLRewrite(GURL* url,
                             content::BrowserContext* browser_context) {
-  if (!url->SchemeIs(content::kChromeUIScheme) ||
-      url->host() != chrome::kChromeUINewTabHost)
-    return false;
-  // Disable new tab overrides, but keep it the same
-  return true;
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->host() == chrome::kChromeUIWelcomeHost) {
+    *url = GURL(kWelcomeRemoteURL);
+    return true;
+  }
+
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->host() == chrome::kChromeUINewTabHost) {
+    // Disable new tab overrides, but keep it the same
+    return true;
+  }
+
+  return false;
 }
 
 bool HandleNewTabURLReverseRewrite(GURL* url,
