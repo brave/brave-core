@@ -12,16 +12,24 @@
 
 namespace {
 
-bool HandleNewTabURLRewrite(GURL* url,
+bool HandleURLRewrite(GURL* url,
                             content::BrowserContext* browser_context) {
-  if (!url->SchemeIs(content::kChromeUIScheme) ||
-      url->host() != chrome::kChromeUINewTabHost)
-    return false;
-  // Disable new tab overrides, but keep it the same
-  return true;
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->host() == chrome::kChromeUIWelcomeHost) {
+    *url = GURL(kWelcomeRemoteURL);
+    return true;
+  }
+
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->host() == chrome::kChromeUINewTabHost) {
+    // Disable new tab overrides, but keep it the same
+    return true;
+  }
+
+  return false;
 }
 
-bool HandleNewTabURLReverseRewrite(GURL* url,
+bool HandleURLReverseRewrite(GURL* url,
                                    content::BrowserContext* browser_context) {
   // Handle mapping new tab URL to ourselves
   if (url->SchemeIs(content::kChromeUIScheme) &&
@@ -47,7 +55,7 @@ content::BrowserMainParts* BraveContentBrowserClient::CreateBrowserMainParts(
 
 void BraveContentBrowserClient::BrowserURLHandlerCreated(content::BrowserURLHandler* handler) {
   // Insert handler for chrome://newtab so that we handle it before anything else can
-  handler->AddHandlerPair(&HandleNewTabURLRewrite,
-                          &HandleNewTabURLReverseRewrite);
+  handler->AddHandlerPair(&HandleURLRewrite,
+                          &HandleURLReverseRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }
