@@ -1,17 +1,28 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import reducers from './reducers'
-import App from './components/app'
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-let store = createStore(reducers)
+const React = require('react')
+const { render } = require('react-dom')
+const { Provider } = require('react-redux')
+const App = require('./components/app')
+const store = require('./store')
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-)
+window.cr.define('brave_new_tab', function () {
+  'use strict'
 
-console.log('brave_new_tab.js loaded')
+  function initialize () {
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+      document.getElementById('root'))
+    window.i18nTemplate.process(window.document, window.loadTimeData)
+  }
+
+  return {
+    initialize
+  }
+})
+
+document.addEventListener('DOMContentLoaded', window.brave_new_tab.initialize)

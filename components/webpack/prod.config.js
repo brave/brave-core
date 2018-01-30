@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const postCSSConfig = require('./postcss.config')
 
 module.exports = {
   entry: {
@@ -11,7 +10,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '..', '..', '..', process.env.TARGET_GEN_DIR, 'brave'),
     filename: '[name].bundle.js',
-   chunkFilename: '[id].chunk.js'
+    chunkFilename: '[id].chunk.js'
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
@@ -44,13 +43,23 @@ module.exports = {
         query: {
           presets: ['react-optimize']
         }
-      }, {
+      },
+      {
+        test: /\.less$/,
+        loader: 'style-loader!css-loader?-minimize!less-loader'
+      },
+      {
         test: /\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-          {loader: 'postcss-loader', options: postCSSConfig}
-        ]
+        loader: 'style-loader!css-loader?-minimize'
+      },
+      // Loads font files for Font Awesome
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader?limit=10000&minetype=application/font-woff'
+      },
+      {
+        test: /\.(ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader'
       }]
   }
 }

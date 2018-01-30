@@ -1,0 +1,72 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import "variables.less";
+
+table.sort {
+  th {
+    &:hover {
+      color: #000;
+    }
+  }
+}
+
+table.sortableTable {
+  tr {
+    th {
+      &[aria-sort="ascending"]:after {
+        content: "\f077";
+      }
+
+      &[aria-sort="descending"]:after {
+        content: "\f078";
+      }
+    }
+
+    td {
+      color: @mediumGray;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+      width: auto;
+    }
+  }
+
+  tr.rowHover:hover {
+    background: @lightGray;
+
+    &.selected {
+      background: @braveOrange;
+
+      td {
+        color: white;
+      }
+
+      div {
+        color: white;
+      }
+    }
+  }
+
+  tr.selected {
+    background-color: lighten(@gray, 20%);
+
+    td {
+      color: @buttonColor;
+    }
+
+    div {
+      color: @buttonColor;
+    }
+  }
+
+  &:not(.sort) {
+    th[aria-sort="ascending"]:after {
+      content: '';
+    }
+
+    th[aria-sort="descending"]after {
+      content: '';
+    }
+  }
+}

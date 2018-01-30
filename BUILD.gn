@@ -37,10 +37,7 @@ repack("packed_extra_resources") {
 
   deps = [
     "//brave/components/resources:brave_components_resources_grit",
-    "//brave/browser/resources:brave_extension_grit"
-  ]
-
-  deps += [
+    "//brave/browser/resources:brave_extension_grit",
     "//brave/common/extensions/api"
   ]
 

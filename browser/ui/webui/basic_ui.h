@@ -21,8 +21,4 @@ class BasicUI : public content::WebUIController {
   DISALLOW_COPY_AND_ASSIGN(BasicUI);
 };
 
-namespace basic_ui {
-
-}  // namespace basic_ui
-
 #endif  // BRAVE_BROWSER_UI_WEBUI_BASIC_UI_H_
