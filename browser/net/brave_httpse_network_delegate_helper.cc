@@ -20,7 +20,7 @@ void OnBeforeURLRequest_HttpseFileWork(
     net::URLRequest* request,
     GURL* new_url,
     std::shared_ptr<OnBeforeURLRequestContext> ctx) {
-  base::ThreadRestrictions::AssertIOAllowed();
+  base::AssertBlockingAllowed();
   DCHECK_CURRENTLY_ON(BrowserThread::FILE);
   DCHECK(ctx->request_identifier != 0);
   g_brave_browser_process->https_everywhere_service()->

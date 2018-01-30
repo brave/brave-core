@@ -14,8 +14,7 @@ class HTTPSEverywhereService;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
-  BraveBrowserProcessImpl(base::SequencedTaskRunner* local_state_task_runner,
-                     const base::CommandLine& command_line);
+  BraveBrowserProcessImpl(base::SequencedTaskRunner* local_state_task_runner);
   ~BraveBrowserProcessImpl() override;
 
 

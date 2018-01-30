@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 6d88fa75e31be381e66a9c1fb848dd95aaae45cf..26abbdce98445dcb4400834b82ca7b908e63dda7 100644
+index 1c02ce08a7d7da3a865ee010c246fa3c5b97bb77..bf8f19e5e76c08cca69eccc349f9879c67e08a0f 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -112,7 +112,10 @@ bool ShouldShowThrobber(TabRendererData::NetworkState state) {
+@@ -103,7 +103,10 @@ const double kSelectedTabThrobScale = 0.95 - kSelectedTabOpacity;
  //
  // The value returned here must be at least Tab::kMinimumEndcapWidth.
  float GetTabEndcapWidth() {

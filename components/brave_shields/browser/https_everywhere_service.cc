@@ -121,7 +121,7 @@ bool HTTPSEverywhereService::Init() {
 bool HTTPSEverywhereService::GetHTTPSURL(
     const GURL* url, const uint64_t& request_identifier,
     std::string& new_url) {
-  base::ThreadRestrictions::AssertIOAllowed();
+  base::AssertBlockingAllowed();
   if (!IsInitialized() || url->scheme() == "https") {
     return false;
   }

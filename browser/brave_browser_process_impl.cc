@@ -15,9 +15,8 @@ BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
 }
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(
-    base::SequencedTaskRunner* local_state_task_runner,
-    const base::CommandLine& command_line)
-    : BrowserProcessImpl(local_state_task_runner, command_line) {
+    base::SequencedTaskRunner* local_state_task_runner)
+    : BrowserProcessImpl(local_state_task_runner) {
   g_browser_process = this;
   g_brave_browser_process = this;
 }

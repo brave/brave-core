@@ -1,15 +1,15 @@
 diff --git a/chrome/browser/ui/cocoa/tabs/tab_controller.mm b/chrome/browser/ui/cocoa/tabs/tab_controller.mm
-index 84d02bda00a0d9269acfc327c58b1b3e8b7445f6..e45fdc15f1764943d4525e7a3180b482ec5ee20f 100644
+index 44617e121a82313c33d8e87498536c707ce705f1..e93aa596a44fa2604f2c149238890230263d3e05 100644
 --- a/chrome/browser/ui/cocoa/tabs/tab_controller.mm
 +++ b/chrome/browser/ui/cocoa/tabs/tab_controller.mm
-@@ -63,8 +63,8 @@ class MenuDelegate : public ui::SimpleMenuModel::Delegate {
- }  // TabControllerInternal namespace
+@@ -98,8 +98,8 @@ class MenuDelegate : public ui::SimpleMenuModel::Delegate {
+ @synthesize url = url_;
  
  namespace {
 -static const CGFloat kTabLeadingPadding = 18;
 -static const CGFloat kTabTrailingPadding = 15;
 +static const CGFloat kTabLeadingPadding = 9;
 +static const CGFloat kTabTrailingPadding = 7;
- static const CGFloat kIconSize = 16;
  static const CGFloat kCloseButtonSize = 16;
  static const CGFloat kInitialTabWidth = 160;
+ static const CGFloat kTitleLeadingPadding = 4;
