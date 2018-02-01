@@ -1,16 +1,18 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 225c6fd2669818225e1877ef21774b04abb1a6f3..d2ff71f0034dd2185d486816935979a3842a3ef8 100644
+index 225c6fd2669818225e1877ef21774b04abb1a6f3..867ff1648895ea54ef1359740ab5a39330cf34bf 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -19,7 +19,7 @@ if (current_cpu == "x86" || current_cpu == "x64") {
+@@ -19,8 +19,8 @@ if (current_cpu == "x86" || current_cpu == "x64") {
  assert(is_linux)
  
  packaging_files_executables = [
 -  "$root_out_dir/chrome",
+-  "$root_out_dir/chrome_sandbox",
 +  "$root_out_dir/brave",
-   "$root_out_dir/chrome_sandbox",
++  "$root_out_dir/brave_sandbox",
  ]
  packaging_files_shlibs = []
+ 
 @@ -153,7 +153,7 @@ action("merge_rpm_dependencies") {
  }
  
@@ -20,3 +22,32 @@ index 225c6fd2669818225e1877ef21774b04abb1a6f3..d2ff71f0034dd2185d486816935979a3
    debug_file = prog_name + ".debug"
    stripped_file = prog_name + ".stripped"
    deps = [
+@@ -240,8 +240,8 @@ copy("common_packaging_files") {
+     ]
+   } else {
+     sources += [
+-      "common/chromium-browser/chromium-browser.appdata.xml",
+-      "common/chromium-browser/chromium-browser.info",
++      "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml",
++      "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.info",
+     ]
+   }
+ 
+@@ -411,7 +411,7 @@ template("linux_package") {
+     if (is_chrome_branded) {
+       package = "google-chrome"
+     } else {
+-      package = "chromium-browser"
++      package = "brave-browser-chromium-fork"
+     }
+     outputs = [
+       "$root_out_dir/${package}-${channel}_${chrome_version_full}-1_${deb_arch}.deb",
+@@ -463,7 +463,7 @@ template("linux_package") {
+       if (is_chrome_branded) {
+         package = "google-chrome"
+       } else {
+-        package = "chromium-browser"
++        package = "brave-browser-chromium-fork"
+       }
+       outputs = [
+         "$root_out_dir/${package}-${channel}-${chrome_version_full}-1.${rpm_arch}.rpm",
