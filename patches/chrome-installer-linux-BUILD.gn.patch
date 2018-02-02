@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 225c6fd2669818225e1877ef21774b04abb1a6f3..867ff1648895ea54ef1359740ab5a39330cf34bf 100644
+index 225c6fd2669818225e1877ef21774b04abb1a6f3..ae4c899764d602450d16c7479424f8369693a0e8 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -19,8 +19,8 @@ if (current_cpu == "x86" || current_cpu == "x64") {
@@ -22,18 +22,24 @@ index 225c6fd2669818225e1877ef21774b04abb1a6f3..867ff1648895ea54ef1359740ab5a393
    debug_file = prog_name + ".debug"
    stripped_file = prog_name + ".stripped"
    deps = [
-@@ -240,8 +240,8 @@ copy("common_packaging_files") {
+@@ -243,6 +243,16 @@ copy("common_packaging_files") {
+       "common/chromium-browser/chromium-browser.appdata.xml",
+       "common/chromium-browser/chromium-browser.info",
      ]
-   } else {
-     sources += [
--      "common/chromium-browser/chromium-browser.appdata.xml",
--      "common/chromium-browser/chromium-browser.info",
++
++    sources -= [
++      "common/chromium-browser/chromium-browser.appdata.xml",
++      "common/chromium-browser/chromium-browser.info",
++    ]
++
++    sources += [
 +      "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml",
 +      "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.info",
-     ]
++    ]
    }
  
-@@ -411,7 +411,7 @@ template("linux_package") {
+   sources += [ "//third_party/eu-strip/bin/eu-strip" ]
+@@ -411,7 +421,7 @@ template("linux_package") {
      if (is_chrome_branded) {
        package = "google-chrome"
      } else {
@@ -42,7 +48,7 @@ index 225c6fd2669818225e1877ef21774b04abb1a6f3..867ff1648895ea54ef1359740ab5a393
      }
      outputs = [
        "$root_out_dir/${package}-${channel}_${chrome_version_full}-1_${deb_arch}.deb",
-@@ -463,7 +463,7 @@ template("linux_package") {
+@@ -463,7 +473,7 @@ template("linux_package") {
        if (is_chrome_branded) {
          package = "google-chrome"
        } else {
