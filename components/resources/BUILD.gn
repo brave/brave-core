@@ -15,6 +15,7 @@ transpile_includes = [
   "../brave_new_tab_ui/actions/newTabActions.js",
   "../brave_new_tab_ui/api.js",
   "../brave_new_tab_ui/backgrounds.js",
+  "../brave_new_tab_ui/storage.js",
   "../brave_new_tab_ui/store.js",
   "../brave_new_tab_ui/reducers/index.js",
   "../brave_new_tab_ui/reducers/newTabReducer.js",

@@ -5,7 +5,7 @@
 /* global chrome */
 
 const types = require('../constants/newTabTypes')
-const backgrounds = require('../backgrounds')
+const storage = require('../storage')
 let getGridSites_
 
 const getGridSites = (...args) => {
@@ -13,13 +13,6 @@ const getGridSites = (...args) => {
     getGridSites_ = require('../api').getGridSites
   }
   return getGridSites_(...args)
-}
-
-const randomBackgroundImage = () => {
-  const randomIndex = Math.floor(Math.random() * backgrounds.length)
-  const image = Object.assign({}, backgrounds[randomIndex])
-  image.style = {backgroundImage: 'url(' + image.source + ')'}
-  return image
 }
 
 const updateBookmarkInfo = (state, url, bookmarkTreeNode) => {
@@ -89,20 +82,10 @@ const newTabReducer = (state, action) => {
       const { fetchTopSites } = require('../api')
       fetchTopSites()
     })
+    state = storage.load() || storage.getInitialState()
   }
 
-  state = state || {
-    topSites: [],
-    ignoredTopSites: [],
-    pinnedTopSites: [],
-    gridSites: [],
-    showImages: true,
-    imageLoadFailed: false,
-    showEmptyPage: false,
-    isIncognito: chrome.extension.inIncognitoContext,
-    bookmarks: {},
-    backgroundImage: randomBackgroundImage()
-  }
+  const startingState = state
   switch (action.type) {
     case types.BOOKMARK_ADDED:
       const { fetchBookmarkInfo } = require('../api')
@@ -238,6 +221,11 @@ const newTabReducer = (state, action) => {
     default:
       break
   }
+
+  if (state !== startingState) {
+    storage.debouncedSave(state)
+  }
+
   return state
 }
 
