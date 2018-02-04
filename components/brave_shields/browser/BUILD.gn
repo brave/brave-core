@@ -6,6 +6,8 @@ source_set("brave_shields") {
     "base_brave_shields_service.h",
     "brave_shields_resource_throttle.cc",
     "brave_shields_resource_throttle.h",
+    "brave_shields_stats.cc",
+    "brave_shields_stats.h",
     "brave_shields_util.cc",
     "brave_shields_util.h",
     "brave_shields_web_contents_observer.cc",

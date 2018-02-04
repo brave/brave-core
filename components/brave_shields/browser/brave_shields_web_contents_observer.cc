@@ -5,6 +5,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_shields/browser/brave_shields_stats.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "brave/common/extensions/api/brave_shields.h"
@@ -77,6 +78,19 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
   content::WebContents* web_contents = GetWebContents(render_process_id,
     render_frame_id, frame_tree_node_id);
   DispatchBlockedEventForWebContents(block_type, subresource, web_contents);
+
+  auto* stats = BraveShieldsStats::GetInstance();
+  if (block_type == kAds) {
+    stats->IncrementAdsBlocked();
+  } else if (block_type == kTrackers) {
+    stats->IncrementTrackersBlocked();
+  } else if (block_type == kHTTPUpgradableResources) {
+    stats->IncrementHttpsUpgrades();
+  } else if (block_type == kJavaScript) {
+    stats->IncrementJavascriptBlocked();
+  } else if (block_type == kFingerprinting) {
+    stats->IncrementFingerprintingBlocked();
+  }
 }
 
 void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(

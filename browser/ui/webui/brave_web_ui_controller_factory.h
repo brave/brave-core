@@ -28,7 +28,6 @@ class BraveWebUIControllerFactory : public ChromeWebUIControllerFactory {
   ~BraveWebUIControllerFactory() override;
 
  private:
-  friend struct base::DefaultSingletonTraits<BraveWebUIControllerFactory>;
   DISALLOW_COPY_AND_ASSIGN(BraveWebUIControllerFactory);
 };
 
