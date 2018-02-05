@@ -6,13 +6,13 @@
 # chromium-browser packages for various platforms.
 
 # Base name of the package.
-PACKAGE="brave-browser-chromium-fork"
+PACKAGE="brave-browser"
 
 # Filename of the main executable (for generating launcher scripts, etc.)
 PROGNAME=brave
 
 # Base directory for package installation.
-INSTALLDIR=/opt/brave.com/brave-chromium-fork
+INSTALLDIR=/opt/brave.com/brave
 
 # Display string for desktop menu/icon.
 MENUNAME="Brave Web Browser"
