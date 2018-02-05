@@ -5,13 +5,13 @@
 #include "brave/browser/ui/webui/new_tab_html_source.h"
 
 #include <string>
-#include "brave/components/brave_shields/browser/brave_shields_stats.h"
+#include "brave/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 
-using brave_shields::BraveShieldsStats;
-
-void CustomizeNewTabHTMLSource(content::WebUIDataSource* source) {
+void CustomizeNewTabHTMLSource(Profile* profile, content::WebUIDataSource* source) {
   source->AddResourcePath("af7ae505a9eed503f8b8e6982036873e.woff2", IDR_BRAVE_COMMON_FONT_AWESOME_1);
   source->AddResourcePath("fee66e712a8a08eef5805a46892932ad.woff", IDR_BRAVE_COMMON_FONT_AWESOME_2);
   source->AddResourcePath("b06871f281fee6b241d60582ae9369b9.ttf", IDR_BRAVE_COMMON_FONT_AWESOME_3);
@@ -32,17 +32,17 @@ void CustomizeNewTabHTMLSource(content::WebUIDataSource* source) {
   source->AddResourcePath("50cc52a4f1743ea74a21da996fe44272.jpg", IDR_BRAVE_NEW_TAB_IMG14);
 
   // Shield stats
+  PrefService* prefs = profile->GetPrefs();
   source->AddString("adsBlockedStat",
-      std::to_string(BraveShieldsStats::GetInstance()->GetAdsBlocked()));
+      std::to_string(prefs->GetUint64(kAdsBlocked)));
   source->AddString("trackersBlockedStat",
-      std::to_string(BraveShieldsStats::GetInstance()->GetTrackersBlocked()));
+      std::to_string(prefs->GetUint64(kTrackersBlocked)));
   source->AddString("javascriptBlockedStat",
-      std::to_string(BraveShieldsStats::GetInstance()->GetJavascriptBlocked()));
+      std::to_string(prefs->GetUint64(kJavascriptBlocked)));
   source->AddString("httpsUpgradesStat",
-      std::to_string(BraveShieldsStats::GetInstance()->GetHTTPSUpgrades()));
+      std::to_string(prefs->GetUint64(kHttpsUpgrades)));
   source->AddString("fingerprintingBlockedStat",
-      std::to_string(BraveShieldsStats::GetInstance()->GetFingerprintingBlocked()));
-
+      std::to_string(prefs->GetUint64(kFingerprintingBlocked)));
   source->SetJsonPath("strings.js");
 }
 

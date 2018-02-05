@@ -18,14 +18,15 @@ using content::WebUIMessageHandler;
 
 namespace {
 
-content::WebUIDataSource* CreateBasicUIHTMLSource(const std::string& name,
+content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
+                                                  const std::string& name,
                                                   const std::string& js_file,
                                                   int js_resource_id,
                                                   int html_resource_id) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
 
-  CustomizeNewTabHTMLSource(source);
+  CustomizeNewTabHTMLSource(profile, source);
 
   source->SetDefaultResource(html_resource_id);
   source->AddResourcePath(js_file, js_resource_id);
@@ -69,5 +70,6 @@ BasicUI::BasicUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::move(handler_owner));
   handler->Init();
   content::WebUIDataSource::Add(profile,
-      CreateBasicUIHTMLSource(name, js_file, js_resource_id, html_resource_id));
+      CreateBasicUIHTMLSource(profile, name,
+        js_file, js_resource_id, html_resource_id));
 }

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
+index 90b5ed12f2785e73700866e8027f99849f030129..de023f0485e6c472f935f6c75869684172e2942b 100644
+--- a/chrome/browser/prefs/browser_prefs.cc
++++ b/chrome/browser/prefs/browser_prefs.cc
+@@ -8,6 +8,7 @@
+ 
+ #include "base/metrics/histogram_macros.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/about_flags.h"
+ #include "chrome/browser/accessibility/invert_bubble_prefs.h"
+@@ -453,6 +454,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   SCOPED_UMA_HISTOGRAM_TIMER("Settings.RegisterProfilePrefsTime");
+   // User prefs. Please keep this list alphabetized.
+   autofill::AutofillManager::RegisterProfilePrefs(registry);
++  brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(registry);
+   browsing_data::prefs::RegisterBrowserUserPrefs(registry);
+   certificate_transparency::CTPolicyManager::RegisterPrefs(registry);
+   ChromeContentBrowserClient::RegisterProfilePrefs(registry);

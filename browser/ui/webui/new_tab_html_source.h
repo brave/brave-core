@@ -6,4 +6,6 @@ namespace content {
 class WebUIDataSource;
 }
 
-void CustomizeNewTabHTMLSource(content::WebUIDataSource* source);
+class Profile;
+
+void CustomizeNewTabHTMLSource(Profile* profile, content::WebUIDataSource* source);

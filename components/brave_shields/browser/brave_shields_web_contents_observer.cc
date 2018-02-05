@@ -5,12 +5,14 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_shields/browser/brave_shields_stats.h"
-#include "chrome/browser/extensions/extension_tab_util.h"
-#include "chrome/browser/profiles/profile.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/render_messages.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/extensions/extension_tab_util.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -79,17 +81,22 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     render_frame_id, frame_tree_node_id);
   DispatchBlockedEventForWebContents(block_type, subresource, web_contents);
 
-  auto* stats = BraveShieldsStats::GetInstance();
-  if (block_type == kAds) {
-    stats->IncrementAdsBlocked();
-  } else if (block_type == kTrackers) {
-    stats->IncrementTrackersBlocked();
-  } else if (block_type == kHTTPUpgradableResources) {
-    stats->IncrementHttpsUpgrades();
-  } else if (block_type == kJavaScript) {
-    stats->IncrementJavascriptBlocked();
-  } else if (block_type == kFingerprinting) {
-    stats->IncrementFingerprintingBlocked();
+  if (web_contents) {
+    PrefService* prefs = Profile::FromBrowserContext(web_contents->GetBrowserContext())->
+      GetOriginalProfile()->
+      GetPrefs();
+
+    if (block_type == kAds) {
+      prefs->SetUint64(kAdsBlocked, prefs->GetUint64(kAdsBlocked) + 1);
+    } else if (block_type == kTrackers) {
+      prefs->SetUint64(kTrackersBlocked, prefs->GetUint64(kTrackersBlocked) + 1);
+    } else if (block_type == kHTTPUpgradableResources) {
+      prefs->SetUint64(kHttpsUpgrades, prefs->GetUint64(kHttpsUpgrades) + 1);
+    } else if (block_type == kJavaScript) {
+      prefs->SetUint64(kJavascriptBlocked, prefs->GetUint64(kJavascriptBlocked) + 1);
+    } else if (block_type == kFingerprinting) {
+      prefs->SetUint64(kFingerprintingBlocked, prefs->GetUint64(kFingerprintingBlocked) + 1);
+    }
   }
 }
 
@@ -140,6 +147,15 @@ void BraveShieldsWebContentsObserver::OnJavaScriptBlockedWithDetail(
   }
   DispatchBlockedEventForWebContents(brave_shields::kJavaScript,
       base::UTF16ToUTF8(details), web_contents);
+}
+
+// static
+void BraveShieldsWebContentsObserver::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterUint64Pref(kAdsBlocked, 0);
+  registry->RegisterUint64Pref(kTrackersBlocked, 0);
+  registry->RegisterUint64Pref(kJavascriptBlocked, 0);
+  registry->RegisterUint64Pref(kHttpsUpgrades, 0);
+  registry->RegisterUint64Pref(kFingerprintingBlocked, 0);
 }
 
 }  // namespace brave_shields

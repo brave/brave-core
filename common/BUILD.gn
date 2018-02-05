@@ -2,6 +2,8 @@ source_set("common") {
   sources = [
     "common_message_generator.cc",
     "common_message_generator.h",
+    "pref_names.cc",
+    "pref_names.h",
     "resource_bundle_helper.cc",
     "resource_bundle_helper.h",
     "webui_url_constants.cc",

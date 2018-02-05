@@ -14,6 +14,8 @@ namespace content {
 class WebContents;
 }
 
+class PrefRegistrySimple;
+
 namespace brave_shields {
 
 class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
@@ -22,6 +24,7 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   BraveShieldsWebContentsObserver(content::WebContents*);
   ~BraveShieldsWebContentsObserver() override;
 
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   static void DispatchBlockedEventForWebContents(
       const std::string& block_type,
       const std::string& subresource,
