@@ -83,7 +83,7 @@ const newTabReducer = (state, action) => {
       fetchTopSites()
     })
     state = storage.load() || {}
-    state = Object.assign(state, storage.getInitialState())
+    state = Object.assign(storage.getInitialState(), state)
   }
 
   const startingState = state

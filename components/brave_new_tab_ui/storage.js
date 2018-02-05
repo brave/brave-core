@@ -20,6 +20,16 @@ const cleanData = (state) => {
   state = { ...state }
   state.backgroundImage = randomBackgroundImage()
   delete state.imageLoadFailed
+  state = getLoadTimeData(state)
+  return state
+}
+
+const getLoadTimeData = (state) => {
+  state = { ...state }
+  state.stats = {}
+  ;['adsBlockedStat', 'trackersBlockedStat', 'javascriptBlockedStat',
+    'httpsUpgradesStat', 'fingerprintingBlockedStat'].forEach(
+      (stat) => state.stats[stat] = window.loadTimeData.getString(stat))
   return state
 }
 
@@ -32,7 +42,8 @@ module.exports.getInitialState = () => cleanData({
   imageLoadFailed: false,
   showEmptyPage: false,
   isIncognito: chrome.extension.inIncognitoContext,
-  bookmarks: {}
+  bookmarks: {},
+  stats: {}
 })
 
 module.exports.load = () => {

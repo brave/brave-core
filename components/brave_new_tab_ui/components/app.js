@@ -125,7 +125,7 @@ class NewTabPage extends React.Component {
       <div className='content'>
         <main>
           <div className='statsBar'>
-            <Stats newTabData={newTabData} />
+            <Stats stats={newTabData.stats} />
             <Clock />
           </div>
           <div className='topSitesContainer'>

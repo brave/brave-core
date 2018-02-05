@@ -4,6 +4,7 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_stats.h"
 
+#include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace brave_shields {

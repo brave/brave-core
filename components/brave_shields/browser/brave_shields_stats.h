@@ -19,6 +19,22 @@ class BraveShieldsStats {
   void IncrementHttpsUpgrades();
   void IncrementFingerprintingBlocked();
 
+  int64_t GetAdsBlocked() const {
+    return ads_blocked_;
+  }
+  int64_t GetTrackersBlocked() const {
+    return trackers_blocked_;
+  }
+  int64_t GetJavascriptBlocked() const {
+    return javascript_blocked_;
+  }
+  int64_t GetHTTPSUpgrades() const {
+    return https_upgrades_;
+  }
+  int64_t GetFingerprintingBlocked() const {
+    return fingerprinting_blocked_;
+  }
+
  protected:
   BraveShieldsStats();
   ~BraveShieldsStats();

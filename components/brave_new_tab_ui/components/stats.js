@@ -9,13 +9,13 @@ class Stats extends React.Component {
     return 50
   }
   get trackedBlockersCount () {
-    return this.props.newTabData.trackedBlockersCount || 0
+    return this.props.stats.trackersBlockedStat || 0
   }
   get adblockCount () {
-    return this.props.newTabData.adblockCount || 0
+    return this.props.stats.adsBlockedStat || 0
   }
   get httpsUpgradedCount () {
-    return this.props.newTabData.httpsUpgradedCount || 0
+    return this.props.stats.httpsUpgradesStat || 0
   }
   get estimatedTimeSaved () {
     const estimatedMillisecondsSaved = (this.adblockCount + this.trackedBlockersCount) * this.millisecondsPerItem || 0
@@ -54,9 +54,9 @@ class Stats extends React.Component {
     const httpsUpgradedCount = this.httpsUpgradedCount
     const timeSaved = this.estimatedTimeSaved
     const blockedArgs = JSON.stringify({
-      adblockCount: adblockCount,
-      trackedBlockersCount: trackedBlockersCount,
-      httpsUpgradedCount: httpsUpgradedCount
+      adblockCount,
+      trackedBlockersCount,
+      httpsUpgradedCount
     })
     return <ul className='statsContainer'>
       <li className='statsBlock'>
