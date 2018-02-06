@@ -2,7 +2,6 @@
 .tags*
 /.idea/
 /dist/
-/external_binaries/
 /out/
 /vendor/requests
 /vendor/boto
