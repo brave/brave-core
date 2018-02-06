@@ -1,0 +1,61 @@
+import("//build/util/branding.gni")
+import("//brave/build/config.gni")
+
+action("generate_breakpad_symbols") {
+  symbols_dir = "$antimuon_dist_dir/$antimuon_project_name.breakpad.syms"
+  outputs = [
+    symbols_dir
+  ]
+
+  args = [
+    "--symbols-dir=" + rebase_path(symbols_dir),
+    "--jobs=16",
+    rebase_path(root_out_dir)
+  ]
+
+  deps = [
+    "//chrome:chrome_app",
+  ]
+
+  script = "//brave/tools/win/generate_breakpad_symbols.py"
+}
+
+group("symbol_dist_resources") {
+  public_deps = [ ":generate_breakpad_symbols" ]
+}
+
+copy("dist_widevine_resources") {
+  sources = [
+    "$root_out_dir/$widevine_cdm_path/widevinecdmadapter.dll",
+  ]
+  outputs = [
+    "$antimuon_dist_dir/$widevine_cdm_path/{{source_file_part}}"
+  ]
+  public_deps = [
+    ":widevine_cdm_adapter",
+  ]
+}
+
+copy("dist_resources") {
+  sources = [
+    "$root_out_dir/chrome_elf.dll",
+    "$root_out_dir/xinput1_3.dll",
+    "$root_shlib_dir/libEGL.dll",
+    "$root_shlib_dir/libGLESv2.dll",
+    "$root_out_dir/d3dcompiler_47.dll",
+  ]
+
+  outputs = [
+    "$antimuon_dist_dir/{{source_file_part}}",
+  ]
+
+  public_deps = [
+    ":external_binaries",
+    "//chrome_elf",
+    "//third_party/angle:copy_compiler_dll",
+    "//third_party/angle:libEGL",
+    "//third_party/angle:libGLESv2",
+  ]
+}
+
+group("chromedriver_dist_resources") {}

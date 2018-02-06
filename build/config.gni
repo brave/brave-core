@@ -1,0 +1,39 @@
+import("//build/toolchain/toolchain.gni")
+import("//build/util/branding.gni")
+
+declare_args() {
+  antimuon_product_name = ""
+  antimuon_project_name = ""
+  executable_name = ""
+  antimuon_version_major = ""
+  antimuon_version_minor = ""
+  antimuon_version_build = ""
+  antimuon_version_patch = 0
+}
+
+antimuon_version = "$antimuon_version_major.$antimuon_version_minor.$antimuon_version_build"
+
+if (executable_name == "") {
+  executable_name = antimuon_project_name
+}
+
+antimuon_dist_dir = "$root_out_dir/dist"
+antimuon_exe = executable_name
+if (is_win) {
+  antimuon_exe = "$antimuon_exe.exe"
+} else if (is_mac) {
+  antimuon_exe = "$chrome_product_full_name.app"
+}
+
+antimuon_icon_dir = "nightly"
+if (is_component_build) {
+  antimuon_icon_dir = "dev"
+}
+
+antimuon_platform = "darwin"
+if (is_win) {
+  antimuon_platform = "win32"
+} else if (is_linux) {
+  antimuon_platform = "linux"
+}
+
