@@ -13,6 +13,11 @@ deps = {
 
 hooks = [
   {
+    'name': 'bootstrap',
+    'pattern': '.',
+    'action': ['python', 'src/brave/script/bootstrap.py'],
+  },
+  {
     # Apply patches to chromium src
     'name': 'apply_patches',
     'pattern': '.',
