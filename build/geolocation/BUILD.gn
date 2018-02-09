@@ -1,0 +1,11 @@
+declare_args() {
+  antimuon_google_api_key = ""
+  antimuon_google_api_endpoint = ""
+}
+
+config("geolocation") {
+  defines = [
+    "GOOGLEAPIS_API_KEY=\"$antimuon_google_api_key\"",
+    "GOOGLEAPIS_ENDPOINT=\"$antimuon_google_api_endpoint\""
+  ]
+}

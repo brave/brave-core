@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/extensions/extension_service.cc b/chrome/browser/extensions/extension_service.cc
+index ca649731ea800e0c7bd3e4c39ff6232f41af85db..b0b7bdec4fffebccd9e136ff51cffbb66e5b7359 100644
+--- a/chrome/browser/extensions/extension_service.cc
++++ b/chrome/browser/extensions/extension_service.cc
+@@ -27,6 +27,7 @@
+ #include "base/threading/thread_task_runner_handle.h"
+ #include "base/time/time.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/browser/extensions/brave_component_loader.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/chrome_notification_types.h"
+@@ -376,7 +377,7 @@ ExtensionService::ExtensionService(Profile* profile,
+   }
+ 
+   component_loader_.reset(
+-      new extensions::ComponentLoader(this,
++      new extensions::BraveComponentLoader(this,
+                                       profile->GetPrefs(),
+                                       g_browser_process->local_state(),
+                                       profile));

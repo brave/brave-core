@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
+index 1c02ce08a7d7da3a865ee010c246fa3c5b97bb77..bf8f19e5e76c08cca69eccc349f9879c67e08a0f 100644
+--- a/chrome/browser/ui/views/tabs/tab.cc
++++ b/chrome/browser/ui/views/tabs/tab.cc
+@@ -103,7 +103,10 @@ const double kSelectedTabThrobScale = 0.95 - kSelectedTabOpacity;
+ //
+ // The value returned here must be at least Tab::kMinimumEndcapWidth.
+ float GetTabEndcapWidth() {
+-  return GetLayoutInsets(TAB).left() - 0.5f;
++  // Originally was `return GetLayoutInsets(TAB).left() - 0.5f`
++  // For rectangle tab shape forcing GetInverseDiagonalSlope give 0 by
++  // (GetTabEndcapWidth() - Tab::kMinimumEndcapWidth) == 0
++  return Tab::kMinimumEndcapWidth;
+ }
+ 
+ void DrawHighlight(gfx::Canvas* canvas,

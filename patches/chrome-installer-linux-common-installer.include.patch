@@ -1,0 +1,23 @@
+diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
+index 4c460fc0244e7c1066e1abc3f3cacbfc92b1ed48..a595365da8685462f1cddfa807b89f93c67c0169 100644
+--- a/chrome/installer/linux/common/installer.include
++++ b/chrome/installer/linux/common/installer.include
+@@ -153,6 +153,9 @@ stage_install_common() {
+     install -m 644 "${BUILDDIR}/ui_resources_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
+   fi
+ 
++  # brave_resources.pak, contains customization, shields
++  install -m 644 "${BUILDDIR}/brave_resources.pak" "${STAGEDIR}/${INSTALLDIR}/"
++
+   # ICU data file; Necessary when the GN icu_use_data_file flag is true.
+   install -m 644 "${BUILDDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
+ 
+@@ -359,7 +362,7 @@ stage_install_common() {
+         exit 1
+       fi
+       local expected_perms=777
+-    elif [ "${base_name}" = "chrome-sandbox" ]; then
++    elif [ "${base_name}" = "brave-sandbox" ]; then
+       local expected_perms=4755
+     elif [[ "${base_name}" = "nacl_irt_"*".nexe" ]]; then
+       local expected_perms=644

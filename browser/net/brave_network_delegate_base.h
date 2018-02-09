@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_H_
-#define BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_H_
+#ifndef BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_BASE_H_
+#define BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_BASE_H_
 
 #include "chrome/browser/net/chrome_network_delegate.h"
 #include "brave/browser/net/url_context.h"
@@ -20,9 +20,9 @@ namespace net {
 class URLRequest;
 }
 
-// BraveNetworkDelegate is the central point from within the Brave code to
+// BraveNetworkDelegateBase is the central point from within the Brave code to
 // add hooks into the network stack.
-class BraveNetworkDelegate : public ChromeNetworkDelegate {
+class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
  public:
 
   using ResponseCallback = base::Callback<void(const base::DictionaryValue&)>;
@@ -45,9 +45,9 @@ class BraveNetworkDelegate : public ChromeNetworkDelegate {
   // |enable_referrers| (and all of the other optional PrefMembers) should be
   // initialized on the UI thread (see below) beforehand. This object's owner is
   // responsible for cleaning them up at shutdown.
-  BraveNetworkDelegate(extensions::EventRouterForwarder* event_router,
+  BraveNetworkDelegateBase(extensions::EventRouterForwarder* event_router,
                         BooleanPrefMember* enable_referrers);
-  ~BraveNetworkDelegate() override;
+  ~BraveNetworkDelegateBase() override;
 
   // NetworkDelegate implementation.
   int OnBeforeURLRequest(net::URLRequest* request,
@@ -60,14 +60,14 @@ class BraveNetworkDelegate : public ChromeNetworkDelegate {
     net::URLRequest* request,
     GURL *new_url,
     std::shared_ptr<brave::OnBeforeURLRequestContext> ctx);
-
- private:
   std::vector<brave::OnBeforeURLRequestCallback>
       before_url_request_callbacks_;
+
+ private:
   std::map<ResponseEvent, ResponseListenerInfo> response_listeners_;
   std::map<uint64_t, net::CompletionCallback> callbacks_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegate);
+  DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);
 };
 
-#endif  // BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_H_
+#endif  // BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_BASE_H_

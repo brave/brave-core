@@ -1,21 +1,21 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index 7bcc72f67676bf1bd388109e94bd0739cd588957..cd1cfd7930ace33eb1c6e72b39133c815a656be2 100644
+index 07ca9b02950c5b690f1680628be3972522caf3c3..61c3269bdb09b8fca3317f4a64db723078f1e95b 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
 @@ -25,6 +25,7 @@
  #include "base/strings/string_util.h"
  #include "base/task_scheduler/post_task.h"
  #include "base/threading/thread_task_runner_handle.h"
-+#include "brave/browser/net/brave_network_delegate.h"
++#include "brave/browser/net/brave_profile_network_delegate.h"
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -1020,7 +1021,7 @@ void ProfileIOData::Init(
+@@ -1062,7 +1063,7 @@ void ProfileIOData::Init(
    builder->set_ssl_config_service(profile_params_->ssl_config_service);
  
    std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
 -      new ChromeNetworkDelegate(
-+      new BraveNetworkDelegate(
++      new BraveProfileNetworkDelegate(
  #if BUILDFLAG(ENABLE_EXTENSIONS)
            io_thread_globals->extension_event_router_forwarder.get(),
  #else

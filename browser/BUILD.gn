@@ -2,14 +2,19 @@ import("//build/config/features.gni")
 
 source_set("browser_process") {
   sources = [
+    "brave_browser_main_extra_parts.cc",
+    "brave_browser_main_extra_parts.h",
     "brave_browser_process_impl.cc",
     "brave_browser_process_impl.h",
     "brave_tab_helpers.cc",
     "brave_tab_helpers.h",
+    "brave_profile_prefs.cc",
+    "brave_profile_prefs.h"
   ]
 
   deps = [
-    "//content/public/browser"
+    "//content/public/browser",
+    "//brave/chromium_src:browser",
   ]
 }
 
@@ -20,12 +25,16 @@ source_set("browser") {
   ]
 
   public_deps = [
+    "//brave/components/resources:brave_components_resources_grit",
+    "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser",
   ]
 
   deps = [
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/omnibox/browser:brave_autocomplete",
+    "extensions",
     "net",
+    "ui",
   ]
 }

@@ -7,5 +7,42 @@
     "channel": "stable",
     "dependencies": [],
     "contexts": ["blessed_extension"]
-  }
+  },
+  "topSites": [{
+    "dependencies": ["permission:topSites"],
+    "contexts": ["blessed_extension"]
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://newtab/*"
+    ]
+  }],
+  "bookmarks": [{
+    "dependencies": ["permission:bookmarks"],
+    "contexts": ["blessed_extension"],
+    "default_parent": true
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://bookmarks/*"
+    ],
+    "default_parent": true
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://newtab/*"
+    ]
+  }],
+  "extension.inIncognitoContext": [{
+    "contexts": ["blessed_extension", "unblessed_extension", "content_script"]
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://newtab/*"
+    ]
+  }]
 }

@@ -1,17 +1,17 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740c427de3e 100644
+index 31dcbbf7fa304aa35eadac5a79ac4dd96e4ccd22..8382a4bd908958e0b01c918fa275186e59a2d508 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -54,7 +54,7 @@ if (is_win) {
-       "$root_out_dir/initialexe/chrome.exe",
-     ]
-     outputs = [
--      "$root_out_dir/chrome.exe",
-+      "$root_out_dir/brave.exe",
-     ]
-     if (symbol_level != 0) {
-       outputs += [ "$root_out_dir/chrome.exe.pdb" ]
-@@ -238,6 +238,8 @@ if (!is_android && !is_mac) {
+@@ -167,7 +167,7 @@ if (!is_android && !is_mac) {
+ 
+       if (is_win) {
+         sources += [
+-          "app/chrome_exe.rc",
++          "//brave/app/brave_exe.rc",
+           "app/chrome_exe_load_config_win.cc",
+           "app/chrome_exe_main_win.cc",
+           "app/chrome_watcher_client_win.cc",
+@@ -241,6 +241,8 @@ if (!is_android && !is_mac) {
            "app/chrome_main.cc",
            "app/chrome_main_delegate.cc",
            "app/chrome_main_delegate.h",
@@ -20,7 +20,7 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
          ]
  
          deps += [
-@@ -308,7 +310,7 @@ if (!is_android && !is_mac) {
+@@ -315,7 +317,7 @@ if (!is_android && !is_mac) {
      if (is_win) {
        output_name = "initialexe/chrome"
      } else {
@@ -29,7 +29,7 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
      }
  
      sources = []
-@@ -357,6 +359,8 @@ if (is_win) {
+@@ -364,6 +366,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -38,7 +38,7 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
      ]
  
      output_name = "chrome"
-@@ -465,6 +469,8 @@ if (is_win) {
+@@ -472,6 +476,8 @@ if (is_win) {
          "app/chrome_main.cc",
          "app/chrome_main_delegate.cc",
          "app/chrome_main_delegate.h",
@@ -47,7 +47,7 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
        ]
  
        configs += [ "//build/config/compiler:wexit_time_destructors" ]
-@@ -534,7 +540,9 @@ if (is_win) {
+@@ -541,7 +547,9 @@ if (is_win) {
  } else if (is_mac) {
    chrome_helper_name = chrome_product_full_name + " Helper"
    chrome_framework_name = chrome_product_full_name + " Framework"
@@ -58,7 +58,7 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
  
    group("chrome") {
      deps = [
-@@ -649,7 +657,7 @@ if (is_win) {
+@@ -656,7 +664,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -67,7 +67,7 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -1150,6 +1158,8 @@ if (is_win) {
+@@ -1157,6 +1165,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -76,7 +76,7 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
        "app/chrome_main_mac.h",
        "app/chrome_main_mac.mm",
      ]
-@@ -1389,6 +1399,7 @@ if (is_win) {
+@@ -1396,6 +1406,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -84,7 +84,7 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
      "//chrome/browser",
      "//chrome/common",
      "//components/sync",
-@@ -1426,6 +1437,7 @@ group("browser_dependencies") {
+@@ -1433,6 +1444,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -92,7 +92,16 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1715,6 +1727,8 @@ if (is_android) {
+@@ -1454,7 +1466,7 @@ group("child_dependencies") {
+ if (is_win) {
+   process_version_rc_template("chrome_exe_version") {
+     sources = [
+-      "app/chrome_exe.ver",
++      "//brave/app/brave_exe.ver",
+     ]
+     output = "$target_gen_dir/chrome_exe_version.rc"
+   }
+@@ -1743,6 +1755,8 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -101,7 +110,7 @@ index 5d0274b0424ecfd527962c5116370a7593d10d15..7ac0fbca6097048f8011a60fed753740
      ]
  
      include_dirs = [ android_ndk_include_dir ]
-@@ -1770,7 +1784,7 @@ if (is_linux) {
+@@ -1798,7 +1812,7 @@ if (is_linux) {
        dump_syms_binary =
            get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
  

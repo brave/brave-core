@@ -1,6 +1,6 @@
-// Copyright (c) 2017 The Brave Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/app/brave_main_delegate.h"
 
@@ -8,6 +8,7 @@
 #include "base/time/time.h"
 #include "build/build_config.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/common/resource_bundle_helper.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 
@@ -61,3 +62,9 @@ bool BraveMainDelegate::ShouldEnableProfilerRecording() {
   return false;
 }
 
+void BraveMainDelegate::PreSandboxStartup() {
+  ChromeMainDelegate::PreSandboxStartup();
+  if (brave::SubprocessNeedsResourceBundle()) {
+    brave::InitializeResourceBundle();
+  }
+}

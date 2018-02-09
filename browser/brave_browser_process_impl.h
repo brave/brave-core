@@ -1,6 +1,6 @@
-// Copyright (c) 2017 The Brave Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
@@ -14,8 +14,7 @@ class HTTPSEverywhereService;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
-  BraveBrowserProcessImpl(base::SequencedTaskRunner* local_state_task_runner,
-                     const base::CommandLine& command_line);
+  BraveBrowserProcessImpl(base::SequencedTaskRunner* local_state_task_runner);
   ~BraveBrowserProcessImpl() override;
 
 

@@ -1,0 +1,34 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_WEBUI_CHROME_WEB_UI_CONTROLLER_FACTORY_H_
+#define BRAVE_BROWSER_UI_WEBUI_CHROME_WEB_UI_CONTROLLER_FACTORY_H_
+
+#include "chrome/browser/ui/webui/chrome_web_ui_controller_factory.h"
+
+namespace base {
+class RefCountedMemory;
+}
+
+class BraveWebUIControllerFactory : public ChromeWebUIControllerFactory {
+ public:
+  content::WebUI::TypeID GetWebUIType(content::BrowserContext* browser_context,
+                                      const GURL& url) const override;
+  content::WebUIController* CreateWebUIControllerForURL(
+      content::WebUI* web_ui,
+      const GURL& url) const override;
+
+  static BraveWebUIControllerFactory* GetInstance();
+
+ protected:
+  friend struct base::DefaultSingletonTraits<BraveWebUIControllerFactory>;
+
+  BraveWebUIControllerFactory();
+  ~BraveWebUIControllerFactory() override;
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveWebUIControllerFactory);
+};
+
+#endif  // BRAVE_BROWSER_UI_WEBUI_CHROME_WEB_UI_CONTROLLER_FACTORY_H_

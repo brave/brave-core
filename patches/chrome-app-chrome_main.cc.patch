@@ -1,5 +1,5 @@
 diff --git a/chrome/app/chrome_main.cc b/chrome/app/chrome_main.cc
-index 90b02a13ed7674b5b4266ffd8e09fcca0392dfc3..0e182ac84efab144a310c6687996d59e4fbe3620 100644
+index 12eb04bde9e7024d72fd37241087562acee85eef..cc1b2eb1bb8e23c98758ffc67c1dc26728b04ba1 100644
 --- a/chrome/app/chrome_main.cc
 +++ b/chrome/app/chrome_main.cc
 @@ -7,6 +7,7 @@
@@ -10,7 +10,7 @@ index 90b02a13ed7674b5b4266ffd8e09fcca0392dfc3..0e182ac84efab144a310c6687996d59e
  #include "build/build_config.h"
  #include "chrome/app/chrome_main_delegate.h"
  #include "chrome/common/chrome_switches.h"
-@@ -60,7 +61,7 @@ int ChromeMain(int argc, const char** argv) {
+@@ -62,7 +63,7 @@ int ChromeMain(int argc, const char** argv) {
    install_static::InitializeFromPrimaryModule();
  #endif
  

@@ -1,8 +1,8 @@
 diff --git a/build/config/chrome_build.gni b/build/config/chrome_build.gni
-index c649018a7a0aeb20caeb2bf37c60d57c48630f1b..9a320d8b5f46f2c7f2d269b7a1cc3b2cf91c07a7 100644
+index 4bb4a043cbbcb562aed8926867660547cd7f018c..8b0f251cc3f7170f73bf5bc2ab4724686c1c2b17 100644
 --- a/build/config/chrome_build.gni
 +++ b/build/config/chrome_build.gni
-@@ -18,5 +18,5 @@ declare_args() {
+@@ -22,5 +22,5 @@ declare_args() {
  if (is_chrome_branded) {
    branding_path_component = "google_chrome"
  } else {

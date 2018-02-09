@@ -1,0 +1,63 @@
+import("//tools/grit/grit_rule.gni")
+
+
+transpile_includes = [
+  # Brave new tab
+  "../brave_new_tab_ui/brave_new_tab.html",
+  "../brave_new_tab_ui/brave_new_tab.js",
+  "../brave_new_tab_ui/components/app.js",
+  "../brave_new_tab_ui/components/block.js",
+  "../brave_new_tab_ui/components/clock.js",
+  "../brave_new_tab_ui/components/footerInfo.js",
+  "../brave_new_tab_ui/components/siteRemovalNotification.js",
+  "../brave_new_tab_ui/components/stats.js",
+  "../brave_new_tab_ui/constants/newTabTypes.js",
+  "../brave_new_tab_ui/actions/newTabActions.js",
+  "../brave_new_tab_ui/api.js",
+  "../brave_new_tab_ui/backgrounds.js",
+  "../brave_new_tab_ui/storage.js",
+  "../brave_new_tab_ui/store.js",
+  "../brave_new_tab_ui/reducers/index.js",
+  "../brave_new_tab_ui/reducers/newTabReducer.js",
+  # Brave payments
+  "../brave_payments_ui/brave_payments.html",
+]
+
+action("transpile_web_uis") {
+  script = "//brave/script/transpile-web-ui.py"
+  inputs = transpile_includes
+  outputs = [
+    "$target_out_dir/brave_new_tab.bundle.js",
+    "$target_out_dir/brave_payments.bundle.js",
+  ]
+  gen_dir = rebase_path(root_gen_dir, "//")
+  args = [
+    "--target_gen_dir=$gen_dir"
+  ]
+  if (is_official_build) {
+    args += [
+      "--production",
+    ]
+  }
+}
+
+grit("brave_components_resources_grit") {
+  source = "brave_components_resources.grd"
+
+  output_name = "brave_components_resources_new"
+  inputs = get_target_outputs(":transpile_web_uis")
+  inputs += transpile_includes
+
+  outputs = [
+    "grit/brave_components_resources.h",
+    "brave_components_resources.pak",
+  ]
+  deps = [ ":transpile_web_uis" ]
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+  output_dir = "$root_gen_dir/components"
+  resource_ids = "//brave/browser/resources/resource_ids"
+}
+

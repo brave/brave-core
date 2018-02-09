@@ -12,6 +12,7 @@ const char kAds[] = "ads";
 const char kTrackers[] = "trackers";
 const char kHTTPUpgradableResources[] = "httpUpgradableResources";
 const char kJavaScript[] = "javascript";
+const char kFingerprinting[] = "fingerprinting";
 const char kBraveShields[] = "braveShields";
 
 }  // brave_shields

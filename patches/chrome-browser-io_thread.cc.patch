@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/io_thread.cc b/chrome/browser/io_thread.cc
+index f052ba92934d3c03d6f24adc80ba5750265c32da..41288b9431cf3b51e0db9f611fc494eca81388f0 100644
+--- a/chrome/browser/io_thread.cc
++++ b/chrome/browser/io_thread.cc
+@@ -30,6 +30,7 @@
+ #include "base/threading/thread.h"
+ #include "base/time/time.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/browser/net/brave_system_network_delegate.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/data_usage/tab_id_annotator.h"
+@@ -778,7 +779,7 @@ void IOThread::ConstructSystemRequestContext() {
+       globals_->network_quality_estimator.get());
+ 
+   builder->set_user_agent(GetUserAgent());
+-  auto chrome_network_delegate = std::make_unique<ChromeNetworkDelegate>(
++  auto chrome_network_delegate = std::make_unique<BraveSystemNetworkDelegate>(
+       extension_event_router_forwarder(), &system_enable_referrers_);
+   // By default, data usage is considered off the record.
+   chrome_network_delegate->set_data_use_aggregator(

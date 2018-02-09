@@ -1,18 +1,15 @@
 diff --git a/third_party/widevine/cdm/BUILD.gn b/third_party/widevine/cdm/BUILD.gn
-index a3eac59cc2ebdb1f9d2bb7af8a7db0d44ab315a9..bb31fe8035643b0f928a69e730cc608af6ee2441 100644
+index f35d8187209663167a19a06a745b95a89d7b9063..36f7959a0508676832b8ecd8d1912fce7456f6e2 100644
 --- a/third_party/widevine/cdm/BUILD.gn
 +++ b/third_party/widevine/cdm/BUILD.gn
-@@ -113,9 +113,10 @@ if (widevine_cdm_binary_files != []) {
-     if (is_mac) {
-       ldflags = [
-         # Not to strip important symbols by -Wl,-dead_strip.
--        "-Wl,-exported_symbol,_PPP_GetInterface",
--        "-Wl,-exported_symbol,_PPP_InitializeModule",
--        "-Wl,-exported_symbol,_PPP_ShutdownModule",
-+        #"-Wl,-exported_symbol,_PPP_GetInterface",
-+        #"-Wl,-exported_symbol,_PPP_InitializeModule",
-+        #"-Wl,-exported_symbol,_PPP_ShutdownModule",
-+        "-Wl,-install_name,@loader_path/libwidevinecdm.dylib"
-       ]
-       #TODO(jrummell) Mac: 'DYLIB_INSTALL_NAME_BASE': '@loader_path',
-     } else if (is_posix && !is_mac) {
+@@ -110,6 +110,10 @@ if (widevine_cdm_binary_files != []) {
+       "//build/config:exe_and_shlib_deps",
+     ]
+ 
++    if (is_mac) {
++      ldflags = [ "-Wl,-install_name,@loader_path/libwidevinecdm.dylib" ]
++    }
++
+     if (is_posix && !is_mac) {
+       cflags = [ "-fvisibility=hidden" ]
+     }

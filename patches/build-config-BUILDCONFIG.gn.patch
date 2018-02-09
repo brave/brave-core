@@ -1,0 +1,26 @@
+diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
+index 78038b04ddf6d2fe0def8bf726198d3fabefab98..7c8411a7c9eb248783f21d2d064cd691f758c2d5 100644
+--- a/build/config/BUILDCONFIG.gn
++++ b/build/config/BUILDCONFIG.gn
+@@ -152,6 +152,7 @@ declare_args() {
+   host_toolchain = ""
+ 
+   # DON'T ADD MORE FLAGS HERE. Read the comment above.
++  antimuon_chromium_build = false
+ }
+ 
+ declare_args() {
+@@ -530,6 +531,13 @@ default_compiler_configs = [
+   "//build/config/coverage:default_coverage",
+   "//build/config/sanitizers:default_sanitizer_flags",
+ ]
++if (!antimuon_chromium_build) {
++  default_compiler_configs -= [ "//build/config/compiler:default_include_dirs" ]
++  default_compiler_configs += [
++    "//brave/build:antimuon_include_dirs",
++    "//build/config/compiler:default_include_dirs"
++  ]
++}
+ if (is_win) {
+   default_compiler_configs += [
+     "//build/config/win:default_crt",

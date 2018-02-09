@@ -2,10 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/net/brave_network_delegate.h"
+#include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/net/brave_httpse_network_delegate.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
@@ -21,7 +20,7 @@ void OnBeforeURLRequest_HttpseFileWork(
     net::URLRequest* request,
     GURL* new_url,
     std::shared_ptr<OnBeforeURLRequestContext> ctx) {
-  base::ThreadRestrictions::AssertIOAllowed();
+  base::AssertBlockingAllowed();
   DCHECK_CURRENTLY_ON(BrowserThread::FILE);
   DCHECK(ctx->request_identifier != 0);
   g_brave_browser_process->https_everywhere_service()->
