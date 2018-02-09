@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+index 546f574bd2d3577413f2d13cfa058bf90c3c77bf..eb4364774a6f53e718d860e7ff533d6b666a86d0 100644
+--- a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
++++ b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+@@ -23,6 +23,8 @@
+ #include "extensions/browser/extensions_browser_client.h"
+ #endif
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ // static
+ AutocompleteClassifier* AutocompleteClassifierFactory::GetForProfile(
+     Profile* profile) {
+@@ -40,7 +42,7 @@ std::unique_ptr<KeyedService> AutocompleteClassifierFactory::BuildInstanceFor(
+     content::BrowserContext* context) {
+   Profile* profile = static_cast<Profile*>(context);
+   return base::MakeUnique<AutocompleteClassifier>(
+-      base::WrapUnique(new AutocompleteController(
++      base::WrapUnique(new BraveAutocompleteController(
+           base::WrapUnique(new ChromeAutocompleteProviderClient(profile)), NULL,
+           AutocompleteClassifier::DefaultOmniboxProviders())),
+       std::unique_ptr<AutocompleteSchemeClassifier>(

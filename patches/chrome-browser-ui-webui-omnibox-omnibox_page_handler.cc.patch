@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
+index 66dc8e32404e169cb40cd5a56cbfe166d9709dbe..028a37bad232a5f1691e5e6d20b4932399ccd866 100644
+--- a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
++++ b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
+@@ -34,6 +34,8 @@
+ #include "components/search_engines/template_url.h"
+ #include "content/public/browser/web_ui.h"
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ using bookmarks::BookmarkModel;
+ 
+ namespace mojo {
+@@ -209,7 +211,7 @@ void OmniboxPageHandler::StartOmniboxQuery(const std::string& input_string,
+ }
+ 
+ void OmniboxPageHandler::ResetController() {
+-  controller_.reset(new AutocompleteController(
++  controller_.reset(new BraveAutocompleteController(
+       base::MakeUnique<ChromeAutocompleteProviderClient>(profile_), this,
+       AutocompleteClassifier::DefaultOmniboxProviders()));
+ }

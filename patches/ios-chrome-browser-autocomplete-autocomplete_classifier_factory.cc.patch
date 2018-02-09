@@ -1,0 +1,22 @@
+diff --git a/ios/chrome/browser/autocomplete/autocomplete_classifier_factory.cc b/ios/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+index 11cdca53bd8c9e9c5d97715030f731226dde2984..f2aec7c949b201db1c06dd38226ee2ecf1aefb6f 100644
+--- a/ios/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
++++ b/ios/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+@@ -17,6 +17,8 @@
+ #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+ #include "ios/chrome/browser/search_engines/template_url_service_factory.h"
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ namespace ios {
+ namespace {
+ 
+@@ -25,7 +27,7 @@ std::unique_ptr<KeyedService> BuildAutocompleteClassifier(
+   ios::ChromeBrowserState* browser_state =
+       ios::ChromeBrowserState::FromBrowserState(context);
+   return base::MakeUnique<AutocompleteClassifier>(
+-      base::WrapUnique(new AutocompleteController(
++      base::WrapUnique(new BraveAutocompleteController(
+           base::WrapUnique(new AutocompleteProviderClientImpl(browser_state)),
+           nullptr, AutocompleteClassifier::DefaultOmniboxProviders())),
+       base::WrapUnique(new AutocompleteSchemeClassifierImpl));

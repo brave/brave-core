@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/android/omnibox/autocomplete_controller_android.cc b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
+index 61c41d19e2fbf7c43bbf5ce9afb5ece667bfadb9..4270226c3150119ee8ea8d000e64649424bbb012 100644
+--- a/chrome/browser/android/omnibox/autocomplete_controller_android.cc
++++ b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
+@@ -56,6 +56,8 @@
+ #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+ #include "ui/base/device_form_factor.h"
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ using base::android::AttachCurrentThread;
+ using base::android::ConvertJavaStringToUTF16;
+ using base::android::ConvertUTF8ToJavaString;
+@@ -90,7 +92,7 @@ class ZeroSuggestPrefetcher : public AutocompleteControllerDelegate {
+ };
+ 
+ ZeroSuggestPrefetcher::ZeroSuggestPrefetcher(Profile* profile)
+-    : controller_(new AutocompleteController(
++    : controller_(new BraveAutocompleteController(
+           base::MakeUnique<ChromeAutocompleteProviderClient>(profile),
+           this,
+           AutocompleteProvider::TYPE_ZERO_SUGGEST)) {
+@@ -127,7 +129,7 @@ void ZeroSuggestPrefetcher::OnResultChanged(bool default_match_changed) {
+ }  // namespace
+ 
+ AutocompleteControllerAndroid::AutocompleteControllerAndroid(Profile* profile)
+-    : autocomplete_controller_(new AutocompleteController(
++    : autocomplete_controller_(new BraveAutocompleteController(
+           base::WrapUnique(new ChromeAutocompleteProviderClient(profile)),
+           this,
+           AutocompleteClassifier::DefaultOmniboxProviders())),
+@@ -344,7 +346,7 @@ AutocompleteControllerAndroid::Factory::~Factory() {
+ 
+ KeyedService* AutocompleteControllerAndroid::Factory::BuildServiceInstanceFor(
+     content::BrowserContext* profile) const {
+-  return new AutocompleteControllerAndroid(static_cast<Profile*>(profile));
++  return new BraveAutocompleteControllerAndroid(static_cast<Profile*>(profile));
+ }
+ 
+ AutocompleteControllerAndroid::~AutocompleteControllerAndroid() {

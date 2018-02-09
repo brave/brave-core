@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/app_list/search/omnibox_provider.cc b/chrome/browser/ui/app_list/search/omnibox_provider.cc
+index fbf7b26028ebd2a1d764c3494387ac1373be8b1f..c09de3e559f5833ef5a10b41dd61a7daced2b07a 100644
+--- a/chrome/browser/ui/app_list/search/omnibox_provider.cc
++++ b/chrome/browser/ui/app_list/search/omnibox_provider.cc
+@@ -18,13 +18,15 @@
+ #include "ui/app_list/search_result.h"
+ #include "url/gurl.h"
+ 
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
++
+ namespace app_list {
+ 
+ OmniboxProvider::OmniboxProvider(Profile* profile,
+                                  AppListControllerDelegate* list_controller)
+     : profile_(profile),
+       list_controller_(list_controller),
+-      controller_(new AutocompleteController(
++      controller_(new BraveAutocompleteController(
+           base::WrapUnique(new ChromeAutocompleteProviderClient(profile)),
+           this,
+           AutocompleteClassifier::DefaultOmniboxProviders() &

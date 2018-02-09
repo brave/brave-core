@@ -1,0 +1,15 @@
+source_set("brave_autocomplete") {
+  sources = [
+    "brave_autocomplete_controller.cc",
+    "brave_autocomplete_controller.h",
+    "topsites_provider_data.cc",
+    "topsites_provider.cc",
+    "topsites_provider.h",
+  ]
+
+  deps = [
+  ]
+  public_deps = [
+    "//chrome/common",
+  ]
+}
