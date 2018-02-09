@@ -12,7 +12,7 @@ import tempfile
 from io import StringIO
 from lib.config import PLATFORM, DIST_URL, get_target_arch, get_chromedriver_version, \
                        get_env_var, s3_config, get_zip_name, product_name, project_name, \
-                       SOURCE_ROOT, dist_dir, get_antimuon_version
+                       SOURCE_ROOT, dist_dir, output_dir, get_antimuon_version
 from lib.util import execute, parse_version, scoped_cwd, s3put
 
 from lib.github import GitHub
@@ -70,6 +70,25 @@ def main():
   # Upload chromedriver and mksnapshot.
   chromedriver = get_zip_name('chromedriver', get_chromedriver_version())
   upload_antimuon(github, release, os.path.join(dist_dir(), chromedriver))
+
+  if PLATFORM == 'darwin':
+    upload_antimuon(github, release, os.path.join(output_dir(), 'Brave.dmg'))
+  elif PLATFORM == 'win32':
+    if get_target_arch() == 'x64':
+      upload_antimuon(github, release, os.path.join(output_dir(),
+          'brave_installer.exe'), 'brave_installer-x64.exe')
+    else:
+      upload_antimuon(github, release, os.path.join(output_dir(),
+          'brave_installer.exe'), 'brave_installer-ia32.exe')
+  # TODO: Enable after linux packaging lands
+  #else:
+    #if get_target_arch() == 'x64':
+      #upload_antimuon(github, release, os.path.join(output_dir(), 'brave-x86_64.rpm'))
+      #upload_antimuon(github, release, os.path.join(output_dir(), 'brave-amd64.deb'))
+    #else:
+      #upload_antimuon(github, release, os.path.join(output_dir(), 'brave-i386.rpm'))
+      #upload_antimuon(github, release, os.path.join(output_dir(), 'brave-i386.deb'))
+
   # mksnapshot = get_zip_name('mksnapshot', get_antimuon_version())
   # upload_antimuon(github, release, os.path.join(dist_dir(), mksnapshot))
 
@@ -158,9 +177,11 @@ def release_antimuon_checksums(github, release):
                       StringIO(checksums.decode('utf-8')), 'text/plain')
 
 
-def upload_antimuon(github, release, file_path):
+def upload_antimuon(github, release, file_path, filename=None):
   # Delete the original file before uploading.
-  filename = os.path.basename(file_path)
+  if filename == None:
+    filename = os.path.basename(file_path)
+
   try:
     for asset in release['assets']:
       if asset['name'] == filename:
