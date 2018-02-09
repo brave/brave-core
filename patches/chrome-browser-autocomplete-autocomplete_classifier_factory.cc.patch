@@ -1,22 +1,21 @@
 diff --git a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
-index 546f574bd2d3577413f2d13cfa058bf90c3c77bf..eb4364774a6f53e718d860e7ff533d6b666a86d0 100644
+index 0d758c8be1626f34ff44cce85e287d5f8027395e..b0bcb1918d65c67163cc2084a898c2db460db161 100644
 --- a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
 +++ b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
-@@ -23,6 +23,8 @@
- #include "extensions/browser/extensions_browser_client.h"
- #endif
+@@ -5,6 +5,7 @@
+ #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
  
+ #include "base/memory/ptr_util.h"
 +#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
-+
- // static
- AutocompleteClassifier* AutocompleteClassifierFactory::GetForProfile(
-     Profile* profile) {
-@@ -40,7 +42,7 @@ std::unique_ptr<KeyedService> AutocompleteClassifierFactory::BuildInstanceFor(
-     content::BrowserContext* context) {
+ #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+ #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
+ #include "chrome/browser/autocomplete/contextual_suggestions_service_factory.h"
+@@ -41,7 +42,7 @@ std::unique_ptr<KeyedService> AutocompleteClassifierFactory::BuildInstanceFor(
    Profile* profile = static_cast<Profile*>(context);
+   auto provider_client =
+       base::MakeUnique<ChromeAutocompleteProviderClient>(profile);
+-  auto controller = base::WrapUnique(new AutocompleteController(
++  auto controller = base::WrapUnique(new BraveAutocompleteController(
+       std::move(provider_client), NULL,
+       AutocompleteClassifier::DefaultOmniboxProviders()));
    return base::MakeUnique<AutocompleteClassifier>(
--      base::WrapUnique(new AutocompleteController(
-+      base::WrapUnique(new BraveAutocompleteController(
-           base::WrapUnique(new ChromeAutocompleteProviderClient(profile)), NULL,
-           AutocompleteClassifier::DefaultOmniboxProviders())),
-       std::unique_ptr<AutocompleteSchemeClassifier>(

@@ -1,17 +1,16 @@
 diff --git a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
-index 66dc8e32404e169cb40cd5a56cbfe166d9709dbe..028a37bad232a5f1691e5e6d20b4932399ccd866 100644
+index 91690a5762cbebb8ca1cd307207ec938be3f51d3..01d4b72b129ca1cacb4f391044ac539e5c508cdd 100644
 --- a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
 +++ b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
-@@ -34,6 +34,8 @@
- #include "components/search_engines/template_url.h"
- #include "content/public/browser/web_ui.h"
- 
+@@ -16,6 +16,7 @@
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/time/time.h"
+ #include "base/values.h"
 +#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
-+
- using bookmarks::BookmarkModel;
- 
- namespace mojo {
-@@ -209,7 +211,7 @@ void OmniboxPageHandler::StartOmniboxQuery(const std::string& input_string,
+ #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+ #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
+ #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+@@ -210,7 +211,7 @@ void OmniboxPageHandler::StartOmniboxQuery(const std::string& input_string,
  }
  
  void OmniboxPageHandler::ResetController() {

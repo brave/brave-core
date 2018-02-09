@@ -1,12 +1,19 @@
 diff --git a/chrome/browser/android/omnibox/autocomplete_controller_android.cc b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
-index 61c41d19e2fbf7c43bbf5ce9afb5ece667bfadb9..4270226c3150119ee8ea8d000e64649424bbb012 100644
+index 3dfce1f5113531fdabdf4f0bce4a1920e7e23719..999dcb9ce87f7be8a931ca6dbd81f16be86f4768 100644
 --- a/chrome/browser/android/omnibox/autocomplete_controller_android.cc
 +++ b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
-@@ -56,6 +56,8 @@
- #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+@@ -17,6 +17,7 @@
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/time/time.h"
+ #include "base/timer/timer.h"
++#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
+ #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
+ #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+ #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
+@@ -56,6 +57,7 @@
+ #include "third_party/metrics_proto/omnibox_event.pb.h"
  #include "ui/base/device_form_factor.h"
  
-+#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
 +
  using base::android::AttachCurrentThread;
  using base::android::ConvertJavaStringToUTF16;
@@ -29,7 +36,7 @@ index 61c41d19e2fbf7c43bbf5ce9afb5ece667bfadb9..4270226c3150119ee8ea8d000e646494
            base::WrapUnique(new ChromeAutocompleteProviderClient(profile)),
            this,
            AutocompleteClassifier::DefaultOmniboxProviders())),
-@@ -344,7 +346,7 @@ AutocompleteControllerAndroid::Factory::~Factory() {
+@@ -347,7 +349,7 @@ AutocompleteControllerAndroid::Factory::~Factory() {
  
  KeyedService* AutocompleteControllerAndroid::Factory::BuildServiceInstanceFor(
      content::BrowserContext* profile) const {
