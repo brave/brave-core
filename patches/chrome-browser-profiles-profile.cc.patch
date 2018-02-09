@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index 9bfac125046c9cc34f1e4440a1ebc5dfc2c93af2..243f176e3bc388d1b89760526a0639a408823ddf 100644
+index 52042ee6bdc6293bad9ac37911c3882895dab61e..b1acb4a858bb0e5eeb43f8bb8054a5353d23ef9c 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
 @@ -136,7 +136,7 @@ const char Profile::kNoHostedDomainFound[] = "NO_HOSTED_DOMAIN";
