@@ -86,4 +86,10 @@ group("create_dist") {
   if (is_mac) {
     deps += [ "build/mac:create_dist_mac" ]
   }
+  if (is_linux) {
+    deps += [
+      "//chrome/installer/linux",
+    ]
+  }
+
 }

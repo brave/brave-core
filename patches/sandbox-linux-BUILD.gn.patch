@@ -1,0 +1,13 @@
+diff --git a/sandbox/linux/BUILD.gn b/sandbox/linux/BUILD.gn
+index 8c9cf2c9458ef538269e83fb5db4d1b02f91c142..2e542281aee7b8beccf5c94cb41e7e8b1bca0bdd 100644
+--- a/sandbox/linux/BUILD.gn
++++ b/sandbox/linux/BUILD.gn
+@@ -335,6 +335,8 @@ if (is_linux) {
+     # This is safe to delete unconditionally, because it is part of the
+     # default configs and empty when not using the sanitizers.
+     configs -= [ "//build/config/sanitizers:default_sanitizer_flags" ]
++
++    output_name = "brave_sandbox"
+   }
+ }
+ 

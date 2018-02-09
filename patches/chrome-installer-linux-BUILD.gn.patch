@@ -1,17 +1,22 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 225c6fd2669818225e1877ef21774b04abb1a6f3..d2ff71f0034dd2185d486816935979a3842a3ef8 100644
+index 225c6fd2669818225e1877ef21774b04abb1a6f3..4a0a2ef64fdfc3c0b2b12d2c7718e414af456650 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -19,7 +19,7 @@ if (current_cpu == "x86" || current_cpu == "x64") {
+@@ -19,11 +19,10 @@ if (current_cpu == "x86" || current_cpu == "x64") {
  assert(is_linux)
  
  packaging_files_executables = [
 -  "$root_out_dir/chrome",
+-  "$root_out_dir/chrome_sandbox",
 +  "$root_out_dir/brave",
-   "$root_out_dir/chrome_sandbox",
++  "$root_out_dir/brave_sandbox",
  ]
  packaging_files_shlibs = []
-@@ -153,7 +153,7 @@ action("merge_rpm_dependencies") {
+-
+ if (enable_nacl) {
+   packaging_files_executables += [
+     "$root_out_dir/nacl_helper",
+@@ -153,7 +152,7 @@ action("merge_rpm_dependencies") {
  }
  
  action("strip_chrome_binary") {
@@ -20,3 +25,14 @@ index 225c6fd2669818225e1877ef21774b04abb1a6f3..d2ff71f0034dd2185d486816935979a3
    debug_file = prog_name + ".debug"
    stripped_file = prog_name + ".stripped"
    deps = [
+@@ -240,8 +239,8 @@ copy("common_packaging_files") {
+     ]
+   } else {
+     sources += [
+-      "common/chromium-browser/chromium-browser.appdata.xml",
+-      "common/chromium-browser/chromium-browser.info",
++      "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml",
++      "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.info",
+     ]
+   }
+ 
