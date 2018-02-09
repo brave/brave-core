@@ -13,9 +13,8 @@ def main():
   brave_extension_dir = os.path.realpath(os.path.dirname(
       os.path.dirname(os.path.realpath(__file__))))
   antimuon_dir = os.path.dirname(os.path.dirname(brave_extension_dir))
-  brave_extension_gen_dir = os.path.join(
-      os.path.dirname(antimuon_dir), 'out', 'Release',
-          'gen', 'brave_extension')
+  root_build_dir = sys.argv[1]
+  brave_extension_gen_dir = os.path.join(root_build_dir, 'gen', 'brave_extension')
 
   os.chdir(brave_extension_dir)
   build_extension('.')
