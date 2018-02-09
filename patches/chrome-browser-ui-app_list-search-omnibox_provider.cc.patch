@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/app_list/search/omnibox_provider.cc b/chrome/browser/ui/app_list/search/omnibox_provider.cc
-index fbf7b26028ebd2a1d764c3494387ac1373be8b1f..c09de3e559f5833ef5a10b41dd61a7daced2b07a 100644
+index 9dfb228e1d71345580601bc4897e8d53faee8540..1cc62cd28ab50c6ac3a61a815cabc227c06a92e7 100644
 --- a/chrome/browser/ui/app_list/search/omnibox_provider.cc
 +++ b/chrome/browser/ui/app_list/search/omnibox_provider.cc
-@@ -18,13 +18,15 @@
- #include "ui/app_list/search_result.h"
- #include "url/gurl.h"
+@@ -6,6 +6,7 @@
  
+ #include "ash/app_list/model/search_result.h"
+ #include "base/memory/ptr_util.h"
 +#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
-+
- namespace app_list {
- 
- OmniboxProvider::OmniboxProvider(Profile* profile,
+ #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+ #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
+ #include "chrome/browser/profiles/profile.h"
+@@ -24,7 +25,7 @@ OmniboxProvider::OmniboxProvider(Profile* profile,
                                   AppListControllerDelegate* list_controller)
      : profile_(profile),
        list_controller_(list_controller),
