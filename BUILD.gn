@@ -283,8 +283,6 @@ action("create_dist_zips") {
   if (is_win) {
     inputs += [
       "$antimuon_dist_dir/chrome_elf.dll",
-      "$antimuon_dist_dir/libEGL.dll",
-      "$antimuon_dist_dir/libGLESv2.dll",
       "$antimuon_dist_dir/$widevine_cdm_path/widevinecdmadapter.dll",
     ]
   }

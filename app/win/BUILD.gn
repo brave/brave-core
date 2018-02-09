@@ -45,8 +45,6 @@ copy("dist_widevine_resources") {
 copy("dist_resources") {
   sources = [
     "$root_out_dir/chrome_elf.dll",
-    "$root_shlib_dir/libEGL.dll",
-    "$root_shlib_dir/libGLESv2.dll",
   ]
 
   outputs = [
@@ -56,8 +54,6 @@ copy("dist_resources") {
   public_deps = [
     "//chrome_elf",
     "//third_party/angle:copy_compiler_dll",
-    "//third_party/angle:libEGL",
-    "//third_party/angle:libGLESv2",
   ]
 }
 
