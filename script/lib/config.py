@@ -15,7 +15,7 @@ PLATFORM = {
 
 SOURCE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 CHROMIUM_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-DIST_URL = 'https://brave-laptop-binaries.s3.amazonaws.com/atom-shell/dist/'
+DIST_URL = 'https://brave-brave-binaries.s3.amazonaws.com/releases/'
 
 verbose_mode = False
 
@@ -28,7 +28,7 @@ def output_dir():
     return os.path.join(CHROMIUM_ROOT, 'out', 'Release')
   return os.path.join(CHROMIUM_ROOT, 'out_x86', 'Release')
 
-def electron_package():
+def brave_package():
   pjson = os.path.join(SOURCE_ROOT, 'package.json')
   with open(pjson) as f:
     obj = json.load(f);
@@ -36,19 +36,19 @@ def electron_package():
 
 
 def product_name():
-  return os.environ.get('npm_config_electron_product_name') or electron_package()['name']
+  return os.environ.get('npm_config_antimuon_product_name') or brave_package()['name']
 
 
 def project_name():
-  return os.environ.get('npm_config_electron_project_name') or electron_package()['name']
+  return os.environ.get('npm_config_antimuon_project_name') or brave_package()['name']
 
 
 def get_chrome_version():
-  version = os.environ.get('npm_config_electron_version') or electron_package()['version']
+  version = os.environ.get('npm_config_antimuon_version') or brave_package()['version']
   return version.split('+')[1]
 
-def get_electron_version():
-  version = os.environ.get('npm_config_electron_version') or electron_package()['version']
+def get_antimuon_version():
+  version = os.environ.get('npm_config_antimuon_version') or brave_package()['version']
   return 'v' + version.split('+')[0]
 
 
@@ -71,16 +71,16 @@ def get_chromedriver_version():
 
 
 def get_env_var(name):
-  return os.environ.get('ELECTRON_' + name) or os.environ.get('npm_config_ELECTRON_' + name, '')
+  return os.environ.get('ANTIMUON_' + name) or os.environ.get('npm_config_ANTIMUON_' + name, '')
 
 
 def s3_config():
   config = (get_env_var('S3_BUCKET'),
             get_env_var('S3_ACCESS_KEY'),
             get_env_var('S3_SECRET_KEY'))
-  message = ('Error: Please set the $ELECTRON_S3_BUCKET, '
-             '$ELECTRON_S3_ACCESS_KEY, and '
-             '$ELECTRON_S3_SECRET_KEY environment variables')
+  message = ('Error: Please set the $ANTIMUON_S3_BUCKET, '
+             '$ANTIMUON_S3_ACCESS_KEY, and '
+             '$ANTIMUON_S3_SECRET_KEY environment variables')
   assert all(len(c) for c in config), message
   return config
 

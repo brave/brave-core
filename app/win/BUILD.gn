@@ -1,0 +1,60 @@
+import("//build/util/branding.gni")
+import("//brave/build/config.gni")
+import("//media/cdm/ppapi/cdm_paths.gni")
+
+action("generate_breakpad_symbols") {
+  symbols_dir = "$antimuon_dist_dir/$antimuon_project_name.breakpad.syms"
+  outputs = [
+    symbols_dir
+  ]
+
+  args = [
+    "--symbols-dir=" + rebase_path(symbols_dir),
+    "--jobs=16",
+    rebase_path(root_out_dir)
+  ]
+
+  script = "//brave/tools/win/generate_breakpad_symbols.py"
+}
+
+group("symbol_dist_resources") {
+  public_deps = [ ":generate_breakpad_symbols" ]
+}
+
+group("widevine_cdm_adapter") {
+  data_deps = [
+    "//third_party/widevine/cdm:widevinecdm",
+  ]
+  public_deps = [
+    "//third_party/widevine/cdm:widevinecdmadapter",
+  ]
+}
+
+copy("dist_widevine_resources") {
+  sources = [
+    "$root_out_dir/$widevine_cdm_path/widevinecdmadapter.dll",
+  ]
+  outputs = [
+    "$antimuon_dist_dir/$widevine_cdm_path/{{source_file_part}}"
+  ]
+  public_deps = [
+    ":widevine_cdm_adapter",
+  ]
+}
+
+copy("dist_resources") {
+  sources = [
+    "$root_out_dir/chrome_elf.dll",
+  ]
+
+  outputs = [
+    "$antimuon_dist_dir/{{source_file_part}}",
+  ]
+
+  public_deps = [
+    "//chrome_elf",
+    "//third_party/angle:copy_compiler_dll",
+  ]
+}
+
+group("chromedriver_dist_resources") {}

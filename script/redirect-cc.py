@@ -11,7 +11,10 @@ def main():
 
 def replace_cc_arg(args):
     # Interested in -c <path>.cc
-    index_c = args.index('-c')
+    if sys.platform == 'win32':
+      index_c = args.index('/c')
+    else:
+      index_c = args.index('-c')
 
     if 0 == len(args) or index_c == len(args) - 1:
         # Something wrong, we have -c but have no path in the next arg
