@@ -19,7 +19,6 @@ import threading
 
 CONCURRENT_TASKS=4
 BRAVE_ROOT=os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-DUMP_SYMS=os.path.join(BRAVE_ROOT, 'tools', 'win', 'dump_syms.exe')
 
 
 def GetCommandOutput(command):
@@ -61,7 +60,8 @@ def GenerateSymbols(options, binaries):
         with print_lock:
           print "Generating symbols for %s" % binary
 
-      syms = GetCommandOutput([DUMP_SYMS, binary])
+      dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
+      syms = GetCommandOutput([dump_syms, binary])
       module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)\r\n", syms)
       if module_line == None:
         with print_lock:
@@ -92,6 +92,8 @@ def GenerateSymbols(options, binaries):
 
 def main():
   parser = optparse.OptionParser()
+  parser.add_option('', '--build-dir', default='',
+                    help='The build output directory.')
   parser.add_option('', '--symbols-dir', default='',
                     help='The directory where to write the symbols file.')
   parser.add_option('', '--clear', default=False, action='store_true',
@@ -103,6 +105,10 @@ def main():
                     help='Print verbose status output.')
 
   (options, directories) = parser.parse_args()
+
+  if not options.build_dir:
+    print "Required option --build-dir missing."
+    return 1
 
   if not options.symbols_dir:
     print "Required option --symbols-dir missing."
