@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 /* global chrome */
 
 const types = require('../constants/newTabTypes')
@@ -36,9 +35,7 @@ const updateBookmarkInfo = (state, url, bookmarkTreeNode) => {
 }
 
 const onDraggedSite = (state, url, destUrl, dragRight) => {
-  const stateBefore = state
   const gridSitesWithoutPreview = getGridSites(state, false)
-
   const currentPositionIndex = gridSitesWithoutPreview.findIndex(site => site.url === url)
   const finalPositionIndex = gridSitesWithoutPreview.findIndex(site => site.url === destUrl)
   let pinnedTopSites = state.pinnedTopSites.slice()
@@ -219,6 +216,11 @@ const newTabReducer = (state, action) => {
     case types.NEW_TAB_GRID_SITES_UPDATED:
       state = { ...state, gridSites: action.gridSites }
       break
+
+    case types.NEW_TAB_STATS_UPDATED:
+      state = storage.getLoadTimeData(state)
+      break
+
     default:
       break
   }

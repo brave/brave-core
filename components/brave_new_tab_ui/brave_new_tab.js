@@ -6,6 +6,7 @@ const React = require('react')
 const { render } = require('react-dom')
 const { Provider } = require('react-redux')
 const App = require('./components/app')
+const { bindActionCreators } = require('redux')
 
 window.cr.define('brave_new_tab', function () {
   'use strict'
@@ -20,8 +21,16 @@ window.cr.define('brave_new_tab', function () {
     window.i18nTemplate.process(window.document, window.loadTimeData)
   }
 
+  function statsUpdated (result) {
+    const store = require('./store')
+    const newTabActions = require('./actions/newTabActions')
+    const actions = bindActionCreators(newTabActions, store.dispatch.bind(store))
+    actions.statsUpdated()
+  }
+
   return {
-    initialize
+    initialize,
+    statsUpdated
   }
 })
 

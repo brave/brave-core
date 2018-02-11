@@ -4,8 +4,11 @@
 
 namespace content {
 class WebUIDataSource;
+class RenderViewHost;
+class WebUI;
 }
 
 class Profile;
 
 void CustomizeNewTabHTMLSource(Profile* profile, content::WebUIDataSource* source);
+void CustomizeNewTabWebUIProperties(content::WebUI* web_ui, Profile* profile, content::RenderViewHost* render_view_host);

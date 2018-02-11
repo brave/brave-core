@@ -6,7 +6,7 @@ const React = require('react')
 const cx = require('../../common/classSet')
 
 class siteRemovalNotification extends React.Component {
-  componentDidMount() {
+  componentDidMount () {
     window.i18nTemplate.process(window.document, window.loadTimeData)
   }
   render () {
