@@ -11,10 +11,15 @@ action("generate_breakpad_symbols") {
   args = [
     "--symbols-dir=" + rebase_path(symbols_dir),
     "--jobs=16",
+    "--build-dir=" + rebase_path(root_out_dir),
     rebase_path(root_out_dir)
   ]
 
   script = "//brave/tools/win/generate_breakpad_symbols.py"
+
+  deps = [
+    "//third_party/breakpad:dump_syms",
+  ]
 }
 
 group("symbol_dist_resources") {
