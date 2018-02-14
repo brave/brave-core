@@ -55,7 +55,10 @@ action("generate_breakpad_symbols") {
     "--clear",
   ]
 
-  deps = [ "//third_party/breakpad:dump_syms" ]
+  deps = [
+    "//chrome", # To be sure brave executable is ready now
+    "//third_party/breakpad:dump_syms",
+  ]
 }
 
 group("symbol_dist_resources") {
