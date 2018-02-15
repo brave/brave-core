@@ -3,11 +3,45 @@ import os.path
 import xml.etree.ElementTree
 import FP
 from os import walk
+from lib.transifex import get_xtb_files
 
 # these are hard coded values
 transifex_folder='../../../../chrome/android/java/strings/transifex'
 translations_folder='../../../../chrome/android/java/strings/translations'
 base_strings_file='../../../../chrome/android/java/strings/strings.xml'
+
+
+def parse_args():
+  parser = argparse.ArgumentParser(description='Push strings to Transifex')
+  parser.add_argument('--grd_path',
+                      nargs=1)
+  return parser.parse_args()
+
+
+def check_args():
+  transifex_info = (get_env_var('TRANSIFEX_USERNAME') and
+          get_env_var('TRANSIFEX_PASSWORD') or get_env_var('TRANSIFEX_API_KEY'))
+  message = 'TRANSIFEX_USERNAME and TRANSIFEX_PASSWORD or TRANSIFEX_API_KEY must be set'
+  assert transifex_info, message
+
+
+def main():
+  args = parse_args()
+  check_args()
+  grd_path = os.path.join(SOURCE_ROOT, args.grd_path[0])
+  filename = os.path.basename(grd_path).split('.')[0]
+
+  # Generate the intermediate Transifex format
+  xtb_files = get_xtb_files(grd_path)
+
+  # Update Transifex
+  #username = get_env_var('TRANSIFEX_USERNAME')
+  #password = get_env_var('TRANSIFEX_PASSWORD')
+  #transifex_api_key = get_env_var('TRANSIFEX_API_KEY')
+  #uploaded = upload_string_file_to_transifex(filename, xml_content, username, password, transifex_api_key)
+  #if not uploaded:
+  #  sys.exit(1)
+
 
 # sync translations from .xtb files to .xml files to be uploaded on transifex
 def SyncTranslationsToTransifex():

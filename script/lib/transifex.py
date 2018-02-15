@@ -80,3 +80,6 @@ def generate_strings_xml_from_grd(output_xml_file_handle, grd_path):
   os.write(output_xml_file_handle, xml_string)
   return xml_string
 
+
+def get_xtb_files(grd_path):
+  print "get xtb files for: %s" % grd_path
