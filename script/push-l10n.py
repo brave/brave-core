@@ -4,7 +4,7 @@ import sys
 import tempfile
 import xml.etree.ElementTree
 from lib.config import get_env_var
-from lib.transifex import upload_string_file_to_transifex, generate_strings_xml_from_grd
+from lib.transifex import upload_source_string_file_to_transifex, generate_source_strings_xml_from_grd
 
 
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -32,13 +32,13 @@ def main():
   filename = os.path.basename(grd_path).split('.')[0]
 
   # Generate the intermediate Transifex format
-  xml_content = generate_strings_xml_from_grd(output_xml_file_handle, grd_path)
+  xml_content = generate_source_strings_xml_from_grd(output_xml_file_handle, grd_path)
 
   # Update Transifex
   username = get_env_var('TRANSIFEX_USERNAME')
   password = get_env_var('TRANSIFEX_PASSWORD')
   transifex_api_key = get_env_var('TRANSIFEX_API_KEY')
-  uploaded = upload_string_file_to_transifex(filename, xml_content, username, password, transifex_api_key)
+  uploaded = upload_source_string_file_to_transifex(filename, xml_content, username, password, transifex_api_key)
   os.close(output_xml_file_handle)
   if not uploaded:
     sys.exit(1)
