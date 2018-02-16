@@ -1,0 +1,1095 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-TW">
+<translation id="1008557486741366299">現在不要</translation>
+<translation id="1015730422737071372">提供其他詳細資訊</translation>
+<translation id="1021110881106174305">接受的信用卡</translation>
+<translation id="1032854598605920125">順時針旋轉</translation>
+<translation id="1038842779957582377">不明名稱</translation>
+<translation id="1050038467049342496">關閉其他應用程式</translation>
+<translation id="1055184225775184556">復原新增(&amp;U)</translation>
+<translation id="10614374240317010">一律不儲存</translation>
+<translation id="1066396345355680611">你可能無法再存取 <ph name="SITE" /> 和其他網站上的受保護內容。</translation>
+<translation id="106701514854093668">電腦版書籤</translation>
+<translation id="1074497978438210769">不安全</translation>
+<translation id="1080116354587839789">符合視窗寬度</translation>
+<translation id="1088860948719068836">新增持卡人姓名</translation>
+<translation id="1103523840287552314">一律翻譯<ph name="LANGUAGE" /></translation>
+<translation id="1107591249535594099">勾選後，Chrome 會在這個裝置上儲存您的信用卡複本，以便更快填寫資訊。</translation>
+<translation id="1110994991967754504">選取<ph name="PERMISSION_NAME" />權限設定</translation>
+<translation id="1111153019813902504">最近使用過的書籤</translation>
+<translation id="1113869188872983271">復原重新排序(&amp;U)</translation>
+<translation id="1126551341858583091">佔用的本機儲存空間大小：<ph name="CRASH_SIZE" />。</translation>
+<translation id="112840717907525620">政策快取正確</translation>
+<translation id="1132774398110320017">Chrome 自動填入設定...</translation>
+<translation id="1150979032973867961">伺服器無法證明其屬於 <ph name="DOMAIN" /> 網域；其安全性憑證未取得你電腦作業系統的信任。這可能是因為設定錯誤，或有攻擊者攔截你的連線所致。</translation>
+<translation id="1151972924205500581">請輸入密碼</translation>
+<translation id="1152921474424827756">存取 <ph name="URL" /> 的<ph name="BEGIN_LINK" />頁庫存檔副本<ph name="END_LINK" /></translation>
+<translation id="1158211211994409885"><ph name="HOST_NAME" /> 意外中斷連線。</translation>
+<translation id="1161325031994447685">重新連線至 Wi-Fi 網路</translation>
+<translation id="1165039591588034296">錯誤</translation>
+<translation id="1175364870820465910">列印(&amp;P)...</translation>
+<translation id="1181037720776840403">移除</translation>
+<translation id="1184214524891303587"><ph name="BEGIN_WHITEPAPER_LINK" />自動向 Google 回報<ph name="END_WHITEPAPER_LINK" />疑似安全性事件的詳細資料。<ph name="PRIVACY_PAGE_LINK" /></translation>
+<translation id="1193706408197842297">未完成付款程序</translation>
+<translation id="1201402288615127009">繼續</translation>
+<translation id="1201895884277373915">這個網站的更多內容</translation>
+<translation id="1206967143813997005">縮寫簽名無效</translation>
+<translation id="1209206284964581585">暫時隱藏</translation>
+<translation id="121201262018556460">你嘗試前往 <ph name="DOMAIN" />，但伺服器所提供的憑證含有防護力薄弱的金鑰。攻擊者可能已破壞私密金鑰，而該伺服器可能並非你的目標伺服器 (你的連線對象可能是攻擊者的電腦)。</translation>
+<translation id="1219129156119358924">系統安全性</translation>
+<translation id="1227224963052638717">不明政策。</translation>
+<translation id="1227633850867390598">隱藏政策值</translation>
+<translation id="1228893227497259893">實體識別碼錯誤</translation>
+<translation id="1232569758102978740">未命名</translation>
+<translation id="1253921432148366685"><ph name="TYPE_1" />、<ph name="TYPE_2" /> (已同步)</translation>
+<translation id="1263231323834454256">閱讀清單</translation>
+<translation id="1264126396475825575">當機報告擷取時間：<ph name="CRASH_TIME" /> (尚未上傳或略過)</translation>
+<translation id="1270502636509132238">取件方式</translation>
+<translation id="1285320974508926690">一律不翻譯此網站</translation>
+<translation id="129553762522093515">最近關閉的分頁</translation>
+<translation id="129863573139666797"><ph name="BEGIN_LINK" />試試看清除 Cookie<ph name="END_LINK" /></translation>
+<translation id="1333989956347591814">以下各方<ph name="BEGIN_EMPHASIS" />可能仍會看到<ph name="END_EMPHASIS" />你的活動：
+        <ph name="BEGIN_LIST" />
+          <ph name="LIST_ITEM" />你造訪的網站
+          <ph name="LIST_ITEM" />你的雇主或學校
+          <ph name="LIST_ITEM" />你的網際網路服務供應商
+        <ph name="END_LIST" /></translation>
+<translation id="1339601241726513588">註冊網域：</translation>
+<translation id="1340482604681802745">取件地址</translation>
+<translation id="1344588688991793829">Chromium 自動填入設定...</translation>
+<translation id="1348198688976932919">你要造訪的網站含有不安全的應用程式</translation>
+<translation id="1374468813861204354">建議</translation>
+<translation id="1375198122581997741">關於版本</translation>
+<translation id="1377321085342047638">卡號</translation>
+<translation id="139305205187523129"><ph name="HOST_NAME" /> 未傳送任何資料。</translation>
+<translation id="1407135791313364759">全部開啟</translation>
+<translation id="1413809658975081374">隱私權設定發生錯誤</translation>
+<translation id="14171126816530869">位於 <ph name="LOCALITY" /> 的 <ph name="ORGANIZATION" />，已經過 <ph name="ISSUER" /> 驗證身分。</translation>
+<translation id="1426410128494586442">是</translation>
+<translation id="1430915738399379752">列印</translation>
+<translation id="1484290072879560759">選擇運送地址</translation>
+<translation id="1506687042165942984">顯示這個網頁的儲存複本 (亦即現已不再使用的版本)。</translation>
+<translation id="1517433312004943670">必須輸入電話號碼</translation>
+<translation id="1517500485252541695">接受的信用卡和簽帳金融卡</translation>
+<translation id="1519264250979466059">建立日期</translation>
+<translation id="1527263332363067270">正在等待連線…</translation>
+<translation id="1532118530259321453">這個網頁顯示</translation>
+<translation id="153384715582417236">暫無內容</translation>
+<translation id="154408704832528245">選擇快遞地址</translation>
+<translation id="1549470594296187301">您必須啟用 JavaScript 才能使用這項功能。</translation>
+<translation id="1559528461873125649">找不到你所指定的檔案或目錄</translation>
+<translation id="1559572115229829303">&lt;p&gt;您裝置的日期和時間 (<ph name="DATE_AND_TIME" />) 不正確，因此無法與 <ph name="BEGIN_BOLD" /><ph name="DOMAIN" /><ph name="END_BOLD" /> 建立私人連線。&lt;/p&gt;
+
+      &lt;p&gt;請前往「設定」應用程式的「一般設定」專區調整日期和時間。&lt;strong&gt;&lt;/strong&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/p&gt;</translation>
+<translation id="1583429793053364125">顯示這個網頁時發生錯誤。</translation>
+<translation id="1590457302292452960">產生高強度密碼...</translation>
+<translation id="1592005682883173041">本機資料存取權</translation>
+<translation id="1594030484168838125">選擇</translation>
+<translation id="1620510694547887537">攝影機</translation>
+<translation id="1629803312968146339">您希望 Chrome 儲存這張信用卡嗎？</translation>
+<translation id="1639239467298939599">載入中</translation>
+<translation id="1640180200866533862">使用者政策</translation>
+<translation id="1640244768702815859">請嘗試<ph name="BEGIN_LINK" />造訪網站首頁<ph name="END_LINK" />。</translation>
+<translation id="1644184664548287040">網路設定無效，無法匯入。</translation>
+<translation id="1644574205037202324">歷史紀錄</translation>
+<translation id="1645368109819982629">不支援的通訊協定</translation>
+<translation id="1655462015569774233">{1,plural, =1{這個伺服器無法證明所在網域是 <ph name="DOMAIN" />；伺服器的安全性憑證已在昨天過期。這可能是因為設定錯誤，或是有攻擊者攔截您的連線。您電腦的時鐘目前設為 <ph name="CURRENT_DATE" />，這是正確的時間嗎？如果不是的話，請更新系統時鐘，然後重新整理這個網頁。}other{這個伺服器無法證明所在網域是 <ph name="DOMAIN" />；伺服器的安全性憑證已在 # 天前過期。這可能是因為設定錯誤，或是有攻擊者攔截您的連線。您電腦的時鐘目前設為 <ph name="CURRENT_DATE" />，這是正確的時間嗎？如果不是的話，請更新系統時鐘，然後重新整理這個網頁。}}</translation>
+<translation id="1656489000284462475">取件</translation>
+<translation id="1663943134801823270">信用卡和地址資訊皆來自 Chrome。你可以在<ph name="BEGIN_LINK" />設定<ph name="END_LINK" />頁面管理這些資訊。</translation>
+<translation id="1676269943528358898"><ph name="SITE" /> 通常使用加密方式保護您的資訊。但 Google Chrome 這次嘗試連線到 <ph name="SITE" /> 時，該網站傳回了異常且錯誤的憑證。這可能是因為有攻擊者企圖偽裝成 <ph name="SITE" />，或是受到 Wi-Fi 登入畫面影響而造成連線中斷。不過請放心，Google Chrome 已及時停止連線，並未傳輸任何資料，因此您的資訊仍然安全無虞。</translation>
+<translation id="168841957122794586">伺服器憑證含有防護力薄弱的加密編譯金鑰。</translation>
+<translation id="1706954506755087368">{1,plural, =1{這個伺服器無法證明所在網域是 <ph name="DOMAIN" />；伺服器的安全性憑證預定明天才生效。這可能是因為設定錯誤，或是有攻擊者攔截您的連線。}other{這個伺服器無法證明所在網域是 <ph name="DOMAIN" />；伺服器的安全性憑證預定 # 天後才生效。這可能是因為設定錯誤，或是有攻擊者攔截您的連線。}}</translation>
+<translation id="1710259589646384581">作業系統</translation>
+<translation id="1721312023322545264">你必須獲得<ph name="NAME" />授權，才能造訪這個網站</translation>
+<translation id="1721424275792716183">* 這是必填欄位</translation>
+<translation id="1727741090716970331">新增有效的信用卡號碼</translation>
+<translation id="1728677426644403582">目前顯示的是網頁原始碼</translation>
+<translation id="173080396488393970">不支援這種信用卡類型</translation>
+<translation id="1734864079702812349">Amex</translation>
+<translation id="1734878702283171397">建議您與系統管理員聯絡。</translation>
+<translation id="1740951997222943430">請輸入有效的到期月份</translation>
+<translation id="17513872634828108">開啟分頁</translation>
+<translation id="1753706481035618306">頁碼</translation>
+<translation id="1763864636252898013">伺服器無法證明其屬於 <ph name="DOMAIN" /> 網域；其安全性憑證未取得你裝置作業系統的信任。這可能是因為設定錯誤，或有攻擊者攔截你的連線所致。</translation>
+<translation id="1768211456781949159"><ph name="BEGIN_LINK" />嘗試執行 Windows 網路診斷<ph name="END_LINK" />。</translation>
+<translation id="1783075131180517613">請更新你的同步通關密語。</translation>
+<translation id="1787142507584202372">這裡會顯示你最近開啟的分頁</translation>
+<translation id="1789575671122666129">彈出式視窗</translation>
+<translation id="1791429645902722292">Google Smart Lock</translation>
+<translation id="1803264062614276815">持卡人姓名</translation>
+<translation id="1806541873155184440">新增日期：<ph name="ADDED_TO_AUTOFILL_MONTH" /></translation>
+<translation id="1821930232296380041">要求或要求參數無效</translation>
+<translation id="1826516787628120939">檢查中</translation>
+<translation id="1834321415901700177">這個網站含有有害程式</translation>
+<translation id="1840414022444569775">這組信用卡號碼已經使用過了</translation>
+<translation id="1842969606798536927">支付</translation>
+<translation id="1871208020102129563">Proxy 設定為使用固定的 Proxy 伺服器，而非 .pac 指令碼網址。</translation>
+<translation id="1871284979644508959">必填欄位</translation>
+<translation id="1874765382782611674">接受的簽帳金融卡</translation>
+<translation id="187918866476621466">開啟起始網頁</translation>
+<translation id="1883255238294161206">收合清單</translation>
+<translation id="1898423065542865115">篩選</translation>
+<translation id="1916770123977586577">如要將你更新過的設定套用到這個網站，請重新載入這個網頁</translation>
+<translation id="1919345977826869612">廣告</translation>
+<translation id="192020519938775529">{COUNT,plural, =0{無}=1{1 個網站}other{# 個網站}}</translation>
+<translation id="1927235823738766038">接受的信用卡和簽帳金融卡</translation>
+<translation id="194030505837763158">前往 <ph name="LINK" /></translation>
+<translation id="1948773908305951926">接受的預付卡</translation>
+<translation id="1962204205936693436"><ph name="DOMAIN" /> 書籤</translation>
+<translation id="1973335181906896915">序列化錯誤</translation>
+<translation id="1974060860693918893">進階</translation>
+<translation id="1978555033938440688">韌體版本</translation>
+<translation id="2001146170449793414">{COUNT,plural, =1{以及另外 1 個應用程式}other{以及另外 # 個應用程式}}</translation>
+<translation id="2025186561304664664">Proxy 已設為自動設定。</translation>
+<translation id="2030481566774242610">你要找的是 <ph name="LINK" /> 嗎？</translation>
+<translation id="2032962459168915086"><ph name="BEGIN_LINK" />檢查 Proxy 和防火牆<ph name="END_LINK" /></translation>
+<translation id="2053553514270667976">郵遞區號</translation>
+<translation id="2064691555167957331">{COUNT,plural, =1{1 個建議項目}other{# 個建議項目}}</translation>
+<translation id="2065985942032347596">需要驗證</translation>
+<translation id="2079545284768500474">復原</translation>
+<translation id="20817612488360358">雖然系統 Proxy 設定已設為使用，不過也指定了明確 Proxy 設定。</translation>
+<translation id="2086652334978798447">如要取得個人化的 Google 推薦內容，請登入 Chrome。</translation>
+<translation id="2091887806945687916">音訊</translation>
+<translation id="2094505752054353250">網域不符</translation>
+<translation id="2096368010154057602">省</translation>
+<translation id="2108755909498034140">重新啟動電腦</translation>
+<translation id="2113977810652731515">信用卡</translation>
+<translation id="2114841414352855701">由於政策被「<ph name="POLICY_NAME" />」覆寫了，因此遭到略過。</translation>
+<translation id="2138201775715568214">正在尋找附近的實體化網路網頁</translation>
+<translation id="213826338245044447">行動版書籤</translation>
+<translation id="214556005048008348">取消付款</translation>
+<translation id="2147827593068025794">背景同步處理</translation>
+<translation id="2148613324460538318">新增卡片</translation>
+<translation id="2149973817440762519">編輯書籤</translation>
+<translation id="2154054054215849342">你的網域無法使用同步功能</translation>
+<translation id="2154484045852737596">編輯卡片資訊</translation>
+<translation id="2166049586286450108">完整管理員存取權</translation>
+<translation id="2166378884831602661">這個網站無法提供安全連線</translation>
+<translation id="2181821976797666341">政策</translation>
+<translation id="2183608646556468874">電話號碼</translation>
+<translation id="2184405333245229118">{COUNT,plural, =1{1 個地址}other{# 個地址}}</translation>
+<translation id="2187317261103489799">偵測 (預設)</translation>
+<translation id="2202020181578195191">請輸入有效的到期年份</translation>
+<translation id="2212735316055980242">找不到政策</translation>
+<translation id="2213606439339815911">正在擷取項目...</translation>
+<translation id="2218879909401188352">目前在 <ph name="BEGIN_BOLD" /><ph name="SITE" /><ph name="END_BOLD" /> 上的攻擊者可能會讓你安裝不安全的應用程式，導致裝置受損、手機帳單中多出隱藏費用，或是個人資訊遭竊。<ph name="BEGIN_LEARN_MORE_LINK" />瞭解詳情<ph name="END_LEARN_MORE_LINK" /></translation>
+<translation id="2230458221926704099">請使用<ph name="BEGIN_LINK" />診斷應用程式<ph name="END_LINK" />修正連線問題</translation>
+<translation id="2239100178324503013">立即傳送</translation>
+<translation id="225207911366869382">這個政策值已遭汰換。</translation>
+<translation id="2262243747453050782">HTTP 錯誤</translation>
+<translation id="2270484714375784793">電話號碼</translation>
+<translation id="2292556288342944218">您的網際網路存取權遭到封鎖</translation>
+<translation id="2298151730144880294">這個網頁上的嵌入式網頁顯示</translation>
+<translation id="230155334948463882">新信用卡？</translation>
+<translation id="2316887270356262533">釋出不到 1 MB。下次造訪部分網站時，載入速度可能會變慢。</translation>
+<translation id="2317259163369394535"><ph name="DOMAIN" /> 要求提供使用者名稱和密碼。</translation>
+<translation id="2317583587496011522">接受簽帳金融卡。</translation>
+<translation id="2337852623177822836">管理員所控制的設定</translation>
+<translation id="2354001756790975382">其他書籤</translation>
+<translation id="2354430244986887761">Google 安全瀏覽服務最近在 <ph name="SITE" /> <ph name="BEGIN_LINK" />發現有害的應用程式<ph name="END_LINK" />。</translation>
+<translation id="2355395290879513365">攻擊者可能會看到你正在這個網站上瀏覽的圖片，並以修改圖片內容的方式讓你受騙。</translation>
+<translation id="2356070529366658676">詢問</translation>
+<translation id="2359629602545592467">多種</translation>
+<translation id="2359808026110333948">繼續</translation>
+<translation id="2365563543831475020">當機報告擷取時間：<ph name="CRASH_TIME" /> (尚未上傳)</translation>
+<translation id="2367567093518048410">等級</translation>
+<translation id="2384307209577226199">企業預設</translation>
+<translation id="2386255080630008482">伺服器憑證已遭撤銷。</translation>
+<translation id="2392959068659972793">顯示尚未設定任何值的政策</translation>
+<translation id="239429038616798445">不支援所選的運送方式，請改選其他方式。</translation>
+<translation id="2396249848217231973">復原刪除(&amp;U)</translation>
+<translation id="2413528052993050574">伺服器無法證明其屬於 <ph name="DOMAIN" /> 網域；其安全性憑證已遭撤銷。這可能是因為設定錯誤，或有攻擊者攔截你的連線所致。</translation>
+<translation id="2463739503403862330">填入</translation>
+<translation id="2465655957518002998">選擇快遞方式</translation>
+<translation id="2467694685043708798"><ph name="BEGIN_LINK" />執行網路診斷<ph name="END_LINK" /></translation>
+<translation id="2479410451996844060">無效的搜尋網址。</translation>
+<translation id="2482878487686419369">通知</translation>
+<translation id="2491120439723279231">伺服器憑證含有錯誤。</translation>
+<translation id="2495083838625180221">JSON 剖析器</translation>
+<translation id="2495093607237746763">勾選後，Chromium 會將您的信用卡資料儲存在這個裝置上，以加快表單填寫速度。</translation>
+<translation id="2498091847651709837">掃描新信用卡</translation>
+<translation id="2501278716633472235">返回</translation>
+<translation id="2503184589641749290">接受的簽帳金融卡和預付卡</translation>
+<translation id="2515629240566999685">檢查所在位置的網路訊號</translation>
+<translation id="2524461107774643265">新增詳細資訊</translation>
+<translation id="2536110899380797252">新增地址</translation>
+<translation id="2539524384386349900">偵測</translation>
+<translation id="255002559098805027"><ph name="HOST_NAME" /> 傳送的回應無效。</translation>
+<translation id="2556876185419854533">復原編輯(&amp;U)</translation>
+<translation id="2586657967955657006">剪貼簿</translation>
+<translation id="2587730715158995865">出自「<ph name="ARTICLE_PUBLISHER" />」。閱讀這篇報導和另外 <ph name="OTHER_ARTICLE_COUNT" /> 篇報導。</translation>
+<translation id="2587841377698384444">Directory API ID：</translation>
+<translation id="2597378329261239068">此文件受到密碼保護，請輸入密碼。</translation>
+<translation id="2609632851001447353">變化版本</translation>
+<translation id="262424810616849754">{COUNT,plural, =0{無}=1{1 個應用程式 ($1)}=2{2 個應用程式 ($1、$2)}other{# 個應用程式 ($1、$2 $3)}}</translation>
+<translation id="2625385379895617796">你的時鐘時間過快</translation>
+<translation id="2634124572758952069">找不到 <ph name="HOST_NAME" /> 的伺服器 IP 位址。</translation>
+<translation id="2639739919103226564">狀態：</translation>
+<translation id="2649204054376361687"><ph name="COUNTRY" />，<ph name="CITY" /></translation>
+<translation id="2650446666397867134">存取檔案遭拒</translation>
+<translation id="2653659639078652383">提交</translation>
+<translation id="2666117266261740852">關閉其他分頁或應用程式</translation>
+<translation id="2674170444375937751">確定要從你的紀錄中刪除這些網頁嗎？</translation>
+<translation id="2677748264148917807">離開</translation>
+<translation id="2699302886720511147">接受的卡片</translation>
+<translation id="2702801445560668637">閱讀清單</translation>
+<translation id="2704283930420550640">政策值格式不符。</translation>
+<translation id="2704951214193499422">Chromium 目前無法驗證您的信用卡，請稍後再試。</translation>
+<translation id="2705137772291741111">已儲存 (快取) 這個網站的複本，但無法讀取。</translation>
+<translation id="2709516037105925701">自動填入</translation>
+<translation id="2710942282213947212">你的電腦上有軟體在阻止 Chromium 建立安全的網路連線</translation>
+<translation id="2712173769900027643">要求權限</translation>
+<translation id="2720342946869265578">鄰近網頁</translation>
+<translation id="2721148159707890343">要求成功</translation>
+<translation id="2728127805433021124">伺服器憑證是以防護力較弱的簽章演算法進行簽署。</translation>
+<translation id="2730326759066348565"><ph name="BEGIN_LINK" />執行連線診斷<ph name="END_LINK" /></translation>
+<translation id="2738330467931008676">選擇取件地址</translation>
+<translation id="2740531572673183784">確定</translation>
+<translation id="2742870351467570537">移除選取的項目</translation>
+<translation id="277133753123645258">運送方式</translation>
+<translation id="277499241957683684">沒有裝置紀錄</translation>
+<translation id="2784949926578158345">連線已重設。</translation>
+<translation id="2788784517760473862">接受的信用卡</translation>
+<translation id="2794233252405721443">網站遭到封鎖</translation>
+<translation id="2795286477369100655">你要離開這個網站嗎？</translation>
+<translation id="2799020568854403057">你要造訪的網站含有有害的應用程式</translation>
+<translation id="2803306138276472711">Google 安全瀏覽功能最近在 <ph name="SITE" /> 上<ph name="BEGIN_LINK" />偵測到惡意軟體<ph name="END_LINK" />。即使是平常可以安全使用的網站，有時也會遭到惡意軟體感染。</translation>
+<translation id="2824775600643448204">網址與搜尋列</translation>
+<translation id="2826760142808435982">連線採用 <ph name="CIPHER" /> 加密，並設有 <ph name="KX" /> 金鑰交換機制。</translation>
+<translation id="2835170189407361413">清除表單</translation>
+<translation id="2851634818064021665">你必須獲得授權，才能造訪這個網站</translation>
+<translation id="2856444702002559011">攻擊者可能會試圖從 <ph name="BEGIN_BOLD" /><ph name="SITE" /><ph name="END_BOLD" /> 竊取你的資訊 (例如密碼、郵件或信用卡資料)。<ph name="BEGIN_LEARN_MORE_LINK" />瞭解詳情<ph name="END_LEARN_MORE_LINK" /></translation>
+<translation id="2889159643044928134">不要重新載入</translation>
+<translation id="2909946352844186028">系統偵測到網路變更。</translation>
+<translation id="2916038427272391327">關閉其他程式</translation>
+<translation id="2922350208395188000">無法檢查伺服器憑證。</translation>
+<translation id="2925673989565098301">快遞方式</translation>
+<translation id="2928905813689894207">帳單地址</translation>
+<translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW" />}=1{「<ph name="SHIPPING_ADDRESS_PREVIEW" />」和另外 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES" /> 個地址}other{「<ph name="SHIPPING_ADDRESS_PREVIEW" />」和另外 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES" /> 個地址}}</translation>
+<translation id="2941952326391522266">伺服器無法證明其屬於 <ph name="DOMAIN" /> 網域；其安全性憑證來自 <ph name="DOMAIN2" /> 網域。這可能是因為設定錯誤，或有攻擊者攔截你的連線所致。</translation>
+<translation id="2948083400971632585">你可以在設定頁面停用任何為連線設置的 Proxy。</translation>
+<translation id="2955913368246107853">關閉搜尋列</translation>
+<translation id="2958431318199492670">網路設定未遵循 ONC 標準，系統可能無法匯入部分設定。</translation>
+<translation id="2966678944701946121">到期日：<ph name="EXPIRATION_DATE_ABBR" />，新增日期：<ph name="ADDED_TO_AUTOFILL_MONTH" /></translation>
+<translation id="2969319727213777354">您必須正確設定時鐘，才能建立安全連線。這是因為網站驗證身分時所使用的憑證僅於特定一段時間內有效。由於您裝置的時鐘不正確，因此 Google Chrome 無法驗證這些憑證。</translation>
+<translation id="2972581237482394796">重做(&amp;R)</translation>
+<translation id="2977665033722899841"><ph name="ROW_NAME" />，目前已選取。<ph name="ROW_CONTENT" /></translation>
+<translation id="298138621710431427">請協助我解決這個問題</translation>
+<translation id="2985306909656435243">啟用後，Chromium 會將您的信用卡資料儲存在這個裝置上，以加快表單填寫速度。</translation>
+<translation id="2985398929374701810">請輸入有效的地址</translation>
+<translation id="2986368408720340940">不支援所選的取件方式，請改選其他方式。</translation>
+<translation id="2991174974383378012">與網站分享</translation>
+<translation id="2991571918955627853">目前無法造訪 <ph name="SITE" />，因為這個網站使用 HSTS。網路錯誤和攻擊行為通常是暫時性的，因此這個網頁可能稍後就會恢復正常狀態。</translation>
+<translation id="3005723025932146533">顯示儲存的複本</translation>
+<translation id="3008447029300691911">請輸入 <ph name="CREDIT_CARD" /> 的信用卡安全碼。完成驗證後，這個網站就會取得您的信用卡詳細資訊。</translation>
+<translation id="3010559122411665027">清單項目「<ph name="ENTRY_INDEX" />」：<ph name="ERROR" /></translation>
+<translation id="301521992641321250">已自動封鎖</translation>
+<translation id="3024663005179499861">政策類型有誤</translation>
+<translation id="3032412215588512954">您要重新載入這個網站嗎？</translation>
+<translation id="3037605927509011580">糟糕！</translation>
+<translation id="3039538478787849737">要將卡片資訊儲存到 Google 嗎？</translation>
+<translation id="3041612393474885105">憑證資訊</translation>
+<translation id="3063697135517575841">Chrome 目前無法驗證您的信用卡，請稍後再試。</translation>
+<translation id="3064966200440839136">即將離開無痕模式，改為使用外部應用程式付款，要繼續嗎？</translation>
+<translation id="3083099961703215236">{COUNT,plural, =0{無}=1{1 組密碼}other{# 組密碼}}</translation>
+<translation id="3093245981617870298">你處於離線狀態。</translation>
+<translation id="3096100844101284527">新增取件地址</translation>
+<translation id="3105172416063519923">資產 ID：</translation>
+<translation id="3109728660330352905">您未獲得授權，無法瀏覽這個網頁。</translation>
+<translation id="3120730422813725195">Elo</translation>
+<translation id="31207688938192855"><ph name="BEGIN_LINK" />嘗試執行連線診斷<ph name="END_LINK" />。</translation>
+<translation id="3145945101586104090">無法將回應解碼</translation>
+<translation id="3150653042067488994">伺服器暫時發生錯誤</translation>
+<translation id="3154506275960390542">這個網頁中的表單可能不會經由安全途徑提交。其他人可能會在傳輸期間檢視你的資料，攻擊者也可能會修改這些資料，導致伺服器接收不同內容。</translation>
+<translation id="3157931365184549694">還原</translation>
+<translation id="3162559335345991374">目前使用的 Wi-Fi 網路可能會要求您造訪登入網頁。</translation>
+<translation id="3167968892399408617">當您關閉所有無痕式分頁後，您在其中瀏覽的網頁都不會保留在瀏覽器紀錄、Cookie 儲存庫或搜尋紀錄中。不過，您下載的檔案或建立的書籤全部都會保留下來。</translation>
+<translation id="3169472444629675720">Discover</translation>
+<translation id="3174168572213147020">島</translation>
+<translation id="3176929007561373547">檢查您的 Proxy 設定，或是與您的網路管理員聯絡
+      確認您的 Proxy 伺服器運作正常。如果您認為自己不需要使用
+      Proxy 伺服器：
+      <ph name="PLATFORM_TEXT" /></translation>
+<translation id="320323717674993345">取消付款</translation>
+<translation id="3207960819495026254">已加入書籤</translation>
+<translation id="3209375525920864198">請輸入有效的工作階段名稱。</translation>
+<translation id="3211223744486044430">只要將這張卡片的資訊儲存到你的 Google 帳戶中和這部裝置上，下次即可更快完成付款程序。</translation>
+<translation id="3225919329040284222">伺服器呈現的憑證與內建的預期條件不符。我們在系統中針對特定高安全性的網站內建了這些預期條件，目的在於保護你的資料安全無虞。</translation>
+<translation id="3226128629678568754">按下重新載入按鈕，重新提交載入網頁所需的資料。</translation>
+<translation id="3227137524299004712">麥克風</translation>
+<translation id="3228969707346345236">網頁已經是<ph name="LANGUAGE" />，翻譯作業失敗。</translation>
+<translation id="323107829343500871">輸入 <ph name="CREDIT_CARD" /> 的信用卡安全碼</translation>
+<translation id="3234666976984236645">一律偵測這個網站的重要內容</translation>
+<translation id="3254409185687681395">把此頁加入書籤</translation>
+<translation id="3270847123878663523">復原重新排序(&amp;U)</translation>
+<translation id="3282497668470633863">新增持卡人姓名</translation>
+<translation id="3286538390144397061">立即重新啟動</translation>
+<translation id="3287510313208355388">上線時進行下載</translation>
+<translation id="3293642807462928945">進一步瞭解 <ph name="POLICY_NAME" /> 政策</translation>
+<translation id="3303855915957856445">找不到相符的搜尋結果</translation>
+<translation id="3305707030755673451">您已在 <ph name="TIME" />使用同步通關密語對資料進行加密，請輸入通關密語開始進行同步。</translation>
+<translation id="3320021301628644560">新增帳單地址</translation>
+<translation id="333371639341676808">防止此網頁產生其他對話方塊。</translation>
+<translation id="3338095232262050444">安全</translation>
+<translation id="3340978935015468852">設定</translation>
+<translation id="3345135638360864351">無法將您的網站存取要求傳送給<ph name="NAME" />，請再試一次。</translation>
+<translation id="3355823806454867987">變更 Proxy 設定...</translation>
+<translation id="3361596688432910856">Chrome <ph name="BEGIN_EMPHASIS" />不會儲存<ph name="END_EMPHASIS" />下列資訊：
+        <ph name="BEGIN_LIST" />
+          <ph name="LIST_ITEM" />你的瀏覽紀錄
+          <ph name="LIST_ITEM" />Cookie 和網站資料
+          <ph name="LIST_ITEM" />你在表單中輸入的資訊
+        <ph name="END_LIST" /></translation>
+<translation id="3369192424181595722">時鐘錯誤</translation>
+<translation id="337363190475750230">已取消佈建</translation>
+<translation id="3377188786107721145">政策解析錯誤</translation>
+<translation id="3380365263193509176">未知的錯誤</translation>
+<translation id="3380864720620200369">用戶端 ID：</translation>
+<translation id="3391030046425686457">快遞地址</translation>
+<translation id="3395827396354264108">取件方式</translation>
+<translation id="3399952811970034796">快遞地址</translation>
+<translation id="3422248202833853650">嘗試關閉其他程式以釋出記憶體。</translation>
+<translation id="3422472998109090673">目前無法連上 <ph name="HOST_NAME" />。</translation>
+<translation id="3427092606871434483">允許 (預設)</translation>
+<translation id="3427342743765426898">重做編輯(&amp;R)</translation>
+<translation id="3431636764301398940">將這張信用卡儲存到這個裝置</translation>
+<translation id="3435896845095436175">啟用</translation>
+<translation id="3447661539832366887">這個裝置的擁有者已關閉恐龍遊戲。</translation>
+<translation id="3447884698081792621">顯示憑證 (核發者：<ph name="ISSUER" />)</translation>
+<translation id="3452404311384756672">擷取間隔：</translation>
+<translation id="3462200631372590220">隱藏詳細資料</translation>
+<translation id="3467763166455606212">持卡人姓名為必填項目</translation>
+<translation id="3479539252931486093">這是未預期的情況嗎？<ph name="BEGIN_LINK" />通知我們<ph name="END_LINK" /></translation>
+<translation id="3479552764303398839">現在不要</translation>
+<translation id="3498215018399854026">我們暫時無法與您的家長聯絡，請再試一次。</translation>
+<translation id="3528171143076753409">伺服器憑證授權不可靠。</translation>
+<translation id="3530944546672790857">{COUNT,plural, =0{在已同步的裝置上至少有 1 個項目}=1{1 個項目 (在已同步的裝置上還有更多項目)}other{# 個項目 (在已同步的裝置上還有更多項目)}}</translation>
+<translation id="3539171420378717834">在這個裝置上保留這張信用卡的複本</translation>
+<translation id="3542684924769048008">選擇密碼：</translation>
+<translation id="3549644494707163724">使用你的通關密語對所有已同步處理的資料進行加密</translation>
+<translation id="3556433843310711081">你的管理員可以為你解除封鎖這個網站</translation>
+<translation id="3566021033012934673">你的連線不是私人連線</translation>
+<translation id="3574305903863751447"><ph name="COUNTRY" />，<ph name="STATE" />，<ph name="CITY" /></translation>
+<translation id="3576616784287504635"><ph name="SITE" /> 的嵌入式網頁顯示</translation>
+<translation id="358285529439630156">接受信用卡和預付卡。</translation>
+<translation id="3582930987043644930">新增名稱</translation>
+<translation id="3583757800736429874">重做移動(&amp;R)</translation>
+<translation id="3586931643579894722">隱藏詳細資訊</translation>
+<translation id="3600246354004376029"><ph name="TITLE" />，<ph name="DOMAIN" />，<ph name="TIME" /></translation>
+<translation id="3615877443314183785">請輸入有效的到期日</translation>
+<translation id="36224234498066874">清除瀏覽資料...</translation>
+<translation id="362276910939193118">顯示完整記錄</translation>
+<translation id="3623476034248543066">顯示政策值</translation>
+<translation id="3630155396527302611">如果程式已列在允許存取網路的清單中，建議您
+      從清單中將其移除，然後再重新加入。</translation>
+<translation id="3650584904733503804">驗證成功</translation>
+<translation id="3655670868607891010">如果你經常看到這個頁面，請參考這些說明：<ph name="HELP_LINK" />。</translation>
+<translation id="3658742229777143148">修訂版本</translation>
+<translation id="3678029195006412963">無法簽署要求</translation>
+<translation id="3678529606614285348">在新的無痕式視窗中開啟網頁 (Ctrl + Shift + N 鍵)</translation>
+<translation id="3679803492151881375">當機報告擷取時間：<ph name="CRASH_TIME" />，報告上傳時間：<ph name="UPLOAD_TIME" /></translation>
+<translation id="3681007416295224113">憑證資訊</translation>
+<translation id="3690164694835360974">登入行為不安全</translation>
+<translation id="3704162925118123524">您可能需要造訪目前所使用網路的登入網頁。</translation>
+<translation id="3704609568417268905"><ph name="TIME" />，<ph name="BOOKMARKED" />，<ph name="TITLE" />，<ph name="DOMAIN" /></translation>
+<translation id="370665806235115550">載入中…</translation>
+<translation id="3712624925041724820">授權已用盡</translation>
+<translation id="3714780639079136834">開啟行動數據或 Wi-Fi</translation>
+<translation id="3715597595485130451">連線至 Wi-Fi</translation>
+<translation id="3717027428350673159"><ph name="BEGIN_LINK" />檢查 Proxy、防火牆和 DNS 設定<ph name="END_LINK" /></translation>
+<translation id="372429172604983730">可能造成這個錯誤的應用程式包括防毒軟體、防火牆、網路篩選或 Proxy 軟體。</translation>
+<translation id="3736520371357197498">如果你瞭解安全性風險，也可以選擇在危險程式尚未遭到移除的狀態下<ph name="BEGIN_LINK" />造訪這個不安全的網站<ph name="END_LINK" />。</translation>
+<translation id="3739623965217189342">您複製的連結</translation>
+<translation id="3744899669254331632"><ph name="SITE" /> 傳送的憑證受到干擾，造成 Chromium 無法處理，因此你目前無法造訪該網站。網路錯誤和攻擊通常是暫時性狀態，因此這個網頁可能稍後就會恢復正常運作。</translation>
+<translation id="3748148204939282805">攻擊者可能會試圖透過 <ph name="BEGIN_BOLD" /><ph name="SITE" /><ph name="END_BOLD" /> 誘使你做一些危險行為，例如安裝軟體或提供個人資訊 (包括密碼、電話號碼或信用卡資料)。<ph name="BEGIN_LEARN_MORE_LINK" />瞭解詳情<ph name="END_LEARN_MORE_LINK" /></translation>
+<translation id="375403751935624634">伺服器錯誤，翻譯作業失敗。</translation>
+<translation id="3759461132968374835">最近沒有收到當機資訊。當機回報功能停用時發生的當機不會列在這裡。</translation>
+<translation id="3765032636089507299">安全瀏覽網頁正在建構中。</translation>
+<translation id="3778403066972421603">你要將這張信用卡的資訊儲存到你在這個裝置上的 Google 帳戶嗎？</translation>
+<translation id="3783418713923659662">Mastercard</translation>
+<translation id="3787705759683870569">到期日：<ph name="EXPIRATION_MONTH" />/<ph name="EXPIRATION_YEAR" /></translation>
+<translation id="3808375843007691220">警告：這是實驗性功能！</translation>
+<translation id="382518646247711829">如果你使用 Proxy 伺服器...</translation>
+<translation id="3828924085048779000">通關密語欄位不得留空。</translation>
+<translation id="385051799172605136">返回</translation>
+<translation id="3858027520442213535">更新日期和時間</translation>
+<translation id="3884278016824448484">裝置識別碼發生衝突</translation>
+<translation id="3885155851504623709">轄區</translation>
+<translation id="3886446263141354045">你想存取這個網站的要求已傳送給<ph name="NAME" /></translation>
+<translation id="3890664840433101773">新增電子郵件地址</translation>
+<translation id="3901925938762663762">這張信用卡已過期</translation>
+<translation id="3909695131102177774"><ph name="LABEL" />：<ph name="ERROR" /></translation>
+<translation id="3945915738023014686">已上傳的當機報告 ID：<ph name="CRASH_ID" /> (本機當機 ID：<ph name="CRASH_LOCAL_ID" />)</translation>
+<translation id="3949571496842715403">這個伺服器無法證明所屬網域為 <ph name="DOMAIN" />；其安全性憑證未指定主體別名。這可能是因為設定錯誤，或是有攻擊者攔截你的連線所致。</translation>
+<translation id="3949601375789751990">你的瀏覽紀錄會顯示在這裡</translation>
+<translation id="3963721102035795474">閱讀器模式</translation>
+<translation id="3964661563329879394">{COUNT,plural, =0{無}=1{來自 1 個網站 }other{來自 # 個網站 }}</translation>
+<translation id="397105322502079400">計算中…</translation>
+<translation id="3973234410852337861"><ph name="HOST_NAME" /> 遭到封鎖</translation>
+<translation id="3987940399970879459">不到 1 MB</translation>
+<translation id="40103911065039147">{URL_count,plural, =1{附近有 1 個網頁}other{附近有 # 個網頁}}</translation>
+<translation id="4030383055268325496">復原新增(&amp;U)</translation>
+<translation id="4058922952496707368">鍵「<ph name="SUBKEY" />」：<ph name="ERROR" /></translation>
+<translation id="4067947977115446013">新增有效的地址</translation>
+<translation id="4072486802667267160">處理你的訂單時發生錯誤，請再試一次。</translation>
+<translation id="4075732493274867456">用戶端和伺服器不支援一般 SSL 通訊協定版本或加密套件。</translation>
+<translation id="4079302484614802869">Proxy 設定已設為使用 .pac 指令碼網址，而非固定的 Proxy 伺服器。</translation>
+<translation id="4098354747657067197">您即將前往詐騙網站</translation>
+<translation id="4103249731201008433">裝置序號無效</translation>
+<translation id="410351446219883937">自動播放</translation>
+<translation id="4103763322291513355">請前往 &lt;strong&gt;chrome://policy&lt;/strong&gt; 查看列入黑名單的網址清單，以及其他系統管理員強制執行的政策。</translation>
+<translation id="4116663294526079822">永遠允許在這個網站執行</translation>
+<translation id="4117700440116928470">系統不支援這項政策的範圍。</translation>
+<translation id="4129401438321186435">{COUNT,plural, =1{以及另外 1 項表單資料}other{以及另外 # 項表單資料}}</translation>
+<translation id="4130226655945681476">檢查網路線、數據機和路由器</translation>
+<translation id="413544239732274901">瞭解詳情</translation>
+<translation id="4148925816941278100">American Express</translation>
+<translation id="4151403195736952345">使用全域預設設定 (偵測)</translation>
+<translation id="4165986682804962316">網站設定</translation>
+<translation id="4169947484918424451">您希望 Chromium 儲存這張信用卡嗎？</translation>
+<translation id="4171400957073367226">驗證簽名無效</translation>
+<translation id="4173827307318847180">{MORE_ITEMS,plural, =1{還有另外 <ph name="ITEM_COUNT" /> 個項目}other{還有另外 <ph name="ITEM_COUNT" /> 個項目}}</translation>
+<translation id="4179515394835346607"><ph name="ROW_NAME" /> <ph name="ROW_CONTENT" /></translation>
+<translation id="4196861286325780578">重做移動(&amp;R)</translation>
+<translation id="4203896806696719780"><ph name="BEGIN_LINK" />檢查防火牆和防毒軟體設定<ph name="END_LINK" /></translation>
+<translation id="4220128509585149162">當機</translation>
+<translation id="422022731706691852">攻擊者可能會試圖透過 <ph name="BEGIN_BOLD" /><ph name="SITE" /><ph name="END_BOLD" /> 誘使你安裝對瀏覽體驗有害 (例如變更你的首頁，或是在你造訪的網站上顯示多餘的廣告) 的程式。<ph name="BEGIN_LEARN_MORE_LINK" />瞭解詳情<ph name="END_LEARN_MORE_LINK" /></translation>
+<translation id="4226937834893929579"><ph name="BEGIN_LINK" />嘗試執行網路診斷<ph name="END_LINK" />。</translation>
+<translation id="4235360514405112390">有效</translation>
+<translation id="4250431568374086873">你與這個網站的連線可能有安全漏洞</translation>
+<translation id="4250680216510889253">否</translation>
+<translation id="425582637250725228">系統可能不會儲存您所做的變更。</translation>
+<translation id="4258748452823770588">簽名有誤</translation>
+<translation id="4265872034478892965">依據管理員的設定允許</translation>
+<translation id="4269787794583293679">(沒有使用者名稱)</translation>
+<translation id="4275830172053184480">重新啟動裝置</translation>
+<translation id="4280429058323657511">，到期日：<ph name="EXPIRATION_DATE_ABBR" /></translation>
+<translation id="4292213515608230699">找不到相符的實驗性功能</translation>
+<translation id="4304224509867189079">登入</translation>
+<translation id="4312866146174492540">封鎖 (預設)</translation>
+<translation id="4325863107915753736">找不到文章</translation>
+<translation id="4326324639298822553">請檢查信用卡到期日，然後再試一次</translation>
+<translation id="4331708818696583467">不安全</translation>
+<translation id="4346197816712207223">接受的信用卡</translation>
+<translation id="4356973930735388585">攻擊者可能會試圖透過這個網站在你的電腦上安裝危險程式，藉此竊取或刪除你的資訊 (例如相片、密碼、郵件和信用卡資料)。</translation>
+<translation id="4372948949327679948">預期的「<ph name="VALUE_TYPE" />」值。</translation>
+<translation id="4377125064752653719">你嘗試前往 <ph name="DOMAIN" />，但是發行者已撤銷伺服器提供的憑證。在這種情況下，請勿信任伺服器提供的安全性憑證，因為你的連線對象可能是攻擊者的電腦。</translation>
+<translation id="4394049700291259645">停用</translation>
+<translation id="4406896451731180161">搜尋結果</translation>
+<translation id="4408413947728134509"><ph name="NUM_COOKIES" /> 個 Cookie</translation>
+<translation id="4415426530740016218">取件地址</translation>
+<translation id="4424024547088906515">伺服器無法證明其屬於 <ph name="DOMAIN" /> 網域；其安全性憑證未取得 Chrome 的信任。這可能是因為設定錯誤，或有攻擊者攔截你的連線所致。</translation>
+<translation id="4432688616882109544"><ph name="HOST_NAME" /> 不接受你的登入憑證，或是你可能未提供登入憑證。</translation>
+<translation id="443673843213245140">雖然已停用 Proxy，不過已指定明確 Proxy 設定。</translation>
+<translation id="445100540951337728">接受的簽帳金融卡</translation>
+<translation id="4506176782989081258">驗證錯誤：<ph name="VALIDATION_ERROR" /></translation>
+<translation id="4506599922270137252">與系統管理員聯絡</translation>
+<translation id="450710068430902550">與管理員分享</translation>
+<translation id="4515275063822566619">信用卡和地址資訊皆來自 Chrome 和你的 Google 帳戶 (<ph name="ACCOUNT_EMAIL" />)。你可以在<ph name="BEGIN_LINK" />設定<ph name="END_LINK" />頁面管理這些資訊。</translation>
+<translation id="4522570452068850558">詳細資訊</translation>
+<translation id="4552089082226364758">Flash</translation>
+<translation id="4558551763791394412">試試看停用擴充功能。</translation>
+<translation id="457875822857220463">快遞</translation>
+<translation id="4582800630050655161">你可能失去了 Google 帳戶存取權，或身分遭到冒用。Chromium 建議你立即變更密碼。</translation>
+<translation id="4587425331216688090">要從 Chrome 中移除地址嗎？</translation>
+<translation id="4592951414987517459">您的 <ph name="DOMAIN" /> 連線使用新型加密套件進行加密。</translation>
+<translation id="4594403342090139922">復原刪除(&amp;U)</translation>
+<translation id="4611292653554630842">登入</translation>
+<translation id="4619615317237390068">在其他裝置上開啟的分頁</translation>
+<translation id="4668929960204016307">，</translation>
+<translation id="467662567472608290">伺服器無法證明其屬於 <ph name="DOMAIN" /> 網域；其安全性憑證含有錯誤。這可能是因為設定錯誤，或有攻擊者攔截你的連線所致。</translation>
+<translation id="4690462567478992370">停止使用無效的憑證</translation>
+<translation id="4690954380545377795">你可能失去了 Google 帳戶存取權，或身分遭到冒用。Chrome 建議你立即變更密碼。</translation>
+<translation id="4701488924964507374"><ph name="SENTENCE1" /> <ph name="SENTENCE2" /></translation>
+<translation id="4708268264240856090">您的連線已中斷</translation>
+<translation id="471880041731876836">你沒有這個網站的瀏覽權限</translation>
+<translation id="4722547256916164131"><ph name="BEGIN_LINK" />執行 Windows 網路診斷<ph name="END_LINK" /></translation>
+<translation id="472349245089439925">你的付款</translation>
+<translation id="4726672564094551039">重新載入政策</translation>
+<translation id="4728558894243024398">平台</translation>
+<translation id="4736825316280949806">重新啟動 Chromium</translation>
+<translation id="4744603770635761495">可執行檔的路徑</translation>
+<translation id="4749685221585524849">上次使用日期：<ph name="LAST_USED_MONTH" /></translation>
+<translation id="4750917950439032686">你傳送給這個網站的資訊 (例如密碼或信用卡號碼) 不會外洩。</translation>
+<translation id="4756388243121344051">記錄(&amp;H)</translation>
+<translation id="4758311279753947758">新增聯絡資訊</translation>
+<translation id="4759118997339041434">付款資訊自動填入功能已停用</translation>
+<translation id="4764776831041365478"><ph name="URL" /> 的網頁可能暫時無法使用或被永久移至新網址。</translation>
+<translation id="4771973620359291008">發生不明的錯誤。</translation>
+<translation id="4792143361752574037">存取工作階段檔案時發生問題，目前無法將檔案儲存到磁碟。請重新載入網頁，然後再試一次。</translation>
+<translation id="4800132727771399293">請檢查您的有效期限和信用卡安全碼，然後再試一次</translation>
+<translation id="4803924862070940586"><ph name="CURRENCY_CODE" /> <ph name="FORMATTED_TOTAL_AMOUNT" /></translation>
+<translation id="4807049035289105102">您目前無法造訪 <ph name="SITE" />，因為這個網站傳送的憑證是亂碼，Google Chrome 無法處理。網路錯誤和攻擊行為通常是暫時性的，因此這個網頁可能稍後就會正常運作。</translation>
+<translation id="4813512666221746211">網路錯誤</translation>
+<translation id="4816492930507672669">依頁面大小自動調整</translation>
+<translation id="483020001682031208">沒有可顯示的實體化網路頁面</translation>
+<translation id="4850886885716139402">檢視</translation>
+<translation id="4854362297993841467">不支援所選的快遞方式，請改選其他方式。</translation>
+<translation id="4858792381671956233">你已詢問家長是否同意你造訪這個網站</translation>
+<translation id="4880827082731008257">搜尋紀錄</translation>
+<translation id="4895877746940133817"><ph name="TYPE_1" />、<ph name="TYPE_2" />，<ph name="TYPE_3" /></translation>
+<translation id="4913131542719409934">需要進行驗證</translation>
+<translation id="4914479371620770914">{URL_count,plural, =1{還有另外 1 個網頁}other{還有另外 # 個網頁}}</translation>
+<translation id="4916962322362512664"><ph name="DEVICE_NAME" /></translation>
+<translation id="4919958102839282947">請輸入 <ph name="CREDIT_CARD" /> 的信用卡安全碼。完成驗證後，這個網站就會取得你 Google 付款帳戶中的信用卡詳細資料。</translation>
+<translation id="4923417429809017348">系統已將此網頁從不明語言翻譯成<ph name="LANGUAGE_LANGUAGE" /></translation>
+<translation id="4923459931733593730">付款</translation>
+<translation id="4926049483395192435">必須指定。</translation>
+<translation id="4926159001844873046"><ph name="SITE" /> 顯示</translation>
+<translation id="4926340098269537727"><ph name="ACTIVE_MATCH" />/<ph name="TOTAL_MATCHCOUNT" /></translation>
+<translation id="495170559598752135">動作</translation>
+<translation id="4958444002117714549">展開清單</translation>
+<translation id="4974590756084640048">重新啟用警告功能</translation>
+<translation id="4989542687859782284">尚未支援</translation>
+<translation id="4989809363548539747">這是不支援的外掛程式</translation>
+<translation id="5002932099480077015">啟用後，Chrome 會將您的信用卡複本儲存在這個裝置上，以加快表單填寫速度。</translation>
+<translation id="5018422839182700155">無法開啟這個網頁</translation>
+<translation id="5019198164206649151">備份儲存狀態不佳</translation>
+<translation id="5023310440958281426">請查看你的管理員政策</translation>
+<translation id="5029568752722684782">清除複本</translation>
+<translation id="503069730517007720">未安裝必要的「<ph name="SOFTWARE_NAME" />」根憑證。IT 管理員必須按照「<ph name="SOFTWARE_NAME" />」的設定說明修正這個問題。<ph name="FURTHER_EXPLANATION" /></translation>
+<translation id="5031870354684148875">關於「Google 翻譯」</translation>
+<translation id="5039804452771397117">允許</translation>
+<translation id="5040262127954254034">隱私權</translation>
+<translation id="5045550434625856497">密碼不正確</translation>
+<translation id="5056549851600133418">為您推薦的文章</translation>
+<translation id="5070335125961472645"><ph name="BEGIN_LINK" />檢查 Proxy 位址<ph name="END_LINK" /></translation>
+<translation id="5086888986931078152">你可能無法再存取部分網站上的受保護內容。</translation>
+<translation id="5087286274860437796">伺服器憑證目前無效。</translation>
+<translation id="5087580092889165836">新增信用卡</translation>
+<translation id="5089810972385038852">州</translation>
+<translation id="5094747076828555589">伺服器無法證明其屬於 <ph name="DOMAIN" /> 網域；其安全性憑證未取得 Chromium 的信任。這可能是因為設定錯誤，或有攻擊者攔截你的連線所致。</translation>
+<translation id="5095208057601539847">省</translation>
+<translation id="5115563688576182185">(64 位元)</translation>
+<translation id="5121084798328133320">完成驗證後，這個網站就會取得你 Google 付款帳戶中的信用卡詳細資料。</translation>
+<translation id="5128122789703661928">無法將使用這個名稱的工作階段刪除。</translation>
+<translation id="5141240743006678641">使用你的 Google 憑證對已同步處理的密碼進行加密</translation>
+<translation id="5145883236150621069">政策回應中存在錯誤代碼</translation>
+<translation id="5159010409087891077">在新的無痕式視窗中開啟網頁 (⇧ + ⌘ + N 鍵)</translation>
+<translation id="5171045022955879922">搜尋或輸入網址</translation>
+<translation id="5172758083709347301">本機</translation>
+<translation id="5179510805599951267">網頁內容不是<ph name="ORIGINAL_LANGUAGE" />嗎？請回報此錯誤</translation>
+<translation id="5190835502935405962">書籤列</translation>
+<translation id="5199729219167945352">實驗性功能</translation>
+<translation id="5201306358585911203">這個網頁上的嵌入式網頁顯示</translation>
+<translation id="5205222826937269299">請輸入名稱</translation>
+<translation id="5222812217790122047">請輸入電子郵件地址</translation>
+<translation id="522700295135997067">這個網站剛剛可能竊取了你的密碼</translation>
+<translation id="5230733896359313003">運送地址</translation>
+<translation id="5251803541071282808">雲端</translation>
+<translation id="5277279256032773186">在工作環境使用 Chrome 嗎？企業可以管理員工的 Chrome 設定。瞭解詳情</translation>
+<translation id="5281113152797308730"><ph name="BEGIN_PARAGRAPH" />請按照以下步驟暫時停用該軟體，以便順利連上網路。你需要管理員權限。<ph name="END_PARAGRAPH" />
+
+    <ph name="BEGIN_LIST" />
+    <ph name="LIST_ITEM" />按一下 [開始]<ph name="BEGIN_BOLD" /><ph name="END_BOLD" />，然後搜尋並選取「檢視本機服務」<ph name="BEGIN_BOLD" /><ph name="END_BOLD" />
+    <ph name="LIST_ITEM" />選取 [VisualDiscovery]<ph name="BEGIN_BOLD" /><ph name="END_BOLD" />
+    <ph name="LIST_ITEM" />在「啟動類型」<ph name="BEGIN_BOLD" /><ph name="END_BOLD" />之下，選取 [已停用]<ph name="BEGIN_BOLD" /><ph name="END_BOLD" />
+    <ph name="LIST_ITEM" />在「服務狀態」<ph name="BEGIN_BOLD" /><ph name="END_BOLD" />之下，按一下 [停止]<ph name="BEGIN_BOLD" /><ph name="END_BOLD" />
+    <ph name="LIST_ITEM" />依序按一下 [套用]<ph name="BEGIN_BOLD" /><ph name="END_BOLD" /> 和 [確定]<ph name="BEGIN_BOLD" /><ph name="END_BOLD" />
+    <ph name="LIST_ITEM" />前往 <ph name="BEGIN_LEARN_MORE_LINK" />Chrome 說明中心<ph name="END_LEARN_MORE_LINK" />瞭解如何將該軟體從你的電腦上永久移除
+    <ph name="END_LIST" /></translation>
+<translation id="5285570108065881030">顯示所有已儲存的密碼</translation>
+<translation id="5287240709317226393">顯示 Cookie</translation>
+<translation id="5299298092464848405">解析政策時發生錯誤</translation>
+<translation id="5308380583665731573">連線</translation>
+<translation id="5308689395849655368">當機報告功能已停用。</translation>
+<translation id="5317780077021120954">儲存</translation>
+<translation id="5324080437450482387">選擇聯絡資訊</translation>
+<translation id="5327248766486351172">名稱</translation>
+<translation id="5332219387342487447">運送方式</translation>
+<translation id="5355557959165512791">目前無法造訪 <ph name="SITE" />，因為這個網站的憑證已遭撤銷。網路錯誤和攻擊行為通常是暫時性的，因此這個網頁可能稍後就會恢復正常狀態。</translation>
+<translation id="536296301121032821">無法儲存政策設定</translation>
+<translation id="5386426401304769735">這個網站的憑證鏈結包含使用 SHA-1 進行簽署的憑證。</translation>
+<translation id="5401815295726769233">搜尋標記</translation>
+<translation id="5402410679244714488">到期日：<ph name="EXPIRATION_DATE_ABBR" />，距離上次使用已超過 1 年</translation>
+<translation id="540969355065856584">這個伺服器無法證明所屬網域為 <ph name="DOMAIN" />；其安全性憑證目前無效。這可能是因為設定錯誤，或是有攻擊者攔截您的連線所致。</translation>
+<translation id="5421136146218899937">清除瀏覽資料...</translation>
+<translation id="5430298929874300616">移除書籤</translation>
+<translation id="5431657950005405462">找不到您的檔案</translation>
+<translation id="5439770059721715174">「<ph name="ERROR_PATH" />」發生架構驗證錯誤：<ph name="ERROR" /></translation>
+<translation id="5452270690849572955">找不到 <ph name="HOST_NAME" /> 網頁</translation>
+<translation id="5455374756549232013">政策時間戳記有誤</translation>
+<translation id="5457113250005438886">無效</translation>
+<translation id="5458150163479425638">{CONTACT,plural, =0{<ph name="CONTACT_PREVIEW" />}=1{「<ph name="CONTACT_PREVIEW" />」和另外 <ph name="NUMBER_OF_ADDITIONAL_CONTACTS" /> 項聯絡資訊}other{「<ph name="CONTACT_PREVIEW" />」和另外 <ph name="NUMBER_OF_ADDITIONAL_CONTACTS" /> 項聯絡資訊}}</translation>
+<translation id="5470861586879999274">重做編輯(&amp;R)</translation>
+<translation id="5481076368049295676">這項內容可能會試圖在你的裝置上安裝危險軟體，藉此竊取或刪除你的資訊。<ph name="BEGIN_LINK" />仍要顯示<ph name="END_LINK" /></translation>
+<translation id="54817484435770891">新增有效的地址</translation>
+<translation id="5492298309214877701">這個位於公司、機構或學校內部網路的網站使用的網址與某個外部網站相同。
+    <ph name="LINE_BREAK" />
+    請與您的系統管理員聯絡。</translation>
+<translation id="5499929369096410817">輸入 <ph name="CREDIT_CARD" /> 的安全碼 (系統不會加以儲存)。</translation>
+<translation id="5509780412636533143">受管理書籤</translation>
+<translation id="5510766032865166053">檔案可能已移至其他位置或遭到刪除。</translation>
+<translation id="5523118979700054094">政策名稱</translation>
+<translation id="552553974213252141">擷取的文字是否正確？</translation>
+<translation id="5540224163453853">找不到要求的文章。</translation>
+<translation id="5541546772353173584">新增電子郵件地址</translation>
+<translation id="5545756402275714221">為你推薦的報導</translation>
+<translation id="5556459405103347317">重新載入</translation>
+<translation id="5560088892362098740">到期日</translation>
+<translation id="5565735124758917034">管理中</translation>
+<translation id="5571083550517324815">無法在這個地址取件，請改用其他地址。</translation>
+<translation id="5571347317547569613">({NUM_COOKIES,plural, =1{目前使用 1 個 Cookie}other{目前使用 # 個 Cookie}})</translation>
+<translation id="5572851009514199876">請啟動 Chrome 並登入帳戶，Chrome 將確認你是否可存取這個網站。</translation>
+<translation id="5580958916614886209">請檢查信用卡到期月份，然後再試一次</translation>
+<translation id="5586446728396275693">沒有已儲存的地址</translation>
+<translation id="5595485650161345191">編輯地址</translation>
+<translation id="5598944008576757369">選擇付款方式</translation>
+<translation id="560412284261940334">系統不支援管理</translation>
+<translation id="5610142619324316209">檢查連線狀態</translation>
+<translation id="5610807607761827392">你可以在<ph name="BEGIN_LINK" />設定<ph name="END_LINK" />中管理信用卡和地址資訊。</translation>
+<translation id="5617949217645503996"><ph name="HOST_NAME" /> 將您重新導向的次數過多。</translation>
+<translation id="5622887735448669177">您要離開這個網站嗎？</translation>
+<translation id="5629630648637658800">無法載入政策設定</translation>
+<translation id="5631439013527180824">裝置管理符記無效</translation>
+<translation id="5633066919399395251">攻擊者目前可能會試圖透過 <ph name="BEGIN_BOLD" /><ph name="SITE" /><ph name="END_BOLD" /> 在你的電腦上安裝危險程式，藉此竊取或刪除你的資訊 (例如相片、密碼、郵件和信用卡資料)。<ph name="BEGIN_LEARN_MORE_LINK" />瞭解詳情<ph name="END_LEARN_MORE_LINK" /></translation>
+<translation id="563324245173044180">已封鎖欺騙性內容。</translation>
+<translation id="5659593005791499971">電子郵件</translation>
+<translation id="5669703222995421982">取得個人化內容</translation>
+<translation id="5675650730144413517">這個網頁無法正常運作</translation>
+<translation id="5685654322157854305">新增運送地址</translation>
+<translation id="5689199277474810259">以 JSON 格式匯出</translation>
+<translation id="5689516760719285838">位置</translation>
+<translation id="5710435578057952990">此網頁的身分未經驗證。</translation>
+<translation id="5719499550583120431">接受預付卡。</translation>
+<translation id="5720705177508910913">目前使用者</translation>
+<translation id="5732392974455271431">你的家長可以為你解除封鎖這個網站</translation>
+<translation id="5763042198335101085">請輸入有效的電子郵件地址</translation>
+<translation id="5765072501007116331">如要查看快遞方式和相關規定，請選取一個地址</translation>
+<translation id="5770114862687765385">這個檔案似乎已毀損。按一下 [重設] 按鈕即可重設工作階段。</translation>
+<translation id="5778550464785688721">MIDI 裝置完整控制</translation>
+<translation id="5784606427469807560">驗證您的信用卡時發生問題。請檢查網際網路連線，然後再試一次。</translation>
+<translation id="5785756445106461925">此外，這個網頁含有其他不安全的資源。其他人可能會在資源傳輸期間檢視這些資源，攻擊者也可能會修改這些資源，進而變更網頁外觀。</translation>
+<translation id="5786044859038896871">要填入你的信用卡資訊嗎？</translation>
+<translation id="5803412860119678065">要填入你的 <ph name="CARD_DETAIL" /> 資訊嗎？</translation>
+<translation id="5810442152076338065">您的 <ph name="DOMAIN" /> 連線使用過舊的加密套件進行加密。</translation>
+<translation id="5813119285467412249">重做新增(&amp;R)</translation>
+<translation id="5838278095973806738">請勿在這個網站上輸入任何機密資訊 (例如密碼或信用卡號碼)，以免遭到攻擊者竊取。</translation>
+<translation id="5866257070973731571">新增電話號碼</translation>
+<translation id="5869405914158311789">無法連上這個網站</translation>
+<translation id="5869522115854928033">已儲存的密碼</translation>
+<translation id="5893752035575986141">接受簽帳金融卡。</translation>
+<translation id="5908541034548427511"><ph name="TYPE_1" /> (已同步)</translation>
+<translation id="5909194079078764042">啟用這些功能可能會造成瀏覽器資料遺失，或導致你的安全性或隱私權面臨威脅，而且瀏覽器的所有使用者都會套用這項設定。</translation>
+<translation id="5920262536204764679">{NUM_COOKIES,plural, =1{目前使用 1 個 Cookie}other{目前使用 # 個 Cookie}}</translation>
+<translation id="5939518447894949180">重設</translation>
+<translation id="5959728338436674663">自動傳送部分<ph name="BEGIN_WHITEPAPER_LINK" />系統資訊和網頁內容<ph name="END_WHITEPAPER_LINK" />給 Google，協助偵測危險的應用程式和網站。<ph name="PRIVACY_PAGE_LINK" /></translation>
+<translation id="5967592137238574583">編輯聯絡資訊</translation>
+<translation id="5967867314010545767">從紀錄中移除</translation>
+<translation id="5972020793760134803">切換至分頁</translation>
+<translation id="5975083100439434680">縮小</translation>
+<translation id="597552863672748783">確認安全碼</translation>
+<translation id="598637245381783098">無法開啟付款應用程式</translation>
+<translation id="5989320800837274978">沒有指定固定的 Proxy 伺服器和 .pac 指令碼網址。</translation>
+<translation id="5990559369517809815">擴充功能已封鎖要傳送至伺服器的要求。</translation>
+<translation id="6008256403891681546">JCB</translation>
+<translation id="6016158022840135739">{COUNT,plural, =1{第 1 頁}other{第 # 頁}}</translation>
+<translation id="6017850046339264347">目前在 <ph name="BEGIN_BOLD" /><ph name="SITE" /><ph name="END_BOLD" /> 上的攻擊者可能會讓你安裝身分不實的欺騙性應用程式，或是收集可用於追蹤你的資料。<ph name="BEGIN_LEARN_MORE_LINK" />瞭解詳情<ph name="END_LEARN_MORE_LINK" /></translation>
+<translation id="6025416945513303461"><ph name="TYPE_1" />、<ph name="TYPE_2" />、<ph name="TYPE_3" /> (已同步)</translation>
+<translation id="6027201098523975773">輸入名稱</translation>
+<translation id="6039846035001940113">如果問題仍未解決，請與網站擁有者聯絡。</translation>
+<translation id="6040143037577758943">關閉</translation>
+<translation id="6047233362582046994">如果你瞭解安全性風險，也可以選擇在有害應用程式尚未遭到移除的狀態下<ph name="BEGIN_LINK" />造訪這個網站<ph name="END_LINK" />。</translation>
+<translation id="6047927260846328439">這項內容可能會試圖誘使你安裝軟體或提供個人資訊。<ph name="BEGIN_LINK" />仍要顯示<ph name="END_LINK" /></translation>
+<translation id="6051221802930200923">目前無法造訪 <ph name="SITE" />，因為這個網站使用憑證鎖定功能。網路錯誤和攻擊行為通常是暫時性的，因此這個網頁可能稍後就會恢復正常狀態。</translation>
+<translation id="6080696365213338172">你使用了管理員提供的憑證存取內容，因此管理員可攔截你傳送至「<ph name="DOMAIN" />」的資料。</translation>
+<translation id="610911394827799129">你的 Google 帳戶仍可能保留了其他類型的瀏覽紀錄 (可前往 <ph name="BEGIN_LINK" />myactivity.google.com<ph name="END_LINK" /> 查詢)。</translation>
+<translation id="6144381551823904650">{COUNT,plural, =0{無}=1{1 組密碼 (保持同步)}other{# 組密碼 (保持同步)}}</translation>
+<translation id="6146055958333702838">檢查您的網路線是否穩固連接。重新啟動您可能正在使用的任何路由器、
+    數據機或其他網路裝置。</translation>
+<translation id="614940544461990577">建議做法：</translation>
+<translation id="6151417162996330722">伺服器憑證的有效期限太長。</translation>
+<translation id="6157877588268064908">如要查看運送方式和相關規定，請選取一個地址</translation>
+<translation id="6165508094623778733">瞭解詳情</translation>
+<translation id="6169916984152623906">現在，你可以進行私密瀏覽了。共用這部裝置的其他使用者不會看到你的活動，不過，你下載的內容和新增的書籤仍會保留在裝置上。</translation>
+<translation id="6177128806592000436">你與這個網站的連線不安全</translation>
+<translation id="6203231073485539293">檢查網際網路連線</translation>
+<translation id="6218753634732582820">要從 Chromium 中移除地址嗎？</translation>
+<translation id="6221345481584921695">Google 安全瀏覽功能最近在 <ph name="SITE" /> 上<ph name="BEGIN_LINK" />偵測到惡意軟體<ph name="END_LINK" />。即使是平常可以安全使用的網站，有時也會遭到惡意軟體感染。這些惡意內容來自已知的惡意軟體散佈網站 <ph name="SUBRESOURCE_HOST" />。</translation>
+<translation id="6251924700383757765">隱私權政策</translation>
+<translation id="6254436959401408446">記憶體不足，無法開啟這個網頁</translation>
+<translation id="625755898061068298">你已選擇針對這個網站停用安全性警告功能。</translation>
+<translation id="6259156558325130047">重做重新排序(&amp;R)</translation>
+<translation id="6263376278284652872"><ph name="DOMAIN" /> 書籤</translation>
+<translation id="6264485186158353794">返回安全性瀏覽</translation>
+<translation id="6276112860590028508">你的閱讀清單中的頁面會顯示在這裡</translation>
+<translation id="6280223929691119688">快遞無法送貨到這個地址，請改用其他地址。</translation>
+<translation id="6282194474023008486">郵遞區號</translation>
+<translation id="6290238015253830360">這裡會顯示為你推薦的文章</translation>
+<translation id="6305205051461490394">無法連上 <ph name="URL" />。</translation>
+<translation id="6319915415804115995">距離上次使用已超過 1 年</translation>
+<translation id="6321917430147971392">檢查 DNS 設定</translation>
+<translation id="6325286409953503969">想搶先試用酷炫的 Chrome 新功能嗎？請安裝<ph name="BEGIN_LINK" />開發人員版<ph name="END_LINK" />。</translation>
+<translation id="6328639280570009161">建議停用網路預測功能</translation>
+<translation id="6328786501058569169">這是詐欺網站</translation>
+<translation id="6337133576188860026">釋出不到 <ph name="SIZE" />。下次造訪部分網站時，載入速度可能會變慢。</translation>
+<translation id="6337534724793800597">依名稱篩選政策</translation>
+<translation id="6342069812937806050">剛剛</translation>
+<translation id="6355080345576803305">公開工作階段覆寫</translation>
+<translation id="6358450015545214790">我需要進一步資訊</translation>
+<translation id="6386120369904791316">{COUNT,plural, =1{以及另外 1 個建議項目}other{以及另外 # 個建議項目}}</translation>
+<translation id="6397451950548600259">你的電腦上有軟體阻止 Chrome 建立安全的網路連線</translation>
+<translation id="6404511346730675251">編輯書籤</translation>
+<translation id="6410264514553301377">輸入 <ph name="CREDIT_CARD" /> 的到期日和信用卡安全碼</translation>
+<translation id="6414888972213066896">你已詢問家長是否同意你造訪這個網站</translation>
+<translation id="6417515091412812850">無法檢查憑證是否已遭撤銷。</translation>
+<translation id="6433490469411711332">編輯聯絡資訊</translation>
+<translation id="6433595998831338502"><ph name="HOST_NAME" /> 拒絕連線。</translation>
+<translation id="6446608382365791566">新增詳細資訊</translation>
+<translation id="6447842834002726250">Cookie</translation>
+<translation id="6451458296329894277">確認重新提交表單</translation>
+<translation id="6456339708790392414">你的付款</translation>
+<translation id="647261751007945333">裝置政策</translation>
+<translation id="6477321094435799029">Chrome 在這個網頁上偵測到異常代碼。為了保護你的個人資訊 (包括密碼、電話號碼或信用卡資料)，Chrome 已封鎖這個網頁。</translation>
+<translation id="6489534406876378309">開始上傳當機報告</translation>
+<translation id="6507833130742554667">接受信用卡和簽帳金融卡。</translation>
+<translation id="6508722015517270189">重新啟動 Chrome</translation>
+<translation id="6521373090216409766">你要重新載入這個網站嗎？</translation>
+<translation id="6529602333819889595">重做刪除(&amp;R)</translation>
+<translation id="6534179046333460208">實體化網路建議</translation>
+<translation id="6550675742724504774">選項</translation>
+<translation id="6556239504065605927">安全連線</translation>
+<translation id="6556915248009097796">到期日：<ph name="EXPIRATION_DATE_ABBR" />，上次使用日期：<ph name="LAST_USED_DATE_NO_DETAIL" /></translation>
+<translation id="6563469144985748109">你的管理員尚未核准這個網站</translation>
+<translation id="6569060085658103619">目前顯示的是擴充功能頁面</translation>
+<translation id="6596325263575161958">加密選項</translation>
+<translation id="662080504995468778">不離開</translation>
+<translation id="6624427990725312378">聯絡資訊</translation>
+<translation id="6626291197371920147">新增有效的信用卡號碼</translation>
+<translation id="6628463337424475685"><ph name="ENGINE" /> 搜尋</translation>
+<translation id="6630809736994426279">攻擊者目前可能會試圖透過 <ph name="BEGIN_BOLD" /><ph name="SITE" /><ph name="END_BOLD" /> 在你的 Mac 上安裝危險程式，藉此竊取或刪除你的資訊 (例如相片、密碼、郵件和信用卡資料)。<ph name="BEGIN_LEARN_MORE_LINK" />瞭解詳情<ph name="END_LEARN_MORE_LINK" /></translation>
+<translation id="6644283850729428850">這項政策已遭取代。</translation>
+<translation id="6657585470893396449">密碼</translation>
+<translation id="6671697161687535275">要從 Chromium 中移除表單填寫建議嗎？</translation>
+<translation id="6685834062052613830">請登出並完成設定程序</translation>
+<translation id="6710213216561001401">返回</translation>
+<translation id="6710594484020273272">&lt;輸入搜尋字詞&gt;</translation>
+<translation id="6711464428925977395">Proxy 伺服器發生錯誤，或是位址不正確。</translation>
+<translation id="674375294223700098">不明的伺服器憑證錯誤。</translation>
+<translation id="6753269504797312559">政策值</translation>
+<translation id="6757797048963528358">您的裝置已進入睡眠模式。</translation>
+<translation id="6778737459546443941">你的家長尚未核准這個網站</translation>
+<translation id="679355240208270552">由於政策未啟用預設搜尋設定，因此遭到忽略。</translation>
+<translation id="681021252041861472">必填欄位</translation>
+<translation id="6810899417690483278">自訂 ID</translation>
+<translation id="6820686453637990663">CVC</translation>
+<translation id="6824266427216888781">無法載入地區資料</translation>
+<translation id="6825578344716086703">你嘗試連上 <ph name="DOMAIN" />，但伺服器的憑證是以防護力薄弱的簽章演算法 (例如 SHA-1) 進行簽署。這代表伺服器提供的安全性憑證可能遭到偽造，而且這個伺服器可能並不是你的目標伺服器 (你的連線對象可能是攻擊者的電腦)。</translation>
+<translation id="6831043979455480757">翻譯</translation>
+<translation id="6839929833149231406">區</translation>
+<translation id="6874604403660855544">重做新增(&amp;R)</translation>
+<translation id="6886577214605505410"><ph name="LOCATION_TITLE" /> <ph name="SHORT_URL" /></translation>
+<translation id="6891596781022320156">系統不支援這項政策的層級。</translation>
+<translation id="6895330447102777224">您的信用卡已通過驗證</translation>
+<translation id="6897140037006041989">使用者代理程式</translation>
+<translation id="6915804003454593391">使用者：</translation>
+<translation id="6945221475159498467">選取</translation>
+<translation id="6948701128805548767">如要查看取件方式和相關規定，請選取一個地址</translation>
+<translation id="6957887021205513506">伺服器憑證疑似偽造。</translation>
+<translation id="6965382102122355670">確定</translation>
+<translation id="6965978654500191972">裝置</translation>
+<translation id="6970216967273061347">區</translation>
+<translation id="6973656660372572881">已指定固定的 Proxy 伺服器和 .pac 指令碼網址。</translation>
+<translation id="6989763994942163495">顯示進階設定...</translation>
+<translation id="7012363358306927923">中國銀聯</translation>
+<translation id="7029809446516969842">密碼</translation>
+<translation id="7050187094878475250">您嘗試連線至 <ph name="DOMAIN" />，但伺服器提供的憑證有效期限太長，因此難以信任。</translation>
+<translation id="7053983685419859001">封鎖</translation>
+<translation id="7064851114919012435">聯絡資訊</translation>
+<translation id="7079718277001814089">這個網站含有惡意軟體</translation>
+<translation id="7087282848513945231">郡</translation>
+<translation id="7090678807593890770">請透過 Google 搜尋「<ph name="LINK" />」</translation>
+<translation id="7108819624672055576">依據擴充功能設定允許</translation>
+<translation id="7111012039238467737">(有效)</translation>
+<translation id="7119414471315195487">關閉其他分頁或程式</translation>
+<translation id="7129409597930077180">無法運送到這個地址，請改用其他地址。</translation>
+<translation id="7138472120740807366">快遞方式</translation>
+<translation id="7139724024395191329">大公國</translation>
+<translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW" />}=1{<ph name="PAYMENT_METHOD_PREVIEW" /> 和另外 <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS" /> 種付款方式}other{<ph name="PAYMENT_METHOD_PREVIEW" /> 和另外 <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS" /> 種付款方式}}</translation>
+<translation id="7155487117670177674">付款行為不安全</translation>
+<translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW" />}=1{<ph name="SHIPPING_OPTION_PREVIEW" />和另外 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS" /> 種選項}other{<ph name="SHIPPING_OPTION_PREVIEW" />和另外 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS" /> 種選項}}</translation>
+<translation id="7179921470347911571">立即重新啟動</translation>
+<translation id="7180611975245234373">重新整理</translation>
+<translation id="7182878459783632708">沒有設定任何政策</translation>
+<translation id="7186367841673660872">此網頁內容已由<ph name="ORIGINAL_LANGUAGE" />翻譯成<ph name="LANGUAGE_LANGUAGE" /></translation>
+<translation id="7192203810768312527">釋出 <ph name="SIZE" />。下次造訪部分網站時，載入速度可能會變慢。</translation>
+<translation id="719464814642662924">Visa</translation>
+<translation id="7210863904660874423"><ph name="HOST_NAME" /> 不符合安全性標準。</translation>
+<translation id="721197778055552897"><ph name="BEGIN_LINK" />進一步瞭解<ph name="END_LINK" />這個問題。</translation>
+<translation id="7219179957768738017">這個連線使用 <ph name="SSL_VERSION" />。</translation>
+<translation id="7220786058474068424">處理中</translation>
+<translation id="724691107663265825">你要造訪的網站含有惡意軟體</translation>
+<translation id="724975217298816891">請輸入 <ph name="CREDIT_CARD" /> 的有效日期和信用卡安全碼，更新您的信用卡詳細資訊。完成驗證後，這個網站就會取得您的信用卡詳細資訊。</translation>
+<translation id="725866823122871198">你電腦的日期和時間 (<ph name="DATE_AND_TIME" />) 不正確，因此無法與 <ph name="BEGIN_BOLD" /><ph name="DOMAIN" /><ph name="END_BOLD" /> 建立私人連線。</translation>
+<translation id="7260504762447901703">撤銷存取權</translation>
+<translation id="7271803869921933038">接受的預付卡</translation>
+<translation id="7275334191706090484">受管理書籤</translation>
+<translation id="7298195798382681320">建議採用</translation>
+<translation id="7309308571273880165">當機報告擷取時間：<ph name="CRASH_TIME" /> (使用者要求上傳，但尚未上傳)</translation>
+<translation id="7334320624316649418">重做重新排序(&amp;R)</translation>
+<translation id="7337706099755338005">你的平台無法使用實驗性功能。</translation>
+<translation id="733923710415886693">伺服器憑證未依憑證透明化政策公開。</translation>
+<translation id="7353601530677266744">命令列</translation>
+<translation id="7372973238305370288">搜尋結果</translation>
+<translation id="7377249249140280793"><ph name="RELATIVE_DATE" /> - <ph name="FULL_DATE" /></translation>
+<translation id="7378627244592794276">不需要</translation>
+<translation id="7378810950367401542">/</translation>
+<translation id="7390545607259442187">驗證信用卡</translation>
+<translation id="7400418766976504921">網址</translation>
+<translation id="7419106976560586862">設定檔路徑</translation>
+<translation id="7437289804838430631">新增聯絡資訊</translation>
+<translation id="7441627299479586546">政策主體有誤</translation>
+<translation id="7444046173054089907">這個網站遭到封鎖</translation>
+<translation id="7445762425076701745">你所連線的伺服器身分無法完全驗證，該伺服器所使用的名稱僅在你的網路中有效，無法驗證外部憑證授權單位的擁有權。即使某些憑證授權單位會核發這些憑證，不過無法就此確保你所連上的網站是正確的，而不會遭到網路攻擊。</translation>
+<translation id="7451311239929941790"><ph name="BEGIN_LINK" />進一步瞭解<ph name="END_LINK" />這個問題。</translation>
+<translation id="7455133967321480974">使用全域預設值 (封鎖)</translation>
+<translation id="7460163899615895653">你最近在其他裝置上開啟的分頁會顯示在這裡</translation>
+<translation id="7469372306589899959">正在驗證信用卡</translation>
+<translation id="7481312909269577407">往前</translation>
+<translation id="7485870689360869515">找不到任何資料。</translation>
+<translation id="7508255263130623398">傳回的政策裝置 ID 沒有任何內容，或是與目前的裝置 ID 不符</translation>
+<translation id="7511955381719512146">目前使用的 Wi-Fi 網路可能會要求您造訪 <ph name="BEGIN_BOLD" /><ph name="LOGIN_URL" /><ph name="END_BOLD" />。</translation>
+<translation id="7514365320538308">下載</translation>
+<translation id="7518003948725431193">找不到此網址的網頁：<ph name="URL" /></translation>
+<translation id="7521387064766892559">JavaScript</translation>
+<translation id="7526934274050461096">你與這個網站之間的連線不是私人連線</translation>
+<translation id="7537536606612762813">強制</translation>
+<translation id="7542403920425041731">經過你確認後，這個網站就會取得你的信用卡詳細資料。</translation>
+<translation id="7542995811387359312">由於這個表單並未採用加密連線方式，所以信用卡自動填入功能已停用。</translation>
+<translation id="7543525346216957623">請徵求家長同意</translation>
+<translation id="7549584377607005141">這個網頁需要使用你先前輸入的資料才能正確顯示。你可以重新傳送這些資料，不過這麼做會重複執行這個網頁先前執行過的任何動作。</translation>
+<translation id="7552846755917812628">嘗試按照下列提示操作：</translation>
+<translation id="7554791636758816595">新增分頁</translation>
+<translation id="7567204685887185387">伺服器無法證明其屬於 <ph name="DOMAIN" /> 網域；其安全性憑證是以欺詐方式發行。這可能是因為設定錯誤，或有攻擊者攔截你的連線所致。</translation>
+<translation id="7568593326407688803">此網頁為<ph name="ORIGINAL_LANGUAGE" />你要翻譯網頁內容嗎？</translation>
+<translation id="7569952961197462199">要從 Chrome 中移除信用卡嗎？</translation>
+<translation id="7578104083680115302">在不同的裝置上透過各個網站和應用程式消費時，使用您讓 Google 儲存的信用卡資料即可快速付款。</translation>
+<translation id="7588950540487816470">實體化網路</translation>
+<translation id="7592362899630581445">伺服器憑證的名稱不符合限制。</translation>
+<translation id="7598391785903975535">不到 <ph name="UPPER_ESTIMATE" /></translation>
+<translation id="759889825892636187"><ph name="HOST_NAME" /> 目前無法處理這項要求。</translation>
+<translation id="7600965453749440009">一律不翻譯<ph name="LANGUAGE" /></translation>
+<translation id="7610193165460212391">值超出 <ph name="VALUE" /> 的範圍。</translation>
+<translation id="7613889955535752492">有效期限：<ph name="EXPIRATION_MONTH" />/<ph name="EXPIRATION_YEAR" /></translation>
+<translation id="7615602087246926389">你已經使用其他版本的「Google 帳戶」密碼對資料進行加密，請在下方輸入密碼。</translation>
+<translation id="7637571805876720304">要從 Chromium 中移除信用卡嗎？</translation>
+<translation id="765676359832457558">隱藏進階設定...</translation>
+<translation id="7658239707568436148">取消</translation>
+<translation id="7662298039739062396">由擴充功能控制的設定</translation>
+<translation id="7663736086183791259">憑證 <ph name="CERTIFICATE_VALIDITY" /></translation>
+<translation id="7667346355482952095">傳回的政策憑證沒有任何內容，或是與目前的憑證不符</translation>
+<translation id="7668654391829183341">不明的裝置</translation>
+<translation id="7669271284792375604">攻擊者可能會試圖透過這個網站誘使你安裝對瀏覽體驗有害 (例如變更你的首頁，或是在你造訪的網站上顯示多餘的廣告) 的程式。</translation>
+<translation id="7682287625158474539">寄送地址</translation>
+<translation id="7695552107151968219">想搶先試用酷炫的 Chrome 新功能嗎？請安裝<ph name="BEGIN_LINK" />測試版<ph name="END_LINK" />。</translation>
+<translation id="7699293099605015246">目前無法顯示文章</translation>
+<translation id="7701040980221191251">無</translation>
+<translation id="7704050614460855821"><ph name="BEGIN_LINK" />繼續前往 <ph name="SITE" /> 網站 (不安全)<ph name="END_LINK" /></translation>
+<translation id="7714464543167945231">憑證</translation>
+<translation id="7716147886133743102">依據管理員的設定封鎖</translation>
+<translation id="7716424297397655342">無法從快取載入這個網站</translation>
+<translation id="7723047071702270851">編輯卡片資訊</translation>
+<translation id="774634243536837715">已封鎖危險內容。</translation>
+<translation id="7752995774971033316">未管理</translation>
+<translation id="7755287808199759310">你的家長可以為你解除封鎖這個網站</translation>
+<translation id="7758069387465995638">防火牆或防毒軟體可能封鎖了連線。</translation>
+<translation id="7759163816903619567">顯示網域：</translation>
+<translation id="7761701407923456692">伺服器憑證與網址不符。</translation>
+<translation id="7763386264682878361">付款資訊清單剖析器</translation>
+<translation id="7764225426217299476">新增地址</translation>
+<translation id="777702478322588152">縣</translation>
+<translation id="7791543448312431591">新增</translation>
+<translation id="7793553086574152071">只要將這張卡片的資訊儲存到你的 Google 帳戶中，下次即可更快完成付款程序。</translation>
+<translation id="7793809570500803535"><ph name="SITE" /> 的網頁可能暫時無法使用或已永久移至新網址。</translation>
+<translation id="7800304661137206267">連線採用 <ph name="CIPHER" /> 加密，並設有 <ph name="MAC" /> 訊息驗證及 <ph name="KX" /> 金鑰交換機制。</translation>
+<translation id="7802523362929240268">網站合法</translation>
+<translation id="780301667611848630">不用了，謝謝</translation>
+<translation id="7805768142964895445">狀態</translation>
+<translation id="7812922009395017822">Mir</translation>
+<translation id="7813600968533626083">要從 Chrome 中移除建議嗎？</translation>
+<translation id="7815407501681723534">找到 <ph name="NUMBER_OF_RESULTS" /> 個與「<ph name="SEARCH_STRING" />」相符的<ph name="SEARCH_RESULTS" /></translation>
+<translation id="7818867226424560206">政策管理</translation>
+<translation id="782886543891417279">目前使用的 Wi-Fi 網路 (<ph name="WIFI_NAME" />) 可能會要求您造訪登入網頁。</translation>
+<translation id="785549533363645510">不過，這並不意味著您可以完全隱形。使用無痕模式時，您的雇主和網際網路服務供應商仍然可以追蹤您的瀏覽紀錄，您所造訪的網站也可能會記錄您的瀏覽行為。</translation>
+<translation id="7855695075675558090"><ph name="TOTAL_LABEL" /> <ph name="CURRENCY_CODE" /> <ph name="FORMATTED_TOTAL_AMOUNT" /></translation>
+<translation id="7878176543348854470">接受簽帳金融卡和預付卡。</translation>
+<translation id="7878562273885520351">你的密碼可能已經外洩</translation>
+<translation id="7887683347370398519">請檢查您的 CVC，然後再試一次</translation>
+<translation id="7893255318348328562">工作階段名稱</translation>
+<translation id="79338296614623784">請輸入有效的電話號碼</translation>
+<translation id="7935318582918952113">DOM Distiller</translation>
+<translation id="7938958445268990899">伺服器憑證尚未生效。</translation>
+<translation id="7947285636476623132">請檢查信用卡到期年份，然後再試一次</translation>
+<translation id="7951415247503192394">(32 位元)</translation>
+<translation id="7956713633345437162">行動版書籤</translation>
+<translation id="7961015016161918242">一律不要</translation>
+<translation id="7983301409776629893">一律將網頁內容由<ph name="ORIGINAL_LANGUAGE" />翻譯成<ph name="TARGET_LANGUAGE" /></translation>
+<translation id="7995512525968007366">未指定</translation>
+<translation id="800218591365569300">嘗試關閉其他分頁或程式，以釋出記憶體。</translation>
+<translation id="8012647001091218357">我們暫時無法與您的家長聯絡，請再試一次。</translation>
+<translation id="8025119109950072390">攻擊者可能會試圖透過這個網站誘使你做一些危險的行為，例如安裝軟體或提供個人資訊 (包括密碼、電話號碼或信用卡資料)。</translation>
+<translation id="8034522405403831421">這是<ph name="SOURCE_LANGUAGE" />網頁，需要翻譯成<ph name="TARGET_LANGUAGE" />嗎？</translation>
+<translation id="8037357227543935929">詢問 (預設)</translation>
+<translation id="8041089156583427627">提供意見</translation>
+<translation id="8041940743680923270">使用全域預設值 (要求確認)</translation>
+<translation id="8042918947222776840">選擇取件方式</translation>
+<translation id="8057711352706143257">「<ph name="SOFTWARE_NAME" />」的設定不正確。通常解除安裝「<ph name="SOFTWARE_NAME" />」即可修正這個問題。<ph name="FURTHER_EXPLANATION" /></translation>
+<translation id="8088680233425245692">無法查看文章。</translation>
+<translation id="8091372947890762290">尚未在伺服器上啟動</translation>
+<translation id="8094917007353911263">目前使用的網路可能會要求您造訪 <ph name="BEGIN_BOLD" /><ph name="LOGIN_URL" /><ph name="END_BOLD" />。</translation>
+<translation id="8103161714697287722">付款方式</translation>
+<translation id="8118489163946903409">付款方式</translation>
+<translation id="8127301229239896662">「<ph name="SOFTWARE_NAME" />」未正確安裝在電腦或網路上。請通知 IT 管理員解決這個問題。</translation>
+<translation id="8131740175452115882">確認</translation>
+<translation id="8149426793427495338">您的電腦已進入睡眠模式。</translation>
+<translation id="8150722005171944719">無法讀取位於 <ph name="URL" /> 的檔案。這個檔案可能已遭移除或移動位置，或者檔案權限為禁止存取。</translation>
+<translation id="8184538546369750125">使用全域預設值 (允許)</translation>
+<translation id="8191494405820426728">本機當機 ID：<ph name="CRASH_LOCAL_ID" /></translation>
+<translation id="8194797478851900357">復原移動(&amp;U)</translation>
+<translation id="8201077131113104583">擴充功能 (ID：「<ph name="EXTENSION_ID" />」) 的更新網址無效。</translation>
+<translation id="8202097416529803614">訂單摘要</translation>
+<translation id="8205463626947051446">網站經常顯示侵入式廣告</translation>
+<translation id="8218327578424803826">指派的位置：</translation>
+<translation id="8225771182978767009">設定這部電腦的使用者選擇封鎖這個網站。</translation>
+<translation id="822964464349305906"><ph name="TYPE_1" />、<ph name="TYPE_2" /></translation>
+<translation id="8238581221633243064">在新的無痕式分頁中開啟網頁</translation>
+<translation id="8241707690549784388">你尋找的網頁使用了你輸入的資料。返回該頁會重複你剛才的行動。你確定要繼續嗎？</translation>
+<translation id="8241712895048303527">禁止這個網站顯示廣告</translation>
+<translation id="8249320324621329438">上次擷取時間：</translation>
+<translation id="8253091569723639551">請提供帳單地址</translation>
+<translation id="825929999321470778">顯示所有已儲存的密碼</translation>
+<translation id="8261506727792406068">刪除</translation>
+<translation id="8267698848189296333">正在以 <ph name="USERNAME" /> 的身分登入</translation>
+<translation id="8288807391153049143">顯示憑證</translation>
+<translation id="8289355894181816810">如果你不確定這代表什麼意思，請與網路管理員聯絡。</translation>
+<translation id="8293206222192510085">新增書籤</translation>
+<translation id="8294431847097064396">來源</translation>
+<translation id="8298115750975731693">目前使用的 Wi-Fi 網路 (<ph name="WIFI_NAME" />) 可能會要求您造訪 <ph name="BEGIN_BOLD" /><ph name="LOGIN_URL" /><ph name="END_BOLD" />。</translation>
+<translation id="8308427013383895095">網路連線發生問題，翻譯作業失敗。</translation>
+<translation id="8311129316111205805">載入工作階段</translation>
+<translation id="8332188693563227489">存取 <ph name="HOST_NAME" /> 的要求遭到拒絕</translation>
+<translation id="834457929814110454">如果你瞭解安全性風險，也可以選擇在有害程式尚未遭到移除的狀態下<ph name="BEGIN_LINK" />造訪這個網站<ph name="END_LINK" />。</translation>
+<translation id="8349305172487531364">書籤列</translation>
+<translation id="8363502534493474904">關閉飛航模式</translation>
+<translation id="8364627913115013041">未設定。</translation>
+<translation id="8368476060205742148">Google Play 服務</translation>
+<translation id="8380941800586852976">不安全</translation>
+<translation id="8382348898565613901">這裡會顯示你最近造訪過的書籤</translation>
+<translation id="8398259832188219207">當機報告上傳時間：<ph name="UPLOAD_TIME" /></translation>
+<translation id="8412145213513410671">當機次數 (<ph name="CRASH_COUNT" />)</translation>
+<translation id="8412392972487953978">你必須輸入兩次相同的通關密語。</translation>
+<translation id="8424582179843326029"><ph name="FIRST_LABEL" /> <ph name="SECOND_LABEL" /> <ph name="THIRD_LABEL" /></translation>
+<translation id="8428213095426709021">設定</translation>
+<translation id="8433057134996913067">您會因此登出大多數網站。</translation>
+<translation id="8437238597147034694">復原移動(&amp;U)</translation>
+<translation id="8466379296835108687">{COUNT,plural, =1{1 張信用卡}other{# 張信用卡}}</translation>
+<translation id="8483780878231876732">如要使用您的 Google 帳戶中的信用卡，請登入 Chrome</translation>
+<translation id="8488350697529856933">適用對象</translation>
+<translation id="8498891568109133222"><ph name="HOST_NAME" /> 的回應時間過長。</translation>
+<translation id="8503559462189395349">Chrome 密碼</translation>
+<translation id="8503813439785031346">使用者名稱</translation>
+<translation id="8543181531796978784">您可以<ph name="BEGIN_ERROR_LINK" />回報偵測問題<ph name="END_ERROR_LINK" />。或者在您瞭解安全性風險後，仍然可以<ph name="BEGIN_LINK" />前往這個不安全的網站<ph name="END_LINK" />。</translation>
+<translation id="8543556556237226809">如有問題，請與你個人資料的監管者聯絡。</translation>
+<translation id="8553075262323480129">無法判定網頁的語言，翻譯作業失敗。</translation>
+<translation id="8557066899867184262">信用卡安全碼位於信用卡背面。</translation>
+<translation id="8559762987265718583">你裝置的日期和時間 (<ph name="DATE_AND_TIME" />) 不正確，因此無法與 <ph name="BEGIN_BOLD" /><ph name="DOMAIN" /><ph name="END_BOLD" /> 建立私人連線。</translation>
+<translation id="8571890674111243710">正在將網頁翻譯成<ph name="LANGUAGE" />...</translation>
+<translation id="858637041960032120">新增電話號碼</translation>
+<translation id="859285277496340001">憑證未指定負責檢查其本身是否已遭到撤銷的機制。</translation>
+<translation id="8620436878122366504">你的家長尚未核准這個網站</translation>
+<translation id="8625384913736129811">將這張信用卡儲存到這個裝置</translation>
+<translation id="8647750283161643317">全部重設為預設值</translation>
+<translation id="8660471606262461360">來自 Google Payments</translation>
+<translation id="8688672835843460752">可用空間</translation>
+<translation id="8703575177326907206">你到 <ph name="DOMAIN" /> 的連線未加密。</translation>
+<translation id="8718314106902482036">未完成付款程序</translation>
+<translation id="8725066075913043281">再試一次</translation>
+<translation id="8728672262656704056">你已進入無痕模式</translation>
+<translation id="8730621377337864115">完成</translation>
+<translation id="8738058698779197622">你必須正確設定時鐘，才能建立安全連線。這是因為網站驗證身分時所使用的憑證僅於特定一段時間內有效。由於你裝置的時鐘不正確，因此 Chromium 無法驗證這些憑證。</translation>
+<translation id="8740359287975076522">找不到 <ph name="HOST_NAME" /> 的 &lt;abbr id="dnsDefinition"&gt;DNS 位址&lt;/abbr&gt;，正在診斷問題。</translation>
+<translation id="874846938927089722">接受的信用卡和預付卡</translation>
+<translation id="8759274551635299824">這張信用卡已過期</translation>
+<translation id="8761567432415473239">Google 安全瀏覽最近在「<ph name="SITE" />」<ph name="BEGIN_LINK" />發現了有害程式<ph name="END_LINK" />。</translation>
+<translation id="8790007591277257123">重做刪除(&amp;R)</translation>
+<translation id="8800988563907321413">這裡會顯示系統建議你瀏覽的鄰近網頁</translation>
+<translation id="8820817407110198400">書籤</translation>
+<translation id="883848425547221593">其他書籤</translation>
+<translation id="884264119367021077">運送地址</translation>
+<translation id="884923133447025588">未發現撤銷機制。</translation>
+<translation id="885730110891505394">與 Google 分享</translation>
+<translation id="8866481888320382733">解析政策設定時發生錯誤</translation>
+<translation id="8870413625673593573">最近關閉的分頁</translation>
+<translation id="8874824191258364635">請輸入有效的信用卡號碼</translation>
+<translation id="8876793034577346603">無法解析網路設定。</translation>
+<translation id="8891727572606052622">Proxy 模式無效。</translation>
+<translation id="8903921497873541725">放大</translation>
+<translation id="8931333241327730545">您要將這張卡片的資訊儲存到您的 Google 帳戶嗎？</translation>
+<translation id="8932102934695377596">你的時鐘時間過慢</translation>
+<translation id="893332455753468063">新增名稱</translation>
+<translation id="8938939909778640821">接受的信用卡和預付卡</translation>
+<translation id="8952525071319348207">請輸入 <ph name="CREDIT_CARD" /> 的到期日和信用卡安全碼，以更新你的信用卡詳細資料。完成驗證後，這個網站就會取得你 Google 付款帳戶中的信用卡詳細資料。</translation>
+<translation id="8957210676456822347">監控式入口網站授權</translation>
+<translation id="8958260976055043711">這個網頁顯示</translation>
+<translation id="8971063699422889582">伺服器憑證已過期。</translation>
+<translation id="8978053250194585037">Google 安全瀏覽功能最近在 <ph name="SITE" /> 上<ph name="BEGIN_LINK" />偵測到網路詐騙行為<ph name="END_LINK" />。詐騙網站會偽裝成其他網站，藉此騙取你的資訊。</translation>
+<translation id="8989148748219918422"><ph name="ORGANIZATION" /> [<ph name="COUNTRY" />]</translation>
+<translation id="8996941253935762404">你要瀏覽的網站含有有害程式</translation>
+<translation id="8997023839087525404">該伺服器的憑證並未根據憑證透明化政策對外公開。部分憑證必須符合這項規定，以確保憑證值得信任，不會讓使用者遭到攻擊。</translation>
+<translation id="9001074447101275817"><ph name="DOMAIN" /> Proxy 要求提供使用者名稱和密碼。</translation>
+<translation id="9005998258318286617">無法載入 PDF 文件。</translation>
+<translation id="9008201768610948239">略過</translation>
+<translation id="9011424611726486705">開啟網站設定</translation>
+<translation id="901974403500617787">這些設定會套用至整個系統，只有以下使用者可設定：<ph name="OWNER_EMAIL" />。</translation>
+<translation id="9020200922353704812">請輸入信用卡帳單地址</translation>
+<translation id="9020542370529661692">此網頁內容已翻譯成<ph name="TARGET_LANGUAGE" /></translation>
+<translation id="9025348182339809926">(無效)</translation>
+<translation id="9035022520814077154">安全性錯誤</translation>
+<translation id="9038649477754266430">使用預測查詢字串服務，讓系統更快載入網頁</translation>
+<translation id="9039213469156557790">此外，這個網頁含有其他不安全的資源。其他人可能會在資源傳輸期間檢視這些資源，攻擊者也可能會修改這些資源，進而變更網頁行為。</translation>
+<translation id="9049981332609050619">你嘗試連線至 <ph name="DOMAIN" />，但伺服器提供的憑證無效。</translation>
+<translation id="9050666287014529139">通關密語</translation>
+<translation id="9065203028668620118">編輯</translation>
+<translation id="9069693763241529744">依據擴充功能設定封鎖</translation>
+<translation id="9076283476770535406">這個網站可能含有成人內容</translation>
+<translation id="9078964945751709336">請提供詳細資訊</translation>
+<translation id="9080712759204168376">訂單摘要</translation>
+<translation id="9103872766612412690"><ph name="SITE" /> 通常使用加密方式保護您的資訊。但 Chromium 這次嘗試連線到 <ph name="SITE" /> 時，該網站傳回了異常且錯誤的憑證。這可能是因為有攻擊者企圖偽裝成 <ph name="SITE" />，或是受到 Wi-Fi 登入畫面影響而造成連線中斷。不過請放心，Chromium 已及時停止連線，並未傳輸任何資料，因此您的資訊仍然安全無虞。</translation>
+<translation id="9106062320799175032">新增帳單地址</translation>
+<translation id="910908805481542201">請協助我解決這個問題</translation>
+<translation id="9128870381267983090">連線至網路</translation>
+<translation id="9137013805542155359">顯示原文</translation>
+<translation id="9137248913990643158">使用這個應用程式前，請先啟動 Chrome 並登入帳戶。</translation>
+<translation id="9148088599418889305">選擇運送方式</translation>
+<translation id="9148507642005240123">復原編輯(&amp;U)</translation>
+<translation id="9154194610265714752">已更新</translation>
+<translation id="9157595877708044936">設定中...</translation>
+<translation id="9169664750068251925">永遠禁止在這個網站執行</translation>
+<translation id="9170848237812810038">取消(&amp;U)</translation>
+<translation id="917450738466192189">伺服器憑證無效。</translation>
+<translation id="9183425211371246419"><ph name="HOST_NAME" /> 使用了不支援的通訊協定。</translation>
+<translation id="9198587359415855350"><ph name="SITE" /> 顯示</translation>
+<translation id="9205078245616868884">您已使用同步通關密語對資料進行加密，請輸入通關密語開始進行同步。</translation>
+<translation id="9207861905230894330">無法新增文章。</translation>
+<translation id="9209577707918422353"><ph name="SITE" /> 的嵌入式網頁顯示</translation>
+<translation id="9215416866750762878">有應用程式阻止 Chrome 建立這個網站的安全連線</translation>
+<translation id="9219103736887031265">圖片</translation>
+<translation id="933612690413056017">無法連上網際網路</translation>
+<translation id="933712198907837967">Diners Club</translation>
+<translation id="935608979562296692">清除表單</translation>
+<translation id="939736085109172342">新增資料夾</translation>
+<translation id="951104842009476243">接受的簽帳金融卡和預付卡</translation>
+<translation id="969892804517981540">正式版本</translation>
+<translation id="973773823069644502">新增快遞地址</translation>
+<translation id="975560348586398090">{COUNT,plural, =0{無}=1{1 個項目}other{# 個項目}}</translation>
+<translation id="981121421437150478">離線</translation>
+<translation id="988159990683914416">開發人員版本</translation>
+<translation id="989988560359834682">編輯地址</translation>
+<translation id="992115559265932548"><ph name="MICROSOFT_ACTIVE_DIRECTORY" /></translation>
+<translation id="992432478773561401">「<ph name="SOFTWARE_NAME" />」未正確安裝在電腦或網路上：
+    &lt;ul&gt;
+    &lt;li&gt;嘗試解除安裝或停用「<ph name="SOFTWARE_NAME" />」&lt;/li&gt;
+    &lt;li&gt;嘗試連線至其他網路&lt;/li&gt;
+    &lt;/ul&gt;</translation>
+</translationbundle>
