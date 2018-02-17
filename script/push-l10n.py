@@ -4,10 +4,11 @@ import sys
 import tempfile
 import xml.etree.ElementTree
 from lib.config import get_env_var
-from lib.transifex import upload_source_string_file_to_transifex, generate_source_strings_xml_from_grd
+from lib.transifex import upload_source_string_file_to_transifex, generate_source_strings_xml_from_grd, get_transifex_languages, get_grd_strings, check_for_chromium_upgrade, check_missing_source_grd_strings_to_transifex
 
 
-SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+BRAVE_SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+SOURCE_ROOT = os.path.dirname(BRAVE_SOURCE_ROOT)
 
 
 def parse_args():
@@ -24,24 +25,28 @@ def check_args():
   assert transifex_info, message
 
 
+def upload_source_files_to_transifex(grd_file_path, filename):
+  # Generate the intermediate Transifex format for the source translations
+  output_xml_file_handle, output_xml_path = tempfile.mkstemp('.xml')
+  xml_content = generate_source_strings_xml_from_grd(output_xml_file_handle, grd_file_path)
+
+  # Update Transifex
+  uploaded = upload_source_string_file_to_transifex(filename, xml_content)
+  os.close(output_xml_file_handle)
+  if not uploaded:
+    sys.exit('Could not upload xml file')
+
+
 def main():
   args = parse_args()
   check_args()
-  output_xml_file_handle, output_xml_path = tempfile.mkstemp('.xml')
-  grd_path = os.path.join(SOURCE_ROOT, args.grd_path[0])
-  filename = os.path.basename(grd_path).split('.')[0]
 
-  # Generate the intermediate Transifex format
-  xml_content = generate_source_strings_xml_from_grd(output_xml_file_handle, grd_path)
+  grd_file_path = os.path.join(BRAVE_SOURCE_ROOT, args.grd_path[0])
+  filename = os.path.basename(grd_file_path).split('.')[0]
 
-  # Update Transifex
-  username = get_env_var('TRANSIFEX_USERNAME')
-  password = get_env_var('TRANSIFEX_PASSWORD')
-  transifex_api_key = get_env_var('TRANSIFEX_API_KEY')
-  uploaded = upload_source_string_file_to_transifex(filename, xml_content, username, password, transifex_api_key)
-  os.close(output_xml_file_handle)
-  if not uploaded:
-    sys.exit(1)
+  upload_source_files_to_transifex(grd_file_path, filename)
+  check_for_chromium_upgrade(SOURCE_ROOT, grd_file_path)
+  check_missing_source_grd_strings_to_transifex(grd_file_path)
 
 
 if __name__ == '__main__':

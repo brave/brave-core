@@ -4,7 +4,7 @@ from os import walk
 import sys
 import xml.etree.ElementTree
 from lib.config import get_env_var
-from lib.transifex import get_xtb_files, get_grd_strings, textify, get_transifex_languages, get_transifex_translation_file_content, get_strings_from_xml_content, generate_xtb_content
+from lib.transifex import get_xtb_files, get_grd_strings, textify, get_transifex_translation_file_content, get_strings_dict_from_xml_content, generate_xtb_content
 
 
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -29,11 +29,6 @@ def main():
   check_args()
   grd_file_path = os.path.join(SOURCE_ROOT, args.grd_path[0])
   filename = os.path.basename(grd_file_path).split('.')[0]
-  # print get_transifex_languages(grd_file_path)
-
-  username = get_env_var('TRANSIFEX_USERNAME')
-  password = get_env_var('TRANSIFEX_PASSWORD')
-  transifex_api_key = get_env_var('TRANSIFEX_API_KEY')
 
   grd_strings = get_grd_strings(grd_file_path)
 
@@ -46,8 +41,8 @@ def main():
   base_path = os.path.dirname(grd_file_path)
   for (lang_code, xtb_rel_path) in xtb_files:
     xtb_file_path = os.path.join(base_path, xtb_rel_path)
-    xml_content = get_transifex_translation_file_content(filename, lang_code, username, password, transifex_api_key)
-    translations = get_strings_from_xml_content(xml_content)
+    xml_content = get_transifex_translation_file_content(filename, lang_code)
+    translations = get_strings_dict_from_xml_content(xml_content)
     xtb_content = generate_xtb_content(grd_strings, translations)
     print 'Updated: ', xtb_file_path
     f = open(xtb_file_path, 'w')
