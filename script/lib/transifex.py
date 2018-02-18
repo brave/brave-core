@@ -144,11 +144,7 @@ def textify(t):
   s = []
   if t.text:
     s.append(t.text)
-  for child in t.getchildren():
-    #s.extend(textify(child))
-    #s.append(lxml.etree.tostring(child))
-    temp = ''.join([lxml.etree.tostring(child) for child in t.iterdescendants()]).strip()
-    s.append(temp)
+  s.append(''.join([lxml.etree.tostring(child) for child in t.iterdescendants()]).strip())
   if t.tail:
     s.append(t.tail)
   val = ''.join(s).strip()
@@ -233,10 +229,16 @@ def generate_source_strings_xml_from_grd(output_xml_file_handle, grd_file_path):
 
 def generate_xtb_content(lang_code, grd_strings, translations):
   """Generates an XTB file from a set of translations and GRD strings"""
+  # Used to make sure duplicate fingerprint stringsa re not made
+  # XTB only contains 1 entry even if multiple string names are different but have the same value.
+  all_string_fps = set()
   translationbundle_tag = create_xtb_format_translationbundle_tag(lang_code)
   for string in grd_strings:
     if string[0] in translations:
       fingerprint = string[2]
+      if fingerprint in all_string_fps:
+        continue
+      all_string_fps.add(fingerprint)
       translation = translations[string[0]]
       translationbundle_tag.append(create_xtb_format_translation_tag(fingerprint, translation))
 
