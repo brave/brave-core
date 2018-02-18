@@ -43,7 +43,7 @@ def main():
     xtb_file_path = os.path.join(base_path, xtb_rel_path)
     xml_content = get_transifex_translation_file_content(filename, lang_code)
     translations = get_strings_dict_from_xml_content(xml_content)
-    xtb_content = generate_xtb_content(grd_strings, translations)
+    xtb_content = generate_xtb_content(lang_code, grd_strings, translations)
     print 'Updated: ', xtb_file_path
     f = open(xtb_file_path, 'w')
     f.write(xtb_content)

@@ -13,9 +13,10 @@ transifex_project_name = 'brave'
 base_url = 'https://www.transifex.com/api/2/'
 
 
-def create_xtb_format_translationbundle_tag():
+def create_xtb_format_translationbundle_tag(lang):
   """Creates the root XTB XML element"""
   translationbundle_tag = lxml.etree.Element('translationbundle')
+  translationbundle_tag.set('lang',lang.replace('_', '-'))
   # Adds a newline so the first translation isn't glued to the translationbundle element for us weak humans.
   translationbundle_tag.text = '\n'
   return translationbundle_tag
@@ -230,9 +231,9 @@ def generate_source_strings_xml_from_grd(output_xml_file_handle, grd_file_path):
   return xml_string
 
 
-def generate_xtb_content(grd_strings, translations):
+def generate_xtb_content(lang_code, grd_strings, translations):
   """Generates an XTB file from a set of translations and GRD strings"""
-  translationbundle_tag = create_xtb_format_translationbundle_tag()
+  translationbundle_tag = create_xtb_format_translationbundle_tag(lang_code)
   for string in grd_strings:
     if string[0] in translations:
       fingerprint = string[2]
