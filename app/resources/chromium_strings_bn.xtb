@@ -1,0 +1,130 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="bn">
+<translation id="5194812628624740897"><ph name="USERNAME"/> সংযোগ বিচ্ছিন্ন করলে তা আপনার ইতিহাস, বুকমার্ক, সেটিংস, এবং এই ডিভাইসে সঞ্চিত অন্যান্য Brave ডেটা মুছে দেবে। আপনার Brave Software অ্যাকাউন্টে সঞ্চিত ডেটা সাফ করা হবে না এবং <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software ড্যাশবোর্ড <ph name="END_GOOGLE_DASHBOARD_LINK"/> এ তা পরিচালনা করা যেতে পারে।</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="680297041157509674">Brave OS</translation>
+<translation id="4847979153841887006">Brave লোগো</translation>
+<translation id="5935964611177478118">Brave এ প্রবেশ করুন</translation>
+<translation id="5516268345616100622">টাস্ক ম্যানেজার - Brave</translation>
+<translation id="7918740962659365265">Brave Software এ  <ph name="UMA_LINK"/> ও ক্র্যাশ প্রতিবেদন পাঠিয়ে Brave আরও ভালো করতে সাহায্য করুন</translation>
+<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="6474707902830053522">Brave OS ব্যবহারে সাহায্য পেতে</translation>
+<translation id="1417155795047680590">Brave রচয়িতা</translation>
+<translation id="8758017846917193089">কপিরাইট <ph name="YEAR"/> Brave রচয়িতা৷ সর্বস্বত্ত্ব সংরক্ষিত৷</translation>
+<translation id="9179832504443063758">Brave মুক্ত উৎসের লাইসেন্সগুলি</translation>
+<translation id="2310890394934209120">Brave OS সম্ভবত অতিরিক্ত <ph name="BEGIN_LINK_CROS_OSS"/>ওপেন সোর্স সফ্টওয়্যার<ph name="END_LINK_CROS_OSS"/> দিয়ে তৈরি৷</translation>
+<translation id="8372475781172910778">Brave OS মুক্ত উৎসে লাইসেন্সগুলি</translation>
+<translation id="8851136666856101339">প্রধান</translation>
+<translation id="5019879183386042809">Brave-কে ডিফল্ট ব্রাউজার করুন</translation>
+<translation id="662492621463805426">Brave OS দিয়ে শুরু করুন</translation>
+<translation id="5063987220091207247">Brave OS এই পৃষ্ঠাটি খুলতে পারবে না।</translation>
+<translation id="4458285410772214805">দয়া করে পরিবর্তনটি সম্ভব করতে প্রস্থান করুন এবং পুনরায় প্রবেশ করুন৷</translation>
+<translation id="3184285555726798152">Brave-কে পটভূমিতে চলতে দিন</translation>
+<translation id="8926637909431618259">Brave বন্ধ হলে পটভূমির অ্যাপ্লিকেশন চালু রাখুন</translation>
+<translation id="2077129598763517140">যখনই উপলব্ধ তখন হার্ডওয়্যার অ্যাক্সিলারেশন ব্যবহার করুন</translation>
+<translation id="7182196174524406109">(Brave <ph name="BEGIN_BUTTON"/>আবার চালু করা<ph name="END_BUTTON"/> প্রয়োজন)</translation>
+<translation id="2585240446624043880">Brave তার ডেটা ডিরেক্টরিতে পড়তে এবং লিখতে পারে না:
+
+<ph name="USER_DATA_DIRECTORY"/></translation>
+<translation id="8417700129970341035">ঐচ্ছিক: স্বয়ংক্রিয়ভাবে Brave Software-এ ব্যবহার পরিসংখ্যান এবং ক্র্যাশ প্রতিবেদন পাঠিয়ে Brave-কে আরও ভালো করতে সহায়তা করুন৷</translation>
+<translation id="1489465648257900784">আপনার প্রোফাইলটি ব্যবহার করতে পারা যাবে না কারণ এটি একটি Brave-এর নতুন সংস্করণ৷ কিছু বিষয় অনুপলব্ধ হতে পারে৷ দয়া করে একটি ভিন্ন প্রোফাইল ডিরেক্টরি উল্লেখ করুন অথবা Brave-এর একটি নতুন সংস্করণ ব্যবহার করুন৷</translation>
+<translation id="1065672644894730302">আপনার অভিরুচিগুলি পড়া যাবে না৷ কিছু বৈশিষ্ট্য অনুপলব্ধ থাকতে পারে ও অভিরুচিগুলিতে করা পরিবর্তনগুলি সংরক্ষিত হবে না৷</translation>
+<translation id="3403365884036456766">আপনার অভিরুচিসমূহ ফাইল দূষিত অথবা অবৈধ৷
+
+Brave আপনার সেটিংস পুনরুদ্ধার করতে অক্ষম৷</translation>
+<translation id="8554809439398012115">Brave এই পাসওয়ার্ডটি <ph name="SAVED_PASSWORD_LINK"/> এ সংরক্ষণ করবে। আপনার এটি মনে রাখার প্রয়োজন নেই।</translation>
+<translation id="5316336629760101484">Brave এর তৈরি করা কঠিন পাসওয়ার্ড ব্যবহার করুন</translation>
+<translation id="2288174659056124771">Brave আপনার ডিফল্ট ব্রাউজার নয়৷</translation>
+<translation id="6715663530666325392">ওয়েবে আপনার ব্যক্তিগতকৃত ব্রাউজার বিষয় সংরক্ষণ করতে সিঙ্ক সেট করুন এবং যেকোনো কম্পিউটারে Brave থেকে সেগুলিতে অ্যাক্সেস করুন৷</translation>
+<translation id="2708027082363760195">Brave PDF দর্শক যা ফাংশানে প্রিন্ট প্রিভিউ জন্য আবশ্যক, তা অন্তর্ভূক্ত করেনি৷</translation>
+<translation id="8880183781256147665">Brave-এ জুড়ছে...</translation>
+<translation id="3561569806301739367"><ph name="FILE_NAME"/> বিপজ্জনক হতে পারে, তাই Brave এটিকে অবরুদ্ধ করেছে।</translation>
+<translation id="9067428552314418522">এই ফাইলটি বিপজ্জনক, তাই Brave এটিকে অবরুদ্ধ করেছে।</translation>
+<translation id="4168372721886011198"><ph name="FILE_NAME"/> বিপজ্জনক, তাই Brave এটিকে অবরুদ্ধ করেছে।</translation>
+<translation id="89367911614620585">এই ফাইলটি বিপজ্জনক হতে পারে, তাই Brave এটিকে অবরুদ্ধ করেছে।</translation>
+<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{বর্তমানে একটি ডাউনলোড হচ্ছে। আপনি কি ডাউনলোড বাতিল করে Brave থেকে বেরিয়ে যেতে চান?}one{বর্তমানে #টি ডাউনলোড হচ্ছে। আপনি কি ডাউনলোডগুলি বাতিল করে Brave থেকে বেরিয়ে যেতে চান?}other{বর্তমানে #টি ডাউনলোড হচ্ছে। আপনি কি ডাউনলোডগুলি বাতিল করে Brave থেকে বেরিয়ে যেতে চান?}}</translation>
+<translation id="5212535894547383850">Brave আপডেট করা বন্ধ করেছে এবং আপনার অপারেটিং সিস্টেমের এই সংস্করণটিকে আর সমর্থন করে না৷</translation>
+<translation id="2339258256897053758">Brave Software API কীগুলি অনুপস্থিত৷ Brave এর কিছু বৈশিষ্ট্য নিষ্ক্রিয় হয়ে যাবে৷</translation>
+<translation id="5906655207909574370">প্রায় আপ-টু-ডেট হয়েছে! আপডেট শেষ করতে আপনার ডিভাইস আবার চালু করুন।</translation>
+<translation id="5877064549588274448">চ্যানেল পরিবর্তিত হয়েছে৷ পরিবর্তনগুলি প্রয়োগ করার জন্য আপনার ডিভাইস আবার শুরু করুন৷</translation>
+<translation id="8667808506758191620">আপনার <ph name="DEVICE_TYPE"/> আপ টু ডেট রয়েছে।</translation>
+<translation id="6970811910055250180">আপনার ডিভাইস আপডেট করা হচ্ছে ...</translation>
+<translation id="8030318113982266900">আপনার ডিভাইস <ph name="CHANNEL_NAME"/> চ্যানেলে আপডেট করা হচ্ছে...</translation>
+<translation id="7355059611036077582">Brave-এ জুড়ুন</translation>
+<translation id="7456658570432774853">বর্তমান সেটিংসের প্রতিবেদন করার মাধ্যম Brave-কে আরও উন্নত করতে সহায়তা করুন</translation>
+<translation id="5436841087823876677">সতর্কতা: Brave ব্রাউজিং ইতিহাস রেকর্ডিং করা থেকে এক্সটেনশনগুলিতে বাধা দিতে পারেনা। ছদ্মবেশী মোডে এই এক্সটেনশনটি অক্ষম করতে, এই বিকল্পটি নির্বাচন মুক্ত করুন।</translation>
+<translation id="777113543093865885">Brave থেকে সরান...</translation>
+<translation id="6078442581074612226">Brave এ</translation>
+<translation id="8148611988012584308">Brave কাস্টমাইজ ও নিয়ন্ত্রণ করুন</translation>
+<translation id="9071554113102421877">Brave এ খুলুন</translation>
+<translation id="1421502046520299169">&amp;amp;Brave OS সম্পর্কে</translation>
+<translation id="2534623228451928732">&amp;amp;Brave OS আপডেট করুন</translation>
+<translation id="4934157190377700991">আপনি এখন Brave এ প্রবেশ করেছেন</translation>
+<translation id="4100716194836114130">এটি হল আপনার Brave</translation>
+<translation id="8296145982386097283">একটি কম্পিউটার শেয়ার করবেন? এখন আপনি আপনার পছন্দমতো উপায়ে Brave কে সেট আপ করতে পারেন৷</translation>
+<translation id="1672124279374861424">Brave থেকে আপনার অ্যাকাউন্ট সরানোর পরে, কার্য়করী করতে আপনাকে খোলা ট্যাবগুলিকে  পুনরায় লোড করার প্রয়োজন হতে পারে।</translation>
+<translation id="9197493712748167998">আপনার Brave জিনিসপত্র সমন্বয় করার জন্য আপনি <ph name="PROFILE_EMAIL"/> ব্যবহার করছেন৷ আপনার সিঙ্ক পছন্দগুলি আপডেট করতে বা Brave Software অ্যাকাউন্ট ছাড়া Brave ব্যবহার করতে <ph name="SETTINGS_LINK"/> এ যান৷</translation>
+<translation id="3968006371075376562">Brave OS আপনার ডেটা সিঙ্ক করতে পারেনি৷ দয়া করে আপনার সিঙ্ক পাসফ্রেজ আপডেট করুন৷</translation>
+<translation id="6746636977031158624">আপনার অ্যাকাউন্টের সাইন ইনের বিবরণটি সেকেলে হওয়ায় Brave OS আপনার ডেটা সিঙ্ক করতে পারেনি৷</translation>
+<translation id="2999152167963026588">আপনার ডোমেনে সিঙ্ক উপলব্ধ না থাকার কারণে Brave OS আপনার ডেটা সিঙ্ক করতে পারেনি৷</translation>
+<translation id="1459786048951724030">সাইন ইনে ত্রুটির কারণে Brave OS আপনার ডেটা সিঙ্ক করতে পারেনি৷</translation>
+<translation id="2887570477425111999">Brave এ বিবরণ সেভ করুন</translation>
+<translation id="193559141530782783">Brave আপনার ব্যক্তিগত বিবরণ সুরক্ষিত ভাবে সঞ্চয় করবে, তাই আপনার আর টাইপ করার প্রয়োজন হবে না।</translation>
+<translation id="663059986967017181">Brave-এ প্রতিলিপি করা হয়েছে</translation>
+<translation id="5225129378754387452">Brave মেনু দেখান</translation>
+<translation id="300669147395456190">Brave অ্যাপ্লিকেশানগুলি</translation>
+<translation id="3421950102518690868"><ph name="DOMAIN"/> এ এই ডিভাইসটি ব্যবহার করার আগে আপনাকে নিম্নলিখিত পরিষেবার শর্তাদি পড়তে হবে এবং এটিকে স্বীকার করতে হবে৷ এই শর্তাদি Brave OS এর শর্তাদিকে প্রসারণ, সংশোধন বা সীমাবদ্ধ করে না৷</translation>
+<translation id="3293668930608086049">Brave আপনার ক্যামেরা এবং মাইক্রোফোন ব্যবহার করছে৷</translation>
+<translation id="8919461291440820124">Brave আপনার মাইক্রোফোন ব্যবহার করছে৷</translation>
+<translation id="3205074487970075628">Brave আপনার ক্যামেরা ব্যবহার করছে৷</translation>
+<translation id="3813272600615358652">আপনি Brave শুরু করলে কোন পৃষ্ঠাটি দেখানো হবে তা এই এক্সটেনশানটি পরিবর্তন করেছে।</translation>
+<translation id="2576129394594491151">আপনি Brave শুরু করলে কোন পৃষ্ঠাটি দেখানো হবে তা "<ph name="EXTENSION_NAME"/>" এক্সটেনশান পরিবর্তন করেছে।</translation>
+<translation id="2675662665675552980">আপনি Brave শুরু করলে কোন পৃষ্ঠাটি দেখানো হবে তাও এটি নিয়ন্ত্রণ করে।</translation>
+<translation id="3215652305414474626">আপনি Brave শুরু করলে বা হোম বোতামটি ক্লিক করলে কোন পৃষ্ঠাটি দেখানো হবে তাও এটি নিয়ন্ত্রণ করে।</translation>
+<translation id="2433912322225810055">আপনি Brave শুরু করলে বা Omnibox থেকে অনুসন্ধান করলে কোন পৃষ্ঠাটি দেখানো হবে তাও এটি নিয়ন্ত্রণ করে।</translation>
+<translation id="2871190378186459992">Brave-এর জন্য খুব ভালো অ্যাপ্লিকেশান, গেম, এক্সটেনশন এবং থিমসমূহ আবিষ্কার করুন৷</translation>
+<translation id="8183252473547465084">আপডেটটি প্রয়োগ করতে Brave OS আবার চালু করা প্রয়োজন।</translation>
+<translation id="5895138241574237353">পুনর্সূচনা</translation>
+<translation id="5875673934455379806">Brave আবার ইন্সটল করুন</translation>
+<translation id="2097604701283463988">Brave পুরানো হয়ে গেছে</translation>
+<translation id="6389268239133412586">Brave আপডেট করা যাচ্ছে না</translation>
+<translation id="7963515534397191222">Brave লেটেস্ট ভার্সনে আপডেট করা যাচ্ছে না, তাই আপনি নতুন বৈশিষ্ট্য এবং সুরক্ষা সমাধানগুলি পাচ্ছেন না।</translation>
+<translation id="3472158705945346956">আপনার পরিচালককে আপনাকে অবশ্যই Brave থেকে সরিয়ে আবার যোগ করতে হবে।</translation>
+<translation id="5173820533850252773">Brave পুরানো হয়ে গেছে</translation>
+<translation id="1705567146636171298">Brave আপডেট করুন</translation>
+<translation id="2316129865977710310">না, ধন্যবাদ</translation>
+<translation id="4050175100176540509">গুরুত্বপূর্ণ নিরাপত্তা উন্নতি এবং নতুন বৈশিষ্ট্যগুলি সর্বশেষ সংস্করণে উপলব্ধ।</translation>
+<translation id="4153970397860125785">{SECONDS,plural, =1{Brave ১ সেকেন্ডের মধ্যে পুনরায় চালু হবে।}one{Brave # সেকেন্ডের মধ্যে পুনরায় চালু হবে।}other{Brave # সেকেন্ডের মধ্যে পুনরায় চালু হবে।}}</translation>
+<translation id="9159286371333817139">আপনার এখনই Brave আবার চালু করা উচিত হবে।</translation>
+<translation id="9203540365585059272">Brave এর জন্য একটি বিশেষ সুরক্ষা আপডেট এইমাত্র প্রয়োগ করা হয়েছে; এটা কার্যকর করার জন্য (আমরা আপনার ট্যাবগুলি পুনরুদ্ধার করব) আপনার এখনই একে পুনরায় চালু করা উচিত হবে।</translation>
+<translation id="1653828314016431939">ঠিক আছে - এখন পুর্নসূচনা করুন</translation>
+<translation id="795025003224538582">পুর্নসূচনা করবেন না</translation>
+<translation id="763369711159699222">Brave কে আরও  করে তুলতে সাহায্য করুন৷</translation>
+<translation id="1156940037717341650">আপনি Brave Software-এ নিরাপত্তার সম্ভাব্য লঙ্ঘনের ঘটনাগুলি স্বয়ংক্রিয়ভাবে প্রতিবেদন করার মাধ্যমে Brave কে নিরাপদ ও সহজে ব্যবহারযোগ্য করতে তুলতে সাহায্য করতে পারেন।</translation>
+<translation id="3009995890652266099">বিপজ্জনক অ্যাপ্লিকেশান এবং সাইট সনাক্ত করতে সহায়তা দিতে স্বয়ংক্রিয়ভাবে কিছু তথ্য ও পৃষ্ঠা সামগ্রী Brave Software এ পাঠানোর মাধ্যমে Brave কে আরও নিরাপদ ও সহজে ব্যবহারযোগ্য করে তুলতে সাহায্য করতে পারেন।</translation>
+<translation id="6791166902140255175">Brave ট্যাব</translation>
+<translation id="8899693649891674038">আপনার ফোনে Brave ইনস্টল করুন। আমরা আপনার ফোনে একটি এসএমএস পাঠাব।</translation>
+<translation id="1570795130102031380">আপনার ফোনে Brave ইনস্টল করুন। আমরা আপনার ফোনে একটি এসএমএস পাঠাব।: <ph name="PHONE_NUMBER"/></translation>
+<translation id="1609678321160597289">আপনার ফোনে Brave ইনস্টল করুন। আমরা আপনার অ্যাকাউন্ট পুনরুদ্ধারের ফোন নম্বরে একটি এসএমএস পাঠাব।</translation>
+<translation id="2965084188004448871">আপনার ফোনে Brave ইনস্টল করুন। আমরা আপনার অ্যাকাউন্ট পুনরুদ্ধারের ফোন নম্বরে একটি এসএমএস পাঠাব: <ph name="PHONE_NUMBER"/></translation>
+<translation id="8358191771897395012">আপনার iPhone এ Brave ইনস্টল করুন</translation>
+<translation id="1744365871163268756">Brave যখন সিস্টেম আপডেটগুলিকে ইনস্টল করে তখন দয়া করে অপেক্ষা করুন৷</translation>
+<translation id="5693614905241031118">Brave স্বয়ংক্রিয়ভাবে আপডেট হয় তাই আপনি সবসময় নবীনতম সংস্করণটি পান৷</translation>
+<translation id="6141293433381251973">Brave স্বয়ংক্রিয়ভাবে আপডেট হয় তাই আপনার কাছে সর্বদা নবীনতম সংস্করণটি থাকে৷ এই ডাউনলোডটি সম্পূর্ণ হলে, Brave আবার চালু হবে এবং আপনি আবার আগের মতো Brave ব্যবহার করতে পারবেন৷</translation>
+<translation id="7808415789955822133">Brave OS শর্তাদি</translation>
+<translation id="6686872257969654608">Brave OS সম্পর্কে</translation>
+<translation id="2280363356796735201">Brave OS সম্পর্কে সহায়তা পান</translation>
+<translation id="6161696008382683101">Brave Software Payments (Brave এ অনুলিপি করা হয়েছে)</translation>
+<translation id="7977435741986383568">Brave আপনার ব্রাউজিংয়ের অভিজ্ঞতাকে উন্নত করতে ওয়েব পরিষেবাগুলি ব্যবহার করতে পারে৷ আপনি আপনার ইচ্ছা অনুযায়ী এই পরিষেবাগুলিকে অক্ষম করতে পারেন৷ <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
+<translation id="6274110506580702455">এই ডিভাইসের প্রশাসক Brave এর মাধ্যমে সাইন-ইন করা অক্ষম করেছেন।</translation>
+<translation id="9220324636239049437">এটি এই ডিভাইস থেকে ১টি আইটেম মুছে দেবে। আপনার ডেটা পরে পুনরুদ্ধার করার জন্য, Brave এ <ph name="USER_EMAIL"/> হিসেবে প্রবেশ করুন।</translation>
+<translation id="5853262807109651878">এটি এই ডিভাইস থেকে <ph name="ITEMS_COUNT"/>টি আইটেম মুছে দেবে। আপনার ডেটা পরে পুনরুদ্ধার করার জন্য, Brave এ <ph name="USER_EMAIL"/> হিসেবে প্রবেশ করুন।</translation>
+<translation id="4784414698887946907">এটি এই ডিভাইস থেকে আপনার ব্রাউজিং ডেটা মুছে ফেলবে। আপনার ডেটা পরে পুনরুদ্ধার করার জন্য, Brave এ <ph name="USER_EMAIL"/> হিসেবে সাইন ইন করুন।</translation>
+<translation id="82609232232243542">Brave-এ প্রবেশ করুন</translation>
+<translation id="8372880274820509128">অতিরিক্ত নিরাপত্তার জন্য Brave আপনার ডেটা এনক্রিপ্ট করবে।</translation>
+<translation id="6234515504547364178">Brave থেকে প্রস্থান করুন</translation>
+<translation id="7713466009760073734">Brave OS এই ভাষায় প্রদর্শিত হচ্ছে</translation>
+<translation id="3518788198614984730">এই ভাষায় Brave OS প্রদর্শন করুন</translation>
+<translation id="6056473803837713617"><ph name="BEGIN_LINK"/>বর্তমান সেটিংসের<ph name="END_LINK"/> প্রতিবেদন করে Brave কে আরও ভালো করে তুলতে সাহায্য করুন</translation>
+</translationbundle>

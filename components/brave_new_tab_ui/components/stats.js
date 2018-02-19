@@ -23,27 +23,27 @@ class Stats extends React.Component {
     const minutes = estimatedMillisecondsSaved < 1000 * 60 * 60
     const seconds = estimatedMillisecondsSaved < 1000 * 60
     let counter
-    let text
+    let id
 
     if (seconds) {
       counter = Math.ceil(estimatedMillisecondsSaved / 1000)
-      text = 'seconds'
+      id = counter === 1 ? 'second' : 'seconds'
     } else if (minutes) {
       counter = Math.ceil(estimatedMillisecondsSaved / 1000 / 60)
-      text = 'minutes'
+      id = counter === 1 ? 'minute' : 'minutes'
     } else if (hours) {
       // Refer to http://stackoverflow.com/a/12830454/2950032 for the detailed reasoning behind the + after
       // toFixed is applied. In a nutshell, + is used to discard unnecessary trailing 0s after calling toFixed
       counter = +((estimatedMillisecondsSaved / 1000 / 60 / 60).toFixed(1))
-      text = 'hours'
+      id = counter === 1 ? 'hour' : 'hours'
     } else {
       // Otherwise the output is in days
       counter = +((estimatedMillisecondsSaved / 1000 / 60 / 60 / 24).toFixed(2))
-      text = 'days'
+      id = counter === 1 ? 'day' : 'days'
     }
 
     return {
-      id: text,
+      id,
       value: counter,
       args: JSON.stringify({ value: counter })
     }
@@ -73,7 +73,7 @@ class Stats extends React.Component {
       </li>
       <li className='statsBlock'>
         <span className='counter timeSaved'>
-          {timeSaved.value} <span className='text' data-l10n-id={timeSaved.id} data-l10n-args={timeSaved.args} />
+          {timeSaved.value} <span className='text' i18n-content={timeSaved.id} />
         </span>
         <span className='statsText' i18n-content='estimatedTimeSaved' />
       </li>

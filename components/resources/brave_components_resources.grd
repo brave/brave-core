@@ -6,6 +6,60 @@
     </output>
     <output filename="brave_components_resources.pak" type="data_package" />
   </outputs>
+  <translations>
+    <file path="strings/brave_components_resources_am.xtb" lang="am" />
+    <file path="strings/brave_components_resources_ar.xtb" lang="ar" />
+    <file path="strings/brave_components_resources_bg.xtb" lang="bg" />
+    <file path="strings/brave_components_resources_bn.xtb" lang="bn" />
+    <file path="strings/brave_components_resources_ca.xtb" lang="ca" />
+    <file path="strings/brave_components_resources_cs.xtb" lang="cs" />
+    <file path="strings/brave_components_resources_da.xtb" lang="da" />
+    <file path="strings/brave_components_resources_de.xtb" lang="de" />
+    <file path="strings/brave_components_resources_el.xtb" lang="el" />
+    <file path="strings/brave_components_resources_en-GB.xtb" lang="en-GB" />
+    <file path="strings/brave_components_resources_es.xtb" lang="es" />
+    <file path="strings/brave_components_resources_es-419.xtb" lang="es-419" />
+    <file path="strings/brave_components_resources_et.xtb" lang="et" />
+    <file path="strings/brave_components_resources_fa.xtb" lang="fa" />
+    <file path="strings/brave_components_resources_fi.xtb" lang="fi" />
+    <file path="strings/brave_components_resources_fil.xtb" lang="fil" />
+    <file path="strings/brave_components_resources_fr.xtb" lang="fr" />
+    <file path="strings/brave_components_resources_gu.xtb" lang="gu" />
+    <file path="strings/brave_components_resources_hi.xtb" lang="hi" />
+    <file path="strings/brave_components_resources_hr.xtb" lang="hr" />
+    <file path="strings/brave_components_resources_hu.xtb" lang="hu" />
+    <file path="strings/brave_components_resources_id.xtb" lang="id" />
+    <file path="strings/brave_components_resources_it.xtb" lang="it" />
+    <file path="strings/brave_components_resources_iw.xtb" lang="he" />
+    <file path="strings/brave_components_resources_ja.xtb" lang="ja" />
+    <file path="strings/brave_components_resources_kn.xtb" lang="kn" />
+    <file path="strings/brave_components_resources_ko.xtb" lang="ko" />
+    <file path="strings/brave_components_resources_lt.xtb" lang="lt" />
+    <file path="strings/brave_components_resources_lv.xtb" lang="lv" />
+    <file path="strings/brave_components_resources_ml.xtb" lang="ml" />
+    <file path="strings/brave_components_resources_mr.xtb" lang="mr" />
+    <file path="strings/brave_components_resources_ms.xtb" lang="ms" />
+    <file path="strings/brave_components_resources_nl.xtb" lang="nl" />
+    <file path="strings/brave_components_resources_no.xtb" lang="no" />
+    <file path="strings/brave_components_resources_pl.xtb" lang="pl" />
+    <file path="strings/brave_components_resources_pt-BR.xtb" lang="pt-BR" />
+    <file path="strings/brave_components_resources_pt-PT.xtb" lang="pt-PT" />
+    <file path="strings/brave_components_resources_ro.xtb" lang="ro" />
+    <file path="strings/brave_components_resources_ru.xtb" lang="ru" />
+    <file path="strings/brave_components_resources_sk.xtb" lang="sk" />
+    <file path="strings/brave_components_resources_sl.xtb" lang="sl" />
+    <file path="strings/brave_components_resources_sr.xtb" lang="sr" />
+    <file path="strings/brave_components_resources_sv.xtb" lang="sv" />
+    <file path="strings/brave_components_resources_sw.xtb" lang="sw" />
+    <file path="strings/brave_components_resources_ta.xtb" lang="ta" />
+    <file path="strings/brave_components_resources_te.xtb" lang="te" />
+    <file path="strings/brave_components_resources_th.xtb" lang="th" />
+    <file path="strings/brave_components_resources_tr.xtb" lang="tr" />
+    <file path="strings/brave_components_resources_uk.xtb" lang="uk" />
+    <file path="strings/brave_components_resources_vi.xtb" lang="vi" />
+    <file path="strings/brave_components_resources_zh-CN.xtb" lang="zh-CN" />
+    <file path="strings/brave_components_resources_zh-TW.xtb" lang="zh-TW" />
+  </translations>
   <release seq="1">
     <includes>
       <!-- Common resources -->
@@ -39,7 +93,14 @@
       <message name="IDS_BRAVE_NEW_TAB_THUMB_REMOVED" desc="Shown when a thumbnail is removed from the new tab page">Thumb Removed.</message>
       <message name="IDS_BRAVE_NEW_TAB_UNDO_REMOVED" desc="Shown when a user wants to undo removing a tile.">Undo</message>
       <message name="IDS_BRAVE_NEW_TAB_RESTORE_ALL" desc="Allows restoring all top sites back to the original.">Restore All</message>
+      <message name="IDS_BRAVE_NEW_TAB_SECOND" desc="Displays the number of seconds.">second</message>
+      <message name="IDS_BRAVE_NEW_TAB_SECONDS" desc="Displays the number of seconds.">seconds</message>
+      <message name="IDS_BRAVE_NEW_TAB_MINUTE" desc="Displays the number of minutes.">minute</message>
+      <message name="IDS_BRAVE_NEW_TAB_MINUTES" desc="Displays the number of minutes.">minutes</message>
+      <message name="IDS_BRAVE_NEW_TAB_HOUR" desc="Displays the number of hours.">hour</message>
+      <message name="IDS_BRAVE_NEW_TAB_HOURS" desc="Displays the number of hours.">hours</message>
+      <message name="IDS_BRAVE_NEW_TAB_DAY" desc="Displays the number of days.">day</message>
+      <message name="IDS_BRAVE_NEW_TAB_DAYS" desc="Displays the number of days.">days</message>
     </messages>
-
   </release>
 </grit>

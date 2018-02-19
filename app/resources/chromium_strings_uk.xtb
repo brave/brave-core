@@ -1,0 +1,132 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="uk">
+<translation id="5194812628624740897">Якщо від’єднати користувача <ph name="USERNAME"/>, вашу історію, закладки, налаштування й інші дані Brave, збережені на цьому пристрої, буде видалено. Дані, які зберігаються в обліковому записі Brave Software, не буде видалено. Ними можна керувати на <ph name="GOOGLE_DASHBOARD_LINK"/>Інформаційній панелі Brave Software<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="680297041157509674">ОС Brave</translation>
+<translation id="4847979153841887006">Логотип Brave</translation>
+<translation id="5935964611177478118">увійдіть в обліковий запис Brave</translation>
+<translation id="5516268345616100622">Диспетчер завдань – Brave</translation>
+<translation id="7918740962659365265">Допоможіть покращити Brave, надсилаючи звіти про аварійне завершення роботи та <ph name="UMA_LINK"/> в Brave Software</translation>
+<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="6474707902830053522">Отримати довідку щодо користування ОС Brave</translation>
+<translation id="1417155795047680590">The Brave Authors</translation>
+<translation id="8758017846917193089">Авторське право <ph name="YEAR"/> Автори Brave. Усі права захищено.</translation>
+<translation id="9179832504443063758">Ліцензії Brave із відкритим кодом</translation>
+<translation id="2310890394934209120">ОС Brave стала можливою завдяки додатковому <ph name="BEGIN_LINK_CROS_OSS"/>програмному забезпеченню з відкритим кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="8372475781172910778">Ліцензії ОС Brave із відкритим кодом</translation>
+<translation id="8851136666856101339">головний</translation>
+<translation id="5019879183386042809">Зробити Brave переглядачем за умовчанням</translation>
+<translation id="662492621463805426">Початок роботи з ОС Brave</translation>
+<translation id="5063987220091207247">Неможливо відкрити цю сторінку в ОС Brave.</translation>
+<translation id="4458285410772214805">Щоб зміна почала діяти, вийдіть і ввійдіть знову.</translation>
+<translation id="3184285555726798152">Дозволити Brave працювати у фоновому режимі</translation>
+<translation id="8926637909431618259">Продовжувати роботу фонових програм, коли Brave закрито</translation>
+<translation id="2077129598763517140">Використовувати апаратне прискорення, якщо доступно</translation>
+<translation id="7182196174524406109">(потрібно <ph name="BEGIN_BUTTON"/>перезапустити<ph name="END_BUTTON"/> Brave)</translation>
+<translation id="2585240446624043880">Brave не може читати та писати дані у свій каталог даних:
+
+<ph name="USER_DATA_DIRECTORY"/></translation>
+<translation id="8417700129970341035">Додатково: допоможіть покращити Brave,  автоматично надсилаючи статистику використання та звіти про аварійне завершення роботи в Brave Software.</translation>
+<translation id="1489465648257900784">Ваш профіль не можна використовувати, оскільки він створений у новішій версії Brave.
+
+Деякі функції можуть бути недоступними. Укажіть інший каталог профілю або скористайтеся новішою версією Brave.</translation>
+<translation id="1065672644894730302">Не вдається розпізнати налаштування. Деякі функції можуть бути не доступні, а зміни в налаштуваннях не зберігатимуться.</translation>
+<translation id="3403365884036456766">Ваш файл налаштувань пошкоджений або недійсний.
+
+Brave не може відновити ваші налаштування.</translation>
+<translation id="8554809439398012115">Brave збереже цей пароль тут: <ph name="SAVED_PASSWORD_LINK"/>. Не потрібно його запам’ятовувати.</translation>
+<translation id="5316336629760101484">Використовуйте надійний пароль, згенерований Brave</translation>
+<translation id="2288174659056124771">Brave не є вашим веб-переглядачем за умовчанням.</translation>
+<translation id="6715663530666325392">Налаштуйте синхронізацію, щоб зберегти свої персоналізовані функції веб-переглядача в Інтернеті й мати до них доступ із Brave на будь-якому комп’ютері.</translation>
+<translation id="2708027082363760195">У Brave немає засобу перегляду файлів PDF, який потрібен для перегляду версії для друку.</translation>
+<translation id="8880183781256147665">Додавання в Brave...</translation>
+<translation id="3561569806301739367">Файл <ph name="FILE_NAME"/> може бути небезпечним, тому Brave заблокував його.</translation>
+<translation id="9067428552314418522">Цей файл небезпечний, тому Brave заблокував його.</translation>
+<translation id="4168372721886011198">Файл <ph name="FILE_NAME"/> небезпечний, тому Brave заблокував його.</translation>
+<translation id="89367911614620585">Цей файл може бути небезпечним, тому Brave заблокував його.</translation>
+<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Триває завантаження. Скасувати його та вийти з Brave?}one{Триває # завантаження. Скасувати їх і вийти з Brave?}few{Тривають # завантаження. Скасувати їх і вийти з Brave?}many{Тривають # завантажень. Скасувати їх і вийти з Brave?}other{Тривають # завантаження. Скасувати їх і вийти з Brave?}}</translation>
+<translation id="5212535894547383850">Оновлення Brave припинилось. Ця версія вашої операційної системи більше не підтримується.</translation>
+<translation id="2339258256897053758">Ключі API Brave Software відсутні. Деякі функції Brave буде вимкнено.</translation>
+<translation id="5906655207909574370">Майже оновлено. Перезапустіть пристрій, щоб завершити оновлення.</translation>
+<translation id="5877064549588274448">Канал змінено. Перезапустіть пристрій, щоб застосувати зміни.</translation>
+<translation id="8667808506758191620">Ваш пристрій <ph name="DEVICE_TYPE"/> оновлено.</translation>
+<translation id="6970811910055250180">Оновлення пристрою...</translation>
+<translation id="8030318113982266900">Оновлення пристрою до каналу <ph name="CHANNEL_NAME"/>…</translation>
+<translation id="7355059611036077582">Додати в Brave</translation>
+<translation id="7456658570432774853">Допоможіть покращити Brave, надсилаючи звіти про поточні налаштування</translation>
+<translation id="5436841087823876677">Застереження: Brave не може заборонити розширенням реєструвати вашу історію веб-перегляду. Щоб вимкнути це розширення в режимі анонімного перегляду, зніміть прапорець поруч із цим параметром.</translation>
+<translation id="777113543093865885">Видалити з Brave…</translation>
+<translation id="6078442581074612226">У Brave</translation>
+<translation id="8148611988012584308">Налаштування та керування Brave</translation>
+<translation id="9071554113102421877">&amp;amp;Відкрити в Brave</translation>
+<translation id="1421502046520299169">Про &amp;amp;ОС Brave</translation>
+<translation id="2534623228451928732">Оновити &amp;amp;ОС Brave</translation>
+<translation id="4934157190377700991">Ви ввійшли в Brave</translation>
+<translation id="4100716194836114130">Це ваш Brave</translation>
+<translation id="8296145982386097283">Користуєтеся комп’ютером спільно з іншими? Тепер ви можете налаштувати Brave на свій смак.</translation>
+<translation id="1672124279374861424">Якщо видалити обліковий запис із Brave, можливо, потрібно оновити відкриті вкладки, щоб зміни почали діяти.</translation>
+<translation id="9197493712748167998">Ви синхронізуєте дані Brave через обліковий запис <ph name="PROFILE_EMAIL"/>. Щоб оновити параметри синхронізації або використовувати Brave без облікового запису Brave Software, перейдіть на сторінку <ph name="SETTINGS_LINK"/>.</translation>
+<translation id="3968006371075376562">ОС Brave не вдалося синхронізувати ваші дані. Оновіть свою парольну фразу для синхронізації.</translation>
+<translation id="6746636977031158624">ОС Brave не вдалося синхронізувати ваші дані, оскільки дані для входу в обліковий запис застаріли.</translation>
+<translation id="2999152167963026588">ОС Brave не вдалося синхронізувати ваші дані, оскільки синхронізація для вашого домену недоступна.</translation>
+<translation id="1459786048951724030">ОС Brave не вдалося синхронізувати ваші дані через помилку входу.</translation>
+<translation id="2887570477425111999">Зберігати дані в Brave</translation>
+<translation id="193559141530782783">Brave надійно зберігатиме ваші особисті дані, тож вам не потрібно буде вводити їх знову.</translation>
+<translation id="663059986967017181">Скопійовано в Brave</translation>
+<translation id="5225129378754387452">Показати меню Brave</translation>
+<translation id="300669147395456190">Програми Brave</translation>
+<translation id="3421950102518690868">Перш ніж використовувати цей пристрій, потрібно прочитати й прийняти наведені нижче Загальні положення та умови для <ph name="DOMAIN"/>. Ці умови не розширюють, не змінюють і не обмежують Умови використання ОС Brave.</translation>
+<translation id="3293668930608086049">Brave використовує вашу камеру та мікрофон.</translation>
+<translation id="8919461291440820124">Brave використовує ваш мікрофон.</translation>
+<translation id="3205074487970075628">Brave використовує вашу камеру.</translation>
+<translation id="3813272600615358652">Це розширення змінило сторінку, яка відкривається під час запуску Brave.</translation>
+<translation id="2576129394594491151">Розширення "<ph name="EXTENSION_NAME"/>" змінило сторінку, яка відкривається під час запуску Brave.</translation>
+<translation id="2675662665675552980">Також указує сторінку, яка відкривається під час запуску Brave.</translation>
+<translation id="3215652305414474626">Розширення також змінило сторінку, яка відкривається під час запуску Brave або натискання кнопки "Домашня сторінка".</translation>
+<translation id="2433912322225810055">Розширення також змінило сторінку, яка відкривається під час запуску Brave або пошуку в універсальному вікні пошуку.</translation>
+<translation id="2871190378186459992">Знаходьте чудові додатки, ігри, розширення й теми для Brave.</translation>
+<translation id="8183252473547465084">Щоб застосувати це оновлення, потрібно перезапустити ОС Brave.</translation>
+<translation id="5895138241574237353">Перезапустити</translation>
+<translation id="5875673934455379806">Перевстановити Brave</translation>
+<translation id="2097604701283463988">Версія Brave застаріла</translation>
+<translation id="6389268239133412586">Не вдається оновити Brave</translation>
+<translation id="7963515534397191222">Не вдалось оновити Brave до останньої версії. Ви не зможете скористатися новими функціями та застосувати виправлення системи безпеки.</translation>
+<translation id="3472158705945346956">Вашому адміністратору потрібно вилучити й знову додати вас у Brave.</translation>
+<translation id="5173820533850252773">Версія Brave застаріла</translation>
+<translation id="1705567146636171298">Оновити Brave</translation>
+<translation id="2316129865977710310">Ні, дякую</translation>
+<translation id="4050175100176540509">В останній версії покращено безпеку та додано нові функції.</translation>
+<translation id="4153970397860125785">{SECONDS,plural, =1{Brave перезапуститься через 1 секунду.}one{Brave перезапуститься через # секунду.}few{Brave перезапуститься через # секунди.}many{Brave перезапуститься через # секунд.}other{Brave перезапуститься через # секунди.}}</translation>
+<translation id="9159286371333817139">Перезапустіть Brave.</translation>
+<translation id="9203540365585059272">Щойно було застосовано спеціальне оновлення для захисту Brave. Щоб воно почало діяти, перезапустіть Brave (ваші вкладки буде відновлено).</translation>
+<translation id="1653828314016431939">OK – перезапустити зараз</translation>
+<translation id="795025003224538582">Не перезапускати</translation>
+<translation id="763369711159699222">Допоможіть покращити Brave</translation>
+<translation id="1156940037717341650">Ви можете допомогти зробити Brave безпечнішим і простішим у користуванні, автоматично повідомляючи Brave Software деталі щодо можливого порушення безпеки.</translation>
+<translation id="3009995890652266099">Ви можете зробити Brave безпечнішим і простішим у користуванні, автоматично надсилаючи в Brave Software деяку інформацію про систему та вміст сторінок, щоб допомогти виявляти небезпечні додатки й сайти.</translation>
+<translation id="6791166902140255175">Вкладка Brave</translation>
+<translation id="8899693649891674038">Установіть Brave на телефоні. Ми надішлемо SMS на ваш телефон.</translation>
+<translation id="1570795130102031380">Установіть Brave на телефоні. Ми надішлемо SMS на ваш телефон: <ph name="PHONE_NUMBER"/></translation>
+<translation id="1609678321160597289">Установіть Brave на телефоні. Ми надішлемо SMS на номер телефону для відновлення облікового запису.</translation>
+<translation id="2965084188004448871">Установіть Brave на телефоні. Ми надішлемо SMS на номер телефону для відновлення облікового запису: <ph name="PHONE_NUMBER"/></translation>
+<translation id="8358191771897395012">завантажити Brave на iPhone</translation>
+<translation id="1744365871163268756">Зачекайте, доки Brave установить найновіші оновлення системи.</translation>
+<translation id="5693614905241031118">Brave оновлюється автоматично, щоб у вас завжди була найновіша версія.</translation>
+<translation id="6141293433381251973">Brave оновлюється автоматично, щоб у вас завжди була найновіша версія. Щойно це завантаження завершиться, Brave перезапуститься й ви зможете продовжувати роботу.</translation>
+<translation id="7808415789955822133">Умови ОС Brave</translation>
+<translation id="6686872257969654608">Про ОС Brave</translation>
+<translation id="2280363356796735201">Отримати довідку щодо ОС Brave</translation>
+<translation id="6161696008382683101">Brave Software Payments (скопійовано в Brave)</translation>
+<translation id="7977435741986383568">Brave може покращувати веб-перегляд за допомогою веб-служб. Ви можете вимкнути ці служби. <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
+<translation id="6274110506580702455">Адміністратор цього пристрою вимкнув вхід у Brave.</translation>
+<translation id="9220324636239049437">1 елемент буде видалено з цього пристрою. Щоб відновити дані пізніше, увійдіть в обліковий запис Brave як <ph name="USER_EMAIL"/>.</translation>
+<translation id="5853262807109651878">З цього пристрою буде видалено стільки елементів: <ph name="ITEMS_COUNT"/>. Щоб відновити дані пізніше, увійдіть в обліковий запис Brave як <ph name="USER_EMAIL"/>.</translation>
+<translation id="4784414698887946907">Дані веб-перегляду буде видалено з цього пристрою. Щоб відновити дані пізніше, увійдіть в обліковий запис Brave як <ph name="USER_EMAIL"/>.</translation>
+<translation id="82609232232243542">Вхід у Brave</translation>
+<translation id="8372880274820509128">Задля підвищення безпеки Brave шифруватиме ваші дані.</translation>
+<translation id="6234515504547364178">Вийти з Brave</translation>
+<translation id="7713466009760073734">Для ОС Brave вибрано цю мову</translation>
+<translation id="3518788198614984730">Вибрати цю мову для ОС Brave</translation>
+<translation id="6056473803837713617">Допоможіть покращити Brave, надсилаючи звіти про <ph name="BEGIN_LINK"/>поточні налаштування<ph name="END_LINK"/></translation>
+</translationbundle>

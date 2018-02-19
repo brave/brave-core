@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const types = require('../constants/newTabTypes')
-
 export const topSitesDataUpdated = (topSites) => {
   return {
     type: types.NEW_TAB_TOP_SITES_DATA_UPDATED,
@@ -76,4 +75,8 @@ export const bookmarkInfoAvailable = (queryUrl, bookmarkTreeNode) => ({
 export const gridSitesUpdated = (gridSites) => ({
   type: types.NEW_TAB_GRID_SITES_UPDATED,
   gridSites
+})
+
+export const statsUpdated = () => ({
+  type: types.NEW_TAB_STATS_UPDATED
 })

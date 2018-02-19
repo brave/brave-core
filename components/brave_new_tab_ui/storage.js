@@ -7,7 +7,7 @@
 const debounce = require('../common/debounce')
 const backgrounds = require('./backgrounds')
 
-const keyName = "new-tab-data"
+const keyName = 'new-tab-data'
 
 const randomBackgroundImage = () => {
   const randomIndex = Math.floor(Math.random() * backgrounds.length)
@@ -20,16 +20,16 @@ const cleanData = (state) => {
   state = { ...state }
   state.backgroundImage = randomBackgroundImage()
   delete state.imageLoadFailed
-  state = getLoadTimeData(state)
+  state = module.exports.getLoadTimeData(state)
   return state
 }
 
-const getLoadTimeData = (state) => {
+module.exports.getLoadTimeData = (state) => {
   state = { ...state }
   state.stats = {}
   ;['adsBlockedStat', 'trackersBlockedStat', 'javascriptBlockedStat',
     'httpsUpgradesStat', 'fingerprintingBlockedStat'].forEach(
-      (stat) => state.stats[stat] = window.loadTimeData.getString(stat))
+      (stat) => { state.stats[stat] = parseInt(chrome.getVariableValue(stat)) })
   return state
 }
 
@@ -47,7 +47,7 @@ module.exports.getInitialState = () => cleanData({
 })
 
 module.exports.load = () => {
-  const data = localStorage.getItem(keyName)
+  const data = window.localStorage.getItem(keyName)
   let state
   if (data) {
     try {
@@ -61,6 +61,6 @@ module.exports.load = () => {
 
 module.exports.debouncedSave = debounce((data) => {
   if (data) {
-    localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
+    window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
   }
 }, 50)
