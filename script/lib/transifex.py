@@ -156,8 +156,8 @@ def textify(t):
 def get_grd_message_string_tags(grd_file_path):
   """Obtains all message tags of the specified GRD file"""
   output_elements = []
-  if grd_file_part.endswith('.grdp'):
-    elements = lxml.etree.parse(grd_file_path).findall('.//grid-part/*')
+  if grd_file_path.endswith('.grdp'):
+    elements = lxml.etree.parse(grd_file_path).findall('./*')
   else:
     elements = lxml.etree.parse(grd_file_path).findall('.//messages/*')
   for element in elements:
@@ -173,6 +173,15 @@ def get_grd_message_string_tags(grd_file_path):
         output_elements.append(child)
     else:
       assert False, ('Unexpected tag name %s' % element.tag)
+
+  elements = lxml.etree.parse(grd_file_path).findall('.//part')
+  for element in elements:
+    grd_base_path = os.path.dirname(grd_file_path)
+    grd_part_filename = element.get('file')
+    grd_part_path = os.path.join(grd_base_path, grd_part_filename)
+    part_output_elements = get_grd_message_string_tags(grd_part_path)
+    output_elements.extend(part_output_elements)
+
   return output_elements
 
 
