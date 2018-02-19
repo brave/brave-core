@@ -71,8 +71,7 @@ def get_transifex_translation_file_content(filename, lang_code):
   url_part = 'project/%s/resource/%s/translation/%s' % (transifex_project_name, filename, lang_code)
   url = base_url + url_part
   r = requests.get(url, auth=get_auth())
-  if r.status_code < 200 or r.status_code > 299:
-    sys.exit('Aborting. Status code %d: %s' % (r.status_code, r.content))
+  assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
   return r.json()['content']
 
 
@@ -102,8 +101,7 @@ def update_source_string_file_to_transifex(filename, xml_content):
   }
   headers = { 'Content-Type': 'application/json' }
   r = requests.put(url, json=payload, auth=get_auth(), headers=headers)
-  if r.status_code < 200 or r.status_code > 299:
-    sys.exit('Aborting. Status code %d: %s' % (r.status_code, r.content))
+  assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
   return True
 
 
@@ -125,7 +123,7 @@ def upload_source_string_file_to_transifex(filename, xml_content):
     if r.content.find('Resource with this Slug and Project already exists.') != -1:
       return update_source_string_file_to_transifex(filename, xml_content)
     else:
-      sys.exit('Aborting. Status code %d: %s' % (r.status_code, r.content))
+      assert False, ('Aborting. Status code %d: %s' % (r.status_code, r.content))
   return True
 
 
@@ -150,7 +148,6 @@ def textify(t):
   val = ''.join(s).strip()
 
   val = clean_triple_quoted_string(val)
-
   # Get rid fo all of the encode entities
   val = HTMLParser.HTMLParser().unescape(val).strip().replace('&', '&amp;')
   return val
@@ -159,7 +156,10 @@ def textify(t):
 def get_grd_message_string_tags(grd_file_path):
   """Obtains all message tags of the specified GRD file"""
   output_elements = []
-  elements = lxml.etree.parse(grd_file_path).findall('.//messages/*')
+  if grd_file_part.endswith('.grdp'):
+    elements = lxml.etree.parse(grd_file_path).findall('.//grid-part/*')
+  else:
+    elements = lxml.etree.parse(grd_file_path).findall('.//messages/*')
   for element in elements:
     if element.tag == 'message':
       output_elements.append(element)
@@ -172,7 +172,7 @@ def get_grd_message_string_tags(grd_file_path):
       for child in children:
         output_elements.append(child)
     else:
-      sys.exit('Unexpected tag name %s' % element.tag)
+      assert False, ('Unexpected tag name %s' % element.tag)
   return output_elements
 
 
@@ -197,17 +197,8 @@ def get_grd_strings(grd_file_path):
     translateable = message_tag.get('translateable')
     if translateable == 'false':
       continue
-    if not message_name:
-      sys.exit('Message name is empty')
-    if not message_name.startswith('IDS_'):
-      sys.exit('Invalid message ID: ' + message_name)
-
-    string_to_hash = message_tag.text
-    string_phs = message_tag.findall('ph')
-    for string_ph in string_phs:
-      string_to_hash = string_to_hash + string_ph.get('name').upper() + string_ph.tail
-    string_to_hash = string_to_hash.strip().encode('utf-8')
-
+    assert not not message_name, 'Message name is empty'
+    assert message_name.startswith('IDS_'), ('Invalid message ID: %s' % message_name)
     string_name = message_name[4:].lower()
     string_fp = get_fingerprint_for_xtb(message_tag)
     string_tuple = (string_name, message_value, string_fp)
@@ -277,12 +268,10 @@ def check_for_chromium_upgrade_extra_langs(src_root, grd_file_path):
   brave_langs = get_transifex_languages(grd_file_path)
   chromium_langs = get_transifex_languages(chromium_grd_file_path)
   x_brave_extra_langs = brave_langs - chromium_langs
-  if len(x_brave_extra_langs) > 0:
-    sys.exit('Brave GRD %s has extra languages %s over Chromium GRD %s' %
+  assert len(x_brave_extra_langs) == 0, ('Brave GRD %s has extra languages %s over Chromium GRD %s' %
             (grd_file_path, chromium_grd_file_path, list(x_brave_extra_langs)))
   x_chromium_extra_langs = chromium_langs - brave_langs
-  if len(x_chromium_extra_langs) > 0:
-    sys.exit('Chromium GRD %s has extra languages %s over Brave GRD %s' %
+  assert len(x_chromium_extra_langs) == 0, ('Chromium GRD %s has extra languages %s over Brave GRD %s' %
             (chromium_grd_file_path, grd_file_path, list(x_chromium_extra_langs)))
 
 
@@ -296,12 +285,10 @@ def check_for_chromium_missing_grd_strings(src_root, grd_file_path):
   brave_strings = { string_name for (string_name, message_value, string_fp) in grd_strings }
   chromium_strings = { string_name for (string_name, message_value, string_fp) in chromium_grd_strings }
   x_brave_extra_strings = brave_strings - chromium_strings
-  if len(x_brave_extra_strings) > 0:
-    sys.exit('Brave GRD %s has extra languages %s over Chromium GRD %s' %
+  assert len(x_brave_extra_strings) == 0, ('Brave GRD %s has extra languages %s over Chromium GRD %s' %
             (grd_file_path, chromium_grd_file_path, list(x_brave_extra_strings)))
   x_chromium_extra_strings = chromium_strings - brave_strings
-  if len(x_chromium_extra_strings) > 0:
-    sys.exit('Chromium GRD %s has extra languages %s over Brave GRD %s' %
+  assert len(x_chromium_extra_strings) == 0, ('Chromium GRD %s has extra languages %s over Brave GRD %s' %
             (chromium_grd_file_path, grd_file_path, list(x_chromium_extra_strings)))
 
 
@@ -318,13 +305,8 @@ def braveify(string_value):
           .replace('Google', 'Brave Software'))
 
 
-def upload_missing_string_to_transifex(lang_code, filename, string_name, string_value, translated_value):
+def upload_missing_translation_to_transifex(lang_code, filename, string_name, string_value, translated_value):
   """Uploads the specified string to the specified language code."""
-  #  if string_name != 'open_in_chrome':
-  #    return
-
-  #  sys.exit()
-
   url_part = 'project/%s/resource/%s/translation/%s/string/%s/' % (transifex_project_name, filename, lang_code, get_transifex_string_hash(string_name))
   url = base_url + url_part
   translated_value = braveify(translated_value)
@@ -337,16 +319,12 @@ def upload_missing_string_to_transifex(lang_code, filename, string_name, string_
   }
   headers = { 'Content-Type': 'application/json' }
   r = requests.put(url, json=payload, auth=get_auth(), headers=headers)
-  if ((r.status_code < 200 or r.status_code > 299) and
-          r.content.find('Resource with this Slug and Project already exists.') == -1):
-    print 'Aborting. Status code %d: %s' % (r.status_code, r.content)
-    return False
-
-  print 'Uploading %s string: %s' % (lang_code, string_name)
+  assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
+  print 'Uploaded %s string: %s' % (lang_code, string_name)
   return True
 
 
-def upload_missing_strings_to_transifex(lang_code, filename, grd_strings, chromium_grd_strings, xtb_strings, chromium_xtb_strings):
+def upload_missing_translations_to_transifex(lang_code, filename, grd_strings, chromium_grd_strings, xtb_strings, chromium_xtb_strings):
   """For each chromium translation that we don't know about, upload it."""
   lang_code = lang_code.replace('-', '_')
   for idx, (string_name, string_value, string_fp) in enumerate(grd_strings):
@@ -354,7 +332,7 @@ def upload_missing_strings_to_transifex(lang_code, filename, grd_strings, chromi
     chromium_string_fp = str(chromium_grd_strings[idx][2])
     if chromium_string_fp in chromium_xtb_strings and string_fp not in xtb_strings:
       #print 'Uploading for locale %s for missing string ID: %s' % (lang_code, string_name)
-      upload_missing_string_to_transifex(lang_code, filename, string_name, string_value, chromium_xtb_strings[chromium_string_fp])
+      upload_missing_translation_to_transifex(lang_code, filename, string_name, string_value, chromium_xtb_strings[chromium_string_fp])
 
 
 def fix_missing_xtb_strings_from_chromium_xtb_strings(src_root, grd_file_path):
@@ -381,7 +359,8 @@ def fix_missing_xtb_strings_from_chromium_xtb_strings(src_root, grd_file_path):
     lang_code = langs[idx]
     xtb_strings = get_strings_dict_from_xtb_file(xtb_file)
     chromium_xtb_strings = get_strings_dict_from_xtb_file(chromium_xtb_file)
-    upload_missing_strings_to_transifex(lang_code, filename, grd_strings, chromium_grd_strings, xtb_strings, chromium_xtb_strings)
+    assert(len(grd_strings) == len(chromium_grd_strings))
+    upload_missing_translations_to_transifex(lang_code, filename, grd_strings, chromium_grd_strings, xtb_strings, chromium_xtb_strings)
 
 
 def check_for_chromium_upgrade(src_root, grd_file_path):
@@ -397,8 +376,7 @@ def get_transifex_source_resource_strings(grd_file_path):
   url_part = 'project/%s/resource/%s/content/' % (transifex_project_name, filename)
   url = base_url + url_part
   r = requests.get(url, auth=get_auth())
-  if r.status_code < 200 or r.status_code > 299:
-    sys.exit('Aborting. Status code %d: %s' % (r.status_code, r.content))
+  assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
   return get_strings_dict_from_xml_content(r.json()['content'])
 
 
@@ -410,8 +388,8 @@ def check_missing_source_grd_strings_to_transifex(grd_file_path):
   grd_string_names = { string_name for (string_name, message_value, string_fp) in grd_strings_tuple }
   filename = os.path.basename(grd_file_path).split('.')[0]
   x_grd_extra_strings = grd_string_names - transifex_string_ids
-  if len(x_grd_extra_strings) > 0:
-    sys.exit('GRD has extra strings over Transifex %' % list(x_grd_extra_strings))
+  assert len(x_grd_extra_strings) == 0, ('GRD has extra strings over Transifex %' %
+          list(x_grd_extra_strings))
   x_transifex_extra_strings = transifex_string_ids - grd_string_names
-  if len(x_transifex_extra_strings) > 0:
-    sys.exit('Transifex has extra strings over GRD %s' % list(x_transifex_extra_strings))
+  assert len(x_transifex_extra_strings) == 0, ('Transifex has extra strings over GRD %s' %
+          list(x_transifex_extra_strings))
