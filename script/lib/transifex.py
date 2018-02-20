@@ -425,3 +425,31 @@ def upload_source_files_to_transifex(source_file_path, filename):
 
   uploaded = upload_source_string_file_to_transifex(filename, content, i18n_type)
   assert uploaded, 'Could not upload xml file'
+
+
+def pull_source_files_from_transifex(source_file_path, filename):
+  ext = os.path.splitext(source_file_path)[1]
+  if ext == '.grd':
+      # Generate the intermediate Transifex format
+      xtb_files = get_xtb_files(source_file_path)
+      base_path = os.path.dirname(source_file_path)
+      grd_strings = get_grd_strings(source_file_path)
+      for (lang_code, xtb_rel_path) in xtb_files:
+        xtb_file_path = os.path.join(base_path, xtb_rel_path)
+        xml_content = get_transifex_translation_file_content(filename, lang_code)
+        translations = get_strings_dict_from_xml_content(xml_content)
+        xtb_content = generate_xtb_content(lang_code, grd_strings, translations)
+        print 'Updated: ', xtb_file_path
+        with open(xtb_file_path, mode='w') as f:
+          f.write(xtb_content)
+  elif ext == '.json':
+    langs_dir_path = os.path.dirname(os.path.dirname(source_file_path))
+    lang_codes = set(os.listdir(langs_dir_path))
+    lang_codes.discard('en_US')
+    lang_codes.discard('.DS_Store')
+    for lang_code in lang_codes:
+      print 'getting filename %s for lang_code %s' % (filename, lang_code)
+      content = get_transifex_translation_file_content(filename, lang_code)
+      localized_translation_path = os.path.join(langs_dir_path, lang_code, 'message.json')
+      with open(localized_translation_path, mode='w') as f:
+        f.write(content)
