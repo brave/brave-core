@@ -1,0 +1,10 @@
+{
+    "appName": {
+        "message": "The Brave Extension",
+        "description": ""
+    },
+    "adsTrackersBlocked": {
+        "message": "Ads and Trackers Blocked",
+        "description": ""
+    }
+}
