@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
+<translation id="689261804992965033">Блокирани реклами</translation>
+<translation id="1663506596135222606">Блокирани тракери</translation>
+<translation id="2313532038420432247">HTTPS надстройки</translation>
+<translation id="7679428712334662192">Очаквано спестено време</translation>
+<translation id="3772054137575942265">Палецът е премахнат.</translation>
+<translation id="2079545284768500474">Отмяна</translation>
+<translation id="8529752221839395787">Възстановяване на всичко</translation>
+<translation id="3022168349636134570">секунда</translation>
+<translation id="8664519043722036194">секунди</translation>
+<translation id="755854589635502953">минута</translation>
+<translation id="7210211103303402262">минути</translation>
+<translation id="679011980069501619">час</translation>
+<translation id="8344569602005188545">часа</translation>
+<translation id="7100907433458266664">ден</translation>
+<translation id="4971389353431353387">дни</translation>
 </translationbundle>

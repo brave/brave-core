@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pl">
+<translation id="689261804992965033">Reklamy zablokowane</translation>
+<translation id="1663506596135222606">Trackery zablokowane</translation>
+<translation id="2313532038420432247">Aktualizacje HTTPS</translation>
+<translation id="7679428712334662192">Szacowany zaoszczędzony czas</translation>
+<translation id="3772054137575942265">Usunięto miniaturę.</translation>
+<translation id="2079545284768500474">Cofnij</translation>
+<translation id="8529752221839395787">Przywróć wszystko</translation>
+<translation id="3022168349636134570">sekunda</translation>
+<translation id="8664519043722036194">sekund</translation>
+<translation id="755854589635502953">minuta</translation>
+<translation id="7210211103303402262">minut</translation>
+<translation id="679011980069501619">godzina</translation>
+<translation id="8344569602005188545">godzin</translation>
+<translation id="7100907433458266664">dzień</translation>
+<translation id="4971389353431353387">dni</translation>
 </translationbundle>

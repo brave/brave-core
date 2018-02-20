@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
+<translation id="689261804992965033">Blockierte Werbeanzeigen</translation>
+<translation id="1663506596135222606">Blockierte Tracker</translation>
+<translation id="2313532038420432247">HTTPS Upgrades</translation>
+<translation id="7679428712334662192">Geschätzte Zeitersparnis</translation>
+<translation id="3772054137575942265">Daumen Entfernt.</translation>
+<translation id="2079545284768500474">Rückgängig machen</translation>
+<translation id="8529752221839395787">Alle Zurücksetzen</translation>
+<translation id="3022168349636134570">Sekunde</translation>
+<translation id="8664519043722036194">Sekunden</translation>
+<translation id="755854589635502953">Minute</translation>
+<translation id="7210211103303402262">Minuten</translation>
+<translation id="679011980069501619">Stunde</translation>
+<translation id="8344569602005188545">Stunden</translation>
+<translation id="7100907433458266664">Tag</translation>
+<translation id="4971389353431353387">Tage</translation>
 </translationbundle>

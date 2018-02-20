@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
+<translation id="689261804992965033">Advertenties geblokkeerd</translation>
+<translation id="1663506596135222606">Trackers geblokkeerd</translation>
+<translation id="2313532038420432247">HTTPS Upgrades</translation>
+<translation id="7679428712334662192">Geschatte tijd bespaard</translation>
+<translation id="3772054137575942265">Thumb verwijderen.</translation>
+<translation id="2079545284768500474">Ongedaan maken</translation>
+<translation id="8529752221839395787">Alles herstellen</translation>
+<translation id="3022168349636134570">seconde</translation>
+<translation id="8664519043722036194">seconden</translation>
+<translation id="755854589635502953">minuut</translation>
+<translation id="7210211103303402262">minuten</translation>
+<translation id="679011980069501619">uur</translation>
+<translation id="8344569602005188545">uren</translation>
+<translation id="7100907433458266664">dag</translation>
+<translation id="4971389353431353387">dagen</translation>
 </translationbundle>

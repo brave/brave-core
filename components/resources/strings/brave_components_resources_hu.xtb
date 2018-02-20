@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
+<translation id="689261804992965033">Reklámok blokkolva</translation>
+<translation id="1663506596135222606">Nyomkövetők blokkolva</translation>
+<translation id="2313532038420432247">HTTPS frissítések</translation>
+<translation id="7679428712334662192">Becsült idő elmentve</translation>
+<translation id="3772054137575942265">Előnézet eltávolítva</translation>
+<translation id="2079545284768500474">Vissza</translation>
+<translation id="8529752221839395787">Összes helyreállítása</translation>
+<translation id="3022168349636134570">másodperc</translation>
+<translation id="8664519043722036194">másodperc</translation>
+<translation id="755854589635502953">perc</translation>
+<translation id="7210211103303402262">perc</translation>
+<translation id="679011980069501619">óra</translation>
+<translation id="8344569602005188545">óra</translation>
+<translation id="7100907433458266664">nap</translation>
+<translation id="4971389353431353387">nap</translation>
 </translationbundle>

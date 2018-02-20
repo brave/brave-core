@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="th">
+<translation id="689261804992965033">บล็อกโฆษณาแล้ว</translation>
+<translation id="1663506596135222606">บล็อกเครื่องติดตามแล้ว</translation>
+<translation id="2313532038420432247">การอัปเกรด HTTPS</translation>
+<translation id="7679428712334662192">เวลาโดยประมาณที่บันทึกไว้</translation>
+<translation id="3772054137575942265">ลบภาพขนาดย่อแล้ว</translation>
+<translation id="2079545284768500474">แก้</translation>
+<translation id="8529752221839395787">คืนค่าทั้งหมด</translation>
+<translation id="3022168349636134570">วินาที</translation>
+<translation id="8664519043722036194">วินาที</translation>
+<translation id="755854589635502953">นาที</translation>
+<translation id="7210211103303402262">นาที</translation>
+<translation id="679011980069501619">ชั่วโมง</translation>
+<translation id="8344569602005188545">ชั่วโมง</translation>
+<translation id="7100907433458266664">วัน</translation>
+<translation id="4971389353431353387">วัน</translation>
 </translationbundle>

@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
+<translation id="689261804992965033">تم حجب الإعلانات</translation>
+<translation id="1663506596135222606">تم حجب المتعقبين</translation>
+<translation id="2313532038420432247">ترقيات HTTPS</translation>
+<translation id="7679428712334662192">تم حفظ الوقت المقدر</translation>
+<translation id="3772054137575942265">تمت إزالة عنصر التحكم</translation>
+<translation id="2079545284768500474">تراجع</translation>
+<translation id="8529752221839395787">استعادة الكل</translation>
+<translation id="3022168349636134570">ثانية</translation>
+<translation id="8664519043722036194">ثوانٍ</translation>
+<translation id="755854589635502953">دقيقة</translation>
+<translation id="7210211103303402262">دقائق</translation>
+<translation id="679011980069501619">ساعة</translation>
+<translation id="8344569602005188545">ساعات</translation>
+<translation id="7100907433458266664">يوم</translation>
+<translation id="4971389353431353387">أيام</translation>
 </translationbundle>

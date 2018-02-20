@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="he">
+<translation id="689261804992965033">פרסומות חסומות</translation>
+<translation id="1663506596135222606">מעקבים חסומים</translation>
+<translation id="2313532038420432247">שדרוגי HTTPS</translation>
+<translation id="7679428712334662192">זמן משוער שנחסך</translation>
+<translation id="3772054137575942265">לחצן הגרירה הוסר.</translation>
+<translation id="2079545284768500474">בטל</translation>
+<translation id="8529752221839395787">שחזר הכול</translation>
+<translation id="3022168349636134570">שנייה</translation>
+<translation id="8664519043722036194">שניות</translation>
+<translation id="755854589635502953">דקה</translation>
+<translation id="7210211103303402262">דקות</translation>
+<translation id="679011980069501619">שעה</translation>
+<translation id="8344569602005188545">שעות</translation>
+<translation id="7100907433458266664">יום</translation>
+<translation id="4971389353431353387">ימים</translation>
 </translationbundle>

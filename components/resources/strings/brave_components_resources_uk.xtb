@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="uk">
+<translation id="689261804992965033">Рекламу заблоковано</translation>
+<translation id="1663506596135222606">Блокування відстежень</translation>
+<translation id="2313532038420432247">Оновлення HTTPS</translation>
+<translation id="7679428712334662192">Очікуваний час збережено</translation>
+<translation id="3772054137575942265">Ескіз вилучено.</translation>
+<translation id="2079545284768500474">Скасувати</translation>
+<translation id="8529752221839395787">Відновити все</translation>
+<translation id="3022168349636134570">секунда</translation>
+<translation id="8664519043722036194">секунд</translation>
+<translation id="755854589635502953">хвилина</translation>
+<translation id="7210211103303402262">хвилин</translation>
+<translation id="679011980069501619">година</translation>
+<translation id="8344569602005188545">годин</translation>
+<translation id="7100907433458266664">день</translation>
+<translation id="4971389353431353387">днів</translation>
 </translationbundle>

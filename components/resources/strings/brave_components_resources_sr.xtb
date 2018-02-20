@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sr">
+<translation id="689261804992965033">Reklame su blokirane</translation>
+<translation id="1663506596135222606">Praćenja su blokirana</translation>
+<translation id="2313532038420432247">HTTPS nadogradnje</translation>
+<translation id="7679428712334662192">Procenjeno vreme je sačuvano</translation>
+<translation id="3772054137575942265">Sličica je uklonjena.</translation>
+<translation id="2079545284768500474">Opozovi radnju</translation>
+<translation id="8529752221839395787">Vrati sve u prethodno stanje</translation>
+<translation id="3022168349636134570">sekunda</translation>
+<translation id="8664519043722036194">sekunde</translation>
+<translation id="755854589635502953">minuta</translation>
+<translation id="7210211103303402262">minute</translation>
+<translation id="679011980069501619">sat</translation>
+<translation id="8344569602005188545">sati</translation>
+<translation id="7100907433458266664">dan</translation>
+<translation id="4971389353431353387">dani</translation>
 </translationbundle>

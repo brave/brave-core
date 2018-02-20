@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="es">
+<translation id="689261804992965033">Anuncios bloqueados</translation>
+<translation id="1663506596135222606">Localizadores bloqueados</translation>
+<translation id="2313532038420432247">Actualizaciones de HTTPS</translation>
+<translation id="7679428712334662192">Tiempo estimado ahorrado</translation>
+<translation id="3772054137575942265">Lápiz de memoria retirado.</translation>
+<translation id="2079545284768500474">Deshacer</translation>
+<translation id="8529752221839395787">Restaurar todo</translation>
+<translation id="3022168349636134570">segundo</translation>
+<translation id="8664519043722036194">segundos</translation>
+<translation id="755854589635502953">minuto</translation>
+<translation id="7210211103303402262">minutos</translation>
+<translation id="679011980069501619">hora</translation>
+<translation id="8344569602005188545">horas</translation>
+<translation id="7100907433458266664">día</translation>
+<translation id="4971389353431353387">días</translation>
 </translationbundle>

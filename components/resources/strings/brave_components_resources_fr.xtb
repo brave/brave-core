@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr">
+<translation id="689261804992965033">Publicités bloquées</translation>
+<translation id="1663506596135222606">Traceurs bloqués</translation>
+<translation id="2313532038420432247">Mises à jour HTTPS</translation>
+<translation id="7679428712334662192">Temps économisé estimé</translation>
+<translation id="3772054137575942265">Vignette retirée.</translation>
+<translation id="2079545284768500474">Annuler</translation>
+<translation id="8529752221839395787">Tout restaurer</translation>
+<translation id="3022168349636134570">seconde</translation>
+<translation id="8664519043722036194">secondes</translation>
+<translation id="755854589635502953">minute</translation>
+<translation id="7210211103303402262">minutes</translation>
+<translation id="679011980069501619">heure</translation>
+<translation id="8344569602005188545">heures</translation>
+<translation id="7100907433458266664">jour</translation>
+<translation id="4971389353431353387">jours</translation>
 </translationbundle>
