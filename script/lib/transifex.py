@@ -2,9 +2,11 @@ from hashlib import md5
 from lib.config import get_env_var
 from xml.sax.saxutils import escape, unescape
 import HTMLParser
+import io
 import os
 import requests
 import sys
+import tempfile
 import lxml.etree
 import FP
 
@@ -91,13 +93,13 @@ def get_strings_dict_from_xtb_file(xtb_file_path):
   return { translation_tag.get('id'): textify(translation_tag) for translation_tag in translation_tags }
 
 
-def update_source_string_file_to_transifex(filename, xml_content):
+def update_source_string_file_to_transifex(filename, content):
   """Uploads the specified source string file to transifex"""
   print 'Updating existing known resource'
   url_part = 'project/%s/resource/%s/content' % (transifex_project_name, filename)
   url = base_url + url_part
   payload = {
-    'content': xml_content
+    'content': content
   }
   headers = { 'Content-Type': 'application/json' }
   r = requests.put(url, json=payload, auth=get_auth(), headers=headers)
@@ -105,16 +107,15 @@ def update_source_string_file_to_transifex(filename, xml_content):
   return True
 
 
-def upload_source_string_file_to_transifex(filename, xml_content):
+def upload_source_string_file_to_transifex(filename, xml_content, i18n_type):
   """Uploads the specified source string file to transifex"""
   url_part = 'project/%s/resources/' % transifex_project_name
   url = base_url + url_part
-  localization_format = 'ANDROID'
   payload = {
     'name': filename,
     'slug': filename,
     'content': xml_content,
-    'i18n_type': localization_format
+    'i18n_type': i18n_type
   }
   headers = { 'Content-Type': 'application/json' }
   #r = requests.post(url, json=payload, auth=get_auth(), headers=headers)
@@ -402,3 +403,25 @@ def check_missing_source_grd_strings_to_transifex(grd_file_path):
   x_transifex_extra_strings = transifex_string_ids - grd_string_names
   assert len(x_transifex_extra_strings) == 0, ('Transifex has extra strings over GRD %s' %
           list(x_transifex_extra_strings))
+
+
+def upload_source_files_to_transifex(source_file_path, filename):
+  uploaded = False
+  i18n_type = ''
+  content = ''
+  ext = os.path.splitext(source_file_path)[1]
+  if ext == '.grd':
+    # Generate the intermediate Transifex format for the source translations
+    output_xml_file_handle, output_xml_path = tempfile.mkstemp('.xml')
+    content = generate_source_strings_xml_from_grd(output_xml_file_handle, source_file_path)
+    os.close(output_xml_file_handle)
+    i18n_type = 'ANDROID'
+  elif ext == '.json':
+    i18n_type = 'CHROME'
+    with io.open(source_file_path, mode='r', encoding='utf-8') as json_file:
+      content = json_file.read()
+  else:
+    assert False, 'Unsupported source file ext %s: %s' % (ext, source_file_path)
+
+  uploaded = upload_source_string_file_to_transifex(filename, content, i18n_type)
+  assert uploaded, 'Could not upload xml file'
