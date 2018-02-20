@@ -1,0 +1,41 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+if (is_android) {
+  import("//build/config/android/rules.gni")
+}
+
+static_library("braveLedger") {
+  sources = [
+    "src/ledger.cc",
+    "src/bat_client.cc",
+    "src/bat_client_webrequest.cc",
+    "src/bat_helper.cc",
+    "src/bat_publisher.cc",
+    "src/bat_balance.cc",
+    "src/tweetnacl.cc",
+  ]
+
+  include_dirs = [
+    "src",
+    "//anonize2/anon",
+    "//anonize2/relic/include",
+    "//anonize2/relic/include/low",
+  ]
+
+  deps = [
+    "//base",
+    "//net",
+    "//anonize2",
+  ]
+
+  include_dirs += [
+    "//base",
+    "//net/url_request",
+    "//content/public/browser",
+    "//third_party/leveldatabase/src/include",
+  ]
+
+  defines = [ "LEDGER_LIBRARY" ]
+}
