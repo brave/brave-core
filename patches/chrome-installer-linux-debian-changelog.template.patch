@@ -1,0 +1,10 @@
+diff --git a/chrome/installer/linux/debian/changelog.template b/chrome/installer/linux/debian/changelog.template
+index 290128804a9a724e9b04ea57be59ce34a0154b42..d46a8aaa55c519ba25a4fe487ae268932dff0699 100644
+--- a/chrome/installer/linux/debian/changelog.template
++++ b/chrome/installer/linux/debian/changelog.template
+@@ -1,4 +1,4 @@
+-@@PACKAGE@@-@@CHANNEL@@ (@@VERSIONFULL@@) @@CHANNEL@@; urgency=low
++@@PACKAGEANDCHANNEL@@ (@@VERSIONFULL@@) @@CHANNEL@@; urgency=low
+ 
+   * Build spec: https://chromium.googlesource.com/chromium/src.git/+/@@VERSION@@/
+ 

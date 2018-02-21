@@ -1,8 +1,16 @@
 diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
-index 4c460fc0244e7c1066e1abc3f3cacbfc92b1ed48..a595365da8685462f1cddfa807b89f93c67c0169 100644
+index 4c460fc0244e7c1066e1abc3f3cacbfc92b1ed48..02625d909e1fcaf3a457f08e1295571611623e15 100644
 --- a/chrome/installer/linux/common/installer.include
 +++ b/chrome/installer/linux/common/installer.include
-@@ -153,6 +153,9 @@ stage_install_common() {
+@@ -75,6 +75,7 @@ process_template() (
+     -e "s#@@PACKAGE@@#${PACKAGE}#g" \
+     -e "s#@@PACKAGE_ORIG@@#${PACKAGE_ORIG}#g" \
+     -e "s#@@PACKAGE_FILENAME@@#${PACKAGE_FILENAME}#g" \
++    -e "s#@@PACKAGEANDCHANNEL@@#${PACKAGEANDCHANNEL}#g" \
+     -e "s#@@PROGNAME@@#${PROGNAME}#g" \
+     -e "s#@@CHANNEL@@#${CHANNEL}#g" \
+     -e "s#@@COMPANY_FULLNAME@@#${COMPANY_FULLNAME}#g" \
+@@ -153,6 +154,9 @@ stage_install_common() {
      install -m 644 "${BUILDDIR}/ui_resources_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
    fi
  
@@ -12,7 +20,7 @@ index 4c460fc0244e7c1066e1abc3f3cacbfc92b1ed48..a595365da8685462f1cddfa807b89f93
    # ICU data file; Necessary when the GN icu_use_data_file flag is true.
    install -m 644 "${BUILDDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
  
-@@ -359,7 +362,7 @@ stage_install_common() {
+@@ -359,7 +363,7 @@ stage_install_common() {
          exit 1
        fi
        local expected_perms=777

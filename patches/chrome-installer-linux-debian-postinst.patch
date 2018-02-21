@@ -1,0 +1,18 @@
+diff --git a/chrome/installer/linux/debian/postinst b/chrome/installer/linux/debian/postinst
+index b284f042a0bdcc9964037ad636bd5e5fa49e7daa..8707a5b62c30508645dcea129d39597c2deef57c 100755
+--- a/chrome/installer/linux/debian/postinst
++++ b/chrome/installer/linux/debian/postinst
+@@ -49,8 +49,11 @@ update-alternatives --install /usr/bin/x-www-browser x-www-browser \
+ update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser \
+   /usr/bin/@@USR_BIN_SYMLINK_NAME@@ $PRIORITY
+ 
+-update-alternatives --install /usr/bin/@@PACKAGE_ORIG@@ @@PACKAGE_ORIG@@ \
+-  /usr/bin/@@USR_BIN_SYMLINK_NAME@@ $PRIORITY
++if [ '"@@PACKAGE_ORIG@@"' != '"@@USR_BIN_SYMLINK_NAME@@"' ]; then
++  update-alternatives --install /usr/bin/@@PACKAGE_ORIG@@ @@PACKAGE_ORIG@@ \
++    /usr/bin/@@USR_BIN_SYMLINK_NAME@@ $PRIORITY
++fi
++
+ 
+ @@include@@../common/apt.include
+ 
