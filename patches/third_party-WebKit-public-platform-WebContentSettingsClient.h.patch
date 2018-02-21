@@ -1,0 +1,16 @@
+diff --git a/third_party/WebKit/public/platform/WebContentSettingsClient.h b/third_party/WebKit/public/platform/WebContentSettingsClient.h
+index 6bcf94a2b9afcc796260e178ef68706aa2595208..8acb47edce339a6d8d1493cf4be5ecec1597cc3b 100644
+--- a/third_party/WebKit/public/platform/WebContentSettingsClient.h
++++ b/third_party/WebKit/public/platform/WebContentSettingsClient.h
+@@ -58,6 +58,11 @@ class WebContentSettingsClient {
+     return enabled_per_settings;
+   }
+ 
++  // Controls whether fingerprinting is allowed for this frame.
++  virtual bool AllowFingerprinting(bool enabled_per_settings) {
++    return enabled_per_settings;
++  }
++
+   // Retrieves the client hints that should be attached to the request for the
+   // given URL.
+   virtual void GetAllowedClientHintsFromSource(const blink::WebURL& url,

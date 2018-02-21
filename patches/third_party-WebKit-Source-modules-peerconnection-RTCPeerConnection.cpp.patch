@@ -1,0 +1,93 @@
+diff --git a/third_party/WebKit/Source/modules/peerconnection/RTCPeerConnection.cpp b/third_party/WebKit/Source/modules/peerconnection/RTCPeerConnection.cpp
+index a629c37f6806fadc7becaf71c3050c4aaa510ce8..3313a0ccce16c3e678e434dc5bb46d19ce4d2f80 100644
+--- a/third_party/WebKit/Source/modules/peerconnection/RTCPeerConnection.cpp
++++ b/third_party/WebKit/Source/modules/peerconnection/RTCPeerConnection.cpp
+@@ -48,6 +48,7 @@
+ #include "bindings/modules/v8/v8_rtc_peer_connection_error_callback.h"
+ #include "bindings/modules/v8/v8_rtc_session_description_callback.h"
+ #include "bindings/modules/v8/v8_rtc_stats_callback.h"
++#include "brave/renderer/brave_content_settings_observer_helper.h"
+ #include "core/dom/DOMException.h"
+ #include "core/dom/DOMTimeStamp.h"
+ #include "core/dom/Document.h"
+@@ -596,6 +597,9 @@ void RTCPeerConnection::Dispose() {
+ 
+ ScriptPromise RTCPeerConnection::createOffer(ScriptState* script_state,
+                                              const RTCOfferOptions& options) {
++  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++    return ScriptPromise::CastUndefined(script_state);
++
+   if (signaling_state_ == kSignalingStateClosed)
+     return ScriptPromise::RejectWithDOMException(
+         script_state,
+@@ -626,6 +630,10 @@ ScriptPromise RTCPeerConnection::createOffer(
+   ExecutionContext* context = ExecutionContext::From(script_state);
+   UseCounter::Count(
+       context, WebFeature::kRTCPeerConnectionCreateOfferLegacyFailureCallback);
++
++  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++    return ScriptPromise::CastUndefined(script_state);
++
+   if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
+     return ScriptPromise::CastUndefined(script_state);
+ 
+@@ -678,6 +686,9 @@ ScriptPromise RTCPeerConnection::createOffer(
+ 
+ ScriptPromise RTCPeerConnection::createAnswer(ScriptState* script_state,
+                                               const RTCAnswerOptions& options) {
++  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++    return ScriptPromise::CastUndefined(script_state);
++
+   if (signaling_state_ == kSignalingStateClosed)
+     return ScriptPromise::RejectWithDOMException(
+         script_state,
+@@ -709,6 +720,9 @@ ScriptPromise RTCPeerConnection::createAnswer(
+         context, WebFeature::kRTCPeerConnectionCreateAnswerLegacyCompliant);
+   }
+ 
++  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++    return ScriptPromise::CastUndefined(script_state);
++
+   if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
+     return ScriptPromise::CastUndefined(script_state);
+ 
+@@ -735,6 +749,9 @@ ScriptPromise RTCPeerConnection::createAnswer(
+ ScriptPromise RTCPeerConnection::setLocalDescription(
+     ScriptState* script_state,
+     const RTCSessionDescriptionInit& session_description_init) {
++  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++    return ScriptPromise::CastUndefined(script_state);
++
+   if (signaling_state_ == kSignalingStateClosed)
+     return ScriptPromise::RejectWithDOMException(
+         script_state,
+@@ -772,6 +789,9 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
+               kRTCPeerConnectionSetLocalDescriptionLegacyNoFailureCallback);
+   }
+ 
++  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++    return ScriptPromise::CastUndefined(script_state);
++
+   if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
+     return ScriptPromise::CastUndefined(script_state);
+ 
+@@ -795,6 +815,9 @@ RTCSessionDescription* RTCPeerConnection::localDescription() {
+ ScriptPromise RTCPeerConnection::setRemoteDescription(
+     ScriptState* script_state,
+     const RTCSessionDescriptionInit& session_description_init) {
++  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++    return ScriptPromise::CastUndefined(script_state);
++
+   if (signaling_state_ == kSignalingStateClosed)
+     return ScriptPromise::RejectWithDOMException(
+         script_state,
+@@ -832,6 +855,9 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
+               kRTCPeerConnectionSetRemoteDescriptionLegacyNoFailureCallback);
+   }
+ 
++  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++    return ScriptPromise::CastUndefined(script_state);
++
+   if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
+     return ScriptPromise::CastUndefined(script_state);
+ 

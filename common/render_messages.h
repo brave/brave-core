@@ -16,3 +16,6 @@
 // user's content settings.
 IPC_MESSAGE_ROUTED1(BraveViewHostMsg_JavaScriptBlocked,
                     base::string16 /* details on blocked content */)
+
+IPC_MESSAGE_ROUTED1(BraveViewHostMsg_FingerprintingBlocked,
+                    base::string16 /* details on blocked content */)

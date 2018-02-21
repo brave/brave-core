@@ -1,0 +1,25 @@
+diff --git a/chrome/renderer/content_settings_observer.h b/chrome/renderer/content_settings_observer.h
+index 8030dcd98b1fc0e227fe07258c4f7f4ecf7fc46f..6532c1de6fc3fbd0f88d6fdcd4ed3bfcd7528b6d 100644
+--- a/chrome/renderer/content_settings_observer.h
++++ b/chrome/renderer/content_settings_observer.h
+@@ -103,6 +103,7 @@ class ContentSettingsObserver
+   }
+ 
+  private:
++  friend class BraveContentSettingsObserver;
+   FRIEND_TEST_ALL_PREFIXES(ContentSettingsObserverTest, WhitelistedSchemes);
+   FRIEND_TEST_ALL_PREFIXES(ContentSettingsObserverBrowserTest,
+                            ContentSettingsInterstitialPages);
+@@ -149,6 +150,12 @@ class ContentSettingsObserver
+       const blink::WebSecurityOrigin& origin,
+       const blink::WebURL& document_url);
+ 
++  template <typename URL>
++  ContentSetting GetContentSettingFromRules(
++      const ContentSettingsForOneType& rules,
++      const blink::WebFrame* frame,
++      const URL& secondary_url);
++
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+   // Owned by ChromeContentRendererClient and outlive us.
+   extensions::Dispatcher* const extension_dispatcher_;

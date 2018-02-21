@@ -45,6 +45,9 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   void OnJavaScriptBlockedWithDetail(
       content::RenderFrameHost* render_frame_host,
       const base::string16& details);
+  void OnFingerprintingBlockedWithDetail(
+      content::RenderFrameHost* render_frame_host,
+      const base::string16& details);
 
   DISALLOW_COPY_AND_ASSIGN(BraveShieldsWebContentsObserver);
 };

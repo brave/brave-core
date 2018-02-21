@@ -1,0 +1,14 @@
+diff --git a/third_party/WebKit/Source/core/frame/ContentSettingsClient.h b/third_party/WebKit/Source/core/frame/ContentSettingsClient.h
+index 54a5a3dd5f92e263b42c265befca66087eaadef7..d78521d2ace8a54b1692dfdfe20df436754f5b10 100644
+--- a/third_party/WebKit/Source/core/frame/ContentSettingsClient.h
++++ b/third_party/WebKit/Source/core/frame/ContentSettingsClient.h
+@@ -51,6 +51,9 @@ class CORE_EXPORT ContentSettingsClient {
+   // Controls whether scripts loaded from the given URL are allowed to execute.
+   bool AllowScriptFromSource(bool enabled_per_settings, const KURL&);
+ 
++  // Controls whether fingerprinting is allowed for this frame.
++  bool AllowFingerprinting(bool enabled_per_settings);
++
+   // Retrieves the client hints that should be attached to the request for the
+   // given URL.
+   void GetAllowedClientHintsFromSource(const KURL&, WebEnabledClientHints*);
