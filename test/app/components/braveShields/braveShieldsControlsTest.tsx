@@ -20,6 +20,7 @@ function setup () {
     ads: 'allow',
     trackers: 'allow',
     javascript: 'block',
+    fingerprinting: 'block',
     blockAdsTrackers: (setting: BlockOptions) => {
       return {
         type: actionTypes.BLOCK_ADS_TRACKERS,
@@ -41,7 +42,10 @@ function setup () {
       return {
         type: actionTypes.JAVASCRIPT_TOGGLED
       }
-    }
+    },
+    fingerprintingToggled: () => {
+      return {
+        type: actionTypes.FINGERPRINTING_TOGGLED
   }
 
   const renderer = renderIntoDocument(<BraveShieldsControls {...props} />) as React.Component<BraveShieldsControls>

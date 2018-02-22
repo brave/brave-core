@@ -17,7 +17,8 @@ function setup () {
     adsBlocked: 1,
     trackersBlocked: 2,
     httpsRedirected: 3,
-    javascriptBlocked: 4
+    javascriptBlocked: 4,
+    fingerprintingBlocked: 5
   }
   const renderer = renderIntoDocument(<BraveShieldsStats {...props} />) as React.Component<BraveShieldsStats>
   const result = renderer.render() as React.ReactElement<UIProps.Grid>

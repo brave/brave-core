@@ -17,6 +17,7 @@ interface Props {
     controlsToggled: shieldActions.ControlsToggled
     httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
     javascriptToggled: shieldActions.JavascriptToggled
+    fingerprintingToggled: shieldActions.FingerprintingToggled
   }
   shieldsPanelTabData: Tab
 }
@@ -42,6 +43,7 @@ export default class BraveShields extends React.Component<Props, object> {
           trackersBlocked={shieldsPanelTabData.trackersBlocked}
           httpsRedirected={shieldsPanelTabData.httpsRedirected}
           javascriptBlocked={shieldsPanelTabData.javascriptBlocked}
+          fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
         />
         <BraveShieldsControls
           braveShields={shieldsPanelTabData.braveShields}
@@ -54,6 +56,8 @@ export default class BraveShields extends React.Component<Props, object> {
           httpsEverywhereToggled={actions.httpsEverywhereToggled}
           javascriptToggled={actions.javascriptToggled}
           controlsOpen={shieldsPanelTabData.controlsOpen}
+          fingerprinting={shieldsPanelTabData.fingerprinting}
+          fingerprintingToggled={actions.fingerprintingToggled}
         />
         <BraveShieldsFooter />
       </div>

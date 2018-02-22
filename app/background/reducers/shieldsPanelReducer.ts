@@ -12,6 +12,7 @@ import {
   setAllowTrackers,
   setAllowHTTPUpgradableResources,
   setAllowJavaScript,
+  setAllowFingerprinting,
   toggleShieldsValue,
   requestShieldPanelData
 } from '../api/shieldsAPI'
@@ -20,6 +21,7 @@ import { reloadTab } from '../api/tabsAPI'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
 import { State, Tab } from '../../types/state/shieldsPannelState'
 import { Actions } from '../../types/actions/index'
+import { BlockOptions } from '../../types/other/blockTypes'
 
 const updateBadgeText = (state: State) => {
   const tabId: number = shieldsPanelState.getActiveTabId(state)
@@ -208,6 +210,22 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         const tabId: number = shieldsPanelState.getActiveTabId(state)
         state = shieldsPanelState
           .updateTabShieldsData(state, tabId, { controlsOpen: action.setting })
+        break
+      }
+    case shieldsPanelTypes.FINGERPRINTING_TOGGLED:
+      {
+        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const setting: BlockOptions = tabData.fingerprinting === 'block' ? 'allow' : 'block'
+        setAllowFingerprinting(tabData.origin, setting)
+          .then(() => {
+            requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+            reloadTab(tabData.id, true).catch(() => {
+              console.error('Tab reload was not successful')
+            })
+          })
+          .catch(() => {
+            console.error('Could not set fingerprinting setting')
+          })
         break
       }
   }

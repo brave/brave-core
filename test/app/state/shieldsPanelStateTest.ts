@@ -17,7 +17,8 @@ const state: State = deepFreeze({
       ads: 'block',
       trackers: 'block',
       httpUpgradableResources: 'block',
-      javascript: 'block'
+      javascript: 'block',
+      fingerprinting: 'block'
     },
     3: {
       id: 3
@@ -45,7 +46,8 @@ describe('shieldsPanelState test', () => {
         ads: 'block',
         trackers: 'block',
         httpUpgradableResources: 'block',
-        javascript: 'block'
+        javascript: 'block',
+        fingerprinting: 'block'
       })
     })
   })
@@ -59,7 +61,8 @@ describe('shieldsPanelState test', () => {
             ads: 'block',
             trackers: 'block',
             httpUpgradableResources: 'block',
-            javascript: 'block'
+            javascript: 'block',
+            fingerprinting: 'block'
           },
           3: {
             id: 3
@@ -83,7 +86,8 @@ describe('shieldsPanelState test', () => {
             ads: 'block',
             trackers: 'block',
             httpUpgradableResources: 'block',
-            javascript: 'block'
+            javascript: 'block',
+            fingerprinting: 'block'
           },
           3: {
             id: 3
@@ -109,7 +113,8 @@ describe('shieldsPanelState test', () => {
             ads: 'block',
             trackers: 'block',
             httpUpgradableResources: 'block',
-            javascript: 'block'
+            javascript: 'block',
+            fingerprinting: 'block'
           },
           3: {
             id: 3
@@ -132,7 +137,8 @@ describe('shieldsPanelState test', () => {
             ads: 'block',
             trackers: 'block',
             httpUpgradableResources: 'block',
-            javascript: 'block'
+            javascript: 'block',
+            fingerprinting: 'block'
           },
           3: {
             id: 3
@@ -157,7 +163,8 @@ describe('shieldsPanelState test', () => {
             ads: 'block',
             trackers: 'block',
             httpUpgradableResources: 'block',
-            javascript: 'block'
+            javascript: 'block',
+            fingerprinting: 'block'
           },
           3: {
             id: 3
@@ -180,7 +187,8 @@ describe('shieldsPanelState test', () => {
         ads: 'allow',
         trackers: 'allow',
         httpUpgradableResources: 'allow',
-        javascript: 'allow'
+        javascript: 'allow',
+        fingerprinting: 'allow'
       }), {
         currentWindowId: 1,
         tabs: {
@@ -190,12 +198,14 @@ describe('shieldsPanelState test', () => {
             trackers: 'allow',
             httpUpgradableResources: 'allow',
             javascript: 'allow',
+            fingerprinting: 'allow',
             controlsOpen: true,
             braveShields: 'allow',
             adsBlocked: 0,
             trackersBlocked: 0,
             httpsRedirected: 0,
-            javascriptBlocked: 0
+            javascriptBlocked: 0,
+            fingerprintingBlocked: 0
           },
           3: {
             id: 3
@@ -223,10 +233,12 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             httpUpgradableResources: 'block',
             javascript: 'block',
+            fingerprinting: 'block',
             adsBlocked: 3,
             trackersBlocked: 4444,
             httpsRedirected: 5,
             javascriptBlocked: 5,
+            fingerprintingBlocked: 5,
             controlsOpen: true,
             hostname: 'https://brave.com',
             origin: 'https://brave.com',
@@ -247,6 +259,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 0,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
           4: {
@@ -263,6 +277,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 0,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 0,
             url: 'https://brave.com'
           }
         },
@@ -276,6 +292,7 @@ describe('shieldsPanelState test', () => {
       stateWithStats.tabs[this.tabId].trackersBlocked = 4
       stateWithStats.tabs[this.tabId].httpsRedirected = 5
       stateWithStats.tabs[this.tabId].javascriptBlocked = 6
+      stateWithStats.tabs[this.tabId].fingerprintingBlocked = 7
       assert.deepEqual(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId), {
         currentWindowId: 1,
         tabs: {
@@ -285,10 +302,12 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             httpUpgradableResources: 'block',
             javascript: 'block',
+            fingerprinting: 'block',
             adsBlocked: 0,
             trackersBlocked: 0,
             httpsRedirected: 0,
             javascriptBlocked: 0,
+            fingerprintingBlocked: 0,
             controlsOpen: true,
             hostname: 'https://brave.com',
             origin: 'https://brave.com',
@@ -309,6 +328,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 0,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
           4: {
@@ -325,6 +346,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 0,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 0,
             url: 'https://brave.com'
           }
         },
@@ -353,6 +376,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 0,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
           3: {
@@ -369,6 +394,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 0,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
           4: {
@@ -385,6 +412,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 4444,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 5,
             url: 'https://brave.com'
           }
         },
@@ -411,6 +440,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 0,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
           3: {
@@ -427,6 +458,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 0,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
           4: {
@@ -443,6 +476,8 @@ describe('shieldsPanelState test', () => {
             braveShields: 'block',
             trackers: 'block',
             trackersBlocked: 0,
+            fingerprinting: 'block',
+            fingerprintingBlocked: 0,
             url: 'https://brave.com'
           }
         },
@@ -465,10 +500,12 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             httpUpgradableResources: 'block',
             javascript: 'block',
+            fingerprinting: 'block',
             adsBlocked: 1,
             trackersBlocked: 0,
             httpsRedirected: 0,
-            javascriptBlocked: 0
+            javascriptBlocked: 0,
+            fingerprintingBlocked: 0
           },
           3: {
             id: 3
@@ -494,10 +531,12 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             httpUpgradableResources: 'block',
             javascript: 'block',
+            fingerprinting: 'block',
             adsBlocked: 1,
             trackersBlocked: 0,
             httpsRedirected: 0,
-            javascriptBlocked: 0
+            javascriptBlocked: 0,
+            fingerprintingBlocked: 0
           },
           3: {
             id: 3

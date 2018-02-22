@@ -24,9 +24,11 @@ export const tabs: Tabs = {
     trackers: 'block',
     httpUpgradableResources: 'block',
     javascript: 'block',
+    fingerprinting: 'block',
     controlsOpen: false,
     httpsRedirected: 0,
     javascriptBlocked: 0,
+    fingerprintingBlocked: 0,
     braveShields: 'block',
     trackersBlocked: 0
   }

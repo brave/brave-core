@@ -25,7 +25,8 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
     chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_ADS } }),
     chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKERS } }),
     chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES } }),
-    chrome.contentSettings.javascript.getAsync({ primaryUrl: origin })
+    chrome.contentSettings.javascript.getAsync({ primaryUrl: origin }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING } })
   ]).then((details) => {
     return {
       url: url.href,
@@ -36,7 +37,8 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       ads: details[1].setting,
       trackers: details[2].setting,
       httpUpgradableResources: details[3].setting,
-      javascript: details[4].setting
+      javascript: details[4].setting,
+      fingerprinting: details[5].setting
     }
   }).catch(() => {
     return {
@@ -47,7 +49,8 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       ads: 0,
       trackers: 0,
       httpUpgradableResources: 0,
-      javascript: 0
+      javascript: 0,
+      fingerprinting: 0
     }
   })
 }
@@ -137,6 +140,20 @@ export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOp
 export const setAllowJavaScript = (origin: string, setting: string) =>
   chrome.contentSettings.javascript.setAsync({
     primaryPattern: origin + '/*',
+    setting
+  })
+
+/**
+ * Changes the fingerprinting at origin to be allowed or blocked.
+ * The fingerprinting-protection service will come into effect if the fingerprinting is marked as blocked.
+ * @param {string} origin the origin of the site to change the setting for
+ * @param {string} setting 'allow' or 'block'
+ * @return a promise which resolves with the setting is set
+ */
+export const setAllowFingerprinting = (origin: string, setting: string) =>
+  chrome.contentSettings.plugins.setAsync({
+    primaryPattern: origin + '/*',
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING },
     setting
   })
 
