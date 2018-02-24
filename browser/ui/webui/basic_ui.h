@@ -9,17 +9,18 @@
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_controller.h"
-#include "components/prefs/pref_observer.h"
 
-class PrefService;
+
+class PrefChangeRegistrar;
 
 namespace content {
 class RenderViewHost;
 }  // content
 
 
-class BasicUI : public content::WebUIController, public PrefObserver {
+class BasicUI : public content::WebUIController {
  public:
   explicit BasicUI(content::WebUI* web_ui, const std::string& host,
       const std::string& js_file, int js_resource_id, int html_resource_id);
@@ -27,11 +28,10 @@ class BasicUI : public content::WebUIController, public PrefObserver {
 
  private:
   void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override;
+  void OnPreferenceChanged();
 
-  // PrefObserver implementation.
-  void OnPreferenceChanged(PrefService* service,
-                           const std::string& pref_name) override;
   content::RenderViewHost* render_view_host_;
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BasicUI);
 };
