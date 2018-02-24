@@ -9,6 +9,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -77,15 +78,18 @@ BasicUI::BasicUI(content::WebUI* web_ui,
     CreateBasicUIHTMLSource(profile, name,
       js_file, js_resource_id, html_resource_id));
   PrefService* prefs = profile->GetPrefs();
-  prefs->AddPrefObserverAllPrefs(this);
+  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
+  pref_change_registrar_->Init(prefs);
+  pref_change_registrar_->Add(kAdsBlocked,
+    base::Bind(&BasicUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(kTrackersBlocked,
+    base::Bind(&BasicUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(kHttpsUpgrades,
+    base::Bind(&BasicUI::OnPreferenceChanged, base::Unretained(this)));
 }
 
 BasicUI::~BasicUI() {
-  Profile* profile = Profile::FromWebUI(web_ui());
-  PrefService* prefs = profile->GetPrefs();
-  if (prefs) {
-    prefs->RemovePrefObserverAllPrefs(this);
-  }
+  pref_change_registrar_.reset();
 }
 
 void BasicUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
@@ -99,16 +103,11 @@ void BasicUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
   }
 }
 
-void BasicUI::OnPreferenceChanged(PrefService* service,
-    const std::string& pref_name) {
-  if (pref_name == kAdsBlocked ||
-      pref_name == kTrackersBlocked ||
-      pref_name == kHttpsUpgrades) {
-    if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-      Profile* profile = Profile::FromWebUI(web_ui());
-      CustomizeNewTabWebUIProperties(web_ui(), profile, render_view_host_);
-      web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
-    }
+void BasicUI::OnPreferenceChanged() {
+  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    Profile* profile = Profile::FromWebUI(web_ui());
+    CustomizeNewTabWebUIProperties(web_ui(), profile, render_view_host_);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
   }
 }
 
