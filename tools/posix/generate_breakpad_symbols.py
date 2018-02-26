@@ -191,27 +191,33 @@ def GenerateSymbols(options, binaries):
     while True:
       binary = queue.get()
 
-      if options.verbose:
-        with print_lock:
-          print "Generating symbols for %s" % binary
+      try:
+          if options.verbose:
+            with print_lock:
+              print "Generating symbols for %s" % binary
 
-      if sys.platform == 'darwin':
-        binary = GetDSYMBundle(options, binary)
-      elif sys.platform == 'linux2':
-        binary = GetSymbolPath(options, binary)
+          if sys.platform == 'darwin':
+            binary = GetDSYMBundle(options, binary)
+          elif sys.platform == 'linux2':
+            binary = GetSymbolPath(options, binary)
 
-      syms = GetCommandOutput([GetDumpSymsBinary(options.build_dir), '-r', '-c',
-                               binary])
-      module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-F]+) (.*)\n", syms)
-      output_path = os.path.join(options.symbols_dir, module_line.group(2),
-                                 module_line.group(1))
-      mkdir_p(output_path)
-      symbol_file = "%s.sym" % module_line.group(2)
-      f = open(os.path.join(output_path, symbol_file), 'w')
-      f.write(syms)
-      f.close()
-
-      queue.task_done()
+          syms = GetCommandOutput([GetDumpSymsBinary(options.build_dir), '-r', '-c',
+                                   binary])
+          module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-F]+) (.*)\n", syms)
+          output_path = os.path.join(options.symbols_dir, module_line.group(2),
+                                     module_line.group(1))
+          mkdir_p(output_path)
+          symbol_file = "%s.sym" % module_line.group(2)
+          f = open(os.path.join(output_path, symbol_file), 'w')
+          f.write(syms)
+          f.close()
+      except Exception as inst:
+          if options.verbose:
+            with print_lock:
+              print type(inst)
+              print inst
+      finally:
+          queue.task_done()
 
   for binary in binaries:
     queue.put(binary)
