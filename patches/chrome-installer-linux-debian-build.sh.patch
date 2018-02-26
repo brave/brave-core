@@ -1,0 +1,52 @@
+diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
+index a91c416cd20e251312c58ebfdaddf3c04e8f75de..d71333022bf838caacc40a60e71d973aa2e2a8e9 100755
+--- a/chrome/installer/linux/debian/build.sh
++++ b/chrome/installer/linux/debian/build.sh
+@@ -21,7 +21,7 @@ gen_changelog() {
+   process_template "${SCRIPTDIR}/changelog.template" "${DEB_CHANGELOG}"
+   debchange -a --nomultimaint -m --changelog "${DEB_CHANGELOG}" \
+     "Release Notes: ${RELEASENOTES}"
+-  GZLOG="${STAGEDIR}/usr/share/doc/${PACKAGE}-${CHANNEL}/changelog.gz"
++  GZLOG="${STAGEDIR}/usr/share/doc/${PACKAGEANDCHANNEL}/changelog.gz"
+   mkdir -p "$(dirname "${GZLOG}")"
+   gzip -9 -c "${DEB_CHANGELOG}" > "${GZLOG}"
+   chmod 644 "${GZLOG}"
+@@ -30,7 +30,7 @@ gen_changelog() {
+ # Create the Debian control file needed by dpkg-deb.
+ gen_control() {
+   dpkg-gencontrol -v"${VERSIONFULL}" -c"${DEB_CONTROL}" -l"${DEB_CHANGELOG}" \
+-  -f"${DEB_FILES}" -p"${PACKAGE}-${CHANNEL}" -P"${STAGEDIR}" \
++  -f"${DEB_FILES}" -p"${PACKAGEANDCHANNEL}" -P"${STAGEDIR}" \
+   -O > "${STAGEDIR}/DEBIAN/control"
+   rm -f "${DEB_CONTROL}"
+ }
+@@ -49,7 +49,7 @@ stage_install_debian() {
+   # Always use a different name for /usr/bin symlink depending on channel.
+   # First, to avoid file collisions. Second, to make it possible to
+   # use update-alternatives for /usr/bin/google-chrome.
+-  local USR_BIN_SYMLINK_NAME="${PACKAGE}-${CHANNEL}"
++  local USR_BIN_SYMLINK_NAME="${PACKAGEANDCHANNEL}"
+ 
+   local PACKAGE_ORIG="${PACKAGE}"
+   if [ "$CHANNEL" != "stable" ]; then
+@@ -92,7 +92,7 @@ verify_package() {
+   local EXPECTED_DEPENDS="${TMPFILEDIR}/expected_deb_depends"
+   local ACTUAL_DEPENDS="${TMPFILEDIR}/actual_deb_depends"
+   echo ${DEPENDS} | sed 's/, /\n/g' | LANG=C sort > "${EXPECTED_DEPENDS}"
+-  dpkg -I "${PACKAGE}-${CHANNEL}_${VERSIONFULL}_${ARCHITECTURE}.deb" | \
++  dpkg -I "${PACKAGEANDCHANNEL}_${VERSIONFULL}_${ARCHITECTURE}.deb" | \
+       grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
+       LANG=C sort > "${ACTUAL_DEPENDS}"
+   BAD_DIFF=0
+@@ -254,6 +254,11 @@ fi
+ eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
+   "${BUILDDIR}/installer/theme/BRANDING")
+ 
++PACKAGEANDCHANNEL="${PACKAGE}-${CHANNEL}"
++if [ "$CHANNEL" = "stable" ]; then
++  PACKAGEANDCHANNEL="${PACKAGE}"
++fi
++
+ verify_channel
+ 
+ # Some Debian packaging tools want these set.
