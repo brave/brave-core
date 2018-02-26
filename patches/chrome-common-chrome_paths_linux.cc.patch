@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_paths_linux.cc b/chrome/common/chrome_paths_linux.cc
-index fc47bd3f12418fdaed879e0b485bfc7cb572a6e8..9f02b6d08385a175354831a8037cb7be933de7df 100644
+index fc47bd3f12418fdaed879e0b485bfc7cb572a6e8..b646812c6abafc22ffe62e06e46d818e15c80984 100644
 --- a/chrome/common/chrome_paths_linux.cc
 +++ b/chrome/common/chrome_paths_linux.cc
 @@ -89,8 +89,10 @@ bool GetDefaultUserDataDirectory(base::FilePath* result) {
@@ -7,10 +7,10 @@ index fc47bd3f12418fdaed879e0b485bfc7cb572a6e8..9f02b6d08385a175354831a8037cb7be
  #if defined(GOOGLE_CHROME_BUILD)
    *result = config_dir.Append("google-chrome" + GetChannelSuffixForDataDir());
 +#elif defined(OFFICIAL_BUILD)
-+  *result = config_dir.Append("brave");
++  *result = config_dir.Append("brave-browser");
  #else
 -  *result = config_dir.Append("chromium");
-+  *result = config_dir.Append("brave-development");
++  *result = config_dir.Append("brave-browser-development");
  #endif
    return true;
  }
