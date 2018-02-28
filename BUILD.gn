@@ -39,11 +39,13 @@ repack("packed_extra_resources") {
   sources = [
     "$root_gen_dir/components/brave_components_resources.pak",
     "$target_gen_dir/browser/resources/brave_extension.pak",
+    "$target_gen_dir/browser/resources/site_hacks_extension.pak",
   ]
 
   deps = [
     "//brave/components/resources:brave_components_resources_grit",
     "//brave/browser/resources:brave_extension_grit",
+    "//brave/browser/resources:site_hacks_extension_grit",
     "//brave/common/extensions/api"
   ]
 

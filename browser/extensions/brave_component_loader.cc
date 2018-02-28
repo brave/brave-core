@@ -26,6 +26,7 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   brave_extension_path =
       brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
   Add(IDR_BRAVE_EXTENSON, brave_extension_path);
+  Add(IDR_SITE_HACKS_EXTENSION, base::FilePath(FILE_PATH_LITERAL("site-hacks-extension")));
 }
 
 }  // namespace extensions
