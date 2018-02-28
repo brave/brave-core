@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_service.cc b/chrome/browser/extensions/extension_service.cc
-index ca649731ea800e0c7bd3e4c39ff6232f41af85db..b0b7bdec4fffebccd9e136ff51cffbb66e5b7359 100644
+index ca649731ea800e0c7bd3e4c39ff6232f41af85db..e390f76c5fbc62c79568cabc0373e68bbfaa42b7 100644
 --- a/chrome/browser/extensions/extension_service.cc
 +++ b/chrome/browser/extensions/extension_service.cc
 @@ -27,6 +27,7 @@
@@ -19,3 +19,23 @@ index ca649731ea800e0c7bd3e4c39ff6232f41af85db..b0b7bdec4fffebccd9e136ff51cffbb6
                                        profile->GetPrefs(),
                                        g_browser_process->local_state(),
                                        profile));
+@@ -1417,6 +1418,19 @@ void ExtensionService::AddComponentExtension(const Extension* extension) {
+   }
+ 
+   AddExtension(extension);
++#if defined(CHROMIUM_BUILD)
++  // ContentSettingsStore::RegisterExtension is only called for default components
++  // on the first run with a fresh profile. All restarts of the browser after that do not call it.
++  // This causes ContentSettingsStore's `entries_` to never insert the component ID
++  // and then  ContentSettingsStore::GetValueMap always returns nullptr.
++  // I don't think Chromium is affeced by this simply because they don't use content settings
++  // from default component extensions.
++  extension_prefs_->OnExtensionInstalled(extension, Extension::ENABLED,
++                                         syncer::StringOrdinal(),
++                                         extensions::kInstallFlagNone,
++                                         std::string(),
++                                         base::nullopt);
++#endif
+ }
+ 
+ void ExtensionService::CheckPermissionsIncrease(const Extension* extension,
