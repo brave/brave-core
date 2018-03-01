@@ -295,10 +295,10 @@ def check_for_chromium_missing_grd_strings(src_root, grd_file_path):
   brave_strings = { string_name for (string_name, message_value, string_fp) in grd_strings }
   chromium_strings = { string_name for (string_name, message_value, string_fp) in chromium_grd_strings }
   x_brave_extra_strings = brave_strings - chromium_strings
-  assert len(x_brave_extra_strings) == 0, ('Brave GRD %s has extra languages %s over Chromium GRD %s' %
+  assert len(x_brave_extra_strings) == 0, ('Brave GRD %s has extra strings %s over Chromium GRD %s' %
             (grd_file_path, chromium_grd_file_path, list(x_brave_extra_strings)))
   x_chromium_extra_strings = chromium_strings - brave_strings
-  assert len(x_chromium_extra_strings) == 0, ('Chromium GRD %s has extra languages %s over Brave GRD %s' %
+  assert len(x_chromium_extra_strings) == 0, ('Chromium GRD %s has extra strings %s over Brave GRD %s' %
             (chromium_grd_file_path, grd_file_path, list(x_chromium_extra_strings)))
 
 
