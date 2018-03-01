@@ -450,6 +450,6 @@ def pull_source_files_from_transifex(source_file_path, filename):
     for lang_code in lang_codes:
       print 'getting filename %s for lang_code %s' % (filename, lang_code)
       content = get_transifex_translation_file_content(filename, lang_code)
-      localized_translation_path = os.path.join(langs_dir_path, lang_code, 'message.json')
+      localized_translation_path = os.path.join(langs_dir_path, lang_code, 'messages.json')
       with open(localized_translation_path, mode='w') as f:
         f.write(content)
