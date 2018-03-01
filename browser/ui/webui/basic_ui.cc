@@ -31,7 +31,7 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
 
-  CustomizeNewTabHTMLSource(profile, source);
+  CustomizeNewTabHTMLSource(source);
 
   source->SetJsonPath("strings.js");
   source->SetDefaultResource(html_resource_id);
@@ -93,20 +93,14 @@ BasicUI::~BasicUI() {
 }
 
 void BasicUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
-  content::RenderViewHost* render_view_host =
-      render_frame_host->GetRenderViewHost();
-  render_view_host_ = render_view_host;
-
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    Profile* profile = Profile::FromWebUI(web_ui());
-    CustomizeNewTabWebUIProperties(web_ui(), profile, render_view_host);
+    CustomizeNewTabWebUIProperties(web_ui());
   }
 }
 
 void BasicUI::OnPreferenceChanged() {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    Profile* profile = Profile::FromWebUI(web_ui());
-    CustomizeNewTabWebUIProperties(web_ui(), profile, render_view_host_);
+    CustomizeNewTabWebUIProperties(web_ui());
     web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
   }
 }

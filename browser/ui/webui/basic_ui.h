@@ -15,11 +15,6 @@
 
 class PrefChangeRegistrar;
 
-namespace content {
-class RenderViewHost;
-}  // content
-
-
 class BasicUI : public content::WebUIController {
  public:
   explicit BasicUI(content::WebUI* web_ui, const std::string& host,
@@ -30,7 +25,6 @@ class BasicUI : public content::WebUIController {
   void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override;
   void OnPreferenceChanged();
 
-  content::RenderViewHost* render_view_host_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BasicUI);

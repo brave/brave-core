@@ -10,6 +10,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_view_host.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 
@@ -38,7 +39,7 @@ void AddResourcePaths(content::WebUIDataSource* html_source,
 
 }  // namespace
 
-void CustomizeNewTabHTMLSource(Profile* profile, content::WebUIDataSource* source) {
+void CustomizeNewTabHTMLSource(content::WebUIDataSource* source) {
   std::vector<WebUISimpleItem> resources = {
     { "af7ae505a9eed503f8b8e6982036873e.woff2", IDR_BRAVE_COMMON_FONT_AWESOME_1 },
     { "fee66e712a8a08eef5805a46892932ad.woff", IDR_BRAVE_COMMON_FONT_AWESOME_2 },
@@ -72,12 +73,21 @@ void CustomizeNewTabHTMLSource(Profile* profile, content::WebUIDataSource* sourc
   AddLocalizedStringsBulk(source, localized_strings);
   }
 
-void CustomizeNewTabWebUIProperties(content::WebUI* web_ui, Profile* profile, content::RenderViewHost* render_view_host) {
+void CustomizeNewTabWebUIProperties(content::WebUI* web_ui) {
+  Profile* profile = Profile::FromWebUI(web_ui);
   PrefService* prefs = profile->GetPrefs();
-  render_view_host->SetWebUIProperty("adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked)));
-  render_view_host->SetWebUIProperty("trackersBlockedStat", std::to_string(prefs->GetUint64(kTrackersBlocked)));
-  render_view_host->SetWebUIProperty("javascriptBlockedStat", std::to_string(prefs->GetUint64(kJavascriptBlocked)));
-  render_view_host->SetWebUIProperty("javascriptBlockedStat", std::to_string(prefs->GetUint64(kJavascriptBlocked)));
-  render_view_host->SetWebUIProperty("httpsUpgradesStat", std::to_string(prefs->GetUint64(kHttpsUpgrades)));
-  render_view_host->SetWebUIProperty("fingerprintingBlockedStat", std::to_string(prefs->GetUint64(kFingerprintingBlocked)));
+  auto* web_contents = web_ui->GetWebContents();
+  if (web_contents) {
+    auto* render_view_host = web_contents->GetRenderViewHost();
+    if (render_view_host) {
+      if (web_contents->GetURL() == "chrome://newtab/") {
+        render_view_host->SetWebUIProperty("adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked)));
+        render_view_host->SetWebUIProperty("trackersBlockedStat", std::to_string(prefs->GetUint64(kTrackersBlocked)));
+        render_view_host->SetWebUIProperty("javascriptBlockedStat", std::to_string(prefs->GetUint64(kJavascriptBlocked)));
+        render_view_host->SetWebUIProperty("javascriptBlockedStat", std::to_string(prefs->GetUint64(kJavascriptBlocked)));
+        render_view_host->SetWebUIProperty("httpsUpgradesStat", std::to_string(prefs->GetUint64(kHttpsUpgrades)));
+        render_view_host->SetWebUIProperty("fingerprintingBlockedStat", std::to_string(prefs->GetUint64(kFingerprintingBlocked)));
+      }
+    }
+  }
 }
