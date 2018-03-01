@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/frame/test_with_browser_view.cc b/chrome/browser/ui/views/frame/test_with_browser_view.cc
-index c179d20c088c28a9b3b4ac02d844b61b9633f833..5551e45af87fbc6c387463ccdb23d6d0bf47cbbf 100644
+index f028f99fde857c1f77ce54b5f27bb6d292bb4200..c2547aae815721666a95d25b7540034772a7fa60 100644
 --- a/chrome/browser/ui/views/frame/test_with_browser_view.cc
 +++ b/chrome/browser/ui/views/frame/test_with_browser_view.cc
-@@ -51,7 +51,7 @@ std::unique_ptr<KeyedService> CreateAutocompleteClassifier(
+@@ -50,7 +50,7 @@ std::unique_ptr<KeyedService> CreateAutocompleteClassifier(
      content::BrowserContext* context) {
    Profile* profile = static_cast<Profile*>(context);
-   return base::MakeUnique<AutocompleteClassifier>(
--      base::WrapUnique(new AutocompleteController(
-+      base::WrapUnique(new BraveAutocompleteController(
-           base::WrapUnique(new ChromeAutocompleteProviderClient(profile)),
- 
-           nullptr, AutocompleteClassifier::DefaultOmniboxProviders())),
+   return std::make_unique<AutocompleteClassifier>(
+-      std::make_unique<AutocompleteController>(
++      std::make_unique<BraveAutocompleteController>(
+           std::make_unique<ChromeAutocompleteProviderClient>(profile), nullptr,
+           AutocompleteClassifier::DefaultOmniboxProviders()),
+       std::make_unique<TestSchemeClassifier>());

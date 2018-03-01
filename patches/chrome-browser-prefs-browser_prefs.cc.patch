@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 90b5ed12f2785e73700866e8027f99849f030129..187009cd17f7b3f8f3b00e50638f8c5151837091 100644
+index 2aa7844d5622624364956dc9b6fc7e510cce8142..2ff9f0f47eab70c0d0f25eac9fdf283e04d884cd 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -8,6 +8,7 @@
@@ -10,7 +10,7 @@ index 90b5ed12f2785e73700866e8027f99849f030129..187009cd17f7b3f8f3b00e50638f8c51
  #include "build/build_config.h"
  #include "chrome/browser/about_flags.h"
  #include "chrome/browser/accessibility/invert_bubble_prefs.h"
-@@ -453,6 +454,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -472,6 +473,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    SCOPED_UMA_HISTOGRAM_TIMER("Settings.RegisterProfilePrefsTime");
    // User prefs. Please keep this list alphabetized.
    autofill::AutofillManager::RegisterProfilePrefs(registry);

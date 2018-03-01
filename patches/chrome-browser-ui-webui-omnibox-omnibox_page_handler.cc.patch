@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
-index 91690a5762cbebb8ca1cd307207ec938be3f51d3..01d4b72b129ca1cacb4f391044ac539e5c508cdd 100644
+index 089208eeacd675cd8b2bb907c46273041b0fcede..1a9f92be9d8b24f1d4830f2231fbe5252d46ff24 100644
 --- a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
 +++ b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
-@@ -16,6 +16,7 @@
+@@ -15,6 +15,7 @@
  #include "base/strings/utf_string_conversions.h"
  #include "base/time/time.h"
  #include "base/values.h"
@@ -10,12 +10,12 @@ index 91690a5762cbebb8ca1cd307207ec938be3f51d3..01d4b72b129ca1cacb4f391044ac539e
  #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
  #include "chrome/browser/bookmarks/bookmark_model_factory.h"
-@@ -210,7 +211,7 @@ void OmniboxPageHandler::StartOmniboxQuery(const std::string& input_string,
+@@ -209,7 +210,7 @@ void OmniboxPageHandler::StartOmniboxQuery(const std::string& input_string,
  }
  
  void OmniboxPageHandler::ResetController() {
 -  controller_.reset(new AutocompleteController(
 +  controller_.reset(new BraveAutocompleteController(
-       base::MakeUnique<ChromeAutocompleteProviderClient>(profile_), this,
+       std::make_unique<ChromeAutocompleteProviderClient>(profile_), this,
        AutocompleteClassifier::DefaultOmniboxProviders()));
  }

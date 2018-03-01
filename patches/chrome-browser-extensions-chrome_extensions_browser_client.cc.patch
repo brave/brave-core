@@ -1,23 +1,17 @@
 diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-index ecf563c9940d0d64e22c9903a77b4782e8e9d294..8aa669d7018427aef50a542b5a3b1b91243cd9c6 100644
+index 4c027114c76f28e799f1e76d7de037b44d2e08f8..917ba18f7b85b6adccca306e149a99426baff00b 100644
 --- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
 +++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-@@ -9,12 +9,14 @@
+@@ -8,6 +8,8 @@
+ 
  #include "base/command_line.h"
- #include "base/memory/ptr_util.h"
  #include "base/version.h"
 +#include "brave/browser/extensions/brave_component_extension_resource_manager.h"
++#include "brave/common/extensions/api/generated_api_registration.h"
  #include "build/build_config.h"
  #include "chrome/browser/app_mode/app_mode_utils.h"
  #include "chrome/browser/browser_process.h"
- #include "chrome/browser/extensions/activity_log/activity_log.h"
- #include "chrome/browser/extensions/api/chrome_extensions_api_client.h"
- #include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
-+#include "brave/common/extensions/api/generated_api_registration.h"
- #include "chrome/browser/extensions/api/generated_api_registration.h"
- #include "chrome/browser/extensions/api/preference/preference_api.h"
- #include "chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate.h"
-@@ -84,7 +86,7 @@ ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient() {
+@@ -83,7 +85,7 @@ ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient() {
    process_manager_delegate_.reset(new ChromeProcessManagerDelegate);
    api_client_.reset(new ChromeExtensionsAPIClient);
    SetCurrentChannel(chrome::GetChannel());
@@ -26,7 +20,7 @@ index ecf563c9940d0d64e22c9903a77b4782e8e9d294..8aa669d7018427aef50a542b5a3b1b91
  }
  
  ChromeExtensionsBrowserClient::~ChromeExtensionsBrowserClient() {}
-@@ -292,6 +294,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
+@@ -291,6 +293,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
  
    // Generated APIs from Chrome.
    api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index a91c416cd20e251312c58ebfdaddf3c04e8f75de..d71333022bf838caacc40a60e71d973aa2e2a8e9 100755
+index 58101b79be04083df44a83a55ac926fb3d192e0e..2038b0794e42d2e051624fc6ba5bc71526508818 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -38,7 +38,7 @@ index a91c416cd20e251312c58ebfdaddf3c04e8f75de..d71333022bf838caacc40a60e71d973a
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -254,6 +254,11 @@ fi
+@@ -258,6 +258,11 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${BUILDDIR}/installer/theme/BRANDING")
  

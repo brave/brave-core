@@ -1,5 +1,5 @@
 diff --git a/third_party/widevine/cdm/BUILD.gn b/third_party/widevine/cdm/BUILD.gn
-index f35d8187209663167a19a06a745b95a89d7b9063..36f7959a0508676832b8ecd8d1912fce7456f6e2 100644
+index 0ab3bb63b0da0398cef54ed1316e12c7d8f3587b..7b2ba8a4e3caaba9002a5ec035b151dbbb80e155 100644
 --- a/third_party/widevine/cdm/BUILD.gn
 +++ b/third_party/widevine/cdm/BUILD.gn
 @@ -110,6 +110,10 @@ if (widevine_cdm_binary_files != []) {

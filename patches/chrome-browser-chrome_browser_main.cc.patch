@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index e1f57b847f9599088075cc18b0dca5bc10b7aca2..1cdc90d596f8dedb4c96b99fe58dbf0dc326d5cf 100644
+index 8510af7933ab8138c011ced9dc3fe20d432394a4..7d1de3dee5a571c7ab76f039421c13b1502381e4 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -44,6 +44,7 @@
@@ -10,7 +10,7 @@ index e1f57b847f9599088075cc18b0dca5bc10b7aca2..1cdc90d596f8dedb4c96b99fe58dbf0d
  #include "build/build_config.h"
  #include "cc/base/switches.h"
  #include "chrome/browser/about_flags.h"
-@@ -952,7 +953,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+@@ -978,7 +979,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
      TRACE_EVENT0("startup",
        "ChromeBrowserMainParts::PreCreateThreadsImpl:InitBrowswerProcessImpl");
      browser_process_ =
@@ -18,4 +18,4 @@ index e1f57b847f9599088075cc18b0dca5bc10b7aca2..1cdc90d596f8dedb4c96b99fe58dbf0d
 +        std::make_unique<BraveBrowserProcessImpl>(local_state_task_runner.get());
    }
  
-   local_state_ = InitializeLocalState(
+   PrefService* local_state = InitializeLocalState(local_state_task_runner.get(),

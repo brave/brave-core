@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 78fa05c87489a20335b642bf0b110b30e03513f4..3869cec0e36dd90aa64a3fb6bb7ce30336903952 100644
+index dba09fda18048dc4da14959cf5216e431a753feb..59a43cdd9a1ef97fb3a556c974ada5cc66e2f414 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -11,6 +11,7 @@
+@@ -10,6 +10,7 @@
+ #include "base/command_line.h"
  #include "base/feature_list.h"
- #include "base/memory/ptr_util.h"
  #include "base/time/default_tick_clock.h"
 +#include "brave/browser/brave_tab_helpers.h"
  #include "build/build_config.h"
  #include "chrome/browser/bookmarks/bookmark_model_factory.h"
  #include "chrome/browser/browser_process.h"
-@@ -189,6 +190,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -192,6 +193,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
    BookmarkLastVisitUpdater::MaybeCreateForWebContentsWithBookmarkModel(
        web_contents, BookmarkModelFactory::GetForBrowserContext(
                          web_contents->GetBrowserContext()));

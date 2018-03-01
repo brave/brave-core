@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
-index 4c460fc0244e7c1066e1abc3f3cacbfc92b1ed48..02625d909e1fcaf3a457f08e1295571611623e15 100644
+index 73d801aac4ed8e3861fc38286c73d21ad216c4b4..eeb5e5920aebbd624f841832ea8320264cdf4550 100644
 --- a/chrome/installer/linux/common/installer.include
 +++ b/chrome/installer/linux/common/installer.include
 @@ -75,6 +75,7 @@ process_template() (
@@ -20,7 +20,7 @@ index 4c460fc0244e7c1066e1abc3f3cacbfc92b1ed48..02625d909e1fcaf3a457f08e12955716
    # ICU data file; Necessary when the GN icu_use_data_file flag is true.
    install -m 644 "${BUILDDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
  
-@@ -359,7 +363,7 @@ stage_install_common() {
+@@ -381,7 +385,7 @@ stage_install_common() {
          exit 1
        fi
        local expected_perms=777

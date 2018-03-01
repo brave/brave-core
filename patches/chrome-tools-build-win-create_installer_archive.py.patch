@@ -1,8 +1,8 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 60a9d643efa79464a730e69bf24c19c16c9fad5a..58ddd09095f6bbf6f3eb6720c0037fb8c285862e 100755
+index 51c91715d0fc03bd352a498405f13cf45b141b2c..ae29f6258b70972d5cf611353d4c9cf2688e96db 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
-@@ -562,6 +562,9 @@ def main(options):
+@@ -565,6 +565,9 @@ def main(options):
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
  
