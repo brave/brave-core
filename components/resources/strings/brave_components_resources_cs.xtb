@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="cs">
+<translation id="689261804992965033">Reklamy blokovány</translation>
+<translation id="1663506596135222606">Trackery blokovány</translation>
+<translation id="2313532038420432247">HTTPS upgrady</translation>
+<translation id="7679428712334662192">Odhadovaný čas uložen</translation>
+<translation id="3772054137575942265">Náhled odstraněn.</translation>
+<translation id="2079545284768500474">Zpět</translation>
+<translation id="8529752221839395787">Obnovit vše</translation>
+<translation id="3022168349636134570">vteřina</translation>
+<translation id="8664519043722036194">vteřiny</translation>
+<translation id="755854589635502953">minuta</translation>
+<translation id="7210211103303402262">minuty</translation>
+<translation id="679011980069501619">hodina</translation>
+<translation id="8344569602005188545">hodiny</translation>
+<translation id="7100907433458266664">den</translation>
+<translation id="4971389353431353387">dny</translation>
 </translationbundle>

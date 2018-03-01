@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
+<translation id="689261804992965033">已阻挡广告</translation>
+<translation id="1663506596135222606">已阻挡追踪器</translation>
+<translation id="2313532038420432247">HTTPS 升级</translation>
+<translation id="7679428712334662192">预计节省时间</translation>
+<translation id="3772054137575942265">已移除快取缩图。</translation>
+<translation id="2079545284768500474">复原</translation>
+<translation id="8529752221839395787">还原全部</translation>
+<translation id="3022168349636134570">秒</translation>
+<translation id="8664519043722036194">秒</translation>
+<translation id="755854589635502953">分钟</translation>
+<translation id="7210211103303402262">分钟</translation>
+<translation id="679011980069501619">小时</translation>
+<translation id="8344569602005188545">小时</translation>
+<translation id="7100907433458266664">天</translation>
+<translation id="4971389353431353387">天</translation>
 </translationbundle>

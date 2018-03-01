@@ -1,5 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
+<translation id="689261804992965033">광고 차단</translation>
+<translation id="1663506596135222606">트래커 차단</translation>
+<translation id="2313532038420432247">HTTPS 업그레이드</translation>
+<translation id="7679428712334662192">예상 시간 저장됨</translation>
 <translation id="3772054137575942265">썸네일 삭제됨.</translation>
+<translation id="2079545284768500474">취소</translation>
+<translation id="8529752221839395787">전체 복구</translation>
+<translation id="3022168349636134570">초</translation>
+<translation id="8664519043722036194">초</translation>
+<translation id="755854589635502953">분</translation>
+<translation id="7210211103303402262">분</translation>
+<translation id="679011980069501619">시간</translation>
+<translation id="8344569602005188545">시간</translation>
+<translation id="7100907433458266664">일</translation>
+<translation id="4971389353431353387">일</translation>
 </translationbundle>
