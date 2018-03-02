@@ -16,6 +16,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   content::BrowserMainParts* CreateBrowserMainParts(
       const content::MainFunctionParams& parameters) override;
   void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
+  std::unique_ptr<content::NavigationUIData> GetNavigationUIData(
+      content::NavigationHandle* navigation_handle) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);

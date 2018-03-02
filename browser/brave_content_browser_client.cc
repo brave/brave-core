@@ -5,6 +5,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 
 #include "brave/browser/brave_browser_main_extra_parts.h"
+#include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/common/url_constants.h"
 #include "content/public/browser/browser_url_handler.h"
@@ -58,4 +59,11 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(content::BrowserURLHand
   handler->AddHandlerPair(&HandleURLRewrite,
                           &HandleURLReverseRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
+}
+
+
+std::unique_ptr<content::NavigationUIData>
+BraveContentBrowserClient::GetNavigationUIData(
+    content::NavigationHandle* navigation_handle) {
+  return base::MakeUnique<BraveNavigationUIData>(navigation_handle);
 }
