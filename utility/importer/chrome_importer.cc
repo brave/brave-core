@@ -231,18 +231,23 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
       dict->GetString("url", &url);
       ImportedBookmarkEntry entry;
       if (type == "folder") {
-        entry.in_toolbar = is_in_toolbar;
-        entry.is_folder = true;
-        entry.url = GURL();
-        entry.path = parent_path;
-        entry.title = name;
-        entry.creation_time =
-          base::Time::FromDoubleT(chromeTimeToDouble(std::stoll(date_added)));
-        bookmarks->push_back(entry);
+        // Folders are added implicitly on adding children, so we only
+        // explicitly add empty folders.
+        const base::ListValue* children;
+        if (dict->GetList("children", &children) && children->empty()) {
+          entry.in_toolbar = is_in_toolbar;
+          entry.is_folder = true;
+          entry.url = GURL();
+          entry.path = parent_path;
+          entry.title = name;
+          entry.creation_time =
+            base::Time::FromDoubleT(chromeTimeToDouble(std::stoll(date_added)));
+          bookmarks->push_back(entry);
+        }
 
         std::vector<base::string16> path = parent_path;
         path.push_back(name);
-        RecursiveReadBookmarksFolder(dict, path, false, bookmarks);
+        RecursiveReadBookmarksFolder(dict, path, is_in_toolbar, bookmarks);
       } else if (type == "url") {
         entry.in_toolbar = is_in_toolbar;
         entry.is_folder = false;
