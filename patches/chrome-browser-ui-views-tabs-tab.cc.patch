@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 1c02ce08a7d7da3a865ee010c246fa3c5b97bb77..bf8f19e5e76c08cca69eccc349f9879c67e08a0f 100644
+index 236029e6121dfdb4c39b4721f6a1bdce10b43905..f778f6a0d33c9b336589d958627e369bf5f72c34 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -103,7 +103,10 @@ const double kSelectedTabThrobScale = 0.95 - kSelectedTabOpacity;

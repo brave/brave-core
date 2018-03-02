@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Licenças de código aberto do Brave</translation>
 <translation id="2310890394934209120">O Brave OS tornou-se possível graças a um <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
 <translation id="8372475781172910778">Licenças de código aberto do Brave OS</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">Tornar o Brave o navegador padrão</translation>
 <translation id="662492621463805426">Primeiros passos com o Brave OS</translation>
 <translation id="5063987220091207247">O Brave OS não pode abrir essa página.</translation>
@@ -31,7 +30,6 @@
 <translation id="3403365884036456766">Seu arquivo de preferências foi corrompido ou não é válido. O Brave não conseguiu recuperar suas configurações.</translation>
 <translation id="8554809439398012115">O Brave salvará essa senha com <ph name="SAVED_PASSWORD_LINK"/>. Você não precisa se lembrar dela.</translation>
 <translation id="5316336629760101484">Use uma senha forte gerada pelo Brave</translation>
-<translation id="2288174659056124771">O Brave não é seu navegador padrão.</translation>
 <translation id="6715663530666325392">Configure a sincronização para salvar suas características de navegador personalizadas na web e acessá-las do Brave em qualquer computador.</translation>
 <translation id="2708027082363760195">O Brave não inclui o visualizador de PDF que é necessário para que a visualização de impressão funcione.</translation>
 <translation id="8880183781256147665">Adicionando ao Brave...</translation>
@@ -40,7 +38,6 @@
 <translation id="4168372721886011198">O arquivo <ph name="FILE_NAME"/> é perigoso. Por isso ele foi bloqueado pelo Brave.</translation>
 <translation id="89367911614620585">Esse arquivo pode ser perigoso, por isso ele foi bloqueado pelo Brave.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Um download está em andamento. Quer cancelar o download e sair do Brave?}one{# downloads estão em andamento. Quer cancelar os downloads e sair do Brave?}other{# downloads estão em andamento. Quer cancelar os downloads e sair do Brave?}}</translation>
-<translation id="5212535894547383850">O Brave parou de ser atualizado e não oferece mais suporte para esta versão do seu sistema operacional.</translation>
 <translation id="2339258256897053758">As chaves da API do Brave Software não foram encontradas. Algumas funcionalidades do Brave serão desativadas.</translation>
 <translation id="5906655207909574370">Atualização quase concluída. Reinicie o dispositivo para concluí-la.</translation>
 <translation id="5877064549588274448">Canal alterado. Reinicie o dispositivo para aplicar as alterações.</translation>
@@ -111,7 +108,7 @@
 <translation id="7808415789955822133">Termos do Brave OS</translation>
 <translation id="6686872257969654608">Sobre o Brave OS</translation>
 <translation id="2280363356796735201">Ajuda com o Brave OS</translation>
-<translation id="6161696008382683101">Brave Software Payments (copiado para o Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (copiado para o Brave)</translation>
 <translation id="7977435741986383568">O Brave pode usar serviços da Web para melhorar sua experiência de navegação. Se preferir, você pode desativar esses serviços. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">O login no Brave foi desativado pelo administrador deste dispositivo.</translation>
 <translation id="9220324636239049437">Essa ação excluirá 1 item deste dispositivo. Para recuperar seus dados mais tarde, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>

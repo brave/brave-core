@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index 52042ee6bdc6293bad9ac37911c3882895dab61e..b1acb4a858bb0e5eeb43f8bb8054a5353d23ef9c 100644
+index 041981153b20f7514c06abb277d1cf76a581c340..d49d614a1eca945de409c34ae598a29fd365b8c6 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
-@@ -136,7 +136,7 @@ const char Profile::kNoHostedDomainFound[] = "NO_HOSTED_DOMAIN";
+@@ -138,7 +138,7 @@ const char Profile::kNoHostedDomainFound[] = "NO_HOSTED_DOMAIN";
  void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(
        prefs::kSearchSuggestEnabled,

@@ -6,7 +6,7 @@
     <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave page.">
       About Brave
     </message>
-    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Chrome help page.">
+    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave help page.">
       Get help with Brave
     </message>
     <message name="IDS_SETTINGS_UPGRADE_UPDATING" desc="Status label: Updating Brave">
@@ -26,25 +26,25 @@
     <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave page.">
       About Brave OS
     </message>
-    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Chrome help page.">
+    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave help page.">
       Get help with Brave OS
     </message>
   </if>
 
   <!-- Autofill Page -->
-  <message name="IDS_SETTINGS_GOOGLE_PAYMENTS_CACHED" desc="Label that will be used to show that a credit card comes from Google Payments and is saved locally. This should follow the casing of the 'Google Payments' and 'Chrome' brands. 'Copied to Brave' is short for 'The credit card is copied to Brave'">
-    Google Payments (copied to Brave)
+  <message name="IDS_SETTINGS_GOOGLE_PAYMENTS_CACHED" desc="Label that will be used to show that a credit card comes from Brave Pay and is saved locally. This should follow the casing of the 'Brave Pay' and 'Brave' brands. 'Copied to Brave' is short for 'The credit card is copied to Brave'. 'Brave Pay' should not be translated as it is the product name.">
+    Brave Pay (copied to Brave)
   </message>
 
   <!-- Default Browser Page -->
   <if expr="not chromeos">
-    <message name="IDS_SETTINGS_DEFAULT_BROWSER_DEFAULT" desc="The text displayed when Chrome is the default browser">
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_DEFAULT" desc="The text displayed when Brave is the default browser">
       Brave is your default browser
     </message>
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT" desc="Default browser checkbox label">
       Make Brave the default browser
     </message>
-    <message name="IDS_SETTINGS_DEFAULT_BROWSER_ERROR" desc="The text displayed when Chrome cannot determine or set the default browser">
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_ERROR" desc="The text displayed when Brave cannot determine or set the default browser">
       Brave cannot determine or set the default browser
     </message>
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_SECONDARY" desc="The text displayed when Brave is installed in side-by-side mode, which does not support setting as the default browser.">
@@ -61,13 +61,13 @@
   <message name="IDS_SETTINGS_SYNC_DISABLED_BY_ADMINISTRATOR" desc="The text to display when sync is disabled by administrator policy.">
     Sign in to Brave is disabled by the administrator of this device.
   </message>
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_SINGULAR" desc="Warning message displayed in the Sign out of Chrome dialog that indicates profile browsing data will be removed from the device.">
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_SINGULAR" desc="Warning message displayed in the Sign out of Brave dialog that indicates profile browsing data will be removed from the device.">
     This will delete 1 item from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>.
   </message>
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_PLURAL" desc="Warning message displayed in the Sign out of Chrome dialog that indicates profile browsing data will be removed from the device.">
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_PLURAL" desc="Warning message displayed in the Sign out of Brave dialog that indicates profile browsing data will be removed from the device.">
     This will delete <ph name="ITEMS_COUNT">$1<ex>66</ex></ph> items from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
   </message>
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITHOUT_COUNTS" desc="Warning message displayed in the Sign out of Chrome dialog that indicates profile browsing data will be removed from the device.">
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITHOUT_COUNTS" desc="Warning message displayed in the Sign out of Brave dialog that indicates profile browsing data will be removed from the device.">
     This will delete your browsing data from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>.
   </message>
 
@@ -102,7 +102,7 @@
 
   <!-- System Page -->
   <if expr="not chromeos">
-    <message name="IDS_SETTINGS_SYSTEM_BACKGROUND_APPS_LABEL" desc="Label for the checkbox to allow apps to run in the background, when Chrome is closed.">
+    <message name="IDS_SETTINGS_SYSTEM_BACKGROUND_APPS_LABEL" desc="Label for the checkbox to allow apps to run in the background, when Brave is closed.">
       Continue running background apps when Brave is closed
     </message>
   </if>

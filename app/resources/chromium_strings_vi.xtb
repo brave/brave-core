@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Giấy phép nguồn mở Brave</translation>
 <translation id="2310890394934209120">Brave OS trở nên khả thi là nhờ các <ph name="BEGIN_LINK_CROS_OSS"/>phần mềm nguồn mở<ph name="END_LINK_CROS_OSS"/> bổ sung.</translation>
 <translation id="8372475781172910778">Giấy phép nguồn mở Brave OS</translation>
-<translation id="8851136666856101339">chính</translation>
 <translation id="5019879183386042809">Đặt Brave làm trình duyệt mặc định</translation>
 <translation id="662492621463805426">Bắt đầu với Brave OS</translation>
 <translation id="5063987220091207247">Brave OS không thể mở trang này.</translation>
@@ -37,7 +36,6 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8554809439398012115">Brave sẽ lưu mật khẩu này bằng <ph name="SAVED_PASSWORD_LINK"/>. Bạn không cần phải nhớ mật khẩu đó.</translation>
 <translation id="5316336629760101484">Sử dụng mật khẩu mạnh do Brave tạo</translation>
-<translation id="2288174659056124771">Brave không phải là trình duyệt mặc định của bạn.</translation>
 <translation id="6715663530666325392">Thiết lập đồng bộ hóa để lưu các tính năng trình duyệt được cá nhân hóa của bạn vào web và truy cập chúng từ Brave trên bất kỳ máy tính nào.</translation>
 <translation id="2708027082363760195">Brave không bao gồm trình xem PDF được yêu cầu để tính năng xem trước bản in hoạt động.</translation>
 <translation id="8880183781256147665">Đang thêm vào Brave...</translation>
@@ -46,7 +44,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> nguy hiểm, do đó Brave đã chặn tệp.</translation>
 <translation id="89367911614620585">Tệp này nguy hiểm, do đó Brave đã chặn tệp.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Một tải xuống hiện đang diễn ra. Bạn có muốn hủy tải xuống và thoát khỏi Brave không?}other{# tải xuống hiện đang diễn ra. Bạn có muốn hủy tải xuống và thoát khỏi Brave không?}}</translation>
-<translation id="5212535894547383850">Brave đã ngừng cập nhật và không còn hỗ trợ phiên bản hệ điều hành này của bạn.</translation>
 <translation id="2339258256897053758">Khóa API của Brave Software bị thiếu. Một số chức năng của Brave sẽ bị tắt.</translation>
 <translation id="5906655207909574370">Gần được cập nhật! Hãy khởi động lại thiết bị của bạn để hoàn tất cập nhật.</translation>
 <translation id="5877064549588274448">Kênh đã thay đổi. Hãy khởi động lại thiết bị để áp dụng thay đổi.</translation>
@@ -117,7 +114,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="7808415789955822133">Điều khoản Brave OS</translation>
 <translation id="6686872257969654608">Giới thiệu về Brave OS</translation>
 <translation id="2280363356796735201">Nhận trợ giúp về Brave OS</translation>
-<translation id="6161696008382683101">Brave Software Payments (đã sao chép vào Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (đã sao chép vào Brave)</translation>
 <translation id="7977435741986383568">Brave có thể sử dụng dịch vụ web để cải thiện trải nghiệm duyệt web của bạn. Bạn có thể tùy ý vô hiệu hóa các dịch vụ này. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Quản trị viên của thiết bị này đã tắt tính năng đăng nhập vào Brave.</translation>
 <translation id="9220324636239049437">Thao tác này sẽ xóa 1 mục khỏi thiết bị này. Để truy xuất dữ liệu của bạn sau, hãy đăng nhập vào Brave dưới dạng <ph name="USER_EMAIL"/>.</translation>

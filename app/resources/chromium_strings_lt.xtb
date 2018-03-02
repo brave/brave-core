@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">„Brave“ atvirojo šaltinio licencijos</translation>
 <translation id="2310890394934209120">„Brave“ OS pasiekiama naudojant papildomą <ph name="BEGIN_LINK_CROS_OSS"/>atvirojo šaltinio programinę įrangą<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">„Brave“ OS atvirojo šaltinio licencijos</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">Padaryti „Brave“ numatytąja naršykle</translation>
 <translation id="662492621463805426">Darbo su „Brave“ OS pradžia</translation>
 <translation id="5063987220091207247">„Brave“ OS negali atidaryti šio puslapio.</translation>
@@ -39,7 +38,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 „Brave“ negali atkurti nustatymų.</translation>
 <translation id="8554809439398012115">„Brave“ išsaugos šį slaptažodį adresu <ph name="SAVED_PASSWORD_LINK"/>. Nereikia jo įsiminti.</translation>
 <translation id="5316336629760101484">Naudokite „Brave“ sugeneruotą sudėtingą slaptažodį</translation>
-<translation id="2288174659056124771">„Brave“ nėra numatytoji naršyklė.</translation>
 <translation id="6715663530666325392">Nustatykite sinchronizavimą, kad žiniatinklyje išsaugotumėte suasmenintas naršyklės funkcijas ir pasiektumėte jas iš „Brave“ bet kuriuo kompiuteriu.</translation>
 <translation id="2708027082363760195">„Brave“ neįtraukta PDF žiūryklė, reikalinga, kad veiktų „Spaudinio peržiūra“.</translation>
 <translation id="8880183781256147665">Pridedama prie „Brave“...</translation>
@@ -48,7 +46,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="4168372721886011198">Failas „<ph name="FILE_NAME"/>“ pavojingas, todėl „Brave“ jį užblokavo.</translation>
 <translation id="89367911614620585">Šis failas gali būti pavojingas, todėl „Brave“ jį užblokavo.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Šiuo metu vykdomas atsisiuntimas. Ar norite atšaukti atsisiuntimą ir išeiti iš „Brave“?}one{Šiuo metu vykdomas # atsisiuntimas. Ar norite atšaukti atsisiuntimus ir išeiti iš „Brave“?}few{Šiuo metu vykdomi # atsisiuntimai. Ar norite atšaukti atsisiuntimus ir išeiti iš „Brave“?}many{Šiuo metu vykdoma # atsisiuntimo. Ar norite atšaukti atsisiuntimus ir išeiti iš „Brave“?}other{Šiuo metu vykdoma # atsisiuntimų. Ar norite atšaukti atsisiuntimus ir išeiti iš „Brave“?}}</translation>
-<translation id="5212535894547383850">„Brave“ nebeatsinaujina ir nebepalaiko šios operacinės sistemos versijos.</translation>
 <translation id="2339258256897053758">Trūksta „Brave Software“ API raktų. Bus išjungtos kai kurios „Brave“ funkcijos.</translation>
 <translation id="5906655207909574370">Beveik įdiegta naujausia versija! Paleiskite įrenginį iš naujo, kad būtų užbaigtas naujinimas.</translation>
 <translation id="5877064549588274448">Kanalas pakeistas. Kad pritaikytumėte pakeitimus, iš naujo paleiskite įrenginį.</translation>
@@ -119,7 +116,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="7808415789955822133">„Brave“ OS sąlygos</translation>
 <translation id="6686872257969654608">Apie „Brave“ OS</translation>
 <translation id="2280363356796735201">Gaukite pagalbos dėl „Brave“ OS</translation>
-<translation id="6161696008382683101">„Brave Software Payments“ (nukopijuota į „Brave“)</translation>
+<translation id="5253815230176279256">„Brave Software Pay“ (nukopijuota į „Brave“)</translation>
 <translation id="7977435741986383568">„Brave“ gali naudoti žiniatinklio paslaugas naršymo funkcijoms pagerinti. Galite pasirinktinai išjungti šias paslaugas. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Prisijungimo prie „Brave“ funkciją išjungė šio įrenginio administratorius.</translation>
 <translation id="9220324636239049437">Atlikus šį veiksmą iš šio įrenginio bus ištrintas 1 elementas. Jei vėliau norėsite gauti duomenis, prisijunkite prie „Brave“ kaip <ph name="USER_EMAIL"/>.</translation>

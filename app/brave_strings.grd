@@ -214,26 +214,17 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         Not used in Brave. Placeholder to keep resource maps in sync. It expects one argument: <ph name="ARGUMENT">$1</ph>.
       </message>
       <if expr="is_macosx">
-        <message name="IDS_MAC_10_678_OBSOLETE_SOON" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using is about to become unsupported.">
-          Future versions of Brave will no longer support Mac OS X 10.6, 10.7, or 10.8.
-        </message>
-        <message name="IDS_MAC_10_678_OBSOLETE_NOW" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using is no longer supported.">
-          Brave may not function correctly because it is no longer supported on Mac OS X 10.6, 10.7, or 10.8.
+        <message name="IDS_MAC_10_9_OBSOLETE_NOW" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using is no longer supported.">
+          Brave may not function correctly because it is no longer supported on Mac OS X 10.9.
         </message>
       </if>
       <if expr="is_win">
-        <message name="IDS_WIN_XP_VISTA_OBSOLETE_SOON" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using is about to become unsupported.">
-          Future versions of Brave will no longer support Windows XP or Windows Vista.
-        </message>
-        <message name="IDS_WIN_XP_VISTA_OBSOLETE_NOW" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using is no longer supported.">
+        <message name="IDS_WIN_XP_VISTA_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using is no longer supported.">
           Brave may not function correctly because it is no longer supported on Windows XP or Windows Vista.
         </message>
       </if>
       <message name="IDS_ACCNAME_APP" desc="The accessible name for the app menu.">
         Brave
-      </message>
-      <message name="IDS_ACCNAME_TOOLBAR" desc="The accessible name for the application's toolbar.">
-        main
       </message>
       <!-- Hung Browser Detector -->
       <if expr="is_win">
@@ -407,7 +398,7 @@ Brave is unable to recover your settings.
           Uninstall
         </message>
       </if>
-      <message name="IDS_DEFAULT_BROWSER_INFOBAR_SHORT_TEXT" desc="More compact text to show in the default browser query infobar.">
+      <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
         Brave isn't your default browser.
       </message>
       <if expr="chromeos">
@@ -490,11 +481,6 @@ Brave is unable to recover your settings.
           Brave is in background mode.
         </message>
       </if>
-
-      <!-- Obsolete System info bar -->
-      <message name="IDS_SYSTEM_OBSOLETE_MESSAGE" desc="Message shown when your OS is no longer supported. This message is followed by a 'Learn more' link.">
-         Brave has stopped updating and no longer supports this version of your operating system.
-      </message>
 
       <!-- Brave API keys info bar -->
       <message name="IDS_MISSING_GOOGLE_API_KEYS" desc="Message shown when Brave API keys are missing. This message is followed by a 'Learn more' link.">
@@ -764,9 +750,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
       <if expr="is_macosx">
         <message name="IDS_OPTIONS_PASSWORDS_MAC_WARNING" desc="The warning for OS X that passwords are shared across profiles in the keychain.">
           On Mac, passwords may be saved to your Keychain and accessed or synced by other Brave users sharing this OS X account.
-        </message>
-        <message name="IDS_AUTOFILL_ADDRESS_BOOK_PROMPT_DESCRIPTION" desc="Text to show in dialog requesting permission to access the user's Address Book contents.">
-          Details from your contacts can help you fill out forms more quickly in Brave.
         </message>
       </if>
 
@@ -1136,14 +1119,6 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         </message>
         <message name="IDS_MISSING_STORAGE_PERMISSION_DOWNLOAD_EDUCATION_TEXT" desc="Text shown educating the user that Brave is missing the Android storage permission, which is required to download files.">
           Brave needs storage access to download files.
-        </message>
-      </if>
-
-      <!-- Framebust / Blocked Redirection intervention message -->
-      <if expr="is_android">
-        <!-- TODO(https://crbug.com/754754) only implemented in Android for now. -->
-        <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
-           Brave stopped this site from taking you to
         </message>
       </if>
 

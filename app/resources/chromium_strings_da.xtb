@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Brave open source-licenser</translation>
 <translation id="2310890394934209120">Brave OS er realiseret af yderligere <ph name="BEGIN_LINK_CROS_OSS"/>open source-software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Brave OS open source-licenser</translation>
-<translation id="8851136666856101339">hovd</translation>
 <translation id="5019879183386042809">Gør Brave til din standardbrowser</translation>
 <translation id="662492621463805426">Kom godt i gang med Brave OS</translation>
 <translation id="5063987220091207247">Brave OS kan ikke åbne denne side.</translation>
@@ -37,7 +36,6 @@ Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller bru
 Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="8554809439398012115">Brave gemmer adgangskoden via <ph name="SAVED_PASSWORD_LINK"/>. Du behøver ikke at huske den.</translation>
 <translation id="5316336629760101484">Brug en stærk adgangskode, der er genereret af Brave</translation>
-<translation id="2288174659056124771">Brave er ikke din standardbrowser.</translation>
 <translation id="6715663530666325392">Konfigurer Synkronisering for at gemme dine personlige browserfunktioner på nettet, og få adgang til dem fra Brave på en computer.</translation>
 <translation id="2708027082363760195">Brave inkluderer ikke PDF-fremviseren, som er påkrævet, for at Vis udskrift kan fungere.</translation>
 <translation id="8880183781256147665">Føjer til Brave...</translation>
@@ -46,7 +44,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> er skadelig, så Brave har blokeret den.</translation>
 <translation id="89367911614620585">Denne fil kan være farlig, så Brave har blokeret den.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Der er et download i gang i øjeblikket. Vil du at annullere dit download og lukke Brave?}one{Der er # downloads i gang i øjeblikket. Vil du at annullere dine downloads og lukke Brave?}other{Der er # downloads i gang i øjeblikket. Vil du at annullere dine downloads og lukke Brave?}}</translation>
-<translation id="5212535894547383850">Brave er holdt op med at opdatere og understøtter ikke længere denne version af dit operativsystem.</translation>
 <translation id="2339258256897053758">Der mangler Brave Software API-nøgler. Nogle funktioner i Brave deaktiveres.</translation>
 <translation id="5906655207909574370">Næsten opdateret. Genstart din enhed for at afslutte opdateringen.</translation>
 <translation id="5877064549588274448">Kanalen er ændret. Genstart din enhed for at anvende ændringerne.</translation>
@@ -117,7 +114,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="7808415789955822133">Vilkår for Brave OS</translation>
 <translation id="6686872257969654608">Om Brave OS</translation>
 <translation id="2280363356796735201">Få hjælp til Brave OS</translation>
-<translation id="6161696008382683101">Brave Software Payments (kopieret til Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (kopieret til Brave)</translation>
 <translation id="7977435741986383568">Brave bruger muligvis webtjenester for at forbedre din browseroplevelse. Du kan vælge at deaktivere disse tjenester. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Login til Brave er deaktiveret af administratoren af denne enhed.</translation>
 <translation id="9220324636239049437">Denne handling sletter ét element på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>

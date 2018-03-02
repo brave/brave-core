@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_service.cc b/chrome/browser/extensions/extension_service.cc
-index ca649731ea800e0c7bd3e4c39ff6232f41af85db..e390f76c5fbc62c79568cabc0373e68bbfaa42b7 100644
+index 9410c6daeabccba17d72244f2395c150aa84283a..9bece6bbc64ee01befe7ca8fb0a83a6f5e1d8ad8 100644
 --- a/chrome/browser/extensions/extension_service.cc
 +++ b/chrome/browser/extensions/extension_service.cc
-@@ -27,6 +27,7 @@
+@@ -28,6 +28,7 @@
  #include "base/threading/thread_task_runner_handle.h"
  #include "base/time/time.h"
  #include "base/trace_event/trace_event.h"
@@ -10,7 +10,7 @@ index ca649731ea800e0c7bd3e4c39ff6232f41af85db..e390f76c5fbc62c79568cabc0373e68b
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -376,7 +377,7 @@ ExtensionService::ExtensionService(Profile* profile,
+@@ -350,7 +351,7 @@ ExtensionService::ExtensionService(Profile* profile,
    }
  
    component_loader_.reset(
@@ -19,7 +19,7 @@ index ca649731ea800e0c7bd3e4c39ff6232f41af85db..e390f76c5fbc62c79568cabc0373e68b
                                        profile->GetPrefs(),
                                        g_browser_process->local_state(),
                                        profile));
-@@ -1417,6 +1418,19 @@ void ExtensionService::AddComponentExtension(const Extension* extension) {
+@@ -1374,6 +1375,19 @@ void ExtensionService::AddComponentExtension(const Extension* extension) {
    }
  
    AddExtension(extension);

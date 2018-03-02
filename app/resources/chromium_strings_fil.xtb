@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Mga lisensya ng open source ng Brave</translation>
 <translation id="2310890394934209120">Nagiging posible ang Brave OS sa pamamagitan ng karagdagang <ph name="BEGIN_LINK_CROS_OSS"/>open source na software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Mga lisensya ng open source ng Brave OS</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">Gawing default na browser ang Brave</translation>
 <translation id="662492621463805426">Magsimula sa Brave OS</translation>
 <translation id="5063987220091207247">Hindi mabuksan ng Brave OS ang page na ito.</translation>
@@ -39,7 +38,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="8554809439398012115">Ise-save ng Brave ang password na ito sa <ph name="SAVED_PASSWORD_LINK"/>. Hindi mo ito kailangang tandaan.</translation>
 <translation id="5316336629760101484">Gumamit ng malakas na password na binuo ng Brave</translation>
-<translation id="2288174659056124771">Hindi Brave ang iyong default na browser.</translation>
 <translation id="6715663530666325392">I-set up ang Pag-sync upang i-save ang iyong personalized na mga tampok ng browser sa web at i-access ang mga iyon mula sa Brave sa anumang computer.</translation>
 <translation id="2708027082363760195">Hindi isinasama ng Brave ang PDF viewer na kinakailangan upang gumana ang Preview ng Pag-print.</translation>
 <translation id="8880183781256147665">Idinaragdag sa Brave...</translation>
@@ -48,7 +46,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="4168372721886011198">Mapanganib ang <ph name="FILE_NAME"/>, kaya na-block ito ng Brave.</translation>
 <translation id="89367911614620585">Maaaring mapanganib ang file na ito, kaya na-block ito ng Brave.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{May nagaganap na pagda-download sa kasalukuyan. Gusto mo bang kanselahin ang pag-download at umalis sa Brave?}one{# pag-download ang nagaganap sa kasalukuyan. Gusto mo bang kanselahin ang mga pag-download at umalis sa Brave?}other{# na pag-download ang nagaganap sa kasalukuyan. Gusto mo bang kanselahin ang mga pag-download at umalis sa Brave?}}</translation>
-<translation id="5212535894547383850">Huminto na sa pag-update ang Brave at hindi na nito sinusuportahan ang bersyong ito ng iyong operating system.</translation>
 <translation id="2339258256897053758">Nawawala ang mga Brave Software API key. Madi-disable ang ilang pagpapagana ng Brave.</translation>
 <translation id="5906655207909574370">Halos napapanahon na! I-restart ang iyong device upang tapusin ang pag-a-update.</translation>
 <translation id="5877064549588274448">Binago ang channel. I-restart ang iyong device upang ilapat ang mga pagbabago.</translation>
@@ -119,7 +116,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="7808415789955822133">Mga tuntunin ng Brave OS</translation>
 <translation id="6686872257969654608">Tungkol sa Brave OS</translation>
 <translation id="2280363356796735201">Humingi ng tulong sa Brave OS</translation>
-<translation id="6161696008382683101">Brave Software Payments (kinopya sa Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (kinopya sa Brave)</translation>
 <translation id="7977435741986383568">Maaaring gumamit ang Brave ng mga serbisyo sa web upang mapahusay ang iyong karanasan sa pag-browse. Opsyonal mong madi-disable ang mga serbisyong ito. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Na-disable ng administrator ng device na ito ang pag-sign in sa Brave.</translation>
 <translation id="9220324636239049437">Magde-delete ito ng 1 item sa device na ito. Upang makuha ang iyong data sa ibang pagkakataon, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>

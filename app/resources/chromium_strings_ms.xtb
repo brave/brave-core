@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Lesen sumber terbuka Brave</translation>
 <translation id="2310890394934209120">Brave OS berjaya dilaksanakan dengan adanya <ph name="BEGIN_LINK_CROS_OSS"/>perisian sumber terbuka<ph name="END_LINK_CROS_OSS"/> tambahan.</translation>
 <translation id="8372475781172910778">Lesen sumber terbuka Brave OS</translation>
-<translation id="8851136666856101339">utama</translation>
 <translation id="5019879183386042809">Jadikan Brave penyemak imbas lalai</translation>
 <translation id="662492621463805426">Bermula dengan OS Brave</translation>
 <translation id="5063987220091207247">OS Brave tidak boleh membuka halaman ini.</translation>
@@ -37,7 +36,6 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8554809439398012115">Brave akan menyimpan kata laluan ini dengan <ph name="SAVED_PASSWORD_LINK"/>. Anda tidak perlu mengingatinya.</translation>
 <translation id="5316336629760101484">Gunakan kata laluan kukuh yang dijana oleh Brave</translation>
-<translation id="2288174659056124771">Brave bukan penyemak imbas lalai anda.</translation>
 <translation id="6715663530666325392">Sediakan Penyegerakan untuk menyimpan ciri penyemak imbas yang diperibadikan di web dan aksesnya dari Brave pada mana-mana komputer.</translation>
 <translation id="2708027082363760195">Brave tidak menyertakan pemapar PDF yang diperlukan oleh Pratonton Cetakan untuk berfungsi.</translation>
 <translation id="8880183781256147665">Menambah ke Brave...</translation>
@@ -46,7 +44,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, jadi Brave telah menyekat fail itu.</translation>
 <translation id="89367911614620585">Fail ini mungkin berbahaya, maka Brave telah menyekatnya.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Muat turun sedang berlangsung. Adakah anda ingin membatalkan muat turun dan keluar daripada Brave?}other{# muat turun sedang berlangsung pada masa ini. Adakah anda ingin membatalkan muat turun dan keluar daripada Brave?}}</translation>
-<translation id="5212535894547383850">Brave telah berhenti mengemas kini dan tidak lagi menyokong versi sistem pengendalian anda ini.</translation>
 <translation id="2339258256897053758">Kunci API Brave Software tiada. Sesetengah fungsi Brave akan dilumpuhkan.</translation>
 <translation id="5906655207909574370">Hampir terkini! Mulakan semula peranti anda untuk menyelesaikan kemas kini.</translation>
 <translation id="5877064549588274448">Saluran berubah. Mulakan semula peranti anda untuk menggunakan perubahan.</translation>
@@ -117,7 +114,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7808415789955822133">Syarat Brave OS</translation>
 <translation id="6686872257969654608">Mengenai Brave OS</translation>
 <translation id="2280363356796735201">Dapatkan bantuan berkenaan Brave OS</translation>
-<translation id="6161696008382683101">Brave Software Payments (disalin ke Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (disalin ke Brave)</translation>
 <translation id="7977435741986383568">Brave boleh menggunakan perkhidmatan web untuk meningkatkan pengalaman penyemakan imbas anda. Anda boleh memilih untuk melumpuhkan perkhidmatan ini. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Log masuk ke Brave dilumpuhkan oleh pentadbir peranti ini.</translation>
 <translation id="9220324636239049437">Tindakan ini akan memadamkan 1 item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>

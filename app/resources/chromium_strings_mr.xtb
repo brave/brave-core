@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Brave खुला स्त्रोत परवाने</translation>
 <translation id="2310890394934209120">अतिरिक्त <ph name="BEGIN_LINK_CROS_OSS"/>खुले स्रोत सॉफ्‍टवेअर<ph name="END_LINK_CROS_OSS"/> द्वारे Brave OS बनवणे शक्‍य झाले.</translation>
 <translation id="8372475781172910778">Brave OS खुला स्त्रोत परवाने</translation>
-<translation id="8851136666856101339">मुख्य</translation>
 <translation id="5019879183386042809">Brave ला डीफॉल्‍ट ब्राउझर बनवा</translation>
 <translation id="662492621463805426">Brave OS सह प्रारंभ करा</translation>
 <translation id="5063987220091207247">Brave OS हे पृष्ठ उघडू शकत नाही.</translation>
@@ -38,7 +37,6 @@
 Brave आपली सेटिंग्ज पुनर्प्राप्त करण्‍यात अक्षम आहे.</translation>
 <translation id="8554809439398012115">Brave <ph name="SAVED_PASSWORD_LINK"/> सह हा पासवर्ड जतन करेल. आपल्याला तो लक्षात ठेवण्याची आवश्यकता नाही.</translation>
 <translation id="5316336629760101484">Brave द्वारे व्युत्पन्न केलेला सशक्त पासवर्ड वापरा</translation>
-<translation id="2288174659056124771">Brave आपला डीफॉल्ट ब्राउझर नाही.</translation>
 <translation id="6715663530666325392">वेबवर आपली वैयक्तीकृत केलेली ब्राउझर वैशिष्ट्ये जतन करण्यासाठी समक्रमण सेट करा आणि कोणत्याही संगणकावरील Brave वरून त्यात प्रवेश करा.</translation>
 <translation id="2708027082363760195">Brave कार्य करण्यासाठी प्रिंट पूर्वावलोकनास आवश्यक असलेले PDF viewer समाविष्ट करीत नाही.</translation>
 <translation id="8880183781256147665">Brave वर जोडत आहे...</translation>
@@ -47,7 +45,6 @@ Brave आपली सेटिंग्ज पुनर्प्राप्त
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> धोकादायक आहे, त्यामुळे Brave ने ते अवरोधित केले आहे.</translation>
 <translation id="89367911614620585">ही फाईल कदाचित धोकादायक असू शकते, त्यामुळे Brave ने ती अवरोधित केली आहे.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{एक डाउनलोड सध्या प्रगतीपथावर आहे. आपण डाउनलोड रद्द करू आणि Brave च्या बाहेर पडू इच्छिता?}one{सध्या # डाउनलोड प्रगतीपथावर आहे. आपण डाउनलोड रद्द करू आणि Brave च्या बाहेर पडू इच्छिता?}other{सध्या # डाउनलोड प्रगतीपथावर आहेत. आपण डाउनलोड रद्द करू आणि Brave च्या बाहेर पडू इच्छिता?}}</translation>
-<translation id="5212535894547383850">Brave ने अपडेट करणे थांबविले आहे आणि हे आपल्या ऑपरेटिंग प्रणालीच्या या आवृत्तीचे यापुढे समर्थन करत नाही.</translation>
 <translation id="2339258256897053758">Brave Software API की गहाळ आहेत. Brave ची काही कार्यक्षमता अक्षम केली जाईल.</translation>
 <translation id="5906655207909574370">अद्ययावत करणे जवळजवळ पूर्ण झाले! अपडेट करणे समाप्त करण्यासाठी आपले डिव्हाइस रीस्टार्ट करा.</translation>
 <translation id="5877064549588274448">चॅनेल बदलले. बदल लागू करण्यासाठी आपले डिव्हाइस रीस्टार्ट करा.</translation>
@@ -118,7 +115,7 @@ Brave आपली सेटिंग्ज पुनर्प्राप्त
 <translation id="7808415789955822133">Brave OS अटी</translation>
 <translation id="6686872257969654608">Brave OS बद्दल</translation>
 <translation id="2280363356796735201">Brave OS सह मदत मिळवा</translation>
-<translation id="6161696008382683101">Brave Software Payments (Brave वर कॉपी केले)</translation>
+<translation id="5253815230176279256">Brave Software Pay (Brave वर कॉपी केले)</translation>
 <translation id="7977435741986383568">Brave आपला ब्राउझिंग अनुभव सुधारण्यासाठी वेब सेवा वापरू शकते. आपण या सेवा वैकल्पिकपणे अक्षम करू शकता. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">या डीव्हाइसच्या प्रशासकाने Brave मध्ये साइन इन बंद केले आहे.</translation>
 <translation id="9220324636239049437">हे या डिव्‍हाइस मधून 1 आयटम हटवेल. नंतर आपला डेटा पुनर्प्राप्त करण्‍यासाठी, Brave मध्ये <ph name="USER_EMAIL"/> म्हणून साइन इन करा.</translation>

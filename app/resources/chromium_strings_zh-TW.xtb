@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Brave 開放原始碼授權</translation>
 <translation id="2310890394934209120">Brave 作業系統的開發有賴其他<ph name="BEGIN_LINK_CROS_OSS"/>開放原始碼軟體<ph name="END_LINK_CROS_OSS"/>。</translation>
 <translation id="8372475781172910778">Brave 作業系統開放原始碼授權</translation>
-<translation id="8851136666856101339">主要元素</translation>
 <translation id="5019879183386042809">將 Brave 設為預設瀏覽器</translation>
 <translation id="662492621463805426">開始使用 Brave 作業系統</translation>
 <translation id="5063987220091207247">Brave 作業系統無法開啟這個網頁。</translation>
@@ -37,7 +36,6 @@
 Brave 無法復原你的設定。</translation>
 <translation id="8554809439398012115">Brave 會將這組密碼儲存至 <ph name="SAVED_PASSWORD_LINK"/>，你不須記住密碼。</translation>
 <translation id="5316336629760101484">使用 Brave 產生的高強度密碼</translation>
-<translation id="2288174659056124771">Brave 不是你的預設瀏覽器。</translation>
 <translation id="6715663530666325392">設定同步處理功能，即可在網路上儲存你的個人化瀏覽器功能，並且透過任何電腦從 Brave 使用這些功能。</translation>
 <translation id="2708027082363760195">Brave 不含 PDF 檢視器，因此無法執行預覽列印功能。</translation>
 <translation id="8880183781256147665">正在新增至 Brave...</translation>
@@ -46,7 +44,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> 並不安全，因此遭到 Brave 封鎖。</translation>
 <translation id="89367911614620585">這個檔案可能不安全，因此遭到 Brave 封鎖。</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{目前正在執行一項下載作業。您要取消下載並結束 Brave 嗎？}other{目前正在執行 # 項下載作業。您要取消下載並結束 Brave 嗎？}}</translation>
-<translation id="5212535894547383850">Brave 已停止更新，無法繼續支援這個作業系統版本。</translation>
 <translation id="2339258256897053758">缺少 Brave Software API 金鑰，系統將停用 Brave 的部分功能。</translation>
 <translation id="5906655207909574370">即將更新為最新版本！重新啟動您的裝置即可完成更新程序。</translation>
 <translation id="5877064549588274448">版本已變更。請重新啟動裝置以套用變更。</translation>
@@ -117,7 +114,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="7808415789955822133">Brave 作業系統條款</translation>
 <translation id="6686872257969654608">關於 Brave 作業系統</translation>
 <translation id="2280363356796735201">前往 Brave 作業系統說明頁面</translation>
-<translation id="6161696008382683101">Brave Software Payments (已複製到 Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (已複製到 Brave)</translation>
 <translation id="7977435741986383568">Brave 可能會使用網路服務改善你的瀏覽體驗。不過，你可以選擇停用這些服務。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">這部裝置的管理員停用了 Brave 的登入功能。</translation>
 <translation id="9220324636239049437">登出後，系統會將 1 個項目從這個裝置上刪除。日後如要重新取得你的資料，請以 <ph name="USER_EMAIL"/> 身分登入 Brave。</translation>

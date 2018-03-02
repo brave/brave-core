@@ -1,9 +1,9 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
-index 94273919e238000a4b284b9b903abe72e7998866..bb28d2370b25b00b2194555e888e86e43ff8aeaa 100644
+index 691d07ff66e08562701b2e537b00bb41b6da3667..44c85f4258b941d1249aba3b3ed8a9b878b39e79 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
 +++ b/chrome/renderer/chrome_content_renderer_client.h
-@@ -244,6 +244,7 @@ class ChromeContentRendererClient
- #endif
+@@ -252,6 +252,7 @@ class ChromeContentRendererClient
+   }
  
   private:
 +  friend class BraveContentRendererClient;

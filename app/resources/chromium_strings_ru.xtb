@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Лицензии Brave на ПО с открытым исходным кодом</translation>
 <translation id="2310890394934209120">Brave OS обязана своим появлением дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Лицензии Brave OS на ПО с открытым исходным кодом</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">Назначить Brave браузером по умолчанию</translation>
 <translation id="662492621463805426">Начало работы с Brave OS</translation>
 <translation id="5063987220091207247">Brave OS не может открыть эту страницу</translation>
@@ -33,7 +32,6 @@
 <translation id="3403365884036456766">Файл настроек поврежден или недействителен. Brave не может восстановить ваши параметры.</translation>
 <translation id="8554809439398012115">Brave сохранит этот пароль в <ph name="SAVED_PASSWORD_LINK"/>. Вам не нужно его запоминать.</translation>
 <translation id="5316336629760101484">Используйте надежный пароль, сгенерированный Brave.</translation>
-<translation id="2288174659056124771">Brave не назначен браузером по умолчанию.</translation>
 <translation id="6715663530666325392">Настройте синхронизацию, чтобы сохранить в облаке персонализированные функции браузера и получить к ним доступ из Brave с любого компьютера.</translation>
 <translation id="2708027082363760195">В Brave нет функции просмотра PDF-файлов, которая нужна для предварительного просмотра при печати.</translation>
 <translation id="8880183781256147665">Добавление в Brave...</translation>
@@ -42,7 +40,6 @@
 <translation id="4168372721886011198">Brave заблокировал файл <ph name="FILE_NAME"/> как опасный.</translation>
 <translation id="89367911614620585">Brave заблокировал этот файл как потенциально опасный.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Идет скачивание. Отменить и выйти из Brave?}one{Идет скачивание (#). Отменить и выйти из Brave?}few{Идет скачивание (#). Отменить и выйти из Brave?}many{Идет скачивание (#). Отменить и выйти из Brave?}other{Идет скачивание (#). Отменить и выйти из Brave?}}</translation>
-<translation id="5212535894547383850">Brave больше не обновляется и не поддерживается для этой версии операционной системы.</translation>
 <translation id="2339258256897053758">Отсутствуют ключи API Brave Software. Некоторые функции Brave могут не работать.</translation>
 <translation id="5906655207909574370">Чтобы завершить обновление, перезапустите устройство.</translation>
 <translation id="5877064549588274448">Канал изменен. Чтобы изменения вступили в силу, перезапустите устройство.</translation>
@@ -113,7 +110,7 @@
 <translation id="7808415789955822133">Условия использования Brave OS</translation>
 <translation id="6686872257969654608">О Brave OS</translation>
 <translation id="2280363356796735201">Справка Brave OS</translation>
-<translation id="6161696008382683101">Brave Software Payments (скопировано в Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (скопирована в Brave)</translation>
 <translation id="7977435741986383568">Для более качественной работы Brave может использовать веб-сервисы. При необходимости отключите их. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Вход в Brave отключен администратором устройства.</translation>
 <translation id="9220324636239049437">С устройства будет удален 1 объект. Чтобы восстановить данные позже, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>

@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.h b/components/omnibox/browser/autocomplete_controller.h
-index 22016d948671a1db266a501201c75fbd619a56ac..60d630dd7a7d46b169133ff59f2206bdcf8ca749 100644
+index b6a6d5508b35be73b015f77e47ccbc3cc6e5bec5..26975228b4134401c6931b22411d71bf0894b582 100644
 --- a/components/omnibox/browser/autocomplete_controller.h
 +++ b/components/omnibox/browser/autocomplete_controller.h
 @@ -140,6 +140,7 @@ class AutocompleteController : public AutocompleteProviderListener {

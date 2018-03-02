@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">‏רישיונות קוד פתוח של Brave</translation>
 <translation id="2310890394934209120">‏מערכת ההפעלה של Brave התאפשרה באמצעות <ph name="BEGIN_LINK_CROS_OSS"/>תוכנת קוד פתוח<ph name="END_LINK_CROS_OSS"/> נוספת.</translation>
 <translation id="8372475781172910778">‏רישיונות קוד פתוח של מערכת ההפעלה של Brave</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">‏הפוך את Brave לדפדפן ברירת המחדל</translation>
 <translation id="662492621463805426">‏תחילת העבודה עם Brave OS</translation>
 <translation id="5063987220091207247">‏מערכת ההפעלה של Brave אינה יכול לפתוח את הדף הזה.</translation>
@@ -35,7 +34,6 @@
 Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8554809439398012115">‏הסיסמה תישמר ב-Brave באמצעות <ph name="SAVED_PASSWORD_LINK"/>. אין צורך לזכור אותה.</translation>
 <translation id="5316336629760101484">‏השתמש בסיסמה חזקה שנוצרה על-ידי Brave</translation>
-<translation id="2288174659056124771">‏Brave אינו דפדפן ברירת המחדל שלך.</translation>
 <translation id="6715663530666325392">‏הגדר סנכרון כדי לשמור את תכונות הדפדפן המותאמות אישית שלך באינטרנט ולגשת אליהן מ-Brave בכל מחשב.</translation>
 <translation id="2708027082363760195">‏Brave אינו כולל מציג PDF, הנדרש להפעלת תצוגה מקדימה של הדפסה.</translation>
 <translation id="8880183781256147665">‏הוספה ל-Brave</translation>
@@ -44,7 +42,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="4168372721886011198">‏<ph name="FILE_NAME"/> מסוכן, ולכן Brave חסם אותו.</translation>
 <translation id="89367911614620585">‏Brave‏ חסם את הקובץ הזה כי הוא עלול להיות מסוכן.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{‏הורדה מתבצעת עכשיו. האם ברצונך לבטל את ההורדה ולצאת מ-Brave?}two{‏# הורדות מתבצעות עכשיו. האם ברצונך לבטל את ההורדות ולצאת מ-Brave?}many{‏# הורדות מתבצעות עכשיו. האם ברצונך לבטל את ההורדות ולצאת מ-Brave?}other{‏# הורדות מתבצעות עכשיו. האם ברצונך לבטל את ההורדות ולצאת מ-Brave?}}</translation>
-<translation id="5212535894547383850">‏Brave הפסיק לעדכן את הגרסה הזו של מערכת ההפעלה שלך וכבר אינו תומך בה.</translation>
 <translation id="2339258256897053758">‏המפתחות של Brave Software API חסרים. פונקציונליות מסוימת של Brave תהיה מושבתת.</translation>
 <translation id="5906655207909574370">העדכון כמעט הושלם! הפעל מחדש את המכשיר כדי לסיים את העדכון.</translation>
 <translation id="5877064549588274448">הערוץ שונה. הפעל מחדש את המכשיר להחלת השינויים.</translation>
@@ -115,7 +112,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="7808415789955822133">‏תנאים עבור מערכת ההפעלה של Brave</translation>
 <translation id="6686872257969654608">‏על מערכת ההפעלה של Brave</translation>
 <translation id="2280363356796735201">‏קבל עזרה בנושא Brave OS</translation>
-<translation id="6161696008382683101">‏Brave Software Payments (‏הועתק ל-Brave)</translation>
+<translation id="5253815230176279256">‏Brave Software Pay (‏הועתק ל-Brave)</translation>
 <translation id="7977435741986383568">‏Brave עשוי להשתמש בשירותי אינטרנט לשיפור חוויית הגלישה. ניתן להשבית את השירותים האלה. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">‏מנהל המערכת של המכשיר הזה השבית את הכניסה אל Brave.</translation>
 <translation id="9220324636239049437">‏הפעולה הזו תמחק פריט אחד מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, היכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>

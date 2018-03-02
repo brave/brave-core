@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Odprtokodne licence za Brave</translation>
 <translation id="2310890394934209120">Sistem Brave OS omogoča dodatna <ph name="BEGIN_LINK_CROS_OSS"/>odprtokodna programska oprema<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Odprtokodne licence za Brave OS</translation>
-<translation id="8851136666856101339">glavn</translation>
 <translation id="5019879183386042809">Nastavi Brave kot privzeti brskalnik</translation>
 <translation id="662492621463805426">Začnite uporabljati Brave OS</translation>
 <translation id="5063987220091207247">OS Brave ne more odpreti te strani.</translation>
@@ -39,7 +38,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="8554809439398012115">Brave bo shranil to geslo s tem: <ph name="SAVED_PASSWORD_LINK"/>. Ni si vam ga treba zapomniti.</translation>
 <translation id="5316336629760101484">Uporabite zapleteno geslo, ki ga ustvari Brave</translation>
-<translation id="2288174659056124771">Brave ni privzeti brskalnik.</translation>
 <translation id="6715663530666325392">Nastavite sinhronizacijo, da prilagojene funkcije brskalnika shranite v spletu in do njih v Braveu dostopate v katerem koli računalniku.</translation>
 <translation id="2708027082363760195">Brave nima pregledovalnika datotek PDF, ki je potreben za predogled tiskanja.</translation>
 <translation id="8880183781256147665">Dodajanje v Brave ...</translation>
@@ -48,7 +46,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="4168372721886011198">Datoteka <ph name="FILE_NAME"/> je nevarna, zato jo je Brave blokiral.</translation>
 <translation id="89367911614620585">Ta datoteka je morda nevarna, zato jo je Brave blokiral.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Trenutno poteka prenos. Ali ga želite preklicati in zapreti Brave?}one{Trenutno poteka # prenos. Ali ga želite preklicati in zapreti Brave?}two{Trenutno potekata # prenosa. Ali ju želite preklicati in zapreti Brave?}few{Trenutno potekajo # prenosi. Ali jih želite preklicati in zapreti Brave?}other{Trenutno poteka # prenosov. Ali jih želite preklicati in zapreti Brave?}}</translation>
-<translation id="5212535894547383850">Brave se ne posodablja več in ne podpira več te različice operacijskega sistema.</translation>
 <translation id="2339258256897053758">Manjkajo ključi za Brave Software API. Nekatere funkcije Bravea bodo onemogočene.</translation>
 <translation id="5906655207909574370">Samo še malo. Znova zaženite napravo, da dokončate posodobitev.</translation>
 <translation id="5877064549588274448">Kanal spremenjen. Znova zaženite napravo, da uveljavite spremembe.</translation>
@@ -119,7 +116,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="7808415789955822133">Pogoji za Brave OS</translation>
 <translation id="6686872257969654608">O sistemu Brave OS</translation>
 <translation id="2280363356796735201">Pomoč za OS Brave</translation>
-<translation id="6161696008382683101">Brave Software Payments (kopirano v Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (kopirano v Brave)</translation>
 <translation id="7977435741986383568">Brave lahko za izboljšanje izkušnje pri brskanju uporabi spletne storitve.
 Te storitve lahko po želji onemogočite. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Prijavo v Brave je onemogočil skrbnik te naprave.</translation>

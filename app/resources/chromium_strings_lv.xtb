@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Brave atklātā pirmkoda licences</translation>
 <translation id="2310890394934209120">Brave OS ir kļuvusi iespējama, pateicoties papildu <ph name="BEGIN_LINK_CROS_OSS"/>atklātā pirmkoda programmatūrai<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Brave OS atklātā pirmkoda licences</translation>
-<translation id="8851136666856101339">galvenais</translation>
 <translation id="5019879183386042809">Padarīt Brave par noklusējuma pārlūku</translation>
 <translation id="662492621463805426">Darba sākšana operētājsistēmā Brave OS</translation>
 <translation id="5063987220091207247">Brave OS nevar atvērt šo lapu.</translation>
@@ -35,7 +34,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="3403365884036456766">Jūsu preferenču fails ir bojāts vai nederīgs. Brave nespēj atkopt jūsu iestatījumus.</translation>
 <translation id="8554809439398012115">Brave saglabās šo paroli vietnē <ph name="SAVED_PASSWORD_LINK"/>. Jums parole nav jāatceras.</translation>
 <translation id="5316336629760101484">Izmantot Brave ģenerētu drošu paroli</translation>
-<translation id="2288174659056124771">Brave nav jūsu noklusējuma pārlūks.</translation>
 <translation id="6715663530666325392">Iestatiet sinhronizāciju, lai saglabātu savas personalizētās pārlūka funkcijas tīmeklī un piekļūtu tām no Brave jebkurā datorā.</translation>
 <translation id="2708027082363760195">Pārlūka Brave komplektācijā nav PDF skatītāja, kas nepieciešams funkcijas Drukas priekšskatījums darbībai.</translation>
 <translation id="8880183781256147665">Notiek pievienošana pārlūkam Brave...</translation>
@@ -44,7 +42,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="4168372721886011198">Fails <ph name="FILE_NAME"/> ir bīstams, tādēļ Brave to bloķēja.</translation>
 <translation id="89367911614620585">Šis fails var būt bīstams, tāpēc Brave to bloķēja.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Pašlaik notiek lejupielāde. Vai vēlaties atcelt lejupielādi un iziet no pārlūka Brave?}zero{Pašlaik notiek # lejupielādes. Vai vēlaties atcelt lejupielādes un iziet no pārlūka Brave?}one{Pašlaik notiek # lejupielāde. Vai vēlaties atcelt lejupielādes un iziet no pārlūka Brave?}other{Pašlaik notiek # lejupielādes. Vai vēlaties atcelt lejupielādes un iziet no pārlūka Brave?}}</translation>
-<translation id="5212535894547383850">Operētājsistēmas Brave atjaunināšana ir apturēta, un vairs netiek atbalstīta šī jūsu operētājsistēmas versija.</translation>
 <translation id="2339258256897053758">Trūkst Brave Software API atslēgu. Tiks atspējotas dažas Brave funkcijas.</translation>
 <translation id="5906655207909574370">Atjaunināšana ir gandrīz pabeigta. Restartējiet ierīci, lai pabeigtu atjaunināšanu.</translation>
 <translation id="5877064549588274448">Kanāls tika mainīts. Lai lietotu izmaiņas, restartējiet ierīci.</translation>
@@ -115,7 +112,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="7808415789955822133">Brave OS noteikumi</translation>
 <translation id="6686872257969654608">Par Brave OS</translation>
 <translation id="2280363356796735201">Saņemt palīdzību par Brave OS</translation>
-<translation id="6161696008382683101">Brave Software Payments (kopēta pārlūkā Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (kopēts pārlūkā Brave)</translation>
 <translation id="7977435741986383568">Brave var izmantot tīmekļa pakalpojumus, lai uzlabotu jūsu pārlūkošanas pieredzi. Varat arī atspējot šos pakalpojumus. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="6274110506580702455">Šīs ierīces administrators ir atspējojis pierakstīšanos pārlūkā Brave.</translation>
 <translation id="9220324636239049437">Veicot šo darbību, no šīs ierīces tiks dzēsts 1 vienums. Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>

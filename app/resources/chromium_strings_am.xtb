@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Brave የክፍት ምንጭ ፈቃዶች</translation>
 <translation id="2310890394934209120">Brave ስርዓተ ክወና በተጨማሪ <ph name="BEGIN_LINK_CROS_OSS"/>ክፍት ምንጭ ሶፍትዌር<ph name="END_LINK_CROS_OSS"/> እውን ሊሆን ችሏል።</translation>
 <translation id="8372475781172910778">Brave OS የክፍት ምንጭ ፈቃዶች</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">Brave ነባሪውን አሳሽ ያድርጉ።</translation>
 <translation id="662492621463805426">በBrave ስርዓተ ክወና ይጀምሩ</translation>
 <translation id="5063987220091207247">Brave OS ይህን ገጽ መክፈት አይችልም።</translation>
@@ -39,7 +38,6 @@
 Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="8554809439398012115">Brave ይህን የይለፍ ቃል ከ<ph name="SAVED_PASSWORD_LINK"/> ጋር ያስቀምጠዋል። በቃልዎ ማስታወስ አይጠበቅብዎትም።</translation>
 <translation id="5316336629760101484">በBrave የመነጨ ጠንካራ የይለፍ ቃል ይጠቀሙ</translation>
-<translation id="2288174659056124771">Brave ነባሪ አሳሽዎ አይደለም።</translation>
 <translation id="6715663530666325392">ግላዊነት የተላበሰው የአሳሽ ባህሪዎችዎ ድር ላይ ለማስቀመጥና ከዚያ Brave ካለው ማንኛውም ኮምፒውተር ለመድረስ አመሳስልን ያዋቅሩ።</translation>
 <translation id="2708027082363760195">Brave የህትመት ቅድመ እይታ እንዲሰራ የሚያስፈልገው የፒ ዲ ኤፍ ማያውን አያካትትም።</translation>
 <translation id="8880183781256147665">ወደ Brave በማከል ላይ...</translation>
@@ -48,7 +46,6 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> አደገኛ ነው፣ ስለዚህ Brave አግዶታል።</translation>
 <translation id="89367911614620585">ይህ ፋይል አደገኛ ሊሆን ስለሚችል Brave አግዶታል።</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{አንድ ማውረድ አሁን በሂደት ላይ ነው። ማውረዱን መተው እና ከBrave መውጣት ይፈልጋሉ?}one{# ማውረዶች አሁን በሂደት ላይ ናቸው። ማውረዶቹን መተው እና ከBrave መውጣት ይፈልጋሉ?}other{# ማውረዶች አሁን በሂደት ላይ ናቸው። ማውረዶቹን መተው እና ከBrave መውጣት ይፈልጋሉ?}}</translation>
-<translation id="5212535894547383850">Brave ማዘመን አቁሟል፣ እና ከአሁን በኋላ ይህን የስርዓተ ክወናዎን ስሪት አይደግፍም።</translation>
 <translation id="2339258256897053758">የBrave Software ኤ ፒ አይ ቁልፎች ይጎድላሉ። አንዳንድ የBrave ተግባራት ይሰናከላሉ።</translation>
 <translation id="5906655207909574370">የተዘመነ ለመሆን ጥቂት ብቻ ቀርቷል! ዝማኔውን ለማጠናቀቅ መሣሪያዎን ዳግም ያስጀምሩት።</translation>
 <translation id="5877064549588274448">ሰርጥ ተለውጧል። ለውጦችን ለመተግበር መሳሪያዎን ዳግም ያስጀምሩ።</translation>
@@ -119,7 +116,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="7808415789955822133">የBrave OS ውል</translation>
 <translation id="6686872257969654608">ስለ Brave OS</translation>
 <translation id="2280363356796735201">Brave OS ላይ እገዛ ያግኙ</translation>
-<translation id="6161696008382683101">Brave Software Payments (ወደ Brave ተቀድቷል)</translation>
+<translation id="5253815230176279256">Brave Software Pay (ወደ Brave ተቀድቷል)</translation>
 <translation id="7977435741986383568">Brave የአሰሳ ተሞክሮዎን ለማሻሻል የድር አገልግሎቶችን ሊጠቀም ይችላል። እነዚህን አገልግሎቶች በአማራጭነት ሊያሰናክሏቸው ይችላሉ። <ph name="BEGIN_LINK"/>የበለጠ ለመረዳት<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">ወደ Brave መግባት በዚህ መሣሪያ አስተዳዳሪ ተሰናክሏል።</translation>
 <translation id="9220324636239049437">ይሄ 1 ንጥል ከዚህ መሣሪያ ይሰርዛል። ውሂብዎን በኋላ ላይ ሰርስረው ለማውጣት እንደ <ph name="USER_EMAIL"/> ሆነው ወደ Brave ይግቡ።</translation>

@@ -1,21 +1,21 @@
 diff --git a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
-index 0d758c8be1626f34ff44cce85e287d5f8027395e..b0bcb1918d65c67163cc2084a898c2db460db161 100644
+index d0816f3988bcc0bf058a1a7f71e449cdb59b98f4..9d444becb107615b7648193f45cf2c337eb0b848 100644
 --- a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
 +++ b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
-@@ -5,6 +5,7 @@
- #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
+@@ -6,6 +6,7 @@
  
- #include "base/memory/ptr_util.h"
+ #include <memory>
+ 
 +#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
  #include "chrome/browser/autocomplete/contextual_suggestions_service_factory.h"
 @@ -41,7 +42,7 @@ std::unique_ptr<KeyedService> AutocompleteClassifierFactory::BuildInstanceFor(
+     content::BrowserContext* context) {
    Profile* profile = static_cast<Profile*>(context);
-   auto provider_client =
-       base::MakeUnique<ChromeAutocompleteProviderClient>(profile);
--  auto controller = base::WrapUnique(new AutocompleteController(
-+  auto controller = base::WrapUnique(new BraveAutocompleteController(
-       std::move(provider_client), NULL,
-       AutocompleteClassifier::DefaultOmniboxProviders()));
-   return base::MakeUnique<AutocompleteClassifier>(
+   return std::make_unique<AutocompleteClassifier>(
+-      std::make_unique<AutocompleteController>(
++      std::make_unique<BraveAutocompleteController>(
+           std::make_unique<ChromeAutocompleteProviderClient>(profile), nullptr,
+           AutocompleteClassifier::DefaultOmniboxProviders()),
+       std::make_unique<ChromeAutocompleteSchemeClassifier>(profile));

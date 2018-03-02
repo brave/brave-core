@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/android/omnibox/autocomplete_controller_android.cc b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
-index 3dfce1f5113531fdabdf4f0bce4a1920e7e23719..999dcb9ce87f7be8a931ca6dbd81f16be86f4768 100644
+index 7fa03c523cbaedf1e868cf17403b947300bfd5e7..2def1a4d423974d2390729f75aef81312787c564 100644
 --- a/chrome/browser/android/omnibox/autocomplete_controller_android.cc
 +++ b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
-@@ -17,6 +17,7 @@
+@@ -16,6 +16,7 @@
  #include "base/strings/utf_string_conversions.h"
  #include "base/time/time.h"
  #include "base/timer/timer.h"
@@ -10,33 +10,25 @@ index 3dfce1f5113531fdabdf4f0bce4a1920e7e23719..999dcb9ce87f7be8a931ca6dbd81f16b
  #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
-@@ -56,6 +57,7 @@
- #include "third_party/metrics_proto/omnibox_event.pb.h"
- #include "ui/base/device_form_factor.h"
- 
-+
- using base::android::AttachCurrentThread;
- using base::android::ConvertJavaStringToUTF16;
- using base::android::ConvertUTF8ToJavaString;
-@@ -90,7 +92,7 @@ class ZeroSuggestPrefetcher : public AutocompleteControllerDelegate {
+@@ -89,7 +90,7 @@ class ZeroSuggestPrefetcher : public AutocompleteControllerDelegate {
  };
  
  ZeroSuggestPrefetcher::ZeroSuggestPrefetcher(Profile* profile)
 -    : controller_(new AutocompleteController(
 +    : controller_(new BraveAutocompleteController(
-           base::MakeUnique<ChromeAutocompleteProviderClient>(profile),
+           std::make_unique<ChromeAutocompleteProviderClient>(profile),
            this,
            AutocompleteProvider::TYPE_ZERO_SUGGEST)) {
-@@ -127,7 +129,7 @@ void ZeroSuggestPrefetcher::OnResultChanged(bool default_match_changed) {
+@@ -126,7 +127,7 @@ void ZeroSuggestPrefetcher::OnResultChanged(bool default_match_changed) {
  }  // namespace
  
  AutocompleteControllerAndroid::AutocompleteControllerAndroid(Profile* profile)
 -    : autocomplete_controller_(new AutocompleteController(
 +    : autocomplete_controller_(new BraveAutocompleteController(
-           base::WrapUnique(new ChromeAutocompleteProviderClient(profile)),
+           std::make_unique<ChromeAutocompleteProviderClient>(profile),
            this,
            AutocompleteClassifier::DefaultOmniboxProviders())),
-@@ -347,7 +349,7 @@ AutocompleteControllerAndroid::Factory::~Factory() {
+@@ -346,7 +347,7 @@ AutocompleteControllerAndroid::Factory::~Factory() {
  
  KeyedService* AutocompleteControllerAndroid::Factory::BuildServiceInstanceFor(
      content::BrowserContext* profile) const {

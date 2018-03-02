@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Brave açık kaynak lisansları</translation>
 <translation id="2310890394934209120">Brave OS, ek <ph name="BEGIN_LINK_CROS_OSS"/>açık kaynak yazılımlar<ph name="END_LINK_CROS_OSS"/> ile hazırlanmıştır.</translation>
 <translation id="8372475781172910778">Brave OS açık kaynak lisansları</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">Brave varsayılan tarayıcı olsun</translation>
 <translation id="662492621463805426">Brave OS'yi Kullanmaya Başlayın</translation>
 <translation id="5063987220091207247">Brave OS bu sayfayı açamıyor.</translation>
@@ -35,7 +34,6 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="8554809439398012115">Brave, bu şifreyi <ph name="SAVED_PASSWORD_LINK"/> bağlantısı ile kaydeder. Şifreyi hatırlamanız gerekmez.</translation>
 <translation id="5316336629760101484">Brave tarafından oluşturulan güçlü bir şifre kullanın</translation>
-<translation id="2288174659056124771">Brave varsayılan tarayıcınız değil.</translation>
 <translation id="6715663530666325392">Kişiselleştirilmiş tarayıcı özelliklerinizi Web'e kaydetmek ve herhangi bir bilgisayardan Brave ile bu özelliklere erişmek için senkronizasyonu ayarlayın.</translation>
 <translation id="2708027082363760195">Brave, Baskı Önizleme için gerekli olan PDF görüntüleyiciyi içermez.</translation>
 <translation id="8880183781256147665">Brave'a ekleniyor ...</translation>
@@ -44,7 +42,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> tehlikeli olduğu için Brave tarafından engellendi.</translation>
 <translation id="89367911614620585">Bu dosya tehlikeli olabileceği için Brave tarafından engellendi.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Şu anda devam eden bir indirme işlemi var. İndirme işlemini iptal etmek ve Brave'dan çıkmak istiyor musunuz?}other{Şu anda devam eden # indirme işlemi var. İndirme işlemlerini iptal etmek ve Brave'dan çıkmak istiyor musunuz?}}</translation>
-<translation id="5212535894547383850">Brave güncellenmesi durdu ve artık işletim sisteminizin bu sürümünü desteklemiyor.</translation>
 <translation id="2339258256897053758">Brave Software API anahtarları eksik. Brave'un bazı işlevleri devre dışı bırakılacak.</translation>
 <translation id="5906655207909574370">Az kaldı! Güncellemeyi tamamlamak için cihazınızı yeniden başlatın.</translation>
 <translation id="5877064549588274448">Kanal değişti. Değişikliklerin uygulanması için cihazınızı yeniden başlatın.</translation>
@@ -115,7 +112,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="7808415789955822133">Brave OS şartları</translation>
 <translation id="6686872257969654608">Brave OS hakkında</translation>
 <translation id="2280363356796735201">Brave OS ile ilgili yardım alın</translation>
-<translation id="6161696008382683101">Brave Software Payments (Brave'a kopyalandı)</translation>
+<translation id="5253815230176279256">Brave Software Pay (Brave'a kopyalandı)</translation>
 <translation id="7977435741986383568">Brave, göz atma deneyiminizi iyileştirmek için web hizmetleri kullanabilir. İsteğe bağlı olarak bu hizmetleri devre dışı bırakabilirsiniz. <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Brave'da oturum açma işlevi, bu cihazın yöneticisi tarafından devre dışı bırakılmıştır.</translation>
 <translation id="9220324636239049437">Bu işlem 1 öğeyi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
