@@ -5,6 +5,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_resource_throttle.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -12,6 +13,8 @@
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
+#include "content/public/browser/resource_request_info.h"
+#include "extensions/browser/extension_api_frame_id_map.h"
 #include "net/url_request/url_request.h"
 
 
@@ -36,7 +39,24 @@ const char* BraveShieldsResourceThrottle::GetNameForLogging() const {
 }
 
 void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
-  GURL tab_origin = request_->site_for_cookies().GetOrigin();
+  auto* request_info = content::ResourceRequestInfo::ForRequest(request_);
+  GURL tab_origin;
+  if (request_info) {
+    auto* navigation_ui_data =
+      (BraveNavigationUIData *)request_info->GetNavigationUIData();
+    if (navigation_ui_data) {
+      tab_origin =
+        ((BraveNavigationUIData*)navigation_ui_data)->
+        GetURL().GetOrigin();
+      LOG(ERROR) << "HIT!!!! tab_origin" << tab_origin << "url:" << request_->url();
+    }
+  }
+
+  if (tab_origin.is_empty()) {
+    tab_origin = request_->site_for_cookies().GetOrigin();
+    LOG(ERROR) << "NO tab_origin: " << tab_origin;
+  }
+
   bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
       request_, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kBraveShields);

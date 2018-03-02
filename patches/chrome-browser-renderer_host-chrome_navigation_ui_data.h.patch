@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/renderer_host/chrome_navigation_ui_data.h b/chrome/browser/renderer_host/chrome_navigation_ui_data.h
+index de1cf324e984fd2c723ab683eb4eea5051a02f0c..a26a2ea69356fb7e953f83a454fc1d0f7f3f8274 100644
+--- a/chrome/browser/renderer_host/chrome_navigation_ui_data.h
++++ b/chrome/browser/renderer_host/chrome_navigation_ui_data.h
+@@ -61,6 +61,7 @@ class ChromeNavigationUIData : public content::NavigationUIData {
+   }
+ 
+  private:
++  friend class BraveNavigationUIData;
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+   // Manages the lifetime of optional ExtensionNavigationUIData information.
+   std::unique_ptr<extensions::ExtensionNavigationUIData> extension_data_;
