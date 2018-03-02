@@ -177,39 +177,38 @@ void ChromeImporter::LoadFaviconData(
     sql::Connection* db,
     const FaviconMap& favicon_map,
     favicon_base::FaviconUsageDataList* favicons) {
-  const char query[] = "SELECT url "
-                       "FROM favicons "
-                       "WHERE id = ?;";
+  const char query[] = "SELECT f.url, fb.image_data "
+                       "FROM favicons f "
+                       "JOIN favicon_bitmaps fb "
+                       "ON f.id = fb.icon_id "
+                       "WHERE f.id = ?;";
   sql::Statement s(db->GetUniqueStatement(query));
+
+  if (!s.is_valid())
+    return;
 
   for (FaviconMap::const_iterator i = favicon_map.begin();
        i != favicon_map.end(); ++i) {
-    s.Reset(true);
     s.BindInt64(0, i->first);
     if (s.Step()) {
       favicon_base::FaviconUsageData usage;
 
-      GURL url = GURL(s.ColumnString(0));
-      if (url.is_valid()) {
-        if (url.SchemeIs(url::kDataScheme)) {
-          std::vector<unsigned char> data;
-          s.ColumnBlobAsVector(0, &data);
-          if (data.empty()) {
-            continue;  // Data definitely invalid.
-          }
-          if (!importer::ReencodeFavicon(&data[0], data.size(),
-                                         &usage.png_data))
-            continue;  // Unable to decode.
-        } else {
-          usage.favicon_url = url;
-        }
-      } else {
+      usage.favicon_url = GURL(s.ColumnString(0));
+      if (!usage.favicon_url.is_valid())
         continue;  // Don't bother importing favicons with invalid URLs.
-      }
+
+      std::vector<unsigned char> data;
+      s.ColumnBlobAsVector(1, &data);
+      if (data.empty())
+        continue;  // Data definitely invalid.
+
+      if (!importer::ReencodeFavicon(&data[0], data.size(), &usage.png_data))
+        continue;  // Unable to decode.
 
       usage.urls = i->second;
       favicons->push_back(usage);
     }
+    s.Reset(true);
   }
 }
 
