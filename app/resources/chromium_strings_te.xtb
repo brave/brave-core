@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Brave ఓపెన్ సోర్స్ లైసెన్స్‌లు</translation>
 <translation id="2310890394934209120">Brave OS సృష్టి అదనపు <ph name="BEGIN_LINK_CROS_OSS"/>ఓపెన్ సోర్స్ సాఫ్ట్‌వేర్<ph name="END_LINK_CROS_OSS"/> ద్వారా సాధ్యమయ్యింది.</translation>
 <translation id="8372475781172910778">Brave OS ఓపెన్ సోర్స్ లైసెన్స్‌లు</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">Braveని డిఫాల్ట్ బ్రౌజర్‌గా చేయి</translation>
 <translation id="662492621463805426">Brave OSతో ప్రారంభించండి</translation>
 <translation id="5063987220091207247">Brave OS ఈ పేజీని తెరవలేదు.</translation>
@@ -33,7 +32,6 @@
 <translation id="3403365884036456766">మీ ప్రాధాన్యతల ఫైల్ పాడైంది లేదా చెల్లదు. Brave మీ సెట్టింగ్‌లను పునరుద్ధరించలేకపోయింది.</translation>
 <translation id="8554809439398012115">Brave <ph name="SAVED_PASSWORD_LINK"/>తో ఈ పాస్‌వర్డ్‌ని సేవ్ చేస్తుంది. మీరు దీనిని గుర్తుంచుకోవాల్సిన అవసరం లేదు.</translation>
 <translation id="5316336629760101484">Brave ద్వారా రూపొందించబడిన శక్తివంతమైన పాస్‌వర్డ్‌ని ఉపయోగించండి</translation>
-<translation id="2288174659056124771">Brave మీ డిఫాల్ట్ బ్రౌజర్ కాదు.</translation>
 <translation id="6715663530666325392">వెబ్‌కు మీ వ్యక్తిగతీకరించిన బ్రౌజర్ లక్షణాలను సేవ్ చేయడానికి సమకాలీకణని సెటప్ చేయండి మరియు వాటిని ఏదైనా కంప్యూటర్‌లోని Brave నుండి ప్రాప్యత చేయండి.</translation>
 <translation id="2708027082363760195">ముద్రణా పరిదృశ్యం పని చేయడానికి అవసరమైన PDF వ్యూయర్‌ని Brave చేర్చలేదు.</translation>
 <translation id="8880183781256147665">Braveకి జోడిస్తోంది...</translation>
@@ -42,7 +40,6 @@
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> హానికరం, కావున Brave దాన్ని బ్లాక్ చేసింది.</translation>
 <translation id="89367911614620585">ఈ ఫైల్ అపాయకరం కావచ్చు, కాబట్టి Brave దీన్ని బ్లాక్ చేసింది.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{డౌన్‌లోడ్ ప్రస్తుతం ప్రోగ్రెస్‌లో ఉంది. మీరు డౌన్‌లోడ్‌ను రద్దు చేసి, Brave నుండి నిష్క్రమించాలనుకుంటున్నారా?}other{# డౌన్‌లోడ్‌లు ప్రస్తుతం ప్రోగ్రెస్‌లో ఉన్నాయి. మీరు డౌన్‌లోడ్‌లను రద్దు చేసి, Brave నుండి నిష్క్రమించాలనుకుంటున్నారా?}}</translation>
-<translation id="5212535894547383850">Brave నవీకరించడాన్ని ఆపివేసింది మరియు ఇక మీ ఆపరేటింగ్ సిస్టమ్ యొక్క ఈ సంస్కరణకు మద్దతివ్వదు.</translation>
 <translation id="2339258256897053758">Brave Software API కీలు లేవు. Brave కార్యాచరణలో కొంత భాగం నిలిపివేయబడుతుంది.</translation>
 <translation id="5906655207909574370">దాదాపు నవీకృతంగా ఉంది! నవీకరణను పూర్తి చేయడానికి మీ పరికరాన్ని పునఃప్రారంభించండి.</translation>
 <translation id="5877064549588274448">ఛానెల్ మార్చబడింది. మార్పులను వర్తింపజేయడానికి మీ పరికరాన్ని పునఃప్రారంభించండి.</translation>
@@ -113,7 +110,7 @@
 <translation id="7808415789955822133">Brave OS నిబంధనలు</translation>
 <translation id="6686872257969654608">Brave OS గురించి</translation>
 <translation id="2280363356796735201">Brave OSతో సహాయాన్ని పొందండి</translation>
-<translation id="6161696008382683101">Brave Software చెల్లింపులు (Braveకి కాపీ చేయబడింది)</translation>
+<translation id="5253815230176279256">Brave Software Pay (Braveకి కాపీ చేయబడింది)</translation>
 <translation id="7977435741986383568">Brave మీ బ్రౌజింగ్ అనుభవాన్ని మెరుగుపరచడానికి వెబ్ సేవలను ఉపయోగించవచ్చు. మీరు ఈ సేవలను ఐచ్ఛికంగా నిలిపివేయవచ్చు. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Braveకు సైన్ ఇన్ చేయడాన్ని ఈ పరికరం యొక్క నిర్వాహకులు నిలిపివేసారు.</translation>
 <translation id="9220324636239049437">ఇది ఈ పరికరం నుండి 1 అంశాన్ని తొలగిస్తుంది. మీ డేటాను తర్వాత తిరిగి పొందడానికి, Braveకి <ph name="USER_EMAIL"/> వలె సైన్ ఇన్ చేయండి.</translation>

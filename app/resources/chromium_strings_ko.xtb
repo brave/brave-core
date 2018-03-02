@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Brave 오픈소스 라이선스</translation>
 <translation id="2310890394934209120">Brave OS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용했습니다.</translation>
 <translation id="8372475781172910778">Brave OS 오픈소스 라이선스</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">Brave을 기본 브라우저로 설정</translation>
 <translation id="662492621463805426">Brave OS 시작하기</translation>
 <translation id="5063987220091207247">Brave OS에서 이 페이지를 열 수 없음</translation>
@@ -39,7 +38,6 @@
 Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8554809439398012115">Brave에서 <ph name="SAVED_PASSWORD_LINK"/>에 이 비밀번호를 저장하므로 기억하지 않아도 됩니다.</translation>
 <translation id="5316336629760101484">Brave에서 생성한 안전한 비밀번호를 사용하세요.</translation>
-<translation id="2288174659056124771">Brave이 기본 브라우저로 설정되어 있지 않습니다.</translation>
 <translation id="6715663530666325392">맞춤설정한 브라우저 기능을 웹에 저장하고 모든 컴퓨터의 Brave에서 액세스할 수 있도록 동기화를 설정합니다.</translation>
 <translation id="2708027082363760195">Brave은 인쇄 미리보기에 필요한 PDF 뷰어가 포함되어 있지 않습니다.</translation>
 <translation id="8880183781256147665">Brave에 추가하는 중...</translation>
@@ -48,7 +46,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/>은(는) 위험한 파일이므로 Brave에서 차단했습니다.</translation>
 <translation id="89367911614620585">이 파일은 위험할 수 있으므로 Brave에서 차단했습니다.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{현재 다운로드가 진행 중입니다. 다운로드를 취소하고 Brave을 종료하시겠습니까?}other{현재 #개의 다운로드가 진행 중입니다. 다운로드를 취소하고 Brave을 종료하시겠습니까?}}</translation>
-<translation id="5212535894547383850">Brave에서 업데이트를 중단했으며 이 버전의 운영체제를 더 이상 지원하지 않습니다.</translation>
 <translation id="2339258256897053758">Brave Software API 키가 누락되었습니다. Brave의 일부 기능이 사용 중지됩니다.</translation>
 <translation id="5906655207909574370">업데이트가 거의 완료되었습니다. 업데이트를 완료하려면 기기를 다시 시작하세요.</translation>
 <translation id="5877064549588274448">채널이 변경되었습니다. 변경사항을 적용하려면 기기를 다시 시작하세요.</translation>
@@ -119,7 +116,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7808415789955822133">Brave OS 용어</translation>
 <translation id="6686872257969654608">Brave OS 정보</translation>
 <translation id="2280363356796735201">Brave OS 도움말 보기</translation>
-<translation id="6161696008382683101">Brave Software Payments(Brave에 복사됨)</translation>
+<translation id="5253815230176279256">Brave Software Pay(Brave에 복사됨)</translation>
 <translation id="7977435741986383568">Brave에서 사용자에게 더 나은 인터넷 사용 환경을 제공하기 위해 웹 서비스를 사용할 수 있습니다. 원하는 경우 서비스를 사용 중지하실 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">이 기기의 관리자에 의해 Brave 로그인이 사용 중지되었습니다.</translation>
 <translation id="9220324636239049437">항목 1개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>

@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">‏مجوزهای منبع باز Brave</translation>
 <translation id="2310890394934209120">‏سیستم عامل Brave با یک <ph name="BEGIN_LINK_CROS_OSS"/>نرم‌افزار منبع آزاد<ph name="END_LINK_CROS_OSS"/> دیگر امکان‌پذیر است.</translation>
 <translation id="8372475781172910778">‏مجوزهای منبع باز سیستم عامل Brave</translation>
-<translation id="8851136666856101339">اصلی</translation>
 <translation id="5019879183386042809">‏Brave  مرورگر پیش‌فرض شود</translation>
 <translation id="662492621463805426">‏شروع به کار با سیستم عامل Brave</translation>
 <translation id="5063987220091207247">‏Brave OS نمی‌تواند این صفحه را باز کند.</translation>
@@ -35,7 +34,6 @@
 Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="8554809439398012115">‏Brave این گذرواژه را با <ph name="SAVED_PASSWORD_LINK"/> ذخیره می‌کند. نیازی نیست آن را به خاطر بسپارید.</translation>
 <translation id="5316336629760101484">‏استفاده از گذرواژه قوی ایجاد شده توسط Brave</translation>
-<translation id="2288174659056124771">‏Brave مرورگر پیش‌فرض شما نیست.</translation>
 <translation id="6715663530666325392">‏برای ذخیره ویژگی‌های مرورگر سفارشی شده خود در وب و دسترسی به آن‌ها از Brave از هر رایانه دیگری، همگام‌سازی را راه‌اندازی کنید.</translation>
 <translation id="2708027082363760195">‏Brave فاقد نمایشگر PDF است که برای عملکرد پیش‌نمایش چاپ لازم است.</translation>
 <translation id="8880183781256147665">‏افزودن به Brave…</translation>
@@ -44,7 +42,6 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="4168372721886011198">‏<ph name="FILE_NAME"/> خطرناک است، بنابراین Brave آن را مسدود کرده است.</translation>
 <translation id="89367911614620585">‏این فایل ممکن است خطرناک باشد، بنابراین Brave آن را مسدود کرده است.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{‏در حال حاضر یک بارگیری در حال انجام است. آیا می‌خواهید بارگیری را لغو کنید و از Brave خارج شوید؟}one{‏در حال حاضر # بارگیری در حال انجام است. آیا می‌خواهید بارگیری را لغو کنید و از Brave خارج شوید؟}other{‏در حال حاضر # بارگیری در حال انجام است. آیا می‌خواهید بارگیری‌ها را لغو کنید و از Brave خارج شوید؟}}</translation>
-<translation id="5212535894547383850">‏Brave دیگر به‌روزرسانی نمی‌شود ودیگر از این نسخه سیستم عامل پشتیبانی نمی‌کند.</translation>
 <translation id="2339258256897053758">‏کلیدهای Brave Software API وجود ندارند. برخی از عملکردهای Brave از کار خواهند افتاد.</translation>
 <translation id="5906655207909574370">تقریباً به‌روز شده است! برای تمام کردن به‌روزرسانی، دستگاهتان را دوباره راه‌اندازی کنید.</translation>
 <translation id="5877064549588274448">کانال تغییر کرد. برای اعمال تغییرات دستگاه خود را مجدداً راه‌اندازی کنید.</translation>
@@ -115,7 +112,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="7808415789955822133">‏شرایط Brave OS</translation>
 <translation id="6686872257969654608">‏درباره سیستم عامل Brave</translation>
 <translation id="2280363356796735201">‏دریافت کمک برای سیستم عامل Brave</translation>
-<translation id="6161696008382683101">‏Brave Software Payments (در Brave کپی شد)</translation>
+<translation id="5253815230176279256">‏Brave Software Pay (در Brave کپی شد)</translation>
 <translation id="7977435741986383568">‏ممکن است Brave برای بهبود تجربه مرور شما از سرویس‌های وب استفاده کند. می‌توانید به‌صورت اختیاری این سرویس‌ها را غیرفعال کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">‏سرپرست این دستگاه ورود به سیستم Brave را غیرفعال کرده است.</translation>
 <translation id="9220324636239049437">‏این کار یک مورد را از این دستگاه حذف می‌کند. برای بازیابی داده‌هایتان در فرصتی دیگر، با <ph name="USER_EMAIL"/> به سیستم Brave وارد شوید.</translation>

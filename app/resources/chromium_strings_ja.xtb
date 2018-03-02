@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Brave オープンソース ライセンス</translation>
 <translation id="2310890394934209120">Brave OS は、さらに追加の<ph name="BEGIN_LINK_CROS_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_CROS_OSS"/>によって実現しました。</translation>
 <translation id="8372475781172910778">Brave OS オープンソース ライセンス</translation>
-<translation id="8851136666856101339">本文</translation>
 <translation id="5019879183386042809">Brave を既定のブラウザにする</translation>
 <translation id="662492621463805426">Brave OS のスタート ガイド</translation>
 <translation id="5063987220091207247">Brave OS ではこのページを開けません。</translation>
@@ -37,7 +36,6 @@
 設定を復元できません。</translation>
 <translation id="8554809439398012115">このパスワードは <ph name="SAVED_PASSWORD_LINK"/> に保存されるため、覚えておく必要はありません。</translation>
 <translation id="5316336629760101484">Brave で生成された安全なパスワードの使用をおすすめします</translation>
-<translation id="2288174659056124771">Brave は既定のブラウザとして設定されていません。</translation>
 <translation id="6715663530666325392">同期を設定すると、パーソナライズされたブラウザ機能をウェブ上に保存して、どのパソコンの Brave からでも使用できるようになります。</translation>
 <translation id="2708027082363760195">印刷プレビューの表示に必要な PDF ビューアが Brave にインストールされていません。</translation>
 <translation id="8880183781256147665">Brave に追加...</translation>
@@ -46,7 +44,6 @@
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> は危険なファイルであるため、Brave でブロックしました。</translation>
 <translation id="89367911614620585">このファイルは危険なファイルの可能性があるため、Brave でブロックしました。</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{ダウンロードが現在進行中です。ダウンロードをキャンセルし、Brave を終了しますか？}other{# 件のダウンロードが現在進行中です。ダウンロードをキャンセルし、Brave を終了しますか？}}</translation>
-<translation id="5212535894547383850">Brave はアップデートの提供を中止しています。お使いのバージョンのオペレーティング システムには対応していません。</translation>
 <translation id="2339258256897053758">Brave Software API キーが欠落しています。Brave の一部の機能は無効になります。</translation>
 <translation id="5906655207909574370">端末を再起動して更新を完了してください。</translation>
 <translation id="5877064549588274448">チャンネルが変更されました。変更を適用するには、デバイスを再起動してください。</translation>
@@ -117,7 +114,7 @@
 <translation id="7808415789955822133">Brave OS 利用規約</translation>
 <translation id="6686872257969654608">Brave OS について</translation>
 <translation id="2280363356796735201">Brave OS のヘルプを見る</translation>
-<translation id="6161696008382683101">Brave Software ペイメント（Brave にコピー）</translation>
+<translation id="5253815230176279256">Brave Software Pay（Brave にコピー）</translation>
 <translation id="7977435741986383568">Brave は、より快適なブラウジングを提供する目的でウェブサービスを使用することがあります。これらのサービスは無効にすることもできます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Brave へのログインは、この端末の管理者によって無効にされています。</translation>
 <translation id="9220324636239049437">この端末から 1 件の項目を削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>

@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Bravei avatud lähtekoodi litsentsid</translation>
 <translation id="2310890394934209120">Brave OS-i aluseks on täiendav <ph name="BEGIN_LINK_CROS_OSS"/>avatud lähtekoodiga tarkvara<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Brave OS-i avatud lähtekoodi litsentsid</translation>
-<translation id="8851136666856101339">pea</translation>
 <translation id="5019879183386042809">Määra Brave vaikebrauseriks</translation>
 <translation id="662492621463805426">Alustamine Brave OS-iga</translation>
 <translation id="5063987220091207247">Brave OS ei saa seda lehte avada.</translation>
@@ -37,7 +36,6 @@ On võimalik, et mõni funktsioon ei ole saadaval. Määrake muu profiilikataloo
 Brave ei saa teie seadeid taastada.</translation>
 <translation id="8554809439398012115">Brave salvestab selle parooli funktsiooniga <ph name="SAVED_PASSWORD_LINK"/>. Te ei pea seda meelde jätma.</translation>
 <translation id="5316336629760101484">Kasutage Bravei loodud tugevat parooli</translation>
-<translation id="2288174659056124771">Brave ei ole teie vaikebrauser.</translation>
 <translation id="6715663530666325392">Seadistage sünkroonimine, et salvestada isikupärastatud brauserifunktsioonid veebi, misjuhul pääsete igast arvutist Bravei kaudu nende juurde.</translation>
 <translation id="2708027082363760195">Brave ei sisalda PDF-vaaturit, mida on printimise eelvaate jaoks vaja.</translation>
 <translation id="8880183781256147665">Bravei lisamine ...</translation>
@@ -46,7 +44,6 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> on ohtlik, mistõttu Brave blokeeris selle.</translation>
 <translation id="89367911614620585">Brave blokeeris faili, kuna see võib olla ohtlik.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Allalaadimine on praegu pooleli. Kas soovite allalaadimise tühistada ja Braveist väljuda?}other{# allalaadimist on praegu pooleli. Kas soovite allalaadimised tühistada ja Braveist väljuda?}}</translation>
-<translation id="5212535894547383850">Bravei värskendamine peatati ja teie operatsioonisüsteemi seda versiooni ei toetata enam.</translation>
 <translation id="2339258256897053758">Brave Software API võtmed on puudu. Teatud Bravei funktsioonid keelatakse.</translation>
 <translation id="5906655207909574370">Seade on peaaegu ajakohane. Värskenduse lõpuleviimiseks taaskäivitage seade.</translation>
 <translation id="5877064549588274448">Kanal on muutunud. Muudatuste rakendamiseks taaskäivitage oma seade.</translation>
@@ -117,7 +114,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="7808415789955822133">Brave OS-i tingimused</translation>
 <translation id="6686872257969654608">Teave Brave OS-i kohta</translation>
 <translation id="2280363356796735201">Brave OS-i puhul abi hankimine</translation>
-<translation id="6161696008382683101">Brave Software Payments (Bravei kopeeritud)</translation>
+<translation id="5253815230176279256">Brave Software Pay (kopeeritud Bravei)</translation>
 <translation id="7977435741986383568">Brave võib sirvimiskogemuse parandamiseks kasutada veebiteenuseid. Võite need teenused valikuliselt keelata. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Administraator on selles seadmes Braveisse sisselogimise keelanud.</translation>
 <translation id="9220324636239049437">See kustutab seadmest ühe üksuse. Hiljem oma andmete toomiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>

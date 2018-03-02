@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Licenças de código aberto do Brave</translation>
 <translation id="2310890394934209120">O lançamento do SO Brave foi possível devido a <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
 <translation id="8372475781172910778">Licenças de código aberto do SO Brave</translation>
-<translation id="8851136666856101339">main</translation>
 <translation id="5019879183386042809">Definir o Brave como navegador predefinido</translation>
 <translation id="662492621463805426">Introdução ao SO Brave</translation>
 <translation id="5063987220091207247">O SO Brave não consegue abrir esta página.</translation>
@@ -37,7 +36,6 @@ Algumas funcionalidades podem não estar disponíveis. Especifique um diretório
 O Brave não consegue recuperar as suas definições.</translation>
 <translation id="8554809439398012115">O Brave vai guardar esta palavra-passe com o <ph name="SAVED_PASSWORD_LINK"/>. Não tem de a memorizar.</translation>
 <translation id="5316336629760101484">Utilize uma palavra-passe forte gerada pelo Brave</translation>
-<translation id="2288174659056124771">O Brave não é seu navegador predefinido.</translation>
 <translation id="6715663530666325392">Configure a Sincronização para guardar as suas funcionalidades personalizadas do navegador para a Web e aceder às mesmas a partir do Brave em qualquer computador.</translation>
 <translation id="2708027082363760195">O Brave não inclui o visualizador de PDF que é necessário para que a Pré-visualização da Impressão funcione.</translation>
 <translation id="8880183781256147665">A adicionar ao Brave...</translation>
@@ -46,7 +44,6 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> é perigoso, por isso o Brave bloqueou-o.</translation>
 <translation id="89367911614620585">Este ficheiro pode ser perigoso. Como tal, o Brave bloqueou-o.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Uma transferência está atualmente em curso. Pretende cancelar a transferência e sair do Brave?}other{# transferências estão atualmente em curso. Pretende cancelar as transferências e sair do Brave?}}</translation>
-<translation id="5212535894547383850">O Brave já não se atualiza nem suporta mais esta versão do seu sistema operativo.</translation>
 <translation id="2339258256897053758">As chaves da API do Brave Software estão em falta. Algumas funcionalidades do Brave serão desativadas.</translation>
 <translation id="5906655207909574370">Quase atualizado! Reinicie o dispositivo para concluir a atualização.</translation>
 <translation id="5877064549588274448">Canal alterado. Reinicie o dispositivo para aplicar as alterações.</translation>
@@ -117,7 +114,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="7808415789955822133">Termos do SO Brave</translation>
 <translation id="6686872257969654608">Acerca do SO Brave</translation>
 <translation id="2280363356796735201">Obter ajuda relacionada com o SO Brave</translation>
-<translation id="6161696008382683101">Brave Software Payments (copiado para o Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (copiado para o Brave)</translation>
 <translation id="7977435741986383568">O Brave poderá utilizar serviços Web para melhorar a sua experiência de navegação. Poderá optar por desativar estes serviços. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">O início de sessão no Brave foi desativado pelo gestor deste dispositivo.</translation>
 <translation id="9220324636239049437">Esta ação elimina 1 item deste dispositivo. Para recuperar os dados mais tarde, inicie sessão no Brave como <ph name="USER_EMAIL"/>.</translation>

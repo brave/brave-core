@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Licence otvorenog izvornog koda Bravea</translation>
 <translation id="2310890394934209120">OS Brave omogućuje dodatni <ph name="BEGIN_LINK_CROS_OSS"/>softver utemeljen na otvorenom kôdu<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Licence otvorenog izvornog koda OS-a Brave</translation>
-<translation id="8851136666856101339">glav</translation>
 <translation id="5019879183386042809">Neka Brave bude zadani preglednik</translation>
 <translation id="662492621463805426">Počnite s upotrebom OS-a Brave</translation>
 <translation id="5063987220091207247">OS Brave ne može otvoriti ovu stranicu.</translation>
@@ -37,7 +36,6 @@ Neke su značajke možda nedostupne. Navedite neki drugi direktorij profila ili 
 Brave ne može oporaviti vaše postavke.</translation>
 <translation id="8554809439398012115">Brave će spremiti tu zaporku pomoću značajke <ph name="SAVED_PASSWORD_LINK"/>. Ne morate je pamtiti.</translation>
 <translation id="5316336629760101484">Upotrijebite snažnu zaporku koju generira Brave</translation>
-<translation id="2288174659056124771">Brave nije vaš zadani preglednik.</translation>
 <translation id="6715663530666325392">Postavite sinkronizaciju da biste spremili svoje prilagođene značajke preglednika na web i pristupali im s preglednika Brave na bilo kojem računalu.</translation>
 <translation id="2708027082363760195">Brave ne uključuje pregledač PDF-a koji je potreban da bi pregled ispisa funkcionirao.</translation>
 <translation id="8880183781256147665">Dodavanje u preglednik Brave...</translation>
@@ -46,7 +44,6 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="4168372721886011198">Datoteka <ph name="FILE_NAME"/> opasna je, pa ju je Brave blokirao.</translation>
 <translation id="89367911614620585">Datoteka je možda opasna i Brave ju je blokirao.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{U tijeku je preuzimanje. Želite li otkazati preuzimanje i napustiti Brave?}one{U tijeku je # preuzimanje. Želite li otkazati preuzimanja i napustiti Brave?}few{U tijeku su # preuzimanja. Želite li otkazati preuzimanja i napustiti Brave?}other{U tijeku je # preuzimanja. Želite li otkazati preuzimanja i napustiti Brave?}}</translation>
-<translation id="5212535894547383850">Brave se prestao ažurirati i više ne podržava ovu verziju vašeg operativnog sustava.</translation>
 <translation id="2339258256897053758">Nedostaju ključevi Brave Software API-ja. Neke funkcije Bravea bit će onemogućene.</translation>
 <translation id="5906655207909574370">Ažuriranje će uskoro biti gotovo. Za dovršetak ponovo pokrenite uređaj.</translation>
 <translation id="5877064549588274448">Kanal je promijenjen. Ponovo pokrenite uređaj za primjenu promjena.</translation>
@@ -117,7 +114,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="7808415789955822133">Uvjeti OS-a Brave</translation>
 <translation id="6686872257969654608">O OS-u Brave</translation>
 <translation id="2280363356796735201">Potraži pomoć za upotrebu OS-a Brave</translation>
-<translation id="6161696008382683101">Brave Software Payments (kopirano na Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (kopirano na Brave)</translation>
 <translation id="7977435741986383568">Brave može upotrebljavati web-usluge za poboljšanje vašeg doživljaja pregledavanja. Ako želite, možete onemogućiti te usluge. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Administrator ovog uređaja onemogućio je prijavu na Brave.</translation>
 <translation id="9220324636239049437">Time će se izbrisati jedna stavka s uređaja. Da biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>

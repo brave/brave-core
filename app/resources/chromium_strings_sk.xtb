@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Licencie open source prehliadača Brave</translation>
 <translation id="2310890394934209120">Prehliadač Brave mohol vzniknúť vďaka ďalšiemu <ph name="BEGIN_LINK_CROS_OSS"/>softvéru s otvoreným zdrojom<ph name="END_LINK_CROS_OSS"/> .</translation>
 <translation id="8372475781172910778">Licencie open source systému OS Brave</translation>
-<translation id="8851136666856101339">hlavné</translation>
 <translation id="5019879183386042809">Nastavte Brave ako svoj predvolený prehliadač</translation>
 <translation id="662492621463805426">Začíname so systémom OS Brave</translation>
 <translation id="5063987220091207247">Brave OS nedokáže túto stránku otvoriť.</translation>
@@ -39,7 +38,6 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="8554809439398012115">Brave heslo uloží pomocou funkcie <ph name="SAVED_PASSWORD_LINK"/>. Nemusíte si ho pamätať.</translation>
 <translation id="5316336629760101484">Použite silné heslo vygenerované prehliadačom Brave</translation>
-<translation id="2288174659056124771">Prehliadač Brave nie je váš predvolený prehliadač.</translation>
 <translation id="6715663530666325392">Ak chcete uložiť svoje prispôsobené funkcie prehliadača na webe a pristupovať k nim z prehliadača Brave v ktoromkoľvek počítači, nastavte synchronizáciu.</translation>
 <translation id="2708027082363760195">Prehliadač Brave neobsahuje nástroj na zobrazovanie súborov PDF, ktorý je potrebný pre funkciu Ukážka pred tlačou.</translation>
 <translation id="8880183781256147665">Pridáva sa do prehliadača Brave...</translation>
@@ -48,7 +46,6 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="4168372721886011198">Súbor <ph name="FILE_NAME"/> je nebezpečný, a preto ho prehliadač Brave zablokoval.</translation>
 <translation id="89367911614620585">Tento súbor môže byť nebezpečný, a preto ho prehliadač Brave zablokoval.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Momentálne prebieha sťahovanie. Chcete ho zrušiť a ukončiť prehliadač Brave?}few{Momentálne prebieha sťahovanie # položiek. Chcete ho zrušiť a ukončiť prehliadač Brave?}many{Momentálne prebieha sťahovanie # položky. Chcete ho zrušiť a ukončiť prehliadač Brave?}other{Momentálne prebieha sťahovanie # položiek. Chcete ho zrušiť a ukončiť prehliadač Brave?}}</translation>
-<translation id="5212535894547383850">Prehliadač Brave sa prestal aktualizovať a túto verziu vášho operačného systému už nepodporuje.</translation>
 <translation id="2339258256897053758">Chýbajú kľúče rozhrania Brave Software API. Niektoré funkcie prehliadača Brave Software Brave budú zakázané.</translation>
 <translation id="5906655207909574370">Aktualizácia je takmer hotová! Dokončite ju reštartovaním zariadenia.</translation>
 <translation id="5877064549588274448">Kanál sa zmenil. Ak chcete zmeny použiť, reštartujte zariadenie.</translation>
@@ -119,7 +116,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="7808415789955822133">Zmluvné podmienky systému OS Brave</translation>
 <translation id="6686872257969654608">Informácie o systéme Brave OS</translation>
 <translation id="2280363356796735201">Pomoc so systémom Brave OS</translation>
-<translation id="6161696008382683101">Brave Software Payments (skopírované do prehliadača Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (skopírované do prehliadača Brave)</translation>
 <translation id="7977435741986383568">Brave vám môže uľahčiť prehliadanie pomocou webových služieb. Vybrané webové služby môžete podľa potreby vypnúť. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Prihlásenie do prehliadača Brave je zakázané správcom tohto zariadenia.</translation>
 <translation id="9220324636239049437">Táto akcia odstráni zo zariadenia jednu položku. Ak budete chcieť svoje údaje neskôr opäť načítať, prihláste sa do prehliadača Brave ako <ph name="USER_EMAIL"/>.</translation>

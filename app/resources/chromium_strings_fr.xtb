@@ -15,7 +15,6 @@
 <translation id="9179832504443063758">Licences Brave Open Source</translation>
 <translation id="2310890394934209120">Brave OS fonctionne grâce à d'autres <ph name="BEGIN_LINK_CROS_OSS"/>logiciels libres<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Licences Brave OS Open Source</translation>
-<translation id="8851136666856101339">principal</translation>
 <translation id="5019879183386042809">Définir Brave en tant que navigateur par défaut</translation>
 <translation id="662492621463805426">Premiers pas avec Brave OS</translation>
 <translation id="5063987220091207247">Brave OS ne peut pas ouvrir cette page</translation>
@@ -38,7 +37,6 @@ Certaines fonctionnalités ne seront peut-être pas disponibles, et les modifica
 Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="8554809439398012115">Brave va enregistrer ce mot de passe avec <ph name="SAVED_PASSWORD_LINK"/>. Vous n'avez pas besoin de le retenir.</translation>
 <translation id="5316336629760101484">Utiliser un mot de passe sécurisé, généré par Brave</translation>
-<translation id="2288174659056124771">Brave n'est pas votre navigateur par défaut.</translation>
 <translation id="6715663530666325392">Configurez la synchronisation pour enregistrer sur le Web les fonctionnalités personnalisées de votre navigateur et y accéder à partir de Brave sur n'importe quel ordinateur.</translation>
 <translation id="2708027082363760195">Brave ne comprend pas le lecteur de PDF qui est nécessaire au fonctionnement de l'aperçu avant impression.</translation>
 <translation id="8880183781256147665">Ajout à Brave en cours…</translation>
@@ -47,7 +45,6 @@ Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="4168372721886011198">Brave a bloqué <ph name="FILE_NAME"/>, car ce fichier est dangereux.</translation>
 <translation id="89367911614620585">Brave a bloqué ce fichier, car ce dernier peut être dangereux.</translation>
 <translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Un téléchargement est en cours. Voulez-vous annuler ce dernier et quitter Brave ?}one{# téléchargement est en cours. Voulez-vous annuler ce dernier et quitter Brave ?}other{# téléchargements sont en cours. Voulez-vous annuler ces derniers et quitter Brave ?}}</translation>
-<translation id="5212535894547383850">Brave n'est plus mis à jour et n'est plus compatible avec la version actuelle de votre système d'exploitation.</translation>
 <translation id="2339258256897053758">Les clés d'API Brave Software sont manquantes. Certaines fonctionnalités de Brave vont être désactivées.</translation>
 <translation id="5906655207909574370">Mise à jour presque terminée. Pour la finaliser, veuillez redémarrer votre appareil.</translation>
 <translation id="5877064549588274448">La version a été modifiée. Redémarrez votre appareil pour appliquer les modifications.</translation>
@@ -118,7 +115,7 @@ Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="7808415789955822133">Conditions d'utilisation de Brave OS</translation>
 <translation id="6686872257969654608">À propos de Brave OS</translation>
 <translation id="2280363356796735201">Obtenir de l'aide avec Brave OS</translation>
-<translation id="6161696008382683101">Brave Software Payments (copiée vers Brave)</translation>
+<translation id="5253815230176279256">Brave Software Pay (copiée dans Brave)</translation>
 <translation id="7977435741986383568">Brave peut utiliser des services Web pour améliorer votre confort de navigation. Vous pouvez choisir de désactiver ces services. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">L'option de connexion à Brave a été désactivée par l'administrateur de cet appareil.</translation>
 <translation id="9220324636239049437">Cette action aura pour effet de supprimer 1 élément de cet appareil. Pour récupérer vos données ultérieurement, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
