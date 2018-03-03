@@ -37,6 +37,10 @@ const char* BraveShieldsResourceThrottle::GetNameForLogging() const {
 
 void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
   GURL tab_origin = request_->site_for_cookies().GetOrigin();
+  // Proper content settings can't be looked up, so do nothing.
+  if (tab_origin.is_empty()) {
+    return;
+  }
   bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
       request_, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kBraveShields);
