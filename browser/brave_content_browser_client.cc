@@ -37,6 +37,9 @@ bool HandleURLReverseRewrite(GURL* url,
       url->host() == chrome::kChromeUINewTabHost) {
     return true;
   }
+  if (url->spec() == kWelcomeRemoteURL) {
+    return true;
+  }
   return false;
 }
 
