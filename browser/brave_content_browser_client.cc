@@ -15,7 +15,8 @@ namespace {
 bool HandleURLRewrite(GURL* url,
                             content::BrowserContext* browser_context) {
   if (url->SchemeIs(content::kChromeUIScheme) &&
-      url->host() == chrome::kChromeUIWelcomeHost) {
+      (url->host() == chrome::kChromeUIWelcomeHost ||
+       url->host() == chrome::kChromeUIWelcomeWin10Host)) {
     *url = GURL(kWelcomeRemoteURL);
     return true;
   }
