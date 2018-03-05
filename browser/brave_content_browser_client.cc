@@ -13,9 +13,10 @@
 namespace {
 
 bool HandleURLRewrite(GURL* url,
-                            content::BrowserContext* browser_context) {
+                      content::BrowserContext* browser_context) {
   if (url->SchemeIs(content::kChromeUIScheme) &&
-      url->host() == chrome::kChromeUIWelcomeHost) {
+      (url->host() == chrome::kChromeUIWelcomeHost ||
+       url->host() == chrome::kChromeUIWelcomeWin10Host)) {
     *url = GURL(kWelcomeRemoteURL);
     return true;
   }
@@ -30,10 +31,13 @@ bool HandleURLRewrite(GURL* url,
 }
 
 bool HandleURLReverseRewrite(GURL* url,
-                                   content::BrowserContext* browser_context) {
+                             content::BrowserContext* browser_context) {
   // Handle mapping new tab URL to ourselves
   if (url->SchemeIs(content::kChromeUIScheme) &&
       url->host() == chrome::kChromeUINewTabHost) {
+    return true;
+  }
+  if (url->spec() == kWelcomeRemoteURL) {
     return true;
   }
   return false;
