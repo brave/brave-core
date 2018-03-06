@@ -2,10 +2,13 @@
 import sys
 import subprocess
 import os.path
+import os
 
 def main():
     args = sys.argv[1:]
     replace_cc_arg(args)
+    if os.environ.has_key('CC_WRAPPER'):
+        args  = [os.environ['CC_WRAPPER']] + args
     cc_retcode = subprocess.call(args)
     return cc_retcode
 
