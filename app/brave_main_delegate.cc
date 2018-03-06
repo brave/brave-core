@@ -5,12 +5,14 @@
 #include "brave/app/brave_main_delegate.h"
 
 #include "base/lazy_instance.h"
+#include "base/path_service.h"
 #include "base/time/time.h"
 #include "build/build_config.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
+#include "chrome/common/chrome_paths.h"
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
 base::LazyInstance<BraveContentRendererClient>::DestructorAtExit
@@ -64,6 +66,28 @@ bool BraveMainDelegate::ShouldEnableProfilerRecording() {
 
 void BraveMainDelegate::PreSandboxStartup() {
   ChromeMainDelegate::PreSandboxStartup();
+#if defined(OS_POSIX)
+  // Setup NativeMessagingHosts to point to the default Chrome locations
+  // because that's where native apps will create them
+  base::FilePath chrome_user_data_dir;
+  base::FilePath native_messaging_dir;
+#if defined(OS_MACOSX)
+  PathService::Get(base::DIR_APP_DATA, &chrome_user_data_dir);
+  chrome_user_data_dir = chrome_user_data_dir.Append("Google/Chrome");
+  native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
+      "/Library/Google/Chrome/NativeMessagingHosts"));
+#else
+  chrome::GetDefaultUserDataDirectory(&chrome_user_data_dir);
+  native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
+      "/etc/opt/chrome/native-messaging-hosts"));
+#endif  // defined(OS_MACOSX)
+  PathService::OverrideAndCreateIfNeeded(
+      chrome::DIR_USER_NATIVE_MESSAGING,
+      chrome_user_data_dir.Append(FILE_PATH_LITERAL("NativeMessagingHosts")),
+      false, true);
+  PathService::OverrideAndCreateIfNeeded(chrome::DIR_NATIVE_MESSAGING,
+      native_messaging_dir, false, true);
+#endif  // OS_POSIX
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
