@@ -35,6 +35,14 @@ group("brave") {
   }
 }
 
+group("brave_tests") {
+  testonly = true
+
+  deps = [
+    "test:brave_unit_tests",
+  ]
+}
+
 repack("packed_extra_resources") {
   sources = [
     "$root_gen_dir/components/brave_components_resources.pak",

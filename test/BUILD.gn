@@ -1,0 +1,18 @@
+import("//testing/test.gni")
+
+test("brave_unit_tests") {
+  sources = [
+    "../utility/importer/chrome_importer_unittest.cc",
+  ]
+
+  public_deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser",
+    "//brave/common",
+    "//brave/renderer",
+    "//brave/utility",
+    "//chrome/test:test_support_unit",
+    "//testing/gtest",
+  ]
+}
