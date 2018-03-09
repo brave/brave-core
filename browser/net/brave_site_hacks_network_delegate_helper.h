@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NET_BRAVE_STATIC_REDIRECT_NETWORK_DELEGATE_H_
-#define BRAVE_BROWSER_NET_BRAVE_STATIC_REDIRECT_NETWORK_DELEGATE_H_
+#ifndef BRAVE_BROWSER_NET_BRAVE_SITE_HACKS_NETWORK_DELEGATE_H_
+#define BRAVE_BROWSER_NET_BRAVE_SITE_HACKS_NETWORK_DELEGATE_H_
 
 #include "chrome/browser/net/chrome_network_delegate.h"
 #include "brave/browser/net/url_context.h"
@@ -16,7 +16,7 @@ class URLRequest;
 
 namespace brave {
 
-int OnBeforeURLRequest_StaticRedirectWork(
+int OnBeforeURLRequest_SiteHacksWork(
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
@@ -24,4 +24,4 @@ int OnBeforeURLRequest_StaticRedirectWork(
 
 }  // namespace brave
 
-#endif  // BRAVE_BROWSER_NET_BRAVE_STATIC_REDIRECT_NETWORK_DELEGATE_H_
+#endif  // BRAVE_BROWSER_NET_BRAVE_SITE_HACKS_NETWORK_DELEGATE_H_
