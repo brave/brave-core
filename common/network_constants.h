@@ -1,0 +1,7 @@
+#ifndef BRAVE_COMMON_NETWORK_CONSTANTS_H_
+#define BRAVE_COMMON_NETWORK_CONSTANTS_H_
+
+extern const char kEmptyDataURI[];
+
+#endif  // BRAVE_COMMON_NETWORK_CONSTANTS_H_
+
