@@ -1,5 +1,30 @@
 import("//testing/test.gni")
 
+static_library("brave_test_support_unit") {
+  testonly = true
+  sources = [
+    "base/brave_unit_test_suite.cc",
+    "base/brave_unit_test_suite.h",
+    "base/run_all_unittests.cc",
+  ]
+
+  public_deps = [
+    "//chrome/test:test_support",
+    "//base",
+    "//chrome:resources",
+    "//chrome:strings",
+    "//chrome/browser",
+    "//chrome/common",
+    "//mojo/edk/test:test_support",
+  ]
+
+  if (is_win) {
+    deps = [
+      "//chrome/install_static/test:test_support",
+    ]
+  }
+}
+
 test("brave_unit_tests") {
   sources = [
     "../utility/importer/chrome_importer_unittest.cc",
@@ -16,7 +41,7 @@ test("brave_unit_tests") {
     "//brave/common",
     "//brave/renderer",
     "//brave/utility",
-    "//chrome/test:test_support_unit",
+    ":brave_test_support_unit",
     "//testing/gtest",
   ]
 }

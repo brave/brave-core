@@ -21,7 +21,6 @@ base::FilePath GetTestChromeLibraryPath(const std::string& suffix) {
 }
 
 TEST(ChromeImporterTest, TestTruth) {
-  brave::RegisterPathProvider();
   base::FilePath test_library_dir = GetTestChromeLibraryPath("default");
   CHECK(base::PathExists(test_library_dir));
 }
