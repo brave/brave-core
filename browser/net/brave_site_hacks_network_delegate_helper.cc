@@ -24,6 +24,17 @@ bool IsEmptyDataURLRedirect(const GURL& gurl) {
       hosts.end();
 }
 
+bool IsBlockedResource(const GURL& gurl) {
+  static std::vector<URLPattern> blocked_patterns({
+    URLPattern(URLPattern::SCHEME_ALL, "https://www.lesechos.fr/xtcore.js"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js")
+  });
+  return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
+      [&gurl](URLPattern pattern){
+        return pattern.MatchesURL(gurl);
+      });
+}
+
 std::string GetGoogleTagManagerPolyfillJS() {
   static std::string base64_output;
   if (base64_output.length() != 0)  {
@@ -72,17 +83,23 @@ bool GetPolyfill(const GURL& gurl, GURL *new_url) {
 }
 
 int OnBeforeURLRequest_SiteHacksWork(
-  net::URLRequest* request,
-  GURL* new_url,
-  const ResponseCallback& next_callback,
-  std::shared_ptr<OnBeforeURLRequestContext> ctx) {
+    net::URLRequest* request,
+    GURL* new_url,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<OnBeforeURLRequestContext> ctx) {
+  const GURL& url = request->url();
 
-  if (IsEmptyDataURLRedirect(request->url())) {
+  if (IsEmptyDataURLRedirect(url)) {
     *new_url = GURL(kEmptyDataURI);
     return net::OK;
   }
 
-  if (GetPolyfill(request->url(), new_url)) {
+  if (IsBlockedResource(url)) {
+    request->Cancel();
+    return net::ERR_ABORTED;
+  }
+
+  if (GetPolyfill(url, new_url)) {
     return net::OK;
   }
 
