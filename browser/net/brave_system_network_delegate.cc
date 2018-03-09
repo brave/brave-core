@@ -13,7 +13,7 @@ BraveSystemNetworkDelegate::BraveSystemNetworkDelegate(
     BraveNetworkDelegateBase(event_router, enable_referrers) {
   brave::OnBeforeURLRequestCallback callback =
       base::Bind(
-          brave::OnBeforeURLRequest_StaticRedirectWork, true);
+          brave::OnBeforeURLRequest_StaticRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 }
 
