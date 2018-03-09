@@ -4,11 +4,24 @@
 
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
 
+#include <string>
+#include <vector>
+
+#include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
 
 
 namespace brave {
+
+bool IsEmptyDataURLRedirect(const GURL& gurl) {
+  static std::vector<std::string> hosts({
+    "sp1.nypost.com",
+    "sp.nasdaq.com"
+  });
+  return std::find(hosts.begin(), hosts.end(), gurl.host()) !=
+      hosts.end();
+}
 
 int OnBeforeURLRequest_StaticRedirectWork(
   bool is_system_check,
@@ -24,6 +37,12 @@ int OnBeforeURLRequest_StaticRedirectWork(
       return net::OK;
     }
   }
+
+  if (IsEmptyDataURLRedirect(request->url())) {
+    *new_url = GURL(kEmptyDataURI);
+    return net::OK;
+  }
+
   return net::OK;
 }
 
