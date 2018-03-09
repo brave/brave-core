@@ -1,5 +1,7 @@
 source_set("common") {
   sources = [
+    "brave_paths.cc",
+    "brave_paths.h",
     "common_message_generator.cc",
     "common_message_generator.h",
     "pref_names.cc",

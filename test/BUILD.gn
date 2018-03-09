@@ -5,6 +5,10 @@ test("brave_unit_tests") {
     "../utility/importer/chrome_importer_unittest.cc",
   ]
 
+  data = [
+    "data/",
+  ]
+
   public_deps = [
     "//base",
     "//base/test:test_support",
