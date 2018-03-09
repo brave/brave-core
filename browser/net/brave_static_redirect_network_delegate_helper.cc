@@ -11,14 +11,18 @@
 namespace brave {
 
 int OnBeforeURLRequest_StaticRedirectWork(
+  bool is_system_check,
   net::URLRequest* request,
   GURL* new_url,
   const ResponseCallback& next_callback,
   std::shared_ptr<OnBeforeURLRequestContext> ctx) {
-  URLPattern geoPattern(URLPattern::SCHEME_HTTPS,
-      "https://www.googleapis.com/geolocation/v1/geolocate?key=*");
-  if (geoPattern.MatchesURL(request->url())) {
-    *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
+  if (is_system_check) {
+    static URLPattern geo_pattern(URLPattern::SCHEME_HTTPS,
+        "https://www.googleapis.com/geolocation/v1/geolocate?key=*");
+    if (geo_pattern.MatchesURL(request->url())) {
+      *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
+      return net::OK;
+    }
   }
   return net::OK;
 }
