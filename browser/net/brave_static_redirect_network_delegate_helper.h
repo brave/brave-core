@@ -17,6 +17,7 @@ class URLRequest;
 namespace brave {
 
 int OnBeforeURLRequest_StaticRedirectWork(
+    bool is_system_check,
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
