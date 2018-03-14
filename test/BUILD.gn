@@ -27,7 +27,7 @@ static_library("brave_test_support_unit") {
 
 test("brave_unit_tests") {
   sources = [
-    "../utility/importer/chrome_importer_unittest.cc",
+    # Add source files containing test definitions here
   ]
 
   data = [
