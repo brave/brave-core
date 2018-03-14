@@ -5,6 +5,7 @@
 import * as React from 'react'
 import { Grid, Column, BrowserText } from 'brave-ui'
 import { BlockOptions } from '../../types/other/blockTypes'
+import { getMessage } from '../../background/api/localeAPI'
 
 export interface Props {
   braveShields: BlockOptions
@@ -51,7 +52,7 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
           size={10}
           verticalAlign='center'
         >
-          Ads and Trackers Blocked
+          <BrowserText text={getMessage('adsTrackersBlocked')} />
         </Column>
 
         <Column align='flex-end' size={2}>
