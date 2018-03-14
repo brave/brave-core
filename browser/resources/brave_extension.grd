@@ -10,15 +10,15 @@
   </outputs>
   <release seq="1">
     <includes>
-      <include name="IDR_BRAVE_EXTENSON_SHIELDS_BUNDLE_JS" file="${root_gen_dir}/brave_extension/js/braveShieldsPanel.bundle.js" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_BACKGROUND_BUNDLE_JS" file="${root_gen_dir}/brave_extension/js/background.bundle.js" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_ICON_16_PNG" file="${root_gen_dir}/brave_extension/img/icon-16.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_ICON_48_PNG" file="${root_gen_dir}/brave_extension/img/icon-48.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_ICON_128_PNG" file="${root_gen_dir}/brave_extension/img/icon-128.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_BACKGROUND_HTML" file="${root_gen_dir}/brave_extension/background.html" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_EN_US_MESSAGES_JSON" file="${root_gen_dir}/brave_extension/_locales/en_US/messages.json" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_BRAVE_SHIELDS_HTML" file="${root_gen_dir}/brave_extension/braveShieldsPanel.html" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_BRAVELIZER_JS" file="${root_gen_dir}/brave_extension/bravelizer.css" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_SHIELDS_BUNDLE_JS" file="brave_extension/js/braveShieldsPanel.bundle.js" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_BACKGROUND_BUNDLE_JS" file="brave_extension/js/background.bundle.js" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_16_PNG" file="brave_extension/img/icon-16.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_48_PNG" file="brave_extension/img/icon-48.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_128_PNG" file="brave_extension/img/icon-128.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_BACKGROUND_HTML" file="brave_extension/background.html" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_EN_US_MESSAGES_JSON" file="brave_extension/_locales/en_US/messages.json" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_BRAVE_SHIELDS_HTML" file="brave_extension/braveShieldsPanel.html" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_BRAVELIZER_JS" file="brave_extension/bravelizer.css" type="BINDATA" />
     </includes>
   </release>
 </grit>
