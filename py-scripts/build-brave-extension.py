@@ -19,7 +19,7 @@ def main():
   os.chdir(brave_extension_dir)
   build_extension('.')
   build_dir_path  = os.path.join(brave_extension_dir, 'build')
-  copy_output(build_dir_path, brave_extension_gen_dir)
+  copy_output(build_dir_path, brave_extension_browser_resources_dir)
 
   brave_out_dir = sys.argv[2]
   locales_src_dir_path = brave_extension_browser_resources_dir;
