@@ -1,0 +1,16 @@
+diff --git a/extensions/browser/extension_prefs.cc b/extensions/browser/extension_prefs.cc
+index cafc90ed44e2ff5d6c844fbea89798684909c268..7ee4032871bfd6e37146ee71514eee98a14f8882 100644
+--- a/extensions/browser/extension_prefs.cc
++++ b/extensions/browser/extension_prefs.cc
+@@ -1111,6 +1111,11 @@ void ExtensionPrefs::OnExtensionUninstalled(const std::string& extension_id,
+   }
+ }
+ 
++void ExtensionPrefs::NotifyExtensionPrefsLoaded(const std::string& extension_id) {
++  for (auto& observer : observer_list_)
++    observer.OnExtensionPrefsLoaded(extension_id, this);
++}
++
+ void ExtensionPrefs::SetExtensionEnabled(const std::string& extension_id) {
+   UpdateExtensionPref(extension_id, kPrefState,
+                       std::make_unique<base::Value>(Extension::ENABLED));

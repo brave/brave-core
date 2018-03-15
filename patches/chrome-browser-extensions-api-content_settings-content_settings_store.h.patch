@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/extensions/api/content_settings/content_settings_store.h b/chrome/browser/extensions/api/content_settings/content_settings_store.h
+index 3a9033a4747026713e1016ec07743af0f6081ff5..8b5d12c3efd2c2920ec968e96b3812f20017976b 100644
+--- a/chrome/browser/extensions/api/content_settings/content_settings_store.h
++++ b/chrome/browser/extensions/api/content_settings/content_settings_store.h
+@@ -71,7 +71,8 @@ class ContentSettingsStore
+       ContentSettingsType type,
+       const content_settings::ResourceIdentifier& identifier,
+       ContentSetting setting,
+-      ExtensionPrefsScope scope);
++      ExtensionPrefsScope scope,
++      bool notify = true);
+ 
+   // Clears all contents settings set by the extension |ext_id|.
+   void ClearContentSettingsForExtension(const std::string& ext_id,

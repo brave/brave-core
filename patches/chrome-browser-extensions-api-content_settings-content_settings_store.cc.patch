@@ -1,0 +1,55 @@
+diff --git a/chrome/browser/extensions/api/content_settings/content_settings_store.cc b/chrome/browser/extensions/api/content_settings/content_settings_store.cc
+index d3574455ee93e9a5241591bdca9234df2707d328..60d79ff619c1e8c701abc2bfa5032d7b5b50b77a 100644
+--- a/chrome/browser/extensions/api/content_settings/content_settings_store.cc
++++ b/chrome/browser/extensions/api/content_settings/content_settings_store.cc
+@@ -102,7 +102,8 @@ void ContentSettingsStore::SetExtensionContentSetting(
+     ContentSettingsType type,
+     const content_settings::ResourceIdentifier& identifier,
+     ContentSetting setting,
+-    ExtensionPrefsScope scope) {
++    ExtensionPrefsScope scope,
++    bool notify) {
+   {
+     base::AutoLock lock(lock_);
+     OriginIdentifierValueMap* map = GetValueMap(ext_id, scope);
+@@ -115,6 +116,17 @@ void ContentSettingsStore::SetExtensionContentSetting(
+     }
+   }
+ 
++  // For SetExtensionContentSettingFromList use case, we delay the notification
++  // after the values in the list from extension_prefs are all stored in the
++  // content setting store. The delay of notification is needed because the
++  // values saved in extension_prefs will be overwritten by the one saved in
++  // content setting store in PreferenceAPI::OnContentSettingChanged. Without
++  // the delay, only the first entry in the list could be saved into content
++  // setting store.
++  if (!notify) {
++    return;
++  }
++
+   // Send notification that content settings changed. (Note: This is responsible
+   // for updating the pref store, so cannot be skipped even if the setting would
+   // be masked by another extension.)
+@@ -295,6 +307,7 @@ void ContentSettingsStore::SetExtensionContentSettingFromList(
+     const std::string& extension_id,
+     const base::ListValue* list,
+     ExtensionPrefsScope scope) {
++  if (list->GetList().empty()) return;
+   for (const auto& value : *list) {
+     const base::DictionaryValue* dict = nullptr;
+     if (!value.GetAsDictionary(&dict)) {
+@@ -349,8 +362,13 @@ void ContentSettingsStore::SetExtensionContentSettingFromList(
+                                content_settings_type,
+                                resource_identifier,
+                                setting,
+-                               scope);
++                               scope,
++                               false); // delay notifications
+   }
++
++  // Send a single notification for the entire list.
++  NotifyOfContentSettingChanged(extension_id,
++                                scope != kExtensionPrefsScopeRegular);
+ }
+ 
+ void ContentSettingsStore::AddObserver(Observer* observer) {

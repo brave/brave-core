@@ -1,0 +1,13 @@
+diff --git a/extensions/browser/extension_prefs.h b/extensions/browser/extension_prefs.h
+index 0f921039ce0e9b24bc939105182645214beac8c3..3e30761818dff8690a311e4200558cc88a482454 100644
+--- a/extensions/browser/extension_prefs.h
++++ b/extensions/browser/extension_prefs.h
+@@ -210,6 +210,8 @@ class ExtensionPrefs : public ExtensionScopedPrefs, public KeyedService {
+                               const Manifest::Location& location,
+                               bool external_uninstall);
+ 
++  void NotifyExtensionPrefsLoaded(const std::string& extension_id);
++
+   // Sets the extension's state to enabled and clears disable reasons.
+   void SetExtensionEnabled(const std::string& extension_id);
+ 

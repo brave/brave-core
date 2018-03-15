@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_service.cc b/chrome/browser/extensions/extension_service.cc
-index 9410c6daeabccba17d72244f2395c150aa84283a..9bece6bbc64ee01befe7ca8fb0a83a6f5e1d8ad8 100644
+index 9410c6daeabccba17d72244f2395c150aa84283a..b856581709007fbd51f31cc4ad988a0a5b782930 100644
 --- a/chrome/browser/extensions/extension_service.cc
 +++ b/chrome/browser/extensions/extension_service.cc
 @@ -28,6 +28,7 @@
@@ -19,7 +19,7 @@ index 9410c6daeabccba17d72244f2395c150aa84283a..9bece6bbc64ee01befe7ca8fb0a83a6f
                                        profile->GetPrefs(),
                                        g_browser_process->local_state(),
                                        profile));
-@@ -1374,6 +1375,19 @@ void ExtensionService::AddComponentExtension(const Extension* extension) {
+@@ -1374,6 +1375,22 @@ void ExtensionService::AddComponentExtension(const Extension* extension) {
    }
  
    AddExtension(extension);
@@ -35,6 +35,9 @@ index 9410c6daeabccba17d72244f2395c150aa84283a..9bece6bbc64ee01befe7ca8fb0a83a6f
 +                                         extensions::kInstallFlagNone,
 +                                         std::string(),
 +                                         base::nullopt);
++  // Trigger ContentSettingsService::OnExtensionPrefsLoaded to populate pref
++  // values into content setting store.
++  extension_prefs_->NotifyExtensionPrefsLoaded(extension->id());
 +#endif
  }
  
