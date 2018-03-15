@@ -4,6 +4,8 @@ source_set("common") {
     "brave_paths.h",
     "common_message_generator.cc",
     "common_message_generator.h",
+    "importer/chrome_importer_utils.cc",
+    "importer/chrome_importer_utils.h",
     "pref_names.cc",
     "pref_names.h",
     "resource_bundle_helper.cc",
@@ -11,8 +13,27 @@ source_set("common") {
     "webui_url_constants.cc",
     "webui_url_constants.h",
   ]
+
   deps = [
     "extensions/api",
     "//brave/chromium_src:common",
   ]
+
+  if (is_mac) {
+    sources += [
+      "importer/chrome_importer_utils_mac.mm",
+    ]
+  }
+
+  if (is_linux) {
+    sources += [
+      "importer/chrome_importer_utils_linux.cc",
+    ]
+  }
+
+  if (is_win) {
+    sources += [
+      "importer/chrome_importer_utils_win.cc",
+    ]
+  }
 }

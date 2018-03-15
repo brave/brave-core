@@ -27,7 +27,9 @@ static_library("brave_test_support_unit") {
 
 test("brave_unit_tests") {
   sources = [
-    # Add source files containing test definitions here
+    "//chrome/common/importer/mock_importer_bridge.cc",
+    "//chrome/common/importer/mock_importer_bridge.h",
+    "../utility/importer/chrome_importer_unittest.cc",
   ]
 
   data = [

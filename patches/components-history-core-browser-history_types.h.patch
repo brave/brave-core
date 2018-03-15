@@ -1,0 +1,12 @@
+diff --git a/components/history/core/browser/history_types.h b/components/history/core/browser/history_types.h
+index 4f9c2cd6c6c27cff439e80e874832bb85d9a621f..5995fcd74826c8a755d934936798edd05f3fcb4e 100644
+--- a/components/history/core/browser/history_types.h
++++ b/components/history/core/browser/history_types.h
+@@ -55,6 +55,7 @@ enum VisitSource {
+   SOURCE_FIREFOX_IMPORTED = 3,
+   SOURCE_IE_IMPORTED = 4,
+   SOURCE_SAFARI_IMPORTED = 5,
++  SOURCE_CHROME_IMPORTED = 6,
+ };
+ 
+ typedef int64_t VisitID;
