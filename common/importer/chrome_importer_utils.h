@@ -16,6 +16,10 @@ class ListValue;
 }
 
 base::FilePath GetChromeUserDataFolder();
+#if !defined(OS_LINUX)
+base::FilePath GetCanaryUserDataFolder();
+#endif
+base::FilePath GetChromiumUserDataFolder();
 
 base::ListValue* GetChromeSourceProfiles(
   const base::FilePath& user_data_folder);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index 3bf47fa746e2a417f89201f3e3800d8639f2e323..5764d1dd9fd9b83a313fe2cfdac5c293cde21af8 100644
+index 3bf47fa746e2a417f89201f3e3800d8639f2e323..122e9daf552834db4d41c77a320332305320696b 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
 @@ -7,9 +7,12 @@
@@ -15,7 +15,7 @@ index 3bf47fa746e2a417f89201f3e3800d8639f2e323..5764d1dd9fd9b83a313fe2cfdac5c293
  #include "build/build_config.h"
  #include "chrome/browser/shell_integration.h"
  #include "chrome/common/importer/firefox_importer_utils.h"
-@@ -124,6 +127,45 @@ void DetectFirefoxProfiles(const std::string locale,
+@@ -124,6 +127,61 @@ void DetectFirefoxProfiles(const std::string locale,
    profiles->push_back(firefox);
  }
  
@@ -56,27 +56,46 @@ index 3bf47fa746e2a417f89201f3e3800d8639f2e323..5764d1dd9fd9b83a313fe2cfdac5c293
 +  base::ListValue* chrome_profiles = GetChromeSourceProfiles(chrome_user_data_folder);
 +  std::string brand_chrome("Chrome ");
 +  AddChromeToProfiles(profiles, chrome_profiles, chrome_user_data_folder, brand_chrome);
++
++#if !defined(OS_LINUX)
++  base::FilePath canary_user_data_folder = GetCanaryUserDataFolder();
++  base::ListValue* canary_profiles =
++    GetChromeSourceProfiles(canary_user_data_folder);
++  std::string brandCanary("Chrome Canary ");
++  AddChromeToProfiles(profiles, canary_profiles, canary_user_data_folder,
++                      brandCanary);
++#endif
++
++  base::FilePath chromium_user_data_folder = GetChromiumUserDataFolder();
++  base::ListValue* chromium_profiles =
++    GetChromeSourceProfiles(chromium_user_data_folder);
++  std::string brandChromium("Chromium ");
++  AddChromeToProfiles(profiles, chromium_profiles, chromium_user_data_folder,
++                      brandChromium);
 +}
 +
  std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
      const std::string& locale,
      bool include_interactive_profiles) {
-@@ -138,6 +180,8 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+@@ -137,20 +195,30 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+   if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
      DetectBuiltinWindowsProfiles(&profiles);
-   } else {
-+    // TODO: Add another branch to check if Chrome is default browser and order imports accordingly
 +    DetectChromeProfiles(&profiles);
+   } else {
      DetectBuiltinWindowsProfiles(&profiles);
      DetectFirefoxProfiles(locale, &profiles);
++    DetectChromeProfiles(&profiles);
    }
-@@ -146,11 +190,18 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+ #elif defined(OS_MACOSX)
+   if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
      DetectSafariProfiles(&profiles);
-   } else {
 +    DetectChromeProfiles(&profiles);
+   } else {
      DetectSafariProfiles(&profiles);
      DetectFirefoxProfiles(locale, &profiles);
++    DetectChromeProfiles(&profiles);
    }
  #else
 -  DetectFirefoxProfiles(locale, &profiles);
