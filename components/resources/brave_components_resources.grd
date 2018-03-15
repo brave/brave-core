@@ -70,6 +70,7 @@
 
       <!-- Browser resrouces -->
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
+      <include name="IDR_SITE_HACKS_EXTENSION" file="../../vendor/site-hacks-extension/manifest.json" type="BINDATA" />
 
       <!-- WebUI payments resrouces -->
       <include name="IDR_BRAVE_PAYMENTS_HTML" file="../brave_payments_ui/brave_payments.html" type="BINDATA" />

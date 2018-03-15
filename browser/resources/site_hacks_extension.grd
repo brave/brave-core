@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit base_dir="." latest_public_release="0" current_release="1" output_all_resource_defines="true">
+  <outputs>
+    <output filename="site_hacks_extension.pak" type="data_package" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <include name="IDR_SITE_HACKS_EXTENSION_JS" file="../../vendor/site-hacks-extension/src/background.js" type="BINDATA" />
+    </includes>
+  </release>
+</grit>

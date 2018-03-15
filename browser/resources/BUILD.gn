@@ -9,7 +9,6 @@ grit("brave_extension_grit") {
     "root_gen_dir=" + rebase_path(root_gen_dir, "."),
   ]
 
-  # output_name = "brave_components_resources_new"
   outputs = [
     "grit/brave_extension.h",
     "grit/brave_extension_resources_map.cc",
@@ -26,3 +25,19 @@ grit("brave_extension_grit") {
   resource_ids = ""
 }
 
+grit("site_hacks_extension_grit") {
+  source = "site_hacks_extension.grd"
+
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, "."),
+  ]
+
+  outputs = [
+    "site_hacks_extension.pak",
+  ]
+
+  output_dir = "$target_gen_dir"
+  # Empty string means use value from the grit element
+  resource_ids = ""
+}

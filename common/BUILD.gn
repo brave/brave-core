@@ -4,6 +4,8 @@ source_set("common") {
     "brave_paths.h",
     "common_message_generator.cc",
     "common_message_generator.h",
+    "network_constants.cc",
+    "network_constants.h",
     "pref_names.cc",
     "pref_names.h",
     "resource_bundle_helper.cc",
