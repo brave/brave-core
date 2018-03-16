@@ -14,10 +14,12 @@ export interface Props {
   ads: BlockOptions
   trackers: BlockOptions
   javascript: BlockOptions
+  fingerprinting: BlockOptions
   blockAdsTrackers: shieldActions.BlockAdsTrackers
   controlsToggled: shieldActions.ControlsToggled
   httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
   javascriptToggled: shieldActions.JavascriptToggled
+  fingerprintingToggled: shieldActions.FingerprintingToggled
 }
 
 export default class BraveShieldsControls extends React.Component<Props, object> {
@@ -28,6 +30,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
     this.onToggleControls = this.onToggleControls.bind(this)
     this.onToggleHTTPSEverywhere = this.onToggleHTTPSEverywhere.bind(this)
     this.onToggleJavaScript = this.onToggleJavaScript.bind(this)
+    this.onToggleFingerprinting = this.onToggleFingerprinting.bind(this)
   }
 
   onChangeAdControl (e: HTMLSelectElement) {
@@ -50,8 +53,12 @@ export default class BraveShieldsControls extends React.Component<Props, object>
     this.props.javascriptToggled()
   }
 
+  onToggleFingerprinting () {
+    this.props.fingerprintingToggled()
+  }
+
   render () {
-    const { braveShields, ads, trackers, controlsOpen, httpUpgradableResources, javascript } = this.props
+    const { braveShields, ads, trackers, controlsOpen, httpUpgradableResources, javascript, fingerprinting } = this.props
     return (
       <Grid
         id='braveShieldsControls'
@@ -117,6 +124,8 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                   id='fingerprintingProtection'
                   disabled={braveShields === 'block'}
                   rightText='Fingerprinting Protection'
+                  checked={braveShields !== 'block' && fingerprinting === 'block'}
+                  onChange={this.onToggleFingerprinting}
                 />
               </Column>
               <Column>

@@ -11,6 +11,7 @@ export interface ShieldDetails {
   trackers: BlockOptions
   httpUpgradableResources: BlockOptions
   javascript: BlockOptions
+  fingerprinting: BlockOptions
   origin: string
   hostname: string
 }
@@ -81,6 +82,14 @@ export interface JavascriptToggled {
   (): JavascriptToggledReturn
 }
 
+interface FingerprintingToggledReturn {
+  type: types.FINGERPRINTING_TOGGLED
+}
+
+export interface FingerprintingToggled {
+  (): FingerprintingToggledReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -88,4 +97,5 @@ export type shieldPanelActions =
   BlockAdsTrackersReturn |
   ControlsToggledReturn |
   HttpsEverywhereToggledReturn |
-  JavascriptToggledReturn
+  JavascriptToggledReturn |
+  FingerprintingToggledReturn

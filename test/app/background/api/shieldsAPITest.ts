@@ -44,6 +44,7 @@ describe('Shields API', () => {
           httpUpgradableResources: 'block',
           javascript: 'block',
           braveShields: 'block',
+          fingerprinting: 'block',
           id: 5
         })
         cb()
@@ -97,7 +98,8 @@ describe('Shields API', () => {
         ads: 'block',
         trackers: 'block',
         httpUpgradableResources: 'block',
-        javascript: 'block'
+        javascript: 'block',
+        fingerprinting: 'block'
       }
 
       this.p
@@ -218,6 +220,34 @@ describe('Shields API', () => {
       assert.equal(this.spy.getCall(0).args.length, 1)
     })
 
+    it('resolves the returned promise', function (cb) {
+      this.p
+        .then(cb)
+        .catch((e: Error) => {
+          console.error(e.toString())
+        })
+    })
+  })
+
+  describe('setAllowFingerprinting', function () {
+    before(function () {
+      this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
+      this.p = shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
+    })
+    after(function () {
+      this.spy.restore()
+    })
+    it('calls chrome.contentSettings.plugins with the correct args', function () {
+      const arg0 = this.spy.getCall(0).args[0]
+      assert.deepEqual(arg0, {
+        primaryPattern: 'https://www.brave.com/*',
+        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING },
+        setting: 'block'
+      })
+    })
+    it('passes only 1 arg to chrome.contentSettings.plugins', function () {
+      assert.equal(this.spy.getCall(0).args.length, 1)
+    })
     it('resolves the returned promise', function (cb) {
       this.p
         .then(cb)

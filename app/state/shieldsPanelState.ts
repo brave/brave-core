@@ -31,11 +31,13 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
     trackersBlocked: 0,
     httpsRedirected: 0,
     javascriptBlocked: 0,
+    fingerprintingBlocked: 0,
     braveShields: 'allow',
     ads: 'allow',
     trackers: 'allow',
     httpUpgradableResources: 'allow',
     javascript: 'allow',
+    fingerprinting: 'allow',
     controlsOpen: true
   },
     ...tabs[tabId],
@@ -47,7 +49,7 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
 
 export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, tabId, blockType) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0 }, ...tabs[tabId] }
+  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0 }, ...tabs[tabId] }
   if (blockType === 'ads') {
     tabs[tabId].adsBlocked++
   } else if (blockType === 'trackers') {
@@ -56,16 +58,19 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     tabs[tabId].httpsRedirected++
   } else if (blockType === 'javascript') {
     tabs[tabId].javascriptBlocked++
+  } else if (blockType === 'fingerprinting') {
+    tabs[tabId].fingerprintingBlocked++
   }
   return { ...state, tabs }
 }
 
 export const resetBlockingStats: shieldState.ResetBlockingStats = (state, tabId) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...tabs[tabId], ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0 } }
+  tabs[tabId] = { ...tabs[tabId], ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0 } }
   tabs[tabId].adsBlocked = 0
   tabs[tabId].trackersBlocked = 0
   tabs[tabId].httpsRedirected = 0
   tabs[tabId].javascriptBlocked = 0
+  tabs[tabId].fingerprintingBlocked = 0
   return { ...state, tabs }
 }

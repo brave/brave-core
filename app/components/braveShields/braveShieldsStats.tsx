@@ -12,6 +12,7 @@ export interface Props {
   trackersBlocked: number
   httpsRedirected: number
   javascriptBlocked: number
+  fingerprintingBlocked: number
 }
 
 export default class BraveShieldsStats extends React.Component<Props, object> {
@@ -26,6 +27,10 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
 
   get javascriptBlocked (): number {
     return this.props.javascriptBlocked
+  }
+
+  get fingerprintingBlocked (): number {
+    return this.props.fingerprintingBlocked
   }
 
   render () {
@@ -77,7 +82,7 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
         </Column>
 
         <Column align='flex-end' size={2}>
-          <BrowserText noSelect={true} text='0' fontSize='26px' color='#ffc000' />
+          <BrowserText noSelect={true} text={this.fingerprintingBlocked} fontSize='26px' color='#ffc000' />
         </Column>
         <Column
           id='fingerPrintingProtectionStats'

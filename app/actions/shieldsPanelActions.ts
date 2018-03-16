@@ -51,3 +51,9 @@ export const javascriptToggled: actions.JavascriptToggled = () => {
     type: types.JAVASCRIPT_TOGGLED
   }
 }
+
+export const fingerprintingToggled: actions.FingerprintingToggled = () => {
+  return {
+    type: types.FINGERPRINTING_TOGGLED
+  }
+}

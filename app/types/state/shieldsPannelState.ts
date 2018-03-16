@@ -19,6 +19,8 @@ export interface Tab {
   trackers: BlockOptions
   trackersBlocked: number
   url: string
+  fingerprinting: BlockOptions
+  fingerprintingBlocked: number
 }
 
 export interface Tabs {

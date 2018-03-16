@@ -19,7 +19,8 @@ describe('shieldsPanelActions', () => {
       origin: 'https://www.brave.com',
       hostname: 'www.brave.com',
       id: 1,
-      javascript: 'allow'
+      javascript: 'allow',
+      fingerprinting: 'allow'
     }
     assert.deepEqual(actions.shieldsPanelDataUpdated(details), {
       type: types.SHIELDS_PANEL_DATA_UPDATED,
@@ -71,6 +72,12 @@ describe('shieldsPanelActions', () => {
     assert.deepEqual(actions.controlsToggled(setting), {
       type: types.CONTROLS_TOGGLED,
       setting
+    })
+  })
+
+  it('fingerprintingToggled action', () => {
+    assert.deepEqual(actions.fingerprintingToggled(), {
+      type: types.FINGERPRINTING_TOGGLED
     })
   })
 })
