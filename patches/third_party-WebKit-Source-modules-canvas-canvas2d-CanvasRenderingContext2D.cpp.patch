@@ -1,5 +1,5 @@
 diff --git a/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp b/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp
-index 94de909f954d2f4638a89aa37575e39626989ae8..76a8211b23d69ef4efe070baa2d7153af82bc355 100644
+index 94de909f954d2f4638a89aa37575e39626989ae8..6760f73fc6dfda85c060e48521fa901b654befad 100644
 --- a/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp
 +++ b/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp
 @@ -36,6 +36,7 @@
@@ -20,56 +20,3 @@ index 94de909f954d2f4638a89aa37575e39626989ae8..76a8211b23d69ef4efe070baa2d7153a
    canvas()->GetDocument().UpdateStyleAndLayoutTreeForNode(canvas());
  
    const Font& font = AccessFont();
-@@ -778,6 +782,52 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
-                              GetState().GetTextAlign(), text);
- }
- 
-+bool CanvasRenderingContext2D::isPointInPath(const double x,
-+                                             const double y,
-+                                             const String& winding_rule_string) {
-+  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame())) return false;
-+  return BaseRenderingContext2D::isPointInPath(x, y, winding_rule_string);
-+}
-+
-+bool CanvasRenderingContext2D::isPointInPath(Path2D* dom_path,
-+                                             const double x,
-+                                             const double y,
-+                                             const String& winding_rule_string) {
-+  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame())) return false;
-+  return BaseRenderingContext2D::isPointInPath(dom_path, x, y,
-+                                               winding_rule_string);
-+}
-+
-+bool CanvasRenderingContext2D::isPointInStroke(const double x, const double y) {
-+  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame())) return false;
-+  return BaseRenderingContext2D::isPointInStroke(x, y);
-+}
-+
-+bool CanvasRenderingContext2D::isPointInStroke(Path2D* dom_path,
-+                                               const double x,
-+                                               const double y) {
-+  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame())) return false;
-+  return BaseRenderingContext2D::isPointInStroke(dom_path, x, y);
-+}
-+
-+ImageData* CanvasRenderingContext2D::getImageData(
-+    int sx,
-+    int sy,
-+    int sw,
-+    int sh,
-+    ExceptionState& exception_state) {
-+  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame())) return nullptr;
-+  return BaseRenderingContext2D::getImageData(sx, sy, sw, sh, exception_state);
-+}
-+
-+const Vector<double>& CanvasRenderingContext2D::getLineDash() const {
-+  static const Vector<double> emptyVector;
-+  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame())) {
-+    return emptyVector;
-+  }
-+  return BaseRenderingContext2D::getLineDash();
-+}
-+
- void CanvasRenderingContext2D::DrawTextInternal(
-     const String& text,
-     double x,

@@ -1,0 +1,44 @@
+diff --git a/third_party/WebKit/Source/modules/canvas/canvas2d/BaseRenderingContext2D.h b/third_party/WebKit/Source/modules/canvas/canvas2d/BaseRenderingContext2D.h
+index a217c9778926db44c42b4abe2e9a40fa8dd78e3c..b884dd769b3b66340c89175ab41a31ffb002d694 100644
+--- a/third_party/WebKit/Source/modules/canvas/canvas2d/BaseRenderingContext2D.h
++++ b/third_party/WebKit/Source/modules/canvas/canvas2d/BaseRenderingContext2D.h
+@@ -57,7 +57,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
+   double miterLimit() const;
+   void setMiterLimit(double);
+ 
+-  const Vector<double>& getLineDash() const;
++  const Vector<double>& getLineDash(ScriptState*) const;
+   void setLineDash(const Vector<double>&);
+ 
+   double lineDashOffset() const;
+@@ -116,15 +116,17 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
+   void clip(const String& winding = "nonzero");
+   void clip(Path2D*, const String& winding = "nonzero");
+ 
+-  bool isPointInPath(const double x,
++  bool isPointInPath(ScriptState*,
++                     const double x,
+                      const double y,
+                      const String& winding = "nonzero");
+-  bool isPointInPath(Path2D*,
++  bool isPointInPath(ScriptState*,
++                     Path2D*,
+                      const double x,
+                      const double y,
+                      const String& winding = "nonzero");
+-  bool isPointInStroke(const double x, const double y);
+-  bool isPointInStroke(Path2D*, const double x, const double y);
++  bool isPointInStroke(ScriptState*, const double x, const double y);
++  bool isPointInStroke(ScriptState*, Path2D*, const double x, const double y);
+ 
+   void clearRect(double x, double y, double width, double height);
+   void fillRect(double x, double y, double width, double height);
+@@ -201,7 +203,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
+                              ImageDataColorSettings&,
+                              ExceptionState&) const;
+ 
+-  ImageData* getImageData(int sx, int sy, int sw, int sh, ExceptionState&);
++  ImageData* getImageData(ScriptState*, int sx, int sy, int sw, int sh, ExceptionState&);
+   void putImageData(ImageData*, int dx, int dy, ExceptionState&);
+   void putImageData(ImageData*,
+                     int dx,
