@@ -41,7 +41,7 @@ bool BraveContentSettingsObserver::AllowScriptFromSource(
   return allow;
 }
 
-void BraveContentSettingsObserver::BraveSpecificDidBlockFingerprinting(
+void BraveContentSettingsObserver::DidBlockFingerprinting(
     const base::string16& details) {
   Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
 }
@@ -62,8 +62,7 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   allow = allow || IsWhitelistedForContentSettings();
 
   if (!allow) {
-    BraveSpecificDidBlockFingerprinting(
-        base::UTF8ToUTF16(secondary_url.spec()));
+    DidBlockFingerprinting(base::UTF8ToUTF16(secondary_url.spec()));
   }
 
   return allow;

@@ -28,7 +28,7 @@ class BraveContentSettingsObserver
   void BraveSpecificDidBlockJavaScript(
     const base::string16& details);
 
-  void BraveSpecificDidBlockFingerprinting(
+  void DidBlockFingerprinting(
     const base::string16& details);
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsObserver);
