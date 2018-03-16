@@ -1,0 +1,22 @@
+diff --git a/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp b/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp
+index 94de909f954d2f4638a89aa37575e39626989ae8..6760f73fc6dfda85c060e48521fa901b654befad 100644
+--- a/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp
++++ b/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp
+@@ -36,6 +36,7 @@
+ #include "bindings/core/v8/ExceptionMessages.h"
+ #include "bindings/core/v8/ExceptionState.h"
+ #include "bindings/modules/v8/rendering_context.h"
++#include "brave/renderer/brave_content_settings_observer_helper.h"
+ #include "core/CSSPropertyNames.h"
+ #include "core/css/CSSFontSelector.h"
+ #include "core/css/CSSPropertyValueSet.h"
+@@ -763,6 +764,9 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
+   if (!canvas()->GetDocument().GetFrame())
+     return TextMetrics::Create();
+ 
++  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame()))
++    return TextMetrics::Create();
++
+   canvas()->GetDocument().UpdateStyleAndLayoutTreeForNode(canvas());
+ 
+   const Font& font = AccessFont();

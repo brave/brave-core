@@ -1,0 +1,15 @@
+diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
+index 991543e4c6f23831957909b5e60a143c1dd8f091..e40942011faa75a41c8cfaebad2439a172b48a24 100644
+--- a/components/content_settings/core/browser/content_settings_utils.cc
++++ b/components/content_settings/core/browser/content_settings_utils.cc
+@@ -143,6 +143,10 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
+   map->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_CLIENT_HINTS,
+                              ResourceIdentifier(),
+                              &(rules->client_hints_rules));
++  map->GetSettingsForOneType(
++      CONTENT_SETTINGS_TYPE_PLUGINS,
++      "fingerprinting",
++      &(rules->fingerprinting_rules));
+ }
+ 
+ bool IsMorePermissive(ContentSetting a, ContentSetting b) {

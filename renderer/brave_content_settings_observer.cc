@@ -9,6 +9,8 @@
 #include "content/public/renderer/render_frame.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/WebKit/public/platform/WebURL.h"
+#include "third_party/WebKit/public/web/WebDocument.h"
+#include "third_party/WebKit/public/web/WebLocalFrame.h"
 
 BraveContentSettingsObserver::BraveContentSettingsObserver(
     content::RenderFrame* render_frame,
@@ -39,3 +41,29 @@ bool BraveContentSettingsObserver::AllowScriptFromSource(
   return allow;
 }
 
+void BraveContentSettingsObserver::DidBlockFingerprinting(
+    const base::string16& details) {
+  Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
+}
+
+bool BraveContentSettingsObserver::AllowFingerprinting(
+    bool enabled_per_settings) {
+  if (!enabled_per_settings)
+    return false;
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  bool allow = true;
+  const GURL secondary_url(
+      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+  if (content_setting_rules_) {
+    ContentSetting setting = GetContentSettingFromRules(
+        content_setting_rules_->fingerprinting_rules, frame, secondary_url);
+    allow = setting != CONTENT_SETTING_BLOCK;
+  }
+  allow = allow || IsWhitelistedForContentSettings();
+
+  if (!allow) {
+    DidBlockFingerprinting(base::UTF8ToUTF16(secondary_url.spec()));
+  }
+
+  return allow;
+}

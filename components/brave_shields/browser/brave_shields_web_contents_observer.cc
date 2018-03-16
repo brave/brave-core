@@ -132,6 +132,8 @@ bool BraveShieldsWebContentsObserver::OnMessageReceived(
         message, render_frame_host)
     IPC_MESSAGE_HANDLER(BraveViewHostMsg_JavaScriptBlocked,
         OnJavaScriptBlockedWithDetail)
+    IPC_MESSAGE_HANDLER(BraveViewHostMsg_FingerprintingBlocked,
+        OnFingerprintingBlockedWithDetail)
     IPC_MESSAGE_UNHANDLED(handled = false)
   IPC_END_MESSAGE_MAP()
   return handled;
@@ -146,6 +148,18 @@ void BraveShieldsWebContentsObserver::OnJavaScriptBlockedWithDetail(
     return;
   }
   DispatchBlockedEventForWebContents(brave_shields::kJavaScript,
+      base::UTF16ToUTF8(details), web_contents);
+}
+
+void BraveShieldsWebContentsObserver::OnFingerprintingBlockedWithDetail(
+    RenderFrameHost* render_frame_host,
+    const base::string16& details) {
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!web_contents) {
+    return;
+  }
+  DispatchBlockedEventForWebContents(brave_shields::kFingerprinting,
       base::UTF16ToUTF8(details), web_contents);
 }
 

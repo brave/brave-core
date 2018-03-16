@@ -1,0 +1,22 @@
+diff --git a/third_party/WebKit/Source/core/svg/SVGTextContentElement.cpp b/third_party/WebKit/Source/core/svg/SVGTextContentElement.cpp
+index d8b1e5b163a7d1663ef692a2e5a3393711784b0d..d5762fb3b08e8acb51196bcae94849ec3d73874d 100644
+--- a/third_party/WebKit/Source/core/svg/SVGTextContentElement.cpp
++++ b/third_party/WebKit/Source/core/svg/SVGTextContentElement.cpp
+@@ -22,6 +22,7 @@
+ 
+ #include "bindings/core/v8/ExceptionMessages.h"
+ #include "bindings/core/v8/ExceptionState.h"
++#include "brave/renderer/brave_content_settings_observer_helper.h"
+ #include "core/CSSPropertyNames.h"
+ #include "core/CSSValueKeywords.h"
+ #include "core/editing/FrameSelection.h"
+@@ -103,6 +104,9 @@ unsigned SVGTextContentElement::getNumberOfChars() {
+ }
+ 
+ float SVGTextContentElement::getComputedTextLength() {
++  if (!AllowFingerprinting(GetDocument().GetFrame())) {
++    return 0.0f;
++  }
+   GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
+   return SVGTextQuery(GetLayoutObject()).TextLength();
+ }

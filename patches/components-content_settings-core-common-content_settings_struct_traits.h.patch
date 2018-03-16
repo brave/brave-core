@@ -1,0 +1,16 @@
+diff --git a/components/content_settings/core/common/content_settings_struct_traits.h b/components/content_settings/core/common/content_settings_struct_traits.h
+index f36bdde91be3f6d44f53fd042b707ec2b83b908e..ec7725fcdd2207323d7fc4a8c05b27d3bb961b16 100644
+--- a/components/content_settings/core/common/content_settings_struct_traits.h
++++ b/components/content_settings/core/common/content_settings_struct_traits.h
+@@ -141,6 +141,11 @@ struct StructTraits<
+     return r.client_hints_rules;
+   }
+ 
++  static const std::vector<ContentSettingPatternSource>& fingerprinting_rules(
++      const RendererContentSettingRules& r) {
++    return r.fingerprinting_rules;
++  }
++
+   static bool Read(
+       content_settings::mojom::RendererContentSettingRulesDataView data,
+       RendererContentSettingRules* out);

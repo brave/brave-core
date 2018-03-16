@@ -1,0 +1,22 @@
+diff --git a/third_party/WebKit/Source/core/svg/SVGPathElement.cpp b/third_party/WebKit/Source/core/svg/SVGPathElement.cpp
+index 0cd5644ddaf02669ed5bb452ee89d558ea6a6399..c0b86e4cbf9a7283ef3ff0b87ab9bd438f23dbc3 100644
+--- a/third_party/WebKit/Source/core/svg/SVGPathElement.cpp
++++ b/third_party/WebKit/Source/core/svg/SVGPathElement.cpp
+@@ -20,6 +20,7 @@
+ 
+ #include "core/svg/SVGPathElement.h"
+ 
++#include "brave/renderer/brave_content_settings_observer_helper.h"
+ #include "core/css/StyleChangeReason.h"
+ #include "core/layout/svg/LayoutSVGPath.h"
+ #include "core/svg/SVGMPathElement.h"
+@@ -65,6 +66,9 @@ Path SVGPathElement::AsPath() const {
+ }
+ 
+ float SVGPathElement::getTotalLength() {
++  if (!AllowFingerprinting(GetDocument().GetFrame())) {
++    return 0.0f;
++  }
+   GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
+   return SVGPathQuery(PathByteStream()).GetTotalLength();
+ }

@@ -1,0 +1,23 @@
+diff --git a/third_party/WebKit/Source/modules/mediastream/MediaDevices.cpp b/third_party/WebKit/Source/modules/mediastream/MediaDevices.cpp
+index 29675b0789e65a2e8520fc2185719065636a7bb3..edfb60c3f7636caee9888ceaea1d5e029a204854 100644
+--- a/third_party/WebKit/Source/modules/mediastream/MediaDevices.cpp
++++ b/third_party/WebKit/Source/modules/mediastream/MediaDevices.cpp
+@@ -6,6 +6,7 @@
+ 
+ #include "bindings/core/v8/ScriptPromise.h"
+ #include "bindings/core/v8/ScriptPromiseResolver.h"
++#include "brave/renderer/brave_content_settings_observer_helper.h"
+ #include "core/dom/DOMException.h"
+ #include "core/dom/Document.h"
+ #include "core/dom/ExceptionCode.h"
+@@ -88,6 +89,10 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state) {
+         DOMException::Create(kNotSupportedError, "Current frame is detached."));
+   }
+ 
++  if (!AllowFingerprinting(frame)) {
++    return ScriptPromise::CastUndefined(script_state);
++  }
++
+   ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
+   ScriptPromise promise = resolver->Promise();
+   requests_.insert(resolver);

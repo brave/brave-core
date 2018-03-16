@@ -23,7 +23,12 @@ class BraveContentSettingsObserver
   bool AllowScriptFromSource(bool enabled_per_settings,
       const blink::WebURL& script_url) override;
 
+  bool AllowFingerprinting(bool enabled_per_settings) override;
+
   void BraveSpecificDidBlockJavaScript(
+    const base::string16& details);
+
+  void DidBlockFingerprinting(
     const base::string16& details);
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsObserver);

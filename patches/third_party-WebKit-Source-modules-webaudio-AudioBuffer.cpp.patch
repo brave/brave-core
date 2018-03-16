@@ -1,0 +1,62 @@
+diff --git a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.cpp b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.cpp
+index c1eb9c51350e31e3b6c621372faaffbbd88809ae..86388d35a06be34e3dd1139044c10bdef27a07f8 100644
+--- a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.cpp
++++ b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.cpp
+@@ -30,12 +30,15 @@
+ 
+ #include "bindings/core/v8/ExceptionMessages.h"
+ #include "bindings/core/v8/ExceptionState.h"
++#include "brave/renderer/brave_content_settings_observer_helper.h"
+ #include "core/dom/ExceptionCode.h"
++#include "core/frame/LocalDOMWindow.h"
+ #include "modules/webaudio/AudioBufferOptions.h"
+ #include "modules/webaudio/BaseAudioContext.h"
+ #include "platform/audio/AudioBus.h"
+ #include "platform/audio/AudioFileReader.h"
+ #include "platform/audio/AudioUtilities.h"
++#include "platform/bindings/ScriptState.h"
+ #include "platform/wtf/typed_arrays/Float32Array.h"
+ 
+ namespace blink {
+@@ -220,8 +223,14 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
+ }
+ 
+ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
++    ScriptState* script_state,
+     unsigned channel_index,
+     ExceptionState& exception_state) {
++  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
++  if (window && !AllowFingerprinting(window->GetFrame())) {
++    return NotShared<DOMFloat32Array>(nullptr);
++  }
++
+   if (channel_index >= channels_.size()) {
+     exception_state.ThrowDOMException(
+         kIndexSizeError, "channel index (" + String::Number(channel_index) +
+@@ -240,16 +249,23 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
+   return NotShared<DOMFloat32Array>(channels_[channel_index].Get());
+ }
+ 
+-void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
++void AudioBuffer::copyFromChannel(ScriptState* script_state,
++                                  NotShared<DOMFloat32Array> destination,
+                                   long channel_number,
+                                   ExceptionState& exception_state) {
+-  return copyFromChannel(destination, channel_number, 0, exception_state);
++  return copyFromChannel(script_state, destination, channel_number, 0, exception_state);
+ }
+ 
+-void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
++void AudioBuffer::copyFromChannel(ScriptState* script_state,
++                                  NotShared<DOMFloat32Array> destination,
+                                   long channel_number,
+                                   unsigned long start_in_channel,
+                                   ExceptionState& exception_state) {
++  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
++  if (window && !AllowFingerprinting(window->GetFrame())) {
++    return;
++  }
++
+   if (channel_number < 0 ||
+       channel_number >= static_cast<long>(channels_.size())) {
+     exception_state.ThrowDOMException(

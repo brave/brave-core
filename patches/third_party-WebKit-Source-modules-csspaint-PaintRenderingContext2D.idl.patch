@@ -1,0 +1,28 @@
+diff --git a/third_party/WebKit/Source/modules/csspaint/PaintRenderingContext2D.idl b/third_party/WebKit/Source/modules/csspaint/PaintRenderingContext2D.idl
+index 9edfdb35bc6648b5ede702c90c7bebc99089fe4c..471c84b08feebba19f674445f153f1713ddaa8e6 100644
+--- a/third_party/WebKit/Source/modules/csspaint/PaintRenderingContext2D.idl
++++ b/third_party/WebKit/Source/modules/csspaint/PaintRenderingContext2D.idl
+@@ -57,10 +57,10 @@
+ 
+     void clip(optional CanvasFillRule winding);
+     void clip(Path2D path, optional CanvasFillRule winding);
+-    boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    boolean isPointInStroke(unrestricted double x, unrestricted double y);
+-    boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState] boolean isPointInStroke(unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
+ 
+     // drawing images
+     [CallWith=ScriptState, RaisesException] void drawImage(CanvasImageSource image, unrestricted double x, unrestricted double y);
+@@ -76,7 +76,7 @@
+ 
+     // dashed lines
+     void setLineDash(sequence<unrestricted double> dash);
+-    sequence<unrestricted double> getLineDash();
++    [CallWith=ScriptState] sequence<unrestricted double> getLineDash();
+     attribute unrestricted double lineDashOffset;
+ };
+ PaintRenderingContext2D implements CanvasPath;

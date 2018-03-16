@@ -1,0 +1,36 @@
+diff --git a/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.idl b/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.idl
+index b578065ce53224fa0f3f5ed9369dca8bc3a730ec..696b097bfaef3a8a42c4f3f72120d361f766fa1d 100644
+--- a/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.idl
++++ b/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.idl
+@@ -102,10 +102,10 @@ interface CanvasRenderingContext2D {
+     [RuntimeEnabled=ExperimentalCanvasFeatures] void scrollPathIntoView(optional Path2D path);
+     void clip(optional CanvasFillRule winding);
+     void clip(Path2D path, optional CanvasFillRule winding);
+-    boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    boolean isPointInStroke(unrestricted double x, unrestricted double y);
+-    boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState] boolean isPointInStroke(unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
+ 
+     // text (see also the CanvasDrawingStyles interface)
+     void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
+@@ -125,7 +125,7 @@ interface CanvasRenderingContext2D {
+     // pixel manipulation
+     [RaisesException] ImageData createImageData(ImageData imagedata);
+     [RaisesException] ImageData createImageData(long sw, long sh);
+-    [RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
++    [CallWith=ScriptState, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
+     [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
+     [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
+     
+@@ -148,6 +148,7 @@ interface CanvasRenderingContext2D {
+ 
+     // dashed lines
+     void setLineDash(sequence<unrestricted double> dash);
++    [CallWith=ScriptState]
+     sequence<unrestricted double> getLineDash();
+     attribute unrestricted double lineDashOffset;
+ 
