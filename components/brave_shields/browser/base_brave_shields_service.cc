@@ -54,7 +54,7 @@ void BaseBraveShieldsService::DownloadDATFile() {
 void BaseBraveShieldsService::DATFileResponse(bool success) {
   std::lock_guard<std::mutex> guard(init_mutex_);
   if (!success) {
-    LOG(ERROR) << "Could not download DAT file";
+    LOG(ERROR) << "Could not download DAT file: " << url_;
     return;
   }
 
