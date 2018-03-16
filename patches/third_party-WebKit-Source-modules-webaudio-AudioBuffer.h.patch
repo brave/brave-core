@@ -1,0 +1,32 @@
+diff --git a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.h b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.h
+index c4422b4951beb8ffa93093e2a9e8fecd7ceba242..82d1813805023d9ef8a34f7a180818c14eb1497e 100644
+--- a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.h
++++ b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.h
+@@ -41,6 +41,7 @@ namespace blink {
+ class AudioBus;
+ class AudioBufferOptions;
+ class ExceptionState;
++class ScriptState;
+ 
+ class MODULES_EXPORT AudioBuffer final : public ScriptWrappable {
+   DEFINE_WRAPPERTYPEINFO();
+@@ -81,13 +82,16 @@ class MODULES_EXPORT AudioBuffer final : public ScriptWrappable {
+ 
+   // Channel data access
+   unsigned numberOfChannels() const { return channels_.size(); }
+-  NotShared<DOMFloat32Array> getChannelData(unsigned channel_index,
++  NotShared<DOMFloat32Array> getChannelData(ScriptState*,
++                                            unsigned channel_index,
+                                             ExceptionState&);
+   NotShared<DOMFloat32Array> getChannelData(unsigned channel_index);
+-  void copyFromChannel(NotShared<DOMFloat32Array>,
++  void copyFromChannel(ScriptState*,
++                       NotShared<DOMFloat32Array>,
+                        long channel_number,
+                        ExceptionState&);
+-  void copyFromChannel(NotShared<DOMFloat32Array>,
++  void copyFromChannel(ScriptState*,
++                       NotShared<DOMFloat32Array>,
+                        long channel_number,
+                        unsigned long start_in_channel,
+                        ExceptionState&);
