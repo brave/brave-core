@@ -21,11 +21,6 @@ def main():
   build_dir_path  = os.path.join(brave_extension_dir, 'build')
   copy_output(build_dir_path, brave_extension_browser_resources_dir)
 
-  brave_out_dir = sys.argv[2]
-  locales_src_dir_path = brave_extension_browser_resources_dir;
-  locales_dest_dir_path = os.path.join(brave_out_dir, 'resources', 'brave_extension');
-  copy_locales(locales_src_dir_path, locales_dest_dir_path)
-
 def build_extension(dirname, env=None):
   if env is None:
     env = os.environ.copy()
@@ -47,14 +42,6 @@ def copy_output(build_dir, output_dir):
   except:
     pass
   shutil.copytree('build', output_dir)
-
-def copy_locales(locales_src_dir_path, locales_dest_dir_path):
-  try:
-    locales_dest_path = os.path.join(locales_dest_dir_path, '_locales')
-    shutil.rmtree(locales_dest_path)
-  except:
-    pass
-  shutil.copytree(os.path.join(locales_src_dir_path, '_locales'), locales_dest_path)
 
 if __name__ == '__main__':
   sys.exit(main())
