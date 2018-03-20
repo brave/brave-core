@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_paths_mac.mm b/chrome/common/chrome_paths_mac.mm
-index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..f231ca44af970aed896f3c62e0a39fc6e61d0b72 100644
+index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..adf92a55f199078ad500fa7baaacd862fae05aa2 100644
 --- a/chrome/common/chrome_paths_mac.mm
 +++ b/chrome/common/chrome_paths_mac.mm
 @@ -58,8 +58,10 @@
@@ -7,10 +7,10 @@ index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..f231ca44af970aed896f3c62e0a39fc6
  #if defined(GOOGLE_CHROME_BUILD)
      product_dir_name = "Google/Chrome";
 +#elif defined(OFFICIAL_BUILD)
-+    product_dir_name = "Brave";
++    product_dir_name = "Brave-Browser";
  #else
 -    product_dir_name = "Chromium";
-+    product_dir_name = "Brave-Development";
++    product_dir_name = "Brave-Browser-Development";
  #endif
    }
  
