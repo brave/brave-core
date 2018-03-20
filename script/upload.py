@@ -18,7 +18,7 @@ from lib.util import execute, parse_version, scoped_cwd, s3put
 from lib.github import GitHub
 
 
-ANTIMUON_REPO = "brave/brave"
+ANTIMUON_REPO = "brave/brave-browser-builds"
 
 DIST_NAME = get_zip_name(project_name(), get_antimuon_version())
 SYMBOLS_NAME = get_zip_name(project_name(), get_antimuon_version(), 'symbols')
