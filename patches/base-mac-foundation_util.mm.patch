@@ -1,0 +1,13 @@
+diff --git a/base/mac/foundation_util.mm b/base/mac/foundation_util.mm
+index eb8284ee58fef43df064d3365dd1b0e8a65c9f49..7b4eff2dd1d8ef3f3889dd71504f7955172fcb99 100644
+--- a/base/mac/foundation_util.mm
++++ b/base/mac/foundation_util.mm
+@@ -250,7 +250,7 @@ void NSObjectRelease(void* obj) {
+ #if defined(GOOGLE_CHROME_BUILD)
+   return "com.google.Chrome";
+ #else
+-  return "org.chromium.Chromium";
++  return "org.brave.Brave";
+ #endif
+ }
+ 
