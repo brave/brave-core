@@ -6,6 +6,7 @@
 #include "bat_client.h"
 #include "bat_publisher.h"
 #include "base/bind.h"
+#include "base/guid.h"
 
 #include "logging.h"
 
@@ -34,6 +35,7 @@ namespace ledger {
     if (!bat_client_) {
       bat_client_ = new BatClient();
     }
+    LOG(ERROR) << "!!!here2";
     bat_client_->loadStateOrRegisterPersona();
   }
 
@@ -101,12 +103,12 @@ namespace ledger {
 
       return;
     }
-    //to do debug
-    LOG(ERROR) << "!!!getting Balance";
-    getBalance();
-    //
     uint64_t publisherTimestamp = bat_client_->getPublisherTimestamp();
     if (publisherTimestamp <= verifiedTimestamp) {
+      //to do debug
+      LOG(ERROR) << "!!!reconcile";
+      run(0);
+      //
       return;
     }
     FETCH_CALLBACK_EXTRA_DATA_ST extraData;
@@ -131,6 +133,10 @@ namespace ledger {
       return;
     }
     bat_publisher_->setPublisherTimestampVerified(extraData.string1, extraData.value1, verified);
+    //to do debug
+    LOG(ERROR) << "!!!reconcile";
+    run(0);
+    //
   }
 
   void Ledger::favIconUpdated(const std::string& publisher, const std::string& favicon_url) {
@@ -239,6 +245,18 @@ namespace ledger {
       return "";
     }
     return bat_client_->getLTCAddress();
+  }
+
+  void Ledger::run(const uint64_t& delayTime) {
+    // That function should be triggeres from the main process periodically to make payments
+    if (!isBatClientExist()) {
+      assert(false);
+
+      return;
+    }
+    if (bat_client_->isReadyForReconcile()) {
+      bat_client_->reconcile(base::GenerateGUID());
+    }
   }
 
 }

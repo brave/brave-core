@@ -40,7 +40,8 @@ public:
 
   void run(const std::string& url, BatHelper::FetchCallback callback,
     const std::vector<std::string>& headers, const std::string& content,
-    const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+    const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
+    const URL_METHOD& method);
 
   void OnURLFetchComplete(const net::URLFetcher* source) final;
   void OnURLFetchDownloadProgress(const net::URLFetcher* source,
@@ -57,7 +58,8 @@ public:
 private:
   void runOnThread(const std::string& url, BatHelper::FetchCallback callback,
     const std::vector<std::string>& headers, const std::string& content,
-    const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+    const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
+    const URL_METHOD& method);
 
   std::unique_ptr<net::UploadDataStream> CreateUploadStream(const std::string& stream);
 

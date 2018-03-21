@@ -38,13 +38,27 @@ namespace bat_client {
 
   void BatClientWebRequest::runOnThread(const std::string& url,
         BatHelper::FetchCallback callback, const std::vector<std::string>& headers,
-        const std::string& content, const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+        const std::string& content, const std::string& contentType,
+        const FETCH_CALLBACK_EXTRA_DATA_ST& extraData, const URL_METHOD& method) {
     std::lock_guard<std::mutex> guard(fetcher_mutex_);
     url_fetchers_.push_back(std::make_unique<URL_FETCH_REQUEST>());
     net::URLFetcher::RequestType requestType = net::URLFetcher::GET;
-    if (!content.empty()) {
-      requestType = net::URLFetcher::POST;
+    switch (method)
+    {
+      case GET:
+        requestType = net::URLFetcher::GET;
+        break;
+      case POST:
+        requestType = net::URLFetcher::POST;
+        break;
+      case PUT:
+        LOG(ERROR) << "!!!in PUT";
+        requestType = net::URLFetcher::PUT;
+        break;
     }
+    /*if (!content.empty()) {
+      requestType = net::URLFetcher::POST;
+    }*/
     url_fetchers_.back()->url_fetcher_ = net::URLFetcher::Create(GURL(url), requestType, this);
     url_fetchers_.back()->callback_ = callback;
     url_fetchers_.back()->extraData_ = extraData;
@@ -63,11 +77,14 @@ namespace bat_client {
   void BatClientWebRequest::run(const std::string& url,
         BatHelper::FetchCallback callback,
         const std::vector<std::string>& headers, const std::string& content,
-        const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+        const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
+        const URL_METHOD& method) {
+    LOG(ERROR) << "!!!web_request URL == " + url;
     content::BrowserThread::PostTask(
       content::BrowserThread::UI, FROM_HERE,
       base::Bind(&BatClientWebRequest::runOnThread,
-          base::Unretained(this), url, callback, headers, content, contentType, extraData));
+          base::Unretained(this), url, callback, headers, content, contentType,
+          extraData, method));
   }
 
   void BatClientWebRequest::OnURLFetchComplete(const net::URLFetcher* source) {

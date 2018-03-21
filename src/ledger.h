@@ -42,6 +42,7 @@ public:
   std::string getLTCAddress();
 
   void getBalance();
+  void run(const uint64_t& delayTime);
 
 private:
   bool isBatClientExist();

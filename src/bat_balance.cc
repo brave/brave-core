@@ -28,7 +28,7 @@ std::string BatBalance::buildURL(const std::string& path, const std::string& pre
 void BatBalance::getWalletProperties(const std::string& paymentInfo, BatHelper::FetchCallback callback,
   const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
     batClientWebRequest_.run(buildURL((std::string)WALLET_PROPERTIES + paymentInfo + WALLET_PROPERTIES_END, ""),
-      callback, std::vector<std::string>(), "", "", extraData);
+      callback, std::vector<std::string>(), "", "", extraData, URL_METHOD::GET);
 }
 
 }

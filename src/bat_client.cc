@@ -16,6 +16,9 @@ namespace bat_client {
 BatClient::BatClient(const bool& useProxy):
       useProxy_(useProxy),
       publisherTimestamp_(0) {
+  // Enable emscripten calls
+  //BatHelper::readEmscripten();
+  //
   initAnonize();
 }
 
@@ -40,11 +43,13 @@ void BatClient::loadStateOrRegisterPersona() {
 
 void BatClient::loadStateOrRegisterPersonaCallback(bool result, const CLIENT_STATE_ST& state) {
   if (!result) {
+    LOG(ERROR) << "!!!here1";
     registerPersona();
 
     return;
   }
-  LOG(ERROR) << "!!!bat address1 == " << state.walletInfo_.addressBAT_;
+  LOG(ERROR) << "!!!bat address == " << state.walletInfo_.addressBAT_;
+  LOG(ERROR) << "!!!card address == " << state.walletInfo_.addressCARD_ID_;
   state_ = state;
   publisherTimestamp(false);
 }
@@ -53,7 +58,8 @@ void BatClient::registerPersona() {
   // We should use simple callbacks on iOS
   batClientWebRequest_.run(buildURL(REGISTER_PERSONA, PREFIX_V2),
     base::Bind(&BatClient::requestCredentialsCallback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST());
+      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      URL_METHOD::GET);
 }
 
 void BatClient::requestCredentialsCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST&) {
@@ -117,7 +123,8 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
   // We should use simple callbacks on iOS
   batClientWebRequest_.run(buildURL((std::string)REGISTER_PERSONA + "/" + state_.userId_, PREFIX_V2),
     base::Bind(&BatClient::registerPersonaCallback,
-      base::Unretained(this)), headers, payloadStringify, "application/json; charset=utf-8", FETCH_CALLBACK_EXTRA_DATA_ST());
+      base::Unretained(this)), headers, payloadStringify, "application/json; charset=utf-8",
+      FETCH_CALLBACK_EXTRA_DATA_ST(), URL_METHOD::POST);
 }
 
 void BatClient::registerPersonaCallback(bool result, const std::string& response,
@@ -135,6 +142,7 @@ void BatClient::registerPersonaCallback(bool result, const std::string& response
     free((void*)masterUserToken);
   }
 
+  LOG(ERROR) << "!!!registerPersonaCallback response == " << response;
   BatHelper::getJSONWalletInfo(response, state_.walletInfo_, state_.fee_currency_, state_.fee_amount_, state_.days_);
   state_.bootStamp_ = BatHelper::currentTime() * 1000;
   state_.reconcileStamp_ = state_.bootStamp_ + state_.days_ * 24 * 60 * 60 * 1000;
@@ -147,7 +155,8 @@ void BatClient::publisherTimestamp(const bool& saveState) {
   extraData.boolean1 = saveState;
   batClientWebRequest_.run(buildURL(PUBLISHER_TIMESTAMP, PREFIX_V3),
     base::Bind(&BatClient::publisherTimestampCallback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST());
+      base::Unretained(this)), std::vector<std::string>(), "", "", extraData,
+      URL_METHOD::GET);
 }
 
 void BatClient::publisherTimestampCallback(bool result, const std::string& response,
@@ -171,7 +180,7 @@ uint64_t BatClient::getPublisherTimestamp() {
 void BatClient::publisherInfo(const std::string& publisher, BatHelper::FetchCallback callback,
     const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   batClientWebRequest_.run(buildURL(PUBLISHER_INFO + publisher, PREFIX_V3),
-    callback, std::vector<std::string>(), "", "", extraData);
+    callback, std::vector<std::string>(), "", "", extraData, URL_METHOD::GET);
 }
 
 void BatClient::setContributionAmount(const double& amount) {
@@ -199,6 +208,150 @@ std::string BatClient::getLTCAddress() {
 void BatClient::getWalletProperties(BatHelper::FetchCallback callback,
     const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   balance_.getWalletProperties(state_.walletInfo_.paymentId_, callback, extraData);
+}
+
+bool BatClient::isReadyForReconcile() {
+  // TODO real check of reconcile timestamp
+  return true;
+}
+
+void BatClient::reconcile(const std::string& viewingId) {
+  //FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+  currentReconcile_.viewingId_ = viewingId;
+  batClientWebRequest_.run(buildURL((std::string)RECONCILE_CONTRIBUTION + state_.userId_, PREFIX_V2),
+    base::Bind(&BatClient::reconcileCallback,
+      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      URL_METHOD::GET);
+}
+
+void BatClient::reconcileCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  LOG(ERROR) << "!!!reconcileCallback response == " + response;
+  if (!result) {
+    // TODO errors handling
+    return;
+  }
+  //currentReconcile_.viewingId_ = extraData.string1;
+  currentReconcile_.surveyorInfo_.surveyorId_ = BatHelper::getJSONValue(SURVEYOR_ID, response);
+
+  currentReconcile();
+}
+
+void BatClient::currentReconcile() {
+  std::ostringstream amount;
+  amount << state_.fee_amount_;
+  std::string path = (std::string)WALLET_PROPERTIES + state_.walletInfo_.paymentId_ + "?refresh=true&amount=" + amount.str() + "&altcurrency=" + state_.fee_currency_;
+  //FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+  batClientWebRequest_.run(buildURL(path, ""),
+    base::Bind(&BatClient::currentReconcileCallback,
+      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      URL_METHOD::GET);
+}
+
+void BatClient::currentReconcileCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  //LOG(ERROR) << "!!!currentReconcileCallback response == " << response;
+  if (!result) {
+    // TODO errors handling
+    return;
+  }
+
+  BatHelper::getJSONRates(response, currentReconcile_.rates_);
+  //LOG(ERROR) << "!!!rates == " << currentReconcile_.rates_.size();
+  UNSIGNED_TX unsignedTx;
+  BatHelper::getJSONUnsignedTx(response, unsignedTx);
+  if (unsignedTx.amount_.empty() && unsignedTx.currency_.empty() && unsignedTx.destination_.empty()) {
+    // We don't have any unsigned transactions
+    return;
+  }
+  currentReconcile_.amount_ = unsignedTx.amount_;
+  currentReconcile_.currency_ = unsignedTx.currency_;
+
+  //std::string keysDenomination[2] = {"amount", "currency"};
+  //std::string valuesDenomination[2] = {unsignedTx.amount_, unsignedTx.currency_};
+  //std::string denomination = BatHelper::stringify(keysDenomination, valuesDenomination, 2);
+  //std::string keys[2] = {"denomination", "destination"};
+  //std::string values[2] = {denomination, unsignedTx.destination_};
+  std::string octets = BatHelper::stringifyUnsignedTx(unsignedTx);//BatHelper::stringify(keys, values, 2);
+  //LOG(ERROR) << "!!!octets == " << octets;
+  std::string headerDigest = "SHA-256=" + BatHelper::getBase64(BatHelper::getSHA256(octets));
+  std::string headerKeys[1] = {"digest"};
+  std::string headerValues[1] = {headerDigest};
+  std::vector<uint8_t> secretKey = BatHelper::getHKDF(state_.walletInfo_.keyInfoSeed_);
+  std::vector<uint8_t> publicKey;
+  std::vector<uint8_t> newSecretKey;
+  BatHelper::getPublicKeyFromSeed(secretKey, publicKey, newSecretKey);
+  //LOG(ERROR) << "!!!state_.walletInfo_.keyInfoSeed_.size == " << state_.walletInfo_.keyInfoSeed_.size();
+  //LOG(ERROR) << "!!!secretKey.size == " << secretKey.size();
+  //LOG(ERROR) << "!!!newSecretKey.size == " << newSecretKey.size();
+  std::string headerSignature = BatHelper::sign(headerKeys, headerValues,
+    1, "primary", newSecretKey);
+  //LOG(ERROR) << "!!!headerSignature == " << headerSignature;
+
+  RECONCILE_PAYLOAD_ST reconcilePayload;
+  reconcilePayload.requestType_ = "httpSignature";
+  reconcilePayload.request_signedtx_headers_digest_ = headerDigest;
+  reconcilePayload.request_signedtx_headers_signature_ = headerSignature;
+  reconcilePayload.request_signedtx_body_ = unsignedTx;
+  reconcilePayload.request_signedtx_octets_ = octets;
+  reconcilePayload.request_viewingId_ = currentReconcile_.viewingId_;
+  reconcilePayload.request_surveyorId_ = currentReconcile_.surveyorInfo_.surveyorId_;
+  std::string payloadStringify = BatHelper::stringifyReconcilePayloadSt(reconcilePayload);
+  //LOG(ERROR) << "!!!payloadStringify == " << payloadStringify;
+
+  std::vector<std::string> headers;
+  headers.push_back("Content-Type: application/json; charset=UTF-8");
+  std::string path = (std::string)WALLET_PROPERTIES + state_.walletInfo_.paymentId_;
+  batClientWebRequest_.run(buildURL(path, ""),
+    base::Bind(&BatClient::reconcilePayloadCallback,
+      base::Unretained(this)), headers, payloadStringify, "application/json; charset=utf-8",
+      FETCH_CALLBACK_EXTRA_DATA_ST(), URL_METHOD::PUT);
+}
+
+void BatClient::reconcilePayloadCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  //LOG(ERROR) << "!!!response == " << response;
+  if (!result) {
+    // TODO errors handling
+    return;
+  }
+  TRANSACTION_ST transaction;
+  BatHelper::getJSONTransaction(response, transaction);
+  transaction.viewingId_ = currentReconcile_.viewingId_;
+  transaction.surveyorId_ = currentReconcile_.surveyorInfo_.surveyorId_;
+  transaction.contribution_rates_ = currentReconcile_.rates_;
+  transaction.contribution_fiat_amount_ = currentReconcile_.amount_;
+  transaction.contribution_fiat_currency_ = currentReconcile_.currency_;
+
+  state_.transactions_.push_back(transaction);
+  BatHelper::saveState(state_);
+  // TODO set a new timestamp for the next reconcile
+  // TODO self.state.updateStamp var in old lib
+  batClientWebRequest_.run(buildURL(UPDATE_RULES_V1, ""),
+    base::Bind(&BatClient::updateRulesCallback,
+      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      URL_METHOD::GET);
+}
+
+void BatClient::updateRulesCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  LOG(ERROR) << "!!!response updateRulesCallback == " << response;
+  if (!result) {
+    // TODO errors handling
+    return;
+  }
+  state_.ruleset_ = response;
+
+  batClientWebRequest_.run(buildURL(UPDATE_RULES_V2, ""),
+    base::Bind(&BatClient::updateRulesV2Callback,
+      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      URL_METHOD::GET);
+}
+
+void BatClient::updateRulesV2Callback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  LOG(ERROR) << "!!!response updateRulesV2Callback == " << response;
+  if (!result) {
+    // TODO errors handling
+    return;
+  }
+  // TODO parse the return rulesetV2
+  state_.rulesetV2_ = response;
 }
 
 }
