@@ -1,6 +1,9 @@
+import("//build/util/branding.gni")
+import("//build/util/version.gni")
+
 action("brave-extension") {
   script = "py-scripts/build-brave-extension.py"
-  args = [ rebase_path(root_build_dir) ]
+  args = [ rebase_path("../.."), rebase_path(root_build_dir) ]
   outputs = [
     "$target_gen_dir/brave_extension/build/background.html",
     "$target_gen_dir/brave_extension/build/js/background.bundle.js",
@@ -11,5 +14,37 @@ action("brave-extension") {
     "$target_gen_dir/brave_extension/build/img/icon-16.png",
     "$target_gen_dir/brave_extension/build/img/icon-48.png",
     "$target_gen_dir/brave_extension/build/_locales/en_US/messages.json",
+  ]
+
+  # For macOS deps is bounded in //chrome:chrome_framework
+  # For Windows installer copying is done in \\chrome\tools\build\win\create_installer_archive.py
+  # Deps below is used for Linux and debugging environment output dir on Windows
+  if (!is_mac) {
+    deps = [":copy-extension-localization"]
+  }
+}
+
+action("copy-extension-localization") {
+  script = "py-scripts/copy-brave-extension-localization.py"
+
+  # changes of something from the list below makes script re-run
+  sources = [
+    "//brave/vendor/brave-extension/app/_locales/en_US/messages.json",
+  ]
+
+  args = []
+  if (is_mac) {
+    chrome_framework_name = chrome_product_full_name + " Framework"
+    resources_target_dir = "$root_out_dir/$chrome_framework_name.framework/Resources"
+  } else {
+    resources_target_dir = "$root_build_dir/resources"
+  }
+
+  args = [
+    rebase_path("$resources_target_dir"),
+  ]
+
+  outputs = [
+    "$resources_target_dir/brave_extension/_locales/en-US/messages.json",
   ]
 }

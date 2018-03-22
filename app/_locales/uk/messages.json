@@ -1,10 +1,10 @@
 {
     "appName": {
-        "message": "The Brave Extension",
+        "message": "The Brave Extension (UA)",
         "description": "The name of the the extension."
     },
     "adsTrackersBlocked": {
-        "message": "Ads and Trackers Blocked",
+        "message": "Ads and Trackers Blocked (UA)",
         "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
     }
 }

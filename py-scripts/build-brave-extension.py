@@ -13,14 +13,13 @@ def main():
   brave_extension_dir = os.path.realpath(os.path.dirname(
       os.path.dirname(os.path.realpath(__file__))))
   antimuon_dir = os.path.dirname(os.path.dirname(brave_extension_dir))
-  root_build_dir = sys.argv[1]
-  brave_extension_gen_dir = os.path.join(root_build_dir, 'gen', 'brave_extension')
+  antimuon_src_dir = sys.argv[1]
+  brave_extension_browser_resources_dir = os.path.join(antimuon_src_dir, 'browser', 'resources', 'brave_extension')
 
   os.chdir(brave_extension_dir)
   build_extension('.')
   build_dir_path  = os.path.join(brave_extension_dir, 'build')
-  copy_output(build_dir_path, brave_extension_gen_dir)
-
+  copy_output(build_dir_path, brave_extension_browser_resources_dir)
 
 def build_extension(dirname, env=None):
   if env is None:
@@ -44,7 +43,5 @@ def copy_output(build_dir, output_dir):
     pass
   shutil.copytree('build', output_dir)
 
-
 if __name__ == '__main__':
   sys.exit(main())
-
