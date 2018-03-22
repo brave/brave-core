@@ -16,7 +16,9 @@ action("brave-extension") {
     "$target_gen_dir/brave_extension/build/_locales/en_US/messages.json",
   ]
 
-  # For mac deps is bounded in //chrome:chrome_framework
+  # For macOS deps is bounded in //chrome:chrome_framework
+  # For Windows installer copying is done in \\chrome\tools\build\win\create_installer_archive.py
+  # Deps below is used for Linux and debugging environment output dir on Windows
   if (!is_mac) {
     deps = [":copy-extension-localization"]
   }
