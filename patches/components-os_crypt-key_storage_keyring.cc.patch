@@ -1,0 +1,13 @@
+diff --git a/components/os_crypt/key_storage_keyring.cc b/components/os_crypt/key_storage_keyring.cc
+index af2f64b34ddb8e49d72dd0dd22ffd2418a422efb..59cd364e90bcab68eddf8936945730c6de3ba2f3 100644
+--- a/components/os_crypt/key_storage_keyring.cc
++++ b/components/os_crypt/key_storage_keyring.cc
+@@ -16,7 +16,7 @@ namespace {
+ #if defined(GOOGLE_CHROME_BUILD)
+ const char kApplicationName[] = "chrome";
+ #else
+-const char kApplicationName[] = "chromium";
++const char kApplicationName[] = "brave";
+ #endif
+ 
+ const GnomeKeyringPasswordSchema kSchema = {
