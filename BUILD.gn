@@ -2,6 +2,15 @@ import("//build/util/branding.gni")
 import("//build/util/version.gni")
 
 action("brave-extension") {
+  # Need this to fire re-pack if changed, nevertheless extension is repacked on each 2nd build
+  inputs = [
+    "app/components/braveShields/braveShields.tsx",
+    "app/components/braveShields/braveShieldsControls.tsx",
+    "app/components/braveShields/braveShieldsFooter.tsx",
+    "app/components/braveShields/braveShieldsHeader.tsx",
+    "app/components/braveShields/braveShieldsStats.tsx",
+    "app/braveShieldsPanel.tsx",
+  ]
   script = "py-scripts/build-brave-extension.py"
   args = [ rebase_path("../.."), rebase_path(root_build_dir) ]
   outputs = [
