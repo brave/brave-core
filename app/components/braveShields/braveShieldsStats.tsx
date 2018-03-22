@@ -57,7 +57,7 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
           size={10}
           verticalAlign='center'
         >
-          <BrowserText text={getMessage('adsTrackersBlocked')} />
+          <BrowserText text={getMessage('shieldsStatsAdsTrackersBlocked')} />
         </Column>
 
         <Column align='flex-end' size={2}>
@@ -68,7 +68,7 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
           size={10}
           verticalAlign='center'
         >
-          HTTPS Upgrades
+          <BrowserText text={getMessage('shieldsStatsHttpsUpgrades')} />
         </Column>
 
         <Column align='flex-end' size={2}>
@@ -79,7 +79,7 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
           size={10}
           verticalAlign='center'
         >
-          Scripts Blocked
+          <BrowserText text={getMessage('shieldsStatsScriptsBlocked')} />
         </Column>
 
         <Column align='flex-end' size={2}>
@@ -90,7 +90,7 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
           size={10}
           verticalAlign='center'
         >
-          Fingerprinting Methods Blocked
+          <BrowserText text={getMessage('shieldsFingerPrintingBlocked')} />
         </Column>
       </Grid>
     )

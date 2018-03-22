@@ -4,6 +4,7 @@
 
 import * as React from 'react'
 import { Grid, Column, ActionButton, Anchor } from 'brave-ui'
+import { getMessage } from '../../background/api/localeAPI'
 
 export default class BraveShieldsFooter extends React.Component<{}, object> {
   render () {
@@ -19,11 +20,11 @@ export default class BraveShieldsFooter extends React.Component<{}, object> {
             noStyle={true}
             href='chrome://settings'
             target='_blank'
-            text='Edit default shield settings...'
+            text={getMessage('shieldsFooterEditDefault')}
           />
         </Column>
         <Column align='flex-end' size={3}>
-          <ActionButton text='Reload' />
+          <ActionButton text={getMessage('shieldsFooterReload')} />
         </Column>
       </Grid>
     )

@@ -6,6 +6,7 @@ import * as React from 'react'
 import { Grid, Column, SwitchButton, BrowserSelect, ContentToggle } from 'brave-ui'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
+import { getMessage } from '../../background/api/localeAPI'
 
 export interface Props {
   controlsOpen: boolean
@@ -70,29 +71,29 @@ export default class BraveShieldsControls extends React.Component<Props, object>
           <ContentToggle
             withSeparator={true}
             open={controlsOpen}
-            summary='Advanced Controls'
+            summary={getMessage('shieldsControlsAdvancedControls')}
             onClick={this.onToggleControls}
           >
             <BrowserSelect
               disabled={braveShields === 'block'}
-              titleName='Ad Control'
+              titleName={getMessage('shieldsControlsAdControl')}
               value={braveShields !== 'block' && ads !== 'allow' && trackers !== 'allow' ? 'allow' : 'block'}
               onChange={this.onChangeAdControl}
             >
               {/* TODO needs "show brave ads" */}
-              <option value='allow'>Block Ads</option>
-              <option value='block'>Allow Ads and Tracking</option>
+              <option value='allow'>{getMessage('shieldsControlsAdControlOptionBlockAds')}</option>
+              <option value='block'>{getMessage('shieldsControlsAdControlOptionAllowAdsTracking')}</option>
             </BrowserSelect>
             {/* TODO @cezaraugusto */}
             <BrowserSelect
               disabled={braveShields === 'block'}
-              titleName='Cookie Control'
+              titleName={getMessage('shieldsControlsCookieControl')}
               value='someVALUE'
               onChange={this.onChangeCookieControl}
             >
-              <option value='SOME'>Block 3rd Party Cookies</option>
-              <option value='SOME'>Allow All Cookies</option>
-              <option value='SOME'>Block All Cookies</option>
+              <option value='SOME'>{getMessage('shieldsControlsCookieOptionBlock3p')}</option>
+              <option value='SOME'>{getMessage('shieldsControlsCookieOptionAllowAll')}</option>
+              <option value='SOME'>{getMessage('shieldsControlsCookieOptionBlockAll')}</option>
             </BrowserSelect>
             <Grid
               gap='10px 5px'
@@ -103,7 +104,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 <SwitchButton
                   id='httpsEverywhere'
                   disabled={braveShields === 'block'}
-                  rightText='HTTPS Everywhere'
+                  rightText={getMessage('shieldsControlsHttpsEverywhereSwitch')}
                   checked={braveShields !== 'block' && httpUpgradableResources !== 'allow'}
                   onChange={this.onToggleHTTPSEverywhere}
                 />
@@ -113,7 +114,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 <SwitchButton
                   id='blockScripts'
                   disabled={braveShields === 'block'}
-                  rightText='Block Scripts'
+                  rightText={getMessage('shieldsControlsBlockScriptsSwitch')}
                   checked={braveShields !== 'block' && javascript !== 'allow'}
                   onChange={this.onToggleJavaScript}
                 />
@@ -123,7 +124,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 <SwitchButton
                   id='fingerprintingProtection'
                   disabled={braveShields === 'block'}
-                  rightText='Fingerprinting Protection'
+                  rightText={getMessage('shieldsControlsFingerprintingProtectionSwitch')}
                   checked={braveShields !== 'block' && fingerprinting === 'block'}
                   onChange={this.onToggleFingerprinting}
                 />
@@ -133,7 +134,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 <SwitchButton
                   id='blockPhishingMalware'
                   disabled={braveShields === 'block'}
-                  rightText='Block Phishing/Malware'
+                  rightText={getMessage('shieldsControlsBlockPhishingMalwareSwitch')}
                 />
               </Column>
             </Grid>
