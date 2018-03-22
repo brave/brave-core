@@ -22,6 +22,7 @@ export interface Tab {
   fingerprinting: BlockFPOptions
   fingerprintingBlocked: number
   cookies: BlockCookiesOptions
+  javascriptBlockedOrigins: string[]
 }
 
 export interface Tabs {
@@ -63,7 +64,7 @@ export interface UpdateTabShieldsData {
 }
 
 export interface UpdateResourceBlocked {
-  (state: State, tabId: number, blockType: BlockTypes): State
+  (state: State, tabId: number, blockType: BlockTypes, subresource: string): State
 }
 
 export interface ResetBlockingStats {

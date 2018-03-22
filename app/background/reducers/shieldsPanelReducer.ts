@@ -15,7 +15,8 @@ import {
   setAllowFingerprinting,
   setAllowCookies,
   toggleShieldsValue,
-  requestShieldPanelData
+  requestShieldPanelData,
+  setAllowScriptOriginsOnce
 } from '../api/shieldsAPI'
 import { setBadgeText } from '../api/badgeAPI'
 import { reloadTab } from '../api/tabsAPI'
@@ -169,7 +170,8 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       {
         const tabId: number = action.details.tabId
         const currentTabId: number = shieldsPanelState.getActiveTabId(state)
-        state = shieldsPanelState.updateResourceBlocked(state, tabId, action.details.blockType)
+        state = shieldsPanelState.updateResourceBlocked(
+          state, tabId, action.details.blockType, action.details.subresource)
         if (tabId === currentTabId) {
           updateBadgeText(state)
         }
@@ -239,6 +241,21 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
           })
           .catch(() => {
             console.error('Could not set cookies setting')
+          })
+        break
+      }
+    case shieldsPanelTypes.ALLOW_SCRIPT_ORIGINS_ONCE:
+      {
+        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        setAllowScriptOriginsOnce(action.origins, tabData.id)
+          .then(() => {
+            requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+            reloadTab(tabData.id, true).catch(() => {
+              console.error('Tab reload was not successful')
+            })
+          })
+          .catch(() => {
+            console.error('Could not set allow script origins once')
           })
         break
       }

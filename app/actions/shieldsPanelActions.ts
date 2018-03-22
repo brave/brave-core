@@ -65,3 +65,10 @@ export const blockCookies: actions.BlockCookies = (setting) => {
     setting
   }
 }
+
+export const allowScriptOriginsOnce: actions.AllowScriptOriginsOnce = (origins) => {
+  return {
+    type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
+    origins
+  }
+}

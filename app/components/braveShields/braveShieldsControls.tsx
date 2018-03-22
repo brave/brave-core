@@ -7,6 +7,7 @@ import { Grid, Column, SwitchButton, BrowserSelect, ContentToggle } from 'brave-
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../../types/other/blockTypes'
 import { getMessage } from '../../background/api/localeAPI'
+import NoScript from '../noScript/noScript'
 
 export interface Props {
   controlsOpen: boolean
@@ -23,9 +24,11 @@ export interface Props {
   javascriptToggled: shieldActions.JavascriptToggled
   blockFingerprinting: shieldActions.BlockFingerprinting
   blockCookies: shieldActions.BlockCookies
+  blockedScriptOrigins: string[]
+  allowScriptOriginsOnce: shieldActions.AllowScriptOriginsOnce
 }
 
-export default class BraveShieldsControls extends React.Component<Props, object> {
+export default class BraveShieldsControls extends React.Component<Props, Object> {
   constructor (props: Props) {
     super(props)
     this.onChangeAdControl = this.onChangeAdControl.bind(this)
@@ -34,6 +37,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
     this.onToggleJavaScript = this.onToggleJavaScript.bind(this)
     this.onChangeFingerprintingProtection = this.onChangeFingerprintingProtection.bind(this)
     this.onChangeCookiesProtection = this.onChangeCookiesProtection.bind(this)
+    this.onAllowScriptOriginsOnce = this.onAllowScriptOriginsOnce.bind(this)
   }
 
   onChangeAdControl (e: HTMLSelectElement) {
@@ -60,8 +64,12 @@ export default class BraveShieldsControls extends React.Component<Props, object>
     this.props.blockCookies(e.target.value)
   }
 
+  onAllowScriptOriginsOnce (origins: string[]) {
+    this.props.allowScriptOriginsOnce(origins)
+  }
+
   render () {
-    const { braveShields, ads, trackers, controlsOpen, httpUpgradableResources, javascript, fingerprinting, cookies } = this.props
+    const { braveShields, ads, trackers, controlsOpen, httpUpgradableResources, javascript, fingerprinting, cookies, blockedScriptOrigins } = this.props
     return (
       <Grid
         id='braveShieldsControls'
@@ -142,6 +150,11 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 />
               </Column>
             </Grid>
+              <NoScript
+                blocked={javascript !== 'allow'}
+                blockedOrigins={blockedScriptOrigins}
+                onSubmit={this.onAllowScriptOriginsOnce}
+              />
           </ContentToggle>
         </Column>
       </Grid>
