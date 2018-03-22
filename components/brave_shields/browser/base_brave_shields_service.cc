@@ -29,9 +29,9 @@ BaseBraveShieldsService::BaseBraveShieldsService(
     const GURL& url) :
       file_name_(file_name),
       url_(url),
-    initialized_(false),
-    task_runner_(
-        base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
+      initialized_(false),
+      task_runner_(
+          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {

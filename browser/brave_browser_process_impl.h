@@ -17,7 +17,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   BraveBrowserProcessImpl(base::SequencedTaskRunner* local_state_task_runner);
   ~BraveBrowserProcessImpl() override;
 
-
   brave_shields::BaseBraveShieldsService* ad_block_service();
   brave_shields::BaseBraveShieldsService*
       tracking_protection_service();
@@ -25,7 +24,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       https_everywhere_service();
 
  private:
-  std::unique_ptr<brave_shields::BaseBraveShieldsService> ad_block_service_;
   std::unique_ptr<brave_shields::BaseBraveShieldsService>
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>

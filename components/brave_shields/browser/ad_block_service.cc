@@ -16,6 +16,7 @@
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
+#include "base/memory/singleton.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
@@ -81,11 +82,9 @@ bool AdBlockService::Init() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// The brave shields factory. Using the Brave Shields as a singleton
-// is the job of the browser process.
-// TODO(bbondy): consider making this a singleton.
-std::unique_ptr<BaseBraveShieldsService> AdBlockServiceFactory() {
-  return base::MakeUnique<AdBlockService>();
+// static
+AdBlockService* AdBlockService::GetInstance() {
+  return base::Singleton<AdBlockService>::get();
 }
 
 }  // namespace brave_shields
