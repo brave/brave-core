@@ -1,0 +1,12 @@
+diff --git a/third_party/s2cellid/BUILD.gn b/third_party/s2cellid/BUILD.gn
+index 2d71a806505e1e1c08f8fffba64524a2a8161588..77d57cccae109300fae64a1c2cb0111588cf220d 100644
+--- a/third_party/s2cellid/BUILD.gn
++++ b/third_party/s2cellid/BUILD.gn
+@@ -15,6 +15,7 @@
+ 
+ config("s2_config") {
+   include_dirs = [ "src" ]
++  if (is_clang && !is_official_build) { cflags = [ "-Wno-unknown-pragmas" ] }
+ }
+ 
+ static_library("s2cellid") {
