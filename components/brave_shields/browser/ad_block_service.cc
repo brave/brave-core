@@ -28,8 +28,10 @@
 
 namespace brave_shields {
 
+GURL AdBlockService::g_ad_block_url(DAT_FILE_URL);
+
 AdBlockService::AdBlockService() :
-    BaseBraveShieldsService(DAT_FILE, GURL(DAT_FILE_URL)),
+    BaseBraveShieldsService(DAT_FILE, AdBlockService::g_ad_block_url),
     ad_block_client_(new AdBlockClient()) {
 }
 

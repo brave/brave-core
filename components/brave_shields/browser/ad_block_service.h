@@ -36,6 +36,9 @@ class AdBlockService : public BaseBraveShieldsService {
     content::ResourceType resource_type,
     const std::string& tab_host) override;
 
+  // Useful for tests to customize
+  static GURL g_ad_block_url;
+
  protected:
   friend struct base::DefaultSingletonTraits<AdBlockService>;
   bool Init() override;
