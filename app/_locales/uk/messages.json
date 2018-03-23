@@ -1,10 +1,94 @@
 {
+    "shieldsControlsCookieControl": {
+        "message": "Cookie Control",
+        "description": "Label Cookie Control dropdown options"
+    },
+    "shieldsControlsCookieOptionBlockAll": {
+        "message": "Block All Cookies",
+        "description": "Cookie control dropdown option Block All Cookies"
+    },
+    "shieldsControlsAdControlOptionAllowAdsTracking": {
+        "message": "Allow Ads and Tracking",
+        "description": "Ad Control dropdown box, option allow ads and tracking"
+    },
+    "shieldsHeaderToggleLeftPosition": {
+        "message": "Down",
+        "description": "Label for top shields switch in shields header turned off position"
+    },
+    "shieldsStatsHttpsUpgrades": {
+        "message": "HTTPS Upgrades",
+        "description": "Label for shields stats, HTTPS upgrades count"
+    },
+    "shieldsFooterReload": {
+        "message": "Reload...",
+        "description": "Shields controls footer, label for action reload page to apply current shields settings"
+    },
+    "shieldsControlsAdControl": {
+        "message": "Ad Control",
+        "description": "Label for Advertisement Control dropdown box options "
+    },
+    "shieldsStatsScriptsBlocked": {
+        "message": "Scripts Blocked",
+        "description": "Label for shields stats, Scripts Blocked count"
+    },
+    "shieldsHeaderToggleRightPosition": {
+        "message": "Up",
+        "description": "Label for top shields switch in shields header turned on position"
+    },
+    "shieldsControlsCookieOptionAllowAll": {
+        "message": "Allow All Cookies",
+        "description": "Cookie control dropdown option Allow All Cookies"
+    },
+    "shieldsControlsHttpsEverywhereSwitch": {
+        "message": "HTTPS Everywhere",
+        "description": "Shields controls, switch for HTTPS Everywhere"
+    },
+    "shieldsControlsFingerprintingProtectionSwitch": {
+        "message": "Fingerprinting Protection",
+        "description": "Shields controls, switch for Fingerprinting Protection"
+    },
+    "shieldsControlsCookieOptionBlock3p": {
+        "message": "Block 3rd Party Cookies",
+        "description": "Cookie control dropdown option Block 3rd Party Cookies"
+    },
+    "shieldsHeaderForSite": {
+        "message": "Site shield settings for",
+        "description": "Label for shields header near current site name"
+    },
+    "shieldsHeaderShieldsToggle": {
+        "message": "Shields",
+        "description": "Label for top shields switch in shields header"
+    },
     "appName": {
-        "message": "The Brave Extension (UA)",
+        "message": "The Brave Extension",
         "description": "The name of the the extension."
     },
-    "adsTrackersBlocked": {
-        "message": "Ads and Trackers Blocked (UA)",
+    "shieldsFooterEditDefault": {
+        "message": "Edit default shield settings...",
+        "description": "Shields controls footer, link to edit default shields settings"
+    },
+    "shieldsControlsAdControlOptionBlockAds": {
+        "message": "Block Ads",
+        "description": "Ad Control dropdown box, option block ads"
+    },
+    "shieldsFingerPrintingBlocked": {
+        "message": "Fingerprinting Methods Blocked",
+        "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+    },
+    "shieldsControlsBlockPhishingMalwareSwitch": {
+        "message": "Block Phishing/Malware",
+        "description": "Shields controls, switch for Block Phishing/Malware"
+    },
+    "shieldsControlsAdvancedControls": {
+        "message": "Advanced Controls",
+        "description": "Label for advanced controls group"
+    },
+    "shieldsControlsBlockScriptsSwitch": {
+        "message": "Block Scripts",
+        "description": "Shields controls, switch for Block Scripts"
+    },
+    "shieldsStatsAdsTrackersBlocked": {
+        "message": "Ads and Trackers Blocked",
         "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
     }
 }

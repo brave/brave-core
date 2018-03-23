@@ -6,6 +6,7 @@ import * as React from 'react'
 import { Grid, Column, Separator, SwitchButton, ActionButton, BrowserText } from 'brave-ui'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
+import { getMessage } from '../../background/api/localeAPI'
 
 export interface Props {
   shieldsToggled: shieldActions.ShieldsToggled
@@ -34,13 +35,13 @@ export default class BraveShieldsHeader extends React.Component<Props, object> {
     return (
       <Grid id='braveShieldsHeader' background='#808080' padding='10px' gap='0' textColor='#fafafa'>
         <Column size={4} verticalAlign='center'>
-          <BrowserText noSelect={true} fontSize='14px' text='Shields' />
+          <BrowserText noSelect={true} fontSize='14px' text={getMessage('shieldsHeaderShieldsToggle')} />
         </Column>
         <Column size={6} verticalAlign='center'>
           <SwitchButton
             id='shieldsToggle'
-            leftText='Down'
-            rightText='Up'
+            leftText={getMessage('shieldsHeaderToggleLeftPosition')}
+            rightText={getMessage('shieldsHeaderToggleRightPosition')}
             checked={braveShields !== 'block'}
             onChange={this.onToggleShields}
           />
@@ -54,7 +55,7 @@ export default class BraveShieldsHeader extends React.Component<Props, object> {
         </Column>
         <Column>
           <Separator />
-          <BrowserText noSelect={true} text='Site shield settings for' />
+          <BrowserText noSelect={true} text={getMessage('shieldsHeaderForSite')} />
         </Column>
         <Column verticalAlign='center'>
           <BrowserText noSelect={true} fontSize='20px' text={hostname} />
