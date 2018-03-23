@@ -27,6 +27,7 @@ static_library("brave_test_support_unit") {
 
 test("brave_unit_tests") {
   sources = [
+    "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
     "//chrome/common/importer/mock_importer_bridge.cc",
     "//chrome/common/importer/mock_importer_bridge.h",
     "../utility/importer/chrome_importer_unittest.cc",
@@ -34,6 +35,10 @@ test("brave_unit_tests") {
 
   data = [
     "data/",
+  ]
+
+  configs += [
+    "//brave/build/geolocation",
   ]
 
   public_deps = [
