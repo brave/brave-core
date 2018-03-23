@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/extensions/api/content_settings/content_settings_store.h b/chrome/browser/extensions/api/content_settings/content_settings_store.h
+index 3a9033a4747026713e1016ec07743af0f6081ff5..f28ee9804d8f229004c2c3ec347755f0ab46390e 100644
+--- a/chrome/browser/extensions/api/content_settings/content_settings_store.h
++++ b/chrome/browser/extensions/api/content_settings/content_settings_store.h
+@@ -86,7 +86,7 @@ class ContentSettingsStore
+ 
+   // Deserializes content settings rules from |list| and applies them as set by
+   // the extension with ID |extension_id|.
+-  void SetExtensionContentSettingFromList(const std::string& extension_id,
++  virtual void SetExtensionContentSettingFromList(const std::string& extension_id,
+                                            const base::ListValue* list,
+                                            ExtensionPrefsScope scope);
+ 
+@@ -111,6 +111,7 @@ class ContentSettingsStore
+   void RemoveObserver(Observer* observer);
+ 
+  private:
++  friend class BraveContentSettingsStore;
+   friend class base::RefCountedThreadSafe<ContentSettingsStore>;
+ 
+   struct ExtensionEntry;
+@@ -129,7 +130,7 @@ class ContentSettingsStore
+       const std::string& ext_id,
+       ExtensionPrefsScope scope) const;
+ 
+-  void NotifyOfContentSettingChanged(const std::string& extension_id,
++  virtual void NotifyOfContentSettingChanged(const std::string& extension_id,
+                                      bool incognito);
+ 
+   bool OnCorrectThread();

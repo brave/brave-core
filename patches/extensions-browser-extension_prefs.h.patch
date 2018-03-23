@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/extension_prefs.h b/extensions/browser/extension_prefs.h
+index 0f921039ce0e9b24bc939105182645214beac8c3..12a24f2530cdc1874f45813ac40b793f0ea340b1 100644
+--- a/extensions/browser/extension_prefs.h
++++ b/extensions/browser/extension_prefs.h
+@@ -565,6 +565,7 @@ class ExtensionPrefs : public ExtensionScopedPrefs, public KeyedService {
+   void ClearExternalUninstallForTesting(const ExtensionId& id);
+ 
+  private:
++  friend class BraveExtensionPrefs;
+   friend class ExtensionPrefsBlacklistedExtensions;  // Unit test.
+   friend class ExtensionPrefsComponentExtension;     // Unit test.
+   friend class ExtensionPrefsUninstallExtension;     // Unit test.

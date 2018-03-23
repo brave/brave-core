@@ -1,0 +1,11 @@
+
+source_set("extensions") {
+  sources = [
+    "browser/brave_extension_prefs.cc",
+    "browser/brave_extension_prefs.h",
+  ]
+
+  public_deps = [
+    "//extensions/browser",
+  ]
+}
