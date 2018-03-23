@@ -71,7 +71,7 @@
         "message": "Block Ads",
         "description": "Ad Control dropdown box, option block ads"
     },
-    "shieldsFingerPrintingProtection": {
+    "shieldsFingerPrintingBlocked": {
         "message": "Fingerprinting Methods Blocked",
         "description": "Label for shields stats, Fingerprinting Methods Blocked count"
     },

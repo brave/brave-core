@@ -16,7 +16,7 @@
     "message": "Scripts Blocked",
     "description": "Label for shields stats, Scripts Blocked count"
   },
-  "shieldsFingerPrintingProtection": {
+  "shieldsFingerPrintingBlocked": {
     "message": "Fingerprinting Methods Blocked",
     "description": "Label for shields stats, Fingerprinting Methods Blocked count"
   },
