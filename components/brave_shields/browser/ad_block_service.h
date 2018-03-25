@@ -17,6 +17,11 @@
 
 class AdBlockClient;
 
+namespace base {
+template <typename Type>
+struct DefaultSingletonTraits;
+}
+
 namespace brave_shields {
 
 // The brave shields service in charge of ad-block checking and init.
@@ -25,11 +30,17 @@ class AdBlockService : public BaseBraveShieldsService {
    AdBlockService();
    ~AdBlockService() override;
 
+  static AdBlockService* GetInstance();
+
   bool ShouldStartRequest(const GURL &url,
     content::ResourceType resource_type,
     const std::string& tab_host) override;
 
+  // Useful for tests to customize
+  static GURL g_ad_block_url;
+
  protected:
+  friend struct base::DefaultSingletonTraits<AdBlockService>;
   bool Init() override;
   void Cleanup() override;
 
@@ -37,9 +48,6 @@ class AdBlockService : public BaseBraveShieldsService {
   std::vector<unsigned char> buffer_;
   std::unique_ptr<AdBlockClient> ad_block_client_;
 };
-
-// Creates the AdBlockService
-std::unique_ptr<BaseBraveShieldsService> AdBlockServiceFactory();
 
 }  // namespace brave_shields
 

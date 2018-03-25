@@ -29,9 +29,9 @@ BaseBraveShieldsService::BaseBraveShieldsService(
     const GURL& url) :
       file_name_(file_name),
       url_(url),
-    initialized_(false),
-    task_runner_(
-        base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
+      initialized_(false),
+      task_runner_(
+          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {
@@ -54,7 +54,7 @@ void BaseBraveShieldsService::DownloadDATFile() {
 void BaseBraveShieldsService::DATFileResponse(bool success) {
   std::lock_guard<std::mutex> guard(init_mutex_);
   if (!success) {
-    LOG(ERROR) << "Could not download DAT file";
+    LOG(ERROR) << "Could not download DAT file: " << url_;
     return;
   }
 

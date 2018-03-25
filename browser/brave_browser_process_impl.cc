@@ -23,11 +23,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(
 
 brave_shields::BaseBraveShieldsService*
 BraveBrowserProcessImpl::ad_block_service() {
-  if (ad_block_service_)
-    return ad_block_service_.get();
-
-  ad_block_service_ = brave_shields::AdBlockServiceFactory();
-  return ad_block_service_.get();
+  return brave_shields::AdBlockService::GetInstance();
 }
 
 brave_shields::BaseBraveShieldsService*
