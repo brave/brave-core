@@ -12,7 +12,7 @@ action("strip_and_dump_chromedriver_symbols") {
   dump_syms_binary =
           get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
 
-  chromedriver_binary = "$antimuon_dist_dir/chromedriver"
+  chromedriver_binary = "$brave_dist_dir/chromedriver"
   if (current_cpu == "x86") {
   # Use "ia32" instead of "x86" for GYP compat.
     chromedriver_symbol_file = "$root_out_dir/chromedriver.breakpad.ia32"
@@ -32,18 +32,18 @@ action("strip_and_dump_chromedriver_symbols") {
 
   deps = [
     dump_syms_label,
-    "//brave:antimuon_chromedriver_dist_resources",
+    "//brave:brave_chromedriver_dist_resources",
   ]
 }
 
 
 action("generate_breakpad_symbols") {
-  symbols_dir = "$antimuon_dist_dir/$antimuon_project_name.breakpad.syms"
+  symbols_dir = "$brave_dist_dir/$brave_project_name.breakpad.syms"
   outputs = [
     symbols_dir
   ]
 
-  start = [ antimuon_project_name ]
+  start = [ brave_project_name ]
 
   script = "//brave/tools/posix/generate_breakpad_symbols.py"
   args = [
@@ -78,12 +78,12 @@ action("strip_and_dump_symbols") {
           get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
 
   deps = [
-    "//brave:antimuon_dist_resources",
+    "//brave:brave_dist_resources",
     # TODO(bridiver) - resolve duplicate symbol generation
     ":generate_breakpad_symbols",
     dump_syms_label,
   ]
-  brave_binary = "$antimuon_dist_dir/brave"
+  brave_binary = "$brave_dist_dir/brave"
   if (current_cpu == "x86") {
   # Use "ia32" instead of "x86" for GYP compat.
     brave_symbol_file = "$root_out_dir/brave.breakpad.ia32"

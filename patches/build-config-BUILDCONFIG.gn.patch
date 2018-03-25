@@ -6,7 +6,7 @@ index 853c8492ce95d1cfaab058c799546e20f9d52cb4..eddfec95acf41f6d0a2a95520dc72f8c
    host_toolchain = ""
  
    # DON'T ADD MORE FLAGS HERE. Read the comment above.
-+  antimuon_chromium_build = false
++  brave_chromium_build = false
  }
  
  declare_args() {
@@ -14,10 +14,10 @@ index 853c8492ce95d1cfaab058c799546e20f9d52cb4..eddfec95acf41f6d0a2a95520dc72f8c
    "//build/config/coverage:default_coverage",
    "//build/config/sanitizers:default_sanitizer_flags",
  ]
-+if (!antimuon_chromium_build) {
++if (!brave_chromium_build) {
 +  default_compiler_configs -= [ "//build/config/compiler:default_include_dirs" ]
 +  default_compiler_configs += [
-+    "//brave/build:antimuon_include_dirs",
++    "//brave/build:brave_include_dirs",
 +    "//build/config/compiler:default_include_dirs"
 +  ]
 +}

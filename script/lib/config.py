@@ -36,19 +36,19 @@ def brave_package():
 
 
 def product_name():
-  return os.environ.get('npm_config_antimuon_product_name') or brave_package()['name']
+  return os.environ.get('npm_config_brave_product_name') or brave_package()['name']
 
 
 def project_name():
-  return os.environ.get('npm_config_antimuon_project_name') or brave_package()['name']
+  return os.environ.get('npm_config_brave_project_name') or brave_package()['name']
 
 
 def get_chrome_version():
-  version = os.environ.get('npm_config_antimuon_version') or brave_package()['version']
+  version = os.environ.get('npm_config_brave_version') or brave_package()['version']
   return version.split('+')[1]
 
-def get_antimuon_version():
-  version = os.environ.get('npm_config_antimuon_version') or brave_package()['version']
+def get_brave_version():
+  version = os.environ.get('npm_config_brave_version') or brave_package()['version']
   return 'v' + version.split('+')[0]
 
 
@@ -71,16 +71,16 @@ def get_chromedriver_version():
 
 
 def get_env_var(name):
-  return os.environ.get('ANTIMUON_' + name) or os.environ.get('npm_config_ANTIMUON_' + name, '')
+  return os.environ.get('BRAVE_' + name) or os.environ.get('npm_config_BRAVE_' + name, '')
 
 
 def s3_config():
   config = (get_env_var('S3_BUCKET'),
             get_env_var('S3_ACCESS_KEY'),
             get_env_var('S3_SECRET_KEY'))
-  message = ('Error: Please set the $ANTIMUON_S3_BUCKET, '
-             '$ANTIMUON_S3_ACCESS_KEY, and '
-             '$ANTIMUON_S3_SECRET_KEY environment variables')
+  message = ('Error: Please set the $BRAVE_S3_BUCKET, '
+             '$BRAVE_S3_ACCESS_KEY, and '
+             '$BRAVE_S3_SECRET_KEY environment variables')
   assert all(len(c) for c in config), message
   return config
 

@@ -7,8 +7,8 @@ chrome_framework_name = chrome_product_full_name + " Framework"
 chrome_helper_name = chrome_product_full_name + " Helper"
 
 # This list must be updated with the two targets' deps list below, and
-# the list of _dsyms in :antimuon_dsym_archive.
-_antimuon_symbols_sources = [
+# the list of _dsyms in :brave_dsym_archive.
+_brave_symbols_sources = [
   "$root_out_dir/$chrome_framework_name.framework/$chrome_framework_name",
   "$root_out_dir/$chrome_helper_name.app/Contents/MacOS/$chrome_helper_name",
   "$root_out_dir/$chrome_product_full_name.app/Contents/MacOS/$chrome_product_full_name",
@@ -26,12 +26,12 @@ group("symbol_dist_resources") {
 }
 
 action("generate_breakpad_symbols") {
-  symbols_dir = "$antimuon_dist_dir/$antimuon_project_name.breakpad.syms"
+  symbols_dir = "$brave_dist_dir/$brave_project_name.breakpad.syms"
   outputs = [
     symbols_dir
   ]
 
-  sources = _antimuon_symbols_sources
+  sources = _brave_symbols_sources
 
   binaries = []
   foreach(_source, sources) {

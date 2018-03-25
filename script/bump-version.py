@@ -4,7 +4,7 @@ import os
 import re
 import sys
 
-from lib.config import SOURCE_ROOT, get_antimuon_version, get_chrome_version
+from lib.config import SOURCE_ROOT, get_brave_version, get_chrome_version
 from lib.util import execute, parse_version, scoped_cwd
 
 
@@ -16,7 +16,7 @@ def main():
   option = sys.argv[1]
   increments = ['major', 'minor', 'patch']
   if option in increments:
-    version = get_antimuon_version()
+    version = get_brave_version()
     versions = parse_version(version.split('-')[0])
     versions = increase_version(versions, increments.index(option))
     chrome = get_chrome_version()

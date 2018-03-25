@@ -1,7 +1,7 @@
 {
-  "name": "antimuon",
+  "name": "brave-core",
   "version": "1.0.0",
-  "description": "Antimuon is a set of changes, APIs, and scripts used for customizing Chromium to make Brave. Unlike brave/muon, brave/antimuon shares virtually no original code with electron.",
+  "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brave/antimuon.git"
+    "url": "git+https://github.com/brave/brave-core.git"
   },
   "author": {
     "name": "Brave Software <support+laptop@brave.com>"
@@ -22,9 +22,9 @@
   ],
   "license": "MPL-2.0",
   "bugs": {
-    "url": "https://github.com/brave/antimuon/issues"
+    "url": "https://github.com/brave/brave-browser/issues"
   },
-  "homepage": "https://github.com/brave/antimuon#readme",
+  "homepage": "https:/github.com/brave/brave-core#readme",
   "devDependencies": {
     "standard": "^10.0.3"
   }

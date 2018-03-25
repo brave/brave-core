@@ -1,10 +1,10 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/ad-block": "https://github.com/brave/ad-block.git@9b1ff3275a2f4ce76ad3aaa749e4a01f32a9dabf",
-  "vendor/tracking-protection": "https://github.com/brave/tracking-protection.git@0931529eba33109c6b3946a83295577fea540045",
-  "vendor/hashset-cpp": "https://github.com/bbondy/hashset-cpp.git@f427324d667d7188a9e0975cca7f3a8c06226b4d",
-  "vendor/bloom-filter-cpp": "https://github.com/bbondy/bloom-filter-cpp.git@6faa14ececa33badad149c40f94ff9867159681c",
+  "vendor/ad-block": "https://github.com/brave/ad-block.git@84cbd78e346f8276ec06ca8d1193a01aaf0fc67f",
+  "vendor/tracking-protection": "https://github.com/brave/tracking-protection.git@051177425a14121a22087d754ad8eb1c0ce8fb24",
+  "vendor/hashset-cpp": "https://github.com/bbondy/hashset-cpp.git@67ffffa69b56e330bab9d08f050727f891c916a1",
+  "vendor/bloom-filter-cpp": "https://github.com/bbondy/bloom-filter-cpp.git@d511cf872ea1d650ab8dc4662f6036dac012d197",
   "vendor/brave-extension": "https://github.com/brave/brave-extension.git@38af139dd65ba6a2a6f84cfc40f214080499dbae",
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
