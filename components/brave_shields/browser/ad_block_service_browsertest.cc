@@ -21,6 +21,13 @@ public:
     InProcessBrowserTest::SetUp();
   }
 
+  void PreRunTestOnMainThread() override {
+    InProcessBrowserTest::PreRunTestOnMainThread();
+    WaitForAdBlockServiceThread();
+    ASSERT_TRUE(
+      brave_shields::AdBlockService::GetInstance()->IsInitialized());
+  }
+
   void InitEmbeddedTestServer() {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
@@ -44,10 +51,6 @@ public:
 
 // Load a page with an ad image, and make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlocked) {
-  WaitForAdBlockServiceThread();
-  EXPECT_TRUE(
-    brave_shields::AdBlockService::GetInstance()->IsInitialized());
-
   GURL url = embedded_test_server()->GetURL(kAdsPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
@@ -62,14 +65,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlocked) {
   EXPECT_TRUE(!img_loaded);
 }
 
-
 // Load a page with an image which is not an ad, and make sure it is NOT blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlocked) {
-  WaitForAdBlockServiceThread();
-
-  EXPECT_TRUE(
-    brave_shields::AdBlockService::GetInstance()->IsInitialized());
-
   GURL url = embedded_test_server()->GetURL(kNoAdsPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
