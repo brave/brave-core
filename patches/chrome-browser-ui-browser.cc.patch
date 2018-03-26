@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
+index b8db8470d449413467642c9b966b5a410f3900b3..fbff992ce2bc0378012bba5efe330b49f810c0d7 100644
+--- a/chrome/browser/ui/browser.cc
++++ b/chrome/browser/ui/browser.cc
+@@ -28,6 +28,7 @@
+ #include "base/threading/thread_restrictions.h"
+ #include "base/threading/thread_task_runner_handle.h"
+ #include "base/time/time.h"
++#include "brave/browser/ui/brave_browser_command_controller.h"
+ #include "build/build_config.h"
+ #include "chrome/app/chrome_command_ids.h"
+ #include "chrome/browser/app_mode/app_mode_utils.h"
+@@ -384,7 +385,7 @@ Browser::Browser(const CreateParams& params)
+       live_tab_context_(new BrowserLiveTabContext(this)),
+       synced_window_delegate_(new BrowserSyncedWindowDelegate(this)),
+       bookmark_bar_state_(BookmarkBar::HIDDEN),
+-      command_controller_(new chrome::BrowserCommandController(this)),
++      command_controller_(new BraveBrowserCommandController(this)),
+       window_has_shown_(false),
+       chrome_updater_factory_(this),
+       weak_factory_(this) {
