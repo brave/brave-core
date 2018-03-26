@@ -63,11 +63,15 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Bookmarks")));
   base::FilePath history =
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("History")));
+  base::FilePath passwords =
+    profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
 
   if (base::PathExists(bookmarks))
     *services_supported |= importer::FAVORITES;
   if (base::PathExists(history))
     *services_supported |= importer::HISTORY;
+  if (base::PathExists(passwords))
+    *services_supported |= importer::PASSWORDS;
 
   return *services_supported != importer::NONE;
 }

@@ -45,6 +45,7 @@ class ChromeImporter : public Importer {
 
   void ImportBookmarks();
   void ImportHistory();
+  void ImportPasswords();
 
   // Multiple URLs can share the same favicon; this is a map
   // of URLs -> IconIDs that we load as a temporary step before
