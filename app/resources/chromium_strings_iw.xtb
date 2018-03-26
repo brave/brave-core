@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
-<translationbundle lang="he">
+<translationbundle lang="iw">
 <translation id="5194812628624740897">‏ניתוק <ph name="USERNAME"/> ינקה את ההיסטוריה, הסימניות, ההגדרות ונתוני Brave אחרים המאוחסנים במכשיר הזה. נתונים המאוחסנים בחשבון Brave Software לא ינוקו, וניתן לנהל אותם <ph name="GOOGLE_DASHBOARD_LINK"/>במרכז השליטה של Brave Software<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">‏מערכת ההפעלה של Brave</translation>
