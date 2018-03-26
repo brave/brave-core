@@ -18,7 +18,10 @@ base_url = 'https://www.transifex.com/api/2/'
 def create_xtb_format_translationbundle_tag(lang):
   """Creates the root XTB XML element"""
   translationbundle_tag = lxml.etree.Element('translationbundle')
-  translationbundle_tag.set('lang',lang.replace('_', '-'))
+  # The lang code "iw" is the old code for Hebrew, the GRDs are updated to use "he".
+  # But Chromium still uses "iw" inside the XTB, and it causes a compiling error on Windows otherwise.
+  # So we need to force it back to "iw" here for minimal impact.
+  translationbundle_tag.set('lang',lang.replace('_', '-').replace('he', 'iw'))
   # Adds a newline so the first translation isn't glued to the translationbundle element for us weak humans.
   translationbundle_tag.text = '\n'
   return translationbundle_tag
