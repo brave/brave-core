@@ -27,6 +27,7 @@ static_library("brave_test_support_unit") {
 
 test("brave_unit_tests") {
   sources = [
+    "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
     "//chrome/common/importer/mock_importer_bridge.cc",
     "//chrome/common/importer/mock_importer_bridge.h",
@@ -46,6 +47,7 @@ test("brave_unit_tests") {
     "//base/test:test_support",
     "//brave/browser",
     "//brave/common",
+    "//brave/extensions",
     "//brave/renderer",
     "//brave/utility",
     ":brave_test_support_unit",

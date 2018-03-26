@@ -5,7 +5,6 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_SITE_HACKS_NETWORK_DELEGATE_H_
 #define BRAVE_BROWSER_NET_BRAVE_SITE_HACKS_NETWORK_DELEGATE_H_
 
-#include "chrome/browser/net/chrome_network_delegate.h"
 #include "brave/browser/net/url_context.h"
 
 struct OnBeforeURLRequestContext;

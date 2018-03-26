@@ -12,7 +12,6 @@
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
 
-
 namespace brave {
 
 bool IsEmptyDataURLRedirect(const GURL& gurl) {
@@ -45,7 +44,7 @@ std::string GetGoogleTagManagerPolyfillJS() {
   str.append("(function() { var noopfn = function() { ; }; window.ga = window.ga || noopfn; })();");
   base64_output.reserve(180);
   Base64UrlEncode(str, base::Base64UrlEncodePolicy::OMIT_PADDING, &base64_output);
-  base64_output= std::string(kJSDataURLPrefix) + base64_output;
+  base64_output = std::string(kJSDataURLPrefix) + base64_output;
   return base64_output;
 }
 
@@ -65,7 +64,7 @@ std::string GetGoogleTagServicesPolyfillJS() {
   str.append("d.length !== 0 ) { gpt.cmd.push(cmd.shift()); } })();");
   base64_output.reserve(4668);
   Base64UrlEncode(str, base::Base64UrlEncodePolicy::OMIT_PADDING, &base64_output);
-  base64_output= std::string(kJSDataURLPrefix) + base64_output;
+  base64_output = std::string(kJSDataURLPrefix) + base64_output;
   return base64_output;
 }
 
