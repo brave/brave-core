@@ -23,8 +23,8 @@ source_set("brave_shields") {
     "tracking_protection_service.h",
   ]
   deps = [
-    "//brave/vendor/ad-block/antimuon:ad-block",
-    "//brave/vendor/tracking-protection/antimuon:tracking-protection",
+    "//brave/vendor/ad-block/brave:ad-block",
+    "//brave/vendor/tracking-protection/brave:tracking-protection",
   ]
   public_deps = [
     "//chrome/common",

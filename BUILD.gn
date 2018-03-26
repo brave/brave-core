@@ -70,7 +70,7 @@ group("packed_resources") {
   ]
 }
 
-antimuon_framework_public_deps = [
+brave_framework_public_deps = [
   ":packed_resources",
 ]
 
@@ -79,7 +79,7 @@ if (is_mac) {
     sources = [
       "$root_gen_dir/repack/brave_resources.pak",
     ]
-    public_deps = antimuon_framework_public_deps
+    public_deps = brave_framework_public_deps
 
     outputs = [
       "{{bundle_resources_dir}}/{{source_file_part}}",
@@ -87,7 +87,7 @@ if (is_mac) {
   }
 } else {
   group("brave_framework_resources") {
-    public_deps = antimuon_framework_public_deps
+    public_deps = brave_framework_public_deps
   }
 }
 
@@ -120,13 +120,13 @@ action("generate_version") {
   ]
 }
 
-copy("antimuon_dist_resources") {
+copy("brave_dist_resources") {
   if (is_mac) {
     sources = []
   } else {
     sources = [
       "$root_out_dir/brave_resources.pak",
-      "$root_out_dir/$antimuon_exe"
+      "$root_out_dir/$brave_exe"
     ]
   }
 
@@ -145,12 +145,12 @@ copy("antimuon_dist_resources") {
   }
 
   outputs = [
-    "$antimuon_dist_dir/{{source_file_part}}"
+    "$brave_dist_dir/{{source_file_part}}"
   ]
 }
 
 if (!is_mac) {
-  copy("antimuon_locale_dist_resources") {
+  copy("brave_locale_dist_resources") {
     deps = [
       "//chrome:packed_resources",
     ]
@@ -165,7 +165,7 @@ if (!is_mac) {
       }
     }
     outputs = [
-      "$antimuon_dist_dir/locales/{{source_file_part}}",
+      "$brave_dist_dir/locales/{{source_file_part}}",
     ]
   }
 }
@@ -183,13 +183,13 @@ if (is_win) {
 
 chromedriver_version = "2.33"
 
-copy("antimuon_chromedriver_dist_resources") {
+copy("brave_chromedriver_dist_resources") {
   sources = [
     "$root_out_dir/$chromedriver",
   ]
 
   outputs = [
-    "$antimuon_dist_dir/$chromedriver"
+    "$brave_dist_dir/$chromedriver"
   ]
 
   deps = [ "//chrome/test/chromedriver:chromedriver" ]
@@ -217,7 +217,7 @@ action("generate_chromium_licenses") {
   ]
 }
 
-copy("antimuon_license_dist_resources") {
+copy("brave_license_dist_resources") {
   sources = get_target_outputs(":generate_chromium_licenses")
   sources += [
     "//brave/LICENSE",
@@ -227,41 +227,41 @@ copy("antimuon_license_dist_resources") {
   ]
 
   outputs = [
-    "$antimuon_dist_dir/{{source_file_part}}"
+    "$brave_dist_dir/{{source_file_part}}"
   ]
 }
 
 zip("chromedriver_zip") {
-  inputs = get_target_outputs(":antimuon_chromedriver_dist_resources")
-  inputs += get_target_outputs(":antimuon_license_dist_resources")
-  output = "$antimuon_dist_dir/chromedriver-v$chromedriver_version-$antimuon_platform-$target_arch.zip"
+  inputs = get_target_outputs(":brave_chromedriver_dist_resources")
+  inputs += get_target_outputs(":brave_license_dist_resources")
+  output = "$brave_dist_dir/chromedriver-v$chromedriver_version-$brave_platform-$target_arch.zip"
 
-  base_dir = antimuon_dist_dir
+  base_dir = brave_dist_dir
 
   deps = [
     "app/$current_os:chromedriver_dist_resources",
-    ":antimuon_chromedriver_dist_resources",
-    ":antimuon_license_dist_resources",
+    ":brave_chromedriver_dist_resources",
+    ":brave_license_dist_resources",
   ]
 }
 
 
 action("create_symbols_dist") {
-  output = "$antimuon_dist_dir/$antimuon_project_name-v$antimuon_version-$antimuon_platform-$target_arch-symbols.zip"
+  output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
 
   script = "//brave/script/create-dist.py"
 
-  # inputs = get_target_outputs(":antimuon_chromedriver_dist_resources")
-  inputs = get_target_outputs(":antimuon_license_dist_resources")
-  dir_inputs = [ "$antimuon_project_name.breakpad.syms" ]
+  # inputs = get_target_outputs(":brave_chromedriver_dist_resources")
+  inputs = get_target_outputs(":brave_license_dist_resources")
+  dir_inputs = [ "$brave_project_name.breakpad.syms" ]
 
   file_inputs = []
   foreach(input, inputs) {
-    file_inputs += [ rebase_path(input, antimuon_dist_dir) ]
+    file_inputs += [ rebase_path(input, brave_dist_dir) ]
   }
 
   rebase_output = rebase_path(output)
-  rebase_base_dir = rebase_path(antimuon_dist_dir)
+  rebase_base_dir = rebase_path(brave_dist_dir)
 
   args = [
     "--base-dir=$rebase_base_dir",
@@ -274,30 +274,30 @@ action("create_symbols_dist") {
 
   deps = [
     "app/$current_os:symbol_dist_resources",
-    ":antimuon_license_dist_resources",
+    ":brave_license_dist_resources",
   ]
 }
 
 action("create_dist_zips") {
-  output = "$antimuon_dist_dir/$antimuon_project_name-v$antimuon_version-$antimuon_platform-$target_arch.zip"
+  output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch.zip"
 
   script = "//brave/script/create-dist.py"
 
-  inputs = get_target_outputs(":antimuon_license_dist_resources")
+  inputs = get_target_outputs(":brave_license_dist_resources")
 
   if (!is_mac) {
-    inputs += get_target_outputs(":antimuon_dist_resources")
-    inputs += get_target_outputs(":antimuon_locale_dist_resources")
+    inputs += get_target_outputs(":brave_dist_resources")
+    inputs += get_target_outputs(":brave_locale_dist_resources")
   }
 
   if (is_win) {
     inputs += [
-      "$antimuon_dist_dir/chrome_elf.dll",
-      "$antimuon_dist_dir/$widevine_cdm_path/widevinecdmadapter.dll",
+      "$brave_dist_dir/chrome_elf.dll",
+      "$brave_dist_dir/$widevine_cdm_path/widevinecdmadapter.dll",
     ]
   }
 
-  dist_dir = antimuon_dist_dir
+  dist_dir = brave_dist_dir
 
   file_inputs = []
   foreach(input, inputs) {
@@ -307,7 +307,7 @@ action("create_dist_zips") {
   dir_inputs = []
   if (is_mac) {
     dir_inputs += [
-      "$antimuon_exe",
+      "$brave_exe",
     ]
   }
 
@@ -317,7 +317,7 @@ action("create_dist_zips") {
 
   deps = [
     ":create_symbols_dist",
-    ":antimuon_license_dist_resources",
+    ":brave_license_dist_resources",
     "app/$current_os:dist_resources",
   ]
 
@@ -325,8 +325,8 @@ action("create_dist_zips") {
 
   if (!is_mac) {
     deps += [
-      ":antimuon_dist_resources",
-      ":antimuon_locale_dist_resources",
+      ":brave_dist_resources",
+      ":brave_locale_dist_resources",
     ]
   }
   if (is_win) {

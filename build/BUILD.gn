@@ -1,8 +1,8 @@
 # Changing these will cause a full rebuild
-antimuon_include_dirs_ = [
+brave_include_dirs_ = [
   "//brave/chromium_src",
 ]
 
-config("antimuon_include_dirs") {
-  include_dirs = antimuon_include_dirs_
+config("brave_include_dirs") {
+  include_dirs = brave_include_dirs_
 }

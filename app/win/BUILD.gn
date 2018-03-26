@@ -3,7 +3,7 @@ import("//brave/build/config.gni")
 import("//media/cdm/ppapi/cdm_paths.gni")
 
 action("generate_breakpad_symbols") {
-  symbols_dir = "$antimuon_dist_dir/$antimuon_project_name.breakpad.syms"
+  symbols_dir = "$brave_dist_dir/$brave_project_name.breakpad.syms"
   outputs = [
     symbols_dir
   ]
@@ -40,7 +40,7 @@ copy("dist_widevine_resources") {
     "$root_out_dir/$widevine_cdm_path/widevinecdmadapter.dll",
   ]
   outputs = [
-    "$antimuon_dist_dir/$widevine_cdm_path/{{source_file_part}}"
+    "$brave_dist_dir/$widevine_cdm_path/{{source_file_part}}"
   ]
   public_deps = [
     ":widevine_cdm_adapter",
@@ -53,7 +53,7 @@ copy("dist_resources") {
   ]
 
   outputs = [
-    "$antimuon_dist_dir/{{source_file_part}}",
+    "$brave_dist_dir/{{source_file_part}}",
   ]
 
   public_deps = [
