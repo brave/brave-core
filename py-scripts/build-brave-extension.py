@@ -12,9 +12,9 @@ if sys.platform in ['win32', 'cygwin']:
 def main():
   brave_extension_dir = os.path.realpath(os.path.dirname(
       os.path.dirname(os.path.realpath(__file__))))
-  antimuon_dir = os.path.dirname(os.path.dirname(brave_extension_dir))
-  antimuon_src_dir = sys.argv[1]
-  brave_extension_browser_resources_dir = os.path.join(antimuon_src_dir, 'browser', 'resources', 'brave_extension')
+  brave_core_dir = os.path.dirname(os.path.dirname(brave_extension_dir))
+  brave_core_src_dir = sys.argv[1]
+  brave_extension_browser_resources_dir = os.path.join(brave_core_src_dir, 'browser', 'resources', 'brave_extension')
 
   os.chdir(brave_extension_dir)
   build_extension('.')
