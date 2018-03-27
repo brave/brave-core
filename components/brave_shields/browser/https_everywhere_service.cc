@@ -79,8 +79,10 @@ namespace {
 
 namespace brave_shields {
 
+GURL HTTPSEverywhereService::g_https_everywhere_url(DAT_FILE_URL);
+
 HTTPSEverywhereService::HTTPSEverywhereService() :
-    BaseBraveShieldsService(DAT_FILE, GURL(DAT_FILE_URL)) {
+    BaseBraveShieldsService(DAT_FILE, g_https_everywhere_url) {
 }
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
@@ -330,11 +332,15 @@ std::string HTTPSEverywhereService::CorrecttoRuleToRE2Engine(
   return correctedto;
 }
 
+// static
+void HTTPSEverywhereService::SetHttpsEveryWhereURLForTest(const GURL& url) {
+  g_https_everywhere_url = url;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
-// TODO(bbondy): consider making this a singleton.
 std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory() {
   return base::MakeUnique<HTTPSEverywhereService>();
 }
