@@ -1,3 +1,20 @@
 import("//build/config/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+source_set("command_ids") {
+  sources = [
+    "brave_command_ids.h",
+  ]
+}
+
+grit("generated_resources_grit") {
+  source = "generated_resources.grd"
+  output_dir = "$root_gen_dir/brave"
+  outputs = [
+    "grit/generated_resources.h",
+    "generated_resources.pak",
+  ]
+  resource_ids = "//brave/browser/resources/resource_ids"
+}
 
 group("app") {}

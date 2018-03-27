@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/toolbar/app_menu_button.cc b/chrome/browser/ui/views/toolbar/app_menu_button.cc
+index 43cd707fb36f70efe23c4e94ec8575caba9cac30..9e578d363d051b3578a70da811f51e0966e0c6b0 100644
+--- a/chrome/browser/ui/views/toolbar/app_menu_button.cc
++++ b/chrome/browser/ui/views/toolbar/app_menu_button.cc
+@@ -11,6 +11,7 @@
+ #include "base/single_thread_task_runner.h"
+ #include "base/threading/thread_task_runner_handle.h"
+ #include "base/time/time.h"
++#include "brave/browser/ui/toolbar/brave_app_menu_model.h"
+ #include "cc/paint/paint_flags.h"
+ #include "chrome/app/vector_icons/vector_icons.h"
+ #include "chrome/browser/themes/theme_properties.h"
+@@ -104,7 +105,7 @@ void AppMenuButton::ShowMenu(bool for_drop) {
+   Browser* browser = toolbar_view_->browser();
+ 
+   menu_.reset(new AppMenu(browser, for_drop ? AppMenu::FOR_DROP : 0));
+-  menu_model_.reset(new AppMenuModel(toolbar_view_, browser));
++  menu_model_.reset(new BraveAppMenuModel(toolbar_view_, browser));
+   menu_model_->Init();
+   menu_->Init(menu_model_.get());
+ 

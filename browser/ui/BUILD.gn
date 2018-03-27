@@ -2,6 +2,12 @@ import("//build/config/features.gni")
 
 source_set("ui") {
   sources = [
+    "brave_browser_command_controller.cc",
+    "brave_browser_command_controller.h",
+    "brave_pages.cc",
+    "brave_pages.h",
+    "toolbar/brave_app_menu_model.cc",
+    "toolbar/brave_app_menu_model.h",
     "webui/basic_ui.cc",
     "webui/basic_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
@@ -11,5 +17,10 @@ source_set("ui") {
   ]
   public_deps = [
     "//content/public/browser",
+  ]
+
+  deps = [
+    "//brave/app:command_ids",
+    "//chrome/app:command_ids",
   ]
 }
