@@ -73,6 +73,23 @@
     "description": "Cookie control dropdown option Block All Cookies"
   },
 
+  "shieldsControlsFingerprintingProtection": {
+    "message": "Fingerprinting Protection",
+    "description": "Label Fingerprinting Protection dropdown options"
+  },
+  "shieldsControlsFingerprintingOptionBlock3p": {
+    "message": "Block 3rd Party Fingerprinting",
+    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  },
+  "shieldsControlsFingerprintingOptionAllowAll": {
+    "message": "Allow All Fingerprinting",
+    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  },
+  "shieldsControlsFingerprintingOptionBlockAll": {
+    "message": "Block All Fingerprinting",
+    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  },
+
   "shieldsControlsHttpsEverywhereSwitch": {
     "message": "HTTPS Everywhere",
     "description": "Shields controls, switch for HTTPS Everywhere"
@@ -80,10 +97,6 @@
   "shieldsControlsBlockScriptsSwitch": {
     "message": "Block Scripts",
     "description": "Shields controls, switch for Block Scripts"
-  },
-  "shieldsControlsFingerprintingProtectionSwitch": {
-    "message": "Fingerprinting Protection",
-    "description": "Shields controls, switch for Fingerprinting Protection"
   },
   "shieldsControlsBlockPhishingMalwareSwitch": {
     "message": "Block Phishing/Malware",
