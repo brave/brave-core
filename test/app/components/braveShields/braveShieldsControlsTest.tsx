@@ -46,6 +46,8 @@ function setup () {
     fingerprintingToggled: () => {
       return {
         type: actionTypes.FINGERPRINTING_TOGGLED
+      }
+    }
   }
 
   const renderer = renderIntoDocument(<BraveShieldsControls {...props} />) as React.Component<BraveShieldsControls>
