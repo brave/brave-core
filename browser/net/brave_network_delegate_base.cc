@@ -55,21 +55,30 @@ void BraveNetworkDelegateBase::RunNextCallback(
   }
 
   // Continue processing callbacks until we hit one that returns PENDING
+  int rv = net::OK;
   while(before_url_request_callbacks_.size() != ctx->next_url_request_index) {
     brave::OnBeforeURLRequestCallback callback =
         before_url_request_callbacks_[ctx->next_url_request_index++];
     brave::ResponseCallback next_callback =
         base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
             base::Unretained(this), request, new_url, ctx);
-    int rv = callback.Run(request, new_url, next_callback, ctx);
+    rv = callback.Run(request, new_url, next_callback, ctx);
     if (rv == net::ERR_IO_PENDING) {
       return;
+    }
+    if (rv == net::ERR_ABORTED) {
+      break;
     }
   }
 
   const net::CompletionCallback& net_completion_callback =
     callbacks_[ctx->request_identifier];
-  int rv =
+  if (rv == net::ERR_ABORTED) {
+    net_completion_callback.Run(rv);
+    return;
+  }
+
+  rv =
     ChromeNetworkDelegate::OnBeforeURLRequest(request,
         net_completion_callback, new_url);
   if (rv != net::ERR_IO_PENDING) {
