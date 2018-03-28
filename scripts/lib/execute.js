@@ -1,4 +1,4 @@
-var execSync = require('child_process').execSync
+var exec = require('child_process').exec
 
 module.exports = function (cmds, env, cb) {
   if (!env) {
@@ -17,7 +17,7 @@ module.exports = function (cmds, env, cb) {
     }
   }
 
-  var r = execSync(cmd, {
+  var r = exec(cmd, {
     env: process.env
   }, function (err) {
     if (cb) {
