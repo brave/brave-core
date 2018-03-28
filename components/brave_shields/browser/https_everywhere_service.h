@@ -20,6 +20,8 @@ namespace leveldb {
 class DB;
 }
 
+class HTTPSEverywhereServiceTest;
+
 namespace brave_shields {
 
 struct HTTPSE_REDIRECTS_COUNT_ST {
@@ -54,6 +56,10 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
   std::string CorrecttoRuleToRE2Engine(const std::string& to);
 
  private:
+  friend class ::HTTPSEverywhereServiceTest;
+  static GURL g_https_everywhere_url;
+  static void SetHttpsEveryWhereURLForTest(const GURL& url);
+
   std::mutex httpse_get_urls_redirects_count_mutex_;
   std::vector<HTTPSE_REDIRECTS_COUNT_ST> httpse_urls_redirects_count_;
   HTTPSERecentlyUsedCache<std::string> recently_used_cache_;
