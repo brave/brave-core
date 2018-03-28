@@ -17,7 +17,7 @@ interface Props {
     controlsToggled: shieldActions.ControlsToggled
     httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
     javascriptToggled: shieldActions.JavascriptToggled
-    fingerprintingToggled: shieldActions.FingerprintingToggled
+    blockFingerprinting: shieldActions.BlockFingerprinting
   }
   shieldsPanelTabData: Tab
 }
@@ -57,7 +57,7 @@ export default class BraveShields extends React.Component<Props, object> {
           javascriptToggled={actions.javascriptToggled}
           controlsOpen={shieldsPanelTabData.controlsOpen}
           fingerprinting={shieldsPanelTabData.fingerprinting}
-          fingerprintingToggled={actions.fingerprintingToggled}
+          blockFingerprinting={actions.blockFingerprinting}
         />
         <BraveShieldsFooter />
       </div>

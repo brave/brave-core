@@ -52,8 +52,9 @@ export const javascriptToggled: actions.JavascriptToggled = () => {
   }
 }
 
-export const fingerprintingToggled: actions.FingerprintingToggled = () => {
+export const blockFingerprinting: actions.BlockFingerprinting = (setting) => {
   return {
-    type: types.FINGERPRINTING_TOGGLED
+    type: types.BLOCK_FINGERPRINTING,
+    setting
   }
 }

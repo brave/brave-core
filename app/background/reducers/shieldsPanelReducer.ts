@@ -21,7 +21,6 @@ import { reloadTab } from '../api/tabsAPI'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
 import { State, Tab } from '../../types/state/shieldsPannelState'
 import { Actions } from '../../types/actions/index'
-import { BlockOptions } from '../../types/other/blockTypes'
 
 const updateBadgeText = (state: State) => {
   const tabId: number = shieldsPanelState.getActiveTabId(state)
@@ -212,11 +211,10 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
           .updateTabShieldsData(state, tabId, { controlsOpen: action.setting })
         break
       }
-    case shieldsPanelTypes.FINGERPRINTING_TOGGLED:
+    case shieldsPanelTypes.BLOCK_FINGERPRINTING:
       {
         const tabData: Tab = shieldsPanelState.getActiveTabData(state)
-        const setting: BlockOptions = tabData.fingerprinting === 'block' ? 'allow' : 'block'
-        setAllowFingerprinting(tabData.origin, setting)
+        setAllowFingerprinting(tabData.origin, action.setting)
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
             reloadTab(tabData.id, true).catch(() => {

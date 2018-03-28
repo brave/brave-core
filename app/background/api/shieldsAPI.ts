@@ -147,7 +147,7 @@ export const setAllowJavaScript = (origin: string, setting: string) =>
  * Changes the fingerprinting at origin to be allowed or blocked.
  * The fingerprinting-protection service will come into effect if the fingerprinting is marked as blocked.
  * @param {string} origin the origin of the site to change the setting for
- * @param {string} setting 'allow' or 'block'
+ * @param {string} setting 'allow' or 'block' or 'block_third_party'
  * @return a promise which resolves with the setting is set
  */
 export const setAllowFingerprinting = (origin: string, setting: string) =>

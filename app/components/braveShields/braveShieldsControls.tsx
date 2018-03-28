@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { Grid, Column, SwitchButton, BrowserSelect, ContentToggle } from 'brave-ui'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
-import { BlockOptions } from '../../types/other/blockTypes'
+import { BlockOptions, BlockFPOptions } from '../../types/other/blockTypes'
 import { getMessage } from '../../background/api/localeAPI'
 
 export interface Props {
@@ -15,12 +15,12 @@ export interface Props {
   ads: BlockOptions
   trackers: BlockOptions
   javascript: BlockOptions
-  fingerprinting: BlockOptions
+  fingerprinting: BlockFPOptions
   blockAdsTrackers: shieldActions.BlockAdsTrackers
   controlsToggled: shieldActions.ControlsToggled
   httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
   javascriptToggled: shieldActions.JavascriptToggled
-  fingerprintingToggled: shieldActions.FingerprintingToggled
+  blockFingerprinting: shieldActions.BlockFingerprinting
 }
 
 export default class BraveShieldsControls extends React.Component<Props, object> {
@@ -31,7 +31,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
     this.onToggleControls = this.onToggleControls.bind(this)
     this.onToggleHTTPSEverywhere = this.onToggleHTTPSEverywhere.bind(this)
     this.onToggleJavaScript = this.onToggleJavaScript.bind(this)
-    this.onToggleFingerprinting = this.onToggleFingerprinting.bind(this)
+    this.onChangeFingerprintingProtection = this.onChangeFingerprintingProtection.bind(this)
   }
 
   onChangeAdControl (e: HTMLSelectElement) {
@@ -54,8 +54,8 @@ export default class BraveShieldsControls extends React.Component<Props, object>
     this.props.javascriptToggled()
   }
 
-  onToggleFingerprinting () {
-    this.props.fingerprintingToggled()
+  onChangeFingerprintingProtection (e: HTMLSelectElement) {
+    this.props.blockFingerprinting(e.target.value)
   }
 
   render () {
@@ -95,6 +95,17 @@ export default class BraveShieldsControls extends React.Component<Props, object>
               <option value='SOME'>{getMessage('shieldsControlsCookieOptionAllowAll')}</option>
               <option value='SOME'>{getMessage('shieldsControlsCookieOptionBlockAll')}</option>
             </BrowserSelect>
+
+            <BrowserSelect
+              disabled={braveShields === 'block'}
+              titleName={getMessage('shieldsControlsFingerprintingProtection')}
+              value={braveShields !== 'block' ? fingerprinting : 'allow'}
+              onChange={this.onChangeFingerprintingProtection}
+            >
+              <option value='block_third_party'>{getMessage('shieldsControlsFingerprintingOptionBlock3p')}</option>
+              <option value='block'>{getMessage('shieldsControlsFingerprintingOptionBlockAll')}</option>
+              <option value='allow'>{getMessage('shieldsControlsFingerprintingOptionAllowAll')}</option>
+            </BrowserSelect>
             <Grid
               gap='10px 5px'
               padding='5px 0'
@@ -117,16 +128,6 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                   rightText={getMessage('shieldsControlsBlockScriptsSwitch')}
                   checked={braveShields !== 'block' && javascript !== 'allow'}
                   onChange={this.onToggleJavaScript}
-                />
-              </Column>
-              <Column>
-                {/* TODO @cezaraugusto */}
-                <SwitchButton
-                  id='fingerprintingProtection'
-                  disabled={braveShields === 'block'}
-                  rightText={getMessage('shieldsControlsFingerprintingProtectionSwitch')}
-                  checked={braveShields !== 'block' && fingerprinting === 'block'}
-                  onChange={this.onToggleFingerprinting}
                 />
               </Column>
               <Column>
