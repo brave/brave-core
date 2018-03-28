@@ -4,6 +4,7 @@
 
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "chrome/browser/ui/browser.h"
@@ -28,8 +29,7 @@ public:
   void PreRunTestOnMainThread() override {
     InProcessBrowserTest::PreRunTestOnMainThread();
     WaitForAdBlockServiceThread();
-    ASSERT_TRUE(
-      brave_shields::AdBlockService::GetInstance()->IsInitialized());
+    ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
   }
 
   void InitEmbeddedTestServer() {
@@ -41,14 +41,14 @@ public:
   }
 
   void InitAdBlock() {
-    brave_shields::AdBlockService::g_ad_block_url =
-        embedded_test_server()->GetURL("adblock-data/3/ABPFilterParserData.dat");
+    brave_shields::AdBlockService::SetAdBlockURLForTest(
+        embedded_test_server()->GetURL("adblock-data/3/ABPFilterParserData.dat"));
   }
 
   void WaitForAdBlockServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(
         new base::ThreadTestHelper(
-            brave_shields::AdBlockService::GetInstance()->GetTaskRunner()));
+            g_brave_browser_process->ad_block_service()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 };
