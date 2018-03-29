@@ -26,7 +26,7 @@
 #include "third_party/zlib/google/zip.h"
 
 #define DAT_FILE "httpse.leveldb.zip"
-// TODO: Repalce this with the real version at runtime
+// TODO: Replace this with the real version at runtime
 #define DAT_FILE_URL "https://s3.amazonaws.com/https-everywhere-data/5.2/httpse.leveldb.zip"
 #define HTTPSE_URLS_REDIRECTS_COUNT_QUEUE   1
 #define HTTPSE_URL_MAX_REDIRECTS_COUNT      5
@@ -81,8 +81,7 @@ namespace brave_shields {
 
 GURL HTTPSEverywhereService::g_https_everywhere_url(DAT_FILE_URL);
 
-HTTPSEverywhereService::HTTPSEverywhereService() :
-    BaseBraveShieldsService(DAT_FILE, g_https_everywhere_url) {
+HTTPSEverywhereService::HTTPSEverywhereService() {
 }
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
@@ -93,7 +92,7 @@ void HTTPSEverywhereService::Cleanup() {
 }
 
 bool HTTPSEverywhereService::Init() {
-  base::FilePath zip_db_file_path = GetDATFilePath(DAT_FILE);
+  base::FilePath zip_db_file_path /*= GetDATFilePath(DAT_FILE)*/;
 
   base::FilePath unzipped_level_db_path = zip_db_file_path.RemoveExtension();
   base::FilePath destination = zip_db_file_path.DirName();

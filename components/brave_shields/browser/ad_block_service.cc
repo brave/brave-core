@@ -13,24 +13,26 @@
 #include "base/bind.h"
 #include "base/bind_helpers.h"
 #include "base/callback.h"
+#include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/extensions/brave_component_installer.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
+#include "chrome/browser/browser_process.h"
+#include "components/component_updater/component_installer.h"
+#include "components/component_updater/component_updater_service.h"
 
 #define DAT_FILE "ABPFilterParserData.dat"
-// TODO: Repalce this with the real version at runtime
-#define DAT_FILE_URL "https://s3.amazonaws.com/adblock-data/3/ABPFilterParserData.dat"
 
 namespace brave_shields {
 
-GURL AdBlockService::g_ad_block_url(DAT_FILE_URL);
+GURL AdBlockService::g_ad_block_url("");
 
 AdBlockService::AdBlockService() :
-    BaseBraveShieldsService(DAT_FILE, AdBlockService::g_ad_block_url),
     ad_block_client_(new AdBlockClient()) {
 }
 
@@ -69,16 +71,36 @@ bool AdBlockService::ShouldStartRequest(const GURL& url,
 }
 
 bool AdBlockService::Init() {
-   if (!GetDATFileData(DAT_FILE, buffer_)) {
+  base::Closure registered_callback =
+    base::Bind(&AdBlockService::OnComponentRegistered,
+               base::Unretained(this), kAdBlockPlusUpdaterId);
+  ReadyCallback ready_callback =
+    base::Bind(&AdBlockService::OnComponentReady,
+               base::Unretained(this), kAdBlockPlusUpdaterId);
+  brave::RegisterComponent(g_browser_process->component_updater(),
+      kAdBlockPlusUpdaterName, kAdBlockPlusUpdaterPublicKeyStr,
+      registered_callback, ready_callback);
+  return true;
+}
+
+void AdBlockService::OnComponentRegistered(const std::string& extension_id) {
+}
+
+void AdBlockService::OnComponentReady(const std::string& extension_id,
+                                      const base::FilePath& install_dir) {
+  if (!GetDATFileData(install_dir, DAT_FILE, buffer_)) {
     LOG(ERROR) << "Could not obtain ad block data file";
-    return false;
+    return;
+  }
+  if (buffer_.empty()) {
+    LOG(ERROR) << "Could not obtain ad block data";
+    return;
   }
   if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
     ad_block_client_.reset();
-    LOG(ERROR) << "AdBlockService::InitAdBlock deserialize failed";
-    return false;
+    LOG(ERROR) << "Failed to deserialize ad block data";
+    return;
   }
-  return true;
 }
 
 // static

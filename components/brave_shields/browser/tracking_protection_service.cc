@@ -24,13 +24,12 @@
 
 #define DAT_FILE "TrackingProtection.dat"
 #define THIRD_PARTY_HOSTS_CACHE_SIZE 20
-// TODO: Repalce this with the real version at runtime
+// TODO: Replace this with the real version at runtime
 #define DAT_FILE_URL "https://s3.amazonaws.com/tracking-protection-data/1/TrackingProtection.dat"
 
 namespace brave_shields {
 
 TrackingProtectionService::TrackingProtectionService() :
-    BaseBraveShieldsService(DAT_FILE, GURL(DAT_FILE_URL)),
     tracking_protection_client_(new CTPParser()),
     // See comment in tracking_protection_service.h for white_list_
     white_list_({
@@ -88,13 +87,15 @@ bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
 }
 
 bool TrackingProtectionService::Init() {
+#if 0
    if (!GetDATFileData(DAT_FILE, buffer_)) {
     LOG(ERROR) << "Could not obtain ad block data file";
     return false;
   }
+#endif
   if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
     tracking_protection_client_.reset();
-    LOG(ERROR) << "TrackingProtectionService::InitAdBlock deserialize failed";
+    LOG(ERROR) << "TrackingProtectionService::Init deserialize failed";
     return false;
   }
   return true;

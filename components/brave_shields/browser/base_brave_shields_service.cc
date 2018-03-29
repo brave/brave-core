@@ -17,21 +17,12 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task_runner_util.h"
-#include "base/task_scheduler/post_task.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/brave_shields/browser/dat_file_web_request.h"
 
 namespace brave_shields {
 
-BaseBraveShieldsService::BaseBraveShieldsService(
-    const std::string& file_name,
-    const GURL& url) :
-      file_name_(file_name),
-      url_(url),
-      initialized_(false),
-      task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
+BaseBraveShieldsService::BaseBraveShieldsService() :
+    initialized_(false) {
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {
@@ -39,28 +30,6 @@ BaseBraveShieldsService::~BaseBraveShieldsService() {
 
 bool BaseBraveShieldsService::IsInitialized() const {
   return initialized_;
-}
-
-void BaseBraveShieldsService::DownloadDATFile() {
-  web_request_.reset(new DATFileWebRequest(
-    file_name_,
-    url_,
-    base::Bind(&BaseBraveShieldsService::DATFileResponse,
-      base::Unretained(this))));
-  web_request_->Init();
-  web_request_->Start();
-}
-
-void BaseBraveShieldsService::DATFileResponse(bool success) {
-  std::lock_guard<std::mutex> guard(init_mutex_);
-  if (!success) {
-    LOG(ERROR) << "Could not download DAT file: " << url_;
-    return;
-  }
-
-  task_runner_->PostTask(FROM_HERE,
-      base::Bind(&BaseBraveShieldsService::InitShields,
-          base::Unretained(this)));
 }
 
 void BaseBraveShieldsService::InitShields() {
@@ -76,7 +45,7 @@ bool BaseBraveShieldsService::Start() {
     return true;
   }
 
-  DownloadDATFile();
+  InitShields();
   return false;
 }
 

@@ -8,6 +8,8 @@ source_set("extensions") {
     "api/content_settings/brave_content_settings_store.h",
     "brave_component_extension_resource_manager.cc",
     "brave_component_extension_resource_manager.h",
+    "brave_component_installer.cc",
+    "brave_component_installer.h",
     "brave_component_loader.cc",
     "brave_component_loader.h",
   ]

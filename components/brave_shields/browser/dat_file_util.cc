@@ -6,21 +6,13 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/path_service.h"
-#include "chrome/common/chrome_paths.h"
 
 namespace brave_shields {
 
-base::FilePath GetDATFilePath(const std::string& file_name) {
-  base::FilePath app_data_path;
-  PathService::Get(chrome::DIR_USER_DATA, &app_data_path);
-  base::FilePath dat_file_path = app_data_path.AppendASCII(file_name);
-  return dat_file_path;
-}
-
-bool GetDATFileData(const std::string& file_name,
+bool GetDATFileData(const base::FilePath& dir,
+    const std::string& file_name,
     std::vector<unsigned char>& buffer) {
-  base::FilePath dat_file_path = GetDATFilePath(file_name);
+  base::FilePath dat_file_path = dir.AppendASCII(file_name);
   int64_t size = 0;
   if (!base::PathExists(dat_file_path)
       || !base::GetFileSize(dat_file_path, &size)
