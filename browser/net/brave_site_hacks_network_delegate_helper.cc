@@ -105,4 +105,26 @@ int OnBeforeURLRequest_SiteHacksWork(
   return net::OK;
 }
 
+void CheckForCookieOverride(const GURL& url, const URLPattern& pattern,
+    net::HttpRequestHeaders* headers, const std::string& extra_cookies) {
+  if (pattern.MatchesURL(url)) {
+    std::string cookies;
+    if (headers->GetHeader(kCookieHeader, &cookies)) {
+      cookies = "; ";
+    }
+    cookies += extra_cookies;
+    headers->SetHeader(kCookieHeader, cookies);
+  }
+}
+
+int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
+        net::HttpRequestHeaders* headers,
+        const ResponseCallback& next_callback,
+        std::shared_ptr<BraveURLRequestContext> ctx) {
+  CheckForCookieOverride(request->url(),
+      URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
+      kForbesExtraCookies);
+  return net::OK;
+}
+
 }  // namespace brave

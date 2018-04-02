@@ -47,6 +47,7 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
   std::shared_ptr<brave::BraveURLRequestContext> ctx(
       new brave::BraveURLRequestContext());
   callbacks_[request->identifier()] = callback;
+  ctx->headers = headers;
   ctx->request_identifier = request->identifier();
   ctx->event_type = brave::kOnBeforeStartTransaction;
   RunNextCallback(request, nullptr, ctx);

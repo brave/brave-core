@@ -21,6 +21,11 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
           brave::OnBeforeURLRequest_HttpsePreFileWork);
   before_url_request_callbacks_.push_back(callback);
 
+  brave::OnBeforeStartTransactionCallback start_transactions_callback =
+      base::Bind(
+          brave::OnBeforeStartTransaction_SiteHacksWork);
+  before_start_transaction_callbacks_.push_back(start_transactions_callback);
+
 }
 
 BraveProfileNetworkDelegate::~BraveProfileNetworkDelegate() {

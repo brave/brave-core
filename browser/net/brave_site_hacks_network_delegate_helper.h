@@ -21,6 +21,11 @@ int OnBeforeURLRequest_SiteHacksWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveURLRequestContext> ctx);
 
+int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveURLRequestContext> ctx);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_SITE_HACKS_NETWORK_DELEGATE_H_
