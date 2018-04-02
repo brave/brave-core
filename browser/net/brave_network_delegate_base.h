@@ -29,19 +29,6 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   using ResponseListener = base::Callback<void(const base::DictionaryValue&,
                                                const ResponseCallback&)>;
 
-  enum ResponseEvent {
-    kOnBeforeRequest,
-    kOnBeforeSendHeaders,
-    kOnHeadersReceived,
-  };
-
-  struct ResponseListenerInfo {
-    ResponseListenerInfo();
-    ~ResponseListenerInfo();
-
-    ResponseListener listener_;
-  };
-
   // |enable_referrers| (and all of the other optional PrefMembers) should be
   // initialized on the UI thread (see below) beforehand. This object's owner is
   // responsible for cleaning them up at shutdown.
@@ -53,18 +40,22 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   int OnBeforeURLRequest(net::URLRequest* request,
                          const net::CompletionCallback& callback,
                          GURL* new_url) override;
+  int OnBeforeStartTransaction(net::URLRequest* request,
+                               const net::CompletionCallback& callback,
+                               net::HttpRequestHeaders* headers) override;
   void OnURLRequestDestroyed(net::URLRequest* request) override;
 
  protected:
   void RunNextCallback(
     net::URLRequest* request,
     GURL *new_url,
-    std::shared_ptr<brave::OnBeforeURLRequestContext> ctx);
+    std::shared_ptr<brave::BraveURLRequestContext> ctx);
   std::vector<brave::OnBeforeURLRequestCallback>
       before_url_request_callbacks_;
+  std::vector<brave::OnBeforeStartTransactionCallback>
+      before_start_transaction_callbacks_;
 
  private:
-  std::map<ResponseEvent, ResponseListenerInfo> response_listeners_;
   std::map<uint64_t, net::CompletionCallback> callbacks_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);

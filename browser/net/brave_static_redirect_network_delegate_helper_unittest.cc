@@ -34,8 +34,8 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, NoModifyTypicalURL) {
   std::unique_ptr<net::URLRequest> request =
       context()->CreateRequest(url, net::IDLE, &test_delegate,
                              TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::OnBeforeURLRequestContext>
-      before_url_context(new brave::OnBeforeURLRequestContext());
+  std::shared_ptr<brave::BraveURLRequestContext>
+      before_url_context(new brave::BraveURLRequestContext());
   brave::ResponseCallback callback;
   GURL new_url;
   int ret =
@@ -52,8 +52,8 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
   std::unique_ptr<net::URLRequest> request =
       context()->CreateRequest(url, net::IDLE, &test_delegate,
                              TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::OnBeforeURLRequestContext>
-      before_url_context(new brave::OnBeforeURLRequestContext());
+  std::shared_ptr<brave::BraveURLRequestContext>
+      before_url_context(new brave::BraveURLRequestContext());
   brave::ResponseCallback callback;
   GURL new_url;
   GURL expected_url(GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY));

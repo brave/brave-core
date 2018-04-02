@@ -85,7 +85,7 @@ int OnBeforeURLRequest_SiteHacksWork(
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
-    std::shared_ptr<OnBeforeURLRequestContext> ctx) {
+    std::shared_ptr<BraveURLRequestContext> ctx) {
   const GURL& url = request->url();
 
   if (IsEmptyDataURLRedirect(url)) {

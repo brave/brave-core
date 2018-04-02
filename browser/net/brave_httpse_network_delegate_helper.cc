@@ -19,7 +19,7 @@ namespace brave {
 void OnBeforeURLRequest_HttpseFileWork(
     net::URLRequest* request,
     GURL* new_url,
-    std::shared_ptr<OnBeforeURLRequestContext> ctx) {
+    std::shared_ptr<BraveURLRequestContext> ctx) {
   base::AssertBlockingAllowed();
   DCHECK_CURRENTLY_ON(BrowserThread::FILE);
   DCHECK(ctx->request_identifier != 0);
@@ -31,7 +31,7 @@ void OnBeforeURLRequest_HttpsePostFileWork(
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
-    std::shared_ptr<OnBeforeURLRequestContext> ctx) {
+    std::shared_ptr<BraveURLRequestContext> ctx) {
 
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
@@ -49,7 +49,7 @@ int OnBeforeURLRequest_HttpsePreFileWork(
   net::URLRequest* request,
   GURL* new_url,
   const ResponseCallback& next_callback,
-  std::shared_ptr<OnBeforeURLRequestContext> ctx) {
+  std::shared_ptr<BraveURLRequestContext> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   GURL tab_origin = request->site_for_cookies().GetOrigin();

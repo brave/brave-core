@@ -15,7 +15,7 @@ int OnBeforeURLRequest_StaticRedirectWork(
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
-    std::shared_ptr<OnBeforeURLRequestContext> ctx) {
+    std::shared_ptr<BraveURLRequestContext> ctx) {
   static URLPattern geo_pattern(URLPattern::SCHEME_HTTPS, kGeoLocationsPattern);
   if (geo_pattern.MatchesURL(request->url())) {
     *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
