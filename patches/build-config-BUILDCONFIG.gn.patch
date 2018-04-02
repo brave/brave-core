@@ -1,5 +1,5 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 853c8492ce95d1cfaab058c799546e20f9d52cb4..eddfec95acf41f6d0a2a95520dc72f8c10b32591 100644
+index 853c8492ce95d1cfaab058c799546e20f9d52cb4..fabd1368273d08c588754fa6a0c85c83b1baf00f 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
 @@ -152,6 +152,7 @@ declare_args() {
