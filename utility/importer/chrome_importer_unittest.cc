@@ -18,6 +18,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::ASCIIToUTF16;
+using ::testing::_;
 
 // In order to test the Chrome import functionality effectively, we store a
 // simulated Chrome profile directory containing dummy data files with the
@@ -31,25 +32,33 @@ base::FilePath GetTestChromeProfileDir(const std::string& profile) {
       .AppendASCII(profile);
 }
 
-TEST(ChromeImporterTest, ImportHistory) {
-  using ::testing::_;
+class ChromeImporterTest : public ::testing::Test {
+ protected:
+  void SetUp() override {
+    profile_dir_ = GetTestChromeProfileDir("default");
+    ASSERT_TRUE(base::DirectoryExists(profile_dir_));
+    profile_.source_path = profile_dir_;
+    importer_ = new ChromeImporter;
+    bridge_ = new MockImporterBridge;
+  }
 
-  base::FilePath profile_dir = GetTestChromeProfileDir("default");
-  ASSERT_TRUE(base::DirectoryExists(profile_dir));
-  scoped_refptr<ChromeImporter> importer = new ChromeImporter;
-  importer::SourceProfile profile;
-  profile.source_path = profile_dir;
-  scoped_refptr<MockImporterBridge> bridge = new MockImporterBridge;
+  base::FilePath profile_dir_;
+  importer::SourceProfile profile_;
+  scoped_refptr<ChromeImporter> importer_;
+  scoped_refptr<MockImporterBridge> bridge_;
+};
+
+TEST_F(ChromeImporterTest, ImportHistory) {
   std::vector<ImporterURLRow> history;
 
-  EXPECT_CALL(*bridge, NotifyStarted());
-  EXPECT_CALL(*bridge, NotifyItemStarted(importer::HISTORY));
-  EXPECT_CALL(*bridge, SetHistoryItems(_, _))
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::HISTORY));
+  EXPECT_CALL(*bridge_, SetHistoryItems(_, _))
       .WillOnce(::testing::SaveArg<0>(&history));
-  EXPECT_CALL(*bridge, NotifyItemEnded(importer::HISTORY));
-  EXPECT_CALL(*bridge, NotifyEnded());
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::HISTORY));
+  EXPECT_CALL(*bridge_, NotifyEnded());
 
-  importer->StartImport(profile, importer::HISTORY, bridge.get());
+  importer_->StartImport(profile_, importer::HISTORY, bridge_.get());
 
   ASSERT_EQ(4u, history.size());
   EXPECT_EQ("https://brave.com/", history[0].url.spec());
@@ -58,25 +67,17 @@ TEST(ChromeImporterTest, ImportHistory) {
   EXPECT_EQ("https://www.nytimes.com/", history[3].url.spec());
 }
 
-TEST(ChromeImporterTest, ImportBookmarks) {
-  using ::testing::_;
-
-  base::FilePath profile_dir = GetTestChromeProfileDir("default");
-  ASSERT_TRUE(base::DirectoryExists(profile_dir));
-  scoped_refptr<ChromeImporter> importer = new ChromeImporter;
-  importer::SourceProfile profile;
-  profile.source_path = profile_dir;
-  scoped_refptr<MockImporterBridge> bridge = new MockImporterBridge;
+TEST_F(ChromeImporterTest, ImportBookmarks) {
   std::vector<ImportedBookmarkEntry> bookmarks;
 
-  EXPECT_CALL(*bridge, NotifyStarted());
-  EXPECT_CALL(*bridge, NotifyItemStarted(importer::FAVORITES));
-  EXPECT_CALL(*bridge, AddBookmarks(_, _))
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::FAVORITES));
+  EXPECT_CALL(*bridge_, AddBookmarks(_, _))
       .WillOnce(::testing::SaveArg<0>(&bookmarks));
-  EXPECT_CALL(*bridge, NotifyItemEnded(importer::FAVORITES));
-  EXPECT_CALL(*bridge, NotifyEnded());
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::FAVORITES));
+  EXPECT_CALL(*bridge_, NotifyEnded());
 
-  importer->StartImport(profile, importer::FAVORITES, bridge.get());
+  importer_->StartImport(profile_, importer::FAVORITES, bridge_.get());
 
   ASSERT_EQ(3u, bookmarks.size());
 
@@ -93,25 +94,17 @@ TEST(ChromeImporterTest, ImportBookmarks) {
   EXPECT_FALSE(bookmarks[2].in_toolbar);
 }
 
-TEST(ChromeImporterTest, ImportFavicons) {
-  using ::testing::_;
-
-  base::FilePath profile_dir = GetTestChromeProfileDir("default");
-  ASSERT_TRUE(base::DirectoryExists(profile_dir));
-  scoped_refptr<ChromeImporter> importer = new ChromeImporter;
-  importer::SourceProfile profile;
-  profile.source_path = profile_dir;
-  scoped_refptr<MockImporterBridge> bridge = new MockImporterBridge;
+TEST_F(ChromeImporterTest, ImportFavicons) {
   favicon_base::FaviconUsageDataList favicons;
 
-  EXPECT_CALL(*bridge, NotifyStarted());
-  EXPECT_CALL(*bridge, NotifyItemStarted(importer::FAVORITES));
-  EXPECT_CALL(*bridge, SetFavicons(_))
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::FAVORITES));
+  EXPECT_CALL(*bridge_, SetFavicons(_))
       .WillOnce(::testing::SaveArg<0>(&favicons));
-  EXPECT_CALL(*bridge, NotifyItemEnded(importer::FAVORITES));
-  EXPECT_CALL(*bridge, NotifyEnded());
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::FAVORITES));
+  EXPECT_CALL(*bridge_, NotifyEnded());
 
-  importer->StartImport(profile, importer::FAVORITES, bridge.get());
+  importer_->StartImport(profile_, importer::FAVORITES, bridge_.get());
 
   ASSERT_EQ(4u, favicons.size());
   EXPECT_EQ("https://www.google.com/favicon.ico",
