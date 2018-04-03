@@ -169,4 +169,53 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NotForbesNoCookieChange) {
   EXPECT_EQ(ret, net::OK);
 }
 
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NoScriptTwitterMobileRedirect) {
+  GURL url("https://mobile.twitter.com/i/nojs_router?path=%2F");
+  net::TestDelegate test_delegate;
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+  net::HttpRequestHeaders headers;
+  headers.SetHeader(kRefererHeader, "https://twitter.com/");
+  std::shared_ptr<brave::BraveURLRequestContext>
+      url_context(new brave::BraveURLRequestContext());
+  brave::ResponseCallback callback;
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
+      callback, url_context);
+  EXPECT_EQ(ret, net::ERR_ABORTED);
+}
+
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest, AllowTwitterMobileRedirectFromDiffSite) {
+  GURL url("https://mobile.twitter.com/i/nojs_router?path=%2F");
+  net::TestDelegate test_delegate;
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+  net::HttpRequestHeaders headers;
+  headers.SetHeader(kRefererHeader, "https://brianbondy.com/");
+  std::shared_ptr<brave::BraveURLRequestContext>
+      url_context(new brave::BraveURLRequestContext());
+  brave::ResponseCallback callback;
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
+      callback, url_context);
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest, TwitterNoCancelWithReferer) {
+  GURL url("https://twitter.com/brianbondy");
+  net::TestDelegate test_delegate;
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+  net::HttpRequestHeaders headers;
+  headers.SetHeader(kRefererHeader, "https://twitter.com/");
+  std::shared_ptr<brave::BraveURLRequestContext>
+      url_context(new brave::BraveURLRequestContext());
+  brave::ResponseCallback callback;
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
+      callback, url_context);
+  EXPECT_EQ(ret, net::OK);
+}
+
+
 }  // namespace

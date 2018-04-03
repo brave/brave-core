@@ -117,6 +117,20 @@ void CheckForCookieOverride(const GURL& url, const URLPattern& pattern,
   }
 }
 
+bool IsBlockTwitterSiteHack(net::URLRequest* request,
+    net::HttpRequestHeaders* headers) {
+  URLPattern redirectURLPattern(URLPattern::SCHEME_ALL, kTwitterRedirectURL);
+  URLPattern referrerPattern(URLPattern::SCHEME_ALL, kTwitterReferrer);
+  if (redirectURLPattern.MatchesURL(request->url())) {
+    std::string referrer;
+    if (headers->GetHeader(kRefererHeader, &referrer) &&
+        referrerPattern.MatchesURL(GURL(referrer))) {
+      return true;
+    }
+  }
+  return false;
+}
+
 int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
@@ -124,6 +138,10 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
   CheckForCookieOverride(request->url(),
       URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
       kForbesExtraCookies);
+  if (IsBlockTwitterSiteHack(request, headers)) {
+    request->Cancel();
+    return net::ERR_ABORTED;
+  }
   return net::OK;
 }
 
