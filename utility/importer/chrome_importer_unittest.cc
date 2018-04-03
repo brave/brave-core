@@ -7,6 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/path_service.h"
 #include "chrome/common/chrome_paths.h"
@@ -36,14 +37,28 @@ base::FilePath GetTestChromeProfileDir(const std::string& profile) {
 
 class ChromeImporterTest : public ::testing::Test {
  protected:
-  void SetUp() override {
-    profile_dir_ = GetTestChromeProfileDir("default");
-    ASSERT_TRUE(base::DirectoryExists(profile_dir_));
+  void SetUpChromeProfile() {
+    // Creates a new profile in a new subdirectory in the temp directory.
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    base::FilePath test_path = temp_dir_.GetPath().AppendASCII("ChromeImporterTest");
+    base::DeleteFile(test_path, true);
+    base::CreateDirectory(test_path);
+    profile_dir_ = test_path.AppendASCII("profile");
+
+    base::FilePath data_dir = GetTestChromeProfileDir("default");
+    ASSERT_TRUE(base::DirectoryExists(data_dir));
+    ASSERT_TRUE(base::CopyDirectory(data_dir, profile_dir_, true));
+
     profile_.source_path = profile_dir_;
+  }
+
+  void SetUp() override {
+    SetUpChromeProfile();
     importer_ = new ChromeImporter;
     bridge_ = new MockImporterBridge;
   }
 
+  base::ScopedTempDir temp_dir_;
   base::FilePath profile_dir_;
   importer::SourceProfile profile_;
   scoped_refptr<ChromeImporter> importer_;
