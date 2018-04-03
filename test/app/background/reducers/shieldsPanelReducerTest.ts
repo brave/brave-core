@@ -354,7 +354,7 @@ describe('braveShieldsPanelReducer', () => {
       assert.deepEqual(
         shieldsPanelReducer(state, {
           type: types.BLOCK_FINGERPRINTING,
-          setting: 'allow',
+          setting: 'allow'
         }), state)
       assert.equal(this.setAllowFingerprintingSpy.withArgs(origin, 'allow').calledOnce, true)
     })
