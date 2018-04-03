@@ -1,8 +1,16 @@
 diff --git a/components/os_crypt/key_storage_keyring.cc b/components/os_crypt/key_storage_keyring.cc
-index af2f64b34ddb8e49d72dd0dd22ffd2418a422efb..59cd364e90bcab68eddf8936945730c6de3ba2f3 100644
+index af2f64b34ddb8e49d72dd0dd22ffd2418a422efb..4de119827b80cb8bbf83c26ef4937c6d8218e448 100644
 --- a/components/os_crypt/key_storage_keyring.cc
 +++ b/components/os_crypt/key_storage_keyring.cc
-@@ -16,7 +16,7 @@ namespace {
+@@ -6,6 +6,7 @@
+ 
+ #include "base/base64.h"
+ #include "base/bind.h"
++#include "base/command_line.h"
+ #include "base/rand_util.h"
+ #include "base/single_thread_task_runner.h"
+ #include "base/strings/string_number_conversions.h"
+@@ -16,7 +17,7 @@ namespace {
  #if defined(GOOGLE_CHROME_BUILD)
  const char kApplicationName[] = "chrome";
  #else
@@ -11,3 +19,23 @@ index af2f64b34ddb8e49d72dd0dd22ffd2418a422efb..59cd364e90bcab68eddf8936945730c6
  #endif
  
  const GnomeKeyringPasswordSchema kSchema = {
+@@ -45,9 +46,18 @@ std::string KeyStorageKeyring::GetKeyImpl() {
+ 
+   std::string password;
+   gchar* password_c = nullptr;
++  const char* application_name;
++  base::CommandLine* command_line = base::CommandLine()::ForCurrentProcess();
++  if (command_line->HasSwitch("import-chrome")) {
++    application_name = "chrome";
++  } else if (command_line->HasSwitch("import-chromium")) {
++    application_name = "chromium";
++  } else {
++    application_name = kApplicationName;
++  }
+   GnomeKeyringResult result =
+       GnomeKeyringLoader::gnome_keyring_find_password_sync_ptr(
+-          &kSchema, &password_c, "application", kApplicationName, nullptr);
++          &kSchema, &password_c, "application", application_name, nullptr);
+   if (result == GNOME_KEYRING_RESULT_OK) {
+     password = password_c;
+     GnomeKeyringLoader::gnome_keyring_free_password_ptr(password_c);
