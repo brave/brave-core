@@ -1,0 +1,16 @@
+The following process was used to create the files in this directory:
+
+1. Create a new profile in Chrome
+2. Simulate browsing activity (visit sites, save bookmarks, passwords, etc.)
+3. Copy relevant files from the the new profile's data directory to this test data directory
+
+## Login Data
+
+Some of the fields in the Login Data SQLite db, such as saved passwords, are
+encrypted by Chrome's OSCrypt class. To test them reliably, Chrome was
+launched with the `--use-mock-keychain` argument for the session where the
+test login data was simulated:
+
+    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --use-mock-keychain
+
+AFAICT this argument is only useful on macOS.

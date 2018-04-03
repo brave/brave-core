@@ -15,9 +15,11 @@
 #include "chrome/common/importer/importer_url_row.h"
 #include "chrome/common/importer/mock_importer_bridge.h"
 #include "components/favicon_base/favicon_usage_data.h"
+#include "components/os_crypt/os_crypt_mocker.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::ASCIIToUTF16;
+using base::UTF16ToASCII;
 using ::testing::_;
 
 // In order to test the Chrome import functionality effectively, we store a
@@ -116,3 +118,29 @@ TEST_F(ChromeImporterTest, ImportFavicons) {
   EXPECT_EQ("https://static.nytimes.com/favicon.ico",
             favicons[3].favicon_url.spec());
 }
+
+// The mock keychain only works on macOS, so only run this test on macOS (for now)
+#if defined(OS_MACOSX)
+TEST_F(ChromeImporterTest, ImportPasswords) {
+  // Use mock keychain on mac to prevent blocking permissions dialogs.
+  OSCryptMocker::SetUp();
+
+  autofill::PasswordForm password;
+
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::PASSWORDS));
+  EXPECT_CALL(*bridge_, SetPasswordForm(_))
+      .WillOnce(::testing::SaveArg<0>(&password));
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::PASSWORDS));
+  EXPECT_CALL(*bridge_, NotifyEnded());
+
+  importer_->StartImport(profile_, importer::PASSWORDS, bridge_.get());
+
+  EXPECT_EQ("test@example.com",
+            UTF16ToASCII(password.username_value));
+  EXPECT_EQ("testing123",
+            UTF16ToASCII(password.password_value));
+
+  OSCryptMocker::TearDown();
+}
+#endif
