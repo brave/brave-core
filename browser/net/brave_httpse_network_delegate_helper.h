@@ -8,7 +8,7 @@
 #include "chrome/browser/net/chrome_network_delegate.h"
 #include "brave/browser/net/url_context.h"
 
-struct BraveURLRequestContext;
+struct BraveRequestInfo;
 
 namespace net {
 class URLRequest;
@@ -20,7 +20,7 @@ int OnBeforeURLRequest_HttpsePreFileWork(
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveURLRequestContext> ctx);
+    std::shared_ptr<BraveRequestInfo> ctx);
 
 }  // namespace brave
 

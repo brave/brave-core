@@ -49,7 +49,7 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   void RunNextCallback(
     net::URLRequest* request,
     GURL *new_url,
-    std::shared_ptr<brave::BraveURLRequestContext> ctx);
+    std::shared_ptr<brave::BraveRequestInfo> ctx);
   std::vector<brave::OnBeforeURLRequestCallback>
       before_url_request_callbacks_;
   std::vector<brave::OnBeforeStartTransactionCallback>

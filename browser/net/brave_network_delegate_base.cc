@@ -28,8 +28,8 @@ int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
   if (before_url_request_callbacks_.empty() || !request) {
     return ChromeNetworkDelegate::OnBeforeURLRequest(request, callback, new_url);
   }
-  std::shared_ptr<brave::BraveURLRequestContext> ctx(
-      new brave::BraveURLRequestContext());
+  std::shared_ptr<brave::BraveRequestInfo> ctx(
+      new brave::BraveRequestInfo());
   callbacks_[request->identifier()] = callback;
   ctx->request_identifier = request->identifier();
   ctx->event_type = brave::kOnBeforeRequest;
@@ -44,8 +44,8 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
     return ChromeNetworkDelegate::OnBeforeStartTransaction(request, callback,
                                                            headers);
   }
-  std::shared_ptr<brave::BraveURLRequestContext> ctx(
-      new brave::BraveURLRequestContext());
+  std::shared_ptr<brave::BraveRequestInfo> ctx(
+      new brave::BraveRequestInfo());
   callbacks_[request->identifier()] = callback;
   ctx->headers = headers;
   ctx->request_identifier = request->identifier();
@@ -57,7 +57,7 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
 void BraveNetworkDelegateBase::RunNextCallback(
     net::URLRequest* request,
     GURL* new_url,
-    std::shared_ptr<brave::BraveURLRequestContext> ctx) {
+    std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   if (!ContainsKey(callbacks_, ctx->request_identifier)) {

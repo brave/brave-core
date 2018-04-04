@@ -85,7 +85,7 @@ int OnBeforeURLRequest_SiteHacksWork(
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveURLRequestContext> ctx) {
+    std::shared_ptr<BraveRequestInfo> ctx) {
   const GURL& url = request->url();
 
   if (IsEmptyDataURLRedirect(url)) {
@@ -134,7 +134,7 @@ bool IsBlockTwitterSiteHack(net::URLRequest* request,
 int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
-        std::shared_ptr<BraveURLRequestContext> ctx) {
+        std::shared_ptr<BraveRequestInfo> ctx) {
   CheckForCookieOverride(request->url(),
       URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
       kForbesExtraCookies);

@@ -7,7 +7,7 @@
 
 #include "brave/browser/net/url_context.h"
 
-struct BraveURLRequestContext;
+struct BraveRequestInfo;
 
 namespace net {
 class URLRequest;
@@ -19,12 +19,12 @@ int OnBeforeURLRequest_SiteHacksWork(
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveURLRequestContext> ctx);
+    std::shared_ptr<BraveRequestInfo> ctx);
 
 int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveURLRequestContext> ctx);
+    std::shared_ptr<BraveRequestInfo> ctx);
 
 }  // namespace brave
 
