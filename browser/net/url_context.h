@@ -13,14 +13,22 @@
 
 namespace brave {
 
-struct OnBeforeURLRequestContext {
-  OnBeforeURLRequestContext();
-  ~OnBeforeURLRequestContext();
+enum BraveNetworkDelegateEventType {
+  kOnBeforeRequest,
+  kOnBeforeStartTransaction,
+  kUnknownEventType
+};
+
+struct BraveRequestInfo {
+  BraveRequestInfo();
+  ~BraveRequestInfo();
   GURL request_url;
   std::string new_url_spec;
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
-  DISALLOW_COPY_AND_ASSIGN(OnBeforeURLRequestContext);
+  net::HttpRequestHeaders* headers = nullptr;
+  BraveNetworkDelegateEventType event_type = kUnknownEventType;
+  DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
 
 using ResponseCallback = base::Callback<void()>;
@@ -30,8 +38,12 @@ using OnBeforeURLRequestCallback =
     base::Callback<int(net::URLRequest* request,
         GURL* new_url,
         const ResponseCallback& next_callback,
-        std::shared_ptr<OnBeforeURLRequestContext> ctx)>;
-
+        std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnBeforeStartTransactionCallback =
+    base::Callback<int(net::URLRequest* request,
+        net::HttpRequestHeaders* headers,
+        const ResponseCallback& next_callback,
+        std::shared_ptr<BraveRequestInfo> ctx)>;
 }  // namespace brave
 
 

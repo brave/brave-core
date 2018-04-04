@@ -13,12 +13,6 @@
 
 using content::BrowserThread;
 
-BraveNetworkDelegateBase::ResponseListenerInfo::ResponseListenerInfo() {
-}
-
-BraveNetworkDelegateBase::ResponseListenerInfo::~ResponseListenerInfo() {
-}
-
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router,
     BooleanPrefMember* enable_referrers) :
@@ -34,20 +28,36 @@ int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
   if (before_url_request_callbacks_.empty() || !request) {
     return ChromeNetworkDelegate::OnBeforeURLRequest(request, callback, new_url);
   }
-
-  std::shared_ptr<brave::OnBeforeURLRequestContext> ctx(
-      new brave::OnBeforeURLRequestContext());
-
+  std::shared_ptr<brave::BraveRequestInfo> ctx(
+      new brave::BraveRequestInfo());
   callbacks_[request->identifier()] = callback;
   ctx->request_identifier = request->identifier();
+  ctx->event_type = brave::kOnBeforeRequest;
   RunNextCallback(request, new_url, ctx);
+  return net::ERR_IO_PENDING;
+}
+
+int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
+    const net::CompletionCallback& callback,
+    net::HttpRequestHeaders* headers) {
+  if (before_start_transaction_callbacks_.empty() || !request) {
+    return ChromeNetworkDelegate::OnBeforeStartTransaction(request, callback,
+                                                           headers);
+  }
+  std::shared_ptr<brave::BraveRequestInfo> ctx(
+      new brave::BraveRequestInfo());
+  callbacks_[request->identifier()] = callback;
+  ctx->headers = headers;
+  ctx->request_identifier = request->identifier();
+  ctx->event_type = brave::kOnBeforeStartTransaction;
+  RunNextCallback(request, nullptr, ctx);
   return net::ERR_IO_PENDING;
 }
 
 void BraveNetworkDelegateBase::RunNextCallback(
     net::URLRequest* request,
-    GURL *new_url,
-    std::shared_ptr<brave::OnBeforeURLRequestContext> ctx) {
+    GURL* new_url,
+    std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   if (!ContainsKey(callbacks_, ctx->request_identifier)) {
@@ -56,18 +66,36 @@ void BraveNetworkDelegateBase::RunNextCallback(
 
   // Continue processing callbacks until we hit one that returns PENDING
   int rv = net::OK;
-  while(before_url_request_callbacks_.size() != ctx->next_url_request_index) {
-    brave::OnBeforeURLRequestCallback callback =
-        before_url_request_callbacks_[ctx->next_url_request_index++];
-    brave::ResponseCallback next_callback =
-        base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-            base::Unretained(this), request, new_url, ctx);
-    rv = callback.Run(request, new_url, next_callback, ctx);
-    if (rv == net::ERR_IO_PENDING) {
-      return;
+
+  if (ctx->event_type == brave::kOnBeforeRequest) {
+    while(before_url_request_callbacks_.size() != ctx->next_url_request_index) {
+      brave::OnBeforeURLRequestCallback callback =
+          before_url_request_callbacks_[ctx->next_url_request_index++];
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
+              base::Unretained(this), request, new_url, ctx);
+      rv = callback.Run(request, new_url, next_callback, ctx);
+      if (rv == net::ERR_IO_PENDING) {
+        return;
+      }
+      if (rv == net::ERR_ABORTED) {
+        break;
+      }
     }
-    if (rv == net::ERR_ABORTED) {
-      break;
+  } else if (ctx->event_type == brave::kOnBeforeStartTransaction) {
+    while(before_start_transaction_callbacks_.size() != ctx->next_url_request_index) {
+      brave::OnBeforeStartTransactionCallback callback =
+          before_start_transaction_callbacks_[ctx->next_url_request_index++];
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
+              base::Unretained(this), request, new_url, ctx);
+      rv = callback.Run(request, ctx->headers, next_callback, ctx);
+      if (rv == net::ERR_IO_PENDING) {
+        return;
+      }
+      if (rv == net::ERR_ABORTED) {
+        break;
+      }
     }
   }
 
@@ -78,17 +106,22 @@ void BraveNetworkDelegateBase::RunNextCallback(
     return;
   }
 
-  rv =
-    ChromeNetworkDelegate::OnBeforeURLRequest(request,
+  if (ctx->event_type == brave::kOnBeforeRequest) {
+    rv = ChromeNetworkDelegate::OnBeforeURLRequest(request,
         net_completion_callback, new_url);
+  } else if (ctx->event_type == brave::kOnBeforeStartTransaction) {
+    rv = ChromeNetworkDelegate::OnBeforeStartTransaction(request,
+        net_completion_callback, ctx->headers);
+  }
+
   if (rv != net::ERR_IO_PENDING) {
     net_completion_callback.Run(rv);
   }
 }
 
 void BraveNetworkDelegateBase::OnURLRequestDestroyed(net::URLRequest* request) {
-  if (!ContainsKey(callbacks_, request->identifier())) {
-    return;
+  if (ContainsKey(callbacks_, request->identifier())) {
+    callbacks_.erase(request->identifier());
   }
-  callbacks_.erase(request->identifier());
+  ChromeNetworkDelegate::OnURLRequestDestroyed(request);
 }

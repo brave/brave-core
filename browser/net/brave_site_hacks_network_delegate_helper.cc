@@ -85,7 +85,7 @@ int OnBeforeURLRequest_SiteHacksWork(
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
-    std::shared_ptr<OnBeforeURLRequestContext> ctx) {
+    std::shared_ptr<BraveRequestInfo> ctx) {
   const GURL& url = request->url();
 
   if (IsEmptyDataURLRedirect(url)) {
@@ -102,6 +102,46 @@ int OnBeforeURLRequest_SiteHacksWork(
     return net::OK;
   }
 
+  return net::OK;
+}
+
+void CheckForCookieOverride(const GURL& url, const URLPattern& pattern,
+    net::HttpRequestHeaders* headers, const std::string& extra_cookies) {
+  if (pattern.MatchesURL(url)) {
+    std::string cookies;
+    if (headers->GetHeader(kCookieHeader, &cookies)) {
+      cookies = "; ";
+    }
+    cookies += extra_cookies;
+    headers->SetHeader(kCookieHeader, cookies);
+  }
+}
+
+bool IsBlockTwitterSiteHack(net::URLRequest* request,
+    net::HttpRequestHeaders* headers) {
+  URLPattern redirectURLPattern(URLPattern::SCHEME_ALL, kTwitterRedirectURL);
+  URLPattern referrerPattern(URLPattern::SCHEME_ALL, kTwitterReferrer);
+  if (redirectURLPattern.MatchesURL(request->url())) {
+    std::string referrer;
+    if (headers->GetHeader(kRefererHeader, &referrer) &&
+        referrerPattern.MatchesURL(GURL(referrer))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
+        net::HttpRequestHeaders* headers,
+        const ResponseCallback& next_callback,
+        std::shared_ptr<BraveRequestInfo> ctx) {
+  CheckForCookieOverride(request->url(),
+      URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
+      kForbesExtraCookies);
+  if (IsBlockTwitterSiteHack(request, headers)) {
+    request->Cancel();
+    return net::ERR_ABORTED;
+  }
   return net::OK;
 }
 

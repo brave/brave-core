@@ -9,10 +9,10 @@
 
 namespace brave {
 
-OnBeforeURLRequestContext::OnBeforeURLRequestContext() {
+BraveRequestInfo::BraveRequestInfo() {
 }
 
-OnBeforeURLRequestContext::~OnBeforeURLRequestContext() {
+BraveRequestInfo::~BraveRequestInfo() {
 }
 
 }  // namespace brave
