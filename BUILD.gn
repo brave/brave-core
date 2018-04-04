@@ -17,6 +17,7 @@ group("child_dependencies") {
 group("browser_dependencies") {
   public_deps = [
     "//brave/browser",
+    "//brave/components/content_settings/core/browser",
     "//brave/extensions",
     "common",
     ":brave_framework_resources",
