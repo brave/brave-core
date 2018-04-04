@@ -1,22 +1,24 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 853c8492ce95d1cfaab058c799546e20f9d52cb4..fabd1368273d08c588754fa6a0c85c83b1baf00f 100644
+index 853c8492ce95d1cfaab058c799546e20f9d52cb4..6e8bf892d1ccc0840cfb8ddb393dd8faee560475 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -152,6 +152,7 @@ declare_args() {
-   host_toolchain = ""
+@@ -46,6 +46,8 @@
+ # When writing build files, to do something only for the host:
+ #   if (current_toolchain == host_toolchain) { ...
  
-   # DON'T ADD MORE FLAGS HERE. Read the comment above.
-+  brave_chromium_build = false
++import("//brave/brave_init_settings.gni")
++
+ if (target_os == "") {
+   target_os = host_os
  }
- 
- declare_args() {
-@@ -534,6 +535,13 @@ default_compiler_configs = [
+@@ -534,6 +536,14 @@ default_compiler_configs = [
    "//build/config/coverage:default_coverage",
    "//build/config/sanitizers:default_sanitizer_flags",
  ]
-+if (!brave_chromium_build) {
++if (brave_chromium_build) {
 +  default_compiler_configs -= [ "//build/config/compiler:default_include_dirs" ]
 +  default_compiler_configs += [
++    "//brave/build:feature_flags",
 +    "//brave/build:brave_include_dirs",
 +    "//build/config/compiler:default_include_dirs"
 +  ]

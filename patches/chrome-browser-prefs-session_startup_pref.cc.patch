@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/prefs/session_startup_pref.cc b/chrome/browser/prefs/session_startup_pref.cc
-index 01328069d4ef68583ddfd1a54c627d860703df0e..bcacc9410cbe55dc152d3ac9df28e291a3164a5a 100644
+index 01328069d4ef68583ddfd1a54c627d860703df0e..16d8ceb2938edffae3271687dd5c5b6af797d8fb 100644
 --- a/chrome/browser/prefs/session_startup_pref.cc
 +++ b/chrome/browser/prefs/session_startup_pref.cc
 @@ -60,6 +60,8 @@ void SessionStartupPref::RegisterProfilePrefs(
  SessionStartupPref::Type SessionStartupPref::GetDefaultStartupType() {
  #if defined(OS_CHROMEOS)
    return SessionStartupPref::LAST;
-+#elif !defined(GOOGLE_CHROME_BUILD)
++#elif defined(BRAVE_CHROMIUM_BUILD)
 +  return SessionStartupPref::LAST;
  #else
    return SessionStartupPref::DEFAULT;

@@ -6,3 +6,9 @@ brave_include_dirs_ = [
 config("brave_include_dirs") {
   include_dirs = brave_include_dirs_
 }
+
+config("feature_flags") {
+  if (brave_chromium_build) {
+    defines = [ "BRAVE_CHROMIUM_BUILD" ]
+  }
+}

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_service.cc b/chrome/browser/extensions/extension_service.cc
-index 9410c6daeabccba17d72244f2395c150aa84283a..417180bfe370c611a591a768d5fb5076bd7955ad 100644
+index 9410c6daeabccba17d72244f2395c150aa84283a..8c9d8397e8101c5b6f053229185bddac9b610ec9 100644
 --- a/chrome/browser/extensions/extension_service.cc
 +++ b/chrome/browser/extensions/extension_service.cc
 @@ -28,6 +28,8 @@
@@ -24,7 +24,7 @@ index 9410c6daeabccba17d72244f2395c150aa84283a..417180bfe370c611a591a768d5fb5076
    }
  
    AddExtension(extension);
-+#if defined(CHROMIUM_BUILD)
++#if defined(BRAVE_CHROMIUM_BUILD)
 +  // ContentSettingsStore::RegisterExtension is only called for default components
 +  // on the first run with a fresh profile. All restarts of the browser after that do not call it.
 +  // This causes ContentSettingsStore's `entries_` to never insert the component ID
