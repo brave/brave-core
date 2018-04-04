@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/base64url.h"
+#include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
@@ -29,6 +30,20 @@ bool IsBlockedResource(const GURL& gurl) {
     URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js")
   });
   return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
+      [&gurl](URLPattern pattern){
+        return pattern.MatchesURL(gurl);
+      });
+}
+
+bool IsUAWhitelisted(const GURL& gurl) {
+  static std::vector<URLPattern> whitelist_patterns({
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.adobe.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.duckduckgo.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.brave.com/*"),
+    // For Widevine
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.netflix.com/*")
+  });
+  return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
       [&gurl](URLPattern pattern){
         return pattern.MatchesURL(gurl);
       });
@@ -141,6 +156,13 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
   if (IsBlockTwitterSiteHack(request, headers)) {
     request->Cancel();
     return net::ERR_ABORTED;
+  }
+  if (IsUAWhitelisted(request->url())) {
+    std::string user_agent;
+    if (headers->GetHeader(kUserAgentHeader, &user_agent)) {
+      base::ReplaceFirstSubstringAfterOffset(&user_agent, 0, "Chrome", "Brave Chrome");
+      headers->SetHeader(kUserAgentHeader, user_agent);
+    }
   }
   return net::OK;
 }
