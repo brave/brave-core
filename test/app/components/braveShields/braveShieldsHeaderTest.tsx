@@ -8,7 +8,7 @@ import * as React from 'react'
 import * as assert from 'assert'
 import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsHeader, { Props } from '../../../../app/components/braveShields/braveShieldsHeader'
-import { Props as UIProps } from 'brave-ui'
+import { GridProps } from 'brave-ui/gridSystem'
 import { BlockOptions } from '../../../../app/types/other/blockTypes';
 import * as actionTypes from '../../../../app/constants/shieldsPanelTypes'
 
@@ -24,7 +24,7 @@ function setup () {
     braveShields: 'allow'
   }
   const renderer = renderIntoDocument(<BraveShieldsHeader {...props} />) as React.Component<BraveShieldsHeader>
-  const result= renderer.render() as React.ReactElement<UIProps.Grid>
+  const result= renderer.render() as React.ReactElement<GridProps>
   return { props, result, renderer }
 }
 
