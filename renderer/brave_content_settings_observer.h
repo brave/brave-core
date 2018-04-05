@@ -7,7 +7,12 @@
 
 #include "base/strings/string16.h"
 #include "chrome/renderer/content_settings_observer.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+
+namespace blink {
+class WebLocalFrame;
+}
 
 // Handles blocking content per content settings for each RenderFrame.
 class BraveContentSettingsObserver
@@ -30,6 +35,14 @@ class BraveContentSettingsObserver
 
   void DidBlockFingerprinting(
     const base::string16& details);
+
+ private:
+  GURL GetOriginOrURL(const blink::WebFrame* frame);
+
+  ContentSetting GetContentSettingFromRules(
+      const ContentSettingsForOneType& rules,
+      const blink::WebLocalFrame* frame,
+      const GURL& secondary_url);
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsObserver);
 };

@@ -6,6 +6,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "content/public/renderer/render_frame.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/WebKit/public/platform/WebURL.h"
@@ -44,6 +45,45 @@ bool BraveContentSettingsObserver::AllowScriptFromSource(
 void BraveContentSettingsObserver::DidBlockFingerprinting(
     const base::string16& details) {
   Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
+}
+
+GURL BraveContentSettingsObserver::GetOriginOrURL(const blink::WebFrame* frame) {
+  url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
+  // The |top_origin| is unique ("null") e.g., for file:// URLs. Use the
+  // document URL as the primary URL in those cases.
+  // TODO(alexmos): This is broken for --site-per-process, since top() can be a
+  // WebRemoteFrame which does not have a document(), and the WebRemoteFrame's
+  // URL is not replicated.  See https://crbug.com/628759.
+  if (top_origin.unique() && frame->Top()->IsWebLocalFrame())
+    return frame->Top()->ToWebLocalFrame()->GetDocument().Url();
+  return top_origin.GetURL();
+}
+
+ContentSetting BraveContentSettingsObserver::GetContentSettingFromRules(
+    const ContentSettingsForOneType& rules,
+    const blink::WebLocalFrame* frame,
+    const GURL& secondary_url) {
+
+  const GURL& primary_url = GetOriginOrURL(frame);
+
+  for (const auto& rule : rules) {
+    ContentSettingsPattern secondary_pattern = rule.secondary_pattern;
+    if (rule.secondary_pattern ==
+        ContentSettingsPattern::FromString("https://firstParty/*")) {
+      secondary_pattern = ContentSettingsPattern::FromString(
+          "[*.]" + GetOriginOrURL(frame).HostNoBrackets());
+    }
+
+    if (rule.primary_pattern.Matches(primary_url) &&
+        (secondary_pattern == ContentSettingsPattern::Wildcard() ||
+         secondary_pattern.Matches(secondary_url))) {
+      return rule.GetContentSetting();
+    }
+  }
+
+  // for cases which are third party resources and doesn't match any existing
+  // rules, block them by default
+  return CONTENT_SETTING_BLOCK;
 }
 
 bool BraveContentSettingsObserver::AllowFingerprinting(
