@@ -1,11 +1,15 @@
-source_set("browser") {
-  sources = []
-  if (is_win) {
-    sources += [
+if (is_win) {
+  source_set("install_static") {
+    sources = [
+      "chrome/common/chrome_icon_resources_win.h",
       "chrome/install_static/chromium_install_modes.cc",
       "chrome/install_static/chromium_install_modes.h",
     ]
   }
+}
+
+source_set("browser") {
+  sources = []
 }
 source_set("common") {
   sources = []

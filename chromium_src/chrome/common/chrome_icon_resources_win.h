@@ -7,34 +7,42 @@
 
 namespace icon_resources {
 
-// This file contains the indices of icon resources in chrome_exe.rc.
+// This file contains the indices of icon resources in brave_exe.rc.
 
 enum {
   // The main application icon is always index 0.
   kApplicationIndex = 0,
 
+#if defined(OFFICIAL_BUILD)
   // Legacy indices that are no longer used.
   kApplication2Index = 1,
   kApplication3Index = 2,
   kApplication4Index = 3,
 
-  // The Chrome Canary application icon.
+  // The Brave Canary application icon.
   kSxSApplicationIndex = 4,
 
-  // The Chrome App Launcher icon.
+  // The Brave App Launcher icon.
   kAppLauncherIndex = 5,
 
-  // The Chrome App Launcher Canary icon.
+  // The Brave App Launcher Canary icon.
   kSxSAppLauncherIndex = 6,
 
-  // The Chrome incognito icon.
+  // The Brave incognito icon.
   kIncognitoIndex = 7,
 
-  // The Chrome Dev application icon.
+  // The Brave Dev application icon.
   kDevApplicationIndex = 8,
 
-  // The Chrome Beta application icon.
+  // The Brave Beta application icon.
   kBetaApplicationIndex = 9,
+#else
+  // The Brave Developer App Launcher icon.
+  kAppLauncherIndex = 1,
+
+  // The Brave Developer incognito icon.
+  kIncognitoIndex = 2,
+#endif
 };
 
 }  // namespace icon_resources

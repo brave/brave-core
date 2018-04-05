@@ -14,15 +14,24 @@ namespace install_static {
 
 const wchar_t kCompanyPathName[] = L"BraveSoftware";
 
-const wchar_t kProductPathName[] = L"Brave";
+#if defined(OFFICIAL_BUILD)
+const wchar_t kProductPathName[] = L"Brave-Browser";
+#else
+const wchar_t kProductPathName[] = L"Brave-Browser-Development";
+#endif
 
 const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
 
+#if defined(OFFICIAL_BUILD)
 const wchar_t kBinariesAppGuid[] = L"{F7526127-0B8A-406F-8998-282BEA40103A}";
+#else
+const wchar_t kBinariesAppGuid[] = L"";
+#endif
 
 // Brave integrates with Brave Update, so the app GUID above is used.
 const wchar_t kBinariesPathName[] = L"";
 
+#if defined(OFFICIAL_BUILD)
 const InstallConstants kInstallModes[] = {
     // The primary install mode for stable Brave.
     {
@@ -56,13 +65,13 @@ const InstallConstants kInstallModes[] = {
     {
         sizeof(kInstallModes[0]),
         BETA_INDEX,     // The mode for the side-by-side beta channel.
-        "brave-beta",  // Install switch.
+        "beta",  // Install switch.
         L" Beta",       // Install suffix.
         L"Beta",        // Logo suffix.
         L"{103BD053-949B-43A8-9120-2E424887DE11}",  // A distinct app GUID.
         L"Brave Beta",                      // A distinct base_app_name.
         L"BraveBeta",                              // A distinct base_app_id.
-        L"BraveHTML",                             // ProgID prefix.
+        L"BraveBHTML",                             // ProgID prefix.
         L"Brave Beta HTML Document",               // ProgID description.
         L"{103BD053-949B-43A8-9120-2E424887DE11}",  // Active Setup GUID.
         L"",                                        // CommandExecuteImpl CLSID.
@@ -84,7 +93,7 @@ const InstallConstants kInstallModes[] = {
     {
         sizeof(kInstallModes[0]),
         DEV_INDEX,     // The mode for the side-by-side dev channel.
-        "brave-dev",  // Install switch.
+        "dev",  // Install switch.
         L" Dev",       // Install suffix.
         L"Dev",        // Logo suffix.
         L"{CB2150F2-595F-4633-891A-E39720CE0531}",  // A distinct app GUID.
@@ -112,8 +121,8 @@ const InstallConstants kInstallModes[] = {
     {
         sizeof(kInstallModes[0]),
         CANARY_INDEX,  // The mode for the side-by-side canary channel.
-        "brave-sxs",  // Install switch.
-        L" SxS",       // Install suffix.
+        "canary",  // Install switch.
+        L" Canary",       // Install suffix.
         L"Canary",     // Logo suffix.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // A distinct app GUID.
         L"Brave Canary",                    // A distinct base_app_name.
@@ -137,6 +146,38 @@ const InstallConstants kInstallModes[] = {
         IDR_SXS,                               // App icon resource id.
     },
 };
+#else
+const InstallConstants kInstallModes[] = {
+    // The primary (and only) install mode for Brave developer build.
+    {
+        sizeof(kInstallModes[0]),
+        DEVELOPER_INDEX,  // The one and only mode for developer mode.
+        "",               // No install switch for the primary install mode.
+        L"",              // Empty install_suffix for the primary install mode.
+        L"",              // No logo suffix for the primary install mode.
+        L"",              // Empty app_guid since no integraion with Brave Update.
+        L"Brave Developer",  // A distinct base_app_name.
+        L"BraveDeveloper",   // A distinct base_app_id.
+        L"BraveDevHTM",                             // ProgID prefix.
+        L"Brave Developer HTML Document",           // ProgID description.
+        L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // Active Setup GUID.
+        L"{312ABB99-A176-4939-A39F-E8D34EA4D393}",  // CommandExecuteImpl CLSID.
+        { 0xf2edbc59,
+          0x7217,
+          0x4da5,
+          { 0xa2, 0x59, 0x3, 0x2, 0xda, 0x6a, 0x0,
+            0xe1 } },  // Toast activator CLSID.
+        L"",    // Empty default channel name since no update integration.
+        ChannelStrategy::UNSUPPORTED,
+        true,   // Supports system-level installs.
+        true,   // Supports in-product set as default browser UX.
+        false,  // Does not support retention experiments.
+        true,   // Supported multi-install.
+        icon_resources::kApplicationIndex,  // App icon resource index.
+        IDR_MAINFRAME,                      // App icon resource id.
+    },
+};
+#endif
 
 static_assert(_countof(kInstallModes) == NUM_INSTALL_MODES,
               "Imbalance between kInstallModes and InstallConstantIndex");
