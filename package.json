@@ -10,7 +10,7 @@
     "clean": "rimraf build/ dev/ *.zip *.crx",
     "lint": "tslint --project tsconfig.json '{app, test}/**/*.{ts,tsx}'",
     "test-e2e": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha ./test/setupApp.ts test/e2e/braveShieldsPanel.ts && mocha ./test/setupApp.ts",
-    "test-unit": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha -r ./test/setupApp.ts test/app/**/**/**/*.ts",
+    "test-unit": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha -r ignore-styles ./test/setupApp.ts test/app/**/**/**/*.ts",
     "test-suite": "node ./scripts/tests.js"
   },
   "repository": {
@@ -64,6 +64,7 @@
     "css-loader": "^0.28.7",
     "css-modules-require-hook": "^4.2.2",
     "extract-text-webpack-plugin": "^3.0.2",
+    "ignore-styles": "^5.0.1",
     "jsdom": "^11.4.0",
     "minimist": "^1.2.0",
     "mocha": "^4.0.1",
