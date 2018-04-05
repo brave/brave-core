@@ -8,7 +8,7 @@ import * as React from 'react'
 import * as assert from 'assert'
 import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsStats from '../../../../app/components/braveShields/braveShieldsStats'
-import { Props as UIProps } from 'brave-ui'
+import { GridProps } from 'brave-ui/gridSystem'
 import { Props } from '../../../../app/components/braveShields/braveShieldsStats';
 
 function setup () {
@@ -21,7 +21,7 @@ function setup () {
     fingerprintingBlocked: 5
   }
   const renderer = renderIntoDocument(<BraveShieldsStats {...props} />) as React.Component<BraveShieldsStats>
-  const result = renderer.render() as React.ReactElement<UIProps.Grid>
+  const result = renderer.render() as React.ReactElement<GridProps>
   return { props, result, renderer }
 }
 
