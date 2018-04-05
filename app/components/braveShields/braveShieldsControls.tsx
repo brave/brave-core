@@ -38,7 +38,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
     this.props.blockAdsTrackers(e.target.value)
   }
 
-  onChangeCookieControl () {
+  onChangeCookieControl (e: HTMLSelectElement) {
     // TODO: @cezaraugusto
   }
 
@@ -133,6 +133,7 @@ export default class BraveShieldsControls extends React.Component<Props, object>
                 {/* TODO @cezaraugusto */}
                 <SwitchButton
                   id='blockPhishingMalware'
+                  checked={false}
                   disabled={braveShields === 'block'}
                   rightText={getMessage('shieldsControlsBlockPhishingMalwareSwitch')}
                 />
