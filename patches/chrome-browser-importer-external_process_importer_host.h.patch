@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/importer/external_process_importer_host.h b/chrome/browser/importer/external_process_importer_host.h
+index 08c6f28746cc5f345114a942834db18f5c7a1d41..9b4ba999a26fb5600fce29eed80ad6f974e0a265 100644
+--- a/chrome/browser/importer/external_process_importer_host.h
++++ b/chrome/browser/importer/external_process_importer_host.h
+@@ -72,10 +72,13 @@ class ExternalProcessImporterHost
+   void NotifyImportItemEnded(importer::ImportItem item);
+   void NotifyImportEnded();
+ 
+- private:
++ protected:
+   // ExternalProcessImporterHost deletes itself in OnImportEnded().
+   ~ExternalProcessImporterHost() override;
+ 
++ private:
++  friend class BraveExternalProcessImporterHost;
++
+   // Launches the utility process that starts the import task, unless bookmark
+   // or template model are not yet loaded. If load is not detected, this method
+   // will be called when the loading observer sees that model loading is

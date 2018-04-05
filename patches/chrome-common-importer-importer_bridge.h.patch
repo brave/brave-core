@@ -1,0 +1,22 @@
+diff --git a/chrome/common/importer/importer_bridge.h b/chrome/common/importer/importer_bridge.h
+index 56d4259aba433df997802109cf5a8d28c03ebd13..dcbb15bba51eb79c086e2b1dec05e04683796993 100644
+--- a/chrome/common/importer/importer_bridge.h
++++ b/chrome/common/importer/importer_bridge.h
+@@ -15,6 +15,7 @@
+ #include "chrome/common/importer/importer_data_types.h"
+ #include "chrome/common/importer/importer_url_row.h"
+ #include "components/favicon_base/favicon_usage_data.h"
++#include "net/cookies/canonical_cookie.h"
+ 
+ class GURL;
+ struct ImportedBookmarkEntry;
+@@ -66,6 +67,9 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
+   virtual void SetAutofillFormData(
+       const std::vector<ImporterAutofillFormDataEntry>& entries) = 0;
+ 
++  virtual void SetCookies(
++      const std::vector<net::CanonicalCookie>& cookies) {};
++
+   // Notifies the coordinator that the import operation has begun.
+   virtual void NotifyStarted() = 0;
+ 

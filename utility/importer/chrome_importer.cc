@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+#include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "build/build_config.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_bridge.h"
@@ -27,6 +28,9 @@
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
+#include "net/cookies/canonical_cookie.h"
+#include "net/cookies/cookie_constants.h"
+#include "net/extras/sqlite/sqlite_persistent_cookie_store.cc"
 #include "sql/connection.h"
 #include "sql/statement.h"
 #include "url/gurl.h"
@@ -48,6 +52,8 @@ base::nix::DesktopEnvironment ChromeImporter::GetDesktopEnvironment() {
   return base::nix::GetDesktopEnvironment(env.get());
 }
 #endif
+
+using base::Time;
 
 ChromeImporter::ChromeImporter() {
 }
@@ -80,6 +86,12 @@ void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
     bridge_->NotifyItemStarted(importer::PASSWORDS);
     ImportPasswords();
     bridge_->NotifyItemEnded(importer::PASSWORDS);
+  }
+
+  if ((items & importer::COOKIES) && !cancelled()) {
+    bridge_->NotifyItemStarted(importer::COOKIES);
+    ImportCookies();
+    bridge_->NotifyItemEnded(importer::COOKIES);
   }
 
   bridge_->NotifyEnded();
@@ -378,4 +390,63 @@ void ChromeImporter::ImportPasswords() {
       }
     }
   #endif
+}
+
+void ChromeImporter::ImportCookies() {
+  base::FilePath cookies_path =
+    source_path_.Append(
+      base::FilePath::StringType(FILE_PATH_LITERAL("Cookies")));
+  if (!base::PathExists(cookies_path))
+    return;
+
+  sql::Connection db;
+  if (!db.Open(cookies_path))
+    return;
+
+  const char query[] =
+    "SELECT creation_utc, host_key, name, value, encrypted_value, path, "
+    "expires_utc, secure, httponly, firstpartyonly, last_access_utc, "
+    "has_expires, persistent, priority FROM cookies";
+
+  sql::Statement s(db.GetUniqueStatement(query));
+
+  std::vector<net::CanonicalCookie> cookies;
+  while (s.Step() && !cancelled()) {
+    std::string encrypted_value = s.ColumnString(4);
+    net::CookieCryptoDelegate* delegate =
+        cookie_config::GetCookieCryptoDelegate();
+    std::string value;
+    if (!encrypted_value.empty() && delegate) {
+#if defined(OS_LINUX)
+      OSCrypt::SetConfig(base::MakeUnique<os_crypt::Config>());
+#endif
+      if (!delegate->DecryptString(encrypted_value, &value)) {
+        continue;
+      }
+    } else {
+      value = s.ColumnString(3);
+    }
+
+    auto cookie = net::CanonicalCookie(
+        s.ColumnString(2),                           // name
+        value,                                       // value
+        s.ColumnString(1),                           // domain
+        s.ColumnString(5),                           // path
+        Time::FromInternalValue(s.ColumnInt64(0)),   // creation_utc
+        Time::FromInternalValue(s.ColumnInt64(6)),   // expires_utc
+        Time::FromInternalValue(s.ColumnInt64(10)),  // last_access_utc
+        s.ColumnBool(7),                             // secure
+        s.ColumnBool(8),                             // http_only
+        DBCookieSameSiteToCookieSameSite(            // samesite
+            static_cast<net::DBCookieSameSite>(s.ColumnInt(9))),
+        DBCookiePriorityToCookiePriority(            // priority
+            static_cast<net::DBCookiePriority>(s.ColumnInt(13))));
+    if (cookie.IsCanonical()) {
+      cookies.push_back(cookie);
+    }
+  }
+
+  if (!cookies.empty() && !cancelled()) {
+    bridge_->SetCookies(cookies);
+  }
 }

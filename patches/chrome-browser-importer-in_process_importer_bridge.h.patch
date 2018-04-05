@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/importer/in_process_importer_bridge.h b/chrome/browser/importer/in_process_importer_bridge.h
+index 247d24220beb7d176b890d7c2d45bdd2dfd8db99..7da2b0faebd7b6cb6038b78568641d5e2020222e 100644
+--- a/chrome/browser/importer/in_process_importer_bridge.h
++++ b/chrome/browser/importer/in_process_importer_bridge.h
+@@ -67,9 +67,9 @@ class InProcessImporterBridge : public ImporterBridge {
+   base::string16 GetLocalizedString(int message_id) override;
+   // End ImporterBridge implementation.
+ 
+- private:
++ protected:
+   ~InProcessImporterBridge() override;
+-
++ private:
+   ProfileWriter* const writer_;  // weak
+   const base::WeakPtr<ExternalProcessImporterHost> host_;
+ 

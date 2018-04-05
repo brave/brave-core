@@ -9,7 +9,15 @@ source_set("browser_process") {
     "brave_tab_helpers.cc",
     "brave_tab_helpers.h",
     "brave_profile_prefs.cc",
-    "brave_profile_prefs.h"
+    "brave_profile_prefs.h",
+    "importer/brave_external_process_importer_client.cc",
+    "importer/brave_external_process_importer_client.h",
+    "importer/brave_external_process_importer_host.cc",
+    "importer/brave_external_process_importer_host.h",
+    "importer/brave_in_process_importer_bridge.cc",
+    "importer/brave_in_process_importer_bridge.h",
+    "importer/brave_profile_writer.cc",
+    "importer/brave_profile_writer.h",
   ]
 
   deps = [

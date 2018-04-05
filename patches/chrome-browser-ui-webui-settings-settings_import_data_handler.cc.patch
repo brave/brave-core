@@ -1,0 +1,46 @@
+diff --git a/chrome/browser/ui/webui/settings/settings_import_data_handler.cc b/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
+index 4a019494a6d98b882b0d2a4f91fce03f66de8c00..0a7ea2dce9d67d37ed0ca64609e74e3008bfad2a 100644
+--- a/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
++++ b/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
+@@ -18,6 +18,8 @@
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/threading/thread_restrictions.h"
+ #include "base/values.h"
++#include "brave/browser/importer/brave_external_process_importer_host.h"
++#include "brave/browser/importer/brave_profile_writer.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/importer/external_process_importer_host.h"
+ #include "chrome/browser/importer/importer_list.h"
+@@ -95,12 +97,12 @@ void ImportDataHandler::StartImport(
+                     base::Value(kImportStatusInProgress));
+   import_did_succeed_ = false;
+ 
+-  importer_host_ = new ExternalProcessImporterHost();
++  importer_host_ = new BraveExternalProcessImporterHost();
+   importer_host_->set_observer(this);
+   Profile* profile = Profile::FromWebUI(web_ui());
+   importer_host_->StartImportSettings(source_profile, profile,
+                                       imported_items,
+-                                      new ProfileWriter(profile));
++                                      new BraveProfileWriter(profile));
+ 
+   importer::LogImporterUseToMetrics("ImportDataHandler",
+                                     source_profile.importer_type);
+@@ -125,6 +127,8 @@ void ImportDataHandler::ImportData(const base::ListValue* args) {
+     selected_items |= importer::PASSWORDS;
+   if (prefs->GetBoolean(prefs::kImportDialogSearchEngine))
+     selected_items |= importer::SEARCH_ENGINES;
++  if (prefs->GetBoolean(prefs::kImportDialogCookies))
++    selected_items |= importer::COOKIES;
+ 
+   const importer::SourceProfile& source_profile =
+       importer_list_->GetSourceProfileAt(browser_index);
+@@ -178,6 +182,8 @@ void ImportDataHandler::SendBrowserProfileData(const std::string& callback_id) {
+     browser_profile->SetBoolean(
+         "autofillFormData",
+         (browser_services & importer::AUTOFILL_FORM_DATA) != 0);
++    browser_profile->SetBoolean("cookies",
++        (browser_services & importer::COOKIES) != 0);
+ 
+     browser_profiles.Append(std::move(browser_profile));
+   }

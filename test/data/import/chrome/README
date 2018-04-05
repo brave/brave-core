@@ -12,6 +12,8 @@ process:
 If special care was taken to generate a certain type of test data, the process
 should be documented below.
 
+[0]: https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md
+
 # Login Data
 
 ## Using the mock keychain
@@ -26,8 +28,6 @@ test login data was simulated:
 When `--use-mock- keychain` is enabled, a fixed key is used to encrypt all
 data that is encrypted with OSCrypt. We may then enable the mock keychain
 during tests so the corresponding decryption will use the same fixed key.
-
-As far as I know, this argument only has an effect on macOS.
 
 ## Triggering a password save prompt in Chrome
 
@@ -46,4 +46,10 @@ save the password.
 
 I recommend using a different port number to easily distinguish each test case.
 
-[0]: https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md
+# Cookies
+
+Start Chrome with a test profile. Make sure to `--use-mock-keychain` if you
+want to be able to test the decrypted value of the cookie.
+
+Run `node cookies_server.js` and navigate to http://localhost:8080 in a test
+Chrome profile to have a test cookie set on localhost.

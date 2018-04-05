@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
+index 906dbf0f69880b96941d898677a6d3fd9ea19cf7..204685201c1114c7a5e14c9a4d8b87ebb56b071b 100644
+--- a/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
++++ b/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
+@@ -923,6 +923,7 @@ void AddImportDataStrings(content::WebUIDataSource* html_source) {
+     {"importPasswords", IDS_SETTINGS_IMPORT_PASSWORDS_CHECKBOX},
+     {"importSearch", IDS_SETTINGS_IMPORT_SEARCH_ENGINES_CHECKBOX},
+     {"importAutofillFormData", IDS_SETTINGS_IMPORT_AUTOFILL_FORM_DATA_CHECKBOX},
++    {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
+     {"importChooseFile", IDS_SETTINGS_IMPORT_CHOOSE_FILE},
+     {"importCommit", IDS_SETTINGS_IMPORT_COMMIT},
+     {"noProfileFound", IDS_SETTINGS_IMPORT_NO_PROFILE_FOUND},
