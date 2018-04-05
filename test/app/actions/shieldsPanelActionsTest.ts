@@ -8,7 +8,7 @@ import * as assert from 'assert'
 import * as types from '../../../app/constants/shieldsPanelTypes'
 import * as actions from '../../../app/actions/shieldsPanelActions'
 import { ShieldDetails, BlockDetails } from '../../../app/types/actions/shieldsPanelActions';
-import { BlockOptions } from '../../../app/types/other/blockTypes';
+import { BlockOptions, BlockFPOptions } from '../../../app/types/other/blockTypes';
 
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
@@ -75,9 +75,11 @@ describe('shieldsPanelActions', () => {
     })
   })
 
-  it('fingerprintingToggled action', () => {
-    assert.deepEqual(actions.fingerprintingToggled(), {
-      type: types.FINGERPRINTING_TOGGLED
+  it('blockFingerprinting action', () => {
+    const setting: BlockFPOptions = 'block_third_party'
+    assert.deepEqual(actions.blockFingerprinting(setting), {
+      type: types.BLOCK_FINGERPRINTING,
+      setting
     })
   })
 })

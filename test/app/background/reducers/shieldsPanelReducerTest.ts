@@ -341,7 +341,7 @@ describe('braveShieldsPanelReducer', () => {
     })
   })
 
-  describe('FINGERPRINTING_TOGGLED', function () {
+  describe('BLOCK_FINGERPRINTING', function () {
     before(function () {
       this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
       this.setAllowFingerprintingSpy = sinon.spy(shieldsAPI, 'setAllowFingerprinting')
@@ -353,7 +353,8 @@ describe('braveShieldsPanelReducer', () => {
     it('should call setAllowFingerprinting', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
-          type: types.FINGERPRINTING_TOGGLED
+          type: types.BLOCK_FINGERPRINTING,
+          setting: 'allow'
         }), state)
       assert.equal(this.setAllowFingerprintingSpy.withArgs(origin, 'allow').calledOnce, true)
     })

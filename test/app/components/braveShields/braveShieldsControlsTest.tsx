@@ -8,7 +8,7 @@ import * as React from 'react'
 import * as assert from 'assert'
 import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsControls, { Props } from '../../../../app/components/braveShields/braveShieldsControls'
-import { BlockOptions } from '../../../../app/types/other/blockTypes'
+import { BlockOptions, BlockFPOptions } from '../../../../app/types/other/blockTypes'
 import * as actionTypes from '../../../../app/constants/shieldsPanelTypes'
 import { GridProps } from 'brave-ui/gridSystem'
 
@@ -43,9 +43,10 @@ function setup () {
         type: actionTypes.JAVASCRIPT_TOGGLED
       }
     },
-    fingerprintingToggled: () => {
+    blockFingerprinting: (setting:BlockFPOptions) => {
       return {
-        type: actionTypes.FINGERPRINTING_TOGGLED
+        type: actionTypes.BLOCK_FINGERPRINTING,
+        setting
       }
     }
   }
