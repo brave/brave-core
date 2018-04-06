@@ -51,6 +51,18 @@ bool IsUAWhitelisted(const GURL& gurl) {
       });
 }
 
+bool IsWhitelistedReferer(const GURL& gurl) {
+  static std::vector<URLPattern> whitelist_patterns({
+    URLPattern(URLPattern::SCHEME_ALL, "https://use.typekit.net/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://cloud.typography.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://www.moremorewin.net/*")
+  });
+  return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
+      [&gurl](URLPattern pattern){
+        return pattern.MatchesURL(gurl);
+      });
+}
+
 std::string GetGoogleTagManagerPolyfillJS() {
   static std::string base64_output;
   if (base64_output.length() != 0)  {
@@ -156,7 +168,7 @@ bool ApplyPotentialRefererBlock(net::URLRequest* request,
       brave_shields::kReferers);
   std::string referrer;
   if (headers->GetHeader(kRefererHeader, &referrer) &&
-      // TODO(bbondy) && no exceptions
+      !IsWhitelistedReferer(request->url()) &&
       !allow_referers) {
     GURL referrer_origin = GURL(referrer).GetOrigin();
     if (referrer_origin != target_origin) {
