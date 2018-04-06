@@ -107,3 +107,20 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
 
   return allow;
 }
+
+bool BraveContentSettingsObserver::AllowReferrer(const GURL& primary_url) {
+  if (!content_setting_rules_) {
+    return false;
+  }
+  for (const auto& rule : content_setting_rules_->brave_shields_rules) {
+    if (rule.primary_pattern.Matches(primary_url)) {
+      return rule.GetContentSetting() == CONTENT_SETTING_BLOCK;
+    }
+  }
+  for (const auto& rule : content_setting_rules_->referrer_rules) {
+    if (rule.primary_pattern.Matches(primary_url)) {
+      return rule.GetContentSetting() == CONTENT_SETTING_ALLOW;
+    }
+  }
+  return false;
+}

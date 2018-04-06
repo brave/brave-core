@@ -1,0 +1,11 @@
+import("//build/config/features.gni")
+
+source_set("renderer") {
+  sources = [
+    "brave_render_frame_impl.cc",
+    "brave_render_frame_impl.h"
+  ]
+  public_deps = [
+    "//content/common",
+  ]
+}

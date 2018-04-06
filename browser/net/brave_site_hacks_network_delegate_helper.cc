@@ -5,49 +5,18 @@
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 
 #include <string>
-#include <vector>
 
 #include "base/base64url.h"
 #include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/common/shield_exceptions.h"
+#include "components/subresource_filter/core/common/first_party_origin.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
 
 namespace brave {
-
-bool IsEmptyDataURLRedirect(const GURL& gurl) {
-  static std::vector<std::string> hosts({
-    "sp1.nypost.com",
-    "sp.nasdaq.com"
-  });
-  return std::find(hosts.begin(), hosts.end(), gurl.host()) !=
-      hosts.end();
-}
-
-bool IsBlockedResource(const GURL& gurl) {
-  static std::vector<URLPattern> blocked_patterns({
-    URLPattern(URLPattern::SCHEME_ALL, "https://www.lesechos.fr/xtcore.js"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js")
-  });
-  return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
-      [&gurl](URLPattern pattern){
-        return pattern.MatchesURL(gurl);
-      });
-}
-
-bool IsUAWhitelisted(const GURL& gurl) {
-  static std::vector<URLPattern> whitelist_patterns({
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.adobe.com/*"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.duckduckgo.com/*"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.brave.com/*"),
-    // For Widevine
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.netflix.com/*")
-  });
-  return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
-      [&gurl](URLPattern pattern){
-        return pattern.MatchesURL(gurl);
-      });
-}
 
 std::string GetGoogleTagManagerPolyfillJS() {
   static std::string base64_output;

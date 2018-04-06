@@ -1,0 +1,13 @@
+diff --git a/content/common/BUILD.gn b/content/common/BUILD.gn
+index 56482152ab076f26d079db805f5107f63c5f94b9..1d36ae8b88232b1bb0db8a808846046cc846e7e6 100644
+--- a/content/common/BUILD.gn
++++ b/content/common/BUILD.gn
+@@ -31,7 +31,7 @@ source_set("common") {
+   # In addition, targets outside of the content component (shell and tests)
+   # must not link to this because it will duplicate the code in the component
+   # build.
+-  visibility = [ "//content/*" ]
++  visibility = [ "//content/*", "//brave/content/*" ]
+ 
+   sources = [
+     "accessibility_messages.h",
