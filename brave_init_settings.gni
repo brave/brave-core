@@ -1,3 +1,10 @@
 declare_args() {
   brave_chromium_build = true
+
+  # Release channel support.
+  # "beta" for beta release.
+  # "dev" for dev channel release.
+  # "canary" for canary channel release.
+  # "" for stable channel release.
+  brave_channel = ""
 }

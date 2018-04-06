@@ -1,0 +1,20 @@
+diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
+index d08a945c6b11a918fa5faedcb1c87c269772e877..8c8c06d11ea3948f558eb984c16ccdb6d5f380b3 100644
+--- a/chrome/common/BUILD.gn
++++ b/chrome/common/BUILD.gn
+@@ -554,6 +554,15 @@ static_library("constants") {
+     "pref_names.h",
+   ]
+ 
++  if (brave_chromium_build) {
++    if (is_mac) {
++      sources += [
++        "//brave/common/brave_paths_mac.mm",
++        "//brave/common/brave_paths_mac.h",
++      ]
++    }
++  }
++
+   public_deps = [
+     ":features",
+     ":non_code_constants",

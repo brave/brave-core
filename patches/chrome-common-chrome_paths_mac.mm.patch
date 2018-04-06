@@ -1,16 +1,32 @@
 diff --git a/chrome/common/chrome_paths_mac.mm b/chrome/common/chrome_paths_mac.mm
-index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..adf92a55f199078ad500fa7baaacd862fae05aa2 100644
+index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..5b29e5ad8b2e152d3b261b42adf4f9c20f675fe7 100644
 --- a/chrome/common/chrome_paths_mac.mm
 +++ b/chrome/common/chrome_paths_mac.mm
-@@ -58,8 +58,10 @@ char* ProductDirNameForBundle(NSBundle* chrome_bundle) {
+@@ -18,6 +18,10 @@
+ #include "chrome/common/chrome_constants.h"
+ #include "chrome/common/chrome_paths_internal.h"
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++#include "brave/common/brave_paths_mac.h"
++#endif
++
+ namespace {
+ 
+ const base::FilePath* g_override_versioned_directory = NULL;
+@@ -58,6 +62,16 @@ char* ProductDirNameForBundle(NSBundle* chrome_bundle) {
    if (!product_dir_name) {
  #if defined(GOOGLE_CHROME_BUILD)
      product_dir_name = "Google/Chrome";
-+#elif defined(OFFICIAL_BUILD)
++#elif defined(BRAVE_CHROMIUM_BUILD)
++#if defined(OFFICIAL_BUILD)
 +    product_dir_name = "Brave-Browser";
- #else
--    product_dir_name = "Chromium";
++    const std::string name = std::string(product_dir_name) +
++        brave::GetChannelSuffixForDataDir(chrome_bundle);
++    product_dir_name = name.c_str();
++#else
++    // Unofficial build uses same user dir for all release channel.
 +    product_dir_name = "Brave-Browser-Development";
++ #endif
+ #else
+     product_dir_name = "Chromium";
  #endif
-   }
- 
