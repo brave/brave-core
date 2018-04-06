@@ -4,6 +4,8 @@
 
 #include "brave/browser/extensions/brave_component_loader.h"
 
+#include "base/command_line.h"
+#include "brave/common/brave_switches.h"
 #include "components/grit/brave_components_resources.h"
 
 namespace extensions {
@@ -22,10 +24,15 @@ BraveComponentLoader::~BraveComponentLoader() {
 void BraveComponentLoader::AddDefaultComponentExtensions(
     bool skip_session_components) {
   ComponentLoader::AddDefaultComponentExtensions(skip_session_components);
-  base::FilePath brave_extension_path(FILE_PATH_LITERAL(""));
-  brave_extension_path =
-      brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
-  Add(IDR_BRAVE_EXTENSON, brave_extension_path);
+
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kDisableBraveExtension)) {
+    base::FilePath brave_extension_path(FILE_PATH_LITERAL(""));
+    brave_extension_path =
+        brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
+    Add(IDR_BRAVE_EXTENSON, brave_extension_path);
+  }
 }
 
 }  // namespace extensions

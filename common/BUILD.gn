@@ -2,6 +2,8 @@ source_set("common") {
   sources = [
     "brave_paths.cc",
     "brave_paths.h",
+    "brave_switches.cc",
+    "brave_switches.h",
     "common_message_generator.cc",
     "common_message_generator.h",
     "importer/chrome_importer_utils.cc",
