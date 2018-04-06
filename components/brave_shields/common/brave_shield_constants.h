@@ -14,6 +14,7 @@ const char kHTTPUpgradableResources[] = "httpUpgradableResources";
 const char kJavaScript[] = "javascript";
 const char kFingerprinting[] = "fingerprinting";
 const char kBraveShields[] = "braveShields";
+const char kReferers[] = "referers";
 
 }  // brave_shields
 

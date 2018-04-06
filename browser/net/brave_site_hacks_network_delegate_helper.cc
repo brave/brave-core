@@ -10,6 +10,8 @@
 #include "base/base64url.h"
 #include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
 
@@ -146,6 +148,25 @@ bool IsBlockTwitterSiteHack(net::URLRequest* request,
   return false;
 }
 
+bool ApplyPotentialRefererBlock(net::URLRequest* request,
+    net::HttpRequestHeaders* headers) {
+  GURL target_origin = GURL(request->url()).GetOrigin();
+  bool allow_referers = brave_shields::IsAllowContentSettingFromIO(
+      request, target_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kReferers);
+  std::string referrer;
+  if (headers->GetHeader(kRefererHeader, &referrer) &&
+      // TODO(bbondy) && no exceptions
+      !allow_referers) {
+    GURL referrer_origin = GURL(referrer).GetOrigin();
+    if (referrer_origin != target_origin) {
+      headers->SetHeader(kRefererHeader, target_origin.spec());
+      return true;
+    }
+  }
+  return false;
+}
+
 int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
@@ -164,6 +185,7 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
       headers->SetHeader(kUserAgentHeader, user_agent);
     }
   }
+  ApplyPotentialRefererBlock(request, headers);
   return net::OK;
 }
 
