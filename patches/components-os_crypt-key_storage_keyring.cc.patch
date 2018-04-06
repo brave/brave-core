@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/key_storage_keyring.cc b/components/os_crypt/key_storage_keyring.cc
-index af2f64b34ddb8e49d72dd0dd22ffd2418a422efb..4de119827b80cb8bbf83c26ef4937c6d8218e448 100644
+index af2f64b34ddb8e49d72dd0dd22ffd2418a422efb..9db6e47b35e6cac14168908a4385120fe44cb8d0 100644
 --- a/components/os_crypt/key_storage_keyring.cc
 +++ b/components/os_crypt/key_storage_keyring.cc
 @@ -6,6 +6,7 @@
@@ -24,7 +24,7 @@ index af2f64b34ddb8e49d72dd0dd22ffd2418a422efb..4de119827b80cb8bbf83c26ef4937c6d
    std::string password;
    gchar* password_c = nullptr;
 +  const char* application_name;
-+  base::CommandLine* command_line = base::CommandLine()::ForCurrentProcess();
++  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
 +  if (command_line->HasSwitch("import-chrome")) {
 +    application_name = "chrome";
 +  } else if (command_line->HasSwitch("import-chromium")) {

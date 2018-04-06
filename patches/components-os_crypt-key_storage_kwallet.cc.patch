@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/key_storage_kwallet.cc b/components/os_crypt/key_storage_kwallet.cc
-index aa4b3d4a6b5c7b1f725d6446ea5e573094ec935b..3d53b65e81969d7bc88466e09623eab22f3088cd 100644
+index aa4b3d4a6b5c7b1f725d6446ea5e573094ec935b..4c4c7191a57afc7a42dfa87701578bd99d417d94 100644
 --- a/components/os_crypt/key_storage_kwallet.cc
 +++ b/components/os_crypt/key_storage_kwallet.cc
 @@ -7,6 +7,7 @@
@@ -18,7 +18,7 @@ index aa4b3d4a6b5c7b1f725d6446ea5e573094ec935b..3d53b65e81969d7bc88466e09623eab2
 +  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
 +  if (command_line->HasSwitch("import-chrome")) {
 +    folder_name = "Chrome Keys";
-+    key = "Chrome Safe Storage"
++    key = "Chrome Safe Storage";
 +  } else if (command_line->HasSwitch("import-chromium")) {
 +    folder_name = "Chromium Keys";
 +    key = "Chromium Safe Storage";
