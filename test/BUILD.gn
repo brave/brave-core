@@ -45,6 +45,7 @@ test("brave_unit_tests") {
   public_deps = [
     "//base",
     "//base/test:test_support",
+    "//brave:browser_dependencies",
     "//brave/browser",
     "//brave/common",
     "//brave/extensions",

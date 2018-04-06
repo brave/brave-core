@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/profiles/profile_impl.cc b/chrome/browser/profiles/profile_impl.cc
+index 46d813b250c032d9d3ef8f6748a00950aa4e18ad..ce0d47f0284e75250bc6d829194ad297818aebc3 100644
+--- a/chrome/browser/profiles/profile_impl.cc
++++ b/chrome/browser/profiles/profile_impl.cc
+@@ -33,6 +33,7 @@
+ #include "base/threading/thread_restrictions.h"
+ #include "base/trace_event/trace_event.h"
+ #include "base/version.h"
++#include "brave/browser/brave_profile_prefs.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/background/background_contents_service_factory.h"
+ #include "chrome/browser/background_fetch/background_fetch_delegate_factory.h"
+@@ -472,6 +473,9 @@ ProfileImpl::ProfileImpl(
+   BrowserContextDependencyManager::GetInstance()->
+       RegisterProfilePrefsForServices(this, pref_registry_.get());
+ 
++  // Done here instead of browser_prefs.cc so it can override default prefs
++  brave::RegisterProfilePrefs(pref_registry_.get());
++
+   SupervisedUserSettingsService* supervised_user_settings = nullptr;
+ #if BUILDFLAG(ENABLE_SUPERVISED_USERS)
+   supervised_user_settings =

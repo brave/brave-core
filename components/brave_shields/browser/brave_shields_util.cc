@@ -22,7 +22,7 @@ using net::URLRequest;
 namespace brave_shields {
 
 bool IsAllowContentSettingFromIO(net::URLRequest* request,
-    GURL tab_origin, ContentSettingsType setting_type,
+    GURL primary_url, GURL secondary_url, ContentSettingsType setting_type,
     const std::string& resource_identifier) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
@@ -39,7 +39,7 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
   content_settings::SettingInfo setting_info;
   std::unique_ptr<base::Value> value =
       io_data->GetHostContentSettingsMap()->GetWebsiteSetting(
-          tab_origin, tab_origin,
+          primary_url, secondary_url,
           setting_type,
           resource_identifier, &setting_info);
   ContentSetting setting =

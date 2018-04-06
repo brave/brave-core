@@ -19,7 +19,7 @@ class URLRequest;
 namespace brave_shields {
 
 bool IsAllowContentSettingFromIO(net::URLRequest* request,
-    GURL tab_origin, ContentSettingsType setting_type,
+    GURL primary_url, GURL secondary_url, ContentSettingsType setting_type,
     const std::string& resource_identifier);
 
 void DispatchBlockedEventFromIO(net::URLRequest* request,
