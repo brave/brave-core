@@ -25,6 +25,7 @@ export const tabs: Tabs = {
     httpUpgradableResources: 'block',
     javascript: 'block',
     fingerprinting: 'block',
+    cookies: 'block',
     controlsOpen: false,
     httpsRedirected: 0,
     javascriptBlocked: 0,

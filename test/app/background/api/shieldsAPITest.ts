@@ -45,6 +45,7 @@ describe('Shields API', () => {
           javascript: 'block',
           braveShields: 'block',
           fingerprinting: 'block',
+          cookies: 'block',
           id: 5
         })
         cb()
@@ -99,7 +100,8 @@ describe('Shields API', () => {
         trackers: 'block',
         httpUpgradableResources: 'block',
         javascript: 'block',
-        fingerprinting: 'block'
+        fingerprinting: 'block',
+        cookies: 'block'
       }
 
       this.p
@@ -259,6 +261,50 @@ describe('Shields API', () => {
     it('resolves the returned promise', function (cb) {
       this.p
         .then(function() {
+          cb()
+        })
+        .catch((e: Error) => {
+          console.error(e.toString())
+        })
+    })
+  })
+
+  describe('setAllowCookies', function () {
+    before(function () {
+      this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
+      this.p = shieldsAPI.setAllowCookies('https://www.brave.com', 'block')
+    })
+    after(function () {
+      this.spy.restore()
+    })
+    it('calls chrome.contentSettings.plugins with the correct args', function () {
+      const arg0 = this.spy.getCall(0).args[0]
+      assert.deepEqual(arg0, {
+        primaryPattern: 'https://www.brave.com/*',
+        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_REFERRERS },
+        setting: 'block'
+      })
+      const arg1 = this.spy.getCall(1).args[0]
+      assert.deepEqual(arg1, {
+        primaryPattern: 'https://www.brave.com/*',
+        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
+        setting: 'block'
+      })
+      const arg2 = this.spy.getCall(2).args[0]
+      assert.deepEqual(arg2, {
+        primaryPattern: 'https://www.brave.com/*',
+        secondaryPattern: 'https://firstParty/*',
+        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
+        setting: 'block'
+      })
+    })
+    it('passes only 1 arg to chrome.contentSettings.plugins', function () {
+      assert.equal(this.spy.getCall(0).args.length, 1)
+      assert.equal(this.spy.getCall(1).args.length, 1)
+    })
+    it('resolves the returned promise', function (cb) {
+      this.p
+      .then(function () {
           cb()
         })
         .catch((e: Error) => {

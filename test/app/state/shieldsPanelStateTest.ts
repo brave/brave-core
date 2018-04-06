@@ -18,7 +18,8 @@ const state: State = deepFreeze({
       trackers: 'block',
       httpUpgradableResources: 'block',
       javascript: 'block',
-      fingerprinting: 'block'
+      fingerprinting: 'block',
+      cookies: 'block'
     },
     3: {
       id: 3
@@ -47,7 +48,8 @@ describe('shieldsPanelState test', () => {
         trackers: 'block',
         httpUpgradableResources: 'block',
         javascript: 'block',
-        fingerprinting: 'block'
+        fingerprinting: 'block',
+        cookies: 'block'
       })
     })
   })
@@ -62,7 +64,8 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             httpUpgradableResources: 'block',
             javascript: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           },
           3: {
             id: 3
@@ -87,7 +90,8 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             httpUpgradableResources: 'block',
             javascript: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           },
           3: {
             id: 3
@@ -114,7 +118,8 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             httpUpgradableResources: 'block',
             javascript: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           },
           3: {
             id: 3
@@ -138,7 +143,8 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             httpUpgradableResources: 'block',
             javascript: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           },
           3: {
             id: 3
@@ -164,7 +170,8 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             httpUpgradableResources: 'block',
             javascript: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           },
           3: {
             id: 3
@@ -188,7 +195,8 @@ describe('shieldsPanelState test', () => {
         trackers: 'allow',
         httpUpgradableResources: 'allow',
         javascript: 'allow',
-        fingerprinting: 'allow'
+        fingerprinting: 'allow',
+        cookies: 'allow'
       }), {
         currentWindowId: 1,
         tabs: {
@@ -199,6 +207,7 @@ describe('shieldsPanelState test', () => {
             httpUpgradableResources: 'allow',
             javascript: 'allow',
             fingerprinting: 'allow',
+            cookies: 'allow',
             controlsOpen: true,
             braveShields: 'allow',
             adsBlocked: 0,
@@ -234,6 +243,7 @@ describe('shieldsPanelState test', () => {
             httpUpgradableResources: 'block',
             javascript: 'block',
             fingerprinting: 'block',
+            cookies: 'block',
             adsBlocked: 3,
             trackersBlocked: 4444,
             httpsRedirected: 5,
@@ -260,6 +270,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 0,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
@@ -278,6 +289,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 0,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com'
           }
@@ -303,6 +315,7 @@ describe('shieldsPanelState test', () => {
             httpUpgradableResources: 'block',
             javascript: 'block',
             fingerprinting: 'block',
+            cookies: 'block',
             adsBlocked: 0,
             trackersBlocked: 0,
             httpsRedirected: 0,
@@ -329,6 +342,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 0,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
@@ -347,6 +361,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 0,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com'
           }
@@ -377,6 +392,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 0,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
@@ -395,6 +411,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 0,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
@@ -413,6 +430,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 4444,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 5,
             url: 'https://brave.com'
           }
@@ -441,6 +459,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 0,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
@@ -459,6 +478,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 0,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com'
           },
@@ -477,6 +497,7 @@ describe('shieldsPanelState test', () => {
             trackers: 'block',
             trackersBlocked: 0,
             fingerprinting: 'block',
+            cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com'
           }
@@ -501,6 +522,7 @@ describe('shieldsPanelState test', () => {
             httpUpgradableResources: 'block',
             javascript: 'block',
             fingerprinting: 'block',
+            cookies: 'block',
             adsBlocked: 1,
             trackersBlocked: 0,
             httpsRedirected: 0,
@@ -532,6 +554,7 @@ describe('shieldsPanelState test', () => {
             httpUpgradableResources: 'block',
             javascript: 'block',
             fingerprinting: 'block',
+            cookies: 'block',
             adsBlocked: 1,
             trackersBlocked: 0,
             httpsRedirected: 0,
