@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "components/subresource_filter/core/common/first_party_origin.h"
 #include "extensions/common/url_pattern.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 
 namespace brave {
@@ -53,16 +54,42 @@ bool IsUAWhitelisted(const GURL& gurl) {
       });
 }
 
-bool IsWhitelistedReferer(const GURL& gurl) {
+bool IsWhitelistedReferer(const GURL& firstPartyOrigin,
+    const GURL& subresourceUrl) {
+  // It's preferred to use specific_patterns below when possible
   static std::vector<URLPattern> whitelist_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://use.typekit.net/*"),
     URLPattern(URLPattern::SCHEME_ALL, "https://cloud.typography.com/*"),
     URLPattern(URLPattern::SCHEME_ALL, "https://www.moremorewin.net/*")
   });
   return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
-      [&gurl](URLPattern pattern){
-        return pattern.MatchesURL(gurl);
-      });
+    [&subresourceUrl](URLPattern pattern){
+      return pattern.MatchesURL(subresourceUrl);
+    });
+}
+
+
+// Warning! Returns true if the result could be determined
+// The actual result is in `result`
+bool IsSameTLDPlus1(const GURL& url1, const GURL& url2,
+                    bool *result) {
+  // Fetch the eTLD+1 of both origins.
+  const std::string origin1_etldp1 =
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url1,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  const std::string origin2_etldp1 =
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url2,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (origin1_etldp1.empty()) {
+    return false;
+  }
+  if (origin2_etldp1.empty()) {
+    return false;
+  }
+  *result = origin1_etldp1 == origin2_etldp1;
+  return true;
 }
 
 bool IsWhitelistedCookieExeption(const GURL& firstPartyOrigin,
@@ -191,15 +218,19 @@ bool IsBlockTwitterSiteHack(net::URLRequest* request,
 bool ApplyPotentialRefererBlock(net::URLRequest* request,
     net::HttpRequestHeaders* headers) {
   GURL target_origin = GURL(request->url()).GetOrigin();
+  GURL first_party_for_cookies_origin(request->site_for_cookies().GetOrigin());
   bool allow_referers = brave_shields::IsAllowContentSettingFromIO(
       request, target_origin, target_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferers);
   std::string referrer;
   if (headers->GetHeader(kRefererHeader, &referrer) &&
-      !IsWhitelistedReferer(request->url()) &&
+      !IsWhitelistedReferer(first_party_for_cookies_origin, request->url()) &&
       !allow_referers) {
+    bool is_first_party_tldp1;
     GURL referrer_origin = GURL(referrer).GetOrigin();
-    if (referrer_origin != target_origin) {
+    bool got_tlds = IsSameTLDPlus1(referrer_origin, target_origin,
+        &is_first_party_tldp1);
+    if (got_tlds && !is_first_party_tldp1) {
       headers->SetHeader(kRefererHeader, target_origin.spec());
       return true;
     }
@@ -216,19 +247,20 @@ bool ApplyPotentialCookieBlock(net::URLRequest* request,
       request, target_origin, target_origin, CONTENT_SETTINGS_TYPE_COOKIES, "");
 
 
-  GURL firstPartyForCookiesOrigin(request->site_for_cookies().GetOrigin());
-  bool is_first_party =
-      subresource_filter::FirstPartyOrigin::IsThirdParty(request->url(),
-          url::Origin::Create(firstPartyForCookiesOrigin));
+  GURL first_party_for_cookies_origin(request->site_for_cookies().GetOrigin());
+  bool is_first_party_tldp1;
+  bool got_tlds =
+    IsSameTLDPlus1(request->site_for_cookies(), request->url(),
+        &is_first_party_tldp1);
 
   bool block_cookies =
       !allow_1p_cookies ||
-      (!allow_cookies && allow_1p_cookies && !is_first_party);
+      (!allow_cookies && allow_1p_cookies && got_tlds && !is_first_party_tldp1);
 
   std::string cookies;
   if (headers->GetHeader(kCookieHeader, &cookies) &&
       !request->site_for_cookies().is_empty() &&
-      !IsWhitelistedCookieExeption(firstPartyForCookiesOrigin, request->url()) &&
+      !IsWhitelistedCookieExeption(first_party_for_cookies_origin, request->url()) &&
       block_cookies) {
     headers->RemoveHeader(kCookieHeader);
   }

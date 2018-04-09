@@ -15,6 +15,9 @@ class URLRequest;
 
 namespace brave {
 
+bool IsSameTLDPlus1(const GURL& url1, const GURL& url2,
+                    bool *result) WARN_UNUSED_RESULT;
+
 int OnBeforeURLRequest_SiteHacksWork(
     net::URLRequest* request,
     GURL* new_url,
