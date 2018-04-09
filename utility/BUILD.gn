@@ -1,4 +1,5 @@
 import("//build/config/features.gni")
+import("//build/config/ui.gni")
 
 source_set("utility") {
   sources = [
@@ -9,6 +10,18 @@ source_set("utility") {
   ]
 
   public_deps = [
+    "//content/public/common",
+  ]
+
+  defines = [ ]
+
+  deps = [
+    "//chrome/common",
     "//chrome/utility",
   ]
+
+  if (use_glib) {
+    defines += [ "USE_LIBSECRET" ]
+    deps += [ "//third_party/libsecret" ]
+  }
 }
