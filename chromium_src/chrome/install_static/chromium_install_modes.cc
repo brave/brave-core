@@ -66,7 +66,7 @@ const InstallConstants kInstallModes[] = {
         sizeof(kInstallModes[0]),
         BETA_INDEX,     // The mode for the side-by-side beta channel.
         "beta",  // Install switch.
-        L" Beta",       // Install suffix.
+        L"-Beta",       // Install suffix.
         L"Beta",        // Logo suffix.
         L"{103BD053-949B-43A8-9120-2E424887DE11}",  // A distinct app GUID.
         L"Brave Beta",                      // A distinct base_app_name.
@@ -94,7 +94,7 @@ const InstallConstants kInstallModes[] = {
         sizeof(kInstallModes[0]),
         DEV_INDEX,     // The mode for the side-by-side dev channel.
         "dev",  // Install switch.
-        L" Dev",       // Install suffix.
+        L"-Dev",       // Install suffix.
         L"Dev",        // Logo suffix.
         L"{CB2150F2-595F-4633-891A-E39720CE0531}",  // A distinct app GUID.
         L"Brave Dev",                       // A distinct base_app_name.
@@ -122,7 +122,7 @@ const InstallConstants kInstallModes[] = {
         sizeof(kInstallModes[0]),
         CANARY_INDEX,  // The mode for the side-by-side canary channel.
         "canary",  // Install switch.
-        L" Canary",       // Install suffix.
+        L"-Canary",       // Install suffix.
         L"Canary",     // Logo suffix.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // A distinct app GUID.
         L"Brave Canary",                    // A distinct base_app_name.
