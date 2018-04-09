@@ -4,6 +4,7 @@
 
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -61,6 +62,32 @@ bool IsWhitelistedReferer(const GURL& gurl) {
   return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
       [&gurl](URLPattern pattern){
         return pattern.MatchesURL(gurl);
+      });
+}
+
+bool IsWhitelistedCookieExeption(const GURL& firstPartyOrigin,
+    const GURL& subresourceUrl) {
+  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns = {{
+      GURL("https://inbox.google.com"),
+      { URLPattern(URLPattern::SCHEME_ALL, "https://hangouts.google.com/*") }
+    }, {
+      GURL("https://mail.google.com"),
+      { URLPattern(URLPattern::SCHEME_ALL, "https://hangouts.google.com/*") }
+    }, {
+      GURL("https://drive.google.com"),
+      { URLPattern(URLPattern::SCHEME_ALL,
+          "https://doc-*-docs.googleusercontent.com/*") }
+    }
+  };
+  std::map<GURL, std::vector<URLPattern> >::iterator i =
+      whitelist_patterns.find(firstPartyOrigin);
+  if (i == whitelist_patterns.end()) {
+    return false;
+  }
+  std::vector<URLPattern> &exceptions = i->second;
+  return std::any_of(exceptions.begin(), exceptions.end(),
+      [&subresourceUrl](const URLPattern& pattern) {
+        return pattern.MatchesURL(subresourceUrl);
       });
 }
 
@@ -188,9 +215,11 @@ bool ApplyPotentialCookieBlock(net::URLRequest* request,
   bool allow_1p_cookies = brave_shields::IsAllowContentSettingFromIO(
       request, target_origin, target_origin, CONTENT_SETTINGS_TYPE_COOKIES, "");
 
+
+  GURL firstPartyForCookiesOrigin(request->site_for_cookies().GetOrigin());
   bool is_first_party =
       subresource_filter::FirstPartyOrigin::IsThirdParty(request->url(),
-          url::Origin::Create(request->site_for_cookies().GetOrigin()));
+          url::Origin::Create(firstPartyForCookiesOrigin));
 
   bool block_cookies =
       !allow_1p_cookies ||
@@ -199,7 +228,7 @@ bool ApplyPotentialCookieBlock(net::URLRequest* request,
   std::string cookies;
   if (headers->GetHeader(kCookieHeader, &cookies) &&
       !request->site_for_cookies().is_empty() &&
-      // TODO(bbondy) && no exceptions
+      !IsWhitelistedCookieExeption(firstPartyForCookiesOrigin, request->url()) &&
       block_cookies) {
     headers->RemoveHeader(kCookieHeader);
   }
