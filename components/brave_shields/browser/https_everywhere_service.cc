@@ -20,14 +20,14 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/browser/brave_component_installer.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "chrome/browser/browser_process.h"
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "third_party/zlib/google/zip.h"
 
 #define DAT_FILE "httpse.leveldb.zip"
-// TODO: Replace this with the real version at runtime
-#define DAT_FILE_URL "https://s3.amazonaws.com/https-everywhere-data/5.2/httpse.leveldb.zip"
 #define HTTPSE_URLS_REDIRECTS_COUNT_QUEUE   1
 #define HTTPSE_URL_MAX_REDIRECTS_COUNT      5
 
@@ -79,9 +79,7 @@ namespace {
 
 namespace brave_shields {
 
-GURL HTTPSEverywhereService::g_https_everywhere_url(DAT_FILE_URL);
-
-HTTPSEverywhereService::HTTPSEverywhereService() {
+HTTPSEverywhereService::HTTPSEverywhereService() : level_db_(nullptr) {
 }
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
@@ -92,13 +90,30 @@ void HTTPSEverywhereService::Cleanup() {
 }
 
 bool HTTPSEverywhereService::Init() {
-  base::FilePath zip_db_file_path /*= GetDATFilePath(DAT_FILE)*/;
+  base::Closure registered_callback =
+    base::Bind(&HTTPSEverywhereService::OnComponentRegistered,
+               base::Unretained(this), kHTTPSEverywhereUpdaterId);
+  ReadyCallback ready_callback =
+    base::Bind(&HTTPSEverywhereService::OnComponentReady,
+               base::Unretained(this), kHTTPSEverywhereUpdaterId);
+  brave::RegisterComponent(g_browser_process->component_updater(),
+      kHTTPSEverywhereUpdaterName, kHTTPSEverywhereUpdaterBase64PublicKey,
+      registered_callback, ready_callback);
+  return true;
+}
+
+void HTTPSEverywhereService::OnComponentRegistered(const std::string& extension_id) {
+}
+
+void HTTPSEverywhereService::OnComponentReady(const std::string& extension_id,
+                                              const base::FilePath& install_dir) {
+  base::FilePath zip_db_file_path = install_dir.AppendASCII(DAT_FILE);
 
   base::FilePath unzipped_level_db_path = zip_db_file_path.RemoveExtension();
   base::FilePath destination = zip_db_file_path.DirName();
   if (!zip::Unzip(zip_db_file_path, destination)) {
-    LOG(ERROR) << "Unzip error for HTTPSE";
-    return false;
+    LOG(ERROR) << "Could not unzip HTTPS Everywhere data file";
+    return;
   }
 
   leveldb::Options options;
@@ -114,16 +129,15 @@ bool HTTPSEverywhereService::Init() {
     LOG(ERROR) << "Level db open error "
       << unzipped_level_db_path.value().c_str()
       << ", error: " << status.ToString();
-    return false;
+    return;
   }
-  return true;
 }
 
 bool HTTPSEverywhereService::GetHTTPSURL(
     const GURL* url, const uint64_t& request_identifier,
     std::string& new_url) {
   base::AssertBlockingAllowed();
-  if (!IsInitialized() || url->scheme() == "https") {
+  if (!IsInitialized() || url->scheme() == url::kHttpsScheme) {
     return false;
   }
   if (!ShouldHTTPSERedirect(request_identifier)) {
@@ -156,7 +170,7 @@ bool HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
     const GURL* url,
     const uint64_t& request_identifier,
     std::string& cached_url) {
-  if (!IsInitialized() || url->scheme() == "https") {
+  if (!IsInitialized() || url->scheme() == url::kHttpsScheme) {
     return false;
   }
   if (!ShouldHTTPSERedirect(request_identifier)) {
@@ -329,11 +343,6 @@ std::string HTTPSEverywhereService::CorrecttoRuleToRE2Engine(
   }
 
   return correctedto;
-}
-
-// static
-void HTTPSEverywhereService::SetHttpsEveryWhereURLForTest(const GURL& url) {
-  g_https_everywhere_url = url;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

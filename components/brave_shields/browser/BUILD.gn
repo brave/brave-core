@@ -4,6 +4,8 @@ source_set("brave_shields") {
     "ad_block_service.h",
     "base_brave_shields_service.cc",
     "base_brave_shields_service.h",
+    "brave_component_installer.cc",
+    "brave_component_installer.h",
     "brave_shields_resource_throttle.cc",
     "brave_shields_resource_throttle.h",
     "brave_shields_util.cc",

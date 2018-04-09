@@ -19,13 +19,13 @@
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/components/brave_shields/browser/brave_component_installer.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/tracking-protection/TPParser.h"
+#include "chrome/browser/browser_process.h"
 
 #define DAT_FILE "TrackingProtection.dat"
 #define THIRD_PARTY_HOSTS_CACHE_SIZE 20
-// TODO: Replace this with the real version at runtime
-#define DAT_FILE_URL "https://s3.amazonaws.com/tracking-protection-data/1/TrackingProtection.dat"
 
 namespace brave_shields {
 
@@ -87,18 +87,37 @@ bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
 }
 
 bool TrackingProtectionService::Init() {
-#if 0
-   if (!GetDATFileData(DAT_FILE, buffer_)) {
-    LOG(ERROR) << "Could not obtain ad block data file";
-    return false;
+  base::Closure registered_callback =
+    base::Bind(&TrackingProtectionService::OnComponentRegistered,
+               base::Unretained(this), kTrackingProtectionUpdaterId);
+  ReadyCallback ready_callback =
+    base::Bind(&TrackingProtectionService::OnComponentReady,
+               base::Unretained(this), kTrackingProtectionUpdaterId);
+  brave::RegisterComponent(g_browser_process->component_updater(),
+      kTrackingProtectionUpdaterName, kTrackingProtectionUpdaterBase64PublicKey,
+      registered_callback, ready_callback);
+  return true;
+}
+
+void TrackingProtectionService::OnComponentRegistered(const std::string& extension_id) {
+}
+
+void TrackingProtectionService::OnComponentReady(const std::string& extension_id,
+                                                 const base::FilePath& install_dir) {
+  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
+  if (!GetDATFileData(dat_file_path, buffer_)) {
+    LOG(ERROR) << "Could not obtain tracking protection data file";
+    return;
   }
-#endif
+  if (buffer_.empty()) {
+    LOG(ERROR) << "Could not obtain tracking protection data";
+    return;
+  }
   if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
     tracking_protection_client_.reset();
-    LOG(ERROR) << "TrackingProtectionService::Init deserialize failed";
-    return false;
+    LOG(ERROR) << "Failed to deserialize tracking protection data";
+    return;
   }
-  return true;
 }
 
 // Ported from Android: net/blockers/blockers_worker.cc

@@ -19,7 +19,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/browser/extensions/brave_component_installer.h"
+#include "brave/components/brave_shields/browser/brave_component_installer.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 #include "chrome/browser/browser_process.h"
@@ -29,8 +29,6 @@
 #define DAT_FILE "ABPFilterParserData.dat"
 
 namespace brave_shields {
-
-GURL AdBlockService::g_ad_block_url("");
 
 AdBlockService::AdBlockService() :
     ad_block_client_(new AdBlockClient()) {
@@ -78,7 +76,7 @@ bool AdBlockService::Init() {
     base::Bind(&AdBlockService::OnComponentReady,
                base::Unretained(this), kAdBlockPlusUpdaterId);
   brave::RegisterComponent(g_browser_process->component_updater(),
-      kAdBlockPlusUpdaterName, kAdBlockPlusUpdaterPublicKeyStr,
+      kAdBlockPlusUpdaterName, kAdBlockPlusUpdaterBase64PublicKey,
       registered_callback, ready_callback);
   return true;
 }
@@ -88,7 +86,8 @@ void AdBlockService::OnComponentRegistered(const std::string& extension_id) {
 
 void AdBlockService::OnComponentReady(const std::string& extension_id,
                                       const base::FilePath& install_dir) {
-  if (!GetDATFileData(install_dir, DAT_FILE, buffer_)) {
+  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
+  if (!GetDATFileData(dat_file_path, buffer_)) {
     LOG(ERROR) << "Could not obtain ad block data file";
     return;
   }
@@ -103,16 +102,11 @@ void AdBlockService::OnComponentReady(const std::string& extension_id,
   }
 }
 
-// static
-void AdBlockService::SetAdBlockURLForTest(const GURL& url) {
-  g_ad_block_url = url;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
-std::unique_ptr<BaseBraveShieldsService> AdBlockServiceFactory() {
+std::unique_ptr<AdBlockService> AdBlockServiceFactory() {
   return base::MakeUnique<AdBlockService>();
 }
 

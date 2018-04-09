@@ -21,7 +21,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(
   g_brave_browser_process = this;
 }
 
-brave_shields::BaseBraveShieldsService*
+brave_shields::AdBlockService*
 BraveBrowserProcessImpl::ad_block_service() {
   if (ad_block_service_)
     return ad_block_service_.get();

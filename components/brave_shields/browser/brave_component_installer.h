@@ -1,9 +1,9 @@
-// Copyright 2014 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef COMPONENTS_COMPONENT_UPDATER_BRAVE_COMPONENT_INSTALLER_H_
-#define COMPONENTS_COMPONENT_UPDATER_BRAVE_COMPONENT_INSTALLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_COMPONENT_INSTALLER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_COMPONENT_INSTALLER_H_
 
 #include <stdint.h>
 
@@ -20,6 +20,7 @@
 namespace base {
 class FilePath;
 }  // namespace base
+
 using ReadyCallback = base::Callback<void(const base::FilePath&)>;
 
 namespace brave {
@@ -28,12 +29,12 @@ class BraveComponentInstallerPolicy :
     public component_updater::ComponentInstallerPolicy {
  public:
   explicit BraveComponentInstallerPolicy(const std::string& name,
-      const std::string &public_key,
+      const std::string& base64_public_key,
       const ReadyCallback& ready_callback);
 
   ~BraveComponentInstallerPolicy() override;
 
-private:
+ private:
   // The following methods override ComponentInstallerPolicy
   bool VerifyInstallation(const base::DictionaryValue& manifest,
       const base::FilePath& install_dir) const override;
@@ -54,6 +55,7 @@ private:
   update_client::InstallerAttributes GetInstallerAttributes() const override;
 
   std::string name_;
+  std::string base64_public_key_;
   std::string public_key_;
   ReadyCallback ready_callback_;
 
@@ -62,10 +64,10 @@ private:
 
 void RegisterComponent(component_updater::ComponentUpdateService* cus,
     const std::string& name,
-    const std::string& public_key,
+    const std::string& base64_public_key,
     const base::Closure& registered_callback,
     const ReadyCallback& ready_callback);
 
 }  // namespace brave
 
-#endif  // COMPONENTS_COMPONENT_UPDATER_BRAVE_COMPONENT_INSTALLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_COMPONENT_INSTALLER_H_

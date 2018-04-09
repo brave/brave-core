@@ -8,26 +8,24 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
-
 
 const char kAdsPage[] = "/blocking.html";
 const char kNoAdsPage[] = "/no_blocking.html";
 
-class AdBlockServiceTest : public InProcessBrowserTest {
+class AdBlockServiceTest : public ExtensionBrowserTest {
 public:
   AdBlockServiceTest() {}
 
   void SetUp() override {
     InitEmbeddedTestServer();
-    InitAdBlock();
-    InProcessBrowserTest::SetUp();
+    ExtensionBrowserTest::SetUp();
   }
 
   void PreRunTestOnMainThread() override {
-    InProcessBrowserTest::PreRunTestOnMainThread();
+    ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForAdBlockServiceThread();
     ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
   }
@@ -40,9 +38,19 @@ public:
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
-  void InitAdBlock() {
-    brave_shields::AdBlockService::SetAdBlockURLForTest(
-        embedded_test_server()->GetURL("adblock-data/3/ABPFilterParserData.dat"));
+  bool InstallAdBlockExtension() {
+    base::FilePath test_data_dir;
+    PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+
+    const extensions::Extension* abp_extension =
+        InstallExtension(test_data_dir.AppendASCII("adblock-data"), 1);
+    if (!abp_extension)
+      return false;
+
+    g_brave_browser_process->ad_block_service()->OnComponentReady(
+        abp_extension->id(), abp_extension->path());
+
+    return true;
   }
 
   void WaitForAdBlockServiceThread() {
@@ -55,6 +63,8 @@ public:
 
 // Load a page with an ad image, and make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlocked) {
+  ASSERT_TRUE(InstallAdBlockExtension());
+
   GURL url = embedded_test_server()->GetURL(kAdsPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
@@ -71,6 +81,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlocked) {
 
 // Load a page with an image which is not an ad, and make sure it is NOT blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlocked) {
+  ASSERT_TRUE(InstallAdBlockExtension());
+
   GURL url = embedded_test_server()->GetURL(kNoAdsPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();

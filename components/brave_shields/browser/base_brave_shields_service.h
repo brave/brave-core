@@ -12,6 +12,7 @@
 #include <vector>
 #include <mutex>
 
+#include "base/sequenced_task_runner.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
@@ -29,9 +30,9 @@ class BaseBraveShieldsService {
   virtual bool ShouldStartRequest(const GURL& url,
       content::ResourceType resource_type,
       const std::string& tab_host);
-//  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() {
-//    return task_runner_;
-//  }
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() {
+    return task_runner_;
+  }
 
  protected:
   virtual bool Init() = 0;
@@ -41,8 +42,8 @@ class BaseBraveShieldsService {
   void InitShields();
 
   bool initialized_;
-  std::mutex init_mutex_;
   std::mutex initialized_mutex_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
 };
 
 }  // namespace brave_shields

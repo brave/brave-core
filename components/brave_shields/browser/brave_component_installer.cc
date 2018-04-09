@@ -1,8 +1,8 @@
-// Copyright 2014 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/extensions/brave_component_installer.h"
+#include "brave/components/brave_shields/browser/brave_component_installer.h"
 
 #include <utility>
 
@@ -24,10 +24,7 @@
 #include "extensions/common/constants.h"
 #include "extensions/common/manifest_constants.h"
 
-using component_updater::ComponentUpdateService;
-
 namespace {
-
 using Result = update_client::CrxInstaller::Result;
 using InstallError = update_client::InstallError;
 }  // namespace
@@ -65,22 +62,24 @@ bool RewriteManifestFile(
 namespace brave {
 
 BraveComponentInstallerPolicy::BraveComponentInstallerPolicy(
-  const std::string& name,
-  const std::string& public_key,
-  const ReadyCallback& ready_callback) :
-  name_(name), public_key_(public_key), ready_callback_(ready_callback) {
+    const std::string& name,
+    const std::string& base64_public_key,
+    const ReadyCallback& ready_callback)
+    : name_(name),
+      base64_public_key_(base64_public_key),
+      ready_callback_(ready_callback) {
+  base::Base64Decode(base64_public_key, &public_key_);
 }
 
 BraveComponentInstallerPolicy::~BraveComponentInstallerPolicy() {}
 
-bool BraveComponentInstallerPolicy::VerifyInstallation(const base::DictionaryValue& manifest,
-                                                       const base::FilePath& install_dir) const {
+bool BraveComponentInstallerPolicy::VerifyInstallation(
+    const base::DictionaryValue& manifest,
+    const base::FilePath& install_dir) const {
   // The manifest file will generate a random ID if we don't provide one.
   // We want to write one with the actual extensions public key so we get
   // the same extensionID which is generated from the public key.
-  std::string base64_public_key;
-  base::Base64Encode(public_key_, &base64_public_key);
-  if (!RewriteManifestFile(install_dir, manifest, base64_public_key)) {
+  if (!RewriteManifestFile(install_dir, manifest, base64_public_key_)) {
     return false;
   }
   return base::PathExists(
@@ -137,13 +136,13 @@ update_client::InstallerAttributes BraveComponentInstallerPolicy::GetInstallerAt
 }
 
 void RegisterComponent(
-    ComponentUpdateService* cus,
+    component_updater::ComponentUpdateService* cus,
     const std::string& name,
-    const std::string& public_key,
+    const std::string& base64_public_key,
     const base::Closure& registered_callback,
     const ReadyCallback& ready_callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-    std::make_unique<BraveComponentInstallerPolicy>(name, public_key, ready_callback));
+    std::make_unique<BraveComponentInstallerPolicy>(name, base64_public_key, ready_callback));
   installer->Register(cus, registered_callback);
 }
 

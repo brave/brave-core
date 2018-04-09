@@ -17,12 +17,16 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task_runner_util.h"
+#include "base/task_scheduler/post_task.h"
 #include "base/threading/thread_restrictions.h"
 
 namespace brave_shields {
 
-BaseBraveShieldsService::BaseBraveShieldsService() :
-    initialized_(false) {
+BaseBraveShieldsService::BaseBraveShieldsService()
+    : initialized_(false),
+      task_runner_(
+          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {
@@ -40,7 +44,6 @@ void BaseBraveShieldsService::InitShields() {
 }
 
 bool BaseBraveShieldsService::Start() {
-  std::lock_guard<std::mutex> guard(init_mutex_);
   if (initialized_) {
     return true;
   }
