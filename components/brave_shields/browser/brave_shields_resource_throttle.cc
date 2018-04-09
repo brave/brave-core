@@ -42,12 +42,12 @@ void BraveShieldsResourceThrottle::WillStartRequest(bool* defer) {
     return;
   }
   bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
-      request_, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      request_, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kBraveShields);
   bool allow_ads = brave_shields::IsAllowContentSettingFromIO(
-      request_, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kAds);
+      request_, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kAds);
   bool allow_trackers = brave_shields::IsAllowContentSettingFromIO(
-      request_, tab_origin,
+      request_, tab_origin, tab_origin,
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kTrackers);
   if (allow_brave_shields &&
       !allow_trackers &&

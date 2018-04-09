@@ -54,10 +54,10 @@ int OnBeforeURLRequest_HttpsePreFileWork(
 
   GURL tab_origin = request->site_for_cookies().GetOrigin();
   bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kBraveShields);
   bool allow_http_upgradable_resource = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kHTTPUpgradableResources);
   if (tab_origin.is_empty() || allow_http_upgradable_resource ||
       !allow_brave_shields) {

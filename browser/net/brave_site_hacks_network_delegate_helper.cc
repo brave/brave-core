@@ -12,6 +12,7 @@
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "components/subresource_filter/core/common/first_party_origin.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
 
@@ -164,7 +165,7 @@ bool ApplyPotentialRefererBlock(net::URLRequest* request,
     net::HttpRequestHeaders* headers) {
   GURL target_origin = GURL(request->url()).GetOrigin();
   bool allow_referers = brave_shields::IsAllowContentSettingFromIO(
-      request, target_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      request, target_origin, target_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferers);
   std::string referrer;
   if (headers->GetHeader(kRefererHeader, &referrer) &&
@@ -175,6 +176,32 @@ bool ApplyPotentialRefererBlock(net::URLRequest* request,
       headers->SetHeader(kRefererHeader, target_origin.spec());
       return true;
     }
+  }
+  return false;
+}
+
+bool ApplyPotentialCookieBlock(net::URLRequest* request,
+    net::HttpRequestHeaders* headers) {
+  GURL target_origin = GURL(request->url()).GetOrigin();
+  bool allow_cookies = brave_shields::IsAllowContentSettingFromIO(
+      request, target_origin, GURL(), CONTENT_SETTINGS_TYPE_COOKIES, "");
+  bool allow_1p_cookies = brave_shields::IsAllowContentSettingFromIO(
+      request, target_origin, target_origin, CONTENT_SETTINGS_TYPE_COOKIES, "");
+
+  bool is_first_party =
+      subresource_filter::FirstPartyOrigin::IsThirdParty(request->url(),
+          url::Origin::Create(request->site_for_cookies().GetOrigin()));
+
+  bool block_cookies =
+      !allow_1p_cookies ||
+      (!allow_cookies && allow_1p_cookies && !is_first_party);
+
+  std::string cookies;
+  if (headers->GetHeader(kCookieHeader, &cookies) &&
+      !request->site_for_cookies().is_empty() &&
+      // TODO(bbondy) && no exceptions
+      block_cookies) {
+    headers->RemoveHeader(kCookieHeader);
   }
   return false;
 }
@@ -198,6 +225,7 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
     }
   }
   ApplyPotentialRefererBlock(request, headers);
+  ApplyPotentialCookieBlock(request, headers);
   return net::OK;
 }
 
