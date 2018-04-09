@@ -44,14 +44,14 @@ IDR_MAINFRAME_3         ICON       "theme\\brave\\win\\placeholder.ico"
 IDR_MAINFRAME_4         ICON       "theme\\brave\\win\\placeholder.ico"
 // The SXS icon must have an index of 4, the constant is used in Chrome code to
 // identify it.
-IDR_SXS                 ICON       "theme\\brave\\win\\brave_sxs.ico"
+IDR_SXS                 ICON       "theme\\brave\\win\\brave_canary.ico"
 
 // Start a naming scheme to keep icons in order. A leading X is used to keep
 // the name alphabetically after IDR_SXS. The maximum of the number that follows
 // should be incremented when a new icon is added. The icon indices in
 // chrome_icon_resources_win.h should also be updated.
 #else
-IDR_MAINFRAME           ICON       "theme\\brave\\win\\brave.ico"
+IDR_MAINFRAME           ICON       "theme\\brave\\win\\brave_development.ico"
 #endif
 
 #if defined(OFFICIAL_BUILD)
