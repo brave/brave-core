@@ -1,24 +1,16 @@
 diff --git a/chrome/installer/util/util_constants.cc b/chrome/installer/util/util_constants.cc
-index e8913e34bd4731886c2709db051ed9a0bf3115ac..2b2456a0f634bfed591bb88c0a541ed56f66e257 100644
+index e8913e34bd4731886c2709db051ed9a0bf3115ac..123a271896d765ef633814a554200127754fc0da 100644
 --- a/chrome/installer/util/util_constants.cc
 +++ b/chrome/installer/util/util_constants.cc
-@@ -182,11 +182,19 @@ const char kGoogleUpdateIsMachineEnvVar[] = "GoogleUpdateIsMachine";
- // TODO(gab): Rename setup.exe itself altogether and use the same binary for
- // Active Setup.
+@@ -184,7 +184,11 @@ const char kGoogleUpdateIsMachineEnvVar[] = "GoogleUpdateIsMachine";
  const wchar_t kActiveSetupExe[] = L"chrmstp.exe";
-+#if defined(BRAVE_CHROMIUM_BUILD)
-+const wchar_t kChromeDll[] = L"brave.dll";
-+const wchar_t kChromeChildDll[] = L"brave_child.dll";
-+const wchar_t kChromeExe[] = L"brave.exe";
-+const wchar_t kChromeNewExe[] = L"new_brave.exe";
-+const wchar_t kChromeOldExe[] = L"old_brave.exe";
-+#else
  const wchar_t kChromeDll[] = L"chrome.dll";
  const wchar_t kChromeChildDll[] = L"chrome_child.dll";
++#if defined(BRAVE_CHROMIUM_BUILD)
++const wchar_t kChromeExe[] = L"brave.exe";
++#else
  const wchar_t kChromeExe[] = L"chrome.exe";
++#endif
  const wchar_t kChromeNewExe[] = L"new_chrome.exe";
  const wchar_t kChromeOldExe[] = L"old_chrome.exe";
-+#endif
  const wchar_t kCmdOnOsUpgrade[] = L"on-os-upgrade";
- const wchar_t kEULASentinelFile[] = L"EULA Accepted";
- const wchar_t kInstallBinaryDir[] = L"Application";

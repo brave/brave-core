@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 3f65aa27ca38e9721493b4e3fe7a40593ab75e0b..668091ef0b3e949f2e9766afb1b566549fc311a4 100644
+index 3f65aa27ca38e9721493b4e3fe7a40593ab75e0b..e5a8172dbafdd3982e4ed50de1770fbd9f688651 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -21,7 +21,7 @@ source_set("lib") {
@@ -35,16 +35,3 @@ index 3f65aa27ca38e9721493b4e3fe7a40593ab75e0b..668091ef0b3e949f2e9766afb1b56654
      ]
  
      if (enable_hidpi) {
-@@ -270,7 +273,11 @@ template("generate_mini_installer") {
- 
- generate_mini_installer("mini_installer") {
-   out_dir = root_out_dir
--  chrome_dll_file = "$root_out_dir/chrome.dll"
-+  if (brave_chromium_build) {
-+    chrome_dll_file = "$root_out_dir/brave.dll"
-+  } else {
-+    chrome_dll_file = "$root_out_dir/chrome.dll"
-+  }
-   chrome_dll_target = "//chrome:main_dll"
- }
- 

@@ -1,0 +1,15 @@
+diff --git a/chrome/app/chrome_command_ids.h b/chrome/app/chrome_command_ids.h
+index 19f5716f08337202e4a4bac34abcaeb6db8bc941..0c42de3cd68533e52a59cf3a213132e2d782073b 100644
+--- a/chrome/app/chrome_command_ids.h
++++ b/chrome/app/chrome_command_ids.h
+@@ -5,6 +5,10 @@
+ #ifndef CHROME_APP_CHROME_COMMAND_IDS_H_
+ #define CHROME_APP_CHROME_COMMAND_IDS_H_
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++#include "brave/app/brave_command_ids.h"
++#endif
++
+ // This file lists all the command IDs understood by e.g. the browser.
+ // It is used by Windows RC files, Mac NIB files, and other platforms too.
+ 

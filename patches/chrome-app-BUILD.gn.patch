@@ -1,21 +1,8 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index 149008e26e3fe8d8f5c7ca52928ed0b8f7bca159..1c28c8bf9516056a65c438fbe90eb88df0d987c6 100644
+index 149008e26e3fe8d8f5c7ca52928ed0b8f7bca159..7043f713584a93d8fa5422bd671bc2424fac3c55 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -38,7 +38,11 @@ source_set("chrome_dll_resources") {
-     "chrome_dll_resource.h",
-   ]
-   if (is_win) {
--    sources += [ "chrome_dll.rc" ]
-+    if (brave_chromium_build) {
-+      sources += [ "//brave/app/brave_dll.rc" ]
-+    } else {
-+      sources += [ "chrome_dll.rc" ]
-+    }
-     if (enable_basic_printing) {
-       # The resource compiler can only handle macro functions up to 31 chars
-       # which the buildflag system produces for this. Make a define so we can
-@@ -243,7 +247,7 @@ grit("google_chrome_strings") {
+@@ -243,7 +243,7 @@ grit("google_chrome_strings") {
  }
  
  grit("chromium_strings") {
