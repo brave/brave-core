@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index d08a945c6b11a918fa5faedcb1c87c269772e877..946a111464968bf780a4cf9ffad851c435b4e228 100644
+index d08a945c6b11a918fa5faedcb1c87c269772e877..7c1daac9f4ff71120ba2eab713e5aec1e24c4bf1 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -528,6 +528,13 @@ static_library("non_code_constants") {
@@ -20,13 +20,13 @@ index d08a945c6b11a918fa5faedcb1c87c269772e877..946a111464968bf780a4cf9ffad851c4
      "pref_names.h",
    ]
  
-+  if (brave_chromium_build) {
-+    if (is_mac) {
-+      sources += [
-+        "//brave/common/brave_paths_mac.mm",
-+        "//brave/common/brave_paths_mac.h",
-+      ]
-+    }
++  if (brave_chromium_build && is_official_build) {
++    sources += [
++      "//brave/common/brave_paths_mac.mm",
++      "//brave/common/brave_paths_mac.h",
++      "//brave/common/brave_channel_info_linux.cc",
++      "//brave/common/brave_channel_info_linux.h",
++    ]
 +  }
 +
    public_deps = [
