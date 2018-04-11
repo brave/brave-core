@@ -18,5 +18,5 @@ MOVE_TO, 15.98f, 7.33f,
 R_CUBIC_TO, 0, -1.1f, -0.9f, -2, -2, -2,
 R_CUBIC_TO, -1.1f, 0, -2, 0.9f, -2, 2,
 R_ARC_TO, 2, 2, 0, 0, 0, 4, 0,
-CLOSE,
+CLOSE, 
 END
