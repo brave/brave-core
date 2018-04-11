@@ -16,10 +16,14 @@ enum : bool {
 // Note: This list of indices must be kept in sync with the brand-specific
 // resource strings in chrome/installer/util/prebuild/create_string_rc.
 enum InstallConstantIndex {
+#if defined(OFFICIAL_BUILD)
   STABLE_INDEX,
   BETA_INDEX,
   DEV_INDEX,
   CANARY_INDEX,
+ #else
+  DEVELOPER_INDEX,
+ #endif
   NUM_INSTALL_MODES,
 };
 

@@ -15,6 +15,9 @@ MODE_SPECIFIC_STRINGS = {
       'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
       'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
     ],
+    'brave-development': [
+      'IDS_APP_SHORTCUTS_SUBDIR_NAME',
+    ],
   },
   'IDS_INBOUND_MDNS_RULE_DESCRIPTION': {
     'google_chrome': [
@@ -32,6 +35,9 @@ MODE_SPECIFIC_STRINGS = {
       'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV',
       'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
     ],
+    'brave-development': [
+      'IDS_INBOUND_MDNS_RULE_DESCRIPTION',
+    ],
   },
   'IDS_INBOUND_MDNS_RULE_NAME': {
     'google_chrome': [
@@ -48,6 +54,9 @@ MODE_SPECIFIC_STRINGS = {
       'IDS_INBOUND_MDNS_RULE_NAME_BETA',
       'IDS_INBOUND_MDNS_RULE_NAME_DEV',
       'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
+    ],
+    'brave-development': [
+      'IDS_INBOUND_MDNS_RULE_NAME',
     ],
   },
   # In contrast to the strings above, this one (IDS_PRODUCT_NAME) is used
@@ -69,6 +78,9 @@ MODE_SPECIFIC_STRINGS = {
       'IDS_SHORTCUT_NAME_BETA',
       'IDS_SHORTCUT_NAME_DEV',
       'IDS_SXS_SHORTCUT_NAME',
+    ],
+    'brave-development': [
+      'IDS_PRODUCT_NAME',
     ],
   },
 }

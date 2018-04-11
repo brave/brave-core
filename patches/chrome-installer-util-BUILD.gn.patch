@@ -1,0 +1,22 @@
+diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
+index 2cf4027737f73cff9fcd061ed46b6b92f3587e84..a219b96e2cfb12f641c87475740a776487bdffac 100644
+--- a/chrome/installer/util/BUILD.gn
++++ b/chrome/installer/util/BUILD.gn
+@@ -246,9 +246,16 @@ action("generate_strings") {
+     "$target_gen_dir/installer_util_strings.rc",
+   ]
+ 
++  brand = "$branding_path_component"
++
++  if (brave_chromium_build && !is_official_build) {
++    # TODO(shong): Remove this.
++    brand = brand + "-development"
++  }
++
+   args = [
+     "-b",
+-    "$branding_path_component",
++    brand,
+     "-i",
+     rebase_path(grdfile, root_build_dir) + ":resources",
+     "-n",
