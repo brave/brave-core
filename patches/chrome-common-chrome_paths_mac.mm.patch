@@ -1,12 +1,12 @@
 diff --git a/chrome/common/chrome_paths_mac.mm b/chrome/common/chrome_paths_mac.mm
-index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..5b29e5ad8b2e152d3b261b42adf4f9c20f675fe7 100644
+index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..e8e1e65109f1d9f7e11b4e080779c525028bd423 100644
 --- a/chrome/common/chrome_paths_mac.mm
 +++ b/chrome/common/chrome_paths_mac.mm
 @@ -18,6 +18,10 @@
  #include "chrome/common/chrome_constants.h"
  #include "chrome/common/chrome_paths_internal.h"
  
-+#if defined(BRAVE_CHROMIUM_BUILD)
++#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
 +#include "brave/common/brave_paths_mac.h"
 +#endif
 +
