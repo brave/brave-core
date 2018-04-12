@@ -75,6 +75,8 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
     const std::string& extension_id,
     const base::FilePath& install_dir);
 
+  void CloseDatabase();
+
   std::mutex httpse_get_urls_redirects_count_mutex_;
   std::vector<HTTPSE_REDIRECTS_COUNT_ST> httpse_urls_redirects_count_;
   HTTPSERecentlyUsedCache<std::string> recently_used_cache_;

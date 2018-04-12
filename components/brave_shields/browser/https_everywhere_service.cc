@@ -87,6 +87,7 @@ HTTPSEverywhereService::~HTTPSEverywhereService() {
 }
 
 void HTTPSEverywhereService::Cleanup() {
+  CloseDatabase();
 }
 
 bool HTTPSEverywhereService::Init() {
@@ -116,16 +117,14 @@ void HTTPSEverywhereService::OnComponentReady(const std::string& extension_id,
     return;
   }
 
+  CloseDatabase();
+
   leveldb::Options options;
   leveldb::Status status = leveldb::DB::Open(options,
       unzipped_level_db_path.AsUTF8Unsafe(),
       &level_db_);
   if (!status.ok() || !level_db_) {
-    if (level_db_) {
-      delete level_db_;
-      level_db_ = nullptr;
-    }
-
+    CloseDatabase();
     LOG(ERROR) << "Level db open error "
       << unzipped_level_db_path.value().c_str()
       << ", error: " << status.ToString();
@@ -343,6 +342,14 @@ std::string HTTPSEverywhereService::CorrecttoRuleToRE2Engine(
   }
 
   return correctedto;
+}
+
+void HTTPSEverywhereService::CloseDatabase()
+{
+  if (level_db_) {
+    delete level_db_;
+    level_db_ = nullptr;
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

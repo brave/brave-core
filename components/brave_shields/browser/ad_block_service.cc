@@ -95,6 +95,7 @@ void AdBlockService::OnComponentReady(const std::string& extension_id,
     LOG(ERROR) << "Could not obtain ad block data";
     return;
   }
+  ad_block_client_.reset(new AdBlockClient());
   if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
     ad_block_client_.reset();
     LOG(ERROR) << "Failed to deserialize ad block data";

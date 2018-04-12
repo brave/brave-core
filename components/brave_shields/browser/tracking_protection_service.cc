@@ -113,6 +113,7 @@ void TrackingProtectionService::OnComponentReady(const std::string& extension_id
     LOG(ERROR) << "Could not obtain tracking protection data";
     return;
   }
+  tracking_protection_client_.reset(new CTPParser());
   if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
     tracking_protection_client_.reset();
     LOG(ERROR) << "Failed to deserialize tracking protection data";
