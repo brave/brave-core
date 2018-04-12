@@ -21,6 +21,7 @@ group("browser_dependencies") {
     "//brave/extensions",
     "common",
     ":brave_framework_resources",
+    ":brave_framework_sparkle",
     "chromium_src:browser",
   ]
 }
@@ -87,6 +88,12 @@ if (is_mac) {
     outputs = [
       "{{bundle_resources_dir}}/{{source_file_part}}",
     ]
+  }
+
+  bundle_data("brave_framework_sparkle") {
+    public_deps = [ "vendor/sparkle" ]
+    sources = [ "vendor/sparkle/Sparkle.framework" ]
+    outputs = [ "{{bundle_contents_dir}}/{{source_file_part}}" ]
   }
 } else {
   group("brave_framework_resources") {

@@ -1,0 +1,64 @@
+diff --git a/chrome/browser/app_controller_mac.mm b/chrome/browser/app_controller_mac.mm
+index 46280fab7ff21a25be1f89b5b17ec7f9d4762700..0968a7e95ec99ae160fd1744a68a411c1a309c36 100644
+--- a/chrome/browser/app_controller_mac.mm
++++ b/chrome/browser/app_controller_mac.mm
+@@ -110,6 +110,10 @@
+ #include "ui/base/l10n/l10n_util.h"
+ #include "ui/base/l10n/l10n_util_mac.h"
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++#import <Sparkle/Sparkle.h>
++#endif
++
+ using apps::AppShimHandler;
+ using apps::ExtensionAppShimHandler;
+ using base::UserMetricsAction;
+@@ -434,6 +438,10 @@ static base::mac::ScopedObjCClassSwizzler* g_swizzle_imk_input_session;
+     if (javascriptAppleEventItem)
+       [devMenu removeItem:javascriptAppleEventItem];
+   }
++
++#if defined(BRAVE_CHROMIUM_BUILD)
++  [self initializeBraveUpdater];
++#endif
+ }
+ 
+ - (void)applicationWillHide:(NSNotification*)notification {
+@@ -809,6 +817,10 @@ static base::mac::ScopedObjCClassSwizzler* g_swizzle_imk_input_session;
+   handoff_active_url_observer_bridge_.reset(
+       new HandoffActiveURLObserverBridge(self));
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++  [self startBraveUpdater];
++#endif
++
+ #if BUILDFLAG(USE_ALLOCATOR_SHIM)
+   // Disable fatal OOM to hack around an OS bug https://crbug.com/654695.
+   if (base::mac::IsOS10_12()) {
+@@ -1696,6 +1708,26 @@ static base::mac::ScopedObjCClassSwizzler* g_swizzle_imk_input_session;
+   [self updateHandoffManager:webContents];
+ }
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++
++#pragma mark - BraveUpdater
++
++#define kBraveUpdateCheckInterval 60
++
++- (void)initializeBraveUpdater {
++  SUUpdater* updater = [SUUpdater sharedUpdater];
++
++  [updater setAutomaticallyChecksForUpdates:YES];
++  [updater setAutomaticallyDownloadsUpdates:YES];
++  [updater setUpdateCheckInterval:kBraveUpdateCheckInterval];
++}
++
++- (void)startBraveUpdater {
++  [[SUUpdater sharedUpdater] checkForUpdatesInBackground];
++}
++
++#endif
++
+ @end  // @implementation AppController
+ 
+ //---------------------------------------------------------------------------

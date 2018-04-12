@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 957ba49abb8d822c47c905a24f85cbddafeb9155..b132ba52c3b7b6e44986ccd4ef7e01f7074cbc37 100644
+index c61e8b60b4c42b4c14b974cf93e61cdc666f378e..7766e82df9c78c78d4d65fb13c6edf8cca11da26 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -1831,6 +1831,7 @@ jumbo_split_static_library("browser") {
@@ -10,3 +10,15 @@ index 957ba49abb8d822c47c905a24f85cbddafeb9155..b132ba52c3b7b6e44986ccd4ef7e01f7
    ]
  
    if (is_android) {
+@@ -2964,6 +2965,11 @@ split_static_library("browser") {
+       "//third_party/google_toolbox_for_mac",
+       "//third_party/mozilla",
+     ]
++
++    if (brave_chromium_build) {
++      deps += [ "//brave/vendor/sparkle" ]
++    }
++
+     libs += [
+       "Accelerate.framework",
+       "AudioUnit.framework",
