@@ -18,6 +18,7 @@ source_set("utility") {
   deps = [
     "//chrome/common",
     "//chrome/utility",
+    "//components/password_manager/core/browser",
   ]
 
   if (use_glib) {
