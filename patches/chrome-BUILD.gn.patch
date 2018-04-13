@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 960921acd7ebb0ba99092745e8d30bca76821f2a..90a5bb5a39178eb0684c94206f3bcb5b29c0036f 100644
+index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38dcdf60bdf 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -180,6 +180,15 @@ if (!is_android && !is_mac) {
@@ -128,15 +128,19 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..90a5bb5a39178eb0684c94206f3bcb5b
      ]
  
      deps = [
-@@ -1238,6 +1281,7 @@ if (is_win) {
-       "//build/config:exe_and_shlib_deps",
-       "//chrome/app/nibs:chrome_xibs",
-       "//chrome/browser/resources/media/mei_preload:component_bundle",
-+      "//brave:brave_framework_sparkle",
+@@ -1253,6 +1296,11 @@ if (is_win) {
+       "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
      ]
  
-     if (is_chrome_branded) {
-@@ -1400,6 +1444,7 @@ if (is_win) {
++    if (brave_chromium_build) {
++      deps += [ "//brave/vendor/sparkle:sparkle_framework" ]
++      ldflags += [ "-Wl,-rpath,@loader_path/Frameworks" ]
++    }
++
+     if (is_component_build) {
+       ldflags += [
+         "-rpath",
+@@ -1400,6 +1448,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -144,7 +148,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..90a5bb5a39178eb0684c94206f3bcb5b
      "//chrome/browser",
      "//chrome/common",
      "//components/sync",
-@@ -1437,6 +1482,7 @@ group("browser_dependencies") {
+@@ -1437,6 +1486,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -152,7 +156,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..90a5bb5a39178eb0684c94206f3bcb5b
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1458,7 +1504,7 @@ group("child_dependencies") {
+@@ -1458,7 +1508,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -161,7 +165,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..90a5bb5a39178eb0684c94206f3bcb5b
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1741,6 +1787,8 @@ if (is_android) {
+@@ -1741,6 +1791,8 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -170,7 +174,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..90a5bb5a39178eb0684c94206f3bcb5b
      ]
  
      include_dirs = [ android_ndk_include_dir ]
-@@ -1796,7 +1844,7 @@ if (is_linux) {
+@@ -1796,7 +1848,7 @@ if (is_linux) {
        dump_syms_binary =
            get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
  

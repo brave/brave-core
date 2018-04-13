@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index c61e8b60b4c42b4c14b974cf93e61cdc666f378e..7766e82df9c78c78d4d65fb13c6edf8cca11da26 100644
+index c61e8b60b4c42b4c14b974cf93e61cdc666f378e..de402de2ff7ddf4e13915f0eb46c9f2578c99d23 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -1835,6 +1835,7 @@ split_static_library("browser") {
@@ -10,15 +10,14 @@ index c61e8b60b4c42b4c14b974cf93e61cdc666f378e..7766e82df9c78c78d4d65fb13c6edf8c
    ]
  
    if (is_android) {
-@@ -2964,6 +2965,11 @@ split_static_library("browser") {
-       "//third_party/google_toolbox_for_mac",
-       "//third_party/mozilla",
+@@ -2975,6 +2976,10 @@ split_static_library("browser") {
+       "SecurityInterface.framework",
      ]
-+
+ 
 +    if (brave_chromium_build) {
-+      deps += [ "//brave/vendor/sparkle" ]
++      public_configs = [ "//brave/vendor/sparkle:sparkle_config" ]
 +    }
 +
-     libs += [
-       "Accelerate.framework",
-       "AudioUnit.framework",
+     if (mac_views_browser) {
+       sources += [ "global_keyboard_shortcuts_views_mac.mm" ]
+     } else {
