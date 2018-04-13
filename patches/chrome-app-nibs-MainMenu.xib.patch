@@ -1,0 +1,13 @@
+diff --git a/chrome/app/nibs/MainMenu.xib b/chrome/app/nibs/MainMenu.xib
+index dbe2f9e9187706991898271355a14323472a3a06..392ab914e3fd7edeee7563910b3a6ed5cb8645a2 100644
+--- a/chrome/app/nibs/MainMenu.xib
++++ b/chrome/app/nibs/MainMenu.xib
+@@ -574,7 +574,7 @@ CA
+                 <outlet property="owner_" destination="-2" id="642"/>
+             </connections>
+         </customObject>
+-        <customObject id="483" customClass="AppController">
++        <customObject id="483" customClass="BraveAppController">
+             <connections>
+                 <outlet property="closeTabMenuItem_" destination="450" id="623"/>
+                 <outlet property="closeWindowMenuItem_" destination="73" id="622"/>

@@ -25,6 +25,8 @@ source_set("browser_process") {
     "importer/brave_profile_writer.h",
     "importer/chrome_profile_lock.cc",
     "importer/chrome_profile_lock.h",
+    "brave_app_controller_mac.mm",
+    "brave_app_controller_mac.h",
   ]
 
   deps = [
@@ -32,6 +34,10 @@ source_set("browser_process") {
     "//content/public/browser",
     "//brave/chromium_src:browser",
   ]
+
+  if (is_mac) {
+    deps += [ "//brave/vendor/sparkle" ]
+  }
 }
 
 source_set("browser") {
@@ -45,6 +51,10 @@ source_set("browser") {
     "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser",
   ]
+
+  if (is_mac) {
+    public_deps += [ "//brave/vendor/sparkle" ]
+  }
 
   deps = [
     "//brave/components/brave_shields/browser:brave_shields",
