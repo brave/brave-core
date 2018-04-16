@@ -6,7 +6,9 @@
 
 #include <string>
 
+#include "base/command_line.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/common/brave_switches.h"
 #import <Sparkle/Sparkle.h>
 
 @implementation BraveAppController
@@ -14,12 +16,17 @@
 - (void)applicationDidFinishLaunching:(NSNotification*)notify {
   [super applicationDidFinishLaunching:notify];
 
-  [self startBraveUpdater];
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kEnableBraveUpdateTest))
+    [self startBraveUpdater];
 }
+
 - (void)applicationWillFinishLaunching:(NSNotification*)notification {
   [super applicationWillFinishLaunching:notification];
 
-  [self initializeBraveUpdater];
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kEnableBraveUpdateTest))
+    [self initializeBraveUpdater];
 }
 
 - (void)initializeBraveUpdater {

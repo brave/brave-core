@@ -11,4 +11,10 @@ namespace switches {
 // in debug mode with auto-reloading.
 const char kDisableBraveExtension[] = "disable-brave-extension";
 
+// Trigger update check.
+// Update check only should be done in official build.
+// For update feature development, update check is enabled by this swtich.
+// TODO(shong): Remove when update development is done.
+const char kEnableBraveUpdateTest[] = "enable-brave-update-test";
+
 }  // namespace switches
