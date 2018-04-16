@@ -1,8 +1,21 @@
 diff --git a/chrome/app/nibs/MainMenu.xib b/chrome/app/nibs/MainMenu.xib
-index dbe2f9e9187706991898271355a14323472a3a06..392ab914e3fd7edeee7563910b3a6ed5cb8645a2 100644
+index dbe2f9e9187706991898271355a14323472a3a06..3950da3f60b4f8f82e381e7adf9eacc380990a70 100644
 --- a/chrome/app/nibs/MainMenu.xib
 +++ b/chrome/app/nibs/MainMenu.xib
-@@ -574,7 +574,7 @@ CA
+@@ -26,6 +26,12 @@
+                                     <action selector="orderFrontStandardAboutPanel:" target="483" id="644"/>
+                                 </connections>
+                             </menuItem>
++                            <menuItem title="^IDS_UPDATE_NOW" id="903">
++                                <connections>
++                                    <action selector="updateBrave:" target="483" id="904"/>
++                                </connections>
++                            </menuItem>
++
+                             <menuItem isSeparatorItem="YES" id="236"/>
+                             <menuItem title="^IDS_PREFERENCES" keyEquivalent="," id="129">
+                                 <connections>
+@@ -574,7 +580,7 @@ CA
                  <outlet property="owner_" destination="-2" id="642"/>
              </connections>
          </customObject>
