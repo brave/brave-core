@@ -10,6 +10,8 @@ source_set("common") {
     "importer/chrome_importer_utils.h",
     "network_constants.cc",
     "network_constants.h",
+    "origin_helper.cc",
+    "origin_helper.h",
     "pref_names.cc",
     "pref_names.h",
     "resource_bundle_helper.cc",

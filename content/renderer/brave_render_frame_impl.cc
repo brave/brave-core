@@ -5,6 +5,8 @@
 #include "brave/content/renderer/brave_render_frame_impl.h"
 
 #include "brave/renderer/brave_content_settings_observer.h"
+#include "brave/common/origin_helper.h"
+#include "brave/common/network_constants.h"
 #include "third_party/WebKit/public/platform/WebSecurityOrigin.h"
 #include "third_party/WebKit/public/platform/WebString.h"
 
@@ -18,7 +20,13 @@ namespace content {
     RenderFrameImpl::WillSendRequest(request);
     BraveContentSettingsObserver* observer =
         (BraveContentSettingsObserver*)ContentSettingsObserver::Get(this);
-    if (!observer->AllowReferrer()) {
+    std::string referrer =
+        request.HttpHeaderField(blink::WebString::FromUTF8(
+            kRefererHeader)).Utf8();
+    bool same = false;
+    if (referrer.length() > 0 &&
+        brave::IsSameTLDPlus1(GURL(request.Url()), GURL(referrer), &same) &&
+        !same && !observer->AllowReferrer()) {
       auto origin = blink::WebSecurityOrigin::Create(request.Url()).ToString();
       request.SetHTTPReferrer(origin, blink::kWebReferrerPolicyDefault);
     }

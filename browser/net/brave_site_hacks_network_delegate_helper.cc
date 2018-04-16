@@ -10,12 +10,12 @@
 
 #include "base/base64url.h"
 #include "base/strings/string_util.h"
+#include "brave/common/origin_helper.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "components/subresource_filter/core/common/first_party_origin.h"
 #include "extensions/common/url_pattern.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 
 namespace brave {
@@ -69,28 +69,6 @@ bool IsWhitelistedReferer(const GURL& firstPartyOrigin,
 }
 
 
-// Warning! Returns true if the result could be determined
-// The actual result is in `result`
-bool IsSameTLDPlus1(const GURL& url1, const GURL& url2,
-                    bool *result) {
-  // Fetch the eTLD+1 of both origins.
-  const std::string origin1_etldp1 =
-      net::registry_controlled_domains::GetDomainAndRegistry(
-          url1,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  const std::string origin2_etldp1 =
-      net::registry_controlled_domains::GetDomainAndRegistry(
-          url2,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  if (origin1_etldp1.empty()) {
-    return false;
-  }
-  if (origin2_etldp1.empty()) {
-    return false;
-  }
-  *result = origin1_etldp1 == origin2_etldp1;
-  return true;
-}
 
 bool IsWhitelistedCookieExeption(const GURL& firstPartyOrigin,
     const GURL& subresourceUrl) {
@@ -250,7 +228,7 @@ bool ApplyPotentialCookieBlock(net::URLRequest* request,
   GURL first_party_for_cookies_origin(request->site_for_cookies().GetOrigin());
   bool is_first_party_tldp1;
   bool got_tlds =
-    IsSameTLDPlus1(request->site_for_cookies(), request->url(),
+    brave::IsSameTLDPlus1(request->site_for_cookies(), request->url(),
         &is_first_party_tldp1);
 
   bool block_cookies =
