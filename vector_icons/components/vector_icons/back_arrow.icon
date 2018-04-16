@@ -1,0 +1,15 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+CANVAS_DIMENSIONS, 32,
+STROKE, 1.2,
+MOVE_TO, 4.06f, 17.26f,
+R_LINE_TO, 22.91f, 13.86f,
+R_CUBIC_TO, 1.03f, 0.63f, 2.39f, -0.08f, 2.39f, -1.25f,
+V_LINE_TO, 2.15f,
+R_CUBIC_TO, 0, -1.17f, -1.35f, -1.87f, -2.39f, -1.25f,
+LINE_TO, 4.06f, 14.76f,
+R_ARC_TO, 1.44f, 1.44f, 0, 0, 0, 0, 2.5f,
+CLOSE,
+END

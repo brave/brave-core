@@ -1,0 +1,52 @@
+diff --git a/components/vector_icons/aggregate_vector_icons.py b/components/vector_icons/aggregate_vector_icons.py
+index 87aa1bea0f6a5159f241479f6bb52547e508fcb3..0a9d96d1c580bdbebc25b444b9eb54a9f61bedda 100644
+--- a/components/vector_icons/aggregate_vector_icons.py
++++ b/components/vector_icons/aggregate_vector_icons.py
+@@ -21,7 +21,7 @@ def CamelCase(name, suffix):
+   return 'k' + ''.join(words) + suffix
+ 
+ 
+-def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
++def AggregateVectorIcons(working_directory, file_list, output_cc, output_h, alt_working_directory):
+   """Compiles all .icon files in a directory into two C++ files.
+ 
+   Args:
+@@ -30,6 +30,8 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+       file_list: A file containing the list of vector icon files to process.
+       output_cc: The path that should be used to write the .cc file.
+       output_h: The path that should be used to write the .h file.
++      alt_working_directory: The alternative path to the directory that holds
++          the .icon files
+   """
+ 
+   # For each file in |file_list|, place it in |path_map| if its extension is
+@@ -52,6 +54,11 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+       Error("Only filenames " + icon_name + ".icon or " + icon_name +
+             ".1x.icon are allowed.")
+ 
++    # Check for alternative path
++    alt_icon_path = os.path.join(alt_working_directory, os.path.basename(icon_path))
++    if (os.path.exists(alt_icon_path)):
++      icon_path = alt_icon_path
++
+     if not scale_factor and icon_name not in path_map:
+       path_map[icon_name] = icon_path
+     elif scale_factor and icon_name not in path_map_1x:
+@@ -144,13 +151,16 @@ def main():
+                     help="The path to output the CC file to.")
+   parser.add_option("--output_h",
+                     help="The path to output the header file to.")
++  parser.add_option("--alt_working_directory",
++                    help="The directory to look for alternative icon files.")
+ 
+   (options, args) = parser.parse_args()
+ 
+   AggregateVectorIcons(options.working_directory,
+                        options.file_list,
+                        options.output_cc,
+-                       options.output_h)
++                       options.output_h,
++                       options.alt_working_directory)
+ 
+ 
+ if __name__ == "__main__":
