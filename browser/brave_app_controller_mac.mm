@@ -11,31 +11,42 @@
 #include "brave/common/brave_switches.h"
 #import <Sparkle/Sparkle.h>
 
-@implementation BraveAppController
+namespace {
 
-- (void)applicationDidFinishLaunching:(NSNotification*)notify {
-  [super applicationDidFinishLaunching:notify];
-
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kEnableBraveUpdateTest))
-    [self startBraveUpdater];
+BOOL UpdateEnabled() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(
+      switches::kEnableBraveUpdateTest);
 }
+
+}
+
+@implementation BraveAppController
 
 - (void)applicationWillFinishLaunching:(NSNotification*)notification {
   [super applicationWillFinishLaunching:notification];
 
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kEnableBraveUpdateTest))
-    [self initializeBraveUpdater];
+  if (!UpdateEnabled())
+    return;
+
+  [self initializeBraveUpdater];
+}
+
+- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item {
+  if ([super validateUserInterfaceItem:item])
+    return YES;
+
+  return  [item action] == @selector(updateBrave:) ? UpdateEnabled() : NO;
+}
+
+- (IBAction)updateBrave:(id)sender {
+  DCHECK(UpdateEnabled());
+
+  [[SUUpdater sharedUpdater] checkForUpdates:sender];
 }
 
 - (void)initializeBraveUpdater {
-  constexpr int kBraveUpdateCheckInterval = 60;
-
   SUUpdater* updater = [SUUpdater sharedUpdater];
-  [updater setAutomaticallyChecksForUpdates:YES];
-  [updater setAutomaticallyDownloadsUpdates:YES];
-  [updater setUpdateCheckInterval:kBraveUpdateCheckInterval];
+
   [updater setDelegate:(id<SUUpdaterDelegate>)self];
 
   // Reset previous feed url set by setFeedURL().
@@ -48,10 +59,6 @@
   // When nil is set, SUFeedURL value in Info.plist is used.
   // TODO(shong): Remove this.
   [updater setFeedURL:nil];
-}
-
-- (void)startBraveUpdater {
-  [[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 
 #pragma mark - SUUpdaterDelegate
