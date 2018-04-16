@@ -31,14 +31,23 @@
 
 - (void)initializeBraveUpdater {
   constexpr int kBraveUpdateCheckInterval = 60;
-  NSURL* url = [NSURL URLWithString:@"https://example.com"];
 
   SUUpdater* updater = [SUUpdater sharedUpdater];
   [updater setAutomaticallyChecksForUpdates:YES];
   [updater setAutomaticallyDownloadsUpdates:YES];
   [updater setUpdateCheckInterval:kBraveUpdateCheckInterval];
   [updater setDelegate:(id<SUUpdaterDelegate>)self];
-  [updater setFeedURL:url];
+
+  // Reset previous feed url set by setFeedURL().
+  // In the SUUpdater document, that value persists in the host bundle's user
+  // default.
+  // Tried to remove that value by removing Brave.app bundle in out/Release and
+  // ~/Library/Preferences/org.brave.Brave.plist.
+  // After these removing, previous value(https://example.org) is still remained
+  // and used when there is SUFeedURL is exsited in Info.plist.
+  // When nil is set, SUFeedURL value is used.
+  // TODO(shong): Remove this.
+  [updater setFeedURL:nil];
 }
 
 - (void)startBraveUpdater {
@@ -48,4 +57,4 @@
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
 }
 
-@end  //  BraveAppController
+@end  // @implementation BraveAppController

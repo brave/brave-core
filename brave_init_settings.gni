@@ -7,4 +7,7 @@ declare_args() {
   # "canary" for canary channel release.
   # "" for stable channel release.
   brave_channel = ""
+
+  # Update feed url on MacOS
+  brave_feed_url = "http://localhost:9090"
 }

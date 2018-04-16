@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38dcdf60bdf 100644
+index 960921acd7ebb0ba99092745e8d30bca76821f2a..5108605a726ad751e64805bf43d88fe281cefdbf 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -180,6 +180,15 @@ if (!is_android && !is_mac) {
@@ -65,7 +65,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
  
    group("chrome") {
      deps = [
-@@ -593,6 +610,12 @@ if (is_win) {
+@@ -593,6 +610,13 @@ if (is_win) {
        "--scm=1",
        "--bundle_id=$chrome_mac_bundle_id",
      ]
@@ -73,12 +73,13 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
 +    if (brave_chromium_build) {
 +      args += [
 +        "--brave_channel=" + brave_channel,
++        "--brave_feed_url=" + brave_feed_url,
 +      ]
 +    }
    }
  
    mac_app_bundle("chrome_app") {
-@@ -661,7 +684,7 @@ if (is_win) {
+@@ -661,7 +685,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -87,7 +88,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -710,6 +733,23 @@ if (is_win) {
+@@ -710,6 +734,23 @@ if (is_win) {
        "app/theme/$branding_path_component/mac/document.icns",
        "browser/ui/cocoa/applescript/scripting.sdef",
      ]
@@ -111,7 +112,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
      outputs = [
        "{{bundle_resources_dir}}/{{source_file_part}}",
      ]
-@@ -1162,6 +1202,8 @@ if (is_win) {
+@@ -1162,6 +1203,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -120,7 +121,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
        "app/chrome_main_mac.h",
        "app/chrome_main_mac.mm",
      ]
-@@ -1226,6 +1268,7 @@ if (is_win) {
+@@ -1226,6 +1269,7 @@ if (is_win) {
  
      public_deps = [
        ":chrome_dll",
@@ -128,7 +129,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
      ]
  
      deps = [
-@@ -1253,6 +1296,11 @@ if (is_win) {
+@@ -1253,6 +1297,11 @@ if (is_win) {
        "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
      ]
  
@@ -140,7 +141,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
      if (is_component_build) {
        ldflags += [
          "-rpath",
-@@ -1400,6 +1448,7 @@ if (is_win) {
+@@ -1400,6 +1449,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -148,7 +149,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
      "//chrome/browser",
      "//chrome/common",
      "//components/sync",
-@@ -1437,6 +1486,7 @@ group("browser_dependencies") {
+@@ -1437,6 +1487,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -156,7 +157,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1458,7 +1508,7 @@ group("child_dependencies") {
+@@ -1458,7 +1509,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -165,7 +166,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1741,6 +1791,8 @@ if (is_android) {
+@@ -1741,6 +1792,8 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -174,7 +175,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4a4c530f01e740d58ced6e9496d9f38d
      ]
  
      include_dirs = [ android_ndk_include_dir ]
-@@ -1796,7 +1848,7 @@ if (is_linux) {
+@@ -1796,7 +1849,7 @@ if (is_linux) {
        dump_syms_binary =
            get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
  
