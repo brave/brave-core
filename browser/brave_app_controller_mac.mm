@@ -45,7 +45,7 @@
   // ~/Library/Preferences/org.brave.Brave.plist.
   // After these removing, previous value(https://example.org) is still remained
   // and used when there is SUFeedURL is exsited in Info.plist.
-  // When nil is set, SUFeedURL value is used.
+  // When nil is set, SUFeedURL value in Info.plist is used.
   // TODO(shong): Remove this.
   [updater setFeedURL:nil];
 }
@@ -54,7 +54,69 @@
   [[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 
+#pragma mark - SUUpdaterDelegate
+
+- (void)updater:(SUUpdater *)updater
+    didFinishLoadingAppcast:(SUAppcast *)appcast {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)item {
+  LOG(ERROR) << __FUNCTION__;
+}
+
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updater:(SUUpdater *)updater
+    willDownloadUpdate:(SUAppcastItem *)item
+           withRequest:(NSMutableURLRequest *)request {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updater:(SUUpdater *)updater
+    failedToDownloadUpdate:(SUAppcastItem *)item error:(NSError *)error {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)userDidCancelDownload:(SUUpdater *)updater {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)item {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updaterDidRelaunchApplication:(SUUpdater *)updater {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updaterWillShowModalAlert:(SUUpdater *)updater {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updaterDidShowModalAlert:(SUUpdater *)updater {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updater:(SUUpdater *)updater
+    willInstallUpdateOnQuit:(SUAppcastItem *)item
+    immediateInstallationInvocation:(NSInvocation *)invocation {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updater:(SUUpdater *)updater
+    didCancelInstallUpdateOnQuit:(SUAppcastItem *)item {
+  LOG(ERROR) << __FUNCTION__;
+}
+
+- (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error {
+  LOG(ERROR) << [[error description] UTF8String];
 }
 
 @end  // @implementation BraveAppController
