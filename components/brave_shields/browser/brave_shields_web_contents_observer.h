@@ -36,6 +36,8 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
       int render_process_id,
       int render_frame_id, int frame_tree_node_id);
   static GURL GetTabURLFromRenderFrameInfo(int render_process_id, int render_frame_id);
+  void AllowScriptsOnce(const std::vector<std::string>& origins,
+                        content::WebContents* web_contents);
 
  protected:
     // A set of identifiers that uniquely identifies a RenderFrame.
@@ -75,6 +77,11 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   // This lock protects |frame_data_map_| from being concurrently written on the
   // UI thread and read on the IO thread.
   static base::Lock frame_data_map_lock_;
+
+  private:
+    friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
+    std::vector<std::string> allowed_script_origins_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveShieldsWebContentsObserver);
 };
 

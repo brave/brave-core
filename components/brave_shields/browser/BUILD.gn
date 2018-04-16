@@ -25,6 +25,7 @@ source_set("brave_shields") {
     "//brave/vendor/tracking-protection/brave:tracking-protection",
   ]
   public_deps = [
+    "//brave/content:common",
     "//chrome/common",
     "//third_party/leveldatabase",
   ]

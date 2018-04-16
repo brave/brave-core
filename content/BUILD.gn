@@ -1,0 +1,10 @@
+source_set("common") {
+  sources = [
+    "common/content_message_generator.cc",
+    "common/content_message_generator.h",
+  ]
+
+  deps = [
+    "//ipc"
+  ]
+}

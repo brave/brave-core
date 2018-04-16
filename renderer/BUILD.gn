@@ -16,5 +16,6 @@ source_set("renderer") {
     "//skia",
     "//third_party/WebKit/public:blink",
     "//brave/chromium_src:renderer",
+    "//brave/content:common",
   ]
 }

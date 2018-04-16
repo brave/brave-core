@@ -6,6 +6,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
+#include "brave/content/common/frame_messages.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "content/public/renderer/render_frame.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
@@ -25,9 +26,53 @@ BraveContentSettingsObserver::BraveContentSettingsObserver(
 BraveContentSettingsObserver::~BraveContentSettingsObserver() {
 }
 
+bool BraveContentSettingsObserver::OnMessageReceived(const IPC::Message& message) {
+  bool handled = true;
+  IPC_BEGIN_MESSAGE_MAP(BraveContentSettingsObserver, message)
+    IPC_MESSAGE_HANDLER(BraveFrameMsg_AllowScriptsOnce, OnAllowScriptsOnce)
+    IPC_MESSAGE_UNHANDLED(handled = false)
+  IPC_END_MESSAGE_MAP()
+
+  if (handled) return true;
+  return ContentSettingsObserver::OnMessageReceived(message);
+}
+
+void BraveContentSettingsObserver::OnAllowScriptsOnce(
+    const std::vector<std::string>& origins) {
+  preloaded_temporarily_allowed_scripts_ = std::move(origins);
+}
+
+void BraveContentSettingsObserver::DidCommitProvisionalLoad(
+    bool is_new_navigation, bool is_same_document_navigation) {
+  if (!is_same_document_navigation) {
+    temporarily_allowed_scripts_ =
+      std::move(preloaded_temporarily_allowed_scripts_);
+  }
+
+  ContentSettingsObserver::DidCommitProvisionalLoad(
+      is_new_navigation, is_same_document_navigation);
+}
+
+bool BraveContentSettingsObserver::IsScriptTemporilyAllowed(
+    const GURL& script_url) {
+  // check if scripts from this origin are temporily allowed or not
+  return base::ContainsKey(temporarily_allowed_scripts_,
+      script_url.GetOrigin().spec());
+}
+
 void BraveContentSettingsObserver::BraveSpecificDidBlockJavaScript(
     const base::string16& details) {
   Send(new BraveViewHostMsg_JavaScriptBlocked(routing_id(), details));
+}
+
+bool BraveContentSettingsObserver::AllowScript(
+    bool enabled_per_settings) {
+  bool allow = ContentSettingsObserver::AllowScript(enabled_per_settings);
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  allow = allow || IsScriptTemporilyAllowed(
+      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+
+  return allow;
 }
 
 bool BraveContentSettingsObserver::AllowScriptFromSource(
@@ -35,6 +80,8 @@ bool BraveContentSettingsObserver::AllowScriptFromSource(
     const blink::WebURL& script_url) {
   bool allow = ContentSettingsObserver::AllowScriptFromSource(
       enabled_per_settings, script_url);
+  allow = allow || IsScriptTemporilyAllowed(GURL(script_url));
+
   if (!allow) {
     const GURL secondary_url(script_url);
     BraveSpecificDidBlockJavaScript(base::UTF8ToUTF16(secondary_url.spec()));

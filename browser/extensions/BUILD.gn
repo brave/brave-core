@@ -15,6 +15,7 @@ source_set("extensions") {
   ]
   deps = [
     "//brave/browser/resources:brave_extension_grit",
-    "//chrome/browser"
+    "//chrome/browser",
+    "//content/public/browser",
   ]
 }
