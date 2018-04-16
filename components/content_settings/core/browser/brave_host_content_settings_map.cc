@@ -14,6 +14,7 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
     : HostContentSettingsMap(prefs, is_incognito_profile, is_guest_profile,
         store_last_modified) {
   InitializeFingerprintingContentSetting();
+  InitializeReferrerContentSetting();
 }
 
 BraveHostContentSettingsMap::~BraveHostContentSettingsMap() {
@@ -26,4 +27,13 @@ void BraveHostContentSettingsMap::InitializeFingerprintingContentSetting() {
       CONTENT_SETTINGS_TYPE_PLUGINS,
       "fingerprinting",
       CONTENT_SETTING_ALLOW);
+}
+
+void BraveHostContentSettingsMap::InitializeReferrerContentSetting() {
+  SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(),
+      ContentSettingsPattern::Wildcard(),
+      CONTENT_SETTINGS_TYPE_PLUGINS,
+      "referer",
+      CONTENT_SETTING_BLOCK);
 }
