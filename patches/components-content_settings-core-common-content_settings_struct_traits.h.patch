@@ -1,14 +1,19 @@
 diff --git a/components/content_settings/core/common/content_settings_struct_traits.h b/components/content_settings/core/common/content_settings_struct_traits.h
-index f36bdde91be3f6d44f53fd042b707ec2b83b908e..ec7725fcdd2207323d7fc4a8c05b27d3bb961b16 100644
+index f36bdde91be3f6d44f53fd042b707ec2b83b908e..cca498abeb250695f0820be75aea4c0623339017 100644
 --- a/components/content_settings/core/common/content_settings_struct_traits.h
 +++ b/components/content_settings/core/common/content_settings_struct_traits.h
-@@ -141,6 +141,11 @@ struct StructTraits<
+@@ -141,6 +141,16 @@ struct StructTraits<
      return r.client_hints_rules;
    }
  
 +  static const std::vector<ContentSettingPatternSource>& fingerprinting_rules(
 +      const RendererContentSettingRules& r) {
 +    return r.fingerprinting_rules;
++  }
++
++  static const std::vector<ContentSettingPatternSource>& referrer_rules(
++      const RendererContentSettingRules& r) {
++    return r.referrer_rules;
 +  }
 +
    static bool Read(

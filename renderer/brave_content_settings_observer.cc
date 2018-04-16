@@ -107,3 +107,15 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
 
   return allow;
 }
+
+bool BraveContentSettingsObserver::AllowReferrer() {
+  if (!content_setting_rules_) {
+    return false;
+  }
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  const GURL secondary_url(
+      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+  ContentSetting setting = GetContentSettingFromRules(
+    content_setting_rules_->referrer_rules, frame, secondary_url);
+  return setting == CONTENT_SETTING_ALLOW;
+}
