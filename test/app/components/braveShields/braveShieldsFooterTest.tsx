@@ -8,12 +8,12 @@ import * as React from 'react'
 import * as assert from 'assert'
 import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsFooter from '../../../../app/components/braveShields/braveShieldsFooter'
-import { GridProps } from 'brave-ui/gridSystem'
+import { Props as UIProps } from 'brave-ui'
 
 function setup () {
   const props = {}
   const renderer = renderIntoDocument(<BraveShieldsFooter {...props} />) as React.Component<BraveShieldsFooter>
-  const result = renderer.render() as React.ReactElement<GridProps>
+  const result = renderer.render() as React.ReactElement<UIProps.Grid>
   return { props, result, renderer }
 }
 

@@ -10,7 +10,7 @@ import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsControls, { Props } from '../../../../app/components/braveShields/braveShieldsControls'
 import { BlockOptions, BlockFPOptions } from '../../../../app/types/other/blockTypes'
 import * as actionTypes from '../../../../app/constants/shieldsPanelTypes'
-import { GridProps } from 'brave-ui/gridSystem'
+import { Props as UIProps } from 'brave-ui'
 
 function setup () {
   const props: Props = {
@@ -52,7 +52,7 @@ function setup () {
   }
 
   const renderer = renderIntoDocument(<BraveShieldsControls {...props} />) as React.Component<BraveShieldsControls>
-  const result = renderer.render() as React.ReactElement<GridProps>
+  const result = renderer.render() as React.ReactElement<UIProps.Grid>
   return { props, result, renderer }
 }
 
