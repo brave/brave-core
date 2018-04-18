@@ -9,7 +9,7 @@ deps = {
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/svn2github/python-patch@a336a458016ced89aba90dfc3f4c8222ae3b1403",
-  "vendor/sparkle": "https://github.com/simonhong/Sparkle.git@3364c87a25a93cf86dc9dd68066830a418ba0d90",
+  "vendor/sparkle": "https://github.com/brave/Sparkle.git@12144681898853240cd10df584abb8a77d91d87f",
 }
 
 hooks = [
