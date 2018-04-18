@@ -10,4 +10,6 @@ declare_args() {
 
   # Update feed url on MacOS
   brave_feed_url = "http://localhost:9090"
+
+  brave_dsa_file = "dsa_pub.pem"
 }
