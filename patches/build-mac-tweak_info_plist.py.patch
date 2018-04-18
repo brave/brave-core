@@ -1,8 +1,8 @@
 diff --git a/build/mac/tweak_info_plist.py b/build/mac/tweak_info_plist.py
-index 9ea794b1517fa2e65ac2c6a38b3176ec52a7b544..8c51b5a9fbb2443310a439495d1b452c736494f4 100755
+index 9ea794b1517fa2e65ac2c6a38b3176ec52a7b544..b6c7ef2f4b64347bbebdb809e980ff4ccdfea996 100755
 --- a/build/mac/tweak_info_plist.py
 +++ b/build/mac/tweak_info_plist.py
-@@ -248,6 +248,11 @@ def Main(argv):
+@@ -248,6 +248,13 @@ def Main(argv):
        default=True, help='Add SCM metadata [1 or 0]')
    parser.add_option('--branding', dest='branding', action='store',
        type='string', default=None, help='The branding of the binary')
@@ -11,10 +11,12 @@ index 9ea794b1517fa2e65ac2c6a38b3176ec52a7b544..8c51b5a9fbb2443310a439495d1b452c
 +      type='string', default=None, help='Channel (beta, dev, canary)')
 +  parser.add_option('--brave_feed_url', dest='brave_feed_url', action='store',
 +      type='string', default=None, help='Target url for update feed')
++  parser.add_option('--brave_dsa_file', dest='brave_dsa_file', action='store',
++      type='string', default=None, help='Public DSA file for update')
    parser.add_option('--bundle_id', dest='bundle_identifier',
        action='store', type='string', default=None,
        help='The bundle id of the binary')
-@@ -353,6 +358,15 @@ def Main(argv):
+@@ -353,6 +360,17 @@ def Main(argv):
    if options.plist_output is not None:
      output_path = options.plist_output
  
@@ -25,7 +27,9 @@ index 9ea794b1517fa2e65ac2c6a38b3176ec52a7b544..8c51b5a9fbb2443310a439495d1b452c
 +  # BRAVE(shong): Add sparkle update support
 +  if options.brave_feed_url:
 +    plist['SUFeedURL'] = options.brave_feed_url
-+    plist['SUPublicDSAKeyFile'] = 'dsa_pub.pem'
++
++  if options.brave_feed_url:
++    plist['SUPublicDSAKeyFile'] = options.brave_dsa_file
 +
    # Now that all keys have been mutated, rewrite the file.
    with tempfile.NamedTemporaryFile() as temp_info_plist:
