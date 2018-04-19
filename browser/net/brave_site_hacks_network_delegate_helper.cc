@@ -216,35 +216,6 @@ bool ApplyPotentialRefererBlock(net::URLRequest* request,
   return false;
 }
 
-bool ApplyPotentialCookieBlock(net::URLRequest* request,
-    net::HttpRequestHeaders* headers) {
-  GURL target_origin = GURL(request->url()).GetOrigin();
-  bool allow_cookies = brave_shields::IsAllowContentSettingFromIO(
-      request, target_origin, GURL(), CONTENT_SETTINGS_TYPE_COOKIES, "");
-  bool allow_1p_cookies = brave_shields::IsAllowContentSettingFromIO(
-      request, target_origin, target_origin, CONTENT_SETTINGS_TYPE_COOKIES, "");
-
-
-  GURL first_party_for_cookies_origin(request->site_for_cookies().GetOrigin());
-  bool is_first_party_tldp1;
-  bool got_tlds =
-    brave::IsSameTLDPlus1(request->site_for_cookies(), request->url(),
-        &is_first_party_tldp1);
-
-  bool block_cookies =
-      !allow_1p_cookies ||
-      (!allow_cookies && allow_1p_cookies && got_tlds && !is_first_party_tldp1);
-
-  std::string cookies;
-  if (headers->GetHeader(kCookieHeader, &cookies) &&
-      !request->site_for_cookies().is_empty() &&
-      !IsWhitelistedCookieExeption(first_party_for_cookies_origin, request->url()) &&
-      block_cookies) {
-    headers->RemoveHeader(kCookieHeader);
-  }
-  return false;
-}
-
 int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
@@ -264,7 +235,6 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
     }
   }
   ApplyPotentialRefererBlock(request, headers);
-  ApplyPotentialCookieBlock(request, headers);
   return net::OK;
 }
 
