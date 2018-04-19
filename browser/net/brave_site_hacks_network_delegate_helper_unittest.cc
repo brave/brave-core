@@ -291,4 +291,61 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NOTUAWhitelistedTest) {
   });
 }
 
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerPreserved) {
+  std::vector<GURL> urls({
+    GURL("https://brianbondy.com/7"),
+    GURL("https://www.brianbondy.com/5"),
+    GURL("https://brian.bondy.brianbondy.com")
+  });
+  std::for_each(urls.begin(), urls.end(),
+      [this](GURL url){
+    net::TestDelegate test_delegate;
+    std::unique_ptr<net::URLRequest> request =
+        context()->CreateRequest(url, net::IDLE, &test_delegate,
+                                 TRAFFIC_ANNOTATION_FOR_TESTS);
+    net::HttpRequestHeaders headers;
+    std::string original_referrer = "https://hello.brianbondy.com/about";
+    headers.SetHeader(kRefererHeader, original_referrer);
+
+    std::shared_ptr<brave::BraveRequestInfo>
+        brave_request_info(new brave::BraveRequestInfo());
+    brave::ResponseCallback callback;
+    int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
+        callback, brave_request_info);
+    std::string referrer;
+    headers.GetHeader(kRefererHeader, &referrer);
+    EXPECT_EQ(ret, net::OK);
+    EXPECT_STREQ(referrer.c_str(), original_referrer.c_str());
+  });
+}
+
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
+  std::vector<GURL> urls({
+    GURL("https://digg.com/7"),
+    GURL("https://slashdot.org/5"),
+    GURL("https://bondy.brian.org")
+  });
+  std::for_each(urls.begin(), urls.end(),
+      [this](GURL url){
+    net::TestDelegate test_delegate;
+    std::unique_ptr<net::URLRequest> request =
+        context()->CreateRequest(url, net::IDLE, &test_delegate,
+                                 TRAFFIC_ANNOTATION_FOR_TESTS);
+    net::HttpRequestHeaders headers;
+    std::string original_referrer = "https://hello.brianbondy.com/about";
+    headers.SetHeader(kRefererHeader, original_referrer);
+
+    std::shared_ptr<brave::BraveRequestInfo>
+        brave_request_info(new brave::BraveRequestInfo());
+    brave::ResponseCallback callback;
+    int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
+        callback, brave_request_info);
+    std::string referrer;
+    headers.GetHeader(kRefererHeader, &referrer);
+    EXPECT_EQ(ret, net::OK);
+    EXPECT_STREQ(referrer.c_str(), url.GetOrigin().spec().c_str());
+  });
+}
+
+
 }  // namespace
