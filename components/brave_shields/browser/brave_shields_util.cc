@@ -21,6 +21,19 @@ using net::URLRequest;
 
 namespace brave_shields {
 
+bool GetDefaultFromResourceIdentifier(const std::string& resource_identifier) {
+  if (resource_identifier == "ads") {
+    return false;
+  } else if (resource_identifier == "trackers") {
+    return false;
+  } else if (resource_identifier == "httpUpgradableResources") {
+    return false;
+  } else if (resource_identifier == "braveShields") {
+    return true;
+  }
+  return false;
+}
+
 bool IsAllowContentSettingFromIO(net::URLRequest* request,
     GURL primary_url, GURL secondary_url, ContentSettingsType setting_type,
     const std::string& resource_identifier) {
@@ -29,12 +42,12 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
   const content::ResourceRequestInfo* resource_info =
       content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info) {
-    return false;
+    return GetDefaultFromResourceIdentifier(resource_identifier);
   }
   ProfileIOData* io_data =
       ProfileIOData::FromResourceContext(resource_info->GetContext());
   if (!io_data) {
-    return false;
+    return GetDefaultFromResourceIdentifier(resource_identifier);
   }
   content_settings::SettingInfo setting_info;
   std::unique_ptr<base::Value> value =
@@ -48,15 +61,7 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
   // TODO(bbondy): Add a static RegisterUserPrefs method for shields and use
   // prefs instead of simply returning true / false below.
   if (setting == CONTENT_SETTING_DEFAULT) {
-    if (resource_identifier == "ads") {
-      return false;
-    } else if (resource_identifier == "trackers") {
-      return false;
-    } else if (resource_identifier == "httpUpgradableResources") {
-      return false;
-    } else if (resource_identifier == "braveShields") {
-      return true;
-    }
+    return GetDefaultFromResourceIdentifier(resource_identifier);
   }
   return setting == CONTENT_SETTING_ALLOW;
 }
