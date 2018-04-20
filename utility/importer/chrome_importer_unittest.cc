@@ -140,21 +140,28 @@ TEST_F(ChromeImporterTest, ImportPasswords) {
   // Use mock keychain on mac to prevent blocking permissions dialogs.
   OSCryptMocker::SetUp();
 
-  autofill::PasswordForm password;
+  autofill::PasswordForm autofillable_login;
+  autofill::PasswordForm blacklisted_login;
 
   EXPECT_CALL(*bridge_, NotifyStarted());
   EXPECT_CALL(*bridge_, NotifyItemStarted(importer::PASSWORDS));
   EXPECT_CALL(*bridge_, SetPasswordForm(_))
-      .WillOnce(::testing::SaveArg<0>(&password));
+      .WillOnce(::testing::SaveArg<0>(&autofillable_login))
+      .WillOnce(::testing::SaveArg<0>(&blacklisted_login));
   EXPECT_CALL(*bridge_, NotifyItemEnded(importer::PASSWORDS));
   EXPECT_CALL(*bridge_, NotifyEnded());
 
   importer_->StartImport(profile_, importer::PASSWORDS, bridge_.get());
 
-  EXPECT_EQ("test@example.com",
-            UTF16ToASCII(password.username_value));
-  EXPECT_EQ("testing123",
-            UTF16ToASCII(password.password_value));
+  EXPECT_FALSE(autofillable_login.blacklisted_by_user);
+  EXPECT_EQ("test-autofillable-login",
+            UTF16ToASCII(autofillable_login.username_value));
+  EXPECT_EQ("autofillable-login-password",
+            UTF16ToASCII(autofillable_login.password_value));
+
+  EXPECT_TRUE(blacklisted_login.blacklisted_by_user);
+  EXPECT_EQ("", UTF16ToASCII(blacklisted_login.username_value));
+  EXPECT_EQ("", UTF16ToASCII(blacklisted_login.password_value));
 
   OSCryptMocker::TearDown();
 }
