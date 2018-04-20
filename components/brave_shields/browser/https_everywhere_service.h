@@ -25,6 +25,9 @@ class HTTPSEverywhereServiceTest;
 
 namespace brave_shields {
 
+const std::string kHTTPSEverywhereUpdaterName("Brave HTTPS Everywhere Updater");
+const std::string kHTTPSEverywhereUpdaterId("oofiananboodjbbmdelgdommihjbkfag");
+
 const std::string kHTTPSEverywhereUpdaterBase64PublicKey =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvn9zSMjTmhkQyrZu5UdN"
     "350nPqLoSeCYngcC7yDFwaUHjoBQXCZqGeDC69ciCQ2mlRhcV2nxXqlUDkiC6+7m"
@@ -33,9 +36,6 @@ const std::string kHTTPSEverywhereUpdaterBase64PublicKey =
     "+YcC9obL4g5krVrfrlKLfFNpIewUcJyBpSlCgfxEyEhgDkK9cILTMUi5vC7GxS3P"
     "OtZqgfRg8Da4i+NwmjQqrz0JFtPMMSyUnmeMj+mSOL4xZVWr8fU2/GOCXs9gczDp"
     "JwIDAQAB";
-
-const std::string kHTTPSEverywhereUpdaterId("oofiananboodjbbmdelgdommihjbkfag");
-const std::string kHTTPSEverywhereUpdaterName("HTTPS Everywhere Updater");
 
 struct HTTPSE_REDIRECTS_COUNT_ST {
 public:
@@ -61,6 +61,9 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
  protected:
   bool Init() override;
   void Cleanup() override;
+  void OnComponentRegistered(const std::string& extension_id) override;
+  void OnComponentReady(const std::string& extension_id,
+      const base::FilePath& install_dir) override;
 
   void AddHTTPSEUrlToRedirectList(const uint64_t& request_id);
   bool ShouldHTTPSERedirect(const uint64_t& request_id);
@@ -70,10 +73,11 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
 
  private:
   friend class ::HTTPSEverywhereServiceTest;
-  void OnComponentRegistered(const std::string& extension_id);
-  void OnComponentReady(
-    const std::string& extension_id,
-    const base::FilePath& install_dir);
+  static std::string g_https_everywhere_updater_id_;
+  static std::string g_https_everywhere_updater_base64_public_key_;
+  static void SetIdAndBase64PublicKeyForTest(
+      const std::string& id,
+      const std::string& base64_public_key);
 
   void CloseDatabase();
 

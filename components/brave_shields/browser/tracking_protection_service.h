@@ -21,6 +21,9 @@ class CTPParser;
 
 namespace brave_shields {
 
+const std::string kTrackingProtectionUpdaterName("Brave Tracking Protection Updater");
+const std::string kTrackingProtectionUpdaterId("afalakplffnnnlkncjhbmahjfjhmlkal");
+
 const std::string kTrackingProtectionUpdaterBase64PublicKey =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4TIQXRCftLpGmQZxmm6"
     "AU8pqGKLoDyi537HGQyRKcK7j/CSXCf3vwJr7xkV72p7bayutuzyNZ3740QxBPie"
@@ -29,9 +32,6 @@ const std::string kTrackingProtectionUpdaterBase64PublicKey =
     "M/v4dBUBZ1HXcuziVbCXVyU51opZCMjlxyUlQR9pTGk+Zh5sDn1Vw1MwLnWiEfQ4"
     "EGL1V7GeI4vgLoOLgq7tmhEratHGCfC1IHm9luMACRr/ybMI6DQJOvgBvecb292F"
     "xQIDAQAB";
-
-const std::string kTrackingProtectionUpdaterId("afalakplffnnnlkncjhbmahjfjhmlkal");
-const std::string kTrackingProtectionUpdaterName("Tracking Protection Updater");
 
 // The brave shields service in charge of tracking protection and init.
 class TrackingProtectionService : public BaseBraveShieldsService {
@@ -46,11 +46,16 @@ class TrackingProtectionService : public BaseBraveShieldsService {
  protected:
   bool Init() override;
   void Cleanup() override;
+  void OnComponentRegistered(const std::string& extension_id) override;
+  void OnComponentReady(const std::string& extension_id,
+      const base::FilePath& install_dir) override;
 
  private:
-  void OnComponentRegistered(const std::string& extension_id);
-  void OnComponentReady(const std::string& extension_id,
-                        const base::FilePath& install_dir);
+  static std::string g_tracking_protection_updater_id_;
+  static std::string g_tracking_protection_updater_base64_public_key_;
+  static void SetIdAndBase64PublicKeyForTest(
+      const std::string& id,
+      const std::string& base64_public_key);
 
   std::vector<std::string> GetThirdPartyHosts(const std::string& base_host);
 
@@ -64,7 +69,7 @@ class TrackingProtectionService : public BaseBraveShieldsService {
 };
 
 // Creates the TrackingProtectionService
-std::unique_ptr<BaseBraveShieldsService> TrackingProtectionServiceFactory();
+std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory();
 
 }  // namespace brave_shields
 

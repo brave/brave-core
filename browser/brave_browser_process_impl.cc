@@ -30,7 +30,7 @@ BraveBrowserProcessImpl::ad_block_service() {
   return ad_block_service_.get();
 }
 
-brave_shields::BaseBraveShieldsService*
+brave_shields::TrackingProtectionService*
 BraveBrowserProcessImpl::tracking_protection_service() {
   if (tracking_protection_service_)
     return tracking_protection_service_.get();

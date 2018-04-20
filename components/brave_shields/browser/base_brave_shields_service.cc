@@ -20,13 +20,30 @@
 #include "base/task_runner_util.h"
 #include "base/task_scheduler/post_task.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/components/brave_shields/browser/brave_component_installer.h"
+#include "chrome/browser/browser_process.h"
 
 namespace brave_shields {
 
-BaseBraveShieldsService::BaseBraveShieldsService()
+BaseBraveShieldsService::BaseBraveShieldsService(
+    const std::string& updater_name,
+    const std::string& updater_id,
+    const std::string& updater_base64_public_key)
     : initialized_(false),
       task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
+          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
+      updater_name_(updater_name),
+      updater_id_(updater_id),
+      updater_base64_public_key_(updater_base64_public_key) {
+  base::Closure registered_callback =
+      base::Bind(&BaseBraveShieldsService::OnComponentRegistered,
+                 base::Unretained(this), updater_id_);
+  ReadyCallback ready_callback =
+      base::Bind(&BaseBraveShieldsService::OnComponentReady,
+                 base::Unretained(this), updater_id_);
+  brave::RegisterComponent(g_browser_process->component_updater(),
+      updater_name_, updater_base64_public_key_,
+      registered_callback, ready_callback);
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {

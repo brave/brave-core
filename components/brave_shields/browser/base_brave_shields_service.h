@@ -12,6 +12,7 @@
 #include <vector>
 #include <mutex>
 
+#include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
@@ -22,7 +23,9 @@ namespace brave_shields {
 // tracking protection, etc.
 class BaseBraveShieldsService {
  public:
-  BaseBraveShieldsService();
+  BaseBraveShieldsService(const std::string& updater_name,
+                          const std::string& updater_id,
+                          const std::string& updater_base64_public_key);
   virtual ~BaseBraveShieldsService();
   bool Start();
   void Stop();
@@ -37,6 +40,9 @@ class BaseBraveShieldsService {
  protected:
   virtual bool Init() = 0;
   virtual void Cleanup() = 0;
+  virtual void OnComponentRegistered(const std::string& extension_id) = 0;
+  virtual void OnComponentReady(const std::string& extension_id,
+                                const base::FilePath& install_dir) = 0;
 
  private:
   void InitShields();
@@ -44,6 +50,9 @@ class BaseBraveShieldsService {
   bool initialized_;
   std::mutex initialized_mutex_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  std::string updater_name_;
+  std::string updater_id_;
+  std::string updater_base64_public_key_;
 };
 
 }  // namespace brave_shields

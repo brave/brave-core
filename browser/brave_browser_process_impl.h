@@ -9,8 +9,8 @@
 
 namespace brave_shields {
 class AdBlockService;
-class BaseBraveShieldsService;
 class HTTPSEverywhereService;
+class TrackingProtectionService;
 }
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
@@ -19,14 +19,12 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   ~BraveBrowserProcessImpl() override;
 
   brave_shields::AdBlockService* ad_block_service();
-  brave_shields::BaseBraveShieldsService*
-      tracking_protection_service();
-  brave_shields::HTTPSEverywhereService*
-      https_everywhere_service();
+  brave_shields::TrackingProtectionService* tracking_protection_service();
+  brave_shields::HTTPSEverywhereService* https_everywhere_service();
 
  private:
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
-  std::unique_ptr<brave_shields::BaseBraveShieldsService>
+  std::unique_ptr<brave_shields::TrackingProtectionService>
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;

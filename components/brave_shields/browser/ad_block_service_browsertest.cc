@@ -15,12 +15,24 @@
 const char kAdsPage[] = "/blocking.html";
 const char kNoAdsPage[] = "/no_blocking.html";
 
+const std::string kAdBlockUpdaterTestId("naccapggpomhlhoifnlebfoocegenbol");
+
+const std::string kAdBlockUpdaterTestBase64PublicKey =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtV7Vr69kkvSvu2lhcMDh"
+    "j4Jm3FKU1zpUkALaum5719/cccVvGpMKKFyy4WYXsmAfcIONmGO4ThK/q6jkgC5v"
+    "8HrkjPOf7HHebKEnsJJucz/Z1t6dq0CE+UA2IWfbGfFM4nJ8AKIv2gqiw2d4ydAs"
+    "QcL26uR9IHHrBk/zzkv2jO43Aw2kY3loqRf60THz4pfz5vOtI+BKOw1KHM0+y1Di"
+    "Qdk+dZ9r8NRQnpjChQzwhMAkxyrdjT1N7NcfTufiYQTOyiFvxPAC9D7vAzkpGgxU"
+    "Ikylk7cYRxqkRGS/AayvfipJ/HOkoBd0yKu1MRk4YcKGd/EahDAhUtd9t4+v33Qv"
+    "uwIDAQAB";
+
 class AdBlockServiceTest : public ExtensionBrowserTest {
 public:
   AdBlockServiceTest() {}
 
   void SetUp() override {
     InitEmbeddedTestServer();
+    InitService();
     ExtensionBrowserTest::SetUp();
   }
 
@@ -38,17 +50,22 @@ public:
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
+  void InitService() {
+    brave_shields::AdBlockService::SetIdAndBase64PublicKeyForTest(
+        kAdBlockUpdaterTestId, kAdBlockUpdaterTestBase64PublicKey);
+  }
+
   bool InstallAdBlockExtension() {
     base::FilePath test_data_dir;
     PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
 
-    const extensions::Extension* abp_extension =
+    const extensions::Extension* ad_block_extension =
         InstallExtension(test_data_dir.AppendASCII("adblock-data"), 1);
-    if (!abp_extension)
+    if (!ad_block_extension)
       return false;
 
     g_brave_browser_process->ad_block_service()->OnComponentReady(
-        abp_extension->id(), abp_extension->path());
+        ad_block_extension->id(), ad_block_extension->path());
 
     return true;
   }
@@ -76,7 +93,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlocked) {
       contents,
       "window.domAutomationController.send(imgLoaded())",
       &img_loaded));
-  EXPECT_TRUE(!img_loaded);
+  EXPECT_FALSE(img_loaded);
 }
 
 // Load a page with an image which is not an ad, and make sure it is NOT blocked.

@@ -10,9 +10,6 @@
 #include <vector>
 
 #include "base/base_paths.h"
-#include "base/bind.h"
-#include "base/bind_helpers.h"
-#include "base/callback.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/macros.h"
@@ -20,7 +17,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/browser/brave_component_installer.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "chrome/browser/browser_process.h"
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
@@ -79,7 +75,16 @@ namespace {
 
 namespace brave_shields {
 
-HTTPSEverywhereService::HTTPSEverywhereService() : level_db_(nullptr) {
+std::string HTTPSEverywhereService::g_https_everywhere_updater_id_(
+    kHTTPSEverywhereUpdaterId);
+std::string HTTPSEverywhereService::g_https_everywhere_updater_base64_public_key_(
+    kHTTPSEverywhereUpdaterBase64PublicKey);
+
+HTTPSEverywhereService::HTTPSEverywhereService()
+    : BaseBraveShieldsService(kHTTPSEverywhereUpdaterName,
+                              g_https_everywhere_updater_id_,
+                              g_https_everywhere_updater_base64_public_key_),
+      level_db_(nullptr) {
 }
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
@@ -91,15 +96,6 @@ void HTTPSEverywhereService::Cleanup() {
 }
 
 bool HTTPSEverywhereService::Init() {
-  base::Closure registered_callback =
-    base::Bind(&HTTPSEverywhereService::OnComponentRegistered,
-               base::Unretained(this), kHTTPSEverywhereUpdaterId);
-  ReadyCallback ready_callback =
-    base::Bind(&HTTPSEverywhereService::OnComponentReady,
-               base::Unretained(this), kHTTPSEverywhereUpdaterId);
-  brave::RegisterComponent(g_browser_process->component_updater(),
-      kHTTPSEverywhereUpdaterName, kHTTPSEverywhereUpdaterBase64PublicKey,
-      registered_callback, ready_callback);
   return true;
 }
 
@@ -350,6 +346,14 @@ void HTTPSEverywhereService::CloseDatabase()
     delete level_db_;
     level_db_ = nullptr;
   }
+}
+
+// static
+void HTTPSEverywhereService::SetIdAndBase64PublicKeyForTest(
+    const std::string& id,
+    const std::string& base64_public_key) {
+  g_https_everywhere_updater_id_ = id;
+  g_https_everywhere_updater_base64_public_key_ = base64_public_key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

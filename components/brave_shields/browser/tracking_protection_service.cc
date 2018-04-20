@@ -11,25 +11,28 @@
 #include <vector>
 
 #include "base/base_paths.h"
-#include "base/bind.h"
-#include "base/bind_helpers.h"
-#include "base/callback.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/brave_shields/browser/brave_component_installer.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/tracking-protection/TPParser.h"
-#include "chrome/browser/browser_process.h"
 
 #define DAT_FILE "TrackingProtection.dat"
 #define THIRD_PARTY_HOSTS_CACHE_SIZE 20
 
 namespace brave_shields {
 
-TrackingProtectionService::TrackingProtectionService() :
+std::string TrackingProtectionService::g_tracking_protection_updater_id_(
+    kTrackingProtectionUpdaterId);
+std::string TrackingProtectionService::g_tracking_protection_updater_base64_public_key_(
+    kTrackingProtectionUpdaterBase64PublicKey);
+
+TrackingProtectionService::TrackingProtectionService()
+    : BaseBraveShieldsService(kTrackingProtectionUpdaterName,
+                              g_tracking_protection_updater_id_,
+                              g_tracking_protection_updater_base64_public_key_),
     tracking_protection_client_(new CTPParser()),
     // See comment in tracking_protection_service.h for white_list_
     white_list_({
@@ -87,15 +90,6 @@ bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
 }
 
 bool TrackingProtectionService::Init() {
-  base::Closure registered_callback =
-    base::Bind(&TrackingProtectionService::OnComponentRegistered,
-               base::Unretained(this), kTrackingProtectionUpdaterId);
-  ReadyCallback ready_callback =
-    base::Bind(&TrackingProtectionService::OnComponentReady,
-               base::Unretained(this), kTrackingProtectionUpdaterId);
-  brave::RegisterComponent(g_browser_process->component_updater(),
-      kTrackingProtectionUpdaterName, kTrackingProtectionUpdaterBase64PublicKey,
-      registered_callback, ready_callback);
   return true;
 }
 
@@ -177,12 +171,20 @@ TrackingProtectionService::GetThirdPartyHosts(const std::string& base_host) {
   return hosts;
 }
 
+// static
+void TrackingProtectionService::SetIdAndBase64PublicKeyForTest(
+    const std::string& id,
+    const std::string& base64_public_key) {
+  g_tracking_protection_updater_id_ = id;
+  g_tracking_protection_updater_base64_public_key_ = base64_public_key;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 // TODO(bbondy): consider making this a singleton.
-std::unique_ptr<BaseBraveShieldsService> TrackingProtectionServiceFactory() {
+std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory() {
   return base::MakeUnique<TrackingProtectionService>();
 }
 

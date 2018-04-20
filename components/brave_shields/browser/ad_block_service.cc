@@ -10,28 +10,29 @@
 #include <vector>
 
 #include "base/base_paths.h"
-#include "base/bind.h"
-#include "base/bind_helpers.h"
-#include "base/callback.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/brave_shields/browser/brave_component_installer.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
-#include "chrome/browser/browser_process.h"
-#include "components/component_updater/component_installer.h"
-#include "components/component_updater/component_updater_service.h"
 
 #define DAT_FILE "ABPFilterParserData.dat"
 
 namespace brave_shields {
 
-AdBlockService::AdBlockService() :
-    ad_block_client_(new AdBlockClient()) {
+std::string AdBlockService::g_ad_block_updater_id_(
+    kAdBlockUpdaterId);
+std::string AdBlockService::g_ad_block_updater_base64_public_key_(
+    kAdBlockUpdaterBase64PublicKey);
+
+AdBlockService::AdBlockService()
+    : BaseBraveShieldsService(kAdBlockUpdaterName,
+                              g_ad_block_updater_id_,
+                              g_ad_block_updater_base64_public_key_),
+      ad_block_client_(new AdBlockClient()) {
 }
 
 AdBlockService::~AdBlockService() {
@@ -69,15 +70,6 @@ bool AdBlockService::ShouldStartRequest(const GURL& url,
 }
 
 bool AdBlockService::Init() {
-  base::Closure registered_callback =
-    base::Bind(&AdBlockService::OnComponentRegistered,
-               base::Unretained(this), kAdBlockPlusUpdaterId);
-  ReadyCallback ready_callback =
-    base::Bind(&AdBlockService::OnComponentReady,
-               base::Unretained(this), kAdBlockPlusUpdaterId);
-  brave::RegisterComponent(g_browser_process->component_updater(),
-      kAdBlockPlusUpdaterName, kAdBlockPlusUpdaterBase64PublicKey,
-      registered_callback, ready_callback);
   return true;
 }
 
@@ -101,6 +93,14 @@ void AdBlockService::OnComponentReady(const std::string& extension_id,
     LOG(ERROR) << "Failed to deserialize ad block data";
     return;
   }
+}
+
+// static
+void AdBlockService::SetIdAndBase64PublicKeyForTest(
+    const std::string& id,
+    const std::string& base64_public_key) {
+  g_ad_block_updater_id_ = id;
+  g_ad_block_updater_base64_public_key_ = base64_public_key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
