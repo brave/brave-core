@@ -18,6 +18,7 @@
 #include "content/public/common/resource_type.h"
 
 class CTPParser;
+class TrackingProtectionServiceTest;
 
 namespace brave_shields {
 
@@ -51,6 +52,7 @@ class TrackingProtectionService : public BaseBraveShieldsService {
       const base::FilePath& install_dir) override;
 
  private:
+  friend class ::TrackingProtectionServiceTest;
   static std::string g_tracking_protection_updater_id_;
   static std::string g_tracking_protection_updater_base64_public_key_;
   static void SetIdAndBase64PublicKeyForTest(
