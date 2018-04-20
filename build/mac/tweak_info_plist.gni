@@ -1,0 +1,51 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# Template to run the tweak_info_plist.py script on a plist.
+#
+# Arguments:
+#
+#     info_plist:
+#         (optional), string, the plist to tweak.
+#
+#     args:
+#         (optional), list of string, the arguments to pass to the
+#         tweak_info_plist.py script.
+#
+# Callers should use get_target_outputs() to get the output name. One of
+# info_plist or info_plists must be specified.
+template("brave_tweak_info_plist") {
+  _output_name = "$target_gen_dir/${target_name}_tweaked.plist"
+
+  assert(defined(invoker.info_plist),
+         "The info_plist must be specified in $target_name")
+
+  _source_name = invoker.info_plist
+  _deps = invoker.deps
+
+  action(target_name) {
+    forward_variables_from(invoker,
+                           [
+                             "args",
+                             "testonly",
+                           ])
+    script = "//brave/build/mac/tweak_info_plist.py"
+    sources = [
+      _source_name,
+    ]
+    outputs = [
+      _output_name,
+    ]
+    if (!defined(args)) {
+      args = []
+    }
+    args += [
+      "--plist",
+      rebase_path(_source_name, root_build_dir),
+      "--output",
+      rebase_path(_output_name, root_build_dir),
+    ]
+    deps = _deps
+  }
+}
