@@ -59,8 +59,7 @@ source_set("browser") {
     "ui",
   ]
 
-  # In component build, chrome_dll links sparkle so link option is needed.
-  if (is_mac && is_component_build) {
+  if (is_mac) {
     public_deps += [ "//brave/vendor/sparkle:sparkle_link" ]
   }
 }
