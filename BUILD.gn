@@ -6,6 +6,12 @@ import("//third_party/icu/config.gni")
 import("//build/config/locales.gni")
 import("//media/cdm/ppapi/cdm_paths.gni")
 
+if (is_mac) {
+  import("//build/config/mac/rules.gni")
+  import("//build/mac/tweak_info_plist.gni")
+  import("//brave/build/mac/tweak_info_plist.gni")
+}
+
 group("child_dependencies") {
   public_deps = [
     "//brave/renderer",
@@ -350,4 +356,74 @@ action("create_dist_zips") {
     "--dir-inputs=$dir_inputs",
     "--output=$rebase_output",
   ]
+}
+
+if (is_mac) {
+  tweak_info_plist("chrome_app_plist") {
+    info_plist = "//chrome/app/app-Info.plist"
+    _keystone_arg = "0"
+    if (is_chrome_branded) {
+      _keystone_arg = "1"
+    }
+    args = [
+      "--breakpad=0",
+      "--keystone=$_keystone_arg",
+      "--scm=1",
+      "--bundle_id=$chrome_mac_bundle_id",
+    ]
+  }
+
+  brave_tweak_info_plist("brave_app_plist") {
+    _chrome_app_plist_output = get_target_outputs(":chrome_app_plist")
+    info_plist = _chrome_app_plist_output[0]
+
+    args = [
+      "--brave_channel=" + brave_channel,
+      "--brave_feed_url=" + brave_feed_url,
+      "--brave_dsa_file=" + brave_dsa_file,
+    ]
+
+    deps = [
+      ":chrome_app_plist",
+    ]
+  }
+
+  mac_app_bundle("chrome_app") {
+    output_name = chrome_product_full_name
+
+    info_plist_target = ":brave_app_plist"
+
+    extra_substitutions = [
+      "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
+      "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
+      "CHROMIUM_CREATOR=$chrome_mac_creator_code",
+    ]
+
+    sources = [
+      "//chrome/app/chrome_exe_main_mac.cc",
+    ]
+
+    extra_configs = [ "//build/config/compiler:wexit_time_destructors" ]
+
+    deps = [
+      "//chrome:chrome_app_strings_bundle_data",
+      "//chrome:chrome_resources",
+      "//chrome:chrome_versioned_bundle_data",
+      "//build/config:exe_and_shlib_deps",
+      "//chrome/common:version_header",
+    ]
+
+    if (is_chrome_branded) {
+      deps += [ ":chrome_helpers" ]
+    }
+
+    # Remove the default strip configuration (which strips all symbols) so that
+    # a saves file can be specified.
+    if (enable_stripping) {
+      remove_configs = [ "//build/config/mac:strip_all" ]
+
+      ldflags =
+          [ "-Wcrl,strip,-s," + rebase_path("//chrome/app/app.saves", root_build_dir) ]
+    }
+  }
 }
