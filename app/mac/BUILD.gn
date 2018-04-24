@@ -49,7 +49,7 @@ action("generate_breakpad_symbols") {
   ]
 
   deps = [
-    "//chrome:chrome_app",
+    "//brave:chrome_app",
     "//chrome:chrome_framework",
     "//chrome:chrome_helper_app",
     "//chrome:chrome_dump_syms",
