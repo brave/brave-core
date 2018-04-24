@@ -5,10 +5,14 @@
 #ifndef BRAVE_BROWSER_BRAVE_APP_CONTROLLER_MAC_H_
 #define BRAVE_BROWSER_BRAVE_APP_CONTROLLER_MAC_H_
 
+#if defined(__OBJC__)
+
 #import "chrome/browser/app_controller_mac.h"
 
 @interface BraveAppController : AppController
 
 @end
+
+#endif  // __OBJC__
 
 #endif  // BRAVE_BROWSER_BRAVE_APP_CONTROLLER_MAC_H_
