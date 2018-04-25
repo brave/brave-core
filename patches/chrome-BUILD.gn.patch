@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 960921acd7ebb0ba99092745e8d30bca76821f2a..0393032752b2f637778b6e74f08d55b6f0cbc69c 100644
+index 960921acd7ebb0ba99092745e8d30bca76821f2a..4727eb6fc090a22ed18b6930a9d01f68c634fe10 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -180,6 +180,15 @@ if (!is_android && !is_mac) {
@@ -65,16 +65,16 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..0393032752b2f637778b6e74f08d55b6
  
    group("chrome") {
      deps = [
-@@ -581,6 +598,9 @@ if (is_win) {
+@@ -595,6 +612,9 @@ if (is_win) {
      ]
    }
  
-+# Disable chrome_app_plist and chrome_app targets here and they are moved to
-+# //brave to easily use other brave targets.
++# Disable chrome_app targets here and they are moved to //brave to easily use
++# other brave targets.
 +if (!brave_chromium_build) {
-   tweak_info_plist("chrome_app_plist") {
-     info_plist = "app/app-Info.plist"
-     _keystone_arg = "0"
+   mac_app_bundle("chrome_app") {
+     output_name = chrome_product_full_name
+ 
 @@ -632,6 +652,13 @@ if (is_win) {
            [ "-Wcrl,strip,-s," + rebase_path("app/app.saves", root_build_dir) ]
      }

@@ -8,7 +8,6 @@ import("//media/cdm/ppapi/cdm_paths.gni")
 
 if (is_mac) {
   import("//build/config/mac/rules.gni")
-  import("//build/mac/tweak_info_plist.gni")
   import("//brave/build/mac/tweak_info_plist.gni")
 }
 
@@ -359,23 +358,8 @@ action("create_dist_zips") {
 }
 
 if (is_mac) {
-  tweak_info_plist("chrome_app_plist") {
-    info_plist = "//chrome/app/app-Info.plist"
-    _keystone_arg = "0"
-    if (is_chrome_branded) {
-      _keystone_arg = "1"
-    }
-    args = [
-      "--breakpad=0",
-      "--keystone=$_keystone_arg",
-      "--scm=1",
-      "--bundle_id=$chrome_mac_bundle_id",
-    ]
-  }
-
   brave_tweak_info_plist("brave_app_plist") {
-    _chrome_app_plist_output = get_target_outputs(":chrome_app_plist")
-    info_plist = _chrome_app_plist_output[0]
+    info_plist = "$root_gen_dir/chrome/chrome_app_plist_tweaked.plist"
 
     args = [
       "--brave_channel=" + brave_channel,
@@ -384,7 +368,7 @@ if (is_mac) {
     ]
 
     deps = [
-      ":chrome_app_plist",
+      "//chrome:chrome_app_plist",
     ]
   }
 
