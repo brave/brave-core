@@ -33,9 +33,8 @@ source_set("browser_process") {
   ]
 
   if (is_mac) {
-    public_deps = [
-      "//brave/vendor/sparkle:sparkle_compile"
-    ]
+    # For building //chrome/browser static library
+    public_deps = [ "//brave/vendor/sparkle" ]
   }
 }
 
@@ -59,7 +58,12 @@ source_set("browser") {
     "ui",
   ]
 
-  if (is_mac) {
-    public_deps += [ "//brave/vendor/sparkle:sparkle_link" ]
+  # In component build, //chrome:chrome_dll links Sparkle.
+  # In non-component build, //chrome:chrome_framework_shared_library generated
+  # by //chrome:chrome_framework links Sparkle. However, sparkle config isn't
+  # propagated to it from this target.
+  # So, //chrome:chrome_framework has direct Sparkle dependency.
+  if (is_mac && is_component_build) {
+    public_deps += [ "//brave/vendor/sparkle" ]
   }
 }

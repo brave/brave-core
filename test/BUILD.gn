@@ -61,12 +61,8 @@ test("brave_unit_tests") {
 }
 
 group("test_support") {
-  public_configs = []
-
   if (is_mac) {
-    public_configs += [
-      "//brave/vendor/sparkle:sparkle_link_config"
-    ]
+    public_deps = [ "//brave/vendor/sparkle" ]
   }
 }
 
