@@ -47,6 +47,7 @@ test("brave_unit_tests") {
     "//base/test:test_support",
     "//brave/browser",
     "//brave/common",
+    "//brave/components/content_settings/core/browser",
     "//brave/extensions",
     "//brave/renderer",
     "//brave/utility",
