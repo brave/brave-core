@@ -154,12 +154,16 @@ TEST_F(ChromeImporterTest, ImportPasswords) {
   importer_->StartImport(profile_, importer::PASSWORDS, bridge_.get());
 
   EXPECT_FALSE(autofillable_login.blacklisted_by_user);
+  EXPECT_EQ("http://127.0.0.1:8080/",
+            autofillable_login.signon_realm);
   EXPECT_EQ("test-autofillable-login",
             UTF16ToASCII(autofillable_login.username_value));
   EXPECT_EQ("autofillable-login-password",
             UTF16ToASCII(autofillable_login.password_value));
 
   EXPECT_TRUE(blacklisted_login.blacklisted_by_user);
+  EXPECT_EQ("http://127.0.0.1:8081/",
+            blacklisted_login.signon_realm);
   EXPECT_EQ("", UTF16ToASCII(blacklisted_login.username_value));
   EXPECT_EQ("", UTF16ToASCII(blacklisted_login.password_value));
 
