@@ -7,6 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/path_service.h"
 #include "chrome/common/chrome_paths.h"
@@ -15,9 +16,12 @@
 #include "chrome/common/importer/importer_url_row.h"
 #include "chrome/common/importer/mock_importer_bridge.h"
 #include "components/favicon_base/favicon_usage_data.h"
+#include "components/os_crypt/os_crypt_mocker.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::ASCIIToUTF16;
+using base::UTF16ToASCII;
+using ::testing::_;
 
 // In order to test the Chrome import functionality effectively, we store a
 // simulated Chrome profile directory containing dummy data files with the
@@ -31,25 +35,47 @@ base::FilePath GetTestChromeProfileDir(const std::string& profile) {
       .AppendASCII(profile);
 }
 
-TEST(ChromeImporterTest, ImportHistory) {
-  using ::testing::_;
+class ChromeImporterTest : public ::testing::Test {
+ protected:
+  void SetUpChromeProfile() {
+    // Creates a new profile in a new subdirectory in the temp directory.
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    base::FilePath test_path = temp_dir_.GetPath().AppendASCII("ChromeImporterTest");
+    base::DeleteFile(test_path, true);
+    base::CreateDirectory(test_path);
+    profile_dir_ = test_path.AppendASCII("profile");
 
-  base::FilePath profile_dir = GetTestChromeProfileDir("default");
-  ASSERT_TRUE(base::DirectoryExists(profile_dir));
-  scoped_refptr<ChromeImporter> importer = new ChromeImporter;
-  importer::SourceProfile profile;
-  profile.source_path = profile_dir;
-  scoped_refptr<MockImporterBridge> bridge = new MockImporterBridge;
+    base::FilePath data_dir = GetTestChromeProfileDir("default");
+    ASSERT_TRUE(base::DirectoryExists(data_dir));
+    ASSERT_TRUE(base::CopyDirectory(data_dir, profile_dir_, true));
+
+    profile_.source_path = profile_dir_;
+  }
+
+  void SetUp() override {
+    SetUpChromeProfile();
+    importer_ = new ChromeImporter;
+    bridge_ = new MockImporterBridge;
+  }
+
+  base::ScopedTempDir temp_dir_;
+  base::FilePath profile_dir_;
+  importer::SourceProfile profile_;
+  scoped_refptr<ChromeImporter> importer_;
+  scoped_refptr<MockImporterBridge> bridge_;
+};
+
+TEST_F(ChromeImporterTest, ImportHistory) {
   std::vector<ImporterURLRow> history;
 
-  EXPECT_CALL(*bridge, NotifyStarted());
-  EXPECT_CALL(*bridge, NotifyItemStarted(importer::HISTORY));
-  EXPECT_CALL(*bridge, SetHistoryItems(_, _))
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::HISTORY));
+  EXPECT_CALL(*bridge_, SetHistoryItems(_, _))
       .WillOnce(::testing::SaveArg<0>(&history));
-  EXPECT_CALL(*bridge, NotifyItemEnded(importer::HISTORY));
-  EXPECT_CALL(*bridge, NotifyEnded());
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::HISTORY));
+  EXPECT_CALL(*bridge_, NotifyEnded());
 
-  importer->StartImport(profile, importer::HISTORY, bridge.get());
+  importer_->StartImport(profile_, importer::HISTORY, bridge_.get());
 
   ASSERT_EQ(4u, history.size());
   EXPECT_EQ("https://brave.com/", history[0].url.spec());
@@ -58,25 +84,17 @@ TEST(ChromeImporterTest, ImportHistory) {
   EXPECT_EQ("https://www.nytimes.com/", history[3].url.spec());
 }
 
-TEST(ChromeImporterTest, ImportBookmarks) {
-  using ::testing::_;
-
-  base::FilePath profile_dir = GetTestChromeProfileDir("default");
-  ASSERT_TRUE(base::DirectoryExists(profile_dir));
-  scoped_refptr<ChromeImporter> importer = new ChromeImporter;
-  importer::SourceProfile profile;
-  profile.source_path = profile_dir;
-  scoped_refptr<MockImporterBridge> bridge = new MockImporterBridge;
+TEST_F(ChromeImporterTest, ImportBookmarks) {
   std::vector<ImportedBookmarkEntry> bookmarks;
 
-  EXPECT_CALL(*bridge, NotifyStarted());
-  EXPECT_CALL(*bridge, NotifyItemStarted(importer::FAVORITES));
-  EXPECT_CALL(*bridge, AddBookmarks(_, _))
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::FAVORITES));
+  EXPECT_CALL(*bridge_, AddBookmarks(_, _))
       .WillOnce(::testing::SaveArg<0>(&bookmarks));
-  EXPECT_CALL(*bridge, NotifyItemEnded(importer::FAVORITES));
-  EXPECT_CALL(*bridge, NotifyEnded());
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::FAVORITES));
+  EXPECT_CALL(*bridge_, NotifyEnded());
 
-  importer->StartImport(profile, importer::FAVORITES, bridge.get());
+  importer_->StartImport(profile_, importer::FAVORITES, bridge_.get());
 
   ASSERT_EQ(3u, bookmarks.size());
 
@@ -93,25 +111,17 @@ TEST(ChromeImporterTest, ImportBookmarks) {
   EXPECT_FALSE(bookmarks[2].in_toolbar);
 }
 
-TEST(ChromeImporterTest, ImportFavicons) {
-  using ::testing::_;
-
-  base::FilePath profile_dir = GetTestChromeProfileDir("default");
-  ASSERT_TRUE(base::DirectoryExists(profile_dir));
-  scoped_refptr<ChromeImporter> importer = new ChromeImporter;
-  importer::SourceProfile profile;
-  profile.source_path = profile_dir;
-  scoped_refptr<MockImporterBridge> bridge = new MockImporterBridge;
+TEST_F(ChromeImporterTest, ImportFavicons) {
   favicon_base::FaviconUsageDataList favicons;
 
-  EXPECT_CALL(*bridge, NotifyStarted());
-  EXPECT_CALL(*bridge, NotifyItemStarted(importer::FAVORITES));
-  EXPECT_CALL(*bridge, SetFavicons(_))
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::FAVORITES));
+  EXPECT_CALL(*bridge_, SetFavicons(_))
       .WillOnce(::testing::SaveArg<0>(&favicons));
-  EXPECT_CALL(*bridge, NotifyItemEnded(importer::FAVORITES));
-  EXPECT_CALL(*bridge, NotifyEnded());
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::FAVORITES));
+  EXPECT_CALL(*bridge_, NotifyEnded());
 
-  importer->StartImport(profile, importer::FAVORITES, bridge.get());
+  importer_->StartImport(profile_, importer::FAVORITES, bridge_.get());
 
   ASSERT_EQ(4u, favicons.size());
   EXPECT_EQ("https://www.google.com/favicon.ico",
@@ -123,3 +133,40 @@ TEST(ChromeImporterTest, ImportFavicons) {
   EXPECT_EQ("https://static.nytimes.com/favicon.ico",
             favicons[3].favicon_url.spec());
 }
+
+// The mock keychain only works on macOS, so only run this test on macOS (for now)
+#if defined(OS_MACOSX)
+TEST_F(ChromeImporterTest, ImportPasswords) {
+  // Use mock keychain on mac to prevent blocking permissions dialogs.
+  OSCryptMocker::SetUp();
+
+  autofill::PasswordForm autofillable_login;
+  autofill::PasswordForm blacklisted_login;
+
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::PASSWORDS));
+  EXPECT_CALL(*bridge_, SetPasswordForm(_))
+      .WillOnce(::testing::SaveArg<0>(&autofillable_login))
+      .WillOnce(::testing::SaveArg<0>(&blacklisted_login));
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::PASSWORDS));
+  EXPECT_CALL(*bridge_, NotifyEnded());
+
+  importer_->StartImport(profile_, importer::PASSWORDS, bridge_.get());
+
+  EXPECT_FALSE(autofillable_login.blacklisted_by_user);
+  EXPECT_EQ("http://127.0.0.1:8080/",
+            autofillable_login.signon_realm);
+  EXPECT_EQ("test-autofillable-login",
+            UTF16ToASCII(autofillable_login.username_value));
+  EXPECT_EQ("autofillable-login-password",
+            UTF16ToASCII(autofillable_login.password_value));
+
+  EXPECT_TRUE(blacklisted_login.blacklisted_by_user);
+  EXPECT_EQ("http://127.0.0.1:8081/",
+            blacklisted_login.signon_realm);
+  EXPECT_EQ("", UTF16ToASCII(blacklisted_login.username_value));
+  EXPECT_EQ("", UTF16ToASCII(blacklisted_login.password_value));
+
+  OSCryptMocker::TearDown();
+}
+#endif
