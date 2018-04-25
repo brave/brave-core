@@ -4,12 +4,17 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 
+#include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
+#include "chrome/browser/io_thread.h"
+#include "components/component_updater/component_updater_service.h"
+#include "content/public/browser/browser_thread.h"
 
 BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
 
+using content::BrowserThread;
 
 BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
 }
@@ -19,6 +24,23 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(
     : BrowserProcessImpl(local_state_task_runner) {
   g_browser_process = this;
   g_brave_browser_process = this;
+}
+
+component_updater::ComponentUpdateService*
+BraveBrowserProcessImpl::component_updater() {
+  if (component_updater_)
+    return component_updater_.get();
+
+  if (!BrowserThread::CurrentlyOn(BrowserThread::UI))
+    return nullptr;
+
+  component_updater_ = component_updater::ComponentUpdateServiceFactory(
+      component_updater::MakeBraveComponentUpdaterConfigurator(
+          base::CommandLine::ForCurrentProcess(),
+          io_thread()->system_url_request_context_getter(),
+          g_browser_process->local_state()));
+
+  return component_updater_.get();
 }
 
 brave_shields::AdBlockService*

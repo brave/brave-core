@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/brave_component_installer.h"
+#include "brave/browser/component_updater/brave_component_installer.h"
 
 #include <utility>
 

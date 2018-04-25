@@ -20,7 +20,7 @@
 #include "base/task_runner_util.h"
 #include "base/task_scheduler/post_task.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/brave_shields/browser/brave_component_installer.h"
+#include "brave/browser/component_updater/brave_component_installer.h"
 #include "chrome/browser/browser_process.h"
 
 namespace brave_shields {

@@ -18,6 +18,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   BraveBrowserProcessImpl(base::SequencedTaskRunner* local_state_task_runner);
   ~BraveBrowserProcessImpl() override;
 
+  // BrowserProcess implementation.
+  component_updater::ComponentUpdateService* component_updater() override;
+
   brave_shields::AdBlockService* ad_block_service();
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();

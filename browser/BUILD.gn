@@ -10,6 +10,10 @@ source_set("browser_process") {
     "brave_tab_helpers.h",
     "brave_profile_prefs.cc",
     "brave_profile_prefs.h",
+    "component_updater/brave_component_installer.cc",
+    "component_updater/brave_component_installer.h",
+    "component_updater/brave_component_updater_configurator.cc",
+    "component_updater/brave_component_updater_configurator.h",
     "importer/brave_external_process_importer_client.cc",
     "importer/brave_external_process_importer_client.h",
     "importer/brave_external_process_importer_host.cc",
@@ -17,10 +21,11 @@ source_set("browser_process") {
     "importer/brave_in_process_importer_bridge.cc",
     "importer/brave_in_process_importer_bridge.h",
     "importer/brave_profile_writer.cc",
-    "importer/brave_profile_writer.h",
+    "importer/brave_profile_writer.h"
   ]
 
   deps = [
+    "//components/component_updater",
     "//content/public/browser",
     "//brave/chromium_src:browser",
   ]
