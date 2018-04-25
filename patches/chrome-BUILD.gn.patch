@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 960921acd7ebb0ba99092745e8d30bca76821f2a..4727eb6fc090a22ed18b6930a9d01f68c634fe10 100644
+index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a12ec199d 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -180,6 +180,15 @@ if (!is_android && !is_mac) {
@@ -141,18 +141,24 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4727eb6fc090a22ed18b6930a9d01f68
      ]
  
      deps = [
-@@ -1253,6 +1302,10 @@ if (is_win) {
+@@ -1253,6 +1302,16 @@ if (is_win) {
        "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
      ]
  
++    # Sparkle link option must be set to build :chrome_framework_shared_library
++    # because :chrome_framework_shared_library shared lib includes
++    # //chrome:browser that uses sparkle. sparkle config from //brave:browser is
++    # not propagated to it.
++    # In component build, however, :chrome_dll shared lib includes
++    # //chrome:browser and sparkle config is propagated to it.
 +    if (brave_chromium_build && !is_component_build) {
-+      deps += [ "//brave/vendor/sparkle:sparkle_link" ]
++      deps += [ "//brave/vendor/sparkle" ]
 +    }
 +
      if (is_component_build) {
        ldflags += [
          "-rpath",
-@@ -1400,6 +1453,7 @@ if (is_win) {
+@@ -1400,6 +1459,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -160,7 +166,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4727eb6fc090a22ed18b6930a9d01f68
      "//chrome/browser",
      "//chrome/common",
      "//components/sync",
-@@ -1437,6 +1491,7 @@ group("browser_dependencies") {
+@@ -1437,6 +1497,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -168,7 +174,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4727eb6fc090a22ed18b6930a9d01f68
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1458,7 +1513,7 @@ group("child_dependencies") {
+@@ -1458,7 +1519,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -177,7 +183,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4727eb6fc090a22ed18b6930a9d01f68
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1741,6 +1796,8 @@ if (is_android) {
+@@ -1741,6 +1802,8 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -186,7 +192,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..4727eb6fc090a22ed18b6930a9d01f68
      ]
  
      include_dirs = [ android_ndk_include_dir ]
-@@ -1796,7 +1853,7 @@ if (is_linux) {
+@@ -1796,7 +1859,7 @@ if (is_linux) {
        dump_syms_binary =
            get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
  
