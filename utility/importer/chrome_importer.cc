@@ -405,8 +405,8 @@ void ChromeImporter::ImportCookies() {
 
   const char query[] =
     "SELECT creation_utc, host_key, name, value, encrypted_value, path, "
-    "expires_utc, secure, httponly, firstpartyonly, last_access_utc, "
-    "has_expires, persistent, priority FROM cookies";
+    "expires_utc, is_secure, is_httponly, firstpartyonly, last_access_utc, "
+    "has_expires, is_persistent, priority FROM cookies";
 
   sql::Statement s(db.GetUniqueStatement(query));
 
