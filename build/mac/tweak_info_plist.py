@@ -87,7 +87,7 @@ def Main(argv):
   if options.brave_feed_url:
     plist['SUFeedURL'] = options.brave_feed_url
 
-  if options.brave_feed_url:
+  if options.brave_dsa_file:
     plist['SUPublicDSAKeyFile'] = options.brave_dsa_file
 
   # Now that all keys have been mutated, rewrite the file.

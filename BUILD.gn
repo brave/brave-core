@@ -390,6 +390,7 @@ if (is_mac) {
     extra_configs = [ "//build/config/compiler:wexit_time_destructors" ]
 
     deps = [
+      "//brave/vendor/sparkle:sparkle_resources_bundle_data",
       "//chrome:chrome_app_strings_bundle_data",
       "//chrome:chrome_resources",
       "//chrome:chrome_versioned_bundle_data",
@@ -398,7 +399,7 @@ if (is_mac) {
     ]
 
     if (is_chrome_branded) {
-      deps += [ ":chrome_helpers" ]
+      deps += [ "chrome:chrome_helpers" ]
     }
 
     # Remove the default strip configuration (which strips all symbols) so that
