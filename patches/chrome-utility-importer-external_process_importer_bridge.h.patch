@@ -1,0 +1,12 @@
+diff --git a/chrome/utility/importer/external_process_importer_bridge.h b/chrome/utility/importer/external_process_importer_bridge.h
+index 7e05c4e04f8e61b418d373a73bd8901347df4c76..e7e6d9fa5e0d54c7755fe3a38eca6f70a902411c 100644
+--- a/chrome/utility/importer/external_process_importer_bridge.h
++++ b/chrome/utility/importer/external_process_importer_bridge.h
+@@ -86,6 +86,7 @@ class ExternalProcessImporterBridge : public ImporterBridge {
+ 
+  private:
+   ~ExternalProcessImporterBridge() override;
++  friend class BraveExternalProcessImporterBridge;
+ 
+   // Holds strings needed by the external importer because the resource
+   // bundle isn't available to the external process.

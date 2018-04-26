@@ -1,8 +1,13 @@
 diff --git a/chrome/utility/importer/profile_import_impl.cc b/chrome/utility/importer/profile_import_impl.cc
-index 97fafc01166bbc7fbc94f6038f925ed4dedc3c2e..ae7daac3265bfc5abd16b768a99d32039a9618ad 100644
+index 97fafc01166bbc7fbc94f6038f925ed4dedc3c2e..22d1fd9662e766fce37e962a8d8a96cae88b9e99 100644
 --- a/chrome/utility/importer/profile_import_impl.cc
 +++ b/chrome/utility/importer/profile_import_impl.cc
-@@ -5,10 +5,12 @@
+@@ -2,13 +2,17 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++#include "brave/utility/importer/brave_external_process_importer_bridge.h"
++
  #include "chrome/utility/importer/profile_import_impl.h"
  
  #include "base/bind.h"
@@ -15,7 +20,7 @@ index 97fafc01166bbc7fbc94f6038f925ed4dedc3c2e..ae7daac3265bfc5abd16b768a99d3203
  #include "base/threading/thread.h"
  #include "base/threading/thread_task_runner_handle.h"
  #include "build/build_config.h"
-@@ -39,6 +41,16 @@ void ProfileImportImpl::StartImport(
+@@ -39,6 +43,16 @@ void ProfileImportImpl::StartImport(
    }
  
    items_to_import_ = items;
@@ -32,3 +37,12 @@ index 97fafc01166bbc7fbc94f6038f925ed4dedc3c2e..ae7daac3265bfc5abd16b768a99d3203
  
    // Create worker thread in which importer runs.
    import_thread_.reset(new base::Thread("import_thread"));
+@@ -49,7 +63,7 @@ void ProfileImportImpl::StartImport(
+     NOTREACHED();
+     ImporterCleanup();
+   }
+-  bridge_ = new ExternalProcessImporterBridge(
++  bridge_ = new BraveExternalProcessImporterBridge(
+       *localized_strings,
+       ThreadSafeProfileImportObserverPtr::Create(std::move(observer)));
+   import_thread_->task_runner()->PostTask(

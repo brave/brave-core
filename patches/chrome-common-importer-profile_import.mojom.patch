@@ -1,0 +1,21 @@
+diff --git a/chrome/common/importer/profile_import.mojom b/chrome/common/importer/profile_import.mojom
+index d5fa210c58244a5c9bc2aed4fa80d903920f604e..0745428b8b1ccd3d7f9b029690d9bbcbb2d8ae7d 100644
+--- a/chrome/common/importer/profile_import.mojom
++++ b/chrome/common/importer/profile_import.mojom
+@@ -7,6 +7,7 @@ module chrome.mojom;
+ import "components/autofill/content/common/autofill_types.mojom";
+ import "mojo/common/string16.mojom";
+ import "mojo/common/values.mojom";
++import "services/network/public/interfaces/cookie_manager.mojom";
+ import "url/mojo/url.mojom";
+ 
+ const string kProfileImportServiceName = "profile_import";
+@@ -65,6 +66,8 @@ interface ProfileImportObserver {
+   OnAutofillFormDataImportStart(uint32 total_autofill_form_data_entry_count);
+   OnAutofillFormDataImportGroup(
+       array<ImporterAutofillFormDataEntry> autofill_form_data_entry_group);
++  OnCookiesImportStart(uint32 total_cookies_count);
++  OnCookiesImportGroup(array<network.mojom.CanonicalCookie> cookies_group);
+   // Windows only:
+   OnIE7PasswordReceived(ImporterIE7PasswordInfo importer_password_info);
+ };

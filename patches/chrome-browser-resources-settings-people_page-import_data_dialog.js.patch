@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/resources/settings/people_page/import_data_dialog.js b/chrome/browser/resources/settings/people_page/import_data_dialog.js
+index d12dfee24b9b468a5abb535238d86088d05e28c7..f72aff1e6d2e45abb0fd5fb62798bd44eb140a0c 100644
+--- a/chrome/browser/resources/settings/people_page/import_data_dialog.js
++++ b/chrome/browser/resources/settings/people_page/import_data_dialog.js
+@@ -81,7 +81,9 @@ Polymer({
+         !(this.getPref('import_dialog_search_engine').value &&
+           this.selected_.search) &&
+         !(this.getPref('import_dialog_autofill_form_data').value &&
+-          this.selected_.autofillFormData);
++          this.selected_.autofillFormData) &&
++        !(this.getPref('import_dialog_cookies').value &&
++          this.selected_.cookies);
+   },
+ 
+   /**

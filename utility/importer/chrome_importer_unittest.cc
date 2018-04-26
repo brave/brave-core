@@ -4,6 +4,7 @@
 
 #include "brave/utility/importer/chrome_importer.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/importer/brave_mock_importer_bridge.h"
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -55,14 +56,14 @@ class ChromeImporterTest : public ::testing::Test {
   void SetUp() override {
     SetUpChromeProfile();
     importer_ = new ChromeImporter;
-    bridge_ = new MockImporterBridge;
+    bridge_ = new BraveMockImporterBridge;
   }
 
   base::ScopedTempDir temp_dir_;
   base::FilePath profile_dir_;
   importer::SourceProfile profile_;
   scoped_refptr<ChromeImporter> importer_;
-  scoped_refptr<MockImporterBridge> bridge_;
+  scoped_refptr<BraveMockImporterBridge> bridge_;
 };
 
 TEST_F(ChromeImporterTest, ImportHistory) {
@@ -166,6 +167,28 @@ TEST_F(ChromeImporterTest, ImportPasswords) {
             blacklisted_login.signon_realm);
   EXPECT_EQ("", UTF16ToASCII(blacklisted_login.username_value));
   EXPECT_EQ("", UTF16ToASCII(blacklisted_login.password_value));
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(ChromeImporterTest, ImportCookies) {
+  OSCryptMocker::SetUp();
+
+  std::vector<net::CanonicalCookie> cookies;
+
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::COOKIES));
+  EXPECT_CALL(*bridge_, SetCookies(_))
+      .WillOnce(::testing::SaveArg<0>(&cookies));
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::COOKIES));
+  EXPECT_CALL(*bridge_, NotifyEnded());
+
+  importer_->StartImport(profile_, importer::COOKIES, bridge_.get());
+
+  ASSERT_EQ(1u, cookies.size());
+  EXPECT_EQ("localhost", cookies[0].Domain());
+  EXPECT_EQ("test", cookies[0].Name());
+  EXPECT_EQ("test", cookies[0].Value());
 
   OSCryptMocker::TearDown();
 }

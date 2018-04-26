@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/importer/profile_writer.h b/chrome/browser/importer/profile_writer.h
+index 3913e09041c243e56b72b2b6e6fea1462c07c0f6..99f464af06d6fb39aa9df0c9fe7c383d86e3ba30 100644
+--- a/chrome/browser/importer/profile_writer.h
++++ b/chrome/browser/importer/profile_writer.h
+@@ -94,6 +94,7 @@ class ProfileWriter : public base::RefCountedThreadSafe<ProfileWriter> {
+ 
+  protected:
+   friend class base::RefCountedThreadSafe<ProfileWriter>;
++  friend class BraveProfileWriter;
+ 
+   virtual ~ProfileWriter();
+ 
