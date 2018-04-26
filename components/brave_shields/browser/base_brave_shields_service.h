@@ -14,18 +14,29 @@
 
 #include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
+#include "components/component_updater/component_updater_service.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
+
+// Just used to give access to OnDemandUpdater since it's private.
+// Chromium has ComponentsUI which is a friend class, so we just
+// do this hack here to gain access.
+class ComponentsUI {
+ public:
+  void OnDemandUpdate(
+      component_updater::ComponentUpdateService* cus,
+      const std::string& component_id);
+};
 
 namespace brave_shields {
 
 // The brave shields service in charge of checking brave shields like ad-block,
 // tracking protection, etc.
-class BaseBraveShieldsService {
+class BaseBraveShieldsService : public ComponentsUI {
  public:
-  BaseBraveShieldsService(const std::string& updater_name,
-                          const std::string& updater_id,
-                          const std::string& updater_base64_public_key);
+  BaseBraveShieldsService(const std::string& component_name,
+                          const std::string& component_id,
+                          const std::string& component_base64_public_key);
   virtual ~BaseBraveShieldsService();
   bool Start();
   void Stop();
@@ -40,9 +51,9 @@ class BaseBraveShieldsService {
  protected:
   virtual bool Init() = 0;
   virtual void Cleanup() = 0;
-  virtual void OnComponentRegistered(const std::string& extension_id) = 0;
-  virtual void OnComponentReady(const std::string& extension_id,
-                                const base::FilePath& install_dir) = 0;
+  virtual void OnComponentRegistered(const std::string& component_id);
+  virtual void OnComponentReady(const std::string& component_id,
+                                const base::FilePath& install_dir);
 
  private:
   void InitShields();
@@ -50,9 +61,9 @@ class BaseBraveShieldsService {
   bool initialized_;
   std::mutex initialized_mutex_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  std::string updater_name_;
-  std::string updater_id_;
-  std::string updater_base64_public_key_;
+  std::string component_name_;
+  std::string component_id_;
+  std::string component_base64_public_key_;
 };
 
 }  // namespace brave_shields

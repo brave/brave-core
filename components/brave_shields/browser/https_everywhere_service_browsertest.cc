@@ -14,9 +14,9 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 
-const std::string kHTTPSEverywhereUpdaterTestId("bhlmpjhncoojbkemjkeppfahkglffilp");
+const std::string kHTTPSEverywhereComponentTestId("bhlmpjhncoojbkemjkeppfahkglffilp");
 
-const std::string kHTTPSEverywhereUpdaterTestBase64PublicKey =
+const std::string kHTTPSEverywhereComponentTestBase64PublicKey =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3tAm7HooTNVGQ9cm7Yuc"
     "M9sLM/V38JOXzdj7z9dyDIfO64N69Gr5dn3XRzLuD+Pyzpl8MzfY/tIbWNSw3I2a"
     "8YcEPmyHl2L4HByKTm+eJ02ArhtkgtZKjiTDc84KQcsTBHqINkMUQYeUN3VW1lz2"
@@ -59,9 +59,10 @@ public:
   }
 
   void InitService() {
-    brave_shields::HTTPSEverywhereService::SetIdAndBase64PublicKeyForTest(
-        kHTTPSEverywhereUpdaterTestId,
-        kHTTPSEverywhereUpdaterTestBase64PublicKey);
+    brave_shields::HTTPSEverywhereService::
+        SetComponentIdAndBase64PublicKeyForTest(
+            kHTTPSEverywhereComponentTestId,
+            kHTTPSEverywhereComponentTestBase64PublicKey);
   }
 
   bool InstallHTTPSEverywhereExtension() {

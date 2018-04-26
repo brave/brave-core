@@ -22,10 +22,10 @@ class TrackingProtectionServiceTest;
 
 namespace brave_shields {
 
-const std::string kTrackingProtectionUpdaterName("Brave Tracking Protection Updater");
-const std::string kTrackingProtectionUpdaterId("afalakplffnnnlkncjhbmahjfjhmlkal");
+const std::string kTrackingProtectionComponentName("Brave Tracking Protection Updater");
+const std::string kTrackingProtectionComponentId("afalakplffnnnlkncjhbmahjfjhmlkal");
 
-const std::string kTrackingProtectionUpdaterBase64PublicKey =
+const std::string kTrackingProtectionComponentBase64PublicKey =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4TIQXRCftLpGmQZxmm6"
     "AU8pqGKLoDyi537HGQyRKcK7j/CSXCf3vwJr7xkV72p7bayutuzyNZ3740QxBPie"
     "sfBOp8bBb8d2VgTHP3b+SuNmK/rsSRsMRhT05x8AAr/7ab6U3rW0Gsalm2653xnn"
@@ -47,17 +47,16 @@ class TrackingProtectionService : public BaseBraveShieldsService {
  protected:
   bool Init() override;
   void Cleanup() override;
-  void OnComponentRegistered(const std::string& extension_id) override;
-  void OnComponentReady(const std::string& extension_id,
+  void OnComponentReady(const std::string& component_id,
       const base::FilePath& install_dir) override;
 
  private:
   friend class ::TrackingProtectionServiceTest;
-  static std::string g_tracking_protection_updater_id_;
-  static std::string g_tracking_protection_updater_base64_public_key_;
-  static void SetIdAndBase64PublicKeyForTest(
-      const std::string& id,
-      const std::string& base64_public_key);
+  static std::string g_tracking_protection_component_id_;
+  static std::string g_tracking_protection_component_base64_public_key_;
+  static void SetComponentIdAndBase64PublicKeyForTest(
+      const std::string& component_id,
+      const std::string& component_base64_public_key);
 
   std::vector<std::string> GetThirdPartyHosts(const std::string& base_host);
 

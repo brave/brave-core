@@ -23,15 +23,15 @@
 
 namespace brave_shields {
 
-std::string AdBlockService::g_ad_block_updater_id_(
-    kAdBlockUpdaterId);
-std::string AdBlockService::g_ad_block_updater_base64_public_key_(
-    kAdBlockUpdaterBase64PublicKey);
+std::string AdBlockService::g_ad_block_component_id_(
+    kAdBlockComponentId);
+std::string AdBlockService::g_ad_block_component_base64_public_key_(
+    kAdBlockComponentBase64PublicKey);
 
 AdBlockService::AdBlockService()
-    : BaseBraveShieldsService(kAdBlockUpdaterName,
-                              g_ad_block_updater_id_,
-                              g_ad_block_updater_base64_public_key_),
+    : BaseBraveShieldsService(kAdBlockComponentName,
+                              g_ad_block_component_id_,
+                              g_ad_block_component_base64_public_key_),
       ad_block_client_(new AdBlockClient()) {
 }
 
@@ -73,10 +73,7 @@ bool AdBlockService::Init() {
   return true;
 }
 
-void AdBlockService::OnComponentRegistered(const std::string& extension_id) {
-}
-
-void AdBlockService::OnComponentReady(const std::string& extension_id,
+void AdBlockService::OnComponentReady(const std::string& component_id,
                                       const base::FilePath& install_dir) {
   base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
   if (!GetDATFileData(dat_file_path, buffer_)) {
@@ -96,11 +93,11 @@ void AdBlockService::OnComponentReady(const std::string& extension_id,
 }
 
 // static
-void AdBlockService::SetIdAndBase64PublicKeyForTest(
-    const std::string& id,
-    const std::string& base64_public_key) {
-  g_ad_block_updater_id_ = id;
-  g_ad_block_updater_base64_public_key_ = base64_public_key;
+void AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
+    const std::string& component_id,
+    const std::string& component_base64_public_key) {
+  g_ad_block_component_id_ = component_id;
+  g_ad_block_component_base64_public_key_ = component_base64_public_key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

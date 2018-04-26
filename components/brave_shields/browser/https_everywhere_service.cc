@@ -75,15 +75,15 @@ namespace {
 
 namespace brave_shields {
 
-std::string HTTPSEverywhereService::g_https_everywhere_updater_id_(
-    kHTTPSEverywhereUpdaterId);
-std::string HTTPSEverywhereService::g_https_everywhere_updater_base64_public_key_(
-    kHTTPSEverywhereUpdaterBase64PublicKey);
+std::string HTTPSEverywhereService::g_https_everywhere_component_id_(
+    kHTTPSEverywhereComponentId);
+std::string HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
+    kHTTPSEverywhereComponentBase64PublicKey);
 
 HTTPSEverywhereService::HTTPSEverywhereService()
-    : BaseBraveShieldsService(kHTTPSEverywhereUpdaterName,
-                              g_https_everywhere_updater_id_,
-                              g_https_everywhere_updater_base64_public_key_),
+    : BaseBraveShieldsService(kHTTPSEverywhereComponentName,
+                              g_https_everywhere_component_id_,
+                              g_https_everywhere_component_base64_public_key_),
       level_db_(nullptr) {
 }
 
@@ -99,10 +99,7 @@ bool HTTPSEverywhereService::Init() {
   return true;
 }
 
-void HTTPSEverywhereService::OnComponentRegistered(const std::string& extension_id) {
-}
-
-void HTTPSEverywhereService::OnComponentReady(const std::string& extension_id,
+void HTTPSEverywhereService::OnComponentReady(const std::string& component_id,
                                               const base::FilePath& install_dir) {
   base::FilePath zip_db_file_path = install_dir.AppendASCII(DAT_FILE);
 
@@ -349,11 +346,11 @@ void HTTPSEverywhereService::CloseDatabase()
 }
 
 // static
-void HTTPSEverywhereService::SetIdAndBase64PublicKeyForTest(
-    const std::string& id,
-    const std::string& base64_public_key) {
-  g_https_everywhere_updater_id_ = id;
-  g_https_everywhere_updater_base64_public_key_ = base64_public_key;
+void HTTPSEverywhereService::SetComponentIdAndBase64PublicKeyForTest(
+    const std::string& component_id,
+    const std::string& component_base64_public_key) {
+  g_https_everywhere_component_id_ = component_id;
+  g_https_everywhere_component_base64_public_key_ = component_base64_public_key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

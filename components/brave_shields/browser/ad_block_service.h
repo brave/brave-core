@@ -21,10 +21,10 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
-const std::string kAdBlockUpdaterName("Brave Ad Block Updater");
-const std::string kAdBlockUpdaterId("cffkpbalmllkdoenhmdmpbkajipdjfam");
+const std::string kAdBlockComponentName("Brave Ad Block Updater");
+const std::string kAdBlockComponentId("cffkpbalmllkdoenhmdmpbkajipdjfam");
 
-const std::string kAdBlockUpdaterBase64PublicKey =
+const std::string kAdBlockComponentBase64PublicKey =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs0qzJmHSgIiw7IGFCxij"
     "1NnB5hJ5ZQ1LKW9htL4EBOaMJvmqaDs/wfq0nw/goBHWsqqkMBynRTu2Hxxirvdb"
     "cugn1Goys5QKPgAvKwDHJp9jlnADWm5xQvPQ4GE1mK1/I3ka9cEOCzPW6GI+wGLi"
@@ -46,17 +46,16 @@ class AdBlockService : public BaseBraveShieldsService {
  protected:
   bool Init() override;
   void Cleanup() override;
-  void OnComponentRegistered(const std::string& extension_id) override;
-  void OnComponentReady(const std::string& extension_id,
+  void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir) override;
 
  private:
   friend class ::AdBlockServiceTest;
-  static std::string g_ad_block_updater_id_;
-  static std::string g_ad_block_updater_base64_public_key_;
-  static void SetIdAndBase64PublicKeyForTest(
-      const std::string& id,
-      const std::string& base64_public_key);
+  static std::string g_ad_block_component_id_;
+  static std::string g_ad_block_component_base64_public_key_;
+  static void SetComponentIdAndBase64PublicKeyForTest(
+      const std::string& component_id,
+      const std::string& component_base64_public_key);
 
   std::vector<unsigned char> buffer_;
   std::unique_ptr<AdBlockClient> ad_block_client_;

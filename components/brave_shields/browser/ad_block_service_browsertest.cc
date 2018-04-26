@@ -15,9 +15,9 @@
 const char kAdsPage[] = "/blocking.html";
 const char kNoAdsPage[] = "/no_blocking.html";
 
-const std::string kAdBlockUpdaterTestId("naccapggpomhlhoifnlebfoocegenbol");
+const std::string kAdBlockComponentTestId("naccapggpomhlhoifnlebfoocegenbol");
 
-const std::string kAdBlockUpdaterTestBase64PublicKey =
+const std::string kAdBlockComponentTestBase64PublicKey =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtV7Vr69kkvSvu2lhcMDh"
     "j4Jm3FKU1zpUkALaum5719/cccVvGpMKKFyy4WYXsmAfcIONmGO4ThK/q6jkgC5v"
     "8HrkjPOf7HHebKEnsJJucz/Z1t6dq0CE+UA2IWfbGfFM4nJ8AKIv2gqiw2d4ydAs"
@@ -51,8 +51,8 @@ public:
   }
 
   void InitService() {
-    brave_shields::AdBlockService::SetIdAndBase64PublicKeyForTest(
-        kAdBlockUpdaterTestId, kAdBlockUpdaterTestBase64PublicKey);
+    brave_shields::AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
+        kAdBlockComponentTestId, kAdBlockComponentTestBase64PublicKey);
   }
 
   bool InstallAdBlockExtension() {

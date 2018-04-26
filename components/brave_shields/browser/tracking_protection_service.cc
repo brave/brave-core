@@ -24,15 +24,15 @@
 
 namespace brave_shields {
 
-std::string TrackingProtectionService::g_tracking_protection_updater_id_(
-    kTrackingProtectionUpdaterId);
-std::string TrackingProtectionService::g_tracking_protection_updater_base64_public_key_(
-    kTrackingProtectionUpdaterBase64PublicKey);
+std::string TrackingProtectionService::g_tracking_protection_component_id_(
+    kTrackingProtectionComponentId);
+std::string TrackingProtectionService::g_tracking_protection_component_base64_public_key_(
+    kTrackingProtectionComponentBase64PublicKey);
 
 TrackingProtectionService::TrackingProtectionService()
-    : BaseBraveShieldsService(kTrackingProtectionUpdaterName,
-                              g_tracking_protection_updater_id_,
-                              g_tracking_protection_updater_base64_public_key_),
+    : BaseBraveShieldsService(kTrackingProtectionComponentName,
+                              g_tracking_protection_component_id_,
+                              g_tracking_protection_component_base64_public_key_),
     tracking_protection_client_(new CTPParser()),
     // See comment in tracking_protection_service.h for white_list_
     white_list_({
@@ -93,10 +93,7 @@ bool TrackingProtectionService::Init() {
   return true;
 }
 
-void TrackingProtectionService::OnComponentRegistered(const std::string& extension_id) {
-}
-
-void TrackingProtectionService::OnComponentReady(const std::string& extension_id,
+void TrackingProtectionService::OnComponentReady(const std::string& component_id,
                                                  const base::FilePath& install_dir) {
   base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
   if (!GetDATFileData(dat_file_path, buffer_)) {
@@ -172,11 +169,11 @@ TrackingProtectionService::GetThirdPartyHosts(const std::string& base_host) {
 }
 
 // static
-void TrackingProtectionService::SetIdAndBase64PublicKeyForTest(
-    const std::string& id,
-    const std::string& base64_public_key) {
-  g_tracking_protection_updater_id_ = id;
-  g_tracking_protection_updater_base64_public_key_ = base64_public_key;
+void TrackingProtectionService::SetComponentIdAndBase64PublicKeyForTest(
+    const std::string& component_id,
+    const std::string& component_base64_public_key) {
+  g_tracking_protection_component_id_ = component_id;
+  g_tracking_protection_component_base64_public_key_ = component_base64_public_key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
