@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a12ec199d 100644
+index 960921acd7ebb0ba99092745e8d30bca76821f2a..9fc4c4a9be27ed0d8fd67cc26d91c7e7fef35374 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -180,6 +180,15 @@ if (!is_android && !is_mac) {
@@ -98,7 +98,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -710,6 +737,25 @@ if (is_win) {
+@@ -710,6 +737,23 @@ if (is_win) {
        "app/theme/$branding_path_component/mac/document.icns",
        "browser/ui/cocoa/applescript/scripting.sdef",
      ]
@@ -117,14 +117,12 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a
 +          "app/theme/$branding_path_component/mac/development/app.icns",
 +        ]
 +      }
-+
-+      deps = [ "//brave/vendor/sparkle:sparkle_resources" ]
 +    }
 +
      outputs = [
        "{{bundle_resources_dir}}/{{source_file_part}}",
      ]
-@@ -1162,6 +1208,8 @@ if (is_win) {
+@@ -1162,6 +1206,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -133,7 +131,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a
        "app/chrome_main_mac.h",
        "app/chrome_main_mac.mm",
      ]
-@@ -1226,6 +1274,7 @@ if (is_win) {
+@@ -1226,6 +1272,7 @@ if (is_win) {
  
      public_deps = [
        ":chrome_dll",
@@ -141,24 +139,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a
      ]
  
      deps = [
-@@ -1253,6 +1302,16 @@ if (is_win) {
-       "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
-     ]
- 
-+    # Sparkle link option must be set to build :chrome_framework_shared_library
-+    # because :chrome_framework_shared_library shared lib includes
-+    # //chrome:browser that uses sparkle. sparkle config from //brave:browser is
-+    # not propagated to it.
-+    # In component build, however, :chrome_dll shared lib includes
-+    # //chrome:browser and sparkle config is propagated to it.
-+    if (brave_chromium_build && !is_component_build) {
-+      deps += [ "//brave/vendor/sparkle" ]
-+    }
-+
-     if (is_component_build) {
-       ldflags += [
-         "-rpath",
-@@ -1400,6 +1459,7 @@ if (is_win) {
+@@ -1400,6 +1447,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -166,7 +147,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a
      "//chrome/browser",
      "//chrome/common",
      "//components/sync",
-@@ -1437,6 +1497,7 @@ group("browser_dependencies") {
+@@ -1437,6 +1485,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -174,7 +155,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1458,7 +1519,7 @@ group("child_dependencies") {
+@@ -1458,7 +1507,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -183,7 +164,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1741,6 +1802,8 @@ if (is_android) {
+@@ -1741,6 +1790,8 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -192,7 +173,7 @@ index 960921acd7ebb0ba99092745e8d30bca76821f2a..947f5ff1444878b5843f14205554ca8a
      ]
  
      include_dirs = [ android_ndk_include_dir ]
-@@ -1796,7 +1859,7 @@ if (is_linux) {
+@@ -1796,7 +1847,7 @@ if (is_linux) {
        dump_syms_binary =
            get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
  
