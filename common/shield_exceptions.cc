@@ -4,6 +4,7 @@
 
 #include "brave/common/shield_exceptions.h"
 
+#include <algorithm>
 #include <map>
 #include <vector>
 
