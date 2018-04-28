@@ -11,9 +11,6 @@
 #include <vector>
 
 #include "base/base_paths.h"
-#include "base/bind.h"
-#include "base/bind_helpers.h"
-#include "base/callback.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
@@ -24,13 +21,18 @@
 
 #define DAT_FILE "TrackingProtection.dat"
 #define THIRD_PARTY_HOSTS_CACHE_SIZE 20
-// TODO: Repalce this with the real version at runtime
-#define DAT_FILE_URL "https://s3.amazonaws.com/tracking-protection-data/1/TrackingProtection.dat"
 
 namespace brave_shields {
 
-TrackingProtectionService::TrackingProtectionService() :
-    BaseBraveShieldsService(DAT_FILE, GURL(DAT_FILE_URL)),
+std::string TrackingProtectionService::g_tracking_protection_component_id_(
+    kTrackingProtectionComponentId);
+std::string TrackingProtectionService::g_tracking_protection_component_base64_public_key_(
+    kTrackingProtectionComponentBase64PublicKey);
+
+TrackingProtectionService::TrackingProtectionService()
+    : BaseBraveShieldsService(kTrackingProtectionComponentName,
+                              g_tracking_protection_component_id_,
+                              g_tracking_protection_component_base64_public_key_),
     tracking_protection_client_(new CTPParser()),
     // See comment in tracking_protection_service.h for white_list_
     white_list_({
@@ -88,16 +90,26 @@ bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
 }
 
 bool TrackingProtectionService::Init() {
-   if (!GetDATFileData(DAT_FILE, buffer_)) {
-    LOG(ERROR) << "Could not obtain ad block data file";
-    return false;
+  return true;
+}
+
+void TrackingProtectionService::OnComponentReady(const std::string& component_id,
+                                                 const base::FilePath& install_dir) {
+  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
+  if (!GetDATFileData(dat_file_path, buffer_)) {
+    LOG(ERROR) << "Could not obtain tracking protection data file";
+    return;
   }
+  if (buffer_.empty()) {
+    LOG(ERROR) << "Could not obtain tracking protection data";
+    return;
+  }
+  tracking_protection_client_.reset(new CTPParser());
   if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
     tracking_protection_client_.reset();
-    LOG(ERROR) << "TrackingProtectionService::InitAdBlock deserialize failed";
-    return false;
+    LOG(ERROR) << "Failed to deserialize tracking protection data";
+    return;
   }
-  return true;
 }
 
 // Ported from Android: net/blockers/blockers_worker.cc
@@ -156,12 +168,19 @@ TrackingProtectionService::GetThirdPartyHosts(const std::string& base_host) {
   return hosts;
 }
 
+// static
+void TrackingProtectionService::SetComponentIdAndBase64PublicKeyForTest(
+    const std::string& component_id,
+    const std::string& component_base64_public_key) {
+  g_tracking_protection_component_id_ = component_id;
+  g_tracking_protection_component_base64_public_key_ = component_base64_public_key;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
-// TODO(bbondy): consider making this a singleton.
-std::unique_ptr<BaseBraveShieldsService> TrackingProtectionServiceFactory() {
+std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory() {
   return base::MakeUnique<TrackingProtectionService>();
 }
 

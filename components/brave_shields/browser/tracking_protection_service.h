@@ -13,14 +13,28 @@
 #include <vector>
 #include <mutex>
 
+#include "base/files/file_path.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "content/public/common/resource_type.h"
 
 class CTPParser;
+class TrackingProtectionServiceTest;
 
 namespace brave_shields {
 
-// The brave shields service in charge of ad-block checking and init.
+const std::string kTrackingProtectionComponentName("Brave Tracking Protection Updater");
+const std::string kTrackingProtectionComponentId("afalakplffnnnlkncjhbmahjfjhmlkal");
+
+const std::string kTrackingProtectionComponentBase64PublicKey =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4TIQXRCftLpGmQZxmm6"
+    "AU8pqGKLoDyi537HGQyRKcK7j/CSXCf3vwJr7xkV72p7bayutuzyNZ3740QxBPie"
+    "sfBOp8bBb8d2VgTHP3b+SuNmK/rsSRsMRhT05x8AAr/7ab6U3rW0Gsalm2653xnn"
+    "QS8vt0s62xQTmC+UMXowaSLUZ0Be/TOu6lHZhOeo0NBMKc6PkOu0R1EEfP7dJR6S"
+    "M/v4dBUBZ1HXcuziVbCXVyU51opZCMjlxyUlQR9pTGk+Zh5sDn1Vw1MwLnWiEfQ4"
+    "EGL1V7GeI4vgLoOLgq7tmhEratHGCfC1IHm9luMACRr/ybMI6DQJOvgBvecb292F"
+    "xQIDAQAB";
+
+// The brave shields service in charge of tracking protection and init.
 class TrackingProtectionService : public BaseBraveShieldsService {
  public:
   TrackingProtectionService();
@@ -33,8 +47,17 @@ class TrackingProtectionService : public BaseBraveShieldsService {
  protected:
   bool Init() override;
   void Cleanup() override;
+  void OnComponentReady(const std::string& component_id,
+      const base::FilePath& install_dir) override;
 
  private:
+  friend class ::TrackingProtectionServiceTest;
+  static std::string g_tracking_protection_component_id_;
+  static std::string g_tracking_protection_component_base64_public_key_;
+  static void SetComponentIdAndBase64PublicKeyForTest(
+      const std::string& component_id,
+      const std::string& component_base64_public_key);
+
   std::vector<std::string> GetThirdPartyHosts(const std::string& base_host);
 
   std::vector<unsigned char> buffer_;
@@ -47,7 +70,7 @@ class TrackingProtectionService : public BaseBraveShieldsService {
 };
 
 // Creates the TrackingProtectionService
-std::unique_ptr<BaseBraveShieldsService> TrackingProtectionServiceFactory();
+std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory();
 
 }  // namespace brave_shields
 

@@ -68,15 +68,15 @@
       <include name="IDR_BRAVE_COMMON_FONT_AWESOME_3" file="${root_gen_dir}/brave/b06871f281fee6b241d60582ae9369b9.ttf" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
 
-      <!-- Browser resrouces -->
+      <!-- Browser resources -->
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
 
-      <!-- WebUI payments resrouces -->
+      <!-- WebUI payments resources -->
       <include name="IDR_BRAVE_PAYMENTS_HTML" file="../brave_payments_ui/brave_payments.html" type="BINDATA" />
       <include name="IDR_BRAVE_PAYMENTS_JS" file="${root_gen_dir}/brave/brave_payments.bundle.js" type="BINDATA" use_base_dir="false" />
 
-      <!-- WebUI newtab resrouces -->
-      <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDDATA" />
+      <!-- WebUI newtab resources -->
+      <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_JS" file="${root_gen_dir}/brave/brave_new_tab.bundle.js" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_NEW_TAB_IMG1" file="../img/newtab/bookmarks_btn.svg" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_IMG4" file="../img/newtab/history_btn.svg" type="BINDATA" />
@@ -85,7 +85,7 @@
 
     </includes>
     <messages fallback_to_english="true">
-      <!-- WebUI newtab resrouces -->
+      <!-- WebUI newtab resources -->
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Ads Blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_TRACKERS_BLOCKED" desc="total number of trackers blocked">Trackers Blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>

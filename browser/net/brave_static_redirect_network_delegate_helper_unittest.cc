@@ -5,9 +5,13 @@
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
 
 #include "brave/browser/net/url_context.h"
+#include "brave/common/network_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "components/component_updater/component_updater_url_constants.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
+#include "url/gurl.h"
+#include "url/url_constants.h"
 
 
 namespace {
@@ -56,7 +60,26 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
       before_url_context(new brave::BraveRequestInfo());
   brave::ResponseCallback callback;
   GURL new_url;
-  GURL expected_url(GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY));
+  GURL expected_url(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
+  int ret =
+      OnBeforeURLRequest_StaticRedirectWork(request.get(), &new_url, callback,
+                                            before_url_context);
+  EXPECT_EQ(new_url, expected_url);
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyComponentUpdaterURL) {
+  net::TestDelegate test_delegate;
+  std::string query_string("?foo=bar");
+  GURL url(std::string(component_updater::kUpdaterDefaultUrl) + query_string);
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                             TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo>
+      before_url_context(new brave::BraveRequestInfo());
+  brave::ResponseCallback callback;
+  GURL new_url;
+  GURL expected_url(std::string(kBraveUpdatesExtensionsEndpoint + query_string));
   int ret =
       OnBeforeURLRequest_StaticRedirectWork(request.get(), &new_url, callback,
                                             before_url_context);

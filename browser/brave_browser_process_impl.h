@@ -8,8 +8,9 @@
 #include "chrome/browser/browser_process_impl.h"
 
 namespace brave_shields {
-class BaseBraveShieldsService;
+class AdBlockService;
 class HTTPSEverywhereService;
+class TrackingProtectionService;
 }
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
@@ -17,15 +18,16 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   BraveBrowserProcessImpl(base::SequencedTaskRunner* local_state_task_runner);
   ~BraveBrowserProcessImpl() override;
 
-  brave_shields::BaseBraveShieldsService* ad_block_service();
-  brave_shields::BaseBraveShieldsService*
-      tracking_protection_service();
-  brave_shields::HTTPSEverywhereService*
-      https_everywhere_service();
+  // BrowserProcess implementation.
+  component_updater::ComponentUpdateService* component_updater() override;
+
+  brave_shields::AdBlockService* ad_block_service();
+  brave_shields::TrackingProtectionService* tracking_protection_service();
+  brave_shields::HTTPSEverywhereService* https_everywhere_service();
 
  private:
-  std::unique_ptr<brave_shields::BaseBraveShieldsService> ad_block_service_;
-  std::unique_ptr<brave_shields::BaseBraveShieldsService>
+  std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
+  std::unique_ptr<brave_shields::TrackingProtectionService>
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;

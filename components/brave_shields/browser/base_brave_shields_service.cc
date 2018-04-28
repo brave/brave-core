@@ -20,18 +20,37 @@
 #include "base/task_runner_util.h"
 #include "base/task_scheduler/post_task.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/brave_shields/browser/dat_file_web_request.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/component_updater/brave_component_installer.h"
+
+void ComponentsUI::OnDemandUpdate(
+    component_updater::ComponentUpdateService* cus,
+    const std::string& component_id) {
+  cus->GetOnDemandUpdater().OnDemandUpdate(component_id,
+      component_updater::Callback());
+}
 
 namespace brave_shields {
 
 BaseBraveShieldsService::BaseBraveShieldsService(
-    const std::string& file_name,
-    const GURL& url) :
-      file_name_(file_name),
-      url_(url),
-      initialized_(false),
+    const std::string& component_name,
+    const std::string& component_id,
+    const std::string& component_base64_public_key)
+    : initialized_(false),
       task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
+          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
+      component_name_(component_name),
+      component_id_(component_id),
+      component_base64_public_key_(component_base64_public_key) {
+  base::Closure registered_callback =
+      base::Bind(&BaseBraveShieldsService::OnComponentRegistered,
+                 base::Unretained(this), component_id_);
+  ReadyCallback ready_callback =
+      base::Bind(&BaseBraveShieldsService::OnComponentReady,
+                 base::Unretained(this), component_id_);
+  brave::RegisterComponent(g_browser_process->component_updater(),
+      component_name_, component_base64_public_key_,
+      registered_callback, ready_callback);
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {
@@ -39,28 +58,6 @@ BaseBraveShieldsService::~BaseBraveShieldsService() {
 
 bool BaseBraveShieldsService::IsInitialized() const {
   return initialized_;
-}
-
-void BaseBraveShieldsService::DownloadDATFile() {
-  web_request_.reset(new DATFileWebRequest(
-    file_name_,
-    url_,
-    base::Bind(&BaseBraveShieldsService::DATFileResponse,
-      base::Unretained(this))));
-  web_request_->Init();
-  web_request_->Start();
-}
-
-void BaseBraveShieldsService::DATFileResponse(bool success) {
-  std::lock_guard<std::mutex> guard(init_mutex_);
-  if (!success) {
-    LOG(ERROR) << "Could not download DAT file: " << url_;
-    return;
-  }
-
-  task_runner_->PostTask(FROM_HERE,
-      base::Bind(&BaseBraveShieldsService::InitShields,
-          base::Unretained(this)));
 }
 
 void BaseBraveShieldsService::InitShields() {
@@ -71,12 +68,11 @@ void BaseBraveShieldsService::InitShields() {
 }
 
 bool BaseBraveShieldsService::Start() {
-  std::lock_guard<std::mutex> guard(init_mutex_);
   if (initialized_) {
     return true;
   }
 
-  DownloadDATFile();
+  InitShields();
   return false;
 }
 
@@ -90,6 +86,15 @@ bool BaseBraveShieldsService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string& tab_host) {
   return true;
+}
+
+void BaseBraveShieldsService::OnComponentRegistered(const std::string& component_id) {
+  OnDemandUpdate(g_browser_process->component_updater(), component_id);
+}
+
+void BaseBraveShieldsService::OnComponentReady(
+    const std::string& component_id,
+    const base::FilePath& install_dir) {
 }
 
 }  // namespace brave_shields

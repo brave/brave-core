@@ -10,9 +10,7 @@
 #include <vector>
 
 #include "base/base_paths.h"
-#include "base/bind.h"
-#include "base/bind_helpers.h"
-#include "base/callback.h"
+#include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
@@ -22,16 +20,19 @@
 #include "brave/vendor/ad-block/ad_block_client.h"
 
 #define DAT_FILE "ABPFilterParserData.dat"
-// TODO: Repalce this with the real version at runtime
-#define DAT_FILE_URL "https://s3.amazonaws.com/adblock-data/3/ABPFilterParserData.dat"
 
 namespace brave_shields {
 
-GURL AdBlockService::g_ad_block_url(DAT_FILE_URL);
+std::string AdBlockService::g_ad_block_component_id_(
+    kAdBlockComponentId);
+std::string AdBlockService::g_ad_block_component_base64_public_key_(
+    kAdBlockComponentBase64PublicKey);
 
-AdBlockService::AdBlockService() :
-    BaseBraveShieldsService(DAT_FILE, AdBlockService::g_ad_block_url),
-    ad_block_client_(new AdBlockClient()) {
+AdBlockService::AdBlockService()
+    : BaseBraveShieldsService(kAdBlockComponentName,
+                              g_ad_block_component_id_,
+                              g_ad_block_component_base64_public_key_),
+      ad_block_client_(new AdBlockClient()) {
 }
 
 AdBlockService::~AdBlockService() {
@@ -69,28 +70,41 @@ bool AdBlockService::ShouldStartRequest(const GURL& url,
 }
 
 bool AdBlockService::Init() {
-   if (!GetDATFileData(DAT_FILE, buffer_)) {
-    LOG(ERROR) << "Could not obtain ad block data file";
-    return false;
-  }
-  if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
-    ad_block_client_.reset();
-    LOG(ERROR) << "AdBlockService::InitAdBlock deserialize failed";
-    return false;
-  }
   return true;
 }
 
+void AdBlockService::OnComponentReady(const std::string& component_id,
+                                      const base::FilePath& install_dir) {
+  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
+  if (!GetDATFileData(dat_file_path, buffer_)) {
+    LOG(ERROR) << "Could not obtain ad block data file";
+    return;
+  }
+  if (buffer_.empty()) {
+    LOG(ERROR) << "Could not obtain ad block data";
+    return;
+  }
+  ad_block_client_.reset(new AdBlockClient());
+  if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
+    ad_block_client_.reset();
+    LOG(ERROR) << "Failed to deserialize ad block data";
+    return;
+  }
+}
+
 // static
-void AdBlockService::SetAdBlockURLForTest(const GURL& url) {
-  g_ad_block_url = url;
+void AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
+    const std::string& component_id,
+    const std::string& component_base64_public_key) {
+  g_ad_block_component_id_ = component_id;
+  g_ad_block_component_base64_public_key_ = component_base64_public_key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
-std::unique_ptr<BaseBraveShieldsService> AdBlockServiceFactory() {
+std::unique_ptr<AdBlockService> AdBlockServiceFactory() {
   return base::MakeUnique<AdBlockService>();
 }
 
