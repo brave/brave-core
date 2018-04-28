@@ -180,7 +180,6 @@ void TrackingProtectionService::SetComponentIdAndBase64PublicKeyForTest(
 
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
-// TODO(bbondy): consider making this a singleton.
 std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory() {
   return base::MakeUnique<TrackingProtectionService>();
 }
