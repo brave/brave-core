@@ -14,6 +14,8 @@ source_set("common") {
     "pref_names.h",
     "resource_bundle_helper.cc",
     "resource_bundle_helper.h",
+    "shield_exceptions.cc",
+    "shield_exceptions.h",
     "webui_url_constants.cc",
     "webui_url_constants.h",
   ]

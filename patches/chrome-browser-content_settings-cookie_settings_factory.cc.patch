@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/content_settings/cookie_settings_factory.cc b/chrome/browser/content_settings/cookie_settings_factory.cc
+index 8e37338f7c666e267db45747a329c838556b6ddf..35f01800b173c10a5ea939b358834cd0c3f5d8cf 100644
+--- a/chrome/browser/content_settings/cookie_settings_factory.cc
++++ b/chrome/browser/content_settings/cookie_settings_factory.cc
+@@ -6,6 +6,7 @@
+ 
+ #include "base/logging.h"
+ #include "base/metrics/user_metrics.h"
++#include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
+ #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+ #include "chrome/browser/profiles/incognito_helpers.h"
+ #include "chrome/browser/profiles/profile.h"
+@@ -63,7 +64,7 @@ CookieSettingsFactory::BuildServiceInstanceFor(
+   } else {
+     base::RecordAction(UserMetricsAction("ThirdPartyCookieBlockingDisabled"));
+   }
+-  return new content_settings::CookieSettings(
++  return new content_settings::BraveCookieSettings(
+       HostContentSettingsMapFactory::GetForProfile(profile),
+       profile->GetPrefs(),
+       extensions::kExtensionScheme);

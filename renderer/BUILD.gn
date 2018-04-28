@@ -10,6 +10,7 @@ source_set("renderer") {
 
   public_deps = [
     "//chrome/renderer",
+    "//brave/content/renderer"
   ]
 
   deps = [
