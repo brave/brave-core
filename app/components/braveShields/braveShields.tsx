@@ -18,6 +18,7 @@ interface Props {
     httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
     javascriptToggled: shieldActions.JavascriptToggled
     blockFingerprinting: shieldActions.BlockFingerprinting
+    blockCookies: shieldActions.BlockCookies
   }
   shieldsPanelTabData: Tab
 }
@@ -58,6 +59,8 @@ export default class BraveShields extends React.Component<Props, object> {
           controlsOpen={shieldsPanelTabData.controlsOpen}
           fingerprinting={shieldsPanelTabData.fingerprinting}
           blockFingerprinting={actions.blockFingerprinting}
+          cookies={shieldsPanelTabData.cookies}
+          blockCookies={actions.blockCookies}
         />
         <BraveShieldsFooter />
       </div>

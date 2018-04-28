@@ -13,6 +13,7 @@ import {
   setAllowHTTPUpgradableResources,
   setAllowJavaScript,
   setAllowFingerprinting,
+  setAllowCookies,
   toggleShieldsValue,
   requestShieldPanelData
 } from '../api/shieldsAPI'
@@ -223,6 +224,21 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
           })
           .catch(() => {
             console.error('Could not set fingerprinting setting')
+          })
+        break
+      }
+    case shieldsPanelTypes.BLOCK_COOKIES:
+      {
+        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        setAllowCookies(tabData.origin, action.setting)
+          .then(() => {
+            requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+            reloadTab(tabData.id, true).catch(() => {
+              console.error('Tab reload was not successful')
+            })
+          })
+          .catch(() => {
+            console.error('Could not set cookies setting')
           })
         break
       }

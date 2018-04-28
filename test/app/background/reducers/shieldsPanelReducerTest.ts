@@ -227,7 +227,8 @@ describe('braveShieldsPanelReducer', () => {
         trackers: 'block',
         httpUpgradableResources: 'block',
         javascript: 'block',
-        fingerprinting: 'block'
+        fingerprinting: 'block',
+        cookies: 'block'
       }
       assert.deepEqual(
         shieldsPanelReducer(initialState.shieldsPanel, {
@@ -250,6 +251,7 @@ describe('braveShieldsPanelReducer', () => {
               httpUpgradableResources: 'block',
               javascript: 'block',
               fingerprinting: 'block',
+              cookies: 'block',
               controlsOpen: true,
               braveShields: 'allow'
             }
@@ -277,7 +279,8 @@ describe('braveShieldsPanelReducer', () => {
         javascript: 'block',
         trackers: 'block',
         ads: 'block',
-        fingerprinting: 'block'
+        fingerprinting: 'block',
+        cookies: 'block'
       }
     },
     windows: {
@@ -360,6 +363,25 @@ describe('braveShieldsPanelReducer', () => {
     })
   })
 
+  describe('BLOCK_COOKIES', function () {
+    before(function () {
+      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
+      this.setAllowCookiesSpy = sinon.spy(shieldsAPI, 'setAllowCookies')
+    })
+    after(function () {
+      this.reloadTabSpy.restore()
+      this.setAllowCookiesSpy.restore()
+    })
+    it('should call setAllowCookies', function () {
+      assert.deepEqual(
+        shieldsPanelReducer(state, {
+          type: types.BLOCK_COOKIES,
+          setting: 'allow'
+        }), state)
+      assert.equal(this.setAllowCookiesSpy.withArgs(origin, 'allow').calledOnce, true)
+    })
+  })
+
   describe('RESOURCE_BLOCKED', function () {
     it('increments for JS blocking', function () {
       let nextState = shieldsPanelReducer(state, {
@@ -387,7 +409,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {
@@ -422,7 +445,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {
@@ -457,7 +481,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {
@@ -490,7 +515,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {
@@ -524,7 +550,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {
@@ -558,7 +585,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           },
           3: {
             adsBlocked: 1,
@@ -599,7 +627,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {
@@ -632,7 +661,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {
@@ -664,7 +694,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {
@@ -696,7 +727,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {
@@ -728,7 +760,8 @@ describe('braveShieldsPanelReducer', () => {
             javascript: 'block',
             trackers: 'block',
             ads: 'block',
-            fingerprinting: 'block'
+            fingerprinting: 'block',
+            cookies: 'block'
           }
         },
         windows: {

@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/shieldsPanelTypes'
-import { BlockTypes, BlockOptions, BlockFPOptions } from '../other/blockTypes'
+import { BlockTypes, BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../other/blockTypes'
 
 export interface ShieldDetails {
   id: number
@@ -12,6 +12,7 @@ export interface ShieldDetails {
   httpUpgradableResources: BlockOptions
   javascript: BlockOptions
   fingerprinting: BlockFPOptions
+  cookies: BlockCookiesOptions
   origin: string
   hostname: string
 }
@@ -66,6 +67,15 @@ export interface BlockFingerprinting {
   (setting: BlockFPOptions): BlockFingerprintingReturn
 }
 
+interface BlockCookiesReturn {
+  type: types.BLOCK_COOKIES
+  setting: BlockCookiesOptions
+}
+
+export interface BlockCookies {
+  (setting: BlockCookiesOptions): BlockCookiesReturn
+}
+
 interface ControlsToggledReturn {
   type: types.CONTROLS_TOGGLED
   setting: boolean
@@ -99,4 +109,5 @@ export type shieldPanelActions =
   ControlsToggledReturn |
   HttpsEverywhereToggledReturn |
   JavascriptToggledReturn |
-  BlockFingerprintingReturn
+  BlockFingerprintingReturn |
+  BlockCookiesReturn

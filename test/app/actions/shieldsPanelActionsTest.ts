@@ -8,7 +8,7 @@ import * as assert from 'assert'
 import * as types from '../../../app/constants/shieldsPanelTypes'
 import * as actions from '../../../app/actions/shieldsPanelActions'
 import { ShieldDetails, BlockDetails } from '../../../app/types/actions/shieldsPanelActions';
-import { BlockOptions, BlockFPOptions } from '../../../app/types/other/blockTypes';
+import { BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../../../app/types/other/blockTypes';
 
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
@@ -20,7 +20,8 @@ describe('shieldsPanelActions', () => {
       hostname: 'www.brave.com',
       id: 1,
       javascript: 'allow',
-      fingerprinting: 'allow'
+      fingerprinting: 'allow',
+      cookies: 'allow'
     }
     assert.deepEqual(actions.shieldsPanelDataUpdated(details), {
       type: types.SHIELDS_PANEL_DATA_UPDATED,
@@ -79,6 +80,14 @@ describe('shieldsPanelActions', () => {
     const setting: BlockFPOptions = 'block_third_party'
     assert.deepEqual(actions.blockFingerprinting(setting), {
       type: types.BLOCK_FINGERPRINTING,
+      setting
+    })
+  })
+
+  it('blockCookies action', () => {
+    const setting: BlockCookiesOptions = 'block_third_party'
+    assert.deepEqual(actions.blockCookies(setting), {
+      type: types.BLOCK_COOKIES,
       setting
     })
   })

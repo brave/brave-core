@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { Grid, Column, SwitchButton, BrowserSelect, ContentToggle } from 'brave-ui'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
-import { BlockOptions, BlockFPOptions } from '../../types/other/blockTypes'
+import { BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../../types/other/blockTypes'
 import { getMessage } from '../../background/api/localeAPI'
 
 export interface Props {
@@ -16,30 +16,28 @@ export interface Props {
   trackers: BlockOptions
   javascript: BlockOptions
   fingerprinting: BlockFPOptions
+  cookies: BlockCookiesOptions
   blockAdsTrackers: shieldActions.BlockAdsTrackers
   controlsToggled: shieldActions.ControlsToggled
   httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
   javascriptToggled: shieldActions.JavascriptToggled
   blockFingerprinting: shieldActions.BlockFingerprinting
+  blockCookies: shieldActions.BlockCookies
 }
 
 export default class BraveShieldsControls extends React.Component<Props, object> {
   constructor (props: Props) {
     super(props)
     this.onChangeAdControl = this.onChangeAdControl.bind(this)
-    this.onChangeCookieControl = this.onChangeCookieControl.bind(this)
     this.onToggleControls = this.onToggleControls.bind(this)
     this.onToggleHTTPSEverywhere = this.onToggleHTTPSEverywhere.bind(this)
     this.onToggleJavaScript = this.onToggleJavaScript.bind(this)
     this.onChangeFingerprintingProtection = this.onChangeFingerprintingProtection.bind(this)
+    this.onChangeCookiesProtection = this.onChangeCookiesProtection.bind(this)
   }
 
   onChangeAdControl (e: HTMLSelectElement) {
     this.props.blockAdsTrackers(e.target.value)
-  }
-
-  onChangeCookieControl (e: HTMLSelectElement) {
-    // TODO: @cezaraugusto
   }
 
   onToggleControls () {
@@ -58,8 +56,12 @@ export default class BraveShieldsControls extends React.Component<Props, object>
     this.props.blockFingerprinting(e.target.value)
   }
 
+  onChangeCookiesProtection (e: HTMLSelectElement) {
+    this.props.blockCookies(e.target.value)
+  }
+
   render () {
-    const { braveShields, ads, trackers, controlsOpen, httpUpgradableResources, javascript, fingerprinting } = this.props
+    const { braveShields, ads, trackers, controlsOpen, httpUpgradableResources, javascript, fingerprinting, cookies } = this.props
     return (
       <Grid
         id='braveShieldsControls'
@@ -84,16 +86,16 @@ export default class BraveShieldsControls extends React.Component<Props, object>
               <option value='allow'>{getMessage('shieldsControlsAdControlOptionBlockAds')}</option>
               <option value='block'>{getMessage('shieldsControlsAdControlOptionAllowAdsTracking')}</option>
             </BrowserSelect>
-            {/* TODO @cezaraugusto */}
+
             <BrowserSelect
               disabled={braveShields === 'block'}
               titleName={getMessage('shieldsControlsCookieControl')}
-              value='someVALUE'
-              onChange={this.onChangeCookieControl}
+              value={braveShields !== 'block' ? cookies : 'allow'}
+              onChange={this.onChangeCookiesProtection}
             >
-              <option value='SOME'>{getMessage('shieldsControlsCookieOptionBlock3p')}</option>
-              <option value='SOME'>{getMessage('shieldsControlsCookieOptionAllowAll')}</option>
-              <option value='SOME'>{getMessage('shieldsControlsCookieOptionBlockAll')}</option>
+              <option value='block_third_party'>{getMessage('shieldsControlsCookieOptionBlock3p')}</option>
+              <option value='block'>{getMessage('shieldsControlsCookieOptionBlockAll')}</option>
+              <option value='allow'>{getMessage('shieldsControlsCookieOptionAllowAll')}</option>
             </BrowserSelect>
 
             <BrowserSelect

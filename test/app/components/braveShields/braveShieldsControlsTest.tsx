@@ -8,7 +8,7 @@ import * as React from 'react'
 import * as assert from 'assert'
 import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsControls, { Props } from '../../../../app/components/braveShields/braveShieldsControls'
-import { BlockOptions, BlockFPOptions } from '../../../../app/types/other/blockTypes'
+import { BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../../../../app/types/other/blockTypes'
 import * as actionTypes from '../../../../app/constants/shieldsPanelTypes'
 import { GridProps } from 'brave-ui/gridSystem'
 
@@ -21,6 +21,7 @@ function setup () {
     trackers: 'allow',
     javascript: 'block',
     fingerprinting: 'block',
+    cookies: 'block',
     blockAdsTrackers: (setting: BlockOptions) => {
       return {
         type: actionTypes.BLOCK_ADS_TRACKERS,
@@ -46,6 +47,12 @@ function setup () {
     blockFingerprinting: (setting:BlockFPOptions) => {
       return {
         type: actionTypes.BLOCK_FINGERPRINTING,
+        setting
+      }
+    },
+    blockCookies: (setting: BlockCookiesOptions) => {
+      return {
+        type: actionTypes.BLOCK_COOKIES,
         setting
       }
     }

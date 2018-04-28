@@ -26,10 +26,13 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
     chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKERS } }),
     chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES } }),
     chrome.contentSettings.javascript.getAsync({ primaryUrl: origin }),
-    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING } }),
-    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/*', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING } })
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/*', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING } }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES } }),
+    chrome.contentSettings.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES } })
   ]).then((details) => {
     const fingerprinting = details[5].setting !== details[6].setting ? 'block_third_party' : details[5].setting
+    const cookies = details[7].setting !== details[8].setting ? 'block_third_party' : details[7].setting
     return {
       url: url.href,
       origin,
@@ -40,7 +43,8 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       trackers: details[2].setting,
       httpUpgradableResources: details[3].setting,
       javascript: details[4].setting,
-      fingerprinting
+      fingerprinting,
+      cookies
     }
   }).catch(() => {
     return {
@@ -169,6 +173,37 @@ export const setAllowFingerprinting = (origin: string, setting: string) => {
   })
 
   return Promise.all([p1, p2])
+}
+
+/**
+ * Changes the cookie at origin to be allowed or blocked.
+ * @param {string} origin the origin of the site to change the setting for
+ * @return a promise which resolves with the setting is set
+ */
+export const setAllowCookies = (origin: string, setting: string) => {
+  const originSetting = setting === 'allow' ? 'allow' : 'block'
+  const firstPartySetting = setting === 'block' ? 'block' : 'allow'
+
+  const p1 = chrome.contentSettings.plugins.setAsync({
+    primaryPattern: origin + '/*',
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_REFERRERS },
+    setting: originSetting
+  })
+
+  const p2 = chrome.contentSettings.plugins.setAsync({
+    primaryPattern: origin + '/*',
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
+    setting: originSetting
+  })
+
+  const p3 = chrome.contentSettings.plugins.setAsync({
+    primaryPattern: origin + '/*',
+    secondaryPattern: 'https://firstParty/*',
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
+    setting: firstPartySetting
+  })
+
+  return Promise.all([p1, p2, p3])
 }
 
 /**

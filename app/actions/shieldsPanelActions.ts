@@ -58,3 +58,10 @@ export const blockFingerprinting: actions.BlockFingerprinting = (setting) => {
     setting
   }
 }
+
+export const blockCookies: actions.BlockCookies = (setting) => {
+  return {
+    type: types.BLOCK_COOKIES,
+    setting
+  }
+}
