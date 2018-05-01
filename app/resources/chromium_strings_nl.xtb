@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Taakbeheer - Brave</translation>
 <translation id="7918740962659365265">Help ons Brave te verbeteren door crashrapporten en <ph name="UMA_LINK"/> naar Brave Software te verzenden</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave bèta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave voor ontwikkelaars</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Hulp bij het gebruik van Brave OS</translation>
 <translation id="1417155795047680590">De auteurs van Brave</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> De auteurs van Brave. Alle rechten voorbehouden.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Aan de slag met Brave OS</translation>
 <translation id="5063987220091207247">Brave OS kan deze pagina niet openen.</translation>
 <translation id="4458285410772214805">Log uit en log weer in om deze wijziging door te voeren.</translation>
-<translation id="3184285555726798152">Brave laten uitvoeren op de achtergrond</translation>
+<translation id="4065288863231444640">Brave laten uitvoeren op de achtergrond</translation>
 <translation id="8926637909431618259">Achtergrondapps ingeschakeld houden als Brave is gesloten</translation>
 <translation id="2077129598763517140">Hardwareversnelling gebruiken indien beschikbaar</translation>
 <translation id="7182196174524406109">(je moet Brave <ph name="BEGIN_BUTTON"/>opnieuw starten<ph name="END_BUTTON"/>)</translation>
@@ -38,7 +42,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 Brave kan je instellingen niet herstellen.</translation>
 <translation id="8554809439398012115">Brave slaat dit wachtwoord op met <ph name="SAVED_PASSWORD_LINK"/>. Je hoeft het niet te onthouden.</translation>
 <translation id="5316336629760101484">Een sterk wachtwoord gebruiken dat is gegenereerd door Brave</translation>
-<translation id="2288174659056124771">Brave is niet je standaardbrowser.</translation>
+<translation id="3343095737966473035">Brave is niet je standaardbrowser</translation>
 <translation id="6715663530666325392">Stel synchronisatie in om je persoonlijke browserfuncties online op te slaan en toegang te hebben tot deze functies via Brave, vanaf elke computer.</translation>
 <translation id="2708027082363760195">Brave bevat niet de pdf-viewer die nodig is om de functie 'Afdrukvoorbeeld' te laten werken.</translation>
 <translation id="8880183781256147665">Toevoegen aan Brave...</translation>
@@ -46,7 +50,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="9067428552314418522">Dit bestand is gevaarlijk en is daarom door Brave geblokkeerd.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> is gevaarlijk en is daarom door Brave geblokkeerd.</translation>
 <translation id="89367911614620585">Dit bestand kan gevaarlijk zijn en is daarom door Brave geblokkeerd.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Er wordt momenteel een download uitgevoerd. Wil je de download annuleren en Brave afsluiten?}other{Er worden momenteel # downloads uitgevoerd. Wil je de downloads annuleren en Brave afsluiten?}}</translation>
 <translation id="2339258256897053758">Brave Software API-sleutels ontbreken. Sommige functies van Brave worden uitgeschakeld.</translation>
 <translation id="5906655207909574370">Updaten bijna voltooid. Start je apparaat opnieuw op om de update te voltooien.</translation>
 <translation id="5877064549588274448">Kanaal gewijzigd. Start het apparaat opnieuw op om de wijzigingen door te voeren.</translation>
@@ -59,9 +62,12 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="777113543093865885">Verwijderen uit Brave…</translation>
 <translation id="6078442581074612226">In Brave</translation>
 <translation id="8148611988012584308">Brave aanpassen en beheren</translation>
+<translation id="5849446944780602366">Brave aanpassen en beheren. Update is beschikbaar</translation>
 <translation id="9071554113102421877">&amp;amp;Openen in Brave</translation>
 <translation id="1421502046520299169">Over &amp;amp;Brave OS</translation>
 <translation id="2534623228451928732">&amp;amp;Brave OS updaten</translation>
+<translation id="3360368475735266712">Log in om Brave op al je apparaten te synchroniseren en te personaliseren</translation>
+<translation id="5477319665405831211">Brave synchroniseren en personaliseren op al je apparaten</translation>
 <translation id="4934157190377700991">Je bent nu ingelogd bij Brave</translation>
 <translation id="4100716194836114130">Personaliseer jouw Brave</translation>
 <translation id="8296145982386097283">Deel je een computer? Je kunt Brave nu precies instellen zoals jij dat wilt.</translation>
@@ -95,13 +101,9 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="3472158705945346956">Je beheerder moet je uit Brave verwijderen en vervolgens weer toevoegen.</translation>
 <translation id="5173820533850252773">Brave is verouderd</translation>
 <translation id="1705567146636171298">Brave updaten</translation>
-<translation id="2316129865977710310">Nee, bedankt</translation>
 <translation id="4050175100176540509">Er zijn belangrijke beveiligingsverbeteringen en nieuwe functies beschikbaar in de nieuwste versie.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave wordt over één seconde opnieuw gestart.}other{Brave wordt over # seconden opnieuw gestart.}}</translation>
-<translation id="9159286371333817139">Je moet Brave nu opnieuw starten.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave wordt over één seconde opnieuw gestart}other{Brave wordt over # seconden opnieuw gestart}}</translation>
 <translation id="9203540365585059272">Er is zojuist een speciale beveiligingsupdate voor Brave toegepast. Je moet Brave nu opnieuw starten om de update toe te passen (je tabbladen worden hersteld).</translation>
-<translation id="1653828314016431939">OK - nu opnieuw starten</translation>
-<translation id="795025003224538582">Niet opnieuw starten</translation>
 <translation id="763369711159699222">Help ons Brave beter te maken</translation>
 <translation id="1156940037717341650">Je kunt helpen Brave veiliger en gebruiksvriendelijker te maken door automatisch informatie over mogelijke beveiligingsincidenten aan Brave Software te melden.</translation>
 <translation id="3009995890652266099">Je kunt helpen Brave veiliger en gebruiksvriendelijker te maken door automatisch bepaalde systeeminformatie en paginacontent naar Brave Software te verzenden om te helpen bij de detectie van gevaarlijke apps en sites.</translation>

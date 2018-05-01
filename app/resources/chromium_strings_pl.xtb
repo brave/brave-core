@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Menedżer zadań – Brave</translation>
 <translation id="7918740962659365265">Pomóż nam ulepszyć Brave, przesyłając do Brave Software raporty o awariach i <ph name="UMA_LINK"/></translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="6474707902830053522">Skorzystaj z pomocy dotyczącej używania systemu operacyjnego Brave</translation>
 <translation id="1417155795047680590">Autorzy Brave</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> Autorzy Brave. Wszelkie prawa zastrzeżone.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Pierwsze kroki z systemem operacyjnym Brave</translation>
 <translation id="5063987220091207247">System operacyjny Brave nie może otworzyć tej strony.</translation>
 <translation id="4458285410772214805">Wyloguj się i zaloguj ponownie, by zmiana zaczęła obowiązywać.</translation>
-<translation id="3184285555726798152">Zezwól Brave na działanie w tle</translation>
+<translation id="4065288863231444640">Zezwalaj Brave na działanie w tle</translation>
 <translation id="8926637909431618259">Kontynuuj działanie aplikacji w tle po zamknięciu Brave</translation>
 <translation id="2077129598763517140">Użyj akceleracji sprzętowej, gdy jest dostępna</translation>
 <translation id="7182196174524406109">(wymaga <ph name="BEGIN_BUTTON"/>ponownego uruchomienia<ph name="END_BUTTON"/> Brave)</translation>
@@ -34,7 +38,7 @@ Niektóre funkcje mogą być niedostępne. Podaj inny katalog z profilem lub uż
 Brave nie może odzyskać ustawień.</translation>
 <translation id="8554809439398012115">Brave zapisze to hasło za pomocą <ph name="SAVED_PASSWORD_LINK"/>. Nie musisz go pamiętać.</translation>
 <translation id="5316336629760101484">Użyj silnego hasła wygenerowanego przez Brave</translation>
-<translation id="2288174659056124771">Brave nie jest domyślną przeglądarką.</translation>
+<translation id="3343095737966473035">Brave nie jest domyślną przeglądarką</translation>
 <translation id="6715663530666325392">Skonfiguruj synchronizację, by zapisać w internecie własne funkcje przeglądarki i mieć do nich dostęp w Brave na każdym komputerze.</translation>
 <translation id="2708027082363760195">Brave nie zawiera przeglądarki PDF wymaganej przez podgląd wydruku.</translation>
 <translation id="8880183781256147665">Dodawanie do Brave...</translation>
@@ -42,7 +46,6 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="9067428552314418522">Ten plik jest niebezpieczny, dlatego został zablokowany przez Brave.</translation>
 <translation id="4168372721886011198">Plik <ph name="FILE_NAME"/> jest niebezpieczny, dlatego został zablokowany przez Brave.</translation>
 <translation id="89367911614620585">Ten plik może być niebezpieczny, dlatego został zablokowany przez Brave.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Trwa pobieranie pliku. Czy chcesz je anulować i wyjść z Brave?}few{Trwa pobieranie # plików. Czy chcesz je anulować i wyjść z Brave?}many{Trwa pobieranie # plików. Czy chcesz je anulować i wyjść z Brave?}other{Trwa pobieranie # pliku. Czy chcesz je anulować i wyjść z Brave?}}</translation>
 <translation id="2339258256897053758">Brakuje kluczy interfejsu Brave Software API. Niektóre funkcje Brave będą wyłączone.</translation>
 <translation id="5906655207909574370">Już prawie gotowe. Uruchom ponownie urządzenie, by zakończyć aktualizację.</translation>
 <translation id="5877064549588274448">Kanał został zmieniony. Aby zastosować zmiany, uruchom ponownie urządzenie.</translation>
@@ -55,9 +58,12 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="777113543093865885">Usuń z Brave...</translation>
 <translation id="6078442581074612226">W Brave</translation>
 <translation id="8148611988012584308">Dostosowywanie i kontrolowanie Brave</translation>
+<translation id="5849446944780602366">Dostosowywanie i kontrolowanie Brave. Dostępna jest aktualizacja.</translation>
 <translation id="9071554113102421877">&amp;amp;Otwórz w Brave</translation>
 <translation id="1421502046520299169">System operacyjny &amp;amp;Brave – informacje</translation>
 <translation id="2534623228451928732">Aktualizuj system operacyjny &amp;amp;Brave</translation>
+<translation id="3360368475735266712">Zaloguj się, by synchronizować dane Brave i korzystać z własnych ustawień przeglądarki na wielu urządzeniach</translation>
+<translation id="5477319665405831211">Synchronizuj dane Brave i korzystaj z własnych ustawień przeglądarki na wielu urządzeniach</translation>
 <translation id="4934157190377700991">Jesteś teraz zalogowany w Brave</translation>
 <translation id="4100716194836114130">Oto Twoja przeglądarka Brave</translation>
 <translation id="8296145982386097283">Używasz komputera, z którego korzystają inne osoby? Teraz możesz skonfigurować Brave tak, jak chcesz.</translation>
@@ -91,13 +97,9 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="3472158705945346956">Twój menedżer musi Cię usunąć i ponownie dodać w Brave.</translation>
 <translation id="5173820533850252773">Brave jest nieaktualny</translation>
 <translation id="1705567146636171298">Zaktualizuj Brave</translation>
-<translation id="2316129865977710310">Nie, dziękuję</translation>
 <translation id="4050175100176540509">W najnowszej wersji zostały wprowadzone ważne poprawki bezpieczeństwa i nowe funkcje.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave uruchomi się ponownie za sekundę.}few{Brave uruchomi się ponownie za # sekundy.}many{Brave uruchomi się ponownie za # sekund.}other{Brave uruchomi się ponownie za # sekundy.}}</translation>
-<translation id="9159286371333817139">Należy teraz ponownie uruchomić Brave.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave uruchomi się ponownie za sekundę}few{Brave uruchomi się ponownie za # sekundy}many{Brave uruchomi się ponownie za # sekund}other{Brave uruchomi się ponownie za # sekundy}}</translation>
 <translation id="9203540365585059272">Właśnie została zastosowana specjalna aktualizacja zabezpieczeń Brave. Aby zmiany zostały wprowadzone, uruchom teraz ponownie przeglądarkę (karty zostaną przywrócone).</translation>
-<translation id="1653828314016431939">W porządku – uruchom ponownie teraz</translation>
-<translation id="795025003224538582">Nie uruchamiaj ponownie</translation>
 <translation id="763369711159699222">Pomóż ulepszyć Brave</translation>
 <translation id="1156940037717341650">Możesz pomóc zwiększyć bezpieczeństwo i komfort korzystania z Brave, automatycznie przesyłając do Brave Software szczegółowe informacje o możliwych zagrożeniach.</translation>
 <translation id="3009995890652266099">Możesz przyczynić się do zwiększenia bezpieczeństwa i komfortu korzystania z Brave, automatycznie wysyłając do Brave Software pewne informacje o systemie i część zawartości stron, by pomóc w wykrywaniu niebezpiecznych aplikacji i witryn.</translation>

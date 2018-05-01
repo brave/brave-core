@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">工作管理員 - Brave</translation>
 <translation id="7918740962659365265">將當機報告和<ph name="UMA_LINK"/>傳送給 Brave Software，助我們一臂之力，讓 Brave 更臻完美</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave 測試版</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave 開發人員版</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary 版</translation>
 <translation id="6474707902830053522">前往 Brave 作業系統說明頁面</translation>
 <translation id="1417155795047680590">The Brave Authors</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> The Brave Authors. 版權所有。</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">開始使用 Brave 作業系統</translation>
 <translation id="5063987220091207247">Brave 作業系統無法開啟這個網頁。</translation>
 <translation id="4458285410772214805">請先登出，然後重新登入，這項變更才會生效。</translation>
-<translation id="3184285555726798152">讓 Brave 在背景執行</translation>
+<translation id="4065288863231444640">讓 Brave 在背景執行</translation>
 <translation id="8926637909431618259">在 Brave 關閉時繼續執行背景應用程式</translation>
 <translation id="2077129598763517140">在可用時使用硬體加速</translation>
 <translation id="7182196174524406109">(必須<ph name="BEGIN_BUTTON"/>重新啟動<ph name="END_BUTTON"/> Brave)</translation>
@@ -36,7 +40,7 @@
 Brave 無法復原你的設定。</translation>
 <translation id="8554809439398012115">Brave 會將這組密碼儲存至 <ph name="SAVED_PASSWORD_LINK"/>，你不須記住密碼。</translation>
 <translation id="5316336629760101484">使用 Brave 產生的高強度密碼</translation>
-<translation id="2288174659056124771">Brave 不是你的預設瀏覽器。</translation>
+<translation id="3343095737966473035">Brave 不是你的預設瀏覽器</translation>
 <translation id="6715663530666325392">設定同步處理功能，即可在網路上儲存你的個人化瀏覽器功能，並且透過任何電腦從 Brave 使用這些功能。</translation>
 <translation id="2708027082363760195">Brave 不含 PDF 檢視器，因此無法執行預覽列印功能。</translation>
 <translation id="8880183781256147665">正在新增至 Brave...</translation>
@@ -44,7 +48,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="9067428552314418522">這個檔案並不安全，因此遭到 Brave 封鎖。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> 並不安全，因此遭到 Brave 封鎖。</translation>
 <translation id="89367911614620585">這個檔案可能不安全，因此遭到 Brave 封鎖。</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{目前正在執行一項下載作業。您要取消下載並結束 Brave 嗎？}other{目前正在執行 # 項下載作業。您要取消下載並結束 Brave 嗎？}}</translation>
 <translation id="2339258256897053758">缺少 Brave Software API 金鑰，系統將停用 Brave 的部分功能。</translation>
 <translation id="5906655207909574370">即將更新為最新版本！重新啟動您的裝置即可完成更新程序。</translation>
 <translation id="5877064549588274448">版本已變更。請重新啟動裝置以套用變更。</translation>
@@ -57,9 +60,12 @@ Brave 無法復原你的設定。</translation>
 <translation id="777113543093865885">從 Brave 中移除...</translation>
 <translation id="6078442581074612226">在 Brave 中</translation>
 <translation id="8148611988012584308">自訂及控制 Brave</translation>
+<translation id="5849446944780602366">有可用的更新，歡迎自訂及控制 Brave。</translation>
 <translation id="9071554113102421877">在 Brave 中開啟(&amp;amp;O)</translation>
 <translation id="1421502046520299169">關於 Brave 作業系統(&amp;amp;C)</translation>
 <translation id="2534623228451928732">更新 Brave 作業系統(&amp;amp;C)</translation>
+<translation id="3360368475735266712">登入即可進行同步處理，讓你在所有裝置上享有個人化的 Brave 體驗</translation>
+<translation id="5477319665405831211">進行同步處理即可在你的所有裝置上享有個人化的 Brave 體驗</translation>
 <translation id="4934157190377700991">你現在已登入 Brave</translation>
 <translation id="4100716194836114130">這是你專屬的 Brave</translation>
 <translation id="8296145982386097283">如果你與他人共用電腦，現在可以依自己的喜好和習慣設定 Brave。</translation>
@@ -93,13 +99,9 @@ Brave 無法復原你的設定。</translation>
 <translation id="3472158705945346956">管理員必須先將你移除，再重新加入 Brave 中。</translation>
 <translation id="5173820533850252773">Brave 版本過舊</translation>
 <translation id="1705567146636171298">更新 Brave</translation>
-<translation id="2316129865977710310">不，謝謝</translation>
 <translation id="4050175100176540509">最新版本包含重要的安全性改善與新功能。</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave 將於 1 秒後重新啟動。}other{Brave 將於 # 秒後重新啟動。}}</translation>
-<translation id="9159286371333817139">建議您立即重新啟動 Brave。</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave 將於 1 秒後重新啟動}other{Brave 將於 # 秒後重新啟動}}</translation>
 <translation id="9203540365585059272">Brave 剛套用了特殊的安全性更新。建議您立即重新啟動，讓更新生效 (系統會還原您的分頁)。</translation>
-<translation id="1653828314016431939">確定 - 立即重新啟動</translation>
-<translation id="795025003224538582">不要重新啟動</translation>
 <translation id="763369711159699222">協助改善 Brave</translation>
 <translation id="1156940037717341650">你可以自動將疑似安全性事件的詳細資料傳送給 Brave Software，協助我們讓 Brave 變得更安全、更好用。</translation>
 <translation id="3009995890652266099">你可以選擇自動傳送部分系統資訊和網頁內容給 Brave Software，協助我們偵測危險的應用程式和網站，讓 Brave 變得更安全、更好用。</translation>

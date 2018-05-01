@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">ടാസ്‌ക് മാനേജർ - Brave</translation>
 <translation id="7918740962659365265">Brave Software-ലേക്ക് ക്രാഷ് റിപ്പോർട്ടുകളും <ph name="UMA_LINK"/> എന്നതും അയയ്‌ക്കുന്നതിലൂടെ Brave മികച്ചതാക്കാൻ സഹായിക്കുക</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave ബീറ്റ</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Brave OS ഉപയോഗിക്കുന്നതിനുള്ള സഹായം നേടുക</translation>
 <translation id="1417155795047680590">Brave രചയിതാക്കൾ</translation>
 <translation id="8758017846917193089">പകർപ്പവകാശം <ph name="YEAR"/> Brave രചയിതാക്കൾ. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്‌തം.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Brave OS-നൊപ്പം ആരംഭിക്കുക</translation>
 <translation id="5063987220091207247">Brave OS-ന് ഈ പേജ് തുറക്കാനാവില്ല.</translation>
 <translation id="4458285410772214805">ഈ മാറ്റം പ്രാബല്യത്തിൽ വരുന്നതിന് സൈൻ ഔട്ട് ചെയ്‌ത് വീണ്ടും സൈൻ ഇൻ ചെയ്യുക.</translation>
-<translation id="3184285555726798152">Brave-ത്തെ പശ്ചാത്തലത്തിൽ പ്രവർത്തിക്കാൻ അനുവദിക്കുക</translation>
+<translation id="4065288863231444640">Brave-ത്തെ പശ്ചാത്തലത്തിൽ പ്രവർത്തിക്കാൻ അനുവദിക്കുക</translation>
 <translation id="8926637909431618259">Brave അടയ്‌ക്കുമ്പോൾ അപ്ലിക്കേഷനുകൾ പശ്ചാത്തലത്തിൽ പ്രവർത്തിക്കുന്നത് തുടരുക</translation>
 <translation id="2077129598763517140">ലഭ്യമാകുമ്പോൾ ഹാർഡ്‌വെയർ ത്വരിതപ്പെടുത്തൽ ഉപയോഗിക്കുക</translation>
 <translation id="7182196174524406109">( Brave <ph name="BEGIN_BUTTON"/>പുനരാരംഭിക്കൽ<ph name="END_BUTTON"/> ആവശ്യമാണ്)</translation>
@@ -38,7 +42,7 @@
 നിങ്ങളുടെ ക്രമീകരണങ്ങൾ വീണ്ടെടുക്കാൻ Brave-ത്തിന് കഴിയില്ല.</translation>
 <translation id="8554809439398012115"><ph name="SAVED_PASSWORD_LINK"/> ഉപയോഗിച്ച് Brave ഈ പാസ്‌വേഡ് സംരക്ഷിക്കും. നിങ്ങൾ അത് ഓർത്തുവെയ്‌ക്കേണ്ടതില്ല.</translation>
 <translation id="5316336629760101484">Brave സൃഷ്‌ടിച്ച ശക്തമായ പാസ്‌വേഡ് ഉപയോഗിക്കുക</translation>
-<translation id="2288174659056124771">Brave നിങ്ങളുടെ സ്ഥിരസ്ഥിതി ബ്രൗസറല്ല.</translation>
+<translation id="3343095737966473035">Brave നിങ്ങളുടെ ഡിഫോൾട്ട് ബ്രൗസറല്ല</translation>
 <translation id="6715663530666325392">നിങ്ങളുടെ വ്യക്തിപരമാക്കിയ ബ്രൗസർ സവിശേഷതകൾ വെബിലേക്ക് സംരക്ഷിച്ച് അവയെ ഏത് കമ്പ്യൂട്ടറിലെയും Brave-ത്തിൽ നിന്ന് ആക്‌സസ്സുചെയ്യുന്നതിന് സമന്വയം സജ്ജമാക്കുക.</translation>
 <translation id="2708027082363760195">Brave-ത്തിൽ പ്രിന്റ് പ്രിവ്യൂവിന് പ്രവർത്തിക്കുന്നതിന് ആവശ്യമായ PDF വ്യൂവർ ഉൾപ്പെടുന്നില്ല.</translation>
 <translation id="8880183781256147665">Brave-ലേക്ക് ചേർക്കുന്നു...</translation>
@@ -46,7 +50,6 @@
 <translation id="9067428552314418522">ഈ ഫയൽ അപകടകരമായതിനാൽ Brave ഇതിനെ ബ്ലോക്കുചെയ്‌തു.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> അപകടകരമായതിനാൽ, Brave ഇതിനെ ബ്ലോക്കുചെയ്‌തു.</translation>
 <translation id="89367911614620585">ഈ ഫയൽ അപകടകരമാകാൻ ഇടയുള്ളതിനാൽ Brave ഇതിനെ ബ്ലോക്കുചെയ്‌തു.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{ഒരു ഡൗൺലോഡ് നിലവിൽ പുരോഗതിയിലാണ്. നിങ്ങൾക്ക് ഡൗൺലോഡ് റദ്ദാക്കി Brave-ത്തിൽ നിന്ന് പുറത്തുകടക്കണോ?}other{# ഡൗൺലോഡുകൾ നിലവിൽ പുരോഗതിയിലാണ്. നിങ്ങൾക്ക് ഡൗൺലോഡുകൾ റദ്ദാക്കി Brave-ത്തിൽ നിന്ന് പുറത്തുകടക്കണോ?}}</translation>
 <translation id="2339258256897053758">Brave Software API കീകൾ നഷ്‌ടമായി. Brave-ന്റെ ചില പ്രവർത്തനങ്ങൾ പ്രവർത്തനരഹിതമാകും.</translation>
 <translation id="5906655207909574370">എകദേശം അപ്‌‌ടുഡേറ്റാണ്! അപ്‌ഡേറ്റുചെയ്യൽ പൂർത്തിയാക്കാൻ ഉപകരണം പുനഃരാരംഭിക്കുക.</translation>
 <translation id="5877064549588274448">ചാനൽ മാറ്റി. മാറ്റങ്ങൾ ബാധകമാകാൻ നിങ്ങളുടെ ഉപകരണം പുനരാരംഭിക്കുക.</translation>
@@ -59,9 +62,12 @@
 <translation id="777113543093865885">Brave-ൽ നിന്ന് നീക്കംചെയ്യുക...</translation>
 <translation id="6078442581074612226">Brave-ത്തിൽ</translation>
 <translation id="8148611988012584308">Brave ഇഷ്‌ടാനുസൃതമാക്കുക, നിയന്ത്രിക്കുക</translation>
+<translation id="5849446944780602366">Brave ഇഷ്ടാനുസൃതമാക്കി നിയന്ത്രിക്കുക. അപ്‌ഡേറ്റ് ലഭ്യമാണ്.</translation>
 <translation id="9071554113102421877">&amp;amp;Brave-ത്തിൽ തുറക്കുക</translation>
 <translation id="1421502046520299169">&amp;amp;Brave OS-നെക്കുറിച്ച്</translation>
 <translation id="2534623228451928732">&amp;amp;Brave OS അപ്‌ഡേറ്റുചെയ്യുക</translation>
+<translation id="3360368475735266712">നിങ്ങളുടെ ഉപകരണങ്ങളിലുടനീളം Brave സമന്വയിപ്പിച്ച് വ്യക്തിഗതമാക്കാൻ സൈൻ ഇൻ ചെയ്യുക</translation>
+<translation id="5477319665405831211">നിങ്ങളുടെ ഉപകരണങ്ങളിലുടനീളം Brave സമന്വയിപ്പിച്ച് വ്യക്തിഗതമാക്കുക</translation>
 <translation id="4934157190377700991">നിങ്ങൾ ഇപ്പോൾ Brave-ൽ സൈൻ ഇൻ ചെയ്‌തു</translation>
 <translation id="4100716194836114130">ഇത് നിങ്ങളുടെ Brave ആണ്</translation>
 <translation id="8296145982386097283">ഒരു കമ്പ്യൂട്ടർ പങ്കിടണോ? ഇപ്പോൾ നിങ്ങൾക്ക് ഇഷ്‌ടപ്പെട്ട രീതിയിൽ Brave സജ്ജീകരിക്കാനാകും.</translation>
@@ -95,13 +101,9 @@
 <translation id="3472158705945346956">നിങ്ങളുടെ മാനേജർ നിങ്ങളെ നീക്കംചെയ്‌ത് Brave-ത്തിലേക്ക് തിരികെ ചേർക്കേണ്ടതാണ്.</translation>
 <translation id="5173820533850252773">Brave കാലഹരണപ്പെട്ടു</translation>
 <translation id="1705567146636171298">Brave അപ്‌ഡേറ്റുചെയ്യുക</translation>
-<translation id="2316129865977710310">വേണ്ട, നന്ദി</translation>
 <translation id="4050175100176540509">ഏറ്റവും പുതിയ പതിപ്പിൽ പ്രധാനപ്പെട്ട സുരക്ഷ മെച്ചപ്പെടുത്തലുകളും പുതിയ ഫീച്ചറുകളും ലഭ്യമാണ്.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave ഒരു സെക്കൻഡിനുള്ളിൽ പുനഃരാരംഭിക്കും.}other{Brave # സെക്കൻഡിനുള്ളിൽ പുനഃരാരംഭിക്കും.}}</translation>
-<translation id="9159286371333817139">നിങ്ങൾ ഇപ്പോൾ Brave പുനഃരാരംഭിക്കണം.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave ഒരു സെക്കൻഡിൽ പുനഃരാരംഭിക്കും}other{Brave # സെക്കൻഡിൽ പുനഃരാരംഭിക്കും}}</translation>
 <translation id="9203540365585059272">Brave-ത്തിനുള്ള ഒരു പ്രത്യേക സുരക്ഷാ അപ്‌ഡേറ്റ് ഇപ്പോൾ പ്രയോഗിച്ചിരിക്കുന്നു; ഇത് പ്രവർത്തനക്ഷമമാക്കാൻ നിങ്ങൾ ഇപ്പോൾ പുനഃരാരംഭിക്കേണ്ടതുണ്ട് (ഞങ്ങൾ നിങ്ങളുടെ ടാബുകൾ പുനഃസ്ഥാപിക്കും).</translation>
-<translation id="1653828314016431939">ശരി - ഇപ്പോൾ പുനഃരാരംഭിക്കുക</translation>
-<translation id="795025003224538582">പുനഃരാരംഭിക്കരുത്</translation>
 <translation id="763369711159699222">Brave മികച്ചതാക്കാൻ സഹായിക്കുക</translation>
 <translation id="1156940037717341650">സുരക്ഷയെ ബാധിക്കാൻ സാധ്യതയുള്ള കാര്യങ്ങളുടെ വിശദാംശങ്ങൾ Brave Software-ലേക്ക് സ്വയമേവ റിപ്പോർട്ടുചെയ്‌തുകൊണ്ട് നിങ്ങൾക്ക് Brave-നെ സുരക്ഷിതവും എളുപ്പവുമാക്കാൻ സഹായിക്കാനാകും.</translation>
 <translation id="3009995890652266099">അപകടകരമായ ആപ്‌സുകളെയും സൈറ്റുകളെയും തിരിച്ചറിയാൻ സഹായിക്കുന്ന ചില സിസ്‌റ്റം വിവരങ്ങളും പേജ് ഉള്ളടക്കവും സ്വയമേവ Brave Software-ന് അയയ്‌ക്കുന്നതിലൂടെ നിങ്ങൾക്ക് Brave-ത്തിന്റെ ഉപയോഗം കൂടുതൽ സുരക്ഷിതവും എളുപ്പവുമാക്കാൻ സഹായിക്കാം.</translation>

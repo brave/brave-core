@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Менаџер задатака – Brave</translation>
 <translation id="7918740962659365265">Помозите нам да побољшамо Brave тако што ћете Brave Software-у слати извештаје о отказивању и <ph name="UMA_LINK"/></translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave бета</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Програмерска верзија Brave-а</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="6474707902830053522">Пронађи помоћ за коришћење Brave ОС-а</translation>
 <translation id="1417155795047680590">The Brave Authors</translation>
 <translation id="8758017846917193089">Ауторска права <ph name="YEAR"/>. Аутори Brave-а. Сва права задржана.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Почетни кораци за Brave ОС</translation>
 <translation id="5063987220091207247">Brave ОС не може да отвори ову страницу.</translation>
 <translation id="4458285410772214805">Одјавите се и поново се пријавите да би ова промена ступила на снагу.</translation>
-<translation id="3184285555726798152">Нека Brave ради у позадини</translation>
+<translation id="4065288863231444640">Нека Brave ради у позадини</translation>
 <translation id="8926637909431618259">Настави са покретањем апликација у позадини када се Brave затвори</translation>
 <translation id="2077129598763517140">Користи хардверско убрзање када је доступно</translation>
 <translation id="7182196174524406109">(захтева <ph name="BEGIN_BUTTON"/>поновно покретање<ph name="END_BUTTON"/> Brave-а)</translation>
@@ -38,7 +42,7 @@
 Brave не може да врати подешавања.</translation>
 <translation id="8554809439398012115">Brave ће сачувати ову лозинку за <ph name="SAVED_PASSWORD_LINK"/>. Не морате да је памтите.</translation>
 <translation id="5316336629760101484">Користите јаку лозинку коју је Brave генерисао</translation>
-<translation id="2288174659056124771">Brave није подразумевани прегледач.</translation>
+<translation id="3343095737966473035">Brave није подразумевани прегледач</translation>
 <translation id="6715663530666325392">Подесите Синхронизацију како бисте сачували персонализоване функције прегледача на Веб и приступали им из Brave-а на било ком рачунару.</translation>
 <translation id="2708027082363760195">Brave не садржи PDF приказивач који је потребан да би Приказ пре штампања функционисао.</translation>
 <translation id="8880183781256147665">Додавање у Brave...</translation>
@@ -46,7 +50,6 @@ Brave не може да врати подешавања.</translation>
 <translation id="9067428552314418522">Ова датотека је опасна, па ју је Brave блокирао.</translation>
 <translation id="4168372721886011198">Датотека <ph name="FILE_NAME"/> је опасна, па ју је Brave блокирао.</translation>
 <translation id="89367911614620585">Ова датотека је можда опасна, па ју је Brave блокирао.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Преузимање је у току. Желите ли да откажете преузимање и да изађете из Brave-а?}one{# преузимање је у току. Желите ли да откажете преузимања и да изађете из Brave-а?}few{# преузимања су у току. Желите ли да откажете преузимања и да изађете из Brave-а?}other{# преузимања је у току. Желите ли да откажете преузимања и да изађете из Brave-а?}}</translation>
 <translation id="2339258256897053758">Недостају шифре за Brave Software API. Неке функције Brave-а ће бити онемогућене.</translation>
 <translation id="5906655207909574370">Ажурирање је скоро готово! Поново покрените уређај да бисте довршили ажурирање.</translation>
 <translation id="5877064549588274448">Канал је промењен. Покрените поново уређај да бисте применили промене.</translation>
@@ -59,9 +62,12 @@ Brave не може да врати подешавања.</translation>
 <translation id="777113543093865885">Уклони из Brave-а...</translation>
 <translation id="6078442581074612226">У Brave-у</translation>
 <translation id="8148611988012584308">Прилагодите и контролишите Brave</translation>
+<translation id="5849446944780602366">Прилагодите и контролишите Brave. Доступно је ажурирање.</translation>
 <translation id="9071554113102421877">&amp;amp;Отвори у Brave-у</translation>
 <translation id="1421502046520299169">О &amp;amp;Brave ОС-у</translation>
 <translation id="2534623228451928732">Ажурирај &amp;amp;Brave ОС</translation>
+<translation id="3360368475735266712">Пријавите се да бисте синхронизовали и персонализовали Brave на свим уређајима</translation>
+<translation id="5477319665405831211">Синхронизујте и персонализујте Brave на свим уређајима</translation>
 <translation id="4934157190377700991">Сада сте пријављени на Brave</translation>
 <translation id="4100716194836114130">Ово је ваш Brave</translation>
 <translation id="8296145982386097283">Делите рачунар? Сада можете да подесите Brave баш онако како вама одговара.</translation>
@@ -95,13 +101,9 @@ Brave не може да врати подешавања.</translation>
 <translation id="3472158705945346956">Менаџер мора да вас уклони из Brave-а, па да вас поново дода.</translation>
 <translation id="5173820533850252773">Brave је застарео</translation>
 <translation id="1705567146636171298">Ажурирај Brave</translation>
-<translation id="2316129865977710310">Не, хвала</translation>
 <translation id="4050175100176540509">Важна безбедносна побољшања и нове функције су доступни у најновијој верзији.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave ће се поново покренути за 1 секунду.}one{Brave ће се поново покренути за # секунду.}few{Brave ће се поново покренути за # секунде.}other{Brave ће се поново покренути за # секунди.}}</translation>
-<translation id="9159286371333817139">Сада треба поново да покренете Brave.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave ће се рестартовати за 1 секунду}one{Brave ће се рестартовати за # секунду}few{Brave ће се рестартовати за # секунде}other{Brave ће се рестартовати за # секунди}}</translation>
 <translation id="9203540365585059272">Посебно безбедносно ажурирање за Brave је управо примењено. Сада треба поново да покренете Brave да би ажурирање ступило на снагу (вратићемо картице).</translation>
-<translation id="1653828314016431939">Важи – Поново покрени одмах</translation>
-<translation id="795025003224538582">Не покрећи поново</translation>
 <translation id="763369711159699222">Помозите нам да побољшамо Brave</translation>
 <translation id="1156940037717341650">Можете да помогнете да Brave буде безбеднији и једноставнији за коришћење ако аутоматски пријављујете Brave Software-у детаље могућих безбедносних инцидената.</translation>
 <translation id="3009995890652266099">Можете да помогнете да Brave буде безбеднији и лакши за коришћење тако што ћете Brave Software-у аутоматски слати неке системске информације и садржаје страница да бисмо открили опасне апликације и сајтове.</translation>

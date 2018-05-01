@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">‏מנהל המשימות - Brave</translation>
 <translation id="7918740962659365265">‏עזור לשפר את Brave על ידי שליחת דוחות קריסה ו-<ph name="UMA_LINK"/> אל Brave Software</translation>
 <translation id="7830723774663008396">‏Brave‏ - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244">‏<ph name="PAGE_TITLE"/> - Brave בגירסת ביטא</translation>
+<translation id="3943696263619956191">‏<ph name="PAGE_TITLE"/> - Brave בגירסת פיתוח</translation>
+<translation id="6236814935154483927">‏<ph name="PAGE_TITLE"/> - Brave בגירסת Canary</translation>
 <translation id="6474707902830053522">‏עזרה באמצעות מערכת ההפעלה של Brave</translation>
 <translation id="1417155795047680590">‏מחברי Brave</translation>
 <translation id="8758017846917193089">‏Copyright <ph name="YEAR"/> The Brave Authors. כל הזכויות שמורות.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">‏תחילת העבודה עם Brave OS</translation>
 <translation id="5063987220091207247">‏מערכת ההפעלה של Brave אינה יכול לפתוח את הדף הזה.</translation>
 <translation id="4458285410772214805">צא מהמערכת והיכנס שוב כדי שהשינוי ייכנס לתוקף.</translation>
-<translation id="3184285555726798152">‏אפשר ל-Brave לפעול ברקע</translation>
+<translation id="4065288863231444640">‏Brave יכול לפעול ברקע</translation>
 <translation id="8926637909431618259">‏המשך הפעלת יישומים ברקע כאשר Brave סגור</translation>
 <translation id="2077129598763517140">השתמש בהאצת חומרה כשניתן</translation>
 <translation id="7182196174524406109">‏(נדרש <ph name="BEGIN_BUTTON"/>אתחול<ph name="END_BUTTON"/> של Brave)</translation>
@@ -34,7 +38,7 @@
 Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8554809439398012115">‏הסיסמה תישמר ב-Brave באמצעות <ph name="SAVED_PASSWORD_LINK"/>. אין צורך לזכור אותה.</translation>
 <translation id="5316336629760101484">‏השתמש בסיסמה חזקה שנוצרה על-ידי Brave</translation>
-<translation id="2288174659056124771">‏Brave אינו דפדפן ברירת המחדל שלך.</translation>
+<translation id="3343095737966473035">‏Brave אינו דפדפן ברירת המחדל שלך</translation>
 <translation id="6715663530666325392">‏הגדר סנכרון כדי לשמור את תכונות הדפדפן המותאמות אישית שלך באינטרנט ולגשת אליהן מ-Brave בכל מחשב.</translation>
 <translation id="2708027082363760195">‏Brave אינו כולל מציג PDF, הנדרש להפעלת תצוגה מקדימה של הדפסה.</translation>
 <translation id="8880183781256147665">‏הוספה ל-Brave</translation>
@@ -42,7 +46,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="9067428552314418522">‏Brave‏ חסם את הקובץ הזה כי הוא מסוכן.</translation>
 <translation id="4168372721886011198">‏<ph name="FILE_NAME"/> מסוכן, ולכן Brave חסם אותו.</translation>
 <translation id="89367911614620585">‏Brave‏ חסם את הקובץ הזה כי הוא עלול להיות מסוכן.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{‏הורדה מתבצעת עכשיו. האם ברצונך לבטל את ההורדה ולצאת מ-Brave?}two{‏# הורדות מתבצעות עכשיו. האם ברצונך לבטל את ההורדות ולצאת מ-Brave?}many{‏# הורדות מתבצעות עכשיו. האם ברצונך לבטל את ההורדות ולצאת מ-Brave?}other{‏# הורדות מתבצעות עכשיו. האם ברצונך לבטל את ההורדות ולצאת מ-Brave?}}</translation>
 <translation id="2339258256897053758">‏המפתחות של Brave Software API חסרים. פונקציונליות מסוימת של Brave תהיה מושבתת.</translation>
 <translation id="5906655207909574370">העדכון כמעט הושלם! הפעל מחדש את המכשיר כדי לסיים את העדכון.</translation>
 <translation id="5877064549588274448">הערוץ שונה. הפעל מחדש את המכשיר להחלת השינויים.</translation>
@@ -55,9 +58,12 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="777113543093865885">‏הסר מ-Brave...</translation>
 <translation id="6078442581074612226">‏ב-Brave</translation>
 <translation id="8148611988012584308">‏התאם אישית ושלוט ב-Brave</translation>
+<translation id="5849446944780602366">‏כדי להתאים אישית את Brave Software Brave ולשלוט בו טוב יותר, כדאי להוריד את העדכון החדש.</translation>
 <translation id="9071554113102421877">‏&amp;amp;פתיחה ב-Brave</translation>
 <translation id="1421502046520299169">‏מידע על &amp;amp;מערכת ההפעלה של Brave‏</translation>
 <translation id="2534623228451928732">‏עדכן את &amp;amp;מערכת ההפעלה של Brave‏</translation>
+<translation id="3360368475735266712">‏כניסה לחשבון תסנכרן ותתאים אישית את Brave בכל המכשירים שברשותך</translation>
+<translation id="5477319665405831211">‏סינכרון והתאמה אישית של Brave בכל המכשירים שברשותך</translation>
 <translation id="4934157190377700991">‏אתה מחובר כעת ל-Brave</translation>
 <translation id="4100716194836114130">‏זהו ה-Brave שלך</translation>
 <translation id="8296145982386097283">‏משתף את המחשב? עכשיו תוכל להגדיר את Brave בדיוק כמו שאתה אוהב.</translation>
@@ -91,13 +97,9 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="3472158705945346956">‏המנהל שלך צריך להסיר אותך מ-Brave ולאחר מכן להוסיף אותך חזרה.</translation>
 <translation id="5173820533850252773">‏Brave אינו מעודכן</translation>
 <translation id="1705567146636171298">‏עדכן את Brave‏</translation>
-<translation id="2316129865977710310">לא, תודה</translation>
 <translation id="4050175100176540509">הגרסה החדשה כוללת שיפורי בטיחות חשובים ותכונות חדשות.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{‏Brave יבצע אתחול בעוד שנייה אחת.}two{‏Brave יבצע אתחול בעוד # שניות.}many{‏Brave יבצע אתחול בעוד # שניות.}other{‏Brave יבצע אתחול בעוד # שניות.}}</translation>
-<translation id="9159286371333817139">‏עליך לאתחל את Brave עכשיו.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{‏Brave יבצע אתחול בעוד שנייה אחת}two{‏Brave יבצע אתחול בעוד # שניות}many{‏Brave יבצע אתחול בעוד # שניות}other{‏Brave יבצע אתחול בעוד # שניות}}</translation>
 <translation id="9203540365585059272">‏בוצע עדכון אבטחה מיוחד של Brave. עליך לאתחל עכשיו כדי שהעדכון יופעל (נשחזר את הכרטיסיות שלך).</translation>
-<translation id="1653828314016431939">אישור - הפעל מחדש כעת</translation>
-<translation id="795025003224538582">אל תבצע הפעלה מחדש</translation>
 <translation id="763369711159699222">‏עזור לנו לשפר את Brave</translation>
 <translation id="1156940037717341650">‏אתה יכול לעזור לשפר את הבטיחות של Brave ולהקל את השימוש בו על ידי דיווח ל-Brave Software על פרטים של בעיות אבטחה אפשריות.</translation>
 <translation id="3009995890652266099">‏תוכל לעזור בשיפור האבטחה וקלות השימוש של Brave על-ידי שליחה אוטומטית של חלק מפרטי המערכת ותוכן הדף אל Brave Software כדי לעזור בזיהוי של יישומים ואתרים מסוכנים.</translation>

@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Trình quản lý tác vụ - Brave</translation>
 <translation id="7918740962659365265">Giúp cải thiện Brave bằng cách gửi báo cáo sự cố và <ph name="UMA_LINK"/> tới Brave Software</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave phiên bản beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave dành cho nhà phát triển</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Nhận trợ giúp về cách sử dụng Brave OS</translation>
 <translation id="1417155795047680590">Tác giả Brave</translation>
 <translation id="8758017846917193089">Bản quyền <ph name="YEAR"/> Tác giả Brave. Mọi quyền được bảo lưu.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Bắt đầu với Brave OS</translation>
 <translation id="5063987220091207247">Brave OS không thể mở trang này.</translation>
 <translation id="4458285410772214805">Vui lòng đăng xuất và đăng nhập lại để thay đổi này có hiệu lực.</translation>
-<translation id="3184285555726798152">Cho phép Brave chạy dưới nền</translation>
+<translation id="4065288863231444640">Cho phép Brave chạy trong nền</translation>
 <translation id="8926637909431618259">Tiếp tục chạy các ứng dụng dưới nền khi Brave bị đóng</translation>
 <translation id="2077129598763517140">Sử dụng chế độ tăng tốc phần cứng khi khả dụng</translation>
 <translation id="7182196174524406109">(yêu cầu Brave <ph name="BEGIN_BUTTON"/>khởi động lại<ph name="END_BUTTON"/>)</translation>
@@ -36,7 +40,7 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8554809439398012115">Brave sẽ lưu mật khẩu này bằng <ph name="SAVED_PASSWORD_LINK"/>. Bạn không cần phải nhớ mật khẩu đó.</translation>
 <translation id="5316336629760101484">Sử dụng mật khẩu mạnh do Brave tạo</translation>
-<translation id="2288174659056124771">Brave không phải là trình duyệt mặc định của bạn.</translation>
+<translation id="3343095737966473035">Brave không phải là trình duyệt mặc định của bạn</translation>
 <translation id="6715663530666325392">Thiết lập đồng bộ hóa để lưu các tính năng trình duyệt được cá nhân hóa của bạn vào web và truy cập chúng từ Brave trên bất kỳ máy tính nào.</translation>
 <translation id="2708027082363760195">Brave không bao gồm trình xem PDF được yêu cầu để tính năng xem trước bản in hoạt động.</translation>
 <translation id="8880183781256147665">Đang thêm vào Brave...</translation>
@@ -44,7 +48,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="9067428552314418522">Tệp này nguy hiểm, do đó Brave đã chặn tệp.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> nguy hiểm, do đó Brave đã chặn tệp.</translation>
 <translation id="89367911614620585">Tệp này nguy hiểm, do đó Brave đã chặn tệp.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Một tải xuống hiện đang diễn ra. Bạn có muốn hủy tải xuống và thoát khỏi Brave không?}other{# tải xuống hiện đang diễn ra. Bạn có muốn hủy tải xuống và thoát khỏi Brave không?}}</translation>
 <translation id="2339258256897053758">Khóa API của Brave Software bị thiếu. Một số chức năng của Brave sẽ bị tắt.</translation>
 <translation id="5906655207909574370">Gần được cập nhật! Hãy khởi động lại thiết bị của bạn để hoàn tất cập nhật.</translation>
 <translation id="5877064549588274448">Kênh đã thay đổi. Hãy khởi động lại thiết bị để áp dụng thay đổi.</translation>
@@ -57,9 +60,12 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="777113543093865885">Xóa khỏi Brave...</translation>
 <translation id="6078442581074612226">Trong Brave</translation>
 <translation id="8148611988012584308">Tùy chỉnh và điều khiển Brave</translation>
+<translation id="5849446944780602366">Tùy chỉnh và kiểm soát Brave. Đã có bản cập nhật.</translation>
 <translation id="9071554113102421877">&amp;amp;Mở trong Brave</translation>
 <translation id="1421502046520299169">Giới thiệu về &amp;amp;Brave OS</translation>
 <translation id="2534623228451928732">Cập nhật &amp;amp;Brave OS</translation>
+<translation id="3360368475735266712">Đăng nhập để đồng bộ hóa và cá nhân hóa Brave trên các thiết bị của bạn</translation>
+<translation id="5477319665405831211">Đồng bộ hóa và cá nhân hóa Brave trên các thiết bị của bạn</translation>
 <translation id="4934157190377700991">Bạn hiện đã đăng nhập vào Brave</translation>
 <translation id="4100716194836114130">Đây là Brave của bạn</translation>
 <translation id="8296145982386097283">Bạn muốn chia sẻ máy tính? Giờ đây, bạn có thể thiết lập Brave theo cách mình muốn.</translation>
@@ -93,13 +99,9 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="3472158705945346956">Người quản lý của bạn phải xóa và thêm lại bạn vào Brave.</translation>
 <translation id="5173820533850252773">Brave đã lỗi thời</translation>
 <translation id="1705567146636171298">Cập nhật Brave</translation>
-<translation id="2316129865977710310">Không, cảm ơn</translation>
 <translation id="4050175100176540509">Cải thiện bảo mật quan trọng và tính năng mới có trong phiên bản mới nhất.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave sẽ khởi động lại sau 1 giây.}other{Brave sẽ khởi động lại sau # giây.}}</translation>
-<translation id="9159286371333817139">Bạn phải khởi động lại Brave ngay bây giờ.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave sẽ khởi động lại sau 1 giây}other{Brave sẽ khởi động lại sau # giây}}</translation>
 <translation id="9203540365585059272">Cập nhật bảo mật đặc biệt cho Brave vừa được áp dụng; bạn phải khởi động lại ngay bây giờ để cập nhật có hiệu lực (chúng tôi sẽ khôi phục các tab của bạn).</translation>
-<translation id="1653828314016431939">OK - Khởi động lại ngay bây giờ</translation>
-<translation id="795025003224538582">Không khởi động lại</translation>
 <translation id="763369711159699222">Giúp cải thiện Brave</translation>
 <translation id="1156940037717341650">Bạn có thể giúp Brave an toàn và dễ sử dụng hơn bằng cách tự động báo cáo với Brave Software chi tiết về sự cố bảo mật có thể xảy ra.</translation>
 <translation id="3009995890652266099">Bạn có thể giúp Brave an toàn và dễ sử dụng hơn bằng cách tự động gửi một số thông tin hệ thống và nội dung trang cho Brave Software để giúp phát hiện các ứng dụng và trang web nguy hiểm.</translation>

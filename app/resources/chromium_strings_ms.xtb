@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Pengurus Tugas - Brave</translation>
 <translation id="7918740962659365265">Bantu jadikan Brave lebih baik dengan menghantar laporan ranap dan <ph name="UMA_LINK"/> kepada Brave Software.</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Dapatkan bantuan untuk menggunakan Brave OS</translation>
 <translation id="1417155795047680590">Pengarang Brave</translation>
 <translation id="8758017846917193089">Hak Cipta <ph name="YEAR"/> Pengarang Brave. Hak cipta terpelihara.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Bermula dengan OS Brave</translation>
 <translation id="5063987220091207247">OS Brave tidak boleh membuka halaman ini.</translation>
 <translation id="4458285410772214805">Sila log keluar dan log masuk semula supaya perubahan ini boleh dilaksanakan.</translation>
-<translation id="3184285555726798152">Benarkan Brave Dijalankan dalam Latar Belakang</translation>
+<translation id="4065288863231444640">Benarkan Brave Dijalankan dalam Latar Belakang</translation>
 <translation id="8926637909431618259">Terus menjalankan apl latar belakang apabila Brave ditutup</translation>
 <translation id="2077129598763517140">Gunakan pecutan perkakasan apabila tersedia</translation>
 <translation id="7182196174524406109">(memerlukan Brave <ph name="BEGIN_BUTTON"/>dimulakan semula<ph name="END_BUTTON"/>)</translation>
@@ -36,7 +40,7 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8554809439398012115">Brave akan menyimpan kata laluan ini dengan <ph name="SAVED_PASSWORD_LINK"/>. Anda tidak perlu mengingatinya.</translation>
 <translation id="5316336629760101484">Gunakan kata laluan kukuh yang dijana oleh Brave</translation>
-<translation id="2288174659056124771">Brave bukan penyemak imbas lalai anda.</translation>
+<translation id="3343095737966473035">Brave bukan penyemak imbas lalai anda</translation>
 <translation id="6715663530666325392">Sediakan Penyegerakan untuk menyimpan ciri penyemak imbas yang diperibadikan di web dan aksesnya dari Brave pada mana-mana komputer.</translation>
 <translation id="2708027082363760195">Brave tidak menyertakan pemapar PDF yang diperlukan oleh Pratonton Cetakan untuk berfungsi.</translation>
 <translation id="8880183781256147665">Menambah ke Brave...</translation>
@@ -44,7 +48,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="9067428552314418522">Fail ini berbahaya, maka Brave telah menyekatnya.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, jadi Brave telah menyekat fail itu.</translation>
 <translation id="89367911614620585">Fail ini mungkin berbahaya, maka Brave telah menyekatnya.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Muat turun sedang berlangsung. Adakah anda ingin membatalkan muat turun dan keluar daripada Brave?}other{# muat turun sedang berlangsung pada masa ini. Adakah anda ingin membatalkan muat turun dan keluar daripada Brave?}}</translation>
 <translation id="2339258256897053758">Kunci API Brave Software tiada. Sesetengah fungsi Brave akan dilumpuhkan.</translation>
 <translation id="5906655207909574370">Hampir terkini! Mulakan semula peranti anda untuk menyelesaikan kemas kini.</translation>
 <translation id="5877064549588274448">Saluran berubah. Mulakan semula peranti anda untuk menggunakan perubahan.</translation>
@@ -57,9 +60,12 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="777113543093865885">Alih keluar daripada Brave...</translation>
 <translation id="6078442581074612226">Dalam Brave</translation>
 <translation id="8148611988012584308">Sesuaikan dan kawal Brave</translation>
+<translation id="5849446944780602366">Sesuaikan dan kawal Brave. Kemas kini tersedia.</translation>
 <translation id="9071554113102421877">&amp;amp;Buka dalam Brave</translation>
 <translation id="1421502046520299169">Mengenai &amp;amp;Brave OS</translation>
 <translation id="2534623228451928732">Kemas kini &amp;amp;Brave OS</translation>
+<translation id="3360368475735266712">Log masuk untuk menyegerakkan dan memperibadikan Brave pada semua peranti anda</translation>
+<translation id="5477319665405831211">Segerakkan dan peribadikan Brave pada semua peranti anda</translation>
 <translation id="4934157190377700991">Anda dilog masuk ke Brave</translation>
 <translation id="4100716194836114130">Ini Brave anda</translation>
 <translation id="8296145982386097283">Berkongsi komputer? Sekarang anda boleh menyediakan Brave menurut cara yang anda suka.</translation>
@@ -93,13 +99,9 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="3472158705945346956">Pengurus anda mesti mengalih keluar dan menambahkan anda kembali pada Brave.</translation>
 <translation id="5173820533850252773">Brave sudah usang</translation>
 <translation id="1705567146636171298">Kemas kini Brave</translation>
-<translation id="2316129865977710310">Tidak, terima kasih</translation>
 <translation id="4050175100176540509">Peningkatan keselamatan penting dan ciri baharu tersedia dalam versi terkini.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave akan dimulakan semula dalam 1 saat.}other{Brave akan dimulakan semula dalam # saat.}}</translation>
-<translation id="9159286371333817139">Anda perlu memulakan semula Brave sekarang.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave akan dimulakan semula dalam 1 saat}other{Brave akan dimulakan semula dalam # saat}}</translation>
 <translation id="9203540365585059272">Kemas kini keselamatan khas untuk Brave baru sahaja dilakukan; anda perlu memulakan semula peranti ini sekarang supaya kemas kini ini berkesan (kami akan memulihkan tab anda).</translation>
-<translation id="1653828314016431939">OK - Mulakan semula sekarang</translation>
-<translation id="795025003224538582">Jangan mulakan semula</translation>
 <translation id="763369711159699222">Bantu menjadikan Brave lebih baik</translation>
 <translation id="1156940037717341650">Anda boleh membantu menjadikan Brave lebih selamat dan lebih mudah untuk digunakan dengan melaporkan butiran kemungkinan insiden keselamatan secara automatik kepada Brave Software.</translation>
 <translation id="3009995890652266099">Anda boleh membantu menjadikan Brave lebih selamat dan mudah digunakan dengan menghantar secara automatik beberapa maklumat sistem dan kandungan halaman kepada Brave Software untuk membantu mengesan apl dan tapak yang berbahaya.</translation>
