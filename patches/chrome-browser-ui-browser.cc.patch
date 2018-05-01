@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index b8db8470d449413467642c9b966b5a410f3900b3..fbff992ce2bc0378012bba5efe330b49f810c0d7 100644
+index daeff3d1009de9f676a6d58e11f2d63670f7545a..09c6998ab84dd4ecd4d5d198a09a2840b33d0781 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -28,6 +28,7 @@
@@ -10,7 +10,7 @@ index b8db8470d449413467642c9b966b5a410f3900b3..fbff992ce2bc0378012bba5efe330b49
  #include "build/build_config.h"
  #include "chrome/app/chrome_command_ids.h"
  #include "chrome/browser/app_mode/app_mode_utils.h"
-@@ -384,7 +385,7 @@ Browser::Browser(const CreateParams& params)
+@@ -389,7 +390,7 @@ Browser::Browser(const CreateParams& params)
        live_tab_context_(new BrowserLiveTabContext(this)),
        synced_window_delegate_(new BrowserSyncedWindowDelegate(this)),
        bookmark_bar_state_(BookmarkBar::HIDDEN),

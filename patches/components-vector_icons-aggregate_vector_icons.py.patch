@@ -1,5 +1,5 @@
 diff --git a/components/vector_icons/aggregate_vector_icons.py b/components/vector_icons/aggregate_vector_icons.py
-index 87aa1bea0f6a5159f241479f6bb52547e508fcb3..0a9d96d1c580bdbebc25b444b9eb54a9f61bedda 100644
+index c48a34932e2b00b5a8abeb8be2127feb58d31f06..1b0fa60587a0273fc305f1b2ada75da3716a0589 100644
 --- a/components/vector_icons/aggregate_vector_icons.py
 +++ b/components/vector_icons/aggregate_vector_icons.py
 @@ -21,7 +21,7 @@ def CamelCase(name, suffix):
@@ -32,7 +32,7 @@ index 87aa1bea0f6a5159f241479f6bb52547e508fcb3..0a9d96d1c580bdbebc25b444b9eb54a9
      if not scale_factor and icon_name not in path_map:
        path_map[icon_name] = icon_path
      elif scale_factor and icon_name not in path_map_1x:
-@@ -144,13 +151,16 @@ def main():
+@@ -147,13 +154,16 @@ def main():
                      help="The path to output the CC file to.")
    parser.add_option("--output_h",
                      help="The path to output the header file to.")

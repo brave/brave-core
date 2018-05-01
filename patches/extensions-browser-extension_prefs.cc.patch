@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/extension_prefs.cc b/extensions/browser/extension_prefs.cc
-index cafc90ed44e2ff5d6c844fbea89798684909c268..7ad517ade16f4fcc6e2b9d8aabeadff10ea5c30b 100644
+index c6e78894dbb6813e5445adacf7935dea5a4ce615..ce47542f157ea28b4b2728945b43227f7c7871e0 100644
 --- a/extensions/browser/extension_prefs.cc
 +++ b/extensions/browser/extension_prefs.cc
 @@ -19,6 +19,7 @@

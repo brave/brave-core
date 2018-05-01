@@ -1,20 +1,20 @@
 diff --git a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
-index d8a82a2216cb11dcfdeccae4c13902f1358b6a98..6bf40c05d6bbe05ceff1a20cf7e238c4e76e5e3a 100644
+index 3b636e0fb9d50c69c1aff636b12fa0d0e48e3c1b..361f90de1a68bda058292fbf1cbd1a04540cd8f2 100644
 --- a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
 +++ b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
-@@ -9,6 +9,7 @@
- #include "base/logging.h"
- #include "base/macros.h"
- #include "build/build_config.h"
-+#include "components/grit/brave_components_resources.h"
+@@ -12,6 +12,7 @@
+ #include "chrome/common/buildflags.h"
  #include "chrome/common/extensions/extension_constants.h"
- #include "chrome/common/features.h"
  #include "chrome/grit/browser_resources.h"
++#include "components/grit/brave_components_resources.h"
+ #include "extensions/common/constants.h"
+ #include "printing/features/features.h"
+ 
 @@ -37,6 +38,7 @@ bool IsComponentExtensionWhitelisted(const std::string& extension_id) {
      extension_misc::kZIPUnpackerExtensionId,
      extension_misc::kZipArchiverExtensionId,
  #endif
-+     "mnojpmjdmbbfmejpflffifhffcmidifd"
++    "mnojpmjdmbbfmejpflffifhffcmidifd"
    };
  
    for (size_t i = 0; i < arraysize(kAllowed); ++i) {

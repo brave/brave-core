@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/host_content_settings_map.h b/components/content_settings/core/browser/host_content_settings_map.h
-index 890e8959ae155618b78661dc8e97a81332d654f8..2a1f562e3b37ce85c3de48ea3f753c34c8586bbd 100644
+index be6ca47337b6acb0f068fa83dbd29a17fc857987..b6c61f74d8b495d3d8dedecc8f1108a963aff7b2 100644
 --- a/components/content_settings/core/browser/host_content_settings_map.h
 +++ b/components/content_settings/core/browser/host_content_settings_map.h
-@@ -303,6 +303,7 @@ class HostContentSettingsMap : public content_settings::Observer,
+@@ -304,6 +304,7 @@ class HostContentSettingsMap : public content_settings::Observer,
    }
  
   private:

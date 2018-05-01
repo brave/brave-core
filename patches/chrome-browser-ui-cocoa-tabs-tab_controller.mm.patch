@@ -1,15 +1,15 @@
 diff --git a/chrome/browser/ui/cocoa/tabs/tab_controller.mm b/chrome/browser/ui/cocoa/tabs/tab_controller.mm
-index d83f7e40819805e87dcd6cd376407d6f0a285edf..ff72af7295aaaf08acc8f0294fd59923194136bf 100644
+index 4c5aa42e828cca44b26c0c60256dbf15860a967d..ac8d46f0a9aeca8683c2a11743d569897dfb672e 100644
 --- a/chrome/browser/ui/cocoa/tabs/tab_controller.mm
 +++ b/chrome/browser/ui/cocoa/tabs/tab_controller.mm
-@@ -101,8 +101,8 @@ class MenuDelegate : public ui::SimpleMenuModel::Delegate {
+@@ -98,8 +98,8 @@ class MenuDelegate : public ui::SimpleMenuModel::Delegate {
  @synthesize url = url_;
  
  namespace {
--static const CGFloat kTabLeadingPadding = 18;
--static const CGFloat kTabTrailingPadding = 15;
-+static const CGFloat kTabLeadingPadding = 9;
-+static const CGFloat kTabTrailingPadding = 7;
- static const CGFloat kCloseButtonSize = 16;
- static const CGFloat kInitialTabWidth = 160;
- static const CGFloat kTitleLeadingPadding = 4;
+-constexpr CGFloat kTabLeadingPadding = 18;
+-constexpr CGFloat kTabTrailingPadding = 15;
++constexpr CGFloat kTabLeadingPadding = 9;
++constexpr CGFloat kTabTrailingPadding = 7;
+ constexpr CGFloat kMinTabWidth = 36;
+ constexpr CGFloat kMinActiveTabWidth = 52;
+ constexpr CGFloat kMaxTabWidth = 246;

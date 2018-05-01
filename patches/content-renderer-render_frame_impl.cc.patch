@@ -1,8 +1,8 @@
 diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
-index 956085eaaf10e59a6b229fc37c17b4903e35ff20..e49a0f19b3b75a8b80b15cb17aea7dd7f5d84ca9 100644
+index 7fc7063d9f455803005dc278ee67dc8e4b94f3ee..1505d9c1efc096569c2103009c32b21cfe040f3b 100644
 --- a/content/renderer/render_frame_impl.cc
 +++ b/content/renderer/render_frame_impl.cc
-@@ -40,6 +40,7 @@
+@@ -41,6 +41,7 @@
  #include "base/threading/thread_task_runner_handle.h"
  #include "base/time/time.h"
  #include "base/trace_event/trace_event.h"
@@ -10,7 +10,7 @@ index 956085eaaf10e59a6b229fc37c17b4903e35ff20..e49a0f19b3b75a8b80b15cb17aea7dd7
  #include "build/build_config.h"
  #include "cc/base/switches.h"
  #include "content/common/accessibility_messages.h"
-@@ -1049,7 +1050,7 @@ RenderFrameImpl* RenderFrameImpl::Create(
+@@ -1063,7 +1064,7 @@ RenderFrameImpl* RenderFrameImpl::Create(
    if (g_create_render_frame_impl)
      return g_create_render_frame_impl(std::move(params));
    else

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 236029e6121dfdb4c39b4721f6a1bdce10b43905..f778f6a0d33c9b336589d958627e369bf5f72c34 100644
+index 66f7beb039718fa75e06cfb73240d6d55185182a..c1dd83f1cf024d260c430784a105b4a50da4f1d0 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -103,7 +103,10 @@ const double kSelectedTabThrobScale = 0.95 - kSelectedTabOpacity;
+@@ -101,7 +101,10 @@ const double kSelectedTabThrobScale = 0.95 - kSelectedTabOpacity;
  //
  // The value returned here must be at least Tab::kMinimumEndcapWidth.
  float GetTabEndcapWidth() {

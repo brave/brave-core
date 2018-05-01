@@ -1,5 +1,5 @@
 diff --git a/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp b/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp
-index 94de909f954d2f4638a89aa37575e39626989ae8..6760f73fc6dfda85c060e48521fa901b654befad 100644
+index 1f8a3c6c8acde3818902ef0cb9e697222e8a3de5..e608bdb7d53a8a8bd1f3f8fc3f81d797e9d7bc58 100644
 --- a/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp
 +++ b/third_party/WebKit/Source/modules/canvas/canvas2d/CanvasRenderingContext2D.cpp
 @@ -36,6 +36,7 @@
@@ -10,7 +10,7 @@ index 94de909f954d2f4638a89aa37575e39626989ae8..6760f73fc6dfda85c060e48521fa901b
  #include "core/CSSPropertyNames.h"
  #include "core/css/CSSFontSelector.h"
  #include "core/css/CSSPropertyValueSet.h"
-@@ -763,6 +764,9 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
+@@ -768,6 +769,9 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
    if (!canvas()->GetDocument().GetFrame())
      return TextMetrics::Create();
  

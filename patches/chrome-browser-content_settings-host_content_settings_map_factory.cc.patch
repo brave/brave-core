@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/content_settings/host_content_settings_map_factory.cc b/chrome/browser/content_settings/host_content_settings_map_factory.cc
-index 7bb265a57ba4c03489743add26adaeea40a9fb06..3f6b1af25a0118ac2b6d388948f0dee49d32f78a 100644
+index 2e8e68563c3c8927087f59d48440d6bde105d3d1..dfd0808207a341432e19f136898df5a2f1539723 100644
 --- a/chrome/browser/content_settings/host_content_settings_map_factory.cc
 +++ b/chrome/browser/content_settings/host_content_settings_map_factory.cc
 @@ -7,6 +7,7 @@
@@ -10,9 +10,9 @@ index 7bb265a57ba4c03489743add26adaeea40a9fb06..3f6b1af25a0118ac2b6d388948f0dee4
  #include "chrome/browser/profiles/off_the_record_profile_impl.h"
  #include "chrome/browser/profiles/profile.h"
  #include "chrome/common/chrome_features.h"
-@@ -81,7 +82,7 @@ scoped_refptr<RefcountedKeyedService>
- 
-   bool store_last_modified = base::FeatureList::IsEnabled(features::kTabsInCbd);
+@@ -79,7 +80,7 @@ scoped_refptr<RefcountedKeyedService>
+     GetForProfile(profile->GetOriginalProfile());
+   }
  
 -  scoped_refptr<HostContentSettingsMap> settings_map(new HostContentSettingsMap(
 +  scoped_refptr<HostContentSettingsMap> settings_map(new BraveHostContentSettingsMap(

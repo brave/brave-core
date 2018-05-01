@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/util_constants.cc b/chrome/installer/util/util_constants.cc
-index e8913e34bd4731886c2709db051ed9a0bf3115ac..123a271896d765ef633814a554200127754fc0da 100644
+index 601fdd05e6e0ee269c792c6457247467068ad011..772577e7233f44f028314f5c67e7aad3e5912253 100644
 --- a/chrome/installer/util/util_constants.cc
 +++ b/chrome/installer/util/util_constants.cc
 @@ -184,7 +184,11 @@ const char kGoogleUpdateIsMachineEnvVar[] = "GoogleUpdateIsMachine";

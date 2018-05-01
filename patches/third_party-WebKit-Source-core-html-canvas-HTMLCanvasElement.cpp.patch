@@ -1,5 +1,5 @@
 diff --git a/third_party/WebKit/Source/core/html/canvas/HTMLCanvasElement.cpp b/third_party/WebKit/Source/core/html/canvas/HTMLCanvasElement.cpp
-index 8f5c621ca932513988e143ad5b0863f5b2af381f..24449d804c4da8e8a7a0e0a90a4f3c05935a6256 100644
+index 3a2834d2fc76de5a9a350f1ef163156c1bdef59b..2cfac7358db683ac11e2ed823405c1f015a5890a 100644
 --- a/third_party/WebKit/Source/core/html/canvas/HTMLCanvasElement.cpp
 +++ b/third_party/WebKit/Source/core/html/canvas/HTMLCanvasElement.cpp
 @@ -35,6 +35,7 @@
@@ -10,7 +10,7 @@ index 8f5c621ca932513988e143ad5b0863f5b2af381f..24449d804c4da8e8a7a0e0a90a4f3c05
  #include "build/build_config.h"
  #include "core/css/CSSFontSelector.h"
  #include "core/css/StyleEngine.h"
-@@ -820,6 +821,9 @@ String HTMLCanvasElement::ToDataURLInternal(
+@@ -834,6 +835,9 @@ String HTMLCanvasElement::ToDataURLInternal(
  String HTMLCanvasElement::toDataURL(const String& mime_type,
                                      const ScriptValue& quality_argument,
                                      ExceptionState& exception_state) const {
@@ -20,7 +20,7 @@ index 8f5c621ca932513988e143ad5b0863f5b2af381f..24449d804c4da8e8a7a0e0a90a4f3c05
    if (!OriginClean()) {
      exception_state.ThrowSecurityError("Tainted canvases may not be exported.");
      return String();
-@@ -839,6 +843,9 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+@@ -853,6 +857,9 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
                                 const String& mime_type,
                                 const ScriptValue& quality_argument,
                                 ExceptionState& exception_state) {

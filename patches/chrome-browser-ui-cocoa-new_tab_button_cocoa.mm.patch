@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/ui/cocoa/new_tab_button.mm b/chrome/browser/ui/cocoa/new_tab_button.mm
-index 767e405a0c4d5142fa1099968c6e1d0e66a6d201..1b353a7e9b2cc91d8447f2513fe3d369b36317a2 100644
---- a/chrome/browser/ui/cocoa/new_tab_button.mm
-+++ b/chrome/browser/ui/cocoa/new_tab_button.mm
+diff --git a/chrome/browser/ui/cocoa/new_tab_button_cocoa.mm b/chrome/browser/ui/cocoa/new_tab_button_cocoa.mm
+index 767e405a0c4d5142fa1099968c6e1d0e66a6d201..f10353e69d4e1242595a38d8a937144cc3022690 100644
+--- a/chrome/browser/ui/cocoa/new_tab_button_cocoa.mm
++++ b/chrome/browser/ui/cocoa/new_tab_button_cocoa.mm
 @@ -25,7 +25,7 @@ enum class OverlayOption {
    DARKEN,
  };
@@ -65,7 +65,7 @@ index 767e405a0c4d5142fa1099968c6e1d0e66a6d201..1b353a7e9b2cc91d8447f2513fe3d369
  
    [bezierPath closePath];
  
-@@ -431,9 +427,11 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -431,9 +427,10 @@ CGFloat LineWidthFromContext(CGContextRef context) {
    CGFloat buttonWidth = newTabButtonImageSize.width;
  
    // Bottom edge.
@@ -75,23 +75,20 @@ index 767e405a0c4d5142fa1099968c6e1d0e66a6d201..1b353a7e9b2cc91d8447f2513fe3d369
 -  const CGFloat kBottomEdgeWidth = 22;
 +  const CGFloat kBottomEdgeWidth = 17.5; //35/2 this is just for doubled line at the bottom
 +
-+
    NSPoint bottomEdgeStart = NSMakePoint(kBottomEdgeX, kBottomEdgeY);
    NSPoint bottomEdgeEnd = NSMakePoint(kBottomEdgeX + kBottomEdgeWidth,
                                        kBottomEdgeY);
-@@ -454,11 +452,13 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -454,11 +451,11 @@ CGFloat LineWidthFromContext(CGContextRef context) {
    CGPoint shadowStart = NSZeroPoint;
    CGPoint shadowEnd = NSZeroPoint;
    NSColor* overlayColor = nil;
 -  const CGFloat kBottomShadowX = 8;
-+
 +  const CGFloat kBottomShadowX = kBottomEdgeX - 1;
    const CGFloat kBottomShadowY = kBottomEdgeY - lineWidth;
    const CGFloat kTopShadowX = 1;
    const CGFloat kTopShadowY = kBottomShadowY + 15;
 -  const CGFloat kShadowWidth = 24;
 +  const CGFloat kShadowWidth = kBottomEdgeWidth;
-+
    static NSColor* lightOverlayColor =
        [[NSColor colorWithCalibratedWhite:1 alpha:0.20] retain];
    static NSColor* darkOverlayColor =

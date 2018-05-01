@@ -1,5 +1,5 @@
 diff --git a/base/mac/foundation_util.mm b/base/mac/foundation_util.mm
-index eb8284ee58fef43df064d3365dd1b0e8a65c9f49..7b4eff2dd1d8ef3f3889dd71504f7955172fcb99 100644
+index aec8c0f6398ce65dd70681cfe94ecee9ba8a1c1e..4f6e728b8da3586e44216bd16fa6890f245b67a2 100644
 --- a/base/mac/foundation_util.mm
 +++ b/base/mac/foundation_util.mm
 @@ -250,7 +250,7 @@ const char* BaseBundleID() {

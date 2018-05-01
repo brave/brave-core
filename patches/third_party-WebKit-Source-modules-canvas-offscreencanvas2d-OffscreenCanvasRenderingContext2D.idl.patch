@@ -1,5 +1,5 @@
 diff --git a/third_party/WebKit/Source/modules/canvas/offscreencanvas2d/OffscreenCanvasRenderingContext2D.idl b/third_party/WebKit/Source/modules/canvas/offscreencanvas2d/OffscreenCanvasRenderingContext2D.idl
-index 227586a9f79859a5c27c73e94f2d34d7ac357962..b5a930c192a01a7965492a542408cc63000e67b1 100644
+index 142beff855606a04d51533a51590f4f29cd3f332..0ef3e904cefdb1ccc25b20e885ff2438d401553b 100644
 --- a/third_party/WebKit/Source/modules/canvas/offscreencanvas2d/OffscreenCanvasRenderingContext2D.idl
 +++ b/third_party/WebKit/Source/modules/canvas/offscreencanvas2d/OffscreenCanvasRenderingContext2D.idl
 @@ -60,10 +60,10 @@

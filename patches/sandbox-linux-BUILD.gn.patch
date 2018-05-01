@@ -1,8 +1,8 @@
 diff --git a/sandbox/linux/BUILD.gn b/sandbox/linux/BUILD.gn
-index 9d4726f89e4b6d11a67fa2d3d5a169f0e3f8d230..2a222a65e419daa97fb0170bc1a88fe74079fca1 100644
+index 207ef460ba53e4169793968cc11d8b489e602ae2..fbfb81fee04ec50a46e23f2d29bb13713e5fae40 100644
 --- a/sandbox/linux/BUILD.gn
 +++ b/sandbox/linux/BUILD.gn
-@@ -335,6 +335,8 @@ if (is_linux) {
+@@ -338,6 +338,8 @@ if (is_linux) {
      # This is safe to delete unconditionally, because it is part of the
      # default configs and empty when not using the sanitizers.
      configs -= [ "//build/config/sanitizers:default_sanitizer_flags" ]

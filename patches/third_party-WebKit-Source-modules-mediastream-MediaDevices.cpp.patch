@@ -1,5 +1,5 @@
 diff --git a/third_party/WebKit/Source/modules/mediastream/MediaDevices.cpp b/third_party/WebKit/Source/modules/mediastream/MediaDevices.cpp
-index 29675b0789e65a2e8520fc2185719065636a7bb3..edfb60c3f7636caee9888ceaea1d5e029a204854 100644
+index b49adc58dbdb3f6b0988495742506ba8c9978680..ec027fc977eb4b8ad075e934c399b62d8ab5e640 100644
 --- a/third_party/WebKit/Source/modules/mediastream/MediaDevices.cpp
 +++ b/third_party/WebKit/Source/modules/mediastream/MediaDevices.cpp
 @@ -6,6 +6,7 @@

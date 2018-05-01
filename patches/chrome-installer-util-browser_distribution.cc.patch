@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/browser_distribution.cc b/chrome/installer/util/browser_distribution.cc
-index ac6a3e41ef2c4e82eab088b39abc0d17c4db0f0e..7f40ea380eecf2d4063f8de78b0a942cca4d76e1 100644
+index 33c105c968dc46b62ab39ee766f1ecce4449c358..e6ad55977dc9dc61975f2a95d12e508f0d1bb7ab 100644
 --- a/chrome/installer/util/browser_distribution.cc
 +++ b/chrome/installer/util/browser_distribution.cc
-@@ -109,7 +109,7 @@ base::string16 BrowserDistribution::GetStartMenuShortcutSubfolder(
+@@ -108,7 +108,7 @@ base::string16 BrowserDistribution::GetStartMenuShortcutSubfolder(
  }
  
  base::string16 BrowserDistribution::GetPublisherName() {
