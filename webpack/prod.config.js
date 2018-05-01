@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const postCSSConfig = require('./postcss.config')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const customPath = path.join(__dirname, './customPublicPath')
 
@@ -8,6 +9,19 @@ module.exports = {
   entry: {
     braveShieldsPanel: [customPath, path.join(__dirname, '../app/braveShieldsPanel')],
     background: [customPath, path.join(__dirname, '../app/background')]
+  },
+  mode: 'production',
+  optimization: {
+    minimizer: [
+      new UglifyJSPlugin({
+        uglifyOptions: {
+          comments: false,
+          compressor: {
+            warnings: false
+          }
+        }
+      })
+    ]
   },
   output: {
     path: path.join(__dirname, '../build/js'),
@@ -17,12 +31,6 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.IgnorePlugin(/[^/]+\/[\S]+.dev$/),
-    new webpack.optimize.UglifyJsPlugin({
-      comments: false,
-      compressor: {
-        warnings: false
-      }
-    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production')
