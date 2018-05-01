@@ -183,6 +183,20 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Brave - <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>
         </message>
       </if>
+      <!-- Accessible window title format - includes the channel, and the same
+           on all browser platforms rather than different on Brave OS. -->
+      <message name="IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window">
+        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave
+      </message>
+      <message name="IDS_ACCESSIBLE_BETA_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the beta channel version of the browser">
+        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Beta
+      </message>
+      <message name="IDS_ACCESSIBLE_DEV_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the developer (dev) channel version of the browser">
+        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Dev
+      </message>
+      <message name="IDS_ACCESSIBLE_CANARY_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the canary (nightly build) channel version of the browser">
+        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Canary
+      </message>
       <if expr="not chromeos">
         <message name="IDS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave help page.">
           Get help with using Brave
@@ -220,7 +234,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
       <if expr="is_win">
         <message name="IDS_WIN_XP_VISTA_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using is no longer supported.">
-          Brave may not function correctly because it is no longer supported on Windows XP or Windows Vista.
+          Brave may not function correctly because it is no longer supported on Windows XP or Windows Vista
         </message>
       </if>
       <message name="IDS_ACCNAME_APP" desc="The accessible name for the app menu.">
@@ -255,7 +269,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
       <if expr="not chromeos">
         <message name="IDS_NEW_TAB_CHROME_WELCOME_PAGE_TITLE"
-                 desc="Title for the hard-coded thumbnail that represents the Brave Brave Welcome page.  This is used on the NTP when there aren't enough thumbnails to show.">
+                 desc="Title for the hard-coded thumbnail that represents the Brave Welcome page.  This is used on the NTP when there aren't enough thumbnails to show.">
           Welcome to Brave
         </message>
       </if>
@@ -276,7 +290,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
       <if expr="use_titlecase">
         <message name="IDS_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND" desc="In Title Case: The checkbox in the status tray context menu that controls whether chrome keeps running in the background after the last window is closed">
-          Let Brave Run In The Background
+          Let Brave Run in the Background
         </message>
       </if>
       <if expr="not use_titlecase">
@@ -341,10 +355,16 @@ Brave is unable to recover your settings.
         <message name="IDS_PASSWORDS_PAGE_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before revealing plaintext passwords on the password page.">
           Brave is trying to show passwords.
         </message>
+        <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before exporting passwords to a file.">
+          Brave wants to export your passwords.
+        </message>
       </if>
       <if expr="is_win">
         <message name="IDS_PASSWORDS_PAGE_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before revealing plaintext passwords on the password page.">
           Brave is trying to show passwords. Type your Windows password to allow this.
+        </message>
+        <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before exporting passwords to a file.">
+          Brave wants to export your passwords. Type your Windows password to allow this.
         </message>
         <message name="IDS_INSTALL_HIGHER_VERSION" desc="Error displayed when higher version already exists.">
           This computer already has a more recent version of Brave. If the software is not working, please uninstall Brave and try again.
@@ -399,7 +419,7 @@ Brave is unable to recover your settings.
         </message>
       </if>
       <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
-        Brave isn't your default browser.
+        Brave isn't your default browser
       </message>
       <if expr="chromeos">
         <message name="IDS_SYNC_OVERVIEW" desc="Brave OS: The message that appears in the options dialog when sync has not been set up by the user.">
@@ -468,12 +488,17 @@ Brave is unable to recover your settings.
         This file may be dangerous, so Brave has blocked it.
       </message>
 
-      <!-- Remove in-progress downloads confirmation dialog -->
-      <message name="IDS_DOWNLOAD_REMOVE_CONFIRM_EXPLANATION" desc="Explanation of the dialog asking for user confirmation to close the browser when one or more downloads are in progress. [ICU Syntax]">
-      {NUM_DOWNLOAD, plural,
-        =1 {A download is currently in progress. Do you want to cancel the download and exit Brave?}
-        other {# downloads are currently in progress. Do you want to cancel the downloads and exit Brave?}}
-      </message>
+      <!-- Abandon in-progress downloads confirmation dialog -->
+      <if expr="not is_macosx">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_BROWSER_MESSAGE" desc="Message on a dialog shown when the user closes the browser while one or more downloads are in progress. This string is shown on Windows, Brave OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+          Exit Brave anyway?
+        </message>
+      </if>
+      <if expr="is_macosx">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_BROWSER_MESSAGE" desc="Mac OSX Only: Message on a dialog shown when the user closes the browser while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
+          Quit Brave anyway?
+        </message>
+      </if>
 
       <!-- Quit all apps confirmation dialog -->
       <if expr="is_macosx">
@@ -536,14 +561,11 @@ Brave is unable to recover your settings.
 
       <if expr="enable_extensions">
         <!-- Extension installed bubble -->
-        <message name="IDS_EXTENSION_INSTALLED_HEADING" desc="First line in the content area of the extension installed bubble. Instructs that the extension was installed.">
-          <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> has been added to Brave.
+        <message name="IDS_EXTENSION_INSTALLED_HEADING" desc="Title of the extension-installed bubble. Instructs that the extension was installed.">
+          <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> has been added to Brave
         </message>
         <message name="IDS_EXTENSION_INSTALLED_SYNC_PROMO_LINK_NEW" desc="Text of the link to sign in to Brave from the extension installed bubble. This will be converted to a link, with additional text around it.">
           sign in to Brave
-        </message>
-        <message name="IDS_EXTENSION_INSTALLED_SIGNIN_PROMO_LINK" desc="The first part of the sign-in promo paragraph. This part will be converted to a link and will get more text appended to it (see IDS_EXTENSION_INSTALLED_SIGNIN_PROMO). Keep this text short.">
-          Sign in to Brave
         </message>
 
         <!-- Extension context menu -->
@@ -589,6 +611,10 @@ Brave is unable to recover your settings.
         Customize and control Brave
       </message>
 
+      <message name="IDS_APPMENU_TOOLTIP_UPDATE_AVAILABLE" desc="The tooltip to show for the browser menu when an update is available">
+        Customize and control Brave. Update is available.
+      </message>
+
       <message name="IDS_OPEN_IN_CHROME" desc="The text label of the Open in Brave menu item for the Hosted App app menu">
         &amp;Open in Brave
       </message>
@@ -619,13 +645,13 @@ Brave is unable to recover your settings.
       </if>
 
       <if expr="is_macosx">
-        <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Brave, not Brave Brave.">
+        <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Brave, not Brave.">
           Brave
         </message>
-        <message name="IDS_HELPER_NAME" desc="The helper application's name.  Should contain the Brave application name (IDS_PRODUCT_NAME). Example: Brave Brave Helper.">
+        <message name="IDS_HELPER_NAME" desc="The helper application's name.  Should contain the Brave application name (IDS_PRODUCT_NAME). Example: Brave Helper.">
           Brave Helper
         </message>
-        <message name="IDS_SHORT_HELPER_NAME" desc="The helper application's short name, used for the Mac's application menu, activity monitor, etc. Example: Brave Helper, not Brave Brave Helper.">
+        <message name="IDS_SHORT_HELPER_NAME" desc="The helper application's short name, used for the Mac's application menu, activity monitor, etc. Example: Brave Helper, not Brave Helper.">
           Brave Helper
         </message>
       </if>
@@ -633,6 +659,14 @@ Brave is unable to recover your settings.
       <!-- Brave sign-in page -->
       <message name="IDS_CHROME_SIGNIN_TITLE" desc="Title on the about:chrome-signin page">
         Brave
+      </message>
+
+      <!-- DICE sign-in promo strings -->
+      <message name="IDS_PROFILES_DICE_SIGNIN_PROMO" desc="Text describing the benefits of signing in and turning on Sync.">
+        Sign in to sync and personalize Brave across your devices
+      </message>
+      <message name="IDS_PROFILES_DICE_SYNC_PROMO" desc="Text describing the benefits of turning on Sync.">
+        Sync and personalize Brave across your devices
       </message>
 
       <!-- Tutorial card in the avatar menu bubble -->
@@ -680,7 +714,7 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
       </if>
 
       <!-- Enterprise sign-in dialog -->
-      <if expr="toolkit_views or is_macosx">
+      <if expr="toolkit_views">
         <message name="IDS_ENTERPRISE_SIGNIN_TITLE" desc="The title of the dialog to confirm linking the browser profile with the signed-in enterprise account">
           Link your Brave data to this account?
         </message>
@@ -709,7 +743,7 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
       </if>
 
       <!-- Brave Cleanup prompt.
-           Note: these strings should only be used by Brave Brave, but
+           Note: these strings should only be used by Brave, but
                  omitting them brings up a hash collision error. -->
       <if expr="is_win">
         <message name="IDS_CHROME_CLEANUP_PROMPT_EXPLANATION" desc="Description in the Brave Cleanup dialog that Brave browser shows when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is found on the user's computer. Appears under the title asking 'Remove harmful software?' Actor is Brave; we are asking, Do you want Brave to remove harmful software? 'it' is harmful software. User has the option of clicking 'Remove' to proceed with a cleanup, or 'Details' to see more details. Preferrably, the translation for this string should have the same meaning as IDS_SETTINGS_RESET_CLEANUP_EXPLANATION.">
@@ -1031,36 +1065,34 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
       </if>
 
       <!-- Upgrade recovery bubble -->
-      <message name="IDS_RUN_RECOVERY" desc="Text for the button the user clicks to recover chromium and its updater.">
-        Update Brave
-      </message>
-      <message name="IDS_DECLINE_RECOVERY" desc="Text for the button the user clicks to decline recovery request.">
-        No, thanks
-      </message>
       <message name="IDS_RECOVERY_BUBBLE_TITLE" desc="Text for the title of the chrome recovery bubble view.">
         Brave is out of date
       </message>
+      <if expr="use_titlecase">
+        <message name="IDS_RUN_RECOVERY" desc="In Title Case: Text for the button the user clicks to recover chromium and its updater.">
+          Update Brave
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_RUN_RECOVERY" desc="Text for the button the user clicks to recover chromium and its updater.">
+          Update Brave
+        </message>
+      </if>
       <message name="IDS_RECOVERY_BUBBLE_TEXT" desc="Text for the chrome recovery bubble view full description.">
         Important security improvements and new features are available in the latest version.
       </message>
 
       <!-- Critical Notification bubble -->
-      <message name="IDS_CRITICAL_NOTIFICATION_HEADLINE" desc="The headline for the critical notification">
+      <message name="IDS_CRITICAL_NOTIFICATION_TITLE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. It counts down from # seconds and then Brave automatically restarts.">
         {SECONDS, plural,
-         =1 {Brave will restart in 1 second.}
-         other {Brave will restart in # seconds.}}
+         =1 {Brave will restart in 1 second}
+         other {Brave will restart in # seconds}}
       </message>
-      <message name="IDS_CRITICAL_NOTIFICATION_HEADLINE_ALTERNATE" desc="The headline for the critical notification when the countdown reaches 0 (will only be seen if an onbeforeunload handler on a web page cancels the shutdown sequence.">
+      <message name="IDS_CRITICAL_NOTIFICATION_TITLE_ALTERNATE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. The title was previously countng down to an automatic restart and now it has finished. Will only be seen if a web page stops the shutdown process.">
         You should restart Brave now.
       </message>
-      <message name="IDS_CRITICAL_NOTIFICATION_TEXT" desc="The text of the critical update notification">
+      <message name="IDS_CRITICAL_NOTIFICATION_TEXT" desc="Explanation text for the bubble that appears when there is a critical update and Brave must restart to install it.">
         A special security update for Brave was just applied; you should restart now for it to take effect (we'll restore your tabs).
-      </message>
-      <message name="IDS_CRITICAL_NOTIFICATION_RESTART" desc="The restart button label">
-        OK - Restart now
-      </message>
-      <message name="IDS_CRITICAL_NOTIFICATION_DISMISS" desc="The dismiss button label">
-        Don't restart
       </message>
 
       <!-- Dialog that asks whether user wants to participate in Safe Browsing Extended Reporting -->
@@ -1106,19 +1138,19 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
       <!-- Runtime permission strings -->
       <if expr="is_android">
         <message name="IDS_INFOBAR_MISSING_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the camera capabilities, but Brave is missing the Android camera permission.">
-          Brave needs permission to access your camera for this site.
+          Brave needs permission to access your camera for this site
         </message>
         <message name="IDS_INFOBAR_MISSING_MICROPHONE_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone capabilities, but Brave is missing the Android microphone permission.">
-          Brave needs permission to access your microphone for this site.
+          Brave needs permission to access your microphone for this site
         </message>
         <message name="IDS_INFOBAR_MISSING_MICROPHONE_CAMERA_PERMISSIONS_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone and camera capabilities, but Brave is missing the Android microphone and camera permissions.">
-          Brave needs permission to access your camera and microphone for this site.
+          Brave needs permission to access your camera and microphone for this site
         </message>
         <message name="IDS_INFOBAR_MISSING_LOCATION_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the location capabilities, but Brave is missing the Android location permission.">
-          Brave needs access to your location to share your location with this site.
+          Brave needs access to your location to share your location with this site
         </message>
         <message name="IDS_MISSING_STORAGE_PERMISSION_DOWNLOAD_EDUCATION_TEXT" desc="Text shown educating the user that Brave is missing the Android storage permission, which is required to download files.">
-          Brave needs storage access to download files.
+          Brave needs storage access to download files
         </message>
       </if>
 
@@ -1202,6 +1234,42 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
       <if expr="is_win">
         <message name="IDS_WIN_NOTIFICATION_SETTINGS_CONTEXT_MENU_ITEM_NAME" desc="The name of the button in Windows Notification Center which leads to Brave notification settings.">
           Go to Brave notification settings
+        </message>
+      </if>
+      <!-- Relaunch notification bubble and dialog. -->
+      <if expr="not is_android and not chromeos">
+        <message name="IDS_RELAUNCH_RECOMMENDED_TITLE" desc="The title of a dialog that tells users that a browser relaunch is recommended for an update available for some number of days.">
+          {0, plural,
+           =0 {A Brave update is available}
+           =1 {A Brave update is available}
+           other {A Brave update has been available for # days}}
+        </message>
+        <message name="IDS_RELAUNCH_RECOMMENDED_BODY" desc="The body text of a dialog that tells users that a browser relaunch is recommended for an update.">
+          Your administrator asks that you relaunch Brave to apply this update
+        </message>
+        <message name="IDS_RELAUNCH_REQUIRED_TITLE_DAYS" desc="The title of a dialog that tells users the browser must be relaunched within two or more days.">
+          {0, plural,
+           =1 {Relaunch Brave within a day}
+           other {Relaunch Brave within # days}}
+        </message>
+        <message name="IDS_RELAUNCH_REQUIRED_TITLE_HOURS" desc="The title of a dialog that tells users the browser must be relaunched within one or more hours.">
+          {0, plural,
+           =1 {Brave will relaunch in an hour}
+           other {Brave will relaunch in # hours}}
+        </message>
+        <message name="IDS_RELAUNCH_REQUIRED_TITLE_MINUTES" desc="The title of a dialog that tells users the browser must be relaunched within one or more minutes.">
+          {0, plural,
+           =1 {Brave will relaunch in 1 minute}
+           other {Brave will relaunch in # minutes}}
+        </message>
+        <message name="IDS_RELAUNCH_REQUIRED_TITLE_SECONDS" desc="The title of a dialog that tells users the browser must be relaunched within some number of seconds.">
+          {0, plural,
+           =0 {Brave will relaunch now}
+           =1 {Brave will relaunch in 1 second}
+           other {Brave will relaunch in # seconds}}
+        </message>
+        <message name="IDS_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells users the browser must be relaunched.">
+          Your administrator requires that you relaunch Brave to apply an update
         </message>
       </if>
     </messages>
