@@ -36,7 +36,6 @@ namespace {
 class BraveConfigurator : public update_client::Configurator {
  public:
   BraveConfigurator(const base::CommandLine* cmdline,
-                    net::URLRequestContextGetter* url_request_getter,
                     PrefService* pref_service);
 
   // update_client::Configurator overrides.
@@ -54,7 +53,7 @@ class BraveConfigurator : public update_client::Configurator {
   std::string GetOSLongName() const override;
   std::string ExtraRequestParams() const override;
   std::string GetDownloadPreference() const override;
-  net::URLRequestContextGetter* RequestContext() const override;
+  scoped_refptr<net::URLRequestContextGetter> RequestContext() const override;
   std::unique_ptr<service_manager::Connector> CreateServiceManagerConnector()
       const override;
   bool EnabledDeltas() const override;
@@ -80,9 +79,8 @@ class BraveConfigurator : public update_client::Configurator {
 // a custom message signing protocol and it does not depend on using HTTPS.
 BraveConfigurator::BraveConfigurator(
     const base::CommandLine* cmdline,
-    net::URLRequestContextGetter* url_request_getter,
     PrefService* pref_service)
-    : configurator_impl_(cmdline, url_request_getter, false),
+    : configurator_impl_(cmdline, false),
       pref_service_(pref_service) {
   DCHECK(pref_service_);
 }
@@ -143,8 +141,9 @@ std::string BraveConfigurator::GetDownloadPreference() const {
   return std::string();
 }
 
-net::URLRequestContextGetter* BraveConfigurator::RequestContext() const {
-  return configurator_impl_.RequestContext();
+scoped_refptr<net::URLRequestContextGetter>
+BraveConfigurator::RequestContext() const {
+  return g_browser_process->system_request_context();
 }
 
 std::unique_ptr<service_manager::Connector>
@@ -199,10 +198,8 @@ void RegisterPrefsForBraveComponentUpdaterConfigurator(
 scoped_refptr<update_client::Configurator>
 MakeBraveComponentUpdaterConfigurator(
     const base::CommandLine* cmdline,
-    net::URLRequestContextGetter* context_getter,
     PrefService* pref_service) {
-  return base::MakeRefCounted<BraveConfigurator>(cmdline, context_getter,
-                                                 pref_service);
+  return base::MakeRefCounted<BraveConfigurator>(cmdline, pref_service);
 }
 
 }  // namespace component_updater

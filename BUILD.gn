@@ -4,7 +4,7 @@ import("//brave/build/config.gni")
 import("//ui/base/ui_features.gni")
 import("//third_party/icu/config.gni")
 import("//build/config/locales.gni")
-import("//media/cdm/ppapi/cdm_paths.gni")
+import("//media/cdm/library_cdm/cdm_paths.gni")
 
 group("child_dependencies") {
   public_deps = [
