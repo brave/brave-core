@@ -18,10 +18,13 @@ source_set("browser_process") {
     "importer/brave_external_process_importer_client.h",
     "importer/brave_external_process_importer_host.cc",
     "importer/brave_external_process_importer_host.h",
+    "importer/brave_importer_lock_dialog.h",
     "importer/brave_in_process_importer_bridge.cc",
     "importer/brave_in_process_importer_bridge.h",
     "importer/brave_profile_writer.cc",
-    "importer/brave_profile_writer.h"
+    "importer/brave_profile_writer.h",
+    "importer/chrome_profile_lock.cc",
+    "importer/chrome_profile_lock.h",
   ]
 
   deps = [

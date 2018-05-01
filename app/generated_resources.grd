@@ -15,6 +15,14 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_SHOW_BRAVE_PAYMENTS" desc="The show brave payments menu in the app menu">
         Brave Payments
       </message>
+
+      <!-- Importer Lock Dialog -->
+      <message name="IDS_CHROME_IMPORTER_LOCK_TITLE" desc="Dialog title for Chrome importer lock dialog">
+	Close Chrome
+      </message>
+      <message name="IDS_CHROME_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the Chrome importer lock dialog">
+	To finish importing, close all Chrome windows.
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
