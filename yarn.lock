@@ -1297,7 +1297,7 @@ braces@^2.3.0, braces@^2.3.1:
     split-string "^3.0.2"
     to-regex "^3.0.1"
 
-brave-ui@^0.7.0:
+brave-ui@^0.7.1:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/brave-ui/-/brave-ui-0.7.2.tgz#510838246e0df86ecb3c38cf3cf1b337ad781ea8"
   dependencies:
