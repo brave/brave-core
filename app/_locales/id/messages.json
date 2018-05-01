@@ -4,7 +4,7 @@
         "description": "Label Cookie Control dropdown options"
     },
     "shieldsControlsCookieOptionBlockAll": {
-        "message": "Block All Cookies",
+        "message": "Blokir Semua Kuki",
         "description": "Cookie control dropdown option Block All Cookies"
     },
     "shieldsControlsAdControlOptionAllowAdsTracking": {
@@ -12,7 +12,7 @@
         "description": "Ad Control dropdown box, option allow ads and tracking"
     },
     "shieldsHeaderToggleLeftPosition": {
-        "message": "Down",
+        "message": "Turun",
         "description": "Label for top shields switch in shields header turned off position"
     },
     "shieldsStatsHttpsUpgrades": {
@@ -36,7 +36,7 @@
         "description": "Label for shields stats, Scripts Blocked count"
     },
     "shieldsHeaderToggleRightPosition": {
-        "message": "Up",
+        "message": "Naik",
         "description": "Label for top shields switch in shields header turned on position"
     },
     "shieldsControlsFingerprintingOptionBlockAll": {
@@ -44,7 +44,7 @@
         "description": "Fingerprinting control dropdown option Block All Fingerprinting"
     },
     "shieldsControlsCookieOptionAllowAll": {
-        "message": "Allow All Cookies",
+        "message": "Izinkan Semua Kuki",
         "description": "Cookie control dropdown option Allow All Cookies"
     },
     "shieldsControlsHttpsEverywhereSwitch": {
@@ -76,7 +76,7 @@
         "description": "Shields controls footer, link to edit default shields settings"
     },
     "shieldsControlsAdControlOptionBlockAds": {
-        "message": "Block Ads",
+        "message": "Blokir Iklan",
         "description": "Ad Control dropdown box, option block ads"
     },
     "shieldsFingerPrintingBlocked": {
@@ -84,7 +84,7 @@
         "description": "Label for shields stats, Fingerprinting Methods Blocked count"
     },
     "shieldsControlsBlockPhishingMalwareSwitch": {
-        "message": "Block Phishing/Malware",
+        "message": "Blokir Phishing/Malware",
         "description": "Shields controls, switch for Block Phishing/Malware"
     },
     "shieldsControlsAdvancedControls": {
@@ -92,7 +92,7 @@
         "description": "Label for advanced controls group"
     },
     "shieldsControlsBlockScriptsSwitch": {
-        "message": "Block Scripts",
+        "message": "Blokir Skrip",
         "description": "Shields controls, switch for Block Scripts"
     },
     "shieldsStatsAdsTrackersBlocked": {
