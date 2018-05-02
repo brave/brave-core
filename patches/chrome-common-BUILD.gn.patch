@@ -1,8 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index d08a945c6b11a918fa5faedcb1c87c269772e877..7c1daac9f4ff71120ba2eab713e5aec1e24c4bf1 100644
+index 7ca361112ae6553b5d55c0118868b6592466e466..936af314f3c6754940ca44cffb6b11bbab3cf453 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -528,6 +528,13 @@ static_library("non_code_constants") {
+@@ -533,6 +533,13 @@ static_library("non_code_constants") {
      "env_vars.h",
    ]
  
@@ -14,9 +14,9 @@ index d08a945c6b11a918fa5faedcb1c87c269772e877..7c1daac9f4ff71120ba2eab713e5aec1
 +  }
 +
    deps = [
+     ":buildflags",
      ":version_header",
-     "//base",
-@@ -554,6 +561,15 @@ static_library("constants") {
+@@ -564,6 +571,15 @@ static_library("constants") {
      "pref_names.h",
    ]
  
@@ -30,5 +30,5 @@ index d08a945c6b11a918fa5faedcb1c87c269772e877..7c1daac9f4ff71120ba2eab713e5aec1
 +  }
 +
    public_deps = [
-     ":features",
+     ":buildflags",
      ":non_code_constants",

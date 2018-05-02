@@ -1,12 +1,12 @@
 diff --git a/chrome/utility/chrome_content_utility_client.h b/chrome/utility/chrome_content_utility_client.h
-index b1967a039cc2975ef1296836de4e5974df453f55..59061165add4a7219909e63e9b4acb9ee87a59ad 100644
+index 8a228d02368f2e149baa5c214cc7f013d631ceaa..b6e527ca8da9b9490a9de4c6fcc4153a0ca4adca 100644
 --- a/chrome/utility/chrome_content_utility_client.h
 +++ b/chrome/utility/chrome_content_utility_client.h
-@@ -36,6 +36,7 @@ class ChromeContentUtilityClient : public content::ContentUtilityClient {
+@@ -41,6 +41,7 @@ class ChromeContentUtilityClient : public content::ContentUtilityClient {
        const NetworkBinderCreationCallback& callback);
  
   private:
 +  friend class BraveContentUtilityClient;
-   // IPC message handlers.
-   using Handlers = std::vector<std::unique_ptr<UtilityMessageHandler>>;
-   Handlers handlers_;
+ #if defined(OS_WIN) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
+   // Last IPC message handler.
+   std::unique_ptr<printing::PrintingHandler> printing_handler_;

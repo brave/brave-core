@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/session_startup_pref.cc b/chrome/browser/prefs/session_startup_pref.cc
-index 01328069d4ef68583ddfd1a54c627d860703df0e..16d8ceb2938edffae3271687dd5c5b6af797d8fb 100644
+index 3e067a976678d9220abddfe8bc75eb8205a01693..93b04d6570e01e147329275749bb7006eb46fa50 100644
 --- a/chrome/browser/prefs/session_startup_pref.cc
 +++ b/chrome/browser/prefs/session_startup_pref.cc
 @@ -60,6 +60,8 @@ void SessionStartupPref::RegisterProfilePrefs(

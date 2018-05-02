@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 3f65aa27ca38e9721493b4e3fe7a40593ab75e0b..e5a8172dbafdd3982e4ed50de1770fbd9f688651 100644
+index c44f8a110599e0cd1d3c15c805b594a63d4b2a54..fa2db27074dc1bdd151d471e1894285030b85e69 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -21,7 +21,7 @@ source_set("lib") {
+@@ -30,7 +30,7 @@ source_set("lib") {
    sources = [
      "appid.h",
      "chrome.release",
@@ -11,7 +11,7 @@ index 3f65aa27ca38e9721493b4e3fe7a40593ab75e0b..e5a8172dbafdd3982e4ed50de1770fbd
      "configuration.cc",
      "configuration.h",
      "decompress.cc",
-@@ -129,12 +129,13 @@ template("generate_mini_installer") {
+@@ -142,11 +142,12 @@ template("generate_mini_installer") {
  
      inputs = [
        "$chrome_dll_file",
@@ -19,16 +19,15 @@ index 3f65aa27ca38e9721493b4e3fe7a40593ab75e0b..e5a8172dbafdd3982e4ed50de1770fbd
 +      "$root_out_dir/brave.exe",
        "$root_out_dir/locales/en-US.pak",
        "$root_out_dir/setup.exe",
-       "$root_out_dir/v8_context_snapshot.bin",
        "//chrome/tools/build/win/makecab.py",
        release_file,
 +      "$root_out_dir/brave_resources.pak",
      ]
  
      outputs = [
-@@ -179,6 +180,8 @@ template("generate_mini_installer") {
+@@ -190,6 +191,8 @@ template("generate_mini_installer") {
+       "//chrome/installer/setup",
        "//third_party/icu:icudata",
-       "//tools/v8_context_snapshot",
        chrome_dll_target,
 +      "//brave:packed_extra_resources",
 +      "//brave/build/win:copy_exe",

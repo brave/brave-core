@@ -1,8 +1,8 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index 149008e26e3fe8d8f5c7ca52928ed0b8f7bca159..7043f713584a93d8fa5422bd671bc2424fac3c55 100644
+index b431e6968c2193c01fdfdfd8014ef54a1fc40872..83f9f2bf531f10d3db98e800d490ebe0165c46a0 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -243,7 +243,7 @@ grit("google_chrome_strings") {
+@@ -247,7 +247,7 @@ grit("google_chrome_strings") {
  }
  
  grit("chromium_strings") {

@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/extension_prefs.h b/extensions/browser/extension_prefs.h
-index 0f921039ce0e9b24bc939105182645214beac8c3..12a24f2530cdc1874f45813ac40b793f0ea340b1 100644
+index d14ff284d59c771e006f172c3584c09cbf1fcb05..11ab04a150c3eb9751f6d8c70d719d54f0de5fd7 100644
 --- a/extensions/browser/extension_prefs.h
 +++ b/extensions/browser/extension_prefs.h
-@@ -565,6 +565,7 @@ class ExtensionPrefs : public ExtensionScopedPrefs, public KeyedService {
+@@ -562,6 +562,7 @@ class ExtensionPrefs : public KeyedService {
    void ClearExternalUninstallForTesting(const ExtensionId& id);
  
   private:

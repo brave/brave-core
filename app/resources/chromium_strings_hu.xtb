@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Feladatkezelő -- Brave</translation>
 <translation id="7918740962659365265">Segítse a Brave fejlesztését azáltal, hogy elküldi a Brave Software-nak a következőket: hibajelentések és <ph name="UMA_LINK"/></translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> -- Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Béta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="6474707902830053522">Segítség kérése a Brave OS használatával  kapcsolatban</translation>
 <translation id="1417155795047680590">A Brave szerzői</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> – A Brave szerzői. Minden jog fenntartva.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">A Brave OS használatának megkezdése</translation>
 <translation id="5063987220091207247">A Brave OS nem tudja megnyitni ezt az oldalt.</translation>
 <translation id="4458285410772214805">Kérjük, jelentkezzen ki, majd jelentkezzen be újra a módosítás aktiválásához.</translation>
-<translation id="3184285555726798152">A Brave fusson a háttérben</translation>
+<translation id="4065288863231444640">A Brave futhat a háttérben</translation>
 <translation id="8926637909431618259">A háttéralkalmazások továbbfuttatása, ha a Braveot bezárják</translation>
 <translation id="2077129598763517140">Hardveres gyorsítás alkalmazása lehetőség szerint</translation>
 <translation id="7182196174524406109">(a Brave <ph name="BEGIN_BUTTON"/>újraindítását<ph name="END_BUTTON"/> igényli)</translation>
@@ -34,7 +38,7 @@
 A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="8554809439398012115">A Brave a jelszót a(z) <ph name="SAVED_PASSWORD_LINK"/> szolgáltatás segítségével menti, így Önnek nem kell megjegyeznie.</translation>
 <translation id="5316336629760101484">A Brave által generált erős jelszó használata</translation>
-<translation id="2288174659056124771">A Brave nem az alapértelmezett böngésző.</translation>
+<translation id="3343095737966473035">A Brave nem az alapértelmezett böngésző</translation>
 <translation id="6715663530666325392">A szinkronizálás beállításával személyre szabott beállításait az interneten tárolhatja, így azok elérhetők a Braveból bármelyik számítógépen.</translation>
 <translation id="2708027082363760195">A Brave nem tartalmazza a PDF Viewer alkalmazást, amely a Nyomtatási előnézet működéséhez szükséges.</translation>
 <translation id="8880183781256147665">Hozzáadás a Bravehoz...</translation>
@@ -42,7 +46,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="9067428552314418522">Ez a fájl veszélyes, ezért a Brave letiltotta.</translation>
 <translation id="4168372721886011198">A(z) <ph name="FILE_NAME"/> veszélyes, ezért a Brave letiltotta.</translation>
 <translation id="89367911614620585">Ez a fájl veszélyes lehet, ezért a Brave letiltotta.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Letöltés van folyamatban. Megszakítja a letöltést, és kilép a Braveból?}other{# letöltés van folyamatban. Megszakítja a letöltéseket, és kilép a Braveból?}}</translation>
 <translation id="2339258256897053758">Hiányoznak Brave Software API-kulcsok. A Brave egyes funkciói kikapcsolnak.</translation>
 <translation id="5906655207909574370">Már majdnem naprakész! Indítsa újra az eszközt a frissítés befejezéséhez.</translation>
 <translation id="5877064549588274448">Módosult a csatorna. Indítsa újra az eszközt a módosítások alkalmazásához.</translation>
@@ -55,9 +58,12 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="777113543093865885">Eltávolítás a Braveból…</translation>
 <translation id="6078442581074612226">A Braveban</translation>
 <translation id="8148611988012584308">A Brave személyre szabása és beállításai</translation>
+<translation id="5849446944780602366">A Brave személyre szabása és vezérlése. Van rendelkezésre álló frissítés.</translation>
 <translation id="9071554113102421877">Megnyitás Braveban</translation>
 <translation id="1421502046520299169">A &amp;amp;Brave OS névjegye</translation>
 <translation id="2534623228451928732">A &amp;amp;Brave OS frissítése</translation>
+<translation id="3360368475735266712">Jelentkezzen be, hogy szinkronizálhassa és személyre szabhassa a Braveot minden eszközén</translation>
+<translation id="5477319665405831211">Szinkronizálhatja és személyre szabhatja a Braveot minden eszközén</translation>
 <translation id="4934157190377700991">Most már bejelentkezett a Braveba</translation>
 <translation id="4100716194836114130">Ez az Ön Braveja</translation>
 <translation id="8296145982386097283">Közösen használ valakivel egy számítógépet? Mostantól úgy állíthatja be a Braveot, ahogy Ön szeretné.</translation>
@@ -91,13 +97,9 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="3472158705945346956">A kezelőjének el kell távolítania, majd újra hozzá kell adnia Önt a Bravehoz.</translation>
 <translation id="5173820533850252773">A Brave elavult</translation>
 <translation id="1705567146636171298">A Brave frissítése</translation>
-<translation id="2316129865977710310">Köszönöm, nem</translation>
 <translation id="4050175100176540509">A legújabb verzióban fontos biztonsági fejlesztések és új funkciók érhetők el.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{A Brave 1 másodpercen belül újraindul.}other{A Brave # másodpercen belül újraindul.}}</translation>
-<translation id="9159286371333817139">Indítsa újra a Braveot most.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{A Brave 1 másodpercen belül újraindul}other{A Brave # másodpercen belül újraindul}}</translation>
 <translation id="9203540365585059272">A rendszer egy speciális biztonsági frissítést alkalmazott a Braveon; indítsa újra a számítógépet, hogy a módosítás életbe léphessen (a lapokat visszaállítjuk).</translation>
-<translation id="1653828314016431939">OK -- Újraindítás most</translation>
-<translation id="795025003224538582">Ne indítsa újra</translation>
 <translation id="763369711159699222">Segítsen a Brave továbbfejlesztésében</translation>
 <translation id="1156940037717341650">Az esetleges biztonsági események adatainak automatikus jelentésével segítséget nyújthat a Brave Software-nak a Brave használatának biztonságosabbá és egyszerűbbé tételéhez.</translation>
 <translation id="3009995890652266099">A rendszer-információk és oldaltartalmak automatikus küldésével segítséget nyújthat a Brave Software-nak a Brave használatának biztonságosabbá és egyszerűbbé tételéhez, illetve a veszélyes alkalmazások és webhelyek felderítéséhez.</translation>

@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">작업 관리자 - Brave</translation>
 <translation id="7918740962659365265">비정상 종료 보고서와 <ph name="UMA_LINK"/>을(를) Brave Software로 전송하여 Brave 개선에 참여합니다.</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave 베타</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - 개발자용 Brave</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Brave OS 사용에 대한 도움말</translation>
 <translation id="1417155795047680590">The Brave Authors</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Brave OS 시작하기</translation>
 <translation id="5063987220091207247">Brave OS에서 이 페이지를 열 수 없음</translation>
 <translation id="4458285410772214805">변경사항을 적용하려면 로그아웃했다가 다시 로그인하세요.</translation>
-<translation id="3184285555726798152">백그라운드에서 Brave을 실행</translation>
+<translation id="4065288863231444640">백그라운드에서 Brave을 실행</translation>
 <translation id="8926637909431618259">Brave 종료 후에도 백그라운드 앱을 계속 실행</translation>
 <translation id="2077129598763517140">가능한 경우 하드웨어 가속 사용</translation>
 <translation id="7182196174524406109">(Brave을 <ph name="BEGIN_BUTTON"/>다시 시작<ph name="END_BUTTON"/>해야 함)</translation>
@@ -38,7 +42,7 @@
 Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8554809439398012115">Brave에서 <ph name="SAVED_PASSWORD_LINK"/>에 이 비밀번호를 저장하므로 기억하지 않아도 됩니다.</translation>
 <translation id="5316336629760101484">Brave에서 생성한 안전한 비밀번호를 사용하세요.</translation>
-<translation id="2288174659056124771">Brave이 기본 브라우저로 설정되어 있지 않습니다.</translation>
+<translation id="3343095737966473035">Brave이 기본 브라우저로 설정되어 있지 않습니다</translation>
 <translation id="6715663530666325392">맞춤설정한 브라우저 기능을 웹에 저장하고 모든 컴퓨터의 Brave에서 액세스할 수 있도록 동기화를 설정합니다.</translation>
 <translation id="2708027082363760195">Brave은 인쇄 미리보기에 필요한 PDF 뷰어가 포함되어 있지 않습니다.</translation>
 <translation id="8880183781256147665">Brave에 추가하는 중...</translation>
@@ -46,7 +50,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="9067428552314418522">이 파일은 위험하므로 Brave에서 차단했습니다.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/>은(는) 위험한 파일이므로 Brave에서 차단했습니다.</translation>
 <translation id="89367911614620585">이 파일은 위험할 수 있으므로 Brave에서 차단했습니다.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{현재 다운로드가 진행 중입니다. 다운로드를 취소하고 Brave을 종료하시겠습니까?}other{현재 #개의 다운로드가 진행 중입니다. 다운로드를 취소하고 Brave을 종료하시겠습니까?}}</translation>
 <translation id="2339258256897053758">Brave Software API 키가 누락되었습니다. Brave의 일부 기능이 사용 중지됩니다.</translation>
 <translation id="5906655207909574370">업데이트가 거의 완료되었습니다. 업데이트를 완료하려면 기기를 다시 시작하세요.</translation>
 <translation id="5877064549588274448">채널이 변경되었습니다. 변경사항을 적용하려면 기기를 다시 시작하세요.</translation>
@@ -59,9 +62,12 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="777113543093865885">Brave에서 제거...</translation>
 <translation id="6078442581074612226">Brave에서</translation>
 <translation id="8148611988012584308">Brave 맞춤설정 및 제어</translation>
+<translation id="5849446944780602366">Brave을 맞춤설정하고 제어하세요. 업데이트가 출시되었습니다.</translation>
 <translation id="9071554113102421877">&amp;amp;Brave에서 열기</translation>
 <translation id="1421502046520299169">Brave OS 정보</translation>
 <translation id="2534623228451928732">Brave OS 업데이트</translation>
+<translation id="3360368475735266712">로그인하여 모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
+<translation id="5477319665405831211">모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
 <translation id="4934157190377700991">이제 Brave에 로그인되었습니다.</translation>
 <translation id="4100716194836114130">나만의 Brave</translation>
 <translation id="8296145982386097283">컴퓨터를 공유하시겠습니까? 이제 원하는 대로 Brave을 설정할 수 있습니다.</translation>
@@ -95,13 +101,9 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="3472158705945346956">관리자가 나를 삭제한 후 다시 Brave에 추가해야 합니다.</translation>
 <translation id="5173820533850252773">Brave이 이전 버전임</translation>
 <translation id="1705567146636171298">Brave 업데이트</translation>
-<translation id="2316129865977710310">아니요, 괜찮습니다.</translation>
 <translation id="4050175100176540509">최신 버전에는 중요한 보안 개선사항 및 새로운 기능이 포함되어 있습니다.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{1초 후에 Brave이 다시 시작됩니다.}other{#초 후에 Brave이 다시 시작됩니다.}}</translation>
-<translation id="9159286371333817139">지금 Brave을 다시 시작해야 합니다.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{1초 후에 Brave이 다시 시작됩니다}other{#초 후에 Brave이 다시 시작됩니다}}</translation>
 <translation id="9203540365585059272">Brave 특별 보안 업데이트를 방금 적용했습니다. 실행하려면 지금 다시 시작하세요. 다시 시작 후 탭은 복원됩니다.</translation>
-<translation id="1653828314016431939">확인 - 지금 다시 시작</translation>
-<translation id="795025003224538582">다시 시작 안함</translation>
 <translation id="763369711159699222">Brave 개선에 참여</translation>
 <translation id="1156940037717341650">Brave Software에 발생할 수 있는 보안 문제의 세부정보를 자동으로 보고하도록 설정하면 Brave을 더 안전하고 편리하게 사용할 수 있습니다.</translation>
 <translation id="3009995890652266099">위험한 앱과 사이트를 감지할 수 있도록 일부 시스템 정보와 페이지 콘텐츠를 Brave Software로 자동 전송함으로써 Brave을 더 안전하고 편리하게 사용할 수 있습니다.</translation>

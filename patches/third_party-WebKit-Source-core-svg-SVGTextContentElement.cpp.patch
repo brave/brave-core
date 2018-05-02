@@ -1,5 +1,5 @@
 diff --git a/third_party/WebKit/Source/core/svg/SVGTextContentElement.cpp b/third_party/WebKit/Source/core/svg/SVGTextContentElement.cpp
-index d8b1e5b163a7d1663ef692a2e5a3393711784b0d..d5762fb3b08e8acb51196bcae94849ec3d73874d 100644
+index 8b2ab50467f419d3b99b9dc0518b3359b09b0284..f8527e4a185e649300d8ea03dc1eaee769ef0873 100644
 --- a/third_party/WebKit/Source/core/svg/SVGTextContentElement.cpp
 +++ b/third_party/WebKit/Source/core/svg/SVGTextContentElement.cpp
 @@ -22,6 +22,7 @@
@@ -10,7 +10,7 @@ index d8b1e5b163a7d1663ef692a2e5a3393711784b0d..d5762fb3b08e8acb51196bcae94849ec
  #include "core/CSSPropertyNames.h"
  #include "core/CSSValueKeywords.h"
  #include "core/editing/FrameSelection.h"
-@@ -103,6 +104,9 @@ unsigned SVGTextContentElement::getNumberOfChars() {
+@@ -100,6 +101,9 @@ unsigned SVGTextContentElement::getNumberOfChars() {
  }
  
  float SVGTextContentElement::getComputedTextLength() {

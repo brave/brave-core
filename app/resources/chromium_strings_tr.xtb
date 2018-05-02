@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Görev Yöneticisi - Brave</translation>
 <translation id="7918740962659365265">Kilitlenme raporlarını ve <ph name="UMA_LINK"/> bilgilerini Brave Software'a göndererek, Brave'u daha iyi hale getirmeye yardımcı olun</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Brave OS'u kullanma konusunda yardım alın</translation>
 <translation id="1417155795047680590">The Brave Authors</translation>
 <translation id="8758017846917193089">Telif Hakkı <ph name="YEAR"/> The Brave Authors. Tüm hakları saklıdır.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Brave OS'yi Kullanmaya Başlayın</translation>
 <translation id="5063987220091207247">Brave OS bu sayfayı açamıyor.</translation>
 <translation id="4458285410772214805">Bu değişikliğin geçerli olabilmesi için lütfen çıkış yapıp tekrar oturum açın.</translation>
-<translation id="3184285555726798152">Brave'un Arka Planda Çalışmasına İzin Ver</translation>
+<translation id="4065288863231444640">Brave'un Arka Planda Çalışmasına İzin Ver</translation>
 <translation id="8926637909431618259">Brave kapandığında arka plan uygulamaları çalıştırmaya devam et</translation>
 <translation id="2077129598763517140">Kullanılabilir olduğunda donanım hızlandırmayı kullan</translation>
 <translation id="7182196174524406109">(Brave'un <ph name="BEGIN_BUTTON"/>yeniden başlatılmasını<ph name="END_BUTTON"/> gerektirir)</translation>
@@ -34,7 +38,7 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="8554809439398012115">Brave, bu şifreyi <ph name="SAVED_PASSWORD_LINK"/> bağlantısı ile kaydeder. Şifreyi hatırlamanız gerekmez.</translation>
 <translation id="5316336629760101484">Brave tarafından oluşturulan güçlü bir şifre kullanın</translation>
-<translation id="2288174659056124771">Brave varsayılan tarayıcınız değil.</translation>
+<translation id="3343095737966473035">Brave varsayılan tarayıcınız değil</translation>
 <translation id="6715663530666325392">Kişiselleştirilmiş tarayıcı özelliklerinizi Web'e kaydetmek ve herhangi bir bilgisayardan Brave ile bu özelliklere erişmek için senkronizasyonu ayarlayın.</translation>
 <translation id="2708027082363760195">Brave, Baskı Önizleme için gerekli olan PDF görüntüleyiciyi içermez.</translation>
 <translation id="8880183781256147665">Brave'a ekleniyor ...</translation>
@@ -42,7 +46,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="9067428552314418522">Bu dosya tehlikeli olduğu için Brave tarafından engellendi.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> tehlikeli olduğu için Brave tarafından engellendi.</translation>
 <translation id="89367911614620585">Bu dosya tehlikeli olabileceği için Brave tarafından engellendi.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Şu anda devam eden bir indirme işlemi var. İndirme işlemini iptal etmek ve Brave'dan çıkmak istiyor musunuz?}other{Şu anda devam eden # indirme işlemi var. İndirme işlemlerini iptal etmek ve Brave'dan çıkmak istiyor musunuz?}}</translation>
 <translation id="2339258256897053758">Brave Software API anahtarları eksik. Brave'un bazı işlevleri devre dışı bırakılacak.</translation>
 <translation id="5906655207909574370">Az kaldı! Güncellemeyi tamamlamak için cihazınızı yeniden başlatın.</translation>
 <translation id="5877064549588274448">Kanal değişti. Değişikliklerin uygulanması için cihazınızı yeniden başlatın.</translation>
@@ -55,9 +58,12 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="777113543093865885">Brave'dan kaldır...</translation>
 <translation id="6078442581074612226">Brave'da</translation>
 <translation id="8148611988012584308">Brave'u özelleştirin ve kontrol edin</translation>
+<translation id="5849446944780602366">Brave'u özelleştirin ve kontrol edin. Güncelleme mevcut.</translation>
 <translation id="9071554113102421877">&amp;amp;Brave'da aç</translation>
 <translation id="1421502046520299169">&amp;amp;Brave OS hakkında</translation>
 <translation id="2534623228451928732">&amp;amp;Brave OS'u güncelle</translation>
+<translation id="3360368475735266712">Brave'u cihazlarınız arasında senkronize etmek ve kişiselleştirmek için oturum açın</translation>
+<translation id="5477319665405831211">Brave'u cihazlarınız arasında senkronize edin ve kişiselleştirin</translation>
 <translation id="4934157190377700991">Şu anda Brave'da oturum açtınız</translation>
 <translation id="4100716194836114130">Bu sizin Brave'unuz</translation>
 <translation id="8296145982386097283">Bilgisayarı paylaşıyor musunuz? Artık Brave'u tam olarak istediğiniz gibi kurabilirsiniz.</translation>
@@ -91,13 +97,9 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="3472158705945346956">Yöneticinizin sizi Brave'dan kaldırması ve daha sonra tekrar eklemesi gerekir.</translation>
 <translation id="5173820533850252773">Brave sürümü eski</translation>
 <translation id="1705567146636171298">Brave'u güncelle</translation>
-<translation id="2316129865977710310">Hayır, teşekkürler</translation>
 <translation id="4050175100176540509">Son sürümde güvenlikle ilgili önemli iyileştirmeler ve yeni özellikler mevcuttur.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave 1 saniye içinde yeniden başlatılacak.}other{Brave # saniye içinde yeniden başlatılacak.}}</translation>
-<translation id="9159286371333817139">Brave'u şimdi yeniden başlatmalısınız.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave 1 saniye içinde yeniden başlatılacak}other{Brave # saniye içinde yeniden başlatılacak}}</translation>
 <translation id="9203540365585059272">Brave için özel bir güvenlik güncellemesi uygulandı. Güncellemenin geçerli olması için cihazı şimdi yeniden başlatmalısınız (sekmeleriniz geri yüklenecektir).</translation>
-<translation id="1653828314016431939">Tamam - Şimdi yeniden başlat</translation>
-<translation id="795025003224538582">Yeniden başlatma</translation>
 <translation id="763369711159699222">Brave'u daha iyi hale getirmeye yardımcı olun</translation>
 <translation id="1156940037717341650">Olası güvenlik olaylarının ayrıntılarını Brave Software'a otomatik olarak bildirerek Brave'un daha güvenli ve kullanımı kolay bir hale gelmesine yardımcı olabilirsiniz.</translation>
 <translation id="3009995890652266099">Tehlikeli uygulamalar ve sitelerin tespit edilmesine yardımcı olmak üzere Brave Software'a bazı sistem bilgilerini ve sayfa içeriklerini otomatik olarak göndererek, Brave'un daha güvenli olmasını ve daha kolay kullanılmasını sağlayabilirsiniz.</translation>

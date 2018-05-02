@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">કાર્ય વ્યવસ્થાપક - Brave</translation>
 <translation id="7918740962659365265">ક્રેશ રિપોર્ટ્સ અને <ph name="UMA_LINK"/> Brave Software ને મોકલીને Brave ને વધુ સારું બનાવવામાં સહાય કરો.</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave બીટા</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Brave OS નો ઉપયોગ કરવા સહાય મેળવો</translation>
 <translation id="1417155795047680590">Brave લેખકો</translation>
 <translation id="8758017846917193089">કોપિરાઇટ <ph name="YEAR"/> The Brave Authors. સર્વાધિકાર સુરક્ષિત.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Brave OS સાથે પ્રારંભ કરો</translation>
 <translation id="5063987220091207247">Brave OS, આ પૃષ્ઠને ખોલી શકતું નથી.</translation>
 <translation id="4458285410772214805">કૃપા કરીને આ પરિવર્તનને પ્રભાવમાં લાવવા માટે સાઇન આઉટ કરો અને ફરીથી સાઇન ઇન કરો.</translation>
-<translation id="3184285555726798152">Brave ને પૃષ્ઠભૂમિમાં ચાલવા દો</translation>
+<translation id="4065288863231444640">Braveને બૅકગ્રાઉન્ડમાં ચાલવા દો</translation>
 <translation id="8926637909431618259">જ્યારે Brave બંધ થાય ત્યારે પૃષ્ઠભૂમિ ઍપ્લિકેશનો ચલાવવાનું ચાલુ રાખો</translation>
 <translation id="2077129598763517140">હાર્ડવેર ઍક્સિલરેશન ઉપલબ્ધ હોવા પર ઉપયોગ કરો</translation>
 <translation id="7182196174524406109">(Brave <ph name="BEGIN_BUTTON"/>પુનઃપ્રારંભ કરવું<ph name="END_BUTTON"/> આવશ્યક છે)</translation>
@@ -38,7 +42,7 @@
 Brave તમારી સેટિંગ્સને પુનઃપ્રાપ્ત કરવામાં અક્ષમ છે.</translation>
 <translation id="8554809439398012115">Brave આ પાસવર્ડ <ph name="SAVED_PASSWORD_LINK"/>માં સાચવશે. તમારે તેને યાદ રાખવાની જરૂર નથી.</translation>
 <translation id="5316336629760101484">Brave દ્વારા બનાવેલ સશક્ત પાસવર્ડનો ઉપયોગ કરો</translation>
-<translation id="2288174659056124771">Brave તમારું ડિફોલ્ટ બ્રાઉઝર નથી.</translation>
+<translation id="3343095737966473035">Brave તમારું ડિફૉલ્ટ બ્રાઉઝર નથી</translation>
 <translation id="6715663530666325392">તમારી વેબ પરની વ્યક્તિગત કરેલી બ્રાઉઝર સુવિધાઓને સાચવવા અને તેમને કોઈપણ કમ્પ્યુટર પર Brave માંથી ઍક્સેસ કરવા માટે સમન્વયન સેટ કરો.</translation>
 <translation id="2708027082363760195">Brave માં PDF વ્યૂઅર સામેલ કરતું નથી, જે પ્રિંટ પૂર્વાવલોકનને કાર્ય કરવા માટે જરૂરી છે.</translation>
 <translation id="8880183781256147665">Brave માં ઉમેરી રહ્યું છે...</translation>
@@ -46,7 +50,6 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="9067428552314418522">આ ફાઇલ જોખમી છે, તેથી Brave એ તેને અવરોધિત કરેલ છે.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> જોખમી છે, તેથી Brave એ તેને અવરોધિત કરેલ છે.</translation>
 <translation id="89367911614620585">આ ફાઇલ જોખમી હોઈ શકે છે, તેથી Brave એ તેને અવરોધિત કરેલ છે.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{હાલમાં એક ડાઉનલોડ ચાલુ છે. શું તમે Brave થી બહાર નીકળવા અને ડાઉનલોડને રદ કરવા માગો છો?}one{હાલમાં # ડાઉનલોડ્સ ચાલુ છે. શું તમે Brave થી બહાર નીકળવા અને ડાઉનલોડ્સને રદ કરવા માગો છો?}other{હાલમાં # ડાઉનલોડ્સ ચાલુ છે. શું તમે Brave થી બહાર નીકળવા અને ડાઉનલોડ્સને રદ કરવા માગો છો?}}</translation>
 <translation id="2339258256897053758">Brave Software API કીઝ ખૂટે છે. Brave ની કેટલીક કાર્યક્ષમતા અક્ષમ થશે.</translation>
 <translation id="5906655207909574370">અપ ટૂ ડેટ થવામાં છે! અપડેટ કરવાનું સમાપ્ત કરવા માટે તમારા ઉપકરણને પુનઃપ્રારંભ કરો.</translation>
 <translation id="5877064549588274448">ચેનલ બદલી. ફેરફારો લાગુ કરવા માટે તમારા ઉપકરણને પુનઃપ્રારંભ કરો.</translation>
@@ -59,9 +62,12 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="777113543093865885">Brave માંથી દૂર કરો...</translation>
 <translation id="6078442581074612226">Brave માં</translation>
 <translation id="8148611988012584308">Brave ને કસ્ટમાઇઝ અને નિયંત્રિત કરો</translation>
+<translation id="5849446944780602366">Braveને કસ્ટમાઇઝ અને નિયંત્રિત કરો. અપડેટ ઉપલબ્ધ છે.</translation>
 <translation id="9071554113102421877">અને Braveમાં ખોલો</translation>
 <translation id="1421502046520299169">&amp;amp;Brave OS વિશે</translation>
 <translation id="2534623228451928732">&amp;amp;Brave OS ને અપડેટ કરો</translation>
+<translation id="3360368475735266712">તમારા બધા ઉપકરણો પર Braveને સિંક અને વ્યક્તિગત કરવા માટે સાઇન ઇન કરો</translation>
+<translation id="5477319665405831211">તમારા બધા ઉપકરણો પર Braveને સિંક અને વ્યક્તિગત કરો</translation>
 <translation id="4934157190377700991">તમે હમણાં Brave માં સાઇન ઇન કર્યું છે</translation>
 <translation id="4100716194836114130">આ તમારું Brave છે</translation>
 <translation id="8296145982386097283">કમ્પ્યુટર શેર કરીએ? હવે તમે તમને ગમે તે રીતે Brave ને સેટ કરી શકો છો.</translation>
@@ -95,13 +101,9 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="3472158705945346956">તમારા સંચાલકે તમને Brave માંથી દૂર કરી અને તેના પર પાછા ઉમેરવા આવશ્યક છે.</translation>
 <translation id="5173820533850252773">Brave જૂનું થઈ ગયું છે</translation>
 <translation id="1705567146636171298">Brave ને અપડેટ કરો</translation>
-<translation id="2316129865977710310">નહીં, આભાર</translation>
 <translation id="4050175100176540509">નવીનતમ સંસ્કરણમાં મહત્વપૂર્ણ સુરક્ષા સુધારણાઓ અને નવી સુવિધાઓ ઉપલબ્ધ છે.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave 1 સેકન્ડમાં પુનઃપ્રારંભ થશે.}one{Brave # સેકન્ડમાં પુનઃપ્રારંભ થશે.}other{Brave # સેકન્ડમાં પુનઃપ્રારંભ થશે.}}</translation>
-<translation id="9159286371333817139">તમારે હવે Brave ને પુનઃપ્રારંભ કરવું જોઈએ.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave 1 સેકન્ડમાં ફરી શરૂ થશે}one{Brave # સેકન્ડમાં ફરી શરૂ થશે}other{Brave # સેકન્ડમાં ફરી શરૂ થશે}}</translation>
 <translation id="9203540365585059272">Brave માટેનું વિશિષ્ટ સુરક્ષા અપડેટ હમણાં જ લાગુ થયું; તેને પ્રભાવિત કરવા માટે તમારે અત્યારે પુનઃપ્રારંભ કરવું જોઈએ (અમે તમારા ટૅબ્સ પુનઃસ્થાપિત કરીશું).</translation>
-<translation id="1653828314016431939">ઓકે - હવે પુનઃપ્રારંભ કરો</translation>
-<translation id="795025003224538582">પુનઃપ્રારંભ કરશો નહીં</translation>
 <translation id="763369711159699222">Brave ને બહેતર બનાવવામાં સહાય કરો</translation>
 <translation id="1156940037717341650">તમે Brave Software ને સંભવિત સુરક્ષા ઘટનાઓની વિગતોની જાણ આપમેળે કરીને Brave ને વધુ સલામત અને ઉપયોગમાં વધુ સરળ બનાવવામાં સહાય કરી શકો છો.</translation>
 <translation id="3009995890652266099">તમે જોખમી અ‍ૅપ્લિકેશનો અને સાઇટ્સ શોધવામાં સહાય કરવા માટે Brave Software ને કેટલીક સિસ્ટમ માહિતી અને પૃષ્ઠ સામગ્રી આપમેળે મોકલીને Brave ને વધુ સુરક્ષિત તથા ઉપયોગમાં સરળ બનાવવામાં સહાય કરી શકો છો.</translation>

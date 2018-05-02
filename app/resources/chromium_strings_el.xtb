@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Διαχείριση Εργασιών - Brave</translation>
 <translation id="7918740962659365265">Βοηθήστε μας να κάνουμε το Brave καλύτερο, αποστέλλωντας αναφορές σφαλμάτων και <ph name="UMA_LINK"/> στη Brave Software</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Λήψη βοήθειας σχετικά με τη χρήση του Brave OS</translation>
 <translation id="1417155795047680590">Οι συντάκτες του Brave</translation>
 <translation id="8758017846917193089">Πνευματικά δικαιώματα <ph name="YEAR"/> Οι συντάκτες του Brave. Με επιφύλαξη παντός δικαιώματος.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Έναρξη χρήσης του Brave OS</translation>
 <translation id="5063987220091207247">Το Brave OS δεν μπορεί να ανοίξει αυτήν τη σελίδα.</translation>
 <translation id="4458285410772214805">Για να εφαρμοστεί αυτή η αλλαγή, αποσυνδεθείτε και συνδεθείτε ξανά.</translation>
-<translation id="3184285555726798152">Να επιτρέπεται στο Brave να εκτελείται στο παρασκήνιο</translation>
+<translation id="4065288863231444640">Να επιτρέπεται στο Brave να εκτελείται στο παρασκήνιο</translation>
 <translation id="8926637909431618259">Να συνεχίζεται η εκτέλεση εφαρμογών παρασκηνίου όταν το Brave είναι κλειστό</translation>
 <translation id="2077129598763517140">Χρήση της επιτάχυνσης υλικού όταν είναι διαθέσιμη</translation>
 <translation id="7182196174524406109">(απαιτείται <ph name="BEGIN_BUTTON"/>επανεκκίνηση<ph name="END_BUTTON"/> του Brave)</translation>
@@ -36,7 +40,7 @@
 Το Brave δεν μπορεί να ανακτήσει τις ρυθμίσεις σας.</translation>
 <translation id="8554809439398012115">Το Brave θα αποθηκεύσει τον κωδικό πρόσβασης με το <ph name="SAVED_PASSWORD_LINK"/>. Δεν χρειάζεται να τον απομνημονεύσετε.</translation>
 <translation id="5316336629760101484">Χρησιμοποιήστε έναν δυνατό κωδικό πρόσβασης που έχει δημιουργηθεί από το Brave</translation>
-<translation id="2288174659056124771">Το Brave δεν είναι το προεπιλεγμένο πρόγραμμα περιήγησης.</translation>
+<translation id="3343095737966473035">Το Brave δεν είναι το προεπιλεγμένο πρόγραμμα περιήγησης</translation>
 <translation id="6715663530666325392">Ρυθμίστε τον συγχρονισμό για την αποθήκευση όλων των εξατομικευμένων λειτουργιών του προγράμματος περιήγησής σας στον ιστό και μεταβείτε σε αυτές από το Brave μέσω οποιουδήποτε υπολογιστή.</translation>
 <translation id="2708027082363760195">Το Brave δεν περιλαμβάνει το πρόγραμμα προβολής αρχείων PDF το οποίο είναι απαραίτητο για τη λειτουργία της Προεπισκόπησης εκτύπωσης.</translation>
 <translation id="8880183781256147665">Προσθήκη στο Brave…</translation>
@@ -44,7 +48,6 @@
 <translation id="9067428552314418522">Αυτό το αρχείο είναι επικίνδυνο και έχει αποκλειστεί από το Brave.</translation>
 <translation id="4168372721886011198">Το αρχείο <ph name="FILE_NAME"/> είναι επικίνδυνο, επομένως έχει αποκλειστεί από το Brave.</translation>
 <translation id="89367911614620585">Αυτό το αρχείο ενδέχεται να είναι επικίνδυνο και έχει αποκλειστεί από το Brave.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Μία λήψη βρίσκεται σε εξέλιξη. Θέλετε να ακυρώσετε τη λήψη και να τερματίσετε το Brave;}other{# λήψεις βρίσκονται σε εξέλιξη. Θέλετε να ακυρώσετε τις λήψεις και να τερματίσετε το Brave;}}</translation>
 <translation id="2339258256897053758">Λείπουν κλειδιά του Brave Software API. Ορισμένες λειτουργίες του Brave Software Brave θα απενεργοποιηθούν.</translation>
 <translation id="5906655207909574370">Η ενημέρωση σχεδόν ολοκληρώθηκε! Επανεκκινήστε τη συσκευή σας για να ολοκληρωθεί η ενημέρωση.</translation>
 <translation id="5877064549588274448">Το κανάλι έχει αλλάξει. Επανεκκινήστε τη συσκευή σας για να εφαρμόσετε τις αλλαγές.</translation>
@@ -57,9 +60,12 @@
 <translation id="777113543093865885">Κατάργηση από το Brave…</translation>
 <translation id="6078442581074612226">Στο Brave</translation>
 <translation id="8148611988012584308">Προσαρμογή και έλεγχος του Brave</translation>
+<translation id="5849446944780602366">Προσαρμόστε και ελέγξτε το Brave. Υπάρχει διαθέσιμη ενημέρωση.</translation>
 <translation id="9071554113102421877">&amp;amp;Άνοιγμα στο Brave</translation>
 <translation id="1421502046520299169">Σχετικά με το &amp;amp;Brave OS</translation>
 <translation id="2534623228451928732">Ενημέρωση &amp;amp;Brave OS</translation>
+<translation id="3360368475735266712">Συνδεθείτε, για να συγχρονίσετε και να εξατομικεύσετε το Brave στις συσκευές σας</translation>
+<translation id="5477319665405831211">Συγχρονίστε και εξατομικεύστε το Brave στις συσκευές σας</translation>
 <translation id="4934157190377700991">Έχετε συνδεθεί στο Brave</translation>
 <translation id="4100716194836114130">Ορίστε το δικό σας Brave</translation>
 <translation id="8296145982386097283">Μοιράζεστε έναν υπολογιστή; Τώρα μπορείτε να ρυθμίσετε το Brave όπως ακριβώς σας αρέσει.</translation>
@@ -93,13 +99,9 @@
 <translation id="3472158705945346956">Ο διαχειριστής πρέπει να σας αφαιρέσει και να σας προσθέσει ξανά στο Brave.</translation>
 <translation id="5173820533850252773">Το Brave δεν είναι ενημερωμένο</translation>
 <translation id="1705567146636171298">Ενημέρωση Brave</translation>
-<translation id="2316129865977710310">Όχι, ευχαριστώ</translation>
 <translation id="4050175100176540509">Στην πιο πρόσφατη έκδοση διατίθενται σημαντικές βελτιώσεις ασφάλειας και νέες λειτουργίες.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Θα γίνει επανεκκίνηση του Brave σε 1 δευτερόλεπτο.}other{Θα γίνει επανεκκίνηση του Brave σε # δευτερόλεπτα.}}</translation>
-<translation id="9159286371333817139">Τώρα θα πρέπει να επανεκκινήσετε το Brave.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Θα γίνει επανεκκίνηση του Brave σε 1 δευτερόλεπτο}other{Θα γίνει επανεκκίνηση του Brave σε # δευτερόλεπτα}}</translation>
 <translation id="9203540365585059272">Μόλις εφαρμόστηκε μια ειδική ενημέρωση ασφαλείας για το Brave. Πρέπει να το επανεκκινήσετε τώρα για να τεθεί σε ισχύ (θα γίνει επαναφορά των καρτελών σας).</translation>
-<translation id="1653828314016431939">OK - Επανεκκίνηση τώρα</translation>
-<translation id="795025003224538582">Να μην γίνει επανεκκίνηση</translation>
 <translation id="763369711159699222">Βοηθήστε μας να κάνουμε το Brave καλύτερο</translation>
 <translation id="1156940037717341650">Μπορείτε να βοηθήσετε να κάνουμε το Brave πιο ασφαλές και εύχρηστο αναφέροντας αυτόματα στην Brave Software λεπτομέρειες σχετικά με πιθανά περιστατικά ασφάλειας.</translation>
 <translation id="3009995890652266099">Μπορείτε να βοηθήσετε να κάνουμε το Brave πιο ασφαλές και εύχρηστο, αποστέλλοντας αυτόματα ορισμένες πληροφορίες συστήματος και περιεχόμενο σελίδων στην Brave Software, για να διευκολυνθεί ο εντοπισμός επικίνδυνων εφαρμογών και ιστοτόπων.</translation>

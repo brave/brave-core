@@ -1,5 +1,5 @@
 diff --git a/third_party/WebKit/Source/core/svg/SVGPathElement.cpp b/third_party/WebKit/Source/core/svg/SVGPathElement.cpp
-index 0cd5644ddaf02669ed5bb452ee89d558ea6a6399..c0b86e4cbf9a7283ef3ff0b87ab9bd438f23dbc3 100644
+index 2556a5eab47b32f8aa0ea4bd01e521fdb6b5b7eb..d1fa90999bbea624a10e0df487aeafaeb18e4e64 100644
 --- a/third_party/WebKit/Source/core/svg/SVGPathElement.cpp
 +++ b/third_party/WebKit/Source/core/svg/SVGPathElement.cpp
 @@ -20,6 +20,7 @@
@@ -7,10 +7,10 @@ index 0cd5644ddaf02669ed5bb452ee89d558ea6a6399..c0b86e4cbf9a7283ef3ff0b87ab9bd43
  #include "core/svg/SVGPathElement.h"
  
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
- #include "core/css/StyleChangeReason.h"
- #include "core/layout/svg/LayoutSVGPath.h"
+ #include "core/layout/LayoutObject.h"
  #include "core/svg/SVGMPathElement.h"
-@@ -65,6 +66,9 @@ Path SVGPathElement::AsPath() const {
+ #include "core/svg/SVGPathQuery.h"
+@@ -64,6 +65,9 @@ Path SVGPathElement::AsPath() const {
  }
  
  float SVGPathElement::getTotalLength() {

@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 51c91715d0fc03bd352a498405f13cf45b141b2c..4fc84f0978a4188669d29697c64c64ae7b753000 100755
+index 8bef984cc9e35fe5d15d0a2ae7d2013eec075156..6d02d51b7819827ac773b9727ac7bfccdc6739eb 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -109,6 +109,33 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,

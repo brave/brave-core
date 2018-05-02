@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Manager de activități - Brave</translation>
 <translation id="7918740962659365265">Contribuie la îmbunătățirea proiectului Brave trimițând rapoarte de eroare și <ph name="UMA_LINK"/> la Brave Software</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave pentru dezvoltatori</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="6474707902830053522">Obțineți ajutor în legătură cu utilizarea sistemului de operare Brave</translation>
 <translation id="1417155795047680590">The Brave Authors</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> The Brave Authors. Toate drepturile rezervate.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Noțiuni introductive despre sistemul de operare Brave</translation>
 <translation id="5063987220091207247">Sistemul de operare Brave nu poate deschide pagina.</translation>
 <translation id="4458285410772214805">Pentru ca modificarea să fie aplicată, deconectați-vă și conectați-vă din nou.</translation>
-<translation id="3184285555726798152">Permiteți Brave să ruleze în fundal</translation>
+<translation id="4065288863231444640">Permite Brave să ruleze în fundal</translation>
 <translation id="8926637909431618259">Rulați în continuare aplicații de fundal când Brave este închis</translation>
 <translation id="2077129598763517140">Utilizează accelerarea hardware când este disponibilă</translation>
 <translation id="7182196174524406109">(necesită <ph name="BEGIN_BUTTON"/>repornirea<ph name="END_BUTTON"/> Brave)</translation>
@@ -36,7 +40,7 @@ Este posibil ca unele funcții să nu fie disponibile. Specificați un director 
 Brave nu poate recupera setările.</translation>
 <translation id="8554809439398012115">Brave va salva parola folosind <ph name="SAVED_PASSWORD_LINK"/>. Nu trebuie să o reții.</translation>
 <translation id="5316336629760101484">Folosește o parolă puternică generată de Brave</translation>
-<translation id="2288174659056124771">Brave nu este browserul dvs. prestabilit.</translation>
+<translation id="3343095737966473035">Brave nu este browserul prestabilit</translation>
 <translation id="6715663530666325392">Configurați sincronizarea pentru a salva funcțiile personalizate ale browserului pe web și accesați-le din Brave de pe orice computer.</translation>
 <translation id="2708027082363760195">Brave nu include vizualizatorul PDF care este necesar pentru funcționarea Previzualizării înainte de printare.</translation>
 <translation id="8880183781256147665">Se adaugă la Brave...</translation>
@@ -44,7 +48,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="9067428552314418522">Fișierul este periculos, așadar Brave l-a blocat.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> este periculos, așadar Brave l-a blocat.</translation>
 <translation id="89367911614620585">Este posibil ca fișierul să fie periculos, așadar Brave l-a blocat.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{O descărcare este în desfășurare. Dorești să anulezi descărcarea și să ieși din Brave?}few{# descărcări sunt în desfășurare. Dorești să anulezi descărcările și să ieși din Brave?}other{# de descărcări sunt în desfășurare. Dorești să anulezi descărcările și să ieși din Brave?}}</translation>
 <translation id="2339258256897053758">Lipsesc chei pentru API-ul Brave Software. Unele funcționalități Brave vor fi dezactivate.</translation>
 <translation id="5906655207909574370">Aproape actualizat! Repornește dispozitivul pentru a finaliza actualizarea.</translation>
 <translation id="5877064549588274448">Canalul a fost schimbat. Reporniți dispozitivul pentru a aplica modificările.</translation>
@@ -57,9 +60,12 @@ Brave nu poate recupera setările.</translation>
 <translation id="777113543093865885">Elimină din Brave...</translation>
 <translation id="6078442581074612226">În Brave</translation>
 <translation id="8148611988012584308">Personalizați și controlați Brave</translation>
+<translation id="5849446944780602366">Personalizează și controlează Brave. Este disponibilă o actualizare.</translation>
 <translation id="9071554113102421877">&amp;amp;Deschide în Brave</translation>
 <translation id="1421502046520299169">Despre sistemul de operare &amp;amp;Brave</translation>
 <translation id="2534623228451928732">Actualizați sistemul de operare &amp;amp;Brave</translation>
+<translation id="3360368475735266712">Conectează-te pentru a sincroniza și a personaliza Brave pe toate dispozitivele</translation>
+<translation id="5477319665405831211">Sincronizează și personalizează Brave pe toate dispozitivele</translation>
 <translation id="4934157190377700991">Acum te-ai conectat la Brave</translation>
 <translation id="4100716194836114130">Acesta este browserul dvs. Brave</translation>
 <translation id="8296145982386097283">Folosești un computer în comun? Acum poți să configurezi Brave exact cum îți place.</translation>
@@ -93,13 +99,9 @@ Brave nu poate recupera setările.</translation>
 <translation id="3472158705945346956">Administratorul trebuie să te elimine și să te adauge din nou în Brave.</translation>
 <translation id="5173820533850252773">Brave nu este actualizat</translation>
 <translation id="1705567146636171298">Actualizează Brave</translation>
-<translation id="2316129865977710310">Nu, mulțumesc</translation>
 <translation id="4050175100176540509">În cea mai recentă versiune sunt disponibile îmbunătățiri de securitate și funcții noi importante.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave va reporni într-o secundă.}few{Brave va reporni în # secunde.}other{Brave va reporni în # de secunde.}}</translation>
-<translation id="9159286371333817139">Îți recomandăm să repornești Brave acum.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave va reporni într-o secundă}few{Brave va reporni în # secunde}other{Brave va reporni în # de secunde}}</translation>
 <translation id="9203540365585059272">Tocmai a fost aplicată o actualizare de securitate specială pentru Brave; pentru ca aceasta să intre în vigoare, îți recomandăm să repornești acum (filele vor fi restabilite).</translation>
-<translation id="1653828314016431939">OK - Reporniți acum</translation>
-<translation id="795025003224538582">Nu reporniți</translation>
 <translation id="763369711159699222">Să îmbunătățim Brave</translation>
 <translation id="1156940037717341650">Puteți contribui la un produs Brave mai sigur și mai ușor de folosit raportând automat la Brave Software detaliile eventualelor incidente privind securitatea.</translation>
 <translation id="3009995890652266099">Ne poți ajuta să facem Brave mai sigur și mai ușor de folosit trimițând automat anumite informații despre sistem și conținutul paginii la Brave Software pentru a detecta aplicațiile și site-urile periculoase.</translation>

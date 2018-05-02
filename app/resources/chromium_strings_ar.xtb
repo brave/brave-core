@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">‏إدارة المهام - Brave</translation>
 <translation id="7918740962659365265">‏يمكنك المساعدة في تحسين Brave عن طريق إرسال تقارير الأعطال و<ph name="UMA_LINK"/> إلى Brave Software</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244">‏<ph name="PAGE_TITLE"/> - الإصدار التجريبي من Brave</translation>
+<translation id="3943696263619956191">‏<ph name="PAGE_TITLE"/> - إصدار قناة مطوري البرامج من Brave</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">‏الحصول على مساعدة بشأن استخدام نظام التشغيل Brave</translation>
 <translation id="1417155795047680590">The Brave Authors</translation>
 <translation id="8758017846917193089">‏حقوق الطبع والنشر لعام <ph name="YEAR"/> لصالح The Brave Authors. جميع الحقوق محفوظة.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">‏البدء في استخدام نظام التشغيل Brave</translation>
 <translation id="5063987220091207247">‏يتعذر على نظام التشغيل Brave فتح هذه الصفحة.</translation>
 <translation id="4458285410772214805">يُرجى الخروج ثم تسجيل الدخول حتى يسري هذا التغيير.</translation>
-<translation id="3184285555726798152">‏دع Brave يعمل في الخلفية</translation>
+<translation id="4065288863231444640">‏السماح بتشغيل Brave في الخلفية</translation>
 <translation id="8926637909431618259">‏استمرار تشغيل تطبيقات الخلفية عند إغلاق Brave</translation>
 <translation id="2077129598763517140">استخدام تسريع الأجهزة عند توفره</translation>
 <translation id="7182196174524406109">‏(<ph name="BEGIN_BUTTON"/>إعادة تشغيل<ph name="END_BUTTON"/> Brave مطلوبة)</translation>
@@ -36,7 +40,7 @@
 يتعذر على Brave استعادة إعداداتك.</translation>
 <translation id="8554809439398012115">‏سيحفظ Brave كلمة المرور هذه بواسطة <ph name="SAVED_PASSWORD_LINK"/>، ولن تحتاج إلى تذكّرها.</translation>
 <translation id="5316336629760101484">‏استخدام كلمة مرور قوية تم إنشاؤها بواسطة Brave</translation>
-<translation id="2288174659056124771">‏ليس Brave متصفحك الافتراضي.</translation>
+<translation id="3343095737966473035">‏Brave ليس متصفحك التلقائي.</translation>
 <translation id="6715663530666325392">‏يمكنك إعداد المزامنة لحفظ ميزات المتصفح المخصصة على الويب والدخول إليها من Brave على أي كمبيوتر.</translation>
 <translation id="2708027082363760195">‏لا يتضمن Brave عارض PDF المطلوب لإجراء معاينة الطباعة.</translation>
 <translation id="8880183781256147665">‏جارٍ الإضافة إلى Brave...</translation>
@@ -44,7 +48,6 @@
 <translation id="9067428552314418522">‏هذا الملف ضار، لذلك فقد حظره Brave.</translation>
 <translation id="4168372721886011198">‏ملف <ph name="FILE_NAME"/> ضار، لذلك فقد حظره Brave.</translation>
 <translation id="89367911614620585">‏قد يكون هذا الملف ضارًا، لذلك فقد حظره Brave.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{‏هناك تنزيل قيد التقدم حاليًا. هل تريد إلغاء التنزيل والخروج من Brave؟}zero{‏هناك # من التنزيلات قيد التقدم حاليًا. هل تريد إلغاء التنزيلات والخروج من Brave؟}two{‏هناك تنزيلان (#) قيد التقدم حاليًا. هل تريد إلغاء التنزيلين والخروج من Brave؟}few{‏هناك # تنزيلات قيد التقدم حاليًا. هل تريد إلغاء التنزيلات والخروج من Brave؟}many{‏هناك # تنزيلاً قيد التقدم حاليًا. هل تريد إلغاء التنزيلات والخروج من Brave؟}other{‏هناك # من التنزيلات قيد التقدم حاليًا. هل تريد إلغاء التنزيلات والخروج من Brave؟}}</translation>
 <translation id="2339258256897053758">‏مفاتيح واجهة برمجة تطبيقات Brave Software مفقودة. وسيترتب على ذلك توقف بعض وظائف Brave عن العمل.</translation>
 <translation id="5906655207909574370">أوشك التحديث على الانتهاء! أعِد تشغيل الجهاز لإنهاء التحديث.</translation>
 <translation id="5877064549588274448">تم تغيير القناة. يمكنك إعادة تشغيل الجهاز لتدخل التغييرات حيز التنفيذ.</translation>
@@ -57,9 +60,12 @@
 <translation id="777113543093865885">‏إزالة من Brave</translation>
 <translation id="6078442581074612226">‏في Brave</translation>
 <translation id="8148611988012584308">‏تخصيص Brave والتحكم فيه</translation>
+<translation id="5849446944780602366">‏تخصيص Brave والتحكُّم فيه. هناك تحديث متوفر.</translation>
 <translation id="9071554113102421877">‏&amp;amp;فتح في Brave</translation>
 <translation id="1421502046520299169">‏حول ن&amp;amp;ظام التشغيل Brave</translation>
 <translation id="2534623228451928732">‏تحديث ن&amp;amp;ظام التشغيل Brave</translation>
+<translation id="3360368475735266712">‏يمكنك تسجيل الدخول لمزامنة Brave وتخصيصه على جميع أجهزتك.</translation>
+<translation id="5477319665405831211">‏يمكنك مزامنة Brave وتخصيصه على جميع أجهزتك.</translation>
 <translation id="4934157190377700991">‏تم تسجيل دخولك الآن إلى Brave</translation>
 <translation id="4100716194836114130">‏هذا هو Brave الخاص بك</translation>
 <translation id="8296145982386097283">‏هل تشارك جهاز كمبيوتر؟ يمكنك الآن إعداد Brave بالطريقة التي تعجبك تمامًا.</translation>
@@ -93,13 +99,9 @@
 <translation id="3472158705945346956">‏يجب على مديرك إزالتك وإضافتك مرة أخرى إلى Brave.</translation>
 <translation id="5173820533850252773">‏إصدار Brave قديم</translation>
 <translation id="1705567146636171298">‏تحديث Brave</translation>
-<translation id="2316129865977710310">لا، شكرًا</translation>
 <translation id="4050175100176540509">تحسينات الأمان المهمة والميزات الجديدة متاحة في أحدث إصدار.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{‏ستتم إعادة تشغيل Brave خلال ثانية واحدة (1).}zero{‏ستتم إعادة تشغيل Brave خلال # ثانية.}two{‏ستتم إعادة تشغيل Brave خلال ثانيتين (#).}few{‏ستتم إعادة تشغيل Brave خلال # ثوانٍ.}many{‏ستتم إعادة تشغيل Brave خلال # ثانية.}other{‏ستتم إعادة تشغيل Brave خلال # ثانية.}}</translation>
-<translation id="9159286371333817139">‏يجب إعادة تشغيل Brave الآن.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{‏ستتم إعادة تشغيل Brave خلال ثانية واحدة}zero{‏ستتم إعادة تشغيل Brave خلال # ثانية}two{‏ستتم إعادة تشغيل Brave خلال ثانيتين (#)}few{‏ستتم إعادة تشغيل Brave خلال # ثوانٍ}many{‏ستتم إعادة تشغيل Brave خلال # ثانيةً}other{‏ستتم إعادة تشغيل Brave خلال # ثانية}}</translation>
 <translation id="9203540365585059272">‏تم الآن تطبيق تحديث أمان خاص لـ Brave؛ تجب إعادة التشغيل الآن لتسري التغييرات التي أجريتها (ستتم استعادة علامات التبويب).</translation>
-<translation id="1653828314016431939">موافق - إعادة التشغيل الآن</translation>
-<translation id="795025003224538582">عدم إعادة التشغيل</translation>
 <translation id="763369711159699222">‏المساعدة في تحسين Brave</translation>
 <translation id="1156940037717341650">‏يمكنك المساعدة في جعل Brave أكثر أمانًا وأسهل استخدامًا بإبلاغ Brave Software تلقائيًا بتفاصيل أي مخاطر أمنية محتملة.</translation>
 <translation id="3009995890652266099">‏يمكنك المساعدة في جعل Brave أكثر أمانًا وأسهل استخدامًا بإرسال بعض معلومات النظام ومحتوى الصفحة تلقائيًا إلى Brave Software للمساعدة في اكتشاف التطبيقات والمواقع الضارة.</translation>

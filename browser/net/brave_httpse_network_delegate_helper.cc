@@ -4,6 +4,7 @@
 
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 
+#include "base/task_scheduler/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -21,7 +22,6 @@ void OnBeforeURLRequest_HttpseFileWork(
     GURL* new_url,
     std::shared_ptr<BraveRequestInfo> ctx) {
   base::AssertBlockingAllowed();
-  DCHECK_CURRENTLY_ON(BrowserThread::FILE);
   DCHECK(ctx->request_identifier != 0);
   g_brave_browser_process->https_everywhere_service()->
     GetHTTPSURL(&ctx->request_url, ctx->request_identifier, ctx->new_url_spec);
@@ -81,8 +81,11 @@ int OnBeforeURLRequest_HttpsePreFileWork(
         GetHTTPSURLFromCacheOnly(&request->url(), request->identifier(),
           ctx->new_url_spec)) {
       ctx->request_url = request->url();
-      BrowserThread::PostTaskAndReply(
-        BrowserThread::FILE, FROM_HERE,
+
+      scoped_refptr<base::SequencedTaskRunner> task_runner =
+          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock(),
+              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+          task_runner->PostTaskAndReply(FROM_HERE,
         base::Bind(OnBeforeURLRequest_HttpseFileWork,
             base::Unretained(request), new_url, ctx),
         base::Bind(base::IgnoreResult(

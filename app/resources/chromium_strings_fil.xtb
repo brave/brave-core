@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="7918740962659365265">Tumulong na gawing mas mahusay ang Brave sa pamamagitan ng pagpapadala ng mga ulat ng pag-crash at <ph name="UMA_LINK"/> sa Brave Software</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Kumuha ng tulong sa paggamit ng Brave OS</translation>
 <translation id="1417155795047680590">Ang Mga May-akda ng Brave</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> Ang Mga May-akda ng Brave. Nakalaan ang lahat ng karapatan.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Magsimula sa Brave OS</translation>
 <translation id="5063987220091207247">Hindi mabuksan ng Brave OS ang page na ito.</translation>
 <translation id="4458285410772214805">Mangyaring mag-sign out at mag-sign in muli upang magkabisa ang pagbabagong ito.</translation>
-<translation id="3184285555726798152">Hayaang Tumakbo ang Brave sa Background</translation>
+<translation id="4065288863231444640">Hayaang Tumakbo ang Brave sa Background</translation>
 <translation id="8926637909431618259">Patuloy na magpatakbo ng background na apps kapag nakasara ang Brave</translation>
 <translation id="2077129598763517140">Gamitin ang pagpapabilis ng hardware kapag available</translation>
 <translation id="7182196174524406109">(kinakailangang <ph name="BEGIN_BUTTON"/>i-restart<ph name="END_BUTTON"/> ang Brave)</translation>
@@ -38,7 +42,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="8554809439398012115">Ise-save ng Brave ang password na ito sa <ph name="SAVED_PASSWORD_LINK"/>. Hindi mo ito kailangang tandaan.</translation>
 <translation id="5316336629760101484">Gumamit ng malakas na password na binuo ng Brave</translation>
-<translation id="2288174659056124771">Hindi Brave ang iyong default na browser.</translation>
+<translation id="3343095737966473035">Hindi Brave ang iyong default na browser</translation>
 <translation id="6715663530666325392">I-set up ang Pag-sync upang i-save ang iyong personalized na mga tampok ng browser sa web at i-access ang mga iyon mula sa Brave sa anumang computer.</translation>
 <translation id="2708027082363760195">Hindi isinasama ng Brave ang PDF viewer na kinakailangan upang gumana ang Preview ng Pag-print.</translation>
 <translation id="8880183781256147665">Idinaragdag sa Brave...</translation>
@@ -46,7 +50,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="9067428552314418522">Mapanganib ang file na ito, kaya na-block ito ng Brave.</translation>
 <translation id="4168372721886011198">Mapanganib ang <ph name="FILE_NAME"/>, kaya na-block ito ng Brave.</translation>
 <translation id="89367911614620585">Maaaring mapanganib ang file na ito, kaya na-block ito ng Brave.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{May nagaganap na pagda-download sa kasalukuyan. Gusto mo bang kanselahin ang pag-download at umalis sa Brave?}one{# pag-download ang nagaganap sa kasalukuyan. Gusto mo bang kanselahin ang mga pag-download at umalis sa Brave?}other{# na pag-download ang nagaganap sa kasalukuyan. Gusto mo bang kanselahin ang mga pag-download at umalis sa Brave?}}</translation>
 <translation id="2339258256897053758">Nawawala ang mga Brave Software API key. Madi-disable ang ilang pagpapagana ng Brave.</translation>
 <translation id="5906655207909574370">Halos napapanahon na! I-restart ang iyong device upang tapusin ang pag-a-update.</translation>
 <translation id="5877064549588274448">Binago ang channel. I-restart ang iyong device upang ilapat ang mga pagbabago.</translation>
@@ -59,9 +62,12 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="777113543093865885">Alisin sa Brave...</translation>
 <translation id="6078442581074612226">Sa Brave</translation>
 <translation id="8148611988012584308">I-customize at kontrolin ang Brave</translation>
+<translation id="5849446944780602366">I-customize at kontrolin ang Brave. May available na update.</translation>
 <translation id="9071554113102421877">&amp;amp;Buksan sa Brave</translation>
 <translation id="1421502046520299169">Tungkol sa &amp;amp;Brave OS</translation>
 <translation id="2534623228451928732">I-update ang &amp;amp;Brave OS</translation>
+<translation id="3360368475735266712">Mag-sign in para i-sync at i-personalize ang Brave sa lahat ng iyong device</translation>
+<translation id="5477319665405831211">I-sync at i-personalize ang Brave sa lahat ng iyong device</translation>
 <translation id="4934157190377700991">Naka-sign in ka ngayon sa Brave</translation>
 <translation id="4100716194836114130">Ito ang iyong Brave</translation>
 <translation id="8296145982386097283">Magbabahagi ng computer? Ngayon, maaari mong i-set up ang Brave sa paraang gusto mo.</translation>
@@ -95,13 +101,9 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="3472158705945346956">Maaaring inalis at idinagdag kang muli ng iyong manager sa Brave.</translation>
 <translation id="5173820533850252773">Luma na ang Brave</translation>
 <translation id="1705567146636171298">I-update ang Brave</translation>
-<translation id="2316129865977710310">Hindi, salamat</translation>
 <translation id="4050175100176540509">May available na mahahalagang pagpapahusay sa seguridad at mga bagong feature sa pinakabagong bersyon.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Magre-restart ang Brave pagkalipas ng 1 segundo.}one{Magre-restart ang Brave pagkalipas ng # segundo.}other{Magre-restart ang Brave pagkalipas ng # na segundo.}}</translation>
-<translation id="9159286371333817139">Dapat mo nang i-restart ngayon ang Brave.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Magre-restart ang Brave pagkalipas ng 1 segundo}one{Magre-restart ang Brave pagkalipas ng # segundo}other{Magre-restart ang Brave pagkalipas ng # na segundo}}</translation>
 <translation id="9203540365585059272">May kakalapat lang na espesyal na update sa seguridad para sa Brave; dapat ka nang mag-restart ngayon upang magkabisa ito (ire-restore namin ang iyong mga tab).</translation>
-<translation id="1653828314016431939">OK - I-restart ngayon</translation>
-<translation id="795025003224538582">Huwag i-restart</translation>
 <translation id="763369711159699222">Tumulong sa pagpapahusay ng Brave</translation>
 <translation id="1156940037717341650">Makakatulong ka na gawing mas ligtas at mas madaling gamitin ang Brave sa pamamagitan ng awtomatikong pag-uulat sa Brave Software ng mga detalye ng mga posibleng isyu sa seguridad.</translation>
 <translation id="3009995890652266099">Makakatulong kang gawing mas ligtas at madaling gamitin ang Brave sa pamamagitan ng awtomatikong pagpapadala ng ilang impormasyon ng system at content ng page sa Brave Software upang makatulong na tumukoy ng mga mapanganib na app at site.</translation>

@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Jobliste – Brave</translation>
 <translation id="7918740962659365265">Hjælp med at gøre Brave bedre ved at sende fejlrapporter og <ph name="UMA_LINK"/> til Brave Software</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave for udviklere</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="6474707902830053522">Få hjælp til at bruge Brave OS</translation>
 <translation id="1417155795047680590">Forfatterne til Brave</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> Forfatterne bag Brave. Alle rettigheder forbeholdes.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Kom godt i gang med Brave OS</translation>
 <translation id="5063987220091207247">Brave OS kan ikke åbne denne side.</translation>
 <translation id="4458285410772214805">Du skal logge ud og logge ind igen, for at denne ændring kan træde i kraft.</translation>
-<translation id="3184285555726798152">Lad Brave køre i baggrunden</translation>
+<translation id="4065288863231444640">Lad Brave køre i baggrunden</translation>
 <translation id="8926637909431618259">Fortsæt med at køre baggrundsapps, når Brave er lukket</translation>
 <translation id="2077129598763517140">Brug hardwareacceleration, når det er muligt</translation>
 <translation id="7182196174524406109">(kræver en <ph name="BEGIN_BUTTON"/>genstart<ph name="END_BUTTON"/> af Brave)</translation>
@@ -36,7 +40,7 @@ Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller bru
 Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="8554809439398012115">Brave gemmer adgangskoden via <ph name="SAVED_PASSWORD_LINK"/>. Du behøver ikke at huske den.</translation>
 <translation id="5316336629760101484">Brug en stærk adgangskode, der er genereret af Brave</translation>
-<translation id="2288174659056124771">Brave er ikke din standardbrowser.</translation>
+<translation id="3343095737966473035">Brave er ikke din standardbrowser</translation>
 <translation id="6715663530666325392">Konfigurer Synkronisering for at gemme dine personlige browserfunktioner på nettet, og få adgang til dem fra Brave på en computer.</translation>
 <translation id="2708027082363760195">Brave inkluderer ikke PDF-fremviseren, som er påkrævet, for at Vis udskrift kan fungere.</translation>
 <translation id="8880183781256147665">Føjer til Brave...</translation>
@@ -44,7 +48,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="9067428552314418522">Denne fil er farlig, så Brave har blokeret den.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> er skadelig, så Brave har blokeret den.</translation>
 <translation id="89367911614620585">Denne fil kan være farlig, så Brave har blokeret den.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Der er et download i gang i øjeblikket. Vil du at annullere dit download og lukke Brave?}one{Der er # downloads i gang i øjeblikket. Vil du at annullere dine downloads og lukke Brave?}other{Der er # downloads i gang i øjeblikket. Vil du at annullere dine downloads og lukke Brave?}}</translation>
 <translation id="2339258256897053758">Der mangler Brave Software API-nøgler. Nogle funktioner i Brave deaktiveres.</translation>
 <translation id="5906655207909574370">Næsten opdateret. Genstart din enhed for at afslutte opdateringen.</translation>
 <translation id="5877064549588274448">Kanalen er ændret. Genstart din enhed for at anvende ændringerne.</translation>
@@ -57,9 +60,12 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="777113543093865885">Fjern fra Brave...</translation>
 <translation id="6078442581074612226">I Brave</translation>
 <translation id="8148611988012584308">Tilpas og kontrollér Brave</translation>
+<translation id="5849446944780602366">Tilpas og administrer Brave. Der er en tilgængelig opdatering.</translation>
 <translation id="9071554113102421877">Åbn i Chr&amp;amp;omium</translation>
 <translation id="1421502046520299169">Om &amp;amp;Brave OS</translation>
 <translation id="2534623228451928732">Opdater &amp;amp;Brave OS</translation>
+<translation id="3360368475735266712">Log ind for at synkronisere og tilpasse Brave på alle dine enheder</translation>
+<translation id="5477319665405831211">Synkroniser og tilpas Brave på alle dine enheder</translation>
 <translation id="4934157190377700991">Du er nu logget ind på Brave</translation>
 <translation id="4100716194836114130">Dette er din Brave-browser</translation>
 <translation id="8296145982386097283">Deler du computer med andre? Nu kan du konfigurere Brave, præcist som du vil.</translation>
@@ -93,13 +99,9 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="3472158705945346956">Din administrator skal fjerne dig fra Brave og tilføje dig igen.</translation>
 <translation id="5173820533850252773">Brave er forældet</translation>
 <translation id="1705567146636171298">Opdater Brave</translation>
-<translation id="2316129865977710310">Nej tak</translation>
 <translation id="4050175100176540509">Vigtige sikkerhedsforbedringer og nye funktioner er tilgængelige i den seneste version.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave genstarter om 1 sekund.}one{Brave genstarter om # sekund.}other{Brave genstarter om # sekunder.}}</translation>
-<translation id="9159286371333817139">Du bør genstarte Brave nu.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave genstarter om 1 sekund}one{Brave genstarter om # sekund}other{Brave genstarter om # sekunder}}</translation>
 <translation id="9203540365585059272">En særlig sikkerhedsopdatering til Brave blev netop anvendt. Du bør genstarte nu, så den kan træde i kraft (dine faner gendannes).</translation>
-<translation id="1653828314016431939">OK, genstart nu</translation>
-<translation id="795025003224538582">Genstart ikke</translation>
 <translation id="763369711159699222">Hjælp med at gøre Brave bedre</translation>
 <translation id="1156940037717341650">Du kan hjælpe med at gøre Brave sikrere og nemmere at bruge ved automatisk at rapportere oplysninger om mulige sikkerhedshændelser til Brave Software.</translation>
 <translation id="3009995890652266099">Du kan gøre Brave mere sikker og lettere at bruge ved automatisk at sende nogle systemoplysninger og sideindhold til Brave Software som en hjælp til at registrere skadelige apps og websites.</translation>

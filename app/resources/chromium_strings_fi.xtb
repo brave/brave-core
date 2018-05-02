@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Tehtävänhallinta - Brave</translation>
 <translation id="7918740962659365265">Auta parantamaan Braveia lähettämällä kaatumisilmoitukset ja <ph name="UMA_LINK"/> Brave Softwarelle</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="6474707902830053522">Hanki apua Brave-käyttöjärjestelmän käytössä</translation>
 <translation id="1417155795047680590">The Brave Authors</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> The Brave Authors. Kaikki oikeudet pidätetään.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Aloita Brave-käyttöjärjestelmän käyttö</translation>
 <translation id="5063987220091207247">Brave-käyttöjärjestelmä ei voi avata tätä sivua.</translation>
 <translation id="4458285410772214805">Kirjaudu ulos ja kirjaudu uudelleen sisään, jotta muutos tulee voimaan.</translation>
-<translation id="3184285555726798152">Jätä Brave käyntiin taustalle</translation>
+<translation id="4065288863231444640">Jätä Brave käyntiin taustalle</translation>
 <translation id="8926637909431618259">Jätä taustasovellukset käyntiin, kun Brave suljetaan</translation>
 <translation id="2077129598763517140">Käytä laitteistokiihdytystä, jos mahdollista</translation>
 <translation id="7182196174524406109">(vaatii Bravein <ph name="BEGIN_BUTTON"/>uudelleenkäynnistyksen<ph name="END_BUTTON"/>)</translation>
@@ -36,7 +40,7 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="8554809439398012115"><ph name="SAVED_PASSWORD_LINK"/> auttaa Braveia tallentamaan tämän salasanan. Sinun ei tarvitse muistaa sitä.</translation>
 <translation id="5316336629760101484">Käytä Bravein luomaa vahvaa salasanaa.</translation>
-<translation id="2288174659056124771">Brave ei ole oletusselain.</translation>
+<translation id="3343095737966473035">Brave ei ole oletusselain.</translation>
 <translation id="6715663530666325392">Määrittämällä synkronoinnin voit tallentaa selaimesi tiedot verkkoon ja käyttää niitä minkä tahansa tietokoneen Braveilla.</translation>
 <translation id="2708027082363760195">Brave ei sisällä PDF-katseluohjelmaa, joka tarvitaan tulostuksen esikatseluun.</translation>
 <translation id="8880183781256147665">Lisätään Braveiin...</translation>
@@ -44,7 +48,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="9067428552314418522">Tämä tiedosto on vaarallinen, joten Brave on estänyt sen.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> on vaarallinen, joten Brave on estänyt sen.</translation>
 <translation id="89367911614620585">Tämä tiedosto voi olla vaarallinen, joten Brave on estänyt sen.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Lataus on parhaillaan käynnissä. Haluatko peruuttaa latauksen ja poistua Braveista?}other{# latausta on parhaillaan käynnissä. Haluatko peruuttaa lataukset ja poistua Braveista?}}</translation>
 <translation id="2339258256897053758">Brave Softwaren sovellusliittymän avaimet puuttuvat. Jotkin Bravein toiminnoista poistetaan käytöstä.</translation>
 <translation id="5906655207909574370">Melkein ajan tasalla. Viimeistele päivitys käynnistämällä laite uudelleen.</translation>
 <translation id="5877064549588274448">Kanava vaihdettiin. Ota muutokset käyttöön käynnistämällä laite uudelleen.</translation>
@@ -57,9 +60,12 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="777113543093865885">Poista Braveista…</translation>
 <translation id="6078442581074612226">Braveissa</translation>
 <translation id="8148611988012584308">Bravein muokkaus ja hallinta</translation>
+<translation id="5849446944780602366">Muokkaa ja hallinnoi Braveia. Päivitys on saatavilla.</translation>
 <translation id="9071554113102421877">&amp;amp;Avaa Braveissa</translation>
 <translation id="1421502046520299169">Tietoja &amp;amp;Brave-käyttöjärjestelmästä</translation>
 <translation id="2534623228451928732">Päivitä &amp;amp;Brave-käyttöjärjestelmä</translation>
+<translation id="3360368475735266712">Kirjaudu sisään, niin voit synkronoida Bravein ja tehdä siitä yksilöllisemmän kaikilla laitteilla.</translation>
+<translation id="5477319665405831211">Voit synkronoida Bravein ja tehdä siitä yksilöllisemmän kaikilla laitteilla.</translation>
 <translation id="4934157190377700991">Olet nyt kirjautuneena Braveiin</translation>
 <translation id="4100716194836114130">Tämä on oma Braveisi</translation>
 <translation id="8296145982386097283">Jaatko tietokoneen jonkun kanssa? Nyt voit määrittää Bravein juuri sellaiseksi kuin haluat.</translation>
@@ -93,13 +99,9 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="3472158705945346956">Ylläpitäjän täytyy poistaa sinut Braveista ja lisätä sinut sen jälkeen uudelleen.</translation>
 <translation id="5173820533850252773">Brave on vanhentunut</translation>
 <translation id="1705567146636171298">Päivitä Brave</translation>
-<translation id="2316129865977710310">Ei kiitos</translation>
 <translation id="4050175100176540509">Uusimmassa versiossa on käytettävissä tärkeitä turvallisuusparannuksia ja uusia ominaisuuksia.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave käynnistyy uudelleen 1 sekunnin kuluttua}other{Brave käynnistyy uudelleen # sekunnin kuluttua}}</translation>
-<translation id="9159286371333817139">Käynnistä Brave uudelleen</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave käynnistyy uudelleen 1 sekunnin kuluttua}other{Brave käynnistyy uudelleen # sekunnin kuluttua}}</translation>
 <translation id="9203540365585059272">Bravein tärkeä tietoturvapäivitys on asennettu. Käynnistä se uudelleen, niin päivitys otetaan käyttöön (avoimet välilehdet palautetaan).</translation>
-<translation id="1653828314016431939">OK - Käynnistä uudelleen nyt</translation>
-<translation id="795025003224538582">Älä käynnistä uudelleen</translation>
 <translation id="763369711159699222">Auta parantamaan Braveia</translation>
 <translation id="1156940037717341650">Voit auttaa meitä parantamaan Bravein turvallisuutta ja tekemään siitä helppokäyttöisemmän ilmoittamalla mahdollisista turvallisuusongelmista Brave Softwarelle automaattisesti.</translation>
 <translation id="3009995890652266099">Voit auttaa meitä kehittämään Bravein turvallisuutta ja käytettävyyttä lähettämällä automaattisesti joitain järjestelmän tietoja ja sivun sisältöjä Brave Softwarelle. Näin autat havaitsemaan vaarallisia sovelluksia ja sivustoja.</translation>

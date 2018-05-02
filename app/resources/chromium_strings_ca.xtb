@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Gestor de tasques: Brave</translation>
 <translation id="7918740962659365265">Ajudeu a millorar Brave; envieu informes d'error i <ph name="UMA_LINK"/> a Brave Software.</translation>
 <translation id="7830723774663008396">Brave: <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/>: Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Obtén ajuda per a l'ús de Brave OS</translation>
 <translation id="1417155795047680590">Els autors de Brave</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> Els autors de Brave. Tots els drets reservats.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Introducció a Brave OS</translation>
 <translation id="5063987220091207247">Brave OS no pot obrir aquesta pàgina.</translation>
 <translation id="4458285410772214805">Tanqueu la sessió i torneu a iniciar-la perquè aquest canvi es faci efectiu.</translation>
-<translation id="3184285555726798152">Permet que Brave s'executi en segon pla</translation>
+<translation id="4065288863231444640">Permet que Brave s'executi en segon pla</translation>
 <translation id="8926637909431618259">Continua executant les aplicacions en segon pla quan es tanqui Brave</translation>
 <translation id="2077129598763517140">Utilitza l'acceleració per maquinari quan estigui disponible</translation>
 <translation id="7182196174524406109">(cal <ph name="BEGIN_BUTTON"/>reiniciar<ph name="END_BUTTON"/> Brave)</translation>
@@ -36,7 +40,7 @@
 Brave no pot recuperar la configuració.</translation>
 <translation id="8554809439398012115">Brave desarà aquesta contrasenya amb <ph name="SAVED_PASSWORD_LINK"/> i no caldrà que la recordis.</translation>
 <translation id="5316336629760101484">Utilitza una contrasenya segura generada per Brave</translation>
-<translation id="2288174659056124771">Brave no és el navegador predeterminat.</translation>
+<translation id="3343095737966473035">Brave no és el navegador predeterminat</translation>
 <translation id="6715663530666325392">Configureu la sincronització per desar al web les funcions personalitzades del navegador i per accedir-hi des de qualsevol equip mitjançant Brave.</translation>
 <translation id="2708027082363760195">Brave no inclou el lector de PDF que és necessari perquè la previsualització funcioni.</translation>
 <translation id="8880183781256147665">S'està afegint a Brave...</translation>
@@ -44,7 +48,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="9067428552314418522">Brave ha bloquejat aquest fitxer perquè és perillós.</translation>
 <translation id="4168372721886011198">Brave ha bloquejat <ph name="FILE_NAME"/> perquè és perillós.</translation>
 <translation id="89367911614620585">Brave ha bloquejat aquest fitxer perquè pot ser perillós.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Hi ha una baixada en curs. Voleu cancel·lar-la i sortir de Brave?}other{Hi ha # baixades en curs. Voleu cancel·lar-les i sortir de Brave?}}</translation>
 <translation id="2339258256897053758">Falten les claus de l'API de Brave Software. Es desactivaran algunes de les funcions de Brave.</translation>
 <translation id="5906655207909574370">Gairebé heu acabat. Reinicieu el dispositiu per completar l'actualització.</translation>
 <translation id="5877064549588274448">El canal ha canviat. Reinicieu el dispositiu perquè s'apliquin els canvis.</translation>
@@ -57,9 +60,12 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="777113543093865885">Suprimeix de Brave...</translation>
 <translation id="6078442581074612226">A Brave</translation>
 <translation id="8148611988012584308">Personalitza i controla Brave</translation>
+<translation id="5849446944780602366">Personalitza i controla Brave. Hi ha una actualització disponible.</translation>
 <translation id="9071554113102421877">&amp;amp;Obre a Brave</translation>
 <translation id="1421502046520299169">Quant a &amp;amp;Brave OS</translation>
 <translation id="2534623228451928732">Actualitza &amp;amp;Brave OS</translation>
+<translation id="3360368475735266712">Inicia la sessió per sincronitzar i personalitzar Brave en tots els teus dispositius</translation>
+<translation id="5477319665405831211">Sincronitza i personalitza Brave en tots els teus dispositius</translation>
 <translation id="4934157190377700991">S'ha iniciat la sessió a Brave</translation>
 <translation id="4100716194836114130">Aquest és el vostre Brave</translation>
 <translation id="8296145982386097283">Si compartiu un ordinador, ara podeu configurar Brave com vulgueu.</translation>
@@ -93,13 +99,9 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="3472158705945346956">El gestor t'ha de suprimir i tornar a afegir a Brave.</translation>
 <translation id="5173820533850252773">Brave no està actualitzat</translation>
 <translation id="1705567146636171298">Actualitza Brave</translation>
-<translation id="2316129865977710310">No, gràcies</translation>
 <translation id="4050175100176540509">La versió més recent incorpora millores de seguretat i funcions noves importants.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave es reiniciarà d'aquí a 1 segon.}other{Brave es reiniciarà d'aquí a # segons.}}</translation>
-<translation id="9159286371333817139">Reinicieu Brave ara</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave es reiniciarà d'aquí a 1 segon}other{Brave es reiniciarà d'aquí a # segons}}</translation>
 <translation id="9203540365585059272">S'acaba d'aplicar una actualització de seguretat especial per a Brave; reinicieu el navegador ara perquè es faci efectiva (restaurarem les pestanyes).</translation>
-<translation id="1653828314016431939">D'acord, reinicia ara</translation>
-<translation id="795025003224538582">No reiniciïs</translation>
 <translation id="763369711159699222">Ajudeu a millorar Brave</translation>
 <translation id="1156940037717341650">Si voleu col·laborar perquè Brave sigui més segur i més fàcil d'utilitzar, informeu automàticament Brave Software dels detalls sobre possibles incidències de seguretat.</translation>
 <translation id="3009995890652266099">Per fer que Brave sigui més segur i més fàcil d'utilitzar, envia automàticament algunes dades del sistema i contingut de les pàgines a Brave Software per ajudar a detectar les aplicacions i els llocs perillosos.</translation>

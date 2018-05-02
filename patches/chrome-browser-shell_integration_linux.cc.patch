@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/shell_integration_linux.cc b/chrome/browser/shell_integration_linux.cc
-index 5814e5f0b1b0d3b8abcf70e96f9949fecd37b12a..ad6b393679b86150c4fb7a1f69cdf2025e3e6bf8 100644
+index 610cba30511257a3db4d8970d1e8bc64f811693a..d64e0bbca7d38f1d7903914eb063a42dab83b79c 100644
 --- a/chrome/browser/shell_integration_linux.cc
 +++ b/chrome/browser/shell_integration_linux.cc
 @@ -652,7 +652,7 @@ std::string GetDesktopName(base::Environment* env) {

@@ -13,7 +13,7 @@
 #include "net/cookies/cookie_constants.h"
 #include "net/url_request/url_request_context.h"
 #include "net/url_request/url_request_context_getter.h"
-#include "services/network/public/interfaces/cookie_manager.mojom.h"
+#include "services/network/public/mojom/cookie_manager.mojom.h"
 
 BraveProfileWriter::BraveProfileWriter(Profile* profile)
     : ProfileWriter(profile) {}

@@ -1,26 +1,17 @@
 diff --git a/components/vector_icons/vector_icons.gni b/components/vector_icons/vector_icons.gni
-index e1a364810743c236111bacfff50be5e26bcbe335..6f394b48c6633ce9739d46fb7aea36103ccab1d5 100644
+index b8ba375a6c4866b061fc8cf2659578c45f5c6be7..40c4ccbbb9017673a2cf82e6b5f4cd2e27e027bd 100644
 --- a/components/vector_icons/vector_icons.gni
 +++ b/components/vector_icons/vector_icons.gni
-@@ -40,6 +40,10 @@ template("aggregate_vector_icons") {
+@@ -40,6 +40,8 @@ template("aggregate_vector_icons") {
        "vector_icons.cc.template",
        "vector_icons.h.template",
      ]
-+
 +    alt_icons_dir = "//brave/vector_icons/"+ rebase_path(invoker.icon_directory, "//")
 +    alt_icons_dir_rel = rebase_path(alt_icons_dir, root_build_dir)
-+
-     inputs = rebase_path(templates + invoker.icons, ".", invoker.icon_directory)
- 
-     outputs = [
-@@ -49,13 +53,13 @@ template("aggregate_vector_icons") {
- 
-     response_file_contents =
-         rebase_path(invoker.icons, root_build_dir, invoker.icon_directory)
--
-     args = [
-       "--working_directory=" +
-           rebase_path(invoker.icon_directory, root_build_dir),
+     inputs =
+         rebase_path(templates + invoker.icons, ".", invoker.icon_directory) +
+         [ "//components/vector_icons/aggregate_vector_icons.py" ]
+@@ -58,6 +60,7 @@ template("aggregate_vector_icons") {
        "--file_list={{response_file_name}}",
        "--output_cc=" + rebase_path(output_cc, root_build_dir),
        "--output_h=" + rebase_path(output_h, root_build_dir),

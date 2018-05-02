@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index 8d132058b6ee5ec856a183933ffd389816885619..756e0353b84dd85da1c0c8fe941949ac2f6a81b6 100644
+index 7450d7f03b509b7ac6e1c8293558248419d7b27e..68fb7f85c12b53d408f0c9f27b15cf299a688bcb 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -713,6 +713,18 @@ void GetGuestViewDefaultContentSettingRules(
+@@ -721,6 +721,18 @@ void GetGuestViewDefaultContentSettingRules(
        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
        content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
        std::string(), incognito));

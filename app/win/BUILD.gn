@@ -1,6 +1,6 @@
 import("//build/util/branding.gni")
 import("//brave/build/config.gni")
-import("//media/cdm/ppapi/cdm_paths.gni")
+import("//media/cdm/library_cdm/cdm_paths.gni")
 
 action("generate_breakpad_symbols") {
   symbols_dir = "$brave_dist_dir/$brave_project_name.breakpad.syms"

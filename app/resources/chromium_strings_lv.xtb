@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Uzdevumu pārvaldnieks — Brave</translation>
 <translation id="7918740962659365265">Palīdzēt uzlabot Brave, nosūtot Brave Software serveriem avāriju pārskatus un <ph name="UMA_LINK"/></translation>
 <translation id="7830723774663008396">Brave — <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> — Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> — Brave beta versija</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> — Brave izstrādātāju versija</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> — Brave Canary</translation>
 <translation id="6474707902830053522">Saņemt palīdzību par Brave OS izmantošanu</translation>
 <translation id="1417155795047680590">Brave autori</translation>
 <translation id="8758017846917193089">Autortiesības <ph name="YEAR"/> Brave autori. Visas tiesības paturētas.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Darba sākšana operētājsistēmā Brave OS</translation>
 <translation id="5063987220091207247">Brave OS nevar atvērt šo lapu.</translation>
 <translation id="4458285410772214805">Lūdzu, izrakstieties un pierakstieties vēlreiz, lai šīs izmaiņas stātos spēkā.</translation>
-<translation id="3184285555726798152">Ļaut Brave darboties fonā</translation>
+<translation id="4065288863231444640">Ļaut pārlūkam Brave darboties fonā</translation>
 <translation id="8926637909431618259">Turpināt lietotņu izpildi fonā, kad Brave ir aizvērts</translation>
 <translation id="2077129598763517140">Izmantot aparatūras paātrināšanas režīmu, kad tas ir pieejams</translation>
 <translation id="7182196174524406109">(ir <ph name="BEGIN_BUTTON"/>jārestartē<ph name="END_BUTTON"/> operētājsistēma Brave)</translation>
@@ -34,7 +38,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="3403365884036456766">Jūsu preferenču fails ir bojāts vai nederīgs. Brave nespēj atkopt jūsu iestatījumus.</translation>
 <translation id="8554809439398012115">Brave saglabās šo paroli vietnē <ph name="SAVED_PASSWORD_LINK"/>. Jums parole nav jāatceras.</translation>
 <translation id="5316336629760101484">Izmantot Brave ģenerētu drošu paroli</translation>
-<translation id="2288174659056124771">Brave nav jūsu noklusējuma pārlūks.</translation>
+<translation id="3343095737966473035">Brave nav jūsu noklusējuma pārlūks.</translation>
 <translation id="6715663530666325392">Iestatiet sinhronizāciju, lai saglabātu savas personalizētās pārlūka funkcijas tīmeklī un piekļūtu tām no Brave jebkurā datorā.</translation>
 <translation id="2708027082363760195">Pārlūka Brave komplektācijā nav PDF skatītāja, kas nepieciešams funkcijas Drukas priekšskatījums darbībai.</translation>
 <translation id="8880183781256147665">Notiek pievienošana pārlūkam Brave...</translation>
@@ -42,7 +46,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="9067428552314418522">Šis fails ir bīstams, tāpēc Brave to bloķēja.</translation>
 <translation id="4168372721886011198">Fails <ph name="FILE_NAME"/> ir bīstams, tādēļ Brave to bloķēja.</translation>
 <translation id="89367911614620585">Šis fails var būt bīstams, tāpēc Brave to bloķēja.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Pašlaik notiek lejupielāde. Vai vēlaties atcelt lejupielādi un iziet no pārlūka Brave?}zero{Pašlaik notiek # lejupielādes. Vai vēlaties atcelt lejupielādes un iziet no pārlūka Brave?}one{Pašlaik notiek # lejupielāde. Vai vēlaties atcelt lejupielādes un iziet no pārlūka Brave?}other{Pašlaik notiek # lejupielādes. Vai vēlaties atcelt lejupielādes un iziet no pārlūka Brave?}}</translation>
 <translation id="2339258256897053758">Trūkst Brave Software API atslēgu. Tiks atspējotas dažas Brave funkcijas.</translation>
 <translation id="5906655207909574370">Atjaunināšana ir gandrīz pabeigta. Restartējiet ierīci, lai pabeigtu atjaunināšanu.</translation>
 <translation id="5877064549588274448">Kanāls tika mainīts. Lai lietotu izmaiņas, restartējiet ierīci.</translation>
@@ -55,9 +58,12 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="777113543093865885">Noņemšana no pārlūka Brave...</translation>
 <translation id="6078442581074612226">Pārlūkā Brave</translation>
 <translation id="8148611988012584308">Pielāgot un kontrolēt Brave</translation>
+<translation id="5849446944780602366">Pielāgojiet un pārvaldiet pārlūku Brave. Ir pieejams atjauninājums.</translation>
 <translation id="9071554113102421877">&amp;amp;Atvērt pārlūkā Brave</translation>
 <translation id="1421502046520299169">Par &amp;amp;Brave OS</translation>
 <translation id="2534623228451928732">Atjaunināt &amp;amp;Brave OS</translation>
+<translation id="3360368475735266712">Pierakstieties, lai sinhronizētu un personalizētu pārlūku Brave visās savās ierīcēs.</translation>
+<translation id="5477319665405831211">Brave sinhronizēšana un personalizēšana visās savās ierīcēs</translation>
 <translation id="4934157190377700991">Jūs esat pierakstījies pārlūkā Brave</translation>
 <translation id="4100716194836114130">Šis ir jūsu Brave</translation>
 <translation id="8296145982386097283">Vai datoru izmanto vairāki lietotāji? Tagad varat iestatīt pārlūku Brave atbilstoši savām vajadzībām.</translation>
@@ -91,13 +97,9 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="3472158705945346956">Jūsu konta pārzinim ir jānoņem jūs no pārlūka Brave un atkal jāpievieno.</translation>
 <translation id="5173820533850252773">Brave versija ir novecojusi.</translation>
 <translation id="1705567146636171298">Atjaunināt Brave</translation>
-<translation id="2316129865977710310">Nē, paldies</translation>
 <translation id="4050175100176540509">Jaunākajā versijā ir pieejami svarīgi drošības uzlabojumi un jaunas funkcijas.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave tiks restartēts pēc 1 sekundes.}zero{Brave tiks restartēts pēc # sekundēm.}one{Brave tiks restartēts pēc # sekundes.}other{Brave tiks restartēts pēc # sekundēm.}}</translation>
-<translation id="9159286371333817139">Restartējiet Brave tūlīt.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Pārlūks Brave tiks restartēts pēc 1 sekundes.}zero{Pārlūks Brave tiks restartēts pēc # sekundēm.}one{Pārlūks Brave tiks restartēts pēc # sekundes.}other{Pārlūks Brave tiks restartēts pēc # sekundēm.}}</translation>
 <translation id="9203540365585059272">Tikko tika piemērots īpašs Brave drošības atjauninājums. Restartējiet tūlīt, lai tas stātos spēkā (mēs atjaunosim jūsu cilnes).</translation>
-<translation id="1653828314016431939">Labi — restartēt tūlīt</translation>
-<translation id="795025003224538582">Nerestartēt</translation>
 <translation id="763369711159699222">Palīdziet uzlabot Brave</translation>
 <translation id="1156940037717341650">Varat palīdzēt uzlabot Brave drošību un lietošanas ērtumu, automātiski nosūtot Brave Software serveriem informāciju par iespējamām drošības problēmām.</translation>
 <translation id="3009995890652266099">Varat palīdzēt uzlabot Brave drošību un lietošanas ērtumu, automātiski nosūtot noteiktu sistēmas informāciju un lapas saturu Brave Software serveriem, lai palīdzētu noteikt bīstamas lietotnes un vietnes.</translation>

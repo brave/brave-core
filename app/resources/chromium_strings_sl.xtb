@@ -9,6 +9,10 @@
 <translation id="5516268345616100622">Upravitelj opravil – Brave</translation>
 <translation id="7918740962659365265">Pomagajte izboljšati Brave – Googlu pošiljajte poročila o zrušitvah in ta dokument: <ph name="UMA_LINK"/>.</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – različica beta Bravea</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – različica Bravea za razvijalce</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – delovna različica Bravea</translation>
 <translation id="6474707902830053522">Pomoč pri uporabi sistema Brave OS</translation>
 <translation id="1417155795047680590">Ustvarjalci Bravea</translation>
 <translation id="8758017846917193089">Copyright <ph name="YEAR"/> Ustvarjalci Bravea. Vse pravice pridržane.</translation>
@@ -19,7 +23,7 @@
 <translation id="662492621463805426">Začnite uporabljati Brave OS</translation>
 <translation id="5063987220091207247">OS Brave ne more odpreti te strani.</translation>
 <translation id="4458285410772214805">Odjavite se in znova prijavite, da bodo te spremembe začele veljati.</translation>
-<translation id="3184285555726798152">Naj se Brave izvaja v ozadju</translation>
+<translation id="4065288863231444640">Naj se Brave izvaja v ozadju</translation>
 <translation id="8926637909431618259">Nadaljuj izvajanje aplikacij v ozadju, ko je Brave zaprt</translation>
 <translation id="2077129598763517140">Uporabi strojno pospeševanje, če je na voljo</translation>
 <translation id="7182196174524406109">(zahteva <ph name="BEGIN_BUTTON"/>vnovični zagon<ph name="END_BUTTON"/> Bravea)</translation>
@@ -38,7 +42,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="8554809439398012115">Brave bo shranil to geslo s tem: <ph name="SAVED_PASSWORD_LINK"/>. Ni si vam ga treba zapomniti.</translation>
 <translation id="5316336629760101484">Uporabite zapleteno geslo, ki ga ustvari Brave</translation>
-<translation id="2288174659056124771">Brave ni privzeti brskalnik.</translation>
+<translation id="3343095737966473035">Brave ni privzeti brskalnik</translation>
 <translation id="6715663530666325392">Nastavite sinhronizacijo, da prilagojene funkcije brskalnika shranite v spletu in do njih v Braveu dostopate v katerem koli računalniku.</translation>
 <translation id="2708027082363760195">Brave nima pregledovalnika datotek PDF, ki je potreben za predogled tiskanja.</translation>
 <translation id="8880183781256147665">Dodajanje v Brave ...</translation>
@@ -46,7 +50,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="9067428552314418522">Ta datoteka je nevarna, zato jo je Brave blokiral.</translation>
 <translation id="4168372721886011198">Datoteka <ph name="FILE_NAME"/> je nevarna, zato jo je Brave blokiral.</translation>
 <translation id="89367911614620585">Ta datoteka je morda nevarna, zato jo je Brave blokiral.</translation>
-<translation id="4635174529212032359">{NUM_DOWNLOAD,plural, =1{Trenutno poteka prenos. Ali ga želite preklicati in zapreti Brave?}one{Trenutno poteka # prenos. Ali ga želite preklicati in zapreti Brave?}two{Trenutno potekata # prenosa. Ali ju želite preklicati in zapreti Brave?}few{Trenutno potekajo # prenosi. Ali jih želite preklicati in zapreti Brave?}other{Trenutno poteka # prenosov. Ali jih želite preklicati in zapreti Brave?}}</translation>
 <translation id="2339258256897053758">Manjkajo ključi za Brave Software API. Nekatere funkcije Bravea bodo onemogočene.</translation>
 <translation id="5906655207909574370">Samo še malo. Znova zaženite napravo, da dokončate posodobitev.</translation>
 <translation id="5877064549588274448">Kanal spremenjen. Znova zaženite napravo, da uveljavite spremembe.</translation>
@@ -59,9 +62,12 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="777113543093865885">Odstranitev iz Bravea ...</translation>
 <translation id="6078442581074612226">V Braveu</translation>
 <translation id="8148611988012584308">Prilagajanje in nadziranje Bravea</translation>
+<translation id="5849446944780602366">Prilagodite in nadzirajte Brave. Posodobitev je na voljo.</translation>
 <translation id="9071554113102421877">&amp;amp;Odpri v Braveu</translation>
 <translation id="1421502046520299169">O sistemu &amp;amp;Brave OS</translation>
 <translation id="2534623228451928732">Posodobi sistem &amp;amp;Brave OS</translation>
+<translation id="3360368475735266712">Prijavite se, da boste lahko Brave sinhronizirali in prilagodili v vseh svojih napravah</translation>
+<translation id="5477319665405831211">V vseh svojih napravah sinhronizirajte in prilagodite Brave</translation>
 <translation id="4934157190377700991">Prijavljeni ste v Brave</translation>
 <translation id="4100716194836114130">To je vaš Brave</translation>
 <translation id="8296145982386097283">Imate računalnik v skupni rabi? Zdaj lahko nastavite Brave po svojih željah.</translation>
@@ -95,13 +101,9 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="3472158705945346956">Skrbnik vas mora odstraniti iz Bravea in vas znova dodati.</translation>
 <translation id="5173820533850252773">Brave je zastarel</translation>
 <translation id="1705567146636171298">Posodobi Brave</translation>
-<translation id="2316129865977710310">Ne, hvala</translation>
 <translation id="4050175100176540509">V najnovejši različici so na voljo pomembne varnostne izboljšave in nove funkcije.</translation>
-<translation id="4153970397860125785">{SECONDS,plural, =1{Brave se bo znova zagnal čez 1 sekundo.}one{Brave se bo znova zagnal čez # sekundo.}two{Brave se bo znova zagnal čez # sekundi.}few{Brave se bo znova zagnal čez # sekunde.}other{Brave se bo znova zagnal čez # sekund.}}</translation>
-<translation id="9159286371333817139">Brave zdaj znova zaženite.</translation>
+<translation id="2513524988380267210">{SECONDS,plural, =1{Brave se bo znova zagnal čez 1 sekundo}one{Brave se bo znova zagnal čez # sekundo}two{Brave se bo znova zagnal čez # sekundi}few{Brave se bo znova zagnal čez # sekunde}other{Brave se bo znova zagnal čez # sekund}}</translation>
 <translation id="9203540365585059272">Pravkar je bila nameščena posebna varnostna posodobitev za Brave. Zdaj znova zaženite računalnik, da bo uveljavljena (vaše zavihke bomo obnovili).</translation>
-<translation id="1653828314016431939">V redu, znova zaženi zdaj</translation>
-<translation id="795025003224538582">Ne zaženi znova</translation>
 <translation id="763369711159699222">Pomagajte izboljšati Brave</translation>
 <translation id="1156940037717341650">S samodejnim poročanjem podrobnosti o morebitnih varnostnih dogodkih Googlu lahko pomagate narediti Brave varnejši in preprostejši za uporabo.</translation>
 <translation id="3009995890652266099">S samodejnim pošiljanjem nekaterih informacij o sistemu in vsebine strani Googlu, s čimer pomagate pri hitrejšem zaznavanju nevarnih aplikacij in spletnih mest, lahko pomagate narediti Brave varnejši in preprostejši za uporabo.</translation>
