@@ -321,4 +321,33 @@ describe('Shields API', () => {
       assert.equal(shieldsAPI.toggleShieldsValue('block'), 'allow')
     })
   })
+
+  describe('setAllowScriptOriginsOnce', function() {
+    before(function () {
+      this.spy = sinon.spy(chrome.braveShields, 'allowScriptsOnce')
+      this.p = shieldsAPI.setAllowScriptOriginsOnce(
+        ['https://a.com/', 'https://b.com/'], 2)
+    })
+    after(function () {
+      this.spy.restore()
+    })
+    it('calls chrome.braveShields.allowScriptsOnce with the correct args', function () {
+      const arg0 = this.spy.getCall(0).args[0]
+      assert.deepEqual(arg0, ['https://a.com/', 'https://b.com/'])
+      const arg1 = this.spy.getCall(0).args[1]
+      assert.deepEqual(arg1, 2)
+    })
+    it('passes 3 args to chrome.braveShields.allowScriptsOnce', function () {
+      assert.equal(this.spy.getCall(0).args.length, 3) // include callback
+    })
+    it('resolves the returned promise', function (cb) {
+      this.p
+        .then(function() {
+          cb()
+        })
+        .catch((e: Error) => {
+          console.error(e.toString())
+        })
+    })
+  })
 })

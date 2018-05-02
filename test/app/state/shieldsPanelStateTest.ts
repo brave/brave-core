@@ -214,7 +214,8 @@ describe('shieldsPanelState test', () => {
             trackersBlocked: 0,
             httpsRedirected: 0,
             javascriptBlocked: 0,
-            fingerprintingBlocked: 0
+            fingerprintingBlocked: 0,
+            javascriptBlockedOrigins: []
           },
           3: {
             id: 3
@@ -253,7 +254,8 @@ describe('shieldsPanelState test', () => {
             hostname: 'https://brave.com',
             origin: 'https://brave.com',
             braveShields: 'block',
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           },
           3: {
             ads: 'block',
@@ -272,7 +274,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           },
           4: {
             ads: 'block',
@@ -291,7 +294,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           }
         },
         windows: {
@@ -325,7 +329,8 @@ describe('shieldsPanelState test', () => {
             hostname: 'https://brave.com',
             origin: 'https://brave.com',
             braveShields: 'block',
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: []
           },
           3: {
             ads: 'block',
@@ -344,7 +349,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           },
           4: {
             ads: 'block',
@@ -363,7 +369,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           }
         },
         windows: {
@@ -394,7 +401,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           },
           3: {
             ads: 'block',
@@ -413,7 +421,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           },
           4: {
             ads: 'block',
@@ -432,7 +441,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 5,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           }
         },
         windows: {
@@ -461,7 +471,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           },
           3: {
             ads: 'block',
@@ -480,7 +491,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: ['https://a.com', 'https://b.com']
           },
           4: {
             ads: 'block',
@@ -499,7 +511,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            javascriptBlockedOrigins: []
           }
         },
         windows: {
@@ -512,7 +525,7 @@ describe('shieldsPanelState test', () => {
   describe('updateResourceBlocked', () => {
     it('can update ads blocked count', function () {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads'), {
+      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads', 'https://test.brave.com'), {
         currentWindowId: 1,
         tabs: {
           2: {
@@ -527,7 +540,8 @@ describe('shieldsPanelState test', () => {
             trackersBlocked: 0,
             httpsRedirected: 0,
             javascriptBlocked: 0,
-            fingerprintingBlocked: 0
+            fingerprintingBlocked: 0,
+            javascriptBlockedOrigins: []
           },
           3: {
             id: 3
@@ -544,7 +558,7 @@ describe('shieldsPanelState test', () => {
     })
     it('can update tracking protection blocked count', function () {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads'), {
+      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads', 'https://test.brave.com'), {
         currentWindowId: 1,
         tabs: {
           2: {
@@ -559,7 +573,8 @@ describe('shieldsPanelState test', () => {
             trackersBlocked: 0,
             httpsRedirected: 0,
             javascriptBlocked: 0,
-            fingerprintingBlocked: 0
+            fingerprintingBlocked: 0,
+            javascriptBlockedOrigins: []
           },
           3: {
             id: 3

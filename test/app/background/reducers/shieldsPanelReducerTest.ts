@@ -228,7 +228,7 @@ describe('braveShieldsPanelReducer', () => {
         httpUpgradableResources: 'block',
         javascript: 'block',
         fingerprinting: 'block',
-        cookies: 'block'
+        cookies: 'block',
       }
       assert.deepEqual(
         shieldsPanelReducer(initialState.shieldsPanel, {
@@ -253,7 +253,8 @@ describe('braveShieldsPanelReducer', () => {
               fingerprinting: 'block',
               cookies: 'block',
               controlsOpen: true,
-              braveShields: 'allow'
+              braveShields: 'allow',
+              javascriptBlockedOrigins: []
             }
           },
           windows: {}
@@ -280,7 +281,8 @@ describe('braveShieldsPanelReducer', () => {
         trackers: 'block',
         ads: 'block',
         fingerprinting: 'block',
-        cookies: 'block'
+        cookies: 'block',
+        javascriptBlockedOrigins: []
       }
     },
     windows: {
@@ -388,7 +390,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'javascript',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com/index.js'
         }
       })
       assert.deepEqual(nextState, {
@@ -410,7 +413,118 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: ['https://test.brave.com/']
+          }
+        },
+        windows: {
+          1: 2
+        }
+      })
+    })
+
+    it('increments JS blocking consecutively', function () {
+      let nextState = shieldsPanelReducer(state, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'javascript',
+          tabId: 2,
+          subresource: 'https://a.com/index.js'
+        }
+      })
+      assert.deepEqual(nextState, {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            origin: 'https://brave.com',
+            hostname: 'brave.com',
+            adsBlocked: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
+            javascriptBlocked: 1,
+            fingerprintingBlocked: 0,
+            controlsOpen: true,
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
+            id: 2,
+            javascript: 'block',
+            trackers: 'block',
+            ads: 'block',
+            fingerprinting: 'block',
+            cookies: 'block',
+            javascriptBlockedOrigins: ['https://a.com/']
+          }
+        },
+        windows: {
+          1: 2
+        }
+      })
+
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'javascript',
+          tabId: 2,
+          subresource: 'https://b.com/index.js'
+        }
+      })
+      assert.deepEqual(nextState, {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            origin: 'https://brave.com',
+            hostname: 'brave.com',
+            adsBlocked: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
+            javascriptBlocked: 2,
+            fingerprintingBlocked: 0,
+            controlsOpen: true,
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
+            id: 2,
+            javascript: 'block',
+            trackers: 'block',
+            ads: 'block',
+            fingerprinting: 'block',
+            cookies: 'block',
+            javascriptBlockedOrigins: ['https://a.com/', 'https://b.com/']
+          }
+        },
+        windows: {
+          1: 2
+        }
+      })
+
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'javascript',
+          tabId: 2,
+          subresource: 'https://a.com/index.js'
+        }
+      })
+      assert.deepEqual(nextState, {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            origin: 'https://brave.com',
+            hostname: 'brave.com',
+            adsBlocked: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
+            javascriptBlocked: 3,
+            fingerprintingBlocked: 0,
+            controlsOpen: true,
+            braveShields: 'allow',
+            httpUpgradableResources: 'block',
+            id: 2,
+            javascript: 'block',
+            trackers: 'block',
+            ads: 'block',
+            fingerprinting: 'block',
+            cookies: 'block',
+            javascriptBlockedOrigins: ['https://a.com/', 'https://b.com/']
           }
         },
         windows: {
@@ -424,7 +538,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'fingerprinting',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com'
         }
       })
       assert.deepEqual(nextState, {
@@ -446,7 +561,8 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: []
           }
         },
         windows: {
@@ -460,7 +576,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'ads',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com'
         }
       })
       assert.deepEqual(nextState, {
@@ -482,7 +599,8 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: []
           }
         },
         windows: {
@@ -494,7 +612,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'ads',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com'
         }
       })
       assert.deepEqual(nextState, {
@@ -516,7 +635,8 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: []
           }
         },
         windows: {
@@ -529,7 +649,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'ads',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com'
         }
       }))
       assert.deepEqual(nextState, {
@@ -551,7 +672,8 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: []
           }
         },
         windows: {
@@ -563,7 +685,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'ads',
-          tabId: 3
+          tabId: 3,
+          subresource: 'https://test.brave.com'
         }
       })
 
@@ -586,14 +709,16 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: []
           },
           3: {
             adsBlocked: 1,
             trackersBlocked: 0,
             httpsRedirected: 0,
             javascriptBlocked: 0,
-            fingerprintingBlocked: 0
+            fingerprintingBlocked: 0,
+            javascriptBlockedOrigins: []
           }
         },
         windows: {
@@ -606,7 +731,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'ads',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com'
         }
       }))
       assert.deepEqual(nextState, {
@@ -628,7 +754,8 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: []
           }
         },
         windows: {
@@ -640,7 +767,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'trackers',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com'
         }
       })
       assert.deepEqual(nextState, {
@@ -662,7 +790,8 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: []
           }
         },
         windows: {
@@ -673,7 +802,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'httpUpgradableResources',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com'
         }
       })
       assert.deepEqual(nextState, {
@@ -695,7 +825,8 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: []
           }
         },
         windows: {
@@ -706,7 +837,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'javascript',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com/index.js'
         }
       })
       assert.deepEqual(nextState, {
@@ -728,7 +860,8 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: ['https://test.brave.com/']
           }
         },
         windows: {
@@ -739,7 +872,8 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'fingerprinting',
-          tabId: 2
+          tabId: 2,
+          subresource: 'https://test.brave.com'
         }
       })
       assert.deepEqual(nextState, {
@@ -761,7 +895,8 @@ describe('braveShieldsPanelReducer', () => {
             trackers: 'block',
             ads: 'block',
             fingerprinting: 'block',
-            cookies: 'block'
+            cookies: 'block',
+            javascriptBlockedOrigins: ['https://test.brave.com/']
           }
         },
         windows: {
@@ -809,6 +944,27 @@ describe('braveShieldsPanelReducer', () => {
 
       assert.equal(this.spy.calledOnce, true)
       assert.equal(this.spy.getCall(0).args[2].controlsOpen, true)
+    })
+  })
+
+  describe('ALLOW_SCRIPT_ORIGINS_ONCE', function() {
+    before(function () {
+      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
+      this.setAllowScriptOriginsOnceSpy = sinon.spy(shieldsAPI, 'setAllowScriptOriginsOnce')
+    })
+    after(function () {
+      this.reloadTabSpy.restore()
+      this.setAllowScriptOriginsOnceSpy.restore()
+    })
+    it('should call setAllowScriptOriginsOnce', function () {
+      const origins = ['https://a.com/', 'https://b.com/']
+      const tabId = 2
+      assert.deepEqual(
+        shieldsPanelReducer(state, {
+          type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
+          origins
+        }), state)
+      assert.equal(this.setAllowScriptOriginsOnceSpy.withArgs(origins, tabId).calledOnce, true)
     })
   })
 })
