@@ -59,9 +59,17 @@
         "message": "Block 3rd Party Fingerprinting",
         "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
     },
+    "noScriptSwitches": {
+        "message": "Toggle switches to disable script blocking",
+        "description": "Instructions for per-origin noScript switches"
+    },
     "shieldsHeaderForSite": {
         "message": "Site shield settings for",
         "description": "Label for shields header near current site name"
+    },
+    "noScriptApplyOnce": {
+        "message": "Apply Once",
+        "description": "Label for applying per-origin noScript settings"
     },
     "shieldsHeaderShieldsToggle": {
         "message": "Shields",
