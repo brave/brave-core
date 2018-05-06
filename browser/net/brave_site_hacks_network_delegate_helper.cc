@@ -7,13 +7,25 @@
 #include <string>
 
 #include "base/base64url.h"
+#include "base/sequenced_task_runner.h"
 #include "base/strings/string_util.h"
+#include "base/task_scheduler/post_task.h"
+#include "base/task_scheduler/task_scheduler.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/grit/generated_resources.h"
+#include "content/public/browser/browser_thread.h"
+#include "content/public/browser/resource_request_info.h"
 #include "extensions/common/url_pattern.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 #include "ui/base/resource/resource_bundle.h"
+
+using content::BrowserThread;
+using namespace net::registry_controlled_domains;
 
 namespace brave {
 
@@ -106,6 +118,32 @@ bool IsBlockTwitterSiteHack(net::URLRequest* request,
   return false;
 }
 
+int ApplyPotentialReferrerBlock(net::URLRequest* request,
+    const ResponseCallback& next_callback,
+    net::HttpRequestHeaders* headers) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  GURL target_origin = GURL(request->url()).GetOrigin();
+  GURL tab_origin = request->site_for_cookies().GetOrigin();
+  bool allow_referrers = brave_shields::IsAllowContentSettingFromIO(
+      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kReferrers);
+  bool shields_up = brave_shields::IsAllowContentSettingFromIO(
+      request, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kBraveShields);
+  std::string referrer;
+  headers->GetHeader(kRefererHeader, &referrer);
+  if (headers->GetHeader(kRefererHeader, &referrer) &&
+      !IsWhitelistedReferrer(tab_origin, target_origin) &&
+      !allow_referrers &&
+      shields_up &&
+      !SameDomainOrHost(target_origin, GURL(referrer),
+          INCLUDE_PRIVATE_REGISTRIES)) {
+    headers->SetHeader(kRefererHeader, target_origin.spec());
+  }
+
+  return net::OK;
+}
+
 int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
@@ -124,7 +162,7 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
       headers->SetHeader(kUserAgentHeader, user_agent);
     }
   }
-  return net::OK;
+  return ApplyPotentialReferrerBlock(request, next_callback, headers);
 }
 
 }  // namespace brave

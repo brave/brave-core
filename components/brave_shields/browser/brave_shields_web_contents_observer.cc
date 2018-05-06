@@ -8,12 +8,20 @@
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/render_messages.h"
 #include "brave/common/pref_names.h"
+#include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "content/browser/frame_host/frame_tree_node.h"
+#include "content/browser/frame_host/navigator.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
@@ -21,11 +29,14 @@
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
 #include "ipc/ipc_message_macros.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+
 
 using extensions::Event;
 using extensions::EventRouter;
 using content::RenderFrameHost;
 using content::WebContents;
+using namespace net::registry_controlled_domains;
 
 DEFINE_WEB_CONTENTS_USER_DATA_KEY(
     brave_shields::BraveShieldsWebContentsObserver);
@@ -248,6 +259,59 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
   registry->RegisterUint64Pref(kJavascriptBlocked, 0);
   registry->RegisterUint64Pref(kHttpsUpgrades, 0);
   registry->RegisterUint64Pref(kFingerprintingBlocked, 0);
+}
+
+void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  auto frame_tree_node_id = navigation_handle->GetFrameTreeNodeId();
+  auto *frame_tree_node = content::FrameTreeNode::GloballyFindByID(
+      frame_tree_node_id);
+  auto* navigation_entry =
+    frame_tree_node->navigator()->GetController()->GetPendingEntry();
+
+  if (!navigation_entry) {
+    navigation_entry =
+      frame_tree_node->navigator()->GetController()->GetLastCommittedEntry();
+  }
+  GURL target_origin = navigation_handle->GetURL().GetOrigin();
+  if (!navigation_entry) {
+    return;
+  }
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  GURL tab_origin(navigation_entry->GetURL().GetOrigin());
+
+  std::unique_ptr<base::Value> referrer_value =
+      HostContentSettingsMapFactory::GetForProfile(profile)
+      ->GetWebsiteSetting(
+          tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kReferrers, NULL);
+  ContentSetting referrer_setting =
+      content_settings::ValueToContentSetting(referrer_value.get());
+
+  std::unique_ptr<base::Value> shields_value =
+      HostContentSettingsMapFactory::GetForProfile(profile)
+      ->GetWebsiteSetting(
+          tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kBraveShields, NULL);
+  ContentSetting shields_setting =
+      content_settings::ValueToContentSetting(shields_value.get());
+
+  auto original_referrer = navigation_handle->GetReferrer();
+  GURL site_instance(navigation_handle->GetStartingSiteInstance()->GetSiteURL());
+  // This does a TLD+1 comparison
+  bool sameTLDP1 = SameDomainOrHost(original_referrer.url,
+      target_origin, INCLUDE_PRIVATE_REGISTRIES);
+
+  if (referrer_setting != CONTENT_SETTING_ALLOW &&
+      shields_setting != CONTENT_SETTING_BLOCK &&
+      !sameTLDP1 &&
+      !brave::IsWhitelistedReferrer(tab_origin, target_origin) &&
+      !original_referrer.url.is_empty()) {
+    auto referrer = original_referrer;
+    referrer.url = navigation_handle->GetURL().GetOrigin();
+    navigation_entry->SetReferrer(referrer);
+  }
 }
 
 }  // namespace brave_shields

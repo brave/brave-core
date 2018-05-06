@@ -25,6 +25,11 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
 void DispatchBlockedEventFromIO(net::URLRequest* request,
     const std::string& block_type);
 
+void GetRenderFrameInfo(net::URLRequest* request,
+    int* render_frame_id,
+    int* render_process_id,
+    int* frame_tree_node_id);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_DAT_FILE_UTIL_

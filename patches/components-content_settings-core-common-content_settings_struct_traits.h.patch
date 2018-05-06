@@ -1,19 +1,14 @@
 diff --git a/components/content_settings/core/common/content_settings_struct_traits.h b/components/content_settings/core/common/content_settings_struct_traits.h
-index f36bdde91be3f6d44f53fd042b707ec2b83b908e..a2c2fcf123cd3ccfffb5495e76d863a5d137b4ab 100644
+index f36bdde91be3f6d44f53fd042b707ec2b83b908e..0abef31c238e59eb7dd07a18b8442e4575eb58a2 100644
 --- a/components/content_settings/core/common/content_settings_struct_traits.h
 +++ b/components/content_settings/core/common/content_settings_struct_traits.h
-@@ -141,6 +141,21 @@ struct StructTraits<
+@@ -141,6 +141,16 @@ struct StructTraits<
      return r.client_hints_rules;
    }
  
 +  static const std::vector<ContentSettingPatternSource>& fingerprinting_rules(
 +      const RendererContentSettingRules& r) {
 +    return r.fingerprinting_rules;
-+  }
-+
-+  static const std::vector<ContentSettingPatternSource>& referrer_rules(
-+      const RendererContentSettingRules& r) {
-+    return r.referrer_rules;
 +  }
 +
 +  static const std::vector<ContentSettingPatternSource>& brave_shields_rules(

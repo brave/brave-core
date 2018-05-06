@@ -58,6 +58,8 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   void RenderFrameDeleted(content::RenderFrameHost* render_frame_host) override;
   void RenderFrameHostChanged(content::RenderFrameHost* old_host,
                               content::RenderFrameHost* new_host) override;
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   // Invoked if an IPC message is coming from a specific RenderFrameHost.
   bool OnMessageReceived(const IPC::Message& message,

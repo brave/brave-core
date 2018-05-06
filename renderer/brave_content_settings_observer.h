@@ -23,7 +23,6 @@ class BraveContentSettingsObserver
                                bool should_whitelist,
                                service_manager::BinderRegistry* registry);
   ~BraveContentSettingsObserver() override;
-  bool AllowReferrer(const GURL&);
 
  protected:
   bool AllowScriptFromSource(bool enabled_per_settings,
