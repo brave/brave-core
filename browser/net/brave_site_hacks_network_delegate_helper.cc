@@ -10,8 +10,10 @@
 #include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
+#include "brave/grit/generated_resources.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
+#include "ui/base/resource/resource_bundle.h"
 
 namespace brave {
 
@@ -20,9 +22,8 @@ std::string GetGoogleTagManagerPolyfillJS() {
   if (base64_output.length() != 0)  {
     return base64_output;
   }
-  std::string str;
-  str.reserve(135);
-  str.append("(function() { var noopfn = function() { ; }; window.ga = window.ga || noopfn; })();");
+  std::string str = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
+    IDR_BRAVE_TAG_MANAGER_POLYFILL).as_string();
   base64_output.reserve(180);
   Base64UrlEncode(str, base::Base64UrlEncodePolicy::OMIT_PADDING, &base64_output);
   base64_output = std::string(kJSDataURLPrefix) + base64_output;
@@ -34,15 +35,8 @@ std::string GetGoogleTagServicesPolyfillJS() {
   if (base64_output.length() != 0)  {
     return base64_output;
   }
-  std::string str;
-  str.reserve(3500);
-  str.append("(function() { var p; var noopfn = function() { }; var noopthisfn = function() { return this; }; var noopnullfn = function() { return null; }; var nooparrayfn = function() { return []; }; var noopstrfn = function() { return ''; }; var companionAdsService = { addEventListener: noopthisfn, enableSyncLoading: noopfn, setRefreshUnfilledSlots: noopfn }; var contentService = { addEventListener: noopthisfn, setContent: noopfn }; var PassbackSlot = function() { }; p = PassbackSlot.prototype; p.display =");
-  str.append(" noopfn; p.get = noopnullfn; p.set = noopthisfn; p.setClickUrl = noopthisfn; p.setTagForChildDirectedTreatment = noopthisfn; p.setTargeting = noopthisfn; p.updateTargetingFromMap = noopthisfn; var pubAdsService = { addEventListener: noopthisfn, clear: noopfn, clearCategoryExclusions: noopthisfn, clearTagForChildDirectedTreatment: noopthisfn, clearTargeting: noopthisfn, collapseEmptyDivs: noopfn, defineOutOfPagePassback: function() { return new PassbackSlot(); }, definePassback: function() { ret");
-  str.append("urn new PassbackSlot(); }, disableInitialLoad: noopfn, display: noopfn, enableAsyncRendering: noopfn, enableSingleRequest: noopfn, enableSyncRendering: noopfn, enableVideoAds: noopfn, get: noopnullfn, getAttributeKeys: nooparrayfn, refresh: noopfn, set: noopthisfn, setCategoryExclusion: noopthisfn, setCentering: noopfn, setCookieOptions: noopthisfn, setLocation: noopthisfn, setPublisherProvidedId: noopthisfn, setTagForChildDirectedTreatment: noopthisfn, setTargeting: noopthisfn, setVideoContent");
-  str.append(": noopthisfn, updateCorrelator: noopfn }; var SizeMappingBuilder = function() { }; p = SizeMappingBuilder.prototype; p.addSize = noopthisfn; p.build = noopnullfn; var Slot = function() { }; p = Slot.prototype; p.addService = noopthisfn; p.clearCategoryExclusions = noopthisfn; p.clearTargeting = noopthisfn; p.defineSizeMapping = noopthisfn; p.get = noopnullfn; p.getAdUnitPath = nooparrayfn; p.getAttributeKeys = nooparrayfn; p.getCategoryExclusions = nooparrayfn; p.getDomId = noopstrfn; p.getSlot");
-  str.append("ElementId = noopstrfn; p.getSlotId = noopthisfn; p.getTargeting = nooparrayfn; p.getTargetingKeys = nooparrayfn; p.set = noopthisfn; p.setCategoryExclusion = noopthisfn; p.setClickUrl = noopthisfn; p.setCollapseEmptyDiv = noopthisfn; p.setTargeting = noopthisfn; var gpt = window.googletag || {}; window.googletag.destroySlots = function () { }; var cmd = gpt.cmd || []; gpt.apiReady = true; gpt.cmd = []; gpt.cmd.push = function(a) { try { a(); } catch (ex) { } return 1; }; gpt.companionAds = func");
-  str.append("tion() { return companionAdsService; }; gpt.content = function() { return contentService; }; gpt.defineOutOfPageSlot = function() { return new Slot(); }; gpt.defineSlot = function() { return new Slot(); }; gpt.disablePublisherConsole = noopfn; gpt.display = noopfn; gpt.enableServices = noopfn; gpt.getVersion = noopstrfn; gpt.pubads = function() { return pubAdsService; }; gpt.pubadsReady = true; gpt.sizeMapping = function() { return new SizeMappingBuilder(); }; window.googletag = gpt; while ( cm");
-  str.append("d.length !== 0 ) { gpt.cmd.push(cmd.shift()); } })();");
+  std::string str = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
+    IDR_BRAVE_TAG_SERVICES_POLYFILL).as_string();
   base64_output.reserve(4668);
   Base64UrlEncode(str, base::Base64UrlEncodePolicy::OMIT_PADDING, &base64_output);
   base64_output = std::string(kJSDataURLPrefix) + base64_output;
