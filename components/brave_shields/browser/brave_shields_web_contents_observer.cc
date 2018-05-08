@@ -310,7 +310,8 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
       !original_referrer.url.is_empty()) {
     auto referrer = original_referrer;
     referrer.url = navigation_handle->GetURL().GetOrigin();
-    navigation_entry->SetReferrer(referrer);
+    navigation_entry->SetReferrer(
+        content::Referrer::SanitizeForRequest(navigation_handle->GetURL(), referrer));
   }
 }
 

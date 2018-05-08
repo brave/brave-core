@@ -19,12 +19,14 @@
 #include "brave/grit/generated_resources.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/resource_request_info.h"
+#include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 #include "ui/base/resource/resource_bundle.h"
 
 using content::BrowserThread;
+using content::Referrer;
 using namespace net::registry_controlled_domains;
 
 namespace brave {
@@ -138,7 +140,11 @@ int ApplyPotentialReferrerBlock(net::URLRequest* request,
       shields_up &&
       !SameDomainOrHost(target_origin, GURL(referrer),
           INCLUDE_PRIVATE_REGISTRIES)) {
-    headers->SetHeader(kRefererHeader, target_origin.spec());
+    auto referrer = Referrer::SanitizeForRequest(target_origin,
+        Referrer(target_origin,
+            request->referrer_policy() == net::URLRequest::NO_REFERRER ?
+            blink::kWebReferrerPolicyNever : blink::kWebReferrerPolicyDefault));
+    headers->SetHeader(kRefererHeader, referrer.url.spec());
   }
 
   return net::OK;
