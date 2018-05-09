@@ -12,6 +12,7 @@
     "includes": [34000],
   },
   "brave/app/generated_resources.grd": {
-    "messages": [35000],
+    "includes": [35000],
+    "messages": [35500],
   },
 }
