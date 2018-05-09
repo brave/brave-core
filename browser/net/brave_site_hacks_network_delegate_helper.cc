@@ -132,21 +132,15 @@ int ApplyPotentialReferrerBlock(net::URLRequest* request,
   bool shields_up = brave_shields::IsAllowContentSettingFromIO(
       request, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kBraveShields);
-  std::string referrer;
-  headers->GetHeader(kRefererHeader, &referrer);
-  if (headers->GetHeader(kRefererHeader, &referrer) &&
-      !IsWhitelistedReferrer(tab_origin, target_origin) &&
-      !allow_referrers &&
-      shields_up &&
-      !SameDomainOrHost(target_origin, GURL(referrer),
-          INCLUDE_PRIVATE_REGISTRIES)) {
-    auto referrer = Referrer::SanitizeForRequest(target_origin,
-        Referrer(target_origin,
-            request->referrer_policy() == net::URLRequest::NO_REFERRER ?
-            blink::kWebReferrerPolicyNever : blink::kWebReferrerPolicyDefault));
-    headers->SetHeader(kRefererHeader, referrer.url.spec());
+  std::string original_referrer;
+  headers->GetHeader(kRefererHeader, &original_referrer);
+  Referrer new_referrer;
+  if (brave_shields::ShouldSetReferrer(allow_referrers, shields_up,
+          GURL(original_referrer), tab_origin, request->url(), target_origin,
+          Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
+              request->referrer_policy()), &new_referrer)) {
+      headers->SetHeader(kRefererHeader, new_referrer.url.spec());
   }
-
   return net::OK;
 }
 

@@ -6,9 +6,9 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/extensions/api/brave_shields.h"
-#include "brave/common/render_messages.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/shield_exceptions.h"
+#include "brave/common/render_messages.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -29,14 +29,12 @@
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
 #include "ipc/ipc_message_macros.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-
 
 using extensions::Event;
 using extensions::EventRouter;
+using content::Referrer;
 using content::RenderFrameHost;
 using content::WebContents;
-using namespace net::registry_controlled_domains;
 
 DEFINE_WEB_CONTENTS_USER_DATA_KEY(
     brave_shields::BraveShieldsWebContentsObserver);
@@ -297,21 +295,16 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
   ContentSetting shields_setting =
       content_settings::ValueToContentSetting(shields_value.get());
 
-  auto original_referrer = navigation_handle->GetReferrer();
-  GURL site_instance(navigation_handle->GetStartingSiteInstance()->GetSiteURL());
-  // This does a TLD+1 comparison
-  bool sameTLDP1 = SameDomainOrHost(original_referrer.url,
-      target_origin, INCLUDE_PRIVATE_REGISTRIES);
-
-  if (referrer_setting != CONTENT_SETTING_ALLOW &&
-      shields_setting != CONTENT_SETTING_BLOCK &&
-      !sameTLDP1 &&
-      !brave::IsWhitelistedReferrer(tab_origin, target_origin) &&
-      !original_referrer.url.is_empty()) {
-    auto referrer = original_referrer;
-    referrer.url = navigation_handle->GetURL().GetOrigin();
-    navigation_entry->SetReferrer(
-        content::Referrer::SanitizeForRequest(navigation_handle->GetURL(), referrer));
+  content::Referrer original_referrer = navigation_handle->GetReferrer();
+  content::Referrer new_referrer;
+  if (ShouldSetReferrer(referrer_setting == CONTENT_SETTING_ALLOW,
+          shields_setting != CONTENT_SETTING_BLOCK,
+          original_referrer.url,
+          tab_origin,
+          navigation_handle->GetURL(),
+          navigation_handle->GetURL().GetOrigin(),
+          original_referrer.policy, &new_referrer)) {
+    navigation_entry->SetReferrer(new_referrer);
   }
 }
 
