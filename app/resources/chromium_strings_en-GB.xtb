@@ -103,6 +103,7 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="1705567146636171298">Update Brave</translation>
 <translation id="4050175100176540509">Important security improvements and new features are available in the latest version.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave will restart in 1 second}other{Brave will restart in # seconds}}</translation>
+<translation id="9159286371333817139">You should restart Brave now.</translation>
 <translation id="9203540365585059272">A special security update for Brave was just applied; you should restart now for it to take effect (we'll restore your tabs).</translation>
 <translation id="763369711159699222">Help make Brave better</translation>
 <translation id="1156940037717341650">You can help make Brave safer and easier to use by automatically reporting details of possible security incidents to Brave Software.</translation>
