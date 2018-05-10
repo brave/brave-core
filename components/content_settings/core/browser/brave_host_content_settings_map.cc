@@ -17,6 +17,7 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
   InitializeFingerprintingContentSetting();
   InitializeReferrerContentSetting();
   InitializeCookieContentSetting();
+  InitializeBraveShieldsContentSetting();
 }
 
 BraveHostContentSettingsMap::~BraveHostContentSettingsMap() {
@@ -48,5 +49,14 @@ void BraveHostContentSettingsMap::InitializeCookieContentSetting() {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kCookies,
+      CONTENT_SETTING_ALLOW);
+}
+
+void BraveHostContentSettingsMap::InitializeBraveShieldsContentSetting() {
+  SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(),
+      ContentSettingsPattern::Wildcard(),
+      CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kBraveShields,
       CONTENT_SETTING_ALLOW);
 }

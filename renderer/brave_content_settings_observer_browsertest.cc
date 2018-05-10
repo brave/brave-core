@@ -168,6 +168,69 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
           brave_shields::kBraveShields, CONTENT_SETTING_ALLOW);
     }
 
+    void AllowFingerprinting() {
+      content_settings()->SetContentSettingCustomScope(
+          top_level_page_pattern(),
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kFingerprinting,
+          CONTENT_SETTING_ALLOW);
+      content_settings()->SetContentSettingCustomScope(
+          top_level_page_pattern(),
+          first_party_pattern(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kFingerprinting,
+          CONTENT_SETTING_ALLOW);
+    }
+
+    void BlockFingerprinting() {
+      content_settings()->SetContentSettingCustomScope(
+          top_level_page_pattern(),
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kFingerprinting,
+          CONTENT_SETTING_BLOCK);
+      content_settings()->SetContentSettingCustomScope(
+          top_level_page_pattern(),
+          first_party_pattern(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kFingerprinting,
+          CONTENT_SETTING_BLOCK);
+    }
+
+    void Block3PFingerprinting() {
+      content_settings()->SetContentSettingCustomScope(
+          top_level_page_pattern(),
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kFingerprinting,
+          CONTENT_SETTING_BLOCK);
+      content_settings()->SetContentSettingCustomScope(
+          top_level_page_pattern(),
+          first_party_pattern(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kFingerprinting,
+          CONTENT_SETTING_ALLOW);
+    }
+
+    void BlockScripts() {
+      content_settings()->SetContentSettingCustomScope(
+          ContentSettingsPattern::Wildcard(),
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_JAVASCRIPT,
+          "",
+          CONTENT_SETTING_BLOCK);
+    }
+
+    void AllowScripts() {
+      content_settings()->SetContentSettingCustomScope(
+          ContentSettingsPattern::Wildcard(),
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_JAVASCRIPT,
+          "",
+          CONTENT_SETTING_ALLOW);
+    }
+
     content::WebContents* contents() {
       return browser()->tab_strip_model()->GetActiveWebContents();
     }
@@ -190,6 +253,16 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       content::RenderFrameHost* main_frame = contents()->GetMainFrame();
       EXPECT_EQ(main_frame->GetLastCommittedURL(), url());
     }
+
+    bool NavigateToURLUntilLoadStop(
+        const std::string& origin, const std::string& path) {
+      ui_test_utils::NavigateToURL(
+          browser(),
+          embedded_test_server()->GetURL(origin, path));
+
+      return WaitForLoadStop(contents());
+    }
+
   private:
     GURL url_;
     GURL iframe_url_;
@@ -233,12 +306,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFP) {
-  content_settings()->SetContentSettingCustomScope(top_level_page_pattern(),
-      ContentSettingsPattern::Wildcard(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting, CONTENT_SETTING_BLOCK);
-  content_settings()->SetContentSettingCustomScope(top_level_page_pattern(),
-      first_party_pattern(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting, CONTENT_SETTING_BLOCK);
+  BlockFingerprinting();
 
   ContentSettingsForOneType fp_settings;
   content_settings()->GetSettingsForOneType(
@@ -261,12 +329,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFP) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFP) {
-  content_settings()->SetContentSettingCustomScope(top_level_page_pattern(),
-      ContentSettingsPattern::Wildcard(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting, CONTENT_SETTING_ALLOW);
-  content_settings()->SetContentSettingCustomScope(top_level_page_pattern(),
-      first_party_pattern(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting, CONTENT_SETTING_ALLOW);
+  AllowFingerprinting();
 
   ContentSettingsForOneType fp_settings;
   content_settings()->GetSettingsForOneType(
@@ -290,12 +353,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFP) {
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
     BlockThirdPartyFP) {
-  content_settings()->SetContentSettingCustomScope(top_level_page_pattern(),
-      ContentSettingsPattern::Wildcard(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting, CONTENT_SETTING_BLOCK);
-  content_settings()->SetContentSettingCustomScope(top_level_page_pattern(),
-      first_party_pattern(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting, CONTENT_SETTING_ALLOW);
+  Block3PFingerprinting();
 
   ContentSettingsForOneType fp_settings;
   content_settings()->GetSettingsForOneType(
@@ -315,6 +373,30 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_TRUE(ExecuteScriptAndExtractBool(
       child_frame(), kPointInPathScript, &isPointInPath));
   EXPECT_FALSE(isPointInPath);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPShieldsDown) {
+  BlockFingerprinting();
+  ShieldsDown();
+
+  ContentSettingsForOneType fp_settings;
+  content_settings()->GetSettingsForOneType(
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
+      &fp_settings);
+  EXPECT_EQ(fp_settings.size(), 3u);
+
+  NavigateToPageWithIframe();
+
+  bool isPointInPath;
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(),
+      kPointInPathScript, &isPointInPath));
+  EXPECT_TRUE(isPointInPath);
+
+  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
+  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(
+      child_frame(), kPointInPathScript, &isPointInPath));
+  EXPECT_TRUE(isPointInPath);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -473,4 +555,29 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
   EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScripts) {
+  BlockScripts();
+
+  EXPECT_TRUE(
+      NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
+  EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowScripts) {
+  AllowScripts();
+
+  EXPECT_TRUE(
+      NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
+  EXPECT_EQ(contents()->GetAllFrames().size(), 3u);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScriptsShieldsDown) {
+  BlockScripts();
+  ShieldsDown();
+
+  EXPECT_TRUE(
+      NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
+  EXPECT_EQ(contents()->GetAllFrames().size(), 3u);
 }
