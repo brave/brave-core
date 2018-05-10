@@ -6,14 +6,22 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/extensions/api/brave_shields.h"
-#include "brave/common/render_messages.h"
 #include "brave/common/pref_names.h"
+#include "brave/common/render_messages.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "content/browser/frame_host/frame_tree_node.h"
+#include "content/browser/frame_host/navigator.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
@@ -24,6 +32,7 @@
 
 using extensions::Event;
 using extensions::EventRouter;
+using content::Referrer;
 using content::RenderFrameHost;
 using content::WebContents;
 
@@ -248,6 +257,55 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
   registry->RegisterUint64Pref(kJavascriptBlocked, 0);
   registry->RegisterUint64Pref(kHttpsUpgrades, 0);
   registry->RegisterUint64Pref(kFingerprintingBlocked, 0);
+}
+
+void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  auto frame_tree_node_id = navigation_handle->GetFrameTreeNodeId();
+  auto *frame_tree_node = content::FrameTreeNode::GloballyFindByID(
+      frame_tree_node_id);
+  auto* navigation_entry =
+    frame_tree_node->navigator()->GetController()->GetPendingEntry();
+
+  if (!navigation_entry) {
+    navigation_entry =
+      frame_tree_node->navigator()->GetController()->GetLastCommittedEntry();
+  }
+  GURL target_origin = navigation_handle->GetURL().GetOrigin();
+  if (!navigation_entry) {
+    return;
+  }
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  GURL tab_origin(navigation_entry->GetURL().GetOrigin());
+
+  std::unique_ptr<base::Value> referrer_value =
+      HostContentSettingsMapFactory::GetForProfile(profile)
+      ->GetWebsiteSetting(
+          tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kReferrers, NULL);
+  ContentSetting referrer_setting =
+      content_settings::ValueToContentSetting(referrer_value.get());
+
+  std::unique_ptr<base::Value> shields_value =
+      HostContentSettingsMapFactory::GetForProfile(profile)
+      ->GetWebsiteSetting(
+          tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kBraveShields, NULL);
+  ContentSetting shields_setting =
+      content_settings::ValueToContentSetting(shields_value.get());
+
+  content::Referrer original_referrer = navigation_handle->GetReferrer();
+  content::Referrer new_referrer;
+  if (ShouldSetReferrer(referrer_setting == CONTENT_SETTING_ALLOW,
+          shields_setting != CONTENT_SETTING_BLOCK,
+          original_referrer.url,
+          tab_origin,
+          navigation_handle->GetURL(),
+          navigation_handle->GetURL().GetOrigin(),
+          original_referrer.policy, &new_referrer)) {
+    navigation_entry->SetReferrer(new_referrer);
+  }
 }
 
 }  // namespace brave_shields

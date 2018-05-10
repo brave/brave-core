@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index 991543e4c6f23831957909b5e60a143c1dd8f091..ec7cc997a636fc18f2796e2967ee61a3554a7be4 100644
+index 991543e4c6f23831957909b5e60a143c1dd8f091..2515cf8782c156ce0c28609fd4dd923298e89cfd 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
-@@ -143,6 +143,18 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
+@@ -143,6 +143,14 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
    map->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_CLIENT_HINTS,
                               ResourceIdentifier(),
                               &(rules->client_hints_rules));
@@ -10,10 +10,6 @@ index 991543e4c6f23831957909b5e60a143c1dd8f091..ec7cc997a636fc18f2796e2967ee61a3
 +      CONTENT_SETTINGS_TYPE_PLUGINS,
 +      "fingerprinting",
 +      &(rules->fingerprinting_rules));
-+  map->GetSettingsForOneType(
-+      CONTENT_SETTINGS_TYPE_PLUGINS,
-+      "referrers",
-+      &(rules->referrer_rules));
 +  map->GetSettingsForOneType(
 +      CONTENT_SETTINGS_TYPE_PLUGINS,
 +      "braveShields",
