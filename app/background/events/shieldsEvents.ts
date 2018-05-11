@@ -5,6 +5,10 @@
 import actions from '../actions/shieldsPanelActions'
 import { BlockDetails } from '../../types/actions/shieldsPanelActions'
 
-chrome.braveShields.onBlocked.addListener((detail: BlockDetails) => {
-  actions.resourceBlocked(detail)
-})
+if (chrome.braveShields) {
+  chrome.braveShields.onBlocked.addListener((detail: BlockDetails) => {
+    actions.resourceBlocked(detail)
+  })
+} else {
+  console.log('chrome.braveShields not enabled')
+}
