@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/importer/profile_import_impl.cc b/chrome/utility/importer/profile_import_impl.cc
-index 97fafc01166bbc7fbc94f6038f925ed4dedc3c2e..22d1fd9662e766fce37e962a8d8a96cae88b9e99 100644
+index 97fafc01166bbc7fbc94f6038f925ed4dedc3c2e..41f1947e7793bc6d9ddc5b1b8293c4141c826f78 100644
 --- a/chrome/utility/importer/profile_import_impl.cc
 +++ b/chrome/utility/importer/profile_import_impl.cc
 @@ -2,13 +2,17 @@
@@ -20,11 +20,10 @@ index 97fafc01166bbc7fbc94f6038f925ed4dedc3c2e..22d1fd9662e766fce37e962a8d8a96ca
  #include "base/threading/thread.h"
  #include "base/threading/thread_task_runner_handle.h"
  #include "build/build_config.h"
-@@ -39,6 +43,16 @@ void ProfileImportImpl::StartImport(
-   }
+@@ -40,6 +44,16 @@ void ProfileImportImpl::StartImport(
  
    items_to_import_ = items;
-+  
+ 
 +  // Signal change to OSCrypt password for importing from Chrome/Chromium
 +  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
 +  if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
@@ -34,9 +33,10 @@ index 97fafc01166bbc7fbc94f6038f925ed4dedc3c2e..22d1fd9662e766fce37e962a8d8a96ca
 +                              "Chromium", base::CompareCase::SENSITIVE)) {
 +    command_line->AppendSwitch("import-chromium");
 +  }
- 
++
    // Create worker thread in which importer runs.
    import_thread_.reset(new base::Thread("import_thread"));
+ #if defined(OS_WIN)
 @@ -49,7 +63,7 @@ void ProfileImportImpl::StartImport(
      NOTREACHED();
      ImporterCleanup();
