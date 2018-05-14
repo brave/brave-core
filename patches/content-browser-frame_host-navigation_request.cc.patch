@@ -1,20 +1,24 @@
 diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
-index cc193622958b95baf7ae5b409c8c9e8df054a0ed..fc71a6067aeb261b91421a3d4349c8891ea7df1e 100644
+index cc193622958b95baf7ae5b409c8c9e8df054a0ed..2b6bb2120c494cd04c01afb619cf186a31b9dbee 100644
 --- a/content/browser/frame_host/navigation_request.cc
 +++ b/content/browser/frame_host/navigation_request.cc
-@@ -1362,6 +1362,18 @@ void NavigationRequest::CommitNavigation() {
+@@ -1362,6 +1362,22 @@ void NavigationRequest::CommitNavigation() {
           render_frame_host ==
               frame_tree_node_->render_manager()->speculative_frame_host());
  
 +  auto* pending_entry =
 +    frame_tree_node_->navigator()->GetController()->GetPendingEntry();
-+  if (pending_entry && !pending_entry->GetReferrer().url.is_empty()) {
-+    common_params_.referrer = pending_entry->GetReferrer();
++  if (pending_entry) {
++    if (!pending_entry->GetReferrer().url.is_empty()) {
++      common_params_.referrer = pending_entry->GetReferrer();
++    }
 +  } else {
 +    auto* last_committed_entry =
 +      frame_tree_node_->navigator()->GetController()->GetLastCommittedEntry();
-+    if (last_committed_entry && !last_committed_entry->GetReferrer().url.is_empty()) {
-+      common_params_.referrer = last_committed_entry->GetReferrer();
++    if (last_committed_entry) {
++      if (!last_committed_entry->GetReferrer().url.is_empty()) {
++        common_params_.referrer = last_committed_entry->GetReferrer();
++      }
 +    }
 +  }
 +

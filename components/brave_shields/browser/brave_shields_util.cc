@@ -115,8 +115,6 @@ bool ShouldSetReferrer(bool allow_referrers, bool shields_up,
     const GURL& original_referrer, const GURL& tab_origin,
     const GURL& target_url, const GURL& new_referrer_url,
     blink::WebReferrerPolicy policy, Referrer *output_referrer) {
-  return false;
-  /*
   if (!output_referrer ||
       allow_referrers ||
       !shields_up ||
@@ -131,7 +129,6 @@ bool ShouldSetReferrer(bool allow_referrers, bool shields_up,
   *output_referrer = Referrer::SanitizeForRequest(target_url,
       Referrer(new_referrer_url, policy));
   return true;
-  */
 }
 
 }  // namespace brave_shields
