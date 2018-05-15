@@ -23,7 +23,8 @@ class ChromeProfileLock {
 
  private:
   bool lock_acquired_;
-  ProcessSingleton process_singleton_;
+  base::FilePath user_data_dir_;
+  std::unique_ptr<ProcessSingleton> process_singleton_;
 
   bool NotificationCallback(const base::CommandLine& command_line,
 			    const base::FilePath& current_directory);

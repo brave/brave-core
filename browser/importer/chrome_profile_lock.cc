@@ -10,9 +10,10 @@
 ChromeProfileLock::ChromeProfileLock(
     const base::FilePath& user_data_dir)
     : lock_acquired_(false),
-      process_singleton_(user_data_dir,
+      user_data_dir_(user_data_dir),
+      process_singleton_(new ProcessSingleton(user_data_dir,
                          base::Bind(&ChromeProfileLock::NotificationCallback,
-				    base::Unretained(this))) {
+                                    base::Unretained(this)))) {
   Lock();
 }
 
@@ -23,13 +24,17 @@ ChromeProfileLock::~ChromeProfileLock() {
 void ChromeProfileLock::Lock() {
   if (HasAcquired())
     return;
-  lock_acquired_ = process_singleton_.Create();
+  lock_acquired_ = process_singleton_->Create();
 }
 
 void ChromeProfileLock::Unlock() {
   if (!HasAcquired())
     return;
-  process_singleton_.Cleanup();
+  process_singleton_->Cleanup();
+  process_singleton_.reset(new ProcessSingleton(user_data_dir_,
+                           base::Bind(&ChromeProfileLock::NotificationCallback,
+                                      base::Unretained(this))));
+  lock_acquired_ = false;
 }
 
 bool ChromeProfileLock::HasAcquired() {
