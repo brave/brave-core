@@ -100,4 +100,12 @@ describe('shieldsPanelActions', () => {
       origins
     })
   })
+
+  it('changeNoScriptSettings action', () => {
+    const origin = 'https://a.com'
+    assert.deepEqual(actions.changeNoScriptSettings(origin), {
+      type: types.CHANGE_NO_SCRIPT_SETTINGS,
+      origin
+    })
+  })
 })

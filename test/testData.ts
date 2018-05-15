@@ -32,7 +32,7 @@ export const tabs: Tabs = {
     fingerprintingBlocked: 0,
     braveShields: 'block',
     trackersBlocked: 0,
-    javascriptBlockedOrigins: []
+    noScriptInfo: {}
   }
 }
 

@@ -30,13 +30,16 @@ describe('braveShieldsPanelReducer', () => {
   describe('ON_BEFORE_NAVIGATION', function () {
     before(function () {
       this.spy = sinon.spy(shieldsPanelState, 'resetBlockingStats')
+      this.resetNoScriptInfoSpy = sinon.spy(shieldsPanelState, 'resetNoScriptInfo')
       this.tabId = 1
     })
     after(function () {
       this.spy.restore()
+      this.resetNoScriptInfoSpy.restore()
     })
     afterEach(function () {
       this.spy.reset()
+      this.resetNoScriptInfoSpy.reset()
     })
     it('calls resetBlockingStats when isMainFrame is true', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
@@ -56,6 +59,26 @@ describe('braveShieldsPanelReducer', () => {
         isMainFrame: false
       })
       assert.equal(this.spy.notCalled, true)
+    })
+    it('calls resetNoScriptInfo when isMainFrame is true', function () {
+      shieldsPanelReducer(initialState.shieldsPanel, {
+        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        tabId: this.tabId,
+        url: 'https://www.brave.com',
+        isMainFrame: true
+      })
+      assert.equal(this.resetNoScriptInfoSpy.calledOnce, true)
+      assert.equal(this.resetNoScriptInfoSpy.getCall(0).args[1], this.tabId)
+      assert.equal(this.resetNoScriptInfoSpy.getCall(0).args[2], 'https://www.brave.com')
+    })
+    it('does not call resetNoScriptInfo when isMainFrame is false', function () {
+      shieldsPanelReducer(initialState.shieldsPanel, {
+        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        tabId: this.tabId,
+        url: 'https://www.brave.com',
+        isMainFrame: false
+      })
+      assert.equal(this.resetNoScriptInfoSpy.notCalled, true)
     })
   })
 
@@ -216,6 +239,34 @@ describe('braveShieldsPanelReducer', () => {
     })
   })
 
+  const origin = 'https://brave.com'
+  const state: State = deepFreeze({
+    tabs: {
+      2: {
+        origin,
+        hostname: 'brave.com',
+        adsBlocked: 0,
+        controlsOpen: true,
+        braveShields: 'allow',
+        trackersBlocked: 0,
+        httpsRedirected: 0,
+        javascriptBlocked: 0,
+        fingerprintingBlocked: 0,
+        id: 2,
+        httpUpgradableResources: 'block',
+        javascript: 'block',
+        trackers: 'block',
+        ads: 'block',
+        fingerprinting: 'block',
+        cookies: 'block',
+        noScriptInfo: {}
+      }
+    },
+    windows: {
+      1: 2
+    },
+    currentWindowId: 1
+  })
   describe('SHIELDS_PANEL_DATA_UPDATED', function () {
     it('updates state detail', function () {
       const tabId = 2
@@ -254,41 +305,12 @@ describe('braveShieldsPanelReducer', () => {
               cookies: 'block',
               controlsOpen: true,
               braveShields: 'allow',
-              javascriptBlockedOrigins: []
+              noScriptInfo: {}
             }
           },
           windows: {}
         })
     })
-  })
-
-  const origin = 'https://brave.com'
-  const state: State = deepFreeze({
-    tabs: {
-      2: {
-        origin,
-        hostname: 'brave.com',
-        adsBlocked: 0,
-        controlsOpen: true,
-        braveShields: 'allow',
-        trackersBlocked: 0,
-        httpsRedirected: 0,
-        javascriptBlocked: 0,
-        fingerprintingBlocked: 0,
-        id: 2,
-        httpUpgradableResources: 'block',
-        javascript: 'block',
-        trackers: 'block',
-        ads: 'block',
-        fingerprinting: 'block',
-        cookies: 'block',
-        javascriptBlockedOrigins: []
-      }
-    },
-    windows: {
-      1: 2
-    },
-    currentWindowId: 1
   })
 
   describe('SHIELDS_TOGGLED', function () {
@@ -414,7 +436,9 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: ['https://test.brave.com/']
+            noScriptInfo: {
+              'https://test.brave.com/': { actuallyBlocked: true, willBlocked: true }
+            }
           }
         },
         windows: {
@@ -452,7 +476,9 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: ['https://a.com/']
+            noScriptInfo: {
+              'https://a.com/': { actuallyBlocked: true, willBlocked: true }
+            }
           }
         },
         windows: {
@@ -488,7 +514,10 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: ['https://a.com/', 'https://b.com/']
+            noScriptInfo: {
+              'https://a.com/': { actuallyBlocked: true, willBlocked: true },
+              'https://b.com/': { actuallyBlocked: true, willBlocked: true }
+            }
           }
         },
         windows: {
@@ -524,7 +553,10 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: ['https://a.com/', 'https://b.com/']
+            noScriptInfo: {
+              'https://a.com/': { actuallyBlocked: true, willBlocked: true },
+              'https://b.com/': { actuallyBlocked: true, willBlocked: true }
+            }
           }
         },
         windows: {
@@ -562,7 +594,7 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: []
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -600,7 +632,7 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: []
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -636,7 +668,7 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: []
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -673,7 +705,7 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: []
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -710,7 +742,7 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: []
+            noScriptInfo: {}
           },
           3: {
             adsBlocked: 1,
@@ -718,7 +750,7 @@ describe('braveShieldsPanelReducer', () => {
             httpsRedirected: 0,
             javascriptBlocked: 0,
             fingerprintingBlocked: 0,
-            javascriptBlockedOrigins: []
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -755,7 +787,7 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: []
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -791,7 +823,7 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: []
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -826,7 +858,7 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: []
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -861,7 +893,9 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: ['https://test.brave.com/']
+            noScriptInfo: {
+              'https://test.brave.com/': { actuallyBlocked: true, willBlocked: true }
+            }
           }
         },
         windows: {
@@ -896,7 +930,9 @@ describe('braveShieldsPanelReducer', () => {
             ads: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            javascriptBlockedOrigins: ['https://test.brave.com/']
+            noScriptInfo: {
+              'https://test.brave.com/': { actuallyBlocked: true, willBlocked: true }
+            }
           }
         },
         windows: {
@@ -965,6 +1001,89 @@ describe('braveShieldsPanelReducer', () => {
           origins
         }), state)
       assert.equal(this.setAllowScriptOriginsOnceSpy.withArgs(origins, tabId).calledOnce, true)
+    })
+  })
+
+  describe('CHANGE_NO_SCRIPT_SETTINGS', function() {
+    before(function () {
+      this.spy = sinon.spy(shieldsPanelState, 'changeNoScriptSettings')
+    })
+    after(function () {
+      this.spy.restore()
+    })
+    it('should call changeNoScriptSettings', function () {
+      const tabId = 2
+      const stateWithNoScriptInfo : State = {
+        tabs: {
+          2: {
+            origin,
+            hostname: 'brave.com',
+            adsBlocked: 0,
+            controlsOpen: true,
+            braveShields: 'allow',
+            trackersBlocked: 0,
+            httpsRedirected: 0,
+            javascriptBlocked: 0,
+            fingerprintingBlocked: 0,
+            id: 2,
+            httpUpgradableResources: 'block',
+            javascript: 'block',
+            trackers: 'block',
+            ads: 'block',
+            fingerprinting: 'block',
+            cookies: 'block',
+            url: 'https://brave.com',
+            noScriptInfo: {
+              'https://brave.com': {
+                actuallyBlocked: true,
+                willBlocked: true
+              }
+            }
+          }
+        },
+        windows: {
+          1: 2
+        },
+        currentWindowId: 1
+      }
+      let nextState =  shieldsPanelReducer(stateWithNoScriptInfo, {
+        type: types.CHANGE_NO_SCRIPT_SETTINGS,
+        origin
+      })
+      assert.deepEqual(nextState, {
+        tabs: {
+          2: {
+            origin,
+            hostname: 'brave.com',
+            adsBlocked: 0,
+            controlsOpen: true,
+            braveShields: 'allow',
+            trackersBlocked: 0,
+            httpsRedirected: 0,
+            javascriptBlocked: 0,
+            fingerprintingBlocked: 0,
+            id: 2,
+            httpUpgradableResources: 'block',
+            javascript: 'block',
+            trackers: 'block',
+            ads: 'block',
+            fingerprinting: 'block',
+            cookies: 'block',
+            url: 'https://brave.com',
+            noScriptInfo: {
+              'https://brave.com': {
+                actuallyBlocked: true,
+                willBlocked: false
+              }
+            }
+          }
+        },
+        windows: {
+          1: 2
+        },
+        currentWindowId: 1
+    })
+    assert.equal(this.spy.withArgs(stateWithNoScriptInfo, tabId, origin).calledOnce, true)
     })
   })
 })
