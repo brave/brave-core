@@ -56,6 +56,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       {
         if (action.isMainFrame) {
           state = shieldsPanelState.resetBlockingStats(state, action.tabId)
+          state = shieldsPanelState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
         }
         break
       }
@@ -257,6 +258,12 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
           .catch(() => {
             console.error('Could not set allow script origins once')
           })
+        break
+      }
+    case shieldsPanelTypes.CHANGE_NO_SCRIPT_SETTINGS:
+      {
+        const tabId: number = shieldsPanelState.getActiveTabId(state)
+        state = shieldsPanelState.changeNoScriptSettings(state, tabId, action.origin)
         break
       }
   }

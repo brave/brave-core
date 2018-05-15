@@ -5,55 +5,45 @@
 import * as React from 'react'
 import { BrowserButton, BrowserText, Column, Grid, Separator, SwitchButton } from 'brave-ui'
 import { getMessage } from '../../background/api/localeAPI'
+import { NoScriptInfo } from '../../types/other/noScriptInfo'
 
 export interface Props {
   blocked: boolean
-  blockedOrigins: string[]
+  noScriptInfo: NoScriptInfo
   onSubmit: (origins: string[]) => void
+  onChangeNoScriptSettings: (origin: string) => void
 }
 
-export interface State {
-  allowOrigins: string[]
-}
-
-export default class NoScript extends React.Component<Props, State> {
+export default class NoScript extends React.Component<Props, Object> {
   constructor (props: Props) {
     super(props)
-    this.onChangeOriginSetting = this.onChangeOriginSetting.bind(this)
+    this.onChangeOriginSettings = this.onChangeOriginSettings.bind(this)
     this.onClick = this.onClick.bind(this)
-    this.state = { allowOrigins : [] }
   }
 
-  onChangeOriginSetting (e: any) {
-    const origin = e.target.id
-    let newAllowOrigins
-
-    if (this.state.allowOrigins.indexOf(origin) > -1) {
-      newAllowOrigins = this.state.allowOrigins.filter(s => s !== origin)
-    } else {
-      newAllowOrigins = [...this.state.allowOrigins, origin]
-    }
-
-    this.setState({ allowOrigins : newAllowOrigins })
+  onChangeOriginSettings (e: any) {
+    this.props.onChangeNoScriptSettings(e.target.id)
   }
 
   onClick () {
-    this.props.onSubmit(this.state.allowOrigins)
+    const noScriptInfo = this.props.noScriptInfo
+    this.props.onSubmit(
+      Object.keys(noScriptInfo).filter(key => !noScriptInfo[key].willBlocked))
   }
 
   render () {
-    const originSwitches = this.props.blockedOrigins.map((origin) => (
+    const originSwitches = Object.keys(this.props.noScriptInfo).map((origin) => (
       <Column key={origin}>
         <SwitchButton
           id={origin}
-          checked={this.state.allowOrigins.indexOf(origin) < 0}
+          checked={this.props.noScriptInfo[origin].willBlocked}
           rightText={origin}
-          onChange={this.onChangeOriginSetting}
+          onChange={this.onChangeOriginSettings}
         />
       </Column>))
 
     return (
-      this.props.blocked && this.props.blockedOrigins.length
+      this.props.blocked && Object.keys(this.props.noScriptInfo).length
       ?
       (
         <div>
@@ -67,7 +57,7 @@ export default class NoScript extends React.Component<Props, State> {
             </Column>
             {originSwitches}
             <Column align='flex-end'>
-              <BrowserButton id='apply' size='10px' onClick={this.onClick}> {getMessage('noScriptApplyOnce')} </BrowserButton>
+              <BrowserButton id='apply' onClick={this.onClick}> {getMessage('noScriptApplyOnce')} </BrowserButton>
             </Column>
           </Grid>
         </div>

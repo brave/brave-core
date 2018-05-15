@@ -111,6 +111,15 @@ export interface AllowScriptOriginsOnce {
   (origins: string[]): AllowScriptOriginsOnceReturn
 }
 
+interface ChangeNoScriptSettingsReturn {
+  type: types.CHANGE_NO_SCRIPT_SETTINGS,
+  origin: string
+}
+
+export interface ChangeNoScriptSettings {
+  (origin: string): ChangeNoScriptSettingsReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -121,4 +130,5 @@ export type shieldPanelActions =
   JavascriptToggledReturn |
   BlockFingerprintingReturn |
   BlockCookiesReturn |
-  AllowScriptOriginsOnceReturn
+  AllowScriptOriginsOnceReturn |
+  ChangeNoScriptSettingsReturn

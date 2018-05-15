@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { BlockOptions, BlockTypes, BlockFPOptions, BlockCookiesOptions } from '../other/blockTypes'
+import { NoScriptInfo } from '../other/noScriptInfo'
 
 export interface Tab {
   ads: BlockOptions
@@ -22,7 +23,7 @@ export interface Tab {
   fingerprinting: BlockFPOptions
   fingerprintingBlocked: number
   cookies: BlockCookiesOptions
-  javascriptBlockedOrigins: string[]
+  noScriptInfo: NoScriptInfo
 }
 
 export interface Tabs {
@@ -69,4 +70,12 @@ export interface UpdateResourceBlocked {
 
 export interface ResetBlockingStats {
   (state: State, tabId: number): State
+}
+
+export interface ChangeNoScriptSettings {
+  (state: State, tabId: number, origin: string): State
+}
+
+export interface ResetNoScriptInfo {
+  (state: State, tabId: number, newOrigin: string): State
 }

@@ -72,3 +72,10 @@ export const allowScriptOriginsOnce: actions.AllowScriptOriginsOnce = (origins) 
     origins
   }
 }
+
+export const changeNoScriptSettings: actions.ChangeNoScriptSettings = (origin) => {
+  return {
+    type: types.CHANGE_NO_SCRIPT_SETTINGS,
+    origin
+  }
+}

@@ -39,7 +39,7 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
     javascript: 'allow',
     fingerprinting: 'allow',
     controlsOpen: true,
-    javascriptBlockedOrigins: []
+    noScriptInfo: {}
   },
     ...tabs[tabId],
     ...details
@@ -50,7 +50,7 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
 
 export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, tabId, blockType, subresource) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0, javascriptBlockedOrigins: [] }, ...tabs[tabId] }
+  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0, noScriptInfo: {} }, ...tabs[tabId] }
   if (blockType === 'ads') {
     tabs[tabId].adsBlocked++
   } else if (blockType === 'trackers') {
@@ -60,21 +60,32 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
   } else if (blockType === 'javascript') {
     const origin = new window.URL(subresource).origin + '/'
     tabs[tabId].javascriptBlocked++
-    tabs[tabId].javascriptBlockedOrigins = Array.from(new Set([...tabs[tabId].javascriptBlockedOrigins, origin]))
+    tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
+    tabs[tabId].noScriptInfo[origin] = { ...{ actuallyBlocked: true, willBlocked: true } }
   } else if (blockType === 'fingerprinting') {
     tabs[tabId].fingerprintingBlocked++
   }
   return { ...state, tabs }
 }
 
+export const changeNoScriptSettings: shieldState.ChangeNoScriptSettings = (state, tabId, origin) => {
+  const tabs: shieldState.Tabs = { ...state.tabs }
+  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0, noScriptInfo: {} }, ...tabs[tabId] }
+  tabs[tabId].noScriptInfo[origin].willBlocked = !tabs[tabId].noScriptInfo[origin].willBlocked
+  return { ...state, tabs }
+}
+
+export const resetNoScriptInfo: shieldState.ResetNoScriptInfo = (state, tabId, newOrigin) => {
+  const tabs: shieldState.Tabs = { ...state.tabs }
+  if (newOrigin !== tabs[tabId].origin) { // navigate away
+    tabs[tabId].noScriptInfo = {}
+  }
+  Object.keys(tabs[tabId].noScriptInfo).map(key => tabs[tabId].noScriptInfo[key].actuallyBlocked = false)
+  return { ...state, tabs }
+}
+
 export const resetBlockingStats: shieldState.ResetBlockingStats = (state, tabId) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...tabs[tabId], ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0, javascriptBlockedOrigins: [] } }
-  tabs[tabId].adsBlocked = 0
-  tabs[tabId].trackersBlocked = 0
-  tabs[tabId].httpsRedirected = 0
-  tabs[tabId].javascriptBlocked = 0
-  tabs[tabId].fingerprintingBlocked = 0
-  tabs[tabId].javascriptBlockedOrigins = []
+  tabs[tabId] = { ...tabs[tabId], ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0 } }
   return { ...state, tabs }
 }
