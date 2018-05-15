@@ -108,7 +108,7 @@
     "description": "Instructions for per-origin noScript switches"
   },
   "noScriptApplyOnce": {
-    "message": "Apply Once",
+    "message": "Apply",
     "description": "Label for applying per-origin noScript settings"
   },
 

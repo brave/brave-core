@@ -68,7 +68,7 @@
         "description": "Label for shields header near current site name"
     },
     "noScriptApplyOnce": {
-        "message": "Apply Once",
+        "message": "Apply",
         "description": "Label for applying per-origin noScript settings"
     },
     "shieldsHeaderShieldsToggle": {
