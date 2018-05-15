@@ -8,6 +8,8 @@ source_set("ui") {
     "brave_pages.h",
     "toolbar/brave_app_menu_model.cc",
     "toolbar/brave_app_menu_model.h",
+    "views/importer/brave_import_lock_dialog_view.cc",
+    "views/importer/brave_import_lock_dialog_view.h",
     "webui/basic_ui.cc",
     "webui/basic_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
@@ -15,6 +17,12 @@ source_set("ui") {
     "webui/new_tab_html_source.cc",
     "webui/new_tab_html_source.h",
   ]
+
+  if (is_mac) {
+    sources += [
+      "cocoa/importer/brave_import_lock_dialog_cocoa.mm",
+    ]
+  }
   public_deps = [
     "//content/public/browser",
   ]
