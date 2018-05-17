@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/extensions/extension_management.cc b/chrome/browser/extensions/extension_management.cc
+index bc6fe02652cd98591180d3e3e5d794941abfb615..c0e7448bff844680c093d455153872b2cc38e9d6 100644
+--- a/chrome/browser/extensions/extension_management.cc
++++ b/chrome/browser/extensions/extension_management.cc
+@@ -15,6 +15,7 @@
+ #include "base/strings/string_util.h"
+ #include "base/trace_event/trace_event.h"
+ #include "base/version.h"
++#include "brave/browser/extensions/brave_extension_management.h"
+ #include "chrome/browser/extensions/extension_management_constants.h"
+ #include "chrome/browser/extensions/extension_management_internal.h"
+ #include "chrome/browser/extensions/external_policy_loader.h"
+@@ -551,7 +552,7 @@ KeyedService* ExtensionManagementFactory::BuildServiceInstanceFor(
+ #if defined(OS_CHROMEOS)
+   is_signin_profile = chromeos::ProfileHelper::IsSigninProfile(profile);
+ #endif
+-  return new ExtensionManagement(profile->GetPrefs(), is_signin_profile);
++  return new BraveExtensionManagement(profile->GetPrefs(), is_signin_profile);
+ }
+ 
+ content::BrowserContext* ExtensionManagementFactory::GetBrowserContextToUse(

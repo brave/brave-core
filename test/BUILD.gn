@@ -73,6 +73,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_shields/browser/ad_block_service_browsertest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_service_browsertest.cc",
     "//brave/components/brave_shields/browser/tracking_protection_service_browsertest.cc",
+    "//brave/extensions/browser/brave_extension_provider_browsertest.cc",
     "//brave/renderer/brave_content_settings_observer_browsertest.cc",
     "//chrome/browser/extensions/browsertest_util.cc",
     "//chrome/browser/extensions/browsertest_util.h",
