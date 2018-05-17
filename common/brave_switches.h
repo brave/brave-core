@@ -11,6 +11,8 @@ namespace switches {
 // alongside the definition of their values in the .cc file.
 extern const char kDisableBraveExtension[];
 
+extern const char kEnableBraveUpdateTest[];
+
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_

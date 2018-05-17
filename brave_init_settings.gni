@@ -7,4 +7,11 @@ declare_args() {
   # "canary" for canary channel release.
   # "" for stable channel release.
   brave_channel = ""
+
+  # Update feed url on MacOS
+  # TODO(simonhong): This url is stub. Replace with real update server or your
+  # test server.
+  brave_feed_url = "http://localhost:9090"
+
+  brave_dsa_file = "dsa_pub.pem"
 }

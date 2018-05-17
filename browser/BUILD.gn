@@ -25,6 +25,10 @@ source_set("browser_process") {
     "importer/brave_profile_writer.h",
     "importer/chrome_profile_lock.cc",
     "importer/chrome_profile_lock.h",
+    "brave_app_controller_mac.mm",
+    "brave_app_controller_mac.h",
+    "sparkle_glue_mac.mm",
+    "sparkle_glue_mac.h",
   ]
 
   deps = [
@@ -53,4 +57,10 @@ source_set("browser") {
     "net",
     "ui",
   ]
+
+  if (is_mac) {
+    deps += [
+      "//brave/vendor/sparkle:sparkle_framework_bundle_data"
+    ]
+  }
 }
