@@ -6,10 +6,13 @@ group("chromedriver_dist_resources") {}
 chrome_framework_name = chrome_product_full_name + " Framework"
 chrome_helper_name = chrome_product_full_name + " Helper"
 
+# This must be same value in //chrome/BUILD.gn.
+chrome_framework_version = "A"
+
 # This list must be updated with the two targets' deps list below, and
 # the list of _dsyms in :brave_dsym_archive.
 _brave_symbols_sources = [
-  "$root_out_dir/$chrome_framework_name.framework/$chrome_framework_name",
+  "$root_out_dir/$chrome_framework_name.framework/Versions/$chrome_framework_version/$chrome_framework_name",
   "$root_out_dir/$chrome_helper_name.app/Contents/MacOS/$chrome_helper_name",
   "$root_out_dir/$chrome_product_full_name.app/Contents/MacOS/$chrome_product_full_name",
   "$root_out_dir/crashpad_handler",
