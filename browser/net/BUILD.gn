@@ -1,7 +1,10 @@
 import("//build/config/features.gni")
 
 source_set("net") {
-  configs += [ "//brave/build/geolocation" ]
+  configs += [
+    "//brave/build/geolocation",
+    "//brave/build/safebrowsing"
+  ]
   sources = [
     "brave_network_delegate_base.cc",
     "brave_network_delegate_base.h",
