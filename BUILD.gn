@@ -1,6 +1,3 @@
-import("//build/util/branding.gni")
-import("//build/util/version.gni")
-
 action("brave-extension") {
   # Need this to fire re-pack if changed, nevertheless extension is repacked on each 2nd build
   inputs = [
@@ -33,6 +30,15 @@ action("brave-extension") {
   }
 }
 
+if (is_mac) {
+  bundle_data("brave_extension_framework_bundle_data") {
+    sources = [ "$root_out_dir/resources/brave_extension" ]
+    outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+
+    public_deps = [ ":copy-extension-localization" ]
+  }
+}
+
 action("copy-extension-localization") {
   script = "py-scripts/copy-brave-extension-localization.py"
 
@@ -41,19 +47,13 @@ action("copy-extension-localization") {
     "//brave/vendor/brave-extension/app/_locales/en_US/messages.json",
   ]
 
-  args = []
-  if (is_mac) {
-    chrome_framework_name = chrome_product_full_name + " Framework"
-    resources_target_dir = "$root_out_dir/$chrome_framework_name.framework/Resources"
-  } else {
-    resources_target_dir = "$root_build_dir/resources"
-  }
+  resources_target_dir = "$root_build_dir/resources"
 
   args = [
     rebase_path("$resources_target_dir"),
   ]
 
   outputs = [
-    "$resources_target_dir/brave_extension/_locales/en-US/messages.json",
+    "$resources_target_dir/brave_extension",
   ]
 }
