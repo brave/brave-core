@@ -41,6 +41,17 @@ source_set("browser_process") {
     "//content/public/browser",
     "//brave/chromium_src:browser",
   ]
+
+  if (is_win && is_official_build) {
+    sources += [
+      "//chrome/browser/google/google_update_win.cc",
+      "//chrome/browser/google/google_update_win.h",
+    ]
+
+    deps += [
+      "//google_update",
+    ]
+  }
 }
 
 source_set("browser") {

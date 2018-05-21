@@ -1,0 +1,61 @@
+diff --git a/chrome/installer/util/google_update_settings.cc b/chrome/installer/util/google_update_settings.cc
+index 42a2c0cc1b9576aa5f6c03e615e4b8450611831d..5142fdf31a4212b79a0d9d2ed99908b7c0e6820c 100644
+--- a/chrome/installer/util/google_update_settings.cc
++++ b/chrome/installer/util/google_update_settings.cc
+@@ -36,7 +36,11 @@ using base::win::RegKey;
+ using installer::InstallationState;
+ 
+ const wchar_t GoogleUpdateSettings::kPoliciesKey[] =
++#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
++    L"SOFTWARE\\Policies\\BraveSoftware\\Update";
++#else
+     L"SOFTWARE\\Policies\\Google\\Update";
++#endif
+ const wchar_t GoogleUpdateSettings::kUpdatePolicyValue[] = L"UpdateDefault";
+ const wchar_t GoogleUpdateSettings::kDownloadPreferencePolicyValue[] =
+     L"DownloadPreference";
+@@ -50,7 +54,7 @@ const int GoogleUpdateSettings::kCheckPeriodOverrideMinutesMax =
+ 
+ const GoogleUpdateSettings::UpdatePolicy
+ GoogleUpdateSettings::kDefaultUpdatePolicy =
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+     GoogleUpdateSettings::AUTOMATIC_UPDATES;
+ #else
+     GoogleUpdateSettings::UPDATES_DISABLED;
+@@ -173,7 +177,7 @@ bool InitChannelInfo(bool system_install,
+   return channel_info->Initialize(key);
+ }
+ 
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+ // Populates |update_policy| with the UpdatePolicy enum value corresponding to a
+ // DWORD read from the registry and returns true if |value| is within range.
+ // If |value| is out of range, returns false without modifying |update_policy|.
+@@ -572,7 +576,7 @@ GoogleUpdateSettings::UpdatePolicy GoogleUpdateSettings::GetAppUpdatePolicy(
+   bool found_override = false;
+   UpdatePolicy update_policy = kDefaultUpdatePolicy;
+ 
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+   DCHECK(!app_guid.empty());
+   RegKey policy_key;
+ 
+@@ -604,7 +608,7 @@ GoogleUpdateSettings::UpdatePolicy GoogleUpdateSettings::GetAppUpdatePolicy(
+ 
+ // static
+ bool GoogleUpdateSettings::AreAutoupdatesEnabled() {
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+   // Check the auto-update check period override. If it is 0 or exceeds the
+   // maximum timeout, then for all intents and purposes auto updates are
+   // disabled.
+@@ -629,7 +633,7 @@ bool GoogleUpdateSettings::AreAutoupdatesEnabled() {
+ 
+ // static
+ bool GoogleUpdateSettings::ReenableAutoupdates() {
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+   int needs_reset_count = 0;
+   int did_reset_count = 0;
+ 

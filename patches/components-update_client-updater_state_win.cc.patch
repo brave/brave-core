@@ -1,0 +1,40 @@
+diff --git a/components/update_client/updater_state_win.cc b/components/update_client/updater_state_win.cc
+index 13e5dd683dcc33de43c67671bb03180b41258a4f..b3627ee52dab3346fa84b6b22f7d69ebb2fd4707 100644
+--- a/components/update_client/updater_state_win.cc
++++ b/components/update_client/updater_state_win.cc
+@@ -24,6 +24,27 @@ namespace update_client {
+ 
+ namespace {
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++// Google Update group policy settings.
++const wchar_t kGoogleUpdatePoliciesKey[] =
++    L"SOFTWARE\\Policies\\BraveSoftware\\Update";
++const wchar_t kCheckPeriodOverrideMinutes[] = L"AutoUpdateCheckPeriodMinutes";
++const wchar_t kUpdatePolicyValue[] = L"UpdateDefault";
++const wchar_t kChromeUpdatePolicyOverride[] =
++    L"Update{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
++
++// Don't allow update periods longer than six weeks (Chrome release cadence).
++const int kCheckPeriodOverrideMinutesMax = 60 * 24 * 7 * 6;
++
++// Google Update registry settings.
++const wchar_t kRegPathGoogleUpdate[] = L"Software\\BraveSoftware\\Update";
++const wchar_t kRegPathClientsGoogleUpdate[] =
++    L"Software\\BraveSoftware\\Update\\Clients\\"
++    L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";
++const wchar_t kRegValueGoogleUpdatePv[] = L"pv";
++const wchar_t kRegValueLastStartedAU[] = L"LastStartedAU";
++const wchar_t kRegValueLastChecked[] = L"LastChecked";
++#else
+ // Google Update group policy settings.
+ const wchar_t kGoogleUpdatePoliciesKey[] =
+     L"SOFTWARE\\Policies\\Google\\Update";
+@@ -43,6 +64,7 @@ const wchar_t kRegPathClientsGoogleUpdate[] =
+ const wchar_t kRegValueGoogleUpdatePv[] = L"pv";
+ const wchar_t kRegValueLastStartedAU[] = L"LastStartedAU";
+ const wchar_t kRegValueLastChecked[] = L"LastChecked";
++#endif
+ 
+ base::Time GetUpdaterTimeValue(bool is_machine, const wchar_t* value_name) {
+   const HKEY root_key = is_machine ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER;

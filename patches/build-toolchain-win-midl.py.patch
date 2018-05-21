@@ -1,0 +1,19 @@
+diff --git a/build/toolchain/win/midl.py b/build/toolchain/win/midl.py
+index 09fec0b8cf2b21484928b112dc11d9896bad17cb..a9f77dc70f1878a33197c0f57bd115ea6097601e 100644
+--- a/build/toolchain/win/midl.py
++++ b/build/toolchain/win/midl.py
+@@ -154,8 +154,13 @@ def overwrite_cls_guid(h_file, iid_file, tlb_file, dynamic_guid):
+ def main(arch, outdir, dynamic_guid, tlb, h, dlldata, iid, proxy, idl, *flags):
+   # Copy checked-in outputs to final location.
+   THIS_DIR = os.path.abspath(os.path.dirname(__file__))
++  # Brave: Use pre-generated files in brave/win_build_output.
++  # Copied all generated files from src/third_party/win_build_output to
++  # src/brave/win_build_output except google_update because we use our own 
++  # google_update_idl.idl.
+   source = os.path.join(THIS_DIR, '..', '..', '..',
+-      'third_party', 'win_build_output', outdir.replace('gen/', 'midl/'))
++      'brave', 'win_build_output', outdir.replace('gen/', 'midl/'))
++      # 'third_party', 'win_build_output', outdir.replace('gen/', 'midl/'))
+   if os.path.isdir(os.path.join(source, os.path.basename(idl))):
+     source = os.path.join(source, os.path.basename(idl))
+   source = os.path.join(source, arch.split('.')[1])  # Append 'x86' or 'x64'.
