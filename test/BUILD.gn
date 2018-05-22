@@ -43,6 +43,7 @@ test("brave_unit_tests") {
 
   configs += [
     "//brave/build/geolocation",
+    "//brave/build/safebrowsing",
   ]
 
   public_deps = [

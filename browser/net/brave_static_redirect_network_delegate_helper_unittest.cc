@@ -68,6 +68,47 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
   EXPECT_EQ(ret, net::OK);
 }
 
+TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV4) {
+  net::TestDelegate test_delegate;
+  GURL url("https://safebrowsing.googleapis.com/v4/threatListUpdates:fetch?$req=ChkKCGNocm9taXVtEg02Ni");
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                             TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo>
+      before_url_context(new brave::BraveRequestInfo());
+  brave::ResponseCallback callback;
+  GURL new_url;
+  GURL::Replacements replacements;
+  replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
+  GURL expected_url(url.ReplaceComponents(replacements));
+  int ret =
+      OnBeforeURLRequest_StaticRedirectWork(request.get(), &new_url, callback,
+                                            before_url_context);
+  EXPECT_EQ(new_url, expected_url);
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
+  net::TestDelegate test_delegate;
+  GURL url("https://safebrowsing.googleapis.com/v5/threatListUpdates:fetch?$req=ChkKCGNocm9taXVtEg02Ni");
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                             TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo>
+      before_url_context(new brave::BraveRequestInfo());
+  brave::ResponseCallback callback;
+  GURL new_url;
+  GURL::Replacements replacements;
+  replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
+  GURL expected_url(url.ReplaceComponents(replacements));
+  int ret =
+      OnBeforeURLRequest_StaticRedirectWork(request.get(), &new_url, callback,
+                                            before_url_context);
+  EXPECT_EQ(new_url, expected_url);
+  EXPECT_EQ(ret, net::OK);
+}
+
+
 TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyComponentUpdaterURL) {
   net::TestDelegate test_delegate;
   std::string query_string("?foo=bar");

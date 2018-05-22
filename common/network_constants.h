@@ -10,6 +10,7 @@ extern const char kGoogleTagManagerPattern[];
 extern const char kGoogleTagServicesPattern[];
 extern const char kForbesPattern[];
 extern const char kForbesExtraCookies[];
+extern const char kSafeBrowsingPrefix[];
 extern const char kTwitterPattern[];
 extern const char kTwitterReferrer[];
 extern const char kTwitterRedirectURL[];

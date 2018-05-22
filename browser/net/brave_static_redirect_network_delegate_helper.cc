@@ -30,13 +30,22 @@ int OnBeforeURLRequest_StaticRedirectWork(
     GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
+  GURL::Replacements replacements;
   static URLPattern geo_pattern(URLPattern::SCHEME_HTTPS, kGeoLocationsPattern);
+  static URLPattern safeBrowsing_pattern(URLPattern::SCHEME_HTTPS, kSafeBrowsingPrefix);
+
   if (geo_pattern.MatchesURL(request->url())) {
     *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
     return net::OK;
   }
+
+  if (safeBrowsing_pattern.MatchesHost(request->url())) {
+    replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
+    *new_url = request->url().ReplaceComponents(replacements);
+    return net::OK;
+  }
+
   if (IsUpdaterURL(request->url())) {
-    GURL::Replacements replacements;
     replacements.SetQueryStr(request->url().query_piece());
     *new_url = GURL(kBraveUpdatesExtensionsEndpoint).ReplaceComponents(replacements);
     return net::OK;
