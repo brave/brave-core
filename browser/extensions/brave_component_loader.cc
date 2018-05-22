@@ -33,6 +33,10 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
         brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
     Add(IDR_BRAVE_EXTENSON, brave_extension_path);
   }
+  base::FilePath brave_chromium_themes_path(FILE_PATH_LITERAL(""));
+  brave_chromium_themes_path =
+      brave_chromium_themes_path.Append(FILE_PATH_LITERAL("brave_chromium_themes"));
+  Add(IDR_BRAVE_BRAVE_LIGHT_THEME, brave_chromium_themes_path);
 }
 
 }  // namespace extensions

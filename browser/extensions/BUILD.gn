@@ -12,6 +12,8 @@ source_set("extensions") {
     "brave_component_loader.h",
     "brave_extension_management.cc",
     "brave_extension_management.h",
+    "brave_extension_constants.cc",
+    "brave_extension_constants.h",
   ]
   deps = [
     "//brave/browser/resources:brave_extension_grit",

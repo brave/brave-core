@@ -9,17 +9,18 @@
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/extensions/brave_extension_constants.h"
 #include "brave/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
-const char* brave_extension_id = "mnojpmjdmbbfmejpflffifhffcmidifd";
-
 bool IsWhitelisted(const std::string& id) {
   static std::vector<std::string> whitelist({
-    // Brave
+    // Brave built-in extensions and components
     brave_extension_id,
+    brave_dark_theme_id,
+    brave_light_theme_id,
     // CryptoTokenExtension
     "kmendfapggjehodndflmmgagdbamhnfd",
     // Cloud Print

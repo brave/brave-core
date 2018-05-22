@@ -62,6 +62,7 @@ repack("packed_extra_resources") {
     "//brave/app:generated_resources_grit",
     "//brave/components/resources:brave_components_resources_grit",
     "//brave/browser/resources:brave_extension_grit",
+    "//brave/browser/resources:brave_chromium_themes_grit",
     "//brave/common/extensions/api"
   ]
 

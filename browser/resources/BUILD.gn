@@ -26,3 +26,23 @@ grit("brave_extension_grit") {
   resource_ids = ""
 }
 
+grit("brave_chromium_themes_grit") {
+  source = "../../vendor/brave-chromium-themes/brave_chromium_themes.grd"
+
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, "."),
+  ]
+
+  outputs = [
+    "grit/brave_chromium_themes.h",
+    "grit/brave_chromium_themes_resources_map.cc",
+    "grit/brave_chromium_themes_resources_map.h",
+    "brave_chromium_themes.pak",
+  ]
+
+  output_dir = "$target_gen_dir"
+  # Empty string means use value from the grit element
+  resource_ids = ""
+}
+

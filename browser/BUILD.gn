@@ -47,6 +47,7 @@ source_set("browser") {
   public_deps = [
     "//brave/components/resources:brave_components_resources_grit",
     "//brave/browser/resources:brave_extension_grit",
+    "//brave/browser/resources:brave_chromium_themes_grit",
     "//chrome/browser",
   ]
 
