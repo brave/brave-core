@@ -9,6 +9,7 @@
 
 namespace brave_shields {
 class AdBlockService;
+class AdBlockRegionalService;
 class HTTPSEverywhereService;
 class TrackingProtectionService;
 }
@@ -22,11 +23,14 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   component_updater::ComponentUpdateService* component_updater() override;
 
   brave_shields::AdBlockService* ad_block_service();
+  brave_shields::AdBlockRegionalService* ad_block_regional_service();
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
 
  private:
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
+  std::unique_ptr<brave_shields::AdBlockRegionalService>
+      ad_block_regional_service_;
   std::unique_ptr<brave_shields::TrackingProtectionService>
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>

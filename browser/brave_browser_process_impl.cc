@@ -6,6 +6,7 @@
 
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/io_thread.h"
@@ -49,6 +50,15 @@ BraveBrowserProcessImpl::ad_block_service() {
 
   ad_block_service_ = brave_shields::AdBlockServiceFactory();
   return ad_block_service_.get();
+}
+
+brave_shields::AdBlockRegionalService*
+BraveBrowserProcessImpl::ad_block_regional_service() {
+  if (ad_block_regional_service_)
+    return ad_block_regional_service_.get();
+
+  ad_block_regional_service_ = brave_shields::AdBlockRegionalServiceFactory();
+  return ad_block_regional_service_.get();
 }
 
 brave_shields::TrackingProtectionService*

@@ -28,10 +28,7 @@ std::string TrackingProtectionService::g_tracking_protection_component_base64_pu
     kTrackingProtectionComponentBase64PublicKey);
 
 TrackingProtectionService::TrackingProtectionService()
-    : BaseBraveShieldsService(kTrackingProtectionComponentName,
-                              g_tracking_protection_component_id_,
-                              g_tracking_protection_component_base64_public_key_),
-    tracking_protection_client_(new CTPParser()),
+  : tracking_protection_client_(new CTPParser()),
     // See comment in tracking_protection_service.h for white_list_
     white_list_({
       "connect.facebook.net",
@@ -89,6 +86,9 @@ bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
 }
 
 bool TrackingProtectionService::Init() {
+  Register(kTrackingProtectionComponentName,
+           g_tracking_protection_component_id_,
+           g_tracking_protection_component_base64_public_key_);
   return true;
 }
 

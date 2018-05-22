@@ -9,3 +9,4 @@ const char kTrackersBlocked[] = "brave.stats.trackers_blocked";
 const char kJavascriptBlocked[] = "brave.stats.javascript_blocked";
 const char kHttpsUpgrades[] = "brave.stats.https_upgrades";
 const char kFingerprintingBlocked[] = "brave.stats.fingerprinting_blocked";
+const char kAdBlockCurrentRegion[] = "brave.ad_block.current_region";

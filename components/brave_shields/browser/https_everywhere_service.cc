@@ -80,11 +80,7 @@ std::string HTTPSEverywhereService::g_https_everywhere_component_id_(
 std::string HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
     kHTTPSEverywhereComponentBase64PublicKey);
 
-HTTPSEverywhereService::HTTPSEverywhereService()
-    : BaseBraveShieldsService(kHTTPSEverywhereComponentName,
-                              g_https_everywhere_component_id_,
-                              g_https_everywhere_component_base64_public_key_),
-      level_db_(nullptr) {
+HTTPSEverywhereService::HTTPSEverywhereService() : level_db_(nullptr) {
 }
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
@@ -99,6 +95,8 @@ void HTTPSEverywhereService::Cleanup() {
 }
 
 bool HTTPSEverywhereService::Init() {
+  Register(kHTTPSEverywhereComponentName, g_https_everywhere_component_id_,
+           g_https_everywhere_component_base64_public_key_);
   return true;
 }
 

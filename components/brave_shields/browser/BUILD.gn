@@ -1,5 +1,12 @@
 source_set("brave_shields") {
   sources = [
+    "ad_block_base_service.cc",
+    "ad_block_base_service.h",
+    "ad_block_regional_service.cc",
+    "ad_block_regional_service.h",
+    "ad_block_regional_updater.cc",
+    "ad_block_regional_updater.h",
+    "ad_block_regional_updater_list.h",
     "ad_block_service.cc",
     "ad_block_service.h",
     "base_brave_shields_service.cc",
