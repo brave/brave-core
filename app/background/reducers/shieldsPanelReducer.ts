@@ -25,9 +25,10 @@ import { Actions } from '../../types/actions/index'
 
 const updateBadgeText = (state: State) => {
   const tabId: number = shieldsPanelState.getActiveTabId(state)
-  if (state.tabs[tabId]) {
-    const total: string = (state.tabs[tabId].adsBlocked + state.tabs[tabId].trackersBlocked).toString()
-    setBadgeText(total)
+  const tab: Tab = state.tabs[tabId]
+  if (tab) {
+    const total = tab.adsBlocked + tab.trackersBlocked + tab.javascriptBlocked + tab.fingerprintingBlocked + tab.httpsRedirected
+    setBadgeText(total.toString())
   }
 }
 

@@ -13,6 +13,7 @@ import * as webNavigationTypes from '../../../../app/constants/webNavigationType
 import shieldsPanelReducer from '../../../../app/background/reducers/shieldsPanelReducer'
 import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
 import * as tabsAPI from '../../../../app/background/api/tabsAPI'
+import * as badgeAPI from '../../../../app/background/api/badgeAPI'
 import * as shieldsPanelState from '../../../../app/state/shieldsPanelState'
 import { initialState } from '../../../testData'
 import * as deepFreeze from 'deep-freeze-node'
@@ -383,6 +384,52 @@ describe('braveShieldsPanelReducer', () => {
   })
 
   describe('RESOURCE_BLOCKED', function () {
+    before(function () {
+      this.spy = sinon.spy(badgeAPI, 'setBadgeText')
+    })
+    after(function () {
+      this.spy.restore()
+    })
+    it('badge text update should include all resource types', function () {
+      const stateWithBlockStats: State = {
+        tabs: {
+          2: {
+            origin,
+            hostname: 'brave.com',
+            url: 'https://brave.com',
+            adsBlocked: 1,
+            controlsOpen: true,
+            braveShields: 'allow',
+            trackersBlocked: 2,
+            httpsRedirected: 3,
+            javascriptBlocked: 4,
+            fingerprintingBlocked: 5,
+            id: 2,
+            httpUpgradableResources: 'block',
+            javascript: 'block',
+            trackers: 'block',
+            ads: 'block',
+            fingerprinting: 'block',
+            cookies: 'block',
+            noScriptInfo: {}
+          }
+        },
+        windows: {
+          1: 2
+        },
+        currentWindowId: 1
+      }
+      shieldsPanelReducer(stateWithBlockStats, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'javascript',
+          tabId: 2,
+          subresource: 'https://a.com/index.js'
+        }
+      })
+      assert.equal(this.spy.calledOnce, true)
+      assert.equal(this.spy.getCall(0).args[0], '16')
+    })
     it('increments for JS blocking', function () {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
