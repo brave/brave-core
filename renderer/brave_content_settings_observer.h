@@ -25,6 +25,7 @@ class BraveContentSettingsObserver
   ~BraveContentSettingsObserver() override;
 
  protected:
+  bool AllowScript(bool enabled_per_settings) override;
   bool AllowScriptFromSource(bool enabled_per_settings,
       const blink::WebURL& script_url) override;
 
@@ -43,6 +44,21 @@ class BraveContentSettingsObserver
       const ContentSettingsForOneType& rules,
       const blink::WebLocalFrame* frame,
       const GURL& secondary_url);
+
+  // RenderFrameObserver
+  bool OnMessageReceived(const IPC::Message& message) override;
+  void OnAllowScriptsOnce(const std::vector<std::string>& origins);
+  void DidCommitProvisionalLoad(bool is_new_navigation,
+                                bool is_same_document_navigation) override;
+
+  bool IsScriptTemporilyAllowed(const GURL& script_url);
+
+  // Origins of scripts which are temporary allowed for this frame in the
+  // current load
+  base::flat_set<std::string> temporarily_allowed_scripts_;
+
+  // temporary allowed script origins we preloaded for the next load
+  base::flat_set<std::string> preloaded_temporarily_allowed_scripts_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsObserver);
 };

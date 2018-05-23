@@ -29,13 +29,24 @@
     ],
    "functions": [
      {
-       "name": "dummy",
+       "name": "allowScriptsOnce",
        "type": "function",
-       "description": "Remove me when there were actual fucntions implemented",
-       "properties": [
+       "description": "Allow scripts from a list of origins until next reload",
+       "parameters": [
          {
-         "type": "integer",
-         "name": "dummyArg"
+           "name": "origins",
+           "type": "array",
+           "items": {"type": "string"}
+         },
+         {
+           "name": "tabID",
+           "type": "integer"
+         },
+         {
+           "type": "function",
+           "name": "callback",
+           "optional": true,
+           "parameters": []
          }
        ]
      }

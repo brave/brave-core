@@ -10,6 +10,7 @@
 #include "brave/common/render_messages.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/content/common/frame_messages.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -306,6 +307,22 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
           original_referrer.policy, &new_referrer)) {
     navigation_entry->SetReferrer(new_referrer);
   }
+
+  // when the main frame navigate away
+  if (navigation_handle->IsInMainFrame() &&
+      !navigation_handle->IsSameDocument() &&
+      navigation_handle->GetReloadType() == content::ReloadType::NONE) {
+    allowed_script_origins_.clear();
+  }
+
+  navigation_handle->GetWebContents()->SendToAllFrames(
+      new BraveFrameMsg_AllowScriptsOnce(
+        MSG_ROUTING_NONE, allowed_script_origins_));
+}
+
+void BraveShieldsWebContentsObserver::AllowScriptsOnce(
+    const std::vector<std::string>& origins, WebContents* contents) {
+  allowed_script_origins_ = std::move(origins);
 }
 
 }  // namespace brave_shields
