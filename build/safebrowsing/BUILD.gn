@@ -1,9 +1,0 @@
-declare_args() {
-  safebrowsing_api_endpoint = ""
-}
-
-config("safebrowsing") {
-  defines = [
-    "SAFEBROWSING_ENDPOINT=\"$safebrowsing_api_endpoint\""
-  ]
-}
