@@ -61,7 +61,7 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     const origin = new window.URL(subresource).origin + '/'
     tabs[tabId].javascriptBlocked++
     tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
-    tabs[tabId].noScriptInfo[origin] = { ...{ actuallyBlocked: true, willBlocked: true } }
+    tabs[tabId].noScriptInfo[origin] = { ...{ actuallyBlocked: true, willBlock: true } }
   } else if (blockType === 'fingerprinting') {
     tabs[tabId].fingerprintingBlocked++
   }
@@ -71,7 +71,7 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
 export const changeNoScriptSettings: shieldState.ChangeNoScriptSettings = (state, tabId, origin) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
   tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0, noScriptInfo: {} }, ...tabs[tabId] }
-  tabs[tabId].noScriptInfo[origin].willBlocked = !tabs[tabId].noScriptInfo[origin].willBlocked
+  tabs[tabId].noScriptInfo[origin].willBlock = !tabs[tabId].noScriptInfo[origin].willBlock
   return { ...state, tabs }
 }
 

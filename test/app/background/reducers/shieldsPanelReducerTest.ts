@@ -437,7 +437,7 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://test.brave.com/': { actuallyBlocked: true, willBlocked: true }
+              'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
             }
           }
         },
@@ -477,7 +477,7 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://a.com/': { actuallyBlocked: true, willBlocked: true }
+              'https://a.com/': { actuallyBlocked: true, willBlock: true }
             }
           }
         },
@@ -515,8 +515,8 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://a.com/': { actuallyBlocked: true, willBlocked: true },
-              'https://b.com/': { actuallyBlocked: true, willBlocked: true }
+              'https://a.com/': { actuallyBlocked: true, willBlock: true },
+              'https://b.com/': { actuallyBlocked: true, willBlock: true }
             }
           }
         },
@@ -554,8 +554,8 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://a.com/': { actuallyBlocked: true, willBlocked: true },
-              'https://b.com/': { actuallyBlocked: true, willBlocked: true }
+              'https://a.com/': { actuallyBlocked: true, willBlock: true },
+              'https://b.com/': { actuallyBlocked: true, willBlock: true }
             }
           }
         },
@@ -894,7 +894,7 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://test.brave.com/': { actuallyBlocked: true, willBlocked: true }
+              'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
             }
           }
         },
@@ -931,7 +931,7 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://test.brave.com/': { actuallyBlocked: true, willBlocked: true }
+              'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
             }
           }
         },
@@ -1036,7 +1036,7 @@ describe('braveShieldsPanelReducer', () => {
             noScriptInfo: {
               'https://brave.com': {
                 actuallyBlocked: true,
-                willBlocked: true
+                willBlock: true
               }
             }
           }
@@ -1073,7 +1073,7 @@ describe('braveShieldsPanelReducer', () => {
             noScriptInfo: {
               'https://brave.com': {
                 actuallyBlocked: true,
-                willBlocked: false
+                willBlock: false
               }
             }
           }

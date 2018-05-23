@@ -608,7 +608,7 @@ describe('shieldsPanelState test', () => {
             javascriptBlocked: 1,
             fingerprintingBlocked: 0,
             noScriptInfo: {
-              'https://test.brave.com/': { actuallyBlocked: true, willBlocked: true }
+              'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
             }
           },
           3: {
@@ -648,8 +648,8 @@ describe('shieldsPanelState test', () => {
           fingerprintingBlocked: 0,
           url: 'https://brave.com',
           noScriptInfo: {
-            'https://a.com': { actuallyBlocked: true, willBlocked: true },
-            'https://b.com': { actuallyBlocked: false, willBlocked: false }
+            'https://a.com': { actuallyBlocked: true, willBlock: true },
+            'https://b.com': { actuallyBlocked: false, willBlock: false }
           }
         },
         3: {
@@ -671,8 +671,8 @@ describe('shieldsPanelState test', () => {
           fingerprintingBlocked: 0,
           url: 'https://brave.com',
           noScriptInfo: {
-            'https://a.com': { actuallyBlocked: true, willBlocked: true },
-            'https://b.com': { actuallyBlocked: false, willBlocked: false }
+            'https://a.com': { actuallyBlocked: true, willBlock: true },
+            'https://b.com': { actuallyBlocked: false, willBlock: false }
           }
         }
       },
@@ -706,8 +706,8 @@ describe('shieldsPanelState test', () => {
               fingerprintingBlocked: 0,
               url: 'https://brave.com',
               noScriptInfo: {
-                'https://a.com': { actuallyBlocked: false, willBlocked: true },
-                'https://b.com': { actuallyBlocked: false, willBlocked: false }
+                'https://a.com': { actuallyBlocked: false, willBlock: true },
+                'https://b.com': { actuallyBlocked: false, willBlock: false }
               }
             },
             3: {
@@ -729,8 +729,8 @@ describe('shieldsPanelState test', () => {
               fingerprintingBlocked: 0,
               url: 'https://brave.com',
               noScriptInfo: {
-                'https://a.com': { actuallyBlocked: true, willBlocked: true },
-                'https://b.com': { actuallyBlocked: false, willBlocked: false }
+                'https://a.com': { actuallyBlocked: true, willBlock: true },
+                'https://b.com': { actuallyBlocked: false, willBlock: false }
               }
             }
           },
@@ -785,8 +785,8 @@ describe('shieldsPanelState test', () => {
               fingerprintingBlocked: 0,
               url: 'https://brave.com',
               noScriptInfo: {
-                'https://a.com': { actuallyBlocked: true, willBlocked: true },
-                'https://b.com': { actuallyBlocked: false, willBlocked: false }
+                'https://a.com': { actuallyBlocked: true, willBlock: true },
+                'https://b.com': { actuallyBlocked: false, willBlock: false }
               }
             }
           },

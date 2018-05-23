@@ -28,7 +28,7 @@ export default class NoScript extends React.Component<Props, Object> {
   onClick () {
     const noScriptInfo = this.props.noScriptInfo
     this.props.onSubmit(
-      Object.keys(noScriptInfo).filter(key => !noScriptInfo[key].willBlocked))
+      Object.keys(noScriptInfo).filter(key => !noScriptInfo[key].willBlock))
   }
 
   render () {
@@ -36,7 +36,7 @@ export default class NoScript extends React.Component<Props, Object> {
       <Column key={origin}>
         <SwitchButton
           id={origin}
-          checked={this.props.noScriptInfo[origin].willBlocked}
+          checked={this.props.noScriptInfo[origin].willBlock}
           rightText={origin}
           onChange={this.onChangeOriginSettings}
         />

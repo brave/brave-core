@@ -4,7 +4,7 @@
 
 export interface NoScriptEntry {
   actuallyBlocked: boolean
-  willBlocked: boolean
+  willBlock: boolean
 }
 
 export interface NoScriptInfo {
