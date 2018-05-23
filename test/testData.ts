@@ -31,7 +31,8 @@ export const tabs: Tabs = {
     javascriptBlocked: 0,
     fingerprintingBlocked: 0,
     braveShields: 'block',
-    trackersBlocked: 0
+    trackersBlocked: 0,
+    noScriptInfo: {}
   }
 }
 
@@ -39,7 +40,8 @@ export const activeTabData = tabs[2]
 
 export const blockedResource: BlockDetails = {
   blockType: 'ads',
-  tabId: 2
+  tabId: 2,
+  subresource: 'https://www.brave.com/test'
 }
 
 export class ChromeEvent {
@@ -94,7 +96,10 @@ export const getMockChrome = () => {
       }
     },
     braveShields: {
-      onBlocked: new ChromeEvent()
+      onBlocked: new ChromeEvent(),
+      allowScriptsOnce: function(origins: Array<string>, tabId: number, cb: () => void) {
+        setImmediate(cb)
+      }
     },
     contentSettings: {
       plugins: {

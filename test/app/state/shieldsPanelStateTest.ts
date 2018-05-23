@@ -214,7 +214,8 @@ describe('shieldsPanelState test', () => {
             trackersBlocked: 0,
             httpsRedirected: 0,
             javascriptBlocked: 0,
-            fingerprintingBlocked: 0
+            fingerprintingBlocked: 0,
+            noScriptInfo: {}
           },
           3: {
             id: 3
@@ -253,7 +254,8 @@ describe('shieldsPanelState test', () => {
             hostname: 'https://brave.com',
             origin: 'https://brave.com',
             braveShields: 'block',
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           },
           3: {
             ads: 'block',
@@ -272,7 +274,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           },
           4: {
             ads: 'block',
@@ -291,7 +294,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -325,7 +329,8 @@ describe('shieldsPanelState test', () => {
             hostname: 'https://brave.com',
             origin: 'https://brave.com',
             braveShields: 'block',
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           },
           3: {
             ads: 'block',
@@ -344,7 +349,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           },
           4: {
             ads: 'block',
@@ -363,7 +369,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -394,7 +401,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           },
           3: {
             ads: 'block',
@@ -413,7 +421,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           },
           4: {
             ads: 'block',
@@ -432,7 +441,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 5,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -461,7 +471,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           },
           3: {
             ads: 'block',
@@ -480,7 +491,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           },
           4: {
             ads: 'block',
@@ -499,7 +511,8 @@ describe('shieldsPanelState test', () => {
             fingerprinting: 'block',
             cookies: 'block',
             fingerprintingBlocked: 0,
-            url: 'https://brave.com'
+            url: 'https://brave.com',
+            noScriptInfo: {}
           }
         },
         windows: {
@@ -512,7 +525,7 @@ describe('shieldsPanelState test', () => {
   describe('updateResourceBlocked', () => {
     it('can update ads blocked count', function () {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads'), {
+      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads', 'https://test.brave.com'), {
         currentWindowId: 1,
         tabs: {
           2: {
@@ -527,7 +540,8 @@ describe('shieldsPanelState test', () => {
             trackersBlocked: 0,
             httpsRedirected: 0,
             javascriptBlocked: 0,
-            fingerprintingBlocked: 0
+            fingerprintingBlocked: 0,
+            noScriptInfo: {}
           },
           3: {
             id: 3
@@ -544,7 +558,7 @@ describe('shieldsPanelState test', () => {
     })
     it('can update tracking protection blocked count', function () {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads'), {
+      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'trackers', 'https://test.brave.com'), {
         currentWindowId: 1,
         tabs: {
           2: {
@@ -555,11 +569,12 @@ describe('shieldsPanelState test', () => {
             javascript: 'block',
             fingerprinting: 'block',
             cookies: 'block',
-            adsBlocked: 1,
-            trackersBlocked: 0,
+            adsBlocked: 0,
+            trackersBlocked: 1,
             httpsRedirected: 0,
             javascriptBlocked: 0,
-            fingerprintingBlocked: 0
+            fingerprintingBlocked: 0,
+            noScriptInfo: {}
           },
           3: {
             id: 3
@@ -572,6 +587,213 @@ describe('shieldsPanelState test', () => {
           1: 2,
           2: 3
         }
+      })
+    })
+    it('can update javascript blocked count and noScriptInfo', function () {
+      this.tabId = 2
+      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'javascript', 'https://test.brave.com'), {
+        currentWindowId: 1,
+        tabs: {
+          2: {
+            id: 2,
+            ads: 'block',
+            trackers: 'block',
+            httpUpgradableResources: 'block',
+            javascript: 'block',
+            fingerprinting: 'block',
+            cookies: 'block',
+            adsBlocked: 0,
+            trackersBlocked: 0,
+            httpsRedirected: 0,
+            javascriptBlocked: 1,
+            fingerprintingBlocked: 0,
+            noScriptInfo: {
+              'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
+            }
+          },
+          3: {
+            id: 3
+          },
+          4: {
+            id: 4
+          }
+        },
+        windows: {
+          1: 2,
+          2: 3
+        }
+      })
+    })
+  })
+  describe('resetNoScriptInfo', () => {
+    const stateWithAllowedScriptOrigins: State = {
+      currentWindowId: 1,
+      tabs: {
+        2: {
+          id: 2,
+          ads: 'block',
+          adsBlocked: 0,
+          controlsOpen: true,
+          hostname: 'https://brave.com',
+          httpUpgradableResources: 'block',
+          httpsRedirected: 0,
+          javascript: 'block',
+          javascriptBlocked: 0,
+          origin: 'https://brave.com',
+          braveShields: 'block',
+          trackers: 'block',
+          trackersBlocked: 0,
+          fingerprinting: 'block',
+          cookies: 'block',
+          fingerprintingBlocked: 0,
+          url: 'https://brave.com',
+          noScriptInfo: {
+            'https://a.com': { actuallyBlocked: true, willBlock: true },
+            'https://b.com': { actuallyBlocked: false, willBlock: false }
+          }
+        },
+        3: {
+          id: 3,
+          ads: 'block',
+          adsBlocked: 0,
+          controlsOpen: true,
+          hostname: 'https://brave.com',
+          httpUpgradableResources: 'block',
+          httpsRedirected: 0,
+          javascript: 'block',
+          javascriptBlocked: 0,
+          origin: 'https://brave.com',
+          braveShields: 'block',
+          trackers: 'block',
+          trackersBlocked: 0,
+          fingerprinting: 'block',
+          cookies: 'block',
+          fingerprintingBlocked: 0,
+          url: 'https://brave.com',
+          noScriptInfo: {
+            'https://a.com': { actuallyBlocked: true, willBlock: true },
+            'https://b.com': { actuallyBlocked: false, willBlock: false }
+          }
+        }
+      },
+      windows: {
+        1: 2,
+        2: 3
+      }
+    }
+    it('reset noScriptInfo for a specific tab without navigating away', function () {
+      this.tabId = 2
+      assert.deepEqual(shieldsPanelState.resetNoScriptInfo(
+        stateWithAllowedScriptOrigins, this.tabId, 'https://brave.com'), {
+          currentWindowId: 1,
+          tabs: {
+            2: {
+              id: 2,
+              ads: 'block',
+              adsBlocked: 0,
+              controlsOpen: true,
+              hostname: 'https://brave.com',
+              httpUpgradableResources: 'block',
+              httpsRedirected: 0,
+              javascript: 'block',
+              javascriptBlocked: 0,
+              origin: 'https://brave.com',
+              braveShields: 'block',
+              trackers: 'block',
+              trackersBlocked: 0,
+              fingerprinting: 'block',
+              cookies: 'block',
+              fingerprintingBlocked: 0,
+              url: 'https://brave.com',
+              noScriptInfo: {
+                'https://a.com': { actuallyBlocked: false, willBlock: true },
+                'https://b.com': { actuallyBlocked: false, willBlock: false }
+              }
+            },
+            3: {
+              id: 3,
+              ads: 'block',
+              adsBlocked: 0,
+              controlsOpen: true,
+              hostname: 'https://brave.com',
+              httpUpgradableResources: 'block',
+              httpsRedirected: 0,
+              javascript: 'block',
+              javascriptBlocked: 0,
+              origin: 'https://brave.com',
+              braveShields: 'block',
+              trackers: 'block',
+              trackersBlocked: 0,
+              fingerprinting: 'block',
+              cookies: 'block',
+              fingerprintingBlocked: 0,
+              url: 'https://brave.com',
+              noScriptInfo: {
+                'https://a.com': { actuallyBlocked: true, willBlock: true },
+                'https://b.com': { actuallyBlocked: false, willBlock: false }
+              }
+            }
+          },
+          windows: {
+            1: 2,
+            2: 3
+          }
+      })
+    })
+    it('reset noScriptInfo for a specific tab with navigating away', function () {
+      this.tabId = 2
+      assert.deepEqual(shieldsPanelState.resetNoScriptInfo(
+        stateWithAllowedScriptOrigins, this.tabId, 'https://test.brave.com'), {
+          currentWindowId: 1,
+          tabs: {
+            2: {
+              id: 2,
+              ads: 'block',
+              adsBlocked: 0,
+              controlsOpen: true,
+              hostname: 'https://brave.com',
+              httpUpgradableResources: 'block',
+              httpsRedirected: 0,
+              javascript: 'block',
+              javascriptBlocked: 0,
+              origin: 'https://brave.com',
+              braveShields: 'block',
+              trackers: 'block',
+              trackersBlocked: 0,
+              fingerprinting: 'block',
+              cookies: 'block',
+              fingerprintingBlocked: 0,
+              url: 'https://brave.com',
+              noScriptInfo: {}
+            },
+            3: {
+              id: 3,
+              ads: 'block',
+              adsBlocked: 0,
+              controlsOpen: true,
+              hostname: 'https://brave.com',
+              httpUpgradableResources: 'block',
+              httpsRedirected: 0,
+              javascript: 'block',
+              javascriptBlocked: 0,
+              origin: 'https://brave.com',
+              braveShields: 'block',
+              trackers: 'block',
+              trackersBlocked: 0,
+              fingerprinting: 'block',
+              cookies: 'block',
+              fingerprintingBlocked: 0,
+              url: 'https://brave.com',
+              noScriptInfo: {
+                'https://a.com': { actuallyBlocked: true, willBlock: true },
+                'https://b.com': { actuallyBlocked: false, willBlock: false }
+              }
+            }
+          },
+          windows: {
+            1: 2,
+            2: 3
+          }
       })
     })
   })

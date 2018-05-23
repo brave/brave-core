@@ -9,6 +9,7 @@ type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript'
 interface BlockDetails {
   blockType: BlockTypes
   tabId: number
+  subresource: string
 }
 
 declare namespace chrome.tabs {
@@ -32,4 +33,6 @@ declare namespace chrome.braveShields {
     addListener: (callback: (detail: BlockDetails) => void) => void
     emit: (detail: BlockDetails) => void
   }
+
+  const allowScriptsOnce: any
 }

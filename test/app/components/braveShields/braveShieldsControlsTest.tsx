@@ -22,6 +22,7 @@ function setup () {
     javascript: 'block',
     fingerprinting: 'block',
     cookies: 'block',
+    noScriptInfo: {},
     blockAdsTrackers: (setting: BlockOptions) => {
       return {
         type: actionTypes.BLOCK_ADS_TRACKERS,
@@ -54,6 +55,18 @@ function setup () {
       return {
         type: actionTypes.BLOCK_COOKIES,
         setting
+      }
+    },
+    allowScriptOriginsOnce: (origins: string[]) => {
+      return {
+        type: actionTypes.ALLOW_SCRIPT_ORIGINS_ONCE,
+        origins
+      }
+    },
+    changeNoScriptSettings: (origin: string) => {
+      return {
+        type: actionTypes.CHANGE_NO_SCRIPT_SETTINGS,
+        origin
       }
     }
   }

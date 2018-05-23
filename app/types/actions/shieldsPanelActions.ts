@@ -20,6 +20,7 @@ export interface ShieldDetails {
 export interface BlockDetails {
   blockType: BlockTypes
   tabId: number
+  subresource: string
 }
 
 interface ShieldsPanelDataUpdatedReturn {
@@ -101,6 +102,24 @@ export interface JavascriptToggled {
   (): JavascriptToggledReturn
 }
 
+interface AllowScriptOriginsOnceReturn {
+  type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
+  origins: string[]
+}
+
+export interface AllowScriptOriginsOnce {
+  (origins: string[]): AllowScriptOriginsOnceReturn
+}
+
+interface ChangeNoScriptSettingsReturn {
+  type: types.CHANGE_NO_SCRIPT_SETTINGS,
+  origin: string
+}
+
+export interface ChangeNoScriptSettings {
+  (origin: string): ChangeNoScriptSettingsReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -110,4 +129,6 @@ export type shieldPanelActions =
   HttpsEverywhereToggledReturn |
   JavascriptToggledReturn |
   BlockFingerprintingReturn |
-  BlockCookiesReturn
+  BlockCookiesReturn |
+  AllowScriptOriginsOnceReturn |
+  ChangeNoScriptSettingsReturn

@@ -52,7 +52,8 @@ describe('shieldsPanelActions', () => {
   it('resourceBlocked action', () => {
     const details: BlockDetails = {
       blockType: 'ads',
-      tabId: 2
+      tabId: 2,
+      subresource: 'https://www.brave.com/test'
     }
     assert.deepEqual(actions.resourceBlocked(details), {
       type: types.RESOURCE_BLOCKED,
@@ -89,6 +90,22 @@ describe('shieldsPanelActions', () => {
     assert.deepEqual(actions.blockCookies(setting), {
       type: types.BLOCK_COOKIES,
       setting
+    })
+  })
+
+  it('allowScriptOriginsOnce action', () => {
+    const origins = ['https://a.com', 'https://b.com']
+    assert.deepEqual(actions.allowScriptOriginsOnce(origins), {
+      type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
+      origins
+    })
+  })
+
+  it('changeNoScriptSettings action', () => {
+    const origin = 'https://a.com'
+    assert.deepEqual(actions.changeNoScriptSettings(origin), {
+      type: types.CHANGE_NO_SCRIPT_SETTINGS,
+      origin
     })
   })
 })

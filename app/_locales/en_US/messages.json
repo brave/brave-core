@@ -103,6 +103,15 @@
     "description": "Shields controls, switch for Block Phishing/Malware"
   },
 
+  "noScriptSwitches": {
+    "message": "Toggle switches to disable script blocking",
+    "description": "Instructions for per-origin noScript switches"
+  },
+  "noScriptApplyOnce": {
+    "message": "Apply",
+    "description": "Label for applying per-origin noScript settings"
+  },
+
   "shieldsFooterEditDefault":{
     "message": "Edit default shield settings...",
     "description": "Shields controls footer, link to edit default shields settings"
