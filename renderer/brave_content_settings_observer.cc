@@ -67,10 +67,14 @@ void BraveContentSettingsObserver::BraveSpecificDidBlockJavaScript(
 
 bool BraveContentSettingsObserver::AllowScript(
     bool enabled_per_settings) {
-  bool allow = ContentSettingsObserver::AllowScript(enabled_per_settings);
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-  allow = allow || IsScriptTemporilyAllowed(
+  const GURL secondary_url(
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+
+  bool allow = ContentSettingsObserver::AllowScript(enabled_per_settings);
+  allow = allow ||
+    IsBraveShieldsDown(frame, secondary_url) ||
+    IsScriptTemporilyAllowed(secondary_url);
 
   return allow;
 }
@@ -78,14 +82,18 @@ bool BraveContentSettingsObserver::AllowScript(
 bool BraveContentSettingsObserver::AllowScriptFromSource(
     bool enabled_per_settings,
     const blink::WebURL& script_url) {
+  const GURL secondary_url(script_url);
+
   bool allow = ContentSettingsObserver::AllowScriptFromSource(
       enabled_per_settings, script_url);
-  allow = allow || IsScriptTemporilyAllowed(GURL(script_url));
+  allow = allow ||
+    IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url) ||
+    IsScriptTemporilyAllowed(secondary_url);
 
   if (!allow) {
-    const GURL secondary_url(script_url);
     BraveSpecificDidBlockJavaScript(base::UTF8ToUTF16(secondary_url.spec()));
   }
+
   return allow;
 }
 
@@ -108,7 +116,7 @@ GURL BraveContentSettingsObserver::GetOriginOrURL(const blink::WebFrame* frame) 
 
 ContentSetting BraveContentSettingsObserver::GetContentSettingFromRules(
     const ContentSettingsForOneType& rules,
-    const blink::WebLocalFrame* frame,
+    const blink::WebFrame* frame,
     const GURL& secondary_url) {
 
   const GURL& primary_url = GetOriginOrURL(frame);
@@ -133,6 +141,18 @@ ContentSetting BraveContentSettingsObserver::GetContentSettingFromRules(
   return CONTENT_SETTING_BLOCK;
 }
 
+bool BraveContentSettingsObserver::IsBraveShieldsDown(
+    const blink::WebFrame* frame,
+    const GURL& secondary_url) {
+  ContentSetting setting = CONTENT_SETTING_DEFAULT;
+  if (content_setting_rules_) {
+    setting = GetContentSettingFromRules(
+        content_setting_rules_->brave_shields_rules, frame, secondary_url);
+  }
+
+  return setting == CONTENT_SETTING_BLOCK;
+}
+
 bool BraveContentSettingsObserver::AllowFingerprinting(
     bool enabled_per_settings) {
   if (!enabled_per_settings)
@@ -141,6 +161,9 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   bool allow = true;
   const GURL secondary_url(
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+  if (IsBraveShieldsDown(frame, secondary_url)) {
+    return true;
+  }
   if (content_setting_rules_) {
     ContentSetting setting = GetContentSettingFromRules(
         content_setting_rules_->fingerprinting_rules, frame, secondary_url);

@@ -42,7 +42,11 @@ class BraveContentSettingsObserver
 
   ContentSetting GetContentSettingFromRules(
       const ContentSettingsForOneType& rules,
-      const blink::WebLocalFrame* frame,
+      const blink::WebFrame* frame,
+      const GURL& secondary_url);
+
+  bool IsBraveShieldsDown(
+      const blink::WebFrame* frame,
       const GURL& secondary_url);
 
   // RenderFrameObserver
