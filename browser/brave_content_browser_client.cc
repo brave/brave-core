@@ -110,6 +110,14 @@ bool BraveContentBrowserClient::AllowGetCookie(
   return allow;
 }
 
+content::ContentBrowserClient::AllowWebBluetoothResult
+BraveContentBrowserClient::AllowWebBluetooth(
+    content::BrowserContext* browser_context,
+    const url::Origin& requesting_origin,
+    const url::Origin& embedding_origin) {
+  return content::ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
+}
+
 bool BraveContentBrowserClient::AllowSetCookie(
     const GURL& url,
     const GURL& first_party,
