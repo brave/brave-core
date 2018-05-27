@@ -1,0 +1,48 @@
+diff --git a/chrome/installer/mac/sign_versioned_dir.sh.in b/chrome/installer/mac/sign_versioned_dir.sh.in
+index a9db32c8ec17629f745eff38a6c732124a21f63e..b2ac9db824bdf769474beb0477b2b06b49268d4f 100644
+--- a/chrome/installer/mac/sign_versioned_dir.sh.in
++++ b/chrome/installer/mac/sign_versioned_dir.sh.in
+@@ -24,7 +24,7 @@ ME="$(basename "${0}")"
+ readonly ME
+ 
+ script_dir="$(dirname "${0}")"
+-source "${script_dir}/variables.sh"
++codesign_id=$codesign_id source "${script_dir}/variables.sh"
+ 
+ codesign_display_and_verify() {
+   args=("${@}")
+@@ -86,6 +86,7 @@ versioned_dir="${app_path}/Contents/Versions/@VERSION@"
+ # https://developer.apple.com/library/content/technotes/tn2206/_index.html#//apple_ref/doc/uid/DTS40007919-CH1-TNTAG13
+ 
+ framework="${versioned_dir}/@MAC_PRODUCT_NAME@ Framework.framework"
++sparkle_framework="${framework}/Frameworks/Sparkle.framework"
+ notification_service="${framework}/XPCServices/AlertNotificationService.xpc"
+ crashpad_handler="${framework}/Helpers/crashpad_handler"
+ helper_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper.app"
+@@ -126,12 +127,14 @@ if [[ -f "${widevine_plugin}" ]]; then
+   codesign_with_options "${widevine_plugin}" "" "widevinecdmadapter"
+ fi
+ 
++codesign_with_options "${sparkle_framework}" "" "org.sparkle-project.Sparkle"
++
+ # The framework is a dylib, so ${enforcement_flags_helpers} are meaningless.
+-codesign_with_options "${framework}" "" "com.google.Chrome.framework"
++codesign_with_options "${framework}" "" "org.brave.Brave.framework"
+ 
+ codesign_with_options "${helper_app}" \
+                       "${enforcement_flags_app}" \
+-                      "com.google.Chrome.helper"
++                      "org.brave.Brave.helper"
+ 
+ if [[ -f "${widevine_plugin}" ]]; then
+   codesign_display_and_verify "${widevine_plugin}"
+@@ -140,8 +143,6 @@ fi
+ codesign_display_and_verify "${crashpad_handler}" --deep
+ codesign_display_and_verify "${app_mode_loader}" --ignore-resources
+ codesign_display_and_verify "${notification_service}" --deep
+-# The framework contains KeystoneRegistration.framework, which uses
+-# custom resource rules, so use --no-strict to verify.
+-codesign_display_and_verify "${framework}" --deep --no-strict
++codesign_display_and_verify "${framework}" --deep
+ codesign_display_and_verify "${framework}" --strict
+ codesign_display_and_verify "${helper_app}" --deep
