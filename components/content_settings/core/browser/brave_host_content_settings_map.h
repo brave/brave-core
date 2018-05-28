@@ -18,6 +18,7 @@ class BraveHostContentSettingsMap : public HostContentSettingsMap {
    void InitializeReferrerContentSetting();
    void InitializeCookieContentSetting();
    void InitializeBraveShieldsContentSetting();
+   void InitializeFlashContentSetting();
    ~BraveHostContentSettingsMap() override;
 };
 
