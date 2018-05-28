@@ -77,6 +77,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_shields/browser/tracking_protection_service_browsertest.cc",
     "//brave/extensions/browser/brave_extension_provider_browsertest.cc",
     "//brave/renderer/brave_content_settings_observer_browsertest.cc",
+    "//brave/renderer/brave_content_settings_observer_flash_browsertest.cc",
     "//chrome/browser/extensions/browsertest_util.cc",
     "//chrome/browser/extensions/browsertest_util.h",
     "//chrome/browser/extensions/extension_browsertest.cc",
@@ -90,6 +91,11 @@ test("brave_browser_tests") {
   deps = [
     "//chrome/browser/ui",
     "//chrome/test:browser_tests_runner",
+    "//ppapi/features",
     ":brave_browser_tests_deps",
+  ]
+  data_deps = [
+    "//ppapi:ppapi_tests",
+    "//ppapi:power_saver_test_plugin",
   ]
 }

@@ -16,7 +16,6 @@ const char kFingerprinting[] = "fingerprinting";
 const char kBraveShields[] = "braveShields";
 const char kReferrers[] = "referrers";
 const char kCookies[] = "cookies";
-const char kFlash[] = "adobe-flash-player";
 
 }  // brave_shields
 
