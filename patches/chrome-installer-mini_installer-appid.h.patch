@@ -1,0 +1,13 @@
+diff --git a/chrome/installer/mini_installer/appid.h b/chrome/installer/mini_installer/appid.h
+index c408242814504aae086fc332f0d8bbd7872821a2..deadf14c9c8a17d7d83fcf3428cd3734a92d70b1 100644
+--- a/chrome/installer/mini_installer/appid.h
++++ b/chrome/installer/mini_installer/appid.h
+@@ -11,7 +11,7 @@ namespace google_update {
+ extern const wchar_t kAppGuid[];
+ extern const wchar_t kMultiInstallAppGuid[];
+ 
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+ extern const wchar_t kBetaAppGuid[];
+ extern const wchar_t kDevAppGuid[];
+ extern const wchar_t kSxSAppGuid[];

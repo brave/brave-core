@@ -1,0 +1,30 @@
+diff --git a/chrome/installer/gcapi/google_update_util.cc b/chrome/installer/gcapi/google_update_util.cc
+index 53a42d799992b4530c8a78513350cf501bcd0e97..532518d3c69dc2a5356a753457de5789566a3c37 100644
+--- a/chrome/installer/gcapi/google_update_util.cc
++++ b/chrome/installer/gcapi/google_update_util.cc
+@@ -11,6 +11,17 @@
+ 
+ namespace gcapi_internals {
+ 
++#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
++const wchar_t kChromeRegClientsKey[] =
++    L"Software\\BraveSoftware\\Update\\Clients\\"
++    L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
++const wchar_t kChromeRegClientStateKey[] =
++    L"Software\\BraveSoftware\\Update\\ClientState\\"
++    L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
++const wchar_t kChromeRegClientStateMediumKey[] =
++    L"Software\\BraveSoftware\\Update\\ClientStateMedium\\"
++    L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
++#else
+ const wchar_t kChromeRegClientsKey[] =
+     L"Software\\Google\\Update\\Clients\\"
+     L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
+@@ -20,6 +31,7 @@ const wchar_t kChromeRegClientStateKey[] =
+ const wchar_t kChromeRegClientStateMediumKey[] =
+     L"Software\\Google\\Update\\ClientStateMedium\\"
+     L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
++#endif
+ 
+ // Mirror the strategy used by GoogleUpdateSettings::GetBrand.
+ bool GetBrand(base::string16* value) {

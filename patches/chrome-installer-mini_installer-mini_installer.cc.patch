@@ -1,0 +1,31 @@
+diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
+index 1f39abbeb2579098a54fa82612199f0307ea03b4..be08f89c43599fc766048d230572e71ada102169 100644
+--- a/chrome/installer/mini_installer/mini_installer.cc
++++ b/chrome/installer/mini_installer/mini_installer.cc
+@@ -61,7 +61,7 @@ struct Context {
+ // TODO(grt): Frame this in terms of whether or not the brand supports
+ // integation with Omaha, where Google Update is the Google-specific fork of
+ // the open-source Omaha project.
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+ // Opens the Google Update ClientState key. If |binaries| is false, opens the
+ // key for Google Chrome or Chrome SxS (canary). If |binaries| is true and an
+ // existing multi-install Chrome is being updated, opens the key for the
+@@ -873,7 +873,7 @@ ProcessExitResult WMain(HMODULE module) {
+   if (!GetWorkDir(module, &base_path, &exit_code))
+     return exit_code;
+ 
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+   // Set the magic suffix in registry to try full installer next time. We ignore
+   // any errors here and we try to set the suffix for user level unless
+   // GoogleUpdateIsMachine=1 is present in the environment or --system-level is
+@@ -898,7 +898,7 @@ ProcessExitResult WMain(HMODULE module) {
+   if (ShouldDeleteExtractedFiles())
+     DeleteExtractedFiles(base_path.get(), archive_path.get(), setup_path.get());
+ 
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+   WriteInstallResults(configuration, exit_code);
+ #endif
+ 

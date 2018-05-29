@@ -1,0 +1,14 @@
+diff --git a/chrome/installer/setup/installer_crash_reporter_client.cc b/chrome/installer/setup/installer_crash_reporter_client.cc
+index 4fdf7841b21e78e7de82633fb1f3ad457eb59ae6..d64d64bef4fa22016d6de50761008ad092689c88 100644
+--- a/chrome/installer/setup/installer_crash_reporter_client.cc
++++ b/chrome/installer/setup/installer_crash_reporter_client.cc
+@@ -133,6 +133,9 @@ bool InstallerCrashReporterClient::ReportingIsEnforcedByPolicy(bool* enabled) {
+ #if defined(GOOGLE_CHROME_BUILD)
+   static const wchar_t kRegistryChromePolicyKey[] =
+       L"SOFTWARE\\Policies\\Google\\Chrome";
++#elif defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
++  static const wchar_t kRegistryChromePolicyKey[] =
++      L"SOFTWARE\\Policies\\BraveSoftware\\Brave";
+ #else
+   static const wchar_t kRegistryChromePolicyKey[] =
+       L"SOFTWARE\\Policies\\Chromium";
