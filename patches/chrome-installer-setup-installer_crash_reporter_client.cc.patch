@@ -1,7 +1,16 @@
 diff --git a/chrome/installer/setup/installer_crash_reporter_client.cc b/chrome/installer/setup/installer_crash_reporter_client.cc
-index 4fdf7841b21e78e7de82633fb1f3ad457eb59ae6..d64d64bef4fa22016d6de50761008ad092689c88 100644
+index 4fdf7841b21e78e7de82633fb1f3ad457eb59ae6..180eb85526209918ae35be4d676b047ffa191fc5 100644
 --- a/chrome/installer/setup/installer_crash_reporter_client.cc
 +++ b/chrome/installer/setup/installer_crash_reporter_client.cc
+@@ -105,7 +105,7 @@ bool InstallerCrashReporterClient::IsRunningUnattended() {
+ }
+ 
+ bool InstallerCrashReporterClient::GetCollectStatsConsent() {
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+   return GoogleUpdateSettings::GetCollectStatsConsentAtLevel(
+       !is_per_user_install_);
+ #else
 @@ -133,6 +133,9 @@ bool InstallerCrashReporterClient::ReportingIsEnforcedByPolicy(bool* enabled) {
  #if defined(GOOGLE_CHROME_BUILD)
    static const wchar_t kRegistryChromePolicyKey[] =

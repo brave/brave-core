@@ -1,0 +1,16 @@
+diff --git a/chrome/installer/util/google_chrome_distribution.cc b/chrome/installer/util/google_chrome_distribution.cc
+index 05941744ff43f03539d6dacd14d057ecc32169a8..a32a719af16a5d6d6bfaf8508708dad0a283e18a 100644
+--- a/chrome/installer/util/google_chrome_distribution.cc
++++ b/chrome/installer/util/google_chrome_distribution.cc
+@@ -146,7 +146,11 @@ base::string16 GoogleChromeDistribution::GetAppDescription() {
+ }
+ 
+ std::string GoogleChromeDistribution::GetSafeBrowsingName() {
++#if defined(BRAVE_CHROMIUM_BUILD)
++  return "brave";
++#else
+   return "googlechrome";
++#endif
+ }
+ 
+ base::string16 GoogleChromeDistribution::GetDistributionData(HKEY root_key) {

@@ -1,0 +1,22 @@
+diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
+index 0a6163dbd3d6f0ea1af4e76f071f84252e8f4c13..2208420375361074656abed2dc222933a516c7e0 100644
+--- a/chrome/installer/mini_installer/configuration.cc
++++ b/chrome/installer/mini_installer/configuration.cc
+@@ -74,7 +74,7 @@ bool Configuration::ParseCommandLine(const wchar_t* command_line) {
+   for (int i = 1; i < argument_count_; ++i) {
+     if (0 == ::lstrcmpi(args_[i], L"--system-level"))
+       is_system_level_ = true;
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL))
+     else if (0 == ::lstrcmpi(args_[i], L"--chrome-beta"))
+       chrome_app_guid_ = google_update::kBetaAppGuid;
+     else if (0 == ::lstrcmpi(args_[i], L"--chrome-dev"))
+@@ -126,7 +126,7 @@ void Configuration::ReadResources(HMODULE module) {
+ }
+ 
+ bool Configuration::IsUpdatingMultiChrome() const {
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL))
+   // Only primary Chrome installs supported multi-install (not canary/SxS).
+   if (chrome_app_guid_ != google_update::kAppGuid)
+     return false;
