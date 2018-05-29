@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="customTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isFolder" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lastVisited" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="syncDisplayUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="syncParentDisplayUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tags" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="visits" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Bookmark" inverseName="parentFolder" inverseEntity="Bookmark" syncable="YES"/>
+        <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="bookmarks" inverseEntity="Domain" syncable="YES"/>
+        <relationship name="parentFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Bookmark" inverseName="children" inverseEntity="Bookmark" syncable="YES"/>
+    </entity>
+    <entity name="Device" representedClassName=".Device" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="deviceDisplayId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isCurrentDevice" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isSynced" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="syncDisplayUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="tabs" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TabMO" inverseName="device" inverseEntity="TabMO" syncable="YES"/>
+    </entity>
+    <entity name="Domain" representedClassName=".Domain" syncable="YES">
+        <attribute name="blockedFromTopSites" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <attribute name="shield_adblockAndTp" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="shield_allOff" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="shield_fpProtection" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="shield_httpse" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="shield_noScript" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="shield_safeBrowsing" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="topsite" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="visits" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <relationship name="bookmarks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Bookmark" inverseName="domain" inverseEntity="Bookmark" syncable="YES"/>
+        <relationship name="favicon" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Favicon" inverseName="domain" inverseEntity="Favicon" syncable="YES"/>
+        <relationship name="historyItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="History" inverseName="domain" inverseEntity="History" syncable="YES"/>
+    </entity>
+    <entity name="Favicon" representedClassName=".FaviconMO" syncable="YES">
+        <attribute name="height" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="favicon" inverseEntity="Domain" syncable="YES"/>
+        <relationship name="topSite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TopSite" inverseName="favicon" inverseEntity="TopSite" syncable="YES"/>
+    </entity>
+    <entity name="History" representedClassName=".History" syncable="YES">
+        <attribute name="sectionIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="syncUUID" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="visitedOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="historyItems" inverseEntity="Domain" syncable="YES"/>
+    </entity>
+    <entity name="TabMO" representedClassName=".TabMO" syncable="YES">
+        <attribute name="isClosed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isSelected" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="screenshot" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="syncUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlHistoryCurrentIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="urlHistorySnapshot" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="tabs" inverseEntity="Device" syncable="YES"/>
+    </entity>
+    <entity name="TopSite" representedClassName=".TopSite" syncable="YES">
+        <attribute name="createdOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="notifications" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="syncUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="favicon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Favicon" inverseName="topSite" inverseEntity="Favicon" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Bookmark" positionX="0" positionY="-450" width="155" height="255"/>
+        <element name="Device" positionX="-252" positionY="-207" width="128" height="150"/>
+        <element name="Domain" positionX="225" positionY="-321" width="128" height="240"/>
+        <element name="Favicon" positionX="439" positionY="-414" width="128" height="135"/>
+        <element name="History" positionX="493" positionY="-150" width="128" height="135"/>
+        <element name="TabMO" positionX="-488" positionY="-229" width="128" height="195"/>
+        <element name="TopSite" positionX="-117" positionY="-663" width="128" height="150"/>
+    </elements>
+</model>
