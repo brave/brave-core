@@ -48,6 +48,26 @@
                ReferencedContainer = "container:Client.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5D1DC51A20AC9AFA00905E5A"
+               BuildableName = "DataTests.xctest"
+               BlueprintName = "DataTests"
+               ReferencedContainer = "container:Client.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5DE7688B20B3456E00FF5533"
+               BuildableName = "BraveSharedTests.xctest"
+               BlueprintName = "BraveSharedTests"
+               ReferencedContainer = "container:Client.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
