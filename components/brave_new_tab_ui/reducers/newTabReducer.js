@@ -221,6 +221,10 @@ const newTabReducer = (state, action) => {
       state = storage.getLoadTimeData(state)
       break
 
+    case types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE:
+      state = { ...state, useAlternativePrivateSearchEngine: action.shouldUse }
+      break
+
     default:
       break
   }

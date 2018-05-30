@@ -80,3 +80,8 @@ export const gridSitesUpdated = (gridSites) => ({
 export const statsUpdated = () => ({
   type: types.NEW_TAB_STATS_UPDATED
 })
+
+export const changePrivateSearchEngine = (shouldUse) => ({
+  type: types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE,
+  shouldUse
+})

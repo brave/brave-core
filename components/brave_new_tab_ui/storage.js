@@ -42,6 +42,7 @@ module.exports.getInitialState = () => cleanData({
   imageLoadFailed: false,
   showEmptyPage: false,
   isIncognito: chrome.extension.inIncognitoContext,
+  useAlternativePrivateSearchEngine: false,
   bookmarks: {},
   stats: {}
 })
