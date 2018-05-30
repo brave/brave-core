@@ -9,63 +9,60 @@
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "brave/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
-const char* brave_extension_id = "mnojpmjdmbbfmejpflffifhffcmidifd";
-
 bool IsWhitelisted(const std::string& id) {
   static std::vector<std::string> whitelist({
-    // Brave
     brave_extension_id,
-    // CryptoTokenExtension
-    "kmendfapggjehodndflmmgagdbamhnfd",
+    pdfjs_extension_id,
+    // 1Password
+    "aomjjhallfgjeglblehebfpbcfeobpgk",
+    // BetterTTV
+    "ajopnjidmegmdimjlfnijceegpefgped",
     // Cloud Print
     "mfehgcgbbipciphmccgaenjidiccnmng",
-    // Chromium PDF Viewer
-    "mhjfbmdgcfjbbpaeojofohoefgiehjai",
-    // Web Store
-    "ahfgeienlihckogmohjhadlkjgocpleb",
-    // Grammarly for Chrome
-    "kbfnbcaeplbcioakkpcpgfkobkghlhen",
+    // CryptoTokenExtension
+    "kmendfapggjehodndflmmgagdbamhnfd",
+    // Bitwarden
+    "nngceckbapebfimnlniiiahkandclblb",
     // Brave Ad Block Updater
     "cffkpbalmllkdoenhmdmpbkajipdjfam",
     // Brave Tracking Protection Updater
     "afalakplffnnnlkncjhbmahjfjhmlkal",
     // Brave HTTPS Everywhere Updater
     "oofiananboodjbbmdelgdommihjbkfag",
+    // Dashlane
+    "fdjamakpfbbddfjaooikfcpapjohcfmg",
+    // Enpass
+    "kmcfomidfpdkfieipokbalgegidffkal",
+    // Grammarly for Chrome
+    "kbfnbcaeplbcioakkpcpgfkobkghlhen",
+    // Honey
+    "bmnlcjabgnpnenekpadlanbbkooimhnj",
+    // LastPass
+    "hdokiejnpimakedhajhdlcegeplioahd",
+    // MetaMask
+    "nkbihfbeogaeaoehlefnkodbefgpgknn",
+    // Pinterest
+    "gpdjojdkbbmdfjfahjcgigfpmkopogic",
+    // Pocket
+    "niloccemoadcdkdjlinkgdfekeahmflj",
+    // Vimium
+    "dbepggeogbaibhgnhhndojpepiihcmeb",
+    // Reddit Enhancement Suite
+    "kbmfpngjjgdllneeigpgjifpgocmfgmb",
+    // Web Store
+    "ahfgeienlihckogmohjhadlkjgocpleb",
     // Test ID: Brave Ad Block Updater
     "naccapggpomhlhoifnlebfoocegenbol",
     // Test ID: Brave Tracking Protection Updater
     "eclbkhjphkhalklhipiicaldjbnhdfkc",
     // Test ID: Brave HTTPS Everywhere Updater
-    "bhlmpjhncoojbkemjkeppfahkglffilp",
-    // 1Password
-    "aomjjhallfgjeglblehebfpbcfeobpgk",
-    // Dashlane
-    "fdjamakpfbbddfjaooikfcpapjohcfmg",
-    // LastPass
-    "hdokiejnpimakedhajhdlcegeplioahd",
-    // Pocket
-    "niloccemoadcdkdjlinkgdfekeahmflj",
-    // Enpass
-    "kmcfomidfpdkfieipokbalgegidffkal",
-    // Vimium
-    "dbepggeogbaibhgnhhndojpepiihcmeb",
-    // bitwarden
-    "nngceckbapebfimnlniiiahkandclblb",
-    // Honey
-    "bmnlcjabgnpnenekpadlanbbkooimhnj",
-    // Pinterest
-    "gpdjojdkbbmdfjfahjcgigfpmkopogic",
-    // MetaMask
-    "nkbihfbeogaeaoehlefnkodbefgpgknn",
-    // Reddit Enhancement Suite
-    "kbmfpngjjgdllneeigpgjifpgocmfgmb",
-    // BetterTTV
-    "ajopnjidmegmdimjlfnijceegpefgped",
+    "bhlmpjhncoojbkemjkeppfahkglffilp"
   });
   return std::find(whitelist.begin(), whitelist.end(), id) != whitelist.end();
 }
