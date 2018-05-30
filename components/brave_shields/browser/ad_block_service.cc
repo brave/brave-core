@@ -5,18 +5,16 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 
 #include <algorithm>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "base/base_paths.h"
+#include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 
 #define DAT_FILE "ABPFilterParserData.dat"
@@ -32,7 +30,8 @@ AdBlockService::AdBlockService()
     : BaseBraveShieldsService(kAdBlockComponentName,
                               g_ad_block_component_id_,
                               g_ad_block_component_base64_public_key_),
-      ad_block_client_(new AdBlockClient()) {
+      ad_block_client_(new AdBlockClient()),
+      weak_factory_(this) {
 }
 
 AdBlockService::~AdBlockService() {
@@ -73,23 +72,29 @@ bool AdBlockService::Init() {
   return true;
 }
 
-void AdBlockService::OnComponentReady(const std::string& component_id,
-                                      const base::FilePath& install_dir) {
-  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
-  if (!GetDATFileData(dat_file_path, buffer_)) {
-    LOG(ERROR) << "Could not obtain ad block data file";
-    return;
-  }
+void AdBlockService::OnDATFileDataReady() {
   if (buffer_.empty()) {
     LOG(ERROR) << "Could not obtain ad block data";
     return;
   }
+
   ad_block_client_.reset(new AdBlockClient());
   if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
     ad_block_client_.reset();
     LOG(ERROR) << "Failed to deserialize ad block data";
     return;
   }
+}
+
+void AdBlockService::OnComponentReady(const std::string& component_id,
+                                      const base::FilePath& install_dir) {
+  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
+
+  GetTaskRunner()->PostTaskAndReply(
+      FROM_HERE,
+      base::Bind(&GetDATFileData, dat_file_path, &buffer_),
+      base::Bind(&AdBlockService::OnDATFileDataReady,
+                 weak_factory_.GetWeakPtr()));
 }
 
 // static

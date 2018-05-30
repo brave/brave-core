@@ -92,37 +92,45 @@ HTTPSEverywhereService::~HTTPSEverywhereService() {
 }
 
 void HTTPSEverywhereService::Cleanup() {
-  CloseDatabase();
+  GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::Bind(&HTTPSEverywhereService::CloseDatabase,
+                 base::Unretained(this)));
 }
 
 bool HTTPSEverywhereService::Init() {
   return true;
 }
 
-void HTTPSEverywhereService::OnComponentReady(const std::string& component_id,
-                                              const base::FilePath& install_dir) {
+void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
   base::FilePath zip_db_file_path = install_dir.AppendASCII(DAT_FILE);
-
   base::FilePath unzipped_level_db_path = zip_db_file_path.RemoveExtension();
   base::FilePath destination = zip_db_file_path.DirName();
-  if (!zip::Unzip(zip_db_file_path, destination)) {
-    LOG(ERROR) << "Could not unzip HTTPS Everywhere data file";
-    return;
-  }
 
+  zip::Unzip(zip_db_file_path, destination),
   CloseDatabase();
 
   leveldb::Options options;
-  leveldb::Status status = leveldb::DB::Open(options,
-      unzipped_level_db_path.AsUTF8Unsafe(),
-      &level_db_);
+  leveldb::Status status =
+      leveldb::DB::Open(options,
+                        unzipped_level_db_path.AsUTF8Unsafe(),
+                        &level_db_);
   if (!status.ok() || !level_db_) {
     CloseDatabase();
     LOG(ERROR) << "Level db open error "
-      << unzipped_level_db_path.value().c_str()
-      << ", error: " << status.ToString();
-    return;
+               << unzipped_level_db_path.value().c_str()
+               << ", error: " << status.ToString();
   }
+}
+
+void HTTPSEverywhereService::OnComponentReady(
+    const std::string& component_id,
+    const base::FilePath& install_dir) {
+  GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::Bind(&HTTPSEverywhereService::InitDB,
+                 base::Unretained(this),
+                 install_dir));
 }
 
 bool HTTPSEverywhereService::GetHTTPSURL(

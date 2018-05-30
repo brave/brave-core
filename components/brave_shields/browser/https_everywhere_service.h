@@ -80,10 +80,14 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
 
   void CloseDatabase();
 
+  void InitDB(const base::FilePath& install_dir);
+
   std::mutex httpse_get_urls_redirects_count_mutex_;
   std::vector<HTTPSE_REDIRECTS_COUNT_ST> httpse_urls_redirects_count_;
   HTTPSERecentlyUsedCache<std::string> recently_used_cache_;
   leveldb::DB* level_db_;
+
+  DISALLOW_COPY_AND_ASSIGN(HTTPSEverywhereService);
 };
 
 // Creates the HTTPSEverywhereService
