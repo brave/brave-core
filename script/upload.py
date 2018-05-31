@@ -233,7 +233,7 @@ def publish_release(github, release_id):
 
 def auth_token():
   token = get_env_var('GITHUB_TOKEN')
-  message = ('Error: Please set the $BRAVE_GITHUB_TOKEN '
+  message = ('Error: Please set the $GITHUB_TOKEN '
              'environment variable, which is your personal token')
   assert token, message
   return token
