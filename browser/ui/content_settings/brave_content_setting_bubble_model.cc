@@ -1,0 +1,65 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/content_settings/brave_content_setting_bubble_model.h"
+
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/plugins/plugin_utils.h"
+#include "chrome/browser/subresource_filter/chrome_subresource_filter_client.h"
+#include "chrome/browser/ui/content_settings/content_setting_bubble_model_delegate.h"
+#include "chrome/grit/generated_resources.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "ui/base/l10n/l10n_util.h"
+
+BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
+    Delegate* delegate, content::WebContents* web_contents, Profile* profile)
+    : ContentSettingSimpleBubbleModel(delegate,
+                                      web_contents,
+                                      profile,
+                                      CONTENT_SETTINGS_TYPE_PLUGINS), profile_(profile) {
+  content_settings::SettingInfo info;
+  HostContentSettingsMap* map =
+      HostContentSettingsMapFactory::GetForProfile(profile);
+  GURL url = web_contents->GetURL();
+  std::unique_ptr<base::Value> value =
+      map->GetWebsiteSetting(url, url, content_type(), std::string(), &info);
+  // If the setting is not managed by the user, hide the "Manage" button.
+  if (info.source != content_settings::SETTING_SOURCE_USER)
+    set_manage_text_style(ContentSettingBubbleModel::ManageTextStyle::kNone);
+  set_custom_link(l10n_util::GetStringUTF16(IDS_BLOCKED_PLUGINS_LOAD_ALL));
+  set_custom_link_enabled(
+      web_contents &&
+      TabSpecificContentSettings::FromWebContents(web_contents)
+          ->load_plugins_link_enabled());
+  set_show_learn_more(true);
+}
+
+void BraveContentSettingPluginBubbleModel::OnLearnMoreClicked() {
+  if (delegate())
+    delegate()->ShowLearnMorePage(CONTENT_SETTINGS_TYPE_PLUGINS);
+}
+
+void BraveContentSettingPluginBubbleModel::OnCustomLinkClicked() {
+  RunPluginsOnPage();
+}
+
+void BraveContentSettingPluginBubbleModel::RunPluginsOnPage() {
+  // Web contents can be NULL if the tab was closed while the plugins
+  // settings bubble is visible.
+  if (!web_contents())
+    return;
+
+  HostContentSettingsMap* map =
+      HostContentSettingsMapFactory::GetForProfile(profile_);
+  map->SetContentSettingDefaultScope(
+      web_contents()->GetURL(),
+      GURL(),
+      CONTENT_SETTINGS_TYPE_PLUGINS,
+      std::string(),
+      CONTENT_SETTING_DETECT_IMPORTANT_CONTENT);
+
+  ChromeSubresourceFilterClient::FromWebContents(web_contents())
+        ->OnReloadRequested();
+}

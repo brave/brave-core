@@ -18,6 +18,7 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
   InitializeReferrerContentSetting();
   InitializeCookieContentSetting();
   InitializeBraveShieldsContentSetting();
+  InitializeFlashContentSetting();
 }
 
 BraveHostContentSettingsMap::~BraveHostContentSettingsMap() {
@@ -59,4 +60,15 @@ void BraveHostContentSettingsMap::InitializeBraveShieldsContentSetting() {
       CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kBraveShields,
       CONTENT_SETTING_ALLOW);
+}
+
+void BraveHostContentSettingsMap::InitializeFlashContentSetting() {
+  SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(),
+      ContentSettingsPattern::Wildcard(),
+      CONTENT_SETTINGS_TYPE_PLUGINS,
+      // One would think this should be brave_shields::kFlash; however, if you
+      // use it, it will always ask and click-to-play will not work.
+      std::string(),
+      CONTENT_SETTING_BLOCK);
 }
