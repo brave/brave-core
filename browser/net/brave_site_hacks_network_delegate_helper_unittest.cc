@@ -19,7 +19,9 @@ class BraveSiteHacksNetworkDelegateHelperTest: public testing::Test {
         context_(new net::TestURLRequestContext(true)) {
   }
   ~BraveSiteHacksNetworkDelegateHelperTest() override {}
-  void SetUp() override {}
+  void SetUp() override {
+    context_->Init();
+  }
   net::TestURLRequestContext* context() { return context_.get(); }
 
  private:
