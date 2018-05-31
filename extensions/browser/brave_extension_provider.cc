@@ -108,29 +108,6 @@ bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
   return true;
 }
 
-bool BraveExtensionProvider::UserMayModifySettings(
-    const Extension* extension,
-    base::string16* error) const {
-  return true;
-}
-
-bool BraveExtensionProvider::MustRemainEnabled(const Extension* extension,
-                                               base::string16* error) const {
-  return false;
-}
-
-bool BraveExtensionProvider::MustRemainDisabled(
-    const Extension* extension,
-    disable_reason::DisableReason* reason,
-    base::string16* error) const {
-  if (extension->id() == brave_extension_id)
-    return false;
-
-  if (reason)
-    *reason = disable_reason::DISABLE_BLOCKED_BY_POLICY;
-  return true;
-}
-
 bool BraveExtensionProvider::MustRemainInstalled(const Extension* extension,
                                                  base::string16* error) const {
   return extension->id() == brave_extension_id;

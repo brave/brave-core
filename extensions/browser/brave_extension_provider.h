@@ -16,13 +16,6 @@ class BraveExtensionProvider : public ManagementPolicy::Provider {
   std::string GetDebugPolicyProviderName() const override;
   bool UserMayLoad(const Extension* extension,
                    base::string16* error) const override;
-  bool UserMayModifySettings(const Extension* extension,
-                             base::string16* error) const override;
-  bool MustRemainEnabled(const Extension* extension,
-                         base::string16* error) const override;
-  bool MustRemainDisabled(const Extension* extension,
-                          disable_reason::DisableReason* reason,
-                          base::string16* error) const override;
   bool MustRemainInstalled(const Extension* extension,
                            base::string16* error) const override;
  private:
