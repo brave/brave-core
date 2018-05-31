@@ -386,6 +386,13 @@
 		7BF5A1EE1B429B3100EA9DD8 /* SyncCommandsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5A1ED1B429B3100EA9DD8 /* SyncCommandsTests.swift */; };
 		8D8251811F4DE67F00780643 /* AdvanceAccountSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8251721F4DE67E00780643 /* AdvanceAccountSettingViewController.swift */; };
 		8DCD3BCD1ED5B7FA00446D38 /* FxADeepLinkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCD3BCC1ED5B7FA00446D38 /* FxADeepLinkingTests.swift */; };
+		A1CDF22B20BDD6B8005C6E58 /* POPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CDF22A20BDD6B8005C6E58 /* POPExtensions.swift */; };
+		A1CDF22D20BDDB66005C6E58 /* BasicAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CDF22C20BDDB65005C6E58 /* BasicAnimationController.swift */; };
+		A1D841FD20BC405E00BDAFF7 /* pop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1D841F420BC405E00BDAFF7 /* pop.framework */; };
+		A1D8420220BC44F800BDAFF7 /* PopoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D841FF20BC44F800BDAFF7 /* PopoverController.swift */; };
+		A1D8420320BC44F800BDAFF7 /* PopoverContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D8420020BC44F800BDAFF7 /* PopoverContainerView.swift */; };
+		A1D8420420BC44F800BDAFF7 /* PopoverContentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D8420120BC44F800BDAFF7 /* PopoverContentComponent.swift */; };
+		A1FEEE2020BF28D900298DA2 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FEEE1F20BF28D900298DA2 /* Then.swift */; };
 		A83E5AB71C1D993D0026D912 /* UIPasteboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83E5AB61C1D993D0026D912 /* UIPasteboardExtensions.swift */; };
 		A83E5B1A1C1DA8BF0026D912 /* image.gif in Resources */ = {isa = PBXBuildFile; fileRef = A83E5B181C1DA8BF0026D912 /* image.gif */; };
 		A83E5B1B1C1DA8BF0026D912 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = A83E5B191C1DA8BF0026D912 /* image.png */; };
@@ -1607,6 +1614,13 @@
 		7BF5A1ED1B429B3100EA9DD8 /* SyncCommandsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncCommandsTests.swift; sourceTree = "<group>"; };
 		8D8251721F4DE67E00780643 /* AdvanceAccountSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceAccountSettingViewController.swift; sourceTree = "<group>"; };
 		8DCD3BCC1ED5B7FA00446D38 /* FxADeepLinkingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FxADeepLinkingTests.swift; sourceTree = "<group>"; };
+		A1CDF22A20BDD6B8005C6E58 /* POPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = POPExtensions.swift; path = Extensions/POPExtensions.swift; sourceTree = "<group>"; };
+		A1CDF22C20BDDB65005C6E58 /* BasicAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BasicAnimationController.swift; path = Helpers/BasicAnimationController.swift; sourceTree = "<group>"; };
+		A1D841F420BC405E00BDAFF7 /* pop.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = pop.framework; path = Carthage/Build/iOS/pop.framework; sourceTree = "<group>"; };
+		A1D841FF20BC44F800BDAFF7 /* PopoverController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverController.swift; sourceTree = "<group>"; };
+		A1D8420020BC44F800BDAFF7 /* PopoverContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverContainerView.swift; sourceTree = "<group>"; };
+		A1D8420120BC44F800BDAFF7 /* PopoverContentComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverContentComponent.swift; sourceTree = "<group>"; };
+		A1FEEE1F20BF28D900298DA2 /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Then.swift; path = ThirdParty/Then.swift; sourceTree = "<group>"; };
 		A83E5AB61C1D993D0026D912 /* UIPasteboardExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIPasteboardExtensions.swift; path = Extensions/UIPasteboardExtensions.swift; sourceTree = "<group>"; };
 		A83E5B181C1DA8BF0026D912 /* image.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = image.gif; sourceTree = "<group>"; };
 		A83E5B191C1DA8BF0026D912 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
@@ -2031,6 +2045,7 @@
 				7B6050011C49653B006EEEC3 /* AdjustSdk.framework in Frameworks */,
 				E4B3348A1BBF23F9004E2BFF /* AdSupport.framework in Frameworks */,
 				7B604F861C494983006EEEC3 /* Alamofire.framework in Frameworks */,
+				A1D841FD20BC405E00BDAFF7 /* pop.framework in Frameworks */,
 				3BA9A0231D2C208C00BD418C /* Fuzi.framework in Frameworks */,
 				5D1DC52820AC9AFB00905E5A /* Data.framework in Frameworks */,
 				7BA4A9471C4CED900091D032 /* GCDWebServers.framework in Frameworks */,
@@ -2420,6 +2435,7 @@
 		28CE83EF1A1D246900576538 /* Third-Party Source */ = {
 			isa = PBXGroup;
 			children = (
+				A1FEEE1F20BF28D900298DA2 /* Then.swift */,
 				E66C5B451BDA81050051AA93 /* Apple */,
 				E659A6091EB7C1D300D7A6AD /* BuddyBuild */,
 				28CE83CA1A1D1D5100576538 /* FxA.xcodeproj */,
@@ -2437,6 +2453,7 @@
 		28EADE5C1AFC3A6D007FB2FB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A1CDF22A20BDD6B8005C6E58 /* POPExtensions.swift */,
 				E650754D1E37F6AE006961AC /* GeometryExtensions.swift */,
 				D83821FF1FC7961D00303C12 /* DispatchQueueExtensions.swift */,
 				D8D33A7C1FBD080300A20A28 /* SnapKitExtensions.swift */,
@@ -2671,6 +2688,7 @@
 		39A359BD1BFCCE7B006B9E87 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				A1CDF22C20BDDB65005C6E58 /* BasicAnimationController.swift */,
 				E65075531E37F6FC006961AC /* DynamicFontHelper.swift */,
 				E65075601E37F77D006961AC /* MenuHelper.swift */,
 				39F99FED1E3A71F800F353B4 /* FxALoginHelper.swift */,
@@ -2878,6 +2896,7 @@
 		7B604FC11C496005006EEEC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A1D841F420BC405E00BDAFF7 /* pop.framework */,
 				392E18021FEC4D7B00EBA79C /* MappaMundi.framework */,
 				EBA31D7E1F799BE20055463D /* Telemetry.framework */,
 				E4F2DABF1F620C0200A556CD /* Leanplum.framework */,
@@ -2925,6 +2944,19 @@
 			);
 			path = Menu;
 			sourceTree = "<group>";
+		};
+		A1D841FE20BC44E400BDAFF7 /* Popover */ = {
+			isa = PBXGroup;
+			children = (
+				A1D841FF20BC44F800BDAFF7 /* PopoverController.swift */,
+				A1D8420020BC44F800BDAFF7 /* PopoverContainerView.swift */,
+				A1D8420120BC44F800BDAFF7 /* PopoverContentComponent.swift */,
+			);
+			indentWidth = 4;
+			path = Popover;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		C8F457A61F1FD75A000CB895 /* BrowserViewController */ = {
 			isa = PBXGroup;
@@ -3194,8 +3226,10 @@
 				0BF0DB931A8545800039F300 /* URLBarView.swift */,
 				D0FCF7F41FE45842004A7995 /* UserScriptManager.swift */,
 			);
+			indentWidth = 4;
 			path = Browser;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		E40A18F61EDC73D5006B7F28 /* Entitlements */ = {
 			isa = PBXGroup;
@@ -3696,6 +3730,7 @@
 				F84B21F51A0910F600AAB793 /* Reader */,
 				2F44FC551A9E83E200FD20CC /* Settings */,
 				D3972BF01C22412B00035B87 /* Share */,
+				A1D841FE20BC44E400BDAFF7 /* Popover */,
 				D0FCF7EE1FE44E15004A7995 /* UserContent */,
 				D38A1BEB1A9FA2CA00F6A386 /* Widgets */,
 				2C49854D206173C800893DAE /* photon-colors.swift */,
@@ -4896,6 +4931,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Sentry.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Telemetry.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/pop.framework",
 			);
 			name = "Copy Carthage Dependencies";
 			outputPaths = (
@@ -5449,8 +5485,10 @@
 				E68F36981EA694000048CF44 /* PanelDataObservers.swift in Sources */,
 				EB07ADBE207FB3E80048D794 /* InstructionsViewController.swift in Sources */,
 				31ADB5DA1E58CEC300E87909 /* ClipboardBarDisplayHandler.swift in Sources */,
+				A1D8420420BC44F800BDAFF7 /* PopoverContentComponent.swift in Sources */,
 				745DAB3F1CDAB09E00D44181 /* HistoryBackButton.swift in Sources */,
 				396E38F31EE0C90D00CC180F /* FxALoginHelper.swift in Sources */,
+				A1D8420220BC44F800BDAFF7 /* PopoverController.swift in Sources */,
 				D3B6923F1B9F9A58004B87A4 /* FindInPageHelper.swift in Sources */,
 				D3C3696E1CC6B78800348A61 /* LocalRequestHelper.swift in Sources */,
 				E4B423DD1ABA0318007E66C8 /* ReaderModeHandlers.swift in Sources */,
@@ -5491,6 +5529,7 @@
 				0BB5B2881AC0A2B90052877D /* SnackBar.swift in Sources */,
 				7BEFC6801BFF68C30059C952 /* QuickActions.swift in Sources */,
 				D0C95E36200FDC5500E4E51C /* MetadataParserHelper.swift in Sources */,
+				A1CDF22D20BDDB66005C6E58 /* BasicAnimationController.swift in Sources */,
 				0BF1B7E31AC60DEA00A7B407 /* InsetButton.swift in Sources */,
 				D0C95EF6201A55A800E4E51C /* BrowserViewController+UIDropInteractionDelegate.swift in Sources */,
 				D31CF65C1CC1959A001D0BD0 /* PrivilegedRequest.swift in Sources */,
@@ -5517,6 +5556,7 @@
 				E689C7301E0C7617008BAADB /* NSAttributedStringExtensions.swift in Sources */,
 				D0C95E0E200FD3B200E4E51C /* PrintHelper.swift in Sources */,
 				E64ED8FA1BC55AE300DAF864 /* UIAlertControllerExtensions.swift in Sources */,
+				A1D8420320BC44F800BDAFF7 /* PopoverContainerView.swift in Sources */,
 				282DA4731A68C1E700A406E2 /* OpenSearch.swift in Sources */,
 				F35B8D2F1D638408008E3D61 /* SessionRestoreHandler.swift in Sources */,
 				E63ED8E11BFD25580097D08E /* LoginListViewController.swift in Sources */,
@@ -5595,6 +5635,7 @@
 				0BA1E02E1B046F1E007675AF /* ErrorPageHelper.swift in Sources */,
 				D3A9949C1A3686BD008AD1AC /* BrowserViewController.swift in Sources */,
 				59A681BDFC95A19F05E07223 /* SearchViewController.swift in Sources */,
+				A1CDF22B20BDD6B8005C6E58 /* POPExtensions.swift in Sources */,
 				E6CF28E71CB43B7900151AB3 /* SensitiveViewController.swift in Sources */,
 				E68E7ADA1CAC207400FDCA76 /* ChangePasscodeViewController.swift in Sources */,
 				E640E85E1C73A45A00C5F072 /* PasscodeEntryViewController.swift in Sources */,
@@ -5615,6 +5656,7 @@
 				7B844E3D1BBDDB9D00E733A2 /* ChevronView.swift in Sources */,
 				E4C358551AF144BA00299F7E /* FSReadingList.m in Sources */,
 				3BE7275D1CCFE8B60099189F /* CustomSearchHandler.swift in Sources */,
+				A1FEEE2020BF28D900298DA2 /* Then.swift in Sources */,
 				E692E3291C46E62D009D1240 /* AuthenticationSettingsViewController.swift in Sources */,
 				E663D5781BB341C4001EF30E /* ToggleButton.swift in Sources */,
 				C88601C61F4228AD00BBDE4F /* ContentBlockerSettingViewController.swift in Sources */,
