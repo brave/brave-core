@@ -25,8 +25,9 @@ bool IsEmptyDataURLRedirect(const GURL& gurl) {
 bool IsUAWhitelisted(const GURL& gurl) {
   static std::vector<URLPattern> whitelist_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://*.adobe.com/*"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.duckduckgo.com/*"),
     URLPattern(URLPattern::SCHEME_ALL, "https://*.brave.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.ctrl.blog/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.duckduckgo.com/*"),
     // For Widevine
     URLPattern(URLPattern::SCHEME_ALL, "https://*.netflix.com/*")
   });
