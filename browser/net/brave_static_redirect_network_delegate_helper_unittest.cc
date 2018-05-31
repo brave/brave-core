@@ -23,7 +23,9 @@ class BraveStaticRedirectNetworkDelegateHelperTest: public testing::Test {
         context_(new net::TestURLRequestContext(true)) {
   }
   ~BraveStaticRedirectNetworkDelegateHelperTest() override {}
-  void SetUp() override {}
+  void SetUp() override {
+    context_->Init();
+  }
   net::TestURLRequestContext* context() { return context_.get(); }
 
  private:

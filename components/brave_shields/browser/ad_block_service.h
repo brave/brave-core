@@ -10,10 +10,10 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <mutex>
 
-#include "base/files/file_path.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
+#include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
 
 class AdBlockClient;
@@ -57,8 +57,14 @@ class AdBlockService : public BaseBraveShieldsService {
       const std::string& component_id,
       const std::string& component_base64_public_key);
 
-  std::vector<unsigned char> buffer_;
+  void OnDATFileDataReady();
+
+  brave_shields::DATFileDataBuffer buffer_;
   std::unique_ptr<AdBlockClient> ad_block_client_;
+
+  base::WeakPtrFactory<AdBlockService> weak_factory_;
+
+  DISALLOW_COPY_AND_ASSIGN(AdBlockService);
 };
 
 // Creates the AdBlockService

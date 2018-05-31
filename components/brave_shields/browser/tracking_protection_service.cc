@@ -5,12 +5,10 @@
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 
 #include <algorithm>
-#include <string>
 #include <utility>
-#include <map>
-#include <vector>
 
 #include "base/base_paths.h"
+#include "base/bind.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
@@ -46,7 +44,8 @@ TrackingProtectionService::TrackingProtectionService()
       "platform.twitter.com",
       "syndication.twitter.com",
       "cdn.syndication.twimg.com"
-    }) {
+    }),
+    weak_factory_(this) {
 }
 
 TrackingProtectionService::~TrackingProtectionService() {
@@ -93,23 +92,30 @@ bool TrackingProtectionService::Init() {
   return true;
 }
 
-void TrackingProtectionService::OnComponentReady(const std::string& component_id,
-                                                 const base::FilePath& install_dir) {
-  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
-  if (!GetDATFileData(dat_file_path, buffer_)) {
-    LOG(ERROR) << "Could not obtain tracking protection data file";
-    return;
-  }
+void TrackingProtectionService::OnDATFileDataReady() {
   if (buffer_.empty()) {
     LOG(ERROR) << "Could not obtain tracking protection data";
     return;
   }
+
   tracking_protection_client_.reset(new CTPParser());
+
   if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
     tracking_protection_client_.reset();
     LOG(ERROR) << "Failed to deserialize tracking protection data";
-    return;
   }
+}
+
+void TrackingProtectionService::OnComponentReady(
+    const std::string& component_id,
+    const base::FilePath& install_dir) {
+  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
+
+  GetTaskRunner()->PostTaskAndReply(
+      FROM_HERE,
+      base::Bind(&GetDATFileData, dat_file_path, &buffer_),
+      base::Bind(&TrackingProtectionService::OnDATFileDataReady,
+                 weak_factory_.GetWeakPtr()));
 }
 
 // Ported from Android: net/blockers/blockers_worker.cc
