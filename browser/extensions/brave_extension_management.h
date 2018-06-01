@@ -13,6 +13,9 @@ class BraveExtensionManagement : public ExtensionManagement {
  public:
   BraveExtensionManagement(PrefService* pref_service, bool is_signin_profile);
   ~BraveExtensionManagement() override;
+
+ private:
+  void RegisterForceInstalledExtensions();
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionManagement);
 };
 
