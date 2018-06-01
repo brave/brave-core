@@ -86,6 +86,7 @@ public:
 
     g_brave_browser_process->tracking_protection_service()->OnComponentReady(
         tracking_protection_extension->id(), tracking_protection_extension->path());
+    WaitForTrackingProtectionServiceThread();
 
     return true;
   }

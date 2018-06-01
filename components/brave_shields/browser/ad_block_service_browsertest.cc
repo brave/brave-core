@@ -66,6 +66,7 @@ public:
 
     g_brave_browser_process->ad_block_service()->OnComponentReady(
         ad_block_extension->id(), ad_block_extension->path());
+    WaitForAdBlockServiceThread();
 
     return true;
   }
