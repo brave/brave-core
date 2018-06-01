@@ -61,6 +61,8 @@ bool IsWhitelisted(const std::string& id) {
     "naccapggpomhlhoifnlebfoocegenbol",
     // Test ID: Brave Tracking Protection Updater
     "eclbkhjphkhalklhipiicaldjbnhdfkc",
+    // Test ID: PDFJS
+    "kpbdcmcgkedhpbcpfndimofjnefgjidd",
     // Test ID: Brave HTTPS Everywhere Updater
     "bhlmpjhncoojbkemjkeppfahkglffilp"
   });
