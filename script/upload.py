@@ -80,14 +80,13 @@ def main():
     else:
       upload_brave(github, release, os.path.join(output_dir(),
           'brave_installer.exe'), 'brave_installer-ia32.exe')
-  # TODO: Enable after linux packaging lands
-  #else:
-    #if get_target_arch() == 'x64':
-      #upload_brave(github, release, os.path.join(output_dir(), 'brave-x86_64.rpm'))
-      #upload_brave(github, release, os.path.join(output_dir(), 'brave-amd64.deb'))
-    #else:
-      #upload_brave(github, release, os.path.join(output_dir(), 'brave-i386.rpm'))
-      #upload_brave(github, release, os.path.join(output_dir(), 'brave-i386.deb'))
+  else:
+    if get_target_arch() == 'x64':
+      upload_brave(github, release, os.path.join(output_dir(), 'brave-x86_64.rpm'))
+      upload_brave(github, release, os.path.join(output_dir(), 'brave-amd64.deb'))
+    else:
+      upload_brave(github, release, os.path.join(output_dir(), 'brave-i386.rpm'))
+      upload_brave(github, release, os.path.join(output_dir(), 'brave-i386.deb'))
 
   # mksnapshot = get_zip_name('mksnapshot', get_brave_version())
   # upload_brave(github, release, os.path.join(dist_dir(), mksnapshot))

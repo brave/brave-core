@@ -16,6 +16,7 @@ PLATFORM = {
 SOURCE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 CHROMIUM_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 DIST_URL = 'https://brave-brave-binaries.s3.amazonaws.com/releases/'
+BRAVE_CORE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 verbose_mode = False
 
@@ -36,11 +37,11 @@ def brave_package():
 
 
 def product_name():
-  return os.environ.get('npm_config_brave_product_name') or brave_package()['name']
+  return os.environ.get('npm_config_brave_product_name') or brave_package()['name'].split('-')[0]
 
 
 def project_name():
-  return os.environ.get('npm_config_brave_project_name') or brave_package()['name']
+  return os.environ.get('npm_config_brave_project_name') or brave_package()['name'].split('-')[0]
 
 
 def get_chrome_version():
@@ -64,9 +65,13 @@ def get_target_arch():
 
 
 def get_chromedriver_version():
-  version_file_path = os.path.join(CHROMIUM_ROOT, 'chrome', 'test', 'chromedriver', 'VERSION')
-  with open(version_file_path, 'r') as version_file:
-    version = version_file.read().strip()
+  pattern = "^chromedriver_version = \"([0-9]\.[0-9]+)\""
+  build_gn_path = os.path.join(BRAVE_CORE_ROOT, 'BUILD.gn')
+  with open(build_gn_path, 'r') as build_gn_file:
+    for line in build_gn_file:
+      match = re.search(pattern,line)
+      if match:
+        version = match.group(1)
   return 'v' + version
 
 
