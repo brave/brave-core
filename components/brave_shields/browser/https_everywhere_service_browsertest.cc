@@ -76,6 +76,7 @@ public:
 
     g_brave_browser_process->https_everywhere_service()->OnComponentReady(
         httpse_extension->id(), httpse_extension->path());
+    WaitForHTTPSEverywhereServiceThread();
 
     return true;
   }
