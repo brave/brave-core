@@ -46,9 +46,12 @@ class AdBlockRegionalService : public AdBlockBaseService {
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
+
   bool UnregisterComponentByLocale(const std::string& locale);
 
   std::string uuid_;
+
+  DISALLOW_COPY_AND_ASSIGN(AdBlockRegionalService);
 };
 
 // Creates the AdBlockRegionalService

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/base_paths.h"
+#include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/macros.h"
@@ -19,12 +20,12 @@
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 
-#define DAT_FILE "ABPFilterParserData.dat"
-
 namespace brave_shields {
 
 AdBlockBaseService::AdBlockBaseService()
-    : BaseBraveShieldsService(), ad_block_client_(new AdBlockClient()) {
+    : BaseBraveShieldsService(),
+      ad_block_client_(new AdBlockClient()),
+      weak_factory_(this) {
 }
 
 AdBlockBaseService::~AdBlockBaseService() {
@@ -52,7 +53,7 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
   if (ad_block_client_->matches(url.spec().c_str(),
         current_option,
         tab_host.c_str())) {
-    // LOG(ERROR) << "AdBlockBaseService::Check(), host: " << tab_host
+    // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: " << tab_host
     //  << ", resource type: " << resource_type
     //  << ", url.spec(): " << url.spec();
     return false;
@@ -61,17 +62,15 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
   return true;
 }
 
-bool AdBlockBaseService::Init() {
-  return true;
+void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
+  GetTaskRunner()->PostTaskAndReply(
+      FROM_HERE,
+      base::Bind(&brave_shields::GetDATFileData, dat_file_path, &buffer_),
+      base::Bind(&AdBlockBaseService::OnDATFileDataReady,
+                 weak_factory_.GetWeakPtr()));
 }
 
-void AdBlockBaseService::OnComponentReady(const std::string& component_id,
-                                          const base::FilePath& install_dir) {
-  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
-  if (!GetDATFileData(dat_file_path, buffer_)) {
-    LOG(ERROR) << "Could not obtain ad block data file";
-    return;
-  }
+void AdBlockBaseService::OnDATFileDataReady() {
   if (buffer_.empty()) {
     LOG(ERROR) << "Could not obtain ad block data";
     return;
@@ -82,6 +81,10 @@ void AdBlockBaseService::OnComponentReady(const std::string& component_id,
     LOG(ERROR) << "Failed to deserialize ad block data";
     return;
   }
+}
+
+bool AdBlockBaseService::Init() {
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

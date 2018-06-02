@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "content/public/common/resource_type.h"
 
 class AdBlockClient;
@@ -53,6 +54,8 @@ class AdBlockService : public AdBlockBaseService {
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
+
+  DISALLOW_COPY_AND_ASSIGN(AdBlockService);
 };
 
 // Creates the AdBlockService

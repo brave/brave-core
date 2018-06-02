@@ -57,8 +57,10 @@ bool IsWhitelisted(const std::string& id) {
     "kbmfpngjjgdllneeigpgjifpgocmfgmb",
     // Web Store
     "ahfgeienlihckogmohjhadlkjgocpleb",
-    // Test ID: Brave Ad Block Updater
+    // Test ID: Brave Default Ad Block Updater
     "naccapggpomhlhoifnlebfoocegenbol",
+    // Test ID: Brave Regional Ad Block Updater (9852EFC4-99E4-4F2D-A915-9C3196C7A1DE)
+    "dlpmaigjliompnelofkljgcmlenklieh",
     // Test ID: Brave Tracking Protection Updater
     "eclbkhjphkhalklhipiicaldjbnhdfkc",
     // Test ID: PDFJS

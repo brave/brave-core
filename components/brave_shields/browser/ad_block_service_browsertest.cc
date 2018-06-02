@@ -50,7 +50,7 @@ public:
 
   void PreRunTestOnMainThread() override {
     ExtensionBrowserTest::PreRunTestOnMainThread();
-    WaitForAdBlockServiceThread();
+    WaitForDefaultAdBlockServiceThread();
     ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
   }
 
@@ -80,7 +80,7 @@ public:
 
     g_brave_browser_process->ad_block_service()->OnComponentReady(
         ad_block_extension->id(), ad_block_extension->path());
-    WaitForAdBlockServiceThread();
+    WaitForDefaultAdBlockServiceThread();
 
     return true;
   }
@@ -96,14 +96,22 @@ public:
 
     g_brave_browser_process->ad_block_regional_service()->OnComponentReady(
         ad_block_extension->id(), ad_block_extension->path());
+    WaitForRegionalAdBlockServiceThread();
 
     return true;
   }
 
-  void WaitForAdBlockServiceThread() {
+  void WaitForDefaultAdBlockServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(
         new base::ThreadTestHelper(
             g_brave_browser_process->ad_block_service()->GetTaskRunner()));
+    ASSERT_TRUE(io_helper->Run());
+  }
+
+  void WaitForRegionalAdBlockServiceThread() {
+    scoped_refptr<base::ThreadTestHelper> io_helper(
+        new base::ThreadTestHelper(
+            g_brave_browser_process->ad_block_regional_service()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 };

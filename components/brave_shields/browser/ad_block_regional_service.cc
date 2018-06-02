@@ -18,9 +18,6 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_updater.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_updater_list.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 #include "brave/vendor/ad-block/lists/regions.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -65,12 +62,10 @@ bool AdBlockRegionalService::ShouldStartRequest(const GURL& url,
 
 bool AdBlockRegionalService::UnregisterComponentByLocale(const std::string& locale) {
   auto it = FindFilterListByLocale(locale);
-  if (it != region_lists.end()) {
-    auto index = std::distance(region_lists.begin(), it);
-    AdBlockRegionalUpdater updater(g_ad_block_regional_updaters.at(index));
-    return Unregister(updater.component_id_);
-  }
-  return false;
+  if (it == region_lists.end())
+    return false;
+  return Unregister(it->component_id);
+
 }
 
 bool AdBlockRegionalService::Init() {
@@ -81,15 +76,13 @@ bool AdBlockRegionalService::Init() {
 
   uuid_ = it->uuid;
 
-  auto index = std::distance(region_lists.begin(), it);
-  AdBlockRegionalUpdater updater(g_ad_block_regional_updaters.at(index));
-  Register(updater.component_name_,
+  Register(it->title,
            !g_ad_block_regional_component_id_.empty()
                ? g_ad_block_regional_component_id_
-               : updater.component_id_,
+               : it->component_id,
            !g_ad_block_regional_component_base64_public_key_.empty()
                ? g_ad_block_regional_component_base64_public_key_
-               : updater.component_base64_public_key_);
+               : it->base64_public_key);
 
   return true;
 }
@@ -110,20 +103,7 @@ void AdBlockRegionalService::OnComponentReady(
     const base::FilePath& install_dir) {
   base::FilePath dat_file_path =
       install_dir.AppendASCII(uuid_).AddExtension(FILE_PATH_LITERAL(".dat"));
-  if (!GetDATFileData(dat_file_path, buffer_)) {
-    LOG(ERROR) << "Could not obtain regional ad block data file";
-    return;
-  }
-  if (buffer_.empty()) {
-    LOG(ERROR) << "Could not obtain regional ad block data";
-    return;
-  }
-  ad_block_client_.reset(new AdBlockClient());
-  if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
-    ad_block_client_.reset();
-    LOG(ERROR) << "Failed to deserialize regional ad block data";
-    return;
-  }
+  AdBlockBaseService::GetDATFileData(dat_file_path);
 }
 
 // static

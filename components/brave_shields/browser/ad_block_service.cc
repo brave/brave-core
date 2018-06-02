@@ -49,29 +49,10 @@ bool AdBlockService::Init() {
   return true;
 }
 
-void AdBlockService::OnDATFileDataReady() {
-  if (buffer_.empty()) {
-    LOG(ERROR) << "Could not obtain ad block data";
-    return;
-  }
-
-  ad_block_client_.reset(new AdBlockClient());
-  if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
-    ad_block_client_.reset();
-    LOG(ERROR) << "Failed to deserialize ad block data";
-    return;
-  }
-}
-
 void AdBlockService::OnComponentReady(const std::string& component_id,
                                       const base::FilePath& install_dir) {
   base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
-
-  GetTaskRunner()->PostTaskAndReply(
-      FROM_HERE,
-      base::Bind(&GetDATFileData, dat_file_path, &buffer_),
-      base::Bind(&AdBlockService::OnDATFileDataReady,
-                 weak_factory_.GetWeakPtr()));
+  AdBlockBaseService::GetDATFileData(dat_file_path);
 }
 
 // static

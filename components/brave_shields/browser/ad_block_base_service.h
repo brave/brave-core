@@ -12,7 +12,9 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
+#include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
 
 class AdBlockClient;
@@ -33,11 +35,18 @@ class AdBlockBaseService : public BaseBraveShieldsService {
  protected:
   bool Init() override;
   void Cleanup() override;
-  void OnComponentReady(const std::string& component_id,
-                        const base::FilePath& install_dir) override;
 
-  std::vector<unsigned char> buffer_;
+  void GetDATFileData(const base::FilePath& dat_file_path);
+
   std::unique_ptr<AdBlockClient> ad_block_client_;
+  DATFileDataBuffer buffer_;
+
+ private:
+  void OnDATFileDataReady();
+
+  base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
+
+  DISALLOW_COPY_AND_ASSIGN(AdBlockBaseService);
 };
 
 }  // namespace brave_shields
