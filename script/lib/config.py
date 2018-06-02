@@ -4,6 +4,7 @@ import errno
 import json
 import os
 import platform
+import re
 import sys
 
 PLATFORM = {
