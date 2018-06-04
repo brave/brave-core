@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">O lançamento do SO Brave foi possível devido a <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
 <translation id="8372475781172910778">Licenças de código aberto do SO Brave</translation>
 <translation id="5019879183386042809">Definir o Brave como navegador predefinido</translation>
-<translation id="662492621463805426">Introdução ao SO Brave</translation>
 <translation id="5063987220091207247">O SO Brave não consegue abrir esta página.</translation>
-<translation id="4458285410772214805">Termine sessão e volte a iniciar sessão para que esta alteração tenha efeito.</translation>
 <translation id="4065288863231444640">Permitir que o Brave seja executado em segundo plano</translation>
-<translation id="8926637909431618259">Continuar a executar aplicações em segundo plano quando o Brave está fechado</translation>
-<translation id="2077129598763517140">Utilizar aceleração de hardware sempre que estiver disponível</translation>
-<translation id="7182196174524406109">(é necessário <ph name="BEGIN_BUTTON"/>reiniciar<ph name="END_BUTTON"/> o Brave)</translation>
 <translation id="2585240446624043880">O Brave não consegue ler e escrever no respetivo diretório de dados:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>

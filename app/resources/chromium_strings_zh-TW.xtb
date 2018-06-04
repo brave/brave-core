@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">Brave 作業系統的開發有賴其他<ph name="BEGIN_LINK_CROS_OSS"/>開放原始碼軟體<ph name="END_LINK_CROS_OSS"/>。</translation>
 <translation id="8372475781172910778">Brave 作業系統開放原始碼授權</translation>
 <translation id="5019879183386042809">將 Brave 設為預設瀏覽器</translation>
-<translation id="662492621463805426">開始使用 Brave 作業系統</translation>
 <translation id="5063987220091207247">Brave 作業系統無法開啟這個網頁。</translation>
-<translation id="4458285410772214805">請先登出，然後重新登入，這項變更才會生效。</translation>
 <translation id="4065288863231444640">讓 Brave 在背景執行</translation>
-<translation id="8926637909431618259">在 Brave 關閉時繼續執行背景應用程式</translation>
-<translation id="2077129598763517140">在可用時使用硬體加速</translation>
-<translation id="7182196174524406109">(必須<ph name="BEGIN_BUTTON"/>重新啟動<ph name="END_BUTTON"/> Brave)</translation>
 <translation id="2585240446624043880">Brave 無法讀取及寫入資料目錄：
 
 <ph name="USER_DATA_DIRECTORY"/></translation>

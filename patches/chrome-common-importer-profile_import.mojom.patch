@@ -1,11 +1,11 @@
 diff --git a/chrome/common/importer/profile_import.mojom b/chrome/common/importer/profile_import.mojom
-index ce703fd88ae73abd0d1cb91247adbc802d43993a..f4b6b4c648ef8cdb27abaf849d1710e84c5073fc 100644
+index e37446ad30a9c86b480ec389ff7aab0cd12269f8..42135898c96e8786ff39da3a6d250ab7d94b06a5 100644
 --- a/chrome/common/importer/profile_import.mojom
 +++ b/chrome/common/importer/profile_import.mojom
 @@ -7,6 +7,7 @@ module chrome.mojom;
  import "components/autofill/content/common/autofill_types.mojom";
  import "mojo/public/mojom/base/string16.mojom";
- import "mojo/common/values.mojom";
+ import "mojo/public/mojom/base/values.mojom";
 +import "services/network/public/mojom/cookie_manager.mojom";
  import "url/mojom/url.mojom";
  

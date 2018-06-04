@@ -1,7 +1,7 @@
-diff --git a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.h b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.h
-index c4422b4951beb8ffa93093e2a9e8fecd7ceba242..82d1813805023d9ef8a34f7a180818c14eb1497e 100644
---- a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.h
-+++ b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.h
+diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.h b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
+index aafe25a269af88e9a89473ca0c8980707eec27fb..c41398158429644d38453fcaff1236eb2d9cdbbe 100644
+--- a/third_party/blink/renderer/modules/webaudio/audio_buffer.h
++++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
 @@ -41,6 +41,7 @@ namespace blink {
  class AudioBus;
  class AudioBufferOptions;

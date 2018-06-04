@@ -1,7 +1,7 @@
-diff --git a/third_party/WebKit/Source/modules/csspaint/PaintRenderingContext2D.idl b/third_party/WebKit/Source/modules/csspaint/PaintRenderingContext2D.idl
-index 9edfdb35bc6648b5ede702c90c7bebc99089fe4c..471c84b08feebba19f674445f153f1713ddaa8e6 100644
---- a/third_party/WebKit/Source/modules/csspaint/PaintRenderingContext2D.idl
-+++ b/third_party/WebKit/Source/modules/csspaint/PaintRenderingContext2D.idl
+diff --git a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
+index 7c7ee5c1d0b24151216098b797fdac9114a99b75..0a92255bc9c811d4bd92cbc8fc22183d649812ed 100644
+--- a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
++++ b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
 @@ -57,10 +57,10 @@
  
      void clip(optional CanvasFillRule winding);

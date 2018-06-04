@@ -14,7 +14,7 @@ source_set("renderer") {
 
   deps = [
     "//skia",
-    "//third_party/WebKit/public:blink",
+    "//third_party/blink/public:blink",
     "//brave/chromium_src:renderer",
     "//brave/content:common",
   ]

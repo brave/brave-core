@@ -1,9 +1,9 @@
 diff --git a/components/vector_icons/aggregate_vector_icons.py b/components/vector_icons/aggregate_vector_icons.py
-index c48a34932e2b00b5a8abeb8be2127feb58d31f06..1b0fa60587a0273fc305f1b2ada75da3716a0589 100644
+index 112cf7bb749e59b866d08aa12dd5dc2e8e7a1745..a5a8bf724461f6b9d649e4536f22f05d747ae33a 100644
 --- a/components/vector_icons/aggregate_vector_icons.py
 +++ b/components/vector_icons/aggregate_vector_icons.py
-@@ -21,7 +21,7 @@ def CamelCase(name, suffix):
-   return 'k' + ''.join(words) + suffix
+@@ -87,7 +87,7 @@ def ExtractIconReps(icon_file_name):
+   return icon_representation_list
  
  
 -def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
@@ -11,7 +11,7 @@ index c48a34932e2b00b5a8abeb8be2127feb58d31f06..1b0fa60587a0273fc305f1b2ada75da3
    """Compiles all .icon files in a directory into two C++ files.
  
    Args:
-@@ -30,6 +30,8 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+@@ -96,6 +96,8 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
        file_list: A file containing the list of vector icon files to process.
        output_cc: The path that should be used to write the .cc file.
        output_h: The path that should be used to write the .h file.
@@ -20,19 +20,19 @@ index c48a34932e2b00b5a8abeb8be2127feb58d31f06..1b0fa60587a0273fc305f1b2ada75da3
    """
  
    # For each file in |file_list|, place it in |path_map| if its extension is
-@@ -52,6 +54,11 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
-       Error("Only filenames " + icon_name + ".icon or " + icon_name +
-             ".1x.icon are allowed.")
+@@ -114,6 +116,11 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+     if extension != ".icon":
+       Error("Only filenames " + icon_name + ".icon are allowed.")
  
 +    # Check for alternative path
 +    alt_icon_path = os.path.join(alt_working_directory, os.path.basename(icon_path))
 +    if (os.path.exists(alt_icon_path)):
 +      icon_path = alt_icon_path
 +
-     if not scale_factor and icon_name not in path_map:
+     if icon_name not in path_map:
        path_map[icon_name] = icon_path
-     elif scale_factor and icon_name not in path_map_1x:
-@@ -147,13 +154,16 @@ def main():
+     else:
+@@ -200,13 +207,16 @@ def main():
                      help="The path to output the CC file to.")
    parser.add_option("--output_h",
                      help="The path to output the header file to.")

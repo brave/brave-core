@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index cc944d605216463e66cfeeb73ad6c5846aff02f5..0e2caeddfe622b9ccfc4ecfbdde489776ace8274 100644
+index 29da523563d3dbbe773f8843dc17db9310016311..ad36ca8581f39ecefb1e3bf1ea4979e3404ace99 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@

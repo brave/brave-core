@@ -1,7 +1,7 @@
-diff --git a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.idl b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.idl
+diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.idl b/third_party/blink/renderer/modules/webaudio/audio_buffer.idl
 index 08e683ee254995a102235b209030cb4688b476b2..36238921b1d3f9cdff4642e6674228e9a49bb546 100644
---- a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.idl
-+++ b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.idl
+--- a/third_party/blink/renderer/modules/webaudio/audio_buffer.idl
++++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.idl
 @@ -38,7 +38,7 @@
  
      // Channel access

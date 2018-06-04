@@ -26,27 +26,6 @@ group("symbol_dist_resources") {
   public_deps = [ ":generate_breakpad_symbols" ]
 }
 
-group("widevine_cdm_adapter") {
-  data_deps = [
-    "//third_party/widevine/cdm:widevinecdm",
-  ]
-  public_deps = [
-    "//third_party/widevine/cdm:widevinecdmadapter",
-  ]
-}
-
-copy("dist_widevine_resources") {
-  sources = [
-    "$root_out_dir/$widevine_cdm_path/widevinecdmadapter.dll",
-  ]
-  outputs = [
-    "$brave_dist_dir/$widevine_cdm_path/{{source_file_part}}"
-  ]
-  public_deps = [
-    ":widevine_cdm_adapter",
-  ]
-}
-
 copy("dist_resources") {
   sources = [
     "$root_out_dir/chrome_elf.dll",

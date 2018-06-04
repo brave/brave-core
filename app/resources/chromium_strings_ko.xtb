@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">Brave OS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용했습니다.</translation>
 <translation id="8372475781172910778">Brave OS 오픈소스 라이선스</translation>
 <translation id="5019879183386042809">Brave을 기본 브라우저로 설정</translation>
-<translation id="662492621463805426">Brave OS 시작하기</translation>
 <translation id="5063987220091207247">Brave OS에서 이 페이지를 열 수 없음</translation>
-<translation id="4458285410772214805">변경사항을 적용하려면 로그아웃했다가 다시 로그인하세요.</translation>
 <translation id="4065288863231444640">백그라운드에서 Brave을 실행</translation>
-<translation id="8926637909431618259">Brave 종료 후에도 백그라운드 앱을 계속 실행</translation>
-<translation id="2077129598763517140">가능한 경우 하드웨어 가속 사용</translation>
-<translation id="7182196174524406109">(Brave을 <ph name="BEGIN_BUTTON"/>다시 시작<ph name="END_BUTTON"/>해야 함)</translation>
 <translation id="2585240446624043880">Brave에서 데이터 디렉토리를 읽고 쓸 수 없습니다.
 
 <ph name="USER_DATA_DIRECTORY"/></translation>

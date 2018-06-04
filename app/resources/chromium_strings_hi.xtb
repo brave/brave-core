@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">क्रोमियम OS अतिरिक्त <ph name="BEGIN_LINK_CROS_OSS"/>खुला स्रोत सॉफ़्टवेयर<ph name="END_LINK_CROS_OSS"/> द्वारा संभव बनाया गया है.</translation>
 <translation id="8372475781172910778">क्रोमियम OS ओपन सोर्स लाइसेंस</translation>
 <translation id="5019879183386042809">क्रोमियम को डिफ़ॉल्ट ब्राउज़र बनाएं</translation>
-<translation id="662492621463805426">क्रोमियम OS के साथ आरंभ करना</translation>
 <translation id="5063987220091207247">क्रोमियम OS यह पेज नहीं खोल सकता.</translation>
-<translation id="4458285410772214805">इस परिवर्तन के प्रभावी होने के लिए, कृपया प्रस्थान करें और पुन: प्रवेश करें.</translation>
 <translation id="4065288863231444640">क्रोमियम को बैकग्राउंड में चलने दें</translation>
-<translation id="8926637909431618259">जब क्रोमियम बंद हो तब पृष्ठभूमि ऐप्‍लिकेशन चलाना जारी रखें</translation>
-<translation id="2077129598763517140">उपलब्ध होने पर हार्डवेयर त्वरण का उपयोग करें</translation>
-<translation id="7182196174524406109">(क्रोमियम <ph name="BEGIN_BUTTON"/>पुन: प्रारंभ<ph name="END_BUTTON"/> करना आवश्यक है)</translation>
 <translation id="2585240446624043880">क्रोमियम इसकी डेटा निर्देशिका में पढ़ या लिख नहीं सकता:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>

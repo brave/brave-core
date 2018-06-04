@@ -1,7 +1,7 @@
-diff --git a/third_party/WebKit/Source/core/frame/ContentSettingsClient.cpp b/third_party/WebKit/Source/core/frame/ContentSettingsClient.cpp
-index fde957a1ab1e63c9b5fc66f69015641e42fb10e9..6356ba58c5f77b9c8486023f41c7faf460516bd3 100644
---- a/third_party/WebKit/Source/core/frame/ContentSettingsClient.cpp
-+++ b/third_party/WebKit/Source/core/frame/ContentSettingsClient.cpp
+diff --git a/third_party/blink/renderer/core/frame/content_settings_client.cc b/third_party/blink/renderer/core/frame/content_settings_client.cc
+index 1ccb2a59b639a914e102aa48af6b482434c47d81..bc9d72f6507fddd8af71389b4d7174db90cd9540 100644
+--- a/third_party/blink/renderer/core/frame/content_settings_client.cc
++++ b/third_party/blink/renderer/core/frame/content_settings_client.cc
 @@ -59,6 +59,12 @@ bool ContentSettingsClient::AllowScriptFromSource(bool enabled_per_settings,
    return enabled_per_settings;
  }

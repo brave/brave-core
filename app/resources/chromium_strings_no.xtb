@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">Brave OS er gjort mulig av ytterligere <ph name="BEGIN_LINK_CROS_OSS"/>åpen kilde-programvare<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Åpen kildekode-lisenser for Brave OS</translation>
 <translation id="5019879183386042809">Gjør Brave til standard nettleser</translation>
-<translation id="662492621463805426">Kom i gang med Brave OS</translation>
 <translation id="5063987220091207247">Brave OS kan ikke åpne denne siden.</translation>
-<translation id="4458285410772214805">Logg deg av og så på igjen for at denne endringen skal tre i kraft.</translation>
 <translation id="4065288863231444640">La Brave kjøre i bakgrunnen</translation>
-<translation id="8926637909431618259">Fortsett å kjøre bakgrunnsprogrammer når Brave er lukket</translation>
-<translation id="2077129598763517140">Bruk maskinvareakselerasjon når det er tilgjengelig</translation>
-<translation id="7182196174524406109">(krever at Brave <ph name="BEGIN_BUTTON"/>startes på nytt<ph name="END_BUTTON"/>)</translation>
 <translation id="2585240446624043880">Brave kan ikke lese og skrive til egen datakatalog:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>

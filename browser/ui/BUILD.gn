@@ -1,4 +1,5 @@
 import("//build/config/features.gni")
+import("//chrome/common/features.gni")
 
 source_set("ui") {
   sources = [
@@ -20,7 +21,7 @@ source_set("ui") {
     "webui/new_tab_html_source.h",
   ]
 
-  if (is_mac) {
+  if (is_mac && !mac_views_browser) {
     sources += [
       "cocoa/importer/brave_import_lock_dialog_cocoa.mm",
     ]

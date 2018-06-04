@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">Brave OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS"/>open source software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Brave OS open source licences</translation>
 <translation id="5019879183386042809">Make Brave the default browser</translation>
-<translation id="662492621463805426">Get Started with Brave OS</translation>
 <translation id="5063987220091207247">Brave OS can't open this page.</translation>
-<translation id="4458285410772214805">Please sign out and sign in again for this change to take effect.</translation>
 <translation id="4065288863231444640">Let Brave Run in the Background</translation>
-<translation id="8926637909431618259">Continue running background apps when Brave is closed</translation>
-<translation id="2077129598763517140">Use hardware acceleration when available</translation>
-<translation id="7182196174524406109">(requires Brave <ph name="BEGIN_BUTTON"/>restart<ph name="END_BUTTON"/>)</translation>
 <translation id="2585240446624043880">Brave cannot read and write to its data directory:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>

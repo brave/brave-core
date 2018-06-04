@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-index 36d4bdef02d61e2062469230d7241dbfd895ded6..a23a7c73e0a7199ea1efade69e5d24491e90e305 100644
+index 906a34b0893281b210417953b7b3e2d9c54ae048..cb8d537935c19ba1d55656db66384a85df68bb0b 100644
 --- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
 +++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-@@ -8,6 +8,8 @@
- 
+@@ -9,6 +9,8 @@
  #include "base/command_line.h"
+ #include "base/logging.h"
  #include "base/version.h"
 +#include "brave/browser/extensions/brave_component_extension_resource_manager.h"
 +#include "brave/common/extensions/api/generated_api_registration.h"
  #include "build/build_config.h"
  #include "chrome/browser/app_mode/app_mode_utils.h"
  #include "chrome/browser/browser_process.h"
-@@ -88,7 +90,7 @@ ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient() {
+@@ -89,7 +91,7 @@ ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient() {
    process_manager_delegate_.reset(new ChromeProcessManagerDelegate);
    api_client_.reset(new ChromeExtensionsAPIClient);
    SetCurrentChannel(chrome::GetChannel());
@@ -20,7 +20,7 @@ index 36d4bdef02d61e2062469230d7241dbfd895ded6..a23a7c73e0a7199ea1efade69e5d2449
  }
  
  ChromeExtensionsBrowserClient::~ChromeExtensionsBrowserClient() {}
-@@ -322,6 +324,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
+@@ -324,6 +326,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
  
    // Generated APIs from Chrome.
    api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);

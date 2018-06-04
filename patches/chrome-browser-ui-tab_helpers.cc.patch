@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index d058e27c755fee6abd32c082a665837c51fbfef1..d909db83c45d71b1a251dd5f56635b02cb21877e 100644
+index 61d874392c26e2911c1b830c80f7264a6b38e561..052ef69872750e9649de8f94a5878e0137f25bd7 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
 @@ -10,6 +10,7 @@
@@ -17,4 +17,4 @@ index d058e27c755fee6abd32c082a665837c51fbfef1..d909db83c45d71b1a251dd5f56635b02
 +  brave::AttachTabHelpers(web_contents);
    chrome_browser_net::NetErrorTabHelper::CreateForWebContents(web_contents);
    chrome_browser_net::PredictorTabHelper::CreateForWebContents(web_contents);
-   if (base::FeatureList::IsEnabled(kDecoupleTranslateLanguageFeature)) {
+   ChromeLanguageDetectionTabHelper::CreateForWebContents(web_contents);

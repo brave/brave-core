@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index c44f8a110599e0cd1d3c15c805b594a63d4b2a54..fa2db27074dc1bdd151d471e1894285030b85e69 100644
+index c365088b90b7a91faf52f5b108f64621a219b11f..3be0b71dfb7c8694da3d30608a3be627830c5559 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -30,7 +30,7 @@ source_set("lib") {
+@@ -29,7 +29,7 @@ source_set("lib") {
    sources = [
      "appid.h",
      "chrome.release",
@@ -11,7 +11,7 @@ index c44f8a110599e0cd1d3c15c805b594a63d4b2a54..fa2db27074dc1bdd151d471e18942850
      "configuration.cc",
      "configuration.h",
      "decompress.cc",
-@@ -142,11 +142,12 @@ template("generate_mini_installer") {
+@@ -132,11 +132,12 @@ template("generate_mini_installer") {
  
      inputs = [
        "$chrome_dll_file",
@@ -25,7 +25,7 @@ index c44f8a110599e0cd1d3c15c805b594a63d4b2a54..fa2db27074dc1bdd151d471e18942850
      ]
  
      outputs = [
-@@ -190,6 +191,8 @@ template("generate_mini_installer") {
+@@ -180,6 +181,8 @@ template("generate_mini_installer") {
        "//chrome/installer/setup",
        "//third_party/icu:icudata",
        chrome_dll_target,

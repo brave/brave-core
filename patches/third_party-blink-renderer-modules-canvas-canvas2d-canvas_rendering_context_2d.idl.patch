@@ -1,11 +1,11 @@
-diff --git a/third_party/WebKit/Source/modules/canvas/offscreencanvas2d/OffscreenCanvasRenderingContext2D.idl b/third_party/WebKit/Source/modules/canvas/offscreencanvas2d/OffscreenCanvasRenderingContext2D.idl
-index 142beff855606a04d51533a51590f4f29cd3f332..0ef3e904cefdb1ccc25b20e885ff2438d401553b 100644
---- a/third_party/WebKit/Source/modules/canvas/offscreencanvas2d/OffscreenCanvasRenderingContext2D.idl
-+++ b/third_party/WebKit/Source/modules/canvas/offscreencanvas2d/OffscreenCanvasRenderingContext2D.idl
-@@ -60,10 +60,10 @@
-     void stroke(Path2D path);
-     void clip();
-     void clip(Path2D path);
+diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
+index b556f96a2a7bf87e9fc3be171bd5f3b913ac4b82..e8c5bbb91e8ee895570fe2e7d87ecb165aacd2fc 100644
+--- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
++++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
+@@ -102,10 +102,10 @@ interface CanvasRenderingContext2D {
+     [RuntimeEnabled=Canvas2dScrollPathIntoView] void scrollPathIntoView(optional Path2D path);
+     void clip(optional CanvasFillRule winding);
+     void clip(Path2D path, optional CanvasFillRule winding);
 -    boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
 -    boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
 -    boolean isPointInStroke(unrestricted double x, unrestricted double y);
@@ -17,7 +17,7 @@ index 142beff855606a04d51533a51590f4f29cd3f332..0ef3e904cefdb1ccc25b20e885ff2438
  
      // text (see also the CanvasDrawingStyles interface)
      void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
-@@ -78,7 +78,7 @@
+@@ -125,7 +125,7 @@ interface CanvasRenderingContext2D {
      // pixel manipulation
      [RaisesException] ImageData createImageData(ImageData imagedata);
      [RaisesException] ImageData createImageData(long sw, long sh);
@@ -25,13 +25,12 @@ index 142beff855606a04d51533a51590f4f29cd3f332..0ef3e904cefdb1ccc25b20e885ff2438
 +    [CallWith=ScriptState, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
- 
-@@ -96,7 +96,7 @@
+     
+@@ -149,6 +149,7 @@ interface CanvasRenderingContext2D {
  
      // dashed lines
      void setLineDash(sequence<unrestricted double> dash);
--    sequence<unrestricted double> getLineDash();
-+    [CallWith=ScriptState] sequence<unrestricted double> getLineDash();
++    [CallWith=ScriptState]
+     sequence<unrestricted double> getLineDash();
      attribute unrestricted double lineDashOffset;
  
-     // text

@@ -1,5 +1,5 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 7d60dd920904d3f98573680e311096f0b9cb252e..11b0b86ba5c4e33884b53c7296a20db5137fc0a2 100644
+index 9e38ee0e592b64f2457dd48110aceafff95164cd..c09b86450ee9906373c3937f9a1e30cb4fb21874 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
 @@ -46,6 +46,8 @@
@@ -11,10 +11,11 @@ index 7d60dd920904d3f98573680e311096f0b9cb252e..11b0b86ba5c4e33884b53c7296a20db5
  if (target_os == "") {
    target_os = host_os
  }
-@@ -535,6 +537,14 @@ default_compiler_configs = [
+@@ -540,7 +542,14 @@ default_compiler_configs = [
    "//build/config/coverage:default_coverage",
    "//build/config/sanitizers:default_sanitizer_flags",
  ]
+-
 +if (brave_chromium_build) {
 +  default_compiler_configs -= [ "//build/config/compiler:default_include_dirs" ]
 +  default_compiler_configs += [

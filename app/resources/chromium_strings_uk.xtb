@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">ОС Brave стала можливою завдяки додатковому <ph name="BEGIN_LINK_CROS_OSS"/>програмному забезпеченню з відкритим кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Ліцензії ОС Brave із відкритим кодом</translation>
 <translation id="5019879183386042809">Зробити Brave переглядачем за умовчанням</translation>
-<translation id="662492621463805426">Початок роботи з ОС Brave</translation>
 <translation id="5063987220091207247">Неможливо відкрити цю сторінку в ОС Brave.</translation>
-<translation id="4458285410772214805">Щоб зміна почала діяти, вийдіть і ввійдіть знову.</translation>
 <translation id="4065288863231444640">Дозволити Brave працювати у фоновому режимі</translation>
-<translation id="8926637909431618259">Продовжувати роботу фонових програм, коли Brave закрито</translation>
-<translation id="2077129598763517140">Використовувати апаратне прискорення, якщо доступно</translation>
-<translation id="7182196174524406109">(потрібно <ph name="BEGIN_BUTTON"/>перезапустити<ph name="END_BUTTON"/> Brave)</translation>
 <translation id="2585240446624043880">Brave не може читати та писати дані у свій каталог даних:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>

@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
+index 80c8e24f7840f5bd1da6ec2dd2c3540ebd6f3045..88deccecb6693c0ae84eed1067cbc395ca70908a 100644
+--- a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
++++ b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
+@@ -10,6 +10,7 @@
+ #include "base/single_thread_task_runner.h"
+ #include "base/threading/thread_task_runner_handle.h"
+ #include "base/time/time.h"
++#include "brave/browser/ui/toolbar/brave_app_menu_model.h"
+ #include "cc/paint/paint_flags.h"
+ #include "chrome/app/vector_icons/vector_icons.h"
+ #include "chrome/browser/themes/theme_properties.h"
+@@ -113,7 +114,7 @@ void BrowserAppMenuButton::ShowMenu(bool for_drop) {
+ 
+   Browser* browser = toolbar_view_->browser();
+ 
+-  InitMenu(std::make_unique<AppMenuModel>(toolbar_view_, browser), browser,
++  InitMenu(std::make_unique<BraveAppMenuModel>(toolbar_view_, browser), browser,
+            for_drop ? AppMenu::FOR_DROP : AppMenu::NO_FLAGS);
+ 
+   base::TimeTicks menu_open_time = base::TimeTicks::Now();

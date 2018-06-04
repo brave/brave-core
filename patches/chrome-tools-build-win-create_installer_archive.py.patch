@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 8bef984cc9e35fe5d15d0a2ae7d2013eec075156..6d02d51b7819827ac773b9727ac7bfccdc6739eb 100755
+index baadb8be43b2dd2159a3ff2d9b3c82c10d869686..82d8c010f42657619d3d5a4b2641dbae988d1b83 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -109,6 +109,33 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
@@ -36,7 +36,7 @@ index 8bef984cc9e35fe5d15d0a2ae7d2013eec075156..6d02d51b7819827ac773b9727ac7bfcc
  
  def CopySectionFilesToStagingDir(config, section, staging_dir, src_dir):
    """Copies installer archive files specified in section from src_dir to
-@@ -565,6 +592,9 @@ def main(options):
+@@ -557,6 +584,9 @@ def main(options):
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
  

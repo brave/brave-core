@@ -63,7 +63,7 @@ void AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 std::unique_ptr<AdBlockService> AdBlockServiceFactory() {
-  return base::MakeUnique<AdBlockService>();
+  return std::make_unique<AdBlockService>();
 }
 
 }  // namespace brave_shields

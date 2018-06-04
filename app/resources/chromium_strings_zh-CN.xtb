@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">Brave 操作系统的问世还有其他<ph name="BEGIN_LINK_CROS_OSS"/>开放源代码软件<ph name="END_LINK_CROS_OSS"/>的一份功能。</translation>
 <translation id="8372475781172910778">Brave操作系统开放源代码许可</translation>
 <translation id="5019879183386042809">将 Brave 设置为默认浏览器</translation>
-<translation id="662492621463805426">Brave 操作系统使用入门</translation>
 <translation id="5063987220091207247">Brave 操作系统无法打开此网页。</translation>
-<translation id="4458285410772214805">请先退出，然后重新登录，以便此更改生效。</translation>
 <translation id="4065288863231444640">让 Brave 在后台运行</translation>
-<translation id="8926637909431618259">关闭 Brave 后继续运行后台应用</translation>
-<translation id="2077129598763517140">使用硬件加速模式（如果可用）</translation>
-<translation id="7182196174524406109">（需要<ph name="BEGIN_BUTTON"/>重新启动<ph name="END_BUTTON"/> Brave）</translation>
 <translation id="2585240446624043880">Brave 无法读写其数据目录：
 
 <ph name="USER_DATA_DIRECTORY"/></translation>

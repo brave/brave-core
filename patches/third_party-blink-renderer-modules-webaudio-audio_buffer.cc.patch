@@ -1,24 +1,26 @@
-diff --git a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.cpp b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.cpp
-index c1eb9c51350e31e3b6c621372faaffbbd88809ae..86388d35a06be34e3dd1139044c10bdef27a07f8 100644
---- a/third_party/WebKit/Source/modules/webaudio/AudioBuffer.cpp
-+++ b/third_party/WebKit/Source/modules/webaudio/AudioBuffer.cpp
-@@ -30,12 +30,15 @@
+diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
+index 71da68ca003c15e2f0bf5e1e094c3b2043652ad3..c78f8a26efb0d97ec242bdbeb29286b7f905e1f5 100644
+--- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
++++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
+@@ -28,14 +28,17 @@
  
- #include "bindings/core/v8/ExceptionMessages.h"
- #include "bindings/core/v8/ExceptionState.h"
+ #include "third_party/blink/renderer/modules/webaudio/audio_buffer.h"
+ 
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
- #include "core/dom/ExceptionCode.h"
-+#include "core/frame/LocalDOMWindow.h"
- #include "modules/webaudio/AudioBufferOptions.h"
- #include "modules/webaudio/BaseAudioContext.h"
- #include "platform/audio/AudioBus.h"
- #include "platform/audio/AudioFileReader.h"
- #include "platform/audio/AudioUtilities.h"
-+#include "platform/bindings/ScriptState.h"
- #include "platform/wtf/typed_arrays/Float32Array.h"
+ #include "third_party/blink/renderer/bindings/core/v8/exception_messages.h"
+ #include "third_party/blink/renderer/bindings/core/v8/exception_state.h"
+ #include "third_party/blink/renderer/core/dom/exception_code.h"
++#include "third_party/blink/renderer/core/frame/local_dom_window.h"
+ #include "third_party/blink/renderer/modules/webaudio/audio_buffer_options.h"
+ #include "third_party/blink/renderer/modules/webaudio/base_audio_context.h"
+ #include "third_party/blink/renderer/platform/audio/audio_bus.h"
+ #include "third_party/blink/renderer/platform/audio/audio_file_reader.h"
+ #include "third_party/blink/renderer/platform/audio/audio_utilities.h"
++#include "third_party/blink/renderer/platform/bindings/script_state.h"
+ #include "third_party/blink/renderer/platform/wtf/typed_arrays/float32_array.h"
  
  namespace blink {
-@@ -220,8 +223,14 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
+@@ -220,8 +223,13 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
  }
  
  NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
@@ -29,11 +31,10 @@ index c1eb9c51350e31e3b6c621372faaffbbd88809ae..86388d35a06be34e3dd1139044c10bde
 +  if (window && !AllowFingerprinting(window->GetFrame())) {
 +    return NotShared<DOMFloat32Array>(nullptr);
 +  }
-+
    if (channel_index >= channels_.size()) {
      exception_state.ThrowDOMException(
          kIndexSizeError, "channel index (" + String::Number(channel_index) +
-@@ -240,16 +249,23 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
+@@ -240,16 +248,22 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
    return NotShared<DOMFloat32Array>(channels_[channel_index].Get());
  }
  
@@ -56,7 +57,6 @@ index c1eb9c51350e31e3b6c621372faaffbbd88809ae..86388d35a06be34e3dd1139044c10bde
 +  if (window && !AllowFingerprinting(window->GetFrame())) {
 +    return;
 +  }
-+
    if (channel_number < 0 ||
        channel_number >= static_cast<long>(channels_.size())) {
      exception_state.ThrowDOMException(

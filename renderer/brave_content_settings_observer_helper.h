@@ -5,8 +5,8 @@
 #ifndef BRAVE_RENDERER_BRAVE_CONTENT_SETTINGS_OBSERVER_HELPER_H_
 #define BRAVE_RENDERER_BRAVE_CONTENT_SETTINGS_OBSERVER_HELPER_H_
 
-#include "core/frame/ContentSettingsClient.h"
-#include "core/frame/LocalFrame.h"
+#include "third_party/blink/renderer/core/frame/content_settings_client.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
 
 static bool AllowFingerprinting(blink::LocalFrame* frame) {
   if (!frame) return true;

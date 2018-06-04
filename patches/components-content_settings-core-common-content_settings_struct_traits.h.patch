@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_struct_traits.h b/components/content_settings/core/common/content_settings_struct_traits.h
-index f36bdde91be3f6d44f53fd042b707ec2b83b908e..0abef31c238e59eb7dd07a18b8442e4575eb58a2 100644
+index 0da14fdf14c69ed1399df3c45cd2b27f085d3187..d533549cc233fb46ae28e73de643720fe1c025d0 100644
 --- a/components/content_settings/core/common/content_settings_struct_traits.h
 +++ b/components/content_settings/core/common/content_settings_struct_traits.h
-@@ -141,6 +141,16 @@ struct StructTraits<
+@@ -140,6 +140,16 @@ struct StructTraits<
      return r.client_hints_rules;
    }
  

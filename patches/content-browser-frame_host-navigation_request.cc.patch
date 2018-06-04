@@ -1,8 +1,8 @@
 diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
-index cc193622958b95baf7ae5b409c8c9e8df054a0ed..2b6bb2120c494cd04c01afb619cf186a31b9dbee 100644
+index 9d8ca86d3151a5a0a46edd111322bcc3bfa3d376..8abe298e616f9cda57ff687573ceb4e3301f4bef 100644
 --- a/content/browser/frame_host/navigation_request.cc
 +++ b/content/browser/frame_host/navigation_request.cc
-@@ -1362,6 +1362,22 @@ void NavigationRequest::CommitNavigation() {
+@@ -1410,6 +1410,22 @@ void NavigationRequest::CommitNavigation() {
           render_frame_host ==
               frame_tree_node_->render_manager()->speculative_frame_host());
  

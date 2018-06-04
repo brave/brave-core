@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/extension_prefs.cc b/extensions/browser/extension_prefs.cc
-index c6e78894dbb6813e5445adacf7935dea5a4ce615..ce47542f157ea28b4b2728945b43227f7c7871e0 100644
+index b594e6600fbb356943a3384b1df7026ad0ec4b4f..8769a4d3f3b93b44eac0f39548e8e0832af573eb 100644
 --- a/extensions/browser/extension_prefs.cc
 +++ b/extensions/browser/extension_prefs.cc
 @@ -19,6 +19,7 @@
@@ -10,12 +10,12 @@ index c6e78894dbb6813e5445adacf7935dea5a4ce615..ce47542f157ea28b4b2728945b43227f
  #include "build/build_config.h"
  #include "components/crx_file/id_util.h"
  #include "components/pref_registry/pref_registry_syncable.h"
-@@ -347,7 +348,7 @@ ExtensionPrefs* ExtensionPrefs::Create(
+@@ -328,7 +329,7 @@ ExtensionPrefs* ExtensionPrefs::Create(
      bool extensions_disabled,
      const std::vector<ExtensionPrefsObserver*>& early_observers,
-     std::unique_ptr<base::Clock> clock) {
+     base::Clock* clock) {
 -  return new ExtensionPrefs(browser_context, pref_service, root_dir,
 +  return new BraveExtensionPrefs(browser_context, pref_service, root_dir,
-                             extension_pref_value_map, std::move(clock),
+                             extension_pref_value_map, clock,
                              extensions_disabled, early_observers);
  }
