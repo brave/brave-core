@@ -63,7 +63,7 @@ class ExtensionFunctionalTest : public ExtensionBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest, BlacklistExtension) {
+IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, BlacklistExtension) {
   base::FilePath test_data_dir;
   PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
   const extensions::Extension* extension =
@@ -71,7 +71,7 @@ IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest, BlacklistExtension) {
   ASSERT_FALSE(extension);
 }
 
-IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest, WhitelistedExtension) {
+IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, WhitelistedExtension) {
   base::FilePath test_data_dir;
   PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
   const extensions::Extension* extension =
