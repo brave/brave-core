@@ -27,7 +27,7 @@ namespace {
 
 std::vector<FilterList>::const_iterator FindFilterListByLocale(const std::string& locale) {
   return std::find_if(region_lists.begin(), region_lists.end(),
-                      [locale](const FilterList& filter_list) {
+                      [&locale](const FilterList& filter_list) {
                         return std::find_if(filter_list.langs.begin(),
                                             filter_list.langs.end(),
                                             [locale](const std::string& lang) {
@@ -47,11 +47,6 @@ AdBlockRegionalService::AdBlockRegionalService() {
 }
 
 AdBlockRegionalService::~AdBlockRegionalService() {
-  Cleanup();
-}
-
-void AdBlockRegionalService::Cleanup() {
-  AdBlockBaseService::Cleanup();
 }
 
 bool AdBlockRegionalService::ShouldStartRequest(const GURL& url,

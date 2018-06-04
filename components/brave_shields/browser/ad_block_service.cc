@@ -30,11 +30,6 @@ AdBlockService::AdBlockService() {
 }
 
 AdBlockService::~AdBlockService() {
-  Cleanup();
-}
-
-void AdBlockService::Cleanup() {
-  AdBlockBaseService::Cleanup();
 }
 
 bool AdBlockService::ShouldStartRequest(const GURL& url,

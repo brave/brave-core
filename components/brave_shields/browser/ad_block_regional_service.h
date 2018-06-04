@@ -34,7 +34,6 @@ class AdBlockRegionalService : public AdBlockBaseService {
 
  protected:
   bool Init() override;
-  void Cleanup() override;
   void OnComponentRegistered(const std::string& component_id) override;
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir) override;
