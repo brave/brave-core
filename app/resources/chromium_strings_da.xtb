@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">Brave OS er realiseret af yderligere <ph name="BEGIN_LINK_CROS_OSS"/>open source-software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Brave OS open source-licenser</translation>
 <translation id="5019879183386042809">Gør Brave til din standardbrowser</translation>
-<translation id="662492621463805426">Kom godt i gang med Brave OS</translation>
 <translation id="5063987220091207247">Brave OS kan ikke åbne denne side.</translation>
-<translation id="4458285410772214805">Du skal logge ud og logge ind igen, for at denne ændring kan træde i kraft.</translation>
 <translation id="4065288863231444640">Lad Brave køre i baggrunden</translation>
-<translation id="8926637909431618259">Fortsæt med at køre baggrundsapps, når Brave er lukket</translation>
-<translation id="2077129598763517140">Brug hardwareacceleration, når det er muligt</translation>
-<translation id="7182196174524406109">(kræver en <ph name="BEGIN_BUTTON"/>genstart<ph name="END_BUTTON"/> af Brave)</translation>
 <translation id="2585240446624043880">Brave kan ikke læse og skrive til sin datamappe:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>

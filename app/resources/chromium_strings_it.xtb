@@ -20,13 +20,8 @@
 <translation id="2310890394934209120">La realizzazione di Brave OS è stata possibile grazie a <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> aggiuntivi.</translation>
 <translation id="8372475781172910778">Licenze open source di Brave OS</translation>
 <translation id="5019879183386042809">Imposta Brave come browser predefinito</translation>
-<translation id="662492621463805426">Inizia a utilizzare Brave OS</translation>
 <translation id="5063987220091207247">Brave OS non è in grado di aprire la pagina.</translation>
-<translation id="4458285410772214805">Esci ed esegui di nuovo l'accesso per applicare la modifica.</translation>
 <translation id="4065288863231444640">Lascia Brave in esecuzione in background</translation>
-<translation id="8926637909431618259">Continua a eseguire applicazioni in background dopo la chiusura di Brave</translation>
-<translation id="2077129598763517140">Usa accelerazione hardware quando disponibile</translation>
-<translation id="7182196174524406109">(è necessario <ph name="BEGIN_BUTTON"/>riavviare<ph name="END_BUTTON"/> Brave)</translation>
 <translation id="2585240446624043880">Brave non è in grado di leggere e scrivere nella directory dei dati:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
