@@ -262,30 +262,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         Make Brave the default browser
       </message>
       <if expr="chromeos">
-        <message name="IDS_NEW_TAB_CHROME_WELCOME_PAGE_TITLE"
-                 desc="Title for the hard-coded thumbnail that represents the Brave OS Welcome page. This is used on the NTP when there aren't enough thumbnails to show.">
-          Get Started with Brave OS
-        </message>
-      </if>
-      <if expr="not chromeos">
-        <message name="IDS_NEW_TAB_CHROME_WELCOME_PAGE_TITLE"
-                 desc="Title for the hard-coded thumbnail that represents the Brave Welcome page.  This is used on the NTP when there aren't enough thumbnails to show.">
-          Welcome to Brave
-        </message>
-      </if>
-      <if expr="chromeos">
         <message name="IDS_EXTERNAL_PROTOCOL_TITLE" desc="External Protocol Dialog Title">
           Brave OS can't open this page.
-        </message>
-      </if>
-      <if expr="not chromeos">
-        <message name="IDS_OPTIONS_RELAUNCH_REQUIRED" desc="The message displayed for an option that requires a relaunch to take effect. This appears in a message box if an option is changed that requires a relaunch.">
-          Please close all Brave windows and relaunch Brave for this change to take effect.
-        </message>
-      </if>
-      <if expr="chromeos">
-        <message name="IDS_OPTIONS_RELAUNCH_REQUIRED" desc="The message displayed for an option that requires a relaunch to take effect. This appears in a message box if an option is changed that requires a relaunch.">
-          Please sign out and sign in again for this change to take effect.
         </message>
       </if>
       <if expr="use_titlecase">
@@ -298,15 +276,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Let Brave run in the background
         </message>
       </if>
-      <message name="IDS_OPTIONS_SYSTEM_ENABLE_BACKGROUND_MODE" desc="The label of the check-box that enables background mode">
-        Continue running background apps when Brave is closed
-      </message>
-      <message name="IDS_OPTIONS_SYSTEM_ENABLE_HARDWARE_ACCELERATION_MODE" desc="The label of the check-box that enables hardware acceleration mode">
-        Use hardware acceleration when available
-      </message>
-      <message name="IDS_OPTIONS_SYSTEM_ENABLE_HARDWARE_ACCELERATION_MODE_RESTART" desc="The restart string after changing hardware acceleration mode">
-        (requires Brave <ph name="BEGIN_BUTTON">&lt;a is="action-link" role="button" id="gpu-mode-reset-restart-button" class="standalone-action-link"&gt;</ph>restart<ph name="END_BUTTON">&lt;/a&gt;</ph>)
-      </message>
       <message name="IDS_CANT_WRITE_USER_DIRECTORY_SUMMARY" desc="Summary of problem displayed in dialog when we can't create a directory for this user.">
 Brave cannot read and write to its data directory:
 
@@ -746,8 +715,8 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
            Note: these strings should only be used by Brave, but
                  omitting them brings up a hash collision error. -->
       <if expr="is_win">
-        <message name="IDS_CHROME_CLEANUP_PROMPT_EXPLANATION" desc="Description in the Brave Cleanup dialog that Brave browser shows when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is found on the user's computer. Appears under the title asking 'Remove harmful software?' Actor is Brave; we are asking, Do you want Brave to remove harmful software? 'it' is harmful software. User has the option of clicking 'Remove' to proceed with a cleanup, or 'Details' to see more details. Preferrably, the translation for this string should have the same meaning as IDS_SETTINGS_RESET_CLEANUP_EXPLANATION.">
-          Brave found harmful software on your computer. Brave can remove it and restore your settings to make your browser work normally again.
+        <message name="IDS_CHROME_CLEANUP_PROMPT_EXPLANATION" desc="Description in the Brave Cleanup dialog that Brave browser shows when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is found on the user's computer. Appears under the title asking 'Remove harmful software?' Actor is Brave; we are asking, Do you want Brave to remove harmful software? 'it' is harmful software. User has the option of clicking 'Remove' to proceed with a cleanup, or 'Details' to see more details. The description is also shown on the Brave Cleanup section of the Settings page, under 'Remove harmful software' title. Preferrably, the translation for this string should parallel IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_CURRENTLY_REMOVING.">
+          There's harmful software on your computer. Brave can remove it and restore your settings to make your browser work normally again.
         </message>
       </if>
 
@@ -778,12 +747,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         </message>
         <message name="IDS_SYNC_OTHER_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error notification when there's an error signing in.">
           Brave OS could not sync your data due to an error signing in.
-        </message>
-      </if>
-
-      <if expr="is_macosx">
-        <message name="IDS_OPTIONS_PASSWORDS_MAC_WARNING" desc="The warning for OS X that passwords are shared across profiles in the keychain.">
-          On Mac, passwords may be saved to your Keychain and accessed or synced by other Brave users sharing this OS X account.
         </message>
       </if>
 
