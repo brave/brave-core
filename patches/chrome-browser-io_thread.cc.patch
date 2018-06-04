@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/io_thread.cc b/chrome/browser/io_thread.cc
-index ba9ae2b58fe842f12b0186bef24692d8d6d99c15..3054e20f79b0f312d66b3ef38a040187d4b12607 100644
+index 4cf9b75a832d756794e6af729f9624baa34ab7d9..2b2430e33feab66b745301e856713b08515ea930 100644
 --- a/chrome/browser/io_thread.cc
 +++ b/chrome/browser/io_thread.cc
-@@ -31,6 +31,7 @@
+@@ -30,6 +30,7 @@
  #include "base/threading/thread.h"
  #include "base/time/time.h"
  #include "base/trace_event/trace_event.h"
@@ -10,10 +10,10 @@ index ba9ae2b58fe842f12b0186bef24692d8d6d99c15..3054e20f79b0f312d66b3ef38a040187
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/data_usage/tab_id_annotator.h"
-@@ -802,7 +803,7 @@ void IOThread::ConstructSystemRequestContext() {
-       globals_->network_quality_estimator.get());
+@@ -778,7 +779,7 @@ void IOThread::ConstructSystemRequestContext() {
+   std::unique_ptr<network::URLRequestContextBuilderMojo> builder =
+       std::make_unique<network::URLRequestContextBuilderMojo>();
  
-   builder->set_user_agent(GetUserAgent());
 -  auto chrome_network_delegate = std::make_unique<ChromeNetworkDelegate>(
 +  auto chrome_network_delegate = std::make_unique<BraveSystemNetworkDelegate>(
        extension_event_router_forwarder(), &system_enable_referrers_);

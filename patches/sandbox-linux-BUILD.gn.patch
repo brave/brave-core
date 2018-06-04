@@ -1,5 +1,5 @@
 diff --git a/sandbox/linux/BUILD.gn b/sandbox/linux/BUILD.gn
-index 207ef460ba53e4169793968cc11d8b489e602ae2..fbfb81fee04ec50a46e23f2d29bb13713e5fae40 100644
+index 2da57fc9947581133ba14db0c2ec4826394f520b..449a736a0abd94c9f63beef1e7a0c40c127eab46 100644
 --- a/sandbox/linux/BUILD.gn
 +++ b/sandbox/linux/BUILD.gn
 @@ -338,6 +338,8 @@ if (is_linux) {

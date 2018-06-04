@@ -1,18 +1,20 @@
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index 7450d7f03b509b7ac6e1c8293558248419d7b27e..446dee49175ca1b2c68da5a9a56f3b03b6879266 100644
+index 196205f32d149db75ea3edeb01b3521735cafa08..39897ad441746b4259c6bf02effa81911206824e 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -721,6 +721,14 @@ void GetGuestViewDefaultContentSettingRules(
-       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-       content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
+@@ -782,6 +782,16 @@ void GetGuestViewDefaultContentSettingRules(
+       base::Value::FromUniquePtrValue(
+           content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
        std::string(), incognito));
 +  rules->fingerprinting_rules.push_back(ContentSettingPatternSource(
 +      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-+      content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),
++      base::Value::FromUniquePtrValue(
++        content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
 +      std::string(), incognito));
 +  rules->brave_shields_rules.push_back(ContentSettingPatternSource(
 +      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-+      content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),
++      base::Value::FromUniquePtrValue(
++        content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
 +      std::string(), incognito));
  }
  

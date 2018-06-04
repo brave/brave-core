@@ -1,8 +1,8 @@
 diff --git a/chrome/utility/chrome_content_utility_client.h b/chrome/utility/chrome_content_utility_client.h
-index 8a228d02368f2e149baa5c214cc7f013d631ceaa..b6e527ca8da9b9490a9de4c6fcc4153a0ca4adca 100644
+index b65c3a9346b508cdbb887ef2967adefb6de6b5b5..777c2529e90931bbf1dccdfb2df911d088bd9eea 100644
 --- a/chrome/utility/chrome_content_utility_client.h
 +++ b/chrome/utility/chrome_content_utility_client.h
-@@ -41,6 +41,7 @@ class ChromeContentUtilityClient : public content::ContentUtilityClient {
+@@ -39,6 +39,7 @@ class ChromeContentUtilityClient : public content::ContentUtilityClient {
        const NetworkBinderCreationCallback& callback);
  
   private:

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 2ea8f903186301e30e8b22562528503a592856f7..0127e734003fd36be765e8f5222bdf2db149b329 100644
+index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..ab6bf7f0d65ae03730d977b17782d52ad3c30736 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -25,11 +25,10 @@ declare_args() {
@@ -16,7 +16,7 @@ index 2ea8f903186301e30e8b22562528503a592856f7..0127e734003fd36be765e8f5222bdf2d
  if (enable_nacl) {
    packaging_files_executables += [
      "$root_out_dir/nacl_helper",
-@@ -161,7 +160,7 @@ action("merge_rpm_dependencies") {
+@@ -159,7 +158,7 @@ action("merge_rpm_dependencies") {
  }
  
  action("strip_chrome_binary") {
@@ -25,7 +25,7 @@ index 2ea8f903186301e30e8b22562528503a592856f7..0127e734003fd36be765e8f5222bdf2d
    debug_file = prog_name + ".debug"
    stripped_file = prog_name + ".stripped"
    deps = [
-@@ -248,8 +247,8 @@ copy("common_packaging_files") {
+@@ -246,8 +245,8 @@ copy("common_packaging_files") {
      ]
    } else {
      sources += [

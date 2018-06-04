@@ -1,7 +1,7 @@
-diff --git a/third_party/WebKit/Source/modules/canvas/canvas2d/BaseRenderingContext2D.h b/third_party/WebKit/Source/modules/canvas/canvas2d/BaseRenderingContext2D.h
-index a217c9778926db44c42b4abe2e9a40fa8dd78e3c..b884dd769b3b66340c89175ab41a31ffb002d694 100644
---- a/third_party/WebKit/Source/modules/canvas/canvas2d/BaseRenderingContext2D.h
-+++ b/third_party/WebKit/Source/modules/canvas/canvas2d/BaseRenderingContext2D.h
+diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
+index 86dabdefdf508d401e1d60da6c0f17dfbe7d8192..b0c6c9481a04aff8d6ede10531d51af94852c3eb 100644
+--- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
++++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
 @@ -57,7 +57,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
    double miterLimit() const;
    void setMiterLimit(double);

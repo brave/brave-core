@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/people_page/import_data_dialog.html b/chrome/browser/resources/settings/people_page/import_data_dialog.html
-index cb07d334450549ee2a385f2921f819768a755203..3f15d2faf64d63fd96cc7d614b8e32423fcf987e 100644
+index 395da9098b01fff62e98c36991c6d100dcefccf3..a7dcb6df48579c75ce2c1301ed51622082f663d0 100644
 --- a/chrome/browser/resources/settings/people_page/import_data_dialog.html
 +++ b/chrome/browser/resources/settings/people_page/import_data_dialog.html
 @@ -90,6 +90,11 @@

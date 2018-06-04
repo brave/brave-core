@@ -1,16 +1,16 @@
-diff --git a/third_party/WebKit/Source/modules/webgl/WebGL2RenderingContextBase.cpp b/third_party/WebKit/Source/modules/webgl/WebGL2RenderingContextBase.cpp
-index 2377614708aa4eeac0795d52e33155623e506994..2c95a6d31921c46175b738d2b2a785a1322b2f76 100644
---- a/third_party/WebKit/Source/modules/webgl/WebGL2RenderingContextBase.cpp
-+++ b/third_party/WebKit/Source/modules/webgl/WebGL2RenderingContextBase.cpp
-@@ -6,6 +6,7 @@
+diff --git a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
+index 731c202c8a2fc897327b8b3dbb5ce189eb2e554c..74cde51fff405487d1cff88c690ef569170c9388 100644
+--- a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
++++ b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
+@@ -5,6 +5,7 @@
+ #include "third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.h"
  
  #include <memory>
- #include "bindings/modules/v8/WebGLAny.h"
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
- #include "core/html/HTMLImageElement.h"
- #include "core/html/canvas/HTMLCanvasElement.h"
- #include "core/html/canvas/ImageData.h"
-@@ -4858,6 +4859,8 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
+ #include "gpu/command_buffer/client/gles2_interface.h"
+ #include "third_party/blink/public/platform/web_graphics_context_3d_provider.h"
+ #include "third_party/blink/renderer/bindings/modules/v8/webgl_any.h"
+@@ -5010,6 +5011,8 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
                                                       GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state);
@@ -19,7 +19,7 @@ index 2377614708aa4eeac0795d52e33155623e506994..2c95a6d31921c46175b738d2b2a785a1
    switch (pname) {
      case GL_SHADING_LANGUAGE_VERSION: {
        return WebGLAny(
-@@ -5435,6 +5438,8 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
+@@ -5546,6 +5549,8 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
    if (isContextLost() || !ValidateGetFramebufferAttachmentParameterFunc(
                               kFunctionName, target, attachment))
      return ScriptValue::CreateNull(script_state);
@@ -28,7 +28,7 @@ index 2377614708aa4eeac0795d52e33155623e506994..2c95a6d31921c46175b738d2b2a785a1
  
    WebGLFramebuffer* framebuffer_binding = GetFramebufferBinding(target);
    DCHECK(!framebuffer_binding || framebuffer_binding->Object());
-@@ -5644,6 +5649,8 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
+@@ -5757,6 +5762,8 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost() || !ValidateTextureBinding("getTexParameter", target))
      return ScriptValue::CreateNull(script_state);

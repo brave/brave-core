@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings.mojom b/components/content_settings/core/common/content_settings.mojom
-index 6766c161ab2345d2cac339d2633ee27ec86d4abe..b8e0e8c4ef6bb18e275519b4ea128f599d52a541 100644
+index f06434f64746ddc3760a1e38dc8bfe3ee8060f3f..37da3e82cab0e6fa7115f3c475308141bf4de91c 100644
 --- a/components/content_settings/core/common/content_settings.mojom
 +++ b/components/content_settings/core/common/content_settings.mojom
 @@ -72,4 +72,6 @@ struct RendererContentSettingRules {

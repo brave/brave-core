@@ -1,7 +1,7 @@
-diff --git a/third_party/WebKit/Source/core/frame/ContentSettingsClient.h b/third_party/WebKit/Source/core/frame/ContentSettingsClient.h
-index 54a5a3dd5f92e263b42c265befca66087eaadef7..d78521d2ace8a54b1692dfdfe20df436754f5b10 100644
---- a/third_party/WebKit/Source/core/frame/ContentSettingsClient.h
-+++ b/third_party/WebKit/Source/core/frame/ContentSettingsClient.h
+diff --git a/third_party/blink/renderer/core/frame/content_settings_client.h b/third_party/blink/renderer/core/frame/content_settings_client.h
+index c6653f1ec2f47442b16a3b5d0d3bfc5da9b263dc..3589f1acd4576e9bbe7b151a4baab2a82a8c629e 100644
+--- a/third_party/blink/renderer/core/frame/content_settings_client.h
++++ b/third_party/blink/renderer/core/frame/content_settings_client.h
 @@ -51,6 +51,9 @@ class CORE_EXPORT ContentSettingsClient {
    // Controls whether scripts loaded from the given URL are allowed to execute.
    bool AllowScriptFromSource(bool enabled_per_settings, const KURL&);

@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/core/svg/svg_path_element.cc b/third_party/blink/renderer/core/svg/svg_path_element.cc
+index 582dbe0e0ed073bd0b9fccfe46779851c7572796..68be4059cc75d2ee5683981484035bf72312bf04 100644
+--- a/third_party/blink/renderer/core/svg/svg_path_element.cc
++++ b/third_party/blink/renderer/core/svg/svg_path_element.cc
+@@ -20,6 +20,7 @@
+ 
+ #include "third_party/blink/renderer/core/svg/svg_path_element.h"
+ 
++#include "brave/renderer/brave_content_settings_observer_helper.h"
+ #include "third_party/blink/renderer/core/layout/layout_object.h"
+ #include "third_party/blink/renderer/core/svg/svg_mpath_element.h"
+ #include "third_party/blink/renderer/core/svg/svg_path_query.h"
+@@ -64,6 +65,9 @@ Path SVGPathElement::AsPath() const {
+ }
+ 
+ float SVGPathElement::getTotalLength() {
++  if (!AllowFingerprinting(GetDocument().GetFrame())) {
++    return 0.0f;
++  }
+   GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
+   return SVGPathQuery(PathByteStream()).GetTotalLength();
+ }

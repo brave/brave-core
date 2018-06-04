@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
-index 3b636e0fb9d50c69c1aff636b12fa0d0e48e3c1b..361f90de1a68bda058292fbf1cbd1a04540cd8f2 100644
+index 15ee5b3f6f23df888875aeee3a06fc140303d04e..2ffb6f76674f8883b022241793434cbd48dcf1e4 100644
 --- a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
 +++ b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
 @@ -12,6 +12,7 @@
@@ -8,7 +8,7 @@ index 3b636e0fb9d50c69c1aff636b12fa0d0e48e3c1b..361f90de1a68bda058292fbf1cbd1a04
  #include "chrome/grit/browser_resources.h"
 +#include "components/grit/brave_components_resources.h"
  #include "extensions/common/constants.h"
- #include "printing/features/features.h"
+ #include "printing/buildflags/buildflags.h"
  
 @@ -37,6 +38,7 @@ bool IsComponentExtensionWhitelisted(const std::string& extension_id) {
      extension_misc::kZIPUnpackerExtensionId,

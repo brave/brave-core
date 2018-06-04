@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/android/omnibox/autocomplete_controller_android.cc b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
-index 7fa03c523cbaedf1e868cf17403b947300bfd5e7..2def1a4d423974d2390729f75aef81312787c564 100644
+index 08685131fd1de67feb5fc28acc33e080fd51b64c..5f3d675b30845c7cbc1d1a58b73380c568d92099 100644
 --- a/chrome/browser/android/omnibox/autocomplete_controller_android.cc
 +++ b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
 @@ -16,6 +16,7 @@
@@ -10,7 +10,7 @@ index 7fa03c523cbaedf1e868cf17403b947300bfd5e7..2def1a4d423974d2390729f75aef8131
  #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
-@@ -89,7 +90,7 @@ class ZeroSuggestPrefetcher : public AutocompleteControllerDelegate {
+@@ -90,7 +91,7 @@ class ZeroSuggestPrefetcher : public AutocompleteControllerDelegate {
  };
  
  ZeroSuggestPrefetcher::ZeroSuggestPrefetcher(Profile* profile)
@@ -19,7 +19,7 @@ index 7fa03c523cbaedf1e868cf17403b947300bfd5e7..2def1a4d423974d2390729f75aef8131
            std::make_unique<ChromeAutocompleteProviderClient>(profile),
            this,
            AutocompleteProvider::TYPE_ZERO_SUGGEST)) {
-@@ -126,7 +127,7 @@ void ZeroSuggestPrefetcher::OnResultChanged(bool default_match_changed) {
+@@ -127,7 +128,7 @@ void ZeroSuggestPrefetcher::OnResultChanged(bool default_match_changed) {
  }  // namespace
  
  AutocompleteControllerAndroid::AutocompleteControllerAndroid(Profile* profile)
@@ -28,7 +28,7 @@ index 7fa03c523cbaedf1e868cf17403b947300bfd5e7..2def1a4d423974d2390729f75aef8131
            std::make_unique<ChromeAutocompleteProviderClient>(profile),
            this,
            AutocompleteClassifier::DefaultOmniboxProviders())),
-@@ -346,7 +347,7 @@ AutocompleteControllerAndroid::Factory::~Factory() {
+@@ -348,7 +349,7 @@ AutocompleteControllerAndroid::Factory::~Factory() {
  
  KeyedService* AutocompleteControllerAndroid::Factory::BuildServiceInstanceFor(
      content::BrowserContext* profile) const {
