@@ -10,7 +10,11 @@
 namespace install_static {
 
 enum : bool {
+#if defined(OFFICIAL_BUILD)
   kUseGoogleUpdateIntegration = true,
+#else
+  kUseGoogleUpdateIntegration = false,
+#endif
 };
 
 // Note: This list of indices must be kept in sync with the brand-specific
