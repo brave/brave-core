@@ -26,75 +26,28 @@ std::string AdBlockService::g_ad_block_component_id_(
 std::string AdBlockService::g_ad_block_component_base64_public_key_(
     kAdBlockComponentBase64PublicKey);
 
-AdBlockService::AdBlockService()
-    : BaseBraveShieldsService(kAdBlockComponentName,
-                              g_ad_block_component_id_,
-                              g_ad_block_component_base64_public_key_),
-      ad_block_client_(new AdBlockClient()),
-      weak_factory_(this) {
+AdBlockService::AdBlockService() {
 }
 
 AdBlockService::~AdBlockService() {
-  Cleanup();
-}
-
-void AdBlockService::Cleanup() {
-  ad_block_client_.reset();
 }
 
 bool AdBlockService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string& tab_host) {
-
-  FilterOption current_option = FONoFilterOption;
-  content::ResourceType internalResource = (content::ResourceType)resource_type;
-  if (content::RESOURCE_TYPE_STYLESHEET == internalResource) {
-    current_option = FOStylesheet;
-  } else if (content::RESOURCE_TYPE_IMAGE == internalResource) {
-    current_option = FOImage;
-  } else if (content::RESOURCE_TYPE_SCRIPT == internalResource) {
-    current_option = FOScript;
-  }
-
-  if (ad_block_client_->matches(url.spec().c_str(),
-        current_option,
-        tab_host.c_str())) {
-    // LOG(ERROR) << "AdBlockService::Check(), host: " << tab_host
-    //  << ", resource type: " << resource_type
-    //  << ", url.spec(): " << url.spec();
-    return false;
-  }
-
-  return true;
+  return AdBlockBaseService::ShouldStartRequest(url, resource_type, tab_host);
 }
 
 bool AdBlockService::Init() {
+  Register(kAdBlockComponentName, g_ad_block_component_id_,
+           g_ad_block_component_base64_public_key_);
   return true;
-}
-
-void AdBlockService::OnDATFileDataReady() {
-  if (buffer_.empty()) {
-    LOG(ERROR) << "Could not obtain ad block data";
-    return;
-  }
-
-  ad_block_client_.reset(new AdBlockClient());
-  if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
-    ad_block_client_.reset();
-    LOG(ERROR) << "Failed to deserialize ad block data";
-    return;
-  }
 }
 
 void AdBlockService::OnComponentReady(const std::string& component_id,
                                       const base::FilePath& install_dir) {
   base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
-
-  GetTaskRunner()->PostTaskAndReply(
-      FROM_HERE,
-      base::Bind(&GetDATFileData, dat_file_path, &buffer_),
-      base::Bind(&AdBlockService::OnDATFileDataReady,
-                 weak_factory_.GetWeakPtr()));
+  AdBlockBaseService::GetDATFileData(dat_file_path);
 }
 
 // static

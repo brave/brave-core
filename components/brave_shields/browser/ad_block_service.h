@@ -11,9 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
-#include "brave/components/brave_shields/browser/base_brave_shields_service.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "content/public/common/resource_type.h"
 
 class AdBlockClient;
@@ -34,7 +32,7 @@ const std::string kAdBlockComponentBase64PublicKey =
     "VwIDAQAB";
 
 // The brave shields service in charge of ad-block checking and init.
-class AdBlockService : public BaseBraveShieldsService {
+class AdBlockService : public AdBlockBaseService {
  public:
    AdBlockService();
    ~AdBlockService() override;
@@ -45,7 +43,6 @@ class AdBlockService : public BaseBraveShieldsService {
 
  protected:
   bool Init() override;
-  void Cleanup() override;
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir) override;
 
@@ -56,13 +53,6 @@ class AdBlockService : public BaseBraveShieldsService {
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
-
-  void OnDATFileDataReady();
-
-  brave_shields::DATFileDataBuffer buffer_;
-  std::unique_ptr<AdBlockClient> ad_block_client_;
-
-  base::WeakPtrFactory<AdBlockService> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(AdBlockService);
 };

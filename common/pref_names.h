@@ -10,5 +10,6 @@ extern const char kTrackersBlocked[];
 extern const char kJavascriptBlocked[];
 extern const char kHttpsUpgrades[];
 extern const char kFingerprintingBlocked[];
+extern const char kAdBlockCurrentRegion[];
 
 #endif

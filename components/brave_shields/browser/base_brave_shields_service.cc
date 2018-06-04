@@ -32,16 +32,22 @@ void ComponentsUI::OnDemandUpdate(
 
 namespace brave_shields {
 
-BaseBraveShieldsService::BaseBraveShieldsService(
-    const std::string& component_name,
-    const std::string& component_id,
-    const std::string& component_base64_public_key)
+BaseBraveShieldsService::BaseBraveShieldsService()
     : initialized_(false),
       task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
-      component_name_(component_name),
-      component_id_(component_id),
-      component_base64_public_key_(component_base64_public_key) {
+        base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
+}
+
+BaseBraveShieldsService::~BaseBraveShieldsService() {
+}
+
+void BaseBraveShieldsService::Register(const std::string& component_name,
+                                       const std::string& component_id,
+                                       const std::string& component_base64_public_key) {
+  component_name_ = component_name;
+  component_id_ = component_id;
+  component_base64_public_key_ = component_base64_public_key;
+
   base::Closure registered_callback =
       base::Bind(&BaseBraveShieldsService::OnComponentRegistered,
                  base::Unretained(this), component_id_);
@@ -49,11 +55,13 @@ BaseBraveShieldsService::BaseBraveShieldsService(
       base::Bind(&BaseBraveShieldsService::OnComponentReady,
                  base::Unretained(this), component_id_);
   brave::RegisterComponent(g_browser_process->component_updater(),
-      component_name_, component_base64_public_key_,
-      registered_callback, ready_callback);
+                           component_name_, component_base64_public_key_,
+                           registered_callback, ready_callback);
 }
 
-BaseBraveShieldsService::~BaseBraveShieldsService() {
+bool BaseBraveShieldsService::Unregister(const std::string& component_id) {
+  return g_browser_process->component_updater()->UnregisterComponent(
+      component_id);
 }
 
 bool BaseBraveShieldsService::IsInitialized() const {

@@ -34,9 +34,7 @@ namespace brave_shields {
 // tracking protection, etc.
 class BaseBraveShieldsService : public ComponentsUI {
  public:
-  BaseBraveShieldsService(const std::string& component_name,
-                          const std::string& component_id,
-                          const std::string& component_base64_public_key);
+  BaseBraveShieldsService();
   virtual ~BaseBraveShieldsService();
   bool Start();
   void Stop();
@@ -54,6 +52,10 @@ class BaseBraveShieldsService : public ComponentsUI {
   virtual void OnComponentRegistered(const std::string& component_id);
   virtual void OnComponentReady(const std::string& component_id,
                                 const base::FilePath& install_dir);
+  void Register(const std::string& component_name,
+                const std::string& component_id,
+                const std::string& component_base64_public_key);
+  bool Unregister(const std::string& component_id);
 
  private:
   void InitShields();
