@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/strings/utf_string_conversions.h"
 #include "base/path_service.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/brave_paths.h"
