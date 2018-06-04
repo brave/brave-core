@@ -301,7 +301,6 @@ action("create_dist_zips") {
   if (is_win) {
     inputs += [
       "$brave_dist_dir/chrome_elf.dll",
-      "$brave_dist_dir/$widevine_cdm_path/widevinecdmadapter.dll",
     ]
   }
 
@@ -335,11 +334,6 @@ action("create_dist_zips") {
     deps += [
       ":brave_dist_resources",
       ":brave_locale_dist_resources",
-    ]
-  }
-  if (is_win) {
-    deps += [
-      "app/win:dist_widevine_resources",
     ]
   }
 
