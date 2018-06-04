@@ -9,7 +9,7 @@
 #include <string>
 
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "third_party/WebKit/public/platform/WebReferrerPolicy.h"
+#include "third_party/blink/public/platform/web_referrer_policy.h"
 
 namespace net {
 class URLRequest;

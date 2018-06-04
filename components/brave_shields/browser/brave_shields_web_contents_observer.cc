@@ -101,8 +101,9 @@ BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
 void BraveShieldsWebContentsObserver::RenderFrameCreated(
     RenderFrameHost* rfh) {
   // Look up the extension API frame ID to force the mapping to be cached.
-  // This is needed so that cached information is available for tabId.
-  extensions::ExtensionApiFrameIdMap::Get()->CacheFrameData(rfh);
+  // This is needed so that cached information is available for tabId in the
+  // filtering callbacks.
+  extensions::ExtensionApiFrameIdMap::Get()->InitializeRenderFrameData(rfh);
 
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {

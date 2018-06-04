@@ -91,7 +91,7 @@ test("brave_browser_tests") {
   deps = [
     "//chrome/browser/ui",
     "//chrome/test:browser_tests_runner",
-    "//ppapi/features",
+    "//ppapi/buildflags",
     ":brave_browser_tests_deps",
   ]
   data_deps = [

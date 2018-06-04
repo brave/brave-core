@@ -366,7 +366,7 @@ void HTTPSEverywhereService::SetComponentIdAndBase64PublicKeyForTest(
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory() {
-  return base::MakeUnique<HTTPSEverywhereService>();
+  return std::make_unique<HTTPSEverywhereService>();
 }
 
 }  // namespace brave_shields

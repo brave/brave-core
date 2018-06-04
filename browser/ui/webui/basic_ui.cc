@@ -70,7 +70,7 @@ BasicUI::BasicUI(content::WebUI* web_ui,
     int html_resource_id)
     : WebUIController(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
-  auto handler_owner = base::MakeUnique<BasicDOMHandler>();
+  auto handler_owner = std::make_unique<BasicDOMHandler>();
   BasicDOMHandler* handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));
   handler->Init();

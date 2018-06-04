@@ -16,7 +16,7 @@ class BraveExtensionPrefs : public ExtensionPrefs {
         PrefService* prefs,
         const base::FilePath& root_dir,
         ExtensionPrefValueMap* extension_pref_value_map,
-        std::unique_ptr<base::Clock> clock,
+        base::Clock* clock,
         bool extensions_disabled,
         const std::vector<ExtensionPrefsObserver*>& early_observers);
 
