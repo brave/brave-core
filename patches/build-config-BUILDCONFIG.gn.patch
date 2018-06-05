@@ -15,7 +15,7 @@ index 9e38ee0e592b64f2457dd48110aceafff95164cd..c09b86450ee9906373c3937f9a1e30cb
    "//build/config/coverage:default_coverage",
    "//build/config/sanitizers:default_sanitizer_flags",
  ]
--
++
 +if (brave_chromium_build) {
 +  default_compiler_configs -= [ "//build/config/compiler:default_include_dirs" ]
 +  default_compiler_configs += [
