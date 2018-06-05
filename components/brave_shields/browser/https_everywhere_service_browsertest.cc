@@ -108,3 +108,19 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, NoRedirectsNotKnownSite) {
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_STREQ("http://www.brianbondy.com/", contents->GetLastCommittedURL().spec().c_str());
 }
+
+// Make sure iframes that should redirect to HTTPS actually redirect and that
+// the header is intact.
+IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSiteInIframe) {
+  ASSERT_TRUE(InstallHTTPSEverywhereExtension());
+  GURL url = embedded_test_server()->GetURL("a.com", "/iframe.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+
+  GURL iframe_url = embedded_test_server()->GetURL("http://www.digg.com/");
+  const char kIframeID[] = "test";
+  content::WebContents* contents =  browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_TRUE(NavigateIframeToURL(contents, kIframeID, iframe_url));
+  content::RenderFrameHost* iframe_contents = ChildFrameAt(contents->GetMainFrame(), 0);
+  WaitForLoadStop(contents);
+  EXPECT_STREQ("https://www.digg.com/", iframe_contents->GetLastCommittedURL().spec().c_str());
+}
