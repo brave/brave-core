@@ -6,6 +6,7 @@
 
 #include "base/bind.h"
 #include "base/bind_helpers.h"
+#include "base/threading/thread_restrictions.h"
 
 ChromeProfileLock::ChromeProfileLock(
     const base::FilePath& user_data_dir)
@@ -22,12 +23,14 @@ ChromeProfileLock::~ChromeProfileLock() {
 }
 
 void ChromeProfileLock::Lock() {
+  base::ThreadRestrictions::ScopedAllowIO allow_io;
   if (HasAcquired())
     return;
   lock_acquired_ = process_singleton_->Create();
 }
 
 void ChromeProfileLock::Unlock() {
+  base::ThreadRestrictions::ScopedAllowIO allow_io;
   if (!HasAcquired())
     return;
   process_singleton_->Cleanup();
