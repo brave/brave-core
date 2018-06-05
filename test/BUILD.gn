@@ -69,9 +69,36 @@ group("brave_browser_tests_deps") {
   ]
 }
 
+static_library("browser_test_support") {
+  testonly = true
+  deps = [
+    "//chrome/test:test_support",
+  ]
+
+  sources = [
+    "base/brave_test_launcher_delegate.cc",
+    "base/brave_test_launcher_delegate.h",
+    "//brave/app/brave_main_delegate.cc",
+    "//brave/app/brave_main_delegate.h",
+  ]
+}
+
+static_library("browser_tests_runner") {
+  testonly = true
+
+  deps = [
+    ":browser_test_support",
+  ]
+
+  sources = [
+    "base/browser_tests_main.cc",
+  ]
+}
+
 test("brave_browser_tests") {
   sources = [
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
+    "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
     "//brave/components/brave_shields/browser/ad_block_service_browsertest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_service_browsertest.cc",
     "//brave/components/brave_shields/browser/tracking_protection_service_browsertest.cc",
@@ -90,9 +117,9 @@ test("brave_browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   deps = [
     "//chrome/browser/ui",
-    "//chrome/test:browser_tests_runner",
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
+    ":browser_tests_runner",
   ]
   data_deps = [
     "//ppapi:ppapi_tests",

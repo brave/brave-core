@@ -6,6 +6,7 @@
 
 #include "brave/common/webui_url_constants.h"
 #include "brave/browser/ui/webui/basic_ui.h"
+#include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "chrome/common/url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "url/gurl.h"
@@ -24,6 +25,11 @@ typedef WebUIController* (*WebUIFactoryFunction)(WebUI* web_ui,
 template<class T>
 WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   return new T(web_ui);
+}
+
+template<>
+WebUIController* NewWebUI<BraveWelcomeUI>(WebUI* web_ui, const GURL& url) {
+  return new BraveWelcomeUI(web_ui);
 }
 
 template<>
@@ -47,6 +53,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   if (url.host_piece() == kPaymentsHost ||
       url.host_piece() ==  chrome::kChromeUINewTabHost) {
     return &NewWebUI<BasicUI>;
+  } else if (url.spec() == kWelcomeRemoteURL) {
+    return &NewWebUI<BraveWelcomeUI>;
   }
 
   return nullptr;
