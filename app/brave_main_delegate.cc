@@ -4,6 +4,8 @@
 
 #include "brave/app/brave_main_delegate.h"
 
+#include <sstream>
+
 #include "base/base_switches.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
@@ -13,6 +15,7 @@
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
@@ -101,7 +104,11 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   command_line.AppendSwitch(switches::kEnableTabAudioMuting);
+
+  std::stringstream enabled_features;
+  enabled_features << features::kEnableEmojiContextMenu.name
+    << "," << features::kDesktopPWAWindowing.name;
   command_line.AppendSwitchASCII(switches::kEnableFeatures,
-      features::kEnableEmojiContextMenu.name);
+      enabled_features.str());
   return ChromeMainDelegate::BasicStartupComplete(exit_code);
 }

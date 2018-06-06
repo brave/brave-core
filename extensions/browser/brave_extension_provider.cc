@@ -15,7 +15,11 @@
 
 namespace {
 
-bool IsWhitelisted(const std::string& id) {
+bool IsWhitelisted(const extensions::Extension* extension) {
+  // Allow PWAs to run
+  if (extension->GetType() == extensions::Manifest::TYPE_HOSTED_APP) {
+    return true;
+  }
   static std::vector<std::string> whitelist({
     brave_extension_id,
     pdfjs_extension_id,
@@ -70,7 +74,8 @@ bool IsWhitelisted(const std::string& id) {
     // Test ID: Brave HTTPS Everywhere Updater
     "bhlmpjhncoojbkemjkeppfahkglffilp"
   });
-  return std::find(whitelist.begin(), whitelist.end(), id) != whitelist.end();
+  return std::find(whitelist.begin(), whitelist.end(),
+      extension->id()) != whitelist.end();
 }
 
 }  // namespace
@@ -94,7 +99,7 @@ std::string BraveExtensionProvider::GetDebugPolicyProviderName() const {
 
 bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
                                          base::string16* error) const {
-  if (!IsWhitelisted(extension->id())) {
+  if (!IsWhitelisted(extension)) {
     if (error) {
       *error =
         l10n_util::GetStringFUTF16(IDS_EXTENSION_CANT_INSTALL_ON_BRAVE,
