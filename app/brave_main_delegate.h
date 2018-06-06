@@ -20,6 +20,7 @@ class BraveMainDelegate : public ChromeMainDelegate {
  protected:
   // content::ContentMainDelegate implementation:
   bool ShouldEnableProfilerRecording() override;
+  bool BasicStartupComplete(int* exit_code) override;
 
   content::ContentBrowserClient* CreateContentBrowserClient() override;
   content::ContentRendererClient* CreateContentRendererClient() override;
