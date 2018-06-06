@@ -73,7 +73,6 @@ class PopoverController: UIViewController {
         
         let pan = UIPanGestureRecognizer(target: self, action: #selector(pannedPopover(_:)))
         pan.delegate = self
-        pan.isEnabled = contentController.isPanToDismissEnabled
         view.addGestureRecognizer(pan)
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -325,8 +324,8 @@ extension PopoverController: BasicAnimationControllerDelegate {
         } else {
             // iPhone variant will always be full-width
             NSLayoutConstraint.activate([
-                containerView.leftAnchor.constraint(equalTo: viewController.view.leftAnchor, constant: outerMargins.left),
-                containerView.rightAnchor.constraint(equalTo: viewController.view.rightAnchor, constant: -outerMargins.right)
+                containerView.leftAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.leftAnchor, constant: outerMargins.left),
+                containerView.rightAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.rightAnchor, constant: -outerMargins.right)
             ])
         }
         
@@ -334,17 +333,10 @@ extension PopoverController: BasicAnimationControllerDelegate {
         centerX.priority = .defaultHigh
         centerX.isActive = true
         
-        if #available(iOS 11.0, *) {
-            NSLayoutConstraint.activate([
-                containerView.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.safeAreaLayoutGuide.topAnchor, constant: outerMargins.top),
-                containerView.bottomAnchor.constraint(lessThanOrEqualTo: viewController.view.safeAreaLayoutGuide.bottomAnchor, constant: -outerMargins.bottom)
-            ])
-        } else {
-            NSLayoutConstraint.activate([
-                containerView.topAnchor.constraint(greaterThanOrEqualTo: viewController.topLayoutGuide.bottomAnchor, constant: outerMargins.top),
-                containerView.bottomAnchor.constraint(lessThanOrEqualTo: viewController.bottomLayoutGuide.topAnchor, constant: -outerMargins.bottom)
-            ])
-        }
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.safeAreaLayoutGuide.topAnchor, constant: outerMargins.top),
+            containerView.bottomAnchor.constraint(lessThanOrEqualTo: viewController.view.safeAreaLayoutGuide.bottomAnchor, constant: -outerMargins.bottom)
+        ])
         
         backgroundOverlayView.alpha = 0.0
         backgroundOverlayView.basicAnimate(property: kPOPViewAlpha, key: "alpha") { animation, _ in
@@ -422,24 +414,37 @@ extension PopoverController: UIViewControllerTransitioningDelegate {
 
 extension PopoverController: UIGestureRecognizerDelegate {
     
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return contentController.isPanToDismissEnabled
+    }
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let pan = gestureRecognizer as? UIPanGestureRecognizer else {
             return false
         }
         
         if let scrollView = otherGestureRecognizer.view as? UIScrollView {
-            let topInset: CGFloat
-            if #available(iOS 11.0, *) {
-                topInset = scrollView.adjustedContentInset.top
-            } else {
-                topInset = scrollView.contentInset.top
-            }
+            let topInset = scrollView.adjustedContentInset.top
+            let leftInset = scrollView.adjustedContentInset.left
             
-            if scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height && pan.velocity(in: pan.view).y < 0 ||
-                scrollView.contentOffset.y <= -topInset && pan.velocity(in: pan.view).y > 0 {
-                otherGestureRecognizer.isEnabled = false
-                otherGestureRecognizer.isEnabled = true
-                return true
+            let velocity = pan.velocity(in: pan.view)
+            if abs(velocity.y) > abs(velocity.x) {
+                if scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height && velocity.y < 0 ||
+                    scrollView.contentOffset.y <= -topInset && velocity.y > 0 {
+                    otherGestureRecognizer.cancel()
+                    return true
+                }
+            } else {
+                if let tableView = scrollView as? UITableView, let ds = tableView.dataSource, velocity.x < 0, ds.responds(to: #selector(UITableViewDataSource.tableView(_:commit:forRowAt:))) {
+                    // Fix table view cell actions
+                    pan.cancel()
+                    return false
+                }
+                if scrollView.contentOffset.x >= scrollView.contentSize.width - scrollView.frame.size.width && velocity.x < 0 ||
+                    scrollView.contentOffset.x <= -leftInset && velocity.x > 0 {
+                    otherGestureRecognizer.cancel()
+                    return true
+                }
             }
         }
         return false

@@ -6,30 +6,30 @@ import CoreData
 import Foundation
 import BraveShared
 
-class Domain: NSManagedObject {
+public class Domain: NSManagedObject {
     
-    @NSManaged var url: String?
-    @NSManaged var visits: Int32
-    @NSManaged var topsite: Bool // not currently used. Should be used once proper frecency code is in.
-    @NSManaged var blockedFromTopSites: Bool // don't show ever on top sites
-    @NSManaged var favicon: FaviconMO?
+    @NSManaged public var url: String?
+    @NSManaged public var visits: Int32
+    @NSManaged public var topsite: Bool // not currently used. Should be used once proper frecency code is in.
+    @NSManaged public var blockedFromTopSites: Bool // don't show ever on top sites
+    @NSManaged public var favicon: FaviconMO?
 
-    @NSManaged var shield_allOff: NSNumber?
-    @NSManaged var shield_adblockAndTp: NSNumber?
-    @NSManaged var shield_httpse: NSNumber?
-    @NSManaged var shield_noScript: NSNumber?
-    @NSManaged var shield_fpProtection: NSNumber?
-    @NSManaged var shield_safeBrowsing: NSNumber?
+    @NSManaged public var shield_allOff: NSNumber?
+    @NSManaged public var shield_adblockAndTp: NSNumber?
+    @NSManaged public var shield_httpse: NSNumber?
+    @NSManaged public var shield_noScript: NSNumber?
+    @NSManaged public var shield_fpProtection: NSNumber?
+    @NSManaged public var shield_safeBrowsing: NSNumber?
 
-    @NSManaged var historyItems: NSSet?
-    @NSManaged var bookmarks: NSSet?
+    @NSManaged public var historyItems: NSSet?
+    @NSManaged public var bookmarks: NSSet?
 
     // Currently required, because not `syncable`
     static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
         return NSEntityDescription.entity(forEntityName: "Domain", in: context)!
     }
 
-    override func awakeFromInsert() {
+    public override func awakeFromInsert() {
         super.awakeFromInsert()
     }
 
@@ -39,7 +39,7 @@ class Domain: NSManagedObject {
         return domainUrl
     }
 
-    class func getOrCreateForUrl(_ url: URL, context: NSManagedObjectContext) -> Domain? {
+    public class func getOrCreateForUrl(_ url: URL, context: NSManagedObjectContext) -> Domain? {
         let domainString = Domain.domainAndScheme(fromUrl: url)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         fetchRequest.entity = Domain.entity(context)

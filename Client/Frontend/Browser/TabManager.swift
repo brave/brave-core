@@ -264,7 +264,7 @@ class TabManager: NSObject {
         return self.addTab(request, configuration: configuration, afterTab: afterTab, flushToDisk: true, zombie: false)
     }
 
-    func addTabsForURLs(_ urls: [URL], zombie: Bool) {
+    func addTabsForURLs(_ urls: [URL], zombie: Bool, isPrivate: Bool = false) {
         assert(Thread.isMainThread)
 
         if urls.isEmpty {
@@ -274,7 +274,7 @@ class TabManager: NSObject {
         self.isRestoring = true
         var tab: Tab!
         for url in urls {
-            tab = self.addTab(URLRequest(url: url), flushToDisk: false, zombie: zombie)
+            tab = self.addTab(URLRequest(url: url), flushToDisk: false, zombie: zombie, isPrivate: isPrivate)
         }
         // Flush.
         storeChanges()

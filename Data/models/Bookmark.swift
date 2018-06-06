@@ -10,30 +10,30 @@ import BraveShared
 
 private let log = Logger.browserLogger
 
-class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
+public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
 
     // Favorite bookmarks are shown only on homepanel as a tile, they are not visible on bookmarks panel.
-    @NSManaged var isFavorite: Bool
-    @NSManaged var isFolder: Bool
-    @NSManaged var title: String?
-    @NSManaged var customTitle: String?
-    @NSManaged var url: String?
-    @NSManaged var visits: Int32
-    @NSManaged var lastVisited: Date?
-    @NSManaged var created: Date?
-    @NSManaged var order: Int16
-    @NSManaged var tags: [String]?
-    @NSManaged var color: String?
+    @NSManaged public var isFavorite: Bool
+    @NSManaged public var isFolder: Bool
+    @NSManaged public var title: String?
+    @NSManaged public var customTitle: String?
+    @NSManaged public var url: String?
+    @NSManaged public var visits: Int32
+    @NSManaged public var lastVisited: Date?
+    @NSManaged public var created: Date?
+    @NSManaged public var order: Int16
+    @NSManaged public var tags: [String]?
+    @NSManaged public var color: String?
     
     /// Should not be set directly, due to specific formatting required, use `syncUUID` instead
     /// CD does not allow (easily) searching on transformable properties, could use binary, but would still require tranformtion
     //  syncUUID should never change
-    @NSManaged var syncDisplayUUID: String?
-    @NSManaged var syncParentDisplayUUID: String?
-    @NSManaged var parentFolder: Bookmark?
-    @NSManaged var children: Set<Bookmark>?
+    @NSManaged public var syncDisplayUUID: String?
+    @NSManaged public var syncParentDisplayUUID: String?
+    @NSManaged public var parentFolder: Bookmark?
+    @NSManaged public var children: Set<Bookmark>?
     
-    @NSManaged var domain: Domain?
+    @NSManaged public var domain: Domain?
     
     var recordType: SyncRecordType = .bookmark
     
@@ -49,7 +49,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         }
     }
     
-    var displayTitle: String? {
+    public var displayTitle: String? {
         if let custom = customTitle, !custom.isEmpty {
             return customTitle
         }
@@ -62,7 +62,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         return nil
     }
     
-    override func awakeFromInsert() {
+    override public func awakeFromInsert() {
         super.awakeFromInsert()
         created = Date()
         lastVisited = created
@@ -72,7 +72,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         return SyncBookmark(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
     }
 
-    class func frc(parentFolder: Bookmark?) -> NSFetchedResultsController<NSFetchRequestResult> {
+    public class func frc(parentFolder: Bookmark?) -> NSFetchedResultsController<NSFetchRequestResult> {
         let context = DataController.shared.mainThreadContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         
@@ -104,7 +104,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         // No auto-save, must be handled by caller if desired
     }
     
-    func update(customTitle: String?, url: String?, save: Bool = false) {
+    public func update(customTitle: String?, url: String?, save: Bool = false) {
         
         // See if there has been any change
         if self.customTitle == customTitle && self.url == url {
@@ -199,10 +199,10 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         
         return bk
     }
-    
+  
     // TODO: DELETE
     // Aways uses main context
-    @discardableResult class func add(url: URL?,
+    @discardableResult public class func add(url: URL?,
                        title: String?,
                        customTitle: String? = nil, // Folders only use customTitle
                        parentFolder:Bookmark? = nil,
@@ -255,7 +255,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         return self.add(rootObject: bookmark, save: true, context: DataController.shared.workerContext)
     }
 
-    class func contains(url: URL, getFavorites: Bool = false, context: NSManagedObjectContext) -> Bool {
+    public class func contains(url: URL, getFavorites: Bool = false, context: NSManagedObjectContext) -> Bool {
         var found = false
         context.performAndWait {
             if let count = get(forUrl: url, countOnly: true, getFavorites: getFavorites, context: context) as? Int {
@@ -289,7 +289,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         return [Bookmark]()
     }
 
-    class func reorderBookmarks(frc: NSFetchedResultsController<NSFetchRequestResult>?, sourceIndexPath: IndexPath,
+    public class func reorderBookmarks(frc: NSFetchedResultsController<NSFetchRequestResult>?, sourceIndexPath: IndexPath,
                                 destinationIndexPath: IndexPath) {
         let dest = frc?.object(at: destinationIndexPath) as! Bookmark
         let src = frc?.object(at: sourceIndexPath) as! Bookmark
@@ -347,7 +347,7 @@ extension Bookmark {
         return nil
     }
     
-    static func getChildren(forFolderUUID syncUUID: [Int]?, ignoreFolders: Bool = false, context: NSManagedObjectContext,
+    public static func getChildren(forFolderUUID syncUUID: [Int]?, ignoreFolders: Bool = false, context: NSManagedObjectContext,
                             orderSort: Bool = false) -> [Bookmark]? {
         guard let searchableUUID = SyncHelpers.syncDisplay(fromUUID: syncUUID) else {
             return nil
@@ -379,7 +379,7 @@ extension Bookmark {
         return get(predicate: NSPredicate(format: "syncDisplayUUID == %@", searchableUUID), context: context)?.first
     }
     
-    static func getFolders(bookmark: Bookmark?, context: NSManagedObjectContext) -> [Bookmark] {
+    public static func getFolders(bookmark: Bookmark?, context: NSManagedObjectContext) -> [Bookmark] {
     
         var predicate: NSPredicate?
         if let parent = bookmark?.parentFolder {
@@ -399,7 +399,8 @@ extension Bookmark {
 
 // TODO: REMOVE!! This should be located in abstraction
 extension Bookmark {
-    class func remove(forUrl url: URL, save: Bool = true, context: NSManagedObjectContext) -> Bool {
+    @discardableResult
+    public class func remove(forUrl url: URL, save: Bool = true, context: NSManagedObjectContext) -> Bool {
         if let bm = get(forUrl: url, context: context) as? Bookmark {
             bm.remove(save: save)
             return true

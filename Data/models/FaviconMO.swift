@@ -5,20 +5,20 @@ import CoreData
 import Foundation
 import Storage
 
-class FaviconMO: NSManagedObject {
+public class FaviconMO: NSManagedObject {
     
-    @NSManaged var url: String?
-    @NSManaged var width: Int16
-    @NSManaged var height: Int16
-    @NSManaged var type: Int16
-    @NSManaged var domain: Domain?
+    @NSManaged public var url: String?
+    @NSManaged public var width: Int16
+    @NSManaged public var height: Int16
+    @NSManaged public var type: Int16
+    @NSManaged public var domain: Domain?
 
     // Necessary override due to bad classname, maybe not needed depending on future CD
     static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
         return NSEntityDescription.entity(forEntityName: "Favicon", in: context)!
     }
 
-    class func get(forFaviconUrl urlString: String, context: NSManagedObjectContext) -> FaviconMO? {
+    public class func get(forFaviconUrl urlString: String, context: NSManagedObjectContext) -> FaviconMO? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         fetchRequest.entity = FaviconMO.entity(context)
         fetchRequest.predicate = NSPredicate(format: "url == %@", urlString)
@@ -35,7 +35,7 @@ class FaviconMO: NSManagedObject {
         return result
     }
 
-    class func add(_ favicon: Favicon, forSiteUrl siteUrl: URL) {
+    public class func add(_ favicon: Favicon, forSiteUrl siteUrl: URL) {
         let context = DataController.shared.workerContext
         context.perform {
             var item = FaviconMO.get(forFaviconUrl: favicon.url, context: context)
