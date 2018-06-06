@@ -14,6 +14,7 @@
 #include "brave/utility/brave_content_utility_client.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
+#include "chrome/common/chrome_switches.h"
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
 base::LazyInstance<BraveContentRendererClient>::DestructorAtExit
@@ -92,4 +93,11 @@ void BraveMainDelegate::PreSandboxStartup() {
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
+}
+
+bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
+  base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  command_line.AppendSwitch(switches::kEnableTabAudioMuting);
+  return ChromeMainDelegate::BasicStartupComplete(exit_code);
 }
