@@ -1,9 +1,44 @@
+import("//brave/build/config.gni")
+
 declare_args() {
   mac_signing_identifier = ""
+  mac_signing_keychain = "login"
 }
 
-action("create_dist_mac") {
-  output = "$root_out_dir/Brave.dmg"
+_packaging_dir = "$root_out_dir/$brave_product_name Packaging"
+keychain_db = getenv("HOME") + "/Library/Keychains/login.${mac_signing_keychain}-db"
+
+action("sign_app") {
+  brave_app = "$root_build_dir/Brave.app"
+
+  script = "//build/gn_run_binary.py"
+  shell_script = "//brave/build/mac/sign_app.sh"
+
+  inputs = [
+    shell_script,
+    brave_app,
+    "$_packaging_dir/sign_app.sh",
+    "$_packaging_dir/sign_versioned_dir.sh",
+  ]
+  outputs = [ "$root_out_dir/signing/Brave.app" ]
+  args = [
+    rebase_path(shell_script, root_out_dir),
+
+    # Use absolute paths needed by codesign
+    rebase_path(brave_app),
+    rebase_path("$root_out_dir/signing/Brave.app"),
+    rebase_path(_packaging_dir),
+    keychain_db,
+    mac_signing_identifier
+  ]
+  deps = [
+    "//brave:chrome_app",
+    "//chrome/installer/mac"
+  ]
+}
+
+action("create_dmg") {
+  output = "$root_out_dir/unsigned/Brave.dmg"
   script = "//build/gn_run_binary.py"
   shell_script = "//chrome/installer/mac/pkg-dmg"
   inputs = [
@@ -13,19 +48,45 @@ action("create_dist_mac") {
   outputs = [ output ]
   args = [
     rebase_path(shell_script, root_build_dir),
-    "--source",
-    "/var/empty",
-    "--target",
-    "Brave.dmg",
-    "--format",
-    "UDBZ",
-    "--verbosity",
-    "0",
-    "--volname",
-    "Brave",
-    "--copy",
-    "Brave.app",
-    "--tempdir",
-    "/tmp",
+    "--source", "/var/empty",
+    "--target", "Brave.dmg",
+    "--format", "UDBZ",
+    "--verbosity", "0",
+    "--volname", "Brave",
+    "--copy", rebase_path("$root_out_dir/signing/Brave.app", root_build_dir),
+    "--tempdir", "/tmp",
+    "--symlink", "/Applications",
+  ]
+
+  deps = [":sign_app"]
+}
+
+action("sign_dmg") {
+  script = "//build/gn_run_binary.py"
+  shell_script = "sign_dmg.sh"
+  inputs = [
+    script,
+    shell_script,
+    "$root_out_dir/unsigned/Brave.dmg",
+  ]
+  outputs = [ "${root_out_dir}/signing/Brave.dmg" ]
+  args = [
+    rebase_path(shell_script, root_build_dir),
+    rebase_path("$root_out_dir/unsigned/Brave.dmg"),
+    rebase_path("$root_out_dir/Brave.dmg"),
+    keychain_db,
+    mac_signing_identifier,
+    "-r=designated => identifier \"Brave\" and certificate leaf = H\"$mac_signing_identifier\"",
+  ]
+
+  deps = [":create_dmg"]
+}
+
+group("create_dist_mac") {
+  deps = [ ":create_dmg" ]
+
+  deps += [
+    ":sign_app",
+    ":sign_dmg",
   ]
 }

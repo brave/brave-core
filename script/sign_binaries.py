@@ -1,28 +1,31 @@
-import fnmatch
 import os
 import subprocess
 
-pfx_path = os.environ.get('CERT')
-pfx_pass = os.environ.get('CERT_PASSWORD')
+cert = os.environ.get('CERT')
+signtool_args = os.environ.get('SIGNTOOL_ARGS') or \
+    'sign /t  http://timestamp.verisign.com/scripts/timstamp.dll' \
+    ' /fd sha256'
 
-assert pfx_path, "CERT required for signing"
-assert pfx_pass , "CERT_PASSWORD required for signing"
+assert (cert or signtool_args), 'One or both of the CERT or SIGNTOOL_ARGS must be' \
+  'set. CERT by default is the name in the //CurrentUser/My windows certificate ' \
+  'store. `SIGNTOOL_ARGS` can be used in combination `CERT` or by it self.'
 
 def get_sign_cmd(file):
   # https://docs.microsoft.com/en-us/dotnet/framework/tools/signtool-exe
-  return ('signtool ' +
-       ' sign /t  http://timestamp.verisign.com/scripts/timstamp.dll' +
-       ' /fd sha256' +
-       ' /f "' + pfx_path +
-       '" /p "' + pfx_pass+ '" ' +
-       file)
+  sdk_dir = os.path.normpath(os.environ.get(
+      'WINDOWSSDKDIR',
+      'C:\\Program Files (x86)\\Windows Kits\\10'))
+  cmd = '"{}\\bin\\x64\\signtool.exe {}".format(sdk_dir, signtool_args)
+  if cert:
+    cmd = cmd + ' /n "' + cert + '"'
+  return (cmd + ' "' + file + '"')
 
 def run_cmd(cmd):
   p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
   for line in p.stdout:
     print line
   p.wait()
-  assert(p.returncode == 0, "Error signing")
+  assert p.returncode == 0, "Error signing"
 
 def sign_binaries(base_dir):
   matches = []
