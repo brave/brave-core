@@ -4,6 +4,7 @@
 
 #include "brave/app/brave_main_delegate.h"
 
+#include "base/base_switches.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
@@ -15,6 +16,7 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
+#include "ui/base/ui_base_features.h"
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
 base::LazyInstance<BraveContentRendererClient>::DestructorAtExit
@@ -99,5 +101,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   command_line.AppendSwitch(switches::kEnableTabAudioMuting);
+  command_line.AppendSwitchASCII(switches::kEnableFeatures,
+      features::kEnableEmojiContextMenu.name);
   return ChromeMainDelegate::BasicStartupComplete(exit_code);
 }
