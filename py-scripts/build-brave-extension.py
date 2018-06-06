@@ -4,7 +4,7 @@ import sys
 import shutil
 from lib.util import execute_stdout, scoped_cwd
 
-NPM = 'yarn'
+NPM = 'npm'
 if sys.platform in ['win32', 'cygwin']:
   NPM += '.cmd'
 
