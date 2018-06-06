@@ -27,8 +27,8 @@ import Shared
 // Previoulsy attempted stack which had significant impact on main thread saves
 // Follow the stack design from http://floriankugler.com/2013/04/02/the-concurrent-core-data-stack/
 
-class DataController: NSObject {
-    static let shared = DataController()
+public class DataController: NSObject {
+    public static let shared = DataController()
     
     fileprivate lazy var writeContext: NSManagedObjectContext = {
         let write = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -39,7 +39,7 @@ class DataController: NSObject {
         return write
     }()
     
-    lazy var workerContext: NSManagedObjectContext = {
+    public lazy var workerContext: NSManagedObjectContext = {
     
         let worker = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         worker.undoManager = nil
@@ -50,7 +50,7 @@ class DataController: NSObject {
         return worker
     }()
     
-    lazy var mainThreadContext: NSManagedObjectContext = {
+    public lazy var mainThreadContext: NSManagedObjectContext = {
         let main = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         main.undoManager = nil
         main.mergePolicy = NSOverwriteMergePolicy
@@ -68,7 +68,7 @@ class DataController: NSObject {
 
        // TransformerUUID.setValueTransformer(transformer: NSValueTransformer?, forName name: String)
 
-        guard let modelURL = Bundle.main.url(forResource: "Model", withExtension:"momd") else {
+        guard let modelURL = Bundle(for: DataController.self).url(forResource: "Model", withExtension:"momd") else {
             fatalError("Error loading model from bundle")
         }
         guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {
