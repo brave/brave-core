@@ -49,7 +49,7 @@ action("create_dmg") {
   args = [
     rebase_path(shell_script, root_build_dir),
     "--source", "/var/empty",
-    "--target", "Brave.dmg",
+    "--target", "unsigned/Brave.dmg",
     "--format", "UDBZ",
     "--verbosity", "0",
     "--volname", "Brave",
