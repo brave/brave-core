@@ -50,15 +50,6 @@ void CustomizeNewTabHTMLSource(content::WebUIDataSource* source) {
     { "1ff8e6c958ca4fa6d8e8680f32cddd0d.woff2", IDT_BRAVE_TEXT_FONT_POPPINS_200_NORMAL_DEVANAGARI },
     { "8a06c170adbf19e0dffcbe868719e6ce.woff2", IDT_BRAVE_TEXT_FONT_POPPINS_400_NORMAL_DEVANAGARI },
 
-    // New private tab requires Muli 400, 400 italic and 600
-    // Vietnamese variant not added as it's under 10kb size and thus inlined by webpack
-    { "1559d981ccec8dc4b4feb9043271ab3d.woff2", IDR_BRAVE_TEXT_FONT_MULI_400_ITALIC_LATIN_EXT },
-    { "187987e45dd0477eef7303ae467324e4.woff2", IDR_BRAVE_TEXT_FONT_MULI_400_ITALIC_LATIN },
-    { "7dd94f3f5749c7866546c7694980ad76.woff2", IDR_BRAVE_TEXT_FONT_MULI_400_NORMAL_LATIN_EXT },
-    { "f0e1ee92a25c8246a4a1fc28b3f77084.woff2", IDR_BRAVE_TEXT_FONT_MULI_400_NORMAL_LATIN },
-    { "3bef707814df0c192a19df4f31518b26.woff2", IDR_BRAVE_TEXT_FONT_MULI_600_NORMAL_LATIN_EXT },
-    { "d0c20b36cf1fedcf75230805055f517b.woff2", IDR_BRAVE_TEXT_FONT_MULI_600_NORMAL_LATIN },
-
     { "img/toolbar/menu_btn.svg", IDR_BRAVE_COMMON_TOOLBAR_IMG },
     // Hash path is the MD5 of the file contents, webpack image loader does this
     { "fd85070af5114d6ac462c466e78448e4.svg", IDR_BRAVE_NEW_TAB_IMG1 },
