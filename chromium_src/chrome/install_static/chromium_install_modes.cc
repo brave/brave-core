@@ -32,6 +32,8 @@ const wchar_t kBinariesAppGuid[] = L"";
 const wchar_t kBinariesPathName[] = L"";
 
 #if defined(OFFICIAL_BUILD)
+// Regarding to install switch, use same value in
+// chrome/installer/mini_installer/configuration.cc
 const InstallConstants kInstallModes[] = {
     // The primary install mode for stable Brave.
     {
@@ -65,7 +67,7 @@ const InstallConstants kInstallModes[] = {
     {
         sizeof(kInstallModes[0]),
         BETA_INDEX,     // The mode for the side-by-side beta channel.
-        "beta",  // Install switch.
+        "chrome-beta",  // Install switch.
         L"-Beta",       // Install suffix.
         L"Beta",        // Logo suffix.
         L"{103BD053-949B-43A8-9120-2E424887DE11}",  // A distinct app GUID.
@@ -93,7 +95,7 @@ const InstallConstants kInstallModes[] = {
     {
         sizeof(kInstallModes[0]),
         DEV_INDEX,     // The mode for the side-by-side dev channel.
-        "dev",  // Install switch.
+        "chrome-dev",  // Install switch.
         L"-Dev",       // Install suffix.
         L"Dev",        // Logo suffix.
         L"{CB2150F2-595F-4633-891A-E39720CE0531}",  // A distinct app GUID.
@@ -121,7 +123,7 @@ const InstallConstants kInstallModes[] = {
     {
         sizeof(kInstallModes[0]),
         CANARY_INDEX,  // The mode for the side-by-side canary channel.
-        "canary",  // Install switch.
+        "chrome-sxs",  // Install switch.
         L"-Canary",       // Install suffix.
         L"Canary",     // Logo suffix.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // A distinct app GUID.
@@ -160,13 +162,13 @@ const InstallConstants kInstallModes[] = {
         L"BraveDeveloper",   // A distinct base_app_id.
         L"BraveDevHTM",                             // ProgID prefix.
         L"Brave Developer HTML Document",           // ProgID description.
-        L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // Active Setup GUID.
-        L"{312ABB99-A176-4939-A39F-E8D34EA4D393}",  // CommandExecuteImpl CLSID.
-        { 0xf2edbc59,
-          0x7217,
-          0x4da5,
-          { 0xa2, 0x59, 0x3, 0x2, 0xda, 0x6a, 0x0,
-            0xe1 } },  // Toast activator CLSID.
+        L"{D6527C63-5CDD-4EF3-9299-1504E17CBD18}",  // Active Setup GUID.
+        L"{B2863926-AF5D-43A2-99CC-29EC43790C89}",  // CommandExecuteImpl CLSID.
+        { 0xeb41c6e8,
+          0xba35,
+          0x4c06,
+          { 0x96, 0xe8, 0x6f, 0x30, 0xf1, 0x8c, 0xa5,
+            0x5c } },  // Toast activator CLSID.
         L"",    // Empty default channel name since no update integration.
         ChannelStrategy::UNSUPPORTED,
         true,   // Supports system-level installs.

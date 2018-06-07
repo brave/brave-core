@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/upgrade_detector_impl.h b/chrome/browser/upgrade_detector_impl.h
-index d6ba0062f4cc5e5969b8a5f05c4e6a74ea5d8fc8..6da851319cdbe0d382c403b7043e881e0c4e7410 100644
+index 03cd93e8baabdec04dbbbf3fefe23e42fdfbd3e1..a35c8674caaa6ba6d090ad6968641b151fe00494 100644
 --- a/chrome/browser/upgrade_detector_impl.h
 +++ b/chrome/browser/upgrade_detector_impl.h
-@@ -53,7 +53,7 @@ class UpgradeDetectorImpl : public UpgradeDetector,
-   // A callback that receives the results of |DetectUpgradeTask|.
-   using UpgradeDetectedCallback = base::OnceCallback<void(UpgradeAvailable)>;
+@@ -74,7 +74,7 @@ class UpgradeDetectorImpl : public UpgradeDetector,
+   // UpgradeDetector:
+   void OnRelaunchNotificationPeriodPrefChanged() override;
  
 -#if defined(OS_WIN) && defined(GOOGLE_CHROME_BUILD)
 +#if defined(OS_WIN) && (defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)))

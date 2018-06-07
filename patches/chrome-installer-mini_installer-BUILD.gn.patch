@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index c365088b90b7a91faf52f5b108f64621a219b11f..3be0b71dfb7c8694da3d30608a3be627830c5559 100644
+index c365088b90b7a91faf52f5b108f64621a219b11f..097aaa00fda05e2c5583bc30d1e264ad7bb996e4 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -29,7 +29,7 @@ source_set("lib") {
@@ -11,6 +11,15 @@ index c365088b90b7a91faf52f5b108f64621a219b11f..3be0b71dfb7c8694da3d30608a3be627
      "configuration.cc",
      "configuration.h",
      "decompress.cc",
+@@ -37,7 +37,7 @@ source_set("lib") {
+     "mini_installer.cc",
+     "mini_installer.h",
+     "mini_installer.rc",
+-    "mini_installer_constants.cc",
++    "//brave/installer/mini_installer/mini_installer_constants.cc",
+     "mini_installer_constants.h",
+     "mini_installer_resource.h",
+     "mini_string.cc",
 @@ -132,11 +132,12 @@ template("generate_mini_installer") {
  
      inputs = [

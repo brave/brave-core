@@ -1,8 +1,16 @@
 diff --git a/chrome/installer/util/google_chrome_distribution.cc b/chrome/installer/util/google_chrome_distribution.cc
-index 05941744ff43f03539d6dacd14d057ecc32169a8..a32a719af16a5d6d6bfaf8508708dad0a283e18a 100644
+index cbbb0d5a7dc3dfdfb88a53c1ac3d50e7550ce177..c8079d730f391541d5395a40cb69ea9b31959236 100644
 --- a/chrome/installer/util/google_chrome_distribution.cc
 +++ b/chrome/installer/util/google_chrome_distribution.cc
-@@ -146,7 +146,11 @@ base::string16 GoogleChromeDistribution::GetAppDescription() {
+@@ -47,6 +47,7 @@ base::string16 LocalizeUrl(const wchar_t* url) {
+   return base::ReplaceStringPlaceholders(url, language, NULL);
+ }
+ 
++// TODO(simonhong): Use brave's url.
+ base::string16 GetUninstallSurveyUrl() {
+   const wchar_t kSurveyUrl[] = L"https://support.google.com/chrome/"
+                                L"contact/chromeuninstall3?hl=$1";
+@@ -146,7 +147,11 @@ base::string16 GoogleChromeDistribution::GetAppDescription() {
  }
  
  std::string GoogleChromeDistribution::GetSafeBrowsingName() {

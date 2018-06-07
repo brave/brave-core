@@ -1,25 +1,17 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index e89ff1f97be2e48bab8ccf7cc9eb5eeb71e78f2e..13021fbdfdeba20584a63c603097bde71441cba6 100644
+index 72dde06a99a77b34f466cbfba3d478dc60b2d86c..293ded5d7615b4cc65fb739f7cde499ee39bf861 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -2627,6 +2627,20 @@ split_static_library("ui") {
-         "webui/help/version_updater_basic.h",
+@@ -2669,6 +2669,12 @@ split_static_library("ui") {
+         "webui/settings/incompatible_applications_handler_win.h",
        ]
-     }
-+
-+    if (brave_chromium_build && is_official_build) {
-+      sources -= [
-+        "webui/help/version_updater_basic.cc",
-+        "webui/help/version_updater_basic.h",
-+      ]
-+
-+      sources += [
+       deps += [ "//google_update" ]
++    } else if (brave_chromium_build && is_official_build) {
++       sources += [
 +        "webui/help/version_updater_win.cc",
 +        "webui/help/version_updater_win.h",
 +      ]
-+
-+      deps += [ "//google_update" ]
-+    }
-   } else {  # 'OS!="win"
-     # The Cast Linux build sets toolkit_views to false, but many files in this
-     # target include views-related files unconditionally, causing `gn check`
++      deps += [ "//google_update" ]   
+     } else {
+       sources += [
+         "webui/help/version_updater_basic.cc",

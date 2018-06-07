@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector_impl.cc
-index c44e055757262146e41bf8f6e6440d9bd6f210e5..e6f86f40ca86f6f582f271ceeee3d302098e492b 100644
+index ed40d2a2490190dbe686ba4dd50bdbfb8ad1d9de..e686c63dab38d314c1ca2fead3b47a92681f1c74 100644
 --- a/chrome/browser/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector_impl.cc
-@@ -92,7 +92,7 @@ int GetCheckForUpgradeEveryMs() {
-   return kCheckForUpgradeMs;
+@@ -102,7 +102,7 @@ base::TimeDelta GetCheckForUpgradeDelay() {
+   return kCheckForUpgrade;
  }
  
 -#if !defined(OS_WIN) || defined(GOOGLE_CHROME_BUILD)
-+#if !defined(OS_WIN) || (defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)))
++#if !defined(OS_WIN) || defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
  // Return true if the current build is one of the unstable channels.
  bool IsUnstableChannel() {
    version_info::Channel channel = chrome::GetChannel();
-@@ -211,7 +211,7 @@ UpgradeDetectorImpl::UpgradeDetectorImpl()
+@@ -227,7 +227,7 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::TickClock* tick_clock)
  #if defined(OS_WIN)
  // Only enable upgrade notifications for Google Chrome builds. Chromium has no
  // upgrade channel.
@@ -20,8 +20,8 @@ index c44e055757262146e41bf8f6e6440d9bd6f210e5..e6f86f40ca86f6f582f271ceeee3d302
    // Check whether the build is an unstable channel before starting the timer.
    is_unstable_channel_ = IsUnstableChannel();
    // There might be a policy/enterprise environment preventing updates, so
-@@ -468,7 +468,7 @@ void UpgradeDetectorImpl::NotifyOnUpgradeWithTimePassed(
-   NotifyUpgrade();
+@@ -578,7 +578,7 @@ void UpgradeDetectorImpl::OnRelaunchNotificationPeriodPrefChanged() {
+     NotifyOnUpgrade();
  }
  
 -#if defined(OS_WIN) && defined(GOOGLE_CHROME_BUILD)

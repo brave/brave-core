@@ -1,20 +1,12 @@
 diff --git a/google_update/BUILD.gn b/google_update/BUILD.gn
-index 6c8539ad2aa89ce5ff74f53c9fffe89930fb8170..983bf08a715d10ecffa520d9ccd37e1d8c71b80f 100644
+index 6c8539ad2aa89ce5ff74f53c9fffe89930fb8170..32aeb6f62a4427d85e2cc3c9df217bb408300956 100644
 --- a/google_update/BUILD.gn
 +++ b/google_update/BUILD.gn
-@@ -5,7 +5,15 @@
- import("//build/toolchain/win/midl.gni")
+@@ -6,6 +6,6 @@ import("//build/toolchain/win/midl.gni")
  
  midl("google_update") {
-+
-+if (brave_chromium_build) {
-+  sources = [
-+    "//brave/google_update_idl.idl",
-+  ]
-+} else {
    sources = [
-     "google_update_idl.idl",
+-    "google_update_idl.idl",
++    "//brave/chromium_src/google_update/google_update_idl.idl",
    ]
  }
-+
-+}
