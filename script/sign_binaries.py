@@ -15,7 +15,7 @@ def get_sign_cmd(file):
   sdk_dir = os.path.normpath(os.environ.get(
       'WINDOWSSDKDIR',
       'C:\\Program Files (x86)\\Windows Kits\\10'))
-  cmd = '"{}\\bin\\x64\\signtool.exe {}".format(sdk_dir, signtool_args)
+  cmd = "{}\\bin\\x64\\signtool.exe {}".format(sdk_dir, signtool_args)
   if cert:
     cmd = cmd + ' /n "' + cert + '"'
   return (cmd + ' "' + file + '"')
