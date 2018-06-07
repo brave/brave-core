@@ -7,7 +7,7 @@ transpile_includes = [
   "../brave_new_tab_ui/brave_new_tab.js",
   "../brave_new_tab_ui/components/app.js",
   "../brave_new_tab_ui/components/block.js",
-  "../brave_new_tab_ui/components/clock.js",
+  "../brave_new_tab_ui/components/newPrivateTab.js",
   "../brave_new_tab_ui/components/footerInfo.js",
   "../brave_new_tab_ui/components/siteRemovalNotification.js",
   "../brave_new_tab_ui/components/stats.js",

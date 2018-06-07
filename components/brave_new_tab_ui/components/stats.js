@@ -3,10 +3,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const React = require('react')
+const { DataBlock, DataItem } = require('brave-ui/dataBlock')
+const { getLocale } = require('../../common/locale')
 
 class Stats extends React.Component {
   get millisecondsPerItem () {
     return 50
+  }
+  get theme () {
+    return this.props.theme || {}
   }
   get trackedBlockersCount () {
     return this.props.stats.trackersBlockedStat || 0
@@ -53,31 +58,27 @@ class Stats extends React.Component {
     const adblockCount = this.adblockCount
     const httpsUpgradedCount = this.httpsUpgradedCount
     const timeSaved = this.estimatedTimeSaved
-    const blockedArgs = JSON.stringify({
-      adblockCount,
-      trackedBlockersCount,
-      httpsUpgradedCount
-    })
-    return <ul className='statsContainer'>
-      <li className='statsBlock'>
-        <span className='counter trackers'>{trackedBlockersCount.toLocaleString()}</span>
-        <span className='statsText' i18n-content='trackersBlocked' data-l10n-args={blockedArgs} />
-      </li>
-      <li className='statsBlock'>
-        <span className='counter ads'>{adblockCount.toLocaleString()}</span>
-        <span className='statsText' i18n-content='adsBlocked' data-l10n-args={blockedArgs} />
-      </li>
-      <li className='statsBlock'>
-        <span className='counter https'>{httpsUpgradedCount.toLocaleString()}</span>
-        <span className='statsText' i18n-content='httpsUpgraded' data-l10n-args={blockedArgs} />
-      </li>
-      <li className='statsBlock'>
-        <span className='counter timeSaved'>
-          {timeSaved.value} <span className='text' i18n-content={timeSaved.id} />
-        </span>
-        <span className='statsText' i18n-content='estimatedTimeSaved' />
-      </li>
-    </ul>
+    return (
+      <DataBlock>
+        <DataItem
+          theme={this.theme.trackersBlocked}
+          description={getLocale('trackersBlocked')}
+          counter={trackedBlockersCount.toLocaleString()} />
+        <DataItem
+          theme={this.theme.adsBlocked}
+          description={getLocale('adsBlocked')}
+          counter={adblockCount.toLocaleString()} />
+        <DataItem
+          theme={this.theme.httpsUpgrades}
+          description={getLocale('httpsUpgraded')}
+          counter={httpsUpgradedCount.toLocaleString()} />
+        <DataItem
+          theme={this.theme.estimatedTime}
+          counter={timeSaved.value}
+          text={getLocale(timeSaved.id)}
+          description={getLocale('estimatedTimeSaved')} />
+      </DataBlock>
+    )
   }
 }
 module.exports = Stats

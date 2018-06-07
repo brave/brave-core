@@ -10,15 +10,18 @@ const HTML5Backend = require('react-dnd-html5-backend')
 const newTabActions = require('../actions/newTabActions')
 
 // Components
+const { Grid, Column, Clock } = require('brave-ui')
 const Stats = require('./stats')
-const Clock = require('./clock')
 const Block = require('./block')
 const FooterInfo = require('./footerInfo')
 const SiteRemovalNotification = require('./siteRemovalNotification')
-// const NewPrivateTab = require('./newprivatetab')
+const NewPrivateTab = require('./newPrivateTab')
 
+// Assets
+const theme = require('./theme')
 require('../../styles/newtab.less')
 require('font-awesome/css/font-awesome.css')
+require('../../fonts/poppins.css')
 
 class NewTabPage extends React.Component {
   constructor (props) {
@@ -29,6 +32,7 @@ class NewTabPage extends React.Component {
     this.onHideSiteRemovalNotification = this.onHideSiteRemovalNotification.bind(this)
     this.onDraggedSite = this.onDraggedSite.bind(this)
     this.onDragEnd = this.onDragEnd.bind(this)
+    this.onChangePrivateSearchEngine = this.onChangePrivateSearchEngine.bind(this)
   }
 
   get actions () {
@@ -37,6 +41,13 @@ class NewTabPage extends React.Component {
 
   get showImages () {
     return this.props.newTabData.showImages && !!this.props.newTabData.backgroundImage
+  }
+
+  get useAlternativePrivateSearchEngine () {
+    return (
+      this.props.newTabData &&
+      this.props.newTabData.useAlternativePrivateSearchEngine
+    )
   }
 
   onDraggedSite (fromUrl, toUrl, dragRight) {
@@ -90,6 +101,13 @@ class NewTabPage extends React.Component {
     this.actions.backgroundImageLoadFailed()
   }
 
+  onChangePrivateSearchEngine (e) {
+    if (!e.target) {
+      return
+    }
+    this.actions.changePrivateSearchEngine(e.target.checked)
+  }
+
   render () {
     const { newTabData } = this.props
 
@@ -99,9 +117,13 @@ class NewTabPage extends React.Component {
     }
 
     if (this.props.newTabData.isIncognito) {
-      // TODO
-      // return <NewPrivateTab newTabData={newTabData} />
-      return null
+      return (
+        <NewPrivateTab
+          stats={newTabData.stats}
+          useAlternativePrivateSearchEngine={this.useAlternativePrivateSearchEngine}
+          onChangePrivateSearchEngine={this.onChangePrivateSearchEngine}
+        />
+      )
     }
 
     // don't render until object is found
@@ -123,10 +145,16 @@ class NewTabPage extends React.Component {
       }
       <div data-test-id={this.showImages ? 'bgGradient' : 'gradient'} className={gradientClassName} />
       <div className='content'>
-        <main>
-          <div className='statsBar'>
-            <Stats stats={newTabData.stats} />
-            <Clock />
+        <main style={theme.newTab}>
+          <div style={theme.newTabStats}>
+            <Grid theme={theme.stats} columns={3}>
+              <Column size={2}>
+                <Stats stats={newTabData.stats} theme={theme} />
+              </Column>
+              <Column size={1} theme={theme.clockContainer}>
+                <Clock theme={theme.clock} />
+              </Column>
+            </Grid>
           </div>
           <div className='topSitesContainer'>
             <nav className='topSitesGrid'>
