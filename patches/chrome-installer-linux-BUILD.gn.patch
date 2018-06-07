@@ -1,8 +1,15 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..ab6bf7f0d65ae03730d977b17782d52ad3c30736 100644
+index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..9857f33bf644c66dff4647045a750035677aec26 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -25,11 +25,10 @@ declare_args() {
+@@ -19,17 +19,16 @@ if (current_cpu == "x86" || current_cpu == "x64") {
+ declare_args() {
+   # Enables checks that ensure the packages are installable on all supported
+   # distributions.
+-  enable_distro_version_check = true
++  enable_distro_version_check = false
+ }
+
  assert(is_linux)
  
  packaging_files_executables = [
