@@ -36,14 +36,14 @@ public func isIgnoredURL(_ url: String) -> Bool {
     return false
 }
 
-class History: NSManagedObject, WebsitePresentable {
+public class History: NSManagedObject, WebsitePresentable {
 
-    @NSManaged var title: String?
-    @NSManaged var url: String?
-    @NSManaged var visitedOn: Date?
-    @NSManaged var syncUUID: UUID?
-    @NSManaged var domain: Domain?
-    @NSManaged var sectionIdentifier: String?
+    @NSManaged public var title: String?
+    @NSManaged public var url: String?
+    @NSManaged public var visitedOn: Date?
+    @NSManaged public var syncUUID: UUID?
+    @NSManaged public var domain: Domain?
+    @NSManaged public var sectionIdentifier: String?
     
     static let Today = getDate(0)
     static let Yesterday = getDate(-1)
@@ -55,7 +55,7 @@ class History: NSManagedObject, WebsitePresentable {
         return NSEntityDescription.entity(forEntityName: "History", in: context)!
     }
 
-    class func add(_ title: String, url: URL) {
+    public class func add(_ title: String, url: URL) {
         let context = DataController.shared.workerContext
         context.perform {
             var item = History.getExisting(url, context: context)
@@ -74,7 +74,7 @@ class History: NSManagedObject, WebsitePresentable {
         }
     }
 
-    class func frc() -> NSFetchedResultsController<NSFetchRequestResult> {
+    public class func frc() -> NSFetchedResultsController<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         let context = DataController.shared.mainThreadContext
         
@@ -87,7 +87,7 @@ class History: NSManagedObject, WebsitePresentable {
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext:context, sectionNameKeyPath: "sectionIdentifier", cacheName: nil)
     }
 
-    override func awakeFromFetch() {
+    public override func awakeFromFetch() {
         if sectionIdentifier != nil {
             return
         }
@@ -145,6 +145,15 @@ class History: NSManagedObject, WebsitePresentable {
             print(fetchError)
         }
         return []
+    }
+    
+    public func remove(save: Bool) {
+        guard let context = managedObjectContext else { return }
+        context.delete(self)
+        
+        if save {
+            DataController.saveContext(context: context)
+        }
     }
     
     class func deleteAll(_ completionOnMain: @escaping ()->()) {
