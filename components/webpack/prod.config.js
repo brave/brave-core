@@ -39,10 +39,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
-        query: {
-          useBabel: true
-        }
+        loader: 'awesome-typescript-loader'
       },
       {
         test: /\.js$/,
