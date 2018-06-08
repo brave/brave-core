@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -14,10 +15,15 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.IgnorePlugin(/[^/]+\/[\S]+.dev$/),
-    new webpack.optimize.UglifyJsPlugin({
-      comments: false,
-      compressor: {
-        warnings: false
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        warnings: false,
+        output: {
+          comments: false
+        },
+        compress: {
+          warnings: false
+        }
       }
     }),
     new webpack.DefinePlugin({
@@ -33,7 +39,10 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader'
+        loader: 'awesome-typescript-loader',
+        query: {
+          useBabel: true
+        }
       },
       {
         test: /\.js$/,
