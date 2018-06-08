@@ -18,6 +18,7 @@ import SwiftyJSON
 import Telemetry
 import Sentry
 import Deferred
+import Data
 
 private let KVOs: [KVOConstants] = [
     .estimatedProgress,
@@ -1131,6 +1132,9 @@ class BrowserViewController: UIViewController {
 
                 // Re-run additional scripts in webView to extract updated favicons and metadata.
                 runScriptsOnWebView(webView)
+                
+                // Only add history of a url which is not a localhost url
+                History.add(tab.title ?? "", url: url)
             }
 
             TabEvent.post(.didChangeURL(url), for: tab)

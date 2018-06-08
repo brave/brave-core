@@ -33,10 +33,10 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   
   weak var delegate: HomeMenuControllerDelegate?
   
-  let bookmarksPanel: BookmarksViewController
+  let bookmarksController: BookmarksViewController
   fileprivate var bookmarksNavController: UINavigationController!
   
-  let history = HistoryPanel()
+  let historyController: HistoryViewController
   
   var bookmarksButton = UIButton()
   var historyButton = UIButton()
@@ -53,7 +53,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   var isPanToDismissEnabled: Bool {
     if visibleController === bookmarksNavController {
       // Don't break reordering bookmarks
-      return !bookmarksPanel.tableView.isEditing
+      return !bookmarksController.tableView.isEditing
     }
     return true
   }
@@ -62,7 +62,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   var pageButtons: [UIButton: UIViewController] {
     return [
       bookmarksButton: bookmarksNavController,
-      historyButton: history,
+      historyButton: historyController,
     ]
   }
   
@@ -73,16 +73,19 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   init(profile: Profile, tabState: TabState) {
     self.profile = profile
     self.tabState = tabState
-    self.bookmarksPanel = BookmarksViewController(folder: nil, tabState: tabState)
+    self.bookmarksController = BookmarksViewController(folder: nil, tabState: tabState)
+    self.historyController = HistoryViewController(tabState: tabState)
     
     super.init(nibName: nil, bundle: nil)
-    bookmarksPanel.profile = profile
-    history.profile = profile
+    bookmarksController.profile = profile
+    historyController.profile = profile
     
-    bookmarksPanel.homePanelDelegate = self
-    bookmarksPanel.bookmarksDidChange = { [weak self] in
+    bookmarksController.homePanelDelegate = self
+    bookmarksController.bookmarksDidChange = { [weak self] in
       self?.updateBookmarkStatus()
     }
+    
+    historyController.homePanelDelegate = self
   }
   
   @available(*, unavailable)
@@ -93,7 +96,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    bookmarksNavController = UINavigationController(rootViewController: bookmarksPanel)
+    bookmarksNavController = UINavigationController(rootViewController: bookmarksController)
     bookmarksNavController.view.backgroundColor = UIColor.white
     view.addSubview(topButtonsView)
     
@@ -129,7 +132,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     settingsButton.tintColor = BraveUX.ActionButtonTintColor
     addBookmarkButton.tintColor = BraveUX.ActionButtonTintColor
     
-    view.addSubview(history.view)
+    view.addSubview(historyController.view)
     view.addSubview(bookmarksNavController.view)
     
     // Setup the bookmarks button as default
@@ -176,7 +179,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     if Bookmark.contains(url: url, context: DataController.shared.mainThreadContext) {
       Bookmark.remove(forUrl: url, context: DataController.shared.mainThreadContext)
     } else {
-      Bookmark.add(url: url, title: tabState.title, parentFolder: bookmarksPanel.currentBookmarksPanel().currentFolder)
+      Bookmark.add(url: url, title: tabState.title, parentFolder: bookmarksController.currentBookmarksPanel().currentFolder)
     }
   }
   
@@ -226,7 +229,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
       make.top.equalTo(topButtonsView.snp.bottom)
     }
     
-    history.view.snp.remakeConstraints { make in
+    historyController.view.snp.remakeConstraints { make in
       make.left.right.bottom.equalTo(self.view)
       make.top.equalTo(topButtonsView.snp.bottom)
     }
@@ -248,16 +251,6 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     sender.tintColor = BraveUX.ActionButtonSelectedTintColor
     
     visibleController = vc
-  }
-  
-  func setHomePanelDelegate(_ delegate: HomePanelDelegate?) {
-    bookmarksPanel.homePanelDelegate = delegate
-    history.homePanelDelegate = delegate
-
-    if (delegate != nil) {
-      bookmarksPanel.reloadData()
-      history.reloadData()
-    }
   }
   
   func updateBookmarkStatus() {
