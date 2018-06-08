@@ -153,11 +153,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         adjustIntegration = AdjustIntegration(profile: profile)
 
-        if LeanPlumClient.shouldEnable(profile: profile) {
-            LeanPlumClient.shared.setup(profile: profile)
-            LeanPlumClient.shared.set(enabled: true)
-        }
-
         self.updateAuthenticationInfo()
         SystemUtils.onFirstRun()
 

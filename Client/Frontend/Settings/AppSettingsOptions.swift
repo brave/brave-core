@@ -642,11 +642,7 @@ class ShowIntroductionSetting: Setting {
     }
 
     override func onClick(_ navigationController: UINavigationController?) {
-        navigationController?.dismiss(animated: true, completion: {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                appDelegate.browserViewController.presentIntroViewController(true)
-            }
-        })
+        navigationController?.dismiss(animated: true)
     }
 }
 
@@ -678,8 +674,6 @@ class SendAnonymousUsageDataSetting: BoolSetting {
             attributedStatusText: statusText,
             settingDidChange: {
                 AdjustIntegration.setEnabled($0)
-                LeanPlumClient.shared.set(attributes: [LPAttributeKey.telemetryOptIn: $0])
-                LeanPlumClient.shared.set(enabled: $0)
             }
         )
     }
@@ -764,7 +758,6 @@ class LoginsSetting: Setting {
     override func onClick(_: UINavigationController?) {
         guard let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() else {
             settings?.navigateToLoginsList()
-            LeanPlumClient.shared.track(event: .openedLogins)
             return
         }
 
@@ -773,7 +766,6 @@ class LoginsSetting: Setting {
             touchIDReason: AuthenticationStrings.loginsTouchReason,
             success: {
                 self.settings?.navigateToLoginsList()
-                LeanPlumClient.shared.track(event: .openedLogins)
             },
             cancel: {
                 self.deselectRow()
@@ -784,7 +776,6 @@ class LoginsSetting: Setting {
             })
         } else {
             settings?.navigateToLoginsList()
-            LeanPlumClient.shared.track(event: .openedLogins)
         }
     }
 }

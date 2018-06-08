@@ -40,7 +40,6 @@
 		0BF1B7E31AC60DEA00A7B407 /* InsetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */; };
 		0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */; };
 		0BF8F8DA1AEFF1C900E90BC2 /* noTitle.html in Resources */ = {isa = PBXBuildFile; fileRef = 0BF8F8D91AEFF1C900E90BC2 /* noTitle.html */; };
-		19DE1F671EC13B6400428B8C /* LeanplumIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DE1F661EC13B6400428B8C /* LeanplumIntegration.swift */; };
 		280CB1371C20E0A3005AF147 /* BookmarksSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280CB1361C20E0A3005AF147 /* BookmarksSynchronizer.swift */; };
 		28126F481C2F948E006466CC /* SQLiteBookmarksHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28126F471C2F948E006466CC /* SQLiteBookmarksHelpers.swift */; };
 		28126F6E1C2F94F9006466CC /* SQLiteBookmarksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28126F6D1C2F94F9006466CC /* SQLiteBookmarksModel.swift */; };
@@ -554,8 +553,6 @@
 		E487B24E1AC1C66400F3E86F /* FiraSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4B7B7571A793CF20022C5E0 /* FiraSans-SemiBold.ttf */; };
 		E487B24F1AC1CC9200F3E86F /* FiraSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECCDAD1AB131770005E717 /* FiraSans-Medium.ttf */; };
 		E487B2501AC1CC9800F3E86F /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4B7B7521A793CF20022C5E0 /* FiraSans-Light.ttf */; };
-		E49943F51AE6879C00BF9DE4 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49943F41AE6879C00BF9DE4 /* IntroViewController.swift */; };
-		E49943F71AE69EDD00BF9DE4 /* Intro.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E49943F61AE69EDD00BF9DE4 /* Intro.xcassets */; };
 		E4A888161A95679500CDC337 /* FxA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CE83D01A1D1D5100576538 /* FxA.framework */; };
 		E4A960061ABB9C450069AD6F /* ReaderModeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A960051ABB9C450069AD6F /* ReaderModeUtils.swift */; };
 		E4A961181AC041C40069AD6F /* ReadabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A961171AC041C40069AD6F /* ReadabilityService.swift */; };
@@ -586,8 +583,6 @@
 		E4E25CCB1CA99E7400D0F088 /* HexExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E25CCA1CA99E7400D0F088 /* HexExtensionsTests.swift */; };
 		E4E7EB6D1C4AED5E0094275D /* SupportUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E7EB6C1C4AED5E0094275D /* SupportUtilsTests.swift */; };
 		E4ECCDAE1AB131770005E717 /* FiraSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECCDAD1AB131770005E717 /* FiraSans-Medium.ttf */; };
-		E4F2DAC01F620C0300A556CD /* Leanplum.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4F2DABF1F620C0200A556CD /* Leanplum.framework */; };
-		E4F2DAC11F62C73900A556CD /* Leanplum.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = E4F2DABF1F620C0200A556CD /* Leanplum.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E60138651C89EB7600DF9756 /* Shared.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E60138661C89EB7D00DF9756 /* Storage.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2FCAE21A1ABB51F800877008 /* Storage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E60138671C89EB8300DF9756 /* Account.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA435FB1ABB83B4008031D1 /* Account.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1221,7 +1216,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E4F2DAC11F62C73900A556CD /* Leanplum.framework in Copy Frameworks */,
 				E62CFB3D1C89EFF700C01324 /* FxA.framework in Copy Frameworks */,
 				E69DB08B1E97DEAA008A67E6 /* SyncTelemetry.framework in Copy Frameworks */,
 				E60138681C89EB8800DF9756 /* Sync.framework in Copy Frameworks */,
@@ -1293,7 +1287,6 @@
 		0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsetButton.swift; sourceTree = "<group>"; };
 		0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFavicons.swift; sourceTree = "<group>"; };
 		0BF8F8D91AEFF1C900E90BC2 /* noTitle.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = noTitle.html; sourceTree = "<group>"; };
-		19DE1F661EC13B6400428B8C /* LeanplumIntegration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeanplumIntegration.swift; sourceTree = "<group>"; };
 		280CB1361C20E0A3005AF147 /* BookmarksSynchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarksSynchronizer.swift; path = Sync/Synchronizers/Bookmarks/BookmarksSynchronizer.swift; sourceTree = SOURCE_ROOT; };
 		28126F471C2F948E006466CC /* SQLiteBookmarksHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteBookmarksHelpers.swift; sourceTree = "<group>"; };
 		28126F6D1C2F94F9006466CC /* SQLiteBookmarksModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteBookmarksModel.swift; sourceTree = "<group>"; };
@@ -1791,8 +1784,6 @@
 		E4424B3B1AC71FB400F44C38 /* FiraSans-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-Book.ttf"; sourceTree = "<group>"; };
 		E46175F21EBB73A10021AE8A /* Sentry.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sentry.framework; path = Carthage/Build/iOS/Sentry.framework; sourceTree = "<group>"; };
 		E47616C61AB74CA600E7DD25 /* ReaderModeBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderModeBarView.swift; sourceTree = "<group>"; };
-		E49943F41AE6879C00BF9DE4 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
-		E49943F61AE69EDD00BF9DE4 /* Intro.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Intro.xcassets; sourceTree = "<group>"; };
 		E4A960051ABB9C450069AD6F /* ReaderModeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderModeUtils.swift; sourceTree = "<group>"; };
 		E4A961171AC041C40069AD6F /* ReadabilityService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadabilityService.swift; sourceTree = "<group>"; };
 		E4A961371AC06FA50069AD6F /* ReaderViewLoading.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ReaderViewLoading.html; sourceTree = "<group>"; };
@@ -1826,7 +1817,6 @@
 		E4E25CCA1CA99E7400D0F088 /* HexExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexExtensionsTests.swift; sourceTree = "<group>"; };
 		E4E7EB6C1C4AED5E0094275D /* SupportUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportUtilsTests.swift; sourceTree = "<group>"; };
 		E4ECCDAD1AB131770005E717 /* FiraSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-Medium.ttf"; sourceTree = "<group>"; };
-		E4F2DABF1F620C0200A556CD /* Leanplum.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Leanplum.framework; path = ThirdParty/Leanplum/Leanplum.framework; sourceTree = "<group>"; };
 		E60961861B62B8A700DD640F /* Fennec.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Fennec.xcconfig; path = Configuration/Fennec.xcconfig; sourceTree = "<group>"; };
 		E60961891B62B8C800DD640F /* Firefox.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Firefox.xcconfig; path = Configuration/Firefox.xcconfig; sourceTree = "<group>"; };
 		E60D03171D511398002FE3F6 /* SyncStatusResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncStatusResolver.swift; sourceTree = "<group>"; };
@@ -2068,7 +2058,6 @@
 				7BA4A9471C4CED900091D032 /* GCDWebServers.framework in Frameworks */,
 				E4B334881BBF23F3004E2BFF /* iAd.framework in Frameworks */,
 				0B8E0FF41A932BD500161DC3 /* ImageIO.framework in Frameworks */,
-				E4F2DAC01F620C0300A556CD /* Leanplum.framework in Frameworks */,
 				7BA4A94A1C4CEFC70091D032 /* OnePasswordExtension.framework in Frameworks */,
 				A1AD4BD720BF4772007A6EA1 /* FastImageCache.framework in Frameworks */,
 				7B8A47F61D01D3B400C07734 /* PassKit.framework in Frameworks */,
@@ -2925,7 +2914,6 @@
 				A1D841F420BC405E00BDAFF7 /* pop.framework */,
 				392E18021FEC4D7B00EBA79C /* MappaMundi.framework */,
 				EBA31D7E1F799BE20055463D /* Telemetry.framework */,
-				E4F2DABF1F620C0200A556CD /* Leanplum.framework */,
 				E46175F21EBB73A10021AE8A /* Sentry.framework */,
 				3B4988CD1E42B01800A12FDA /* SwiftyJSON.framework */,
 				E6231C041B90A472005ABB0D /* libxml2.2.tbd */,
@@ -3267,15 +3255,6 @@
 				E40A18FA1EDC73D5006B7F28 /* FirefoxBeta.entitlements */,
 			);
 			path = Entitlements;
-			sourceTree = "<group>";
-		};
-		E49943F31AE6879C00BF9DE4 /* Intro */ = {
-			isa = PBXGroup;
-			children = (
-				E49943F41AE6879C00BF9DE4 /* IntroViewController.swift */,
-				E49943F61AE69EDD00BF9DE4 /* Intro.xcassets */,
-			);
-			path = Intro;
 			sourceTree = "<group>";
 		};
 		E4E0BB141AFBC9E4008D6260 /* Shared */ = {
@@ -3701,7 +3680,6 @@
 		F84B21E41A0910F600AAB793 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				19DE1F661EC13B6400428B8C /* LeanplumIntegration.swift */,
 				E652F6F91BF66A79007FFDD6 /* Delegates */,
 				28CE83E81A1D206D00576538 /* Client-Bridging-Header.h */,
 				E40FAB0B1A7ABB77009CB80D /* WebServer.swift */,
@@ -3752,7 +3730,6 @@
 				EB2A63241F3B49A7004EF8B0 /* ContentBlocker */,
 				7B0B1B9C1C1B69F500DF4AB5 /* Extensions */,
 				F84B22211A09122500AAB793 /* Home */,
-				E49943F31AE6879C00BF9DE4 /* Intro */,
 				E63ED8DF1BFD254E0097D08E /* Login Management */,
 				7BC7B4571C903A6A0046E9D2 /* Menu */,
 				F84B21F51A0910F600AAB793 /* Reader */,
@@ -4875,7 +4852,6 @@
 				F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */,
 				F35B8D2B1D6380EA008E3D61 /* SessionRestore.html in Resources */,
 				7B42406E1CA04CAC009B5C28 /* Menu.xcassets in Resources */,
-				E49943F71AE69EDD00BF9DE4 /* Intro.xcassets in Resources */,
 				3BC659591E5BA505006D560F /* top_sites.json in Resources */,
 				E4B7B7631A793CF20022C5E0 /* CharisSILI.ttf in Resources */,
 				EB54A8782028CE4000018880 /* disconnect-content.json in Resources */,
@@ -5681,7 +5657,6 @@
 				EB11A1052044A90E0018F749 /* TrackingProtectionPageStats.swift in Sources */,
 				E633E2DA1C21EAF8001FFF6C /* LoginDetailViewController.swift in Sources */,
 				59A68B280D62462B85CF57A4 /* HistoryPanel.swift in Sources */,
-				19DE1F671EC13B6400428B8C /* LeanplumIntegration.swift in Sources */,
 				E65D89181C8647420006EA35 /* AppAuthenticator.swift in Sources */,
 				28FDFF0C1C1F725800840F86 /* SeparatorTableCell.swift in Sources */,
 				C400467C1CF4E43E00B08303 /* BackForwardListViewController.swift in Sources */,
@@ -5704,7 +5679,6 @@
 				59A68FD5260B8D520F890F4A /* ReaderPanel.swift in Sources */,
 				E40FAB0C1A7ABB77009CB80D /* WebServer.swift in Sources */,
 				59A68D66379CFA85C4EAF00B /* TwoLineCell.swift in Sources */,
-				E49943F51AE6879C00BF9DE4 /* IntroViewController.swift in Sources */,
 				A1AD4BE320C0861D007A6EA1 /* UIBarButtonItemExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

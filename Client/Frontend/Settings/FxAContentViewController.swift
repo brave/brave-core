@@ -56,13 +56,6 @@ class FxAContentViewController: SettingsContentViewController, WKScriptMessageHa
         super.viewDidDisappear(animated)
         
         profile.getAccount()?.updateProfile()
-        
-        // If the FxAContentViewController was launched from a FxA deferred link
-        // onboarding might not have been shown. Check to see if it needs to be
-        // displayed and don't animate.
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            appDelegate.browserViewController.presentIntroViewController(false, animated: false)
-        }
     }
 
     override func makeWebView() -> WKWebView {
@@ -130,12 +123,6 @@ class FxAContentViewController: SettingsContentViewController, WKScriptMessageHa
         let helper = FxALoginHelper.sharedInstance
         helper.delegate = self
         helper.application(app, didReceiveAccountJSON: data)
-
-        if profile.hasAccount() {
-            LeanPlumClient.shared.set(attributes: [LPAttributeKey.signedInSync: true])
-        }
-
-        LeanPlumClient.shared.track(event: .signsInFxa)
     }
 
     @objc fileprivate func userDidVerify(_ notification: Notification) {
@@ -148,7 +135,6 @@ class FxAContentViewController: SettingsContentViewController, WKScriptMessageHa
         // we only Notify via the FxALoginStateMachine.
         let flags = FxALoginFlags(pushEnabled: account.pushRegistration != nil,
                                   verified: true)
-        LeanPlumClient.shared.set(attributes: [LPAttributeKey.signedInSync: true])
         DispatchQueue.main.async {
             self.delegate?.contentViewControllerDidSignIn(self, withFlags: flags)
         }

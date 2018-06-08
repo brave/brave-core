@@ -497,13 +497,6 @@ class BrowserViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // On iPhone, if we are about to show the On-Boarding, blank out the tab so that it does
-        // not flash before we present. This change of alpha also participates in the animation when
-        // the intro view is dismissed.
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            self.view.alpha = (profile.prefs.intForKey(PrefsKeys.IntroSeen) != nil) ? 1.0 : 0.0
-        }
-
         if !displayedRestoreTabsAlert && !cleanlyBackgrounded() && crashedLastLaunch() {
             displayedRestoreTabsAlert = true
             showRestoreTabsAlert()
@@ -548,8 +541,6 @@ class BrowserViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        presentIntroViewController()
-
         screenshotHelper.viewIsVisible = true
         screenshotHelper.takePendingScreenshots(tabManager.tabs)
 
@@ -1048,7 +1039,6 @@ class BrowserViewController: UIViewController {
         }
 
         present(controller, animated: true, completion: nil)
-        LeanPlumClient.shared.track(event: .userSharedWebpage)
     }
 
     func updateFindInPageVisibility(visible: Bool, tab: Tab? = nil) {
@@ -1314,7 +1304,6 @@ extension BrowserViewController: URLBarDelegate {
                 case .available:
                     enableReaderMode()
                     UnifiedTelemetry.recordEvent(category: .action, method: .tap, object: .readerModeOpenButton)
-                    LeanPlumClient.shared.track(event: .useReaderView)
                 case .active:
                     disableReaderMode()
                     UnifiedTelemetry.recordEvent(category: .action, method: .tap, object: .readerModeCloseButton)
@@ -1460,8 +1449,6 @@ extension BrowserViewController: URLBarDelegate {
             }
             showHomePanelController(inline: false)
         }
-
-        LeanPlumClient.shared.track(event: .interactWithURLBar)
     }
 
     func urlBarDidLeaveOverlayMode(_ urlBar: URLBarView) {
@@ -2268,33 +2255,7 @@ extension BrowserViewController: ReaderModeBarViewDelegate {
     }
 }
 
-extension BrowserViewController: IntroViewControllerDelegate {
-    @discardableResult func presentIntroViewController(_ force: Bool = false, animated: Bool = true) -> Bool {
-        if let deeplink = self.profile.prefs.stringForKey("AdjustDeeplinkKey"), let url = URL(string: deeplink) {
-            self.launchFxAFromDeeplinkURL(url)
-            return true
-        }
-        
-        if force || profile.prefs.intForKey(PrefsKeys.IntroSeen) == nil {
-            let introViewController = IntroViewController()
-            introViewController.delegate = self
-            // On iPad we present it modally in a controller
-            if topTabsVisible {
-                introViewController.preferredContentSize = CGSize(width: IntroUX.Width, height: IntroUX.Height)
-                introViewController.modalPresentationStyle = .formSheet
-            }
-            present(introViewController, animated: animated) {
-                // On first run (and forced) open up the homepage in the background.
-                if let homePageURL = HomePageAccessors.getHomePage(self.profile.prefs), let tab = self.tabManager.selectedTab, DeviceInfo.hasConnectivity() {
-                    tab.loadRequest(URLRequest(url: homePageURL))
-                }
-            }
-
-            return true
-        }
-
-        return false
-    }
+extension BrowserViewController {
     
     func launchFxAFromDeeplinkURL(_ url: URL) {
         self.profile.prefs.removeObjectForKey("AdjustDeeplinkKey")
@@ -2303,21 +2264,6 @@ extension BrowserViewController: IntroViewControllerDelegate {
         let fxaParams: FxALaunchParams
         fxaParams = FxALaunchParams(query: query)
         self.presentSignInViewController(fxaParams)
-    }
-
-    func introViewControllerDidFinish(_ introViewController: IntroViewController, requestToLogin: Bool) {
-        self.profile.prefs.setInt(1, forKey: PrefsKeys.IntroSeen)
-
-        introViewController.dismiss(animated: true) {
-            if self.navigationController?.viewControllers.count ?? 0 > 1 {
-                _ = self.navigationController?.popToRootViewController(animated: true)
-            }
-            
-            if requestToLogin {
-                let fxaParams = FxALaunchParams(query: ["entrypoint": "firstrun"])
-                self.presentSignInViewController(fxaParams)
-            }
-        }
     }
 
     func presentSignInViewController(_ fxaOptions: FxALaunchParams? = nil) {
@@ -2376,7 +2322,6 @@ extension BrowserViewController: ContextMenuHelperDelegate {
 
             let addTab = { (rURL: URL, isPrivate: Bool) in
                     let tab = self.tabManager.addTab(URLRequest(url: rURL as URL), afterTab: currentTab, isPrivate: isPrivate)
-                    LeanPlumClient.shared.track(event: .openedNewTab, withParameters: ["Source": "Long Press Context Menu"])
                     guard !self.topTabsVisible else {
                         return
                     }
@@ -2434,7 +2379,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             let saveImageAction = UIAlertAction(title: saveImageTitle, style: .default) { _ in
                 if photoAuthorizeStatus == .authorized || photoAuthorizeStatus == .notDetermined {
                     self.getImage(url as URL) {
-                        UIImageWriteToSavedPhotosAlbum($0, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                        UIImageWriteToSavedPhotosAlbum($0, self, nil, nil)
                     }
                 } else {
                     let accessDenied = UIAlertController(title: NSLocalizedString("Firefox would like to access your Photos", comment: "See http://mzl.la/1G7uHo7"), message: NSLocalizedString("This allows you to save the image to your Camera Roll.", comment: "See http://mzl.la/1G7uHo7"), preferredStyle: .alert)
@@ -2505,14 +2450,6 @@ extension BrowserViewController: ContextMenuHelperDelegate {
     func contextMenuHelper(_ contextMenuHelper: ContextMenuHelper, didCancelGestureRecognizer: UIGestureRecognizer) {
         displayedPopoverController?.dismiss(animated: true) {
             self.displayedPopoverController = nil
-        }
-    }
-}
-
-extension BrowserViewController {
-    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if error == nil {
-            LeanPlumClient.shared.track(event: .saveImage)
         }
     }
 }
