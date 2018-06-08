@@ -576,7 +576,7 @@ extension ActivityStreamPanel: DataObserverDelegate {
 
     func getPocketVideos() -> Success {
         let showPocket = (profile.prefs.boolForKey(PrefsKeys.ASPocketStoriesVisible) ?? Pocket.IslocaleSupported(Locale.current.identifier))
-        guard showPocket, LeanPlumClient.shared.enablePocketVideo.boolValue() else {
+        guard showPocket else {
             self.pocketVideoStories = []
             return succeed()
         }
@@ -742,12 +742,10 @@ extension ActivityStreamPanel: DataObserverDelegate {
             site = Site(url: pocketStories[index].url.absoluteString, title: pocketStories[index].title)
             telemetry.reportEvent(.Click, source: .Pocket, position: index)
             let params = ["Source": "Activity Stream", "StoryType": "Article"]
-            LeanPlumClient.shared.track(event: .openedPocketStory, withParameters: params)
         case .pocketVideo:
             site = Site(url: pocketVideoStories[index].url.absoluteString, title: pocketVideoStories[index].title)
             telemetry.reportEvent(.Click, source: .Pocket, position: index)
             let params = ["Source": "Activity Stream", "StoryType": "Video"]
-            LeanPlumClient.shared.track(event: .openedPocketStory, withParameters: params)
         case .topSites, .highlightIntro:
             return
         }
@@ -811,10 +809,6 @@ extension ActivityStreamPanel: HomePanelContextMenu {
             self.homePanelDelegate?.homePanelDidRequestToOpenInNewTab(siteURL, isPrivate: false)
             self.telemetry.reportEvent(.NewTab, source: pingSource, position: index)
             let source = ["Source": "Activity Stream Long Press Context Menu"]
-            LeanPlumClient.shared.track(event: .openedNewTab, withParameters: source)
-            if Section(indexPath.section) == .pocket {
-                LeanPlumClient.shared.track(event: .openedPocketStory, withParameters: source)
-            }
         }
 
         let openInNewPrivateTabAction = PhotonActionSheetItem(title: Strings.OpenInNewPrivateTabContextMenuTitle, iconString: "quick_action_new_private_tab") { action in
@@ -847,7 +841,6 @@ extension ActivityStreamPanel: HomePanelContextMenu {
                 site.setBookmarked(true)
                 self.profile.panelDataObservers.activityStream.refreshIfNeeded(forceHighlights: true, forceTopSites: true)
                 self.telemetry.reportEvent(.AddBookmark, source: pingSource, position: index)
-                LeanPlumClient.shared.track(event: .savedBookmark)
                 UnifiedTelemetry.recordEvent(category: .action, method: .add, object: .bookmark, value: .activityStream)
             })
         }

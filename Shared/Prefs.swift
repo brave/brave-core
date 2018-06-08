@@ -14,7 +14,7 @@ public struct PrefsKeys {
     public static let KeyMailToOption = "MailToOption"
     public static let HasFocusInstalled = "HasFocusInstalled"
     public static let HasPocketInstalled = "HasPocketInstalled"
-    public static let IntroSeen = "IntroViewControllerSeen"
+    public static let IntroSeen = "IntroViewControllerSeen" // Currently unused, but for future use for any sort of on-boarding/intro screen
 
     //Activity Stream
     public static let KeyTopSitesCacheIsValid = "topSitesCacheIsValid"

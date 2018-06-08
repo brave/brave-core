@@ -59,8 +59,6 @@ class DisconnectSetting: Setting {
         alertController.addAction(
             UIAlertAction(title: Strings.SettingsDisconnectDestructiveAction, style: .destructive) { (action) in
                 FxALoginHelper.sharedInstance.applicationDidDisconnect(UIApplication.shared)
-                LeanPlumClient.shared.set(attributes: [LPAttributeKey.signedInSync: self.profile.hasAccount()])
-                _ = navigationController?.popViewController(animated: true)
         })
         navigationController?.present(alertController, animated: true, completion: nil)
     }

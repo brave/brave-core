@@ -147,15 +147,6 @@ class FxALoginHelper {
         
         account.updateProfile()
         
-        let leanplum = LeanPlumClient.shared
-        if leanplum.isLPEnabled() && leanplum.isFxAPrePushEnabled() {
-            // If Leanplum A/B push notification tests are enabled, defer to them for
-            // displaying the pre-push permission dialog. If user dismisses it, we will still have
-            // another chance to prompt them. Afterwards, Leanplum calls `apnsRegisterDidSucceed` or
-            // `apnsRegisterDidFail` to finish setting up Autopush.
-            return readyForSyncing()
-        }
-        
         requestUserNotifications(application)
     }
 
