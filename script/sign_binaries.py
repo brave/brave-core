@@ -12,10 +12,8 @@ assert (cert or signtool_args), 'One or both of the CERT or SIGNTOOL_ARGS must b
 
 def get_sign_cmd(file):
   # https://docs.microsoft.com/en-us/dotnet/framework/tools/signtool-exe
-  sdk_dir = os.path.normpath(os.environ.get(
-      'WINDOWSSDKDIR',
-      'C:\\Program Files (x86)\\Windows Kits\\10'))
-  cmd = "{}\\bin\\x64\\signtool.exe {}".format(sdk_dir, signtool_args)
+  # signtool should be in the path if it was set up correctly by gn through src/build/vs_toolchain.py
+  cmd = 'signtool ' + format(signtool_args)
   if cert:
     cmd = cmd + ' /n "' + cert + '"'
   return (cmd + ' "' + file + '"')
