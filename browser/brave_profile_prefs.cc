@@ -22,6 +22,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Restore last profile on restart
   registry->SetDefaultPrefValue(prefs::kRestoreOnStartup,
       base::Value(SessionStartupPref::kPrefValueLast));
+
+  // Show download prompt by default
+  registry->SetDefaultPrefValue(prefs::kPromptForDownload, base::Value(true));
 }
 
 }  // namespace brave
