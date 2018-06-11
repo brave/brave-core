@@ -825,7 +825,6 @@ extension ActivityStreamPanel: HomePanelContextMenu {
                     site.setBookmarked(false)
                 }
                 self.telemetry.reportEvent(.RemoveBookmark, source: pingSource, position: index)
-                UnifiedTelemetry.recordEvent(category: .action, method: .delete, object: .bookmark, value: .activityStream)
             })
         } else {
             bookmarkAction = PhotonActionSheetItem(title: Strings.BookmarkContextMenuTitle, iconString: "action_bookmark", handler: { action in
@@ -841,7 +840,6 @@ extension ActivityStreamPanel: HomePanelContextMenu {
                 site.setBookmarked(true)
                 self.profile.panelDataObservers.activityStream.refreshIfNeeded(forceHighlights: true, forceTopSites: true)
                 self.telemetry.reportEvent(.AddBookmark, source: pingSource, position: index)
-                UnifiedTelemetry.recordEvent(category: .action, method: .add, object: .bookmark, value: .activityStream)
             })
         }
 
