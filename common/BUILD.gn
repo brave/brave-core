@@ -20,6 +20,8 @@ source_set("common") {
     "resource_bundle_helper.h",
     "shield_exceptions.cc",
     "shield_exceptions.h",
+    "url_constants.cc",
+    "url_constants.h",
     "webui_url_constants.cc",
     "webui_url_constants.h",
   ]

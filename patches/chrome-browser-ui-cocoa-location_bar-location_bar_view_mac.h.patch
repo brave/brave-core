@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/cocoa/location_bar/location_bar_view_mac.h b/chrome/browser/ui/cocoa/location_bar/location_bar_view_mac.h
+index 442195862ff0cceb0d519e88c4c76fe0c13ff3f6..26945b588c3a746bb85370134f1dc6c8b0603500 100644
+--- a/chrome/browser/ui/cocoa/location_bar/location_bar_view_mac.h
++++ b/chrome/browser/ui/cocoa/location_bar/location_bar_view_mac.h
+@@ -162,7 +162,7 @@ class LocationBarViewMac : public LocationBar,
+   const ToolbarModel* GetToolbarModel() const override;
+   content::WebContents* GetWebContents() override;
+ 
+-  PageInfoVerboseType GetPageInfoVerboseType() const;
++  virtual PageInfoVerboseType GetPageInfoVerboseType() const;
+ 
+   // Returns true if the page info decoration should display security verbose.
+   // The verbose should only be shown for valid and invalid HTTPS states.

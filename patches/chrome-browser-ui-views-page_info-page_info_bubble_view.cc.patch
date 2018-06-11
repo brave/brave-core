@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/views/page_info/page_info_bubble_view.cc b/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
+index 6b55c35ca21ed48ef57772116402fdcb3180d01a..7ae4051033463bfa7713a66ddd34f823f9cdb355 100644
+--- a/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
++++ b/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
+@@ -14,6 +14,7 @@
+ #include "base/strings/string16.h"
+ #include "base/strings/string_util.h"
+ #include "base/strings/utf_string_conversions.h"
++#include "brave/common/url_constants.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/certificate_viewer.h"
+ #include "chrome/browser/infobars/infobar_service.h"
+@@ -477,6 +478,7 @@ InternalPageInfoBubbleView::InternalPageInfoBubbleView(
+     // view-source scheme uses the same icon as chrome:// pages.
+     icon = IDR_PRODUCT_LOGO_16;
+   } else if (!url.SchemeIs(content::kChromeUIScheme) &&
++             !url.SchemeIs(kBraveUIScheme) &&
+              !url.SchemeIs(content::kChromeDevToolsScheme)) {
+     NOTREACHED();
+   }
+@@ -537,6 +539,7 @@ views::BubbleDialogDelegateView* PageInfoBubbleView::CreatePageInfoBubble(
+   gfx::NativeView parent_view = platform_util::GetViewForWindow(parent_window);
+ 
+   if (url.SchemeIs(content::kChromeUIScheme) ||
++      url.SchemeIs(kBraveUIScheme) ||
+       url.SchemeIs(content::kChromeDevToolsScheme) ||
+       url.SchemeIs(extensions::kExtensionScheme) ||
+       url.SchemeIs(content::kViewSourceScheme)) {

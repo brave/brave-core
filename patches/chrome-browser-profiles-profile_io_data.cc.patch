@@ -1,16 +1,25 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index fd7a4c25a2a2bb1d7ac4383638bef6e247fddd1c..6dbaab7379afbf43a656b8b3984164b2bed16fa3 100644
+index fd7a4c25a2a2bb1d7ac4383638bef6e247fddd1c..90fe36992bbd8c4f329322426ba9215b09d0e88b 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
-@@ -25,6 +25,7 @@
+@@ -25,6 +25,8 @@
  #include "base/strings/string_util.h"
  #include "base/task_scheduler/post_task.h"
  #include "base/threading/thread_task_runner_handle.h"
 +#include "brave/browser/net/brave_profile_network_delegate.h"
++#include "brave/common/url_constants.h"
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -1060,7 +1061,7 @@ void ProfileIOData::Init(
+@@ -782,6 +784,7 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+     extensions::kExtensionScheme,
+ #endif
++    kBraveUIScheme,
+     content::kChromeUIScheme,
+     url::kDataScheme,
+ #if defined(OS_CHROMEOS)
+@@ -1060,7 +1063,7 @@ void ProfileIOData::Init(
    builder->set_ssl_config_service(profile_params_->ssl_config_service);
  
    std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
