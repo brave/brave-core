@@ -8,53 +8,45 @@ import Shared
 extension BrowserViewController {
 
     @objc private func reloadTabKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "reload"])
         if let tab = tabManager.selectedTab, homePanelController == nil {
             tab.reload()
         }
     }
 
     @objc private func goBackKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "go-back"])
         if let tab = tabManager.selectedTab, tab.canGoBack, homePanelController == nil {
             tab.goBack()
         }
     }
 
     @objc private func goForwardKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "go-forward"])
         if let tab = tabManager.selectedTab, tab.canGoForward {
             tab.goForward()
         }
     }
 
     @objc private func findInPageKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "find-in-page"])
         if let tab = tabManager.selectedTab, homePanelController == nil {
             self.tab(tab, didSelectFindInPageForSelection: "")
         }
     }
 
     @objc private func selectLocationBarKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "select-location-bar"])
         scrollController.showToolbars(animated: true)
         urlBar.tabLocationViewDidTapLocation(urlBar.locationView)
     }
 
     @objc private func newTabKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "new-tab"])
         openBlankNewTab(focusLocationField: true, isPrivate: false)
     }
 
     @objc private func newPrivateTabKeyCommand() {
         // NOTE: We cannot and should not distinguish between "new-tab" and "new-private-tab"
         // when recording telemetry for key commands.
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "new-tab"])
         openBlankNewTab(focusLocationField: true, isPrivate: true)
     }
 
     @objc private func closeTabKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "close-tab"])
         guard let currentTab = tabManager.selectedTab else {
             return
         }
@@ -62,7 +54,6 @@ extension BrowserViewController {
     }
 
     @objc private func nextTabKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "next-tab"])
         guard let currentTab = tabManager.selectedTab else {
             return
         }
@@ -76,7 +67,6 @@ extension BrowserViewController {
     }
 
     @objc private func previousTabKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "previous-tab"])
         guard let currentTab = tabManager.selectedTab else {
             return
         }
@@ -90,7 +80,6 @@ extension BrowserViewController {
     }
 
     @objc private func showTabTrayKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "show-tab-tray"])
         showTabTray()
     }
 

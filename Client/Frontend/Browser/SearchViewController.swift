@@ -5,7 +5,6 @@
 import UIKit
 import Shared
 import Storage
-import Telemetry
 
 private enum SearchListSection: Int {
     case searchSuggestions
@@ -266,8 +265,6 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             return
         }
 
-        Telemetry.default.recordSearch(location: .quickSearch, searchEngine: engine.engineID ?? "other")
-
         searchDelegate?.searchViewController(self, didSelectURL: url)
     }
 
@@ -353,7 +350,6 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             if let site = data[indexPath.row] {
                 if let url = URL(string: site.url) {
                     searchDelegate?.searchViewController(self, didSelectURL: url)
-                    UnifiedTelemetry.recordEvent(category: .action, method: .open, object: .bookmark, value: .awesomebarResults)
                 }
             }
         }
@@ -503,8 +499,6 @@ extension SearchViewController: SuggestionCellDelegate {
         if url == nil {
             url = engine.searchURLForQuery(suggestion)
         }
-
-        Telemetry.default.recordSearch(location: .suggestion, searchEngine: engine.engineID ?? "other")
 
         if let url = url {
             searchDelegate?.searchViewController(self, didSelectURL: url)

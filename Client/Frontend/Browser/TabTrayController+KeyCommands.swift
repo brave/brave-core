@@ -30,29 +30,24 @@ extension TabTrayController {
     }
 
     @objc func didCloseTabKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "close-tab"])
         if let tab = tabManager.selectedTab {
             tabManager.removeTab(tab)
         }
     }
 
     @objc func didCloseAllTabsKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "close-all-tabs"])
         closeTabsForCurrentTray()
     }
 
     @objc func didEnterTabKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "enter-tab"])
         _ = self.navigationController?.popViewController(animated: true)
     }
 
     @objc func didOpenNewTabKeyCommand() {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "new-tab"])
         openNewTab()
     }
 
     @objc func didChangeSelectedTabKeyCommand(sender: UIKeyCommand) {
-        UnifiedTelemetry.recordEvent(category: .action, method: .press, object: .keyCommand, extras: ["action": "select-tab"])
         let step: Int
         guard let input = sender.input else { return }
         switch input {

@@ -15,7 +15,6 @@ import Account
 import MobileCoreServices
 import SDWebImage
 import SwiftyJSON
-import Telemetry
 import Sentry
 import Deferred
 import Data
@@ -1164,13 +1163,11 @@ extension BrowserViewController: QRCodeViewControllerDelegate {
     func didScanQRCodeWithURL(_ url: URL) {
         openBlankNewTab(focusLocationField: false)
         finishEditingAndSubmit(url, visitType: VisitType.typed)
-        UnifiedTelemetry.recordEvent(category: .action, method: .scan, object: .qrCodeURL)
     }
 
     func didScanQRCodeWithText(_ text: String) {
         openBlankNewTab(focusLocationField: false)
         submitSearchText(text)
-        UnifiedTelemetry.recordEvent(category: .action, method: .scan, object: .qrCodeText)
     }
 }
 
@@ -1303,10 +1300,8 @@ extension BrowserViewController: URLBarDelegate {
                 switch readerMode.state {
                 case .available:
                     enableReaderMode()
-                    UnifiedTelemetry.recordEvent(category: .action, method: .tap, object: .readerModeOpenButton)
                 case .active:
                     disableReaderMode()
-                    UnifiedTelemetry.recordEvent(category: .action, method: .tap, object: .readerModeCloseButton)
                 case .unavailable:
                     break
                 }
@@ -1427,7 +1422,6 @@ extension BrowserViewController: URLBarDelegate {
 
         if let searchURL = engine.searchURLForQuery(text) {
             // We couldn't find a matching search keyword, so do a search query.
-            Telemetry.default.recordSearch(location: .actionBar, searchEngine: engine.engineID ?? "other")
             finishEditingAndSubmit(searchURL, visitType: VisitType.typed)
         } else {
             // We still don't have a valid URL, so something is broken. Give up.
@@ -2352,7 +2346,6 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             let downloadAction = UIAlertAction(title: downloadTitle, style: .default) { _ in
                 self.pendingDownloadURL = url
                 currentTab.webView?.evaluateJavaScript("window.__firefox__.download('\(url.absoluteString)', '\(UserScriptManager.securityToken)')")
-                UnifiedTelemetry.recordEvent(category: .action, method: .tap, object: .downloadLinkButton)
             }
             actionSheetController.addAction(downloadAction, accessibilityIdentifier: "linkContextMenu.download")
 

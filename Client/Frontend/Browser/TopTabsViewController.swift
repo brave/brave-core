@@ -273,8 +273,6 @@ extension TopTabsViewController: UIDropInteractionDelegate {
     }
 
     func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
-        UnifiedTelemetry.recordEvent(category: .action, method: .drop, object: .url, value: .topTabs)
-
         _ = session.loadObjects(ofClass: URL.self) { urls in
             guard let url = urls.first else {
                 return
@@ -402,8 +400,6 @@ extension TopTabsViewController: UICollectionViewDragDelegate {
             itemProvider = NSItemProvider()
         }
 
-        UnifiedTelemetry.recordEvent(category: .action, method: .drag, object: .tab, value: .topTabs)
-
         let dragItem = UIDragItem(itemProvider: itemProvider)
         dragItem.localObject = tab
         return [dragItem]
@@ -416,8 +412,6 @@ extension TopTabsViewController: UICollectionViewDropDelegate {
         guard let destinationIndexPath = coordinator.destinationIndexPath, let dragItem = coordinator.items.first?.dragItem, let tab = dragItem.localObject as? Tab, let sourceIndex = tabStore.index(of: tab) else {
             return
         }
-
-        UnifiedTelemetry.recordEvent(category: .action, method: .drop, object: .tab, value: .topTabs)
 
         coordinator.drop(dragItem, toItemAt: destinationIndexPath)
         isDragging = false

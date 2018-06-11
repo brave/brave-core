@@ -40,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 
     var receivedURLs: [URL]?
-    var unifiedTelemetry: UnifiedTelemetry?
 
     @discardableResult func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         //
@@ -103,8 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         Logger.browserLogger.newLogWithDate(logDate)
 
         let profile = getProfile(application)
-
-        unifiedTelemetry = UnifiedTelemetry(profile: profile)
 
         if !DebugSettingsBundleOptions.disableLocalWebServer {
             // Set up a web server that serves us static content. Do this early so that it is ready when the UI is presented.
@@ -239,11 +236,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         if let profile = profile, let _ = profile.prefs.boolForKey(PrefsKeys.AppExtensionTelemetryOpenUrl) {
             profile.prefs.removeObjectForKey(PrefsKeys.AppExtensionTelemetryOpenUrl)
-            var object = UnifiedTelemetry.EventObject.url
-            if case .text(_) = routerpath {
-                object = .searchText
-            }
-            UnifiedTelemetry.recordEvent(category: .appExtensionAction, method: .applicationOpenUrl, object: object)
         }
 
 
@@ -293,8 +285,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             quickActions.handleShortCutItem(shortcut, withBrowserViewController: browserViewController)
             quickActions.launchedShortcutItem = nil
         }
-
-        UnifiedTelemetry.recordEvent(category: .action, method: .foreground, object: .app)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -309,8 +299,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         defaults.synchronize()
 
         syncOnDidEnterBackground(application: application)
-
-        UnifiedTelemetry.recordEvent(category: .action, method: .background, object: .app)
     }
 
     fileprivate func syncOnDidEnterBackground(application: UIApplication) {
