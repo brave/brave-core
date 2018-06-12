@@ -2,7 +2,7 @@ diff --git a/chrome/browser/ui/cocoa/tabs/tab_view.mm b/chrome/browser/ui/cocoa/
 index 9021a2ce3a706576546fb1f9b77207a4e24d9665..516a06ead1fd17f802ba122384621c585b01d818 100644
 --- a/chrome/browser/ui/cocoa/tabs/tab_view.mm
 +++ b/chrome/browser/ui/cocoa/tabs/tab_view.mm
-@@ -451,7 +451,6 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -451,7 +451,6 @@ - (NSColor*)backgroundColorForSelected:(bool)selected {
  - (void)drawFill:(NSRect)dirtyRect {
    gfx::ScopedNSGraphicsContextSaveGState scopedGState;
    NSRect bounds = [self bounds];
@@ -10,7 +10,7 @@ index 9021a2ce3a706576546fb1f9b77207a4e24d9665..516a06ead1fd17f802ba122384621c58
    NSRect clippingRect = bounds;
    clippingRect.size.height = [TabView maskImageFillHeight];
    if (state_ != NSOnState) {
-@@ -937,6 +936,7 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -937,6 +936,7 @@ - (void)adjustGlowValue {
  @implementation TabImageMaker
  
  + (NSBezierPath*)tabLeftEdgeBezierPathForContext:(CGContextRef)context {
@@ -18,7 +18,7 @@ index 9021a2ce3a706576546fb1f9b77207a4e24d9665..516a06ead1fd17f802ba122384621c58
    NSBezierPath* bezierPath = [NSBezierPath bezierPath];
  
    [bezierPath moveToPoint:NSMakePoint(-2, 0)];
-@@ -944,10 +944,11 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -944,10 +944,11 @@ + (NSBezierPath*)tabLeftEdgeBezierPathForContext:(CGContextRef)context {
               controlPoint1:NSMakePoint(1.805, -0.38)
               controlPoint2:NSMakePoint(2.17, 1.415)];
  
@@ -34,7 +34,7 @@ index 9021a2ce3a706576546fb1f9b77207a4e24d9665..516a06ead1fd17f802ba122384621c58
  
    [bezierPath lineToPoint:NSMakePoint(18, 29)];
  
-@@ -977,6 +978,7 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -977,6 +978,7 @@ + (NSBezierPath*)tabLeftEdgeBezierPathForContext:(CGContextRef)context {
  }
  
  + (void)setTabEdgeStrokeColor {

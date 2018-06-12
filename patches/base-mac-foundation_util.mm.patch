@@ -2,7 +2,7 @@ diff --git a/base/mac/foundation_util.mm b/base/mac/foundation_util.mm
 index aec8c0f6398ce65dd70681cfe94ecee9ba8a1c1e..4f6e728b8da3586e44216bd16fa6890f245b67a2 100644
 --- a/base/mac/foundation_util.mm
 +++ b/base/mac/foundation_util.mm
-@@ -250,7 +250,7 @@ const char* BaseBundleID() {
+@@ -250,7 +250,7 @@ void NSObjectRelease(void* obj) {
  #if defined(GOOGLE_CHROME_BUILD)
    return "com.google.Chrome";
  #else

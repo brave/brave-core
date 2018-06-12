@@ -2,7 +2,7 @@ diff --git a/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm b/chrome/brows
 index 8f0fc0a5711f1f011b90c1cbcb27d78977d70263..b9ec879393c5029b34650455b8d594ca929f6cbe 100644
 --- a/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm
 +++ b/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm
-@@ -92,7 +92,7 @@ const CGFloat kUseFullAvailableWidth = -1.0;
+@@ -92,7 +92,7 @@
  const CGFloat kLastPinnedTabSpacing = 2.0;
  
  // The amount by which the new tab button is offset (from the tabs).
@@ -11,7 +11,7 @@ index 8f0fc0a5711f1f011b90c1cbcb27d78977d70263..b9ec879393c5029b34650455b8d594ca
  
  const NSTimeInterval kAnimationDuration = 0.125;
  
-@@ -592,7 +592,7 @@ NSRect FlipRectInView(NSView* view, NSRect rect) {
+@@ -592,7 +592,7 @@ + (CGFloat)tabOverlap {
    // tab. Else, every time the throbber is painted, the throbber's invalidation
    // will also invalidate parts of the tab to the left, and two tabs's
    // backgrounds need to be painted on each throbber frame instead of one.

@@ -11,7 +11,7 @@ index 0124634998da23dee70c687fbce09189a070006f..1001697a09c7465c17652eb4d9c8ca3a
    // Use the main Chrome application bundle and not the framework bundle.
    // Keystone keys don't live in the framework.
    NSBundle* bundle = base::mac::OuterBundle();
-@@ -21,10 +21,14 @@ std::string GetChannelName() {
+@@ -21,10 +21,14 @@
  
    // Only ever return "", "unknown", "beta", "dev", or "canary" in a branded
    // build.
@@ -26,7 +26,7 @@ index 0124634998da23dee70c687fbce09189a070006f..1001697a09c7465c17652eb4d9c8ca3a
      // For the stable channel, KSChannelID is not set.
      channel = @"";
    } else if ([channel isEqual:@"beta"] ||
-@@ -42,8 +46,7 @@ std::string GetChannelName() {
+@@ -42,8 +46,7 @@
  }
  
  version_info::Channel GetChannelByName(const std::string& channel) {

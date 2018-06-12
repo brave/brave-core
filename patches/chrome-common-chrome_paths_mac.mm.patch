@@ -13,7 +13,7 @@ index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..e8e1e65109f1d9f7e11b4e080779c525
  namespace {
  
  const base::FilePath* g_override_versioned_directory = NULL;
-@@ -58,6 +62,16 @@ char* ProductDirNameForBundle(NSBundle* chrome_bundle) {
+@@ -58,6 +62,16 @@
    if (!product_dir_name) {
  #if defined(GOOGLE_CHROME_BUILD)
      product_dir_name = "Google/Chrome";

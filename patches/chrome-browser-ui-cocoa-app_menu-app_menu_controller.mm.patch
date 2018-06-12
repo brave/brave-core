@@ -10,7 +10,7 @@ index 89f8b4bbba39c990b65c62159a00e51eff0b53ab..094303f8643eb1471a77a2b5e3e8e3d8
  #include "chrome/app/chrome_command_ids.h"
  #import "chrome/browser/app_controller_mac.h"
  #include "chrome/browser/profiles/profile.h"
-@@ -495,7 +496,7 @@ class ToolbarActionsBarObserverHelper : public ToolbarActionsBarObserver {
+@@ -495,7 +496,7 @@ - (BrowserActionsController*)browserActionsController {
  - (void)createModel {
    DCHECK(browser_);
    recentTabsMenuModelDelegate_.reset();
