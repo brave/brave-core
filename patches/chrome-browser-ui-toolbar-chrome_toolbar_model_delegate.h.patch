@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/toolbar/chrome_toolbar_model_delegate.h b/chrome/browser/ui/toolbar/chrome_toolbar_model_delegate.h
+index c895c0b18ec4f3fc8682de7c4a02833d7a992ea7..3d6a8f313f7e7090dd23c1ea6aaf9634bd82bb36 100644
+--- a/chrome/browser/ui/toolbar/chrome_toolbar_model_delegate.h
++++ b/chrome/browser/ui/toolbar/chrome_toolbar_model_delegate.h
+@@ -34,6 +34,7 @@ class ChromeToolbarModelDelegate : public ToolbarModelDelegate {
+   content::NavigationEntry* GetNavigationEntry() const;
+ 
+  private:
++  friend class BraveToolbarModelDelegate;
+   base::string16 FormattedStringWithEquivalentMeaning(
+       const GURL& url,
+       const base::string16& formatted_url) const override;

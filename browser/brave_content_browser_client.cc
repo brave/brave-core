@@ -8,6 +8,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
+#include "brave/common/url_constants.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
@@ -32,9 +33,15 @@ bool HandleURLRewrite(GURL* url,
     return true;
   }
 
-  if (url->SchemeIs(content::kChromeUIScheme) &&
-      url->host() == chrome::kChromeUINewTabHost) {
-    // Disable new tab overrides, but keep it the same
+  if (url->SchemeIs(kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    *url = url->ReplaceComponents(replacements);
+    return true;
+  }
+
+  // Needed for making chrome:// URLs map back to brave:// URLs.
+  if (url->SchemeIs(content::kChromeUIScheme)) {
     return true;
   }
 
@@ -48,7 +55,15 @@ bool HandleURLReverseRewrite(GURL* url,
       url->host() == chrome::kChromeUINewTabHost) {
     return true;
   }
+
   if (url->spec() == kWelcomeRemoteURL) {
+    return true;
+  }
+
+  if (url->SchemeIs(content::kChromeUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(kBraveUIScheme);
+    *url = url->ReplaceComponents(replacements);
     return true;
   }
   return false;

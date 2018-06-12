@@ -11,6 +11,8 @@ source_set("ui") {
     "content_settings/brave_content_setting_bubble_model.h",
     "toolbar/brave_app_menu_model.cc",
     "toolbar/brave_app_menu_model.h",
+    "toolbar/brave_toolbar_model_delegate.cc",
+    "toolbar/brave_toolbar_model_delegate.h",
     "views/importer/brave_import_lock_dialog_view.cc",
     "views/importer/brave_import_lock_dialog_view.h",
     "webui/basic_ui.cc",
@@ -23,10 +25,16 @@ source_set("ui") {
     "webui/new_tab_html_source.h",
   ]
 
-  if (is_mac && !mac_views_browser) {
+  if (is_mac) {
     sources += [
-      "cocoa/importer/brave_import_lock_dialog_cocoa.mm",
+      "cocoa/location_bar/brave_location_bar_view_mac.h",
+      "cocoa/location_bar/brave_location_bar_view_mac.mm",
     ]
+    if (!mac_views_browser) {
+      sources += [
+        "cocoa/importer/brave_import_lock_dialog_cocoa.mm",
+      ]
+    }
   }
   public_deps = [
     "//content/public/browser",
