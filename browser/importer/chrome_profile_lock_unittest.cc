@@ -15,11 +15,10 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/string_util.h"
-#include "base/test/test_simple_task_runner.h"
-#include "base/threading/thread_task_runner_handle.h"
 #include "build/build_config.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_paths.h"
+#include "content/public/test/test_browser_thread_bundle.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if defined(OS_WIN)
@@ -29,12 +28,8 @@ const char kLockFile[] = "lockfile";
 class ChromeProfileLockTest : public testing::Test {
  public:
    ChromeProfileLockTest ()
-    : task_runner_(base::MakeRefCounted<base::TestSimpleTaskRunner>()),
-      thread_task_runner_handle_override_(
-        base::ThreadTaskRunnerHandle::OverrideForTesting(task_runner_)) {}
-   ~ChromeProfileLockTest () override {
-     task_runner_->RunUntilIdle();
-   }
+     : test_browser_thread_bundle_(
+         content::TestBrowserThreadBundle::REAL_IO_THREAD) {}
  protected:
   void SetUp() override {
     testing::Test::SetUp();
@@ -52,11 +47,10 @@ class ChromeProfileLockTest : public testing::Test {
 
   void LockFileExists(bool expect);
 
+  content::TestBrowserThreadBundle test_browser_thread_bundle_;
   base::ScopedTempDir temp_dir_;
   base::FilePath user_data_path_;
   base::FilePath lock_file_path_;
-  scoped_refptr<base::TestSimpleTaskRunner> task_runner_;
-  base::ScopedClosureRunner thread_task_runner_handle_override_;
 };
 
 void ChromeProfileLockTest::LockFileExists(bool expect) {
