@@ -86,6 +86,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
       <Grid id='braveShieldsControls' theme={theme.braveShieldsControls}>
         <Column>
           <ContentToggleArrow
+            id='advancedControlsToggle'
             withSeparator={true}
             open={controlsOpen}
             summary={getMessage('shieldsControlsAdvancedControls')}
@@ -93,6 +94,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
           >
             <BoxedContent theme={theme.braveShieldsControlsContent}>
               <SelectOption
+                id='shieldsControlsAdControl'
                 disabled={braveShields === 'block'}
                 titleName={getMessage('shieldsControlsAdControl')}
                 value={braveShields !== 'block' && ads !== 'allow' && trackers !== 'allow' ? 'allow' : 'block'}
@@ -104,6 +106,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
               </SelectOption>
 
               <SelectOption
+                id='shieldsControlsCookieControl'
                 disabled={braveShields === 'block'}
                 titleName={getMessage('shieldsControlsCookieControl')}
                 value={braveShields !== 'block' ? cookies : 'allow'}
@@ -115,6 +118,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
               </SelectOption>
 
               <SelectOption
+                id='shieldsControlsFingerprintingProtection'
                 disabled={braveShields === 'block'}
                 titleName={getMessage('shieldsControlsFingerprintingProtection')}
                 value={braveShields !== 'block' ? fingerprinting : 'allow'}
