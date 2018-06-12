@@ -1084,10 +1084,7 @@ extension TabTrayController: UIViewControllerPreviewingDelegate {
 extension TabTrayController: ClientPickerViewControllerDelegate {
 
     func clientPickerViewController(_ clientPickerViewController: ClientPickerViewController, didPickClients clients: [RemoteClient]) {
-        if let item = clientPickerViewController.shareItem {
-            _ = self.profile.sendItems([item], toClients: clients)
-        }
-        clientPickerViewController.dismiss(animated: true, completion: nil)
+        // BRAVE TODO: Not sure what ClientPickerViewController is for or when its used yet
     }
 
     func clientPickerViewControllerDidCancel(_ clientPickerViewController: ClientPickerViewController) {

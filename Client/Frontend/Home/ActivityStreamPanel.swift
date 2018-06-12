@@ -8,7 +8,6 @@ import Deferred
 import Storage
 import SDWebImage
 import XCGLogger
-import SyncTelemetry
 import SnapKit
 
 private let log = Logger.browserLogger
@@ -60,7 +59,6 @@ struct UXSizeClasses {
 class ActivityStreamPanel: UICollectionViewController, HomePanel {
     weak var homePanelDelegate: HomePanelDelegate?
     fileprivate let profile: Profile
-    fileprivate let telemetry: ActivityStreamTracker
     fileprivate let pocketAPI = Pocket()
     fileprivate let pocketVideoAPI = Pocket(endPoint: PocketVideoFeed)
     fileprivate let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -84,9 +82,8 @@ class ActivityStreamPanel: UICollectionViewController, HomePanel {
     var pocketStories: [PocketStory] = []
     var pocketVideoStories: [PocketStory] = []
 
-    init(profile: Profile, telemetry: ActivityStreamTracker? = nil) {
+    init(profile: Profile) {
         self.profile = profile
-        self.telemetry = telemetry ?? ActivityStreamTracker(eventsTracker: PingCentre.clientForTopic(.ActivityStreamEvents, clientID: profile.clientID), sessionsTracker: PingCentre.clientForTopic(.ActivityStreamSessions, clientID: profile.clientID))
 
         super.init(collectionViewLayout: flowLayout)
         self.collectionView?.delegate = self
@@ -116,14 +113,7 @@ class ActivityStreamPanel: UICollectionViewController, HomePanel {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        sessionStart = Date.now()
         reloadAll()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        telemetry.reportSessionStop(Date.now() - (sessionStart ?? 0))
-        sessionStart = nil
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -480,24 +470,6 @@ extension ActivityStreamPanel {
 
 // MARK: - Data Management
 extension ActivityStreamPanel: DataObserverDelegate {
-    fileprivate func reportMissingData(sites: [Site], source: ASPingSource) {
-        let missingImagePings: [[String: Any]] = sites.compactMap { site in
-            if site.metadata?.mediaURL == nil {
-                return self.telemetry.pingFor(badState: .MissingMetadataImage, source: source)
-            }
-            return nil
-        }
-
-        let missingFaviconPings: [[String: Any]] = sites.compactMap { site in
-            if site.icon == nil {
-                return self.telemetry.pingFor(badState: .MissingFavicon, source: source)
-            }
-            return nil
-        }
-
-        let badPings = missingImagePings + missingFaviconPings
-        self.telemetry.eventsTracker.sendBatch(badPings, validate: true)
-    }
 
     // Reloads both highlights and top sites data from their respective caches. Does not invalidate the cache.
     // See ActivityStreamDataObserver for invalidation logic.
@@ -554,8 +526,6 @@ extension ActivityStreamPanel: DataObserverDelegate {
             }
             let sites = resultArr.reduce([]) { $0 + $1.asArray() }
 
-            // Scan through the fetched highlights and report on anything that might be missing.
-            self.reportMissingData(sites: sites, source: .Highlights)
             self.highlights = sites
             return succeed()
         }
@@ -621,9 +591,6 @@ extension ActivityStreamPanel: DataObserverDelegate {
                 return defaultSites.find { $0.title.lowercased() == domain } ?? site
             }
 
-            // Don't report bad states for default sites we provide
-            self.reportMissingData(sites: mySites, source: .TopSites)
-
             self.topSitesManager.currentTraits = self.view.traitCollection
 
             if newSites.count > Int(ActivityStreamTopSiteCacheSize) {
@@ -634,7 +601,6 @@ extension ActivityStreamPanel: DataObserverDelegate {
 
             self.topSitesManager.urlPressedHandler = { [unowned self] url, indexPath in
                 self.longPressRecognizer.isEnabled = false
-                self.telemetry.reportEvent(.Click, source: .TopSites, position: indexPath.item)
                 self.showSiteWithURLHandler(url as URL)
             }
 
@@ -737,14 +703,11 @@ extension ActivityStreamPanel: DataObserverDelegate {
         switch section {
         case .highlights:
             site = self.highlights[index]
-            telemetry.reportEvent(.Click, source: .Highlights, position: index)
         case .pocket:
             site = Site(url: pocketStories[index].url.absoluteString, title: pocketStories[index].title)
-            telemetry.reportEvent(.Click, source: .Pocket, position: index)
             let params = ["Source": "Activity Stream", "StoryType": "Article"]
         case .pocketVideo:
             site = Site(url: pocketVideoStories[index].url.absoluteString, title: pocketVideoStories[index].title)
-            telemetry.reportEvent(.Click, source: .Pocket, position: index)
             let params = ["Source": "Activity Stream", "StoryType": "Video"]
         case .topSites, .highlightIntro:
             return
@@ -782,23 +745,19 @@ extension ActivityStreamPanel: HomePanelContextMenu {
     func getContextMenuActions(for site: Site, with indexPath: IndexPath) -> [PhotonActionSheetItem]? {
         guard let siteURL = URL(string: site.url) else { return nil }
 
-        let pingSource: ASPingSource
         let index: Int
         var sourceView: UIView?
         
         switch Section(indexPath.section) {
         case .topSites:
-            pingSource = .TopSites
             index = indexPath.item
             if let topSiteCell = self.collectionView?.cellForItem(at: IndexPath(row: 0, section: 0)) as? ASHorizontalScrollCell {
                 sourceView = topSiteCell.collectionView.cellForItem(at: indexPath)
             }
         case .highlights:
-            pingSource = .Highlights
             index = indexPath.row
             sourceView = self.collectionView?.cellForItem(at: indexPath)
         case .pocket, .pocketVideo:
-            pingSource = .Pocket
             index = indexPath.item
             sourceView = self.collectionView?.cellForItem(at: indexPath)
         case .highlightIntro:
@@ -807,7 +766,6 @@ extension ActivityStreamPanel: HomePanelContextMenu {
 
         let openInNewTabAction = PhotonActionSheetItem(title: Strings.OpenInNewTabContextMenuTitle, iconString: "quick_action_new_tab") { action in
             self.homePanelDelegate?.homePanelDidRequestToOpenInNewTab(siteURL, isPrivate: false)
-            self.telemetry.reportEvent(.NewTab, source: pingSource, position: index)
             let source = ["Source": "Activity Stream Long Press Context Menu"]
         }
 
@@ -824,7 +782,6 @@ extension ActivityStreamPanel: HomePanelContextMenu {
                     }
                     site.setBookmarked(false)
                 }
-                self.telemetry.reportEvent(.RemoveBookmark, source: pingSource, position: index)
             })
         } else {
             bookmarkAction = PhotonActionSheetItem(title: Strings.BookmarkContextMenuTitle, iconString: "action_bookmark", handler: { action in
@@ -839,12 +796,10 @@ extension ActivityStreamPanel: HomePanelContextMenu {
                                                                                     toApplication: .shared)
                 site.setBookmarked(true)
                 self.profile.panelDataObservers.activityStream.refreshIfNeeded(forceHighlights: true, forceTopSites: true)
-                self.telemetry.reportEvent(.AddBookmark, source: pingSource, position: index)
             })
         }
 
         let deleteFromHistoryAction = PhotonActionSheetItem(title: Strings.DeleteFromHistoryContextMenuTitle, iconString: "action_delete", handler: { action in
-            self.telemetry.reportEvent(.Delete, source: pingSource, position: index)
             self.profile.history.removeHistoryForURL(site.url).uponQueue(.main) { result in
                 guard result.isSuccess else { return }
                 self.profile.panelDataObservers.activityStream.refreshIfNeeded(forceHighlights: true, forceTopSites: true)
@@ -854,7 +809,6 @@ extension ActivityStreamPanel: HomePanelContextMenu {
         let shareAction = PhotonActionSheetItem(title: Strings.ShareContextMenuTitle, iconString: "action_share", handler: { action in
             let helper = ShareExtensionHelper(url: siteURL, tab: nil)
             let controller = helper.createActivityViewController { completed, activityType in
-                self.telemetry.reportEvent(.Share, source: pingSource, position: index, shareProvider: activityType)
             }
             if UI_USER_INTERFACE_IDIOM() == .pad, let popoverController = controller.popoverPresentationController {
                 let cellRect = sourceView?.frame ?? .zero
@@ -869,12 +823,10 @@ extension ActivityStreamPanel: HomePanelContextMenu {
         })
 
         let removeTopSiteAction = PhotonActionSheetItem(title: Strings.RemoveContextMenuTitle, iconString: "action_remove", handler: { action in
-            self.telemetry.reportEvent(.Remove, source: pingSource, position: index)
             self.hideURLFromTopSites(site)
         })
 
         let dismissHighlightAction = PhotonActionSheetItem(title: Strings.RemoveContextMenuTitle, iconString: "action_remove", handler: { action in
-            self.telemetry.reportEvent(.Dismiss, source: pingSource, position: index)
             self.hideFromHighlights(site)
         })
 
@@ -911,81 +863,6 @@ extension ActivityStreamPanel: UIPopoverPresentationControllerDelegate {
     // This is used by the Share UIActivityViewController action sheet on iPad
     func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect: UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
         popoverPresentationController.presentedViewController.dismiss(animated: false, completion: nil)
-    }
-}
-
-// MARK: Telemetry
-
-enum ASPingEvent: String {
-    case Click = "CLICK"
-    case Delete = "DELETE"
-    case Dismiss = "DISMISS"
-    case Share = "SHARE"
-    case NewTab = "NEW_TAB"
-    case AddBookmark = "ADD_BOOKMARK"
-    case RemoveBookmark = "REMOVE_BOOKMARK"
-    case Remove = "REMOVE"
-}
-
-enum ASPingBadStateEvent: String {
-    case MissingMetadataImage = "MISSING_METADATA_IMAGE"
-    case MissingFavicon = "MISSING_FAVICON"
-}
-
-enum ASPingSource: String {
-    case Highlights = "HIGHLIGHTS"
-    case TopSites = "TOP_SITES"
-    case HighlightsIntro = "HIGHLIGHTS_INTRO"
-    case Pocket = "POCKET"
-}
-
-struct ActivityStreamTracker {
-    let eventsTracker: PingCentreClient
-    let sessionsTracker: PingCentreClient
-
-    private var baseASPing: [String: Any] {
-        return [
-            "app_version": AppInfo.appVersion,
-            "build": AppInfo.buildNumber,
-            "locale": Locale.current.identifier,
-            "release_channel": AppConstants.BuildChannel.rawValue
-        ]
-    }
-
-    func pingFor(badState: ASPingBadStateEvent, source: ASPingSource) -> [String: Any] {
-        var eventPing: [String: Any] = [
-            "event": badState.rawValue,
-            "page": "NEW_TAB",
-            "source": source.rawValue,
-        ]
-        eventPing.merge(with: baseASPing)
-        return eventPing
-    }
-
-    func reportEvent(_ event: ASPingEvent, source: ASPingSource, position: Int, shareProvider: String? = nil) {
-        var eventPing: [String: Any] = [
-            "event": event.rawValue,
-            "page": "NEW_TAB",
-            "source": source.rawValue,
-            "action_position": position,
-        ]
-
-        if let provider = shareProvider {
-            eventPing["share_provider"] = provider
-        }
-
-        eventPing.merge(with: baseASPing)
-        eventsTracker.sendPing(eventPing as [String : AnyObject], validate: true)
-    }
-
-    func reportSessionStop(_ duration: UInt64) {
-        sessionsTracker.sendPing([
-            "session_duration": NSNumber(value: duration),
-            "app_version": AppInfo.appVersion,
-            "build": AppInfo.buildNumber,
-            "locale": Locale.current.identifier,
-            "release_channel": AppConstants.BuildChannel.rawValue
-            ] as [String: Any], validate: true)
     }
 }
 

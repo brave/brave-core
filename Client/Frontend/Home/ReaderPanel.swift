@@ -190,7 +190,6 @@ class ReadingListPanel: UITableViewController, HomePanel {
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(notificationReceived), name: .FirefoxAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notificationReceived), name: .DynamicFontChanged, object: nil)
     }
 
@@ -233,9 +232,6 @@ class ReadingListPanel: UITableViewController, HomePanel {
 
     @objc func notificationReceived(_ notification: Notification) {
         switch notification.name {
-        case .FirefoxAccountChanged:
-            refreshReadingList()
-            break
         case .DynamicFontChanged:
             if emptyStateOverlayView.superview != nil {
                 emptyStateOverlayView.removeFromSuperview()

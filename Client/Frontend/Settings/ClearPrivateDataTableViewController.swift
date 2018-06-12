@@ -144,24 +144,26 @@ class ClearPrivateDataTableViewController: UITableViewController {
 
         // We have been asked to clear history and we have an account.
         // (Whether or not it's in a good state is irrelevant.)
-        if self.toggles[HistoryClearableIndex] && profile.hasAccount() {
-            profile.syncManager.hasSyncedHistory().uponQueue(.main) { yes in
-                // Err on the side of warning, but this shouldn't fail.
-                let alert: UIAlertController
-                if yes.successValue ?? true {
-                    // Our local database contains some history items that have been synced.
-                    // Warn the user before clearing.
-                    alert = UIAlertController.clearSyncedHistoryAlert(okayCallback: clearPrivateData)
-                } else {
-                    alert = UIAlertController.clearPrivateDataAlert(okayCallback: clearPrivateData)
-                }
-                self.present(alert, animated: true, completion: nil)
-                return
-            }
-        } else {
-            let alert = UIAlertController.clearPrivateDataAlert(okayCallback: clearPrivateData)
-            self.present(alert, animated: true, completion: nil)
-        }
+      
+      // BRAVE TODO: Remove this entire class (probably)
+//        if self.toggles[HistoryClearableIndex] && profile.hasAccount() {
+//            profile.syncManager.hasSyncedHistory().uponQueue(.main) { yes in
+//                // Err on the side of warning, but this shouldn't fail.
+//                let alert: UIAlertController
+//                if yes.successValue ?? true {
+//                    // Our local database contains some history items that have been synced.
+//                    // Warn the user before clearing.
+//                    alert = UIAlertController.clearSyncedHistoryAlert(okayCallback: clearPrivateData)
+//                } else {
+//                    alert = UIAlertController.clearPrivateDataAlert(okayCallback: clearPrivateData)
+//                }
+//                self.present(alert, animated: true, completion: nil)
+//                return
+//            }
+//        } else {
+//            let alert = UIAlertController.clearPrivateDataAlert(okayCallback: clearPrivateData)
+//            self.present(alert, animated: true, completion: nil)
+//        }
 
         tableView.deselectRow(at: indexPath, animated: false)
     }

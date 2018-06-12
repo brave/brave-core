@@ -11,7 +11,6 @@ import Storage
 import SnapKit
 import XCGLogger
 import Alamofire
-import Account
 import MobileCoreServices
 import SDWebImage
 import SwiftyJSON
@@ -1513,9 +1512,6 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         var actions: [[PhotonActionSheetItem]] = []
 
-        if let syncAction = syncMenuButton(showFxA: presentSignInViewController) {
-            actions.append(syncAction)
-        }
         actions.append(getHomePanelActions())
         actions.append(getOtherPanelActions(vcDelegate: self))
         // force a modal if the menu is being displayed in compact split screen
@@ -1695,13 +1691,9 @@ extension BrowserViewController: HomePanelViewControllerDelegate {
     }
 
     func homePanelViewControllerDidRequestToCreateAccount(_ homePanelViewController: HomePanelViewController) {
-        let fxaParams = FxALaunchParams(query: ["entrypoint": "homepanel"])
-        presentSignInViewController(fxaParams) // TODO UX Right now the flow for sign in and create account is the same
     }
 
     func homePanelViewControllerDidRequestToSignIn(_ homePanelViewController: HomePanelViewController) {
-        let fxaParams = FxALaunchParams(query: ["entrypoint": "homepanel"])
-        presentSignInViewController(fxaParams) // TODO UX Right now the flow for sign in and create account is the same
     }
 
     func homePanelViewControllerDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool) {
@@ -2249,54 +2241,6 @@ extension BrowserViewController: ReaderModeBarViewDelegate {
     }
 }
 
-extension BrowserViewController {
-    
-    func launchFxAFromDeeplinkURL(_ url: URL) {
-        self.profile.prefs.removeObjectForKey("AdjustDeeplinkKey")
-        var query = url.getQuery()
-        query["entrypoint"] = "adjust_deepklink_ios"
-        let fxaParams: FxALaunchParams
-        fxaParams = FxALaunchParams(query: query)
-        self.presentSignInViewController(fxaParams)
-    }
-
-    func presentSignInViewController(_ fxaOptions: FxALaunchParams? = nil) {
-        // Show the settings page if we have already signed in. If we haven't then show the signin page
-        let vcToPresent: UIViewController
-        if profile.hasAccount(), let status = profile.getAccount()?.actionNeeded, status == .none {
-            let settingsTableViewController = SyncContentSettingsViewController()
-            settingsTableViewController.profile = profile
-            vcToPresent = settingsTableViewController
-        } else {
-            let signInVC = FxAContentViewController(profile: profile, fxaOptions: fxaOptions)
-            signInVC.delegate = self
-            vcToPresent = signInVC
-        }
-        vcToPresent.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissSignInViewController))
-        let settingsNavigationController = SettingsNavigationController(rootViewController: vcToPresent)
-		settingsNavigationController.modalPresentationStyle = .formSheet
-        settingsNavigationController.navigationBar.isTranslucent = false
-        self.present(settingsNavigationController, animated: true, completion: nil)
-    }
-
-    @objc func dismissSignInViewController() {
-        self.dismiss(animated: true, completion: nil)
-    }
-
-}
-
-extension BrowserViewController: FxAContentViewControllerDelegate {
-    func contentViewControllerDidSignIn(_ viewController: FxAContentViewController, withFlags flags: FxALoginFlags) {
-        if flags.verified {
-            self.dismiss(animated: true, completion: nil)
-        }
-    }
-
-    func contentViewControllerDidCancel(_ viewController: FxAContentViewController) {
-        self.dismiss(animated: true, completion: nil)
-    }
-}
-
 extension BrowserViewController: ContextMenuHelperDelegate {
     func contextMenuHelper(_ contextMenuHelper: ContextMenuHelper, didLongPressElements elements: ContextMenuHelper.Elements, gestureRecognizer: UIGestureRecognizer) {
         // locationInView can return (0, 0) when the long press is triggered in an invalid page
@@ -2741,9 +2685,10 @@ extension BrowserViewController: ClientPickerViewControllerDelegate, Instruction
             present(alert, animated: true, completion: nil)
             return
         }
-        profile.sendItems([shareItem], toClients: clients).uponQueue(.main) { _ in
-            self.popToBVC()
-        }
+        self.popToBVC()
+//        profile.sendItems([shareItem], toClients: clients).uponQueue(.main) { _ in
+//            self.popToBVC()
+//        }
     }
 }
 

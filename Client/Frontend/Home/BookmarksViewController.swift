@@ -137,10 +137,6 @@ class BookmarksViewController: SiteTableViewController, HomePanel {
     fatalError("init(coder:) has not been implemented")
   }
   
-  deinit {
-    NotificationCenter.default.removeObserver(self, name: .FirefoxAccountChanged, object: nil)
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -287,9 +283,6 @@ class BookmarksViewController: SiteTableViewController, HomePanel {
   
   func notificationReceived(_ notification: Notification) {
     switch notification.name {
-    case .FirefoxAccountChanged:
-      self.reloadData()
-      break
     case NSNotification.Name.UITextFieldTextDidChange:
       if let okAction = addBookmarksFolderOkAction, let textField = notification.object as? UITextField {
         okAction.isEnabled = (textField.text?.count ?? 0) > 0

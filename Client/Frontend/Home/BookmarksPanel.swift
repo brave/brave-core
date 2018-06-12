@@ -58,7 +58,6 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(notificationReceived), name: .FirefoxAccountChanged, object: nil)
 
         self.tableView.register(SeparatorTableCell.self, forCellReuseIdentifier: BookmarkSeparatorCellIdentifier)
         self.tableView.register(BookmarkFolderTableViewCell.self, forCellReuseIdentifier: BookmarkFolderCellIdentifier)
@@ -111,26 +110,12 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
             source.selectFolder(BookmarkRoots.MobileFolderGUID).upon(onModelFetched)
         }
     }
-
-    @objc func notificationReceived(_ notification: Notification) {
-        switch notification.name {
-        case .FirefoxAccountChanged:
-            self.reloadData()
-            break
-        default:
-            // no need to do anything at all
-            log.warning("Received unexpected notification \(notification.name)")
-            break
-        }
-    }
     
     @objc fileprivate func refreshBookmarks() {
-        profile.syncManager.mirrorBookmarks().upon { (_) in
-            DispatchQueue.main.async {
-                self.loadData()
-                self.refreshControl?.endRefreshing()
-            }
-        }
+      DispatchQueue.main.async {
+        self.loadData()
+        self.refreshControl?.endRefreshing()
+      }
     }
 
     fileprivate func createEmptyStateOverlayView() -> UIView {

@@ -31,7 +31,7 @@ class HistoryPanel: SiteTableViewController, HomePanel {
     weak var homePanelDelegate: HomePanelDelegate?
     private var currentSyncedDevicesCount: Int?
 
-    var events: [Notification.Name] = [.FirefoxAccountChanged, .PrivateDataClearedHistory, .DynamicFontChanged]
+    var events: [Notification.Name] = [.PrivateDataClearedHistory, .DynamicFontChanged]
     var refreshControl: UIRefreshControl?
 
     fileprivate lazy var longPressRecognizer: UILongPressGestureRecognizer = {
@@ -77,20 +77,20 @@ class HistoryPanel: SiteTableViewController, HomePanel {
         // Add a refresh control if the user is logged in and the control was not added before. If the user is not
         // logged in, remove any existing control but only when it is not currently refreshing. Otherwise, wait for
         // the refresh to finish before removing the control.
-        if profile.hasSyncableAccount() && refreshControl == nil {
-            addRefreshControl()
-        } else if refreshControl?.isRefreshing == false {
+//        if profile.hasSyncableAccount() && refreshControl == nil {
+//            addRefreshControl()
+//        } else if refreshControl?.isRefreshing == false {
             removeRefreshControl()
-        }
+//        }
 
-        if profile.hasSyncableAccount() {
-            syncDetailText = " "
-            updateSyncedDevicesCount().uponQueue(.main) { result in
-                self.updateNumberOfSyncedDevices(self.currentSyncedDevicesCount)
-            }
-        } else {
+//        if profile.hasSyncableAccount() {
+//            syncDetailText = " "
+//            updateSyncedDevicesCount().uponQueue(.main) { result in
+//                self.updateNumberOfSyncedDevices(self.currentSyncedDevicesCount)
+//            }
+//        } else {
             syncDetailText = ""
-        }
+//        }
     }
 
     @objc fileprivate func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -124,17 +124,13 @@ class HistoryPanel: SiteTableViewController, HomePanel {
         reloadData()
 
         switch notification.name {
-        case .FirefoxAccountChanged, .PrivateDataClearedHistory:
-            if self.profile.hasSyncableAccount() {
-                resyncHistory()
-            }
+        case .PrivateDataClearedHistory:
             break
         case .DynamicFontChanged:
             if emptyStateOverlayView.superview != nil {
                 emptyStateOverlayView.removeFromSuperview()
             }
             emptyStateOverlayView = createEmptyStateOverlayView()
-            resyncHistory()
             break
         default:
             // no need to do anything at all
@@ -150,20 +146,6 @@ class HistoryPanel: SiteTableViewController, HomePanel {
     private func setData(_ data: Cursor<Site>) {
         self.data = data
         self.computeSectionOffsets()
-    }
-
-    func resyncHistory() {
-        profile.syncManager.syncHistory().uponQueue(.main) { result in
-            if result.isSuccess {
-                self.reloadData()
-            } else {
-                self.endRefreshing()
-            }
-
-            self.updateSyncedDevicesCount().uponQueue(.main) { result in
-                self.updateNumberOfSyncedDevices(self.currentSyncedDevicesCount)
-            }
-        }
     }
 
     // MARK: - Refreshing TableView
@@ -184,14 +166,13 @@ class HistoryPanel: SiteTableViewController, HomePanel {
         self.refreshControl?.endRefreshing()
 
         // Remove the refresh control if the user has logged out in the meantime
-        if !self.profile.hasSyncableAccount() {
+//        if !self.profile.hasSyncableAccount() {
             self.removeRefreshControl()
-        }
+//        }
     }
 
     @objc func refresh() {
         self.refreshControl?.beginRefreshing()
-        resyncHistory()
     }
 
     override func reloadData() {
