@@ -64,8 +64,6 @@ private enum PresentationStyle {
 
 class PhotonActionSheet: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     fileprivate(set) var actions: [[PhotonActionSheetItem]]
-
-    var syncManager: SyncManager? // used to display the sync button
     
     private var site: Site?
     private let style: PresentationStyle
@@ -299,8 +297,7 @@ class PhotonActionSheet: UIViewController, UITableViewDelegate, UITableViewDataS
         let cell = tableView.dequeueReusableCell(withIdentifier: PhotonActionSheetUX.CellName, for: indexPath) as! PhotonActionSheetCell
         let action = actions[indexPath.section][indexPath.row]
         cell.tintColor = self.tintColor
-        let syncManager = action.accessory == .Sync ? self.syncManager : nil
-        cell.configure(with: action, syncManager: syncManager)
+        cell.configure(with: action)
         return cell
     }
     
@@ -517,8 +514,6 @@ private class PhotonActionSheetCell: UITableViewCell {
     static let VerticalPadding: CGFloat = 2
     static let IconSize = 16
 
-    var syncButton: SyncMenuButton?
-
     lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = DynamicFontHelper.defaultHelper.LargeSizeRegularWeightAS
@@ -631,7 +626,7 @@ private class PhotonActionSheetCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with action: PhotonActionSheetItem, syncManager: SyncManager? = nil) {
+    func configure(with action: PhotonActionSheetItem) {
         titleLabel.text = action.title
         titleLabel.textColor = self.tintColor
         titleLabel.textColor = action.accessory == .Text ? titleLabel.textColor.withAlphaComponent(0.6) : titleLabel.textColor
@@ -673,9 +668,6 @@ private class PhotonActionSheetCell: UITableViewCell {
         } else {
             statusIcon.removeFromSuperview()
         }
-        if action.accessory != .Sync {
-            syncButton?.removeFromSuperview()
-        }
 
         switch action.accessory {
         case .Text:
@@ -692,86 +684,9 @@ private class PhotonActionSheetCell: UITableViewCell {
             toggleSwitch.image = image
             stackView.addArrangedSubview(toggleSwitch)
         case .Sync:
-            if let manager = syncManager {
-                if syncButton == nil {
-                    let button = SyncMenuButton(with: manager)
-                    stackView.addArrangedSubview(button)
-                    syncButton = button
-                    syncButton?.contentHorizontalAlignment = .right
-                    syncButton?.snp.makeConstraints { make in
-                        make.size.equalTo(40)
-                    }
-                }
-                syncButton?.updateAnimations()
-                let padding = PhotonActionSheetCell.Padding
-                stackView.snp.remakeConstraints { make in
-                    make.edges.equalTo(contentView).inset(UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding))
-                }
-            }
+            break
         default:
             break // Do nothing. The rest are not supported yet.
         }
     }
 }
-
-private class SyncMenuButton: UIButton {
-
-    let syncManager: SyncManager
-    let iconSize = CGSize(width: 24, height: 24)
-
-    init(with syncManager: SyncManager) {
-        self.syncManager = syncManager
-        super.init(frame: .zero)
-
-        self.addTarget(self, action: #selector(startSync), for: .touchUpInside)
-
-        let line = UIView()
-        line.backgroundColor = UIColor.Photon.Grey40
-        self.addSubview(line)
-        line.snp.makeConstraints { make in
-            make.width.equalTo(1)
-            make.leading.equalToSuperview()
-            make.top.bottom.equalToSuperview()
-        }
-
-        guard let syncStatus = syncManager.syncDisplayState else {
-            self.setImage(UIImage(named: "FxA-Sync")?.createScaled(iconSize), for: .normal)
-            return
-        }
-
-        let imageName = (syncStatus == .inProgress) ? "FxA-Sync-Blue" : "FxA-Sync"
-        setImage(UIImage(named: imageName)?.createScaled(iconSize), for: .normal)
-
-        if syncStatus == .inProgress {
-            animate()
-        }
-    }
-
-    private func animate() {
-        let continuousRotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
-        continuousRotateAnimation.fromValue = 0.0
-        continuousRotateAnimation.toValue = CGFloat(Double.pi)
-        continuousRotateAnimation.isRemovedOnCompletion = true
-        continuousRotateAnimation.duration = 0.5
-        continuousRotateAnimation.repeatCount = .infinity
-        self.imageView?.layer.add(continuousRotateAnimation, forKey: "rotateKey")
-    }
-
-    func updateAnimations() {
-        self.imageView?.layer.removeAllAnimations()
-        setImage(UIImage(named: "FxA-Sync")?.createScaled(iconSize), for: .normal)
-        if let syncStatus = syncManager.syncDisplayState, syncStatus == .inProgress {
-            setImage(UIImage(named: "FxA-Sync-Blue")?.createScaled(iconSize), for: .normal)
-            animate()
-        }
-    }
-
-    @objc func startSync() {
-        self.syncManager.syncEverything(why: .syncNow)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-

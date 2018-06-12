@@ -5,7 +5,6 @@
 import Foundation
 import Shared
 @testable import Storage
-
 import XCTest
 
 private func getBrowserDB(_ filename: String, files: FileAccessor) -> BrowserDB? {

@@ -44,9 +44,9 @@ class TestAppDelegate: AppDelegate {
         if launchArguments.contains(LaunchArguments.ClearProfile) {
             // Use a clean profile for each test session.
             log.debug("Deleting all files in 'Documents' directory to clear the profile")
-            profile = BrowserProfile(localName: "testProfile", syncDelegate: application.syncDelegate, clear: true)
+            profile = BrowserProfile(localName: "testProfile", clear: true)
         } else {
-            profile = BrowserProfile(localName: "testProfile", syncDelegate: application.syncDelegate)
+            profile = BrowserProfile(localName: "testProfile")
         }
 
         // Don't show the What's New page.

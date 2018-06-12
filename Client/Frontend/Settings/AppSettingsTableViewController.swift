@@ -4,7 +4,6 @@
 
 import UIKit
 import Shared
-import Account
 
 /// App Settings Screen (triggered by tapping the 'Gear' in the Tab Tray Controller)
 class AppSettingsTableViewController: SettingsTableViewController {
@@ -21,24 +20,12 @@ class AppSettingsTableViewController: SettingsTableViewController {
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "AppSettingsTableViewController.navigationItem.leftBarButtonItem"
 
         tableView.accessibilityIdentifier = "AppSettingsTableViewController.tableView"
-        
-        // Refresh the user's FxA profile upon viewing settings. This will update their avatar,
-        // display name, etc.
-        profile.getAccount()?.updateProfile()
-
     }
 
     override func generateSettings() -> [SettingSection] {
         var settings = [SettingSection]()
 
         let privacyTitle = NSLocalizedString("Privacy", comment: "Privacy section title")
-        let accountDebugSettings = [
-            // Debug settings:
-            RequirePasswordDebugSetting(settings: self),
-            RequireUpgradeDebugSetting(settings: self),
-            ForgetSyncAuthStateDebugSetting(settings: self),
-            StageSyncServiceDebugSetting(settings: self),
-        ]
 
         let prefs = profile.prefs
         var generalSettings: [Setting] = [
@@ -51,16 +38,7 @@ class AppSettingsTableViewController: SettingsTableViewController {
             BoolSetting(prefs: prefs, prefKey: "saveLogins", defaultValue: true,
                         titleText: NSLocalizedString("Save Logins", comment: "Setting to enable the built-in password manager")),
             ]        
-        
-        let accountChinaSyncSetting: [Setting]
-        if !profile.isChinaEdition {
-            accountChinaSyncSetting = []
-        } else {
-            accountChinaSyncSetting = [
-                // Show China sync service setting:
-                ChinaSyncServiceSetting(settings: self)
-            ]
-        }
+      
         // There is nothing to show in the Customize section if we don't include the compact tab layout
         // setting on iPad. When more options are added that work on both device types, this logic can
         // be changed.
@@ -72,17 +50,6 @@ class AppSettingsTableViewController: SettingsTableViewController {
         ]
 
         var accountSectionTitle = NSAttributedString(string: Strings.FxAFirefoxAccount)
-
-        let footerText = !profile.hasAccount() ? NSAttributedString(string: Strings.FxASyncUsageDetails) : nil
-        settings += [
-            SettingSection(title: accountSectionTitle, footerTitle: footerText, children: [
-                // Without a Firefox Account:
-                ConnectSetting(settings: self),
-                AdvanceAccountSetting(settings: self),
-                // With a Firefox Account:
-                AccountStatusSetting(settings: self),
-                SyncNowSetting(settings: self)
-            ] + accountChinaSyncSetting + accountDebugSettings)]
 
         settings += [ SettingSection(title: NSAttributedString(string: Strings.SettingsGeneralSectionTitle), children: generalSettings)]
 
@@ -132,13 +99,11 @@ class AppSettingsTableViewController: SettingsTableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = super.tableView(tableView, viewForHeaderInSection: section) as! SettingsTableSectionHeaderFooterView
         // Prevent the top border from showing for the General section.
-        if !profile.hasAccount() {
-            switch section {
-                case 1:
-                    headerView.showTopBorder = false
+        switch section {
+            case 1:
+                headerView.showTopBorder = false
             default:
                 break
-            }
         }
         return headerView
     }

@@ -5,8 +5,6 @@
 import UIKit
 import Shared
 import SnapKit
-import FxA
-import Account
 
 class AdvanceAccountSettingViewController: SettingsTableViewController {
     fileprivate let SectionHeaderIdentifier = "SectionHeaderIdentifier"
@@ -26,10 +24,6 @@ class AdvanceAccountSettingViewController: SettingsTableViewController {
         self.profile.prefs.setString("", forKey: PrefsKeys.KeyCustomSyncOauth)
         self.profile.prefs.setString("", forKey: PrefsKeys.KeyCustomSyncAuth)
         self.profile.prefs.setString("", forKey: PrefsKeys.KeyCustomSyncWeb)
-        
-        // To help prevent the account being in a strange state, we force it to
-        // log out when user clears their custom server preferences.
-        self.profile.removeAccount()
     }
 
     func setCustomAccountPrefs(_ data: Data, url: URL) {
@@ -47,7 +41,6 @@ class AdvanceAccountSettingViewController: SettingsTableViewController {
         self.profile.prefs.setString(customSyncOauth, forKey: PrefsKeys.KeyCustomSyncOauth)
         self.profile.prefs.setString(customSyncAuth, forKey: PrefsKeys.KeyCustomSyncAuth)
         self.profile.prefs.setString(url.absoluteString, forKey: PrefsKeys.KeyCustomSyncWeb)
-        self.profile.removeAccount()
         self.displaySuccessAlert()
     }
     

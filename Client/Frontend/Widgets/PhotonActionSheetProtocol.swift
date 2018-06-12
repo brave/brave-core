@@ -25,10 +25,6 @@ extension PhotonActionSheetProtocol {
         let sheet = PhotonActionSheet(title: title, actions: actions, closeButtonTitle: closeButtonTitle, style: style)
         sheet.modalPresentationStyle = style
         sheet.photonTransitionDelegate = PhotonActionSheetAnimator()
-        if let account = profile.getAccount(), account.actionNeeded == .none {
-            // the sync manager is only needed when we have a logged in user with sync in a good state
-            sheet.syncManager = profile.syncManager // the syncmanager is used to display the sync button in the browser menu
-        }
 
         if let popoverVC = sheet.popoverPresentationController, sheet.modalPresentationStyle == .popover {
             popoverVC.delegate = viewController
@@ -226,22 +222,22 @@ extension PhotonActionSheetProtocol {
 
         let sendToDevice = PhotonActionSheetItem(title: Strings.SendToDeviceTitle, iconString: "menu-Send-to-Device") { action in
             guard let bvc = presentableVC as? PresentableVC & InstructionsViewControllerDelegate & ClientPickerViewControllerDelegate else { return }
-            if !self.profile.hasAccount() {
+//            if !self.profile.hasAccount() {
                 let instructionsViewController = InstructionsViewController()
                 instructionsViewController.delegate = bvc
                 let navigationController = UINavigationController(rootViewController: instructionsViewController)
                 navigationController.modalPresentationStyle = .formSheet
                 bvc.present(navigationController, animated: true, completion: nil)
                 return
-            }
+//            }
 
-            let clientPickerViewController = ClientPickerViewController()
-            clientPickerViewController.clientPickerDelegate = bvc
-            clientPickerViewController.profile = self.profile
-            clientPickerViewController.profileNeedsShutdown = false
-            let navigationController = UINavigationController(rootViewController: clientPickerViewController)
-            navigationController.modalPresentationStyle = .formSheet
-            bvc.present(navigationController, animated: true, completion: nil)
+//            let clientPickerViewController = ClientPickerViewController()
+//            clientPickerViewController.clientPickerDelegate = bvc
+//            clientPickerViewController.profile = self.profile
+//            clientPickerViewController.profileNeedsShutdown = false
+//            let navigationController = UINavigationController(rootViewController: clientPickerViewController)
+//            navigationController.modalPresentationStyle = .formSheet
+//            bvc.present(navigationController, animated: true, completion: nil)
         }
         
         let sharePage = PhotonActionSheetItem(title: Strings.AppMenuSharePageTitleString, iconString: "action_share") { action in
@@ -450,48 +446,5 @@ extension PhotonActionSheetProtocol {
         } else {
             return [toggleDesktopSite]
         }
-    }
-
-    func syncMenuButton(showFxA: @escaping (_ params: FxALaunchParams?) -> ()) -> [PhotonActionSheetItem]? {
-        profile.getAccount()?.updateProfile()
-        let account = profile.getAccount()
-
-        func title() -> String? {
-            guard let status = account?.actionNeeded else { return Strings.FxASignInToSync }
-            switch status {
-            case .none:
-                return account?.fxaProfile?.displayName ?? account?.fxaProfile?.email
-            case .needsVerification:
-                return Strings.FxAAccountVerifyEmail
-            case .needsPassword:
-                return Strings.FxAAccountVerifyPassword
-            case .needsUpgrade:
-                return Strings.FxAAccountUpgradeFirefox
-            }
-        }
-
-        func imageName() -> String? {
-            guard let status = account?.actionNeeded else { return "menu-sync" }
-            switch status {
-            case .none:
-                return "placeholder-avatar"
-            case .needsVerification, .needsPassword, .needsUpgrade:
-                return "menu-warning"
-            }
-        }
-
-        let action: ((PhotonActionSheetItem) -> Void) = { action in
-            let fxaParams = FxALaunchParams(query: ["entrypoint": "browsermenu"])
-            showFxA(fxaParams)
-        }
-
-        guard let title = title(), let iconString = imageName() else { return nil }
-        // .none is also a case on the swift enum "Optional" so the value needs to be unwrapped before we check
-        var iconURL: URL? = nil
-        if let actionNeeded = account?.actionNeeded {
-            iconURL = (actionNeeded == .none) ? account?.fxaProfile?.avatar.url : nil
-        }
-        let syncOption = PhotonActionSheetItem(title: title, iconString: iconString, iconURL: iconURL, accessory: .Sync, handler: action)
-        return [syncOption]
     }
 }

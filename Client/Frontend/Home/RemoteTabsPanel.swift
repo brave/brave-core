@@ -3,11 +3,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
-import Account
 import Shared
 import SnapKit
 import Storage
-import Sync
 import XCGLogger
 
 private let log = Logger.browserLogger
@@ -55,7 +53,6 @@ class RemoteTabsPanel: UIViewController, HomePanel {
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(notificationReceived), name: .FirefoxAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notificationReceived), name: .ProfileDidFinishSyncing, object: nil)
     }
 
@@ -91,7 +88,7 @@ class RemoteTabsPanel: UIViewController, HomePanel {
 
     @objc func notificationReceived(_ notification: Notification) {
         switch notification.name {
-        case .FirefoxAccountChanged, .ProfileDidFinishSyncing:
+        case .ProfileDidFinishSyncing:
             DispatchQueue.main.async {
                 print(notification.name)
                 self.tableViewController.refreshTabs()
@@ -549,14 +546,17 @@ fileprivate class RemoteTabsTableViewController: UITableViewController {
         tableView.isScrollEnabled = false
         tableView.allowsSelection = false
         tableView.tableFooterView = UIView(frame: .zero)
+      
+        // BRAVE TODO: Remove this panel if we're not planning on using it for Tab sync
 
         // Short circuit if the user is not logged in
-        if !profile.hasSyncableAccount() {
+//        if !profile.hasSyncableAccount() {
             self.tableViewDelegate = RemoteTabsPanelErrorDataSource(homePanel: remoteTabsPanel, error: .notLoggedIn)
             self.endRefreshing()
-            return
-        }
+//            return
+//        }
 
+        /*
         self.profile.getCachedClientsAndTabs().uponQueue(.main) { result in
             if let clientAndTabs = result.successValue {
                 self.updateDelegateClientAndTabData(clientAndTabs)
@@ -584,6 +584,7 @@ fileprivate class RemoteTabsTableViewController: UITableViewController {
                 self.endRefreshing()
             }
         }
+        */
     }
 
     @objc fileprivate func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
