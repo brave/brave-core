@@ -35,7 +35,7 @@ namespace brave_shields {
 BaseBraveShieldsService::BaseBraveShieldsService()
     : initialized_(false),
       task_runner_(
-        base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
+          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {
@@ -59,6 +59,7 @@ void BaseBraveShieldsService::Register(const std::string& component_name,
                            registered_callback, ready_callback);
 }
 
+// static
 bool BaseBraveShieldsService::Unregister(const std::string& component_id) {
   return g_browser_process->component_updater()->UnregisterComponent(
       component_id);

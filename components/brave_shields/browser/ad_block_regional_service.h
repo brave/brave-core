@@ -42,9 +42,11 @@ class AdBlockRegionalService : public AdBlockBaseService {
   friend class ::AdBlockServiceTest;
   static std::string g_ad_block_regional_component_id_;
   static std::string g_ad_block_regional_component_base64_public_key_;
+  static std::string g_ad_block_regional_dat_file_version_;
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
+  static void SetDATFileVersionForTest(const std::string& dat_file_version);
 
   bool UnregisterComponentByLocale(const std::string& locale);
 

@@ -24,6 +24,7 @@
 #include "third_party/zlib/google/zip.h"
 
 #define DAT_FILE "httpse.leveldb.zip"
+#define DAT_FILE_VERSION "6.0"
 #define HTTPSE_URLS_REDIRECTS_COUNT_QUEUE   1
 #define HTTPSE_URL_MAX_REDIRECTS_COUNT      5
 
@@ -101,7 +102,8 @@ bool HTTPSEverywhereService::Init() {
 }
 
 void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
-  base::FilePath zip_db_file_path = install_dir.AppendASCII(DAT_FILE);
+  base::FilePath zip_db_file_path =
+      install_dir.AppendASCII(DAT_FILE_VERSION).AppendASCII(DAT_FILE);
   base::FilePath unzipped_level_db_path = zip_db_file_path.RemoveExtension();
   base::FilePath destination = zip_db_file_path.DirName();
 
@@ -114,10 +116,11 @@ void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
                         unzipped_level_db_path.AsUTF8Unsafe(),
                         &level_db_);
   if (!status.ok() || !level_db_) {
-    CloseDatabase();
     LOG(ERROR) << "Level db open error "
                << unzipped_level_db_path.value().c_str()
                << ", error: " << status.ToString();
+    CloseDatabase();
+    return;
   }
 }
 

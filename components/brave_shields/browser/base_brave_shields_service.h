@@ -55,7 +55,7 @@ class BaseBraveShieldsService : public ComponentsUI {
   void Register(const std::string& component_name,
                 const std::string& component_id,
                 const std::string& component_base64_public_key);
-  bool Unregister(const std::string& component_id);
+  static bool Unregister(const std::string& component_id);
 
  private:
   void InitShields();

@@ -18,6 +18,7 @@
 #include "brave/vendor/tracking-protection/TPParser.h"
 
 #define DAT_FILE "TrackingProtection.dat"
+#define DAT_FILE_VERSION "1"
 #define THIRD_PARTY_HOSTS_CACHE_SIZE 20
 
 namespace brave_shields {
@@ -97,9 +98,7 @@ void TrackingProtectionService::OnDATFileDataReady() {
     LOG(ERROR) << "Could not obtain tracking protection data";
     return;
   }
-
   tracking_protection_client_.reset(new CTPParser());
-
   if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
     tracking_protection_client_.reset();
     LOG(ERROR) << "Failed to deserialize tracking protection data";
@@ -109,7 +108,8 @@ void TrackingProtectionService::OnDATFileDataReady() {
 void TrackingProtectionService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir) {
-  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
+  base::FilePath dat_file_path =
+      install_dir.AppendASCII(DAT_FILE_VERSION).AppendASCII(DAT_FILE);
 
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,

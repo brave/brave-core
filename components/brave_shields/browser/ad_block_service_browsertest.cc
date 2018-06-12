@@ -14,6 +14,7 @@
 #include "content/public/test/browser_test_utils.h"
 
 const char kAdsPage[] = "/blocking.html";
+const char kAdsPageV4[] = "/blocking_v4.html";
 const char kAdsPageRegional[] = "/blocking_regional.html";
 const char kNoAdsPage[] = "/no_blocking.html";
 
@@ -62,19 +63,33 @@ public:
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
-  void SetComponentIdAndBase64PublicKeyForTest(
+  void SetDefaultComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key) {
     brave_shields::AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
         component_id, component_base64_public_key);
   }
 
-  bool InstallAdBlockExtension() {
+  void SetRegionalComponentIdAndBase64PublicKeyForTest(
+      const std::string& component_id,
+      const std::string& component_base64_public_key) {
+    brave_shields::AdBlockRegionalService::
+        SetComponentIdAndBase64PublicKeyForTest(component_id,
+                                                component_base64_public_key);
+  }
+
+  void SetDATFileVersionForTest(const std::string& dat_file_version) {
+    brave_shields::AdBlockService::SetDATFileVersionForTest(dat_file_version);
+  }
+
+  bool InstallDefaultAdBlockExtension(
+      const std::string& extension_dir = "adblock-default",
+      int expected_change = 1) {
     base::FilePath test_data_dir;
     PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-
     const extensions::Extension* ad_block_extension = InstallExtension(
-        test_data_dir.AppendASCII("adblock-data"), 1);
+        test_data_dir.AppendASCII("adblock-data").AppendASCII(extension_dir),
+        expected_change);
     if (!ad_block_extension)
       return false;
 
@@ -88,9 +103,11 @@ public:
   bool InstallRegionalAdBlockExtension(const std::string& uuid) {
     base::FilePath test_data_dir;
     PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-
-    const extensions::Extension* ad_block_extension = InstallExtension(
-        test_data_dir.AppendASCII("adblock-regional-data").AppendASCII(uuid), 1);
+    const extensions::Extension* ad_block_extension =
+        InstallExtension(test_data_dir.AppendASCII("adblock-data")
+                             .AppendASCII("adblock-regional")
+                             .AppendASCII(uuid),
+                         1);
     if (!ad_block_extension)
       return false;
 
@@ -98,6 +115,13 @@ public:
         ad_block_extension->id(), ad_block_extension->path());
     WaitForRegionalAdBlockServiceThread();
 
+    return true;
+  }
+
+  bool StartAdBlockRegionalService() {
+    g_brave_browser_process->ad_block_regional_service()->Start();
+    if (!g_brave_browser_process->ad_block_regional_service()->IsInitialized())
+      return false;
     return true;
   }
 
@@ -118,9 +142,10 @@ public:
 
 // Load a page with an ad image, and make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
-  SetComponentIdAndBase64PublicKeyForTest(kDefaultAdBlockComponentTestId,
-                                          kDefaultAdBlockComponentTestBase64PublicKey);
-  ASSERT_TRUE(InstallAdBlockExtension());
+  SetDefaultComponentIdAndBase64PublicKeyForTest(
+      kDefaultAdBlockComponentTestId,
+      kDefaultAdBlockComponentTestBase64PublicKey);
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
 
   GURL url = embedded_test_server()->GetURL(kAdsPage);
   ui_test_utils::NavigateToURL(browser(), url);
@@ -138,9 +163,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
 
 // Load a page with an image which is not an ad, and make sure it is NOT blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByDefaultBlocker) {
-  SetComponentIdAndBase64PublicKeyForTest(kDefaultAdBlockComponentTestId,
-                                          kDefaultAdBlockComponentTestBase64PublicKey);
-  ASSERT_TRUE(InstallAdBlockExtension());
+  SetDefaultComponentIdAndBase64PublicKeyForTest(
+      kDefaultAdBlockComponentTestId,
+      kDefaultAdBlockComponentTestBase64PublicKey);
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
 
   GURL url = embedded_test_server()->GetURL(kNoAdsPage);
   ui_test_utils::NavigateToURL(browser(), url);
@@ -162,11 +188,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
   g_browser_process->SetApplicationLocale("fr");
   ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
 
-  g_brave_browser_process->ad_block_regional_service()->Start();
-  ASSERT_TRUE(g_brave_browser_process->ad_block_regional_service()->IsInitialized());
+  ASSERT_TRUE(StartAdBlockRegionalService());
 
-  SetComponentIdAndBase64PublicKeyForTest(kRegionalAdBlockComponentTestId,
-                                          kRegionalAdBlockComponentTestBase64PublicKey);
+  SetRegionalComponentIdAndBase64PublicKeyForTest(
+      kRegionalAdBlockComponentTestId,
+      kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
 
   GURL url = embedded_test_server()->GetURL(kAdsPageRegional);
@@ -189,8 +215,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByRegionalBlocke
   g_browser_process->SetApplicationLocale("fr");
   ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
 
-  SetComponentIdAndBase64PublicKeyForTest(kRegionalAdBlockComponentTestId,
-                                          kRegionalAdBlockComponentTestBase64PublicKey);
+  ASSERT_TRUE(StartAdBlockRegionalService());
+
+  SetRegionalComponentIdAndBase64PublicKeyForTest(
+      kRegionalAdBlockComponentTestId,
+      kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
 
   GURL url = embedded_test_server()->GetURL(kNoAdsPage);
@@ -205,4 +234,35 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByRegionalBlocke
       "window.domAutomationController.send(imgLoaded())",
       &img_loaded));
   EXPECT_TRUE(img_loaded);
+}
+
+// Upgrade from v3 to v4 format data file and make sure v4-specific ad
+// is blocked.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedAfterDataFileVersionUpgrade) {
+  SetDefaultComponentIdAndBase64PublicKeyForTest(
+      kDefaultAdBlockComponentTestId,
+      kDefaultAdBlockComponentTestBase64PublicKey);
+
+  // Install AdBlock extension with a version 3 format data file and
+  // expect a new install
+  SetDATFileVersionForTest("3");
+  ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v3", 1));
+
+  // Install AdBlock extension with a version 4 format data file and
+  // expect an upgrade install
+  SetDATFileVersionForTest("4");
+  ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v4", 0));
+
+  GURL url = embedded_test_server()->GetURL(kAdsPageV4);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+
+  bool img_loaded;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents,
+      "window.domAutomationController.send(imgLoaded())",
+      &img_loaded));
+  EXPECT_FALSE(img_loaded);
 }
