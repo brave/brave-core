@@ -1,0 +1,13 @@
+diff --git a/chrome/common/channel_info_posix.cc b/chrome/common/channel_info_posix.cc
+index 7978d188e03342dd8ed59e8bff47f24af23d6641..52711bdf1d3a58b22a4303eb576af76f0e491933 100644
+--- a/chrome/common/channel_info_posix.cc
++++ b/chrome/common/channel_info_posix.cc
+@@ -25,7 +25,7 @@ version_info::Channel GetChannelImpl(std::string* modifier_out,
+   if (env)
+     modifier = env;
+ 
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+   // Only ever return "", "unknown", "dev" or "beta" in a branded build.
+   if (modifier == "unstable")  // linux version of "dev"
+     modifier = "dev";
