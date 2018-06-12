@@ -1,0 +1,22 @@
+diff --git a/chrome/app/theme/theme_resources.grd b/chrome/app/theme/theme_resources.grd
+index 54e8e52b5f4a2616065b144c76a82a14bd23df84..45d0675f95d35c1da85712aaad8919c18d3df7de 100644
+--- a/chrome/app/theme/theme_resources.grd
++++ b/chrome/app/theme/theme_resources.grd
+@@ -232,10 +232,13 @@
+         <structure type="chrome_scaled_image" name="IDR_PRINTER_DETECTED_NOTIFICATION" file="cros/printer_detected_notification.png" />
+       </if>
+       <if expr="not _google_chrome">
+-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_16" file="chromium/product_logo_16.png" />
+-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32" file="chromium/product_logo_32.png" />
+-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_WHITE" file="chromium/product_logo_white.png" />
+-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_NAME_22" file="chromium/product_logo_name_22.png" />
++        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_16" file="brave/product_logo_16.png" />
++        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32" file="brave/product_logo_32.png" />
++        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave/product_logo_32.png" />
++        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave/product_logo_32.png" />
++        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave/product_logo_32.png" />
++        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_WHITE" file="brave/product_logo_white.png" />
++        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_NAME_22" file="brave/product_logo_name_22.png" />
+       </if>
+       <if expr="_google_chrome">
+         <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_16" file="google_chrome/product_logo_16.png" />
