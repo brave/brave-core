@@ -7,13 +7,13 @@ import 'mocha'
 import * as React from 'react'
 import * as assert from 'assert'
 import { renderIntoDocument } from 'react-dom/test-utils'
-import BraveShieldsControls, { Props } from '../../../../app/components/braveShields/braveShieldsControls'
+import BraveShieldsControls, { BraveShieldsControlsProps } from '../../../../app/components/braveShields/braveShieldsControls'
 import { BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../../../../app/types/other/blockTypes'
 import * as actionTypes from '../../../../app/constants/shieldsPanelTypes'
 import { GridProps } from 'brave-ui/gridSystem'
 
 function setup () {
-  const props: Props = {
+  const props: BraveShieldsControlsProps = {
     controlsOpen: false,
     braveShields: 'allow',
     httpUpgradableResources: 'allow',

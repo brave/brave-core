@@ -9,10 +9,10 @@ import * as assert from 'assert'
 import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsStats from '../../../../app/components/braveShields/braveShieldsStats'
 import { GridProps } from 'brave-ui/gridSystem'
-import { Props } from '../../../../app/components/braveShields/braveShieldsStats';
+import { BraveShieldsStatsProps } from '../../../../app/components/braveShields/braveShieldsStats';
 
 function setup () {
-  const props: Props = {
+  const props: BraveShieldsStatsProps = {
     braveShields: 'allow',
     adsBlocked: 1,
     trackersBlocked: 2,

@@ -7,13 +7,13 @@ import 'mocha'
 import * as React from 'react'
 import * as assert from 'assert'
 import { renderIntoDocument } from 'react-dom/test-utils'
-import BraveShieldsHeader, { Props } from '../../../../app/components/braveShields/braveShieldsHeader'
+import BraveShieldsHeader, { BraveShieldsHeaderProps } from '../../../../app/components/braveShields/braveShieldsHeader'
 import { GridProps } from 'brave-ui/gridSystem'
 import { BlockOptions } from '../../../../app/types/other/blockTypes';
 import * as actionTypes from '../../../../app/constants/shieldsPanelTypes'
 
 function setup () {
-  const props: Props = {
+  const props: BraveShieldsHeaderProps = {
     hostname: 'brave.com',
     shieldsToggled: (setting: BlockOptions) => {
       return {

@@ -3,11 +3,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { Grid, Column, BrowserText } from 'brave-ui'
+import { Grid, Column } from 'brave-ui/gridSystem'
+import TextLabel from 'brave-ui/textLabel'
+
 import { BlockOptions } from '../../types/other/blockTypes'
 import { getMessage } from '../../background/api/localeAPI'
+import theme from '../../theme'
 
-export interface Props {
+export interface BraveShieldsStatsProps {
   braveShields: BlockOptions
   adsBlocked: number
   trackersBlocked: number
@@ -16,7 +19,15 @@ export interface Props {
   fingerprintingBlocked: number
 }
 
-export default class BraveShieldsStats extends React.Component<Props, object> {
+export default class BraveShieldsStats extends React.Component<BraveShieldsStatsProps, {}> {
+  constructor (props: BraveShieldsStatsProps) {
+    super(props)
+    this.onClickadsTrackersBlockedStats = this.onClickadsTrackersBlockedStats.bind(this)
+    this.onClickHttpsUpgradesStats = this.onClickHttpsUpgradesStats.bind(this)
+    this.onClickScriptsBlockedStats = this.onClickScriptsBlockedStats.bind(this)
+    this.onClickFingerPrintingProtectionStats = this.onClickScriptsBlockedStats.bind(this)
+  }
+
   get totalAdsTrackersBlocked (): number {
     const { adsBlocked, trackersBlocked } = this.props
     return adsBlocked + trackersBlocked
@@ -34,63 +45,77 @@ export default class BraveShieldsStats extends React.Component<Props, object> {
     return this.props.fingerprintingBlocked
   }
 
+  onClickadsTrackersBlockedStats () {
+    // TODO #202
+    console.log('fired adsTrackersBlockedStats')
+  }
+
+  onClickHttpsUpgradesStats () {
+    // TODO #202
+    console.log('fired httpsUpgradesStats')
+  }
+
+  onClickScriptsBlockedStats () {
+    // TODO #202
+    console.log('fired scriptsBlockedStats')
+  }
+
+  onClickFingerPrintingProtectionStats () {
+    // TODO #202
+    console.log('fired fingerPrintingProtectionStats')
+  }
+
   render () {
     const { braveShields } = this.props
     return (
       <Grid
         id='braveShieldsStats'
+        theme={theme.braveShieldsStats}
         disabled={braveShields === 'block'}
-        padding='10px'
-        gap='7px'
-        background='#f7f7f7'
       >
-        <Column align='flex-end' size={2}>
-          <BrowserText
-            noSelect={true}
+        <Column theme={theme.statsNumbers} size={1}>
+          <TextLabel
+            theme={theme.totalAdsTrackersBlockedStat}
             text={this.totalAdsTrackersBlocked}
-            fontSize='26px'
-            color='#fe521d'
+            onClick={this.onClickadsTrackersBlockedStats}
+          />
+          <TextLabel
+            theme={theme.httpsRedirectedStat}
+            text={this.httpsRedirected}
+            onClick={this.onClickHttpsUpgradesStats}
+          />
+          <TextLabel
+            theme={theme.javascriptBlockedStat}
+            text={this.javascriptBlocked}
+            onClick={this.onClickScriptsBlockedStats}
+          />
+          <TextLabel
+            theme={theme.fingerprintingBlockedStat}
+            text={this.fingerprintingBlocked}
+            onClick={this.onClickFingerPrintingProtectionStats}
           />
         </Column>
-        <Column
-          id='adsTrackersBlockedStats'
-          size={10}
-          verticalAlign='center'
-        >
-          <BrowserText text={getMessage('shieldsStatsAdsTrackersBlocked')} />
-        </Column>
-
-        <Column align='flex-end' size={2}>
-          <BrowserText noSelect={true} text={this.httpsRedirected} fontSize='26px' color='#0796fa' />
-        </Column>
-        <Column
-          id='httpsUpgradesStats'
-          size={10}
-          verticalAlign='center'
-        >
-          <BrowserText text={getMessage('shieldsStatsHttpsUpgrades')} />
-        </Column>
-
-        <Column align='flex-end' size={2}>
-          <BrowserText noSelect={true} text={this.javascriptBlocked} fontSize='26px' color='#555555' />
-        </Column>
-        <Column
-          id='scriptsBlockedStats'
-          size={10}
-          verticalAlign='center'
-        >
-          <BrowserText text={getMessage('shieldsStatsScriptsBlocked')} />
-        </Column>
-
-        <Column align='flex-end' size={2}>
-          <BrowserText noSelect={true} text={this.fingerprintingBlocked} fontSize='26px' color='#ffc000' />
-        </Column>
-        <Column
-          id='fingerPrintingProtectionStats'
-          size={10}
-          verticalAlign='center'
-        >
-          <BrowserText text={getMessage('shieldsFingerPrintingBlocked')} />
+        <Column theme={theme.statsNames} size={11}>
+          <TextLabel
+            theme={theme.totalAdsTrackersBlockedText}
+            text={getMessage('shieldsStatsAdsTrackersBlocked')}
+            onClick={this.onClickadsTrackersBlockedStats}
+          />
+          <TextLabel
+            theme={theme.httpsRedirectedText}
+            text={getMessage('shieldsStatsHttpsUpgrades')}
+            onClick={this.onClickHttpsUpgradesStats}
+          />
+          <TextLabel
+            theme={theme.javascriptBlockedText}
+            text={getMessage('shieldsStatsScriptsBlocked')}
+            onClick={this.onClickScriptsBlockedStats}
+          />
+          <TextLabel
+            theme={theme.fingerprintingBlockedText}
+            text={getMessage('shieldsFingerPrintingBlocked')}
+            onClick={this.onClickFingerPrintingProtectionStats}
+          />
         </Column>
       </Grid>
     )

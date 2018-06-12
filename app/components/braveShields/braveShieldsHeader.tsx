@@ -3,19 +3,24 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { Grid, Column, Separator, SwitchButton, ActionButton, BrowserText } from 'brave-ui'
+import { Grid, Column } from 'brave-ui/gridSystem'
+import Separator from 'brave-ui/separator'
+import SwitchButton from 'brave-ui/switchButton'
+import UnstyledButton from 'brave-ui/unstyledButton'
+import TextLabel from 'brave-ui/textLabel'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 import { getMessage } from '../../background/api/localeAPI'
+import theme from '../../theme'
 
-export interface Props {
+export interface BraveShieldsHeaderProps {
   shieldsToggled: shieldActions.ShieldsToggled
   hostname: string
   braveShields: BlockOptions
 }
 
-export default class BraveShieldsHeader extends React.Component<Props, object> {
-  constructor (props: Props) {
+export default class BraveShieldsHeader extends React.PureComponent<BraveShieldsHeaderProps, {}> {
+  constructor (props: BraveShieldsHeaderProps) {
     super(props)
     this.onToggleShields = this.onToggleShields.bind(this)
     this.onClosePopup = this.onClosePopup.bind(this)
@@ -33,11 +38,11 @@ export default class BraveShieldsHeader extends React.Component<Props, object> {
   render () {
     const { braveShields, hostname } = this.props
     return (
-      <Grid id='braveShieldsHeader' background='#808080' padding='10px' gap='0' textColor='#fafafa'>
-        <Column size={4} verticalAlign='center'>
-          <BrowserText noSelect={true} fontSize='14px' text={getMessage('shieldsHeaderShieldsToggle')} />
+      <Grid id='braveShieldsHeader' theme={theme.braveShieldsHeader}>
+        <Column size={4} theme={theme.columnVerticalCenter}>
+          <TextLabel theme={theme.title} text={getMessage('shieldsHeaderShieldsToggle')} />
         </Column>
-        <Column size={6} verticalAlign='center'>
+        <Column size={6} theme={theme.columnVerticalCenter}>
           <SwitchButton
             id='shieldsToggle'
             leftText={getMessage('shieldsHeaderToggleLeftPosition')}
@@ -46,19 +51,19 @@ export default class BraveShieldsHeader extends React.Component<Props, object> {
             onChange={this.onToggleShields}
           />
         </Column>
-        <Column size={2} align='flex-end' verticalAlign='center'>
-          <ActionButton
-            fontSize='20px'
+        <Column size={2} theme={theme.columnVerticalCenterEnd}>
+          <UnstyledButton
+            theme={theme.closeButton}
             text='&times;'
             onClick={this.onClosePopup}
           />
         </Column>
         <Column>
           <Separator />
-          <BrowserText noSelect={true} text={getMessage('shieldsHeaderForSite')} />
         </Column>
-        <Column verticalAlign='center'>
-          <BrowserText noSelect={true} fontSize='20px' text={hostname} />
+        <Column theme={theme.hostnameContent}>
+          <TextLabel text={getMessage('shieldsHeaderForSite')} />
+          <TextLabel theme={theme.hostname} text={hostname} />
         </Column>
       </Grid>
     )

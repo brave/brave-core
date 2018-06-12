@@ -57,7 +57,7 @@
   version "0.0.28"
   resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.28.tgz#c054e8af4d9dd75db4e63abc76f885168714d4b3"
 
-"@types/jsdom@^11.0.4":
+"@types/jsdom@11.0.4":
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-11.0.4.tgz#a645db4704cf7e4f811f583926ad12525c719400"
   dependencies:
@@ -1297,10 +1297,11 @@ braces@^2.3.0, braces@^2.3.1:
     split-string "^3.0.2"
     to-regex "^3.0.1"
 
-brave-ui@^0.7.1:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/brave-ui/-/brave-ui-0.7.2.tgz#510838246e0df86ecb3c38cf3cf1b337ad781ea8"
+brave-ui@^0.10.5:
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/brave-ui/-/brave-ui-0.10.5.tgz#64b69323b5f188bd7b0325ce3cb26fa6492415ee"
   dependencies:
+    emptykit.css "^1.0.1"
     styled-components "^3.2.6"
 
 brorand@^1.0.1:
@@ -2387,6 +2388,10 @@ elliptic@^6.0.0:
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
+
+emptykit.css@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/emptykit.css/-/emptykit.css-1.0.1.tgz#e7c592c9c4bbe9b358411eb50e5011719a89f512"
 
 encodeurl@~1.0.2:
   version "1.0.2"
