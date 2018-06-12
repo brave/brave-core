@@ -63,7 +63,7 @@ export default class BraveShieldsHeader extends React.PureComponent<BraveShields
         </Column>
         <Column theme={theme.hostnameContent}>
           <TextLabel text={getMessage('shieldsHeaderForSite')} />
-          <TextLabel theme={theme.hostname} text={hostname} />
+          <TextLabel id='hostname' theme={theme.hostname} text={hostname} />
         </Column>
       </Grid>
     )

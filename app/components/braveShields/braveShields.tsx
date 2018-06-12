@@ -10,7 +10,7 @@ import BraveShieldsFooter from './braveShieldsFooter'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { Tab } from '../../types/state/shieldsPannelState'
 
-interface Props {
+interface BraveShieldsProps {
   actions: {
     shieldsToggled: shieldActions.ShieldsToggled
     blockAdsTrackers: shieldActions.BlockAdsTrackers
@@ -25,7 +25,7 @@ interface Props {
   shieldsPanelTabData: Tab
 }
 
-export default class BraveShields extends React.Component<Props, object> {
+export default class BraveShields extends React.Component<BraveShieldsProps, {}> {
   render () {
     const { shieldsPanelTabData, actions } = this.props
 

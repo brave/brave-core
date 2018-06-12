@@ -26,7 +26,7 @@ function setup () {
 }
 
 // TODO: @cezaraugusto Implement Enzyme
-describe('BraveShieldsStats component', () => {
+describe.skip('BraveShieldsStats component', () => {
   it('should render correctly', () => {
     let { result } = setup()
     assert.equal(result.props.id, 'braveShieldsStats')

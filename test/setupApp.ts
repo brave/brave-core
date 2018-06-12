@@ -5,8 +5,11 @@
 import * as jsdom from 'jsdom'
 import { getMockChrome } from './testData'
 
-const {JSDOM} = jsdom
-const {document} = (new JSDOM('<!doctype html><html><body></body></html>')).window
+const { JSDOM } = jsdom
+const { document } = (new JSDOM('<!doctype html><html><body></body></html>')).window
+
+import { configure } from 'enzyme'
+import * as Adapter from 'enzyme-adapter-react-16'
 
 global.document = document
 global.window = document.defaultView
@@ -19,3 +22,5 @@ if (global.chrome === undefined) {
 global.requestAnimationFrame = function (cb: () => void) {
   return setTimeout(cb, 0)
 }
+
+configure({ adapter: new Adapter() })
