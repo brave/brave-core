@@ -11,6 +11,9 @@ namespace switches {
 // in debug mode with auto-reloading.
 const char kDisableBraveExtension[] = "disable-brave-extension";
 
+// Allows disabling the PDFJS extension.
+const char kDisablePDFJSExtension[] = "disable-pdfjs-extension";
+
 // This switch enables update module(Sparkle).
 // When you use this flag for update test, make sure to fix the feed URL
 // |brave_feed_url| in brave/brave_init_settings.gni.
