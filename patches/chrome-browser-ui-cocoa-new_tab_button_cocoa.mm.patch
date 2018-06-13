@@ -2,7 +2,7 @@ diff --git a/chrome/browser/ui/cocoa/new_tab_button_cocoa.mm b/chrome/browser/ui
 index 767e405a0c4d5142fa1099968c6e1d0e66a6d201..f10353e69d4e1242595a38d8a937144cc3022690 100644
 --- a/chrome/browser/ui/cocoa/new_tab_button_cocoa.mm
 +++ b/chrome/browser/ui/cocoa/new_tab_button_cocoa.mm
-@@ -25,7 +25,7 @@ enum class OverlayOption {
+@@ -25,7 +25,7 @@
    DARKEN,
  };
  
@@ -11,7 +11,7 @@ index 767e405a0c4d5142fa1099968c6e1d0e66a6d201..f10353e69d4e1242595a38d8a937144c
  
  NSImage* GetMaskImageFromCell(NewTabButtonCell* aCell) {
    return [aCell imageForState:image_button_cell::kDefaultState view:nil];
-@@ -346,34 +346,30 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -346,34 +346,30 @@ - (NSImage*)imageForState:(image_button_cell::ButtonState)state
  + (NSBezierPath*)newTabButtonBezierPathWithLineWidth:(CGFloat)lineWidth {
    NSBezierPath* bezierPath = [NSBezierPath bezierPath];
  
@@ -65,7 +65,7 @@ index 767e405a0c4d5142fa1099968c6e1d0e66a6d201..f10353e69d4e1242595a38d8a937144c
  
    [bezierPath closePath];
  
-@@ -431,9 +427,10 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -431,9 +427,10 @@ + (void)drawNewTabButtonImage:(NewTabButtonCustomImageRep*)imageRep
    CGFloat buttonWidth = newTabButtonImageSize.width;
  
    // Bottom edge.
@@ -78,7 +78,7 @@ index 767e405a0c4d5142fa1099968c6e1d0e66a6d201..f10353e69d4e1242595a38d8a937144c
    NSPoint bottomEdgeStart = NSMakePoint(kBottomEdgeX, kBottomEdgeY);
    NSPoint bottomEdgeEnd = NSMakePoint(kBottomEdgeX + kBottomEdgeWidth,
                                        kBottomEdgeY);
-@@ -454,11 +451,11 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -454,11 +451,11 @@ + (void)drawNewTabButtonImage:(NewTabButtonCustomImageRep*)imageRep
    CGPoint shadowStart = NSZeroPoint;
    CGPoint shadowEnd = NSZeroPoint;
    NSColor* overlayColor = nil;
