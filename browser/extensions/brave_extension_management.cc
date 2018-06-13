@@ -4,6 +4,8 @@
 
 #include "brave/browser/extensions/brave_extension_management.h"
 
+#include "base/command_line.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/extensions/browser/brave_extension_provider.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
@@ -17,7 +19,11 @@ BraveExtensionManagement::BraveExtensionManagement(
     : ExtensionManagement(pref_service, is_signin_profile) {
   providers_.push_back(
       std::make_unique<BraveExtensionProvider>());
-  RegisterForceInstalledExtensions();
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kDisablePDFJSExtension)) {
+    RegisterForceInstalledExtensions();
+  }
 }
 
 BraveExtensionManagement::~BraveExtensionManagement() {
