@@ -39,6 +39,7 @@ class TabScrollingController: NSObject {
     weak var header: UIView?
     weak var footer: UIView?
     weak var urlBar: URLBarView?
+    weak var tabsBar: TabsBarViewController?
     weak var snackBars: UIView?
 
     var footerBottomConstraint: Constraint?
@@ -51,10 +52,17 @@ class TabScrollingController: NSObject {
 
     fileprivate var headerTopOffset: CGFloat = 0 {
         didSet {
-            headerTopConstraint?.update(offset: headerTopOffset)
+            headerTopConstraint?.update(offset: headerTopOffset - tabsBarOffset)
             header?.superview?.setNeedsLayout()
         }
     }
+    
+    fileprivate var tabsBarOffset: CGFloat {
+        guard let tabsBar = tabsBar else { return 0 }
+        
+        return (scrollDirection == .down && !tabsBar.view.isHidden) ? UX.TabsBar.height : 0
+    }
+
 
     fileprivate var footerBottomOffset: CGFloat = 0 {
         didSet {
@@ -254,7 +262,7 @@ private extension TabScrollingController {
             if isShownFromHidden {
                 scrollView.contentOffset = CGPoint(x: initialContentOffset.x, y: initialContentOffset.y + self.topScrollHeight)
             }
-            self.headerTopOffset = headerOffset
+            self.headerTopOffset = headerOffset + self.tabsBarOffset
             self.footerBottomOffset = footerOffset
             self.urlBar?.updateAlphaForSubviews(alpha)
             self.header?.superview?.layoutIfNeeded()

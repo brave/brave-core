@@ -260,6 +260,7 @@ extension BrowserViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if let tab = tabManager[webView] {
             navigateInTab(tab: tab, to: navigation)
+            tabsBar.reloadDataAndRestoreSelectedTab()
         }
     }
 }
