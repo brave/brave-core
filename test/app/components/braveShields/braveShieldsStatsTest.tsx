@@ -6,29 +6,28 @@
 import 'mocha'
 import * as React from 'react'
 import * as assert from 'assert'
-import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsStats from '../../../../app/components/braveShields/braveShieldsStats'
-import { GridProps } from 'brave-ui/gridSystem'
-import { Props } from '../../../../app/components/braveShields/braveShieldsStats';
+import { BraveShieldsStatsProps } from '../../../../app/components/braveShields/braveShieldsStats';
+import { shallow } from 'enzyme'
 
-function setup () {
-  const props: Props = {
-    braveShields: 'allow',
-    adsBlocked: 1,
-    trackersBlocked: 2,
-    httpsRedirected: 3,
-    javascriptBlocked: 4,
-    fingerprintingBlocked: 5
-  }
-  const renderer = renderIntoDocument(<BraveShieldsStats {...props} />) as React.Component<BraveShieldsStats>
-  const result = renderer.render() as React.ReactElement<GridProps>
-  return { props, result, renderer }
+const fakeProps: BraveShieldsStatsProps = {
+  braveShields: 'allow',
+  adsBlocked: 1,
+  trackersBlocked: 2,
+  httpsRedirected: 3,
+  javascriptBlocked: 4,
+  fingerprintingBlocked: 5
 }
 
-// TODO: @cezaraugusto Implement Enzyme
 describe('BraveShieldsStats component', () => {
-  it('should render correctly', () => {
-    let { result } = setup()
-    assert.equal(result.props.id, 'braveShieldsStats')
+  const baseComponent = (props: BraveShieldsStatsProps) =>
+    <BraveShieldsStats {...props} />
+
+  it('renders the component', () => {
+    const wrapper = shallow(baseComponent(fakeProps))
+    const assertion = wrapper.find('#braveShieldsStats').length === 1
+    assert.equal(assertion, true)
   })
+
+  // TODO: add more tests after #202
 })

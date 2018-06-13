@@ -3,28 +3,26 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { Grid, Column, ActionButton, Anchor } from 'brave-ui'
+import { Grid, Column } from 'brave-ui/gridSystem'
+import Anchor from 'brave-ui/anchor'
+import UnstyledButton from 'brave-ui/unstyledButton'
 import { getMessage } from '../../background/api/localeAPI'
+import theme from '../../theme'
 
-export default class BraveShieldsFooter extends React.Component<{}, object> {
+export default class BraveShieldsFooter extends React.PureComponent<{}, {}> {
   render () {
     return (
-      <Grid
-        id='braveShieldsFooter'
-        gap='10px'
-        padding='0 10px 10px'
-        background='#eee'
-      >
-        <Column align='flex-start' size={9}>
+      <Grid id='braveShieldsFooter' theme={theme.braveShieldsFooter}>
+        <Column size={9} theme={theme.columnStart}>
           <Anchor
-            noStyle={true}
+            theme={theme.editLink}
             href='chrome://settings'
             target='_blank'
             text={getMessage('shieldsFooterEditDefault')}
           />
         </Column>
-        <Column align='flex-end' size={3}>
-          <ActionButton text={getMessage('shieldsFooterReload')} />
+        <Column size={3} theme={theme.columnEnd}>
+          <UnstyledButton text={getMessage('shieldsFooterReload')} />
         </Column>
       </Grid>
     )

@@ -3,19 +3,24 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { BrowserButton, BrowserText, Column, Grid, Separator, SwitchButton } from 'brave-ui'
+import PushButton from 'brave-ui/pushButton'
+import TextLabel from 'brave-ui/textLabel'
+import { Column, Grid } from 'brave-ui/gridSystem'
+import Separator from 'brave-ui/separator'
+import SwitchButton from 'brave-ui/switchButton'
 import { getMessage } from '../../background/api/localeAPI'
 import { NoScriptInfo } from '../../types/other/noScriptInfo'
+import theme from '../../theme'
 
-export interface Props {
+export interface NoScriptProps {
   blocked: boolean
   noScriptInfo: NoScriptInfo
   onSubmit: (origins: string[]) => void
   onChangeNoScriptSettings: (origin: string) => void
 }
 
-export default class NoScript extends React.Component<Props, Object> {
-  constructor (props: Props) {
+export default class NoScript extends React.PureComponent<NoScriptProps, {}> {
+  constructor (props: NoScriptProps) {
     super(props)
     this.onChangeOriginSettings = this.onChangeOriginSettings.bind(this)
     this.onClick = this.onClick.bind(this)
@@ -48,16 +53,15 @@ export default class NoScript extends React.Component<Props, Object> {
       (
         <div>
           <Separator />
-          <Grid
-            gap='10px 5px'
-            padding='10px 0'
-          >
+          <Grid id='noScript' theme={theme.noScript}>
             <Column>
-              <BrowserText text={getMessage('noScriptSwitches')} />
+              <TextLabel text={getMessage('noScriptSwitches')} />
             </Column>
             {originSwitches}
-            <Column align='flex-end'>
-              <BrowserButton id='apply' onClick={this.onClick}> {getMessage('noScriptApplyOnce')} </BrowserButton>
+            <Column theme={theme.columnEnd}>
+              <PushButton id='apply' onClick={this.onClick}>
+                {getMessage('noScriptApplyOnce')}
+              </PushButton>
             </Column>
           </Grid>
         </div>

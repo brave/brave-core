@@ -6,21 +6,15 @@
 import 'mocha'
 import * as React from 'react'
 import * as assert from 'assert'
-import { renderIntoDocument } from 'react-dom/test-utils'
 import BraveShieldsFooter from '../../../../app/components/braveShields/braveShieldsFooter'
-import { GridProps } from 'brave-ui/gridSystem'
+import { shallow } from 'enzyme'
 
-function setup () {
-  const props = {}
-  const renderer = renderIntoDocument(<BraveShieldsFooter {...props} />) as React.Component<BraveShieldsFooter>
-  const result = renderer.render() as React.ReactElement<GridProps>
-  return { props, result, renderer }
-}
-
-// TODO: @cezaraugusto Implement Enzyme
 describe('BraveShieldsFooter component', () => {
-  it('should render correctly', () => {
-    const { result } = setup()
-    assert.equal(result.props.id, 'braveShieldsFooter')
+  const baseComponent = () => <BraveShieldsFooter />
+
+  it('renders the component', () => {
+    const wrapper = shallow(baseComponent())
+    const assertion = wrapper.find('#braveShieldsFooter').length === 1
+    assert.equal(assertion, true)
   })
 })
