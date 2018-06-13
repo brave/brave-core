@@ -106,8 +106,12 @@ void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
       install_dir.AppendASCII(DAT_FILE_VERSION).AppendASCII(DAT_FILE);
   base::FilePath unzipped_level_db_path = zip_db_file_path.RemoveExtension();
   base::FilePath destination = zip_db_file_path.DirName();
+  if (!zip::Unzip(zip_db_file_path, destination)) {
+    LOG(ERROR) << "Failed to unzip database file "
+               << zip_db_file_path.value().c_str();
+    return;
+  }
 
-  zip::Unzip(zip_db_file_path, destination),
   CloseDatabase();
 
   leveldb::Options options;
