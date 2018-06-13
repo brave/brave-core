@@ -29,6 +29,7 @@ test("brave_unit_tests") {
   sources = [
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
+    "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
     "//brave/common/importer/brave_mock_importer_bridge.cc",
     "//brave/common/importer/brave_mock_importer_bridge.h",
     "//chrome/common/importer/mock_importer_bridge.cc",
@@ -44,6 +45,19 @@ test("brave_unit_tests") {
   configs += [
     "//brave/build/geolocation",
     "//brave/build/safebrowsing",
+  ]
+
+  deps = [
+    "//chrome:browser_dependencies",
+    "//chrome:child_dependencies",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//components/signin/core/browser",
+    "//components/signin/core/browser:test_support",
+    "//components/sync_preferences",
+    "//content/public/common",
   ]
 
   public_deps = [
