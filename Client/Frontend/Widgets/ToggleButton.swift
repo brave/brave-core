@@ -4,7 +4,7 @@
 
 import UIKit
 
-private struct UX {
+private struct WidgetUX {
     static let BackgroundColor = UIColor.Photon.Purple60
 
     // The amount of pixels the toggle button will expand over the normal size. This results in the larger -> contract animation.
@@ -26,7 +26,7 @@ class ToggleButton: UIButton {
     fileprivate func updateMaskPathForSelectedState(_ selected: Bool) {
         let path = CGMutablePath()
         if selected {
-            var rect = CGRect(size: UX.BackgroundSize)
+            var rect = CGRect(size: WidgetUX.BackgroundSize)
             rect.center = maskShapeLayer.position
             path.addEllipse(in: rect)
         } else {
@@ -36,7 +36,7 @@ class ToggleButton: UIButton {
     }
 
     fileprivate func animateSelection(_ selected: Bool) {
-        var endFrame = CGRect(size: UX.BackgroundSize)
+        var endFrame = CGRect(size: WidgetUX.BackgroundSize)
         endFrame.center = maskShapeLayer.position
 
         if selected {
@@ -46,7 +46,7 @@ class ToggleButton: UIButton {
             startPath.addEllipse(in: CGRect(origin: maskShapeLayer.position, size: .zero))
 
             let largerPath = CGMutablePath()
-            let largerBounds = endFrame.insetBy(dx: -UX.ExpandDelta, dy: -UX.ExpandDelta)
+            let largerBounds = endFrame.insetBy(dx: -WidgetUX.ExpandDelta, dy: -WidgetUX.ExpandDelta)
             largerPath.addEllipse(in: largerBounds)
 
             let endPath = CGMutablePath()
@@ -58,12 +58,12 @@ class ToggleButton: UIButton {
                 largerPath,
                 endPath
             ]
-            animation.duration = UX.ShowDuration
+            animation.duration = WidgetUX.ShowDuration
             self.maskShapeLayer.path = endPath
             self.maskShapeLayer.add(animation, forKey: "grow")
         } else {
             let animation = CABasicAnimation(keyPath: "path")
-            animation.duration = UX.HideDuration
+            animation.duration = WidgetUX.HideDuration
             animation.fillMode = kCAFillModeForwards
 
             let fromPath = CGMutablePath()
@@ -93,7 +93,7 @@ class ToggleButton: UIButton {
 
     lazy fileprivate var backgroundLayer: CALayer = {
         let backgroundLayer = CALayer()
-        backgroundLayer.backgroundColor = UX.BackgroundColor.cgColor
+        backgroundLayer.backgroundColor = WidgetUX.BackgroundColor.cgColor
         backgroundLayer.mask = self.maskShapeLayer
         return backgroundLayer
     }()
@@ -111,7 +111,7 @@ class ToggleButton: UIButton {
 
         // Make the gradient larger than normal to allow the mask transition to show when it blows up
         // a little larger than the resting size
-        backgroundLayer.bounds = backgroundView.frame.insetBy(dx: -UX.ExpandDelta, dy: -UX.ExpandDelta)
+        backgroundLayer.bounds = backgroundView.frame.insetBy(dx: -WidgetUX.ExpandDelta, dy: -WidgetUX.ExpandDelta)
         maskShapeLayer.bounds = backgroundView.frame
         backgroundLayer.position = CGPoint(x: zeroFrame.midX, y: zeroFrame.midY)
         maskShapeLayer.position = CGPoint(x: zeroFrame.midX, y: zeroFrame.midY)
