@@ -23,7 +23,7 @@ protocol Syncable: class /* where Self: NSManagedObject */ {
 }
 
 extension Syncable {
-    static func entity(context:NSManagedObjectContext) -> NSEntityDescription {
+    public static func entity(context:NSManagedObjectContext) -> NSEntityDescription {
         // Swift 4 version
         // let className = String(describing: type(of: self))
         let className = String(describing: self)
