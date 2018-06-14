@@ -1,8 +1,6 @@
 
 source_set("extensions") {
   sources = [
-    "browser/brave_extension_prefs.cc",
-    "browser/brave_extension_prefs.h",
     "browser/brave_extension_provider.cc",
     "browser/brave_extension_provider.h",
   ]
