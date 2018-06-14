@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/settings_resources.grd b/chrome/browser/resources/settings/settings_resources.grd
+index 4474624ac7aa78950f2aea0bffbcd74441014fc5..f28b514cc34c0f034d61c90a210cfdc7368db4b9 100644
+--- a/chrome/browser/resources/settings/settings_resources.grd
++++ b/chrome/browser/resources/settings/settings_resources.grd
+@@ -737,6 +737,7 @@
+                  type="chrome_html" />
+       <structure name="IDR_SETTINGS_PASSWORDS_SECTION_HTML"
+                  file="passwords_and_forms_page/passwords_section.html"
++                 preprocess="true"
+                  type="chrome_html" />
+       <structure name="IDR_SETTINGS_PASSWORDS_SECTION_JS"
+                  file="passwords_and_forms_page/passwords_section.js"
