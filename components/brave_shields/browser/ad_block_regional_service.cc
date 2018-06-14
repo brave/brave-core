@@ -14,11 +14,13 @@
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
+#include "brave/vendor/ad-block/data_file_version.h"
 #include "brave/vendor/ad-block/lists/regions.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
@@ -42,6 +44,8 @@ namespace brave_shields {
 
 std::string AdBlockRegionalService::g_ad_block_regional_component_id_;
 std::string AdBlockRegionalService::g_ad_block_regional_component_base64_public_key_;
+std::string AdBlockRegionalService::g_ad_block_regional_dat_file_version_(
+    base::NumberToString(DATA_FILE_VERSION));
 
 AdBlockRegionalService::AdBlockRegionalService() {
 }
@@ -97,7 +101,9 @@ void AdBlockRegionalService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir) {
   base::FilePath dat_file_path =
-      install_dir.AppendASCII(uuid_).AddExtension(FILE_PATH_LITERAL(".dat"));
+      install_dir.AppendASCII(g_ad_block_regional_dat_file_version_)
+          .AppendASCII(uuid_)
+          .AddExtension(FILE_PATH_LITERAL(".dat"));
   AdBlockBaseService::GetDATFileData(dat_file_path);
 }
 
@@ -112,6 +118,12 @@ void AdBlockRegionalService::SetComponentIdAndBase64PublicKeyForTest(
     const std::string& component_base64_public_key) {
   g_ad_block_regional_component_id_ = component_id;
   g_ad_block_regional_component_base64_public_key_ = component_base64_public_key;
+}
+
+// static
+void AdBlockRegionalService::SetDATFileVersionForTest(
+  const std::string& dat_file_version) {
+  g_ad_block_regional_dat_file_version_ = dat_file_version;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

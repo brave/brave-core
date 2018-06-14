@@ -74,8 +74,9 @@ IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, BlacklistExtension) {
 IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, WhitelistedExtension) {
   base::FilePath test_data_dir;
   PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-  const extensions::Extension* extension =
-    InstallExtension(test_data_dir.AppendASCII("adblock-data"), 1);
+  const extensions::Extension* extension = InstallExtension(
+      test_data_dir.AppendASCII("adblock-data").AppendASCII("adblock-default"),
+      1);
   ASSERT_TRUE(extension);
 }
 

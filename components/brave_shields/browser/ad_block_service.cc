@@ -13,9 +13,11 @@
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
+#include "brave/vendor/ad-block/data_file_version.h"
 
 #define DAT_FILE "ABPFilterParserData.dat"
 
@@ -25,6 +27,8 @@ std::string AdBlockService::g_ad_block_component_id_(
     kAdBlockComponentId);
 std::string AdBlockService::g_ad_block_component_base64_public_key_(
     kAdBlockComponentBase64PublicKey);
+std::string AdBlockService::g_ad_block_dat_file_version_(
+    base::NumberToString(DATA_FILE_VERSION));
 
 AdBlockService::AdBlockService() {
 }
@@ -46,7 +50,9 @@ bool AdBlockService::Init() {
 
 void AdBlockService::OnComponentReady(const std::string& component_id,
                                       const base::FilePath& install_dir) {
-  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
+  base::FilePath dat_file_path =
+      install_dir.AppendASCII(g_ad_block_dat_file_version_)
+          .AppendASCII(DAT_FILE);
   AdBlockBaseService::GetDATFileData(dat_file_path);
 }
 
@@ -56,6 +62,12 @@ void AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
     const std::string& component_base64_public_key) {
   g_ad_block_component_id_ = component_id;
   g_ad_block_component_base64_public_key_ = component_base64_public_key;
+}
+
+// static
+void AdBlockService::SetDATFileVersionForTest(
+  const std::string& dat_file_version) {
+  g_ad_block_dat_file_version_ = dat_file_version;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

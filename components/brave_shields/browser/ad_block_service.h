@@ -50,9 +50,11 @@ class AdBlockService : public AdBlockBaseService {
   friend class ::AdBlockServiceTest;
   static std::string g_ad_block_component_id_;
   static std::string g_ad_block_component_base64_public_key_;
+  static std::string g_ad_block_dat_file_version_;
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
+  static void SetDATFileVersionForTest(const std::string& dat_file_version);
 
   DISALLOW_COPY_AND_ASSIGN(AdBlockService);
 };
