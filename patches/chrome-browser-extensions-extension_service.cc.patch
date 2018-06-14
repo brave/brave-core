@@ -1,17 +1,16 @@
 diff --git a/chrome/browser/extensions/extension_service.cc b/chrome/browser/extensions/extension_service.cc
-index 33a77c176b6de6b1b699cde64d5371b6e6aa2139..5f12f47878fa91af065839a91bf19277a99ed009 100644
+index 33a77c176b6de6b1b699cde64d5371b6e6aa2139..700001c964342e9abeb9541f8452bfc6577b187e 100644
 --- a/chrome/browser/extensions/extension_service.cc
 +++ b/chrome/browser/extensions/extension_service.cc
-@@ -28,6 +28,8 @@
+@@ -28,6 +28,7 @@
  #include "base/threading/thread_task_runner_handle.h"
  #include "base/time/time.h"
  #include "base/trace_event/trace_event.h"
 +#include "brave/browser/extensions/brave_component_loader.h"
-+#include "brave/extensions/browser/brave_extension_prefs.h"
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -335,7 +337,7 @@ ExtensionService::ExtensionService(Profile* profile,
+@@ -335,7 +336,7 @@ ExtensionService::ExtensionService(Profile* profile,
    }
  
    component_loader_.reset(
@@ -20,7 +19,7 @@ index 33a77c176b6de6b1b699cde64d5371b6e6aa2139..5f12f47878fa91af065839a91bf19277
                                        profile->GetPrefs(),
                                        g_browser_process->local_state(),
                                        profile));
-@@ -1247,6 +1249,23 @@ void ExtensionService::AddComponentExtension(const Extension* extension) {
+@@ -1247,6 +1248,21 @@ void ExtensionService::AddComponentExtension(const Extension* extension) {
    }
  
    AddExtension(extension);
@@ -36,10 +35,8 @@ index 33a77c176b6de6b1b699cde64d5371b6e6aa2139..5f12f47878fa91af065839a91bf19277
 +                                         extensions::kInstallFlagNone,
 +                                         std::string(),
 +                                         base::nullopt);
-+  // Trigger ContentSettingsService::OnExtensionPrefsLoaded to populate pref
-+  // values into content setting store.
-+  static_cast<extensions::BraveExtensionPrefs*>(extension_prefs_)
-+    ->NotifyExtensionPrefsLoaded(extension->id());
++  extensions::ContentSettingsService::Get(profile_)->OnExtensionPrefsLoaded(
++      extension->id(), extension_prefs_);
 +#endif
  }
  
