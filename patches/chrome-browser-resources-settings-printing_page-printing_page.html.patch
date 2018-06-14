@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/settings/printing_page/printing_page.html b/chrome/browser/resources/settings/printing_page/printing_page.html
+index af5a328a2efb6a4f703c17697501b61d76559316..b849e7368e6a57323db1830db4abaf20815f09ab 100644
+--- a/chrome/browser/resources/settings/printing_page/printing_page.html
++++ b/chrome/browser/resources/settings/printing_page/printing_page.html
+@@ -38,6 +38,7 @@
+           </paper-icon-button-light>
+         </div>
+ </if>
++<if expr="_google_chrome">
+         <div id="cloudPrinters" class="settings-box"
+             on-click="onTapCloudPrinters_" actionable>
+           <div class="start">$i18n{cloudPrintersTitle}</div>
+@@ -45,6 +46,7 @@
+             <button aria-label="$i18n{cloudPrintersTitle}"></button>
+           </paper-icon-button-light>
+         </div>
++</if>
+       </neon-animatable>
+ <if expr="chromeos">
+       <template is="dom-if" route-path="/cupsPrinters">
