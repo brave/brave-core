@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/importer/profile_import_impl.cc b/chrome/utility/importer/profile_import_impl.cc
-index 1cbcc2fcb663c43daad9e6ad86f97e74b964aa11..2910707b7f569cb87947c81d8522f1d9fad82014 100644
+index 1cbcc2fcb663c43daad9e6ad86f97e74b964aa11..ec1c8c3d159c84e8e757dcb84a2766dc7f54851a 100644
 --- a/chrome/utility/importer/profile_import_impl.cc
 +++ b/chrome/utility/importer/profile_import_impl.cc
 @@ -2,12 +2,16 @@
@@ -19,7 +19,7 @@ index 1cbcc2fcb663c43daad9e6ad86f97e74b964aa11..2910707b7f569cb87947c81d8522f1d9
  #include "base/threading/thread.h"
  #include "base/threading/thread_task_runner_handle.h"
  #include "build/build_config.h"
-@@ -39,6 +43,16 @@ void ProfileImportImpl::StartImport(
+@@ -39,6 +43,19 @@ void ProfileImportImpl::StartImport(
  
    items_to_import_ = items;
  
@@ -31,12 +31,15 @@ index 1cbcc2fcb663c43daad9e6ad86f97e74b964aa11..2910707b7f569cb87947c81d8522f1d9
 +  } else if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
 +                              "Chromium", base::CompareCase::SENSITIVE)) {
 +    command_line->AppendSwitch("import-chromium");
++  } else if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
++                              "Brave", base::CompareCase::SENSITIVE)) {
++    command_line->AppendSwitch("import-brave");
 +  }
 +
    // Create worker thread in which importer runs.
    import_thread_.reset(new base::Thread("import_thread"));
  #if defined(OS_WIN)
-@@ -48,7 +62,7 @@ void ProfileImportImpl::StartImport(
+@@ -48,7 +65,7 @@ void ProfileImportImpl::StartImport(
      NOTREACHED();
      ImporterCleanup();
    }

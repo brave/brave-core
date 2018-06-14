@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index 3bf47fa746e2a417f89201f3e3800d8639f2e323..122e9daf552834db4d41c77a320332305320696b 100644
+index 3bf47fa746e2a417f89201f3e3800d8639f2e323..80d681f20de36650d2d2b3fb000c71687656140e 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
-@@ -7,9 +7,12 @@
+@@ -7,9 +7,14 @@
  #include <stdint.h>
  
  #include "base/bind.h"
@@ -11,11 +11,13 @@ index 3bf47fa746e2a417f89201f3e3800d8639f2e323..122e9daf552834db4d41c77a32033230
  #include "base/task_scheduler/task_traits.h"
  #include "base/threading/thread_restrictions.h"
 +#include "base/values.h"
++#include "brave/common/importer/brave_importer_utils.h"
 +#include "brave/common/importer/chrome_importer_utils.h"
++#include "brave/grit/generated_resources.h"
  #include "build/build_config.h"
  #include "chrome/browser/shell_integration.h"
  #include "chrome/common/importer/firefox_importer_utils.h"
-@@ -124,6 +127,61 @@ void DetectFirefoxProfiles(const std::string locale,
+@@ -124,6 +129,79 @@ void DetectFirefoxProfiles(const std::string locale,
    profiles->push_back(firefox);
  }
  
@@ -74,26 +76,49 @@ index 3bf47fa746e2a417f89201f3e3800d8639f2e323..122e9daf552834db4d41c77a32033230
 +                      brandChromium);
 +}
 +
++void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles) {
++  base::AssertBlockingAllowed();
++
++  base::FilePath brave_user_data_folder = GetBraveUserDataFolder();
++
++  uint16_t items = importer::NONE;
++  if (!BraveImporterCanImport(brave_user_data_folder, &items))
++    return;
++
++  importer::SourceProfile brave;
++  brave.importer_name =
++      l10n_util::GetStringUTF16(IDS_IMPORT_FROM_BRAVE);
++  brave.importer_type = importer::TYPE_BRAVE;
++  brave.services_supported = items;
++  brave.source_path = brave_user_data_folder;
++  profiles->push_back(brave);
++}
++
  std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
      const std::string& locale,
      bool include_interactive_profiles) {
-@@ -137,20 +195,30 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+@@ -136,21 +214,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+ #if defined(OS_WIN)
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
++    DetectBraveProfiles(&profiles);
      DetectBuiltinWindowsProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
    } else {
      DetectBuiltinWindowsProfiles(&profiles);
++    DetectBraveProfiles(&profiles);
      DetectFirefoxProfiles(locale, &profiles);
 +    DetectChromeProfiles(&profiles);
    }
  #elif defined(OS_MACOSX)
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
++    DetectBraveProfiles(&profiles);
      DetectSafariProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
    } else {
      DetectSafariProfiles(&profiles);
++    DetectBraveProfiles(&profiles);
      DetectFirefoxProfiles(locale, &profiles);
 +    DetectChromeProfiles(&profiles);
    }
@@ -101,8 +126,10 @@ index 3bf47fa746e2a417f89201f3e3800d8639f2e323..122e9daf552834db4d41c77a32033230
 -  DetectFirefoxProfiles(locale, &profiles);
 +  if (shell_integration::IsFirefoxDefaultBrowser()) {
 +    DetectFirefoxProfiles(locale, &profiles);
++    DetectBraveProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
 +  } else {
++    DetectBraveProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
 +    DetectFirefoxProfiles(locale, &profiles);
 +  }

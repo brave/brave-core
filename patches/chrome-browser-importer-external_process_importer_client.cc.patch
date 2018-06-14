@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/importer/external_process_importer_client.cc b/chrome/browser/importer/external_process_importer_client.cc
+index 429c16dc6a56fcd0ea1d674508c1927a387e1905..0f29ba75ffce20b1104e36b4ba1aa78fd28fc50a 100644
+--- a/chrome/browser/importer/external_process_importer_client.cc
++++ b/chrome/browser/importer/external_process_importer_client.cc
+@@ -8,6 +8,7 @@
+ 
+ #include "base/bind.h"
+ #include "base/strings/string_number_conversions.h"
++#include "brave/grit/generated_resources.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/importer/external_process_importer_host.h"
+ #include "chrome/browser/importer/in_process_importer_bridge.h"
+@@ -71,6 +72,9 @@ void ExternalProcessImporterClient::Start() {
+   localized_strings.SetKey(
+       base::IntToString(IDS_BOOKMARK_BAR_FOLDER_NAME),
+       base::Value(l10n_util::GetStringUTF8(IDS_BOOKMARK_BAR_FOLDER_NAME)));
++  localized_strings.SetKey(
++      base::IntToString(IDS_IMPORT_FROM_BRAVE),
++      base::Value(l10n_util::GetStringUTF8(IDS_IMPORT_FROM_BRAVE)));
+ 
+   // If the utility process hasn't started yet the message will queue until it
+   // does.

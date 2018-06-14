@@ -1,12 +1,13 @@
 diff --git a/chrome/common/importer/importer_data_types.h b/chrome/common/importer/importer_data_types.h
-index 0fc90c62398a93eb89568ce78c8ded2bc9b232b6..50a7d3c0079b7e9c5bc38a4ae3b25eef6d024169 100644
+index 0fc90c62398a93eb89568ce78c8ded2bc9b232b6..cd3301cdbab878231050dbdf66d4572852d0a331 100644
 --- a/chrome/common/importer/importer_data_types.h
 +++ b/chrome/common/importer/importer_data_types.h
-@@ -83,6 +83,7 @@ enum VisitSource {
+@@ -83,6 +83,8 @@ enum VisitSource {
    VISIT_SOURCE_FIREFOX_IMPORTED = 1,
    VISIT_SOURCE_IE_IMPORTED = 2,
    VISIT_SOURCE_SAFARI_IMPORTED = 3,
 +  VISIT_SOURCE_CHROME_IMPORTED = 4,
++  VISIT_SOURCE_BRAVE_IMPORTED = 5,
  };
  
  }  // namespace importer

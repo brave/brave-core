@@ -30,7 +30,7 @@
 #include "components/prefs/pref_filter.h"
 #include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_constants.h"
-#include "net/extras/sqlite/sqlite_persistent_cookie_store.cc"
+#include "net/extras/sqlite/sqlite_persistent_cookie_store.h"
 #include "sql/connection.h"
 #include "sql/statement.h"
 #include "url/gurl.h"
@@ -410,16 +410,17 @@ void ChromeImporter::ImportCookies() {
 
   sql::Statement s(db.GetUniqueStatement(query));
 
+  net::CookieCryptoDelegate* delegate =
+    cookie_config::GetCookieCryptoDelegate();
+#if defined(OS_LINUX)
+  OSCrypt::SetConfig(std::make_unique<os_crypt::Config>());
+#endif
+
   std::vector<net::CanonicalCookie> cookies;
   while (s.Step() && !cancelled()) {
     std::string encrypted_value = s.ColumnString(4);
-    net::CookieCryptoDelegate* delegate =
-        cookie_config::GetCookieCryptoDelegate();
     std::string value;
     if (!encrypted_value.empty() && delegate) {
-#if defined(OS_LINUX)
-      OSCrypt::SetConfig(std::make_unique<os_crypt::Config>());
-#endif
       if (!delegate->DecryptString(encrypted_value, &value)) {
         continue;
       }
@@ -437,10 +438,8 @@ void ChromeImporter::ImportCookies() {
         Time::FromInternalValue(s.ColumnInt64(10)),  // last_access_utc
         s.ColumnBool(7),                             // secure
         s.ColumnBool(8),                             // http_only
-        DBCookieSameSiteToCookieSameSite(            // samesite
-            static_cast<net::DBCookieSameSite>(s.ColumnInt(9))),
-        DBCookiePriorityToCookiePriority(            // priority
-            static_cast<net::DBCookiePriority>(s.ColumnInt(13))));
+        static_cast<net::CookieSameSite>(s.ColumnInt(9)),    // samesite
+        static_cast<net::CookiePriority>(s.ColumnInt(13)));  // priority
     if (cookie.IsCanonical()) {
       cookies.push_back(cookie);
     }
