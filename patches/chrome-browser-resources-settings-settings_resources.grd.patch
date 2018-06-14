@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/resources/settings/settings_resources.grd b/chrome/browser/resources/settings/settings_resources.grd
-index 4474624ac7aa78950f2aea0bffbcd74441014fc5..f28b514cc34c0f034d61c90a210cfdc7368db4b9 100644
+index 4474624ac7aa78950f2aea0bffbcd74441014fc5..0998690f19cfb5f529bf76c0e1b43ef09f33a0d9 100644
 --- a/chrome/browser/resources/settings/settings_resources.grd
 +++ b/chrome/browser/resources/settings/settings_resources.grd
-@@ -737,6 +737,7 @@
+@@ -132,6 +132,7 @@
+       <structure name="IDR_SETTINGS_APPEARANCE_FONTS_PAGE_HTML"
+                  file="appearance_page/appearance_fonts_page.html"
+                  type="chrome_html"
++                 preprocess="true"
+                  allowexternalscript="true" />
+       <structure name="IDR_SETTINGS_APPEARANCE_FONTS_PAGE_JS"
+                  file="appearance_page/appearance_fonts_page.js"
+@@ -737,6 +738,7 @@
                   type="chrome_html" />
        <structure name="IDR_SETTINGS_PASSWORDS_SECTION_HTML"
                   file="passwords_and_forms_page/passwords_section.html"

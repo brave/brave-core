@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/resources/settings/page_visibility.js b/chrome/browser/resources/settings/page_visibility.js
+index 419bd55a6866a6051e3b1a67443830e47c99e391..ab89258f4239a1040d70af7a31b64738c86f1e30 100644
+--- a/chrome/browser/resources/settings/page_visibility.js
++++ b/chrome/browser/resources/settings/page_visibility.js
+@@ -125,6 +125,31 @@ cr.define('settings', function() {
+       multidevice: true,
+     };
+     // </if>
++    // <if expr="not _google_chrome">
++    pageVisibility = {
++      a11y: false,
++      passwordsAndForms: true,
++      people: true,
++      onStartup: true,
++      reset: true,
++      appearance: {
++        setWallpaper: true,
++        setTheme: false,
++        homeButton: true,
++        bookmarksBar: true,
++        pageZoom: true,
++      },
++      advancedSettings: true,
++      privacy: {
++        searchPrediction: true,
++        networkPrediction: true,
++      },
++      downloads: {
++        googleDrive: true,
++      },
++      multidevice: true,
++    };
++    // </if>
+   }
+ 
+   return {pageVisibility: pageVisibility};

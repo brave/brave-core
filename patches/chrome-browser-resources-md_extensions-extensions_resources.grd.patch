@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/md_extensions/extensions_resources.grd b/chrome/browser/resources/md_extensions/extensions_resources.grd
+index 7ae0088239c42ce2cca66b28d9f62a8184033983..7fddb06178b5f176c7900c154828d959be6940a4 100644
+--- a/chrome/browser/resources/md_extensions/extensions_resources.grd
++++ b/chrome/browser/resources/md_extensions/extensions_resources.grd
+@@ -161,6 +161,7 @@
+                  type="chrome_html" />
+       <structure name="IDR_MD_EXTENSIONS_SIDEBAR_HTML"
+                  file="sidebar.html"
++                 preprocess="true"
+                  type="chrome_html" />
+       <structure name="IDR_MD_EXTENSIONS_SIDEBAR_JS"
+                  file="sidebar.js"

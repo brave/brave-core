@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/resources/settings/settings_menu/settings_menu.html b/chrome/browser/resources/settings/settings_menu/settings_menu.html
+index 58721ca87c950f2300841cf43f74a9c655e353b3..eafc95fc9e059383a08b7908bcd756d658803710 100644
+--- a/chrome/browser/resources/settings/settings_menu/settings_menu.html
++++ b/chrome/browser/resources/settings/settings_menu/settings_menu.html
+@@ -176,10 +176,12 @@
+             $i18n{multidevicePageTitle}
+           </a>
+ </if>
++<if expr="_google_chrome">
+           <a href="/accessibility">
+             <iron-icon icon="settings:accessibility"></iron-icon>
+             $i18n{a11yPageTitle}
+           </a>
++</if>
+ <if expr="not chromeos">
+           <a href="/system">
+             <iron-icon icon="settings:build"></iron-icon>
