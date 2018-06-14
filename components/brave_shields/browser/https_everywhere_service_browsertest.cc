@@ -59,6 +59,7 @@ public:
   }
 
   void InitService() {
+    brave_shields::HTTPSEverywhereService::SetIgnorePortForTest(true);
     brave_shields::HTTPSEverywhereService::
         SetComponentIdAndBase64PublicKeyForTest(
             kHTTPSEverywhereComponentTestId,
@@ -66,9 +67,9 @@ public:
   }
 
   bool InstallHTTPSEverywhereExtension() {
+    base::ScopedAllowBlockingForTesting allow_blocking;
     base::FilePath test_data_dir;
     PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-
     const extensions::Extension* httpse_extension =
         InstallExtension(test_data_dir.AppendASCII("https-everywhere-data"), 1);
     if (!httpse_extension)
@@ -93,20 +94,25 @@ public:
 IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSite) {
   ASSERT_TRUE(InstallHTTPSEverywhereExtension());
 
-  GURL url = embedded_test_server()->GetURL("http://www.digg.com/");
+  GURL url = embedded_test_server()->GetURL("www.digg.com", "/");
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_STREQ("https://www.digg.com/", contents->GetLastCommittedURL().spec().c_str());
+  EXPECT_EQ(GURL("https://www.digg.com/"), contents->GetLastCommittedURL());
 }
 
 // Load a URL which has no HTTPSE rule and verify we did not rewrite it.
 IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, NoRedirectsNotKnownSite) {
   ASSERT_TRUE(InstallHTTPSEverywhereExtension());
 
-  GURL url = embedded_test_server()->GetURL("http://www.brianbondy.com/");
+  GURL url = embedded_test_server()->GetURL("www.brianbondy.com", "/");
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_STREQ("http://www.brianbondy.com/", contents->GetLastCommittedURL().spec().c_str());
+
+  GURL::Replacements clear_port;
+  clear_port.ClearPort();
+
+  EXPECT_EQ(GURL("http://www.brianbondy.com/"),
+            contents->GetLastCommittedURL().ReplaceComponents(clear_port));
 }
 
 // Make sure iframes that should redirect to HTTPS actually redirect and that
@@ -116,11 +122,11 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSiteInIframe) {
   GURL url = embedded_test_server()->GetURL("a.com", "/iframe.html");
   ui_test_utils::NavigateToURL(browser(), url);
 
-  GURL iframe_url = embedded_test_server()->GetURL("http://www.digg.com/");
+  GURL iframe_url = embedded_test_server()->GetURL("www.digg.com", "/");
   const char kIframeID[] = "test";
   content::WebContents* contents =  browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(NavigateIframeToURL(contents, kIframeID, iframe_url));
   content::RenderFrameHost* iframe_contents = ChildFrameAt(contents->GetMainFrame(), 0);
   WaitForLoadStop(contents);
-  EXPECT_STREQ("https://www.digg.com/", iframe_contents->GetLastCommittedURL().spec().c_str());
+  EXPECT_EQ(GURL("https://www.digg.com/"), iframe_contents->GetLastCommittedURL());
 }

@@ -76,6 +76,7 @@ namespace {
 
 namespace brave_shields {
 
+bool HTTPSEverywhereService::g_ignore_port_(false);
 std::string HTTPSEverywhereService::g_https_everywhere_component_id_(
     kHTTPSEverywhereComponentId);
 std::string HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
@@ -155,19 +156,26 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     return true;
   }
 
-  const std::vector<std::string> domains = ExpandDomainForLookup(url->host());
+  GURL candidate_url(*url);
+  if (g_ignore_port_ && candidate_url.has_port()) {
+    GURL::Replacements replacements;
+    replacements.ClearPort();
+    candidate_url = candidate_url.ReplaceComponents(replacements);
+  }
+
+  const std::vector<std::string> domains = ExpandDomainForLookup(candidate_url.host());
   for (auto domain : domains) {
     std::string value = leveldbGet(level_db_, domain);
     if (!value.empty()) {
-      new_url = ApplyHTTPSRule(url->spec(), value);
+      new_url = ApplyHTTPSRule(candidate_url.spec(), value);
       if (0 != new_url.length()) {
-        recently_used_cache_.data[url->spec()] = new_url;
+        recently_used_cache_.data[candidate_url.spec()] = new_url;
         AddHTTPSEUrlToRedirectList(request_identifier);
         return true;
       }
     }
   }
-  recently_used_cache_.data[url->spec()] = "";
+  recently_used_cache_.data[candidate_url.spec()].clear();
   return false;
 }
 
@@ -364,6 +372,11 @@ void HTTPSEverywhereService::SetComponentIdAndBase64PublicKeyForTest(
     const std::string& component_base64_public_key) {
   g_https_everywhere_component_id_ = component_id;
   g_https_everywhere_component_base64_public_key_ = component_base64_public_key;
+}
+
+// static
+void HTTPSEverywhereService::SetIgnorePortForTest(bool ignore) {
+  g_ignore_port_ = ignore;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -85,6 +85,7 @@ public:
   bool InstallDefaultAdBlockExtension(
       const std::string& extension_dir = "adblock-default",
       int expected_change = 1) {
+    base::ScopedAllowBlockingForTesting allow_blocking;
     base::FilePath test_data_dir;
     PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     const extensions::Extension* ad_block_extension = InstallExtension(
@@ -101,6 +102,7 @@ public:
   }
 
   bool InstallRegionalAdBlockExtension(const std::string& uuid) {
+    base::ScopedAllowBlockingForTesting allow_blocking;
     base::FilePath test_data_dir;
     PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     const extensions::Extension* ad_block_extension =

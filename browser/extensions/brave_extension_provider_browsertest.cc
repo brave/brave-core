@@ -64,6 +64,7 @@ class ExtensionFunctionalTest : public ExtensionBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, BlacklistExtension) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath test_data_dir;
   PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
   const extensions::Extension* extension =
@@ -72,6 +73,7 @@ IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, BlacklistExtension) {
 }
 
 IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, WhitelistedExtension) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath test_data_dir;
   PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
   const extensions::Extension* extension = InstallExtension(
@@ -81,6 +83,7 @@ IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, WhitelistedExtension) {
 }
 
 IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, PDFJSInstalls) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath test_data_dir;
   PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
   InstallExtensionSilently(extension_service(),
