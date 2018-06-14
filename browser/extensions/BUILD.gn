@@ -12,10 +12,14 @@ source_set("extensions") {
     "brave_component_loader.h",
     "brave_extension_management.cc",
     "brave_extension_management.h",
+    "brave_extension_provider.cc",
+    "brave_extension_provider.h",
   ]
+
   deps = [
     "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser",
     "//content/public/browser",
+    "//extensions/browser",
   ]
 }
