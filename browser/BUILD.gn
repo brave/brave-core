@@ -34,6 +34,9 @@ source_set("browser_process") {
   ]
 
   deps = [
+    "//brave/components/brave_shields/browser:brave_shields",
+    "//brave/components/content_settings/core/browser",
+    "//brave/common",
     "//components/component_updater",
     "//content/public/browser",
     "//brave/chromium_src:browser",

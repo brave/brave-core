@@ -7,7 +7,7 @@
 #include "base/command_line.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "brave/extensions/browser/brave_extension_provider.h"
+#include "brave/browser/extensions/brave_extension_provider.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "extensions/common/extension_urls.h"
 
