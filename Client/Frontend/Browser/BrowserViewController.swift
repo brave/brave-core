@@ -37,7 +37,8 @@ private struct BrowserViewControllerUX {
 }
 
 class BrowserViewController: UIViewController {
-    var homePanelController: HomePanelViewController?
+    // var homePanelController: HomePanelViewController?
+    var homePanelController: TopSitesPanel?
     var webViewContainer: UIView!
     var urlBar: URLBarView!
     var tabsBar: TabsBarViewController!
@@ -654,11 +655,16 @@ class BrowserViewController: UIViewController {
         homePanelIsInline = inline
 
         if homePanelController == nil {
+            let homePanelController = TopSitesPanel()
+            homePanelController.topSitesPanelDelegate = self
+            homePanelController.view.alpha = 0
+            /*
             let homePanelController = HomePanelViewController()
             homePanelController.profile = profile
             homePanelController.delegate = self
             homePanelController.url = tabManager.selectedTab?.url?.displayURL
             homePanelController.view.alpha = 0
+            */
             self.homePanelController = homePanelController
 
             addChildViewController(homePanelController)
@@ -670,7 +676,8 @@ class BrowserViewController: UIViewController {
             return
         }
         let isPrivate = tabManager.selectedTab?.isPrivate ?? false
-        homePanelController.applyTheme(isPrivate ? Theme.Private : Theme.Normal)
+        // BRAVE TODO:
+        // homePanelController.applyTheme(isPrivate ? Theme.Private : Theme.Normal)
         let panelNumber = tabManager.selectedTab?.url?.fragment
 
         // splitting this out to see if we can get better crash reports when this has a problem
@@ -680,7 +687,9 @@ class BrowserViewController: UIViewController {
                 newSelectedButtonIndex = lastInt
             }
         }
-        homePanelController.selectedPanel = HomePanelType(rawValue: newSelectedButtonIndex)
+        
+        // BRAVE TODO:
+        // homePanelController.selectedPanel = HomePanelType(rawValue: newSelectedButtonIndex)
 
         // We have to run this animation, even if the view is already showing because there may be a hide animation running
         // and we want to be sure to override its results.
@@ -2706,5 +2715,12 @@ extension BrowserViewController: HomeMenuControllerDelegate {
     
     func menuDidBatchOpenURLs(_ menu: HomeMenuController, urls: [URL]) {
         self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabManager.selectedTab?.tabState.isPrivate ?? false)
+    }
+}
+
+extension BrowserViewController: TopSitesPanelDelegate {
+    
+    func didSelectUrl(url: URL) {
+        finishEditingAndSubmit(url, visitType: .bookmark)
     }
 }
