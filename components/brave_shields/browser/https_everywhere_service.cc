@@ -76,7 +76,7 @@ namespace {
 
 namespace brave_shields {
 
-bool HTTPSEverywhereService::g_ignore_port_(false);
+bool HTTPSEverywhereService::g_ignore_port_for_test_(false);
 std::string HTTPSEverywhereService::g_https_everywhere_component_id_(
     kHTTPSEverywhereComponentId);
 std::string HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
@@ -157,7 +157,7 @@ bool HTTPSEverywhereService::GetHTTPSURL(
   }
 
   GURL candidate_url(*url);
-  if (g_ignore_port_ && candidate_url.has_port()) {
+  if (g_ignore_port_for_test_ && candidate_url.has_port()) {
     GURL::Replacements replacements;
     replacements.ClearPort();
     candidate_url = candidate_url.ReplaceComponents(replacements);
@@ -376,7 +376,7 @@ void HTTPSEverywhereService::SetComponentIdAndBase64PublicKeyForTest(
 
 // static
 void HTTPSEverywhereService::SetIgnorePortForTest(bool ignore) {
-  g_ignore_port_ = ignore;
+  g_ignore_port_for_test_ = ignore;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

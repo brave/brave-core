@@ -75,10 +75,14 @@ public:
             kTrackingProtectionComponentTestBase64PublicKey);
   }
 
-  bool InstallTrackingProtectionExtension() {
+  void GetTestDataDir(base::FilePath* test_data_dir) {
     base::ScopedAllowBlockingForTesting allow_blocking;
+    PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+  }
+
+  bool InstallTrackingProtectionExtension() {
     base::FilePath test_data_dir;
-    PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    GetTestDataDir(&test_data_dir);
     const extensions::Extension* tracking_protection_extension =
         InstallExtension(test_data_dir.AppendASCII("tracking-protection-data"), 1);
     if (!tracking_protection_extension)

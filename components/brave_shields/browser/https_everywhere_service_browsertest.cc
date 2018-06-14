@@ -66,10 +66,14 @@ public:
             kHTTPSEverywhereComponentTestBase64PublicKey);
   }
 
-  bool InstallHTTPSEverywhereExtension() {
+  void GetTestDataDir(base::FilePath* test_data_dir) {
     base::ScopedAllowBlockingForTesting allow_blocking;
+    PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+  }
+
+  bool InstallHTTPSEverywhereExtension() {
     base::FilePath test_data_dir;
-    PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    GetTestDataDir(&test_data_dir);
     const extensions::Extension* httpse_extension =
         InstallExtension(test_data_dir.AppendASCII("https-everywhere-data"), 1);
     if (!httpse_extension)

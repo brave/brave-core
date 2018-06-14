@@ -61,21 +61,23 @@ class ExtensionFunctionalTest : public ExtensionBrowserTest {
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(embedded_test_server()->Start());
   }
+  void GetTestDataDir(base::FilePath* test_data_dir) {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, BlacklistExtension) {
-  base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath test_data_dir;
-  PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+  GetTestDataDir(&test_data_dir);
   const extensions::Extension* extension =
     InstallExtension(test_data_dir.AppendASCII("should-be-blocked-extension"), 0);
   ASSERT_FALSE(extension);
 }
 
 IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, WhitelistedExtension) {
-  base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath test_data_dir;
-  PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+  GetTestDataDir(&test_data_dir);
   const extensions::Extension* extension = InstallExtension(
       test_data_dir.AppendASCII("adblock-data").AppendASCII("adblock-default"),
       1);
@@ -83,9 +85,8 @@ IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, WhitelistedExtension) {
 }
 
 IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, PDFJSInstalls) {
-  base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath test_data_dir;
-  PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+  GetTestDataDir(&test_data_dir);
   InstallExtensionSilently(extension_service(),
       test_data_dir.AppendASCII("pdfjs.crx"));
 

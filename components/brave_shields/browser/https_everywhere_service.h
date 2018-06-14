@@ -72,7 +72,7 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
 
  private:
   friend class ::HTTPSEverywhereServiceTest;
-  static bool g_ignore_port_;
+  static bool g_ignore_port_for_test_;
   static std::string g_https_everywhere_component_id_;
   static std::string g_https_everywhere_component_base64_public_key_;
   static void SetIgnorePortForTest(bool ignore);
