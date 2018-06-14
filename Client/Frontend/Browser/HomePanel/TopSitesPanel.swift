@@ -17,8 +17,13 @@ struct TopSitesPanelUX {
     static let statsBottomMargin: CGFloat = 5
 }
 
+protocol TopSitesPanelDelegate: class {
+    func didSelectUrl(url: URL)
+}
+
 class TopSitesPanel: UIViewController {
     weak var homePanelDelegate: HomePanelDelegate?
+    weak var topSitesPanelDelegate: TopSitesPanelDelegate?
     
     // MARK: - Favorites collection view properties
     fileprivate lazy var collection: UICollectionView = {
@@ -185,6 +190,10 @@ class TopSitesPanel: UIViewController {
         }
     }
     
+    @objc func viewControllerTapped() {
+        endEditing()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -209,9 +218,6 @@ class TopSitesPanel: UIViewController {
         case .changed:
             collection.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
         case .ended:
-            // Allows user to tap anywhere to dimiss 'edit thumbnail' button.
-            // BRAVE TODO:
-            // (view.window as! BraveMainWindow).addTouchFilter(self)
             collection.endInteractiveMovement()
         default:
             collection.cancelInteractiveMovement()
@@ -359,8 +365,6 @@ class TopSitesPanel: UIViewController {
     }
     
     func endEditing() {
-        // BRAVE TODO:
-        // (view.window as! BraveMainWindow).removeTouchFilter(self)
         dataSource.isEditing = false
     }
     
@@ -399,8 +403,7 @@ extension TopSitesPanel: UICollectionViewDelegateFlowLayout {
         
         guard let urlString = fav?.url, let url = URL(string: urlString) else { return }
         
-        // BRAVE TODO:
-        // homePanelDelegate?.homePanel(self, didSelectURL: url)
+        topSitesPanelDelegate?.didSelectUrl(url: url)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -450,19 +453,6 @@ extension TopSitesPanel: UICollectionViewDelegateFlowLayout {
         return cols + 1
     }
 }
-
-// BRAVE TODO:
-/*
-extension TopSitesPanel : WindowTouchFilter {
-    func filterTouch(_ touch: UITouch) -> Bool {
-        // Allows user to tap anywhere to dimiss 'edit thumbnail' button.
-        if (touch.view as? UIButton) == nil && touch.phase == .began {
-            self.endEditing()
-        }
-        return false
-    }
-}
-*/
 
 extension TopSitesPanel: ThumbnailCellDelegate {
     func editThumbnail(_ thumbnailCell: ThumbnailCell) {

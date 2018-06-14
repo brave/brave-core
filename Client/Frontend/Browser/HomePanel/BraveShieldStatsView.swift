@@ -86,6 +86,10 @@ class BraveShieldStatsView: UIView, Themeable {
         httpsStatView.stat = BraveGlobalShieldStats.singleton.httpse.abbreviation
         timeStatView.stat = timeSaved
         */
+        adsStatView.stat = "0"
+        trackersStatView.stat = "0"
+        httpsStatView.stat = "0"
+        timeStatView.stat = "0"
     }
     
     func applyTheme(_ themeName: String) {
