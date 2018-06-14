@@ -1,8 +1,22 @@
 diff --git a/chrome/installer/util/util_constants.cc b/chrome/installer/util/util_constants.cc
-index 4ed3469f1dae894df6636185414993c657b7b2c4..1ff629ffcd6513fb2d65785be9b48aec2d326731 100644
+index 4ed3469f1dae894df6636185414993c657b7b2c4..76da2acd8391b4ae3f6d2efe2e8eaaec7539251f 100644
 --- a/chrome/installer/util/util_constants.cc
 +++ b/chrome/installer/util/util_constants.cc
-@@ -187,7 +187,11 @@ const char kGoogleUpdateIsMachineEnvVar[] = "GoogleUpdateIsMachine";
+@@ -171,7 +171,13 @@ namespace env_vars {
+ // The presence of this environment variable with a value of 1 implies that
+ // setup.exe should run as a system installation regardless of what is on the
+ // command line.
++#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
++// Reflect brave branded-omaha variable name.
++// Company name(BraveSoftware) + Product name(Update).
++const char kGoogleUpdateIsMachineEnvVar[] = "BraveSoftwareUpdateIsMachine";
++#else
+ const char kGoogleUpdateIsMachineEnvVar[] = "GoogleUpdateIsMachine";
++#endif
+ 
+ }  // namespace env_vars
+ 
+@@ -187,7 +193,11 @@ const char kGoogleUpdateIsMachineEnvVar[] = "GoogleUpdateIsMachine";
  const wchar_t kActiveSetupExe[] = L"chrmstp.exe";
  const wchar_t kChromeDll[] = L"chrome.dll";
  const wchar_t kChromeChildDll[] = L"chrome_child.dll";
