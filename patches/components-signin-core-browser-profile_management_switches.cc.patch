@@ -1,0 +1,14 @@
+diff --git a/components/signin/core/browser/profile_management_switches.cc b/components/signin/core/browser/profile_management_switches.cc
+index a26592c75da20daf487cc1c2205bba567be9268b..568d654093292647de5a4ff196fc8620ffd6c664 100644
+--- a/components/signin/core/browser/profile_management_switches.cc
++++ b/components/signin/core/browser/profile_management_switches.cc
+@@ -96,6 +96,9 @@ void RegisterAccountConsistencyProfilePrefs(
+ }
+ 
+ AccountConsistencyMethod GetAccountConsistencyMethod() {
++#if defined(BRAVE_CHROMIUM_BUILD)
++  return AccountConsistencyMethod::kDiceFixAuthErrors;
++#endif
+ #if BUILDFLAG(ENABLE_MIRROR)
+   // Mirror is always enabled on Android and iOS.
+   return AccountConsistencyMethod::kMirror;
