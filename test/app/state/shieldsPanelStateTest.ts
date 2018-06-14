@@ -7,7 +7,7 @@ import 'mocha'
 import * as assert from 'assert'
 import * as deepFreeze from 'deep-freeze-node'
 import * as shieldsPanelState from '../../../app/state/shieldsPanelState'
-import { State } from '../../../app/types/state/shieldsPannelState';
+import { State } from '../../../app/types/state/shieldsPannelState'
 
 const state: State = deepFreeze({
   currentWindowId: 1,
@@ -24,7 +24,7 @@ const state: State = deepFreeze({
     3: {
       id: 3
     },
-    4: {
+    4: { 
       id: 4
     }
   },
@@ -215,7 +215,12 @@ describe('shieldsPanelState test', () => {
             httpsRedirected: 0,
             javascriptBlocked: 0,
             fingerprintingBlocked: 0,
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           },
           3: {
             id: 3
@@ -255,7 +260,12 @@ describe('shieldsPanelState test', () => {
             origin: 'https://brave.com',
             braveShields: 'block',
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           },
           3: {
             ads: 'block',
@@ -275,7 +285,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           },
           4: {
             ads: 'block',
@@ -295,7 +310,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           }
         },
         windows: {
@@ -330,7 +350,12 @@ describe('shieldsPanelState test', () => {
             origin: 'https://brave.com',
             braveShields: 'block',
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           },
           3: {
             ads: 'block',
@@ -350,7 +375,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           },
           4: {
             ads: 'block',
@@ -370,7 +400,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           }
         },
         windows: {
@@ -402,7 +437,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           },
           3: {
             ads: 'block',
@@ -422,7 +462,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           },
           4: {
             ads: 'block',
@@ -442,7 +487,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 5,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           }
         },
         windows: {
@@ -472,7 +522,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           },
           3: {
             ads: 'block',
@@ -492,7 +547,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           },
           4: {
             ads: 'block',
@@ -512,7 +572,12 @@ describe('shieldsPanelState test', () => {
             cookies: 'block',
             fingerprintingBlocked: 0,
             url: 'https://brave.com',
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            trackersBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            fingerprintingBlockedResources: []
           }
         },
         windows: {
@@ -541,7 +606,12 @@ describe('shieldsPanelState test', () => {
             httpsRedirected: 0,
             javascriptBlocked: 0,
             fingerprintingBlocked: 0,
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [ 'https://test.brave.com' ],
+            fingerprintingBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            trackersBlockedResources: []
           },
           3: {
             id: 3
@@ -574,7 +644,12 @@ describe('shieldsPanelState test', () => {
             httpsRedirected: 0,
             javascriptBlocked: 0,
             fingerprintingBlocked: 0,
-            noScriptInfo: {}
+            noScriptInfo: {},
+            adsBlockedResources: [],
+            fingerprintingBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [],
+            trackersBlockedResources: [ 'https://test.brave.com' ]
           },
           3: {
             id: 3
@@ -609,7 +684,12 @@ describe('shieldsPanelState test', () => {
             fingerprintingBlocked: 0,
             noScriptInfo: {
               'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
-            }
+            },
+            adsBlockedResources: [],
+            fingerprintingBlockedResources: [],
+            httpsRedirectedResources: [],
+            javascriptBlockedResources: [ 'https://test.brave.com' ],
+            trackersBlockedResources: []
           },
           3: {
             id: 3
@@ -650,7 +730,12 @@ describe('shieldsPanelState test', () => {
           noScriptInfo: {
             'https://a.com': { actuallyBlocked: true, willBlock: true },
             'https://b.com': { actuallyBlocked: false, willBlock: false }
-          }
+          },
+          adsBlockedResources: [],
+          trackersBlockedResources: [],
+          httpsRedirectedResources: [],
+          javascriptBlockedResources: [],
+          fingerprintingBlockedResources: []
         },
         3: {
           id: 3,
@@ -673,7 +758,12 @@ describe('shieldsPanelState test', () => {
           noScriptInfo: {
             'https://a.com': { actuallyBlocked: true, willBlock: true },
             'https://b.com': { actuallyBlocked: false, willBlock: false }
-          }
+          },
+          adsBlockedResources: [],
+          trackersBlockedResources: [],
+          httpsRedirectedResources: [],
+          javascriptBlockedResources: [],
+          fingerprintingBlockedResources: []
         }
       },
       windows: {
@@ -708,7 +798,12 @@ describe('shieldsPanelState test', () => {
               noScriptInfo: {
                 'https://a.com': { actuallyBlocked: false, willBlock: true },
                 'https://b.com': { actuallyBlocked: false, willBlock: false }
-              }
+              },
+              adsBlockedResources: [],
+              trackersBlockedResources: [],
+              httpsRedirectedResources: [],
+              javascriptBlockedResources: [],
+              fingerprintingBlockedResources: []
             },
             3: {
               id: 3,
@@ -731,7 +826,12 @@ describe('shieldsPanelState test', () => {
               noScriptInfo: {
                 'https://a.com': { actuallyBlocked: true, willBlock: true },
                 'https://b.com': { actuallyBlocked: false, willBlock: false }
-              }
+              },
+              adsBlockedResources: [],
+              trackersBlockedResources: [],
+              httpsRedirectedResources: [],
+              javascriptBlockedResources: [],
+              fingerprintingBlockedResources: []
             }
           },
           windows: {
@@ -764,7 +864,12 @@ describe('shieldsPanelState test', () => {
               cookies: 'block',
               fingerprintingBlocked: 0,
               url: 'https://brave.com',
-              noScriptInfo: {}
+              noScriptInfo: {},
+              adsBlockedResources: [],
+              trackersBlockedResources: [],
+              httpsRedirectedResources: [],
+              javascriptBlockedResources: [],
+              fingerprintingBlockedResources: []
             },
             3: {
               id: 3,
@@ -787,7 +892,12 @@ describe('shieldsPanelState test', () => {
               noScriptInfo: {
                 'https://a.com': { actuallyBlocked: true, willBlock: true },
                 'https://b.com': { actuallyBlocked: false, willBlock: false }
-              }
+              },
+              adsBlockedResources: [],
+              trackersBlockedResources: [],
+              httpsRedirectedResources: [],
+              javascriptBlockedResources: [],
+              fingerprintingBlockedResources: []
             }
           },
           windows: {

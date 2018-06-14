@@ -47,6 +47,11 @@ export default class BraveShields extends React.Component<BraveShieldsProps, {}>
           httpsRedirected={shieldsPanelTabData.httpsRedirected}
           javascriptBlocked={shieldsPanelTabData.javascriptBlocked}
           fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
+          adsBlockedResources={shieldsPanelTabData.adsBlockedResources}
+          trackersBlockedResources={shieldsPanelTabData.trackersBlockedResources}
+          httpsRedirectedResources={shieldsPanelTabData.httpsRedirectedResources}
+          javascriptBlockedResources={shieldsPanelTabData.javascriptBlockedResources}
+          fingerprintingBlockedResources={shieldsPanelTabData.fingerprintingBlockedResources}
         />
         <BraveShieldsControls
           braveShields={shieldsPanelTabData.braveShields}

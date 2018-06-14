@@ -5,6 +5,7 @@
 import * as React from 'react'
 import { Grid, Column } from 'brave-ui/gridSystem'
 import TextLabel from 'brave-ui/textLabel'
+import Paragraph from 'brave-ui/paragraph'
 
 import { BlockOptions } from '../../types/other/blockTypes'
 import { getMessage } from '../../background/api/localeAPI'
@@ -17,15 +18,32 @@ export interface BraveShieldsStatsProps {
   httpsRedirected: number
   javascriptBlocked: number
   fingerprintingBlocked: number
+  adsBlockedResources: Array<string>
+  trackersBlockedResources: Array<string>
+  httpsRedirectedResources: Array<string>
+  javascriptBlockedResources: Array<string>
+  fingerprintingBlockedResources: Array<string>
 }
 
-export default class BraveShieldsStats extends React.Component<BraveShieldsStatsProps, {}> {
+export interface BraveShieldsStatsState {
+  adsTrackersBlockedDetailsOpen: boolean,
+  httpsRedirectedDetailsOpen: boolean,
+  javascriptBlockedDetailsOpen: boolean,
+  fingerprintingBlockedDetailsOpen: boolean
+}
+
+export default class BraveShieldsStats extends React.Component<BraveShieldsStatsProps, BraveShieldsStatsState> {
   constructor (props: BraveShieldsStatsProps) {
     super(props)
-    this.onClickadsTrackersBlockedStats = this.onClickadsTrackersBlockedStats.bind(this)
-    this.onClickHttpsUpgradesStats = this.onClickHttpsUpgradesStats.bind(this)
-    this.onClickScriptsBlockedStats = this.onClickScriptsBlockedStats.bind(this)
-    this.onClickFingerPrintingProtectionStats = this.onClickScriptsBlockedStats.bind(this)
+    this.onToggleBlockedResourcesDetails = this.onToggleBlockedResourcesDetails.bind(this)
+
+    // creates a temporary state to switch the toggle of blocked resources details
+    this.state = {
+      adsTrackersBlockedDetailsOpen: false,
+      httpsRedirectedDetailsOpen: false,
+      javascriptBlockedDetailsOpen: false,
+      fingerprintingBlockedDetailsOpen: false
+    }
   }
 
   get totalAdsTrackersBlocked (): number {
@@ -45,24 +63,56 @@ export default class BraveShieldsStats extends React.Component<BraveShieldsStats
     return this.props.fingerprintingBlocked
   }
 
-  onClickadsTrackersBlockedStats () {
-    // TODO #202
-    console.log('fired adsTrackersBlockedStats')
+  get totalAdsTrackersBlockedResources (): Array<string> {
+    const { adsBlockedResources, trackersBlockedResources } = this.props
+    return [ ...adsBlockedResources, ...trackersBlockedResources ]
   }
 
-  onClickHttpsUpgradesStats () {
-    // TODO #202
-    console.log('fired httpsUpgradesStats')
+  get httpsRedirectedResources (): Array<string> {
+    return this.props.httpsRedirectedResources
   }
 
-  onClickScriptsBlockedStats () {
-    // TODO #202
-    console.log('fired scriptsBlockedStats')
+  get javascriptBlockedResources (): Array<string> {
+    return this.props.javascriptBlockedResources
   }
 
-  onClickFingerPrintingProtectionStats () {
-    // TODO #202
-    console.log('fired fingerPrintingProtectionStats')
+  get fingerprintingBlockedResources (): Array<string> {
+    return this.props.fingerprintingBlockedResources
+  }
+
+  get blockedResourcesDetailsList () {
+    const {
+      adsTrackersBlockedDetailsOpen,
+      httpsRedirectedDetailsOpen,
+      javascriptBlockedDetailsOpen,
+      fingerprintingBlockedDetailsOpen
+    } = this.state
+
+    if (adsTrackersBlockedDetailsOpen) {
+      return this.setResourceBlockedItemView(this.totalAdsTrackersBlockedResources)
+    } else if (httpsRedirectedDetailsOpen) {
+      return this.setResourceBlockedItemView(this.httpsRedirectedResources)
+    } else if (javascriptBlockedDetailsOpen) {
+      return this.setResourceBlockedItemView(this.javascriptBlockedResources)
+    } else if (fingerprintingBlockedDetailsOpen) {
+      return this.setResourceBlockedItemView(this.fingerprintingBlockedResources)
+    } else {
+      return null
+    }
+  }
+
+  setResourceBlockedItemView (resource: Array<string>) {
+    return resource.map((src: string, key: number) =>
+      <Paragraph theme={theme.blockedResourcesStatsText} key={key} text={src} />)
+  }
+
+  onToggleBlockedResourcesDetails (e: any) {
+    this.setState({
+      adsTrackersBlockedDetailsOpen: e.target.id.startsWith('totalAdsTrackersBlocked'),
+      httpsRedirectedDetailsOpen: e.target.id.startsWith('httpsRedirected'),
+      javascriptBlockedDetailsOpen: e.target.id.startsWith('javascriptBlocked'),
+      fingerprintingBlockedDetailsOpen: e.target.id.startsWith('fingerprintingBlocked')
+    })
   }
 
   render () {
@@ -75,47 +125,58 @@ export default class BraveShieldsStats extends React.Component<BraveShieldsStats
       >
         <Column theme={theme.statsNumbers} size={1}>
           <TextLabel
+            id='totalAdsTrackersBlockedStat'
             theme={theme.totalAdsTrackersBlockedStat}
             text={this.totalAdsTrackersBlocked}
-            onClick={this.onClickadsTrackersBlockedStats}
+            onClick={this.onToggleBlockedResourcesDetails}
           />
           <TextLabel
+            id='httpsRedirectedStat'
             theme={theme.httpsRedirectedStat}
             text={this.httpsRedirected}
-            onClick={this.onClickHttpsUpgradesStats}
+            onClick={this.onToggleBlockedResourcesDetails}
           />
           <TextLabel
+            id='javascriptBlockedStat'
             theme={theme.javascriptBlockedStat}
             text={this.javascriptBlocked}
-            onClick={this.onClickScriptsBlockedStats}
+            onClick={this.onToggleBlockedResourcesDetails}
           />
           <TextLabel
+            id='fingerprintingBlockedStat'
             theme={theme.fingerprintingBlockedStat}
             text={this.fingerprintingBlocked}
-            onClick={this.onClickFingerPrintingProtectionStats}
+            onClick={this.onToggleBlockedResourcesDetails}
           />
         </Column>
         <Column theme={theme.statsNames} size={11}>
           <TextLabel
+            id='totalAdsTrackersBlockedText'
             theme={theme.totalAdsTrackersBlockedText}
             text={getMessage('shieldsStatsAdsTrackersBlocked')}
-            onClick={this.onClickadsTrackersBlockedStats}
+            onClick={this.onToggleBlockedResourcesDetails}
           />
           <TextLabel
+            id='httpsRedirectedText'
             theme={theme.httpsRedirectedText}
             text={getMessage('shieldsStatsHttpsUpgrades')}
-            onClick={this.onClickHttpsUpgradesStats}
+            onClick={this.onToggleBlockedResourcesDetails}
           />
           <TextLabel
+            id='javascriptBlockedText'
             theme={theme.javascriptBlockedText}
             text={getMessage('shieldsStatsScriptsBlocked')}
-            onClick={this.onClickScriptsBlockedStats}
+            onClick={this.onToggleBlockedResourcesDetails}
           />
           <TextLabel
+            id='fingerprintingBlockedText'
             theme={theme.fingerprintingBlockedText}
             text={getMessage('shieldsFingerPrintingBlocked')}
-            onClick={this.onClickFingerPrintingProtectionStats}
+            onClick={this.onToggleBlockedResourcesDetails}
           />
+        </Column>
+        <Column id='blockedResourcesStats' theme={theme.blockedResourcesStats} size={12}>
+          {this.blockedResourcesDetailsList}
         </Column>
       </Grid>
     )

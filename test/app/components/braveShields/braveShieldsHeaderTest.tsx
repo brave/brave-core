@@ -7,7 +7,7 @@ import 'mocha'
 import * as React from 'react'
 import * as assert from 'assert'
 import BraveShieldsHeader, { BraveShieldsHeaderProps } from '../../../../app/components/braveShields/braveShieldsHeader'
-import { BlockOptions } from '../../../../app/types/other/blockTypes';
+import { BlockOptions } from '../../../../app/types/other/blockTypes'
 import * as actionTypes from '../../../../app/constants/shieldsPanelTypes'
 import { shallow } from 'enzyme'
 import * as sinon from 'sinon'
