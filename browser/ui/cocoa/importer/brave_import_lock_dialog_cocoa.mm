@@ -11,7 +11,7 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/importer/brave_importer_lock_dialog.h"
 #include "brave/browser/ui/views/importer/brave_import_lock_dialog_view.h"
-#include "brave/grit/generated_resources.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/cocoa/browser_dialogs_views_mac.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"

@@ -11,7 +11,7 @@
   "brave/browser/resources/brave_extension.grd": {
     "includes": [34000],
   },
-  "brave/app/generated_resources.grd": {
+  "brave/app/brave_generated_resources.grd": {
     "includes": [35000],
     "messages": [35500],
   },
