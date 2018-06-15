@@ -63,6 +63,11 @@ public:
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
+  void GetTestDataDir(base::FilePath* test_data_dir) {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+  }
+
   void SetDefaultComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key) {
@@ -86,7 +91,7 @@ public:
       const std::string& extension_dir = "adblock-default",
       int expected_change = 1) {
     base::FilePath test_data_dir;
-    PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    GetTestDataDir(&test_data_dir);
     const extensions::Extension* ad_block_extension = InstallExtension(
         test_data_dir.AppendASCII("adblock-data").AppendASCII(extension_dir),
         expected_change);
@@ -102,7 +107,7 @@ public:
 
   bool InstallRegionalAdBlockExtension(const std::string& uuid) {
     base::FilePath test_data_dir;
-    PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    GetTestDataDir(&test_data_dir);
     const extensions::Extension* ad_block_extension =
         InstallExtension(test_data_dir.AppendASCII("adblock-data")
                              .AppendASCII("adblock-regional")

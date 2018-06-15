@@ -75,10 +75,14 @@ public:
             kTrackingProtectionComponentTestBase64PublicKey);
   }
 
+  void GetTestDataDir(base::FilePath* test_data_dir) {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+  }
+
   bool InstallTrackingProtectionExtension() {
     base::FilePath test_data_dir;
-    PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-
+    GetTestDataDir(&test_data_dir);
     const extensions::Extension* tracking_protection_extension =
         InstallExtension(test_data_dir.AppendASCII("tracking-protection-data"), 1);
     if (!tracking_protection_extension)
@@ -110,7 +114,7 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, TrackerReferencedFromTrust
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  GURL test_url = embedded_test_server()->GetURL("365dm.com", "logo.png");
+  GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
 
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
@@ -131,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, TrackerReferencedFromUntru
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  GURL test_url = embedded_test_server()->GetURL("365dm.com", "logo.png");
+  GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
 
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
