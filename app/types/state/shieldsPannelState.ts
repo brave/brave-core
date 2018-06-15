@@ -24,6 +24,11 @@ export interface Tab {
   fingerprintingBlocked: number
   cookies: BlockCookiesOptions
   noScriptInfo: NoScriptInfo
+  adsBlockedResources: Array<string>
+  trackersBlockedResources: Array<string>
+  httpsRedirectedResources: Array<string>
+  javascriptBlockedResources: Array<string>
+  fingerprintingBlockedResources: Array<string>
 }
 
 export interface Tabs {

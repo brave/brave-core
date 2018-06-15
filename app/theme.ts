@@ -101,6 +101,14 @@ const theme = {
   noScript: {
     padding: '10px 0',
     gridGap: '10px 5px'
+  },
+  blockedResourcesStats: {
+    flexDirection: 'column',
+    overflow: 'hidden'
+  },
+  blockedResourcesStatsText: {
+    fontSize: '10px',
+    margin: '0 0 3px'
   }
 }
 

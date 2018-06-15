@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as deepFreeze from 'deep-freeze-node'
-import { Tab } from '../app/types/state/shieldsPannelState';
+import { Tab } from '../app/types/state/shieldsPannelState'
 
 interface CustomTab extends Tab {
   url: string
@@ -32,7 +32,12 @@ export const tabs: Tabs = {
     fingerprintingBlocked: 0,
     braveShields: 'block',
     trackersBlocked: 0,
-    noScriptInfo: {}
+    noScriptInfo: {},
+    adsBlockedResources: [],
+    trackersBlockedResources: [],
+    httpsRedirectedResources: [],
+    javascriptBlockedResources: [],
+    fingerprintingBlockedResources: []
   }
 }
 

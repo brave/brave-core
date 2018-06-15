@@ -39,7 +39,12 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
     javascript: 'allow',
     fingerprinting: 'allow',
     controlsOpen: true,
-    noScriptInfo: {}
+    noScriptInfo: {},
+    adsBlockedResources: [],
+    trackersBlockedResources: [],
+    httpsRedirectedResources: [],
+    javascriptBlockedResources: [],
+    fingerprintingBlockedResources: []
   },
     ...tabs[tabId],
     ...details
@@ -50,21 +55,43 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
 
 export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, tabId, blockType, subresource) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0, noScriptInfo: {} }, ...tabs[tabId] }
+  tabs[tabId] = {
+    ...{
+      adsBlocked: 0,
+      trackersBlocked: 0,
+      httpsRedirected: 0,
+      javascriptBlocked: 0,
+      fingerprintingBlocked: 0,
+      noScriptInfo: {},
+      adsBlockedResources: [],
+      trackersBlockedResources: [],
+      httpsRedirectedResources: [],
+      javascriptBlockedResources: [],
+      fingerprintingBlockedResources: []
+    },
+    ...tabs[tabId]
+  }
+
   if (blockType === 'ads') {
     tabs[tabId].adsBlocked++
+    tabs[tabId].adsBlockedResources = [ ...tabs[tabId].adsBlockedResources, subresource ]
   } else if (blockType === 'trackers') {
     tabs[tabId].trackersBlocked++
+    tabs[tabId].trackersBlockedResources = [ ...tabs[tabId].trackersBlockedResources, subresource ]
   } else if (blockType === 'httpUpgradableResources') {
     tabs[tabId].httpsRedirected++
+    tabs[tabId].httpsRedirectedResources = [ ...tabs[tabId].httpsRedirectedResources, subresource ]
   } else if (blockType === 'javascript') {
     const origin = new window.URL(subresource).origin + '/'
     tabs[tabId].javascriptBlocked++
     tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
     tabs[tabId].noScriptInfo[origin] = { ...{ actuallyBlocked: true, willBlock: true } }
+    tabs[tabId].javascriptBlockedResources = [ ...tabs[tabId].javascriptBlockedResources, subresource ]
   } else if (blockType === 'fingerprinting') {
     tabs[tabId].fingerprintingBlocked++
+    tabs[tabId].fingerprintingBlockedResources = [ ...tabs[tabId].fingerprintingBlockedResources, subresource ]
   }
+
   return { ...state, tabs }
 }
 

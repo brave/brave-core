@@ -7,8 +7,8 @@ import 'mocha'
 import * as assert from 'assert'
 import * as types from '../../../app/constants/shieldsPanelTypes'
 import * as actions from '../../../app/actions/shieldsPanelActions'
-import { ShieldDetails, BlockDetails } from '../../../app/types/actions/shieldsPanelActions';
-import { BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../../../app/types/other/blockTypes';
+import { ShieldDetails, BlockDetails } from '../../../app/types/actions/shieldsPanelActions'
+import { BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../../../app/types/other/blockTypes'
 
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
