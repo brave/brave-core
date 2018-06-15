@@ -68,7 +68,7 @@ struct FavoritesHelper {
             
             let attrs = [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Thin", size: iconSize.height-90) ?? UIFont.systemFont(ofSize: iconSize.height-90, weight: UIFont.Weight.thin),
                          NSAttributedStringKey.paragraphStyle: paragraphStyle,
-                         NSAttributedStringKey.backgroundColor: UX.White]
+                         NSAttributedStringKey.backgroundColor: UIColor.clear]
             
             let string: NSString = NSString(string: letter.uppercased())
             let size = string.size(withAttributes: attrs)
