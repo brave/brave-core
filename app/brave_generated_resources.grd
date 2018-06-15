@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This file contains definitions of strings that are distribution specific.
-If you update this file, be sure also to update google_chrome_strings.grd. -->
-
 <grit base_dir="." latest_public_release="0" current_release="1"
       output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
   <outputs>
