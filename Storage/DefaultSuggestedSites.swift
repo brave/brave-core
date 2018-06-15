@@ -36,14 +36,6 @@ open class DefaultSuggestedSites {
     open static let sites = [
         "default": [
             SuggestedSiteData(
-                url: "https://m.facebook.com/",
-                bgColor: "0x385185",
-                imageUrl: "asset://suggestedsites_facebook",
-                faviconUrl: "asset://defaultFavicon",
-                trackingId: 632,
-                title: NSLocalizedString("Facebook", comment: "Tile title for Facebook")
-            ),
-            SuggestedSiteData(
                 url: "https://m.youtube.com/",
                 bgColor: "0xcd201f",
                 imageUrl: "asset://suggestedsites_youtube",
@@ -74,6 +66,22 @@ open class DefaultSuggestedSites {
                 faviconUrl: "asset://defaultFavicon",
                 trackingId: 628,
                 title: NSLocalizedString("Twitter", comment: "Tile title for Twitter")
+            ),
+            SuggestedSiteData(
+                url: "https://reddit.com/",
+                bgColor: "0xD1E6FF",
+                imageUrl: "asset://suggestedsites_reddit",
+                faviconUrl: "asset://defaultFavicon",
+                trackingId: 632,
+                title: NSLocalizedString("Reddit", comment: "Tile title for Reddit")
+            ),
+            SuggestedSiteData(
+                url: "https://coinmarketcap.com/",
+                bgColor: "0xF7F8F9",
+                imageUrl: "asset://suggestedsites_coinmarketcap",
+                faviconUrl: "asset://defaultFavicon",
+                trackingId: 633,
+                title: NSLocalizedString("Coinmarketcap", comment: "Tile title for Coinmarketcap")
             )
         ],
         "zh_CN": [
