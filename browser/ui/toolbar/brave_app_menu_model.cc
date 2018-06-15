@@ -5,7 +5,7 @@
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/grit/generated_resources.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 
 void BraveAppMenuModel::Build() {

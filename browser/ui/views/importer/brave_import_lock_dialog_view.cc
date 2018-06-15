@@ -10,7 +10,7 @@
 #include "base/single_thread_task_runner.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_task_runner_handle.h"
-#include "brave/grit/generated_resources.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/importer/importer_lock_dialog.h"
 #include "chrome/browser/ui/browser_dialogs.h"

@@ -7,12 +7,12 @@ source_set("command_ids") {
   ]
 }
 
-grit("generated_resources_grit") {
-  source = "generated_resources.grd"
+grit("brave_generated_resources_grit") {
+  source = "brave_generated_resources.grd"
   output_dir = "$root_gen_dir/brave"
   outputs = [
-    "grit/generated_resources.h",
-    "generated_resources.pak",
+    "grit/brave_generated_resources.h",
+    "brave_generated_resources.pak",
   ]
   resource_ids = "//brave/browser/resources/resource_ids"
 }

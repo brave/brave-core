@@ -10,7 +10,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "brave/grit/generated_resources.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
