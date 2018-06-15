@@ -14,7 +14,7 @@ struct ThumbnailCellUX {
     static let LabelAlignment: NSTextAlignment = .center
     
     static let LabelInsets = UIEdgeInsetsMake(0, 3, 2, 3)
-    static let PlaceholderImage = UIImage(named: "defaultTopSiteIcon")
+    static let PlaceholderImage = #imageLiteral(resourceName: "defaultTopSiteIcon")
     static let CornerRadius: CGFloat = 8
     
     static let EditButtonAnimationDuration: TimeInterval = 0.4
