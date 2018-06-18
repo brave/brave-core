@@ -151,7 +151,6 @@ class FavoritesTileDecorator {
     fileprivate func downloadFaviconsAndUpdateForUrl(_ url: URL, indexPath: IndexPath) {
         weak var weakSelf = self
         
-        // BRAVE TODO: Not sure if this profile is right.
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate, let profile = appDelegate.profile else {
             return
         }
