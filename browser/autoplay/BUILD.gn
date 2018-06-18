@@ -1,0 +1,12 @@
+import("//build/config/features.gni")
+
+source_set("autoplay") {
+  sources = [
+    "autoplay_permission_context.cc",
+    "autoplay_permission_context.h",
+  ]
+
+  deps = [
+    "//chrome/browser",
+  ]
+}

@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/content_settings/tab_specific_content_settings.cc b/chrome/browser/content_settings/tab_specific_content_settings.cc
+index c320432217c81bfbb6032d4b1b96ac1f2acc0529..8a58994ef579cb11db974ecc0dfa4ada9aaaade3 100644
+--- a/chrome/browser/content_settings/tab_specific_content_settings.cc
++++ b/chrome/browser/content_settings/tab_specific_content_settings.cc
+@@ -272,7 +272,8 @@ bool TabSpecificContentSettings::IsContentBlocked(
+       content_type == CONTENT_SETTINGS_TYPE_MIDI_SYSEX ||
+       content_type == CONTENT_SETTINGS_TYPE_ADS ||
+       content_type == CONTENT_SETTINGS_TYPE_SOUND ||
+-      content_type == CONTENT_SETTINGS_TYPE_CLIPBOARD_READ) {
++      content_type == CONTENT_SETTINGS_TYPE_CLIPBOARD_READ ||
++      content_type == CONTENT_SETTINGS_TYPE_AUTOPLAY) {
+     const auto& it = content_settings_status_.find(content_type);
+     if (it != content_settings_status_.end())
+       return it->second.blocked;
+@@ -306,7 +307,8 @@ bool TabSpecificContentSettings::IsContentAllowed(
+       content_type != CONTENT_SETTINGS_TYPE_MEDIASTREAM_CAMERA &&
+       content_type != CONTENT_SETTINGS_TYPE_PPAPI_BROKER &&
+       content_type != CONTENT_SETTINGS_TYPE_MIDI_SYSEX &&
+-      content_type != CONTENT_SETTINGS_TYPE_CLIPBOARD_READ) {
++      content_type != CONTENT_SETTINGS_TYPE_CLIPBOARD_READ &&
++      content_type != CONTENT_SETTINGS_TYPE_AUTOPLAY) {
+     return false;
+   }
+ 

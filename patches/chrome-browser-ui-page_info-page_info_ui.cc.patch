@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/page_info/page_info_ui.cc b/chrome/browser/ui/page_info/page_info_ui.cc
+index 4eb66e247b4adde8c3600ac71c33cf42705e2043..41868b717ed41a765e1d4e96b6efb3dacbfa8d06 100644
+--- a/chrome/browser/ui/page_info/page_info_ui.cc
++++ b/chrome/browser/ui/page_info/page_info_ui.cc
+@@ -479,6 +479,9 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
+     case CONTENT_SETTINGS_TYPE_USB_GUARD:
+       icon = &vector_icons::kUsbIcon;
+       break;
++    case CONTENT_SETTINGS_TYPE_AUTOPLAY:
++      icon = &kExtensionIcon;
++      break;
+     default:
+       // All other |ContentSettingsType|s do not have icons on desktop or are
+       // not shown in the Page Info bubble.

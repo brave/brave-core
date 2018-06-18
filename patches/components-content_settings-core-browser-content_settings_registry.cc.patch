@@ -1,0 +1,16 @@
+diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
+index 6a0478a2e2dad6a715aaedf35a52d09612340881..2b4e6649c53cf74c4f0d9652f30306460e4a916c 100644
+--- a/components/content_settings/core/browser/content_settings_registry.cc
++++ b/components/content_settings/core/browser/content_settings_registry.cc
+@@ -265,9 +265,9 @@ void ContentSettingsRegistry::Init() {
+                WebsiteSettingsRegistry::PLATFORM_ANDROID,
+            ContentSettingsInfo::INHERIT_IN_INCOGNITO);
+ 
+-  Register(CONTENT_SETTINGS_TYPE_AUTOPLAY, "autoplay", CONTENT_SETTING_ALLOW,
++  Register(CONTENT_SETTINGS_TYPE_AUTOPLAY, "autoplay", CONTENT_SETTING_ASK,
+            WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(),
+-           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
++           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK),
+            WebsiteSettingsInfo::REQUESTING_ORIGIN_ONLY_SCOPE,
+            WebsiteSettingsRegistry::DESKTOP |
+                WebsiteSettingsRegistry::PLATFORM_ANDROID,

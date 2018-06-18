@@ -11,6 +11,30 @@ index a4d98a201625c071f8c6f78208bcf02f28adf7eb..42d8ca5a4421788865fc84a669d5c288
  #include "chrome/browser/chrome_notification_types.h"
  #include "chrome/browser/content_settings/chrome_content_settings_utils.h"
 @@ -1686,7 +1687,7 @@ ContentSettingBubbleModel*
+@@ -140,6 +141,7 @@ void ContentSettingSimpleBubbleModel::SetTitle() {
+       {CONTENT_SETTINGS_TYPE_PPAPI_BROKER, IDS_BLOCKED_PPAPI_BROKER_TITLE},
+       {CONTENT_SETTINGS_TYPE_SOUND, IDS_BLOCKED_SOUND_TITLE},
+       {CONTENT_SETTINGS_TYPE_CLIPBOARD_READ, IDS_BLOCKED_CLIPBOARD_TITLE},
++      {CONTENT_SETTINGS_TYPE_AUTOPLAY, IDS_BLOCKED_AUTOPLAY_TITLE},
+   };
+   // Fields as for kBlockedTitleIDs, above.
+   static const ContentSettingsTypeIdEntry kAccessedTitleIDs[] = {
+@@ -805,6 +807,7 @@ void ContentSettingSingleRadioGroup::SetRadioGroup() {
+       {CONTENT_SETTINGS_TYPE_PPAPI_BROKER, IDS_BLOCKED_PPAPI_BROKER_UNBLOCK},
+       {CONTENT_SETTINGS_TYPE_SOUND, IDS_BLOCKED_SOUND_UNBLOCK},
+       {CONTENT_SETTINGS_TYPE_CLIPBOARD_READ, IDS_BLOCKED_CLIPBOARD_UNBLOCK},
++      {CONTENT_SETTINGS_TYPE_AUTOPLAY, IDS_BLOCKED_AUTOPLAY_UNBLOCK},
+   };
+   // Fields as for kBlockedAllowIDs, above.
+   static const ContentSettingsTypeIdEntry kAllowedAllowIDs[] = {
+@@ -833,6 +836,7 @@ void ContentSettingSingleRadioGroup::SetRadioGroup() {
+       {CONTENT_SETTINGS_TYPE_PPAPI_BROKER, IDS_BLOCKED_PPAPI_BROKER_NO_ACTION},
+       {CONTENT_SETTINGS_TYPE_SOUND, IDS_BLOCKED_SOUND_NO_ACTION},
+       {CONTENT_SETTINGS_TYPE_CLIPBOARD_READ, IDS_BLOCKED_CLIPBOARD_NO_ACTION},
++      {CONTENT_SETTINGS_TYPE_AUTOPLAY, IDS_BLOCKED_AUTOPLAY_NO_ACTION},
+   };
+   static const ContentSettingsTypeIdEntry kAllowedBlockIDs[] = {
+       {CONTENT_SETTINGS_TYPE_COOKIES, IDS_ALLOWED_COOKIES_BLOCK},
                                                     profile, content_type);
    }
    if (content_type == CONTENT_SETTINGS_TYPE_PLUGINS) {
@@ -19,3 +43,11 @@ index a4d98a201625c071f8c6f78208bcf02f28adf7eb..42d8ca5a4421788865fc84a669d5c288
    }
    if (content_type == CONTENT_SETTINGS_TYPE_MIXEDSCRIPT) {
      return new ContentSettingMixedScriptBubbleModel(delegate, web_contents,
+@@ -1728,6 +1732,7 @@ ContentSettingBubbleModel*
+       content_type == CONTENT_SETTINGS_TYPE_JAVASCRIPT ||
+       content_type == CONTENT_SETTINGS_TYPE_PPAPI_BROKER ||
+       content_type == CONTENT_SETTINGS_TYPE_SOUND ||
++      content_type == CONTENT_SETTINGS_TYPE_AUTOPLAY ||
+       content_type == CONTENT_SETTINGS_TYPE_CLIPBOARD_READ) {
+     return new ContentSettingSingleRadioGroup(delegate, web_contents, profile,
+                                               content_type);

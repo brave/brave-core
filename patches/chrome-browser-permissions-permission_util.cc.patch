@@ -1,0 +1,39 @@
+diff --git a/chrome/browser/permissions/permission_util.cc b/chrome/browser/permissions/permission_util.cc
+index 9ec1081c4908f99172e33d26ee73bccb5c7546f5..224c8db9b45717ac5787b3e60adbd9f57dd538c7 100644
+--- a/chrome/browser/permissions/permission_util.cc
++++ b/chrome/browser/permissions/permission_util.cc
+@@ -50,6 +50,8 @@ std::string PermissionUtil::GetPermissionString(
+       return "ClipboardWrite";
+     case CONTENT_SETTINGS_TYPE_PAYMENT_HANDLER:
+       return "PaymentHandler";
++    case CONTENT_SETTINGS_TYPE_AUTOPLAY:
++      return "Autoplay";
+     default:
+       break;
+   }
+@@ -79,6 +81,8 @@ PermissionRequestType PermissionUtil::GetRequestType(ContentSettingsType type) {
+       return PermissionRequestType::PERMISSION_CLIPBOARD_READ;
+     case CONTENT_SETTINGS_TYPE_PAYMENT_HANDLER:
+       return PermissionRequestType::PERMISSION_PAYMENT_HANDLER;
++    case CONTENT_SETTINGS_TYPE_AUTOPLAY:
++      return PermissionRequestType::PERMISSION_AUTOPLAY;
+     default:
+       NOTREACHED();
+       return PermissionRequestType::UNKNOWN;
+@@ -122,6 +126,8 @@ bool PermissionUtil::GetPermissionType(ContentSettingsType type,
+     *out = PermissionType::CLIPBOARD_READ;
+   } else if (type == CONTENT_SETTINGS_TYPE_PAYMENT_HANDLER) {
+     *out = PermissionType::PAYMENT_HANDLER;
++  } else if (type == CONTENT_SETTINGS_TYPE_AUTOPLAY) {
++    *out = PermissionType::AUTOPLAY;
+   } else {
+     return false;
+   }
+@@ -145,6 +151,7 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
+     case CONTENT_SETTINGS_TYPE_ACCESSIBILITY_EVENTS:
+     case CONTENT_SETTINGS_TYPE_CLIPBOARD_READ:
+     case CONTENT_SETTINGS_TYPE_PAYMENT_HANDLER:
++    case CONTENT_SETTINGS_TYPE_AUTOPLAY:
+       return true;
+     default:
+       return false;

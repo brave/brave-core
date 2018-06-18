@@ -11,6 +11,30 @@ index 6a047d612138645672aa1b1535d06adac790001a..f3d6fa6634d4c30a7fb9abc3e5adb3af
  #include "chrome/app/vector_icons/vector_icons.h"
  #include "chrome/browser/browser_process.h"
 @@ -778,6 +779,9 @@ ContentSettingImageModel::GenerateContentSettingImageModels() {
+@@ -161,6 +162,7 @@ const ContentSettingsImageDetails kImageDetails[] = {
+     {CONTENT_SETTINGS_TYPE_PPAPI_BROKER, kExtensionIcon,
+      IDS_BLOCKED_PPAPI_BROKER_MESSAGE, 0, IDS_ALLOWED_PPAPI_BROKER_MESSAGE},
+     {CONTENT_SETTINGS_TYPE_SOUND, kTabAudioIcon, IDS_BLOCKED_SOUND_TITLE, 0, 0},
++    {CONTENT_SETTINGS_TYPE_AUTOPLAY, kExtensionIcon, IDS_BLOCKED_AUTOPLAY_TITLE, 0, 0},
+ };
+ 
+ const ContentSettingsImageDetails* GetImageDetails(ContentSettingsType type) {
+@@ -259,6 +261,8 @@ ContentSettingImageModel::CreateForContentType(ImageType image_type) {
+       return std::make_unique<ContentSettingFramebustBlockImageModel>();
+     case ImageType::CLIPBOARD_READ:
+       return std::make_unique<ContentSettingClipboardReadImageModel>();
++    case ImageType::AUTOPLAY:
++      return std::make_unique<ContentSettingBlockedImageModel>(ImageType::AUTOPLAY, CONTENT_SETTINGS_TYPE_AUTOPLAY);
+     case ImageType::NUM_IMAGE_TYPES:
+       break;
+   }
+@@ -732,11 +736,15 @@ ContentSettingImageModel::GenerateContentSettingImageModels() {
+       ImageType::SOUND,
+       ImageType::FRAMEBUST,
+       ImageType::CLIPBOARD_READ,
++      ImageType::AUTOPLAY,
+   };
+ 
    std::vector<std::unique_ptr<ContentSettingImageModel>> result;
    for (auto type : kContentSettingImageOrder)
      result.push_back(CreateForContentType(type));

@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/permissions/permission_request_impl.cc b/chrome/browser/permissions/permission_request_impl.cc
+index a716bb8332e0da0da2ecb3523efb5cffab776157..6c858f77c5579ea144a52609e36182e5044c5b54 100644
+--- a/chrome/browser/permissions/permission_request_impl.cc
++++ b/chrome/browser/permissions/permission_request_impl.cc
+@@ -81,6 +81,8 @@ PermissionRequest::IconId PermissionRequestImpl::GetIconId() const {
+       return vector_icons::kAccessibilityIcon;
+     case CONTENT_SETTINGS_TYPE_CLIPBOARD_READ:
+       return kContentPasteIcon;
++    case CONTENT_SETTINGS_TYPE_AUTOPLAY:
++      return kExtensionIcon;
+     default:
+       NOTREACHED();
+       return kExtensionIcon;
+@@ -159,6 +161,9 @@ base::string16 PermissionRequestImpl::GetMessageTextFragment() const {
+     case CONTENT_SETTINGS_TYPE_CLIPBOARD_READ:
+       message_id = IDS_CLIPBOARD_PERMISSION_FRAGMENT;
+       break;
++    case CONTENT_SETTINGS_TYPE_AUTOPLAY:
++      message_id = IDS_AUTOPLAY_PERMISSION_FRAGMENT;
++      break;
+     default:
+       NOTREACHED();
+       return base::string16();

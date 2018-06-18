@@ -1,0 +1,17 @@
+diff --git a/content/child/runtime_features.cc b/content/child/runtime_features.cc
+index 03a522caa66608eb4a5d5caa9acad5b284780ca9..ab3da349256c7b2e543df38daf1bae66889122cc 100644
+--- a/content/child/runtime_features.cc
++++ b/content/child/runtime_features.cc
+@@ -347,10 +347,12 @@ void SetRuntimeFeaturesDefaultsAndUpdateFromArgs(
+     WebRuntimeFeatures::EnableWebNfc(true);
+ #endif
+ 
++#if !defined(BRAVE_CHROMIUM_BUILD)
+   if (media::GetEffectiveAutoplayPolicy(command_line) !=
+       switches::autoplay::kNoUserGestureRequiredPolicy) {
+     WebRuntimeFeatures::EnableAutoplayMutedVideos(true);
+   }
++#endif
+ 
+   WebRuntimeFeatures::EnableWebAuth(
+       base::FeatureList::IsEnabled(features::kWebAuth));

@@ -113,6 +113,28 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BOOKMARK_GROUP_FROM_BRAVE" desc="The group name of bookmarks from Brave">
         Imported From Brave
       </message>
+      <!-- Autoplay -->
+      <message name="IDS_AUTOPLAY_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to autoplay media. Follows a prompt: 'This site would like to:'">
+        Autoplay media
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY" desc="Label for autoplay site settings.">
+        Autoplay
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK" desc="The ask label for autoplay in site settings.">
+        Ask when a site wants to autoplay media
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK_RECOMMENDED" desc="The ask label for autoplay in site settings (with the 'recommended' suffix).">
+        Ask when a site wants to autoplay media (recommended)
+      </message>
+      <message name="IDS_BLOCKED_AUTOPLAY_TITLE" desc="Tooltip and bubble info header text when a page is not allowed to autoplay media.">
+        Autoplay was blocked on this page
+      </message>
+      <message name="IDS_BLOCKED_AUTOPLAY_UNBLOCK" desc="Radio button choice to unblock a site from autoplay media, displayed in bubble when a page tries to autoplay media.">
+        Always allow autoplay on <ph name="HOST">$1<ex>mail.google.com</ex></ph>
+      </message>
+      <message name="IDS_BLOCKED_AUTOPLAY_NO_ACTION" desc="Radio button choice to continue blocking a site from autoplay media, displayed in bubble when a page tries to autoplay media.">
+        Continue blocking autoplay
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />

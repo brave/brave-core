@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/site_settings/constants.js b/chrome/browser/resources/settings/site_settings/constants.js
+index bc8b5a8179c6a464829012904de5e5188921b000..12ce6f12ae20ab791c73fd0fbcd6915b577f411b 100644
+--- a/chrome/browser/resources/settings/site_settings/constants.js
++++ b/chrome/browser/resources/settings/site_settings/constants.js
+@@ -34,6 +34,7 @@ settings.ContentSettingsTypes = {
+   ADS: 'ads',
+   CLIPBOARD: 'clipboard',
+   SENSORS: 'sensors',
++  AUTOPLAY: 'autoplay',
+   PAYMENT_HANDLER: 'payment-handler',
+ };
+ 

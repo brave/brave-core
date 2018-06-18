@@ -1,0 +1,13 @@
+diff --git a/content/browser/permissions/permission_service_impl.cc b/content/browser/permissions/permission_service_impl.cc
+index f6c0538a690fb436d7f1da3fd889525936c8a58a..8d75787e27f4eef9c7e30c79ebf8143c6ffe60bf 100644
+--- a/content/browser/permissions/permission_service_impl.cc
++++ b/content/browser/permissions/permission_service_impl.cc
+@@ -58,6 +58,8 @@ PermissionType PermissionDescriptorToPermissionType(
+       return PermissionType::CLIPBOARD_WRITE;
+     case PermissionName::PAYMENT_HANDLER:
+       return PermissionType::PAYMENT_HANDLER;
++    case PermissionName::AUTOPLAY:
++      return PermissionType::AUTOPLAY;
+   }
+ 
+   NOTREACHED();
