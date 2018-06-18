@@ -1,22 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index eb650f8aa7009371e31077e0f4a754807efd7613..8d95e053223d698cf66453d344f2f5dbb325ab38 100644
+index eb650f8aa7009371e31077e0f4a754807efd7613..31167ff4a0bcb3882f0e6df63a1412bf2d5752f3 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -524,6 +524,13 @@ static_library("non_code_constants") {
-     "env_vars.h",
-   ]
- 
-+  if (brave_chromium_build && is_win) {
-+    sources -= [ "chrome_icon_resources_win.h" ]
-+    sources += [
-+      "//brave/chromium_src/chrome/common/chrome_icon_resources_win.h",
-+    ]
-+  }
-+
-   deps = [
-     ":buildflags",
-     ":version_header",
-@@ -555,6 +562,15 @@ static_library("constants") {
+@@ -555,6 +555,15 @@ static_library("constants") {
      "pref_names.h",
    ]
  

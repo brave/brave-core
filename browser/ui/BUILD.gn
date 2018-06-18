@@ -37,7 +37,7 @@ source_set("ui") {
     "//chrome/app:command_ids",
   ]
 
-  if (is_win && brave_chromium_build && is_official_build) {
+  if (is_win && is_official_build) {
     sources += [
       "//chrome/browser/ui/webui/help/version_updater_win.cc",
       "//chrome/browser/ui/webui/help/version_updater_win.h",
