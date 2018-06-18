@@ -36,7 +36,6 @@ class BraveShieldStatsView: UIView, Themeable {
     lazy var timeStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
         statView.title = Strings.ShieldsTimeStats
-        // Color dynamically set in controller: TopSitesPanel, should be abstracted
         statView.color = UIApplication.isInPrivateMode ? UX.GreyA : UX.GreyJ
         return statView
     }()
