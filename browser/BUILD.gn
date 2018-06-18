@@ -71,7 +71,6 @@ source_set("browser") {
     "//brave/components/omnibox/browser:brave_autocomplete",
     "extensions",
     "net",
-    "ui",
   ]
 
   if (is_mac) {

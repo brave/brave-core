@@ -36,4 +36,12 @@ source_set("ui") {
     "//brave/app:command_ids",
     "//chrome/app:command_ids",
   ]
+
+  if (is_win && brave_chromium_build && is_official_build) {
+    sources += [
+      "//chrome/browser/ui/webui/help/version_updater_win.cc",
+      "//chrome/browser/ui/webui/help/version_updater_win.h",
+    ]
+    deps += [ "//google_update" ]
+  }
 }
