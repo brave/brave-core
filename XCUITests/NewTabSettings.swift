@@ -9,7 +9,6 @@ class NewTabSettingsTest: BaseTestCase {
         navigator.goto(NewTabSettings)
         waitforExistence(app.navigationBars["New Tab Settings"])
         waitforExistence(app.tables.cells.staticTexts["Show your Top Sites"])
-        XCTAssertTrue(app.tables.switches["ASPocketStoriesVisible"].isEnabled)
         XCTAssertTrue(app.tables.switches["ASBookmarkHighlightsVisible"].isEnabled)
         XCTAssertTrue(app.tables.switches["ASRecentHighlightsVisible"].isEnabled)
     }

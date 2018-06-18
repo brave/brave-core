@@ -190,22 +190,6 @@ class ActivityStreamHighlightCell: UICollectionViewCell {
             self.statusIcon.image = UIImage(named: "context_viewed")
         }
     }
-    
-    func configureWithPocketStory(_ pocketStory: PocketStory) {
-        self.siteImageView.sd_setImage(with: pocketStory.imageURL)
-        self.siteImageView.contentMode = .scaleAspectFill
-        
-        self.domainLabel.text = pocketStory.domain
-        self.titleLabel.text = pocketStory.title
-        
-        self.descriptionLabel.text = Strings.PocketTrendingText
-        self.statusIcon.image = UIImage(named: "context_pocket")
-    }
-
-    func configureWithPocketVideoStory(_ pocketStory: PocketStory) {
-        playLabel.isHidden = false
-        self.configureWithPocketStory(pocketStory)
-    }
 }
 
 private struct HighlightIntroCellUX {
