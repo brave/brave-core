@@ -1,8 +1,8 @@
 diff --git a/components/update_client/updater_state_win.cc b/components/update_client/updater_state_win.cc
-index 66a049048b4b99b3296af25f0ffc914cf0ed8f2c..e5481826109b4089253e2d2cc390f1b79ce08a0b 100644
+index 66a049048b4b99b3296af25f0ffc914cf0ed8f2c..a0fa4805e3c63087f002f9c2db4ad0943f3c9d3d 100644
 --- a/components/update_client/updater_state_win.cc
 +++ b/components/update_client/updater_state_win.cc
-@@ -23,6 +23,22 @@ namespace update_client {
+@@ -23,6 +23,19 @@ namespace update_client {
  
  namespace {
  
@@ -18,18 +18,15 @@ index 66a049048b4b99b3296af25f0ffc914cf0ed8f2c..e5481826109b4089253e2d2cc390f1b7
 +const wchar_t kRegPathClientsGoogleUpdate[] =
 +    L"Software\\BraveSoftware\\Update\\Clients\\"
 +    L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";
-+const wchar_t kRegValueGoogleUpdatePv[] = L"pv";
-+const wchar_t kRegValueLastStartedAU[] = L"LastStartedAU";
-+const wchar_t kRegValueLastChecked[] = L"LastChecked";
 +#else
  // Google Update group policy settings.
  const wchar_t kGoogleUpdatePoliciesKey[] =
      L"SOFTWARE\\Policies\\Google\\Update";
-@@ -42,6 +58,7 @@ const wchar_t kRegPathClientsGoogleUpdate[] =
+@@ -39,6 +52,7 @@ const wchar_t kRegPathGoogleUpdate[] = L"Software\\Google\\Update";
+ const wchar_t kRegPathClientsGoogleUpdate[] =
+     L"Software\\Google\\Update\\Clients\\"
+     L"{430FD4D0-B729-4F61-AA34-91526481799D}";
++#endif
  const wchar_t kRegValueGoogleUpdatePv[] = L"pv";
  const wchar_t kRegValueLastStartedAU[] = L"LastStartedAU";
  const wchar_t kRegValueLastChecked[] = L"LastChecked";
-+#endif
- 
- base::Time GetUpdaterTimeValue(bool is_machine, const wchar_t* value_name) {
-   const HKEY root_key = is_machine ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER;
