@@ -2194,6 +2194,8 @@
 			children = (
 				7B42406D1CA04CAC009B5C28 /* Menu.xcassets */,
 				A1FEEE0220BEE6BF00298DA2 /* HomeMenuController.swift */,
+				A1AD4BCE20BF3E8C007A6EA1 /* BookmarksViewController.swift */,
+				A198E75020C701ED00334C11 /* HistoryViewController.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -2940,8 +2942,6 @@
 				74821F8D1DAD8F1300EEEA72 /* ActivityStreamHighlightCell.swift */,
 				3BB50E1F1D627539004B33DF /* ActivityStreamPanel.swift */,
 				3BB50E101D6274CD004B33DF /* ActivityStreamTopSitesCell.swift */,
-				A1AD4BCE20BF3E8C007A6EA1 /* BookmarksViewController.swift */,
-				A198E75020C701ED00334C11 /* HistoryViewController.swift */,
 				D0E89A2820910917001CE5C7 /* DownloadsPanel.swift */,
 				59A685F4EAD19EDEC854BCA4 /* ReaderPanel.swift */,
 				745DAB2F1CDAAFAA00D44181 /* RecentlyClosedTabsPanel.swift */,
