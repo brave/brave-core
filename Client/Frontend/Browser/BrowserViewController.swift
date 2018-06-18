@@ -37,8 +37,7 @@ private struct BrowserViewControllerUX {
 }
 
 class BrowserViewController: UIViewController {
-    // var homePanelController: HomePanelViewController?
-    var homePanelController: TopSitesPanel?
+    var topSitesViewController: TopSitesViewController?
     var webViewContainer: UIView!
     var urlBar: URLBarView!
     var tabsBar: TabsBarViewController!
@@ -201,7 +200,7 @@ class BrowserViewController: UIViewController {
         }
 
         view.setNeedsUpdateConstraints()
-        if let home = homePanelController {
+        if let home = topSitesViewController {
             home.view.setNeedsUpdateConstraints()
         }
 
@@ -628,7 +627,7 @@ class BrowserViewController: UIViewController {
 
         // Remake constraints even if we're already showing the home controller.
         // The home controller may change sizes if we tap the URL bar while on about:home.
-        homePanelController?.view.snp.remakeConstraints { make in
+        topSitesViewController?.view.snp.remakeConstraints { make in
             let tabsBarOffset = tabsBar.view.isHidden ? UX.TabsBar.height : 0
             webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).inset(tabsBarOffset).constraint
             
@@ -656,9 +655,9 @@ class BrowserViewController: UIViewController {
     fileprivate func showHomePanelController(inline: Bool) {
         homePanelIsInline = inline
 
-        if homePanelController == nil {
-            let homePanelController = TopSitesPanel()
-            homePanelController.topSitesPanelDelegate = self
+        if topSitesViewController == nil {
+            let homePanelController = TopSitesViewController()
+            homePanelController.delegate = self
             homePanelController.view.alpha = 0
             /*
             let homePanelController = HomePanelViewController()
@@ -667,13 +666,13 @@ class BrowserViewController: UIViewController {
             homePanelController.url = tabManager.selectedTab?.url?.displayURL
             homePanelController.view.alpha = 0
             */
-            self.homePanelController = homePanelController
+            self.topSitesViewController = homePanelController
 
             addChildViewController(homePanelController)
             view.addSubview(homePanelController.view)
             homePanelController.didMove(toParentViewController: self)
         }
-        guard let homePanelController = self.homePanelController else {
+        guard let homePanelController = self.topSitesViewController else {
             assertionFailure("homePanelController is still nil after assignment.")
             return
         }
@@ -707,8 +706,8 @@ class BrowserViewController: UIViewController {
     }
 
     fileprivate func hideHomePanelController() {
-        if let controller = homePanelController {
-            self.homePanelController = nil
+        if let controller = topSitesViewController {
+            self.topSitesViewController = nil
             UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState, animations: { () -> Void in
                 controller.view.alpha = 0
             }, completion: { _ in
@@ -762,7 +761,7 @@ class BrowserViewController: UIViewController {
             return
         }
 
-        homePanelController?.view?.isHidden = true
+        topSitesViewController?.view?.isHidden = true
 
         searchController!.didMove(toParentViewController: self)
     }
@@ -792,7 +791,7 @@ class BrowserViewController: UIViewController {
             searchController.view.removeFromSuperview()
             searchController.removeFromParentViewController()
             self.searchController = nil
-            homePanelController?.view?.isHidden = false
+            topSitesViewController?.view?.isHidden = false
             searchLoader = nil
         }
     }
@@ -1372,7 +1371,7 @@ extension BrowserViewController: URLBarDelegate {
     }
 
     func urlBarDidPressScrollToTop(_ urlBar: URLBarView) {
-        if let selectedTab = tabManager.selectedTab, homePanelController == nil {
+        if let selectedTab = tabManager.selectedTab, topSitesViewController == nil {
             // Only scroll to top if we are not showing the home view controller
             selectedTab.webView?.scrollView.setContentOffset(CGPoint.zero, animated: true)
         }
@@ -2686,7 +2685,7 @@ extension BrowserViewController: HomeMenuControllerDelegate {
     }
 }
 
-extension BrowserViewController: TopSitesPanelDelegate {
+extension BrowserViewController: TopSitesDelegate {
     
     func didSelectUrl(url: URL) {
         finishEditingAndSubmit(url, visitType: .bookmark)

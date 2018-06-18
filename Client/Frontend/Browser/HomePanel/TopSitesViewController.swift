@@ -12,18 +12,18 @@ import Data
 
 private let log = Logger.browserLogger
 
-struct TopSitesPanelUX {
+struct TopSitesUX {
     static let statsHeight: CGFloat = 110.0
     static let statsBottomMargin: CGFloat = 5
 }
 
-protocol TopSitesPanelDelegate: class {
+protocol TopSitesDelegate: class {
     func didSelectUrl(url: URL)
 }
 
-class TopSitesPanel: UIViewController {
+class TopSitesViewController: UIViewController {
     weak var homePanelDelegate: HomePanelDelegate?
-    weak var topSitesPanelDelegate: TopSitesPanelDelegate?
+    weak var delegate: TopSitesDelegate?
     
     // MARK: - Favorites collection view properties
     fileprivate lazy var collection: UICollectionView = {
@@ -41,7 +41,7 @@ class TopSitesPanel: UIViewController {
         view.alwaysBounceVertical = true
         view.accessibilityIdentifier = "Top Sites View"
         // Entire site panel, including the stats view insets
-        view.contentInset = UIEdgeInsetsMake(TopSitesPanelUX.statsHeight, 0, 0, 0)
+        view.contentInset = UIEdgeInsetsMake(TopSitesUX.statsHeight, 0, 0, 0)
         
         return view
     }()
@@ -160,9 +160,9 @@ class TopSitesPanel: UIViewController {
         var statsViewFrame: CGRect = braveShieldStatsView.frame
         statsViewFrame.origin.x = 20
         // Offset the stats view from the inset set above
-        statsViewFrame.origin.y = -(TopSitesPanelUX.statsHeight + TopSitesPanelUX.statsBottomMargin)
+        statsViewFrame.origin.y = -(TopSitesUX.statsHeight + TopSitesUX.statsBottomMargin)
         statsViewFrame.size.width = collection.frame.width - statsViewFrame.minX * 2
-        statsViewFrame.size.height = TopSitesPanelUX.statsHeight
+        statsViewFrame.size.height = TopSitesUX.statsHeight
         braveShieldStatsView.frame = statsViewFrame
         
         collection.addSubview(braveShieldStatsView)
@@ -397,13 +397,13 @@ class TopSitesPanel: UIViewController {
 }
 
 // MARK: - Delegates
-extension TopSitesPanel: UICollectionViewDelegateFlowLayout {
+extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let fav = dataSource.favoriteBookmark(at: indexPath)
         
         guard let urlString = fav?.url, let url = URL(string: urlString) else { return }
         
-        topSitesPanelDelegate?.didSelectUrl(url: url)
+        delegate?.didSelectUrl(url: url)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -454,7 +454,7 @@ extension TopSitesPanel: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TopSitesPanel: ThumbnailCellDelegate {
+extension TopSitesViewController: ThumbnailCellDelegate {
     func editThumbnail(_ thumbnailCell: ThumbnailCell) {
         guard let indexPath = collection.indexPath(for: thumbnailCell),
             let fav = dataSource.frc?.fetchedObjects?[indexPath.item] as? Bookmark else { return }
