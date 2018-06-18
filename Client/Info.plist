@@ -44,7 +44,6 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>pocket</string>
 		<string>firefox-focus</string>
 		<string>firefox-klar</string>
 		<string>ymail</string>
@@ -94,8 +93,6 @@
 	<array>
 		<string>org.mozilla.ios.firefox.browsing</string>
 	</array>
-	<key>PocketEnvironmentAPIKey</key>
-	<string>$(POCKET_API_KEY)</string>
 	<key>SentryDSN</key>
 	<string>$(SENTRY_DSN)</string>
 	<key>UIAppFonts</key>

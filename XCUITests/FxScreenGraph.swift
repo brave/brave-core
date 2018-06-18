@@ -144,7 +144,6 @@ class Action {
     static let UnlockLoginsSettings = "UnlockLoginsSettings"
     static let DisablePasscodeTypeIncorrectPasscode = "DisablePasscodeTypeIncorrectPasscode"
 
-    static let TogglePocketInNewTab = "TogglePocketInNewTab"
     static let ToggleBookmarksInNewTab = "ToggleBookmarksInNewTab"
     static let ToggleHistoryInNewTab = "ToggleHistoryInNewTab"
 
@@ -199,7 +198,6 @@ class FxUserState: MMUserState {
     var noImageMode = false
     var nightMode = false
 
-    var pocketInNewTab = false
     var bookmarksInNewTab = true
     var historyInNewTab = true
 
@@ -538,10 +536,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
     map.addScreenState(NewTabSettings) { screenState in
         let table = app.tables.element(boundBy: 0)
         screenState.tap(table.cells["NewTabOption"], to: NewTabChoiceSettings)
-        screenState.gesture(forAction: Action.TogglePocketInNewTab) { userState in
-            userState.pocketInNewTab = !userState.pocketInNewTab
-            table.switches["ASPocketStoriesVisible"].tap()
-        }
         screenState.gesture(forAction: Action.ToggleBookmarksInNewTab) { userState in
             userState.bookmarksInNewTab = !userState.bookmarksInNewTab
             table.switches["ASBookmarkHighlightsVisible"].tap()
