@@ -659,13 +659,7 @@ class BrowserViewController: UIViewController {
             let homePanelController = TopSitesViewController()
             homePanelController.delegate = self
             homePanelController.view.alpha = 0
-            /*
-            let homePanelController = HomePanelViewController()
-            homePanelController.profile = profile
-            homePanelController.delegate = self
-            homePanelController.url = tabManager.selectedTab?.url?.displayURL
-            homePanelController.view.alpha = 0
-            */
+
             self.topSitesViewController = homePanelController
 
             addChildViewController(homePanelController)
@@ -676,9 +670,7 @@ class BrowserViewController: UIViewController {
             assertionFailure("homePanelController is still nil after assignment.")
             return
         }
-        let isPrivate = tabManager.selectedTab?.isPrivate ?? false
-        // BRAVE TODO:
-        // homePanelController.applyTheme(isPrivate ? Theme.Private : Theme.Normal)
+
         let panelNumber = tabManager.selectedTab?.url?.fragment
 
         // splitting this out to see if we can get better crash reports when this has a problem
@@ -688,9 +680,6 @@ class BrowserViewController: UIViewController {
                 newSelectedButtonIndex = lastInt
             }
         }
-        
-        // BRAVE TODO:
-        // homePanelController.selectedPanel = HomePanelType(rawValue: newSelectedButtonIndex)
 
         // We have to run this animation, even if the view is already showing because there may be a hide animation running
         // and we want to be sure to override its results.
