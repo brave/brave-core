@@ -5,7 +5,7 @@ import Shared
 import CoreData
 import SwiftyJSON
 
-protocol Syncable: class /* where Self: NSManagedObject */ {
+public protocol Syncable: class /* where Self: NSManagedObject */ {
     // Used to enforce CD conformity
     /* @NSManaged */ var syncDisplayUUID: String? { get set }
     /* @NSManaged */ var created: Date? { get set }
@@ -23,7 +23,7 @@ protocol Syncable: class /* where Self: NSManagedObject */ {
 }
 
 extension Syncable {
-    static func entity(context:NSManagedObjectContext) -> NSEntityDescription {
+    public static func entity(context:NSManagedObjectContext) -> NSEntityDescription {
         // Swift 4 version
         // let className = String(describing: type(of: self))
         let className = String(describing: self)
