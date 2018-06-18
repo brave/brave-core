@@ -629,7 +629,9 @@ class BrowserViewController: UIViewController {
         // Remake constraints even if we're already showing the home controller.
         // The home controller may change sizes if we tap the URL bar while on about:home.
         homePanelController?.view.snp.remakeConstraints { make in
-            make.top.equalTo(self.header.snp.bottom)
+            let tabsBarOffset = tabsBar.view.isHidden ? UX.TabsBar.height : 0
+            webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).inset(tabsBarOffset).constraint
+            
             make.left.right.equalTo(self.view)
             if self.homePanelIsInline {
                 make.bottom.equalTo(self.toolbar?.snp.top ?? self.view.snp.bottom)
