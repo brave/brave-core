@@ -49,9 +49,9 @@ extension Notification.Name {
 
     public static let FileDidDownload = Notification.Name("FileDidDownload")
     
-    public static let NotificationThumbnailEditOn = Notification.Name("NotificationThumbnailEditOn")
-    public static let NotificationThumbnailEditOff = Notification.Name("NotificationThumbnailEditOff")
+    public static let ThumbnailEditOn = Notification.Name("ThumbnailEditOn")
+    public static let ThumbnailEditOff = Notification.Name("ThumbnailEditOff")
     
-    public static let NotificationPrivacyModeChanged = Notification.Name("PrivacyModeChangedNotification")
-    public static let NotificationTopSitesConversion = Notification.Name("NotificationTopSitesConversion")
+    public static let PrivacyModeChanged = Notification.Name("PrivacyModeChanged")
+    public static let TopSitesConversion = Notification.Name("TopSitesConversion")
 }
