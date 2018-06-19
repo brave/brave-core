@@ -1681,8 +1681,8 @@
 			isa = PBXGroup;
 			children = (
 				0AADC4CD20D2A6A200FDE368 /* favorites */,
-				0AADC4C720D2A55A00FDE368 /* TopSitesViewController.swift */,
 				0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */,
+				0AADC4C720D2A55A00FDE368 /* TopSitesViewController.swift */,
 			);
 			path = HomePanel;
 			sourceTree = "<group>";
