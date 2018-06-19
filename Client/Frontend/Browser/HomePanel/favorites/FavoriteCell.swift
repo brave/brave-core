@@ -159,13 +159,13 @@ class FavoriteCell: UICollectionViewCell {
         // Prevents the textLabel from getting squished in relation to other view priorities.
         textLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showEditMode), name: Notification.Name.NotificationThumbnailEditOn, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(hideEditMode), name: Notification.Name.NotificationThumbnailEditOff, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showEditMode), name: Notification.Name.ThumbnailEditOn, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideEditMode), name: Notification.Name.ThumbnailEditOff, object: nil)
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.NotificationThumbnailEditOn, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.NotificationThumbnailEditOff, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.ThumbnailEditOn, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.ThumbnailEditOff, object: nil)
     }
     
     @objc func showEditMode() {

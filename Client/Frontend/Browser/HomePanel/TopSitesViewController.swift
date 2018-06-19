@@ -109,9 +109,12 @@ class TopSitesViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         NotificationCenter.default.do {
-            $0.addObserver(self, selector: #selector(existingUserTopSitesConversion), name: Notification.Name.NotificationTopSitesConversion, object: nil)
-            $0.addObserver(self, selector: #selector(privateBrowsingModeChanged), name: Notification.Name.NotificationPrivacyModeChanged, object: nil)
-            $0.addObserver(self, selector: #selector(updateIphoneConstraints), name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
+            $0.addObserver(self, selector: #selector(existingUserTopSitesConversion), 
+                           name: Notification.Name.TopSitesConversion, object: nil)
+            $0.addObserver(self, selector: #selector(privateBrowsingModeChanged), 
+                           name: Notification.Name.PrivacyModeChanged, object: nil)
+            $0.addObserver(self, selector: #selector(updateIphoneConstraints), 
+                           name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
         }   
     }
     
@@ -126,8 +129,8 @@ class TopSitesViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.do {
-            $0.removeObserver(self, name: Notification.Name.NotificationTopSitesConversion, object: nil)
-            $0.removeObserver(self, name: Notification.Name.NotificationPrivacyModeChanged, object: nil)
+            $0.removeObserver(self, name: Notification.Name.TopSitesConversion, object: nil)
+            $0.removeObserver(self, name: Notification.Name.PrivacyModeChanged, object: nil)
             $0.removeObserver(self, name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
         }
     }
