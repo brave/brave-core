@@ -52,7 +52,8 @@ const theme = {
     justifyContent: 'flex-end'
   },
   editLink: {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    userSelect: 'none'
   },
   braveShieldsStats: {
     padding: '10px 15px',
@@ -118,6 +119,9 @@ const theme = {
   blockedResourcesStatsText: {
     fontSize: '10px',
     margin: '0 0 3px'
+  },
+  noUserSelect: {
+    userSelect: 'none'
   }
 }
 

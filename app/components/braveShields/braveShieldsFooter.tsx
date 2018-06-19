@@ -22,7 +22,7 @@ export default class BraveShieldsFooter extends React.PureComponent<{}, {}> {
           />
         </Column>
         <Column size={3} theme={theme.columnEnd}>
-          <UnstyledButton text={getMessage('shieldsFooterReload')} />
+          <UnstyledButton theme={theme.noUserSelect} text={getMessage('shieldsFooterReload')} />
         </Column>
       </Grid>
     )
