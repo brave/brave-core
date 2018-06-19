@@ -88,7 +88,7 @@ class FavoriteCell: UICollectionViewCell {
         return scaledImage!
     }
     
-    lazy var textLabel = UILabel().then {
+    let textLabel = UILabel().then {
         $0.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         $0.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
         $0.textColor = UI.labelColor
@@ -97,7 +97,7 @@ class FavoriteCell: UICollectionViewCell {
         $0.numberOfLines = 2
     }
     
-    lazy var imageView = UIImageView().then {
+    let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
         $0.layer.cornerRadius = UI.cornerRadius
@@ -107,7 +107,7 @@ class FavoriteCell: UICollectionViewCell {
         $0.layer.magnificationFilter = kCAFilterNearest
     }
     
-    lazy var editButton = UIButton().then {
+    let editButton = UIButton().then {
         $0.isExclusiveTouch = true
         let removeButtonImage = UIImage(named: "edit-small")?.withRenderingMode(.alwaysTemplate)
         $0.setImage(removeButtonImage, for: .normal)

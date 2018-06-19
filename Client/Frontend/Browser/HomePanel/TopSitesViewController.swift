@@ -26,7 +26,7 @@ class TopSitesViewController: UIViewController {
     weak var delegate: TopSitesDelegate?
     
     // MARK: - Favorites collection view properties
-    fileprivate lazy var collection: UICollectionView = {
+    private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 6
@@ -46,15 +46,15 @@ class TopSitesViewController: UIViewController {
         
         return view
     }()
-    fileprivate lazy var dataSource: FavoritesDataSource = { return FavoritesDataSource() }()
+    private lazy var dataSource: FavoritesDataSource = { return FavoritesDataSource() }()
     
     // MARK: - Lazy views
-    fileprivate lazy var privateTabMessageContainer = UIView().then {
+    private let privateTabMessageContainer = UIView().then {
         $0.isUserInteractionEnabled = true
         $0.isHidden = !UIApplication.isInPrivateMode
     }
     
-    fileprivate lazy var privateTabTitleLabel = UILabel().then {
+    private let privateTabTitleLabel = UILabel().then {
         $0.lineBreakMode = .byWordWrapping
         $0.textAlignment = .center
         $0.numberOfLines = 0
@@ -63,7 +63,7 @@ class TopSitesViewController: UIViewController {
         $0.text = Strings.Private_Tab_Title
     }
     
-    fileprivate lazy var privateTabInfoLabel = UILabel().then {
+    fileprivate let privateTabInfoLabel = UILabel().then {
         $0.lineBreakMode = .byWordWrapping
         $0.textAlignment = .center
         $0.numberOfLines = 0
@@ -72,7 +72,7 @@ class TopSitesViewController: UIViewController {
         $0.text = Strings.Private_Tab_Body
     }
     
-    fileprivate lazy var privateTabLinkButton = UIButton().then {
+    private let privateTabLinkButton = UIButton().then {
         let linkButtonTitle = NSAttributedString(string: Strings.Private_Tab_Link, attributes:
             [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue])
         $0.setAttributedTitle(linkButtonTitle, for: .normal)
@@ -83,9 +83,9 @@ class TopSitesViewController: UIViewController {
         $0.addTarget(self, action: #selector(showPrivateTabInfo), for: .touchUpInside)
     }
     
-    fileprivate var ddgLogo = UIImageView(image: UIImage(named: "duckduckgo"))
+    private let ddgLogo = UIImageView(image: UIImage(named: "duckduckgo"))
     
-    fileprivate lazy var ddgLabel = UILabel().then {
+    private let ddgLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.textColor = UX.GreyD
         $0.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular)
@@ -94,11 +94,11 @@ class TopSitesViewController: UIViewController {
         $0.text = "ddg promotion text TODO"
     }
     
-    fileprivate lazy var ddgButton = UIControl().then {
+    private let ddgButton = UIControl().then {
         $0.addTarget(self, action: #selector(showDDGCallout), for: .touchUpInside)
     }
     
-    fileprivate lazy var braveShieldStatsView = BraveShieldStatsView(frame: CGRect.zero).then {
+    private let braveShieldStatsView = BraveShieldStatsView(frame: CGRect.zero).then {
         $0.autoresizingMask = [.flexibleWidth]
     }
     
