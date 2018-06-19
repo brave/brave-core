@@ -71,7 +71,7 @@ class TopSitesViewController: UIViewController {
         $0.text = Strings.Private_Tab_Body
     }
     
-    private let privateTabLinkButton = UIButton().then {
+    private lazy var privateTabLinkButton = UIButton().then {
         let linkButtonTitle = NSAttributedString(string: Strings.Private_Tab_Link, attributes:
             [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue])
         $0.setAttributedTitle(linkButtonTitle, for: .normal)
@@ -93,7 +93,7 @@ class TopSitesViewController: UIViewController {
         $0.text = "ddg promotion text TODO"
     }
     
-    private let ddgButton = UIControl().then {
+    private lazy var ddgButton = UIControl().then {
         $0.addTarget(self, action: #selector(showDDGCallout), for: .touchUpInside)
     }
     
