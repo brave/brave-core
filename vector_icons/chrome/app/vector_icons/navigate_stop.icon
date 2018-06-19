@@ -3,8 +3,18 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 
 CANVAS_DIMENSIONS, 32,
-STROKE, 1.2,
-MOVE_TO, 0, 0,
-R_LINE_TO, 32.02f, 32.02f,
-MOVE_TO, 32.02f, 0,
-LINE_TO, 0, 32.02f
+MOVE_TO, 28.56f, 25.44f,
+R_LINE_TO, -9.94f, -9.94f,
+R_LINE_TO, 9.83f, -9.83f,
+R_ARC_TO, 1.5f, 1.5f, 0, 1, 0, -2.12f, -2.12f,
+R_LINE_TO, -9.83f, 9.83f,
+R_LINE_TO, -9.94f, -9.94f,
+R_ARC_TO, 1.5f, 1.5f, 0, 1, 0, -2.12f, 2.12f,
+R_LINE_TO, 9.94f, 9.94f,
+R_LINE_TO, -9.83f, 9.83f,
+R_ARC_TO, 1.5f, 1.5f, 0, 1, 0, 2.12f, 2.12f,
+R_LINE_TO, 9.83f, -9.83f,
+R_LINE_TO, 9.94f, 9.94f,
+R_ARC_TO, 1.5f, 1.5f, 0, 0, 0, 2.12f, 0,
+R_ARC_TO, 1.5f, 1.5f, 0, 0, 0, 0, -2.12f,
+CLOSE
