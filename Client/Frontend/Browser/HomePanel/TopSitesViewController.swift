@@ -31,90 +31,76 @@ class TopSitesViewController: UIViewController {
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 6
         
-        let view = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
-        view.backgroundColor = UIApplication.isInPrivateMode ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
-        view.delegate = self
+        let view = UICollectionView(frame: self.view.frame, collectionViewLayout: layout).then {
+            $0.backgroundColor = UIApplication.isInPrivateMode ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
+            $0.delegate = self
         
-        let thumbnailIdentifier = "Thumbnail"
-        view.register(ThumbnailCell.self, forCellWithReuseIdentifier: thumbnailIdentifier)
-        view.keyboardDismissMode = .onDrag
-        view.alwaysBounceVertical = true
-        view.accessibilityIdentifier = "Top Sites View"
-        // Entire site panel, including the stats view insets
-        view.contentInset = UIEdgeInsetsMake(TopSitesUX.statsHeight, 0, 0, 0)
+            let thumbnailIdentifier = "Thumbnail"
+            $0.register(FavoriteCell.self, forCellWithReuseIdentifier: thumbnailIdentifier)
+            $0.keyboardDismissMode = .onDrag
+            $0.alwaysBounceVertical = true
+            $0.accessibilityIdentifier = "Top Sites View"
+            // Entire site panel, including the stats view insets
+            $0.contentInset = UIEdgeInsetsMake(TopSitesUX.statsHeight, 0, 0, 0)
+        }
         
         return view
     }()
     fileprivate lazy var dataSource: FavoritesDataSource = { return FavoritesDataSource() }()
     
     // MARK: - Lazy views
-    fileprivate lazy var privateTabMessageContainer: UIView = {
-        let view = UIView()
-        view.isUserInteractionEnabled = true
-        view.isHidden = !UIApplication.isInPrivateMode
-        return view
-    }()
+    fileprivate lazy var privateTabMessageContainer = UIView().then {
+        $0.isUserInteractionEnabled = true
+        $0.isHidden = !UIApplication.isInPrivateMode
+    }
     
-    fileprivate lazy var privateTabTitleLabel: UILabel = {
-        let view = UILabel()
-        view.lineBreakMode = .byWordWrapping
-        view.textAlignment = .center
-        view.numberOfLines = 0
-        view.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.semibold)
-        view.textColor = UIColor(white: 1, alpha: 0.6)
-        view.text = Strings.Private_Tab_Title
-        return view
-    }()
+    fileprivate lazy var privateTabTitleLabel = UILabel().then {
+        $0.lineBreakMode = .byWordWrapping
+        $0.textAlignment = .center
+        $0.numberOfLines = 0
+        $0.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.semibold)
+        $0.textColor = UIColor(white: 1, alpha: 0.6)
+        $0.text = Strings.Private_Tab_Title
+    }
     
-    fileprivate lazy var privateTabInfoLabel: UILabel = {
-        let view = UILabel()
-        view.lineBreakMode = .byWordWrapping
-        view.textAlignment = .center
-        view.numberOfLines = 0
-        view.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
-        view.textColor = UIColor(white: 1, alpha: 1.0)
-        view.text = Strings.Private_Tab_Body
-        return view
-    }()
+    fileprivate lazy var privateTabInfoLabel = UILabel().then {
+        $0.lineBreakMode = .byWordWrapping
+        $0.textAlignment = .center
+        $0.numberOfLines = 0
+        $0.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+        $0.textColor = UIColor(white: 1, alpha: 1.0)
+        $0.text = Strings.Private_Tab_Body
+    }
     
-    fileprivate lazy var privateTabLinkButton: UIButton = {
-        let view = UIButton()
-        
+    fileprivate lazy var privateTabLinkButton = UIButton().then {
         let linkButtonTitle = NSAttributedString(string: Strings.Private_Tab_Link, attributes:
             [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue])
-        view.setAttributedTitle(linkButtonTitle, for: .normal)
-        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
-        view.titleLabel?.textColor = UIColor(white: 1, alpha: 0.25)
-        view.titleLabel?.textAlignment = .center
-        view.titleLabel?.lineBreakMode = .byWordWrapping
-        view.addTarget(self, action: #selector(showPrivateTabInfo), for: .touchUpInside)
-        return view
-    }()
+        $0.setAttributedTitle(linkButtonTitle, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
+        $0.titleLabel?.textColor = UIColor(white: 1, alpha: 0.25)
+        $0.titleLabel?.textAlignment = .center
+        $0.titleLabel?.lineBreakMode = .byWordWrapping
+        $0.addTarget(self, action: #selector(showPrivateTabInfo), for: .touchUpInside)
+    }
     
     fileprivate var ddgLogo = UIImageView(image: UIImage(named: "duckduckgo"))
     
-    fileprivate lazy var ddgLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.textColor = UX.GreyD
-        label.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular)
+    fileprivate lazy var ddgLabel = UILabel().then {
+        $0.numberOfLines = 0
+        $0.textColor = UX.GreyD
+        $0.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular)
         // BRAVE TODO:
         // label.text = Strings.DDG_promotion
-        label.text = "ddg promotion text TODO"
-        return label
-    }()
+        $0.text = "ddg promotion text TODO"
+    }
     
-    fileprivate lazy var ddgButton: UIControl = {
-        let control = UIControl()
-        control.addTarget(self, action: #selector(showDDGCallout), for: .touchUpInside)
-        return control
-    }()
+    fileprivate lazy var ddgButton = UIControl().then {
+        $0.addTarget(self, action: #selector(showDDGCallout), for: .touchUpInside)
+    }
     
-    fileprivate lazy var braveShieldStatsView: BraveShieldStatsView = {
-        let view = BraveShieldStatsView(frame: CGRect.zero)
-        view.autoresizingMask = [.flexibleWidth]
-        return view
-    }()
+    fileprivate lazy var braveShieldStatsView = BraveShieldStatsView(frame: CGRect.zero).then {
+        $0.autoresizingMask = [.flexibleWidth]
+    }
     
     /// Called after user taps on ddg popup to set it as a default search enginge in private browsing mode.
     var ddgPrivateSearchCompletionBlock: (() -> ())?
@@ -122,9 +108,11 @@ class TopSitesViewController: UIViewController {
     // MARK: - Init/lifecycle
     init() {
         super.init(nibName: nil, bundle: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(existingUserTopSitesConversion), name: Notification.Name.NotificationTopSitesConversion, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(privateBrowsingModeChanged), name: Notification.Name.NotificationPrivacyModeChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateIphoneConstraints), name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.do {
+            $0.addObserver(self, selector: #selector(existingUserTopSitesConversion), name: Notification.Name.NotificationTopSitesConversion, object: nil)
+            $0.addObserver(self, selector: #selector(privateBrowsingModeChanged), name: Notification.Name.NotificationPrivacyModeChanged, object: nil)
+            $0.addObserver(self, selector: #selector(updateIphoneConstraints), name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
+        }   
     }
     
     @objc func existingUserTopSitesConversion() {
@@ -137,9 +125,11 @@ class TopSitesViewController: UIViewController {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.NotificationTopSitesConversion, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.NotificationPrivacyModeChanged, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.do {
+            $0.removeObserver(self, name: Notification.Name.NotificationTopSitesConversion, object: nil)
+            $0.removeObserver(self, name: Notification.Name.NotificationPrivacyModeChanged, object: nil)
+            $0.removeObserver(self, name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
+        }
     }
     
     override func viewDidLoad() {
@@ -413,14 +403,14 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
         let cellWidth = floor(width - padding) / CGFloat(columnsPerRow)
         // The tile's height is determined the aspect ratio of the thumbnails width. We also take into account
         // some padding between the title and the image.
-        let cellHeight = floor(cellWidth / (CGFloat(ThumbnailCellUX.ImageAspectRatio) - 0.1))
+        let cellHeight = floor(cellWidth / (CGFloat(FavoriteCell.imageAspectRatio) - 0.1))
         
         return CGSize(width: cellWidth, height: cellHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let thumbnailCell = cell as? ThumbnailCell else { return }
-        thumbnailCell.delegate = self
+        guard let favoriteCell = cell as? FavoriteCell else { return }
+        favoriteCell.delegate = self
     }
     
     fileprivate var columnsPerRow: Int {
@@ -454,9 +444,9 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TopSitesViewController: ThumbnailCellDelegate {
-    func editThumbnail(_ thumbnailCell: ThumbnailCell) {
-        guard let indexPath = collection.indexPath(for: thumbnailCell),
+extension TopSitesViewController: FavoriteCellDelegate {
+    func editFavorite(_ favoriteCell: FavoriteCell) {
+        guard let indexPath = collection.indexPath(for: favoriteCell),
             let fav = dataSource.frc?.fetchedObjects?[indexPath.item] as? Bookmark else { return }
         
         let actionSheet = UIAlertController(title: fav.displayTitle, message: nil, preferredStyle: .actionSheet)
@@ -498,8 +488,8 @@ extension TopSitesViewController: ThumbnailCellDelegate {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             actionSheet.popoverPresentationController?.permittedArrowDirections = .any
-            actionSheet.popoverPresentationController?.sourceView = thumbnailCell
-            actionSheet.popoverPresentationController?.sourceRect = thumbnailCell.bounds
+            actionSheet.popoverPresentationController?.sourceView = favoriteCell
+            actionSheet.popoverPresentationController?.sourceRect = favoriteCell.bounds
             present(actionSheet, animated: true, completion: nil)
         } else {
             present(actionSheet, animated: true) {

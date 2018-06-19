@@ -5,52 +5,32 @@
 import UIKit
 import Shared
 
-struct ThumbnailCellUX {
-    /// Ratio of width:height of the thumbnail image.
-    static let ImageAspectRatio: Float = 1.0
-    static let BorderColor = UX.GreyJ
-    static let BorderWidth: CGFloat = 0
-    static let LabelColor = UIAccessibilityDarkerSystemColorsEnabled() ? UX.GreyJ : UX.GreyH
-    static let LabelAlignment: NSTextAlignment = .center
-    
-    static let LabelInsets = UIEdgeInsetsMake(0, 3, 2, 3)
-    static let PlaceholderImage = #imageLiteral(resourceName: "defaultTopSiteIcon")
-    static let CornerRadius: CGFloat = 8
-    
-    static let EditButtonAnimationDuration: TimeInterval = 0.4
-    static let EditButtonAnimationDamping: CGFloat = 0.6
+@objc protocol FavoriteCellDelegate {
+    func editFavorite(_ favoriteCell: FavoriteCell)
 }
 
-@objc protocol ThumbnailCellDelegate {
-    func editThumbnail(_ thumbnailCell: ThumbnailCell)
-}
-
-class ThumbnailCell: UICollectionViewCell {
-    weak var delegate: ThumbnailCellDelegate?
+class FavoriteCell: UICollectionViewCell {
+    static let imageAspectRatio: Float = 1.0
+    static let placeholderImage = #imageLiteral(resourceName: "defaultTopSiteIcon")
+    
+    private struct UI {
+        /// Ratio of width:height of the thumbnail image.
+        static let borderColor = UX.GreyJ
+        static let borderWidth: CGFloat = 0
+        static let cornerRadius: CGFloat = 8
+        
+        static let labelColor = UIAccessibilityDarkerSystemColorsEnabled() ? UX.GreyJ : UX.GreyH
+        static let labelAlignment: NSTextAlignment = .center
+        static let labelInsets = UIEdgeInsetsMake(0, 3, 2, 3)
+        
+        static let editButtonAnimationDuration: TimeInterval = 0.4
+        static let editButtonAnimationDamping: CGFloat = 0.6
+    }
+    
+    weak var delegate: FavoriteCellDelegate?
     
     var imageInsets: UIEdgeInsets = UIEdgeInsets.zero
     var cellInsets: UIEdgeInsets = UIEdgeInsets.zero
-    
-    static func imageWithSize(_ image: UIImage, size:CGSize, maxScale: CGFloat) -> UIImage {
-        var scaledImageRect = CGRect.zero;
-        var aspectWidth:CGFloat = size.width / image.size.width;
-        var aspectHeight:CGFloat = size.height / image.size.height;
-        if aspectWidth > maxScale || aspectHeight > maxScale {
-            let m = max(maxScale / aspectWidth, maxScale / aspectHeight)
-            aspectWidth *= m
-            aspectHeight *= m
-        }
-        let aspectRatio:CGFloat = min(aspectWidth, aspectHeight);
-        scaledImageRect.size.width = image.size.width * aspectRatio;
-        scaledImageRect.size.height = image.size.height * aspectRatio;
-        scaledImageRect.origin.x = (size.width - scaledImageRect.size.width) / 2.0;
-        scaledImageRect.origin.y = (size.height - scaledImageRect.size.height) / 2.0;
-        UIGraphicsBeginImageContextWithOptions(size, false, 0);
-        image.draw(in: scaledImageRect);
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return scaledImage!;
-    }
     
     var image: UIImage? = nil {
         didSet {
@@ -72,7 +52,7 @@ class ThumbnailCell: UICollectionViewCell {
                         // we are on iPad pro. Fragile, but no other way to detect this on simulator.
                         maxScale *= 2.0
                     }
-                    image = ThumbnailCell.imageWithSize(image, size: ContainerSize.scaledDown(), maxScale: maxScale)
+                    image = imageWithSize(image, size: ContainerSize.scaledDown(), maxScale: maxScale)
                     imageView.contentMode = .center
                 }
                 else if image.size.width > 32 {
@@ -80,54 +60,69 @@ class ThumbnailCell: UICollectionViewCell {
                 }
                 imageView.image = image
             } else {
-                imageView.image = ThumbnailCellUX.PlaceholderImage
+                imageView.image = FavoriteCell.placeholderImage
                 imageView.contentMode = .center
             }
         }
     }
     
-    lazy var textLabel: UILabel = {
-        let textLabel = UILabel()
-        textLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
-        textLabel.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
-        textLabel.textColor = ThumbnailCellUX.LabelColor
-        textLabel.textAlignment = ThumbnailCellUX.LabelAlignment
-        textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
-        textLabel.numberOfLines = 2
-        return textLabel
-    }()
+    private func imageWithSize(_ image: UIImage, size:CGSize, maxScale: CGFloat) -> UIImage {
+        var scaledImageRect = CGRect.zero;
+        var aspectWidth:CGFloat = size.width / image.size.width;
+        var aspectHeight:CGFloat = size.height / image.size.height;
+        if aspectWidth > maxScale || aspectHeight > maxScale {
+            let m = max(maxScale / aspectWidth, maxScale / aspectHeight)
+            aspectWidth *= m
+            aspectHeight *= m
+        }
+        let aspectRatio:CGFloat = min(aspectWidth, aspectHeight)
+        scaledImageRect.size.width = image.size.width * aspectRatio
+        scaledImageRect.size.height = image.size.height * aspectRatio
+        scaledImageRect.origin.x = (size.width - scaledImageRect.size.width) / 2.0
+        scaledImageRect.origin.y = (size.height - scaledImageRect.size.height) / 2.0
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        image.draw(in: scaledImageRect)
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return scaledImage!
+    }
     
-    lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = ThumbnailCellUX.CornerRadius
-        imageView.layer.borderColor = ThumbnailCellUX.BorderColor.cgColor
-        imageView.layer.borderWidth = ThumbnailCellUX.BorderWidth
-        imageView.layer.minificationFilter = kCAFilterTrilinear
-        imageView.layer.magnificationFilter = kCAFilterNearest
-        return imageView
-    }()
+    lazy var textLabel = UILabel().then {
+        $0.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
+        $0.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
+        $0.textColor = UI.labelColor
+        $0.textAlignment = UI.labelAlignment
+        $0.lineBreakMode = NSLineBreakMode.byWordWrapping
+        $0.numberOfLines = 2
+    }
     
-    lazy var editButton: UIButton = {
-        let editButton = UIButton()
-        editButton.isExclusiveTouch = true
+    lazy var imageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = UI.cornerRadius
+        $0.layer.borderColor = UI.borderColor.cgColor
+        $0.layer.borderWidth = UI.borderWidth
+        $0.layer.minificationFilter = kCAFilterTrilinear
+        $0.layer.magnificationFilter = kCAFilterNearest
+    }
+    
+    lazy var editButton = UIButton().then {
+        $0.isExclusiveTouch = true
         let removeButtonImage = UIImage(named: "edit-small")?.withRenderingMode(.alwaysTemplate)
-        editButton.setImage(removeButtonImage, for: .normal)
-        editButton.addTarget(self, action: #selector(ThumbnailCell.editButtonTapped), for: UIControlEvents.touchUpInside)
-        editButton.accessibilityLabel = Strings.Edit_Bookmark
-        editButton.isHidden = true
-        editButton.backgroundColor = UX.GreyC
-        editButton.tintColor = UX.GreyI
-        editButton.frame.size = CGSize(width: 28, height: 28)
+        $0.setImage(removeButtonImage, for: .normal)
+        $0.addTarget(self, action: #selector(FavoriteCell.editButtonTapped), for: UIControlEvents.touchUpInside)
+        $0.accessibilityLabel = Strings.Edit_Bookmark
+        $0.isHidden = true
+        $0.backgroundColor = UX.GreyC
+        $0.tintColor = UX.GreyI
+        $0.frame.size = CGSize(width: 28, height: 28)
         let xOffset: CGFloat = 5
-        let buttonCenterX = floor(editButton.bounds.width/2) + xOffset
-        let buttonCenterY = floor(editButton.bounds.height/2)
-        editButton.center = CGPoint(x: buttonCenterX, y: buttonCenterY)
-        editButton.layer.cornerRadius = editButton.bounds.width/2
-        editButton.layer.masksToBounds = true
-        return editButton
-    }()
+        let buttonCenterX = floor($0.bounds.width/2) + xOffset
+        let buttonCenterY = floor($0.bounds.height/2)
+        $0.center = CGPoint(x: buttonCenterX, y: buttonCenterY)
+        $0.layer.cornerRadius = $0.bounds.width/2
+        $0.layer.masksToBounds = true
+    }
     
     override var isSelected: Bool {
         didSet { updateSelectedHighlightedState() }
@@ -151,7 +146,7 @@ class ThumbnailCell: UICollectionViewCell {
         
         textLabel.snp.remakeConstraints { make in
             // TODO: relook at insets
-            make.left.right.equalTo(self.contentView).inset(ThumbnailCellUX.LabelInsets)
+            make.left.right.equalTo(self.contentView).inset(UI.labelInsets)
             make.top.equalTo(imageView.snp.bottom).offset(5)
         }
         
@@ -164,10 +159,8 @@ class ThumbnailCell: UICollectionViewCell {
         // Prevents the textLabel from getting squished in relation to other view priorities.
         textLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showEditMode), name: Notification.Name.NotificationThumbnailEditOn,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(hideEditMode), name: Notification.Name.NotificationThumbnailEditOff,
-                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showEditMode), name: Notification.Name.NotificationThumbnailEditOn, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideEditMode), name: Notification.Name.NotificationThumbnailEditOff, object: nil)
     }
     
     deinit {
@@ -198,13 +191,13 @@ class ThumbnailCell: UICollectionViewCell {
         imageView.image = nil
     }
     
-    fileprivate func updateSelectedHighlightedState() {
+    private func updateSelectedHighlightedState() {
         let activated = isSelected || isHighlighted
         self.imageView.alpha = activated ? 0.7 : 1.0
     }
     
     @objc func editButtonTapped() {
-        delegate?.editThumbnail(self)
+        delegate?.editFavorite(self)
     }
     
     func toggleEditButton(_ show: Bool) {
@@ -219,9 +212,9 @@ class ThumbnailCell: UICollectionViewCell {
         
         let scaleTransform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         editButton.transform = show ? scaleTransform : CGAffineTransform.identity
-        UIView.animate(withDuration: ThumbnailCellUX.EditButtonAnimationDuration,
+        UIView.animate(withDuration: UI.editButtonAnimationDuration,
                        delay: 0,
-                       usingSpringWithDamping: ThumbnailCellUX.EditButtonAnimationDamping,
+                       usingSpringWithDamping: UI.editButtonAnimationDamping,
                        initialSpringVelocity: 0,
                        options: UIViewAnimationOptions.allowUserInteraction,
                        animations: {
@@ -234,6 +227,6 @@ class ThumbnailCell: UICollectionViewCell {
     }
     
     func showBorder(_ show: Bool) {
-        imageView.layer.borderWidth = show ? ThumbnailCellUX.BorderWidth : 0
+        imageView.layer.borderWidth = show ? UI.borderWidth : 0
     }
 }

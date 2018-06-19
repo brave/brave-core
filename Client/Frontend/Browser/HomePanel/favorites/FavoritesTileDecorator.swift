@@ -25,7 +25,7 @@ enum FavoritesTileType {
 class FavoritesTileDecorator {
     let url: URL
     let normalizedHost: String
-    let cell: ThumbnailCell
+    let cell: FavoriteCell
     let indexPath: IndexPath
     let color: UIColor?
     weak var collection: UICollectionView?
@@ -49,7 +49,7 @@ class FavoritesTileDecorator {
         }
     }
 
-    init(url: URL, cell: ThumbnailCell, indexPath: IndexPath, color: UIColor? = nil) {
+    init(url: URL, cell: FavoriteCell, indexPath: IndexPath, color: UIColor? = nil) {
         self.url = url
         self.cell = cell
         self.indexPath = indexPath
@@ -105,10 +105,10 @@ class FavoritesTileDecorator {
     }
 
     private func setDefaultTile() {
-        cell.imageView.image = ThumbnailCellUX.PlaceholderImage
+        cell.imageView.image = FavoriteCell.placeholderImage
     }
 
-    fileprivate func setCellImage(_ cell: ThumbnailCell, iconUrl: URL, cacheWithUrl: URL) {
+    fileprivate func setCellImage(_ cell: FavoriteCell, iconUrl: URL, cacheWithUrl: URL) {
         ImageCache.shared.image(cacheWithUrl, type: .square, callback: { (image) in
             if image != nil {
                 DispatchQueue.main.async {
@@ -157,7 +157,7 @@ class FavoritesTileDecorator {
         
         FaviconFetcher.getForURL(url, profile: profile).uponQueue(DispatchQueue.main) { result in
             guard let favicons = result.successValue, favicons.count > 0, let foundIconUrl = favicons.first?.url.asURL,
-                let cell = weakSelf?.collection?.cellForItem(at: indexPath) as? ThumbnailCell else { return }
+                let cell = weakSelf?.collection?.cellForItem(at: indexPath) as? FavoriteCell else { return }
             self.setCellImage(cell, iconUrl: foundIconUrl, cacheWithUrl: url)
         }
     }
