@@ -12,16 +12,15 @@ import Data
 
 private let log = Logger.browserLogger
 
-struct TopSitesUX {
-    static let statsHeight: CGFloat = 110.0
-    static let statsBottomMargin: CGFloat = 5
-}
-
 protocol TopSitesDelegate: class {
     func didSelectUrl(url: URL)
 }
 
 class TopSitesViewController: UIViewController {
+    private struct UI {
+        static let statsHeight: CGFloat = 110.0
+        static let statsBottomMargin: CGFloat = 5
+    }
     weak var homePanelDelegate: HomePanelDelegate?
     weak var delegate: TopSitesDelegate?
     
@@ -41,14 +40,14 @@ class TopSitesViewController: UIViewController {
             $0.alwaysBounceVertical = true
             $0.accessibilityIdentifier = "Top Sites View"
             // Entire site panel, including the stats view insets
-            $0.contentInset = UIEdgeInsetsMake(TopSitesUX.statsHeight, 0, 0, 0)
+            $0.contentInset = UIEdgeInsetsMake(UI.statsHeight, 0, 0, 0)
         }
         
         return view
     }()
     private lazy var dataSource: FavoritesDataSource = { return FavoritesDataSource() }()
     
-    // MARK: - Lazy views
+    // MARK: - Views initialization
     private let privateTabMessageContainer = UIView().then {
         $0.isUserInteractionEnabled = true
         $0.isHidden = !UIApplication.isInPrivateMode
@@ -138,14 +137,14 @@ class TopSitesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIApplication.isInPrivateMode ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
+        view.backgroundColor = UIApplication.isInPrivateMode ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(gesture:)))
         collection.addGestureRecognizer(longPressGesture)
         
         view.addSubview(collection)
         collection.dataSource = UIApplication.isInPrivateMode ? nil : dataSource
-        self.dataSource.collectionView = self.collection
+        dataSource.collectionView = collection
         
         // Could setup as section header but would need to use flow layout,
         // Auto-layout subview within collection doesn't work properly,
@@ -153,9 +152,9 @@ class TopSitesViewController: UIViewController {
         var statsViewFrame: CGRect = braveShieldStatsView.frame
         statsViewFrame.origin.x = 20
         // Offset the stats view from the inset set above
-        statsViewFrame.origin.y = -(TopSitesUX.statsHeight + TopSitesUX.statsBottomMargin)
+        statsViewFrame.origin.y = -(UI.statsHeight + UI.statsBottomMargin)
         statsViewFrame.size.width = collection.frame.width - statsViewFrame.minX * 2
-        statsViewFrame.size.height = TopSitesUX.statsHeight
+        statsViewFrame.size.height = UI.statsHeight
         braveShieldStatsView.frame = statsViewFrame
         
         collection.addSubview(braveShieldStatsView)
@@ -183,19 +182,11 @@ class TopSitesViewController: UIViewController {
         }
     }
     
-    @objc func viewControllerTapped() {
-        endEditing()
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         // This makes collection view layout to recalculate its cell size.
         collection.collectionViewLayout.invalidateLayout()
-    }
-    
-    func hideDDG() {
-        ddgButton.isHidden = true
     }
     
     /// Handles long press gesture for UICollectionView cells reorder.
@@ -219,7 +210,7 @@ class TopSitesViewController: UIViewController {
     
     // MARK: - Constraints setup
     fileprivate func makeConstraints() {
-        collection.snp.makeConstraints { make -> Void in
+        collection.snp.makeConstraints { make in
             if #available(iOS 11.0, *) {
                 make.edges.equalTo(self.view.safeAreaLayoutGuide.snp.edges)
             } else {
@@ -227,7 +218,7 @@ class TopSitesViewController: UIViewController {
             }
         }
         
-        privateTabMessageContainer.snp.makeConstraints { (make) -> Void in
+        privateTabMessageContainer.snp.makeConstraints { make in
             make.centerX.equalTo(collection)
             if UIDevice.current.userInterfaceIdiom == .pad {
                 make.centerY.equalTo(self.view)
@@ -248,7 +239,7 @@ class TopSitesViewController: UIViewController {
                 make.left.right.equalTo(0)
             }
             
-            privateTabInfoLabel.snp.makeConstraints { (make) -> Void in
+            privateTabInfoLabel.snp.makeConstraints { make in
                 make.top.equalTo(self.privateTabTitleLabel.snp.bottom).offset(10)
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     make.centerX.equalTo(collection)
@@ -258,7 +249,7 @@ class TopSitesViewController: UIViewController {
                 make.right.equalTo(-16)
             }
             
-            privateTabLinkButton.snp.makeConstraints { (make) -> Void in
+            privateTabLinkButton.snp.makeConstraints { make in
                 make.top.equalTo(self.privateTabInfoLabel.snp.bottom).offset(10)
                 make.left.equalTo(0)
                 make.right.equalTo(0)
@@ -292,7 +283,7 @@ class TopSitesViewController: UIViewController {
         let isIphoneX = UIScreen.main.nativeBounds.height == 2436
         
         if isIphoneX {
-            collection.snp.remakeConstraints { make -> Void in
+            collection.snp.remakeConstraints { make in
                 make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
                 make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
@@ -352,13 +343,15 @@ class TopSitesViewController: UIViewController {
         self.view.setNeedsUpdateConstraints()
     }
     
+    // MARK: - Duckduckgo popup
+    
     @objc func showDDGCallout() {
         // BRAVE TODO:
         // getApp().browserViewController.presentDDGCallout(force: true)
     }
     
-    func endEditing() {
-        dataSource.isEditing = false
+    func hideDDG() {
+        ddgButton.isHidden = true
     }
     
     // MARK: - Private browsing modde
@@ -480,7 +473,7 @@ extension TopSitesViewController: FavoriteCellDelegate {
                                                                     self.dataSource.isEditing = false
             }
             
-            self.present(editPopup, animated: true, completion: nil)
+            self.present(editPopup, animated: true)
         }
         
         let cancelAction = UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil)
@@ -493,7 +486,7 @@ extension TopSitesViewController: FavoriteCellDelegate {
             actionSheet.popoverPresentationController?.permittedArrowDirections = .any
             actionSheet.popoverPresentationController?.sourceView = favoriteCell
             actionSheet.popoverPresentationController?.sourceRect = favoriteCell.bounds
-            present(actionSheet, animated: true, completion: nil)
+            present(actionSheet, animated: true)
         } else {
             present(actionSheet, animated: true) {
                 self.dataSource.isEditing = false
