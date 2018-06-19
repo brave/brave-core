@@ -12,6 +12,7 @@ import Shared
 class FavoriteCell: UICollectionViewCell {
     static let imageAspectRatio: Float = 1.0
     static let placeholderImage = #imageLiteral(resourceName: "defaultTopSiteIcon")
+    static let identifier = "FavoriteCell"
     
     private struct UI {
         /// Ratio of width:height of the thumbnail image.

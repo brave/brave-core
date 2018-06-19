@@ -35,8 +35,8 @@ class TopSitesViewController: UIViewController {
             $0.backgroundColor = UIApplication.isInPrivateMode ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
             $0.delegate = self
         
-            let thumbnailIdentifier = "Thumbnail"
-            $0.register(FavoriteCell.self, forCellWithReuseIdentifier: thumbnailIdentifier)
+            let cellIdentifier = FavoriteCell.identifier
+            $0.register(FavoriteCell.self, forCellWithReuseIdentifier: cellIdentifier)
             $0.keyboardDismissMode = .onDrag
             $0.alwaysBounceVertical = true
             $0.accessibilityIdentifier = "Top Sites View"

@@ -20,8 +20,6 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
                 // requiring user to long press again if he wants to reorder a tile.
                 let name = isEditing ? Notification.Name.ThumbnailEditOn : Notification.Name.ThumbnailEditOff
                 NotificationCenter.default.post(name: name, object: nil)
-                
-                
             }
         }
     }
@@ -54,7 +52,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Thumbnail", for: indexPath) as! FavoriteCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteCell.identifier, for: indexPath) as! FavoriteCell
         return configureCell(cell: cell, at: indexPath)
     }
 
@@ -63,6 +61,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
         Bookmark.reorderBookmarks(frc: frc, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
     }
 
+    @discardableResult
     fileprivate func configureCell(cell: FavoriteCell, at indexPath: IndexPath) -> UICollectionViewCell {
         guard let fav = frc?.object(at: indexPath) as? Bookmark else { return UICollectionViewCell() }
 
@@ -92,20 +91,17 @@ extension FavoritesDataSource: NSFetchedResultsControllerDelegate {
             if let indexPath = indexPath {
                 collectionView?.insertItems(at: [indexPath])
             }
-            break
         case .delete:
             if let indexPath = indexPath {
                 collectionView?.deleteItems(at: [indexPath])
             }
-            break
         case .update:
             if let indexPath = indexPath, let cell = collectionView?.cellForItem(at: indexPath) as? FavoriteCell {
-                _ = configureCell(cell: cell, at: indexPath)
+                configureCell(cell: cell, at: indexPath)
             }
             if let newIndexPath = newIndexPath, let cell = collectionView?.cellForItem(at: newIndexPath) as? FavoriteCell {
-                _ = configureCell(cell: cell, at: newIndexPath)
+                configureCell(cell: cell, at: newIndexPath)
             }
-            break
         case .move:
             break
         }
