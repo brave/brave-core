@@ -54,7 +54,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Thumbnail", for: indexPath) as! ThumbnailCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Thumbnail", for: indexPath) as! FavoriteCell
         return configureCell(cell: cell, at: indexPath)
     }
 
@@ -63,7 +63,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
         Bookmark.reorderBookmarks(frc: frc, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
     }
 
-    fileprivate func configureCell(cell: ThumbnailCell, at indexPath: IndexPath) -> UICollectionViewCell {
+    fileprivate func configureCell(cell: FavoriteCell, at indexPath: IndexPath) -> UICollectionViewCell {
         guard let fav = frc?.object(at: indexPath) as? Bookmark else { return UICollectionViewCell() }
 
         cell.textLabel.text = fav.displayTitle ?? fav.url
@@ -99,10 +99,10 @@ extension FavoritesDataSource: NSFetchedResultsControllerDelegate {
             }
             break
         case .update:
-            if let indexPath = indexPath, let cell = collectionView?.cellForItem(at: indexPath) as? ThumbnailCell {
+            if let indexPath = indexPath, let cell = collectionView?.cellForItem(at: indexPath) as? FavoriteCell {
                 _ = configureCell(cell: cell, at: indexPath)
             }
-            if let newIndexPath = newIndexPath, let cell = collectionView?.cellForItem(at: newIndexPath) as? ThumbnailCell {
+            if let newIndexPath = newIndexPath, let cell = collectionView?.cellForItem(at: newIndexPath) as? FavoriteCell {
                 _ = configureCell(cell: cell, at: newIndexPath)
             }
             break
