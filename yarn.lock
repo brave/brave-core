@@ -1318,9 +1318,9 @@ braces@^2.3.0, braces@^2.3.1:
     split-string "^3.0.2"
     to-regex "^3.0.1"
 
-brave-ui@^0.10.11:
-  version "0.10.11"
-  resolved "https://registry.yarnpkg.com/brave-ui/-/brave-ui-0.10.11.tgz#0480f3891c24779bc07caf2092a19d6856845fd6"
+brave-ui@^0.10.13:
+  version "0.10.13"
+  resolved "https://registry.yarnpkg.com/brave-ui/-/brave-ui-0.10.13.tgz#dd932f9076b3082524769d4c9a539b83ad28976b"
   dependencies:
     emptykit.css "^1.0.1"
     styled-components "^3.2.6"

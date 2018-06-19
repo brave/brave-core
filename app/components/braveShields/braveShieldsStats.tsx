@@ -107,11 +107,19 @@ export default class BraveShieldsStats extends React.Component<BraveShieldsStats
   }
 
   onToggleBlockedResourcesDetails (e: any) {
+    const id = e.target.id || ''
+    const {
+      adsTrackersBlockedDetailsOpen,
+      httpsRedirectedDetailsOpen,
+      javascriptBlockedDetailsOpen,
+      fingerprintingBlockedDetailsOpen
+    } = this.state
+
     this.setState({
-      adsTrackersBlockedDetailsOpen: e.target.id.startsWith('totalAdsTrackersBlocked'),
-      httpsRedirectedDetailsOpen: e.target.id.startsWith('httpsRedirected'),
-      javascriptBlockedDetailsOpen: e.target.id.startsWith('javascriptBlocked'),
-      fingerprintingBlockedDetailsOpen: e.target.id.startsWith('fingerprintingBlocked')
+      adsTrackersBlockedDetailsOpen: id.startsWith('totalAdsTrackersBlocked') && !adsTrackersBlockedDetailsOpen,
+      httpsRedirectedDetailsOpen: id.startsWith('httpsRedirected') && !httpsRedirectedDetailsOpen,
+      javascriptBlockedDetailsOpen: id.startsWith('javascriptBlocked') && !javascriptBlockedDetailsOpen,
+      fingerprintingBlockedDetailsOpen: id.startsWith('fingerprintingBlocked') && !fingerprintingBlockedDetailsOpen
     })
   }
 

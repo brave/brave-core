@@ -95,6 +95,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
             <BoxedContent theme={theme.braveShieldsControlsContent}>
               <SelectOption
                 id='shieldsControlsAdControl'
+                theme={theme.noUserSelect}
                 disabled={braveShields === 'block'}
                 titleName={getMessage('shieldsControlsAdControl')}
                 value={braveShields !== 'block' && ads !== 'allow' && trackers !== 'allow' ? 'allow' : 'block'}
@@ -107,6 +108,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
 
               <SelectOption
                 id='shieldsControlsCookieControl'
+                theme={theme.noUserSelect}
                 disabled={braveShields === 'block'}
                 titleName={getMessage('shieldsControlsCookieControl')}
                 value={braveShields !== 'block' ? cookies : 'allow'}
@@ -119,6 +121,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
 
               <SelectOption
                 id='shieldsControlsFingerprintingProtection'
+                theme={theme.noUserSelect}
                 disabled={braveShields === 'block'}
                 titleName={getMessage('shieldsControlsFingerprintingProtection')}
                 value={braveShields !== 'block' ? fingerprinting : 'allow'}
@@ -134,6 +137,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
                   {/* TODO @cezaraugusto */}
                   <SwitchButton
                     id='httpsEverywhere'
+                    theme={theme.noUserSelect}
                     disabled={braveShields === 'block'}
                     rightText={getMessage('shieldsControlsHttpsEverywhereSwitch')}
                     checked={braveShields !== 'block' && httpUpgradableResources !== 'allow'}
@@ -144,6 +148,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
                   {/* TODO @cezaraugusto */}
                   <SwitchButton
                     id='blockScripts'
+                    theme={theme.noUserSelect}
                     disabled={braveShields === 'block'}
                     rightText={getMessage('shieldsControlsBlockScriptsSwitch')}
                     checked={braveShields !== 'block' && javascript !== 'allow'}
@@ -154,6 +159,7 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
                   {/* TODO @cezaraugusto */}
                   <SwitchButton
                     id='blockPhishingMalware'
+                    theme={theme.noUserSelect}
                     checked={false}
                     disabled={braveShields === 'block'}
                     rightText={getMessage('shieldsControlsBlockPhishingMalwareSwitch')}

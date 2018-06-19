@@ -52,7 +52,8 @@ const theme = {
     justifyContent: 'flex-end'
   },
   editLink: {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    userSelect: 'none'
   },
   braveShieldsStats: {
     padding: '10px 15px',
@@ -69,34 +70,42 @@ const theme = {
   totalAdsTrackersBlockedStat: {
     fontSize: '26px',
     color: '#fe521d',
-    lineHeight: '30px'
+    lineHeight: '30px',
+    cursor: 'pointer'
   },
   totalAdsTrackersBlockedText: {
-    lineHeight: '30px'
+    lineHeight: '30px',
+    cursor: 'pointer'
   },
   httpsRedirectedStat: {
     fontSize: '26px',
     color: '#0796fa',
-    lineHeight: '30px'
+    lineHeight: '30px',
+    cursor: 'pointer'
   },
   httpsRedirectedText: {
-    lineHeight: '30px'
+    lineHeight: '30px',
+    cursor: 'pointer'
   },
   javascriptBlockedStat: {
     fontSize: '26px',
     color: '#555555',
-    lineHeight: '30px'
+    lineHeight: '30px',
+    cursor: 'pointer'
   },
   javascriptBlockedText: {
-    lineHeight: '30px'
+    lineHeight: '30px',
+    cursor: 'pointer'
   },
   fingerprintingBlockedStat: {
     fontSize: '26px',
     color: '#ffc000',
-    lineHeight: '30px'
+    lineHeight: '30px',
+    cursor: 'pointer'
   },
   fingerprintingBlockedText: {
-    lineHeight: '30px'
+    lineHeight: '30px',
+    cursor: 'pointer'
   },
   noScript: {
     padding: '10px 0',
@@ -104,11 +113,15 @@ const theme = {
   },
   blockedResourcesStats: {
     flexDirection: 'column',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    cursor: 'pointer'
   },
   blockedResourcesStatsText: {
     fontSize: '10px',
     margin: '0 0 3px'
+  },
+  noUserSelect: {
+    userSelect: 'none'
   }
 }
 
