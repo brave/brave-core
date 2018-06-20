@@ -1,5 +1,5 @@
 diff --git a/chrome/install_static/install_modes.cc b/chrome/install_static/install_modes.cc
-index 42d9966254758305e0dc999b186aa7abe1ff762a..147dd51211c889bdcbde29ae0537a6e17d045dd8 100644
+index 42d9966254758305e0dc999b186aa7abe1ff762a..7b53849803ff00ac824e1d6c7fb378ffcc63ba10 100644
 --- a/chrome/install_static/install_modes.cc
 +++ b/chrome/install_static/install_modes.cc
 @@ -12,6 +12,21 @@ std::wstring GetUnregisteredKeyPathForProduct(const wchar_t* product) {
@@ -20,7 +20,7 @@ index 42d9966254758305e0dc999b186aa7abe1ff762a..147dd51211c889bdcbde29ae0537a6e1
 +  return std::wstring(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\")
 +      .append(app_guid);
 +}
-+#else  // BRAVE_CHROMIUM_BUILD
++#else
  std::wstring GetClientsKeyPathForApp(const wchar_t* app_guid) {
    return std::wstring(L"Software\\Google\\Update\\Clients\\").append(app_guid);
  }
