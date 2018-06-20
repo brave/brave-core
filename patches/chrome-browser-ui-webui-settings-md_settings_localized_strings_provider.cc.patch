@@ -1,18 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
-index 6ee8837135be6b1f9389827dac26ecfa5a2a4fd6..4b68be2a2010f313056c2f51b5cd55a1f7eb7715 100644
+index 6ee8837135be6b1f9389827dac26ecfa5a2a4fd6..e38da9061e07072a56fc4b3a82a0dcff20a2d0bf 100644
 --- a/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
 +++ b/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
-@@ -10,6 +10,9 @@
- #include "base/i18n/number_formatting.h"
- #include "base/strings/string_number_conversions.h"
- #include "base/strings/utf_string_conversions.h"
-+#if defined(BRAVE_CHROMIUM_BUILD)
-+#include "brave/grit/brave_generated_resources.h"
-+#endif
- #include "build/build_config.h"
- #include "build/buildflag.h"
- #include "chrome/browser/browser_process.h"
-@@ -996,6 +999,7 @@ void AddImportDataStrings(content::WebUIDataSource* html_source) {
+@@ -996,6 +996,7 @@ void AddImportDataStrings(content::WebUIDataSource* html_source) {
      {"importPasswords", IDS_SETTINGS_IMPORT_PASSWORDS_CHECKBOX},
      {"importSearch", IDS_SETTINGS_IMPORT_SEARCH_ENGINES_CHECKBOX},
      {"importAutofillFormData", IDS_SETTINGS_IMPORT_AUTOFILL_FORM_DATA_CHECKBOX},
