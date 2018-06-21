@@ -41,8 +41,14 @@ public:
   bool isReadyForReconcile();
   void reconcile(const std::string& viewingId, BatHelper::SimpleCallback callback);
   unsigned int ballots(const std::string& viewingId);
+  void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);
+
+  void prepareBallots();
 
 private:
+  void prepareBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction);
+  void prepareBallotCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void vote(const std::string& publisher, const std::string& viewingId);
   void loadStateOrRegisterPersonaCallback(bool result, const CLIENT_STATE_ST& state);
   void registerPersona();
   void publisherTimestamp(const bool& saveState = true);
@@ -67,6 +73,7 @@ private:
   uint64_t publisherTimestamp_;
   std::mutex state_mutex_;
   std::mutex transactions_access_mutex_;
+  std::mutex ballots_access_mutex_;
   bat_balance::BatBalance balance_;
   CURRENT_RECONCILE currentReconcile_;
 };

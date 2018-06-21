@@ -260,7 +260,7 @@ namespace ledger {
     }
   }
 
-  void Ledger::reconcileCallback() {
+  void Ledger::reconcileCallback(const std::string& viewingId) {
     if (!isBatClientExist() || !isBatPublisherExist()) {
       assert(false);
 
@@ -270,9 +270,16 @@ namespace ledger {
     unsigned int ballotsCount = bat_client_->ballots("");
     LOG(ERROR) << "!!!ballotsCount == " << ballotsCount;
     std::vector<WINNERS_ST> winners = bat_publisher_->winners(ballotsCount);
+    std::vector<std::string> publishers;
     for (size_t i = 0; i < winners.size(); i++) {
-      if (!bat_publisher_->isEligableForContribution(winners[i].publisher_data_))
+      if (!bat_publisher_->isEligableForContribution(winners[i].publisher_data_)) {
+        continue;
+      }
+      publishers.push_back(winners[i].publisher_data_.publisherKey_);
     }
+    bat_client_->votePublishers(publishers, ""/*, viewingId*/);
+    // TODO call prepareBallots by timeouts like in js library
+    bat_client_->prepareBallots();
   }
 
 }

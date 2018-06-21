@@ -85,6 +85,17 @@ struct TRANSACTION_ST {
   unsigned int votes_;
 };
 
+struct BALLOT_ST {
+  BALLOT_ST();
+  BALLOT_ST(const BALLOT_ST& ballot);
+  ~BALLOT_ST();
+
+  std::string viewingId_;
+  std::string surveyorId_;
+  std::string publisher_;
+  unsigned int offset_;
+};
+
 struct CLIENT_STATE_ST {
   CLIENT_STATE_ST();
   ~CLIENT_STATE_ST();
@@ -102,6 +113,7 @@ struct CLIENT_STATE_ST {
   double fee_amount_;
   unsigned int days_;
   std::vector<TRANSACTION_ST> transactions_;
+  std::vector<BALLOT_ST> ballots_;
   std::string ruleset_;
   std::string rulesetV2_;
 };
@@ -197,7 +209,7 @@ public:
   typedef base::Callback<void(bool, const std::string&, const FETCH_CALLBACK_EXTRA_DATA_ST&)> FetchCallback;
   typedef base::Callback<void(bool, const CLIENT_STATE_ST&)> ReadStateCallback;
   typedef base::Callback<void(bool, const PUBLISHER_STATE_ST&)> ReadPublisherStateCallback;
-  typedef base::Callback<void()> SimpleCallback;
+  typedef base::Callback<void(const std::string&)> SimpleCallback;
 
   static std::string getJSONValue(const std::string& fieldName, const std::string& json);
   static std::vector<std::string> getJSONList(const std::string& fieldName, const std::string& json);

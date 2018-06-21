@@ -70,6 +70,16 @@ TRANSACTION_ST::TRANSACTION_ST(const TRANSACTION_ST& transaction) {
 }
 TRANSACTION_ST::~TRANSACTION_ST() {}
 
+BALLOT_ST::BALLOT_ST():
+  offset_(0) {}
+BALLOT_ST::BALLOT_ST(const BALLOT_ST& ballot) {
+  viewingId_ = ballot.viewingId_;
+  surveyorId_ = ballot.surveyorId_;
+  publisher_ = ballot.publisher_;
+  offset_ = ballot.offset_;
+}
+BALLOT_ST::~BALLOT_ST() {}
+
 CLIENT_STATE_ST::CLIENT_STATE_ST():
   bootStamp_(0),
   reconcileStamp_(0),
@@ -426,6 +436,44 @@ void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
       state.transactions_.push_back(transaction);
     }
   }
+
+  if (childTopDictionary->Get("ballots", &value)) {
+    const base::ListValue *lValue = nullptr;
+    value->GetAsList(&lValue);
+    for (size_t i = 0; i < lValue->GetSize(); i++) {
+      BALLOT_ST ballot;
+      const base::DictionaryValue* ballotDictionary = nullptr;
+      lValue->GetDictionary(i, &ballotDictionary);
+      if (nullptr == ballotDictionary) {
+        continue;
+      }
+      if (ballotDictionary->Get("viewingId", &value)) {
+        value->GetAsString(&ballot.viewingId_);
+      }
+      if (ballotDictionary->Get("surveyorId", &value)) {
+        value->GetAsString(&ballot.surveyorId_);
+      }
+      if (ballotDictionary->Get("publisher", &value)) {
+        value->GetAsString(&ballot.publisher_);
+      }
+      if (ballotDictionary->Get("offset", &value)) {
+        value->GetAsInteger((int*)&ballot.offset_);
+      }
+      state.ballots_.push_back(ballot);
+    }
+  }
+
+  /*std::unique_ptr<base::ListValue> ballots(new base::ListValue());
+  for (size_t i = 0; i < state.ballots_.size(); i++) {
+    std::unique_ptr<base::DictionaryValue> ballot_dict(new base::DictionaryValue());
+    ballot_dict->SetString("viewingId", state.ballots_[i].viewingId_);
+    ballot_dict->SetString("surveyorId", state.ballots_[i].surveyorId_);
+    ballot_dict->SetString("publisher", state.ballots_[i].publisher_);
+    ballot_dict->SetInteger("offset", state.ballots_[i].offset_);
+
+    ballots->Append(std::make_unique<base::Value>(ballot_dict->Clone()));
+  }
+  root_dict.Set("ballots", std::move(ballots));*/
 }
 
 void BatHelper::getJSONRates(const std::string& json, std::map<std::string, double>& rates) {
@@ -1001,6 +1049,18 @@ std::string BatHelper::stringifyState(const CLIENT_STATE_ST& state) {
 
   root_dict.SetString("ruleset", state.ruleset_);
   root_dict.SetString("rulesetV4", state.rulesetV2_);
+
+  std::unique_ptr<base::ListValue> ballots(new base::ListValue());
+  for (size_t i = 0; i < state.ballots_.size(); i++) {
+    std::unique_ptr<base::DictionaryValue> ballot_dict(new base::DictionaryValue());
+    ballot_dict->SetString("viewingId", state.ballots_[i].viewingId_);
+    ballot_dict->SetString("surveyorId", state.ballots_[i].surveyorId_);
+    ballot_dict->SetString("publisher", state.ballots_[i].publisher_);
+    ballot_dict->SetInteger("offset", state.ballots_[i].offset_);
+
+    ballots->Append(std::make_unique<base::Value>(ballot_dict->Clone()));
+  }
+  root_dict.Set("ballots", std::move(ballots));
 
   base::JSONWriter::Write(root_dict, &res);
 

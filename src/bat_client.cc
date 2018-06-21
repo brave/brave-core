@@ -8,6 +8,8 @@
 #include "bat_helper.h"
 #include "base/bind.h"
 #include "base/guid.h"
+#include "url_util.h"
+#include "url_canon_stdstring.h"
 
 #include "anon.h"
 
@@ -437,7 +439,7 @@ void BatClient::viewingCredentialsCallback(bool result, const std::string& respo
     }
   }
   BatHelper::saveState(state_);
-  currentReconcile_.ledgerCallback_.Run();
+  currentReconcile_.ledgerCallback_.Run(currentReconcile_.viewingId_);
   //LOG(ERROR) << "!!!response masterUserToken == " << currentReconcile_.masterUserToken_;
 
 }
@@ -453,6 +455,81 @@ unsigned int BatClient::ballots(const std::string& viewingId) {
   }
 
   return count;
+}
+
+void BatClient::votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId) {
+  for (size_t i = 0; i < publishers.size(); i++) {
+    vote(publishers[i], viewingId);
+  }
+  BatHelper::saveState(state_);
+}
+
+void BatClient::vote(const std::string& publisher, const std::string& viewingId) {
+  DCHECK(!publisher.empty());
+  if (publisher.empty()) {
+    return;
+  }
+  BALLOT_ST ballot;
+  {
+    std::lock_guard<std::mutex> guard(transactions_access_mutex_);
+    int i = 0;
+    for (i = state_.transactions_.size() - 1; i >=0; i--) {
+      if (state_.transactions_[i].votes_ >= state_.transactions_[i].surveyorIds_.size()) {
+        continue;
+      }
+      if (state_.transactions_[i].viewingId_ == viewingId || viewingId.empty()) {
+        break;
+      }
+    }
+    if (i < 0) {
+      return;
+    }
+    ballot.viewingId_ = state_.transactions_[i].viewingId_;
+    ballot.surveyorId_ = state_.transactions_[i].surveyorIds_[state_.transactions_[i].votes_];
+    ballot.publisher_ = publisher;
+    ballot.offset_ = state_.transactions_[i].votes_;
+    state_.transactions_[i].votes_++;
+    //LOG(ERROR) << "!!!prepared ballout " << publisher << ", votes == " << state_.transactions_[i].votes_;
+  }
+  std::lock_guard<std::mutex> guard(ballots_access_mutex_);
+  state_.ballots_.push_back(ballot);
+}
+
+void BatClient::prepareBallots() {
+  std::lock_guard<std::mutex> guard(ballots_access_mutex_);
+  for (int i = state_.ballots_.size() - 1; i >= 0; i--) {
+    TRANSACTION_ST transaction;
+    bool breakTheLoop = false;
+    std::lock_guard<std::mutex> guard(transactions_access_mutex_);
+    for (size_t j = 0; j < state_.transactions_.size(); j++) {
+      // TODO check on valid credentials for transaction,
+      // ballot.prepareBallot and ballot.delayStamp
+      if (state_.transactions_[j].viewingId_ == state_.ballots_[i].viewingId_) {
+        // TODO check on ballot.prepareBallot and call commitBallot if it exist
+        prepareBallot(state_.ballots_[i], state_.transactions_[j]);
+        breakTheLoop = true;
+        break;
+      }
+    }
+    if (breakTheLoop) {
+      break;
+    }
+  }
+}
+
+void BatClient::prepareBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction) {
+  std::string surveyorIdEncoded;
+  url::StdStringCanonOutput surveyorIdCanon(&surveyorIdEncoded);
+  url::EncodeURIComponent(ballot.surveyorId_.c_str(), ballot.surveyorId_.length(), &surveyorIdCanon);
+  surveyorIdCanon.Complete();
+  batClientWebRequest_.run(buildURL((std::string)SURVEYOR_VOTING + surveyorIdEncoded + "/" + transaction.anonizeViewingId_, PREFIX_V2),
+    base::Bind(&BatClient::prepareBallotCallback,
+      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      URL_METHOD::GET);
+}
+
+void BatClient::prepareBallotCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  LOG(ERROR) << "!!!!prepareBallotCallback response == " << response;
 }
 
 }
