@@ -25,6 +25,8 @@
 #define UPDATE_RULES_V2                 "/v2/publisher/ruleset?limit=512&excludedOnly=false"
 #define RECOVER_WALLET_PUBLIC_KEY       "/v2/wallet?publicKey="
 #define RECOVER_WALLET                  "/v2/wallet/"
+#define GET_SET_PROMOTION								"/v1/grants"
+#define GET_PROMOTION_CAPTCHA						"/v1/captchas/"
 
 #define REGISTRARVK_FIELDNAME           "registrarVK"
 #define VERIFICATION_FIELDNAME          "verification"

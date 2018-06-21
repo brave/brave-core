@@ -47,11 +47,20 @@ public:
   std::string getWalletPassphrase();
   void recoverWallet(const std::string& passPhrase);
 
+  void getPromotion(const std::string& lang, const std::string& forPaymentId);
+  void setPromotion(const std::string& promotionId, const std::string& captchaResponse);
+  void getPromotionCaptcha();
+
 private:
+  void getPromotionCaptchaCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void getPromotionCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void setPromotionCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void recoverWalletPublicKeyCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void recoverWalletCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void prepareBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction);
+  void commitBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction);
   void prepareBallotCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void commitBallotCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void vote(const std::string& publisher, const std::string& viewingId);
   void loadStateOrRegisterPersonaCallback(bool result, const CLIENT_STATE_ST& state);
   void registerPersona();
