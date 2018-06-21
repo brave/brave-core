@@ -39,7 +39,8 @@ public:
     const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
 
   bool isReadyForReconcile();
-  void reconcile(const std::string& viewingId);
+  void reconcile(const std::string& viewingId, BatHelper::SimpleCallback callback);
+  unsigned int ballots(const std::string& viewingId);
 
 private:
   void loadStateOrRegisterPersonaCallback(bool result, const CLIENT_STATE_ST& state);
@@ -56,16 +57,16 @@ private:
   void viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId);
   void viewingCredentialsCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
 
-  std::string getAnonizeProof(const std::string& registrarVK, const std::string& id);
+  std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
 
   std::string buildURL(const std::string& path, const std::string& prefix);
 
   bool useProxy_;
   BatClientWebRequest batClientWebRequest_;
   CLIENT_STATE_ST state_;
-  std::string preFlight_;
   uint64_t publisherTimestamp_;
   std::mutex state_mutex_;
+  std::mutex transactions_access_mutex_;
   bat_balance::BatBalance balance_;
   CURRENT_RECONCILE currentReconcile_;
 };

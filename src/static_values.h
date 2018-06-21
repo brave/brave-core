@@ -26,6 +26,7 @@
 #define REGISTRARVK_FIELDNAME           "registrarVK"
 #define VERIFICATION_FIELDNAME          "verification"
 #define SURVEYOR_ID                     "surveyorId"
+#define SURVEYOR_IDS                    "surveyorIds"
 
 #define CURRENCY                        "BAT"
 

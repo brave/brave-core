@@ -75,6 +75,14 @@ struct TRANSACTION_ST {
   std::string contribution_fee_;
   std::string submissionStamp_;
   std::string submissionId_;
+  std::string anonizeViewingId_;
+  std::string registrarVK_;
+  std::string masterUserToken_;
+  std::vector<std::string> surveyorIds_;
+  std::string satoshis_;
+  std::string altCurrency_;
+  std::string probi_;
+  unsigned int votes_;
 };
 
 struct CLIENT_STATE_ST {
@@ -88,6 +96,7 @@ struct CLIENT_STATE_ST {
   std::string userId_;
   std::string registrarVK_;
   std::string masterUserToken_;
+  std::string preFlight_;
   std::string fee_currency_;
   std::string settings_;
   double fee_amount_;
@@ -121,6 +130,7 @@ struct PUBLISHER_ST {
   uint64_t verifiedTimeStamp_;
   unsigned int percent_;
   bool deleted_;
+  double weight_;
 };
 
 struct PUBLISHER_DATA_ST {
@@ -128,12 +138,22 @@ struct PUBLISHER_DATA_ST {
   PUBLISHER_DATA_ST(const PUBLISHER_DATA_ST& publisherData);
   ~PUBLISHER_DATA_ST();
 
+  bool operator<(const PUBLISHER_DATA_ST &rhs) const;
+
   std::string publisherKey_;
   PUBLISHER_ST publisher_;
   unsigned int daysSpent_;
   unsigned int hoursSpent_;
   unsigned int minutesSpent_;
   unsigned int secondsSpent_;
+};
+
+struct WINNERS_ST {
+  WINNERS_ST();
+  ~WINNERS_ST();
+
+  PUBLISHER_DATA_ST publisher_data_;
+  unsigned int votes_;
 };
 
 struct WALLET_PROPERTIES_ST {
@@ -166,18 +186,6 @@ struct SURVEYOR_INFO_ST {
   std::string surveyorId_;
 };
 
-struct CURRENT_RECONCILE {
-  CURRENT_RECONCILE();
-  ~CURRENT_RECONCILE();
-
-  std::string viewingId_;
-  SURVEYOR_INFO_ST surveyorInfo_;
-  uint64_t timestamp_;
-  std::map<std::string, double> rates_;
-  std::string amount_;
-  std::string currency_;
-};
-
 enum URL_METHOD {
   GET = 0,
   PUT = 1,
@@ -189,8 +197,10 @@ public:
   typedef base::Callback<void(bool, const std::string&, const FETCH_CALLBACK_EXTRA_DATA_ST&)> FetchCallback;
   typedef base::Callback<void(bool, const CLIENT_STATE_ST&)> ReadStateCallback;
   typedef base::Callback<void(bool, const PUBLISHER_STATE_ST&)> ReadPublisherStateCallback;
+  typedef base::Callback<void()> SimpleCallback;
 
   static std::string getJSONValue(const std::string& fieldName, const std::string& json);
+  static std::vector<std::string> getJSONList(const std::string& fieldName, const std::string& json);
   static void getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
     std::string& fee_currency, double& fee_amount, unsigned int& days);
   static void getJSONState(const std::string& json, CLIENT_STATE_ST& state);
@@ -242,6 +252,23 @@ public:
 private:
   BatHelper();
   ~BatHelper();
+};
+
+struct CURRENT_RECONCILE {
+  CURRENT_RECONCILE();
+  ~CURRENT_RECONCILE();
+
+  std::string viewingId_;
+  std::string anonizeViewingId_;
+  std::string registrarVK_;
+  std::string preFlight_;
+  std::string masterUserToken_;
+  SURVEYOR_INFO_ST surveyorInfo_;
+  uint64_t timestamp_;
+  std::map<std::string, double> rates_;
+  std::string amount_;
+  std::string currency_;
+  BatHelper::SimpleCallback ledgerCallback_;
 };
 
 #endif  // BAT_HELPER_H_

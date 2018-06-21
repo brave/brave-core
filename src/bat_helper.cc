@@ -45,7 +45,8 @@ RECONCILE_PAYLOAD_ST::~RECONCILE_PAYLOAD_ST() {}
 WALLET_INFO_ST::WALLET_INFO_ST() {}
 WALLET_INFO_ST::~WALLET_INFO_ST() {}
 
-TRANSACTION_ST::TRANSACTION_ST() {}
+TRANSACTION_ST::TRANSACTION_ST():
+  votes_(0) {}
 TRANSACTION_ST::TRANSACTION_ST(const TRANSACTION_ST& transaction) {
   viewingId_ = transaction.viewingId_;
   surveyorId_ = transaction.surveyorId_;
@@ -58,6 +59,14 @@ TRANSACTION_ST::TRANSACTION_ST(const TRANSACTION_ST& transaction) {
   submissionStamp_ = transaction.submissionStamp_;
   submissionId_ = transaction.submissionId_;
   contribution_rates_ = transaction.contribution_rates_;
+  anonizeViewingId_ = transaction.anonizeViewingId_;
+  registrarVK_ = transaction.registrarVK_;
+  masterUserToken_ = transaction.masterUserToken_;
+  surveyorIds_ = transaction.surveyorIds_;
+  satoshis_ = transaction.satoshis_;
+  altCurrency_ = transaction.altCurrency_;
+  probi_ = transaction.probi_;
+  votes_ = transaction.votes_;
 }
 TRANSACTION_ST::~TRANSACTION_ST() {}
 
@@ -84,7 +93,8 @@ PUBLISHER_ST::PUBLISHER_ST():
   pinPercentage_(false),
   verifiedTimeStamp_(0),
   percent_(0),
-  deleted_(false) {}
+  deleted_(false),
+  weight_(0) {}
 PUBLISHER_ST::PUBLISHER_ST(const PUBLISHER_ST& publisher) :
   duration_(publisher.duration_),
   favicon_url_(publisher.favicon_url_),
@@ -111,6 +121,14 @@ PUBLISHER_DATA_ST::PUBLISHER_DATA_ST(const PUBLISHER_DATA_ST& publisherData) :
   minutesSpent_(publisherData.minutesSpent_),
   secondsSpent_(publisherData.secondsSpent_) {}
 PUBLISHER_DATA_ST::~PUBLISHER_DATA_ST() {}
+
+bool PUBLISHER_DATA_ST::operator<(const PUBLISHER_DATA_ST &rhs) const {
+  return publisher_.score_ > rhs.publisher_.score_;
+}
+
+WINNERS_ST::WINNERS_ST() :
+  votes_(0) {}
+WINNERS_ST::~WINNERS_ST() {}
 
 WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST() {}
 WALLET_PROPERTIES_ST::~WALLET_PROPERTIES_ST() {}
@@ -157,6 +175,35 @@ std::string BatHelper::getJSONValue(const std::string& fieldName, const std::str
   if (childTopDictionary->Get(fieldName, &value)) {
     if (value->GetAsString(&res)) {
       return res;
+    }
+  }
+
+  return res;
+}
+
+std::vector<std::string> BatHelper::getJSONList(const std::string& fieldName, const std::string& json) {
+  std::vector<std::string> res;
+
+  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
+  if (nullptr == json_object.get()) {
+      LOG(ERROR) << "BatHelper::getJSONList: incorrect json object";
+
+      return res;
+  }
+
+  const base::DictionaryValue* childTopDictionary = nullptr;
+  json_object->GetAsDictionary(&childTopDictionary);
+  if (nullptr == childTopDictionary) {
+      return res;
+  }
+  const base::Value* value = nullptr;
+  if (childTopDictionary->Get(fieldName, &value)) {
+    const base::ListValue *lValue = nullptr;
+    value->GetAsList(&lValue);
+    for (size_t i = 0; i < lValue->GetSize(); i++) {
+      std::string surveyor;
+      lValue->GetString(i, &surveyor);
+      res.push_back(surveyor);
     }
   }
 
@@ -233,6 +280,10 @@ void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
   if (childTopDictionary->Get("masterUserToken", &value)) {
     value->GetAsString(&state.masterUserToken_);
     DCHECK(!state.masterUserToken_.empty());
+  }
+  if (childTopDictionary->Get("preFlight", &value)) {
+    value->GetAsString(&state.preFlight_);
+    DCHECK(!state.preFlight_.empty());
   }
   if (childTopDictionary->Get("fee_currency", &value)) {
     value->GetAsString(&state.fee_currency_);
@@ -312,7 +363,6 @@ void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
         value->GetAsDouble(&dValue);
         transaction.contribution_rates_.insert(std::pair<std::string, double>("LTC", dValue));
       }
-      LOG(ERROR) << "!!!here5";
       if (transactionDictionary->Get("rates.BTC", &value)) {
         double dValue = 0;
         value->GetAsDouble(&dValue);
@@ -343,7 +393,36 @@ void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
       if (transactionDictionary->Get("submissionId", &value)) {
         value->GetAsString(&transaction.submissionId_);
       }
-
+      if (transactionDictionary->Get("anonizeViewingId", &value)) {
+        value->GetAsString(&transaction.anonizeViewingId_);
+      }
+      if (transactionDictionary->Get("registrarVK", &value)) {
+        value->GetAsString(&transaction.registrarVK_);
+      }
+      if (transactionDictionary->Get("masterUserToken", &value)) {
+        value->GetAsString(&transaction.masterUserToken_);
+      }
+      if (transactionDictionary->Get("surveyorIds", &value)) {
+        const base::ListValue *lSubValue = nullptr;
+        value->GetAsList(&lSubValue);
+        for (size_t j = 0; j < lSubValue->GetSize(); j++) {
+          std::string surveyor;
+          lSubValue->GetString(j, &surveyor);
+          transaction.surveyorIds_.push_back(surveyor);
+        }
+      }
+      if (transactionDictionary->Get("satoshis", &value)) {
+        value->GetAsString(&transaction.satoshis_);
+      }
+      if (transactionDictionary->Get("altCurrency", &value)) {
+        value->GetAsString(&transaction.altCurrency_);
+      }
+      if (transactionDictionary->Get("probi", &value)) {
+        value->GetAsString(&transaction.probi_);
+      }
+      if (transactionDictionary->Get("votes", &value)) {
+        value->GetAsInteger((int*)&transaction.votes_);
+      }
       state.transactions_.push_back(transaction);
     }
   }
@@ -568,6 +647,9 @@ void BatHelper::getJSONPublisher(const std::string& json, PUBLISHER_ST& publishe
   }
   if (childTopDictionary->Get("deleted", &value)) {
     value->GetAsBoolean(&publisher_st.deleted_);
+  }
+  if (childTopDictionary->Get("weight", &value)) {
+    value->GetAsDouble(&publisher_st.weight_);
   }
 }
 
@@ -850,7 +932,7 @@ std::string BatHelper::stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& r
 
   base::JSONWriter::Write(root_dict, &res);
 
-  LOG(ERROR) << "!!!json == " << res;
+  //LOG(ERROR) << "!!!json == " << res;
 
   return res;
 }
@@ -865,6 +947,7 @@ std::string BatHelper::stringifyState(const CLIENT_STATE_ST& state) {
   root_dict.SetString("userId", state.userId_);
   root_dict.SetString("registrarVK", state.registrarVK_);
   root_dict.SetString("masterUserToken", state.masterUserToken_);
+  root_dict.SetString("preFlight", state.preFlight_);
   root_dict.SetString("fee_currency", state.fee_currency_);
   root_dict.SetString("settings", state.settings_);
   root_dict.SetDouble("fee_amount", state.fee_amount_);
@@ -898,6 +981,20 @@ std::string BatHelper::stringifyState(const CLIENT_STATE_ST& state) {
     transaction_dict->SetString("contribution_fee", state.transactions_[i].contribution_fee_);
     transaction_dict->SetString("submissionStamp", state.transactions_[i].submissionStamp_);
     transaction_dict->SetString("submissionId", state.transactions_[i].submissionId_);
+    transaction_dict->SetString("anonizeViewingId", state.transactions_[i].anonizeViewingId_);
+    transaction_dict->SetString("registrarVK", state.transactions_[i].registrarVK_);
+    transaction_dict->SetString("masterUserToken", state.transactions_[i].masterUserToken_);
+
+    std::unique_ptr<base::ListValue> surveyorIds(new base::ListValue());
+    for (size_t j = 0; j < state.transactions_[i].surveyorIds_.size(); j++) {
+      surveyorIds->AppendString(state.transactions_[i].surveyorIds_[j]);
+    }
+    transaction_dict->SetList("surveyorIds", std::move(surveyorIds));
+    transaction_dict->SetString("satoshis", state.transactions_[i].satoshis_);
+    transaction_dict->SetString("altCurrency", state.transactions_[i].altCurrency_);
+    transaction_dict->SetString("probi", state.transactions_[i].probi_);
+    transaction_dict->SetInteger("votes", state.transactions_[i].votes_);
+
     transactions->Append(std::make_unique<base::Value>(transaction_dict->Clone()));
   }
   root_dict.Set("transactions", std::move(transactions));
@@ -937,6 +1034,7 @@ std::string BatHelper::stringifyPublisher(const PUBLISHER_ST& publisher_st) {
   root_dict.SetString("verifiedTimeStamp", std::to_string(publisher_st.verifiedTimeStamp_));
   root_dict.SetInteger("percent", publisher_st.percent_);
   root_dict.SetBoolean("deleted", publisher_st.deleted_);
+  root_dict.SetDouble("weight", publisher_st.weight_);
 
   base::JSONWriter::Write(root_dict, &res);
   LOG(ERROR) << "!!!stringifyPublisher res == " << res;

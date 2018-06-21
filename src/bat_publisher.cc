@@ -30,6 +30,10 @@
    TLD = ‘co.jp’
 */
 
+static bool winners_votes_compare(const WINNERS_ST& first, const WINNERS_ST& second){
+    return (first.votes_ < second.votes_);
+}
+
 
 namespace bat_publisher {
 
@@ -398,6 +402,7 @@ void BatPublisher::synopsisNormalizerInternal() {
     totalScores += iter->second.score_;
   }
   std::vector<unsigned int> percents;
+  std::vector<double> weights;
   std::vector<double> realPercents;
   std::vector<double> roundoffs;
   unsigned int totalPercents = 0;
@@ -413,6 +418,8 @@ void BatPublisher::synopsisNormalizerInternal() {
     }
     roundoffs.push_back(roundoff);
     totalPercents += percents[percents.size() - 1];
+    // TODO make pinned, unpinned publishers
+    weights.push_back((double)iter->second.score_ / (double)publishers_.size() * 100.0);
   }
   while (totalPercents != 100) {
     size_t valueToChange = 0;
@@ -442,6 +449,7 @@ void BatPublisher::synopsisNormalizerInternal() {
       continue;
     }
     iter->second.percent_ = percents[currentValue];
+    iter->second.weight_ = weights[currentValue];
     currentValue++;
   }
 }
@@ -452,6 +460,60 @@ void BatPublisher::synopsisNormalizer() {
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   task_runner->PostTask(FROM_HERE, base::Bind(&BatPublisher::synopsisNormalizerInternal,
     base::Unretained(this)));
+}
+
+std::vector<WINNERS_ST> BatPublisher::winners(const unsigned int& ballots) {
+  std::vector<WINNERS_ST> res;
+
+  std::vector<PUBLISHER_DATA_ST> top = topN();
+  unsigned int totalVotes = 0;
+  std::vector<unsigned int> votes;
+  // TODO there is underscore.shuffle
+  for (size_t i = 0; i < top.size(); i++) {
+    LOG(ERROR) << "!!!name == " << top[i].publisherKey_ << ", score == " << top[i].publisher_.score_;
+    if (top[i].publisher_.percent_ <= 0) {
+      continue;
+    }
+    WINNERS_ST winner;
+    winner.votes_ = (unsigned int)std::lround((double)top[i].publisher_.percent_ * (double)ballots / 100.0);
+    totalVotes += winner.votes_;
+    winner.publisher_data_ = top[i];
+    res.push_back(winner);
+  }
+  if (res.size()) {
+    while (totalVotes > ballots) {
+      std::vector<WINNERS_ST>::iterator max = std::max_element(res.begin(), res.end(), winners_votes_compare);
+      (max->votes_)--;
+      totalVotes--;
+    }
+  }
+
+  return res;
+}
+
+std::vector<PUBLISHER_DATA_ST> BatPublisher::topN() {
+  std::vector<PUBLISHER_DATA_ST> res;
+
+  std::lock_guard<std::mutex> guard(publishers_map_mutex_);
+  for (std::map<std::string, PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
+    if (0 == iter->second.score_
+        || state_.min_pubslisher_duration_ > iter->second.duration_
+        || state_.min_visits_ > iter->second.visits_) {
+      continue;
+    }
+    PUBLISHER_DATA_ST publisherData;
+    publisherData.publisherKey_ = iter->first;
+    publisherData.publisher_ = iter->second;
+    res.push_back(publisherData);
+  }
+
+  std::sort(res.begin(), res.end());
+
+  return res;
+}
+
+bool BatPublisher::isEligableForContribution(const PUBLISHER_DATA_ST& publisherData) {
+  return !publisherData.publisher_.exclude_ && isPublisherVisible(publisherData.publisher_);
 }
 
 // courtesy of @dimitry-xyz: https://github.com/brave/ledger/issues/2#issuecomment-221752002

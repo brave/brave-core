@@ -78,7 +78,7 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
 
   state_.registrarVK_ = BatHelper::getJSONValue(REGISTRARVK_FIELDNAME, response);
   DCHECK(!state_.registrarVK_.empty());
-  std::string proof = getAnonizeProof(state_.registrarVK_, state_.userId_);
+  std::string proof = getAnonizeProof(state_.registrarVK_, state_.userId_, state_.preFlight_);
 
   state_.walletInfo_.keyInfoSeed_ = BatHelper::generateSeed();
   std::vector<uint8_t> secretKey = BatHelper::getHKDF(state_.walletInfo_.keyInfoSeed_);
@@ -116,14 +116,14 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
       FETCH_CALLBACK_EXTRA_DATA_ST(), URL_METHOD::POST);
 }
 
-std::string BatClient::getAnonizeProof(const std::string& registrarVK, const std::string& id) {
+std::string BatClient::getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight) {
   const char* cred = makeCred(id.c_str());
   if (nullptr != cred) {
-    preFlight_ = cred;
+    preFlight = cred;
     free((void*)cred);
   }
-  DCHECK(!preFlight_.empty());
-  const char* proofTemp = registerUserMessage(preFlight_.c_str(), registrarVK.c_str());
+  DCHECK(!preFlight.empty());
+  const char* proofTemp = registerUserMessage(preFlight.c_str(), registrarVK.c_str());
   std::string proof;
   if (nullptr != proofTemp) {
     proof = proofTemp;
@@ -143,7 +143,7 @@ void BatClient::registerPersonaCallback(bool result, const std::string& response
 
   std::string verification = BatHelper::getJSONValue(VERIFICATION_FIELDNAME, response);
   const char* masterUserToken = registerUserFinal(state_.userId_.c_str(), verification.c_str(),
-    preFlight_.c_str(), state_.registrarVK_.c_str());
+    state_.preFlight_.c_str(), state_.registrarVK_.c_str());
   if (nullptr != masterUserToken) {
     state_.masterUserToken_ = masterUserToken;
     free((void*)masterUserToken);
@@ -222,9 +222,10 @@ bool BatClient::isReadyForReconcile() {
   return true;
 }
 
-void BatClient::reconcile(const std::string& viewingId) {
+void BatClient::reconcile(const std::string& viewingId, BatHelper::SimpleCallback callback) {
   //FETCH_CALLBACK_EXTRA_DATA_ST extraData;
   currentReconcile_.viewingId_ = viewingId;
+  currentReconcile_.ledgerCallback_ = callback;
   batClientWebRequest_.run(buildURL((std::string)RECONCILE_CONTRIBUTION + state_.userId_, PREFIX_V2),
     base::Bind(&BatClient::reconcileCallback,
       base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
@@ -327,7 +328,10 @@ void BatClient::reconcilePayloadCallback(bool result, const std::string& respons
   transaction.contribution_fiat_amount_ = currentReconcile_.amount_;
   transaction.contribution_fiat_currency_ = currentReconcile_.currency_;
 
-  state_.transactions_.push_back(transaction);
+  {
+    std::lock_guard<std::mutex> guard(transactions_access_mutex_);
+    state_.transactions_.push_back(transaction);
+  }
   BatHelper::saveState(state_);
   // TODO set a new timestamp for the next reconcile
   // TODO self.state.updateStamp var in old lib
@@ -382,18 +386,18 @@ void BatClient::registerViewingCallback(bool result, const std::string& response
     return;
   }
 
-  std::string registrarVK = BatHelper::getJSONValue(REGISTRARVK_FIELDNAME, response);
-  DCHECK(!registrarVK.empty());
-  std::string anonizeViewingId = currentReconcile_.viewingId_;
-  anonizeViewingId.erase(std::remove(anonizeViewingId.begin(), anonizeViewingId.end(), '-'), anonizeViewingId.end());
-  anonizeViewingId.erase(12, 1);
-  std::string proof = getAnonizeProof(registrarVK, anonizeViewingId);
+  currentReconcile_.registrarVK_ = BatHelper::getJSONValue(REGISTRARVK_FIELDNAME, response);
+  DCHECK(!currentReconcile_.registrarVK_.empty());
+  currentReconcile_.anonizeViewingId_ = currentReconcile_.viewingId_;
+  currentReconcile_.anonizeViewingId_.erase(std::remove(currentReconcile_.anonizeViewingId_.begin(), currentReconcile_.anonizeViewingId_.end(), '-'), currentReconcile_.anonizeViewingId_.end());
+  currentReconcile_.anonizeViewingId_.erase(12, 1);
+  std::string proof = getAnonizeProof(currentReconcile_.registrarVK_, currentReconcile_.anonizeViewingId_, currentReconcile_.preFlight_);
   LOG(ERROR) << "!!!proof1 == " << proof;
 
   std::string keys[1] = {"proof"};
   std::string values[1] = {proof};
   std::string proofStringified = BatHelper::stringify(keys, values, 1);
-  viewingCredentials(proofStringified, anonizeViewingId);
+  viewingCredentials(proofStringified, currentReconcile_.anonizeViewingId_);
 }
 
 void BatClient::viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId) {
@@ -404,11 +408,51 @@ void BatClient::viewingCredentials(const std::string& proofStringified, const st
 }
 
 void BatClient::viewingCredentialsCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
-  LOG(ERROR) << "!!!response viewingCredentialsCallback == " << response;
+  //LOG(ERROR) << "!!!response viewingCredentialsCallback == " << response;
   if (!result) {
     // TODO errors handling
     return;
   }
+
+  std::string verification = BatHelper::getJSONValue(VERIFICATION_FIELDNAME, response);
+  //LOG(ERROR) << "!!!response verification == " << verification;
+  const char* masterUserToken = registerUserFinal(currentReconcile_.anonizeViewingId_.c_str(), verification.c_str(),
+    currentReconcile_.preFlight_.c_str(), currentReconcile_.registrarVK_.c_str());
+  if (nullptr != masterUserToken) {
+    currentReconcile_.masterUserToken_ = masterUserToken;
+    free((void*)masterUserToken);
+  }
+  std::vector<std::string> surveyors = BatHelper::getJSONList(SURVEYOR_IDS, response);
+  // Save the rest values to transactions
+  {
+    std::lock_guard<std::mutex> guard(transactions_access_mutex_);
+    for (size_t i = 0; i < state_.transactions_.size(); i++) {
+      if (state_.transactions_[i].viewingId_ != currentReconcile_.viewingId_) {
+        continue;
+      }
+      state_.transactions_[i].anonizeViewingId_ = currentReconcile_.anonizeViewingId_;
+      state_.transactions_[i].registrarVK_ = currentReconcile_.registrarVK_;
+      state_.transactions_[i].masterUserToken_ = currentReconcile_.masterUserToken_;
+      state_.transactions_[i].surveyorIds_ = surveyors;
+    }
+  }
+  BatHelper::saveState(state_);
+  currentReconcile_.ledgerCallback_.Run();
+  //LOG(ERROR) << "!!!response masterUserToken == " << currentReconcile_.masterUserToken_;
+
+}
+
+unsigned int BatClient::ballots(const std::string& viewingId) {
+  std::lock_guard<std::mutex> guard(transactions_access_mutex_);
+  unsigned int count = 0;
+  for (size_t i = 0; i < state_.transactions_.size(); i++) {
+    if (state_.transactions_[i].votes_ < state_.transactions_[i].surveyorIds_.size()
+        && (state_.transactions_[i].viewingId_ == viewingId || 0 == viewingId.length())) {
+      count += state_.transactions_[i].surveyorIds_.size() - state_.transactions_[i].votes_;
+    }
+  }
+
+  return count;
 }
 
 }

@@ -255,7 +255,23 @@ namespace ledger {
       return;
     }
     if (bat_client_->isReadyForReconcile()) {
-      bat_client_->reconcile(base::GenerateGUID());
+      bat_client_->reconcile(base::GenerateGUID(), base::Bind(&Ledger::reconcileCallback,
+        base::Unretained(this)));
+    }
+  }
+
+  void Ledger::reconcileCallback() {
+    if (!isBatClientExist() || !isBatPublisherExist()) {
+      assert(false);
+
+      return;
+    }
+    LOG(ERROR) << "!!!in reconcile callback";
+    unsigned int ballotsCount = bat_client_->ballots("");
+    LOG(ERROR) << "!!!ballotsCount == " << ballotsCount;
+    std::vector<WINNERS_ST> winners = bat_publisher_->winners(ballotsCount);
+    for (size_t i = 0; i < winners.size(); i++) {
+      if (!bat_publisher_->isEligableForContribution(winners[i].publisher_data_))
     }
   }
 

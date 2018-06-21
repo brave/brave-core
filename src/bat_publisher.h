@@ -38,6 +38,8 @@ public:
   void setPublisherMinVisits(const unsigned int& visits);
   void setPublisherAllowNonVerified(const bool& allow);
   std::vector<PUBLISHER_DATA_ST> getPublishersData();
+  std::vector<WINNERS_ST> winners(const unsigned int& ballots);
+  bool isEligableForContribution(const PUBLISHER_DATA_ST& publisherData);
 
 private:
   double concaveScore(const uint64_t& duration);
@@ -56,6 +58,7 @@ private:
   void synopsisNormalizer();
   void synopsisNormalizerInternal();
   bool isPublisherVisible(const PUBLISHER_ST& publisher_st);
+  std::vector<PUBLISHER_DATA_ST> topN();
 
   std::map<std::string, PUBLISHER_ST> publishers_;
   std::mutex publishers_map_mutex_;
