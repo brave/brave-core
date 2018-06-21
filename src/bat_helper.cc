@@ -179,13 +179,21 @@ UNSIGNED_TX::~UNSIGNED_TX() {}
 SURVEYOR_ST::SURVEYOR_ST() {}
 SURVEYOR_ST::~SURVEYOR_ST() {}
 
+TWITCH_EVENT_INFO::TWITCH_EVENT_INFO() {}
+TWITCH_EVENT_INFO::TWITCH_EVENT_INFO(const TWITCH_EVENT_INFO& twitchEventInfo):
+  event_(twitchEventInfo.event_),
+  time_(twitchEventInfo.time_),
+  status_(twitchEventInfo.status_) {}
+TWITCH_EVENT_INFO::~TWITCH_EVENT_INFO() {}
+
 MEDIA_PUBLISHER_INFO::MEDIA_PUBLISHER_INFO() {}
 MEDIA_PUBLISHER_INFO::MEDIA_PUBLISHER_INFO(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo):
   publisherName_(mediaPublisherInfo.publisherName_),
   publisherURL_(mediaPublisherInfo.publisherURL_),
   favIconURL_(mediaPublisherInfo.favIconURL_),
   channelName_(mediaPublisherInfo.channelName_),
-  publisher_(mediaPublisherInfo.publisher_) {}
+  publisher_(mediaPublisherInfo.publisher_),
+  twitchEventInfo_(mediaPublisherInfo.twitchEventInfo_) {}
 MEDIA_PUBLISHER_INFO::~MEDIA_PUBLISHER_INFO() {}
 
 
@@ -266,6 +274,70 @@ std::vector<std::string> BatHelper::getJSONList(const std::string& fieldName, co
   }
 
   return res;
+}
+
+void BatHelper::getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts) {
+  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
+  if (nullptr == json_object.get()) {
+      LOG(ERROR) << "BatHelper::getJSONState: incorrect json object";
+
+      return;
+  }
+
+  const base::ListValue* childTopList = nullptr;
+  json_object->GetAsList(&childTopList);
+  if (nullptr == childTopList) {
+    return;
+  }
+  const base::Value* value = nullptr;
+  for (size_t i = 0; i < childTopList->GetSize(); i++) {
+    const base::DictionaryValue* eventDictionary = nullptr;
+    childTopList->GetDictionary(i, &eventDictionary);
+    if (nullptr == eventDictionary) {
+      return;
+    }
+    std::map<std::string, std::string> event;
+    if (eventDictionary->Get("event", &value)) {
+      std::string valueTmp;
+      value->GetAsString(&valueTmp);
+      event["event"] = valueTmp;
+    }
+    if (eventDictionary->Get("properties", &value)) {
+      const base::DictionaryValue *dValue = nullptr;
+      value->GetAsDictionary(&dValue);
+      if (nullptr == dValue) {
+        return;
+      }
+      event["properties"] = "";
+      if (dValue->Get("channel", &value)) {
+        std::string valueTmp;
+        value->GetAsString(&valueTmp);
+        event["channel"] = valueTmp;
+      }
+      if (dValue->Get("vod", &value)) {
+        std::string valueTmp;
+        value->GetAsString(&valueTmp);
+        event["vod"] = valueTmp;
+      }
+      if (dValue->Get("time", &value)) {
+        double valueTmp;
+        value->GetAsDouble(&valueTmp);
+        event["time"] = std::to_string(valueTmp);
+      }
+    }
+    parts.push_back(event);
+  }
+  /*const base::Value* value = nullptr;
+  if (childTopDictionary->Get("event", &value)) {
+    std::string valueTmp;
+    value->GetAsString(&valueTmp);
+    //parts["event"] = valueTmp;
+  }
+  if (childTopDictionary->Get("properties", &value)) {
+    const base::DictionaryValue *dValue = nullptr;
+    value->GetAsDictionary(&dValue);
+    //parts["properties"] = "";
+  }*/
 }
 
 void BatHelper::getJSONPublisherState(const std::string& json, PUBLISHER_STATE_ST& state) {
@@ -1197,6 +1269,15 @@ void BatHelper::getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISH
   if (childTopDictionary->Get("publisher", &value)) {
     value->GetAsString(&mediaPublisherInfo.publisher_);
   }
+  if (childTopDictionary->Get("twitch_event", &value)) {
+    value->GetAsString(&mediaPublisherInfo.twitchEventInfo_.event_);
+  }
+  if (childTopDictionary->Get("twitch_time", &value)) {
+    value->GetAsString(&mediaPublisherInfo.twitchEventInfo_.time_);
+  }
+  if (childTopDictionary->Get("twitch_status", &value)) {
+    value->GetAsString(&mediaPublisherInfo.twitchEventInfo_.status_);
+  }
 }
 
 std::string BatHelper::stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
@@ -1209,6 +1290,9 @@ std::string BatHelper::stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& m
   root_dict.SetString("favIconURL", mediaPublisherInfo.favIconURL_);
   root_dict.SetString("channelName", mediaPublisherInfo.channelName_);
   root_dict.SetString("publisher", mediaPublisherInfo.publisher_);
+  root_dict.SetString("twitch_event", mediaPublisherInfo.twitchEventInfo_.event_);
+  root_dict.SetString("twitch_time", mediaPublisherInfo.twitchEventInfo_.time_);
+  root_dict.SetString("twitch_status", mediaPublisherInfo.twitchEventInfo_.status_);
 
   base::JSONWriter::Write(root_dict, &res);
 
@@ -1420,6 +1504,17 @@ void BatHelper::getUrlQueryParts(const std::string& query, std::map<std::string,
   }
 }
 
+void BatHelper::getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts) {
+  size_t pos = query.find("data=");
+  if (std::string::npos != pos && query.length() > 5) {
+    std::string varValue;
+    DecodeURLChars(query.substr(5), varValue);
+    std::vector<uint8_t> decoded = BatHelper::getFromBase64(varValue);
+    decoded.push_back((uint8_t)'\0');
+    BatHelper::getJSONTwitchProperties((char*)&decoded.front(), parts);
+  }
+}
+
 std::string BatHelper::getMediaId(const std::map<std::string, std::string>& data, const std::string& type) {
   if (YOUTUBE_MEDIA_TYPE == type) {
     std::map<std::string, std::string>::const_iterator iter = data.find("docid");
@@ -1427,7 +1522,26 @@ std::string BatHelper::getMediaId(const std::map<std::string, std::string>& data
       return iter->second;
     }
   } else if (TWITCH_MEDIA_TYPE == type) {
-    // TODO
+    std::map<std::string, std::string>::const_iterator iter = data.find("event");
+    if (iter != data.end() && data.find("properties") != data.end()) {
+      for (size_t i = 0; i < ledger::_twitch_events_array_size; i++) {
+        if (iter->second == ledger::_twitch_events[i]) {
+          iter = data.find("channel");
+          std::string id("");
+          if (iter != data.end()) {
+            id = iter->second;
+          }
+          iter = data.find("vod");
+          if (iter != data.end()) {
+            std::string idAddition(iter->second);
+            std::remove(idAddition.begin(), idAddition.end(), 'v');
+            id += "_vod_" + idAddition;
+          }
+
+          return id;
+        }
+      }
+    }
   }
 
   return "";
@@ -1451,47 +1565,25 @@ uint64_t BatHelper::getMediaDuration(const std::map<std::string, std::string>& d
       if (startTime.size() != endTime.size()) {
         return 0;
       }
-      float tempTime = 0;
+      double tempTime = 0;
       for (size_t i = 0; i < startTime.size(); i++) {
         std::stringstream tempET(endTime[i]);
         std::stringstream tempST(startTime[i]);
-        float st = 0;
-        float et = 0;
+        double st = 0;
+        double et = 0;
         tempET >> et;
         tempST >> st;
         tempTime = et - st;
-        //LOG(ERROR) << "!!!st == " << st;
-        //LOG(ERROR) << "!!!et == " << et;
       }
       duration = (uint64_t)(tempTime * 1000.0);
     }
   } else if (TWITCH_MEDIA_TYPE == type) {
-    // TODO
+    // We set the correct duration for twitch in BatGetMedia class
+    duration = 0;
   }
 
   return duration;
 }
-
-/*std::string BatHelper::getHTMLItem(const std::string& html, const std::string& item) {
-  std::string res;
-
-  size_t pos = html.find(item);
-  LOG(ERROR) << "pos == " << pos;
-  if (pos != std::string::npos) {
-    pos = html.find("content=\"", pos);
-    LOG(ERROR) << "pos == " << pos;
-    if (pos != std::string::npos) {
-      size_t posEnd = html.find("\">", pos);
-      LOG(ERROR) << "posEnd == " << pos;
-      if (posEnd != std::string::npos) {
-        res = html.substr(pos + 9, posEnd - pos - 9);
-      }
-    }
-  }
-  LOG(ERROR) << "getHTMLItem res == " << res;
-
-  return res;
-}*/
 
 // Enable emscripten calls
 /*void BatHelper::readEmscriptenInternal() {

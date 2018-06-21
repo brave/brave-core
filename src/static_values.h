@@ -50,6 +50,9 @@
 #define SEED_LENGTH                     32
 #define SALT_LENGTH                     64
 
+#define TWITCH_MINIMUM_SECONDS					10
+#define TWITCH_MAXIMUM_SECONDS_CHUNK		120
+
 namespace ledger {
 
 static const bool g_isProduction = false;
@@ -66,6 +69,11 @@ static const uint64_t _milliseconds_day = 24 * 60 * 60 * 1000;
 static const uint64_t _milliseconds_hour = 60 * 60 * 1000;
 static const uint64_t _milliseconds_minute = 60 * 1000;
 static const uint64_t _milliseconds_second = 1000;
+
+static const unsigned int _twitch_events_array_size = 8;
+// Important: set _twitch_events_array_size as a correct array size when you modify items in _twitch_events
+static const std::string _twitch_events[] = {"buffer-empty", "buffer-refill", "video_end",
+	"minute-watched", "video_pause", "player_click_vod_seek", "video-play", "video_error"};
 
 }
 

@@ -9,6 +9,7 @@
 #include "bat_publisher.h"
 #include "base/bind.h"
 #include "base/guid.h"
+#include "static_values.h"
 //#include "chrome/browser/io_thread.h"
 
 #include "logging.h"
@@ -305,14 +306,41 @@ namespace ledger {
     //LOG(ERROR) << "!!!media urlQuery == " << urlQuery;
     //LOG(ERROR) << "!!!media url type == " << type;
     std::map<std::string, std::string> parts;
-    BatHelper::getUrlQueryParts(urlQuery, parts);
+    std::vector<std::map<std::string, std::string>> twitchParts;
+    if (YOUTUBE_MEDIA_TYPE == type) {
+      BatHelper::getUrlQueryParts(urlQuery, parts);
+      processMedia(parts, type);
+    } else if (TWITCH_MEDIA_TYPE == type) {
+      BatHelper::getTwitchParts(urlQuery, twitchParts);
+      for (size_t i = 0; i < twitchParts.size(); i++) {
+        processMedia(twitchParts[i], type);
+      }
+    }
+  }
 
+  void Ledger::processMedia(const std::map<std::string, std::string>& parts, const std::string& type) {
     std::string mediaId = BatHelper::getMediaId(parts, type);
     //LOG(ERROR) << "!!!mediaId == " << mediaId;
+    if (mediaId.empty()) {
+      return;
+    }
     std::string mediaKey = BatHelper::getMediaKey(mediaId, type);
     //LOG(ERROR) << "!!!mediaKey == " << mediaKey;
-    uint64_t duration = BatHelper::getMediaDuration(parts, mediaKey, type);
-    LOG(ERROR) << "!!!duration == " << duration;
+    uint64_t duration = 0;
+    TWITCH_EVENT_INFO twitchEventInfo;
+    if (YOUTUBE_MEDIA_TYPE == type) {
+      duration = BatHelper::getMediaDuration(parts, mediaKey, type);
+      //LOG(ERROR) << "!!!duration == " << duration;
+    } else if (TWITCH_MEDIA_TYPE == type) {
+      std::map<std::string, std::string>::const_iterator iter = parts.find("event");
+      if (iter != parts.end()) {
+        twitchEventInfo.event_ = iter->second;
+      }
+      iter = parts.find("time");
+      if (iter != parts.end()) {
+        twitchEventInfo.time_ = iter->second;
+      }
+    }
     if (!bat_get_media_) {
       return;
     }
@@ -320,10 +348,8 @@ namespace ledger {
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
     task_runner->PostTask(FROM_HERE, base::Bind(&BatGetMedia::getPublisherFromMediaProps, base::Unretained(bat_get_media_), 
-      mediaId, mediaKey, type, duration, base::Bind(&Ledger::OnMediaRequestCallback,
+      mediaId, mediaKey, type, duration, twitchEventInfo, base::Bind(&Ledger::OnMediaRequestCallback,
       base::Unretained(this))));
-
-    //bat_get_media_->getPublisherFromMediaProps();
   }
 
   void Ledger::OnMediaRequestCallback(const uint64_t& duration, const MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {

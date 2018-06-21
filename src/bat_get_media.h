@@ -26,7 +26,7 @@ public:
 	~BatGetMedia();
 
 	void getPublisherFromMediaProps(const std::string& mediaId, const std::string& mediaKey, const std::string& providerName,
-		const uint64_t& duration, BatGetMedia::GetMediaPublisherInfoCallback callback);
+		const uint64_t& duration, const TWITCH_EVENT_INFO& twitchEventInfo, BatGetMedia::GetMediaPublisherInfoCallback callback);
 
 private:
 	void openMediaPublishersDB();
@@ -36,6 +36,8 @@ private:
 	void getPublisherInfoCallback(bool result, const std::string& response, 
 		const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
 	void saveMediaPublisherInfo(const std::string& mediaKey, const std::string& stringifiedPublisher);
+	uint64_t getTwitchDuration(const TWITCH_EVENT_INFO& oldEventInfo, const TWITCH_EVENT_INFO& newEventInfo);
+	std::string getTwitchStatus(const TWITCH_EVENT_INFO& oldEventInfo, const TWITCH_EVENT_INFO& newEventInfo);
 
 	leveldb::DB* level_db_;
 	bat_client::BatClientWebRequest batClientWebRequest_;

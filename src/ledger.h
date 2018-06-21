@@ -56,6 +56,7 @@ private:
   void walletPropertiesCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void reconcileCallback(const std::string& viewingId);
   void OnMediaRequestCallback(const uint64_t& duration, const MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
+  void processMedia(const std::map<std::string, std::string>& parts, const std::string& type);
 
   bat_client::BatClient* bat_client_;
   bat_publisher::BatPublisher* bat_publisher_;

@@ -226,6 +226,16 @@ struct SURVEYOR_ST {
   std::string surveySK_;
 };
 
+struct TWITCH_EVENT_INFO {
+  TWITCH_EVENT_INFO();
+  TWITCH_EVENT_INFO(const TWITCH_EVENT_INFO&);
+  ~TWITCH_EVENT_INFO();
+
+  std::string event_;
+  std::string time_;
+  std::string status_;
+};
+
 struct MEDIA_PUBLISHER_INFO {
   MEDIA_PUBLISHER_INFO();
   MEDIA_PUBLISHER_INFO(const MEDIA_PUBLISHER_INFO&);
@@ -236,6 +246,7 @@ struct MEDIA_PUBLISHER_INFO {
   std::string favIconURL_;
   std::string channelName_;
   std::string publisher_;
+  TWITCH_EVENT_INFO twitchEventInfo_;
 };
 
 enum URL_METHOD {
@@ -266,6 +277,7 @@ public:
   static void getJSONRates(const std::string& json, std::map<std::string, double>& rates);
   static void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor);
   static void getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
+  static void getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts);
   static std::vector<uint8_t> generateSeed();
   static std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
   static void getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
@@ -299,10 +311,10 @@ public:
   // We have to implement different function for iOS, probably laptop
   static void readPublisherStateFile(BatHelper::ReadPublisherStateCallback callback);
   static void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts);
+  static void getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts);
   static std::string getMediaId(const std::map<std::string, std::string>& data, const std::string& type);
   static std::string getMediaKey(const std::string& mediaId, const std::string& type);
   static uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);
-  //static std::string getHTMLItem(const std::string& html, const std::string& item);
 
   // TODO debug
   //static void readEmscripten();

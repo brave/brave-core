@@ -49,21 +49,32 @@ void BatGetMedia::openMediaPublishersDB() {
 }
 
 void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const std::string& mediaKey, const std::string& providerName,
-		const uint64_t& duration, BatGetMedia::GetMediaPublisherInfoCallback callback) {
+		const uint64_t& duration, const TWITCH_EVENT_INFO& twitchEventInfo, BatGetMedia::GetMediaPublisherInfoCallback callback) {
 
 	// Check if the publisher's info is already cached
 	DCHECK(level_db_);
 	if (level_db_) {
     std::string value;
 		leveldb::Status status = level_db_->Get(leveldb::ReadOptions(), mediaKey, &value);
-		LOG(ERROR) << "!!!status == " << status.ToString();
-		//DCHECK(status.ok());
-		LOG(ERROR) << "!!!value == " << value;
 		if (!value.empty()) {
 			MEDIA_PUBLISHER_INFO publisherInfo;
 			BatHelper::getJSONMediaPublisherInfo(value, publisherInfo);
-			LOG(ERROR) << "!!!from JSON " << publisherInfo.publisherName_;
-			callback.Run(duration, publisherInfo);
+			//LOG(ERROR) << "!!!from JSON " << publisherInfo.publisherName_;
+
+			uint64_t realDuration = duration;
+			if (TWITCH_MEDIA_TYPE == providerName) {
+				realDuration = getTwitchDuration(publisherInfo.twitchEventInfo_, twitchEventInfo);
+				//LOG(ERROR) << "!!!realDuration == " << realDuration;
+				TWITCH_EVENT_INFO oldInfo = publisherInfo.twitchEventInfo_;
+				publisherInfo.twitchEventInfo_ = twitchEventInfo;
+				publisherInfo.twitchEventInfo_.status_ = getTwitchStatus(oldInfo, twitchEventInfo);
+				saveMediaPublisherInfo(mediaKey, BatHelper::stringifyMediaPublisherInfo(publisherInfo));
+				if (0 == realDuration) {
+					return;
+				}
+			}
+
+			callback.Run(realDuration, publisherInfo);
 
 			return;
 		}
@@ -91,33 +102,146 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
 	      base::Bind(&BatGetMedia::getPublisherFromMediaPropsCallback, base::Unretained(this)), 
 	      std::vector<std::string>(), "", "", extraData, URL_METHOD::GET);
 	} else if (TWITCH_MEDIA_TYPE == providerName) {
-		// TODO
+		MEDIA_PUBLISHER_INFO publisherInfo;
+		publisherInfo.favIconURL_ = "";
+		publisherInfo.channelName_ = getMediaURL(mediaId, providerName);
+		publisherInfo.publisherURL_ = publisherInfo.channelName_ + "/videos";
+		publisherInfo.publisher_ = providerName + "#author:";
+		size_t pos = publisherInfo.channelName_.rfind("/");
+		if (pos != std::string::npos && pos < publisherInfo.channelName_.length() - 1) {
+			publisherInfo.publisher_ += publisherInfo.channelName_.substr(pos + 1);
+			//LOG(ERROR) << "!!!publisher == " << publisherInfo.publisher_;
+		}
+		publisherInfo.publisherName_ = publisherInfo.publisher_;
+		publisherInfo.twitchEventInfo_ = twitchEventInfo;
+		publisherInfo.twitchEventInfo_.status_ = getTwitchStatus(TWITCH_EVENT_INFO(), twitchEventInfo);
+		//LOG(ERROR) << "!!!publisherURL_ == " << publisherInfo.publisherURL_;
+		//LOG(ERROR) << "!!!channelName_ == " << publisherInfo.channelName_;
+
+		saveMediaPublisherInfo(mediaKey, BatHelper::stringifyMediaPublisherInfo(publisherInfo));
+
+		uint64_t realDuration = getTwitchDuration(TWITCH_EVENT_INFO(), twitchEventInfo);
+		//LOG(ERROR) << "!!!realDuration == " << realDuration;
+		if (0 == realDuration) {
+			return;
+		}
+
+		{
+	  	std::lock_guard<std::mutex> guard(callbacks_access_mutex_);
+
+	  	std::map<std::string, BatGetMedia::GetMediaPublisherInfoCallback>::iterator iter = mapCallbacks_.find(extraData.string5);
+	  	DCHECK(iter != mapCallbacks_.end());
+	  	BatGetMedia::GetMediaPublisherInfoCallback callback = iter->second;
+	  	mapCallbacks_.erase(iter);
+	  	callback.Run(realDuration, publisherInfo);
+	  }
 	}
+}
+
+std::string BatGetMedia::getTwitchStatus(const TWITCH_EVENT_INFO& oldEventInfo, const TWITCH_EVENT_INFO& newEventInfo) {
+	std::string status = "playing";
+
+	if (
+		(
+			newEventInfo.event_ == "video_pause" &&
+			oldEventInfo.event_ != "video_pause"
+		) ||	// User clicked pause (we need to exclude seeking while paused)
+		(
+			newEventInfo.event_ == "video_pause" &&
+			oldEventInfo.event_ == "video_pause" &&
+			oldEventInfo.status_ == "playing"
+		) ||	// User clicked pause as soon as he clicked play
+		(
+			newEventInfo.event_ == "player_click_vod_seek" &&
+			oldEventInfo.status_ == "paused"
+		)	// Seeking a video while it is paused
+	) {
+		status = "paused";
+	}
+
+	// User pauses a video, then seeks it and plays it again
+	if (newEventInfo.event_ == "video_pause" &&
+			oldEventInfo.event_ == "player_click_vod_seek" &&
+			oldEventInfo.status_ == "paused") {
+		status = "playing";
+	}
+
+	//LOG(ERROR) << "!!!video status == " << status;
+
+	return status;
+}
+
+uint64_t BatGetMedia::getTwitchDuration(const TWITCH_EVENT_INFO& oldEventInfo, const TWITCH_EVENT_INFO& newEventInfo) {
+	// Remove duplicated events
+	if (oldEventInfo.event_ == newEventInfo.event_ &&
+			oldEventInfo.time_ == newEventInfo.time_) {
+		return 0;
+	}
+
+	if (newEventInfo.event_ == "video-play") {	// Start event
+		return TWITCH_MINIMUM_SECONDS * 1000;
+	}
+
+	double time = 0;
+	std::stringstream tempTime(newEventInfo.time_);
+  double currentTime = 0;
+  tempTime >> currentTime;
+  std::stringstream tempOld(oldEventInfo.time_);
+  double oldTime = 0;
+  tempOld >> oldTime;
+
+  if (oldEventInfo.event_ == "video-play") {
+  	time = currentTime - oldTime - TWITCH_MINIMUM_SECONDS;
+  } else if (newEventInfo.event_ == "minute-watched" ||	// Minute watched
+  		newEventInfo.event_ == "buffer-empty" ||	// Run out of buffer
+  		newEventInfo.event_ == "video_error" ||	// Video has some problems
+  		newEventInfo.event_ == "video_end" ||	// Video ended
+  		(newEventInfo.event_ == "player_click_vod_seek" && oldEventInfo.status_ == "paused") ||	// Vod seek
+  		(
+  			newEventInfo.event_ == "video_pause" &&
+  			(
+  				(
+  					oldEventInfo.event_ != "video_pause" &&
+  					oldEventInfo.event_ != "player_click_vod_seek"
+  				) ||
+  				oldEventInfo.status_ == "playing"
+				)
+			)	// User paused video
+		) {
+  	time = currentTime - oldTime;
+  }
+
+  if (time < 0) {
+  	return 0;
+  }
+
+  if (time > TWITCH_MAXIMUM_SECONDS_CHUNK) {
+  	time = TWITCH_MAXIMUM_SECONDS_CHUNK;
+  }
+
+  return (uint64_t)(time * 1000.0);
 }
 
 void BatGetMedia::getPublisherFromMediaPropsCallback(bool result, const std::string& response, 
 		const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
-  LOG(ERROR) << "!!!!getPublisherFromMediaPropsCallback response == " << response;
+  //LOG(ERROR) << "!!!!getPublisherFromMediaPropsCallback response == " << response;
   if (YOUTUBE_MEDIA_TYPE == extraData.string1) {
 		std::string publisherURL = BatHelper::getJSONValue("author_url", response);
 		std::string publisherName = BatHelper::getJSONValue("author_name", response);
-		LOG(ERROR) << "!!!!publisherURL == " << publisherURL;
-		LOG(ERROR) << "!!!!publisherName == " << publisherName;
+		//LOG(ERROR) << "!!!!publisherURL == " << publisherURL;
+		//LOG(ERROR) << "!!!!publisherName == " << publisherName;
 		FETCH_CALLBACK_EXTRA_DATA_ST newExtraData(extraData);
 		newExtraData.string3 = publisherURL;
 		newExtraData.string4 = publisherName;
 		batClientWebRequest_.run(publisherURL,
 	      base::Bind(&BatGetMedia::getPublisherInfoCallback, base::Unretained(this)), 
 	      std::vector<std::string>(), "", "", newExtraData, URL_METHOD::GET);
-	} else if (TWITCH_MEDIA_TYPE == extraData.string1) {
-		// TODO
 	}
 }
 
 void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& response, 
 		const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
 	//LOG(ERROR) << "!!!!getPublisherInfoCallback == " << response;
-	LOG(ERROR) << "!!!!getPublisherInfoCallback response.length() == " << response.length();
 	if (YOUTUBE_MEDIA_TYPE == extraData.string1) {
 		size_t pos = response.find("<div id=\"img-preload\"");
 		std::string favIconURL;
@@ -139,13 +263,13 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
 		  	pos = std::string::npos;
 		  }
 		} while (favIconURL.find("photo.jpg") == std::string::npos);
-		LOG(ERROR) << "publisher's picture URL == " << favIconURL;
+		//LOG(ERROR) << "publisher's picture URL == " << favIconURL;
 		std::string channelName = extraData.string3 + "/videos";
 		pos = extraData.string3.rfind("/");
 		std::string publisher = extraData.string1 + "#channel:";
 		if (pos != std::string::npos && pos < extraData.string3.length() - 1) {
 			publisher += extraData.string3.substr(pos + 1);
-			LOG(ERROR) << "!!!publisher == " << publisher;
+			//LOG(ERROR) << "!!!publisher == " << publisher;
 		}
 		MEDIA_PUBLISHER_INFO publisherInfo;
 		publisherInfo.publisherName_ = extraData.string4;
@@ -169,11 +293,7 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
 	  	mapCallbacks_.erase(iter);
 	  	callback.Run(extraData.value1, publisherInfo);
 	  }
-	} else if (TWITCH_MEDIA_TYPE == extraData.string1) {
-		// TODO
 	}
-	// TODO implement the fetch of a photo and channel name
-	//std::string title = BatHelper::getHTMLItem(response, /*"og:title"*/"div id=\"mi");
 }
 
 void BatGetMedia::saveMediaPublisherInfo(const std::string& mediaKey, const std::string& stringifiedPublisher) {
@@ -195,7 +315,7 @@ std::string BatGetMedia::getMediaURL(const std::string& mediaId, const std::stri
 	if (YOUTUBE_MEDIA_TYPE == providerName) {
 		res = "https://www.youtube.com/watch?v=" + mediaId;
 	} else if (TWITCH_MEDIA_TYPE == providerName) {
-		// TODO
+		res = "https://www.twitch.tv/" + mediaId;
 	}
 
 	return res;
