@@ -88,6 +88,9 @@ namespace ledger {
   }
 
   void Ledger::saveVisit(const std::string& publisher, const uint64_t& duration) {
+    // TODO debug
+    //bat_client_->recoverWallet(bat_client_->getWalletPassphrase());
+    //
     if (!isBatPublisherExist()) {
       assert(false);
 

@@ -22,12 +22,14 @@ static_library("braveLedger") {
     "//anonize2/anon",
     "//anonize2/relic/include",
     "//anonize2/relic/include/low",
+    "//bip39wally-core/include"
   ]
 
   deps = [
     "//base",
     "//net",
     "//anonize2",
+    "//bip39wally-core",
     "//v8",
     "//net:net_utility_services",
     "//net:net_with_v8",

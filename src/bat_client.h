@@ -44,12 +44,14 @@ public:
   void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);
 
   void prepareBallots();
+  std::string getWalletPassphrase();
+  void recoverWallet(const std::string& passPhrase);
 
 private:
+  void recoverWalletPublicKeyCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void recoverWalletCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void prepareBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction);
-  void commitBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction);
   void prepareBallotCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void commitBallotCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void vote(const std::string& publisher, const std::string& viewingId);
   void loadStateOrRegisterPersonaCallback(bool result, const CLIENT_STATE_ST& state);
   void registerPersona();
