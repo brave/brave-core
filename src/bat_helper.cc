@@ -12,6 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/sequenced_task_runner.h"
 #include "base/bind.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task_scheduler/post_task.h"
 #include "chrome/browser/browser_process.h"
 #include "browser_thread.h"
@@ -67,18 +68,26 @@ TRANSACTION_ST::TRANSACTION_ST(const TRANSACTION_ST& transaction) {
   altCurrency_ = transaction.altCurrency_;
   probi_ = transaction.probi_;
   votes_ = transaction.votes_;
+  ballots_ = transaction.ballots_;
 }
 TRANSACTION_ST::~TRANSACTION_ST() {}
 
 BALLOT_ST::BALLOT_ST():
-  offset_(0) {}
+  offset_(0),
+  delayStamp_(0) {}
 BALLOT_ST::BALLOT_ST(const BALLOT_ST& ballot) {
   viewingId_ = ballot.viewingId_;
   surveyorId_ = ballot.surveyorId_;
   publisher_ = ballot.publisher_;
   offset_ = ballot.offset_;
+  prepareBallot_ = ballot.prepareBallot_;
+  delayStamp_ = ballot.delayStamp_;
 }
 BALLOT_ST::~BALLOT_ST() {}
+
+TRANSACTION_BALLOT_ST::TRANSACTION_BALLOT_ST():
+  offset_(0) {}
+TRANSACTION_BALLOT_ST::~TRANSACTION_BALLOT_ST() {}
 
 CLIENT_STATE_ST::CLIENT_STATE_ST():
   bootStamp_(0),
@@ -146,6 +155,15 @@ WALLET_PROPERTIES_ST::~WALLET_PROPERTIES_ST() {}
 FETCH_CALLBACK_EXTRA_DATA_ST::FETCH_CALLBACK_EXTRA_DATA_ST():
   value1(0),
   boolean1(true) {}
+FETCH_CALLBACK_EXTRA_DATA_ST::FETCH_CALLBACK_EXTRA_DATA_ST(const FETCH_CALLBACK_EXTRA_DATA_ST& extraData):
+  value1(extraData.value1),
+  string1(extraData.string1),
+  string2(extraData.string2),
+  string3(extraData.string3),
+  string4(extraData.string4),
+  string5(extraData.string5),
+  boolean1(extraData.boolean1) {}
+
 FETCH_CALLBACK_EXTRA_DATA_ST::~FETCH_CALLBACK_EXTRA_DATA_ST() {}
 
 SURVEYOR_INFO_ST::SURVEYOR_INFO_ST() {}
@@ -157,6 +175,36 @@ CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
 
 UNSIGNED_TX::UNSIGNED_TX() {}
 UNSIGNED_TX::~UNSIGNED_TX() {}
+
+SURVEYOR_ST::SURVEYOR_ST() {}
+SURVEYOR_ST::~SURVEYOR_ST() {}
+
+MEDIA_PUBLISHER_INFO::MEDIA_PUBLISHER_INFO() {}
+MEDIA_PUBLISHER_INFO::MEDIA_PUBLISHER_INFO(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo):
+  publisherName_(mediaPublisherInfo.publisherName_),
+  publisherURL_(mediaPublisherInfo.publisherURL_),
+  favIconURL_(mediaPublisherInfo.favIconURL_),
+  channelName_(mediaPublisherInfo.channelName_),
+  publisher_(mediaPublisherInfo.publisher_) {}
+MEDIA_PUBLISHER_INFO::~MEDIA_PUBLISHER_INFO() {}
+
+
+void split(std::vector<std::string>& tmp, std::string query, char delimiter)
+{
+  std::stringstream ss(query);
+  std::string item;
+  while (std::getline(ss, item, delimiter)) {
+    if (query[0] != '\n') {
+      tmp.push_back(item);
+    }
+  }
+}
+
+void DecodeURLChars(const std::string& input, std::string& output) {
+  url::RawCanonOutputW<1024> canonOutput;
+  url::DecodeURLEscapeSequences(input.c_str(), input.length(), &canonOutput);
+  output = base::UTF16ToUTF8(base::StringPiece16(canonOutput.data(), canonOutput.length()));
+}
 
 
 
@@ -459,21 +507,19 @@ void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
       if (ballotDictionary->Get("offset", &value)) {
         value->GetAsInteger((int*)&ballot.offset_);
       }
+      if (ballotDictionary->Get("prepareBallot", &value)) {
+        value->GetAsString(&ballot.prepareBallot_);
+      }
+      if (ballotDictionary->Get("delayStamp", &value)) {
+        std::string delayStamp;
+        value->GetAsString(&delayStamp);
+        std::stringstream temp(delayStamp);
+        temp >> ballot.delayStamp_;
+      }
+
       state.ballots_.push_back(ballot);
     }
   }
-
-  /*std::unique_ptr<base::ListValue> ballots(new base::ListValue());
-  for (size_t i = 0; i < state.ballots_.size(); i++) {
-    std::unique_ptr<base::DictionaryValue> ballot_dict(new base::DictionaryValue());
-    ballot_dict->SetString("viewingId", state.ballots_[i].viewingId_);
-    ballot_dict->SetString("surveyorId", state.ballots_[i].surveyorId_);
-    ballot_dict->SetString("publisher", state.ballots_[i].publisher_);
-    ballot_dict->SetInteger("offset", state.ballots_[i].offset_);
-
-    ballots->Append(std::make_unique<base::Value>(ballot_dict->Clone()));
-  }
-  root_dict.Set("ballots", std::move(ballots));*/
 }
 
 void BatHelper::getJSONRates(const std::string& json, std::map<std::string, double>& rates) {
@@ -515,6 +561,38 @@ void BatHelper::getJSONRates(const std::string& json, std::map<std::string, doub
     double dValue = 0;
     value->GetAsDouble(&dValue);
     rates.insert(std::pair<std::string, double>("EUR", dValue));
+  }
+}
+
+void BatHelper::getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor) {
+  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
+  if (nullptr == json_object.get()) {
+      LOG(ERROR) << "BatHelper::getJSONSurveyor: incorrect json object";
+
+      return;
+  }
+
+  const base::DictionaryValue* childTopDictionary = nullptr;
+  json_object->GetAsDictionary(&childTopDictionary);
+  if (nullptr == childTopDictionary) {
+      return;
+  }
+
+  const base::Value* value = nullptr;
+  if (childTopDictionary->Get("signature", &value)) {
+    value->GetAsString(&surveyor.signature_);
+  }
+  if (childTopDictionary->Get("surveyorId", &value)) {
+    value->GetAsString(&surveyor.surveyorId_);
+  }
+  if (childTopDictionary->Get("surveyVK", &value)) {
+    value->GetAsString(&surveyor.surveyVK_);
+  }
+  if (childTopDictionary->Get("registrarVK", &value)) {
+    value->GetAsString(&surveyor.registrarVK_);
+  }
+  if (childTopDictionary->Get("surveySK", &value)) {
+    value->GetAsString(&surveyor.surveySK_);
   }
 }
 
@@ -1065,6 +1143,8 @@ std::string BatHelper::stringifyState(const CLIENT_STATE_ST& state) {
     ballot_dict->SetString("surveyorId", state.ballots_[i].surveyorId_);
     ballot_dict->SetString("publisher", state.ballots_[i].publisher_);
     ballot_dict->SetInteger("offset", state.ballots_[i].offset_);
+    ballot_dict->SetString("prepareBallot", state.ballots_[i].prepareBallot_);
+    ballot_dict->SetString("delayStamp", std::to_string(state.ballots_[i].delayStamp_));
 
     ballots->Append(std::make_unique<base::Value>(ballot_dict->Clone()));
   }
@@ -1082,6 +1162,53 @@ std::string BatHelper::stringifyPublisherState(const PUBLISHER_STATE_ST& state) 
   root_dict.SetInteger("min_pubslisher_duration", state.min_pubslisher_duration_);
   root_dict.SetInteger("min_visits", state.min_visits_);
   root_dict.SetBoolean("allow_non_verified", state.allow_non_verified_);
+
+  base::JSONWriter::Write(root_dict, &res);
+
+  return res;
+}
+
+void BatHelper::getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
+  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
+  if (nullptr == json_object.get()) {
+      LOG(ERROR) << "BatHelper::getJSONMediaPublisherInfo: incorrect json object";
+
+      return;
+  }
+
+  const base::DictionaryValue* childTopDictionary = nullptr;
+  json_object->GetAsDictionary(&childTopDictionary);
+  if (nullptr == childTopDictionary) {
+      return;
+  }
+  const base::Value* value = nullptr;
+  if (childTopDictionary->Get("publisherName", &value)) {
+    value->GetAsString(&mediaPublisherInfo.publisherName_);
+  }
+  if (childTopDictionary->Get("publisherURL", &value)) {
+    value->GetAsString(&mediaPublisherInfo.publisherURL_);
+  }
+  if (childTopDictionary->Get("favIconURL", &value)) {
+    value->GetAsString(&mediaPublisherInfo.favIconURL_);
+  }
+  if (childTopDictionary->Get("channelName", &value)) {
+    value->GetAsString(&mediaPublisherInfo.channelName_);
+  }
+  if (childTopDictionary->Get("publisher", &value)) {
+    value->GetAsString(&mediaPublisherInfo.publisher_);
+  }
+}
+
+std::string BatHelper::stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
+  std::string res;
+
+  base::DictionaryValue root_dict;
+
+  root_dict.SetString("publisherName", mediaPublisherInfo.publisherName_);
+  root_dict.SetString("publisherURL", mediaPublisherInfo.publisherURL_);
+  root_dict.SetString("favIconURL", mediaPublisherInfo.favIconURL_);
+  root_dict.SetString("channelName", mediaPublisherInfo.channelName_);
+  root_dict.SetString("publisher", mediaPublisherInfo.publisher_);
 
   base::JSONWriter::Write(root_dict, &res);
 
@@ -1245,7 +1372,7 @@ void BatHelper::readPublisherStateFile(BatHelper::ReadPublisherStateCallback cal
 
 void BatHelper::saveState(const CLIENT_STATE_ST& state) {
   std::string data = BatHelper::stringifyState(state);
-  LOG(ERROR) << "!!!saveState == " << data;
+  //LOG(ERROR) << "!!!saveState == " << data;
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
@@ -1275,6 +1402,96 @@ void BatHelper::loadPublisherState(BatHelper::ReadPublisherStateCallback callbac
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   task_runner->PostTask(FROM_HERE, base::Bind(&BatHelper::readPublisherStateFile, callback));
 }
+
+void BatHelper::getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts) {
+  std::vector<std::string> vars;
+  split(vars, query, '&');
+  for (size_t i = 0; i < vars.size(); i++) {
+    std::vector<std::string> var;
+    split(var, vars[i], '=');
+    if (var.size() != 2) {
+      continue;
+    }
+    std::string varName;
+    std::string varValue;
+    DecodeURLChars(var[0], varName);
+    DecodeURLChars(var[1], varValue);
+    parts[varName] = varValue;
+  }
+}
+
+std::string BatHelper::getMediaId(const std::map<std::string, std::string>& data, const std::string& type) {
+  if (YOUTUBE_MEDIA_TYPE == type) {
+    std::map<std::string, std::string>::const_iterator iter = data.find("docid");
+    if (iter != data.end()) {
+      return iter->second;
+    }
+  } else if (TWITCH_MEDIA_TYPE == type) {
+    // TODO
+  }
+
+  return "";
+}
+
+std::string BatHelper::getMediaKey(const std::string& mediaId, const std::string& type) {
+  return type + "_" + mediaId;
+}
+
+uint64_t BatHelper::getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type) {
+  uint64_t duration = 0;
+
+  if (YOUTUBE_MEDIA_TYPE == type) {
+    std::map<std::string, std::string>::const_iterator iterSt = data.find("st");
+    std::map<std::string, std::string>::const_iterator iterEt = data.find("et");
+    if (iterSt != data.end() && iterEt != data.end()) {
+      std::vector<std::string> startTime;
+      std::vector<std::string> endTime;
+      split(startTime, iterSt->second, ',');
+      split(endTime, iterEt->second, ',');
+      if (startTime.size() != endTime.size()) {
+        return 0;
+      }
+      float tempTime = 0;
+      for (size_t i = 0; i < startTime.size(); i++) {
+        std::stringstream tempET(endTime[i]);
+        std::stringstream tempST(startTime[i]);
+        float st = 0;
+        float et = 0;
+        tempET >> et;
+        tempST >> st;
+        tempTime = et - st;
+        //LOG(ERROR) << "!!!st == " << st;
+        //LOG(ERROR) << "!!!et == " << et;
+      }
+      duration = (uint64_t)(tempTime * 1000.0);
+    }
+  } else if (TWITCH_MEDIA_TYPE == type) {
+    // TODO
+  }
+
+  return duration;
+}
+
+/*std::string BatHelper::getHTMLItem(const std::string& html, const std::string& item) {
+  std::string res;
+
+  size_t pos = html.find(item);
+  LOG(ERROR) << "pos == " << pos;
+  if (pos != std::string::npos) {
+    pos = html.find("content=\"", pos);
+    LOG(ERROR) << "pos == " << pos;
+    if (pos != std::string::npos) {
+      size_t posEnd = html.find("\">", pos);
+      LOG(ERROR) << "posEnd == " << pos;
+      if (posEnd != std::string::npos) {
+        res = html.substr(pos + 9, posEnd - pos - 9);
+      }
+    }
+  }
+  LOG(ERROR) << "getHTMLItem res == " << res;
+
+  return res;
+}*/
 
 // Enable emscripten calls
 /*void BatHelper::readEmscriptenInternal() {

@@ -40,6 +40,12 @@
 #define LEDGER_STATE_FILENAME           "6e16793f-52e1-41fb-b6a2-24b99b47e8f8"
 #define LEDGER_PUBLISHER_STATE_FILENAME "ee1e6705-bc4f-4aba-b03c-57cc8cb2ae4d"
 #define PUBLISHERS_DB_NAME              "d2c799cd-f37f-4230-9a04-ca23ba5be240"
+#define MEDIA_CACHE_DB_NAME             "9956db89-9105-420b-9ad4-49348bc536af"
+
+#define YOUTUBE_MEDIA_TYPE							"youtube"
+#define TWITCH_MEDIA_TYPE								"twitch"
+#define YOUTUBE_PROVIDER_NAME						"YouTube"
+#define YOUTUBE_PROVIDER_URL						"https://www.youtube.com/oembed"
 
 #define SEED_LENGTH                     32
 #define SALT_LENGTH                     64

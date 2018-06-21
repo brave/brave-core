@@ -150,8 +150,8 @@ void BatPublisher::saveVisitInternal(const std::string& publisher, const uint64_
 }
 
 void BatPublisher::saveVisit(const std::string& publisher, const uint64_t& duration,
-    BatPublisher::SaveVisitCallback callback) {
-  if (duration < state_.min_pubslisher_duration_) {
+    BatPublisher::SaveVisitCallback callback, bool ignoreMinTime) {
+  if (!ignoreMinTime && duration < state_.min_pubslisher_duration_) {
     return;
   }
 
@@ -408,6 +408,7 @@ void BatPublisher::synopsisNormalizerInternal() {
   unsigned int totalPercents = 0;
   for (std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
     if (!isPublisherVisible(iter->second)) {
+      //LOG(ERROR) << "!!!not visible " << iter->first;
       continue;
     }
     realPercents.push_back((double)iter->second.score_ / (double)totalScores * 100.0);
@@ -434,14 +435,16 @@ void BatPublisher::synopsisNormalizerInternal() {
         valueToChange = i;
       }
     }
-    if (totalPercents > 100) {
-      percents[valueToChange] -= 1;
-      totalPercents -= 1;
-    } else {
-      percents[valueToChange] += 1;
-      totalPercents += 1;
+    if (0 != percents.size()) {
+      if (totalPercents > 100) {
+        percents[valueToChange] -= 1;
+        totalPercents -= 1;
+      } else {
+        percents[valueToChange] += 1;
+        totalPercents += 1;
+      }
+      roundoffs[valueToChange] = 0;
     }
-    roundoffs[valueToChange] = 0;
   }
   size_t currentValue = 0;
   for (std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {

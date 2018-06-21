@@ -13,7 +13,7 @@
 #include <vector>
 
 namespace leveldb {
-class DB;
+  class DB;
 }
 
 namespace bat_publisher {
@@ -27,7 +27,7 @@ public:
 
   void initSynopsis();
   void saveVisit(const std::string& publisher, const uint64_t& duration,
-    BatPublisher::SaveVisitCallback callback);
+    BatPublisher::SaveVisitCallback callback, bool ignoreMinTime);
   void setPublisherTimestampVerified(const std::string& publisher,
     const uint64_t& verifiedTimestamp, const bool& verified);
   void setPublisherFavIcon(const std::string& publisher, const std::string& favicon_url);

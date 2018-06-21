@@ -16,6 +16,10 @@ namespace bat_publisher {
   class BatPublisher;
 }
 
+namespace bat_get_media {
+  class BatGetMedia;
+}
+
 namespace ledger {
 
 class Ledger {
@@ -25,7 +29,7 @@ public:
 
   void createWallet();
   void initSynopsis();
-  void saveVisit(const std::string& publisher, const uint64_t& duration);
+  void saveVisit(const std::string& publisher, const uint64_t& duration, bool ignoreMinTime);
   void saveVisitCallback(const std::string& publisher, const uint64_t& verifiedTimestamp);
   void favIconUpdated(const std::string& publisher, const std::string& favicon_url);
   void setPublisherInclude(const std::string& publisher, const bool& include);
@@ -35,6 +39,7 @@ public:
   void setPublisherMinVisits(const unsigned int& visits);
   void setPublisherAllowNonVerified(const bool& allow);
   void setContributionAmount(const double& amount);
+  void OnMediaRequest(const std::string& url, const std::string& urlQuery, const std::string& type, bool privateTab);
 
   std::string getBATAddress();
   std::string getBTCAddress();
@@ -50,9 +55,11 @@ private:
   void publisherInfoCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void walletPropertiesCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void reconcileCallback(const std::string& viewingId);
+  void OnMediaRequestCallback(const uint64_t& duration, const MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
 
   bat_client::BatClient* bat_client_;
   bat_publisher::BatPublisher* bat_publisher_;
+  bat_get_media::BatGetMedia* bat_get_media_;
 };
 }
 

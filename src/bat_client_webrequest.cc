@@ -40,6 +40,7 @@ namespace bat_client {
         BatHelper::FetchCallback callback, const std::vector<std::string>& headers,
         const std::string& content, const std::string& contentType,
         const FETCH_CALLBACK_EXTRA_DATA_ST& extraData, const URL_METHOD& method) {
+    //LOG(ERROR) << "!!!on runOnThread == " + url;
     std::lock_guard<std::mutex> guard(fetcher_mutex_);
     url_fetchers_.push_back(std::make_unique<URL_FETCH_REQUEST>());
     net::URLFetcher::RequestType requestType = net::URLFetcher::GET;
@@ -62,6 +63,7 @@ namespace bat_client {
     url_fetchers_.back()->url_fetcher_ = net::URLFetcher::Create(GURL(url), requestType, this);
     url_fetchers_.back()->callback_ = callback;
     url_fetchers_.back()->extraData_ = extraData;
+    //LOG(ERROR) << "!!!on runOnThread == " + url;
     url_fetchers_.back()->url_fetcher_->SetRequestContext(g_browser_process->system_request_context());
     for (size_t i = 0; i < headers.size(); i++) {
       url_fetchers_.back()->url_fetcher_->AddExtraRequestHeader(headers[i]);
@@ -88,6 +90,7 @@ namespace bat_client {
   }
 
   void BatClientWebRequest::OnURLFetchComplete(const net::URLFetcher* source) {
+    //LOG(ERROR) << "!!!OnURLFetchComplete";
     int response_code = source->GetResponseCode();
     bool failure = response_code == net::URLFetcher::ResponseCode::RESPONSE_CODE_INVALID ||
       !source->GetStatus().is_success();

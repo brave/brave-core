@@ -11,6 +11,7 @@ static_library("braveLedger") {
     "src/ledger.cc",
     "src/bat_client.cc",
     "src/bat_client_webrequest.cc",
+    "src/bat_get_media.cc",
     "src/bat_helper.cc",
     "src/bat_publisher.cc",
     "src/bat_balance.cc",

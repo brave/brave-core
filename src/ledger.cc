@@ -2,23 +2,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/task_scheduler/post_task.h"
 #include "ledger.h"
 #include "bat_client.h"
+#include "bat_get_media.h"
 #include "bat_publisher.h"
 #include "base/bind.h"
 #include "base/guid.h"
+//#include "chrome/browser/io_thread.h"
 
 #include "logging.h"
 
 
 using namespace bat_client;
 using namespace bat_publisher;
+using namespace bat_get_media;
 
 namespace ledger {
 
   Ledger::Ledger():
-    bat_client_(nullptr),
-    bat_publisher_(nullptr) {
+      bat_client_(nullptr),
+      bat_publisher_(nullptr),
+      bat_get_media_(nullptr) {
+    bat_get_media_ = new BatGetMedia();
   }
 
   Ledger::~Ledger() {
@@ -27,6 +33,9 @@ namespace ledger {
     }
     if (bat_publisher_) {
       delete bat_publisher_;
+    }
+    if (bat_get_media_) {
+      delete bat_get_media_;
     }
   }
 
@@ -87,7 +96,7 @@ namespace ledger {
     // TODO send the balance to the UI via observer or callback
   }
 
-  void Ledger::saveVisit(const std::string& publisher, const uint64_t& duration) {
+  void Ledger::saveVisit(const std::string& publisher, const uint64_t& duration, bool ignoreMinTime) {
     // TODO debug
     //bat_client_->recoverWallet(bat_client_->getWalletPassphrase());
     //
@@ -97,7 +106,7 @@ namespace ledger {
       return;
     }
     bat_publisher_->saveVisit(publisher, duration, base::Bind(&Ledger::saveVisitCallback,
-      base::Unretained(this)));
+      base::Unretained(this)), ignoreMinTime);
   }
 
   void Ledger::saveVisitCallback(const std::string& publisher, const uint64_t& verifiedTimestamp) {
@@ -109,8 +118,8 @@ namespace ledger {
     uint64_t publisherTimestamp = bat_client_->getPublisherTimestamp();
     if (publisherTimestamp <= verifiedTimestamp) {
       //to do debug
-      LOG(ERROR) << "!!!reconcile";
-      run(0);
+      //LOG(ERROR) << "!!!reconcile";
+      //run(0);
       //
       return;
     }
@@ -118,12 +127,14 @@ namespace ledger {
     extraData.value1 = publisherTimestamp;
     extraData.string1 = publisher;
     // Update publisher verified or not flag
+    //LOG(ERROR) << "!!!getting publisher info";
     bat_client_->publisherInfo(publisher, base::Bind(&Ledger::publisherInfoCallback,
       base::Unretained(this)), extraData);
   }
 
   void Ledger::publisherInfoCallback(bool result, const std::string& response,
       const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+    //LOG(ERROR) << "!!!got publisher info";
     if (!result) {
       // TODO errors handling
       return;
@@ -137,8 +148,8 @@ namespace ledger {
     }
     bat_publisher_->setPublisherTimestampVerified(extraData.string1, extraData.value1, verified);
     //to do debug
-    LOG(ERROR) << "!!!reconcile";
-    run(0);
+    //LOG(ERROR) << "!!!reconcile";
+    //run(0);
     //
   }
 
@@ -283,6 +294,40 @@ namespace ledger {
     bat_client_->votePublishers(publishers, ""/*, viewingId*/);
     // TODO call prepareBallots by timeouts like in js library
     bat_client_->prepareBallots();
+  }
+
+  void Ledger::OnMediaRequest(const std::string& url, const std::string& urlQuery, const std::string& type, bool privateTab) {
+    // Don't track private tabs
+    if (privateTab) {
+      return;
+    }
+    //LOG(ERROR) << "!!!media url == " << url;
+    //LOG(ERROR) << "!!!media urlQuery == " << urlQuery;
+    //LOG(ERROR) << "!!!media url type == " << type;
+    std::map<std::string, std::string> parts;
+    BatHelper::getUrlQueryParts(urlQuery, parts);
+
+    std::string mediaId = BatHelper::getMediaId(parts, type);
+    //LOG(ERROR) << "!!!mediaId == " << mediaId;
+    std::string mediaKey = BatHelper::getMediaKey(mediaId, type);
+    //LOG(ERROR) << "!!!mediaKey == " << mediaKey;
+    uint64_t duration = BatHelper::getMediaDuration(parts, mediaKey, type);
+    LOG(ERROR) << "!!!duration == " << duration;
+    if (!bat_get_media_) {
+      return;
+    }
+    scoped_refptr<base::SequencedTaskRunner> task_runner =
+     base::CreateSequencedTaskRunnerWithTraits(
+         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+    task_runner->PostTask(FROM_HERE, base::Bind(&BatGetMedia::getPublisherFromMediaProps, base::Unretained(bat_get_media_), 
+      mediaId, mediaKey, type, duration, base::Bind(&Ledger::OnMediaRequestCallback,
+      base::Unretained(this))));
+
+    //bat_get_media_->getPublisherFromMediaProps();
+  }
+
+  void Ledger::OnMediaRequestCallback(const uint64_t& duration, const MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
+    saveVisit(mediaPublisherInfo.publisher_, duration, true);
   }
 
 }

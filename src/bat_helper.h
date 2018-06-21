@@ -196,11 +196,15 @@ struct WALLET_PROPERTIES_ST {
 
 struct FETCH_CALLBACK_EXTRA_DATA_ST {
   FETCH_CALLBACK_EXTRA_DATA_ST();
+  FETCH_CALLBACK_EXTRA_DATA_ST(const FETCH_CALLBACK_EXTRA_DATA_ST&);
   ~FETCH_CALLBACK_EXTRA_DATA_ST();
 
   uint64_t value1;
   std::string string1;
   std::string string2;
+  std::string string3;
+  std::string string4;
+  std::string string5;
   bool boolean1;
 };
 
@@ -220,6 +224,18 @@ struct SURVEYOR_ST {
   std::string surveyVK_;
   std::string registrarVK_;
   std::string surveySK_;
+};
+
+struct MEDIA_PUBLISHER_INFO {
+  MEDIA_PUBLISHER_INFO();
+  MEDIA_PUBLISHER_INFO(const MEDIA_PUBLISHER_INFO&);
+  ~MEDIA_PUBLISHER_INFO();
+
+  std::string publisherName_;
+  std::string publisherURL_;
+  std::string favIconURL_;
+  std::string channelName_;
+  std::string publisher_;
 };
 
 enum URL_METHOD {
@@ -249,6 +265,7 @@ public:
   static void getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
   static void getJSONRates(const std::string& json, std::map<std::string, double>& rates);
   static void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor);
+  static void getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
   static std::vector<uint8_t> generateSeed();
   static std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
   static void getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
@@ -261,6 +278,7 @@ public:
   static std::string stringifyPublisherState(const PUBLISHER_STATE_ST& state);
   static std::string stringifyPublisher(const PUBLISHER_ST& publisher_st);
   static std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx);
+  static std::string stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
   static std::vector<uint8_t> getSHA256(const std::string& in);
   static std::string getBase64(const std::vector<uint8_t>& in);
   static std::vector<uint8_t> getFromBase64(const std::string& in);
@@ -280,10 +298,15 @@ public:
   static void writePublisherStateFile(const std::string& data);
   // We have to implement different function for iOS, probably laptop
   static void readPublisherStateFile(BatHelper::ReadPublisherStateCallback callback);
+  static void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts);
+  static std::string getMediaId(const std::map<std::string, std::string>& data, const std::string& type);
+  static std::string getMediaKey(const std::string& mediaId, const std::string& type);
+  static uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);
+  //static std::string getHTMLItem(const std::string& html, const std::string& item);
 
-  // to do debug
-  static void readEmscripten();
-  static void readEmscriptenInternal();
+  // TODO debug
+  //static void readEmscripten();
+  //static void readEmscriptenInternal();
   //
 
 private:
