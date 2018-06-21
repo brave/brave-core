@@ -7,6 +7,10 @@
 
 #include "chrome/browser/browser_process_impl.h"
 
+namespace brave {
+class BraveStatsUpdater;
+}
+
 namespace brave_shields {
 class AdBlockService;
 class AdBlockRegionalService;
@@ -35,6 +39,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
+  std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcessImpl);
 };

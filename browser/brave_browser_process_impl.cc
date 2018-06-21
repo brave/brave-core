@@ -4,12 +4,16 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 
+#include "base/bind.h"
+#include "base/task_scheduler/post_task.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
+#include "brave/browser/brave_stats_updater.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/io_thread.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "components/component_updater/component_updater_service.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -25,6 +29,20 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(
     : BrowserProcessImpl(local_state_task_runner) {
   g_browser_process = this;
   g_brave_browser_process = this;
+
+  brave_stats_updater_ = brave::BraveStatsUpdaterFactory();
+
+  scoped_refptr<base::SequencedTaskRunner> task_runner =
+      base::CreateSequencedTaskRunnerWithTraits(
+          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+  task_runner->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](brave::BraveStatsUpdater* stats_updater) {
+            stats_updater->Start();
+          },
+          base::Unretained(brave_stats_updater_.get())),
+      base::TimeDelta::FromMinutes(2));
 }
 
 component_updater::ComponentUpdateService*
