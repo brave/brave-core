@@ -60,6 +60,14 @@ struct WALLET_INFO_ST {
   std::vector<uint8_t> keyInfoSeed_;
 };
 
+struct TRANSACTION_BALLOT_ST {
+  TRANSACTION_BALLOT_ST();
+  ~TRANSACTION_BALLOT_ST();
+
+  std::string publisher_;
+  unsigned int offset_;
+};
+
 struct TRANSACTION_ST {
   TRANSACTION_ST();
   TRANSACTION_ST(const TRANSACTION_ST& transaction);
@@ -83,6 +91,7 @@ struct TRANSACTION_ST {
   std::string altCurrency_;
   std::string probi_;
   unsigned int votes_;
+  std::vector<TRANSACTION_BALLOT_ST> ballots_;
 };
 
 struct BALLOT_ST {
@@ -94,6 +103,9 @@ struct BALLOT_ST {
   std::string surveyorId_;
   std::string publisher_;
   unsigned int offset_;
+  std::string prepareBallot_;
+  uint64_t delayStamp_;
+
 };
 
 struct CLIENT_STATE_ST {
@@ -188,6 +200,7 @@ struct FETCH_CALLBACK_EXTRA_DATA_ST {
 
   uint64_t value1;
   std::string string1;
+  std::string string2;
   bool boolean1;
 };
 
@@ -196,6 +209,17 @@ struct SURVEYOR_INFO_ST {
   ~SURVEYOR_INFO_ST();
 
   std::string surveyorId_;
+};
+
+struct SURVEYOR_ST {
+  SURVEYOR_ST();
+  ~SURVEYOR_ST();
+
+  std::string signature_;
+  std::string surveyorId_;
+  std::string surveyVK_;
+  std::string registrarVK_;
+  std::string surveySK_;
 };
 
 enum URL_METHOD {
@@ -224,6 +248,7 @@ public:
   static void getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx);
   static void getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
   static void getJSONRates(const std::string& json, std::map<std::string, double>& rates);
+  static void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor);
   static std::vector<uint8_t> generateSeed();
   static std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
   static void getPublicKeyFromSeed(const std::vector<uint8_t>& seed,

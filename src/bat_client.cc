@@ -394,7 +394,7 @@ void BatClient::registerViewingCallback(bool result, const std::string& response
   currentReconcile_.anonizeViewingId_.erase(std::remove(currentReconcile_.anonizeViewingId_.begin(), currentReconcile_.anonizeViewingId_.end(), '-'), currentReconcile_.anonizeViewingId_.end());
   currentReconcile_.anonizeViewingId_.erase(12, 1);
   std::string proof = getAnonizeProof(currentReconcile_.registrarVK_, currentReconcile_.anonizeViewingId_, currentReconcile_.preFlight_);
-  LOG(ERROR) << "!!!proof1 == " << proof;
+  //LOG(ERROR) << "!!!proof1 == " << proof;
 
   std::string keys[1] = {"proof"};
   std::string values[1] = {proof};
@@ -496,15 +496,17 @@ void BatClient::vote(const std::string& publisher, const std::string& viewingId)
 }
 
 void BatClient::prepareBallots() {
+  uint64_t currentTime = BatHelper::currentTime() * 1000;
   std::lock_guard<std::mutex> guard(ballots_access_mutex_);
   for (int i = state_.ballots_.size() - 1; i >= 0; i--) {
     TRANSACTION_ST transaction;
     bool breakTheLoop = false;
     std::lock_guard<std::mutex> guard(transactions_access_mutex_);
     for (size_t j = 0; j < state_.transactions_.size(); j++) {
-      // TODO check on valid credentials for transaction,
-      // ballot.prepareBallot and ballot.delayStamp
-      if (state_.transactions_[j].viewingId_ == state_.ballots_[i].viewingId_) {
+      // TODO check on valid credentials for transaction
+      if (state_.transactions_[j].viewingId_ == state_.ballots_[i].viewingId_
+          && (state_.ballots_[i].prepareBallot_.empty() || 0 == state_.ballots_[i].delayStamp_
+            || state_.ballots_[i].delayStamp_ <= currentTime)) {
         // TODO check on ballot.prepareBallot and call commitBallot if it exist
         prepareBallot(state_.ballots_[i], state_.transactions_[j]);
         breakTheLoop = true;
@@ -522,14 +524,88 @@ void BatClient::prepareBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& tra
   url::StdStringCanonOutput surveyorIdCanon(&surveyorIdEncoded);
   url::EncodeURIComponent(ballot.surveyorId_.c_str(), ballot.surveyorId_.length(), &surveyorIdCanon);
   surveyorIdCanon.Complete();
+  FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+  extraData.string1 = ballot.viewingId_;
+  extraData.string2 = ballot.surveyorId_;
   batClientWebRequest_.run(buildURL((std::string)SURVEYOR_VOTING + surveyorIdEncoded + "/" + transaction.anonizeViewingId_, PREFIX_V2),
     base::Bind(&BatClient::prepareBallotCallback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      base::Unretained(this)), std::vector<std::string>(), "", "", extraData,
       URL_METHOD::GET);
 }
 
 void BatClient::prepareBallotCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   LOG(ERROR) << "!!!!prepareBallotCallback response == " << response;
+  {
+    std::lock_guard<std::mutex> guard(ballots_access_mutex_);
+    for (int i = state_.ballots_.size() - 1; i >= 0; i--) {
+      if (state_.ballots_[i].viewingId_ == extraData.string1
+          && state_.ballots_[i].surveyorId_ == extraData.string2) {
+        state_.ballots_[i].prepareBallot_ = response;
+        // TODO make random from 1 second to 3 hours.
+        state_.ballots_[i].delayStamp_ = BatHelper::currentTime() * 1000;
+        // TODO debug, just calling commitBallot here for testing purposes
+        {
+          std::lock_guard<std::mutex> guard(transactions_access_mutex_);
+          for (size_t j = 0; j < state_.transactions_.size(); j++) {
+            if (state_.transactions_[j].viewingId_ == state_.ballots_[i].viewingId_) {
+              commitBallot(state_.ballots_[i], state_.transactions_[j]);
+            }
+          }
+        }
+        break;
+      }
+    }
+  }
+  BatHelper::saveState(state_);
+}
+
+void BatClient::commitBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction) {
+  SURVEYOR_ST surveyor;
+  BatHelper::getJSONSurveyor(ballot.prepareBallot_, surveyor);
+  std::string surveyorIdEncoded;
+  url::StdStringCanonOutput surveyorIdCanon(&surveyorIdEncoded);
+  url::EncodeURIComponent(surveyor.surveyorId_.c_str(), surveyor.surveyorId_.length(), &surveyorIdCanon);
+  surveyorIdCanon.Complete();
+
+  std::string signatureToSend;
+  //LOG(ERROR) << "!!!full signature == " << surveyor.signature_;
+  size_t delimeterPos = surveyor.signature_.find(',');
+  if (std::string::npos != delimeterPos && delimeterPos + 1 <= surveyor.signature_.length()) {
+    signatureToSend = surveyor.signature_.substr(delimeterPos + 1);
+    //LOG(ERROR) << "!!!signatureToSend == " << signatureToSend;
+    if (signatureToSend.length() > 1 && signatureToSend[0] == ' ') {
+      signatureToSend.erase(0, 1);
+    }
+  }
+  //LOG(ERROR) << "!!!result signature == " << signatureToSend;
+  std::string keysMsg[1] = {"publisher"};
+  std::string valuesMsg[1] = {ballot.publisher_};
+  std::string msg = BatHelper::stringify(keysMsg, valuesMsg, 1);
+
+  const char* proof = submitMessage(msg.c_str(), transaction.masterUserToken_.c_str(),
+    transaction.registrarVK_.c_str(), signatureToSend.c_str(), surveyor.surveyorId_.c_str(), surveyor.surveyVK_.c_str());
+  //LOG(ERROR) << "!!!proof == " << proof;
+  std::string anonProof;
+  if (nullptr != proof) {
+    anonProof = proof;
+    free((void*)proof);
+  }
+
+  std::string keys[1] = {"proof"};
+  std::string values[1] = {anonProof};
+  std::string payload = BatHelper::stringify(keys, values, 1);
+
+  FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+  batClientWebRequest_.run(buildURL((std::string)SURVEYOR_VOTING + surveyorIdEncoded, PREFIX_V2),
+    base::Bind(&BatClient::commitBallotCallback,
+      base::Unretained(this)), std::vector<std::string>(), payload, "", extraData,
+      URL_METHOD::PUT);
+}
+
+void BatClient::commitBallotCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  LOG(ERROR) << "!!!!commitBallotCallback response == " << response;
+
+  // TODO add ballots to transaction, saveState, remove ballots from vector of ballots
 }
 
 }

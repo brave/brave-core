@@ -67,18 +67,26 @@ TRANSACTION_ST::TRANSACTION_ST(const TRANSACTION_ST& transaction) {
   altCurrency_ = transaction.altCurrency_;
   probi_ = transaction.probi_;
   votes_ = transaction.votes_;
+  ballots_ = transaction.ballots_;
 }
 TRANSACTION_ST::~TRANSACTION_ST() {}
 
 BALLOT_ST::BALLOT_ST():
-  offset_(0) {}
+  offset_(0),
+  delayStamp_(0) {}
 BALLOT_ST::BALLOT_ST(const BALLOT_ST& ballot) {
   viewingId_ = ballot.viewingId_;
   surveyorId_ = ballot.surveyorId_;
   publisher_ = ballot.publisher_;
   offset_ = ballot.offset_;
+  prepareBallot_ = ballot.prepareBallot_;
+  delayStamp_ = ballot.delayStamp_;
 }
 BALLOT_ST::~BALLOT_ST() {}
+
+TRANSACTION_BALLOT_ST::TRANSACTION_BALLOT_ST():
+  offset_(0) {}
+TRANSACTION_BALLOT_ST::~TRANSACTION_BALLOT_ST() {}
 
 CLIENT_STATE_ST::CLIENT_STATE_ST():
   bootStamp_(0),
@@ -157,6 +165,9 @@ CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
 
 UNSIGNED_TX::UNSIGNED_TX() {}
 UNSIGNED_TX::~UNSIGNED_TX() {}
+
+SURVEYOR_ST::SURVEYOR_ST() {}
+SURVEYOR_ST::~SURVEYOR_ST() {}
 
 
 
@@ -459,21 +470,19 @@ void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
       if (ballotDictionary->Get("offset", &value)) {
         value->GetAsInteger((int*)&ballot.offset_);
       }
+      if (ballotDictionary->Get("prepareBallot", &value)) {
+        value->GetAsString(&ballot.prepareBallot_);
+      }
+      if (ballotDictionary->Get("delayStamp", &value)) {
+        std::string delayStamp;
+        value->GetAsString(&delayStamp);
+        std::stringstream temp(delayStamp);
+        temp >> ballot.delayStamp_;
+      }
+
       state.ballots_.push_back(ballot);
     }
   }
-
-  /*std::unique_ptr<base::ListValue> ballots(new base::ListValue());
-  for (size_t i = 0; i < state.ballots_.size(); i++) {
-    std::unique_ptr<base::DictionaryValue> ballot_dict(new base::DictionaryValue());
-    ballot_dict->SetString("viewingId", state.ballots_[i].viewingId_);
-    ballot_dict->SetString("surveyorId", state.ballots_[i].surveyorId_);
-    ballot_dict->SetString("publisher", state.ballots_[i].publisher_);
-    ballot_dict->SetInteger("offset", state.ballots_[i].offset_);
-
-    ballots->Append(std::make_unique<base::Value>(ballot_dict->Clone()));
-  }
-  root_dict.Set("ballots", std::move(ballots));*/
 }
 
 void BatHelper::getJSONRates(const std::string& json, std::map<std::string, double>& rates) {
@@ -515,6 +524,38 @@ void BatHelper::getJSONRates(const std::string& json, std::map<std::string, doub
     double dValue = 0;
     value->GetAsDouble(&dValue);
     rates.insert(std::pair<std::string, double>("EUR", dValue));
+  }
+}
+
+void BatHelper::getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor) {
+  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
+  if (nullptr == json_object.get()) {
+      LOG(ERROR) << "BatHelper::getJSONSurveyor: incorrect json object";
+
+      return;
+  }
+
+  const base::DictionaryValue* childTopDictionary = nullptr;
+  json_object->GetAsDictionary(&childTopDictionary);
+  if (nullptr == childTopDictionary) {
+      return;
+  }
+
+  const base::Value* value = nullptr;
+  if (childTopDictionary->Get("signature", &value)) {
+    value->GetAsString(&surveyor.signature_);
+  }
+  if (childTopDictionary->Get("surveyorId", &value)) {
+    value->GetAsString(&surveyor.surveyorId_);
+  }
+  if (childTopDictionary->Get("surveyVK", &value)) {
+    value->GetAsString(&surveyor.surveyVK_);
+  }
+  if (childTopDictionary->Get("registrarVK", &value)) {
+    value->GetAsString(&surveyor.registrarVK_);
+  }
+  if (childTopDictionary->Get("surveySK", &value)) {
+    value->GetAsString(&surveyor.surveySK_);
   }
 }
 
@@ -1057,6 +1098,8 @@ std::string BatHelper::stringifyState(const CLIENT_STATE_ST& state) {
     ballot_dict->SetString("surveyorId", state.ballots_[i].surveyorId_);
     ballot_dict->SetString("publisher", state.ballots_[i].publisher_);
     ballot_dict->SetInteger("offset", state.ballots_[i].offset_);
+    ballot_dict->SetString("prepareBallot", state.ballots_[i].prepareBallot_);
+    ballot_dict->SetString("delayStamp", std::to_string(state.ballots_[i].delayStamp_));
 
     ballots->Append(std::make_unique<base::Value>(ballot_dict->Clone()));
   }
@@ -1237,7 +1280,7 @@ void BatHelper::readPublisherStateFile(BatHelper::ReadPublisherStateCallback cal
 
 void BatHelper::saveState(const CLIENT_STATE_ST& state) {
   std::string data = BatHelper::stringifyState(state);
-  LOG(ERROR) << "!!!saveState == " << data;
+  //LOG(ERROR) << "!!!saveState == " << data;
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
