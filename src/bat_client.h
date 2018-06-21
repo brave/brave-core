@@ -51,6 +51,12 @@ private:
   void reconcilePayloadCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void updateRulesCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void updateRulesV2Callback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void registerViewing();
+  void registerViewingCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId);
+  void viewingCredentialsCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+
+  std::string getAnonizeProof(const std::string& registrarVK, const std::string& id);
 
   std::string buildURL(const std::string& path, const std::string& prefix);
 

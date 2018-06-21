@@ -14,6 +14,7 @@
 #define PREFIX_V2                       "/v2"
 #define PREFIX_V3                       "/v3"
 #define REGISTER_PERSONA                "/registrar/persona"
+#define REGISTER_VIEWING                "/registrar/viewing"
 #define PUBLISHER_TIMESTAMP             "/publisher/timestamp"
 #define PUBLISHER_INFO                  "/publisher/identity?publisher="
 #define WALLET_PROPERTIES               "/v2/wallet/"

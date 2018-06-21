@@ -78,19 +78,8 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
 
   state_.registrarVK_ = BatHelper::getJSONValue(REGISTRARVK_FIELDNAME, response);
   DCHECK(!state_.registrarVK_.empty());
-  const char* cred = makeCred(state_.userId_.c_str());
-  if (nullptr != cred) {
-    preFlight_ = cred;
-    free((void*)cred);
-  }
-  DCHECK(!preFlight_.empty());
-  const char* proofTemp = registerUserMessage(preFlight_.c_str(), state_.registrarVK_.c_str());
-  std::string proof;
-  if (nullptr != proofTemp) {
-    proof = proofTemp;
-    free((void*)proofTemp);
-  }
-  DCHECK(!proof.empty());
+  std::string proof = getAnonizeProof(state_.registrarVK_, state_.userId_);
+
   state_.walletInfo_.keyInfoSeed_ = BatHelper::generateSeed();
   std::vector<uint8_t> secretKey = BatHelper::getHKDF(state_.walletInfo_.keyInfoSeed_);
   std::vector<uint8_t> publicKey;
@@ -125,6 +114,24 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
     base::Bind(&BatClient::registerPersonaCallback,
       base::Unretained(this)), headers, payloadStringify, "application/json; charset=utf-8",
       FETCH_CALLBACK_EXTRA_DATA_ST(), URL_METHOD::POST);
+}
+
+std::string BatClient::getAnonizeProof(const std::string& registrarVK, const std::string& id) {
+  const char* cred = makeCred(id.c_str());
+  if (nullptr != cred) {
+    preFlight_ = cred;
+    free((void*)cred);
+  }
+  DCHECK(!preFlight_.empty());
+  const char* proofTemp = registerUserMessage(preFlight_.c_str(), registrarVK.c_str());
+  std::string proof;
+  if (nullptr != proofTemp) {
+    proof = proofTemp;
+    free((void*)proofTemp);
+  }
+  DCHECK(!proof.empty());
+
+  return proof;
 }
 
 void BatClient::registerPersonaCallback(bool result, const std::string& response,
@@ -324,14 +331,16 @@ void BatClient::reconcilePayloadCallback(bool result, const std::string& respons
   BatHelper::saveState(state_);
   // TODO set a new timestamp for the next reconcile
   // TODO self.state.updateStamp var in old lib
+  FETCH_CALLBACK_EXTRA_DATA_ST stExtraData;
+  stExtraData.boolean1 = true;
   batClientWebRequest_.run(buildURL(UPDATE_RULES_V1, ""),
     base::Bind(&BatClient::updateRulesCallback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      base::Unretained(this)), std::vector<std::string>(), "", "", stExtraData,
       URL_METHOD::GET);
 }
 
 void BatClient::updateRulesCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
-  LOG(ERROR) << "!!!response updateRulesCallback == " << response;
+  //LOG(ERROR) << "!!!response updateRulesCallback == " << response;
   if (!result) {
     // TODO errors handling
     return;
@@ -340,18 +349,66 @@ void BatClient::updateRulesCallback(bool result, const std::string& response, co
 
   batClientWebRequest_.run(buildURL(UPDATE_RULES_V2, ""),
     base::Bind(&BatClient::updateRulesV2Callback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      base::Unretained(this)), std::vector<std::string>(), "", "", extraData,
       URL_METHOD::GET);
 }
 
 void BatClient::updateRulesV2Callback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
-  LOG(ERROR) << "!!!response updateRulesV2Callback == " << response;
+  //LOG(ERROR) << "!!!response updateRulesV2Callback == " << response;
   if (!result) {
     // TODO errors handling
     return;
   }
   // TODO parse the return rulesetV2
   state_.rulesetV2_ = response;
+  // We are doing a reconcile if the boolean is true
+  if (extraData.boolean1) {
+    // Register viewingId
+    registerViewing();
+  }
+}
+
+void BatClient::registerViewing() {
+  batClientWebRequest_.run(buildURL((std::string)REGISTER_VIEWING, PREFIX_V2),
+    base::Bind(&BatClient::registerViewingCallback,
+      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      URL_METHOD::GET);
+}
+
+void BatClient::registerViewingCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  LOG(ERROR) << "!!!response registerViewingCallback == " << response;
+  if (!result) {
+    // TODO errors handling
+    return;
+  }
+
+  std::string registrarVK = BatHelper::getJSONValue(REGISTRARVK_FIELDNAME, response);
+  DCHECK(!registrarVK.empty());
+  std::string anonizeViewingId = currentReconcile_.viewingId_;
+  anonizeViewingId.erase(std::remove(anonizeViewingId.begin(), anonizeViewingId.end(), '-'), anonizeViewingId.end());
+  anonizeViewingId.erase(12, 1);
+  std::string proof = getAnonizeProof(registrarVK, anonizeViewingId);
+  LOG(ERROR) << "!!!proof1 == " << proof;
+
+  std::string keys[1] = {"proof"};
+  std::string values[1] = {proof};
+  std::string proofStringified = BatHelper::stringify(keys, values, 1);
+  viewingCredentials(proofStringified, anonizeViewingId);
+}
+
+void BatClient::viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId) {
+  batClientWebRequest_.run(buildURL((std::string)REGISTER_VIEWING + "/" + anonizeViewingId, PREFIX_V2),
+    base::Bind(&BatClient::viewingCredentialsCallback,
+      base::Unretained(this)), std::vector<std::string>(), proofStringified, "application/json; charset=utf-8", FETCH_CALLBACK_EXTRA_DATA_ST(),
+      URL_METHOD::POST);
+}
+
+void BatClient::viewingCredentialsCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  LOG(ERROR) << "!!!response viewingCredentialsCallback == " << response;
+  if (!result) {
+    // TODO errors handling
+    return;
+  }
 }
 
 }
