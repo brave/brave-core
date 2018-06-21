@@ -119,8 +119,8 @@ namespace ledger {
     uint64_t publisherTimestamp = bat_client_->getPublisherTimestamp();
     if (publisherTimestamp <= verifiedTimestamp) {
       //to do debug
-      //LOG(ERROR) << "!!!reconcile";
-      //run(0);
+      LOG(ERROR) << "!!!reconcile";
+      run(0);
       //
       return;
     }

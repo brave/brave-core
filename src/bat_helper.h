@@ -104,6 +104,7 @@ struct BALLOT_ST {
   std::string publisher_;
   unsigned int offset_;
   std::string prepareBallot_;
+  std::string proofBallot_;
   uint64_t delayStamp_;
 
 };
@@ -249,6 +250,14 @@ struct MEDIA_PUBLISHER_INFO {
   TWITCH_EVENT_INFO twitchEventInfo_;
 };
 
+struct BATCH_PROOF {
+  BATCH_PROOF();
+  ~BATCH_PROOF();
+
+  TRANSACTION_ST transaction_;
+  BALLOT_ST ballot_;
+};
+
 enum URL_METHOD {
   GET = 0,
   PUT = 1,
@@ -278,6 +287,7 @@ public:
   static void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor);
   static void getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
   static void getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts);
+  static void getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors);
   static std::vector<uint8_t> generateSeed();
   static std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
   static void getPublicKeyFromSeed(const std::vector<uint8_t>& seed,

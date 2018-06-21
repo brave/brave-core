@@ -81,6 +81,7 @@ BALLOT_ST::BALLOT_ST(const BALLOT_ST& ballot) {
   publisher_ = ballot.publisher_;
   offset_ = ballot.offset_;
   prepareBallot_ = ballot.prepareBallot_;
+  proofBallot_ = ballot.proofBallot_;
   delayStamp_ = ballot.delayStamp_;
 }
 BALLOT_ST::~BALLOT_ST() {}
@@ -196,6 +197,9 @@ MEDIA_PUBLISHER_INFO::MEDIA_PUBLISHER_INFO(const MEDIA_PUBLISHER_INFO& mediaPubl
   twitchEventInfo_(mediaPublisherInfo.twitchEventInfo_) {}
 MEDIA_PUBLISHER_INFO::~MEDIA_PUBLISHER_INFO() {}
 
+BATCH_PROOF::BATCH_PROOF() {}
+BATCH_PROOF::~BATCH_PROOF() {}
+
 
 void split(std::vector<std::string>& tmp, std::string query, char delimiter)
 {
@@ -279,7 +283,7 @@ std::vector<std::string> BatHelper::getJSONList(const std::string& fieldName, co
 void BatHelper::getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONState: incorrect json object";
+      LOG(ERROR) << "BatHelper::getJSONTwitchProperties: incorrect json object";
 
       return;
   }
@@ -327,17 +331,32 @@ void BatHelper::getJSONTwitchProperties(const std::string& json, std::vector<std
     }
     parts.push_back(event);
   }
-  /*const base::Value* value = nullptr;
-  if (childTopDictionary->Get("event", &value)) {
-    std::string valueTmp;
-    value->GetAsString(&valueTmp);
-    //parts["event"] = valueTmp;
+}
+
+void BatHelper::getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors) {
+  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
+  if (nullptr == json_object.get()) {
+      LOG(ERROR) << "BatHelper::getJSONBatchSurveyors: incorrect json object";
+
+      return;
   }
-  if (childTopDictionary->Get("properties", &value)) {
-    const base::DictionaryValue *dValue = nullptr;
-    value->GetAsDictionary(&dValue);
-    //parts["properties"] = "";
-  }*/
+
+  const base::ListValue* childTopList = nullptr;
+  json_object->GetAsList(&childTopList);
+  if (nullptr == childTopList) {
+    return;
+  }
+  LOG(ERROR) << "!!!surveyors size == " << childTopList->GetSize();
+  for (size_t i = 0; i < childTopList->GetSize(); i++) {
+    const base::DictionaryValue* eventDictionary = nullptr;
+    childTopList->GetDictionary(i, &eventDictionary);
+    if (nullptr == eventDictionary) {
+      return;
+    }
+    std::string surveyor;
+    base::JSONWriter::Write(*eventDictionary, &surveyor);
+    surveyors.push_back(surveyor);
+  }
 }
 
 void BatHelper::getJSONPublisherState(const std::string& json, PUBLISHER_STATE_ST& state) {
@@ -581,6 +600,9 @@ void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
       }
       if (ballotDictionary->Get("prepareBallot", &value)) {
         value->GetAsString(&ballot.prepareBallot_);
+      }
+      if (ballotDictionary->Get("proofBallot", &value)) {
+        value->GetAsString(&ballot.proofBallot_);
       }
       if (ballotDictionary->Get("delayStamp", &value)) {
         std::string delayStamp;
@@ -1216,6 +1238,7 @@ std::string BatHelper::stringifyState(const CLIENT_STATE_ST& state) {
     ballot_dict->SetString("publisher", state.ballots_[i].publisher_);
     ballot_dict->SetInteger("offset", state.ballots_[i].offset_);
     ballot_dict->SetString("prepareBallot", state.ballots_[i].prepareBallot_);
+    ballot_dict->SetString("proofBallot", state.ballots_[i].proofBallot_);
     ballot_dict->SetString("delayStamp", std::to_string(state.ballots_[i].delayStamp_));
 
     ballots->Append(std::make_unique<base::Value>(ballot_dict->Clone()));

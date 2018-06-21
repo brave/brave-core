@@ -57,6 +57,10 @@ private:
   void setPromotionCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void recoverWalletPublicKeyCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void recoverWalletCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void prepareBatch(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction);
+  void prepareBatchCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void proofBatch(const std::vector<BATCH_PROOF>& batchProof);
+  void prepareVoteBatch(const std::vector<BATCH_PROOF>& batchProof);
   void prepareBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction);
   void commitBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction);
   void prepareBallotCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData);

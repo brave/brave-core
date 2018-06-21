@@ -501,28 +501,128 @@ void BatClient::vote(const std::string& publisher, const std::string& viewingId)
 }
 
 void BatClient::prepareBallots() {
-  uint64_t currentTime = BatHelper::currentTime() * 1000;
-  std::lock_guard<std::mutex> guard(ballots_access_mutex_);
-  for (int i = state_.ballots_.size() - 1; i >= 0; i--) {
-    TRANSACTION_ST transaction;
-    bool breakTheLoop = false;
-    std::lock_guard<std::mutex> guard(transactions_access_mutex_);
-    for (size_t j = 0; j < state_.transactions_.size(); j++) {
-      // TODO check on valid credentials for transaction
-      if (state_.transactions_[j].viewingId_ == state_.ballots_[i].viewingId_
-          && (state_.ballots_[i].prepareBallot_.empty() || 0 == state_.ballots_[i].delayStamp_
-            || state_.ballots_[i].delayStamp_ <= currentTime)) {
-        // TODO check on ballot.prepareBallot and call commitBallot if it exist
-        prepareBallot(state_.ballots_[i], state_.transactions_[j]);
-        breakTheLoop = true;
+  //uint64_t currentTime = BatHelper::currentTime() * 1000;
+  //std::vector<BATCH_PROOF> batchProof;
+  {
+    std::lock_guard<std::mutex> guard(ballots_access_mutex_);
+    for (int i = state_.ballots_.size() - 1; i >= 0; i--) {
+      bool breakTheLoop = false;
+      std::lock_guard<std::mutex> guard(transactions_access_mutex_);
+      for (size_t j = 0; j < state_.transactions_.size(); j++) {
+        // TODO check on valid credentials for transaction
+        if (state_.transactions_[j].viewingId_ == state_.ballots_[i].viewingId_
+            /*&& (state_.ballots_[i].prepareBallot_.empty() || 0 == state_.ballots_[i].delayStamp_
+              || state_.ballots_[i].delayStamp_ <= currentTime)*/) {
+          // TODO check on ballot.prepareBallot and call commitBallot if it exist
+          if (state_.ballots_[i].prepareBallot_.empty()) {
+            prepareBatch(state_.ballots_[i], state_.transactions_[j]);
+            //prepareBallot(state_.ballots_[i], state_.transactions_[j]);
+            breakTheLoop = true;
+            break;
+          }
+          //BATCH_PROOF batchProofEl;
+          //batchProofEl.transaction_ = state_.transactions_[j];
+          //batchProofEl.ballot_ = state_.ballots_[i];
+          //batchProof.push_back(batchProofEl);
+        }
+      }
+      if (breakTheLoop) {
         break;
       }
     }
-    if (breakTheLoop) {
-      break;
+  }
+
+  //proofBatch(batchProof);
+  //LOG(ERROR) << "!!! 1 batchProof.size() == " << batchProof.size();
+}
+
+void BatClient::prepareBatch(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction) {
+  FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+  extraData.string1 = ballot.viewingId_;
+  extraData.string2 = ballot.surveyorId_;
+  batClientWebRequest_.run(buildURL((std::string)SURVEYOR_BATCH_VOTING + transaction.anonizeViewingId_, PREFIX_V2),
+    base::Bind(&BatClient::prepareBatchCallback,
+      base::Unretained(this)), std::vector<std::string>(), "", "", extraData,
+      URL_METHOD::GET);
+}
+
+void BatClient::prepareBatchCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  //LOG(ERROR) << "!!!!prepareBatchCallback response == " << response;
+  std::vector<std::string> surveyors;
+  BatHelper::getJSONBatchSurveyors(response, surveyors);
+  std::vector<BATCH_PROOF> batchProof;
+  for (size_t j = 0; j < surveyors.size(); j++) {
+    std::string error = BatHelper::getJSONValue("error", surveyors[j]);
+    if (!error.empty()) {
+      continue;
+    }
+    std::lock_guard<std::mutex> guard(ballots_access_mutex_);
+    for (int i = state_.ballots_.size() - 1; i >= 0; i--) {
+      if (state_.ballots_[i].surveyorId_ == BatHelper::getJSONValue("surveyorId", surveyors[j])) {
+        std::lock_guard<std::mutex> guard(transactions_access_mutex_);
+        for (size_t k = 0; k < state_.transactions_.size(); k++) {
+          if (state_.transactions_[k].viewingId_ == state_.ballots_[i].viewingId_) {
+            state_.ballots_[i].prepareBallot_ = surveyors[j];
+            BATCH_PROOF batchProofEl;
+            batchProofEl.transaction_ = state_.transactions_[k];
+            batchProofEl.ballot_ = state_.ballots_[i];
+            batchProof.push_back(batchProofEl);
+          }
+        }
+      }
     }
   }
+
+  BatHelper::saveState(state_);
+  proofBatch(batchProof);
+  LOG(ERROR) << "!!! 2 batchProof.size() == " << batchProof.size();
 }
+
+void BatClient::proofBatch(const std::vector<BATCH_PROOF>& batchProof) {
+  for (size_t i = 0; i < batchProof.size(); i++) {
+    SURVEYOR_ST surveyor;
+    BatHelper::getJSONSurveyor(batchProof[i].ballot_.prepareBallot_, surveyor);
+    std::string surveyorIdEncoded;
+    url::StdStringCanonOutput surveyorIdCanon(&surveyorIdEncoded);
+    url::EncodeURIComponent(surveyor.surveyorId_.c_str(), surveyor.surveyorId_.length(), &surveyorIdCanon);
+    surveyorIdCanon.Complete();
+
+    std::string signatureToSend;
+    LOG(ERROR) << "!!!full signature == " << surveyor.signature_;
+    size_t delimeterPos = surveyor.signature_.find(',');
+    if (std::string::npos != delimeterPos && delimeterPos + 1 <= surveyor.signature_.length()) {
+      signatureToSend = surveyor.signature_.substr(delimeterPos + 1);
+      LOG(ERROR) << "!!!signatureToSend == " << signatureToSend;
+      if (signatureToSend.length() > 1 && signatureToSend[0] == ' ') {
+        signatureToSend.erase(0, 1);
+      }
+    }
+
+    //LOG(ERROR) << "!!!result signature == " << signatureToSend;
+    std::string keysMsg[1] = {"publisher"};
+    std::string valuesMsg[1] = {batchProof[i].ballot_.publisher_};
+    std::string msg = BatHelper::stringify(keysMsg, valuesMsg, 1);
+
+    const char* proof = submitMessage(msg.c_str(), batchProof[i].transaction_.masterUserToken_.c_str(),
+      batchProof[i].transaction_.registrarVK_.c_str(), signatureToSend.c_str(), surveyor.surveyorId_.c_str(), surveyor.surveyVK_.c_str());
+    //LOG(ERROR) << "!!!proof == " << proof;
+    std::string anonProof;
+    if (nullptr != proof) {
+      anonProof = proof;
+      free((void*)proof);
+    }
+
+    std::lock_guard<std::mutex> guard(ballots_access_mutex_);
+    for (size_t j = 0; j < state_.ballots_.size(); j++) {
+      if (state_.ballots_[j].surveyorId_ == batchProof[i].ballot_.surveyorId_) {
+        state_.ballots_[j].proofBallot_ = anonProof;
+      }
+    }
+  }
+  // TODO make wait
+  // const delayTime = random.randomInt({ min: 10 * msecs.second, max: 1 * msecs.minute })
+}
+
 
 void BatClient::prepareBallot(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction) {
   std::string surveyorIdEncoded;
