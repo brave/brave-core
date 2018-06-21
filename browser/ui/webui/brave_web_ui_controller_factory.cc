@@ -38,6 +38,9 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   if (host == kPaymentsHost) {
     return new BasicUI(web_ui, url.host(), kPaymentsJS,
         IDR_BRAVE_PAYMENTS_JS, IDR_BRAVE_PAYMENTS_HTML);
+  } else if (host == kWelcomeHost) {
+    return new BasicUI(web_ui, url.host(), kWelcomeJS,
+        IDR_BRAVE_WELCOME_JS, IDR_BRAVE_WELCOME_HTML);
   } else if (host ==  chrome::kChromeUINewTabHost) {
     return new BasicUI(web_ui, url.host(), kBraveNewTabJS,
         IDR_BRAVE_NEW_TAB_JS, IDR_BRAVE_NEW_TAB_HTML);
@@ -51,9 +54,10 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
   if (url.host_piece() == kPaymentsHost ||
+      url.host_piece() == kWelcomeHost ||
       url.host_piece() ==  chrome::kChromeUINewTabHost) {
     return &NewWebUI<BasicUI>;
-  } else if (url.spec() == kWelcomeRemoteURL) {
+  } else if (url.spec() == kBraveUIWelcomeURL) {
     return &NewWebUI<BraveWelcomeUI>;
   }
 

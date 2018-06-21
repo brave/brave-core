@@ -79,6 +79,10 @@
       <include name="IDR_BRAVE_PAYMENTS_HTML" file="../brave_payments_ui/brave_payments.html" type="BINDATA" />
       <include name="IDR_BRAVE_PAYMENTS_JS" file="${root_gen_dir}/brave/brave_payments.bundle.js" type="BINDATA" use_base_dir="false" />
 
+      <!-- WebUI welcome page resources -->
+      <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_JS" file="${root_gen_dir}/brave/brave_welcome.bundle.js" type="BINDATA" use_base_dir="false" />
+
       <!-- WebUI newtab resources -->
       <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_JS" file="${root_gen_dir}/brave/brave_new_tab.bundle.js" type="BINDATA" use_base_dir="false" />

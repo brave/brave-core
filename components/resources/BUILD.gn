@@ -21,6 +21,8 @@ transpile_includes = [
   "../brave_new_tab_ui/reducers/newTabReducer.js",
   # Brave payments
   "../brave_payments_ui/brave_payments.html",
+  # Brave welcome page
+  "../brave_welcome_ui/brave_welcome.html",
 ]
 
 action("transpile_web_uis") {
@@ -29,6 +31,7 @@ action("transpile_web_uis") {
   outputs = [
     "$target_out_dir/brave_new_tab.bundle.js",
     "$target_out_dir/brave_payments.bundle.js",
+    "$target_out_dir/brave_welcome.bundle.js",
   ]
   gen_dir = rebase_path(root_gen_dir, "//")
   args = [
