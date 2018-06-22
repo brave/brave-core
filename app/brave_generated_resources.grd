@@ -80,6 +80,23 @@
       <message name="IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX" desc="Checkbox for importing cookies">
         Cookies
       </message>
+      <message name="IDS_WIDEVINE_NOT_INSTALLED_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address line when Widevine is blocked">
+        Widevine is not installed
+      </message>
+      <message name="IDS_WIDEVINE_NOT_INSTALLED_MESSAGE" desc="Tooltip on the icon when Wideivne is not installed. 'Widevine' is the name of a plugin and should not be translated.">
+        Widevine is not installed.
+      </message>
+      <message name="IDS_INSTALL_AND_RUN_WIDEVINE" desc="Button to install and register Widevine with the component updater.  'Widevine' is the name of a plugin and should not be translated.">
+        Install and run Widevine
+      </message>
+      <message name="IDS_NOT_INSTALLED_WIDEVINE_TITLE" desc="Bubble info header text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
+        Widevine is not installed
+      </message>
+      <message name="IDS_WIDEVINE_INSTALL_MESSAGE" desc="Bubble info text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
+        Google Widevine is a piece of Digital Rights Management (DRM) code that we at Brave Software do not own and cannot inspect. The Google Widevine code is loaded from Google servers, not from our servers. It is loaded only when you enable this option. We discourage the use of DRM, but we respect user choice and acknowledge that some Brave users would like to use services that require it.
+
+By installing this extension, you are agreeing to the Google Widevine Terms of Use. You agree that Brave is not responsible for any damages or losses in connection with your use of Google Widevine.
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
