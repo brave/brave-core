@@ -147,17 +147,12 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   }
   
   @objc private func onClickSettingsButton() {
-    guard let profile = profile else {
-      return
-    }
-
     // BRAVE TODO: Add back settings
-//    let settingsTableViewController = BraveSettingsView(style: .grouped)
-//    settingsTableViewController.profile = getApp().profile
-//
-//    let controller = SettingsNavigationController(rootViewController: settingsTableViewController)
-//    controller.modalPresentationStyle = UIModalPresentationStyle.formSheet
-//    present(controller, animated: true, completion: nil)
+    let settingsTableViewController = SettingsViewController()
+
+    let controller = SettingsNavigationController(rootViewController: settingsTableViewController)
+    controller.modalPresentationStyle = .formSheet
+    present(controller, animated: true, completion: nil)
   }
   
   @objc private func onClickBookmarksButton() {
@@ -313,3 +308,10 @@ extension HomeMenuController: HomePanelDelegate {
     return self.homePanel(homePanel, didSelectURL: url, visitType: visitType)
   }
 }
+
+extension HomeMenuController: PreferencesObserver {
+  func preferencesDidChange(for key: String) {
+    print("Changed preference with key: \"\(key)\"")
+  }
+}
+

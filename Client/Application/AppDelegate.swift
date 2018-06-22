@@ -12,6 +12,7 @@ import SwiftKeychainWrapper
 import LocalAuthentication
 import CoreSpotlight
 import UserNotifications
+import BraveShared
 
 private let log = Logger.browserLogger
 
@@ -215,6 +216,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // that is an iOS bug or not.
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
 
+        UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
+      
         return shouldPerformAdditionalDelegateHandling
     }
 

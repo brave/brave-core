@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 
 // A browser color represents the color of UI in both Private browsing mode and normal mode
 struct BrowserColor {
@@ -142,4 +143,12 @@ public struct UIConstants {
     /// JPEG compression quality for persisted screenshots. Must be between 0-1.
     static let ScreenshotQuality: Float = 0.3
     static let ActiveScreenshotQuality: CGFloat = 0.5
+  
+    // settings
+    static let TableViewHeaderBackgroundColor = BraveUX.GreyA
+    static let TableViewHeaderTextColor = BraveUX.GreyH
+    static let TableViewRowTextColor = BraveUX.GreyJ
+    static let TableViewDisabledRowTextColor = BraveUX.GreyE
+    static let TableViewSeparatorColor = BraveUX.GreyC
+    static let TableViewHeaderFooterHeight = CGFloat(44)
 }
