@@ -2,9 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef STATIC_VALUES_H_
-#define STATIC_VALUES_H_
+#ifndef BRAVELEDGER_STATIC_VALUES_H_
+#define BRAVELEDGER_STATIC_VALUES_H_
 
+#include <cstdint>
 #define LEDGER_STAGING_SERVER           "https://ledger-staging.mercury.basicattentiontoken.org"
 #define LEDGER_PRODUCTION_SERVER        "https://ledger.mercury.basicattentiontoken.org"
 #define LEDGER_PRODUCTION_PROXY_SERVER  "https://mercury-proxy.privateinternetaccess.com"
@@ -58,7 +59,7 @@
 
 #define VOTE_BATCH_SIZE									10
 
-namespace ledger {
+namespace braveledger_ledger {
 
 static const bool g_isProduction = false;
 static const uint8_t g_hkdfSalt[] = {126, 244, 99, 158, 51, 68, 253, 80, 133, 183, 51, 180, 77,
@@ -80,6 +81,6 @@ static const unsigned int _twitch_events_array_size = 8;
 static const std::string _twitch_events[] = {"buffer-empty", "buffer-refill", "video_end",
 	"minute-watched", "video_pause", "player_click_vod_seek", "video-play", "video_error"};
 
-}
+} //namespace braveledger_ledger
 
-#endif  // STATIC_VALUES_H_
+#endif  // BRAVELEDGER_STATIC_VALUES_H_

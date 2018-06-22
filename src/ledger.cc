@@ -2,39 +2,38 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/task_scheduler/post_task.h"
+
 #include "ledger.h"
 #include "bat_client.h"
 #include "bat_get_media.h"
-#include "bat_publisher.h"
+#include "bat_publishers.h"
+#include "bat_helper.h"
+#include "static_values.h"
+#if defined CHROMIUM_BUILD
 #include "base/bind.h"
 #include "base/guid.h"
-#include "static_values.h"
-//#include "chrome/browser/io_thread.h"
+#include "base/logging.h"
+#include "base/macros.h"
+#include "base/task_scheduler/post_task.h"
+#else
+#include <iostream>
+#include <cassert>
+#endif
 
-#include "logging.h"
 
 
-using namespace bat_client;
-using namespace bat_publisher;
+using namespace braveledger_bat_client;
+using namespace braveledger_bat_publishers;
 using namespace bat_get_media;
 
-namespace ledger {
+namespace braveledger_ledger {
 
-  Ledger::Ledger():
-      bat_client_(nullptr),
-      bat_publisher_(nullptr),
-      bat_get_media_(nullptr) {
+  Ledger::Ledger()
+  {
     bat_get_media_ = new BatGetMedia();
   }
 
-  Ledger::~Ledger() {
-    if (bat_client_) {
-      delete bat_client_;
-    }
-    if (bat_publisher_) {
-      delete bat_publisher_;
-    }
+  Ledger::~Ledger() { 
     if (bat_get_media_) {
       delete bat_get_media_;
     }
@@ -43,17 +42,17 @@ namespace ledger {
   void Ledger::createWallet() {
     initSynopsis();
     if (!bat_client_) {
-      bat_client_ = new BatClient();
+      bat_client_.reset (new BatClient());
     }
     LOG(ERROR) << "!!!here2";
     bat_client_->loadStateOrRegisterPersona();
   }
 
   void Ledger::initSynopsis() {
-    if (!bat_publisher_) {
-      bat_publisher_ = new BatPublisher();
+    if (!bat_publishers_) {
+      bat_publishers_.reset(new BatPublishers());
     }
-    bat_publisher_->initSynopsis();
+    bat_publishers_->initSynopsis();
   }
 
   bool Ledger::isBatClientExist() {
@@ -67,9 +66,8 @@ namespace ledger {
   }
 
   bool Ledger::isBatPublisherExist() {
-    if (!bat_publisher_) {
+    if (!bat_publishers_) {
       LOG(ERROR) << "ledger bat_publisher is not exist";
-
       return false;
     }
 
@@ -82,18 +80,18 @@ namespace ledger {
 
       return;
     }
-    FETCH_CALLBACK_EXTRA_DATA_ST extraData;
-    bat_client_->getWalletProperties(base::Bind(&Ledger::walletPropertiesCallback,
-      base::Unretained(this)), extraData);
+    braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+    auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &Ledger::walletPropertiesCallback);
+    bat_client_->getWalletProperties(runnable, extraData);
   }
 
-  void Ledger::walletPropertiesCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  void Ledger::walletPropertiesCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
     if (!result) {
       // TODO errors handling
       return;
     }
-    WALLET_PROPERTIES_ST walletProperties;
-    BatHelper::getJSONWalletProperties(response, walletProperties);
+    braveledger_bat_helper::WALLET_PROPERTIES_ST walletProperties;
+    braveledger_bat_helper::getJSONWalletProperties(response, walletProperties);
     // TODO send the balance to the UI via observer or callback
   }
 
@@ -106,8 +104,8 @@ namespace ledger {
 
       return;
     }
-    bat_publisher_->saveVisit(publisher, duration, base::Bind(&Ledger::saveVisitCallback,
-      base::Unretained(this)), ignoreMinTime);
+    auto runnable = braveledger_bat_helper::bat_mem_fun_binder2(*this, &Ledger::saveVisitCallback);
+    bat_publishers_->saveVisit(publisher, duration, runnable, ignoreMinTime);
   }
 
   void Ledger::saveVisitCallback(const std::string& publisher, const uint64_t& verifiedTimestamp) {
@@ -124,30 +122,30 @@ namespace ledger {
       //
       return;
     }
-    FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+    braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST extraData;
     extraData.value1 = publisherTimestamp;
     extraData.string1 = publisher;
     // Update publisher verified or not flag
     //LOG(ERROR) << "!!!getting publisher info";
-    bat_client_->publisherInfo(publisher, base::Bind(&Ledger::publisherInfoCallback,
-      base::Unretained(this)), extraData);
+    auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &Ledger::publisherInfoCallback);
+    bat_client_->publisherInfo(publisher, runnable, extraData);
   }
 
   void Ledger::publisherInfoCallback(bool result, const std::string& response,
-      const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+    const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
     //LOG(ERROR) << "!!!got publisher info";
     if (!result) {
       // TODO errors handling
       return;
     }
     bool verified = false;
-    BatHelper::getJSONPublisherVerified(response, verified);
+    braveledger_bat_helper::getJSONPublisherVerified(response, verified);
     if (!isBatPublisherExist()) {
       assert(false);
 
       return;
     }
-    bat_publisher_->setPublisherTimestampVerified(extraData.string1, extraData.value1, verified);
+    bat_publishers_->setPublisherTimestampVerified(extraData.string1, extraData.value1, verified);
     //to do debug
     //LOG(ERROR) << "!!!reconcile";
     //run(0);
@@ -160,7 +158,7 @@ namespace ledger {
 
       return;
     }
-    bat_publisher_->setPublisherFavIcon(publisher, favicon_url);
+    bat_publishers_->setPublisherFavIcon(publisher, favicon_url);
   }
 
   void Ledger::setPublisherInclude(const std::string& publisher, const bool& include) {
@@ -169,7 +167,7 @@ namespace ledger {
 
       return;
     }
-    bat_publisher_->setPublisherInclude(publisher, include);
+    bat_publishers_->setPublisherInclude(publisher, include);
   }
 
   void Ledger::setPublisherDeleted(const std::string& publisher, const bool& deleted) {
@@ -178,7 +176,7 @@ namespace ledger {
 
       return;
     }
-    bat_publisher_->setPublisherDeleted(publisher, deleted);
+    bat_publishers_->setPublisherDeleted(publisher, deleted);
   }
 
   void Ledger::setPublisherPinPercentage(const std::string& publisher, const bool& pinPercentage) {
@@ -187,7 +185,7 @@ namespace ledger {
 
       return;
     }
-    bat_publisher_->setPublisherPinPercentage(publisher, pinPercentage);
+    bat_publishers_->setPublisherPinPercentage(publisher, pinPercentage);
   }
 
   void Ledger::setPublisherMinVisitTime(const uint64_t& duration) { // In milliseconds
@@ -196,7 +194,7 @@ namespace ledger {
 
       return;
     }
-    bat_publisher_->setPublisherMinVisitTime(duration);
+    bat_publishers_->setPublisherMinVisitTime(duration);
   }
 
   void Ledger::setPublisherMinVisits(const unsigned int& visits) {
@@ -205,7 +203,7 @@ namespace ledger {
 
       return;
     }
-    bat_publisher_->setPublisherMinVisits(visits);
+    bat_publishers_->setPublisherMinVisits(visits);
   }
 
   void Ledger::setPublisherAllowNonVerified(const bool& allow) {
@@ -214,7 +212,7 @@ namespace ledger {
 
       return;
     }
-    bat_publisher_->setPublisherAllowNonVerified(allow);
+    bat_publishers_->setPublisherAllowNonVerified(allow);
   }
 
   void Ledger::setContributionAmount(const double& amount) {
@@ -270,8 +268,8 @@ namespace ledger {
       return;
     }
     if (bat_client_->isReadyForReconcile()) {
-      bat_client_->reconcile(base::GenerateGUID(), base::Bind(&Ledger::reconcileCallback,
-        base::Unretained(this)));
+      auto runnable = braveledger_bat_helper::bat_mem_fun_binder1(*this, &Ledger::reconcileCallback);
+      bat_client_->reconcile(braveledger_bat_helper::GenerateGUID(), runnable);
     }
   }
 
@@ -284,10 +282,10 @@ namespace ledger {
     LOG(ERROR) << "!!!in reconcile callback";
     unsigned int ballotsCount = bat_client_->ballots("");
     LOG(ERROR) << "!!!ballotsCount == " << ballotsCount;
-    std::vector<WINNERS_ST> winners = bat_publisher_->winners(ballotsCount);
+    std::vector<braveledger_bat_helper::WINNERS_ST> winners = bat_publishers_->winners(ballotsCount);
     std::vector<std::string> publishers;
     for (size_t i = 0; i < winners.size(); i++) {
-      if (!bat_publisher_->isEligableForContribution(winners[i].publisher_data_)) {
+      if (!bat_publishers_->isEligableForContribution(winners[i].publisher_data_)) {
         continue;
       }
       publishers.push_back(winners[i].publisher_data_.publisherKey_);
@@ -356,4 +354,5 @@ namespace ledger {
     saveVisit(mediaPublisherInfo.publisher_, duration, true);
   }
 
-}
+} //namespace braveledger_ledger
+
