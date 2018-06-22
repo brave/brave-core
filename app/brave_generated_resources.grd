@@ -84,6 +84,7 @@
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
       <include name="IDR_BRAVE_TAG_MANAGER_POLYFILL" file="resources/js/tag_manager_polyfill.js" type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS" file="resources/js/brave_page_visibility.js" type="BINDATA" />
     </includes>
   </release>
 </grit>
