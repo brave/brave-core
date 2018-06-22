@@ -15,4 +15,7 @@
     "includes": [35000],
     "messages": [35500],
   },
+  "brave/app/theme/brave_theme_resources.grd": {
+    "structures": [36000],
+  },
 }

@@ -1,0 +1,19 @@
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+grit("brave_theme_resources") {
+  source = "brave_theme_resources.grd"
+  defines = chrome_grit_defines
+  outputs = [
+    "grit/brave_theme_resources.h",
+    "grit/brave_theme_resources_map.cc",
+    "grit/brave_theme_resources_map.h",
+    "brave_theme_resources_100_percent.pak",
+    "brave_theme_resources_200_percent.pak",
+    "brave_theme_resources_300_percent.pak",
+  ]
+
+  resource_ids = "//brave/browser/resources/resource_ids"
+
+  output_dir = "$root_gen_dir/brave"
+}
