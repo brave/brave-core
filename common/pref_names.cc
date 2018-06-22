@@ -15,3 +15,4 @@ const char kLastCheckMonth[] = "brave.stats.last_check_month";
 const char kFirstCheckMade[] = "brave.stats.first_check_made";
 const char kWeekOfInstallation[] = "brave.stats.week_of_installation";
 const char kAdBlockCurrentRegion[] = "brave.ad_block.current_region";
+const char kWidevineOptedIn[] = "brave.widevine_opted_in";
