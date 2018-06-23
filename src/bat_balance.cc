@@ -5,18 +5,12 @@
 #include "bat_balance.h"
 #include "static_values.h"
 
-namespace bat_balance {
+namespace braveledger_bat_balance {
 
-BatBalance::BatBalance() {
-}
-
-BatBalance::~BatBalance() {
-
-}
 
 std::string BatBalance::buildURL(const std::string& path, const std::string& prefix) {
   std::string url;
-  if (ledger::g_isProduction) {
+  if (braveledger_ledger::g_isProduction) {
     url = BALANCE_PRODUCTION_SERVER;
   } else {
     url = BALANCE_STAGING_SERVER;
@@ -25,10 +19,11 @@ std::string BatBalance::buildURL(const std::string& path, const std::string& pre
   return url + prefix + path;
 }
 
-void BatBalance::getWalletProperties(const std::string& paymentInfo, BatHelper::FetchCallback callback,
-  const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
-    batClientWebRequest_.run(buildURL((std::string)WALLET_PROPERTIES + paymentInfo + WALLET_PROPERTIES_END, ""),
-      callback, std::vector<std::string>(), "", "", extraData, URL_METHOD::GET);
+void BatBalance::getWalletProperties(const std::string& paymentInfo, braveledger_bat_helper::FetchCallback callback,
+  const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+    
+  batClientWebRequest_.run(buildURL((std::string)WALLET_PROPERTIES + paymentInfo + WALLET_PROPERTIES_END, ""),
+      callback, std::vector<std::string>(), "", "", extraData, braveledger_bat_helper::URL_METHOD::GET);
 }
 
-}
+} //namespace braveledger_bat_balance
