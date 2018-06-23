@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_CLIENT_WEBREQUEST_H_
-#define BAT_CLIENT_WEBREQUEST_H_
+#ifndef BRAVELEDGER_BAT_CLIENT_WEBREQUEST_CHROMIUM_H_
+#define BRAVELEDGER_BAT_CLIENT_WEBREQUEST_CHROMIUM_H_
 
 #include <string>
 #include <list>
@@ -22,7 +22,7 @@ namespace net {
   class UploadDataStream;
 }
 
-namespace bat_client {
+namespace braveledger_bat_client_webrequest {
 
 class BatClientWebRequest: public net::URLFetcherDelegate {
 public:
@@ -31,17 +31,17 @@ public:
     ~URL_FETCH_REQUEST();
 
     std::unique_ptr<net::URLFetcher> url_fetcher_;
-    BatHelper::FetchCallback callback_;
-    FETCH_CALLBACK_EXTRA_DATA_ST extraData_;
+    braveledger_bat_helper::FetchCallback callback_;
+    braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST extraData_;
   };
 
   BatClientWebRequest();
   ~BatClientWebRequest() final;
 
-  void run(const std::string& url, BatHelper::FetchCallback callback,
+  void run(const std::string& url, braveledger_bat_helper::FetchCallback callback,
     const std::vector<std::string>& headers, const std::string& content,
-    const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
-    const URL_METHOD& method);
+    const std::string& contentType, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
+    const braveledger_bat_helper::URL_METHOD& method);
 
   void OnURLFetchComplete(const net::URLFetcher* source) final;
   void OnURLFetchDownloadProgress(const net::URLFetcher* source,
@@ -56,10 +56,10 @@ public:
   }
 
 private:
-  void runOnThread(const std::string& url, BatHelper::FetchCallback callback,
+  void runOnThread(const std::string& url, braveledger_bat_helper::FetchCallback callback,
     const std::vector<std::string>& headers, const std::string& content,
-    const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
-    const URL_METHOD& method);
+    const std::string& contentType, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
+    const braveledger_bat_helper::URL_METHOD& method);
 
   std::unique_ptr<net::UploadDataStream> CreateUploadStream(const std::string& stream);
 
@@ -67,6 +67,6 @@ private:
   std::mutex fetcher_mutex_;
   //std::unique_ptr<net::URLFetcher> url_fetcher_;
 };
-}
+} //namespace braveledger_bat_client_webrequest
 
-#endif // BAT_CLIENT_WEBREQUEST_H_
+#endif // BRAVELEDGER_BAT_CLIENT_WEBREQUEST_CHROMIUM_H_

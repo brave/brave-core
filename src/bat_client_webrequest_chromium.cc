@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat_client_webrequest.h"
+#include "bat_client_webrequest_chromium.h"
 #include "url_fetcher.h"
 #include "url_request_context.h"
 #include "url_request_context_getter.h"
@@ -16,6 +16,10 @@
 #include "net/base/upload_bytes_element_reader.h"
 
 namespace bat_client {
+
+namespace braveledger_bat_client_webrequest {  
+
+
 
   BatClientWebRequest::BatClientWebRequest() {
   }
@@ -37,22 +41,23 @@ namespace bat_client {
   }
 
   void BatClientWebRequest::runOnThread(const std::string& url,
-        BatHelper::FetchCallback callback, const std::vector<std::string>& headers,
+        braveledger_bat_helper::FetchCallback callback, const std::vector<std::string>& headers,
         const std::string& content, const std::string& contentType,
-        const FETCH_CALLBACK_EXTRA_DATA_ST& extraData, const URL_METHOD& method) {
-    //LOG(ERROR) << "!!!on runOnThread == " + url;
+        const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData, const braveledger_bat_helper::URL_METHOD& method) {
+
+    LOG(ERROR) << "BatClientWebRequest::runOnThread";
     std::lock_guard<std::mutex> guard(fetcher_mutex_);
     url_fetchers_.push_back(std::make_unique<URL_FETCH_REQUEST>());
     net::URLFetcher::RequestType requestType = net::URLFetcher::GET;
     switch (method)
     {
-      case GET:
+      case braveledger_bat_helper::GET:
         requestType = net::URLFetcher::GET;
         break;
-      case POST:
+      case braveledger_bat_helper::POST:
         requestType = net::URLFetcher::POST;
         break;
-      case PUT:
+      case braveledger_bat_helper::PUT:
         LOG(ERROR) << "!!!in PUT";
         requestType = net::URLFetcher::PUT;
         break;
@@ -77,10 +82,11 @@ namespace bat_client {
   }
 
   void BatClientWebRequest::run(const std::string& url,
-        BatHelper::FetchCallback callback,
+        braveledger_bat_helper::FetchCallback callback,
         const std::vector<std::string>& headers, const std::string& content,
-        const std::string& contentType, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
-        const URL_METHOD& method) {
+        const std::string& contentType, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
+        const braveledger_bat_helper::URL_METHOD& method) {
+
     LOG(ERROR) << "!!!web_request URL == " + url;
     content::BrowserThread::PostTask(
       content::BrowserThread::UI, FROM_HERE,
