@@ -5,6 +5,7 @@ import("//ui/base/ui_features.gni")
 import("//third_party/icu/config.gni")
 import("//build/config/locales.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
+import("//brave/brave_paks.gni")
 
 if (is_mac) {
   import("//build/config/mac/rules.gni")
@@ -24,7 +25,7 @@ group("browser_dependencies") {
     "//brave/browser",
     "//brave/components/content_settings/core/browser",
     "common",
-    ":brave_framework_resources",
+    ":packed_resources",
     "chromium_src:browser",
   ]
 }
@@ -50,51 +51,12 @@ group("brave_tests") {
   ]
 }
 
-repack("packed_extra_resources") {
-  sources = [
-    "$root_gen_dir/brave/brave_generated_resources.pak",
-    "$root_gen_dir/components/brave_components_resources.pak",
-    "$target_gen_dir/browser/resources/brave_extension.pak",
-  ]
-
-  deps = [
-    "//brave/app:brave_generated_resources_grit",
-    "//brave/components/resources:brave_components_resources_grit",
-    "//brave/browser/resources:brave_extension_grit",
-    "//brave/common/extensions/api"
-  ]
-
+brave_paks("packed_resources") {
   if (is_mac) {
-    output = "$root_gen_dir/repack/brave_resources.pak"
+    output_dir = "$root_gen_dir/repack"
+    copy_data_to_bundle = true
   } else {
-    output = "$root_out_dir/brave_resources.pak"
-  }
-}
-
-group("packed_resources") {
-  public_deps = [
-    ":packed_extra_resources",
-  ]
-}
-
-brave_framework_public_deps = [
-  ":packed_resources",
-]
-
-if (is_mac) {
-  bundle_data("brave_framework_resources") {
-    sources = [
-      "$root_gen_dir/repack/brave_resources.pak",
-    ]
-    public_deps = brave_framework_public_deps
-
-    outputs = [
-      "{{bundle_resources_dir}}/{{source_file_part}}",
-    ]
-  }
-} else {
-  group("brave_framework_resources") {
-    public_deps = brave_framework_public_deps
+    output_dir = root_out_dir
   }
 }
 
@@ -142,7 +104,7 @@ copy("brave_dist_resources") {
   deps = [
     ":brave",
     ":generate_version",
-    ":packed_extra_resources",
+    ":packed_resources",
   ]
 
   if (is_win) {

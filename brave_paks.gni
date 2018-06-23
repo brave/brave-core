@@ -1,0 +1,149 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/locales.gni")
+import("//chrome/common/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//tools/grit/repack.gni")
+import("//ui/base/ui_features.gni")
+
+# Generates a rule to repack a set of resources, substituting a given string
+# in for the percentage (e.g. "100", "200"). It generates the repacked files in
+# the "gen" directory, and then introduces a copy rule to copy it to the root
+# build directory.
+#
+# Argument:
+#   percent [required]
+#      String to substitute for the percentage.
+template("brave_repack_percent") {
+  percent = invoker.percent
+
+  repack(target_name) {
+    forward_variables_from(invoker,
+                           [
+                             "copy_data_to_bundle",
+                             "repack_whitelist",
+                             "visibility",
+                           ])
+
+    # All sources should also have deps for completeness.
+    sources = [
+      "$root_gen_dir/brave/brave_theme_resources_${percent}_percent.pak",
+    ]
+
+    deps = [
+      "//brave/app/theme:brave_theme_resources_grit",
+    ]
+
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+
+    output = "${invoker.output_dir}/brave_${percent}_percent.pak"
+  }
+}
+
+template("brave_extra_paks") {
+  repack(target_name) {
+    forward_variables_from(invoker,
+                           [
+                             "copy_data_to_bundle",
+                             "repack_whitelist",
+                             "visibility",
+                           ])
+    output = "${invoker.output_dir}/brave_resources.pak"
+    sources = [
+      "$root_gen_dir/brave/brave_generated_resources.pak",
+      "$root_gen_dir/components/brave_components_resources.pak",
+      "$target_gen_dir/browser/resources/brave_extension.pak",
+    ]
+
+    deps = [
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/components/resources:brave_components_resources_grit",
+      "//brave/browser/resources:brave_extension_grit",
+      "//brave/common/extensions/api"
+    ]
+
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+    if (defined(invoker.additional_paks)) {
+      sources += invoker.additional_paks
+    }
+  }
+}
+
+# Defines repack() targets used by Brave. Specifically:
+# * brave_100_percent.pak
+# * brave_200_percent.pak (optionally)
+# * resources.pak
+#
+# Paramters:
+#   output_dir [required]: Directory to output .pak files.
+#   additional_extra_paks: List of extra .pak sources for resources.pak.
+#   locale_whitelist: if set, override repack_whitelist for locale .pak files.
+#   copy_data_to_bundle:
+#   deps:
+#   output_dir:
+#   public_deps:
+#   repack_whitelist:
+#   visibility:
+#     Normal meanings.
+#
+template("brave_paks") {
+  brave_repack_percent("${target_name}_100_percent") {
+    percent = "100"
+    forward_variables_from(invoker,
+                           [
+                             "copy_data_to_bundle",
+                             "deps",
+                             "output_dir",
+                             "repack_whitelist",
+                             "visibility",
+                           ])
+  }
+
+  if (enable_hidpi) {
+    brave_repack_percent("${target_name}_200_percent") {
+      percent = "200"
+      forward_variables_from(invoker,
+                             [
+                               "copy_data_to_bundle",
+                               "deps",
+                               "output_dir",
+                               "repack_whitelist",
+                               "visibility",
+                             ])
+    }
+  }
+
+  brave_extra_paks("${target_name}_extra") {
+    forward_variables_from(invoker,
+                           [
+                             "copy_data_to_bundle",
+                             "deps",
+                             "output_dir",
+                             "repack_whitelist",
+                             "visibility",
+                           ])
+    if (defined(invoker.additional_extra_paks)) {
+      additional_paks = invoker.additional_extra_paks
+    }
+  }
+
+  group(target_name) {
+    forward_variables_from(invoker, [ "deps" ])
+    public_deps = [
+      ":${target_name}_100_percent",
+      ":${target_name}_extra",
+    ]
+    if (enable_hidpi) {
+      public_deps += [ ":${target_name}_200_percent" ]
+    }
+    if (defined(invoker.public_deps)) {
+      public_deps += invoker.public_deps
+    }
+  }
+}
