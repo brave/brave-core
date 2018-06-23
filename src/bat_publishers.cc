@@ -2,79 +2,80 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat_publisher.h"
-#include "leveldb/db.h"
-#include "base/sequenced_task_runner.h"
-#include "base/bind.h"
-#include "base/files/file_path.h"
-#include "base/path_service.h"
-#include "base/files/file_util.h"
-#include "base/task_scheduler/post_task.h"
-#include "chrome/browser/browser_process.h"
-#include "static_values.h"
 #include <cmath>
 #include <algorithm>
 
+
+#if defined CHROMIUM_BUILD
+#include "base/sequenced_task_runner.h"
+#include "base/task_scheduler/post_task.h"
+#include "chrome/browser/browser_process.h"
 #include "logging.h"
 
+#endif
+
+#include "bat_helper.h"
+#include "bat_publishers.h"
+#include "static_values.h"
 /* foo.bar.example.com
-   QLD = ‘bar’
-   RLD = ‘foo.bar’
-   SLD = ‘example.com’
-   TLD = ‘com’
+   QLD = 'bar'
+   RLD = 'foo.bar'
+   SLD = 'example.com'
+   TLD = 'com'
 
   search.yahoo.co.jp
-   QLD = ‘search’
-   RLD = ‘search’
-   SLD = ‘yahoo.co.jp’
-   TLD = ‘co.jp’
+   QLD = 'search'
+   RLD = 'search'
+   SLD = 'yahoo.co.jp'
+   TLD = 'co.jp'
 */
 
-static bool winners_votes_compare(const WINNERS_ST& first, const WINNERS_ST& second){
+static bool winners_votes_compare(const braveledger_bat_helper::WINNERS_ST& first, const braveledger_bat_helper::WINNERS_ST& second){
     return (first.votes_ < second.votes_);
 }
 
 
-namespace bat_publisher {
+namespace braveledger_bat_publishers {
 
-BatPublisher::BatPublisher():
+BatPublishers::BatPublishers():
   level_db_(nullptr) {
   calcScoreConsts();
 }
 
-BatPublisher::~BatPublisher() {
-  if (nullptr != level_db_) {
-    delete level_db_;
-  }
+BatPublishers::~BatPublishers() {
+
 }
 
-void BatPublisher::calcScoreConsts() {
-  a_ = 1.0 / (ledger::_d * 2.0) - state_.min_pubslisher_duration_;
+
+void BatPublishers::calcScoreConsts() {
+  a_ = 1.0 / (braveledger_ledger::_d * 2.0) - state_.min_pubslisher_duration_;
   a2_ = a_ * 2;
   a4_ = a2_ * 2;
   b_ = state_.min_pubslisher_duration_ - a_;
   b2_ = b_ * b_;
 }
 
-void BatPublisher::openPublishersDB() {
-  base::FilePath dbFilePath;
-  base::PathService::Get(base::DIR_HOME, &dbFilePath);
-  dbFilePath = dbFilePath.Append(PUBLISHERS_DB_NAME);
-
+void BatPublishers::openPublishersDB() {
+  std::string pubDbPath;
+  braveledger_bat_helper::getPublishersDb(PUBLISHERS_DB_NAME, pubDbPath);
+  
+  level_db_.reset(nullptr); //release the existing db connection
   leveldb::Options options;
   options.create_if_missing = true;
-  leveldb::Status status = leveldb::DB::Open(options, dbFilePath.value().c_str(), &level_db_);
-  if (!status.ok() || !level_db_) {
-      if (level_db_) {
-          delete level_db_;
-          level_db_ = nullptr;
+  leveldb::DB * db_ptr = nullptr;
+  leveldb::Status status = leveldb::DB::Open(options, pubDbPath, &db_ptr);
+  if (!status.ok() || db_ptr == nullptr) {
+      if (db_ptr != nullptr) {
+        delete db_ptr;
       }
-
-      LOG(ERROR) << "openPublishersDB level db open error " << dbFilePath.value().c_str();
+      LOG(ERROR) << "openPublishersDB level db open error " << pubDbPath.c_str();
+  }
+  else  {
+    level_db_.reset(db_ptr);
   }
 }
 
-void BatPublisher::loadPublishers() {
+void BatPublishers::loadPublishers() {
   openPublishersDB();
   if (!level_db_) {
     assert(false);
@@ -87,15 +88,15 @@ void BatPublisher::loadPublishers() {
   leveldb::Iterator* it = level_db_->NewIterator(leveldb::ReadOptions());
   for (it->SeekToFirst(); it->Valid(); it->Next()) {
     std::string publisher = it->key().ToString();
-    PUBLISHER_ST publisher_st;
-    BatHelper::getJSONPublisher(it->value().ToString(), publisher_st);
+    braveledger_bat_helper::PUBLISHER_ST publisher_st;
+    braveledger_bat_helper::getJSONPublisher(it->value().ToString(), publisher_st);
     publishers_[publisher] = publisher_st;
   }
   assert(it->status().ok());  // Check for any errors found during the scan
   delete it;
 }
 
-void BatPublisher::loadStateCallback(bool result, const PUBLISHER_STATE_ST& state) {
+void BatPublishers::loadStateCallback(bool result, const braveledger_bat_helper::PUBLISHER_STATE_ST& state) {
   if (!result) {
     return;
   }
@@ -103,37 +104,43 @@ void BatPublisher::loadStateCallback(bool result, const PUBLISHER_STATE_ST& stat
   calcScoreConsts();
 }
 
-void BatPublisher::initSynopsis() {
-  BatHelper::loadPublisherState(base::Bind(&BatPublisher::loadStateCallback,
+void BatPublishers::initSynopsis() {
+
+#if defined CHROMIUM_BUILD
+  braveledger_bat_helper::loadPublisherState(base::Bind(&BatPublishers::loadStateCallback,
     base::Unretained(this)));
+
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublisher::loadPublishers, base::Unretained(this)));
+  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::loadPublishers, base::Unretained(this)));
+#else
+
+#endif
 }
 
-void BatPublisher::saveVisitInternal(const std::string& publisher, const uint64_t& duration,
-    BatPublisher::SaveVisitCallback callback) {
+void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64_t& duration,
+    BatPublishers::SaveVisitCallback callback) {
   double currentScore = concaveScore(duration);
 
   std::string stringifiedPublisher;
   uint64_t verifiedTimestamp = 0;
   {
     std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
+    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
     if (publishers_.end() == iter) {
-      PUBLISHER_ST publisher_st;
+      braveledger_bat_helper::PUBLISHER_ST publisher_st;
       publisher_st.duration_ = duration;
       publisher_st.score_ = currentScore;
       publisher_st.visits_ = 1;
       publishers_[publisher] = publisher_st;
-      stringifiedPublisher = BatHelper::stringifyPublisher(publisher_st);
+      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
     } else {
       iter->second.duration_ += duration;
       iter->second.score_ += currentScore;
       iter->second.visits_ += 1;
       verifiedTimestamp = iter->second.verifiedTimeStamp_;
-      stringifiedPublisher = BatHelper::stringifyPublisher(iter->second);
+      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
     }
     if (!level_db_) {
       assert(false);
@@ -145,31 +152,34 @@ void BatPublisher::saveVisitInternal(const std::string& publisher, const uint64_
     leveldb::Status status = level_db_->Put(leveldb::WriteOptions(), publisher, stringifiedPublisher);
     assert(status.ok());
   }
-  callback.Run(publisher, verifiedTimestamp);
+  
+  braveledger_bat_helper::run_runnable <void, BatPublishers::SaveVisitCallback, const std::string&, const uint64_t& >(callback, publisher, verifiedTimestamp);  
   synopsisNormalizerInternal();
 }
 
-void BatPublisher::saveVisit(const std::string& publisher, const uint64_t& duration,
-    BatPublisher::SaveVisitCallback callback, bool ignoreMinTime) {
+void BatPublishers::saveVisit(const std::string& publisher, const uint64_t& duration,
+    BatPublishers::SaveVisitCallback callback, bool ignoreMinTime) {
   if (!ignoreMinTime && duration < state_.min_pubslisher_duration_) {
     return;
   }
 
   // TODO checks if the publisher verified, disabled and etc
-
+#if defined CHROMIUM_BUILD
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublisher::saveVisitInternal, base::Unretained(this),
+  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::saveVisitInternal, base::Unretained(this),
     publisher, duration, callback));
+#else
+#endif
 }
 
-void BatPublisher::setPublisherTimestampVerifiedInternal(const std::string& publisher,
+void BatPublishers::setPublisherTimestampVerifiedInternal(const std::string& publisher,
     const uint64_t& verifiedTimestamp, const bool& verified) {
   {
     std::string stringifiedPublisher;
     std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
+    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
     if (publishers_.end() == iter) {
       assert(false);
 
@@ -177,7 +187,7 @@ void BatPublisher::setPublisherTimestampVerifiedInternal(const std::string& publ
     } else {
       iter->second.verified_ = verified;
       iter->second.verifiedTimeStamp_ = verifiedTimestamp;
-      stringifiedPublisher = BatHelper::stringifyPublisher(iter->second);
+      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
     }
     if (!level_db_) {
       assert(false);
@@ -192,27 +202,31 @@ void BatPublisher::setPublisherTimestampVerifiedInternal(const std::string& publ
   synopsisNormalizerInternal();
 }
 
-void BatPublisher::setPublisherTimestampVerified(const std::string& publisher,
+void BatPublishers::setPublisherTimestampVerified(const std::string& publisher,
     const uint64_t& verifiedTimestamp, const bool& verified) {
+#if defined CHROMIUM_BUILD 
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublisher::setPublisherTimestampVerifiedInternal,
+
+  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherTimestampVerifiedInternal,
     base::Unretained(this), publisher, verifiedTimestamp, verified));
+#else
+#endif
 }
 
-void BatPublisher::setPublisherFavIconInternal(const std::string& publisher, const std::string& favicon_url) {
+void BatPublishers::setPublisherFavIconInternal(const std::string& publisher, const std::string& favicon_url) {
   std::string stringifiedPublisher;
   std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-  std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
+  std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
   if (publishers_.end() == iter) {
-    PUBLISHER_ST publisher_st;
+    braveledger_bat_helper::PUBLISHER_ST publisher_st;
     publisher_st.favicon_url_ = favicon_url;
     publishers_[publisher] = publisher_st;
-    stringifiedPublisher = BatHelper::stringifyPublisher(publisher_st);
+    stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
   } else {
     iter->second.favicon_url_ = favicon_url;
-    stringifiedPublisher = BatHelper::stringifyPublisher(iter->second);
+    stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
   }
   if (!level_db_) {
     assert(false);
@@ -225,27 +239,31 @@ void BatPublisher::setPublisherFavIconInternal(const std::string& publisher, con
   assert(status.ok());
 }
 
-void BatPublisher::setPublisherFavIcon(const std::string& publisher, const std::string& favicon_url) {
+void BatPublishers::setPublisherFavIcon(const std::string& publisher, const std::string& favicon_url) {
+
+#if defined CHROMIUM_BUILD 
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublisher::setPublisherFavIconInternal,
+  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherFavIconInternal,
     base::Unretained(this), publisher, favicon_url));
+#else
+#endif
 }
 
-void BatPublisher::setPublisherIncludeInternal(const std::string& publisher, const bool& include) {
+void BatPublishers::setPublisherIncludeInternal(const std::string& publisher, const bool& include) {
   {
     std::string stringifiedPublisher;
     std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
+    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
     if (publishers_.end() == iter) {
-      PUBLISHER_ST publisher_st;
+      braveledger_bat_helper::PUBLISHER_ST publisher_st;
       publisher_st.exclude_ = !include;
       publishers_[publisher] = publisher_st;
-      stringifiedPublisher = BatHelper::stringifyPublisher(publisher_st);
+      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
     } else {
       iter->second.exclude_ = !include;
-      stringifiedPublisher = BatHelper::stringifyPublisher(iter->second);
+      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
     }
     if (!level_db_) {
       assert(false);
@@ -260,27 +278,32 @@ void BatPublisher::setPublisherIncludeInternal(const std::string& publisher, con
   synopsisNormalizerInternal();
 }
 
-void BatPublisher::setPublisherInclude(const std::string& publisher, const bool& include) {
+void BatPublishers::setPublisherInclude(const std::string& publisher, const bool& include) {
+
+#if defined CHROMIUM_BUILD 
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublisher::setPublisherIncludeInternal,
+
+  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherIncludeInternal,
     base::Unretained(this), publisher, include));
+#else
+#endif
 }
 
-void BatPublisher::setPublisherDeletedInternal(const std::string& publisher, const bool& deleted) {
+void BatPublishers::setPublisherDeletedInternal(const std::string& publisher, const bool& deleted) {
   {
     std::string stringifiedPublisher;
     std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
+    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
     if (publishers_.end() == iter) {
-      PUBLISHER_ST publisher_st;
+      braveledger_bat_helper::PUBLISHER_ST publisher_st;
       publisher_st.deleted_ = deleted;
       publishers_[publisher] = publisher_st;
-      stringifiedPublisher = BatHelper::stringifyPublisher(publisher_st);
+      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
     } else {
       iter->second.deleted_ = deleted;
-      stringifiedPublisher = BatHelper::stringifyPublisher(iter->second);
+      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
     }
     if (!level_db_) {
       assert(false);
@@ -295,27 +318,31 @@ void BatPublisher::setPublisherDeletedInternal(const std::string& publisher, con
   synopsisNormalizerInternal();
 }
 
-void BatPublisher::setPublisherDeleted(const std::string& publisher, const bool& deleted) {
+void BatPublishers::setPublisherDeleted(const std::string& publisher, const bool& deleted) {
+#if defined CHROMIUM_BUILD 
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublisher::setPublisherDeletedInternal,
+
+  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherDeletedInternal,
     base::Unretained(this), publisher, deleted));
+#else
+#endif
 }
 
-void BatPublisher::setPublisherPinPercentageInternal(const std::string& publisher, const bool& pinPercentage) {
+void BatPublishers::setPublisherPinPercentageInternal(const std::string& publisher, const bool& pinPercentage) {
   {
     std::string stringifiedPublisher;
     std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
+    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
     if (publishers_.end() == iter) {
-      PUBLISHER_ST publisher_st;
+      braveledger_bat_helper::PUBLISHER_ST publisher_st;
       publisher_st.pinPercentage_ = pinPercentage;
       publishers_[publisher] = publisher_st;
-      stringifiedPublisher = BatHelper::stringifyPublisher(publisher_st);
+      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
     } else {
       iter->second.pinPercentage_ = pinPercentage;
-      stringifiedPublisher = BatHelper::stringifyPublisher(iter->second);
+      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
     }
     if (!level_db_) {
       assert(false);
@@ -330,51 +357,54 @@ void BatPublisher::setPublisherPinPercentageInternal(const std::string& publishe
   synopsisNormalizerInternal();
 }
 
-void BatPublisher::setPublisherPinPercentage(const std::string& publisher, const bool& pinPercentage) {
+void BatPublishers::setPublisherPinPercentage(const std::string& publisher, const bool& pinPercentage) {
+#if defined CHROMIUM_BUILD 
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublisher::setPublisherPinPercentageInternal,
+  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherPinPercentageInternal,
     base::Unretained(this), publisher, pinPercentage));
+#else
+#endif
 }
 
-void BatPublisher::setPublisherMinVisitTime(const uint64_t& duration) { // In milliseconds
+void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In milliseconds
   state_.min_pubslisher_duration_ = duration;
-  BatHelper::savePublisherState(state_);
+  braveledger_bat_helper::savePublisherState(state_);
   synopsisNormalizer();
 }
 
-void BatPublisher::setPublisherMinVisits(const unsigned int& visits) {
+void BatPublishers::setPublisherMinVisits(const unsigned int& visits) {
   state_.min_visits_ = visits;
-  BatHelper::savePublisherState(state_);
+  braveledger_bat_helper::savePublisherState(state_);
   synopsisNormalizer();
 }
 
-void BatPublisher::setPublisherAllowNonVerified(const bool& allow) {
+void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
   state_.allow_non_verified_ = allow;
-  BatHelper::savePublisherState(state_);
+  braveledger_bat_helper::savePublisherState(state_);
   synopsisNormalizer();
 }
 
-std::vector<PUBLISHER_DATA_ST> BatPublisher::getPublishersData() {
-  std::vector<PUBLISHER_DATA_ST> res;
+std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> BatPublishers::getPublishersData() {
+  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> res;
 
   std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-  for (std::map<std::string, PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
-    PUBLISHER_DATA_ST publisherData;
+  for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
+    braveledger_bat_helper::PUBLISHER_DATA_ST publisherData;
     publisherData.publisherKey_ = iter->first;
     publisherData.publisher_ = iter->second;
     // TODO check all of that
-    if (iter->second.duration_ >= ledger::_milliseconds_day) {
-      publisherData.daysSpent_ = std::max((int)std::lround((double)iter->second.duration_ / (double)ledger::_milliseconds_day), 1);
-    } else if (iter->second.duration_ >= ledger::_milliseconds_hour) {
-      publisherData.hoursSpent_ = std::max((int)((double)iter->second.duration_ / (double)ledger::_milliseconds_hour), 1);
-      publisherData.minutesSpent_ = std::lround((double)(iter->second.duration_ % ledger::_milliseconds_hour) / (double)ledger::_milliseconds_minute);
-    } else if (iter->second.duration_ >= ledger::_milliseconds_minute) {
-      publisherData.minutesSpent_ = std::max((int)((double)iter->second.duration_ / (double)ledger::_milliseconds_minute), 1);
-      publisherData.secondsSpent_ = std::lround((double)(iter->second.duration_ % ledger::_milliseconds_minute) / (double)ledger::_milliseconds_second);
+    if (iter->second.duration_ >= braveledger_ledger::_milliseconds_day) {
+      publisherData.daysSpent_ = std::max((int)std::lround((double)iter->second.duration_ / (double)braveledger_ledger::_milliseconds_day), 1);
+    } else if (iter->second.duration_ >= braveledger_ledger::_milliseconds_hour) {
+      publisherData.hoursSpent_ = std::max((int)((double)iter->second.duration_ / (double)braveledger_ledger::_milliseconds_hour), 1);
+      publisherData.minutesSpent_ = std::lround((double)(iter->second.duration_ % braveledger_ledger::_milliseconds_hour) / (double)braveledger_ledger::_milliseconds_minute);
+    } else if (iter->second.duration_ >= braveledger_ledger::_milliseconds_minute) {
+      publisherData.minutesSpent_ = std::max((int)((double)iter->second.duration_ / (double)braveledger_ledger::_milliseconds_minute), 1);
+      publisherData.secondsSpent_ = std::lround((double)(iter->second.duration_ % braveledger_ledger::_milliseconds_minute) / (double)braveledger_ledger::_milliseconds_second);
     } else {
-      publisherData.secondsSpent_ = std::max((int)std::lround((double)iter->second.duration_ / (double)ledger::_milliseconds_second), 1);
+      publisherData.secondsSpent_ = std::max((int)std::lround((double)iter->second.duration_ / (double)braveledger_ledger::_milliseconds_second), 1);
     }
     res.push_back(publisherData);
   }
@@ -382,7 +412,7 @@ std::vector<PUBLISHER_DATA_ST> BatPublisher::getPublishersData() {
   return res;
 }
 
-bool BatPublisher::isPublisherVisible(const PUBLISHER_ST& publisher_st) {
+bool BatPublishers::isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st) {
   if (publisher_st.deleted_ || (!state_.allow_non_verified_ && !publisher_st.verified_)) {
     return false;
   }
@@ -392,10 +422,12 @@ bool BatPublisher::isPublisherVisible(const PUBLISHER_ST& publisher_st) {
     publisher_st.visits_ >= state_.min_visits_;
 }
 
-void BatPublisher::synopsisNormalizerInternal() {
+void BatPublishers::synopsisNormalizerInternal() {
+
+  LOG(ERROR)<<"BatPublishers::synopsisNormalizerInternal";
   std::lock_guard<std::mutex> guard(publishers_map_mutex_);
   double totalScores = 0.0;
-  for (std::map<std::string, PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
+  for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
     if (!isPublisherVisible(iter->second)) {
       continue;
     }
@@ -406,7 +438,7 @@ void BatPublisher::synopsisNormalizerInternal() {
   std::vector<double> realPercents;
   std::vector<double> roundoffs;
   unsigned int totalPercents = 0;
-  for (std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
+  for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
     if (!isPublisherVisible(iter->second)) {
       //LOG(ERROR) << "!!!not visible " << iter->first;
       continue;
@@ -447,7 +479,7 @@ void BatPublisher::synopsisNormalizerInternal() {
     }
   }
   size_t currentValue = 0;
-  for (std::map<std::string, PUBLISHER_ST>::iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
+  for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
     if (!isPublisherVisible(iter->second)) {
       continue;
     }
@@ -457,18 +489,22 @@ void BatPublisher::synopsisNormalizerInternal() {
   }
 }
 
-void BatPublisher::synopsisNormalizer() {
+void BatPublishers::synopsisNormalizer() {
+#if defined CHROMIUM_BUILD 
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublisher::synopsisNormalizerInternal,
+
+  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::synopsisNormalizerInternal,
     base::Unretained(this)));
+#else
+#endif
 }
 
-std::vector<WINNERS_ST> BatPublisher::winners(const unsigned int& ballots) {
-  std::vector<WINNERS_ST> res;
+std::vector<braveledger_bat_helper::WINNERS_ST> BatPublishers::winners(const unsigned int& ballots) {
+  std::vector<braveledger_bat_helper::WINNERS_ST> res;
 
-  std::vector<PUBLISHER_DATA_ST> top = topN();
+  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> top = topN();
   unsigned int totalVotes = 0;
   std::vector<unsigned int> votes;
   // TODO there is underscore.shuffle
@@ -477,7 +513,7 @@ std::vector<WINNERS_ST> BatPublisher::winners(const unsigned int& ballots) {
     if (top[i].publisher_.percent_ <= 0) {
       continue;
     }
-    WINNERS_ST winner;
+    braveledger_bat_helper::WINNERS_ST winner;
     winner.votes_ = (unsigned int)std::lround((double)top[i].publisher_.percent_ * (double)ballots / 100.0);
     totalVotes += winner.votes_;
     winner.publisher_data_ = top[i];
@@ -485,7 +521,7 @@ std::vector<WINNERS_ST> BatPublisher::winners(const unsigned int& ballots) {
   }
   if (res.size()) {
     while (totalVotes > ballots) {
-      std::vector<WINNERS_ST>::iterator max = std::max_element(res.begin(), res.end(), winners_votes_compare);
+      std::vector<braveledger_bat_helper::WINNERS_ST>::iterator max = std::max_element(res.begin(), res.end(), winners_votes_compare);
       (max->votes_)--;
       totalVotes--;
     }
@@ -494,17 +530,17 @@ std::vector<WINNERS_ST> BatPublisher::winners(const unsigned int& ballots) {
   return res;
 }
 
-std::vector<PUBLISHER_DATA_ST> BatPublisher::topN() {
-  std::vector<PUBLISHER_DATA_ST> res;
+std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> BatPublishers::topN() {
+  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> res;
 
   std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-  for (std::map<std::string, PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
+  for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
     if (0 == iter->second.score_
         || state_.min_pubslisher_duration_ > iter->second.duration_
         || state_.min_visits_ > iter->second.visits_) {
       continue;
     }
-    PUBLISHER_DATA_ST publisherData;
+    braveledger_bat_helper::PUBLISHER_DATA_ST publisherData;
     publisherData.publisherKey_ = iter->first;
     publisherData.publisher_ = iter->second;
     res.push_back(publisherData);
@@ -515,13 +551,13 @@ std::vector<PUBLISHER_DATA_ST> BatPublisher::topN() {
   return res;
 }
 
-bool BatPublisher::isEligableForContribution(const PUBLISHER_DATA_ST& publisherData) {
+bool BatPublishers::isEligableForContribution(const braveledger_bat_helper::PUBLISHER_DATA_ST& publisherData) {
   return !publisherData.publisher_.exclude_ && isPublisherVisible(publisherData.publisher_);
 }
 
 // courtesy of @dimitry-xyz: https://github.com/brave/ledger/issues/2#issuecomment-221752002
-double BatPublisher::concaveScore(const uint64_t& duration) {
+double BatPublishers::concaveScore(const uint64_t& duration) {
   return (std::sqrt(b2_ + a4_ * duration) - b_) / (double)a2_;
 }
 
-}
+} //namespace braveledger_bat_publisher
