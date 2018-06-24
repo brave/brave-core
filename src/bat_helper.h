@@ -32,7 +32,26 @@
 
 #include "static_values.h"
 
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
 namespace braveledger_bat_helper {
+
+  using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
+
+  template <typename T> void  saveToJson(const T& t, std::string & json)
+  {
+    rapidjson::StringBuffer buffer;
+    JsonWriter writer(buffer);
+    t.saveToJson(writer);
+    json = buffer.GetString();
+  }
+
+  //return: parsing status:  true = succeded, false = failed 
+  template <typename T> bool  loadFromJson( T& t, const std::string & json)
+  {    
+    return t.loadFromJson(json);
+  }
 
   struct REQUEST_CREDENTIALS_ST {
   
@@ -75,6 +94,11 @@ struct WALLET_INFO_ST {
   WALLET_INFO_ST();
   ~WALLET_INFO_ST();
 
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    //save to json string    
+    void saveToJson(JsonWriter & writer) const;
   std::string paymentId_;
   std::string addressBAT_;
   std::string addressBTC_;
@@ -88,6 +112,12 @@ struct TRANSACTION_BALLOT_ST {
   TRANSACTION_BALLOT_ST();
   ~TRANSACTION_BALLOT_ST();
 
+    //load from json string
+    bool loadFromJson(const std::string & json);    
+
+    //save to json string
+    void saveToJson(JsonWriter & writer) const;
+	
     std::string publisher_;
     unsigned int offset_ = 0u;
   };
@@ -96,6 +126,11 @@ struct TRANSACTION_ST {
   TRANSACTION_ST();
   TRANSACTION_ST(const TRANSACTION_ST& transaction);
   ~TRANSACTION_ST();
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    //save to json string
+    void saveToJson(JsonWriter & writer) const;
 
   std::string viewingId_;
   std::string surveyorId_;
@@ -123,6 +158,11 @@ struct BALLOT_ST {
   BALLOT_ST(const BALLOT_ST& ballot);
   ~BALLOT_ST();
 
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    //save to json string
+    void saveToJson(JsonWriter & writer) const;
   std::string viewingId_;
   std::string surveyorId_;
   std::string publisher_;
@@ -136,6 +176,11 @@ struct BALLOT_ST {
 struct CLIENT_STATE_ST {
   CLIENT_STATE_ST();
   ~CLIENT_STATE_ST();
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    //save to json string
+    void saveToJson(JsonWriter & writer) const;
 
   WALLET_INFO_ST walletInfo_;
   uint64_t bootStamp_ = 0u;
@@ -159,6 +204,11 @@ struct PUBLISHER_STATE_ST {
   PUBLISHER_STATE_ST();
   ~PUBLISHER_STATE_ST();
 
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    //save to json string
+    void saveToJson(JsonWriter & writer) const;
   unsigned int min_pubslisher_duration_ = braveledger_ledger::_default_min_pubslisher_duration;  // In milliseconds
   unsigned int min_visits_ = 1u;
   bool allow_non_verified_ = true;
@@ -168,6 +218,11 @@ struct PUBLISHER_ST {
   PUBLISHER_ST();
   PUBLISHER_ST(const PUBLISHER_ST& publisher);
   ~PUBLISHER_ST();
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    //save to json string
+    void saveToJson(JsonWriter & writer) const;
 
   uint64_t duration_ = 0u;
   std::string favicon_url_;
@@ -209,6 +264,8 @@ struct WALLET_PROPERTIES_ST {
   WALLET_PROPERTIES_ST();
   ~WALLET_PROPERTIES_ST();
 
+    //load from json string
+    bool loadFromJson(const std::string & json);    
   std::string altcurrency_;
   double balance_;
   std::map<std::string, double> rates_;
@@ -244,6 +301,11 @@ struct SURVEYOR_ST {
   SURVEYOR_ST();
   ~SURVEYOR_ST();
 
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    //save to json string
+    void saveToJson(JsonWriter & writer) const;
   std::string signature_;
   std::string surveyorId_;
   std::string surveyVK_;
@@ -364,18 +426,18 @@ enum URL_METHOD {
   std::string getJSONValue(const std::string& fieldName, const std::string& json);  
   std::vector<std::string> getJSONList(const std::string& fieldName, const std::string& json);
 
-  void getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
+  bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
     std::string& fee_currency, double& fee_amount, unsigned int& days);
   void getJSONState(const std::string& json, CLIENT_STATE_ST& state);
   void getJSONPublisherState(const std::string& json, PUBLISHER_STATE_ST& state);
   void getJSONPublisher(const std::string& json, PUBLISHER_ST& publisher_st);
-  void getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp);
-  void getJSONPublisherVerified(const std::string& json, bool& verified);
+  bool getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp);
+  bool getJSONPublisherVerified(const std::string& json, bool& verified);
   void getJSONWalletProperties(const std::string& json, WALLET_PROPERTIES_ST& walletProperties);
-  void getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx);
-  void getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
-  void getJSONRates(const std::string& json, std::map<std::string, double>& rates);
-  void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor);
+  bool getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx);
+  bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
+  bool getJSONRates(const std::string& json, std::map<std::string, double>& rates);
+
   void getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
   void getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts);
   void getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors);
@@ -394,23 +456,23 @@ enum URL_METHOD {
   std::string stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
   std::vector<uint8_t> getSHA256(const std::string& in);
   std::string getBase64(const std::vector<uint8_t>& in);
-  std::vector<uint8_t> getFromBase64(const std::string& in);
+  bool getFromBase64(const std::string& in, std::vector<uint8_t> & out);
   // Sign using ed25519 algorithm
   std::string sign(std::string* keys, std::string* values, const unsigned int& size,
     const std::string& keyId, const std::vector<uint8_t>& secretKey);
   uint64_t currentTime();
   void saveState(const CLIENT_STATE_ST& state);
-  void loadState(BatHelper::ReadStateCallback callback);
+  void loadState(ReadStateCallback callback);
   void savePublisherState(const PUBLISHER_STATE_ST& state);
-  void loadPublisherState(BatHelper::ReadPublisherStateCallback callback);
+  void loadPublisherState(ReadPublisherStateCallback callback);
   // We have to implement different function for iOS, probably laptop
   void writeStateFile(const std::string& data);
   // We have to implement different function for iOS, probably laptop
-  void readStateFile(BatHelper::ReadStateCallback callback);
+  void readStateFile(ReadStateCallback callback);
   // We have to implement different function for iOS, probably laptop
   void writePublisherStateFile(const std::string& data);
   // We have to implement different function for iOS, probably laptop
-  void readPublisherStateFile(BatHelper::ReadPublisherStateCallback callback);
+  void readPublisherStateFile(ReadPublisherStateCallback callback);
   void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts);
   void getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts);
   std::string getMediaId(const std::map<std::string, std::string>& data, const std::string& type);

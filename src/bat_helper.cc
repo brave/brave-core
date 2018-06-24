@@ -16,6 +16,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+
 #include "base/values.h"
 #include "base/files/file_path.h"
 #include "base/path_service.h"
@@ -33,6 +34,10 @@
 #include <openssl/base64.h>
 
 
+//RapidJson
+#include "rapidjson/document.h"
+#include "rapidjson/error/en.h"
+
 
 // to do debug
 //#include <stdio.h>
@@ -47,20 +52,122 @@ namespace braveledger_bat_helper {
 REQUEST_CREDENTIALS_ST::REQUEST_CREDENTIALS_ST() {}
 REQUEST_CREDENTIALS_ST::~REQUEST_CREDENTIALS_ST() {}
 
+/////////////////////////////////////////////////////////////////////////////
 RECONCILE_PAYLOAD_ST::RECONCILE_PAYLOAD_ST() {}
 RECONCILE_PAYLOAD_ST::~RECONCILE_PAYLOAD_ST() {}
 
+  /////////////////////////////////////////////////////////////////////////////
   WALLET_INFO_ST::WALLET_INFO_ST() {}
   WALLET_INFO_ST::~WALLET_INFO_ST() {}
+  bool WALLET_INFO_ST::loadFromJson(const std::string & json)
+  {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
 
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error)
+    {
+      error = !( d["paymentId"].IsString() &&
+        d["addressBAT"].IsString() &&
+        d["addressBTC"].IsString() &&
+        d["addressCARD_ID"].IsString() &&
+        d["addressETH"].IsString() &&
+        d["addressLTC"].IsString() &&
+        d["keyInfoSeed"].IsString() );
+    }
+
+    //convert keyInfoSeed and check error
+    std::string sKeyInfoSeed = d["keyInfoSeed"].GetString();
+    error = ! getFromBase64(sKeyInfoSeed, keyInfoSeed_);
+    
+    if (false == error)
+    {
+      paymentId_ = d["paymentId"].GetString();
+      addressBAT_ = d["addressBAT"].GetString();
+      addressBTC_ = d["addressBTC"].GetString();
+      addressCARD_ID_ = d["addressCARD_ID"].GetString();
+      addressETH_ = d["addressETH"].GetString();
+      addressLTC_ = d["addressLTC"].GetString();      
+    }
+
+    return error;
+  }
+
+  //save to json string  
+  void WALLET_INFO_ST::saveToJson(JsonWriter & writer) const
+  {    
+    writer.StartObject();
+
+    writer.String("paymentId");
+    writer.String(paymentId_.c_str());
+
+    writer.String("addressBAT");
+    writer.String(addressBAT_.c_str());
+
+    writer.String("addressBTC");
+    writer.String(addressBTC_.c_str());
+
+    writer.String("addressCARD_ID");
+    writer.String(addressCARD_ID_.c_str());
+
+    writer.String("addressETH");
+    writer.String(addressETH_.c_str());
+
+    writer.String("addressLTC");
+    writer.String(addressLTC_.c_str());
+
+    writer.String("keyInfoSeed");
+    writer.String(getBase64 (keyInfoSeed_).c_str());
+
+    writer.EndObject();    
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
   UNSIGNED_TX::UNSIGNED_TX() {}
   UNSIGNED_TX::~UNSIGNED_TX() {}
 
+  /////////////////////////////////////////////////////////////////////////////
   TRANSACTION_BALLOT_ST::TRANSACTION_BALLOT_ST() :
     offset_(0) {}
 
   TRANSACTION_BALLOT_ST::~TRANSACTION_BALLOT_ST() {}
+  bool TRANSACTION_BALLOT_ST::loadFromJson(const std::string & json)
+  {
+    rapidjson::Document d;
+    d.Parse(json.c_str());    
 
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error)
+    {
+      error = !( d["publisher"].IsString() &&
+        d["offset"].IsUint() );
+    }    
+    
+    if (false == error)
+    {
+      publisher_ = d["publisher"].GetString();
+      offset_ = d["offset"].GetUint();
+    }
+
+    return error;
+  }  
+  
+  void TRANSACTION_BALLOT_ST::saveToJson(JsonWriter & writer) const
+  {    
+    writer.StartObject();
+
+    writer.String("publisher");
+    writer.String(publisher_.c_str());
+
+    writer.String("offset");
+    writer.Uint(offset_);
+
+    writer.EndObject();    
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
 TRANSACTION_ST::TRANSACTION_ST():
   votes_(0) {}
 TRANSACTION_ST::TRANSACTION_ST(const TRANSACTION_ST& transaction) {
@@ -86,7 +193,169 @@ TRANSACTION_ST::TRANSACTION_ST(const TRANSACTION_ST& transaction) {
   ballots_ = transaction.ballots_;
 }
 TRANSACTION_ST::~TRANSACTION_ST() {}
+  bool TRANSACTION_ST::loadFromJson(const std::string & json)
+  {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
 
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error)
+    {
+      error = !(d["viewingId"].IsString() &&
+        d["surveyorId"].IsString() &&
+        d["contribution_fiat_amount"].IsString() &&
+        d["contribution_fiat_currency"].IsString() &&
+        d["rates"].IsObject() &&
+        d["rates"].HasMember("ETH") &&
+        d["rates"].HasMember("LTC") &&
+        d["rates"].HasMember("BTC") &&
+        d["rates"].HasMember("USD") &&
+        d["rates"].HasMember("EUR") &&
+        d["contribution_altcurrency"].IsString() &&
+        d["contribution_probi"].IsString() &&
+        d["contribution_fee"].IsString() &&
+        d["submissionStamp"].IsString() &&
+        d["submissionId"].IsString() &&
+        d["anonizeViewingId"].IsString() &&
+        d["registrarVK"].IsString() &&
+        d["masterUserToken"].IsString() &&
+        d["surveyorIds"].IsArray() &&
+        d["satoshis"].IsString() &&
+        d["altCurrency"].IsString() &&
+        d["probi"].IsString() &&
+        d["votes"].IsUint() &&
+        d["ballots"].IsArray());        
+    }    
+    
+    if (false == error)
+    {
+      viewingId_ = d["viewingId"].GetString();
+      surveyorId_ = d["surveyorId"].GetString();
+      contribution_fiat_amount_ = d["contribution_fiat_amount"].GetString();
+      contribution_fiat_currency_ = d["contribution_fiat_currency"].GetString();                
+      contribution_altcurrency_ = d["contribution_altcurrency"].GetString();
+      contribution_probi_ = d["contribution_probi"].GetString();
+      contribution_fee_ = d["contribution_fee"].GetString();
+      submissionStamp_ = d["submissionStamp"].GetString();
+      submissionId_ = d["submissionId"].GetString();
+      anonizeViewingId_ = d["anonizeViewingId"].GetString();
+      registrarVK_ = d["registrarVK"].GetString();
+      masterUserToken_ = d["masterUserToken"].GetString();
+      satoshis_ = d["satoshis"].GetString();
+      altCurrency_ = d["altCurrency"].GetString();
+      probi_ = d["probi"].GetString();
+      votes_ = d["votes"].GetUint();
+      
+      for ( auto & i : d["rates"].GetObject())
+      {
+        contribution_rates_.insert(std::make_pair(i.name.GetString(), i.value.GetDouble() ));
+      }        
+
+      for (auto & i : d["surveyorIds"].GetArray())
+      {
+        surveyorIds_.push_back(i.GetString());
+      }      
+        
+      for (const auto & i : d["ballots"].GetArray() )
+      {
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+
+        TRANSACTION_BALLOT_ST ballot;
+        ballot.loadFromJson(sb.GetString());
+        ballots_.push_back(ballot);
+      }
+    }
+
+    return error;
+  }   
+
+  
+  void TRANSACTION_ST::saveToJson(JsonWriter & writer) const
+  {
+    writer.StartObject();
+
+    writer.String("viewingId");
+    writer.String(viewingId_.c_str());
+
+    writer.String("surveyorId");
+    writer.String(surveyorId_.c_str());
+
+    writer.String("contribution_fiat_amount");
+    writer.String(contribution_fiat_amount_.c_str());
+
+    writer.String("contribution_fiat_currency");
+    writer.String(contribution_fiat_currency_.c_str());
+
+    writer.String("rates");
+    writer.StartObject();
+    for (auto & p : contribution_rates_)
+    {
+      writer.String(p.first.c_str());
+      writer.Double(p.second);
+    }
+    writer.EndObject();
+
+    writer.String("contribution_altcurrency");
+    writer.String(contribution_altcurrency_.c_str());
+
+    writer.String("contribution_probi");
+    writer.String(contribution_probi_.c_str());
+
+    writer.String("contribution_fee");
+    writer.String(contribution_fee_.c_str());
+
+    writer.String("submissionStamp");
+    writer.String(submissionStamp_.c_str());
+
+    writer.String("submissionId");
+    writer.String(submissionId_.c_str());
+
+    writer.String("anonizeViewingId");
+    writer.String(anonizeViewingId_.c_str());
+
+    writer.String("registrarVK");
+    writer.String(registrarVK_.c_str());
+
+    writer.String("masterUserToken");
+    writer.String(masterUserToken_.c_str());
+
+    writer.String("surveyorIds");
+    writer.StartArray();
+    for (auto & i : surveyorIds_)
+    {
+      writer.String(i.c_str());
+    }
+    writer.EndArray();
+
+    writer.String("satoshis");
+    writer.String(satoshis_.c_str());
+
+    writer.String("altCurrency");
+    writer.String(altCurrency_.c_str());
+
+    writer.String("probi");
+    writer.String(probi_.c_str());
+
+    writer.String("votes");
+    writer.Uint(votes_);
+
+    /* TODO: clarify if it needs to be serialized
+    writer.String("ballots");
+    writer.StartArray();
+    for (auto & i : ballots_)
+    {
+      i.saveToJson(writer);
+    }
+    writer.EndArray();
+    */
+
+    writer.EndObject();
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
 BALLOT_ST::BALLOT_ST():
   offset_(0),
   delayStamp_(0) {}
@@ -100,7 +369,62 @@ BALLOT_ST::BALLOT_ST(const BALLOT_ST& ballot) {
   delayStamp_ = ballot.delayStamp_;
 }
 BALLOT_ST::~BALLOT_ST() {}
+  bool BALLOT_ST::loadFromJson(const std::string & json)
+  {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
 
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error)
+    {
+      error = !(d["viewingId"].IsString() &&
+        d["surveyorId"].IsString() &&
+        d["publisher"].IsString() &&
+        d["offset"].IsUint() &&
+        d["prepareBallot"].IsString() &&
+        d["delayStamp"].IsUint64() );
+    }
+    
+    if (false == error)
+    {
+      viewingId_ = d["viewingId"].GetString();
+      surveyorId_ = d["surveyorId"].GetString();
+      publisher_ = d["publisher"].GetString();
+      offset_ = d["offset"].GetUint();
+      prepareBallot_ = d["prepareBallot"].GetString();
+      delayStamp_ = d["delayStamp"].GetUint64();
+    }
+
+    return error;
+  }  
+  
+  void BALLOT_ST::saveToJson(JsonWriter & writer) const
+  {
+    writer.StartObject();
+
+    writer.String("viewingId");
+    writer.String(viewingId_.c_str());
+
+    writer.String("surveyorId");
+    writer.String(surveyorId_.c_str());
+
+    writer.String("publisher");
+    writer.String(publisher_.c_str());
+
+    writer.String("offset");
+    writer.Uint(offset_);
+
+    writer.String("prepareBallot");
+    writer.String(prepareBallot_.c_str());
+
+    writer.String("delayStamp");
+    writer.Uint64(delayStamp_);
+
+    writer.EndObject();
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
 CLIENT_STATE_ST::CLIENT_STATE_ST():
   bootStamp_(0),
   reconcileStamp_(0),
@@ -109,12 +433,192 @@ CLIENT_STATE_ST::CLIENT_STATE_ST():
   days_(0)  {}
 CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
 
+  bool CLIENT_STATE_ST::loadFromJson(const std::string & json)
+  {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    //has parser error or wrong types
+    bool error = d.HasParseError();
+    if (false == error)
+    {
+      error = !(d["walletInfo"].IsObject() &&
+        d["bootStamp"].IsUint64() &&
+        d["reconcileStamp"].IsUint64() &&
+        d["personaId"].IsString() &&
+        d["userId"].IsString() &&
+        d["registrarVK"].IsString() &&
+        d["masterUserToken"].IsString() &&
+        d["preFlight"].IsString() &&
+        d["fee_currency"].IsString() &&
+        d["settings"].IsString() &&
+        d["fee_amount"].IsDouble() &&
+        d["days"].IsUint() &&
+        d["transactions"].IsArray() &&
+        d["ballots"].IsArray() );
+    }
+    
+    if (false == error)
+    {
+      {
+        auto & i = d["walletInfo"];
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);        
+        walletInfo_.loadFromJson(sb.GetString());
+      }
+
+      bootStamp_ = d["bootStamp"].GetUint64();
+      reconcileStamp_ = d["reconcileStamp"].GetUint64();
+      personaId_ = d["personaId"].GetString();
+      userId_ = d["userId"].GetString();
+      registrarVK_ = d["registrarVK"].GetString();
+      masterUserToken_ = d["masterUserToken"].GetString();
+      preFlight_ = d["preFlight"].GetString();
+      fee_currency_ = d["fee_currency"].GetString();
+      settings_ = d["settings"].GetString();
+      fee_amount_ = d["fee_amount"].GetDouble();
+      days_ = d["days"].GetUint();
+
+      for (const auto & i : d["transactions"].GetArray())
+      {
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+
+        TRANSACTION_ST ta;
+        ta.loadFromJson(sb.GetString());
+        transactions_.push_back(ta);
+      }
+
+      for (const auto & i : d["ballots"].GetArray())
+      {
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+
+        BALLOT_ST b;
+        b.loadFromJson(sb.GetString());
+        ballots_.push_back(b);
+      }    
+    }
+
+    return error;
+  }
+  
+  void CLIENT_STATE_ST::saveToJson(JsonWriter & writer) const
+  {
+    writer.StartObject();
+
+    writer.String("walletInfo");
+    walletInfo_.saveToJson(writer);
+
+    writer.String("bootStamp");
+    writer.Uint64(bootStamp_);
+
+    writer.String("reconcileStamp");
+    writer.Uint64(reconcileStamp_);
+
+    writer.String("personaId");
+    writer.String(personaId_.c_str());
+
+    writer.String("userId");
+    writer.String(userId_.c_str());
+
+    writer.String("registrarVK");
+    writer.String(registrarVK_.c_str());
+
+    writer.String("masterUserToken");
+    writer.String(masterUserToken_.c_str());
+
+    writer.String("preFlight");
+    writer.String(preFlight_.c_str());
+
+    writer.String("fee_currency");
+    writer.String(fee_currency_.c_str());
+
+    writer.String("settings");
+    writer.String(settings_.c_str());
+
+    writer.String("fee_amount");
+    writer.Double(fee_amount_);
+
+    writer.String("days");
+    writer.Uint(days_);
+
+    writer.String("transactions");
+    writer.StartArray();
+    for (auto & t : transactions_)
+    {
+      t.saveToJson(writer);
+    }
+    writer.EndArray();
+
+    writer.String("ballots");
+    writer.StartArray();
+    for (auto & b : ballots_)
+    {
+      b.saveToJson(writer);
+    }
+    writer.EndArray();
+
+    writer.String("ruleset");
+    writer.String(ruleset_.c_str());
+
+    writer.String("rulesetV2");
+    writer.String(rulesetV2_.c_str());    
+
+    writer.EndObject();
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
 PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
     min_pubslisher_duration_(braveledger_ledger::_default_min_pubslisher_duration),
   min_visits_(1),
   allow_non_verified_(true) {}
 PUBLISHER_STATE_ST::~PUBLISHER_STATE_ST() {}
+  bool PUBLISHER_STATE_ST::loadFromJson(const std::string & json)
+  {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+    
+    //has parser errors or wrong types
+    bool error = d.HasParseError();       
+    if (false == error)
+    {
+      error = !(d["min_pubslisher_duration"].IsUint() &&
+        d["min_visits"].IsUint() &&
+        d["allow_non_verified"].IsBool());
+    }
+    
+    if (false == error)
+    {
+      min_pubslisher_duration_ = d["min_pubslisher_duration"].GetUint();
+      min_visits_ = d["min_visits"].GetUint();
+      allow_non_verified_ = d["allow_non_verified"].GetBool();
+    }
+    
+    return error;
+  }
+  
+  
+  void PUBLISHER_STATE_ST::saveToJson(JsonWriter & writer) const
+  {    
+    writer.StartObject();
+    
+    writer.String("min_pubslisher_duration");
+    writer.Uint(min_pubslisher_duration_);
 
+    writer.String("min_visits");
+    writer.Uint(min_visits_);
+
+    writer.String("allow_non_verified");
+    writer.Bool(allow_non_verified_);
+    
+    writer.EndObject();   
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
 PUBLISHER_ST::PUBLISHER_ST():
   duration_(0),
   score_(0),
@@ -140,7 +644,101 @@ PUBLISHER_ST::PUBLISHER_ST(const PUBLISHER_ST& publisher) :
     weight_(publisher.weight_)
   {}
 PUBLISHER_ST::~PUBLISHER_ST() {}
+  bool PUBLISHER_ST::loadFromJson(const std::string & json)
+  {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
 
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error)
+    {
+      error = !(d["duration"].IsUint64() &&
+        d["favicon_url"].IsString() &&
+        d["score"].IsDouble() &&
+        d["visits"].IsUint() &&
+        d["verified"].IsBool() &&
+        d["exclude"].IsBool() &&
+        d["pinPercentage"].IsBool() &&
+        d["verifiedTimeStamp"].IsUint64() &&
+        d["percent"].IsUint() &&
+        d["deleted"].IsBool() &&
+        d["weight"].IsDouble() );
+    }
+
+    if (false == error)
+    {
+      //TODO: Uint64 or string?
+      duration_ = d["duration"].GetUint64();
+      favicon_url_ = d["favicon_url"].GetString();
+      score_ = d["score"].GetDouble();
+      visits_ = d["visits"].GetUint();
+      verified_ = d["verified"].GetBool();
+      exclude_ = d["exclude"].GetBool();
+      pinPercentage_ = d["pinPercentage"].GetBool();
+      verifiedTimeStamp_ = d["verifiedTimeStamp"].GetUint64();
+      percent_ = d["percent"].GetUint();
+      deleted_ = d["deleted"].GetBool();
+      weight_ = d["weight"].GetDouble();
+    }
+    
+    return error;
+  }
+
+  uint64_t duration_ = 0u;
+  std::string favicon_url_;
+  double score_ = .0;
+  unsigned int visits_ = 0;
+  bool verified_ = false;
+  bool exclude_ = false;
+  bool pinPercentage_ = false;
+  uint64_t verifiedTimeStamp_ = 0u;
+  unsigned int percent_ = 0;
+  bool deleted_ = false;
+  double weight_ = .0;
+  void PUBLISHER_ST::saveToJson(JsonWriter & writer) const
+  {
+    writer.StartObject();
+
+    //TODO: uint64 or string
+    writer.String("duration");
+    writer.Uint64(duration_);
+
+    writer.String("favicon_url");
+    writer.String(favicon_url_.c_str());
+
+    writer.String("score");
+    writer.Double(score_);
+
+    writer.String("visits");
+    writer.Uint(visits_);
+
+    writer.String("verified");
+    writer.Bool(verified_);
+
+    writer.String("exclude");
+    writer.Bool(exclude_);
+
+    writer.String("pinPercentage");
+    writer.Bool(pinPercentage_);
+
+    //TODO: uint64 or string
+    writer.String("verifiedTimeStamp");
+    writer.Uint64(verifiedTimeStamp_);
+
+    writer.String("percent");
+    writer.Uint(percent_);
+
+    writer.String("deleted");
+    writer.Bool(deleted_);
+
+    writer.String("weight");
+    writer.Double(weight_);
+
+    writer.EndObject();
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
 PUBLISHER_DATA_ST::PUBLISHER_DATA_ST() :
   daysSpent_(0),
   hoursSpent_(0),
@@ -159,13 +757,60 @@ bool PUBLISHER_DATA_ST::operator<(const PUBLISHER_DATA_ST &rhs) const {
   return publisher_.score_ > rhs.publisher_.score_;
 }
 
+  /////////////////////////////////////////////////////////////////////////////
 WINNERS_ST::WINNERS_ST() :
   votes_(0) {}
 WINNERS_ST::~WINNERS_ST() {}
 
+  /////////////////////////////////////////////////////////////////////////////
 WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST() {}
 WALLET_PROPERTIES_ST::~WALLET_PROPERTIES_ST() {}
 
+  bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json)
+  {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error)
+    {
+      error = !(d["altcurrency"].IsString() &&
+        d["balance"].IsDouble() &&
+        d["rates"].IsObject() &&
+        d["parameters"].IsObject() );
+    }
+
+    if (false == error)
+    {
+      altcurrency_ = d["altcurrency"].GetString();
+      balance_ = d["balance"].GetDouble();
+      
+      for (auto & i : d["rates"].GetObject())
+      {
+        rates_.insert(std::make_pair(i.name.GetString(), i.value.GetDouble()));
+      }
+
+      parameters_currency_ = d["parameters"]["adFree"]["currency"].GetString();
+      parameters_fee_ = d["parameters"]["adFree"]["fee"]["BAT"].GetDouble();
+
+      for (auto & i : d["parameters"]["adFree"]["choices"]["BAT"].GetArray())
+      {
+        parameters_choices_.push_back(i.GetDouble());
+      }
+
+      for (auto & i : d["parameters"]["adFree"]["range"]["BAT"].GetArray())
+      {
+        parameters_range_.push_back(i.GetDouble());
+      }
+
+      parameters_days_ = d["parameters"]["adFree"]["days"].GetUint();
+    }
+    return error;
+  } 
+  
+
+  /////////////////////////////////////////////////////////////////////////////
 FETCH_CALLBACK_EXTRA_DATA_ST::FETCH_CALLBACK_EXTRA_DATA_ST():
   value1(0),
   boolean1(true) {}
@@ -180,15 +825,71 @@ FETCH_CALLBACK_EXTRA_DATA_ST::FETCH_CALLBACK_EXTRA_DATA_ST(const FETCH_CALLBACK_
 
 FETCH_CALLBACK_EXTRA_DATA_ST::~FETCH_CALLBACK_EXTRA_DATA_ST() {}
 
+  /////////////////////////////////////////////////////////////////////////////
 SURVEYOR_INFO_ST::SURVEYOR_INFO_ST() {}
 SURVEYOR_INFO_ST::~SURVEYOR_INFO_ST() {}
 
+
+ /////////////////////////////////////////////////////////////////////////////
 CURRENT_RECONCILE::CURRENT_RECONCILE() :
   timestamp_(0) {}
 CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
 
+  /////////////////////////////////////////////////////////////////////////////
 SURVEYOR_ST::SURVEYOR_ST() {}
 SURVEYOR_ST::~SURVEYOR_ST() {}
+
+  bool SURVEYOR_ST::loadFromJson(const std::string & json)
+  {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error)
+    {
+      error = !(d["signature"].IsString() &&
+        d["surveyorId"].IsString() &&
+        d["surveyVK"].IsString() &&
+        d["registrarVK"].IsString() &&
+        d["surveySK"].IsString() );
+    }
+
+    if (false == error)
+    {
+      signature_ = d["signature"].GetString();
+      surveyorId_ = d["surveyorId"].GetString();
+      surveyVK_ = d["surveyVK"].GetString();
+      registrarVK_ = d["registrarVK"].GetString();
+      surveySK_ = d["surveySK"].GetString();
+    }
+
+    return error;
+  }
+
+  
+  void SURVEYOR_ST::saveToJson(JsonWriter & writer) const
+  {
+    writer.StartObject();
+
+    writer.String("signature");
+    writer.String(signature_.c_str());
+
+    writer.String("surveyorId");
+    writer.String(surveyorId_.c_str());
+
+    writer.String("surveyVK");
+    writer.String(surveyVK_.c_str());
+
+    writer.String("registrarVK");
+    writer.String(registrarVK_.c_str());
+
+    writer.String("surveySK");
+    writer.String(surveySK_.c_str());
+
+    writer.EndObject();
+  }
+  /////////////////////////////////////////////////////////////////////////////
 
 TWITCH_EVENT_INFO::TWITCH_EVENT_INFO() {}
 TWITCH_EVENT_INFO::TWITCH_EVENT_INFO(const TWITCH_EVENT_INFO& twitchEventInfo):
@@ -229,6 +930,7 @@ void DecodeURLChars(const std::string& input, std::string& output) {
 }
 
 
+//TODO: to be deleted
   std::string getJSONValue(const std::string& fieldName, const std::string& json) {
   std::string res;
 
@@ -254,6 +956,7 @@ void DecodeURLChars(const std::string& input, std::string& output) {
   return res;
 }
 
+//TODO: to be deleted
   std::vector<std::string> getJSONList(const std::string& fieldName, const std::string& json) {
   std::vector<std::string> res;
 
@@ -362,6 +1065,8 @@ void BatHelper::getJSONBatchSurveyors(const std::string& json, std::vector<std::
   }
 }
 
+
+//TODO: to be deleted
   void getJSONPublisherState(const std::string& json, PUBLISHER_STATE_ST& state) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
@@ -619,48 +1324,35 @@ void BatHelper::getJSONBatchSurveyors(const std::string& json, std::vector<std::
   }
 }
 
-void getJSONRates(const std::string& json, std::map<std::string, double>& rates) {
-  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
-  if (nullptr == json_object.get()) {
-      LOG(ERROR) << "getJSONWalletProperties: incorrect json object";
+bool getJSONRates(const std::string& json, std::map<std::string, double>& rates) {
 
-      return;
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  //has parser errors or wrong types
+  bool error = d.HasParseError();
+  if (false == error)
+  {
+    error = !(d["rates"].IsObject() &&
+      d["rates"].HasMember("ETH") &&
+      d["rates"].HasMember("LTC") &&
+      d["rates"].HasMember("BTC") &&
+      d["rates"].HasMember("USD") &&
+      d["rates"].HasMember("EUR"));
   }
 
-  const base::DictionaryValue* childTopDictionary = nullptr;
-  json_object->GetAsDictionary(&childTopDictionary);
-  if (nullptr == childTopDictionary) {
-      return;
+  if (false == error)
+  {
+    for (auto & i : d["rates"].GetObject())
+    {
+      rates.insert(std::make_pair(i.name.GetString(), i.value.GetDouble()));
+    }
   }
-
-  const base::Value* value = nullptr;
-  if (childTopDictionary->Get("rates.ETH", &value)) {
-    double dValue = 0;
-    value->GetAsDouble(&dValue);
-    rates.insert(std::pair<std::string, double>("ETH", dValue));
-  }
-  if (childTopDictionary->Get("rates.LTC", &value)) {
-    double dValue = 0;
-    value->GetAsDouble(&dValue);
-    rates.insert(std::pair<std::string, double>("LTC", dValue));
-  }
-  if (childTopDictionary->Get("rates.BTC", &value)) {
-    double dValue = 0;
-    value->GetAsDouble(&dValue);
-    rates.insert(std::pair<std::string, double>("BTC", dValue));
-  }
-  if (childTopDictionary->Get("rates.USD", &value)) {
-    double dValue = 0;
-    value->GetAsDouble(&dValue);
-    rates.insert(std::pair<std::string, double>("USD", dValue));
-  }
-  if (childTopDictionary->Get("rates.EUR", &value)) {
-    double dValue = 0;
-    value->GetAsDouble(&dValue);
-    rates.insert(std::pair<std::string, double>("EUR", dValue));
-  }
+  return error;
 }
 
+
+//TODO: to be deleted
 void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
@@ -693,6 +1385,7 @@ void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor) {
   }
 }
 
+//TODO: to be deleted
 void getJSONWalletProperties(const std::string& json, WALLET_PROPERTIES_ST& walletProperties) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
@@ -767,60 +1460,52 @@ void getJSONWalletProperties(const std::string& json, WALLET_PROPERTIES_ST& wall
   }
 }
 
-void getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction) {
-  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
-  if (nullptr == json_object.get()) {
-      LOG(ERROR) << "getJSONUnsignedTx: incorrect json object";
+bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction) {
 
-      return;
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  //has parser errors or wrong types
+  bool error = d.HasParseError();
+  if (false == error)
+  {
+    error = !(d["paymentStamp"].IsDouble() &&
+      d["probi"].IsString() &&
+      d["altcurrency"].IsString() );
   }
 
-  const base::DictionaryValue* childTopDictionary = nullptr;
-  json_object->GetAsDictionary(&childTopDictionary);
-  if (nullptr == childTopDictionary) {
-      return;
-  }
-
-  const base::Value* value = nullptr;
-  if (childTopDictionary->Get("paymentStamp", &value)) {
-    double stamp(0);
-    value->GetAsDouble(&stamp);
+  if (false == error)
+  {
+    double stamp = d["paymentStamp"].GetDouble();
     transaction.submissionStamp_ = std::to_string((unsigned long long)stamp);
+    transaction.contribution_probi_ = d["probi"].GetString();
+    transaction.contribution_altcurrency_ = d["altcurrency"].GetString();
   }
-  if (childTopDictionary->Get("probi", &value)) {
-    value->GetAsString(&transaction.contribution_probi_);
-  }
-  if (childTopDictionary->Get("altcurrency", &value)) {
-    value->GetAsString(&transaction.contribution_altcurrency_);
-  }
+  return error;
 }
 
-void getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx) {
-  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
-  if (nullptr == json_object.get()) {
-      LOG(ERROR) << "getJSONUnsignedTx: incorrect json object";
+bool getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx) {
+ rapidjson::Document d;
+  d.Parse(json.c_str());
 
-      return;
-  }
-
-  const base::DictionaryValue* childTopDictionary = nullptr;
-  json_object->GetAsDictionary(&childTopDictionary);
-  if (nullptr == childTopDictionary) {
-      return;
+  //has parser errors or wrong types
+  bool error = d.HasParseError();
+  if (false == error)
+  {
+    error = !(d["unsignedTx"].IsObject());
   }
 
-  const base::Value* value = nullptr;
-  if (childTopDictionary->Get("unsignedTx.denomination.amount", &value)) {
-    value->GetAsString(&unsignedTx.amount_);
+  if (false == error)
+  {
+    unsignedTx.amount_ = d["unsignedTx"]["denomination"]["amount"].GetString();
+    unsignedTx.currency_ = d["unsignedTx"]["denomination"]["currency"].GetString();
+    unsignedTx.destination_ = d["unsignedTx"]["destination"].GetString();    
   }
-  if (childTopDictionary->Get("unsignedTx.denomination.currency", &value)) {
-    value->GetAsString(&unsignedTx.currency_);
-  }
-  if (childTopDictionary->Get("unsignedTx.destination", &value)) {
-    value->GetAsString(&unsignedTx.destination_);
-  }
+  return error;
 }
 
+
+//TODO: to be deleted
 void getJSONPublisher(const std::string& json, PUBLISHER_ST& publisher_st) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
@@ -876,114 +1561,77 @@ void getJSONPublisher(const std::string& json, PUBLISHER_ST& publisher_st) {
   }
 }
 
-void getJSONPublisherVerified(const std::string& json, bool& verified) {
+bool getJSONPublisherVerified(const std::string& json, bool& verified) {
   verified = false;
-  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
-  if (nullptr == json_object.get()) {
-      LOG(ERROR) << "getJSONPublisherVerified: incorrect json object";
 
-      return;
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  //has parser errors or wrong types
+  bool error = d.HasParseError();
+  if (false == error)
+  {
+    error = !(d["properties"].IsObject());
   }
 
-  const base::DictionaryValue* childTopDictionary = nullptr;
-  json_object->GetAsDictionary(&childTopDictionary);
-  if (nullptr == childTopDictionary) {
-      return;
+  if (false == error)
+  {
+    verified = d["properties"]["verified"].GetBool();    
   }
-  const base::Value* value = nullptr;
-  if (childTopDictionary->Get("properties.verified", &value)) {
-    value->GetAsBoolean(&verified);
-  }
+  return error;
 }
 
-void getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
+bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo, 
       std::string& fee_currency, double& fee_amount, unsigned int& days) {
-  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
-  if (nullptr == json_object.get()) {
-      LOG(ERROR) << "getJSONWalletInfo: incorrect json object";
+ rapidjson::Document d;
+  d.Parse(json.c_str());
 
-      return;
-  }
-
-  const base::DictionaryValue* childTopDictionary = nullptr;
-  json_object->GetAsDictionary(&childTopDictionary);
-  if (nullptr == childTopDictionary) {
-      return;
-  }
-  const base::Value* value = nullptr;
-  std::string prefix = "wallet.";
-  if (childTopDictionary->Get("wallet.paymentId", &value)) {
-    value->GetAsString(&walletInfo.paymentId_);
-    DCHECK(!walletInfo.paymentId_.empty());
-  } else {
-    prefix = "";
-  }
-  if (childTopDictionary->Get(prefix + "addresses.BAT", &value)) {
-    value->GetAsString(&walletInfo.addressBAT_);
-    DCHECK(!walletInfo.addressBAT_.empty());
-  }
-  if (childTopDictionary->Get(prefix + "addresses.BTC", &value)) {
-    value->GetAsString(&walletInfo.addressBTC_);
-    DCHECK(!walletInfo.addressBTC_.empty());
-  }
-  if (childTopDictionary->Get(prefix + "addresses.CARD_ID", &value)) {
-    value->GetAsString(&walletInfo.addressCARD_ID_);
-    DCHECK(!walletInfo.addressCARD_ID_.empty());
-  }
-  if (childTopDictionary->Get(prefix + "addresses.ETH", &value)) {
-    value->GetAsString(&walletInfo.addressETH_);
-    DCHECK(!walletInfo.addressETH_.empty());
-  }
-  if (childTopDictionary->Get(prefix + "addresses.LTC", &value)) {
-    value->GetAsString(&walletInfo.addressLTC_);
-    DCHECK(!walletInfo.addressLTC_.empty());
+  //has parser errors or wrong types
+  bool error = d.HasParseError();
+  if (false == error)
+  {
+    error = !(d["wallet"].IsObject() &&
+      d["payload"].IsObject() );
   }
 
-  std::string fees = "payload.adFree.fee";
-  if (childTopDictionary->Get("payload.adFree.days", &value)) {
-    value->GetAsInteger((int*)&days);
-    DCHECK(days != 0);
-  } else if (childTopDictionary->Get("parameters.adFree.days", &value)) {
-    value->GetAsInteger((int*)&days);
-    DCHECK(days != 0);
-    fees = "parameters.adFree.fee";
-  }
-  const base::DictionaryValue* feeDictionary = nullptr;
-  if (childTopDictionary->Get(fees, &value)) {
-    if (!value->GetAsDictionary(&feeDictionary)) {
-      LOG(ERROR) << "getJSONWalletInfo: could not get fee object";
+  if (false == error)
+  {
+    walletInfo.paymentId_ = d["wallet"]["paymentId"].GetString();
+    walletInfo.addressBAT_ = d["wallet"]["addresses"]["BAT"].GetString();
+    walletInfo.addressCARD_ID_ = d["wallet"]["addresses"]["CARD_ID"].GetString();
+    walletInfo.addressETH_ = d["wallet"]["addresses"]["ETH"].GetString();
+    walletInfo.addressLTC_ = d["wallet"]["addresses"]["LTC"].GetString();
 
-      return;
-    }
-    base::detail::const_dict_iterator_proxy dictIterator = feeDictionary->DictItems();
-    if (dictIterator.begin() != dictIterator.end()) {
-      fee_currency = dictIterator.begin()->first;
-      dictIterator.begin()->second.GetAsDouble(&fee_amount);
+    days = d["payload"]["adFree"]["days"].GetUint();
+    const auto & fee = d["payload"]["adFree"]["fee"].GetObject();
+    auto itr = fee.MemberBegin();
+    if (itr != fee.MemberEnd() )
+    {
+      fee_currency = itr->name.GetString();
+      fee_amount = itr->value.GetDouble();
     }
   }
+  return error;
 }
 
-void getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp) {
+bool getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp) {
   publisherTimestamp = 0;
-  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
-  if (nullptr == json_object.get()) {
-      LOG(ERROR) << "getJSONPublisherTimeStamp: incorrect json object";
 
-      return;
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  //has parser errors or wrong types
+  bool error = d.HasParseError();
+  if (false == error)
+  {
+    error = !(d["timestamp"].IsUint64());
   }
 
-  const base::DictionaryValue* childTopDictionary = nullptr;
-  json_object->GetAsDictionary(&childTopDictionary);
-  if (nullptr == childTopDictionary) {
-      return;
+  if (false == error)
+  {
+    publisherTimestamp = d["timestamp"].GetUint64();
   }
-  const base::Value* value = nullptr;
-  if (childTopDictionary->Get("timestamp", &value)) {
-    std::string timestamp;
-    value->GetAsString(&timestamp);
-    std::stringstream temp(timestamp);
-    temp >> publisherTimestamp;
-  }
+  return error;  
 }
 
 std::vector<uint8_t> generateSeed() {
@@ -1086,88 +1734,151 @@ std::string uint8ToHex(const std::vector<uint8_t>& in) {
   return res.str();
 }
 
-std::string stringify(std::string* keys,
-    std::string* values, const unsigned int& size) {
-  std::string res;
 
-  base::DictionaryValue root_dict;
-  for (unsigned int i = 0; i < size; i++) {
-    root_dict.SetString(keys[i], values[i]);
+std::string stringify(std::string* keys, std::string* values, const unsigned int& size) {
+  rapidjson::StringBuffer buffer;
+  JsonWriter writer(buffer);
+  writer.StartObject();
+  
+  for (unsigned int i = 0; i < size; i++)
+  {
+    writer.String(keys[i].c_str());
+    writer.String(values[i].c_str());
   }
-
-  base::JSONWriter::Write(root_dict, &res);
-
-  return res;
+  
+  writer.EndObject();
+  return buffer.GetString();
 }
 
 std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx) {
-  std::string res;
+  rapidjson::StringBuffer buffer;
+  JsonWriter writer(buffer);  
+  writer.StartObject();
 
-  base::DictionaryValue root_dict;
-  std::unique_ptr<base::DictionaryValue> denomination_dict(new base::DictionaryValue());
-  denomination_dict->SetString("amount", unsignedTx.amount_);
-  denomination_dict->SetString("currency", unsignedTx.currency_);
-  root_dict.Set("denomination", std::move(denomination_dict));
-  root_dict.SetString("destination", unsignedTx.destination_);
+  writer.String("denomination");
+  writer.StartObject();
 
-  base::JSONWriter::Write(root_dict, &res);
+  writer.String("amout");
+  writer.String(unsignedTx.amount_.c_str());
 
-  return res;
+  writer.String("currency");
+  writer.String(unsignedTx.currency_.c_str());  
+  writer.EndObject();
+
+  writer.String("destination");
+  writer.String(unsignedTx.destination_.c_str());
+
+  writer.EndObject();
+  return buffer.GetString();  
 }
 
 std::string stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_ST& request_credentials) {
-  std::string res;
 
-  base::DictionaryValue root_dict;
-  root_dict.SetString("requestType", request_credentials.requestType_);
-  std::unique_ptr<base::DictionaryValue> request_dict(new base::DictionaryValue());
-  std::unique_ptr<base::DictionaryValue> request_headers_dict(new base::DictionaryValue());
-  request_headers_dict->SetString("digest", request_credentials.request_headers_digest_);
-  request_headers_dict->SetString("signature", request_credentials.request_headers_signature_);
-  request_dict->Set("headers", std::move(request_headers_dict));
-  std::unique_ptr<base::DictionaryValue> request_body_dict(new base::DictionaryValue());
-  request_body_dict->SetString("currency", request_credentials.request_body_currency_);
-  request_body_dict->SetString("label", request_credentials.request_body_label_);
-  request_body_dict->SetString("publicKey", request_credentials.request_body_publicKey_);
-  request_dict->Set("body", std::move(request_body_dict));
-  request_dict->SetString("octets", request_credentials.request_body_octets_);
-  root_dict.Set("request", std::move(request_dict));
-  root_dict.SetString("proof", request_credentials.proof_);
+  rapidjson::StringBuffer buffer;
+  JsonWriter writer(buffer);
+  writer.StartObject(); //root
 
-  base::JSONWriter::Write(root_dict, &res);
+  writer.String("requestType");
+  writer.String(request_credentials.requestType_.c_str());
+  
+  writer.String("request");
+  writer.StartObject(); //request
 
-  return res;
+  writer.String("headers");
+  writer.StartObject(); //headers
+
+  writer.String("digest");
+  writer.String(request_credentials.request_headers_digest_.c_str());
+
+  writer.String("signature");
+  writer.String(request_credentials.request_headers_signature_.c_str());
+
+  writer.EndObject(); //headers
+
+  writer.String("body");
+  writer.StartObject(); //body
+
+  writer.String("currency");
+  writer.String(request_credentials.request_body_currency_.c_str());
+
+  writer.String("label");
+  writer.String(request_credentials.request_body_label_.c_str());
+
+  writer.String("publicKey");
+  writer.String(request_credentials.request_body_publicKey_.c_str());
+
+  writer.EndObject(); //body
+
+  writer.String("octets");
+  writer.String(request_credentials.request_body_octets_.c_str());
+
+  writer.EndObject(); //request
+
+  writer.String("proof");
+  writer.String(request_credentials.proof_.c_str());
+  writer.EndObject(); //root
+  return buffer.GetString();
 }
 
 std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload) {
-  std::string res;
+rapidjson::StringBuffer buffer;
+  JsonWriter writer(buffer);
+  writer.StartObject(); //root
 
-  base::DictionaryValue root_dict;
-  root_dict.SetString("requestType", reconcile_payload.requestType_);
-  std::unique_ptr<base::DictionaryValue> signedTx_dict(new base::DictionaryValue());
-  std::unique_ptr<base::DictionaryValue> signedTx_headers_dict(new base::DictionaryValue());
-  signedTx_headers_dict->SetString("digest", reconcile_payload.request_signedtx_headers_digest_);
-  signedTx_headers_dict->SetString("signature", reconcile_payload.request_signedtx_headers_signature_);
-  signedTx_dict->Set("headers", std::move(signedTx_headers_dict));
-  std::unique_ptr<base::DictionaryValue> signedTx_body_dict(new base::DictionaryValue());
-  std::unique_ptr<base::DictionaryValue> signedTx_body_denomination_dict(new base::DictionaryValue());
-  signedTx_body_denomination_dict->SetString("amount", reconcile_payload.request_signedtx_body_.amount_);
-  signedTx_body_denomination_dict->SetString("currency", reconcile_payload.request_signedtx_body_.currency_);
-  signedTx_body_dict->Set("denomination", std::move(signedTx_body_denomination_dict));
-  signedTx_body_dict->SetString("destination", reconcile_payload.request_signedtx_body_.destination_);
-  signedTx_dict->Set("body", std::move(signedTx_body_dict));
-  signedTx_dict->SetString("octets", reconcile_payload.request_signedtx_octets_);
-  root_dict.Set("signedTx", std::move(signedTx_dict));
-  root_dict.SetString("surveyorId", reconcile_payload.request_surveyorId_);
-  root_dict.SetString("viewingId", reconcile_payload.request_viewingId_);
+  writer.String("requestType");
+  writer.String(reconcile_payload.requestType_.c_str());
 
-  base::JSONWriter::Write(root_dict, &res);
+  writer.String("signedTx");
+  writer.StartObject(); //signedTx
 
-  //LOG(ERROR) << "!!!json == " << res;
+  writer.String("headers");
+  writer.StartObject(); //headers
 
-  return res;
+  writer.String("digest");
+  writer.String(reconcile_payload.request_signedtx_headers_digest_.c_str());
+
+  writer.String("signature");
+  writer.String(reconcile_payload.request_signedtx_headers_signature_.c_str());
+
+  writer.EndObject(); //headers
+
+  writer.String("body");
+  writer.StartObject(); //body
+
+
+  writer.String("denomination");
+  writer.StartObject(); //denomination
+
+  writer.String("amount");
+  writer.String(reconcile_payload.request_signedtx_body_.amount_.c_str());
+
+  writer.String("currency");
+  writer.String(reconcile_payload.request_signedtx_body_.currency_.c_str());
+
+  writer.EndObject(); //denomination
+
+  writer.String("destination");
+  writer.String(reconcile_payload.request_signedtx_body_.destination_.c_str());
+
+  writer.EndObject(); //body
+
+  writer.String("octets");
+  writer.String(reconcile_payload.request_signedtx_octets_.c_str());
+
+  writer.EndObject(); //signedTx
+
+  writer.String("surveyorId");
+  writer.String(reconcile_payload.request_surveyorId_.c_str());
+
+  writer.String("viewingId");
+  writer.String(reconcile_payload.request_viewingId_.c_str());
+
+  writer.EndObject(); //root
+  return buffer.GetString();
 }
+/////////////////////////////////////////////////////////////////////////////
 
+//TODO: to be deleted
 std::string stringifyState(const CLIENT_STATE_ST& state) {
   std::string res;
 
@@ -1253,6 +1964,7 @@ std::string stringifyState(const CLIENT_STATE_ST& state) {
   return res;
 }
 
+//TODO: to be deleted
 std::string stringifyPublisherState(const PUBLISHER_STATE_ST& state) {
   std::string res;
 
@@ -1325,6 +2037,8 @@ std::string stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublish
   return res;
 }
 
+
+//TODO: to be deleted
 std::string stringifyPublisher(const PUBLISHER_ST& publisher_st) {
   std::string res;
 
@@ -1419,6 +2133,7 @@ uint64_t currentTime() {
 }
 
 void writeStateFile(const std::string& data) {
+#if defined CHROMIUM_BUILD
   base::FilePath dirToSave;
   base::PathService::Get(base::DIR_HOME, &dirToSave);
   dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
@@ -1426,9 +2141,11 @@ void writeStateFile(const std::string& data) {
   int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());
   LOG(ERROR)<<"writeStateFile to: " << dirToSave << " : " << data.length() << " : " <<succeded;
   assert(succeded != -1);
+  #endif
 }
 
 void readStateFile(ReadStateCallback callback) {
+#if defined CHROMIUM_BUILD
   base::FilePath dirToSave;
   base::PathService::Get(base::DIR_HOME, &dirToSave);
   dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
@@ -1450,9 +2167,11 @@ void readStateFile(ReadStateCallback callback) {
   }
 
   callback.Run(false, CLIENT_STATE_ST());
+#endif
 }
 
 void writePublisherStateFile(const std::string& data) {
+#if defined CHROMIUM_BUILD
   base::FilePath dirToSave;
   base::PathService::Get(base::DIR_HOME, &dirToSave);
   dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
@@ -1460,9 +2179,11 @@ void writePublisherStateFile(const std::string& data) {
   int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());  
   LOG(ERROR)<<"writeStateFile to: " << dirToSave << " : " << data.length() << " : " <<succeded;
   assert(succeded != -1);
+#endif
 }
 
 void readPublisherStateFile(ReadPublisherStateCallback callback) {
+#if defined CHROMIUM_BUILD
   base::FilePath dirToSave;
   base::PathService::Get(base::DIR_HOME, &dirToSave);
   dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
@@ -1484,6 +2205,7 @@ void readPublisherStateFile(ReadPublisherStateCallback callback) {
   }
 
   callback.Run(false, PUBLISHER_STATE_ST());
+#endif
 }
 
 void saveState(const CLIENT_STATE_ST& state) {
@@ -1529,7 +2251,7 @@ void loadPublisherState(ReadPublisherStateCallback callback) {
 #endif
 }
 
-void BatHelper::getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts) {
+void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts) {
   std::vector<std::string> vars;
   split(vars, query, '&');
   for (size_t i = 0; i < vars.size(); i++) {
@@ -1546,7 +2268,7 @@ void BatHelper::getUrlQueryParts(const std::string& query, std::map<std::string,
   }
 }
 
-void BatHelper::getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts) {
+void getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts) {
   size_t pos = query.find("data=");
   if (std::string::npos != pos && query.length() > 5) {
     std::string varValue;
@@ -1557,7 +2279,7 @@ void BatHelper::getTwitchParts(const std::string& query, std::vector<std::map<st
   }
 }
 
-std::string BatHelper::getMediaId(const std::map<std::string, std::string>& data, const std::string& type) {
+std::string getMediaId(const std::map<std::string, std::string>& data, const std::string& type) {
   if (YOUTUBE_MEDIA_TYPE == type) {
     std::map<std::string, std::string>::const_iterator iter = data.find("docid");
     if (iter != data.end()) {
@@ -1589,11 +2311,11 @@ std::string BatHelper::getMediaId(const std::map<std::string, std::string>& data
   return "";
 }
 
-std::string BatHelper::getMediaKey(const std::string& mediaId, const std::string& type) {
+std::string getMediaKey(const std::string& mediaId, const std::string& type) {
   return type + "_" + mediaId;
 }
 
-uint64_t BatHelper::getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type) {
+uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type) {
   uint64_t duration = 0;
 
   if (YOUTUBE_MEDIA_TYPE == type) {
