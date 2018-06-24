@@ -4,6 +4,16 @@
 
 #include "bat_helper.h"
 #include "static_values.h"
+
+#include <sstream>
+#include <random>
+#include <utility>
+#include <iomanip>
+#include <ctime>
+#include <memory>
+#include <iostream>
+
+
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -22,11 +32,7 @@
 #include <openssl/sha.h>
 #include <openssl/base64.h>
 
-#include <sstream>
-#include <random>
-#include <utility>
-#include <iomanip>
-#include <ctime>
+
 
 // to do debug
 //#include <stdio.h>
@@ -37,14 +43,23 @@
 //
 
 
+namespace braveledger_bat_helper {
 REQUEST_CREDENTIALS_ST::REQUEST_CREDENTIALS_ST() {}
 REQUEST_CREDENTIALS_ST::~REQUEST_CREDENTIALS_ST() {}
 
 RECONCILE_PAYLOAD_ST::RECONCILE_PAYLOAD_ST() {}
 RECONCILE_PAYLOAD_ST::~RECONCILE_PAYLOAD_ST() {}
 
-WALLET_INFO_ST::WALLET_INFO_ST() {}
-WALLET_INFO_ST::~WALLET_INFO_ST() {}
+  WALLET_INFO_ST::WALLET_INFO_ST() {}
+  WALLET_INFO_ST::~WALLET_INFO_ST() {}
+
+  UNSIGNED_TX::UNSIGNED_TX() {}
+  UNSIGNED_TX::~UNSIGNED_TX() {}
+
+  TRANSACTION_BALLOT_ST::TRANSACTION_BALLOT_ST() :
+    offset_(0) {}
+
+  TRANSACTION_BALLOT_ST::~TRANSACTION_BALLOT_ST() {}
 
 TRANSACTION_ST::TRANSACTION_ST():
   votes_(0) {}
@@ -86,10 +101,6 @@ BALLOT_ST::BALLOT_ST(const BALLOT_ST& ballot) {
 }
 BALLOT_ST::~BALLOT_ST() {}
 
-TRANSACTION_BALLOT_ST::TRANSACTION_BALLOT_ST():
-  offset_(0) {}
-TRANSACTION_BALLOT_ST::~TRANSACTION_BALLOT_ST() {}
-
 CLIENT_STATE_ST::CLIENT_STATE_ST():
   bootStamp_(0),
   reconcileStamp_(0),
@@ -99,7 +110,7 @@ CLIENT_STATE_ST::CLIENT_STATE_ST():
 CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
 
 PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
-  min_pubslisher_duration_(ledger::_default_min_pubslisher_duration),
+    min_pubslisher_duration_(braveledger_ledger::_default_min_pubslisher_duration),
   min_visits_(1),
   allow_non_verified_(true) {}
 PUBLISHER_STATE_ST::~PUBLISHER_STATE_ST() {}
@@ -125,7 +136,9 @@ PUBLISHER_ST::PUBLISHER_ST(const PUBLISHER_ST& publisher) :
   pinPercentage_(publisher.pinPercentage_),
   verifiedTimeStamp_(publisher.verifiedTimeStamp_),
   percent_(publisher.percent_),
-  deleted_(publisher.deleted_) {}
+    deleted_(publisher.deleted_),
+    weight_(publisher.weight_)
+  {}
 PUBLISHER_ST::~PUBLISHER_ST() {}
 
 PUBLISHER_DATA_ST::PUBLISHER_DATA_ST() :
@@ -174,9 +187,6 @@ CURRENT_RECONCILE::CURRENT_RECONCILE() :
   timestamp_(0) {}
 CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
 
-UNSIGNED_TX::UNSIGNED_TX() {}
-UNSIGNED_TX::~UNSIGNED_TX() {}
-
 SURVEYOR_ST::SURVEYOR_ST() {}
 SURVEYOR_ST::~SURVEYOR_ST() {}
 
@@ -219,19 +229,12 @@ void DecodeURLChars(const std::string& input, std::string& output) {
 }
 
 
-
-BatHelper::BatHelper() {
-}
-
-BatHelper::~BatHelper() {
-}
-
-std::string BatHelper::getJSONValue(const std::string& fieldName, const std::string& json) {
+  std::string getJSONValue(const std::string& fieldName, const std::string& json) {
   std::string res;
 
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONValue: incorrect json object";
+      LOG(ERROR) << "getJSONValue: incorrect json object";
 
       return "";
   }
@@ -251,12 +254,12 @@ std::string BatHelper::getJSONValue(const std::string& fieldName, const std::str
   return res;
 }
 
-std::vector<std::string> BatHelper::getJSONList(const std::string& fieldName, const std::string& json) {
+  std::vector<std::string> getJSONList(const std::string& fieldName, const std::string& json) {
   std::vector<std::string> res;
 
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONList: incorrect json object";
+      LOG(ERROR) << "getJSONList: incorrect json object";
 
       return res;
   }
@@ -359,10 +362,10 @@ void BatHelper::getJSONBatchSurveyors(const std::string& json, std::vector<std::
   }
 }
 
-void BatHelper::getJSONPublisherState(const std::string& json, PUBLISHER_STATE_ST& state) {
+  void getJSONPublisherState(const std::string& json, PUBLISHER_STATE_ST& state) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONState: incorrect json object";
+      LOG(ERROR) << "getJSONState: incorrect json object";
 
       return;
   }
@@ -386,10 +389,10 @@ void BatHelper::getJSONPublisherState(const std::string& json, PUBLISHER_STATE_S
   }
 }
 
-void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
+  void getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONState: incorrect json object";
+      LOG(ERROR) << "getJSONState: incorrect json object";
 
       return;
   }
@@ -478,7 +481,7 @@ void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
     std::string keyInfoSeed;
     value->GetAsString(&keyInfoSeed);
     DCHECK(!keyInfoSeed.empty());
-    state.walletInfo_.keyInfoSeed_ = BatHelper::getFromBase64(keyInfoSeed);
+      state.walletInfo_.keyInfoSeed_ = getFromBase64(keyInfoSeed);
   }
   if (childTopDictionary->Get("transactions", &value)) {
     const base::ListValue *lValue = nullptr;
@@ -616,10 +619,10 @@ void BatHelper::getJSONState(const std::string& json, CLIENT_STATE_ST& state) {
   }
 }
 
-void BatHelper::getJSONRates(const std::string& json, std::map<std::string, double>& rates) {
+void getJSONRates(const std::string& json, std::map<std::string, double>& rates) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONWalletProperties: incorrect json object";
+      LOG(ERROR) << "getJSONWalletProperties: incorrect json object";
 
       return;
   }
@@ -658,10 +661,10 @@ void BatHelper::getJSONRates(const std::string& json, std::map<std::string, doub
   }
 }
 
-void BatHelper::getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor) {
+void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONSurveyor: incorrect json object";
+      LOG(ERROR) << "getJSONSurveyor: incorrect json object";
 
       return;
   }
@@ -690,10 +693,10 @@ void BatHelper::getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor) 
   }
 }
 
-void BatHelper::getJSONWalletProperties(const std::string& json, WALLET_PROPERTIES_ST& walletProperties) {
+void getJSONWalletProperties(const std::string& json, WALLET_PROPERTIES_ST& walletProperties) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONWalletProperties: incorrect json object";
+      LOG(ERROR) << "getJSONWalletProperties: incorrect json object";
 
       return;
   }
@@ -764,10 +767,10 @@ void BatHelper::getJSONWalletProperties(const std::string& json, WALLET_PROPERTI
   }
 }
 
-void BatHelper::getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction) {
+void getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONUnsignedTx: incorrect json object";
+      LOG(ERROR) << "getJSONUnsignedTx: incorrect json object";
 
       return;
   }
@@ -792,10 +795,10 @@ void BatHelper::getJSONTransaction(const std::string& json, TRANSACTION_ST& tran
   }
 }
 
-void BatHelper::getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx) {
+void getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONUnsignedTx: incorrect json object";
+      LOG(ERROR) << "getJSONUnsignedTx: incorrect json object";
 
       return;
   }
@@ -818,10 +821,10 @@ void BatHelper::getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsigned
   }
 }
 
-void BatHelper::getJSONPublisher(const std::string& json, PUBLISHER_ST& publisher_st) {
+void getJSONPublisher(const std::string& json, PUBLISHER_ST& publisher_st) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONPublisher: incorrect json object";
+      LOG(ERROR) << "getJSONPublisher: incorrect json object";
 
       return;
   }
@@ -873,11 +876,11 @@ void BatHelper::getJSONPublisher(const std::string& json, PUBLISHER_ST& publishe
   }
 }
 
-void BatHelper::getJSONPublisherVerified(const std::string& json, bool& verified) {
+void getJSONPublisherVerified(const std::string& json, bool& verified) {
   verified = false;
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONPublisherVerified: incorrect json object";
+      LOG(ERROR) << "getJSONPublisherVerified: incorrect json object";
 
       return;
   }
@@ -893,11 +896,11 @@ void BatHelper::getJSONPublisherVerified(const std::string& json, bool& verified
   }
 }
 
-void BatHelper::getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
+void getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
       std::string& fee_currency, double& fee_amount, unsigned int& days) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONWalletInfo: incorrect json object";
+      LOG(ERROR) << "getJSONWalletInfo: incorrect json object";
 
       return;
   }
@@ -948,7 +951,7 @@ void BatHelper::getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walle
   const base::DictionaryValue* feeDictionary = nullptr;
   if (childTopDictionary->Get(fees, &value)) {
     if (!value->GetAsDictionary(&feeDictionary)) {
-      LOG(ERROR) << "BatHelper::getJSONWalletInfo: could not get fee object";
+      LOG(ERROR) << "getJSONWalletInfo: could not get fee object";
 
       return;
     }
@@ -960,11 +963,11 @@ void BatHelper::getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walle
   }
 }
 
-void BatHelper::getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp) {
+void getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp) {
   publisherTimestamp = 0;
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONPublisherTimeStamp: incorrect json object";
+      LOG(ERROR) << "getJSONPublisherTimeStamp: incorrect json object";
 
       return;
   }
@@ -983,7 +986,7 @@ void BatHelper::getJSONPublisherTimeStamp(const std::string& json, uint64_t& pub
   }
 }
 
-std::vector<uint8_t> BatHelper::generateSeed() {
+std::vector<uint8_t> generateSeed() {
   //std::ostringstream seedStr;
 
   std::vector<uint8_t> vSeed(SEED_LENGTH);
@@ -1010,7 +1013,7 @@ std::vector<uint8_t> BatHelper::generateSeed() {
   return vSeed;
 }
 
-std::vector<uint8_t> BatHelper::getHKDF(const std::vector<uint8_t>& seed) {
+std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed) {
   DCHECK(!seed.empty());
   std::vector<uint8_t> out(SEED_LENGTH);
   //uint8_t out[SEED_LENGTH];
@@ -1025,7 +1028,7 @@ std::vector<uint8_t> BatHelper::getHKDF(const std::vector<uint8_t>& seed) {
   LOG(ERROR) << "!!!seed == " << seedStr1.str();*/
   //
   int hkdfRes = HKDF(&out.front(), SEED_LENGTH, EVP_sha512(), &seed.front(), seed.size(),
-    ledger::g_hkdfSalt, SALT_LENGTH, nullptr, 0);
+    braveledger_ledger::g_hkdfSalt, SALT_LENGTH, nullptr, 0);
 
   DCHECK(hkdfRes);
   DCHECK(!seed.empty());
@@ -1044,7 +1047,7 @@ std::vector<uint8_t> BatHelper::getHKDF(const std::vector<uint8_t>& seed) {
   return out;
 }
 
-void BatHelper::getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
+void getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
       std::vector<uint8_t>& publicKey, std::vector<uint8_t>& secretKey) {
   DCHECK(!seed.empty());
   publicKey.resize(crypto_sign_PUBLICKEYBYTES);
@@ -1073,7 +1076,7 @@ void BatHelper::getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
   LOG(ERROR) << "!!!secretStr == " << secretStr.str();*/
 }
 
-std::string BatHelper::uint8ToHex(const std::vector<uint8_t>& in) {
+std::string uint8ToHex(const std::vector<uint8_t>& in) {
   std::ostringstream res;
   for (size_t i = 0; i < in.size(); i++) {
     res << std::setfill('0') << std::setw(sizeof(uint8_t) * 2)
@@ -1083,7 +1086,7 @@ std::string BatHelper::uint8ToHex(const std::vector<uint8_t>& in) {
   return res.str();
 }
 
-std::string BatHelper::stringify(std::string* keys,
+std::string stringify(std::string* keys,
     std::string* values, const unsigned int& size) {
   std::string res;
 
@@ -1097,7 +1100,7 @@ std::string BatHelper::stringify(std::string* keys,
   return res;
 }
 
-std::string BatHelper::stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx) {
+std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx) {
   std::string res;
 
   base::DictionaryValue root_dict;
@@ -1112,7 +1115,7 @@ std::string BatHelper::stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx) {
   return res;
 }
 
-std::string BatHelper::stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_ST& request_credentials) {
+std::string stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_ST& request_credentials) {
   std::string res;
 
   base::DictionaryValue root_dict;
@@ -1136,7 +1139,7 @@ std::string BatHelper::stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_S
   return res;
 }
 
-std::string BatHelper::stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload) {
+std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload) {
   std::string res;
 
   base::DictionaryValue root_dict;
@@ -1165,7 +1168,7 @@ std::string BatHelper::stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& r
   return res;
 }
 
-std::string BatHelper::stringifyState(const CLIENT_STATE_ST& state) {
+std::string stringifyState(const CLIENT_STATE_ST& state) {
   std::string res;
 
   base::DictionaryValue root_dict;
@@ -1187,7 +1190,7 @@ std::string BatHelper::stringifyState(const CLIENT_STATE_ST& state) {
   wallet_info_dict->SetString("addressCARD_ID", state.walletInfo_.addressCARD_ID_);
   wallet_info_dict->SetString("addressETH", state.walletInfo_.addressETH_);
   wallet_info_dict->SetString("addressLTC", state.walletInfo_.addressLTC_);
-  wallet_info_dict->SetString("keyInfoSeed_", BatHelper::getBase64(state.walletInfo_.keyInfoSeed_));
+  wallet_info_dict->SetString("keyInfoSeed_", getBase64(state.walletInfo_.keyInfoSeed_));
   root_dict.Set("wallet_info", std::move(wallet_info_dict));
 
   std::unique_ptr<base::ListValue> transactions(new base::ListValue());
@@ -1250,7 +1253,7 @@ std::string BatHelper::stringifyState(const CLIENT_STATE_ST& state) {
   return res;
 }
 
-std::string BatHelper::stringifyPublisherState(const PUBLISHER_STATE_ST& state) {
+std::string stringifyPublisherState(const PUBLISHER_STATE_ST& state) {
   std::string res;
 
   base::DictionaryValue root_dict;
@@ -1263,10 +1266,10 @@ std::string BatHelper::stringifyPublisherState(const PUBLISHER_STATE_ST& state) 
   return res;
 }
 
-void BatHelper::getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
+void getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
   std::unique_ptr<base::Value> json_object = base::JSONReader::Read(json);
   if (nullptr == json_object.get()) {
-      LOG(ERROR) << "BatHelper::getJSONMediaPublisherInfo: incorrect json object";
+      LOG(ERROR) << "getJSONMediaPublisherInfo: incorrect json object";
 
       return;
   }
@@ -1303,7 +1306,7 @@ void BatHelper::getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISH
   }
 }
 
-std::string BatHelper::stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
+std::string stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
   std::string res;
 
   base::DictionaryValue root_dict;
@@ -1322,7 +1325,7 @@ std::string BatHelper::stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& m
   return res;
 }
 
-std::string BatHelper::stringifyPublisher(const PUBLISHER_ST& publisher_st) {
+std::string stringifyPublisher(const PUBLISHER_ST& publisher_st) {
   std::string res;
 
   base::DictionaryValue root_dict;
@@ -1344,7 +1347,7 @@ std::string BatHelper::stringifyPublisher(const PUBLISHER_ST& publisher_st) {
   return res;
 }
 
-std::vector<uint8_t> BatHelper::getSHA256(const std::string& in) {
+std::vector<uint8_t> getSHA256(const std::string& in) {
   std::vector<uint8_t> res(SHA256_DIGEST_LENGTH);
 
   SHA256((uint8_t*)in.c_str(), in.length(), &res.front());
@@ -1352,41 +1355,43 @@ std::vector<uint8_t> BatHelper::getSHA256(const std::string& in) {
   return res;
 }
 
-std::string BatHelper::getBase64(const std::vector<uint8_t>& in) {
+std::string getBase64(const std::vector<uint8_t>& in) {
   std::string res;
 
   size_t size = 0;
   if (!EVP_EncodedLength(&size, in.size())) {
     DCHECK(false);
-    LOG(ERROR) << "EVP_EncodedLength failure in BatHelper::getBase64";
+    LOG(ERROR) << "EVP_EncodedLength failure in getBase64";
 
     return "";
   }
   std::vector<uint8_t> out(size);
-  DCHECK(EVP_EncodeBlock(&out.front(), &in.front(), in.size()) != 0);
+  int numEncBytes = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
+  DCHECK(numEncBytes != 0);
   res = (char*)&out.front();
 
   return res;
 }
 
-std::vector<uint8_t> BatHelper::getFromBase64(const std::string& in) {
+std::vector<uint8_t> getFromBase64(const std::string& in) {
   std::vector<uint8_t> res;
 
   size_t size = 0;
   if (!EVP_DecodedLength(&size, in.length())) {
     DCHECK(false);
-    LOG(ERROR) << "EVP_DecodedLength failure in BatHelper::getFromBase64";
+    LOG(ERROR) << "EVP_DecodedLength failure in getFromBase64";
 
     return res;
   }
   res.resize(size);
-  DCHECK(EVP_DecodeBase64(&res.front(), &size, size, (const uint8_t*)in.c_str(), in.length()));
+  int numDecBytes = EVP_DecodeBase64(&res.front(), &size, size, (const uint8_t*)in.c_str(), in.length());
+  DCHECK(numDecBytes !=0);
   LOG(ERROR) << "!!!decoded size == " << size;
 
   return res;
 }
 
-std::string BatHelper::sign(std::string* keys, std::string* values, const unsigned int& size,
+std::string sign(std::string* keys, std::string* values, const unsigned int& size,
     const std::string& keyId, const std::vector<uint8_t>& secretKey) {
   std::string headers;
   std::string message;
@@ -1406,22 +1411,24 @@ std::string BatHelper::sign(std::string* keys, std::string* values, const unsign
   std::copy(signedMsg.begin(), signedMsg.begin() + crypto_sign_BYTES, signature.begin());
 
   return "keyId=\"" + keyId + "\",algorithm=\"" + SIGNATURE_ALGORITHM +
-    "\",headers=\"" + headers + "\",signature=\"" + BatHelper::getBase64(signature) + "\"";
+    "\",headers=\"" + headers + "\",signature=\"" + getBase64(signature) + "\"";
 }
 
-uint64_t BatHelper::currentTime() {
+uint64_t currentTime() {
   return time(0);
 }
 
-void BatHelper::writeStateFile(const std::string& data) {
+void writeStateFile(const std::string& data) {
   base::FilePath dirToSave;
   base::PathService::Get(base::DIR_HOME, &dirToSave);
   dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
 
-  assert(base::WriteFile(dirToSave, data.c_str(), data.length()));
+  int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());
+  LOG(ERROR)<<"writeStateFile to: " << dirToSave << " : " << data.length() << " : " <<succeded;
+  assert(succeded != -1);
 }
 
-void BatHelper::readStateFile(BatHelper::ReadStateCallback callback) {
+void readStateFile(ReadStateCallback callback) {
   base::FilePath dirToSave;
   base::PathService::Get(base::DIR_HOME, &dirToSave);
   dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
@@ -1436,7 +1443,7 @@ void BatHelper::readStateFile(BatHelper::ReadStateCallback callback) {
   if (-1 != base::ReadFile(dirToSave, &data.front(), file_size)) {
     data[file_size] = '\0';
     CLIENT_STATE_ST state;
-    BatHelper::getJSONState(&data.front(), state);
+    getJSONState(&data.front(), state);
     callback.Run(true, state);
 
     return;
@@ -1445,15 +1452,17 @@ void BatHelper::readStateFile(BatHelper::ReadStateCallback callback) {
   callback.Run(false, CLIENT_STATE_ST());
 }
 
-void BatHelper::writePublisherStateFile(const std::string& data) {
+void writePublisherStateFile(const std::string& data) {
   base::FilePath dirToSave;
   base::PathService::Get(base::DIR_HOME, &dirToSave);
   dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
 
-  assert(base::WriteFile(dirToSave, data.c_str(), data.length()));
+  int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());  
+  LOG(ERROR)<<"writeStateFile to: " << dirToSave << " : " << data.length() << " : " <<succeded;
+  assert(succeded != -1);
 }
 
-void BatHelper::readPublisherStateFile(BatHelper::ReadPublisherStateCallback callback) {
+void readPublisherStateFile(ReadPublisherStateCallback callback) {
   base::FilePath dirToSave;
   base::PathService::Get(base::DIR_HOME, &dirToSave);
   dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
@@ -1468,7 +1477,7 @@ void BatHelper::readPublisherStateFile(BatHelper::ReadPublisherStateCallback cal
   if (-1 != base::ReadFile(dirToSave, &data.front(), file_size)) {
     data[file_size] = '\0';
     PUBLISHER_STATE_ST state;
-    BatHelper::getJSONPublisherState(&data.front(), state);
+    getJSONPublisherState(&data.front(), state);
     callback.Run(true, state);
 
     return;
@@ -1477,37 +1486,47 @@ void BatHelper::readPublisherStateFile(BatHelper::ReadPublisherStateCallback cal
   callback.Run(false, PUBLISHER_STATE_ST());
 }
 
-void BatHelper::saveState(const CLIENT_STATE_ST& state) {
-  std::string data = BatHelper::stringifyState(state);
+void saveState(const CLIENT_STATE_ST& state) {
+  std::string data = stringifyState(state);
   //LOG(ERROR) << "!!!saveState == " << data;
+#if defined CHROMIUM_BUILD
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatHelper::writeStateFile,
-     data));
+  task_runner->PostTask(FROM_HERE, base::Bind(&writeStateFile, data));
+#else
+#endif
 }
 
-void BatHelper::loadState(BatHelper::ReadStateCallback callback) {
+void loadState(ReadStateCallback callback) {
+#if defined CHROMIUM_BUILD
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatHelper::readStateFile, callback));
+  task_runner->PostTask(FROM_HERE, base::Bind(&readStateFile, callback));
+#else
+#endif
 }
 
-void BatHelper::savePublisherState(const PUBLISHER_STATE_ST& state) {
-  std::string data = BatHelper::stringifyPublisherState(state);
+void savePublisherState(const PUBLISHER_STATE_ST& state) {
+  std::string data = stringifyPublisherState(state);
+#if defined CHROMIUM_BUILD
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatHelper::writePublisherStateFile,
-     data));
+  task_runner->PostTask(FROM_HERE, base::Bind(&writePublisherStateFile, data));
+#else
+#endif
 }
 
-void BatHelper::loadPublisherState(BatHelper::ReadPublisherStateCallback callback) {
+void loadPublisherState(ReadPublisherStateCallback callback) {
+#if defined CHROMIUM_BUILD
   scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatHelper::readPublisherStateFile, callback));
+  task_runner->PostTask(FROM_HERE, base::Bind(&readPublisherStateFile, callback));
+#else
+#endif
 }
 
 void BatHelper::getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts) {
@@ -1608,6 +1627,45 @@ uint64_t BatHelper::getMediaDuration(const std::map<std::string, std::string>& d
   return duration;
 }
 
+//cross-platform GenerateGUID
+std::string GenerateGUID()
+{
+#if defined CHROMIUM_BUILD
+  return base::GenerateGUID();
+#else
+  //TODO: to implement
+  return "please implement";
+#endif
+}
+
+//cross-platform encodeURIComponent
+void encodeURIComponent(const std::string & instr, std::string & outstr)
+{
+#if defined CHROMIUM_BUILD
+  url::StdStringCanonOutput surveyorIdCanon(&outstr);
+  url::EncodeURIComponent(instr.c_str(), instr.length(), &surveyorIdCanon);
+  surveyorIdCanon.Complete();
+#else
+  //TODO: to implement
+  assert(false);
+#endif
+}
+
+//cross-platform getPublishersDb
+void getPublishersDb(const std::string & pubId, std::string & pubDbPath)
+{
+#if defined CHROMIUM_BUILD
+  base::FilePath dbFilePath;
+  base::PathService::Get(base::DIR_HOME, &dbFilePath);
+  dbFilePath = dbFilePath.Append(pubId);
+  pubDbPath = dbFilePath.value();
+
+#else
+  //TODO: to implement
+  assert(false);
+#endif
+
+}
 // Enable emscripten calls
 /*void BatHelper::readEmscriptenInternal() {
   base::MemoryMappedFile::Region region_out;
@@ -1705,3 +1763,6 @@ void BatHelper::readEmscripten() {
   task_runner->PostTask(FROM_HERE, base::Bind(&BatHelper::readEmscriptenInternal));
 }*/
 //
+
+} //namespace braveledger_bat_helper 
+

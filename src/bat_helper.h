@@ -2,18 +2,42 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_HELPER_H_
-#define BAT_HELPER_H_
+#ifndef BRAVELEDGER_BAT_HELPER_H_
+#define BRAVELEDGER_BAT_HELPER_H_
 
 #include <string>
 #include <vector>
 #include <map>
+#include <cassert>
+
+
+#if defined CHROMIUM_BUILD
 
 #include "base/callback.h"
+#include "base/guid.h"
+#include "base/bind.h"
+#include "base/files/file_path.h"
+#include "base/path_service.h"
+#include "base/files/file_util.h"
 
-struct REQUEST_CREDENTIALS_ST {
-  REQUEST_CREDENTIALS_ST();
-  ~REQUEST_CREDENTIALS_ST();
+#else
+
+#include <functional>
+#include <iostream>
+
+#define DCHECK assert
+#define LOG(LEVEL) std::cerr<< std::endl<< #LEVEL << ": "
+
+#endif
+
+#include "static_values.h"
+
+namespace braveledger_bat_helper {
+
+  struct REQUEST_CREDENTIALS_ST {
+  
+    REQUEST_CREDENTIALS_ST();
+    ~REQUEST_CREDENTIALS_ST();  
 
   std::string proof_;
   std::string requestType_;
@@ -64,9 +88,9 @@ struct TRANSACTION_BALLOT_ST {
   TRANSACTION_BALLOT_ST();
   ~TRANSACTION_BALLOT_ST();
 
-  std::string publisher_;
-  unsigned int offset_;
-};
+    std::string publisher_;
+    unsigned int offset_ = 0u;
+  };
 
 struct TRANSACTION_ST {
   TRANSACTION_ST();
@@ -90,7 +114,7 @@ struct TRANSACTION_ST {
   std::string satoshis_;
   std::string altCurrency_;
   std::string probi_;
-  unsigned int votes_;
+  unsigned int votes_ = 0u;
   std::vector<TRANSACTION_BALLOT_ST> ballots_;
 };
 
@@ -102,10 +126,10 @@ struct BALLOT_ST {
   std::string viewingId_;
   std::string surveyorId_;
   std::string publisher_;
-  unsigned int offset_;
+  unsigned int offset_ = 0u;
   std::string prepareBallot_;
   std::string proofBallot_;
-  uint64_t delayStamp_;
+  uint64_t delayStamp_ = 0u;
 
 };
 
@@ -114,17 +138,17 @@ struct CLIENT_STATE_ST {
   ~CLIENT_STATE_ST();
 
   WALLET_INFO_ST walletInfo_;
-  uint64_t bootStamp_;
-  uint64_t reconcileStamp_;
+  uint64_t bootStamp_ = 0u;
+  uint64_t reconcileStamp_ = 0u;
   std::string personaId_;
   std::string userId_;
   std::string registrarVK_;
   std::string masterUserToken_;
   std::string preFlight_;
   std::string fee_currency_;
-  std::string settings_;
-  double fee_amount_;
-  unsigned int days_;
+  std::string settings_= AD_FREE_SETTINGS;
+  double fee_amount_ = .0;
+  unsigned int days_ = 0u;
   std::vector<TRANSACTION_ST> transactions_;
   std::vector<BALLOT_ST> ballots_;
   std::string ruleset_;
@@ -135,9 +159,9 @@ struct PUBLISHER_STATE_ST {
   PUBLISHER_STATE_ST();
   ~PUBLISHER_STATE_ST();
 
-  unsigned int min_pubslisher_duration_;  // In milliseconds
-  unsigned int min_visits_;
-  bool allow_non_verified_;
+  unsigned int min_pubslisher_duration_ = braveledger_ledger::_default_min_pubslisher_duration;  // In milliseconds
+  unsigned int min_visits_ = 1u;
+  bool allow_non_verified_ = true;
 };
 
 struct PUBLISHER_ST {
@@ -145,17 +169,17 @@ struct PUBLISHER_ST {
   PUBLISHER_ST(const PUBLISHER_ST& publisher);
   ~PUBLISHER_ST();
 
-  uint64_t duration_;
+  uint64_t duration_ = 0u;
   std::string favicon_url_;
-  double score_;
-  unsigned int visits_;
-  bool verified_;
-  bool exclude_;
-  bool pinPercentage_;
-  uint64_t verifiedTimeStamp_;
-  unsigned int percent_;
-  bool deleted_;
-  double weight_;
+  double score_ = .0;
+  unsigned int visits_ = 0;
+  bool verified_ = false;
+  bool exclude_ = false;
+  bool pinPercentage_ = false;
+  uint64_t verifiedTimeStamp_ = 0u;
+  unsigned int percent_ = 0;
+  bool deleted_ = false;
+  double weight_ = .0;
 };
 
 struct PUBLISHER_DATA_ST {
@@ -167,10 +191,10 @@ struct PUBLISHER_DATA_ST {
 
   std::string publisherKey_;
   PUBLISHER_ST publisher_;
-  unsigned int daysSpent_;
-  unsigned int hoursSpent_;
-  unsigned int minutesSpent_;
-  unsigned int secondsSpent_;
+  unsigned int daysSpent_ = 0;
+  unsigned int hoursSpent_ = 0;
+  unsigned int minutesSpent_ = 0;
+  unsigned int secondsSpent_ = 0;
 };
 
 struct WINNERS_ST {
@@ -178,7 +202,7 @@ struct WINNERS_ST {
   ~WINNERS_ST();
 
   PUBLISHER_DATA_ST publisher_data_;
-  unsigned int votes_;
+  unsigned int votes_ = 0;
 };
 
 struct WALLET_PROPERTIES_ST {
@@ -200,13 +224,13 @@ struct FETCH_CALLBACK_EXTRA_DATA_ST {
   FETCH_CALLBACK_EXTRA_DATA_ST(const FETCH_CALLBACK_EXTRA_DATA_ST&);
   ~FETCH_CALLBACK_EXTRA_DATA_ST();
 
-  uint64_t value1;
+  uint64_t value1 = 0u;
   std::string string1;
   std::string string2;
   std::string string3;
   std::string string4;
   std::string string5;
-  bool boolean1;
+  bool boolean1 = true;
 };
 
 struct SURVEYOR_INFO_ST {
@@ -264,77 +288,140 @@ enum URL_METHOD {
   POST = 2
 };
 
-class BatHelper {
-public:
-  typedef base::Callback<void(bool, const std::string&, const FETCH_CALLBACK_EXTRA_DATA_ST&)> FetchCallback;
-  typedef base::Callback<void(bool, const CLIENT_STATE_ST&)> ReadStateCallback;
-  typedef base::Callback<void(bool, const PUBLISHER_STATE_ST&)> ReadPublisherStateCallback;
-  typedef base::Callback<void(const std::string&)> SimpleCallback;
+  
 
-  static std::string getJSONValue(const std::string& fieldName, const std::string& json);
-  static std::vector<std::string> getJSONList(const std::string& fieldName, const std::string& json);
-  static void getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
+  typedef void (FetchCallbackSignature) (bool, const std::string&, const FETCH_CALLBACK_EXTRA_DATA_ST&);
+  typedef void (ReadStateCallbackSignature) (bool, const CLIENT_STATE_ST&);
+  typedef void (ReadPublisherStateCallbackSignature) (bool, const PUBLISHER_STATE_ST&) ;
+  typedef void (SimpleCallbackSignature) (const std::string&) ;
+
+#if defined CHROMIUM_BUILD
+  typedef base::Callback<FetchCallbackSignature> FetchCallback;
+  typedef base::Callback<ReadStateCallbackSignature> ReadStateCallback;
+  typedef base::Callback<ReadPublisherStateCallbackSignature> ReadPublisherStateCallback;
+  typedef base::Callback<SimpleCallbackSignature> SimpleCallback;
+
+  //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.  
+  template <typename BaseType, typename Signature >
+  static base::Callback<Signature> bat_mem_fun_binder(BaseType & instance, Signature BaseType::* ptr_to_mem)
+  {
+    return base::Bind(ptr_to_mem, base::Unretained(&instance));
+  }
+
+  //working with Chromium Callback.Run()
+  template <typename ReturnValue, typename Runnable, typename... Args>
+  ReturnValue run_runnable(Runnable & runnable, Args... args)
+  {
+    return runnable.Run(args...);
+  }
+
+#define bat_mem_fun_binder1 bat_mem_fun_binder
+#define bat_mem_fun_binder2 bat_mem_fun_binder
+#define bat_mem_fun_binder3 bat_mem_fun_binder
+
+#else
+  typedef std::function<FetchCallbackSignature> FetchCallback;
+  typedef std::function<ReadStateCallbackSignature> ReadStateCallback;
+  typedef std::function<ReadPublisherStateCallbackSignature> ReadPublisherStateCallback;
+  typedef std::function<SimpleCallbackSignature> SimpleCallback;
+
+  //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.  
+  template <typename BaseType, typename Signature >
+  std::function<Signature> bat_mem_fun_binder(BaseType & instance, Signature BaseType::* ptr_to_mem)
+  {    
+    return std::bind(ptr_to_mem, &instance);
+  }
+
+  template <typename BaseType, typename Signature >
+  std::function<Signature> bat_mem_fun_binder1(BaseType & instance, Signature BaseType::* ptr_to_mem)
+  {
+    using namespace std::placeholders;    
+    return std::bind(ptr_to_mem, &instance, _1);    
+  }
+
+  template <typename BaseType, typename Signature >
+  std::function<Signature> bat_mem_fun_binder2(BaseType & instance, Signature BaseType::* ptr_to_mem)
+  {
+    using namespace std::placeholders;
+    return std::bind(ptr_to_mem, &instance, _1, _2);
+  }
+
+  template <typename BaseType, typename Signature >
+  std::function<Signature> bat_mem_fun_binder3(BaseType & instance, Signature BaseType::* ptr_to_mem)
+  {
+    using namespace std::placeholders;
+    return std::bind(ptr_to_mem, &instance, _1, _2, _3);
+  }
+
+  //working with C++ function.operator() 
+  template <typename ReturnValue, typename Runnable, typename ... Args>
+  ReturnValue run_runnable(Runnable & runnable, Args ... args)
+  {
+    return runnable(args...);
+  }
+#endif  
+
+  std::string getJSONValue(const std::string& fieldName, const std::string& json);  
+  std::vector<std::string> getJSONList(const std::string& fieldName, const std::string& json);
+
+  void getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
     std::string& fee_currency, double& fee_amount, unsigned int& days);
-  static void getJSONState(const std::string& json, CLIENT_STATE_ST& state);
-  static void getJSONPublisherState(const std::string& json, PUBLISHER_STATE_ST& state);
-  static void getJSONPublisher(const std::string& json, PUBLISHER_ST& publisher_st);
-  static void getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp);
-  static void getJSONPublisherVerified(const std::string& json, bool& verified);
-  static void getJSONWalletProperties(const std::string& json, WALLET_PROPERTIES_ST& walletProperties);
-  static void getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx);
-  static void getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
-  static void getJSONRates(const std::string& json, std::map<std::string, double>& rates);
-  static void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor);
-  static void getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
-  static void getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts);
-  static void getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors);
-  static std::vector<uint8_t> generateSeed();
-  static std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
-  static void getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
+  void getJSONState(const std::string& json, CLIENT_STATE_ST& state);
+  void getJSONPublisherState(const std::string& json, PUBLISHER_STATE_ST& state);
+  void getJSONPublisher(const std::string& json, PUBLISHER_ST& publisher_st);
+  void getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp);
+  void getJSONPublisherVerified(const std::string& json, bool& verified);
+  void getJSONWalletProperties(const std::string& json, WALLET_PROPERTIES_ST& walletProperties);
+  void getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx);
+  void getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
+  void getJSONRates(const std::string& json, std::map<std::string, double>& rates);
+  void getJSONSurveyor(const std::string& json, SURVEYOR_ST& surveyor);
+  void getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
+  void getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts);
+  void getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors);
+  std::vector<uint8_t> generateSeed();
+  std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
+  void getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
     std::vector<uint8_t>& publicKey, std::vector<uint8_t>& secretKey);
-  static std::string uint8ToHex(const std::vector<uint8_t>& in);
-  static std::string stringify(std::string* keys, std::string* values, const unsigned int& size);
-  static std::string stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_ST& request_credentials);
-  static std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload);
-  static std::string stringifyState(const CLIENT_STATE_ST& state);
-  static std::string stringifyPublisherState(const PUBLISHER_STATE_ST& state);
-  static std::string stringifyPublisher(const PUBLISHER_ST& publisher_st);
-  static std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx);
-  static std::string stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
-  static std::vector<uint8_t> getSHA256(const std::string& in);
-  static std::string getBase64(const std::vector<uint8_t>& in);
-  static std::vector<uint8_t> getFromBase64(const std::string& in);
+  std::string uint8ToHex(const std::vector<uint8_t>& in);
+  std::string stringify(std::string* keys, std::string* values, const unsigned int& size);
+  std::string stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_ST& request_credentials);
+  std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload);
+  std::string stringifyState(const CLIENT_STATE_ST& state);
+  std::string stringifyPublisherState(const PUBLISHER_STATE_ST& state);
+  std::string stringifyPublisher(const PUBLISHER_ST& publisher_st);
+  std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx);
+  std::string stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
+  std::vector<uint8_t> getSHA256(const std::string& in);
+  std::string getBase64(const std::vector<uint8_t>& in);
+  std::vector<uint8_t> getFromBase64(const std::string& in);
   // Sign using ed25519 algorithm
-  static std::string sign(std::string* keys, std::string* values, const unsigned int& size,
+  std::string sign(std::string* keys, std::string* values, const unsigned int& size,
     const std::string& keyId, const std::vector<uint8_t>& secretKey);
-  static uint64_t currentTime();
-  static void saveState(const CLIENT_STATE_ST& state);
-  static void loadState(BatHelper::ReadStateCallback callback);
-  static void savePublisherState(const PUBLISHER_STATE_ST& state);
-  static void loadPublisherState(BatHelper::ReadPublisherStateCallback callback);
+  uint64_t currentTime();
+  void saveState(const CLIENT_STATE_ST& state);
+  void loadState(BatHelper::ReadStateCallback callback);
+  void savePublisherState(const PUBLISHER_STATE_ST& state);
+  void loadPublisherState(BatHelper::ReadPublisherStateCallback callback);
   // We have to implement different function for iOS, probably laptop
-  static void writeStateFile(const std::string& data);
+  void writeStateFile(const std::string& data);
   // We have to implement different function for iOS, probably laptop
-  static void readStateFile(BatHelper::ReadStateCallback callback);
+  void readStateFile(BatHelper::ReadStateCallback callback);
   // We have to implement different function for iOS, probably laptop
-  static void writePublisherStateFile(const std::string& data);
+  void writePublisherStateFile(const std::string& data);
   // We have to implement different function for iOS, probably laptop
-  static void readPublisherStateFile(BatHelper::ReadPublisherStateCallback callback);
-  static void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts);
-  static void getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts);
-  static std::string getMediaId(const std::map<std::string, std::string>& data, const std::string& type);
-  static std::string getMediaKey(const std::string& mediaId, const std::string& type);
-  static uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);
+  void readPublisherStateFile(BatHelper::ReadPublisherStateCallback callback);
+  void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts);
+  void getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts);
+  std::string getMediaId(const std::map<std::string, std::string>& data, const std::string& type);
+  std::string getMediaKey(const std::string& mediaId, const std::string& type);
+  uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);
 
   // TODO debug
   //static void readEmscripten();
   //static void readEmscriptenInternal();
   //
 
-private:
-  BatHelper();
-  ~BatHelper();
-};
 
 struct CURRENT_RECONCILE {
   CURRENT_RECONCILE();
@@ -346,11 +433,20 @@ struct CURRENT_RECONCILE {
   std::string preFlight_;
   std::string masterUserToken_;
   SURVEYOR_INFO_ST surveyorInfo_;
-  uint64_t timestamp_;
+  uint64_t timestamp_ = 0u;
   std::map<std::string, double> rates_;
   std::string amount_;
   std::string currency_;
-  BatHelper::SimpleCallback ledgerCallback_;
+  SimpleCallback ledgerCallback_;
 };
 
-#endif  // BAT_HELPER_H_
+
+  //cross-platform functions
+  std::string GenerateGUID();
+  void encodeURIComponent(const std::string & instr, std::string & outstr);
+  void getPublishersDb(const std::string & pubId, std::string & pubDbPath);
+
+} //namespace braveledger_bat_helper
+
+#endif  // BRAVELEDGER_BAT_HELPER_H_
+
