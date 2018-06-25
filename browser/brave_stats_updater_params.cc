@@ -15,10 +15,17 @@
 namespace brave {
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service)
-    : pref_service_(pref_service),
-      today_ymd_(GetCurrentDateAsYMD()),
-      today_woy_(GetCurrentISOWeekNumber()),
-      today_month_(GetCurrentMonth()) {
+    : BraveStatsUpdaterParams(pref_service,
+                              GetCurrentDateAsYMD(),
+                              GetCurrentISOWeekNumber(),
+                              GetCurrentMonth()) {
+}
+
+BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service,
+                                                 const std::string& ymd,
+                                                 int woy,
+                                                 int month)
+    : pref_service_(pref_service), ymd_(ymd), woy_(woy), month_(month) {
   LoadPrefs();
 }
 
@@ -28,16 +35,16 @@ BraveStatsUpdaterParams::~BraveStatsUpdaterParams() {
 
 std::string BraveStatsUpdaterParams::GetDailyParam() const {
   return BooleanToString(
-      base::CompareCaseInsensitiveASCII(today_ymd_, last_check_ymd_) == 1);
+      base::CompareCaseInsensitiveASCII(ymd_, last_check_ymd_) == 1);
 }
 
 std::string BraveStatsUpdaterParams::GetWeeklyParam() const {
-  return BooleanToString(last_check_woy_ == 0 || today_woy_ != last_check_woy_);
+  return BooleanToString(last_check_woy_ == 0 || woy_ != last_check_woy_);
 }
 
 std::string BraveStatsUpdaterParams::GetMonthlyParam() const {
   return BooleanToString(last_check_month_ == 0 ||
-                         today_month_ != last_check_month_);
+                         month_ != last_check_month_);
 }
 
 std::string BraveStatsUpdaterParams::GetFirstCheckMadeParam() const {
@@ -49,23 +56,21 @@ std::string BraveStatsUpdaterParams::GetWeekOfInstallationParam() const {
 }
 
 void BraveStatsUpdaterParams::LoadPrefs() {
-  PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
-  last_check_ymd_ = prefs->GetString(kLastCheckYMD);
-  last_check_woy_ = prefs->GetInteger(kLastCheckWOY);
-  last_check_month_ = prefs->GetInteger(kLastCheckMonth);
-  first_check_made_ = prefs->GetBoolean(kFirstCheckMade);
-  week_of_installation_ = prefs->GetString(kWeekOfInstallation);
+  last_check_ymd_ = pref_service_->GetString(kLastCheckYMD);
+  last_check_woy_ = pref_service_->GetInteger(kLastCheckWOY);
+  last_check_month_ = pref_service_->GetInteger(kLastCheckMonth);
+  first_check_made_ = pref_service_->GetBoolean(kFirstCheckMade);
+  week_of_installation_ = pref_service_->GetString(kWeekOfInstallation);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
 }
 
 void BraveStatsUpdaterParams::SavePrefs() {
-  PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
-  prefs->SetString(kLastCheckYMD, today_ymd_);
-  prefs->SetInteger(kLastCheckWOY, today_woy_);
-  prefs->SetInteger(kLastCheckMonth, today_month_);
-  prefs->SetBoolean(kFirstCheckMade, first_check_made_);
-  prefs->SetString(kWeekOfInstallation, week_of_installation_);
+  pref_service_->SetString(kLastCheckYMD, ymd_);
+  pref_service_->SetInteger(kLastCheckWOY, woy_);
+  pref_service_->SetInteger(kLastCheckMonth, month_);
+  pref_service_->SetBoolean(kFirstCheckMade, first_check_made_);
+  pref_service_->SetString(kWeekOfInstallation, week_of_installation_);
 }
 
 std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {

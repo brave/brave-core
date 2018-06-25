@@ -20,6 +20,10 @@ namespace brave {
 class BraveStatsUpdaterParams {
  public:
   BraveStatsUpdaterParams(PrefService* pref_service);
+  BraveStatsUpdaterParams(PrefService* pref_service,
+                          const std::string& ymd,
+                          int woy,
+                          int month);
   ~BraveStatsUpdaterParams();
 
   std::string GetDailyParam() const;
@@ -30,9 +34,9 @@ class BraveStatsUpdaterParams {
 
  private:
   PrefService* pref_service_;
-  std::string today_ymd_;
-  int today_woy_;
-  int today_month_;
+  std::string ymd_;
+  int woy_;
+  int month_;
   std::string last_check_ymd_;
   int last_check_woy_;
   int last_check_month_;
