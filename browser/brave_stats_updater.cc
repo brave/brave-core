@@ -83,7 +83,8 @@ GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
 
 namespace brave {
 
-BraveStatsUpdater::BraveStatsUpdater() {
+BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
+    : pref_service_(pref_service) {
 }
 
 BraveStatsUpdater::~BraveStatsUpdater() {
@@ -140,7 +141,7 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
           policy_exception_justification:
             "Not implemented."
         })");
-  brave::BraveStatsUpdaterParams stats_updater_params;
+  brave::BraveStatsUpdaterParams stats_updater_params(pref_service_);
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GetUpdateURL(stats_updater_params);
   resource_request->load_flags =
@@ -162,8 +163,8 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory() {
-  return std::make_unique<BraveStatsUpdater>();
+std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(PrefService* pref_service) {
+  return std::make_unique<BraveStatsUpdater>(pref_service);
 }
 
 void RegisterPrefsForBraveStatsUpdater(PrefRegistrySimple* registry) {

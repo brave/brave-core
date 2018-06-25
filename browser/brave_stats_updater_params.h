@@ -9,6 +9,8 @@
 
 #include "base/macros.h"
 
+class PrefService;
+
 namespace base {
 class Time;
 }
@@ -17,7 +19,7 @@ namespace brave {
 
 class BraveStatsUpdaterParams {
  public:
-  BraveStatsUpdaterParams();
+  BraveStatsUpdaterParams(PrefService* pref_service);
   ~BraveStatsUpdaterParams();
 
   std::string GetDailyParam() const;
@@ -27,6 +29,7 @@ class BraveStatsUpdaterParams {
   std::string GetWeekOfInstallationParam() const;
 
  private:
+  PrefService* pref_service_;
   std::string today_ymd_;
   int today_woy_;
   int today_month_;

@@ -11,6 +11,7 @@
 #include "base/timer/timer.h"
 
 class PrefRegistrySimple;
+class PrefService;
 
 namespace network {
 class SimpleURLLoader;
@@ -20,7 +21,7 @@ namespace brave {
 
 class BraveStatsUpdater {
  public:
-  BraveStatsUpdater();
+  BraveStatsUpdater(PrefService* pref_service);
   ~BraveStatsUpdater();
 
   void Start();
@@ -33,6 +34,7 @@ class BraveStatsUpdater {
   // Invoked from RepeatingTimer when server ping timer fires.
   void OnServerPingTimerFired();
 
+  PrefService* pref_service_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::RepeatingTimer> server_ping_timer_;
 
@@ -40,7 +42,8 @@ class BraveStatsUpdater {
 };
 
 // Creates the BraveStatsUpdater
-std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory();
+std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(
+    PrefService* pref_service);
 
 // Registers the preferences used by BraveStatsUpdater
 void RegisterPrefsForBraveStatsUpdater(PrefRegistrySimple* registry);

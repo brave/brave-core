@@ -10,13 +10,13 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/common/pref_names.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave {
 
-BraveStatsUpdaterParams::BraveStatsUpdaterParams()
-    : today_ymd_(GetCurrentDateAsYMD()),
+BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service)
+    : pref_service_(pref_service),
+      today_ymd_(GetCurrentDateAsYMD()),
       today_woy_(GetCurrentISOWeekNumber()),
       today_month_(GetCurrentMonth()) {
   LoadPrefs();
