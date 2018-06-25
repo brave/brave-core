@@ -55,8 +55,7 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
   // It's preferred to use specific_patterns below when possible
   static std::vector<URLPattern> whitelist_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://use.typekit.net/*"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://cloud.typography.com/*"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://www.moremorewin.net/*")
+    URLPattern(URLPattern::SCHEME_ALL, "https://cloud.typography.com/*")
   });
   return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
     [&subresourceUrl](URLPattern pattern){
