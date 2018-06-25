@@ -73,7 +73,8 @@ export const getMockChrome = () => {
       onStartup: new ChromeEvent()
     },
     browserAction: {
-      setBadgeText: function (text: string) { }
+      setBadgeText: function (text: string) { },
+      setIcon: function (icon: string, tabId: number) { }
     },
     tabs: {
       queryAsync: function () {
