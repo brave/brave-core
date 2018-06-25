@@ -104,14 +104,16 @@ void BraveStatsUpdater::Stop() {
 
 void BraveStatsUpdater::OnSimpleLoaderComplete(
     std::unique_ptr<std::string> response_body) {
-  if (!response_body) {
-    int response_code = -1;
-    if (simple_url_loader_->ResponseInfo() &&
-        simple_url_loader_->ResponseInfo()->headers)
-      response_code = simple_url_loader_->ResponseInfo()->headers->response_code();
+  int response_code = -1;
+  if (simple_url_loader_->ResponseInfo() &&
+      simple_url_loader_->ResponseInfo()->headers)
+    response_code =
+        simple_url_loader_->ResponseInfo()->headers->response_code();
+  if (simple_url_loader_->NetError() != net::OK || response_code != 200) {
     LOG(ERROR) << "Failed to send usage stats to update server"
                << ", error: " << simple_url_loader_->NetError()
                << ", response code: " << response_code
+               << ", payload: " << *response_body
                << ", url: " << simple_url_loader_->GetFinalURL().spec();
     return;
   }
@@ -150,6 +152,7 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
           ->GetURLLoaderFactory();
   simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
+  simple_url_loader_->SetAllowHttpErrorResults(true);
   simple_url_loader_->DownloadToString(
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnSimpleLoaderComplete,
