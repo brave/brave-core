@@ -369,7 +369,7 @@ void BatPublishers::setPublisherPinPercentage(const std::string& publisher, cons
 }
 
 void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In milliseconds
-  state_.min_pubslisher_duration_ = duration;
+  state_.min_pubslisher_duration_ = duration; //TODO: conversion from 'const uint64_t' to 'unsigned int', possible loss of data
   braveledger_bat_helper::savePublisherState(state_);
   synopsisNormalizer();
 }

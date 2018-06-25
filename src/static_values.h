@@ -6,6 +6,8 @@
 #define BRAVELEDGER_STATIC_VALUES_H_
 
 #include <cstdint>
+#include <string>
+
 #define LEDGER_STAGING_SERVER           "https://ledger-staging.mercury.basicattentiontoken.org"
 #define LEDGER_PRODUCTION_SERVER        "https://ledger.mercury.basicattentiontoken.org"
 #define LEDGER_PRODUCTION_PROXY_SERVER  "https://mercury-proxy.privateinternetaccess.com"

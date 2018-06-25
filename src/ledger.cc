@@ -2,13 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
-#include "ledger.h"
-#include "bat_client.h"
-#include "bat_get_media.h"
-#include "bat_publishers.h"
-#include "bat_helper.h"
-#include "static_values.h"
 #if defined CHROMIUM_BUILD
 #include "base/bind.h"
 #include "base/guid.h"
@@ -20,11 +13,17 @@
 #include <cassert>
 #endif
 
+#include "bat_helper.h"
+#include "ledger.h"
+#include "bat_client.h"
+#include "bat_get_media.h"
+#include "bat_publishers.h"
+#include "static_values.h"
 
 
 using namespace braveledger_bat_client;
 using namespace braveledger_bat_publishers;
-using namespace bat_get_media;
+using namespace braveledger_bat_get_media;
 
 namespace braveledger_ledger {
 
@@ -44,7 +43,7 @@ namespace braveledger_ledger {
     if (!bat_client_) {
       bat_client_.reset (new BatClient());
     }
-    LOG(ERROR) << "!!!here2";
+    LOG(ERROR) << "here 2";
     bat_client_->loadStateOrRegisterPersona();
   }
 
@@ -306,10 +305,10 @@ namespace braveledger_ledger {
     std::map<std::string, std::string> parts;
     std::vector<std::map<std::string, std::string>> twitchParts;
     if (YOUTUBE_MEDIA_TYPE == type) {
-      BatHelper::getUrlQueryParts(urlQuery, parts);
+      braveledger_bat_helper::getUrlQueryParts(urlQuery, parts);
       processMedia(parts, type);
     } else if (TWITCH_MEDIA_TYPE == type) {
-      BatHelper::getTwitchParts(urlQuery, twitchParts);
+      braveledger_bat_helper::getTwitchParts(urlQuery, twitchParts);
       for (size_t i = 0; i < twitchParts.size(); i++) {
         processMedia(twitchParts[i], type);
       }
@@ -317,17 +316,17 @@ namespace braveledger_ledger {
   }
 
   void Ledger::processMedia(const std::map<std::string, std::string>& parts, const std::string& type) {
-    std::string mediaId = BatHelper::getMediaId(parts, type);
+    std::string mediaId = braveledger_bat_helper::getMediaId(parts, type);
     //LOG(ERROR) << "!!!mediaId == " << mediaId;
     if (mediaId.empty()) {
       return;
     }
-    std::string mediaKey = BatHelper::getMediaKey(mediaId, type);
+    std::string mediaKey = braveledger_bat_helper::getMediaKey(mediaId, type);
     //LOG(ERROR) << "!!!mediaKey == " << mediaKey;
     uint64_t duration = 0;
-    TWITCH_EVENT_INFO twitchEventInfo;
+    braveledger_bat_helper::TWITCH_EVENT_INFO twitchEventInfo;
     if (YOUTUBE_MEDIA_TYPE == type) {
-      duration = BatHelper::getMediaDuration(parts, mediaKey, type);
+      duration = braveledger_bat_helper::getMediaDuration(parts, mediaKey, type);
       //LOG(ERROR) << "!!!duration == " << duration;
     } else if (TWITCH_MEDIA_TYPE == type) {
       std::map<std::string, std::string>::const_iterator iter = parts.find("event");
@@ -342,15 +341,21 @@ namespace braveledger_ledger {
     if (!bat_get_media_) {
       return;
     }
+
+#if defined CHROMIUM_BUILD
     scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
     task_runner->PostTask(FROM_HERE, base::Bind(&BatGetMedia::getPublisherFromMediaProps, base::Unretained(bat_get_media_), 
       mediaId, mediaKey, type, duration, twitchEventInfo, base::Bind(&Ledger::OnMediaRequestCallback,
       base::Unretained(this))));
+#else
+
+#endif
+
   }
 
-  void Ledger::OnMediaRequestCallback(const uint64_t& duration, const MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
+  void Ledger::OnMediaRequestCallback(const uint64_t& duration, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
     saveVisit(mediaPublisherInfo.publisher_, duration, true);
   }
 
