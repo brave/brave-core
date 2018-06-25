@@ -6,17 +6,11 @@
 
 #include <string>
 
-#import "brave/browser/sparkle_glue_mac.h"
-#include "base/command_line.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/common/brave_switches.h"
+#import "brave/browser/sparkle_glue_mac.h"
+#include "brave/browser/update_util.h"
 
 namespace {
-
-BOOL UpdateEnabled() {
-  return base::CommandLine::ForCurrentProcess()->HasSwitch(
-      switches::kEnableBraveUpdateTest);
-}
 
 std::string GetDescriptionFromAppcastItem(id item) {
   return [SparkleGlue descriptionFromAppcastItem:item];
@@ -32,7 +26,7 @@ std::string GetDescriptionFromAppcastItem(id item) {
 - (void)applicationWillFinishLaunching:(NSNotification*)notification {
   [super applicationWillFinishLaunching:notification];
 
-  if (!UpdateEnabled())
+  if (!brave::UpdateEnabled())
     return;
 
   [self initializeBraveUpdater];
@@ -42,17 +36,18 @@ std::string GetDescriptionFromAppcastItem(id item) {
   if ([super validateUserInterfaceItem:item])
     return YES;
 
-  return  [item action] == @selector(updateBrave:) ? UpdateEnabled() : NO;
+  return  [item action] == @selector(updateBrave:) ? brave::UpdateEnabled()
+                                                   : NO;
 }
 
 - (IBAction)updateBrave:(id)sender {
-  DCHECK(UpdateEnabled());
+  DCHECK(brave::UpdateEnabled());
 
   [sparkle_glue_ checkForUpdates:sender];
 }
 
 - (void)initializeBraveUpdater {
-  DCHECK(UpdateEnabled());
+  DCHECK(brave::UpdateEnabled());
 
   sparkle_glue_ = [SparkleGlue sharedSparkleGlue];
   [sparkle_glue_ setDelegate:self];

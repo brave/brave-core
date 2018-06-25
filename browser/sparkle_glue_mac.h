@@ -21,6 +21,7 @@
 
 - (void)setDelegate:(id)delegate;
 - (void)checkForUpdates:(id)sender;
+- (void)checkForUpdatesInBackground;
 
 @end  // @interface SparkleGlue
 
