@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/upgrade_detector_impl.h b/chrome/browser/upgrade_detector_impl.h
+index 03cd93e8baabdec04dbbbf3fefe23e42fdfbd3e1..a35c8674caaa6ba6d090ad6968641b151fe00494 100644
+--- a/chrome/browser/upgrade_detector_impl.h
++++ b/chrome/browser/upgrade_detector_impl.h
+@@ -74,7 +74,7 @@ class UpgradeDetectorImpl : public UpgradeDetector,
+   // UpgradeDetector:
+   void OnRelaunchNotificationPeriodPrefChanged() override;
+ 
+-#if defined(OS_WIN) && defined(GOOGLE_CHROME_BUILD)
++#if defined(OS_WIN) && (defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)))
+   // Receives the results of AreAutoupdatesEnabled and starts the upgrade check
+   // timer.
+   void OnAutoupdatesEnabledResult(bool auto_updates_enabled);

@@ -1,7 +1,16 @@
 diff --git a/chrome/installer/util/browser_distribution.cc b/chrome/installer/util/browser_distribution.cc
-index 33c105c968dc46b62ab39ee766f1ecce4449c358..e6ad55977dc9dc61975f2a95d12e508f0d1bb7ab 100644
+index 33c105c968dc46b62ab39ee766f1ecce4449c358..7504f12b590cdaa063e5a31e55dda24adfc142c6 100644
 --- a/chrome/installer/util/browser_distribution.cc
 +++ b/chrome/installer/util/browser_distribution.cc
+@@ -54,7 +54,7 @@ BrowserDistribution* BrowserDistribution::GetOrCreateBrowserDistribution(
+ BrowserDistribution* BrowserDistribution::GetDistribution() {
+   BrowserDistribution* dist = NULL;
+ 
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+   dist = GetOrCreateBrowserDistribution<GoogleChromeDistribution>(
+       &g_browser_distribution);
+ #else
 @@ -108,7 +108,7 @@ base::string16 BrowserDistribution::GetStartMenuShortcutSubfolder(
  }
  

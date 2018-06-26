@@ -1,6 +1,6 @@
-// Copyright 2014 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/installer/mini_installer/mini_installer_constants.h"
 
@@ -15,7 +15,7 @@ const wchar_t kChromeArchivePrefix[] = L"chrome";
 const wchar_t kSetupPrefix[] = L"setup";
 
 // Command line switch names for setup.exe.
-#if defined(COMPONENT_BUILD)
+#if defined(SKIP_ARCHIVE_COMPRESSION)
 const wchar_t kCmdUncompressedArchive[] = L"uncompressed-archive";
 #else
 const wchar_t kCmdInstallArchive[] = L"install-archive";
@@ -57,15 +57,26 @@ const wchar_t kUninstallArgumentsRegistryValue[] = L"UninstallArguments";
 const wchar_t kUninstallRegistryValue[] = L"UninstallString";
 
 // Registry key paths.
+#if defined(OFFICIAL_BUILD)
 // The path to the key containing each app's Clients registry key. The trailing
 // slash is required.
-const wchar_t kClientsKeyBase[] = L"Software\\Brave\\Update\\Clients\\";
+const wchar_t kClientsKeyBase[] = L"Software\\BraveSoftware\\Update\\Clients\\";
 // The path to the key containing each app's Client State registry key. The
 // trailing slash is required.
 const wchar_t kClientStateKeyBase[] =
-    L"Software\\Brave\\Update\\ClientState\\";
+    L"Software\\BraveSoftware\\Update\\ClientState\\";
 // The path to the key in which kCleanupRegistryValue is found.
 const wchar_t kCleanupRegistryKey[] =
     L"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Brave";
+#else
+// The path to the key containing each app's Clients registry key.
+// No trailing slash on this one because the app's GUID is not appended.
+const wchar_t kClientsKeyBase[] = L"Software\\Chromium";
+// The path to the key containing each app's Client State registry key.
+// No trailing slash on this one because the app's GUID is not appended.
+const wchar_t kClientStateKeyBase[] = L"Software\\Chromium";
+// The path to the key in which kCleanupRegistryValue is found.
+const wchar_t kCleanupRegistryKey[] = L"Software\\Chromium";
+#endif
 
 }  // namespace mini_installer
