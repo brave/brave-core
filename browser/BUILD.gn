@@ -8,6 +8,8 @@ source_set("browser_process") {
     "brave_browser_main_extra_parts.h",
     "brave_browser_process_impl.cc",
     "brave_browser_process_impl.h",
+    "brave_local_state_prefs.cc",
+    "brave_local_state_prefs.h",
     "brave_profile_prefs.cc",
     "brave_profile_prefs.h",
     "brave_stats_updater.cc",

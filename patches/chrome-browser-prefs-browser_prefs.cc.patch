@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
+index 3f5d2b82ded5b35671470ff81a6ba9088c2be523..7fe701bf99d4dcc8f7f4003f3ee2051b11b5944b 100644
+--- a/chrome/browser/prefs/browser_prefs.cc
++++ b/chrome/browser/prefs/browser_prefs.cc
+@@ -8,6 +8,7 @@
+ 
+ #include "base/metrics/histogram_macros.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/browser/brave_local_state_prefs.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/about_flags.h"
+ #include "chrome/browser/accessibility/invert_bubble_prefs.h"
+@@ -355,6 +356,7 @@ void RegisterProfilePrefsForMigration(
+ 
+ void RegisterLocalState(PrefRegistrySimple* registry) {
+   // Please keep this list alphabetized.
++  brave::RegisterLocalStatePrefs(registry);
+   browser_shutdown::RegisterPrefs(registry);
+   BrowserProcessImpl::RegisterPrefs(registry);
+   ChromeContentBrowserClient::RegisterLocalStatePrefs(registry);
