@@ -59,4 +59,8 @@ id GetSUUpdater() {
   [su_updater_ checkForUpdates:sender];
 }
 
+- (void)checkForUpdatesInBackground {
+  [su_updater_ checkForUpdatesInBackground];
+}
+
 @end
