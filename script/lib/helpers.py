@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
+import json
 
 BRAVE_REPO = "brave/brave-browser-builds"
 
@@ -24,6 +25,12 @@ def release_channel():
               'environment variable, which is your release channel')
   assert channel, message
   return channel
+
+def get_tag():
+  return 'v' + get_version() + release_channel()
+
+def get_version():
+  return json.load(open('package.json'))['version']
 
 def release_name():
   return '{0} Channel'.format(get_channel_display_name())

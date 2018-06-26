@@ -19,19 +19,19 @@ RELEASE_NAME = 'Dev Channel Beta'
 def main():
   repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
-  release = get_draft(repo, get_tag_without_channel())
-  commit_tag = get_commit_tag(get_brave_version())
+  release = get_draft(repo, get_brave_version())
+  commit_tag = get_commit_tag(get_version())
 
   print("[INFO] Releasing {}".format(release['tag_name']))
   publish_release(repo, release['id'], get_tag(), commit_tag)
 
 def get_commit_tag(version):
-  parts = get_brave_version().split('.', 3)
+  parts = get_version().split('.', 3)
   if (len(parts) == 3):
     parts[2] = 'x'
     return '.'.join(parts)
   else:
-    raise(UserWarning("[ERROR] Invalid version name '%s'", get_brave_version()))
+    raise(UserWarning("[ERROR] Invalid version name '%s'", get_version()))
 
 def get_draft(repo, tag):
   releases = get_releases_by_tag(repo, tag, include_drafts=True)
