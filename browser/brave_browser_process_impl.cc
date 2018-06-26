@@ -6,6 +6,7 @@
 
 #include "base/bind.h"
 #include "base/task_scheduler/post_task.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -29,10 +30,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(
   g_browser_process = this;
   g_brave_browser_process = this;
   brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-      base::CreateSequencedTaskRunnerWithTraits(
-          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostDelayedTask(
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(
           [](brave::BraveStatsUpdater* stats_updater) {
