@@ -69,7 +69,7 @@ void BraveStatsUpdaterParams::SavePrefs() {
   pref_service_->SetString(kLastCheckYMD, ymd_);
   pref_service_->SetInteger(kLastCheckWOY, woy_);
   pref_service_->SetInteger(kLastCheckMonth, month_);
-  pref_service_->SetBoolean(kFirstCheckMade, first_check_made_);
+  pref_service_->SetBoolean(kFirstCheckMade, true);
   pref_service_->SetString(kWeekOfInstallation, week_of_installation_);
 }
 
