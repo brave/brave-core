@@ -1,9 +1,13 @@
 #!/usr/bin/env python
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import argparse
 import errno
 import hashlib
 import os
+import requests
 import shutil
 import subprocess
 import sys
@@ -14,11 +18,9 @@ from lib.config import PLATFORM, DIST_URL, get_target_arch, get_chromedriver_ver
                        get_env_var, s3_config, get_zip_name, product_name, project_name, \
                        SOURCE_ROOT, dist_dir, output_dir, get_brave_version
 from lib.util import execute, parse_version, scoped_cwd, s3put
+from lib.helpers import *
 
 from lib.github import GitHub
-
-
-BRAVE_REPO = "brave/brave-browser-builds"
 
 DIST_NAME = get_zip_name(project_name(), get_brave_version())
 SYMBOLS_NAME = get_zip_name(project_name(), get_brave_version(), 'symbols')
@@ -28,68 +30,50 @@ PDB_NAME = get_zip_name(project_name(), get_brave_version(), 'pdb')
 
 def main():
   args = parse_args()
+  print('[INFO] Running upload...')
 
-  if not args.publish_release:
-    build_version = get_brave_version()
-    if not get_brave_version().startswith(build_version):
-      error = 'Tag name ({0}) should match build version ({1})\n'.format(
-          get_brave_version(), build_version)
-      sys.stderr.write(error)
-      sys.stderr.flush()
-      return 1
+  # Repo is defined in lib/helpers.py for now
+  repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
-  github = GitHub(auth_token())
-  releases = github.repos(BRAVE_REPO).releases.get()
-  tag_exists = False
-  for release in releases:
-    if not release['draft'] and release['tag_name'] == args.version:
-      tag_exists = True
-      break
+  tag = get_brave_version()
+  release = get_draft(repo, tag)
 
-  release = create_or_get_release_draft(github, releases, args.version,
-                                        tag_exists)
+  if not release:
+    print("[INFO] No existing release found, creating new release for this upload")
+    release = create_release_draft(repo, tag)
 
-  if args.publish_release:
-    # Create and upload the Brave SHASUMS*.txt
-    release_brave_checksums(github, release)
-
-    # Press the publish button.
-    # publish_release(github, release['id'])
-
-    # Do not upload other files when passed "-p".
-    return
-
+  print('[INFO] Uploading release {}'.format(release['tag_name']))
   # Upload Brave with GitHub Releases API.
-  upload_brave(github, release, os.path.join(dist_dir(), DIST_NAME))
-  upload_brave(github, release, os.path.join(dist_dir(), SYMBOLS_NAME))
+  upload_brave(repo, release, os.path.join(dist_dir(), DIST_NAME), force=args.force)
+  upload_brave(repo, release, os.path.join(dist_dir(), SYMBOLS_NAME), force=args.force)
   # if PLATFORM == 'darwin':
-  #   upload_brave(github, release, os.path.join(dist_dir(), DSYM_NAME))
+  #   upload_brave(repo, release, os.path.join(dist_dir(), DSYM_NAME))
   # elif PLATFORM == 'win32':
-  #   upload_brave(github, release, os.path.join(dist_dir(), PDB_NAME))
+  #   upload_brave(repo, release, os.path.join(dist_dir(), PDB_NAME))
 
   # Upload chromedriver and mksnapshot.
   chromedriver = get_zip_name('chromedriver', get_chromedriver_version())
-  upload_brave(github, release, os.path.join(dist_dir(), chromedriver))
+  upload_brave(repo, release, os.path.join(dist_dir(), chromedriver), force=args.force)
 
   if PLATFORM == 'darwin':
-    upload_brave(github, release, os.path.join(output_dir(), 'Brave.dmg'))
+    upload_brave(repo, release, os.path.join(output_dir(), 'Brave.dmg'), force=args.force)
   elif PLATFORM == 'win32':
     if get_target_arch() == 'x64':
-      upload_brave(github, release, os.path.join(output_dir(),
-          'brave_installer.exe'), 'brave_installer-x64.exe')
+      upload_brave(repo, release, os.path.join(output_dir(),
+          'brave_installer.exe'), 'brave_installer-x64.exe', force=args.force)
     else:
-      upload_brave(github, release, os.path.join(output_dir(),
-          'brave_installer.exe'), 'brave_installer-ia32.exe')
+      upload_brave(repo, release, os.path.join(output_dir(),
+          'brave_installer.exe'), 'brave_installer-ia32.exe', force=args.force)
   else:
     if get_target_arch() == 'x64':
-      upload_brave(github, release, os.path.join(output_dir(), 'brave-x86_64.rpm'))
-      upload_brave(github, release, os.path.join(output_dir(), 'brave-amd64.deb'))
+      upload_brave(repo, release, os.path.join(output_dir(), 'brave-x86_64.rpm'), force=args.force)
+      upload_brave(repo, release, os.path.join(output_dir(), 'brave-amd64.deb'), force=args.force)
     else:
-      upload_brave(github, release, os.path.join(output_dir(), 'brave-i386.rpm'))
-      upload_brave(github, release, os.path.join(output_dir(), 'brave-i386.deb'))
+      upload_brave(repo, release, os.path.join(output_dir(), 'brave-i386.rpm'), force=args.force)
+      upload_brave(repo, release, os.path.join(output_dir(), 'brave-i386.deb'), force=args.force)
 
   # mksnapshot = get_zip_name('mksnapshot', get_brave_version())
-  # upload_brave(github, release, os.path.join(dist_dir(), mksnapshot))
+  # upload_brave(repo, release, os.path.join(dist_dir(), mksnapshot))
 
   # if PLATFORM == 'win32' and not tag_exists:
   #   # Upload PDBs to Windows symbol server.
@@ -97,15 +81,29 @@ def main():
 
   versions = parse_version(args.version)
   version = '.'.join(versions[:3])
+  print('[INFO] Finished upload')
+
+
+def get_draft(repo, tag):
+  release = None
+  releases = get_releases_by_tag(repo, tag, include_drafts=True)
+  if releases:
+    print("[INFO] Found existing release draft, merging this upload with it")
+    if len(releases) > 1:
+      raise UserWarning("[INFO] More then one draft with the tag '{}' found, not sure which one to merge with.".format(tag))
+    release = releases[0]
+    if release['draft'] == False:
+      raise UserWarning("[INFO] Release with tag '{}' is already published, aborting.".format(tag))
+
+  return release
 
 
 def parse_args():
   parser = argparse.ArgumentParser(description='upload distribution file')
+  parser.add_argument('--force', action='store_true', 
+                      help='Overwrite files in destination draft on upload.')
   parser.add_argument('-v', '--version', help='Specify the version',
                       default=get_brave_version())
-  parser.add_argument('-p', '--publish-release',
-                      help='Publish the release',
-                      action='store_true')
   parser.add_argument('-d', '--dist-url',
                       help='The base dist url for download',
                       default=DIST_URL)
@@ -149,38 +147,26 @@ def get_text_with_editor(name):
   os.unlink(t.name)
   return text
 
-def create_or_get_release_draft(github, releases, tag, tag_exists):
-  # Search for existing draft.
-  for release in releases:
-    if release['draft']:
-      return release
 
-  if tag_exists:
-    tag = 'do-not-publish-me'
-
-  return create_release_draft(github, tag)
-
-
-def create_release_draft(github, tag):
-  name = '{0} {1}'.format(project_name(), tag)
+def create_release_draft(repo, tag):
+  name = '{0} {1}'.format(release_name(), tag)
+  # TODO: Parse release notes from CHANGELOG.md
   body = '(placeholder)'
   data = dict(tag_name=tag, name=name, body=body, draft=True)
-  r = github.repos(BRAVE_REPO).releases.post(data=data)
-  return r
+
+  release = retry_func(
+    lambda run: repo.releases.post(data=data),
+    catch=requests.exceptions.ConnectionError, retries=3
+  )
+  return release
 
 
-def release_brave_checksums(github, release):
-  checksums = run_python_script('merge-brave-checksums.py',
-                                '-v', get_brave_version())
-  upload_io_to_github(github, release, 'SHASUMS256.txt',
-                      StringIO(checksums.decode('utf-8')), 'text/plain')
-
-
-def upload_brave(github, release, file_path, filename=None):
+def upload_brave(github, release, file_path, filename=None, force=False):
   # Delete the original file before uploading.
   if filename == None:
     filename = os.path.basename(file_path)
 
+  print('[INFO] Uploading: ' + filename)
   try:
     for asset in release['assets']:
       if asset['name'] == filename:
@@ -190,7 +176,14 @@ def upload_brave(github, release, file_path, filename=None):
 
   # Upload the file.
   with open(file_path, 'rb') as f:
-    upload_io_to_github(github, release, filename, f, 'application/zip')
+    if force:
+      delete_file(github, release, filename)
+
+    retry_func(
+      lambda ran: upload_io_to_github(github, release, filename, f, 'application/zip'),
+      catch_func=lambda ran: delete_file(github, release, filename),
+      catch=requests.exceptions.ConnectionError, retries=3
+    )
 
   # Upload the checksum file.
   upload_sha256_checksum(release['tag_name'], file_path)
@@ -204,11 +197,13 @@ def upload_brave(github, release, file_path, filename=None):
     upload_brave(github, release, arm_file_path)
 
 
-def upload_io_to_github(github, release, name, io, content_type):
-  params = {'name': name}
-  headers = {'Content-Type': content_type}
-  github.repos(BRAVE_REPO).releases(release['id']).assets.post(
-      params=params, headers=headers, data=io, verify=False)
+def upload_io_to_github(github, release, name, io, content_type, retries=3):
+  io.seek(0)
+  github.releases(release['id']).assets.post(
+  params={'name': name},
+  headers={'Content-Type': content_type},
+  data=io, verify=False
+  )
 
 
 def upload_sha256_checksum(version, file_path):
@@ -225,17 +220,25 @@ def upload_sha256_checksum(version, file_path):
         'releases/tmp/{0}'.format(version), [checksum_path])
 
 
-def publish_release(github, release_id):
-  data = dict(draft=False)
-  github.repos(BRAVE_REPO).releases(release_id).patch(data=data)
-
-
 def auth_token():
   token = get_env_var('GITHUB_TOKEN')
-  message = ('Error: Please set the $GITHUB_TOKEN '
+  message = ('Error: Please set the $BRAVE_GITHUB_TOKEN '
              'environment variable, which is your personal token')
   assert token, message
   return token
+
+def delete_file(github, release, name, retries=3):
+  release = retry_func(
+    lambda run: github.releases(release['id']).get(),
+    catch=requests.exceptions.ConnectionError, retries=3
+  )
+  for asset in release['assets']:
+    if asset['name'] == name:
+      print("[INFO] Deleting file name '{}' with asset id {}".format(name, asset['id']))
+      retry_func(
+        lambda run: github.releases.assets(asset['id']).delete(),
+        catch=requests.exceptions.ConnectionError, retries=3
+      )
 
 
 if __name__ == '__main__':
