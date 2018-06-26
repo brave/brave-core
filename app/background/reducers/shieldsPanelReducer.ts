@@ -18,7 +18,7 @@ import {
   requestShieldPanelData,
   setAllowScriptOriginsOnce
 } from '../api/shieldsAPI'
-import { setBadgeText } from '../api/badgeAPI'
+import { setBadgeText, setIcon } from '../api/browserActionAPI'
 import { reloadTab } from '../api/tabsAPI'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
 import { State, Tab } from '../../types/state/shieldsPannelState'
@@ -33,12 +33,23 @@ const updateBadgeText = (state: State) => {
   }
 }
 
+const updateShieldsIcon = (state: State) => {
+  const tabId: number = shieldsPanelState.getActiveTabId(state)
+  const tab: Tab = state.tabs[tabId]
+  if (tab) {
+    const url: string = tab.url
+    const isShieldsActive: boolean = state.tabs[tabId].braveShields === 'allow'
+    setIcon(url, tabId, isShieldsActive)
+  }
+}
+
 const focusedWindowChanged = (state: State, windowId: number): State => {
   if (windowId !== -1) {
     state = shieldsPanelState.updateFocusedWindow(state, windowId)
     if (shieldsPanelState.getActiveTabId(state)) {
       requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
       updateBadgeText(state)
+      updateShieldsIcon(state)
     } else {
       console.warn('no tab id so cannot request shield data from window focus change!')
     }
@@ -84,6 +95,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         const tabId: number = action.tabId
         state = updateActiveTab(state, windowId, tabId)
         updateBadgeText(state)
+        updateShieldsIcon(state)
         break
       }
     case tabTypes.TAB_DATA_CHANGED:
@@ -92,6 +104,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         if (tab.active && tab.id) {
           state = updateActiveTab(state, tab.windowId, tab.id)
           updateBadgeText(state)
+          updateShieldsIcon(state)
         }
         break
       }
@@ -105,6 +118,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         if (tab.active && tab.id) {
           state = updateActiveTab(state, tab.windowId, tab.id)
           updateBadgeText(state)
+          updateShieldsIcon(state)
         }
         break
       }

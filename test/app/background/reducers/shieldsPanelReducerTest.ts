@@ -13,7 +13,7 @@ import * as webNavigationTypes from '../../../../app/constants/webNavigationType
 import shieldsPanelReducer from '../../../../app/background/reducers/shieldsPanelReducer'
 import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
 import * as tabsAPI from '../../../../app/background/api/tabsAPI'
-import * as badgeAPI from '../../../../app/background/api/badgeAPI'
+import * as browserActionAPI from '../../../../app/background/api/browserActionAPI'
 import * as shieldsPanelState from '../../../../app/state/shieldsPanelState'
 import { initialState } from '../../../testData'
 import * as deepFreeze from 'deep-freeze-node'
@@ -112,7 +112,9 @@ describe('braveShieldsPanelReducer', () => {
         windows: {
           1: this.tabId
         },
-        tabs: {}
+        tabs: {
+          [this.tabId]: { url: 'https://brave.com' }
+        }
       })
       shieldsPanelReducer(state, {
         type: windowTypes.WINDOW_FOCUS_CHANGED,
@@ -419,7 +421,7 @@ describe('braveShieldsPanelReducer', () => {
 
   describe('RESOURCE_BLOCKED', function () {
     before(function () {
-      this.spy = sinon.spy(badgeAPI, 'setBadgeText')
+      this.spy = sinon.spy(browserActionAPI, 'setBadgeText')
     })
     after(function () {
       this.spy.restore()
