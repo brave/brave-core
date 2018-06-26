@@ -52,6 +52,29 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
   // Note that there's already an exception for TLD+1, so don't add those here.
   // Check with the security team before adding exceptions.
 
+  // https://github.com/brave/browser-laptop/issues/5861
+  // The below patterns are done to only allow the specific request
+  // pattern, of reddit -> redditmedia -> embedly -> imgur.
+  static auto redditPtrn = URLPattern(URLPattern::SCHEME_HTTPS, "https://www.reddit.com/*");
+  static std::vector<URLPattern> reddit_embed_patterns({
+    redditPtrn,
+    URLPattern(URLPattern::SCHEME_HTTPS, "https://www.redditmedia.com/*"),
+    URLPattern(URLPattern::SCHEME_HTTPS, "https://cdn.embedly.com/*"),
+    URLPattern(URLPattern::SCHEME_HTTPS, "https://imgur.com/*")
+  });
+
+  if (redditPtrn.MatchesURL(firstPartyOrigin)) {
+    bool is_reddit_embed = std::any_of(
+      reddit_embed_patterns.begin(),
+      reddit_embed_patterns.end(),
+      [&subresourceUrl](URLPattern pattern){
+        return pattern.MatchesURL(subresourceUrl);
+      });
+    if (is_reddit_embed) {
+      return true;
+    }
+  }
+
   // It's preferred to use specific_patterns below when possible
   static std::vector<URLPattern> whitelist_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://use.typekit.net/*"),
