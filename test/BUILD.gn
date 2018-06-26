@@ -27,6 +27,7 @@ static_library("brave_test_support_unit") {
 
 test("brave_unit_tests") {
   sources = [
+    "//brave/browser/brave_stats_updater_unittest.cc",
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",

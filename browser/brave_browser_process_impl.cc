@@ -4,7 +4,11 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 
+#include "base/bind.h"
+#include "base/task_scheduler/post_task.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
+#include "brave/browser/brave_stats_updater.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
@@ -25,6 +29,15 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(
     : BrowserProcessImpl(local_state_task_runner) {
   g_browser_process = this;
   g_brave_browser_process = this;
+  brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](brave::BraveStatsUpdater* stats_updater) {
+            stats_updater->Start();
+          },
+          base::Unretained(brave_stats_updater_.get())),
+      base::TimeDelta::FromMinutes(2));
 }
 
 component_updater::ComponentUpdateService*
