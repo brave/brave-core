@@ -33,7 +33,7 @@ template("brave_repack_percent") {
     ]
 
     deps = [
-      "//brave/app/theme:brave_theme_resources_grit",
+      "//brave/app/theme:brave_theme_resources",
     ]
 
     if (defined(invoker.deps)) {
