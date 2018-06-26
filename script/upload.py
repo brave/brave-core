@@ -22,9 +22,6 @@ from lib.helpers import *
 
 from lib.github import GitHub
 
-
-BRAVE_REPO = "brave/brave-browser-builds"
-
 DIST_NAME = get_zip_name(project_name(), get_brave_version())
 SYMBOLS_NAME = get_zip_name(project_name(), get_brave_version(), 'symbols')
 DSYM_NAME = get_zip_name(project_name(), get_brave_version(), 'dsym')
@@ -35,6 +32,7 @@ def main():
   args = parse_args()
   print('[INFO] Running upload...')
 
+  # Repo is defined in lib/helpers.py for now
   repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
   tag = get_brave_version()
