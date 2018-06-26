@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
+index 5191116d07b7d2b625a503e81f0850bfa2a896d6..c0575a8aa56faea5ea3638938eac0a77227e8c96 100644
+--- a/chrome/browser/resources/settings/route.js
++++ b/chrome/browser/resources/settings/route.js
+@@ -375,7 +375,9 @@ cr.define('settings', function() {
+       }
+ 
+       r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');
++      // <if expr="_google_chrome">
+       r.CLOUD_PRINTERS = r.PRINTING.createChild('/cloudPrinters');
++      // </if>
+       // <if expr="chromeos">
+       r.CUPS_PRINTERS = r.PRINTING.createChild('/cupsPrinters');
+ 

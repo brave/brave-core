@@ -77,10 +77,14 @@
       <message name="IDS_CHROME_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the Chrome importer lock dialog">
 	To finish importing, close all Chrome windows.
       </message>
+      <message name="IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX" desc="Checkbox for importing cookies">
+        Cookies
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
       <include name="IDR_BRAVE_TAG_MANAGER_POLYFILL" file="resources/js/tag_manager_polyfill.js" type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS" file="resources/js/brave_page_visibility.js" type="BINDATA" />
     </includes>
   </release>
 </grit>

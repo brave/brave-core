@@ -175,6 +175,8 @@ def get_grd_message_string_tags(grd_file_path):
       children = [child for child in children if child.tag == 'message']
       for child in children:
         output_elements.append(child)
+    elif element.tag == 'part': # will be handled below
+      continue
     else:
       assert False, ('Unexpected tag name %s' % element.tag)
 
@@ -182,6 +184,8 @@ def get_grd_message_string_tags(grd_file_path):
   for element in elements:
     grd_base_path = os.path.dirname(grd_file_path)
     grd_part_filename = element.get('file')
+    if grd_part_filename == 'chromeos_strings.grdp':
+      continue
     grd_part_path = os.path.join(grd_base_path, grd_part_filename)
     part_output_elements = get_grd_message_string_tags(grd_part_path)
     output_elements.extend(part_output_elements)
