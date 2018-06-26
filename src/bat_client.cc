@@ -13,16 +13,16 @@
 #include "url_canon_stdstring.h"
 #endif
 
-#include "bat_client.h"
+
 #include "static_values.h"
 #include "bat_helper.h"
+#include "bat_client.h"
 
 #include "anon.h"
 #include "wally_bip39.h"
 
-namespace braveledger_bat_client {  
+namespace braveledger_bat_client {
 
-BatClient::~BatClient() {}
 BatClient::BatClient( bool useProxy):
       useProxy_(useProxy),
       publisherTimestamp_(0) {
@@ -555,34 +555,34 @@ void BatClient::prepareBallots() {
   //LOG(ERROR) << "!!! 1 batchProof.size() == " << batchProof.size();
 }
 
-void BatClient::prepareBatch(const BALLOT_ST& ballot, const TRANSACTION_ST& transaction) {
-  FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+void BatClient::prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction) {
+  braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST extraData;
   extraData.string1 = ballot.viewingId_;
   extraData.string2 = ballot.surveyorId_;
+
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::prepareBatchCallback);
   batClientWebRequest_.run(buildURL((std::string)SURVEYOR_BATCH_VOTING + transaction.anonizeViewingId_, PREFIX_V2),
-    base::Bind(&BatClient::prepareBatchCallback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", extraData,
-      URL_METHOD::GET);
+    runnable, std::vector<std::string>(), "", "", extraData, braveledger_bat_helper::URL_METHOD::GET);
 }
 
-void BatClient::prepareBatchCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+void BatClient::prepareBatchCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   //LOG(ERROR) << "!!!!prepareBatchCallback response == " << response;
   std::vector<std::string> surveyors;
-  BatHelper::getJSONBatchSurveyors(response, surveyors);
-  std::vector<BATCH_PROOF> batchProof;
+  braveledger_bat_helper::getJSONBatchSurveyors(response, surveyors);
+  std::vector<braveledger_bat_helper::BATCH_PROOF> batchProof;
   for (size_t j = 0; j < surveyors.size(); j++) {
-    std::string error = BatHelper::getJSONValue("error", surveyors[j]);
+    std::string error = braveledger_bat_helper::getJSONValue("error", surveyors[j]);
     if (!error.empty()) {
       continue;
     }
     std::lock_guard<std::mutex> guard(ballots_access_mutex_);
     for (int i = state_.ballots_.size() - 1; i >= 0; i--) {
-      if (state_.ballots_[i].surveyorId_ == BatHelper::getJSONValue("surveyorId", surveyors[j])) {
+      if (state_.ballots_[i].surveyorId_ == braveledger_bat_helper::getJSONValue("surveyorId", surveyors[j])) {
         std::lock_guard<std::mutex> guard(transactions_access_mutex_);
         for (size_t k = 0; k < state_.transactions_.size(); k++) {
           if (state_.transactions_[k].viewingId_ == state_.ballots_[i].viewingId_) {
             state_.ballots_[i].prepareBallot_ = surveyors[j];
-            BATCH_PROOF batchProofEl;
+            braveledger_bat_helper::BATCH_PROOF batchProofEl;
             batchProofEl.transaction_ = state_.transactions_[k];
             batchProofEl.ballot_ = state_.ballots_[i];
             batchProof.push_back(batchProofEl);
@@ -592,19 +592,18 @@ void BatClient::prepareBatchCallback(bool result, const std::string& response, c
     }
   }
 
-  BatHelper::saveState(state_);
+  braveledger_bat_helper::saveState(state_);
   proofBatch(batchProof);
   LOG(ERROR) << "!!! 2 batchProof.size() == " << batchProof.size();
 }
 
-void BatClient::proofBatch(const std::vector<BATCH_PROOF>& batchProof) {
+void BatClient::proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof) {
   for (size_t i = 0; i < batchProof.size(); i++) {
-    SURVEYOR_ST surveyor;
-    BatHelper::getJSONSurveyor(batchProof[i].ballot_.prepareBallot_, surveyor);
+    braveledger_bat_helper::SURVEYOR_ST surveyor;    
+    braveledger_bat_helper::loadFromJson(surveyor, batchProof[i].ballot_.prepareBallot_);    
+    
     std::string surveyorIdEncoded;
-    url::StdStringCanonOutput surveyorIdCanon(&surveyorIdEncoded);
-    url::EncodeURIComponent(surveyor.surveyorId_.c_str(), surveyor.surveyorId_.length(), &surveyorIdCanon);
-    surveyorIdCanon.Complete();
+    braveledger_bat_helper::encodeURIComponent(surveyor.surveyorId_, surveyorIdEncoded);    
 
     std::string signatureToSend;
     LOG(ERROR) << "!!!full signature == " << surveyor.signature_;
@@ -620,7 +619,7 @@ void BatClient::proofBatch(const std::vector<BATCH_PROOF>& batchProof) {
     //LOG(ERROR) << "!!!result signature == " << signatureToSend;
     std::string keysMsg[1] = {"publisher"};
     std::string valuesMsg[1] = {batchProof[i].ballot_.publisher_};
-    std::string msg = BatHelper::stringify(keysMsg, valuesMsg, 1);
+    std::string msg = braveledger_bat_helper::stringify(keysMsg, valuesMsg, 1);
 
     const char* proof = submitMessage(msg.c_str(), batchProof[i].transaction_.masterUserToken_.c_str(),
       batchProof[i].transaction_.registrarVK_.c_str(), signatureToSend.c_str(), surveyor.surveyorId_.c_str(), surveyor.surveyVK_.c_str());
@@ -683,8 +682,9 @@ void BatClient::prepareBallotCallback(bool result, const std::string& response, 
 }
 
 void BatClient::commitBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction) {
-  braveledger_bat_helper::SURVEYOR_ST surveyor;
-  braveledger_bat_helper::getJSONSurveyor(ballot.prepareBallot_, surveyor);
+  braveledger_bat_helper::SURVEYOR_ST surveyor;  
+  braveledger_bat_helper::loadFromJson(surveyor, ballot.prepareBallot_);
+
   std::string surveyorIdEncoded;
   braveledger_bat_helper::encodeURIComponent(surveyor.surveyorId_, surveyorIdEncoded);
 
@@ -763,33 +763,32 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
   }
   state_.walletInfo_.keyInfoSeed_ = newSeed;
 
-  std::vector<uint8_t> secretKey = BatHelper::getHKDF(state_.walletInfo_.keyInfoSeed_);
+  std::vector<uint8_t> secretKey = braveledger_bat_helper::getHKDF(state_.walletInfo_.keyInfoSeed_);
   std::vector<uint8_t> publicKey;
   std::vector<uint8_t> newSecretKey;
-  BatHelper::getPublicKeyFromSeed(secretKey, publicKey, newSecretKey);
-  std::string publicKeyHex = BatHelper::uint8ToHex(publicKey);
+  braveledger_bat_helper::getPublicKeyFromSeed(secretKey, publicKey, newSecretKey);
+  std::string publicKeyHex = braveledger_bat_helper::uint8ToHex(publicKey);
 
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::recoverWalletPublicKeyCallback);
   batClientWebRequest_.run(buildURL((std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex, ""),
-    base::Bind(&BatClient::recoverWalletPublicKeyCallback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
-      URL_METHOD::GET);
+    runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
+    braveledger_bat_helper::URL_METHOD::GET);
 }
 
 void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& response,
-    const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+    const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   //LOG(ERROR) << "!!!recoverWalletPublicKeyCallback == " << response;
-  std::string recoveryId = BatHelper::getJSONValue("paymentId", response);
+  std::string recoveryId = braveledger_bat_helper::getJSONValue("paymentId", response);
 
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::recoverWalletCallback);
   batClientWebRequest_.run(buildURL((std::string)RECOVER_WALLET + recoveryId, ""),
-    base::Bind(&BatClient::recoverWalletCallback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
-      URL_METHOD::GET);
+    runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_helper::URL_METHOD::GET);
 }
 
-void BatClient::recoverWalletCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+void BatClient::recoverWalletCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   //LOG(ERROR) << "!!!recoverWalletCallback == " << response;
-  BatHelper::getJSONWalletInfo(response, state_.walletInfo_, state_.fee_currency_, state_.fee_amount_, state_.days_);
-  BatHelper::saveState(state_);
+  braveledger_bat_helper::getJSONWalletInfo(response, state_.walletInfo_, state_.fee_currency_, state_.fee_amount_, state_.days_);
+  braveledger_bat_helper::saveState(state_);
 }
 
 void BatClient::getPromotion(const std::string& lang, const std::string& forPaymentId) {
@@ -811,39 +810,38 @@ void BatClient::getPromotion(const std::string& lang, const std::string& forPaym
     }
   }
 
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::getPromotionCallback);
   batClientWebRequest_.run(buildURL((std::string)GET_SET_PROMOTION + arguments, ""),
-    base::Bind(&BatClient::getPromotionCallback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
-      URL_METHOD::GET);
+    runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_helper::URL_METHOD::GET);
 }
 
-void BatClient::getPromotionCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+void BatClient::getPromotionCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   LOG(ERROR) << "!!!getPromotionCallback == " << response;
 }
 
 void BatClient::setPromotion(const std::string& promotionId, const std::string& captchaResponse) {
   std::string keys[2] = {"promotionId", "captchaResponse"};
   std::string values[2] = {promotionId, captchaResponse};
-  std::string payload = BatHelper::stringify(keys, values, 2);
+  std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
 
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::setPromotionCallback);
   batClientWebRequest_.run(buildURL((std::string)GET_SET_PROMOTION + "/" + state_.walletInfo_.paymentId_, ""),
-    base::Bind(&BatClient::setPromotionCallback,
-      base::Unretained(this)), std::vector<std::string>(), payload, "",
-      FETCH_CALLBACK_EXTRA_DATA_ST(), URL_METHOD::PUT);
+    runnable, std::vector<std::string>(), payload, "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_helper::URL_METHOD::PUT);
 }
 
-void BatClient::setPromotionCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+void BatClient::setPromotionCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   LOG(ERROR) << "!!!setPromotionCallback == " << response;
 }
 
 void BatClient::getPromotionCaptcha() {
+
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::getPromotionCaptchaCallback);
   batClientWebRequest_.run(buildURL((std::string)GET_PROMOTION_CAPTCHA + state_.walletInfo_.paymentId_, ""),
-    base::Bind(&BatClient::getPromotionCaptchaCallback,
-      base::Unretained(this)), std::vector<std::string>(), "", "", FETCH_CALLBACK_EXTRA_DATA_ST(),
-      URL_METHOD::GET);
+    runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
+      braveledger_bat_helper::URL_METHOD::GET);
 }
 
-void BatClient::getPromotionCaptchaCallback(bool result, const std::string& response, const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+void BatClient::getPromotionCaptchaCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   LOG(ERROR) << "!!!getPromotionCaptchaCallback == " << response;
 }
 
