@@ -49,6 +49,15 @@ class ClearPrivateDataTableViewController: UITableViewController {
     }
   }
   
+  init() {
+    super.init(style: .grouped)
+  }
+  
+  @available(*, unavailable)
+  required init?(coder aDecoder: NSCoder) {
+    fatalError()
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -58,9 +67,6 @@ class ClearPrivateDataTableViewController: UITableViewController {
     
     tableView.separatorColor = UIConstants.TableViewSeparatorColor
     tableView.backgroundColor = UIConstants.TableViewHeaderBackgroundColor
-    let footer = SettingsTableSectionHeaderFooterView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: UIConstants.TableViewHeaderFooterHeight))
-    footer.showBottomBorder = false
-    tableView.tableFooterView = footer
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -198,14 +204,6 @@ class ClearPrivateDataTableViewController: UITableViewController {
     actionSheet.addAction(clearAction)
     actionSheet.addAction(.init(title: Strings.Cancel, style: .cancel, handler: nil))
     present(actionSheet, animated: true, completion: nil)
-  }
-  
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return tableView.dequeueReusableHeaderFooterView(withIdentifier: SectionHeaderFooterIdentifier) as! SettingsTableSectionHeaderFooterView
-  }
-  
-  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return UIConstants.TableViewHeaderFooterHeight
   }
   
   @objc func switchValueChanged(_ toggle: UISwitch) {

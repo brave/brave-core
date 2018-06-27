@@ -1071,20 +1071,6 @@ class BrowserViewController: UIViewController {
             updateViewConstraints()
         }
     }
-
-    @objc fileprivate func openSettings() {
-        assert(Thread.isMainThread, "Opening settings requires being invoked on the main thread")
-
-        let settingsTableViewController = AppSettingsTableViewController()
-        settingsTableViewController.profile = profile
-        settingsTableViewController.tabManager = tabManager
-        settingsTableViewController.settingsDelegate = self
-
-        let controller = SettingsNavigationController(rootViewController: settingsTableViewController)
-        controller.popoverDelegate = self
-        controller.modalPresentationStyle = .formSheet
-        self.present(controller, animated: true, completion: nil)
-    }
     
     fileprivate func postLocationChangeNotificationForTab(_ tab: Tab, navigation: WKNavigation?) {
         let notificationCenter = NotificationCenter.default
@@ -2670,7 +2656,9 @@ extension BrowserViewController: HomeMenuControllerDelegate {
     func menuDidOpenSettings(_ menu: HomeMenuController) {
         menu.dismiss(animated: true) { [weak self] in
             guard let `self` = self else { return }
-            let container = UINavigationController(rootViewController: SettingsViewController(profile: self.profile, tabManager: self.tabManager))
+            let settingsController = SettingsViewController(profile: self.profile, tabManager: self.tabManager)
+            settingsController.settingsDelegate = self
+            let container = SettingsNavigationController(rootViewController: settingsController)
             container.modalPresentationStyle = .formSheet
             self.present(container, animated: true)
         }
