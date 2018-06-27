@@ -60,6 +60,12 @@ source_set("browser_process") {
       "//google_update",
     ]
   }
+
+  if (is_mac || is_linux) {
+    deps += [
+      "//brave/vendor/bat-native-ledger",
+    ]
+  }
 }
 
 source_set("browser") {
