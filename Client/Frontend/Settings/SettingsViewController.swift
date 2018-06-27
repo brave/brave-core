@@ -7,12 +7,23 @@ import Shared
 import BraveShared
 import Static
 
-extension TabBarVisibility {
-  fileprivate var settingsText: String {
+extension TabBarVisibility: RepresentableOptionType {
+  public var displayString: String {
     switch self {
     case .always: return Strings.Always_show
     case .landscapeOnly: return Strings.Show_in_landscape_only
     case .never: return Strings.Never_show
+    }
+  }
+}
+
+extension HTTPCookie.AcceptPolicy: RepresentableOptionType {
+  
+  public var displayString: String {
+    switch self {
+    case .always: return Strings.Block_all_cookies
+    case .onlyFromMainDocumentDomain: return Strings.Block_3rd_party_cookies
+    case .never: return Strings.Dont_block_cookies
     }
   }
 }
@@ -28,17 +39,33 @@ private func BasicBoolRow(title: String, option: Preferences.Option<Bool>) -> Ro
   )
 }
 
+extension DataSource {
+  /// Get the index path of a Row to modify it
+  ///
+  /// Since they are structs we cannot obtain references to them to alter them, we must directly access them
+  /// from `sections[x].rows[y]`
+  func indexPath(rowUUID: String, sectionUUID: String) -> IndexPath? {
+    guard let section = sections.index(where: { $0.uuid == sectionUUID }),
+      let row = sections[section].rows.index(where: { $0.uuid == rowUUID }) else {
+        return nil
+    }
+    return IndexPath(row: row, section: section)
+  }
+}
+
 class SettingsViewController: TableViewController {
   
   private var settings: [Section] = []
   
-  init() {
+  private let profile: Profile
+  private let tabManager: TabManager
+  
+  init(profile: Profile, tabManager: TabManager) {
+    self.profile = profile
+    self.tabManager = tabManager
+    
     super.init(style: .grouped)
     
-    (UISwitch.appearance(whenContainedInInstancesOf: [SettingsViewController.self]) as UISwitch).do {
-      $0.tintColor = BraveUX.SwitchTintColor
-      $0.onTintColor = BraveUX.BraveOrange
-    }
     UITableViewCell.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor = BraveUX.BraveOrange
   }
   
@@ -74,25 +101,58 @@ class SettingsViewController: TableViewController {
         Row(text: Strings.Show_Tabs_Bar, accessory: .switchToggle(value: Preferences.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }))
       )
     } else {
+      let uuid = "general.tab-bar-visiblity"
       general.rows.append(
-        Row(text: Strings.Show_Tabs_Bar, detailText: TabBarVisibility(rawValue: Preferences.tabBarVisibility.value)?.settingsText, selection: {
-          // Show options for tab bar visiblity
-        }, accessory: .disclosureIndicator)
+        Row(text: Strings.Show_Tabs_Bar, detailText: TabBarVisibility(rawValue: Preferences.tabBarVisibility.value)?.displayString, selection: { [unowned self] in
+          // Show options for tab bar visibility
+          let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
+            options: TabBarVisibility.allCases,
+            selectedOption: TabBarVisibility(rawValue: Preferences.tabBarVisibility.value),
+            optionChanged: { [unowned self] _, option in
+              Preferences.tabBarVisibility.value = option.rawValue
+
+              if let indexPath = self.dataSource.indexPath(rowUUID: uuid, sectionUUID: general.uuid) {
+                self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = option.displayString
+              }
+            }
+          )
+          optionsViewController.headerText = Strings.Show_Tabs_Bar
+          self.navigationController?.pushViewController(optionsViewController, animated: true)
+        }, accessory: .disclosureIndicator, uuid: uuid)
       )
     }
     
-    let privacy = Section(
-      header: .title(Strings.Privacy),
-      rows: [
-        Row(text: Strings.ClearPrivateData, selection: {
-          // Show Clear private data screen
-        }, accessory: .disclosureIndicator),
-        Row(text: Strings.Cookie_Control, detailText: nil, selection: {
-          // Show Options
-        }, accessory: .disclosureIndicator),
-        BasicBoolRow(title: Strings.Private_Browsing_Only, option: Preferences.Privacy.privateBrowsingOnly)
-      ]
+    let cookieControlUuid = "privacy.cookie-control"
+    var privacy = Section(
+      header: .title(Strings.Privacy)
     )
+    privacy.rows = [
+      Row(text: Strings.ClearPrivateData, selection: { [unowned self] in
+        // Show Clear private data screen
+        let clearPrivateData = ClearPrivateDataTableViewController().then {
+          $0.profile = self.profile
+          $0.tabManager = self.tabManager
+        }
+        self.navigationController?.pushViewController(clearPrivateData, animated: true)
+      }, accessory: .disclosureIndicator),
+      Row(text: Strings.Cookie_Control, detailText: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value)?.displayString, selection: {
+        // Show Options for cookie control
+        let optionsViewController = OptionSelectionViewController<HTTPCookie.AcceptPolicy>(
+          options: [.onlyFromMainDocumentDomain, .always, .never],
+          selectedOption: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value),
+          optionChanged: { [unowned self] _, option in
+            Preferences.Privacy.cookieAcceptPolicy.value = option.rawValue
+            
+            if let indexPath = self.dataSource.indexPath(rowUUID: cookieControlUuid, sectionUUID: privacy.uuid) {
+              self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = option.displayString
+            }
+          }
+        )
+        optionsViewController.headerText = Strings.Cookie_Control
+        self.navigationController?.pushViewController(optionsViewController, animated: true)
+      }, accessory: .disclosureIndicator, uuid: cookieControlUuid),
+      BasicBoolRow(title: Strings.Private_Browsing_Only, option: Preferences.Privacy.privateBrowsingOnly)
+    ]
     
     let security = Section(
       header: .title(Strings.Security),
@@ -122,14 +182,20 @@ class SettingsViewController: TableViewController {
       header: .title(Strings.Support),
       rows: [
         BasicBoolRow(title: Strings.Opt_in_to_telemetry, option: Preferences.Support.sendsCrashReportsAndMetrics),
-        Row(text: Strings.Report_a_bug, selection: {
+        Row(text: Strings.Report_a_bug, selection: { [unowned self] in
           // Report a bug
+          self.tabManager.addTabsForURLs([BraveUX.BraveCommunityURL], zombie: false)
+          self.dismiss(animated: true)
         }, cellClass: ButtonCell.self),
-        Row(text: Strings.Privacy_Policy, selection: {
+        Row(text: Strings.Privacy_Policy, selection: { [unowned self] in
           // Show privacy policy
+          let privacy = SettingsContentViewController().then { $0.url = BraveUX.BravePrivacyURL }
+          self.navigationController?.pushViewController(privacy, animated: true)
         }, accessory: .disclosureIndicator),
-        Row(text: Strings.Terms_of_Use, selection: {
+        Row(text: Strings.Terms_of_Use, selection: { [unowned self] in
           // Show terms of use
+          let toc = SettingsContentViewController().then { $0.url = BraveUX.BraveTermsOfUseURL }
+          self.navigationController?.pushViewController(toc, animated: true)
         }, accessory: .disclosureIndicator)
       ]
     )
