@@ -23,98 +23,98 @@
 
 namespace braveledger_bat_publishers {
 
-class BatPublishers {
-public:
+  class BatPublishers {
+  public:
 
-#if defined CHROMIUM_BUILD
-  typedef base::Callback<void(const std::string&, const uint64_t&)> SaveVisitCallback;
-#else
-  typedef std::function<void(const std::string&, const uint64_t&)> SaveVisitCallback;
-#endif  
+  #if defined CHROMIUM_BUILD
+    typedef base::Callback<void(const std::string&, const uint64_t&)> SaveVisitCallback;
+  #else
+    typedef std::function<void(const std::string&, const uint64_t&)> SaveVisitCallback;
+  #endif  
 
-  BatPublishers();
+    BatPublishers();
 
-  ~BatPublishers();
+    ~BatPublishers();
 
-  void initSynopsis();
+    void initSynopsis();
 
-  void saveVisit(const std::string& publisher, const uint64_t& duration,
-    BatPublishers::SaveVisitCallback callback, bool ignoreMinTime);
+    void saveVisit(const std::string& publisher, const uint64_t& duration,
+      BatPublishers::SaveVisitCallback callback, bool ignoreMinTime);
 
-  void setPublisherTimestampVerified(const std::string& publisher,
-    const uint64_t& verifiedTimestamp, const bool& verified);
+    void setPublisherTimestampVerified(const std::string& publisher,
+      const uint64_t& verifiedTimestamp, const bool& verified);
 
-  void setPublisherFavIcon(const std::string& publisher, const std::string& favicon_url);
+    void setPublisherFavIcon(const std::string& publisher, const std::string& favicon_url);
 
-  void setPublisherInclude(const std::string& publisher, const bool& include);
+    void setPublisherInclude(const std::string& publisher, const bool& include);
 
-  void setPublisherDeleted(const std::string& publisher, const bool& deleted);
+    void setPublisherDeleted(const std::string& publisher, const bool& deleted);
 
-  void setPublisherPinPercentage(const std::string& publisher, const bool& pinPercentage);
+    void setPublisherPinPercentage(const std::string& publisher, const bool& pinPercentage);
 
-  void setPublisherMinVisitTime(const uint64_t& duration); // In milliseconds
+    void setPublisherMinVisitTime(const uint64_t& duration); // In milliseconds
 
-  void setPublisherMinVisits(const unsigned int& visits);
+    void setPublisherMinVisits(const unsigned int& visits);
 
-  void setPublisherAllowNonVerified(const bool& allow);
+    void setPublisherAllowNonVerified(const bool& allow);
 
-  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> getPublishersData();
+    std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> getPublishersData();
 
-  std::vector<braveledger_bat_helper::WINNERS_ST> winners(const unsigned int& ballots);
+    std::vector<braveledger_bat_helper::WINNERS_ST> winners(const unsigned int& ballots);
 
-  bool isEligableForContribution(const braveledger_bat_helper::PUBLISHER_DATA_ST& publisherData);
+    bool isEligableForContribution(const braveledger_bat_helper::PUBLISHER_DATA_ST& publisherData);
 
-private:
-  double concaveScore(const uint64_t& duration);
+  private:
+    double concaveScore(const uint64_t& duration);
 
-  void openPublishersDB();
+    void openPublishersDB();
 
-  void loadPublishers();
+    void loadPublishers();
 
-  void saveVisitInternal(const std::string& publisher, const uint64_t& duration,
-    BatPublishers::SaveVisitCallback callback);
+    void saveVisitInternal(const std::string& publisher, const uint64_t& duration,
+      BatPublishers::SaveVisitCallback callback);
 
-  void setPublisherFavIconInternal(const std::string& publisher, const std::string& favicon_url);
+    void setPublisherFavIconInternal(const std::string& publisher, const std::string& favicon_url);
 
-  void setPublisherTimestampVerifiedInternal(const std::string& publisher,
-    const uint64_t& verifiedTimestamp, const bool& verified);
+    void setPublisherTimestampVerifiedInternal(const std::string& publisher,
+      const uint64_t& verifiedTimestamp, const bool& verified);
 
-  void setPublisherDeletedInternal(const std::string& publisher, const bool& deleted);
+    void setPublisherDeletedInternal(const std::string& publisher, const bool& deleted);
 
-  void setPublisherIncludeInternal(const std::string& publisher, const bool& include);
+    void setPublisherIncludeInternal(const std::string& publisher, const bool& include);
 
-  void setPublisherPinPercentageInternal(const std::string& publisher, const bool& pinPercentage);
+    void setPublisherPinPercentageInternal(const std::string& publisher, const bool& pinPercentage);
 
-  void loadStateCallback(bool result, const braveledger_bat_helper::PUBLISHER_STATE_ST& state);
+    void loadStateCallback(bool result, const braveledger_bat_helper::PUBLISHER_STATE_ST& state);
 
-  void calcScoreConsts();
+    void calcScoreConsts();
 
-  void synopsisNormalizer();
+    void synopsisNormalizer();
 
-  void synopsisNormalizerInternal();
+    void synopsisNormalizerInternal();
 
-  bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
+    bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
 
-  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> topN();
+    std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> topN();
 
-  std::map<std::string, braveledger_bat_helper::PUBLISHER_ST> publishers_;
+    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST> publishers_;
 
-  std::mutex publishers_map_mutex_;
+    std::mutex publishers_map_mutex_;
 
-  std::unique_ptr<leveldb::DB> level_db_;
+    std::unique_ptr<leveldb::DB> level_db_;
 
-  braveledger_bat_helper::PUBLISHER_STATE_ST state_;
+    braveledger_bat_helper::PUBLISHER_STATE_ST state_;
 
-  unsigned int a_;
+    unsigned int a_;
 
-  unsigned int a2_;
+    unsigned int a2_;
 
-  unsigned int a4_;
+    unsigned int a4_;
 
-  unsigned int b_;
+    unsigned int b_;
 
-  unsigned int b2_;
-};
+    unsigned int b2_;
+  };
 
 } //namespace braveledger_bat_publishers
 

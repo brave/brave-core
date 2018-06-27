@@ -23,9 +23,8 @@ namespace braveledger_bat_client_webrequest {
       const std::string& contentType, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
       const braveledger_bat_helper::URL_METHOD& method) {
 
+      //TODO: platform-dependent implementation 
     }
-
-
   };
 
 } //namespace braveledger_bat_client_webrequest

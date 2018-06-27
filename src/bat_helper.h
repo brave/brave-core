@@ -46,7 +46,11 @@ namespace braveledger_bat_helper {
   //return: parsing status:  true = succeded, false = failed 
   template <typename T> bool  loadFromJson( T& t, const std::string & json)
   {    
-    return t.loadFromJson(json);
+    bool succeded = t.loadFromJson(json);
+    if (!succeded) {
+      LOG(LEVEL) << "Failed to parse:" << json << std::endl;
+    }
+    return succeded;
   }
 
   struct REQUEST_CREDENTIALS_ST {  
@@ -312,11 +316,15 @@ namespace braveledger_bat_helper {
     std::string surveySK_;
   };
 
+  
+  /*
+    The struct is serialized/deserialized from/into JSON as part of MEDIA_PUBLISHER_INFO
+  */
   struct TWITCH_EVENT_INFO {
     TWITCH_EVENT_INFO();
     TWITCH_EVENT_INFO(const TWITCH_EVENT_INFO&);
     ~TWITCH_EVENT_INFO();
-
+    
     std::string event_;
     std::string time_;
     std::string status_;
@@ -326,6 +334,12 @@ namespace braveledger_bat_helper {
     MEDIA_PUBLISHER_INFO();
     MEDIA_PUBLISHER_INFO(const MEDIA_PUBLISHER_INFO&);
     ~MEDIA_PUBLISHER_INFO();
+
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    //save to json string
+    void saveToJson(JsonWriter & writer) const;
 
     std::string publisherName_;
     std::string publisherURL_;
@@ -421,36 +435,26 @@ namespace braveledger_bat_helper {
   }
 #endif  
 
-  std::string getJSONValue(const std::string& fieldName, const std::string& json);
+  bool getJSONValue(const std::string& fieldName, const std::string& json, std::string & value);
 
-  std::vector<std::string> getJSONList(const std::string& fieldName, const std::string& json);
+  bool getJSONList(const std::string& fieldName, const std::string& json, std::vector<std::string> & value);
 
   bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
     std::string& fee_currency, double& fee_amount, unsigned int& days);
 
-  void getJSONState(const std::string& json, CLIENT_STATE_ST& state);
-
-  void getJSONPublisherState(const std::string& json, PUBLISHER_STATE_ST& state);
-
-  void getJSONPublisher(const std::string& json, PUBLISHER_ST& publisher_st);
-
   bool getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp);
 
-  bool getJSONPublisherVerified(const std::string& json, bool& verified);
-
-  void getJSONWalletProperties(const std::string& json, WALLET_PROPERTIES_ST& walletProperties);
+  bool getJSONPublisherVerified(const std::string& json, bool& verified);  
 
   bool getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx);
 
   bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
 
-  bool getJSONRates(const std::string& json, std::map<std::string, double>& rates);
+  bool getJSONRates(const std::string& json, std::map<std::string, double>& rates);  
 
-  void getJSONMediaPublisherInfo(const std::string& json, MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
+  bool getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts);
 
-  void getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts);
-
-  void getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors);
+  bool getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors);
 
   std::vector<uint8_t> generateSeed();
 
@@ -464,17 +468,9 @@ namespace braveledger_bat_helper {
 
   std::string stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_ST& request_credentials);
 
-  std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload);
+  std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload);  
 
-  std::string stringifyState(const CLIENT_STATE_ST& state);
-
-  std::string stringifyPublisherState(const PUBLISHER_STATE_ST& state);
-
-  std::string stringifyPublisher(const PUBLISHER_ST& publisher_st);
-
-  std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx);
-
-  std::string stringifyMediaPublisherInfo(const MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
+  std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx);  
 
   std::vector<uint8_t> getSHA256(const std::string& in);
 
@@ -545,8 +541,8 @@ namespace braveledger_bat_helper {
   //cross-platform functions
   std::string GenerateGUID();
   void encodeURIComponent(const std::string & instr, std::string & outstr);
-  void getPublishersDb(const std::string & pubId, std::string & pubDbPath);
-
+  void getDbFile(const std::string & id, std::string & pubDbPath);
+  void DecodeURLChars(const std::string& input, std::string& output);
 } //namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_

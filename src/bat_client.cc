@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+
 #include <algorithm>
 #include <sstream>
-
 
 #if defined CHROMIUM_BUILD
 #include "base/bind.h"
@@ -18,7 +18,10 @@
 #include "bat_helper.h"
 #include "bat_client.h"
 
+//anonize
 #include "anon.h"
+
+//wally
 #include "wally_bip39.h"
 
 namespace braveledger_bat_client {
@@ -90,7 +93,7 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
   state_.userId_.erase(std::remove(state_.userId_.begin(), state_.userId_.end(), '-'), state_.userId_.end());
   state_.userId_.erase(12, 1);
 
-  state_.registrarVK_ = braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME, response);
+  braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME, response, state_.registrarVK_);
   DCHECK(!state_.registrarVK_.empty());
   std::string proof = getAnonizeProof(state_.registrarVK_, state_.userId_, state_.preFlight_);
 
@@ -154,7 +157,8 @@ void BatClient::registerPersonaCallback(bool result, const std::string& response
     return;
   }
 
-  std::string verification = braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME, response);
+  std::string verification;
+  braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME, response, verification);
   const char* masterUserToken = registerUserFinal(state_.userId_.c_str(), verification.c_str(),
     state_.preFlight_.c_str(), state_.registrarVK_.c_str());
   if (nullptr != masterUserToken) {
@@ -260,8 +264,7 @@ void BatClient::reconcileCallback(bool result, const std::string& response, cons
     return;
   }
   //currentReconcile_.viewingId_ = extraData.string1;
-  currentReconcile_.surveyorInfo_.surveyorId_ = braveledger_bat_helper::getJSONValue(SURVEYOR_ID, response);
-
+  braveledger_bat_helper::getJSONValue(SURVEYOR_ID, response, currentReconcile_.surveyorInfo_.surveyorId_);
   currentReconcile();
 }
 
@@ -410,7 +413,7 @@ void BatClient::registerViewingCallback(bool result, const std::string& response
     return;
   }
 
-  currentReconcile_.registrarVK_ = braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME, response);
+  braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME, response, currentReconcile_.registrarVK_);
   DCHECK(!currentReconcile_.registrarVK_.empty());
   currentReconcile_.anonizeViewingId_ = currentReconcile_.viewingId_;
   currentReconcile_.anonizeViewingId_.erase(std::remove(currentReconcile_.anonizeViewingId_.begin(), currentReconcile_.anonizeViewingId_.end(), '-'), currentReconcile_.anonizeViewingId_.end());
@@ -426,7 +429,6 @@ void BatClient::registerViewingCallback(bool result, const std::string& response
 
 void BatClient::viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId) {
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::viewingCredentialsCallback);
-
   batClientWebRequest_.run(buildURL((std::string)REGISTER_VIEWING + "/" + anonizeViewingId, PREFIX_V2), runnable,
     std::vector<std::string>(), proofStringified, "application/json; charset=utf-8", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
     braveledger_bat_helper::URL_METHOD::POST);
@@ -439,15 +441,19 @@ void BatClient::viewingCredentialsCallback(bool result, const std::string& respo
     return;
   }
 
-  std::string verification = braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME, response);
+  std::string verification;
+  braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME, response, verification);
   //LOG(ERROR) << "!!!response verification == " << verification;
   const char* masterUserToken = registerUserFinal(currentReconcile_.anonizeViewingId_.c_str(), verification.c_str(),
     currentReconcile_.preFlight_.c_str(), currentReconcile_.registrarVK_.c_str());
+
   if (nullptr != masterUserToken) {
     currentReconcile_.masterUserToken_ = masterUserToken;
     free((void*)masterUserToken);
   }
-  std::vector<std::string> surveyors = braveledger_bat_helper::getJSONList(SURVEYOR_IDS, response);
+
+  std::vector<std::string> surveyors;
+  braveledger_bat_helper::getJSONList(SURVEYOR_IDS, response, surveyors);
   // Save the rest values to transactions
   {
     std::lock_guard<std::mutex> guard(transactions_access_mutex_);
@@ -520,7 +526,7 @@ void BatClient::vote(const std::string& publisher, const std::string& viewingId)
 }
 
 void BatClient::prepareBallots() {
-  //uint64_t currentTime = BatHelper::currentTime() * 1000;
+  //uint64_t currentTime = braveledger_bat_helper::currentTime() * 1000;
   //std::vector<BATCH_PROOF> batchProof;
   {
     std::lock_guard<std::mutex> guard(ballots_access_mutex_);
@@ -571,13 +577,16 @@ void BatClient::prepareBatchCallback(bool result, const std::string& response, c
   braveledger_bat_helper::getJSONBatchSurveyors(response, surveyors);
   std::vector<braveledger_bat_helper::BATCH_PROOF> batchProof;
   for (size_t j = 0; j < surveyors.size(); j++) {
-    std::string error = braveledger_bat_helper::getJSONValue("error", surveyors[j]);
+    std::string error;
+    braveledger_bat_helper::getJSONValue("error", surveyors[j], error);
     if (!error.empty()) {
       continue;
     }
     std::lock_guard<std::mutex> guard(ballots_access_mutex_);
     for (int i = state_.ballots_.size() - 1; i >= 0; i--) {
-      if (state_.ballots_[i].surveyorId_ == braveledger_bat_helper::getJSONValue("surveyorId", surveyors[j])) {
+      std::string survId;
+      braveledger_bat_helper::getJSONValue("surveyorId", surveyors[j], survId);
+      if (state_.ballots_[i].surveyorId_ == survId) {
         std::lock_guard<std::mutex> guard(transactions_access_mutex_);
         for (size_t k = 0; k < state_.transactions_.size(); k++) {
           if (state_.transactions_[k].viewingId_ == state_.ballots_[i].viewingId_) {
@@ -778,7 +787,8 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
 void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& response,
     const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   //LOG(ERROR) << "!!!recoverWalletPublicKeyCallback == " << response;
-  std::string recoveryId = braveledger_bat_helper::getJSONValue("paymentId", response);
+  std::string recoveryId;
+  braveledger_bat_helper::getJSONValue("paymentId", response, recoveryId);
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::recoverWalletCallback);
   batClientWebRequest_.run(buildURL((std::string)RECOVER_WALLET + recoveryId, ""),

@@ -15,11 +15,8 @@
 #include "net/base/elements_upload_data_stream.h"
 #include "net/base/upload_bytes_element_reader.h"
 
-namespace bat_client {
 
-namespace braveledger_bat_client_webrequest {  
-
-
+namespace braveledger_bat_client_webrequest {
 
   BatClientWebRequest::BatClientWebRequest() {
   }
@@ -31,13 +28,10 @@ namespace braveledger_bat_client_webrequest {
   BatClientWebRequest::URL_FETCH_REQUEST::~URL_FETCH_REQUEST(){}
 
   std::unique_ptr<net::UploadDataStream>  BatClientWebRequest::CreateUploadStream(const std::string& stream) {
-    std::vector<char> buffer(
-        stream.begin(),
-        stream.end());
-    return net::ElementsUploadDataStream::CreateWithReader(
-        std::unique_ptr<net::UploadElementReader>(
-            new net::UploadOwnedBytesElementReader(&buffer)),
-        0);
+    std::vector<char> buffer(stream.begin(),stream.end());
+
+    return net::ElementsUploadDataStream::CreateWithReader( 
+      std::unique_ptr<net::UploadElementReader>(new net::UploadOwnedBytesElementReader(&buffer)), 0);
   }
 
   void BatClientWebRequest::runOnThread(const std::string& url,
@@ -113,4 +107,4 @@ namespace braveledger_bat_client_webrequest {
     }
   }
 
-}
+} //namespace braveledger_bat_client_webrequest

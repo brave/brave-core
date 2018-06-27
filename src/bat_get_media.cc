@@ -2,26 +2,35 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <sstream>
+
+#if defined CHROMIUM_BUILD
 #include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/task_scheduler/post_task.h"
-#include "bat_get_media.h"
-#include "static_values.h"
-#include "leveldb/db.h"
 #include "url_util.h"
 #include "url_canon_stdstring.h"
+#endif
 
-namespace bat_get_media {
+#include "bat_get_media.h"
+#include "static_values.h"
+
+//leveldb
+#include "leveldb/db.h"
+
+
+namespace braveledger_bat_get_media {
 
 BatGetMedia::BatGetMedia():
 	level_db_(nullptr) {
-
+#if defined CHROMIUM_BUILD
 	scoped_refptr<base::SequencedTaskRunner> task_runner =
    base::CreateSequencedTaskRunnerWithTraits(
        {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   task_runner->PostTask(FROM_HERE, base::Bind(&BatGetMedia::openMediaPublishersDB, base::Unretained(this)));
+#endif
 }
 
 BatGetMedia::~BatGetMedia() {
@@ -31,25 +40,26 @@ BatGetMedia::~BatGetMedia() {
 }
 
 void BatGetMedia::openMediaPublishersDB() {
-  base::FilePath dbFilePath;
-  base::PathService::Get(base::DIR_HOME, &dbFilePath);
-  dbFilePath = dbFilePath.Append(MEDIA_CACHE_DB_NAME);
+
+  std::string dbPath;
+  braveledger_bat_helper::getDbFile(MEDIA_CACHE_DB_NAME, dbPath);
+  
 
   leveldb::Options options;
   options.create_if_missing = true;
-  leveldb::Status status = leveldb::DB::Open(options, dbFilePath.value().c_str(), &level_db_);
+  leveldb::Status status = leveldb::DB::Open(options, dbPath, &level_db_);
   if (!status.ok() || !level_db_) {
     if (level_db_) {
       delete level_db_;
       level_db_ = nullptr;
     }
 
-    LOG(ERROR) << "openMediaPublishersDB level db open error " << dbFilePath.value().c_str();
+    LOG(ERROR) << "openMediaPublishersDB level db open error " << dbPath;
   }
 }
 
 void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const std::string& mediaKey, const std::string& providerName,
-		const uint64_t& duration, const TWITCH_EVENT_INFO& twitchEventInfo, BatGetMedia::GetMediaPublisherInfoCallback callback) {
+		const uint64_t& duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, BatGetMedia::GetMediaPublisherInfoCallback callback) {
 
 	// Check if the publisher's info is already cached
 	DCHECK(level_db_);
@@ -57,37 +67,38 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
     std::string value;
 		leveldb::Status status = level_db_->Get(leveldb::ReadOptions(), mediaKey, &value);
 		if (!value.empty()) {
-			MEDIA_PUBLISHER_INFO publisherInfo;
-			BatHelper::getJSONMediaPublisherInfo(value, publisherInfo);
+      braveledger_bat_helper::MEDIA_PUBLISHER_INFO publisherInfo;
+      braveledger_bat_helper::loadFromJson(publisherInfo, value);
 			//LOG(ERROR) << "!!!from JSON " << publisherInfo.publisherName_;
 
 			uint64_t realDuration = duration;
 			if (TWITCH_MEDIA_TYPE == providerName) {
 				realDuration = getTwitchDuration(publisherInfo.twitchEventInfo_, twitchEventInfo);
 				//LOG(ERROR) << "!!!realDuration == " << realDuration;
-				TWITCH_EVENT_INFO oldInfo = publisherInfo.twitchEventInfo_;
+        braveledger_bat_helper::TWITCH_EVENT_INFO oldInfo = publisherInfo.twitchEventInfo_;
 				publisherInfo.twitchEventInfo_ = twitchEventInfo;
 				publisherInfo.twitchEventInfo_.status_ = getTwitchStatus(oldInfo, twitchEventInfo);
-				saveMediaPublisherInfo(mediaKey, BatHelper::stringifyMediaPublisherInfo(publisherInfo));
-				if (0 == realDuration) {
+
+        std::string medPubJson;
+        braveledger_bat_helper::saveToJson(publisherInfo, medPubJson);
+				saveMediaPublisherInfo(mediaKey, medPubJson);
+				
+        if (0 == realDuration) {
 					return;
 				}
 			}
-
-			callback.Run(realDuration, publisherInfo);
+			
+      braveledger_bat_helper::run_runnable <void, BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, realDuration, publisherInfo);
 
 			return;
 		}
   }
 
 	std::string mediaURL = getMediaURL(mediaId, providerName);
-
 	std::string mediaURLEncoded;
-  url::StdStringCanonOutput mediaURLCanon(&mediaURLEncoded);
-  url::EncodeURIComponent(mediaURL.c_str(), mediaURL.length(), &mediaURLCanon);
-  mediaURLCanon.Complete();
+  braveledger_bat_helper::encodeURIComponent(mediaURL, mediaURLEncoded);
 
-  FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+  braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST extraData;
   extraData.value1 = duration;
   extraData.string5 = mediaKey;
   extraData.string1 = providerName;
@@ -98,11 +109,13 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
   	mapCallbacks_[mediaKey] = callback;
   }
   if (YOUTUBE_MEDIA_TYPE == providerName) {
+
+    auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatGetMedia::getPublisherFromMediaPropsCallback);
 		batClientWebRequest_.run((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + mediaURLEncoded,
-	      base::Bind(&BatGetMedia::getPublisherFromMediaPropsCallback, base::Unretained(this)), 
-	      std::vector<std::string>(), "", "", extraData, URL_METHOD::GET);
+      runnable, std::vector<std::string>(), "", "", extraData, braveledger_bat_helper::URL_METHOD::GET);
+
 	} else if (TWITCH_MEDIA_TYPE == providerName) {
-		MEDIA_PUBLISHER_INFO publisherInfo;
+    braveledger_bat_helper::MEDIA_PUBLISHER_INFO publisherInfo;
 		publisherInfo.favIconURL_ = "";
 		publisherInfo.channelName_ = getMediaURL(mediaId, providerName);
 		publisherInfo.publisherURL_ = publisherInfo.channelName_ + "/videos";
@@ -114,13 +127,15 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
 		}
 		publisherInfo.publisherName_ = publisherInfo.publisher_;
 		publisherInfo.twitchEventInfo_ = twitchEventInfo;
-		publisherInfo.twitchEventInfo_.status_ = getTwitchStatus(TWITCH_EVENT_INFO(), twitchEventInfo);
+		publisherInfo.twitchEventInfo_.status_ = getTwitchStatus(braveledger_bat_helper::TWITCH_EVENT_INFO(), twitchEventInfo);
 		//LOG(ERROR) << "!!!publisherURL_ == " << publisherInfo.publisherURL_;
 		//LOG(ERROR) << "!!!channelName_ == " << publisherInfo.channelName_;
 
-		saveMediaPublisherInfo(mediaKey, BatHelper::stringifyMediaPublisherInfo(publisherInfo));
+    std::string medPubJson;
+    braveledger_bat_helper::saveToJson(publisherInfo, medPubJson);
+		saveMediaPublisherInfo(mediaKey, medPubJson);
 
-		uint64_t realDuration = getTwitchDuration(TWITCH_EVENT_INFO(), twitchEventInfo);
+		uint64_t realDuration = getTwitchDuration(braveledger_bat_helper::TWITCH_EVENT_INFO(), twitchEventInfo);
 		//LOG(ERROR) << "!!!realDuration == " << realDuration;
 		if (0 == realDuration) {
 			return;
@@ -133,12 +148,13 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
 	  	DCHECK(iter != mapCallbacks_.end());
 	  	BatGetMedia::GetMediaPublisherInfoCallback callback = iter->second;
 	  	mapCallbacks_.erase(iter);
-	  	callback.Run(realDuration, publisherInfo);
+
+      braveledger_bat_helper::run_runnable <void, BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, realDuration, publisherInfo);	  	
 	  }
 	}
 }
 
-std::string BatGetMedia::getTwitchStatus(const TWITCH_EVENT_INFO& oldEventInfo, const TWITCH_EVENT_INFO& newEventInfo) {
+std::string BatGetMedia::getTwitchStatus(const braveledger_bat_helper::TWITCH_EVENT_INFO& oldEventInfo, const braveledger_bat_helper::TWITCH_EVENT_INFO& newEventInfo) {
 	std::string status = "playing";
 
 	if (
@@ -171,7 +187,7 @@ std::string BatGetMedia::getTwitchStatus(const TWITCH_EVENT_INFO& oldEventInfo, 
 	return status;
 }
 
-uint64_t BatGetMedia::getTwitchDuration(const TWITCH_EVENT_INFO& oldEventInfo, const TWITCH_EVENT_INFO& newEventInfo) {
+uint64_t BatGetMedia::getTwitchDuration(const braveledger_bat_helper::TWITCH_EVENT_INFO& oldEventInfo, const braveledger_bat_helper::TWITCH_EVENT_INFO& newEventInfo) {
 	// Remove duplicated events
 	if (oldEventInfo.event_ == newEventInfo.event_ &&
 			oldEventInfo.time_ == newEventInfo.time_) {
@@ -182,6 +198,7 @@ uint64_t BatGetMedia::getTwitchDuration(const TWITCH_EVENT_INFO& oldEventInfo, c
 		return TWITCH_MINIMUM_SECONDS * 1000;
 	}
 
+  //TODO: check if converted properly
 	double time = 0;
 	std::stringstream tempTime(newEventInfo.time_);
   double currentTime = 0;
@@ -223,24 +240,27 @@ uint64_t BatGetMedia::getTwitchDuration(const TWITCH_EVENT_INFO& oldEventInfo, c
 }
 
 void BatGetMedia::getPublisherFromMediaPropsCallback(bool result, const std::string& response, 
-		const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+		const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   //LOG(ERROR) << "!!!!getPublisherFromMediaPropsCallback response == " << response;
   if (YOUTUBE_MEDIA_TYPE == extraData.string1) {
-		std::string publisherURL = BatHelper::getJSONValue("author_url", response);
-		std::string publisherName = BatHelper::getJSONValue("author_name", response);
+    std::string publisherURL;
+    braveledger_bat_helper::getJSONValue("author_url", response, publisherURL);
+    std::string publisherName;
+    braveledger_bat_helper::getJSONValue("author_name", response, publisherName);
 		//LOG(ERROR) << "!!!!publisherURL == " << publisherURL;
 		//LOG(ERROR) << "!!!!publisherName == " << publisherName;
-		FETCH_CALLBACK_EXTRA_DATA_ST newExtraData(extraData);
+    braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST newExtraData(extraData);
 		newExtraData.string3 = publisherURL;
 		newExtraData.string4 = publisherName;
-		batClientWebRequest_.run(publisherURL,
-	      base::Bind(&BatGetMedia::getPublisherInfoCallback, base::Unretained(this)), 
-	      std::vector<std::string>(), "", "", newExtraData, URL_METHOD::GET);
+
+    auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatGetMedia::getPublisherInfoCallback);
+    batClientWebRequest_.run(publisherURL, runnable,
+	      std::vector<std::string>(), "", "", newExtraData, braveledger_bat_helper::URL_METHOD::GET);
 	}
 }
 
 void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& response, 
-		const FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+		const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
 	//LOG(ERROR) << "!!!!getPublisherInfoCallback == " << response;
 	if (YOUTUBE_MEDIA_TYPE == extraData.string1) {
 		size_t pos = response.find("<div id=\"img-preload\"");
@@ -271,18 +291,23 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
 			publisher += extraData.string3.substr(pos + 1);
 			//LOG(ERROR) << "!!!publisher == " << publisher;
 		}
-		MEDIA_PUBLISHER_INFO publisherInfo;
+    braveledger_bat_helper::MEDIA_PUBLISHER_INFO publisherInfo;
 		publisherInfo.publisherName_ = extraData.string4;
 		publisherInfo.publisherURL_ = extraData.string3;
 		publisherInfo.favIconURL_ = favIconURL;
 		publisherInfo.channelName_ = channelName;
 		publisherInfo.publisher_ = publisher;
 
-		scoped_refptr<base::SequencedTaskRunner> task_runner =
+    std::string medPubJson;
+    braveledger_bat_helper::saveToJson(publisherInfo, medPubJson);
+
+#if defined CHROMIUM_BUILD
+    scoped_refptr<base::SequencedTaskRunner> task_runner =
      base::CreateSequencedTaskRunnerWithTraits(
          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  	task_runner->PostTask(FROM_HERE, base::Bind(&BatGetMedia::saveMediaPublisherInfo, base::Unretained(this),
-    	extraData.string5, BatHelper::stringifyMediaPublisherInfo(publisherInfo)));
+  	task_runner->PostTask(FROM_HERE, base::Bind(&BatGetMedia::saveMediaPublisherInfo, base::Unretained(this),extraData.string5, medPubJson));
+#else
+#endif
 
 		{
 	  	std::lock_guard<std::mutex> guard(callbacks_access_mutex_);
@@ -291,7 +316,7 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
 	  	DCHECK(iter != mapCallbacks_.end());
 	  	BatGetMedia::GetMediaPublisherInfoCallback callback = iter->second;
 	  	mapCallbacks_.erase(iter);
-	  	callback.Run(extraData.value1, publisherInfo);
+      braveledger_bat_helper::run_runnable <void, BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, extraData.value1, publisherInfo);
 	  }
 	}
 }
@@ -321,4 +346,5 @@ std::string BatGetMedia::getMediaURL(const std::string& mediaId, const std::stri
 	return res;
 }
 
-}
+} //namespace braveledger_bat_get_media
+

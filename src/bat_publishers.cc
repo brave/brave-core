@@ -5,7 +5,6 @@
 #include <cmath>
 #include <algorithm>
 
-
 #if defined CHROMIUM_BUILD
 #include "base/sequenced_task_runner.h"
 #include "base/task_scheduler/post_task.h"
@@ -17,6 +16,7 @@
 #include "bat_helper.h"
 #include "bat_publishers.h"
 #include "static_values.h"
+
 /* foo.bar.example.com
    QLD = 'bar'
    RLD = 'foo.bar'
@@ -43,7 +43,6 @@ BatPublishers::BatPublishers():
 }
 
 BatPublishers::~BatPublishers() {
-
 }
 
 
@@ -57,7 +56,7 @@ void BatPublishers::calcScoreConsts() {
 
 void BatPublishers::openPublishersDB() {
   std::string pubDbPath;
-  braveledger_bat_helper::getPublishersDb(PUBLISHERS_DB_NAME, pubDbPath);
+  braveledger_bat_helper::getDbFile(PUBLISHERS_DB_NAME, pubDbPath);
   
   level_db_.reset(nullptr); //release the existing db connection
   leveldb::Options options;
@@ -89,7 +88,8 @@ void BatPublishers::loadPublishers() {
   for (it->SeekToFirst(); it->Valid(); it->Next()) {
     std::string publisher = it->key().ToString();
     braveledger_bat_helper::PUBLISHER_ST publisher_st;
-    braveledger_bat_helper::getJSONPublisher(it->value().ToString(), publisher_st);
+    std::string publisher_value = it->value().ToString();
+    braveledger_bat_helper::loadFromJson(publisher_st, publisher_value);
     publishers_[publisher] = publisher_st;
   }
   assert(it->status().ok());  // Check for any errors found during the scan
@@ -133,14 +133,14 @@ void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64
       publisher_st.duration_ = duration;
       publisher_st.score_ = currentScore;
       publisher_st.visits_ = 1;
-      publishers_[publisher] = publisher_st;
-      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
+      publishers_[publisher] = publisher_st;      
+      braveledger_bat_helper::saveToJson(publisher_st, stringifiedPublisher);
     } else {
       iter->second.duration_ += duration;
       iter->second.score_ += currentScore;
       iter->second.visits_ += 1;
-      verifiedTimestamp = iter->second.verifiedTimeStamp_;
-      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
+      verifiedTimestamp = iter->second.verifiedTimeStamp_;      
+      braveledger_bat_helper::saveToJson(iter->second, stringifiedPublisher);
     }
     if (!level_db_) {
       assert(false);
@@ -186,8 +186,8 @@ void BatPublishers::setPublisherTimestampVerifiedInternal(const std::string& pub
       return;
     } else {
       iter->second.verified_ = verified;
-      iter->second.verifiedTimeStamp_ = verifiedTimestamp;
-      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
+      iter->second.verifiedTimeStamp_ = verifiedTimestamp;      
+      braveledger_bat_helper::saveToJson(iter->second, stringifiedPublisher);
     }
     if (!level_db_) {
       assert(false);
@@ -222,11 +222,11 @@ void BatPublishers::setPublisherFavIconInternal(const std::string& publisher, co
   if (publishers_.end() == iter) {
     braveledger_bat_helper::PUBLISHER_ST publisher_st;
     publisher_st.favicon_url_ = favicon_url;
-    publishers_[publisher] = publisher_st;
-    stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
+    publishers_[publisher] = publisher_st;    
+    braveledger_bat_helper::saveToJson(publisher_st, stringifiedPublisher);
   } else {
-    iter->second.favicon_url_ = favicon_url;
-    stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
+    iter->second.favicon_url_ = favicon_url;    
+    braveledger_bat_helper::saveToJson(iter->second, stringifiedPublisher);
   }
   if (!level_db_) {
     assert(false);
@@ -259,11 +259,11 @@ void BatPublishers::setPublisherIncludeInternal(const std::string& publisher, co
     if (publishers_.end() == iter) {
       braveledger_bat_helper::PUBLISHER_ST publisher_st;
       publisher_st.exclude_ = !include;
-      publishers_[publisher] = publisher_st;
-      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
+      publishers_[publisher] = publisher_st;      
+      braveledger_bat_helper::saveToJson(publisher_st, stringifiedPublisher);
     } else {
-      iter->second.exclude_ = !include;
-      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
+      iter->second.exclude_ = !include;      
+      braveledger_bat_helper::saveToJson(iter->second, stringifiedPublisher);
     }
     if (!level_db_) {
       assert(false);
@@ -299,15 +299,14 @@ void BatPublishers::setPublisherDeletedInternal(const std::string& publisher, co
     if (publishers_.end() == iter) {
       braveledger_bat_helper::PUBLISHER_ST publisher_st;
       publisher_st.deleted_ = deleted;
-      publishers_[publisher] = publisher_st;
-      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
+      publishers_[publisher] = publisher_st;      
+      braveledger_bat_helper::saveToJson(publisher_st, stringifiedPublisher);
     } else {
-      iter->second.deleted_ = deleted;
-      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
+      iter->second.deleted_ = deleted;      
+      braveledger_bat_helper::saveToJson(iter->second, stringifiedPublisher);
     }
     if (!level_db_) {
       assert(false);
-
       return;
     }
 
@@ -338,15 +337,14 @@ void BatPublishers::setPublisherPinPercentageInternal(const std::string& publish
     if (publishers_.end() == iter) {
       braveledger_bat_helper::PUBLISHER_ST publisher_st;
       publisher_st.pinPercentage_ = pinPercentage;
-      publishers_[publisher] = publisher_st;
-      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(publisher_st);
+      publishers_[publisher] = publisher_st;      
+      braveledger_bat_helper::saveToJson(publisher_st, stringifiedPublisher);
     } else {
-      iter->second.pinPercentage_ = pinPercentage;
-      stringifiedPublisher = braveledger_bat_helper::stringifyPublisher(iter->second);
+      iter->second.pinPercentage_ = pinPercentage;      
+      braveledger_bat_helper::saveToJson(iter->second, stringifiedPublisher);
     }
     if (!level_db_) {
       assert(false);
-
       return;
     }
 

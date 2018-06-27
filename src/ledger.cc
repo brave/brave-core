@@ -90,7 +90,7 @@ namespace braveledger_ledger {
       return;
     }
     braveledger_bat_helper::WALLET_PROPERTIES_ST walletProperties;
-    braveledger_bat_helper::getJSONWalletProperties(response, walletProperties);
+    braveledger_bat_helper::loadFromJson(walletProperties, response);
     // TODO send the balance to the UI via observer or callback
   }
 
