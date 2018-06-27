@@ -8,6 +8,7 @@ import Storage
 import Shared
 import SwiftyJSON
 import XCGLogger
+import Data
 
 protocol TabContentScript {
     static func name() -> String
@@ -38,6 +39,8 @@ struct TabState {
 }
 
 class Tab: NSObject {
+    var id: String?
+    
     fileprivate var _isPrivate: Bool = false
     internal fileprivate(set) var isPrivate: Bool {
         get {
@@ -209,7 +212,7 @@ class Tab: NSObject {
             webView.scrollView.layer.masksToBounds = false
             webView.navigationDelegate = navigationDelegate
 
-            restore(webView)
+            restore(webView, restorationData: self.sessionData?.savedTabData)
 
             self.webView = webView
             self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
@@ -218,6 +221,8 @@ class Tab: NSObject {
         }
     }
 
+    // TODO: Old restore function, remove after finishing tabmanager migration.
+    /*
     func restore(_ webView: WKWebView) {
         // Pulls restored session data from a previous SavedTab to load into the Tab. If it's nil, a session restore
         // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
@@ -248,6 +253,52 @@ class Tab: NSObject {
         } else {
             print("creating webview with no lastRequest and no session data: \(self.url?.description ?? "nil")")
         }
+    }
+    */
+    
+    func restore(_ webView: WKWebView, restorationData: SavedTab2?) {
+        // Pulls restored session data from a previous SavedTab to load into the Browser. If it's nil, a session restore
+        // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
+        // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
+        // to trigger the session restore via custom handlers
+        if let sessionData = restorationData {
+            lastTitle = sessionData.title
+            if let title = lastTitle {
+//                webView.title = title
+            }
+            var updatedURLs = [String]()
+            var prev = ""
+            for urlString in sessionData.history {
+                guard let url = URL(string: urlString) else { continue }
+                let updatedURL = WebServer.sharedInstance.updateLocalURL(url)!.absoluteString
+                let curr = updatedURL.regexReplacePattern("https?:..", with: "")
+                if curr.count > 1 && curr == prev {
+                    updatedURLs.removeLast()
+                }
+                prev = curr
+                updatedURLs.append(updatedURL)
+            }
+            let currentPage = sessionData.historyIndex
+            self.sessionData = nil
+            var jsonDict = [String: AnyObject]()
+            jsonDict["history"] = updatedURLs as AnyObject
+            jsonDict["currentPage"] = Int(currentPage) as AnyObject
+            
+            guard let escapedJSON = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
+                return
+            }
+            
+            let restoreURL = URL(string: "\(WebServer.sharedInstance.base)/about/sessionrestore?history=\(escapedJSON)")
+            lastRequest = PrivilegedRequest(url: restoreURL!) as URLRequest
+            // lastRequest?.addValue(WebServer.uniqueBytes, forHTTPHeaderField: WebServer.headerAuthKey)
+            webView.load(lastRequest!)
+        } else if let request = lastRequest {
+            webView.load(request)
+        } else {
+            // log.error("creating webview with no lastRequest and no session data: \(self.url)")
+            print("creating webview with no lastRequest and no session data: \(self.url)")
+        }
+        
     }
 
     deinit {
@@ -284,22 +335,32 @@ class Tab: NSObject {
     var title: String? {
         return webView?.title
     }
+    
+    var isHomePanel: Bool {
+        guard let url = webView?.url else { return false }
+        return url.baseDomain == "localhost" && url.absoluteString.contains("about/home/#panel=0")
+    }
 
     var displayTitle: String {
         if let title = webView?.title, !title.isEmpty {
-            return title
+            return title.range(of: "localhost") == nil ? title : ""
         }
-
-        // When picking a display title. Tabs with sessionData are pending a restore so show their old title.
-        // To prevent flickering of the display title. If a tab is restoring make sure to use its lastTitle.
-        if let url = self.url, url.isAboutHomeURL, sessionData == nil, !restoring {
+        else if isHomePanel {
+            return "New Tab"
+            // BRAVE TODO:
+            // return Strings.New_Tab
+        }
+        
+        guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
+            /* if let title = displayURL?.absoluteString {
+                return title
+            }
+            else */ if let tab = TabMO.get(byId: id, context: DataController.shared.mainThreadContext) {
+                return tab.title ?? tab.url ?? ""
+            }
             return ""
         }
-
-        guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
-            return self.url?.displayURL?.absoluteString ??  ""
-        }
-
+        
         return lastTitle
     }
 
@@ -365,7 +426,7 @@ class Tab: NSObject {
 
         if let webView = self.webView {
             print("restoring webView from scratch")
-            restore(webView)
+            restore(webView, restorationData: sessionData?.savedTabData)
         }
     }
 
@@ -577,5 +638,15 @@ class TabWebViewMenuHelper: UIView {
                 tabWebView.delegate?.tabWebView(tabWebView, didSelectFindInPageForSelection: selection)
             }
         }
+    }
+}
+
+extension SessionData {
+    // This is not a fully direct mapping, but rather an attempt to reconcile data differences, primarily used for tab restoration
+    var savedTabData: SavedTab2 {
+        // (id: String, title: String, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, history: [String], historyIndex: Int16)
+        let urlStrings = urls.map { $0.absoluteString }
+        let currentURL = urlStrings[(currentPage < 0 ? max(urlStrings.count-1, 0) : currentPage)]
+        return ("InvalidId", "", currentURL, false, -1, nil, urlStrings, Int16(currentPage))
     }
 }

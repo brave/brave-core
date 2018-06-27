@@ -109,7 +109,7 @@ public class DataController: NSObject {
         DataController.saveContext(context: context)
     }
 
-    static func saveContext(context: NSManagedObjectContext?) {
+    public static func saveContext(context: NSManagedObjectContext?) {
         guard let context = context else {
             print("No context on save")
             return
