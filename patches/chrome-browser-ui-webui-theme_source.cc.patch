@@ -1,19 +1,8 @@
 diff --git a/chrome/browser/ui/webui/theme_source.cc b/chrome/browser/ui/webui/theme_source.cc
-index f3681500ad54c2dcc0a01ddf606c7088a8c5c9d4..6c08f9c33fc744ca61599d150370ebd36e37f016 100644
+index f3681500ad54c2dcc0a01ddf606c7088a8c5c9d4..4ef2c3b30f9695afffb1ba58e5f67f19d6e88da2 100644
 --- a/chrome/browser/ui/webui/theme_source.cc
 +++ b/chrome/browser/ui/webui/theme_source.cc
-@@ -30,6 +30,10 @@
- #include "ui/gfx/image/image_skia_rep.h"
- #include "url/gurl.h"
- 
-+#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
-+#include "brave/grit/brave_theme_resources.h"
-+#endif
-+
- namespace {
- 
- GURL GetThemeUrl(const std::string& path) {
-@@ -98,7 +102,7 @@ void ThemeSource::StartDataRequest(
+@@ -98,7 +98,7 @@ void ThemeSource::StartDataRequest(
    int resource_id = -1;
    if (parsed_path == "current-channel-logo") {
      switch (chrome::GetChannel()) {
