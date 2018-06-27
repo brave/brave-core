@@ -10,6 +10,12 @@ deps = {
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/svn2github/python-patch@a336a458016ced89aba90dfc3f4c8222ae3b1403",
   "vendor/sparkle": "https://github.com/brave/Sparkle.git@c0759cce415d7c0feae45005c8a013b1898711f0",
+  "vendor/bat-native-ledger": "https://github.com/brave-intl/bat-native-ledger@a4ad4ece372e4850176818cc2f0a05d7854d7b52",
+  "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@9fe10792a7e8d6f1796149ed61125044b2433683",
+  "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@237d1205ec779d598fdba1443aab7d0f26a207da",
+  "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@3c27e7c4d62cd02309d73b920e6d7df854fc32e2",
+  "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@841a82fe8b1755cb35aee673f1e2cce358c5efc3",
+
 }
 
 hooks = [
