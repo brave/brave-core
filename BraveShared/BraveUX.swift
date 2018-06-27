@@ -5,6 +5,7 @@ public struct BraveUX {
     
     public static let BraveCommunityURL = URL(string: "https://community.brave.com/")!
     public static let BravePrivacyURL = URL(string: "https://brave.com/privacy/")!
+    public static let BraveTermsOfUseURL = URL(string: "https://www.brave.com/terms_of_use")!
     public static let PrefKeyOptInDialogWasSeen = "OptInDialogWasSeen"
     public static let PrefKeyUserAllowsTelemetry = "userallowstelemetry"
     

@@ -12,6 +12,9 @@ enum TabBarVisibility: Int {
   case never
   case always
   case landscapeOnly
+  
+  // TODO: Remove when we can use Swift 4.2/`CaseIterable`
+  static let allCases: [TabBarVisibility] = [.never, .always, .landscapeOnly]
 }
 
 /// The applications preferences container
@@ -22,6 +25,7 @@ final class Preferences {
   static let saveLogins = Option<Bool>(key: "general.save-logins", default: true)
   static let blockPopups = Option<Bool>(key: "general.block-popups", default: true)
   static let tabBarVisibility = Option<Int>(key: "general.tab-bar-visiblity", default: TabBarVisibility.always.rawValue)
+  static let duckDuckGoPrivateSearch = Option<Bool?>(key: "ddg-private-search", default: nil)
 }
 
 extension Preferences {
@@ -32,6 +36,7 @@ extension Preferences {
   }
   final class Privacy {
     static let privateBrowsingOnly = Option<Bool>(key: "privacy.private-only", default: false)
+    static let cookieAcceptPolicy = Option<UInt>(key: "privacy.cookie-accept", default: HTTPCookie.AcceptPolicy.onlyFromMainDocumentDomain.rawValue)
   }
   final class Security {
     static let browserLockEnabled = Option<Bool>(key: "security.browser-lock", default: false)
@@ -101,6 +106,7 @@ extension Preferences {
 extension Optional: UserDefaultsEncodable where Wrapped: UserDefaultsEncodable {}
 extension Bool: UserDefaultsEncodable {}
 extension Int: UserDefaultsEncodable {}
+extension UInt: UserDefaultsEncodable {}
 extension Float: UserDefaultsEncodable {}
 extension Double: UserDefaultsEncodable {}
 extension String: UserDefaultsEncodable {}

@@ -23,6 +23,7 @@ enum MenuURLAction {
 }
 
 protocol HomeMenuControllerDelegate: class {
+  func menuDidOpenSettings(_ menu: HomeMenuController)
   /// The user selected a url in one of the menu panels (i.e. bookmarks or history)
   func menuDidSelectURL(_ menu: HomeMenuController, url: URL, visitType: VisitType, action: MenuURLAction)
   /// The user tapped "Open All" on a folder
@@ -147,12 +148,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   }
   
   @objc private func onClickSettingsButton() {
-    // BRAVE TODO: Add back settings
-    let settingsTableViewController = SettingsViewController()
-
-    let controller = SettingsNavigationController(rootViewController: settingsTableViewController)
-    controller.modalPresentationStyle = .formSheet
-    present(controller, animated: true, completion: nil)
+    delegate?.menuDidOpenSettings(self)
   }
   
   @objc private func onClickBookmarksButton() {

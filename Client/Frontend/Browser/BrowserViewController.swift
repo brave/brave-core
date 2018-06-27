@@ -2666,6 +2666,16 @@ extension BrowserViewController: ClientPickerViewControllerDelegate, Instruction
 }
 
 extension BrowserViewController: HomeMenuControllerDelegate {
+    
+    func menuDidOpenSettings(_ menu: HomeMenuController) {
+        menu.dismiss(animated: true) { [weak self] in
+            guard let `self` = self else { return }
+            let container = UINavigationController(rootViewController: SettingsViewController(profile: self.profile, tabManager: self.tabManager))
+            container.modalPresentationStyle = .formSheet
+            self.present(container, animated: true)
+        }
+    }
+    
     func menuDidSelectURL(_ menu: HomeMenuController, url: URL, visitType: VisitType, action: MenuURLAction) {
         switch action {
         case .openInCurrentTab:

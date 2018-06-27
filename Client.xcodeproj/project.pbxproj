@@ -283,6 +283,8 @@
 		7BF5A1EE1B429B3100EA9DD8 /* SyncCommandsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5A1ED1B429B3100EA9DD8 /* SyncCommandsTests.swift */; };
 		8D8251811F4DE67F00780643 /* AdvanceAccountSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8251721F4DE67E00780643 /* AdvanceAccountSettingViewController.swift */; };
 		A134B88A20DA98BB00A581D0 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134B88920DA98BB00A581D0 /* Preferences.swift */; };
+		A1510DA120E409E9008BF1F4 /* URLCacheExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */; };
+		A1510DAA20E425EA008BF1F4 /* BraveWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DA920E425EA008BF1F4 /* BraveWebView.swift */; };
 		A176323820CF2A6000126F25 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
 		A176323920CF2AF200126F25 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
 		A176323A20CF2AF600126F25 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
@@ -295,6 +297,7 @@
 		A1AD4BD720BF4772007A6EA1 /* FastImageCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1AD4BD520BF476E007A6EA1 /* FastImageCache.framework */; };
 		A1AD4BE120C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD4BE020C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift */; };
 		A1AD4BE320C0861D007A6EA1 /* UIBarButtonItemExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */; };
+		A1CA29C420E1746A00CB9126 /* OptionSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CA29C320E1746A00CB9126 /* OptionSelectionViewController.swift */; };
 		A1CDF22B20BDD6B8005C6E58 /* POPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CDF22A20BDD6B8005C6E58 /* POPExtensions.swift */; };
 		A1CDF22D20BDDB66005C6E58 /* BasicAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CDF22C20BDDB65005C6E58 /* BasicAnimationController.swift */; };
 		A1D841FD20BC405E00BDAFF7 /* pop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1D841F420BC405E00BDAFF7 /* pop.framework */; };
@@ -1170,6 +1173,8 @@
 		7BF5A1ED1B429B3100EA9DD8 /* SyncCommandsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncCommandsTests.swift; sourceTree = "<group>"; };
 		8D8251721F4DE67E00780643 /* AdvanceAccountSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceAccountSettingViewController.swift; sourceTree = "<group>"; };
 		A134B88920DA98BB00A581D0 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLCacheExtensions.swift; sourceTree = "<group>"; };
+		A1510DA920E425EA008BF1F4 /* BraveWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWebView.swift; sourceTree = "<group>"; };
 		A176323020CF2A6000126F25 /* DeferredTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTestUtils.swift; sourceTree = "<group>"; };
 		A198E75020C701ED00334C11 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		A1AD4BCE20BF3E8C007A6EA1 /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
@@ -1178,6 +1183,7 @@
 		A1AD4BD520BF476E007A6EA1 /* FastImageCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FastImageCache.framework; path = Carthage/Build/iOS/FastImageCache.framework; sourceTree = "<group>"; };
 		A1AD4BE020C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIGestureRecognizerExtensions.swift; path = Extensions/UIGestureRecognizerExtensions.swift; sourceTree = "<group>"; };
 		A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemExtensions.swift; sourceTree = "<group>"; };
+		A1CA29C320E1746A00CB9126 /* OptionSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSelectionViewController.swift; sourceTree = "<group>"; };
 		A1CDF22A20BDD6B8005C6E58 /* POPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = POPExtensions.swift; path = Extensions/POPExtensions.swift; sourceTree = "<group>"; };
 		A1CDF22C20BDDB65005C6E58 /* BasicAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BasicAnimationController.swift; path = Helpers/BasicAnimationController.swift; sourceTree = "<group>"; };
 		A1D841F420BC405E00BDAFF7 /* pop.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = pop.framework; path = Carthage/Build/iOS/pop.framework; sourceTree = "<group>"; };
@@ -1796,6 +1802,7 @@
 				2F44FCC41A9E85E900FD20CC /* SettingsTableViewController.swift */,
 				7B4980A71CE363ED0017547C /* Settings.xcassets */,
 				A1F66A7220DD71C400303328 /* SettingsViewController.swift */,
+				A1CA29C320E1746A00CB9126 /* OptionSelectionViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2091,6 +2098,7 @@
 				5DE768A820B3461200FF5533 /* BraveUX.swift */,
 				5DE768AD20B443E500FF5533 /* JSONSerializationExtensions.swift */,
 				5DE768AF20B4601600FF5533 /* UIColorExtensions.swift */,
+				A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */,
 				5DE7688620B3456D00FF5533 /* BraveShared.h */,
 				5DE7688720B3456D00FF5533 /* Info.plist */,
 			);
@@ -2467,6 +2475,7 @@
 				D3C744CC1A687D6C004CE85D /* URIFixup.swift */,
 				0BF0DB931A8545800039F300 /* URLBarView.swift */,
 				D0FCF7F41FE45842004A7995 /* UserScriptManager.swift */,
+				A1510DA920E425EA008BF1F4 /* BraveWebView.swift */,
 			);
 			indentWidth = 4;
 			path = Browser;
@@ -4041,6 +4050,7 @@
 				5DE768B020B4601700FF5533 /* UIColorExtensions.swift in Sources */,
 				5DE768AE20B443E500FF5533 /* JSONSerializationExtensions.swift in Sources */,
 				5DE768AB20B346B800FF5533 /* BraveShieldState.swift in Sources */,
+				A1510DA120E409E9008BF1F4 /* URLCacheExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4312,7 +4322,9 @@
 				3BE7275D1CCFE8B60099189F /* CustomSearchHandler.swift in Sources */,
 				A1FEEE2020BF28D900298DA2 /* Then.swift in Sources */,
 				E692E3291C46E62D009D1240 /* AuthenticationSettingsViewController.swift in Sources */,
+				A1CA29C420E1746A00CB9126 /* OptionSelectionViewController.swift in Sources */,
 				0A4B012420D0321A004D4011 /* UX.swift in Sources */,
+				A1510DAA20E425EA008BF1F4 /* BraveWebView.swift in Sources */,
 				E663D5781BB341C4001EF30E /* ToggleButton.swift in Sources */,
 				C88601C61F4228AD00BBDE4F /* ContentBlockerSettingViewController.swift in Sources */,
 				E6327A641BF6438E008D12E0 /* DebugSettingsBundleOptions.swift in Sources */,
