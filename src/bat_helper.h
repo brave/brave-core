@@ -13,11 +13,7 @@
 
 #if defined CHROMIUM_BUILD
 #include "base/callback.h"
-#include "base/guid.h"
 #include "base/bind.h"
-#include "base/files/file_path.h"
-#include "base/path_service.h"
-#include "base/files/file_util.h"
 #else
 #include <functional>
 #include <iostream>
@@ -48,7 +44,7 @@ namespace braveledger_bat_helper {
   {    
     bool succeded = t.loadFromJson(json);
     if (!succeded) {
-      LOG(LEVEL) << "Failed to parse:" << json << std::endl;
+      LOG(ERROR) << "Failed to parse:" << json << std::endl;
     }
     return succeded;
   }

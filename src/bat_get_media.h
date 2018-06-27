@@ -15,7 +15,12 @@
 #include <functional>
 #endif
 
+#if defined CHROMIUM_BUILD
+#include "bat_client_webrequest_chromium.h"
+#else
 #include "bat_client_webrequest.h"
+#endif
+
 #include "bat_helper.h"
 
 namespace leveldb {

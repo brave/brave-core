@@ -12,16 +12,16 @@
 #include <iostream>
 
 #if defined CHROMIUM_BUILD
-//#include "base/values.h"
+#include "base/logging.h"
 #include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/files/file_util.h"
 #include "base/sequenced_task_runner.h"
-#include "base/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task_scheduler/post_task.h"
-#include "chrome/browser/browser_process.h"
-#include "browser_thread.h"
+#include "url/url_util.h"
+#include "url/url_canon_stdstring.h"
+#include "base/guid.h"
 #endif
 
 //tweetnacl
@@ -1551,9 +1551,10 @@ namespace braveledger_bat_helper {
       message += keys[i] + ": " + values[i];
     }
     std::vector<uint8_t> signedMsg(crypto_sign_BYTES + message.length());
-    uint64_t signedMsgSize = 0;
-    crypto_sign(&signedMsg.front(), &signedMsgSize, (const unsigned char*)message.c_str(),
-      (uint64_t)message.length(), &secretKey.front());
+
+    unsigned long long signedMsgSize = 0;
+    crypto_sign(&signedMsg.front(), &signedMsgSize, (const unsigned char*)message.c_str(), (unsigned long long)message.length(), &secretKey.front());
+
     std::vector<uint8_t> signature(crypto_sign_BYTES);
     std::copy(signedMsg.begin(), signedMsg.begin() + crypto_sign_BYTES, signature.begin());
 
