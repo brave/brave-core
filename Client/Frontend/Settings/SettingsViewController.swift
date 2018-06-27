@@ -53,7 +53,13 @@ extension DataSource {
   }
 }
 
+protocol SettingsDelegate: class {
+  func settingsOpenURLInNewTab(_ url: URL)
+}
+
 class SettingsViewController: TableViewController {
+  
+  weak var settingsDelegate: SettingsDelegate?
   
   private var settings: [Section] = []
   
@@ -184,7 +190,7 @@ class SettingsViewController: TableViewController {
         BasicBoolRow(title: Strings.Opt_in_to_telemetry, option: Preferences.Support.sendsCrashReportsAndMetrics),
         Row(text: Strings.Report_a_bug, selection: { [unowned self] in
           // Report a bug
-          self.tabManager.addTabsForURLs([BraveUX.BraveCommunityURL], zombie: false)
+          self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.BraveCommunityURL)
           self.dismiss(animated: true)
         }, cellClass: ButtonCell.self),
         Row(text: Strings.Privacy_Policy, selection: { [unowned self] in
