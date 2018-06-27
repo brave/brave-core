@@ -1,16 +1,23 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 77d3df86a7d19a2a4fe699601261c84a0ffb7f72..caa1008d41312a994a779634eaa4eacfd8659229 100644
+index 77d3df86a7d19a2a4fe699601261c84a0ffb7f72..19b8efc3e89ec74197e492f6844de925405f6815 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -28,6 +28,7 @@
+@@ -28,6 +28,8 @@
  #include "base/threading/thread_restrictions.h"
  #include "base/threading/thread_task_runner_handle.h"
  #include "base/time/time.h"
++#include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 +#include "brave/browser/ui/brave_browser_command_controller.h"
  #include "build/build_config.h"
  #include "chrome/app/chrome_command_ids.h"
  #include "chrome/browser/app_mode/app_mode_utils.h"
-@@ -379,7 +380,7 @@ Browser::Browser(const CreateParams& params)
+@@ -374,12 +376,12 @@ Browser::Browser(const CreateParams& params)
+       initial_workspace_(params.initial_workspace),
+       is_session_restore_(params.is_session_restore),
+       content_setting_bubble_model_delegate_(
+-          new BrowserContentSettingBubbleModelDelegate(this)),
++          new BraveBrowserContentSettingBubbleModelDelegate(this)),
+       toolbar_model_delegate_(new BrowserToolbarModelDelegate(this)),
        live_tab_context_(new BrowserLiveTabContext(this)),
        synced_window_delegate_(new BrowserSyncedWindowDelegate(this)),
        bookmark_bar_state_(BookmarkBar::HIDDEN),

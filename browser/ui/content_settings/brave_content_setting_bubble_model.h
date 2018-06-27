@@ -8,9 +8,10 @@ class Profile;
 
 class BraveContentSettingPluginBubbleModel : public ContentSettingSimpleBubbleModel {
  public:
-  BraveContentSettingPluginBubbleModel(Delegate* delegate,
-                                  content::WebContents* web_contents,
-                                  Profile* profile);
+  BraveContentSettingPluginBubbleModel(
+      ContentSettingBubbleModel::Delegate* delegate,
+      content::WebContents* web_contents,
+      Profile* profile);
 
  private:
   void OnLearnMoreClicked() override;

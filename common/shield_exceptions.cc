@@ -103,4 +103,20 @@ bool IsWhitelistedCookieExeption(const GURL& firstPartyOrigin,
       });
 }
 
+bool IsWidevineInstallableURL(const GURL& url) {
+  static std::vector<URLPattern> patterns({
+    URLPattern(URLPattern::SCHEME_ALL, "https://www.netflix.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://bitmovin.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://www.primevideo.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://www.spotify.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://shaka-player-demo.appspot.com/*"),
+    // Used for tests
+    URLPattern(URLPattern::SCHEME_ALL, "http://www.netflix.com:*/*")
+  });
+  return std::any_of(patterns.begin(), patterns.end(),
+    [&url](URLPattern pattern){
+      return pattern.MatchesURL(url);
+    });
+}
+
 }

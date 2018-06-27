@@ -41,19 +41,31 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(
 }
 
 component_updater::ComponentUpdateService*
-BraveBrowserProcessImpl::component_updater() {
-  if (component_updater_)
-    return component_updater_.get();
+BraveBrowserProcessImpl::component_updater(
+    std::unique_ptr<component_updater::ComponentUpdateService> &component_updater,
+    bool use_brave_server) {
+  if (component_updater)
+    return component_updater.get();
 
   if (!BrowserThread::CurrentlyOn(BrowserThread::UI))
     return nullptr;
 
-  component_updater_ = component_updater::ComponentUpdateServiceFactory(
+  component_updater = component_updater::ComponentUpdateServiceFactory(
       component_updater::MakeBraveComponentUpdaterConfigurator(
           base::CommandLine::ForCurrentProcess(),
-          g_browser_process->local_state()));
+          g_browser_process->local_state(), use_brave_server));
 
-  return component_updater_.get();
+  return component_updater.get();
+}
+
+component_updater::ComponentUpdateService*
+BraveBrowserProcessImpl::component_updater() {
+  return component_updater(component_updater_, true);
+}
+
+component_updater::ComponentUpdateService*
+BraveBrowserProcessImpl::google_component_updater() {
+  return component_updater(google_component_updater_, false);
 }
 
 brave_shields::AdBlockService*
