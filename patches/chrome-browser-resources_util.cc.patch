@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/resources_util.cc b/chrome/browser/resources_util.cc
+index d74bc7f4accc959329dc57be8232263736d4473c..41fcf53a338b7022c608e6527a9e9d0fa16dc382 100644
+--- a/chrome/browser/resources_util.cc
++++ b/chrome/browser/resources_util.cc
+@@ -19,6 +19,10 @@
+ #include "ui/chromeos/resources/grit/ui_chromeos_resources_map.h"
+ #endif
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++#include "brave/grit/brave_theme_resources_map.h"
++#endif
++
+ namespace {
+ 
+ // A wrapper class that holds a map between resource strings and resource
+@@ -42,6 +46,12 @@ class ThemeMap {
+     for (size_t i = 0; i < kUiResourcesSize; ++i) {
+       storage.emplace_back(kUiResources[i].name, kUiResources[i].value);
+     }
++#if defined(BRAVE_CHROMIUM_BUILD)
++    for (size_t i = 0; i < kBraveThemeResourcesSize; ++i) {
++      storage.emplace_back(kBraveThemeResources[i].name,
++                           kBraveThemeResources[i].value);
++    }
++#endif
+ #if defined(OS_CHROMEOS)
+     for (size_t i = 0; i < kUiChromeosResourcesSize; ++i) {
+       storage.emplace_back(kUiChromeosResources[i].name,

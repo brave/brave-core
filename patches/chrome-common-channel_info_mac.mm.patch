@@ -1,5 +1,5 @@
 diff --git a/chrome/common/channel_info_mac.mm b/chrome/common/channel_info_mac.mm
-index 0124634998da23dee70c687fbce09189a070006f..1001697a09c7465c17652eb4d9c8ca3abaa88a5f 100644
+index 0124634998da23dee70c687fbce09189a070006f..52a9302f4791751a59b4b1834e4ab0d86cf603b0 100644
 --- a/chrome/common/channel_info_mac.mm
 +++ b/chrome/common/channel_info_mac.mm
 @@ -13,7 +13,7 @@
@@ -7,7 +7,7 @@ index 0124634998da23dee70c687fbce09189a070006f..1001697a09c7465c17652eb4d9c8ca3a
  
  std::string GetChannelName() {
 -#if defined(GOOGLE_CHROME_BUILD)
-+#if defined(GOOGLE_CHROME_BUILD) || defined(BRAVE_CHROMIUM_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    // Use the main Chrome application bundle and not the framework bundle.
    // Keystone keys don't live in the framework.
    NSBundle* bundle = base::mac::OuterBundle();
@@ -32,7 +32,7 @@ index 0124634998da23dee70c687fbce09189a070006f..1001697a09c7465c17652eb4d9c8ca3a
  version_info::Channel GetChannelByName(const std::string& channel) {
 -#if defined(GOOGLE_CHROME_BUILD)
 -
-+#if defined(GOOGLE_CHROME_BUILD) || defined(BRAVE_CHROMIUM_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    if (channel.empty()) {
      return version_info::Channel::STABLE;
    } else if (channel == "beta") {

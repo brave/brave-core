@@ -27,6 +27,7 @@ static_library("brave_test_support_unit") {
 
 test("brave_unit_tests") {
   sources = [
+    "//brave/browser/brave_resources_util_unittest.cc",
     "//brave/browser/brave_stats_updater_unittest.cc",
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
@@ -114,9 +115,11 @@ test("brave_browser_tests") {
   sources = [
     "//brave/browser/brave_content_browser_client_browsertest.cc",
     "//brave/browser/brave_profile_prefs_browsertest.cc",
+    "//brave/browser/brave_resources_browsertest.cc",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
     "//brave/browser/ui/content_settings/brave_widevine_blocked_image_model_browsertest.cc",
     "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
+    "//brave/common/brave_channel_info_browsertest.cc",
     "//brave/components/brave_shields/browser/ad_block_service_browsertest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_service_browsertest.cc",
     "//brave/components/brave_shields/browser/tracking_protection_service_browsertest.cc",

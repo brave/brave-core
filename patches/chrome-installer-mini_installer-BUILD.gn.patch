@@ -1,27 +1,24 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index c365088b90b7a91faf52f5b108f64621a219b11f..66f116635e01cfa85aecc5fe28c3b61fb4b1c409 100644
+index c365088b90b7a91faf52f5b108f64621a219b11f..7602bde419922a28244c6e225f62e6d9836cc2ca 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -132,11 +132,12 @@ template("generate_mini_installer") {
- 
-     inputs = [
-       "$chrome_dll_file",
--      "$root_out_dir/chrome.exe",
-+      "$root_out_dir/brave.exe",
-       "$root_out_dir/locales/en-US.pak",
-       "$root_out_dir/setup.exe",
-       "//chrome/tools/build/win/makecab.py",
-       release_file,
-+      "$root_out_dir/brave_resources.pak",
-     ]
- 
-     outputs = [
-@@ -180,6 +181,8 @@ template("generate_mini_installer") {
-       "//chrome/installer/setup",
+@@ -181,6 +181,19 @@ template("generate_mini_installer") {
        "//third_party/icu:icudata",
        chrome_dll_target,
-+      "//brave:packed_extra_resources",
-+      "//brave/build/win:copy_exe",
      ]
++    if (brave_chromium_build) {
++      inputs -= [
++        "$root_out_dir/chrome.exe",
++      ]
++      inputs += [
++        "$root_out_dir/brave.exe",
++        "$root_out_dir/brave_resources.pak",
++      ]
++      deps += [
++        "//brave:packed_resources",
++        "//brave/build/win:copy_exe",
++      ]
++    }
  
      if (enable_hidpi) {
+       args += [ "--enable_hidpi=1" ]
