@@ -124,13 +124,13 @@ const InstallConstants kInstallModes[] = {
         sizeof(kInstallModes[0]),
         CANARY_INDEX,  // The mode for the side-by-side canary channel.
         "chrome-sxs",  // Install switch.
-        L"-Canary",       // Install suffix.
+        L"-Nightly",       // Install suffix.
         L"Canary",     // Logo suffix.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // A distinct app GUID.
-        L"Brave Canary",                    // A distinct base_app_name.
-        L"BraveCanary",                            // A distinct base_app_id.
+        L"Brave Nightly",                    // A distinct base_app_name.
+        L"BraveNightly",                            // A distinct base_app_id.
         L"BraveSSHTM",                             // ProgID prefix.
-        L"Brave Canary HTML Document",             // ProgID description.
+        L"Brave Nightly HTML Document",             // ProgID description.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // Active Setup GUID.
         L"{312ABB99-A176-4939-A39F-E8D34EA4D393}",  // CommandExecuteImpl CLSID.
         { 0xf2edbc59,
@@ -138,7 +138,7 @@ const InstallConstants kInstallModes[] = {
           0x4da5,
           { 0xa2, 0x59, 0x3, 0x2, 0xda, 0x6a, 0x0,
             0xe1 } },  // Toast activator CLSID.
-        L"canary",                                  // Forced channel name.
+        L"nightly",                                  // Forced channel name.
         ChannelStrategy::FIXED,
         false,  // Does not support system-level installs.
         false,  // Does not support in-product set as default browser UX.
