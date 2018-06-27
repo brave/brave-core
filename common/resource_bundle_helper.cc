@@ -12,11 +12,11 @@
 
 #if defined(OS_MACOSX)
 #include "base/mac/foundation_util.h"
+#include "base/strings/sys_string_conversions.h"
 #endif
 
 namespace {
 
-// Returns the path to the extensions_shell_and_test.pak file.
 base::FilePath GetResourcesPakFilePath() {
 #if defined(OS_MACOSX)
   return base::mac::PathForFrameworkBundleResource(
@@ -29,14 +29,40 @@ base::FilePath GetResourcesPakFilePath() {
 #endif  // OS_MACOSX
 }
 
+base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
+  DCHECK(scale_factor == ui::SCALE_FACTOR_100P ||
+         scale_factor == ui::SCALE_FACTOR_200P);
+
+  const char* pak_file =
+      (scale_factor == ui::SCALE_FACTOR_100P) ? "brave_100_percent.pak"
+                                              : "brave_200_percent.pak";
+#if defined(OS_MACOSX)
+  base::ScopedCFTypeRef<CFStringRef> pak_file_mac(
+      base::SysUTF8ToCFStringRef(pak_file));
+  return base::mac::PathForFrameworkBundleResource(pak_file_mac);
+#else
+  base::FilePath pak_path;
+  PathService::Get(base::DIR_MODULE, &pak_path);
+  pak_path = pak_path.AppendASCII(pak_file);
+  return pak_path;
+#endif  // OS_MACOSX
+}
+
 }
 
 namespace brave {
 
 void InitializeResourceBundle() {
-  base::FilePath resources_pack_path = GetResourcesPakFilePath();
-  ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
-      resources_pack_path, ui::SCALE_FACTOR_NONE);
+  auto& rb = ui::ResourceBundle::GetSharedInstance();
+  rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::SCALE_FACTOR_NONE);
+
+  rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_100P),
+                         ui::SCALE_FACTOR_100P);
+
+  if (ui::ResourceBundle::IsScaleFactorSupported(ui::SCALE_FACTOR_200P)) {
+    rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_200P),
+                           ui::SCALE_FACTOR_200P);
+  }
 }
 
 // Returns true if this subprocess type needs the ResourceBundle initialized
