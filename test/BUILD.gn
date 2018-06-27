@@ -147,3 +147,21 @@ test("brave_browser_tests") {
     "//ppapi:power_saver_test_plugin",
   ]
 }
+
+if (is_win) {
+  test("brave_install_static_unittests") {
+    sources = [
+      "//brave/chromium_src/chrome/install_static/brave_product_install_details_unittest.cc",
+    ]
+    include_dirs = [ "$target_gen_dir" ]
+    deps = [
+      "//base",
+      "//base/test:run_all_unittests",
+      "//base/test:test_support",
+      "//chrome/install_static:install_static_util",
+      "//chrome/install_static/test:test_support",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
+}
