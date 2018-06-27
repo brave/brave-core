@@ -7,6 +7,8 @@ import WebKit
 import Storage
 import Shared
 import XCGLogger
+import Data
+import CoreData
 
 private let log = Logger.browserLogger
 
@@ -208,6 +210,11 @@ class TabManager: NSObject {
         }
 
         preserveTabs()
+        
+        if let t = selectedTab, t.webView == nil {
+            selectedTab?.createWebview()
+            restoreTab(t)
+        }
 
         assert(tab === selectedTab, "Expected tab is selected")
         selectedTab?.createWebview()
@@ -300,13 +307,14 @@ class TabManager: NSObject {
         delegates.forEach { $0.get()?.tabManagerDidAddTabs(self) }
     }
 
-    fileprivate func addTab(_ request: URLRequest? = nil, configuration: WKWebViewConfiguration? = nil, afterTab: Tab? = nil, flushToDisk: Bool, zombie: Bool, isPrivate: Bool) -> Tab {
+    fileprivate func addTab(_ request: URLRequest? = nil, configuration: WKWebViewConfiguration? = nil, afterTab: Tab? = nil, flushToDisk: Bool, zombie: Bool, id: String? = nil, isPrivate: Bool) -> Tab {
         assert(Thread.isMainThread)
 
         // Take the given configuration. Or if it was nil, take our default configuration for the current browsing mode.
         let configuration: WKWebViewConfiguration = configuration ?? (isPrivate ? privateConfiguration : self.configuration)
 
         let tab = Tab(configuration: configuration, isPrivate: isPrivate)
+        tab.id = id ?? TabMO.freshTab().syncUUID
         configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie)
         return tab
     }
@@ -315,6 +323,7 @@ class TabManager: NSObject {
         assert(Thread.isMainThread)
 
         let tab = Tab(configuration: configuration ?? self.configuration)
+        tab.id = TabMO.freshTab().syncUUID
         configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie)
         return tab
     }
@@ -388,7 +397,47 @@ class TabManager: NSObject {
         if flushToDisk {
         	storeChanges()
         }
+        
+        // Ignore on restore.
+        if !zombie && !UIApplication.isInPrivateMode {
+            if let data = tabData(for: tab) {
+                TabMO.preserve(tabData: data)
+            }
+
+//            TabMO.preserve(tabData: Tab)
+            // TabMO.preserve(tab: tab)
+            //saveTabOrder()
+        }
+
     }
+    
+    private func tabData(for tab: Tab) -> TabDataToSave? {
+        guard let webView = tab.webView, let order = indexOfWebView(webView) else { return nil }
+        
+            let id = tab.id ?? TabMO.freshTab().syncUUID!
+        
+            let isSelected = selectedTab === tab
+            let tabData = TabDataToSave(webView: webView, 
+                                        url: tab.url, order: order, tabID: id, displayTitle: tab.displayTitle, 
+                                        isSelected: isSelected)
+            
+            return tabData
+    }
+    
+    func indexOfWebView(_ webView: WKWebView) -> UInt? {
+        objc_sync_enter(self); defer { objc_sync_exit(self) }
+        
+        var count = UInt(0)
+        for tab in tabs {
+            if tab.webView === webView {
+                return count
+            }
+            count = count + 1
+        }
+        
+        return nil
+    }
+    
 
     // This method is duplicated to hide the flushToDisk option from consumers.
     func removeTab(_ tab: Tab) {
@@ -599,10 +648,13 @@ class TabManager: NSObject {
     }
 
     func storeChanges() {
+        
+        /*
         stateDelegate?.tabManagerWillStoreTabs(normalTabs)
 
         // Also save (full) tab state to disk.
         preserveTabs()
+        */
     }
 
     @objc func prefsDidChange() {
@@ -801,24 +853,24 @@ extension TabManager {
     }
 
     fileprivate func restoreTabsInternal() {
-        guard var savedTabs = TabManager.tabsToRestore() else {
-            return
-        }
-
-        // Make sure to wipe the private tabs if the user has the pref turned on
-        if shouldClearPrivateTabs() {
-            savedTabs = savedTabs.filter { !$0.isPrivate }
-        }
+//        guard var savedTabs = TabManager.tabsToRestore() else {
+//            return
+//        }
+        
+        let savedTabs = TabMO.getAll()
+        if savedTabs.isEmpty { return }
 
         var tabToSelect: Tab?
         for savedTab in savedTabs {
             // Provide an empty request to prevent a new tab from loading the home screen
-            let tab = self.addTab(nil, configuration: nil, afterTab: nil, flushToDisk: false, zombie: true, isPrivate: savedTab.isPrivate)
+            let tab = self.addTab(nil, configuration: nil, afterTab: nil, flushToDisk: false, zombie: true, 
+                                  id: savedTab.syncUUID, isPrivate: savedTab.isPrivate)
 
             // Since this is a restored tab, reset the URL to be loaded as that will be handled by the SessionRestoreHandler
             tab.url = nil
 
-            if let faviconURL = savedTab.faviconURL {
+            /*
+            if let faviconURL = savedTab.favicon.url {
                 let icon = Favicon(url: faviconURL, date: Date())
                 icon.width = 1
                 tab.favicons.append(icon)
@@ -835,12 +887,13 @@ extension TabManager {
                     }
                 }
             }
+            */
 
             if savedTab.isSelected {
                 tabToSelect = tab
             }
 
-            tab.sessionData = savedTab.sessionData
+            // tab.sessionData = savedTab.sessionData
             tab.lastTitle = savedTab.title
         }
 
@@ -856,8 +909,24 @@ extension TabManager {
         }
 
         if let tab = tabToSelect {
+            // FIXME: only selected tab has webView attached
             selectTab(tab)
+            restoreTab(tab)
             tab.createWebview()
+        }
+    }
+    
+    func restoreTab(_ tab: Tab) {
+        // Tab was created with no active webview or session data. Restore tab data from CD and configure.
+        guard let savedTab = TabMO.get(byId: tab.id, context: DataController.shared.mainThreadContext) else { return }
+        
+        if let history = savedTab.urlHistorySnapshot as? [String], let tabUUID = savedTab.syncUUID, let url = savedTab.url {
+            let data = SavedTab2(id: tabUUID, title: savedTab.title ?? "", url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)
+            if let webView = tab.webView {
+                tab.navigationDelegate = navDelegate
+                // tab.restore(webView, restorationData: data)
+                tab.restore(webView, restorationData: data)
+            }
         }
     }
 
@@ -932,9 +1001,25 @@ extension TabManager: WKNavigationDelegate {
         // only store changes if this is not an error page
         // as we current handle tab restore as error page redirects then this ensures that we don't
         // call storeChanges unnecessarily on startup
-        if let url = webView.url, !url.isErrorPageURL {
-            storeChanges()
+        
+        if let tab = tabForWebView(webView), let url = webView.url, !url.absoluteString.contains("localhost"), let data = tabData(for: tab) {
+            DispatchQueue.main.async {
+                TabMO.preserve(tabData: data)
+            }
+            // storeChanges()
         }
+    }
+    
+    func tabForWebView(_ webView: WKWebView) -> Tab? {
+        objc_sync_enter(self); defer { objc_sync_exit(self) }
+        
+        for tab in tabs {
+            if tab.webView === webView {
+                return tab
+            }
+        }
+        
+        return nil
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
