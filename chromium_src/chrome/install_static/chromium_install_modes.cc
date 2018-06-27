@@ -122,9 +122,9 @@ const InstallConstants kInstallModes[] = {
     // A secondary install mode for Brave SxS (canary).
     {
         sizeof(kInstallModes[0]),
-        CANARY_INDEX,  // The mode for the side-by-side canary channel.
+        NIGHTLY_INDEX, // The mode for the side-by-side nightly channel.
         "chrome-sxs",  // Install switch.
-        L"-Nightly",       // Install suffix.
+        L"-Nightly",   // Install suffix.
         L"Canary",     // Logo suffix.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // A distinct app GUID.
         L"Brave Nightly",                    // A distinct base_app_name.

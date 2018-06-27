@@ -89,12 +89,12 @@ constexpr TestData kTestData[] = {
     {
         L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-Nightly"
         L"\\Application\\brave.exe",
-        CANARY_INDEX, false, L"nightly",
+        NIGHTLY_INDEX, false, L"nightly",
     },
     {
         L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-Nightly"
         L"\\Application\\brave.exe",
-        CANARY_INDEX, false, L"nightly",
+        NIGHTLY_INDEX, false, L"nightly",
     },
 };
 #else   // OFFICIAL_BUILD
@@ -110,7 +110,7 @@ constexpr TestData kTestData[] = {
         DEVELOPER_INDEX, false, L"",
     },
 };
-#endif  // !GOOGLE_CHROME_BUILD
+#endif  // !OFFICIAL_BUILD
 
 }  // namespace
 

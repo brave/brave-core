@@ -24,7 +24,7 @@ enum InstallConstantIndex {
   STABLE_INDEX,
   BETA_INDEX,
   DEV_INDEX,
-  CANARY_INDEX,
+  NIGHTLY_INDEX,
  #else
   DEVELOPER_INDEX,
  #endif
