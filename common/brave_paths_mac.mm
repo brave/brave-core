@@ -10,6 +10,7 @@
 namespace brave {
 
 std::string GetChannelSuffixForDataDir(NSBundle* chrome_bundle) {
+#if defined(OFFICIAL_BUILD)
   // chrome::GetChannelString() returns valid value only at first call.
   // From second call, it returns empty string. So, reimplemented for fetching
   // channel string here.
@@ -31,6 +32,9 @@ std::string GetChannelSuffixForDataDir(NSBundle* chrome_bundle) {
   std::string result = base::SysNSStringToUTF8(suffix);
   result[1] = std::toupper(result[1]);
   return result;
+#else  // OFFICIAL_BUILD
+  return "-Development";
+#endif
 }
 
 }  // namespace brave
