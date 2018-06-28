@@ -249,7 +249,6 @@
 		7B3631EA1C244FEE00D12AF9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3631E91C244FEE00D12AF9 /* Theme.swift */; };
 		7B3D9E651E4CBFDB007A50DA /* NSCoderExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3D9E641E4CBFDB007A50DA /* NSCoderExtensions.swift */; };
 		7B42406E1CA04CAC009B5C28 /* Menu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B42406D1CA04CAC009B5C28 /* Menu.xcassets */; };
-		7B4980A81CE363ED0017547C /* Settings.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B4980A71CE363ED0017547C /* Settings.xcassets */; };
 		7B604F861C494983006EEEC3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B604F851C494983006EEEC3 /* Alamofire.framework */; };
 		7B604F991C494F74006EEEC3 /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B604F981C494F74006EEEC3 /* KIF.framework */; };
 		7B604F9B1C4950F2006EEEC3 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B604F9A1C4950F2006EEEC3 /* SDWebImage.framework */; };
@@ -281,6 +280,8 @@
 		A134B88A20DA98BB00A581D0 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134B88920DA98BB00A581D0 /* Preferences.swift */; };
 		A1510DA120E409E9008BF1F4 /* URLCacheExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */; };
 		A1510DAA20E425EA008BF1F4 /* BraveWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DA920E425EA008BF1F4 /* BraveWebView.swift */; };
+		A1510DDF20E51EF4008BF1F4 /* UIDeviceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DDE20E51EF4008BF1F4 /* UIDeviceExtensions.swift */; };
+		A16DC67F20E585D90069C8E1 /* PasscodeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16DC67E20E585D90069C8E1 /* PasscodeSettingsViewController.swift */; };
 		A176323820CF2A6000126F25 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
 		A176323920CF2AF200126F25 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
 		A176323A20CF2AF600126F25 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
@@ -302,7 +303,6 @@
 		A1D8420420BC44F800BDAFF7 /* PopoverContentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D8420120BC44F800BDAFF7 /* PopoverContentComponent.swift */; };
 		A1F66A7320DD71C400303328 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F66A7220DD71C400303328 /* SettingsViewController.swift */; };
 		A1F66A8020DD87CA00303328 /* Static.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1F66A7F20DD87CA00303328 /* Static.framework */; };
-		A1F66A8620DD988900303328 /* DeviceModelDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F66A8520DD988900303328 /* DeviceModelDetector.swift */; };
 		A1FEEE0320BEE6BF00298DA2 /* HomeMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FEEE0220BEE6BF00298DA2 /* HomeMenuController.swift */; };
 		A1FEEE2020BF28D900298DA2 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FEEE1F20BF28D900298DA2 /* Then.swift */; };
 		A83E5AB71C1D993D0026D912 /* UIPasteboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83E5AB61C1D993D0026D912 /* UIPasteboardExtensions.swift */; };
@@ -547,7 +547,6 @@
 		E696FE511C47F86E00EC007C /* AuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E696FE501C47F86E00EC007C /* AuthenticatorTests.swift */; };
 		E698FFDA1B4AADF40001F623 /* TabScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E698FFD91B4AADF40001F623 /* TabScrollController.swift */; };
 		E69922171B94E3EF007C480D /* Licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = E69922121B94E3EF007C480D /* Licenses.html */; };
-		E69E06BA1C76173D00D0F926 /* RequirePasscodeIntervalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69E06B91C76173D00D0F926 /* RequirePasscodeIntervalViewController.swift */; };
 		E69E06C91C76198000D0F926 /* AuthenticationManagerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69E06C81C76198000D0F926 /* AuthenticationManagerConstants.swift */; };
 		E6A92ADB1C52A8DA00743291 /* LoginInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A92ADA1C52A8DA00743291 /* LoginInputTests.swift */; };
 		E6B4C3D81C68F55C001F97E8 /* JSPrompt.html in Resources */ = {isa = PBXBuildFile; fileRef = E6B4C3D71C68F55C001F97E8 /* JSPrompt.html */; };
@@ -1133,7 +1132,6 @@
 		7B3632D31C2983F000D12AF9 /* L10nSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10nSnapshotTests.swift; sourceTree = "<group>"; };
 		7B3D9E641E4CBFDB007A50DA /* NSCoderExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSCoderExtensions.swift; sourceTree = "<group>"; };
 		7B42406D1CA04CAC009B5C28 /* Menu.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Menu.xcassets; sourceTree = "<group>"; };
-		7B4980A71CE363ED0017547C /* Settings.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Settings.xcassets; sourceTree = "<group>"; };
 		7B604F851C494983006EEEC3 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		7B604F981C494F74006EEEC3 /* KIF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KIF.framework; path = Carthage/Build/iOS/KIF.framework; sourceTree = "<group>"; };
 		7B604F9A1C4950F2006EEEC3 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
@@ -1162,6 +1160,8 @@
 		A134B88920DA98BB00A581D0 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLCacheExtensions.swift; sourceTree = "<group>"; };
 		A1510DA920E425EA008BF1F4 /* BraveWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWebView.swift; sourceTree = "<group>"; };
+		A1510DDE20E51EF4008BF1F4 /* UIDeviceExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtensions.swift; sourceTree = "<group>"; };
+		A16DC67E20E585D90069C8E1 /* PasscodeSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeSettingsViewController.swift; sourceTree = "<group>"; };
 		A176323020CF2A6000126F25 /* DeferredTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTestUtils.swift; sourceTree = "<group>"; };
 		A198E75020C701ED00334C11 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		A1AD4BCE20BF3E8C007A6EA1 /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
@@ -1179,7 +1179,6 @@
 		A1D8420120BC44F800BDAFF7 /* PopoverContentComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverContentComponent.swift; sourceTree = "<group>"; };
 		A1F66A7220DD71C400303328 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A1F66A7F20DD87CA00303328 /* Static.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Static.framework; path = Carthage/Build/iOS/Static.framework; sourceTree = "<group>"; };
-		A1F66A8520DD988900303328 /* DeviceModelDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModelDetector.swift; sourceTree = "<group>"; };
 		A1FEEE0220BEE6BF00298DA2 /* HomeMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMenuController.swift; sourceTree = "<group>"; };
 		A1FEEE1F20BF28D900298DA2 /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Then.swift; path = ThirdParty/Then.swift; sourceTree = "<group>"; };
 		A83E5AB61C1D993D0026D912 /* UIPasteboardExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIPasteboardExtensions.swift; path = Extensions/UIPasteboardExtensions.swift; sourceTree = "<group>"; };
@@ -1452,7 +1451,6 @@
 		E696FE501C47F86E00EC007C /* AuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatorTests.swift; sourceTree = "<group>"; };
 		E698FFD91B4AADF40001F623 /* TabScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabScrollController.swift; sourceTree = "<group>"; };
 		E69922121B94E3EF007C480D /* Licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Licenses.html; sourceTree = "<group>"; };
-		E69E06B91C76173D00D0F926 /* RequirePasscodeIntervalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequirePasscodeIntervalViewController.swift; sourceTree = "<group>"; };
 		E69E06C81C76198000D0F926 /* AuthenticationManagerConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationManagerConstants.swift; sourceTree = "<group>"; };
 		E6A92ADA1C52A8DA00743291 /* LoginInputTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginInputTests.swift; sourceTree = "<group>"; };
 		E6B4C3D71C68F55C001F97E8 /* JSPrompt.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = JSPrompt.html; sourceTree = "<group>"; };
@@ -1775,9 +1773,9 @@
 				74E36D771B71323500D69DA1 /* SettingsContentViewController.swift */,
 				2F44FC711A9E840300FD20CC /* SettingsNavigationController.swift */,
 				2F44FCC41A9E85E900FD20CC /* SettingsTableViewController.swift */,
-				7B4980A71CE363ED0017547C /* Settings.xcassets */,
 				A1F66A7220DD71C400303328 /* SettingsViewController.swift */,
 				A1CA29C320E1746A00CB9126 /* OptionSelectionViewController.swift */,
+				A16DC67E20E585D90069C8E1 /* PasscodeSettingsViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2550,7 +2548,6 @@
 				E65075561E37F714006961AC /* FaviconFetcher.swift */,
 				E650755D1E37F756006961AC /* Try.h */,
 				E650755E1E37F756006961AC /* Try.m */,
-				A1F66A8520DD988900303328 /* DeviceModelDetector.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2576,6 +2573,7 @@
 				7B9BF91B1E43472E00CB24F4 /* JSONExtensions.swift */,
 				7B3D9E641E4CBFDB007A50DA /* NSCoderExtensions.swift */,
 				E693F0D81E9D64BD0086DC17 /* OptionalExtensions.swift */,
+				A1510DDE20E51EF4008BF1F4 /* UIDeviceExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2626,7 +2624,6 @@
 				E6108FF81C84E91C005D25E8 /* BasePasscodeViewController.swift */,
 				E68E7ACA1CAC1D4500FDCA76 /* PagingPasscodeViewController.swift */,
 				E640E85D1C73A45A00C5F072 /* PasscodeEntryViewController.swift */,
-				E69E06B91C76173D00D0F926 /* RequirePasscodeIntervalViewController.swift */,
 				E68E7AD91CAC207400FDCA76 /* ChangePasscodeViewController.swift */,
 				E68E7ADB1CAC208200FDCA76 /* SetupPasscodeViewController.swift */,
 				E68E7ADD1CAC208A00FDCA76 /* RemovePasscodeViewController.swift */,
@@ -3658,7 +3655,6 @@
 				E4B7B7611A793CF20022C5E0 /* CharisSILB.ttf in Resources */,
 				D37524871C6E8B5A00A5F6C2 /* topdomains.txt in Resources */,
 				E4B7B7621A793CF20022C5E0 /* CharisSILBI.ttf in Resources */,
-				7B4980A81CE363ED0017547C /* Settings.xcassets in Resources */,
 				39F4C0FA2045D87400746155 /* FocusHelper.js in Resources */,
 				E4B7B7861A793CF20022C5E0 /* FiraSans-UltraLight.ttf in Resources */,
 				2F44FB2C1A9D5D8500FD20CC /* Home.xcassets in Resources */,
@@ -3806,6 +3802,7 @@
 				7B10AA9F1E3A15020002DD08 /* DataExtensions.swift in Sources */,
 				7B3D9E651E4CBFDB007A50DA /* NSCoderExtensions.swift in Sources */,
 				E65075931E37F7AB006961AC /* AppConstants.swift in Sources */,
+				A1510DDF20E51EF4008BF1F4 /* UIDeviceExtensions.swift in Sources */,
 				E65075B81E37F7AB006961AC /* NotificationConstants.swift in Sources */,
 				E65075AC1E37F7AB006961AC /* StringExtensions.swift in Sources */,
 				E65075951E37F7AB006961AC /* GeneralUtils.swift in Sources */,
@@ -4170,7 +4167,6 @@
 				D3B6923D1B9F9444004B87A4 /* FindInPageBar.swift in Sources */,
 				2F44FC721A9E840300FD20CC /* SettingsNavigationController.swift in Sources */,
 				74821F8E1DAD8F1400EEEA72 /* ActivityStreamHighlightCell.swift in Sources */,
-				E69E06BA1C76173D00D0F926 /* RequirePasscodeIntervalViewController.swift in Sources */,
 				D0E89A2920910917001CE5C7 /* DownloadsPanel.swift in Sources */,
 				D3BA7E0E1B0E934F00153782 /* ContextMenuHelper.swift in Sources */,
 				E660BE061BB0666D009AC090 /* InnerStrokedView.swift in Sources */,
@@ -4188,6 +4184,7 @@
 				E689C7301E0C7617008BAADB /* NSAttributedStringExtensions.swift in Sources */,
 				D0C95E0E200FD3B200E4E51C /* PrintHelper.swift in Sources */,
 				E64ED8FA1BC55AE300DAF864 /* UIAlertControllerExtensions.swift in Sources */,
+				A16DC67F20E585D90069C8E1 /* PasscodeSettingsViewController.swift in Sources */,
 				A1D8420320BC44F800BDAFF7 /* PopoverContainerView.swift in Sources */,
 				A1AD4BE120C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift in Sources */,
 				282DA4731A68C1E700A406E2 /* OpenSearch.swift in Sources */,
@@ -4255,7 +4252,6 @@
 				D3A9949D1A3686BD008AD1AC /* Tab.swift in Sources */,
 				EB11A1042044A90E0018F749 /* ContentBlockerHelper+Whitelist.swift in Sources */,
 				A93067E81D0FE18E00C49C6E /* NightModeHelper.swift in Sources */,
-				A1F66A8620DD988900303328 /* DeviceModelDetector.swift in Sources */,
 				E65075571E37F714006961AC /* FaviconFetcher.swift in Sources */,
 				D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */,
 				D3C744CD1A687D6C004CE85D /* URIFixup.swift in Sources */,

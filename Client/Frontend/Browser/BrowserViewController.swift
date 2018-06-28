@@ -36,7 +36,7 @@ private struct BrowserViewControllerUX {
     fileprivate static let BookmarkStarAnimationOffset: CGFloat = 80
 }
 
-class BrowserViewController: UIViewController {
+class BrowserViewController: SensitiveViewController {
     var homePanelController: HomePanelViewController?
     var webViewContainer: UIView!
     var urlBar: URLBarView!
