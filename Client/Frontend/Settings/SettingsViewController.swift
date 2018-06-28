@@ -6,6 +6,8 @@ import UIKit
 import Shared
 import BraveShared
 import Static
+import SwiftKeychainWrapper
+import LocalAuthentication
 
 extension TabBarVisibility: RepresentableOptionType {
   public var displayString: String {
@@ -35,7 +37,8 @@ private func BasicBoolRow(title: String, option: Preferences.Option<Bool>) -> Ro
     accessory: .switchToggle(
       value: option.value,
       { option.value = $0 }
-    )
+    ),
+    uuid: option.key
   )
 }
 
@@ -72,7 +75,7 @@ class SettingsViewController: TableViewController {
     
     super.init(style: .grouped)
     
-    UITableViewCell.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor = BraveUX.BraveOrange
+    UITableViewCell.appearance().tintColor = BraveUX.BraveOrange
   }
   
   @available(*, unavailable)
@@ -91,6 +94,23 @@ class SettingsViewController: TableViewController {
     tableView.separatorColor = UIConstants.TableViewSeparatorColor
     tableView.backgroundColor = UIConstants.TableViewHeaderBackgroundColor
     
+    dataSource.sections = [
+      generalSection,
+      privacySection,
+      securitySection,
+      shieldsSection,
+      supportSection,
+      aboutSection
+    ]
+  }
+  
+  @objc private func tappedDone() {
+    dismiss(animated: true)
+  }
+  
+  // MARK: - Sections
+  
+  private lazy var generalSection: Section = {
     var general = Section(
       header: .title(Strings.SettingsGeneralSectionTitle),
       rows: [
@@ -116,7 +136,7 @@ class SettingsViewController: TableViewController {
             selectedOption: TabBarVisibility(rawValue: Preferences.tabBarVisibility.value),
             optionChanged: { [unowned self] _, option in
               Preferences.tabBarVisibility.value = option.rawValue
-
+              
               if let indexPath = self.dataSource.indexPath(rowUUID: uuid, sectionUUID: general.uuid) {
                 self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = option.displayString
               }
@@ -127,8 +147,10 @@ class SettingsViewController: TableViewController {
         }, accessory: .disclosureIndicator, uuid: uuid)
       )
     }
-    
-    let cookieControlUuid = "privacy.cookie-control"
+    return general
+  }()
+  
+  private lazy var privacySection: Section = {
     var privacy = Section(
       header: .title(Strings.Privacy)
     )
@@ -140,37 +162,73 @@ class SettingsViewController: TableViewController {
           $0.tabManager = self.tabManager
         }
         self.navigationController?.pushViewController(clearPrivateData, animated: true)
-      }, accessory: .disclosureIndicator),
-      Row(text: Strings.Cookie_Control, detailText: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value)?.displayString, selection: {
-        // Show Options for cookie control
-        let optionsViewController = OptionSelectionViewController<HTTPCookie.AcceptPolicy>(
-          options: [.onlyFromMainDocumentDomain, .always, .never],
-          selectedOption: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value),
-          optionChanged: { [unowned self] _, option in
-            Preferences.Privacy.cookieAcceptPolicy.value = option.rawValue
-            
-            if let indexPath = self.dataSource.indexPath(rowUUID: cookieControlUuid, sectionUUID: privacy.uuid) {
-              self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = option.displayString
-            }
-          }
-        )
-        optionsViewController.headerText = Strings.Cookie_Control
-        self.navigationController?.pushViewController(optionsViewController, animated: true)
-      }, accessory: .disclosureIndicator, uuid: cookieControlUuid),
-      BasicBoolRow(title: Strings.Private_Browsing_Only, option: Preferences.Privacy.privateBrowsingOnly)
+      }, accessory: .disclosureIndicator)
     ]
+    var cookieControlRow = Row(text: Strings.Cookie_Control, detailText: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value)?.displayString, accessory: .disclosureIndicator)
+    cookieControlRow.selection = { [unowned self] in
+      // Show Options for cookie control
+      let optionsViewController = OptionSelectionViewController<HTTPCookie.AcceptPolicy>(
+        options: [.onlyFromMainDocumentDomain, .always, .never],
+        selectedOption: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value),
+        optionChanged: { [unowned self] _, option in
+          Preferences.Privacy.cookieAcceptPolicy.value = option.rawValue
+          
+          if let indexPath = self.dataSource.indexPath(rowUUID: cookieControlRow.uuid, sectionUUID: privacy.uuid) {
+            self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = option.displayString
+          }
+        }
+      )
+      optionsViewController.headerText = Strings.Cookie_Control
+      self.navigationController?.pushViewController(optionsViewController, animated: true)
+    }
+    privacy.rows.append(cookieControlRow)
+    privacy.rows.append(BasicBoolRow(title: Strings.Private_Browsing_Only, option: Preferences.Privacy.privateBrowsingOnly))
+    return privacy
+  }()
+  
+  private lazy var securitySection: Section = {
+    let passcodeTitle: String = {
+      let localAuthContext = LAContext()
+      if localAuthContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+        let title: String
+        if localAuthContext.biometryType == .faceID {
+          return AuthenticationStrings.faceIDPasscodeSetting
+        } else {
+          return AuthenticationStrings.touchIDPasscodeSetting
+        }
+      } else {
+        return AuthenticationStrings.passcode
+      }
+    }()
     
-    let security = Section(
+    return Section(
       header: .title(Strings.Security),
       rows: [
-        Row(text: Strings.Browser_Lock, accessory: .switchToggle(value: Preferences.Security.browserLockEnabled.value, { Preferences.Security.browserLockEnabled.value = $0 })),
-        Row(text: Strings.Change_Pin, selection: {
-          // Show pin selector
-        }, accessory: .disclosureIndicator)
+        Row(text: passcodeTitle, selection: { [unowned self] in
+          let passcodeSettings = PasscodeSettingsViewController()
+          self.navigationController?.pushViewController(passcodeSettings, animated: true)
+        }, accessory: .disclosureIndicator),
+//        Row(text: Strings.Browser_Lock, accessory: .switchToggle(value: Preferences.Security.browserLockEnabled.value, { [unowned self] on in
+//          self.browserLockToggled(on)
+//        }), uuid: Preferences.Security.browserLockEnabled.key),
+//        Row(text: Strings.Change_Pin, selection: { [unowned self] in
+//          if Preferences.Security.browserLockEnabled.value {
+//            // Show change passcode
+//            let changePasscodeController = ChangePasscodeViewController()
+//            let container = UINavigationController(rootViewController: changePasscodeController)
+//            self.present(container, animated: true)
+//          } else {
+//            let setupPasscodeController = SetupPasscodeViewController()
+//            let container = UINavigationController(rootViewController: setupPasscodeController)
+//            self.present(container, animated: true)
+//          }
+//        }, accessory: .disclosureIndicator)
       ]
     )
-    
-    let shields = Section(
+  }()
+  
+  private lazy var shieldsSection: Section = {
+    return Section(
       header: .title(Strings.Brave_Shield_Defaults),
       rows: [
         BasicBoolRow(title: Strings.Block_Ads_and_Tracking, option: Preferences.Shields.blockAdsAndTracking),
@@ -180,11 +238,12 @@ class SettingsViewController: TableViewController {
         BasicBoolRow(title: Strings.Fingerprinting_Protection, option: Preferences.Shields.fingerprintingProtection),
       ]
     )
-    
     // TODO: Add regional adblock
     // shields.rows.append(BasicBoolRow(title: Strings.Use_regional_adblock, option: Preferences.Shields.useRegionAdBlock))
-    
-    let support = Section(
+  }()
+  
+  private lazy var supportSection: Section = {
+    return Section(
       header: .title(Strings.Support),
       rows: [
         BasicBoolRow(title: Strings.Opt_in_to_telemetry, option: Preferences.Support.sendsCrashReportsAndMetrics),
@@ -205,10 +264,13 @@ class SettingsViewController: TableViewController {
         }, accessory: .disclosureIndicator)
       ]
     )
-    
-    let version = String(format: Strings.Version_template, Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "", Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "")
-    
-    let about = Section(
+  }()
+  
+  private lazy var aboutSection: Section = {
+    let version = String(format: Strings.Version_template,
+                         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
+                         Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "")
+    return Section(
       header: .title(Strings.About),
       rows: [
         Row(text: version, selection: { [unowned self] in
@@ -227,18 +289,37 @@ class SettingsViewController: TableViewController {
         })
       ]
     )
-    
-    dataSource.sections = [
-      general,
-      privacy,
-      security,
-      shields,
-      support,
-      about
-    ]
-  }
-  
-  @objc private func tappedDone() {
-    dismiss(animated: true)
-  }
+  }()
 }
+
+//extension SettingsViewController: PasscodeEntryDelegate {
+//  func passcodeValidationDidSucceed() {
+//    Preferences.Security.browserLockEnabled.value = false
+//    presentedViewController?.dismiss(animated: true, completion: nil)
+//  }
+//
+//  @objc private func userDidCreatePasscode(_ notification: Notification) {
+//    Preferences.Security.isPinSetup.value = true
+//    Preferences.Security.browserLockEnabled.value = true
+//  }
+//
+//  private func browserLockToggled(_ on: Bool) {
+//    if on {
+//      if KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() == nil || !Preferences.Security.isPinSetup.value {
+//        let setupPasscodeController = SetupPasscodeViewController()
+//        let container = UINavigationController(rootViewController: setupPasscodeController)
+//        self.present(container, animated: true)
+//      } else {
+//        Preferences.Security.browserLockEnabled.value = on
+//      }
+//    } else {
+//      let enterPasscodeController = PasscodeEntryViewController()
+//      enterPasscodeController.delegate = self
+//      let container = UINavigationController(rootViewController: enterPasscodeController)
+//      self.present(container, animated: true)
+//    }
+//  }
+//}
+//
+//extension SettingsViewController {
+//}

@@ -39,7 +39,7 @@ extension Preferences {
     static let cookieAcceptPolicy = Option<UInt>(key: "privacy.cookie-accept", default: HTTPCookie.AcceptPolicy.onlyFromMainDocumentDomain.rawValue)
   }
   final class Security {
-    static let browserLockEnabled = Option<Bool>(key: "security.browser-lock", default: false)
+    static let popupForBrowserLockShown = Option<Bool>(key: "security.popup-for-browser-lock", default: false)
   }
   final class Shields {
     static let blockAdsAndTracking = Option<Bool>(key: "shields.block-ads-and-tracking", default: true)
