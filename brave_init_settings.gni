@@ -4,7 +4,7 @@ declare_args() {
   # Release channel support.
   # "beta" for beta release.
   # "dev" for dev channel release.
-  # "canary" for canary channel release.
+  # "nightly" for nightly channel release.
   # "" for stable channel release.
   brave_channel = ""
 

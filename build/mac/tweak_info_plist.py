@@ -51,7 +51,7 @@ def Main(argv):
       type='string', default=None, help='If specified, the path to output ' + \
       'the tweaked plist, rather than overwriting the input.')
   parser.add_option('--brave_channel', dest='brave_channel', action='store',
-      type='string', default=None, help='Channel (beta, dev, canary)')
+      type='string', default=None, help='Channel (beta, dev, nightly)')
   parser.add_option('--brave_feed_url', dest='brave_feed_url', action='store',
       type='string', default=None, help='Target url for update feed')
   parser.add_option('--brave_dsa_file', dest='brave_dsa_file', action='store',
