@@ -49,3 +49,14 @@ source_set("common") {
     ]
   }
 }
+
+source_set("constants") {
+  if (is_official_build) {
+    sources = [
+      "//brave/common/brave_paths_mac.mm",
+      "//brave/common/brave_paths_mac.h",
+      "//brave/common/brave_channel_info_linux.cc",
+      "//brave/common/brave_channel_info_linux.h",
+    ]
+  }
+}
