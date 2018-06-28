@@ -28,8 +28,12 @@ const wchar_t kBinariesAppGuid[] = L"{F7526127-0B8A-406F-8998-282BEA40103A}";
 const wchar_t kBinariesAppGuid[] = L"";
 #endif
 
+#if defined(OFFICIAL_BUILD)
 // Brave integrates with Brave Update, so the app GUID above is used.
 const wchar_t kBinariesPathName[] = L"";
+#else
+const wchar_t kBinariesPathName[] = L"Brave Binaries";
+#endif
 
 #if defined(OFFICIAL_BUILD)
 // Regarding to install switch, use same value in
@@ -158,10 +162,10 @@ const InstallConstants kInstallModes[] = {
         L"",              // Empty install_suffix for the primary install mode.
         L"",              // No logo suffix for the primary install mode.
         L"",              // Empty app_guid since no integraion with Brave Update.
-        L"Brave Developer",  // A distinct base_app_name.
-        L"BraveDeveloper",   // A distinct base_app_id.
+        L"Brave Development",  // A distinct base_app_name.
+        L"BraveDevelopment",   // A distinct base_app_id.
         L"BraveDevHTM",                             // ProgID prefix.
-        L"Brave Developer HTML Document",           // ProgID description.
+        L"Brave Development HTML Document",           // ProgID description.
         L"{D6527C63-5CDD-4EF3-9299-1504E17CBD18}",  // Active Setup GUID.
         L"{B2863926-AF5D-43A2-99CC-29EC43790C89}",  // CommandExecuteImpl CLSID.
         { 0xeb41c6e8,
