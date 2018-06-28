@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index 3bf47fa746e2a417f89201f3e3800d8639f2e323..80d681f20de36650d2d2b3fb000c71687656140e 100644
+index 3bf47fa746e2a417f89201f3e3800d8639f2e323..ca39ac3c246c73da4fe601e355d5f74d3a4efedf 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
-@@ -7,9 +7,14 @@
+@@ -7,9 +7,13 @@
  #include <stdint.h>
  
  #include "base/bind.h"
@@ -13,11 +13,10 @@ index 3bf47fa746e2a417f89201f3e3800d8639f2e323..80d681f20de36650d2d2b3fb000c7168
 +#include "base/values.h"
 +#include "brave/common/importer/brave_importer_utils.h"
 +#include "brave/common/importer/chrome_importer_utils.h"
-+#include "brave/grit/generated_resources.h"
  #include "build/build_config.h"
  #include "chrome/browser/shell_integration.h"
  #include "chrome/common/importer/firefox_importer_utils.h"
-@@ -124,6 +129,79 @@ void DetectFirefoxProfiles(const std::string locale,
+@@ -124,6 +128,79 @@ void DetectFirefoxProfiles(const std::string locale,
    profiles->push_back(firefox);
  }
  
@@ -97,7 +96,7 @@ index 3bf47fa746e2a417f89201f3e3800d8639f2e323..80d681f20de36650d2d2b3fb000c7168
  std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
      const std::string& locale,
      bool include_interactive_profiles) {
-@@ -136,21 +214,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+@@ -136,21 +213,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
  #if defined(OS_WIN)
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
