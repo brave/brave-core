@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/chrome_views_delegate_linux.cc b/chrome/browser/ui/views/chrome_views_delegate_linux.cc
+index 3a3712ea6730027724df4915b44364762c173959..aad3e4ae087483251c0fa2595fa193af3e0c1868 100644
+--- a/chrome/browser/ui/views/chrome_views_delegate_linux.cc
++++ b/chrome/browser/ui/views/chrome_views_delegate_linux.cc
+@@ -23,7 +23,7 @@ bool IsDesktopEnvironmentUnity() {
+ }
+ 
+ int GetWindowIconResourceId() {
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+   switch (chrome::GetChannel()) {
+     case version_info::Channel::DEV:
+       return IDR_PRODUCT_LOGO_128_DEV;

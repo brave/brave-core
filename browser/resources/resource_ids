@@ -18,4 +18,7 @@
   "brave/app/theme/brave_theme_resources.grd": {
     "structures": [36000],
   },
+  "brave/app/theme/brave_unscaled_resources.grd": {
+    "includes": [36500],
+  },
 }
