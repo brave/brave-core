@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- This file is created by l10nUtil.js. Do not edit manually. -->
 <!-- Settings-specific strings (included from generated_resources.grd). -->
 <grit-part>
   <!-- Main Page -->
@@ -3409,6 +3410,7 @@
     <message name="IDS_SETTINGS_IMPORT_AUTOFILL_FORM_DATA_CHECKBOX" desc="Checkbox for importing form data for autofill">
       Autofill form data
     </message>
+
     <message name="IDS_SETTINGS_IMPORT_CHOOSE_FILE" desc="Text for the Choose File on dialog">
       Choose File
     </message>
