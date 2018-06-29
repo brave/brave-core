@@ -9,11 +9,6 @@
 #include <map>
 #include <mutex>
 
-#if defined CHROMIUM_BUILD
-#include "base/callback.h"
-#else
-#include <functional>
-#endif
 
 #if defined CHROMIUM_BUILD
 #include "bat_client_webrequest_chromium.h"
@@ -30,19 +25,13 @@ namespace leveldb {
 namespace braveledger_bat_get_media {
 
   class BatGetMedia {
-  public:
-
-  #if defined CHROMIUM_BUILD
-    typedef base::Callback <void(const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&)> GetMediaPublisherInfoCallback;
-  #else
-    typedef std::function<void(const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&)> GetMediaPublisherInfoCallback;
-  #endif
+  public:  
 
 	  BatGetMedia();
 	  ~BatGetMedia();
 
 	  void getPublisherFromMediaProps(const std::string& mediaId, const std::string& mediaKey, const std::string& providerName,
-		  const uint64_t& duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, BatGetMedia::GetMediaPublisherInfoCallback callback);
+		  const uint64_t& duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, braveledger_bat_helper::GetMediaPublisherInfoCallback callback);
 
   private:
 	  void openMediaPublishersDB();
@@ -65,7 +54,7 @@ namespace braveledger_bat_get_media {
 
     braveledger_bat_client_webrequest::BatClientWebRequest batClientWebRequest_;
 
-	  std::map<std::string, BatGetMedia::GetMediaPublisherInfoCallback> mapCallbacks_;
+	  std::map<std::string, braveledger_bat_helper::GetMediaPublisherInfoCallback> mapCallbacks_;
 
 	  std::mutex callbacks_access_mutex_;
   };

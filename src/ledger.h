@@ -16,7 +16,6 @@
 #include "bat_get_media.h"
 
 
-
 namespace braveledger_ledger {
 
   class Ledger {

@@ -5,14 +5,6 @@
 #include <cmath>
 #include <algorithm>
 
-#if defined CHROMIUM_BUILD
-#include "base/sequenced_task_runner.h"
-#include "base/task_scheduler/post_task.h"
-#include "chrome/browser/browser_process.h"
-#include "logging.h"
-
-#endif
-
 #include "bat_helper.h"
 #include "bat_publishers.h"
 #include "static_values.h"
@@ -115,7 +107,7 @@ void BatPublishers::initSynopsis() {
 }
 
 void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64_t& duration,
-    BatPublishers::SaveVisitCallback callback) {
+  braveledger_bat_helper::SaveVisitCallback callback) {
   double currentScore = concaveScore(duration);
 
   std::string stringifiedPublisher;
@@ -148,12 +140,12 @@ void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64
     assert(status.ok());
   }
   
-  braveledger_bat_helper::run_runnable <BatPublishers::SaveVisitCallback, const std::string&, const uint64_t& >(callback, publisher, std::cref(verifiedTimestamp) );  
+  braveledger_bat_helper::run_runnable <braveledger_bat_helper::SaveVisitCallback, const std::string&, const uint64_t& >(callback, publisher, std::cref(verifiedTimestamp) );
   synopsisNormalizerInternal();
 }
 
 void BatPublishers::saveVisit(const std::string& publisher, const uint64_t& duration,
-    BatPublishers::SaveVisitCallback callback, bool ignoreMinTime) {
+  braveledger_bat_helper::SaveVisitCallback callback, bool ignoreMinTime) {
   if (!ignoreMinTime && duration < state_.min_pubslisher_duration_) {
     return;
   }

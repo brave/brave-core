@@ -9,29 +9,35 @@
 #include "base/task_scheduler/post_task.h"
 #include "base/bind.h"
 #include "base/callback.h"
+
 #else
 #include <functional>
 #include <iostream>
 #include <cassert>
 #endif
 
-
 namespace braveledger_bat_helper {
 
   struct FETCH_CALLBACK_EXTRA_DATA_ST;
   struct CLIENT_STATE_ST;
   struct PUBLISHER_STATE_ST;
+  struct MEDIA_PUBLISHER_INFO;
 
   using FetchCallbackSignature = void (bool, const std::string&, const FETCH_CALLBACK_EXTRA_DATA_ST&);
   using ReadStateCallbackSignature = void (bool, const CLIENT_STATE_ST&);
   using ReadPublisherStateCallbackSignature = void (bool, const PUBLISHER_STATE_ST&);
   using SimpleCallbackSignature = void (const std::string&);
+  using GetMediaPublisherInfoSignature = void(const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&);
+  using SaveVisitSignature = void(const std::string&, const uint64_t&);
+
 
 #if defined CHROMIUM_BUILD
   using  FetchCallback = base::Callback<FetchCallbackSignature>;
   using  ReadStateCallback = base::Callback<ReadStateCallbackSignature>;
   using  ReadPublisherStateCallback = base::Callback<ReadPublisherStateCallbackSignature>;
   using  SimpleCallback = base::Callback<SimpleCallbackSignature>;
+  using  GetMediaPublisherInfoCallback = base::Callback<GetMediaPublisherInfoSignature>;
+  using  SaveVisitCallback = base::Callback<SaveVisitSignature>;
 
   //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.  
   template <typename BaseType, typename Signature, typename... Args >
@@ -78,6 +84,8 @@ namespace braveledger_bat_helper {
   using ReadStateCallback =  std::function<braveledger_bat_helper::ReadStateCallbackSignature>;
   using ReadPublisherStateCallback  = std::function<braveledger_bat_helper::ReadPublisherStateCallbackSignature> ;
   using SimpleCallback =  std::function<SimpleCallbackSignature>;
+  using  GetMediaPublisherInfoCallback = std::function<GetMediaPublisherInfoSignature>;
+  using  SaveVisitCallback = std::function<SaveVisitSignature>;
 
   //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.  
   template <typename BaseType, typename Signature, typename ... Args >

@@ -6,13 +6,6 @@
 #include <algorithm>
 #include <sstream>
 
-#if defined CHROMIUM_BUILD
-#include "base/bind.h"
-#include "base/guid.h"
-#include "url_util.h"
-#include "url_canon_stdstring.h"
-#endif
-
 
 #include "static_values.h"
 #include "bat_helper.h"

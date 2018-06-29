@@ -2,16 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#if defined CHROMIUM_BUILD
-#include "base/bind.h"
-#include "base/guid.h"
-#include "base/logging.h"
-#include "base/macros.h"
-#include "base/task_scheduler/post_task.h"
-#else
-#include <iostream>
-#include <cassert>
-#endif
 
 #include "bat_helper.h"
 #include "ledger.h"
@@ -342,7 +332,7 @@ namespace braveledger_ledger {
       return;
     }    
 
-    BatGetMedia::GetMediaPublisherInfoCallback runnable1 = braveledger_bat_helper::bat_mem_fun_binder2(*this, &Ledger::OnMediaRequestCallback);
+    braveledger_bat_helper::GetMediaPublisherInfoCallback runnable1 = braveledger_bat_helper::bat_mem_fun_binder2(*this, &Ledger::OnMediaRequestCallback);
 
     auto runnable2 = braveledger_bat_helper::bat_mem_fun_binder(*bat_get_media_, &BatGetMedia::getPublisherFromMediaProps, 
       std::cref(mediaId), std::cref(mediaKey), type, std::cref(duration), std::cref(twitchEventInfo), runnable1);

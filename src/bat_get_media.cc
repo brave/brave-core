@@ -4,16 +4,6 @@
 
 #include <sstream>
 
-#if defined CHROMIUM_BUILD
-#include "base/bind.h"
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
-#include "base/path_service.h"
-#include "base/task_scheduler/post_task.h"
-#include "url_util.h"
-#include "url_canon_stdstring.h"
-#endif
-
 #include "bat_get_media.h"
 #include "static_values.h"
 
@@ -56,7 +46,7 @@ void BatGetMedia::openMediaPublishersDB() {
 }
 
 void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const std::string& mediaKey, const std::string& providerName,
-		const uint64_t& duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, BatGetMedia::GetMediaPublisherInfoCallback callback) {
+		const uint64_t& duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, braveledger_bat_helper::GetMediaPublisherInfoCallback callback) {
 
 	// Check if the publisher's info is already cached
 	DCHECK(level_db_);
@@ -85,7 +75,7 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
 				}
 			}
 			
-      braveledger_bat_helper::run_runnable <BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(realDuration), std::cref(publisherInfo) );
+      braveledger_bat_helper::run_runnable <braveledger_bat_helper::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(realDuration), std::cref(publisherInfo) );
 
 			return;
 		}
@@ -141,12 +131,12 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
 		{
 	  	std::lock_guard<std::mutex> guard(callbacks_access_mutex_);
 
-	  	std::map<std::string, BatGetMedia::GetMediaPublisherInfoCallback>::iterator iter = mapCallbacks_.find(extraData.string5);
+	  	std::map<std::string, braveledger_bat_helper::GetMediaPublisherInfoCallback>::iterator iter = mapCallbacks_.find(extraData.string5);
 	  	DCHECK(iter != mapCallbacks_.end());
-	  	BatGetMedia::GetMediaPublisherInfoCallback callback = iter->second;
+      braveledger_bat_helper::GetMediaPublisherInfoCallback callback = iter->second;
 	  	mapCallbacks_.erase(iter);
 
-      braveledger_bat_helper::run_runnable <BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(realDuration), std::cref(publisherInfo) );
+      braveledger_bat_helper::run_runnable <braveledger_bat_helper::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(realDuration), std::cref(publisherInfo) );
 	  }
 	}
 }
@@ -304,11 +294,11 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
 		{
 	  	std::lock_guard<std::mutex> guard(callbacks_access_mutex_);
 
-	  	std::map<std::string, BatGetMedia::GetMediaPublisherInfoCallback>::iterator iter = mapCallbacks_.find(extraData.string5);
+	  	std::map<std::string, braveledger_bat_helper::GetMediaPublisherInfoCallback>::iterator iter = mapCallbacks_.find(extraData.string5);
 	  	DCHECK(iter != mapCallbacks_.end());
-	  	BatGetMedia::GetMediaPublisherInfoCallback callback = iter->second;
+      braveledger_bat_helper::GetMediaPublisherInfoCallback callback = iter->second;
 	  	mapCallbacks_.erase(iter);
-      braveledger_bat_helper::run_runnable <BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(extraData.value1), std::cref(publisherInfo) );
+      braveledger_bat_helper::run_runnable <braveledger_bat_helper::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(extraData.value1), std::cref(publisherInfo) );
 	  }
 	}
 }

@@ -11,12 +11,6 @@
 #include <vector>
 #include <memory>
 
-#if defined CHROMIUM_BUILD
-#include "base/callback.h"
-#else
-#include <functional>
-#endif
-
 #include "bat_helper.h"
 
 #include "leveldb/db.h"
@@ -24,13 +18,7 @@
 namespace braveledger_bat_publishers {
 
   class BatPublishers {
-  public:
-
-  #if defined CHROMIUM_BUILD
-    typedef base::Callback<void(const std::string&, const uint64_t&)> SaveVisitCallback;
-  #else
-    typedef std::function<void(const std::string&, const uint64_t&)> SaveVisitCallback;
-  #endif  
+  public:  
 
     BatPublishers();
 
@@ -39,7 +27,7 @@ namespace braveledger_bat_publishers {
     void initSynopsis();
 
     void saveVisit(const std::string& publisher, const uint64_t& duration,
-      BatPublishers::SaveVisitCallback callback, bool ignoreMinTime);
+      braveledger_bat_helper::SaveVisitCallback callback, bool ignoreMinTime);
 
     void setPublisherTimestampVerified(const std::string& publisher,
       const uint64_t& verifiedTimestamp, const bool& verified);
@@ -72,7 +60,7 @@ namespace braveledger_bat_publishers {
     void loadPublishers();
 
     void saveVisitInternal(const std::string& publisher, const uint64_t& duration,
-      BatPublishers::SaveVisitCallback callback);
+      braveledger_bat_helper::SaveVisitCallback callback);
 
     void setPublisherFavIconInternal(const std::string& publisher, const std::string& favicon_url);
 

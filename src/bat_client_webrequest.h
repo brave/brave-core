@@ -8,8 +8,8 @@
 
 #include <vector>
 #include <string>
-#include "bat_helper.h"
 
+#include "bat_helper.h"
 
 namespace braveledger_bat_client_webrequest {
 
