@@ -8,21 +8,9 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <cassert>
-
-
-#if defined CHROMIUM_BUILD
-#include "base/callback.h"
-#include "base/bind.h"
-#else
-#include <functional>
-#include <iostream>
-
-#define DCHECK assert
-#define LOG(LEVEL) std::cerr<< std::endl<< #LEVEL << ": "
-#endif
 
 #include "static_values.h"
+#include "bat_helper_platform.h"
 
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -313,9 +301,8 @@ namespace braveledger_bat_helper {
   };
 
   
-  /*
-    The struct is serialized/deserialized from/into JSON as part of MEDIA_PUBLISHER_INFO
-  */
+  
+  // The struct is serialized/deserialized from/into JSON as part of MEDIA_PUBLISHER_INFO  
   struct TWITCH_EVENT_INFO {
     TWITCH_EVENT_INFO();
     TWITCH_EVENT_INFO(const TWITCH_EVENT_INFO&);
@@ -358,78 +345,24 @@ namespace braveledger_bat_helper {
     PUT = 1,
     POST = 2
   };
+
+  struct CURRENT_RECONCILE {
+    CURRENT_RECONCILE();
+    ~CURRENT_RECONCILE();
+
+    std::string viewingId_;
+    std::string anonizeViewingId_;
+    std::string registrarVK_;
+    std::string preFlight_;
+    std::string masterUserToken_;
+    SURVEYOR_INFO_ST surveyorInfo_;
+    uint64_t timestamp_ = 0u;
+    std::map<std::string, double> rates_;
+    std::string amount_;
+    std::string currency_;
+    SimpleCallback ledgerCallback_;    
+  };
   
-
-  typedef void (FetchCallbackSignature) (bool, const std::string&, const FETCH_CALLBACK_EXTRA_DATA_ST&);
-  typedef void (ReadStateCallbackSignature) (bool, const CLIENT_STATE_ST&);
-  typedef void (ReadPublisherStateCallbackSignature) (bool, const PUBLISHER_STATE_ST&) ;
-  typedef void (SimpleCallbackSignature) (const std::string&) ;
-
-#if defined CHROMIUM_BUILD
-  typedef base::Callback<FetchCallbackSignature> FetchCallback;
-  typedef base::Callback<ReadStateCallbackSignature> ReadStateCallback;
-  typedef base::Callback<ReadPublisherStateCallbackSignature> ReadPublisherStateCallback;
-  typedef base::Callback<SimpleCallbackSignature> SimpleCallback;
-
-  //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.  
-  template <typename BaseType, typename Signature >
-  static base::Callback<Signature> bat_mem_fun_binder(BaseType & instance, Signature BaseType::* ptr_to_mem)
-  {
-    return base::Bind(ptr_to_mem, base::Unretained(&instance));
-  }
-
-  //working with Chromium Callback.Run()
-  template <typename ReturnValue, typename Runnable, typename... Args>
-  ReturnValue run_runnable(Runnable & runnable, Args... args)
-  {
-    return runnable.Run(args...);
-  }
-
-  #define bat_mem_fun_binder1 bat_mem_fun_binder
-  #define bat_mem_fun_binder2 bat_mem_fun_binder
-  #define bat_mem_fun_binder3 bat_mem_fun_binder
-
-#else
-  typedef std::function<FetchCallbackSignature> FetchCallback;
-  typedef std::function<ReadStateCallbackSignature> ReadStateCallback;
-  typedef std::function<ReadPublisherStateCallbackSignature> ReadPublisherStateCallback;
-  typedef std::function<SimpleCallbackSignature> SimpleCallback;
-
-  //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.  
-  template <typename BaseType, typename Signature >
-  std::function<Signature> bat_mem_fun_binder(BaseType & instance, Signature BaseType::* ptr_to_mem)
-  {    
-    return std::bind(ptr_to_mem, &instance);
-  }
-
-  template <typename BaseType, typename Signature >
-  std::function<Signature> bat_mem_fun_binder1(BaseType & instance, Signature BaseType::* ptr_to_mem)
-  {
-    using namespace std::placeholders;    
-    return std::bind(ptr_to_mem, &instance, _1);    
-  }
-
-  template <typename BaseType, typename Signature >
-  std::function<Signature> bat_mem_fun_binder2(BaseType & instance, Signature BaseType::* ptr_to_mem)
-  {
-    using namespace std::placeholders;
-    return std::bind(ptr_to_mem, &instance, _1, _2);
-  }
-
-  template <typename BaseType, typename Signature >
-  std::function<Signature> bat_mem_fun_binder3(BaseType & instance, Signature BaseType::* ptr_to_mem)
-  {
-    using namespace std::placeholders;
-    return std::bind(ptr_to_mem, &instance, _1, _2, _3);
-  }
-
-  //working with C++ function.operator() 
-  template <typename ReturnValue, typename Runnable, typename ... Args>
-  ReturnValue run_runnable(Runnable & runnable, Args ... args)
-  {
-    return runnable(args...);
-  }
-#endif  
 
   bool getJSONValue(const std::string& fieldName, const std::string& json, std::string & value);
 
@@ -486,19 +419,7 @@ namespace braveledger_bat_helper {
 
   void savePublisherState(const PUBLISHER_STATE_ST& state);
 
-  void loadPublisherState(ReadPublisherStateCallback callback);
-  
-  // We have to implement different function for iOS, probably laptop
-  void writeStateFile(const std::string& data);
-  
-  // We have to implement different function for iOS, probably laptop
-  void readStateFile(ReadStateCallback callback);
-  
-  // We have to implement different function for iOS, probably laptop
-  void writePublisherStateFile(const std::string& data);
-  
-  // We have to implement different function for iOS, probably laptop
-  void readPublisherStateFile(ReadPublisherStateCallback callback);
+  void loadPublisherState(ReadPublisherStateCallback callback);  
 
   void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts);
 
@@ -510,35 +431,25 @@ namespace braveledger_bat_helper {
 
   uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);
 
+  // We have to implement different function for iOS, probably laptop
+  void writeStateFile(const std::string& data);
+
+  // We have to implement different function for iOS, probably laptop
+  void readStateFile(ReadStateCallback callback);
+
+  // We have to implement different function for iOS, probably laptop
+  void writePublisherStateFile(const std::string& data);
+
+  // We have to implement different function for iOS, probably laptop
+  void readPublisherStateFile(ReadPublisherStateCallback callback);
+
+  void getDbFile(const std::string & id, std::string & pubDbPath);
+
   // TODO debug
   //static void readEmscripten();
   //static void readEmscriptenInternal();
-  //
-
-
-  struct CURRENT_RECONCILE {
-    CURRENT_RECONCILE();
-    ~CURRENT_RECONCILE();
-
-    std::string viewingId_;
-    std::string anonizeViewingId_;
-    std::string registrarVK_;
-    std::string preFlight_;
-    std::string masterUserToken_;
-    SURVEYOR_INFO_ST surveyorInfo_;
-    uint64_t timestamp_ = 0u;
-    std::map<std::string, double> rates_;
-    std::string amount_;
-    std::string currency_;
-    SimpleCallback ledgerCallback_;
-  };
-
-
-  //cross-platform functions
-  std::string GenerateGUID();
-  void encodeURIComponent(const std::string & instr, std::string & outstr);
-  void getDbFile(const std::string & id, std::string & pubDbPath);
-  void DecodeURLChars(const std::string& input, std::string& output);
+  //  
+  
 } //namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_

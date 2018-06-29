@@ -16,13 +16,8 @@
 #include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/files/file_util.h"
-#include "base/sequenced_task_runner.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/task_scheduler/post_task.h"
-#include "url/url_util.h"
-#include "url/url_canon_stdstring.h"
-#include "base/guid.h"
 #endif
+
 
 //tweetnacl
 #include "tweetnacl.h"
@@ -1255,8 +1250,7 @@ namespace braveledger_bat_helper {
     std::vector<uint8_t> vSeed(SEED_LENGTH);
     std::random_device r;
     std::seed_seq seed{r(), r(), r(), r(), r(), r(), r(), r()};
-    auto rand = std::bind(std::uniform_int_distribution<>(0, UCHAR_MAX),
-                            std::mt19937(seed));
+    auto rand = std::bind(std::uniform_int_distribution<>(0, UCHAR_MAX), std::mt19937(seed));
 
     //std::generate_n(std::ostream_iterator<int>(seedStr, ","), seedLength, rand);
     std::generate_n(vSeed.begin(), SEED_LENGTH, rand);
@@ -1564,131 +1558,37 @@ namespace braveledger_bat_helper {
 
   uint64_t currentTime() {
     return time(0);
-  }
-
-  void writeStateFile(const std::string& data) {
-  #if defined CHROMIUM_BUILD
-    base::FilePath dirToSave;
-    base::PathService::Get(base::DIR_HOME, &dirToSave);
-    dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
-
-    int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());
-    LOG(ERROR)<<"writeStateFile to: " << dirToSave << " : " << data.length() << " : " <<succeded;
-    assert(succeded != -1);
-    #endif
-  }
-
-  void readStateFile(ReadStateCallback callback) {
-  #if defined CHROMIUM_BUILD
-    base::FilePath dirToSave;
-    base::PathService::Get(base::DIR_HOME, &dirToSave);
-    dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
-    int64_t file_size = 0;
-    if (!GetFileSize(dirToSave, &file_size)) {
-
-      callback.Run(false, CLIENT_STATE_ST());
-
-      return;
-    }
-    std::vector<char> data(file_size + 1);
-    if (-1 != base::ReadFile(dirToSave, &data.front(), file_size)) {
-      data[file_size] = '\0';
-      CLIENT_STATE_ST state;
-      braveledger_bat_helper::loadFromJson(state, &data.front());
-      callback.Run(true, state);
-      return;
-    }
-
-    callback.Run(false, CLIENT_STATE_ST());
-  #endif
-  }
-
-  void writePublisherStateFile(const std::string& data) {
-  #if defined CHROMIUM_BUILD
-    base::FilePath dirToSave;
-    base::PathService::Get(base::DIR_HOME, &dirToSave);
-    dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
-
-    int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());  
-    LOG(ERROR)<<"writeStateFile to: " << dirToSave << " : " << data.length() << " : " <<succeded;
-    assert(succeded != -1);
-  #else
-
-  #endif
-  }
-
-  void readPublisherStateFile(ReadPublisherStateCallback callback) {
-  #if defined CHROMIUM_BUILD
-    base::FilePath dirToSave;
-    base::PathService::Get(base::DIR_HOME, &dirToSave);
-    dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
-    int64_t file_size = 0;
-    if (!GetFileSize(dirToSave, &file_size)) {
-
-      callback.Run(false, PUBLISHER_STATE_ST());
-
-      return;
-    }
-    std::vector<char> data(file_size + 1);
-    if (-1 != base::ReadFile(dirToSave, &data.front(), file_size)) {
-      data[file_size] = '\0';
-      PUBLISHER_STATE_ST state;    
-      braveledger_bat_helper::loadFromJson(state, &data.front());
-      callback.Run(true, state);
-
-      return;
-    }
-
-    callback.Run(false, PUBLISHER_STATE_ST());
-  #else
-
-  #endif
-  }
+  }  
+  
 
   void saveState(const CLIENT_STATE_ST& state) {
   
     std::string data;
     braveledger_bat_helper::saveToJson(state, data);
     //LOG(ERROR) << "!!!saveState == " << data;
-  #if defined CHROMIUM_BUILD
-    scoped_refptr<base::SequencedTaskRunner> task_runner =
-       base::CreateSequencedTaskRunnerWithTraits(
-           {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-    task_runner->PostTask(FROM_HERE, base::Bind(&writeStateFile, data));
-  #else
-  #endif
+
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeStateFile, std::cref(data));
+    braveledger_bat_helper::PostTask(runnable);
   }
 
   void loadState(ReadStateCallback callback) {
-  #if defined CHROMIUM_BUILD
-    scoped_refptr<base::SequencedTaskRunner> task_runner =
-       base::CreateSequencedTaskRunnerWithTraits(
-           {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-    task_runner->PostTask(FROM_HERE, base::Bind(&readStateFile, callback));
-  #else
-  #endif
+  
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::readStateFile, callback);
+    braveledger_bat_helper::PostTask(runnable);
   }
 
   void savePublisherState(const PUBLISHER_STATE_ST& state) {
     std::string data;
     braveledger_bat_helper::saveToJson(state, data);
-  #if defined CHROMIUM_BUILD
-    scoped_refptr<base::SequencedTaskRunner> task_runner =
-       base::CreateSequencedTaskRunnerWithTraits(
-           {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-    task_runner->PostTask(FROM_HERE, base::Bind(&writePublisherStateFile, data));
-  #else
-  #endif
+  
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writePublisherStateFile, std::cref(data));
+    braveledger_bat_helper::PostTask(runnable);
   }
 
   void loadPublisherState(ReadPublisherStateCallback callback) {
-  #if defined CHROMIUM_BUILD
-    scoped_refptr<base::SequencedTaskRunner> task_runner =
-       base::CreateSequencedTaskRunnerWithTraits(
-           {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-    task_runner->PostTask(FROM_HERE, base::Bind(&readPublisherStateFile, callback));
-  #else
-  #endif
+  
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::readPublisherStateFile, callback);
+    braveledger_bat_helper::PostTask(runnable);
   }
 
   void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts) {
@@ -1798,50 +1698,99 @@ namespace braveledger_bat_helper {
   }
 
 
-  void DecodeURLChars(const std::string& input, std::string& output) {
-  #if defined CHROMIUM_BUILD
-    url::RawCanonOutputW<1024> canonOutput;
-    url::DecodeURLEscapeSequences(input.c_str(), input.length(), &canonOutput);
-    output = base::UTF16ToUTF8(base::StringPiece16(canonOutput.data(), canonOutput.length()));
-  #else
-    //TODO: to implement  
-  #endif
+  
+  void writeStateFile(const std::string& data) {
+#if defined CHROMIUM_BUILD
+    base::FilePath dirToSave;
+    base::PathService::Get(base::DIR_HOME, &dirToSave);
+    dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
+
+    int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());
+    LOG(ERROR) << "writeStateFile to: " << dirToSave << " : " << data.length() << " : " << succeded;
+    assert(succeded != -1);
+#endif
+  }
+
+  void readStateFile(ReadStateCallback callback) {
+#if defined CHROMIUM_BUILD
+    base::FilePath dirToSave;
+    base::PathService::Get(base::DIR_HOME, &dirToSave);
+    dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
+    int64_t file_size = 0;
+    if (!GetFileSize(dirToSave, &file_size)) {
+
+      callback.Run(false, CLIENT_STATE_ST());
+
+      return;
+    }
+    std::vector<char> data(file_size + 1);
+    if (-1 != base::ReadFile(dirToSave, &data.front(), file_size)) {
+      data[file_size] = '\0';
+      CLIENT_STATE_ST state;
+      braveledger_bat_helper::loadFromJson(state, &data.front());
+      callback.Run(true, state);
+      return;
+    }
+
+    callback.Run(false, CLIENT_STATE_ST());
+#endif
   }
 
 
-  std::string GenerateGUID()
-  {
-  #if defined CHROMIUM_BUILD
-    return base::GenerateGUID();
-  #else
-    //TODO: to implement
-    return "please implement";
-  #endif
+
+  void writePublisherStateFile(const std::string& data) {
+#if defined CHROMIUM_BUILD
+    base::FilePath dirToSave;
+    base::PathService::Get(base::DIR_HOME, &dirToSave);
+    dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
+
+    int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());
+    LOG(ERROR) << "writeStateFile to: " << dirToSave << " : " << data.length() << " : " << succeded;
+    assert(succeded != -1);
+#else
+
+#endif
   }
 
-  void encodeURIComponent(const std::string & instr, std::string & outstr)
-  {
-  #if defined CHROMIUM_BUILD
-    url::StdStringCanonOutput surveyorIdCanon(&outstr);
-    url::EncodeURIComponent(instr.c_str(), instr.length(), &surveyorIdCanon);
-    surveyorIdCanon.Complete();
-  #else
-    //TODO: to implement
-    assert(false);
-  #endif
+  void readPublisherStateFile(ReadPublisherStateCallback callback) {
+#if defined CHROMIUM_BUILD
+    base::FilePath dirToSave;
+    base::PathService::Get(base::DIR_HOME, &dirToSave);
+    dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
+    int64_t file_size = 0;
+    if (!GetFileSize(dirToSave, &file_size)) {
+
+      callback.Run(false, PUBLISHER_STATE_ST());
+
+      return;
+    }
+    std::vector<char> data(file_size + 1);
+    if (-1 != base::ReadFile(dirToSave, &data.front(), file_size)) {
+      data[file_size] = '\0';
+      PUBLISHER_STATE_ST state;
+      braveledger_bat_helper::loadFromJson(state, &data.front());
+      callback.Run(true, state);
+
+      return;
+    }
+
+    callback.Run(false, PUBLISHER_STATE_ST());
+#else
+
+#endif
   }
 
   void getDbFile(const std::string & id, std::string & pubDbPath)
   {
-  #if defined CHROMIUM_BUILD
+#if defined CHROMIUM_BUILD
     base::FilePath dbFilePath;
     base::PathService::Get(base::DIR_HOME, &dbFilePath);
     dbFilePath = dbFilePath.Append(id);
     pubDbPath = dbFilePath.value();
-  #else
+#else
     //TODO: to implement
     assert(false);
-  #endif
+#endif
   }
 
   // Enable emscripten calls

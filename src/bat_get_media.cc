@@ -25,12 +25,9 @@ namespace braveledger_bat_get_media {
 
 BatGetMedia::BatGetMedia():
 	level_db_(nullptr) {
-#if defined CHROMIUM_BUILD
-	scoped_refptr<base::SequencedTaskRunner> task_runner =
-   base::CreateSequencedTaskRunnerWithTraits(
-       {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatGetMedia::openMediaPublishersDB, base::Unretained(this)));
-#endif
+
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatGetMedia::openMediaPublishersDB);
+  braveledger_bat_helper::PostTask(runnable);
 }
 
 BatGetMedia::~BatGetMedia() {
@@ -88,7 +85,7 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
 				}
 			}
 			
-      braveledger_bat_helper::run_runnable <void, BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, realDuration, publisherInfo);
+      braveledger_bat_helper::run_runnable <BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(realDuration), std::cref(publisherInfo) );
 
 			return;
 		}
@@ -149,7 +146,7 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
 	  	BatGetMedia::GetMediaPublisherInfoCallback callback = iter->second;
 	  	mapCallbacks_.erase(iter);
 
-      braveledger_bat_helper::run_runnable <void, BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, realDuration, publisherInfo);	  	
+      braveledger_bat_helper::run_runnable <BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(realDuration), std::cref(publisherInfo) );
 	  }
 	}
 }
@@ -299,15 +296,10 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
 		publisherInfo.publisher_ = publisher;
 
     std::string medPubJson;
-    braveledger_bat_helper::saveToJson(publisherInfo, medPubJson);
+    braveledger_bat_helper::saveToJson(publisherInfo, medPubJson);    
 
-#if defined CHROMIUM_BUILD
-    scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  	task_runner->PostTask(FROM_HERE, base::Bind(&BatGetMedia::saveMediaPublisherInfo, base::Unretained(this),extraData.string5, medPubJson));
-#else
-#endif
+    auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatGetMedia::saveMediaPublisherInfo, std::cref(extraData.string5), std::cref(medPubJson) );
+    braveledger_bat_helper::PostTask(runnable);
 
 		{
 	  	std::lock_guard<std::mutex> guard(callbacks_access_mutex_);
@@ -316,7 +308,7 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
 	  	DCHECK(iter != mapCallbacks_.end());
 	  	BatGetMedia::GetMediaPublisherInfoCallback callback = iter->second;
 	  	mapCallbacks_.erase(iter);
-      braveledger_bat_helper::run_runnable <void, BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, extraData.value1, publisherInfo);
+      braveledger_bat_helper::run_runnable <BatGetMedia::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(extraData.value1), std::cref(publisherInfo) );
 	  }
 	}
 }

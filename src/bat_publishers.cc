@@ -47,6 +47,7 @@ BatPublishers::~BatPublishers() {
 
 
 void BatPublishers::calcScoreConsts() {
+  //TODO: check Warning	C4244	'=': conversion from 'double' to 'unsigned int', possible loss of data
   a_ = 1.0 / (braveledger_ledger::_d * 2.0) - state_.min_pubslisher_duration_;
   a2_ = a_ * 2;
   a4_ = a2_ * 2;
@@ -106,17 +107,11 @@ void BatPublishers::loadStateCallback(bool result, const braveledger_bat_helper:
 
 void BatPublishers::initSynopsis() {
 
-#if defined CHROMIUM_BUILD
-  braveledger_bat_helper::loadPublisherState(base::Bind(&BatPublishers::loadStateCallback,
-    base::Unretained(this)));
+  braveledger_bat_helper::ReadPublisherStateCallback runnable1 = braveledger_bat_helper::bat_mem_fun_binder2(*this, &BatPublishers::loadStateCallback);
+  braveledger_bat_helper::loadPublisherState(runnable1);  
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::loadPublishers, base::Unretained(this)));
-#else
-
-#endif
+  auto runnable2 = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::loadPublishers);
+  braveledger_bat_helper::PostTask(runnable2);
 }
 
 void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64_t& duration,
@@ -153,7 +148,7 @@ void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64
     assert(status.ok());
   }
   
-  braveledger_bat_helper::run_runnable <void, BatPublishers::SaveVisitCallback, const std::string&, const uint64_t& >(callback, publisher, verifiedTimestamp);  
+  braveledger_bat_helper::run_runnable <BatPublishers::SaveVisitCallback, const std::string&, const uint64_t& >(callback, publisher, std::cref(verifiedTimestamp) );  
   synopsisNormalizerInternal();
 }
 
@@ -164,14 +159,8 @@ void BatPublishers::saveVisit(const std::string& publisher, const uint64_t& dura
   }
 
   // TODO checks if the publisher verified, disabled and etc
-#if defined CHROMIUM_BUILD
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::saveVisitInternal, base::Unretained(this),
-    publisher, duration, callback));
-#else
-#endif
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::saveVisitInternal, publisher, duration, callback);
+  braveledger_bat_helper::PostTask(runnable);
 }
 
 void BatPublishers::setPublisherTimestampVerifiedInternal(const std::string& publisher,
@@ -204,15 +193,9 @@ void BatPublishers::setPublisherTimestampVerifiedInternal(const std::string& pub
 
 void BatPublishers::setPublisherTimestampVerified(const std::string& publisher,
     const uint64_t& verifiedTimestamp, const bool& verified) {
-#if defined CHROMIUM_BUILD 
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
 
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherTimestampVerifiedInternal,
-    base::Unretained(this), publisher, verifiedTimestamp, verified));
-#else
-#endif
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherTimestampVerifiedInternal, publisher, verifiedTimestamp, verified);
+  braveledger_bat_helper::PostTask(runnable);
 }
 
 void BatPublishers::setPublisherFavIconInternal(const std::string& publisher, const std::string& favicon_url) {
@@ -241,14 +224,8 @@ void BatPublishers::setPublisherFavIconInternal(const std::string& publisher, co
 
 void BatPublishers::setPublisherFavIcon(const std::string& publisher, const std::string& favicon_url) {
 
-#if defined CHROMIUM_BUILD 
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherFavIconInternal,
-    base::Unretained(this), publisher, favicon_url));
-#else
-#endif
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherFavIconInternal, publisher, favicon_url);
+  braveledger_bat_helper::PostTask(runnable);
 }
 
 void BatPublishers::setPublisherIncludeInternal(const std::string& publisher, const bool& include) {
@@ -280,15 +257,8 @@ void BatPublishers::setPublisherIncludeInternal(const std::string& publisher, co
 
 void BatPublishers::setPublisherInclude(const std::string& publisher, const bool& include) {
 
-#if defined CHROMIUM_BUILD 
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherIncludeInternal,
-    base::Unretained(this), publisher, include));
-#else
-#endif
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherIncludeInternal, publisher, include);
+  braveledger_bat_helper::PostTask(runnable);
 }
 
 void BatPublishers::setPublisherDeletedInternal(const std::string& publisher, const bool& deleted) {
@@ -318,15 +288,8 @@ void BatPublishers::setPublisherDeletedInternal(const std::string& publisher, co
 }
 
 void BatPublishers::setPublisherDeleted(const std::string& publisher, const bool& deleted) {
-#if defined CHROMIUM_BUILD 
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherDeletedInternal,
-    base::Unretained(this), publisher, deleted));
-#else
-#endif
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherDeletedInternal, publisher, deleted);
+  braveledger_bat_helper::PostTask(runnable);
 }
 
 void BatPublishers::setPublisherPinPercentageInternal(const std::string& publisher, const bool& pinPercentage) {
@@ -356,14 +319,8 @@ void BatPublishers::setPublisherPinPercentageInternal(const std::string& publish
 }
 
 void BatPublishers::setPublisherPinPercentage(const std::string& publisher, const bool& pinPercentage) {
-#if defined CHROMIUM_BUILD 
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::setPublisherPinPercentageInternal,
-    base::Unretained(this), publisher, pinPercentage));
-#else
-#endif
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherPinPercentageInternal, publisher, pinPercentage);
+  braveledger_bat_helper::PostTask(runnable);
 }
 
 void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In milliseconds
@@ -488,15 +445,8 @@ void BatPublishers::synopsisNormalizerInternal() {
 }
 
 void BatPublishers::synopsisNormalizer() {
-#if defined CHROMIUM_BUILD 
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-
-  task_runner->PostTask(FROM_HERE, base::Bind(&BatPublishers::synopsisNormalizerInternal,
-    base::Unretained(this)));
-#else
-#endif
+  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::synopsisNormalizerInternal);
+  braveledger_bat_helper::PostTask(runnable);
 }
 
 std::vector<braveledger_bat_helper::WINNERS_ST> BatPublishers::winners(const unsigned int& ballots) {

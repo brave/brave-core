@@ -340,19 +340,14 @@ namespace braveledger_ledger {
     }
     if (!bat_get_media_) {
       return;
-    }
+    }    
 
-#if defined CHROMIUM_BUILD
-    scoped_refptr<base::SequencedTaskRunner> task_runner =
-     base::CreateSequencedTaskRunnerWithTraits(
-         {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-    task_runner->PostTask(FROM_HERE, base::Bind(&BatGetMedia::getPublisherFromMediaProps, base::Unretained(bat_get_media_), 
-      mediaId, mediaKey, type, duration, twitchEventInfo, base::Bind(&Ledger::OnMediaRequestCallback,
-      base::Unretained(this))));
-#else
+    BatGetMedia::GetMediaPublisherInfoCallback runnable1 = braveledger_bat_helper::bat_mem_fun_binder2(*this, &Ledger::OnMediaRequestCallback);
 
-#endif
+    auto runnable2 = braveledger_bat_helper::bat_mem_fun_binder(*bat_get_media_, &BatGetMedia::getPublisherFromMediaProps, 
+      std::cref(mediaId), std::cref(mediaKey), type, std::cref(duration), std::cref(twitchEventInfo), runnable1);
 
+    braveledger_bat_helper::PostTask(runnable2);
   }
 
   void Ledger::OnMediaRequestCallback(const uint64_t& duration, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {

@@ -125,6 +125,7 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
   //LOG(ERROR) << "!!!payloadStringify == " << payloadStringify;
   std::vector<std::string> headers;
   headers.push_back("Content-Type: application/json; charset=UTF-8");
+  
   // We should use simple callbacks on iOS
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::registerPersonaCallback);
   batClientWebRequest_.run(buildURL((std::string)REGISTER_PERSONA + "/" + state_.userId_, PREFIX_V2),
@@ -315,8 +316,7 @@ void BatClient::currentReconcileCallback(bool result, const std::string& respons
   //LOG(ERROR) << "!!!state_.walletInfo_.keyInfoSeed_.size == " << state_.walletInfo_.keyInfoSeed_.size();
   //LOG(ERROR) << "!!!secretKey.size == " << secretKey.size();
   //LOG(ERROR) << "!!!newSecretKey.size == " << newSecretKey.size();
-  std::string headerSignature = braveledger_bat_helper::sign(headerKeys, headerValues,
-    1, "primary", newSecretKey);
+  std::string headerSignature = braveledger_bat_helper::sign(headerKeys, headerValues, 1, "primary", newSecretKey);
   //LOG(ERROR) << "!!!headerSignature == " << headerSignature;
 
   braveledger_bat_helper::RECONCILE_PAYLOAD_ST reconcilePayload;
@@ -468,7 +468,7 @@ void BatClient::viewingCredentialsCallback(bool result, const std::string& respo
     }
   }
   braveledger_bat_helper::saveState(state_);  
-  braveledger_bat_helper::run_runnable <void, braveledger_bat_helper::SimpleCallback, const std::string&> (currentReconcile_.ledgerCallback_, currentReconcile_.viewingId_);
+  braveledger_bat_helper::run_runnable <braveledger_bat_helper::SimpleCallback, const std::string&> (currentReconcile_.ledgerCallback_, std::cref(currentReconcile_.viewingId_) );
   
   //LOG(ERROR) << "!!!response masterUserToken == " << currentReconcile_.masterUserToken_;
 
