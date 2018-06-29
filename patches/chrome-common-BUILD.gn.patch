@@ -1,20 +1,17 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index eb650f8aa7009371e31077e0f4a754807efd7613..31167ff4a0bcb3882f0e6df63a1412bf2d5752f3 100644
+index eb650f8aa7009371e31077e0f4a754807efd7613..11c036a1922da9f00a8b196657bdfc15431c4f9c 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -555,6 +555,15 @@ static_library("constants") {
-     "pref_names.h",
+@@ -579,6 +579,12 @@ static_library("constants") {
+     "//third_party/widevine/cdm:headers",
    ]
  
-+  if (brave_chromium_build && is_official_build) {
-+    sources += [
-+      "//brave/common/brave_paths_mac.mm",
-+      "//brave/common/brave_paths_mac.h",
-+      "//brave/common/brave_channel_info_linux.cc",
-+      "//brave/common/brave_channel_info_linux.h",
++  if (brave_chromium_build) {
++    deps += [
++      "//brave/common:constants"
 +    ]
 +  }
 +
-   public_deps = [
-     ":buildflags",
-     ":non_code_constants",
+   if (is_android) {
+     # This dependency must only be added for Android.
+     #

@@ -49,3 +49,18 @@ source_set("common") {
     ]
   }
 }
+
+source_set("constants") {
+  sources = [
+    "//brave/common/brave_paths_mac.mm",
+    "//brave/common/brave_paths_mac.h",
+  ]
+  if (is_official_build) {
+    # TODO(simonhong): Unify belows files with above regardless of official
+    # condition.
+    sources += [
+      "//brave/common/brave_channel_info_linux.cc",
+      "//brave/common/brave_channel_info_linux.h",
+    ]
+  }
+}

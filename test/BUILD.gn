@@ -42,6 +42,12 @@ test("brave_unit_tests") {
     "../utility/importer/chrome_importer_unittest.cc",
   ]
 
+  if (is_mac) {
+    sources += [
+      "//brave/common/brave_channel_info_mac_unittest.cc",
+    ]
+  }
+
   data = [
     "data/",
   ]

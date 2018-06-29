@@ -10,6 +10,12 @@
 namespace brave {
 
 std::string GetChannelSuffixForDataDir(NSBundle* chrome_bundle) {
+#if defined(OFFICIAL_BUILD)
+  // In test, |chrome_bundle| is nil.
+  // Returns nightly suffix for test.
+  if (chrome_bundle == nil) {
+    return "-Nightly";
+  }
   // chrome::GetChannelString() returns valid value only at first call.
   // From second call, it returns empty string. So, reimplemented for fetching
   // channel string here.
@@ -21,7 +27,7 @@ std::string GetChannelSuffixForDataDir(NSBundle* chrome_bundle) {
     return std::string();
   } else if ([channel isEqual:@"beta"] ||
              [channel isEqual:@"dev"] ||
-             [channel isEqual:@"canary"]) {
+             [channel isEqual:@"nightly"]) {
     [suffix appendString:channel];
   } else {
     NOTREACHED();
@@ -31,6 +37,9 @@ std::string GetChannelSuffixForDataDir(NSBundle* chrome_bundle) {
   std::string result = base::SysNSStringToUTF8(suffix);
   result[1] = std::toupper(result[1]);
   return result;
+#else  // OFFICIAL_BUILD
+  return "-Development";
+#endif
 }
 
 }  // namespace brave
