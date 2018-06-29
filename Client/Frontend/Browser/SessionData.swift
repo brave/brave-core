@@ -5,6 +5,7 @@
 import Foundation
 
 import Shared
+import Data
 
 class SessionData: NSObject, NSCoding {
     let currentPage: Int
@@ -46,5 +47,13 @@ class SessionData: NSObject, NSCoding {
         coder.encode(currentPage, forKey: "currentPage")
         coder.encode(urls, forKey: "urls")
         coder.encode(Int64(lastUsedTime), forKey: "lastUsedTime")
+    }
+    
+    // This is not a fully direct mapping, but rather an attempt to reconcile data differences, primarily used for tab restoration
+    var savedTabData: SavedTab2 {
+        // (id: String, title: String, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, history: [String], historyIndex: Int16)
+        let urlStrings = urls.map { $0.absoluteString }
+        let currentURL = urlStrings[(currentPage < 0 ? max(urlStrings.count-1, 0) : currentPage)]
+        return ("InvalidId", "", currentURL, false, -1, nil, urlStrings, Int16(currentPage))
     }
 }
