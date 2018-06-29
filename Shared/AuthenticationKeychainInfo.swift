@@ -8,16 +8,6 @@ import SwiftKeychainWrapper
 public let KeychainKeyAuthenticationInfo = "authenticationInfo"
 public let AllowedPasscodeFailedAttempts = 3
 
-// Passcode intervals with rawValue in seconds.
-public enum PasscodeInterval: Int {
-    case immediately    = 2
-    case oneMinute      = 60
-    case fiveMinutes    = 300
-    case tenMinutes     = 600
-    case fifteenMinutes = 900
-    case oneHour        = 3600
-}
-
 // MARK: - Helper methods for accessing Authentication information from the Keychain
 public extension KeychainWrapper {
     func authenticationInfo() -> AuthenticationKeychainInfo? {
@@ -36,9 +26,8 @@ public extension KeychainWrapper {
 }
 
 open class AuthenticationKeychainInfo: NSObject, NSCoding {
-    fileprivate(set) open var lastPasscodeValidationInterval: TimeInterval?
     fileprivate(set) open var passcode: String?
-    fileprivate(set) open var requiredPasscodeInterval: PasscodeInterval?
+    open var isPasscodeRequiredImmediately: Bool
     fileprivate(set) open var lockOutInterval: TimeInterval?
     fileprivate(set) open var failedAttempts: Int
     open var useTouchID: Bool
@@ -48,40 +37,34 @@ open class AuthenticationKeychainInfo: NSObject, NSCoding {
 
     public init(passcode: String) {
         self.passcode = passcode
-        self.requiredPasscodeInterval = .immediately
+        self.isPasscodeRequiredImmediately = true
         self.failedAttempts = 0
         self.useTouchID = false
     }
 
     open func encode(with aCoder: NSCoder) {
-        if let lastPasscodeValidationInterval = lastPasscodeValidationInterval {
-            let interval = NSNumber(value: lastPasscodeValidationInterval as Double)
-            aCoder.encode(interval, forKey: "lastPasscodeValidationInterval")
-        }
-
         if let lockOutInterval = lockOutInterval, isLocked() {
             let interval = NSNumber(value: lockOutInterval as Double)
             aCoder.encode(interval, forKey: "lockOutInterval")
         }
 
         aCoder.encode(passcode, forKey: "passcode")
-        aCoder.encode(requiredPasscodeInterval?.rawValue, forKey: "requiredPasscodeInterval")
+        aCoder.encode(isPasscodeRequiredImmediately, forKey: "isPasscodeRequiredImmediately")
         aCoder.encode(failedAttempts, forKey: "failedAttempts")
         aCoder.encode(useTouchID, forKey: "useTouchID")
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        self.lastPasscodeValidationInterval = aDecoder.decodeAsDouble(forKey: "lastPasscodeValidationInterval")
         if let lockOutInterval = aDecoder.decodeObject(forKey: "lockOutInterval") as? NSNumber {
             self.lockOutInterval = lockOutInterval.doubleValue
         }
         self.passcode = aDecoder.decodeObject(forKey: "passcode") as? String
         self.failedAttempts = aDecoder.decodeAsInt(forKey: "failedAttempts")
         self.useTouchID = aDecoder.decodeAsBool(forKey: "useTouchID")
-        if var interval = aDecoder.decodeObject(forKey: "requiredPasscodeInterval") as? NSNumber {
-            // We have updated the immediate lockout value to 2 from 0 due to timing issues with systemUptime()
-            interval = interval == 0 ? 2 : interval
-            self.requiredPasscodeInterval = PasscodeInterval(rawValue: interval.intValue)
+        if aDecoder.containsValue(forKey: "isPasscodeRequiredImmediately") {
+            self.isPasscodeRequiredImmediately = aDecoder.decodeAsBool(forKey: "isPasscodeRequiredImmediately")
+        } else {
+            self.isPasscodeRequiredImmediately = true
         }
     }
 }
@@ -95,18 +78,9 @@ public extension AuthenticationKeychainInfo {
 
     func updatePasscode(_ passcode: String) {
         self.passcode = passcode
-        self.lastPasscodeValidationInterval = nil
-    }
-
-    func updateRequiredPasscodeInterval(_ interval: PasscodeInterval) {
-        self.requiredPasscodeInterval = interval
-        self.lastPasscodeValidationInterval = nil
     }
 
     func recordValidation() {
-        // Save the timestamp to remember the last time we successfully
-        // validated and clear out the failed attempts counter.
-        self.lastPasscodeValidationInterval = SystemUtils.systemUptime()
         resetLockoutState()
     }
 
@@ -134,24 +108,5 @@ public extension AuthenticationKeychainInfo {
             return false
         }
         return (SystemUtils.systemUptime() - (self.lockOutInterval ?? 0)) < lockTimeInterval
-    }
-
-    func requiresValidation() -> Bool {
-        // If there isn't a passcode, don't need validation.
-        guard let _ = passcode else {
-            return false
-        }
-
-        // Need to make sure we've validated in the past. If not, its a definite yes.
-        guard let lastValidationInterval = lastPasscodeValidationInterval,
-                  let requireInterval = requiredPasscodeInterval
-        else {
-            return true
-        }
-
-        // We've authenticated before so lets see how long since. If the uptime is less than the last validation stamp,
-        // we probably restarted which means we should require validation.
-        return SystemUtils.systemUptime() - lastValidationInterval > Double(requireInterval.rawValue) ||
-               SystemUtils.systemUptime() < lastValidationInterval
     }
 }
