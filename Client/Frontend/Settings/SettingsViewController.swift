@@ -207,22 +207,7 @@ class SettingsViewController: TableViewController {
         Row(text: passcodeTitle, selection: { [unowned self] in
           let passcodeSettings = PasscodeSettingsViewController()
           self.navigationController?.pushViewController(passcodeSettings, animated: true)
-        }, accessory: .disclosureIndicator),
-//        Row(text: Strings.Browser_Lock, accessory: .switchToggle(value: Preferences.Security.browserLockEnabled.value, { [unowned self] on in
-//          self.browserLockToggled(on)
-//        }), uuid: Preferences.Security.browserLockEnabled.key),
-//        Row(text: Strings.Change_Pin, selection: { [unowned self] in
-//          if Preferences.Security.browserLockEnabled.value {
-//            // Show change passcode
-//            let changePasscodeController = ChangePasscodeViewController()
-//            let container = UINavigationController(rootViewController: changePasscodeController)
-//            self.present(container, animated: true)
-//          } else {
-//            let setupPasscodeController = SetupPasscodeViewController()
-//            let container = UINavigationController(rootViewController: setupPasscodeController)
-//            self.present(container, animated: true)
-//          }
-//        }, accessory: .disclosureIndicator)
+        }, accessory: .disclosureIndicator)
       ]
     )
   }()
@@ -291,35 +276,3 @@ class SettingsViewController: TableViewController {
     )
   }()
 }
-
-//extension SettingsViewController: PasscodeEntryDelegate {
-//  func passcodeValidationDidSucceed() {
-//    Preferences.Security.browserLockEnabled.value = false
-//    presentedViewController?.dismiss(animated: true, completion: nil)
-//  }
-//
-//  @objc private func userDidCreatePasscode(_ notification: Notification) {
-//    Preferences.Security.isPinSetup.value = true
-//    Preferences.Security.browserLockEnabled.value = true
-//  }
-//
-//  private func browserLockToggled(_ on: Bool) {
-//    if on {
-//      if KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() == nil || !Preferences.Security.isPinSetup.value {
-//        let setupPasscodeController = SetupPasscodeViewController()
-//        let container = UINavigationController(rootViewController: setupPasscodeController)
-//        self.present(container, animated: true)
-//      } else {
-//        Preferences.Security.browserLockEnabled.value = on
-//      }
-//    } else {
-//      let enterPasscodeController = PasscodeEntryViewController()
-//      enterPasscodeController.delegate = self
-//      let container = UINavigationController(rootViewController: enterPasscodeController)
-//      self.present(container, animated: true)
-//    }
-//  }
-//}
-//
-//extension SettingsViewController {
-//}
