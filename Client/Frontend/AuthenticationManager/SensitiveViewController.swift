@@ -18,6 +18,7 @@ class SensitiveViewController: UIViewController {
     var promptingForTouchID: Bool = false
     var backgroundedBlur: UIImageView?
     var authState: AuthenticationState = .notAuthenticating
+    var isPasscodeEntryCancellable: Bool = true
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -64,7 +65,7 @@ class SensitiveViewController: UIViewController {
             },
             fallback: {
                 self.promptingForTouchID = false
-                AppAuthenticator.presentPasscodeAuthentication(self.navigationController, delegate: self)
+                AppAuthenticator.presentPasscodeAuthentication(self.navigationController, delegate: self, isCancellable: self.isPasscodeEntryCancellable)
             }
         )
         authState = .presenting

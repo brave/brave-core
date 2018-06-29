@@ -45,8 +45,9 @@ class AppAuthenticator {
         }
     }
 
-    static func presentPasscodeAuthentication(_ presentingNavController: UINavigationController?, delegate: PasscodeEntryDelegate?) {
+    static func presentPasscodeAuthentication(_ presentingNavController: UINavigationController?, delegate: PasscodeEntryDelegate?, isCancellable: Bool) {
         let passcodeVC = PasscodeEntryViewController()
+        passcodeVC.isCancellable = isCancellable
         passcodeVC.delegate = delegate
         let navController = UINavigationController(rootViewController: passcodeVC)
         navController.modalPresentationStyle = .formSheet
