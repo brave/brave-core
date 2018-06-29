@@ -314,8 +314,10 @@ class TabManager: NSObject {
         let configuration: WKWebViewConfiguration = configuration ?? (isPrivate ? privateConfiguration : self.configuration)
 
         let tab = Tab(configuration: configuration, isPrivate: isPrivate)
-        tab.id = id ?? TabMO.freshTab().syncUUID
-        configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie)
+        if !isPrivate {
+            tab.id = id ?? TabMO.freshTab().syncUUID
+        }
+        configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie, isPrivate: isPrivate)
         return tab
     }
 
@@ -324,6 +326,7 @@ class TabManager: NSObject {
 
         let tab = Tab(configuration: configuration ?? self.configuration)
         tab.id = TabMO.freshTab().syncUUID
+        
         configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie)
         return tab
     }
@@ -349,7 +352,7 @@ class TabManager: NSObject {
         storeChanges()
     }
 
-    func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, isPopup: Bool = false) {
+    func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, isPopup: Bool = false, isPrivate: Bool = false) {
         assert(Thread.isMainThread)
 
         delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
@@ -399,7 +402,7 @@ class TabManager: NSObject {
         }
         
         // Ignore on restore.
-        if !zombie && !UIApplication.isInPrivateMode {
+        if !zombie && !isPrivate {
             if let data = tabData(for: tab) {
                 TabMO.preserve(tabData: data)
             }
@@ -414,14 +417,14 @@ class TabManager: NSObject {
     private func tabData(for tab: Tab) -> TabDataToSave? {
         guard let webView = tab.webView, let order = indexOfWebView(webView) else { return nil }
         
-            let id = tab.id ?? TabMO.freshTab().syncUUID!
+        let id = tab.id ?? TabMO.freshTab().syncUUID!
         
-            let isSelected = selectedTab === tab
-            let tabData = TabDataToSave(webView: webView, 
-                                        url: tab.url, order: order, tabID: id, displayTitle: tab.displayTitle, 
-                                        isSelected: isSelected)
+        let isSelected = selectedTab === tab
+        let tabData = TabDataToSave(webView: webView, 
+                                    url: tab.url, order: order, tabID: id, displayTitle: tab.displayTitle, 
+                                    isSelected: isSelected)
             
-            return tabData
+        return tabData
     }
     
     func indexOfWebView(_ webView: WKWebView) -> UInt? {
@@ -473,6 +476,11 @@ class TabManager: NSObject {
 
         let prevCount = count
         tabs.remove(at: removalIndex)
+        
+        let context = DataController.shared.mainThreadContext
+        if let tab = TabMO.get(byId: tab.id, context: context) {
+            DataController.remove(object: tab, context: context)
+        }
 
         let viableTabs: [Tab] = tab.isPrivate ? privateTabs : normalTabs
 
@@ -862,6 +870,11 @@ extension TabManager {
 
         var tabToSelect: Tab?
         for savedTab in savedTabs {
+            if savedTab.url == nil {
+                DataController.remove(object: savedTab)
+                continue
+            }
+            
             // Provide an empty request to prevent a new tab from loading the home screen
             let tab = self.addTab(nil, configuration: nil, afterTab: nil, flushToDisk: false, zombie: true, 
                                   id: savedTab.syncUUID, isPrivate: savedTab.isPrivate)
@@ -1002,7 +1015,8 @@ extension TabManager: WKNavigationDelegate {
         // as we current handle tab restore as error page redirects then this ensures that we don't
         // call storeChanges unnecessarily on startup
         
-        if let tab = tabForWebView(webView), let url = webView.url, !url.absoluteString.contains("localhost"), let data = tabData(for: tab) {
+        if let tab = tabForWebView(webView), !tab.isPrivate, let url = webView.url, !url.absoluteString.contains("localhost"), 
+            let data = tabData(for: tab) {
             DispatchQueue.main.async {
                 TabMO.preserve(tabData: data)
             }
