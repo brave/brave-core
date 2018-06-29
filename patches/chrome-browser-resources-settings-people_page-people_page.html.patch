@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/resources/settings/people_page/people_page.html b/chrome/browser/resources/settings/people_page/people_page.html
+index 2adc21adf829c182fa2d496745d6d4402bc0b349..26db5c5846142470e98b6353c1e3f6c2a68135b7 100644
+--- a/chrome/browser/resources/settings/people_page/people_page.html
++++ b/chrome/browser/resources/settings/people_page/people_page.html
+@@ -197,9 +197,11 @@
+ <if expr="not chromeos">
+           </template> <!-- if="[[!diceEnabled_]]" -->
+ </if>
++<if expr="_google_chrome">
+           <div class="settings-box" hidden="[[syncStatus.signinAllowed]]">
+             $i18n{syncDisabledByAdministrator}
+           </div>
++</if>
+         </template>
+ 
+ <if expr="not chromeos">
