@@ -6,12 +6,12 @@ import Foundation
 
 import Shared
 
-public class SessionData: NSObject, NSCoding {
-    public let currentPage: Int
-    public let urls: [URL]
-    public let lastUsedTime: Timestamp
+class SessionData: NSObject, NSCoding {
+    let currentPage: Int
+    let urls: [URL]
+    let lastUsedTime: Timestamp
 
-    public var jsonDictionary: [String: Any] {
+    var jsonDictionary: [String: Any] {
         return [
             "currentPage": String(self.currentPage),
             "lastUsedTime": String(self.lastUsedTime),
@@ -27,7 +27,7 @@ public class SessionData: NSObject, NSCoding {
         - parameter urls:            The sequence of URLs in this tab's session history.
         - parameter lastUsedTime:    The last time this tab was modified.
     **/
-    public init(currentPage: Int, urls: [URL], lastUsedTime: Timestamp) {
+    init(currentPage: Int, urls: [URL], lastUsedTime: Timestamp) {
         self.currentPage = currentPage
         self.urls = urls
         self.lastUsedTime = lastUsedTime
@@ -36,13 +36,13 @@ public class SessionData: NSObject, NSCoding {
         assert(currentPage > -urls.count && currentPage <= 0, "Session index is valid")
     }
 
-    public required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         self.currentPage = coder.decodeAsInt(forKey: "currentPage")
         self.urls = coder.decodeObject(forKey: "urls") as? [URL] ?? []
         self.lastUsedTime = coder.decodeAsUInt64(forKey: "lastUsedTime")
     }
 
-    public func encode(with coder: NSCoder) {
+    func encode(with coder: NSCoder) {
         coder.encode(currentPage, forKey: "currentPage")
         coder.encode(urls, forKey: "urls")
         coder.encode(Int64(lastUsedTime), forKey: "lastUsedTime")

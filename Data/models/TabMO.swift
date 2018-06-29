@@ -36,8 +36,6 @@ public class TabMO: NSManagedObject {
         }
         return nil
     }
-    
-    public var sessionData: SessionData?
 
     public override func awakeFromInsert() {
         super.awakeFromInsert()
