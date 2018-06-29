@@ -515,8 +515,7 @@ class BrowserViewController: UIViewController {
     }
 
     fileprivate func canRestoreTabs() -> Bool {
-        guard let tabsToRestore = TabManager.tabsToRestore() else { return false }
-        return !tabsToRestore.isEmpty
+        return !TabMO.getAll().isEmpty
     }
 
     override func viewDidAppear(_ animated: Bool) {

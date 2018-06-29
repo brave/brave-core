@@ -209,7 +209,7 @@ class TabManager: NSObject {
             _selectedIndex = -1
         }
 
-        preserveTabs()
+        preserveScreenshots()
         
         if let t = selectedTab, t.webView == nil {
             selectedTab?.createWebview()
@@ -699,82 +699,6 @@ class TabManager: NSObject {
     }
 }
 
-class SavedTab: NSObject, NSCoding {
-    let isSelected: Bool
-    let title: String?
-    let isPrivate: Bool
-    var sessionData: SessionData?
-    var screenshotUUID: UUID?
-    var faviconURL: String?
-
-    var jsonDictionary: [String: AnyObject] {
-        let title: String = self.title ?? "null"
-        let faviconURL: String = self.faviconURL ?? "null"
-        let uuid: String = self.screenshotUUID?.uuidString ?? "null"
-
-        var json: [String: AnyObject] = [
-            "title": title as AnyObject,
-            "isPrivate": String(self.isPrivate) as AnyObject,
-            "isSelected": String(self.isSelected) as AnyObject,
-            "faviconURL": faviconURL as AnyObject,
-            "screenshotUUID": uuid as AnyObject
-        ]
-
-        if let sessionDataInfo = self.sessionData?.jsonDictionary {
-            json["sessionData"] = sessionDataInfo as AnyObject?
-        }
-
-        return json
-    }
-
-    init?(tab: Tab, isSelected: Bool) {
-        assert(Thread.isMainThread)
-
-        self.screenshotUUID = tab.screenshotUUID as UUID?
-        self.isSelected = isSelected
-        self.title = tab.displayTitle
-        self.isPrivate = tab.isPrivate
-        self.faviconURL = tab.displayFavicon?.url
-        super.init()
-
-        if tab.sessionData == nil {
-            let currentItem: WKBackForwardListItem! = tab.webView?.backForwardList.currentItem
-
-            // Freshly created web views won't have any history entries at all.
-            // If we have no history, abort.
-            if currentItem == nil {
-                return nil
-            }
-
-            let backList = tab.webView?.backForwardList.backList ?? []
-            let forwardList = tab.webView?.backForwardList.forwardList ?? []
-            let urls = (backList + [currentItem] + forwardList).map { $0.url }
-            let currentPage = -forwardList.count
-            self.sessionData = SessionData(currentPage: currentPage, urls: urls, lastUsedTime: tab.lastExecutedTime ?? Date.now())
-        } else {
-            self.sessionData = tab.sessionData
-        }
-    }
-
-    required init?(coder: NSCoder) {
-        self.sessionData = coder.decodeObject(forKey: "sessionData") as? SessionData
-        self.screenshotUUID = coder.decodeObject(forKey: "screenshotUUID") as? UUID
-        self.isSelected = coder.decodeBool(forKey: "isSelected")
-        self.title = coder.decodeObject(forKey: "title") as? String
-        self.isPrivate = coder.decodeBool(forKey: "isPrivate")
-        self.faviconURL = coder.decodeObject(forKey: "faviconURL") as? String
-    }
-
-    func encode(with coder: NSCoder) {
-        coder.encode(sessionData, forKey: "sessionData")
-        coder.encode(screenshotUUID, forKey: "screenshotUUID")
-        coder.encode(isSelected, forKey: "isSelected")
-        coder.encode(title, forKey: "title")
-        coder.encode(isPrivate, forKey: "isPrivate")
-        coder.encode(faviconURL, forKey: "faviconURL")
-    }
-}
-
 extension TabManager {
 
     static fileprivate func tabsStateArchivePath() -> String {
@@ -820,58 +744,21 @@ extension TabManager {
             return nil
         }
     }
-
-    static func tabsToRestore() -> [SavedTab]? {
-        if let tabData = tabArchiveData() {
-            let unarchiver = NSKeyedUnarchiver(forReadingWith: tabData)
-            unarchiver.decodingFailurePolicy = .setErrorAndReturn
-            guard let tabs = unarchiver.decodeObject(forKey: "tabs") as? [SavedTab] else {
-                Sentry.shared.send(message: "Failed to restore tabs", tag: SentryTag.tabManager, severity: .error, description: "\(unarchiver.error ??? "nil")")
-                return nil
-            }
-            return tabs
-        } else {
-            return nil
-        }
-    }
-
-    fileprivate func preserveTabsInternal() {
+    
+    private func preserveScreenshots() {
         assert(Thread.isMainThread)
-
-        guard !isRestoring else { return }
-
-        let path = TabManager.tabsStateArchivePath()
-        var savedTabs = [SavedTab]()
+        if isRestoring { return }
+        
         var savedUUIDs = Set<String>()
-        for (tabIndex, tab) in tabs.enumerated() {
-            if let savedTab = SavedTab(tab: tab, isSelected: tabIndex == selectedIndex) {
-                savedTabs.append(savedTab)
-
-                if let screenshot = tab.screenshot,
-                   let screenshotUUID = tab.screenshotUUID {
-                    savedUUIDs.insert(screenshotUUID.uuidString)
-                    imageStore?.put(screenshotUUID.uuidString, image: screenshot)
-                }
-            }
+        
+        for tab in tabs { 
+            guard let screenshot = tab.screenshot, let screenshotUUID = tab.screenshotUUID  else { continue }
+            savedUUIDs.insert(screenshotUUID.uuidString)
+            imageStore?.put(screenshotUUID.uuidString, image: screenshot)
         }
-
+        
         // Clean up any screenshots that are no longer associated with a tab.
-        _ = imageStore?.clearExcluding(savedUUIDs)
-
-        let tabStateData = NSMutableData()
-        let archiver = NSKeyedArchiver(forWritingWith: tabStateData)
-        archiver.encode(savedTabs, forKey: "tabs")
-        archiver.finishEncoding()
-        tabStateData.write(toFile: path, atomically: true)
-    }
-
-    func preserveTabs() {
-        // This is wrapped in an Objective-C @try/@catch handler because NSKeyedArchiver may throw exceptions which Swift cannot handle
-        _ = Try(withTry: { () -> Void in
-            self.preserveTabsInternal()
-            }) { (exception) -> Void in
-            Sentry.shared.send(message: "Failed to preserve tabs", tag: SentryTag.tabManager, severity: .error, description: "\(exception ??? "nil")")
-        }
+        imageStore?.clearExcluding(savedUUIDs)
     }
 
     fileprivate func restoreTabsInternal() {
@@ -1073,20 +960,6 @@ extension TabManager: WKNavigationDelegate {
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         if let tab = selectedTab, tab.webView == webView {
             webView.reload()
-        }
-    }
-}
-
-extension TabManager {
-    class func tabRestorationDebugInfo() -> String {
-        assert(Thread.isMainThread)
-
-        let tabs = TabManager.tabsToRestore()?.map { $0.jsonDictionary } ?? []
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: tabs, options: [.prettyPrinted])
-            return String(data: jsonData, encoding: .utf8) ?? ""
-        } catch _ {
-            return ""
         }
     }
 }
