@@ -350,6 +350,19 @@ class TabManager: NSObject {
         }
 
         storeChanges()
+        saveTabOrder()
+    }
+    
+    func saveTabOrder() {
+        let context = DataController.shared.workerContext
+        context.perform {
+            for i in 0..<self.tabs.count {
+                let tab = self.tabs[i]
+                guard let managedObject = TabMO.get(byId: tab.id, context: context) else { print("Error: Tab missing managed object"); continue }
+                managedObject.order = Int16(i)
+            }
+            DataController.saveContext(context: context)
+        }
     }
 
     func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, isPopup: Bool = false, isPrivate: Bool = false) {
@@ -405,6 +418,7 @@ class TabManager: NSObject {
         if !zombie && !isPrivate {
             if let data = tabData(for: tab) {
                 TabMO.preserve(tabData: data)
+                saveTabOrder()
             }
 
 //            TabMO.preserve(tabData: Tab)
