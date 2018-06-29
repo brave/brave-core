@@ -2707,3 +2707,14 @@ extension BrowserViewController: HomeMenuControllerDelegate {
         self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabManager.selectedTab?.tabState.isPrivate ?? false)
     }
 }
+
+extension BrowserViewController: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        // TODO: Update tab bar visiblity based on `Preferences.tabBarVisibility` once BraveURLBarView is back
+        // TODO: Update fingerprinting protection based on `Preferences.Shields.fingerprintingProtection` once fingerprinting protection is added back
+        if Preferences.Privacy.privateBrowsingOnly.value {
+            switchToPrivacyMode(isPrivate: true)
+            // TODO: Add more logic to `switchToPrivacyMode` once specific Brave Private Browsing logic is added back
+        }
+    }
+}
