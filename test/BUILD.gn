@@ -159,7 +159,11 @@ test("brave_browser_tests") {
 if (is_win) {
   test("brave_install_static_unittests") {
     sources = [
+      "//brave/chromium_src/chrome/install_static/brave_install_details_unittest.cc",
+      "//brave/chromium_src/chrome/install_static/brave_install_modes_unittest.cc",
+      "//brave/chromium_src/chrome/install_static/brave_install_util_unittest.cc",
       "//brave/chromium_src/chrome/install_static/brave_product_install_details_unittest.cc",
+      "//brave/chromium_src/chrome/install_static/brave_user_data_dir_win_unittest.cc",
     ]
     include_dirs = [ "$target_gen_dir" ]
     deps = [
