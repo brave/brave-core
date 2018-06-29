@@ -1,7 +1,33 @@
-Hey there! Thanks for using Firefox!
+<!-- Have you searched for similar issues on the repository?
+Before submitting this issue, please visit our wiki for common ones: https://github.com/brave/browser-ios/wiki
+For more, check out our community site: https://community.brave.com/ -->
 
-We prefer to have bugs in Bugzilla. That way issues can be tracked and the rest of Mozilla can help us fix and verify issues as well.
+### Description: 
 
-We would love if you have found a bug to report it in Bugzilla. [File a new bug](https://bugzilla.mozilla.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2F&bug_ignored=0&op_sys=iOS%20&product=Firefox%20for%20iOS&rep_platform=All)
 
-If you are having an issue building or running the project message us on IRC. There are lots of people who are around to help. We are on [#mobile](https://wiki.mozilla.org/IRC)
+### Steps to Reproduce 
+  1.
+  2.
+  3.
+
+**Actual result:** <!-- Add screenshots if needed -->
+
+
+**Expected result:**
+
+
+**Reproduces how often:** [Easily reproduced, Intermittent Issue]
+
+
+**Brave Version:** <!-- Provide full details Eg: v1.4.2(17.09.08.16) -->
+
+
+**Device details:** <!-- Model type and iOS version Eg: iPhone 6s+ (iOS 10.3.3)-->
+
+
+**Website problems only:**
+- did you check with Brave Shields down?
+- did you check in Safari/Firefox (WkWebView-based browsers)? 
+
+
+### Additional Information 
