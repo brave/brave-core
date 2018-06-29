@@ -902,7 +902,9 @@ extension TabManager {
                 icon.width = 1
                 tab.favicons.append(icon)
             }
+             */
 
+            
             // Set the UUID for the tab, asynchronously fetch the UIImage, then store
             // the screenshot in the tab as long as long as a newer one hasn't been taken.
             if let screenshotUUID = savedTab.screenshotUUID,
@@ -914,7 +916,7 @@ extension TabManager {
                     }
                 }
             }
-            */
+            
 
             if savedTab.isSelected {
                 tabToSelect = tab
