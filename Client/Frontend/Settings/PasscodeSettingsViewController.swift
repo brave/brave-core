@@ -55,9 +55,9 @@ class PasscodeSettingsViewController: TableViewController {
           // TODO: Need localized copy of this
           Row(text: "Require Passcode Immediately", accessory:
             .switchToggle(
-              value: authenticationInfo.requiredPasscodeInterval == PasscodeInterval.immediately,
+              value: authenticationInfo.isPasscodeRequiredImmediately,
               // TODO: Make a new option "infinite" instead of using time intervals
-              { on in authenticationInfo.updateRequiredPasscodeInterval(on ? .immediately : .oneHour); KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(authenticationInfo) }
+              { on in authenticationInfo.isPasscodeRequiredImmediately = on; KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(authenticationInfo) }
             )
           )
         ]

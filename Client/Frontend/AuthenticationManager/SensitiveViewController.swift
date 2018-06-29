@@ -11,6 +11,9 @@ enum AuthenticationState {
     case presenting
 }
 
+/// A global flag indicating whether or not the user has validated their session already
+private var isSessionValidated: Bool = false
+
 class SensitiveViewController: UIViewController {
     var promptingForTouchID: Bool = false
     var backgroundedBlur: UIImageView?
@@ -35,9 +38,13 @@ class SensitiveViewController: UIViewController {
         guard authState != .presenting else {
             return
         }
-
+        
         presentedViewController?.dismiss(animated: false, completion: nil)
-        guard let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo(), authInfo.requiresValidation() else {
+        guard let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() else {
+            return
+        }
+        
+        if !authInfo.isPasscodeRequiredImmediately && isSessionValidated {
             removeBackgroundedBlur()
             return
         }
@@ -99,6 +106,8 @@ class SensitiveViewController: UIViewController {
 extension SensitiveViewController: PasscodeEntryDelegate {
     func passcodeValidationDidSucceed() {
         removeBackgroundedBlur()
+        isSessionValidated = true
+      
         self.navigationController?.dismiss(animated: true, completion: nil)
         self.authState = .notAuthenticating
     }
