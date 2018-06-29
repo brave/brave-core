@@ -159,6 +159,7 @@ class BrowserViewController: SensitiveViewController {
     }
 
     fileprivate func didInit() {
+        isPasscodeEntryCancellable = false
         screenshotHelper = ScreenshotHelper(controller: self)
         tabManager.addDelegate(self)
         tabManager.addNavigationDelegate(self)

@@ -22,11 +22,27 @@ class BasePasscodeViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    var isCancellable: Bool = true {
+        didSet {
+            if isCancellable {
+                navigationItem.rightBarButtonItem = cancelBarButtonItem
+            } else {
+                navigationItem.rightBarButtonItem = nil
+            }
+        }
+    }
+    
+    private lazy var cancelBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.dismissAnimated))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = SettingsUX.TableViewHeaderBackgroundColor
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.dismissAnimated))
+        if isCancellable {
+            navigationItem.rightBarButtonItem = cancelBarButtonItem
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
         automaticallyAdjustsScrollViewInsets = false
     }
 
