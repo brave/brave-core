@@ -52,4 +52,65 @@ namespace braveledger_bat_helper {
     assert(false);
 #endif
   }
+
+
+  void getHomeDir(std::string& home)
+  {
+#if defined CHROMIUM_BUILD
+    base::FilePath dirToSave;
+    base::PathService::Get(base::DIR_HOME, &dirToSave);
+    home = dirToSave.value();
+#else
+    //TODO: to implement
+    assert(false);
+#endif
+  }
+
+  void appendPath(const std::string& root, const std::string& leaf, std::string & path)
+  {
+#if defined CHROMIUM_BUILD
+    base::FilePath root_path (root.c_str());
+    root_path = root_path.Append(leaf);
+    path = root_path.value();
+#else
+    //TODO: to implement
+    assert(false);
+#endif
+  }
+
+  bool writeFile(const std::string & path, const std::string& data)
+  {
+#if defined CHROMIUM_BUILD
+    base::FilePath dirToSave (path.c_str());    
+
+    int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());
+    LOG(ERROR) << "writeToFile to: " << dirToSave << " : " << data.length() << " : " << succeded;
+    assert(succeded != -1);
+    return (succeded != -1) ? true : false;    
+#else
+    //TODO: to implement
+    assert(false);
+    return false;
+#endif
+  }
+
+
+  bool readFile(const std::string & path, std::ostringstream & ss)
+  {
+#if defined CHROMIUM_BUILD    
+    bool succeded = false;    
+    base::FilePath path_to_file (path.c_str());
+    base::PathExists(path_to_file);
+    if (base::PathExists(path_to_file)) {
+      std::string str;
+      succeded = base::ReadFileToString(path_to_file, &str);
+      ss << str;      
+    }    
+    return succeded;    
+#else    
+    assert(false);
+    return false;
+#endif
+  }
+
 } //namespace braveledger_bat_helper

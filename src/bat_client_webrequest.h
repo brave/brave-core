@@ -13,17 +13,17 @@
 
 namespace braveledger_bat_client_webrequest {
 
+  //platform-dependent implementation 
   class BatClientWebRequest
   {
   public:
     BatClientWebRequest() = default;
-
+    
     void run(const std::string& url, braveledger_bat_helper::FetchCallback callback,
       const std::vector<std::string>& headers, const std::string& content,
       const std::string& contentType, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
       const braveledger_bat_helper::URL_METHOD& method) {
-
-      //TODO: platform-dependent implementation 
+      //TODO: implement! 
     }
   };
 

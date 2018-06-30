@@ -429,27 +429,15 @@ namespace braveledger_bat_helper {
 
   std::string getMediaKey(const std::string& mediaId, const std::string& type);
 
-  uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);
-
-  // We have to implement different function for iOS, probably laptop
-  void writeStateFile(const std::string& data);
-
-  // We have to implement different function for iOS, probably laptop
-  void readStateFile(ReadStateCallback callback);
-
-  // We have to implement different function for iOS, probably laptop
-  void writePublisherStateFile(const std::string& data);
-
-  // We have to implement different function for iOS, probably laptop
-  void readPublisherStateFile(ReadPublisherStateCallback callback);
-
-  void getDbFile(const std::string & id, std::string & pubDbPath);
-
-  // TODO debug
-  //static void readEmscripten();
-  //static void readEmscriptenInternal();
-  //  
+  uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);  
   
+  void readStateFile(ReadStateCallback callback);
+  
+  void readPublisherStateFile(ReadPublisherStateCallback callback);  
+
+  //temporary solution: to run ( void writeFile(args) ) as a Chromium Task
+  void writeFileNoReturn(const std::string & path, const std::string& data);
+
 } //namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_

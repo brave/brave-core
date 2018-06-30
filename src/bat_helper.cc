@@ -11,14 +11,6 @@
 #include <memory>
 #include <iostream>
 
-#if defined CHROMIUM_BUILD
-#include "base/logging.h"
-#include "base/files/file_path.h"
-#include "base/path_service.h"
-#include "base/files/file_util.h"
-#endif
-
-
 //tweetnacl
 #include "tweetnacl.h"
 
@@ -36,15 +28,6 @@
 
 #include "bat_helper.h"
 #include "static_values.h"
-
-
-// to do debug
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include "base/android/apk_assets.h"
-//#include "v8/include/v8.h"
-//#include "v8/include/libplatform/libplatform.h"
-//
 
 
 namespace braveledger_bat_helper {
@@ -1251,56 +1234,19 @@ namespace braveledger_bat_helper {
     std::random_device r;
     std::seed_seq seed{r(), r(), r(), r(), r(), r(), r(), r()};
     auto rand = std::bind(std::uniform_int_distribution<>(0, UCHAR_MAX), std::mt19937(seed));
-
-    //std::generate_n(std::ostream_iterator<int>(seedStr, ","), seedLength, rand);
-    std::generate_n(vSeed.begin(), SEED_LENGTH, rand);
-    /*for (size_t i = 0; i < vSeed.size(); i++) {
-      if (0 != i) {
-        seedStr << ",";
-      }
-      seedStr << vSeed[i];
-    }
-    std::string res = seedStr.str();
-    //if (!res.empty()) {
-    //  res.erase(res.end() - 1);
-    //}
-    LOG(ERROR) << res;
-
-    return res;*/
+    
+    std::generate_n(vSeed.begin(), SEED_LENGTH, rand);    
     return vSeed;
   }
 
   std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed) {
     DCHECK(!seed.empty());
-    std::vector<uint8_t> out(SEED_LENGTH);
-    //uint8_t out[SEED_LENGTH];
-    //to do debug
-    /*std::ostringstream seedStr1;
-    for (size_t i = 0; i < SEED_LENGTH; i++) {
-      if (0 != i) {
-        seedStr1 << ",";
-      }
-      seedStr1 << (int)seed[i];
-    }
-    LOG(ERROR) << "!!!seed == " << seedStr1.str();*/
-    //
+    std::vector<uint8_t> out(SEED_LENGTH);    
     int hkdfRes = HKDF(&out.front(), SEED_LENGTH, EVP_sha512(), &seed.front(), seed.size(),
       braveledger_ledger::g_hkdfSalt, SALT_LENGTH, nullptr, 0);
 
     DCHECK(hkdfRes);
     DCHECK(!seed.empty());
-
-    //to do debug
-    /*std::ostringstream seedStr;
-    for (size_t i = 0; i < SEED_LENGTH; i++) {
-      if (0 != i) {
-        seedStr << ",";
-      }
-      seedStr << (int)out[i];
-    }
-    LOG(ERROR) << "!!!hkdfRes == " << hkdfRes << ", out == " << seedStr.str();*/
-    //
-
     return out;
   }
 
@@ -1313,24 +1259,7 @@ namespace braveledger_bat_helper {
 
     crypto_sign_keypair(&publicKey.front(), &secretKey.front(), 1);
 
-    DCHECK(!publicKey.empty() && !secretKey.empty());
-    //to do debug
-    /*std::ostringstream publicStr;
-    for (size_t i = 0; i < crypto_sign_PUBLICKEYBYTES; i++) {
-      if (0 != i) {
-        publicStr << ",";
-      }
-      publicStr << (int)outPublic[i];
-    }
-    std::ostringstream secretStr;
-    for (size_t i = 0; i < crypto_sign_SECRETKEYBYTES; i++) {
-      if (0 != i) {
-        secretStr << ",";
-      }
-      secretStr << (int)outSecret[i];
-    }
-    LOG(ERROR) << "!!!publicStr == " << publicStr.str();
-    LOG(ERROR) << "!!!secretStr == " << secretStr.str();*/
+    DCHECK(!publicKey.empty() && !secretKey.empty());    
   }
 
   std::string uint8ToHex(const std::vector<uint8_t>& in) {
@@ -1567,7 +1496,12 @@ namespace braveledger_bat_helper {
     braveledger_bat_helper::saveToJson(state, data);
     //LOG(ERROR) << "!!!saveState == " << data;
 
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeStateFile, std::cref(data));
+    std::string ledger_state_file_path;
+    std::string root;
+    braveledger_bat_helper::getHomeDir(root);
+    braveledger_bat_helper::appendPath(root, LEDGER_STATE_FILENAME, ledger_state_file_path);
+
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, std::cref(ledger_state_file_path), std::cref(data));        
     braveledger_bat_helper::PostTask(runnable);
   }
 
@@ -1580,8 +1514,13 @@ namespace braveledger_bat_helper {
   void savePublisherState(const PUBLISHER_STATE_ST& state) {
     std::string data;
     braveledger_bat_helper::saveToJson(state, data);
+
+    std::string ledger_pub_state_file_path;
+    std::string root;
+    braveledger_bat_helper::getHomeDir(root);
+    braveledger_bat_helper::appendPath(root, LEDGER_PUBLISHER_STATE_FILENAME, ledger_pub_state_file_path);   
   
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writePublisherStateFile, std::cref(data));
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, std::cref(ledger_pub_state_file_path), std::cref(data));
     braveledger_bat_helper::PostTask(runnable);
   }
 
@@ -1695,201 +1634,57 @@ namespace braveledger_bat_helper {
     }
 
     return duration;
-  }
-
-
+  }  
   
-  void writeStateFile(const std::string& data) {
-#if defined CHROMIUM_BUILD
-    base::FilePath dirToSave;
-    base::PathService::Get(base::DIR_HOME, &dirToSave);
-    dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
-
-    int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());
-    LOG(ERROR) << "writeStateFile to: " << dirToSave << " : " << data.length() << " : " << succeded;
-    assert(succeded != -1);
-#endif
-  }
 
   void readStateFile(ReadStateCallback callback) {
-#if defined CHROMIUM_BUILD
-    base::FilePath dirToSave;
-    base::PathService::Get(base::DIR_HOME, &dirToSave);
-    dirToSave = dirToSave.Append(LEDGER_STATE_FILENAME);
-    int64_t file_size = 0;
-    if (!GetFileSize(dirToSave, &file_size)) {
+    std::string file_path;
+    std::string root;
+    braveledger_bat_helper::getHomeDir(root);
+    std::ostringstream data;
 
-      callback.Run(false, CLIENT_STATE_ST());
-
-      return;
-    }
-    std::vector<char> data(file_size + 1);
-    if (-1 != base::ReadFile(dirToSave, &data.front(), file_size)) {
-      data[file_size] = '\0';
+    braveledger_bat_helper::appendPath(root, LEDGER_STATE_FILENAME, file_path);
+    bool succeded = braveledger_bat_helper::readFile(file_path, data);
+    if (succeded)
+    {
       CLIENT_STATE_ST state;
-      braveledger_bat_helper::loadFromJson(state, &data.front());
-      callback.Run(true, state);
-      return;
+      braveledger_bat_helper::loadFromJson(state, data.str());
+      braveledger_bat_helper::run_runnable (callback, true, std::cref(state));      
     }
-
-    callback.Run(false, CLIENT_STATE_ST());
-#endif
+    else
+    {
+      CLIENT_STATE_ST temp;
+      braveledger_bat_helper::run_runnable(callback, false, std::cref(temp));
+    }
   }
 
-
-
-  void writePublisherStateFile(const std::string& data) {
-#if defined CHROMIUM_BUILD
-    base::FilePath dirToSave;
-    base::PathService::Get(base::DIR_HOME, &dirToSave);
-    dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
-
-    int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());
-    LOG(ERROR) << "writeStateFile to: " << dirToSave << " : " << data.length() << " : " << succeded;
-    assert(succeded != -1);
-#else
-
-#endif
-  }
 
   void readPublisherStateFile(ReadPublisherStateCallback callback) {
-#if defined CHROMIUM_BUILD
-    base::FilePath dirToSave;
-    base::PathService::Get(base::DIR_HOME, &dirToSave);
-    dirToSave = dirToSave.Append(LEDGER_PUBLISHER_STATE_FILENAME);
-    int64_t file_size = 0;
-    if (!GetFileSize(dirToSave, &file_size)) {
+    std::string file_path;
+    std::string root;
+    braveledger_bat_helper::getHomeDir(root);
+    std::ostringstream data;
 
-      callback.Run(false, PUBLISHER_STATE_ST());
-
-      return;
-    }
-    std::vector<char> data(file_size + 1);
-    if (-1 != base::ReadFile(dirToSave, &data.front(), file_size)) {
-      data[file_size] = '\0';
-      PUBLISHER_STATE_ST state;
-      braveledger_bat_helper::loadFromJson(state, &data.front());
-      callback.Run(true, state);
-
-      return;
-    }
-
-    callback.Run(false, PUBLISHER_STATE_ST());
-#else
-
-#endif
-  }
-
-  void getDbFile(const std::string & id, std::string & pubDbPath)
-  {
-#if defined CHROMIUM_BUILD
-    base::FilePath dbFilePath;
-    base::PathService::Get(base::DIR_HOME, &dbFilePath);
-    dbFilePath = dbFilePath.Append(id);
-    pubDbPath = dbFilePath.value();
-#else
-    //TODO: to implement
-    assert(false);
-#endif
-  }
-
-  // Enable emscripten calls
-  /*void readEmscriptenInternal() {
-    base::MemoryMappedFile::Region region_out;
-    int fd_out = base::android::OpenApkAsset("assets/anonize2-jumbo.mp3", &region_out);
-    if (fd_out < 0) {
-      LOG(ERROR) << "readEmscripten error: Cannot open assets/anonize2-jumbo.dat";
-      return;
-    }
-
-    base::File file(fd_out);
-    base::MemoryMappedFile* adblock_mmap_ = new base::MemoryMappedFile();
-    if (!adblock_mmap_->Initialize(std::move(file), region_out)) {
-      LOG(ERROR) << "InitAdBlock: Cannot init memory mapped file";
-      return;
-    }
-    std::vector<char> data(adblock_mmap_->length() + 1);
-    ::memcpy(&data.front(), adblock_mmap_->data(), adblock_mmap_->length());
-    data[adblock_mmap_->length()] = '\0';
-    //LOG(ERROR) << "!!!file == " << &data.front();
-    LOG(ERROR) << "!!!length == " << data.size();
-    delete adblock_mmap_;
-
-    std::string toExecute = (std::string)&data.front() + "\r\nvar init = cwrap('initAnonize', '', '')\r\ninit()";
-    toExecute += "\r\nvar makeCred = cwrap('makeCred', 'string', [ 'string' ])\r\nmakeCred('6d1219ab4ac45a5928323eb196ed62a')";
-
-    // V8 init
-    v8::V8::InitializeICU();
-  //  v8::Platform *platform = v8::platform::CreateDefaultPlatform();
-  //  v8::V8::InitializePlatform(platform);
-
-    std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
-    v8::V8::InitializePlatform(platform.get());
-
-    v8::V8::Initialize();
-
-    v8::Isolate::CreateParams create_params;
-    create_params.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
-
-    // Create a new Isolate and make it the current one.
-    v8::Isolate* isolate = v8::Isolate::New(create_params);
-
-    //v8::Persistent<v8::String> test;
-
+    braveledger_bat_helper::appendPath(root, LEDGER_PUBLISHER_STATE_FILENAME, file_path);
+    bool succeded = braveledger_bat_helper::readFile(file_path, data);
+    if (succeded)
     {
-      v8::Isolate::Scope isolate_scope(isolate);
-
-      // Create a stack-allocated handle scope.
-      v8::HandleScope handle_scope(isolate);
-
-      // Create a new context.
-      v8::Local<v8::Context> context = v8::Context::New(isolate);
-
-      // Enter the context for compiling and running the hello world script.
-      v8::Context::Scope context_scope(context);
-
-
-      //test.Reset(isolate, v8::String::NewFromUtf8(isolate, "Hello' + ', World!'"));
-      //test.SetWeak(&test, weak_callback, v8::WeakCallbackType::kParameter);
-
-
-      // Create a string containing the JavaScript source code.
-      v8::Local<v8::String> source = v8::String::NewFromUtf8(isolate, (const char*)toExecute.c_str());
-
-      // Compile the source code.
-      v8::TryCatch try_catch(isolate);
-
-      // Compile the script and check for errors.
-      v8::Local<v8::Script> compiled_script;
-      if (!v8::Script::Compile(context, source).ToLocal(&compiled_script)) {
-        v8::String::Utf8Value error(isolate, try_catch.Exception());
-        LOG(ERROR) << "!!!error == " << *error;
-        // The script failed to compile; bail out.
-      }
-
-      // Run the script to get the result.
-      v8::Local<v8::Value> result = compiled_script->Run();
-
-      // Convert the result to an UTF8 string and print it.
-      v8::String::Utf8Value utf8(isolate, result);
-      LOG(ERROR) << "!!!result == " << *utf8;
+      PUBLISHER_STATE_ST state;
+      braveledger_bat_helper::loadFromJson(state, data.str());
+      braveledger_bat_helper::run_runnable(callback, true, std::cref(state));
     }
-
-    isolate->LowMemoryNotification();
-
-    // Dispose the isolate and tear down V8.
-    isolate->Dispose();
-    v8::V8::Dispose();
-    v8::V8::ShutdownPlatform();
+    else
+    {
+      PUBLISHER_STATE_ST temp;
+      braveledger_bat_helper::run_runnable(callback, false, std::cref(temp));
+    }
   }
 
-  void readEmscripten() {
-    scoped_refptr<base::SequencedTaskRunner> task_runner =
-       base::CreateSequencedTaskRunnerWithTraits(
-           {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-    task_runner->PostTask(FROM_HERE, base::Bind(&braveledger_bat_helper::readEmscriptenInternal));
-  }*/
-  //
+  void writeFileNoReturn(const std::string & path, const std::string& data)
+  {
+    //ignoring return
+    writeFile(path, data);
+  }
 
 } //namespace braveledger_bat_helper 
 

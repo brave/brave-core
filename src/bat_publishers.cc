@@ -48,8 +48,10 @@ void BatPublishers::calcScoreConsts() {
 }
 
 void BatPublishers::openPublishersDB() {
-  std::string pubDbPath;
-  braveledger_bat_helper::getDbFile(PUBLISHERS_DB_NAME, pubDbPath);
+  std::string pubDbPath;  
+  std::string root;
+  braveledger_bat_helper::getHomeDir(root);
+  braveledger_bat_helper::appendPath(root, PUBLISHERS_DB_NAME, pubDbPath);  
   
   level_db_.reset(nullptr); //release the existing db connection
   leveldb::Options options;
@@ -140,7 +142,7 @@ void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64
     assert(status.ok());
   }
   
-  braveledger_bat_helper::run_runnable <braveledger_bat_helper::SaveVisitCallback, const std::string&, const uint64_t& >(callback, publisher, std::cref(verifiedTimestamp) );
+  braveledger_bat_helper::run_runnable (callback, publisher, std::cref(verifiedTimestamp) );
   synopsisNormalizerInternal();
 }
 

@@ -9,8 +9,13 @@
 #include "base/task_scheduler/post_task.h"
 #include "base/bind.h"
 #include "base/callback.h"
+#include "base/logging.h"
+#include "base/files/file_path.h"
+#include "base/path_service.h"
+#include "base/files/file_util.h"
 
 #else
+
 #include <functional>
 #include <iostream>
 #include <cassert>
@@ -67,8 +72,6 @@ namespace braveledger_bat_helper {
 #define bat_fun_binder2 bat_fun_binder
 #define bat_fun_binder3 bat_fun_binder
 
-
-
   template <typename Runnable>
   void PostTask(Runnable runnable)
   {
@@ -77,7 +80,6 @@ namespace braveledger_bat_helper {
 
     task_runner->PostTask(FROM_HERE, runnable);
   }
-
 
 #else
   using FetchCallback = std::function<braveledger_bat_helper::FetchCallbackSignature>;
@@ -152,20 +154,31 @@ namespace braveledger_bat_helper {
   template <typename Runnable, typename ... Args >
   void PostTask(Runnable runnable, Args ... args)
   {
+    //TODO: implement!
     runnable(args...);
   }
 
   // Chromium debug macros redefined
+  //TODO: implement!
 #define DCHECK assert
 #define LOG(LEVEL) std::cerr<< std::endl<< #LEVEL << ": "
 
 #endif
 
-std::string GenerateGUID();
+  std::string GenerateGUID();
 
-void encodeURIComponent(const std::string & instr, std::string & outstr);
+  void encodeURIComponent(const std::string & instr, std::string & outstr);
 
-void DecodeURLChars(const std::string& input, std::string& output);
+  void DecodeURLChars(const std::string& input, std::string& output);
+
+  void getHomeDir(std::string& home);
+
+  void appendPath(const std::string& root, const std::string& leaf, std::string & path);
+
+  //overwrites file if exist
+  bool writeFile(const std::string & path, const std::string& data);
+
+  bool readFile(const std::string & path, std::ostringstream & ss);
 
 } //namespace braveledger_bat_helper
 

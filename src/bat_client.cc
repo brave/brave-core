@@ -21,10 +21,7 @@ namespace braveledger_bat_client {
 
 BatClient::BatClient( bool useProxy):
       useProxy_(useProxy),
-      publisherTimestamp_(0) {
-  // Enable emscripten calls
-  //braveledger_bat_helper::readEmscripten();
-  //
+      publisherTimestamp_(0) {  
   initAnonize();
 }
 
@@ -461,7 +458,7 @@ void BatClient::viewingCredentialsCallback(bool result, const std::string& respo
     }
   }
   braveledger_bat_helper::saveState(state_);  
-  braveledger_bat_helper::run_runnable <braveledger_bat_helper::SimpleCallback, const std::string&> (currentReconcile_.ledgerCallback_, std::cref(currentReconcile_.viewingId_) );
+  braveledger_bat_helper::run_runnable (currentReconcile_.ledgerCallback_, std::cref(currentReconcile_.viewingId_) );
   
   //LOG(ERROR) << "!!!response masterUserToken == " << currentReconcile_.masterUserToken_;
 

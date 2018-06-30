@@ -29,8 +29,9 @@ BatGetMedia::~BatGetMedia() {
 void BatGetMedia::openMediaPublishersDB() {
 
   std::string dbPath;
-  braveledger_bat_helper::getDbFile(MEDIA_CACHE_DB_NAME, dbPath);
-  
+  std::string root;
+  braveledger_bat_helper::getHomeDir(root);
+  braveledger_bat_helper::appendPath(root, MEDIA_CACHE_DB_NAME, dbPath);  
 
   leveldb::Options options;
   options.create_if_missing = true;
@@ -75,8 +76,7 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
 				}
 			}
 			
-      braveledger_bat_helper::run_runnable <braveledger_bat_helper::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(realDuration), std::cref(publisherInfo) );
-
+      braveledger_bat_helper::run_runnable(callback, std::cref(realDuration), std::cref(publisherInfo) );
 			return;
 		}
   }
@@ -136,7 +136,7 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
       braveledger_bat_helper::GetMediaPublisherInfoCallback callback = iter->second;
 	  	mapCallbacks_.erase(iter);
 
-      braveledger_bat_helper::run_runnable <braveledger_bat_helper::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(realDuration), std::cref(publisherInfo) );
+      braveledger_bat_helper::run_runnable (callback, std::cref(realDuration), std::cref(publisherInfo) );
 	  }
 	}
 }
@@ -298,7 +298,7 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
 	  	DCHECK(iter != mapCallbacks_.end());
       braveledger_bat_helper::GetMediaPublisherInfoCallback callback = iter->second;
 	  	mapCallbacks_.erase(iter);
-      braveledger_bat_helper::run_runnable <braveledger_bat_helper::GetMediaPublisherInfoCallback, const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&>(callback, std::cref(extraData.value1), std::cref(publisherInfo) );
+      braveledger_bat_helper::run_runnable (callback, std::cref(extraData.value1), std::cref(publisherInfo) );
 	  }
 	}
 }
