@@ -42,9 +42,10 @@ test("brave_unit_tests") {
     "../utility/importer/chrome_importer_unittest.cc",
   ]
 
-  if (is_mac) {
+  # On Windows, brave_install_static_unittests covers channel test.
+  if (is_mac || is_linux) {
     sources += [
-      "//brave/common/brave_channel_info_mac_unittest.cc",
+      "//brave/common/brave_channel_info_unittest.cc",
     ]
   }
 

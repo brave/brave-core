@@ -51,11 +51,8 @@ source_set("common") {
 }
 
 source_set("constants") {
-  # TODO(simonhong): Remove if clauses.
-  if (is_official_build) {
-    sources = [
-      "//brave/common/brave_channel_info_linux.cc",
-      "//brave/common/brave_channel_info_linux.h",
-    ]
-  }
+  sources = [
+    "//brave/common/brave_channel_info_linux.cc",
+    "//brave/common/brave_channel_info_linux.h",
+  ]
 }
