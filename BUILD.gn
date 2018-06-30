@@ -74,8 +74,15 @@ group("create_dist") {
     deps += [ "build/mac:create_dist_mac" ]
   }
   if (is_linux) {
+    _linux_channel = brave_channel
+    if (brave_channel == "") {
+      _linux_channel = "stable"
+    } else if (brave_channel == "dev") {
+      _linux_channel = "unstable"
+    }
+
     deps += [
-      "//chrome/installer/linux",
+      "//chrome/installer/linux:$_linux_channel",
       "//brave/app/linux:dist_resources",
     ]
   }
