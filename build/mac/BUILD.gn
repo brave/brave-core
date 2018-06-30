@@ -8,6 +8,16 @@ declare_args() {
 _packaging_dir = "$root_out_dir/$brave_product_name Packaging"
 keychain_db = getenv("HOME") + "/Library/Keychains/login.${mac_signing_keychain}-db"
 
+_target_app_name = "Brave-Browser"
+if (brave_channel == "beta") {
+  _target_app_name = _target_app_name + "-Beta"
+} else if (brave_channel == "dev") {
+  _target_app_name = _target_app_name + "-Dev"
+} else if (brave_channel == "nightly") {
+  _target_app_name = _target_app_name + "-Nightly"
+}
+_target_app_path = "$root_out_dir/signing/$_target_app_name.app"
+
 action("sign_app") {
   brave_app = "$root_build_dir/Brave.app"
 
@@ -20,13 +30,13 @@ action("sign_app") {
     "$_packaging_dir/sign_app.sh",
     "$_packaging_dir/sign_versioned_dir.sh",
   ]
-  outputs = [ "$root_out_dir/signing/Brave.app" ]
+  outputs = [ _target_app_path ]
   args = [
     rebase_path(shell_script, root_out_dir),
 
     # Use absolute paths needed by codesign
     rebase_path(brave_app),
-    rebase_path("$root_out_dir/signing/Brave.app"),
+    rebase_path(_target_app_path),
     rebase_path(_packaging_dir),
     keychain_db,
     mac_signing_identifier
@@ -53,7 +63,7 @@ action("create_dmg") {
     "--format", "UDBZ",
     "--verbosity", "0",
     "--volname", "Brave",
-    "--copy", rebase_path("$root_out_dir/signing/Brave.app", root_build_dir),
+    "--copy", rebase_path(_target_app_path, root_build_dir),
     "--tempdir", "/tmp",
     "--symlink", "/Applications",
   ]
