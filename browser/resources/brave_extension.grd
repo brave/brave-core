@@ -13,6 +13,7 @@
       <include name="IDR_BRAVE_EXTENSON_SHIELDS_BUNDLE_JS" file="brave_extension/js/braveShieldsPanel.bundle.js" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_BACKGROUND_BUNDLE_JS" file="brave_extension/js/background.bundle.js" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_ICON_16_PNG" file="brave_extension/img/icon-16.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_16_DISABLED_PNG" file="brave_extension/img/icon-16-disabled.png" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_ICON_48_PNG" file="brave_extension/img/icon-48.png" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_ICON_128_PNG" file="brave_extension/img/icon-128.png" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_BACKGROUND_HTML" file="brave_extension/background.html" type="BINDATA" />
