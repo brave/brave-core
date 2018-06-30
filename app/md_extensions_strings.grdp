@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- This file is created by l10nUtil.js. Do not edit manually. -->
 <!-- MD Extensions strings (included from generated_resources.grd). -->
 <grit-part>
   <message name="IDS_MD_EXTENSIONS_DEVELOPER_MODE" desc="The text displayed next to the checkbox to toggle developer mode in the extensions page.">

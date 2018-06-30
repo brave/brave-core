@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is created by l10nUtil.js. Do not edit manually. -->
 <grit latest_public_release="0" current_release="1" output_all_resource_defines="false">
   <outputs>
     <output filename="grit/extensions_resources.h" type="rc_header">
