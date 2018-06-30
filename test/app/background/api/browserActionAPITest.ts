@@ -17,7 +17,7 @@ describe('BrowserAction API', () => {
     })
     after(function () {
       this.spy.restore()
-    }) 
+    })
     it('calls chrome.browserAction.setBadgeText with the text', function () {
       assert(this.spy.calledOnce)
       assert.deepEqual(this.spy.getCall(0).args[0], {
@@ -26,8 +26,8 @@ describe('BrowserAction API', () => {
     })
   })
   describe('setIcon', function () {
-    const enabledIconPath = '../../img/icon-16.png'
-    const disabledIconPath = '../../img/icon-16-disabled.png'
+    const enabledIconPath = 'img/icon-16.png'
+    const disabledIconPath = 'img/icon-16-disabled.png'
     before(function () {
       this.spy = sinon.spy(chrome.browserAction, 'setIcon')
       this.url = 'https://brave.com'
