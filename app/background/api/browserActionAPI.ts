@@ -16,8 +16,8 @@ export const setBadgeText = (text: string) => {
  * Updates the shields icon based on shields state
  */
 export const setIcon = (url: string, tabId: number, shieldsOn: boolean) => {
-  const shieldsEnabledIcon = '../../img/icon-16.png'
-  const shieldsDisabledIcon = '../../img/icon-16-disabled.png'
+  const shieldsEnabledIcon = 'img/icon-16.png'
+  const shieldsDisabledIcon = 'img/icon-16-disabled.png'
   const isHttpOrHttps = url && /^http/.test(url)
 
   if (chrome.browserAction) {

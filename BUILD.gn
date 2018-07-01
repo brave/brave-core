@@ -18,6 +18,7 @@ action("brave-extension") {
     "$target_gen_dir/brave_extension/build/bravelizer.css",
     "$target_gen_dir/brave_extension/build/img/icon-128.png",
     "$target_gen_dir/brave_extension/build/img/icon-16.png",
+    "$target_gen_dir/brave_extension/build/img/icon-16-disabled.png",
     "$target_gen_dir/brave_extension/build/img/icon-48.png",
     "$target_gen_dir/brave_extension/build/_locales/en_US/messages.json",
   ]
