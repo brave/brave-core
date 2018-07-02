@@ -6,6 +6,7 @@
         "module": "commonjs",
         "lib": ["es6", "dom"],
         "target": "es5",
+        "downlevelIteration": true,
         "allowJs": true,
         "jsx": "react",
         "moduleResolution": "node",
