@@ -6,16 +6,14 @@
 #define BRAVELEDGER_BAT_HELPER_PLATFORM_H_
 
 #if defined CHROMIUM_BUILD
-#include "base/task_scheduler/post_task.h"
 #include "base/bind.h"
 #include "base/callback.h"
-#include "base/logging.h"
 #include "base/files/file_path.h"
-#include "base/path_service.h"
 #include "base/files/file_util.h"
-
+#include "base/logging.h"
+#include "base/path_service.h"
+#include "base/task_scheduler/post_task.h"
 #else
-
 #include <functional>
 #include <iostream>
 #include <cassert>
@@ -35,7 +33,6 @@ namespace braveledger_bat_helper {
   using GetMediaPublisherInfoSignature = void(const uint64_t&, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&);
   using SaveVisitSignature = void(const std::string&, const uint64_t&);
 
-
 #if defined CHROMIUM_BUILD
   using  FetchCallback = base::Callback<FetchCallbackSignature>;
   using  ReadStateCallback = base::Callback<ReadStateCallbackSignature>;
@@ -44,7 +41,7 @@ namespace braveledger_bat_helper {
   using  GetMediaPublisherInfoCallback = base::Callback<GetMediaPublisherInfoSignature>;
   using  SaveVisitCallback = base::Callback<SaveVisitSignature>;
 
-  //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.  
+  //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.
   template <typename BaseType, typename Signature, typename... Args >
   decltype(auto) bat_mem_fun_binder(BaseType & instance, Signature BaseType::* ptr_to_mem, Args... args)
   {
@@ -89,7 +86,7 @@ namespace braveledger_bat_helper {
   using  GetMediaPublisherInfoCallback = std::function<GetMediaPublisherInfoSignature>;
   using  SaveVisitCallback = std::function<SaveVisitSignature>;
 
-  //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.  
+  //Binds a member function of an instance of the type (Base) which has a signature (Signature) to a callback wrapper.
   template <typename BaseType, typename Signature, typename ... Args >
   decltype(auto) bat_mem_fun_binder(BaseType & instance, Signature BaseType::* ptr_to_mem, Args ... args)
   {
@@ -144,7 +141,7 @@ namespace braveledger_bat_helper {
     return std::bind(ptr_to_fun, _1, _2, _3);
   }
 
-  //working with C++ function.operator() 
+  //working with C++ function.operator()
   template <typename Runnable, typename ... Args>
   decltype(auto) run_runnable(Runnable & runnable, Args ... args)
   {
@@ -180,6 +177,6 @@ namespace braveledger_bat_helper {
 
   bool readFile(const std::string & path, std::ostringstream & ss);
 
-} //namespace braveledger_bat_helper
+}  // namespace braveledger_bat_helper
 
 #endif  //BRAVELEDGER_BAT_HELPER_PLATFORM_H_

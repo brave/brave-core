@@ -3,18 +3,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat_client_webrequest_chromium.h"
-#include "url_fetcher.h"
-#include "url_request_context.h"
-#include "url_request_context_getter.h"
-#include "url_request_context_builder.h"
-#include "logging.h"
+
+#include "base/logging.h"
 #include "chrome/browser/browser_process.h"
-#include "browser_thread.h"
-#include "net/base/upload_data_stream.h"
-#include "net/base/upload_element_reader.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/elements_upload_data_stream.h"
 #include "net/base/upload_bytes_element_reader.h"
+#include "net/base/upload_data_stream.h"
+#include "net/base/upload_element_reader.h"
+#include "net/url_request/url_fetcher.h"
+#include "net/url_request/url_request_context.h"
+#include "net/url_request/url_request_context_builder.h"
+#include "net/url_request/url_request_context_getter.h"
 
+#include "bat_helper.h"
 
 namespace braveledger_bat_client_webrequest {
 
@@ -24,13 +26,13 @@ namespace braveledger_bat_client_webrequest {
   BatClientWebRequest::~BatClientWebRequest() {
   }
 
-  BatClientWebRequest::URL_FETCH_REQUEST::URL_FETCH_REQUEST(){}
-  BatClientWebRequest::URL_FETCH_REQUEST::~URL_FETCH_REQUEST(){}
+  BatClientWebRequest::URL_FETCH_REQUEST::URL_FETCH_REQUEST() {}
+  BatClientWebRequest::URL_FETCH_REQUEST::~URL_FETCH_REQUEST() {}
 
   std::unique_ptr<net::UploadDataStream>  BatClientWebRequest::CreateUploadStream(const std::string& stream) {
     std::vector<char> buffer(stream.begin(),stream.end());
 
-    return net::ElementsUploadDataStream::CreateWithReader( 
+    return net::ElementsUploadDataStream::CreateWithReader(
       std::unique_ptr<net::UploadElementReader>(new net::UploadOwnedBytesElementReader(&buffer)), 0);
   }
 
@@ -61,7 +63,7 @@ namespace braveledger_bat_client_webrequest {
     }*/
     url_fetchers_.back()->url_fetcher_ = net::URLFetcher::Create(GURL(url), requestType, this);
     url_fetchers_.back()->callback_ = callback;
-    url_fetchers_.back()->extraData_ = extraData;
+    url_fetchers_.back()->extraData_.reset(new braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(extraData));
     //LOG(ERROR) << "!!!on runOnThread == " + url;
     url_fetchers_.back()->url_fetcher_->SetRequestContext(g_browser_process->system_request_context());
     for (size_t i = 0; i < headers.size(); i++) {
@@ -102,9 +104,9 @@ namespace braveledger_bat_client_webrequest {
 
     std::lock_guard<std::mutex> guard(fetcher_mutex_);
     if (url_fetchers_.size()) {
-      url_fetchers_.front()->callback_.Run(!failure, response, url_fetchers_.front()->extraData_);
+      url_fetchers_.front()->callback_.Run(!failure, response, *url_fetchers_.front()->extraData_);
       url_fetchers_.pop_front();
     }
   }
 
-} //namespace braveledger_bat_client_webrequest
+}  // namespace braveledger_bat_client_webrequest

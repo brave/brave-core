@@ -3,13 +3,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-#include "bat_helper.h"
-#include "ledger.h"
 #include "bat_client.h"
 #include "bat_get_media.h"
+#include "bat_helper.h"
 #include "bat_publishers.h"
+#include "ledger.h"
 #include "static_values.h"
 
+#include "rapidjson_bat_helper.h"
 
 using namespace braveledger_bat_client;
 using namespace braveledger_bat_publishers;
@@ -22,7 +23,7 @@ namespace braveledger_ledger {
     bat_get_media_ = new BatGetMedia();
   }
 
-  Ledger::~Ledger() { 
+  Ledger::~Ledger() {
     if (bat_get_media_) {
       delete bat_get_media_;
     }
@@ -330,11 +331,11 @@ namespace braveledger_ledger {
     }
     if (!bat_get_media_) {
       return;
-    }    
+    }
 
     braveledger_bat_helper::GetMediaPublisherInfoCallback runnable1 = braveledger_bat_helper::bat_mem_fun_binder2(*this, &Ledger::OnMediaRequestCallback);
 
-    auto runnable2 = braveledger_bat_helper::bat_mem_fun_binder(*bat_get_media_, &BatGetMedia::getPublisherFromMediaProps, 
+    auto runnable2 = braveledger_bat_helper::bat_mem_fun_binder(*bat_get_media_, &BatGetMedia::getPublisherFromMediaProps,
       std::cref(mediaId), std::cref(mediaKey), type, std::cref(duration), std::cref(twitchEventInfo), runnable1);
 
     braveledger_bat_helper::PostTask(runnable2);
@@ -344,5 +345,4 @@ namespace braveledger_ledger {
     saveVisit(mediaPublisherInfo.publisher_, duration, true);
   }
 
-} //namespace braveledger_ledger
-
+}  // namespace braveledger_ledger

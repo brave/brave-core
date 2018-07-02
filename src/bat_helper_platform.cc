@@ -2,21 +2,19 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this
 * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
+#include "bat_helper_platform.h"
 
 #if defined CHROMIUM_BUILD
+#include "base/guid.h"
 #include "base/logging.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task_scheduler/post_task.h"
-#include "url/url_util.h"
 #include "url/url_canon_stdstring.h"
-#include "base/guid.h"
+#include "url/url_util.h"
 #endif
 
-#include "bat_helper_platform.h"
 #include "static_values.h"
-
 
 namespace braveledger_bat_helper {
 
@@ -26,10 +24,9 @@ namespace braveledger_bat_helper {
     url::DecodeURLEscapeSequences(input.c_str(), input.length(), &canonOutput);
     output = base::UTF16ToUTF8(base::StringPiece16(canonOutput.data(), canonOutput.length()));
 #else
-    //TODO: to implement  
+    //TODO: to implement
 #endif
   }
-
 
   std::string GenerateGUID()
   {
@@ -52,7 +49,6 @@ namespace braveledger_bat_helper {
     assert(false);
 #endif
   }
-
 
   void getHomeDir(std::string& home)
   {
@@ -81,12 +77,12 @@ namespace braveledger_bat_helper {
   bool writeFile(const std::string & path, const std::string& data)
   {
 #if defined CHROMIUM_BUILD
-    base::FilePath dirToSave (path.c_str());    
+    base::FilePath dirToSave (path.c_str());
 
     int succeded = base::WriteFile(dirToSave, data.c_str(), data.length());
     LOG(ERROR) << "writeToFile to: " << dirToSave << " : " << data.length() << " : " << succeded;
     assert(succeded != -1);
-    return (succeded != -1) ? true : false;    
+    return (succeded != -1) ? true : false;
 #else
     //TODO: to implement
     assert(false);
@@ -97,20 +93,20 @@ namespace braveledger_bat_helper {
 
   bool readFile(const std::string & path, std::ostringstream & ss)
   {
-#if defined CHROMIUM_BUILD    
-    bool succeded = false;    
+#if defined CHROMIUM_BUILD
+    bool succeded = false;
     base::FilePath path_to_file (path.c_str());
     base::PathExists(path_to_file);
     if (base::PathExists(path_to_file)) {
       std::string str;
       succeded = base::ReadFileToString(path_to_file, &str);
-      ss << str;      
-    }    
-    return succeded;    
-#else    
+      ss << str;
+    }
+    return succeded;
+#else
     assert(false);
     return false;
 #endif
   }
 
-} //namespace braveledger_bat_helper
+}  // namespace braveledger_bat_helper

@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
 #ifndef BRAVELEDGER_STATIC_VALUES_H_
 #define BRAVELEDGER_STATIC_VALUES_H_
 
@@ -24,13 +23,13 @@
 #define WALLET_PROPERTIES_END           "/balance"
 #define RECONCILE_CONTRIBUTION          "/surveyor/contribution/current/"
 #define SURVEYOR_VOTING                 "/surveyor/voting/"
-#define SURVEYOR_BATCH_VOTING						"/batch/surveyor/voting/"
+#define SURVEYOR_BATCH_VOTING            "/batch/surveyor/voting/"
 #define UPDATE_RULES_V1                 "/v1/publisher/ruleset?consequential=true"
 #define UPDATE_RULES_V2                 "/v2/publisher/ruleset?limit=512&excludedOnly=false"
 #define RECOVER_WALLET_PUBLIC_KEY       "/v2/wallet?publicKey="
 #define RECOVER_WALLET                  "/v2/wallet/"
-#define GET_SET_PROMOTION								"/v1/grants"
-#define GET_PROMOTION_CAPTCHA						"/v1/captchas/"
+#define GET_SET_PROMOTION                "/v1/grants"
+#define GET_PROMOTION_CAPTCHA            "/v1/captchas/"
 
 #define REGISTRARVK_FIELDNAME           "registrarVK"
 #define VERIFICATION_FIELDNAME          "verification"
@@ -48,18 +47,18 @@
 #define PUBLISHERS_DB_NAME              "d2c799cd-f37f-4230-9a04-ca23ba5be240"
 #define MEDIA_CACHE_DB_NAME             "9956db89-9105-420b-9ad4-49348bc536af"
 
-#define YOUTUBE_MEDIA_TYPE							"youtube"
-#define TWITCH_MEDIA_TYPE								"twitch"
-#define YOUTUBE_PROVIDER_NAME						"YouTube"
-#define YOUTUBE_PROVIDER_URL						"https://www.youtube.com/oembed"
+#define YOUTUBE_MEDIA_TYPE              "youtube"
+#define TWITCH_MEDIA_TYPE                "twitch"
+#define YOUTUBE_PROVIDER_NAME            "YouTube"
+#define YOUTUBE_PROVIDER_URL            "https://www.youtube.com/oembed"
 
 #define SEED_LENGTH                     32
 #define SALT_LENGTH                     64
 
-#define TWITCH_MINIMUM_SECONDS					10
-#define TWITCH_MAXIMUM_SECONDS_CHUNK		120
+#define TWITCH_MINIMUM_SECONDS          10
+#define TWITCH_MAXIMUM_SECONDS_CHUNK    120
 
-#define VOTE_BATCH_SIZE									10
+#define VOTE_BATCH_SIZE                  10
 
 namespace braveledger_ledger {
 
@@ -81,8 +80,8 @@ static const uint64_t _milliseconds_second = 1000;
 static const unsigned int _twitch_events_array_size = 8;
 // Important: set _twitch_events_array_size as a correct array size when you modify items in _twitch_events
 static const std::string _twitch_events[] = {"buffer-empty", "buffer-refill", "video_end",
-	"minute-watched", "video_pause", "player_click_vod_seek", "video-play", "video_error"};
+  "minute-watched", "video_pause", "player_click_vod_seek", "video-play", "video_error"};
 
-} //namespace braveledger_ledger
+}  // namespace braveledger_ledger
 
 #endif  // BRAVELEDGER_STATIC_VALUES_H_
