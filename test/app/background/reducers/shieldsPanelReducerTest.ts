@@ -459,7 +459,7 @@ describe('braveShieldsPanelReducer', () => {
             braveShields: 'allow',
             trackersBlocked: 2,
             httpsRedirected: 3,
-            javascriptBlocked: 4,
+            javascriptBlocked: 1,
             fingerprintingBlocked: 5,
             id: 2,
             httpUpgradableResources: 'block',
@@ -490,7 +490,7 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
       assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[0], '16')
+      assert.equal(this.spy.getCall(0).args[0], '12')
     })
     it('increments for JS blocking', function () {
       let nextState = shieldsPanelReducer(state, {
@@ -646,7 +646,7 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 0,
             trackersBlocked: 0,
             httpsRedirected: 0,
-            javascriptBlocked: 3,
+            javascriptBlocked: 2,
             fingerprintingBlocked: 0,
             controlsOpen: true,
             braveShields: 'allow',
@@ -667,8 +667,7 @@ describe('braveShieldsPanelReducer', () => {
             httpsRedirectedResources: [],
             javascriptBlockedResources: [
               'https://a.com/index.js',
-              'https://b.com/index.js',
-              'https://a.com/index.js'
+              'https://b.com/index.js'
             ]
           }
         },
@@ -676,6 +675,54 @@ describe('braveShieldsPanelReducer', () => {
           1: 2
         }
       })
+    })
+
+    it('increments JS blocking consecutively without duplicates', function () {
+      this.tabId = 2
+      let nextState = shieldsPanelReducer(state, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'javascript',
+          tabId: this.tabId,
+          subresource: 'https://a.com/index.js'
+        }
+      })
+      assert.deepEqual(
+        nextState.tabs[this.tabId].javascriptBlockedResources,
+        [ 'https://a.com/index.js' ]
+      )
+
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'javascript',
+          tabId: this.tabId,
+          subresource: 'https://b.com/index.js'
+        }
+      })
+      assert.deepEqual(
+        nextState.tabs[this.tabId].javascriptBlockedResources,
+        [
+          'https://a.com/index.js',
+          'https://b.com/index.js'
+        ]
+      )
+
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'javascript',
+          tabId: this.tabId,
+          subresource: 'https://b.com/index.js'
+        }
+      })
+      assert.deepEqual(
+        nextState.tabs[this.tabId].javascriptBlockedResources,
+        [
+          'https://a.com/index.js',
+          'https://b.com/index.js'
+        ]
+      )
     })
 
     it('increments for fingerprinting blocked', function () {
@@ -768,7 +815,7 @@ describe('braveShieldsPanelReducer', () => {
         details: {
           blockType: 'ads',
           tabId: 2,
-          subresource: 'https://test.brave.com'
+          subresource: 'https://test2.brave.com'
         }
       })
       assert.deepEqual(nextState, {
@@ -795,7 +842,7 @@ describe('braveShieldsPanelReducer', () => {
             trackersBlockedResources: [],
             adsBlockedResources: [
               'https://test.brave.com',
-              'https://test.brave.com'
+              'https://test2.brave.com'
             ],
             fingerprintingBlockedResources: [],
             httpsRedirectedResources: [],
@@ -807,6 +854,54 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
     })
+    it('increases same count consecutively without duplicates', function () {
+      this.tabId = 2
+      let nextState = shieldsPanelReducer(state, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'ads',
+          tabId: this.tabId,
+          subresource: 'https://test.brave.com'
+        }
+      })
+      assert.deepEqual(
+        nextState.tabs[this.tabId].adsBlockedResources,
+        [ 'https://test.brave.com' ]
+      )
+
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'ads',
+          tabId: this.tabId,
+          subresource: 'https://test2.brave.com'
+        }
+      })
+      assert.deepEqual(
+        nextState.tabs[this.tabId].adsBlockedResources,
+        [
+          'https://test.brave.com',
+          'https://test2.brave.com'
+        ]
+      )
+
+      nextState = shieldsPanelReducer(nextState, {
+        type: types.RESOURCE_BLOCKED,
+        details: {
+          blockType: 'ads',
+          tabId: this.tabId,
+          subresource: 'https://test2.brave.com'
+        }
+      })
+      assert.deepEqual(
+        nextState.tabs[this.tabId].adsBlockedResources,
+        [
+          'https://test.brave.com',
+          'https://test2.brave.com'
+        ]
+      )
+    })
+
     it('increases different tab counts separately', function () {
       let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
