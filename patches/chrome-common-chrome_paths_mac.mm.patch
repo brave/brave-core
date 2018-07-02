@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_paths_mac.mm b/chrome/common/chrome_paths_mac.mm
-index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..9e2676c79f09a565b5047af20bb82d44f2a3732f 100644
+index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..f3335630ea508f06334aa8e53ccf96dfb4484a7e 100644
 --- a/chrome/common/chrome_paths_mac.mm
 +++ b/chrome/common/chrome_paths_mac.mm
 @@ -18,6 +18,10 @@
@@ -21,7 +21,7 @@ index cca3bbb41ae25484c3e87c9aba09a8b07741e2b2..9e2676c79f09a565b5047af20bb82d44
 +    product_dir_name = "BraveSoftware/Brave-Browser";
 +    const std::string name = std::string(product_dir_name) +
 +        brave::GetChannelSuffixForDataDir(chrome_bundle);
-+    product_dir_name = name.c_str();
++    return strdup(name.c_str());
  #else
      product_dir_name = "Chromium";
  #endif
