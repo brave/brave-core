@@ -1,16 +1,24 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index c66a6f6245ebe7d4abb1993c93f279e9e8442993..d78f0f1867d4b863133f826b45116dfe62813489 100644
+index c66a6f6245ebe7d4abb1993c93f279e9e8442993..8b3eed687137c5b7cba118b78f48022bc2b30e59 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
-@@ -246,9 +246,16 @@ action("generate_strings") {
+@@ -246,9 +246,24 @@ action("generate_strings") {
      "$target_gen_dir/installer_util_strings.rc",
    ]
  
 +  brand = "$branding_path_component"
 +
-+  if (brave_chromium_build && !is_official_build) {
-+    # TODO(shong): Remove this.
-+    brand = brand + "-development"
++  if (brave_chromium_build) {
++    # When brave_strings.grd is modified, outputs should be re-generated.
++    # This is workaround. Need to change the way of using |brave_strings.grd|
++    # in |create_string_rc.py|.
++    sources = [
++      "//chrome/app/brave_strings.grd"
++    ]
++    if (!is_official_build) {
++      # TODO(shong): Remove this.
++      brand = brand + "-development"
++    }
 +  }
 +
    args = [

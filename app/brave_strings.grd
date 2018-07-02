@@ -137,11 +137,14 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         Brave
       </message>
       <if expr="is_win">
-        <message name="IDS_SXS_SHORTCUT_NAME" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_SXS_SHORTCUT_NAME">
+          Brave Nightly
         </message>
-        <message name="IDS_SHORTCUT_NAME_BETA" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_SHORTCUT_NAME_BETA">
+          Brave Beta
         </message>
-        <message name="IDS_SHORTCUT_NAME_DEV" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_SHORTCUT_NAME_DEV">
+          Brave Dev
         </message>
         <message name="IDS_PRODUCT_DESCRIPTION" desc="Browser description">
           Brave is a web browser that runs webpages and applications with lightning speed. It's fast, stable, and easy to use. Browse the web more safely with malware and phishing protection built into Brave.
@@ -804,9 +807,11 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         Brave Apps
       </message>
       <if expr="is_win">
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">
+          Brave Apps
         </message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">
+          Brave Apps
         </message>
       </if>
 
@@ -920,20 +925,26 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         <message name="IDS_INBOUND_MDNS_RULE_NAME" desc="The name of the firewall rule allowing inbound mDNS traffic.">
           Brave (mDNS-In)
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA">
+          Brave Beta (mDNS-In)
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY">
+          Brave Nightly (mDNS-In)
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV">
+          Brave Dev (mDNS-In)
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION" desc="The description of the firewall rule allowing inbound mDNS traffic.">
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION">
           Inbound rule for Brave to allow mDNS traffic.
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA">
+          Inbound rule for Brave Beta to allow mDNS traffic.
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY">
+          Inbound rule for Brave Nightly to allow mDNS traffic.
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV" desc="Unused in Brave builds" translateable="false">
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV">
+          Inbound rule for Brave Dev to allow mDNS traffic.
         </message>
       </if>
 
