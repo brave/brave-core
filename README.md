@@ -1,4 +1,4 @@
-Firefox for iOS
+Brave for iOS 🦁
 ===============
 
 Download on the [App Store](https://itunes.apple.com/app/brave-web-browser/id1052879175?mt=8).
@@ -8,7 +8,7 @@ This branch (development)
 
 This branch is for mainline development that will ship in the next release.
 
-This branch currently supports iOS 10 and 11, and is written in Swift 4.
+This branch currently supports iOS 11, and is written in Swift 4.
 
 Please make sure you aim your pull requests in the right direction.
 
