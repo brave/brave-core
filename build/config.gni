@@ -66,3 +66,7 @@ if (is_official_build) {
 }
 
 brave_product_dir_name = "BraveSoftware/Brave-Browser$brave_product_dir_name_suffix"
+
+if (is_mac) {
+  brave_target_app_name = "Brave-Browser$brave_product_dir_name_suffix"
+}
