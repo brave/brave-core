@@ -353,7 +353,7 @@ class TabManager: NSObject {
         saveTabOrder()
     }
     
-    func saveTabOrder() {
+    private func saveTabOrder() {
         let context = DataController.shared.workerContext
         context.perform {
             for i in 0..<self.tabs.count {
@@ -416,10 +416,7 @@ class TabManager: NSObject {
         
         // Ignore on restore.
         if !zombie && !isPrivate {
-            if let data = savedTabData(tab: tab) {
-                TabMO.preserve(savedTab: data)
-                saveTabOrder()
-            }
+            saveChanges(tab: tab, saveOrder: true)
         }
 
     }
@@ -438,7 +435,16 @@ class TabManager: NSObject {
         return nil
     }
     
-    private func savedTabData(tab: Tab) -> SavedTab? {
+    func saveChanges(tab: Tab, saveOrder: Bool = false) {
+        guard let data = savedTabData(tab: tab) else { return }
+        
+        TabMO.preserve(savedTab: data)
+        if saveOrder {
+            saveTabOrder()
+        }
+    }
+    
+    func savedTabData(tab: Tab) -> SavedTab? {
         
         guard let webView = tab.webView, let order = indexOfWebView(webView) else { return nil }
         
@@ -945,12 +951,8 @@ extension TabManager: WKNavigationDelegate {
         // as we current handle tab restore as error page redirects then this ensures that we don't
         // call storeChanges unnecessarily on startup
         
-        if let tab = tabForWebView(webView), !tab.isPrivate, let url = webView.url, !url.absoluteString.contains("localhost"), 
-            let data = savedTabData(tab: tab) {
-            DispatchQueue.main.async {
-                TabMO.preserve(savedTab: data)
-            }
-            // storeChanges()
+        if let tab = tabForWebView(webView), !tab.isPrivate, let url = webView.url, !url.absoluteString.contains("localhost") {
+            saveChanges(tab: tab)
         }
     }
     
