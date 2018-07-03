@@ -918,6 +918,9 @@
       <structure name="IDR_SETTINGS_PAGE_VISIBILITY_HTML"
                  file="page_visibility.html"
                  type="chrome_html" />
+      <structure name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS"
+                 file="brave_page_visibility.js"
+                 type="chrome_html" />
       <structure name="IDR_SETTINGS_PAGE_VISIBILITY_JS"
                  file="page_visibility.js"
                  type="chrome_html"
