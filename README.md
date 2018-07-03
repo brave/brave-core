@@ -48,15 +48,11 @@ $ yarn compress -- [options]
 
 ```bash
 # lint
-$ yarn lint
-
-# test/app
-$ yarn test
-$ yarn test -- --watch  # watch files
+$ npm run test-unit
 
 # test/e2e
-$ yarn build
-$ yarn test-e2e
+$ npm run-script build
+$ npm run test-e2e
 ```
 
 ## LICENSE
