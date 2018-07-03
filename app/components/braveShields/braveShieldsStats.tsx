@@ -88,13 +88,13 @@ export default class BraveShieldsStats extends React.Component<BraveShieldsStats
       fingerprintingBlockedDetailsOpen
     } = this.state
 
-    if (adsTrackersBlockedDetailsOpen) {
+    if (adsTrackersBlockedDetailsOpen && this.totalAdsTrackersBlocked > 0) {
       return this.setResourceBlockedItemView(this.totalAdsTrackersBlockedResources)
-    } else if (httpsRedirectedDetailsOpen) {
+    } else if (httpsRedirectedDetailsOpen && this.httpsRedirected > 0) {
       return this.setResourceBlockedItemView(this.httpsRedirectedResources)
-    } else if (javascriptBlockedDetailsOpen) {
+    } else if (javascriptBlockedDetailsOpen && this.javascriptBlocked > 0) {
       return this.setResourceBlockedItemView(this.javascriptBlockedResources)
-    } else if (fingerprintingBlockedDetailsOpen) {
+    } else if (fingerprintingBlockedDetailsOpen && this.fingerprintingBlocked > 0) {
       return this.setResourceBlockedItemView(this.fingerprintingBlockedResources)
     } else {
       return null
