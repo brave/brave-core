@@ -52,6 +52,9 @@ def Main(argv):
       'the tweaked plist, rather than overwriting the input.')
   parser.add_option('--brave_channel', dest='brave_channel', action='store',
       type='string', default=None, help='Channel (beta, dev, nightly)')
+  parser.add_option('--brave_product_dir_name', dest='brave_product_dir_name',
+      action='store', type='string', default=None,
+      help='Product directory name')
   parser.add_option('--brave_feed_url', dest='brave_feed_url', action='store',
       type='string', default=None, help='Target url for update feed')
   parser.add_option('--brave_dsa_file', dest='brave_dsa_file', action='store',
@@ -83,6 +86,8 @@ def Main(argv):
 
   if options.brave_channel:
     plist['KSChannelID'] = options.brave_channel
+
+  plist['CrProductDirName'] = options.brave_product_dir_name
 
   if options.brave_feed_url:
     plist['SUFeedURL'] = options.brave_feed_url

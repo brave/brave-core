@@ -12,26 +12,16 @@
 
 TEST(BraveChannelInfoMacTest, ChannelTest) {
 #if defined(OFFICIAL_BUILD)
+  EXPECT_EQ(version_info::Channel::STABLE,
+            chrome::GetChannelByName(""));
+  EXPECT_EQ(version_info::Channel::BETA,
+            chrome::GetChannelByName("beta"));
+  EXPECT_EQ(version_info::Channel::DEV,
+            chrome::GetChannelByName("dev"));
   EXPECT_EQ(version_info::Channel::CANARY,
             chrome::GetChannelByName("nightly"));
 #else
   EXPECT_EQ(version_info::Channel::UNKNOWN,
             chrome::GetChannelByName(""));
 #endif
-}
-
-TEST(BraveChannelInfoMacTest, DefaultUserDataDirectoryTest) {
-  base::FilePath path;
-  EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
-#if defined(OFFICIAL_BUILD)
-  EXPECT_EQ("Brave-Browser-Nightly", path.BaseName().AsUTF8Unsafe());
-#else
-  EXPECT_EQ("Brave-Browser-Development", path.BaseName().AsUTF8Unsafe());
-#endif
-}
-
-TEST(BraveChannelInfoMacTest, ParentDirectoryOfUserDataDirectoryTest) {
-  base::FilePath path;
-  EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
-  EXPECT_EQ("BraveSoftware", path.DirName().BaseName().AsUTF8Unsafe());
 }
