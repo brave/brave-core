@@ -67,6 +67,10 @@ void BraveContentSettingsObserver::BraveSpecificDidBlockJavaScript(
 
 bool BraveContentSettingsObserver::AllowScript(
     bool enabled_per_settings) {
+  // clear cached url for other flow like directly calling `DidNotAllowScript`
+  // without calling `AllowScriptFromSource` first
+  blocked_script_url_ = GURL::EmptyGURL();
+
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   const GURL secondary_url(
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
@@ -77,6 +81,15 @@ bool BraveContentSettingsObserver::AllowScript(
     IsScriptTemporilyAllowed(secondary_url);
 
   return allow;
+}
+
+void BraveContentSettingsObserver::DidNotAllowScript() {
+  if (!blocked_script_url_.is_empty()) {
+    BraveSpecificDidBlockJavaScript(
+      base::UTF8ToUTF16(blocked_script_url_.spec()));
+    blocked_script_url_ = GURL::EmptyGURL();
+  }
+  ContentSettingsObserver::DidNotAllowScript();
 }
 
 bool BraveContentSettingsObserver::AllowScriptFromSource(
@@ -91,7 +104,7 @@ bool BraveContentSettingsObserver::AllowScriptFromSource(
     IsScriptTemporilyAllowed(secondary_url);
 
   if (!allow) {
-    BraveSpecificDidBlockJavaScript(base::UTF8ToUTF16(secondary_url.spec()));
+    blocked_script_url_ = secondary_url;
   }
 
   return allow;

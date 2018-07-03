@@ -26,6 +26,7 @@ class BraveContentSettingsObserver
 
  protected:
   bool AllowScript(bool enabled_per_settings) override;
+  void DidNotAllowScript() override;
   bool AllowScriptFromSource(bool enabled_per_settings,
       const blink::WebURL& script_url) override;
 
@@ -60,6 +61,9 @@ class BraveContentSettingsObserver
   // Origins of scripts which are temporary allowed for this frame in the
   // current load
   base::flat_set<std::string> temporarily_allowed_scripts_;
+
+  // cache blocked script url which will later be used in `DidNotAllowScript()`
+  GURL blocked_script_url_;
 
   // temporary allowed script origins we preloaded for the next load
   base::flat_set<std::string> preloaded_temporarily_allowed_scripts_;
