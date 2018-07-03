@@ -8,15 +8,7 @@ declare_args() {
 _packaging_dir = "$root_out_dir/$brave_product_name Packaging"
 keychain_db = getenv("HOME") + "/Library/Keychains/login.${mac_signing_keychain}-db"
 
-_target_app_name = "Brave-Browser"
-if (brave_channel == "beta") {
-  _target_app_name = _target_app_name + "-Beta"
-} else if (brave_channel == "dev") {
-  _target_app_name = _target_app_name + "-Dev"
-} else if (brave_channel == "nightly") {
-  _target_app_name = _target_app_name + "-Nightly"
-}
-_target_app_path = "$root_out_dir/signing/$_target_app_name.app"
+_target_app_path = "$root_out_dir/signing/$brave_target_app_name.app"
 
 action("sign_app") {
   brave_app = "$root_build_dir/Brave.app"
@@ -48,7 +40,7 @@ action("sign_app") {
 }
 
 action("create_dmg") {
-  output = "$root_out_dir/unsigned/$_target_app_name.dmg"
+  output = "$root_out_dir/unsigned/$brave_target_app_name.dmg"
   script = "//build/gn_run_binary.py"
   shell_script = "//chrome/installer/mac/pkg-dmg"
   inputs = [
@@ -59,10 +51,10 @@ action("create_dmg") {
   args = [
     rebase_path(shell_script, root_build_dir),
     "--source", "/var/empty",
-    "--target", "unsigned/$_target_app_name.dmg",
+    "--target", "unsigned/$brave_target_app_name.dmg",
     "--format", "UDBZ",
     "--verbosity", "0",
-    "--volname", "$_target_app_name",
+    "--volname", "$brave_target_app_name",
     "--copy", rebase_path(_target_app_path, root_build_dir),
     "--tempdir", "/tmp",
     "--symlink", "/Applications",
@@ -77,16 +69,16 @@ action("sign_dmg") {
   inputs = [
     script,
     shell_script,
-    "$root_out_dir/unsigned/$_target_app_name.dmg",
+    "$root_out_dir/unsigned/$brave_target_app_name.dmg",
   ]
-  outputs = [ "${root_out_dir}/signing/$_target_app_name.dmg" ]
+  outputs = [ "${root_out_dir}/signing/$brave_target_app_name.dmg" ]
   args = [
     rebase_path(shell_script, root_build_dir),
-    rebase_path("$root_out_dir/unsigned/$_target_app_name.dmg"),
-    rebase_path("$root_out_dir/$_target_app_name.dmg"),
+    rebase_path("$root_out_dir/unsigned/$brave_target_app_name.dmg"),
+    rebase_path("$root_out_dir/$brave_target_app_name.dmg"),
     keychain_db,
     mac_signing_identifier,
-    "-r=designated => identifier \"$_target_app_name\" and certificate leaf = H\"$mac_signing_identifier\"",
+    "-r=designated => identifier \"$brave_target_app_name\" and certificate leaf = H\"$mac_signing_identifier\"",
   ]
 
   deps = [":create_dmg"]
