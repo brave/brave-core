@@ -278,6 +278,7 @@
 		7BF5A1EA1B41640500EA9DD8 /* SyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5A1E91B41640500EA9DD8 /* SyncQueue.swift */; };
 		7BF5A1EE1B429B3100EA9DD8 /* SyncCommandsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5A1ED1B429B3100EA9DD8 /* SyncCommandsTests.swift */; };
 		A134B88A20DA98BB00A581D0 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134B88920DA98BB00A581D0 /* Preferences.swift */; };
+		A13AC72520EC12360040D4BB /* Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13AC72420EC12360040D4BB /* Migration.swift */; };
 		A1510DA120E409E9008BF1F4 /* URLCacheExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */; };
 		A1510DAA20E425EA008BF1F4 /* BraveWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DA920E425EA008BF1F4 /* BraveWebView.swift */; };
 		A1510DDF20E51EF4008BF1F4 /* UIDeviceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DDE20E51EF4008BF1F4 /* UIDeviceExtensions.swift */; };
@@ -1157,6 +1158,7 @@
 		7BF5A1E91B41640500EA9DD8 /* SyncQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncQueue.swift; sourceTree = "<group>"; };
 		7BF5A1ED1B429B3100EA9DD8 /* SyncCommandsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncCommandsTests.swift; sourceTree = "<group>"; };
 		A134B88920DA98BB00A581D0 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		A13AC72420EC12360040D4BB /* Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migration.swift; sourceTree = "<group>"; };
 		A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLCacheExtensions.swift; sourceTree = "<group>"; };
 		A1510DA920E425EA008BF1F4 /* BraveWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWebView.swift; sourceTree = "<group>"; };
 		A1510DDE20E51EF4008BF1F4 /* UIDeviceExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtensions.swift; sourceTree = "<group>"; };
@@ -2833,6 +2835,7 @@
 				7BEFC67F1BFF68C30059C952 /* QuickActions.swift */,
 				D8EFFA0B1FF5B1FA001D3A09 /* NavigationRouter.swift */,
 				A134B88920DA98BB00A581D0 /* Preferences.swift */,
+				A13AC72420EC12360040D4BB /* Migration.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -4125,6 +4128,7 @@
 				D3C3696E1CC6B78800348A61 /* LocalRequestHelper.swift in Sources */,
 				E4B423DD1ABA0318007E66C8 /* ReaderModeHandlers.swift in Sources */,
 				D308E4E41A5306F500842685 /* SearchEngines.swift in Sources */,
+				A13AC72520EC12360040D4BB /* Migration.swift in Sources */,
 				3BCE6D3C1CEB9E4D0080928C /* ThirdPartySearchAlerts.swift in Sources */,
 				745DAB301CDAAFAA00D44181 /* RecentlyClosedTabsPanel.swift in Sources */,
 				0BF0DB941A8545800039F300 /* URLBarView.swift in Sources */,

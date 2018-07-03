@@ -101,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         Logger.browserLogger.newLogWithDate(logDate)
 
         let profile = getProfile(application)
+        Preferences.migrate(from: profile)
 
         if !DebugSettingsBundleOptions.disableLocalWebServer {
             // Set up a web server that serves us static content. Do this early so that it is ready when the UI is presented.
