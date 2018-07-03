@@ -8,10 +8,8 @@ import Shared
 import WebKit
 import XCGLogger
 
-public typealias SavedTab2 = (id: String, title: String, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, history: [String], historyIndex: Int16)
-
-public typealias TabDataToSave = (webView: WKWebView?, url: URL?, order: UInt, tabID: String, displayTitle: String, 
-                                  isSelected: Bool)
+// Properties we want to extract from Tab/TabManager and save in TabMO
+public typealias SavedTab = (id: String, title: String, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, history: [String], historyIndex: Int16)
 
 private let log = Logger.browserLogger
 
@@ -68,7 +66,7 @@ public class TabMO: NSManagedObject {
     }
 
     @discardableResult 
-    public class func add(_ tabInfo: SavedTab2, context: NSManagedObjectContext) -> TabMO? {
+    public class func add(_ tabInfo: SavedTab, context: NSManagedObjectContext) -> TabMO? {
         let tab: TabMO? = get(byId: tabInfo.id, context: context)
         if tab == nil {
             return nil
@@ -138,79 +136,12 @@ public class TabMO: NSManagedObject {
         return result
     }
     
-    public class func preserve(tabData: TabDataToSave, urlOverride: String? = nil) {
-        
-        if let data = savedTabData(tabData: tabData, urlOverride: urlOverride) {
-            let context = DataController.shared.workerContext
-            context.perform {
-                _ = TabMO.add(data, context: context)
-                DataController.saveContext(context: context)
-            }
+    public class func preserve(savedTab: SavedTab, urlOverride: String? = nil) {
+        let context = DataController.shared.workerContext
+        context.perform {
+            _ = TabMO.add(savedTab, context: context)
+            DataController.saveContext(context: context)
         }
-    }
-    
-    public class func savedTabData(tabData: TabDataToSave, context: NSManagedObjectContext = DataController.shared.mainThreadContext, urlOverride: String? = nil) -> SavedTab2? {
-        
-        // Ignore session restore data.
-        guard let urlString = tabData.url?.absoluteString else { return nil }
-        if urlString.contains("localhost") { return nil }
-        
-        var urls = [String]()
-        var currentPage = 0
-        
-        let webView = tabData.webView
-        
-        if let currentItem = webView?.backForwardList.currentItem {
-            // Freshly created web views won't have any history entries at all.
-            let backList = webView?.backForwardList.backList ?? []
-            let forwardList = webView?.backForwardList.forwardList ?? []
-            var backListMap = backList.map { $0.url.absoluteString }
-            let forwardListMap = forwardList.map { $0.url.absoluteString }
-            var currentItemString = currentItem.url.absoluteString
-            
-            log.debug("backList: \(backListMap)")
-            log.debug("forwardList: \(forwardListMap)")
-            log.debug("currentItem: \(currentItemString)")
-            
-            /* Completely ignore forward history when passing urlOverride. When a webpage
-               hasn't fully loaded we attempt to preserve the current state of the webview.
-               urls that are currently loading aren't visible in history or forward history.
-               Our work around here is to append the currently requested URL to the end of the
-               navigation stack, and ignore forward history (as it would be replaced on full load).
-               There should be a very narrow edgecase where user who navigates back has no active
-               cache for the back url and close the browser while page is still being loaded-
-               resulting in lost forward history. */
-            
-            if let urlOverride = urlOverride, backListMap.count == 0 || forwardListMap.count == 0 {
-                // Navigating back or forward, lets ignore current.
-                if currentItemString == urlOverride {
-                    currentItemString = ""
-                }
-                if backListMap.index(of: urlOverride) == backListMap.count - 1 {
-                    backListMap.removeLast()
-                }
-                urls = backListMap + [currentItemString] + [urlOverride]
-            }
-            else {
-                // Business as usual.
-                urls = backListMap + [currentItemString] + forwardListMap
-                currentPage = -forwardList.count
-            }
-            
-            log.debug("---stack: \(urls)")
-        }
-        if let id = TabMO.get(byId: tabData.tabID, context: context)?.syncUUID {
-            let displayTitle = tabData.displayTitle
-            let title = displayTitle != "" ? displayTitle : urlOverride ?? ""
-            if urlOverride == nil && tabData.url == nil {
-                log.warning("Missing tab url, using empty string as a fallback. Should not happen.")
-            }
-            
-            let data = SavedTab2(id, title, urlOverride ?? urlString, tabData.isSelected, Int16(tabData.order), nil, urls, Int16(currentPage))
-            return data
-        }
-        
-        return nil
     }
 }
 

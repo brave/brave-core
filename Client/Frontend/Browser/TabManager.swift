@@ -416,29 +416,12 @@ class TabManager: NSObject {
         
         // Ignore on restore.
         if !zombie && !isPrivate {
-            if let data = tabData(for: tab) {
-                TabMO.preserve(tabData: data)
+            if let data = savedTabData(tab: tab) {
+                TabMO.preserve(savedTab: data)
                 saveTabOrder()
             }
-
-//            TabMO.preserve(tabData: Tab)
-            // TabMO.preserve(tab: tab)
-            //saveTabOrder()
         }
 
-    }
-    
-    private func tabData(for tab: Tab) -> TabDataToSave? {
-        guard let webView = tab.webView, let order = indexOfWebView(webView) else { return nil }
-        
-        let id = tab.id ?? TabMO.freshTab().syncUUID!
-        
-        let isSelected = selectedTab === tab
-        let tabData = TabDataToSave(webView: webView, 
-                                    url: tab.url, order: order, tabID: id, displayTitle: tab.displayTitle, 
-                                    isSelected: isSelected)
-            
-        return tabData
     }
     
     func indexOfWebView(_ webView: WKWebView) -> UInt? {
@@ -450,6 +433,50 @@ class TabManager: NSObject {
                 return count
             }
             count = count + 1
+        }
+        
+        return nil
+    }
+    
+    private func savedTabData(tab: Tab) -> SavedTab? {
+        
+        guard let webView = tab.webView, let order = indexOfWebView(webView) else { return nil }
+        
+        let context = DataController.shared.mainThreadContext
+        
+        // Ignore session restore data.
+        guard let urlString = tab.url?.absoluteString else { return nil }
+        if urlString.contains("localhost") { return nil }
+        
+        var urls = [String]()
+        var currentPage = 0
+        
+        if let currentItem = webView.backForwardList.currentItem {
+            // Freshly created web views won't have any history entries at all.
+            let backList = webView.backForwardList.backList
+            let forwardList = webView.backForwardList.forwardList
+            let backListMap = backList.map { $0.url.absoluteString }
+            let forwardListMap = forwardList.map { $0.url.absoluteString }
+            let currentItemString = currentItem.url.absoluteString
+            
+            log.debug("backList: \(backListMap)")
+            log.debug("forwardList: \(forwardListMap)")
+            log.debug("currentItem: \(currentItemString)")
+            
+            // Business as usual.
+            urls = backListMap + [currentItemString] + forwardListMap
+            currentPage = -forwardList.count
+            
+            log.debug("---stack: \(urls)")
+        }
+        if let id = TabMO.get(byId: tab.id, context: context)?.syncUUID {
+            let displayTitle = tab.displayTitle
+            let title = displayTitle != "" ? displayTitle : ""
+            
+            let isSelected = selectedTab === tab
+            
+            let data = SavedTab(id, title, urlString, isSelected, Int16(order), nil, urls, Int16(currentPage))
+            return data
         }
         
         return nil
@@ -837,7 +864,7 @@ extension TabManager {
         guard let savedTab = TabMO.get(byId: tab.id, context: DataController.shared.mainThreadContext) else { return }
         
         if let history = savedTab.urlHistorySnapshot as? [String], let tabUUID = savedTab.syncUUID, let url = savedTab.url {
-            let data = SavedTab2(id: tabUUID, title: savedTab.title ?? "", url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)
+            let data = SavedTab(id: tabUUID, title: savedTab.title ?? "", url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)
             if let webView = tab.webView {
                 tab.navigationDelegate = navDelegate
                 // tab.restore(webView, restorationData: data)
@@ -919,9 +946,9 @@ extension TabManager: WKNavigationDelegate {
         // call storeChanges unnecessarily on startup
         
         if let tab = tabForWebView(webView), !tab.isPrivate, let url = webView.url, !url.absoluteString.contains("localhost"), 
-            let data = tabData(for: tab) {
+            let data = savedTabData(tab: tab) {
             DispatchQueue.main.async {
-                TabMO.preserve(tabData: data)
+                TabMO.preserve(savedTab: data)
             }
             // storeChanges()
         }

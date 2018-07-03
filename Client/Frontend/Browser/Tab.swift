@@ -263,7 +263,7 @@ class Tab: NSObject {
     }
     */
     
-    func restore(_ webView: WKWebView, restorationData: SavedTab2?) {
+    func restore(_ webView: WKWebView, restorationData: SavedTab?) {
         // Pulls restored session data from a previous SavedTab to load into the Browser. If it's nil, a session restore
         // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
         // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
