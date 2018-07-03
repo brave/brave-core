@@ -12,7 +12,7 @@ This branch currently supports iOS 11, and is written in Swift 4.
 
 Please make sure you aim your pull requests in the right direction.
 
-For bug fixes and features for the upcoming release, please see the associated milestone branch (e.g. *v2.1.3*).
+For bug fixes and features for the upcoming release, please see the associated [GitHub milestones](https://github.com/brave/brave-ios/milestones) (e.g. *2.1.3*).
 
 Getting involved
 ----------------
