@@ -37,3 +37,20 @@ if (is_win) {
   brave_platform = "linux"
 }
 
+brave_product_dir_name_suffix = ""
+
+if (is_official_build) {
+  if (brave_channel == "beta") {
+    brave_product_dir_name_suffix = "-Beta"
+  } else if (brave_channel == "dev") {
+    brave_product_dir_name_suffix = "-Dev"
+  } else if (brave_channel == "nightly") {
+    brave_product_dir_name_suffix = "-Nightly"
+  } else {
+    assert(brave_channel == "", "Unknown channel name")
+  }
+} else {
+  brave_product_dir_name_suffix = "-Development"
+}
+
+brave_product_dir_name = "BraveSoftware/Brave-Browser$brave_product_dir_name_suffix"
