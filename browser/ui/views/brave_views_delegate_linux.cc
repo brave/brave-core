@@ -19,10 +19,11 @@ int GetWindowIconResourceId() {
     case version_info::Channel::BETA:
       return IDR_PRODUCT_LOGO_128_BETA;
     default:
-      break;
+      return IDR_PRODUCT_LOGO_128;
   }
+#else
+  return IDR_PRODUCT_LOGO_128_DEVELOPMENT;
 #endif
-  return IDR_PRODUCT_LOGO_128;
 }
 
 }  // namespace

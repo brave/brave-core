@@ -11,6 +11,7 @@
       <if expr="is_linux">
         <include name="IDR_PRODUCT_LOGO_128_BETA" file="brave/product_logo_128_beta.png" type="BINDATA" />
         <include name="IDR_PRODUCT_LOGO_128_DEV" file="brave/product_logo_128_dev.png" type="BINDATA" />
+        <include name="IDR_PRODUCT_LOGO_128_DEVELOPMENT" file="brave/product_logo_128_development.png" type="BINDATA" />
       </if>
     </includes>
   </release>
