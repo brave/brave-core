@@ -17,7 +17,7 @@ For bug fixes and features for the upcoming release, please see the associated [
 Getting involved
 ----------------
 
-We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution. Please read the [Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/).
+We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution.
 
 * Discord:            [#iOS](https://discord.gg/cR3gmq5) for general conversing and [#developers-ios](https://wiki.mozilla.org/IRC) for development discussion.
 * Bugs:           [File a new bug](https://github.com/brave/brave-ios/issues/new) • [Existing bugs](https://github.com/brave/brave-ios/issues)
@@ -26,8 +26,6 @@ Want to contribute but don't know where to start? Here is a list of [Good First 
 
 Building the code
 -----------------
-
-> __As of April 2018, this project requires Xcode 9.3.__
 
 1. Install the latest [Xcode developer tools](https://developer.apple.com/xcode/downloads/) from Apple.
 1. Install Carthage
