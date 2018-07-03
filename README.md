@@ -50,7 +50,7 @@ Building the code
 ## Contributor guidelines
 
 ### Creating a pull request
-* All pull requests must be associated with a specific Github issue.
+* All pull requests must be associated with a specific GitHub issue.
 * If a bug corresponding to the fix does not yet exist, please file it.
 * Please use the following formats in your PR titles:
     <br>&nbsp;&nbsp;`Fix/Ref #<issueId>: <description>.`
