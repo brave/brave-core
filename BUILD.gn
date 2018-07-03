@@ -75,7 +75,7 @@ group("create_dist") {
   }
   if (is_linux) {
     deps += [
-      "//chrome/installer/linux",
+      "//chrome/installer/linux:$brave_linux_channel",
       "//brave/app/linux:dist_resources",
     ]
   }

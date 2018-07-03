@@ -25,6 +25,18 @@ if (is_win) {
   brave_exe = "$chrome_product_full_name.app"
 }
 
+if (is_linux) {
+  # Our channle name and upstream linux channel name is different.
+  brave_linux_channel = ""
+  if (brave_channel == "") {
+    brave_linux_channel = "stable"
+  } else if (brave_channel == "dev") {
+    brave_linux_channel = "unstable"
+  } else {
+    assert(brave_channel == "beta", "Not supported channel name: $brave_channel")
+  }
+}
+
 brave_icon_dir = "nightly"
 if (is_component_build) {
   brave_icon_dir = "dev"
