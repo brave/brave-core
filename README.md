@@ -70,8 +70,3 @@ Building the code
 * New code should not contain any trailing whitespace.
 * We recommend *enabling* the "Automatically trim trailing whitespace" and keeping "Including whitespace-only lines" *deselected* in Xcode (under Text Editing).
 * <code>git rebase --whitespace=fix</code> can also be used to remove whitespace from your commits before issuing a pull request.
-
-### Commits
-* Each commit should have a single clear purpose. If a commit contains multiple unrelated changes, those changes should be split into separate commits.
-* If a commit requires another commit to build properly, those commits should be squashed.
-* Follow-up commits for any review comments should be squashed. Do not include "Fixed PR comments", merge commits, or other "temporary" commits in pull requests.
