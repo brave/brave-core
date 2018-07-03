@@ -14,6 +14,7 @@ import * as sinon from 'sinon'
 
 const fakeProps: BraveShieldsHeaderProps = {
   hostname: 'brave.com',
+  origin: 'https://brave.com',
   shieldsToggled: (setting: BlockOptions) => {
     return {
       type: actionTypes.SHIELDS_TOGGLED,

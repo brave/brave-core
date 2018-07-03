@@ -11,7 +11,7 @@ import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
 import { activeTabData } from '../../../testData'
 import { Tab as TabType } from '../../../../app/types/state/shieldsPannelState'
 import * as resourceIdentifiers from '../../../../app/constants/resourceIdentifiers'
-
+ 
 describe('Shields API', () => {
   describe('getShieldSettingsForTabData', function () {
     it('returns a rejected promise when no tab data is specified', function (cb) {
@@ -48,6 +48,75 @@ describe('Shields API', () => {
           cookies: 'block',
           id: 5
         })
+        cb()
+      })
+      .catch((e: Error) => {
+        console.error(e.toString())
+      })
+    })
+
+    it('returns `block` by default for braveShields when origin is either http or https', function (cb) {
+      const tab: chrome.tabs.Tab = {
+        url: 'https://www.brave.com/charizard/knows/serg',
+        index: 1,
+        pinned: false,
+        highlighted: false,
+        windowId: 1,
+        active: true,
+        incognito: false,
+        selected: false,
+        id: 1337
+      }
+
+      shieldsAPI.getShieldSettingsForTabData(tab).then((data) => {
+        const assertion = 'braveShields' in data && data.braveShields === 'block'
+        assert(assertion)
+        cb()
+      })
+      .catch((e: Error) => {
+        console.error(e.toString())
+      })
+    })
+
+    it('returns `block` by default for braveShields when origin is not http or https', function (cb) {
+      const tab: chrome.tabs.Tab = {
+        url: 'ftp://www.brave.com/serg/dont/know/pikachu',
+        index: 1,
+        pinned: false,
+        highlighted: false,
+        windowId: 1,
+        active: true,
+        incognito: false,
+        selected: false,
+        id: 1337
+      }
+
+      shieldsAPI.getShieldSettingsForTabData(tab).then((data) => {
+        const assertion = 'braveShields' in data && data.braveShields === 'block'
+        assert(assertion)
+        cb()
+      })
+      .catch((e: Error) => {
+        console.error(e.toString())
+      })
+    })
+
+    it('returns `block` by default for braveShields when origin is an about page', function (cb) {
+      const tab: chrome.tabs.Tab = {
+        url: 'chrome://welcome',
+        index: 1,
+        pinned: false,
+        highlighted: false,
+        windowId: 1,
+        active: true,
+        incognito: false,
+        selected: false,
+        id: 1337
+      }
+
+      shieldsAPI.getShieldSettingsForTabData(tab).then((data) => {
+        const assertion = 'braveShields' in data && data.braveShields === 'block'
+        assert(assertion)
         cb()
       })
       .catch((e: Error) => {
