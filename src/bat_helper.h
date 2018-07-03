@@ -9,35 +9,13 @@
 #include <vector>
 #include <map>
 
-#include "static_values.h"
 #include "bat_helper_platform.h"
-
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
+#include "static_values.h"
+#include "url_method.h"
 
 namespace braveledger_bat_helper {
 
-  using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
-
-  template <typename T> void  saveToJson(const T& t, std::string & json)
-  {
-    rapidjson::StringBuffer buffer;
-    JsonWriter writer(buffer);
-    t.saveToJson(writer);
-    json = buffer.GetString();
-  }
-
-  //return: parsing status:  true = succeded, false = failed 
-  template <typename T> bool  loadFromJson( T& t, const std::string & json)
-  {    
-    bool succeded = t.loadFromJson(json);
-    if (!succeded) {
-      LOG(ERROR) << "Failed to parse:" << json << std::endl;
-    }
-    return succeded;
-  }
-
-  struct REQUEST_CREDENTIALS_ST {  
+  struct REQUEST_CREDENTIALS_ST {
     REQUEST_CREDENTIALS_ST();
     ~REQUEST_CREDENTIALS_ST();
 
@@ -75,13 +53,12 @@ namespace braveledger_bat_helper {
 
   struct WALLET_INFO_ST {
     WALLET_INFO_ST();
+    WALLET_INFO_ST(const WALLET_INFO_ST&);
     ~WALLET_INFO_ST();
 
     //load from json string
     bool loadFromJson(const std::string & json);
 
-    //save to json string    
-    void saveToJson(JsonWriter & writer) const;
     std::string paymentId_;
     std::string addressBAT_;
     std::string addressBTC_;
@@ -96,11 +73,8 @@ namespace braveledger_bat_helper {
     ~TRANSACTION_BALLOT_ST();
 
     //load from json string
-    bool loadFromJson(const std::string & json);    
+    bool loadFromJson(const std::string & json);
 
-    //save to json string
-    void saveToJson(JsonWriter & writer) const;
-	
     std::string publisher_;
     unsigned int offset_ = 0u;
   };
@@ -112,9 +86,6 @@ namespace braveledger_bat_helper {
 
     //load from json string
     bool loadFromJson(const std::string & json);
-
-    //save to json string
-    void saveToJson(JsonWriter & writer) const;
 
     std::string viewingId_;
     std::string surveyorId_;
@@ -145,8 +116,6 @@ namespace braveledger_bat_helper {
     //load from json string
     bool loadFromJson(const std::string & json);
 
-    //save to json string
-    void saveToJson(JsonWriter & writer) const;
     std::string viewingId_;
     std::string surveyorId_;
     std::string publisher_;
@@ -158,13 +127,11 @@ namespace braveledger_bat_helper {
 
   struct CLIENT_STATE_ST {
     CLIENT_STATE_ST();
+    CLIENT_STATE_ST(const CLIENT_STATE_ST&);
     ~CLIENT_STATE_ST();
-    
+
     //load from json string
     bool loadFromJson(const std::string & json);
-
-    //save to json string
-    void saveToJson(JsonWriter & writer) const;
 
     WALLET_INFO_ST walletInfo_;
     uint64_t bootStamp_ = 0u;
@@ -191,8 +158,6 @@ namespace braveledger_bat_helper {
     //load from json string
     bool loadFromJson(const std::string & json);
 
-    //save to json string
-    void saveToJson(JsonWriter & writer) const;
     unsigned int min_pubslisher_duration_ = braveledger_ledger::_default_min_pubslisher_duration;  // In milliseconds
     unsigned int min_visits_ = 1u;
     bool allow_non_verified_ = true;
@@ -205,9 +170,6 @@ namespace braveledger_bat_helper {
 
     //load from json string
     bool loadFromJson(const std::string & json);
-
-    //save to json string
-    void saveToJson(JsonWriter & writer) const;
 
     uint64_t duration_ = 0u;
     std::string favicon_url_;
@@ -290,9 +252,6 @@ namespace braveledger_bat_helper {
     //load from json string
     bool loadFromJson(const std::string & json);
 
-    //save to json string
-    void saveToJson(JsonWriter & writer) const;
-
     std::string signature_;
     std::string surveyorId_;
     std::string surveyVK_;
@@ -300,14 +259,12 @@ namespace braveledger_bat_helper {
     std::string surveySK_;
   };
 
-  
-  
-  // The struct is serialized/deserialized from/into JSON as part of MEDIA_PUBLISHER_INFO  
+  // The struct is serialized/deserialized from/into JSON as part of MEDIA_PUBLISHER_INFO
   struct TWITCH_EVENT_INFO {
     TWITCH_EVENT_INFO();
     TWITCH_EVENT_INFO(const TWITCH_EVENT_INFO&);
     ~TWITCH_EVENT_INFO();
-    
+
     std::string event_;
     std::string time_;
     std::string status_;
@@ -320,9 +277,6 @@ namespace braveledger_bat_helper {
 
     //load from json string
     bool loadFromJson(const std::string & json);
-
-    //save to json string
-    void saveToJson(JsonWriter & writer) const;
 
     std::string publisherName_;
     std::string publisherURL_;
@@ -340,12 +294,6 @@ namespace braveledger_bat_helper {
     BALLOT_ST ballot_;
   };
 
-  enum URL_METHOD {
-    GET = 0,
-    PUT = 1,
-    POST = 2
-  };
-
   struct CURRENT_RECONCILE {
     CURRENT_RECONCILE();
     ~CURRENT_RECONCILE();
@@ -360,9 +308,8 @@ namespace braveledger_bat_helper {
     std::map<std::string, double> rates_;
     std::string amount_;
     std::string currency_;
-    SimpleCallback ledgerCallback_;    
+    SimpleCallback ledgerCallback_;
   };
-  
 
   bool getJSONValue(const std::string& fieldName, const std::string& json, std::string & value);
 
@@ -373,13 +320,13 @@ namespace braveledger_bat_helper {
 
   bool getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp);
 
-  bool getJSONPublisherVerified(const std::string& json, bool& verified);  
+  bool getJSONPublisherVerified(const std::string& json, bool& verified);
 
   bool getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx);
 
   bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
 
-  bool getJSONRates(const std::string& json, std::map<std::string, double>& rates);  
+  bool getJSONRates(const std::string& json, std::map<std::string, double>& rates);
 
   bool getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts);
 
@@ -397,9 +344,9 @@ namespace braveledger_bat_helper {
 
   std::string stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_ST& request_credentials);
 
-  std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload);  
+  std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload);
 
-  std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx);  
+  std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx);
 
   std::vector<uint8_t> getSHA256(const std::string& in);
 
@@ -409,7 +356,7 @@ namespace braveledger_bat_helper {
 
   // Sign using ed25519 algorithm
   std::string sign(std::string* keys, std::string* values, const unsigned int& size,
-    const std::string& keyId, const std::vector<uint8_t>& secretKey);
+      const std::string& keyId, const std::vector<uint8_t>& secretKey);
 
   uint64_t currentTime();
 
@@ -419,7 +366,7 @@ namespace braveledger_bat_helper {
 
   void savePublisherState(const PUBLISHER_STATE_ST& state);
 
-  void loadPublisherState(ReadPublisherStateCallback callback);  
+  void loadPublisherState(ReadPublisherStateCallback callback);
 
   void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts);
 
@@ -429,16 +376,16 @@ namespace braveledger_bat_helper {
 
   std::string getMediaKey(const std::string& mediaId, const std::string& type);
 
-  uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);  
-  
+  uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);
+
   void readStateFile(ReadStateCallback callback);
-  
-  void readPublisherStateFile(ReadPublisherStateCallback callback);  
+
+  void readPublisherStateFile(ReadPublisherStateCallback callback);
 
   //temporary solution: to run ( void writeFile(args) ) as a Chromium Task
   void writeFileNoReturn(const std::string & path, const std::string& data);
 
-} //namespace braveledger_bat_helper
+}  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_
 

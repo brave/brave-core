@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat_helper.h"
 
 #include <sstream>
 #include <random>
@@ -11,24 +12,14 @@
 #include <memory>
 #include <iostream>
 
-//tweetnacl
-#include "tweetnacl.h"
-
-//boringssl
-#include <openssl/hkdf.h>
-#include <openssl/digest.h>
-#include <openssl/sha.h>
 #include <openssl/base64.h>
+#include <openssl/digest.h>
+#include <openssl/hkdf.h>
+#include <openssl/sha.h>
 
-
-//rapidjson
-#include "rapidjson/document.h"
-#include "rapidjson/error/en.h"
-
-
-#include "bat_helper.h"
+#include "rapidjson_bat_helper.h"
 #include "static_values.h"
-
+#include "tweetnacl.h"
 
 namespace braveledger_bat_helper {
 
@@ -44,7 +35,18 @@ namespace braveledger_bat_helper {
   /////////////////////////////////////////////////////////////////////////////
   WALLET_INFO_ST::WALLET_INFO_ST() {}
 
+  WALLET_INFO_ST::WALLET_INFO_ST(const WALLET_INFO_ST& other) {
+    paymentId_ = other.paymentId_;
+    addressBAT_ = other.addressBAT_;
+    addressBTC_ = other.addressBTC_;
+    addressCARD_ID_ = other.addressCARD_ID_;
+    addressETH_ = other.addressETH_;
+    addressLTC_ = other.addressLTC_;
+    keyInfoSeed_ = other.keyInfoSeed_;
+  }
+
   WALLET_INFO_ST::~WALLET_INFO_ST() {}
+
 
   bool WALLET_INFO_ST::loadFromJson(const std::string & json)
   {
@@ -67,7 +69,7 @@ namespace braveledger_bat_helper {
     //convert keyInfoSeed and check error
     std::string sKeyInfoSeed = d["keyInfoSeed"].GetString();
     error = ! getFromBase64(sKeyInfoSeed, keyInfoSeed_);
-    
+
     if (false == error)
     {
       paymentId_ = d["paymentId"].GetString();
@@ -75,37 +77,37 @@ namespace braveledger_bat_helper {
       addressBTC_ = d["addressBTC"].GetString();
       addressCARD_ID_ = d["addressCARD_ID"].GetString();
       addressETH_ = d["addressETH"].GetString();
-      addressLTC_ = d["addressLTC"].GetString();      
+      addressLTC_ = d["addressLTC"].GetString();
     }
     return !error;
   }
-  
-  void WALLET_INFO_ST::saveToJson(JsonWriter & writer) const
-  {    
+
+  void saveToJson(JsonWriter & writer, const WALLET_INFO_ST& data)
+  {
     writer.StartObject();
 
     writer.String("paymentId");
-    writer.String(paymentId_.c_str());
+    writer.String(data.paymentId_.c_str());
 
     writer.String("addressBAT");
-    writer.String(addressBAT_.c_str());
+    writer.String(data.addressBAT_.c_str());
 
     writer.String("addressBTC");
-    writer.String(addressBTC_.c_str());
+    writer.String(data.addressBTC_.c_str());
 
     writer.String("addressCARD_ID");
-    writer.String(addressCARD_ID_.c_str());
+    writer.String(data.addressCARD_ID_.c_str());
 
     writer.String("addressETH");
-    writer.String(addressETH_.c_str());
+    writer.String(data.addressETH_.c_str());
 
     writer.String("addressLTC");
-    writer.String(addressLTC_.c_str());
+    writer.String(data.addressLTC_.c_str());
 
     writer.String("keyInfoSeed");
-    writer.String(getBase64 (keyInfoSeed_).c_str());
+    writer.String(getBase64(data.keyInfoSeed_).c_str());
 
-    writer.EndObject();    
+    writer.EndObject();
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -122,7 +124,7 @@ namespace braveledger_bat_helper {
   bool TRANSACTION_BALLOT_ST::loadFromJson(const std::string & json)
   {
     rapidjson::Document d;
-    d.Parse(json.c_str());    
+    d.Parse(json.c_str());
 
     //has parser errors or wrong types
     bool error = d.HasParseError();
@@ -130,8 +132,8 @@ namespace braveledger_bat_helper {
     {
       error = !( d["publisher"].IsString() &&
         d["offset"].IsUint() );
-    }    
-    
+    }
+
     if (false == error)
     {
       publisher_ = d["publisher"].GetString();
@@ -139,19 +141,19 @@ namespace braveledger_bat_helper {
     }
 
     return !error;
-  }  
-  
-  void TRANSACTION_BALLOT_ST::saveToJson(JsonWriter & writer) const
-  {    
+  }
+
+  void saveToJson(JsonWriter & writer, const TRANSACTION_BALLOT_ST& data)
+  {
     writer.StartObject();
 
     writer.String("publisher");
-    writer.String(publisher_.c_str());
+    writer.String(data.publisher_.c_str());
 
     writer.String("offset");
-    writer.Uint(offset_);
+    writer.Uint(data.offset_);
 
-    writer.EndObject();    
+    writer.EndObject();
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -215,15 +217,15 @@ namespace braveledger_bat_helper {
         d["altCurrency"].IsString() &&
         d["probi"].IsString() &&
         d["votes"].IsUint() &&
-        d["ballots"].IsArray());        
-    }    
-    
+        d["ballots"].IsArray());
+    }
+
     if (false == error)
     {
       viewingId_ = d["viewingId"].GetString();
       surveyorId_ = d["surveyorId"].GetString();
       contribution_fiat_amount_ = d["contribution_fiat_amount"].GetString();
-      contribution_fiat_currency_ = d["contribution_fiat_currency"].GetString();                
+      contribution_fiat_currency_ = d["contribution_fiat_currency"].GetString();
       contribution_altcurrency_ = d["contribution_altcurrency"].GetString();
       contribution_probi_ = d["contribution_probi"].GetString();
       contribution_fee_ = d["contribution_fee"].GetString();
@@ -236,17 +238,17 @@ namespace braveledger_bat_helper {
       altCurrency_ = d["altCurrency"].GetString();
       probi_ = d["probi"].GetString();
       votes_ = d["votes"].GetUint();
-      
+
       for ( auto & i : d["rates"].GetObject())
       {
         contribution_rates_.insert(std::make_pair(i.name.GetString(), i.value.GetDouble() ));
-      }        
+      }
 
       for (auto & i : d["surveyorIds"].GetArray())
       {
         surveyorIds_.push_back(i.GetString());
-      }      
-        
+      }
+
       for (const auto & i : d["ballots"].GetArray() )
       {
         rapidjson::StringBuffer sb;
@@ -260,28 +262,28 @@ namespace braveledger_bat_helper {
     }
 
     return !error;
-  }   
+  }
 
-  
-  void TRANSACTION_ST::saveToJson(JsonWriter & writer) const
+
+  void saveToJson(JsonWriter & writer, const TRANSACTION_ST& data)
   {
     writer.StartObject();
 
     writer.String("viewingId");
-    writer.String(viewingId_.c_str());
+    writer.String(data.viewingId_.c_str());
 
     writer.String("surveyorId");
-    writer.String(surveyorId_.c_str());
+    writer.String(data.surveyorId_.c_str());
 
     writer.String("contribution_fiat_amount");
-    writer.String(contribution_fiat_amount_.c_str());
+    writer.String(data.contribution_fiat_amount_.c_str());
 
     writer.String("contribution_fiat_currency");
-    writer.String(contribution_fiat_currency_.c_str());
+    writer.String(data.contribution_fiat_currency_.c_str());
 
     writer.String("rates");
     writer.StartObject();
-    for (auto & p : contribution_rates_)
+    for (auto & p : data.contribution_rates_)
     {
       writer.String(p.first.c_str());
       writer.Double(p.second);
@@ -289,55 +291,55 @@ namespace braveledger_bat_helper {
     writer.EndObject();
 
     writer.String("contribution_altcurrency");
-    writer.String(contribution_altcurrency_.c_str());
+    writer.String(data.contribution_altcurrency_.c_str());
 
     writer.String("contribution_probi");
-    writer.String(contribution_probi_.c_str());
+    writer.String(data.contribution_probi_.c_str());
 
     writer.String("contribution_fee");
-    writer.String(contribution_fee_.c_str());
+    writer.String(data.contribution_fee_.c_str());
 
     writer.String("submissionStamp");
-    writer.String(submissionStamp_.c_str());
+    writer.String(data.submissionStamp_.c_str());
 
     writer.String("submissionId");
-    writer.String(submissionId_.c_str());
+    writer.String(data.submissionId_.c_str());
 
     writer.String("anonizeViewingId");
-    writer.String(anonizeViewingId_.c_str());
+    writer.String(data.anonizeViewingId_.c_str());
 
     writer.String("registrarVK");
-    writer.String(registrarVK_.c_str());
+    writer.String(data.registrarVK_.c_str());
 
     writer.String("masterUserToken");
-    writer.String(masterUserToken_.c_str());
+    writer.String(data.masterUserToken_.c_str());
 
     writer.String("surveyorIds");
     writer.StartArray();
-    for (auto & i : surveyorIds_)
+    for (auto & i : data.surveyorIds_)
     {
       writer.String(i.c_str());
     }
     writer.EndArray();
 
     writer.String("satoshis");
-    writer.String(satoshis_.c_str());
+    writer.String(data.satoshis_.c_str());
 
     writer.String("altCurrency");
-    writer.String(altCurrency_.c_str());
+    writer.String(data.altCurrency_.c_str());
 
     writer.String("probi");
-    writer.String(probi_.c_str());
+    writer.String(data.probi_.c_str());
 
     writer.String("votes");
-    writer.Uint(votes_);
+    writer.Uint(data.votes_);
 
     /* TODO: clarify if it needs to be serialized
     writer.String("ballots");
     writer.StartArray();
-    for (auto & i : ballots_)
+    for (auto & i : data.ballots_)
     {
-      i.saveToJson(writer);
+      saveToJson(writer, i);
     }
     writer.EndArray();
     */
@@ -378,7 +380,7 @@ namespace braveledger_bat_helper {
         d["prepareBallot"].IsString() &&
         d["delayStamp"].IsUint64() );
     }
-    
+
     if (false == error)
     {
       viewingId_ = d["viewingId"].GetString();
@@ -390,29 +392,29 @@ namespace braveledger_bat_helper {
     }
 
     return !error;
-  }  
-  
-  void BALLOT_ST::saveToJson(JsonWriter & writer) const
+  }
+
+  void saveToJson(JsonWriter & writer, const BALLOT_ST& data)
   {
     writer.StartObject();
 
     writer.String("viewingId");
-    writer.String(viewingId_.c_str());
+    writer.String(data.viewingId_.c_str());
 
     writer.String("surveyorId");
-    writer.String(surveyorId_.c_str());
+    writer.String(data.surveyorId_.c_str());
 
     writer.String("publisher");
-    writer.String(publisher_.c_str());
+    writer.String(data.publisher_.c_str());
 
     writer.String("offset");
-    writer.Uint(offset_);
+    writer.Uint(data.offset_);
 
     writer.String("prepareBallot");
-    writer.String(prepareBallot_.c_str());
+    writer.String(data.prepareBallot_.c_str());
 
     writer.String("delayStamp");
-    writer.Uint64(delayStamp_);
+    writer.Uint64(data.delayStamp_);
 
     writer.EndObject();
   }
@@ -424,6 +426,25 @@ namespace braveledger_bat_helper {
     settings_(AD_FREE_SETTINGS),
     fee_amount_(0),
     days_(0)  {}
+
+  CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
+    walletInfo_ = other.walletInfo_;
+    bootStamp_ = other.bootStamp_;
+    reconcileStamp_ = other.reconcileStamp_;
+    personaId_ = other.personaId_;
+    userId_ = other.userId_;
+    registrarVK_ = other.registrarVK_;
+    masterUserToken_ = other.masterUserToken_;
+    preFlight_ = other.preFlight_;
+    fee_currency_ = other.fee_currency_;
+    settings_ = other.settings_;
+    fee_amount_ = other.fee_amount_;
+    days_ = other.days_;
+    transactions_ = other.transactions_;
+    ballots_ = other.ballots_;
+    ruleset_ = other.ruleset_;
+    rulesetV2_ = other.rulesetV2_;
+  }
 
   CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
 
@@ -451,14 +472,14 @@ namespace braveledger_bat_helper {
         d["transactions"].IsArray() &&
         d["ballots"].IsArray() );
     }
-    
+
     if (false == error)
     {
       {
         auto & i = d["walletInfo"];
         rapidjson::StringBuffer sb;
         rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-        i.Accept(writer);        
+        i.Accept(writer);
         walletInfo_.loadFromJson(sb.GetString());
       }
 
@@ -494,73 +515,73 @@ namespace braveledger_bat_helper {
         BALLOT_ST b;
         b.loadFromJson(sb.GetString());
         ballots_.push_back(b);
-      }    
+      }
     }
 
     return !error;
   }
-  
-  void CLIENT_STATE_ST::saveToJson(JsonWriter & writer) const
+
+  void saveToJson(JsonWriter & writer, const CLIENT_STATE_ST& data)
   {
     writer.StartObject();
 
     writer.String("walletInfo");
-    walletInfo_.saveToJson(writer);
+    saveToJson(writer, data.walletInfo_);
 
     writer.String("bootStamp");
-    writer.Uint64(bootStamp_);
+    writer.Uint64(data.bootStamp_);
 
     writer.String("reconcileStamp");
-    writer.Uint64(reconcileStamp_);
+    writer.Uint64(data.reconcileStamp_);
 
     writer.String("personaId");
-    writer.String(personaId_.c_str());
+    writer.String(data.personaId_.c_str());
 
     writer.String("userId");
-    writer.String(userId_.c_str());
+    writer.String(data.userId_.c_str());
 
     writer.String("registrarVK");
-    writer.String(registrarVK_.c_str());
+    writer.String(data.registrarVK_.c_str());
 
     writer.String("masterUserToken");
-    writer.String(masterUserToken_.c_str());
+    writer.String(data.masterUserToken_.c_str());
 
     writer.String("preFlight");
-    writer.String(preFlight_.c_str());
+    writer.String(data.preFlight_.c_str());
 
     writer.String("fee_currency");
-    writer.String(fee_currency_.c_str());
+    writer.String(data.fee_currency_.c_str());
 
     writer.String("settings");
-    writer.String(settings_.c_str());
+    writer.String(data.settings_.c_str());
 
     writer.String("fee_amount");
-    writer.Double(fee_amount_);
+    writer.Double(data.fee_amount_);
 
     writer.String("days");
-    writer.Uint(days_);
+    writer.Uint(data.days_);
 
     writer.String("transactions");
     writer.StartArray();
-    for (auto & t : transactions_)
+    for (auto & t : data.transactions_)
     {
-      t.saveToJson(writer);
+      saveToJson(writer, t);
     }
     writer.EndArray();
 
     writer.String("ballots");
     writer.StartArray();
-    for (auto & b : ballots_)
+    for (auto & b : data.ballots_)
     {
-      b.saveToJson(writer);
+      saveToJson(writer, b);
     }
     writer.EndArray();
 
     writer.String("ruleset");
-    writer.String(ruleset_.c_str());
+    writer.String(data.ruleset_.c_str());
 
     writer.String("rulesetV2");
-    writer.String(rulesetV2_.c_str());    
+    writer.String(data.rulesetV2_.c_str());
 
     writer.EndObject();
   }
@@ -577,40 +598,40 @@ namespace braveledger_bat_helper {
   {
     rapidjson::Document d;
     d.Parse(json.c_str());
-    
+
     //has parser errors or wrong types
-    bool error = d.HasParseError();       
+    bool error = d.HasParseError();
     if (false == error)
     {
       error = !(d["min_pubslisher_duration"].IsUint() &&
         d["min_visits"].IsUint() &&
         d["allow_non_verified"].IsBool());
     }
-    
+
     if (false == error)
     {
       min_pubslisher_duration_ = d["min_pubslisher_duration"].GetUint();
       min_visits_ = d["min_visits"].GetUint();
       allow_non_verified_ = d["allow_non_verified"].GetBool();
     }
-    
+
     return !error;
-  }  
-  
-  void PUBLISHER_STATE_ST::saveToJson(JsonWriter & writer) const
-  {    
+  }
+
+  void saveToJson(JsonWriter & writer, const PUBLISHER_STATE_ST& data)
+  {
     writer.StartObject();
-    
+
     writer.String("min_pubslisher_duration");
-    writer.Uint(min_pubslisher_duration_);
+    writer.Uint(data.min_pubslisher_duration_);
 
     writer.String("min_visits");
-    writer.Uint(min_visits_);
+    writer.Uint(data.min_visits_);
 
     writer.String("allow_non_verified");
-    writer.Bool(allow_non_verified_);
-    
-    writer.EndObject();   
+    writer.Bool(data.allow_non_verified_);
+
+    writer.EndObject();
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -679,48 +700,48 @@ namespace braveledger_bat_helper {
       deleted_ = d["deleted"].GetBool();
       weight_ = d["weight"].GetDouble();
     }
-    
+
     return !error;
   }
-  
-  void PUBLISHER_ST::saveToJson(JsonWriter & writer) const
+
+  void saveToJson(JsonWriter & writer, const PUBLISHER_ST& data)
   {
     writer.StartObject();
 
     //TODO: uint64 or string
     writer.String("duration");
-    writer.Uint64(duration_);
+    writer.Uint64(data.duration_);
 
     writer.String("favicon_url");
-    writer.String(favicon_url_.c_str());
+    writer.String(data.favicon_url_.c_str());
 
     writer.String("score");
-    writer.Double(score_);
+    writer.Double(data.score_);
 
     writer.String("visits");
-    writer.Uint(visits_);
+    writer.Uint(data.visits_);
 
     writer.String("verified");
-    writer.Bool(verified_);
+    writer.Bool(data.verified_);
 
     writer.String("exclude");
-    writer.Bool(exclude_);
+    writer.Bool(data.exclude_);
 
     writer.String("pinPercentage");
-    writer.Bool(pinPercentage_);
+    writer.Bool(data.pinPercentage_);
 
     //TODO: uint64 or string
     writer.String("verifiedTimeStamp");
-    writer.Uint64(verifiedTimeStamp_);
+    writer.Uint64(data.verifiedTimeStamp_);
 
     writer.String("percent");
-    writer.Uint(percent_);
+    writer.Uint(data.percent_);
 
     writer.String("deleted");
-    writer.Bool(deleted_);
+    writer.Bool(data.deleted_);
 
     writer.String("weight");
-    writer.Double(weight_);
+    writer.Double(data.weight_);
 
     writer.EndObject();
   }
@@ -776,7 +797,7 @@ namespace braveledger_bat_helper {
     {
       altcurrency_ = d["altcurrency"].GetString();
       balance_ = d["balance"].GetDouble();
-      
+
       for (auto & i : d["rates"].GetObject())
       {
         rates_.insert(std::make_pair(i.name.GetString(), i.value.GetDouble()));
@@ -798,7 +819,7 @@ namespace braveledger_bat_helper {
       parameters_days_ = d["parameters"]["adFree"]["days"].GetUint();
     }
     return !error;
-  }  
+  }
 
   /////////////////////////////////////////////////////////////////////////////
   FETCH_CALLBACK_EXTRA_DATA_ST::FETCH_CALLBACK_EXTRA_DATA_ST():
@@ -859,25 +880,25 @@ namespace braveledger_bat_helper {
 
     return !error;
   }
-  
-  void SURVEYOR_ST::saveToJson(JsonWriter & writer) const
+
+  void saveToJson(JsonWriter & writer, const SURVEYOR_ST& data)
   {
     writer.StartObject();
 
     writer.String("signature");
-    writer.String(signature_.c_str());
+    writer.String(data.signature_.c_str());
 
     writer.String("surveyorId");
-    writer.String(surveyorId_.c_str());
+    writer.String(data.surveyorId_.c_str());
 
     writer.String("surveyVK");
-    writer.String(surveyVK_.c_str());
+    writer.String(data.surveyVK_.c_str());
 
     writer.String("registrarVK");
-    writer.String(registrarVK_.c_str());
+    writer.String(data.registrarVK_.c_str());
 
     writer.String("surveySK");
-    writer.String(surveySK_.c_str());
+    writer.String(data.surveySK_.c_str());
 
     writer.EndObject();
   }
@@ -939,33 +960,33 @@ namespace braveledger_bat_helper {
     return !error;
   }
 
-  void MEDIA_PUBLISHER_INFO::saveToJson(JsonWriter & writer) const
+  void saveToJson(JsonWriter & writer, const MEDIA_PUBLISHER_INFO& data)
   {
     writer.StartObject();
 
     writer.String("publisherName");
-    writer.String(publisherName_.c_str());
+    writer.String(data.publisherName_.c_str());
 
     writer.String("publisherURL");
-    writer.String(publisherURL_.c_str());
+    writer.String(data.publisherURL_.c_str());
 
     writer.String("favIconURL");
-    writer.String(favIconURL_.c_str());
+    writer.String(data.favIconURL_.c_str());
 
     writer.String("channelName");
-    writer.String(channelName_.c_str());
+    writer.String(data.channelName_.c_str());
 
     writer.String("publisher");
-    writer.String(publisher_.c_str());
+    writer.String(data.publisher_.c_str());
 
     writer.String("twitch_event");
-    writer.String(twitchEventInfo_.event_.c_str());
+    writer.String(data.twitchEventInfo_.event_.c_str());
 
     writer.String("twitch_time");
-    writer.String(twitchEventInfo_.time_.c_str());
+    writer.String(data.twitchEventInfo_.time_.c_str());
 
     writer.String("twitch_status");
-    writer.String(twitchEventInfo_.status_.c_str());
+    writer.String(data.twitchEventInfo_.status_.c_str());
 
     writer.EndObject();
   }
@@ -995,10 +1016,10 @@ namespace braveledger_bat_helper {
     //has parser errors or wrong types
     bool error = d.HasParseError() || ( false == d.HasMember(fieldName.c_str()) );
     if (false == error)
-    {      
+    {
       value = d[fieldName.c_str()].GetString();
     }
-    return !error;  
+    return !error;
 }
 
   bool getJSONList(const std::string& fieldName, const std::string& json, std::vector<std::string> & value) {
@@ -1019,7 +1040,7 @@ namespace braveledger_bat_helper {
 
   bool getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts) {
     rapidjson::Document d;
-    d.Parse(json.c_str());  
+    d.Parse(json.c_str());
 
     //has parser errors or wrong types
     bool error = d.HasParseError();
@@ -1029,14 +1050,14 @@ namespace braveledger_bat_helper {
       {
         const char * event_field = "event";
         std::map<std::string, std::string> eventmap;
-      
-        auto obj = i.GetObject();      
+
+        auto obj = i.GetObject();
         if (obj.HasMember(event_field))
         {
           eventmap[event_field] = obj[event_field].GetString();
         }
 
-        const char * props_field = "properties";      
+        const char * props_field = "properties";
         if (obj.HasMember(props_field))
         {
           eventmap[props_field] = "";
@@ -1061,7 +1082,7 @@ namespace braveledger_bat_helper {
       } //for (auto & i : d.GetArray())
 
     }
-    return !error;  
+    return !error;
   }
 
   bool getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors) {
@@ -1076,13 +1097,13 @@ namespace braveledger_bat_helper {
       {
         rapidjson::StringBuffer sb;
         rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-        i.Accept(writer);      
+        i.Accept(writer);
         std::string surveyor = sb.GetString();
         surveyors.push_back(surveyor);
       }
     }
     return !error;
-  }  
+  }
 
   bool getJSONRates(const std::string& json, std::map<std::string, double>& rates) {
     rapidjson::Document d;
@@ -1149,7 +1170,7 @@ namespace braveledger_bat_helper {
     {
       unsignedTx.amount_ = d["unsignedTx"]["denomination"]["amount"].GetString();
       unsignedTx.currency_ = d["unsignedTx"]["denomination"]["currency"].GetString();
-      unsignedTx.destination_ = d["unsignedTx"]["destination"].GetString();    
+      unsignedTx.destination_ = d["unsignedTx"]["destination"].GetString();
     }
     return !error;
   }
@@ -1169,12 +1190,12 @@ namespace braveledger_bat_helper {
 
     if (false == error)
     {
-      verified = d["properties"]["verified"].GetBool();    
+      verified = d["properties"]["verified"].GetBool();
     }
     return !error;
   }
 
-  bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo, 
+  bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
         std::string& fee_currency, double& fee_amount, unsigned int& days) {
    rapidjson::Document d;
     d.Parse(json.c_str());
@@ -1224,7 +1245,7 @@ namespace braveledger_bat_helper {
     {
       publisherTimestamp = d["timestamp"].GetUint64();
     }
-    return !error;  
+    return !error;
   }
 
   std::vector<uint8_t> generateSeed() {
@@ -1234,14 +1255,14 @@ namespace braveledger_bat_helper {
     std::random_device r;
     std::seed_seq seed{r(), r(), r(), r(), r(), r(), r(), r()};
     auto rand = std::bind(std::uniform_int_distribution<>(0, UCHAR_MAX), std::mt19937(seed));
-    
-    std::generate_n(vSeed.begin(), SEED_LENGTH, rand);    
+
+    std::generate_n(vSeed.begin(), SEED_LENGTH, rand);
     return vSeed;
   }
 
   std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed) {
     DCHECK(!seed.empty());
-    std::vector<uint8_t> out(SEED_LENGTH);    
+    std::vector<uint8_t> out(SEED_LENGTH);
     int hkdfRes = HKDF(&out.front(), SEED_LENGTH, EVP_sha512(), &seed.front(), seed.size(),
       braveledger_ledger::g_hkdfSalt, SALT_LENGTH, nullptr, 0);
 
@@ -1259,7 +1280,7 @@ namespace braveledger_bat_helper {
 
     crypto_sign_keypair(&publicKey.front(), &secretKey.front(), 1);
 
-    DCHECK(!publicKey.empty() && !secretKey.empty());    
+    DCHECK(!publicKey.empty() && !secretKey.empty());
   }
 
   std::string uint8ToHex(const std::vector<uint8_t>& in) {
@@ -1276,20 +1297,20 @@ namespace braveledger_bat_helper {
     rapidjson::StringBuffer buffer;
     JsonWriter writer(buffer);
     writer.StartObject();
-  
+
     for (unsigned int i = 0; i < size; i++)
     {
       writer.String(keys[i].c_str());
       writer.String(values[i].c_str());
     }
-  
+
     writer.EndObject();
     return buffer.GetString();
   }
 
   std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx) {
     rapidjson::StringBuffer buffer;
-    JsonWriter writer(buffer);  
+    JsonWriter writer(buffer);
     writer.StartObject();
 
     writer.String("denomination");
@@ -1299,14 +1320,14 @@ namespace braveledger_bat_helper {
     writer.String(unsignedTx.amount_.c_str());
 
     writer.String("currency");
-    writer.String(unsignedTx.currency_.c_str());  
+    writer.String(unsignedTx.currency_.c_str());
     writer.EndObject();
 
     writer.String("destination");
     writer.String(unsignedTx.destination_.c_str());
 
     writer.EndObject();
-    return buffer.GetString();  
+    return buffer.GetString();
   }
 
   std::string stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_ST& request_credentials) {
@@ -1317,7 +1338,7 @@ namespace braveledger_bat_helper {
 
     writer.String("requestType");
     writer.String(request_credentials.requestType_.c_str());
-  
+
     writer.String("request");
     writer.StartObject(); //request
 
@@ -1436,8 +1457,8 @@ namespace braveledger_bat_helper {
     return res;
   }
 
-  bool getFromBase64(const std::string& in, std::vector<uint8_t> & out) {    
-    bool succeded = true;    
+  bool getFromBase64(const std::string& in, std::vector<uint8_t> & out) {
+    bool succeded = true;
     size_t size = 0;
     if (!EVP_DecodedLength(&size, in.length())) {
       DCHECK(false);
@@ -1456,7 +1477,7 @@ namespace braveledger_bat_helper {
       {
         succeded = false;
         out.clear();
-      }      
+      }
     }
     return succeded;
   }
@@ -1487,13 +1508,12 @@ namespace braveledger_bat_helper {
 
   uint64_t currentTime() {
     return time(0);
-  }  
-  
+  }
 
   void saveState(const CLIENT_STATE_ST& state) {
-  
+
     std::string data;
-    braveledger_bat_helper::saveToJson(state, data);
+    braveledger_bat_helper::saveToJsonString(state, data);
     //LOG(ERROR) << "!!!saveState == " << data;
 
     std::string ledger_state_file_path;
@@ -1501,31 +1521,31 @@ namespace braveledger_bat_helper {
     braveledger_bat_helper::getHomeDir(root);
     braveledger_bat_helper::appendPath(root, LEDGER_STATE_FILENAME, ledger_state_file_path);
 
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, std::cref(ledger_state_file_path), std::cref(data));        
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, std::cref(ledger_state_file_path), std::cref(data));
     braveledger_bat_helper::PostTask(runnable);
   }
 
   void loadState(ReadStateCallback callback) {
-  
+
     auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::readStateFile, callback);
     braveledger_bat_helper::PostTask(runnable);
   }
 
   void savePublisherState(const PUBLISHER_STATE_ST& state) {
     std::string data;
-    braveledger_bat_helper::saveToJson(state, data);
+    braveledger_bat_helper::saveToJsonString(state, data);
 
     std::string ledger_pub_state_file_path;
     std::string root;
     braveledger_bat_helper::getHomeDir(root);
-    braveledger_bat_helper::appendPath(root, LEDGER_PUBLISHER_STATE_FILENAME, ledger_pub_state_file_path);   
-  
+    braveledger_bat_helper::appendPath(root, LEDGER_PUBLISHER_STATE_FILENAME, ledger_pub_state_file_path);
+
     auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, std::cref(ledger_pub_state_file_path), std::cref(data));
     braveledger_bat_helper::PostTask(runnable);
   }
 
   void loadPublisherState(ReadPublisherStateCallback callback) {
-  
+
     auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::readPublisherStateFile, callback);
     braveledger_bat_helper::PostTask(runnable);
   }
@@ -1562,7 +1582,7 @@ namespace braveledger_bat_helper {
       else
       {
         LOG(ERROR) << "getTwitchParts failed in getFromBase64";
-      }      
+      }
     }
   }
 
@@ -1634,8 +1654,7 @@ namespace braveledger_bat_helper {
     }
 
     return duration;
-  }  
-  
+  }
 
   void readStateFile(ReadStateCallback callback) {
     std::string file_path;
@@ -1649,7 +1668,7 @@ namespace braveledger_bat_helper {
     {
       CLIENT_STATE_ST state;
       braveledger_bat_helper::loadFromJson(state, data.str());
-      braveledger_bat_helper::run_runnable (callback, true, std::cref(state));      
+      braveledger_bat_helper::run_runnable (callback, true, std::cref(state));
     }
     else
     {
@@ -1685,6 +1704,4 @@ namespace braveledger_bat_helper {
     //ignoring return
     writeFile(path, data);
   }
-
-} //namespace braveledger_bat_helper 
-
+}  // namespace braveledger_bat_helper

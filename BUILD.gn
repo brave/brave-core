@@ -1,50 +1,41 @@
-# Copyright 2014 The Chromium Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
 
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
+if (is_android) {
+  dep_base = rebase_path("..", "//")
+} else {
+  dep_base = rebase_path("../..", "//")
+}
 
-static_library("braveLedger") {
+config("internal_config") {
+  include_dirs = [ "../src" ]
+  defines = [ "BRAVE_LEDGER_LIB" ]
+}
+
+source_set("bat-native-ledger") {
+  configs += [ ":internal_config" ]
+
   sources = [
-    "src/ledger.cc",
     "src/bat_client.cc",
-    "src/bat_client_webrequest.cc",
+    "src/bat_client_webrequest_chromium.cc",
     "src/bat_get_media.cc",
     "src/bat_helper.cc",
-    "src/bat_publisher.cc",
+    "src/bat_helper_platform.cc",
+    "src/bat_publishers.cc",
     "src/bat_balance.cc",
-    "src/tweetnacl.cc",
-  ]
-
-  include_dirs = [
-    "src",
-    "//anonize2/anon",
-    "//anonize2/relic/include",
-    "//anonize2/relic/include/low",
-    "//bip39wally-core/include"
+    "src/ledger.cc",
   ]
 
   deps = [
-    "//base",
     "//net",
-    "//anonize2",
-    "//bip39wally-core",
-    "//v8",
-    "//net:net_utility_services",
-    "//net:net_with_v8",
-    "//v8:v8_libplatform",
+    "//third_party/leveldatabase",
+    rebase_path("bat-native-anonize:anonize2", dep_base),
+    rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
+    rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
+    rebase_path("bat-native-rapidjson", dep_base),
   ]
-
-  include_dirs += [
-    "//base",
-    "//net/url_request",
-    "//url",
-    "//content/public/browser",
-    "//third_party/leveldatabase/src/include",
-    "//v8",
-  ]
-
-  defines = [ "LEDGER_LIBRARY" ]
 }

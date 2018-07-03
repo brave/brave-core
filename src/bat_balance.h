@@ -13,25 +13,24 @@
 #include "bat_client_webrequest.h"
 #endif
 
-#include "bat_helper.h"
+namespace braveledger_bat_helper {
+struct FETCH_CALLBACK_EXTRA_DATA_ST;
+}
 
-namespace braveledger_bat_balance
-{
+namespace braveledger_bat_balance {
 
 class BatBalance {
-public:
+ public:
   BatBalance() = default;
   ~BatBalance() = default;
-
   void getWalletProperties(const std::string& paymentInfo, braveledger_bat_helper::FetchCallback callback,
     const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
 
-private:
+ private:
   std::string buildURL(const std::string& path, const std::string& prefix);
-
   braveledger_bat_client_webrequest::BatClientWebRequest batClientWebRequest_;
 };
 
-} //namespace braveledger_bat_balance
+}  // namespace braveledger_bat_balance
 
 #endif  // BRAVELEDGER_BAT_BALANCE_H_
