@@ -39,6 +39,8 @@ source_set("common") {
 
   if (is_linux) {
     sources += [
+      "brave_channel_info_posix.cc",
+      "brave_channel_info_posix.h",
       "importer/chrome_importer_utils_linux.cc",
     ]
   }

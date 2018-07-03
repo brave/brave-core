@@ -6,35 +6,7 @@
 #include "../../../../chrome/common/chrome_paths_linux.cc"
 #undef GetDefaultUserDataDirectory
 
-namespace {
-
-std::string GetChannelSuffixForDataDir() {
-#if defined(OFFICIAL_BUILD)
-  std::string modifier;
-  std::string data_dir_suffix;
-
-  char* env = getenv("CHROME_VERSION_EXTRA");
-  if (env)
-    modifier = env;
-
-  // Chrome doesn't support canary channel on linux.
-  if (modifier == "unstable")  // linux version of "dev"
-    modifier = "dev";
-  if (modifier == "dev") {
-    data_dir_suffix = "-Dev";
-  } else if (modifier == "beta") {
-    data_dir_suffix = "-Beta";
-  } else {
-    DCHECK(modifier == "stable");
-  }
-
-  return data_dir_suffix;
-#else  // OFFICIAL_BUILD
-  return "-Development";
-#endif
-}
-
-}  // namespace
+#include "brave/common/brave_channel_info_posix.h"
 
 namespace chrome {
 
@@ -45,8 +17,10 @@ bool GetDefaultUserDataDirectory(base::FilePath* result) {
   config_dir =
       GetXDGDirectory(env.get(), kXdgConfigHomeEnvVar, kDotConfigDir);
 
-  *result = config_dir.Append("BraveSoftware/Brave-Browser" + GetChannelSuffixForDataDir());
+  std::string data_dir_suffix;
+  brave::GetChannelImpl(nullptr, &data_dir_suffix);
 
+  *result = config_dir.Append("BraveSoftware/Brave-Browser" + data_dir_suffix);
   return true;
 }
 
