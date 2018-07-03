@@ -17,22 +17,32 @@ enum TabBarVisibility: Int {
     static let allCases: [TabBarVisibility] = [.never, .always, .landscapeOnly]
 }
 
+enum PasswordManagerBehavior: Int {
+    case showPicker
+    case onePassword
+    case lastPass
+    case bitwarden
+    case trueKey
+}
+
 /// The applications preferences container
 ///
 /// Properties in this object should be of the the type `Option` with the object which is being
 /// stored to automatically interact with `UserDefaults`
 final class Preferences {
     /// The default `UserDefaults` that all `Option`s will use unless specified
-    static let defaultContainer = UserDefaults.standard
+    static let defaultContainer = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)!
 }
 
 extension Preferences {
-    /// Whether or not the user has opted-in for using DuckDuckGo during a Private Browsing session
-    ///
-    /// Defaults to nil, meaning the user has not been given the choice yet
-    static let duckDuckGoPrivateSearch = Option<Bool?>(key: "ddg-private-search", default: nil)
-    /// Whether or not the user has seen the browser lock popup already
-    static let popupForBrowserLockShown = Option<Bool>(key: "security.popup-for-browser-lock", default: false)
+    final class Popups {
+        /// Whether or not the user has opted-in for using DuckDuckGo during a Private Browsing session
+        ///
+        /// Defaults to nil, meaning the user has not been given the choice yet
+        static let duckDuckGoPrivateSearch = Option<Bool?>(key: "ddg-private-search", default: nil)
+        /// Whether or not the user has seen the browser lock popup already
+        static let browserLock = Option<Bool>(key: "security.popup-for-browser-lock", default: false)
+    }
 }
 
 extension Preferences {
@@ -43,6 +53,8 @@ extension Preferences {
         static let blockPopups = Option<Bool>(key: "general.block-popups", default: true)
         /// Controls how the tab bar should be shown (or not shown)
         static let tabBarVisibility = Option<Int>(key: "general.tab-bar-visiblity", default: TabBarVisibility.always.rawValue)
+        /// The behavior when the password manager button is tapped
+        static let passwordManagerShortcutBehavior = Option<Int>(key: "general.pm-button-behavior", default: PasswordManagerBehavior.showPicker.rawValue)
     }
     final class Search {
         /// Whether or not to show suggestions while the user types
@@ -119,7 +131,7 @@ extension Preferences {
         /// The key used for getting/setting the value in `UserDefaults`
         let key: String
         /// Creates a preference
-        fileprivate init(key: String, default: ValueType, container: UserDefaults = Preferences.defaultContainer) {
+        init(key: String, default: ValueType, container: UserDefaults = Preferences.defaultContainer) {
             self.key = key
             self.container = container
             value = (container.value(forKey: key) as? ValueType) ?? `default`
