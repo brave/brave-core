@@ -50,7 +50,7 @@ class SessionData: NSObject, NSCoding {
     }
     
     // This is not a fully direct mapping, but rather an attempt to reconcile data differences, primarily used for tab restoration
-    var savedTabData: SavedTab2 {
+    var savedTabData: SavedTab {
         // (id: String, title: String, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, history: [String], historyIndex: Int16)
         let urlStrings = urls.map { $0.absoluteString }
         let currentURL = urlStrings[(currentPage < 0 ? max(urlStrings.count-1, 0) : currentPage)]
