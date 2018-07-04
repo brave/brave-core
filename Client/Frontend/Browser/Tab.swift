@@ -134,7 +134,7 @@ class Tab: NSObject {
     var screenshotUUID: UUID? {
         didSet {
             let context = DataController.shared.mainThreadContext
-            let tabMO = TabMO.get(byId: id, context: context)
+            let tabMO = TabMO.get(by: id, context: context)
             tabMO?.screenshotUUID = screenshotUUID
             DataController.saveContext(context: context)
         }
@@ -359,7 +359,7 @@ class Tab: NSObject {
             /* if let title = displayURL?.absoluteString {
                 return title
             }
-            else */ if let tab = TabMO.get(byId: id, context: DataController.shared.mainThreadContext) {
+            else */ if let tab = TabMO.get(by: id, context: DataController.shared.mainThreadContext) {
                 return tab.title ?? tab.url ?? ""
             }
             return ""

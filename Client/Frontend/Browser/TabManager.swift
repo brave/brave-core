@@ -313,7 +313,7 @@ class TabManager: NSObject {
 
         let tab = Tab(configuration: configuration, isPrivate: isPrivate)
         if !isPrivate {
-            tab.id = id ?? TabMO.freshTab().syncUUID
+            tab.id = id ?? TabMO.create().syncUUID
         }
         configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie, isPrivate: isPrivate)
         return tab
@@ -323,7 +323,7 @@ class TabManager: NSObject {
         assert(Thread.isMainThread)
 
         let tab = Tab(configuration: configuration ?? self.configuration)
-        tab.id = TabMO.freshTab().syncUUID
+        tab.id = TabMO.create().syncUUID
         
         configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie)
         return tab
@@ -354,7 +354,7 @@ class TabManager: NSObject {
         context.perform {
             for i in 0..<self.tabs.count {
                 let tab = self.tabs[i]
-                guard let managedObject = TabMO.get(byId: tab.id, context: context) else { print("Error: Tab missing managed object"); continue }
+                guard let managedObject = TabMO.get(by: tab.id, context: context) else { print("Error: Tab missing managed object"); continue }
                 managedObject.order = Int16(i)
             }
             DataController.saveContext(context: context)
@@ -468,7 +468,7 @@ class TabManager: NSObject {
             
             log.debug("---stack: \(urls)")
         }
-        if let id = TabMO.get(byId: tab.id, context: context)?.syncUUID {
+        if let id = TabMO.get(by: tab.id, context: context)?.syncUUID {
             let displayTitle = tab.displayTitle
             let title = displayTitle != "" ? displayTitle : ""
             
@@ -509,7 +509,7 @@ class TabManager: NSObject {
         tabs.remove(at: removalIndex)
         
         let context = DataController.shared.mainThreadContext
-        if let tab = TabMO.get(byId: tab.id, context: context) {
+        if let tab = TabMO.get(by: tab.id, context: context) {
             DataController.remove(object: tab, context: context)
         }
 
@@ -843,7 +843,7 @@ extension TabManager {
     
     func restoreTab(_ tab: Tab) {
         // Tab was created with no active webview or session data. Restore tab data from CD and configure.
-        guard let savedTab = TabMO.get(byId: tab.id, context: DataController.shared.mainThreadContext) else { return }
+        guard let savedTab = TabMO.get(by: tab.id, context: DataController.shared.mainThreadContext) else { return }
         
         if let history = savedTab.urlHistorySnapshot as? [String], let tabUUID = savedTab.syncUUID, let url = savedTab.url {
             let data = SavedTab(id: tabUUID, title: savedTab.title ?? "", url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)
