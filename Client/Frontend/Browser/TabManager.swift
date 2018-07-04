@@ -298,8 +298,6 @@ class TabManager: NSObject {
         for url in urls {
             tab = self.addTab(URLRequest(url: url), flushToDisk: false, zombie: zombie, isPrivate: isPrivate)
         }
-        // Flush.
-        storeChanges()
         // Select the most recent.
         self.selectTab(tab)
         self.isRestoring = false
@@ -342,14 +340,12 @@ class TabManager: NSObject {
 
         let previouslySelectedTab = selectedTab
 
-        // TODO: Move to Tab model once we migrate to CoreData.
         tabs.insert(tabs.remove(at: visibleFromIndex), at: visibleToIndex)
 
         if let previouslySelectedTab = previouslySelectedTab, let previousSelectedIndex = tabs.index(of: previouslySelectedTab) {
             _selectedIndex = previousSelectedIndex
         }
 
-        storeChanges()
         saveTabOrder()
     }
     
@@ -410,12 +406,9 @@ class TabManager: NSObject {
                 }
             }
         }
-        if flushToDisk {
-        	storeChanges()
-        }
         
         // Ignore on restore.
-        if !zombie && !isPrivate {
+        if flushToDisk && !zombie && !isPrivate {
             saveTab(tab, saveOrder: true)
         }
 
@@ -491,13 +484,13 @@ class TabManager: NSObject {
 
     // This method is duplicated to hide the flushToDisk option from consumers.
     func removeTab(_ tab: Tab) {
-        self.removeTab(tab, flushToDisk: true, notify: true)
+        self.removeTab(tab, notify: true)
         hideNetworkActivitySpinner()
     }
 
     /// - Parameter notify: if set to true, will call the delegate after the tab
     ///   is removed.
-    fileprivate func removeTab(_ tab: Tab, flushToDisk: Bool, notify: Bool) {
+    fileprivate func removeTab(_ tab: Tab, notify: Bool) {
         assert(Thread.isMainThread)
 
         guard let removalIndex = tabs.index(where: { $0 === tab }) else {
@@ -583,10 +576,6 @@ class TabManager: NSObject {
         } else {
             selectTab(tabs.last, previous: oldSelectedTab)
         }
-
-        if flushToDisk {
-            storeChanges()
-        }
     }
 
     /// Removes all private tabs from the manager without notifying delegates.
@@ -638,7 +627,6 @@ class TabManager: NSObject {
             toast = ButtonToast(labelText: String.localizedStringWithFormat(Strings.TabsDeleteAllUndoTitle, numberOfTabs), buttonText: Strings.TabsDeleteAllUndoAction, completion: { buttonPressed in
                 if buttonPressed {
                     self.undoCloseTabs()
-                    self.storeChanges()
                     for delegate in self.delegates {
                         delegate.get()?.tabManagerDidAddTabs(self)
                     }
@@ -676,9 +664,8 @@ class TabManager: NSObject {
 
     func removeTabs(_ tabs: [Tab]) {
         for tab in tabs {
-            self.removeTab(tab, flushToDisk: false, notify: true)
+            self.removeTab(tab, notify: true)
         }
-        storeChanges()
     }
     
     func removeAll() {
