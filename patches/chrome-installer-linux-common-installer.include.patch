@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
-index 58b80612445aa0616462805f464bcae0b3ee1c3e..b9d7e55692a730286fac55b1f997008012fdafca 100644
+index 58b80612445aa0616462805f464bcae0b3ee1c3e..5acee06845fe2f94ef51f5ddbf9261a33fa4df5d 100644
 --- a/chrome/installer/linux/common/installer.include
 +++ b/chrome/installer/linux/common/installer.include
 @@ -75,6 +75,7 @@ process_template() (
@@ -10,12 +10,16 @@ index 58b80612445aa0616462805f464bcae0b3ee1c3e..b9d7e55692a730286fac55b1f9970080
      -e "s#@@PROGNAME@@#${PROGNAME}#g" \
      -e "s#@@CHANNEL@@#${CHANNEL}#g" \
      -e "s#@@COMPANY_FULLNAME@@#${COMPANY_FULLNAME}#g" \
-@@ -154,6 +155,15 @@ stage_install_common() {
+@@ -154,6 +155,19 @@ stage_install_common() {
      install -m 644 "${BUILDDIR}/ui_resources_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
    fi
  
 +  # brave_resources.pak, contains customization, shields
 +  install -m 644 "${BUILDDIR}/brave_resources.pak" "${STAGEDIR}/${INSTALLDIR}/"
++
++  # brave_[100|200]_resources.pak for scaled resources
++  install -m 644 "${BUILDDIR}/brave_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
++  install -m 644 "${BUILDDIR}/brave_200_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
 +
 +  # localization files for Brave extension
 +  install -d -m 755 "${STAGEDIR}/${INSTALLDIR}/resources/brave_extension/_locales"
@@ -26,7 +30,7 @@ index 58b80612445aa0616462805f464bcae0b3ee1c3e..b9d7e55692a730286fac55b1f9970080
    # ICU data file; Necessary when the GN icu_use_data_file flag is true.
    install -m 644 "${BUILDDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
  
-@@ -381,7 +391,7 @@ stage_install_common() {
+@@ -381,7 +395,7 @@ stage_install_common() {
          exit 1
        fi
        local expected_perms=777
