@@ -54,7 +54,6 @@ test("brave_unit_tests") {
 
   configs += [
     "//brave/build/geolocation",
-    "//brave/build/safebrowsing",
   ]
 
   deps = [
@@ -82,6 +81,10 @@ test("brave_unit_tests") {
     "//brave/utility",
     ":brave_test_support_unit",
     "//testing/gtest",
+  ]
+
+  deps += [
+    "//brave/browser/safebrowsing",
   ]
 }
 
