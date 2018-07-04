@@ -32,11 +32,13 @@ describe('braveShieldsPanelReducer', () => {
     before(function () {
       this.spy = sinon.spy(shieldsPanelState, 'resetBlockingStats')
       this.resetNoScriptInfoSpy = sinon.spy(shieldsPanelState, 'resetNoScriptInfo')
+      this.resetBlockingResourcesSpy = sinon.spy(shieldsPanelState, 'resetBlockingResources')
       this.tabId = 1
     })
     after(function () {
       this.spy.restore()
       this.resetNoScriptInfoSpy.restore()
+      this.resetBlockingResourcesSpy.restore()
     })
     afterEach(function () {
       this.spy.reset()
@@ -80,6 +82,25 @@ describe('braveShieldsPanelReducer', () => {
         isMainFrame: false
       })
       assert.equal(this.resetNoScriptInfoSpy.notCalled, true)
+    })
+    it('calls resetBlockingResources when isMainFrame is true', function () {
+      shieldsPanelReducer(initialState.shieldsPanel, {
+        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        tabId: this.tabId,
+        url: 'https://www.brave.com',
+        isMainFrame: true
+      })
+      assert.equal(this.spy.calledOnce, true)
+      assert.equal(this.spy.getCall(0).args[1], this.tabId)
+    })
+    it('does not call resetBlockingResources when isMainFrame is false', function () {
+      shieldsPanelReducer(initialState.shieldsPanel, {
+        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        tabId: this.tabId,
+        url: 'https://www.brave.com',
+        isMainFrame: false
+      })
+      assert.equal(this.spy.notCalled, true)
     })
   })
 
