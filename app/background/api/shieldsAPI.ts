@@ -5,6 +5,7 @@
 import { Tab } from '../../types/state/shieldsPannelState'
 import { BlockOptions } from '../../types/other/blockTypes'
 import * as resourceIdentifiers from '../../constants/resourceIdentifiers'
+import { isHttpOrHttps } from '../../helpers/urlUtils'
 
 /**
  * Obtains the shields panel data for the specified tab data
@@ -33,12 +34,13 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
   ]).then((details) => {
     const fingerprinting = details[5].setting !== details[6].setting ? 'block_third_party' : details[5].setting
     const cookies = details[7].setting !== details[8].setting ? 'block_third_party' : details[7].setting
+    const braveShields = isHttpOrHttps(origin) ? details[0].setting : 'block'
     return {
       url: url.href,
       origin,
       hostname,
       id: tabData.id,
-      braveShields: details[0].setting,
+      braveShields,
       ads: details[1].setting,
       trackers: details[2].setting,
       httpUpgradableResources: details[3].setting,
