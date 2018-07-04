@@ -61,6 +61,9 @@ extension Preferences {
         // Support
         migrate(key: "userallowstelemetry", to: Preferences.Support.sendsCrashReportsAndMetrics)
         
+        // Popups
+        migrate(key: "popupForDDG", to: Preferences.Popups.duckDuckGoPrivateSearch)
+        
         Preferences.Migration.completed.value = true
     }
 }
