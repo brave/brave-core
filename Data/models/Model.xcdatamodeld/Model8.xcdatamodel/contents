@@ -78,8 +78,6 @@
     </entity>
     <entity name="TabMO" representedClassName=".TabMO" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isClosed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isPrivate" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isSelected" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="screenshot" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
@@ -106,7 +104,7 @@
         <element name="Domain" positionX="225" positionY="-321" width="128" height="240"/>
         <element name="Favicon" positionX="439" positionY="-414" width="128" height="135"/>
         <element name="History" positionX="493" positionY="-150" width="128" height="135"/>
-        <element name="TabMO" positionX="-488" positionY="-229" width="128" height="240"/>
+        <element name="TabMO" positionX="-488" positionY="-229" width="128" height="210"/>
         <element name="TopSite" positionX="-117" positionY="-663" width="128" height="150"/>
     </elements>
 </model>

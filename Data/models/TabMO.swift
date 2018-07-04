@@ -23,8 +23,6 @@ public class TabMO: NSManagedObject {
     @NSManaged public var urlHistoryCurrentIndex: Int16
     @NSManaged public var screenshot: Data?
     @NSManaged public var isSelected: Bool
-    @NSManaged public var isClosed: Bool
-    @NSManaged public var isPrivate: Bool
     @NSManaged public var color: String?
     @NSManaged public var screenshotUUID: UUID?
     
@@ -59,28 +57,24 @@ public class TabMO: NSManagedObject {
         // TODO: replace with logic to create sync uuid then buble up new uuid to browser.
         tab.syncUUID = UUID().uuidString
         tab.title = Strings.New_Tab
-        // BRAVE TODO:
-//        tab.isPrivate = PrivateBrowsing.singleton.isOn
         DataController.saveContext(context: context)
         return tab
     }
 
     @discardableResult 
     public class func add(_ tabInfo: SavedTab, context: NSManagedObjectContext) -> TabMO? {
-        let tab: TabMO? = get(byId: tabInfo.id, context: context)
-        if tab == nil {
-            return nil
-        }
+        guard let tab = get(byId: tabInfo.id, context: context) else { return nil }
+        
         if let s = tabInfo.screenshot {
-            tab?.screenshot = UIImageJPEGRepresentation(s, 1)
+            tab.screenshot = UIImageJPEGRepresentation(s, 1)
         }
-        tab?.url = tabInfo.url
-        tab?.order = tabInfo.order
-        tab?.title = tabInfo.title
-        tab?.urlHistorySnapshot = tabInfo.history as NSArray
-        tab?.urlHistoryCurrentIndex = tabInfo.historyIndex
-        tab?.isSelected = tabInfo.isSelected
-        return tab!
+        tab.url = tabInfo.url
+        tab.order = tabInfo.order
+        tab.title = tabInfo.title
+        tab.urlHistorySnapshot = tabInfo.history as NSArray
+        tab.urlHistoryCurrentIndex = tabInfo.historyIndex
+        tab.isSelected = tabInfo.isSelected
+        return tab
     }
 
     public class func getAll() -> [TabMO] {
