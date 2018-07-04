@@ -24,6 +24,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
 
   void InitBraveCommandState();
   void UpdateCommandForBraveRewards();
+  void UpdateCommandForBraveAdblock();
 
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition);

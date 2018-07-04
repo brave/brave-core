@@ -70,10 +70,15 @@ bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
 
 void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForBraveRewards();
+  UpdateCommandForBraveAdblock();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_REWARDS, true);
+}
+
+void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -90,6 +95,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
   switch (id) {
     case IDC_SHOW_BRAVE_REWARDS:
       brave::ShowBraveRewards(browser_);
+      break;
+    case IDC_SHOW_BRAVE_ADBLOCK:
+      brave::ShowBraveAdblock(browser_);
       break;
 
     default:

@@ -16,4 +16,10 @@ void ShowBraveRewards(Browser* browser) {
       GetSingletonTabNavigateParams(browser, GURL(kBraveUIRewardsURL)));
 }
 
+void ShowBraveAdblock(Browser* browser) {
+  ShowSingletonTabOverwritingNTP(
+      browser,
+      GetSingletonTabNavigateParams(browser, GURL(kBraveUIAdblockURL)));
+}
+
 }  // namespace brave

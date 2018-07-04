@@ -10,6 +10,7 @@
 // ID of IDC_BRAVE_COMANDS_START and first brave command should be same.
 #define IDC_BRAVE_COMMANDS_START 56000
 #define IDC_SHOW_BRAVE_REWARDS   56000
+#define IDC_SHOW_BRAVE_ADBLOCK   56001
 
 #define IDC_BRAVE_COMMANDS_LAST  57000
 

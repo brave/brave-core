@@ -23,6 +23,8 @@ source_set("ui") {
     "views/importer/brave_import_lock_dialog_view.h",
     "webui/basic_ui.cc",
     "webui/basic_ui.h",
+    "webui/brave_adblock_ui.cc",
+    "webui/brave_adblock_ui.h",
     "webui/brave_new_tab_ui.cc",
     "webui/brave_new_tab_ui.h",
     "webui/brave_rewards_ui.cc",

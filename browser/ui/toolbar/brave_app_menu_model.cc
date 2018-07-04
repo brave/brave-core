@@ -19,4 +19,8 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
       GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
       IDC_SHOW_BRAVE_REWARDS,
       IDS_SHOW_BRAVE_REWARDS);
+  InsertItemWithStringIdAt(
+      GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
+      IDC_SHOW_BRAVE_ADBLOCK,
+      IDS_SHOW_BRAVE_ADBLOCK);
 }
