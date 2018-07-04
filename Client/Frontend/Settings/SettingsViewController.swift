@@ -30,6 +30,30 @@ extension HTTPCookie.AcceptPolicy: RepresentableOptionType {
     }
 }
 
+extension PasswordManagerShortcutBehavior: RepresentableOptionType {
+    public var displayString: String {
+        switch self {
+        case .showPicker: return Strings.ShowPicker
+        case .onePassword: return "1Password"
+        case .lastPass: return "LastPass"
+        case .bitwarden: return "bitwarden"
+        case .trueKey: return "True Key"
+        }
+    }
+    
+    /* v1.6 doesn't show images despite the code/assets existing to support it
+    public var image: UIImage? {
+        switch self {
+            case .showPicker: return UIImage(imageLiteralResourceName: "key")
+            case .onePassword: return UIImage(imageLiteralResourceName: "passhelper_1pwd")
+            case .lastPass: return UIImage(imageLiteralResourceName: "passhelper_lastpass")
+            case .bitwarden: return UIImage(imageLiteralResourceName: "passhelper_bitwarden")
+            case .trueKey: return UIImage(imageLiteralResourceName: "passhelper_truekey")
+        }
+    }
+    */
+}
+
 /// Just creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
 private func BoolRow(title: String, option: Preferences.Option<Bool>) -> Row {
     return Row(
@@ -146,6 +170,32 @@ class SettingsViewController: TableViewController {
             }
             general.rows.append(row)
         }
+        
+        // TODO: Check if Password Managers exist before showing this row
+        var pmRow = Row(
+            text: Strings.Password_manager_button,
+            detailText: PasswordManagerShortcutBehavior(rawValue: Preferences.General.passwordManagerShortcutBehavior.value)?.displayString,
+            accessory: .disclosureIndicator
+        )
+        pmRow.selection = { [unowned self] in
+            // Show options for password manager button
+            let optionsViewController = OptionSelectionViewController<PasswordManagerShortcutBehavior>(
+                options: PasswordManagerShortcutBehavior.allCases,
+                selectedOption: PasswordManagerShortcutBehavior(rawValue: Preferences.General.passwordManagerShortcutBehavior.value),
+                optionChanged: { [unowned self] _, option in
+                    Preferences.General.passwordManagerShortcutBehavior.value = option.rawValue
+                    
+                    if let indexPath = self.dataSource.indexPath(rowUUID: pmRow.uuid, sectionUUID: general.uuid) {
+                        self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = option.displayString
+                    }
+                }
+            )
+            optionsViewController.headerText = Strings.Password_manager_button
+            optionsViewController.footerText = Strings.Password_manager_button_settings_footer
+            self.navigationController?.pushViewController(optionsViewController, animated: true)
+        }
+        general.rows.append(pmRow)
+        
         return general
     }()
     
