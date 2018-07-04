@@ -77,6 +77,10 @@ export interface ResetBlockingStats {
   (state: State, tabId: number): State
 }
 
+export interface ResetBlockingResources {
+  (state: State, tabId: number): State
+}
+
 export interface ChangeNoScriptSettings {
   (state: State, tabId: number, origin: string): State
 }
