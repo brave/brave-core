@@ -27,7 +27,7 @@ extension Preferences {
         let keyPrefix = profile.prefs.getBranchPrefix()
         
         /// Migrate a given key from `Prefs` into a specific option
-        func migrate<T>(key: String, option: Preferences.Option<T>) {
+        func migrate<T>(key: String, to option: Preferences.Option<T>) {
             if let value = userDefaults?.object(forKey: "\(keyPrefix)\(key)") as? T {
                 option.value = value
             }
@@ -35,14 +35,14 @@ extension Preferences {
         
         // General
         // TODO: Search engine migration
-        migrate(key: "saveLogins", option: Preferences.General.saveLogins)
-        migrate(key: "blockPopups", option: Preferences.General.blockPopups)
-        migrate(key: "kPrefKeyTabsBarShowPolicy", option: Preferences.General.tabBarVisibility)
-        migrate(key: "thirdPartyPasswordShortcutEnabled", option: Preferences.General.passwordManagerShortcutBehavior)
+        migrate(key: "saveLogins", to: Preferences.General.saveLogins)
+        migrate(key: "blockPopups", to: Preferences.General.blockPopups)
+        migrate(key: "kPrefKeyTabsBarShowPolicy", to: Preferences.General.tabBarVisibility)
+        migrate(key: "thirdPartyPasswordShortcutEnabled", to: Preferences.General.passwordManagerShortcutBehavior)
         
         // Privacy
-        migrate(key: "braveAcceptCookiesPref", option: Preferences.Privacy.cookieAcceptPolicy)
-        migrate(key: "privateBrowsingAlwaysOn", option: Preferences.Privacy.privateBrowsingOnly)
+        migrate(key: "braveAcceptCookiesPref", to: Preferences.Privacy.cookieAcceptPolicy)
+        migrate(key: "privateBrowsingAlwaysOn", to: Preferences.Privacy.privateBrowsingOnly)
         
         // Security
         NSKeyedUnarchiver.setClass(AuthenticationKeychainInfo.self, forClassName: "AuthenticationKeychainInfo")
@@ -51,15 +51,15 @@ extension Preferences {
         }
         
         // Shields
-        migrate(key: "braveBlockAdsAndTracking", option: Preferences.Shields.blockAdsAndTracking)
-        migrate(key: "braveHttpsEverywhere", option: Preferences.Shields.httpsEverywhere)
-        migrate(key: "braveSafeBrowsing", option: Preferences.Shields.blockPhishingAndMalware)
-        migrate(key: "noscript_on", option: Preferences.Shields.blockScripts)
-        migrate(key: "fingerprintprotection_on", option: Preferences.Shields.fingerprintingProtection)
-        migrate(key: "braveAdblockUseRegional", option: Preferences.Shields.useRegionAdBlock)
+        migrate(key: "braveBlockAdsAndTracking", to: Preferences.Shields.blockAdsAndTracking)
+        migrate(key: "braveHttpsEverywhere", to: Preferences.Shields.httpsEverywhere)
+        migrate(key: "braveSafeBrowsing", to: Preferences.Shields.blockPhishingAndMalware)
+        migrate(key: "noscript_on", to: Preferences.Shields.blockScripts)
+        migrate(key: "fingerprintprotection_on", to: Preferences.Shields.fingerprintingProtection)
+        migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
         
         // Support
-        migrate(key: "userallowstelemetry", option: Preferences.Support.sendsCrashReportsAndMetrics)
+        migrate(key: "userallowstelemetry", to: Preferences.Support.sendsCrashReportsAndMetrics)
         
         Preferences.Migration.completed.value = true
     }

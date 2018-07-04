@@ -17,12 +17,15 @@ enum TabBarVisibility: Int {
     static let allCases: [TabBarVisibility] = [.never, .always, .landscapeOnly]
 }
 
-enum PasswordManagerBehavior: Int {
+enum PasswordManagerShortcutBehavior: Int {
     case showPicker
     case onePassword
     case lastPass
     case bitwarden
     case trueKey
+    
+    // TODO: Remove when we can use Swift 4.2/`CaseIterable`
+    static let allCases: [PasswordManagerShortcutBehavior] = [.showPicker, .onePassword, .lastPass, .bitwarden, .trueKey]
 }
 
 /// The applications preferences container
@@ -54,7 +57,7 @@ extension Preferences {
         /// Controls how the tab bar should be shown (or not shown)
         static let tabBarVisibility = Option<Int>(key: "general.tab-bar-visiblity", default: TabBarVisibility.always.rawValue)
         /// The behavior when the password manager button is tapped
-        static let passwordManagerShortcutBehavior = Option<Int>(key: "general.pm-button-behavior", default: PasswordManagerBehavior.showPicker.rawValue)
+        static let passwordManagerShortcutBehavior = Option<Int>(key: "general.pm-button-behavior", default: PasswordManagerShortcutBehavior.showPicker.rawValue)
     }
     final class Search {
         /// Whether or not to show suggestions while the user types

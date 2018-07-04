@@ -62,7 +62,7 @@ class OptionSelectionViewController<OptionType: RepresentableOptionType>: TableV
     
     var footerText: String? {
         didSet {
-            guard let text = headerText else {
+            guard let text = footerText else {
                 dataSource.sections[0].footer = nil
                 return
             }
