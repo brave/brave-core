@@ -2389,7 +2389,7 @@ extension BrowserViewController: HistoryStateHelperDelegate {
     func historyStateHelper(_ historyStateHelper: HistoryStateHelper, didPushOrReplaceStateInTab tab: Tab) {
         navigateInTab(tab: tab)
         tabManager.storeChanges()
-        tabManager.saveChanges(tab: tab)
+        tabManager.saveTab(tab)
     }
 }
 

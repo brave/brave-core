@@ -416,7 +416,7 @@ class TabManager: NSObject {
         
         // Ignore on restore.
         if !zombie && !isPrivate {
-            saveChanges(tab: tab, saveOrder: true)
+            saveTab(tab, saveOrder: true)
         }
 
     }
@@ -435,7 +435,7 @@ class TabManager: NSObject {
         return nil
     }
     
-    func saveChanges(tab: Tab, saveOrder: Bool = false) {
+    func saveTab(_ tab: Tab, saveOrder: Bool = false) {
         guard let data = savedTabData(tab: tab) else { return }
         
         TabMO.preserve(savedTab: data)
@@ -952,7 +952,7 @@ extension TabManager: WKNavigationDelegate {
         // call storeChanges unnecessarily on startup
         
         if let tab = tabForWebView(webView), !tab.isPrivate, let url = webView.url, !url.absoluteString.contains("localhost") {
-            saveChanges(tab: tab)
+            saveTab(tab)
         }
     }
     
