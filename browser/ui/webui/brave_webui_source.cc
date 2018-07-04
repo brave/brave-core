@@ -58,6 +58,9 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "50cc52a4f1743ea74a21da996fe44272.jpg", IDR_BRAVE_NEW_TAB_IMG14 },
         { "b6dd4b1292cfd4470e58486c56ad0832.svg", IDR_BRAVE_NEW_TAB_PRIVATE_ICON }
       }
+    }, {
+      std::string("welcome"), {
+      }
     }
   };
   AddResourcePaths(source, resources[name]);
@@ -85,6 +88,9 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "privateNewTabDisclaimer2", IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER_2 },
         { "duckduckGoSearchInfo", IDS_BRAVE_PRIVATE_NEW_TAB_DUCKDUCKGO_SEARCH_INFO },
         { "privateNewTabSearchLabel", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_TOGGLE_LABEL }
+      }
+    }, {
+      std::string("welcome"), {
       }
     }
   };

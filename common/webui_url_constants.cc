@@ -9,5 +9,5 @@ const char kPaymentsJS[] = "brave_payments.js";
 const char kWelcomeHost[] = "welcome";
 const char kWelcomeJS[] = "brave_welcome.js";
 const char kBraveNewTabJS[] = "brave_new_tab.js";
-const char kBraveUIWelcomeURL[] = "chrome://welcome";
-const char kBraveUIPaymentsURL[] = "chrome://payments";
+const char kBraveUIWelcomeURL[] = "chrome://welcome/";
+const char kBraveUIPaymentsURL[] = "chrome://payments/";
