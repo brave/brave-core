@@ -95,6 +95,8 @@ copy("brave_dist_resources") {
   } else {
     sources = [
       "$root_out_dir/brave_resources.pak",
+      "$root_out_dir/brave_100_percent.pak",
+      "$root_out_dir/brave_200_percent.pak",
       "$root_out_dir/$brave_exe"
     ]
   }
