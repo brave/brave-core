@@ -480,18 +480,11 @@ class TabManager: NSObject {
         
         return nil
     }
-    
 
-    // This method is duplicated to hide the flushToDisk option from consumers.
     func removeTab(_ tab: Tab) {
-        self.removeTab(tab, notify: true)
-        hideNetworkActivitySpinner()
-    }
-
-    /// - Parameter notify: if set to true, will call the delegate after the tab
-    ///   is removed.
-    fileprivate func removeTab(_ tab: Tab, notify: Bool) {
         assert(Thread.isMainThread)
+        
+        hideNetworkActivitySpinner()
 
         guard let removalIndex = tabs.index(where: { $0 === tab }) else {
             Sentry.shared.sendWithStacktrace(message: "Could not find index of tab to remove", tag: .tabManager, severity: .fatal, description: "Tab count: \(count)")
@@ -504,9 +497,7 @@ class TabManager: NSObject {
 
         let oldSelectedTab = selectedTab
 
-        if notify {
-            delegates.forEach { $0.get()?.tabManager(self, willRemoveTab: tab) }
-        }
+        delegates.forEach { $0.get()?.tabManager(self, willRemoveTab: tab) }
 
         // The index of the tab in its respective tab grouping. Used to figure out which tab is next
         var tabIndex: Int = -1
@@ -561,10 +552,8 @@ class TabManager: NSObject {
         // There's still some time between this and the webView being destroyed. We don't want to pick up any stray events.
         tab.webView?.navigationDelegate = nil
 
-        if notify {
-            delegates.forEach { $0.get()?.tabManager(self, didRemoveTab: tab) }
-            TabEvent.post(.didClose, for: tab)
-        }
+        delegates.forEach { $0.get()?.tabManager(self, didRemoveTab: tab) }
+        TabEvent.post(.didClose, for: tab)
 
         if !tab.isPrivate && viableTabs.isEmpty {
             addTab()
@@ -664,7 +653,7 @@ class TabManager: NSObject {
 
     func removeTabs(_ tabs: [Tab]) {
         for tab in tabs {
-            self.removeTab(tab, notify: true)
+            self.removeTab(tab)
         }
     }
     
