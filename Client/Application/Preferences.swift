@@ -43,8 +43,6 @@ extension Preferences {
         ///
         /// Defaults to nil, meaning the user has not been given the choice yet
         static let duckDuckGoPrivateSearch = Option<Bool?>(key: "ddg-private-search", default: nil)
-        /// Whether or not the user has seen the browser lock popup already
-        static let browserLock = Option<Bool>(key: "security.popup-for-browser-lock", default: false)
     }
 }
 
