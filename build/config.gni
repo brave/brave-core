@@ -33,7 +33,9 @@ if (is_linux) {
   } else if (brave_channel == "dev") {
     brave_linux_channel = "unstable"
   } else {
-    assert(brave_channel == "beta", "Not supported channel name: $brave_channel")
+    assert((brave_channel == "beta" || brave_channel == "nightly"),
+           "Not supported channel name: $brave_channel")
+    brave_linux_channel = brave_channel
   }
 }
 

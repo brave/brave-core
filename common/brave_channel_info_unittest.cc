@@ -63,6 +63,11 @@ TEST(BraveChannelInfoTest, DefaultUserDataDirectoryAndChannelTest) {
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
   EXPECT_EQ("Brave-Browser-Dev", path.BaseName().AsUTF8Unsafe());
   EXPECT_EQ(version_info::Channel::DEV, chrome::GetChannel());
+
+  env->SetVar("CHROME_VERSION_EXTRA", "nightly");
+  EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
+  EXPECT_EQ("Brave-Browser-Nightly", path.BaseName().AsUTF8Unsafe());
+  EXPECT_EQ(version_info::Channel::CANARY, chrome::GetChannel());
 #else  // OFFICIAL_BUILD
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
   EXPECT_EQ("Brave-Browser-Development", path.BaseName().AsUTF8Unsafe());

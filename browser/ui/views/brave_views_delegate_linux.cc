@@ -18,6 +18,8 @@ int GetWindowIconResourceId() {
       return IDR_PRODUCT_LOGO_128_DEV;
     case version_info::Channel::BETA:
       return IDR_PRODUCT_LOGO_128_BETA;
+    case version_info::Channel::CANARY:
+      return IDR_PRODUCT_LOGO_128_NIGHTLY;
     default:
       return IDR_PRODUCT_LOGO_128;
   }

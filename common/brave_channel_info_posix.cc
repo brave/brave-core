@@ -31,6 +31,9 @@ version_info::Channel GetChannelImpl(std::string* modifier_out,
   } else if (modifier == "beta") {
     channel = version_info::Channel::BETA;
     data_dir_suffix = "-Beta";
+  } else if (modifier == "nightly") {
+    channel = version_info::Channel::CANARY;
+    data_dir_suffix = "-Nightly";
   } else {
     modifier = "unknown";
   }

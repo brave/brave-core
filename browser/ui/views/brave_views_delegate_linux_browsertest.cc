@@ -28,6 +28,9 @@ IN_PROC_BROWSER_TEST_F(BraveViewsDelegateViewLinuxBrowserTest, GetDefaultWindowI
   env->SetVar("CHROME_VERSION_EXTRA", "dev");
   EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128_DEV)->bitmap(),
             views_delegate->GetDefaultWindowIcon()->bitmap());
+  env->SetVar("CHROME_VERSION_EXTRA", "nightly");
+  EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128_NIGHTLY)->bitmap(),
+            views_delegate->GetDefaultWindowIcon()->bitmap());
 #else  // OFFICIAL_BUILD
   EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128_DEVELOPMENT)->bitmap(),
             views_delegate->GetDefaultWindowIcon()->bitmap());
