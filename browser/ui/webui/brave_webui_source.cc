@@ -61,6 +61,9 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
     }, {
       std::string("welcome"), {
       }
+    }, {
+      std::string("rewards"), {
+      }
     }
   };
   AddResourcePaths(source, resources[name]);
@@ -91,6 +94,9 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       }
     }, {
       std::string("welcome"), {
+      }
+    }, {
+      std::string("rewards"), {
       }
     }
   };

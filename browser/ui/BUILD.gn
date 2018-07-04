@@ -25,6 +25,8 @@ source_set("ui") {
     "webui/basic_ui.h",
     "webui/brave_new_tab_ui.cc",
     "webui/brave_new_tab_ui.h",
+    "webui/brave_rewards_ui.cc",
+    "webui/brave_rewards_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_welcome_ui.cc",

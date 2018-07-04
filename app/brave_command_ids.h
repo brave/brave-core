@@ -9,7 +9,7 @@
 // Check chrome/app/chrome_command_ids.h when rebase.
 // ID of IDC_BRAVE_COMANDS_START and first brave command should be same.
 #define IDC_BRAVE_COMMANDS_START 56000
-#define IDC_SHOW_BRAVE_PAYMENTS  56000
+#define IDC_SHOW_BRAVE_REWARDS   56000
 
 #define IDC_BRAVE_COMMANDS_LAST  57000
 

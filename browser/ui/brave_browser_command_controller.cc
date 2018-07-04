@@ -69,11 +69,11 @@ bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
 }
 
 void BraveBrowserCommandController::InitBraveCommandState() {
-  UpdateCommandForBravePayments();
+  UpdateCommandForBraveRewards();
 }
 
-void BraveBrowserCommandController::UpdateCommandForBravePayments() {
-  UpdateCommandEnabled(IDC_SHOW_BRAVE_PAYMENTS, true);
+void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_REWARDS, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -88,8 +88,8 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       << "Invalid/disabled command " << id;
 
   switch (id) {
-    case IDC_SHOW_BRAVE_PAYMENTS:
-      brave::ShowBravePayments(browser_);
+    case IDC_SHOW_BRAVE_REWARDS:
+      brave::ShowBraveRewards(browser_);
       break;
 
     default:

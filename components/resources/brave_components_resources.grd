@@ -75,9 +75,9 @@
       <!-- Browser resrouces -->
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
 
-      <!-- WebUI payments resources -->
-      <include name="IDR_BRAVE_PAYMENTS_HTML" file="../brave_payments_ui/brave_payments.html" type="BINDATA" />
-      <include name="IDR_BRAVE_PAYMENTS_JS" file="${root_gen_dir}/brave/brave_payments.bundle.js" type="BINDATA" use_base_dir="false" />
+      <!-- WebUI Brave Rewards resources -->
+      <include name="IDR_BRAVE_REWARDS_HTML" file="../brave_rewards_ui/brave_rewards.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_JS" file="${root_gen_dir}/brave/brave_rewards.bundle.js" type="BINDATA" use_base_dir="false" />
 
       <!-- WebUI welcome page resources -->
       <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />

@@ -10,10 +10,10 @@
 
 namespace brave {
 
-void ShowBravePayments(Browser* browser) {
+void ShowBraveRewards(Browser* browser) {
   ShowSingletonTabOverwritingNTP(
       browser,
-      GetSingletonTabNavigateParams(browser, GURL(kBraveUIPaymentsURL)));
+      GetSingletonTabNavigateParams(browser, GURL(kBraveUIRewardsURL)));
 }
 
 }  // namespace brave

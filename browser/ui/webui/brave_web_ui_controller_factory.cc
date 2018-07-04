@@ -6,6 +6,7 @@
 
 #include "brave/common/webui_url_constants.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/brave_rewards_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "chrome/common/url_constants.h"
 #include "components/grit/brave_components_resources.h"
@@ -30,9 +31,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 template<>
 WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
-  if (host == kPaymentsHost) {
-    return new BasicUI(web_ui, url.host(), kPaymentsJS,
-        IDR_BRAVE_PAYMENTS_JS, IDR_BRAVE_PAYMENTS_HTML);
+  if (host == kRewardsHost) {
+    return new BraveRewardsUI(web_ui, url.host());
   } else if (host == kWelcomeHost) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host ==  chrome::kChromeUINewTabHost) {
@@ -46,7 +46,7 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 // with it.
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
-  if (url.host_piece() == kPaymentsHost ||
+  if (url.host_piece() == kRewardsHost ||
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == kBraveUIWelcomeURL ||
       url.host_piece() == chrome::kChromeUINewTabHost) {
