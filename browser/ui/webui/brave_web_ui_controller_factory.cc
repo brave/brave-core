@@ -5,7 +5,7 @@
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
 #include "brave/common/webui_url_constants.h"
-#include "brave/browser/ui/webui/basic_ui.h"
+#include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "chrome/common/url_constants.h"
 #include "components/grit/brave_components_resources.h"
@@ -42,8 +42,7 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new BasicUI(web_ui, url.host(), kWelcomeJS,
         IDR_BRAVE_WELCOME_JS, IDR_BRAVE_WELCOME_HTML);
   } else if (host ==  chrome::kChromeUINewTabHost) {
-    return new BasicUI(web_ui, url.host(), kBraveNewTabJS,
-        IDR_BRAVE_NEW_TAB_JS, IDR_BRAVE_NEW_TAB_HTML);
+    return new BraveNewTabUI(web_ui, url.host());
   }
   return nullptr;
 }

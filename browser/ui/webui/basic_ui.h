@@ -9,11 +9,12 @@
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_controller.h"
 
-
-class PrefChangeRegistrar;
+namespace content {
+class WebUIDataSource;
+class WebUI;
+}
 
 class BasicUI : public content::WebUIController {
  public:
@@ -22,11 +23,6 @@ class BasicUI : public content::WebUIController {
   ~BasicUI() override;
 
  private:
-  void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override;
-  void OnPreferenceChanged();
-
-  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
-
   DISALLOW_COPY_AND_ASSIGN(BasicUI);
 };
 
