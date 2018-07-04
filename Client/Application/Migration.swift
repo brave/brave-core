@@ -28,8 +28,10 @@ extension Preferences {
         
         /// Migrate a given key from `Prefs` into a specific option
         func migrate<T>(key: String, to option: Preferences.Option<T>) {
-            if let value = userDefaults?.object(forKey: "\(keyPrefix)\(key)") as? T {
+            let profileKey = "\(keyPrefix)\(key)"
+            if let value = userDefaults?.object(forKey: profileKey) as? T {
                 option.value = value
+                userDefaults?.removeObject(forKey: profileKey)
             }
         }
         
