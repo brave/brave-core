@@ -74,8 +74,6 @@ public struct BraveUX {
     
     public static let BrowserViewAlphaWhenShowingTabTray = 0.3
     
-    public static let PrefKeyIsToolbarHidingEnabled = "PrefKeyIsToolbarHidingEnabled"
-    
     public static let BackgroundColorForBookmarksHistoryAndTopSites = UIColor.white
     
     public static let BackgroundColorForTopSitesPrivate = GreyJ
