@@ -9,7 +9,7 @@
 
 class BraveWelcomeUI : public BasicUI {
  public:
-  explicit BraveWelcomeUI(content::WebUI* web_ui, const std::string& host);
+  BraveWelcomeUI(content::WebUI* web_ui, const std::string& host);
   ~BraveWelcomeUI() override;
 
  private:

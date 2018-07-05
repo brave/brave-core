@@ -82,6 +82,7 @@ bool AdBlockRegionalService::Init() {
     return false;
 
   uuid_ = it->uuid;
+  title_ = it->title;
 
   Register(it->title,
            !g_ad_block_regional_component_id_.empty()

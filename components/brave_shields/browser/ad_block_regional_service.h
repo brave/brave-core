@@ -31,6 +31,8 @@ class AdBlockRegionalService : public AdBlockBaseService {
     const std::string& tab_host) override;
 
   static bool IsSupportedLocale(const std::string& locale);
+  std::string GetUUID() const { return uuid_; }
+  std::string GetTitle() const { return title_; }
 
  protected:
   bool Init() override;
@@ -51,6 +53,7 @@ class AdBlockRegionalService : public AdBlockBaseService {
   bool UnregisterComponentByLocale(const std::string& locale);
 
   std::string uuid_;
+  std::string title_;
 
   DISALLOW_COPY_AND_ASSIGN(AdBlockRegionalService);
 };

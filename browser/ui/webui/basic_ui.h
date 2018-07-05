@@ -18,7 +18,7 @@ class WebUI;
 
 class BasicUI : public content::WebUIController {
  public:
-  explicit BasicUI(content::WebUI* web_ui, const std::string& host,
+  BasicUI(content::WebUI* web_ui, const std::string& host,
       const std::string& js_file, int js_resource_id, int html_resource_id);
   ~BasicUI() override;
 

@@ -5,13 +5,14 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_UI_H_
 
+#include <memory>
 #include "brave/browser/ui/webui/basic_ui.h"
 
 class PrefChangeRegistrar;
 
 class BraveNewTabUI : public BasicUI {
  public:
-  explicit BraveNewTabUI(content::WebUI* web_ui, const std::string& host);
+  BraveNewTabUI(content::WebUI* web_ui, const std::string& host);
   ~BraveNewTabUI() override;
 
  private:

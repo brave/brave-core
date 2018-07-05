@@ -31,10 +31,10 @@ source_set("ui") {
     "webui/brave_rewards_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
     "webui/brave_web_ui_controller_factory.h",
-    "webui/brave_welcome_ui.cc",
-    "webui/brave_welcome_ui.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
+    "webui/brave_welcome_ui.cc",
+    "webui/brave_welcome_ui.h",
   ]
 
   if (is_mac && !mac_views_browser) {
