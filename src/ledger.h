@@ -55,7 +55,7 @@ private:
   void walletPropertiesCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void reconcileCallback(const std::string& viewingId);
   void OnMediaRequestCallback(const uint64_t& duration, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
-  void processMedia(const std::map<std::string, std::string>& parts, const std::string& type);
+  void processMedia(const std::map<std::string, std::string>& parts, std::string type);
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
   braveledger_bat_get_media::BatGetMedia* bat_get_media_;
