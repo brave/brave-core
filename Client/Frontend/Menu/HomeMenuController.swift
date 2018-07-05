@@ -304,10 +304,3 @@ extension HomeMenuController: HomePanelDelegate {
     return self.homePanel(homePanel, didSelectURL: url, visitType: visitType)
   }
 }
-
-extension HomeMenuController: PreferencesObserver {
-  func preferencesDidChange(for key: String) {
-    print("Changed preference with key: \"\(key)\"")
-  }
-}
-
