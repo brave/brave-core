@@ -12,7 +12,7 @@ $ git clone git@github.com:brave/brave-extension.git
 
 # Install dependencies
 $ cd brave-extension
-$ yarn install
+$ npm install
 ```
 
 ## Development
@@ -20,7 +20,7 @@ $ yarn install
 ```bash
 # Build files will appear in './dev'
 # Start webpack development server
-$ yarn dev
+$ npm run dev
 ```
 
 ## Release
@@ -29,7 +29,7 @@ $ yarn dev
 
 ```bash
 # build files to './build'
-$ yarn build
+$ npm run build
 ```
 
 ### Packaging
@@ -37,8 +37,8 @@ $ yarn build
 
 ```bash
 # compress release into a brave.zip and brave.crx.
-$ yarn build
-$ yarn compress -- [options]
+$ npm run build
+$ npm run compress -- [options]
 ```
 
 ## Test

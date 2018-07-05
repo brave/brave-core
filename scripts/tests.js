@@ -10,10 +10,10 @@
 
  switch (ACTION) {
    case 'lint':
-     cmd.push('yarn lint')
+     cmd.push('npm run lint')
      break
    case 'test-unit':
-     cmd.push('yarn test-unit')
+     cmd.push('npm run test-unit')
      break
  }
 

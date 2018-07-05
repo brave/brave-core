@@ -3,7 +3,7 @@ dist: trusty
 language: node_js
 node_js:
   - "8.9"
-  
+
 branches:
   only:
     - master
@@ -11,7 +11,6 @@ branches:
 
 cache:
   directories:
-    - $HOME/.yarn-cache
     - node_modules
 
 env:
@@ -29,8 +28,7 @@ addons:
 
 install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
-  - npm install -g yarn
-  - yarn install
+  - npm install
 
 before_script:
   - export DISPLAY=:99.0
@@ -38,7 +36,7 @@ before_script:
   - sleep 3
 
 script:
-  - yarn test-suite
-#  - yarn run build
+  - npm run test-suite
+#  - npm run build
 # We need to pre-package a Brave build for this
-# - yarn run test-e2e
+# - npm run test-e2e
