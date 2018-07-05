@@ -67,7 +67,6 @@ Building the code
 ### Whitespace
 * New code should not contain any trailing whitespace.
 * We recommend *enabling* the "Automatically trim trailing whitespace" and keeping "Including whitespace-only lines" *deselected* in Xcode (under Text Editing).
-* <code>git rebase --whitespace=fix</code> can also be used to remove whitespace from your commits before issuing a pull request.
 
 ## Code Signing
 
