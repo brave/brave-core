@@ -23,12 +23,18 @@ source_set("ui") {
     "views/importer/brave_import_lock_dialog_view.h",
     "webui/basic_ui.cc",
     "webui/basic_ui.h",
+    "webui/brave_adblock_ui.cc",
+    "webui/brave_adblock_ui.h",
+    "webui/brave_new_tab_ui.cc",
+    "webui/brave_new_tab_ui.h",
+    "webui/brave_rewards_ui.cc",
+    "webui/brave_rewards_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
     "webui/brave_web_ui_controller_factory.h",
+    "webui/brave_webui_source.cc",
+    "webui/brave_webui_source.h",
     "webui/brave_welcome_ui.cc",
     "webui/brave_welcome_ui.h",
-    "webui/new_tab_html_source.cc",
-    "webui/new_tab_html_source.h",
   ]
 
   if (is_mac && !mac_views_browser) {
@@ -43,6 +49,7 @@ source_set("ui") {
   deps = [
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources",
+    "//brave/components/resources:brave_components_resources_grit",
     "//chrome/app:command_ids",
   ]
 

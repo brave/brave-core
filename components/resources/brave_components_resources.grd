@@ -75,9 +75,17 @@
       <!-- Browser resrouces -->
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
 
-      <!-- WebUI payments resources -->
-      <include name="IDR_BRAVE_PAYMENTS_HTML" file="../brave_payments_ui/brave_payments.html" type="BINDATA" />
-      <include name="IDR_BRAVE_PAYMENTS_JS" file="${root_gen_dir}/brave/brave_payments.bundle.js" type="BINDATA" use_base_dir="false" />
+      <!-- WebUI Brave Rewards resources -->
+      <include name="IDR_BRAVE_REWARDS_HTML" file="../brave_rewards_ui/brave_rewards.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_JS" file="${root_gen_dir}/brave/brave_rewards.bundle.js" type="BINDATA" use_base_dir="false" />
+
+      <!-- WebUI adblock resources -->
+      <include name="IDR_BRAVE_ADBLOCK_HTML" file="../brave_adblock_ui/brave_adblock.html" type="BINDATA" />
+      <include name="IDR_BRAVE_ADBLOCK_JS" file="${root_gen_dir}/brave/brave_adblock.bundle.js" type="BINDATA" use_base_dir="false" />
+
+      <!-- WebUI welcome page resources -->
+      <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_JS" file="${root_gen_dir}/brave/brave_welcome.bundle.js" type="BINDATA" use_base_dir="false" />
 
       <!-- WebUI newtab resources -->
       <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
@@ -112,6 +120,11 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DUCKDUCKGO_SEARCH_INFO" desc="Displays info about DuckDuckGo searches in private new tab.">With private search, Brave will use DuckDuckGo to answer your searches while you are in this private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_TOGGLE_LABEL" desc="Displays the toggle label for switching private search to DuckDuckGo.">
 PrivateSearch with DuckDuckGo</message>
+      <!-- WebUI adblock resources -->
+      <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total Ads Blocked:</message>
+      <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED_TITLE" desc="Title for if geographic regional ad-blocking is enabled">Regional Ad Block:</message>
+      <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED" desc="Geographic regional ad-blocking is enabled">Enabled</message>
+      <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_DISABLED" desc="Geographic regional ad-blocking is disabled">Disabled</message>
     </messages>
   </release>
 </grit>

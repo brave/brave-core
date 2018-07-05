@@ -5,12 +5,11 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WELCOME_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WELCOME_UI_H_
 
-#include "base/macros.h"
-#include "content/public/browser/web_ui_controller.h"
+#include "brave/browser/ui/webui/basic_ui.h"
 
-class BraveWelcomeUI : public content::WebUIController {
+class BraveWelcomeUI : public BasicUI {
  public:
-  explicit BraveWelcomeUI(content::WebUI* web_ui);
+  BraveWelcomeUI(content::WebUI* web_ui, const std::string& host);
   ~BraveWelcomeUI() override;
 
  private:

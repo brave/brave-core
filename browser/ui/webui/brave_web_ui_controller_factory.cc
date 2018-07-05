@@ -5,7 +5,9 @@
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
 #include "brave/common/webui_url_constants.h"
-#include "brave/browser/ui/webui/basic_ui.h"
+#include "brave/browser/ui/webui/brave_adblock_ui.h"
+#include "brave/browser/ui/webui/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/brave_rewards_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "chrome/common/url_constants.h"
 #include "components/grit/brave_components_resources.h"
@@ -28,19 +30,16 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 }
 
 template<>
-WebUIController* NewWebUI<BraveWelcomeUI>(WebUI* web_ui, const GURL& url) {
-  return new BraveWelcomeUI(web_ui);
-}
-
-template<>
 WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
-  if (host == kPaymentsHost) {
-    return new BasicUI(web_ui, url.host(), kPaymentsJS,
-        IDR_BRAVE_PAYMENTS_JS, IDR_BRAVE_PAYMENTS_HTML);
+  if (host == kAdblockHost) {
+    return new BraveAdblockUI(web_ui, url.host());
+  } else if (host == kRewardsHost) {
+    return new BraveRewardsUI(web_ui, url.host());
+  } else if (host == kWelcomeHost) {
+    return new BraveWelcomeUI(web_ui, url.host());
   } else if (host ==  chrome::kChromeUINewTabHost) {
-    return new BasicUI(web_ui, url.host(), kBraveNewTabJS,
-        IDR_BRAVE_NEW_TAB_JS, IDR_BRAVE_NEW_TAB_HTML);
+    return new BraveNewTabUI(web_ui, url.host());
   }
   return nullptr;
 }
@@ -50,11 +49,12 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 // with it.
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
-  if (url.host_piece() == kPaymentsHost ||
-      url.host_piece() ==  chrome::kChromeUINewTabHost) {
+  if (url.host_piece() == kAdblockHost ||
+      url.host_piece() == kRewardsHost ||
+      url.host_piece() == kWelcomeHost ||
+      url.host_piece() == kBraveUIWelcomeURL ||
+      url.host_piece() == chrome::kChromeUINewTabHost) {
     return &NewWebUI<BasicUI>;
-  } else if (url.spec() == kWelcomeRemoteURL) {
-    return &NewWebUI<BraveWelcomeUI>;
   }
 
   return nullptr;

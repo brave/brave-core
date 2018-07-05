@@ -23,7 +23,8 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
   bool UpdateCommandEnabled(int id, bool state) override;
 
   void InitBraveCommandState();
-  void UpdateCommandForBravePayments();
+  void UpdateCommandForBraveRewards();
+  void UpdateCommandForBraveAdblock();
 
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition);

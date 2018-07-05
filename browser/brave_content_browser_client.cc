@@ -28,7 +28,7 @@ bool HandleURLRewrite(GURL* url,
   if (url->SchemeIs(content::kChromeUIScheme) &&
       (url->host() == chrome::kChromeUIWelcomeHost ||
        url->host() == chrome::kChromeUIWelcomeWin10Host)) {
-    *url = GURL(kWelcomeRemoteURL);
+    *url = GURL(kBraveUIWelcomeURL);
     return true;
   }
 
@@ -48,7 +48,7 @@ bool HandleURLReverseRewrite(GURL* url,
       url->host() == chrome::kChromeUINewTabHost) {
     return true;
   }
-  if (url->spec() == kWelcomeRemoteURL) {
+  if (url->spec() == kBraveUIWelcomeURL) {
     return true;
   }
   return false;

@@ -2,11 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-namespace content {
-class WebUIDataSource;
-class WebUI;
-}
+import { createStore } from 'redux'
+import reducers from './reducers'
 
-
-void CustomizeNewTabHTMLSource(content::WebUIDataSource* source);
-void CustomizeNewTabWebUIProperties(content::WebUI* web_ui);
+const store = createStore(reducers)
+module.exports = store

@@ -28,12 +28,20 @@
 namespace {
 
 std::vector<FilterList>::const_iterator FindFilterListByLocale(const std::string& locale) {
+  std::string adjusted_locale;
+  std::string::size_type loc = locale.find("-");
+  if (loc == std::string::npos) {
+    adjusted_locale = locale;
+  } else {
+    adjusted_locale = locale.substr(0, loc);
+  }
+  adjusted_locale = base::ToLowerASCII(adjusted_locale);
   return std::find_if(region_lists.begin(), region_lists.end(),
-                      [&locale](const FilterList& filter_list) {
+                      [&adjusted_locale](const FilterList& filter_list) {
                         return std::find_if(filter_list.langs.begin(),
                                             filter_list.langs.end(),
-                                            [locale](const std::string& lang) {
-                                              return lang == locale;
+                                            [adjusted_locale](const std::string& lang) {
+                                              return lang == adjusted_locale;
                                             }) != filter_list.langs.end();
                       });
 }
@@ -74,6 +82,7 @@ bool AdBlockRegionalService::Init() {
     return false;
 
   uuid_ = it->uuid;
+  title_ = it->title;
 
   Register(it->title,
            !g_ad_block_regional_component_id_.empty()

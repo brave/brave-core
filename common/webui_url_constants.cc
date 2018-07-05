@@ -4,8 +4,13 @@
 
 #include "brave/common/webui_url_constants.h"
 
-const char kPaymentsHost[] = "payments";
-const char kPaymentsJS[] = "brave_payments.js";
+const char kAdblockHost[] = "adblock";
+const char kAdblockJS[] = "brave_adblock.js";
+const char kRewardsHost[] = "rewards";
+const char kRewardsJS[] = "brave_rewards.js";
+const char kWelcomeHost[] = "welcome";
+const char kWelcomeJS[] = "brave_welcome.js";
 const char kBraveNewTabJS[] = "brave_new_tab.js";
-const char kWelcomeRemoteURL[] = "https://brave.com/welcome/";
-const char kBraveUIPaymentsURL[] = "chrome://payments";
+const char kBraveUIWelcomeURL[] = "chrome://welcome/";
+const char kBraveUIRewardsURL[] = "chrome://rewards/";
+const char kBraveUIAdblockURL[] = "chrome://adblock/";

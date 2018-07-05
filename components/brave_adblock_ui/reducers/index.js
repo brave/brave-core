@@ -3,10 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { combineReducers } from 'redux'
-import newTabReducer from './newTabReducer'
+import adblockReducer from './adblock_reducer'
 
 const combinedReducer = combineReducers({
-  newTabData: newTabReducer
+  adblockData: adblockReducer
 })
 
 export default combinedReducer

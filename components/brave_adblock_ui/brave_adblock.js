@@ -8,7 +8,7 @@ const { Provider } = require('react-redux')
 const App = require('./components/app')
 const { bindActionCreators } = require('redux')
 
-window.cr.define('brave_new_tab', function () {
+window.cr.define('brave_adblock', function () {
   'use strict'
 
   function initialize () {
@@ -23,8 +23,8 @@ window.cr.define('brave_new_tab', function () {
 
   function statsUpdated () {
     const store = require('./store')
-    const newTabActions = require('./actions/newTabActions')
-    const actions = bindActionCreators(newTabActions, store.dispatch.bind(store))
+    const adblockActions = require('./actions/adblock_actions')
+    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
     actions.statsUpdated()
   }
 
@@ -34,4 +34,4 @@ window.cr.define('brave_new_tab', function () {
   }
 })
 
-document.addEventListener('DOMContentLoaded', window.brave_new_tab.initialize)
+document.addEventListener('DOMContentLoaded', window.brave_adblock.initialize)

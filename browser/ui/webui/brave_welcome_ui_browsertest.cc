@@ -38,7 +38,7 @@ IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
   content::WebContents* web_contents = tab_strip->GetWebContentsAt(0);
   content::TestNavigationObserver observer(web_contents, 1);
   observer.Wait();
-  EXPECT_EQ(kWelcomeRemoteURL,
+  EXPECT_EQ(kBraveUIWelcomeURL,
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
 }
 
