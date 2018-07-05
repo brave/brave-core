@@ -6,6 +6,8 @@ import Foundation
 import Shared
 import SwiftKeychainWrapper
 
+private let log = Logger.browserLogger
+
 extension Preferences {
     /// Migration preferences
     final class Migration {
@@ -25,9 +27,14 @@ extension Preferences {
         /// Migrate a given key from `Prefs` into a specific option
         func migrate<T>(key: String, to option: Preferences.Option<T>) {
             let profileKey = "\(keyPrefix)\(key)"
-            if let value = userDefaults?.object(forKey: profileKey) as? T {
+            // Have to do two checks because T may be an Optional, since object(forKey:) returns Any? it will succeed
+            // as casting to T if T is Optional even if the key doesnt exist.
+            let value = userDefaults?.object(forKey: profileKey)
+            if value != nil, let value = value as? T {
                 option.value = value
                 userDefaults?.removeObject(forKey: profileKey)
+            } else {
+                log.info("Could not migrate legacy pref with key: \"\(profileKey)\".")
             }
         }
         
