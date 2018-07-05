@@ -20,18 +20,18 @@ version_info::Channel GetChannelImpl(std::string* modifier_out,
   if (env)
     modifier = env;
 
-  if (modifier == "unstable")  // linux version of "dev"
-    modifier = "dev";
-  if (modifier == "stable") {
+  if (modifier == LINUX_CHANNEL_DEV)
+    modifier = BRAVE_LINUX_CHANNEL_DEV;
+  if (modifier == LINUX_CHANNEL_STABLE) {
     channel = version_info::Channel::STABLE;
-    modifier = "";
-  } else if (modifier == "dev") {
+    modifier = BRAVE_LINUX_CHANNEL_STABLE;
+  } else if (modifier == BRAVE_LINUX_CHANNEL_DEV) {
     channel = version_info::Channel::DEV;
     data_dir_suffix = "-Dev";
-  } else if (modifier == "beta") {
+  } else if (modifier == LINUX_CHANNEL_BETA) {
     channel = version_info::Channel::BETA;
     data_dir_suffix = "-Beta";
-  } else if (modifier == "nightly") {
+  } else if (modifier == BRAVE_LINUX_CHANNEL_NIGHTLY) {
     channel = version_info::Channel::CANARY;
     data_dir_suffix = "-Nightly";
   } else {

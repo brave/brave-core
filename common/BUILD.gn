@@ -43,6 +43,10 @@ source_set("common") {
       "brave_channel_info_posix.h",
       "importer/chrome_importer_utils_linux.cc",
     ]
+
+    configs += [
+      "//brave/build/linux:linux_channel_names",
+    ]
   }
 
   if (is_win) {

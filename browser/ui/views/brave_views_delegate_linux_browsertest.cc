@@ -16,19 +16,19 @@ IN_PROC_BROWSER_TEST_F(BraveViewsDelegateViewLinuxBrowserTest, GetDefaultWindowI
   auto& rb = ui::ResourceBundle::GetSharedInstance();
 
 #if defined(OFFICIAL_BUILD)
-  env->SetVar("CHROME_VERSION_EXTRA", "stable");
+  env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_STABLE);
   EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128)->bitmap(),
             views_delegate->GetDefaultWindowIcon()->bitmap());
-  env->SetVar("CHROME_VERSION_EXTRA", "beta");
+  env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_BETA);
   EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128_BETA)->bitmap(),
             views_delegate->GetDefaultWindowIcon()->bitmap());
-  env->SetVar("CHROME_VERSION_EXTRA", "unstable");
+  env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_DEV);
   EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128_DEV)->bitmap(),
             views_delegate->GetDefaultWindowIcon()->bitmap());
-  env->SetVar("CHROME_VERSION_EXTRA", "dev");
+  env->SetVar("CHROME_VERSION_EXTRA", BRAVE_LINUX_CHANNEL_DEV);
   EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128_DEV)->bitmap(),
             views_delegate->GetDefaultWindowIcon()->bitmap());
-  env->SetVar("CHROME_VERSION_EXTRA", "nightly");
+  env->SetVar("CHROME_VERSION_EXTRA", BRAVE_LINUX_CHANNEL_NIGHTLY);
   EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128_NIGHTLY)->bitmap(),
             views_delegate->GetDefaultWindowIcon()->bitmap());
 #else  // OFFICIAL_BUILD

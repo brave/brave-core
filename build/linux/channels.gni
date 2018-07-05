@@ -1,0 +1,22 @@
+assert(is_linux)
+
+brave_linux_channel_stable = ""
+brave_linux_channel_dev = "dev"
+brave_linux_channel_nightly = "nightly"
+linux_channel_stable = "stable"
+linux_channel_beta = "beta"
+linux_channel_dev = "unstable"
+
+# Our channel name and upstream linux channel name is different.
+if (brave_channel == "") {
+  linux_channel = linux_channel_stable
+} else if (brave_channel == "beta") {
+  linux_channel = linux_channel_beta
+} else if (brave_channel == "dev") {
+  linux_channel = linux_channel_dev
+} else if (brave_channel == "nightly") {
+  linux_channel = brave_linux_channel_nightly
+} else {
+  assert(false, "Not supported channel name: $brave_channel")
+}
+

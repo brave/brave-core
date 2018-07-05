@@ -1,0 +1,14 @@
+import("//brave/build/linux/channels.gni")
+
+assert(is_linux)
+
+config("linux_channel_names") {
+  defines= [
+    "BRAVE_LINUX_CHANNEL_STABLE=\"$brave_linux_channel_stable\"",
+    "BRAVE_LINUX_CHANNEL_DEV=\"$brave_linux_channel_dev\"",
+    "BRAVE_LINUX_CHANNEL_NIGHTLY=\"$brave_linux_channel_nightly\"",
+    "LINUX_CHANNEL_STABLE=\"$linux_channel_stable\"",
+    "LINUX_CHANNEL_BETA=\"$linux_channel_beta\"",
+    "LINUX_CHANNEL_DEV=\"$linux_channel_dev\"",
+  ]
+}
