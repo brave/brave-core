@@ -37,15 +37,17 @@ final class Preferences {
     static let defaultContainer = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)!
 }
 
+// MARK: - Other Preferences
 extension Preferences {
     final class Popups {
         /// Whether or not the user has opted-in for using DuckDuckGo during a Private Browsing session
         ///
         /// Defaults to nil, meaning the user has not been given the choice yet
-        static let duckDuckGoPrivateSearch = Option<Bool?>(key: "ddg-private-search", default: nil)
+        static let duckDuckGoPrivateSearch = Option<Bool?>(key: "popups.ddg-private-search", default: nil)
     }
 }
 
+// MARK: - User Preferences
 extension Preferences {
     final class General {
         /// Whether or not to save logins in Brave
@@ -70,6 +72,8 @@ extension Preferences {
         static let privateBrowsingOnly = Option<Bool>(key: "privacy.private-only", default: false)
         /// The users preference on how to store Cookies
         static let cookieAcceptPolicy = Option<UInt>(key: "privacy.cookie-accept", default: HTTPCookie.AcceptPolicy.onlyFromMainDocumentDomain.rawValue)
+        /// The toggles states for clear private data screen
+        static let clearPrivateDataToggles = Option<[Bool]>(key: "privacy.clear-data-toggles", default: [])
     }
     final class Shields {
         /// Shields will block ads and tracking if enabled
@@ -114,14 +118,12 @@ extension Preferences {
         /// Upon setting this value, UserDefaults will be updated and any observers will be called
         var value: ValueType {
             didSet {
-                container.set(value, forKey: key)
+                container.set(value, forKey: self.key)
                 container.synchronize()
                 
-                if observers.count() > 0 {
-                    let key = self.key
-                    observers.forEach {
-                        $0.preferencesDidChange(for: key)
-                    }
+                let key = self.key
+                observers.forEach {
+                    $0.preferencesDidChange(for: key)
                 }
             }
         }
