@@ -32,6 +32,7 @@ source_set("bat-native-ledger") {
 
   deps = [
     "//net",
+    "//services/network:network_service",
     "//third_party/leveldatabase",
     rebase_path("bat-native-anonize:anonize2", dep_base),
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
