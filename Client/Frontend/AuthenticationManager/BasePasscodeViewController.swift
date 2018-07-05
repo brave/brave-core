@@ -25,8 +25,12 @@ class BasePasscodeViewController: UIViewController {
     
     var isCancellable: Bool = true {
         didSet {
-            navigationItem.rightBarButtonItem = isCancellable ? cancelBarButtonItem : nil
+            updateRightBarButtonItem()
         }
+    }
+    
+    func updateRightBarButtonItem() {
+        navigationItem.rightBarButtonItem = isCancellable ? cancelBarButtonItem : nil
     }
     
     private lazy var cancelBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissAnimated))
@@ -34,7 +38,7 @@ class BasePasscodeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = SettingsUX.TableViewHeaderBackgroundColor
-        navigationItem.rightBarButtonItem = isCancellable ? cancelBarButtonItem : nil
+        updateRightBarButtonItem()
         automaticallyAdjustsScrollViewInsets = false
     }
 
