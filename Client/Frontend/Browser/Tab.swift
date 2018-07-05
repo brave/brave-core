@@ -227,41 +227,6 @@ class Tab: NSObject {
             tabDelegate?.tab?(self, didCreateWebView: webView)
         }
     }
-
-    // TODO: Old restore function, remove after finishing tabmanager migration.
-    /*
-    func restore(_ webView: WKWebView) {
-        // Pulls restored session data from a previous SavedTab to load into the Tab. If it's nil, a session restore
-        // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
-        // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
-        // to trigger the session restore via custom handlers
-        if let sessionData = self.sessionData {
-            restoring = true
-
-            var urls = [String]()
-            for url in sessionData.urls {
-                urls.append(url.absoluteString)
-            }
-
-            let currentPage = sessionData.currentPage
-            self.sessionData = nil
-            var jsonDict = [String: AnyObject]()
-            jsonDict["history"] = urls as AnyObject?
-            jsonDict["currentPage"] = currentPage as AnyObject?
-            guard let json = JSON(jsonDict).stringValue() else {
-                return
-            }
-            let escapedJSON = json.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-            let restoreURL = URL(string: "\(WebServer.sharedInstance.base)/about/sessionrestore?history=\(escapedJSON)")
-            lastRequest = PrivilegedRequest(url: restoreURL!) as URLRequest
-            webView.load(lastRequest!)
-        } else if let request = lastRequest {
-            webView.load(request)
-        } else {
-            print("creating webview with no lastRequest and no session data: \(self.url?.description ?? "nil")")
-        }
-    }
-    */
     
     func restore(_ webView: WKWebView, restorationData: SavedTab?) {
         // Pulls restored session data from a previous SavedTab to load into the Browser. If it's nil, a session restore
@@ -340,7 +305,7 @@ class Tab: NSObject {
         return webView?.title
     }
     
-    var isHomePanel: Bool {
+    private var isHomePanel: Bool {
         guard let url = webView?.url else { return false }
         return url.baseDomain == "localhost" && url.absoluteString.contains("about/home/#panel=0")
     }
@@ -350,16 +315,13 @@ class Tab: NSObject {
             return title.range(of: "localhost") == nil ? title : ""
         }
         else if isHomePanel {
-            return "New Tab"
-            // BRAVE TODO:
-            // return Strings.New_Tab
+            return Strings.NewTabTitle
         }
         
         guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
-            /* if let title = displayURL?.absoluteString {
+            if let title = url?.absoluteString {
                 return title
-            }
-            else */ if let tab = TabMO.get(by: id, context: DataController.shared.mainThreadContext) {
+            } else if let tab = TabMO.get(by: id, context: DataController.shared.mainThreadContext) {
                 return tab.title ?? tab.url ?? ""
             }
             return ""
