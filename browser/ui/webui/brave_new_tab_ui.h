@@ -11,7 +11,7 @@ class PrefChangeRegistrar;
 
 class BraveNewTabUI : public BasicUI {
  public:
-  explicit BraveNewTabUI(content::WebUI* web_ui, const std::string& host);
+  BraveNewTabUI(content::WebUI* web_ui, const std::string& host);
   ~BraveNewTabUI() override;
 
  private:

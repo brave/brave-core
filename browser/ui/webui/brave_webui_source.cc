@@ -4,12 +4,9 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 
-#include <string>
-#include "brave/common/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
+#include <map>
+
 #include "components/grit/brave_components_resources.h"
-#include "components/prefs/pref_service.h"
-#include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 namespace {
@@ -64,6 +61,9 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
     }, {
       std::string("rewards"), {
       }
+    }, {
+      std::string("adblock"), {
+      }
     }
   };
   AddResourcePaths(source, resources[name]);
@@ -97,6 +97,13 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       }
     }, {
       std::string("rewards"), {
+      }
+    }, {
+      std::string("adblock"), {
+        { "adsBlocked", IDS_ADBLOCK_TOTAL_ADS_BLOCKED },
+        { "regionalAdblockEnabledTitle", IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED_TITLE},
+        { "regionalAdblockEnabled", IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED },
+        { "regionalAdblockDisabled", IDS_ADBLOCK_REGIONAL_AD_BLOCK_DISABLED },
       }
     }
   };

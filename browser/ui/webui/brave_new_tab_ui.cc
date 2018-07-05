@@ -33,7 +33,6 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 }
 
 BraveNewTabUI::~BraveNewTabUI() {
-  pref_change_registrar_.reset();
 }
 
 void BraveNewTabUI::CustomizeNewTabWebUIProperties() {

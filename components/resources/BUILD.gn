@@ -23,6 +23,16 @@ transpile_includes = [
   "../brave_rewards_ui/brave_rewards.html",
   # Brave welcome page
   "../brave_welcome_ui/brave_welcome.html",
+  # Brave adblock page
+  "../brave_adblock_ui/brave_adblock.html",
+  "../brave_adblock_ui/brave_adblock.js",
+  "../brave_adblock_ui/components/app.js",
+  "../brave_adblock_ui/constants/adblock_types.js",
+  "../brave_adblock_ui/actions/adblock_actions.js",
+  "../brave_adblock_ui/storage.js",
+  "../brave_adblock_ui/store.js",
+  "../brave_adblock_ui/reducers/index.js",
+  "../brave_adblock_ui/reducers/adblock_reducer.js",
 ]
 
 action("transpile_web_uis") {
@@ -32,6 +42,7 @@ action("transpile_web_uis") {
     "$target_out_dir/brave_new_tab.bundle.js",
     "$target_out_dir/brave_rewards.bundle.js",
     "$target_out_dir/brave_welcome.bundle.js",
+    "$target_out_dir/brave_adblock.bundle.js",
   ]
   gen_dir = rebase_path(root_gen_dir, "//")
   args = [

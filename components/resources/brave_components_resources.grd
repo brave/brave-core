@@ -120,6 +120,11 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DUCKDUCKGO_SEARCH_INFO" desc="Displays info about DuckDuckGo searches in private new tab.">With private search, Brave will use DuckDuckGo to answer your searches while you are in this private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_TOGGLE_LABEL" desc="Displays the toggle label for switching private search to DuckDuckGo.">
 PrivateSearch with DuckDuckGo</message>
+      <!-- WebUI adblock resources -->
+      <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total Ads Blocked:</message>
+      <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED_TITLE" desc="Title for if geographic regional ad-blocking is enabled">Regional Ad Block:</message>
+      <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED" desc="Geographic regional ad-blocking is enabled">Enabled</message>
+      <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_DISABLED" desc="Geographic regional ad-blocking is disabled">Disabled</message>
     </messages>
   </release>
 </grit>

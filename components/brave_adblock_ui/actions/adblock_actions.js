@@ -2,11 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { combineReducers } from 'redux'
-import newTabReducer from './newTabReducer'
+const types = require('../constants/adblock_types')
 
-const combinedReducer = combineReducers({
-  newTabData: newTabReducer
+export const statsUpdated = () => ({
+  type: types.ADBLOCK_STATS_UPDATED
 })
-
-export default combinedReducer

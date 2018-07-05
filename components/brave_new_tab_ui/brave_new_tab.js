@@ -21,7 +21,7 @@ window.cr.define('brave_new_tab', function () {
     window.i18nTemplate.process(window.document, window.loadTimeData)
   }
 
-  function statsUpdated (result) {
+  function statsUpdated () {
     const store = require('./store')
     const newTabActions = require('./actions/newTabActions')
     const actions = bindActionCreators(newTabActions, store.dispatch.bind(store))
