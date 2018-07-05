@@ -678,16 +678,6 @@ class TabManager: NSObject {
         return tabs.filter { $0.webView?.url == url } .first
     }
 
-    func storeChanges() {
-        
-        /*
-        stateDelegate?.tabManagerWillStoreTabs(normalTabs)
-
-        // Also save (full) tab state to disk.
-        preserveTabs()
-        */
-    }
-
     @objc func prefsDidChange() {
         DispatchQueue.main.async {
             let allowPopups = !(self.prefs.boolForKey("blockPopups") ?? true)
@@ -771,10 +761,6 @@ extension TabManager {
     }
 
     fileprivate func restoreTabsInternal() {
-//        guard var savedTabs = TabManager.tabsToRestore() else {
-//            return
-//        }
-        
         let savedTabs = TabMO.getAll()
         if savedTabs.isEmpty { return }
 
@@ -792,6 +778,7 @@ extension TabManager {
             // Since this is a restored tab, reset the URL to be loaded as that will be handled by the SessionRestoreHandler
             tab.url = nil
 
+            // BRAVE TODO: restore favicon
             /*
             if let faviconURL = savedTab.favicon.url {
                 let icon = Favicon(url: faviconURL, date: Date())
@@ -812,7 +799,6 @@ extension TabManager {
                     }
                 }
             }
-            
 
             if savedTab.isSelected {
                 tabToSelect = tab
