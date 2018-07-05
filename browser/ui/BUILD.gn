@@ -25,6 +25,8 @@ source_set("ui") {
     "webui/basic_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
+    "webui/brave_md_settings_ui.cc",
+    "webui/brave_md_settings_ui.h",
     "webui/brave_new_tab_ui.cc",
     "webui/brave_new_tab_ui.h",
     "webui/brave_rewards_ui.cc",

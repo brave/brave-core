@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.js b/chrome/browser/resources/settings/privacy_page/privacy_page.js
+index c8a41ea859437ec0c494f05bdbc15ee5fd5423ec..5def6736ec607bd367ecc650f128786b5e5314e5 100644
+--- a/chrome/browser/resources/settings/privacy_page/privacy_page.js
++++ b/chrome/browser/resources/settings/privacy_page/privacy_page.js
+@@ -52,7 +52,7 @@ Polymer({
+       }
+     },
+ 
+-    // <if expr="_google_chrome and not chromeos">
++    // <if expr="_chromium and not chromeos">
+     // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
+     // (but handled differently in C++).
+     /** @private {chrome.settingsPrivate.PrefObject} */
+@@ -169,7 +169,7 @@ Polymer({
+ 
+     this.browserProxy_ = settings.PrivacyPageBrowserProxyImpl.getInstance();
+ 
+-    // <if expr="_google_chrome and not chromeos">
++    // <if expr="_chromium and not chromeos">
+     const setMetricsReportingPref = this.setMetricsReportingPref_.bind(this);
+     this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
+     this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
+@@ -301,7 +301,7 @@ Polymer({
+     this.browserProxy_.setSafeBrowsingExtendedReportingEnabled(enabled);
+   },
+ 
+-  // <if expr="_google_chrome and not chromeos">
++  // <if expr="_chromium and not chromeos">
+   /** @private */
+   onMetricsReportingChange_: function() {
+     const enabled = this.$.metricsReportingControl.checked;
