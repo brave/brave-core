@@ -1521,7 +1521,7 @@ namespace braveledger_bat_helper {
     braveledger_bat_helper::getHomeDir(root);
     braveledger_bat_helper::appendPath(root, LEDGER_STATE_FILENAME, ledger_state_file_path);
 
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, std::cref(ledger_state_file_path), std::cref(data));
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, ledger_state_file_path, data);
     braveledger_bat_helper::PostTask(runnable);
   }
 
@@ -1540,7 +1540,7 @@ namespace braveledger_bat_helper {
     braveledger_bat_helper::getHomeDir(root);
     braveledger_bat_helper::appendPath(root, LEDGER_PUBLISHER_STATE_FILENAME, ledger_pub_state_file_path);
 
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, std::cref(ledger_pub_state_file_path), std::cref(data));
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, ledger_pub_state_file_path, data);
     braveledger_bat_helper::PostTask(runnable);
   }
 

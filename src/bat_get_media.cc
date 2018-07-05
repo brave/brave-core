@@ -290,7 +290,7 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
     std::string medPubJson;
     braveledger_bat_helper::saveToJsonString(publisherInfo, medPubJson);
 
-    auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatGetMedia::saveMediaPublisherInfo, std::cref(extraData.string5), std::cref(medPubJson) );
+    auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatGetMedia::saveMediaPublisherInfo, extraData.string5, medPubJson);
     braveledger_bat_helper::PostTask(runnable);
 
     {

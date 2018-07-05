@@ -32,19 +32,17 @@ class BatPublishers {
 
   void initSynopsis();
 
-    void saveVisit(const std::string& publisher, const uint64_t& duration,
-      braveledger_bat_helper::SaveVisitCallback callback, bool ignoreMinTime);
+    void saveVisit(std::string publisher, uint64_t duration, braveledger_bat_helper::SaveVisitCallback callback, bool ignoreMinTime);
 
-  void setPublisherTimestampVerified(const std::string& publisher,
-    const uint64_t& verifiedTimestamp, const bool& verified);
+  void setPublisherTimestampVerified(std::string publisher, uint64_t verifiedTimestamp, bool verified);
 
-  void setPublisherFavIcon(const std::string& publisher, const std::string& favicon_url);
+  void setPublisherFavIcon(std::string publisher, std::string favicon_url);
 
-  void setPublisherInclude(const std::string& publisher, const bool& include);
+  void setPublisherInclude(std::string publisher, bool include);
 
-  void setPublisherDeleted(const std::string& publisher, const bool& deleted);
+  void setPublisherDeleted(std::string publisher, bool deleted);
 
-  void setPublisherPinPercentage(const std::string& publisher, const bool& pinPercentage);
+  void setPublisherPinPercentage(std::string publisher, bool pinPercentage);
 
   void setPublisherMinVisitTime(const uint64_t& duration); // In milliseconds
 

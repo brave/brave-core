@@ -151,8 +151,7 @@ void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64
   synopsisNormalizerInternal();
 }
 
-void BatPublishers::saveVisit(const std::string& publisher, const uint64_t& duration,
-  braveledger_bat_helper::SaveVisitCallback callback, bool ignoreMinTime) {
+void BatPublishers::saveVisit(std::string publisher, uint64_t duration, braveledger_bat_helper::SaveVisitCallback callback, bool ignoreMinTime) {
   if (!ignoreMinTime && duration < state_->min_pubslisher_duration_) {
     return;
   }
@@ -190,8 +189,7 @@ void BatPublishers::setPublisherTimestampVerifiedInternal(const std::string& pub
   synopsisNormalizerInternal();
 }
 
-void BatPublishers::setPublisherTimestampVerified(const std::string& publisher,
-    const uint64_t& verifiedTimestamp, const bool& verified) {
+void BatPublishers::setPublisherTimestampVerified(std::string publisher, uint64_t verifiedTimestamp, bool verified) {
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherTimestampVerifiedInternal, publisher, verifiedTimestamp, verified);
   braveledger_bat_helper::PostTask(runnable);
 }
@@ -220,7 +218,7 @@ void BatPublishers::setPublisherFavIconInternal(const std::string& publisher, co
   assert(status.ok());
 }
 
-void BatPublishers::setPublisherFavIcon(const std::string& publisher, const std::string& favicon_url) {
+void BatPublishers::setPublisherFavIcon(std::string publisher, std::string favicon_url) {
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherFavIconInternal, publisher, favicon_url);
   braveledger_bat_helper::PostTask(runnable);
 }
@@ -252,7 +250,7 @@ void BatPublishers::setPublisherIncludeInternal(const std::string& publisher, co
   synopsisNormalizerInternal();
 }
 
-void BatPublishers::setPublisherInclude(const std::string& publisher, const bool& include) {
+void BatPublishers::setPublisherInclude(std::string publisher, bool include) {
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherIncludeInternal, publisher, include);
   braveledger_bat_helper::PostTask(runnable);
 }
@@ -283,7 +281,7 @@ void BatPublishers::setPublisherDeletedInternal(const std::string& publisher, co
   synopsisNormalizerInternal();
 }
 
-void BatPublishers::setPublisherDeleted(const std::string& publisher, const bool& deleted) {
+void BatPublishers::setPublisherDeleted(std::string publisher, bool deleted) {
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherDeletedInternal, publisher, deleted);
   braveledger_bat_helper::PostTask(runnable);
 }
@@ -314,7 +312,7 @@ void BatPublishers::setPublisherPinPercentageInternal(const std::string& publish
   synopsisNormalizerInternal();
 }
 
-void BatPublishers::setPublisherPinPercentage(const std::string& publisher, const bool& pinPercentage) {
+void BatPublishers::setPublisherPinPercentage(std::string publisher, bool pinPercentage) {
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherPinPercentageInternal, publisher, pinPercentage);
   braveledger_bat_helper::PostTask(runnable);
 }

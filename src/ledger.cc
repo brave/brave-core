@@ -306,7 +306,7 @@ namespace braveledger_ledger {
     }
   }
 
-  void Ledger::processMedia(const std::map<std::string, std::string>& parts, const std::string& type) {
+  void Ledger::processMedia(const std::map<std::string, std::string>& parts, std::string type) {
     std::string mediaId = braveledger_bat_helper::getMediaId(parts, type);
     //LOG(ERROR) << "!!!mediaId == " << mediaId;
     if (mediaId.empty()) {
@@ -336,7 +336,7 @@ namespace braveledger_ledger {
     braveledger_bat_helper::GetMediaPublisherInfoCallback runnable1 = braveledger_bat_helper::bat_mem_fun_binder2(*this, &Ledger::OnMediaRequestCallback);
 
     auto runnable2 = braveledger_bat_helper::bat_mem_fun_binder(*bat_get_media_, &BatGetMedia::getPublisherFromMediaProps,
-      std::cref(mediaId), std::cref(mediaKey), type, std::cref(duration), std::cref(twitchEventInfo), runnable1);
+      mediaId, mediaKey, type, duration, twitchEventInfo, runnable1);
 
     braveledger_bat_helper::PostTask(runnable2);
   }
