@@ -60,7 +60,9 @@ private func deleteLibraryFolderContents(_ folder: String, validateClearedExcept
     for content in contents {
         for name in allowedFileNames {
             if !content.contains(name) {
-                BraveApp.showErrorAlert(title: "Error clearing data", error: "Item not cleared: \(content)")
+                let alert = UIAlertController(title: "Error clearing data", message: "Item not cleared: \(content)", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true)
             }
         }
     }
