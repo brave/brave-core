@@ -14,11 +14,11 @@
 #include "base/macros.h"
 #include "base/nix/xdg_util.h"
 #include "base/values.h"
+#include "brave/utility/importer/chrome_importer.h"
 #include "build/build_config.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
-#include "chrome/utility/importer/importer.h"
 
-class BraveImporter : public Importer {
+class BraveImporter : public ChromeImporter {
  public:
   BraveImporter();
 
@@ -30,12 +30,9 @@ class BraveImporter : public Importer {
  private:
   ~BraveImporter() override;
 
-  static base::nix::DesktopEnvironment GetDesktopEnvironment();
-
-  void ImportHistory();
-  void ImportBookmarks();
-  void ImportPasswords();
-  void ImportCookies();
+  void ImportBookmarks() override;
+  void ImportHistory() override;
+  void ImportPasswords() override;
 
   void ParseBookmarks(std::vector<ImportedBookmarkEntry>* bookmarks);
   void RecursiveReadBookmarksFolder(
@@ -47,10 +44,6 @@ class BraveImporter : public Importer {
     base::Value* bookmarks_dict,
     base::Value* bookmark_order_dict,
     std::vector<ImportedBookmarkEntry>* bookmarks);
-
-  double chromeTimeToDouble(int64_t time);
-
-  base::FilePath source_path_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveImporter);
 };

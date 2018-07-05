@@ -38,16 +38,21 @@ class ChromeImporter : public Importer {
                    uint16_t items,
                    ImporterBridge* bridge) override;
 
- private:
+ protected:
   ~ChromeImporter() override;
 
   static base::nix::DesktopEnvironment GetDesktopEnvironment();
 
-  void ImportBookmarks();
-  void ImportHistory();
-  void ImportPasswords();
-  void ImportCookies();
+  virtual void ImportBookmarks();
+  virtual void ImportHistory();
+  virtual void ImportPasswords();
+  virtual void ImportCookies();
 
+  double chromeTimeToDouble(int64_t time);
+
+  base::FilePath source_path_;
+
+ private:
   // Multiple URLs can share the same favicon; this is a map
   // of URLs -> IconIDs that we load as a temporary step before
   // actually loading the icons.
@@ -68,10 +73,6 @@ class ChromeImporter : public Importer {
     const std::vector<base::string16>& parent_path,
     bool is_in_toolbar,
     std::vector<ImportedBookmarkEntry>* bookmarks);
-
-  double chromeTimeToDouble(int64_t time);
-
-  base::FilePath source_path_;
 
   DISALLOW_COPY_AND_ASSIGN(ChromeImporter);
 };

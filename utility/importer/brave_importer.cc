@@ -41,11 +41,6 @@
 #include "chrome/browser/password_manager/native_backend_kwallet_x.h"
 #include "chrome/browser/password_manager/password_store_x.h"
 #include "components/os_crypt/key_storage_util_linux.h"
-
-base::nix::DesktopEnvironment BraveImporter::GetDesktopEnvironment() {
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  return base::nix::GetDesktopEnvironment(env.get());
-}
 #endif
 
 using base::Time;
@@ -287,10 +282,6 @@ void BraveImporter::ImportBookmarks() {
   }
 }
 
-double BraveImporter::chromeTimeToDouble(int64_t time) {
-  return ((time * 10 - 0x19DB1DED53E8000) / 10000) / 1000;
-}
-
 void BraveImporter::ImportPasswords() {
 #if !defined(USE_X11)
   base::FilePath passwords_path =
@@ -379,62 +370,4 @@ void BraveImporter::ImportPasswords() {
     }
   }
 #endif
-}
-
-void BraveImporter::ImportCookies() {
-  base::FilePath cookies_path =
-    source_path_.Append(
-      base::FilePath::StringType(FILE_PATH_LITERAL("Cookies")));
-  if (!base::PathExists(cookies_path))
-    return;
-
-  sql::Connection db;
-  if (!db.Open(cookies_path))
-    return;
-
-  const char query[] =
-    "SELECT creation_utc, host_key, name, value, encrypted_value, path, "
-    "expires_utc, is_secure, is_httponly, firstpartyonly, last_access_utc, "
-    "has_expires, is_persistent, priority FROM cookies";
-
-  sql::Statement s(db.GetUniqueStatement(query));
-
-  net::CookieCryptoDelegate* delegate =
-    cookie_config::GetCookieCryptoDelegate();
-#if defined(OS_LINUX)
-  OSCrypt::SetConfig(std::make_unique<os_crypt::Config>());
-#endif
-
-  std::vector<net::CanonicalCookie> cookies;
-  while (s.Step() && !cancelled()) {
-    std::string encrypted_value = s.ColumnString(4);
-    std::string value;
-    if (!encrypted_value.empty() && delegate) {
-      if (!delegate->DecryptString(encrypted_value, &value)) {
-        continue;
-      }
-    } else {
-      value = s.ColumnString(3);
-    }
-
-    auto cookie = net::CanonicalCookie(
-        s.ColumnString(2),                           // name
-        value,                                       // value
-        s.ColumnString(1),                           // domain
-        s.ColumnString(5),                           // path
-        Time::FromInternalValue(s.ColumnInt64(0)),   // creation_utc
-        Time::FromInternalValue(s.ColumnInt64(6)),   // expires_utc
-        Time::FromInternalValue(s.ColumnInt64(10)),  // last_access_utc
-        s.ColumnBool(7),                             // secure
-        s.ColumnBool(8),                             // http_only
-        static_cast<net::CookieSameSite>(s.ColumnInt(9)),  // samesite
-        static_cast<net::CookiePriority>(s.ColumnInt(13)));  // priority
-    if (cookie.IsCanonical()) {
-      cookies.push_back(cookie);
-    }
-  }
-
-  if (!cookies.empty() && !cancelled()) {
-    bridge_->SetCookies(cookies);
-  }
 }
