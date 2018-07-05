@@ -84,6 +84,13 @@ public class TabMO: NSManagedObject {
             TabMO.update(with: savedTab.id, tabData: savedTab, context: context)
         }
     }
+    
+    public class func saveScreenshotUUID(_ uuid: UUID?, tabId: String?) {
+        let context = DataController.shared.mainThreadContext
+        let tabMO = TabMO.get(by: tabId, context: context)
+        tabMO?.screenshotUUID = uuid
+        DataController.saveContext(context: context)
+    }
 
     public class func getAll() -> [TabMO] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
