@@ -132,12 +132,7 @@ class Tab: NSObject {
 
     fileprivate(set) var screenshot: UIImage?
     var screenshotUUID: UUID? {
-        didSet {
-            let context = DataController.shared.mainThreadContext
-            let tabMO = TabMO.get(by: id, context: context)
-            tabMO?.screenshotUUID = screenshotUUID
-            DataController.saveContext(context: context)
-        }
+        didSet { TabMO.saveScreenshotUUID(screenshotUUID, tabId: id) }
     }
 
     // If this tab has been opened from another, its parent will point to the tab from which it was opened
