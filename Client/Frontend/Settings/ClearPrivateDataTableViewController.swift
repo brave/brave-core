@@ -10,7 +10,6 @@ private let SectionToggles = 0
 private let SectionButton = 1
 private let NumberOfSections = 2
 private let SectionHeaderFooterIdentifier = "SectionHeaderFooterIdentifier"
-private let TogglesPrefKey = "clearprivatedata.toggles"
 
 private let log = Logger.browserLogger
 
@@ -36,7 +35,9 @@ class ClearPrivateDataTableViewController: UITableViewController {
     }()
     
     fileprivate lazy var toggles: [Bool] = {
-        if let savedToggles = self.profile.prefs.arrayForKey(TogglesPrefKey) as? [Bool] {
+        let savedToggles = Preferences.Privacy.clearPrivateDataToggles.value
+        // Ensure if we ever add an option to the list of clearables we don't crash
+        if savedToggles.count == clearables.count {
             return savedToggles
         }
         
@@ -70,7 +71,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: nil)
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         
         if indexPath.section == SectionToggles {
             cell.textLabel?.text = clearables[indexPath.item].clearable.label
@@ -84,7 +85,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
         } else {
             assert(indexPath.section == SectionButton)
             cell.textLabel?.text = Strings.ClearPrivateData
-            cell.textLabel?.textAlignment = NSTextAlignment.center
+            cell.textLabel?.textAlignment = .center
             cell.textLabel?.textColor = UIConstants.DestructiveRed
             cell.accessibilityTraits = UIAccessibilityTraitButton
             cell.accessibilityIdentifier = "ClearPrivateData"
@@ -118,7 +119,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
         let deferred = Deferred<Void>()
         
         clearables.enumerated().map { clearable in
-            print("Clearing \(clearable.element).")
+            log.info("Clearing \(clearable.element).")
             
             let res = Success()
             succeed().upon() { _ in // move off main thread
@@ -131,7 +132,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
             .allSucceed()
             .upon { result in
                 if !result.isSuccess && !secondAttempt {
-                    print("Private data NOT cleared successfully")
+                    log.error("Private data NOT cleared successfully")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                         // For some reason, a second attempt seems to always succeed
                         clearPrivateData(clearables, secondAttempt: true).upon() { _ in
@@ -142,7 +143,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
                 }
                 
                 if !result.isSuccess {
-                    print("Private data NOT cleared after 2 attempts")
+                    log.error("Private data NOT cleared after 2 attempts")
                 }
                 deferred.fill(())
         }
@@ -187,7 +188,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
         
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let clearAction = UIAlertAction(title: Strings.ClearPrivateData, style: .destructive) { (_) in
-            self.profile.prefs.setObject(self.toggles, forKey: TogglesPrefKey)
+            Preferences.Privacy.clearPrivateDataToggles.value = self.toggles
             self.clearButtonEnabled = false
             
             //      NotificationCenter.default.removeObserver(self)

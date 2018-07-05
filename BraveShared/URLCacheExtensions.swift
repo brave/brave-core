@@ -8,7 +8,7 @@ extension URLCache {
   
   /// Setup default URLCache settings for Brave
   public func setupBraveDefaults() {
-    memoryCapacity = 6 * 1024 * 1024; // 6 MB
-    diskCapacity = 40 * 1024 * 1024;
+    memoryCapacity = 6 * 1024 * 1024 // 6 MB
+    diskCapacity = 40 * 1024 * 1024
   }
 }

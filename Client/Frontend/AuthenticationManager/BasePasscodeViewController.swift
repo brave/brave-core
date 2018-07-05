@@ -25,24 +25,16 @@ class BasePasscodeViewController: UIViewController {
     
     var isCancellable: Bool = true {
         didSet {
-            if isCancellable {
-                navigationItem.rightBarButtonItem = cancelBarButtonItem
-            } else {
-                navigationItem.rightBarButtonItem = nil
-            }
+            navigationItem.rightBarButtonItem = isCancellable ? cancelBarButtonItem : nil
         }
     }
     
-    private lazy var cancelBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.dismissAnimated))
+    private lazy var cancelBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissAnimated))
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = SettingsUX.TableViewHeaderBackgroundColor
-        if isCancellable {
-            navigationItem.rightBarButtonItem = cancelBarButtonItem
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
+        navigationItem.rightBarButtonItem = isCancellable ? cancelBarButtonItem : nil
         automaticallyAdjustsScrollViewInsets = false
     }
 

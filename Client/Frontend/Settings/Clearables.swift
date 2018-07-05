@@ -44,7 +44,7 @@ private func deleteLibraryFolderContents(_ folder: String, validateClearedExcept
     let manager = FileManager.default
     let library = manager.urls(for: FileManager.SearchPathDirectory.libraryDirectory, in: .userDomainMask)[0]
     let dir = library.appendingPathComponent(folder)
-    var contents = try manager.contentsOfDirectory(atPath: dir.path)
+    let contents = try manager.contentsOfDirectory(atPath: dir.path)
     for content in contents {
         do {
             try manager.removeItem(at: dir.appendingPathComponent(content))

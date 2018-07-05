@@ -12,13 +12,13 @@ enum AuthenticationState {
 }
 
 /// A global flag indicating whether or not the user has validated their session already
-private var isSessionValidated: Bool = false
+private var isSessionValidated = false
 
 class SensitiveViewController: UIViewController {
-    var promptingForTouchID: Bool = false
+    var promptingForTouchID = false
     var backgroundedBlur: UIImageView?
     var authState: AuthenticationState = .notAuthenticating
-    var isPasscodeEntryCancellable: Bool = true
+    var isPasscodeEntryCancellable = true
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
