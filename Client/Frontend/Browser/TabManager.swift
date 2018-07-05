@@ -354,7 +354,7 @@ class TabManager: NSObject {
         context.perform {
             for i in 0..<self.tabs.count {
                 let tab = self.tabs[i]
-                guard let managedObject = TabMO.get(by: tab.id, context: context) else { print("Error: Tab missing managed object"); continue }
+                guard let managedObject = TabMO.get(by: tab.id, context: context) else { log.error("Error: Tab missing managed object"); continue }
                 managedObject.order = Int16(i)
             }
             DataController.saveContext(context: context)

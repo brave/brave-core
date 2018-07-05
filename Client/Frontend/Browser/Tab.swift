@@ -10,6 +10,8 @@ import SwiftyJSON
 import XCGLogger
 import Data
 
+private let log = Logger.browserLogger
+
 protocol TabContentScript {
     static func name() -> String
     func scriptMessageHandlerName() -> String?
@@ -259,8 +261,7 @@ class Tab: NSObject {
         } else if let request = lastRequest {
             webView.load(request)
         } else {
-            // log.error("creating webview with no lastRequest and no session data: \(self.url)")
-            print("creating webview with no lastRequest and no session data: \(self.url)")
+            log.warning("creating webview with no lastRequest and no session data: \(self.url)")
         }
         
     }
@@ -381,12 +382,12 @@ class Tab: NSObject {
         }
 
         if let _ = webView?.reloadFromOrigin() {
-            print("reloaded zombified tab from origin")
+            log.debug("reloaded zombified tab from origin")
             return
         }
 
         if let webView = self.webView {
-            print("restoring webView from scratch")
+            log.debug("restoring webView from scratch")
             restore(webView, restorationData: sessionData?.savedTabData)
         }
     }
