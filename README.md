@@ -68,3 +68,21 @@ Building the code
 * New code should not contain any trailing whitespace.
 * We recommend *enabling* the "Automatically trim trailing whitespace" and keeping "Including whitespace-only lines" *deselected* in Xcode (under Text Editing).
 * <code>git rebase --whitespace=fix</code> can also be used to remove whitespace from your commits before issuing a pull request.
+
+## Code Signing
+
+1. After running the *bootstrap.sh* script in the setup instructions navigate to:
+<br>`Client/Configuration/Local/DevTeam.xcconfig`
+1. Add your *Apple Team ID* in this file:
+<br>`LOCAL_DEVELOPMENT_TEAM = KL8N8XSYF4`
+
+>Team IDs look identical to provisioning profile UUIDs, so make sure this is the correct one.
+
+The entire `Local` directory is included in the `.gitignore`, so these changes are not tracked by source control. This allows code signing without making tracked changes. Updating this file will only sign the `Fennec` target for local builds.
+
+### Finding Team IDs
+
+The easiest known way to find your team ID is to log into your [Apple Developer](https://developer.apple.com) account. After logging in, the team ID is currently shown at the end of the URL:
+<br>`https://developer.apple.com/account/<TEAM ID>`
+
+Use this string literal in the above, `DevTeam.xcconfig` file to code sign 
