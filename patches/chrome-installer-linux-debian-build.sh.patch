@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 8234cafbb5f95ec608dfa5eff3d0098def1d225a..b6cdc060387389fb93616686a1895ca7e95c98b6 100755
+index 8234cafbb5f95ec608dfa5eff3d0098def1d225a..f1d5799806fc733b875e62cfd2c97662362a3ce7 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -38,7 +38,18 @@ index 8234cafbb5f95ec608dfa5eff3d0098def1d225a..b6cdc060387389fb93616686a1895ca7
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -259,6 +259,11 @@ fi
+@@ -159,6 +159,10 @@ verify_channel() {
+       CHANNEL=unstable
+       RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Dev%20updates"
+       ;;
++    nightly )
++      CHANNEL=nightly
++      RELEASENOTES="https://community.brave.com"
++      ;;
+     testing|beta )
+       CHANNEL=beta
+       RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Beta%20updates"
+@@ -259,6 +263,11 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${BUILDDIR}/installer/theme/BRANDING")
  

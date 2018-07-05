@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..ab6bf7f0d65ae03730d977b17782d52ad3c30736 100644
+index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..b9a82deb60d40228dbe67bf5d91c88888d44eda6 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -25,11 +25,10 @@ declare_args() {
@@ -36,3 +36,10 @@ index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..ab6bf7f0d65ae03730d977b17782d52a
      ]
    }
  
+@@ -524,3 +523,6 @@ linux_package("beta") {
+ linux_package("unstable") {
+   channel = "unstable"
+ }
++linux_package("nightly") {
++  channel = "nightly"
++}

@@ -48,6 +48,7 @@ source_set("ui") {
 
   deps = [
     "//brave/app:command_ids",
+    "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/theme:brave_theme_resources",
     "//brave/components/resources:brave_components_resources_grit",
     "//chrome/app:command_ids",
@@ -59,5 +60,14 @@ source_set("ui") {
       "//chrome/browser/ui/webui/help/version_updater_win.h",
     ]
     deps += [ "//google_update" ]
+  }
+
+  if (is_linux) {
+    sources += [
+      "views/brave_browser_main_extra_parts_views_linux.cc",
+      "views/brave_browser_main_extra_parts_views_linux.h",
+      "views/brave_views_delegate_linux.cc",
+      "views/brave_views_delegate_linux.h",
+    ]
   }
 }

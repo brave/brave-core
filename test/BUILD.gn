@@ -43,9 +43,10 @@ test("brave_unit_tests") {
     "../utility/importer/chrome_importer_unittest.cc",
   ]
 
-  if (is_mac) {
+  # On Windows, brave_install_static_unittests covers channel test.
+  if (is_mac || is_linux) {
     sources += [
-      "//brave/common/brave_channel_info_mac_unittest.cc",
+      "//brave/common/brave_channel_info_unittest.cc",
     ]
   }
 
@@ -55,6 +56,7 @@ test("brave_unit_tests") {
 
   configs += [
     "//brave/build/geolocation",
+    "//brave/build/linux:linux_channel_names",
   ]
 
   deps = [
@@ -147,6 +149,15 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/updater/extension_cache_fake.cc",
     "//chrome/browser/extensions/updater/extension_cache_fake.h",
   ]
+  if (is_linux) {
+    sources += [
+      "//brave/browser/ui/views/brave_views_delegate_linux_browsertest.cc",
+    ]
+    configs += [
+      "//brave/build/linux:linux_channel_names",
+    ]
+  }
+
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   deps = [
     "//chrome/browser/ui",

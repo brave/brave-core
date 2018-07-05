@@ -12,6 +12,10 @@ if (is_mac) {
   import("//brave/build/mac/tweak_info_plist.gni")
 }
 
+if (is_linux) {
+  import("//brave/build/linux/channels.gni")
+}
+
 group("child_dependencies") {
   public_deps = [
     "//brave/renderer",
@@ -75,7 +79,7 @@ group("create_dist") {
   }
   if (is_linux) {
     deps += [
-      "//chrome/installer/linux:$brave_linux_channel",
+      "//chrome/installer/linux:$linux_channel",
       "//brave/app/linux:dist_resources",
     ]
   }
