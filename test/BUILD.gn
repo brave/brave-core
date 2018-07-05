@@ -56,8 +56,13 @@ test("brave_unit_tests") {
 
   configs += [
     "//brave/build/geolocation",
-    "//brave/build/linux:linux_channel_names",
   ]
+
+  if (is_linux) {
+    configs += [
+      "//brave/build/linux:linux_channel_names",
+    ]
+  }
 
   deps = [
     "//chrome:browser_dependencies",
