@@ -1,0 +1,22 @@
+source_set("payments") {
+  sources = [
+    "payments_service.cc",
+    "payments_service.h",
+    "payments_service_factory.cc",
+    "payments_service_factory.h",
+  ]
+  deps = [
+    "//base",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    # for profile.h
+    "//components/domain_reliability",
+    "//content/public/browser",
+    "//services/network/public/mojom",
+  ]
+  if (is_mac || is_linux) {
+    deps += [
+      "//brave/vendor/bat-native-ledger",
+    ]
+  }
+}

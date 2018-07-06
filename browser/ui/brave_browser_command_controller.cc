@@ -93,11 +93,14 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       << "Invalid/disabled command " << id;
 
   switch (id) {
-    case IDC_SHOW_BRAVE_REWARDS:
-      brave::ShowBraveRewards(browser_);
-      break;
+    // case IDC_SHOW_BRAVE_REWARDS:
+    //   brave::ShowBraveRewards(browser_);
+    //   break;
     case IDC_SHOW_BRAVE_ADBLOCK:
       brave::ShowBraveAdblock(browser_);
+      break;
+    case IDC_SHOW_BRAVE_REWARDS:
+      brave::ShowBravePayments(browser_);
       break;
 
     default:

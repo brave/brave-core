@@ -49,6 +49,7 @@ source_set("ui") {
   deps = [
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources",
+    "//brave/browser/payments",
     "//brave/components/resources:brave_components_resources_grit",
     "//chrome/app:command_ids",
   ]
