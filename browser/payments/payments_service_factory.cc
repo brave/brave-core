@@ -9,6 +9,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
+#if defined(BRAVE_PAYMENTS_ENABLED)
+#include "brave/browser/payments/payments_service_impl.h"
+#endif
+
 // static
 payments::PaymentsService* PaymentsServiceFactory::GetForProfile(
     Profile* profile) {
@@ -35,14 +39,22 @@ PaymentsServiceFactory::~PaymentsServiceFactory() {
 
 KeyedService* PaymentsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+#if defined(BRAVE_PAYMENTS_ENABLED)
   std::unique_ptr<payments::PaymentsService> payments_service(
-      new payments::PaymentsService());
+      new payments::PaymentsServiceImpl());
   return payments_service.release();
+#else
+  return NULL;
+#endif
 }
 
 content::BrowserContext* PaymentsServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+  if (context->IsOffTheRecord())
+    return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+
+  // use original profile for session profiles
+  return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 
 bool PaymentsServiceFactory::ServiceIsNULLWhileTesting() const {

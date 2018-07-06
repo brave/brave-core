@@ -1,10 +1,29 @@
+declare_args() {
+  # anonize doesn't currently build on windows
+  brave_payments_enabled = is_mac || is_linux
+}
+
+config("external_config") {
+  visibility = [ ":payments" ]
+
+  defines = []
+  if (brave_payments_enabled) {
+    defines += [ "BRAVE_PAYMENTS_ENABLED" ]
+  }
+}
+
 source_set("payments") {
+  public_configs = [
+    ":external_config"
+  ]
+
   sources = [
     "payments_service.cc",
     "payments_service.h",
     "payments_service_factory.cc",
     "payments_service_factory.h",
   ]
+
   deps = [
     "//base",
     "//components/keyed_service/content",
@@ -14,7 +33,13 @@ source_set("payments") {
     "//content/public/browser",
     "//services/network/public/mojom",
   ]
-  if (is_mac || is_linux) {
+
+  if (brave_payments_enabled) {
+    sources += [
+      "payments_service_impl.cc",
+      "payments_service_impl.h",
+    ]
+
     deps += [
       "//brave/vendor/bat-native-ledger",
     ]
