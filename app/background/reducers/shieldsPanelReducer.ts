@@ -69,6 +69,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       {
         if (action.isMainFrame) {
           state = shieldsPanelState.resetBlockingStats(state, action.tabId)
+          state = shieldsPanelState.resetBlockingResources(state, action.tabId)
           state = shieldsPanelState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
         }
         break
