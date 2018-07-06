@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..422bb0673de70562af2b9775631237e9738b93a0 100644
+index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..b58cb1e920cc86b2999f72f5f7f09bbcb19d2613 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -5,6 +5,7 @@
@@ -23,7 +23,7 @@ index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..422bb0673de70562af2b9775631237e9
      return false;
  
 +  // brave(darkdh): default allow local files
-+  if (element_->GetDocument().origin() == String("null"))
++  if (element_->GetDocument().origin() == String("null") || element_->GetDocument().origin() == String("file://"))
 +    return false;
 +
 +#if defined(BRAVE_CHROMIUM_BUILD)
