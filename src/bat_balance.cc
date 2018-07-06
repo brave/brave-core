@@ -20,11 +20,11 @@ std::string BatBalance::buildURL(const std::string& path, const std::string& pre
   return url + prefix + path;
 }
 
-void BatBalance::getWalletProperties(const std::string& paymentInfo, braveledger_bat_helper::FetchCallback callback,
+void BatBalance::getWalletProperties(const std::string& paymentInfo, braveledger_bat_client_webrequest::FetchCallback callback,
   const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
 
-  batClientWebRequest_.run(buildURL((std::string)WALLET_PROPERTIES + paymentInfo + WALLET_PROPERTIES_END, ""),
-      callback, std::vector<std::string>(), "", "", extraData, braveledger_bat_helper::URL_METHOD::GET);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)WALLET_PROPERTIES + paymentInfo + WALLET_PROPERTIES_END, ""),
+      callback, std::vector<std::string>(), "", "", extraData, braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 }  // namespace braveledger_bat_balance

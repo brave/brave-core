@@ -7,11 +7,7 @@
 
 #include <string>
 
-#if defined CHROMIUM_BUILD
-#include "bat_client_webrequest_chromium.h"
-#else
 #include "bat_client_webrequest.h"
-#endif
 
 namespace braveledger_bat_helper {
 struct FETCH_CALLBACK_EXTRA_DATA_ST;
@@ -23,12 +19,12 @@ class BatBalance {
  public:
   BatBalance() = default;
   ~BatBalance() = default;
-  void getWalletProperties(const std::string& paymentInfo, braveledger_bat_helper::FetchCallback callback,
+  void getWalletProperties(const std::string& paymentInfo,
+    braveledger_bat_client_webrequest::FetchCallback callback,
     const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
 
  private:
   std::string buildURL(const std::string& path, const std::string& prefix);
-  braveledger_bat_client_webrequest::BatClientWebRequest batClientWebRequest_;
 };
 
 }  // namespace braveledger_bat_balance

@@ -8,10 +8,10 @@
 #include <algorithm>
 
 #include "bat_helper.h"
-#include "static_values.h"
-
 #include "leveldb/db.h"
 #include "rapidjson_bat_helper.h"
+#include "static_values.h"
+#include "third_party/leveldatabase/env_chromium.h"
 
 /* foo.bar.example.com
    QLD = 'bar'
@@ -33,12 +33,26 @@ static bool winners_votes_compare(const braveledger_bat_helper::WINNERS_ST& firs
 
 namespace braveledger_bat_publishers {
 
+namespace {
+
+void CloseDB(leveldb::DB* db) {
+  delete db;
+}
+
+}
+
 BatPublishers::BatPublishers():
-  level_db_(nullptr), state_(new braveledger_bat_helper::PUBLISHER_STATE_ST) {
+  level_db_(nullptr),
+  state_(new braveledger_bat_helper::PUBLISHER_STATE_ST) {
   calcScoreConsts();
 }
 
 BatPublishers::~BatPublishers() {
+  if (level_db_.get()) {
+    auto runnable = braveledger_bat_helper::bat_fun_binder(&CloseDB,
+        level_db_.release());
+    braveledger_bat_helper::PostTask(runnable);
+  }
 }
 
 
@@ -51,34 +65,38 @@ void BatPublishers::calcScoreConsts() {
   b2_ = b_ * b_;
 }
 
-void BatPublishers::openPublishersDB() {
-  std::string pubDbPath;
+bool BatPublishers::EnsureInitialized() {
+  if (level_db_.get()) return true;
+  return Init();
+}
+
+bool BatPublishers::Init() {
+  std::string db_path;
   std::string root;
   braveledger_bat_helper::getHomeDir(root);
-  braveledger_bat_helper::appendPath(root, PUBLISHERS_DB_NAME, pubDbPath);
+  braveledger_bat_helper::appendPath(root, PUBLISHERS_DB_NAME, db_path);
 
-  level_db_.reset(nullptr); //release the existing db connection
-  leveldb::Options options;
+  leveldb_env::Options options;
   options.create_if_missing = true;
-  leveldb::DB * db_ptr = nullptr;
-  leveldb::Status status = leveldb::DB::Open(options, pubDbPath, &db_ptr);
-  if (!status.ok() || db_ptr == nullptr) {
-      if (db_ptr != nullptr) {
-        delete db_ptr;
-      }
-      LOG(ERROR) << "openPublishersDB level db open error " << pubDbPath.c_str();
+  leveldb::Status status = leveldb_env::OpenDB(options, db_path, &level_db_);
+
+  if (status.IsCorruption()) {
+    LOG(WARNING) << "Deleting possibly-corrupt database";
+    // base::DeleteFile(path_, true);
+    status = leveldb_env::OpenDB(options, db_path, &level_db_);
   }
-  else  {
-    level_db_.reset(db_ptr);
+
+  if (!status.ok()) {
+    LOG(ERROR) << "init level db open error " << db_path;
+    return false;
   }
+
+  return true;
 }
 
 void BatPublishers::loadPublishers() {
-  openPublishersDB();
-  if (!level_db_) {
+  if (!EnsureInitialized()) {
     assert(false);
-    LOG(ERROR) << "loadPublishers level db is not initialized";
-
     return;
   }
 
@@ -135,9 +153,8 @@ void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64
       verifiedTimestamp = iter->second.verifiedTimeStamp_;
       braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
     }
-    if (!level_db_) {
+    if (!EnsureInitialized()) {
       assert(false);
-
       return;
     }
 
@@ -176,9 +193,8 @@ void BatPublishers::setPublisherTimestampVerifiedInternal(const std::string& pub
       iter->second.verifiedTimeStamp_ = verifiedTimestamp;
       braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
     }
-    if (!level_db_) {
+    if (!EnsureInitialized()) {
       assert(false);
-
       return;
     }
 
@@ -207,9 +223,8 @@ void BatPublishers::setPublisherFavIconInternal(const std::string& publisher, co
     iter->second.favicon_url_ = favicon_url;
     braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
   }
-  if (!level_db_) {
+  if (!EnsureInitialized()) {
     assert(false);
-
     return;
   }
 
@@ -237,9 +252,8 @@ void BatPublishers::setPublisherIncludeInternal(const std::string& publisher, co
       iter->second.exclude_ = !include;
       braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
     }
-    if (!level_db_) {
+    if (!EnsureInitialized()) {
       assert(false);
-
       return;
     }
 
@@ -269,7 +283,7 @@ void BatPublishers::setPublisherDeletedInternal(const std::string& publisher, co
       iter->second.deleted_ = deleted;
       braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
     }
-    if (!level_db_) {
+    if (!EnsureInitialized()) {
       assert(false);
       return;
     }
@@ -300,7 +314,7 @@ void BatPublishers::setPublisherPinPercentageInternal(const std::string& publish
       iter->second.pinPercentage_ = pinPercentage;
       braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
     }
-    if (!level_db_) {
+    if (!EnsureInitialized()) {
       assert(false);
       return;
     }

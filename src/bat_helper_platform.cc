@@ -18,6 +18,11 @@
 
 namespace braveledger_bat_helper {
 
+#if defined CHROMIUM_BUILD
+  std::unique_ptr<BatClientWebRequestChromium> batClientWebRequest(new BatClientWebRequestChromium);
+#endif
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+
   void DecodeURLChars(const std::string& input, std::string& output) {
 #if defined CHROMIUM_BUILD
     url::RawCanonOutputW<1024> canonOutput;

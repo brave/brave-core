@@ -64,9 +64,9 @@ void BatClient::registerPersona() {
   // We should use simple callbacks on iOS
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::requestCredentialsCallback);
 
-  batClientWebRequest_.run(buildURL(REGISTER_PERSONA, PREFIX_V2), runnable,
+  braveledger_bat_helper::batClientWebRequest->run(buildURL(REGISTER_PERSONA, PREFIX_V2), runnable,
     std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
-    braveledger_bat_helper::URL_METHOD::GET);
+    braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::requestCredentialsCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST&) {
@@ -118,10 +118,10 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
 
   // We should use simple callbacks on iOS
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::registerPersonaCallback);
-  batClientWebRequest_.run(buildURL((std::string)REGISTER_PERSONA + "/" + state_->userId_, PREFIX_V2),
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)REGISTER_PERSONA + "/" + state_->userId_, PREFIX_V2),
     runnable,
     headers, payloadStringify, "application/json; charset=utf-8",
-    braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_helper::URL_METHOD::POST);
+    braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_client_webrequest::URL_METHOD::POST);
 }
 
 std::string BatClient::getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight) {
@@ -174,8 +174,8 @@ void BatClient::publisherTimestamp( bool saveState) {
   extraData.boolean1 = saveState;
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::publisherTimestampCallback);
-  batClientWebRequest_.run(buildURL(PUBLISHER_TIMESTAMP, PREFIX_V3),runnable, std::vector<std::string>(), "", "", extraData,
-    braveledger_bat_helper::URL_METHOD::GET);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL(PUBLISHER_TIMESTAMP, PREFIX_V3),runnable, std::vector<std::string>(), "", "", extraData,
+    braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::publisherTimestampCallback(bool result, const std::string& response,
@@ -199,10 +199,10 @@ uint64_t BatClient::getPublisherTimestamp() {
   return publisherTimestamp_;
 }
 
-void BatClient::publisherInfo(const std::string& publisher, braveledger_bat_helper::FetchCallback callback,
+void BatClient::publisherInfo(const std::string& publisher, braveledger_bat_client_webrequest::FetchCallback callback,
     const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
-  batClientWebRequest_.run(buildURL(PUBLISHER_INFO + publisher, PREFIX_V3),
-    callback, std::vector<std::string>(), "", "", extraData, braveledger_bat_helper::URL_METHOD::GET);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL(PUBLISHER_INFO + publisher, PREFIX_V3),
+    callback, std::vector<std::string>(), "", "", extraData, braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::setContributionAmount(const double& amount) {
@@ -227,7 +227,7 @@ std::string BatClient::getLTCAddress() {
   return state_->walletInfo_.addressLTC_;
 }
 
-void BatClient::getWalletProperties (braveledger_bat_helper::FetchCallback callback,
+void BatClient::getWalletProperties (braveledger_bat_client_webrequest::FetchCallback callback,
   const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   balance_.getWalletProperties(state_->walletInfo_.paymentId_, callback, extraData);
 }
@@ -243,9 +243,9 @@ void BatClient::reconcile(const std::string& viewingId, braveledger_bat_helper::
   currentReconcile_->ledgerCallback_ = callback;
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::reconcileCallback);
-  batClientWebRequest_.run(buildURL((std::string)RECONCILE_CONTRIBUTION + state_->userId_, PREFIX_V2), runnable,
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)RECONCILE_CONTRIBUTION + state_->userId_, PREFIX_V2), runnable,
     std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
-    braveledger_bat_helper::URL_METHOD::GET);
+    braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::reconcileCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -266,9 +266,9 @@ void BatClient::currentReconcile() {
   //FETCH_CALLBACK_EXTRA_DATA_ST extraData;
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::currentReconcileCallback);
-  batClientWebRequest_.run(buildURL(path, ""), runnable,
+  braveledger_bat_helper::batClientWebRequest->run(buildURL(path, ""), runnable,
     std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
-    braveledger_bat_helper::URL_METHOD::GET);
+    braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::currentReconcileCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -325,9 +325,9 @@ void BatClient::currentReconcileCallback(bool result, const std::string& respons
   std::string path = (std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_;
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::reconcilePayloadCallback);
-  batClientWebRequest_.run(buildURL(path, ""), runnable,
+  braveledger_bat_helper::batClientWebRequest->run(buildURL(path, ""), runnable,
     headers, payloadStringify, "application/json; charset=utf-8",
-    braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_helper::URL_METHOD::PUT);
+    braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_client_webrequest::URL_METHOD::PUT);
 }
 
 void BatClient::reconcilePayloadCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -355,8 +355,8 @@ void BatClient::reconcilePayloadCallback(bool result, const std::string& respons
   stExtraData.boolean1 = true;
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::updateRulesCallback);
-  batClientWebRequest_.run(buildURL(UPDATE_RULES_V1, ""),runnable,
-    std::vector<std::string>(), "", "", stExtraData, braveledger_bat_helper::URL_METHOD::GET);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL(UPDATE_RULES_V1, ""),runnable,
+    std::vector<std::string>(), "", "", stExtraData, braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::updateRulesCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -368,9 +368,9 @@ void BatClient::updateRulesCallback(bool result, const std::string& response, co
   state_->ruleset_ = response;
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::updateRulesV2Callback);
-  batClientWebRequest_.run(buildURL(UPDATE_RULES_V2, ""),runnable,
+  braveledger_bat_helper::batClientWebRequest->run(buildURL(UPDATE_RULES_V2, ""),runnable,
     std::vector<std::string>(), "", "", extraData,
-    braveledger_bat_helper::URL_METHOD::GET);
+    braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::updateRulesV2Callback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -390,10 +390,10 @@ void BatClient::updateRulesV2Callback(bool result, const std::string& response, 
 
 void BatClient::registerViewing() {
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::registerViewingCallback);
-  batClientWebRequest_.run(buildURL((std::string)REGISTER_VIEWING, PREFIX_V2),
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)REGISTER_VIEWING, PREFIX_V2),
     runnable,
     std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
-    braveledger_bat_helper::URL_METHOD::GET);
+    braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::registerViewingCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -419,9 +419,9 @@ void BatClient::registerViewingCallback(bool result, const std::string& response
 
 void BatClient::viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId) {
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::viewingCredentialsCallback);
-  batClientWebRequest_.run(buildURL((std::string)REGISTER_VIEWING + "/" + anonizeViewingId, PREFIX_V2), runnable,
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)REGISTER_VIEWING + "/" + anonizeViewingId, PREFIX_V2), runnable,
     std::vector<std::string>(), proofStringified, "application/json; charset=utf-8", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
-    braveledger_bat_helper::URL_METHOD::POST);
+    braveledger_bat_client_webrequest::URL_METHOD::POST);
 }
 
 void BatClient::viewingCredentialsCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -557,8 +557,8 @@ void BatClient::prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, co
   extraData.string2 = ballot.surveyorId_;
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::prepareBatchCallback);
-  batClientWebRequest_.run(buildURL((std::string)SURVEYOR_BATCH_VOTING + transaction.anonizeViewingId_, PREFIX_V2),
-    runnable, std::vector<std::string>(), "", "", extraData, braveledger_bat_helper::URL_METHOD::GET);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)SURVEYOR_BATCH_VOTING + transaction.anonizeViewingId_, PREFIX_V2),
+    runnable, std::vector<std::string>(), "", "", extraData, braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::prepareBatchCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -650,8 +650,8 @@ void BatClient::prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, c
   extraData.string2 = ballot.surveyorId_;
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::prepareBallotCallback);
-  batClientWebRequest_.run(buildURL((std::string)SURVEYOR_VOTING + surveyorIdEncoded + "/" + transaction.anonizeViewingId_, PREFIX_V2), runnable,
-    std::vector<std::string>(), "", "", extraData, braveledger_bat_helper::URL_METHOD::GET);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)SURVEYOR_VOTING + surveyorIdEncoded + "/" + transaction.anonizeViewingId_, PREFIX_V2), runnable,
+    std::vector<std::string>(), "", "", extraData, braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::prepareBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -718,8 +718,8 @@ void BatClient::commitBallot(const braveledger_bat_helper::BALLOT_ST& ballot, co
   braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST extraData;
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::commitBallotCallback);
-  batClientWebRequest_.run(buildURL((std::string)SURVEYOR_VOTING + surveyorIdEncoded, PREFIX_V2),runnable,
-    std::vector<std::string>(), payload, "", extraData, braveledger_bat_helper::URL_METHOD::PUT);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)SURVEYOR_VOTING + surveyorIdEncoded, PREFIX_V2),runnable,
+    std::vector<std::string>(), payload, "", extraData, braveledger_bat_client_webrequest::URL_METHOD::PUT);
 }
 
 void BatClient::commitBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -769,9 +769,9 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
   std::string publicKeyHex = braveledger_bat_helper::uint8ToHex(publicKey);
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::recoverWalletPublicKeyCallback);
-  batClientWebRequest_.run(buildURL((std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex, ""),
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex, ""),
     runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
-    braveledger_bat_helper::URL_METHOD::GET);
+    braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& response,
@@ -781,8 +781,8 @@ void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& r
   braveledger_bat_helper::getJSONValue("paymentId", response, recoveryId);
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::recoverWalletCallback);
-  batClientWebRequest_.run(buildURL((std::string)RECOVER_WALLET + recoveryId, ""),
-    runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_helper::URL_METHOD::GET);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)RECOVER_WALLET + recoveryId, ""),
+    runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::recoverWalletCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -811,8 +811,8 @@ void BatClient::getPromotion(const std::string& lang, const std::string& forPaym
   }
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::getPromotionCallback);
-  batClientWebRequest_.run(buildURL((std::string)GET_SET_PROMOTION + arguments, ""),
-    runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_helper::URL_METHOD::GET);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)GET_SET_PROMOTION + arguments, ""),
+    runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::getPromotionCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -825,8 +825,8 @@ void BatClient::setPromotion(const std::string& promotionId, const std::string& 
   std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
 
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::setPromotionCallback);
-  batClientWebRequest_.run(buildURL((std::string)GET_SET_PROMOTION + "/" + state_->walletInfo_.paymentId_, ""),
-    runnable, std::vector<std::string>(), payload, "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_helper::URL_METHOD::PUT);
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)GET_SET_PROMOTION + "/" + state_->walletInfo_.paymentId_, ""),
+    runnable, std::vector<std::string>(), payload, "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(), braveledger_bat_client_webrequest::URL_METHOD::PUT);
 }
 
 void BatClient::setPromotionCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
@@ -835,9 +835,9 @@ void BatClient::setPromotionCallback(bool result, const std::string& response, c
 
 void BatClient::getPromotionCaptcha() {
   auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatClient::getPromotionCaptchaCallback);
-  batClientWebRequest_.run(buildURL((std::string)GET_PROMOTION_CAPTCHA + state_->walletInfo_.paymentId_, ""),
+  braveledger_bat_helper::batClientWebRequest->run(buildURL((std::string)GET_PROMOTION_CAPTCHA + state_->walletInfo_.paymentId_, ""),
     runnable, std::vector<std::string>(), "", "", braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST(),
-      braveledger_bat_helper::URL_METHOD::GET);
+      braveledger_bat_client_webrequest::URL_METHOD::GET);
 }
 
 void BatClient::getPromotionCaptchaCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {

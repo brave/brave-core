@@ -9,51 +9,55 @@
 
 #include "bat_get_media.h"
 #include "bat_helper.h"
-#include "static_values.h"
-
 #include "leveldb/db.h"
 #include "rapidjson_bat_helper.h"
+#include "static_values.h"
+#include "third_party/leveldatabase/env_chromium.h"
 
 namespace braveledger_bat_get_media {
 
+// TODO(bridiver) - revisit this class for possible delegation to deal with
+// threading and file location issues
 BatGetMedia::BatGetMedia():
   level_db_(nullptr) {
-
-  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatGetMedia::openMediaPublishersDB);
-  braveledger_bat_helper::PostTask(runnable);
 }
 
-BatGetMedia::~BatGetMedia() {
-  if (nullptr != level_db_) {
-    delete level_db_;
-  }
+BatGetMedia::~BatGetMedia() {}
+
+bool BatGetMedia::EnsureInitialized() {
+  if (level_db_.get()) return true;
+  return Init();
 }
 
-void BatGetMedia::openMediaPublishersDB() {
-  std::string dbPath;
+bool BatGetMedia::Init() {
+  std::string db_path;
   std::string root;
   braveledger_bat_helper::getHomeDir(root);
-  braveledger_bat_helper::appendPath(root, MEDIA_CACHE_DB_NAME, dbPath);
+  braveledger_bat_helper::appendPath(root, MEDIA_CACHE_DB_NAME, db_path);
 
-  leveldb::Options options;
+  leveldb_env::Options options;
   options.create_if_missing = true;
-  leveldb::Status status = leveldb::DB::Open(options, dbPath, &level_db_);
-  if (!status.ok() || !level_db_) {
-    if (level_db_) {
-      delete level_db_;
-      level_db_ = nullptr;
-    }
+  leveldb::Status status = leveldb_env::OpenDB(options, db_path, &level_db_);
 
-    LOG(ERROR) << "openMediaPublishersDB level db open error " << dbPath;
+  if (status.IsCorruption()) {
+    LOG(WARNING) << "Deleting possibly-corrupt database";
+    // base::DeleteFile(path_, true);
+    status = leveldb_env::OpenDB(options, db_path, &level_db_);
   }
+
+  if (!status.ok()) {
+    LOG(ERROR) << "init level db open error " << db_path;
+    return false;
+  }
+
+  return true;
 }
 
 void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const std::string& mediaKey, const std::string& providerName,
     const uint64_t& duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, braveledger_bat_helper::GetMediaPublisherInfoCallback callback) {
 
   // Check if the publisher's info is already cached
-  DCHECK(level_db_);
-  if (level_db_) {
+  if (EnsureInitialized()) {
     std::string value;
     leveldb::Status status = level_db_->Get(leveldb::ReadOptions(), mediaKey, &value);
     if (!value.empty()) {
@@ -100,8 +104,8 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
   if (YOUTUBE_MEDIA_TYPE == providerName) {
 
     auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatGetMedia::getPublisherFromMediaPropsCallback);
-    batClientWebRequest_.run((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + mediaURLEncoded,
-      runnable, std::vector<std::string>(), "", "", extraData, braveledger_bat_helper::URL_METHOD::GET);
+    braveledger_bat_helper::batClientWebRequest->run((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + mediaURLEncoded,
+      runnable, std::vector<std::string>(), "", "", extraData, braveledger_bat_client_webrequest::URL_METHOD::GET);
 
   } else if (TWITCH_MEDIA_TYPE == providerName) {
     braveledger_bat_helper::MEDIA_PUBLISHER_INFO publisherInfo;
@@ -243,8 +247,8 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(bool result, const std::str
     newExtraData.string4 = publisherName;
 
     auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatGetMedia::getPublisherInfoCallback);
-    batClientWebRequest_.run(publisherURL, runnable,
-        std::vector<std::string>(), "", "", newExtraData, braveledger_bat_helper::URL_METHOD::GET);
+    braveledger_bat_helper::batClientWebRequest->run(publisherURL, runnable,
+        std::vector<std::string>(), "", "", newExtraData, braveledger_bat_client_webrequest::URL_METHOD::GET);
   }
 }
 

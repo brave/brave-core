@@ -8,8 +8,10 @@
 #include <vector>
 #include <string>
 
-#include "bat_helper_platform.h"
-#include "url_method.h"
+// TODO(bridiver) - hacky temp workaround
+#if defined CHROMIUM_BUILD
+#include "base/callback.h"
+#endif
 
 namespace braveledger_bat_helper {
 struct FETCH_CALLBACK_EXTRA_DATA_ST;
@@ -17,16 +19,30 @@ struct FETCH_CALLBACK_EXTRA_DATA_ST;
 
 namespace braveledger_bat_client_webrequest {
 
+enum URL_METHOD {
+  GET = 0,
+  PUT = 1,
+  POST = 2
+};
+
+using FetchCallbackSignature = void (bool, const std::string&, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST&);
+// TODO(bridiver) - another hacky temp workaround
+#if !defined CHROMIUM_BUILD
+using FetchCallback = std::function<FetchCallbackSignature>;
+#else
+using FetchCallback = base::Callback<FetchCallbackSignature>;
+#endif
+
 // platform-dependent implementation
 class BatClientWebRequest {
  public:
   BatClientWebRequest() = default;
-  void run(const std::string& url, braveledger_bat_helper::FetchCallback callback,
+  virtual void run(const std::string& url, FetchCallback callback,
       const std::vector<std::string>& headers, const std::string& content,
       const std::string& contentType, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
-      const braveledger_bat_helper::URL_METHOD& method) {
-    //TODO: implement!
-  }
+      const URL_METHOD& method) = 0;
+  virtual void Stop() = 0;
+  virtual void Start() = 0;
 };
 
 }  // namespace braveledger_bat_client_webrequest
