@@ -2,12 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/ledger.h"
 
 #include "bat_client.h"
 #include "bat_get_media.h"
 #include "bat_helper.h"
 #include "bat_publishers.h"
-#include "ledger.h"
 #include "static_values.h"
 
 #include "rapidjson_bat_helper.h"
@@ -18,15 +18,15 @@ using namespace braveledger_bat_get_media;
 
 namespace braveledger_ledger {
 
-  Ledger::Ledger()
-  {
-    bat_get_media_ = new BatGetMedia();
+  Ledger::Ledger() :
+      bat_get_media_(new BatGetMedia()) {
+    // TODO(bridiver) super hacky workaround for web requests sent after Ledger is destroyed
+    braveledger_bat_helper::batClientWebRequest->Start();
   }
 
   Ledger::~Ledger() {
-    if (bat_get_media_) {
-      delete bat_get_media_;
-    }
+    // TODO(bridiver) super hacky workaround for web requests sent after Ledger is destroyed
+    braveledger_bat_helper::batClientWebRequest->Stop();
   }
 
   void Ledger::createWallet() {
@@ -328,9 +328,6 @@ namespace braveledger_ledger {
       if (iter != parts.end()) {
         twitchEventInfo.time_ = iter->second;
       }
-    }
-    if (!bat_get_media_) {
-      return;
     }
 
     braveledger_bat_helper::GetMediaPublisherInfoCallback runnable1 = braveledger_bat_helper::bat_mem_fun_binder2(*this, &Ledger::OnMediaRequestCallback);

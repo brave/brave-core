@@ -59,7 +59,8 @@ class BatPublishers {
  private:
   double concaveScore(const uint64_t& duration);
 
-  void openPublishersDB();
+  bool Init();
+  bool EnsureInitialized();
 
   void loadPublishers();
 

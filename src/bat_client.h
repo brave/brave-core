@@ -9,23 +9,9 @@
 #include <vector>
 #include <mutex>
 
-#if defined CHROMIUM_BUILD
-#include "bat_client_webrequest_chromium.h"
-#else
-#include "bat_client_webrequest.h"
-#endif
-
 #include "bat_balance.h"
-#include "bat_helper_platform.h"
-
-namespace braveledger_bat_helper {
-struct BALLOT_ST;
-struct BATCH_PROOF;
-struct FETCH_CALLBACK_EXTRA_DATA_ST;
-struct TRANSACTION_ST;
-struct CURRENT_RECONCILE;
-struct CLIENT_STATE_ST;
-}
+#include "bat_client_webrequest.h"
+#include "bat_helper.h"
 
 namespace braveledger_bat_client {
 
@@ -40,14 +26,14 @@ class BatClient {
   void registerPersonaCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void publisherTimestampCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   uint64_t getPublisherTimestamp();
-  void publisherInfo(const std::string& publisher, braveledger_bat_helper::FetchCallback callback,
+  void publisherInfo(const std::string& publisher, braveledger_bat_client_webrequest::FetchCallback callback,
       const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void setContributionAmount(const double& amount);
   std::string getBATAddress();
   std::string getBTCAddress();
   std::string getETHAddress();
   std::string getLTCAddress();
-  void getWalletProperties(braveledger_bat_helper::FetchCallback callback,
+  void getWalletProperties(braveledger_bat_client_webrequest::FetchCallback callback,
       const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   bool isReadyForReconcile();
   void reconcile(const std::string& viewingId, braveledger_bat_helper::SimpleCallback callback);
@@ -92,7 +78,6 @@ class BatClient {
   std::string buildURL(const std::string& path, const std::string& prefix);
 
   bool useProxy_;
-  braveledger_bat_client_webrequest::BatClientWebRequest batClientWebRequest_;
   std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;
   uint64_t publisherTimestamp_;
   std::mutex state_mutex_;

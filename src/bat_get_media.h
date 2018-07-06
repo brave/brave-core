@@ -9,17 +9,7 @@
 #include <map>
 #include <mutex>
 
-#if defined CHROMIUM_BUILD
-#include "bat_client_webrequest_chromium.h"
-#else
-#include "bat_client_webrequest.h"
-#endif
-
-namespace braveledger_bat_helper {
-struct FETCH_CALLBACK_EXTRA_DATA_ST;
-struct MEDIA_PUBLISHER_INFO;
-struct TWITCH_EVENT_INFO;
-}
+#include "bat_helper.h"
 
 namespace leveldb {
 class DB;
@@ -37,7 +27,8 @@ class BatGetMedia {
       const uint64_t& duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, braveledger_bat_helper::GetMediaPublisherInfoCallback callback);
 
  private:
-   void openMediaPublishersDB();
+  bool Init();
+  bool EnsureInitialized();
   std::string getMediaURL(const std::string& mediaId, const std::string& providerName);
   void getPublisherFromMediaPropsCallback(bool result, const std::string& response,
       const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
@@ -47,8 +38,7 @@ class BatGetMedia {
   uint64_t getTwitchDuration(const braveledger_bat_helper::TWITCH_EVENT_INFO& oldEventInfo, const braveledger_bat_helper::TWITCH_EVENT_INFO& newEventInfo);
   std::string getTwitchStatus(const braveledger_bat_helper::TWITCH_EVENT_INFO& oldEventInfo, const braveledger_bat_helper::TWITCH_EVENT_INFO& newEventInfo);
 
-  leveldb::DB* level_db_;
-  braveledger_bat_client_webrequest::BatClientWebRequest batClientWebRequest_;
+  std::unique_ptr<leveldb::DB> level_db_;
   std::map<std::string, braveledger_bat_helper::GetMediaPublisherInfoCallback> mapCallbacks_;
   std::mutex callbacks_access_mutex_;
 };

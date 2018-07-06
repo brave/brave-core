@@ -11,22 +11,35 @@ if (is_android) {
   dep_base = rebase_path("../..", "//")
 }
 
+config("external_config") {
+  include_dirs = [ "include" ]
+}
+
 config("internal_config") {
-  include_dirs = [ "../src" ]
-  defines = [ "BRAVE_LEDGER_LIB" ]
+  include_dirs = [ "src" ]
 }
 
 source_set("bat-native-ledger") {
+  public_configs = [ ":external_config" ]
   configs += [ ":internal_config" ]
 
   sources = [
-    "src/bat_client.cc",
-    "src/bat_client_webrequest_chromium.cc",
-    "src/bat_get_media.cc",
-    "src/bat_helper.cc",
-    "src/bat_helper_platform.cc",
-    "src/bat_publishers.cc",
+    "include/bat/ledger/ledger.h",
     "src/bat_balance.cc",
+    "src/bat_balance.h",
+    "src/bat_client.cc",
+    "src/bat_client_webrequest.cc",
+    "src/bat_client_webrequest.h",
+    "src/bat_client_webrequest_chromium.cc",
+    "src/bat_client_webrequest_chromium.h",
+    "src/bat_get_media.cc",
+    "src/bat_get_media.h",
+    "src/bat_helper.cc",
+    "src/bat_helper.h",
+    "src/bat_helper_platform.cc",
+    "src/bat_helper_platform.h",
+    "src/bat_publishers.cc",
+    "src/bat_publishers.h",
     "src/ledger.cc",
   ]
 

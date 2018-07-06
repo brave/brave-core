@@ -5,7 +5,10 @@
 #ifndef BRAVELEDGER_BAT_HELPER_PLATFORM_H_
 #define BRAVELEDGER_BAT_HELPER_PLATFORM_H_
 
+#include "bat_client_webrequest.h"
 #if defined CHROMIUM_BUILD
+#include <memory>
+
 #include "base/bind.h"
 #include "base/callback.h"
 #include "base/files/file_path.h"
@@ -13,6 +16,9 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/task_scheduler/post_task.h"
+#include "bat_client_webrequest_chromium.h"
+
+using braveledger_bat_client_webrequest::BatClientWebRequestChromium;
 #else
 #include <functional>
 #include <iostream>
@@ -26,7 +32,6 @@ namespace braveledger_bat_helper {
   struct PUBLISHER_STATE_ST;
   struct MEDIA_PUBLISHER_INFO;
 
-  using FetchCallbackSignature = void (bool, const std::string&, const FETCH_CALLBACK_EXTRA_DATA_ST&);
   using ReadStateCallbackSignature = void (bool, const CLIENT_STATE_ST&);
   using ReadPublisherStateCallbackSignature = void (bool, const PUBLISHER_STATE_ST&);
   using SimpleCallbackSignature = void (const std::string&);
@@ -34,7 +39,6 @@ namespace braveledger_bat_helper {
   using SaveVisitSignature = void(const std::string&, const uint64_t&);
 
 #if defined CHROMIUM_BUILD
-  using  FetchCallback = base::Callback<FetchCallbackSignature>;
   using  ReadStateCallback = base::Callback<ReadStateCallbackSignature>;
   using  ReadPublisherStateCallback = base::Callback<ReadPublisherStateCallbackSignature>;
   using  SimpleCallback = base::Callback<SimpleCallbackSignature>;
@@ -69,17 +73,25 @@ namespace braveledger_bat_helper {
 #define bat_fun_binder2 bat_fun_binder
 #define bat_fun_binder3 bat_fun_binder
 
+  extern std::unique_ptr<BatClientWebRequestChromium> batClientWebRequest;
+  extern scoped_refptr<base::SequencedTaskRunner> task_runner_;
+
   template <typename Runnable>
   void PostTask(Runnable runnable)
   {
-    scoped_refptr<base::SequencedTaskRunner> task_runner =
-      base::CreateSequencedTaskRunnerWithTraits({ base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN });
-
-    task_runner->PostTask(FROM_HERE, runnable);
+    // TODO(bridiver) - this is a super hacky temporary workaround to fix
+    // CalledOnValidThread errors and avoid creating a new task runner for
+    // every task
+    if (!task_runner_.get()) {
+      task_runner_ =
+          base::CreateSequencedTaskRunnerWithTraits({
+            base::MayBlock(),
+            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN });
+    }
+    task_runner_->PostTask(FROM_HERE, runnable);
   }
 
 #else
-  using FetchCallback = std::function<braveledger_bat_helper::FetchCallbackSignature>;
   using ReadStateCallback =  std::function<braveledger_bat_helper::ReadStateCallbackSignature>;
   using ReadPublisherStateCallback  = std::function<braveledger_bat_helper::ReadPublisherStateCallbackSignature> ;
   using SimpleCallback =  std::function<SimpleCallbackSignature>;

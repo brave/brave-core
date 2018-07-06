@@ -2,20 +2,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_LEDGER_H_
-#define BRAVELEDGER_LEDGER_H_
+#ifndef BAT_LEDGER_LEDGER_H_
+#define BAT_LEDGER_LEDGER_H_
 
 #include <memory>
 #include <map>
 #include <string>
 
-#include "bat_client.h"
-#include "bat_get_media.h"
-#include "bat_publishers.h"
+namespace braveledger_bat_client {
+class BatClient;
+}
 
 namespace braveledger_bat_helper {
-  struct FETCH_CALLBACK_EXTRA_DATA_ST;
-  struct MEDIA_PUBLISHER_INFO;
+struct FETCH_CALLBACK_EXTRA_DATA_ST;
+struct MEDIA_PUBLISHER_INFO;
+}
+
+namespace braveledger_bat_get_media {
+class BatGetMedia;
+}
+
+namespace braveledger_bat_publishers {
+class BatPublishers;
 }
 
 namespace braveledger_ledger {
@@ -58,9 +66,9 @@ private:
   void processMedia(const std::map<std::string, std::string>& parts, std::string type);
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
-  braveledger_bat_get_media::BatGetMedia* bat_get_media_;
+  std::unique_ptr<braveledger_bat_get_media::BatGetMedia> bat_get_media_;
 };
 
 }  // namespace braveledger_ledger
 
-#endif  // BRAVELEDGER_LEDGER_H_
+#endif  // BAT_LEDGER_LEDGER_H_

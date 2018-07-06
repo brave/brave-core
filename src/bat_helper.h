@@ -11,7 +11,6 @@
 
 #include "bat_helper_platform.h"
 #include "static_values.h"
-#include "url_method.h"
 
 namespace braveledger_bat_helper {
 

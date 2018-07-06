@@ -8,17 +8,9 @@
 #include <string>
 #include <list>
 #include <vector>
-#include <mutex>
 
-#include "base/callback.h"
+#include "bat_client_webrequest.h"
 #include "net/url_request/url_fetcher_delegate.h"
-
-#include "bat_helper_platform.h"
-#include "url_method.h"
-
-namespace braveledger_bat_helper {
-struct FETCH_CALLBACK_EXTRA_DATA_ST;
-}
 
 // We have to implement another fetcher class for iOS
 namespace net {
@@ -28,24 +20,27 @@ class UploadDataStream;
 
 namespace braveledger_bat_client_webrequest {
 
-class BatClientWebRequest: public net::URLFetcherDelegate {
+class BatClientWebRequestChromium: public BatClientWebRequest,
+                           public net::URLFetcherDelegate {
  public:
   struct URL_FETCH_REQUEST {
     URL_FETCH_REQUEST();
     ~URL_FETCH_REQUEST();
 
     std::unique_ptr<net::URLFetcher> url_fetcher_;
-    braveledger_bat_helper::FetchCallback callback_;
+    FetchCallback callback_;
     std::unique_ptr<braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST> extraData_;
   };
 
-  BatClientWebRequest();
-  ~BatClientWebRequest() final;
+  BatClientWebRequestChromium();
+  ~BatClientWebRequestChromium() final;
 
-  void run(const std::string& url, braveledger_bat_helper::FetchCallback callback,
+  void run(const std::string& url, FetchCallback callback,
       const std::vector<std::string>& headers, const std::string& content,
       const std::string& contentType, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
-      const braveledger_bat_helper::URL_METHOD& method);
+      const URL_METHOD& method) override;
+  void Stop() override;
+  void Start() override;
 
   void OnURLFetchComplete(const net::URLFetcher* source) final;
   void OnURLFetchDownloadProgress(const net::URLFetcher* source,
@@ -60,15 +55,16 @@ class BatClientWebRequest: public net::URLFetcherDelegate {
   }
 
  private:
-  void runOnThread(const std::string& url, braveledger_bat_helper::FetchCallback callback,
+  void runOnThread(const std::string& url, FetchCallback callback,
       const std::vector<std::string>& headers, const std::string& content,
       const std::string& contentType, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
-      const braveledger_bat_helper::URL_METHOD& method);
+      const URL_METHOD& method);
 
   std::unique_ptr<net::UploadDataStream> CreateUploadStream(const std::string& stream);
 
   std::list<std::unique_ptr<URL_FETCH_REQUEST>> url_fetchers_;
-  std::mutex fetcher_mutex_;
+  bool running_;
+
   // std::unique_ptr<net::URLFetcher> url_fetcher_;
 };
 

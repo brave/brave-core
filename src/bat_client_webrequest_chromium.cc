@@ -5,6 +5,7 @@
 #include "bat_client_webrequest_chromium.h"
 
 #include "base/logging.h"
+#include "bat_helper.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/elements_upload_data_stream.h"
@@ -16,44 +17,54 @@
 #include "net/url_request/url_request_context_builder.h"
 #include "net/url_request/url_request_context_getter.h"
 
-#include "bat_helper.h"
-
 namespace braveledger_bat_client_webrequest {
 
-  BatClientWebRequest::BatClientWebRequest() {
+  BatClientWebRequestChromium::BatClientWebRequestChromium() : running_(false) {
   }
 
-  BatClientWebRequest::~BatClientWebRequest() {
+  BatClientWebRequestChromium::~BatClientWebRequestChromium() {
   }
 
-  BatClientWebRequest::URL_FETCH_REQUEST::URL_FETCH_REQUEST() {}
-  BatClientWebRequest::URL_FETCH_REQUEST::~URL_FETCH_REQUEST() {}
+  BatClientWebRequestChromium::URL_FETCH_REQUEST::URL_FETCH_REQUEST() {}
+  BatClientWebRequestChromium::URL_FETCH_REQUEST::~URL_FETCH_REQUEST() {}
 
-  std::unique_ptr<net::UploadDataStream>  BatClientWebRequest::CreateUploadStream(const std::string& stream) {
+  std::unique_ptr<net::UploadDataStream>  BatClientWebRequestChromium::CreateUploadStream(const std::string& stream) {
     std::vector<char> buffer(stream.begin(),stream.end());
 
     return net::ElementsUploadDataStream::CreateWithReader(
       std::unique_ptr<net::UploadElementReader>(new net::UploadOwnedBytesElementReader(&buffer)), 0);
   }
 
-  void BatClientWebRequest::runOnThread(const std::string& url,
-        braveledger_bat_helper::FetchCallback callback, const std::vector<std::string>& headers,
-        const std::string& content, const std::string& contentType,
-        const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData, const braveledger_bat_helper::URL_METHOD& method) {
+  void BatClientWebRequestChromium::Start() {
+    running_ = true;
+  }
 
-    LOG(ERROR) << "BatClientWebRequest::runOnThread";
-    std::lock_guard<std::mutex> guard(fetcher_mutex_);
+  void BatClientWebRequestChromium::Stop() {
+    running_ = false;
+    url_fetchers_.clear();
+  }
+
+  void BatClientWebRequestChromium::runOnThread(const std::string& url,
+      FetchCallback callback,
+      const std::vector<std::string>& headers,
+      const std::string& content, const std::string& contentType,
+      const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
+      const URL_METHOD& method) {
+    if (!running_)
+      return;
+
+    LOG(ERROR) << "BatClientWebRequestChromium::runOnThread";
     url_fetchers_.push_back(std::make_unique<URL_FETCH_REQUEST>());
     net::URLFetcher::RequestType requestType = net::URLFetcher::GET;
     switch (method)
     {
-      case braveledger_bat_helper::GET:
+      case URL_METHOD::GET:
         requestType = net::URLFetcher::GET;
         break;
-      case braveledger_bat_helper::POST:
+      case URL_METHOD::POST:
         requestType = net::URLFetcher::POST;
         break;
-      case braveledger_bat_helper::PUT:
+      case URL_METHOD::PUT:
         LOG(ERROR) << "!!!in PUT";
         requestType = net::URLFetcher::PUT;
         break;
@@ -72,26 +83,26 @@ namespace braveledger_bat_client_webrequest {
     if (!content.empty()) {
       url_fetchers_.back()->url_fetcher_->SetUploadStreamFactory(
           contentType,
-          base::Bind(&BatClientWebRequest::CreateUploadStream, base::Unretained(this), content));
+          base::Bind(&BatClientWebRequestChromium::CreateUploadStream, base::Unretained(this), content));
     }
     url_fetchers_.back()->url_fetcher_->Start();
   }
 
-  void BatClientWebRequest::run(const std::string& url,
-        braveledger_bat_helper::FetchCallback callback,
+  void BatClientWebRequestChromium::run(const std::string& url,
+        FetchCallback callback,
         const std::vector<std::string>& headers, const std::string& content,
         const std::string& contentType, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData,
-        const braveledger_bat_helper::URL_METHOD& method) {
+        const URL_METHOD& method) {
 
     LOG(ERROR) << "!!!web_request URL == " + url;
     content::BrowserThread::PostTask(
       content::BrowserThread::UI, FROM_HERE,
-      base::Bind(&BatClientWebRequest::runOnThread,
+      base::Bind(&BatClientWebRequestChromium::runOnThread,
           base::Unretained(this), url, callback, headers, content, contentType,
           extraData, method));
   }
 
-  void BatClientWebRequest::OnURLFetchComplete(const net::URLFetcher* source) {
+  void BatClientWebRequestChromium::OnURLFetchComplete(const net::URLFetcher* source) {
     //LOG(ERROR) << "!!!OnURLFetchComplete";
     int response_code = source->GetResponseCode();
     bool failure = response_code == net::URLFetcher::ResponseCode::RESPONSE_CODE_INVALID ||
@@ -102,7 +113,6 @@ namespace braveledger_bat_client_webrequest {
     std::string response;
     source->GetResponseAsString(&response);
 
-    std::lock_guard<std::mutex> guard(fetcher_mutex_);
     if (url_fetchers_.size()) {
       url_fetchers_.front()->callback_.Run(!failure, response, *url_fetchers_.front()->extraData_);
       url_fetchers_.pop_front();
