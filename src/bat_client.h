@@ -9,34 +9,35 @@
 #include <vector>
 #include <mutex>
 
-#include "bat_balance.h"
-#include "bat_client_webrequest.h"
+#include "bat/ledger/ledger_callback_handler.h"
 #include "bat_helper.h"
+#include "url_request_handler.h"
+
+namespace bat_ledger {
+class LedgerImpl;
+}
 
 namespace braveledger_bat_client {
 
-class BatClient {
+class BatClient : public ledger::LedgerCallbackHandler {
  public:
+  explicit BatClient(bat_ledger::LedgerImpl* ledger, bool useProxy = true);
+  ~BatClient() override;
 
-  explicit BatClient( bool useProxy = true);
-  ~BatClient();
-
-  void loadStateOrRegisterPersona();
+  void loadStateOrRegisterPersonaCallback(bool success, const std::string& data);
   void requestCredentialsCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void registerPersonaCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void publisherTimestampCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void publisherTimestampCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extra_data);
   uint64_t getPublisherTimestamp();
-  void publisherInfo(const std::string& publisher, braveledger_bat_client_webrequest::FetchCallback callback,
-      const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  uint64_t publisherInfo(const std::string& publisher,
+                        ledger::LedgerCallbackHandler* handler);
   void setContributionAmount(const double& amount);
-  std::string getBATAddress();
-  std::string getBTCAddress();
-  std::string getETHAddress();
-  std::string getLTCAddress();
-  void getWalletProperties(braveledger_bat_client_webrequest::FetchCallback callback,
-      const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  const std::string& getBATAddress() const;
+  const std::string& getBTCAddress() const;
+  const std::string& getETHAddress() const;
+  const std::string& getLTCAddress() const;
   bool isReadyForReconcile();
-  void reconcile(const std::string& viewingId, braveledger_bat_helper::SimpleCallback callback);
+  void reconcile(const std::string& viewingId);
   unsigned int ballots(const std::string& viewingId);
   void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);
   void prepareBallots();
@@ -45,13 +46,15 @@ class BatClient {
   void getPromotion(const std::string& lang, const std::string& forPaymentId);
   void setPromotion(const std::string& promotionId, const std::string& captchaResponse);
   void getPromotionCaptcha();
+  void getWalletProperties(const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
 
  private:
-  void getPromotionCaptchaCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void getPromotionCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void setPromotionCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void recoverWalletPublicKeyCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void recoverWalletCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void saveState();
+  void getPromotionCaptchaCallback(bool result, const std::string& response);
+  void getPromotionCallback(bool result, const std::string& response);
+  void setPromotionCallback(bool result, const std::string& response);
+  void recoverWalletPublicKeyCallback(bool result, const std::string& response);
+  void recoverWalletCallback(bool result, const std::string& response);
   void prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   void prepareBatchCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof);
@@ -59,32 +62,33 @@ class BatClient {
   void prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   void commitBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   void prepareBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void commitBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void commitBallotCallback(bool result, const std::string& response);
   void vote(const std::string& publisher, const std::string& viewingId);
-  void loadStateOrRegisterPersonaCallback(bool result, const braveledger_bat_helper::CLIENT_STATE_ST& state);
   void registerPersona();
   void publisherTimestamp(bool saveState = true);
-  void reconcileCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void reconcileCallback(bool result, const std::string& response);
   void currentReconcile();
-  void currentReconcileCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void reconcilePayloadCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void currentReconcileCallback(bool result, const std::string& response);
+  void reconcilePayloadCallback(bool result, const std::string& response);
   void updateRulesCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void updateRulesV2Callback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void registerViewing();
-  void registerViewingCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void registerViewingCallback(bool result, const std::string& response);
   void viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId);
-  void viewingCredentialsCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void viewingCredentialsCallback(bool result, const std::string& response);
   std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
   std::string buildURL(const std::string& path, const std::string& prefix);
 
+  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   bool useProxy_;
   std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;
   uint64_t publisherTimestamp_;
   std::mutex state_mutex_;
   std::mutex transactions_access_mutex_;
   std::mutex ballots_access_mutex_;
-  braveledger_bat_balance::BatBalance balance_;
   std::unique_ptr<braveledger_bat_helper::CURRENT_RECONCILE> currentReconcile_;
+
+  bat_ledger::URLRequestHandler handler_;
 };
 
 }  // namespace braveledger_bat_client

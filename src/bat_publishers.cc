@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "bat_helper.h"
+#include "ledger_impl.h"
 #include "leveldb/db.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
@@ -41,7 +42,8 @@ void CloseDB(leveldb::DB* db) {
 
 }
 
-BatPublishers::BatPublishers():
+BatPublishers::BatPublishers(bat_ledger::LedgerImpl* ledger):
+  ledger_(ledger),
   level_db_(nullptr),
   state_(new braveledger_bat_helper::PUBLISHER_STATE_ST) {
   calcScoreConsts();
@@ -49,9 +51,8 @@ BatPublishers::BatPublishers():
 
 BatPublishers::~BatPublishers() {
   if (level_db_.get()) {
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&CloseDB,
-        level_db_.release());
-    braveledger_bat_helper::PostTask(runnable);
+    auto io_task = std::bind(&CloseDB, level_db_.release());
+    ledger_->RunIOTask(io_task);
   }
 }
 
@@ -113,24 +114,11 @@ void BatPublishers::loadPublishers() {
   delete it;
 }
 
-void BatPublishers::loadStateCallback(bool result, const braveledger_bat_helper::PUBLISHER_STATE_ST& state) {
-  if (!result) {
-    return;
-  }
-  state_.reset(new braveledger_bat_helper::PUBLISHER_STATE_ST(state));
-  calcScoreConsts();
-}
-
 void BatPublishers::initSynopsis() {
-
-  braveledger_bat_helper::ReadPublisherStateCallback runnable1 = braveledger_bat_helper::bat_mem_fun_binder2(*this, &BatPublishers::loadStateCallback);
-  braveledger_bat_helper::loadPublisherState(runnable1);
-
-  auto runnable2 = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::loadPublishers);
-  braveledger_bat_helper::PostTask(runnable2);
+  ledger_->LoadPublisherState(this);
 }
 
-void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64_t& duration,
+void BatPublishers::saveVisitInternal(const std::string& publisher, uint64_t duration,
   braveledger_bat_helper::SaveVisitCallback callback) {
   double currentScore = concaveScore(duration);
 
@@ -163,7 +151,7 @@ void BatPublishers::saveVisitInternal(const std::string& publisher, const uint64
     assert(status.ok());
   }
 
-  braveledger_bat_helper::run_runnable (callback, publisher, std::cref(verifiedTimestamp) );
+  ledger_->RunTask(std::bind(callback, publisher, verifiedTimestamp));
 
   synopsisNormalizerInternal();
 }
@@ -174,8 +162,12 @@ void BatPublishers::saveVisit(std::string publisher, uint64_t duration, braveled
   }
 
   // TODO checks if the publisher verified, disabled and etc
-  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::saveVisitInternal, publisher, duration, callback);
-  braveledger_bat_helper::PostTask(runnable);
+  auto io_task = std::bind(&BatPublishers::saveVisitInternal,
+                           this,
+                           publisher,
+                           duration,
+                           callback);
+  ledger_->RunIOTask(io_task);
 }
 
 void BatPublishers::setPublisherTimestampVerifiedInternal(const std::string& publisher,
@@ -206,8 +198,8 @@ void BatPublishers::setPublisherTimestampVerifiedInternal(const std::string& pub
 }
 
 void BatPublishers::setPublisherTimestampVerified(std::string publisher, uint64_t verifiedTimestamp, bool verified) {
-  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherTimestampVerifiedInternal, publisher, verifiedTimestamp, verified);
-  braveledger_bat_helper::PostTask(runnable);
+  auto io_task = std::bind(&BatPublishers::setPublisherTimestampVerifiedInternal, this, publisher, verifiedTimestamp, verified);
+  ledger_->RunIOTask(io_task);
 }
 
 void BatPublishers::setPublisherFavIconInternal(const std::string& publisher, const std::string& favicon_url) {
@@ -234,8 +226,8 @@ void BatPublishers::setPublisherFavIconInternal(const std::string& publisher, co
 }
 
 void BatPublishers::setPublisherFavIcon(std::string publisher, std::string favicon_url) {
-  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherFavIconInternal, publisher, favicon_url);
-  braveledger_bat_helper::PostTask(runnable);
+  auto io_task = std::bind(&BatPublishers::setPublisherFavIconInternal, this, publisher, favicon_url);
+  ledger_->RunIOTask(io_task);
 }
 
 void BatPublishers::setPublisherIncludeInternal(const std::string& publisher, const bool& include) {
@@ -265,8 +257,8 @@ void BatPublishers::setPublisherIncludeInternal(const std::string& publisher, co
 }
 
 void BatPublishers::setPublisherInclude(std::string publisher, bool include) {
-  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherIncludeInternal, publisher, include);
-  braveledger_bat_helper::PostTask(runnable);
+  auto io_task = std::bind(&BatPublishers::setPublisherIncludeInternal, this, publisher, include);
+  ledger_->RunIOTask(io_task);
 }
 
 void BatPublishers::setPublisherDeletedInternal(const std::string& publisher, const bool& deleted) {
@@ -296,8 +288,8 @@ void BatPublishers::setPublisherDeletedInternal(const std::string& publisher, co
 }
 
 void BatPublishers::setPublisherDeleted(std::string publisher, bool deleted) {
-  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherDeletedInternal, publisher, deleted);
-  braveledger_bat_helper::PostTask(runnable);
+  auto io_task = std::bind(&BatPublishers::setPublisherDeletedInternal, this, publisher, deleted);
+  ledger_->RunIOTask(io_task);
 }
 
 void BatPublishers::setPublisherPinPercentageInternal(const std::string& publisher, const bool& pinPercentage) {
@@ -327,25 +319,25 @@ void BatPublishers::setPublisherPinPercentageInternal(const std::string& publish
 }
 
 void BatPublishers::setPublisherPinPercentage(std::string publisher, bool pinPercentage) {
-  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::setPublisherPinPercentageInternal, publisher, pinPercentage);
-  braveledger_bat_helper::PostTask(runnable);
+  auto io_task = std::bind(&BatPublishers::setPublisherPinPercentageInternal, this, publisher, pinPercentage);
+  ledger_->RunIOTask(io_task);
 }
 
 void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In milliseconds
   state_->min_pubslisher_duration_ = duration; //TODO: conversion from 'const uint64_t' to 'unsigned int', possible loss of data
-  braveledger_bat_helper::savePublisherState(*state_);
+  saveState();
   synopsisNormalizer();
 }
 
 void BatPublishers::setPublisherMinVisits(const unsigned int& visits) {
   state_->min_visits_ = visits;
-  braveledger_bat_helper::savePublisherState(*state_);
+  saveState();
   synopsisNormalizer();
 }
 
 void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
   state_->allow_non_verified_ = allow;
-  braveledger_bat_helper::savePublisherState(*state_);
+  saveState();
   synopsisNormalizer();
 }
 
@@ -453,8 +445,8 @@ void BatPublishers::synopsisNormalizerInternal() {
 }
 
 void BatPublishers::synopsisNormalizer() {
-  auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatPublishers::synopsisNormalizerInternal);
-  braveledger_bat_helper::PostTask(runnable);
+  auto io_task = std::bind(&BatPublishers::synopsisNormalizerInternal, this);
+  ledger_->RunIOTask(io_task);
 }
 
 std::vector<braveledger_bat_helper::WINNERS_ST> BatPublishers::winners(const unsigned int& ballots) {
@@ -513,6 +505,40 @@ bool BatPublishers::isEligableForContribution(const braveledger_bat_helper::PUBL
 // courtesy of @dimitry-xyz: https://github.com/brave/ledger/issues/2#issuecomment-221752002
 double BatPublishers::concaveScore(const uint64_t& duration) {
   return (std::sqrt(b2_ + a4_ * duration) - b_) / (double)a2_;
+}
+
+void BatPublishers::saveState() {
+  std::string data;
+  braveledger_bat_helper::saveToJsonString(*state_, data);
+  ledger_->SavePublisherState(data, this);
+}
+
+void BatPublishers::loadState(bool success, const std::string& data) {
+  if (!success) {
+    // TODO error handling
+    return;
+  }
+
+  braveledger_bat_helper::PUBLISHER_STATE_ST state;
+  braveledger_bat_helper::loadFromJson(state, data.c_str());
+  state_.reset(new braveledger_bat_helper::PUBLISHER_STATE_ST(state));
+  calcScoreConsts();
+}
+
+void BatPublishers::OnLedgerStateLoaded(ledger::Result result,
+                                        const std::string& data) {
+
+}
+
+void BatPublishers::OnPublisherStateLoaded(ledger::Result result,
+                                           const std::string& data) {
+  if (result != ledger::Result::OK) {
+    LOG(ERROR) << "Could not load publisher state";
+    return;
+    // TODO - error handling
+  }
+  auto io_task = std::bind(&BatPublishers::loadPublishers, this);
+  ledger_->RunIOTask(io_task);
 }
 
 }  // namespace braveledger_bat_publisher

@@ -307,8 +307,12 @@ namespace braveledger_bat_helper {
     std::map<std::string, double> rates_;
     std::string amount_;
     std::string currency_;
-    SimpleCallback ledgerCallback_;
   };
+
+  using GetMediaPublisherInfoSignature = void(uint64_t, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&);
+  using SaveVisitSignature = void(const std::string&, uint64_t);
+  using GetMediaPublisherInfoCallback = std::function<GetMediaPublisherInfoSignature>;
+  using SaveVisitCallback = std::function<SaveVisitSignature>;
 
   bool getJSONValue(const std::string& fieldName, const std::string& json, std::string & value);
 
@@ -359,14 +363,6 @@ namespace braveledger_bat_helper {
 
   uint64_t currentTime();
 
-  void saveState(const CLIENT_STATE_ST& state);
-
-  void loadState(ReadStateCallback callback);
-
-  void savePublisherState(const PUBLISHER_STATE_ST& state);
-
-  void loadPublisherState(ReadPublisherStateCallback callback);
-
   void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts);
 
   void getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts);
@@ -376,14 +372,6 @@ namespace braveledger_bat_helper {
   std::string getMediaKey(const std::string& mediaId, const std::string& type);
 
   uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);
-
-  void readStateFile(ReadStateCallback callback);
-
-  void readPublisherStateFile(ReadPublisherStateCallback callback);
-
-  //temporary solution: to run ( void writeFile(args) ) as a Chromium Task
-  void writeFileNoReturn(const std::string & path, const std::string& data);
-
 }  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_

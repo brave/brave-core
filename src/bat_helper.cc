@@ -1510,46 +1510,6 @@ namespace braveledger_bat_helper {
     return time(0);
   }
 
-  void saveState(const CLIENT_STATE_ST& state) {
-
-    std::string data;
-    braveledger_bat_helper::saveToJsonString(state, data);
-    //LOG(ERROR) << "!!!saveState == " << data;
-
-    std::string ledger_state_file_path;
-    std::string root;
-    braveledger_bat_helper::getHomeDir(root);
-    braveledger_bat_helper::appendPath(root, LEDGER_STATE_FILENAME, ledger_state_file_path);
-
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, ledger_state_file_path, data);
-    braveledger_bat_helper::PostTask(runnable);
-  }
-
-  void loadState(ReadStateCallback callback) {
-
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::readStateFile, callback);
-    braveledger_bat_helper::PostTask(runnable);
-  }
-
-  void savePublisherState(const PUBLISHER_STATE_ST& state) {
-    std::string data;
-    braveledger_bat_helper::saveToJsonString(state, data);
-
-    std::string ledger_pub_state_file_path;
-    std::string root;
-    braveledger_bat_helper::getHomeDir(root);
-    braveledger_bat_helper::appendPath(root, LEDGER_PUBLISHER_STATE_FILENAME, ledger_pub_state_file_path);
-
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::writeFileNoReturn, ledger_pub_state_file_path, data);
-    braveledger_bat_helper::PostTask(runnable);
-  }
-
-  void loadPublisherState(ReadPublisherStateCallback callback) {
-
-    auto runnable = braveledger_bat_helper::bat_fun_binder(&braveledger_bat_helper::readPublisherStateFile, callback);
-    braveledger_bat_helper::PostTask(runnable);
-  }
-
   void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts) {
     std::vector<std::string> vars;
     split(vars, query, '&');
@@ -1656,52 +1616,4 @@ namespace braveledger_bat_helper {
     return duration;
   }
 
-  void readStateFile(ReadStateCallback callback) {
-    std::string file_path;
-    std::string root;
-    braveledger_bat_helper::getHomeDir(root);
-    std::ostringstream data;
-
-    braveledger_bat_helper::appendPath(root, LEDGER_STATE_FILENAME, file_path);
-    bool succeded = braveledger_bat_helper::readFile(file_path, data);
-    if (succeded)
-    {
-      CLIENT_STATE_ST state;
-      braveledger_bat_helper::loadFromJson(state, data.str());
-      braveledger_bat_helper::run_runnable (callback, true, std::cref(state));
-    }
-    else
-    {
-      CLIENT_STATE_ST temp;
-      braveledger_bat_helper::run_runnable(callback, false, std::cref(temp));
-    }
-  }
-
-
-  void readPublisherStateFile(ReadPublisherStateCallback callback) {
-    std::string file_path;
-    std::string root;
-    braveledger_bat_helper::getHomeDir(root);
-    std::ostringstream data;
-
-    braveledger_bat_helper::appendPath(root, LEDGER_PUBLISHER_STATE_FILENAME, file_path);
-    bool succeded = braveledger_bat_helper::readFile(file_path, data);
-    if (succeded)
-    {
-      PUBLISHER_STATE_ST state;
-      braveledger_bat_helper::loadFromJson(state, data.str());
-      braveledger_bat_helper::run_runnable(callback, true, std::cref(state));
-    }
-    else
-    {
-      PUBLISHER_STATE_ST temp;
-      braveledger_bat_helper::run_runnable(callback, false, std::cref(temp));
-    }
-  }
-
-  void writeFileNoReturn(const std::string & path, const std::string& data)
-  {
-    //ignoring return
-    writeFile(path, data);
-  }
 }  // namespace braveledger_bat_helper
