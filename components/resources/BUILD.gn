@@ -21,6 +21,13 @@ transpile_includes = [
   "../brave_new_tab_ui/reducers/newTabReducer.js",
   # Brave Rewards
   "../brave_rewards_ui/brave_rewards.html",
+  "../brave_rewards_ui/components/app.js",
+  "../brave_rewards_ui/constants/rewards_types.js",
+  "../brave_rewards_ui/actions/rewards_actions.js",
+  "../brave_rewards_ui/storage.js",
+  "../brave_rewards_ui/store.js",
+  "../brave_rewards_ui/reducers/index.js",
+  "../brave_rewards_ui/reducers/rewards_reducer.js",
   # Brave welcome page
   "../brave_welcome_ui/brave_welcome.html",
   # Brave adblock page

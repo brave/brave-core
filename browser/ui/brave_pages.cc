@@ -5,6 +5,7 @@
 #include "brave/browser/ui/brave_pages.h"
 
 #include "brave/common/webui_url_constants.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "url/gurl.h"
 
