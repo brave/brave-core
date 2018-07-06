@@ -12,9 +12,11 @@ import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 import { getMessage } from '../../background/api/localeAPI'
 import theme from '../../theme'
+import { isHttpOrHttps } from '../../helpers/urlUtils'
 
 export interface BraveShieldsHeaderProps {
   shieldsToggled: shieldActions.ShieldsToggled
+  origin: string
   hostname: string
   braveShields: BlockOptions
 }
@@ -27,6 +29,10 @@ export default class BraveShieldsHeader extends React.PureComponent<BraveShields
   }
 
   onToggleShields (e: HTMLSelectElement) {
+    const { origin } = this.props
+    if (!isHttpOrHttps(origin)) {
+      return
+    }
     const shieldsOption: BlockOptions = e.target.checked ? 'allow' : 'block'
     this.props.shieldsToggled(shieldsOption)
   }

@@ -134,7 +134,6 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
 
               <Grid theme={theme.braveShieldsControlsSwitches}>
                 <Column>
-                  {/* TODO @cezaraugusto */}
                   <SwitchButton
                     id='httpsEverywhere'
                     theme={theme.noUserSelect}
@@ -145,7 +144,6 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
                   />
                 </Column>
                 <Column>
-                  {/* TODO @cezaraugusto */}
                   <SwitchButton
                     id='blockScripts'
                     theme={theme.noUserSelect}
@@ -156,7 +154,6 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
                   />
                 </Column>
                 <Column>
-                  {/* TODO @cezaraugusto */}
                   <SwitchButton
                     id='blockPhishingMalware'
                     theme={theme.noUserSelect}

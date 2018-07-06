@@ -39,6 +39,7 @@ export default class BraveShields extends React.Component<BraveShieldsProps, {}>
           braveShields={shieldsPanelTabData.braveShields}
           shieldsToggled={actions.shieldsToggled}
           hostname={shieldsPanelTabData.hostname}
+          origin={shieldsPanelTabData.origin}
         />
         <BraveShieldsStats
           braveShields={shieldsPanelTabData.braveShields}
