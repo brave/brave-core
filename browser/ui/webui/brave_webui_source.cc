@@ -53,7 +53,28 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "314e7529efec41c8867019815f4d8dad.svg", IDR_BRAVE_NEW_TAB_IMG4 },
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         { "50cc52a4f1743ea74a21da996fe44272.jpg", IDR_BRAVE_NEW_TAB_IMG14 },
-        { "b6dd4b1292cfd4470e58486c56ad0832.svg", IDR_BRAVE_NEW_TAB_PRIVATE_ICON }
+        { "b6dd4b1292cfd4470e58486c56ad0832.svg", IDR_BRAVE_NEW_TAB_PRIVATE_ICON },
+        // New tab Backgrounds
+        { "dksfoto1.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
+        { "dksfoto2.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
+        { "dksfoto3.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND3 },
+        { "dksfoto4.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND4 },
+        { "dksfoto5.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND5 },
+        { "dksfoto6.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND6 },
+        { "dksfoto7.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND7 },
+        { "dksfoto8.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
+        { "dksfoto9.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND9 },
+        { "dksfoto10.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND10 },
+        { "dksfoto11.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND11 },
+        { "Phoyoserge_Corsica.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND12 },
+        { "Phoyoserge_Corsica2.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND13 },
+        { "Phoyoserge_DowntownGriffith.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
+        { "Phoyoserge_ElmatadorBeach.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND15 },
+        { "Phoyoserge_ParisConciergeri.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND16 },
+        { "Phoyoserge_Theroofparis.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND17 },
+        { "Phoyoserge_TheSeantParis.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND18 },
+        { "Phoyoserge_VeniseSunset.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND19 },
+        { "Phoyoserge_Yosemite.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND20 }
       }
     }, {
       std::string("welcome"), {

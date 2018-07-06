@@ -5,102 +5,102 @@
 module.exports = [
   {
     'name': 'Tuolome Meadows',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto1.jpg',
+    'source': 'dksfoto1.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'South Tufa, Mono Lake',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto2.jpg',
+    'source': 'dksfoto2.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'Little Lakes Valley',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto3.jpg',
+    'source': 'dksfoto3.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'Bay Bridge',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto4.jpg',
+    'source': 'dksfoto4.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'Yosemite',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto5.jpg',
+    'source': 'dksfoto5.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'Beach Ice',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto6.jpg',
+    'source': 'dksfoto6.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'Color and White Trunks',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto7.jpg',
+    'source': 'dksfoto7.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'Golden Gate Bridge',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto8.jpg',
+    'source': 'dksfoto8.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'Long Lake',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto9.jpg',
+    'source': 'dksfoto9.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'San Francisco Skyline',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto10.jpg',
+    'source': 'dksfoto10.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'Across Mono Basin',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/dksfoto11.jpg',
+    'source': 'dksfoto11.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
   }, {
     'name': 'Corsica',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/Phoyoserge_Corsica.jpg',
+    'source': 'Phoyoserge_Corsica.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   }, {
     'name': 'Corsica',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/Phoyoserge_Corsica2.jpg',
+    'source': 'Phoyoserge_Corsica2.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   }, {
     'name': 'Griffith Park Observatory (Downtown Los Angeles)',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/Phoyoserge_DowntownGriffith.jpg',
+    'source': 'Phoyoserge_DowntownGriffith.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   }, {
     'name': 'Elmatador Beach',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/Phoyoserge_ElmatadorBeach.jpg',
+    'source': 'Phoyoserge_ElmatadorBeach.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   }, {
     'name': 'Paris:Conciergeri',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/Phoyoserge_ParisConciergeri.jpg',
+    'source': 'Phoyoserge_ParisConciergeri.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   }, {
     'name': 'Paris:The Roof',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/Phoyoserge_Theroofparis.jpg',
+    'source': 'Phoyoserge_Theroofparis.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   }, {
     'name': 'Paris:The Seant',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/Phoyoserge_TheSeantParis.jpg',
+    'source': 'Phoyoserge_TheSeantParis.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   }, {
     'name': 'Venise Sunset',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/Phoyoserge_VeniseSunset.jpg',
+    'source': 'Phoyoserge_VeniseSunset.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   }, {
     'name': 'Yosemite',
-    'source': 'https://s3.amazonaws.com/brave-backgrounds/Phoyoserge_Yosemite.jpg',
+    'source': 'Phoyoserge_Yosemite.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   }
