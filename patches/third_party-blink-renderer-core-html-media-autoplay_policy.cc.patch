@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..590239f9311598dbf9d083bd32c0589acf14cce4 100644
+index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..422bb0673de70562af2b9775631237e9738b93a0 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -5,6 +5,7 @@
@@ -18,10 +18,14 @@ index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..590239f9311598dbf9d083bd32c0589a
  #include "third_party/blink/renderer/platform/network/network_state_notifier.h"
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/wtf/assertions.h"
-@@ -341,6 +343,11 @@ bool AutoplayPolicy::IsGestureNeededForPlaybackIfPendingUserGestureIsLocked()
+@@ -341,6 +343,15 @@ bool AutoplayPolicy::IsGestureNeededForPlaybackIfPendingUserGestureIsLocked()
    if (element_->GetLoadType() == WebMediaPlayer::kLoadTypeMediaStream)
      return false;
  
++  // brave(darkdh): default allow local files
++  if (element_->GetDocument().origin() == String("null"))
++    return false;
++
 +#if defined(BRAVE_CHROMIUM_BUILD)
 +  if (IsAutoplayAllowedPerSettings())
 +    return false;
@@ -30,7 +34,7 @@ index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..590239f9311598dbf9d083bd32c0589a
    // We want to allow muted video to autoplay if:
    // - the flag is enabled;
    // - Data Saver is not enabled;
-@@ -414,6 +421,18 @@ bool AutoplayPolicy::IsAutoplayAllowedPerSettings() const {
+@@ -414,6 +425,18 @@ bool AutoplayPolicy::IsAutoplayAllowedPerSettings() const {
    LocalFrame* frame = element_->GetDocument().GetFrame();
    if (!frame)
      return false;
