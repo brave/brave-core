@@ -32,7 +32,6 @@ class BraveImporter : public ChromeImporter {
 
   void ImportBookmarks() override;
   void ImportHistory() override;
-  void ImportPasswords() override;
 
   void ParseBookmarks(std::vector<ImportedBookmarkEntry>* bookmarks);
   void RecursiveReadBookmarksFolder(

@@ -84,7 +84,7 @@ void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
 
   if ((items & importer::PASSWORDS) && !cancelled()) {
     bridge_->NotifyItemStarted(importer::PASSWORDS);
-    ImportPasswords();
+    ImportPasswords(base::FilePath(FILE_PATH_LITERAL("Preferences")));
     bridge_->NotifyItemEnded(importer::PASSWORDS);
   }
 
@@ -302,7 +302,7 @@ double ChromeImporter::chromeTimeToDouble(int64_t time) {
   return ((time * 10 - 0x19DB1DED53E8000) / 10000) / 1000;
 }
 
-void ChromeImporter::ImportPasswords() {
+void ChromeImporter::ImportPasswords(const base::FilePath& prefs) {
   #if !defined(USE_X11)
     base::FilePath passwords_path =
       source_path_.Append(
@@ -329,9 +329,7 @@ void ChromeImporter::ImportPasswords() {
       }
     }
   #else
-    base::FilePath prefs_path =
-      source_path_.Append(
-        base::FilePath::StringType(FILE_PATH_LITERAL("Preferences")));
+    base::FilePath prefs_path = source_path_.Append(prefs);
     const base::Value *value;
     scoped_refptr<JsonPrefStore> prefs = new JsonPrefStore(prefs_path);
     int local_profile_id;
