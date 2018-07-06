@@ -10,10 +10,6 @@
 #include "base/macros.h"
 #include "components/keyed_service/core/keyed_service.h"
 
-namespace braveledger_ledger {
-class Ledger;
-}
-
 namespace payments {
 
 class PaymentsService : public KeyedService {
@@ -21,14 +17,9 @@ class PaymentsService : public KeyedService {
   PaymentsService();
   ~PaymentsService() override;
 
-  // KeyedService:
-  void Shutdown() override;
-
-  void CreateWallet();
+  virtual void CreateWallet();
 
  private:
-  std::unique_ptr<braveledger_ledger::Ledger> ledger_;
-
   DISALLOW_COPY_AND_ASSIGN(PaymentsService);
 };
 

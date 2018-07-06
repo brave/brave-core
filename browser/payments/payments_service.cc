@@ -3,22 +3,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "brave/browser/payments/payments_service.h"
 
-#include "bat/ledger/ledger.h"
+#include "base/logging.h"
 
 namespace payments {
 
-  PaymentsService::PaymentsService() :
-      ledger_(new braveledger_ledger::Ledger()) {
+  PaymentsService::PaymentsService() {
   }
 
   PaymentsService::~PaymentsService() {
   }
 
   void PaymentsService::CreateWallet() {
-    ledger_->createWallet();
-  }
-
-  void PaymentsService::Shutdown() {
-    ledger_.reset();
+    NOTREACHED();
   }
 }  // namespace history
