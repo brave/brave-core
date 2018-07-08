@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/theme_source.cc b/chrome/browser/ui/webui/theme_source.cc
-index f3681500ad54c2dcc0a01ddf606c7088a8c5c9d4..4ef2c3b30f9695afffb1ba58e5f67f19d6e88da2 100644
+index f3681500ad54c2dcc0a01ddf606c7088a8c5c9d4..4a441313707d43c6a6f10f9947306ad168e74167 100644
 --- a/chrome/browser/ui/webui/theme_source.cc
 +++ b/chrome/browser/ui/webui/theme_source.cc
 @@ -98,7 +98,7 @@ void ThemeSource::StartDataRequest(
@@ -11,3 +11,15 @@ index f3681500ad54c2dcc0a01ddf606c7088a8c5c9d4..4ef2c3b30f9695afffb1ba58e5f67f19
        case version_info::Channel::CANARY:
          resource_id = IDR_PRODUCT_LOGO_32_CANARY;
          break;
+@@ -120,7 +120,11 @@ void ThemeSource::StartDataRequest(
+         FALLTHROUGH;
+ #endif
+       case version_info::Channel::UNKNOWN:
++#if defined(BRAVE_CHROMIUM_BUILD)
++        resource_id = IDR_PRODUCT_LOGO_32_DEVELOPMENT;
++#else
+         resource_id = IDR_PRODUCT_LOGO_32;
++#endif
+         break;
+     }
+   } else {
