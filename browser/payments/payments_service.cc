@@ -4,6 +4,7 @@
 #include "brave/browser/payments/payments_service.h"
 
 #include "base/logging.h"
+#include "brave/browser/payments/payments_service_observer.h"
 
 namespace payments {
 
@@ -13,7 +14,11 @@ namespace payments {
   PaymentsService::~PaymentsService() {
   }
 
-  void PaymentsService::CreateWallet() {
-    NOTREACHED();
+  void PaymentsService::AddObserver(PaymentsServiceObserver* observer) {
+    observers_.AddObserver(observer);
   }
-}  // namespace history
+
+  void PaymentsService::RemoveObserver(PaymentsServiceObserver* observer) {
+    observers_.RemoveObserver(observer);
+  }
+}  // namespace payments

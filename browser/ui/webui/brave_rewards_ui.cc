@@ -6,6 +6,7 @@
 
 #include "brave/browser/payments/payments_service.h"
 #include "brave/browser/payments/payments_service_factory.h"
+#include "brave/browser/payments/payments_service_observer.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
@@ -18,11 +19,12 @@ using content::WebUIMessageHandler;
 namespace {
 
 // The handler for Javascript messages for Brave about: pages
-class RewardsDOMHandler : public WebUIMessageHandler {
+class RewardsDOMHandler : public WebUIMessageHandler,
+                          public payments::PaymentsServiceObserver {
  public:
   RewardsDOMHandler() {
   }
-  ~RewardsDOMHandler() override {}
+  ~RewardsDOMHandler() override;
 
   void Init();
 
@@ -33,8 +35,20 @@ class RewardsDOMHandler : public WebUIMessageHandler {
   void HandleCreateWalletRequested(const base::ListValue* args);
   void OnWalletCreated();
   void OnWalletCreateFailed();
+
+  // PaymentServiceObserver implementation
+  void OnWalletCreated(payments::PaymentsService* payment_service,
+                       int error_code) override;
+
+  payments::PaymentsService* payments_service_;  // NOT OWNED
+
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
 };
+
+RewardsDOMHandler::~RewardsDOMHandler() {
+  if (payments_service_)
+    payments_service_->RemoveObserver(this);
+}
 
 void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("createWalletRequested",
@@ -46,21 +60,24 @@ void RewardsDOMHandler::Init() {
 }
 
 void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args) {
-#if defined(BRAVE_PAYMENTS_ENABLED)
   Profile* profile = Profile::FromWebUI(web_ui());
-  payments::PaymentsService* payments_service =
-      PaymentsServiceFactory::GetForProfile(profile);
+  payments_service_ = PaymentsServiceFactory::GetForProfile(profile);
 
-  if (payments_service) {
-    payments_service->CreateWallet();
+  if (payments_service_) {
+    payments_service_->AddObserver(this);
+    payments_service_->CreateWallet();
+  } else {
+    OnWalletCreateFailed();
   }
+}
 
-  // TODO(bbondy): Use an observer or client override for when the wallet is actually
-  // created once the native-ledger library supports it.
-  OnWalletCreated();
-#else
-  OnWalletCreateFailed();
-#endif
+void RewardsDOMHandler::OnWalletCreated(
+    payments::PaymentsService* payment_service,
+    int error_code) {
+  if (error_code == 0)
+    OnWalletCreated();
+  else
+    OnWalletCreateFailed();
 }
 
 void RewardsDOMHandler::OnWalletCreated() {
