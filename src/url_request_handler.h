@@ -36,7 +36,7 @@ class URLRequestHandler : public ledger::LedgerCallbackHandler {
                             int response_code,
                             const std::string& response) override;
 
-  std::map<int, URLRequestCallback> request_handlers_;
+  std::map<uint64_t, URLRequestCallback> request_handlers_;
  };
 }  // namespace bat_ledger
 

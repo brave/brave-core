@@ -6,6 +6,7 @@
 #define BAT_LEDGER_LEDGER_CLIENT_H_
 
 #include <memory>
+#include <vector>
 
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_task_runner.h"
