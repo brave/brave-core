@@ -9,16 +9,18 @@
 
 #include "bat_get_media.h"
 #include "bat_helper.h"
+#include "ledger_impl.h"
 #include "leveldb/db.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
 #include "third_party/leveldatabase/env_chromium.h"
 
+using namespace std::placeholders;
+
 namespace braveledger_bat_get_media {
 
-// TODO(bridiver) - revisit this class for possible delegation to deal with
-// threading and file location issues
-BatGetMedia::BatGetMedia():
+BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
+  ledger_(ledger),
   level_db_(nullptr) {
 }
 
@@ -54,7 +56,7 @@ bool BatGetMedia::Init() {
 }
 
 void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const std::string& mediaKey, const std::string& providerName,
-    const uint64_t& duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, braveledger_bat_helper::GetMediaPublisherInfoCallback callback) {
+    uint64_t duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, braveledger_bat_helper::GetMediaPublisherInfoCallback callback) {
 
   // Check if the publisher's info is already cached
   if (EnsureInitialized()) {
@@ -82,7 +84,7 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
         }
       }
 
-      braveledger_bat_helper::run_runnable(callback, std::cref(realDuration), std::cref(publisherInfo) );
+      ledger_->RunTask(std::bind(callback, realDuration, publisherInfo));
       return;
     }
   }
@@ -97,16 +99,23 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
   extraData.string1 = providerName;
   extraData.string2 = mediaURL;
   {
+    // TODO(bridiver) - need to find out what is going on with mapCallbacks_
+    // it's keyed to the mediaKey, but every lookup just gets the last entry
+    // which doesn't seem right to me
     std::lock_guard<std::mutex> guard(callbacks_access_mutex_);
     DCHECK(mapCallbacks_.find(mediaKey) == mapCallbacks_.end());
     mapCallbacks_[mediaKey] = callback;
   }
   if (YOUTUBE_MEDIA_TYPE == providerName) {
-
-    auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatGetMedia::getPublisherFromMediaPropsCallback);
-    braveledger_bat_helper::batClientWebRequest->run((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + mediaURLEncoded,
-      runnable, std::vector<std::string>(), "", "", extraData, braveledger_bat_client_webrequest::URL_METHOD::GET);
-
+    // TODO(bridiver) - this is also an issue because we're making these calls from the IO thread
+    auto request = ledger_->LoadURL((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + mediaURLEncoded,
+      std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
+    handler_.AddRequestHandler(std::move(request),
+        std::bind(&BatGetMedia::getPublisherFromMediaPropsCallback,
+        this,
+        _1,
+        _2,
+        extraData));
   } else if (TWITCH_MEDIA_TYPE == providerName) {
     braveledger_bat_helper::MEDIA_PUBLISHER_INFO publisherInfo;
     publisherInfo.favIconURL_ = "";
@@ -142,7 +151,8 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
       braveledger_bat_helper::GetMediaPublisherInfoCallback callback = iter->second;
       mapCallbacks_.erase(iter);
 
-      braveledger_bat_helper::run_runnable (callback, std::cref(realDuration), std::cref(publisherInfo) );
+      // TODO(bridiver) -  why are we using a different callback here than the one that was passed in?
+      ledger_->RunTask(std::bind(callback, realDuration, publisherInfo));
     }
   }
 }
@@ -246,9 +256,14 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(bool result, const std::str
     newExtraData.string3 = publisherURL;
     newExtraData.string4 = publisherName;
 
-    auto runnable = braveledger_bat_helper::bat_mem_fun_binder3(*this, &BatGetMedia::getPublisherInfoCallback);
-    braveledger_bat_helper::batClientWebRequest->run(publisherURL, runnable,
-        std::vector<std::string>(), "", "", newExtraData, braveledger_bat_client_webrequest::URL_METHOD::GET);
+    auto request = ledger_->LoadURL(publisherURL,
+        std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
+    handler_.AddRequestHandler(std::move(request),
+        std::bind(&BatGetMedia::getPublisherInfoCallback,
+                  this,
+                  _1,
+                  _2,
+                  newExtraData));
   }
 }
 
@@ -294,8 +309,8 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
     std::string medPubJson;
     braveledger_bat_helper::saveToJsonString(publisherInfo, medPubJson);
 
-    auto runnable = braveledger_bat_helper::bat_mem_fun_binder(*this, &BatGetMedia::saveMediaPublisherInfo, extraData.string5, medPubJson);
-    braveledger_bat_helper::PostTask(runnable);
+    auto io_task = std::bind(&BatGetMedia::saveMediaPublisherInfo, this, extraData.string5, medPubJson);
+    ledger_->RunIOTask(io_task);
 
     {
       std::lock_guard<std::mutex> guard(callbacks_access_mutex_);
@@ -304,7 +319,7 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
       DCHECK(iter != mapCallbacks_.end());
       braveledger_bat_helper::GetMediaPublisherInfoCallback callback = iter->second;
       mapCallbacks_.erase(iter);
-      braveledger_bat_helper::run_runnable (callback, std::cref(extraData.value1), std::cref(publisherInfo) );
+      callback(extraData.value1, publisherInfo);
     }
   }
 }
