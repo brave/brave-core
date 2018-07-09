@@ -10,7 +10,7 @@ import sys
 from lib.github import GitHub
 from lib.config import PLATFORM, DIST_URL, get_target_arch, get_chromedriver_version, \
                        get_env_var, s3_config, get_zip_name, product_name, project_name, \
-                       SOURCE_ROOT, dist_dir, output_dir, get_brave_version
+                       SOURCE_ROOT, dist_dir, output_dir, get_brave_version, get_raw_version
 from lib.helpers import *
 import requests
 
@@ -20,23 +20,23 @@ def main():
   repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
   release = get_draft(repo, get_brave_version())
-  commit_tag = get_commit_tag(get_brave_version())
+  commit_tag = get_commit_tag(get_raw_version())
 
   print("[INFO] Releasing {}".format(release['tag_name']))
   publish_release(repo, release['id'], get_tag(), commit_tag)
 
 def get_commit_tag(version):
-  parts = get_brave_version().split('.', 3)
+  parts = get_raw_version().split('.', 3)
   if (len(parts) == 3):
     parts[2] = 'x'
     return '.'.join(parts)
   else:
-    raise(UserWarning("[ERROR] Invalid version name '%s'", get_brave_version()))
+    raise(UserWarning("[ERROR] Invalid version name '%s'", get_raw_version()))
 
 def get_draft(repo, tag):
   releases = get_releases_by_tag(repo, tag, include_drafts=True)
   if not releases:
-    raise(UserWarning("[ERROR]: No draft with tag '{}' found, may need to run the ./tools/upload.py script first".format(tag)))
+    raise(UserWarning("[ERROR]: No draft with tag '{}' found, may need to run the ./script/upload.py script first".format(tag)))
   elif len(releases) > 1 or not releases[0]['draft']:
     raise(UserWarning("[ERROR]: Release with tag {} already exists".format(tag)))
   return releases[0]

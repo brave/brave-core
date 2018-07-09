@@ -5,7 +5,7 @@
 
 import os
 import json
-from .config import get_brave_version
+from .config import get_raw_version
 
 BRAVE_REPO = "brave/brave-browser-builds"
 
@@ -28,7 +28,7 @@ def release_channel():
   return channel
 
 def get_tag():
-  return 'v' + get_brave_version() + release_channel()
+  return 'v' + get_raw_version() + release_channel()
 
 def release_name():
   return '{0} Channel'.format(get_channel_display_name())

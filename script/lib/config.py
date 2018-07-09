@@ -60,6 +60,8 @@ def get_brave_version():
   version = os.environ.get('npm_config_brave_version') or brave_browser_package()['version']
   return 'v' + version.split('+')[0]
 
+def get_raw_version():
+  return os.environ.get('npm_config_brave_version') or brave_browser_package()['version']
 
 def get_platform_key():
   if os.environ.has_key('MAS_BUILD'):
