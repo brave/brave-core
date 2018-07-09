@@ -18,6 +18,7 @@ SOURCE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'
 CHROMIUM_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 DIST_URL = 'https://brave-brave-binaries.s3.amazonaws.com/releases/'
 BRAVE_CORE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+BRAVE_BROWSER_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
 
 verbose_mode = False
 
@@ -30,27 +31,33 @@ def output_dir():
     return os.path.join(CHROMIUM_ROOT, 'out', 'Release')
   return os.path.join(CHROMIUM_ROOT, 'out_x86', 'Release')
 
-def brave_package():
-  pjson = os.path.join(SOURCE_ROOT, 'package.json')
+# Use brave-browser/package.json version for canonical version definition
+def brave_browser_package():
+  pjson = os.path.join(BRAVE_BROWSER_ROOT, 'package.json')
   with open(pjson) as f:
     obj = json.load(f);
     return obj;
 
+def brave_core_package():
+  pjson = os.path.join(BRAVE_CORE_ROOT, 'package.json')
+  with open(pjson) as f:
+    obj = json.load(f);
+    return obj;
 
 def product_name():
-  return os.environ.get('npm_config_brave_product_name') or brave_package()['name'].split('-')[0]
+  return os.environ.get('npm_config_brave_product_name') or brave_core_package()['name'].split('-')[0]
 
 
 def project_name():
-  return os.environ.get('npm_config_brave_project_name') or brave_package()['name'].split('-')[0]
+  return os.environ.get('npm_config_brave_project_name') or brave_core_package()['name'].split('-')[0]
 
 
 def get_chrome_version():
-  version = os.environ.get('npm_config_brave_version') or brave_package()['version']
+  version = os.environ.get('npm_config_brave_version') or brave_browser_package()['version']
   return version.split('+')[1]
 
 def get_brave_version():
-  version = os.environ.get('npm_config_brave_version') or brave_package()['version']
+  version = os.environ.get('npm_config_brave_version') or brave_browser_package()['version']
   return 'v' + version.split('+')[0]
 
 
