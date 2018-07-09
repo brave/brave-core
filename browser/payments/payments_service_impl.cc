@@ -22,6 +22,26 @@ namespace payments {
 
 namespace {
 
+class LedgerURLLoaderImpl : public ledger::LedgerURLLoader {
+ public:
+  LedgerURLLoaderImpl(uint64_t request_id, net::URLFetcher* fetcher) :
+    request_id_(request_id),
+    fetcher_(fetcher) {}
+  ~LedgerURLLoaderImpl() override = default;
+
+  void Start() override {
+    fetcher_->Start();
+  }
+
+  uint64_t request_id() override {
+    return request_id_;
+  }
+
+ private:
+  uint64_t request_id_;
+  net::URLFetcher* fetcher_;  // NOT OWNED
+};
+
 net::URLFetcher::RequestType URLMethodToRequestType(ledger::URL_METHOD method) {
   switch(method) {
     case ledger::URL_METHOD::GET:
@@ -180,12 +200,12 @@ void PaymentsServiceImpl::OnPublisherStateSaved(
                                          : ledger::Result::ERROR);
 }
 
-uint64_t PaymentsServiceImpl::LoadURL(const std::string& url,
-                 const std::vector<std::string>& headers,
-                 const std::string& content,
-                 const std::string& contentType,
-                 const ledger::URL_METHOD& method,
-                 ledger::LedgerCallbackHandler* handler) {
+std::unique_ptr<ledger::LedgerURLLoader> PaymentsServiceImpl::LoadURL(const std::string& url,
+    const std::vector<std::string>& headers,
+    const std::string& content,
+    const std::string& contentType,
+    const ledger::URL_METHOD& method,
+    ledger::LedgerCallbackHandler* handler) {
   net::URLFetcher::RequestType request_type = URLMethodToRequestType(method);
 
   net::URLFetcher* fetcher = net::URLFetcher::Create(
@@ -198,14 +218,16 @@ uint64_t PaymentsServiceImpl::LoadURL(const std::string& url,
   if (!content.empty())
     fetcher->SetUploadData(contentType, content);
 
-  fetcher->Start();
   FetchCallback callback = base::Bind(
       &ledger::LedgerCallbackHandler::OnURLRequestResponse,
       base::Unretained(handler),
       next_id);
   fetchers_[fetcher] = callback;
 
-  return next_id++;
+  std::unique_ptr<ledger::LedgerURLLoader> loader(
+      new LedgerURLLoaderImpl(next_id++, fetcher));
+
+  return loader;
 }
 
 void PaymentsServiceImpl::OnURLFetchComplete(

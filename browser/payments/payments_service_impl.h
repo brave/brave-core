@@ -70,12 +70,12 @@ class PaymentsServiceImpl : public PaymentsService,
                        ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherState(const std::string& publisher_state,
                           ledger::LedgerCallbackHandler* handler) override;
-  uint64_t LoadURL(const std::string& url,
-                   const std::vector<std::string>& headers,
-                   const std::string& content,
-                   const std::string& contentType,
-                   const ledger::URL_METHOD& method,
-                   ledger::LedgerCallbackHandler* handler) override;
+  std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& contentType,
+      const ledger::URL_METHOD& method,
+      ledger::LedgerCallbackHandler* handler) override;
   void RunIOTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
   void RunTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
 
