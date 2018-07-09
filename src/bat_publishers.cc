@@ -12,7 +12,10 @@
 #include "leveldb/db.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
+
+#if defined CHROMIUM_BUILD
 #include "third_party/leveldatabase/env_chromium.h"
+#endif
 
 /* foo.bar.example.com
    QLD = 'bar'
@@ -77,14 +80,26 @@ bool BatPublishers::Init() {
   braveledger_bat_helper::getHomeDir(root);
   braveledger_bat_helper::appendPath(root, PUBLISHERS_DB_NAME, db_path);
 
+#if defined CHROMIUM_BUILD
   leveldb_env::Options options;
   options.create_if_missing = true;
   leveldb::Status status = leveldb_env::OpenDB(options, db_path, &level_db_);
+#else
+  leveldb::Options options;
+  options.create_if_missing = true;
+  leveldb::DB * db_ptr = level_db_.get();
+  leveldb::Status status = leveldb::DB::Open(options, db_path, &db_ptr);
+#endif
 
   if (status.IsCorruption()) {
     LOG(WARNING) << "Deleting possibly-corrupt database";
     // base::DeleteFile(path_, true);
+
+#if defined CHROMIUM_BUILD
     status = leveldb_env::OpenDB(options, db_path, &level_db_);
+#else
+    leveldb::Status status = leveldb::DB::Open(options, db_path, &db_ptr);
+#endif
   }
 
   if (!status.ok()) {

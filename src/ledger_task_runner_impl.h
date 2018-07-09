@@ -6,6 +6,7 @@
 #define BAT_LEDGER_LEDGER_IO_TASK_RUNNER_IMPL_
 
 #include <string>
+#include <functional>
 
 #include "bat/ledger/ledger_task_runner.h"
 
