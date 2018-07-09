@@ -10,6 +10,7 @@
 #include <mutex>
 
 #include "bat/ledger/ledger_callback_handler.h"
+#include "bat/ledger/ledger_url_loader.h"
 #include "bat_helper.h"
 #include "url_request_handler.h"
 
@@ -29,8 +30,9 @@ class BatClient : public ledger::LedgerCallbackHandler {
   void registerPersonaCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void publisherTimestampCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extra_data);
   uint64_t getPublisherTimestamp();
-  uint64_t publisherInfo(const std::string& publisher,
-                        ledger::LedgerCallbackHandler* handler);
+  std::unique_ptr<ledger::LedgerURLLoader> publisherInfo(
+      const std::string& publisher,
+      ledger::LedgerCallbackHandler* handler);
   void setContributionAmount(const double& amount);
   const std::string& getBATAddress() const;
   const std::string& getBTCAddress() const;

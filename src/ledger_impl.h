@@ -11,6 +11,7 @@
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
+#include "bat/ledger/ledger_url_loader.h"
 #include "bat_helper.h"
 #include "ledger_task_runner_impl.h"
 #include "url_request_handler.h"
@@ -70,12 +71,12 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnWalletCreated(ledger::Result);
 
-  uint64_t LoadURL(const std::string& url,
-                       const std::vector<std::string>& headers,
-                       const std::string& content,
-                       const std::string& contentType,
-                       const ledger::URL_METHOD& method,
-                       ledger::LedgerCallbackHandler* handler);
+  std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& contentType,
+      const ledger::URL_METHOD& method,
+      ledger::LedgerCallbackHandler* handler);
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id);
   void RunIOTask(LedgerTaskRunnerImpl::Task task);

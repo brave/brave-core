@@ -2,19 +2,20 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this
 * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_LEDGER_TASK_RUNNER_
-#define BAT_LEDGER_LEDGER_TASK_RUNNER_
+#ifndef BAT_LEDGER_LEDGER_URL_LOADER_
+#define BAT_LEDGER_LEDGER_URL_LOADER_
 
 #include <string>
 
 namespace ledger {
 
-class LedgerTaskRunner {
+class LedgerURLLoader {
  public:
-  virtual ~LedgerTaskRunner() = default;
-  virtual void Run() = 0;
+  virtual ~LedgerURLLoader() = default;
+  virtual void Start() = 0;
+  virtual uint64_t request_id() = 0;
 };
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_LEDGER_TASK_RUNNER_
+#endif  // BAT_LEDGER_LEDGER_URL_LOADER_

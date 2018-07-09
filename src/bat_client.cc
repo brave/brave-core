@@ -79,7 +79,7 @@ void BatClient::registerPersona() {
   auto request_id = ledger_->LoadURL(buildURL(REGISTER_PERSONA, PREFIX_V2),
       std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::requestCredentialsCallback,
                                        this,
                                        _1,
@@ -139,7 +139,7 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
     buildURL((std::string)REGISTER_PERSONA + "/" + state_->userId_, PREFIX_V2),
     headers, payloadStringify, "application/json; charset=utf-8",
     ledger::URL_METHOD::POST, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::registerPersonaCallback,
                                        this,
                                        _1,
@@ -202,7 +202,7 @@ void BatClient::publisherTimestamp( bool save_state) {
 
   auto request_id = ledger_->LoadURL(buildURL(PUBLISHER_TIMESTAMP, PREFIX_V3), std::vector<std::string>(), "", "",
     ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::publisherTimestampCallback,
                                        this,
                                        _1,
@@ -231,8 +231,9 @@ uint64_t BatClient::getPublisherTimestamp() {
   return publisherTimestamp_;
 }
 
-uint64_t BatClient::publisherInfo(const std::string& publisher,
-                             ledger::LedgerCallbackHandler* handler){
+std::unique_ptr<ledger::LedgerURLLoader> BatClient::publisherInfo(
+    const std::string& publisher,
+    ledger::LedgerCallbackHandler* handler){
   return ledger_->LoadURL(buildURL(PUBLISHER_INFO + publisher, PREFIX_V3),
       std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, handler);
 }
@@ -266,7 +267,7 @@ const std::string& BatClient::getLTCAddress() const {
 //       "",
 //       "",
 //       ledger::URL_METHOD::GET, &handler_);
-//   handler_.AddRequestHandler(request_id,
+//   handler_.AddRequestHandler(std::move(request_id),
 //                              std::bind(&BatClient::publisherTimestampCallback,
 //                                        this,
 //                                        _1,
@@ -288,7 +289,7 @@ void BatClient::reconcile(const std::string& viewingId) {
       ledger::URL_METHOD::GET,
       &handler_);
 
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::reconcileCallback,
                                        this,
                                        _1,
@@ -315,7 +316,7 @@ void BatClient::currentReconcile() {
   auto request_id = ledger_->LoadURL(buildURL(path, ""),
       std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::currentReconcileCallback,
                                        this,
                                        _1,
@@ -379,7 +380,7 @@ void BatClient::currentReconcileCallback(bool result, const std::string& respons
     headers, payloadStringify, "application/json; charset=utf-8",
     ledger::URL_METHOD::PUT,
     &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::reconcilePayloadCallback,
                                        this,
                                        _1,
@@ -412,7 +413,7 @@ void BatClient::reconcilePayloadCallback(bool result, const std::string& respons
 
   auto request_id = ledger_->LoadURL(buildURL(UPDATE_RULES_V1, ""),
     std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::updateRulesCallback,
                                        this,
                                        _1,
@@ -431,7 +432,7 @@ void BatClient::updateRulesCallback(bool result, const std::string& response, co
   auto request_id = ledger_->LoadURL(buildURL(UPDATE_RULES_V2, ""),
     std::vector<std::string>(), "", "",
     ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::updateRulesV2Callback,
                                        this,
                                        _1,
@@ -458,7 +459,7 @@ void BatClient::registerViewing() {
   auto request_id = ledger_->LoadURL(buildURL((std::string)REGISTER_VIEWING, PREFIX_V2),
     std::vector<std::string>(), "", "",
     ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::registerViewingCallback,
                                        this,
                                        _1,
@@ -490,7 +491,7 @@ void BatClient::viewingCredentials(const std::string& proofStringified, const st
   auto request_id = ledger_->LoadURL(buildURL((std::string)REGISTER_VIEWING + "/" + anonizeViewingId, PREFIX_V2),
     std::vector<std::string>(), proofStringified, "application/json; charset=utf-8",
     ledger::URL_METHOD::POST, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::viewingCredentialsCallback,
                                        this,
                                        _1,
@@ -631,7 +632,7 @@ void BatClient::prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, co
 
   auto request_id = ledger_->LoadURL(buildURL((std::string)SURVEYOR_BATCH_VOTING + transaction.anonizeViewingId_, PREFIX_V2),
     std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::prepareBatchCallback,
                                        this,
                                        _1,
@@ -729,7 +730,7 @@ void BatClient::prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, c
 
   auto request_id = ledger_->LoadURL(buildURL((std::string)SURVEYOR_VOTING + surveyorIdEncoded + "/" + transaction.anonizeViewingId_, PREFIX_V2),
     std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::prepareBallotCallback,
                                        this,
                                        _1,
@@ -800,7 +801,7 @@ void BatClient::commitBallot(const braveledger_bat_helper::BALLOT_ST& ballot, co
 
   auto request_id = ledger_->LoadURL(buildURL((std::string)SURVEYOR_VOTING + surveyorIdEncoded, PREFIX_V2),
     std::vector<std::string>(), payload, "", ledger::URL_METHOD::PUT, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::commitBallotCallback,
                                        this,
                                        _1,
@@ -862,7 +863,7 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
   auto request_id = ledger_->LoadURL(buildURL((std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex, ""),
     std::vector<std::string>(), "", "",
     ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::recoverWalletPublicKeyCallback,
                                        this,
                                        _1,
@@ -877,7 +878,7 @@ void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& r
 
   auto request_id = ledger_->LoadURL(buildURL((std::string)RECOVER_WALLET + recoveryId, ""),
     std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::recoverWalletCallback,
                                        this,
                                        _1,
@@ -911,7 +912,7 @@ void BatClient::getPromotion(const std::string& lang, const std::string& forPaym
 
   auto request_id = ledger_->LoadURL(buildURL((std::string)GET_SET_PROMOTION + arguments, ""),
     std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::getPromotionCallback,
                                        this,
                                        _1,
@@ -929,7 +930,7 @@ void BatClient::setPromotion(const std::string& promotionId, const std::string& 
 
   auto request_id = ledger_->LoadURL(buildURL((std::string)GET_SET_PROMOTION + "/" + state_->walletInfo_.paymentId_, ""),
     std::vector<std::string>(), payload, "", ledger::URL_METHOD::PUT, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::setPromotionCallback,
                                        this,
                                        _1,
@@ -944,7 +945,7 @@ void BatClient::getPromotionCaptcha() {
   auto request_id = ledger_->LoadURL(buildURL((std::string)GET_PROMOTION_CAPTCHA + state_->walletInfo_.paymentId_, ""),
     std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(request_id,
+  handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::getPromotionCaptchaCallback,
                                        this,
                                        _1,

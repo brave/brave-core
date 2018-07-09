@@ -7,9 +7,11 @@
 
 #include <functional>
 #include <map>
+#include <memory>
 #include <string>
 
 #include "bat/ledger/ledger_callback_handler.h"
+#include "bat/ledger/ledger_url_loader.h"
 #include "bat_helper.h"
 
 namespace bat_ledger {
@@ -22,7 +24,8 @@ class URLRequestHandler : public ledger::LedgerCallbackHandler {
   ~URLRequestHandler() override;
 
   void Clear();
-  bool AddRequestHandler(uint64_t request_id, URLRequestCallback callback);
+  bool AddRequestHandler(std::unique_ptr<ledger::LedgerURLLoader> loader,
+                         URLRequestCallback callback);
   bool RunRequestHandler(uint64_t request_id,
                          bool success,
                          const std::string& response);

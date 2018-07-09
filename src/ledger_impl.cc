@@ -65,12 +65,12 @@ void LedgerImpl::OnWalletCreated(ledger::Result result) {
   ledger_client_->OnWalletCreated(result);
 }
 
-uint64_t LedgerImpl::LoadURL(const std::string& url,
-                    const std::vector<std::string>& headers,
-                    const std::string& content,
-                    const std::string& contentType,
-                    const ledger::URL_METHOD& method,
-                    ledger::LedgerCallbackHandler* handler) {
+std::unique_ptr<ledger::LedgerURLLoader> LedgerImpl::LoadURL(const std::string& url,
+    const std::vector<std::string>& headers,
+    const std::string& content,
+    const std::string& contentType,
+    const ledger::URL_METHOD& method,
+    ledger::LedgerCallbackHandler* handler) {
   return ledger_client_->LoadURL(
       url, headers, content, contentType, method, handler);
 }
@@ -123,13 +123,14 @@ void LedgerImpl::saveVisitCallback(const std::string& publisher,
 
   // Update publisher verified or not flag
   //LOG(ERROR) << "!!!getting publisher info";
-  auto request_id = bat_client_->publisherInfo(publisher, &handler_);
-  handler_.AddRequestHandler(request_id, std::bind(&LedgerImpl::publisherInfoCallback,
-                                            this,
-                                            publisher,
-                                            publisherTimestamp,
-                                            _1,
-                                            _2));
+  auto request = bat_client_->publisherInfo(publisher, &handler_);
+  handler_.AddRequestHandler(std::move(request),
+                             std::bind(&LedgerImpl::publisherInfoCallback,
+                                        this,
+                                        publisher,
+                                        publisherTimestamp,
+                                        _1,
+                                        _2));
 }
 
 void LedgerImpl::publisherInfoCallback(const std::string& publisher,

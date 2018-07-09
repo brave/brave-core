@@ -9,6 +9,7 @@
 
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_task_runner.h"
+#include "bat/ledger/ledger_url_loader.h"
 
 namespace ledger {
 
@@ -33,12 +34,12 @@ class LedgerClient {
                                LedgerCallbackHandler* handler) = 0;
   virtual void SavePublisherState(const std::string& publisher_state,
                                   LedgerCallbackHandler* handler) = 0;
-  virtual uint64_t LoadURL(const std::string& url,
-                       const std::vector<std::string>& headers,
-                       const std::string& content,
-                       const std::string& contentType,
-                       const URL_METHOD& method,
-                       ledger::LedgerCallbackHandler* handler) = 0;
+  virtual std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& contentType,
+      const ledger::URL_METHOD& method,
+      ledger::LedgerCallbackHandler* handler) = 0;
   // RunIOTask and RunTask are temporary workarounds for leveldb
   // and we should replace them with a ledger_client api for reading/writing
   // individual records

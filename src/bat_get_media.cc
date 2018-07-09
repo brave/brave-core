@@ -108,9 +108,9 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
   }
   if (YOUTUBE_MEDIA_TYPE == providerName) {
     // TODO(bridiver) - this is also an issue because we're making these calls from the IO thread
-    auto request_id = ledger_->LoadURL((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + mediaURLEncoded,
+    auto request = ledger_->LoadURL((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + mediaURLEncoded,
       std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-    handler_.AddRequestHandler(request_id,
+    handler_.AddRequestHandler(std::move(request),
         std::bind(&BatGetMedia::getPublisherFromMediaPropsCallback,
         this,
         _1,
@@ -256,9 +256,9 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(bool result, const std::str
     newExtraData.string3 = publisherURL;
     newExtraData.string4 = publisherName;
 
-    auto request_id = ledger_->LoadURL(publisherURL,
+    auto request = ledger_->LoadURL(publisherURL,
         std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-    handler_.AddRequestHandler(request_id,
+    handler_.AddRequestHandler(std::move(request),
         std::bind(&BatGetMedia::getPublisherInfoCallback,
                   this,
                   _1,

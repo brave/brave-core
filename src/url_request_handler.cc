@@ -25,12 +25,15 @@ void URLRequestHandler::OnURLRequestResponse(uint64_t request_id,
   }
 }
 
-bool URLRequestHandler::AddRequestHandler(uint64_t request_id,
-                                          URLRequestCallback callback) {
+bool URLRequestHandler::AddRequestHandler(
+    std::unique_ptr<ledger::LedgerURLLoader> loader,
+    URLRequestCallback callback) {
+  uint64_t request_id = loader->request_id();
   if (request_handlers_.find(request_id) != request_handlers_.end())
     return false;
 
   request_handlers_[request_id] = callback;
+  loader->Start();
   return true;
 }
 
