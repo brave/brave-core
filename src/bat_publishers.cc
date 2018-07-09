@@ -78,7 +78,7 @@ bool BatPublishers::Init() {
 
   leveldb::Options options;
   options.create_if_missing = true;
-  leveldb::DB * db_ptr = level_db_.get();
+  leveldb::DB * db_ptr = nullptr;
   leveldb::Status status = leveldb::DB::Open(options, db_path, &db_ptr);
 
   if (status.IsCorruption()) {
@@ -87,12 +87,18 @@ bool BatPublishers::Init() {
     leveldb::Status status = leveldb::DB::Open(options, db_path, &db_ptr);
   }
 
+  bool succeded = false;
   if (!status.ok()) {
     LOG(ERROR) << "init level db open error " << db_path;
-    return false;
+    succeded = false;
+  }
+  else
+  {
+    level_db_.reset(db_ptr);
+    succeded = true;
   }
 
-  return true;
+  return succeded;
 }
 
 void BatPublishers::loadPublishers() {
