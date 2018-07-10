@@ -50,13 +50,14 @@ group("brave") {
   public_deps = [
     "//chrome",
   ]
+  deps = []
   if (is_win) {
-    deps = [
+    deps += [
       "build/win:copy_exe",
       "build/win:copy_pdb"
     ]
   }
-  deps = [
+  deps += [
     ":generate_version",
   ]
 }
