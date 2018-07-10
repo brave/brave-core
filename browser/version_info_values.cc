@@ -4,6 +4,8 @@
 
 #include "brave/browser/version_info_values.h"
 
-#define GetVersionNumber GetBraveVersionNumber
-#include "../../../../../../../chrome/browser/ui/webui/settings/about_handler.cc"
-#undef GetVersionNumber
+namespace version_info {
+std::string GetBraveVersionNumber() {
+  return std::string(BRAVE_BROWSER_VERSION) + "  Chromium: " + PRODUCT_VERSION;
+}
+}  // namespace version_info

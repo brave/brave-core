@@ -41,6 +41,8 @@ source_set("browser_process") {
     "sparkle_glue_mac.h",
     "update_util.cc",
     "update_util.h",
+    "version_info_values.cc",
+    "version_info_values.h",
   ]
 
   deps = [
