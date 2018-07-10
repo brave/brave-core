@@ -4,6 +4,8 @@ import UIKit
 import CoreData
 import Shared
 
+private let log = Logger.browserLogger
+
 //      Now that sync is disabled, we hvae fallen back to the original design (from floriankugler)
 //      Will update template once issues are ironed out
 
@@ -111,12 +113,12 @@ public class DataController: NSObject {
 
     public static func saveContext(context: NSManagedObjectContext?) {
         guard let context = context else {
-            print("No context on save")
+            log.warning("No context on save")
             return
         }
         
         if context === DataController.shared.writeContext {
-            print("Do not use with the write moc, this save is handled internally here.")
+            log.warning("Do not use with the write moc, this save is handled internally here.")
             return
         }
 

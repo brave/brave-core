@@ -352,11 +352,14 @@ class TabManager: NSObject {
     private func saveTabOrder() {
         let context = DataController.shared.workerContext
         context.perform {
-            for i in 0..<self.tabs.count {
-                let tab = self.tabs[i]
-                guard let managedObject = TabMO.get(by: tab.id, context: context) else { log.error("Error: Tab missing managed object"); continue }
+            for (i, tab) in self.tabs.enumerated() {
+                guard let managedObject = TabMO.get(by: tab.id, context: context) else { 
+                    log.error("Error: Tab missing managed object")
+                    continue
+                }
                 managedObject.order = Int16(i)
             }
+            
             DataController.saveContext(context: context)
         }
     }
@@ -444,8 +447,7 @@ class TabManager: NSObject {
         let context = DataController.shared.mainThreadContext
         
         // Ignore session restore data.
-        guard let urlString = tab.url?.absoluteString else { return nil }
-        if urlString.contains("localhost") { return nil }
+        guard let urlString = tab.url?.absoluteString, !urlString.contains("localhost") else { return nil }
         
         var urls = [String]()
         var currentPage = 0
@@ -835,7 +837,6 @@ extension TabManager {
             let data = SavedTab(id: tabUUID, title: savedTab.title ?? "", url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)
             if let webView = tab.webView {
                 tab.navigationDelegate = navDelegate
-                // tab.restore(webView, restorationData: data)
                 tab.restore(webView, restorationData: data)
             }
         }
