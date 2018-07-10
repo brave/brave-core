@@ -247,8 +247,8 @@ class Tab: NSObject {
             let currentPage = sessionData.historyIndex
             self.sessionData = nil
             var jsonDict = [String: AnyObject]()
-            jsonDict["history"] = updatedURLs as AnyObject
-            jsonDict["currentPage"] = Int(currentPage) as AnyObject
+            jsonDict[SessionData.Keys.history] = updatedURLs as AnyObject
+            jsonDict[SessionData.Keys.currentPage] = Int(currentPage) as AnyObject
             
             guard let escapedJSON = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
                 return
@@ -299,17 +299,12 @@ class Tab: NSObject {
     var title: String? {
         return webView?.title
     }
-    
-    private var isHomePanel: Bool {
-        guard let url = webView?.url else { return false }
-        return url.baseDomain == "localhost" && url.absoluteString.contains("about/home/#panel=0")
-    }
 
     var displayTitle: String {
         if let title = webView?.title, !title.isEmpty {
             return title.range(of: "localhost") == nil ? title : ""
         }
-        else if isHomePanel {
+        else if let url = webView?.url, url.isAboutHomeURL {
             return Strings.NewTabTitle
         }
         
