@@ -24,6 +24,11 @@ struct UX {
         static let StatTitleColor = GreyF
     }
     
+    struct Favorites {
+        static let cellLabelColorNormal = UIColor(rgb: 0x2D2D2D)
+        static let cellLabelColorPrivate = UIColor(rgb: 0xDBDBDB)
+    }
+    
     static let BraveOrange = UIColor(rgb: 0xfb542b)
     
     static let Blue = UIColor(rgb: 0x424acb)

@@ -47,13 +47,9 @@ class FavoriteCell: UICollectionViewCell {
             }
             
             if var image = image {
-                if image.size.width <= 32 && ContainerSize.size != CGSize.zero {
-                    var maxScale = CGFloat(image.size.width < 24 ? 3.0 : 1.5)
-                    if ContainerSize.size.width > 170 {
-                        // we are on iPad pro. Fragile, but no other way to detect this on simulator.
-                        maxScale *= 2.0
-                    }
-                    image = imageWithSize(image, size: ContainerSize.scaledDown(), maxScale: maxScale)
+                if image.size.width <= 32 && ContainerSize.size != CGSize.zero {                    
+                    image = image.scale(toSize: ContainerSize.scaledDown())
+                    
                     imageView.contentMode = .center
                 }
                 else if image.size.width > 32 {
@@ -187,14 +183,18 @@ class FavoriteCell: UICollectionViewCell {
         showBorder(false)
         backgroundColor = UIColor.clear
         textLabel.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
-        textLabel.textColor = UIApplication.isInPrivateMode ? UIColor(rgb: 0xDBDBDB) : UIColor(rgb: 0x2D2D2D)
+        textLabel.textColor = 
+            UIApplication.isInPrivateMode ? UX.Favorites.cellLabelColorPrivate : UX.Favorites.cellLabelColorNormal
         imageView.backgroundColor = UIColor.clear
         imageView.image = nil
     }
     
     private func updateSelectedHighlightedState() {
+        let activatedAlpha: CGFloat = 0.7
+        let disactivatedAlpha: CGFloat = 1.0
+        
         let activated = isSelected || isHighlighted
-        self.imageView.alpha = activated ? 0.7 : 1.0
+        self.imageView.alpha = activated ? activatedAlpha : disactivatedAlpha
     }
     
     @objc func editButtonTapped() {
