@@ -476,7 +476,8 @@ class TabManager: NSObject {
             
             let isSelected = selectedTab === tab
             
-            let data = SavedTab(id, title, urlString, isSelected, Int16(order), nil, urls, Int16(currentPage))
+            let data = SavedTab(id: id, title: title, url: urlString, isSelected: isSelected, order: Int16(order), 
+                                screenshot: nil, history: urls, historyIndex: Int16(currentPage))
             return data
         }
         

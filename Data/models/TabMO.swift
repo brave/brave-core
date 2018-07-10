@@ -8,8 +8,29 @@ import Shared
 import WebKit
 import XCGLogger
 
-// Properties we want to extract from Tab/TabManager and save in TabMO
-public typealias SavedTab = (id: String, title: String, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, history: [String], historyIndex: Int16)
+/// Properties we want to extract from Tab/TabManager and save in TabMO
+public struct SavedTab {
+    public let id: String
+    public let title: String
+    public let url: String
+    public let isSelected: Bool
+    public let order: Int16
+    public let screenshot: UIImage?
+    public let history: [String]
+    public let historyIndex: Int16
+    
+    public init(id: String, title: String, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, 
+                history: [String], historyIndex: Int16) {
+        self.id = id
+        self.title = title
+        self.url = url
+        self.isSelected = isSelected
+        self.order = order
+        self.screenshot = screenshot
+        self.history = history
+        self.historyIndex = historyIndex
+    }
+}
 
 private let log = Logger.browserLogger
 
