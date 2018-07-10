@@ -34,6 +34,18 @@ group("browser_dependencies") {
   ]
 }
 
+action("generate_version") {
+  script = "//brave/script/version.py"
+  gen_dir = rebase_path(root_gen_dir, "//")
+  args = [
+    "--target_gen_dir=$gen_dir"
+  ]
+  inputs = [ "../../package.json" ]
+  outputs = [
+    "$root_out_dir/version"
+  ]
+}
+
 group("brave") {
   public_deps = [
     "//chrome",
@@ -44,6 +56,9 @@ group("brave") {
       "build/win:copy_pdb"
     ]
   }
+  deps = [
+    ":generate_version",
+  ]
 }
 
 group("brave_tests") {
@@ -83,14 +98,6 @@ group("create_dist") {
       "//brave/app/linux:dist_resources",
     ]
   }
-}
-
-action("generate_version") {
-  script = "//brave/script/version.py"
-
-  outputs = [
-    "$root_out_dir/version"
-  ]
 }
 
 copy("brave_dist_resources") {

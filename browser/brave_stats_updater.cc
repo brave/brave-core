@@ -7,6 +7,7 @@
 #include "base/sys_info.h"
 #include "brave/browser/brave_stats_updater_params.h"
 #include "brave/common/pref_names.h"
+#include "brave/version.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/channel_info.h"
@@ -64,7 +65,7 @@ GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
   update_url =
       net::AppendQueryParameter(update_url, "channel", GetChannelName());
   update_url = net::AppendQueryParameter(update_url, "version",
-                                         version_info::GetVersionNumber());
+                                         BRAVE_BROWSER_VERSION);
   update_url = net::AppendQueryParameter(update_url, "daily",
                                          stats_updater_params.GetDailyParam());
   update_url = net::AppendQueryParameter(update_url, "weekly",
