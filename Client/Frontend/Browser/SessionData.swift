@@ -11,6 +11,11 @@ class SessionData: NSObject, NSCoding {
     let currentPage: Int
     let urls: [URL]
     let lastUsedTime: Timestamp
+    
+    struct Keys {
+        static let currentPage = "currentPage"
+        static let history = "history"
+    }
 
     var jsonDictionary: [String: Any] {
         return [
