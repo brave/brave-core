@@ -72,12 +72,9 @@ class FavoritesTileDecorator {
             cell.imageView.contentMode = .scaleAspectFit
             cell.imageView.layer.minificationFilter = kCAFilterTrilinear
             cell.showBorder(!UIApplication.isInPrivateMode)
-
-            UIGraphicsBeginImageContextWithOptions(image.size, false, 0)
-            image.draw(in: CGRect(origin: CGPoint(x: 3, y: 6), size: CGSize(width: image.size.width - 6, height: image.size.height - 6)))
-            let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            cell.imageView.image = scaledImage
+            
+            let size = CGSize(width: image.size.width - 6, height: image.size.height - 6)
+            cell.imageView.image = image.scale(toSize: size)
             break
         case .faviconOnly:
             ImageCache.shared.image(url, type: .square, callback: { (image) in
