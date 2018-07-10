@@ -100,6 +100,13 @@
 
 By installing this extension, you are agreeing to the Google Widevine Terms of Use. You agree that Brave is not responsible for any damages or losses in connection with your use of Google Widevine.
       </message>
+      <!-- Brave Importer -->
+      <message name="IDS_IMPORT_FROM_BRAVE" desc="browser combo box: Brave">
+        Brave
+      </message>
+      <message name="IDS_BOOKMARK_GROUP_FROM_BRAVE" desc="The group name of bookmarks from Brave">
+        Imported From Brave
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />

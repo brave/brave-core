@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index 3bf47fa746e2a417f89201f3e3800d8639f2e323..122e9daf552834db4d41c77a320332305320696b 100644
+index 3bf47fa746e2a417f89201f3e3800d8639f2e323..b40d0e1ace80355ee8163abd9b632ba428803caf 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
-@@ -7,9 +7,12 @@
+@@ -7,9 +7,13 @@
  #include <stdint.h>
  
  #include "base/bind.h"
@@ -11,89 +11,43 @@ index 3bf47fa746e2a417f89201f3e3800d8639f2e323..122e9daf552834db4d41c77a32033230
  #include "base/task_scheduler/task_traits.h"
  #include "base/threading/thread_restrictions.h"
 +#include "base/values.h"
++#include "brave/common/importer/brave_importer_utils.h"
 +#include "brave/common/importer/chrome_importer_utils.h"
  #include "build/build_config.h"
  #include "chrome/browser/shell_integration.h"
  #include "chrome/common/importer/firefox_importer_utils.h"
-@@ -124,6 +127,61 @@ void DetectFirefoxProfiles(const std::string locale,
-   profiles->push_back(firefox);
- }
+@@ -29,6 +33,9 @@
+ #include "chrome/common/importer/edge_importer_utils_win.h"
+ #endif
  
-+void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
-+                         base::ListValue* chrome_profiles,
-+                         base::FilePath& user_data_folder,
-+                         std::string& brand) {
-+  for (const auto& value : *chrome_profiles) {
-+    const base::DictionaryValue* dict;
-+    if (!value.GetAsDictionary(&dict))
-+      continue;
-+    uint16_t items = importer::NONE;
-+    std::string profile;
-+    std::string name;
-+    dict->GetString("id", &profile);
-+    dict->GetString("name", &name);
-+    if (!ChromeImporterCanImport(user_data_folder.Append(
-+      base::FilePath::StringType(profile.begin(), profile.end())), &items))
-+      continue;
-+    importer::SourceProfile chrome;
-+    std::string importer_name(brand);
-+    importer_name.append(name);
-+    chrome.importer_name = base::UTF8ToUTF16(importer_name);
-+    chrome.importer_type = importer::TYPE_CHROME;
-+    chrome.services_supported = items;
-+    chrome.source_path =
-+      user_data_folder.Append(
-+        base::FilePath::StringType(profile.begin(), profile.end()));
-+    profiles->push_back(chrome);
-+  }
-+  delete chrome_profiles;
-+}
++void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles);
++void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles);
 +
-+void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
-+  base::AssertBlockingAllowed();
-+
-+  base::FilePath chrome_user_data_folder = GetChromeUserDataFolder();
-+  base::ListValue* chrome_profiles = GetChromeSourceProfiles(chrome_user_data_folder);
-+  std::string brand_chrome("Chrome ");
-+  AddChromeToProfiles(profiles, chrome_profiles, chrome_user_data_folder, brand_chrome);
-+
-+#if !defined(OS_LINUX)
-+  base::FilePath canary_user_data_folder = GetCanaryUserDataFolder();
-+  base::ListValue* canary_profiles =
-+    GetChromeSourceProfiles(canary_user_data_folder);
-+  std::string brandCanary("Chrome Canary ");
-+  AddChromeToProfiles(profiles, canary_profiles, canary_user_data_folder,
-+                      brandCanary);
-+#endif
-+
-+  base::FilePath chromium_user_data_folder = GetChromiumUserDataFolder();
-+  base::ListValue* chromium_profiles =
-+    GetChromeSourceProfiles(chromium_user_data_folder);
-+  std::string brandChromium("Chromium ");
-+  AddChromeToProfiles(profiles, chromium_profiles, chromium_user_data_folder,
-+                      brandChromium);
-+}
-+
- std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
-     const std::string& locale,
-     bool include_interactive_profiles) {
-@@ -137,20 +195,30 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+ namespace {
+ 
+ #if defined(OS_WIN)
+@@ -136,21 +143,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+ #if defined(OS_WIN)
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
++    DetectBraveProfiles(&profiles);
      DetectBuiltinWindowsProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
    } else {
      DetectBuiltinWindowsProfiles(&profiles);
++    DetectBraveProfiles(&profiles);
      DetectFirefoxProfiles(locale, &profiles);
 +    DetectChromeProfiles(&profiles);
    }
  #elif defined(OS_MACOSX)
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
++    DetectBraveProfiles(&profiles);
      DetectSafariProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
    } else {
      DetectSafariProfiles(&profiles);
++    DetectBraveProfiles(&profiles);
      DetectFirefoxProfiles(locale, &profiles);
 +    DetectChromeProfiles(&profiles);
    }
@@ -101,8 +55,10 @@ index 3bf47fa746e2a417f89201f3e3800d8639f2e323..122e9daf552834db4d41c77a32033230
 -  DetectFirefoxProfiles(locale, &profiles);
 +  if (shell_integration::IsFirefoxDefaultBrowser()) {
 +    DetectFirefoxProfiles(locale, &profiles);
++    DetectBraveProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
 +  } else {
++    DetectBraveProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
 +    DetectFirefoxProfiles(locale, &profiles);
 +  }

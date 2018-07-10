@@ -7,6 +7,8 @@ source_set("utility") {
     "brave_content_utility_client.h",
     "importer/brave_external_process_importer_bridge.cc",
     "importer/brave_external_process_importer_bridge.h",
+    "importer/brave_importer.cc",
+    "importer/brave_importer.h",
     "importer/chrome_importer.cc",
     "importer/chrome_importer.h",
   ]

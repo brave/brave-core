@@ -10,6 +10,8 @@ source_set("common") {
     "extensions/extension_constants.h",
     "extensions/manifest_handlers/pdfjs_manifest_override.cc",
     "extensions/manifest_handlers/pdfjs_manifest_override.h",
+    "importer/brave_importer_utils.cc",
+    "importer/brave_importer_utils.h",
     "importer/chrome_importer_utils.cc",
     "importer/chrome_importer_utils.h",
     "network_constants.cc",
@@ -33,6 +35,7 @@ source_set("common") {
 
   if (is_mac) {
     sources += [
+      "importer/brave_importer_utils_mac.mm",
       "importer/chrome_importer_utils_mac.mm",
     ]
   }
@@ -41,6 +44,7 @@ source_set("common") {
     sources += [
       "brave_channel_info_posix.cc",
       "brave_channel_info_posix.h",
+      "importer/brave_importer_utils_linux.cc",
       "importer/chrome_importer_utils_linux.cc",
     ]
 
@@ -51,6 +55,7 @@ source_set("common") {
 
   if (is_win) {
     sources += [
+      "importer/brave_importer_utils_win.cc",
       "importer/chrome_importer_utils_win.cc",
     ]
   }

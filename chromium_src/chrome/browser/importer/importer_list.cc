@@ -1,0 +1,84 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "../../../../../chrome/browser/importer/importer_list.cc"
+
+#include "base/strings/utf_string_conversions.h"
+#include "base/values.h"
+#include "brave/common/importer/brave_importer_utils.h"
+#include "brave/common/importer/chrome_importer_utils.h"
+#include "chrome/grit/generated_resources.h"
+
+void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
+                         base::ListValue* chrome_profiles,
+                         base::FilePath& user_data_folder,
+                         std::string& brand) {
+  for (const auto& value : *chrome_profiles) {
+    const base::DictionaryValue* dict;
+    if (!value.GetAsDictionary(&dict))
+      continue;
+    uint16_t items = importer::NONE;
+    std::string profile;
+    std::string name;
+    dict->GetString("id", &profile);
+    dict->GetString("name", &name);
+    if (!ChromeImporterCanImport(user_data_folder.Append(
+      base::FilePath::StringType(profile.begin(), profile.end())), &items))
+      continue;
+    importer::SourceProfile chrome;
+    std::string importer_name(brand);
+    importer_name.append(name);
+    chrome.importer_name = base::UTF8ToUTF16(importer_name);
+    chrome.importer_type = importer::TYPE_CHROME;
+    chrome.services_supported = items;
+    chrome.source_path =
+      user_data_folder.Append(
+        base::FilePath::StringType(profile.begin(), profile.end()));
+    profiles->push_back(chrome);
+  }
+  delete chrome_profiles;
+}
+
+void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
+  base::AssertBlockingAllowed();
+
+  base::FilePath chrome_user_data_folder = GetChromeUserDataFolder();
+  base::ListValue* chrome_profiles = GetChromeSourceProfiles(chrome_user_data_folder);
+  std::string brand_chrome("Chrome ");
+  AddChromeToProfiles(profiles, chrome_profiles, chrome_user_data_folder, brand_chrome);
+
+#if !defined(OS_LINUX)
+  base::FilePath canary_user_data_folder = GetCanaryUserDataFolder();
+  base::ListValue* canary_profiles =
+    GetChromeSourceProfiles(canary_user_data_folder);
+  std::string brandCanary("Chrome Canary ");
+  AddChromeToProfiles(profiles, canary_profiles, canary_user_data_folder,
+                      brandCanary);
+#endif
+
+  base::FilePath chromium_user_data_folder = GetChromiumUserDataFolder();
+  base::ListValue* chromium_profiles =
+    GetChromeSourceProfiles(chromium_user_data_folder);
+  std::string brandChromium("Chromium ");
+  AddChromeToProfiles(profiles, chromium_profiles, chromium_user_data_folder,
+                      brandChromium);
+}
+
+void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles) {
+  base::AssertBlockingAllowed();
+
+  base::FilePath brave_user_data_folder = GetBraveUserDataFolder();
+
+  uint16_t items = importer::NONE;
+  if (!BraveImporterCanImport(brave_user_data_folder, &items))
+    return;
+
+  importer::SourceProfile brave;
+  brave.importer_name =
+      l10n_util::GetStringUTF16(IDS_IMPORT_FROM_BRAVE);
+  brave.importer_type = importer::TYPE_BRAVE;
+  brave.services_supported = items;
+  brave.source_path = brave_user_data_folder;
+  profiles->push_back(brave);
+}
