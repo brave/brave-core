@@ -36,7 +36,7 @@ public class TabMO: NSManagedObject {
     public override func prepareForDeletion() {
         super.prepareForDeletion()
 
-        // BRAVE TODO: uncomment
+        // BRAVE TODO: check, if we still need it for restoring website screenshots.
         // Remove cached image
 //        if let url = imageUrl, !PrivateBrowsing.singleton.isOn {
 //            ImageCache.shared.remove(url, type: .portrait)
@@ -59,12 +59,11 @@ public class TabMO: NSManagedObject {
     }
 
     // Updates existing tab with new data. Usually called when user navigates to a new website for in his existing tab.
-    @discardableResult 
-    public class func update(with id: String, tabData: SavedTab, context: NSManagedObjectContext) -> TabMO? {
+    @discardableResult public class func update(with id: String, tabData: SavedTab, context: NSManagedObjectContext) -> TabMO? {
         guard let tab = get(by: id, context: context) else { return nil }
         
-        if let s = tabData.screenshot {
-            tab.screenshot = UIImageJPEGRepresentation(s, 1)
+        if let screenshot = tabData.screenshot {
+            tab.screenshot = UIImageJPEGRepresentation(screenshot, 1)
         }
         tab.url = tabData.url
         tab.order = tabData.order
