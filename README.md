@@ -1,41 +1,31 @@
-Firefox for iOS [![codebeat badge](https://codebeat.co/badges/67e58b6d-bc89-4f22-ba8f-7668a9c15c5a)](https://codebeat.co/projects/github-com-mozilla-firefox-ios) [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=57bf25c0f096bc01001e21e0&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/57bf25c0f096bc01001e21e0/build/latest) [![codecov](https://codecov.io/gh/mozilla-mobile/firefox-ios/branch/master/graph/badge.svg)](https://codecov.io/gh/mozilla-mobile/firefox-ios/branch/master)
+Brave for iOS 🦁
 ===============
 
-Download on the [App Store](https://itunes.apple.com/app/firefox-web-browser/id989804926).
+Download on the [App Store](https://itunes.apple.com/app/brave-web-browser/id1052879175?mt=8).
 
-This branch (master)
+This branch (development)
 -----------
 
-This branch is for mainline development that will ship in *v11.0*.
+This branch is for mainline development that will ship in the next release.
 
-This branch only works with Xcode 9.3 and supports iOS 10, and 11.
-
-This branch is written in Swift 4
+This branch currently supports iOS 11, and is written in Swift 4.
 
 Please make sure you aim your pull requests in the right direction.
 
-For bug fixes and features for the upcoming v12.0 release, please see the *v12.x* branch. (Which may not exist yet)
+For bug fixes and features for the upcoming release, please see the associated [GitHub milestones](https://github.com/brave/brave-ios/milestones) (e.g. *2.1.3*).
 
 Getting involved
 ----------------
 
-We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution. Please read the [Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/).
+We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution.
 
-* IRC:            [#mobile](https://wiki.mozilla.org/IRC) for general discussion and [#mobistatus](https://wiki.mozilla.org/IRC) for team status updates.
-* Mailing list:   [mobile-firefox-dev@mozilla.org](https://mail.mozilla.org/listinfo/mobile-firefox-dev).
-* Bugs:           [File a new bug](https://bugzilla.mozilla.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2F&bug_ignored=0&op_sys=iOS%20&product=Firefox%20for%20iOS&rep_platform=All) • [Existing bugs](https://bugzilla.mozilla.org/describecomponents.cgi?product=Firefox%20for%20iOS)
+* Discord:            [#iOS](https://discord.gg/cR3gmq5) for general conversing and [#developers-ios](https://wiki.mozilla.org/IRC) for development discussion.
+* Bugs:           [File a new bug](https://github.com/brave/brave-ios/issues/new) • [Existing bugs](https://github.com/brave/brave-ios/issues)
 
-Want to contribute but don't know where to start? Here is a list of [Good First Bugs.](http://www.joshmatthews.net/bugsahoy/?mobileios=1&simple=1)
-
-Likewise, the design and UX is still in flux. Don't get attached to them. They will change tomorrow!
-https://mozilla.invisionapp.com/share/HA254M642#/screens/63057282?maintainScrollPosition=false
-
-*GitHub issues are enabled* on this repository, but we encourage you to file a bug (see above). We'll accept issues to track work items that don't yet have a pull request, and also as an early funnel for bug reports, but Bugzilla is the source of truth for lots of good reasons — issues will be shifted into Bugzilla, and pull requests need a bug number.
+Want to contribute but don't know where to start? Here is a list of [Good First Issues](https://github.com/brave/brave-ios/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
 
 Building the code
 -----------------
-
-> __As of April 2018, this project requires Xcode 9.3.__
 
 1. Install the latest [Xcode developer tools](https://developer.apple.com/xcode/downloads/) from Apple.
 1. Install Carthage
@@ -45,61 +35,30 @@ Building the code
     ```
 1. Clone the repository:
     ```shell
-    git clone https://github.com/mozilla-mobile/firefox-ios
+    git clone https://github.com/brave/brave-ios.git
     ```
 1. Pull in the project dependencies:
     ```shell
-    cd firefox-ios
+    cd brave-ios
     sh ./bootstrap.sh
     ```
 1. Open `Client.xcodeproj` in Xcode.
 1. Build the `Fennec` scheme in Xcode.
 
-## Building User Scripts
-
-User Scripts (JavaScript injected into the `WKWebView`) are compiled, concatenated and minified using [webpack](https://webpack.js.org/). User Scripts to be aggregated are placed in the following directories:
-
-```
-/Client
-|-- /Frontend
-    |-- /UserContent
-        |-- /UserScripts
-            |-- /AllFrames
-            |   |-- /AtDocumentEnd
-            |   |-- /AtDocumentStart
-            |-- /MainFrame
-                |-- /AtDocumentEnd
-                |-- /AtDocumentStart
-```
-
-This reduces the total possible number of User Scripts down to four. The compiled output from concatenating and minifying the User Scripts placed in these folders resides in `/Client/Assets` and are named accordingly:
-
-* `AllFramesAtDocumentEnd.js`
-* `AllFramesAtDocumentStart.js`
-* `MainFrameAtDocumentEnd.js`
-* `MainFrameAtDocumentStart.js`
-
-To simplify the build process, these compiled files are checked-in to this repository. When adding or editing User Scripts, these files can be re-compiled with `webpack` manually. This requires Node.js to be installed and all required `npm` packages can be installed by running `npm install` in the root directory of the project. User Scripts can be compiled by running the following `npm` command in the root directory of the project:
-
-```
-npm run build
-```
-
 ## Contributor guidelines
 
 ### Creating a pull request
-* All pull requests must be associated with a specific bug in [Bugzilla](https://bugzilla.mozilla.org/).
- * If a bug corresponding to the fix does not yet exist, please [file it](https://bugzilla.mozilla.org/enter_bug.cgi?op_sys=iOS&product=Firefox%20for%20iOS&rep_platform=All).
- * You'll need to be logged in to create/update bugs, but note that Bugzilla allows you to sign in with your GitHub account.
-* Use the bug number/title as the name of pull request. For example, a pull request for [bug 1135920](https://bugzilla.mozilla.org/show_bug.cgi?id=1135920) would be titled "Bug 1135920 - Create a top sites panel".
-* Finally, upload an attachment to the bug pointing to the GitHub pull request.
- 1. Click <b>Add an attachment</b>.
- 2. Next to <b>File</b>, click <b>Paste text as attachment</b>.
- 3. Paste the URL of the GitHub pull request.
- 4. Enter "Pull request" as the description.
- 5. Finally, flag the pull request for review. Set the <b>review</b> field to "?", then enter the name of the person you'd like to review your patch. If you don't know whom to add as the reviewer, click <b>suggested reviewers</b> and select a name from the dropdown list.
-
-<b>Pro tip: To simplify the attachment step, install the [Github Bugzilla Tweaks](https://github.com/autonome/Github-Bugzilla-Tweaks) addon. This will add a button that takes care of the first four attachment steps for you.</b>
+* All pull requests must be associated with a specific GitHub issue.
+* If a bug corresponding to the fix does not yet exist, please file it.
+* Please use the following formats in your PR titles:
+    <br>&nbsp;&nbsp;`Fix/Ref #<issueId>: <description>.`
+    <br>&nbsp;&nbsp;Examples:
+    <br>&nbsp;&nbsp;`Fix #102: Added Face ID usage description to plist.`
+    <br>&nbsp;&nbsp;`Ref #102: Fixed type on Face ID usage description.`
+* Add any additional information regarding the PR in the description.
+* In the unlikely and rare situation that a PR fixing multiple, related issues separate issue numbers with a comma:
+    <br>&nbsp;&nbsp;`Fix #159, Fix #160: Removed whitepsace for + button on right-side panel.`
+* PRs will be squashed and merged, so it is important to keep PRs focused on specific tasks.
 
 ### Swift style
 * Swift code should generally follow the conventions listed at https://github.com/raywenderlich/swift-style-guide.
@@ -107,10 +66,29 @@ npm run build
 
 ### Whitespace
 * New code should not contain any trailing whitespace.
-* We recommend enabling both the "Automatically trim trailing whitespace" and "Including whitespace-only lines" preferences in Xcode (under Text Editing).
-* <code>git rebase --whitespace=fix</code> can also be used to remove whitespace from your commits before issuing a pull request.
+* We recommend *enabling* the "Automatically trim trailing whitespace" and keeping "Including whitespace-only lines" *deselected* in Xcode (under Text Editing).
 
 ### Commits
 * Each commit should have a single clear purpose. If a commit contains multiple unrelated changes, those changes should be split into separate commits.
 * If a commit requires another commit to build properly, those commits should be squashed.
 * Follow-up commits for any review comments should be squashed. Do not include "Fixed PR comments", merge commits, or other "temporary" commits in pull requests.
+
+> In *most* cases Pull Request commits will remain intact with a merge commit on the targeted branch.
+
+## Code Signing
+
+1. After running the *bootstrap.sh* script in the setup instructions navigate to:
+<br>`Client/Configuration/Local/DevTeam.xcconfig`
+1. Add your *Apple Team ID* in this file:
+<br>`LOCAL_DEVELOPMENT_TEAM = KL8N8XSYF4`
+
+>Team IDs look identical to provisioning profile UUIDs, so make sure this is the correct one.
+
+The entire `Local` directory is included in the `.gitignore`, so these changes are not tracked by source control. This allows code signing without making tracked changes. Updating this file will only sign the `Fennec` target for local builds.
+
+### Finding Team IDs
+
+The easiest known way to find your team ID is to log into your [Apple Developer](https://developer.apple.com) account. After logging in, the team ID is currently shown at the end of the URL:
+<br>`https://developer.apple.com/account/<TEAM ID>`
+
+Use this string literal in the above, `DevTeam.xcconfig` file to code sign 
