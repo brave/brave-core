@@ -41,7 +41,7 @@ KeyedService* PaymentsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
 #if defined(BRAVE_PAYMENTS_ENABLED)
   std::unique_ptr<payments::PaymentsService> payments_service(
-      new payments::PaymentsServiceImpl());
+      new payments::PaymentsServiceImpl(Profile::FromBrowserContext(context)));
   return payments_service.release();
 #else
   return NULL;

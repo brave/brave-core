@@ -10,7 +10,7 @@ deps = {
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/svn2github/python-patch@a336a458016ced89aba90dfc3f4c8222ae3b1403",
   "vendor/sparkle": "https://github.com/brave/Sparkle.git@c0759cce415d7c0feae45005c8a013b1898711f0",
-  "vendor/bat-native-ledger": "https://github.com/brave-intl/bat-native-ledger@2f1f6480cfa618c6dc2209dbbbfdece1ae8dd377",
+  "vendor/bat-native-ledger": "https://github.com/brave-intl/bat-native-ledger@692d9a510afc6ca25143ee9b7b68b833d6a92f70",
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@744b43313525a047eda4f2e2e689aa88b6c596fa",
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@e5aba371a56d3e41f7e80e868312446ce7bd434c",
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@8f60c03329f475959b44cd22838284e19508ec80",
