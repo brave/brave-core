@@ -7,16 +7,18 @@
 
 #include <string>
 
+#include "bat/ledger/export.h"
+
 namespace ledger {
 
-enum Result {
+LEDGER_EXPORT enum Result {
   OK = 0,
   ERROR = 1,
   // some more useful result codes should go here
 };
 
 // LedgerCallbackHandler must not be destroyed if they have pending callbacks
-class LedgerCallbackHandler {
+class LEDGER_EXPORT LedgerCallbackHandler {
  public:
   virtual ~LedgerCallbackHandler() = default;
 
