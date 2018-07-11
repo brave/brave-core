@@ -22,6 +22,9 @@
 - (void)setDelegate:(id)delegate;
 - (void)checkForUpdates:(id)sender;
 - (void)checkForUpdatesInBackground;
+- (void)setAutomaticallyChecksForUpdates:(BOOL)enable;
+- (void)setAutomaticallyDownloadsUpdates:(BOOL)enable;
+- (void)setUpdateCheckInterval:(NSTimeInterval)interval;
 
 @end  // @interface SparkleGlue
 

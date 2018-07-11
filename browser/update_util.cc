@@ -10,9 +10,12 @@
 namespace brave {
 
 bool UpdateEnabled() {
-  // TODO(simonhong): Remove this flag and enable update only in official build.
-  return base::CommandLine::ForCurrentProcess()->HasSwitch(
-      switches::kEnableBraveUpdateTest);
+#if defined(OFFICIAL_BUILD)
+  return !base::CommandLine::ForCurrentProcess()->HasSwitch(
+      switches::kDisableBraveUpdate);
+#else
+  return false;
+#endif
 }
 
 }  //namespace brave

@@ -11,9 +11,9 @@ namespace switches {
 // alongside the definition of their values in the .cc file.
 extern const char kDisableBraveExtension[];
 
-extern const char kDisablePDFJSExtension[];
+extern const char kDisableBraveUpdate[];
 
-extern const char kEnableBraveUpdateTest[];
+extern const char kDisablePDFJSExtension[];
 
 }  // namespace switches
 

@@ -22,7 +22,8 @@ void VersionUpdaterMac::CheckForUpdate(
     const StatusCallback& status_callback,
     const PromoteCallback& promote_callback) {
   if (brave::UpdateEnabled()) {
-    [[SparkleGlue sharedSparkleGlue] checkForUpdatesInBackground];
+    [[SparkleGlue sharedSparkleGlue] checkForUpdates:nil];
+
     // TODO(simonhong): Update status from sparkle.
     status_callback.Run(DISABLED, 0, std::string(), 0, base::string16());
     NOTIMPLEMENTED();

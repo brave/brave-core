@@ -49,8 +49,18 @@ std::string GetDescriptionFromAppcastItem(id item) {
 - (void)initializeBraveUpdater {
   DCHECK(brave::UpdateEnabled());
 
+  // Background update check interval.
+  constexpr int kBraveUpdateCheckIntervalInSec = 3 * 60 * 60;
+
   sparkle_glue_ = [SparkleGlue sharedSparkleGlue];
+
   [sparkle_glue_ setDelegate:self];
+  [sparkle_glue_ setAutomaticallyChecksForUpdates:YES];
+  [sparkle_glue_ setAutomaticallyDownloadsUpdates:YES];
+  [sparkle_glue_ setUpdateCheckInterval:kBraveUpdateCheckIntervalInSec];
+
+  // Start background update.
+  [sparkle_glue_ checkForUpdatesInBackground];
 }
 
 #pragma mark - SUUpdaterDelegate
