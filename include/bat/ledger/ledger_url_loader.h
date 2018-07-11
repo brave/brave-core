@@ -7,9 +7,11 @@
 
 #include <string>
 
+#include "bat/ledger/export.h"
+
 namespace ledger {
 
-class LedgerURLLoader {
+class LEDGER_EXPORT LedgerURLLoader {
  public:
   virtual ~LedgerURLLoader() = default;
   virtual void Start() = 0;

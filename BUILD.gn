@@ -24,7 +24,7 @@ group("bat-native-ledger") {
     ":ledger",
   ]
 
-  deps = [
+  data_deps = [
     ":bat-native-ledger-standalone",
   ]
 }
@@ -32,6 +32,14 @@ group("bat-native-ledger") {
 static_library("bat-native-ledger-standalone") {
   # TODO(bridiver) - only export symbols from `include`
   complete_static_lib = true
+
+  output_dir = root_out_dir
+
+  configs -= [ "//build/config/compiler:thin_archive" ]
+
+  defines = [
+    "STANDALONE_BUILD",
+  ]
 
   deps = [
     ":ledger"

@@ -7,11 +7,12 @@
 
 #include <string>
 
+#include "bat/ledger/export.h"
 #include "bat/ledger/ledger_client.h"
 
 namespace ledger {
 
-class Ledger {
+class LEDGER_EXPORT Ledger {
  public:
   Ledger() = default;
   virtual ~Ledger() = default;
