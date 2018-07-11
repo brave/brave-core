@@ -31,3 +31,22 @@ carthage bootstrap $CARTHAGE_VERBOSE --platform ios --color auto --cache-builds
 
 npm install
 npm run build
+
+# Sets up local configurations from the tracked .template files
+
+# Checking the `Local` Directory
+CONFIG_PATH="Client/Configuration"
+if [ ! -d "$CONFIG_PATH/Local/" ]; then
+  echo "Creating 'Local' directory"
+
+  (cd $CONFIG_PATH && mkdir Local)
+fi
+
+# Copying over any necessary files into `Local`
+for CONFIG_FILE_NAME in BundleId DevTeam BuildId
+do
+  CONFIG_FILE=$CONFIG_FILE_NAME.xcconfig
+  (cd $CONFIG_PATH \
+    && cp -n Local.templates/$CONFIG_FILE Local/$CONFIG_FILE \
+  )
+done

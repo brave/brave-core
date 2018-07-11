@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 
 // A browser color represents the color of UI in both Private browsing mode and normal mode
 struct BrowserColor {
@@ -115,8 +116,6 @@ public struct UIConstants {
 
     static let AppBackgroundColor = UIColor.Photon.Grey10
     static let SystemBlueColor = UIColor.Photon.Blue40
-    static let ControlTintColor = UIColor.Photon.Blue50
-    static let PasscodeDotColor = UIColor.Photon.Grey60
     static let PrivateModeAssistantToolbarBackgroundColor = UIColor.Photon.Grey50
     static let PrivateModeTextHighlightColor = UIColor.Photon.Purple60
     static let PrivateModePurple = UIColor.Defaults.MobilePrivatePurple
@@ -142,4 +141,18 @@ public struct UIConstants {
     /// JPEG compression quality for persisted screenshots. Must be between 0-1.
     static let ScreenshotQuality: Float = 0.3
     static let ActiveScreenshotQuality: CGFloat = 0.5
+  
+    // Passcode dot gray
+    static let PasscodeDotColor = BraveUX.GreyG
+  
+    // Brave Orange
+    static let ControlTintColor = BraveUX.BraveOrange
+  
+    // settings
+    static let TableViewHeaderBackgroundColor = BraveUX.GreyA
+    static let TableViewHeaderTextColor = BraveUX.GreyH
+    static let TableViewRowTextColor = BraveUX.GreyJ
+    static let TableViewDisabledRowTextColor = BraveUX.GreyE
+    static let TableViewSeparatorColor = BraveUX.GreyC
+    static let TableViewHeaderFooterHeight = CGFloat(44)
 }

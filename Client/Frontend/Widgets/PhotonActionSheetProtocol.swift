@@ -104,15 +104,7 @@ extension PhotonActionSheetProtocol {
         items.append(nightMode)
 
         let openSettings = PhotonActionSheetItem(title: Strings.AppMenuSettingsTitleString, iconString: "menu-Settings") { action in
-            let settingsTableViewController = AppSettingsTableViewController()
-            settingsTableViewController.profile = self.profile
-            settingsTableViewController.tabManager = self.tabManager
-            settingsTableViewController.settingsDelegate = vcDelegate
-
-            let controller = SettingsNavigationController(rootViewController: settingsTableViewController)
-            controller.popoverDelegate = vcDelegate
-            controller.modalPresentationStyle = .formSheet
-            vcDelegate.present(controller, animated: true, completion: nil)
+          // Photon action sheet will eventually be removed
         }
         items.append(openSettings)
 
