@@ -24,14 +24,32 @@
 	<string>$(BRAVE_BUILD_ID)</string>
 	<key>MozDevelopmentTeam</key>
 	<string>$(DEVELOPMENT_TEAM)</string>
-	<key>MozInternalURLScheme</key>
-	<string>$(MOZ_INTERNAL_URL_SCHEME)</string>
 	<key>NSExtension</key>
 	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>NSExtensionActivationRule</key>
+			<dict>
+				<key>NSExtensionActivationSupportsText</key>
+				<true/>
+				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
+				<integer>1</integer>
+				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
+				<integer>1</integer>
+			</dict>
+		</dict>
 		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.widget-extension</string>
+		<string>com.apple.share-services</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>TodayViewController</string>
+		<string>InitialViewController</string>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FiraSans-Regular.ttf</string>
+		<string>FiraSans-SemiBold.ttf</string>
+		<string>FiraSans-Light.ttf</string>
+		<string>FiraSans-UltraLight.ttf</string>
+		<string>FiraSans-Medium.ttf</string>
+	</array>
 </dict>
 </plist>

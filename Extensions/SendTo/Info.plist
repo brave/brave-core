@@ -5,9 +5,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>$(MOZ_BUNDLE_DISPLAY_NAME)</string>
+	<string>CFBundleDisplayName</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIcons</key>
+	<dict/>
+	<key>CFBundleIcons~ipad</key>
+	<dict/>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -17,21 +21,28 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(BRAVE_VERSION)</string>
+	<string>10.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(BRAVE_BUILD_ID)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>MozDevelopmentTeam</key>
 	<string>$(DEVELOPMENT_TEAM)</string>
-	<key>MozInternalURLScheme</key>
-	<string>$(MOZ_INTERNAL_URL_SCHEME)</string>
 	<key>NSExtension</key>
 	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>NSExtensionActivationRule</key>
+			<string>SUBQUERY ( extensionItems, $extensionItem, SUBQUERY ( $extensionItem.attachments, $attachment, ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url").@count == 1 ).@count == 1</string>
+		</dict>
 		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.widget-extension</string>
+		<string>com.apple.ui-services</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>TodayViewController</string>
+		<string>ActionViewController</string>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FiraSans-Regular.ttf</string>
+	</array>
 </dict>
 </plist>

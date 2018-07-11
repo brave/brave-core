@@ -18,20 +18,16 @@
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(BRAVE_VERSION)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(BRAVE_BUILD_ID)</string>
 	<key>MozDevelopmentTeam</key>
 	<string>$(DEVELOPMENT_TEAM)</string>
-	<key>MozInternalURLScheme</key>
-	<string>$(MOZ_INTERNAL_URL_SCHEME)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.widget-extension</string>
+		<string>com.apple.usernotifications.service</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>TodayViewController</string>
+		<string>$(PRODUCT_MODULE_NAME).NotificationService</string>
 	</dict>
 </dict>
 </plist>
