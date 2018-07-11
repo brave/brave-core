@@ -51,6 +51,8 @@ source_set("browser_process") {
     "//brave/components/content_settings/core/browser",
     "//brave/common",
     "//components/component_updater",
+    "//components/safe_browsing/common:safe_browsing_prefs",
+    "//components/spellcheck/browser",
     "//content/public/browser",
     "//brave/chromium_src:browser",
   ]

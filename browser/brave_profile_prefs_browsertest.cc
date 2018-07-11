@@ -8,6 +8,8 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "components/safe_browsing/common/safe_browsing_prefs.h"
+#include "components/spellcheck/browser/pref_names.h"
 
 using BraveProfilePrefsBrowserTest = InProcessBrowserTest;
 
@@ -17,4 +19,15 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DownloadPromptDefault) {
       browser()->profile()->GetPrefs()->GetBoolean(prefs::kPromptForDownload));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kWidevineOptedIn));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DisableGoogleServicesByDefault) {
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(prefs::kAlternateErrorPagesEnabled));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(spellcheck::prefs::kSpellCheckUseSpellingService));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(prefs::kSafeBrowsingExtendedReportingOptInAllowed));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(prefs::kSearchSuggestEnabled));
 }
