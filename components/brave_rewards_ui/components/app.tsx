@@ -6,6 +6,9 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
+// Components
+const RewardsPage = require('./settings')
+
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 
@@ -14,7 +17,7 @@ interface Props {
   rewardsData: Rewards.State
 }
 
-export class RewardsPage extends React.Component<Props, {}> {
+export class App extends React.Component<Props, {}> {
   onCreateWalletClicked = () => {
     this.actions.createWalletRequested()
   }
@@ -27,12 +30,16 @@ export class RewardsPage extends React.Component<Props, {}> {
     const { rewardsData } = this.props
     return (
       <div id='rewardsPage'>
-        <div>
-          <a href='#' onClick={this.onCreateWalletClicked}>Create Wallet</a>
-        </div>
+        {
+          !rewardsData.walletCreated && !rewardsData.walletCreateFailed
+          ? <div>
+            <a href='#' onClick={this.onCreateWalletClicked}>Yes I am in! (TODO add an actual page)</a>
+          </div>
+          : null
+        }
         {
           rewardsData.walletCreated
-          ? <div>Wallet Created!</div>
+          ? <RewardsPage />
           : null
         }
         {
@@ -56,4 +63,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RewardsPage)
+)(App)
