@@ -22,8 +22,7 @@ namespace {
 class RewardsDOMHandler : public WebUIMessageHandler,
                           public payments::PaymentsServiceObserver {
  public:
-  RewardsDOMHandler() {
-  }
+  RewardsDOMHandler() {};
   ~RewardsDOMHandler() override;
 
   void Init();
@@ -57,14 +56,14 @@ void RewardsDOMHandler::RegisterMessages() {
 }
 
 void RewardsDOMHandler::Init() {
+  Profile* profile = Profile::FromWebUI(web_ui());
+  payments_service_ = PaymentsServiceFactory::GetForProfile(profile);
+  if (payments_service_)
+    payments_service_->AddObserver(this);
 }
 
 void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args) {
-  Profile* profile = Profile::FromWebUI(web_ui());
-  payments_service_ = PaymentsServiceFactory::GetForProfile(profile);
-
   if (payments_service_) {
-    payments_service_->AddObserver(this);
     payments_service_->CreateWallet();
   } else {
     OnWalletCreateFailed();
