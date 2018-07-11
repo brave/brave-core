@@ -1,7 +1,6 @@
 import Foundation
 import Deferred
 import Shared
-import Storage
 import SwiftyJSON
 
 // These override the setting in the prefs

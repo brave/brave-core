@@ -1,26 +1,127 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/. 
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-fastlane_version "1.39.0"
+fastlane_version "2.86.0"
 
 default_platform :ios
 
+CONFIG_PATH = "../Client/Configuration"
+LOCAL_PATH = "#{CONFIG_PATH}/Local"
 
-import_build_tools(
-  url: 'git@github.com:mozilla/firefox-ios-build-tools.git',
-  clone_folder: "../build-tools",
-)
+platform :ios do
+  before_all do |lane, options|
+    # Verify clean repo by default
+    unless options[:ignore_git_status]
+      UI.message "Running git status check"
+      ensure_git_status_clean()
+    end
+  end
 
-#move all the build tools to the right places
-clone_folder = "../../build-tools"
-sh("rsync -a #{clone_folder}/scripts ../")
-sh("rsync -a #{clone_folder}/fastlane/Appfile Appfile")
-sh("rsync -a #{clone_folder}/fastlane/Snapfile Snapfile")
-sh("rsync -a #{clone_folder}/fastlane/SnapshotHelper.swift SnapshotHelper.swift")
-sh("rsync -a #{clone_folder}/fastlane/scripts .")
-sh("rsync -a #{clone_folder}/fastlane/frames .")
-sh("rsync -a #{clone_folder}/fastlane/templates .")
+  after_all do |lane, options|
+    # If no uncommitted changes existed before running `lane`, reset any potential fastlane changes
+    reset_git_repo(skip_clean: true) unless options[:ignore_git_status]
+  end
 
-#import the fastfile
-import "#{clone_folder}/fastlane/BaseFastfile"
+  desc "Creates a Brave Beta Release build for TestFlight."
+  lane :beta do |options|
+    set_build_number()
+
+    # TODO: make name dynamic
+    # build_name = "Brave#{get_client_version_number}(#{get_build_number})"
+    build_name = "BraveBeta#{get_client_version_number}"
+
+    UI.message "NAME: #{build_name}"
+
+    carthage(
+      platform: "iOS",
+      cache_builds: true,
+      configuration: "Release",
+    )
+
+    add_badge(color: "green")
+
+    gym(
+      scheme: "FirefoxBeta",
+      output_directory: "./builds/",
+      output_name: "#{build_name}.ipa",
+      sdk: "iphoneos",
+      clean: true,
+      export_method: "app-store",
+      include_symbols: true,
+      include_bitcode: false,
+      xcargs: "-allowProvisioningUpdates",
+    )
+
+    testflight(
+      username: sh("cat", "#{LOCAL_PATH}/AppleId"),
+      ipa: "./builds/#{build_name}.ipa",
+      skip_waiting_for_build_processing: true,
+    )
+  end
+
+  # Private helper methods ---------------------------------------
+
+  desc "Adds the version/build tag on top of the AppIcon. Takes the following arguments: \"
+  :color              The color of the right area of the badge."
+  private_lane :add_badge do |options|
+    badge(
+      shield: "#{get_client_version_number}-#{get_build_number}-#{options[:color]}",
+      no_badge: true,
+      shield_no_resize: true,
+      shield_gravity: "south",
+    )
+  end
+
+  desc "Updates the project's build number to be the next number acceptable by TestFlight. Takes the following arguments:"
+  lane :set_build_number do
+    latest_build_number = latest_testflight_build_number(
+      version: get_client_version_number,
+      initial_build_number: 0,
+      username: sh("cat", "#{LOCAL_PATH}/AppleId"),
+      app_identifier: "com.brave.ios.BrowserBeta",
+    )
+
+    dateFormat = "%y.%m.%d.%H"
+
+    time = Time.now.getutc
+    formattedBuildNumber = time.strftime(dateFormat)
+
+    if formattedBuildNumber == latest_build_number
+      UI.message "Same build number, adding minute modifier."
+      # Add the minute as a differentiator
+      dateFormat += ".%m"
+      formattedBuildNumber = time.strftime(dateFormat) 
+    end
+
+    sh("echo GENERATED_BUILD_ID=#{formattedBuildNumber} > #{LOCAL_PATH}/BuildId.xcconfig")
+  end
+
+  # TODO: Attempt action override on same name
+  private_lane :get_client_version_number do
+    buildIdFile = Xcodeproj::Config.new("#{CONFIG_PATH}/Base.xcconfig")
+    buildId = buildIdFile.attributes['BRAVE_VERSION']
+
+    # Traditionally, would pull version number via:
+    # get_version_number(target: "Client")
+    # This however does not work since we use xcconfigq variables and Fastlane does not seem to parse
+    #   these very well (e.g. this returns the literal value: "$(BRAVE_VERSION)")
+  end
+
+  private_lane :get_client_build_number do
+    buildIdFile = Xcodeproj::Config.new("#{LOCAL_PATH}/BuildId.xcconfig")
+    buildId = buildIdFile.attributes['GENERATED_BUILD_ID']
+  end
+
+  override_lane :get_build_number do
+    get_client_build_number()
+  end
+
+  lane :logtest do |options|
+    UI.message "1: #{options[:one]}"
+
+    foo = sh("cat", "#{LOCAL_PATH}/AppleId")
+    UI.message foo
+  end
+
+end

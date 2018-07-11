@@ -5,6 +5,7 @@ public struct BraveUX {
     
     public static let BraveCommunityURL = URL(string: "https://community.brave.com/")!
     public static let BravePrivacyURL = URL(string: "https://brave.com/privacy/")!
+    public static let BraveTermsOfUseURL = URL(string: "https://www.brave.com/terms_of_use")!
     public static let PrefKeyOptInDialogWasSeen = "OptInDialogWasSeen"
     public static let PrefKeyUserAllowsTelemetry = "userallowstelemetry"
     
@@ -72,8 +73,6 @@ public struct BraveUX {
     public static let PanelClosingThresholdWhenDragging = 0.3 // a percent range 1.0 to 0
     
     public static let BrowserViewAlphaWhenShowingTabTray = 0.3
-    
-    public static let PrefKeyIsToolbarHidingEnabled = "PrefKeyIsToolbarHidingEnabled"
     
     public static let BackgroundColorForBookmarksHistoryAndTopSites = UIColor.white
     

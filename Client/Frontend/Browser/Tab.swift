@@ -200,7 +200,7 @@ class Tab: NSObject {
             configuration!.preferences = WKPreferences()
             configuration!.preferences.javaScriptCanOpenWindowsAutomatically = false
             configuration!.allowsInlineMediaPlayback = true
-            let webView = TabWebView(frame: .zero, configuration: configuration!)
+            let webView = BraveWebView(frame: .zero, configuration: configuration!)
             webView.delegate = self
             configuration = nil
 
@@ -264,12 +264,17 @@ class Tab: NSObject {
         }
         
     }
-
-    deinit {
+    
+    func deleteWebView() {
         if let webView = webView {
             webView.removeObserver(self, forKeyPath: KVOConstants.URL.rawValue)
             tabDelegate?.tab?(self, willDeleteWebView: webView)
         }
+        webView = nil
+    }
+
+    deinit {
+        deleteWebView()
         contentScriptManager.helpers.removeAll()
     }
 
@@ -555,7 +560,7 @@ private protocol TabWebViewDelegate: class {
     func tabWebView(_ tabWebView: TabWebView, didSelectFindInPageForSelection selection: String)
 }
 
-private class TabWebView: WKWebView, MenuHelperInterface {
+class TabWebView: WKWebView, MenuHelperInterface {
     fileprivate weak var delegate: TabWebViewDelegate?
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
@@ -569,7 +574,7 @@ private class TabWebView: WKWebView, MenuHelperInterface {
         }
     }
 
-    fileprivate override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         // The find-in-page selection menu only appears if the webview is the first responder.
         becomeFirstResponder()
 
