@@ -36,7 +36,7 @@ private struct BrowserViewControllerUX {
     fileprivate static let BookmarkStarAnimationOffset: CGFloat = 80
 }
 
-class BrowserViewController: UIViewController {
+class BrowserViewController: SensitiveViewController {
     var homePanelController: HomePanelViewController?
     var webViewContainer: UIView!
     var urlBar: URLBarView!
@@ -159,6 +159,7 @@ class BrowserViewController: UIViewController {
     }
 
     fileprivate func didInit() {
+        isPasscodeEntryCancellable = false
         screenshotHelper = ScreenshotHelper(controller: self)
         tabManager.addDelegate(self)
         tabManager.addNavigationDelegate(self)
@@ -1070,20 +1071,6 @@ class BrowserViewController: UIViewController {
             self.findInPageBar = nil
             updateViewConstraints()
         }
-    }
-
-    @objc fileprivate func openSettings() {
-        assert(Thread.isMainThread, "Opening settings requires being invoked on the main thread")
-
-        let settingsTableViewController = AppSettingsTableViewController()
-        settingsTableViewController.profile = profile
-        settingsTableViewController.tabManager = tabManager
-        settingsTableViewController.settingsDelegate = self
-
-        let controller = SettingsNavigationController(rootViewController: settingsTableViewController)
-        controller.popoverDelegate = self
-        controller.modalPresentationStyle = .formSheet
-        self.present(controller, animated: true, completion: nil)
     }
     
     fileprivate func postLocationChangeNotificationForTab(_ tab: Tab, navigation: WKNavigation?) {
@@ -2666,6 +2653,18 @@ extension BrowserViewController: ClientPickerViewControllerDelegate, Instruction
 }
 
 extension BrowserViewController: HomeMenuControllerDelegate {
+    
+    func menuDidOpenSettings(_ menu: HomeMenuController) {
+        menu.dismiss(animated: true) { [weak self] in
+            guard let `self` = self else { return }
+            let settingsController = SettingsViewController(profile: self.profile, tabManager: self.tabManager)
+            settingsController.settingsDelegate = self
+            let container = SettingsNavigationController(rootViewController: settingsController)
+            container.modalPresentationStyle = .formSheet
+            self.present(container, animated: true)
+        }
+    }
+    
     func menuDidSelectURL(_ menu: HomeMenuController, url: URL, visitType: VisitType, action: MenuURLAction) {
         switch action {
         case .openInCurrentTab:
@@ -2706,5 +2705,16 @@ extension BrowserViewController: HomeMenuControllerDelegate {
     
     func menuDidBatchOpenURLs(_ menu: HomeMenuController, urls: [URL]) {
         self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabManager.selectedTab?.tabState.isPrivate ?? false)
+    }
+}
+
+extension BrowserViewController: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        // TODO: Update tab bar visiblity based on `Preferences.tabBarVisibility` once BraveURLBarView is back
+        // TODO: Update fingerprinting protection based on `Preferences.Shields.fingerprintingProtection` once fingerprinting protection is added back
+        if Preferences.Privacy.privateBrowsingOnly.value {
+            switchToPrivacyMode(isPrivate: true)
+            // TODO: Add more logic to `switchToPrivacyMode` once specific Brave Private Browsing logic is added back
+        }
     }
 }
