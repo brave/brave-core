@@ -6,6 +6,7 @@
 #define BRAVE_BROWSER_BRAVE_CONTENT_BROWSER_CLIENT_H_
 
 #include "chrome/browser/chrome_content_browser_client.h"
+#include "content/public/browser/content_browser_client.h"
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
@@ -29,6 +30,12 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                       int render_process_id,
                       int render_frame_id,
                       const net::CookieOptions& options) override;
+
+  content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
+      content::BrowserContext* browser_context,
+      const url::Origin& requesting_origin,
+      const url::Origin& embedding_origin) override;
+
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
 };

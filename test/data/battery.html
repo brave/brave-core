@@ -1,0 +1,10 @@
+<script>
+  function getBatteryBlocked() {
+    try {
+      navigator.get_battery();
+    } catch (err) {
+      return true;
+    }
+    return false;
+  }
+</script>
