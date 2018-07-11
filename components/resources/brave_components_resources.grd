@@ -123,6 +123,13 @@
       <include name="IDR_BRAVE_NEW_TAB_BACKGROUND19" file="../img/newtab/Phoyoserge_VeniseSunset.jpg" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_BACKGROUND20" file="../img/newtab/Phoyoserge_Yosemite.jpg" type="BINDATA" />
 
+      <!-- WebUI rewards resources -->
+      <include name="IDR_BRAVE_REWARDS_IMG_WALLET_ICON" file="../img/rewards/wallet_icon.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_FUNDS_ICON" file="../img/rewards/funds_icon.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_ADS_DISABLED" file="../img/rewards/ads_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_CONTRIBUTE_DISABLED" file="../img/rewards/contribute_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_BART_TEMP" file="../img/rewards/temp/bartBaker.jpeg" type="BINDATA" />
+
     </includes>
     <messages fallback_to_english="true">
       <!-- WebUI newtab resources -->
@@ -147,6 +154,7 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DUCKDUCKGO_SEARCH_INFO" desc="Displays info about DuckDuckGo searches in private new tab.">With private search, Brave will use DuckDuckGo to answer your searches while you are in this private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_TOGGLE_LABEL" desc="Displays the toggle label for switching private search to DuckDuckGo.">
 PrivateSearch with DuckDuckGo</message>
+
       <!-- WebUI adblock resources -->
       <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total Ads Blocked:</message>
       <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED_TITLE" desc="Title for if geographic regional ad-blocking is enabled">Regional Ad Block:</message>
@@ -172,6 +180,19 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON" desc="Button to skip the welcome tour and go to the new tab page">Skip welcome tour</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON" desc="Button to move to the next slide of the welcome tour">Next</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>
+
+       <!-- WebUI rewards resources -->
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Ads</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn tokens by seeing ads on Brave. Ads are matched from machine learning and the data temporarily present in your browser without tracking your information or sending it outside.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Brave Contribute</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">A simple way to support content creators. Set monthly allowance and browse normally. Your favorite sites (content sites only) receive your contributions automatically. You can exclude sites from funding here.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY" desc="">Monthly budget</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES" desc="">Supported sites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Direct Donations</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Donate to sites as you browse or give tips to posts when you ‘Like’ them. You can also make the donation recurring monthly so you can support the site continuously. All accessed from the address bar.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL" desc="">Total donations this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_LIST" desc="">List of donations</message>
     </messages>
   </release>
 </grit>

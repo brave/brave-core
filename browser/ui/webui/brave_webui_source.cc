@@ -87,6 +87,11 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       }
     }, {
       std::string("rewards"), {
+        { "823882f2419bf6c16b8291e056ea4b52.svg", IDR_BRAVE_REWARDS_IMG_WALLET_ICON },
+        { "53ef964d53d132d1849285f533c74df6.svg", IDR_BRAVE_REWARDS_IMG_FUNDS_ICON },
+        { "9c14c003bf37abc636c0d266a0ac33a7.svg", IDR_BRAVE_REWARDS_IMG_ADS_DISABLED },
+        { "ea846f2b45804dd849672945f1becd19.svg", IDR_BRAVE_REWARDS_IMG_CONTRIBUTE_DISABLED },
+        { "4fcfa7f92c5fc22c2b6f34701bfdcd0a.jpeg", IDR_BRAVE_REWARDS_IMG_BART_TEMP }
       }
     }, {
       std::string("adblock"), {
@@ -142,6 +147,17 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       }
     }, {
       std::string("rewards"), {
+        { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
+        { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
+        { "contributionTitle",  IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE },
+        { "contributionDesc",  IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC },
+        { "contributionMonthly",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY },
+        { "contributionNextDate",  IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE },
+        { "contributionSites",  IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES },
+        { "donationTitle",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE },
+        { "donationDesc",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC },
+        { "donationTotal",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL },
+        { "donationList",  IDS_BRAVE_REWARDS_LOCAL_DONAT_LIST }
       }
     }, {
       std::string("adblock"), {
