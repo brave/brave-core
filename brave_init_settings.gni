@@ -8,10 +8,16 @@ declare_args() {
   # "" for stable channel release.
   brave_channel = ""
 
-  # Update feed url on MacOS
-  # TODO(simonhong): This url is stub. Replace with real update server or your
-  # test server.
-  brave_feed_url = "http://localhost:9090"
+  base_sparkle_update_url = ""
 
   brave_dsa_file = "dsa_pub.pem"
 }
+
+if (base_sparkle_update_url == "") {
+  base_sparkle_update_url = "https://updates.bravesoftware.com/sparkle/Brave-Browser"
+}
+_update_channel = brave_channel
+if (_update_channel == "") {
+  _update_channel = "stable"
+}
+brave_feed_url = "$base_sparkle_update_url/$_update_channel/appcast.xml"

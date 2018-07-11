@@ -63,4 +63,16 @@ id GetSUUpdater() {
   [su_updater_ checkForUpdatesInBackground];
 }
 
+- (void)setAutomaticallyChecksForUpdates:(BOOL)enable {
+  [su_updater_ setAutomaticallyChecksForUpdates:enable];
+}
+
+- (void)setAutomaticallyDownloadsUpdates:(BOOL)enable {
+  [su_updater_ setAutomaticallyDownloadsUpdates:enable];
+}
+
+- (void)setUpdateCheckInterval:(NSTimeInterval)interval {
+  [su_updater_ setUpdateCheckInterval:interval];
+}
+
 @end
