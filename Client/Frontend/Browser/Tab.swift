@@ -302,7 +302,7 @@ class Tab: NSObject {
 
     var displayTitle: String {
         if let title = webView?.title, !title.isEmpty {
-            return title.range(of: "localhost") == nil ? title : ""
+            return title.contains("localhost") ? "" : title
         }
         else if let url = webView?.url, url.isAboutHomeURL {
             return Strings.NewTabTitle
@@ -311,7 +311,7 @@ class Tab: NSObject {
         guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
             if let title = url?.absoluteString {
                 return title
-            } else if let tab = TabMO.get(by: id, context: DataController.shared.mainThreadContext) {
+            } else if let tab = TabMO.get(fromId: id, context: DataController.shared.mainThreadContext) {
                 return tab.title ?? tab.url ?? ""
             }
             return ""

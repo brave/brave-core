@@ -353,7 +353,7 @@ class TabManager: NSObject {
         let context = DataController.shared.workerContext
         context.perform {
             for (i, tab) in self.tabs.enumerated() {
-                guard let managedObject = TabMO.get(by: tab.id, context: context) else { 
+                guard let managedObject = TabMO.get(fromId: tab.id, context: context) else { 
                     log.error("Error: Tab missing managed object")
                     continue
                 }
@@ -470,7 +470,7 @@ class TabManager: NSObject {
             
             log.debug("---stack: \(urls)")
         }
-        if let id = TabMO.get(by: tab.id, context: context)?.syncUUID {
+        if let id = TabMO.get(fromId: tab.id, context: context)?.syncUUID {
             let displayTitle = tab.displayTitle
             let title = displayTitle != "" ? displayTitle : ""
             
@@ -512,7 +512,7 @@ class TabManager: NSObject {
         tabs.remove(at: removalIndex)
         
         let context = DataController.shared.mainThreadContext
-        if let tab = TabMO.get(by: tab.id, context: context) {
+        if let tab = TabMO.get(fromId: tab.id, context: context) {
             DataController.remove(object: tab, context: context)
         }
 
@@ -807,7 +807,6 @@ extension TabManager {
                 tabToSelect = tab
             }
 
-            // tab.sessionData = savedTab.sessionData
             tab.lastTitle = savedTab.title
         }
 
@@ -823,7 +822,7 @@ extension TabManager {
         }
 
         if let tab = tabToSelect {
-            // FIXME: only selected tab has webView attached
+            // TODO: only selected tab has webView attached
             selectTab(tab)
             restoreTab(tab)
             tab.createWebview()
@@ -832,10 +831,10 @@ extension TabManager {
     
     func restoreTab(_ tab: Tab) {
         // Tab was created with no active webview or session data. Restore tab data from CD and configure.
-        guard let savedTab = TabMO.get(by: tab.id, context: DataController.shared.mainThreadContext) else { return }
+        guard let savedTab = TabMO.get(fromId: tab.id, context: DataController.shared.mainThreadContext) else { return }
         
         if let history = savedTab.urlHistorySnapshot as? [String], let tabUUID = savedTab.syncUUID, let url = savedTab.url {
-            let data = SavedTab(id: tabUUID, title: savedTab.title ?? "", url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)
+            let data = SavedTab(id: tabUUID, title: savedTab.title, url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)
             if let webView = tab.webView {
                 tab.navigationDelegate = navDelegate
                 tab.restore(webView, restorationData: data)
