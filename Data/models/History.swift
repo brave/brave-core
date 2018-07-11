@@ -156,7 +156,7 @@ public class History: NSManagedObject, WebsitePresentable {
         }
     }
     
-    class func deleteAll(_ completionOnMain: @escaping ()->()) {
+    public class func deleteAll(_ completionOnMain: @escaping ()->()) {
         let context = DataController.shared.workerContext
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()

@@ -17,29 +17,16 @@ enum HomePanelPath: String {
     case history
 }
 
-// An enum to route to a settings page.
-// This could be extended to provide default values to pass to fxa
-enum SettingsPage: String {
-    case newTab
-    case homePage
-    case mailto
-    case search
-    case clearData = "clear-private-data"
-}
-
 // Used by the App to navigate to different views.
 // To open a URL use /open-url or to open a blank tab use /open-url with no params
 enum DeepLink {
-    case settings(SettingsPage)
     case homePanel(HomePanelPath)
     init?(urlString: String) {
         let paths = urlString.split(separator: "/")
         guard let component = paths[safe: 0], let componentPath = paths[safe: 1] else {
             return nil
         }
-        if component == "settings", let link = SettingsPage(rawValue: String(componentPath)) {
-            self = .settings(link)
-        } else if component == "homepanel", let link = HomePanelPath(rawValue: String(componentPath)) {
+        if component == "homepanel", let link = HomePanelPath(rawValue: String(componentPath)) {
             self = .homePanel(link)
         } else {
             return nil
@@ -102,15 +89,6 @@ enum NavigationPath {
         switch link {
         case .homePanel(let panelPath):
             NavigationPath.handleHomePanel(panel: panelPath, with: bvc)
-        case .settings(let settingsPath):
-            guard let rootVC = bvc.navigationController else {
-                return
-            }
-            let settingsTableViewController = AppSettingsTableViewController()
-            settingsTableViewController.profile = bvc.profile
-            settingsTableViewController.tabManager = bvc.tabManager
-            settingsTableViewController.settingsDelegate = bvc
-            NavigationPath.handleSettings(settings: settingsPath, with: rootVC, baseSettingsVC: settingsTableViewController, and: bvc)
         }
     }
     
@@ -134,42 +112,6 @@ enum NavigationPath {
     private static func handleText(text: String, with bvc: BrowserViewController) {
         bvc.openBlankNewTab(focusLocationField: true, searchFor: text)
     }
-    
-    private static func handleSettings(settings: SettingsPage, with rootNav: UINavigationController, baseSettingsVC: AppSettingsTableViewController, and bvc: BrowserViewController) {
-
-        guard let profile = baseSettingsVC.profile, let tabManager = baseSettingsVC.tabManager else {
-            return
-        }
-        
-        let controller = SettingsNavigationController(rootViewController: baseSettingsVC)
-        controller.popoverDelegate = bvc
-        controller.modalPresentationStyle = UIModalPresentationStyle.formSheet
-        rootNav.present(controller, animated: true, completion: nil)
-
-        switch settings {
-        case .newTab:
-            let viewController = NewTabChoiceViewController(prefs: baseSettingsVC.profile.prefs)
-            controller.pushViewController(viewController, animated: true)
-        case .homePage:
-            let viewController = HomePageSettingsViewController()
-            viewController.profile = profile
-            viewController.tabManager = tabManager
-            controller.pushViewController(viewController, animated: true)
-        case .mailto:
-            let viewController = OpenWithSettingsViewController(prefs: profile.prefs)
-            controller.pushViewController(viewController, animated: true)
-        case .search:
-            let viewController = SearchSettingsTableViewController()
-            viewController.model = profile.searchEngines
-            viewController.profile = profile
-            controller.pushViewController(viewController, animated: true)
-        case .clearData:
-            let viewController = ClearPrivateDataTableViewController()
-            viewController.profile = profile
-            viewController.tabManager = tabManager
-            controller.pushViewController(viewController, animated: true)
-        }
-    }
 }
 
 extension NavigationPath: Equatable {}
@@ -189,8 +131,6 @@ extension DeepLink: Equatable {}
 
 func == (lhs: DeepLink, rhs: DeepLink) -> Bool {
     switch (lhs, rhs) {
-    case let (.settings(lhs), .settings(rhs)):
-        return lhs == rhs
     case let (.homePanel(lhs), .homePanel(rhs)):
         return lhs == rhs
     default:

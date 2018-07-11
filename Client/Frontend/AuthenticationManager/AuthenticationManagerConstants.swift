@@ -5,20 +5,6 @@
 import Foundation
 import Shared
 
-// Strings for the passcode intervals.
-extension PasscodeInterval {
-    var settingTitle: String {
-        switch self {
-        case .immediately:      return AuthenticationStrings.immediately
-        case .oneMinute:        return AuthenticationStrings.oneMinute
-        case .fiveMinutes:      return AuthenticationStrings.fiveMinutes
-        case .tenMinutes:       return AuthenticationStrings.tenMinutes
-        case .fifteenMinutes:   return AuthenticationStrings.fifteenMinutes
-        case .oneHour:          return AuthenticationStrings.oneHour
-        }
-    }
-}
-
 // Strings used in multiple areas within the Authentication Manager
 struct AuthenticationStrings {
     static let passcode =

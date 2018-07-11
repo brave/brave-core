@@ -12,6 +12,7 @@ import SwiftKeychainWrapper
 import LocalAuthentication
 import CoreSpotlight
 import UserNotifications
+import BraveShared
 
 private let log = Logger.browserLogger
 
@@ -100,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         Logger.browserLogger.newLogWithDate(logDate)
 
         let profile = getProfile(application)
+        Preferences.migrate(from: profile)
 
         if !DebugSettingsBundleOptions.disableLocalWebServer {
             // Set up a web server that serves us static content. Do this early so that it is ready when the UI is presented.
@@ -215,6 +217,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // that is an iOS bug or not.
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
 
+        UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
+      
+        (UISwitch.appearance() as UISwitch).do {
+            $0.tintColor = BraveUX.SwitchTintColor
+            $0.onTintColor = BraveUX.BraveOrange
+        }
+      
+        HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value) ?? .onlyFromMainDocumentDomain
+      
         return shouldPerformAdditionalDelegateHandling
     }
 
