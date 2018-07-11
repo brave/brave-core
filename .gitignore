@@ -78,3 +78,9 @@ MozBuildID.xcconfig
 
 # Node.js
 node_modules
+
+# Brave
+scripts/
+BuildId.xcconfig
+
+Client/Configuration/Local/

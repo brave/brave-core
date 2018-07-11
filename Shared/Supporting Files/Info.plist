@@ -15,11 +15,11 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>12.0</string>
+	<string>$(BRAVE_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(BRAVE_BUILD_ID)</string>
 	<key>NSPrincipalClass</key>
 	<string></string>
 </dict>
