@@ -19,9 +19,16 @@ cr.define('settings', function() {
     }
   };
 
+  const privacyHandler = {
+    get: function(obj, prop) {
+      return prop === 'searchPrediction' ? false : true;
+    }
+  }
+
   const handler = {
     get: function(obj, prop) {
       if (prop === 'appearance') return new Proxy({}, appearanceHandler);
+      if (prop === 'privacy') return new Proxy({}, privacyHandler);
       return prop === 'a11y' ? false : true;
     }
   };
