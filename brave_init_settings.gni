@@ -8,12 +8,16 @@ declare_args() {
   # "" for stable channel release.
   brave_channel = ""
 
+  base_sparkle_update_url = ""
+
   brave_dsa_file = "dsa_pub.pem"
 }
 
-_base_update_url = "https://updates.bravesoftware.com/sparkle/Brave-Browser"
+if (base_sparkle_update_url == "") {
+  base_sparkle_update_url = "https://updates.bravesoftware.com/sparkle/Brave-Browser"
+}
 _update_channel = brave_channel
 if (_update_channel == "") {
   _update_channel = "stable"
 }
-brave_feed_url = "$_base_update_url/$_update_channel/appcast.xml"
+brave_feed_url = "$base_sparkle_update_url/$_update_channel/appcast.xml"
