@@ -267,7 +267,7 @@ class SearchSetting: Setting {
 
     init(settings: SettingsTableViewController) {
         self.profile = settings.profile
-        super.init(title: NSAttributedString(string: NSLocalizedString("Search", comment: "Open search section of settings"), attributes: [NSAttributedStringKey.foregroundColor: SettingsUX.TableViewRowTextColor]))
+        super.init(title: NSAttributedString(string: NSLocalizedString("Settings.Open.Search", value: "Search", comment: "Open search section of settings"), attributes: [NSAttributedStringKey.foregroundColor: SettingsUX.TableViewRowTextColor]))
     }
 
     override func onClick(_ navigationController: UINavigationController?) {

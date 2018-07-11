@@ -193,11 +193,10 @@ class TabsButton: UIButton {
                     self.insideButton.layer.opacity = 1
                     self.insideButton.layer.transform = CATransform3DIdentity
                 }
-                self.accessibilityLabel = NSLocalizedString("Show Tabs", comment: "Accessibility label for the tabs button in the (top) tab toolbar")
+                self.accessibilityLabel = NSLocalizedString("Browser.Toolbar.Show.Tabs.Button.Accessibility.Label", value: "Show Tabs", comment: "Accessibility label for the tabs button in the (top) tab toolbar")
                 self.countLabel.text = countToBe
                 self.accessibilityValue = countToBe
             }
-            
             if animated {
                 UIView.animate(withDuration: 1.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [], animations: animate, completion: completion)
             } else {

@@ -88,7 +88,7 @@ public extension Strings {
     public static let SyncUnableCreateGroup = NSLocalizedString("Unable to create new sync group.", comment: "Description on popup when setting up a sync group fails")
     
     public static let ShowTour = NSLocalizedString("Show Tour", comment: "Show the on-boarding screen again from the settings")
-    public static let DefaultSearchEngine = NSLocalizedString("Default Search Engine", comment: "Open search section of settings")
+    public static let DefaultSearchEngine = NSLocalizedString("Settings.Open.Default.Search", value: "Default Search Engine", comment: "Open search section of settings")
     public static let Logins = NSLocalizedString("Logins", comment: "Label used as an item in Settings. When touched, the user will be navigated to the Logins/Password manager.")
     public static let Settings = NSLocalizedString("Settings", comment: "")
     public static let OtherSettings = NSLocalizedString("Other Settings", comment: "Other settings sectiont title")
@@ -182,7 +182,7 @@ public extension Strings {
     public static let Swipe_right_or_left_with_three_fingers_to_close_the_tab = NSLocalizedString("Swipe right or left with three fingers to close the tab.", comment: "Accessibility hint for tab tray's displayed tab.")
     public static let Learn_More = NSLocalizedString("Learn More", comment: "Text button displayed when there are no tabs open while in private mode")
     public static let Private_Browsing = NSLocalizedString("Private Browsing", comment: "")
-    public static let Show_Tabs = NSLocalizedString("Show Tabs", comment: "Accessibility Label for the tabs button in the browser toolbar")
+    public static let Show_Tabs = NSLocalizedString("Browser.Toolbar.Show.Tabs.Button.Accessibility.Label", value: "Show Tabs", comment: "Accessibility Label for the tabs button in the browser toolbar")
     public static let Address_and_Search = NSLocalizedString("Address and Search", comment: "Accessibility label for address and search field, both words (Address, Search) are therefore nouns.")
     public static let This_folder_isnt_empty = NSLocalizedString("This folder isn't empty.", comment: "Title of the confirmation alert when the user tries to delete_a_folder_that_still_contains_bookmarks_and/or folders.")
     public static let Are_you_sure_you_want_to_delete_it_and_its_contents = NSLocalizedString("Are you sure you want to delete it and its contents?", comment: "Main body of the confirmation alert when the user tries to delete a folder that still contains bookmarks and/or folders.")
@@ -308,7 +308,7 @@ public extension Strings {
     public static let BookmarksFolderTitleMenu = NSLocalizedString("Bookmarks Menu", comment: "The name of the folder that contains desktop bookmarks in the menu. This should match bookmarks.folder.menu.label on Android.")
     public static let BookmarksFolderTitleToolbar = NSLocalizedString("Bookmarks Toolbar", comment: "The name of the folder that contains desktop bookmarks in the toolbar. This should match bookmarks.folder.toolbar.label on Android.")
     public static let BookmarksFolderTitleUnsorted = NSLocalizedString("Unsorted Bookmarks", comment: "The name of the folder that contains unsorted desktop bookmarks. This should match bookmarks.folder.unfiled.label on Android.")
-    public static let DefaultTitleUntitled = NSLocalizedString("Untitled", comment: "The default name for bookmark item without titles.")
+    public static let DefaultTitleUntitled = NSLocalizedString("Default.Bookmark.Title", value: "Untitled", comment: "The default name for bookmark item without titles.")
     public static let desktopBookmarksLabel = NSLocalizedString("Desktop Bookmarks", comment: "The folder name for the virtual folder that contains all desktop bookmarks.")
 }
 

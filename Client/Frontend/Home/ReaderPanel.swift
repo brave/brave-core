@@ -37,8 +37,8 @@ private struct ReadingListTableViewCellUX {
 
     // Localizable strings
     static let DeleteButtonTitleText = NSLocalizedString("Remove", comment: "Title for the button that removes a reading list item")
-    static let MarkAsReadButtonTitleText = NSLocalizedString("Mark as Read", comment: "Title for the button that marks a reading list item as read")
-    static let MarkAsUnreadButtonTitleText = NSLocalizedString("Mark as Unread", comment: "Title for the button that marks a reading list item as unread")
+    static let MarkAsReadButtonTitleText = NSLocalizedString("Mark.Reading.List.As.Read.Button.Title", value: "Mark as Read", comment: "Title for the button that marks a reading list item as read")
+    static let MarkAsUnreadButtonTitleText = NSLocalizedString("Mark.Reading.List.As.Unread.Button.Title", value: "Mark as Unread", comment: "Title for the button that marks a reading list item as unread")
 }
 
 private struct ReadingListPanelUX {

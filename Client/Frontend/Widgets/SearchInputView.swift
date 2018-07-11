@@ -49,7 +49,7 @@ class SearchInputView: UIView {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Search", tableName: "LoginManager", comment: "Title for the search field at the top of the Logins list screen")
+        label.text = NSLocalizedString("Search.Field.Title", tableName: "LoginManager", value: "Search", comment: "Title for the search field at the top of the Logins list screen")
         label.font = SearchInputViewUX.titleFont
         label.textColor = SearchInputViewUX.titleColor
         return label
