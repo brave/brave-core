@@ -4,6 +4,8 @@
 
 #include "brave/browser/importer/brave_external_process_importer_client.h"
 #include "brave/browser/importer/brave_external_process_importer_host.h"
+#include "brave/browser/importer/brave_profile_lock.h"
+#include "brave/browser/importer/chrome_profile_lock.h"
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
 
 #include "brave/browser/importer/brave_importer_lock_dialog.h"
@@ -33,7 +35,7 @@ void BraveExternalProcessImporterHost::StartImportSettings(
     return;
   }
 
-  if (!CheckForChromeLock(source_profile)) {
+  if (!CheckForChromeOrBraveLock()) {
     Cancel();
     return;
   }
@@ -65,17 +67,18 @@ void BraveExternalProcessImporterHost::ShowWarningDialog() {
   DCHECK(!headless_);
   brave::importer::ShowImportLockDialog(
       parent_window_,
+      source_profile_,
       base::Bind(&BraveExternalProcessImporterHost::OnImportLockDialogEnd,
                  weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveExternalProcessImporterHost::OnImportLockDialogEnd(bool is_continue) {
   if (is_continue) {
-    // User chose to continue, then we check the lock again to make
-    // sure that Chrome has been closed. Try to import the settings
-    // if successful. Otherwise, show a warning dialog.
-    chrome_lock_->Lock();
-    if (chrome_lock_->HasAcquired()) {
+    // User chose to continue, then we check the lock again to make sure that
+    // the other browser has been closed. Try to import the settings if
+    // successful. Otherwise, show a warning dialog.
+    browser_lock_->Lock();
+    if (browser_lock_->HasAcquired()) {
       is_source_readable_ = true;
       LaunchImportIfReady();
     } else {
@@ -86,19 +89,24 @@ void BraveExternalProcessImporterHost::OnImportLockDialogEnd(bool is_continue) {
   }
 }
 
-bool BraveExternalProcessImporterHost::CheckForChromeLock(
-    const importer::SourceProfile& source_profile) {
-  if (source_profile.importer_type != importer::TYPE_CHROME)
+bool BraveExternalProcessImporterHost::CheckForChromeOrBraveLock() {
+  if (!(source_profile_.importer_type == importer::TYPE_CHROME ||
+        source_profile_.importer_type == importer::TYPE_BRAVE))
     return true;
 
-  // Extract the user data directory from the path of the profile to be
-  // imported, because we can only lock/unlock the entire user directory with
-  // ProcessSingleton.
-  base::FilePath user_data_dir = source_profile.source_path.DirName();
+  DCHECK(!browser_lock_.get());
 
-  DCHECK(!chrome_lock_.get());
-  chrome_lock_.reset(new ChromeProfileLock(user_data_dir));
-  if (chrome_lock_->HasAcquired())
+  if (source_profile_.importer_type == importer::TYPE_CHROME) {
+    // Extract the user data directory from the path of the profile to be
+    // imported, because we can only lock/unlock the entire user directory with
+    // ProcessSingleton.
+    base::FilePath user_data_dir = source_profile_.source_path.DirName();
+    browser_lock_.reset(new ChromeProfileLock(user_data_dir));
+  } else {  // source_profile_.importer_type == importer::TYPE_BRAVE
+    browser_lock_.reset(new BraveProfileLock(source_profile_.source_path));
+  }
+
+  if (browser_lock_->HasAcquired())
     return true;
 
   // If fail to acquire the lock, we set the source unreadable and

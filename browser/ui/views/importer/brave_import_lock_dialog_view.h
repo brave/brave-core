@@ -8,6 +8,7 @@
 #include "base/callback.h"
 #include "base/compiler_specific.h"
 #include "base/macros.h"
+#include "chrome/common/importer/importer_data_types.h"
 #include "ui/views/window/dialog_delegate.h"
 
 namespace brave {
@@ -17,10 +18,12 @@ namespace brave {
 class ImportLockDialogView : public views::DialogDelegateView {
  public:
   static void Show(gfx::NativeWindow parent,
+                   ::importer::SourceProfile source_profile,
                    const base::Callback<void(bool)>& callback);
 
  private:
-  explicit ImportLockDialogView(const base::Callback<void(bool)>& callback);
+  explicit ImportLockDialogView(::importer::SourceProfile source_profile,
+                                const base::Callback<void(bool)>& callback);
   ~ImportLockDialogView() override;
 
   // views::View:
@@ -36,6 +39,8 @@ class ImportLockDialogView : public views::DialogDelegateView {
   bool ShouldShowCloseButton() const override;
 
  private:
+  ::importer::SourceProfile source_profile_;
+
   // Called with the result of the dialog.
   base::Callback<void(bool)> callback_;
 

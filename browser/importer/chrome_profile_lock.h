@@ -7,19 +7,20 @@
 
 #include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "brave/browser/importer/browser_profile_lock.h"
 #include "chrome/browser/process_singleton.h"
 
-class ChromeProfileLock {
+class ChromeProfileLock : public BrowserProfileLock {
  public:
   explicit ChromeProfileLock(const base::FilePath& user_data_dir);
-  ~ChromeProfileLock();
+  ~ChromeProfileLock() override;
 
   // Locks and releases the profile.
-  void Lock();
-  void Unlock();
+  void Lock() override;
+  void Unlock() override;
 
   // Returns true if we lock the profile successfully.
-  bool HasAcquired();
+  bool HasAcquired() override;
 
  private:
   bool lock_acquired_;
@@ -27,7 +28,7 @@ class ChromeProfileLock {
   std::unique_ptr<ProcessSingleton> process_singleton_;
 
   bool NotificationCallback(const base::CommandLine& command_line,
-			    const base::FilePath& current_directory);
+                            const base::FilePath& current_directory);
 
   DISALLOW_COPY_AND_ASSIGN(ChromeProfileLock);
 };
