@@ -11,7 +11,7 @@ declare_args() {
   brave_dsa_file = "dsa_pub.pem"
 }
 
-_base_update_url = "https://updates-test.bravesoftware.com/sparkle/Brave-Browser"
+_base_update_url = "https://updates.bravesoftware.com/sparkle/Brave-Browser"
 _update_channel = brave_channel
 if (_update_channel == "") {
   _update_channel = "stable"
