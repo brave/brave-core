@@ -11,7 +11,7 @@ import XCGLogger
 /// Properties we want to extract from Tab/TabManager and save in TabMO
 public struct SavedTab {
     public let id: String
-    public let title: String
+    public let title: String?
     public let url: String
     public let isSelected: Bool
     public let order: Int16
@@ -19,7 +19,7 @@ public struct SavedTab {
     public let history: [String]
     public let historyIndex: Int16
     
-    public init(id: String, title: String, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, 
+    public init(id: String, title: String?, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, 
                 history: [String], historyIndex: Int16) {
         self.id = id
         self.title = title
@@ -81,7 +81,7 @@ public class TabMO: NSManagedObject {
 
     // Updates existing tab with new data. Usually called when user navigates to a new website for in his existing tab.
     @discardableResult public class func update(with id: String, tabData: SavedTab, context: NSManagedObjectContext) -> TabMO? {
-        guard let tab = get(by: id, context: context) else { return nil }
+        guard let tab = get(fromId: id, context: context) else { return nil }
         
         if let screenshot = tabData.screenshot {
             tab.screenshot = UIImageJPEGRepresentation(screenshot, 1)
@@ -107,7 +107,7 @@ public class TabMO: NSManagedObject {
     
     public class func saveScreenshotUUID(_ uuid: UUID?, tabId: String?) {
         let context = DataController.shared.mainThreadContext
-        let tabMO = TabMO.get(by: tabId, context: context)
+        let tabMO = TabMO.get(fromId: tabId, context: context)
         tabMO?.screenshotUUID = uuid
         DataController.saveContext(context: context)
     }
@@ -144,7 +144,7 @@ public class TabMO: NSManagedObject {
         }
     }
     
-    public class func get(by id: String?, context: NSManagedObjectContext) -> TabMO? {
+    public class func get(fromId id: String?, context: NSManagedObjectContext) -> TabMO? {
         guard let id = id else { return nil }
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
