@@ -19,6 +19,7 @@
 		0AADC4D420D2A6A200FDE368 /* FavoritesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4D020D2A6A200FDE368 /* FavoritesDataSource.swift */; };
 		0AADC4D520D2A6A200FDE368 /* PreloadedFavorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */; };
 		0AADC4D720D2B03900FDE368 /* BraveShieldStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */; };
+		0ABA874320E68CF500D2694F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C027441B2A348C001B1E88 /* SessionData.swift */; };
 		0B21E8061E26CCB7000C8779 /* EarlGrey.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0B21E8051E26CCB7000C8779 /* EarlGrey.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0B305E1B1E3A98A900BE0767 /* BookmarkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B305E1A1E3A98A900BE0767 /* BookmarkingTests.swift */; };
 		0B3D670E1E09B90B00C1EFC7 /* AuthenticationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3D670D1E09B90B00C1EFC7 /* AuthenticationTest.swift */; };
@@ -246,7 +247,6 @@
 		74821FFE1DB6D3AC00EEEA72 /* MailSchemes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 74821FFD1DB6D3AC00EEEA72 /* MailSchemes.plist */; };
 		7482205C1DBAB56300EEEA72 /* MailProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7482205B1DBAB56300EEEA72 /* MailProviders.swift */; };
 		74B195441CF503FC007F36EF /* RecentlyClosedTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B195431CF503FC007F36EF /* RecentlyClosedTabs.swift */; };
-		74C027451B2A348C001B1E88 /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C027441B2A348C001B1E88 /* SessionData.swift */; };
 		74E36D781B71323500D69DA1 /* SettingsContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E36D771B71323500D69DA1 /* SettingsContentViewController.swift */; };
 		7B10AA9F1E3A15020002DD08 /* DataExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B10AA9E1E3A15020002DD08 /* DataExtensions.swift */; };
 		7B10AABB1E3A1F650002DD08 /* URLRequestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B10AABA1E3A1F650002DD08 /* URLRequestExtensions.swift */; };
@@ -895,6 +895,7 @@
 		0AADC4D020D2A6A200FDE368 /* FavoritesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesDataSource.swift; sourceTree = "<group>"; };
 		0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreloadedFavorites.swift; sourceTree = "<group>"; };
 		0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveShieldStatsView.swift; sourceTree = "<group>"; };
+		0A9B6A3420E6453400712BC9 /* Model8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model8.xcdatamodel; sourceTree = "<group>"; };
 		0B21E8051E26CCB7000C8779 /* EarlGrey.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EarlGrey.framework; path = Carthage/Build/iOS/EarlGrey.framework; sourceTree = "<group>"; };
 		0B305E1A1E3A98A900BE0767 /* BookmarkingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkingTests.swift; sourceTree = "<group>"; };
 		0B3D670D1E09B90B00C1EFC7 /* AuthenticationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationTest.swift; sourceTree = "<group>"; };
@@ -4140,6 +4141,7 @@
 				0AADC4D320D2A6A200FDE368 /* FavoritesTileDecorator.swift in Sources */,
 				E68E39BE1C46F42000B85F42 /* AppSettingsTableViewController.swift in Sources */,
 				E640E86A1C73A47C00C5F072 /* PasscodeViews.swift in Sources */,
+				0ABA874320E68CF500D2694F /* SessionData.swift in Sources */,
 				D029A04920A62DB0001DB72F /* TemporaryDocument.swift in Sources */,
 				D38F02D11C05127100175932 /* Authenticator.swift in Sources */,
 				E68E7ADC1CAC208200FDCA76 /* SetupPasscodeViewController.swift in Sources */,
@@ -4183,7 +4185,6 @@
 				E4CD9E911A6897FB00318571 /* ReaderMode.swift in Sources */,
 				A1FEEE0320BEE6BF00298DA2 /* HomeMenuController.swift in Sources */,
 				E68E7ADE1CAC208A00FDCA76 /* RemovePasscodeViewController.swift in Sources */,
-				74C027451B2A348C001B1E88 /* SessionData.swift in Sources */,
 				D314E7F71A37B98700426A76 /* TabToolbar.swift in Sources */,
 				EB11A1062044A90E0018F749 /* ContentBlockerHelper+TabContentScript.swift in Sources */,
 				3B0943811D6CC4FC004F24E1 /* FilledPageControl.swift in Sources */,
@@ -7414,6 +7415,7 @@
 		5D1DC54C20AE004600905E5A /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				0A9B6A3420E6453400712BC9 /* Model8.xcdatamodel */,
 				5D1DC54D20AE004600905E5A /* Model7.xcdatamodel */,
 				5D1DC54E20AE004600905E5A /* Model2.xcdatamodel */,
 				5D1DC54F20AE004600905E5A /* Model4.xcdatamodel */,
@@ -7422,7 +7424,7 @@
 				5D1DC55220AE004600905E5A /* Model5.xcdatamodel */,
 				5D1DC55320AE004600905E5A /* Model.xcdatamodel */,
 			);
-			currentVersion = 5D1DC54D20AE004600905E5A /* Model7.xcdatamodel */;
+			currentVersion = 0A9B6A3420E6453400712BC9 /* Model8.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

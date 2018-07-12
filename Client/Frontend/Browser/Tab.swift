@@ -8,6 +8,9 @@ import Storage
 import Shared
 import SwiftyJSON
 import XCGLogger
+import Data
+
+private let log = Logger.browserLogger
 
 protocol TabContentScript {
     static func name() -> String
@@ -38,6 +41,8 @@ struct TabState {
 }
 
 class Tab: NSObject {
+    var id: String?
+    
     fileprivate var _isPrivate: Bool = false
     internal fileprivate(set) var isPrivate: Bool {
         get {
@@ -128,7 +133,9 @@ class Tab: NSObject {
     }
 
     fileprivate(set) var screenshot: UIImage?
-    var screenshotUUID: UUID?
+    var screenshotUUID: UUID? {
+        didSet { TabMO.saveScreenshotUUID(screenshotUUID, tabId: id) }
+    }
 
     // If this tab has been opened from another, its parent will point to the tab from which it was opened
     var parent: Tab?
@@ -209,7 +216,7 @@ class Tab: NSObject {
             webView.scrollView.layer.masksToBounds = false
             webView.navigationDelegate = navigationDelegate
 
-            restore(webView)
+            restore(webView, restorationData: self.sessionData?.savedTabData)
 
             self.webView = webView
             self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
@@ -217,37 +224,45 @@ class Tab: NSObject {
             tabDelegate?.tab?(self, didCreateWebView: webView)
         }
     }
-
-    func restore(_ webView: WKWebView) {
+    
+    func restore(_ webView: WKWebView, restorationData: SavedTab?) {
         // Pulls restored session data from a previous SavedTab to load into the Tab. If it's nil, a session restore
         // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
         // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
         // to trigger the session restore via custom handlers
-        if let sessionData = self.sessionData {
-            restoring = true
-
-            var urls = [String]()
-            for url in sessionData.urls {
-                urls.append(url.absoluteString)
+        if let sessionData = restorationData {
+            lastTitle = sessionData.title
+            var updatedURLs = [String]()
+            var previous = ""
+            for urlString in sessionData.history {
+                guard let url = URL(string: urlString) else { continue }
+                let updatedURL = WebServer.sharedInstance.updateLocalURL(url)!.absoluteString
+                let current = updatedURL.regexReplacePattern("https?:..", with: "")
+                if current.count > 1 && current == previous {
+                    updatedURLs.removeLast()
+                }
+                previous = current
+                updatedURLs.append(updatedURL)
             }
-
-            let currentPage = sessionData.currentPage
+            let currentPage = sessionData.historyIndex
             self.sessionData = nil
             var jsonDict = [String: AnyObject]()
-            jsonDict["history"] = urls as AnyObject?
-            jsonDict["currentPage"] = currentPage as AnyObject?
-            guard let json = JSON(jsonDict).stringValue() else {
+            jsonDict[SessionData.Keys.history] = updatedURLs as AnyObject
+            jsonDict[SessionData.Keys.currentPage] = Int(currentPage) as AnyObject
+            
+            guard let escapedJSON = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
                 return
             }
-            let escapedJSON = json.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            
             let restoreURL = URL(string: "\(WebServer.sharedInstance.base)/about/sessionrestore?history=\(escapedJSON)")
             lastRequest = PrivilegedRequest(url: restoreURL!) as URLRequest
             webView.load(lastRequest!)
         } else if let request = lastRequest {
             webView.load(request)
         } else {
-            print("creating webview with no lastRequest and no session data: \(self.url?.description ?? "nil")")
+            log.warning("creating webview with no lastRequest and no session data: \(self.url)")
         }
+        
     }
     
     func deleteWebView() {
@@ -292,19 +307,21 @@ class Tab: NSObject {
 
     var displayTitle: String {
         if let title = webView?.title, !title.isEmpty {
-            return title
+            return title.contains("localhost") ? "" : title
         }
-
-        // When picking a display title. Tabs with sessionData are pending a restore so show their old title.
-        // To prevent flickering of the display title. If a tab is restoring make sure to use its lastTitle.
-        if let url = self.url, url.isAboutHomeURL, sessionData == nil, !restoring {
+        else if let url = webView?.url, url.isAboutHomeURL {
+            return Strings.NewTabTitle
+        }
+        
+        guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
+            if let title = url?.absoluteString {
+                return title
+            } else if let tab = TabMO.get(fromId: id, context: DataController.shared.mainThreadContext) {
+                return tab.title ?? tab.url ?? ""
+            }
             return ""
         }
-
-        guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
-            return self.url?.displayURL?.absoluteString ??  ""
-        }
-
+        
         return lastTitle
     }
 
@@ -364,13 +381,13 @@ class Tab: NSObject {
         }
 
         if let _ = webView?.reloadFromOrigin() {
-            print("reloaded zombified tab from origin")
+            log.debug("reloaded zombified tab from origin")
             return
         }
 
         if let webView = self.webView {
-            print("restoring webView from scratch")
-            restore(webView)
+            log.debug("restoring webView from scratch")
+            restore(webView, restorationData: sessionData?.savedTabData)
         }
     }
 
@@ -527,7 +544,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandler {
 
         helpers[name] = helper
 
-        // If this helper handles script messages, then get the handler name and register it. The Browser
+        // If this helper handles script messages, then get the handler name and register it. The Tab
         // receives all messages and then dispatches them to the right TabHelper.
         if let scriptMessageHandlerName = helper.scriptMessageHandlerName() {
             tab.webView?.configuration.userContentController.add(self, name: scriptMessageHandlerName)
@@ -584,3 +601,4 @@ class TabWebViewMenuHelper: UIView {
         }
     }
 }
+
