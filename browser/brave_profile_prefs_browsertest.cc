@@ -17,6 +17,9 @@ using BraveProfilePrefsBrowserTest = InProcessBrowserTest;
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DownloadPromptDefault) {
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(prefs::kPromptForDownload));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, WidevineOptInDisabledByDefault) {
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kWidevineOptedIn));
 }
