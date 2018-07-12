@@ -49,6 +49,7 @@ source_set("browser_process") {
   ]
 
   deps = [
+    "//brave:generate_version",
     "//brave/browser/payments",
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/content_settings/core/browser",

@@ -32,8 +32,6 @@ def create_version(target_gen_dir):
     version = get_brave_version()[1:]
     version_h_file.write(''.join(['#define BRAVE_BROWSER_VERSION "', version, '"']))
 
-  print("version_path is: ", version_path, get_brave_version())
-
 
 if __name__ == '__main__':
   sys.exit(main())
