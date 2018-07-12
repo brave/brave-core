@@ -6,6 +6,7 @@
 #define BRAVE_BROWSER_IMPORTER_BRAVE_IMPORTER_LOCK_DIALOG_H_
 
 #include "base/callback_forward.h"
+#include "chrome/common/importer/importer_data_types.h"
 #include "ui/gfx/native_widget_types.h"
 
 namespace brave {
@@ -15,6 +16,7 @@ namespace importer {
 // warning dialog. After closing the dialog, the ImportHost receives a callback
 // with the message either to skip the import, or to continue the process.
 void ShowImportLockDialog(gfx::NativeWindow parent,
+                          ::importer::SourceProfile source_profile,
                           const base::Callback<void(bool)>& callback);
 
 }  // namespace importer

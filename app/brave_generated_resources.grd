@@ -80,6 +80,12 @@
       <message name="IDS_CHROME_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the Chrome importer lock dialog">
 	To finish importing, close all Chrome windows.
       </message>
+      <message name="IDS_BRAVE_IMPORTER_LOCK_TITLE" desc="Dialog title for Brave importer lock dialog">
+	Close Brave
+      </message>
+      <message name="IDS_BRAVE_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the Brave importer lock dialog">
+	To finish importing, close all Brave windows.
+      </message>
       <message name="IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX" desc="Checkbox for importing cookies">
         Cookies
       </message>
