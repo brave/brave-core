@@ -57,7 +57,7 @@ def get_chrome_version():
   return version.split('+')[1]
 
 def get_brave_version():
-  return 'v' + self.get_raw_version()
+  return 'v' + get_raw_version()
 
 def get_raw_version():
   return os.environ.get('npm_config_brave_version') or brave_browser_package()['version']
