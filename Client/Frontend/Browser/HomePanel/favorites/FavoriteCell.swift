@@ -63,27 +63,6 @@ class FavoriteCell: UICollectionViewCell {
         }
     }
     
-    private func imageWithSize(_ image: UIImage, size:CGSize, maxScale: CGFloat) -> UIImage {
-        var scaledImageRect = CGRect.zero;
-        var aspectWidth:CGFloat = size.width / image.size.width;
-        var aspectHeight:CGFloat = size.height / image.size.height;
-        if aspectWidth > maxScale || aspectHeight > maxScale {
-            let m = max(maxScale / aspectWidth, maxScale / aspectHeight)
-            aspectWidth *= m
-            aspectHeight *= m
-        }
-        let aspectRatio:CGFloat = min(aspectWidth, aspectHeight)
-        scaledImageRect.size.width = image.size.width * aspectRatio
-        scaledImageRect.size.height = image.size.height * aspectRatio
-        scaledImageRect.origin.x = (size.width - scaledImageRect.size.width) / 2.0
-        scaledImageRect.origin.y = (size.height - scaledImageRect.size.height) / 2.0
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        image.draw(in: scaledImageRect)
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return scaledImage!
-    }
-    
     let textLabel = UILabel().then {
         $0.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         $0.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
