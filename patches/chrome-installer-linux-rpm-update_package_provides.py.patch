@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/update_package_provides.py b/chrome/installer/linux/rpm/update_package_provides.py
-index 4ce30012357a32e1316dbb3930ce55ddf9acacfa..c8a661351b8279b5d6ce239eb4c61725c27ae8f6 100755
+index 4ce30012357a32e1316dbb3930ce55ddf9acacfa..3da4853a58b846bec19eaf6502d061eb1be0405e 100755
 --- a/chrome/installer/linux/rpm/update_package_provides.py
 +++ b/chrome/installer/linux/rpm/update_package_provides.py
 @@ -32,6 +32,7 @@ PACKAGE_FILTER = [
@@ -26,3 +26,63 @@ index 4ce30012357a32e1316dbb3930ce55ddf9acacfa..c8a661351b8279b5d6ce239eb4c61725
      "rtld(GNU_HASH)",
  ]
  
+@@ -67,12 +72,30 @@ REPO_NS = "http://linux.duke.edu/metadata/repo"
+ 
+ rpm_sources = {}
+ for version in SUPPORTED_FEDORA_RELEASES:
+-  rpm_sources['Fedora ' + version] = [
+-      "https://download.fedoraproject.org/pub/fedora/linux/releases/%s/Everything/x86_64/os/" % version,
+-      # 'updates' must appear after 'releases' since its entries
+-      # overwrite the originals.
+-      "https://download.fedoraproject.org/pub/fedora/linux/updates/%s/x86_64/" % version,
+-  ]
++  if version in '27':
++     rpm_sources['Fedora ' + version] = [
++         "https://download.fedoraproject.org/pub/fedora/linux/releases/%s/Everything/x86_64/os/" % version,
++         # 'updates' must appear after 'releases' since its entries
++         # overwrite the originals.
++         "https://download.fedoraproject.org/pub/fedora/linux/updates/%s/x86_64/" % version,
++     ]
++  elif version in '26':
++     rpm_sources['Fedora ' + version] = [
++         "https://download.fedoraproject.org/pub/fedora/linux/releases/%s/Everything/x86_64/os/" % version,
++         # 'updates' must appear after 'releases' since its entries
++         # overwrite the originals.
++         #"https://download.fedoraproject.org/pub/fedora/linux/updates/%s/x86_64/" % version,
++         "https://pubmirror1.math.uh.edu/fedora-buffet/archive/fedora/linux/updates/%s/x86_64/" % version,
++     ]
++  elif version in '25':
++     rpm_sources['Fedora ' + version] = [
++         "https://download.fedoraproject.org/pub/fedora/linux/releases/%s/Everything/x86_64/os/" % version,
++         # 'updates' must appear after 'releases' since its entries
++         # overwrite the originals.
++         #"https://download.fedoraproject.org/pub/fedora/linux/updates/%s/x86_64/" % version,
++         "https://mirrors.rit.edu/fedora/archive/fedora/linux/updates/%s/x86_64/" % version,
++     ]
++
+ for version in SUPPORTED_OPENSUSE_LEAP_RELEASES:
+     rpm_sources['openSUSE Leap ' + version] = [
+         "https://download.opensuse.org/distribution/leap/%s/repo/oss/suse/" % version,
+@@ -81,6 +104,9 @@ for version in SUPPORTED_OPENSUSE_LEAP_RELEASES:
+         "https://download.opensuse.org/update/leap/%s/oss/" % version,
+   ]
+ 
++print("rpm sources list for reference:")
++print(json.dumps(rpm_sources, indent=4))
++
+ provides = {}
+ for distro in rpm_sources:
+   distro_provides = {}
+@@ -90,10 +116,12 @@ for distro in rpm_sources:
+     # to ensure the file-references from the metadata file are valid.
+     source = urllib2.urlopen(source).geturl()
+ 
++    print("working on url {}".format(source))
+     response = urllib2.urlopen(source + "repodata/repomd.xml")
+     repomd = xml.etree.ElementTree.fromstring(response.read())
+     primary = source + repomd.find("./{%s}data[@type='primary']/{%s}location" %
+                                    (REPO_NS, REPO_NS)).attrib['href']
++    print("primary is: {}".format(primary))
+     expected_checksum = repomd.find(
+         "./{%s}data[@type='primary']/{%s}checksum[@type='sha256']" %
+         (REPO_NS, REPO_NS)).text
