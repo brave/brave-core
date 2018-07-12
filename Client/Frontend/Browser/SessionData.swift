@@ -15,13 +15,15 @@ class SessionData: NSObject, NSCoding {
     struct Keys {
         static let currentPage = "currentPage"
         static let history = "history"
+        static let lastUsedTime = "lastUsedTime"
+        static let urls = "url"
     }
 
     var jsonDictionary: [String: Any] {
         return [
-            "currentPage": String(self.currentPage),
-            "lastUsedTime": String(self.lastUsedTime),
-            "urls": urls.map { $0.absoluteString }
+            SessionData.Keys.currentPage: String(self.currentPage),
+            SessionData.Keys.lastUsedTime: String(self.lastUsedTime),
+            SessionData.Keys.urls: urls.map { $0.absoluteString }
         ]
     }
 
@@ -43,15 +45,15 @@ class SessionData: NSObject, NSCoding {
     }
 
     required init?(coder: NSCoder) {
-        self.currentPage = coder.decodeAsInt(forKey: "currentPage")
+        self.currentPage = coder.decodeAsInt(forKey: SessionData.Keys.currentPage)
         self.urls = coder.decodeObject(forKey: "urls") as? [URL] ?? []
-        self.lastUsedTime = coder.decodeAsUInt64(forKey: "lastUsedTime")
+        self.lastUsedTime = coder.decodeAsUInt64(forKey: SessionData.Keys.lastUsedTime)
     }
 
     func encode(with coder: NSCoder) {
-        coder.encode(currentPage, forKey: "currentPage")
-        coder.encode(urls, forKey: "urls")
-        coder.encode(Int64(lastUsedTime), forKey: "lastUsedTime")
+        coder.encode(currentPage, forKey: SessionData.Keys.currentPage)
+        coder.encode(urls, forKey: SessionData.Keys.urls)
+        coder.encode(Int64(lastUsedTime), forKey: SessionData.Keys.lastUsedTime)
     }
     
     // This is not a fully direct mapping, but rather an attempt to reconcile data differences, primarily used for tab restoration

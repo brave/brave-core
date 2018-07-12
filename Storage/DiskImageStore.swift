@@ -83,7 +83,7 @@ open class DiskImageStore {
     }
 
     /// Clears all images from the cache, excluding the given set of keys.
-    @discardableResult open func clearExcluding(_ keys: Set<String>) -> Success {
+    open func clearExcluding(_ keys: Set<String>) -> Success {
         return deferDispatchAsync(queue) { () -> Success in
             let keysToDelete = self.keys.subtracting(keys)
 
