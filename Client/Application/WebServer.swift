@@ -76,6 +76,14 @@ class WebServer {
             }
         }
     }
+    
+    func updateLocalURL(_ url: URL) -> URL? {
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
+        if components.host == "localhost" && components.scheme == "http" {
+            components.port = Int(WebServer.sharedInstance.server.port)
+        }
+        return components.url
+    }
 
     /// Return a full url, as a string, for a resource in a module. No check is done to find out if the resource actually exist.
     func URLForResource(_ resource: String, module: String) -> String {
