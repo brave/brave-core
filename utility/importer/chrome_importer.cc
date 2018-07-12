@@ -302,7 +302,7 @@ double ChromeImporter::chromeTimeToDouble(int64_t time) {
   return ((time * 10 - 0x19DB1DED53E8000) / 10000) / 1000;
 }
 
-void ChromeImporter::ImportPasswords(const base::FilePath& prefs) {
+void ChromeImporter::ImportPasswords(const base::FilePath& prefs_filename) {
   #if !defined(USE_X11)
     base::FilePath passwords_path =
       source_path_.Append(
@@ -329,7 +329,7 @@ void ChromeImporter::ImportPasswords(const base::FilePath& prefs) {
       }
     }
   #else
-    base::FilePath prefs_path = source_path_.Append(prefs);
+    base::FilePath prefs_path = source_path_.Append(prefs_filename);
     const base::Value *value;
     scoped_refptr<JsonPrefStore> prefs = new JsonPrefStore(prefs_path);
     int local_profile_id;
