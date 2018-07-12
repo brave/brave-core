@@ -516,8 +516,7 @@ class BrowserViewController: SensitiveViewController {
     }
 
     fileprivate func canRestoreTabs() -> Bool {
-        guard let tabsToRestore = TabManager.tabsToRestore() else { return false }
-        return !tabsToRestore.isEmpty
+        return !TabMO.getAll().isEmpty
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -2376,7 +2375,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
 extension BrowserViewController: HistoryStateHelperDelegate {
     func historyStateHelper(_ historyStateHelper: HistoryStateHelper, didPushOrReplaceStateInTab tab: Tab) {
         navigateInTab(tab: tab)
-        tabManager.storeChanges()
+        tabManager.saveTab(tab)
     }
 }
 
