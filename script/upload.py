@@ -8,6 +8,7 @@ import errno
 import hashlib
 import os
 import requests
+import re
 import shutil
 import subprocess
 import sys
@@ -16,7 +17,7 @@ import tempfile
 from io import StringIO
 from lib.config import PLATFORM, DIST_URL, get_target_arch, get_chromedriver_version, \
                        get_env_var, s3_config, get_zip_name, product_name, project_name, \
-                       SOURCE_ROOT, dist_dir, output_dir, get_brave_version
+                       SOURCE_ROOT, dist_dir, output_dir, get_brave_version, get_raw_version
 from lib.util import execute, parse_version, scoped_cwd, s3put
 from lib.helpers import *
 
@@ -56,7 +57,8 @@ def main():
   upload_brave(repo, release, os.path.join(dist_dir(), chromedriver), force=args.force)
 
   if PLATFORM == 'darwin':
-    upload_brave(repo, release, os.path.join(output_dir(), 'Brave.dmg'), force=args.force)
+    for pkg in yield_brave_packages():
+      upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
   elif PLATFORM == 'win32':
     if get_target_arch() == 'x64':
       upload_brave(repo, release, os.path.join(output_dir(),
@@ -66,8 +68,8 @@ def main():
           'brave_installer.exe'), 'brave_installer-ia32.exe', force=args.force)
   else:
     if get_target_arch() == 'x64':
-      upload_brave(repo, release, os.path.join(output_dir(), 'brave-x86_64.rpm'), force=args.force)
-      upload_brave(repo, release, os.path.join(output_dir(), 'brave-amd64.deb'), force=args.force)
+      for pkg in yield_brave_packages():
+        upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
     else:
       upload_brave(repo, release, os.path.join(output_dir(), 'brave-i386.rpm'), force=args.force)
       upload_brave(repo, release, os.path.join(output_dir(), 'brave-i386.deb'), force=args.force)
@@ -83,6 +85,20 @@ def main():
   version = '.'.join(versions[:3])
   print('[INFO] Finished upload')
 
+
+def yield_brave_packages():
+  # NOTE: mbacchi - before official release this must handle stable release channel which is ""
+  channel = release_channel()
+  version = get_raw_version()
+  for _, _, files in os.walk(output_dir()):
+    for file in files:
+      if PLATFORM == 'darwin':
+        if re.match(r'Brave-Browser-' + get_channel_display_name(channel) + r'.*\.dmg$'):
+          yield file
+      elif PLATFORM == 'linux':
+        if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
+          or re.match(r'brave-browser-' + channel + '-' + version + r'.*\.rpm$', file):
+          yield file
 
 def get_draft(repo, tag):
   release = None
