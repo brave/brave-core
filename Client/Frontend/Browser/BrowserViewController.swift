@@ -37,7 +37,7 @@ private struct BrowserViewControllerUX {
 }
 
 class BrowserViewController: SensitiveViewController {
-    var homePanelController: HomePanelViewController?
+    var topSitesViewController: TopSitesViewController?
     var webViewContainer: UIView!
     var urlBar: URLBarView!
     var tabsBar: TabsBarViewController!
@@ -201,7 +201,7 @@ class BrowserViewController: SensitiveViewController {
         }
 
         view.setNeedsUpdateConstraints()
-        if let home = homePanelController {
+        if let home = topSitesViewController {
             home.view.setNeedsUpdateConstraints()
         }
 
@@ -627,8 +627,10 @@ class BrowserViewController: SensitiveViewController {
 
         // Remake constraints even if we're already showing the home controller.
         // The home controller may change sizes if we tap the URL bar while on about:home.
-        homePanelController?.view.snp.remakeConstraints { make in
-            make.top.equalTo(self.urlBar.snp.bottom)
+        topSitesViewController?.view.snp.remakeConstraints { make in
+            let tabsBarOffset = tabsBar.view.isHidden ? UX.TabsBar.height : 0
+            webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).inset(tabsBarOffset).constraint
+            
             make.left.right.equalTo(self.view)
             if self.homePanelIsInline {
                 make.bottom.equalTo(self.toolbar?.snp.top ?? self.view.snp.bottom)
@@ -653,24 +655,22 @@ class BrowserViewController: SensitiveViewController {
     fileprivate func showHomePanelController(inline: Bool) {
         homePanelIsInline = inline
 
-        if homePanelController == nil {
-            let homePanelController = HomePanelViewController()
-            homePanelController.profile = profile
+        if topSitesViewController == nil {
+            let homePanelController = TopSitesViewController()
             homePanelController.delegate = self
-            homePanelController.url = tabManager.selectedTab?.url?.displayURL
             homePanelController.view.alpha = 0
-            self.homePanelController = homePanelController
+
+            self.topSitesViewController = homePanelController
 
             addChildViewController(homePanelController)
             view.addSubview(homePanelController.view)
             homePanelController.didMove(toParentViewController: self)
         }
-        guard let homePanelController = self.homePanelController else {
+        guard let homePanelController = self.topSitesViewController else {
             assertionFailure("homePanelController is still nil after assignment.")
             return
         }
-        let isPrivate = tabManager.selectedTab?.isPrivate ?? false
-        homePanelController.applyTheme(isPrivate ? Theme.Private : Theme.Normal)
+
         let panelNumber = tabManager.selectedTab?.url?.fragment
 
         // splitting this out to see if we can get better crash reports when this has a problem
@@ -680,7 +680,6 @@ class BrowserViewController: SensitiveViewController {
                 newSelectedButtonIndex = lastInt
             }
         }
-        homePanelController.selectedPanel = HomePanelType(rawValue: newSelectedButtonIndex)
 
         // We have to run this animation, even if the view is already showing because there may be a hide animation running
         // and we want to be sure to override its results.
@@ -696,8 +695,8 @@ class BrowserViewController: SensitiveViewController {
     }
 
     fileprivate func hideHomePanelController() {
-        if let controller = homePanelController {
-            self.homePanelController = nil
+        if let controller = topSitesViewController {
+            self.topSitesViewController = nil
             UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState, animations: { () -> Void in
                 controller.view.alpha = 0
             }, completion: { _ in
@@ -751,7 +750,7 @@ class BrowserViewController: SensitiveViewController {
             return
         }
 
-        homePanelController?.view?.isHidden = true
+        topSitesViewController?.view?.isHidden = true
 
         searchController!.didMove(toParentViewController: self)
     }
@@ -781,7 +780,7 @@ class BrowserViewController: SensitiveViewController {
             searchController.view.removeFromSuperview()
             searchController.removeFromParentViewController()
             self.searchController = nil
-            homePanelController?.view?.isHidden = false
+            topSitesViewController?.view?.isHidden = false
             searchLoader = nil
         }
     }
@@ -1347,7 +1346,7 @@ extension BrowserViewController: URLBarDelegate {
     }
 
     func urlBarDidPressScrollToTop(_ urlBar: URLBarView) {
-        if let selectedTab = tabManager.selectedTab, homePanelController == nil {
+        if let selectedTab = tabManager.selectedTab, topSitesViewController == nil {
             // Only scroll to top if we are not showing the home view controller
             selectedTab.webView?.scrollView.setContentOffset(CGPoint.zero, animated: true)
         }
@@ -1661,40 +1660,6 @@ extension BrowserViewController: TabDelegate {
     func tab(_ tab: Tab, didSelectFindInPageForSelection selection: String) {
         updateFindInPageVisibility(visible: true)
         findInPageBar?.text = selection
-    }
-}
-
-extension BrowserViewController: HomePanelViewControllerDelegate {
-    func homePanelViewController(_ homePanelViewController: HomePanelViewController, didSelectURL url: URL, visitType: VisitType) {
-        finishEditingAndSubmit(url, visitType: visitType)
-    }
-
-    func homePanelViewController(_ homePanelViewController: HomePanelViewController, didSelectPanel panel: Int) {
-        if let url = tabManager.selectedTab?.url, url.isAboutHomeURL {
-            tabManager.selectedTab?.webView?.evaluateJavaScript("history.replaceState({}, '', '#panel=\(panel)')", completionHandler: nil)
-        }
-    }
-
-    func homePanelViewControllerDidRequestToCreateAccount(_ homePanelViewController: HomePanelViewController) {
-    }
-
-    func homePanelViewControllerDidRequestToSignIn(_ homePanelViewController: HomePanelViewController) {
-    }
-
-    func homePanelViewControllerDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool) {
-        let tab = self.tabManager.addTab(PrivilegedRequest(url: url) as URLRequest, afterTab: self.tabManager.selectedTab, isPrivate: isPrivate)
-        // If we are showing toptabs a user can just use the top tab bar
-        // If in overlay mode switching doesnt correctly dismiss the homepanels
-        guard !self.urlBar.inOverlayMode else {
-            return
-        }
-        // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
-        let toast = ButtonToast(labelText: Strings.ContextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.ContextMenuButtonToastNewTabOpenedButtonText, completion: { buttonPressed in
-            if buttonPressed {
-                self.tabManager.selectTab(tab)
-            }
-        })
-        self.show(toast: toast)
     }
 }
 
@@ -2705,6 +2670,13 @@ extension BrowserViewController: HomeMenuControllerDelegate {
     func menuDidBatchOpenURLs(_ menu: HomeMenuController, urls: [URL]) {
         self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabManager.selectedTab?.tabState.isPrivate ?? false)
     }
+}
+
+extension BrowserViewController: TopSitesDelegate {
+    
+    func didSelectUrl(url: URL) {
+        finishEditingAndSubmit(url, visitType: .bookmark)
+}
 }
 
 extension BrowserViewController: PreferencesObserver {
