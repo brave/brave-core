@@ -87,7 +87,7 @@ public extension String {
         }
     }
     
-    public func regexReplacePattern(_ pattern:String, with:String) -> String {
+    public func regexReplacePattern(_ pattern: String, with: String) -> String {
         let regex = try! NSRegularExpression(pattern:pattern, options: [])
         return regex.stringByReplacingMatches(in: self, options: [], range: NSMakeRange(0, self.count), withTemplate: with)
     }
