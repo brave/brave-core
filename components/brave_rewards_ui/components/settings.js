@@ -41,6 +41,7 @@ class RewardsPage extends React.Component {
     }
   }
 
+  // TODO remove
   get contributeRows () {
     return [
       {
@@ -93,6 +94,7 @@ class RewardsPage extends React.Component {
     ]
   }
 
+  // TODO remove
   get donationRows () {
     return [
       {
@@ -144,7 +146,7 @@ class RewardsPage extends React.Component {
       image={adsDisabledIcon}
       theme={{color: '#ceb4e1', boldColor: '#b490cf'}}
     >
-      <h3>Coming soon.</h3>
+      <h3>{getLocale('adsDisabledText')}</h3>
     </DisabledContent>
   }
 
@@ -153,8 +155,8 @@ class RewardsPage extends React.Component {
       image={contributeDisabledIcon}
       theme={{color: '#ce9ccf', boldColor: '#c16fc2'}}
     >
-      • Pay directly for the content you love. <br />
-      • Your <b>monthly allowance</b> gets divided based on your attention metric.
+      • {getLocale('contributionDisabledText1')} <br />
+      • {getLocale('contributionDisabledText2')}}
     </DisabledContent>
   }
 
@@ -226,8 +228,8 @@ class RewardsPage extends React.Component {
             </List>
             <ContributeTable
               header={[
-                'Site visited',
-                'Attentions'
+                getLocale('contributionSiteVisited'),
+                getLocale('contributionSiteAttention')
               ]}
               rows={this.contributeRows}
               allSites={false}
@@ -237,7 +239,7 @@ class RewardsPage extends React.Component {
                 headerColor: '#9F22A1'
               }}
             >
-              Please visit some sites
+              {getLocale('contributionVisitSome')}
             </ContributeTable>
           </Box>
           <Box
@@ -246,11 +248,11 @@ class RewardsPage extends React.Component {
             description={getLocale('donationDesc')}
             settingsChild={'TODO Add me'}
           >
-            <List title={getLocale('donationTotal')}>
+            <List title={getLocale('donationTotalDonations')}>
               <Tokens value={21} converted={7} />
             </List>
             <List title={getLocale('donationList')}>
-              Total &nbsp;<Tokens value={3} hideText />
+              {getLocale('donationTotal')} &nbsp;<Tokens value={3} hideText />
             </List>
             <DonationTable
               rows={this.donationRows}
@@ -259,7 +261,7 @@ class RewardsPage extends React.Component {
                 headerColor: '#696FDC'
               }}
             >
-              Please visit some sites
+              {getLocale('donationVisitSome')}
             </DonationTable>
           </Box>
         </Column>
@@ -284,12 +286,12 @@ class RewardsPage extends React.Component {
             converted={'6.0 USD'}
             actions={[
               {
-                name: 'Add funds',
+                name: getLocale('panelAddFunds'),
                 action: () => {},
                 icon: walletIcon
               },
               {
-                name: 'Withdraw Funds',
+                name: getLocale('panelWithdrawFunds'),
                 action: () => {},
                 icon: fundsIcon
               }
