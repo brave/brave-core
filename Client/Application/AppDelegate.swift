@@ -216,6 +216,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // button will be in the incorrect position and overlap with the input text. Not clear if
         // that is an iOS bug or not.
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
+        
+        if let profile = profile,  profile.prefs.boolForKey(PrefsKeys.IsFirstLaunch) != true {
+            FavoritesHelper.addDefaultFavorites()
+            profile.prefs.setBool(true, forKey: PrefsKeys.IsFirstLaunch)
+        }
 
         UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
       

@@ -65,6 +65,24 @@ extension UIImage {
     public static func templateImageNamed(_ name: String) -> UIImage? {
         return UIImage(named: name)?.withRenderingMode(.alwaysTemplate)
     }
+    
+    public func scale(toSize size: CGSize) -> UIImage {
+        if self.size == size {
+            return self
+        }
+        
+        let rendererFormat = UIGraphicsImageRendererFormat.default()
+        rendererFormat.opaque = false
+        rendererFormat.scale = 1.0
+        
+        let scaledImageRect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        let renderer = UIGraphicsImageRenderer(size: size, format: rendererFormat)
+        let scaledImage = renderer.image { context in
+            self.draw(in: scaledImageRect)
+        }
+        
+        return scaledImage
+    }
 
     // TESTING ONLY: not for use in release/production code.
     // PNG comparison can return false negatives, be very careful using for non-equal comparison.
