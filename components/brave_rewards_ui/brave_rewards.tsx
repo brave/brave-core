@@ -6,6 +6,7 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
+const { initLocale } = require('brave-ui')
 
 // Components
 import App from './components/app'
@@ -24,6 +25,9 @@ window.cr.define('brave_rewards', function () {
       </Provider>,
       document.getElementById('root'))
     window.i18nTemplate.process(window.document, window.loadTimeData)
+    if (window.loadTimeData && window.loadTimeData.data_) {
+      initLocale(window.loadTimeData.data_)
+    }
   }
 
   function getActions () {
