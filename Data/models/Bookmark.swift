@@ -35,7 +35,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
     
     @NSManaged public var domain: Domain?
     
-    var recordType: SyncRecordType = .bookmark
+    public var recordType: SyncRecordType = .bookmark
     
     var syncParentUUID: [Int]? {
         get { return SyncHelpers.syncUUID(fromString: syncParentDisplayUUID) }
@@ -68,7 +68,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         lastVisited = created
     }
     
-    func asDictionary(deviceId: [Int]?, action: Int?) -> [String: Any] {
+    public func asDictionary(deviceId: [Int]?, action: Int?) -> [String: Any] {
         return SyncBookmark(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
     }
 
@@ -95,7 +95,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
     }
     
     // Syncable
-    func update(syncRecord record: SyncRecord?) {
+    public func update(syncRecord record: SyncRecord?) {
         guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
         title = site.title
         update(customTitle: site.customTitle, url: site.location)
@@ -133,7 +133,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         }
     }
 
-    static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
+    public static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
         // Explicit parentFolder to force method decision
         return add(rootObject: root as? SyncBookmark, save: save, sendToSync: sendToSync, parentFolder: nil, context: context)
     }

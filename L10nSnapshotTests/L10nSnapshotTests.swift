@@ -8,14 +8,6 @@ let testPageBase = "http://wopr.norad.org/~sarentz/fxios/testpages"
 let loremIpsumURL = "\(testPageBase)/index.html"
 
 class L10nSnapshotTests: L10nBaseSnapshotTests {
-    func test02DefaultTopSites() {
-        navigator.toggleOff(userState.pocketInNewTab, withAction: Action.TogglePocketInNewTab)
-        navigator.goto(HomePanelsScreen)
-        snapshot("02DefaultTopSites-01")
-        navigator.toggleOn(userState.pocketInNewTab, withAction: Action.TogglePocketInNewTab)
-        navigator.goto(HomePanelsScreen)
-        snapshot("02DefaultTopSites-with-pocket-02")
-    }
 
     func test03MenuOnTopSites() {
         navigator.goto(NewTabScreen)

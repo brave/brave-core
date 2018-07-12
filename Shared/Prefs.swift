@@ -13,14 +13,12 @@ public struct PrefsKeys {
     public static let KeyNightModeStatus = "NightModeStatus"
     public static let KeyMailToOption = "MailToOption"
     public static let HasFocusInstalled = "HasFocusInstalled"
-    public static let HasPocketInstalled = "HasPocketInstalled"
     public static let IntroSeen = "IntroViewControllerSeen" // Currently unused, but for future use for any sort of on-boarding/intro screen
 
     //Activity Stream
     public static let KeyTopSitesCacheIsValid = "topSitesCacheIsValid"
     public static let KeyTopSitesCacheSize = "topSitesCacheSize"
     public static let KeyNewTab = "NewTabPrefKey"
-    public static let ASPocketStoriesVisible = "ASPocketStoriesVisible"
     public static let ASRecentHighlightsVisible = "ASRecentHighlightsVisible"
     public static let ASBookmarkHighlightsVisible = "ASBookmarkHighlightsVisible"
     public static let ASLastInvalidation = "ASLastInvalidation"

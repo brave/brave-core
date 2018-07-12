@@ -6,36 +6,23 @@
 //  Copyright © 2015 Felix Krause. All rights reserved.
 //
 
-// -----------------------------------------------------
-// IMPORTANT: When modifying this file, make sure to
-//            increment the version number at the very
-//            bottom of the file to notify users about
-//            the new SnapshotHelper.swift
-// -----------------------------------------------------
-
 import Foundation
 import XCTest
 
 var deviceLanguage = ""
-var locale = ""
 
-func setupSnapshot(_ app: XCUIApplication) {
-    Snapshot.setupSnapshot(app)
+@available(*, deprecated, message="use setupSnapshot: instead")
+func setLanguage(app: XCUIApplication) {
+    setupSnapshot(app)
 }
 
-func snapshot(_ name: String, waitForLoadingIndicator: Bool) {
-    if waitForLoadingIndicator {
-        Snapshot.snapshot(name)
-    } else {
-        Snapshot.snapshot(name, timeWaitingForIdle: 0)
-    }
+func setupSnapshot(app: XCUIApplication) {
+    Snapshot.setLanguage(app)
+    Snapshot.setLaunchArguments(app)
 }
 
-/// - Parameters:
-///   - name: The name of the snapshot
-///   - timeout: Amount of seconds to wait until the network loading indicator disappears. Pass `0` if you don't want to wait.
-func snapshot(_ name: String, timeWaitingForIdle timeout: TimeInterval = 20) {
-    Snapshot.snapshot(name, timeWaitingForIdle: timeout)
+func snapshot(name: String, waitForLoadingIndicator: Bool = false) {
+    Snapshot.snapshot(name, waitForLoadingIndicator: waitForLoadingIndicator)
 }
 
 enum SnapshotError: Error, CustomDebugStringConvertible {
@@ -135,17 +122,17 @@ open class Snapshot: NSObject {
             let regex = try NSRegularExpression(pattern: "(\\\".+?\\\"|\\S+)", options: [])
             let matches = regex.matches(in: launchArguments, options: [], range: NSRange(location: 0, length: launchArguments.count))
             let results = matches.map { result -> String in
-                (launchArguments as NSString).substring(with: result.range)
+                (launchArguments as NSString).substringWithRange(result.range)
             }
             app.launchArguments += results
         } catch {
             print("Couldn't detect/set launch_arguments...")
         }
     }
-
-    open class func snapshot(_ name: String, timeWaitingForIdle timeout: TimeInterval = 20) {
-        if timeout > 0 {
-            waitForLoadingIndicatorToDisappear(within: timeout)
+    
+    class func snapshot(name: String, waitForLoadingIndicator: Bool = false) {
+        if waitForLoadingIndicator {
+            waitForLoadingIndicatorToDisappear()
         }
 
         print("snapshot: \(name)") // more information about this, check out https://docs.fastlane.tools/actions/snapshot/#how-does-it-work
@@ -260,14 +247,6 @@ private extension XCUIElementQuery {
 
             return element.isStatusBar(deviceWidth)
         }
-
-        return self.containing(isStatusBar)
-    }
-}
-
-private extension CGFloat {
-    func isBetween(_ numberA: CGFloat, and numberB: CGFloat) -> Bool {
-        return numberA...numberB ~= self
     }
 }
 

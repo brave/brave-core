@@ -412,20 +412,6 @@ class TabTrayController: UIViewController {
         presentingViewController!.dismiss(animated: true, completion: nil)
     }
 
-    @objc func didClickSettingsItem() {
-        assert(Thread.isMainThread, "Opening settings requires being invoked on the main thread")
-
-        let settingsTableViewController = AppSettingsTableViewController()
-        settingsTableViewController.profile = profile
-        settingsTableViewController.tabManager = tabManager
-        settingsTableViewController.settingsDelegate = self
-
-        let controller = SettingsNavigationController(rootViewController: settingsTableViewController)
-        controller.popoverDelegate = self
-		controller.modalPresentationStyle = .formSheet
-        present(controller, animated: true, completion: nil)
-    }
-
     @objc func didClickAddTab() {
         openNewTab()
     }

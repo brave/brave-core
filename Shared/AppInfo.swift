@@ -39,10 +39,10 @@ open class AppInfo {
     /// http requests. It is the base bundle identifier with a "group." prefix.
     open static var sharedContainerIdentifier: String {
         var bundleIdentifier = baseBundleIdentifier
-        if bundleIdentifier == "org.mozilla.ios.FennecEnterprise" {
+        if bundleIdentifier == "com.brave.ios.FennecEnterprise" {
             // Bug 1373726 - Base bundle identifier incorrectly generated for Nightly builds
             // This can be removed when we are able to fix the app group in the developer portal
-            bundleIdentifier = "org.mozilla.ios.Fennec.enterprise"
+            bundleIdentifier = "com.brave.ios.Fennec.enterprise"
         }
         return "group." + bundleIdentifier
     }
@@ -50,10 +50,10 @@ open class AppInfo {
     /// Return the keychain access group.
     open static func keychainAccessGroupWithPrefix(_ prefix: String) -> String {
         var bundleIdentifier = baseBundleIdentifier
-        if bundleIdentifier == "org.mozilla.ios.FennecEnterprise" {
+        if bundleIdentifier == "com.brave.ios.FennecEnterprise" {
             // Bug 1373726 - Base bundle identifier incorrectly generated for Nightly builds
             // This can be removed when we are able to fix the app group in the developer portal
-            bundleIdentifier = "org.mozilla.ios.Fennec.enterprise"
+            bundleIdentifier = "com.brave.ios.Fennec.enterprise"
         }
         return prefix + "." + bundleIdentifier
     }
