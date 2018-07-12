@@ -17,4 +17,7 @@ const char kDisablePDFJSExtension[] = "disable-pdfjs-extension";
 // This switch disables update module(Sparkle).
 const char kDisableBraveUpdate[] = "disable-brave-update";
 
+// This switch disables the ChromeGoogleURLTrackerClient
+const char kDisableChromeGoogleURLTrackingClient[] = "disable-chrome-google-url-tracking-client";
+
 }  // namespace switches

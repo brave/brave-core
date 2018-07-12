@@ -15,6 +15,8 @@ extern const char kDisableBraveUpdate[];
 
 extern const char kDisablePDFJSExtension[];
 
+extern const char kDisableChromeGoogleURLTrackingClient[];
+
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_

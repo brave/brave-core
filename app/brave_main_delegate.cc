@@ -12,6 +12,7 @@
 #include "base/time/time.h"
 #include "build/build_config.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
@@ -105,6 +106,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       *base::CommandLine::ForCurrentProcess();
   command_line.AppendSwitch(switches::kEnableTabAudioMuting);
   command_line.AppendSwitch(switches::kDisableDomainReliability);
+  command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
 
   std::stringstream enabled_features;
   enabled_features << features::kEnableEmojiContextMenu.name
