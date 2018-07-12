@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index c365088b90b7a91faf52f5b108f64621a219b11f..b8ca81c628b565a65d973c7a0590771645dc0bde 100644
+index c365088b90b7a91faf52f5b108f64621a219b11f..c60f159ed2a94cf5401f3e979fd3d028a09140a4 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -181,6 +181,21 @@ template("generate_mini_installer") {
+@@ -181,6 +181,23 @@ template("generate_mini_installer") {
        "//third_party/icu:icudata",
        chrome_dll_target,
      ]
@@ -15,8 +15,10 @@ index c365088b90b7a91faf52f5b108f64621a219b11f..b8ca81c628b565a65d973c7a05907716
 +        "$root_out_dir/brave_resources.pak",
 +        "$root_out_dir/brave_100_percent.pak",
 +        "$root_out_dir/brave_200_percent.pak",
++        "$root_gen_dir/brave/VERSION",
 +      ]
 +      deps += [
++        "//brave:generate_version",
 +        "//brave:packed_resources",
 +        "//brave/build/win:copy_exe",
 +      ]

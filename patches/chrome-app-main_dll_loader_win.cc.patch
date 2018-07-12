@@ -1,0 +1,27 @@
+diff --git a/chrome/app/main_dll_loader_win.cc b/chrome/app/main_dll_loader_win.cc
+index dd026800f3dee99c3fe48bd7d8a0e51bc3bddd72..f4bb381d8ce1050536c5a0248a5c5b8ac51a1e09 100644
+--- a/chrome/app/main_dll_loader_win.cc
++++ b/chrome/app/main_dll_loader_win.cc
+@@ -45,6 +45,10 @@
+ #include "content/public/common/content_switches.h"
+ #include "sandbox/win/src/sandbox.h"
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++#include "brave/version.h"
++#endif
++
+ namespace {
+ // The entry point signature of chrome.dll.
+ typedef int (*DLL_MAIN)(HINSTANCE, sandbox::SandboxInterfaceInfo*, int64_t);
+@@ -95,7 +99,11 @@ base::FilePath GetModulePath(base::StringPiece16 module_name) {
+   // Othwerwise, return the path to the module in a versioned sub-directory of
+   // the current executable's directory. This is the expected location of
+   // modules for proper installs.
++#if defined(BRAVE_CHROMIUM_BUILD)
++  return exe_dir.AppendASCII(BRAVE_BROWSER_VERSION_FOUR_COMPONENTS).Append(module_name);
++#else
+   return exe_dir.AppendASCII(chrome::kChromeVersion).Append(module_name);
++#endif
+ }
+ 
+ }  // namespace

@@ -1,0 +1,23 @@
+diff --git a/chrome/process_version_rc_template.gni b/chrome/process_version_rc_template.gni
+index 9259ac135736079e7dc8a5922fa039555d3e1ced..e6a784956ab44428a643d4a0777a69ba7a3cbf1f 100644
+--- a/chrome/process_version_rc_template.gni
++++ b/chrome/process_version_rc_template.gni
+@@ -52,6 +52,18 @@ template("process_version_rc_template") {
+     _sources += invoker.sources
+   }
+ 
++  if (brave_chromium_build) {
++    _sources -= [
++      "//chrome/VERSION",
++    ]
++    _sources += [
++      "$root_gen_dir/brave/VERSION",
++    ]
++    deps = [
++      "//brave:generate_version"
++    ]
++  }
++
+   process_version(target_name) {
+     template_file = _template_file
+     sources = _sources

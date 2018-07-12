@@ -1,0 +1,52 @@
+diff --git a/chrome/app/version_assembly/BUILD.gn b/chrome/app/version_assembly/BUILD.gn
+index d9151bcbdfe59c90891a5d10765ce2db015ea583..fdfe779d92e40fd470f53c3a3eb02f07d29c2bb1 100644
+--- a/chrome/app/version_assembly/BUILD.gn
++++ b/chrome/app/version_assembly/BUILD.gn
+@@ -6,6 +6,10 @@ import("//build/config/win/manifest.gni")
+ import("//build/util/process_version.gni")
+ import("//build/util/version.gni")
+ 
++if (brave_chromium_build) {
++  import("//brave/build/config.gni")
++}
++
+ version_assembly_output_file = "$target_gen_dir/version_assembly.manifest"
+ 
+ # Generates a manifest file with the current build's version information.
+@@ -16,6 +20,18 @@ process_version("chrome_exe_version_manifest") {
+     "//chrome/VERSION",
+   ]
+   output = version_assembly_output_file
++  if (brave_chromium_build) {
++    # Use brave's VERSION.
++    sources -= [
++      "//chrome/VERSION",
++    ]
++    sources += [
++      "$root_gen_dir/brave/VERSION",
++    ]
++    deps = [
++      "//brave:generate_version",
++    ]
++  }
+ }
+ 
+ # Generates the manifest for chrome.exe. This is the normal manifest stuff plus
+@@ -42,4 +58,17 @@ process_version("version_assembly_manifest") {
+   ]
+   output = "$root_build_dir/$chrome_version_full.manifest"
+   process_only = true
++  if (brave_chromium_build) {
++    # Use brave's VERSION.
++    sources -= [
++      "//chrome/VERSION",
++    ]
++    sources += [
++      "$root_gen_dir/brave/VERSION",
++    ]
++    deps = [
++      "//brave:generate_version",
++    ]
++    output = "$root_build_dir/$brave_version.$brave_version_patch.manifest"
++  }
+ }

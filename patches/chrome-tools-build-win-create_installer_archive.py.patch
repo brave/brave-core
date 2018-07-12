@@ -1,7 +1,16 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index baadb8be43b2dd2159a3ff2d9b3c82c10d869686..82d8c010f42657619d3d5a4b2641dbae988d1b83 100755
+index baadb8be43b2dd2159a3ff2d9b3c82c10d869686..33bfe2b160a5478784251618d13426ad457975be 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
+@@ -55,7 +55,7 @@ def BuildVersion(build_dir):
+   minor = 0
+   build = 0
+   patch = 0
+-  for line in open(os.path.join(build_dir, '../../chrome', VERSION_FILE), 'r'):
++  for line in open(os.path.join(build_dir, 'gen/brave', VERSION_FILE), 'r'):
+     line = line.rstrip()
+     if line.startswith('MAJOR='):
+       major = line[6:]
 @@ -109,6 +109,33 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
    if enable_hidpi == '1':
      CopySectionFilesToStagingDir(config, 'HIDPI', staging_dir, build_dir)
