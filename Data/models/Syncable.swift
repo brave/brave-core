@@ -5,7 +5,7 @@ import Shared
 import CoreData
 import SwiftyJSON
 
-protocol Syncable: class /* where Self: NSManagedObject */ {
+public protocol Syncable: class /* where Self: NSManagedObject */ {
     // Used to enforce CD conformity
     /* @NSManaged */ var syncDisplayUUID: String? { get set }
     /* @NSManaged */ var created: Date? { get set }

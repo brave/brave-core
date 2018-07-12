@@ -11,10 +11,14 @@ enum AuthenticationState {
     case presenting
 }
 
+/// A global flag indicating whether or not the user has validated their session already
+private var isSessionValidated = false
+
 class SensitiveViewController: UIViewController {
-    var promptingForTouchID: Bool = false
+    var promptingForTouchID = false
     var backgroundedBlur: UIImageView?
     var authState: AuthenticationState = .notAuthenticating
+    var isPasscodeEntryCancellable = true
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -35,9 +39,13 @@ class SensitiveViewController: UIViewController {
         guard authState != .presenting else {
             return
         }
-
+        
         presentedViewController?.dismiss(animated: false, completion: nil)
-        guard let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo(), authInfo.requiresValidation() else {
+        guard let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() else {
+            return
+        }
+        
+        if !authInfo.isPasscodeRequiredImmediately && isSessionValidated {
             removeBackgroundedBlur()
             return
         }
@@ -57,7 +65,7 @@ class SensitiveViewController: UIViewController {
             },
             fallback: {
                 self.promptingForTouchID = false
-                AppAuthenticator.presentPasscodeAuthentication(self.navigationController, delegate: self)
+                AppAuthenticator.presentPasscodeAuthentication(self.navigationController, delegate: self, isCancellable: self.isPasscodeEntryCancellable)
             }
         )
         authState = .presenting
@@ -99,6 +107,8 @@ class SensitiveViewController: UIViewController {
 extension SensitiveViewController: PasscodeEntryDelegate {
     func passcodeValidationDidSucceed() {
         removeBackgroundedBlur()
+        isSessionValidated = true
+      
         self.navigationController?.dismiss(animated: true, completion: nil)
         self.authState = .notAuthenticating
     }

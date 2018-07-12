@@ -11,7 +11,7 @@ protocol SyncRecordProtocol {
     
 }
 
-class SyncRecord: SyncRecordProtocol {
+public class SyncRecord: SyncRecordProtocol {
     
     // MARK: Declaration for string constants to be used to decode and also serialize.
     fileprivate struct SerializationKeys {
@@ -44,7 +44,7 @@ class SyncRecord: SyncRecordProtocol {
     }
     
     // Would be nice to make this type specific to class
-    required init(record: Syncable?, deviceId: [Int]?, action: Int?) {
+    required public init(record: Syncable?, deviceId: [Int]?, action: Int?) {
         
         self.objectId = record?.syncUUID
         self.deviceId = deviceId
@@ -62,7 +62,7 @@ class SyncRecord: SyncRecordProtocol {
     /// Initiates the instance based on the JSON that was passed.
     ///
     /// - parameter json: JSON object from SwiftyJSON.
-    required init(json: JSON?) {
+    required public init(json: JSON?) {
         // objectId can come in two different formats
         if let items = json?[SerializationKeys.objectId].array { objectId = items.map { $0.intValue } }
         if let items = json?[SerializationKeys.deviceId].array { deviceId = items.map { $0.intValue } }
