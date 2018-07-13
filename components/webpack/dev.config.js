@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
+  mode: 'development',
   devtool: '#inline-source-map',
   entry: {
     brave_adblock: path.join(__dirname, '../brave_adblock_ui/brave_adblock'),
@@ -16,12 +17,7 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.IgnorePlugin(/[^/]+\/[\S]+.dev$/),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('development')
-      }
-    })
+    new webpack.IgnorePlugin(/[^/]+\/[\S]+.dev$/)
   ],
   resolve: {
     extensions: ['.ts', '.tsx', '.js']
@@ -30,7 +26,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader'
+        loader: 'awesome-typescript-loader',
       },
       {
         test: /\.js$/,
@@ -59,3 +55,4 @@ module.exports = {
       }]
   }
 }
+

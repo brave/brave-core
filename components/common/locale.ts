@@ -3,12 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 'use strict'
+// TODO optimize NZ
+declare let window: any;
 
 /**
  * Gets the localized string
  * @param {string} text - the locale string to translate
  * @returns {string} - the localized string
  */
-const getLocale = (text) => window.loadTimeData && window.loadTimeData.getString(text)
-
-module.exports = { getLocale }
+export const getLocale = (text) => window.loadTimeData && window.loadTimeData.getString(text)
