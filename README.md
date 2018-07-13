@@ -1,6 +1,6 @@
 # Brave Only Extension
 
-[![Build Status](https://travis-ci.org/brave/brave-extension.svg?branch=master)](https://travis-ci.org/brave/brave-extension)
+[![Build Status](https://travis-ci.org/brave/brave-extension.svg?branch=master)](https://travis-ci.org/brave/brave-extension).
 
 > Experiment moving part of the Brave UI into an extension for use in Brave only (Not Chrome, it will use APIs not available in Chrome)
 
