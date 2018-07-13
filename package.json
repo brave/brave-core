@@ -1,13 +1,13 @@
 {
-  "name": "firefox-ios",
-  "version": "1.0.0",
-  "description": "Firefox for iOS",
+  "name": "brave-ios",
+  "version": "2.0",
+  "description": "Brave for iOS",
   "scripts": {
     "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mozilla-mobile/firefox-ios.git"
+    "url": "git+https://github.com/brave/brave-ios.git"
   },
   "license": "MPL-2.0",
   "dependencies": {
