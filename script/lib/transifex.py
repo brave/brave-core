@@ -199,7 +199,7 @@ def get_fingerprint_for_xtb(message_tag):
   string_phs = message_tag.findall('ph')
   for string_ph in string_phs:
     string_to_hash = string_to_hash + string_ph.get('name').upper() + string_ph.tail
-  string_to_hash = string_to_hash.strip().encode('utf-8')
+  string_to_hash = (string_to_hash or '').strip().encode('utf-8')
   string_to_hash = clean_triple_quoted_string(string_to_hash)
   return FP.FingerPrint(string_to_hash) & 0x7fffffffffffffffL
 
@@ -207,6 +207,7 @@ def get_fingerprint_for_xtb(message_tag):
 def get_grd_strings(grd_file_path):
   """Obtains a tubple of (name, value, FP) for each string in a GRD file"""
   strings = []
+  print 'Getting GRD strings for: ', grd_file_path
   all_message_tags = get_grd_message_string_tags(grd_file_path)
   for message_tag in all_message_tags:
     message_name = message_tag.get('name')
