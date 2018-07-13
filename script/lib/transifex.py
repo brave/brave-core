@@ -31,6 +31,9 @@ def create_xtb_format_translation_tag(fingerprint, string_value):
   """Creates child XTB elements for each translation tag"""
   string_tag = lxml.etree.Element('translation')
   string_tag.set('id', str(fingerprint))
+  if string_value.count('<') != string_value.count('>'):
+    print 'Warning: Unmatched < character, consider fixing on Trasifex, force encoding the following string:' + string_value
+    string_value = string_value.replace('<', '&lt;').replace('>', '&gt;')
   string_tag.text = string_value
   string_tag.tail = '\n'
   return string_tag
