@@ -11,7 +11,7 @@
 
 base::FilePath GetChromeUserDataFolder() {
   base::FilePath result;
-  if (!PathService::Get(base::DIR_HOME, &result))
+  if (!base::PathService::Get(base::DIR_HOME, &result))
     return base::FilePath();
 
   result = result.Append(".config");
@@ -22,7 +22,7 @@ base::FilePath GetChromeUserDataFolder() {
 
 base::FilePath GetChromiumUserDataFolder() {
   base::FilePath result;
-  if (!PathService::Get(base::DIR_HOME, &result))
+  if (!base::PathService::Get(base::DIR_HOME, &result))
     return base::FilePath();
 
   result = result.Append(".config");

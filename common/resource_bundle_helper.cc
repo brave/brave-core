@@ -8,6 +8,7 @@
 #include "base/path_service.h"
 #include "components/nacl/common/nacl_switches.h"
 #include "content/public/common/content_switches.h"
+#include "services/service_manager/embedder/switches.h"
 #include "ui/base/resource/resource_bundle.h"
 
 #if defined(OS_MACOSX)
@@ -23,7 +24,7 @@ base::FilePath GetResourcesPakFilePath() {
       CFSTR("brave_resources.pak"));
 #else
   base::FilePath pak_path;
-  PathService::Get(base::DIR_MODULE, &pak_path);
+  base::PathService::Get(base::DIR_MODULE, &pak_path);
   pak_path = pak_path.AppendASCII("brave_resources.pak");
   return pak_path;
 #endif  // OS_MACOSX
@@ -42,7 +43,7 @@ base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
   return base::mac::PathForFrameworkBundleResource(pak_file_mac);
 #else
   base::FilePath pak_path;
-  PathService::Get(base::DIR_MODULE, &pak_path);
+  base::PathService::Get(base::DIR_MODULE, &pak_path);
   pak_path = pak_path.AppendASCII(pak_file);
   return pak_path;
 #endif  // OS_MACOSX
@@ -73,7 +74,7 @@ bool SubprocessNeedsResourceBundle() {
   return
 #if defined(OS_POSIX) && !defined(OS_MACOSX)
       // The zygote process opens the resources for the renderers.
-      process_type == switches::kZygoteProcess ||
+      process_type == service_manager::switches::kZygoteProcess ||
 #endif
 #if defined(OS_MACOSX)
       // Mac needs them too for scrollbar related images and for sandbox

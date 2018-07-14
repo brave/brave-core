@@ -51,7 +51,7 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
 
       brave::RegisterPathProvider();
       base::FilePath test_data_dir;
-      PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+      base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
       embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
       ASSERT_TRUE(embedded_test_server()->Start());

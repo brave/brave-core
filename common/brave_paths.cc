@@ -18,7 +18,7 @@ bool PathProvider(int key, base::FilePath* result) {
 
   switch (key) {
     case DIR_TEST_DATA:
-      if (!PathService::Get(base::DIR_SOURCE_ROOT, &cur))
+      if (!base::PathService::Get(base::DIR_SOURCE_ROOT, &cur))
         return false;
       cur = cur.Append(FILE_PATH_LITERAL("brave"));
       cur = cur.Append(FILE_PATH_LITERAL("test"));
@@ -36,7 +36,7 @@ bool PathProvider(int key, base::FilePath* result) {
 }
 
 void RegisterPathProvider() {
-  PathService::RegisterProvider(PathProvider, PATH_START, PATH_END);
+  base::PathService::RegisterProvider(PathProvider, PATH_START, PATH_END);
 }
 
 }  // namespace brave

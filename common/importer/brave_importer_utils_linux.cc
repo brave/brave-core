@@ -11,7 +11,7 @@
 
 base::FilePath GetBraveUserDataFolder() {
   base::FilePath home;
-  if (!PathService::Get(base::DIR_HOME, &home))
+  if (!base::PathService::Get(base::DIR_HOME, &home))
     return base::FilePath();
 
   base::FilePath result = home;

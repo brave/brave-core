@@ -80,7 +80,7 @@ void BraveMainDelegate::PreSandboxStartup() {
   base::FilePath chrome_user_data_dir;
   base::FilePath native_messaging_dir;
 #if defined(OS_MACOSX)
-  PathService::Get(base::DIR_APP_DATA, &chrome_user_data_dir);
+  base::PathService::Get(base::DIR_APP_DATA, &chrome_user_data_dir);
   chrome_user_data_dir = chrome_user_data_dir.Append("Google/Chrome");
   native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
       "/Library/Google/Chrome/NativeMessagingHosts"));
@@ -89,11 +89,11 @@ void BraveMainDelegate::PreSandboxStartup() {
   native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
       "/etc/opt/chrome/native-messaging-hosts"));
 #endif  // defined(OS_MACOSX)
-  PathService::OverrideAndCreateIfNeeded(
+  base::PathService::OverrideAndCreateIfNeeded(
       chrome::DIR_USER_NATIVE_MESSAGING,
       chrome_user_data_dir.Append(FILE_PATH_LITERAL("NativeMessagingHosts")),
       false, true);
-  PathService::OverrideAndCreateIfNeeded(chrome::DIR_NATIVE_MESSAGING,
+  base::PathService::OverrideAndCreateIfNeeded(chrome::DIR_NATIVE_MESSAGING,
       native_messaging_dir, false, true);
 #endif  // OS_POSIX
   if (brave::SubprocessNeedsResourceBundle()) {

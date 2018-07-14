@@ -30,7 +30,7 @@ using ::testing::_;
 // test data directory. This function returns the path to that directory.
 base::FilePath GetTestChromeProfileDir(const std::string& profile) {
   base::FilePath test_dir;
-  PathService::Get(brave::DIR_TEST_DATA, &test_dir);
+  base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
 
   return test_dir.AppendASCII("import").AppendASCII("chrome")
       .AppendASCII(profile);

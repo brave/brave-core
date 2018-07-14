@@ -15,6 +15,8 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 
+using extensions::ExtensionBrowserTest;
+
 const char kTrackingPage[] = "/tracking.html";
 
 const char kTrackingScript[] =
@@ -63,7 +65,7 @@ public:
   void InitEmbeddedTestServer() {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
-    PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(embedded_test_server()->Start());
   }
@@ -77,7 +79,7 @@ public:
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
     base::ScopedAllowBlockingForTesting allow_blocking;
-    PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+    base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
   }
 
   bool InstallTrackingProtectionExtension() {

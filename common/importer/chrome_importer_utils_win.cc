@@ -10,7 +10,7 @@
 
 base::FilePath GetChromeUserDataFolder() {
   base::FilePath result;
-  if (!PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
     return base::FilePath();
 
   result = result.AppendASCII("Google");
@@ -22,7 +22,7 @@ base::FilePath GetChromeUserDataFolder() {
 
 base::FilePath GetCanaryUserDataFolder() {
   base::FilePath result;
-  if (!PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
     return base::FilePath();
 
   result = result.AppendASCII("Google");
@@ -34,7 +34,7 @@ base::FilePath GetCanaryUserDataFolder() {
 
 base::FilePath GetChromiumUserDataFolder() {
   base::FilePath result;
-  if (!PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
     return base::FilePath();
 
   result = result.AppendASCII("Chromium");

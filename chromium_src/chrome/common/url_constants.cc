@@ -4,6 +4,12 @@
 
 #include "chrome/common/url_constants.h"
 
+/**
+ * For rebasing Chromium, see this PR for vim commands:
+ * https://github.com/brave/brave-core/pull/155
+ * IMPORTANMT: SCAN MANUALLY TO MAKE SURE NOTHING ELSE NEW IS MISSING!
+ */
+
 namespace chrome {
 
 const char kAutomaticSettingsResetLearnMoreURL[] =
@@ -124,9 +130,6 @@ const char kDownloadInterruptedLearnMoreURL[] =
 const char kDownloadScanningLearnMoreURL[] =
     "https://community.brave.com";
 
-const char kEasyUnlockLearnMoreUrl[] =
-    "https://community.brave.com";
-
 const char kExtensionControlledSettingLearnMoreURL[] =
     "https://community.brave.com";
 
@@ -134,13 +137,6 @@ const char kExtensionInvalidRequestURL[] = "chrome-extension://invalid/";
 
 const char kGoogleAccountActivityControlsURL[] =
     "https://community.brave.com";
-
-const char kLanguageSettingsLearnMoreUrl[] =
-#if defined(OS_CHROMEOS)
-    "https://community.brave.com";
-#else
-    "https://community.brave.com";
-#endif
 
 const char kLearnMoreReportingURL[] =
     "https://community.brave.com";
@@ -254,6 +250,9 @@ const char kCrosScheme[] = "cros";
 const char kCupsPrintLearnMoreURL[] =
     "https://community.brave.com";
 
+const char kEasyUnlockLearnMoreUrl[] =
+    "https://community.brave.com";
+
 const char kEULAPathFormat[] = "/usr/share/chromeos-assets/eula/%s/eula.html";
 
 const char kEolNotificationURL[] = "https://community.brave.com";
@@ -262,6 +261,9 @@ const char kGoogleNameserversLearnMoreURL[] =
     "https://community.brave.com";
 
 const char kInstantTetheringLearnMoreURL[] =
+    "https://community.brave.com";
+
+const char kLanguageSettingsLearnMoreUrl[] =
     "https://community.brave.com";
 
 const char kLearnMoreEnterpriseURL[] =
@@ -276,6 +278,9 @@ const char kOnlineEulaURLPath[] =
     "https://community.brave.com";
 
 const char kTPMFirmwareUpdateLearnMoreURL[] =
+    "https://community.brave.com";
+
+const char kTimeZoneSettingsLearnMoreURL[] =
     "https://community.brave.com";
 #endif  // defined(OS_CHROMEOS)
 
@@ -305,11 +310,6 @@ const char kBlockedPluginLearnMoreURL[] =
     "https://community.brave.com";
 
 const char kOutdatedPluginLearnMoreURL[] =
-    "https://community.brave.com";
-#endif
-
-#if defined(OS_CHROMEOS)
-const char kTimeZoneSettingsLearnMoreURL[] =
     "https://community.brave.com";
 #endif
 
