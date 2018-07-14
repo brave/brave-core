@@ -24,7 +24,7 @@ window.cr.define('brave_adblock', function () {
   function statsUpdated () {
     const store = require('./store')
     const adblockActions = require('./actions/adblock_actions')
-    const actions = bindActionCreators(adblockActions, store.store.dispatch.bind(store))
+    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
     actions.statsUpdated()
   }
 

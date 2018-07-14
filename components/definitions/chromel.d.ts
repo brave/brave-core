@@ -3,9 +3,5 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 declare namespace chrome {
-  function getVariableValue(stat: string): string
-
-  const extension: {
-    inIncognitoContext: boolean
-  }
+  function getVariableValue (stat: string): string
 }

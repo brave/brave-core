@@ -8,7 +8,7 @@ const { connect } = require('react-redux')
 const rewardsActions = require('../actions/rewards_actions')
 
 const CreateWalletLink = (props) =>
-  href = '#' onClick = { props.createWalletClicked } > Create Wallet< /a>
+  href = '#' onClick = { props.createWalletClicked } > Create Wallet/a> as 
   < /div>
 
 class RewardsPage extends React.Component {
@@ -29,17 +29,16 @@ class RewardsPage extends React.Component {
     const { rewardsData } = this.props
     return (
       createWalletClicked = { this.onCreateWalletClicked } / >
-          {
-            rewardsData.walletCreated
-          ? Wallet  Created!/div> as 
+        {
+          rewardsData.walletCreated
+          ? Wallet   Created!/div> as
           : null
-          }
-    {
-          rewardsData.walletCreateFailed
-          ? Wallet  Create Failed! < /div>
-          : null
-        }
-    /div>) as 
+        {
+      rewardsData.walletCreateFailed
+          ? Wallet   Create Failed! < /div>
+      : null
+    }
+    / div > ) as
   }
 }
 
@@ -54,4 +53,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RewardsPage)
+) (RewardsPage)

@@ -1,4 +1,8 @@
 declare namespace AdBlock {
+  export interface ApplicationState {
+    adblockData: State
+  }
+
   export interface State {
     stats: {
       adsBlockedStat?: number

@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const theme = {
+export const theme = {
   newTab: {
     fontFamily: '"Poppins", sans-serif'
   },
@@ -65,5 +65,3 @@ const theme = {
     labelColor: 'rgba(255,255,255,0.8)'
   }
 }
-
-module.exports = theme

@@ -3,38 +3,32 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-const { DragDropContext } = require('react-dnd')
-const { bindActionCreators } = require('redux')
-const { connect } = require('react-redux')
-const HTML5Backend = require('react-dnd-html5-backend')
-const newTabActions = require('../actions/newTabActions')
+import { DragDropContext } from 'react-dnd'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as HTML5Backend from 'react-dnd-html5-backend'
+import * as newTabActions from '../actions/newTabActions'
 
 // Components
-const { Grid, Column, Clock } = require('brave-ui')
-const Stats = require('./stats')
-const Block = require('./block')
-const FooterInfo = require('./footerInfo')
-const SiteRemovalNotification = require('./siteRemovalNotification')
-const NewPrivateTab = require('./newPrivateTab')
+import { Grid, Column, Clock } from 'brave-ui'
+import Stats from './stats'
+import Block from './block'
+import FooterInfo from './footerInfo'
+import SiteRemovalNotification from './siteRemovalNotification'
+import NewPrivateTab from './newPrivateTab'
 
 // Assets
-const theme = require('./theme')
+import { theme } from './theme'
 require('../../styles/newtab.less')
 require('font-awesome/css/font-awesome.css')
 require('../../fonts/poppins.css')
 
-class NewTabPage extends React.Component {
-  constructor (props) {
-    super(props)
-    this.onBackgroundImageLoadFailed = this.onBackgroundImageLoadFailed.bind(this)
-    this.onUndoAllSiteIgnored = this.onUndoAllSiteIgnored.bind(this)
-    this.onUndoIgnoredTopSite = this.onUndoIgnoredTopSite.bind(this)
-    this.onHideSiteRemovalNotification = this.onHideSiteRemovalNotification.bind(this)
-    this.onDraggedSite = this.onDraggedSite.bind(this)
-    this.onDragEnd = this.onDragEnd.bind(this)
-    this.onChangePrivateSearchEngine = this.onChangePrivateSearchEngine.bind(this)
-  }
+interface Props {
+  actions: any
+  newTabData: NewTab.State
+}
 
+class NewTabPage extends React.Component<Props, {}> {
   get actions () {
     return this.props.actions
   }
@@ -50,15 +44,15 @@ class NewTabPage extends React.Component {
     )
   }
 
-  onDraggedSite (fromUrl, toUrl, dragRight) {
+  onDraggedSite = (fromUrl: string, toUrl: string, dragRight: boolean) => {
     this.actions.siteDragged(fromUrl, toUrl, dragRight)
   }
 
-  onDragEnd (url, didDrop) {
+  onDragEnd = (url: string, didDrop: boolean) => {
     this.actions.siteDragEnd(url, didDrop)
   }
 
-  onToggleBookmark (site) {
+  onToggleBookmark (site: NewTab.Site) {
     if (site.bookmarked) {
       this.actions.bookmarkAdded(site.url)
     } else {
@@ -66,11 +60,11 @@ class NewTabPage extends React.Component {
     }
   }
 
-  onHideSiteRemovalNotification () {
+  onHideSiteRemovalNotification = () => {
     this.actions.onHideSiteRemovalNotification()
   }
 
-  onTogglePinnedTopSite (site) {
+  onTogglePinnedTopSite (site: NewTab.Site) {
     if (!site.pinned) {
       this.actions.sitePinned(site.url)
     } else {
@@ -78,18 +72,18 @@ class NewTabPage extends React.Component {
     }
   }
 
-  onIgnoredTopSite (site) {
+  onIgnoredTopSite (site: NewTab.Site) {
     this.actions.siteIgnored(site.url)
   }
 
-  onUndoIgnoredTopSite () {
+  onUndoIgnoredTopSite = () => {
     this.actions.undoSiteIgnored()
   }
 
   /**
    * Clear ignoredTopSites and pinnedTopSites list
    */
-  onUndoAllSiteIgnored () {
+  onUndoAllSiteIgnored = () => {
     this.actions.undoAllSiteIgnored()
   }
 
@@ -97,11 +91,11 @@ class NewTabPage extends React.Component {
    * This handler only fires when the image fails to load.
    * If both the remote and local image fail, page defaults to gradients.
    */
-  onBackgroundImageLoadFailed () {
+  onBackgroundImageLoadFailed = () => {
     this.actions.backgroundImageLoadFailed()
   }
 
-  onChangePrivateSearchEngine (e) {
+  onChangePrivateSearchEngine = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target) {
       return
     }
@@ -131,78 +125,78 @@ class NewTabPage extends React.Component {
       return null
     }
 
-    const backgroundProps = {}
+    const backgroundProps: Partial<NewTab.Image> = {}
+    const bgImage: NewTab.Image | undefined = this.props.newTabData.backgroundImage
     let gradientClassName = 'gradient'
-    if (this.showImages) {
-      backgroundProps.style = this.props.newTabData.backgroundImage.style
+    if (this.showImages && bgImage) {
+      backgroundProps.style = bgImage.style
       gradientClassName = 'bgGradient'
     }
-    return <div data-test-id='dynamicBackground' className='dynamicBackground' {...backgroundProps}>
-      {
-        this.showImages
-          ? <img src={this.props.newTabData.backgroundImage.source} onError={this.onBackgroundImageLoadFailed} data-test-id='backgroundImage' />
-          : null
-      }
-      <div data-test-id={this.showImages ? 'bgGradient' : 'gradient'} className={gradientClassName} />
-      <div className='content'>
-        <main style={theme.newTab}>
-          <div style={theme.newTabStats}>
-            <Grid theme={theme.stats} columns={3}>
-              <Column size={2}>
-                <Stats stats={newTabData.stats} theme={theme} />
-              </Column>
-              <Column size={1} theme={theme.clockContainer}>
-                <Clock theme={theme.clock} />
-              </Column>
-            </Grid>
-          </div>
-          <div className='topSitesContainer'>
-            <nav className='topSitesGrid'>
-              {
-                this.props.newTabData.gridSites.map((site, i) =>
-                  <Block
-                    key={site.url}
-                    id={site.url}
-                    title={site.title}
-                    href={site.url}
-                    favicon={site.favicon}
-                    letter={site.letter}
-                    thumb={site.thumb}
-                    style={{ backgroundColor: site.themeColor || site.computedThemeColor }}
-                    onToggleBookmark={this.onToggleBookmark.bind(this, site)}
-                    onPinnedTopSite={this.onTogglePinnedTopSite.bind(this, site)}
-                    onIgnoredTopSite={this.onIgnoredTopSite.bind(this, site)}
-                    onDraggedSite={this.onDraggedSite}
-                    onDragEnd={this.onDragEnd}
-                    isPinned={site.pinned}
-                    isBookmarked={site.bookmarked}
-                  />
-                )
-              }
-            </nav>
-          </div>
-        </main>
+    return (
+      <div data-test-id='dynamicBackground' className='dynamicBackground' {...backgroundProps}>
         {
-          this.props.newTabData.showSiteRemovalNotification
-            ? <SiteRemovalNotification
-              onUndoIgnoredTopSite={this.onUndoIgnoredTopSite}
-              onRestoreAll={this.onUndoAllSiteIgnored}
-              onCloseNotification={this.onHideSiteRemovalNotification}
-              />
+          this.showImages && bgImage
+            ? <img src={bgImage.source} onError={this.onBackgroundImageLoadFailed} data-test-id='backgroundImage' />
             : null
         }
-        {
-          <FooterInfo backgroundImage={this.props.newTabData.backgroundImage} />}
+        <div data-test-id={this.showImages ? 'bgGradient' : 'gradient'} className={gradientClassName} />
+        <div className='content'>
+          <main style={theme.newTab}>
+            <div style={theme.newTabStats}>
+              <Grid columns={3}>
+                <Column size={2}>
+                  <Stats stats={newTabData.stats}/>
+                </Column>
+                <Column size={1} theme={theme.clockContainer}>
+                  <Clock theme={theme.clock} />
+                </Column>
+              </Grid>
+            </div>
+            <div className='topSitesContainer'>
+              <nav className='topSitesGrid'>
+                {
+                  this.props.newTabData.gridSites.map((site: NewTab.Site) =>
+                    <Block
+                      key={site.url}
+                      id={site.url}
+                      title={site.title}
+                      href={site.url}
+                      favicon={site.favicon}
+                      style={{ backgroundColor: site.themeColor || site.computedThemeColor }}
+                      onToggleBookmark={this.onToggleBookmark.bind(this, site)}
+                      onPinnedTopSite={this.onTogglePinnedTopSite.bind(this, site)}
+                      onIgnoredTopSite={this.onIgnoredTopSite.bind(this, site)}
+                      onDraggedSite={this.onDraggedSite}
+                      onDragEnd={this.onDragEnd}
+                      isPinned={site.pinned}
+                      isBookmarked={site.bookmarked}
+                    />
+                  )
+                }
+              </nav>
+            </div>
+          </main>
+          {
+            this.props.newTabData.showSiteRemovalNotification
+              ? <SiteRemovalNotification
+                onUndoIgnoredTopSite={this.onUndoIgnoredTopSite}
+                onRestoreAll={this.onUndoAllSiteIgnored}
+                onCloseNotification={this.onHideSiteRemovalNotification}
+              />
+              : null
+          }
+          <FooterInfo backgroundImage={bgImage} />
+        </div>
       </div>
-    </div>
+    )
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: NewTab.ApplicationState) => ({
   newTabData: state.newTabData
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   actions: bindActionCreators(newTabActions, dispatch)
 })
 

@@ -5,7 +5,7 @@
 import { combineReducers } from 'redux'
 import newTabReducer from './newTabReducer'
 
-const combinedReducer = combineReducers({
+const combinedReducer = combineReducers<NewTab.ApplicationState>({
   newTabData: newTabReducer
 })
 

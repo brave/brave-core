@@ -4,28 +4,37 @@
 
 import * as React from 'react'
 
-class FooterInfo extends React.Component {
-  render () {
-    return <footer className='footerContainer'>
-      <div className='copyrightNotice'>
-        {
-          this.props.backgroundImage && this.props.backgroundImage.name
-          ? <div>
-            <div className='copyrightCredits'>
-              <span className='photoBy' data-l10n-id='photoBy' /> <a className='copyrightOwner' href={this.props.backgroundImage.link} rel='noopener' target='_blank'>{this.props.backgroundImage.author}</a>
-            </div>
-            <span className='photoName'>{this.props.backgroundImage.name}</span>
-          </div>
-          : null
-        }
-      </div>
-      <nav className='shortcutsContainer'>
-        <a href='chrome://settings'><span className='shortcutIcon settingsIcon' data-l10n-id='preferencesPage' /></a>
-        <a href='chrome://bookmarks'><span className='shortcutIcon bookmarksIcon' data-l10n-id='bookmarksPage' /></a>
-        <a href='chrome://history'><span className='shortcutIcon historyIcon' data-l10n-id='historyPage' /></a>
-      </nav>
-    </footer>
-  }
+interface Props {
+  backgroundImage?: NewTab.Image
 }
 
-module.exports = FooterInfo
+export default class FooterInfo extends React.Component<Props, {}> {
+  render () {
+    const bgImage: NewTab.Image | undefined = this.props.backgroundImage
+
+    return (
+      <footer className='footerContainer'>
+        <div className='copyrightNotice'>
+          {
+            bgImage && bgImage.name
+            ? <div>
+              <div className='copyrightCredits'>
+                <span className='photoBy' data-l10n-id='photoBy' />
+                <a className='copyrightOwner' href={bgImage.link} rel='noopener' target='_blank'>
+                  {bgImage.author}
+                </a>
+              </div>
+              <span className='photoName'>{bgImage.name}</span>
+            </div>
+            : null
+          }
+        </div>
+        <nav className='shortcutsContainer'>
+          <a href='chrome://settings'><span className='shortcutIcon settingsIcon' data-l10n-id='preferencesPage' /></a>
+          <a href='chrome://bookmarks'><span className='shortcutIcon bookmarksIcon' data-l10n-id='bookmarksPage' /></a>
+          <a href='chrome://history'><span className='shortcutIcon historyIcon' data-l10n-id='historyPage' /></a>
+        </nav>
+      </footer>
+    )
+  }
+}

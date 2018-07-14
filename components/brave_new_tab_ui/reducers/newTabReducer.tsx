@@ -3,26 +3,30 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global chrome */
 
-const types = require('../constants/newTabTypes')
-const storage = require('../storage')
-let getGridSites_
+import { Reducer } from 'redux'
 
-const getGridSites = (...args) => {
-  if (!getGridSites_) {
-    getGridSites_ = require('../api').getGridSites
+import { types } from '../constants/newTabTypes'
+import * as storage from '../storage'
+
+let getGridSitesCache: (state: NewTab.State, checkBookmarkInfo: boolean) => NewTab.Site[]
+
+const getGridSites = (state: NewTab.State, checkBookmarkInfo: boolean) => {
+  if (!getGridSitesCache) {
+    getGridSitesCache = require('../api').getGridSites
   }
-  return getGridSites_(...args)
+
+  return getGridSitesCache(state, checkBookmarkInfo)
 }
 
-const updateBookmarkInfo = (state, url, bookmarkTreeNode) => {
+const updateBookmarkInfo = (state: NewTab.State, url: string, bookmarkTreeNode: any) => {
   const bookmarks = Object.assign({}, state.bookmarks)
   const gridSites = state.gridSites.slice()
   const topSites = state.topSites.slice()
   const pinnedTopSites = state.pinnedTopSites.slice()
   // The default empty object is just to avoid null checks below
-  const gridSite = gridSites.find((s) => s.url === url) || {}
-  const topSite = topSites.find((s) => s.url === url) || {}
-  const pinnedTopSite = pinnedTopSites.find((s) => s.url === url) || {}
+  const gridSite: Partial<NewTab.Site> = gridSites.find((s) => s.url === url) || {}
+  const topSite: Partial<NewTab.Site> = topSites.find((s) => s.url === url) || {}
+  const pinnedTopSite: Partial<NewTab.Site> = pinnedTopSites.find((s) => s.url === url) || {}
   gridSite.bookmarked = topSite.bookmarked = pinnedTopSite.bookmarked = !!bookmarkTreeNode
   if (bookmarkTreeNode) {
     bookmarks[url] = bookmarkTreeNode
@@ -34,7 +38,7 @@ const updateBookmarkInfo = (state, url, bookmarkTreeNode) => {
   return state
 }
 
-const onDraggedSite = (state, url, destUrl, dragRight) => {
+const onDraggedSite = (state: NewTab.State, url: string, destUrl: string) => {
   const gridSitesWithoutPreview = getGridSites(state, false)
   const currentPositionIndex = gridSitesWithoutPreview.findIndex(site => site.url === url)
   const finalPositionIndex = gridSitesWithoutPreview.findIndex(site => site.url === destUrl)
@@ -66,13 +70,13 @@ const onDraggedSite = (state, url, destUrl, dragRight) => {
   return state
 }
 
-const onDragEnd = (state) => {
+const onDragEnd = (state: NewTab.State) => {
   state = { ...state, gridSites: getGridSites(state, false) }
   return state
 }
 
-let calculateGridSites
-const newTabReducer = (state, action) => {
+let calculateGridSites: any
+const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action) => {
   if (state === undefined) {
     calculateGridSites = require('../api').calculateGridSites
     setImmediate(() => {
@@ -87,15 +91,18 @@ const newTabReducer = (state, action) => {
   switch (action.type) {
     case types.BOOKMARK_ADDED:
       const { fetchBookmarkInfo } = require('../api')
-      const topSite = state.topSites.findIndex((site) => site.url === action.url)
-      chrome.bookmarks.create({
-        title: topSite.title,
-        url: topSite.url
-      }, () => {
-        fetchBookmarkInfo(action.url)
-      })
+      const topSite: NewTab.Site | undefined = state.topSites.find((site) => site.url === action.url)
+      if (topSite) {
+        chrome.bookmarks.create({
+          title: topSite.title,
+          url: topSite.url
+        }, () => {
+          fetchBookmarkInfo(action.url)
+        })
+      }
       break
     case types.BOOKMARK_REMOVED:
+      // TODO somewhere we are saying that bookmarks is Record of booleans, but here we are using id
       const bookmarkInfo = state.bookmarks[action.url]
       if (bookmarkInfo) {
         chrome.bookmarks.remove(bookmarkInfo.id, () => {
@@ -109,7 +116,7 @@ const newTabReducer = (state, action) => {
       break
     case types.NEW_TAB_BACKGROUND_IMAGE_LOAD_FAILED: {
       const source = '/50cc52a4f1743ea74a21da996fe44272.jpg'
-      const fallbackImage = {
+      const fallbackImage: NewTab.Image = {
         name: 'Bay Bridge',
         source,
         style: { backgroundImage: 'url(' + source + ')' },
@@ -133,9 +140,10 @@ const newTabReducer = (state, action) => {
     }
 
     case types.NEW_TAB_SITE_PINNED: {
-      const topSiteIndex = state.topSites.findIndex((site) => site.url === action.url)
-      const pinnedTopSite = Object.assign({}, state.topSites[topSiteIndex], { pinned: true })
-      const pinnedTopSites = state.pinnedTopSites.slice()
+      const topSiteIndex: number = state.topSites.findIndex((site) => site.url === action.url)
+      const pinnedTopSite: NewTab.Site = Object.assign({}, state.topSites[topSiteIndex], { pinned: true })
+      const pinnedTopSites: NewTab.Site[] = state.pinnedTopSites.slice()
+
       pinnedTopSite.index = topSiteIndex
       pinnedTopSites.push(pinnedTopSite)
       pinnedTopSites.sort((x, y) => x.index - y.index)
@@ -148,9 +156,9 @@ const newTabReducer = (state, action) => {
     }
 
     case types.NEW_TAB_SITE_UNPINNED:
-      const currentPositionIndex = state.pinnedTopSites.findIndex((site) => site.url === action.url)
+      const currentPositionIndex: number = state.pinnedTopSites.findIndex((site) => site.url === action.url)
       if (currentPositionIndex !== -1) {
-        const pinnedTopSites = state.pinnedTopSites.slice()
+        const pinnedTopSites: NewTab.Site[] = state.pinnedTopSites.slice()
         pinnedTopSites.splice(currentPositionIndex, 1)
         state = {
           ...state,
@@ -161,8 +169,8 @@ const newTabReducer = (state, action) => {
       break
 
     case types.NEW_TAB_SITE_IGNORED: {
-      const topSiteIndex = state.topSites.findIndex((site) => site.url === action.url)
-      const ignoredTopSites = state.ignoredTopSites.slice()
+      const topSiteIndex: number = state.topSites.findIndex((site) => site.url === action.url)
+      const ignoredTopSites: NewTab.Site[] = state.ignoredTopSites.slice()
       ignoredTopSites.splice(0, 1, state.topSites[topSiteIndex])
       state = {
         ...state,
@@ -174,7 +182,7 @@ const newTabReducer = (state, action) => {
     }
 
     case types.NEW_TAB_UNDO_SITE_IGNORED: {
-      const ignoredTopSites = state.ignoredTopSites.slice()
+      const ignoredTopSites: NewTab.Site[] = state.ignoredTopSites.slice()
       ignoredTopSites.pop()
       state = {
         ...state,
@@ -202,11 +210,11 @@ const newTabReducer = (state, action) => {
       break
 
     case types.NEW_TAB_SITE_DRAGGED:
-      state = onDraggedSite(state, action.fromUrl, action.toUrl, action.dragRight)
+      state = onDraggedSite(state, action.fromUrl, action.toUrl)
       break
 
     case types.NEW_TAB_SITE_DRAG_END:
-      state = onDragEnd(state, action.url)
+      state = onDragEnd(state)
       break
 
     case types.NEW_TAB_BOOKMARK_INFO_AVAILABLE:

@@ -3,10 +3,10 @@
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-const { getLocale } = require('../../common/locale')
+import { getLocale } from '../../common/locale'
 
 // Components
-const {
+import {
   Page,
   Grid,
   Column,
@@ -16,18 +16,24 @@ const {
   Paragraph,
   SwitchButton,
   Clock
-} = require('brave-ui')
+} from 'brave-ui'
 
-const Stats = require('./stats')
+import Stats from './stats'
 
 // Theme
-const theme = require('./theme')
+import { theme } from './theme'
 require('emptykit.css')
 
 // Images
 const privateTabIcon = require('../../img/newtab/private_tab_pagearea_icon.svg')
 
-class NewPrivateTab extends React.PureComponent {
+interface Props {
+  stats: NewTab.Stats,
+  useAlternativePrivateSearchEngine: boolean,
+  onChangePrivateSearchEngine: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
+
+export default class NewPrivateTab extends React.PureComponent<Props, {}> {
   render () {
     const {
       stats,
@@ -44,7 +50,7 @@ class NewPrivateTab extends React.PureComponent {
       <Page theme={theme.newPrivateTab}>
         <Grid columns={3}>
           <Column size={2}>
-            <Stats stats={stats} theme={theme} />
+            <Stats stats={stats} />
           </Column>
           <Column size={1} theme={theme.clockContainer}>
             <Clock theme={theme.clock} />
@@ -55,13 +61,16 @@ class NewPrivateTab extends React.PureComponent {
             <Heading
               level={1}
               theme={theme.title}
-              text={getLocale('privateNewTabTitle')} />
+              text={getLocale('privateNewTabTitle')}
+            />
             <Paragraph
               theme={theme.text}
-              text={getLocale('privateNewTabDisclaimer1')} />
+              text={getLocale('privateNewTabDisclaimer1')}
+            />
             <Paragraph
               theme={theme.italicText}
-              text={getLocale('privateNewTabDisclaimer2')} />
+              text={getLocale('privateNewTabDisclaimer2')}
+            />
             <BoxedContent theme={theme.switchContainer}>
               <SwitchButton
                 id='togglePrivateSearchEngine'
@@ -69,7 +78,8 @@ class NewPrivateTab extends React.PureComponent {
                 theme={theme.switchButton}
                 checked={useAlternativePrivateSearchEngine}
                 onChange={onChangePrivateSearchEngine}
-                rightText={getLocale('privateNewTabSearchLabel')} />
+                rightText={getLocale('privateNewTabSearchLabel')}
+              />
             </BoxedContent>
             <Paragraph theme={theme.text} text={getLocale('duckduckGoSearchInfo')} />
           </MediaContent>
@@ -78,5 +88,3 @@ class NewPrivateTab extends React.PureComponent {
     )
   }
 }
-
-module.exports = NewPrivateTab

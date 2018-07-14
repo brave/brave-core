@@ -7,4 +7,4 @@
  * Only the property names with truthy values are included.
  */
 // TODO remove NZ
-module.exports = (obj) => Object.keys(obj).filter((prop) => obj[prop]).join(' ')
+export const cx = (obj: any) => Object.keys(obj).filter((prop) => obj[prop]).join(' ')

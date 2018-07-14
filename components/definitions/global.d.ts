@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 export {}
 
-type Translations = {[key: string]: string}[]
+type Translations = Record<string, string>[]
 
 declare global {
   interface Window {
@@ -16,6 +16,10 @@ declare global {
     }
     brave_adblock: {
       initialize: () => void
+    }
+    brave_new_tab: {
+      initialize: () => void
+      statsUpdated: () => void
     }
   }
 }

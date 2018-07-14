@@ -3,40 +3,48 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-const cx = require('../../common/classSet')
-const DragSource = require('react-dnd').DragSource
-const DropTarget = require('react-dnd').DropTarget
+import { cx } from '../../common/classSet'
+import {
+  DragSource, DragSourceCollector,
+  DragSourceConnector,
+  DragSourceMonitor, DragSourceSpec,
+  DropTarget, DropTargetCollector,
+  DropTargetConnector,
+  DropTargetMonitor, DropTargetSpec
+} from 'react-dnd'
 
 const Types = {
   BLOCK: 'block'
 }
 
-const blockSource = {
+const blockSource: DragSourceSpec<Props> = {
   /**
    * Required. Called when the dragging starts
    * It's the only data available to the drop targets about the drag source
    * @see http://gaearon.github.io/react-dnd/docs-drag-source.html#specification-methods
    */
-  beginDrag (props) {
+  beginDrag (props: Props) {
     return {
       id: props.id
     }
   },
 
-  endDrag (props, monitor, component) {
-    const dragId = monitor.getItem().id
+  endDrag (props: Props, monitor: DragSourceMonitor) {
+    const item: Props = monitor.getItem() as Props
+    const draggedId = item.id
     const didDrop = monitor.didDrop()
-    props.onDragEnd(dragId, didDrop)
+    props.onDragEnd(draggedId, didDrop)
   }
 }
 
-const blockTarget = {
+const blockTarget: DropTargetSpec<Props> = {
   /**
    * Optional. Called when an item is hovered over the component
    * @see http://gaearon.github.io/react-dnd/docs-drop-target.html#specification-methods
    */
-  hover (props, monitor) {
-    const draggedId = monitor.getItem().id
+  hover (props: Props, monitor: DropTargetMonitor) {
+    const item: Props = monitor.getItem() as Props
+    const draggedId = item.id
     if (draggedId !== props.id) {
       const dragRight = monitor.getClientOffset().x - monitor.getInitialSourceClientOffset().x > 0
       props.onDraggedSite(draggedId, props.id, dragRight)
@@ -53,23 +61,54 @@ const blockTarget = {
  * @see http://gaearon.github.io/react-dnd/docs-drop-target.html#the-collecting-function
  */
 
-const sourceCollect = (connect, monitor) => {
+const sourceCollect: DragSourceCollector = (connect: DragSourceConnector, monitor: DragSourceMonitor) => {
   return {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
   }
 }
 
-const targetCollect = (connect) => {
+const targetCollect: DropTargetCollector = (connect: DropTargetConnector) => {
   return {
     connectDropTarget: connect.dropTarget()
   }
 }
 
-class Block extends React.Component {
+interface Props {
+  id: string
+  onDragEnd: (draggedId: string, didDrop: boolean) => void
+  onDraggedSite: (draggedId: string, id: string, dragRight: boolean) => void
+  connectDragSource?: any
+  connectDropTarget?: any
+  onToggleBookmark: () => void
+  isBookmarked?: boolean
+  onPinnedTopSite: () => void
+  isPinned: boolean
+  onIgnoredTopSite: () => void
+  title: string
+  href: string
+  style: {
+    backgroundColor: string
+  }
+  favicon: string
+}
+
+// TODO remove so many props NZ
+export default class Block extends React.Component<Props, {}> {
   render () {
-    const { isDragging, connectDragSource, connectDropTarget, onToggleBookmark, isBookmarked, onPinnedTopSite, isPinned, onIgnoredTopSite, title, href, style, favicon } = this.props
-    const opacity = isDragging ? 0 : 1
+    const {
+      connectDragSource,
+      connectDropTarget,
+      onToggleBookmark,
+      isBookmarked,
+      onPinnedTopSite,
+      isPinned,
+      onIgnoredTopSite,
+      title,
+      href,
+      style,
+      favicon
+    } = this.props
     const starIcon = isBookmarked ? 'fa-star' : 'fa-star-o'
     const pinIcon = isPinned ? 'fa-minus' : 'fa-thumb-tack'
 
@@ -77,9 +116,6 @@ class Block extends React.Component {
       <div className='topSiteSquareSpace'>
         <div
           className='topSitesElement'
-          style={{
-            opacity: opacity
-          }}
         >
           <div className='topSitesActionContainer'>
             <button
@@ -128,15 +164,13 @@ class Block extends React.Component {
  *
  * @see http://gaearon.github.io/react-dnd/docs-drag-source.html
  */
-const source = DragSource(Types.BLOCK, blockSource, sourceCollect)(Block)
+const source = DragSource<Props>(Types.BLOCK, blockSource, sourceCollect)(Block)
 
+// Notice that we're exporting the DropTarget and not Block Class.
 /**
  * React to the compatible items being dragged, hovered, or dropped on it
  * Works with the same parameters as DragSource() above.
  *
  * @see http://gaearon.github.io/react-dnd/docs-drop-target.html
  */
-const block = DropTarget(Types.BLOCK, blockTarget, targetCollect)(source)
-
-// Notice that we're exporting the DropTarget and not Block Class.
-module.exports = block
+export const block = DropTarget<Props>(Types.BLOCK, blockTarget, targetCollect)(source)

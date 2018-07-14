@@ -5,11 +5,7 @@
 import { combineReducers } from 'redux'
 import adblockReducer from './adblock_reducer'
 
-interface State {
-  adblockData: AdBlock.State
-}
-
-const combinedReducer = combineReducers<State>({
+const combinedReducer = combineReducers<AdBlock.ApplicationState>({
   adblockData: adblockReducer
 })
 

@@ -2,13 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* global chrome */
-
 const { bindActionCreators } = require('redux')
 const newTabActions = require('./actions/newTabActions')
 const debounce = require('../common/debounce')
 
-let actions
+let actions: any
+
 const getActions = () => {
   if (actions) {
     return actions
@@ -21,35 +20,34 @@ const getActions = () => {
 /**
  * Obtains a letter / char that represents the current site
  */
-const getLetterFromSite = (site) => {
+const getLetterFromSite = (site: NewTab.Site) => {
   let name
   try {
     name = new window.URL(site.url || '').hostname
-  } catch (e) {}
+  } catch (e) {
+    console.warn('getLetterFromSite', { url: site.url || '' })
+  }
   name = site.title || name || '?'
   return name.charAt(0).toUpperCase()
 }
 
 /**
  * Obtains the top sites and submits an action with the results
- * @param {Array<Object>} - An array of top site objects with title and url.
  */
-export const fetchTopSites = (topSites) => {
-  chrome.topSites.get(
-    (topSites) => getActions().topSitesDataUpdated(topSites || [])
-  )
+export const fetchTopSites = () => {
+  chrome.topSites.get((topSites: NewTab.Site[]) => getActions().topSitesDataUpdated(topSites || []))
 }
 
 /**
  * Obtains the URL's bookmark info and calls an action with the result
  */
-export const fetchBookmarkInfo = (url) => {
+export const fetchBookmarkInfo = (url: string) => {
   chrome.bookmarks.search(url.replace(/^https?:\/\//, ''),
     (bookmarkTreeNodes) => getActions().bookmarkInfoAvailable(url, bookmarkTreeNodes[0])
   )
 }
 
-export const getGridSites = (state, checkBookmarkInfo) => {
+export const getGridSites = (state: NewTab.State, checkBookmarkInfo: boolean) => {
   const sizeToCount = { large: 18, medium: 12, small: 6 }
   const count = sizeToCount[state.gridLayoutSize || 'small']
 
@@ -75,6 +73,7 @@ export const getGridSites = (state, checkBookmarkInfo) => {
     gridSite.thumb = `chrome://thumb/${gridSite.url}`
     gridSite.favicon = `chrome://favicon/size/48@1x/${gridSite.url}`
     gridSite.bookmarked = state.bookmarks[gridSite.url]
+
     if (checkBookmarkInfo && gridSite.bookmarked === undefined) {
       fetchBookmarkInfo(gridSite.url)
     }
@@ -85,6 +84,6 @@ export const getGridSites = (state, checkBookmarkInfo) => {
 /**
  * Calculates the top sites grid and calls an action with the results
  */
-export const calculateGridSites = debounce((state) => {
-  getActions().gridSitesUpdated(getGridSites(state, true, true))
+export const calculateGridSites = debounce((state: NewTab.State) => {
+  getActions().gridSitesUpdated(getGridSites(state, true))
 }, 10)
