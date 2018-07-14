@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "brave-ui": "^0.12.2",
-    "emptykit.css": "^1.0.1"
+    "emptykit.css": "^1.0.1",
+    "typesafe-actions": "^2.0.4"
   }
 }

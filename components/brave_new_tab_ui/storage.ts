@@ -2,9 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* global chrome */
-
-const debounce = require('../common/debounce')
+import {debounce} from '../common/debounce'
 const backgrounds = require('./backgrounds')
 
 const keyName = 'new-tab-data'
@@ -12,7 +10,7 @@ const keyName = 'new-tab-data'
 const randomBackgroundImage = () => {
   const randomIndex = Math.floor(Math.random() * backgrounds.length)
   const image = Object.assign({}, backgrounds[randomIndex])
-  image.style = {backgroundImage: 'url(' + image.source + ')'}
+  image.style = { backgroundImage: 'url(' + image.source + ')' }
   return image
 }
 

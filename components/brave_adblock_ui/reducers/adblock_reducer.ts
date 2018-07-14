@@ -1,16 +1,15 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-/* global chrome */
 
-const types = require('../constants/adblock_types')
+import { Reducer } from 'redux'
+
+const { types } = require('../constants/adblock_types')
 const storage = require('../storage')
-let getGridSites_
 
-const adblockReducer = (state, action) => {
-  if (state === undefined) {
-    state = storage.load() || {}
-    state = Object.assign(storage.getInitialState(), state)
+const adblockReducer: Reducer<AdBlock.State> = (state: AdBlock.State, action) => {
+  if (state == null) {
+    state = storage.load()
   }
 
   const startingState = state

@@ -104,7 +104,7 @@ const newTabReducer = (state, action) => {
       }
       break
     case types.NEW_TAB_TOP_SITES_DATA_UPDATED:
-      state = {...state, topSites: action.topSites}
+      state = { ...state, topSites: action.topSites }
       calculateGridSites(state)
       break
     case types.NEW_TAB_BACKGROUND_IMAGE_LOAD_FAILED: {
@@ -112,7 +112,7 @@ const newTabReducer = (state, action) => {
       const fallbackImage = {
         name: 'Bay Bridge',
         source,
-        style: {backgroundImage: 'url(' + source + ')'},
+        style: { backgroundImage: 'url(' + source + ')' },
         author: 'Darrell Sano',
         link: 'https://dksfoto.smugmug.com'
       }

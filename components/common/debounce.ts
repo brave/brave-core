@@ -4,16 +4,14 @@
 
 'use strict'
 
-function debounce (fn, bufferInterval, ...args) {
-  let timeout
-  return (...args2) => {
+export const debounce = function<T>(fn: (data: T) => void, bufferInterval: number, ...args: Array<string>) {
+  let timeout: any
+  return (...args2: Array<string>) => {
     clearTimeout(timeout)
-    let a = args || []
+    let a: Array<string> = args || []
     if (args2 && args2.constructor === Array) {
       a = a.concat(args2)
     }
     timeout = setTimeout(fn.apply.bind(fn, this, a), bufferInterval)
   }
 }
-
-module.exports = debounce

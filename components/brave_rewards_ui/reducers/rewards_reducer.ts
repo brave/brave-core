@@ -15,15 +15,15 @@ const rewardsReducer = (state, action) => {
   const startingState = state
   switch (action.type) {
     case types.CREATE_WALLET_REQUESTED:
-      chrome.send('createWalletRequested', []);
+      chrome.send('createWalletRequested', [])
       break
     case types.WALLET_CREATED:
-        state = {... state}
-        state.walletCreated = true
+      state = { ...state }
+      state.walletCreated = true
       break
     case types.WALLET_CREATE_FAILED:
-        state = {... state}
-        state.walletCreateFailed = true
+      state = { ...state }
+      state.walletCreateFailed = true
       break
   }
 

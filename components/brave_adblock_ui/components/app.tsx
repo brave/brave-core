@@ -2,41 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const React = require('react')
-const { bindActionCreators } = require('redux')
-const { connect } = require('react-redux')
-const adblockActions = require('../actions/adblock_actions')
+import * as React from 'react'
+import { bindActionCreators, Dispatch } from 'redux'
+import { connect } from 'react-redux'
+import { RegionalAdBlockEnabled } from './regionalAdBlockEnabled'
+import * as adblockActions from '../actions/adblock_actions'
+import { NumBlockedStat } from './numBlockedStat'
 
-const NumBlockedStat = (props) =>
-  <div>
-    <span i18n-content='adsBlocked'/>
-    <span> </span>
-    { props.adsBlockedStat || 0 }
-  </div>
+interface Props {
+  actions: AdBlock.Actions
+  adblockData: AdBlock.State
+}
 
-const RegionalAdBlockEnabled = (props) =>
-  <div>
-    <span i18n-content='regionalAdblockEnabledTitle'/>
-    <span> </span>
-    {
-      props.regionalAdBlockEnabled
-      ? <span i18n-content='regionalAdblockEnabled'/>
-      : <span i18n-content='regionalAdblockDisabled'/>
-    }
-    <div>
-    {
-      props.regionalAdBlockEnabled
-      ? props.regionalAdBlockTitle
-      : null
-    }
-    </div>
-  </div>
-
-class AdblockPage extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
+class AdblockPage extends React.Component<Props, {}> {
   get actions () {
     return this.props.actions
   }
@@ -45,19 +23,20 @@ class AdblockPage extends React.Component {
     const { adblockData } = this.props
     return (
       <div>
-        <NumBlockedStat adsBlockedStat={adblockData.stats.adsBlockedStat} />
+        <NumBlockedStat adsBlockedStat={adblockData.stats.adsBlockedStat || 0} />
         <RegionalAdBlockEnabled
           regionalAdBlockEnabled={adblockData.stats.regionalAdBlockEnabled}
-          regionalAdBlockTitle={adblockData.stats.regionalAdBlockTitle} />
+          regionalAdBlockTitle={adblockData.stats.regionalAdBlockTitle || ''}
+        />
       </div>)
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: {adblockData: AdBlock.State}) => ({
   adblockData: state.adblockData
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(adblockActions, dispatch)
 })
 

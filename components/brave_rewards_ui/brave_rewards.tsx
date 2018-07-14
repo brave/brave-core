@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const React = require('react')
+import * as React from 'react'
 const { render } = require('react-dom')
 const { Provider } = require('react-redux')
 const App = require('./components/app')
@@ -43,4 +43,3 @@ window.cr.define('brave_rewards', function () {
 })
 
 document.addEventListener('DOMContentLoaded', window.brave_rewards.initialize)
-

@@ -18,7 +18,7 @@ const welcomeReducer = (state, action) => {
       chrome.send('importNowRequested', [])
       break
     case types.GO_TO_PAGE_REQUESTED:
-      state = {...state}
+      state = { ...state }
       state.pageIndex = action.pageIndex
       break
   }

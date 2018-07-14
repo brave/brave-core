@@ -2,15 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const React = require('react')
+import * as React from 'react'
 const { bindActionCreators } = require('redux')
 const { connect } = require('react-redux')
 const rewardsActions = require('../actions/rewards_actions')
 
 const CreateWalletLink = (props) =>
-  <div>
-    <a href='#' onClick={props.createWalletClicked}>Create Wallet</a>
-  </div>
+  href = '#' onClick = { props.createWalletClicked } > Create Wallet< /a>
+  < /div>
 
 class RewardsPage extends React.Component {
   constructor (props) {
@@ -18,7 +17,7 @@ class RewardsPage extends React.Component {
     this.onCreateWalletClicked = this.onCreateWalletClicked.bind(this)
   }
 
-  onCreateWalletClicked() {
+  onCreateWalletClicked () {
     this.actions.createWalletRequested()
   }
 
@@ -29,19 +28,18 @@ class RewardsPage extends React.Component {
   render () {
     const { rewardsData } = this.props
     return (
-      <div>
-        <CreateWalletLink createWalletClicked={this.onCreateWalletClicked} />
-        {
-          rewardsData.walletCreated
-          ? <div>Wallet Created!</div>
+      createWalletClicked = { this.onCreateWalletClicked } / >
+          {
+            rewardsData.walletCreated
+          ? Wallet  Created!/div> as 
           : null
-        }
-        {
+          }
+    {
           rewardsData.walletCreateFailed
-          ? <div>Wallet Create Failed!</div>
+          ? Wallet  Create Failed! < /div>
           : null
         }
-      </div>)
+    /div>) as 
   }
 }
 

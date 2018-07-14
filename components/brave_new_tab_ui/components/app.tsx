@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const React = require('react')
+import * as React from 'react'
 const { DragDropContext } = require('react-dnd')
 const { bindActionCreators } = require('redux')
 const { connect } = require('react-redux')
@@ -168,7 +168,7 @@ class NewTabPage extends React.Component {
                     favicon={site.favicon}
                     letter={site.letter}
                     thumb={site.thumb}
-                    style={{backgroundColor: site.themeColor || site.computedThemeColor}}
+                    style={{ backgroundColor: site.themeColor || site.computedThemeColor }}
                     onToggleBookmark={this.onToggleBookmark.bind(this, site)}
                     onPinnedTopSite={this.onTogglePinnedTopSite.bind(this, site)}
                     onIgnoredTopSite={this.onIgnoredTopSite.bind(this, site)}
@@ -192,8 +192,7 @@ class NewTabPage extends React.Component {
             : null
         }
         {
-          <FooterInfo backgroundImage={this.props.newTabData.backgroundImage} />
-    }
+          <FooterInfo backgroundImage={this.props.newTabData.backgroundImage} />}
       </div>
     </div>
   }

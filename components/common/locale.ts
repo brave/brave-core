@@ -4,7 +4,7 @@
 
 'use strict'
 // TODO optimize NZ
-declare let window: any;
+declare let window: any
 
 /**
  * Gets the localized string

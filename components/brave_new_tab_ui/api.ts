@@ -50,7 +50,7 @@ export const fetchBookmarkInfo = (url) => {
 }
 
 export const getGridSites = (state, checkBookmarkInfo) => {
-  const sizeToCount = {large: 18, medium: 12, small: 6}
+  const sizeToCount = { large: 18, medium: 12, small: 6 }
   const count = sizeToCount[state.gridLayoutSize || 'small']
 
   // Start with top sites with filtered out ignored sites and pinned sites
