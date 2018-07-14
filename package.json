@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint-js": "standard"
+    "lint": "tslint --project tsconfig.json 'components/**/*.{ts,tsx}'",
+    "test-security": "npm audit"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,10 @@
     {
       "name": "Cezar Augusto",
       "email": "cezar@brave.com"
+    },
+    {
+      "name": "Nejc Zdovc",
+      "email": "nejc@brave.com"
     }
   ],
   "license": "MPL-2.0",
@@ -30,7 +35,14 @@
   },
   "homepage": "https:/github.com/brave/brave-core#readme",
   "devDependencies": {
-    "standard": "^10.0.3"
+    "@types/react": "^16.0.26",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-redux": "^6.0.4",
+    "@types/redux-logger": "^3.0.5",
+    "tslint": "^5.8.0",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-react": "^3.2.0",
+    "typescript": "^2.8.1"
   },
   "dependencies": {
     "brave-ui": "^0.12.2",
