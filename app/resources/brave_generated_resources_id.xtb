@@ -1,4 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
+<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="6834222924780460429"><ph name="EXTENSION_NAME">$1</ph> (extension ID \"<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>\") tidak diizinkan di Brave. Silakan lihat about:extensions untuk memasang ekstensi.
+      <ex>abacabadabacabaeabacabadabacabaf</ex></translation>
+<translation id="7450557937477381864">Tutup Chrome</translation>
+<translation id="7008934821596358692">Untuk menyelesaikan impor, tutup semua jendela Chrome.</translation>
+<translation id="7753103220327065417">Tutup Brave</translation>
+<translation id="5588481533147090393">Untuk menyelesaikan impor, tutup semua jendela Brave.</translation>
+<translation id="6447842834002726250">Kuki</translation>
+<translation id="9173846700806833701">Widevine tidak terpasang</translation>
+<translation id="2433569048491784801">Widevine tidak terpasang.</translation>
+<translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Diimpor dari Brave</translation>
 </translationbundle>

@@ -16,4 +16,9 @@
 <translation id="8344569602005188545">시간</translation>
 <translation id="7100907433458266664">일</translation>
 <translation id="4971389353431353387">일</translation>
+<translation id="6199596294742117349">이것은 비공개 탭입니다</translation>
+<translation id="5752267332751652945">비공개 탭은 페이지 방문 기록이나 횟수, Brave Payments 결제 등의 기록을 남기지 않습니다. 브라우저를 닫으면 비공개 탭의 쿠키가 사라집니다.</translation>
+<translation id="7463160927746266889">참고 : 비공개 탭으로 방문하는 사이트는 로컬에 저장되지 않지만 IPS(인터넷 사업자), 고용주, 방문중인 사이트에는 익명으로 보이도록 할 수는 없습니다.</translation>
+<translation id="910419239800579753">비공개 검색, Brave로 비공개 탭에 있는 동안 DuckDuckGo를 사용하여 검색합니다. DuckDuckGo는 검색 기록을 추적하지 않는 검색 엔진이므로 비공개로 검색 할 수 있습니다.</translation>
+<translation id="3643126010006741083">DuckDuckGo로 비공개 검색</translation>
 </translationbundle>

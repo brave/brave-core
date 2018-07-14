@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
-<translation id="689261804992965033">Annonser blockerade</translation>
-<translation id="1663506596135222606">Spårare blockerade</translation>
+<translation id="689261804992965033">Blockerade annonser</translation>
+<translation id="1663506596135222606">Blockerade spårare</translation>
 <translation id="2313532038420432247">HTTPS-uppgraderingar</translation>
-<translation id="7679428712334662192">Uppskattad tid sparad</translation>
+<translation id="7679428712334662192">Uppskattad sparad tid</translation>
 <translation id="3772054137575942265">Tumme borttagen.</translation>
 <translation id="2079545284768500474">Ångra</translation>
 <translation id="8529752221839395787">Återställ alla</translation>
@@ -16,4 +16,6 @@
 <translation id="8344569602005188545">timmar</translation>
 <translation id="7100907433458266664">dag</translation>
 <translation id="4971389353431353387">dagar</translation>
+<translation id="6199596294742117349">Detta är en privat flik</translation>
+<translation id="3643126010006741083">Privat sökning med DuckDuckGo</translation>
 </translationbundle>
