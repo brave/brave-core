@@ -1,45 +1,14 @@
 import("//tools/grit/grit_rule.gni")
 
-
 transpile_includes = [
-  # Brave new tab
+  # Brave Adblock Page
+  "../brave_adblock_ui/brave_adblock.html",
+  # Brave New Tab
   "../brave_new_tab_ui/brave_new_tab.html",
-  "../brave_new_tab_ui/brave_new_tab.js",
-  "../brave_new_tab_ui/components/app.js",
-  "../brave_new_tab_ui/components/block.js",
-  "../brave_new_tab_ui/components/newPrivateTab.js",
-  "../brave_new_tab_ui/components/footerInfo.js",
-  "../brave_new_tab_ui/components/siteRemovalNotification.js",
-  "../brave_new_tab_ui/components/stats.js",
-  "../brave_new_tab_ui/constants/newTabTypes.js",
-  "../brave_new_tab_ui/actions/newTabActions.js",
-  "../brave_new_tab_ui/api.js",
-  "../brave_new_tab_ui/backgrounds.js",
-  "../brave_new_tab_ui/storage.js",
-  "../brave_new_tab_ui/store.js",
-  "../brave_new_tab_ui/reducers/index.js",
-  "../brave_new_tab_ui/reducers/newTabReducer.js",
   # Brave Rewards
   "../brave_rewards_ui/brave_rewards.html",
-  "../brave_rewards_ui/components/app.js",
-  "../brave_rewards_ui/constants/rewards_types.js",
-  "../brave_rewards_ui/actions/rewards_actions.js",
-  "../brave_rewards_ui/storage.js",
-  "../brave_rewards_ui/store.js",
-  "../brave_rewards_ui/reducers/index.js",
-  "../brave_rewards_ui/reducers/rewards_reducer.js",
-  # Brave welcome page
-  "../brave_welcome_ui/brave_welcome.html",
-  # Brave adblock page
-  "../brave_adblock_ui/brave_adblock.html",
-  "../brave_adblock_ui/brave_adblock.js",
-  "../brave_adblock_ui/components/app.js",
-  "../brave_adblock_ui/constants/adblock_types.js",
-  "../brave_adblock_ui/actions/adblock_actions.js",
-  "../brave_adblock_ui/storage.js",
-  "../brave_adblock_ui/store.js",
-  "../brave_adblock_ui/reducers/index.js",
-  "../brave_adblock_ui/reducers/adblock_reducer.js",
+  # Brave Welcome Page
+  "../brave_welcome_ui/brave_welcome.html"
 ]
 
 action("transpile_web_uis") {

@@ -3,16 +3,18 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 export {}
 
-type Translations = Record<string, string>[]
+type loadTimeData = {
+  getString: (key: string) => string
+}
 
 declare global {
   interface Window {
-    loadTimeData: Translations
+    loadTimeData: loadTimeData
     cr: {
       define: (name: string, init: () => void) => void
     }
     i18nTemplate: {
-      process: (document: Document, translations: Translations) => void
+      process: (document: Document, translations: loadTimeData) => void
     }
     brave_adblock: {
       initialize: () => void

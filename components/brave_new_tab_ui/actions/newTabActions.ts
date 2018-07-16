@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { action } from 'typesafe-actions'
-const types = require('../constants/newTabTypes')
+import { types } from '../constants/newTabTypes'
 
 export const topSitesDataUpdated = (topSites: NewTab.Site[]) => action(types.NEW_TAB_TOP_SITES_DATA_UPDATED, {
   topSites

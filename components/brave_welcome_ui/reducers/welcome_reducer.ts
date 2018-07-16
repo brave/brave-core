@@ -9,6 +9,7 @@ const welcomeReducer = (state: Welcome.State, action: any) => {
   if (state === undefined) {
     state = storage.load()
   }
+  const payload = action.payload
   const startingState = state
   switch (action.type) {
     case types.IMPORT_NOW_REQUESTED:
@@ -16,7 +17,7 @@ const welcomeReducer = (state: Welcome.State, action: any) => {
       break
     case types.GO_TO_PAGE_REQUESTED:
       state = { ...state }
-      state.pageIndex = action.pageIndex
+      state.pageIndex = payload.pageIndex
       break
   }
 

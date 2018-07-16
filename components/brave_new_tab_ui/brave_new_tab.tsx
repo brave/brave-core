@@ -3,16 +3,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-const { render } = require('react-dom')
-const { Provider } = require('react-redux')
-const App = require('./components/app')
-const { bindActionCreators } = require('redux')
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import App from './components/app'
+import { bindActionCreators } from 'redux'
+import store from './store'
+import * as newTabActions from './actions/newTabActions'
 
 window.cr.define('brave_new_tab', function () {
   'use strict'
 
   function initialize () {
-    const store = require('./store')
     render(
       <Provider store={store}>
         <App />
@@ -22,8 +23,6 @@ window.cr.define('brave_new_tab', function () {
   }
 
   function statsUpdated () {
-    const store = require('./store')
-    const newTabActions = require('./actions/newTabActions')
     const actions = bindActionCreators(newTabActions, store.dispatch.bind(store))
     actions.statsUpdated()
   }

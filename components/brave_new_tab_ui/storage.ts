@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { debounce } from '../common/debounce'
-const backgrounds = require('./backgrounds')
+import { images as backgrounds } from './backgrounds'
 
 const keyName = 'new-tab-data'
 
@@ -36,14 +36,6 @@ const randomBackgroundImage = (): NewTab.Image => {
   return image
 }
 
-const cleanData = (state: NewTab.State): NewTab.State => {
-  state = { ...state }
-  state.backgroundImage = randomBackgroundImage()
-  delete state.imageLoadFailed
-  state = module.exports.getLoadTimeData(state)
-  return state
-}
-
 export const getLoadTimeData = (state: NewTab.State) => {
   state = { ...state }
   state.stats = defaultState.stats
@@ -54,11 +46,19 @@ export const getLoadTimeData = (state: NewTab.State) => {
   return state
 }
 
+const cleanData = (state: NewTab.State): NewTab.State => {
+  state = { ...state }
+  state.backgroundImage = randomBackgroundImage()
+  delete state.imageLoadFailed
+  state = getLoadTimeData(state)
+  return state
+}
+
 export const getInitialState = () => cleanData(defaultState)
 
 export const load = () => {
   const data = window.localStorage.getItem(keyName)
-  let state
+  let state = getInitialState()
   if (data) {
     try {
       state = JSON.parse(data)

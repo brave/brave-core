@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { action } from 'typesafe-actions'
-const types = require('../constants/rewards_types')
+import { types } from '../constants/rewards_types'
 
 export const createWalletRequested = () => action(types.CREATE_WALLET_REQUESTED)
 

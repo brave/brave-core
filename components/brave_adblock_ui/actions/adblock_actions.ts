@@ -3,6 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { action } from 'typesafe-actions'
-const types = require('../constants/adblock_types')
+import { types } from '../constants/adblock_types'
 
 export const statsUpdated = () => action(types.ADBLOCK_STATS_UPDATED)

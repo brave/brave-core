@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint --project tsconfig.json 'components/**/*.{ts,tsx}'",
-    "lint-fix": "tslint --project tsconfig.json 'components/**/*.{ts,tsx}' --fix",
     "test-security": "npm audit"
   },
   "repository": {
@@ -42,7 +41,6 @@
     "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^6.0.4",
     "@types/redux-logger": "^3.0.5",
-    "react-dnd-html5-backend": "^5.0.1",
     "tslint": "^5.8.0",
     "tslint-config-standard": "^7.0.0",
     "tslint-react": "^3.2.0",
@@ -52,6 +50,7 @@
     "brave-ui": "^0.12.2",
     "emptykit.css": "^1.0.1",
     "react-dnd": "^5.0.0",
+    "react-dnd-html5-backend": "^5.0.1",
     "typesafe-actions": "^2.0.4"
   }
 }

@@ -94,7 +94,7 @@ interface Props {
 }
 
 // TODO remove so many props NZ
-export default class Block extends React.Component<Props, {}> {
+class Block extends React.Component<Props, {}> {
   render () {
     const {
       connectDragSource,
@@ -173,4 +173,4 @@ const source = DragSource<Props>(Types.BLOCK, blockSource, sourceCollect)(Block)
  *
  * @see http://gaearon.github.io/react-dnd/docs-drop-target.html
  */
-export const block = DropTarget<Props>(Types.BLOCK, blockTarget, targetCollect)(source)
+export default DropTarget<Props>(Types.BLOCK, blockTarget, targetCollect)(source)

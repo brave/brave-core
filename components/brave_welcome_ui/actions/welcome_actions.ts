@@ -3,8 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { action } from 'typesafe-actions'
-
-const types = require('../constants/welcome_types')
+import { types } from '../constants/welcome_types'
 
 export const importNowRequested = () => action(types.IMPORT_NOW_REQUESTED)
 

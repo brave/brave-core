@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { DataBlock, DataItem } from 'brave-ui/dataBlock'
 import { getLocale } from '../../common/locale'
-import { theme } from './theme'
+import { theme } from '../theme'
 
 interface Props {
   stats: NewTab.Stats

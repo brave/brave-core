@@ -11,8 +11,7 @@ interface Props {
 
 export const RegionalAdBlockEnabled = (props: Props) => (
   <div>
-    <span i18n-content='regionalAdblockEnabledTitle'/>
-    <span>&nbsp;</span>
+    <span i18n-content='regionalAdblockEnabledTitle'/>&nbsp;
     {
       props.regionalAdBlockEnabled
       ? <span i18n-content='regionalAdblockEnabled'/>

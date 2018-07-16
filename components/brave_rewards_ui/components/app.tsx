@@ -2,12 +2,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const React = require('react')
-const { bindActionCreators } = require('redux')
-const { connect } = require('react-redux')
-const rewardsActions = require('../actions/rewards_actions')
+import * as React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as rewardsActions from '../actions/rewards_actions'
 
-class RewardsPage extends React.Component {
+interface Props {
+  actions: any
+  rewardsData: Rewards.State
+}
+
+class RewardsPage extends React.Component<Props, {}> {
   onCreateWalletClicked = () => {
     this.actions.createWalletRequested()
   }

@@ -5,5 +5,4 @@
 import { createStore } from 'redux'
 import reducers from './reducers'
 
-const store = createStore(reducers)
-module.exports = store
+export default createStore(reducers)

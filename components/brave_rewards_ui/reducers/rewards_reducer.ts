@@ -3,9 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
-
-const types = require('../constants/rewards_types')
-const storage = require('../storage')
+import { types } from '../constants/rewards_types'
+import * as storage from '../storage'
 
 const rewardsReducer: Reducer<Rewards.State> = (state: Rewards.State, action) => {
   if (state === undefined) {

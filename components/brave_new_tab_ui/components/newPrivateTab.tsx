@@ -21,7 +21,7 @@ import {
 import Stats from './stats'
 
 // Theme
-import { theme } from './theme'
+import { theme } from '../theme'
 require('emptykit.css')
 
 // Images

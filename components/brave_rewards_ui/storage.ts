@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const debounce = require('../common/debounce')
+import { debounce } from '../common/debounce'
 
 const keyName = 'rewards-data'
 
@@ -10,6 +10,8 @@ const defaultState: Rewards.State = {
   walletCreated: false,
   walletCreateFailed: false
 }
+
+const cleanData = (state: Rewards.State) => state
 
 export const getInitialState = (): Rewards.State => cleanData(defaultState)
 

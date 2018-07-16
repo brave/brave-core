@@ -10,8 +10,6 @@ interface Props {
 
 export const NumBlockedStat = (props: Props) => (
   <div>
-    <span i18n-content='adsBlocked'/>
-    <span>&nbsp;</span>
-    {props.adsBlockedStat || 0}
+    <span i18n-content='adsBlocked'/> {props.adsBlockedStat || 0}
   </div>
 )

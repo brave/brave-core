@@ -6,16 +6,7 @@ import { Reducer } from 'redux'
 
 import { types } from '../constants/newTabTypes'
 import * as storage from '../storage'
-
-let getGridSitesCache: (state: NewTab.State, checkBookmarkInfo: boolean) => NewTab.Site[]
-
-const getGridSites = (state: NewTab.State, checkBookmarkInfo: boolean) => {
-  if (!getGridSitesCache) {
-    getGridSitesCache = require('../api').getGridSites
-  }
-
-  return getGridSitesCache(state, checkBookmarkInfo)
-}
+import { fetchBookmarkInfo, getGridSites, fetchTopSites, calculateGridSites } from '../api'
 
 const updateBookmarkInfo = (state: NewTab.State, url: string, bookmarkTreeNode: any) => {
   const bookmarks = Object.assign({}, state.bookmarks)
@@ -74,43 +65,40 @@ const onDragEnd = (state: NewTab.State) => {
   return state
 }
 
-let calculateGridSites: any
-const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action) => {
+const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action: any) => {
   if (state === undefined) {
-    calculateGridSites = require('../api').calculateGridSites
     setImmediate(() => {
-      const { fetchTopSites } = require('../api')
       fetchTopSites()
     })
-    state = storage.load() || {}
-    state = Object.assign(storage.getInitialState(), state)
+    state = storage.load()
   }
 
   const startingState = state
+  const payload = action.payload
   switch (action.type) {
     case types.BOOKMARK_ADDED:
-      const { fetchBookmarkInfo } = require('../api')
       const topSite: NewTab.Site | undefined = state.topSites.find((site) => site.url === action.url)
       if (topSite) {
         chrome.bookmarks.create({
           title: topSite.title,
           url: topSite.url
         }, () => {
-          fetchBookmarkInfo(action.url)
+          fetchBookmarkInfo(payload.url)
         })
       }
       break
     case types.BOOKMARK_REMOVED:
-      // TODO somewhere we are saying that bookmarks is Record of booleans, but here we are using id
-      const bookmarkInfo = state.bookmarks[action.url]
+      // TODO somewhere we are saying that bookmarks is Record of booleans, but here we are using id NZ
+      const bookmarkInfo = state.bookmarks[payload.url]
       if (bookmarkInfo) {
-        chrome.bookmarks.remove(bookmarkInfo.id, () => {
-          fetchBookmarkInfo(action.url)
+        // TODO this is static now NZ
+        chrome.bookmarks.remove('1', () => {
+          fetchBookmarkInfo(payload.url)
         })
       }
       break
     case types.NEW_TAB_TOP_SITES_DATA_UPDATED:
-      state = { ...state, topSites: action.topSites }
+      state = { ...state, topSites: payload.topSites }
       calculateGridSites(state)
       break
     case types.NEW_TAB_BACKGROUND_IMAGE_LOAD_FAILED: {
@@ -139,7 +127,7 @@ const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action) => {
     }
 
     case types.NEW_TAB_SITE_PINNED: {
-      const topSiteIndex: number = state.topSites.findIndex((site) => site.url === action.url)
+      const topSiteIndex: number = state.topSites.findIndex((site) => site.url === payload.url)
       const pinnedTopSite: NewTab.Site = Object.assign({}, state.topSites[topSiteIndex], { pinned: true })
       const pinnedTopSites: NewTab.Site[] = state.pinnedTopSites.slice()
 
@@ -155,7 +143,7 @@ const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action) => {
     }
 
     case types.NEW_TAB_SITE_UNPINNED:
-      const currentPositionIndex: number = state.pinnedTopSites.findIndex((site) => site.url === action.url)
+      const currentPositionIndex: number = state.pinnedTopSites.findIndex((site) => site.url === payload.url)
       if (currentPositionIndex !== -1) {
         const pinnedTopSites: NewTab.Site[] = state.pinnedTopSites.slice()
         pinnedTopSites.splice(currentPositionIndex, 1)
@@ -168,7 +156,7 @@ const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action) => {
       break
 
     case types.NEW_TAB_SITE_IGNORED: {
-      const topSiteIndex: number = state.topSites.findIndex((site) => site.url === action.url)
+      const topSiteIndex: number = state.topSites.findIndex((site) => site.url === payload.url)
       const ignoredTopSites: NewTab.Site[] = state.ignoredTopSites.slice()
       ignoredTopSites.splice(0, 1, state.topSites[topSiteIndex])
       state = {
@@ -209,7 +197,7 @@ const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action) => {
       break
 
     case types.NEW_TAB_SITE_DRAGGED:
-      state = onDraggedSite(state, action.fromUrl, action.toUrl)
+      state = onDraggedSite(state, payload.fromUrl, payload.toUrl)
       break
 
     case types.NEW_TAB_SITE_DRAG_END:
@@ -217,11 +205,11 @@ const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action) => {
       break
 
     case types.NEW_TAB_BOOKMARK_INFO_AVAILABLE:
-      state = updateBookmarkInfo(state, action.queryUrl, action.bookmarkTreeNode)
+      state = updateBookmarkInfo(state, payload.queryUrl, payload.bookmarkTreeNode)
       break
 
     case types.NEW_TAB_GRID_SITES_UPDATED:
-      state = { ...state, gridSites: action.gridSites }
+      state = { ...state, gridSites: payload.gridSites }
       break
 
     case types.NEW_TAB_STATS_UPDATED:
@@ -229,7 +217,7 @@ const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action) => {
       break
 
     case types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE:
-      state = { ...state, useAlternativePrivateSearchEngine: action.shouldUse }
+      state = { ...state, useAlternativePrivateSearchEngine: payload.shouldUse }
       break
 
     default:

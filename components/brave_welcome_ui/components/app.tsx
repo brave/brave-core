@@ -12,7 +12,7 @@ import Panel from 'brave-ui/v1/panel'
 import BraveScreen from './braveScreen'
 import RewardsScreen from './rewardsScreen'
 import ImportScreen from './importScreen'
-import ShieldsScreen from './shiedsScreen'
+import ShieldsScreen from './shieldsScreen'
 import FeaturesScreen from './featuresScreen'
 import Footer from './footer'
 

@@ -3,15 +3,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-const { render } = require('react-dom')
-const { Provider } = require('react-redux')
-const App = require('./components/app')
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import App from './components/app'
+import store from './store'
 
 window.cr.define('brave_welcome', function () {
   'use strict'
 
   function initialize () {
-    const store = require('./store')
     render(
       <Provider store={store}>
         <App />

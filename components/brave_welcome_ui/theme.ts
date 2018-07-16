@@ -52,7 +52,7 @@ export const theme = {
   },
   content: {
     display: 'flex',
-    flexDirection: 'column',
+    // flexDirection: 'column', TODO figure it out why it's failing https://github.com/Microsoft/TypeScript/issues/9489
     justifyContent: 'center',
     alignItems: 'center',
     flex: '1',

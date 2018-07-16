@@ -4,9 +4,9 @@
 
 'use strict'
 
-export const debounce = function<T>(fn: (data: T) => void, bufferInterval: number, ...args: Array<string>) {
+export const debounce = function<T>(fn: (data: T) => void, bufferInterval: number, ...args: Array<any>) {
   let timeout: any
-  return (...args2: Array<string>) => {
+  return (...args2: any[]) => {
     clearTimeout(timeout)
     let a: Array<string> = args || []
     if (args2 && args2.constructor === Array) {

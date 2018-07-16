@@ -6,7 +6,7 @@ import * as React from 'react'
 import { DragDropContext } from 'react-dnd'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as HTML5Backend from 'react-dnd-html5-backend'
+import HTML5Backend from 'react-dnd-html5-backend'
 import * as newTabActions from '../actions/newTabActions'
 
 // Components
@@ -18,7 +18,7 @@ import SiteRemovalNotification from './siteRemovalNotification'
 import NewPrivateTab from './newPrivateTab'
 
 // Assets
-import { theme } from './theme'
+import { theme } from '../theme'
 require('../../styles/newtab.less')
 require('font-awesome/css/font-awesome.css')
 require('../../fonts/poppins.css')
