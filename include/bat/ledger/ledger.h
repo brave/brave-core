@@ -5,12 +5,25 @@
 #ifndef BAT_LEDGER_LEDGER_H_
 #define BAT_LEDGER_LEDGER_H_
 
+#include <memory>
 #include <string>
 
 #include "bat/ledger/export.h"
 #include "bat/ledger/ledger_client.h"
+#include "bat/ledger/publisher_info.h"
 
 namespace ledger {
+
+LEDGER_EXPORT struct VisitData {
+  VisitData(const std::string& _tld,
+            const std::string& _domain,
+            const std::string& _path,
+            uint64_t _duration);
+  const std::string tld;
+  const std::string domain;
+  const std::string path;
+  uint64_t duration;
+};
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -25,22 +38,24 @@ class LEDGER_EXPORT Ledger {
 
   virtual void CreateWallet() = 0;
   virtual void Reconcile() = 0;
-  virtual void SaveVisit(const std::string& publisher,
-                         uint64_t duration,
-                         bool ignoreMinTime) = 0;
+  virtual void OnVisit(const VisitData& visit_data) = 0;
   virtual void OnMediaRequest(const std::string& url,
                               const std::string& urlQuery,
                               const std::string& type) = 0;
-  virtual void SetPublisherInclude(const std::string& publisher,
-                                   bool include) = 0;
-  virtual void SetPublisherDeleted(const std::string& publisher,
-                                   bool deleted) = 0;
-  virtual void SetPublisherPinPercentage(const std::string& publisher,
-                                         bool pinPercentage) = 0;
+
+  virtual void SetPublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
+                                PublisherInfoCallback callback) = 0;
+  virtual void GetPublisherInfo(const PublisherInfo::id_type& publisher_id,
+                                PublisherInfoCallback callback) = 0;
+  virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
+                                    PublisherInfoFilter filter,
+                                    GetPublisherInfoListCallback callback) = 0;
+
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_milliseconds) = 0;
   virtual void SetPublisherMinVisits(unsigned int visits) = 0;
   virtual void SetPublisherAllowNonVerified(bool allow) = 0;
   virtual void SetContributionAmount(double amount) = 0;
+
   virtual const std::string& GetBATAddress() const = 0;
   virtual const std::string& GetBTCAddress() const = 0;
   virtual const std::string& GetETHAddress() const = 0;

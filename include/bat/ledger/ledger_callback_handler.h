@@ -24,10 +24,12 @@ class LEDGER_EXPORT LedgerCallbackHandler {
 
   virtual void OnLedgerStateLoaded(Result result,
                                    const std::string& data) {};
+  virtual void OnLedgerStateSaved(Result result) {};
+
   virtual void OnPublisherStateLoaded(Result result,
                                       const std::string& data) {};
   virtual void OnPublisherStateSaved(Result result) {};
-  virtual void OnLedgerStateSaved(Result result) {};
+
   virtual void OnURLRequestResponse(uint64_t request_id,
                                     int response_code,
                                     const std::string& response) {};

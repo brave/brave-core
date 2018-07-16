@@ -43,16 +43,19 @@ class LedgerImpl : public ledger::Ledger,
   std::string GenerateGUID() const;
   void Reconcile() override;
   void CreateWallet() override;
-  void SaveVisit(const std::string& publisher,
-                 uint64_t duration,
-                 bool ignoreMinTime) override;
+  void OnVisit(const ledger::VisitData& visit_data) override;
   void OnMediaRequest(const std::string& url,
-                              const std::string& urlQuery,
-                              const std::string& type) override;
-  void SetPublisherInclude(const std::string& publisher, bool include) override;
-  void SetPublisherDeleted(const std::string& publisher, bool deleted) override;
-  void SetPublisherPinPercentage(const std::string& publisher,
-                                 bool pinPercentage) override;
+                      const std::string& urlQuery,
+                      const std::string& type) override;
+
+  void SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
+                        ledger::PublisherInfoCallback callback) override;
+  void GetPublisherInfo(const ledger::PublisherInfo::id_type& publisher_id,
+                        ledger::PublisherInfoCallback callback) override;
+  void GetPublisherInfoList(uint32_t start, uint32_t limit,
+                            ledger::PublisherInfoFilter filter,
+                            ledger::GetPublisherInfoListCallback callback) override;
+
   void SetPublisherMinVisitTime(uint64_t duration_in_milliseconds) override;
   void SetPublisherMinVisits(unsigned int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
@@ -88,13 +91,13 @@ class LedgerImpl : public ledger::Ledger,
 
  private:
   void initSynopsis();
+  void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
+                          ledger::Result result,
+                          std::unique_ptr<ledger::PublisherInfo> info);
+
   void processMedia(const std::map<std::string,
                     std::string>& parts,
                     const std::string& type);
-  void publisherInfoCallback(const std::string& publisher,
-                             uint64_t publisher_timestamp,
-                             bool success,
-                             const std::string& response);
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
   void OnMediaRequestCallback(uint64_t duration,

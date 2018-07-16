@@ -28,11 +28,6 @@ class BatClient : public ledger::LedgerCallbackHandler {
   void loadStateOrRegisterPersonaCallback(bool success, const std::string& data);
   void requestCredentialsCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void registerPersonaCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void publisherTimestampCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extra_data);
-  uint64_t getPublisherTimestamp();
-  std::unique_ptr<ledger::LedgerURLLoader> publisherInfo(
-      const std::string& publisher,
-      ledger::LedgerCallbackHandler* handler);
   void setContributionAmount(const double& amount);
   const std::string& getBATAddress() const;
   const std::string& getBTCAddress() const;
@@ -68,7 +63,6 @@ class BatClient : public ledger::LedgerCallbackHandler {
   void commitBallotCallback(bool result, const std::string& response);
   void vote(const std::string& publisher, const std::string& viewingId);
   void registerPersona();
-  void publisherTimestamp(bool saveState = true);
   void reconcileCallback(bool result, const std::string& response);
   void currentReconcile();
   void currentReconcileCallback(bool result, const std::string& response);
@@ -85,7 +79,6 @@ class BatClient : public ledger::LedgerCallbackHandler {
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   bool useProxy_;
   std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;
-  uint64_t publisherTimestamp_;
   std::mutex state_mutex_;
   std::mutex transactions_access_mutex_;
   std::mutex ballots_access_mutex_;

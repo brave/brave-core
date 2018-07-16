@@ -165,45 +165,22 @@ namespace braveledger_bat_helper {
 
   struct PUBLISHER_ST {
     PUBLISHER_ST();
-    PUBLISHER_ST(const PUBLISHER_ST& publisher);
     ~PUBLISHER_ST();
+    bool operator<(const PUBLISHER_ST& rhs) const;
 
-    //load from json string
-    bool loadFromJson(const std::string & json);
-
+    std::string id_;
     uint64_t duration_ = 0u;
-    std::string favicon_url_;
     double score_ = .0;
     unsigned int visits_ = 0;
-    bool verified_ = false;
-    bool exclude_ = false;
-    bool pinPercentage_ = false;
-    uint64_t verifiedTimeStamp_ = 0u;
     unsigned int percent_ = 0;
-    bool deleted_ = false;
     double weight_ = .0;
-  };
-
-  struct PUBLISHER_DATA_ST {
-    PUBLISHER_DATA_ST();
-    PUBLISHER_DATA_ST(const PUBLISHER_DATA_ST& publisherData);
-    ~PUBLISHER_DATA_ST();
-
-    bool operator<(const PUBLISHER_DATA_ST &rhs) const;
-
-    std::string publisherKey_;
-    PUBLISHER_ST publisher_;
-    unsigned int daysSpent_ = 0;
-    unsigned int hoursSpent_ = 0;
-    unsigned int minutesSpent_ = 0;
-    unsigned int secondsSpent_ = 0;
   };
 
   struct WINNERS_ST {
     WINNERS_ST();
     ~WINNERS_ST();
 
-    PUBLISHER_DATA_ST publisher_data_;
+    PUBLISHER_ST publisher_data_;
     unsigned int votes_ = 0;
   };
 
@@ -321,8 +298,6 @@ namespace braveledger_bat_helper {
 
   bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
     std::string& fee_currency, double& fee_amount, unsigned int& days);
-
-  bool getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp);
 
   bool getJSONPublisherVerified(const std::string& json, bool& verified);
 

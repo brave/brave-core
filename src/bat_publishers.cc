@@ -26,35 +26,22 @@
    TLD = 'co.jp'
 */
 
+using namespace std::placeholders;
+
 static bool winners_votes_compare(const braveledger_bat_helper::WINNERS_ST& first, const braveledger_bat_helper::WINNERS_ST& second){
     return (first.votes_ < second.votes_);
 }
 
-
 namespace braveledger_bat_publishers {
-
-namespace {
-
-void CloseDB(leveldb::DB* db) {
-  delete db;
-}
-
-}
 
 BatPublishers::BatPublishers(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
-  level_db_(nullptr),
   state_(new braveledger_bat_helper::PUBLISHER_STATE_ST) {
   calcScoreConsts();
 }
 
 BatPublishers::~BatPublishers() {
-  if (level_db_.get()) {
-    auto io_task = std::bind(&CloseDB, level_db_.release());
-    ledger_->RunIOTask(io_task);
-  }
 }
-
 
 void BatPublishers::calcScoreConsts() {
   //TODO: check Warning	C4244	'=': conversion from 'double' to 'unsigned int', possible loss of data
@@ -65,287 +52,112 @@ void BatPublishers::calcScoreConsts() {
   b2_ = b_ * b_;
 }
 
-bool BatPublishers::EnsureInitialized() {
-  if (level_db_.get()) return true;
-  return Init();
-}
-
-bool BatPublishers::Init() {
-  std::string db_path;
-  std::string root;
-  braveledger_bat_helper::getHomeDir(root);
-  braveledger_bat_helper::appendPath(root, PUBLISHERS_DB_NAME, db_path);
-
-  leveldb::Options options;
-  options.create_if_missing = true;
-  leveldb::DB * db_ptr = nullptr;
-  leveldb::Status status = leveldb::DB::Open(options, db_path, &db_ptr);
-
-  if (status.IsCorruption()) {
-    LOG(WARNING) << "Deleting possibly-corrupt database";
-    // base::DeleteFile(path_, true);
-    leveldb::Status status = leveldb::DB::Open(options, db_path, &db_ptr);
-  }
-
-  bool succeded = false;
-  if (!status.ok()) {
-    LOG(ERROR) << "init level db open error " << db_path;
-    succeded = false;
-  }
-  else
-  {
-    level_db_.reset(db_ptr);
-    succeded = true;
-  }
-
-  return succeded;
-}
-
-void BatPublishers::loadPublishers() {
-  if (!EnsureInitialized()) {
-    assert(false);
-    return;
-  }
-
-  std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-  leveldb::Iterator* it = level_db_->NewIterator(leveldb::ReadOptions());
-  for (it->SeekToFirst(); it->Valid(); it->Next()) {
-    std::string publisher = it->key().ToString();
-    braveledger_bat_helper::PUBLISHER_ST publisher_st;
-    std::string publisher_value = it->value().ToString();
-    braveledger_bat_helper::loadFromJson(publisher_st, publisher_value);
-    publishers_[publisher] = publisher_st;
-  }
-  assert(it->status().ok());  // Check for any errors found during the scan
-  delete it;
+// courtesy of @dimitry-xyz: https://github.com/brave/ledger/issues/2#issuecomment-221752002
+double BatPublishers::concaveScore(const uint64_t& duration) {
+  return (std::sqrt(b2_ + a4_ * duration) - b_) / (double)a2_;
 }
 
 void BatPublishers::initSynopsis() {
   ledger_->LoadPublisherState(this);
 }
 
-void BatPublishers::saveVisitInternal(const std::string& publisher, uint64_t duration,
-  braveledger_bat_helper::SaveVisitCallback callback) {
-  double currentScore = concaveScore(duration);
-
-  std::string stringifiedPublisher;
-  uint64_t verifiedTimestamp = 0;
-  {
-    std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
-    if (publishers_.end() == iter) {
-      braveledger_bat_helper::PUBLISHER_ST publisher_st;
-      publisher_st.duration_ = duration;
-      publisher_st.score_ = currentScore;
-      publisher_st.visits_ = 1;
-      publishers_[publisher] = publisher_st;
-      braveledger_bat_helper::saveToJsonString(publisher_st, stringifiedPublisher);
-    } else {
-      iter->second.duration_ += duration;
-      iter->second.score_ += currentScore;
-      iter->second.visits_ += 1;
-      verifiedTimestamp = iter->second.verifiedTimeStamp_;
-      braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
-    }
-    if (!EnsureInitialized()) {
-      assert(false);
-      return;
-    }
-
-    // Save the publisher to the database
-    leveldb::Status status = level_db_->Put(leveldb::WriteOptions(), publisher, stringifiedPublisher);
-    assert(status.ok());
-  }
-
-  ledger_->RunTask(std::bind(callback, publisher, verifiedTimestamp));
-
-  synopsisNormalizerInternal();
+const ledger::PublisherInfo::id_type getPublisherID(
+    const ledger::VisitData& visit_data) {
+  return visit_data.tld;
 }
 
-void BatPublishers::saveVisit(std::string publisher, uint64_t duration, braveledger_bat_helper::SaveVisitCallback callback, bool ignoreMinTime) {
-  if (!ignoreMinTime && duration < state_->min_pubslisher_duration_) {
+std::string getProviderName(const ledger::PublisherInfo::id_type publisher_id) {
+  // TODO - this is for the media stuff
+  return "";
+}
+
+bool ignoreMinTime(const ledger::PublisherInfo::id_type publisher_id) {
+  return !getProviderName(publisher_id).empty();
+}
+
+void BatPublishers::saveVisit(const ledger::VisitData& visit_data) {
+  const ledger::PublisherInfo::id_type publisher_id =
+      getPublisherID(visit_data);
+
+  if (!ignoreMinTime(publisher_id) &&
+      visit_data.duration < state_->min_pubslisher_duration_)
+    return;
+
+  ledger_->GetPublisherInfo(publisher_id,
+      std::bind(&BatPublishers::saveVisitInternal, this,
+                    std::cref(publisher_id), std::cref(visit_data), _1, _2));
+}
+
+void onVisitSavedDummy(ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+  // onPublisherInfoUpdated will always be called by LedgerImpl so do nothing
+}
+
+void BatPublishers::saveVisitInternal(
+    const ledger::PublisherInfo::id_type& publisher_id,
+    const ledger::VisitData& visit_data,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+  if (result != ledger::Result::OK) {
+    // TODO error handling
     return;
   }
 
-  // TODO checks if the publisher verified, disabled and etc
-  auto io_task = std::bind(&BatPublishers::saveVisitInternal,
-                           this,
-                           publisher,
-                           duration,
-                           callback);
-  ledger_->RunIOTask(io_task);
+  if (!publisher_info.get())
+    publisher_info.reset(new ledger::PublisherInfo(publisher_id));
+
+  publisher_info->duration += visit_data.duration;
+  publisher_info->visits += 1;
+  publisher_info->score += concaveScore(visit_data.duration);
+
+  ledger_->SetPublisherInfo(std::move(publisher_info),
+      std::bind(&onVisitSavedDummy, _1, _2));
 }
 
-void BatPublishers::setPublisherTimestampVerifiedInternal(const std::string& publisher,
-    const uint64_t& verifiedTimestamp, const bool& verified) {
-  {
-    std::string stringifiedPublisher;
-    std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
-    if (publishers_.end() == iter) {
-      assert(false);
-
-      return;
-    } else {
-      iter->second.verified_ = verified;
-      iter->second.verifiedTimeStamp_ = verifiedTimestamp;
-      braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
-    }
-    if (!EnsureInitialized()) {
-      assert(false);
-      return;
-    }
-
-    // Save the publisher to the database
-    leveldb::Status status = level_db_->Put(leveldb::WriteOptions(), publisher, stringifiedPublisher);
-    assert(status.ok());
-  }
-  synopsisNormalizerInternal();
-}
-
-void BatPublishers::setPublisherTimestampVerified(std::string publisher, uint64_t verifiedTimestamp, bool verified) {
-  auto io_task = std::bind(&BatPublishers::setPublisherTimestampVerifiedInternal, this, publisher, verifiedTimestamp, verified);
-  ledger_->RunIOTask(io_task);
-}
-
-void BatPublishers::setPublisherFavIconInternal(const std::string& publisher, const std::string& favicon_url) {
-  std::string stringifiedPublisher;
-  std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-  std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
-  if (publishers_.end() == iter) {
-    braveledger_bat_helper::PUBLISHER_ST publisher_st;
-    publisher_st.favicon_url_ = favicon_url;
-    publishers_[publisher] = publisher_st;
-    braveledger_bat_helper::saveToJsonString(publisher_st, stringifiedPublisher);
-  } else {
-    iter->second.favicon_url_ = favicon_url;
-    braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
-  }
-  if (!EnsureInitialized()) {
-    assert(false);
-    return;
+std::unique_ptr<ledger::PublisherInfo> BatPublishers::onPublisherInfoUpdated(
+    ledger::Result result, std::unique_ptr<ledger::PublisherInfo> info) {
+  if (result != ledger::Result::OK) {
+    // TODO error handling
+    return info;
   }
 
-  // Save the publisher to the database
-  leveldb::Status status = level_db_->Put(leveldb::WriteOptions(), publisher, stringifiedPublisher);
-  assert(status.ok());
-}
-
-void BatPublishers::setPublisherFavIcon(std::string publisher, std::string favicon_url) {
-  auto io_task = std::bind(&BatPublishers::setPublisherFavIconInternal, this, publisher, favicon_url);
-  ledger_->RunIOTask(io_task);
-}
-
-void BatPublishers::setPublisherIncludeInternal(const std::string& publisher, const bool& include) {
-  {
-    std::string stringifiedPublisher;
-    std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
-    if (publishers_.end() == iter) {
-      braveledger_bat_helper::PUBLISHER_ST publisher_st;
-      publisher_st.exclude_ = !include;
-      publishers_[publisher] = publisher_st;
-      braveledger_bat_helper::saveToJsonString(publisher_st, stringifiedPublisher);
-    } else {
-      iter->second.exclude_ = !include;
-      braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
-    }
-    if (!EnsureInitialized()) {
-      assert(false);
-      return;
-    }
-
-    // Save the publisher to the database
-    leveldb::Status status = level_db_->Put(leveldb::WriteOptions(), publisher, stringifiedPublisher);
-    assert(status.ok());
+  if (!isEligableForContribution(*info)) {
+    publishers_.erase(info->id);
+    return info;
   }
-  synopsisNormalizerInternal();
-}
 
-void BatPublishers::setPublisherInclude(std::string publisher, bool include) {
-  auto io_task = std::bind(&BatPublishers::setPublisherIncludeInternal, this, publisher, include);
-  ledger_->RunIOTask(io_task);
-}
+  const ledger::PublisherInfo::id_type& publisher_id = info->id;
 
-void BatPublishers::setPublisherDeletedInternal(const std::string& publisher, const bool& deleted) {
-  {
-    std::string stringifiedPublisher;
-    std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
-    if (publishers_.end() == iter) {
-      braveledger_bat_helper::PUBLISHER_ST publisher_st;
-      publisher_st.deleted_ = deleted;
-      publishers_[publisher] = publisher_st;
-      braveledger_bat_helper::saveToJsonString(publisher_st, stringifiedPublisher);
-    } else {
-      iter->second.deleted_ = deleted;
-      braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
-    }
-    if (!EnsureInitialized()) {
-      assert(false);
-      return;
-    }
-
-    // Save the publisher to the database
-    leveldb::Status status = level_db_->Put(leveldb::WriteOptions(), publisher, stringifiedPublisher);
-    assert(status.ok());
+  auto publisher = publishers_.find(info->id);
+  if (publisher != publishers_.end()) {
+    publishers_[publisher_id] = braveledger_bat_helper::PUBLISHER_ST();
+    publishers_[publisher_id].id_ = publisher_id;
   }
-  synopsisNormalizerInternal();
-}
 
-void BatPublishers::setPublisherDeleted(std::string publisher, bool deleted) {
-  auto io_task = std::bind(&BatPublishers::setPublisherDeletedInternal, this, publisher, deleted);
-  ledger_->RunIOTask(io_task);
-}
+  publishers_[publisher_id].duration_ = info->duration;
+  publishers_[publisher_id].score_ = info->score;
+  publishers_[publisher_id].visits_ = info->visits;
+  publishers_[publisher_id].percent_ = info->percent;
+  publishers_[publisher_id].weight_ = info->weight;
 
-void BatPublishers::setPublisherPinPercentageInternal(const std::string& publisher, const bool& pinPercentage) {
-  {
-    std::string stringifiedPublisher;
-    std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-    std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.find(publisher);
-    if (publishers_.end() == iter) {
-      braveledger_bat_helper::PUBLISHER_ST publisher_st;
-      publisher_st.pinPercentage_ = pinPercentage;
-      publishers_[publisher] = publisher_st;
-      braveledger_bat_helper::saveToJsonString(publisher_st, stringifiedPublisher);
-    } else {
-      iter->second.pinPercentage_ = pinPercentage;
-      braveledger_bat_helper::saveToJsonString(iter->second, stringifiedPublisher);
-    }
-    if (!EnsureInitialized()) {
-      assert(false);
-      return;
-    }
+  synopsisNormalizer();
 
-    // Save the publisher to the database
-    leveldb::Status status = level_db_->Put(leveldb::WriteOptions(), publisher, stringifiedPublisher);
-    assert(status.ok());
-  }
-  synopsisNormalizerInternal();
-}
-
-void BatPublishers::setPublisherPinPercentage(std::string publisher, bool pinPercentage) {
-  auto io_task = std::bind(&BatPublishers::setPublisherPinPercentageInternal, this, publisher, pinPercentage);
-  ledger_->RunIOTask(io_task);
+  return info;
 }
 
 void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In milliseconds
   state_->min_pubslisher_duration_ = duration; //TODO: conversion from 'const uint64_t' to 'unsigned int', possible loss of data
   saveState();
-  synopsisNormalizer();
-  calcScoreConsts();
 }
 
 void BatPublishers::setPublisherMinVisits(const unsigned int& visits) {
   state_->min_visits_ = visits;
   saveState();
-  synopsisNormalizer();
 }
 
 void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
   state_->allow_non_verified_ = allow;
   saveState();
-  synopsisNormalizer();
 }
 
 uint64_t BatPublishers::getPublisherMinVisitTime() const {
@@ -360,51 +172,10 @@ bool BatPublishers::getPublisherAllowNonVerified() const {
   return state_->allow_non_verified_;
 }
 
-std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> BatPublishers::getPublishersData() {
-  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> res;
-
-  std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-  for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
-    braveledger_bat_helper::PUBLISHER_DATA_ST publisherData;
-    publisherData.publisherKey_ = iter->first;
-    publisherData.publisher_ = iter->second;
-    // TODO check all of that
-    if (iter->second.duration_ >= braveledger_ledger::_milliseconds_day) {
-      publisherData.daysSpent_ = std::max((int)std::lround((double)iter->second.duration_ / (double)braveledger_ledger::_milliseconds_day), 1);
-    } else if (iter->second.duration_ >= braveledger_ledger::_milliseconds_hour) {
-      publisherData.hoursSpent_ = std::max((int)((double)iter->second.duration_ / (double)braveledger_ledger::_milliseconds_hour), 1);
-      publisherData.minutesSpent_ = std::lround((double)(iter->second.duration_ % braveledger_ledger::_milliseconds_hour) / (double)braveledger_ledger::_milliseconds_minute);
-    } else if (iter->second.duration_ >= braveledger_ledger::_milliseconds_minute) {
-      publisherData.minutesSpent_ = std::max((int)((double)iter->second.duration_ / (double)braveledger_ledger::_milliseconds_minute), 1);
-      publisherData.secondsSpent_ = std::lround((double)(iter->second.duration_ % braveledger_ledger::_milliseconds_minute) / (double)braveledger_ledger::_milliseconds_second);
-    } else {
-      publisherData.secondsSpent_ = std::max((int)std::lround((double)iter->second.duration_ / (double)braveledger_ledger::_milliseconds_second), 1);
-    }
-    res.push_back(publisherData);
-  }
-
-  return res;
-}
-
-bool BatPublishers::isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st) {
-  if (publisher_st.deleted_ || (!state_->allow_non_verified_ && !publisher_st.verified_)) {
-    return false;
-  }
-
-  return publisher_st.score_ > 0 &&
-    publisher_st.duration_ >= state_->min_pubslisher_duration_ &&
-    publisher_st.visits_ >= state_->min_visits_;
-}
-
-void BatPublishers::synopsisNormalizerInternal() {
-
-  LOG(ERROR)<<"BatPublishers::synopsisNormalizerInternal";
-  std::lock_guard<std::mutex> guard(publishers_map_mutex_);
+void BatPublishers::synopsisNormalizer() {
+  LOG(ERROR)<<"BatPublishers::synopsisNormalizer";
   double totalScores = 0.0;
   for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
-    if (!isPublisherVisible(iter->second)) {
-      continue;
-    }
     totalScores += iter->second.score_;
   }
   std::vector<unsigned int> percents;
@@ -413,10 +184,6 @@ void BatPublishers::synopsisNormalizerInternal() {
   std::vector<double> roundoffs;
   unsigned int totalPercents = 0;
   for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
-    if (!isPublisherVisible(iter->second)) {
-      //LOG(ERROR) << "!!!not visible " << iter->first;
-      continue;
-    }
     realPercents.push_back((double)iter->second.score_ / (double)totalScores * 100.0);
     percents.push_back((unsigned int)std::lround(realPercents[realPercents.size() - 1]));
     double roundoff = percents[percents.size() - 1] - realPercents[realPercents.size() - 1];
@@ -454,33 +221,25 @@ void BatPublishers::synopsisNormalizerInternal() {
   }
   size_t currentValue = 0;
   for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
-    if (!isPublisherVisible(iter->second)) {
-      continue;
-    }
     iter->second.percent_ = percents[currentValue];
     iter->second.weight_ = weights[currentValue];
     currentValue++;
   }
 }
 
-void BatPublishers::synopsisNormalizer() {
-  auto io_task = std::bind(&BatPublishers::synopsisNormalizerInternal, this);
-  ledger_->RunIOTask(io_task);
-}
-
 std::vector<braveledger_bat_helper::WINNERS_ST> BatPublishers::winners(const unsigned int& ballots) {
   std::vector<braveledger_bat_helper::WINNERS_ST> res;
-  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> top = topN();
+  std::vector<braveledger_bat_helper::PUBLISHER_ST> top = topN();
   unsigned int totalVotes = 0;
   std::vector<unsigned int> votes;
   // TODO there is underscore.shuffle
   for (size_t i = 0; i < top.size(); i++) {
-    LOG(ERROR) << "!!!name == " << top[i].publisherKey_ << ", score == " << top[i].publisher_.score_;
-    if (top[i].publisher_.percent_ <= 0) {
+    LOG(ERROR) << "!!!name == " << top[i].id_ << ", score == " << top[i].score_;
+    if (top[i].percent_ <= 0) {
       continue;
     }
     braveledger_bat_helper::WINNERS_ST winner;
-    winner.votes_ = (unsigned int)std::lround((double)top[i].publisher_.percent_ * (double)ballots / 100.0);
+    winner.votes_ = (unsigned int)std::lround((double)top[i].percent_ * (double)ballots / 100.0);
     totalVotes += winner.votes_;
     winner.publisher_data_ = top[i];
     res.push_back(winner);
@@ -496,34 +255,31 @@ std::vector<braveledger_bat_helper::WINNERS_ST> BatPublishers::winners(const uns
   return res;
 }
 
-std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> BatPublishers::topN() {
-  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> res;
+std::vector<braveledger_bat_helper::PUBLISHER_ST> BatPublishers::topN() {
+  std::vector<braveledger_bat_helper::PUBLISHER_ST> res;
 
-  std::lock_guard<std::mutex> guard(publishers_map_mutex_);
-  for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
-    if (0 == iter->second.score_
-        || state_->min_pubslisher_duration_ > iter->second.duration_
-        || state_->min_visits_ > iter->second.visits_) {
-      continue;
-    }
-    braveledger_bat_helper::PUBLISHER_DATA_ST publisherData;
-    publisherData.publisherKey_ = iter->first;
-    publisherData.publisher_ = iter->second;
-    res.push_back(publisherData);
-  }
+  for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++)
+    res.push_back(iter->second);
 
   std::sort(res.begin(), res.end());
 
   return res;
 }
 
-bool BatPublishers::isEligableForContribution(const braveledger_bat_helper::PUBLISHER_DATA_ST& publisherData) {
-  return !publisherData.publisher_.exclude_ && isPublisherVisible(publisherData.publisher_);
+bool BatPublishers::isVerified(const ledger::PublisherInfo& publisher_id) {
+  // TODO - implement bloom filter
+  return true;
 }
 
-// courtesy of @dimitry-xyz: https://github.com/brave/ledger/issues/2#issuecomment-221752002
-double BatPublishers::concaveScore(const uint64_t& duration) {
-  return (std::sqrt(b2_ + a4_ * duration) - b_) / (double)a2_;
+bool BatPublishers::isEligableForContribution(const ledger::PublisherInfo& info) {
+
+  if (info.excluded || (!state_->allow_non_verified_ && !isVerified(info.id)))
+    return false;
+
+  return info.score > 0 &&
+    info.duration >= state_->min_pubslisher_duration_ &&
+    info.visits >= state_->min_visits_;
+
 }
 
 void BatPublishers::saveState() {
@@ -532,21 +288,11 @@ void BatPublishers::saveState() {
   ledger_->SavePublisherState(data, this);
 }
 
-void BatPublishers::loadState(bool success, const std::string& data) {
-  if (!success) {
-    // TODO error handling
-    return;
-  }
-
+void BatPublishers::loadState(const std::string& data) {
   braveledger_bat_helper::PUBLISHER_STATE_ST state;
   braveledger_bat_helper::loadFromJson(state, data.c_str());
   state_.reset(new braveledger_bat_helper::PUBLISHER_STATE_ST(state));
   calcScoreConsts();
-}
-
-void BatPublishers::OnLedgerStateLoaded(ledger::Result result,
-                                        const std::string& data) {
-
 }
 
 void BatPublishers::OnPublisherStateLoaded(ledger::Result result,
@@ -556,8 +302,17 @@ void BatPublishers::OnPublisherStateLoaded(ledger::Result result,
     return;
     // TODO - error handling
   }
-  auto io_task = std::bind(&BatPublishers::loadPublishers, this);
-  ledger_->RunIOTask(io_task);
+
+  loadState(data);
+}
+
+void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
+  if (result != ledger::Result::OK) {
+    LOG(ERROR) << "Could not save publisher state";
+    // TODO - error handling
+    return;
+  }
+  synopsisNormalizer();
 }
 
 }  // namespace braveledger_bat_publisher

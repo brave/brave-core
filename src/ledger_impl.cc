@@ -58,6 +58,12 @@ std::string LedgerImpl::GenerateGUID() const {
 
 void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
                                      const std::string& data) {
+  if (result != ledger::Result::OK) {
+    LOG(ERROR) << "Could not load ledger state";
+    return;
+    // TODO - error handling
+  }
+
   bat_client_->loadStateOrRegisterPersonaCallback(result == ledger::Result::OK, data);
 }
 
@@ -90,12 +96,8 @@ void LedgerImpl::initSynopsis() {
 //   // TODO send the balance to the UI via observer or callback
 // }
 
-void LedgerImpl::SaveVisit(const std::string& publisher, uint64_t duration, bool ignoreMinTime) {
-  // TODO debug
-  //bat_client_->recoverWallet(bat_client_->getWalletPassphrase());
-  //
-  auto callback = std::bind(&LedgerImpl::saveVisitCallback, this, _1, _2);
-  bat_publishers_->saveVisit(publisher, duration, callback, ignoreMinTime);
+void LedgerImpl::OnVisit(const ledger::VisitData& visit_data) {
+  bat_publishers_->saveVisit(visit_data);
 }
 
 void LedgerImpl::RunIOTask(LedgerTaskRunnerImpl::Task io_task) {
@@ -110,57 +112,30 @@ void LedgerImpl::RunTask(LedgerTaskRunnerImpl::Task task) {
   ledger_client_->RunTask(std::move(task_runner));
 }
 
-void LedgerImpl::saveVisitCallback(const std::string& publisher,
-                                   uint64_t verifiedTimestamp) {
-  uint64_t publisherTimestamp = bat_client_->getPublisherTimestamp();
-  if (publisherTimestamp <= verifiedTimestamp) {
-    //to do debug
-    LOG(ERROR) << "!!!reconcile";
-    Reconcile();
-    //
-    return;
-  }
+void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info,
+                                  ledger::PublisherInfoCallback callback) {
+  ledger_client_->SavePublisherInfo(std::move(info),
+      std::bind(&LedgerImpl::OnSetPublisherInfo, this, callback, _1, _2));
 
-  // Update publisher verified or not flag
-  //LOG(ERROR) << "!!!getting publisher info";
-  auto request = bat_client_->publisherInfo(publisher, &handler_);
-  handler_.AddRequestHandler(std::move(request),
-                             std::bind(&LedgerImpl::publisherInfoCallback,
-                                        this,
-                                        publisher,
-                                        publisherTimestamp,
-                                        _1,
-                                        _2));
 }
 
-void LedgerImpl::publisherInfoCallback(const std::string& publisher,
-                                       uint64_t publisher_timestamp,
-                                       bool success,
-                                       const std::string& response) {
-  //LOG(ERROR) << "!!!got publisher info";
-  if (!success) {
-    // TODO errors handling
-    return;
-  }
-  bool verified = false;
-  braveledger_bat_helper::getJSONPublisherVerified(response, verified);
-  bat_publishers_->setPublisherTimestampVerified(publisher, publisher_timestamp, verified);
-  //to do debug
-  //LOG(ERROR) << "!!!reconcile";
-  //run(0);
-  //
+void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
+                                    ledger::Result result,
+                                    std::unique_ptr<ledger::PublisherInfo> info) {
+  info = bat_publishers_->onPublisherInfoUpdated(result, std::move(info));
+  callback(result, std::move(info));
 }
 
-void LedgerImpl::SetPublisherInclude(const std::string& publisher, bool include) {
-  bat_publishers_->setPublisherInclude(publisher, include);
+void LedgerImpl::GetPublisherInfo(
+    const ledger::PublisherInfo::id_type& publisher_id,
+    ledger::PublisherInfoCallback callback) {
+  ledger_client_->LoadPublisherInfo(publisher_id, callback);
 }
 
-void LedgerImpl::SetPublisherDeleted(const std::string& publisher, bool deleted) {
-  bat_publishers_->setPublisherDeleted(publisher, deleted);
-}
-
-void LedgerImpl::SetPublisherPinPercentage(const std::string& publisher, bool pinPercentage) {
-  bat_publishers_->setPublisherPinPercentage(publisher, pinPercentage);
+void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
+                                ledger::PublisherInfoFilter filter,
+                                ledger::GetPublisherInfoListCallback callback) {
+  ledger_client_->LoadPublisherInfoList(start, limit, filter, callback);
 }
 
 void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) { // In milliseconds
@@ -231,10 +206,7 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
   std::vector<braveledger_bat_helper::WINNERS_ST> winners = bat_publishers_->winners(ballotsCount);
   std::vector<std::string> publishers;
   for (size_t i = 0; i < winners.size(); i++) {
-    if (!bat_publishers_->isEligableForContribution(winners[i].publisher_data_)) {
-      continue;
-    }
-    publishers.push_back(winners[i].publisher_data_.publisherKey_);
+    publishers.push_back(winners[i].publisher_data_.id_);
   }
   bat_client_->votePublishers(publishers, viewing_id);
   // TODO call prepareBallots by timeouts like in js library
@@ -291,7 +263,7 @@ void LedgerImpl::processMedia(const std::map<std::string, std::string>& parts, c
 }
 
 void LedgerImpl::OnMediaRequestCallback(uint64_t duration, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
-  SaveVisit(mediaPublisherInfo.publisher_, duration, true);
+  // SaveVisit(mediaPublisherInfo.publisher_, duration, true);
 }
 
 }  // namespace bat_ledger
