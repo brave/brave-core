@@ -2,22 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
+const React = require('react')
 const { bindActionCreators } = require('redux')
 const { connect } = require('react-redux')
 const rewardsActions = require('../actions/rewards_actions')
 
-const CreateWalletLink = (props) =>
-  href = '#' onClick = { props.createWalletClicked } > Create Wallet/a> as 
-  < /div>
-
 class RewardsPage extends React.Component {
-  constructor (props) {
-    super(props)
-    this.onCreateWalletClicked = this.onCreateWalletClicked.bind(this)
-  }
-
-  onCreateWalletClicked () {
+  onCreateWalletClicked = () => {
     this.actions.createWalletRequested()
   }
 
@@ -28,29 +19,34 @@ class RewardsPage extends React.Component {
   render () {
     const { rewardsData } = this.props
     return (
-      createWalletClicked = { this.onCreateWalletClicked } / >
+      <div>
+        <div>
+          <a href='#' onClick={this.onCreateWalletClicked}>Create Wallet</a>
+        </div>
         {
           rewardsData.walletCreated
-          ? Wallet   Created!/div> as
+          ? <div>Wallet Created!</div>
           : null
+        }
         {
-      rewardsData.walletCreateFailed
-          ? Wallet   Create Failed! < /div>
-      : null
-    }
-    / div > ) as
+          rewardsData.walletCreateFailed
+          ? <div>Wallet Create Failed!</div>
+          : null
+        }
+      </div>
+    )
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: Rewards.ApplicationState) => ({
   rewardsData: state.rewardsData
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   actions: bindActionCreators(rewardsActions, dispatch)
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-) (RewardsPage)
+)(RewardsPage)

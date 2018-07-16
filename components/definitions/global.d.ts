@@ -21,5 +21,10 @@ declare global {
       initialize: () => void
       statsUpdated: () => void
     }
+    brave_rewards: {
+      initialize: () => void
+      walletCreated: () => void
+      walletCreateFailed: () => void
+    }
   }
 }

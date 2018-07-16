@@ -4,4 +4,5 @@
 
 declare namespace chrome {
   function getVariableValue (stat: string): string
+  function send (stat: string, args?: any[]): void
 }

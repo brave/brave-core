@@ -6,13 +6,16 @@ const debounce = require('../common/debounce')
 
 const keyName = 'rewards-data'
 
-const cleanData = (state) => ({})
+const defaultState: Rewards.State = {
+  walletCreated: false,
+  walletCreateFailed: false
+}
 
-module.exports.getInitialState = () => cleanData({})
+export const getInitialState = (): Rewards.State => cleanData(defaultState)
 
-module.exports.load = () => {
+export const load = () => {
   const data = window.localStorage.getItem(keyName)
-  let state
+  let state: Rewards.State = getInitialState()
   if (data) {
     try {
       state = JSON.parse(data)
@@ -23,7 +26,7 @@ module.exports.load = () => {
   return cleanData(state)
 }
 
-module.exports.debouncedSave = debounce((data) => {
+export const debouncedSave = debounce((data: Rewards.State) => {
   if (data) {
     window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
   }

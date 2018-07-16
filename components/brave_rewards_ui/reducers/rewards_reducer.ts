@@ -2,16 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* global chrome */
+import { Reducer } from 'redux'
 
 const types = require('../constants/rewards_types')
 const storage = require('../storage')
 
-const rewardsReducer = (state, action) => {
+const rewardsReducer: Reducer<Rewards.State> = (state: Rewards.State, action) => {
   if (state === undefined) {
-    state = storage.load() || {}
-    state = Object.assign(storage.getInitialState(), state)
+    state = storage.load()
   }
+
   const startingState = state
   switch (action.type) {
     case types.CREATE_WALLET_REQUESTED:
