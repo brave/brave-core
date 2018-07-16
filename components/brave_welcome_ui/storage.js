@@ -6,9 +6,12 @@ const debounce = require('../common/debounce')
 
 const keyName = 'welcome-data'
 
-const cleanData = (state) => ({})
+const cleanData = (state) => {
+  state = { ...state }
+  return state
+}
 
-module.exports.getInitialState = () => cleanData({})
+module.exports.getInitialState = () => cleanData({ pageIndex: 0 })
 
 module.exports.load = () => {
   const data = window.localStorage.getItem(keyName)

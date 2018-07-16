@@ -6,7 +6,6 @@ const React = require('react')
 const { render } = require('react-dom')
 const { Provider } = require('react-redux')
 const App = require('./components/app')
-const { bindActionCreators } = require('redux')
 
 window.cr.define('brave_welcome', function () {
   'use strict'
@@ -19,12 +18,6 @@ window.cr.define('brave_welcome', function () {
       </Provider>,
       document.getElementById('root'))
     window.i18nTemplate.process(window.document, window.loadTimeData)
-  }
-
-  function getActions () {
-    const store = require('./store')
-    const welcomeActions = require('./actions/welcome_actions')
-    return bindActionCreators(welcomeActions, store.dispatch.bind(store))
   }
 
   return {

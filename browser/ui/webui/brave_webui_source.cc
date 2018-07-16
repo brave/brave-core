@@ -78,6 +78,12 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       }
     }, {
       std::string("welcome"), {
+      { "51a13e5e543f312a990d4fd7e741d427.png", IDR_BRAVE_WELCOME_SLIDE_1_IMAGE },
+      { "a6abd363c58f91a260f94f5beb32b172.png", IDR_BRAVE_WELCOME_SLIDE_2_IMAGE },
+      { "fc31b8d3f7f3d32eec78365212f3002b.png", IDR_BRAVE_WELCOME_SLIDE_3_IMAGE },
+      { "59ec9e5cdea1df1630f8c6e2b7a27ede.png", IDR_BRAVE_WELCOME_SLIDE_4_IMAGE },
+      { "c2217e15737be3c82f5fef818d3fd26c.png", IDR_BRAVE_WELCOME_SLIDE_5_IMAGE },
+      { "e9d936c617aad55fe1bc7a001f2defb4.svg", IDR_BRAVE_WELCOME_BACKGROUND_IMAGE }
       }
     }, {
       std::string("rewards"), {
@@ -115,6 +121,24 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       }
     }, {
       std::string("welcome"), {
+        { "welcome", IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE },
+        { "whatIsBrave", IDS_BRAVE_WELCOME_PAGE_MAIN_DESC },
+        { "letsGo", IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON },
+        { "enableBraveRewards", IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE },
+        { "setupBraveRewards", IDS_BRAVE_WELCOME_PAGE_REWARDS_DESC },
+        { "enableRewards", IDS_BRAVE_WELCOME_PAGE_REWARDS_BUTTON },
+        { "importFromAnotherBrowser", IDS_BRAVE_WELCOME_PAGE_IMPORT_TITLE },
+        { "setupImport", IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC },
+        { "importNow", IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON },
+        { "manageShields", IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE },
+        { "adjustProtectionLevel", IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC },
+        { "shieldSettings", IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON },
+        { "customizePreferences", IDS_BRAVE_WELCOME_PAGE_PREFERENCES_TITLE },
+        { "configure", IDS_BRAVE_WELCOME_PAGE_PREFERENCES_DESC },
+        { "preferences", IDS_BRAVE_WELCOME_PAGE_PREFERENCES_BUTTON },
+        { "skipWelcomeTour", IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON },
+        { "next", IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON },
+        { "done", IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON }
       }
     }, {
       std::string("rewards"), {

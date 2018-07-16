@@ -33,7 +33,7 @@
     "standard": "^10.0.3"
   },
   "dependencies": {
-    "brave-ui": "^0.10.3",
+    "brave-ui": "^0.12.2",
     "emptykit.css": "^1.0.1"
   }
 }

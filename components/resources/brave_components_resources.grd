@@ -87,6 +87,13 @@
       <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
       <include name="IDR_BRAVE_WELCOME_JS" file="${root_gen_dir}/brave/brave_welcome.bundle.js" type="BINDATA" use_base_dir="false" />
 
+      <include name="IDR_BRAVE_WELCOME_SLIDE_1_IMAGE" file="../img/welcome/brave_logo.png" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_2_IMAGE" file="../img/welcome/features.png" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_3_IMAGE" file="../img/welcome/import.png" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_4_IMAGE" file="../img/welcome/rewards.png" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_5_IMAGE" file="../img/welcome/shields.png" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_BACKGROUND_IMAGE" file="../img/welcome/welcomebg.svg" type="BINDATA" />
+
       <!-- WebUI newtab resources -->
       <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_JS" file="${root_gen_dir}/brave/brave_new_tab.bundle.js" type="BINDATA" use_base_dir="false" />
@@ -145,6 +152,26 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED_TITLE" desc="Title for if geographic regional ad-blocking is enabled">Regional Ad Block:</message>
       <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED" desc="Geographic regional ad-blocking is enabled">Enabled</message>
       <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_DISABLED" desc="Geographic regional ad-blocking is disabled">Disabled</message>
+
+      <!-- WebUI welcome page resources -->
+      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE" desc="Welcome message title">Welcome to Brave</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_DESC" desc="Welcome message description">Brave is so much more than a browser. Let\'s show you how to make the most of it</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON" desc="Button that moves to the next welcome screen">Let's go</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE" desc="Welcome message title for Brave Rewards">Enable Brave Rewards</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_DESC" desc="Explainer text about Brave Rewards">Setting up Brave Rewards is easy and you start earning blockchain-based tokens which can be used to reward your favorite content creators.</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_BUTTON" desc="Button to enable Brave Rewards from the welcome page">Enable Rewards</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_TITLE" desc="Welcome message title for import from another browser">Import from another browser</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC" desc="Explainer text about importing from another browser">Brave makes it easy to setup your usual environment by importing bookmarks and settings from other browsers installed on your computer.</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON" desc="Button to import from another browser">Import Now</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE" desc="Welcome message title for shields">Manage your shield settings</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC" desc="Explainer text about shields">Adjust and monitor your level of protection by clicking the Brave logo in the toolbar. Manage your global shield settings in the preferences panel</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON" desc="Button to open shield settings">Shield Settings</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_PREFERENCES_TITLE" desc="Welcome message title for preferences">Customize your preferences</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_PREFERENCES_DESC" desc="Explainer text about features in Brave">Tabs, appearance, extensions and history setting can be configured in the preferences panel. You might even find a dark theme in there ;)</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_PREFERENCES_BUTTON" desc="Button to open the preferences page">Preferences</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON" desc="Button to skip the welcome tour and go to the new tab page">Skip welcome tour</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON" desc="Button to move to the next slide of the welcome tour">Next</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>
     </messages>
   </release>
 </grit>
