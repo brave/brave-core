@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { UnstyledButton } from 'brave-ui'
 import Panel from 'brave-ui/v1/panel'
@@ -16,9 +16,11 @@ import ShieldsScreen from './shieldsScreen'
 import FeaturesScreen from './featuresScreen'
 import Footer from './footer'
 
+// Constants
+import { theme } from '../constants/theme'
+
 // Utils
 import * as welcomeActions from '../actions/welcome_actions'
-import { theme } from '../theme'
 
 // Assets
 const background = require('../../img/welcome/welcomebg.svg')
@@ -154,7 +156,7 @@ const mapStateToProps = (state: Welcome.ApplicationState) => ({
   welcomeData: state.welcomeData
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(welcomeActions, dispatch)
 })
 

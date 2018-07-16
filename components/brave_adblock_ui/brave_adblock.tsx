@@ -5,8 +5,12 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import App from './components/app'
 import { bindActionCreators } from 'redux'
+
+// Components
+import App from './components/app'
+
+// Utils
 import store from './store'
 import * as adblockActions from './actions/adblock_actions'
 

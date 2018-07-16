@@ -3,12 +3,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { getLocale } from '../../common/locale'
 import Image from 'brave-ui/v1/image'
 import { PushButton } from 'brave-ui/v1/pushButton'
 import { Heading, Paragraph } from 'brave-ui'
-import { theme } from '../theme'
 
+// Constants
+import { theme } from '../constants/theme'
+
+// Utils
+import { getLocale } from '../../common/locale'
+
+// Assets
 const braveLogo = require('../../img/welcome/brave_logo.png')
 
 interface Props {

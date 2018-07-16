@@ -7,10 +7,13 @@ import { Heading, Paragraph } from 'brave-ui'
 import Image from 'brave-ui/v1/image'
 import { PushButtonLink } from 'brave-ui/v1/pushButton'
 
+// Constants
+import { theme } from '../constants/theme'
+
 // Utils
-import { theme } from '../theme'
 import { getLocale } from '../../common/locale'
 
+// Assets
 const rewardsImage = require('../../img/welcome/rewards.png')
 
 export default class RewardsScreen extends React.PureComponent {

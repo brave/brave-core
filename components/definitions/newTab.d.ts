@@ -59,8 +59,4 @@ declare namespace NewTab {
     gridLayoutSize?: 'small'
     showSiteRemovalNotification?: boolean
   }
-
-  export interface Actions {
-    statsUpdated: any
-  }
 }

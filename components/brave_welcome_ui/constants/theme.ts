@@ -2,6 +2,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import * as CSS from 'csstype'
+
+interface Content {
+  display: CSS.DisplayProperty
+  flexDirection: CSS.FlexDirectionProperty
+  justifyContent: CSS.JustifyContentProperty
+  alignItems: CSS.AlignItemsProperty
+  flex: CSS.FlexProperty<1>
+  marginBottom: CSS.MarginBottomProperty<1>
+}
+
 export const theme = {
   panel: {
     backgroundColor: 'rgba(255,255,255,0.95)',
@@ -52,12 +63,12 @@ export const theme = {
   },
   content: {
     display: 'flex',
-    // flexDirection: 'column', TODO figure it out why it's failing https://github.com/Microsoft/TypeScript/issues/9489
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     flex: '1',
     marginBottom: '40px'
-  },
+  } as Content,
   skip: {
     color: '#76777A',
     textDecoration: 'underline'

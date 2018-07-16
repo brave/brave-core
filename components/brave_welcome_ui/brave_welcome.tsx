@@ -5,7 +5,11 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+
+// Components
 import App from './components/app'
+
+// Utils
 import store from './store'
 
 window.cr.define('brave_welcome', function () {

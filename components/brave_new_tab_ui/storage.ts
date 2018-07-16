@@ -2,8 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Constants
+import { images as backgrounds } from './constants/backgrounds'
+
+// Utils
 import { debounce } from '../common/debounce'
-import { images as backgrounds } from './backgrounds'
 
 const keyName = 'new-tab-data'
 

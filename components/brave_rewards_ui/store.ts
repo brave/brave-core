@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createStore } from 'redux'
+
+// Utils
 import reducers from './reducers'
 
 export default createStore(reducers)

@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { cx } from '../../common/classSet'
 import {
   DragSource, DragSourceCollector,
   DragSourceConnector,
@@ -12,6 +11,9 @@ import {
   DropTargetConnector,
   DropTargetMonitor, DropTargetSpec
 } from 'react-dnd'
+
+// Utils
+import { cx } from '../../common/classSet'
 
 const Types = {
   BLOCK: 'block'

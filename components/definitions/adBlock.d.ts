@@ -11,8 +11,4 @@ declare namespace AdBlock {
       regionalAdBlockTitle?: string
     }
   }
-
-  export interface Actions {
-    statsUpdated: any
-  }
 }

@@ -4,21 +4,25 @@
 
 import * as React from 'react'
 import { DragDropContext } from 'react-dnd'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import HTML5Backend from 'react-dnd-html5-backend'
-import * as newTabActions from '../actions/newTabActions'
+import { Grid, Column, Clock } from 'brave-ui'
 
 // Components
-import { Grid, Column, Clock } from 'brave-ui'
 import Stats from './stats'
 import Block from './block'
 import FooterInfo from './footerInfo'
 import SiteRemovalNotification from './siteRemovalNotification'
 import NewPrivateTab from './newPrivateTab'
 
+// Constants
+import { theme } from '../constants/theme'
+
+// Utils
+import * as newTabActions from '../actions/newTabActions'
+
 // Assets
-import { theme } from '../theme'
 require('../../styles/newtab.less')
 require('font-awesome/css/font-awesome.css')
 require('../../fonts/poppins.css')
@@ -196,7 +200,7 @@ const mapStateToProps = (state: NewTab.ApplicationState) => ({
   newTabData: state.newTabData
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(newTabActions, dispatch)
 })
 

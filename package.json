@@ -40,7 +40,7 @@
     "@types/react-dnd": "^2.0.36",
     "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^6.0.4",
-    "@types/redux-logger": "^3.0.5",
+    "csstype": "^2.5.5",
     "tslint": "^5.8.0",
     "tslint-config-standard": "^7.0.0",
     "tslint-react": "^3.2.0",

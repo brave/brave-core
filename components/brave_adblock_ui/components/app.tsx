@@ -5,12 +5,16 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
+
+// Components
 import { RegionalAdBlockEnabled } from './regionalAdBlockEnabled'
-import * as adblockActions from '../actions/adblock_actions'
 import { NumBlockedStat } from './numBlockedStat'
 
+// Utils
+import * as adblockActions from '../actions/adblock_actions'
+
 interface Props {
-  actions: AdBlock.Actions
+  actions: any
   adblockData: AdBlock.State
 }
 

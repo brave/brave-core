@@ -6,9 +6,11 @@ import * as React from 'react'
 import Image from 'brave-ui/v1/image'
 import { Heading, Paragraph } from 'brave-ui'
 
+// Constants
+import { theme } from '../constants/theme'
+
 // Utils
 import { getLocale } from '../../common/locale'
-import { theme } from '../theme'
 
 // Assets
 const shieldsImage = require('../../img/welcome/shields.png')

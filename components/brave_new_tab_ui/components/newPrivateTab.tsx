@@ -4,8 +4,6 @@
 
 import * as React from 'react'
 import { getLocale } from '../../common/locale'
-
-// Components
 import {
   Page,
   Grid,
@@ -18,14 +16,15 @@ import {
   Clock
 } from 'brave-ui'
 
+// Components
 import Stats from './stats'
 
-// Theme
-import { theme } from '../theme'
-require('emptykit.css')
+// Constant
+import { theme } from '../constants/theme'
 
-// Images
+// Assets
 const privateTabIcon = require('../../img/newtab/private_tab_pagearea_icon.svg')
+require('emptykit.css')
 
 interface Props {
   stats: NewTab.Stats,

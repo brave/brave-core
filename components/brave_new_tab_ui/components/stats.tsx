@@ -4,8 +4,12 @@
 
 import * as React from 'react'
 import { DataBlock, DataItem } from 'brave-ui/dataBlock'
+
+// Constants
+import { theme } from '../constants/theme'
+
+// Utils
 import { getLocale } from '../../common/locale'
-import { theme } from '../theme'
 
 interface Props {
   stats: NewTab.Stats

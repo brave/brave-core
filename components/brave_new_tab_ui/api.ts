@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { bindActionCreators } from 'redux'
+
+// Utils
 import * as newTabActions from './actions/newTabActions'
 import { debounce } from '../common/debounce'
 import store from './store'

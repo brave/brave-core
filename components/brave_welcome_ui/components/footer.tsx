@@ -3,11 +3,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { getLocale } from '../../common/locale'
 import { PushButton, PushButtonLink } from 'brave-ui/v1/pushButton'
 import ArrowRight from 'brave-ui/v1/icons/arrowRight'
 import { Grid, Column, Anchor } from 'brave-ui'
-import { theme } from '../theme'
+
+// Constants
+import { theme } from '../constants/theme'
+
+// Utils
+import { getLocale } from '../../common/locale'
 
 interface Props {
   pageIndex: number,

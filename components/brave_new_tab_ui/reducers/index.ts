@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { combineReducers } from 'redux'
+
+// Utils
 import newTabReducer from './newTabReducer'
 
 export default combineReducers<NewTab.ApplicationState>({

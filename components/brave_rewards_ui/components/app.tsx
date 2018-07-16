@@ -3,8 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
+
+// Utils
 import * as rewardsActions from '../actions/rewards_actions'
 
 interface Props {
@@ -47,7 +49,7 @@ const mapStateToProps = (state: Rewards.ApplicationState) => ({
   rewardsData: state.rewardsData
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(rewardsActions, dispatch)
 })
 

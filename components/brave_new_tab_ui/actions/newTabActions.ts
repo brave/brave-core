@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { action } from 'typesafe-actions'
+
+// Constants
 import { types } from '../constants/newTabTypes'
 
 export const topSitesDataUpdated = (topSites: NewTab.Site[]) => action(types.NEW_TAB_TOP_SITES_DATA_UPDATED, {
@@ -52,7 +54,7 @@ export const siteDragEnd = (url: string, didDrop: boolean) => action(types.NEW_T
 
 export const onHideSiteRemovalNotification = () => action(types.NEW_TAB_HIDE_SITE_REMOVAL_NOTIFICATION)
 
-export const bookmarkInfoAvailable = (queryUrl: string, bookmarkTreeNode: any) => action(types.NEW_TAB_BOOKMARK_INFO_AVAILABLE, {
+export const bookmarkInfoAvailable = (queryUrl: string, bookmarkTreeNode: NewTab.Bookmark) => action(types.NEW_TAB_BOOKMARK_INFO_AVAILABLE, {
   queryUrl,
   bookmarkTreeNode
 })

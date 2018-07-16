@@ -3,7 +3,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
+
+// Constants
 import { types } from '../constants/newTabTypes'
+
+// Utils
 import * as storage from '../storage'
 import { fetchBookmarkInfo, getGridSites, calculateGridSites, fetchTopSites } from '../api'
 

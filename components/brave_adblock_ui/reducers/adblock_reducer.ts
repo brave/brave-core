@@ -4,7 +4,10 @@
 
 import { Reducer } from 'redux'
 
+// Constants
 import { types } from '../constants/adblock_types'
+
+// Utils
 import * as storage from '../storage'
 
 const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State | undefined, action) => {
