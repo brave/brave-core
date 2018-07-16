@@ -37,7 +37,7 @@ class TwoLineTableViewCell: UITableViewCell {
         contentView.addSubview(_textLabel)
         contentView.addSubview(_detailTextLabel)
 
-        twoLineHelper.setUpViews(self, textLabel: textLabel!, detailTextLabel: detailTextLabel!, imageView: imageView!)
+        twoLineHelper.setUpViews(contentView, textLabel: textLabel!, detailTextLabel: detailTextLabel!, imageView: imageView!)
 
         indentationWidth = 0
         layoutMargins = .zero
@@ -100,7 +100,7 @@ class SiteTableViewCell: TwoLineTableViewCell {
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        twoLineHelper.setUpViews(self, textLabel: textLabel!, detailTextLabel: detailTextLabel!, imageView: imageView!)
+        twoLineHelper.setUpViews(contentView, textLabel: textLabel!, detailTextLabel: detailTextLabel!, imageView: imageView!)
     }
 
     override func layoutSubviews() {
@@ -137,7 +137,7 @@ class TwoLineHeaderFooterView: UITableViewHeaderFooterView {
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        twoLineHelper.setUpViews(self, textLabel: _textLabel, detailTextLabel: _detailTextLabel, imageView: imageView)
+        twoLineHelper.setUpViews(contentView, textLabel: _textLabel, detailTextLabel: _detailTextLabel, imageView: imageView)
 
         contentView.addSubview(_textLabel)
         contentView.addSubview(_detailTextLabel)
