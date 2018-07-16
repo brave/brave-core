@@ -38,11 +38,14 @@ action("generate_version") {
   script = "//brave/script/version.py"
   gen_dir = rebase_path(root_gen_dir, "//")
   args = [
-    "--target_gen_dir=$gen_dir"
+    "--target_gen_dir=$gen_dir",
+    "--brave_version_patch=$brave_version_patch"
   ]
   inputs = [ "../../package.json" ]
   outputs = [
-    "$root_out_dir/version"
+    "$root_out_dir/version",
+    "$root_gen_dir/brave/version.h",
+    "$root_gen_dir/brave/VERSION",
   ]
 }
 
