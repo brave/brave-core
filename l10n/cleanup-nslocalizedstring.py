@@ -3,12 +3,23 @@
 import os
 import re
 
-ignore_parent_directories = ["*test", "ThirdParty", "Carthage", "fastlane", "L10nSnapshotTests", "l10n"]
+ignore_parent_directories = ["ThirdParty", "Carthage", "fastlane", "L10nSnapshotTests", "l10n"]
 frameworks = ["BraveShared", "Data", "Shared", "Storage"]
 
 def pascal_case(string):
+  # Convert hyphens and underscores to spaces so that words are correctly pascal cased
+  string = string.replace("-", " ")
+  string = string.replace("_", " ")
+
+  # Convert first letter of each word to uppercase
   string = re.sub(r'[\s]+(?P<first>[a-z])', lambda m: m.group('first').upper(), string)
+
+  # Strip punctuation
   string = re.sub(r'[^\w\s]', '', string)
+
+  # Strip spaces
+  string = string.replace(" ", "")
+
   return string
 
 def replacement_string(key, value, tablename, comment, is_framework):
@@ -52,30 +63,38 @@ for path, directories, files in os.walk("."):
 
       with open(os.path.join(path, file), 'r') as source:
         content = source.read()
-        
-        regex = 'NSLocalizedString\("([^"]*)"\)'
-        content = re.sub(regex, lambda match: replacement_string(match.group(1), match.group(1), "", "", is_framework), content)
 
-        regex = 'NSLocalizedString\("([^"]*)", value: "([^"]*)"\)'
-        content = re.sub(regex, lambda match: replacement_string(match.group(1), match.group(2), "", "", is_framework), content)
+        pattern = 'NSLocalizedString\("([^"]*)"\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), "", "", is_framework)
+        content = re.sub(pattern, replacement_pattern, content)
 
-        regex = 'NSLocalizedString\("([^"]*)", tableName: "([^"]*)"\)'
-        content = re.sub(regex, lambda match: replacement_string(match.group(1), match.group(1), match.group(2), "", is_framework), content)
+        pattern = 'NSLocalizedString\("([^"]*)", comment: "([^"]*)"\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), "", match.group(2), is_framework)
+        content = re.sub(pattern, replacement_pattern, content)
 
-        regex = 'NSLocalizedString\("([^"]*)", tableName: "([^"]*)", comment: "([^"]*)"\)'
-        content = re.sub(regex, lambda match: replacement_string(match.group(1), match.group(1), match.group(2), match.group(3), is_framework), content)
+        pattern = 'NSLocalizedString\("([^"]*)", tableName: "([^"]*)"\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(2), "", is_framework)
+        content = re.sub(pattern, replacement_pattern, content)
 
-        regex = 'NSLocalizedString\("([^"]*)", comment: "([^"]*)"\)'
-        content = re.sub(regex, lambda match: replacement_string(match.group(1), match.group(1), "", match.group(2), is_framework), content)
+        pattern = 'NSLocalizedString\("([^"]*)", tableName: "([^"]*)", comment: "([^"]*)"\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(2), match.group(3), is_framework)
+        content = re.sub(pattern, replacement_pattern, content)
 
-        regex = 'NSLocalizedString\("([^"]*)", value: "([^"]*)", comment: "([^"]*)"\)'
-        content = re.sub(regex, lambda match: replacement_string(match.group(1), match.group(2), "", match.group(3), is_framework), content)
+        pattern = 'NSLocalizedString\("([^"]*)", value: "([^"]*)"\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(2), "", "", is_framework)
+        content = re.sub(pattern, replacement_pattern, content)
 
-        regex = 'NSLocalizedString\("([^"]*)", value: "([^"]*)", tableName: "([^"]*)"\)'
-        content = re.sub(regex, lambda match: replacement_string(match.group(1), match.group(1), match.group(2), match.group(3), is_framework), content)
+        pattern = 'NSLocalizedString\("([^"]*)", value: "([^"]*)", comment: "([^"]*)"\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(2), "", match.group(3), is_framework)
+        content = re.sub(pattern, replacement_pattern, content)
 
-        regex = 'NSLocalizedString\("([^"]*)", value: "([^"]*)", tableName: "([^"]*)", comment: "([^"]*)"\)'
-        content = re.sub(regex, lambda match: replacement_string(match.group(1), match.group(2), framework, match.group(4), is_framework), content)
+        pattern = 'NSLocalizedString\("([^"]*)", value: "([^"]*)", tableName: "([^"]*)"\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(2), match.group(3), is_framework)
+        content = re.sub(pattern, replacement_pattern, content)
+
+        pattern = 'NSLocalizedString\("([^"]*)", value: "([^"]*)", tableName: "([^"]*)", comment: "([^"]*)"\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(2), framework, match.group(4), is_framework)
+        content = re.sub(pattern, replacement_pattern, content)
 
         with open(os.path.join(path, file), 'w') as source:
           source.write(content)
