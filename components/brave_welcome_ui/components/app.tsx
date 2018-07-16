@@ -3,40 +3,34 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-const { bindActionCreators } = require('redux')
-const { connect } = require('react-redux')
-const welcomeActions = require('../actions/welcome_actions')
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { UnstyledButton } from 'brave-ui'
+import Panel from 'brave-ui/v1/panel'
 
 // Components
-const { UnstyledButton } = require('brave-ui')
-const Panel = require('brave-ui/v1/panel').default
+import BraveScreen from './braveScreen'
+import RewardsScreen from './rewardsScreen'
+import ImportScreen from './importScreen'
+import ShieldsScreen from './shiedsScreen'
+import FeaturesScreen from './featuresScreen'
+import Footer from './footer'
 
-// Theme
-const theme = require('../theme')
+// Utils
+import * as welcomeActions from '../actions/welcome_actions'
+import { theme } from '../theme'
 
-// Screens
-const BraveScreen = require('./braveScreen')
-const RewardsScreen = require('./rewardsScreen')
-const ImportScreen = require('./importScreen')
-const ShieldsScreen = require('./shiedsScreen')
-const FeaturesScreen = require('./featuresScreen')
-const Footer = require('./footer')
-
-// Images
+// Assets
 const background = require('../../img/welcome/welcomebg.svg')
-
-// Fonts
 require('../../fonts/muli.css')
 require('../../fonts/poppins.css')
 
-class WelcomePage extends React.Component {
-  constructor (props) {
-    super(props)
-    this.onImportNowClicked = this.onImportNowClicked.bind(this)
-    this.onGoToFirstSlide = this.onGoToSlide.bind(this, 1)
-    this.onClickNext = this.onClickNext.bind(this)
-  }
+interface Props {
+  welcomeData: Welcome.State
+  actions: any
+}
 
+class WelcomePage extends React.Component<Props, {}> {
   get pageIndex () {
     return this.props.welcomeData.pageIndex
   }
@@ -58,22 +52,22 @@ class WelcomePage extends React.Component {
   get activeScreen () {
     switch (this.pageIndex) {
       case 0:
-        return <BraveScreen theme={theme} onGoToFirstSlide={this.onGoToFirstSlide} />
+        return <BraveScreen onGoToFirstSlide={this.onGoToFirstSlide} />
       case 1:
-        return <RewardsScreen theme={theme} />
+        return <RewardsScreen />
       case 2:
-        return <ImportScreen theme={theme} onImportNowClicked={this.onImportNowClicked} />
+        return <ImportScreen onImportNowClicked={this.onImportNowClicked} />
       case 3:
-        return <ShieldsScreen theme={theme} />
+        return <ShieldsScreen />
       case 4:
-        return <FeaturesScreen theme={theme} />
+        return <FeaturesScreen />
       default:
-        return <BraveScreen theme={theme} />
+        return <BraveScreen onGoToFirstSlide={this.onGoToFirstSlide} />
     }
   }
 
   get slideBullets () {
-    return Array.from({length: this.totalSecondaryScreensSize}, (v, k) => {
+    return Array.from({ length: this.totalSecondaryScreensSize }, (v, k) => {
       return (
         <UnstyledButton
           theme={
@@ -122,15 +116,19 @@ class WelcomePage extends React.Component {
     }
   }
 
-  onGoToSlide (nextPage) {
+  onGoToFirstSlide = () => {
+    this.onGoToSlide(1)
+  }
+
+  onGoToSlide = (nextPage: number) => {
     this.actions.goToPageRequested(nextPage)
   }
 
-  onClickNext () {
+  onClickNext = () => {
     this.actions.goToPageRequested(this.pageIndex + 1)
   }
 
-  onImportNowClicked () {
+  onImportNowClicked = () => {
     this.actions.importNowRequested()
   }
 
@@ -138,14 +136,13 @@ class WelcomePage extends React.Component {
     return (
       <div style={this.backgroundStyle}>
         <Panel theme={theme.panel}>
-          { this.activeScreen }
+          {this.activeScreen}
           <Footer
-            theme={theme}
             pageIndex={this.pageIndex}
             totalSecondaryScreensSize={this.totalSecondaryScreensSize}
             onClickNext={this.onClickNext}
           >
-            { this.slideBullets }
+            {this.slideBullets}
           </Footer>
         </Panel>
       </div>
@@ -153,11 +150,11 @@ class WelcomePage extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: Welcome.ApplicationState) => ({
   welcomeData: state.welcomeData
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   actions: bindActionCreators(welcomeActions, dispatch)
 })
 

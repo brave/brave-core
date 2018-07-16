@@ -2,17 +2,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const React = require('react')
-const { getLocale } = require('../../common/locale')
-const PushButton = require('brave-ui/v1/pushButton').PushButton
-const PushButtonLink = require('brave-ui/v1/pushButton').PushButtonLink
-const ArrowRight = require('brave-ui/v1/icons/arrowRight').default
-const { Grid, Column, Anchor } = require('brave-ui')
+import * as React from 'react'
+import { getLocale } from '../../common/locale'
+import { PushButton, PushButtonLink } from 'brave-ui/v1/pushButton'
+import ArrowRight from 'brave-ui/v1/icons/arrowRight'
+import { Grid, Column, Anchor } from 'brave-ui'
+import { theme } from '../theme'
 
-class Footer extends React.PureComponent {
+interface Props {
+  pageIndex: number,
+  totalSecondaryScreensSize: number,
+  onClickNext: (e: any) => void
+}
+
+export default class Footer extends React.PureComponent<Props, {}> {
   render () {
     const {
-      theme,
       pageIndex,
       totalSecondaryScreensSize,
       onClickNext,
@@ -35,30 +40,32 @@ class Footer extends React.PureComponent {
           <Column size={1} theme={theme.footerColumnRight}>
             {
               pageIndex < totalSecondaryScreensSize - 1
-                ? (
-                  <PushButton
-                    theme={theme.sideButton}
-                    color='secondary'
-                    onClick={onClickNext}
-                  >
-                    <span style={{
+              ? (
+                <PushButton
+                  theme={theme.sideButton}
+                  color='secondary'
+                  onClick={onClickNext}
+                >
+                  <span
+                    style={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-evenly'
-                    }}>
-                      {getLocale('next')} <ArrowRight />
-                    </span>
-                  </PushButton>
-                )
-                : (
-                  <PushButtonLink
-                    theme={theme.sideButton}
-                    color='secondary'
-                    href='chrome://newtab'
+                    }}
                   >
-                    {getLocale('done')}
-                  </PushButtonLink>
-                )
+                    {getLocale('next')} <ArrowRight />
+                  </span>
+                </PushButton>
+              )
+              : (
+                <PushButtonLink
+                  theme={theme.sideButton}
+                  color='secondary'
+                  href='chrome://newtab'
+                >
+                  {getLocale('done')}
+                </PushButtonLink>
+              )
             }
           </Column>
         </Grid>
@@ -66,5 +73,3 @@ class Footer extends React.PureComponent {
     )
   }
 }
-
-module.exports = Footer

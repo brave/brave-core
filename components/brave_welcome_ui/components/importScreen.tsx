@@ -2,25 +2,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const React = require('react')
-const { getLocale } = require('../../common/locale')
+import * as React from 'react'
+import { getLocale } from '../../common/locale'
+import Image from 'brave-ui/v1/image'
+import { PushButton } from 'brave-ui/v1/pushButton'
+import { Heading, Paragraph } from 'brave-ui'
+import { theme } from '../theme'
+
 const importImage = require('../../img/welcome/import.png')
-const Image = require('brave-ui/v1/image').default
-const PushButton = require('brave-ui/v1/pushButton').PushButton
-const { Heading, Paragraph } = require('brave-ui')
 
-class ImportScreen extends React.PureComponent {
-  constructor (props) {
-    super(props)
-    this.onClickImportNow = this.onClickImportNow.bind(this)
-  }
+interface Props {
+  onImportNowClicked: () => void
+}
 
-  onClickImportNow () {
+export default class ImportScreen extends React.PureComponent<Props, {}> {
+  onClickImportNow = () => {
     this.props.onImportNowClicked()
   }
 
   render () {
-    const { theme } = this.props
     return (
       <section style={theme.content}>
         <Image theme={theme.importImage} src={importImage} />
@@ -38,5 +38,3 @@ class ImportScreen extends React.PureComponent {
     )
   }
 }
-
-module.exports = ImportScreen

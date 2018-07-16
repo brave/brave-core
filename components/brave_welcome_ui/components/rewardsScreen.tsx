@@ -2,16 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const React = require('react')
-const { getLocale } = require('../../common/locale')
-const rewardsImage = require('../../img/welcome/rewards.png')
-const Image = require('brave-ui/v1/image').default
-const PushButtonLink = require('brave-ui/v1/pushButton').PushButtonLink
-const { Heading, Paragraph } = require('brave-ui')
+import * as React from 'react'
+import { Heading, Paragraph } from 'brave-ui'
+import Image from 'brave-ui/v1/image'
+import { PushButtonLink } from 'brave-ui/v1/pushButton'
 
-class RewardsScreen extends React.PureComponent {
+// Utils
+import { theme } from '../theme'
+import { getLocale } from '../../common/locale'
+
+const rewardsImage = require('../../img/welcome/rewards.png')
+
+export default class RewardsScreen extends React.PureComponent {
   render () {
-    const { theme } = this.props
     return (
       <section style={theme.content}>
         <Image theme={theme.paymentsImage} src={rewardsImage} />
@@ -29,5 +32,3 @@ class RewardsScreen extends React.PureComponent {
     )
   }
 }
-
-module.exports = RewardsScreen

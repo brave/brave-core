@@ -6,16 +6,16 @@ const debounce = require('../common/debounce')
 
 const keyName = 'welcome-data'
 
-const cleanData = (state) => {
+const cleanData = (state: Welcome.State) => {
   state = { ...state }
   return state
 }
 
-module.exports.getInitialState = () => cleanData({ pageIndex: 0 })
+export const getInitialState = () => cleanData({ pageIndex: 0 })
 
-module.exports.load = () => {
+export const load = () => {
   const data = window.localStorage.getItem(keyName)
-  let state
+  let state = getInitialState()
   if (data) {
     try {
       state = JSON.parse(data)
@@ -26,7 +26,7 @@ module.exports.load = () => {
   return cleanData(state)
 }
 
-module.exports.debouncedSave = debounce((data) => {
+export const debouncedSave = debounce((data: Welcome.State) => {
   if (data) {
     window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
   }

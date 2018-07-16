@@ -2,15 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* global chrome */
+import { types } from '../constants/welcome_types'
+import * as storage from '../storage'
 
-const types = require('../constants/welcome_types')
-const storage = require('../storage')
-
-const welcomeReducer = (state, action) => {
+const welcomeReducer = (state: Welcome.State, action: any) => {
   if (state === undefined) {
-    state = storage.load() || {}
-    state = Object.assign(storage.getInitialState(), state)
+    state = storage.load()
   }
   const startingState = state
   switch (action.type) {

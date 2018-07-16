@@ -2,15 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const React = require('react')
-const { getLocale } = require('../../common/locale')
-const shieldsImage = require('../../img/welcome/shields.png')
-const Image = require('brave-ui/v1/image').default
-const { Heading, Paragraph } = require('brave-ui')
+import * as React from 'react'
+import Image from 'brave-ui/v1/image'
+import { Heading, Paragraph } from 'brave-ui'
 
-class ShieldsScreen extends React.PureComponent {
+// Utils
+import { getLocale } from '../../common/locale'
+import { theme } from '../theme'
+
+// Assets
+const shieldsImage = require('../../img/welcome/shields.png')
+
+export default class ShieldsScreen extends React.PureComponent {
   render () {
-    const { theme } = this.props
     return (
       <section style={theme.content}>
         <Image theme={theme.shieldsImage} src={shieldsImage} />
@@ -20,5 +24,3 @@ class ShieldsScreen extends React.PureComponent {
     )
   }
 }
-
-module.exports = ShieldsScreen
