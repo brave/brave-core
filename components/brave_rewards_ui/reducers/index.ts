@@ -5,8 +5,6 @@
 import { combineReducers } from 'redux'
 import rewardsReducer from './rewards_reducer'
 
-const combinedReducer = combineReducers<Rewards.ApplicationState>({
+export default combineReducers<Rewards.ApplicationState>({
   rewardsData: rewardsReducer
 })
-
-export default combinedReducer

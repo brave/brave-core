@@ -13,11 +13,9 @@ const defaultState: Rewards.State = {
 
 const cleanData = (state: Rewards.State) => state
 
-export const getInitialState = (): Rewards.State => cleanData(defaultState)
-
-export const load = () => {
+export const load = (): Rewards.State => {
   const data = window.localStorage.getItem(keyName)
-  let state: Rewards.State = getInitialState()
+  let state: Rewards.State = defaultState
   if (data) {
     try {
       state = JSON.parse(data)

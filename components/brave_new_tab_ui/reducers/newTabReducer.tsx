@@ -3,13 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
-
 import { types } from '../constants/newTabTypes'
 import * as storage from '../storage'
-import { fetchBookmarkInfo, getGridSites, fetchTopSites, calculateGridSites } from '../api'
+import { fetchBookmarkInfo, getGridSites, calculateGridSites, fetchTopSites } from '../api'
 
-const updateBookmarkInfo = (state: NewTab.State, url: string, bookmarkTreeNode: any) => {
-  const bookmarks = Object.assign({}, state.bookmarks)
+const updateBookmarkInfo = (state: NewTab.State, url: string, bookmarkTreeNode?: NewTab.Bookmark) => {
+  const bookmarks = state.bookmarks
   const gridSites = state.gridSites.slice()
   const topSites = state.topSites.slice()
   const pinnedTopSites = state.pinnedTopSites.slice()
@@ -17,9 +16,10 @@ const updateBookmarkInfo = (state: NewTab.State, url: string, bookmarkTreeNode: 
   const gridSite: Partial<NewTab.Site> = gridSites.find((s) => s.url === url) || {}
   const topSite: Partial<NewTab.Site> = topSites.find((s) => s.url === url) || {}
   const pinnedTopSite: Partial<NewTab.Site> = pinnedTopSites.find((s) => s.url === url) || {}
-  gridSite.bookmarked = topSite.bookmarked = pinnedTopSite.bookmarked = !!bookmarkTreeNode
+
   if (bookmarkTreeNode) {
     bookmarks[url] = bookmarkTreeNode
+    gridSite.bookmarked = topSite.bookmarked = pinnedTopSite.bookmarked = bookmarkTreeNode
   } else {
     delete bookmarks[url]
   }
@@ -29,7 +29,7 @@ const updateBookmarkInfo = (state: NewTab.State, url: string, bookmarkTreeNode: 
 }
 
 const onDraggedSite = (state: NewTab.State, url: string, destUrl: string) => {
-  const gridSitesWithoutPreview = getGridSites(state, false)
+  const gridSitesWithoutPreview = getGridSites(state)
   const currentPositionIndex = gridSitesWithoutPreview.findIndex(site => site.url === url)
   const finalPositionIndex = gridSitesWithoutPreview.findIndex(site => site.url === destUrl)
   let pinnedTopSites = state.pinnedTopSites.slice()
@@ -56,21 +56,22 @@ const onDraggedSite = (state: NewTab.State, url: string, destUrl: string) => {
     return pinnedTopSite
   })
   state = { ...state, pinnedTopSites }
-  state = { ...state, gridSites: getGridSites(state, false) }
+  state = { ...state, gridSites: getGridSites(state) }
   return state
 }
 
 const onDragEnd = (state: NewTab.State) => {
-  state = { ...state, gridSites: getGridSites(state, false) }
+  state = { ...state, gridSites: getGridSites(state) }
   return state
 }
 
-const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action: any) => {
+export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State | undefined, action: any) => {
   if (state === undefined) {
+    state = storage.load()
+
     setImmediate(() => {
       fetchTopSites()
     })
-    state = storage.load()
   }
 
   const startingState = state
@@ -88,11 +89,9 @@ const newTabReducer: Reducer<NewTab.State> = (state: NewTab.State, action: any) 
       }
       break
     case types.BOOKMARK_REMOVED:
-      // TODO somewhere we are saying that bookmarks is Record of booleans, but here we are using id NZ
       const bookmarkInfo = state.bookmarks[payload.url]
       if (bookmarkInfo) {
-        // TODO this is static now NZ
-        chrome.bookmarks.remove('1', () => {
+        chrome.bookmarks.remove(bookmarkInfo.id, () => {
           fetchBookmarkInfo(payload.url)
         })
       }

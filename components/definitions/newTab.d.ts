@@ -1,6 +1,6 @@
 declare namespace NewTab {
   export interface ApplicationState {
-    newTabData: State
+    newTabData: State | undefined
   }
 
   export interface Image {
@@ -23,7 +23,7 @@ declare namespace NewTab {
     themeColor: string
     computedThemeColor: string
     pinned: boolean
-    bookmarked?: boolean
+    bookmarked?: Bookmark
   }
 
   export interface Stats {
@@ -32,6 +32,15 @@ declare namespace NewTab {
     javascriptBlockedStat: number
     httpsUpgradesStat: number
     fingerprintingBlockedStat: number
+  }
+
+  export interface Bookmark {
+    dateAdded: number
+    id: string
+    index: number
+    parentId: string
+    title: string
+    url: string
   }
 
   export interface State {
@@ -44,7 +53,7 @@ declare namespace NewTab {
     showEmptyPage: boolean,
     isIncognito: boolean,
     useAlternativePrivateSearchEngine: boolean,
-    bookmarks: Record<string, boolean>,
+    bookmarks: Record<string, Bookmark>,
     stats: Stats
     backgroundImage?: Image
     gridLayoutSize?: 'small'

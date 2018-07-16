@@ -33,11 +33,9 @@ export const cleanData = (state: AdBlock.State): AdBlock.State => {
   return getLoadTimeData(state)
 }
 
-export const getInitialState = (): AdBlock.State => cleanData(defaultState)
-
 export const load = (): AdBlock.State => {
   const data = window.localStorage.getItem(keyName)
-  let state: AdBlock.State = getInitialState()
+  let state: AdBlock.State = defaultState
   if (data) {
     try {
       state = JSON.parse(data)

@@ -1,6 +1,6 @@
 declare namespace Welcome {
   export interface ApplicationState {
-    welcomeData: State
+    welcomeData: State | undefined
   }
 
   export interface State {

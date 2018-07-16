@@ -1,6 +1,6 @@
 declare namespace AdBlock {
   export interface ApplicationState {
-    adblockData: State
+    adblockData: State | undefined
   }
 
   export interface State {

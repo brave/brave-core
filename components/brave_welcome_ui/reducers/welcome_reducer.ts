@@ -2,13 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { Reducer } from 'redux'
 import { types } from '../constants/welcome_types'
 import * as storage from '../storage'
 
-const welcomeReducer = (state: Welcome.State, action: any) => {
+const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State | undefined, action: any) => {
   if (state === undefined) {
     state = storage.load()
   }
+
   const payload = action.payload
   const startingState = state
   switch (action.type) {

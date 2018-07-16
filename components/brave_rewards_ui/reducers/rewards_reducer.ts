@@ -6,7 +6,7 @@ import { Reducer } from 'redux'
 import { types } from '../constants/rewards_types'
 import * as storage from '../storage'
 
-const rewardsReducer: Reducer<Rewards.State> = (state: Rewards.State, action) => {
+const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State | undefined, action) => {
   if (state === undefined) {
     state = storage.load()
   }

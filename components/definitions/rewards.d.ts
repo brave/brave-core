@@ -1,6 +1,6 @@
 declare namespace Rewards {
   export interface ApplicationState {
-    rewardsData: State
+    rewardsData: State | undefined
   }
 
   export interface State {

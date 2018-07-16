@@ -169,7 +169,7 @@ class NewTabPage extends React.Component<Props, {}> {
                       onDraggedSite={this.onDraggedSite}
                       onDragEnd={this.onDragEnd}
                       isPinned={site.pinned}
-                      isBookmarked={site.bookmarked}
+                      isBookmarked={site.bookmarked !== undefined}
                     />
                   )
                 }

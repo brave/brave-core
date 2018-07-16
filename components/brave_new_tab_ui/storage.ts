@@ -54,11 +54,9 @@ const cleanData = (state: NewTab.State): NewTab.State => {
   return state
 }
 
-export const getInitialState = () => cleanData(defaultState)
-
-export const load = () => {
+export const load = (): NewTab.State => {
   const data = window.localStorage.getItem(keyName)
-  let state = getInitialState()
+  let state = defaultState
   if (data) {
     try {
       state = JSON.parse(data)

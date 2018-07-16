@@ -47,7 +47,7 @@ export const fetchBookmarkInfo = (url: string) => {
   )
 }
 
-export const getGridSites = (state: NewTab.State, checkBookmarkInfo: boolean) => {
+export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) => {
   const sizeToCount = { large: 18, medium: 12, small: 6 }
   const count = sizeToCount[state.gridLayoutSize || 'small']
 
@@ -68,13 +68,13 @@ export const getGridSites = (state: NewTab.State, checkBookmarkInfo: boolean) =>
   })
 
   gridSites = gridSites.slice(0, count)
-  gridSites.forEach((gridSite) => {
+  gridSites.forEach((gridSite: NewTab.Site) => {
     gridSite.letter = getLetterFromSite(gridSite)
     gridSite.thumb = `chrome://thumb/${gridSite.url}`
     gridSite.favicon = `chrome://favicon/size/48@1x/${gridSite.url}`
     gridSite.bookmarked = state.bookmarks[gridSite.url]
 
-    if (checkBookmarkInfo && gridSite.bookmarked === undefined) {
+    if (checkBookmarkInfo && !gridSite.bookmarked) {
       fetchBookmarkInfo(gridSite.url)
     }
   })

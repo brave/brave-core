@@ -7,8 +7,8 @@ import { Reducer } from 'redux'
 import { types } from '../constants/adblock_types'
 import * as storage from '../storage'
 
-const adblockReducer: Reducer<AdBlock.State> = (state: AdBlock.State, action) => {
-  if (state == null) {
+const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State | undefined, action) => {
+  if (state === undefined) {
     state = storage.load()
   }
 

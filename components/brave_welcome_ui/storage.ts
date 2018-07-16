@@ -6,16 +6,18 @@ import { debounce } from '../common/debounce'
 
 const keyName = 'welcome-data'
 
+const defaultState = {
+  pageIndex: 0
+}
+
 const cleanData = (state: Welcome.State) => {
   state = { ...state }
   return state
 }
 
-export const getInitialState = () => cleanData({ pageIndex: 0 })
-
-export const load = () => {
+export const load = (): Welcome.State => {
   const data = window.localStorage.getItem(keyName)
-  let state = getInitialState()
+  let state = defaultState
   if (data) {
     try {
       state = JSON.parse(data)

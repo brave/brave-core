@@ -5,8 +5,6 @@
 import { combineReducers } from 'redux'
 import welcomeReducer from './welcome_reducer'
 
-const combinedReducer = combineReducers({
+export default combineReducers({
   welcomeData: welcomeReducer
 })
-
-export default combinedReducer
