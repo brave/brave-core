@@ -1,4 +1,6 @@
 #!/usr/bin/python
+#
+# Clean up NSLocalizedString usage excluding files within "ignore_parent_directories"
 
 import os
 import re
