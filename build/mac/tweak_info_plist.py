@@ -59,8 +59,6 @@ def Main(argv):
       type='string', default=None, help='Target url for update feed')
   parser.add_option('--brave_dsa_file', dest='brave_dsa_file', action='store',
       type='string', default=None, help='Public DSA file for update')
-  parser.add_option('--version', dest='version', action='store', type='string',
-      default=None, help='The version string [major.minor.build.patch]')
   parser.add_option('--format', choices=('binary1', 'xml1', 'json'),
       default='xml1', help='Format to use when writing property list '
           '(default: %(default)s)')
@@ -99,43 +97,6 @@ def Main(argv):
 
   # Explicitly disable profiling
   plist['SUEnableSystemProfiling'] = False
-
-  version_format_for_key = {
-    'CFBundleShortVersionString': '@MAJOR@.@MINOR@.@BUILD@.@PATCH@',
-    'CFBundleVersion': '@BUILD@.@PATCH@',
-  }
-
-  def _GetVersion(version_format, values):
-    """Generates a version number according to |version_format| using the values
-    from |values|."""
-    result = version_format
-    for key in values:
-      value = values[key]
-      result = result.replace('@%s@' % key, value)
-    return result
-
-  def _AddVersionKeys(plist, version_format_for_key, version):
-    if not version:
-      return False
-
-    # Parse the given version number, that should be in MAJOR.MINOR.BUILD.PATCH
-    # format (where each value is a number). Note that str.isdigit() returns
-    # True if the string is composed only of digits (and thus match \d+ regexp).
-    groups = version.split('.')
-    if len(groups) != 4 or not all(element.isdigit() for element in groups):
-      print >>sys.stderr, 'Invalid version string specified: "%s"' % version
-      return False
-    values = dict(zip(('MAJOR', 'MINOR', 'BUILD', 'PATCH'), groups))
-
-    for key in version_format_for_key:
-      plist[key] = _GetVersion(version_format_for_key[key], values)
-
-    # Return with no error.
-    return True
-
-  # Insert the product version.
-  if not _AddVersionKeys(plist, version_format_for_key, options.version):
-    return 2
 
   # Now that all keys have been mutated, rewrite the file.
   with tempfile.NamedTemporaryFile() as temp_info_plist:
