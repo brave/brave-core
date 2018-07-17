@@ -4,7 +4,7 @@ import argparse
 import os
 import sys
 
-from lib.config import CHROMIUM_ROOT, get_brave_version
+from lib.config import CHROMIUM_ROOT, get_brave_version, get_chromium_version
 
 
 def main():
@@ -31,6 +31,8 @@ def create_version(target_gen_dir):
     # Strip off the v prefix.
     version = get_brave_version()[1:]
     version_h_file.write(''.join(['#define BRAVE_BROWSER_VERSION "', version, '"']))
+    version_h_file.write('\n')
+    version_h_file.write(''.join(['#define BRAVE_CHROMIUM_VERSION "', get_chromium_version(), '"']))
 
 
 if __name__ == '__main__':

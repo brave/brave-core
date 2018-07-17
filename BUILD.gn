@@ -42,7 +42,8 @@ action("generate_version") {
   ]
   inputs = [ "../../package.json" ]
   outputs = [
-    "$root_out_dir/version"
+    "$root_gen_dir/brave/version.h",
+    "$root_out_dir/version",
   ]
 }
 

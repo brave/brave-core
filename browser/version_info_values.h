@@ -6,6 +6,7 @@
 #define BRAVE_BROWSER_VERSION_INFO_VALUES_H_
 
 #include <string>
+
 #include "brave/version.h"
 #include "components/version_info/version_info_values.h"
 

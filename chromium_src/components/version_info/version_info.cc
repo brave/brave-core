@@ -8,10 +8,12 @@
 #undef GetChannelString
 #undef GetProductNameAndVersionForUserAgent
 
+#include "brave/version.h"
+
 namespace version_info {
 
 std::string GetProductNameAndVersionForUserAgent() {
-  return std::string("Chrome/") + CHROMIUM_VERSION_STRING;
+  return std::string("Chrome/") + BRAVE_CHROMIUM_VERSION;
 }
 
 // We use |nightly| instead of |canary|.

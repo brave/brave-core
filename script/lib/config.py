@@ -59,6 +59,12 @@ def get_chrome_version():
 def get_brave_version():
   return 'v' + get_raw_version()
 
+def get_chrome_project():
+  return brave_browser_package()['config']['projects']['chrome'];
+
+def get_chromium_version():
+  return os.environ.get('npm_config_chromium_version') or get_chrome_project()['tag']
+
 def get_raw_version():
   return os.environ.get('npm_config_brave_version') or brave_browser_package()['version']
 
