@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index b65abdff40e5fbca6eacf26bc3618a4ed60498ce..f2e1e7d2f41aa218b0c33fee8303cebefbcbb15c 100644
+index 284a5324b06e5669800bfddd66c06d097f4256ef..cd3e6c5129151a06ac6e0f64f65ed63d5277579c 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
 @@ -13,6 +13,13 @@
@@ -16,7 +16,7 @@ index b65abdff40e5fbca6eacf26bc3618a4ed60498ce..f2e1e7d2f41aa218b0c33fee8303cebe
  #include "chrome/common/chrome_content_client.h"
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/api/api_features.h"
-@@ -156,13 +163,13 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
+@@ -155,13 +162,13 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
      const std::string& name) const {
    std::unique_ptr<FeatureProvider> provider;
    if (name == "api") {
@@ -34,7 +34,7 @@ index b65abdff40e5fbca6eacf26bc3618a4ed60498ce..f2e1e7d2f41aa218b0c33fee8303cebe
    } else {
      NOTREACHED();
    }
-@@ -175,6 +182,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
+@@ -174,6 +181,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
        new JSONFeatureProviderSource("api"));
    source->LoadJSON(IDR_EXTENSION_API_FEATURES);
    source->LoadJSON(IDR_CHROME_EXTENSION_API_FEATURES);
@@ -42,7 +42,7 @@ index b65abdff40e5fbca6eacf26bc3618a4ed60498ce..f2e1e7d2f41aa218b0c33fee8303cebe
    return source;
  }
  
-@@ -252,7 +260,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
+@@ -251,7 +259,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
  bool ChromeExtensionsClient::IsAPISchemaGenerated(
      const std::string& name) const {
    // Test from most common to least common.
@@ -52,7 +52,7 @@ index b65abdff40e5fbca6eacf26bc3618a4ed60498ce..f2e1e7d2f41aa218b0c33fee8303cebe
           api::GeneratedSchemas::IsGenerated(name);
  }
  
-@@ -263,6 +272,9 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
+@@ -262,6 +271,9 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
    if (!chrome_schema.empty())
      return chrome_schema;
  

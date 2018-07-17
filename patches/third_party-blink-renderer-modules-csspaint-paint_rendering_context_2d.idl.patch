@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-index 7c7ee5c1d0b24151216098b797fdac9114a99b75..0a92255bc9c811d4bd92cbc8fc22183d649812ed 100644
+index d889355a1e96ebdbf1b994d124208886f6060f8f..ecc10b5c5bc1e41ff4487b34e6573869624826ba 100644
 --- a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-@@ -57,10 +57,10 @@
+@@ -59,10 +59,10 @@
  
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
@@ -17,7 +17,7 @@ index 7c7ee5c1d0b24151216098b797fdac9114a99b75..0a92255bc9c811d4bd92cbc8fc22183d
  
      // drawing images
      [CallWith=ScriptState, RaisesException] void drawImage(CanvasImageSource image, unrestricted double x, unrestricted double y);
-@@ -76,7 +76,7 @@
+@@ -78,7 +78,7 @@
  
      // dashed lines
      void setLineDash(sequence<unrestricted double> dash);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/content_settings/content_setting_image_model.cc b/chrome/browser/ui/content_settings/content_setting_image_model.cc
-index 366ba05a508c8e5f77bd0a380ff229da73065819..b24ef19f81ab2c469780caab71a5953d95750d16 100644
+index 366ba05a508c8e5f77bd0a380ff229da73065819..4f159eee09eb691c796681af5e669df442aca7b7 100644
 --- a/chrome/browser/ui/content_settings/content_setting_image_model.cc
 +++ b/chrome/browser/ui/content_settings/content_setting_image_model.cc
 @@ -10,6 +10,7 @@

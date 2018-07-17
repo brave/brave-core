@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index e73bbc01264c9d25bfa590480da97ab59bad97c1..cc0adb2cdc8dfc0bf58ea58cb033c950d6987063 100644
+index 054c6e2a52628ab3098a6c2a368cd17be9eae11d..5dd158fce5468954bee16383b2b5aaf700909998 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -1833,6 +1833,7 @@ jumbo_split_static_library("browser") {
+@@ -1868,6 +1868,7 @@ jumbo_split_static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
 +    "//brave/browser:browser_process",
    ]
  
-   if (is_android) {
+   if (is_posix || is_fuchsia) {

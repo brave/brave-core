@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/omnibox_controller.cc b/components/omnibox/browser/omnibox_controller.cc
-index 75a76658b52a64a1a3b142bfd26c57a311f8f4dc..98a21008d4867d7f465e64a7269ffe96fe9ed711 100644
+index e2bc11edcf6721fd36462b87ba2852e5e76385d2..a36a62afa38a3c20b856515c2887ed5e2cd4bd22 100644
 --- a/components/omnibox/browser/omnibox_controller.cc
 +++ b/components/omnibox/browser/omnibox_controller.cc
 @@ -14,12 +14,14 @@

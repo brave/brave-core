@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index e8ab216743690813331932598ce6049821952c0a..782b8c42df5f167705fdba2d0768bdaefd7fbc7e 100644
+index 11bc707d13704373055a4dc4294b2ecb83ce2cdb..f7797cce606a9075173fc6c61b023bd515a64e2f 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -431,6 +431,8 @@ enum HistogramValue {
-   OMNIBOX_ON_DELETE_SUGGESTION,
-   VIRTUAL_KEYBOARD_PRIVATE_ON_KEYBOARD_CONFIG_CHANGED,
-   PASSWORDS_PRIVATE_ON_PASSWORDS_FILE_EXPORT_PROGRESS,
+@@ -438,6 +438,8 @@ enum HistogramValue {
+   SAFE_BROWSING_PRIVATE_ON_SECURITY_INTERSTITIAL_PROCEEDED,
+   ACCESSIBILITY_PRIVATE_ON_SELECT_TO_SPEAK_STATE_CHANGE_REQUESTED,
+   INPUT_METHOD_PRIVATE_ON_FOCUS,
 +  BRAVE_START = 5000,
 +  BRAVE_AD_BLOCKED,
    // Last entry: Add new entries above, then run:

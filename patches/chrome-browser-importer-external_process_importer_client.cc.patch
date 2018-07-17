@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.cc b/chrome/browser/importer/external_process_importer_client.cc
-index 429c16dc6a56fcd0ea1d674508c1927a387e1905..433083d6802bea4213343a9315a496d9f5cb78e5 100644
+index c0970768d65ee4c629f17f61ca9204c53f1cdba7..13871d88bc7c766f75c3e4dd440bf086627f3bc5 100644
 --- a/chrome/browser/importer/external_process_importer_client.cc
 +++ b/chrome/browser/importer/external_process_importer_client.cc
-@@ -71,6 +71,12 @@ void ExternalProcessImporterClient::Start() {
-   localized_strings.SetKey(
-       base::IntToString(IDS_BOOKMARK_BAR_FOLDER_NAME),
-       base::Value(l10n_util::GetStringUTF8(IDS_BOOKMARK_BAR_FOLDER_NAME)));
-+  localized_strings.SetKey(
-+      base::IntToString(IDS_IMPORT_FROM_BRAVE),
-+      base::Value(l10n_util::GetStringUTF8(IDS_IMPORT_FROM_BRAVE)));
-+  localized_strings.SetKey(
-+      base::IntToString(IDS_BOOKMARK_GROUP_FROM_BRAVE),
-+      base::Value(l10n_util::GetStringUTF8(IDS_BOOKMARK_GROUP_FROM_BRAVE)));
+@@ -69,6 +69,12 @@ void ExternalProcessImporterClient::Start() {
+   localized_strings.try_emplace(
+       IDS_BOOKMARK_BAR_FOLDER_NAME,
+       l10n_util::GetStringUTF8(IDS_BOOKMARK_BAR_FOLDER_NAME));
++  localized_strings.try_emplace(
++      IDS_IMPORT_FROM_BRAVE,
++      l10n_util::GetStringUTF8(IDS_IMPORT_FROM_BRAVE));
++  localized_strings.try_emplace(
++      IDS_BOOKMARK_GROUP_FROM_BRAVE,
++      l10n_util::GetStringUTF8(IDS_BOOKMARK_GROUP_FROM_BRAVE));
  
    // If the utility process hasn't started yet the message will queue until it
    // does.

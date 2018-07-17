@@ -1,5 +1,5 @@
 diff --git a/extensions/common/manifest_url_handlers.cc b/extensions/common/manifest_url_handlers.cc
-index ac932cc21b18606a3a40b85699a3a99e061eaf8a..9f2cb18472ae0fbf88c37b9af62a8d10ab62bdfd 100644
+index 39450837d2a4ab5e1ab2dc91a234524523f1e36b..ad5ceab85f08a5d3baa153a5a893b96585257f36 100644
 --- a/extensions/common/manifest_url_handlers.cc
 +++ b/extensions/common/manifest_url_handlers.cc
 @@ -55,6 +55,9 @@ const GURL ManifestURL::GetManifestHomePageURL(const Extension* extension) {

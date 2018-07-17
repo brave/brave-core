@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/content_settings_client.h b/third_party/blink/renderer/core/frame/content_settings_client.h
-index c6653f1ec2f47442b16a3b5d0d3bfc5da9b263dc..3589f1acd4576e9bbe7b151a4baab2a82a8c629e 100644
+index 8fce92fe7d32528df5fdcc5a250aed36b24ab029..27536cb6e6f962daaebd6b371e86cf9974506abc 100644
 --- a/third_party/blink/renderer/core/frame/content_settings_client.h
 +++ b/third_party/blink/renderer/core/frame/content_settings_client.h
 @@ -51,6 +51,9 @@ class CORE_EXPORT ContentSettingsClient {

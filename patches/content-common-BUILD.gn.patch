@@ -1,8 +1,8 @@
 diff --git a/content/common/BUILD.gn b/content/common/BUILD.gn
-index 397d91728125615c7339f9fb84e42d70a630ca64..5c0aa0772302c1718d3fa3f15080cd6ace1f07e7 100644
+index de4c4d2af49b75ff06f31c05871bf72b1abfe55d..5c719bf3d1eee58e2ea89c9c88e71d3937918a1e 100644
 --- a/content/common/BUILD.gn
 +++ b/content/common/BUILD.gn
-@@ -32,7 +32,7 @@ source_set("common") {
+@@ -31,7 +31,7 @@ source_set("common") {
    # In addition, targets outside of the content component (shell and tests)
    # must not link to this because it will duplicate the code in the component
    # build.

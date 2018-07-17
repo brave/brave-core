@@ -1,23 +1,22 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-index b556f96a2a7bf87e9fc3be171bd5f3b913ac4b82..e8c5bbb91e8ee895570fe2e7d87ecb165aacd2fc 100644
+index 6e0b7cec6018bbc2396232498118c25288af8e00..ad580e4fa9fa7a5b2d374e3b6a41dbea90cbb620 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-@@ -102,10 +102,10 @@ interface CanvasRenderingContext2D {
+@@ -103,9 +103,13 @@ interface CanvasRenderingContext2D {
      [RuntimeEnabled=Canvas2dScrollPathIntoView] void scrollPathIntoView(optional Path2D path);
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
--    boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
--    boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
--    boolean isPointInStroke(unrestricted double x, unrestricted double y);
--    boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
-+    [CallWith=ScriptState] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
-+    [CallWith=ScriptState] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
-+    [CallWith=ScriptState] boolean isPointInStroke(unrestricted double x, unrestricted double y);
-+    [CallWith=ScriptState] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState]
+     boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState]
+     boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState]
+     boolean isPointInStroke(unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState]
+     boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
  
      // text (see also the CanvasDrawingStyles interface)
-     void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
-@@ -125,7 +125,7 @@ interface CanvasRenderingContext2D {
+@@ -126,7 +130,7 @@ interface CanvasRenderingContext2D {
      // pixel manipulation
      [RaisesException] ImageData createImageData(ImageData imagedata);
      [RaisesException] ImageData createImageData(long sw, long sh);
@@ -25,8 +24,8 @@ index b556f96a2a7bf87e9fc3be171bd5f3b913ac4b82..e8c5bbb91e8ee895570fe2e7d87ecb16
 +    [CallWith=ScriptState, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
-     
-@@ -149,6 +149,7 @@ interface CanvasRenderingContext2D {
+ 
+@@ -150,6 +154,7 @@ interface CanvasRenderingContext2D {
  
      // dashed lines
      void setLineDash(sequence<unrestricted double> dash);

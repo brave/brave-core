@@ -1,0 +1,38 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
+index 7f8265a3e0c623d36266e683666dabebd5c40ffa..d5a44178c413299dbe0ff9874ca86cf777b42199 100644
+--- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
++++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
+@@ -22,15 +22,18 @@
+         border-top: none;
+       }
+     </style>
++    <if expr="_google_chrome">
+     <settings-toggle-button pref="{{prefs.alternate_error_pages.enabled}}"
+         label="$i18n{linkDoctorPref}"
+         sub-label="$i18n{linkDoctorPrefDesc}">
+     </settings-toggle-button>
++    </if>
+     <settings-toggle-button hidden="[[!pageVisibility.searchPrediction]]"
+         pref="{{prefs.search.suggest_enabled}}"
+         label="$i18n{searchSuggestPref}"
+         sub-label="$i18n{searchSuggestPrefDesc}">
+     </settings-toggle-button>
++    <if expr="_google_chrome">
+     <settings-toggle-button id="safeBrowsingExtendedReportingControl"
+         pref="[[safeBrowsingExtendedReportingPref_]]"
+         label="$i18n{safeBrowsingEnableExtendedReporting}"
+@@ -38,6 +41,7 @@
+         on-settings-boolean-control-change="onSberChange_"
+         no-set-pref>
+     </settings-toggle-button>
++    </if>
+     <settings-toggle-button hidden="[[!pageVisibility.networkPrediction]]"
+         pref="{{prefs.net.network_prediction_options}}"
+         label="$i18n{networkPredictionEnabled}"
+@@ -90,4 +94,4 @@
+ </if><!-- _google_chrome -->
+   </template>
+   <script src="personalization_options.js"></script>
+-</dom-module>
+\ No newline at end of file
++</dom-module>

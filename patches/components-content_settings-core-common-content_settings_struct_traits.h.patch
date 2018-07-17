@@ -1,9 +1,9 @@
 diff --git a/components/content_settings/core/common/content_settings_struct_traits.h b/components/content_settings/core/common/content_settings_struct_traits.h
-index 0da14fdf14c69ed1399df3c45cd2b27f085d3187..d533549cc233fb46ae28e73de643720fe1c025d0 100644
+index 55d50d612b0308ce6a877b7430a6d0eb86603d53..aa35e5146fa4b43437223e1175b0504b7f617e85 100644
 --- a/components/content_settings/core/common/content_settings_struct_traits.h
 +++ b/components/content_settings/core/common/content_settings_struct_traits.h
-@@ -140,6 +140,16 @@ struct StructTraits<
-     return r.client_hints_rules;
+@@ -145,6 +145,16 @@ struct StructTraits<
+     return r.popup_redirect_rules;
    }
  
 +  static const std::vector<ContentSettingPatternSource>& fingerprinting_rules(

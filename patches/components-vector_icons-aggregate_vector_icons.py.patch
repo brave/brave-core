@@ -1,9 +1,9 @@
 diff --git a/components/vector_icons/aggregate_vector_icons.py b/components/vector_icons/aggregate_vector_icons.py
-index 112cf7bb749e59b866d08aa12dd5dc2e8e7a1745..a5a8bf724461f6b9d649e4536f22f05d747ae33a 100644
+index cc7f0c6de1df7c34a92066efee01d19e5dbf473f..609ec93a9b7e0c88d3a1b426229426343a99c3b1 100644
 --- a/components/vector_icons/aggregate_vector_icons.py
 +++ b/components/vector_icons/aggregate_vector_icons.py
-@@ -87,7 +87,7 @@ def ExtractIconReps(icon_file_name):
-   return icon_representation_list
+@@ -102,7 +102,7 @@ def ExtractIconReps(icon_file_name):
+   return icon_representations
  
  
 -def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
@@ -11,7 +11,7 @@ index 112cf7bb749e59b866d08aa12dd5dc2e8e7a1745..a5a8bf724461f6b9d649e4536f22f05d
    """Compiles all .icon files in a directory into two C++ files.
  
    Args:
-@@ -96,6 +96,8 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+@@ -111,6 +111,8 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
        file_list: A file containing the list of vector icon files to process.
        output_cc: The path that should be used to write the .cc file.
        output_h: The path that should be used to write the .h file.
@@ -20,7 +20,7 @@ index 112cf7bb749e59b866d08aa12dd5dc2e8e7a1745..a5a8bf724461f6b9d649e4536f22f05d
    """
  
    # For each file in |file_list|, place it in |path_map| if its extension is
-@@ -114,6 +116,11 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
+@@ -129,6 +131,11 @@ def AggregateVectorIcons(working_directory, file_list, output_cc, output_h):
      if extension != ".icon":
        Error("Only filenames " + icon_name + ".icon are allowed.")
  
@@ -32,7 +32,7 @@ index 112cf7bb749e59b866d08aa12dd5dc2e8e7a1745..a5a8bf724461f6b9d649e4536f22f05d
      if icon_name not in path_map:
        path_map[icon_name] = icon_path
      else:
-@@ -200,13 +207,16 @@ def main():
+@@ -205,13 +212,16 @@ def main():
                      help="The path to output the CC file to.")
    parser.add_option("--output_h",
                      help="The path to output the header file to.")

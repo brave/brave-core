@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 3f5d2b82ded5b35671470ff81a6ba9088c2be523..7fe701bf99d4dcc8f7f4003f3ee2051b11b5944b 100644
+index 0229dbb44d005ad76ac65cc083d206a15532c431..64f68b5e8e3c27d5835a118433af2c71e3c60d38 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -8,6 +8,7 @@
@@ -10,7 +10,7 @@ index 3f5d2b82ded5b35671470ff81a6ba9088c2be523..7fe701bf99d4dcc8f7f4003f3ee2051b
  #include "build/build_config.h"
  #include "chrome/browser/about_flags.h"
  #include "chrome/browser/accessibility/invert_bubble_prefs.h"
-@@ -355,6 +356,7 @@ void RegisterProfilePrefsForMigration(
+@@ -354,6 +355,7 @@ void RegisterProfilePrefsForMigration(
  
  void RegisterLocalState(PrefRegistrySimple* registry) {
    // Please keep this list alphabetized.

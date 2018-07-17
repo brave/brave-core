@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.h b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
-index aafe25a269af88e9a89473ca0c8980707eec27fb..c41398158429644d38453fcaff1236eb2d9cdbbe 100644
+index d9bdda78b091e90dc87d3d0d8c0c74f88be29642..60cd8e7c8eeb92ec8c502cdc46c9289086f80c0b 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.h
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
 @@ -41,6 +41,7 @@ namespace blink {

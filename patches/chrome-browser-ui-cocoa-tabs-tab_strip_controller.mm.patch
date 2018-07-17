@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm b/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm
-index 8f0fc0a5711f1f011b90c1cbcb27d78977d70263..b9ec879393c5029b34650455b8d594ca929f6cbe 100644
+index bfd79bb1f56ff2b30de970e0fe09a953c168453e..1295e0c057785ec838ae93131fb2b8e51acbecb8 100644
 --- a/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm
 +++ b/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm
 @@ -92,7 +92,7 @@ const CGFloat kUseFullAvailableWidth = -1.0;

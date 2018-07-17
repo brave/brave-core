@@ -1,0 +1,12 @@
+diff --git a/mojo/public/cpp/platform/named_platform_channel_win.cc b/mojo/public/cpp/platform/named_platform_channel_win.cc
+index 0507efe5abb5193f653a7631b5025cb9358c23f0..3d55aa725cbcd9d8673796302b97405eef33d720 100644
+--- a/mojo/public/cpp/platform/named_platform_channel_win.cc
++++ b/mojo/public/cpp/platform/named_platform_channel_win.cc
+@@ -4,6 +4,7 @@
+ 
+ #include "mojo/public/cpp/platform/named_platform_channel.h"
+ 
++#include <memory>
+ #include <windows.h>
+ 
+ // NOTE: This needs to be included *after* windows.h.

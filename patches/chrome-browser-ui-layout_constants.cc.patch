@@ -1,45 +1,26 @@
 diff --git a/chrome/browser/ui/layout_constants.cc b/chrome/browser/ui/layout_constants.cc
-index fa868bb9966d2e82a77aae0d1b32e5b8464a62fc..edea7c08bf699394a284d3332f6d30505334572c 100644
+index 90737e5bacc33077a035c9215153db61992fa3c8..505bcd77f14e30ca20c4bd7765663b04f4e4d0bd 100644
 --- a/chrome/browser/ui/layout_constants.cc
 +++ b/chrome/browser/ui/layout_constants.cc
-@@ -60,13 +60,10 @@ int GetLayoutConstant(LayoutConstant constant) {
-     case LOCATION_BAR_ICON_INTERIOR_PADDING:
-       return touch_optimized_material ? 8 : 4;
-     case TABSTRIP_NEW_TAB_BUTTON_SPACING: {
--      // In non-touch optimized UI, we make the new tab button overlap with the
--      // last tab in the tabstrip (i.e negative spacing). However, in
--      // touch-optimized UI, we actually want to push the new tab button
--      // further away from the tab. The distance is 8 DIP from the point at
--      // which the last tab's endcap intersects with the tabstrip separator,
--      // which is actually 6 DIP from the last tab's right point.
--      constexpr int kSpacing[] = {-5, -6, 6, -5};
-+      // Originally here was `{-5, -6, 6, -5}`
-+      // This value means how the new tab button is moved to the most right tab
-+      // from the position of rectangle shape.
-+      constexpr int kSpacing[] = {6, 7, 7, 6};
-       return kSpacing[mode];
-     }
-     case TAB_AFTER_TITLE_PADDING:
-@@ -102,7 +99,12 @@ gfx::Insets GetLayoutInsets(LayoutInset inset) {
-   const int mode = ui::MaterialDesignController::GetMode();
-   switch (inset) {
-     case TAB: {
--      constexpr int kTabHorizontalInset[] = {16, 18, 24, 16};
-+      // Originally here was `{8, 9, 12};`
-+      // Insets is a content border inside of the tab. When the tab has been
-+      // changed to rectangle shape instead of trapezoid, then top part
-+      // of the tab had more space. So reasonable to decrease the content
-+      // border.
-+      constexpr int kTabHorizontalInset[] = {8, 9, 12, 8};
+@@ -105,7 +105,7 @@ gfx::Insets GetLayoutInsets(LayoutInset inset) {
+       // TODO(pkasting): This should disappear; the horizontal portion should
+       // be computed in tab.cc, and the vertical portion become a standalone
+       // value (that should perhaps be 0 in Refresh).
+-      constexpr int kTabHorizontalInset[] = {16, 18, 24, 16, 16};
++      constexpr int kTabHorizontalInset[] = {8, 9, 12, 8, 8};
        return gfx::Insets(1, kTabHorizontalInset[mode]);
      }
      case TOOLBAR_BUTTON:
-@@ -125,7 +127,7 @@ gfx::Size GetLayoutSize(LayoutSize size, bool is_incognito) {
+@@ -127,11 +127,7 @@ gfx::Size GetLayoutSize(LayoutSize size, bool is_incognito) {
+   const int mode = ui::MaterialDesignController::GetMode();
    switch (size) {
      case NEW_TAB_BUTTON: {
-       const gfx::Size sizes[] = {
--          {36, 18}, {39, 21}, {(is_incognito ? 42 : 24), 24}, {36, 18}};
-+          {18, 18}, {21, 21}, {24, 24}, {18, 18}};
+-      const gfx::Size sizes[] = {{36, 18},
+-                                 {39, 21},
+-                                 {(is_incognito ? 42 : 24), 24},
+-                                 {28, 28},
+-                                 {28, 28}};
++      const gfx::Size sizes[] = {{18, 18}, {21, 21}, {24, 24}, {18, 18}, {18, 18}};
        return sizes[mode];
      }
    }
