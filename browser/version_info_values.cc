@@ -7,6 +7,6 @@
 namespace version_info {
 std::string GetBraveVersionNumber() {
   return std::string(BRAVE_BROWSER_VERSION) +
-      "  Chromium: " + CHROMIUM_VERSION_STRING;
+      "  Chromium: " + BRAVE_CHROMIUM_VERSION;
 }
 }  // namespace version_info

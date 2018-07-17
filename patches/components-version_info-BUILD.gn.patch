@@ -1,0 +1,18 @@
+diff --git a/components/version_info/BUILD.gn b/components/version_info/BUILD.gn
+index 8fbad36091b4a1e1baea40911599ac0d2d12aa0a..7d36d11a23e54e9e8eac22d8e9ae0c4a402eb367 100644
+--- a/components/version_info/BUILD.gn
++++ b/components/version_info/BUILD.gn
+@@ -21,6 +21,13 @@ static_library("version_info") {
+     "//base",
+   ]
+ 
++  if (brave_chromium_build) {
++    # Our override file refers brave/version.h
++    deps += [
++      "//brave:generate_version",
++    ]
++  }
++
+   public_deps = [
+     ":channel",
+   ]
