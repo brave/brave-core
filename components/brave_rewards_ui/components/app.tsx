@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-const RewardsPage = require('./settings')
+import RewardsPage from './settings'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'

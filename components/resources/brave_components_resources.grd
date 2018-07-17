@@ -193,6 +193,17 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Donate to sites as you browse or give tips to posts when you ‘Like’ them. You can also make the donation recurring monthly so you can support the site continuously. All accessed from the address bar.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL" desc="">Total donations this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_LIST" desc="">List of donations</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT" desc="">Coming soon.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1" desc="">Pay directly for the content you love.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT2" desc="">Your monthly allowance gets divided based on your attention metric.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITE_VISITED" desc="">Site visited</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ATTENTION" desc="">Attentions</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Please visit some sites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total donations this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Please do some donations</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="">Add Funds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS" desc="">Manage Funds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_TOKENS" desc="">tokens</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
