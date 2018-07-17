@@ -2,6 +2,8 @@
 <!-- This file is created by l10nUtil.js. Do not edit manually. -->
 <!-- Settings-specific strings (included from generated_resources.grd). -->
 <grit-part>
+  <message name="IDS_SETTINGS_EMPTY_STRING" desc="Empty string, exist only to make code generic. No translation required."></message>
+
   <!-- Main Page -->
   <if expr="chromeos">
     <message name="IDS_SETTINGS_SECONDARY_USER_BANNER" desc="Banner displayed in settings page when the user is secondary in a multi-profile session.">
@@ -12,6 +14,9 @@
   <!-- Shared across multiple pages -->
   <message name="IDS_SETTINGS_MORE_ACTIONS" desc="Tooltip text (shows on hover or for screenreaders) for a button that shows a menu with more actions when clicked or tapped">
     More actions
+  </message>
+  <message name="IDS_SETTINGS_TURN_ON" desc="Label for turn on buttons.">
+    Turn on
   </message>
 
   <!-- About Page -->
@@ -174,18 +179,6 @@
     <message name="IDS_SETTINGS_TTS_LINK_DESCRIPTION" desc="Description of link to manage text-to-speech settings">
       Select and customize text-to-speech voices
     </message>
-    <message name="IDS_SETTINGS_MANAGE_GOOGLE_TTS_ENGINE_SETTINGS" desc="Link to manage Brave text-to-speech engine settings">
-      Manage Brave text-to-speech
-    </message>
-    <message name="IDS_SETTINGS_GOOGLE_TTS_ENGINE_LINK_DESCRIPTION" desc="Description of link to manage Brave text-to-speech engine settings">
-      Add or remove Brave text-to-speech voices
-    </message>
-    <message name="IDS_SETTINGS_GOOGLE_TTS_ENGINE_TITLE" desc="Title of the Brave text-to-speech engine settings page">
-      Brave Text-To-Speech Settings
-    </message>
-    <message name="IDS_SETTINGS_ENABLE_TTS_VOICE_LABEL" desc="Title of the checkbox which enables or disables a text-to-speech voice.">
-      Enable voice
-    </message>
     <message name="IDS_SETTINGS_LARGE_MOUSE_CURSOR_LABEL" desc="Label for checkbox which enables showing a larger mouse cursor than normal.">
       Show large mouse cursor
     </message>
@@ -279,6 +272,9 @@
     <message name="IDS_SETTINGS_ON_SCREEN_KEYBOARD_LABEL" desc="Label for checkbox which enables an on-screen keyboard.">
       Enable on-screen keyboard
     </message>
+    <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LABEL" desc="Label for checkbox which enables the ability to speak into text fields">
+      Enable dictation (speak to type)
+    </message>
     <message name="IDS_SETTINGS_MONO_AUDIO_LABEL" desc="Label for checkbox which enables mono audio output.">
       Play the same audio through all speakers (mono audio)
     </message>
@@ -318,6 +314,9 @@
     <message name="IDS_SETTINGS_ACCESSIBILITY_KEYBOARD_HEADING" desc="In the settings tab, the heading above settings related to the keyboard.">
       Keyboard
     </message>
+    <message name="IDS_SETTINGS_ACCESSIBILITY_KEYBOARD_AND_TEXT_INPUT_HEADING" desc="In the settings tab, the heading above settings related to the keyboard and other text input.">
+      Keyboard and text input
+    </message>
     <message name="IDS_SETTINGS_ACCESSIBILITY_KEYBOARD_SETTINGS_TITLE" desc="In the settings tab, the title of a link to open keyboard settings.">
       Open keyboard device settings
     </message>
@@ -339,8 +338,14 @@
     <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_TITLE" desc="In the settings tab, the text next to the checkbox to enable an option to hold a key and click to speak any on-screen text out loud.">
       Enable select-to-speak
     </message>
-    <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_DESCRIPTION" desc="In the settings tab, the description of an option to hold a key and click or drag a box with the mouse to speak any on-screen text out loud.">
-      Highlight what you want to hear, then press Search + S. Or, press and hold Search, then click or drag to select content.
+    <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_DISABLED_DESCRIPTION" desc="In the settings tab, the description of a feature that will read on-screen text out loud. This text is shown when that feature is disabled.">
+      Hear text read aloud
+    </message>
+    <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_DESCRIPTION" desc="For devices with a hardware keyboard. In the settings tab, the description of an option to hold a key and click or drag a box with the mouse to speak any on-screen text out loud.">
+      Highlight what you want to hear, then press Search + S. You can also press and hold the Search key, or tap the Select-to-Speak icon near your profile image to make a selection.
+    </message>
+    <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_DESCRIPTION_WITHOUT_KEYBOARD" desc="For devices that do not have a hardware keyboard. In the settings tab, the description of an option to highlight text to be read out loud.">
+      Tap the Select-to-Speak icon near your profile image, then select what you want to hear.
     </message>
     <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_OPTIONS_LABEL" desc="In the settings tab, the label for the button that opens the Options page for the Select-to-Speak feature.">
       Open select-to-speak settings
@@ -357,14 +362,44 @@
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOICES" desc="Heading describing a collection of listboxes on the text-to-speech settings page. Each listbox is associated with a language, and contains all possible voices for that language">
       Preferred Voices
     </message>
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_NO_VOICES_MESSAGE" desc="Message when no text-to-speech voices are found on the Brave OS device.">
+      No voices found
+    </message>
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PROPERTIES" desc="Heading describing a collection of input controls for a section of text-to-speech settings on speech properties, including speech pitch and rate">
       Speech Properties
     </message>
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_RATE" desc="The rate (speed) of speech in text-to-speech settings.">
       Rate
     </message>
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_RATE_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech rate">
+      Slowest
+    </message>
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_RATE_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech rate">
+      Fastest
+    </message>
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH" desc="The pitch of speech in text-to-speech settings.">
       Pitch
+    </message>
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech pitch">
+      Lowest
+    </message>
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech pitch">
+      Highest
+    </message>
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME" desc="The volume of speech compared to system volume in text-to-speech settings.">
+      Volume
+    </message>
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech volume">
+      Quietest
+    </message>
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech volume">
+      Loudest
+    </message>
+    <message name="IDS_SETTINGS_PERCENTAGE" desc="A number displayed as a percentage">
+      <ph name="PERCENTAGE">$1<ex>120</ex>%</ph>
+    </message>
+    <message name="IDS_SETTINGS_DEFAULT_PERCENTAGE" desc="A number displayed as a percentage, which is the normal or default.">
+      <ph name="PERCENTAGE">$1<ex>120</ex>%</ph> (default)
     </message>
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PREVIEW_HEADING" desc="The heading for a section of the text-to-speech settings page where a user can preview text to speech">
       Preview
@@ -374,6 +409,9 @@
     </message>
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PREVIEW_INPUT" desc="The sample input for a section of the text-to-speech settings page where a user can preview text to speech. Users will hear this read aloud.">
       Hi there! I'm your text-to-speech voice.
+    </message>
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PREVIEW_VOICE" desc="Label for a dropdown to select preview voice in the section of the text-to-speech settings page where a user can preview text to speech.">
+      Voice to preview
     </message>
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PREVIEW_PLAY" desc="A button on the text-to-speech settings page to start playing a preview of text to speech">
       Play
@@ -387,6 +425,20 @@
   </if>
 
   <if expr="chromeos">
+    <!-- Crostini Page -->
+    <message name="IDS_SETTINGS_CROSTINI_TITLE" desc="The title of Crostini section.">
+      Linux (Beta)
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_LABEL" desc="The text associated with the primary section setting.">
+      Linux (Beta)
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
+      Run Linux tools, editors, and IDEs on your Bravebook.
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_REMOVE" desc="Label for the row to open a dialog confirming removal of Crostini.">
+      Remove Linux Apps for Bravebook
+    </message>
+
     <!-- Android Apps Page -->
     <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Brave Play Store (Arc++ / Android Apps) section.">
       Brave Play Store
@@ -396,9 +448,6 @@
     </message>
     <message name="IDS_SETTINGS_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
       Brave Play Store
-    </message>
-    <message name="IDS_SETTINGS_ANDROID_APPS_ENABLE" desc="Label for the button that enables Brave Play Store (Arc++) apps.">
-      Turn on
     </message>
     <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Brave Play Store (Android) apps.">
       Install apps and games from Brave Play on your Bravebook. &lt;a target="_blank" href="<ph name="URL">$1<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
@@ -506,6 +555,9 @@
   </message>
   <message name="IDS_SETTINGS_MENU_BUTTON_LABEL" desc="Tooltips for the sidebar menu button.">
     Main menu
+  </message>
+  <message name="IDS_SETTINGS_MENU_EXTENSIONS_LINK_TOOLTIP" desc="Explanation that the extensions page will open in a new tab">
+    Opens in a new tab
   </message>
   <message name="IDS_SETTINGS_SEARCH_PROMPT" desc="Label for input field to search within settings.">
     Search settings
@@ -1226,6 +1278,9 @@
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_PROTOCOL_USB" desc="The dropdown menu of the printer USB protocol on the manually add printer dialog.">
       USB
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_PROTOCOL_IPPUSB" desc="The dropdown menu of the printer IPPUSB protocol on the edit printer dialog.">
+      IPP over USB (IPPUSB)
+    </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_CONFIGURING_MESSAGE" desc="The configuring-in-progress message shown in the configuring printer dialog.">
       Configuring <ph name="PRINTER_NAME">$1<ex>printer</ex></ph> ...
     </message>
@@ -1271,6 +1326,12 @@
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PPD_UNRETRIEVABLE" desc="The message shown when the PPD provided while trying to add a new printer is unretrievable.">
       Can&#x2019;t find PPD. Make sure your Bravebook is online and try again.
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_NATIVE_PRINTERS_NOT_ALLOWED_MESSAGE" desc="The message shown when the user is prevented from configuring printers due to an enterprise policy.">
+      Printer configuration is handled by the administrator.
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_EDIT_PRINTER_INVALID_PRINTER_UPDATE" desc="The message shown when the user attempts to edit a configured printer in a way that would make it unusable">
+      Requested printer changes would make the printer unusable.
+    </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_REQUIRE_INTERNET_MESSAGE" desc="The message shown when there is no internet access to set up a printer.">
       Connect to the internet to add a printer
     </message>
@@ -1279,6 +1340,9 @@
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_EDIT_PRINTER_BUTTON" desc="Text for the button which allows the user to save the modification of a CUPS printer.">
       Save
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_EDIT_PRINTER_CURRENT_PPD_MESSAGE" desc="Informational text displayed to the user if they have an existing custom PPD.">
+      Current PPD file in use: <ph name="PPD_NAME">$1<ex>example.ppd.gz</ex></ph>
     </message>
   </if>
   <if expr="not chromeos">
@@ -1311,17 +1375,41 @@
   </message>
 
   <if expr="chromeos">
-    <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES" desc="In Downloads Settings, the title of the SMB Shares setting section.">
+    <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES" desc="In Downloads Settings, the title of the SMB shares setting section.">
       Network File Shares
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES_LEARN_MORE_LABEL" desc="Label for the link that teaches users how to setup SMB shares.">
       Set up or manage Network File Shares.
     </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES_ADD_SHARE" desc="In SMB Shares settings subpage, text for the link to add a new SMB Share.">
+    <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES_ADD_SHARE" desc="In SMB shares settings subpage, text for the link to add a new SMB share.">
       Add File Share
     </message>
-    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_URL" desc="Title for the input that lets users specify the name of an SMB Url.">
-      File Share Url
+    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_URL" desc="Title for the input that lets users specify the name of an SMB URL.">
+      File Share URL
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_USERNAME" desc="Title for the input that lets users specify their username for an SMB share.">
+      Username
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_PASSWORD" desc="Title for the input that lets users specify their password for an SMB Share.">
+      Password
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_SUCCESS_MESSAGE" desc="The message shown when a new SMB share is successfully mounted.">
+      Share mounted successfully.
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_ERROR_MESSAGE" desc="The message shown when mounting a new SMB share fails.">
+      Error mounting share. Check the file share URL and try again.
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_AUTH_FAILED_MESSAGE" desc="The message shown when mounting a new SMB share fails due to an authentication failure.">
+      Error mounting share. Please check your credentials and try again.
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_NOT_FOUND_MESSAGE" desc="The message shown when mounting a new SMB share fails because the share cannot be found.">
+      Error mounting share. The specified share was not found on the network.
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_UNSUPPORTED_DEVICE_MESSAGE" desc="The message shown when mounting a new SMB share fails because the specified device is not supported.">
+      Error mounting share. The specified share is not supported.
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_MOUNT_EXISTS_MESSAGE" desc="The message shown when mounting a new SMB share fails because the share is already mounted.">
+      Error mounting share. The specified share is already mounted.
     </message>
 
     <!-- Date/Time Page -->
@@ -1411,7 +1499,7 @@
     <message name="IDS_SETTINGS_EASY_UNLOCK_PROXIMITY_THRESHOLD_VERY_CLOSE" desc="The text on the Easy unlock settings page indicating the phone should be very close for the unlock to work.">
       Very close
     </message>
-    <message name="IDS_SETTINGS_EASY_UNLOCK_PROXIMITY_THRESHOLD_CLOSE" desc="The text on the Easy unlock settings page indicating the phone should be close for the unlock to work.">
+    <message name="IDS_SETTINGS_EASY_UNLOCK_PROXIMITY_THRESHOLD_CLOSE" desc="The text on the Easy unlock settings page indicating the phone should be close for the unlock to work." meaning="An adjective, not a verb, like 'nearby'.">
       Close
     </message>
     <message name="IDS_SETTINGS_EASY_UNLOCK_PROXIMITY_THRESHOLD_FAR" desc="The text on the Easy unlock settings page indicating the phone can be far for the unlock to work.">
@@ -2144,6 +2232,9 @@
   <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_TITLE" desc="Title for the currently used language in the header for the collapsible list of languages.">
     Language
   </message>
+  <message name="IDS_SETTINGS_LANGUAGE_SEARCH" desc="Placeholder/label for the text input field that allows a user to filter languages.">
+    Search languages
+  </message>
   <message name="IDS_SETTINGS_LANGUAGES_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the language options. Only visible by screen reader software.">
     Show language options
   </message>
@@ -2258,6 +2349,12 @@
   <message name="IDS_SETTINGS_LINKDOCTOR_PREF" desc="The documentation string of the 'Use Link Doctor' preference to help with navigation errors.">
     Use a web service to help resolve navigation errors
   </message>
+  <message name="IDS_SETTINGS_LINKDOCTOR_PREF_UNIFIED_CONSENT" desc="The documentation string of the 'Use Link Doctor' preference to help with navigation errors.">
+    Show suggestions for similar pages when a page can't be found
+  </message>
+  <message name="IDS_SETTINGS_LINKDOCTOR_PREF_DESC_UNIFIED_CONSENT" desc="The description of the 'Use Link Doctor' preference to help with navigation errors.">
+    Sends the web address of the page you're trying to reach to Brave
+  </message>
   <if expr="chromeos">
     <message name="IDS_SETTINGS_SUGGEST_PREF" desc="The documentation string of the 'Use Suggest' preference">
       Use a prediction service to help complete searches and URLs typed in the address bar or the app launcher search box
@@ -2268,11 +2365,29 @@
       Use a prediction service to help complete searches and URLs typed in the address bar
     </message>
   </if>
-  <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_DESCRIPTION" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
+  <message name="IDS_SETTINGS_SUGGEST_PREF_UNIFIED_CONSENT" desc="The documentation string of the 'Use Suggest' preference">
+    Autocomplete searches and web addresses
+  </message>
+  <message name="IDS_SETTINGS_SUGGEST_PREF_DESC_UNIFIED_CONSENT" desc="The description of the 'Use Suggest' preference">
+    Sends searches from the address bar and search box and some cookies to your default search engine
+  </message>
+  <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_LABEL" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
     Use a prediction service to load pages more quickly
+  </message>
+  <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_LABEL_UNIFIED_CONSENT" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
+    Preload pages for faster browsing and searching
+  </message>
+  <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_DESC_UNIFIED_CONSENT" desc="In the advanced options tab, the secondary text next to the checkbox that enables prediction of network actions.">
+    Uses cookies to remember your preferences, even if you don’t visit those pages
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION" desc="The label of the 'Protect you and your device from dangerous sites' checkbox">
     Protect you and your device from dangerous sites
+  </message>
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION_UNIFIED_CONSENT" desc="The label of the 'Protect you and your device from dangerous sites' checkbox">
+    Protect you and your device from dangerous sites (Safe Browsing)
+  </message>
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION_DESC_UNIFIED_CONSENT" desc="The secondary label of the 'Protect you and your device from dangerous sites' checkbox">
+    Checks sites you visit and files you download for harmful behavior or content, like phishing or malware
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_EXTENDED_REPORTING" desc="Checkbox label: should Brave upload information about suspicious downloads and websites to Safe Browsing">
     Automatically report details of possible security incidents to Brave
@@ -2280,17 +2395,35 @@
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_SCOUT_REPORTING" desc="Checkbox label: should Brave upload some system information and page content to Safe Browsing for malware detection">
     Automatically send some system information and page content to Brave to help detect dangerous apps and sites
   </message>
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING_UNIFIED_CONSENT" desc="Checkbox label: should Brave upload some system information and page content to Safe Browsing">
+    Help improve Safe Browsing
+  </message>
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING_DESC_UNIFIED_CONSENT" desc="Checkbox label: should Brave upload some system information and page content to Safe Browsing">
+    Sends some system information and page content to Brave
+  </message>
   <message name="IDS_SETTINGS_SPELLING_PREF" desc="The documentation string of the 'Use Spelling' preference">
     Use a web service to help resolve spelling errors
   </message>
   <message name="IDS_SETTINGS_SPELLING_DESCRIPTION" desc="Description of using a web serviced to help resolve spelling errors. It is important to convey that what the user types will be sent to Brave.">
     Smarter spell-checking by sending what you type in the browser to Brave
   </message>
+  <message name="IDS_SETTINGS_SPELLING_PREF_UNIFIED_CONSENT" desc="The documentation string of the 'Use Spelling' preference">
+    Spell check
+  </message>
+  <message name="IDS_SETTINGS_SPELLING_DESCRIPTION_UNIFIED_CONSENT" desc="Description of using a web serviced to help resolve spelling errors. It is important to convey that what the user types will be sent to Brave.">
+    Control this setting in <ph name="BEGIN_LINK">&lt;a href=&quot;chrome://settings/languages&quot;&gt;<ex>&lt;a href=&quot;chrome://settings/languages&quot;&gt;</ex></ph>Languages<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
   <message name="IDS_SETTINGS_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
     Automatically send usage statistics and crash reports to Brave
   </message>
   <message name="IDS_SETTINGS_ENABLE_LOGGING_DIAGNOSTIC_AND_USAGE_DATA" desc="The label of the checkbox to enable/disable diagnostic and user metrics logging">
     Automatically send diagnostic and usage data to Brave
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_UNIFIED_CONSENT" desc="The label of the checkbox to enable/disable crash and user metrics logging. This string does not need a Brave counter-part because it will only be visible if Brave-branded.">
+    Help improve Brave's features and performance
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_DESC_UNIFIED_CONSENT" desc="The description of the checkbox to enable/disable crash and user metrics logging">
+    Automatically sends usage statistics and crash reports to Brave
   </message>
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK" desc="The label of the checkbox to enable/disable sending the 'Do Not track' header">
     Send a "Do Not Track" request with your browsing traffic
@@ -2333,6 +2466,9 @@
   </message>
   <message name="IDS_SETTINGS_TITLE_AND_COUNT" desc="The title of a section in the settings page with a count of the total number of items in the section">
     <ph name="TITLE">$1<ex>Block</ex></ph> - <ph name="COUNT">$2<ex>42</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_MORE_SETTINGS" desc="The text with a link to point users to more sync and personalization settings">
+    For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;a href=&quot;chrome://settings/syncSetup&quot;&gt;<ex>&lt;a href=&quot;chrome://settings/syncSetup&quot;&gt;</ex></ph>Sync and personalization<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
 
   <!-- Reset Settings Page -->
@@ -2484,6 +2620,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES" desc="Label for the all sites site settings.">
     All sites
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES_DESCRIPTION" desc="Label for the button linking to the All Sites page.">
+    View permissions and data stored across sites
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS" desc="Label for the ads site settings.">
     Ads
   </message>
@@ -2556,8 +2695,8 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_PDF_DOWNLOAD_PDFS" desc="Label for downloading PDF documents instead of automatically opening them in Brave.">
     Download PDF files instead of automatically opening them in Brave
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS" desc="Label for the popups site settings.">
-    Popups
+  <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS" desc="Label for the pop-ups and redirects site settings.">
+    Pop-ups and redirects
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT" desc="Label for the protected content site settings.">
     Protected content
@@ -3006,6 +3145,12 @@
   <message name="IDS_SETTINGS_CHANGE_PICTURE_PROFILE_PHOTO" desc="The text on the Brave profile photo of the user.">
     Brave Profile photo
   </message>
+  <message name="IDS_SETTINGS_PEOPLE_SYNC_UNIFIED_CONSENT_TOGGLE_TITLE" desc="The title of the toggle to opt into unified consent and enable all its services.">
+    Sync and personalize Brave across you devices
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SYNC_UNIFIED_CONSENT_TOGGLE_SUBTITLE" desc="The subtitle of the toggle to opt into unified consent and enable all its services.">
+    Uses content on sites you visit and browser activity and interations.
+  </message>
 
   <if expr="chromeos">
     <message name="IDS_SETTINGS_PEOPLE_CONFIGURE_PIN_CHOOSE_PIN_TITLE" desc="Message shown below the title that tells the user to enter the initial PIN.">
@@ -3088,6 +3233,15 @@
     </message>
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_ENABLE_FINGERPRINT_CHECKBOX_LABEL" desc="The text on the label of the checkbox which allows users to enable or disable fingerprint usage.">
       Enable fingerprint unlock
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
+      All of your signed in Brave accounts from apps and websites can be managed here.
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_HEADER" desc="List header for Account List in Account Manager Settings page.">
+      Accounts
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_PAGE_TITLE" desc="Title of Account Manager Settings page.">
+      Brave Accounts
     </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_TITLE" desc="Title of the add fingerprint dialog popup.">
       Add a fingerprint
@@ -3197,9 +3351,6 @@
     <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT" desc="The text displayed to prompt users to sign in to chrome.">
       Web browsing with Brave smarts
     </message>
-    <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY" desc="The secondary text displayed to prompt users to sign in to chrome.">
-      Sync for a personalized browsing experience, across your devices
-    </message>
     <message name="IDS_SETTINGS_PEOPLE_SYNC_ANOTHER_ACCOUNT" desc="The label for the button that lets the user choose another account to sync with.">
       Use another account
     </message>
@@ -3272,7 +3423,16 @@
   <message name="IDS_SETTINGS_SYNC_SECTION_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the sync settings. Only visible by screen reader software.">
     Show sync settings
   </message>
-  <message name="IDS_SETTINGS_SYNC_SYNC_AND_PERSONALIZATION" desc="The label of button that takes the user to manage their sync and personalization settings.">
+  <message name="IDS_SETTINGS_PERSONALIZATION_SECTION_LABEL" desc="Title for a section that shows options for various Brave services">
+    Other Brave services
+  </message>
+  <message name="IDS_SETTINGS_PERSONALIZATION_SECTION_DESC" desc="Brief explanation of the capability of Brave services.">
+    Communicate with Brave to improve browsing and Brave
+  </message>
+  <message name="IDS_SETTINGS_PERSONALIZATION_SECTION_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the google services settings. Only visible by screen reader software.">
+    Show Brave services settings
+  </message>
+  <message name="IDS_SETTINGS_SYNC_SYNC_AND_PERSONALIZATION" desc="The name of the settings page and the label of the button that takes the user to manage their sync and personalization settings.">
     Sync and personalization
   </message>
   <message name="IDS_SETTINGS_SYNC_PAGE_TITLE" desc="Name of the settings page which manages syncing data between multiple browser instances with the same Brave profile.">
@@ -3287,9 +3447,6 @@
     </message>
     <message name="IDS_SETTINGS_SYNC_SETTINGS_CANCEL_SYNC" desc="The label of button that allows user to cancel sync.">
       Cancel sync
-    </message>
-    <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT" desc="The text displayed to prompt users to sign in to chrome.">
-      Sync and personalize Brave across your devices
     </message>
     <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT_SECONDARY" desc="The secondary text displayed to prompt users to sign in to chrome.">
       Turns on the features listed here. Uses your browser activity, content on some sites you visit, and other browser interactions for personalization.
@@ -3776,6 +3933,15 @@
     <message name="IDS_SETTINGS_DISPLAY_ZOOM_SLIDER_MAXIMUM" desc="In Device Settings > Displays, the label of the maximum value for the display size slider">
       Huge
     </message>
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_LOGICAL_RESOLUTION_TEXT" desc="In Device Settings > Displays, the text describing the display's effective resolution.">
+      Looks like <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_LOGICAL_RESOLUTION_DEFAULT_TEXT" desc="In Device Settings > Displays, the text describing the display's effective resolution that comes due to the zoom being at the recommended level.">
+      Looks like <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (Default)
+    </message>
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_LOGICAL_RESOLUTION_NATIVE_TEXT" desc="In Device Settings > Displays, the text describing the display's native resolution.">
+      Looks like <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (Native)
+    </message>
     <message name="IDS_SETTINGS_DISPLAY_ORIENTATION" desc="In Device Settings > Displays, the label for the control for changing a display's orientation.">
       Orientation
     </message>
@@ -3951,9 +4117,6 @@
 
   <!-- Password protection -->
   <message name="IDS_SETTINGS_CHANGE_PASSWORD_TITLE" desc="Title of the reset password warning.">
-    A site may have stolen your password
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PASSWORD_TITLE_SOFTER" desc="Title of the reset password warning.">
     Your password may be compromised
   </message>
   <message name="IDS_SETTINGS_CHANGE_PASSWORD_DETAIL" desc="Detailed description of the reset password warning.">
@@ -4103,4 +4266,8 @@
       Done! No incompatible applications found.
     </message>
   </if>
+
+  <message name="IDS_PAGE_NOT_AVAILABLE_FOR_GUEST_HEADING" desc="This is the heading for the page not available for guest.">
+    <ph name="PAGE_NAME">$1<ex>Bookmarks</ex></ph> is not available to Guest users.
+  </message>
 </grit-part>

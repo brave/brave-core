@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is created by l10nUtil.js. Do not edit manually. -->
+<!-- Printing specific strings (included from generated_resources.grd). -->
+<grit-part>
+  <message name="IDS_UTILITY_PROCESS_PDF_COMPOSITOR_SERVICE_NAME" desc="The name of the utility process used for PDF compositing.">
+    PDF Compositor Service
+  </message>
+  <if expr="enable_print_preview or is_win">
+    <message name="IDS_UTILITY_PROCESS_PRINTING_SERVICE_NAME" desc="The name of the utility process used for printing conversions.">
+      Printing Service
+    </message>
+  </if>
+
+  <!-- Print Preview -->
+  <message name="IDS_PRINT_INVALID_PRINTER_SETTINGS" desc="Message to display when selected printer is not reachable or its settings are invalid.">
+    The selected printer is not available or not installed correctly.  Check your printer or try selecting another printer.
+  </message>
+
+  <if expr="enable_print_preview">
+    <message name="IDS_PRINT_PREVIEW_TITLE" desc="Fallback title for print preview page.">
+      Print
+    </message>
+    <message name="IDS_PRINT_PREVIEW_LOADING" desc="Message to display while the print preview is still loading.">
+      Loading preview
+    </message>
+    <message name="IDS_PRINT_PREVIEW_FAILED" desc="Message to display when print preview fails.">
+      Print preview failed.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_UNSUPPORTED_CLOUD_PRINTER" desc="Message to display when an unsupported cloud printer is selected.">
+      The selected Brave Cloud Print device is no longer supported. Try setting up the printer in your computer's system settings.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PRINT_BUTTON" desc="Print button.">
+      Print
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SAVE_BUTTON" desc="Save button.">
+      Save
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PRINTING" desc="Text shown after the user clicks on the print button and before the print preview tab is closed to let the user know that printing is in progress.">
+      Printing...
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SAVING" desc="Text shown after the user clicks on the save button and before the print preview tab is closed to let the user know that saving is in progress.">
+      Saving...
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_ALL_PAGES" desc="Option to print all pages.">
+      All
+    </message>
+    <message name="IDS_PRINT_PREVIEW_DESTINATION_LABEL" desc="Destination option label. It is displayed right on top of the available printers list.">
+      Destination
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_BW" desc="Option to print in black and white.">
+      Black and white
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_COLLATE" desc="Option to collate multiple copies.">
+      Collate
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_COLOR" desc="Option to print in color.">
+      Color
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_LANDSCAPE" desc="Option to print in landscape mode.">
+      Landscape
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_PORTRAIT" desc="Option to print in portrait mode.">
+      Portrait
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_TWO_SIDED" desc="Option to do two-sided (duplex) printing.">
+      Two-sided
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PAGES_LABEL" desc="Page range option label.">
+      Pages
+    </message>
+    <message name="IDS_PRINT_PREVIEW_LAYOUT_LABEL" desc="Layout option label.">
+      Layout
+    </message>
+    <message name="IDS_PRINT_PREVIEW_COPIES_LABEL" desc="Copies option label.">
+      Copies
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SCALING_LABEL" desc="Scaling option label.">
+      Scale
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PAGES_PER_SHEET_LABEL" desc="Pages per sheet option label.">
+      Pages Per Sheet
+    </message>
+    <message name="IDS_PRINT_PREVIEW_EXAMPLE_PAGE_RANGE_TEXT" desc="Example page range text.">
+      e.g. 1-5, 8, 11-13
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_TEXT" desc="Aria-label page range text.">
+      page range text box
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_RADIO" desc="Aria-label page range radio.">
+      page range radio button
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PRINT_TO_PDF"
+             desc="Option shown on printer drop-down list for saving previewed document as a PDF.">
+      Save as PDF
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PRINT_WITH_CLOUD_PRINT_WAIT"
+        desc="Message shown in the print preview page after choosing cloud print before the dialog displays">
+      Loading <ph name="CLOUD_PRINT_NAME">$1<ex>Brave Cloud Print</ex></ph>
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_LONG" desc="Print summary, explaining to the user how many pages will be printed.">
+      Total: <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph> (<ph name="NUMBER_OF_PAGES">$3<ex>4</ex></ph> <ph name="PAGE_OR_PAGES_LABEL">$4<ex>Pages</ex></ph>)
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_SHORT" desc="Print summary, explaining to the user how many pages will be printed.">
+      Total: <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph>
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SHEETS_LABEL_PLURAL" desc="Label shown in the print preview summary.">
+      sheets of paper
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SHEETS_LABEL_SINGULAR" desc="Label shown in the print preview summary.">
+      sheet of paper
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PAGE_LABEL_SINGULAR" desc="Label shown in the print preview summary.">
+      page
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PAGE_LABEL_PLURAL" desc="Label shown in the print preview summary.">
+      pages
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_SYNTAX_INSTRUCTION" desc="Instruction shown when the user enters an invalid page range.">
+      Invalid page range, use <ph name="EXAMPLE_PAGE_RANGE">$1<ex>e.g. 1-5, 8, 11-13</ex></ph>
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_LIMIT_INSTRUCTION" desc="Instruction shown when the user enters an excessive page range.">
+      Out of bounds page reference
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_LIMIT_INSTRUCTION_WITH_VALUE" desc="Instruction shown when the user enters an excessive page number, and the maximum page.">
+      Out of bounds page reference, limit is <ph name="MAXIMUM_PAGE">$1<ex>1</ex></ph>
+    </message>
+    <message name="IDS_PRINT_PREVIEW_COPIES_INSTRUCTION" desc="Instruction shown when the user enters an invalid number of copies.">
+      Use a number to indicate how many copies to print (1 to 999).
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SCALING_INSTRUCTION" desc="Instruction shown when the user enters an invalid scaling value.">
+      Scale amount must be a number between 10 and 200.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PRINT_PAGES_LABEL" desc="ARIA label used by screen reader to explain the purpose of the page selection textbox">
+      Print Specific Pages
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTIONS_LABEL" desc="Options label currently providing the choice to print headers and footers.">
+      Options
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_HEADER_FOOTER" desc="Checkbox label that provides a choice to print the headers and footers.">
+      Headers and footers
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_FIT_TO_PAGE" desc="Checkbox label shown in print preview page to auto fit the PDF page.">
+      Fit to page
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_BACKGROUND_COLORS_AND_IMAGES" desc="Checkbox label shown in print preview page to print webpage backgrounds.">
+      Background graphics
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_SELECTION_ONLY" desc="Checkbox label shown in print preview page to print only selected content.">
+      Selection only
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_RASTERIZE" desc="Checkbox label shown in print preview page to print PDF as an image (rasterize PDF).">
+      Print as image
+    </message>
+    <message name="IDS_PRINT_PREVIEW_MARGINS_LABEL" desc="Margins option label. Provides user the option to change the margins of the printed page.">
+      Margins
+    </message>
+    <message name="IDS_PRINT_PREVIEW_DEFAULT_MARGINS" desc="Option that specifies the page be printed with default margins.">
+      Default
+    </message>
+    <message name="IDS_PRINT_PREVIEW_NO_MARGINS" desc="Option that specifies the page be printed with no margins.">
+      None
+    </message>
+    <message name="IDS_PRINT_PREVIEW_CUSTOM_MARGINS" desc="Option that specifies the page be printed with user-specified custom margins.">
+      Custom
+    </message>
+    <message name="IDS_PRINT_PREVIEW_MINIMUM_MARGINS" desc="Option that specifies the page be printed with the minimum allowed margins by the printer.">
+      Minimum
+    </message>
+    <message name="IDS_PRINT_PREVIEW_TOP_MARGIN_LABEL" desc="ARIA label used by screen reader to explain the purpose of the top margin textbox.">
+      Top margin
+    </message>
+    <message name="IDS_PRINT_PREVIEW_BOTTOM_MARGIN_LABEL" desc="ARIA label used by screen reader to explain the purpose of the bottom margin textbox.">
+      Bottom margin
+    </message>
+    <message name="IDS_PRINT_PREVIEW_LEFT_MARGIN_LABEL" desc="ARIA label used by screen reader to explain the purpose of the left margin textbox.">
+      Left margin
+    </message>
+    <message name="IDS_PRINT_PREVIEW_RIGHT_MARGIN_LABEL" desc="ARIA label used by screen reader to explain the purpose of the right margin textbox.">
+      Right margin
+    </message>
+    <message name="IDS_PRINT_PREVIEW_MEDIA_SIZE_LABEL" desc="Media size option label. Provides user the option to change the size of the printed page.">
+      Paper size
+    </message>
+    <message name="IDS_PRINT_PREVIEW_DPI_LABEL" desc="Print quality option label. Provides user the option to select one of the print quality options defined for the printer.">
+      Quality
+    </message>
+    <message name="IDS_PRINT_PREVIEW_NON_ISOTROPIC_DPI_ITEM_LABEL" desc="Print quality option value text in case horizontal and vertical DPI values differ.">
+      <ph name="HORIZONTAL_DPI">$1<ex>200</ex></ph>x<ph name="VERTICAL_DPI">$2<ex>100</ex></ph> dpi
+    </message>
+    <message name="IDS_PRINT_PREVIEW_DPI_ITEM_LABEL" desc="Print quality option value text.">
+      <ph name="DPI">$1<ex>300</ex></ph> dpi
+    </message>
+    <message name="IDS_PRINT_PREVIEW_NATIVE_DIALOG" desc="Option offering the user to open the native print dialog, displayed when the PDF viewer is missing or when print preview fails.">
+      Print using system dialog…
+    </message>
+    <message name="IDS_PRINT_PREVIEW_DESTINATION_SEARCH_TITLE" desc="Title of the destination search UI component.">
+      Select a destination
+    </message>
+    <message name="IDS_PRINT_PREVIEW_ACCOUNT_SELECT_TITLE" desc="Title of the user's account selection control, to choose the account destinations are being shown for.">
+      Showing destinations for
+    </message>
+    <message name="IDS_PRINT_PREVIEW_ADD_ACCOUNT_TITLE" desc="Title of the selection control item to let user to sign into another account.">
+      Add account...
+    </message>
+    <message name="IDS_PRINT_PREVIEW_CLOUD_PRINT_PROMOTION" desc="Message describing features of Brave Cloud Print.">
+      Print to Brave Docs and other cloud destinations. <ph name="BEGIN_LINK">$1<ex>&lt;span&gt;</ex></ph>Sign in<ph name="END_LINK">$2<ex>&lt;/span&gt;</ex></ph> to print to Brave Cloud Print.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a search box when user has not entered a search query.">
+      Search destinations
+    </message>
+    <message name="IDS_PRINT_PREVIEW_NO_DESTINATIONS_MESSAGE" desc="Message to show when no destinations were found.">
+      No destinations found
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SHOW_ALL_BUTTON_TEXT" desc="Label on a button to show all print destinations.">
+      Show All...
+    </message>
+    <message name="IDS_PRINT_PREVIEW_DESTINATION_COUNT" desc="Message to show how many print destinations the user has.">
+      (<ph name="COUNT">$1<ex>154</ex></ph> total)
+    </message>
+    <message name="IDS_PRINT_PREVIEW_RECENT_DESTINATIONS_TITLE" desc="Title of the section in the Print Preview dialog that lists recently used printers that the user can print to. 'Destinations' is used because the list may include 'Saving as PDF' or other options that are not physical printers.">
+      Recent Destinations
+    </message>
+    <message name="IDS_PRINT_PREVIEW_PRINT_DESTINATIONS_TITLE" desc="Title of the section in the Print Preview dialog that lists all printers that the user can print to. 'Destinations' is used because the list may include 'Saving as PDF' or other options that are not physical printers.">
+      Print Destinations
+    </message>
+    <message name="IDS_PRINT_PREVIEW_MANAGE" desc="Text of link to manage printers.">
+      Manage...
+    </message>
+    <message name="IDS_PRINT_PREVIEW_CHANGE_DESTINATION" desc="Label on button to change print destination." meaning="Label text">
+      Change...
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OFFLINE_FOR_YEAR" desc="Shown when printer has been offline for more than a year.">
+      Offline for more than a year
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OFFLINE_FOR_MONTH" desc="Shown when printer has been offline for more than a month.">
+      Offline for more than a month
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OFFLINE_FOR_WEEK" desc="Shown when printer has been offline for more than a week.">
+      Offline for more than a week
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OFFLINE" desc="Shown when printer is currently offline.">
+      Currently offline
+    </message>
+    <message name="IDS_PRINT_PREVIEW_NO_LONGER_SUPPORTED_FRAGMENT" desc="Shown in destination settings when printer is no longer supported.">
+      No longer supported
+    </message>
+    <message name="IDS_PRINT_PREVIEW_NO_LONGER_SUPPORTED" desc="Shown in destinations dialog when printer is no longer supported.">
+      No longer supported.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_EXTENSION_DESTINATION_ICON_TOOLTIP" desc="Tooltip for the icon shown in print destination list next to print destination provided by an extension.">
+      Documents you send to print via <ph name="APP_NAME">$1<ex>A Brave app</ex></ph> can be read by <ph name="APP_NAME">$1<ex>A Brave app</ex></ph>.
+    </message>
+    <message name="IDS_MORE_OPTIONS_LABEL" desc="Label of the toggle element to switch between showing more or less printing options in the Print Preview.">
+      More settings
+    </message>
+    <message name="IDS_LESS_OPTIONS_LABEL" desc="Label of the toggle element to switch between showing more or less printing options in the Print Preview.">
+      Fewer settings
+    </message>
+    <message name="IDS_PRINT_PREVIEW_COULD_NOT_PRINT" desc="Error message when printing fails in the print preview">
+      Printing failed. Please check your printer and try again.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_REGISTER_PROMO_BUTTON_TEXT">
+      Register
+    </message>
+    <message name="IDS_PRINT_PREVIEW_ADVANCED_SETTINGS_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a advanced settings search box when user has not entered a search query.">
+      Search settings
+    </message>
+    <message name="IDS_PRINT_PREVIEW_ADVANCED_SETTINGS_DIALOG_TITLE" desc="Title of the advanced printer settings selection dialog.">
+      Advanced settings for <ph name="PRINTING_DESTINATION">$1<ex>Office printer</ex></ph>
+    </message>
+    <message name="IDS_PRINT_PREVIEW_NO_ADVANCED_SETTINGS_MATCH_SEARCH_HINT" desc="Message to display in the printer advanced settings dialog when no settings match search string entered by the user.">
+      No matches were found.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_ADVANCED_SETTINGS_DIALOG_CONFIRM" desc="In title case: The text for the accept button on the printer advanced settings dialog.">
+      Apply
+    </message>
+    <message name="IDS_PRINT_PREVIEW_ADVANCED_OPTIONS_LABEL" desc="Printer advanced options section label.">
+      Advanced
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SHOW_ADVANCED_OPTIONS" desc="The text for the button to open the printer's advanced settings dialog.">
+      Change printer options...
+    </message>
+    <message name="IDS_PRINT_PREVIEW_ACCEPT_INVITE" desc="Text for the button to accept the printer-sharing invitation.">
+      Accept
+    </message>
+    <message name="IDS_PRINT_PREVIEW_ACCEPT_GROUP_INVITE" desc="Text for the button to accept the printer-sharing invitation for the group of users.">
+      Accept for group
+    </message>
+    <message name="IDS_PRINT_PREVIEW_REJECT_INVITE" desc="Text for the button to reject the printer-sharing invitation.">
+      Reject
+    </message>
+    <message name="IDS_PRINT_PREVIEW_GROUP_INVITE_TEXT" desc="Message to show when the user has pending printer-sharing invitation for the group of users they are a manager of.">
+      &lt;strong&gt;<ph name="SENDER">$1</ph>&lt;/strong&gt; wants to share a printer &lt;strong&gt;<ph name="PRINTER_NAME">$2</ph>&lt;/strong&gt; with a group you own: &lt;strong&gt;<ph name="GROUP_NAME">$3</ph>&lt;/strong&gt;. If you accept, all group members will be able to print to the printer.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_INVITE_TEXT" desc="Message to show when the user has pending printer-sharing invitation.">
+      &lt;strong&gt;<ph name="SENDER">$1</ph>&lt;/strong&gt; wants to share a printer &lt;strong&gt;<ph name="PRINTER_NAME">$2</ph>&lt;/strong&gt; with you.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_BUTTON_SELECT" desc="Label for a button in a dialog asking a user to confirm selection of a printer in print preview UI. The printer gets selected if the user clicks the button.">
+      Select
+    </message>
+    <message name="IDS_PRINT_PREVIEW_BUTTON_GO_BACK" desc="Label for a button in a dialog asking a user to confirm selection of a printer in print preview UI. Clicking the button will cancel printer selection, close the dialog and go back to the list of printers available for selection.">
+      Back
+    </message>
+    <message name="IDS_PRINT_PREVIEW_RESOLVE_EXTENSION_USB_PERMISSION_MESSAGE" desc="Warning shown to the user when they attempt to select a USB printer supported by an extension, but for which the extension doesn't yet have access permission. The user is warned that selecting the printer would grant the extension access to the USB device and asked to confirm or cancel the selection. The extension name will be shown in the paragraph immediately bellow this message.">
+      By selecting this printer, you are giving the following extension the permission to access your printer:
+    </message>
+    <message name="IDS_PRINT_PREVIEW_RESOLVE_EXTENSION_USB_ERROR_MESSAGE" desc="Message shown to the user when they attempt to select a USB pinter supported by an extension, but for which the extension does not yet have access permission. The message is shown if the user grants the extension access to the USB device (by confirming printer selection), but the extension is not able to retrieve information about the printer, and an error is reported. The message contains a placeholder for the name of the extension.">
+      <ph name="EXTENSION_NAME">$1<ex>Print app</ex></ph> could not communicate with this printer. Make sure the printer is plugged in and try again.
+    </message>
+    <if expr="chromeos">
+      <message name="IDS_PRINT_CONFIGURING_IN_PROGRESS_TEXT" desc="Message shown to user while their printer is being setup in Brave OS.">
+        Setting up
+      </message>
+      <message name="IDS_PRINT_CONFIGURING_FAILED_TEXT" desc="Message shown to user when their printer is failed to set up in Brave OS.">
+        Error setting up printer
+      </message>
+    </if>
+    <if expr="not chromeos">
+      <message name="IDS_PRINT_PREVIEW_SYSTEM_DIALOG_OPTION" desc="Option allowing the user to access advanced printer settings using the native print system dialog instead of printing through the print preview mechanism. Shortcut key is not translated">
+        Print using system dialog... <ph name="SHORTCUT_KEY">$1<ex>(Shift+Ctrl+P)</ex></ph>
+      </message>
+    </if>
+    <if expr="is_macosx">
+      <message name="IDS_PRINT_PREVIEW_OPENING_PDF_IN_PREVIEW_APP" desc="Text shown after the user clicks on the open pdf in preview button while the pdf file is not ready yet.">
+      Opening PDF in Preview
+      </message>
+      <message name="IDS_PRINT_PREVIEW_OPEN_PDF_IN_PREVIEW_APP" desc="Option allowing the user to open the pdf in native preview app">
+      Open PDF in Preview
+      </message>
+    </if>
+  </if>
+
+  <!-- Print -->
+  <message name="IDS_DEFAULT_PRINT_DOCUMENT_TITLE" desc="Default title for a print document">
+    Untitled Document
+  </message>
+  <message name="IDS_PRINT_SPOOL_FAILED_TITLE_TEXT" desc="Title of a message box when printing fails because of printer issues.">
+    Print Failed
+  </message>
+  <message name="IDS_PRINT_SPOOL_FAILED_ERROR_TEXT" desc="Text in a messagebox when printing fails because of printer issues.">
+    Something went wrong when trying to print.  Please check your printer and try again.
+  </message>
+
+  <!-- Cloud Print proxy strings -->
+  <message name="IDS_CLOUD_PRINT_REGISTER_PRINTER_FAILED" desc="Status message to be sent to the server when we failed to retrieve information about a printer to register.">
+    An error occurred while retrieving printer capabilities for printer <ph name="PRINTER_NAME">$1<ex>HP Laserjet 7900</ex></ph>. This printer could not be registered with <ph name="CLOUD_PRINT_NAME">$2<ex>Brave Cloud Print</ex></ph>.
+  </message>
+  <message name="IDS_CLOUD_PRINT_ZOMBIE_PRINTER" desc="Status message to be sent to the server when we get a notification for a printer that we can't find locally.">
+    Received a notification for an unknown printer.
+  </message>
+  <message name="IDS_CLOUD_PRINT_ENUM_FAILED" desc="Status message to be sent to the Cloud Print server when enumerating printers failed.">
+    There was a problem listing printers. Some of your printers may not have registered successfully with <ph name="CLOUD_PRINT_NAME">$1<ex>Brave Cloud Print</ex></ph>.
+  </message>
+  <message name="IDS_SERVICE_CRASH_RECOVERY_CONTENT" desc="Text content telling the user the service process has crashed.">
+    The <ph name="CLOUD_PRINT_NAME">$1<ex>Brave Cloud Print</ex></ph> connector process has crashed. Restart?
+  </message>
+</grit-part>

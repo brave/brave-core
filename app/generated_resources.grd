@@ -198,6 +198,11 @@ are declared in build/common.gypi.
         <part file="md_extensions_strings.grdp" />
       </if>
 
+      <!-- Printing specific strings -->
+      <if expr="enable_printing">
+        <part file="printing_strings.grdp" />
+      </if>
+
       <!-- TODO add all of your "string table" messages here.  Remember to
       change nontranslateable parts of the messages into placeholders (using the
       <ph> element).  You can also use the 'grit add' tool to help you identify
@@ -1915,9 +1920,6 @@ are declared in build/common.gypi.
         <message name="IDS_AMBIENT_BADGE_INSTALL" desc="String for the ambient badge promoting an app installation">
           Add <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> to Home screen
         </message>
-        <message name="IDS_AMBIENT_BADGE_OPEN" desc="String for the ambient badge promoting opening an installed app">
-          Open <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph>
-        </message>
       </if>
       <!-- Bookmark app bubble -->
       <if expr="use_titlecase">
@@ -2230,16 +2232,13 @@ are declared in build/common.gypi.
         Pop-ups were blocked on this page.
       </message>
       <message name="IDS_BLOCKED_POPUPS_TITLE" desc="Bubble title when a page is not allowed to display popups.">
-        Pop-ups blocked
+        Pop-ups blocked:
       </message>
-      <message name="IDS_BLOCKED_POPUPS_MESSAGE" desc="Bubble info header text when a page is not allowed to display popups.  This appears above a list of popup titles.">
-        The following pop-ups were blocked on this page:
+      <message name="IDS_BLOCKED_POPUPS_REDIRECTS_UNBLOCK" desc="Radio button choice to unblock a site from showing popups and redirects, displayed in bubble when a page tries to display popups or redirects.">
+        Always allow pop-ups and redirects from <ph name="HOST">$1<ex>mail.google.com</ex></ph>
       </message>
-      <message name="IDS_BLOCKED_POPUPS_UNBLOCK" desc="Radio button choice to unblock a site from showing popups, displayed in bubble when a page tries to display popups.">
-        Always allow pop-ups from <ph name="HOST">$1<ex>mail.google.com</ex></ph>
-      </message>
-      <message name="IDS_BLOCKED_POPUPS_NO_ACTION" desc="Radio button choice to continue blocking a site from showing popups, displayed in bubble when a page tries to display popups.">
-        Continue blocking pop-ups
+      <message name="IDS_BLOCKED_POPUPS_REDIRECTS_NO_ACTION" desc="Radio button choice to continue blocking a site from showing popups and redirects, displayed in bubble when a page tries to display popups or redirects.">
+        Continue blocking
       </message>
       <message name="IDS_BLOCKED_POPUPS_LINK" desc="Link to popups section of content blocking management dialog, displayed in bubble when a page tries to display popups.">
         Manage pop-up blocking...
@@ -3262,9 +3261,6 @@ are declared in build/common.gypi.
         </message>
       </if>
       <if expr="is_win">
-        <message name="IDS_UTILITY_PROCESS_PDF_CONVERTOR_NAME" desc="The name of the utility process used for converting PDFs to a different format.">
-          PDF Convertor
-        </message>
         <message name="IDS_UTILITY_PROCESS_FILE_DIALOG_NAME" desc="The name of the utility process used for handling a file open/save dialog.">
           File Open/Save Dialog
         </message>
@@ -3276,17 +3272,17 @@ are declared in build/common.gypi.
         <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing Brave OS system images.">
           Brave OS System Image Writer
         </message>
+      </if>
+      <if expr="enable_extensions or is_android">
         <message name="IDS_UTILITY_PROCESS_MEDIA_GALLERY_UTILITY_NAME" desc="The name of the utility process used for checking media files.">
           Media File Checker
         </message>
       </if>
-      <if expr="enable_print_preview">
-        <message name="IDS_UTILITY_PROCESS_PRINTING_SERVICE_NAME" desc="The name of the utility process used for printing conversions.">
-          Printing service
-        </message>
-      </if>
       <message name="IDS_UTILITY_PROCESS_PATCH_NAME" desc="The name of the utility process used for patching file operations.">
         Patch Service
+      </message>
+      <message name="IDS_UTILITY_PROCESS_PROFILING_SERVICE_NAME" desc="The name of the utility process used for heap profiling.">
+        Profiling Service
       </message>
       <message name="IDS_UTILITY_PROCESS_UNZIP_NAME" desc="The name of the utility process used for unzipping files.">
         Unzip Service
@@ -3325,16 +3321,10 @@ are declared in build/common.gypi.
       <if expr="enable_extensions">
         <!-- Extension blocked action bubble -->
         <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_HEADING" desc="Heading of the bubble to tell users that in order to run an extension, they'll need to refresh the page.">
-          Refresh required
-        </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_CONTENT" desc="The content of the bubble to tell users that in order to run an extension, they'll need to refresh the page.">
-          In order to run this extension, you need to refresh the page. You can run this extension automatically on this site by right-clicking on the extension icon.
+          Reload page to use this extension
         </message>
         <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_OK_BUTTON" desc="The text of the button to proceed with the page refresh for running an extension.">
-          OK, refresh
-        </message>
-        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_CANCEL_BUTTON" desc="The text of the button to close the bubble and not refresh the page or run the extension.">
-          Never mind
+          Reload
         </message>
       </if>
 
@@ -3464,9 +3454,6 @@ are declared in build/common.gypi.
       </message>
       <message name="IDS_EXTENSION_PROMPT_CAN_ACCESS" desc="Second line in the content area of the extension or app permissions view dialog. Note that the exact wording is important. This should mean that the extension _can now_ access the listed privileges, because it has already been installed. This message appeared because the user must approve new permissions of the extension or app.">
         It can:
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_WITHHELD" desc="Header for withheld permissions warning on extension install.">
-        Warning: You've enabled the --scripts-require-action flag on this computer, which limits the capabilities of this extension. However, other devices may not support this flag or have it enabled. On these devices, this extension can also:
       </message>
       <message name="IDS_EXTENSION_NO_SPECIAL_PERMISSIONS" desc="Shown when the app/extension requires no special permission">
         Has no special permissions.
@@ -3788,15 +3775,6 @@ are declared in build/common.gypi.
       </if>
 
       <!-- Extension/App error messages -->
-      <message name="IDS_EXTENSION_PACK_WARNING_TITLE" desc="Warning title message for pack extension">
-        Pack Extension Warning
-      </message>
-      <message name="IDS_EXTENSION_PACK_ERROR_TITLE" desc="Error title message for pack extension">
-        Pack Extension Error
-      </message>
-      <message name="IDS_EXTENSION_PROCEED_ANYWAY" desc="Button to continue with operation in extension packing">
-        Proceed anyway
-      </message>
       <message name="IDS_EXTENSION_CANT_DOWNGRADE_VERSION" desc="Error message when a user tries to install an extension with a lower version than a version that it already installed.">
         Attempted to downgrade extension.
       </message>
@@ -3935,183 +3913,29 @@ are declared in build/common.gypi.
         The folder you selected contains sensitive files. Are you sure you want to grant "$1" permanent write access to this folder?
       </message>
 
-      <!-- chrome://settings/extensions page -->
+      <!-- Extensions strings, which are not used by chrome://extensions. -->
       <if expr="enable_extensions">
-        <message name="IDS_EXTENSIONS_DEVELOPER_MODE_LINK" desc="Text of the link for developer mode.">
-          Developer mode
-        </message>
-        <message name="IDS_EXTENSIONS_LOAD_UNPACKED_BUTTON" desc="Text of the 'Load Extension' button.">
-          Load unpacked extension...
-        </message>
-        <message name="IDS_EXTENSIONS_PACK_BUTTON" desc="Text for the 'Pack Extension' button.">
-          Pack extension...
-        </message>
-        <message name="IDS_EXTENSIONS_UPDATE_BUTTON" desc="Text for the 'Update extensions' button.">
-          Update extensions now
-        </message>
-        <message name="IDS_EXTENSIONS_NONE_INSTALLED" desc="Text that lets the user know that no extensions are installed.">
-          Boo... You have no extensions :-(
-        </message>
-        <message name="IDS_EXTENSIONS_NONE_INSTALLED_SUGGEST_GALLERY" desc="Text on next line after IDS_EXTENSIONS_NONE_INSTALLED that suggests the user look in the Brave Web Store for extensions to install.">
-          Want to <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>browse the Brave Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> instead?
-        </message>
-        <message name="IDS_EXTENSIONS_INSTALL_DROP_TARGET" desc="Text on drop target for installing extensions.">
-          Drop to install
-        </message>
-        <message name="IDS_EXTENSIONS_CRASHED_EXTENSION" desc="Text that signifies that the extension process was terminated, usually because it has crashed.">
-          (Crashed)
-        </message>
-        <message name="IDS_EXTENSIONS_IN_DEVELOPMENT" desc="Text that signifies that the extension is currently in development.">
-          (Unpacked)
-        </message>
-        <message name="IDS_EXTENSIONS_VIEW_INCOGNITO" desc="Text that signifies that the extension view is in an incognito process.">
-          (Incognito)
-        </message>
-        <message name="IDS_EXTENSIONS_VIEW_INACTIVE" desc="Text that signifies that the extension view is an inactive transient page.">
-          (Inactive)
-        </message>
-        <message name="IDS_EXTENSIONS_VIEW_IFRAME" desc="Text that signifies that the extension view is an iframe.">
-          (iframe)
-        </message>
-        <message name="IDS_EXTENSIONS_BACKGROUND_PAGE" desc="Display name for an autogenerated background page.">
-          background page
-        </message>
-        <message name="IDS_EXTENSIONS_ID" desc="The ID label in front of the extension ID.">
-          ID:
-        </message>
-        <message name="IDS_EXTENSIONS_PATH" desc="The label in front of the extension load path.">
-          Loaded from:
-        </message>
-        <message name="IDS_EXTENSIONS_INSPECT_VIEWS" desc="The text for the label in front of the links to inspect views (some of which may not be loaded yet).">
-          Inspect views:
-        </message>
-        <message name="IDS_EXTENSIONS_INSTALL_WARNINGS" desc="The text which says that an extension has warnings when it was installed.">
-          There were warnings when trying to install this extension:
-        </message>
         <message name="IDS_EXTENSIONS_LOAD_ERROR_HEADING" desc="The title of the section that describes an extension load error.">
           Error Loading Extension
         </message>
         <message name="IDS_EXTENSIONS_LOAD_ERROR_MESSAGE" desc="The message which tells the user that an extension failed to load.">
           Failed to load extension from:
         </message>
-        <message name="IDS_EXTENSIONS_LOAD_ERROR_RETRY" desc="The text of the button to retry loading an extension.">
-          Retry
-        </message>
-        <message name="IDS_EXTENSIONS_LOAD_ERROR_GIVE_UP" desc="The text of the button to give up on trying to load an extension.">
-          I give up
-        </message>
-        <message name="IDS_EXTENSIONS_LOAD_COULD_NOT_LOAD_MANIFEST" desc="The text to indicate that the source of the extension's manifest failed to load.">
-          Could not load manifest.
-        </message>
-        <message name="IDS_EXTENSIONS_LOAD_ADDITIONAL_FAILURES" desc="The text displayed above additional extension load failures.">
-          Other extensions that failed to load:
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_HEADING" desc="The heading of the list of errors for an extension.">
-          Errors
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_CLEAR_ALL" desc="The text for the button to delete all extension errors.">
-          Clear all
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_NO_ERRORS" desc="The text displayed when an extension has no errors.">
-          Awesome, no errors!
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_NO_ERRORS_CODE_MESSAGE" desc="The text displayed in the 'code' section when an extension has no errors.">
-          Nothing to see here, move along.
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_CONTEXT" desc="The label for the context of an extension's error.">
-          Context:
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_STACK_TRACE" desc="The label for the stack trace of an extension's error.">
-          Stack Trace
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_ANONYMOUS_FUNCTION" desc="The label indicating that an error was caused within an anonymous function in the code.">
-          anonymous function
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_LAUNCH_DEVTOOLS" desc="The text for the button to view an extension error in the developer tools.">
-          View in Developer Tools
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_CONTEXT_UNKNOWN" desc="Text indicating that the context URL for an error is unknown.">
-          Unknown
-        </message>
-        <message name="IDS_EXTENSIONS_ERROR_NO_CODE_TO_DISPLAY" desc="Text indicating that there is no code to be displayed for a given error.">
-          Sorry, we can't show the code for this error.
-        </message>
-        <message name="IDS_EXTENSIONS_ENABLE" desc="The link for enabling extensions.">
-          Enable
-        </message>
-        <message name="IDS_EXTENSIONS_ENABLED" desc="The label for an enabled extension.">
-          Enabled
-        </message>
-        <message name="IDS_EXTENSIONS_REMOVE" desc="The label for uninstalling an extension.">
-          Remove
-        </message>
-        <message name="IDS_EXTENSIONS_ENABLE_INCOGNITO" desc="The checkbox for enabling an extension in incognito.">
-          Allow in incognito
-        </message>
-        <message name="IDS_EXTENSIONS_ENABLE_ERROR_COLLECTION" desc="The checkbox for enabling error collection for an extension.">
-          Collect errors
-        </message>
-        <message name="IDS_EXTENSIONS_ALLOW_ON_ALL_URLS" desc="The checkbox for allowing an extension to run scripts on all websites without explicit permission.">
-          Allow on all websites
-        </message>
-        <message name="IDS_EXTENSIONS_ALLOW_FILE_ACCESS" desc="The checkbox for allowing an extension access to run scripts on file URLs.">
-          Allow access to file URLs
-        </message>
-        <message name="IDS_EXTENSIONS_VISIT_WEBSITE" desc="The link for visiting the extension's homepage.">
-          Developer website
-        </message>
-        <message name="IDS_EXTENSIONS_VISIT_WEBSTORE" desc="The link for visiting the extension's gallery page.">
-          Details
-        </message>
-        <message name="IDS_EXTENSIONS_RELOAD_TERMINATED" desc="The link for reloading extensions.">
-          Reload
-        </message>
-        <message name="IDS_EXTENSIONS_REPAIR_CORRUPTED" desc="The link for repairing corrupted extensions.">
-          Repair
-        </message>
-        <message name="IDS_EXTENSIONS_LAUNCH" desc="The link for launching apps.">
-          Launch
-        </message>
-        <if expr="is_macosx">
-          <message name="IDS_EXTENSIONS_RELOAD_UNPACKED" desc="The link for reloading unpacked extensions.">
-            Reload (⌘R)
-          </message>
-        </if>
-        <if expr="not is_macosx">
-          <message name="IDS_EXTENSIONS_RELOAD_UNPACKED" desc="The link for reloading unpacked extensions.">
-            Reload (Ctrl+R)
-          </message>
-        </if>
         <message name="IDS_EXTENSIONS_OPTIONS_LINK" desc="The link text for the Options link.">
           Options
         </message>
-        <message name="IDS_EXTENSIONS_PERMISSIONS_LINK" desc="The link text for the Permissions link.">
-          Permissions
-        </message>
-        <message name="IDS_EXTENSIONS_INFO_LINK" desc="The text for the link that opens the App Info dialog for the extension, displaying permissions and other useful information about the app.">
-          Details
-        </message>
-        <message name="IDS_EXTENSIONS_LOG_LEVEL_INFO" desc="Alt-text indicating a low severity level for the error icon in the chrome://extensions page.">
-          Log
-        </message>
-        <message name="IDS_EXTENSIONS_LOG_LEVEL_WARN" desc="Alt-text indicating a medium severity level for the error icon in the chrome://extensions page.">
-          Warning
-        </message>
-        <message name="IDS_EXTENSIONS_LOG_LEVEL_ERROR" desc="Alt-text indicating a high severity level for the error icon in the chrome://extensions page.">
-          Error
-        </message>
         <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS" desc="The label in an extension's context menu for the submenu specifying whether or not the extension can run on the current page (sentence case).">
-            Page access
+            Allow access
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_CLICK" desc="The label in an extension's context menu to allow the extension access to the page only when the user clicks on the extension action (sentence case).">
-            Run on click
+            On click
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_SITE" desc="The label in an extension's context menu to always allow the extension access to the current origin (sentence case).">
-            Always run on <ph name="ORIGIN">$1<ex>google.com</ex></ph>
+            On <ph name="ORIGIN">$1<ex>google.com</ex></ph>
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_ALL_SITES" desc="The label in an extension's context menu to always allow the extension access on all sites (sentence case).">
-            Always run on all sites
+            On all sites
           </message>
           <message name="IDS_EXTENSIONS_OPTIONS_MENU_ITEM" desc="The text for the options menu item in context menus (sentence case).">
             Options
@@ -4139,17 +3963,17 @@ are declared in build/common.gypi.
           </message>
         </if>
         <if expr="use_titlecase">
-          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS" desc="The label in an extension's context menu for the submenu specifying whether or not the extension can run on the current page (sentence case).">
-            Page Access
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS" desc="The label in an extension's context menu for the submenu specifying whether or not the extension can run on the current page (title case).">
+            Allow Access
           </message>
-          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_CLICK" desc="The label in an extension's context menu to allow the extension access to the page only when the user clicks on the extension action (sentence case).">
-            Run on Click
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_CLICK" desc="The label in an extension's context menu to allow the extension access to the page only when the user clicks on the extension action (title case).">
+            On Click
           </message>
-          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_SITE" desc="The label in an extension's context menu to always allow the extension access to the current origin (sentence case).">
-            Always Run on <ph name="ORIGIN">$1<ex>google.com</ex></ph>
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_SITE" desc="The label in an extension's context menu to always allow the extension access to the current origin (title case).">
+            On <ph name="ORIGIN">$1<ex>google.com</ex></ph>
           </message>
-          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_ALL_SITES" desc="The label in an extension's context menu to always allow the extension access on all sites (sentence case).">
-            Always Run on All Sites
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_ALL_SITES" desc="The label in an extension's context menu to always allow the extension access on all sites (title case).">
+            On All Sites
           </message>
           <message name="IDS_EXTENSIONS_OPTIONS_MENU_ITEM" desc="The text for the options menu item in context menus (title case).">
             Options
@@ -4178,20 +4002,8 @@ are declared in build/common.gypi.
         </if>
       </if>
 
-      <message name="IDS_EXTENSIONS_POLICY_CONTROLLED" desc="The text in the extensions UI informing the user that an extension is policy controlled">
-        (This extension is managed and cannot be removed or disabled.)
-      </message>
-      <message name="IDS_EXTENSIONS_POLICY_RECOMMENDED" desc="The text in the extensions UI informing the user that an extension is recommended installed by policy">
-        (This extension is managed and cannot be removed.)
-      </message>
-      <message name="IDS_EXTENSIONS_DEPENDENT_EXTENSIONS" desc="The text in the extensions UI informing the user that an extension is depended on by on other installed extensions">
-        The following extensions depend on this extension:
-      </message>
       <message name="IDS_EXTENSIONS_LOCKED_SUPERVISED_USER" desc="The error message (either shown in the extensions UI or logged) informing a supervised user that extensions cannot be changed.">
         Apps and extensions can only be modified by the manager (<ph name="CUSTODIAN_NAME">$1<ex>Jane Doe</ex></ph>).
-      </message>
-      <message name="IDS_EXTENSIONS_LOADING" desc="Placeholder text shown when loading the list of extensions.">
-        Loading...
       </message>
       <message name="IDS_EXTENSIONS_INSTALLED_BY_CHILD_CUSTODIAN" desc="The text in the extensions UI informing a child user that an extension was installed by their parent and cannot be changed.">
         Installed by your parent.
@@ -4199,57 +4011,15 @@ are declared in build/common.gypi.
       <message name="IDS_EXTENSIONS_INSTALLED_BY_SUPERVISED_USER_CUSTODIAN" desc="The text in the extensions UI informing a supervised user that an extension was installed by their custodian and cannot be changed">
         Installed by your custodian.
       </message>
-      <message name="IDS_GET_MORE_EXTENSIONS" desc="The text for getting more extensions. Displayed at bottom of extension management page when there is at least one extension installed.">
-        Get more extensions
-      </message>
       <message name="IDS_EXTENSION_LOAD_FROM_DIRECTORY" desc="Title of directory browse dialog when user wants to load an extension from a directory.">
         Select the extension directory.
-      </message>
-      <message name="IDS_EXTENSIONS_COMMANDS_CONFIGURE" desc="Text for the 'Keyboard shortcuts' link to configure extension keyboard shortcuts.">
-        Keyboard shortcuts
-      </message>
-      <message name="IDS_EXTENSION_COMMANDS_DIALOG_TITLE" desc="Title of extension commands dialog">
-        Keyboard Shortcuts for Extensions and Apps
-      </message>
-      <message name="IDS_EXTENSION_COMMANDS_EMPTY" desc="The heading of the extension commands dialog when there are no commands to show.">
-        No extensions have keyboard shortcuts assigned.
-      </message>
-      <message name="IDS_EXTENSION_COMMANDS_INACTIVE" desc="The text shown instead of the shortcut text (Ctrl+F) if the shortcut is inactive.">
-        Not set
-      </message>
-      <message name="IDS_EXTENSION_TYPE_SHORTCUT" desc="The text shown in a text box to instruct the user to start typing (to capture which shortcut to use for the extension command).">
-        Type a shortcut
-      </message>
-      <message name="IDS_EXTENSION_DELETE_SHORTCUT" desc="The text shown when you hover over the X inside the input text field.">
-        Delete shortcut
       </message>
       <message name="IDS_EXTENSION_COMMANDS_GENERIC_ACTIVATE" desc="The generic 'activate extension' text used as description for some commands.">
         Activate the extension
       </message>
-      <message name="IDS_EXTENSION_COMMANDS_GLOBAL" desc="The text in the select box for commands that are global in nature (the shortcut works when Brave does not have focus).">
-        Global
-      </message>
-      <message name="IDS_EXTENSION_COMMANDS_NOT_GLOBAL" desc="The text in the select box for commands that are not global in nature (the shortcut works only when Brave has focus).">
-        In Brave
-      </message>
 
-      <message name="IDS_EXTENSION_PACK_DIALOG_TITLE" desc="Title of pack extension dialog">
-        Pack Extension
-      </message>
-      <message name="IDS_EXTENSION_PACK_BUTTON" desc="Text of the pack extension button">
-        Pack Extension
-      </message>
       <message name="IDS_EXTENSION_PACK_DIALOG_HEADING" desc="The heading of the pack extension dialog.">
         Select the root directory of the extension to pack. To update an extension, also select the private key file to reuse.
-      </message>
-      <message name="IDS_EXTENSION_PACK_DIALOG_ROOT_DIRECTORY_LABEL" desc="Label in the pack extension dialog for the control that lets the user select the extension to pack.">
-        Extension root directory:
-      </message>
-      <message name="IDS_EXTENSION_PACK_DIALOG_PRIVATE_KEY_LABEL" desc="Label in the pack extension dialog for the control that lets the user select the private key to use to pack the extension. The label should indicate that the input is not required to be filled in.">
-        Private key file (optional):
-      </message>
-      <message name="IDS_EXTENSION_PACK_DIALOG_BROWSE" desc="Text on buttons in the pack extension dialog that open up file browsing UI to pick the extension to pack.">
-        Browse...
       </message>
       <message name="IDS_EXTENSION_PACK_DIALOG_SELECT_KEY" desc="Heading in file browse dialog instructing user to select a private key.">
         Select private key file.
@@ -4365,9 +4135,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSION_WARNINGS_WRENCH_MENU_ITEM" desc="The wrench menu item indicating that extensions caused problems.">
         Extension error
       </message>
-      <message name="IDS_EXTENSION_WARNINGS_TITLE" desc="The title of a section in chrome://extensions which contains the warning(s) that relates to one particular extension">
-        Warning:
-      </message>
 
       <!-- External extension install alerts -->
       <!-- TODO(mpcomplete): We may need to change Brave to
@@ -4412,12 +4179,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSIONS_DISABLE_DEVELOPER_MODE_BODY" desc="Body of a dialog warning users they have development mode extensions running">
         Extensions running in developer mode can harm your computer. If you're not a developer, you should disable these extensions running in developer mode to stay safe.
-      </message>
-      <message name="IDS_EXTENSIONS_CORRUPTED_EXTENSION" desc="The warning for the user that an extension may have been tampered with on disk.">
-        This extension may have been corrupted.
-      </message>
-      <message name="IDS_EXTENSIONS_DISABLED_UPDATE_REQUIRED_BY_POLICY" desc="Text shown in the extensions settings for extensions disabled due to minimum version requirement from enterprise policy">
-        This extension is outdated and disabled by enterprise policy. It might become enabled automatically when a newer version is available.
       </message>
 
       <!-- Settings API bubble -->
@@ -4888,11 +4649,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         usage statistics
       </message>
 
-      <!-- Unimplemented Flags Infobar-->
-      <message name="IDS_UNIMPLEMENTED_FLAGS_WARNING_MESSAGE" desc="Message shown when a command-line flag is used that is not implemented by this build. [Keep it short so it fits in the infobar.]">
-        <ph name="BAD_FLAG">$1<ex>--enable-heap-profiling</ex></ph> is not implemented in this build
-      </message>
-
       <!-- Bad Flags Infobar-->
       <message name="IDS_BAD_FLAGS_WARNING_MESSAGE" desc="Message shown when an unsupported command-line flag is used. [Keep it short so it fits in the infobar.]">
         You are using an unsupported command-line flag: <ph name="BAD_FLAG">$1<ex>--no-sandbox</ex></ph>. Stability and security will suffer.
@@ -5072,9 +4828,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OMNIBOX_KEYWORD_TEXT_MD" desc="Text shown in the search button at the front of the omnibox when the user has selected a keyword, in MD (no final colon)">
         Search <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
       </message>
-      <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, and Brave is the default search engine.">
-        Search Brave or type URL
-      </message>
       <message name="IDS_CLICK_TO_VIEW_DOODLE" desc="Prompts users to click on an icon to view a Brave doodle. Normally, today's Brave doodle is shown when the user opens a new tab (if there is a doodle today). If there is a doodle, but it cannot be shown, Brave puts an icon next to the regular Brave logo. The icon uses this label for accessibility. If the user clicks the icon, Brave will show the doodle.">
         Click to view today’s doodle
       </message>
@@ -5089,6 +4842,83 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Search or type web address
         </message>
       </if>
+
+      <!-- NTP -->
+      <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, and Brave is the default search engine.">
+        Search Brave or type URL
+      </message>
+      <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_MD" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, Brave is the default search engine, and the Material Design UI is enabled.">
+        Search Brave or type a URL
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_ADD_SHORTCUT_TOOLTIP" desc="The tooltip for adding a custom link shortcut. (On the New Tab Page)">
+        Add shortcut
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_ADD_SHORTCUT_TITLE" desc="The title of the custom link add shortcut dialog. (On the New Tab Page)">
+        Add shortcut
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_EDIT_SHORTCUT_TOOLTIP" desc="The tooltip for editing a custom link shortcut. (On the New Tab Page)">
+        Edit shortcut
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_EDIT_SHORTCUT" desc="The title for custom link edit shortcut dialog. (On the New Tab Page)">
+        Edit shortcut
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_NAME" desc="The title for custom link name input field on the edit shortcut dialog. (On the New Tab Page)">
+        Name
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_URL" desc="The title for custom link URL input field on the edit shortcut dialog. (On the New Tab Page)">
+        URL
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_REMOVE" desc="The text label of the custom link remove button on the edit shortcut dialog. (On the New Tab Page)">
+        Remove
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_CANCEL" desc="The text label of the custom link cancel button on the edit shortcut dialog. (On the New Tab Page)">
+        Cancel
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_DONE" desc="The text label of the custom link done button on the edit shortcut dialog. (On the New Tab Page)">
+        Done
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_INVALID_URL" desc="The text of displayed when an invalid URL is provided when creating a custom link. (On the New Tab Page)">
+       Type a valid URL
+      </message>
+      <message name="IDS_NTP_CONFIRM_MSG_SHORTCUT_REMOVED" desc="The title of the shortcut removed confirmation message when removing a custom link. (On the New Tab Page)">
+        Shortcut removed
+      </message>
+      <message name="IDS_NTP_CONFIRM_MSG_SHORTCUT_EDITED" desc="The title of the shortcut edited confirmation message when editing a custom link. (On the New Tab Page)">
+        Shortcut edited
+      </message>
+      <message name="IDS_NTP_CONFIRM_MSG_SHORTCUT_ADDED" desc="The title of the shortcut added confirmation message when adding a custom link. (On the New Tab Page)">
+        Shortcut added
+      </message>
+      <message name="IDS_NTP_CONFIRM_MSG_RESTORE_DEFAULTS" desc="The text label of the restore default shortcuts button when editing a custom link. (On the New Tab Page)">
+        Restore default shortcuts
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_CUSTOMIZE_BACKGROUND" desc="The title for the tooltip for background customization. (On the New Tab Page)">
+        Customize background
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_GOOGLE_PHOTOS" desc="The text label of the Brave Photos option for background customization. (On the New Tab Page)">
+        Brave Photos
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_CHROME_WALLPAPERS" desc="The text label of the Brave wallpapers option for background customization.(On the New Tab Page)">
+        Brave wallpapers
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_UPLOAD_AN_IMAGE" desc="The text label of the upload an image option for background customization. (On the New Tab Page)">
+        Upload an image
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_SELECT_A_COLLECTION" desc="The text label of the select a collection submenu for background customization. (On the New Tab Page)">
+        Select a collection
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_SELECT_GOOGLE_ALBUM" desc="The text label for the Brave Photos submenu for background customization. (On the New Tab Page)">
+        Select a Brave Photo Album
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_DAILY_REFRESH" desc="The text label for the daily background randomization option.  (On the New Tab Page)">
+        Daily refresh
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_SURPRISE_ME" desc="The text label for the random background option. (On the New Tab Page)">
+        Surprise me
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_RESTORE_DEFAULT" desc="The text label for the restore default option for background customization. (On the New Tab Page)">
+        Restore default background
+      </message>
 
       <!--Tooltip strings-->
       <message name="IDS_TOOLTIP_BACK" desc="The tooltip for back button">
@@ -5691,18 +5521,6 @@ I don't think this site should be blocked!
       <message name="IDS_MEDIA_MENU_NO_DEVICE_TITLE" desc="The title of the media select menu if there is no microphone or camera available on the machine">
         None available
       </message>
-      <message name="IDS_POPUP_TAB_LABEL" desc="Label for Pop-up Windows tab on Content Settings dialog">
-        Pop-ups
-      </message>
-      <message name="IDS_POPUP_HEADER" desc="Header for popup exception management page on Content Settings dialog">
-        Pop-up exceptions
-      </message>
-      <message name="IDS_POPUP_ALLOW_RADIO" desc="A radio button in the Content Settings dialog for allowing pop-up windows in the browser.">
-        Allow all sites to show pop-ups
-      </message>
-      <message name="IDS_POPUP_BLOCK_RADIO" desc="A radio button in the Content Settings dialog for preventing showing pop-up windows on any sites.">
-        Do not allow any site to show pop-ups (recommended)
-      </message>
       <if expr="is_android">
         <message name="IDS_POPUPS_BLOCKED_INFOBAR_BUTTON_SHOW" desc="Pop-up Blocking Show Button [CHAR-LIMIT=32]">
           Always show
@@ -5878,351 +5696,21 @@ I don't think this site should be blocked!
       </message>
 
       <!-- Picture-in-Picture -->
-      <message name="IDS_PICTURE_IN_PICTURE_TITLE_TEXT" desc="Title of the picture-in-picture window. This appears in the system tray and window header.">
+      <message name="IDS_PICTURE_IN_PICTURE_TITLE_TEXT" desc="Title of the Picture-in-Picture window. This appears in the system tray and window header.">
         Picture-in-Picture
       </message>
-
-      <!-- Print -->
-      <message name="IDS_DEFAULT_PRINT_DOCUMENT_TITLE" desc="Default title for a print document">
-        Untitled Document
+      <message name="IDS_PICTURE_IN_PICTURE_PAUSE_CONTROL_TEXT" desc="Text label of the pause control button. The button appears when the user hovers over the Picture-in-Picture window and the video is currently playing.">
+        Pause
       </message>
-      <message name="IDS_PRINT_SPOOL_FAILED_TITLE_TEXT" desc="Title of a message box when printing fails because of printer issues.">
-        Print Failed
+      <message name="IDS_PICTURE_IN_PICTURE_PLAY_CONTROL_TEXT" desc="Text label of the play control button. The button appears when the user hovers over the Picture-in-Picture window and the video is currently paused.">
+        Play
       </message>
-      <message name="IDS_PRINT_SPOOL_FAILED_ERROR_TEXT" desc="Text in a messagebox when printing fails because of printer issues.">
-        Something went wrong when trying to print.  Please check your printer and try again.
+      <message name="IDS_PICTURE_IN_PICTURE_CLOSE_CONTROL_TEXT" desc="Text label of the close control button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Close
       </message>
-
-      <!-- Cloud Print proxy strings -->
-      <message name="IDS_CLOUD_PRINT_REGISTER_PRINTER_FAILED" desc="Status message to be sent to the server when we failed to retrieve information about a printer to register.">
-        An error occurred while retrieving printer capabilities for printer <ph name="PRINTER_NAME">$1<ex>HP Laserjet 7900</ex></ph>. This printer could not be registered with <ph name="CLOUD_PRINT_NAME">$2<ex>Brave Cloud Print</ex></ph>.
+      <message name="IDS_PICTURE_IN_PICTURE_PLAY_PAUSE_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button toggles between play and pause controls.">
+        Toggle video to play or pause
       </message>
-      <message name="IDS_CLOUD_PRINT_ZOMBIE_PRINTER" desc="Status message to be sent to the server when we get a notification for a printer that we can't find locally.">
-        Received a notification for an unknown printer.
-      </message>
-      <message name="IDS_CLOUD_PRINT_ENUM_FAILED" desc="Status message to be sent to the Cloud Print server when enumerating printers failed.">
-        There was a problem listing printers. Some of your printers may not have registered successfully with <ph name="CLOUD_PRINT_NAME">$1<ex>Brave Cloud Print</ex></ph>.
-      </message>
-      <message name="IDS_SERVICE_CRASH_RECOVERY_CONTENT" desc="Text content telling the user the service process has crashed.">
-        The <ph name="CLOUD_PRINT_NAME">$1<ex>Brave Cloud Print</ex></ph> connector process has crashed. Restart?
-      </message>
-
-      <!-- Print Preview -->
-      <if expr="enable_printing">
-        <message name="IDS_PRINT_INVALID_PRINTER_SETTINGS" desc="Message to display when selected printer is not reachable or its settings are invalid.">
-          The selected printer is not available or not installed correctly.  Check your printer or try selecting another printer.
-        </message>
-      </if>
-      <if expr="enable_print_preview">
-        <message name="IDS_PRINT_PREVIEW_TITLE" desc="Fallback title for print preview page.">
-          Print
-        </message>
-        <message name="IDS_PRINT_PREVIEW_LOADING" desc="Message to display while the print preview is still loading.">
-          Loading preview
-        </message>
-        <message name="IDS_PRINT_PREVIEW_FAILED" desc="Message to display when print preview fails.">
-          Print preview failed.
-        </message>
-        <message name="IDS_PRINT_PREVIEW_UNSUPPORTED_CLOUD_PRINTER" desc="Message to display when an unsupported cloud printer is selected.">
-          The selected Brave Cloud Print device is no longer supported. Try setting up the printer in your computer's system settings.
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PRINT_BUTTON" desc="Print button.">
-          Print
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SAVE_BUTTON" desc="Save button.">
-          Save
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PRINTING" desc="Text shown after the user clicks on the print button and before the print preview tab is closed to let the user know that printing is in progress.">
-          Printing...
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SAVING" desc="Text shown after the user clicks on the save button and before the print preview tab is closed to let the user know that saving is in progress.">
-          Saving...
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_ALL_PAGES" desc="Option to print all pages.">
-          All
-        </message>
-        <message name="IDS_PRINT_PREVIEW_DESTINATION_LABEL" desc="Destination option label. It is displayed right on top of the available printers list.">
-          Destination
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_BW" desc="Option to print in black and white.">
-          Black and white
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_COLLATE" desc="Option to collate multiple copies.">
-          Collate
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_COLOR" desc="Option to print in color.">
-          Color
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_LANDSCAPE" desc="Option to print in landscape mode.">
-          Landscape
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_PORTRAIT" desc="Option to print in portrait mode.">
-          Portrait
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_TWO_SIDED" desc="Option to do two-sided (duplex) printing.">
-          Two-sided
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PAGES_LABEL" desc="Page range option label.">
-          Pages
-        </message>
-        <message name="IDS_PRINT_PREVIEW_LAYOUT_LABEL" desc="Layout option label.">
-          Layout
-        </message>
-        <message name="IDS_PRINT_PREVIEW_COPIES_LABEL" desc="Copies option label.">
-          Copies
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SCALING_LABEL" desc="Scaling option label.">
-          Scale
-        </message>
-        <message name="IDS_PRINT_PREVIEW_EXAMPLE_PAGE_RANGE_TEXT" desc="Example page range text.">
-          e.g. 1-5, 8, 11-13
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_TEXT" desc="Aria-label page range text.">
-          page range text box
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_RADIO" desc="Aria-label page range radio.">
-          page range radio button
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PRINT_TO_PDF"
-                 desc="Option shown on printer drop-down list for saving previewed document as a PDF.">
-          Save as PDF
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PRINT_WITH_CLOUD_PRINT_WAIT"
-            desc="Message shown in the print preview page after choosing cloud print before the dialog displays">
-          Loading <ph name="CLOUD_PRINT_NAME">$1<ex>Brave Cloud Print</ex></ph>
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_LONG" desc="Print summary, explaining to the user how many pages will be printed.">
-          Total: <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph> (<ph name="NUMBER_OF_PAGES">$3<ex>4</ex></ph> <ph name="PAGE_OR_PAGES_LABEL">$4<ex>Pages</ex></ph>)
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_SHORT" desc="Print summary, explaining to the user how many pages will be printed.">
-          Total: <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph>
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SHEETS_LABEL_PLURAL" desc="Label shown in the print preview summary.">
-          sheets of paper
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SHEETS_LABEL_SINGULAR" desc="Label shown in the print preview summary.">
-          sheet of paper
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PAGE_LABEL_SINGULAR" desc="Label shown in the print preview summary.">
-          page
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PAGE_LABEL_PLURAL" desc="Label shown in the print preview summary.">
-          pages
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_SYNTAX_INSTRUCTION" desc="Instruction shown when the user enters an invalid page range.">
-          Invalid page range, use <ph name="EXAMPLE_PAGE_RANGE">$1<ex>e.g. 1-5, 8, 11-13</ex></ph>
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_LIMIT_INSTRUCTION" desc="Instruction shown when the user enters an excessive page range.">
-          Out of bounds page reference
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_LIMIT_INSTRUCTION_WITH_VALUE" desc="Instruction shown when the user enters an excessive page number, and the maximum page.">
-          Out of bounds page reference, limit is <ph name="MAXIMUM_PAGE">$1<ex>1</ex></ph>
-        </message>
-        <message name="IDS_PRINT_PREVIEW_COPIES_INSTRUCTION" desc="Instruction shown when the user enters an invalid number of copies.">
-          Use a number to indicate how many copies to print (1 to 999).
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SCALING_INSTRUCTION" desc="Instruction shown when the user enters an invalid scaling value.">
-          Scale amount must be a number between 10 and 200.
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PRINT_PAGES_LABEL" desc="ARIA label used by screen reader to explain the purpose of the page selection textbox">
-          Print Specific Pages
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTIONS_LABEL" desc="Options label currently providing the choice to print headers and footers.">
-          Options
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_HEADER_FOOTER" desc="Checkbox label that provides a choice to print the headers and footers.">
-          Headers and footers
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_FIT_TO_PAGE" desc="Checkbox label shown in print preview page to auto fit the PDF page.">
-          Fit to page
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_BACKGROUND_COLORS_AND_IMAGES" desc="Checkbox label shown in print preview page to print webpage backgrounds.">
-          Background graphics
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_SELECTION_ONLY" desc="Checkbox label shown in print preview page to print only selected content.">
-          Selection only
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OPTION_RASTERIZE" desc="Checkbox label shown in print preview page to print PDF as an image (rasterize PDF).">
-          Print as image
-        </message>
-        <message name="IDS_PRINT_PREVIEW_MARGINS_LABEL" desc="Margins option label. Provides user the option to change the margins of the printed page.">
-          Margins
-        </message>
-        <message name="IDS_PRINT_PREVIEW_DEFAULT_MARGINS" desc="Option that specifies the page be printed with default margins.">
-          Default
-        </message>
-        <message name="IDS_PRINT_PREVIEW_NO_MARGINS" desc="Option that specifies the page be printed with no margins.">
-          None
-        </message>
-        <message name="IDS_PRINT_PREVIEW_CUSTOM_MARGINS" desc="Option that specifies the page be printed with user-specified custom margins.">
-          Custom
-        </message>
-        <message name="IDS_PRINT_PREVIEW_MINIMUM_MARGINS" desc="Option that specifies the page be printed with the minimum allowed margins by the printer.">
-          Minimum
-        </message>
-        <message name="IDS_PRINT_PREVIEW_TOP_MARGIN_LABEL" desc="ARIA label used by screen reader to explain the purpose of the top margin textbox.">
-          Top margin
-        </message>
-        <message name="IDS_PRINT_PREVIEW_BOTTOM_MARGIN_LABEL" desc="ARIA label used by screen reader to explain the purpose of the bottom margin textbox.">
-          Bottom margin
-        </message>
-        <message name="IDS_PRINT_PREVIEW_LEFT_MARGIN_LABEL" desc="ARIA label used by screen reader to explain the purpose of the left margin textbox.">
-          Left margin
-        </message>
-        <message name="IDS_PRINT_PREVIEW_RIGHT_MARGIN_LABEL" desc="ARIA label used by screen reader to explain the purpose of the right margin textbox.">
-          Right margin
-        </message>
-        <message name="IDS_PRINT_PREVIEW_MEDIA_SIZE_LABEL" desc="Media size option label. Provides user the option to change the size of the printed page.">
-          Paper size
-        </message>
-        <message name="IDS_PRINT_PREVIEW_DPI_LABEL" desc="Print quality option label. Provides user the option to select one of the print quality options defined for the printer.">
-          Quality
-        </message>
-        <message name="IDS_PRINT_PREVIEW_NON_ISOTROPIC_DPI_ITEM_LABEL" desc="Print quality option value text in case horizontal and vertical DPI values differ.">
-          <ph name="HORIZONTAL_DPI">$1<ex>200</ex></ph>x<ph name="VERTICAL_DPI">$2<ex>100</ex></ph> dpi
-        </message>
-        <message name="IDS_PRINT_PREVIEW_DPI_ITEM_LABEL" desc="Print quality option value text.">
-          <ph name="DPI">$1<ex>300</ex></ph> dpi
-        </message>
-        <message name="IDS_PRINT_PREVIEW_NATIVE_DIALOG" desc="Option offering the user to open the native print dialog, displayed when the PDF viewer is missing or when print preview fails.">
-          Print using system dialog…
-        </message>
-        <message name="IDS_PRINT_PREVIEW_DESTINATION_SEARCH_TITLE" desc="Title of the destination search UI component.">
-          Select a destination
-        </message>
-        <message name="IDS_PRINT_PREVIEW_ACCOUNT_SELECT_TITLE" desc="Title of the user's account selection control, to choose the account destinations are being shown for.">
-          Showing destinations for
-        </message>
-        <message name="IDS_PRINT_PREVIEW_ADD_ACCOUNT_TITLE" desc="Title of the selection control item to let user to sign into another account.">
-          Add account...
-        </message>
-        <message name="IDS_PRINT_PREVIEW_CLOUD_PRINT_PROMOTION" desc="Message describing features of Brave Cloud Print.">
-          Print to Brave Docs and other cloud destinations. <ph name="BEGIN_LINK">$1<ex>&lt;span&gt;</ex></ph>Sign in<ph name="END_LINK">$2<ex>&lt;/span&gt;</ex></ph> to print to Brave Cloud Print.
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a search box when user has not entered a search query.">
-          Search destinations
-        </message>
-        <message name="IDS_PRINT_PREVIEW_NO_DESTINATIONS_MESSAGE" desc="Message to show when no destinations were found.">
-          No destinations found
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SHOW_ALL_BUTTON_TEXT" desc="Label on a button to show all print destinations.">
-          Show All...
-        </message>
-        <message name="IDS_PRINT_PREVIEW_DESTINATION_COUNT" desc="Message to show how many print destinations the user has.">
-          (<ph name="COUNT">$1<ex>154</ex></ph> total)
-        </message>
-        <message name="IDS_PRINT_PREVIEW_RECENT_DESTINATIONS_TITLE" desc="Title of the section in the Print Preview dialog that lists recently used printers that the user can print to. 'Destinations' is used because the list may include 'Saving as PDF' or other options that are not physical printers.">
-          Recent Destinations
-        </message>
-        <message name="IDS_PRINT_PREVIEW_PRINT_DESTINATIONS_TITLE" desc="Title of the section in the Print Preview dialog that lists all printers that the user can print to. 'Destinations' is used because the list may include 'Saving as PDF' or other options that are not physical printers.">
-          Print Destinations
-        </message>
-        <message name="IDS_PRINT_PREVIEW_MANAGE" desc="Text of link to manage printers.">
-          Manage...
-        </message>
-        <message name="IDS_PRINT_PREVIEW_CHANGE_DESTINATION" desc="Label on button to change print destination." meaning="Label text">
-          Change...
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OFFLINE_FOR_YEAR" desc="Shown when printer has been offline for more than a year.">
-          Offline for more than a year
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OFFLINE_FOR_MONTH" desc="Shown when printer has been offline for more than a month.">
-          Offline for more than a month
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OFFLINE_FOR_WEEK" desc="Shown when printer has been offline for more than a week.">
-          Offline for more than a week
-        </message>
-        <message name="IDS_PRINT_PREVIEW_OFFLINE" desc="Shown when printer is currently offline.">
-          Currently offline
-        </message>
-        <message name="IDS_PRINT_PREVIEW_NO_LONGER_SUPPORTED_FRAGMENT" desc="Shown in destination settings when printer is no longer supported.">
-          No longer supported
-        </message>
-        <message name="IDS_PRINT_PREVIEW_NO_LONGER_SUPPORTED" desc="Shown in destinations dialog when printer is no longer supported.">
-          No longer supported.
-        </message>
-        <message name="IDS_PRINT_PREVIEW_EXTENSION_DESTINATION_ICON_TOOLTIP" desc="Tooltip for the icon shown in print destination list next to print destination provided by an extension.">
-          Documents you send to print via <ph name="APP_NAME">$1<ex>A Brave app</ex></ph> can be read by <ph name="APP_NAME">$1<ex>A Brave app</ex></ph>.
-        </message>
-        <message name="IDS_MORE_OPTIONS_LABEL" desc="Label of the toggle element to switch between showing more or less printing options in the Print Preview.">
-          More settings
-        </message>
-        <message name="IDS_LESS_OPTIONS_LABEL" desc="Label of the toggle element to switch between showing more or less printing options in the Print Preview.">
-          Fewer settings
-        </message>
-        <message name="IDS_PRINT_PREVIEW_COULD_NOT_PRINT" desc="Error message when printing fails in the print preview">
-          Printing failed. Please check your printer and try again.
-        </message>
-        <message name="IDS_PRINT_PREVIEW_REGISTER_PROMO_BUTTON_TEXT">
-          Register
-        </message>
-        <message name="IDS_PRINT_PREVIEW_ADVANCED_SETTINGS_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a advanced settings search box when user has not entered a search query.">
-          Search settings
-        </message>
-        <message name="IDS_PRINT_PREVIEW_ADVANCED_SETTINGS_DIALOG_TITLE" desc="Title of the advanced printer settings selection dialog.">
-          Advanced settings for <ph name="PRINTING_DESTINATION">$1<ex>Office printer</ex></ph>
-        </message>
-        <message name="IDS_PRINT_PREVIEW_NO_ADVANCED_SETTINGS_MATCH_SEARCH_HINT" desc="Message to display in the printer advanced settings dialog when no settings match search string entered by the user.">
-          No matches were found.
-        </message>
-        <message name="IDS_PRINT_PREVIEW_ADVANCED_SETTINGS_DIALOG_CONFIRM" desc="In title case: The text for the accept button on the printer advanced settings dialog.">
-          Apply
-        </message>
-        <message name="IDS_PRINT_PREVIEW_ADVANCED_OPTIONS_LABEL" desc="Printer advanced options section label.">
-          Advanced
-        </message>
-        <message name="IDS_PRINT_PREVIEW_SHOW_ADVANCED_OPTIONS" desc="The text for the button to open the printer's advanced settings dialog.">
-          Change printer options...
-        </message>
-        <message name="IDS_PRINT_PREVIEW_ACCEPT_INVITE" desc="Text for the button to accept the printer-sharing invitation.">
-          Accept
-        </message>
-        <message name="IDS_PRINT_PREVIEW_ACCEPT_GROUP_INVITE" desc="Text for the button to accept the printer-sharing invitation for the group of users.">
-          Accept for group
-        </message>
-        <message name="IDS_PRINT_PREVIEW_REJECT_INVITE" desc="Text for the button to reject the printer-sharing invitation.">
-          Reject
-        </message>
-        <message name="IDS_PRINT_PREVIEW_GROUP_INVITE_TEXT" desc="Message to show when the user has pending printer-sharing invitation for the group of users they are a manager of.">
-          &lt;strong&gt;<ph name="SENDER">$1</ph>&lt;/strong&gt; wants to share a printer &lt;strong&gt;<ph name="PRINTER_NAME">$2</ph>&lt;/strong&gt; with a group you own: &lt;strong&gt;<ph name="GROUP_NAME">$3</ph>&lt;/strong&gt;. If you accept, all group members will be able to print to the printer.
-        </message>
-        <message name="IDS_PRINT_PREVIEW_INVITE_TEXT" desc="Message to show when the user has pending printer-sharing invitation.">
-          &lt;strong&gt;<ph name="SENDER">$1</ph>&lt;/strong&gt; wants to share a printer &lt;strong&gt;<ph name="PRINTER_NAME">$2</ph>&lt;/strong&gt; with you.
-        </message>
-        <message name="IDS_PRINT_PREVIEW_BUTTON_SELECT" desc="Label for a button in a dialog asking a user to confirm selection of a printer in print preview UI. The printer gets selected if the user clicks the button.">
-          Select
-        </message>
-        <message name="IDS_PRINT_PREVIEW_BUTTON_GO_BACK" desc="Label for a button in a dialog asking a user to confirm selection of a printer in print preview UI. Clicking the button will cancel printer selection, close the dialog and go back to the list of printers available for selection.">
-          Back
-        </message>
-        <message name="IDS_PRINT_PREVIEW_RESOLVE_EXTENSION_USB_PERMISSION_MESSAGE" desc="Warning shown to the user when they attempt to select a USB printer supported by an extension, but for which the extension doesn't yet have access permission. The user is warned that selecting the printer would grant the extension access to the USB device and asked to confirm or cancel the selection. The extension name will be shown in the paragraph immediately bellow this message.">
-          By selecting this printer, you are giving the following extension the permission to access your printer:
-        </message>
-        <message name="IDS_PRINT_PREVIEW_RESOLVE_EXTENSION_USB_ERROR_MESSAGE" desc="Message shown to the user when they attempt to select a USB pinter supported by an extension, but for which the extension does not yet have access permission. The message is shown if the user grants the extension access to the USB device (by confirming printer selection), but the extension is not able to retrieve information about the printer, and an error is reported. The message contains a placeholder for the name of the extension.">
-          <ph name="EXTENSION_NAME">$1<ex>Print app</ex></ph> could not communicate with this printer. Make sure the printer is plugged in and try again.
-        </message>
-        <if expr="chromeos">
-          <message name="IDS_PRINT_CONFIGURING_IN_PROGRESS_TEXT" desc="Message shown to user while their printer is being setup in Brave OS.">
-            Setting up
-          </message>
-          <message name="IDS_PRINT_CONFIGURING_FAILED_TEXT" desc="Message shown to user when their printer is failed to set up in Brave OS.">
-            Error setting up printer
-          </message>
-        </if>
-        <if expr="not chromeos">
-          <message name="IDS_PRINT_PREVIEW_SYSTEM_DIALOG_OPTION" desc="Option allowing the user to access advanced printer settings using the native print system dialog instead of printing through the print preview mechanism. Shortcut key is not translated">
-            Print using system dialog... <ph name="SHORTCUT_KEY">$1<ex>(Shift+Ctrl+P)</ex></ph>
-          </message>
-        </if>
-        <if expr="is_macosx">
-          <message name="IDS_PRINT_PREVIEW_OPENING_PDF_IN_PREVIEW_APP" desc="Text shown after the user clicks on the open pdf in preview button while the pdf file is not ready yet.">
-          Opening PDF in Preview
-          </message>
-          <message name="IDS_PRINT_PREVIEW_OPEN_PDF_IN_PREVIEW_APP" desc="Option allowing the user to open the pdf in native preview app">
-          Open PDF in Preview
-          </message>
-        </if>
-      </if>
 
       <!-- Load State -->
       <message name="IDS_LOAD_STATE_WAITING_FOR_SOCKET_SLOT" desc="Status text when Brave is at its connection limit, and is waiting for a URL request to complete to free up a connection.">
@@ -7367,8 +6855,8 @@ I don't think this site should be blocked!
       <message name="IDS_PROFILES_PROFILE_SIGNOUT_BUTTON" desc="Button in the avatar menu bubble view to sign-out the current profile.">
         Exit and childlock
       </message>
-      <message name="IDS_PROFILES_CLOSE_ALL_WINDOWS_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile.">
-        Close all your windows
+      <message name="IDS_PROFILES_EXIT_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile when there is more than one profile.">
+        Exit <ph name="PROFILE_NAME">$1<ex>User</ex></ph>
       </message>
       <message name="IDS_PROFILES_GAIA_SIGNIN_TITLE" desc="Title of the account removal view in the avatar menu bubble.">
         Sign in
@@ -7403,7 +6891,10 @@ I don't think this site should be blocked!
       <message name="IDS_PROFILES_DICE_SIGNIN_WITH_ANOTHER_ACCOUNT_BUTTON" desc="Button to sign in and turn on Sync with another web account.">
         Sync to another account
       </message>
-      <message name="IDS_PROFILES_DICE_SYNC_PAUSED_TITLE" desc="Title of the profile user menu when sync is paused.">
+      <message name="IDS_PROFILES_DICE_SYNC_DISABLED_TITLE" desc="Title of the profile user menu when sync is disabled.">
+        Sync disabled
+      </message>
+       <message name="IDS_PROFILES_DICE_SYNC_PAUSED_TITLE" desc="Title of the profile user menu when sync is paused.">
         Sync is paused
       </message>
       <message name="IDS_PROFILES_DICE_USE_ANOTHER_ACCOUNT_BUTTON" desc="Button to use another account to sign in and turn on Sync.">
@@ -7449,6 +6940,12 @@ I don't think this site should be blocked!
         <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
           Manage people
         </message>
+        <message name="IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a guest window.">
+          Open Guest window
+        </message>
+        <message name="IDS_PROFILES_CLOSE_ALL_WINDOWS_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile.">
+          Close all your windows
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_PROFILES_PROFILE_ADD_ACCOUNT_BUTTON" desc="Button in the avatar menu bubble view used to add an account to a profile.">
@@ -7471,6 +6968,12 @@ I don't think this site should be blocked!
         </message>
         <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
           Manage People
+        </message>
+        <message name="IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a guest window.">
+          Open Guest Window
+        </message>
+        <message name="IDS_PROFILES_CLOSE_ALL_WINDOWS_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile.">
+          Close all your Windows
         </message>
       </if>
       <message name="IDS_PROFILES_EDIT_PROFILE_ACCESSIBLE_NAME" desc="Description of the Edit Profile button. This is used for accessibility.">
@@ -7651,9 +7154,6 @@ I don't think this site should be blocked!
       <message name="IDS_PROFILES_DELETE_BUTTON_LABEL" desc="The label that appears on the profile delete button in the options dialog to allow a user to delete their profile.">
         Remove...
       </message>
-      <message name="IDS_PROFILES_LEGACY_SUPERVISED_USER_DASHBOARD_TIP" desc="A message that appears below the Users section on the Settings page when the current user manages legacy supervised users (but no child accounts) on the machine, providing a link to the external management dashboard page.">
-        Manage your supervised users via the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Supervised Users Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-      </message>
       <message name="IDS_PROFILES_DELETE_SINGLE_BUTTON_LABEL" desc="The label that appears on the profile delete button in the options dialog to allow a user with only one profile to delete it.">
         Delete this person
       </message>
@@ -7718,7 +7218,40 @@ I don't think this site should be blocked!
         You've turned on Sync
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Unity is enabled">
-        Get even more from Brave
+        Get Brave smarts in Brave
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_CONSENT_BUMP_TITLE" desc="Title of the sync consent bump in the tab modal signin flow when Unity is enabled">
+        Get more Brave smarts
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_MORE_OPTIONS_BUTTON_LABEL" desc="Label of the sync confirmation button to show more options">
+        More options
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_MORE_OPTIONS_TITLE" desc="Title of the sync confirmation more options dialog">
+        Sync and personalization options
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_MORE_OPTIONS_SUBTITLE" desc="Subitle of the sync confirmation more options dialog">
+        Features related to sync and personalization are now under a single control. Turning this on may change your current settings.
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_REVIEW_SETTINGS_TITLE" desc="Title of the sync confirmation option to review settings">
+        Review your settings on the next screen
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_MAKE_NO_CHANGES_TITLE" desc="Title of the sync confirmation option to make no changes">
+        Make no changes
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_MAKE_NO_CHANGES_SUBTITLE" desc="Subtitle of the sync confirmation option to make no changes">
+        The data you sync to Brave and the features you use will not change
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_USE_DEFAULT_TITLE" desc="Title of the sync confirmation option to use the default settings">
+        Yes, turn on sync and personalization
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_USE_DEFAULT_SUBTITLE" desc="Subtitle of the sync confirmation option to use the default settings">
+        You can customize this anytime in Brave Settings
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_CONFIRM_BUTTON_LABEL" desc="Label of the sync confirmation options confirm button">
+        Ok
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_BACK_BUTTON_LABEL" desc="Label of the sync confirmation options button to go to the previous screen">
+        Back
       </message>
 
       <!-- "Brave sync" is the Brave Cloud Based service used for sync. Thus this string resource is set to "Brave sync" even for Brave builds. -->
@@ -7729,7 +7262,7 @@ I don't think this site should be blocked!
         Your bookmarks, history, passwords, and other settings will be synced to your Brave Account so you can use them on all your devices
       </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_CHROME_SYNC_MESSAGE" desc="Body of the chrome sync section of the sync confirmation dialog in the tab modal signin flow">
-        Sync your bookmarks, passwords, and history on all your devices
+        Your bookmarks, passwords, history, and more on all your devices
       </message>
       <message name="IDS_SYNC_CONFIRMATION_PERSONALIZE_SERVICES_TITLE" desc="Title of the personalize services section of the sync confirmation dialog in the tab modal signin flow" formatter_data="android_java">
         Personalize Brave services
@@ -7738,13 +7271,13 @@ I don't think this site should be blocked!
         Brave may use your browsing history to personalize Search, ads, and other Brave services
       </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_PERSONALIZE_SERVICES_BODY" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow">
-        Get more personalized experiences, such as better content suggestions and smarter Translate
+        Personalized Brave services like Brave Pay
       </message>
       <message name="IDS_SYNC_CONFIRMATION_PERSONALIZE_SERVICES_BODY_CHILD_ACCOUNT" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow for child accounts" formatter_data="android_java">
         Brave may use your browsing history to personalize Search and other Brave services
       </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_GOOGLE_SERVICES_BODY" desc="Body of the google services section of the sync confirmation dialog in the tab modal signin flow">
-        Bring powerful Brave services like spell check and tap to search to Brave
+        Improve Brave and its security by sending system and usage information to Brave
       </message>
       <message name="IDS_SYNC_CONFIRMATION_SYNC_SETTINGS_LINK_BODY" desc="Label of the section containing the link to go to the sync setting page.">
         Want to manage sync and personalization before they’re turned on? Visit <ph name="BEGIN_LINK">&lt;a id="settingsLink" href="chrome://settings"&gt;</ph>Settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
@@ -7753,7 +7286,7 @@ I don't think this site should be blocked!
         You can customize what information Brave collects in <ph name="BEGIN_LINK">&lt;a id="settingsLink" href="chrome://settings"&gt;</ph>Settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> anytime.
       </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_SYNC_SETTINGS_DESCRIPTION" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow for child accounts">
-        Brave may use your browsing activity, content on some sites you visit, and other browser interactions to personalize Brave and other Brave services like Translate, Search, and ads.
+        Brave may use content on sites you visit and browsing activity and interactions to personalize Brave and other Brave services like Translate, Search, and ads. You can customize this in Settings.
       </message>
       <message name="IDS_SYNC_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
         Ok, got it
@@ -7764,8 +7297,8 @@ I don't think this site should be blocked!
       <message name="IDS_SYNC_CONFIRMATION_UNDO_BUTTON_LABEL" desc="Label of the undo button in the sync confirmation dialog of the tab modal signin flow">
         Undo
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_DICE_UNDO_BUTTON_LABEL" desc="Label of the undo button in the sync confirmation dialog of the tab modal signin flow">
-        No thanks
+      <message name="IDS_SYNC_CONFIRMATION_DICE_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation dialog of the tab modal signin flow to open settings">
+        Settings
       </message>
 
       <!--- Sync Confirmation section of the tab modal signin flow when sync is disabled by policy -->
@@ -8166,9 +7699,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_SYNC_ACCOUNT_SYNCING_WITH_MANAGE_LINK" desc="The message that appears in the options dialog indicating that account is syncing along with a link to manage their data (where supported, or not possible through the application)">
           Manage your synced data on <ph name="BEGIN_LINK">&lt;a href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$1" target=&quot;_blank&quot;&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-        </message>
-        <message name="IDS_SYNC_ACCOUNT_SYNCING_WITH_MANAGE_LINK_NEW" desc="The message that appears in the options dialog indicating that account is syncing along with a link to manage their data (where supported, or not possible through the application)">
-          Manage your synced data and devices on <ph name="BEGIN_LINK">&lt;a href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$1" target=&quot;_blank&quot;&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
         </message>
         <message name="IDS_SYNC_AUTHENTICATING_LABEL" desc="Label to display while the user is being authenticated to use sync.">
           Authenticating...
@@ -8619,7 +8149,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
                 Wrong index.
         </message>
         <message name="IDS_JAVASCRIPT_UNSUPPORTED_ERROR_APPLESCRIPT_MAC" desc="Error dialog title to be displayed when the user attempts to execute JavaScript via AppleScript. Mac-only.">
-          Executing JavaScript through AppleScript is turned off. To turn it on, visit Brave Settings > Advanced > System. For more information: https://support.google.com/chrome/?p=applescript
+          Executing JavaScript through AppleScript is turned off. To turn it on, from the menu bar, go to View > Developer > Allow JavaScript from Apple Events. For more information: https://support.google.com/chrome/?p=applescript
         </message>
       </if> <!-- is_macosx -->
 
@@ -9411,9 +8941,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_PROFILES_DELETE_MESSAGE" desc="Message explaining to the user what will happen if they delete this profile">
           Are you sure you want to remove "<ph name="PROFILE_NAME">$1<ex>New User</ex></ph>" and all associated Brave data from this computer? This cannot be undone.
         </message>
-        <message name="IDS_PROFILES_DELETE_LEGACY_SUPERVISED_ADDENDUM" desc="Additional message shown in the same dialog following the IDS_PROFILES_DELETE_MESSAGE, explaining to the user what will happen if they delete the profile of a supervised user.">
-          Settings and browsing history for this supervised user may still be visible by the manager at <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DISPLAY_LINK">$2</ph><ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-        </message>
         <message name="IDS_PROFILES_DISCONNECT_MANAGED_PROFILE_TITLE" desc="Title of the disconnect managed profile dialog.">
           Disconnect your Brave Account
         </message>
@@ -9425,9 +8952,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_PROFILES_LIST_ITEM_CURRENT" desc="Text to display in the multi-profiles list when this profile is the current profile">
           <ph name="PROFILE_NAME">$1<ex>New User</ex></ph> (current)
-        </message>
-        <message name="IDS_PROFILES_LIST_LEGACY_SUPERVISED_USER_LABEL" desc="Text to display in the multi-profiles list next to the profile name when this profile is supervised.">
-          (Supervised)
         </message>
         <message name="IDS_PROFILES_SINGLE_USER_MESSAGE" desc="Text to display in the multi-profiles section when there is only one user">
           You are currently the only <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> user.
@@ -9449,45 +8973,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_PROFILES_CREATE_SIGN_IN_ERROR" desc="Message shown when a sign-in error occurs during creation of a new supervised user.">
           The new supervised user couldn't be created. Please make sure you're signed in properly and try again.
         </message>
-        <message name="IDS_PROFILES_CREATE_NO_CUSTODIAN_ACCOUNT_ERROR" desc="Message shown when the user checks the checkbox to create a supervised user, but does not select a custodian account from the dropdown list.">
-          Select an account to manage the supervised user.
-        </message>
-        <message name="IDS_PROFILES_CREATE_LEGACY_SUPERVISED_USER_ERROR_EXISTS_REMOTELY" desc="Message shown when the user enters the name of a supervised user that can be imported.">
-          Looks like you're already managing a user by that name. Did you want to <ph name="BEGIN_LINK">&lt;a is="action-link" id="supervised-user-import-existing"&gt;</ph>import <ph name="PROFILE_NAME">$1<ex>John</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph> to this device?
-        </message>
-        <message name="IDS_PROFILES_CREATE_LEGACY_SUPERVISED_USER_ERROR_EXISTS_LOCALLY" desc="Message shown when the user enters the name of a supervised user that we already have locally.">
-          Looks like you already have a supervised user with this name.
-        </message>
-        <message name="IDS_PROFILES_CREATE_SUPERVISED_SIGNED_IN_LABEL" desc="Label for the 'Supervised user' checkbox in the create-profile dialog when the current user is signed in.">
-          Control and view the websites this person visits from <ph name="CUSTODIAN_EMAIL">$1<ex>user@gmail.com</ex></ph>.
-        </message>
         <message name="IDS_PROFILES_CREATE_DESKTOP_SHORTCUT_LABEL" desc="Label for the checkbox that controls whether a desktop shortcut should be created for the new profile.">
           Create a desktop shortcut for this user
-        </message>
-        <message name="IDS_PROFILES_CREATE_SUPERVISED_MULTI_SIGNED_IN_LABEL" desc="Label for the 'Supervised user' checkbox in the create-profile dialog when user can choose from a list of signed in users.">
-          Supervise this person to control and view the websites they visit from your Brave Account.
-        </message>
-        <message name="IDS_PROFILES_CREATE_SUPERVISED_NO_SIGNED_IN_USER_TEXT" desc="Informative text displayed below the 'Supervised user' checkbox in the create-profile dialog when there are no signed in users to choose as the custodian.">
-          To supervise this person, <ph name="BEGIN_LINK">&lt;a id="sign-in-to-chrome" href="https://support.google.com/chrome/answer/185277"&gt;</ph>sign in to Brave<ph name="END_LINK">&lt;/a&gt;</ph>.
-        </message>
-        <message name="IDS_PROFILES_CREATE_SUPERVISED_SENTINEL_MENU_ITEM_TEXT" desc="Label for the dropdown menu containing signed in users from which the user can choose a custodian account.">
-          Select an account
-        </message>
-        <message name="IDS_PROFILES_CREATE_SUPERVISED_ACCOUNT_DETAILS_OUT_OF_DATE_LABEL" desc="Label for the 'Supervised user' checkbox in the create-profile dialog when the current user is signed in, but their sign-in information is invalid. This will be followed by a 'Sign in again' link.">
-          Control and view the websites this person visits from <ph name="CUSTODIAN_EMAIL">$1<ex>user@gmail.com</ex></ph>.
-    Your account sign-in details are out of date.
         </message>
         <message name="IDS_PROFILES_CREATE_CUSTODIAN_ACCOUNT_DETAILS_OUT_OF_DATE_ERROR" desc="Message shown when the custodian is signed in, but their sign-in information is invalid.">
           Your account details are out of date. <ph name="BEGIN_LINK">&lt;a is="action-link" id="reauth" data-user-email="$1"&gt;</ph>Sign in again<ph name="END_LINK">&lt;/a&gt;</ph>.
         </message>
-        <message name="IDS_PROFILES_CREATE_SUPERVISED_NOT_ALLOWED_BY_POLICY" desc="Error message shown when the policy-controlled preference prohibits creating supervised users.">
-          Your administrator doesn’t allow you to create supervised users.
-        </message>
         <message name="IDS_PROFILES_CREATE_SUPERVISED_JUST_SIGNED_IN" desc="Warning message shown in the create-profile dialog when the custodian signed in recently, sync has not yet finished initializing, and so the creation process is likely to take extra time.">
           Creating your supervised user. This may take a few moments.
-        </message>
-        <message name="IDS_PROFILES_CREATE_SUPERVISED_NOT_SIGNED_IN_HTML" desc="Label for the (disabled) 'Supervised user' checkbox in the create-profile dialog when the current user is not signed in, containing a link to the sign in page.">
-          <ph name="BEGIN_SIGN_IN_LINK">&lt;a is="action-link" id="create-profile-supervised-sign-in-link"&gt;</ph>Sign in<ph name="END_SIGN_IN_LINK">&lt;/a&gt;</ph> to control and view the websites this person visits.
         </message>
         <message name="IDS_PROFILES_CREATE_SHORTCUT_CHECKBOX" desc="Create Shortcut checkbox when creating a new profile">
           Create a desktop shortcut for this user
@@ -9499,34 +8992,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Remove desktop shortcut
         </message>
 
-        <!-- Legacy supervised-user creation wizard dialogs -->
-        <message name="IDS_LEGACY_SUPERVISED_USER_LEARN_MORE_TITLE" desc="Title for the 'Learn more' dialog for the supervised user feature.">
-          What is a supervised user?
-        </message>
-        <message name="IDS_SUPERVISED_USER_LEARN_MORE_TEXT" desc="Informative text describing the 'supervised user' feature in detail, shown when the 'Learn more' link is clicked in the 'Create User' page of the user manager. The HTML entities at the starts of the lines are a non-breaking space, a bullet, and another non-breaking space.">
-          A supervised user can explore the web with your guidance. As the manager of a supervised user in Brave, you can:
-
-&#160;&#8226;&#160;allow or prohibit certain websites,
-&#160;&#8226;&#160;review websites the supervised user has visited, and
-&#160;&#8226;&#160;manage other settings.
-
-Creating a supervised user does not create a Brave Account, and their bookmarks, browsing history, and other preferences will not follow them to other devices with Brave Sync. After you create a new supervised user, you can manage their settings at any time, from any device, at <ph name="BEGIN_MANAGE_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DISPLAY_LINK">$2</ph><ph name="END_MANAGE_LINK">&lt;/a&gt;</ph>.
-
-For more information, visit our <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://support.google.com/chrome/?p=ui_supervised_users&amp;hl=[GRITLANGCODE]"&gt;</ph>Help Center<ph name="END_LINK">&lt;/a&gt;</ph>.
-        </message>
-        <message name="IDS_LEGACY_SUPERVISED_USER_LEARN_MORE_DONE_BUTTON" desc="Text for the 'OK' button on the 'Learn more' dialog for the supervised user feature.">
-          OK, got it
-        </message>
-        <message name="IDS_LEGACY_SUPERVISED_USER_CREATED_TITLE" desc="Title for the confirmation dialog that appears after a supervised user has been created.">
-          <ph name="NEW_PROFILE_NAME">$1<ex>New User</ex></ph> is now a supervised user
-        </message>
-        <message name="IDS_LEGACY_SUPERVISED_USER_CREATED_DONE_BUTTON" desc="Text for the button that closes the dialog without making any additional changes, on the supervised user creation confirmation dialog.">
-          OK, got it
-        </message>
-        <message name="IDS_LEGACY_SUPERVISED_USER_CREATED_SWITCH_BUTTON" desc="Text for the button that opens a window for the new supervised user, on the supervised user creation confirmation dialog.">
-          Switch to <ph name="NEW_PROFILE_NAME">$1<ex>New User</ex></ph>
-        </message>
-
         <!-- Import existing supervised user dialog -->
         <message name="IDS_IMPORT_EXISTING_LEGACY_SUPERVISED_USER_TITLE" desc="Title for the dialog used to import existing supervised users. The dialog appears when the custodian clicks on 'Import existing supervised user' during the user creation flow. The dialog displays a list of existing supervised users for the custodian to choose from">
           Import an existing supervised user
@@ -9534,26 +8999,11 @@ For more information, visit our <ph name="BEGIN_LINK">&lt;a target="_blank" href
         <message name="IDS_IMPORT_EXISTING_LEGACY_SUPERVISED_USER_TEXT" desc="Text that instructs the user to choose one of the displayed supervised users to import to this device.">
           Choose a supervised user to add to this device.
         </message>
-        <message name="IDS_IMPORT_NO_EXISTING_SUPERVISED_USER_TEXT" desc="Message shown to the custodian when they open the 'supervised user import' overlay but have no existing supervised users to import.">
-          There are no supervised users to add to this device.
-        </message>
         <message name="IDS_CREATE_NEW_LEGACY_SUPERVISED_USER_LINK" desc="The text for the link button that takes the user back from the dialog for importing an existing supervised user to the user creation dialog.">
           Create a new supervised user
         </message>
         <message name="IDS_IMPORT_EXISTING_LEGACY_SUPERVISED_USER_OK" desc="Text on the button to confirm importing an existing supervised user.">
           Import supervised user
-        </message>
-        <message name="IDS_LEGACY_SUPERVISED_USER_ALREADY_ON_THIS_DEVICE" desc="Text shown in the list of supervised users beside the name of a supervised user that already exists on the current device.">
-          (already on this device)
-        </message>
-        <message name="IDS_LEGACY_SUPERVISED_USER_IMPORT_LOCAL_ERROR" desc="Message shown when a local error (for example, a disk error) occurs during supervised user import.">
-          The supervised user couldn't be imported. Please check your hard drive space and permissions and try again.
-        </message>
-        <message name="IDS_LEGACY_SUPERVISED_USER_IMPORT_REMOTE_ERROR" desc="Message shown when a remote error (for example, a network error) occurs during supervised user import.">
-          The supervised user couldn't be imported. Please check your network connection and try again later.
-        </message>
-        <message name="IDS_LEGACY_SUPERVISED_USER_IMPORT_SIGN_IN_ERROR" desc="Message shown when a sign-in error occurs during supervised user import.">
-          Looks like there's a problem with your credentials. Please make sure you're signed in properly and try again.
         </message>
       </if>
 
@@ -10171,6 +9621,9 @@ For more information, visit our <ph name="BEGIN_LINK">&lt;a target="_blank" href
       <message name="IDS_TOOLTIP_TAB_ALERT_STATE_USB_CONNECTED" desc="Extra tool tip text, when tab is connected to a USB device.">
         This tab is connected to a USB device.
       </message>
+      <message name="IDS_TOOLTIP_TAB_ALERT_STATE_PIP_PLAYING" desc="Extra tool tip text, when tab is playing a video in Picture-in-Picture.">
+        This tab is playing a video in Picture-in-Picture.
+      </message>
 
       <!-- Tab accessibility labels -->
       <message name="IDS_TAB_AX_LABEL_MEDIA_RECORDING_FORMAT" desc="Accessibility label text, when the tab is recording media. Example: 'Brave Hangouts - Camera or microphone recording'">
@@ -10178,6 +9631,9 @@ For more information, visit our <ph name="BEGIN_LINK">&lt;a target="_blank" href
       </message>
       <message name="IDS_TAB_AX_LABEL_TAB_CAPTURING_FORMAT" desc="Accessibility label text, when the tab content is being captured and shared using screen sharing. Example: 'Brave Hangouts - Tab content shared'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Tab content shared
+      </message>
+        <message name="IDS_TAB_AX_LABEL_PIP_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing a persistent video in Picture-in-Picture. Example: 'Brave Hangouts - Video playing in Picture-in-Picture'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Video playing in Picture-in-Picture
       </message>
       <message name="IDS_TAB_AX_LABEL_AUDIO_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing audio. Example: 'Brave Play Music - Audio playing'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Play Music</ex></ph> - Audio playing
@@ -10250,9 +9706,6 @@ For more information, visit our <ph name="BEGIN_LINK">&lt;a target="_blank" href
       </message>
       <message name="IDS_PUSH_MESSAGING_GENERIC_NOTIFICATION_BODY" desc="Body text of an auto-generated notification informing the user that the site may have received an update in the background, in case the site did not satisfy the visible notification requirement itself.">
         This site has been updated in the background.
-      </message>
-      <message name="IDS_NOTIFICATIONS_BACKGROUND_SERVICE_NAME" desc="The name of the Notifications service that can run in the background">
-        Notifications
       </message>
 
       <!-- Easy Unlock strings -->
@@ -10509,6 +9962,9 @@ For more information, visit our <ph name="BEGIN_LINK">&lt;a target="_blank" href
       <message name="IDS_DEVICE_LOG_TYPE_HID" desc="Checkbox to enable showing events of type HID (Human Interface Device)">
         HID
       </message>
+      <message name="IDS_DEVICE_LOG_TYPE_PRINTER" desc="Checkbox to enable showing events of type Printer">
+        Printer
+      </message>
       <message name="IDS_DEVICE_LOG_FILEINFO" desc="File info checkbox in device event log">
         File Info
       </message>
@@ -10715,7 +10171,7 @@ For more information, visit our <ph name="BEGIN_LINK">&lt;a target="_blank" href
     <if expr="not is_android">
       <!-- Android strings are declared in android_chrome_strings.grd. -->
       <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
-        Redirect blocked to site
+        Redirect blocked:
       </message>
       <if expr="use_titlecase">
         <message name="IDS_REDIRECT_BLOCKED_GOT_IT" desc="In Title Case: The text of the OK button for the blocked redirect dialog.">
@@ -10862,6 +10318,16 @@ For more information, visit our <ph name="BEGIN_LINK">&lt;a target="_blank" href
       </message>
     </if>
 
+    <!-- Download open confirmation dialog -->
+    <if expr="not is_android">
+      <message name="IDS_DOWNLOAD_OPEN_CONFIRMATION_DIALOG_TITLE" desc="Title of the dialog prompt shown to users when an extension is trying to open a downloaded file.">
+        Open download
+      </message>
+      <message name="IDS_DOWNLOAD_OPEN_CONFIRMATION_DIALOG_MESSAGE" desc="Text of the message of the download open confirmation dialog.">
+        Allow <ph name="EXTENSION_NAME">$1<ex>Download Viewer</ex></ph> to open <ph name="FILE_NAME">$2<ex>abc.jpg</ex></ph>?
+      </message>
+    </if>
+
     <!-- Strings that are only used when VR devices are supported -->
     <!-- TODO(ddorwin): Use consistent naming schemes for VR strings. -->
     <if expr="enable_vr">
@@ -10972,12 +10438,45 @@ For more information, visit our <ph name="BEGIN_LINK">&lt;a target="_blank" href
       <message name="IDS_VR_BUTTON_APP_REPOSITION" desc="This is the label for the app button while in reposition mode">
         Finish
       </message>
+      <message name="IDS_VR_MENU_NEW_TAB" desc="Menu item for opening a new tab. [CHAR-LIMIT=27]">
+        New tab
+      </message>
       <message name="IDS_VR_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new incognito tab that facilitates pseudononymous browsing. [CHAR-LIMIT=27]">
         New incognito tab
       </message>
+      <message name="IDS_VR_MENU_BOOKMARKS" desc="Menu item for opening the bookmarks page that contains all the user's bookmarks. [CHAR-LIMIT=27]">
+        Bookmarks
+      </message>
+      <message name="IDS_VR_MENU_RECENT_TABS" desc="Menu item for opening the 'Recent tabs' page that shows recently closed tabs and pages the user has opened on his/her other devices. [CHAR-LIMIT=27]">
+        Recent tabs
+      </message>
+      <message name="IDS_VR_MENU_HISTORY" desc="Menu item for opening the history page. [CHAR-LIMIT=27]">
+        History
+      </message>
+      <message name="IDS_VR_MENU_DOWNLOADS" desc="Menu item for opening the downloads page. [CHAR-LIMIT=27]">
+        Downloads
+      </message>
+      <message name="IDS_VR_MENU_SHARE" desc="Menu item for sharing the current URL. [CHAR-LIMIT=27]">
+        Share...
+      </message>
+      <message name="IDS_VR_MENU_PREFERENCES" desc="Menu item for opening browser preferences. [CHAR-LIMIT=27]">
+        Settings
+      </message>
+      <message name="IDS_VR_MENU_CLOSE_ALL_TABS" desc="Menu item for closing all open tabs. [CHAR-LIMIT=27]">
+        Close all tabs
+      </message>
       <message name="IDS_VR_MENU_CLOSE_INCOGNITO_TABS" desc="Menu item for closing all open incognito tabs. [CHAR-LIMIT=27]">
         Close incognito tabs
-     </message>
+      </message>
+      <message name="IDS_VR_MENU_SEND_FEEDBACK" desc="Menu item for sending feedback. [CHAR-LIMIT=27]">
+        Send feedback
+      </message>
+      <message name="IDS_VR_TABS_BUTTON_REGULAR" desc="Text on button for selecting regular tabs">
+        Tabs
+      </message>
+      <message name="IDS_VR_TABS_BUTTON_INCOGNITO" desc="Text on button for selecting incognito tabs">
+        Incognito
+      </message>
     </if>
 
     <message name="IDS_CONFIRM_FILE_UPLOAD_TITLE" desc="Title of dialog for confirming that many files are about to be uploaded / given to the site. [ICU Syntax]">

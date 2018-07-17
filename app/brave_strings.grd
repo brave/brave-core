@@ -137,14 +137,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         Brave
       </message>
       <if expr="is_win">
-        <message name="IDS_SXS_SHORTCUT_NAME">
-          Brave Nightly
+        <message name="IDS_SXS_SHORTCUT_NAME" desc="Unused in Brave builds" translateable="false">
         </message>
-        <message name="IDS_SHORTCUT_NAME_BETA">
-          Brave Beta
+        <message name="IDS_SHORTCUT_NAME_BETA" desc="Unused in Brave builds" translateable="false">
         </message>
-        <message name="IDS_SHORTCUT_NAME_DEV">
-          Brave Dev
+        <message name="IDS_SHORTCUT_NAME_DEV" desc="Unused in Brave builds" translateable="false">
         </message>
         <message name="IDS_PRODUCT_DESCRIPTION" desc="Browser description">
           Brave is a web browser that runs webpages and applications with lightning speed. It's fast, stable, and easy to use. Browse the web more safely with malware and phishing protection built into Brave.
@@ -161,6 +158,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_SHORT_PRODUCT_LOGO_ALT_TEXT" desc="Alt text for the Brave logo image.">
         Brave logo
       </message>
+      <!-- Brave enterprise logo won't be used in Brave -->
+      <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image."/>
       <if expr="is_win">
         <message name="IDS_SHORTCUT_NEW_WINDOW" desc="The text label of the New window shortcut context menu entry as of Windows 8">
           New window
@@ -807,11 +806,9 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         Brave Apps
       </message>
       <if expr="is_win">
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">
-          Brave Apps
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA" desc="Unused in Brave builds" translateable="false">
         </message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">
-          Brave Apps
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV" desc="Unused in Brave builds" translateable="false">
         </message>
       </if>
 
@@ -925,26 +922,20 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         <message name="IDS_INBOUND_MDNS_RULE_NAME" desc="The name of the firewall rule allowing inbound mDNS traffic.">
           Brave (mDNS-In)
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA">
-          Brave Beta (mDNS-In)
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA" desc="Unused in Brave builds" translateable="false">
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY">
-          Brave Nightly (mDNS-In)
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY" desc="Unused in Brave builds" translateable="false">
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV">
-          Brave Dev (mDNS-In)
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV" desc="Unused in Brave builds" translateable="false">
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION">
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION" desc="The description of the firewall rule allowing inbound mDNS traffic.">
           Inbound rule for Brave to allow mDNS traffic.
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA">
-          Inbound rule for Brave Beta to allow mDNS traffic.
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA" desc="Unused in Brave builds" translateable="false">
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY">
-          Inbound rule for Brave Nightly to allow mDNS traffic.
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY" desc="Unused in Brave builds" translateable="false">
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV">
-          Inbound rule for Brave Dev to allow mDNS traffic.
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV" desc="Unused in Brave builds" translateable="false">
         </message>
       </if>
 
@@ -1179,7 +1170,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
           Not now
         </message>
         <message name="IDS_DICE_WELCOME_DESCRIPTION" desc="A message on the welcome page explaining the purpose of signing in.">
-          Sign in for a personalized browsing experience, synced across devices
+          Sign in to sync and personalize Brave across your devices
         </message>
       </if>
 
@@ -1245,6 +1236,21 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         </message>
         <message name="IDS_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells users the browser must be relaunched.">
           Your administrator requires that you relaunch Brave to apply an update
+        </message>
+      </if>
+      <!-- Chroium launch blocking dialog. -->
+      <if expr="not is_android and not chromeos">
+         <message name="IDS_ENTERPRISE_STARTUP_CLOUD_POLICY_ENROLLMENT_TOOLTIP" desc="The information message of Brave launch blocking dialog for machine level user cloud policy enrollment.">
+          Launching Brave
+        </message>
+        <message name="IDS_ENTERPRISE_STARTUP_CLOUD_POLICY_ENROLLMENT_ERROR" desc="The error message of Brave launch blocking dialog when machine level user cloud policy enrollment failed.">
+          Couldn't launch Brave. Try again.
+        </message>
+        <message name="IDS_ENTERPRISE_STARTUP_RELAUNCH_BUTTON" desc="The text of relaunch button of Brave launch blocking dialog.">
+          Relaunch Brave
+        </message>
+        <message name="IDS_ENTERPRISE_STARTUP_CANCEL_BUTTON" desc="The text of cancel button of Brave launch blocking dialog.">
+          Close
         </message>
       </if>
     </messages>
