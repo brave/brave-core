@@ -32,5 +32,20 @@ class TestGetDraft(unittest.TestCase):
     upload.get_draft(self.repo, 'new')
     self.assertEquals(upload.get_draft(self.repo, 'test'), None)
 
+class TestYieldBravePackages(unittest.TestCase):
+  def setUp(self):
+    self.yield_pkgs_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'test_yield_pkgs')
+
+  def test_only_returns_dev_darwin_package(self):
+    upload.PLATFORM = 'darwin'
+    pkgs = list(upload.yield_brave_packages(os.path.join(self.yield_pkgs_dir, upload.PLATFORM), 'dev', '0.50.8'))
+    self.assertEquals(pkgs, ['Brave-Browser-Dev.dmg'])
+
+  def test_only_returns_dev_linux_packages(self):
+    upload.PLATFORM = 'linux'
+    pkgs = list(upload.yield_brave_packages(os.path.join(self.yield_pkgs_dir, upload.PLATFORM), 'dev', '0.50.8'))
+    self.assertEquals(sorted(pkgs), sorted(['brave-browser-dev-0.50.8-1.x86_64.rpm', 'brave-browser-dev_0.50.8_amd64.deb']))
+
+
 if __name__ == '__main__':
   print unittest.main()

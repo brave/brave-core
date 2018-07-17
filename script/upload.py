@@ -56,8 +56,10 @@ def main():
   chromedriver = get_zip_name('chromedriver', get_chromedriver_version())
   upload_brave(repo, release, os.path.join(dist_dir(), chromedriver), force=args.force)
 
+  pkgs = yield_brave_packages(output_dir(), release_channel(), get_raw_version())
+
   if PLATFORM == 'darwin':
-    for pkg in yield_brave_packages():
+    for pkg in pkgs:
       upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
   elif PLATFORM == 'win32':
     if get_target_arch() == 'x64':
@@ -68,7 +70,7 @@ def main():
           'brave_installer.exe'), 'brave_installer-ia32.exe', force=args.force)
   else:
     if get_target_arch() == 'x64':
-      for pkg in yield_brave_packages():
+      for pkg in pkgs:
         upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
     else:
       upload_brave(repo, release, os.path.join(output_dir(), 'brave-i386.rpm'), force=args.force)
@@ -86,14 +88,12 @@ def main():
   print('[INFO] Finished upload')
 
 
-def yield_brave_packages():
+def yield_brave_packages(dir, channel, version):
   # NOTE: mbacchi - before official release this must handle stable release channel which is ""
-  channel = release_channel()
-  version = get_raw_version()
-  for _, _, files in os.walk(output_dir()):
+  for _, _, files in os.walk(dir):
     for file in files:
       if PLATFORM == 'darwin':
-        if re.match(r'Brave-Browser-' + get_channel_display_name(channel) + r'.*\.dmg$'):
+        if re.match(r'Brave-Browser-' + channel.capitalize() + r'.*\.dmg$', file):
           yield file
       elif PLATFORM == 'linux':
         if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
