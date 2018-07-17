@@ -69,6 +69,10 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
         embedded_test_server()->GetURL("a.com", "/autoplay_by_method.html");
       autoplay_attr_url_ =
         embedded_test_server()->GetURL("a.com", "/autoplay_by_attr.html");
+      autoplay_method_muted_url_ =
+        embedded_test_server()->GetURL("a.com", "/autoplay_by_method_muted.html");
+      autoplay_attr_muted_url_ =
+        embedded_test_server()->GetURL("a.com", "/autoplay_by_attr_muted.html");
       file_autoplay_method_url_ =
         GURL("file://" + test_data_dir.AsUTF8Unsafe() +
              "/autoplay_by_method.html");
@@ -88,6 +92,8 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
 
     const GURL& autoplay_method_url() { return autoplay_method_url_; }
     const GURL& autoplay_attr_url() { return autoplay_attr_url_; }
+    const GURL& autoplay_method_muted_url() { return autoplay_method_muted_url_; }
+    const GURL& autoplay_attr_muted_url() { return autoplay_attr_muted_url_; }
     const GURL& file_autoplay_method_url() { return file_autoplay_method_url_; }
     const GURL& file_autoplay_attr_url() { return file_autoplay_attr_url_; }
 
@@ -138,6 +144,8 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
   private:
     GURL autoplay_method_url_;
     GURL autoplay_attr_url_;
+    GURL autoplay_method_muted_url_;
+    GURL autoplay_attr_muted_url_;
     GURL file_autoplay_method_url_;
     GURL file_autoplay_attr_url_;
     ContentSettingsPattern top_level_page_pattern_;
@@ -160,6 +168,23 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskByDefault) {
   result.clear();
 
   NavigateToURLUntilLoadStop(autoplay_attr_url());
+  EXPECT_TRUE(manager->IsBubbleVisible());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
+
+  // Muted version of above
+  result.clear();
+
+  NavigateToURLUntilLoadStop(autoplay_method_muted_url());
+  EXPECT_TRUE(manager->IsBubbleVisible());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
+
+  result.clear();
+
+  NavigateToURLUntilLoadStop(autoplay_attr_muted_url());
   EXPECT_TRUE(manager->IsBubbleVisible());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
@@ -192,6 +217,35 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
   NavigateToURLUntilLoadStop(autoplay_attr_url());
+  EXPECT_TRUE(popup_prompt_factory->RequestTypeSeen(
+              PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(1, popup_prompt_factory->TotalRequestCount());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_EQ(result, kVideoPlaying);
+
+  // Muted version of above
+  ResetAutoplayToDefault();
+  popup_prompt_factory->ResetCounts();
+  result.clear();
+
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+
+  NavigateToURLUntilLoadStop(autoplay_method_muted_url());
+  EXPECT_TRUE(popup_prompt_factory->RequestTypeSeen(
+              PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(1, popup_prompt_factory->TotalRequestCount());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_EQ(result, kVideoPlaying);
+
+  ResetAutoplayToDefault();
+  popup_prompt_factory->ResetCounts();
+  result.clear();
+
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+
+  NavigateToURLUntilLoadStop(autoplay_attr_muted_url());
   EXPECT_TRUE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(1, popup_prompt_factory->TotalRequestCount());
@@ -232,6 +286,35 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickBlock) {
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
+
+  // Muted version of above
+  ResetAutoplayToDefault();
+  popup_prompt_factory->ResetCounts();
+  result.clear();
+
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+
+  NavigateToURLUntilLoadStop(autoplay_method_muted_url());
+  EXPECT_TRUE(popup_prompt_factory->RequestTypeSeen(
+              PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(1, popup_prompt_factory->TotalRequestCount());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
+
+  ResetAutoplayToDefault();
+  popup_prompt_factory->ResetCounts();
+  result.clear();
+
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+
+  NavigateToURLUntilLoadStop(autoplay_attr_muted_url());
+  EXPECT_TRUE(popup_prompt_factory->RequestTypeSeen(
+              PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(1, popup_prompt_factory->TotalRequestCount());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
 }
 
 // Allow autoplay
@@ -264,6 +347,32 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
+
+  // Muted version of above
+  result.clear();
+
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+
+  NavigateToURLUntilLoadStop(autoplay_method_muted_url());
+  EXPECT_FALSE(popup_prompt_factory->is_visible());
+  EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
+              PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_EQ(result, kVideoPlaying);
+
+  result.clear();
+
+  NavigateToURLUntilLoadStop(autoplay_attr_muted_url());
+  EXPECT_FALSE(popup_prompt_factory->is_visible());
+  EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
+              PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_EQ(result, kVideoPlaying);
+
 }
 
 // Block autoplay
@@ -274,6 +383,31 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockAutoplay) {
       contents());
   auto popup_prompt_factory =
       std::make_unique<MockPermissionPromptFactory>(manager);
+
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+
+  NavigateToURLUntilLoadStop(autoplay_method_url());
+  EXPECT_FALSE(popup_prompt_factory->is_visible());
+  EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
+              PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
+
+  result.clear();
+
+  NavigateToURLUntilLoadStop(autoplay_attr_url());
+  EXPECT_FALSE(popup_prompt_factory->is_visible());
+  EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
+              PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
+
+  // Muted version of above
+  result.clear();
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
