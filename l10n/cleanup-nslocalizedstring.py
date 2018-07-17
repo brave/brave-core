@@ -1,20 +1,21 @@
 #!/usr/bin/python
 #
-# Clean up NSLocalizedString usage excluding files within "ignore_parent_directories"
+# Clean up NSLocalizedString usage excluding files within "blacklisted_parent_directories"
 
 import os
 import re
 
-ignore_parent_directories = ["ThirdParty", "Carthage", "fastlane", "L10nSnapshotTests", "l10n"]
+blacklisted_parent_directories = ["ThirdParty", "Carthage", "fastlane", "L10nSnapshotTests", "l10n"]
 frameworks = ["BraveShared", "Data", "Shared", "Storage"]
 
 def pascal_case(string):
-  # Convert hyphens and underscores to spaces so that words are correctly pascal cased
+  # Convert fullstops, hyphens and underscores to spaces so that words are correctly pascal cased
+  string = string.replace(".", " ")
   string = string.replace("-", " ")
   string = string.replace("_", " ")
 
   # Convert first letter of each word to uppercase
-  string = re.sub(r'[\s]+(?P<first>[a-z])', lambda m: m.group('first').upper(), string)
+  string = re.sub(r'(^|\s)(\S)', lambda match: match.group(1) + match.group(2).upper(), string)
 
   # Strip punctuation
   string = re.sub(r'[^\w\s]', '', string)
@@ -25,10 +26,21 @@ def pascal_case(string):
   return string
 
 def replacement_string(key, value, tablename, comment, is_framework):
-  content = 'NSLocalizedString("' + pascal_case(key) + '", value: "' + value + '"'
+  # func NSLocalizedString(_ key: String,
+  #                    tableName: String? = default,
+  #                       bundle: Bundle = default,
+  #                        value: String = default,
+  #                      comment: String
+
+  content = 'NSLocalizedString("' + pascal_case(key) + '"'
+
   if is_framework:
     content += ', tableName: "' + tablename + '"'
+
+  content += ', value: "' + value + '"'
+
   content += ', comment: "' + comment + '")'
+
   return content
 
 def parent_directory(path):
@@ -39,7 +51,7 @@ def parent_directory(path):
 
 def should_skip_path(path):
   directory = parent_directory(path)
-  if directory in ignore_parent_directories:
+  if directory in blacklisted_parent_directories:
     return True
 
   return False
@@ -63,40 +75,68 @@ for path, directories, files in os.walk("."):
       else:
         print "Processing " + path + "/" + file
 
+      quotedStringPattern = '"([^"]*)"'
+
+      keyPattern = ' *"([^"]*)" *'
+      tableNamePattern = ',[ \t]*(.?)[ \t]*tableName:[ \t]*(.?)[ \t]*' + quotedStringPattern + '[ \t]*'
+      valuePattern = ',[ \t]*(.?)[ \t]*value:[ \t]*(.?)[ \t]*' + quotedStringPattern + '[ \t]*'
+      commentPattern = ',[ \t]*(.?)[ \t]*comment:[ \t]*(.?)[ \t]*' + quotedStringPattern + '[ \t]*'
+
+      flags = re.MULTILINE | re.DOTALL
+
       with open(os.path.join(path, file), 'r') as source:
         content = source.read()
 
-        pattern = 'NSLocalizedString\("([^"]*)"\)'
+        # Where K = key
+        #       T = tableName
+        #       B = bundle
+        #       V = value
+        #       C = comment
+
+        # K---
+        pattern = 'NSLocalizedString\(' + keyPattern + '\)'
         replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), "", "", is_framework)
-        content = re.sub(pattern, replacement_pattern, content)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
-        pattern = 'NSLocalizedString\("([^"]*)", comment: "([^"]*)"\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), "", match.group(2), is_framework)
-        content = re.sub(pattern, replacement_pattern, content)
+        # K--C
+        pattern = 'NSLocalizedString\(' + keyPattern + commentPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), "", match.group(4), is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
-        pattern = 'NSLocalizedString\("([^"]*)", tableName: "([^"]*)"\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(2), "", is_framework)
-        content = re.sub(pattern, replacement_pattern, content)
+        # K-T-
+        pattern = 'NSLocalizedString\(' + keyPattern + tableNamePattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(4), "", is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
-        pattern = 'NSLocalizedString\("([^"]*)", tableName: "([^"]*)", comment: "([^"]*)"\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(2), match.group(3), is_framework)
-        content = re.sub(pattern, replacement_pattern, content)
+        # K-TC
+        pattern = 'NSLocalizedString\(' + keyPattern + tableNamePattern + commentPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(4), match.group(7), is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
-        pattern = 'NSLocalizedString\("([^"]*)", value: "([^"]*)"\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(2), "", "", is_framework)
-        content = re.sub(pattern, replacement_pattern, content)
+        # KV--
+        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), "", "", is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
-        pattern = 'NSLocalizedString\("([^"]*)", value: "([^"]*)", comment: "([^"]*)"\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(2), "", match.group(3), is_framework)
-        content = re.sub(pattern, replacement_pattern, content)
+        # KV-C
+        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + commentPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), "", match.group(7), is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
-        pattern = 'NSLocalizedString\("([^"]*)", value: "([^"]*)", tableName: "([^"]*)"\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(2), match.group(3), is_framework)
-        content = re.sub(pattern, replacement_pattern, content)
+        # KVT-
+        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + tableNamePattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), match.group(7), "", is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
-        pattern = 'NSLocalizedString\("([^"]*)", value: "([^"]*)", tableName: "([^"]*)", comment: "([^"]*)"\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(2), framework, match.group(4), is_framework)
-        content = re.sub(pattern, replacement_pattern, content)
+        # KVTC
+        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + tableNamePattern + commentPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), framework, match.group(10), is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
+
+        # KTVC
+        pattern = 'NSLocalizedString\(' + keyPattern + tableNamePattern + valuePattern + commentPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(7), framework, match.group(10), is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
         with open(os.path.join(path, file), 'w') as source:
           source.write(content)
