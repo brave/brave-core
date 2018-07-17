@@ -45,7 +45,7 @@ std::string GetPlatformIdentifier() {
   std::string os_type = version_info::GetOSType();
   if (os_type == "Linux")
     return kPlatformIdentifierLinux;
-  else if (os_type == "Mac")
+  else if (os_type == "Mac OS X")
     return kPlatformIdentifierMac;
   else if (os_type == "Windows") {
     if (base::SysInfo::OperatingSystemArchitecture() == "x86")
