@@ -8,7 +8,7 @@
  * @param {object} replacements - replacements for specific translation, replacement should be defined as {{key}}
  * @returns {string} - the localized string
  */
-export const getLocale = (key, replacements) => {
+export const getLocale = (key: string, replacements?: Record<string, string>) => {
   if (!key || !window.loadTimeData) {
     return key
   }

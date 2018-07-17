@@ -5,6 +5,7 @@ export {}
 
 type loadTimeData = {
   getString: (key: string) => string
+  data_: Record<string, string>
 }
 
 declare global {
