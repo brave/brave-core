@@ -60,7 +60,7 @@
         "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
     },
     "noScriptSwitches": {
-        "message": "Toggle switches to disable script blocking",
+        "message": "A választógomb elhúzásával letilthatja a szkript blokkolást",
         "description": "Instructions for per-origin noScript switches"
     },
     "shieldsHeaderForSite": {
@@ -68,7 +68,7 @@
         "description": "Label for shields header near current site name"
     },
     "noScriptApplyOnce": {
-        "message": "Apply",
+        "message": "Alkalmaz",
         "description": "Label for applying per-origin noScript settings"
     },
     "shieldsHeaderShieldsToggle": {

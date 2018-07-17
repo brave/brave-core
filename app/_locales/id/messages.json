@@ -1,6 +1,6 @@
 {
     "shieldsControlsCookieControl": {
-        "message": "Cookie Control",
+        "message": "Kontrol Kuki",
         "description": "Label Cookie Control dropdown options"
     },
     "shieldsControlsCookieOptionBlockAll": {
@@ -8,7 +8,7 @@
         "description": "Cookie control dropdown option Block All Cookies"
     },
     "shieldsControlsAdControlOptionAllowAdsTracking": {
-        "message": "Allow Ads and Tracking",
+        "message": "Izinkan Iklan dan Pelacakan",
         "description": "Ad Control dropdown box, option allow ads and tracking"
     },
     "shieldsHeaderToggleLeftPosition": {
@@ -16,23 +16,23 @@
         "description": "Label for top shields switch in shields header turned off position"
     },
     "shieldsStatsHttpsUpgrades": {
-        "message": "HTTPS Upgrades",
+        "message": "Peningkatan HTTPS",
         "description": "Label for shields stats, HTTPS upgrades count"
     },
     "shieldsControlsFingerprintingOptionAllowAll": {
-        "message": "Allow All Fingerprinting",
+        "message": "Izinkan Semua Sidik Jari",
         "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
     },
     "shieldsFooterReload": {
-        "message": "Reload...",
+        "message": "Muat ulang...",
         "description": "Shields controls footer, label for action reload page to apply current shields settings"
     },
     "shieldsControlsAdControl": {
-        "message": "Ad Control",
+        "message": "Kontrol Iklan",
         "description": "Label for Advertisement Control dropdown box options "
     },
     "shieldsStatsScriptsBlocked": {
-        "message": "Scripts Blocked",
+        "message": "Skrip Diblokir",
         "description": "Label for shields stats, Scripts Blocked count"
     },
     "shieldsHeaderToggleRightPosition": {
@@ -40,7 +40,7 @@
         "description": "Label for top shields switch in shields header turned on position"
     },
     "shieldsControlsFingerprintingOptionBlockAll": {
-        "message": "Block All Fingerprinting",
+        "message": "Blokir Semua Sidik Jari",
         "description": "Fingerprinting control dropdown option Block All Fingerprinting"
     },
     "shieldsControlsCookieOptionAllowAll": {
@@ -52,35 +52,35 @@
         "description": "Shields controls, switch for HTTPS Everywhere"
     },
     "shieldsControlsCookieOptionBlock3p": {
-        "message": "Block 3rd Party Cookies",
+        "message": "Blokir Kuki Pihak ke-3",
         "description": "Cookie control dropdown option Block 3rd Party Cookies"
     },
     "shieldsControlsFingerprintingOptionBlock3p": {
-        "message": "Block 3rd Party Fingerprinting",
+        "message": "Blokir Sidik Jari Pihak ke-3",
         "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
     },
     "noScriptSwitches": {
-        "message": "Toggle switches to disable script blocking",
+        "message": "Balik sakelar untuk menonaktifkan pemblokiran skrip",
         "description": "Instructions for per-origin noScript switches"
     },
     "shieldsHeaderForSite": {
-        "message": "Site shield settings for",
+        "message": "Pengaturan perisai situs untuk",
         "description": "Label for shields header near current site name"
     },
     "noScriptApplyOnce": {
-        "message": "Apply",
+        "message": "Terapkan",
         "description": "Label for applying per-origin noScript settings"
     },
     "shieldsHeaderShieldsToggle": {
-        "message": "Shields",
+        "message": "Perisai",
         "description": "Label for top shields switch in shields header"
     },
     "appName": {
-        "message": "The Brave Extension",
+        "message": "Ekstensi Brave",
         "description": "The name of the the extension."
     },
     "shieldsFooterEditDefault": {
-        "message": "Edit default shield settings...",
+        "message": "Edit pengaturan perisai baku...",
         "description": "Shields controls footer, link to edit default shields settings"
     },
     "shieldsControlsAdControlOptionBlockAds": {
@@ -88,7 +88,7 @@
         "description": "Ad Control dropdown box, option block ads"
     },
     "shieldsFingerPrintingBlocked": {
-        "message": "Fingerprinting Methods Blocked",
+        "message": "Metode Sidik Jari Diblokir",
         "description": "Label for shields stats, Fingerprinting Methods Blocked count"
     },
     "shieldsControlsBlockPhishingMalwareSwitch": {
@@ -96,7 +96,7 @@
         "description": "Shields controls, switch for Block Phishing/Malware"
     },
     "shieldsControlsAdvancedControls": {
-        "message": "Advanced Controls",
+        "message": "Kontrol Lanjutan",
         "description": "Label for advanced controls group"
     },
     "shieldsControlsBlockScriptsSwitch": {
@@ -104,11 +104,11 @@
         "description": "Shields controls, switch for Block Scripts"
     },
     "shieldsStatsAdsTrackersBlocked": {
-        "message": "Ads and Trackers Blocked",
+        "message": "Iklan dan Pelacak Diblokir",
         "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
     },
     "shieldsControlsFingerprintingProtection": {
-        "message": "Fingerprinting Protection",
+        "message": "Perlindungan Sidik Jari",
         "description": "Label Fingerprinting Protection dropdown options"
     }
 }

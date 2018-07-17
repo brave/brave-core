@@ -48,7 +48,7 @@
         "description": "Cookie control dropdown option Allow All Cookies"
     },
     "shieldsControlsHttpsEverywhereSwitch": {
-        "message": "모두 HTTPS 사용",
+        "message": "항상 HTTPS 사용",
         "description": "Shields controls, switch for HTTPS Everywhere"
     },
     "shieldsControlsCookieOptionBlock3p": {
@@ -60,7 +60,7 @@
         "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
     },
     "noScriptSwitches": {
-        "message": "Toggle switches to disable script blocking",
+        "message": "스위치를 사용하여 스크립트 차단 중지",
         "description": "Instructions for per-origin noScript switches"
     },
     "shieldsHeaderForSite": {
@@ -68,7 +68,7 @@
         "description": "Label for shields header near current site name"
     },
     "noScriptApplyOnce": {
-        "message": "Apply",
+        "message": "적용",
         "description": "Label for applying per-origin noScript settings"
     },
     "shieldsHeaderShieldsToggle": {
