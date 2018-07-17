@@ -104,6 +104,7 @@ source_set("browser") {
     "//brave/components/brave_shields/browser:brave_shields",
     "extensions",
     "net",
+    "permissions",
   ]
 
   if (is_mac) {

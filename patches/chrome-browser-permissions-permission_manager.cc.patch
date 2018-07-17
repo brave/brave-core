@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/permissions/permission_manager.cc b/chrome/browser/permissions/permission_manager.cc
-index af0c4c0e74fbcf78f02fe112f19724260dda456a..dc1dea1a9ec64c9d7b6344ee26be2e888f217076 100644
+index af0c4c0e74fbcf78f02fe112f19724260dda456a..045a82e8484d845cd6ee7871a39b8093ffb048ae 100644
 --- a/chrome/browser/permissions/permission_manager.cc
 +++ b/chrome/browser/permissions/permission_manager.cc
 @@ -121,6 +121,8 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
@@ -11,12 +11,3 @@ index af0c4c0e74fbcf78f02fe112f19724260dda456a..dc1dea1a9ec64c9d7b6344ee26be2e88
      case PermissionType::NUM:
        // This will hit the NOTREACHED below.
        break;
-@@ -304,6 +306,8 @@ PermissionManager::PermissionManager(Profile* profile) : profile_(profile) {
-       std::make_unique<ClipboardWritePermissionContext>(profile);
-   permission_contexts_[CONTENT_SETTINGS_TYPE_PAYMENT_HANDLER] =
-       std::make_unique<payments::PaymentHandlerPermissionContext>(profile);
-+  permission_contexts_[CONTENT_SETTINGS_TYPE_AUTOPLAY] =
-+      std::make_unique<AutoplayPermissionContext>(profile);
- }
- 
- PermissionManager::~PermissionManager() {
