@@ -1,29 +1,32 @@
-git:
-  depth: 10
-notifications:
-  email: false
-
 language: node_js
 node_js:
-  - "4"
-os:
-  - linux
-  - osx
-env:
-  - TARGET_ARCH=x64
-osx_image: xcode7.3
+  - "node"
 
-matrix:
-  include:
-    - os: linux
-      env: TARGET_ARCH=arm
-    - os: linux
-      env: TARGET_ARCH=ia32
-  allow_failures:
-    - os: osx
-
-script: './script/cibuild'
+dist: trusty
 
 branches:
   only:
     - master
+    - /\d+\.\d+\.x/
+
+cache:
+  directories:
+    - $HOME/.npm
+    - node_modules
+
+env:
+  - TEST_SUITE=lint
+  - TEST_SUITE=test-security
+
+before_install:
+  - npm i -g npm
+  - npm --version
+
+install:
+  - npm i
+
+script:
+  - npm run $TEST_SUITE
+
+
+

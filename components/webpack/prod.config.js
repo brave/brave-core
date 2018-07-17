@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
+  mode: 'production',
   entry: {
     brave_adblock: path.join(__dirname, '../brave_adblock_ui/brave_adblock'),
     brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
@@ -27,11 +28,6 @@ module.exports = {
           warnings: false
         }
       }
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
     })
   ],
   resolve: {
@@ -41,7 +37,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader'
+        loader: 'ts-loader'
       },
       {
         test: /\.js$/,
