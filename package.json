@@ -83,9 +83,9 @@
     "tslint-config-standard": "^7.0.0",
     "tslint-react": "^3.2.0",
     "typescript": "^2.8.1",
-    "webpack": "^4.6.0",
+    "webpack": "^4.16.1",
     "webpack-cli": "^2.0.15",
-    "webpack-hot-middleware": "^2.20.0",
+    "webpack-hot-middleware": "^2.22.3",
     "webpack-httpolyglot-server": "^0.3.0"
   },
   "dependencies": {
