@@ -1,6 +1,6 @@
 #!/bin/sh
 set -exu
-### You will want to run with brave-apt as your first argument to push to
+### You will want to run with brave-browser-apt-staging-release as your first argument to push to
 ### production
 OPTION=${1:-brave-browser-apt-staging-nightly}
 GPG_KEY=${2:-4A1B4360}

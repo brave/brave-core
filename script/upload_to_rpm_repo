@@ -21,6 +21,9 @@ if ! rpm --checksig dist/*.rpm | grep pgp; then
 fi
 # Ensure the rpm has the correct signature before continuing
 # NOTE: rpm displays the short key id, all lower case
+# NOTE: The key must already be imported to the rpm db or this
+# will fail, i.e.
+#   'sudo rpm --import brave-core-nightly.asc'
 rpm -v -K dist/*.rpm | grep "key ID ${GPG_KEY_SHORT_ID,,}: OK"
 
 cp dist/*.rpm $TMP_REPO/x86_64/
