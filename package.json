@@ -51,15 +51,11 @@
     "resetModules": true,
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "components/**/**/*.tsx",
-      "!components/content_settings",
-      "!components/definitions",
-      "!components/fonts",
-      "!components/img",
-      "!components/omnibox",
-      "!components/resources",
-      "!components/styles",
-      "!components/test"
+      "<rootDir>/components/**/**/*.{ts, tsx}",
+      "!<rootDir>/components/definitions/*",
+      "!<rootDir>/components/**/constants/*",
+      "!<rootDir>/components/**/reducers/index.ts",
+      "!<rootDir>/components/test/*"
     ],
     "testMatch": [
       "<rootDir>/components/test/**/**/?(*_)(test).{ts,tsx}"
@@ -67,12 +63,12 @@
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/components/test/testSetup.js",
+    "setupTestFrameworkScriptFile": "<rootDir>/components/test/testSetup.ts",
     "setupFiles": [
-      "<rootDir>/components/test/testPolyfills.js"
+      "<rootDir>/components/test/testPolyfills.ts"
     ],
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.ts",
       "\\.(css)$": "identity-obj-proxy"
     }
   },
