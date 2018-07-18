@@ -4,7 +4,7 @@ Please include a summary of the change and which issue is fixed. Please also inc
 ## Pull Request Checklist
 
 - [ ] My patch has gone through review and I have addressed review comments
-- [ ] My patch has a standard commit message that looks like `Bug 12345678 - This fixes something something`
+- [ ] My patch has a standard commit message that looks like `Fix #123: This fixes the shattered coffee cup!`
 
 - [ ] I have updated the *Unit Tests* to cover new or changed functionality
 - [ ] I have updated the *UI Tests* to cover new or changed functionality

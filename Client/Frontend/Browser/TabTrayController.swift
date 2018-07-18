@@ -412,20 +412,6 @@ class TabTrayController: UIViewController {
         presentingViewController!.dismiss(animated: true, completion: nil)
     }
 
-    @objc func didClickSettingsItem() {
-        assert(Thread.isMainThread, "Opening settings requires being invoked on the main thread")
-
-        let settingsTableViewController = AppSettingsTableViewController()
-        settingsTableViewController.profile = profile
-        settingsTableViewController.tabManager = tabManager
-        settingsTableViewController.settingsDelegate = self
-
-        let controller = SettingsNavigationController(rootViewController: settingsTableViewController)
-        controller.popoverDelegate = self
-		controller.modalPresentationStyle = .formSheet
-        present(controller, animated: true, completion: nil)
-    }
-
     @objc func didClickAddTab() {
         openNewTab()
     }
@@ -997,7 +983,7 @@ fileprivate class EmptyPrivateTabsView: UIView {
 
         titleLabel.text =  NSLocalizedString("Private Browsing",
             tableName: "PrivateBrowsing", comment: "Title displayed for when there are no open tabs while in private mode")
-        descriptionLabel.text = NSLocalizedString("Firefox won’t remember any of your history or cookies, but new bookmarks will be saved.",
+        descriptionLabel.text = NSLocalizedString("Brave won't remember any of your history or cookies, but new bookmarks will be saved.",
             tableName: "PrivateBrowsing", comment: "Description text displayed when there are no open tabs while in private mode")
 
         addSubview(titleLabel)
