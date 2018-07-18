@@ -1,0 +1,89 @@
+#!/bin/sh
+set -exu
+### You will want to run with brave-browser-apt-staging-release as your first argument to push to
+### production
+OPTION=${1:-brave-browser-apt-staging-nightly}
+GPG_KEY=${2:-4A1B4360}
+KEY_NAME=brave-core-nightly.asc
+KEY_FILE=/tmp/${KEY_NAME}
+SNAP_TAG=`date +'%s'`
+DIST='artful zesty yakkety xenial jessie trusty serena stretch bionic buster'
+
+cat <<EOF > $HOME/.aptly.conf
+{ "rootDir": "$HOME/.aptly",
+"downloadConcurrency": 4,
+"downloadSpeedLimit": 0,
+"architectures": [],
+"dependencyFollowSuggests": false,
+"dependencyFollowRecommends": false,
+"dependencyFollowAllVariants": false,
+"dependencyFollowSource": false,
+"gpgDisableSign": false,
+"gpgDisableVerify": false,
+"gpgProvider": "gpg",
+"downloadSourcePackages": false,
+"ppaDistributorID": "ubuntu",
+"ppaCodename": "",
+"S3PublishEndpoints": {
+"brave-browser-apt-staging-release": {
+"region": "us-west-2",
+"bucket": "brave-browser-apt-staging-release",
+"acl": "public-read"
+},
+"brave-browser-apt-staging-nightly": {
+"region": "us-west-2",
+"bucket": "brave-browser-apt-staging-nightly",
+"acl": "public-read"
+},
+"brave-browser-apt-staging-dev": {
+"region": "us-west-2",
+"bucket": "brave-browser-apt-staging-dev",
+"acl": "public-read"
+},
+"brave-browser-apt-staging-testing": {
+"region": "us-west-2",
+"bucket": "brave-browser-apt-staging-testing",
+"acl": "public-read"
+}
+},
+"SwiftPublishEndpoints": {} }
+EOF
+
+# Make sure staging and release cache isn't mixed
+rm -Rf ~/.aptly
+
+gpg --export --armor ${GPG_KEY} > ${KEY_FILE}
+aws s3 cp ${KEY_FILE} s3://${OPTION}/${KEY_NAME}
+aws s3api put-object-acl --acl public-read --bucket ${OPTION} --key ${KEY_NAME}
+
+for i in ${DIST}
+	do aptly publish drop -force-drop $i s3:${OPTION}: || true
+done
+
+for i in ${DIST}
+	do aptly repo drop -force ${i}-release || true
+done
+
+for i in ${DIST}
+	do aptly snapshot drop -force ${i}-snapshot || true
+done
+
+for i in ${DIST}
+	do aptly repo create -distribution=$i -component=main ${i}-release
+done
+
+for i in ${DIST}
+	do aptly repo add ${i}-release dist/*.deb
+done
+
+for i in ${DIST}
+	do aptly snapshot create ${i}-snapshot from repo ${i}-release
+done
+
+for i in ${DIST}
+	do aptly repo edit ${i}-release
+done
+
+for i in ${DIST}
+	do aptly publish snapshot -force-overwrite=true -gpg-key=${GPG_KEY} ${i}-snapshot s3:${OPTION}:
+done
