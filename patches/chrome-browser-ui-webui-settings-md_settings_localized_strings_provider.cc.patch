@@ -1,27 +1,13 @@
 diff --git a/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
-index 59189009c128db5de5d33494e95ea382de8b4ac6..22446f57ef2f69fc117fbb6f338dc56f7491d5ff 100644
+index 6ee8837135be6b1f9389827dac26ecfa5a2a4fd6..bfe5cd07380aedf5e5e088ae781728b8d4395d59 100644
 --- a/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
 +++ b/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
-@@ -1018,6 +1018,7 @@ void AddImportDataStrings(content::WebUIDataSource* html_source) {
-     {"importPasswords", IDS_SETTINGS_IMPORT_PASSWORDS_CHECKBOX},
-     {"importSearch", IDS_SETTINGS_IMPORT_SEARCH_ENGINES_CHECKBOX},
-     {"importAutofillFormData", IDS_SETTINGS_IMPORT_AUTOFILL_FORM_DATA_CHECKBOX},
-+    {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
-     {"importChooseFile", IDS_SETTINGS_IMPORT_CHOOSE_FILE},
-     {"importCommit", IDS_SETTINGS_IMPORT_COMMIT},
-     {"noProfileFound", IDS_SETTINGS_IMPORT_NO_PROFILE_FOUND},
-@@ -2080,6 +2081,14 @@ void AddSiteSettingsStrings(content::WebUIDataSource* html_source,
-      IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS},
-     {"siteSettingsProtectedContentEnable",
-      IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ENABLE},
-+    {"siteSettingsAutoplay",
-+     IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY},
-+    {"siteSettingsCategoryAutoplay",
-+     IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY},
-+    {"siteSettingsAutoplayAsk",
-+     IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK},
-+    {"siteSettingsAutoplayAskRecommended",
-+     IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK_RECOMMENDED},
- #if defined(OS_CHROMEOS) || defined(OS_WIN)
-     {"siteSettingsProtectedContentIdentifiersExplanation",
-      IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_EXPLANATION},
+@@ -2446,6 +2446,8 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
+ #endif
+   policy_indicator::AddLocalizedStrings(html_source);
+ 
++  BraveAddLocalizedStrings(html_source, profile);
++
+   html_source->SetJsonPath(kLocalizedStringsFile);
+ }
+ 

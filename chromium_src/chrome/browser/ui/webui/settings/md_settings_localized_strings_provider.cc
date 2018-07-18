@@ -1,11 +1,22 @@
-#define AddCommonStrings AddCommonStrings_ChromeImpl
+#include "chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.h"
+namespace settings {
+void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
+}
 #include "../../../../../../chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc"
-#undef AddCommonStrings
 
 namespace settings {
 
-void AddCommonStrings(content::WebUIDataSource* html_source, Profile* profile) {
-  AddCommonStrings_ChromeImpl(html_source, profile);
+#if !defined(OS_CHROMEOS)
+void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
+  LocalizedString localized_strings[] = {
+    {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX}
+  };
+  AddLocalizedStringsBulk(html_source, localized_strings,
+                          arraysize(localized_strings));
+}
+#endif
+
+void BraveAddCommonStrings(content::WebUIDataSource* html_source, Profile* profile) {
   LocalizedString localized_strings[] = {
     {"siteSettingsAutoplay",
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY},
@@ -18,6 +29,12 @@ void AddCommonStrings(content::WebUIDataSource* html_source, Profile* profile) {
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           arraysize(localized_strings));
+}
+
+void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
+                              Profile* profile) {
+  BraveAddImportDataStrings(html_source);
+  BraveAddCommonStrings(html_source, profile);
 }
 
 }
