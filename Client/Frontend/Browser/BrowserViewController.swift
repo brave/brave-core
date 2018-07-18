@@ -720,7 +720,7 @@ class BrowserViewController: SensitiveViewController {
                 hideHomePanelController()
                 return
             }
-            if url.isAboutHomeURL {
+            if url.isAboutHomeURL && !url.isErrorPageURL {
                 showHomePanelController(inline: true)
             } else if !url.isLocalUtility || url.isReaderModeURL {
                 hideHomePanelController()
