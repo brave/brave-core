@@ -179,6 +179,22 @@ void LedgerImpl::SetContributionAmount(double amount) {
   bat_client_->setContributionAmount(amount);
 }
 
+uint64_t LedgerImpl::GetPublisherMinVisitTime() const {
+  return bat_publishers_->getPublisherMinVisitTime();
+}
+
+unsigned int LedgerImpl::GetPublisherMinVisits() const {
+  return bat_publishers_->getPublisherMinVisits();
+}
+
+bool LedgerImpl::GetPublisherAllowNonVerified() const {
+  return bat_publishers_->getPublisherAllowNonVerified();
+}
+
+double LedgerImpl::GetContributionAmount() const {
+  return bat_client_->getContributionAmount();
+}
+
 const std::string& LedgerImpl::GetBATAddress() const {
   return bat_client_->getBATAddress();
 }
