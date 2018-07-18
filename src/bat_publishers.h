@@ -55,6 +55,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setPublisherAllowNonVerified(const bool& allow);
 
+  uint64_t getPublisherMinVisitTime() const; // In milliseconds
+  unsigned int getPublisherMinVisits() const;
+  bool getPublisherAllowNonVerified() const;
+
   std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> getPublishersData();
 
   std::vector<braveledger_bat_helper::WINNERS_ST> winners(const unsigned int& ballots);

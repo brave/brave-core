@@ -45,6 +45,10 @@ class LEDGER_EXPORT Ledger {
   virtual const std::string& GetBTCAddress() const = 0;
   virtual const std::string& GetETHAddress() const = 0;
   virtual const std::string& GetLTCAddress() const = 0;
+  virtual uint64_t GetPublisherMinVisitTime() const = 0; // In milliseconds
+  virtual unsigned int GetPublisherMinVisits() const = 0;
+  virtual bool GetPublisherAllowNonVerified() const = 0;
+  virtual double GetContributionAmount() const = 0;
 };
 
 }  // namespace ledger
