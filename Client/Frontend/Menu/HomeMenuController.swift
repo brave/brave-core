@@ -245,7 +245,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   }
   
   func updateBookmarkStatus() {
-    guard let url = tabState.url else {
+    guard let url = tabState.url, !url.isLocal else {
       //disable button for homescreen/empty url
       addBookmarkButton.isSelected = false
       addBookmarkButton.isEnabled = false
