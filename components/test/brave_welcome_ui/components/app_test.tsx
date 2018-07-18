@@ -1,25 +1,21 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
+import { types } from '../../../brave_welcome_ui/constants/welcome_types'
+import { welcomeInitialState } from '../../testData'
 import {
   WelcomePage,
   mapStateToProps,
   mapDispatchToProps
 } from '../../../brave_welcome_ui/components/app'
-import { types } from '../../../brave_welcome_ui/constants/welcome_types'
-let appState: Welcome.ApplicationState = {
-  welcomeData: {
-    pageIndex: 0
-  }
-}
 
-let welcomeData: Welcome.State = {
-  pageIndex: 0
-}
-
-describe('WelcomePage component', () => {
+describe('welcomePage component', () => {
   describe('mapStateToProps', () => {
-    it('should show the current pageIndex', () => {
-      expect(mapStateToProps(appState).welcomeData).toEqual({ pageIndex: 0 })
+    it('should map the default state', () => {
+      expect(mapStateToProps(welcomeInitialState)).toEqual({
+        welcomeData: {
+          pageIndex: 0
+        }
+      })
     })
   })
 
@@ -38,12 +34,12 @@ describe('WelcomePage component', () => {
     })
   })
 
-  describe('welcomePage component', () => {
+  describe('welcomePage dumb component', () => {
     it('renders the component', () => {
       const wrapper = shallow(
         <WelcomePage
           actions={{}}
-          welcomeData={welcomeData}
+          welcomeData={welcomeInitialState.welcomeData}
         />
       )
       const assertion = wrapper.find('#welcomePage')
