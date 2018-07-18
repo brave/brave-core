@@ -55,6 +55,7 @@
       "!<rootDir>/components/definitions/*",
       "!<rootDir>/components/**/constants/*",
       "!<rootDir>/components/**/reducers/index.ts",
+      "!<rootDir>/components/**/store.ts",
       "!<rootDir>/components/test/*"
     ],
     "testMatch": [
@@ -98,6 +99,7 @@
     "emptykit.css": "^1.0.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^23.4.1",
     "less": "^3.7.1",
     "less-loader": "^4.0.5",
