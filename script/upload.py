@@ -96,6 +96,8 @@ def yield_brave_packages(dir, channel, version):
         if re.match(r'Brave-Browser-' + channel.capitalize() + r'.*\.dmg$', file):
           yield file
       elif PLATFORM == 'linux':
+        if channel == 'dev':
+           channel = 'unstable'
         if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
           or re.match(r'brave-browser-' + channel + '-' + version + r'.*\.rpm$', file):
           yield file
