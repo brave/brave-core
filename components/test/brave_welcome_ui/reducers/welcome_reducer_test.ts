@@ -5,7 +5,6 @@
 import welcomeReducer from '../../../brave_welcome_ui/reducers/welcome_reducer'
 import * as actions from '../../../brave_welcome_ui/actions/welcome_actions'
 import { types } from '../../../brave_welcome_ui/constants/welcome_types'
-import { initialState } from '../../testData'
 
 describe('welcomeReducer', () => {
   it('should handle initial state', () => {
@@ -15,7 +14,7 @@ describe('welcomeReducer', () => {
 
   describe('GO_TO_PAGE_REQUESTED', () => {
     it('sets the pageIndex', () => {
-      const assertion = welcomeReducer(initialState.welcomeData, {
+      const assertion = welcomeReducer(undefined, {
         type: types.GO_TO_PAGE_REQUESTED,
         payload: { pageIndex: 1337 }
       })

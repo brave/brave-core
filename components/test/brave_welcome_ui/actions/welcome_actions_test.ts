@@ -4,7 +4,6 @@
 
 import { types } from '../../../brave_welcome_ui/constants/welcome_types'
 import * as actions from '../../../brave_welcome_ui/actions/welcome_actions'
-import { initialState } from '../../testData'
 
 describe('welcome_actions', () => {
   it('importNowRequested', () => {
@@ -16,10 +15,10 @@ describe('welcome_actions', () => {
   })
 
   it('goToPageRequested', () => {
-    expect(actions.goToPageRequested(initialState.pageIndex)).toEqual({
+    expect(actions.goToPageRequested(1337)).toEqual({
       type: types.GO_TO_PAGE_REQUESTED,
       meta: undefined,
-      payload: { pageIndex: initialState.pageIndex }
+      payload: { pageIndex: 1337 }
     })
   })
 })
