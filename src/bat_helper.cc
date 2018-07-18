@@ -1163,7 +1163,7 @@ namespace braveledger_bat_helper {
     bool error = d.HasParseError();
     if (false == error)
     {
-      error = !(d["unsignedTx"].IsObject());
+      error = !d.HasMember("unsignedTx") || !(d["unsignedTx"].IsObject());
     }
 
     if (false == error)
