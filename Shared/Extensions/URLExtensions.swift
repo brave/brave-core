@@ -55,6 +55,12 @@ private var etldEntries: TLDEntryMap? = {
 
 // MARK: - Local Resource URL Extensions
 extension URL {
+    public struct Strings {
+        static let localhost = "localhost"
+        static let localhostIp = "127.0.0.1"
+        static let http = "http"
+        
+    }
 
     public func allocatedFileSize() -> Int64 {
         // First try to get the total allocated size and in failing that, get the file allocated size

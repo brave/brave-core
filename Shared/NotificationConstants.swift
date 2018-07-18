@@ -48,4 +48,10 @@ extension Notification.Name {
     public static let HomePanelPrefsChanged = Notification.Name("HomePanelPrefsChanged")
 
     public static let FileDidDownload = Notification.Name("FileDidDownload")
+    
+    public static let ThumbnailEditOn = Notification.Name("ThumbnailEditOn")
+    public static let ThumbnailEditOff = Notification.Name("ThumbnailEditOff")
+    
+    public static let PrivacyModeChanged = Notification.Name("PrivacyModeChanged")
+    public static let TopSitesConversion = Notification.Name("TopSitesConversion")
 }

@@ -12,6 +12,7 @@ import SwiftKeychainWrapper
 import LocalAuthentication
 import CoreSpotlight
 import UserNotifications
+import BraveShared
 
 private let log = Logger.browserLogger
 
@@ -100,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         Logger.browserLogger.newLogWithDate(logDate)
 
         let profile = getProfile(application)
+        Preferences.migrate(from: profile)
 
         if !DebugSettingsBundleOptions.disableLocalWebServer {
             // Set up a web server that serves us static content. Do this early so that it is ready when the UI is presented.
@@ -214,7 +216,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // button will be in the incorrect position and overlap with the input text. Not clear if
         // that is an iOS bug or not.
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
+        
+        if let profile = profile,  profile.prefs.boolForKey(PrefsKeys.IsFirstLaunch) != true {
+            FavoritesHelper.addDefaultFavorites()
+            profile.prefs.setBool(true, forKey: PrefsKeys.IsFirstLaunch)
+        }
 
+        UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
+      
+        (UISwitch.appearance() as UISwitch).do {
+            $0.tintColor = BraveUX.SwitchTintColor
+            $0.onTintColor = BraveUX.BraveOrange
+        }
+      
+        HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value) ?? .onlyFromMainDocumentDomain
+      
         return shouldPerformAdditionalDelegateHandling
     }
 
@@ -392,16 +408,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
                     }
                 } catch _ {
                     print("Failed to retrieve logs from device")
-                }
-            }
-
-            if DebugSettingsBundleOptions.attachTabStateToDebugEmail {
-                if let tabStateDebugData = TabManager.tabRestorationDebugInfo().data(using: .utf8) {
-                    mailComposeViewController.addAttachmentData(tabStateDebugData, mimeType: "text/plain", fileName: "tabState.txt")
-                }
-
-                if let tabStateData = TabManager.tabArchiveData() {
-                    mailComposeViewController.addAttachmentData(tabStateData as Data, mimeType: "application/octet-stream", fileName: "tabsState.archive")
                 }
             }
 
