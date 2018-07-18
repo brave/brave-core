@@ -77,7 +77,7 @@ for path, directories, files in os.walk("."):
 
       quotedStringPattern = '"([^"]*)"'
 
-      keyPattern = ' *"([^"]*)" *'
+      keyPattern = ' *' + quotedStringPattern + ' *'
       tableNamePattern = ',[ \t]*(.?)[ \t]*tableName:[ \t]*(.?)[ \t]*' + quotedStringPattern + '[ \t]*'
       valuePattern = ',[ \t]*(.?)[ \t]*value:[ \t]*(.?)[ \t]*' + quotedStringPattern + '[ \t]*'
       commentPattern = ',[ \t]*(.?)[ \t]*comment:[ \t]*(.?)[ \t]*' + quotedStringPattern + '[ \t]*'
@@ -93,39 +93,9 @@ for path, directories, files in os.walk("."):
         #       V = value
         #       C = comment
 
-        # K---
-        pattern = 'NSLocalizedString\(' + keyPattern + '\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), "", "", is_framework)
-        content = re.sub(pattern, replacement_pattern, content, flags = flags)
-
-        # K--C
-        pattern = 'NSLocalizedString\(' + keyPattern + commentPattern + '\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), "", match.group(4), is_framework)
-        content = re.sub(pattern, replacement_pattern, content, flags = flags)
-
-        # K-T-
-        pattern = 'NSLocalizedString\(' + keyPattern + tableNamePattern + '\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(4), "", is_framework)
-        content = re.sub(pattern, replacement_pattern, content, flags = flags)
-
-        # K-TC
-        pattern = 'NSLocalizedString\(' + keyPattern + tableNamePattern + commentPattern + '\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), match.group(4), match.group(7), is_framework)
-        content = re.sub(pattern, replacement_pattern, content, flags = flags)
-
-        # KV--
-        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + '\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), "", "", is_framework)
-        content = re.sub(pattern, replacement_pattern, content, flags = flags)
-
-        # KV-C
-        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + commentPattern + '\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), "", match.group(7), is_framework)
-        content = re.sub(pattern, replacement_pattern, content, flags = flags)
-
-        # KVT-
-        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + tableNamePattern + '\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), match.group(7), "", is_framework)
+        # KTVC
+        pattern = 'NSLocalizedString\(' + keyPattern + tableNamePattern + valuePattern + commentPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(7), framework, match.group(10), is_framework)
         content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
         # KVTC
@@ -133,9 +103,39 @@ for path, directories, files in os.walk("."):
         replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), framework, match.group(10), is_framework)
         content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
-        # KTVC
-        pattern = 'NSLocalizedString\(' + keyPattern + tableNamePattern + valuePattern + commentPattern + '\)'
-        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(7), framework, match.group(10), is_framework)
+        # KVT-
+        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + tableNamePattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), framework, "", is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
+
+        # KV-C
+        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + commentPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), framework, match.group(7), is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
+
+        # KV--
+        pattern = 'NSLocalizedString\(' + keyPattern + valuePattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(4), framework, "", is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
+
+        # K-TC
+        pattern = 'NSLocalizedString\(' + keyPattern + tableNamePattern + commentPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), framework, match.group(7), is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
+
+        # K-T-
+        pattern = 'NSLocalizedString\(' + keyPattern + tableNamePattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), framework, "", is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
+
+        # K--C
+        pattern = 'NSLocalizedString\(' + keyPattern + commentPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), framework, match.group(4), is_framework)
+        content = re.sub(pattern, replacement_pattern, content, flags = flags)
+
+        # K---
+        pattern = 'NSLocalizedString\(' + keyPattern + '\)'
+        replacement_pattern = lambda match: replacement_string(match.group(1), match.group(1), framework, "", is_framework)
         content = re.sub(pattern, replacement_pattern, content, flags = flags)
 
         with open(os.path.join(path, file), 'w') as source:
