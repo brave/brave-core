@@ -5,7 +5,7 @@
 import { combineReducers } from 'redux'
 
 // Utils
-import newTabReducer from './newTabReducer'
+import newTabReducer from './new_tab_reducer'
 
 export default combineReducers<NewTab.ApplicationState>({
   newTabData: newTabReducer

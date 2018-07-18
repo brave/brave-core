@@ -20,7 +20,7 @@ import NewPrivateTab from './newPrivateTab'
 import { theme } from '../constants/theme'
 
 // Utils
-import * as newTabActions from '../actions/newTabActions'
+import * as newTabActions from '../actions/new_tab_actions'
 
 // Assets
 require('../../styles/newtab.less')
