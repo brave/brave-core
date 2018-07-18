@@ -39,3 +39,4 @@ npm-debug.log
 *~
 CMakeLists.txt
 cmake-build-debug/
+coverage/
