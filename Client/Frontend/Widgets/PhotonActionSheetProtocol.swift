@@ -49,10 +49,6 @@ extension PhotonActionSheetProtocol {
             tab.loadRequest(PrivilegedRequest(url: HomePanelType.bookmarks.localhostURL) as URLRequest)
         }
 
-        let openReadingList = PhotonActionSheetItem(title: Strings.AppMenuReadingListTitleString, iconString: "menu-panel-ReadingList") { action in
-            tab.loadRequest(PrivilegedRequest(url: HomePanelType.readingList.localhostURL) as URLRequest)
-        }
-
         let openHistory = PhotonActionSheetItem(title: Strings.AppMenuHistoryTitleString, iconString: "menu-panel-History") { action in
             tab.loadRequest(PrivilegedRequest(url: HomePanelType.history.localhostURL) as URLRequest)
         }
@@ -65,7 +61,7 @@ extension PhotonActionSheetProtocol {
             HomePageHelper(prefs: self.profile.prefs).openHomePage(tab)
         }
         
-        var actions = [openTopSites, openBookmarks, openReadingList, openHistory, openDownloads]
+        var actions = [openTopSites, openBookmarks, openHistory, openDownloads]
         if HomePageHelper(prefs: self.profile.prefs).isHomePageAvailable {
             actions.insert(openHomePage, at: 0)
         }
@@ -146,13 +142,6 @@ extension PhotonActionSheetProtocol {
         let toggleActionTitle = tab.desktopSite ? Strings.AppMenuViewMobileSiteTitleString : Strings.AppMenuViewDesktopSiteTitleString
         let toggleDesktopSite = PhotonActionSheetItem(title: toggleActionTitle, iconString: "menu-RequestDesktopSite") { action in
             tab.toggleDesktopSite()
-        }
-        
-        let addReadingList = PhotonActionSheetItem(title: Strings.AppMenuAddToReadingListTitleString, iconString: "addToReadingList") { action in
-            guard let url = tab.url?.displayURL else { return }
-
-            self.profile.readingList.createRecordWithURL(url.absoluteString, title: tab.title ?? "", addedBy: UIDevice.current.name)
-            success(Strings.AppMenuAddToReadingListConfirmMessage)
         }
 
         let findInPageAction = PhotonActionSheetItem(title: Strings.AppMenuFindInPageTitleString, iconString: "menu-FindInPage") { action in
@@ -260,10 +249,6 @@ extension PhotonActionSheetProtocol {
         // Disable bookmarking and reading list if the URL is too long.
         if !tab.urlIsTooLong {
             mainActions.append(isBookmarked ? removeBookmark : bookmarkPage)
-
-            if tab.readerModeAvailableOrActive {
-                mainActions.append(addReadingList)
-            }
         }
 
         let pinAction = (isPinned ? removeTopSitesPin : pinToTopSites)

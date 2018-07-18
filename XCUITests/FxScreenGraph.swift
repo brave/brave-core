@@ -91,13 +91,11 @@ let PrivateHomePanelsScreen = "PrivateHomePanels"
 let HomePanel_TopSites = "HomePanel.TopSites.0"
 let HomePanel_Bookmarks = "HomePanel.Bookmarks.1"
 let HomePanel_History = "HomePanel.History.2"
-let HomePanel_ReadingList = "HomePanel.ReadingList.3"
 
 let allHomePanels = [
     HomePanel_Bookmarks,
     HomePanel_TopSites,
-    HomePanel_History,
-    HomePanel_ReadingList
+    HomePanel_History
 ]
 
 class Action {
@@ -413,7 +411,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
         screenState.tap(app.buttons["HomePanels.TopSites"], to: HomePanel_TopSites)
         screenState.tap(app.buttons["HomePanels.Bookmarks"], to: HomePanel_Bookmarks)
         screenState.tap(app.buttons["HomePanels.History"], to: HomePanel_History)
-        screenState.tap(app.buttons["HomePanels.ReadingList"], to: HomePanel_ReadingList)
 
         screenState.tap(app.buttons["Private Mode"], forAction: Action.TogglePrivateModeFromTabBarHomePanel, if: "tablet == true") { userState in
             userState.isPrivate = !userState.isPrivate
@@ -448,10 +445,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
     map.addScreenState(HomePanel_History) { screenState in
         screenState.press(app.tables["History List"].cells.element(boundBy: 2), to: HistoryPanelContextMenu)
         screenState.tap(app.cells["HistoryPanel.recentlyClosedCell"], to: HistoryRecentlyClosed)
-        screenState.noop(to: HomePanelsScreen)
-    }
-
-    map.addScreenState(HomePanel_ReadingList) { screenState in
         screenState.noop(to: HomePanelsScreen)
     }
 
@@ -829,7 +822,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
         screenState.tap(app.tables.cells["menu-panel-TopSites"], to: HomePanel_TopSites)
         screenState.tap(app.tables.cells["menu-panel-Bookmarks"], to: HomePanel_Bookmarks)
         screenState.tap(app.tables.cells["menu-panel-History"], to: HomePanel_History)
-        screenState.tap(app.tables.cells["menu-panel-ReadingList"], to: HomePanel_ReadingList)
 
         screenState.tap(app.tables.cells["menu-NoImageMode"], forAction: Action.ToggleNoImageMode, transitionTo: BrowserTabMenu) { userState in
             userState.noImageMode = !userState.noImageMode
@@ -888,8 +880,8 @@ extension MMNavigator where T == FxUserState {
     }
 
     func browserPerformAction(_ view: BrowserPerformAction) {
-        let PageMenuOptions = [.shareOption, .toggleBookmarkOption, .addReadingListOption, .findInPageOption, .sendToDeviceOption, .toggleDesktopOption, BrowserPerformAction.copyURLOption]
-        let BrowserMenuOptions = [.openTopSitesOption, .openBookMarksOption, .openReadingListOption, .openHistoryOption, .toggleHideImages, .toggleNightMode, BrowserPerformAction.openSettingsOption]
+        let PageMenuOptions = [.shareOption, .toggleBookmarkOption, .findInPageOption, .sendToDeviceOption, .toggleDesktopOption, BrowserPerformAction.copyURLOption]
+        let BrowserMenuOptions = [.openTopSitesOption, .openBookMarksOption, .openHistoryOption, .toggleHideImages, .toggleNightMode, BrowserPerformAction.openSettingsOption]
 
         let app = XCUIApplication()
 
@@ -905,7 +897,6 @@ extension MMNavigator where T == FxUserState {
 enum BrowserPerformAction: String {
     // Page Menu
     case toggleBookmarkOption  = "menu-Bookmark"
-    case addReadingListOption = "addToReadingList"
     case copyURLOption = "menu-Copy-Link"
     case findInPageOption = "menu-FindInPage"
     case toggleDesktopOption = "menu-RequestDesktopSite"
@@ -917,7 +908,6 @@ enum BrowserPerformAction: String {
     case openTopSitesOption = "menu-panel-TopSites"
     case openBookMarksOption = "menu-panel-Bookmarks"
     case openHistoryOption = "menu-panel-History"
-    case openReadingListOption = "menu-panel-ReadingList"
     case toggleHideImages = "menu-NoImageMode"
     case toggleNightMode = "menu-NightMode"
     case openSettingsOption = "menu-Settings"

@@ -4,7 +4,6 @@
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonCrypto.h>
 
-#import "FSReadingList.h"
 #import "Try.h"
 
 #import "ThirdParty/UIImageViewAligned/UIImageViewAligned.h"
