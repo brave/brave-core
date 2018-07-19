@@ -30,9 +30,6 @@ For reference, here are a few pull requests where we've pulled in new language f
 * Type ```sudo easy_install pip```
 * Type ```sudo -H pip install tornado```
 * Type ```sudo -H pip install lxml```
-* Type ```ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"```
-* Type ```brew install node```
-* Type ```npm install request```
 
 Besides providing the actual translations themselves, it's important that the code tokenizes all strings shown to the user.
 

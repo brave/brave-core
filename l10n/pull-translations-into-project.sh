@@ -13,14 +13,13 @@
 report_error()
 {
   echo $2
+  echo $2 >>output.log 2>&1
   cleanup
   exit $1
 }
 
 cleanup()
 {
-  echo "Cleaning up temporary files..."
-
   if [ -d translated-xliffs ] ; then
     rm -Rf translated-xliffs
   fi
@@ -42,14 +41,14 @@ fi
 cd $(dirname "$0")
 
 if [ ! -d "translated-xliffs" ] ; then
-  mkdir "translated-xliffs" &> output.log
+  mkdir "translated-xliffs" >>output.log 2>&1
   if [ $? != 0 ] ; then
-    report_error 3 "ERROR: Failed to create \"translated-xliffs directory\", please see output.log"
+    report_error 3 "ERROR: Failed to create \"translated-xliffs\" directory, please see output.log"
   fi
 fi
 
 echo "Downloading translations from Transifex..."
-USERNAME="${USERNAME}" PASSWORD="${PASSWORD}" node downloadLanguages.js >>output.log 2>&1
+USERNAME="${USERNAME}" PASSWORD="${PASSWORD}" ./download-translations-from-transifex.sh
 if [ $? != 0 ] ; then
   report_error 4 "ERROR: Failed to download translations from Transifex, please see output.log"
 fi
@@ -63,3 +62,5 @@ if [ $? != 0 ] ; then
 fi
 
 cleanup
+
+echo "Successfully imported translations into Xcode project"
