@@ -4,8 +4,7 @@
 
 #include "chrome/browser/ui/webui/help/version_updater_mac.h"
 
-#import "brave/browser/sparkle_glue_mac.h"
-#include "brave/browser/update_util.h"
+#import "brave/browser/mac/sparkle_glue.h"
 
 VersionUpdater* VersionUpdater::Create(
     content::WebContents* web_contents) {
@@ -21,8 +20,8 @@ VersionUpdaterMac::~VersionUpdaterMac() {
 void VersionUpdaterMac::CheckForUpdate(
     const StatusCallback& status_callback,
     const PromoteCallback& promote_callback) {
-  if (brave::UpdateEnabled()) {
-    [[SparkleGlue sharedSparkleGlue] checkForUpdates:nil];
+  if (SparkleGlue* sparkle_glue = [SparkleGlue sharedSparkleGlue]) {
+    [sparkle_glue checkForUpdates];
 
     // TODO(simonhong): Update status from sparkle.
     status_callback.Run(DISABLED, 0, std::string(), 0, base::string16());
