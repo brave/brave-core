@@ -5,7 +5,7 @@
 
 import reducers from '../../../brave_welcome_ui/reducers/index'
 import { welcomeInitialState } from '../../testData'
- 
+
 describe('welcome reducers test', () => {
   it('reducers are a combined reducer function', () => {
     expect(typeof reducers).toBe('function')

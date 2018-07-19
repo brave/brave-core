@@ -7,7 +7,7 @@ import rewardsReducer from '../../../brave_rewards_ui/reducers/rewards_reducer'
 import * as actions from '../../../brave_rewards_ui/actions/rewards_actions'
 import { types } from '../../../brave_rewards_ui/constants/rewards_types'
 
-describe('rewardsReducer', () => { 
+describe('rewardsReducer', () => {
   it('should handle initial state', () => {
     const assertion = rewardsReducer(undefined, actions.walletCreated())
     expect(assertion).toEqual({

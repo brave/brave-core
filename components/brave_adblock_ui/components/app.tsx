@@ -16,7 +16,7 @@ import * as adblockActions from '../actions/adblock_actions'
 interface Props {
   actions: any
   adblockData: AdBlock.State
-} 
+}
 
 export class AdblockPage extends React.Component<Props, {}> {
   get actions () {

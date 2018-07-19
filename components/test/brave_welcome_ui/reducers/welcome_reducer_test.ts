@@ -19,12 +19,12 @@ describe('welcomeReducer', () => {
         payload: { pageIndex: 1337 }
       })
       expect(assertion).toEqual({ pageIndex: 1337 })
-     })
-   })
+    })
+  })
 
-   describe.skip('IMPORT_NOW_REQUESTED', () => {
+  describe.skip('IMPORT_NOW_REQUESTED', () => {
     it('calls importNowRequested', () => {
       // TODO
     })
   })
- })
+})

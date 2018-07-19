@@ -2,15 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
- import * as React from 'react'
- import { shallow } from 'enzyme'
- import { types } from '../../../brave_rewards_ui/constants/rewards_types'
- import { rewardsInitialState } from '../../testData'
- import {
-   RewardsPage,
-   mapStateToProps,
-   mapDispatchToProps
- } from '../../../brave_rewards_ui/components/app'
+import * as React from 'react'
+import { shallow } from 'enzyme'
+import { types } from '../../../brave_rewards_ui/constants/rewards_types'
+import { rewardsInitialState } from '../../testData'
+import {
+  RewardsPage,
+  mapStateToProps,
+  mapDispatchToProps
+} from '../../../brave_rewards_ui/components/app'
 
 describe('rewardsPage component', () => {
   describe('mapStateToProps', () => {
@@ -29,7 +29,7 @@ describe('rewardsPage component', () => {
       const dispatch = jest.fn()
 
       mapDispatchToProps(dispatch).actions.walletCreated()
-      expect(dispatch.mock.calls[0][0]).toEqual({ 
+      expect(dispatch.mock.calls[0][0]).toEqual({
         type: types.WALLET_CREATED,
         meta: undefined,
         payload: undefined
