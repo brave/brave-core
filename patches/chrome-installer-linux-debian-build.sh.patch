@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 8234cafbb5f95ec608dfa5eff3d0098def1d225a..f1d5799806fc733b875e62cfd2c97662362a3ce7 100755
+index 8234cafbb5f95ec608dfa5eff3d0098def1d225a..8ac9c94863023bb0bfbe087218650f0b9893d6c4 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -38,8 +38,12 @@ index 8234cafbb5f95ec608dfa5eff3d0098def1d225a..f1d5799806fc733b875e62cfd2c97662
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -159,6 +159,10 @@ verify_channel() {
-       CHANNEL=unstable
+@@ -156,9 +156,13 @@ verify_channel() {
+       RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Stable%20updates"
+       ;;
+     unstable|dev|alpha )
+-      CHANNEL=unstable
++      CHANNEL=dev
        RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Dev%20updates"
        ;;
 +    nightly )
@@ -49,11 +53,17 @@ index 8234cafbb5f95ec608dfa5eff3d0098def1d225a..f1d5799806fc733b875e62cfd2c97662
      testing|beta )
        CHANNEL=beta
        RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Beta%20updates"
-@@ -259,6 +263,11 @@ fi
+@@ -259,6 +263,17 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${BUILDDIR}/installer/theme/BRANDING")
  
 +PACKAGEANDCHANNEL="${PACKAGE}-${CHANNEL}"
++if [ "$CHANNEL" = "unstable" ]; then
++  PACKAGEANDCHANNEL="${PACKAGE}-dev"
++fi
++if [ "$CHANNEL" = "dev" ]; then
++  PACKAGEANDCHANNEL="${PACKAGE}-dev"
++fi
 +if [ "$CHANNEL" = "stable" ]; then
 +  PACKAGEANDCHANNEL="${PACKAGE}"
 +fi
