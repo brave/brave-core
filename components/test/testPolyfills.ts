@@ -2,11 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-declare namespace NodeJS {
-  interface Global {
-    requestAnimationFrame: any
-  }
-}
+import { getMockChrome } from './testData'
 
 (global as any).window = {} as any
 (window as any).localStorage = {
@@ -17,4 +13,8 @@ declare namespace NodeJS {
 // while running Jest tests
 global.requestAnimationFrame = function (cb: () => void) {
   return setTimeout(cb, 0)
+}
+
+if (global.chrome === undefined) {
+  global.chrome = getMockChrome()
 }
