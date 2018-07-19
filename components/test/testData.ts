@@ -14,3 +14,12 @@ export const rewardsInitialState = {
     walletCreateFailed: false
   }
 }
+
+export const adblockInitialState = {
+  adblockData: {
+    stats: {
+      numBlocked: 0,
+      regionalAdBlockEnabled: false
+    }
+  }
+}

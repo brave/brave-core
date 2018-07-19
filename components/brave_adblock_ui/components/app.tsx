@@ -16,9 +16,9 @@ import * as adblockActions from '../actions/adblock_actions'
 interface Props {
   actions: any
   adblockData: AdBlock.State
-}
+} 
 
-class AdblockPage extends React.Component<Props, {}> {
+export class AdblockPage extends React.Component<Props, {}> {
   get actions () {
     return this.props.actions
   }
@@ -26,7 +26,7 @@ class AdblockPage extends React.Component<Props, {}> {
   render () {
     const { adblockData } = this.props
     return (
-      <div>
+      <div id='adblockPage'>
         <NumBlockedStat adsBlockedStat={adblockData.stats.adsBlockedStat || 0} />
         <RegionalAdBlockEnabled
           regionalAdBlockEnabled={adblockData.stats.regionalAdBlockEnabled}
@@ -36,11 +36,11 @@ class AdblockPage extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: {adblockData: AdBlock.State}) => ({
+export const mapStateToProps = (state: AdBlock.ApplicationState) => ({
   adblockData: state.adblockData
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+export const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(adblockActions, dispatch)
 })
 
