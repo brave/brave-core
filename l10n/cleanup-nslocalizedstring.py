@@ -9,7 +9,7 @@ blacklisted_parent_directories = ["ThirdParty", "Carthage", "fastlane", "L10nSna
 frameworks = ["BraveShared", "Data", "Shared", "Storage"]
 
 def pascal_case(string):
-  # Convert fullstops, hyphens and underscores to spaces so that words are correctly pascal cased
+  # Convert full stops, hyphens and underscores to spaces so that words are correctly pascal cased
   string = string.replace(".", " ")
   string = string.replace("-", " ")
   string = string.replace("_", " ")
