@@ -7,14 +7,14 @@ import { getMockChrome } from './testData'
 (global as any).window = {} as any
 (window as any).localStorage = {
   getItem: jest.fn()
-}
+} as any
 
 // This mocks rAF to avoid React console.error
 // while running Jest tests
-global.requestAnimationFrame = function (cb: () => void) {
+(global as any).requestAnimationFrame = function (cb: () => void) {
   return setTimeout(cb, 0)
 }
 
-if (global.chrome === undefined) {
-  global.chrome = getMockChrome()
+if ((global as any).chrome === undefined) {
+  (global as any).chrome = getMockChrome()
 }
