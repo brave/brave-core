@@ -37,3 +37,5 @@ node_modules/
 debug.log
 npm-debug.log
 *~
+CMakeLists.txt
+cmake-build-debug/
