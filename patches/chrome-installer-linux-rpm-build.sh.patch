@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/build.sh b/chrome/installer/linux/rpm/build.sh
-index 261faeaf26f34f2e89229579ae7933e23e4299e6..f4bde0a98bd7d6fa4e6c6a4f1ee63e6132b0e997 100755
+index 261faeaf26f34f2e89229579ae7933e23e4299e6..5a62bbb79e76917577b961134f23a860cf917ad9 100755
 --- a/chrome/installer/linux/rpm/build.sh
 +++ b/chrome/installer/linux/rpm/build.sh
 @@ -15,8 +15,9 @@ gen_spec() {
@@ -25,13 +25,15 @@ index 261faeaf26f34f2e89229579ae7933e23e4299e6..f4bde0a98bd7d6fa4e6c6a4f1ee63e61
    mv "$RPMBUILD_DIR/RPMS/$ARCHITECTURE/${PKGNAME}.${ARCHITECTURE}.rpm" \
       "${OUTPUTDIR}"
    # Make sure the package is world-readable, otherwise it causes problems when
-@@ -146,6 +150,9 @@ verify_channel() {
-     unstable|dev|alpha )
-       CHANNEL=unstable
+@@ -144,7 +148,10 @@ verify_channel() {
+       CHANNEL=stable
        ;;
+     unstable|dev|alpha )
+-      CHANNEL=unstable
++      CHANNEL=dev
++      ;;
 +    nightly )
 +      CHANNEL=nightly
-+      ;;
+       ;;
      testing|beta )
        CHANNEL=beta
-       ;;

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..b9a82deb60d40228dbe67bf5d91c88888d44eda6 100644
+index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..5c42a601d6b101e3caf43203568fb42f629f6411 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -25,11 +25,10 @@ declare_args() {
@@ -36,7 +36,17 @@ index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..b9a82deb60d40228dbe67bf5d91c8888
      ]
    }
  
-@@ -524,3 +523,6 @@ linux_package("beta") {
+@@ -386,6 +385,9 @@ group("installer_deps") {
+ template("linux_package") {
+   assert(defined(invoker.channel))
+   channel = invoker.channel
++  if (channel == "unstable" ) {
++    channel = "dev"
++  }
+ 
+   if (current_cpu == "x86") {
+     # The shell scripts use "ia32" instead of "x86".
+@@ -524,3 +526,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }
