@@ -144,8 +144,6 @@ class ErrorPageHelper {
             }
 
             self.redirecting.remove(at: index)
-            
-            
 
             guard let query = request?.query, 
                   let code = query["code"] as? String,
