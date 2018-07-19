@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #
 # Clean up NSLocalizedString usage excluding files within "blacklisted_parent_directories"
+# Run ./l10n/cleanup-nslocalizedstring.py from project root folder
 
 import os
 import re
