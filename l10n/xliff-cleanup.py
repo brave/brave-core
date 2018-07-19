@@ -7,8 +7,7 @@
 #     the one for our main app and those for our extensions.
 #
 #  2. Look at all remaining <file> sections and remove those strings that should not
-#     be localized. Currently that means: CFBundleDisplayName, CFBundleName and
-#     CFBundleShortVersionString.
+#     be localized. Currently that means: CFBundleName and CFBundleShortVersionString.
 #
 #  3. Remove all remaining <file> sections that are now have no <trans-unit> nodes
 #     in their <body> anymore.
