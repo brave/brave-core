@@ -8,6 +8,8 @@ import GCDWebServers
 import Shared
 import Storage
 
+private let log = Logger.browserLogger
+
 class ErrorPageHelper {
     static let MozDomain = "mozilla"
     static let MozErrorDownloadsNotEnabled = 100
@@ -142,13 +144,16 @@ class ErrorPageHelper {
             }
 
             self.redirecting.remove(at: index)
+            
+            
 
-            guard let code = request?.query["code"] as? String,
+            guard let query = request?.query, 
+                  let code = query["code"] as? String,
                   let errCode = Int(code),
-                  let errDescription = request?.query["description"] as? String,
-                  let errURLString = request?.query["url"] as? String,
+                  let errDescription = query["description"] as? String,
+                  let errURLString = query["url"] as? String,
                   let errURLDomain = URL(string: errURLString)?.host,
-                  var errDomain = request?.query["domain"] as? String else {
+                  var errDomain = query["domain"] as? String else {
                 return GCDWebServerResponse(statusCode: 404)
             }
 
@@ -175,7 +180,7 @@ class ErrorPageHelper {
                 }
                 errDomain = ""
             } else if CertErrors.contains(errCode) {
-                guard let certError = request?.query["certerror"] as? String else {
+                guard let query = request?.query, let certError = query["certerror"] as? String else {
                     return GCDWebServerResponse(statusCode: 404)
                 }
 
@@ -194,7 +199,12 @@ class ErrorPageHelper {
 
             variables["actions"] = actions
 
-            let response = GCDWebServerDataResponse(htmlTemplate: asset, variables: variables)
+            guard let unwrappedAsset = asset else {
+                log.error("Asset is nil")
+                return GCDWebServerResponse(statusCode: 404)
+            }
+            
+            let response = GCDWebServerDataResponse(htmlTemplate: unwrappedAsset, variables: variables)
             response?.setValue("no cache", forAdditionalHeader: "Pragma")
             response?.setValue("no-cache,must-revalidate", forAdditionalHeader: "Cache-Control")
             response?.setValue(Date().description, forAdditionalHeader: "Expires")
@@ -203,12 +213,23 @@ class ErrorPageHelper {
 
         server.registerHandlerForMethod("GET", module: "errors", resource: "NetError.css", handler: { (request) -> GCDWebServerResponse! in
             let path = Bundle(for: self).path(forResource: "NetError", ofType: "css")!
-            return GCDWebServerDataResponse(data: try? Data(contentsOf: URL(fileURLWithPath: path)), contentType: "text/css")
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
+                log.error("NetError data is nil")
+                return GCDWebServerResponse(statusCode: 404)
+            }
+            
+            return GCDWebServerDataResponse(data: data, contentType: "text/css")
         })
 
         server.registerHandlerForMethod("GET", module: "errors", resource: "CertError.css", handler: { (request) -> GCDWebServerResponse! in
             let path = Bundle(for: self).path(forResource: "CertError", ofType: "css")!
-            return GCDWebServerDataResponse(data: try? Data(contentsOf: URL(fileURLWithPath: path)), contentType: "text/css")
+            
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
+                log.error("CertError data is nil")
+                return GCDWebServerResponse(statusCode: 404)
+            }
+            
+            return GCDWebServerDataResponse(data: data, contentType: "text/css")
         })
     }
 
