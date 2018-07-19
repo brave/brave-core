@@ -26,12 +26,6 @@ def pascal_case(string):
   return string
 
 def replacement_string(key, value, tablename, comment, is_framework):
-  # func NSLocalizedString(_ key: String,
-  #                    tableName: String? = default,
-  #                       bundle: Bundle = default,
-  #                        value: String = default,
-  #                      comment: String
-
   content = 'NSLocalizedString("' + pascal_case(key) + '"'
 
   if is_framework:
@@ -89,7 +83,6 @@ for path, directories, files in os.walk("."):
 
         # Where K = key
         #       T = tableName
-        #       B = bundle
         #       V = value
         #       C = comment
 
