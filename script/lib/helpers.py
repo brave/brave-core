@@ -7,7 +7,7 @@ import os
 import json
 from .config import get_raw_version
 
-BRAVE_REPO = "brave/brave-browser-builds"
+BRAVE_REPO = "brave/brave-browser"
 
 def get_channel_display_name():
   d = {'beta': 'Beta', 'canary': 'Canary', 'dev': 'Developer', 'release': 'Release'}
