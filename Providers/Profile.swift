@@ -63,10 +63,6 @@ protocol Profile: class {
     var recentlyClosedTabs: ClosedTabsStore { get }
     var panelDataObservers: PanelDataObservers { get }
 
-    #if !MOZ_TARGET_NOTIFICATIONSERVICE
-        var readingList: ReadingList { get }
-    #endif
-
     var isShutdown: Bool { get }
     
     func shutdown()
@@ -111,7 +107,6 @@ open class BrowserProfile: Profile {
 
     let db: BrowserDB
     let loginsDB: BrowserDB
-    let readingListDB: BrowserDB
 
     private static var loginsKey: String? {
         let key = "sqlcipher.key.logins.db"
@@ -164,7 +159,6 @@ open class BrowserProfile: Profile {
         // Set up our database handles.
         self.loginsDB = BrowserDB(filename: "logins.db", secretKey: BrowserProfile.loginsKey, schema: LoginsSchema(), files: files)
         self.db = BrowserDB(filename: "browser.db", schema: BrowserSchema(), files: files)
-        self.readingListDB = BrowserDB(filename: "ReadingList.db", schema: ReadingListSchema(), files: files)
 
         let notificationCenter = NotificationCenter.default
 
@@ -327,10 +321,6 @@ open class BrowserProfile: Profile {
 
     lazy var prefs: Prefs = {
         return self.makePrefs()
-    }()
-
-    lazy var readingList: ReadingList = {
-        return SQLiteReadingList(db: self.readingListDB)
     }()
 
     lazy var remoteClientsAndTabs: RemoteClientsAndTabs & ResettableSyncStorage & AccountRemovalDelegate & RemoteDevices = {

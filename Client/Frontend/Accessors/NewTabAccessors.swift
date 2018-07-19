@@ -32,7 +32,6 @@ enum NewTabPage: String {
     case topSites = "TopSites"
     case bookmarks = "Bookmarks"
     case history = "History"
-    case readingList = "ReadingList"
 
     var settingTitle: String {
         switch self {
@@ -46,8 +45,6 @@ enum NewTabPage: String {
             return Strings.SettingsNewTabBookmarks
         case .history:
             return Strings.SettingsNewTabHistory
-        case .readingList:
-            return Strings.SettingsNewTabReadingList
         }
     }
 
@@ -59,8 +56,6 @@ enum NewTabPage: String {
             return HomePanelType.bookmarks
         case .history:
             return HomePanelType.history
-        case .readingList:
-            return HomePanelType.readingList
         default:
             return nil
         }
@@ -73,5 +68,5 @@ enum NewTabPage: String {
         return homePanel.localhostURL as URL
     }
 
-    static let allValues = [blankPage, topSites, bookmarks, history, readingList, homePage]
+    static let allValues = [blankPage, topSites, bookmarks, history, homePage]
 }

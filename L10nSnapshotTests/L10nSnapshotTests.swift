@@ -204,31 +204,6 @@ class L10nSnapshotTests: L10nBaseSnapshotTests {
         snapshot("21ReaderModeSettingsMenu-01")
     }
 
-    func test22ReadingListTableContextMenu() {
-        let app = XCUIApplication()
-        loadWebPage(url: loremIpsumURL, waitForOtherElementWithAriaLabel: "body")
-        app.buttons["TabLocationView.readerModeButton"].tap()
-        app.buttons["ReaderModeBarView.listStatusButton"].tap()
-        app.textFields["url"].tap()
-        app.buttons["HomePanels.ReadingList"].tap()
-        app.tables["ReadingTable"].cells.element(boundBy: 0).press(forDuration: 2.0)
-        snapshot("22ReadingListTableContextMenu-01")
-    }
-
-    func test23ReadingListTableRowMenu() {
-        let app = XCUIApplication()
-        loadWebPage(url: loremIpsumURL, waitForOtherElementWithAriaLabel: "body")
-        app.buttons["TabLocationView.readerModeButton"].tap()
-        app.buttons["ReaderModeBarView.listStatusButton"].tap()
-        app.textFields["url"].tap()
-        app.buttons["HomePanels.ReadingList"].tap()
-        app.tables["ReadingTable"].cells.element(boundBy: 0).swipeLeft()
-        snapshot("23ReadingListTableRowMenu-01")
-        app.tables["ReadingTable"].cells.element(boundBy: 0).buttons.element(boundBy: 1).tap()
-        app.tables["ReadingTable"].cells.element(boundBy: 0).swipeLeft()
-        snapshot("23ReadingListTableRowMenu-02")
-    }
-
     func test24BookmarksListTableRowMenu() {
         navigator.openURL(loremIpsumURL)
         navigator.performAction(Action.Bookmark)

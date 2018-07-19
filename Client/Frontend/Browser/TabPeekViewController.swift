@@ -9,7 +9,6 @@ import WebKit
 
 protocol TabPeekDelegate: class {
     func tabPeekDidAddBookmark(_ tab: Tab)
-    @discardableResult func tabPeekDidAddToReadingList(_ tab: Tab) -> ReadingListItem?
     func tabPeekRequestsPresentationOf(_ viewController: UIViewController)
     func tabPeekDidCloseTab(_ tab: Tab)
 }
@@ -17,7 +16,6 @@ protocol TabPeekDelegate: class {
 class TabPeekViewController: UIViewController, WKNavigationDelegate {
 
     fileprivate static let PreviewActionAddToBookmarks = NSLocalizedString("Add to Bookmarks", tableName: "3DTouchActions", comment: "Label for preview action on Tab Tray Tab to add current tab to Bookmarks")
-    fileprivate static let PreviewActionAddToReadingList = NSLocalizedString("Add to Reading List", tableName: "3DTouchActions", comment: "Label for preview action on Tab Tray Tab to add current tab to Reading List")
     fileprivate static let PreviewActionCopyURL = NSLocalizedString("Copy URL", tableName: "3DTouchActions", comment: "Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard")
     fileprivate static let PreviewActionCloseTab = NSLocalizedString("Close Tab", tableName: "3DTouchActions", comment: "Label for preview action on Tab Tray Tab to close the current tab")
 
@@ -26,7 +24,6 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
     fileprivate weak var delegate: TabPeekDelegate?
     fileprivate var clientPicker: UINavigationController?
     fileprivate var isBookmarked: Bool = false
-    fileprivate var isInReadingList: Bool = false
     fileprivate var hasRemoteClients: Bool = false
     fileprivate var ignoreURL: Bool = false
 
@@ -39,13 +36,6 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
 
         let urlIsTooLongToSave = self.tab?.urlIsTooLong ?? false
         if !self.ignoreURL && !urlIsTooLongToSave {
-            if !self.isInReadingList {
-                actions.append(UIPreviewAction(title: TabPeekViewController.PreviewActionAddToReadingList, style: .default) { previewAction, viewController in
-                    guard let tab = self.tab else { return }
-                    _ = self.delegate?.tabPeekDidAddToReadingList(tab)
-                })
-            }
-
             if !self.isBookmarked {
                 actions.append(UIPreviewAction(title: TabPeekViewController.PreviewActionAddToBookmarks, style: .default) { previewAction, viewController in
                     guard let tab = self.tab else { return }
@@ -159,10 +149,7 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
 
             self.clientPicker = UINavigationController(rootViewController: clientPickerController)
         }
-
-        let result = browserProfile.readingList.getRecordWithURL(displayURL).value.successValue
-
-        self.isInReadingList = !(result?.url.isEmpty ?? true)
+        
         self.ignoreURL = isIgnoredURL(displayURL)
     }
 
