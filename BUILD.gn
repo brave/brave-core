@@ -19,9 +19,38 @@ config("internal_config") {
   include_dirs = [ "src" ]
 }
 
-source_set("bat-native-ledger") {
+group("bat-native-ledger") {
+  public_deps = [
+    ":ledger",
+  ]
+
+  data_deps = [
+    ":bat-native-ledger-standalone",
+  ]
+}
+
+static_library("bat-native-ledger-standalone") {
+  # TODO(bridiver) - only export symbols from `include`
+  complete_static_lib = true
+
+  output_dir = root_out_dir
+
+  configs -= [ "//build/config/compiler:thin_archive" ]
+
+  defines = [
+    "STANDALONE_BUILD",
+  ]
+
+  deps = [
+    ":ledger"
+  ]
+}
+
+source_set("ledger") {
   public_configs = [ ":external_config" ]
   configs += [ ":internal_config" ]
+
+  output_name = "bat_native_ledger"
 
   sources = [
     "include/bat/ledger/ledger.h",
@@ -49,8 +78,7 @@ source_set("bat-native-ledger") {
   ]
 
   deps = [
-    "//net",
-    "//services/network:network_service",
+    "//third_party/boringssl",
     "//third_party/leveldatabase",
     rebase_path("bat-native-anonize:anonize2", dep_base),
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),

@@ -8,19 +8,20 @@
 #include <memory>
 #include <vector>
 
+#include "bat/ledger/export.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_task_runner.h"
 #include "bat/ledger/ledger_url_loader.h"
 
 namespace ledger {
 
-enum URL_METHOD {
+LEDGER_EXPORT enum URL_METHOD {
   GET = 0,
   PUT = 1,
   POST = 2
 };
 
-class LedgerClient {
+class LEDGER_EXPORT LedgerClient {
  public:
   virtual ~LedgerClient() = default;
 

@@ -38,6 +38,7 @@ class BatClient : public ledger::LedgerCallbackHandler {
   const std::string& getBTCAddress() const;
   const std::string& getETHAddress() const;
   const std::string& getLTCAddress() const;
+  double getContributionAmount() const;
   bool isReadyForReconcile();
   void reconcile(const std::string& viewingId);
   unsigned int ballots(const std::string& viewingId);

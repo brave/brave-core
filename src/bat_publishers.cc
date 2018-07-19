@@ -347,6 +347,18 @@ void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
   synopsisNormalizer();
 }
 
+uint64_t BatPublishers::getPublisherMinVisitTime() const {
+  return state_->min_pubslisher_duration_;
+}
+
+unsigned int BatPublishers::getPublisherMinVisits() const {
+  return state_->min_visits_;
+}
+
+bool BatPublishers::getPublisherAllowNonVerified() const {
+  return state_->allow_non_verified_;
+}
+
 std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> BatPublishers::getPublishersData() {
   std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> res;
 

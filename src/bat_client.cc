@@ -244,6 +244,10 @@ void BatClient::setContributionAmount(const double& amount) {
   saveState();
 }
 
+double BatClient::getContributionAmount() const {
+  return state_->fee_amount_;
+}
+
 const std::string& BatClient::getBATAddress() const {
   return state_->walletInfo_.addressBAT_;
 }

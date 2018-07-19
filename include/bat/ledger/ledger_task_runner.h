@@ -7,9 +7,11 @@
 
 #include <string>
 
+#include "bat/ledger/export.h"
+
 namespace ledger {
 
-class LedgerTaskRunner {
+class LEDGER_EXPORT LedgerTaskRunner {
  public:
   virtual ~LedgerTaskRunner() = default;
   virtual void Run() = 0;
