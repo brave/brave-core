@@ -137,13 +137,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         self.window!.rootViewController = rootViewController
 
-        NotificationCenter.default.addObserver(forName: .FSReadingListAddReadingListItem, object: nil, queue: nil) { (notification) -> Void in
-            if let userInfo = notification.userInfo, let url = userInfo["URL"] as? URL {
-                let title = (userInfo["Title"] as? String) ?? ""
-                profile.readingList.createRecordWithURL(url.absoluteString, title: title, addedBy: UIDevice.current.name)
-            }
-        }
-
         adjustIntegration = AdjustIntegration(profile: profile)
 
         self.updateAuthenticationInfo()

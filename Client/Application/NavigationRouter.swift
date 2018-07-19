@@ -13,7 +13,6 @@ struct FxALaunchParams {
 enum HomePanelPath: String {
     case bookmarks
     case topsites
-    case readingList
     case history
 }
 
@@ -96,7 +95,6 @@ enum NavigationPath {
         switch panel {
         case .bookmarks: bvc.openURLInNewTab(HomePanelType.bookmarks.localhostURL, isPrivileged: true)
         case .history: bvc.openURLInNewTab(HomePanelType.history.localhostURL, isPrivileged: true)
-        case .readingList:bvc.openURLInNewTab(HomePanelType.readingList.localhostURL, isPrivileged: true)
         case .topsites: bvc.openURLInNewTab(HomePanelType.topSites.localhostURL, isPrivileged: true)
         }
     }

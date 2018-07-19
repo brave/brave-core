@@ -44,7 +44,6 @@ enum HomePanelType: Int {
     case topSites = 0
     case bookmarks = 1
     case history = 2
-    case readingList = 3
     case downloads = 4
 
     var localhostURL: URL {
