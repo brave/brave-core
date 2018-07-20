@@ -36,11 +36,11 @@ window.cr.define('brave_rewards', function () {
   }
 
   function walletCreated () {
-    getActions().walletCreated()
+    getActions().onWalletCreated()
   }
 
   function walletCreateFailed () {
-    getActions().walletCreateFailed()
+    getActions().onWalletCreateFailed()
   }
 
   return {

@@ -87,10 +87,11 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       }
     }, {
       std::string("rewards"), {
-        { "823882f2419bf6c16b8291e056ea4b52.svg", IDR_BRAVE_REWARDS_IMG_WALLET_ICON },
-        { "53ef964d53d132d1849285f533c74df6.svg", IDR_BRAVE_REWARDS_IMG_FUNDS_ICON },
-        { "9c14c003bf37abc636c0d266a0ac33a7.svg", IDR_BRAVE_REWARDS_IMG_ADS_DISABLED },
-        { "ea846f2b45804dd849672945f1becd19.svg", IDR_BRAVE_REWARDS_IMG_CONTRIBUTE_DISABLED },
+        { "878e89ddb547d70019456c4792ce1a23.svg", IDR_BRAVE_REWARDS_IMG_ADS_DISABLED },
+        { "6517b078dcd47a8540230a5453d53927.svg", IDR_BRAVE_REWARDS_IMG_CONTRIBUTE_DISABLED },
+        { "21bfb482964742768c5020312af36224.svg", IDR_BRAVE_REWARDS_IMG_DONATE_DISABLED },
+        { "5f9c3f06eaead2dd375d8395b3360134.svg", IDR_BRAVE_REWARDS_IMG_FUNDS_ICON },
+        { "940b64e76580835ea7ef81bab9d32390.svg", IDR_BRAVE_REWARDS_IMG_WALLET_ICON },
         { "4fcfa7f92c5fc22c2b6f34701bfdcd0a.jpeg", IDR_BRAVE_REWARDS_IMG_BART_TEMP }
       }
     }, {
@@ -150,6 +151,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
         { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
         { "adsDisabledText",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT },
+
         { "contributionTitle",  IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE },
         { "contributionDesc",  IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC },
         { "contributionMonthly",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY },
@@ -160,12 +162,30 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "contributionSiteVisited",  IDS_BRAVE_REWARDS_LOCAL_CONTR_SITE_VISITED },
         { "contributionSiteAttention",  IDS_BRAVE_REWARDS_LOCAL_CONTR_ATTENTION },
         { "contributionVisitSome",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME },
+        { "contributionMinTime",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME },
+        { "contributionMinVisits",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS },
+        { "contributionAllowed",  IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOWED },
+        { "contributionNonVerified",  IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_NON_VERIFIED },
+        { "contributionVideos",  IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_VIDEOS },
+        { "contributionVisit1",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1 },
+        { "contributionVisit5",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5 },
+        { "contributionVisit10",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_10 },
+        { "contributionTime5",  IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_5 },
+        { "contributionTime8",  IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_8 },
+        { "contributionTime60",  IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60 },
+
         { "donationTitle",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE },
         { "donationDesc",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC },
         { "donationTotalDonations",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS },
         { "donationTotal",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL },
         { "donationList",  IDS_BRAVE_REWARDS_LOCAL_DONAT_LIST },
         { "donationVisitSome",  IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME },
+        { "donationAbility",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY },
+        { "donationAbilityYT",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_YT },
+        { "donationAbilityTwitter",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW },
+        { "donationDisabledText1",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT1 },
+        { "donationDisabledText2",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2 },
+
         { "panelAddFunds",  IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS },
         { "panelWithdrawFunds",  IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS },
         { "tokens",  IDS_BRAVE_REWARDS_LOCAL_TOKENS },

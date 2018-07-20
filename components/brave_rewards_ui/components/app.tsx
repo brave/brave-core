@@ -7,19 +7,17 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import RewardsPage from './settings'
+import SettingsPage from './settingsPage'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 
-interface Props {
-  actions: any
-  rewardsData: Rewards.State
+interface Props extends Rewards.ComponentProps {
 }
 
 export class App extends React.Component<Props, {}> {
   onCreateWalletClicked = () => {
-    this.actions.createWalletRequested()
+    this.actions.createWallet()
   }
 
   get actions () {
@@ -39,7 +37,7 @@ export class App extends React.Component<Props, {}> {
         }
         {
           rewardsData.walletCreated
-          ? <RewardsPage />
+          ? <SettingsPage />
           : null
         }
         {
