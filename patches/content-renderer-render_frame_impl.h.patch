@@ -1,5 +1,5 @@
 diff --git a/content/renderer/render_frame_impl.h b/content/renderer/render_frame_impl.h
-index aeabf1f9d5d968dd7876f9c40f9214460e5bf42a..447fae4cf70ef771af1a4c8fde0c453226023b6a 100644
+index d841189173ce88675fece0fface17d990229cfea..0255f76ad52664f0819c05dd80ee8263911ef2b1 100644
 --- a/content/renderer/render_frame_impl.h
 +++ b/content/renderer/render_frame_impl.h
 @@ -875,6 +875,7 @@ class CONTENT_EXPORT RenderFrameImpl
