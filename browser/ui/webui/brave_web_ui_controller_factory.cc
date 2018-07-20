@@ -6,6 +6,7 @@
 
 #include "brave/common/webui_url_constants.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
+#include "brave/browser/ui/webui/brave_md_settings_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
@@ -38,8 +39,10 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new BraveRewardsUI(web_ui, url.host());
   } else if (host == kWelcomeHost) {
     return new BraveWelcomeUI(web_ui, url.host());
-  } else if (host ==  chrome::kChromeUINewTabHost) {
+  } else if (host == chrome::kChromeUINewTabHost) {
     return new BraveNewTabUI(web_ui, url.host());
+  } else if (host == chrome::kChromeUISettingsHost) {
+    return new BraveMdSettingsUI(web_ui, url.host());
   }
   return nullptr;
 }
@@ -53,7 +56,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kRewardsHost ||
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == kBraveUIWelcomeURL ||
-      url.host_piece() == chrome::kChromeUINewTabHost) {
+      url.host_piece() == chrome::kChromeUINewTabHost ||
+      url.host_piece() == chrome::kChromeUISettingsHost) {
     return &NewWebUI<BasicUI>;
   }
 
