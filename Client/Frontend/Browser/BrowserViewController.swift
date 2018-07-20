@@ -2534,31 +2534,6 @@ extension BrowserViewController: JSPromptAlertControllerDelegate {
     }
 }
 
-extension BrowserViewController: ClientPickerViewControllerDelegate, InstructionsViewControllerDelegate {
-    func instructionsViewControllerDidClose(_ instructionsViewController: InstructionsViewController) {
-        self.popToBVC()
-    }
-
-    func clientPickerViewControllerDidCancel(_ clientPickerViewController: ClientPickerViewController) {
-        self.popToBVC()
-    }
-
-    func clientPickerViewController(_ clientPickerViewController: ClientPickerViewController, didPickClients clients: [RemoteClient]) {
-        guard let tab = tabManager.selectedTab, let url = tab.canonicalURL?.displayURL?.absoluteString else { return }
-        let shareItem = ShareItem(url: url, title: tab.title, favicon: tab.displayFavicon)
-        guard shareItem.isShareable else {
-            let alert = UIAlertController(title: Strings.SendToErrorTitle, message: Strings.SendToErrorMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: Strings.SendToErrorOKButton, style: .default) { _ in self.popToBVC()})
-            present(alert, animated: true, completion: nil)
-            return
-        }
-        self.popToBVC()
-//        profile.sendItems([shareItem], toClients: clients).uponQueue(.main) { _ in
-//            self.popToBVC()
-//        }
-    }
-}
-
 extension BrowserViewController: HomeMenuControllerDelegate {
     
     func menuDidOpenSettings(_ menu: HomeMenuController) {

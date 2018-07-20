@@ -1047,7 +1047,7 @@ extension TabTrayController: UIViewControllerPreviewingDelegate {
         let tab = tabDataSource.tabs[indexPath.row]
         let tabVC = TabPeekViewController(tab: tab, delegate: self)
         if let browserProfile = profile as? BrowserProfile {
-            tabVC.setState(withProfile: browserProfile, clientPickerDelegate: self)
+            tabVC.setState(withProfile: browserProfile)
         }
         previewingContext.sourceRect = self.view.convert(cell.frame, from: collectionView)
 
@@ -1059,17 +1059,6 @@ extension TabTrayController: UIViewControllerPreviewingDelegate {
         tabManager.selectTab(tpvc.tab)
         navigationController?.popViewController(animated: true)
         delegate?.tabTrayDidDismiss(self)
-    }
-}
-
-extension TabTrayController: ClientPickerViewControllerDelegate {
-
-    func clientPickerViewController(_ clientPickerViewController: ClientPickerViewController, didPickClients clients: [RemoteClient]) {
-        // BRAVE TODO: Not sure what ClientPickerViewController is for or when its used yet
-    }
-
-    func clientPickerViewControllerDidCancel(_ clientPickerViewController: ClientPickerViewController) {
-        clientPickerViewController.dismiss(animated: true, completion: nil)
     }
 }
 
