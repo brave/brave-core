@@ -1,4 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
+<translation id="6834222924780460429"><ph name="EXTENSION_NAME">$1</ph> (extension ID \"<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>\")는 Brave에서 허용되지 않습니다. 확장 프로그램을 설치하려면 about:extensions를 참조하십시오.
+ <ex>abacabadabacabaeabacabadabacabaf</ex></translation>
+<translation id="7450557937477381864">Chrome 닫기</translation>
+<translation id="7008934821596358692">가져오기를 완료하려면 모든 Chrome 창을 닫아야 합니다.</translation>
+<translation id="6447842834002726250">쿠키</translation>
 </translationbundle>

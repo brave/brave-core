@@ -1,5 +1,5 @@
 diff --git a/build/toolchain/win/BUILD.gn b/build/toolchain/win/BUILD.gn
-index f8eb453e400fd645a48f7d1ca2f92cdb2213ffd2..c4a63e44099cf1baa4f574cd29c126f01936a0d5 100644
+index 4d9d1f45f8702395716bd7be30c7a9b21ffb2f7d..c668f93a50f3e46ee441eedf34f6c09e82003a68 100644
 --- a/build/toolchain/win/BUILD.gn
 +++ b/build/toolchain/win/BUILD.gn
 @@ -6,6 +6,7 @@ import("//build/config/clang/clang.gni")

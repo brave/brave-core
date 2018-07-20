@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
-index f32ffad1a95bc31b6571a624333420e88d98913a..80826621b07f21531772725ce3679f472a39a6f1 100644
+index d4e0823a55994118bacfe4fd7f8ec1881640e8ac..ce405ac073c10aea07aa2c7a5d24f8385da8d36f 100644
 --- a/chrome/common/chrome_constants.cc
 +++ b/chrome/common/chrome_constants.cc
 @@ -10,11 +10,11 @@

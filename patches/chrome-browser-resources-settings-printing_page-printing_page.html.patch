@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/printing_page/printing_page.html b/chrome/browser/resources/settings/printing_page/printing_page.html
-index af5a328a2efb6a4f703c17697501b61d76559316..b849e7368e6a57323db1830db4abaf20815f09ab 100644
+index 59372e889b4feb719b2697ed8919eb14761e151e..b14b706478d9a02314e4586a6d09e70175ec5574 100644
 --- a/chrome/browser/resources/settings/printing_page/printing_page.html
 +++ b/chrome/browser/resources/settings/printing_page/printing_page.html
 @@ -38,6 +38,7 @@

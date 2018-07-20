@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/cocoa/tabs/tab_controller.mm b/chrome/browser/ui/cocoa/tabs/tab_controller.mm
-index 0c1473bf9880e543ebbb45f7795f7412b348948d..c1b1f17cde3fef138b983fedd9a9592103cc519d 100644
+index 1b9e4c16b0c8e26c52fc3a3df78252b5f35e4a25..46eac736c92b618bc3014df6afe9cf45078a3f72 100644
 --- a/chrome/browser/ui/cocoa/tabs/tab_controller.mm
 +++ b/chrome/browser/ui/cocoa/tabs/tab_controller.mm
-@@ -117,8 +117,8 @@ class MenuDelegate : public ui::SimpleMenuModel::Delegate {
+@@ -97,8 +97,8 @@ class MenuDelegate : public ui::SimpleMenuModel::Delegate {
  @synthesize url = url_;
  
  namespace {

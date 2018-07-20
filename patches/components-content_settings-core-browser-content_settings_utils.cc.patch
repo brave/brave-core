@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index 721ab4378d2854a53dd1c46bdf2f5bd0b9b3204f..dc573871dc56d8a4312ad1a44fae381caee00d64 100644
+index 6f087c5cb38568b6c83b2cd2bcd182389e0d60cc..249040ce74e8b5b306a523ed54f27e04d860bfa1 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
-@@ -144,6 +144,14 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
-   map->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_CLIENT_HINTS,
-                              ResourceIdentifier(),
+@@ -146,6 +146,14 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
                               &(rules->client_hints_rules));
+   map->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_POPUPS, ResourceIdentifier(),
+                              &(rules->popup_redirect_rules));
 +  map->GetSettingsForOneType(
 +      CONTENT_SETTINGS_TYPE_PLUGINS,
 +      "fingerprinting",

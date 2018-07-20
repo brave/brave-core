@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index 29da523563d3dbbe773f8843dc17db9310016311..5555da9c8d9e1f44257d815c94b7acd9db711b47 100644
+index 419d98ccc4a8dd6fe99ef705d869170dd69d6e4b..0c40b63cef66f2bc89cf2139738c2ab74c938a20 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@
@@ -20,7 +20,7 @@ index 29da523563d3dbbe773f8843dc17db9310016311..5555da9c8d9e1f44257d815c94b7acd9
  chrome_100_percent.pak: %(VersionDir)s\
  chrome_child.dll: %(VersionDir)s\
  chrome_elf.dll: %(VersionDir)s\
-@@ -68,6 +70,7 @@ swiftshader\libGLESv2.dll: %(VersionDir)s\swiftshader\
+@@ -76,6 +78,7 @@ swiftshader\libGLESv2.dll: %(VersionDir)s\swiftshader\
  
  [HIDPI]
  chrome_200_percent.pak: %(VersionDir)s\

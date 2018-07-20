@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 61d874392c26e2911c1b830c80f7264a6b38e561..052ef69872750e9649de8f94a5878e0137f25bd7 100644
+index b8bb2042e29f1a8a21d4e6ca7a890e5f7434893c..d3a267d04cffb0f9162c63d0e002fe5c176ec29c 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
 @@ -10,6 +10,7 @@

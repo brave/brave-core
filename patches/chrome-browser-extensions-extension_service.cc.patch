@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_service.cc b/chrome/browser/extensions/extension_service.cc
-index 33a77c176b6de6b1b699cde64d5371b6e6aa2139..700001c964342e9abeb9541f8452bfc6577b187e 100644
+index 62d1e91881c267cb3cb12ddd9b074a8974bbf516..75953b620d82853c66fff4ea4651f6bef989b8d5 100644
 --- a/chrome/browser/extensions/extension_service.cc
 +++ b/chrome/browser/extensions/extension_service.cc
 @@ -28,6 +28,7 @@
@@ -19,7 +19,7 @@ index 33a77c176b6de6b1b699cde64d5371b6e6aa2139..700001c964342e9abeb9541f8452bfc6
                                        profile->GetPrefs(),
                                        g_browser_process->local_state(),
                                        profile));
-@@ -1247,6 +1248,21 @@ void ExtensionService::AddComponentExtension(const Extension* extension) {
+@@ -1267,6 +1268,21 @@ void ExtensionService::AddComponentExtension(const Extension* extension) {
    }
  
    AddExtension(extension);

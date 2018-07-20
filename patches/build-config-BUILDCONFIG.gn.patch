@@ -1,5 +1,5 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 9e38ee0e592b64f2457dd48110aceafff95164cd..c09b86450ee9906373c3937f9a1e30cb4fb21874 100644
+index 93a97ff2803fe335be4537bc2d21a493468a2a23..b2073ca826d7f488ffb4ebcbb6cf00af58cdf37f 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
 @@ -46,6 +46,8 @@
@@ -11,7 +11,7 @@ index 9e38ee0e592b64f2457dd48110aceafff95164cd..c09b86450ee9906373c3937f9a1e30cb
  if (target_os == "") {
    target_os = host_os
  }
-@@ -540,7 +542,14 @@ default_compiler_configs = [
+@@ -528,7 +530,14 @@ default_compiler_configs = [
    "//build/config/coverage:default_coverage",
    "//build/config/sanitizers:default_sanitizer_flags",
  ]

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/settings_menu/settings_menu.html b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-index 58721ca87c950f2300841cf43f74a9c655e353b3..eafc95fc9e059383a08b7908bcd756d658803710 100644
+index baa02f919e8473fb4368bbb240fa0b5972810cdc..5fb458a9d7dad6cbfc9586dc0f8a1262dfb8a9fc 100644
 --- a/chrome/browser/resources/settings/settings_menu/settings_menu.html
 +++ b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-@@ -176,10 +176,12 @@
+@@ -186,10 +186,12 @@
              $i18n{multidevicePageTitle}
            </a>
  </if>

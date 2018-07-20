@@ -1,16 +1,15 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 919215d238adbe5ba7dbc729c2dd25d1da8ea5d8..279a8f4d4d4addc00506b3ee51215c42f05e56ac 100644
+index ad55e68dc6e3f25c21a1e7c13c8bc093c5b0bd56..750a75bc53cebb46bf04f892ea16e14e31f1afe6 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -101,7 +101,10 @@ const double kSelectedTabThrobScale = 0.95 - kSelectedTabOpacity;
+@@ -111,9 +111,7 @@ constexpr int kTabSeparatorTouchHeight = 24;
  //
  // The value returned here must be at least Tab::kMinimumEndcapWidth.
  float GetTabEndcapWidth() {
--  return GetLayoutInsets(TAB).left() - 0.5f;
-+  // Originally was `return GetLayoutInsets(TAB).left() - 0.5f`
-+  // For rectangle tab shape forcing GetInverseDiagonalSlope give 0 by
-+  // (GetTabEndcapWidth() - Tab::kMinimumEndcapWidth) == 0
-+  return Tab::kMinimumEndcapWidth;
+-  // TODO(pkasting): This should become a member function and vary with
+-  // GetCornerRadius().
+-  return GetLayoutInsets(TAB).left() - (MD::IsRefreshUi() ? 0.0f : 0.5f);
++  return MD::IsRefreshUi() ? GetLayoutInsets(TAB).left() : Tab::kMinimumEndcapWidth;
  }
  
  void DrawHighlight(gfx::Canvas* canvas,

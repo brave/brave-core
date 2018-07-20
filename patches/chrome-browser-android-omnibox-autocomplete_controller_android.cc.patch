@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/android/omnibox/autocomplete_controller_android.cc b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
-index 08685131fd1de67feb5fc28acc33e080fd51b64c..5f3d675b30845c7cbc1d1a58b73380c568d92099 100644
+index d2f549913162b2def9316840e61ebd3b8e9c86f4..a9fc95c23d5a0110ac2a4596c34e865b6ba4847f 100644
 --- a/chrome/browser/android/omnibox/autocomplete_controller_android.cc
 +++ b/chrome/browser/android/omnibox/autocomplete_controller_android.cc
-@@ -16,6 +16,7 @@
+@@ -17,6 +17,7 @@
  #include "base/strings/utf_string_conversions.h"
  #include "base/time/time.h"
  #include "base/timer/timer.h"
@@ -10,7 +10,7 @@ index 08685131fd1de67feb5fc28acc33e080fd51b64c..5f3d675b30845c7cbc1d1a58b73380c5
  #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
-@@ -90,7 +91,7 @@ class ZeroSuggestPrefetcher : public AutocompleteControllerDelegate {
+@@ -99,7 +100,7 @@ class ZeroSuggestPrefetcher : public AutocompleteControllerDelegate {
  };
  
  ZeroSuggestPrefetcher::ZeroSuggestPrefetcher(Profile* profile)
@@ -19,7 +19,7 @@ index 08685131fd1de67feb5fc28acc33e080fd51b64c..5f3d675b30845c7cbc1d1a58b73380c5
            std::make_unique<ChromeAutocompleteProviderClient>(profile),
            this,
            AutocompleteProvider::TYPE_ZERO_SUGGEST)) {
-@@ -127,7 +128,7 @@ void ZeroSuggestPrefetcher::OnResultChanged(bool default_match_changed) {
+@@ -136,7 +137,7 @@ void ZeroSuggestPrefetcher::OnResultChanged(bool default_match_changed) {
  }  // namespace
  
  AutocompleteControllerAndroid::AutocompleteControllerAndroid(Profile* profile)
@@ -28,7 +28,7 @@ index 08685131fd1de67feb5fc28acc33e080fd51b64c..5f3d675b30845c7cbc1d1a58b73380c5
            std::make_unique<ChromeAutocompleteProviderClient>(profile),
            this,
            AutocompleteClassifier::DefaultOmniboxProviders())),
-@@ -348,7 +349,7 @@ AutocompleteControllerAndroid::Factory::~Factory() {
+@@ -364,7 +365,7 @@ AutocompleteControllerAndroid::Factory::~Factory() {
  
  KeyedService* AutocompleteControllerAndroid::Factory::BuildServiceInstanceFor(
      content::BrowserContext* profile) const {

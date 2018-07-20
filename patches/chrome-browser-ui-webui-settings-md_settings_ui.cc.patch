@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/md_settings_ui.cc b/chrome/browser/ui/webui/settings/md_settings_ui.cc
-index f8e4ae44148aa01579097d4ef373025b66dde788..dde5c9c64bdeb0091e7b7780e295b5d402d62249 100644
+index c7ca00e9642c29d6dace213ea3a3c4a950a0661c..2bbc4bf3a21cda263fdbc63fe2d69c6f5037eaae 100644
 --- a/chrome/browser/ui/webui/settings/md_settings_ui.cc
 +++ b/chrome/browser/ui/webui/settings/md_settings_ui.cc
-@@ -122,6 +122,7 @@ void MdSettingsUI::RegisterProfilePrefs(
+@@ -130,6 +130,7 @@ void MdSettingsUI::RegisterProfilePrefs(
    registry->RegisterBooleanPref(prefs::kImportDialogHistory, true);
    registry->RegisterBooleanPref(prefs::kImportDialogSavedPasswords, true);
    registry->RegisterBooleanPref(prefs::kImportDialogSearchEngine, true);

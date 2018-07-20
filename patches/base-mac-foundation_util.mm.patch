@@ -1,8 +1,8 @@
 diff --git a/base/mac/foundation_util.mm b/base/mac/foundation_util.mm
-index aec8c0f6398ce65dd70681cfe94ecee9ba8a1c1e..4f6e728b8da3586e44216bd16fa6890f245b67a2 100644
+index 15fc15ba307e18f438852f00f41b2f5ecf7ff85f..1cce370b0973e56ff26dc94ca2c425de07a4d305 100644
 --- a/base/mac/foundation_util.mm
 +++ b/base/mac/foundation_util.mm
-@@ -250,7 +250,7 @@ const char* BaseBundleID() {
+@@ -252,7 +252,7 @@ const char* BaseBundleID() {
  #if defined(GOOGLE_CHROME_BUILD)
    return "com.google.Chrome";
  #else

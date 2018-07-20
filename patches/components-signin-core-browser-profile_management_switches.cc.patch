@@ -1,8 +1,8 @@
 diff --git a/components/signin/core/browser/profile_management_switches.cc b/components/signin/core/browser/profile_management_switches.cc
-index a26592c75da20daf487cc1c2205bba567be9268b..568d654093292647de5a4ff196fc8620ffd6c664 100644
+index 301da575ed86a9c88adef3f4f3d9c33f3d848c83..fb75153a943c8173d05efb7862263ac71f54ee7a 100644
 --- a/components/signin/core/browser/profile_management_switches.cc
 +++ b/components/signin/core/browser/profile_management_switches.cc
-@@ -96,6 +96,9 @@ void RegisterAccountConsistencyProfilePrefs(
+@@ -97,6 +97,9 @@ void RegisterAccountConsistencyProfilePrefs(
  }
  
  AccountConsistencyMethod GetAccountConsistencyMethod() {

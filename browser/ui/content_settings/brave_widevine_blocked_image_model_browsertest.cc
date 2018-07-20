@@ -31,7 +31,7 @@ class BraveWidevineBlockedImageModelBrowserTest : public InProcessBrowserTest {
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
-    PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
     ASSERT_TRUE(embedded_test_server()->Start());
@@ -83,9 +83,10 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
   // The animation has run for the current WebContents, but not for any other.
   Profile* profile = browser()->profile();
   WebContents::CreateParams create_params(profile);
-  WebContents* other_web_contents = WebContents::Create(create_params);
-  browser()->tab_strip_model()->AppendWebContents(other_web_contents, true);
-  EXPECT_TRUE(model->ShouldRunAnimation(other_web_contents));
+  std::unique_ptr<WebContents> other_web_contents(WebContents::Create(create_params));
+  content::WebContents* raw_other_web_contents = other_web_contents.get();
+  browser()->tab_strip_model()->AppendWebContents(std::move(other_web_contents), true);
+  EXPECT_TRUE(model->ShouldRunAnimation(raw_other_web_contents));
 }
 
 // Tests that we go to the correct link when learn more is clicked in the bubble

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 5191116d07b7d2b625a503e81f0850bfa2a896d6..c0575a8aa56faea5ea3638938eac0a77227e8c96 100644
+index 819467b388781db13d70b70cc5ebbe8c8966834b..52df670bda37b374da3d58f4b1a2454226373656 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -375,7 +375,9 @@ cr.define('settings', function() {
+@@ -381,7 +381,9 @@ cr.define('settings', function() {
        }
  
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');

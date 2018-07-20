@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index 196205f32d149db75ea3edeb01b3521735cafa08..38f93d1df536a478c32306e415f40900ff4c7759 100644
+index ec54b365d46d8b3d095970cded217d090e3757e6..35851877d4b104d251d90b370def8a4b289c8967 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -461,6 +461,10 @@
+@@ -465,6 +465,10 @@
  #include "chrome/services/file_util/public/mojom/constants.mojom.h"
  #endif
  
@@ -13,7 +13,7 @@ index 196205f32d149db75ea3edeb01b3521735cafa08..38f93d1df536a478c32306e415f40900
  using base::FileDescriptor;
  using content::BrowserThread;
  using content::BrowserURLHandler;
-@@ -782,6 +786,16 @@ void GetGuestViewDefaultContentSettingRules(
+@@ -804,6 +808,16 @@ void GetGuestViewDefaultContentSettingRules(
        base::Value::FromUniquePtrValue(
            content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
        std::string(), incognito));
@@ -30,7 +30,7 @@ index 196205f32d149db75ea3edeb01b3521735cafa08..38f93d1df536a478c32306e415f40900
  }
  
  AppLoadedInTabSource ClassifyAppLoadedInTabSource(
-@@ -1050,7 +1064,11 @@ content::BrowserMainParts* ChromeContentBrowserClient::CreateBrowserMainParts(
+@@ -1082,7 +1096,11 @@ content::BrowserMainParts* ChromeContentBrowserClient::CreateBrowserMainParts(
    // which they are added.
  #if defined(TOOLKIT_VIEWS)
  #if defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(USE_OZONE)

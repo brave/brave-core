@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_impl.cc b/chrome/browser/profiles/profile_impl.cc
-index a88db07ea31f6feddabfd0776ee240d8e9a36335..a64e4c13b3740c14f1b6605785dd929f242f5578 100644
+index 25157844cc0e3382db64d1dbf78128134efbd050..80f20c2034e10851ad341ab3b0ea7cbd0d8a30b1 100644
 --- a/chrome/browser/profiles/profile_impl.cc
 +++ b/chrome/browser/profiles/profile_impl.cc
 @@ -32,6 +32,7 @@
@@ -10,9 +10,9 @@ index a88db07ea31f6feddabfd0776ee240d8e9a36335..a64e4c13b3740c14f1b6605785dd929f
  #include "build/build_config.h"
  #include "chrome/browser/background/background_contents_service_factory.h"
  #include "chrome/browser/background_fetch/background_fetch_delegate_factory.h"
-@@ -483,6 +484,9 @@ ProfileImpl::ProfileImpl(
-   BrowserContextDependencyManager::GetInstance()->
-       RegisterProfilePrefsForServices(this, pref_registry_.get());
+@@ -485,6 +486,9 @@ ProfileImpl::ProfileImpl(
+   BrowserContextDependencyManager::GetInstance()
+       ->RegisterProfilePrefsForServices(this, pref_registry_.get());
  
 +  // Done here instead of browser_prefs.cc so it can override default prefs
 +  brave::RegisterProfilePrefs(pref_registry_.get());

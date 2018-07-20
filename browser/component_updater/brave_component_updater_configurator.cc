@@ -16,6 +16,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/pref_names.h"
+#include "components/component_updater/component_updater_command_line_config_policy.h"
 #include "components/component_updater/configurator_impl.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -84,7 +85,7 @@ BraveConfigurator::BraveConfigurator(
     const base::CommandLine* cmdline,
     PrefService* pref_service,
     bool use_brave_server)
-    : configurator_impl_(cmdline, false),
+    : configurator_impl_(ComponentUpdaterCommandLineConfigPolicy(cmdline), false),
       pref_service_(pref_service),
       use_brave_server_(use_brave_server) {
   DCHECK(pref_service_);

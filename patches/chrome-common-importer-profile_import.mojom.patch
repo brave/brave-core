@@ -1,16 +1,16 @@
 diff --git a/chrome/common/importer/profile_import.mojom b/chrome/common/importer/profile_import.mojom
-index e37446ad30a9c86b480ec389ff7aab0cd12269f8..42135898c96e8786ff39da3a6d250ab7d94b06a5 100644
+index 625b5ddec268292acf11f3c060c07c336ca1317f..6461206ff781150ed59c66cc8ae8dffafbb5b30f 100644
 --- a/chrome/common/importer/profile_import.mojom
 +++ b/chrome/common/importer/profile_import.mojom
-@@ -7,6 +7,7 @@ module chrome.mojom;
+@@ -6,6 +6,7 @@ module chrome.mojom;
+ 
  import "components/autofill/content/common/autofill_types.mojom";
  import "mojo/public/mojom/base/string16.mojom";
- import "mojo/public/mojom/base/values.mojom";
 +import "services/network/public/mojom/cookie_manager.mojom";
  import "url/mojom/url.mojom";
  
  const string kProfileImportServiceName = "profile_import";
-@@ -65,6 +66,8 @@ interface ProfileImportObserver {
+@@ -64,6 +65,8 @@ interface ProfileImportObserver {
    OnAutofillFormDataImportStart(uint32 total_autofill_form_data_entry_count);
    OnAutofillFormDataImportGroup(
        array<ImporterAutofillFormDataEntry> autofill_form_data_entry_group);

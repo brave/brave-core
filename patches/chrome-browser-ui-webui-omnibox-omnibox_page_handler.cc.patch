@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
-index 089208eeacd675cd8b2bb907c46273041b0fcede..1a9f92be9d8b24f1d4830f2231fbe5252d46ff24 100644
+index f56b9c749199d98b5662f9718d52c57bc51321d8..779c1b4ff4ca58c70b012cc7347b6fa79019087f 100644
 --- a/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
 +++ b/chrome/browser/ui/webui/omnibox/omnibox_page_handler.cc
 @@ -15,6 +15,7 @@
@@ -10,7 +10,7 @@ index 089208eeacd675cd8b2bb907c46273041b0fcede..1a9f92be9d8b24f1d4830f2231fbe525
  #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
  #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
  #include "chrome/browser/bookmarks/bookmark_model_factory.h"
-@@ -209,7 +210,7 @@ void OmniboxPageHandler::StartOmniboxQuery(const std::string& input_string,
+@@ -210,7 +211,7 @@ void OmniboxPageHandler::StartOmniboxQuery(const std::string& input_string,
  }
  
  void OmniboxPageHandler::ResetController() {

@@ -58,6 +58,11 @@ const InstallConstants kInstallModes[] = {
           0x44c0,
           { 0x97, 0xd2, 0x6d, 0xa0, 0xdb, 0x62, 0x3d,
             0xb4 } },  // Toast activator CLSID.
+        { 0x576b31af,
+          0x6369,
+          0x4b6b,
+          { 0x85, 0x60, 0xe4, 0xb2, 0x3, 0xa9, 0x7a,
+            0x8b } },  // Elevator CLSID.
         L"",  // The empty string means "stable".
         ChannelStrategy::ADDITIONAL_PARAMETERS,
         true,  // Supports system-level installs.
@@ -86,6 +91,11 @@ const InstallConstants kInstallModes[] = {
           0x49f0,
           { 0x8d, 0x47, 0xef, 0x22, 0xbb, 0xc4, 0xb,
             0xa7 } },  // Toast activator CLSID.
+        { 0x2313f1cd,
+          0x41f3,
+          0x4347,
+          { 0xbe, 0xc0, 0xd7, 0x22, 0xca, 0x41, 0x2c,
+            0x75 } },  // Elevator CLSID.
         L"beta",                                    // Forced channel name.
         ChannelStrategy::FIXED,
         true,   // Supports system-level installs.
@@ -114,6 +124,11 @@ const InstallConstants kInstallModes[] = {
           0x47a6,
           { 0xa5, 0x47, 0x69, 0x1c, 0xc9, 0x4c, 0xae,
             0xe0 } },  // Toast activator CLSID.
+        { 0x9129ed6a,
+          0x11d3,
+          0x43b7,
+          { 0xb7, 0x18, 0x8f, 0x82, 0x61, 0x45, 0x97,
+            0xa3 } },  // Elevator CLSID.
         L"dev",                                     // Forced channel name.
         ChannelStrategy::FIXED,
         true,   // Supports system-level installs.
@@ -142,6 +157,11 @@ const InstallConstants kInstallModes[] = {
           0x4da5,
           { 0xa2, 0x59, 0x3, 0x2, 0xda, 0x6a, 0x0,
             0xe1 } },  // Toast activator CLSID.
+        { 0x1ce2f84f,
+          0x70cb,
+          0x4389,
+          { 0x87, 0xdb, 0xd0, 0x99, 0x48, 0x30, 0xbb,
+            0x17 } },  // Elevator CLSID.
         L"nightly",                                  // Forced channel name.
         ChannelStrategy::FIXED,
         false,  // Does not support system-level installs.
@@ -173,6 +193,11 @@ const InstallConstants kInstallModes[] = {
           0x4c06,
           { 0x96, 0xe8, 0x6f, 0x30, 0xf1, 0x8c, 0xa5,
             0x5c } },  // Toast activator CLSID.
+        { 0x5693e62d,
+          0xd6,
+          0x4421,
+          { 0xaf, 0xe8, 0x58, 0xf3, 0xc9, 0x47, 0x43,
+            0x6a } },  // Elevator CLSID.
         L"",    // Empty default channel name since no update integration.
         ChannelStrategy::UNSUPPORTED,
         true,   // Supports system-level installs.

@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
+<translation id="3866249974567520381">Leírás</translation>
+<translation id="4530494379350999373">Eredet</translation>
+<translation id="8195027750202970175">Lemezen elfoglalt méret</translation>
+<translation id="9116465289595958864">Utoljára módosított</translation>
+<translation id="4590324241397107707">Adatállomány tároló</translation>
+<translation id="5338503421962489998">Helyi tároló</translation>
+<translation id="6509207748479174212">Média licensz</translation>
+<translation id="6032912588568283682">Fájl rendszer</translation>
+<translation id="8016266267177410919">Ideiglenes tároló</translation>
+<translation id="4175737294868205930">Állandó tároló</translation>
+<translation id="6105877918873366097">Utoljára elért</translation>
+<translation id="3941357410013254652">Csatorna ID</translation>
+<translation id="7702907602086592255">Domain</translation>
+<translation id="1296497012903089238">Tanúsítvány típus</translation>
+<translation id="1067048845568873861">Készült</translation>
 </translationbundle>

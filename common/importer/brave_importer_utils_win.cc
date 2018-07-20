@@ -10,7 +10,7 @@
 
 base::FilePath GetBraveUserDataFolder() {
   base::FilePath result;
-  if (!PathService::Get(base::DIR_APP_DATA, &result))
+  if (!base::PathService::Get(base::DIR_APP_DATA, &result))
     return base::FilePath();
 
   result = result.AppendASCII("brave");

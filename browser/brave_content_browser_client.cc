@@ -62,7 +62,9 @@ WebContents* GetWebContents(int render_process_id, int render_frame_id) {
 
 }
 
-BraveContentBrowserClient::BraveContentBrowserClient() {}
+BraveContentBrowserClient::BraveContentBrowserClient(std::unique_ptr<ui::DataPack> data_pack) :
+    ChromeContentBrowserClient(std::move(data_pack))
+{}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 

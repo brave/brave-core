@@ -13,6 +13,8 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 
+using extensions::ExtensionBrowserTest;
+
 const char kAdsPage[] = "/blocking.html";
 const char kAdsPageV4[] = "/blocking_v4.html";
 const char kAdsPageRegional[] = "/blocking_regional.html";
@@ -58,14 +60,14 @@ public:
   void InitEmbeddedTestServer() {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
-    PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
     base::ScopedAllowBlockingForTesting allow_blocking;
-    PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+    base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
   }
 
   void SetDefaultComponentIdAndBase64PublicKeyForTest(

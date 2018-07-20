@@ -8,9 +8,11 @@
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/content_browser_client.h"
 
+#include <memory>
+
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
-  BraveContentBrowserClient();
+  BraveContentBrowserClient(std::unique_ptr<ui::DataPack> data_pack = nullptr);
   ~BraveContentBrowserClient() override;
 
    // Overridden from ChromeContentBrowserClient:

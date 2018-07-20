@@ -15,7 +15,7 @@ class BraveExternalProcessImporterBridge :
  public:
   // |observer| must outlive this object.
   BraveExternalProcessImporterBridge(
-      base::Value localized_strings,
+      const base::flat_map<uint32_t, std::string>& localized_strings,
       scoped_refptr<chrome::mojom::ThreadSafeProfileImportObserverPtr>
           observer);
 
