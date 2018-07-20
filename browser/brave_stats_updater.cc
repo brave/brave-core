@@ -21,11 +21,6 @@
 
 const char kBaseUpdateURL[] = "https://laptop-updates.brave.com/1/usage/brave-core";
 
-const char kPlatformIdentifierLinux[] = "linux-bc";
-const char kPlatformIdentifierMac[] = "osx-bc";
-const char kPlatformIdentifierWinIA32[] = "winia32-bc";
-const char kPlatformIdentifierWinx64[] = "winx64-bc";
-
 // Ping the update server once an hour.
 const int kUpdateServerPingFrequency = 60 * 60;
 
@@ -42,20 +37,18 @@ std::string GetChannelName() {
 }
 
 std::string GetPlatformIdentifier() {
-  std::string os_type = version_info::GetOSType();
-  if (os_type == "Linux")
-    return kPlatformIdentifierLinux;
-  else if (os_type == "Mac")
-    return kPlatformIdentifierMac;
-  else if (os_type == "Windows") {
-    if (base::SysInfo::OperatingSystemArchitecture() == "x86")
-      return kPlatformIdentifierWinIA32;
-    else
-      return kPlatformIdentifierWinx64;
-  } else {
-    NOTREACHED();
-    return std::string();
-  }
+#if defined(OS_WIN)
+  if (base::SysInfo::OperatingSystemArchitecture() == "x86")
+    return "winia32-bc";
+  else
+    return "winx64-bc";
+#elif defined(OS_MACOSX)
+  return "osx-bc";
+#elif defined(OS_LINUX)
+  return "linux-bc";
+#else
+  return std::string();
+#endif
 }
 
 GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
