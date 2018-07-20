@@ -821,8 +821,7 @@ namespace braveledger_bat_helper {
       error = !(d.HasMember("signature") && d["signature"].IsString() &&
         d.HasMember("surveyorId") && d["surveyorId"].IsString() &&
         d.HasMember("surveyVK") && d["surveyVK"].IsString() &&
-        d.HasMember("registrarVK") && d["registrarVK"].IsString() &&
-        d.HasMember("surveySK") && d["surveySK"].IsString() );
+        d.HasMember("registrarVK") && d["registrarVK"].IsString());
     }
 
     if (false == error) {
@@ -830,7 +829,9 @@ namespace braveledger_bat_helper {
       surveyorId_ = d["surveyorId"].GetString();
       surveyVK_ = d["surveyVK"].GetString();
       registrarVK_ = d["registrarVK"].GetString();
-      surveySK_ = d["surveySK"].GetString();
+      if (d.HasMember("surveySK") && d["surveySK"].IsString()) {
+        surveySK_ = d["surveySK"].GetString();
+      }
     }
 
     return !error;
@@ -1016,7 +1017,7 @@ namespace braveledger_bat_helper {
 
           const char * time_field = "time";
           if (obj[props_field].HasMember(time_field)) {
-            double d = obj[props_field][time_field].GetDouble();
+            unsigned long long d = obj[props_field][time_field].GetUint64();
             eventmap[time_field] = std::to_string(d);
           }
         }
@@ -1076,14 +1077,14 @@ namespace braveledger_bat_helper {
     //has parser errors or wrong types
     bool error = d.HasParseError();
     if (false == error) {
-      error = !(d.HasMember("paymentStamp") && d["paymentStamp"].IsDouble() &&
+      error = !(d.HasMember("paymentStamp") && d["paymentStamp"].IsUint64() &&
         d.HasMember("probi") && d["probi"].IsString() &&
         d.HasMember("altcurrency") && d["altcurrency"].IsString() );
     }
 
     if (false == error) {
-      double stamp = d["paymentStamp"].GetDouble();
-      transaction.submissionStamp_ = std::to_string((unsigned long long)stamp);
+      unsigned long long stamp = d["paymentStamp"].GetUint64();
+      transaction.submissionStamp_ = std::to_string(stamp);
       transaction.contribution_probi_ = d["probi"].GetString();
       transaction.contribution_altcurrency_ = d["altcurrency"].GetString();
     }
@@ -1241,7 +1242,7 @@ namespace braveledger_bat_helper {
     writer.String("denomination");
     writer.StartObject();
 
-    writer.String("amout");
+    writer.String("amount");
     writer.String(unsignedTx.amount_.c_str());
 
     writer.String("currency");
