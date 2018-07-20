@@ -4,7 +4,7 @@
         "description": "Label Cookie Control dropdown options"
     },
     "shieldsControlsCookieOptionBlockAll": {
-        "message": "Block All Cookies",
+        "message": "Blockera alla kakor",
         "description": "Cookie control dropdown option Block All Cookies"
     },
     "shieldsControlsAdControlOptionAllowAdsTracking": {
@@ -12,11 +12,11 @@
         "description": "Ad Control dropdown box, option allow ads and tracking"
     },
     "shieldsHeaderToggleLeftPosition": {
-        "message": "Down",
+        "message": "Av",
         "description": "Label for top shields switch in shields header turned off position"
     },
     "shieldsStatsHttpsUpgrades": {
-        "message": "HTTPS Upgrades",
+        "message": "HTTPS-uppgraderingar",
         "description": "Label for shields stats, HTTPS upgrades count"
     },
     "shieldsControlsFingerprintingOptionAllowAll": {
@@ -32,11 +32,11 @@
         "description": "Label for Advertisement Control dropdown box options "
     },
     "shieldsStatsScriptsBlocked": {
-        "message": "Scripts Blocked",
+        "message": "Blockerade skript",
         "description": "Label for shields stats, Scripts Blocked count"
     },
     "shieldsHeaderToggleRightPosition": {
-        "message": "Up",
+        "message": "På",
         "description": "Label for top shields switch in shields header turned on position"
     },
     "shieldsControlsFingerprintingOptionBlockAll": {
@@ -44,7 +44,7 @@
         "description": "Fingerprinting control dropdown option Block All Fingerprinting"
     },
     "shieldsControlsCookieOptionAllowAll": {
-        "message": "Allow All Cookies",
+        "message": "Tillåt alla kakor",
         "description": "Cookie control dropdown option Allow All Cookies"
     },
     "shieldsControlsHttpsEverywhereSwitch": {
@@ -84,7 +84,7 @@
         "description": "Shields controls footer, link to edit default shields settings"
     },
     "shieldsControlsAdControlOptionBlockAds": {
-        "message": "Block Ads",
+        "message": "Blockera annonser",
         "description": "Ad Control dropdown box, option block ads"
     },
     "shieldsFingerPrintingBlocked": {
@@ -100,11 +100,11 @@
         "description": "Label for advanced controls group"
     },
     "shieldsControlsBlockScriptsSwitch": {
-        "message": "Block Scripts",
+        "message": "Blockera skript",
         "description": "Shields controls, switch for Block Scripts"
     },
     "shieldsStatsAdsTrackersBlocked": {
-        "message": "Ads and Trackers Blocked",
+        "message": "Blockerade annonser och spårare",
         "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
     },
     "shieldsControlsFingerprintingProtection": {
