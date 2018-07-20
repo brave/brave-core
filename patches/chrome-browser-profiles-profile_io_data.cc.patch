@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index a9a5998fdf673de4ea2645cd9aa6495d9a9c00d6..ab90a2bd82558b526c8dc6a69194ca15759375c5 100644
+index 22d90e5273991555ca613b322cc84afd25a45d85..bc61fe8ce80c19c765656c820990e1b68e9be0a4 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
 @@ -24,6 +24,7 @@
@@ -10,7 +10,7 @@ index a9a5998fdf673de4ea2645cd9aa6495d9a9c00d6..ab90a2bd82558b526c8dc6a69194ca15
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -1045,7 +1046,7 @@ void ProfileIOData::Init(
+@@ -1057,7 +1058,7 @@ void ProfileIOData::Init(
    ChromeNetworkDelegate* chrome_network_delegate_unowned = nullptr;
    if (!base::FeatureList::IsEnabled(network::features::kNetworkService)) {
      std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
