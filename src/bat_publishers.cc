@@ -333,6 +333,7 @@ void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In m
   state_->min_pubslisher_duration_ = duration; //TODO: conversion from 'const uint64_t' to 'unsigned int', possible loss of data
   saveState();
   synopsisNormalizer();
+  calcScoreConsts();
 }
 
 void BatPublishers::setPublisherMinVisits(const unsigned int& visits) {
