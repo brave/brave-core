@@ -9,7 +9,7 @@ if sys.platform in ['win32', 'cygwin']:
 
 def main():
   args = parse_args()
-  transpile_web_uis('.', args.production, args.target_gen_dir[0])
+  transpile_web_uis(args.production, args.target_gen_dir[0])
 
 
 def parse_args():
@@ -22,7 +22,7 @@ def parse_args():
   return parser.parse_args()
 
 
-def transpile_web_uis(dirname, production, target_gen_dir, env=None):
+def transpile_web_uis(production, target_gen_dir, env=None):
   if env is None:
     env = os.environ.copy()
 
@@ -32,6 +32,7 @@ def transpile_web_uis(dirname, production, target_gen_dir, env=None):
     args = [NPM, 'run', 'web-ui-dev']
 
   env["TARGET_GEN_DIR"] = target_gen_dir
+  dirname = os.path.abspath(os.path.join(__file__, '..', '..'))
   with scoped_cwd(dirname):
     execute_stdout(args, env)
 
