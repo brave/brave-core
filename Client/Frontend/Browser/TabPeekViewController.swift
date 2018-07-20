@@ -24,7 +24,6 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
     fileprivate weak var delegate: TabPeekDelegate?
     fileprivate var clientPicker: UINavigationController?
     fileprivate var isBookmarked: Bool = false
-    fileprivate var hasRemoteClients: Bool = false
     fileprivate var ignoreURL: Bool = false
 
     fileprivate var screenShot: UIImageView?
@@ -40,12 +39,6 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
                 actions.append(UIPreviewAction(title: TabPeekViewController.PreviewActionAddToBookmarks, style: .default) { previewAction, viewController in
                     guard let tab = self.tab else { return }
                     self.delegate?.tabPeekDidAddBookmark(tab)
-                    })
-            }
-            if self.hasRemoteClients {
-                actions.append(UIPreviewAction(title: Strings.SendToDeviceTitle, style: .default) { previewAction, viewController in
-                    guard let clientPicker = self.clientPicker else { return }
-                    self.delegate?.tabPeekRequestsPresentationOf(clientPicker)
                     })
             }
             // only add the copy URL action if we don't already have 3 items in our list
@@ -116,7 +109,7 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
         clonedWebView.load(URLRequest(url: url))
     }
 
-    func setState(withProfile browserProfile: BrowserProfile, clientPickerDelegate: ClientPickerViewControllerDelegate) {
+    func setState(withProfile browserProfile: BrowserProfile) {
         assert(Thread.current.isMainThread)
 
         guard let tab = self.tab else {
@@ -134,22 +127,6 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
             }
         }
 
-        browserProfile.remoteClientsAndTabs.getClientGUIDs().uponQueue(mainQueue) {
-            guard let clientGUIDs = $0.successValue else {
-                return
-            }
-
-            self.hasRemoteClients = !clientGUIDs.isEmpty
-            let clientPickerController = ClientPickerViewController()
-            clientPickerController.clientPickerDelegate = clientPickerDelegate
-            clientPickerController.profile = browserProfile
-            if let url = tab.url?.absoluteString {
-                clientPickerController.shareItem = ShareItem(url: url, title: tab.title, favicon: nil)
-            }
-
-            self.clientPicker = UINavigationController(rootViewController: clientPickerController)
-        }
-        
         self.ignoreURL = isIgnoredURL(displayURL)
     }
 
