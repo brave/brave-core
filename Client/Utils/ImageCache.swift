@@ -25,23 +25,24 @@ class ImageEntity: NSObject, FICEntity {
     }
   }
   
-  var fic_sourceImageUUID: String {
+  var sourceImageUUID: String {
     get {
       return uuid ?? UUID().uuidString
     }
   }
   
-  func fic_sourceImageURL(withFormatName formatName: String) -> URL? {
+  func sourceImageURL(withFormatName formatName: String) -> URL? {
     return url
   }
   
-  func fic_drawingBlock(for image: UIImage, withFormatName formatName: String) -> FICEntityImageDrawingBlock? {
+  func drawingBlock(for image: UIImage, withFormatName formatName: String) -> FICEntityImageDrawingBlock? {
     let drawingBlock: FICEntityImageDrawingBlock = { (context, contextSize) in
-      let contextBounds: CGRect = CGRect(x: 0, y: 0, width: contextSize.width, height: contextSize.height)
-      context.clear(contextBounds)
-      UIGraphicsPushContext(context)
-      image.draw(in: contextBounds)
-      UIGraphicsPopContext()
+        guard let context = context else { return }
+        let contextBounds: CGRect = CGRect(x: 0, y: 0, width: contextSize.width, height: contextSize.height)
+        context.clear(contextBounds)
+        UIGraphicsPushContext(context)
+        image.draw(in: contextBounds)
+        UIGraphicsPopContext()
     }
     return drawingBlock
   }
