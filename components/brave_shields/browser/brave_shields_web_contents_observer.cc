@@ -14,6 +14,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/renderer_configuration.mojom.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -30,6 +31,36 @@
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
 #include "ipc/ipc_message_macros.h"
+
+namespace {
+
+// Content Settings are only sent to the main frame currently.
+// Chrome may fix this at some point, but for now we do this as a work-around.
+// You can verify if this is fixed by running the following test:
+// npm run test -- brave_browser_tests --filter=BraveContentSettingsObserverBrowserTest.*
+// Chrome seems to also have a bug with RenderFrameHostChanged not updating the content settings
+// so this is fixed here too. That case is coveredd in tests by:
+// npm run test -- brave_browser_tests --filter=BraveContentSettingsObserverBrowserTest.*
+void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
+  for (content::RenderFrameHost* frame : web_contents->GetAllFrames()) {
+    Profile* profile =
+        Profile::FromBrowserContext(web_contents->GetBrowserContext());
+    const HostContentSettingsMap* map =
+        HostContentSettingsMapFactory::GetForProfile(profile);
+    RendererContentSettingRules rules;
+    GetRendererContentSettingRules(map, &rules);
+    IPC::ChannelProxy* channel =
+        frame->GetProcess()->GetChannel();
+    // channel might be NULL in tests.
+    if (channel) {
+      chrome::mojom::RendererConfigurationAssociatedPtr rc_interface;
+      channel->GetRemoteAssociatedInterface(&rc_interface);
+      rc_interface->SetContentSettingRules(rules);
+    }
+  }
+}
+
+}  // namespace
 
 using extensions::Event;
 using extensions::EventRouter;
@@ -102,6 +133,7 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(
     RenderFrameHost* rfh) {
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {
+    UpdateContentSettingsToRendererFrames(web_contents);
     base::AutoLock lock(frame_data_map_lock_);
     const RenderFrameIdKey key(rfh->GetProcess()->GetID(), rfh->GetRoutingID());
     std::map<RenderFrameIdKey, GURL>::iterator iter =
