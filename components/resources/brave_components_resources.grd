@@ -124,10 +124,11 @@
       <include name="IDR_BRAVE_NEW_TAB_BACKGROUND20" file="../img/newtab/Phoyoserge_Yosemite.jpg" type="BINDATA" />
 
       <!-- WebUI rewards resources -->
-      <include name="IDR_BRAVE_REWARDS_IMG_WALLET_ICON" file="../img/rewards/wallet_icon.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_FUNDS_ICON" file="../img/rewards/funds_icon.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_ADS_DISABLED" file="../img/rewards/ads_disabled.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_CONTRIBUTE_DISABLED" file="../img/rewards/contribute_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_DONATE_DISABLED" file="../img/rewards/donate_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_WALLET_ICON" file="../img/rewards/wallet_icon.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_FUNDS_ICON" file="../img/rewards/funds_icon.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_BART_TEMP" file="../img/rewards/temp/bartBaker.jpeg" type="BINDATA" />
 
     </includes>
@@ -204,6 +205,22 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="">Add Funds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS" desc="">Manage Funds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_TOKENS" desc="">tokens</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME" desc="">Minimum page time before logging a visit</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS" desc="">Minimum visits for publisher relevancy</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOWED" desc="">What should be allowed?</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_NON_VERIFIED" desc="">Allow contribution to non-verified sites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_VIDEOS" desc="">Allow contribution to videos</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1" desc="">1 visit</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5" desc="">5 visits</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_10" desc="">10 visits</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_5" desc="">5 seconds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_8" desc="">8 seconds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60" desc="">1 minute</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Enable ability to give tips on ‘Like’ posts</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_YT" desc="">YouTube</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW" desc="">Twitter</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT1" desc="">Donate on the spot as you find gems.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">Enable Tips on Twitter, YouTube, and more, to give tips to posts you ‘Like’.</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>

@@ -17,16 +17,26 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
   const startingState = state
   switch (action.type) {
-    case types.CREATE_WALLET_REQUESTED:
+    case types.CREATE_WALLET:
       chrome.send('createWalletRequested', [])
       break
     case types.WALLET_CREATED:
       state = { ...state }
       state.walletCreated = true
+      state.enabledMain = true
+      state.enabledAds = true
+      state.enabledContribute = true
+      state.createdTimestamp = new Date().getTime()
       break
     case types.WALLET_CREATE_FAILED:
       state = { ...state }
       state.walletCreateFailed = true
+      break
+    case types.ON_SETTING_SAVE:
+      state = { ...state }
+      if (action.payload.key) {
+        state[action.payload.key] = action.payload.value
+      }
       break
   }
 

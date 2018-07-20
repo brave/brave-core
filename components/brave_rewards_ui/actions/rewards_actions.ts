@@ -7,8 +7,13 @@ import { action } from 'typesafe-actions'
 // Constant
 import { types } from '../constants/rewards_types'
 
-export const createWalletRequested = () => action(types.CREATE_WALLET_REQUESTED)
+export const createWallet = () => action(types.CREATE_WALLET)
 
-export const walletCreated = () => action(types.WALLET_CREATED)
+export const onWalletCreated = () => action(types.WALLET_CREATED)
 
-export const walletCreateFailed = () => action(types.WALLET_CREATE_FAILED)
+export const onWalletCreateFailed = () => action(types.WALLET_CREATE_FAILED)
+
+export const onSettingSave = (key: string, value: any) => action(types.ON_SETTING_SAVE, {
+  key,
+  value
+})

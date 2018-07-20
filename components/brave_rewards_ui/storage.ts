@@ -8,8 +8,20 @@ import { debounce } from '../common/debounce'
 const keyName = 'rewards-data'
 
 const defaultState: Rewards.State = {
+  createdTimestamp: null,
+  enabledMain: false,
+  enabledAds: true,
+  enabledContribute: true,
+  firstLoad: null,
   walletCreated: false,
-  walletCreateFailed: false
+  walletCreateFailed: false,
+  contributionMinTime: 8000,
+  contributionMinVisits: 1,
+  contributionMonthly: 10,
+  contributionNonVerified: true,
+  contributionVideos: true,
+  donationAbilityYT: true,
+  donationAbilityTwitter: true
 }
 
 const cleanData = (state: Rewards.State) => state
