@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/update_package_provides.py b/chrome/installer/linux/rpm/update_package_provides.py
-index 4ce30012357a32e1316dbb3930ce55ddf9acacfa..c8a661351b8279b5d6ce239eb4c61725c27ae8f6 100755
+index 4ce30012357a32e1316dbb3930ce55ddf9acacfa..08a8985d9309dbf329df1885b7d3793c652c8895 100755
 --- a/chrome/installer/linux/rpm/update_package_provides.py
 +++ b/chrome/installer/linux/rpm/update_package_provides.py
 @@ -32,6 +32,7 @@ PACKAGE_FILTER = [
@@ -26,3 +26,19 @@ index 4ce30012357a32e1316dbb3930ce55ddf9acacfa..c8a661351b8279b5d6ce239eb4c61725
      "rtld(GNU_HASH)",
  ]
  
+@@ -73,6 +78,15 @@ for version in SUPPORTED_FEDORA_RELEASES:
+       # overwrite the originals.
+       "https://download.fedoraproject.org/pub/fedora/linux/updates/%s/x86_64/" % version,
+   ]
++rpm_sources['Fedora ' + '26'] = [
++    "https://download.fedoraproject.org/pub/fedora/linux/releases/%s/Everything/x86_64/os/" % version,
++    "https://pubmirror1.math.uh.edu/fedora-buffet/archive/fedora/linux/updates/%s/x86_64/" % version,
++]
++rpm_sources['Fedora ' + '25'] = [
++    "https://download.fedoraproject.org/pub/fedora/linux/releases/%s/Everything/x86_64/os/" % version,
++    "https://mirrors.rit.edu/fedora/archive/fedora/linux/updates/%s/x86_64/" % version,
++]
++
+ for version in SUPPORTED_OPENSUSE_LEAP_RELEASES:
+     rpm_sources['openSUSE Leap ' + version] = [
+         "https://download.opensuse.org/distribution/leap/%s/repo/oss/suse/" % version,
