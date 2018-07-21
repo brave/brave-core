@@ -58,7 +58,7 @@ for language_code in ${language_codes[@]} ; do
   fi
 
   if [ $((http_status_code / 100)) != 2 ] ; then
-    report_error 4 "ERROR: HTTP Status Code: $response"
+    report_error 4 "ERROR: HTTP Status Code: $http_status_code"
   fi
 
   if [ -e translation.xliff ] ; then
