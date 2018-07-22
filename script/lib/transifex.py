@@ -101,7 +101,7 @@ def get_strings_dict_from_xtb_file(xtb_file_path):
 
 def update_source_string_file_to_transifex(filename, content):
   """Uploads the specified source string file to transifex"""
-  print 'Updating existing known resource'
+  print 'Updating existing known resource for filename %s' % filename
   url_part = 'project/%s/resource/%s/content' % (transifex_project_name, filename)
   url = base_url + url_part
   payload = {
