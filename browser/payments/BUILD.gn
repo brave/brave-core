@@ -18,11 +18,15 @@ source_set("payments") {
   ]
 
   sources = [
+    "content_site.cc",
+    "content_site.h",
     "payments_service.cc",
     "payments_service.h",
     "payments_service_factory.cc",
     "payments_service_factory.h",
     "payments_service_observer.h",
+    "publisher_info_backend.cc",
+    "publisher_info_backend.h",
   ]
 
   deps = [
@@ -33,6 +37,7 @@ source_set("payments") {
     "//components/domain_reliability",
     "//content/public/browser",
     "//services/network/public/mojom",
+    "//third_party/leveldatabase",
   ]
 
   if (brave_payments_enabled) {
