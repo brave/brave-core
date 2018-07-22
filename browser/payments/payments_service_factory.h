@@ -34,6 +34,8 @@ class PaymentsServiceFactory : public BrowserContextKeyedServiceFactory {
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
+
+  DISALLOW_COPY_AND_ASSIGN(PaymentsServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_FACTORY_H_

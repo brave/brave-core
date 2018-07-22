@@ -9,11 +9,16 @@
 
 #include "base/macros.h"
 #include "base/observer_list.h"
+#include "brave/browser/payments/content_site.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 namespace payments {
 
 class PaymentsServiceObserver;
+
+using GetContentSiteListCallback =
+    base::Callback<void(std::unique_ptr<ContentSiteList>,
+        uint32_t /* next_record */)>;
 
 class PaymentsService : public KeyedService {
  public:
@@ -21,6 +26,9 @@ class PaymentsService : public KeyedService {
   ~PaymentsService() override;
 
   virtual void CreateWallet() = 0;
+  virtual void GetContentSiteList(uint32_t start,
+                                  uint32_t limit,
+                                const GetContentSiteListCallback& callback) = 0;
 
   void AddObserver(PaymentsServiceObserver* observer);
   void RemoveObserver(PaymentsServiceObserver* observer);
