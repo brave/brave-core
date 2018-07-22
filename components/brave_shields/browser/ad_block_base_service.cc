@@ -20,6 +20,79 @@
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 
+
+namespace {
+
+FilterOption ResourceTypeToFilterOption(content::ResourceType resource_type) {
+  FilterOption filter_option = FONoFilterOption;
+  switch(resource_type) {
+    // top level page
+    case content::RESOURCE_TYPE_MAIN_FRAME:
+      filter_option = FODocument;
+      break;
+    // frame or iframe
+    case content::RESOURCE_TYPE_SUB_FRAME:
+      filter_option = FOSubdocument;
+      break;
+    // a CSS stylesheet
+    case content::RESOURCE_TYPE_STYLESHEET:
+      filter_option = FOStylesheet;
+      break;
+    // an external script
+    case content::RESOURCE_TYPE_SCRIPT:
+      filter_option = FOScript;
+      break;
+    // an image (jpg/gif/png/etc)
+    case content::RESOURCE_TYPE_IMAGE:
+      filter_option = FOImage;
+      break;
+    // a font
+    case content::RESOURCE_TYPE_FONT_RESOURCE:
+      filter_option = FOFont;
+      break;
+    // an "other" subresource.
+    case content::RESOURCE_TYPE_SUB_RESOURCE:
+      filter_option = FOOther;
+      break;
+    // an object (or embed) tag for a plugin.
+    case content::RESOURCE_TYPE_OBJECT:
+      filter_option = FOObject;
+      break;
+    // a media resource.
+    case content::RESOURCE_TYPE_MEDIA:
+      filter_option = FOMedia;
+      break;
+    // a XMLHttpRequest
+    case content::RESOURCE_TYPE_XHR:
+      filter_option = FOXmlHttpRequest;
+      break;
+    // a ping request for <a ping>/sendBeacon.
+    case content::RESOURCE_TYPE_PING:
+      filter_option = FOPing;
+      break;
+    // the main resource of a dedicated
+    case content::RESOURCE_TYPE_WORKER:
+    // the main resource of a shared worker.
+    case content::RESOURCE_TYPE_SHARED_WORKER:
+    // an explicitly requested prefetch
+    case content::RESOURCE_TYPE_PREFETCH:
+    // a favicon
+    case content::RESOURCE_TYPE_FAVICON:
+    // the main resource of a service worker.
+    case content::RESOURCE_TYPE_SERVICE_WORKER:
+    // a report of Content Security Policy
+    case content::RESOURCE_TYPE_CSP_REPORT:
+    // a resource that a plugin requested.
+    case content::RESOURCE_TYPE_PLUGIN_RESOURCE:
+    case content::RESOURCE_TYPE_LAST_TYPE:
+    default:
+      break;
+  }
+  return filter_option;
+}
+
+}  // namespace
+
 namespace brave_shields {
 
 AdBlockBaseService::AdBlockBaseService()
@@ -40,16 +113,7 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string& tab_host) {
 
-  FilterOption current_option = FONoFilterOption;
-  content::ResourceType internalResource = (content::ResourceType)resource_type;
-  if (content::RESOURCE_TYPE_STYLESHEET == internalResource) {
-    current_option = FOStylesheet;
-  } else if (content::RESOURCE_TYPE_IMAGE == internalResource) {
-    current_option = FOImage;
-  } else if (content::RESOURCE_TYPE_SCRIPT == internalResource) {
-    current_option = FOScript;
-  }
-
+  FilterOption current_option = ResourceTypeToFilterOption(resource_type);
   if (ad_block_client_->matches(url.spec().c_str(),
         current_option,
         tab_host.c_str())) {
