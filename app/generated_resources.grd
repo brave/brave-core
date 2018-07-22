@@ -1,18 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This file is created by l10nUtil.js. Do not edit manually. -->
-
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
 This file contains definitions of resources that will be translated for each
 locale.  The variables is_win, is_macosx, is_linux, and is_posix are available
 for making strings OS specific.  Other platform defines such as use_titlecase
 are declared in build/common.gypi.
 -->
-
-<grit base_dir="." latest_public_release="0" current_release="1"
-      output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit base_dir="." latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
   <outputs>
     <output filename="grit/generated_resources.h" type="rc_header">
-      <emit emit_type='prepend'></emit>
+      <emit emit_type="prepend" />
     </output>
     <output filename="generated_resources_am.pak" type="data_package" lang="am" />
     <output filename="generated_resources_ar.pak" type="data_package" lang="ar" />
@@ -863,7 +860,7 @@ are declared in build/common.gypi.
             &amp;Smaller
           </message>
           <message name="IDS_ZOOM_MINUS2" desc="The text label of the Make Text Smaller menu item in the merged menu">
-            &#8722;
+            −
           </message>
           <message name="IDS_COPY_URL" desc="The text label of the Copy URL menu item for the Hosted App app menu">
             Copy &amp;URL
@@ -937,7 +934,7 @@ are declared in build/common.gypi.
             &amp;Smaller
           </message>
           <message name="IDS_ZOOM_MINUS2" desc="The text label of the Make Text Smaller menu item in the merged menu">
-            &#8722;
+            −
           </message>
           <message name="IDS_COPY_URL" desc="In Title Case: The text label of the Copy URL menu item for the Hosted App app menu">
             Copy &amp;URL
@@ -1128,42 +1125,34 @@ are declared in build/common.gypi.
         ''' - '''
       </message>
       <if expr="not use_titlecase">
-        <message name="IDS_EDIT_SEARCH_ENGINES"
-                 desc="Title of the popup menu item for editing search engines">
+        <message name="IDS_EDIT_SEARCH_ENGINES" desc="Title of the popup menu item for editing search engines">
           &amp;Edit search engines...
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_EDIT_SEARCH_ENGINES"
-                 desc="In Title Case: Title of the popup menu item for editing search engines">
+        <message name="IDS_EDIT_SEARCH_ENGINES" desc="In Title Case: Title of the popup menu item for editing search engines">
           &amp;Edit Search Engines...
         </message>
       </if>
 
       <!-- Search Engine Settings -->
-      <message name="IDS_SEARCH_ENGINES_EDITOR_KEYWORD_COLUMN"
-               desc="Title of the keyword column in the search engines editor">
+      <message name="IDS_SEARCH_ENGINES_EDITOR_KEYWORD_COLUMN" desc="Title of the keyword column in the search engines editor">
         Keyword
       </message>
-      <message name="IDS_SEARCH_ENGINES_EDITOR_DESCRIPTION_COLUMN"
-               desc="Title of the description column in the search engines editor">
+      <message name="IDS_SEARCH_ENGINES_EDITOR_DESCRIPTION_COLUMN" desc="Title of the description column in the search engines editor">
         Name
       </message>
-      <message name="IDS_SEARCH_ENGINES_EDITOR_MAIN_SEPARATOR"
-               desc="Title above the set of keywords the user has modified and or explicitly created">
+      <message name="IDS_SEARCH_ENGINES_EDITOR_MAIN_SEPARATOR" desc="Title above the set of keywords the user has modified and or explicitly created">
         Default search settings
       </message>
-      <message name="IDS_SEARCH_ENGINES_EDITOR_OTHER_SEPARATOR"
-               desc="Title above the set of keywords Brave automatically created as the user browses">
+      <message name="IDS_SEARCH_ENGINES_EDITOR_OTHER_SEPARATOR" desc="Title above the set of keywords Brave automatically created as the user browses">
         Other search engines
       </message>
-      <message name="IDS_SEARCH_ENGINES_EDITOR_EXTENSIONS_SEPARATOR"
-               desc="Title above the set of keywords installed by active extensions">
+      <message name="IDS_SEARCH_ENGINES_EDITOR_EXTENSIONS_SEPARATOR" desc="Title above the set of keywords installed by active extensions">
         Search engines added by extensions
       </message>
 
-      <message name="IDS_SEARCH_ENGINES_EDITOR_DEFAULT_ENGINE"
-               desc="Engine name displayed for the engine in the list that is currently marked as default">
+      <message name="IDS_SEARCH_ENGINES_EDITOR_DEFAULT_ENGINE" desc="Engine name displayed for the engine in the list that is currently marked as default">
         <ph name="ENGINE_NAME">$1<ex>Brave</ex></ph> (Default)
       </message>
 
@@ -1193,260 +1182,197 @@ are declared in build/common.gypi.
       <!-- Download Error Messages-->
       <!-- *_STATUS_*: Short message in the download on the shelf.-->
       <!-- *_DESCRIPTION_*: Corresponding more descriptive message on the download page.-->
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS"
-               desc="The download experienced an error and was interrupted, size downloaded/total.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS" desc="The download experienced an error and was interrupted, size downloaded/total.">
         Download error
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_ACCESS_DENIED"
-               desc="Cannot write to the directory/file due to insufficient permissions. Please select another directory.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_ACCESS_DENIED" desc="Cannot write to the directory/file due to insufficient permissions. Please select another directory.">
         Insufficient permissions
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_ACCESS_DENIED"
-               desc="Download page message: Access Denied.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_ACCESS_DENIED" desc="Download page message: Access Denied.">
         Cannot save due to insufficient permissions. Please save to another location.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_PATH_TOO_LONG"
-               desc="The file path name is too long.  Please select another location or name.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_PATH_TOO_LONG" desc="The file path name is too long.  Please select another location or name.">
         Path too long
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_PATH_TOO_LONG"
-               desc="Download page message: Path Too Long.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_PATH_TOO_LONG" desc="Download page message: Path Too Long.">
         The file path or name is too long.  Please save with a shorter name or to another location.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_DISK_FULL"
-               desc="There is not enough room on the disk to download this file.  Please choose another disk or delete files to make more room.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_DISK_FULL" desc="There is not enough room on the disk to download this file.  Please choose another disk or delete files to make more room.">
         Disk full
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_DISK_FULL"
-               desc="Download page message: Disk Full.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_DISK_FULL" desc="Download page message: Disk Full.">
         Your hard disk is full.  Please save to another location or make more room on the hard disk.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_FILE_TOO_LARGE"
-               desc="The file is too large for the file system.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_FILE_TOO_LARGE" desc="The file is too large for the file system.">
         File too large
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_FILE_TOO_LARGE"
-               desc="Download page message: File too large.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_FILE_TOO_LARGE" desc="Download page message: File too large.">
         The file is too large for your computer to handle. Sorry.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_TEMPORARY_PROBLEM"
-               desc="There was a problem saving the file.  Please try again later.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_TEMPORARY_PROBLEM" desc="There was a problem saving the file.  Please try again later.">
         System busy
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_TEMPORARY_PROBLEM"
-               desc="Download page message: Temporary problem.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_TEMPORARY_PROBLEM" desc="Download page message: Temporary problem.">
         Your computer is doing too many things right now.  Try again later.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_VIRUS"
-               desc="This file contains a virus.  We recommend not downloading it.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_VIRUS" desc="This file contains a virus.  We recommend not downloading it.">
         Virus detected
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_VIRUS"
-               desc="Download page message: Virus.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_VIRUS" desc="Download page message: Virus.">
         Anti-virus software detected a virus.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_BLOCKED"
-               desc="The download was blocked due to security policy.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_BLOCKED" desc="The download was blocked due to security policy.">
         Blocked
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_BLOCKED"
-               desc="Download page message: The download was blocked due to security policy on this machine.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_BLOCKED" desc="Download page message: The download was blocked due to security policy on this machine.">
         Security settings on your computer blocked this file.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_CONTENT_LENGTH_MISMATCH"
-               desc="The download is incomplete as not all the data are received.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_CONTENT_LENGTH_MISMATCH" desc="The download is incomplete as not all the data are received.">
         File incomplete
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_CONTENT_LENGTH_MISMATCH"
-               desc="Download page message: Reveived fewer bytes than expected and the download was incomplete.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_CONTENT_LENGTH_MISMATCH" desc="Download page message: Reveived fewer bytes than expected and the download was incomplete.">
         Destination file was incomplete due to a connection issue.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SECURITY_CHECK_FAILED"
-               desc="The security check performed on this download failed unexpectedly">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SECURITY_CHECK_FAILED" desc="The security check performed on this download failed unexpectedly">
         Virus scan failed
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SECURITY_CHECK_FAILED"
-               desc="Download page message: The security check performed on this download failed unexpectedly">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SECURITY_CHECK_FAILED" desc="Download page message: The security check performed on this download failed unexpectedly">
         Anti-virus software failed unexpectedly while scanning this file.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_FILE_TOO_SHORT"
-               desc="A download resumption was attempted, but the file didn't exist or wasn't as large as expected">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_FILE_TOO_SHORT" desc="A download resumption was attempted, but the file didn't exist or wasn't as large as expected">
         File truncated
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_FILE_TOO_SHORT"
-               desc="Download page message: A download resumption was attempted, but the file didn't exist or wasn't as large as expected">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_FILE_TOO_SHORT" desc="Download page message: A download resumption was attempted, but the file didn't exist or wasn't as large as expected">
         Destination file was truncated or removed since last download.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_FILE_SAME_AS_SOURCE"
-               desc="The source and the target of the download file were the same. I.e. the user attempted to download the file onto itself.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_FILE_SAME_AS_SOURCE" desc="The source and the target of the download file were the same. I.e. the user attempted to download the file onto itself.">
         Already downloaded
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_FILE_SAME_AS_SOURCE"
-               desc="Download page message: The source and the target of the download were the same.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_FILE_SAME_AS_SOURCE" desc="Download page message: The source and the target of the download were the same.">
         The file already exists in your download folder.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_NETWORK_TIMEOUT"
-               desc="Network Timeout.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_NETWORK_TIMEOUT" desc="Network Timeout.">
         Network timeout
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_NETWORK_TIMEOUT"
-               desc="Download page message: Network Timeout.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_NETWORK_TIMEOUT" desc="Download page message: Network Timeout.">
         The download was taking too long and was stopped by the network.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_NETWORK_DISCONNECTED"
-               desc="Network Disconnected.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_NETWORK_DISCONNECTED" desc="Network Disconnected.">
         Network disconnected
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_NETWORK_DISCONNECTED"
-               desc="Download page message: Network Disconnected.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_NETWORK_DISCONNECTED" desc="Download page message: Network Disconnected.">
         Internet disconnected. Please check your internet connection and try again.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SERVER_DOWN"
-               desc="The server is down.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SERVER_DOWN" desc="The server is down.">
         Server unavailable
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SERVER_DOWN"
-               desc="Download page message: The server is down.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SERVER_DOWN" desc="Download page message: The server is down.">
         Server unavailable.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_NETWORK_ERROR"
-               desc="Network error.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_NETWORK_ERROR" desc="Network error.">
         Network error
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_NETWORK_ERROR"
-               desc="Download page message: Network error.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_NETWORK_ERROR" desc="Download page message: Network error.">
         Unknown network error.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_NO_FILE"
-               desc="File not found on server.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_NO_FILE" desc="File not found on server.">
         No file
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_NO_FILE"
-               desc="Download page message: File not found on server.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_NO_FILE" desc="Download page message: File not found on server.">
         The server could not find the file.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SERVER_PROBLEM"
-               desc="Server problem.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SERVER_PROBLEM" desc="Server problem.">
         Server problem
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SERVER_PROBLEM"
-               desc="Download page message: Server problem.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SERVER_PROBLEM" desc="Download page message: Server problem.">
         Unknown server error. Please try again, or contact the server administrator.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SHUTDOWN"
-               desc="Shutdown.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SHUTDOWN" desc="Shutdown.">
         Shutdown
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SHUTDOWN"
-               desc="Download page message: Shutdown.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SHUTDOWN" desc="Download page message: Shutdown.">
         The browser was shut down before the download completed.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_CRASH"
-               desc="Browser Crash.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_CRASH" desc="Browser Crash.">
         Crash
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_CRASH"
-               desc="Download page message: Browser Crash.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_CRASH" desc="Download page message: Browser Crash.">
         The browser crashed before the download completed.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_UNAUTHORIZED"
-               desc="Not authorized.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_UNAUTHORIZED" desc="Not authorized.">
         Needs authorization
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_UNAUTHORIZED"
-               desc="Download page message: Not authorized.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_UNAUTHORIZED" desc="Download page message: Not authorized.">
         Server did not authorize you to access this resource.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SERVER_CERT_PROBLEM"
-               desc="Server certificate problem.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SERVER_CERT_PROBLEM" desc="Server certificate problem.">
         Bad certificate
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SERVER_CERT_PROBLEM"
-               desc="Download page message: Server certificate problem.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_SERVER_CERT_PROBLEM" desc="Download page message: Server certificate problem.">
         There was a problem with server's certificate.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_FORBIDDEN"
-               desc="Forbidden.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_FORBIDDEN" desc="Forbidden.">
         Forbidden
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_FORBIDDEN"
-               desc="Download page message: Forbidden.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_FORBIDDEN" desc="Download page message: Forbidden.">
         Access to this resource was forbidden by the server.
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_UNREACHABLE"
-               desc="An unexpected response was received which may indicate that the server is not reachable due to an intermediary.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_UNREACHABLE" desc="An unexpected response was received which may indicate that the server is not reachable due to an intermediary.">
         Server unreachable
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_UNREACHABLE"
-               desc="Download page message: An unexpected response was received which may indicate that the server is not reachable due to an intermediary.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_UNREACHABLE" desc="Download page message: An unexpected response was received which may indicate that the server is not reachable due to an intermediary.">
         The server may be unreachable. Try again later.
       </message>
 
-      <message name="IDS_DOWNLOAD_NOTIFICATION_LABEL_OPEN_WHEN_COMPLETE"
-               desc="Download notifications: Label for 'Open when download is complete' action button on notification">
+      <message name="IDS_DOWNLOAD_NOTIFICATION_LABEL_OPEN_WHEN_COMPLETE" desc="Download notifications: Label for 'Open when download is complete' action button on notification">
         Open when done
       </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_LABEL_OPEN"
-               desc="Download notifications: Label for 'Open download' action button on notification">
+      <message name="IDS_DOWNLOAD_NOTIFICATION_LABEL_OPEN" desc="Download notifications: Label for 'Open download' action button on notification">
         Open
       </message>
       <!-- Download Shelf Items -->
-      <message name="IDS_DOWNLOAD_STATUS_STARTING"
-               desc="When starting a download, let the user know we're starting the download.">
+      <message name="IDS_DOWNLOAD_STATUS_STARTING" desc="When starting a download, let the user know we're starting the download.">
         Starting...
       </message>
       <if expr="chromeos">
-        <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_TITLE"
-                 desc="The title of a download notification: the current download status is in progress.">
+        <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_TITLE" desc="The title of a download notification: the current download status is in progress.">
                  Downloading <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex></ph>
         </message>
-        <message name="IDS_DOWNLOAD_STATUS_PAUSED_TITLE"
-                 desc="The title of a download notification: the current download status is in progress.">
+        <message name="IDS_DOWNLOAD_STATUS_PAUSED_TITLE" desc="The title of a download notification: the current download status is in progress.">
                  Paused <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex></ph>
         </message>
-        <message name="IDS_DOWNLOAD_STATUS_DOWNLOAD_FAILED_TITLE"
-                 desc="The title of a download notification: the current download status is failed.">
+        <message name="IDS_DOWNLOAD_STATUS_DOWNLOAD_FAILED_TITLE" desc="The title of a download notification: the current download status is failed.">
                  <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex></ph> download unsuccessful
         </message>
-        <message name="IDS_DOWNLOAD_STATUS_COMPLETE_TITLE"
-                 desc="The title of a download notification: the current download status is finished successufully.">
+        <message name="IDS_DOWNLOAD_STATUS_COMPLETE_TITLE" desc="The title of a download notification: the current download status is finished successufully.">
                  Download complete
         </message>
-        <message name="IDS_DOWNLOAD_NOTIFICATION_STATUS_COMPLETED"
-                 desc="Size and units downloaded, and the origin domain.">
+        <message name="IDS_DOWNLOAD_NOTIFICATION_STATUS_COMPLETED" desc="Size and units downloaded, and the origin domain.">
           <ph name="DOWNLOAD_RECEIVED">$1<ex>154 MB</ex></ph> from <ph name="DOWNLOAD_DOMAIN">$2<ex>example.com</ex></ph>
         </message>
-        <message name="IDS_DOWNLOAD_NOTIFICATION_STATUS_SHORT"
-                 desc="Size and units downloaded, and the origin domain. ">
+        <message name="IDS_DOWNLOAD_NOTIFICATION_STATUS_SHORT" desc="Size and units downloaded, and the origin domain. ">
           <ph name="DOWNLOAD_RECEIVED">$1<ex>154 MB</ex></ph> from <ph name="DOWNLOAD_DOMAIN">$2<ex>example.com</ex></ph>
         </message>
-        <message name="IDS_DOWNLOAD_NOTIFICATION_DISPLAY_SOURCE"
-                 desc="The name of the notification source, which is download manager here. Shown in the notification header.">
+        <message name="IDS_DOWNLOAD_NOTIFICATION_DISPLAY_SOURCE" desc="The name of the notification source, which is download manager here. Shown in the notification header.">
           Download manager
         </message>
       </if>
-      <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS"
-               desc="Size and units downloaded, time remaining.">
+      <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS" desc="Size and units downloaded, time remaining.">
         <ph name="DOWNLOAD_RECEIVED">$1<ex>54/154 MB</ex></ph>, <ph name="TIME_LEFT">$2<ex>5s</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_WITH_DOMAIN"
-               desc="Size and units downloaded, time remaining.">
+      <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_WITH_DOMAIN" desc="Size and units downloaded, time remaining.">
         <ph name="DOWNLOAD_RECEIVED">$1<ex>54/154 MB</ex></ph> from <ph name="DOWNLOAD_DOMAIN">$2<ex>example.com</ex></ph>, <ph name="TIME_LEFT">$3<ex>5s</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_SIZES"
-               desc="Size and units downloaded.">
+      <message name="IDS_DOWNLOAD_STATUS_SIZES" desc="Size and units downloaded.">
         <ph name="DOWNLOAD_RECEIVED">$1<ex>54kB</ex></ph>/<ph name="DOWNLOAD_TOTAL">$2<ex>154MB</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_OPEN_IN"
-               desc="Time left until the file download completes and the file is opened.">
+      <message name="IDS_DOWNLOAD_STATUS_OPEN_IN" desc="Time left until the file download completes and the file is opened.">
         Opening in <ph name="TIME_REMAINING">$1<ex>5 sec</ex></ph>...
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_OPEN_WHEN_COMPLETE"
-         desc="Status that the file download will be opened when the download completes.">
+      <message name="IDS_DOWNLOAD_STATUS_OPEN_WHEN_COMPLETE" desc="Status that the file download will be opened when the download completes.">
         Opening when complete
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_OPENING"
-               desc="Temporary status shown when a user has clicked to open a downloaded file.">
+      <message name="IDS_DOWNLOAD_STATUS_OPENING" desc="Temporary status shown when a user has clicked to open a downloaded file.">
         Opening <ph name="FILE">$1<ex>image.jpg</ex></ph>...
       </message>
       <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_SHORT" desc="Short status text that appears on unknown-sized downloads in progress.">
@@ -1466,108 +1392,85 @@ are declared in build/common.gypi.
         Unconfirmed
       </message>
       <if expr="is_android">
-        <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD"
-                 desc="Mobile: Message shown to the user to validate the download of a dangerous file.">
+        <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD" desc="Mobile: Message shown to the user to validate the download of a dangerous file.">
           This type of file can harm your device. Do you want to keep <ph name="FILE_NAME">$1<ex>malware.exe</ex></ph> anyway?
         </message>
-        <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD_EXTENSION"
-           desc="Mobile: Message shown to the user to validate the download of an extension file.">
+        <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD_EXTENSION" desc="Mobile: Message shown to the user to validate the download of an extension file.">
           Extensions, apps, and themes can harm your device. Are you sure you want to continue?
         </message>
       </if>
       <if expr="not is_android">
-        <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD"
-                 desc="Message shown to the user to validate the download of a dangerous file.">
+        <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD" desc="Message shown to the user to validate the download of a dangerous file.">
           This type of file can harm your computer. Do you want to keep <ph name="FILE_NAME">$1<ex>malware.exe</ex></ph> anyway?
         </message>
-        <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD_EXTENSION"
-           desc="Message shown to the user to validate the download of an extension file.">
+        <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD_EXTENSION" desc="Message shown to the user to validate the download of an extension file.">
           Extensions, apps, and themes can harm your computer. Are you sure you want to continue?
         </message>
       </if>
-      <message name="IDS_PROMPT_UNCOMMON_DOWNLOAD_CONTENT"
-         desc="Message shown to the user to validate the download when the download content is classified as uncommon by safebrowsing.">
+      <message name="IDS_PROMPT_UNCOMMON_DOWNLOAD_CONTENT" desc="Message shown to the user to validate the download when the download content is classified as uncommon by safebrowsing.">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is not commonly downloaded and may be dangerous.
       </message>
-      <message name="IDS_BLOCK_REASON_UNCOMMON_DOWNLOAD"
-         desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is uncommon.">
+      <message name="IDS_BLOCK_REASON_UNCOMMON_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is uncommon.">
         This file is not commonly downloaded and may be dangerous.
       </message>
-      <message name="IDS_BLOCK_REASON_GENERIC_DOWNLOAD"
-         desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it may be dangerous.">
+      <message name="IDS_BLOCK_REASON_GENERIC_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it may be dangerous.">
         This type of file may harm your computer.
       </message>
 
       <if expr="chromeos">
-        <message name="IDS_PROMPT_BLOCKED_MALICIOUS_DOWNLOAD_TITLE"
-                 desc="In the download notification, a title of message shown for blocked download">
+        <message name="IDS_PROMPT_BLOCKED_MALICIOUS_DOWNLOAD_TITLE" desc="In the download notification, a title of message shown for blocked download">
           Dangerous download blocked
         </message>
       </if>
-      <message name="IDS_CONFIRM_KEEP_DANGEROUS_DOWNLOAD_TITLE"
-               desc="Title for the confirmation dialog asking whether the user really meant to keep a dangerous download">
+      <message name="IDS_CONFIRM_KEEP_DANGEROUS_DOWNLOAD_TITLE" desc="Title for the confirmation dialog asking whether the user really meant to keep a dangerous download">
         Confirm download
       </message>
-      <message name="IDS_KEEP_DANGEROUS_DOWNLOAD_TITLE"
-               desc="Title for the confirmation dialog asking whether the user really meant to keep a dangerous download">
+      <message name="IDS_KEEP_DANGEROUS_DOWNLOAD_TITLE" desc="Title for the confirmation dialog asking whether the user really meant to keep a dangerous download">
         Keep dangerous file?
       </message>
-      <message name="IDS_KEEP_UNCOMMON_DOWNLOAD_TITLE"
-               desc="Title for the confirmation dialog asking whether the user really meant to keep an uncommon download">
+      <message name="IDS_KEEP_UNCOMMON_DOWNLOAD_TITLE" desc="Title for the confirmation dialog asking whether the user really meant to keep an uncommon download">
         Keep file?
       </message>
-      <message name="IDS_PROMPT_CONFIRM_KEEP_DANGEROUS_DOWNLOAD"
-               desc="Prompt text for the confirmation dialog asking whether the user really meant to keep a dangerous download">
+      <message name="IDS_PROMPT_CONFIRM_KEEP_DANGEROUS_DOWNLOAD" desc="Prompt text for the confirmation dialog asking whether the user really meant to keep a dangerous download">
         This file may be harmful for your computer.
       </message>
-      <message name="IDS_PROMPT_CONFIRM_KEEP_MALICIOUS_DOWNLOAD_BODY"
-               desc="Body prompt text for the confirmation dialog asking whether the user really meant to keep a download">
+      <message name="IDS_PROMPT_CONFIRM_KEEP_MALICIOUS_DOWNLOAD_BODY" desc="Body prompt text for the confirmation dialog asking whether the user really meant to keep a download">
         Even if you have downloaded files from this site before, the site may be temporarily unsafe (hacked). Try downloading this file later.
       </message>
       <if expr="use_titlecase">
-        <message name="IDS_CONFIRM_DOWNLOAD_AGAIN"
-                 desc="In Title Case: Text for the button used to confirm the dialog asking whether the user really meant to keep dangerous download.">
+        <message name="IDS_CONFIRM_DOWNLOAD_AGAIN" desc="In Title Case: Text for the button used to confirm the dialog asking whether the user really meant to keep dangerous download.">
           Keep Anyway
         </message>
-        <message name="IDS_CONFIRM_DOWNLOAD"
-                 desc="In Title Case: Text for the button used to validate the downloading of a dangerous download on download shelf.">
+        <message name="IDS_CONFIRM_DOWNLOAD" desc="In Title Case: Text for the button used to validate the downloading of a dangerous download on download shelf.">
           Keep
         </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_CONFIRM_DOWNLOAD_AGAIN"
-                 desc="Text for the button used to confirm the dialog asking whether the user really meant to keep dangerous download.">
+        <message name="IDS_CONFIRM_DOWNLOAD_AGAIN" desc="Text for the button used to confirm the dialog asking whether the user really meant to keep dangerous download.">
           Keep anyway
         </message>
-        <message name="IDS_CONFIRM_DOWNLOAD"
-                 desc="Text for the button used to validate the downloading of a dangerous download on download shelf.">
+        <message name="IDS_CONFIRM_DOWNLOAD" desc="Text for the button used to validate the downloading of a dangerous download on download shelf.">
           Keep
         </message>
       </if>
-      <message name="IDS_CONFIRM_DOWNLOAD_RESTORE"
-               desc="Text for the button used to validate the downloading of a dangerous download on chrome://downloads page.">
+      <message name="IDS_CONFIRM_DOWNLOAD_RESTORE" desc="Text for the button used to validate the downloading of a dangerous download on chrome://downloads page.">
         Keep dangerous file
       </message>
-      <message name="IDS_CONTINUE_EXTENSION_DOWNLOAD"
-               desc="Text for the button used to validate the installation of an extension.">
+      <message name="IDS_CONTINUE_EXTENSION_DOWNLOAD" desc="Text for the button used to validate the installation of an extension.">
         Continue
       </message>
-      <message name="IDS_DISCARD_DOWNLOAD"
-               desc="Text for the button used to stop a dangerous download.">
+      <message name="IDS_DISCARD_DOWNLOAD" desc="Text for the button used to stop a dangerous download.">
         Discard
       </message>
 
       <!-- Download Tab Items -->
-      <message name="IDS_DOWNLOAD_LINK_PAUSE"
-               desc="In the download view, 'Pause' link text">
+      <message name="IDS_DOWNLOAD_LINK_PAUSE" desc="In the download view, 'Pause' link text">
         Pause
       </message>
-      <message name="IDS_MD_DOWNLOAD_SEARCH"
-               desc="Placeholder text/label for the search input in the download page">
+      <message name="IDS_MD_DOWNLOAD_SEARCH" desc="Placeholder text/label for the search input in the download page">
         Search downloads
       </message>
-      <message name="IDS_DOWNLOAD_CLEAR_SEARCH"
-               desc="Tooltip text for the button that clears the search term on the downloads page.">
+      <message name="IDS_DOWNLOAD_CLEAR_SEARCH" desc="Tooltip text for the button that clears the search term on the downloads page.">
         Clear search
       </message>
       <message name="IDS_MD_DOWNLOAD_NO_DOWNLOADS" desc="A message shown when the user has no downloads to show on chrome://downloads.">
@@ -1576,118 +1479,92 @@ are declared in build/common.gypi.
       <message name="IDS_DOWNLOAD_ITEM_DROPDOWN_BUTTON_ACCESSIBLE_TEXT" desc="Text for the dropdown button that opens the download item options menu">
         Options menu
       </message>
-      <message name="IDS_DOWNLOAD_LINK_RESUME"
-               desc="In the download view, 'Resume' link text">
+      <message name="IDS_DOWNLOAD_LINK_RESUME" desc="In the download view, 'Resume' link text">
         Resume
       </message>
-      <message name="IDS_DOWNLOAD_LINK_REMOVE"
-               desc="In the download view, 'Remove from list' link text">
+      <message name="IDS_DOWNLOAD_LINK_REMOVE" desc="In the download view, 'Remove from list' link text">
         Remove from list
       </message>
-      <message name="IDS_DOWNLOAD_LINK_CANCEL"
-               desc="In the download view, 'Cancel' link text">
+      <message name="IDS_DOWNLOAD_LINK_CANCEL" desc="In the download view, 'Cancel' link text">
         Cancel
       </message>
-      <message name="IDS_MD_DOWNLOAD_LINK_RETRY"
-               desc="In the download view, 'Retry' button text to retry downloading a file.">
+      <message name="IDS_MD_DOWNLOAD_LINK_RETRY" desc="In the download view, 'Retry' button text to retry downloading a file.">
         Retry
       </message>
       <if expr="not is_macosx">
-        <message name="IDS_DOWNLOAD_LINK_SHOW"
-                 desc="In the download view, 'Show in folder' link text">
+        <message name="IDS_DOWNLOAD_LINK_SHOW" desc="In the download view, 'Show in folder' link text">
           Show in folder
         </message>
       </if>
       <if expr="is_macosx">
-        <message name="IDS_DOWNLOAD_LINK_SHOW"
-                 desc="Mac: In the download view, 'Show in Finder' link text">
+        <message name="IDS_DOWNLOAD_LINK_SHOW" desc="Mac: In the download view, 'Show in Finder' link text">
           Show in Finder
         </message>
       </if>
-      <message name="IDS_DOWNLOAD_LINK_SHOW_ALL_DOWNLOADS"
-               desc="In the download notification, 'Show all downloads' button text.">
+      <message name="IDS_DOWNLOAD_LINK_SHOW_ALL_DOWNLOADS" desc="In the download notification, 'Show all downloads' button text.">
         Show all downloads
       </message>
       <if expr="chromeos">
       </if>
-      <message name="IDS_DOWNLOAD_TAB_CANCELLED"
-               desc="Text that appears next to the downloaded files that have been canceled">
+      <message name="IDS_DOWNLOAD_TAB_CANCELLED" desc="Text that appears next to the downloaded files that have been canceled">
         Canceled
       </message>
-      <message name="IDS_DOWNLOAD_FILE_REMOVED"
-               desc="Text that appears when a downloaded file has been deleted from the user's computer.">
+      <message name="IDS_DOWNLOAD_FILE_REMOVED" desc="Text that appears when a downloaded file has been deleted from the user's computer.">
         Deleted
       </message>
-      <message name="IDS_DOWNLOAD_TAB_PROGRESS_STATUS_TIME_UNKNOWN"
-               desc="The status text for a download in progress in the download manager. This includes information such as speed and received byte counts and is used when we do not know the remaining time">
+      <message name="IDS_DOWNLOAD_TAB_PROGRESS_STATUS_TIME_UNKNOWN" desc="The status text for a download in progress in the download manager. This includes information such as speed and received byte counts and is used when we do not know the remaining time">
         <ph name="SPEED">$1<ex>10kB/s</ex></ph> - <ph name="RECEIVED_AMOUNT">$2<ex>40kB</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_TAB_PROGRESS_STATUS"
-               desc="The status text for a download in progress in the download manager. This includes information such as speed, received byte counts as well as remaining time">
+      <message name="IDS_DOWNLOAD_TAB_PROGRESS_STATUS" desc="The status text for a download in progress in the download manager. This includes information such as speed, received byte counts as well as remaining time">
         <ph name="SPEED">$1<ex>10kB/s</ex></ph> - <ph name="RECEIVED_AMOUNT">$2<ex>40kB</ex></ph>, <ph name="TIME_REMAINING">$3<ex>42 mins left</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_TAB_PROGRESS_SIZE"
-               desc="Speed and received byte counts (with total)">
+      <message name="IDS_DOWNLOAD_TAB_PROGRESS_SIZE" desc="Speed and received byte counts (with total)">
         <ph name="RECEIVED_AMOUNT">$1<ex>40kB</ex></ph> of <ph name="TOTAL_SIZE">$2<ex>250kB</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_PROGRESS_PAUSED"
-               desc="Indicate the download is in progress but paused">
+      <message name="IDS_DOWNLOAD_PROGRESS_PAUSED" desc="Indicate the download is in progress but paused">
         Paused
       </message>
-      <message name="IDS_DOWNLOAD_LINK_CLEAR_ALL"
-         desc="Clear all downloads link">
+      <message name="IDS_DOWNLOAD_LINK_CLEAR_ALL" desc="Clear all downloads link">
         Clear all
       </message>
-      <message name="IDS_DOWNLOAD_LINK_OPEN_DOWNLOADS_FOLDER"
-               desc="Open downloads folder link">
+      <message name="IDS_DOWNLOAD_LINK_OPEN_DOWNLOADS_FOLDER" desc="Open downloads folder link">
         Open downloads folder
       </message>
-      <message name="IDS_DOWNLOAD_MORE_ACTIONS"
-               desc="Tooltip of a button on the downloads page that shows a menu with actions like 'Open downloads folder' or 'Clear all'">
+      <message name="IDS_DOWNLOAD_MORE_ACTIONS" desc="Tooltip of a button on the downloads page that shows a menu with actions like 'Open downloads folder' or 'Clear all'">
         More actions
       </message>
-      <message name="IDS_DOWNLOAD_BY_EXTENSION_URL"
-               desc="Indicates which extension downloaded this file by name and URL.">
-        Downloaded by &lt;a href=&quot;<ph name="URL">$1<ex>adblock.com</ex></ph>&quot;&gt;<ph name="EXTENSION">$2<ex>The Best Brave Extension Ever</ex></ph>&lt;/a&gt;
+      <message name="IDS_DOWNLOAD_BY_EXTENSION_URL" desc="Indicates which extension downloaded this file by name and URL.">
+        Downloaded by &lt;a href="<ph name="URL">$1<ex>adblock.com</ex></ph>"&gt;<ph name="EXTENSION">$2<ex>The Best Brave Extension Ever</ex></ph>&lt;/a&gt;
       </message>
-      <message name="IDS_DOWNLOAD_IN_INCOGNITO"
-               desc="Indicates a download was started in Incognito mode.">
+      <message name="IDS_DOWNLOAD_IN_INCOGNITO" desc="Indicates a download was started in Incognito mode.">
         Downloaded in Incognito
       </message>
 
       <!-- Download Alerts for Accessibility -->
-      <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_ACCESSIBLE_ALERT"
-               desc="The title of a download notification: the current download status is in progress. This message is for screen reader users.">
+      <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_ACCESSIBLE_ALERT" desc="The title of a download notification: the current download status is in progress. This message is for screen reader users.">
                Downloading <ph name="SIZE">$1<ex>52.7 MB</ex></ph>, <ph name="FILE_NAME">$2<ex>somedocument.pdf</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_PERCENT_COMPLETE_ACCESSIBLE_ALERT"
-               desc="The title of a download notification: the current download status is in progress and time remaining is known. This message is for screen reader users.">
+      <message name="IDS_DOWNLOAD_STATUS_PERCENT_COMPLETE_ACCESSIBLE_ALERT" desc="The title of a download notification: the current download status is in progress and time remaining is known. This message is for screen reader users.">
                Downloading, <ph name="PERCENT_REMAINING">$1<ex>33</ex>% remaining</ph>
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_TIME_REMAINING_ACCESSIBLE_ALERT"
-               desc="The title of a download notification: the current download status is in progress and time remaining is known. This message is for screen reader users.">
+      <message name="IDS_DOWNLOAD_STATUS_TIME_REMAINING_ACCESSIBLE_ALERT" desc="The title of a download notification: the current download status is in progress and time remaining is known. This message is for screen reader users.">
                Downloading, <ph name="STATUS">$1<ex>42 mins left</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_FAILED_ACCESSIBLE_ALERT"
-               desc="The title of a download notification: the current download status is failed. This message is for screen reader users.">
+      <message name="IDS_DOWNLOAD_FAILED_ACCESSIBLE_ALERT" desc="The title of a download notification: the current download status is failed. This message is for screen reader users.">
                Download unsuccessful: <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_CANCELLED_ACCESSIBLE_ALERT"
-               desc="The title of a download notification: the current download status is cancelled. This message is for screen reader users.">
+      <message name="IDS_DOWNLOAD_CANCELLED_ACCESSIBLE_ALERT" desc="The title of a download notification: the current download status is cancelled. This message is for screen reader users.">
                Download cancelled: <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex>.</ph>
       </message>
-      <message name="IDS_DOWNLOAD_COMPLETE_ACCESSIBLE_ALERT"
-               desc="The title of a download notification: the current download status is finished successufully. This message is for screen reader users.">
+      <message name="IDS_DOWNLOAD_COMPLETE_ACCESSIBLE_ALERT" desc="The title of a download notification: the current download status is finished successufully. This message is for screen reader users.">
                Download complete: <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex>. Press Shift+F6 to cycle to the downloads bar area.</ph>
       </message>
 
       <!-- Download Notification Labels -->
-      <message name="IDS_DOWNLOAD_NOTIFICATION_COPY_TO_CLIPBOARD"
-               desc="In the download notification, the text of 'Copy to clipboard' button, which is to copy the file content (eg. an image for image files) to the clipboard">
+      <message name="IDS_DOWNLOAD_NOTIFICATION_COPY_TO_CLIPBOARD" desc="In the download notification, the text of 'Copy to clipboard' button, which is to copy the file content (eg. an image for image files) to the clipboard">
         Copy to clipboard
       </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_ANNOTATE"
-               desc="In the download notification, the text of the button that opens the file (if it is an image) in the note-taking app so the user can annotate it">
+      <message name="IDS_DOWNLOAD_NOTIFICATION_ANNOTATE" desc="In the download notification, the text of the button that opens the file (if it is an image) in the note-taking app so the user can annotate it">
         Annotate image
       </message>
 
@@ -1695,135 +1572,102 @@ are declared in build/common.gypi.
       <if expr="not is_android">
         <if expr="not use_titlecase">
           <if expr="is_macosx">
-            <message name="IDS_DOWNLOAD_MENU_SHOW"
-                  desc="Mac: Show the file in the Finder, 'Show in Finder' item"
-                  meaning="'show in Finder' on Mac in Sentence case">
+            <message name="IDS_DOWNLOAD_MENU_SHOW" desc="Mac: Show the file in the Finder, 'Show in Finder' item" meaning="'show in Finder' on Mac in Sentence case">
               &amp;Show in Finder
             </message>
           </if>
           <if expr="not is_macosx">
-            <message name="IDS_DOWNLOAD_MENU_SHOW"
-                     desc="Show the file in file explorer, 'Show in folder' item"
-                  meaning="'show in folder' on non Mac in Sentence case">
+            <message name="IDS_DOWNLOAD_MENU_SHOW" desc="Show the file in file explorer, 'Show in folder' item" meaning="'show in folder' on non Mac in Sentence case">
               &amp;Show in folder
             </message>
           </if>
-          <message name="IDS_DOWNLOAD_MENU_OPEN_WHEN_COMPLETE"
-                   desc="Download context menu: Open when download is finished">
+          <message name="IDS_DOWNLOAD_MENU_OPEN_WHEN_COMPLETE" desc="Download context menu: Open when download is finished">
             Open when &amp;done
           </message>
-          <message name="IDS_DOWNLOAD_MENU_OPEN"
-                   desc="Download context menu: Open download">
+          <message name="IDS_DOWNLOAD_MENU_OPEN" desc="Download context menu: Open download">
             &amp;Open
           </message>
-          <message name="IDS_DOWNLOAD_MENU_ALWAYS_OPEN_TYPE"
-                   desc="Download context menu: Open when download is finished">
+          <message name="IDS_DOWNLOAD_MENU_ALWAYS_OPEN_TYPE" desc="Download context menu: Open when download is finished">
             &amp;Always open files of this type
           </message>
-          <message name="IDS_DOWNLOAD_MENU_PLATFORM_OPEN"
-          desc="Download context menu: Open the download using the default handler for the platform.">
+          <message name="IDS_DOWNLOAD_MENU_PLATFORM_OPEN" desc="Download context menu: Open the download using the default handler for the platform.">
             Open with system viewer
           </message>
-          <message name="IDS_DOWNLOAD_MENU_PLATFORM_OPEN_ALWAYS"
-          desc="Download context menu: Always open the download using the default handler for the platform.">
+          <message name="IDS_DOWNLOAD_MENU_PLATFORM_OPEN_ALWAYS" desc="Download context menu: Always open the download using the default handler for the platform.">
             Always open with system viewer
           </message>
-          <message name="IDS_DOWNLOAD_MENU_CANCEL"
-                   desc="Download context menu: Cancel">
+          <message name="IDS_DOWNLOAD_MENU_CANCEL" desc="Download context menu: Cancel">
             &amp;Cancel
           </message>
-          <message name="IDS_DOWNLOAD_MENU_PAUSE_ITEM"
-                   desc="Download context menu: Pause download">
+          <message name="IDS_DOWNLOAD_MENU_PAUSE_ITEM" desc="Download context menu: Pause download">
             &amp;Pause
           </message>
-          <message name="IDS_DOWNLOAD_MENU_RESUME_ITEM"
-                   desc="Download context menu: Resume download">
+          <message name="IDS_DOWNLOAD_MENU_RESUME_ITEM" desc="Download context menu: Resume download">
             &amp;Resume
           </message>
-          <message name="IDS_DOWNLOAD_MENU_DISCARD"
-                   desc="Download context menu: Discard malicious download">
+          <message name="IDS_DOWNLOAD_MENU_DISCARD" desc="Download context menu: Discard malicious download">
             &amp;Discard
           </message>
-          <message name="IDS_DOWNLOAD_MENU_KEEP"
-                   desc="Download context menu: Keep malicious download">
+          <message name="IDS_DOWNLOAD_MENU_KEEP" desc="Download context menu: Keep malicious download">
             &amp;Keep
           </message>
-          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_SCANNING"
-                   desc="Download context menu: Show information about download scanning">
+          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_SCANNING" desc="Download context menu: Show information about download scanning">
             &amp;Learn more
           </message>
-          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INTERRUPTED"
-                   desc="Download context menu: Show information about interrupted downloads">
+          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INTERRUPTED" desc="Download context menu: Show information about interrupted downloads">
             &amp;More information
           </message>
         </if>
         <if expr="use_titlecase">
            <if expr="is_macosx">
-            <message name="IDS_DOWNLOAD_MENU_SHOW"
-                     desc="In Title Case: Mac: Show the file in the Finder, 'Show in Finder' item"
-                  meaning="'show in Finder' on Mac in Title Case">
+            <message name="IDS_DOWNLOAD_MENU_SHOW" desc="In Title Case: Mac: Show the file in the Finder, 'Show in Finder' item" meaning="'show in Finder' on Mac in Title Case">
               &amp;Show in Finder
             </message>
           </if>
            <if expr="not is_macosx">
-            <message name="IDS_DOWNLOAD_MENU_SHOW"
-                     desc="In Title Case: Show the file in file explorer, 'Show in folder' item"
-                  meaning="'show in folder' on non Mac in Title Case">
+            <message name="IDS_DOWNLOAD_MENU_SHOW" desc="In Title Case: Show the file in file explorer, 'Show in folder' item" meaning="'show in folder' on non Mac in Title Case">
               &amp;Show in Folder
             </message>
           </if>
-          <message name="IDS_DOWNLOAD_MENU_OPEN_WHEN_COMPLETE"
-                   desc="In Title Case: Download context menu: Open when download is finished">
+          <message name="IDS_DOWNLOAD_MENU_OPEN_WHEN_COMPLETE" desc="In Title Case: Download context menu: Open when download is finished">
             Open When &amp;Done
           </message>
-          <message name="IDS_DOWNLOAD_MENU_OPEN"
-                   desc="In Title Case: Download context menu: Open download">
+          <message name="IDS_DOWNLOAD_MENU_OPEN" desc="In Title Case: Download context menu: Open download">
             &amp;Open
           </message>
-          <message name="IDS_DOWNLOAD_MENU_ALWAYS_OPEN_TYPE"
-                   desc="In Title Case: Download context menu: Open when download is finished">
+          <message name="IDS_DOWNLOAD_MENU_ALWAYS_OPEN_TYPE" desc="In Title Case: Download context menu: Open when download is finished">
             &amp;Always Open Files of This Type
           </message>
-          <message name="IDS_DOWNLOAD_MENU_PLATFORM_OPEN"
-                   desc="In Title Case: Download context menu: Open the download using the default handler for the platform.">
+          <message name="IDS_DOWNLOAD_MENU_PLATFORM_OPEN" desc="In Title Case: Download context menu: Open the download using the default handler for the platform.">
             Open With System Viewer
           </message>
-          <message name="IDS_DOWNLOAD_MENU_PLATFORM_OPEN_ALWAYS"
-                   desc="In Title Case: Download context menu: Always open the download using the default handler for the platform.">
+          <message name="IDS_DOWNLOAD_MENU_PLATFORM_OPEN_ALWAYS" desc="In Title Case: Download context menu: Always open the download using the default handler for the platform.">
             Always Open With System Viewer
           </message>
-          <message name="IDS_DOWNLOAD_MENU_CANCEL"
-                   desc="In Title Case: Download context menu: Cancel">
+          <message name="IDS_DOWNLOAD_MENU_CANCEL" desc="In Title Case: Download context menu: Cancel">
             &amp;Cancel
           </message>
-          <message name="IDS_DOWNLOAD_MENU_PAUSE_ITEM"
-                   desc="In Title Case: Download context menu: Pause download">
+          <message name="IDS_DOWNLOAD_MENU_PAUSE_ITEM" desc="In Title Case: Download context menu: Pause download">
             &amp;Pause
           </message>
-          <message name="IDS_DOWNLOAD_MENU_RESUME_ITEM"
-                   desc="In Title Case: Download context menu: Resume download">
+          <message name="IDS_DOWNLOAD_MENU_RESUME_ITEM" desc="In Title Case: Download context menu: Resume download">
             &amp;Resume
           </message>
-          <message name="IDS_DOWNLOAD_MENU_DISCARD"
-                   desc="In Title Case: Download context menu: Discard malicious download">
+          <message name="IDS_DOWNLOAD_MENU_DISCARD" desc="In Title Case: Download context menu: Discard malicious download">
             &amp;Discard
           </message>
-          <message name="IDS_DOWNLOAD_MENU_KEEP"
-                   desc="In Title Case: Download context menu: Keep malicious download">
+          <message name="IDS_DOWNLOAD_MENU_KEEP" desc="In Title Case: Download context menu: Keep malicious download">
             &amp;Keep
           </message>
-          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_SCANNING"
-                   desc="In Title Case: Download context menu: Show information about download scanning">
+          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_SCANNING" desc="In Title Case: Download context menu: Show information about download scanning">
             &amp;Learn More
           </message>
-          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INTERRUPTED"
-                   desc="In Title Case: Download context menu: Show information about interrupted downloads">
+          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INTERRUPTED" desc="In Title Case: Download context menu: Show information about interrupted downloads">
             &amp;More Information
           </message>
         </if>  <!-- not use_titlecase -->
         <if expr="is_win">
-          <message name="IDS_DOWNLOAD_MENU_ALWAYS_OPEN_PDF_IN_READER"
-                   desc="Download context menu: Always open PDFs using Adobe Reader">
+          <message name="IDS_DOWNLOAD_MENU_ALWAYS_OPEN_PDF_IN_READER" desc="Download context menu: Always open PDFs using Adobe Reader">
             Always open in Adobe Reader
           </message>
         </if>
@@ -1831,17 +1675,14 @@ are declared in build/common.gypi.
 
       <!-- Touch Bar-->
       <if expr="is_macosx">
-        <message name="IDS_CUSTOMIZE_TOUCH_BAR"
-                 desc="Menu item text for customizing the Touch Bar.">
+        <message name="IDS_CUSTOMIZE_TOUCH_BAR" desc="Menu item text for customizing the Touch Bar.">
           Customize Touch Bar
         </message>
 
-        <message name="IDS_TOUCH_BAR_GOOGLE_SEARCH"
-                   desc="Text for the search button in the touch bar when Brave is the default search provider. Pressing the button will bring focus to the omnibox.">
+        <message name="IDS_TOUCH_BAR_GOOGLE_SEARCH" desc="Text for the search button in the touch bar when Brave is the default search provider. Pressing the button will bring focus to the omnibox.">
           Search or type URL
         </message>
-        <message name="IDS_TOUCH_BAR_SEARCH"
-                   desc="Text for the search button in the touch bar when Brave is not the default search provider. Pressing the button will bring focus to the omnibox. $1 is the name of the search provider)">
+        <message name="IDS_TOUCH_BAR_SEARCH" desc="Text for the search button in the touch bar when Brave is not the default search provider. Pressing the button will bring focus to the omnibox. $1 is the name of the search provider)">
           Search <ph name="SEARCH_ENGINE">$1<ex>Bing</ex></ph>
         </message>
         <message name="IDS_TOOLTIP_TOUCH_BAR_BACK" desc="The tooltip for the touch bar back button.">
@@ -1850,24 +1691,19 @@ are declared in build/common.gypi.
         <message name="IDS_TOOLTIP_TOUCH_BAR_FORWARD" desc="The tooltip for the touch bar forward button.">
         Touch to go forward.
         </message>
-        <message name="IDS_TOUCH_BAR_BACK_FORWARD_CUSTOMIZATION_LABEL"
-                   desc="Customization label for the back and forward buttons in the touch bar.">
+        <message name="IDS_TOUCH_BAR_BACK_FORWARD_CUSTOMIZATION_LABEL" desc="Customization label for the back and forward buttons in the touch bar.">
           Back/Forward
         </message>
-        <message name="IDS_TOUCH_BAR_STOP_RELOAD_CUSTOMIZATION_LABEL"
-                   desc="Customization label for the stop or reload button in the touch bar.">
+        <message name="IDS_TOUCH_BAR_STOP_RELOAD_CUSTOMIZATION_LABEL" desc="Customization label for the stop or reload button in the touch bar.">
           Stop/Reload
         </message>
-        <message name="IDS_TOUCH_BAR_HOME_CUSTOMIZATION_LABEL"
-                   desc="Customization label for the home button in the touch bar.">
+        <message name="IDS_TOUCH_BAR_HOME_CUSTOMIZATION_LABEL" desc="Customization label for the home button in the touch bar.">
           Home
         </message>
-        <message name="IDS_TOUCH_BAR_BOOKMARK_CUSTOMIZATION_LABEL"
-                   desc="Customization label for the bookmark button in the touch bar.">
+        <message name="IDS_TOUCH_BAR_BOOKMARK_CUSTOMIZATION_LABEL" desc="Customization label for the bookmark button in the touch bar.">
           Bookmark
         </message>
-        <message name="IDS_TOUCH_BAR_NEW_TAB_CUSTOMIZATION_LABEL"
-                   desc="Customization label for the new tab button in the touch bar.">
+        <message name="IDS_TOUCH_BAR_NEW_TAB_CUSTOMIZATION_LABEL" desc="Customization label for the new tab button in the touch bar.">
           New Tab
         </message>
         <message name="IDS_TOUCH_BAR_EXIT_FULLSCREEN" desc="Text for the exit fullscreen button in the touch bar.">
@@ -2431,8 +2267,7 @@ are declared in build/common.gypi.
         <message name="IDS_CERT_USAGE_EMAIL_SIGNER" desc="The description of a certificate that is verified for signing emails">
           Email Signer Certificate
         </message>
-        <message name="IDS_CERT_USAGE_EMAIL_RECEIVER" desc="The description of a
-          certificate that is verified for encrypting email">
+        <message name="IDS_CERT_USAGE_EMAIL_RECEIVER" desc="The description of a           certificate that is verified for encrypting email">
           Email Encryption Certificate
         </message>
         <message name="IDS_CERT_USAGE_OBJECT_SIGNER" desc="The description of a certificate that is verified for signing executable code">
@@ -2480,10 +2315,10 @@ are declared in build/common.gypi.
         <message name="IDS_CERT_DETAILS_VALIDITY" desc="The label of the Validity element in the details page of the certificate info dialog.">
           Validity
         </message>
-        <message name="IDS_CERT_DETAILS_NOT_BEFORE" desc="The label of the Validity->Not Before element in the details page of the certificate info dialog.">
+        <message name="IDS_CERT_DETAILS_NOT_BEFORE" desc="The label of the Validity-&gt;Not Before element in the details page of the certificate info dialog.">
           Not Before
         </message>
-        <message name="IDS_CERT_DETAILS_NOT_AFTER" desc="The label of the Validity->Not After element in the details page of the certificate info dialog.">
+        <message name="IDS_CERT_DETAILS_NOT_AFTER" desc="The label of the Validity-&gt;Not After element in the details page of the certificate info dialog.">
           Not After
         </message>
         <message name="IDS_CERT_DETAILS_SUBJECT" desc="The label of the Subject element in the details page of the certificate info dialog. (In this case, subject refers to the entity the certificate was issued to.)">
@@ -3131,7 +2966,7 @@ are declared in build/common.gypi.
           <ph name="NUM_KILOBYTES">$1<ex>5,000</ex></ph>K (<ph name="NUM_KILOBYTES_LIVE">$2<ex>5,000</ex></ph>K live)
         </message>
         <message name="IDS_TASK_MANAGER_NA_CELL_TEXT" desc="The value displayed for resource usage when the information is not available, or not applicable to the process.">
-          &#8211;
+          –
         </message>
         <message name="IDS_TASK_MANAGER_BACKGROUNDED_TEXT" desc="The value displayed for a process with backgrounded priority">
           Low
@@ -5025,8 +4860,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_BOOKMARKS_CHEVRON" desc="The accessible name for the chevron visible if not all the bookmark buttons fit.">
         Menu containing hidden bookmarks
       </message>
-      <message name="IDS_ACCNAME_BOOKMARKS_MENU" desc="The accessible name for
-the Bookmarks menu.">
+      <message name="IDS_ACCNAME_BOOKMARKS_MENU" desc="The accessible name for the Bookmarks menu.">
         Bookmarks menu
       </message>
       <message name="IDS_ACCNAME_SEPARATOR" desc="The accessible name for a separator.">
@@ -6597,226 +6431,176 @@ I don't think this site should be blocked!
 
       <!-- Strings used for non-Android builds -->
       <if expr="not is_android">
-        <message name="IDS_APP_DEFAULT_PAGE_NAME"
-                 desc="Default name for the first 'Apps' page on the New Tab Page.">
+        <message name="IDS_APP_DEFAULT_PAGE_NAME" desc="Default name for the first 'Apps' page on the New Tab Page.">
           Apps
         </message>
-        <message name="IDS_APP_LAUNCHER_TAB_TITLE"
-                 desc="Default name for stand alone web page to serve as an App launcher when the new tab doesn't show apps.">
+        <message name="IDS_APP_LAUNCHER_TAB_TITLE" desc="Default name for stand alone web page to serve as an App launcher when the new tab doesn't show apps.">
           Apps
         </message>
-        <message name="IDS_NEW_TAB_GUEST_SESSION_HEADING"
-              desc="Heading used when a person enters Guest Session">
+        <message name="IDS_NEW_TAB_GUEST_SESSION_HEADING" desc="Heading used when a person enters Guest Session">
           You’re browsing as a Guest
         </message>
         <if expr="chromeos">
-          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION"
-              desc="Used when a person enters Guest Session">
+          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a person enters Guest Session">
             Pages you view in this window won’t appear in the browser history and they won’t leave other traces, like cookies, on the computer after you sign out. Files you download and bookmarks you create won’t be preserved.
           </message>
         </if>
         <if expr="not chromeos">
-          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION"
-              desc="Used when a person enters Guest Session">
+          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a person enters Guest Session">
             Pages you view in this window won’t appear in the browser history and they won’t leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however.
           </message>
         </if>
-        <message name="IDS_NEW_TAB_TILE_GRID_ACCESSIBLE_DESCRIPTION"
-                 desc="Help message for screenreader users, spoken when navigating to a tile grid for the first time.">
+        <message name="IDS_NEW_TAB_TILE_GRID_ACCESSIBLE_DESCRIPTION" desc="Help message for screenreader users, spoken when navigating to a tile grid for the first time.">
           Use left and right arrow keys to navigate.
         </message>
         <message name="IDS_NEW_TAB_APP_INSTALL_HINT_LABEL" desc="Text for the plus icon on the NTP that links to the web store.">
           Add more apps
         </message>
-        <message name="IDS_NEW_TAB_MOST_VISITED"
-                 desc="The name for the 'Most Visited' navigation control on the New Tab Page.">
+        <message name="IDS_NEW_TAB_MOST_VISITED" desc="The name for the 'Most Visited' navigation control on the New Tab Page.">
           Most visited
         </message>
       </if>
 
-      <message name="IDS_NEW_TAB_RESTORE_THUMBNAILS_SHORT_LINK"
-               desc="The link that restores previously removed thumbnails. Context is 'Thumbnail removed. Undo | Restore all'">
+      <message name="IDS_NEW_TAB_RESTORE_THUMBNAILS_SHORT_LINK" desc="The link that restores previously removed thumbnails. Context is 'Thumbnail removed. Undo | Restore all'">
         Restore all
       </message>
 
-      <message name="IDS_NEW_TAB_ATTRIBUTION_INTRO"
-               desc="Leading sentence above a custom logo that the theme artist has provided">
+      <message name="IDS_NEW_TAB_ATTRIBUTION_INTRO" desc="Leading sentence above a custom logo that the theme artist has provided">
         Theme created by
       </message>
-      <message name="IDS_NEW_TAB_THUMBNAIL_REMOVED_NOTIFICATION"
-               desc="Notification text shown when a thumbnail has been removed from the most visited section.">
+      <message name="IDS_NEW_TAB_THUMBNAIL_REMOVED_NOTIFICATION" desc="Notification text shown when a thumbnail has been removed from the most visited section.">
         Thumbnail removed.
       </message>
-      <message name="IDS_NEW_TAB_REMOVE_THUMBNAIL_TOOLTIP"
-         desc="Tooltip text for the button that removes/blacklists the thumbnail. Once removed the thumbnail will not show up on the new tab page again.">
+      <message name="IDS_NEW_TAB_REMOVE_THUMBNAIL_TOOLTIP" desc="Tooltip text for the button that removes/blacklists the thumbnail. Once removed the thumbnail will not show up on the new tab page again.">
         Don't show on this page
       </message>
-      <message name="IDS_NEW_TAB_PAGE_SWITCHER_CHANGE_TITLE"
-         desc="Title for accessibility of the 'page-switcher-start' or 'page-switcher-end' button when switching from one type (determined based on title) of card to another">
+      <message name="IDS_NEW_TAB_PAGE_SWITCHER_CHANGE_TITLE" desc="Title for accessibility of the 'page-switcher-start' or 'page-switcher-end' button when switching from one type (determined based on title) of card to another">
         Go to <ph name="PAGE_TITLE">$1<ex>Apps</ex></ph>
       </message>
-      <message name="IDS_NEW_TAB_PAGE_SWITCHER_SAME_TITLE"
-         desc="Title for accessibility of the 'page-switcher-start' or 'page-switcher-end' button when switching between pages which have the same title">
+      <message name="IDS_NEW_TAB_PAGE_SWITCHER_SAME_TITLE" desc="Title for accessibility of the 'page-switcher-start' or 'page-switcher-end' button when switching between pages which have the same title">
         More <ph name="PAGE_TITLE">$1<ex>Apps</ex></ph>
       </message>
-      <message name="IDS_NEW_TAB_VOICE_AUDIO_ERROR"
-        desc="Used to indicate that there was an error starting the microphone to record speech input.">
+      <message name="IDS_NEW_TAB_VOICE_AUDIO_ERROR" desc="Used to indicate that there was an error starting the microphone to record speech input.">
         Please check your microphone.
       </message>
-      <message name="IDS_NEW_TAB_VOICE_DETAILS"
-        desc="Used as text for a link to a help web page, in case microphone permission has not been granted by the user.">
+      <message name="IDS_NEW_TAB_VOICE_DETAILS" desc="Used as text for a link to a help web page, in case microphone permission has not been granted by the user.">
         Details
       </message>
-      <message name="IDS_NEW_TAB_VOICE_LANGUAGE_ERROR"
-        desc="Used to indicate that the speech recognition service is not available for the user's locale.">
+      <message name="IDS_NEW_TAB_VOICE_LANGUAGE_ERROR" desc="Used to indicate that the speech recognition service is not available for the user's locale.">
         Voice search in your language is not available.
       </message>
-      <message name="IDS_NEW_TAB_VOICE_LISTENING"
-        desc="Used to indicate that the speech recognition service has started and is still waiting for user input. This message appears if there is no activity for 2 seconds after the user has been instructed to start speaking.">
+      <message name="IDS_NEW_TAB_VOICE_LISTENING" desc="Used to indicate that the speech recognition service has started and is still waiting for user input. This message appears if there is no activity for 2 seconds after the user has been instructed to start speaking.">
         Listening...
       </message>
-      <message name="IDS_NEW_TAB_VOICE_NETWORK_ERROR"
-        desc="Used to indicate that there was a network error when communicating with the speech recognition service.">
+      <message name="IDS_NEW_TAB_VOICE_NETWORK_ERROR" desc="Used to indicate that there was a network error when communicating with the speech recognition service.">
         No Internet connection.
       </message>
-      <message name="IDS_NEW_TAB_VOICE_NO_TRANSLATION"
-        desc="Used to indicate that speech input was detected but the service couldn't confidently translate the message.">
+      <message name="IDS_NEW_TAB_VOICE_NO_TRANSLATION" desc="Used to indicate that speech input was detected but the service couldn't confidently translate the message.">
         Didn't get that.
       </message>
-      <message name="IDS_NEW_TAB_VOICE_NO_VOICE"
-        desc="Used to indicate that the speech recognition service didn't receive any voice input.">
+      <message name="IDS_NEW_TAB_VOICE_NO_VOICE" desc="Used to indicate that the speech recognition service didn't receive any voice input.">
         Please check your microphone and audio levels.
       </message>
-      <message name="IDS_NEW_TAB_VOICE_OTHER_ERROR"
-        desc="Used to indicate that the speech recognition service failed in an unknown way.">
+      <message name="IDS_NEW_TAB_VOICE_OTHER_ERROR" desc="Used to indicate that the speech recognition service failed in an unknown way.">
         Unknown error.
       </message>
-      <message name="IDS_NEW_TAB_VOICE_PERMISSION_ERROR"
-        desc="Used to indicate that the speech recognition service did not get permission to use the microphone.">
+      <message name="IDS_NEW_TAB_VOICE_PERMISSION_ERROR" desc="Used to indicate that the speech recognition service did not get permission to use the microphone.">
         Voice search has been turned off.
       </message>
-      <message name="IDS_NEW_TAB_VOICE_READY"
-        desc="Used to indicate that the speech recognition service has started and is waiting for user input.">
+      <message name="IDS_NEW_TAB_VOICE_READY" desc="Used to indicate that the speech recognition service has started and is waiting for user input.">
         Speak now
       </message>
-      <message name="IDS_NEW_TAB_VOICE_TRY_AGAIN"
-        desc="Used as text for a link to retrying voice input, in case we recognize that the user is speaking, but cannot determine the exact words.">
+      <message name="IDS_NEW_TAB_VOICE_TRY_AGAIN" desc="Used as text for a link to retrying voice input, in case we recognize that the user is speaking, but cannot determine the exact words.">
         Try again
       </message>
-      <message name="IDS_NEW_TAB_VOICE_WAITING"
-        desc="Used to indicate that the speech recognition service is waiting for user permission to use the microphone.">
+      <message name="IDS_NEW_TAB_VOICE_WAITING" desc="Used to indicate that the speech recognition service is waiting for user permission to use the microphone.">
         Waiting...
       </message>
 
       <if expr="not use_titlecase">
-        <message name="IDS_NEW_TAB_APP_OPTIONS"
-                 desc="Text for the context menu item that takes the user to the options of an app. (In sentence case.)">
+        <message name="IDS_NEW_TAB_APP_OPTIONS" desc="Text for the context menu item that takes the user to the options of an app. (In sentence case.)">
           Options
         </message>
-        <message name="IDS_NEW_TAB_APP_DETAILS"
-                 desc="Text for the context menu item that takes the user to the app in Web Store. (In sentence case.)">
+        <message name="IDS_NEW_TAB_APP_DETAILS" desc="Text for the context menu item that takes the user to the app in Web Store. (In sentence case.)">
           View in Web Store
         </message>
-        <message name="IDS_NEW_TAB_APP_CREATE_SHORTCUT"
-                 desc="Text for the context menu item that creates an app shortcut. (In sentence case.)">
+        <message name="IDS_NEW_TAB_APP_CREATE_SHORTCUT" desc="Text for the context menu item that creates an app shortcut. (In sentence case.)">
           Create shortcuts...
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_SHOW_INFO"
-                 desc="Text for the context menu item that shows the application information. (In sentence case.)">
+        <message name="IDS_APP_CONTEXT_MENU_SHOW_INFO" desc="Text for the context menu item that shows the application information. (In sentence case.)">
           App info
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_PINNED"
-                 desc="Text for the button that opens the app in a pinned tab. (In sentence case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_PINNED" desc="Text for the button that opens the app in a pinned tab. (In sentence case.)">
           Open as pinned tab
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_REGULAR"
-                 desc="Text for the button that opens the app in a regular tab. (In sentence case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_REGULAR" desc="Text for the button that opens the app in a regular tab. (In sentence case.)">
           Open as regular tab
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_WINDOW"
-                 desc="Text for the button that opens the app in an app window. (In sentence case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_WINDOW" desc="Text for the button that opens the app in an app window. (In sentence case.)">
           Open as window
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_FULLSCREEN"
-                 desc="Text for the button that opens the app full screen. (In sentence case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_FULLSCREEN" desc="Text for the button that opens the app full screen. (In sentence case.)">
           Open full screen
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_MAXIMIZED"
-                 desc="Text for the button that opens the app maximized. (In sentence case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_MAXIMIZED" desc="Text for the button that opens the app maximized. (In sentence case.)">
           Open maximized
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_TAB"
-                 desc="Text for the button that opens the app in a tab. (In sentence case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_TAB" desc="Text for the button that opens the app in a tab. (In sentence case.)">
           Open in a tab
         </message>
         <if expr="chromeos">
-          <message name="IDS_APP_CONTEXT_MENU_ACTIVATE_ARC"
-                   desc="Text for the button that activates Android App. (In sentence case.)">
+          <message name="IDS_APP_CONTEXT_MENU_ACTIVATE_ARC" desc="Text for the button that activates Android App. (In sentence case.)">
             Open
           </message>
-          <message name="IDS_APP_CONTEXT_MENU_INSTALL_ARC"
-                   desc="Text for the button that installs the Android app. (In sentence case.)">
+          <message name="IDS_APP_CONTEXT_MENU_INSTALL_ARC" desc="Text for the button that installs the Android app. (In sentence case.)">
             Install
           </message>
         </if>
       </if>
 
       <if expr="use_titlecase">
-        <message name="IDS_NEW_TAB_APP_OPTIONS"
-                 desc="Text for the context menu item that takes the user to the options of an app. (In title case.)">
+        <message name="IDS_NEW_TAB_APP_OPTIONS" desc="Text for the context menu item that takes the user to the options of an app. (In title case.)">
           Options
         </message>
-        <message name="IDS_NEW_TAB_APP_DETAILS"
-                 desc="Text for the context menu item that takes the user to the app in Web Store. (In title case.)">
+        <message name="IDS_NEW_TAB_APP_DETAILS" desc="Text for the context menu item that takes the user to the app in Web Store. (In title case.)">
           View in Web Store
         </message>
         <if expr="is_macosx">
-          <message name="IDS_NEW_TAB_APP_CREATE_SHORTCUT"
-                   desc="Text for the context menu item that creates an app shortcut. (In title case.)">
+          <message name="IDS_NEW_TAB_APP_CREATE_SHORTCUT" desc="Text for the context menu item that creates an app shortcut. (In title case.)">
             Create Shortcut
           </message>
         </if>
         <if expr="not is_macosx">
-          <message name="IDS_NEW_TAB_APP_CREATE_SHORTCUT"
-                   desc="Text for the context menu item that creates an app shortcut. (In title case.)">
+          <message name="IDS_NEW_TAB_APP_CREATE_SHORTCUT" desc="Text for the context menu item that creates an app shortcut. (In title case.)">
             Create Shortcuts...
           </message>
         </if>
-        <message name="IDS_APP_CONTEXT_MENU_SHOW_INFO"
-                 desc="Text for the context menu item that shows the application information. (In title case.)">
+        <message name="IDS_APP_CONTEXT_MENU_SHOW_INFO" desc="Text for the context menu item that shows the application information. (In title case.)">
           App Info
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_PINNED"
-                 desc="Text for the button that opens the app in a pinned tab. (In title case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_PINNED" desc="Text for the button that opens the app in a pinned tab. (In title case.)">
           Open as Pinned Tab
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_REGULAR"
-                 desc="Text for the button that opens the app in a regular tab. (In title case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_REGULAR" desc="Text for the button that opens the app in a regular tab. (In title case.)">
           Open as Regular Tab
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_WINDOW"
-                 desc="Text for the button that opens the app in an app window. (In title case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_WINDOW" desc="Text for the button that opens the app in an app window. (In title case.)">
           Open as Window
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_FULLSCREEN"
-                 desc="Text for the button that opens the app full screen. (In title case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_FULLSCREEN" desc="Text for the button that opens the app full screen. (In title case.)">
           Open Full Screen
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_MAXIMIZED"
-                 desc="Text for the button that opens the app maximized. (In title case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_MAXIMIZED" desc="Text for the button that opens the app maximized. (In title case.)">
           Open Maximized
         </message>
-        <message name="IDS_APP_CONTEXT_MENU_OPEN_TAB"
-                 desc="Text for the button that opens the app in a tab. (In title case.)">
+        <message name="IDS_APP_CONTEXT_MENU_OPEN_TAB" desc="Text for the button that opens the app in a tab. (In title case.)">
           Open in a Tab
         </message>
         <if expr="chromeos">
-          <message name="IDS_APP_CONTEXT_MENU_ACTIVATE_ARC"
-                   desc="Text for the button that activates Android App. (In title case.)">
+          <message name="IDS_APP_CONTEXT_MENU_ACTIVATE_ARC" desc="Text for the button that activates Android App. (In title case.)">
             Open
           </message>
-          <message name="IDS_APP_CONTEXT_MENU_INSTALL_ARC"
-                   desc="Text for the button that installs the Android app. (In title case.)">
+          <message name="IDS_APP_CONTEXT_MENU_INSTALL_ARC" desc="Text for the button that installs the Android app. (In title case.)">
             Install
           </message>
         </if>
@@ -7000,8 +6784,7 @@ I don't think this site should be blocked!
       <message name="IDS_SINGLE_PROFILE_DISPLAY_NAME" desc="The name displayed by the avatar button if only one profile exists.">
         You
       </message>
-      <message name="IDS_GUEST_PROFILE_NAME" desc="The name given to the guest
-      browsing profile. Displayed in the avatar menu bubble and button UI.">
+      <message name="IDS_GUEST_PROFILE_NAME" desc="The name given to the guest       browsing profile. Displayed in the avatar menu bubble and button UI.">
         Guest
       </message>
 
@@ -7698,7 +7481,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Confirm sync settings to start sync.
         </message>
         <message name="IDS_SYNC_ACCOUNT_SYNCING_WITH_MANAGE_LINK" desc="The message that appears in the options dialog indicating that account is syncing along with a link to manage their data (where supported, or not possible through the application)">
-          Manage your synced data on <ph name="BEGIN_LINK">&lt;a href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$1" target=&quot;_blank&quot;&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+          Manage your synced data on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
         </message>
         <message name="IDS_SYNC_AUTHENTICATING_LABEL" desc="Label to display while the user is being authenticated to use sync.">
           Authenticating...
@@ -7773,7 +7556,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Disconnect your Brave Account
         </message>
         <message name="IDS_SYNC_STOP_SYNCING_EXPLANATION_LABEL" desc="The text to display below the 'Stop syncing this account' button on the options pane, explaining what the button does.">
-          By disconnecting your Brave Account from <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>, your data will remain on this computer but changes will no longer be synced to your Brave Account. Data already stored in your Brave Account will remain there until you remove it using <ph name="BEGIN_LINK">&lt;a href="$2" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$2" target=&quot;_blank&quot;&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+          By disconnecting your Brave Account from <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>, your data will remain on this computer but changes will no longer be synced to your Brave Account. Data already stored in your Brave Account will remain there until you remove it using <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
         </message>
         <message name="IDS_SYNC_STOP_DELETE_PROFILE_LABEL" desc="The text to display by the checkbox asking user whether to also delete profile when stopping sync.">
           Also clear your history, bookmarks, settings, and other Brave data stored on this device.
@@ -7888,7 +7671,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
         <!-- Personalize Brave Services section of the configure sync dialog -->
         <message name="IDS_SYNC_PERSONALIZE_GOOGLE_SERVICES_MESSAGE" desc="Text of the section containing a link to the Brave Activity Controls.">
-          Control how Brave uses your browsing history to personalize Search, ads, and other Brave services from <ph name="BEGIN_LINK">&lt;a id="activity-controls" href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a id="activity-controls" href="$1" target=&quot;_blank&quot;&gt;</ex></ph>Brave Activity Controls<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+          Control how Brave uses your browsing history to personalize Search, ads, and other Brave services from <ph name="BEGIN_LINK">&lt;a id="activity-controls" href="$1" target="_blank"&gt;<ex>&lt;a id="activity-controls" href="$1" target="_blank"&gt;</ex></ph>Brave Activity Controls<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
         </message>
 
         <!-- Passphrase dialog strings -->
@@ -7899,7 +7682,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           The passphrase you entered is incorrect.
         </message>
         <message name="IDS_SYNC_PASSPHRASE_RECOVER" desc="Message about how to recover from a lost passphrase.">
-          If you've forgotten your passphrase, stop and reset Sync via <ph name="BEGIN_LINK">&lt;a href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$1" target=&quot;_blank&quot;&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+          If you've forgotten your passphrase, stop and reset Sync via <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
         </message>
         <message name="IDS_SYNC_PASSPHRASE_CANCEL_YES" desc="String for 'yes' button on passphrase cancel warning dialog.">
           Skip
@@ -7933,7 +7716,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Not signed in to <ph name="SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph>
         </message>
         <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_SUB_HEADER" desc="The second line of the of the message shown in NTP when a user is not signed in to sync.">
-          (You're missing out&#8212;<ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK">$1<ex>sign in</ex></ph>)
+          (You're missing out—<ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK">$1<ex>sign in</ex></ph>)
         </message>
         <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK" desc="The linkified portion of the sync sign in promo on the NTP. Clicking this text allows the user to sign in to sync.">
           sign in
@@ -8149,7 +7932,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
                 Wrong index.
         </message>
         <message name="IDS_JAVASCRIPT_UNSUPPORTED_ERROR_APPLESCRIPT_MAC" desc="Error dialog title to be displayed when the user attempts to execute JavaScript via AppleScript. Mac-only.">
-          Executing JavaScript through AppleScript is turned off. To turn it on, from the menu bar, go to View > Developer > Allow JavaScript from Apple Events. For more information: https://support.google.com/chrome/?p=applescript
+          Executing JavaScript through AppleScript is turned off. To turn it on, from the menu bar, go to View &gt; Developer &gt; Allow JavaScript from Apple Events. For more information: https://support.google.com/chrome/?p=applescript
         </message>
       </if> <!-- is_macosx -->
 
@@ -8381,14 +8164,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Bookmark All Tabs...
         </message>
         <!-- Window menu -->
-        <message name="IDS_MINIMIZE_WINDOW_MAC"
-                 desc="The Mac menu item for minimize the window menu."
-                 meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
+        <message name="IDS_MINIMIZE_WINDOW_MAC" desc="The Mac menu item for minimize the window menu." meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
           Minimize
         </message>
-        <message name="IDS_ZOOM_WINDOW_MAC"
-                 desc="The Mac menu item for zoom (maximize) in the window menu."
-                 meaning="Mac Menubar: The Mac menu item for zoom (maximize) in the window menu.">
+        <message name="IDS_ZOOM_WINDOW_MAC" desc="The Mac menu item for zoom (maximize) in the window menu." meaning="Mac Menubar: The Mac menu item for zoom (maximize) in the window menu.">
           Zoom
         </message>
         <message name="IDS_NEXT_TAB_MAC" desc="The Mac menu item for next tab in the window menu.">
@@ -9198,47 +8977,37 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- High-contrast mode. -->
-      <message name="IDS_HIGH_CONTRAST_TITLE"
-               desc="Text for the dialog asking if the user may be interested in a High-Contrast extension or a dark theme. Note to translators: this is the name of a feature in Windows, so please try to find the correct name of that feature in your region.">
+      <message name="IDS_HIGH_CONTRAST_TITLE" desc="Text for the dialog asking if the user may be interested in a High-Contrast extension or a dark theme. Note to translators: this is the name of a feature in Windows, so please try to find the correct name of that feature in your region.">
         Browse the web in high contrast mode
       </message>
-      <message name="IDS_HIGH_CONTRAST_HEADER"
-               desc="Section header for list of extensions or themes to try in conjunction with the High Contrast mode">
+      <message name="IDS_HIGH_CONTRAST_HEADER" desc="Section header for list of extensions or themes to try in conjunction with the High Contrast mode">
         Try:
       </message>
-      <message name="IDS_HIGH_CONTRAST_EXT"
-               desc="The title of a link that will open the Brave Web Store with a High Contrast extension the user can install.">
+      <message name="IDS_HIGH_CONTRAST_EXT" desc="The title of a link that will open the Brave Web Store with a High Contrast extension the user can install.">
         High Contrast Extension
       </message>
-      <message name="IDS_DARK_THEME"
-               desc="The title of a link that will open the Brave Web Store with a dark theme the user might want to install, if they prefer light text on a dark background.">
+      <message name="IDS_DARK_THEME" desc="The title of a link that will open the Brave Web Store with a dark theme the user might want to install, if they prefer light text on a dark background.">
         Dark Theme
       </message>
 
       <!-- Windows 8 Metro mode. -->
       <if expr="is_win">
-        <message name="IDS_METRO_FLOW_DESCRIPTION"
-                 desc="Wordy description of what the set-Brave-as-Metro flow is all about.">
+        <message name="IDS_METRO_FLOW_DESCRIPTION" desc="Wordy description of what the set-Brave-as-Metro flow is all about.">
           Click next to choose your default browser.
         </message>
-        <message name="IDS_METRO_FLOW_SET_DEFAULT"
-                 desc="The label of the button invoking Windows8 default app settings window.">
+        <message name="IDS_METRO_FLOW_SET_DEFAULT" desc="The label of the button invoking Windows8 default app settings window.">
           Next
         </message>
-        <message name="IDS_METRO_MISSING_PLUGIN_PROMPT"
-                 desc="Infobar message to let user do something about the missing plugin">
+        <message name="IDS_METRO_MISSING_PLUGIN_PROMPT" desc="Infobar message to let user do something about the missing plugin">
           <ph name="PLUGIN_NAME">$1<ex>Quicktime</ex></ph> is required to display some elements on this page
         </message>
-        <message name="IDS_METRO_NPAPI_PLUGIN_PROMPT"
-                 desc="Infobar message when an NPAPI plugin doesn't run in Metro mode.">
+        <message name="IDS_METRO_NPAPI_PLUGIN_PROMPT" desc="Infobar message when an NPAPI plugin doesn't run in Metro mode.">
           <ph name="PLUGIN_NAME">$1<ex>Quicktime</ex></ph> only works on the desktop
         </message>
-        <message name="IDS_METRO_DOWNLOAD_COMPLETE_NOTIFICATION"
-                desc="Notification displayed when a download request is completed">
+        <message name="IDS_METRO_DOWNLOAD_COMPLETE_NOTIFICATION" desc="Notification displayed when a download request is completed">
           Your download has completed
         </message>
-        <message name="IDS_METRO_DOWNLOAD_COMPLETE_NOTIFICATION_TITLE"
-                desc="Title for notification displayed when a download request is completed">
+        <message name="IDS_METRO_DOWNLOAD_COMPLETE_NOTIFICATION_TITLE" desc="Title for notification displayed when a download request is completed">
           Download complete notification
         </message>
       </if>
@@ -9275,15 +9044,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
         </if>
         <if expr="not use_titlecase">
-          <message name="IDS_MEDIA_GALLERIES_DIALOG_ADD_GALLERY" desc="In sentence case: Button for adding a new gallery by choosing a folder."
-                   meaning="In sentence case: Button for adding a new gallery by choosing a folder.">
+          <message name="IDS_MEDIA_GALLERIES_DIALOG_ADD_GALLERY" desc="In sentence case: Button for adding a new gallery by choosing a folder." meaning="In sentence case: Button for adding a new gallery by choosing a folder.">
             Add location...
           </message>
           <message name="IDS_MEDIA_GALLERIES_DIALOG_CANCEL" desc="In sentence case: The text for the cancel button on the media galleries configuration dialog.">
             Cancel
           </message>
-          <message name="IDS_MEDIA_GALLERIES_DIALOG_CONFIRM" desc="In sentence case: The text for the accept button on the media galleries configuration dialog."
-                   meaning="In sentence case: The text for the accept button on the media galleries configuration dialog.">
+          <message name="IDS_MEDIA_GALLERIES_DIALOG_CONFIRM" desc="In sentence case: The text for the accept button on the media galleries configuration dialog." meaning="In sentence case: The text for the accept button on the media galleries configuration dialog.">
             Apply
           </message>
         </if>
@@ -9331,12 +9098,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_APP_LIST_CONTEXT_MENU_PIN_ENFORCED_BY_POLICY" desc="Short text for the pin/unpin context menu to tell user the setting is enforced by policy of an app list item">
             Pinned by administrator
           </message>
-          <message name="IDS_APP_LIST_UNINSTALL_ITEM"
-                   desc="Title text for the 'uninstall' context menu item of an app list item.">
+          <message name="IDS_APP_LIST_UNINSTALL_ITEM" desc="Title text for the 'uninstall' context menu item of an app list item.">
             Uninstall
           </message>
-          <message name="IDS_APP_LIST_REMOVE_SHORTCUT"
-                   desc="Title text for the 'remove' context menu item of an app list shortcut item.">
+          <message name="IDS_APP_LIST_REMOVE_SHORTCUT" desc="Title text for the 'remove' context menu item of an app list shortcut item.">
             Remove
           </message>
           <message name="IDS_APP_LIST_NEW_WINDOW" desc="The text label of the New Window menu item">
@@ -9365,12 +9130,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_APP_LIST_CONTEXT_MENU_PIN_ENFORCED_BY_POLICY" desc="Short text for the pin/unpin context menu to tell user the setting is enforced by policy of an app list item">
             Pinned by administrator
           </message>
-          <message name="IDS_APP_LIST_UNINSTALL_ITEM"
-                   desc="Title text for the 'uninstall' context menu item of an app list item.">
+          <message name="IDS_APP_LIST_UNINSTALL_ITEM" desc="Title text for the 'uninstall' context menu item of an app list item.">
             Uninstall
           </message>
-          <message name="IDS_APP_LIST_REMOVE_SHORTCUT"
-                   desc="Title text for the 'remove' context menu item of an app list shortcut item.">
+          <message name="IDS_APP_LIST_REMOVE_SHORTCUT" desc="Title text for the 'remove' context menu item of an app list shortcut item.">
             Remove
           </message>
           <message name="IDS_APP_LIST_NEW_WINDOW" desc="The text label of the New Window menu item">
@@ -9871,10 +9634,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_PHONE_UNLOCKABLE" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected, but it does not have lock screen enabled, in which case it is not allowed to unlock Bravebooks.">
         To keep your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> safe, Smart Lock requires a screen lock on your phone.
       </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_RSSI_TOO_LOW" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected, but it's not in the Bravebook's proximity (> 30 feet away).">
+      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_RSSI_TOO_LOW" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected, but it's not in the Bravebook's proximity (&gt; 30 feet away).">
         Bring your phone closer to unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>.
       </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_PHONE_LOCKED_AND_RSSI_TOO_LOW" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected, but it's both (a) locked and (b) not in the Bravebook's proximity (> 1 foot away).">
+      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_PHONE_LOCKED_AND_RSSI_TOO_LOW" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected, but it's both (a) locked and (b) not in the Bravebook's proximity (&gt; 1 foot away).">
         Unlock your phone and bring it closer to unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>.
       </message>
       <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_INITIAL_AUTHENTICATED" desc="Tooltip text shown on lock screen when a phone eligible to unlock the Bravebook via Easy Unlock is detected and authenticated for the first time.">

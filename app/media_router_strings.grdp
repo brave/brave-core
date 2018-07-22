@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This file is created by l10nUtil.js. Do not edit manually. -->
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Media Router-specific strings (included from generated_resources.grd). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <!-- General -->
   <message name="IDS_MEDIA_ROUTER_TITLE" desc="Title of a dialog offering possible actions for Media Router, which enables users to mirror individual tabs or desktop as well as cast content to a device.">
@@ -206,8 +206,7 @@
   </message>
 
   <!-- File Dialog -->
-  <message name="IDS_MEDIA_ROUTER_FILE_DIALOG_AUDIO_VIDEO_FILTER" desc="Label for the drop down menu in the file selection dialog to show only audio and
-video files, instead of all files.">
+  <message name="IDS_MEDIA_ROUTER_FILE_DIALOG_AUDIO_VIDEO_FILTER" desc="Label for the drop down menu in the file selection dialog to show only audio and video files, instead of all files.">
     Audio/Video
   </message>
 

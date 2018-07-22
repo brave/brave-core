@@ -187,7 +187,7 @@ def get_grd_message_string_tags(grd_file_path):
   for element in elements:
     grd_base_path = os.path.dirname(grd_file_path)
     grd_part_filename = element.get('file')
-    if grd_part_filename == 'chromeos_strings.grdp':
+    if grd_part_filename in ['chromeos_strings.grdp', 'media_router_resources.grdp']:
       continue
     grd_part_path = os.path.join(grd_base_path, grd_part_filename)
     part_output_elements = get_grd_message_string_tags(grd_part_path)
@@ -210,7 +210,6 @@ def get_fingerprint_for_xtb(message_tag):
 def get_grd_strings(grd_file_path):
   """Obtains a tubple of (name, value, FP) for each string in a GRD file"""
   strings = []
-  print 'Getting GRD strings for: ', grd_file_path
   all_message_tags = get_grd_message_string_tags(grd_file_path)
   for message_tag in all_message_tags:
     message_name = message_tag.get('name')
@@ -341,7 +340,7 @@ def upload_missing_translation_to_transifex(lang_code, filename, string_name, st
   headers = { 'Content-Type': 'application/json' }
   r = requests.put(url, json=payload, auth=get_auth(), headers=headers)
   assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
-  print 'Uploaded %s string: %s' % (lang_code, string_name)
+  print 'Uploaded %s string: %s -- %s...' % (lang_code, string_name, translated_value[:12])
   return True
 
 
@@ -403,6 +402,9 @@ def get_transifex_source_resource_strings(grd_file_path):
 
 def check_missing_source_grd_strings_to_transifex(grd_file_path):
   """Compares the GRD strings to the strings on Transifex and uploads any missing strings."""
+  source_grd_strings = get_grd_strings(grd_file_path)
+  if len(source_grd_strings) == 0:
+    return
   strings_dict = get_transifex_source_resource_strings(grd_file_path)
   transifex_string_ids = set(strings_dict.keys())
   grd_strings_tuple = get_grd_strings(grd_file_path)

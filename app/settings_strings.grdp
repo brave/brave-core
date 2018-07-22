@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This file is created by l10nUtil.js. Do not edit manually. -->
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Settings-specific strings (included from generated_resources.grd). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <message name="IDS_SETTINGS_EMPTY_STRING" desc="Empty string, exist only to make code generic. No translation required."></message>
+  <message name="IDS_SETTINGS_EMPTY_STRING" desc="Empty string, exist only to make code generic. No translation required." />
 
   <!-- Main Page -->
   <if expr="chromeos">
@@ -602,7 +602,7 @@
   <message name="IDS_SETTINGS_NOT_VALID" desc="Text indicating that an input is not valid.">
    Not valid
   </message>
-  <message name="IDS_SETTINGS_NOT_VALID_WEB_ADDRESS" desc="Text indicating that the Web address entered by the user is invalid." >
+  <message name="IDS_SETTINGS_NOT_VALID_WEB_ADDRESS" desc="Text indicating that the Web address entered by the user is invalid.">
     Not a valid web address
   </message>
   <message name="IDS_SETTINGS_RETRY" desc="The label text of the retry button because there is an error.">
@@ -831,7 +831,7 @@
     <message name="IDS_SETTINGS_BLUETOOTH_TOGGLE_ACCESSIBILITY_LABEL" desc="Accessibility only label for Bluetooth enable/disable toggle.">
       Bluetooth enable
     </message>
-    <message name="IDS_SETTINGS_BLUETOOTH_ENTER_KEY" desc="Bluetooth pairing dialog: Text for enter key when pairing keyboard devices." >
+    <message name="IDS_SETTINGS_BLUETOOTH_ENTER_KEY" desc="Bluetooth pairing dialog: Text for enter key when pairing keyboard devices.">
       enter
     </message>
     <message name="IDS_SETTINGS_BLUETOOTH_ACCEPT_PASSKEY" desc="Bluetooth pairing dialog: Text for button to accept pairing code.">
@@ -1306,25 +1306,25 @@
       Searching...
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_ERROR_MESSAGE" desc="The message shown when a new printer is not set up successfully.">
-      Can&#x2019;t add printer. Restart your computer and try again.
+      Can’t add printer. Restart your computer and try again.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_FATAL_ERROR_MESSAGE" desc="The message shown when a fatal error occurs while trying to add a new printer.">
-      Can&#x2019;t add printer. Restart your computer and try again.
+      Can’t add printer. Restart your computer and try again.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PRINTER_UNREACHABLE_MESSAGE" desc="The message shown when the printer that is to be added is unreachable for configuration.">
-      Can&#x2019;t connect to printer. Check that the printer is turned on and is connected to your Bravebook by Wi-Fi or USB.
+      Can’t connect to printer. Check that the printer is turned on and is connected to your Bravebook by Wi-Fi or USB.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PPD_TOO_LARGE_MESSAGE" desc="The message shown when the PPD provided while trying to add new printer is too large.">
-      Can&#x2019;t load large PPD. Maximum size is 250 kB.
+      Can’t load large PPD. Maximum size is 250 kB.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_INVALID_PPD_MESSAGE" desc="The message shown when the PPD provided while trying to add a new printer is invalid.">
       File is the wrong format. Check the PPD file and try again.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PPD_NOT_FOUND" desc="The message shown when the PPD provided while trying to add a new printer cannot be found.">
-      Can&#x2019;t find PPD. Make sure your Bravebook is online and try again.
+      Can’t find PPD. Make sure your Bravebook is online and try again.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PPD_UNRETRIEVABLE" desc="The message shown when the PPD provided while trying to add a new printer is unretrievable.">
-      Can&#x2019;t find PPD. Make sure your Bravebook is online and try again.
+      Can’t find PPD. Make sure your Bravebook is online and try again.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_NATIVE_PRINTERS_NOT_ALLOWED_MESSAGE" desc="The message shown when the user is prevented from configuring printers due to an enterprise policy.">
       Printer configuration is handled by the administrator.
@@ -1528,142 +1528,142 @@
     <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS" desc="Name of the settings page which displays the list of known networks.">
       Known Networks
     </message>
-    <message name="IDS_SETTINGS_INTERNET_ADD_CONNECTION" desc="Settings > Internet > Add connection expanding section label.">
+    <message name="IDS_SETTINGS_INTERNET_ADD_CONNECTION" desc="Settings &gt; Internet &gt; Add connection expanding section label.">
       Add connection
     </message>
     <message name="IDS_SETTINGS_INTERNET_ADD_CONNECTION_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the options for a new connection. Only visible by screen reader software.">
       Add network connection
     </message>
-    <message name="IDS_SETTINGS_INTERNET_ADD_CONNECTION_NOT_ALLOWED" desc="Settings > Internet > Message when Add connection is not allowed.">
+    <message name="IDS_SETTINGS_INTERNET_ADD_CONNECTION_NOT_ALLOWED" desc="Settings &gt; Internet &gt; Message when Add connection is not allowed.">
       Add connection is disabled by your administrator
     </message>
-    <message name="IDS_SETTINGS_INTERNET_ADD_WIFI" desc="Settings > Internet > Add Wi-Fi label.">
+    <message name="IDS_SETTINGS_INTERNET_ADD_WIFI" desc="Settings &gt; Internet &gt; Add Wi-Fi label.">
       Add Wi-Fi...
     </message>
-    <message name="IDS_SETTINGS_INTERNET_ADD_VPN" desc="Settings > Internet > Add VPN label.">
+    <message name="IDS_SETTINGS_INTERNET_ADD_VPN" desc="Settings &gt; Internet &gt; Add VPN label.">
       Add OpenVPN / L2TP...
     </message>
-    <message name="IDS_SETTINGS_INTERNET_ADD_THIRD_PARTY_VPN" desc="Settings > Internet > Add third party VPN label">
+    <message name="IDS_SETTINGS_INTERNET_ADD_THIRD_PARTY_VPN" desc="Settings &gt; Internet &gt; Add third party VPN label">
       Add <ph name="PROVIDER_NAME">$1<ex>VPN Demo</ex></ph>...
     </message>
-    <message name="IDS_SETTINGS_INTERNET_ADD_ARC_VPN" desc="Settings > Internet > Add Arc VPN label.">
+    <message name="IDS_SETTINGS_INTERNET_ADD_ARC_VPN" desc="Settings &gt; Internet &gt; Add Arc VPN label.">
       Add Android VPN...
     </message>
-    <message name="IDS_SETTINGS_INTERNET_ADD_ARC_VPN_PROVIDER" desc="Settings > Internet > Add Arc VPN provider label">
+    <message name="IDS_SETTINGS_INTERNET_ADD_ARC_VPN_PROVIDER" desc="Settings &gt; Internet &gt; Add Arc VPN provider label">
       Add <ph name="PROVIDER_NAME">$1<ex>VPN Demo</ex></ph>...
     </message>
-    <message name="IDS_SETTINGS_INTERNET_DEVICE_ENABLING" desc="Settings > Internet > Message when a device (e.g a Cellular modem) is enabling.">
+    <message name="IDS_SETTINGS_INTERNET_DEVICE_ENABLING" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is enabling.">
       Enabling
     </message>
-    <message name="IDS_SETTINGS_INTERNET_DEVICE_INITIALIZING" desc="Settings > Internet > Message when a device (e.g a Cellular modem) is initializing.">
+    <message name="IDS_SETTINGS_INTERNET_DEVICE_INITIALIZING" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is initializing.">
       Initializing
     </message>
-    <message name="IDS_SETTINGS_INTERNET_CONFIG_SHARE" desc="Settings > Internet > Network config: Label for setting allowing other device users to use the network configuration.">
+    <message name="IDS_SETTINGS_INTERNET_CONFIG_SHARE" desc="Settings &gt; Internet &gt; Network config: Label for setting allowing other device users to use the network configuration.">
       Allow other users of this device to use this network
     </message>
-    <message name="IDS_SETTINGS_INTERNET_CONFIG_SAVE_CREDENTIALS" desc="Settings > Internet > Network config: Label for the setting to save identity and password.">
+    <message name="IDS_SETTINGS_INTERNET_CONFIG_SAVE_CREDENTIALS" desc="Settings &gt; Internet &gt; Network config: Label for the setting to save identity and password.">
       Save identity and password
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CA_USE_DEFAULT" desc="Settings > Internet > Network config: Label for selecting the default Certificate Authority for an EAP network.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CA_USE_DEFAULT" desc="Settings &gt; Internet &gt; Network config: Label for selecting the default Certificate Authority for an EAP network.">
       Default
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CA_DO_NOT_CHECK" desc="Settings > Internet > Network config: Label for selecting that no Certificate Authority should be used for an EAP network.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CA_DO_NOT_CHECK" desc="Settings &gt; Internet &gt; Network config: Label for selecting that no Certificate Authority should be used for an EAP network.">
       Do not check
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NO_USER_CERT" desc="Settings > Internet > Network config: Label for selecting that no User Certificate should be used when connected to an OpenVPN network.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_NO_USER_CERT" desc="Settings &gt; Internet &gt; Network config: Label for selecting that no User Certificate should be used when connected to an OpenVPN network.">
       No user certificate
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CERTIFICATE_NAME" desc="Settings > Internet > Network config: Formatting string for network certificate names.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CERTIFICATE_NAME" desc="Settings &gt; Internet &gt; Network config: Formatting string for network certificate names.">
       <ph name="ISSUED_BY">$1<ex>Brave Inc</ex></ph> [<ph name="ISSUED_TO">$2<ex>John Doe</ex></ph>]
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CERTIFICATE_NAME_HARDWARE_BACKED" desc="Settings > Internet > Network configuration: Formatting string for network certificate names that are hardware backed.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CERTIFICATE_NAME_HARDWARE_BACKED" desc="Settings &gt; Internet &gt; Network configuration: Formatting string for network certificate names that are hardware backed.">
       <ph name="ISSUED_BY">$1<ex>Brave Inc</ex></ph> [<ph name="ISSUED_TO">$2<ex>John Doe</ex></ph>] (hardware-backed)
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CERTIFICATE_NONE_INSTALLED" desc="Settings > Internet > Network configuration: Label when no certificates are installed.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CERTIFICATE_NONE_INSTALLED" desc="Settings &gt; Internet &gt; Network configuration: Label when no certificates are installed.">
       None installed
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_ACCESS_POINT" desc="Settings > Internet > Network details: Access Point section label.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_ACCESS_POINT" desc="Settings &gt; Internet &gt; Network details: Access Point section label.">
       Access Point
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS" desc="Settings > Network: Name servers label.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS" desc="Settings &gt; Network: Name servers label.">
       Name servers
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_AUTOMATIC" desc="Settings > Internet > Network details: Label for setting automatic name servers.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_AUTOMATIC" desc="Settings &gt; Internet &gt; Network details: Label for setting automatic name servers.">
       Automatic name servers
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_CUSTOM" desc="Settings > Internet > Network details: Label for setting custom name servers.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_CUSTOM" desc="Settings &gt; Internet &gt; Network details: Label for setting custom name servers.">
       Custom name servers
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_GOOGLE" desc="Settings > Internet > Network details: Label for setting Brave name servers.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_GOOGLE" desc="Settings &gt; Internet &gt; Network details: Label for setting Brave name servers.">
       Brave name servers
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_WPAD" desc="Settings > Internet > Network details: Web Proxy Auto Discovery (WPAD) label.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_WPAD" desc="Settings &gt; Internet &gt; Network details: Web Proxy Auto Discovery (WPAD) label.">
       Web Proxy Auto Discovery URL:
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_WPAD_NONE" desc="Settings > Internet > Network details: Value for Web Proxy Auto Discovery when no URL is provided.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_WPAD_NONE" desc="Settings &gt; Internet &gt; Network details: Value for Web Proxy Auto Discovery when no URL is provided.">
       Not provided
     </message>
-    <message name="IDS_SETTINGS_INTERNET_MOBILE_SEARCH" desc="Settings > Internet > Message in Mobile section when searching for mobile networks.">
+    <message name="IDS_SETTINGS_INTERNET_MOBILE_SEARCH" desc="Settings &gt; Internet &gt; Message in Mobile section when searching for mobile networks.">
       Searching for mobile networks
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_ADVANCED" desc="Settings > Internet > Network details: Advanced section label.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_ADVANCED" desc="Settings &gt; Internet &gt; Network details: Advanced section label.">
       Advanced
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_ADVANCED_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the advanced network properties. Only visible by screen reader software.">
       Show advanced network properties
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_NETWORK" desc="Settings > Internet > Network details: Network section label.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_NETWORK" desc="Settings &gt; Internet &gt; Network details: Network section label.">
       Network
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_NETWORK_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the network address configuration settings. Only visible by screen reader software.">
       Show network address settings
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_PROXY" desc="Settings > Internet > Network details: Proxy section label.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_PROXY" desc="Settings &gt; Internet &gt; Network details: Proxy section label.">
       Proxy
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_PROXY_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the proxy configuration settings. Only visible by screen reader software.">
       Show proxy settings
     </message>
-    <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING" desc="Settings > Internet > Network details: Toggle label to allow mobile data roaming.">
+    <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING" desc="Settings &gt; Internet &gt; Network details: Toggle label to allow mobile data roaming.">
       Allow mobile data roaming
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CHOOSE_MOBILE" desc="Settings > Internet > Network details: Label for control to choose a mobile data network.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CHOOSE_MOBILE" desc="Settings &gt; Internet &gt; Network details: Label for control to choose a mobile data network.">
       Mobile data network
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCAN" desc="Settings > Internet > Network details: Label for button to start a Cellular scan.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCAN" desc="Settings &gt; Internet &gt; Network details: Label for button to start a Cellular scan.">
       Scan
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCAN_COMPLETED" desc="Settings > Internet > Network details: Status text when a scan has completed.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCAN_COMPLETED" desc="Settings &gt; Internet &gt; Network details: Status text when a scan has completed.">
       Scan completed
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCAN_CONNECTED_HELP" desc="Settings > Internet > Network details: Help message for scan button when network is connected.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCAN_CONNECTED_HELP" desc="Settings &gt; Internet &gt; Network details: Help message for scan button when network is connected.">
       Disconnect to enable scanning
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCANNING" desc="Settings > Internet > Network details: Status text when a scan is in progress.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_SCANNING" desc="Settings &gt; Internet &gt; Network details: Status text when a scan is in progress.">
       Scanning...
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_NO_NETWORKS" desc="Settings > Internet > Network details: Dropdown text when no cellular networks were found after a scan.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_NO_NETWORKS" desc="Settings &gt; Internet &gt; Network details: Dropdown text when no cellular networks were found after a scan.">
       No networks
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED" desc="Settings > Internet > Network details: Text to show when a network is shared.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared.">
       Other users of this device can use this network.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PRIMARY_USER_CONTROLLED" desc="Settings > Internet > Network details: Text to show when a network configuration is controlled by the primary user.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PRIMARY_USER_CONTROLLED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network configuration is controlled by the primary user.">
       Network configuration is controlled by <ph name="USER_EMAIL">$1<ex>joe@gmail.com</ex></ph>.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ENFORCED_POLICY" desc="Settings > Internet > Network details: Text to show when a network proxy is policy enforced.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ENFORCED_POLICY" desc="Settings &gt; Internet &gt; Network details: Text to show when a network proxy is policy enforced.">
       This proxy is enforced by your administrator
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED" desc="Settings > Internet > Network details: Text next to the checkbox for allowing proxy settings for shared networks.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED" desc="Settings &gt; Internet &gt; Network details: Text next to the checkbox for allowing proxy settings for shared networks.">
       Allow proxies for shared networks
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED_ENABLE_WARNING_TITLE" desc="Settings > Internet > Network details: Title for warning dialog when changing the allow shared proxies setting is enabled.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED_ENABLE_WARNING_TITLE" desc="Settings &gt; Internet &gt; Network details: Title for warning dialog when changing the allow shared proxies setting is enabled.">
       Allow proxies for shared networks
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED_DISABLE_WARNING_TITLE" desc="Settings > Internet > Network details: Title for warning dialog when changing the allow shared proxies setting is disabled.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED_DISABLE_WARNING_TITLE" desc="Settings &gt; Internet &gt; Network details: Title for warning dialog when changing the allow shared proxies setting is disabled.">
       Disallow proxies for shared networks
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED_WARNING_MESSAGE" desc="Settings > Internet > Network details: Warning message when changing the allow shared proxies setting.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ALLOW_SHARED_WARNING_MESSAGE" desc="Settings &gt; Internet &gt; Network details: Warning message when changing the allow shared proxies setting.">
       Changing this setting will affect all shared networks
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_TYPE_DIRECT" desc="Radio used to tell it to just connect directly, not use a proxy.">
@@ -1678,121 +1678,121 @@
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_TYPE_WPAD" desc="Label for the checkbox that controls whether to use an autoconfiguration URL.">
       Web proxy autodiscovery
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_USE_SAME" desc="Settings > Internet > Network details: Label for checkbox indicating that a network proxy uses the same value for all protocols.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_USE_SAME" desc="Settings &gt; Internet &gt; Network details: Label for checkbox indicating that a network proxy uses the same value for all protocols.">
       Use the same proxy for all protocols
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_EXCEPTION_LIST" desc="Settings > Internet > Network details: Label for list of network proxy exceptions.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_EXCEPTION_LIST" desc="Settings &gt; Internet &gt; Network details: Label for list of network proxy exceptions.">
       Do not use the proxy settings for these hosts and domains:
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ADD_EXCEPTION" desc="Settings > Internet > Network details: Label for button to add a network proxy exception.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ADD_EXCEPTION" desc="Settings &gt; Internet &gt; Network details: Label for button to add a network proxy exception.">
       Add exception
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_CONNECTION_TYPE" desc="Settings > Internet > Network details: Label for proxy connection type dropdown.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_CONNECTION_TYPE" desc="Settings &gt; Internet &gt; Network details: Label for proxy connection type dropdown.">
       Connection type
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_CONNECTION_TYPE_DIALOG" desc="Label for proxy connection type dropdown in the network details dialog used in the login screen.">
       Proxy connection type
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_AUTO_CONFIG" desc="Settings > Internet > Network details: Label for proxy autoconfiguration URL input.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_AUTO_CONFIG" desc="Settings &gt; Internet &gt; Network details: Label for proxy autoconfiguration URL input.">
       Autoconfiguration URL:
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PROXY" desc="Settings > Internet > Network details: Label for all proxies.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for all proxies.">
       Proxy
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_HTTP_PROXY" desc="Settings > Internet > Network details: Label for HTTP proxy.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_HTTP_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for HTTP proxy.">
       HTTP Proxy
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_SHTTP_PROXY" desc="Settings > Internet > Network details: Label for SHTTP proxy.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_SHTTP_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for SHTTP proxy.">
       Secure HTTP Proxy
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_FTP_PROXY" desc="Settings > Internet > Network details: Label for FTP proxy.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_FTP_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for FTP proxy.">
       FTP Proxy
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_SOCKS_HOST" desc="Settings > Internet > Network details: Label for SOCKS host proxy.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_SOCKS_HOST" desc="Settings &gt; Internet &gt; Network details: Label for SOCKS host proxy.">
       SOCKS Host
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PORT" desc="Settings > Internet > Network details: Label for proxy port input.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PORT" desc="Settings &gt; Internet &gt; Network details: Label for proxy port input.">
       Port
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CHANGE_PIN" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for buton to change the PIN.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CHANGE_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for buton to change the PIN.">
       Change PIN
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CARD_MISSING" desc="Settings > Internet > Network details > Lock/unlock SIM card: Message when SIM card is missing.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CARD_MISSING" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when SIM card is missing.">
       Missing SIM card
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CARD_LOCKED" desc="Settings > Internet > Network details > Lock/unlock SIM card: Message when SIM card is locked.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CARD_LOCKED" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when SIM card is locked.">
       SIM card is locked
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_LOCK_ENABLE" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for checkbox to enable SIM card locking.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_LOCK_ENABLE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for checkbox to enable SIM card locking.">
       Enable SIM card locking (require PIN to use mobile data)
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_BUTTON_CHANGE" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for dialog button to change a PIN.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_BUTTON_CHANGE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for dialog button to change a PIN.">
       Change
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_BUTTON_ENTER" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for dialog button to enter a PIN.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_BUTTON_ENTER" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for dialog button to enter a PIN.">
       Enter
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_BUTTON_UNLOCK" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for button to unlock the SIM card.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_BUTTON_UNLOCK" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for button to unlock the SIM card.">
       Unlock
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PIN_TITLE" desc="Settings > Internet > Network details > Lock/unlock SIM card: Title for enter PIN dialog.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PIN_TITLE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Title for enter PIN dialog.">
       Enter SIM PIN
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CHANGE_PIN_TITLE" desc="Settings > Internet > Network details > Lock/unlock SIM card: Title for change PIN dialog.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CHANGE_PIN_TITLE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Title for change PIN dialog.">
       Change SIM PIN
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_LOCKED_TITLE" desc="Settings > Internet > Network details > Lock/unlock SIM card: Title for SIM locked dialog.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_LOCKED_TITLE" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Title for SIM locked dialog.">
       SIM Card is locked
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_LOCKED_WARNING" desc="Settings > Internet > Network details > Lock/unlock SIM card: Warning for SIM locked dialog when PUK is required.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_LOCKED_WARNING" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Warning for SIM locked dialog when PUK is required.">
       Your SIM card will be permanently disabled if you cannot enter the correct PIN Unlock Key.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PIN" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for entering a PIN.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for entering a PIN.">
       Enter PIN
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_OLD_PIN" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for entering an old (current) PIN.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_OLD_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for entering an old (current) PIN.">
       Enter old PIN
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_NEW_PIN" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for entering a new PIN.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_NEW_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for entering a new PIN.">
       Enter new PIN
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_RE_ENTER_NEW_PIN" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for re-entering a new PIN.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_RE_ENTER_NEW_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for re-entering a new PIN.">
       Re-enter new PIN
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PUK" desc="Settings > Internet > Network details > Lock/unlock SIM card: Label for entering a PUK.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PUK" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for entering a PUK.">
       Enter PIN Unlock Key
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_PREFER" desc="Settings > Internet > Network details: Label for the checkbox determining whether a network is preferred over other networks.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PREFER" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether a network is preferred over other networks.">
       Prefer this network
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings > Internet > Network details: Label for the checkbox determining whether to automatically connect to the network.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically connect to the network.">
       Automatically connect to this network
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_IP_CONFIG_AUTO" desc="Settings > Internet > Network details: Label for the checkbox determining whether to automatically configure the network IP config.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_IP_CONFIG_AUTO" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically configure the network IP config.">
       Configure IP address automatically
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NETWORK_IP_ADDRESS" desc="Settings > Internet > Network details: Label for the network IP Address.">
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_IP_ADDRESS" desc="Settings &gt; Internet &gt; Network details: Label for the network IP Address.">
       IP Address
     </message>
-    <message name="IDS_SETTINGS_INTERNET_BUTTON_FORGET" desc="Settings > Internet > Network details: The label for the button to forget a network (remove from the list of known networks).">
+    <message name="IDS_SETTINGS_INTERNET_BUTTON_FORGET" desc="Settings &gt; Internet &gt; Network details: The label for the button to forget a network (remove from the list of known networks).">
       Forget
     </message>
-    <message name="IDS_SETTINGS_INTERNET_BUTTON_VIEW_ACCOUNT" desc="Settings > Internet > Network details: The label for the button to view the account details for a Cellular network.">
+    <message name="IDS_SETTINGS_INTERNET_BUTTON_VIEW_ACCOUNT" desc="Settings &gt; Internet &gt; Network details: The label for the button to view the account details for a Cellular network.">
       View Account
     </message>
-    <message name="IDS_SETTINGS_INTERNET_BUTTON_ACTIVATE" desc="Settings > Internet > Network details: The label for the button to activate a Cellular network.">
+    <message name="IDS_SETTINGS_INTERNET_BUTTON_ACTIVATE" desc="Settings &gt; Internet &gt; Network details: The label for the button to activate a Cellular network.">
       Activate
     </message>
-    <message name="IDS_SETTINGS_INTERNET_BUTTON_CONFIGURE" desc="Settings > Internet > Network details: The label for the button to configure a network (change its settings).">
+    <message name="IDS_SETTINGS_INTERNET_BUTTON_CONFIGURE" desc="Settings &gt; Internet &gt; Network details: The label for the button to configure a network (change its settings).">
       Configure
     </message>
-    <message name="IDS_SETTINGS_INTERNET_BUTTON_CONNECT" desc="Settings > Internet > Network details: The label for the button to connect to a network.">
+    <message name="IDS_SETTINGS_INTERNET_BUTTON_CONNECT" desc="Settings &gt; Internet &gt; Network details: The label for the button to connect to a network.">
       Connect
     </message>
-    <message name="IDS_SETTINGS_INTERNET_BUTTON_DISCONNECT" desc="Settings > Internet > Network details: The label for the button to disconnect from a network.">
+    <message name="IDS_SETTINGS_INTERNET_BUTTON_DISCONNECT" desc="Settings &gt; Internet &gt; Network details: The label for the button to disconnect from a network.">
       Disconnect
     </message>
-    <message name="IDS_SETTINGS_INTERNET_CONNECT_NOT_ALLOWED" desc="Settings > Internet > Message when connecting to a non policy network is not allowed.">
+    <message name="IDS_SETTINGS_INTERNET_CONNECT_NOT_ALLOWED" desc="Settings &gt; Internet &gt; Message when connecting to a non policy network is not allowed.">
       Connecting to this network is disabled by your administrator
     </message>
     <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_BUTTON" desc="Text for button that opens the known networks subpage.">
@@ -1807,13 +1807,13 @@
     <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_ALL" desc="Title for list of all other (non preferred) networks.">
       All networks
     </message>
-    <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_ADD_PREFERRED" desc="Settings > Internet > Known networks > Dropdown menu item to add a network to the list of preferred networks.">
+    <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_ADD_PREFERRED" desc="Settings &gt; Internet &gt; Known networks &gt; Dropdown menu item to add a network to the list of preferred networks.">
       Add to preferred
     </message>
-    <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_REMOVE_PREFERRED" desc="Settings > Internet > Known networks > Dropdown menu item to remove a network from the list of preferred networks.">
+    <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_REMOVE_PREFERRED" desc="Settings &gt; Internet &gt; Known networks &gt; Dropdown menu item to remove a network from the list of preferred networks.">
       Remove from preferred
     </message>
-    <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_FORGET" desc="Settings > Internet > Known networks > Dropdown menu item to forget a known network.">
+    <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_FORGET" desc="Settings &gt; Internet &gt; Known networks &gt; Dropdown menu item to forget a known network.">
       Forget
     </message>
     <message name="IDS_SETTINGS_INTERNET_NO_NETWORKS" desc="Entry when there are no preferred networks or no networks of a particular type.">
@@ -1852,43 +1852,43 @@
     <message name="IDS_SETTINGS_INTERNET_NO_NETWORKS_MOBILE_DATA" desc="Text shown when viewing the Mobile data page when there are no cellular or tether networks available.">
       No mobile connection found. Turn on Instant Tethering on your other devices and try again. &lt;a target="_blank" href="<ph name="URL">$1<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DIALOG_TITLE" desc="Settings > Internet > Tether Connection Dialog > Title asking the user to create a new hotspot.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DIALOG_TITLE" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Title asking the user to create a new hotspot.">
       Connect to new hotspot?
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_AVAILABLE_DEVICE_TITLE" desc="Settings > Internet > Tether Connection Dialog > Label for explaining that the device following the colon is available for tethering.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_AVAILABLE_DEVICE_TITLE" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Label for explaining that the device following the colon is available for tethering.">
       Available device:
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_BATTERY_PERCENTAGE" desc="Settings > Internet > Tether Connection Dialog > Description of how much battery a device has.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_BATTERY_PERCENTAGE" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Description of how much battery a device has.">
       <ph name="BATTERY_PERCENTAGE">$1<ex>100</ex></ph>% Battery
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_EXPLANATION" desc="Settings > Internet > Tether Connection Dialog > Explanation of what will happen if the user connects to a tether hotspot.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_EXPLANATION" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Explanation of what will happen if the user connects to a tether hotspot.">
       Your <ph name="PHONE_NAME">$1<ex>Brave Pixel XL</ex></ph> will create a private Wi-Fi connection.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_CARRIER_WARNING" desc="Settings > Internet > Tether Connection Dialog > Warning to users that cellular providers may block the use of tethering.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_CARRIER_WARNING" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Warning to users that cellular providers may block the use of tethering.">
       Some carriers might block this feature.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DESCRIPTION_TITLE" desc="Settings > Internet > Tether Connection Dialog > Title of the section describing what will happen when tethering is enabled.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DESCRIPTION_TITLE" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Title of the section describing what will happen when tethering is enabled.">
       While the hotspot is on, your <ph name="PHONE_NAME">$1<ex>Brave Pixel XL</ex></ph> will:
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DESCRIPTION_MOBILE_DATA" desc="Settings > Internet > Tether Connection Dialog > Bulletpoint alerting the user that tethering will use mobile data.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DESCRIPTION_MOBILE_DATA" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Bulletpoint alerting the user that tethering will use mobile data.">
       Use mobile data
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DESCRIPTION_BATTERY" desc="Settings > Internet > Tether Connection Dialog > Bullet point alerting the user that tethering will use both devices' batteries.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DESCRIPTION_BATTERY" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Bullet point alerting the user that tethering will use both devices' batteries.">
       Use the battery more quickly (currently <ph name="BATTERY_PERCENTAGE">$1<ex>100</ex></ph>%)
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DESCRIPTION_WIFI" desc="Settings > Internet > Tether Connection Dialog > Bullet point alerting the user that the tether host (i.e., the device to which the current device will connect to) will disconnect from Wi-Fi.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DESCRIPTION_WIFI" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Bullet point alerting the user that the tether host (i.e., the device to which the current device will connect to) will disconnect from Wi-Fi.">
       Disconnect from Wi-Fi
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_NOT_NOW_BUTTON" desc="Settings > Internet > Tether Connection Dialog > Button which, when tapped, closes the dialog and does not connect the device.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_NOT_NOW_BUTTON" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Button which, when tapped, closes the dialog and does not connect the device.">
       Not now
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_CONNECT_BUTTON" desc="Settings > Internet > Tether Connection Dialog > Button which, when tapped, starts a connection attempt to the device.">
+    <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_CONNECT_BUTTON" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Button which, when tapped, starts a connection attempt to the device.">
       Connect
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TOGGLE_TETHER_LABEL" desc="Settings > Internet: Label for Tether enable/disable toggle .">
+    <message name="IDS_SETTINGS_INTERNET_TOGGLE_TETHER_LABEL" desc="Settings &gt; Internet: Label for Tether enable/disable toggle .">
       Get data connection
     </message>
-    <message name="IDS_SETTINGS_INTERNET_TOGGLE_TETHER_SUBTEXT" desc="Settings > Internet: Description for Tether enable/disable toggle .">
+    <message name="IDS_SETTINGS_INTERNET_TOGGLE_TETHER_SUBTEXT" desc="Settings &gt; Internet: Description for Tether enable/disable toggle .">
       Let this device find other devices with your Brave Account that have a mobile data connection
     </message>
     <message name="IDS_SETTINGS_INTERNET_TOGGLE_MOBILE_ACCESSIBILITY_LABEL" desc="Accessibility only label for mobile data enable/disable toggle .">
@@ -2007,10 +2007,10 @@
     <message name="IDS_ONC_CELLULAR_SERVING_OPERATOR_NAME" desc="ONC Property label for Cellular.ServingOperator.Name">
       Operator
     </message>
-    <message name="IDS_ONC_CONNECTED" desc="Settings > Internet, text in network summary when a network is connected.">
+    <message name="IDS_ONC_CONNECTED" desc="Settings &gt; Internet, text in network summary when a network is connected.">
       Connected
     </message>
-    <message name="IDS_ONC_CONNECTING" desc="Settings > Internet, text in network summary when a network is connecting.">
+    <message name="IDS_ONC_CONNECTING" desc="Settings &gt; Internet, text in network summary when a network is connecting.">
       Connecting
     </message>
     <message name="IDS_ONC_EAP_ANONYMOUS_IDENTITY" desc="ONC Property label for EAP.AnonymousIdentity">
@@ -2067,7 +2067,7 @@
     <message name="IDS_ONC_EAP_USER_CERT" desc="ONC Property label for EAP User Certs">
       User certificate
     </message>
-    <message name="IDS_ONC_NOT_CONNECTED" desc="Settings > Internet, text in network summary when a network is not connecting or connected.">
+    <message name="IDS_ONC_NOT_CONNECTED" desc="Settings &gt; Internet, text in network summary when a network is not connecting or connected.">
       Not Connected
     </message>
     <message name="IDS_ONC_MAC_ADDRESS" desc="ONC Property label for MacAddress">
@@ -2079,34 +2079,34 @@
     <message name="IDS_ONC_RESTRICTED_CONNECTIVITY" desc="ONC Property label for RestrictedConnectivity">
       Restricted IP
     </message>
-    <message name="IDS_ONC_TETHER_BATTERY_PERCENTAGE" desc="Settings > Internet > Title of section which displays the battery percentage of another device which provides a tether hotspot for the current device to connect to.">
+    <message name="IDS_ONC_TETHER_BATTERY_PERCENTAGE" desc="Settings &gt; Internet &gt; Title of section which displays the battery percentage of another device which provides a tether hotspot for the current device to connect to.">
       Battery
     </message>
-    <message name="IDS_ONC_TETHER_BATTERY_PERCENTAGE_VALUE" desc="Settings > Internet > Text contents of section which displays the battery percentage of another device which provides a tether hotspot for the current device to connect to.">
+    <message name="IDS_ONC_TETHER_BATTERY_PERCENTAGE_VALUE" desc="Settings &gt; Internet &gt; Text contents of section which displays the battery percentage of another device which provides a tether hotspot for the current device to connect to.">
       <ph name="BATTERY_PERCENTAGE">$1<ex>100</ex></ph>%
     </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH" desc="Settings > Internet > Title of section which displays the cellular signal strength of another device which provides a tether hotspot for the current device to connect to. The signal strength is displayed as a string (e.g., Strong)">
+    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH" desc="Settings &gt; Internet &gt; Title of section which displays the cellular signal strength of another device which provides a tether hotspot for the current device to connect to. The signal strength is displayed as a string (e.g., Strong)">
       Signal strength
     </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_WEAK" desc="Settings > Internet > Label used to describe the signal strength of a device's cellular connection when the signal is weak. The strength value is 1 on a scale from 1 (min) to 5 (max).">
+    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_WEAK" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is weak. The strength value is 1 on a scale from 1 (min) to 5 (max).">
       Weak
     </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_OKAY" desc="Settings > Internet > Label used to describe the signal strength of a device's cellular connection when the signal is okay. The strength value is 2 on a scale from 1 (min) to 5 (max).">
+    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_OKAY" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is okay. The strength value is 2 on a scale from 1 (min) to 5 (max).">
       Weak
     </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_GOOD" desc="Settings > Internet > Label used to describe the signal strength of a device's cellular connection when the signal is good. The strength value is 3 on a scale from 1 (min) to 5 (max).">
+    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_GOOD" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is good. The strength value is 3 on a scale from 1 (min) to 5 (max).">
       Fine
     </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_STRONG" desc="Settings > Internet > Label used to describe the signal strength of a device's cellular connection when the signal is strong. The strength value is 4 on a scale from 1 (min) to 5 (max).">
+    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_STRONG" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is strong. The strength value is 4 on a scale from 1 (min) to 5 (max).">
       Strong
     </message>
-    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_VERY_STRONG" desc="Settings > Internet > Label used to describe the signal strength of a device's cellular connection when the signal is very strong. The strength value is 5 on a scale from 1 (min) to 5 (max).">
+    <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_VERY_STRONG" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is very strong. The strength value is 5 on a scale from 1 (min) to 5 (max).">
       Very strong
     </message>
-    <message name="IDS_ONC_TETHER_CARRIER" desc="Settings > Internet > Title of section which displays the name of the cellular provider (e.g., Verizon) of another device which provides a tether hotspot for the current device to connect to. To be clear, the current device does not have cellular service; instead, another device has it and can provide data to the current device via a Wi-Fi hotspot.">
+    <message name="IDS_ONC_TETHER_CARRIER" desc="Settings &gt; Internet &gt; Title of section which displays the name of the cellular provider (e.g., Verizon) of another device which provides a tether hotspot for the current device to connect to. To be clear, the current device does not have cellular service; instead, another device has it and can provide data to the current device via a Wi-Fi hotspot.">
       Cellular provider
     </message>
-    <message name="IDS_ONC_TETHER_CARRIER_UNKNOWN" desc="Settings > Internet > Text displayed in the settings UI in place of a cellular provider when the actual name of the provider is unknown. In this context, the cellular provider refers to the carrier which provides mobile data service to another device which can start a tether hotspot to provide a data connection to the current device.">
+    <message name="IDS_ONC_TETHER_CARRIER_UNKNOWN" desc="Settings &gt; Internet &gt; Text displayed in the settings UI in place of a cellular provider when the actual name of the provider is unknown. In this context, the cellular provider refers to the carrier which provides mobile data service to another device which can start a tether hotspot to provide a data connection to the current device.">
       Unknown carrier
     </message>
     <message name="IDS_ONC_VPN_HOST" desc="ONC Property label for VPN.Host">
@@ -2157,16 +2157,16 @@
     <message name="IDS_ONC_WIFI_SECURITY" desc="ONC Property label for WiFi.Security">
       Security
     </message>
-    <message name="IDS_ONC_WIFI_SECURITY_NONE" desc="In settings > Internet, a string specifying security type = none.">
+    <message name="IDS_ONC_WIFI_SECURITY_NONE" desc="In settings &gt; Internet, a string specifying security type = none.">
       None
     </message>
-    <message name="IDS_ONC_WIFI_SECURITY_WEP" desc="In settings > Internet, a string specifying security type = WEP.">
+    <message name="IDS_ONC_WIFI_SECURITY_WEP" desc="In settings &gt; Internet, a string specifying security type = WEP.">
       WEP
     </message>
-    <message name="IDS_ONC_WIFI_SECURITY_PSK" desc="In settings > Internet, a string specifying security type = PSK (either WPA-PSK or RSN-PSK).">
+    <message name="IDS_ONC_WIFI_SECURITY_PSK" desc="In settings &gt; Internet, a string specifying security type = PSK (either WPA-PSK or RSN-PSK).">
       PSK (WPA or RSN)
     </message>
-    <message name="IDS_ONC_WIFI_SECURITY_EAP" desc="In settings > Internet, a string specifying security type = EAP (802.1X).">
+    <message name="IDS_ONC_WIFI_SECURITY_EAP" desc="In settings &gt; Internet, a string specifying security type = EAP (802.1X).">
       EAP
     </message>
     <message name="IDS_ONC_WIFI_SIGNAL_STRENGTH" desc="ONC Property label for WiFi.SignalStrength">
@@ -2411,7 +2411,7 @@
     Spell check
   </message>
   <message name="IDS_SETTINGS_SPELLING_DESCRIPTION_UNIFIED_CONSENT" desc="Description of using a web serviced to help resolve spelling errors. It is important to convey that what the user types will be sent to Brave.">
-    Control this setting in <ph name="BEGIN_LINK">&lt;a href=&quot;chrome://settings/languages&quot;&gt;<ex>&lt;a href=&quot;chrome://settings/languages&quot;&gt;</ex></ph>Languages<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    Control this setting in <ph name="BEGIN_LINK">&lt;a href="chrome://settings/languages"&gt;<ex>&lt;a href="chrome://settings/languages"&gt;</ex></ph>Languages<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_SETTINGS_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
     Automatically send usage statistics and crash reports to Brave
@@ -2468,7 +2468,7 @@
     <ph name="TITLE">$1<ex>Block</ex></ph> - <ph name="COUNT">$2<ex>42</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PRIVACY_MORE_SETTINGS" desc="The text with a link to point users to more sync and personalization settings">
-    For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;a href=&quot;chrome://settings/syncSetup&quot;&gt;<ex>&lt;a href=&quot;chrome://settings/syncSetup&quot;&gt;</ex></ph>Sync and personalization<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;a href="chrome://settings/syncSetup"&gt;<ex>&lt;a href="chrome://settings/syncSetup"&gt;</ex></ph>Sync and personalization<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
 
   <!-- Reset Settings Page -->
@@ -3017,7 +3017,7 @@
   <message name="IDS_SETTINGS_NO_USB_DEVICES_FOUND" desc="Explanation for not showing USB devices in site settings.">
     No USB devices found
   </message>
-  <message name="IDS_SETTINGS_ADD_SITE_EXCEPTION_PLACEHOLDER" desc="Placeholder text shown before the user starts typing a new content settings exception for a site." >
+  <message name="IDS_SETTINGS_ADD_SITE_EXCEPTION_PLACEHOLDER" desc="Placeholder text shown before the user starts typing a new content settings exception for a site.">
     [*.]example.com
   </message>
   <message name="IDS_SETTINGS_ADD_SITE_TITLE" desc="Title for the Add Site dialog">
@@ -3370,7 +3370,7 @@
       Sync is paused
     </message>
     <message name="IDS_SETTINGS_SYNC_DISCONNECT_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Sign out of Brave' dialog to stop syncing for managed profiles.">
-      Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave Account and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$2" target=&quot;_blank&quot;&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+      Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave Account and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
     </message>
     <message name="IDS_SETTINGS_EDIT_PERSON" desc="Title of the edit person subpage. This is a subpage to edit the name and icon of a Brave Profile.">
       Edit person
@@ -3402,7 +3402,7 @@
     Sign Out
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing for non-managed profiles.">
-    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave Account. However, your existing data will remain stored in your Brave Account and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$1" target=&quot;_blank&quot;&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave Account. However, your existing data will remain stored in your Brave Account and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button in the Sign out of Brave dialog that toggles showing the profile stats. Only visible by screen reader software.">
     Show profile stats
@@ -3498,13 +3498,13 @@
     Encrypt synced passwords with your Brave username and password
   </message>
   <message name="IDS_SETTINGS_ENCRYPT_WITH_SYNC_PASSPHRASE_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
-    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$1" target=&quot;_blank&quot;&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_EXPLANATION_TEXT" desc="Message shown when explicit passphrase is selected.">
-    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$1" target=&quot;_blank&quot;&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT" desc="Informs user how to change their encryption setting.">
-    To change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$1" target=&quot;_blank&quot;&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    To change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_EMPTY_PASSPHRASE_ERROR" desc="Error message when the passphrase is empty.">
     Empty passphrase is not allowed
@@ -3516,7 +3516,7 @@
     The passphrase you entered is incorrect
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_RECOVER" desc="Message about how to recover from a lost passphrase.">
-    If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target=&quot;_blank&quot;&gt;<ex>&lt;a href="$1" target=&quot;_blank&quot;&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_PLACEHOLDER" desc="Placeholder for the passphrase field.">
     Passphrase
@@ -3837,61 +3837,61 @@
     <message name="IDS_SETTINGS_DISPLAY_TITLE" desc="In Device Settings, the title for display settings.">
       Displays
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ARRANGEMENT_TITLE" desc="In Device Settings > Displays, the label for the display arrangement section.">
+    <message name="IDS_SETTINGS_DISPLAY_ARRANGEMENT_TITLE" desc="In Device Settings &gt; Displays, the label for the display arrangement section.">
       Arrangement
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ARRANGEMENT_TEXT" desc="In Device Settings > Displays, text describing to use a mouse to drag the displays and change the arrangement.">
+    <message name="IDS_SETTINGS_DISPLAY_ARRANGEMENT_TEXT" desc="In Device Settings &gt; Displays, text describing to use a mouse to drag the displays and change the arrangement.">
       Drag to move a display
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_MIRROR" desc="In Device Settings > Displays, the label for the control for mirroring.">
+    <message name="IDS_SETTINGS_DISPLAY_MIRROR" desc="In Device Settings &gt; Displays, the label for the control for mirroring.">
       Mirror <ph name="DISPLAY_NAME">$1<ex>HP Z27n</ex></ph>
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_MIRROR_DISPLAY_NAME" desc="In Device Settings > Displays, the label for the mirrored display name shown in the layout.">
+    <message name="IDS_SETTINGS_DISPLAY_MIRROR_DISPLAY_NAME" desc="In Device Settings &gt; Displays, the label for the mirrored display name shown in the layout.">
       Mirrored
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_LABEL" desc="In Device Settings > Displays, the label for the Night Light feature (which controls the color temperature of the screen) section.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_LABEL" desc="In Device Settings &gt; Displays, the label for the Night Light feature (which controls the color temperature of the screen) section.">
       Night Light
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_ON_AT_SUNSET" desc="In Device Settings > Displays, the sub label for the automatic schedule which explains that Night Light will turn on automatically at sunset.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_ON_AT_SUNSET" desc="In Device Settings &gt; Displays, the sub label for the automatic schedule which explains that Night Light will turn on automatically at sunset.">
       Night Light will turn on automatically at sunset
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_OFF_AT_SUNRISE" desc="In Device Settings > Displays, the sub label for the automatic schedule which explains that Night Light will turn off automatically at sunrise.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_OFF_AT_SUNRISE" desc="In Device Settings &gt; Displays, the sub label for the automatic schedule which explains that Night Light will turn off automatically at sunrise.">
       Night Light will turn off automatically at sunrise
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_CUSTOM" desc="In Device Settings > Displays, the label of the option to set a custom schedule of the Night Light feature.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_CUSTOM" desc="In Device Settings &gt; Displays, the label of the option to set a custom schedule of the Night Light feature.">
       Custom
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_LABEL" desc="In Device Settings > Displays, the label for the automatic schedule section of the Night Light feature.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_LABEL" desc="In Device Settings &gt; Displays, the label for the automatic schedule section of the Night Light feature.">
       Schedule
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_NEVER" desc="In Device Settings > Displays, the label of the option to turn off the automatic schedule of the Night Light feature.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_NEVER" desc="In Device Settings &gt; Displays, the label of the option to turn off the automatic schedule of the Night Light feature.">
       Never
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_SUNSET_TO_SUNRISE" desc="In Device Settings > Displays, the label of the option to set the automatic schedule of the Night Light feature to turn on at sunset and off at sunrise.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_SUNSET_TO_SUNRISE" desc="In Device Settings &gt; Displays, the label of the option to set the automatic schedule of the Night Light feature to turn on at sunset and off at sunrise.">
       Sunset to Sunrise
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_START_TIME" desc="In Device Settings > Displays, the label of the start time bubble.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_START_TIME" desc="In Device Settings &gt; Displays, the label of the start time bubble.">
       Start time
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_STOP_TIME" desc="In Device Settings > Displays, the label of the end time bubble.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_STOP_TIME" desc="In Device Settings &gt; Displays, the label of the end time bubble.">
       End time
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEXT" desc="In Device Settings > Displays, text describing the Night Light feature.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEXT" desc="In Device Settings &gt; Displays, text describing the Night Light feature.">
       Make it easier to look at your screen or read in dim light
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEMPERATURE_LABEL" desc="In Device Settings > Displays, label of the slider that controls the color temperature of the screen when the Night Light feature is on.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEMPERATURE_LABEL" desc="In Device Settings &gt; Displays, label of the slider that controls the color temperature of the screen when the Night Light feature is on.">
       Color temperature
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEMP_SLIDER_MAX_LABEL" desc="In Device Settings > Displays, label of the maximum value settable by the color temperature slider.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEMP_SLIDER_MAX_LABEL" desc="In Device Settings &gt; Displays, label of the maximum value settable by the color temperature slider.">
       Warmer
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEMP_SLIDER_MIN_LABEL" desc="In Device Settings > Displays, label of the minimum value settable by the color temperature slider.">
+    <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEMP_SLIDER_MIN_LABEL" desc="In Device Settings &gt; Displays, label of the minimum value settable by the color temperature slider.">
       Cooler
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_UNIFIED_DESKTOP" desc="In Device Settings > Displays, the label for the control for the unified desktop feature.">
+    <message name="IDS_SETTINGS_DISPLAY_UNIFIED_DESKTOP" desc="In Device Settings &gt; Displays, the label for the control for the unified desktop feature.">
       Allow windows to span displays
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_SCREEN" desc="In Device Settings > Displays, the label for the dropdown menu for changing the dispay type.">
+    <message name="IDS_SETTINGS_DISPLAY_SCREEN" desc="In Device Settings &gt; Displays, the label for the dropdown menu for changing the dispay type.">
       Screen
     </message>
     <message name="IDS_SETTINGS_DISPLAY_SCREEN_PRIMARY" desc="The label for the dropdown menu list item to set the selected screen as primary display.">
@@ -3900,52 +3900,52 @@
     <message name="IDS_SETTINGS_DISPLAY_SCREEN_EXTENDED" desc="The label for the dropdown menu list item to set the selected screen as extended display.">
       Extended display
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_TITLE" desc="In Device Settings > Displays, the label for the section for changing a display's resolution.">
+    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_TITLE" desc="In Device Settings &gt; Displays, the label for the section for changing a display's resolution.">
       Resolution
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_TEXT" desc="In Device Settings > Displays, the text describing the display's resolution.">
+    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_TEXT" desc="In Device Settings &gt; Displays, the text describing the display's resolution.">
       <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph>
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_TEXT_BEST" desc="In Device Settings > Displays, the text describing the display's resolution when it is the 'best' resolution.">
+    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_TEXT_BEST" desc="In Device Settings &gt; Displays, the text describing the display's resolution when it is the 'best' resolution.">
       <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (Best)
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_TEXT_NATIVE" desc="In Device Settings > Displays, the text describing the display's resolution when it is the native resolution.">
+    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_TEXT_NATIVE" desc="In Device Settings &gt; Displays, the text describing the display's resolution when it is the native resolution.">
       <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (Native)
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_SUBLABEL" desc="In Device Settings > Displays, the text describing the drop down menu to select the desired resolution and refresh rate of the selected external display.">
+    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_SUBLABEL" desc="In Device Settings &gt; Displays, the text describing the drop down menu to select the desired resolution and refresh rate of the selected external display.">
       Determines sharpness of text and images
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_MENU_ITEM" desc="In Device Settings > Displays, the text entry for a single item in the external display resolution drop down menu.">
+    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display resolution drop down menu.">
       <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (<ph name="REFRESH_RATE">$3<ex>60</ex></ph> Hertz)
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ZOOM_TITLE" desc="In Device Settings > Displays, the title for the section for changing the display's zoom.">
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_TITLE" desc="In Device Settings &gt; Displays, the title for the section for changing the display's zoom.">
       Display Size
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ZOOM_SUBLABEL" desc="In Device Settings > Displays, the text describing the display's zoom.">
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_SUBLABEL" desc="In Device Settings &gt; Displays, the text describing the display's zoom.">
       Make items on your screen smaller or larger
     </message>
     <message name="IDS_SETTINGS_DISPLAY_ZOOM_VALUE" desc="The currently selected display zoom percentage.">
       <ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph>
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ZOOM_SLIDER_MINIMUM" desc="In Device Settings > Displays, the label of the minimum value for the display size slider">
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_SLIDER_MINIMUM" desc="In Device Settings &gt; Displays, the label of the minimum value for the display size slider">
       Tiny
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ZOOM_SLIDER_MAXIMUM" desc="In Device Settings > Displays, the label of the maximum value for the display size slider">
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_SLIDER_MAXIMUM" desc="In Device Settings &gt; Displays, the label of the maximum value for the display size slider">
       Huge
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ZOOM_LOGICAL_RESOLUTION_TEXT" desc="In Device Settings > Displays, the text describing the display's effective resolution.">
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_LOGICAL_RESOLUTION_TEXT" desc="In Device Settings &gt; Displays, the text describing the display's effective resolution.">
       Looks like <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph>
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ZOOM_LOGICAL_RESOLUTION_DEFAULT_TEXT" desc="In Device Settings > Displays, the text describing the display's effective resolution that comes due to the zoom being at the recommended level.">
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_LOGICAL_RESOLUTION_DEFAULT_TEXT" desc="In Device Settings &gt; Displays, the text describing the display's effective resolution that comes due to the zoom being at the recommended level.">
       Looks like <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (Default)
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ZOOM_LOGICAL_RESOLUTION_NATIVE_TEXT" desc="In Device Settings > Displays, the text describing the display's native resolution.">
+    <message name="IDS_SETTINGS_DISPLAY_ZOOM_LOGICAL_RESOLUTION_NATIVE_TEXT" desc="In Device Settings &gt; Displays, the text describing the display's native resolution.">
       Looks like <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (Native)
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ORIENTATION" desc="In Device Settings > Displays, the label for the control for changing a display's orientation.">
+    <message name="IDS_SETTINGS_DISPLAY_ORIENTATION" desc="In Device Settings &gt; Displays, the label for the control for changing a display's orientation.">
       Orientation
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_ORIENTATION_STANDARD" desc="In Device Settings > Displays, the label for standard orientation (0 rotation).">
+    <message name="IDS_SETTINGS_DISPLAY_ORIENTATION_STANDARD" desc="In Device Settings &gt; Displays, the label for standard orientation (0 rotation).">
       Standard
     </message>
     <message name="IDS_SETTINGS_DISPLAY_OVERSCAN_TEXT" desc="Text explaining that this setting is used to adjust the boundaries of the selected display.">
@@ -3969,10 +3969,10 @@
     <message name="IDS_SETTINGS_DISPLAY_OVERSCAN_RESET" desc="Label for resetting overscan calibration.">
       Reset
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_TOUCH_CALIBRATION_TITLE" desc="In Device Settings > Displays, the label for initiating touch calibration.">
+    <message name="IDS_SETTINGS_DISPLAY_TOUCH_CALIBRATION_TITLE" desc="In Device Settings &gt; Displays, the label for initiating touch calibration.">
       Calibrate touchscreen
     </message>
-    <message name="IDS_SETTINGS_DISPLAY_TOUCH_CALIBRATION_TEXT" desc="In Device Settings > Displays, the sublabel for initiating touch calibration.">
+    <message name="IDS_SETTINGS_DISPLAY_TOUCH_CALIBRATION_TEXT" desc="In Device Settings &gt; Displays, the sublabel for initiating touch calibration.">
       Set up and adjust the accuracy of your touchscreen
     </message>
 
@@ -3980,31 +3980,31 @@
     <message name="IDS_SETTINGS_STORAGE_TITLE" desc="In Device Settings, the title for storage management.">
       Storage management
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_IN_USE" desc="In Device Settings > Storage, label for the used storage size of Brave OS internal storage.">
+    <message name="IDS_SETTINGS_STORAGE_ITEM_IN_USE" desc="In Device Settings &gt; Storage, label for the used storage size of Brave OS internal storage.">
       In use
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_AVAILABLE" desc="In Device Settings > Storage, label for the available storage size of Brave OS internal storage.">
+    <message name="IDS_SETTINGS_STORAGE_ITEM_AVAILABLE" desc="In Device Settings &gt; Storage, label for the available storage size of Brave OS internal storage.">
       Available
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_DOWNLOADS" desc="In Device Settings > Storage, label for the size of Downloads directory.">
+    <message name="IDS_SETTINGS_STORAGE_ITEM_DOWNLOADS" desc="In Device Settings &gt; Storage, label for the size of Downloads directory.">
       Downloads
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_DRIVE_CACHE" desc="In Device Settings > Storage, label for the size of Brave Drive's offline files.">
+    <message name="IDS_SETTINGS_STORAGE_ITEM_DRIVE_CACHE" desc="In Device Settings &gt; Storage, label for the size of Brave Drive's offline files.">
       Offline files
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_BROWSING_DATA" desc="In Device Settings > Storage, label for the size of browsing data.">
+    <message name="IDS_SETTINGS_STORAGE_ITEM_BROWSING_DATA" desc="In Device Settings &gt; Storage, label for the size of browsing data.">
       Browsing data
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_ANDROID" desc="In Device Settings > Storage, label for the total size of Android apps and cache.">
+    <message name="IDS_SETTINGS_STORAGE_ITEM_ANDROID" desc="In Device Settings &gt; Storage, label for the total size of Android apps and cache.">
       Android storage
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_OTHER_USERS" desc="In Device Settings > Storage, label for the total size of other users' data directories.">
+    <message name="IDS_SETTINGS_STORAGE_ITEM_OTHER_USERS" desc="In Device Settings &gt; Storage, label for the total size of other users' data directories.">
       Other users
     </message>
-    <message name="IDS_SETTINGS_STORAGE_SIZE_CALCULATING" desc="In Device Settings > Storage, label for storage item's size indicating the size is being calculated.">
+    <message name="IDS_SETTINGS_STORAGE_SIZE_CALCULATING" desc="In Device Settings &gt; Storage, label for storage item's size indicating the size is being calculated.">
       Calculating...
     </message>
-    <message name="IDS_SETTINGS_STORAGE_SIZE_UNKNOWN" desc="In Device Settings > Storage, label for storage item's size indicating the size is unknown">
+    <message name="IDS_SETTINGS_STORAGE_SIZE_UNKNOWN" desc="In Device Settings &gt; Storage, label for storage item's size indicating the size is unknown">
       Unknown
     </message>
     <message name="IDS_SETTINGS_STORAGE_SPACE_LOW_MESSAGE_TITLE" desc="Title of a warning message indicating device's available disk space is low.">
@@ -4039,52 +4039,52 @@
     <message name="IDS_SETTINGS_POWER_TITLE" desc="In Device Settings, the title for power management.">
       Power
     </message>
-    <message name="IDS_SETTINGS_POWER_SOURCE_LABEL" desc="In Device Settings > Power, the label for the power source dropdown.">
+    <message name="IDS_SETTINGS_POWER_SOURCE_LABEL" desc="In Device Settings &gt; Power, the label for the power source dropdown.">
       Power source
     </message>
-    <message name="IDS_SETTINGS_POWER_SOURCE_BATTERY" desc="In Device Settings > Power, the text referring to the battery as the power source.">
+    <message name="IDS_SETTINGS_POWER_SOURCE_BATTERY" desc="In Device Settings &gt; Power, the text referring to the battery as the power source.">
       Battery
     </message>
-    <message name="IDS_SETTINGS_POWER_SOURCE_AC_ADAPTER" desc="In Device Settings > Power, the text referring to a dedicated charger like an AC adapter as the power source.">
+    <message name="IDS_SETTINGS_POWER_SOURCE_AC_ADAPTER" desc="In Device Settings &gt; Power, the text referring to a dedicated charger like an AC adapter as the power source.">
       AC adapter
     </message>
-    <message name="IDS_SETTINGS_POWER_SOURCE_LOW_POWER_CHARGER" desc="In Device Settings > Power, the text referring to a low-power charger like a USB charger as the power source.">
+    <message name="IDS_SETTINGS_POWER_SOURCE_LOW_POWER_CHARGER" desc="In Device Settings &gt; Power, the text referring to a low-power charger like a USB charger as the power source.">
       Low-power charger
     </message>
-    <message name="IDS_SETTINGS_POWER_SOURCE_CALCULATING" desc="In Device Settings > Power, the power source description when the power status is being determined.">
+    <message name="IDS_SETTINGS_POWER_SOURCE_CALCULATING" desc="In Device Settings &gt; Power, the power source description when the power status is being determined.">
       Checking...
     </message>
-    <message name="IDS_SETTINGS_POWER_IDLE_LABEL" desc="In Device Settings > Power, label for behavior when device is idle.">
+    <message name="IDS_SETTINGS_POWER_IDLE_LABEL" desc="In Device Settings &gt; Power, label for behavior when device is idle.">
       When idle
     </message>
-    <message name="IDS_SETTINGS_POWER_IDLE_DISPLAY_OFF_SLEEP" desc="In Device Settings > Power, menu item for idle behavior that turns the screen off and later puts the device to sleep. String must be short enough to fit in a drop-down menu.">
+    <message name="IDS_SETTINGS_POWER_IDLE_DISPLAY_OFF_SLEEP" desc="In Device Settings &gt; Power, menu item for idle behavior that turns the screen off and later puts the device to sleep. String must be short enough to fit in a drop-down menu.">
       Sleep
     </message>
-    <message name="IDS_SETTINGS_POWER_IDLE_DISPLAY_OFF" desc="In Device Settings > Power, menu item for idle behavior that turns the screen off but prevents the device from sleeping. String must be short enough to fit in a drop-down menu.">
+    <message name="IDS_SETTINGS_POWER_IDLE_DISPLAY_OFF" desc="In Device Settings &gt; Power, menu item for idle behavior that turns the screen off but prevents the device from sleeping. String must be short enough to fit in a drop-down menu.">
       Turn off display
     </message>
-    <message name="IDS_SETTINGS_POWER_IDLE_DISPLAY_ON" desc="In Device Settings > Power, menu item for idle behavior that prevents the screen from turning off and prevents the device from sleeping. String must be short enough to fit in a drop-down menu.">
+    <message name="IDS_SETTINGS_POWER_IDLE_DISPLAY_ON" desc="In Device Settings &gt; Power, menu item for idle behavior that prevents the screen from turning off and prevents the device from sleeping. String must be short enough to fit in a drop-down menu.">
       Keep display on
     </message>
-    <message name="IDS_SETTINGS_POWER_IDLE_OTHER" desc="In Device Settings > Power, menu item for custom idle behavior.">
+    <message name="IDS_SETTINGS_POWER_IDLE_OTHER" desc="In Device Settings &gt; Power, menu item for custom idle behavior.">
       Other
     </message>
-    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SLEEP_LABEL" desc="In Device Settings > Power, label for suspending when lid is closed.">
+    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SLEEP_LABEL" desc="In Device Settings &gt; Power, label for suspending when lid is closed.">
       Sleep when lid is closed
     </message>
-    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SIGN_OUT_LABEL" desc="In Device Settings > Power, label for signing out when lid is closed.">
+    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SIGN_OUT_LABEL" desc="In Device Settings &gt; Power, label for signing out when lid is closed.">
       Sign out when lid is closed
     </message>
-    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SHUT_DOWN_LABEL" desc="In Device Settings > Power, label for shutting down when lid is closed.">
+    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SHUT_DOWN_LABEL" desc="In Device Settings &gt; Power, label for shutting down when lid is closed.">
       Shut down when lid is closed
     </message>
-    <message name="IDS_SETTINGS_BATTERY_STATUS" desc="In Device Settings > Power, the battery status while the battery is discharging, showing the battery power as a percentage and the time left until the battery is empty.">
+    <message name="IDS_SETTINGS_BATTERY_STATUS" desc="In Device Settings &gt; Power, the battery status while the battery is discharging, showing the battery power as a percentage and the time left until the battery is empty.">
       <ph name="percentage">$1<ex>56</ex></ph>% - <ph name="time">$2<ex>2 hours and 20 minutes</ex></ph> left
     </message>
-    <message name="IDS_SETTINGS_BATTERY_STATUS_CHARGING" desc="In Device Settings > Power, the battery status while the battery is charging, showing the battery power as a percentage and the time left until the battery is full.">
+    <message name="IDS_SETTINGS_BATTERY_STATUS_CHARGING" desc="In Device Settings &gt; Power, the battery status while the battery is charging, showing the battery power as a percentage and the time left until the battery is full.">
       <ph name="percentage">$1<ex>56</ex></ph>% - <ph name="time">$2<ex>2 hours and 20 minutes</ex></ph> until full
     </message>
-    <message name="IDS_SETTINGS_BATTERY_STATUS_SHORT" desc="In Device Settings > Power, the battery status when the time left cannot be shown.">
+    <message name="IDS_SETTINGS_BATTERY_STATUS_SHORT" desc="In Device Settings &gt; Power, the battery status when the time left cannot be shown.">
       <ph name="percentage">$1<ex>56</ex></ph>%
     </message>
   </if>
@@ -4132,7 +4132,7 @@
       Clean up computer
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_DETAILS_EXPLANATION" desc="Text that appears below the list of files, programs, and registry entries to be removed by Brave as part of a cleanup process. 'privacy white paper' is a guide to Brave's privacy policy and practices. In 'unwanted software protection,' the word 'unwanted' modifies 'software,' i.e. 'protection from unwanted software'.">
-      Items not listed here will also be removed, if needed. Learn more about &lt;a href=&quot;<ph name="URL">$1<ex>https://www.google.com/chrome/browser/privacy/whitepaper.html#unwantedsoftware</ex></ph>&quot;&gt;unwanted software protection&lt;/a&gt; in the Brave privacy white paper.
+      Items not listed here will also be removed, if needed. Learn more about &lt;a href="<ph name="URL">$1<ex>https://www.google.com/chrome/browser/privacy/whitepaper.html#unwantedsoftware</ex></ph>"&gt;unwanted software protection&lt;/a&gt; in the Brave privacy white paper.
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_DETAILS_FILES_AND_PROGRAMS" desc="Introduces a bullet list containing the names of files and programs to be removed by Brave.">
       Files and programs:
