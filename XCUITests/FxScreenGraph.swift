@@ -880,7 +880,7 @@ extension MMNavigator where T == FxUserState {
     }
 
     func browserPerformAction(_ view: BrowserPerformAction) {
-        let PageMenuOptions = [.shareOption, .toggleBookmarkOption, .findInPageOption, .sendToDeviceOption, .toggleDesktopOption, BrowserPerformAction.copyURLOption]
+        let PageMenuOptions = [.shareOption, .toggleBookmarkOption, .findInPageOption, .toggleDesktopOption, BrowserPerformAction.copyURLOption]
         let BrowserMenuOptions = [.openTopSitesOption, .openBookMarksOption, .openHistoryOption, .toggleHideImages, .toggleNightMode, BrowserPerformAction.openSettingsOption]
 
         let app = XCUIApplication()
@@ -901,7 +901,6 @@ enum BrowserPerformAction: String {
     case findInPageOption = "menu-FindInPage"
     case toggleDesktopOption = "menu-RequestDesktopSite"
     case pinToTopSitesOption = "action_pin"
-    case sendToDeviceOption = "menu-Send-to-Device"
     case shareOption = "action_share"
 
     // Tab Menu
