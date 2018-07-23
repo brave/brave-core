@@ -85,17 +85,13 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       return iframe_pattern_;
     }
 
-    const ContentSettingsPattern& empty_pattern() {
-      return empty_pattern_;
-    }
-
     HostContentSettingsMap * content_settings() {
       return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
     }
 
     void BlockReferrers() {
       content_settings()->SetContentSettingCustomScope(top_level_page_pattern(),
-          empty_pattern(), CONTENT_SETTINGS_TYPE_PLUGINS,
+          ContentSettingsPattern::Wildcard(), CONTENT_SETTINGS_TYPE_PLUGINS,
           brave_shields::kReferrers, CONTENT_SETTING_BLOCK);
       ContentSettingsForOneType settings;
       content_settings()->GetSettingsForOneType(
@@ -269,7 +265,6 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
     ContentSettingsPattern top_level_page_pattern_;
     ContentSettingsPattern first_party_pattern_;
     ContentSettingsPattern iframe_pattern_;
-    ContentSettingsPattern empty_pattern_;
     std::unique_ptr<ChromeContentClient> content_client_;
     std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 
