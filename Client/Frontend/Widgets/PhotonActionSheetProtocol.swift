@@ -201,26 +201,6 @@ extension PhotonActionSheetProtocol {
             }.uponQueue(.main) { _ in }
         }
 
-        let sendToDevice = PhotonActionSheetItem(title: Strings.SendToDeviceTitle, iconString: "menu-Send-to-Device") { action in
-            guard let bvc = presentableVC as? PresentableVC & InstructionsViewControllerDelegate & ClientPickerViewControllerDelegate else { return }
-//            if !self.profile.hasAccount() {
-                let instructionsViewController = InstructionsViewController()
-                instructionsViewController.delegate = bvc
-                let navigationController = UINavigationController(rootViewController: instructionsViewController)
-                navigationController.modalPresentationStyle = .formSheet
-                bvc.present(navigationController, animated: true, completion: nil)
-                return
-//            }
-
-//            let clientPickerViewController = ClientPickerViewController()
-//            clientPickerViewController.clientPickerDelegate = bvc
-//            clientPickerViewController.profile = self.profile
-//            clientPickerViewController.profileNeedsShutdown = false
-//            let navigationController = UINavigationController(rootViewController: clientPickerViewController)
-//            navigationController.modalPresentationStyle = .formSheet
-//            bvc.present(navigationController, animated: true, completion: nil)
-        }
-        
         let sharePage = PhotonActionSheetItem(title: Strings.AppMenuSharePageTitleString, iconString: "action_share") { action in
             guard let url = tab.canonicalURL?.displayURL else { return }
 
@@ -252,7 +232,7 @@ extension PhotonActionSheetProtocol {
         }
 
         let pinAction = (isPinned ? removeTopSitesPin : pinToTopSites)
-        mainActions.append(contentsOf: [sendToDevice, copyURL])
+        mainActions.append(copyURL)
 
         return [mainActions, [findInPageAction, toggleDesktopSite, pinAction]]
     }
