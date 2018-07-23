@@ -79,8 +79,8 @@ extension Strings {
     public static let SettingsDisconnectDestructiveAction = NSLocalizedString("Settings.Disconnect.DestructiveButton", value: "Disconnect", comment: "Destructive action button in alert when user is prompted for disconnect")
     public static let SettingsSearchDoneButton = NSLocalizedString("Settings.Search.Done.Button", value: "Done", comment: "Button displayed at the top of the search settings.")
     public static let SettingsSearchEditButton = NSLocalizedString("Settings.Search.Edit.Button", value: "Edit", comment: "Button displayed at the top of the search settings.")
-    public static let UseTouchID = NSLocalizedString("Use Touch ID", tableName: "AuthenticationManager", comment: "List section title for when to use Touch ID")
-    public static let UseFaceID = NSLocalizedString("Use Face ID", tableName: "AuthenticationManager", comment: "List section title for when to use Face ID")
+    public static let UseTouchID = NSLocalizedString("Use Touch ID", comment: "List section title for when to use Touch ID")
+    public static let UseFaceID = NSLocalizedString("Use Face ID", comment: "List section title for when to use Face ID")
 }
 
 // Error pages.
@@ -554,10 +554,10 @@ extension Strings {
 
 // Share extension
 extension Strings {
-    public static let SendToCancelButton = NSLocalizedString("SendTo.Cancel.Button", bundle: applicationBundle(), value: "Cancel", comment: "Button title for cancelling share screen")
-    public static let SendToErrorOKButton = NSLocalizedString("SendTo.Error.OK.Button", bundle: applicationBundle(), value: "OK", comment: "OK button to dismiss the error prompt.")
-    public static let SendToErrorTitle = NSLocalizedString("SendTo.Error.Title", bundle: applicationBundle(), value: "The link you are trying to share cannot be shared.", comment: "Title of error prompt displayed when an invalid URL is shared.")
-    public static let SendToErrorMessage = NSLocalizedString("SendTo.Error.Message", bundle: applicationBundle(), value: "Only HTTP and HTTPS links can be shared.", comment: "Message in error prompt explaining why the URL is invalid.")
+    public static let SendToCancelButton = NSLocalizedString("SendTo.Cancel.Button", value: "Cancel", comment: "Button title for cancelling share screen")
+    public static let SendToErrorOKButton = NSLocalizedString("SendTo.Error.OK.Button", value: "OK", comment: "OK button to dismiss the error prompt.")
+    public static let SendToErrorTitle = NSLocalizedString("SendTo.Error.Title", value: "The link you are trying to share cannot be shared.", comment: "Title of error prompt displayed when an invalid URL is shared.")
+    public static let SendToErrorMessage = NSLocalizedString("SendTo.Error.Message", value: "Only HTTP and HTTPS links can be shared.", comment: "Message in error prompt explaining why the URL is invalid.")
 
     // The above items are re-used strings from the old extension. New strings below.
 
@@ -575,6 +575,6 @@ extension Strings {
 }
 
 // MARK: Deprecated Strings (to be removed in next version)
-private let logOut = NSLocalizedString("Log Out", comment: "Button in settings screen to disconnect from your account")
+private let logOut = NSLocalizedString("Settings.Log.Out.Button.Title", value: "Log Out", comment: "Button in settings screen to disconnect from your account")
 private let logOutQuestion = NSLocalizedString("Log Out?", comment: "Title of the 'log out firefox account' alert")
 private let logOutDestructive = NSLocalizedString("Log Out", comment: "Disconnect button in the 'log out firefox account' alert")

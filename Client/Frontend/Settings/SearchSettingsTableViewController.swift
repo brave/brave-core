@@ -38,7 +38,7 @@ class SearchSettingsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Search", comment: "Navigation title for search settings.")
+        navigationItem.title = NSLocalizedString("Settings.Search.Navigation.Title", value: "Search", comment: "Navigation title for search settings.")
 
         // To allow re-ordering the list of search engines at all times.
         tableView.isEditing = true
@@ -86,7 +86,7 @@ class SearchSettingsTableViewController: UITableViewController {
                 engine = model.defaultEngine
                 cell = UITableViewCell(style: .default, reuseIdentifier: nil)
                 cell.editingAccessoryType = .disclosureIndicator
-                cell.accessibilityLabel = NSLocalizedString("Default Search Engine", comment: "Accessibility label for default search engine setting.")
+                cell.accessibilityLabel = NSLocalizedString("Settings.Default.Search.Engine.Accessibility.Label", value: "Default Search Engine", comment: "Accessibility label for default search engine setting.")
                 cell.accessibilityValue = engine.shortName
                 cell.textLabel?.text = engine.shortName
                 cell.imageView?.image = engine.image.createScaled(IconSize)
@@ -204,7 +204,7 @@ class SearchSettingsTableViewController: UITableViewController {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: SectionHeaderIdentifier) as! SettingsTableSectionHeaderFooterView
         var sectionTitle: String
         if section == SectionDefault {
-            sectionTitle = NSLocalizedString("Default Search Engine", comment: "Title for default search engine settings section.")
+            sectionTitle = NSLocalizedString("Settings.Default.Search.Engine.Section.Title", value: "Default Search Engine", comment: "Title for default search engine settings section.")
         } else {
             sectionTitle = NSLocalizedString("Quick-Search Engines", comment: "Title for quick-search engines settings section.")
         }
