@@ -1,31 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
-<translation id="5194812628624740897">Als je de verbinding met <ph name="USERNAME"/> verbreekt, worden je geschiedenis, bladwijzers, instellingen en andere Brave-gegevens die op dit apparaat zijn opgeslagen, gewist. Gegevens die zijn opgeslagen in je Brave Software-account worden niet gewist en kunnen worden beheerd via <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software Dashboard<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">inloggen bij Brave</translation>
 <translation id="5516268345616100622">Taakbeheer - Brave</translation>
-<translation id="7918740962659365265">Help ons Brave te verbeteren door crashrapporten en <ph name="UMA_LINK"/> naar Brave Software te verzenden</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave bèta</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave voor ontwikkelaars</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Hulp bij het gebruik van Brave OS</translation>
 <translation id="8992261409816268381">De auteurs van Brave</translation>
-<translation id="4651430425715739110">Copyright <ph name="YEAR"/> De auteurs van Brave. Alle rechten voorbehouden.</translation>
 <translation id="9179832504443063758">Open-sourcelicenties van Brave</translation>
-<translation id="2310890394934209120">Brave OS wordt mogelijk gemaakt door aanvullende <ph name="BEGIN_LINK_CROS_OSS"/>open source-software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Open-sourcelicenties van Brave OS</translation>
 <translation id="5019879183386042809">Brave als standaardbrowser instellen</translation>
 <translation id="5063987220091207247">Brave OS kan deze pagina niet openen.</translation>
 <translation id="4065288863231444640">Brave laten uitvoeren op de achtergrond</translation>
-<translation id="2585240446624043880">Brave kan niet lezen van en schrijven naar de eigen gegevensdirectory :
-
-<ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8417700129970341035">Optioneel: help Brave beter te maken door automatisch gebruiksstatistieken en crashmeldingen naar Brave Software te verzenden.</translation>
 <translation id="1489465648257900784">Je profiel kan niet worden gebruikt, omdat dit is gemaakt in een recentere versie van Brave.
 
@@ -36,22 +24,17 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="3403365884036456766">Je bestand met voorkeuren is beschadigd of ongeldig.
 
 Brave kan je instellingen niet herstellen.</translation>
-<translation id="8554809439398012115">Brave slaat dit wachtwoord op met <ph name="SAVED_PASSWORD_LINK"/>. Je hoeft het niet te onthouden.</translation>
 <translation id="5316336629760101484">Een sterk wachtwoord gebruiken dat is gegenereerd door Brave</translation>
 <translation id="3343095737966473035">Brave is niet je standaardbrowser</translation>
 <translation id="6715663530666325392">Stel synchronisatie in om je persoonlijke browserfuncties online op te slaan en toegang te hebben tot deze functies via Brave, vanaf elke computer.</translation>
 <translation id="2708027082363760195">Brave bevat niet de pdf-viewer die nodig is om de functie 'Afdrukvoorbeeld' te laten werken.</translation>
 <translation id="8880183781256147665">Toevoegen aan Brave...</translation>
-<translation id="3561569806301739367"><ph name="FILE_NAME"/> kan gevaarlijk zijn en is daarom door Brave geblokkeerd.</translation>
 <translation id="9067428552314418522">Dit bestand is gevaarlijk en is daarom door Brave geblokkeerd.</translation>
-<translation id="4168372721886011198"><ph name="FILE_NAME"/> is gevaarlijk en is daarom door Brave geblokkeerd.</translation>
 <translation id="89367911614620585">Dit bestand kan gevaarlijk zijn en is daarom door Brave geblokkeerd.</translation>
 <translation id="2339258256897053758">Brave Software API-sleutels ontbreken. Sommige functies van Brave worden uitgeschakeld.</translation>
 <translation id="5906655207909574370">Updaten bijna voltooid. Start je apparaat opnieuw op om de update te voltooien.</translation>
 <translation id="5877064549588274448">Kanaal gewijzigd. Start het apparaat opnieuw op om de wijzigingen door te voeren.</translation>
-<translation id="8667808506758191620">Je <ph name="DEVICE_TYPE"/> is up-to-date.</translation>
 <translation id="6970811910055250180">Je apparaat bijwerken...</translation>
-<translation id="8030318113982266900">Je apparaat bijwerken naar <ph name="CHANNEL_NAME"/> kanaal...</translation>
 <translation id="7355059611036077582">Toevoegen aan Brave</translation>
 <translation id="7456658570432774853">Help Brave beter te maken door de huidige instellingen te melden</translation>
 <translation id="5436841087823876677">Waarschuwing: Brave kan niet voorkomen dat extensies je browsergeschiedenis vastleggen. Als je deze extensie in de incognitomodus wilt uitschakelen, verwijder je het vinkje bij deze optie.</translation>
@@ -68,22 +51,19 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="4100716194836114130">Personaliseer jouw Brave</translation>
 <translation id="8296145982386097283">Deel je een computer? Je kunt Brave nu precies instellen zoals jij dat wilt.</translation>
 <translation id="1672124279374861424">Nadat je je account uit Brave hebt verwijderd, moet je je geopende tabbladen mogelijk opnieuw laden om de wijzigingen door te voeren.</translation>
-<translation id="9197493712748167998">Je gebruikt <ph name="PROFILE_EMAIL"/> om je Brave-bestanden te synchroniseren. Als je je synchronisatievoorkeur wilt bijwerken of Brave zonder een Brave Software-account wilt gebruiken, ga je naar '<ph name="SETTINGS_LINK"/>'.</translation>
 <translation id="3968006371075376562">Brave OS kan je gegevens niet synchroniseren. Update je wachtwoordzin voor synchronisatie.</translation>
 <translation id="6746636977031158624">Brave OS kan je gegevens niet synchroniseren omdat de inloggegevens voor je account zijn verouderd.</translation>
 <translation id="2999152167963026588">Brave OS kan je gegevens niet synchroniseren omdat synchronisatie niet beschikbaar is voor je domein.</translation>
 <translation id="1459786048951724030">Brave OS kan je gegevens niet synchroniseren door een fout tijdens het inloggen.</translation>
 <translation id="2887570477425111999">Details opslaan in Brave</translation>
-<translation id="193559141530782783">Brave slaat je persoonlijke gegevens veilig op, zodat je ze niet opnieuw hoeft op te geven.</translation>
+<translation id="193559141530782783">Brave slaat je persoonlijke gegevens beveiligd op, zodat je ze niet opnieuw hoeft op te geven.</translation>
 <translation id="663059986967017181">Gekopieerd naar Brave</translation>
 <translation id="5225129378754387452">Brave-menu weergeven</translation>
 <translation id="300669147395456190">Brave-apps</translation>
-<translation id="3421950102518690868"><ph name="DOMAIN"/> vereist dat je de volgende Servicevoorwaarden leest en accepteert voordat je dit apparaat gebruikt. Deze voorwaarden zijn geen uitbreiding, aanpassing of beperking van de Voorwaarden van Brave OS.</translation>
 <translation id="3293668930608086049">Brave gebruikt je camera en microfoon.</translation>
 <translation id="8919461291440820124">Brave gebruikt je microfoon.</translation>
 <translation id="3205074487970075628">Brave gebruikt je camera.</translation>
 <translation id="3813272600615358652">Deze extensie heeft gewijzigd welke pagina wordt weergegeven wanneer je Brave start.</translation>
-<translation id="2576129394594491151">De extensie '<ph name="EXTENSION_NAME"/>' heeft gewijzigd welke pagina wordt weergegeven wanneer je Brave start.</translation>
 <translation id="2675662665675552980">Hiermee wordt ook gecontroleerd welke pagina wordt weergegeven wanneer je Brave start.</translation>
 <translation id="3215652305414474626">Hiermee wordt ook gecontroleerd welke pagina wordt weergegeven wanneer je Brave start of op de knop 'Homepage' klikt.</translation>
 <translation id="2433912322225810055">Hiermee wordt ook gecontroleerd welke pagina wordt weergegeven wanneer je Brave start of vanuit de omnibox zoekt.</translation>
@@ -106,9 +86,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="3009995890652266099">Je kunt helpen Brave veiliger en gebruiksvriendelijker te maken door automatisch bepaalde systeeminformatie en paginacontent naar Brave Software te verzenden om te helpen bij de detectie van gevaarlijke apps en sites.</translation>
 <translation id="6791166902140255175">Brave-tabblad</translation>
 <translation id="8899693649891674038">Installeer Brave op je telefoon. We sturen een sms naar je telefoon.</translation>
-<translation id="1570795130102031380">Installeer Brave op je telefoon. We sturen een sms naar je telefoon: <ph name="PHONE_NUMBER"/></translation>
 <translation id="1609678321160597289">Installeer Brave op je telefoon. We sturen een sms naar het hersteltelefoonnummer voor je account.</translation>
-<translation id="2965084188004448871">Installeer Brave op je telefoon. We sturen een sms naar het hersteltelefoonnummer voor je account: <ph name="PHONE_NUMBER"/></translation>
 <translation id="8358191771897395012">Download Brave naar je iPhone</translation>
 <translation id="1744365871163268756">Wacht terwijl Brave de nieuwste systeemupdates installeert.</translation>
 <translation id="5693614905241031118">Brave wordt automatisch bijgewerkt, zodat je altijd beschikt over de nieuwste versie.</translation>
@@ -117,15 +95,10 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="6686872257969654608">Over Brave OS</translation>
 <translation id="2280363356796735201">Hulp bij Brave OS</translation>
 <translation id="5253815230176279256">Brave Software Pay (gekopieerd naar Brave)</translation>
-<translation id="7977435741986383568">Brave kan webservices gebruiken om de browsefunctionaliteit te verbeteren. Je kunt deze services eventueel uitschakelen. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Inloggen bij Brave is uitgeschakeld door de beheerder van dit apparaat.</translation>
-<translation id="9220324636239049437">Hiermee wordt 1 item verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
-<translation id="5853262807109651878">Hiermee worden <ph name="ITEMS_COUNT"/> items verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
-<translation id="4784414698887946907">Hiermee worden je browsergegevens verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="82609232232243542">Inloggen bij Brave</translation>
 <translation id="8372880274820509128">Je gegevens worden voor extra beveiliging door Brave gecodeerd.</translation>
 <translation id="6234515504547364178">Uitloggen bij Brave</translation>
 <translation id="7713466009760073734">Brave OS wordt weergegeven in deze taal</translation>
 <translation id="3518788198614984730">Brave OS weergeven in deze taal</translation>
-<translation id="6056473803837713617">Help Brave beter te maken door de <ph name="BEGIN_LINK"/>huidige instellingen<ph name="END_LINK"/> te melden</translation>
 </translationbundle>

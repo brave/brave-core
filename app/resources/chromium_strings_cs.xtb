@@ -1,31 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="cs">
-<translation id="5194812628624740897">Odpojení uživatele <ph name="USERNAME"/> smaže také historii, záložky, nastavení a další data prohlížeče Brave uložená v tomto zařízení. Data uložená ve vašem účtu Brave Software nebudou vymazána a lze je spravovat na <ph name="GOOGLE_DASHBOARD_LINK"/>Hlavním panelu Brave Software<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">přihlaste se do prohlížeče Brave</translation>
 <translation id="5516268345616100622">Správce úloh – Brave</translation>
-<translation id="7918740962659365265">Pomozte aplikaci Brave zlepšovat tím, že budete společnosti Brave Software zasílat zprávy o selhání a <ph name="UMA_LINK"/>.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="6474707902830053522">Pomoc s používáním operačního systému Brave OS</translation>
 <translation id="8992261409816268381">Autoři prohlížeče Brave</translation>
-<translation id="4651430425715739110">Copyright <ph name="YEAR"/> Autoři prohlížeče Brave. Všechna práva vyhrazena.</translation>
 <translation id="9179832504443063758">Brave – licence open source</translation>
-<translation id="2310890394934209120">Brave OS by nemohl existovat bez dalšího <ph name="BEGIN_LINK_CROS_OSS"/>softwaru s otevřeným zdrojovým kódem<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8372475781172910778">Brave OS – licence open source</translation>
 <translation id="5019879183386042809">Nastavit Brave jako výchozí prohlížeč</translation>
 <translation id="5063987220091207247">Brave OS tuto stránku nedokáže otevřít</translation>
 <translation id="4065288863231444640">Nechat Brave běžet na pozadí</translation>
-<translation id="2585240446624043880">Brave nemůže číst ani zapisovat do svého datového adresáře:
-
-<ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8417700129970341035">Volitelné: Pomozte Brave zlepšit – posílejte automaticky společnosti Brave Software statistiky využití a zprávy o selhání aplikace.</translation>
 <translation id="1489465648257900784">Nelze použít váš profil, protože byl vytvořen v novější verzi prohlížeče Brave.
 
@@ -36,22 +24,17 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="3403365884036456766">Soubor nastavení je poškozený nebo neplatný.
 
 Brave nemůže vaše nastavení obnovit.</translation>
-<translation id="8554809439398012115">Brave heslo uloží pomocí funkce <ph name="SAVED_PASSWORD_LINK"/>. Heslo si tak nebudete muset pamatovat.</translation>
 <translation id="5316336629760101484">Použijte heslo vygenerované prohlížečem Brave</translation>
 <translation id="3343095737966473035">Brave není vaším výchozím prohlížečem</translation>
 <translation id="6715663530666325392">Chcete-li uložit personalizované funkce prohlížeče na web a získat k nim přístup z prohlížeče Brave v libovolném prohlížeči, nastavte synchronizaci.</translation>
 <translation id="2708027082363760195">Brave neobsahuje prohlížeč PDF, který je požadován ke správnému fungování Náhledu tisku.</translation>
 <translation id="8880183781256147665">Přidávání do prohlížeče Brave...</translation>
-<translation id="3561569806301739367">Soubor <ph name="FILE_NAME"/> může být nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
 <translation id="9067428552314418522">Tento soubor je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
-<translation id="4168372721886011198">Soubor <ph name="FILE_NAME"/> je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
 <translation id="89367911614620585">Tento soubor může být nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
 <translation id="2339258256897053758">Chybí klíče rozhraní Brave Software API. Některé funkce Brave nebudou k dispozici.</translation>
 <translation id="5906655207909574370">Aktualizace je téměř hotova! Dokončíte ji restartováním zařízení.</translation>
 <translation id="5877064549588274448">Verze byla změněna. Změny se projeví po restartování zařízení.</translation>
-<translation id="8667808506758191620">Vaše zařízení <ph name="DEVICE_TYPE"/> je aktuální.</translation>
 <translation id="6970811910055250180">Aktualizace zařízení...</translation>
-<translation id="8030318113982266900">Aktualizace zařízení na verzi <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Přidat do prohlížeče Brave</translation>
 <translation id="7456658570432774853">Pomoci s vylepšováním prohlížeče Brave prostřednictvím nahlášení aktuálního nastavení</translation>
 <translation id="5436841087823876677">Upozornění: Brave nemůže rozšířením zabránit v zaznamenávání vaší historie procházení. Chcete-li toto rozšíření v anonymním režimu deaktivovat, zrušte výběr této možnosti.</translation>
@@ -68,7 +51,6 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="4100716194836114130">Toto je váš prohlížeč Brave</translation>
 <translation id="8296145982386097283">Sdílíte počítač s dalšími uživateli? Nyní si Brave můžete nastavit podle svých představ.</translation>
 <translation id="1672124279374861424">Odebrání účtu z aplikace Brave se může projevit až po opětovném načtení otevřených karet.</translation>
-<translation id="9197493712748167998">Synchronizujete obsah a nastavení prohlížeče Brave s účtem <ph name="PROFILE_EMAIL"/>. Chcete-li možnosti synchronizace upravit nebo Brave používat bez účtu Brave Software, navštivte <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3968006371075376562">Brave OS vaše data nemohl synchronizovat. Aktualizujte prosím heslovou frázi pro synchronizaci.</translation>
 <translation id="6746636977031158624">Brave OS nemůže synchronizovat data, protože vaše přihlašovací údaje k účtu jsou zastaralé.</translation>
 <translation id="2999152167963026588">Brave OS nemůže synchronizovat data, protože Synchronizace ve vaší doméně není k dispozici.</translation>
@@ -78,12 +60,10 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="663059986967017181">Zkopírováno do prohlížeče Brave</translation>
 <translation id="5225129378754387452">Zobrazit nabídku Brave</translation>
 <translation id="300669147395456190">Aplikace Brave</translation>
-<translation id="3421950102518690868">Doména <ph name="DOMAIN"/> vyžaduje, abyste si před použitím tohoto zařízení přečetli následující smluvní podmínky a odsouhlasili je. Tyto smluvní podmínky nerozšiřují, neupravují ani neomezují smluvní podmínky systému Brave OS.</translation>
 <translation id="3293668930608086049">Brave používá vaši kameru a mikrofon.</translation>
 <translation id="8919461291440820124">Brave používá váš mikrofon.</translation>
 <translation id="3205074487970075628">Brave používá vaši kameru.</translation>
 <translation id="3813272600615358652">Toto rozšíření změnilo stránku, která se zobrazí při spuštění prohlížeče Brave.</translation>
-<translation id="2576129394594491151">Rozšíření <ph name="EXTENSION_NAME"/> změnilo stránku, která se zobrazí při spuštění prohlížeče Brave.</translation>
 <translation id="2675662665675552980">Také řídí, která stránka se zobrazí při spuštění prohlížeče Brave.</translation>
 <translation id="3215652305414474626">Také řídí, která stránka se zobrazí při spuštění prohlížeče Brave nebo po kliknutí na tlačítko Domovská stránka.</translation>
 <translation id="2433912322225810055">Také řídí, která stránka se zobrazí po spuštění prohlížeče Brave nebo při vyhledávání v omniboxu.</translation>
@@ -100,15 +80,13 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="4050175100176540509">V nejnovější verzi jsou k dispozici důležitá vylepšení zabezpečení a nové funkce.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave se za 1 sekundu restartuje}few{Brave se za # sekundy restartuje}many{Brave se za # sekundy restartuje}other{Brave se za # sekund restartuje}}</translation>
 <translation id="9159286371333817139">Nyní byste Brave měli restartovat.</translation>
-<translation id="9203540365585059272">Právě byla nainstalována mimořádná bezpečnostní aktualizace prohlížeče Brave. Aby se projevila, měli byste prohlížeč nyní restartovat (otevřené karty se automaticky obnoví).</translation>
+<translation id="9203540365585059272">Právě byla nainstalována mimořádná bezpečnostní aktualizace prohlížeče Brave. Aby se projevila, měli byste prohlížeč teď restartovat (otevřené karty se automaticky obnoví).</translation>
 <translation id="763369711159699222">Pomozte projekt Brave vylepšit</translation>
 <translation id="1156940037717341650">Automatickým hlášením podrobností o možných bezpečnostních incidentech do Googlu můžete pomoci zrychlit projekt Brave a usnadnit jeho používání.</translation>
 <translation id="3009995890652266099">Automatickým hlášením některých informací o systému a obsahu stránek do Googlu můžete pomoci rozpoznávat nebezpečné aplikace a weby a zvýšit tak bezpečnost prohlížeče Brave a usnadnit jeho používání.</translation>
 <translation id="6791166902140255175">Karta prohlížeče Brave</translation>
 <translation id="8899693649891674038">Nainstalujte si Brave do telefonu. Zašleme vám na telefon SMS.</translation>
-<translation id="1570795130102031380">Nainstalujte si Brave do telefonu. Zašleme vám SMS na telefon <ph name="PHONE_NUMBER"/>.</translation>
 <translation id="1609678321160597289">Nainstalujte si Brave do telefonu. Zašleme vám SMS na telefonní číslo pro obnovení účtu.</translation>
-<translation id="2965084188004448871">Nainstalujte si Brave do telefonu. Zašleme vám SMS na toto telefonní číslo pro obnovení účtu: <ph name="PHONE_NUMBER"/>.</translation>
 <translation id="8358191771897395012">stáhněte si Brave do iPhonu</translation>
 <translation id="1744365871163268756">Počkejte prosím, než Brave nainstaluje nejnovější aktualizace systému.</translation>
 <translation id="5693614905241031118">Prohlížeč Brave se automaticky aktualizuje, abyste vždy měli k dispozici nejnovější verzi.</translation>
@@ -117,15 +95,10 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="6686872257969654608">O systému Brave OS</translation>
 <translation id="2280363356796735201">Pomoc se systémem Brave OS</translation>
 <translation id="5253815230176279256">Brave Software Pay (zkopírováno do prohlížeče Brave)</translation>
-<translation id="7977435741986383568">Brave vám může usnadnit prohlížení pomocí webových služeb. Tyto služby můžete případně zakázat. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Přihlášení do prohlížeče Brave je administrátorem tohoto zařízení zakázáno.</translation>
-<translation id="9220324636239049437">Z tohoto zařízení bude smazána 1 položka. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
-<translation id="5853262807109651878">Z tohoto zařízení bude smazán následující počet položek: <ph name="ITEMS_COUNT"/>. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
-<translation id="4784414698887946907">Ze zařízení budou smazány vaše údaje o prohlížení. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="82609232232243542">Přihlásit se do prohlížeče Brave</translation>
 <translation id="8372880274820509128">V zájmu lepšího zabezpečení bude Brave šifrovat vaše data.</translation>
 <translation id="6234515504547364178">Odhlášení z prohlížeče Brave</translation>
 <translation id="7713466009760073734">Brave OS se zobrazuje v tomto jazyce</translation>
 <translation id="3518788198614984730">Zobrazit Brave OS v tomto jazyce</translation>
-<translation id="6056473803837713617">Pomozte s vylepšováním prohlížeče Brave tím, že nahlásíte <ph name="BEGIN_LINK"/>aktuální nastavení<ph name="END_LINK"/></translation>
 </translationbundle>
