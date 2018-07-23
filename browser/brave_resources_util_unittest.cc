@@ -11,6 +11,12 @@
 #include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if defined(OS_WIN)
+#include "brave/common/resource_bundle_helper.h"
+#include "chrome/grit/chromium_strings.h"
+#include "ui/base/l10n/l10n_util.h"
+#endif
+
 TEST(BraveResourcesUtil, CheckIds) {
   const struct {
     const char* name;
@@ -26,3 +32,24 @@ TEST(BraveResourcesUtil, CheckIds) {
   for (size_t i = 0; i < arraysize(kCases); ++i)
     EXPECT_EQ(kCases[i].id, ResourcesUtil::GetThemeResourceId(kCases[i].name));
 }
+
+#if defined(OS_WIN)
+TEST(BraveResourcesWinTest, CheckStringsForInstaller) {
+  // Test whether strings for installer are filled.
+  // This test is added because these strings are initially empty and filled
+  // with brave's one.
+  brave::InitializeResourceBundle();
+
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SXS_SHORTCUT_NAME).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SHORTCUT_NAME_BETA).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SHORTCUT_NAME_DEV).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_NAME_BETA).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_NAME_CANARY).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_NAME_DEV).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV).empty());
+}
+#endif
