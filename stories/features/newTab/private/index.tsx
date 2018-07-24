@@ -36,20 +36,24 @@ class NewPrivateTab extends React.PureComponent {
               <DataItem
                 theme={theme.trackersBlocked}
                 description={locale.trackersBlocked}
-                counter={data.trackersBlockedCount} />
+                counter={data.trackersBlockedCount}
+              />
               <DataItem
                 theme={theme.adsBlocked}
                 description={locale.adsBlocked}
-                counter={data.adsBlockedCount} />
+                counter={data.adsBlockedCount}
+              />
               <DataItem
                 theme={theme.httpsUpgrades}
                 description={locale.httpsUpgrades}
-                counter={data.httpsUpgradesCount} />
+                counter={data.httpsUpgradesCount}
+              />
               <DataItem
                 theme={theme.estimatedTime}
                 description={locale.estimatedTime}
                 text={locale.minutes}
-                counter={data.estimatedTimeCount} />
+                counter={data.estimatedTimeCount}
+              />
             </DataBlock>
           </Column>
           <Column size={1} theme={theme.clockContainer}>
@@ -66,7 +70,8 @@ class NewPrivateTab extends React.PureComponent {
                   id='togglePrivateSearchEngine'
                   size='large'
                   checked={false}
-                  rightText={locale.switchLabel} />
+                  rightText={locale.switchLabel}
+                />
               </BoxedContent>
               <Paragraph theme={theme.text} text={locale.paragraph3} />
           </MediaContent>
