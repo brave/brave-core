@@ -12,23 +12,23 @@ import Box from '../../../../src/features/rewards/box/index'
 import locale from './fakeLocale'
 import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
-import List from '../../../../src/features/rewards/list';
-import Tokens from '../../../../src/features/rewards/tokens';
-import Select from '../../../../src/components/formControls/select';
-import Checkbox from '../../../../src/components/formControls/checkbox';
-import DisabledContent from '../../../../src/features/rewards/disabledContent';
-import MainToggle from '../../../../src/features/rewards/mainToggle';
-import Panel from '../../../../src/features/rewards/panel';
-import ContributeTable, { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/contributeTable';
-import { boolean, select, object } from '@storybook/addon-knobs';
-import Alert from '../../../../src/features/rewards/alert';
-import DonationTable, { DetailRow as DonationDetailRow } from '../../../../src/features/rewards/donationTable';
-import ModalContribute from '../../../../src/features/rewards/modalContribute';
-import ModalBackupRestore, { TabsType } from '../../../../src/features/rewards/modalBackupRestore';
-import PanelEmpty from '../../../../src/features/rewards/panelEmpty';
-import PanelSummary from '../../../../src/features/rewards/panelSummary';
-import PanelOff from '../../../../src/features/rewards/panelOff';
-import SettingsPage from '../../../../src/features/rewards/settingsPage';
+import List from '../../../../src/features/rewards/list'
+import Tokens from '../../../../src/features/rewards/tokens'
+import Select from '../../../../src/components/formControls/select'
+import Checkbox from '../../../../src/components/formControls/checkbox'
+import DisabledContent from '../../../../src/features/rewards/disabledContent'
+import MainToggle from '../../../../src/features/rewards/mainToggle'
+import Panel from '../../../../src/features/rewards/panel'
+import ContributeTable, { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/contributeTable'
+import { boolean, select, object } from '@storybook/addon-knobs'
+import Alert from '../../../../src/features/rewards/alert'
+import DonationTable, { DetailRow as DonationDetailRow } from '../../../../src/features/rewards/donationTable'
+import ModalContribute from '../../../../src/features/rewards/modalContribute'
+import ModalBackupRestore, { TabsType } from '../../../../src/features/rewards/modalBackupRestore'
+import PanelEmpty from '../../../../src/features/rewards/panelEmpty'
+import PanelSummary from '../../../../src/features/rewards/panelSummary'
+import PanelOff from '../../../../src/features/rewards/panelOff'
+import SettingsPage from '../../../../src/features/rewards/settingsPage'
 
 // Images
 const adsImg = require('../../../assets/img/rewards_ads.svg')
@@ -49,6 +49,10 @@ interface State {
   modalContribute: boolean
   modalBackup: boolean
   modalBackupActive: TabsType
+}
+
+const doNothing = () => {
+  console.log('nothing')
 }
 
 class Settings extends React.PureComponent<{}, State> {
@@ -74,7 +78,7 @@ class Settings extends React.PureComponent<{}, State> {
           src: bartBaker
         },
         attention: 40,
-        onRemove: () => {}
+        onRemove: doNothing
       },
       {
         profile: {
@@ -83,8 +87,7 @@ class Settings extends React.PureComponent<{}, State> {
           src: ddgo
         },
         attention: 20,
-        onRemove: () => {
-        }
+        onRemove: doNothing
       },
       {
         profile: {
@@ -93,7 +96,7 @@ class Settings extends React.PureComponent<{}, State> {
           src: buzz
         },
         attention: 10,
-        onRemove: () => {}
+        onRemove: doNothing
       },
       {
         profile: {
@@ -102,7 +105,7 @@ class Settings extends React.PureComponent<{}, State> {
           src: guardian
         },
         attention: 5,
-        onRemove: () => {}
+        onRemove: doNothing
       },
       {
         profile: {
@@ -111,7 +114,7 @@ class Settings extends React.PureComponent<{}, State> {
           src: wiki
         },
         attention: 4,
-        onRemove: () => {}
+        onRemove: doNothing
       }
     ]
   }
@@ -130,7 +133,7 @@ class Settings extends React.PureComponent<{}, State> {
           tokens: 2,
           converted: 0.2
         },
-        onRemove: () => {}
+        onRemove: doNothing
       },
       {
         profile: {
@@ -143,7 +146,7 @@ class Settings extends React.PureComponent<{}, State> {
           tokens: 12,
           converted: 6.2
         },
-        text: 'May 7',
+        text: 'May 7'
       },
       {
         profile: {
@@ -157,66 +160,102 @@ class Settings extends React.PureComponent<{}, State> {
           tokens: 7,
           converted: 3.2
         },
-        text: 'May 2',
+        text: 'May 2'
       }
     ]
   }
 
   adsDisabled () {
-    return <DisabledContent
-      image={adsImg}
-      theme={{color: '#ceb4e1', boldColor: '#b490cf'}}
-    >
-      <h3>Coming soon.</h3>
-    </DisabledContent>
+    return (
+      <DisabledContent
+        image={adsImg}
+        theme={{ color: '#ceb4e1', boldColor: '#b490cf' }}
+      >
+        <h3>Coming soon.</h3>
+      </DisabledContent>
+    )
   }
 
   contributeSettingsChild = () => {
-    return <>
-      <Grid columns={1} theme={{maxWidth: '270px', margin: '0 auto'}}>
-          <Column size={1} theme={{justifyContent: 'center', flexWrap: 'wrap'}}>
-            <Select title={locale.contributionMonthly}>
-              <div data-value='10'><Tokens value={10} converted={'4'}/></div>
-              <div data-value='20'><Tokens value={20} converted={'6'}/></div>
-              <div data-value='40'><Tokens value={40} converted={'12'}/></div>
-              <div data-value='100'><Tokens value={100} converted={'40'}/></div>
-            </Select>
-             <Select title={locale.contributionSitesLimit}>
-              <div data-value='0'>{locale.contributionSitesNoLimit}</div>
-              <div data-value='10'>{locale.contributionSitesLimit10}</div>
-              <div data-value='50'>{locale.contributionSitesLimit50}</div>
-            </Select>
-          </Column>
-        </Grid>
-    </>
+    return (
+      <>
+        <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>
+            <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Select title={locale.contributionMonthly}>
+                <div data-value='10'><Tokens value={10} converted={'4'}/></div>
+                <div data-value='20'><Tokens value={20} converted={'6'}/></div>
+                <div data-value='40'><Tokens value={40} converted={'12'}/></div>
+                <div data-value='100'><Tokens value={100} converted={'40'}/></div>
+              </Select>
+               <Select title={locale.contributionSitesLimit}>
+                <div data-value='0'>{locale.contributionSitesNoLimit}</div>
+                <div data-value='10'>{locale.contributionSitesLimit10}</div>
+                <div data-value='50'>{locale.contributionSitesLimit50}</div>
+              </Select>
+            </Column>
+          </Grid>
+      </>
+    )
   }
 
   contributeDisabled () {
-    return <DisabledContent
-      image={contributeImg}
-      theme={{color: '#ce9ccf', boldColor: '#c16fc2'}}
-    >
-      • Pay directly for the content you love. <br/>
-      • Your <b>monthly allowance</b> gets divided based on your attention metric.
-    </DisabledContent>
+    return (
+      <DisabledContent
+        image={contributeImg}
+        theme={{ color: '#ce9ccf', boldColor: '#c16fc2' }}
+      >
+        • Pay directly for the content you love. <br/>
+        • Your <b>monthly allowance</b> gets divided based on your attention metric.
+      </DisabledContent>
+    )
   }
 
   donationSettingsChild = () => {
-    return <>
-      <Grid columns={1} theme={{maxWidth: '270px', margin: '0 auto'}}>
-          <Column size={1} theme={{justifyContent: 'center', flexWrap: 'wrap'}}>
-            <Checkbox
-              title={'Enable ability to give tips on ‘Like’ posts'}
-              value={{'yt': true, 'tw': false, 'inst': false}}
-              multiple
-            >
-              <div data-key='yt'>YouTube</div>
-              <div data-key='tw'>Twitter</div>
-              <div data-key='inst'>Instagram</div>
-            </Checkbox>
-          </Column>
-        </Grid>
-    </>
+    return (
+      <>
+        <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>
+            <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Checkbox
+                title={'Enable ability to give tips on ‘Like’ posts'}
+                value={{ 'yt': true, 'tw': false, 'inst': false }}
+                multiple={true}
+              >
+                <div data-key='yt'>YouTube</div>
+                <div data-key='tw'>Twitter</div>
+                <div data-key='inst'>Instagram</div>
+              </Checkbox>
+            </Column>
+          </Grid>
+      </>
+    )
+  }
+
+  onMainToggle = () => {
+    this.setState({ mainToggle: !this.state.mainToggle })
+  }
+
+  onContributeToggle = () => {
+    this.setState({ contributeToggle: !this.state.contributeToggle })
+  }
+
+  onContributeModalClose = () => {
+    this.setState({ modalContribute: false })
+  }
+
+  onContributeModalOpen = () => {
+    this.setState({ modalContribute: true })
+  }
+
+  onBackupTabChange = (tabId: TabsType) => {
+    this.setState({ modalBackupActive: tabId })
+  }
+
+  onBackupModalClose = () => {
+    this.setState({ modalBackup: false })
+  }
+
+  onBackupModalOpen = () => {
+    this.setState({ modalBackup: true })
   }
 
   render () {
@@ -234,41 +273,39 @@ class Settings extends React.PureComponent<{}, State> {
 
     return (
       <SettingsPage>
-        <Grid columns={3} theme={{gridGap: '32px'}}>
-          <Column size={2} theme={{justifyContent: 'center', flexWrap: 'wrap'}}>
+        <Grid columns={3} theme={{ gridGap: '32px' }}>
+          <Column size={2} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <MainToggle
-              onToggle={() => {this.setState({mainToggle: !this.state.mainToggle})}}
+              onToggle={this.onMainToggle}
               enabled={this.state.mainToggle}
             />
             <Box
               title={locale.adsTitle}
-              theme={{titleColor: '#C12D7C'}}
+              theme={{ titleColor: '#C12D7C' }}
               description={locale.adsDesc}
               toggle={false}
               disabledContent={this.adsDisabled()}
-            >
-            </Box>
+            />
             <Box
               title={locale.contributionTitle}
-              theme={{titleColor: '#9F22A1'}}
+              theme={{ titleColor: '#9F22A1' }}
               description={locale.contributionDesc}
-              toggle
+              toggle={true}
               checked={this.state.contributeToggle}
               settingsChild={this.contributeSettingsChild()}
               disabledContent={this.contributeDisabled()}
-              onToggle={() => {this.setState({contributeToggle: !this.state.contributeToggle})}}
+              onToggle={this.onContributeToggle}
             >
               {
                 this.state.modalContribute
                 ? <ModalContribute
-                    rows={this.contributeRows}
-                    onClose={() => self.setState({modalContribute: false})}
-                  />
+                  rows={this.contributeRows}
+                  onClose={this.onContributeModalClose.bind(self)}
+                />
                 : null
               }
               <List title={locale.contributionMonthly}>
                 <Select
-                  onChange={() => false}
                   theme={{
                     border: 'none',
                     padding: '0 20px 0 0',
@@ -281,20 +318,23 @@ class Settings extends React.PureComponent<{}, State> {
                   <div data-value='100'><Tokens value={100} converted={'40'}/></div>
                 </Select>
               </List>
-              <List title={locale.contributionNextDate} theme={{
-                'font-size': '16px',
-                'font-weight': '600',
-                'text-align': 'right',
-                'border-radius': '6px',
-                color: '#4b4c5c',
-                background: '#e9f0ff',
-                display: 'inline-block',
-                padding: '9px 10px 9px 13px'
-              }}>
+              <List
+                title={locale.contributionNextDate}
+                theme={{
+                  'font-size': '16px',
+                  'font-weight': '600',
+                  'text-align': 'right',
+                  'border-radius': '6px',
+                  color: '#4b4c5c',
+                  background: '#e9f0ff',
+                  display: 'inline-block',
+                  padding: '9px 10px 9px 13px'
+                }}
+              >
                 July 25th
               </List>
               <List title={locale.contributionSites}>
-                Total &nbsp;<Tokens value={55} hideText/>
+                Total &nbsp;<Tokens value={55} hideText={true}/>
               </List>
               <ContributeTable
                 header={[
@@ -304,7 +344,7 @@ class Settings extends React.PureComponent<{}, State> {
                 rows={this.contributeRows}
                 allSites={false}
                 numSites={55}
-                onShowAll={() => self.setState({modalContribute: true})}
+                onShowAll={this.onContributeModalOpen.bind(self)}
                 theme={{
                   headerColor: '#9F22A1'
                 }}
@@ -314,7 +354,7 @@ class Settings extends React.PureComponent<{}, State> {
             </Box>
             <Box
               title={locale.donationTitle}
-              theme={{titleColor: '#696FDC'}}
+              theme={{ titleColor: '#696FDC' }}
               description={locale.donationDesc}
               settingsChild={this.donationSettingsChild()}
             >
@@ -322,11 +362,11 @@ class Settings extends React.PureComponent<{}, State> {
                 <Tokens value={21} converted={7} />
               </List>
               <List title={locale.donationList}>
-                Total &nbsp;<Tokens value={3} hideText/>
+                Total &nbsp;<Tokens value={3} hideText={true}/>
               </List>
               <DonationTable
                 rows={this.donationRows}
-                allItems
+                allItems={true}
                 theme={{
                   headerColor: '#696FDC'
                 }}
@@ -341,14 +381,14 @@ class Settings extends React.PureComponent<{}, State> {
                 ? <ModalBackupRestore
                   activeTabId={this.state.modalBackupActive}
                   recoveryKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
-                  onTabChange={(tabId: TabsType) => self.setState({ modalBackupActive: tabId })}
-                  onClose={() => self.setState({modalBackup: false})}
-                  onCopy={() => {}}
-                  onPrint={() => {}}
-                  onSaveFile={() => {}}
-                  onRestore={() => {}}
-                  onImport={() => {}}
-                  />
+                  onTabChange={this.onBackupTabChange.bind(self)}
+                  onClose={this.onBackupModalClose.bind(self)}
+                  onCopy={doNothing}
+                  onPrint={doNothing}
+                  onSaveFile={doNothing}
+                  onRestore={doNothing}
+                  onImport={doNothing}
+                />
                 : null
               }
             <Panel
@@ -357,19 +397,19 @@ class Settings extends React.PureComponent<{}, State> {
               actions={[
                 {
                   name: 'Add funds',
-                  action: () => {},
+                  action: doNothing,
                   icon: wallet
                 },
                 {
                   name: 'Withdraw Funds',
-                  action: () => {},
+                  action: doNothing,
                   icon: funds
                 }
               ]}
-              onSettingsClick={() => self.setState({modalBackup: true})}
-              onActivityClick={() => {}}
-              showCopy
-              showSecActions
+              onSettingsClick={this.onBackupModalOpen}
+              onActivityClick={doNothing}
+              showCopy={true}
+              showSecActions={true}
               grants={object('Claimed grants', [
                 {
                   tokens: 8,
@@ -388,7 +428,7 @@ class Settings extends React.PureComponent<{}, State> {
             >
               {
                 showNotification
-                ? <Alert type={'error'} theme={{position: 'absolute'}}>
+                ? <Alert type={'error'} theme={{ position: 'absolute' }}>
                     <b>Funds received!</b> 25 tokens are added to your wallet successfully.
                 </Alert>
                 : null
@@ -399,11 +439,11 @@ class Settings extends React.PureComponent<{}, State> {
               {
                 content === 'summary'
                 ? <PanelSummary
-                  grant={{color: '#C12D7C', tokens: 10, converted: 0.25}}
-                  ads={{color: '#C12D7C', tokens: 10, converted: 0.25}}
-                  contribute={{color: '#9752CB', tokens: 10, converted: 0.25}}
-                  donation={{color: '#4C54D2', tokens: 2, converted: 0.25}}
-                  tips={{color: '#4C54D2', tokens: 19, converted: 5.25}}
+                  grant={{ color: '#C12D7C', tokens: 10, converted: 0.25 }}
+                  ads={{ color: '#C12D7C', tokens: 10, converted: 0.25 }}
+                  contribute={{ color: '#9752CB', tokens: 10, converted: 0.25 }}
+                  donation={{ color: '#4C54D2', tokens: 2, converted: 0.25 }}
+                  tips={{ color: '#4C54D2', tokens: 19, converted: 5.25 }}
                   grants={object('Active grants',[
                     {
                       id: '1',
@@ -416,7 +456,7 @@ class Settings extends React.PureComponent<{}, State> {
                       converted: 0.50
                     }
                   ])}
-                  onActivity={()=>{}}
+                  onActivity={doNothing}
                 />
                 : null
               }

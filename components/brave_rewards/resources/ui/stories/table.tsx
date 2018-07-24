@@ -18,69 +18,72 @@ const buzz = require('../../assets/img/buzz.jpg')
 const guardian = require('../../assets/img/guardian.jpg')
 const eich = require('../../assets/img/eich.jpg')
 
-
 addDecorator(withKnobs)
 
 // Globally adapt the story visualizer for this story
 addDecorator(BetterPageVisualizer)
 
+const doNothing = () => {
+  console.log('nothing')
+}
+
 storiesOf('Feature Components/Rewards/Table', module)
   .add('Contribution',() => {
-      const header: string[] = [
-        'Site visited',
-        'Attentions'
-      ]
+    const header: string[] = [
+      'Site visited',
+      'Attentions'
+    ]
 
-      const rows: ContributeDetailRow[] = [
-        {
-          profile: {
-            name: 'Bart Baker',
-            verified: true,
-            provider: 'youtube',
-            src: bart
-          },
-          attention: 40,
-          onRemove: () => {}
+    const rows: ContributeDetailRow[] = [
+      {
+        profile: {
+          name: 'Bart Baker',
+          verified: true,
+          provider: 'youtube',
+          src: bart
         },
-        {
-          profile: {
-            name: 'duckduckgo.com',
-            verified: true,
-            src: ddgo
-          },
-          attention: 20,
-          onRemove: () => {
-          }
+        attention: 40,
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          name: 'duckduckgo.com',
+          verified: true,
+          src: ddgo
         },
-        {
-          profile: {
-            name: 'buzzfeed.com',
-            verified: false,
-            src: buzz
-          },
-          attention: 10,
-          onRemove: () => {}
+        attention: 20,
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          name: 'buzzfeed.com',
+          verified: false,
+          src: buzz
         },
-        {
-          profile: {
-            name: 'theguardian.com',
-            verified: true,
-            src: guardian
-          },
-          attention: 5,
-          onRemove: () => {}
+        attention: 10,
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          name: 'theguardian.com',
+          verified: true,
+          src: guardian
         },
-        {
-          profile: {
-            name: 'wikipedia.org',
-            verified: false,
-            src: wiki
-          },
-          attention: 4,
-          onRemove: () => {}
-        }
-      ]
-      return <div style={{width: '595px'}}>
+        attention: 5,
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          name: 'wikipedia.org',
+          verified: false,
+          src: wiki
+        },
+        attention: 4,
+        onRemove: doNothing
+      }
+    ]
+    return (
+      <div style={{ width: '595px' }}>
         <ContributeTable
           header={object('Header', header)}
           rows={object('Rows', rows)}
@@ -90,52 +93,54 @@ storiesOf('Feature Components/Rewards/Table', module)
           Please visit some sites
         </ContributeTable>
       </div>
-    })
-    .add('Donation',() => {
-      const rows: DonationDetailRow[] = [
-        {
-          profile: {
-            name: 'Bart Baker',
-            verified: true,
-            provider: 'youtube',
-            src: bart
-          },
-          type: 'recurring',
-          contribute: {
-            tokens: 2,
-            converted: 0.2
-          },
-          onRemove: () => {}
+    )
+  })
+  .add('Donation',() => {
+    const rows: DonationDetailRow[] = [
+      {
+        profile: {
+          name: 'Bart Baker',
+          verified: true,
+          provider: 'youtube',
+          src: bart
         },
-        {
-          profile: {
-            verified: false,
-            name: 'theguardian.com',
-            src: guardian
-          },
-          type: 'donation',
-          contribute: {
-            tokens: 12,
-            converted: 6.2
-          },
-          text: 'May 7',
+        type: 'recurring',
+        contribute: {
+          tokens: 2,
+          converted: 0.2
         },
-        {
-          profile: {
-            verified: false,
-            name: 'BrendanEich',
-            provider: 'twitter',
-            src: eich
-          },
-          type: 'tip',
-          contribute: {
-            tokens: 7,
-            converted: 3.2
-          },
-          text: 'May 2',
-        }
-      ]
-      return <div style={{width: '595px'}}>
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          verified: false,
+          name: 'theguardian.com',
+          src: guardian
+        },
+        type: 'donation',
+        contribute: {
+          tokens: 12,
+          converted: 6.2
+        },
+        text: 'May 7'
+      },
+      {
+        profile: {
+          verified: false,
+          name: 'BrendanEich',
+          provider: 'twitter',
+          src: eich
+        },
+        type: 'tip',
+        contribute: {
+          tokens: 7,
+          converted: 3.2
+        },
+        text: 'May 2'
+      }
+    ]
+    return (
+      <div style={{ width: '595px' }}>
         <DonationTable
           rows={object('Rows', rows)}
           allItems={boolean('Are this all items?', false)}
@@ -144,4 +149,5 @@ storiesOf('Feature Components/Rewards/Table', module)
           Please visit some sites
         </DonationTable>
       </div>
-    })
+    )
+  })

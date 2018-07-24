@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { withState } from '@dump247/storybook-state';
+import { withState } from '@dump247/storybook-state'
 import { storiesOf, addDecorator } from '@storybook/react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 import { BetterPageVisualizer } from '../../storyUtil'
@@ -24,24 +24,31 @@ addDecorator(withKnobs)
 // Globally adapt the story visualizer for this story
 addDecorator(BetterPageVisualizer)
 
+const doNothing = () => {
+  console.log('nothing')
+}
+
 storiesOf('Feature Components/Rewards/Modal', module)
   .add('Backup/Restore', withState({ tabId: 'backup' }, (store) => {
-    return <div style={{maxWidth: '900px', background: '#fff', padding: '30px'}}>
-      <ModalBackupRestore
-        activeTabId={store.state.tabId as TabsType}
-        recoveryKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
-        error={text('Error', '')}
-        onTabChange={(tabId: string) => (
-          store.set({ tabId })
-        )}
-        onClose={() => {}}
-        onCopy={() => {}}
-        onPrint={() => {}}
-        onSaveFile={() => {}}
-        onRestore={() => {}}
-        onImport={() => {}}
-      />
-    </div>
+    const onTabChange = (tabId: string) => {
+      store.set({ tabId })
+    }
+    return (
+      <div style={{ maxWidth: '900px', background: '#fff', padding: '30px' }}>
+        <ModalBackupRestore
+          activeTabId={store.state.tabId as TabsType}
+          recoveryKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
+          error={text('Error', '')}
+          onTabChange={onTabChange}
+          onClose={doNothing}
+          onCopy={doNothing}
+          onPrint={doNothing}
+          onSaveFile={doNothing}
+          onRestore={doNothing}
+          onImport={doNothing}
+        />
+      </div>
+    )
   }))
   .add('Contribute', () => {
     const rows: DetailRow[] = [
@@ -53,7 +60,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           src: bart
         },
         attention: 40,
-        onRemove: () => {}
+        onRemove: doNothing
       },
       {
         profile: {
@@ -62,8 +69,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           src: ddgo
         },
         attention: 20,
-        onRemove: () => {
-        }
+        onRemove: doNothing
       },
       {
         profile: {
@@ -72,7 +78,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           src: buzz
         },
         attention: 10,
-        onRemove: () => {}
+        onRemove: doNothing
       },
       {
         profile: {
@@ -81,7 +87,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           src: guardian
         },
         attention: 5,
-        onRemove: () => {}
+        onRemove: doNothing
       },
       {
         profile: {
@@ -90,12 +96,14 @@ storiesOf('Feature Components/Rewards/Modal', module)
           src: wiki
         },
         attention: 4,
-        onRemove: () => {}
+        onRemove: doNothing
       }
     ]
 
-    return <ModalContribute
-      rows={rows}
-      onClose={() => {}}
-    />
+    return (
+      <ModalContribute
+        rows={rows}
+        onClose={doNothing}
+      />
+    )
   })

@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { withState } from '@dump247/storybook-state';
+import { withState } from '@dump247/storybook-state'
 import { storiesOf, addDecorator } from '@storybook/react'
 import { withKnobs, boolean, text, object, number } from '@storybook/addon-knobs'
 import { BetterPageVisualizer } from '../../storyUtil'
@@ -18,9 +18,9 @@ const siteScreen = require('../../assets/img/ddgo_site.png')
 const tipScreen = require('../../assets/img/tip_site.jpg')
 
 const donationAmount = [
-  {tokens: 1, converted: 0.3, selected: false},
-  {tokens: 5, converted: 1.5, selected: false},
-  {tokens: 10, converted: 3, selected: false}
+  { tokens: 1, converted: 0.3, selected: false },
+  { tokens: 5, converted: 1.5, selected: false },
+  { tokens: 10, converted: 3, selected: false }
 ]
 
 addDecorator(withKnobs)
@@ -30,8 +30,20 @@ addDecorator(BetterPageVisualizer)
 
 storiesOf('Feature Components/Rewards/Concepts', module)
   .add('Settings', () => <Settings />)
-  .add('Site Banner', withState({donationAmount}, (store) => {
-      return <div style={{background: `url(${siteScreen}) no-repeat top center / cover`, width: '100%', height: '100vh'}}>
+  .add('Site Banner', withState({ donationAmount }, (store) => {
+    const onDonate = () => {
+      console.log('onDonate')
+    }
+    const onAmountSelection = (tokens: number) => {
+      const list = store.state.donationAmount.map((item) => {
+        item.selected = item.tokens === tokens
+        return item
+      })
+      store.set({ donationAmount: list })
+    }
+
+    return (
+      <div style={{ background: `url(${siteScreen}) no-repeat top center / cover`, width: '100%', height: '100vh' }}>
         <SiteBanner
           domain={text('Domain', 'duckduckgo.com')}
           title={text('Title', '')}
@@ -40,15 +52,9 @@ storiesOf('Feature Components/Rewards/Concepts', module)
           bgImage={boolean('Show bg image', false) ? siteBgImage : null}
           logo={boolean('Show logo', false) ? siteBgLogo : null}
           donationAmounts={object('Donations', store.state.donationAmount)}
-          theme={{logoBgColor: text('Logo bg color', '')}}
-          onDonate={() => {}}
-          onAmountSelection={(tokens: number) => {
-            const list = store.state.donationAmount.map((item) => {
-              item.selected = item.tokens === tokens
-              return item
-            })
-            store.set({donationAmount: list})
-          }}
+          theme={{ logoBgColor: text('Logo bg color', '') }}
+          onDonate={onDonate}
+          onAmountSelection={onAmountSelection}
           social={[
             {
               type: 'twitter',
@@ -66,30 +72,43 @@ storiesOf('Feature Components/Rewards/Concepts', module)
               handler: 'duckduckgo'
             }
           ]}
-          onClose={() => {}}
         />
       </div>
-    }))
-    .add('Tip', withState({donationAmount, allow: false}, (store) => {
-      return <div style={{background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative'}}>
-        <div style={{position: 'absolute', bottom: '185px', left: '330px'}}>
+    )
+  }))
+    .add('Tip', withState({ donationAmount, allow: false }, (store) => {
+      const onDonate = () => {
+        console.log('onDonate')
+      }
+      const onClose = () => {
+        console.log('onClose')
+      }
+      const onAllow = (allow: boolean) => {
+        store.set({ allow })
+      }
+      const onAmountSelection = (tokens: number) => {
+        const list = store.state.donationAmount.map((item) => {
+          item.selected = item.tokens === tokens
+          return item
+        })
+        store.set({ donationAmount: list })
+      }
+
+      return (
+        <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
+        <div style={{ position: 'absolute', bottom: '185px', left: '330px' }}>
           <Tip
             donationAmounts={object('Donations', store.state.donationAmount)}
             title={text('Title', 'Bart Baker')}
             allow={boolean('Allow tips', store.state.allow)}
             provider={text('Provider', 'YouTube')}
             balance={5}
-            onDonate={() => {}}
-            onClose={() => {}}
-            onAllow={(allow: boolean) => store.set({allow})}
-            onAmountSelection={(tokens: number) => {
-              const list = store.state.donationAmount.map((item) => {
-                item.selected = item.tokens === tokens
-                return item
-              })
-              store.set({donationAmount: list})
-            }}
+            onDonate={onDonate}
+            onClose={onClose}
+            onAllow={onAllow}
+            onAmountSelection={onAmountSelection}
           />
         </div>
       </div>
+      )
     }))
