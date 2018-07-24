@@ -72,40 +72,6 @@ class NavigationTest: BaseTestCase {
         waitForValueContains(app.textFields["url"], value: website_2["value"]!)
     }
 
-    func testTapSignInShowsFxAFromTour() {
-        // Open FxAccount from tour option in settings menu and go throughout all the screens there
-        navigator.goto(Intro_FxASignin)
-        checkFirefoxSyncScreenShown()
-
-        // Go back to NewTabScreen
-        navigator.goto(HomePanelsScreen)
-        waitforExistence(app.buttons["HomePanels.TopSites"])
-    }
-
-    func testTapSigninShowsFxAFromSettings() {
-        navigator.goto(SettingsScreen)
-        // Open FxAccount from settings menu and check the Sign in to Firefox scren
-        let signInToFirefoxStaticText = app.tables["AppSettingsTableViewController.tableView"].staticTexts["Sign in to Sync"]
-        signInToFirefoxStaticText.tap()
-        checkFirefoxSyncScreenShown()
-
-        // After that it is possible to go back to Settings
-        let settingsButton = app.navigationBars["Client.FxAContentView"].buttons["Settings"]
-        settingsButton.tap()
-    }
-
-    func testTapSignInShowsFxAFromRemoteTabPanel() {
-        navigator.goto(HomePanel_TopSites)
-        // Open FxAccount from remote tab panel and check the Sign in to Firefox scren
-        navigator.goto(HomePanel_History)
-        XCTAssertTrue(app.tables["History List"].staticTexts["Synced Devices"].isEnabled)
-        app.tables["History List"].staticTexts["Synced Devices"].tap()
-        app.tables.buttons["Sign in to Sync"].tap()
-        checkFirefoxSyncScreenShown()
-        app.navigationBars["Client.FxAContentView"].buttons["Done"].tap()
-        navigator.nowAt(HomePanel_History)
-    }
-
     private func checkFirefoxSyncScreenShown() {
         waitforExistence(app.webViews.staticTexts["Sign in"])
         XCTAssertTrue(app.webViews.textFields["Email"].exists)
