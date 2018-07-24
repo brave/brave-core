@@ -105,8 +105,12 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 #pragma mark - SparkleGlue
 
 + (instancetype)sharedSparkleGlue {
-  static SparkleGlue* shared;
-  if (brave::UpdateEnabled() && shared == nil) {
+  static bool sTriedCreatingSharedSparkleGlue = false;
+  static SparkleGlue* shared = nil;
+
+  if (brave::UpdateEnabled() && !sTriedCreatingSharedSparkleGlue) {
+    sTriedCreatingSharedSparkleGlue = true;
+
     shared = [[SparkleGlue alloc] init];
     [shared loadParameters];
     if (![shared loadSparkleFramework]) {
