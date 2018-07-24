@@ -16,9 +16,7 @@
 - (void)setAutomaticallyChecksForUpdates:(BOOL)enable;
 - (void)setAutomaticallyDownloadsUpdates:(BOOL)enable;
 - (void)checkForUpdatesInBackground;
-- (void)installUpdatesIfAvailable;
-- (void)setUpdateCheckInterval:(int)interval;
-- (void)checkForUpdatesInBackground;
+- (void)setUpdateCheckInterval:(NSTimeInterval)interval;
 
 @end
 

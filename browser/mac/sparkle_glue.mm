@@ -10,30 +10,96 @@
 
 #include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
+#import "base/mac/scoped_nsautorelease_pool.h"
+#import "base/mac/scoped_nsobject.h"
+#include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/task_scheduler/post_task.h"
 #import "brave/browser/mac/su_updater.h"
 #include "brave/browser/update_util.h"
 #include "chrome/common/channel_info.h"
+#include "chrome/common/chrome_constants.h"
 
 namespace {
+
+NSString* GetVersionFromAppcastItem(id item) {
+  return [item performSelector:@selector(displayVersionString)];
+}
 
 std::string GetDescriptionFromAppcastItem(id item) {
   NSString* description =
       [NSString stringWithFormat:@"AppcastItem(Date: %@, Version: %@)",
           [item performSelector:@selector(dateString)],
-          [item performSelector:@selector(versionString)]];
+          GetVersionFromAppcastItem(item)];
   return [description UTF8String];
 }
 
+// Adaptor for scheduling an Objective-C method call in TaskScheduler.
+class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
+ public:
+
+  // Call |sel| on |target| with |arg| in a WorkerPool thread.
+  // |target| and |arg| are retained, |arg| may be |nil|.
+  static void PostPerform(id target, SEL sel, id arg) {
+    DCHECK(target);
+    DCHECK(sel);
+
+    scoped_refptr<PerformBridge> op = new PerformBridge(target, sel, arg);
+    base::PostTaskWithTraits(FROM_HERE,
+                             {base::MayBlock(), base::TaskPriority::BACKGROUND,
+                              base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+                             base::Bind(&PerformBridge::Run, op.get()));
+  }
+
+  // Convenience for the no-argument case.
+  static void PostPerform(id target, SEL sel) {
+    PostPerform(target, sel, nil);
+  }
+
+ private:
+  // Allow RefCountedThreadSafe<> to delete.
+  friend class base::RefCountedThreadSafe<PerformBridge>;
+
+  PerformBridge(id target, SEL sel, id arg)
+      : target_([target retain]),
+        sel_(sel),
+        arg_([arg retain]) {
+  }
+
+  ~PerformBridge() {}
+
+  // Happens on a WorkerPool thread.
+  void Run() {
+    base::mac::ScopedNSAutoreleasePool pool;
+    [target_ performSelector:sel_ withObject:arg_];
+  }
+
+  base::scoped_nsobject<id> target_;
+  SEL sel_;
+  base::scoped_nsobject<id> arg_;
+};
+
 }  // namespace
+
+NSString* const kBraveAutoupdateStatusNotification = @"AutoupdateStatusNotification";
+NSString* const kBraveAutoupdateStatusStatus = @"status";
+NSString* const kBraveAutoupdateStatusVersion = @"version";
+NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 
 @implementation SparkleGlue
 {
   SUUpdater* su_updater_;
+
   BOOL registered_;
+  BOOL updateSuccessfullyInstalled_;
+
   NSString* appPath_;
   NSString* url_;
+  NSString* new_version_;
+
   std::string channel_;
+  // The most recent kBraveAutoupdateStatusNotification notification posted.
+  base::scoped_nsobject<NSNotification> recentNotification_;
 }
 
 #pragma mark - SparkleGlue
@@ -65,6 +131,7 @@ std::string GetDescriptionFromAppcastItem(id item) {
 - (void)dealloc {
   [appPath_ release];
   [url_ release];
+  [new_version_ release];
 
   [super dealloc];
 }
@@ -96,28 +163,83 @@ std::string GetDescriptionFromAppcastItem(id item) {
   DCHECK(brave::UpdateEnabled());
   DCHECK(su_updater_);
 
+  [self updateStatus:kAutoupdateRegistering version:nil error:nil];
+
   registered_ = true;
 
   [su_updater_ setDelegate:self];
+
+  // Background update check interval.
+  constexpr NSTimeInterval kBraveUpdateCheckIntervalInSec = 3 * 60 * 60;
+  [su_updater_ setUpdateCheckInterval:kBraveUpdateCheckIntervalInSec];
   [su_updater_ setAutomaticallyChecksForUpdates:YES];
   [su_updater_ setAutomaticallyDownloadsUpdates:YES];
 
-  // Background update check interval.
-  constexpr int kBraveUpdateCheckIntervalInSec = 60 * 60;
-  [su_updater_ setUpdateCheckInterval:kBraveUpdateCheckIntervalInSec];
+  [self updateStatus:kAutoupdateRegistered version:nil error:nil];
+}
 
-  // Start background update.
-  [su_updater_ checkForUpdatesInBackground];
+- (NSString*)appInfoPlistPath {
+  // NSBundle ought to have a way to access this path directly, but it
+  // doesn't.
+  return [[appPath_ stringByAppendingPathComponent:@"Contents"]
+             stringByAppendingPathComponent:@"Info.plist"];
+}
+
+// Returns the version of the currently-installed application on disk.
+// If not, returns running version.
+- (NSString*)currentlyInstalledVersion {
+  // We don't know currently installed version from property list because
+  // sparkle updates it when relaunching.
+  // So, caching version when new candidate is found and use it.
+  if (updateSuccessfullyInstalled_)
+    return new_version_;
+
+  NSString* appInfoPlistPath = [self appInfoPlistPath];
+  NSDictionary* infoPlist =
+      [NSDictionary dictionaryWithContentsOfFile:appInfoPlistPath];
+  return base::mac::ObjCCast<NSString>(
+      [infoPlist objectForKey:@"CFBundleShortVersionString"]);
 }
 
 - (void)checkForUpdates {
   DCHECK(registered_);
-  [su_updater_ checkForUpdates:nil];
+
+  if ([self asyncOperationPending]) {
+    // Update check already in process; return without doing anything.
+    return;
+  }
+
+  [self updateStatus:kAutoupdateChecking version:nil error:nil];
+
+  [su_updater_ checkForUpdatesInBackground];
 }
 
 - (void)checkForUpdatesInBackground {
   DCHECK(registered_);
   [su_updater_ checkForUpdatesInBackground];
+}
+
+- (void)updateStatus:(AutoupdateStatus)status
+             version:(NSString*)version
+               error:(NSString*)error {
+  NSNumber* statusNumber = [NSNumber numberWithInt:status];
+  NSMutableDictionary* dictionary =
+      [NSMutableDictionary dictionaryWithObject:statusNumber
+                                         forKey:kBraveAutoupdateStatusStatus];
+  if ([version length]) {
+    [dictionary setObject:version forKey:kBraveAutoupdateStatusVersion];
+  }
+  if ([error length]) {
+    [dictionary setObject:error forKey:kBraveAutoupdateStatusErrorMessages];
+  }
+
+  NSNotification* notification =
+      [NSNotification notificationWithName:kBraveAutoupdateStatusNotification
+                                    object:self
+                                  userInfo:dictionary];
+  recentNotification_.reset([notification retain]);
+
+  [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 - (BOOL)isOnReadOnlyFilesystem {
@@ -160,19 +282,96 @@ std::string GetDescriptionFromAppcastItem(id item) {
   return [base::mac::OuterBundle() infoDictionary];
 }
 
+- (AutoupdateStatus)recentStatus {
+  NSDictionary* dictionary = [recentNotification_ userInfo];
+  NSNumber* status = base::mac::ObjCCastStrict<NSNumber>(
+      [dictionary objectForKey:kBraveAutoupdateStatusStatus]);
+  return static_cast<AutoupdateStatus>([status intValue]);
+}
+
+- (NSNotification*)recentNotification {
+  return [[recentNotification_ retain] autorelease];
+}
+
+- (BOOL)asyncOperationPending {
+  AutoupdateStatus status = [self recentStatus];
+  return status == kAutoupdateRegistering ||
+         status == kAutoupdateChecking ||
+         status == kAutoupdateInstalling;
+}
+
+- (void)determineUpdateStatusAsync {
+  DCHECK([NSThread isMainThread]);
+
+  PerformBridge::PostPerform(self, @selector(determineUpdateStatus));
+}
+
+// Runs on a thread managed by WorkerPool.
+- (void)determineUpdateStatus {
+  DCHECK(![NSThread isMainThread]);
+
+  NSString* version = [self currentlyInstalledVersion];
+
+  [self performSelectorOnMainThread:@selector(determineUpdateStatusForVersion:)
+                         withObject:version
+                      waitUntilDone:NO];
+}
+
+- (void)determineUpdateStatusForVersion:(NSString*)version {
+  DCHECK([NSThread isMainThread]);
+
+  AutoupdateStatus status;
+  if (updateSuccessfullyInstalled_) {
+    // If an update was successfully installed and this object saw it happen,
+    // then don't even bother comparing versions.
+    status = kAutoupdateInstalled;
+  } else {
+    NSString* currentVersion =
+        [NSString stringWithUTF8String:chrome::kChromeVersion];
+    if (!version) {
+      // If the version on disk could not be determined, assume that
+      // whatever's running is current.
+      version = currentVersion;
+      status = kAutoupdateCurrent;
+    } else if ([version isEqualToString:currentVersion]) {
+      status = kAutoupdateCurrent;
+    } else {
+      // If the version on disk doesn't match what's currently running, an
+      // update must have been applied in the background, without this app's
+      // direct participation.  Leave updateSuccessfullyInstalled_ alone
+      // because there's no direct knowledge of what actually happened.
+      status = kAutoupdateInstalled;
+    }
+  }
+
+  [self updateStatus:status version:version error:nil];
+}
+
 #pragma mark - SUUpdaterDelegate
 
 - (void)updater:(id)updater didFinishLoadingAppcast:(id)appcast {
   VLOG(0) << "brave update: did finish loading appcast";
+
+  [self updateStatus:kAutoupdateChecking version:nil error:nil];
 }
 
 - (void)updater:(id)updater didFindValidUpdate:(id)item {
-  VLOG(0) << "brave update: did finish valid update with " +
+  VLOG(0) << "brave update: did find valid update with " +
              GetDescriptionFromAppcastItem(item);
+
+  // Caching update candidate version.
+  // See the comments of |currentlyInstalledVersion|.
+  new_version_ = GetVersionFromAppcastItem(item);
+
+  [self updateStatus:kAutoupdateAvailable
+             version:GetVersionFromAppcastItem(item)
+               error:nil];
 }
 
 - (void)updaterDidNotFindUpdate:(id)updater {
   VLOG(0) << "brave update: did not find update";
+
+  [self determineUpdateStatusAsync];
 }
 
 - (void)updater:(id)updater
@@ -180,6 +379,9 @@ std::string GetDescriptionFromAppcastItem(id item) {
            withRequest:(NSMutableURLRequest *)request {
   VLOG(0) << "brave update: willDownloadUpdate with " +
              GetDescriptionFromAppcastItem(item);
+  [self updateStatus:kAutoupdateInstalling
+             version:nil
+               error:nil];
 }
 
 - (void)updater:(id)updater
@@ -188,23 +390,24 @@ std::string GetDescriptionFromAppcastItem(id item) {
   VLOG(0) << "brave update: failed to download update with " +
              GetDescriptionFromAppcastItem(item) +
              " with error - " + [[error description] UTF8String];
+  [self updateStatus:kAutoupdateInstallFailed
+             version:nil
+               error:[error localizedDescription]];
 }
 
 - (void)userDidCancelDownload:(id)updater {
   VLOG(0) << "brave update: user did cancel download";
+  [self updateStatus:kAutoupdateInstallFailed
+               version:nil
+                 error:nil];
 }
 
 - (void)updater:(id)updater willInstallUpdate:(id)item {
   VLOG(0) << "brave update: will install update with " +
              GetDescriptionFromAppcastItem(item);
-}
-
-- (void)updaterWillRelaunchApplication:(id)updater {
-  VLOG(0) << "brave update: will relaunch application";
-}
-
-- (void)updaterDidRelaunchApplication:(id)updater {
-  VLOG(0) << "brave update: did relaunch application";
+  [self updateStatus:kAutoupdateInstalling
+             version:nil
+               error:nil];
 }
 
 - (void)updater:(id)updater
@@ -212,14 +415,58 @@ std::string GetDescriptionFromAppcastItem(id item) {
     immediateInstallationInvocation:(NSInvocation *)invocation {
   VLOG(0) << "brave update: will install update on quit with " +
              GetDescriptionFromAppcastItem(item);
-}
 
-- (void)updater:(id)updater didCancelInstallUpdateOnQuit:(id)item {
-  VLOG(0) << "brave update: did cancel install update on quit with " +
-             GetDescriptionFromAppcastItem(item);
+  updateSuccessfullyInstalled_ = YES;
+
+  [self determineUpdateStatusAsync];
 }
 
 - (void)updater:(id)updater didAbortWithError:(NSError *)error {
-  VLOG(0) << [[error description] UTF8String];
+  VLOG(0) << "brave update: did abort with error: " +
+             base::SysNSStringToUTF8([error localizedDescription]);
+  /* Error code. See SUErrors.h
+    // Appcast phase errors.
+    SUAppcastParseError = 1000,
+    SUNoUpdateError = 1001,
+    SUAppcastError = 1002,
+    SURunningFromDiskImageError = 1003,
+
+    // Download phase errors.
+    SUTemporaryDirectoryError = 2000,
+    SUDownloadError = 2001,
+
+    // Extraction phase errors.
+    SUUnarchivingError = 3000,
+    SUSignatureError = 3001,
+
+    // Installation phase errors.
+    SUFileCopyFailure = 4000,
+    SUAuthenticationFailure = 4001,
+    SUMissingUpdateError = 4002,
+    SUMissingInstallerToolError = 4003,
+    SURelaunchError = 4004,
+    SUInstallationError = 4005,
+    SUDowngradeError = 4006,
+    SUInstallationCancelledError = 4007,
+
+    // System phase errors
+    SUSystemPowerOffError = 5000
+  */
+  const int error_code = [error code];
+  // SUNoUpdateError. Just return.
+  // Status is updated by updaterDidNotFindUpdate().
+  if (error_code == 1001)
+    return;
+
+  AutoupdateStatus status;
+  // Treats 1XXX errors as checking error and all others are as install failed.
+  if (error_code < 2000)
+    status = kAutoupdateCheckFailed;
+  else
+    status = kAutoupdateInstallFailed;
+
+  [self updateStatus:status
+             version:nil
+               error:[error localizedDescription]];
 }
 @end
