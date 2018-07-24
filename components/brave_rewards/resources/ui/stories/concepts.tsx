@@ -8,6 +8,7 @@ import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean, text, object, number } from '@storybook/addon-knobs'
 
 // Components
+import RewardsWelcome from './welcome'
 import Settings from './settings/settings'
 import { SiteBanner, Tip } from '../../../src/features/rewards'
 
@@ -22,9 +23,20 @@ const donationAmount = [
   { tokens: 10, converted: 3, selected: false }
 ]
 
+const dummyOptInAction = () => {
+  console.log(dummyOptInAction)
+}
+
 storiesOf('Feature Components/Rewards/Concepts', module)
   .addDecorator(withKnobs)
   .add('Settings Page', () => <Settings />)
+  .add('RewardsWelcome', () => {
+    return (
+      <RewardsWelcome
+        optInAction={dummyOptInAction}
+      />
+    )
+  })
   .add('Site Banner', withState({ donationAmount }, (store) => {
     const onDonate = () => {
       console.log('onDonate')

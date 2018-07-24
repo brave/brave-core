@@ -8,6 +8,7 @@ export const StyledWrapper = styled.div`
   background: #f2f4f7;
   min-height: 100vh;
   width: 100%;
+  font-family: "Poppins", sans-serif
 ` as any
 
 export const StyleHeader = styled.div`

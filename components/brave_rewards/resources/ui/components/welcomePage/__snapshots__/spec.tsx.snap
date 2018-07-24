@@ -1,0 +1,461 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
+.c5 {
+  text-align: center;
+  min-height: 610px;
+  padding: 60px 0px 25px 0px;
+  border-top-left-radius: 35px;
+  border-top-right-radius: 35px;
+  background: linear-gradient(#392DD1,#8C41DE);
+  border-bottom-left-radius: 150% 200px;
+  border-bottom-right-radius: 150% 200px;
+}
+
+.c0 {
+  background: #f2f4f7;
+  min-height: 100vh;
+  width: 100%;
+  font-family: "Poppins",sans-serif;
+}
+
+.c1 {
+  background-image: linear-gradient(267deg,#bf14a2,#f73a1c);
+  height: 62px;
+}
+
+.c2 {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.c29 {
+  display: inline-block;
+  overflow: hidden;
+  background: #fff;
+  font-size: 14px;
+  border-radius: 28px;
+  min-width: 235px;
+  font-family: Poppins,sans-serif;
+}
+
+.c30 {
+  text-align: center;
+  box-sizing: border-box;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-transform: uppercase;
+  padding: 21px 15px;
+  background: rgba(251,84,43,0.9);
+  color: #fff;
+}
+
+.c30:hover {
+  background: rgba(251,84,43,1);
+}
+
+.c30:active {
+  background: rgba(251,84,43,0.4);
+}
+
+.c13 {
+  display: inline-block;
+  overflow: hidden;
+  border: 1px solid rgba(184,185,196,0.9);
+  color: rgba(184,185,196,0.9);
+  font-size: 14px;
+  border-radius: 24px;
+  min-width: 116px;
+  padding: 17px 15px;
+  text-align: center;
+  box-sizing: border-box;
+  font-family: Poppins,sans-serif;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 500;
+}
+
+.c13:hover {
+  border-color: rgba(184,185,196,1);
+}
+
+.c13:active {
+  border-color: rgba(184,185,196,0.4);
+}
+
+.c13:hover {
+  color: rgba(184,185,196,1);
+}
+
+.c13:active {
+  color: rgba(184,185,196,0.4);
+}
+
+.c12 {
+  margin: 40px 0px 40px 0px;
+}
+
+.c25 {
+  text-align: center;
+}
+
+.c17 {
+  padding: 15px 0px 40px 0px;
+}
+
+.c19 {
+  margin: 0 auto;
+  max-width: 675px;
+  padding: 40px 0px;
+}
+
+.c4 {
+  display: block;
+}
+
+.c18 {
+  display: block;
+}
+
+.c23 {
+  margin: 20px auto 0px auto;
+  max-width: 1000px;
+}
+
+.c24 {
+  margin: 80px auto 50px auto;
+  max-width: 500px;
+}
+
+.c3 {
+  background: url(test-file-stub) no-repeat top;
+}
+
+.c6 {
+  margin: 0 auto;
+  max-width: 115px;
+}
+
+.c7 {
+  margin: 20px auto 10px auto;
+  width: 115px;
+}
+
+.c16 {
+  margin: 0 auto;
+  color: #999;
+  width: 45px;
+}
+
+.c8 {
+  font-size: 38px;
+  font-weight: 500;
+  color: #FFF;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+  display: inline-block;
+  margin: 14px 0px 10px 0px;
+}
+
+.c26 {
+  color: #5C58C2;
+  font-size: 22px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+  line-height: 28px;
+}
+
+.c20 {
+  color: #222326;
+  font-size: 28px;
+  font-weight: normal;
+  text-align: left;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  line-height: 28px;
+}
+
+.c10 {
+  color: #5BC4FE;
+  font-size: 22px;
+  font-weight: 500;
+  text-align: center;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+  line-height: 28px;
+}
+
+.c9 {
+  display: inline-block;
+  vertical-align: text-top;
+  margin-top: -25px;
+  color: #FFF;
+  font-size: 14px;
+  font-weight: 300;
+  opacity: 0.7;
+}
+
+.c11 {
+  font-size: 16px;
+  max-width: 375px;
+  margin: 0 auto;
+  line-height: 28px;
+  color: #FFF;
+}
+
+.c14 {
+  font-size: 16px;
+  margin: 0px 0px 10px 0px;
+  line-height: 28px;
+  color: #FFF;
+  opacity: 0.5;
+}
+
+.c27 {
+  font-size: 16px;
+  line-height: 28px;
+  color: #484B4E;
+  font-weight: 300;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+}
+
+.c21 {
+  font-size: 16px;
+  line-height: 28px;
+  color: #484B4E;
+  font-weight: 300;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+  max-width: 475px;
+  margin: 0 0 10px;
+}
+
+.c22 {
+  font-weight: 600;
+  font-size: 16px;
+  color: #484B4E;
+  margin: 0px 0px 60px 0px;
+}
+
+.c28 {
+  font-weight: 600;
+}
+
+.c15 {
+  cursor: pointer;
+}
+
+<div
+  className="c0"
+  id="welcome-page"
+>
+  <div
+    className="c1"
+  />
+  <div
+    className="c2"
+  >
+    <div
+      className="c3"
+    >
+      <div
+        className="c4"
+      >
+        <div
+          className="c5"
+          id="rewards-hero"
+        >
+          <div
+            className="c4"
+          >
+            <figure
+              className="c6"
+            >
+              <img
+                className="c7"
+                src=""
+              />
+            </figure>
+            <h1
+              className="c8"
+            >
+              MISSING: braveRewardsTitle
+            </h1>
+            <span
+              className="c9"
+            >
+              TM
+            </span>
+            <h2
+              className="c10"
+            >
+              MISSING: braveRewardsSubTitle
+            </h2>
+            <p
+              className="c11"
+            >
+              MISSING: braveRewardsDesc
+            </p>
+          </div>
+          <section
+            className="c12"
+          >
+            <div
+              className="c13"
+              color="subtle"
+              onClick={undefined}
+              size="large"
+            >
+              MISSING: braveRewardsOptInText
+            </div>
+          </section>
+          <div
+            className="c4"
+          >
+            <p
+              className="c14"
+            >
+              MISSING: braveRewardsTeaser
+            </p>
+            <a
+              className="c15"
+              onClick={[Function]}
+            >
+              <img
+                className="c16"
+                src=""
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <section
+        className="c17"
+      >
+        <section
+          className="c18"
+        >
+          <div
+            className="c19"
+          >
+            <div
+              className="c4"
+            >
+              <h2
+                className="c20"
+              >
+                MISSING: whyBraveRewards
+              </h2>
+              <p
+                className="c21"
+              >
+                MISSING: whyBraveRewardsDesc
+              </p>
+              <p
+                className="c22"
+              >
+                MISSING: whyBraveRewardsBold
+              </p>
+            </div>
+            <div
+              className="c4"
+            >
+              <h2
+                className="c20"
+              >
+                MISSING: whyBraveRewards
+              </h2>
+              <p
+                className="c21"
+              >
+                MISSING: howDoesItWorkDesc
+              </p>
+            </div>
+          </div>
+        </section>
+        <section
+          className="c23"
+        >
+          <section
+            id="rewards-info"
+          />
+        </section>
+        <section
+          className="c24"
+        >
+          <section
+            className="c25"
+          >
+            <h2
+              className="c26"
+            >
+              MISSING: readyToTakePart
+            </h2>
+            <p
+              className="c27"
+            >
+              <span>
+                MISSING: readyToTakePartStart
+              </span>
+              <strong
+                className="c28"
+              >
+                MISSING: readyToTakePartBold
+              </strong>
+              <span>
+                MISSING: readyToTakePartDesc
+              </span>
+            </p>
+            <div
+              className="c29"
+              color="brand"
+              onClick={undefined}
+            >
+              <div
+                className="c30"
+                color="brand"
+                disabled={undefined}
+              >
+                MISSING: readyToTakePartOptInText
+              </div>
+            </div>
+          </section>
+        </section>
+      </section>
+    </div>
+  </div>
+</div>
+`;

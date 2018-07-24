@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Hero tests basic tests matches the snapshot 1`] = `
+.c0 {
+  text-align: center;
+  min-height: 610px;
+  padding: 60px 0px 25px 0px;
+  border-top-left-radius: 35px;
+  border-top-right-radius: 35px;
+  background: linear-gradient(#392DD1,#8C41DE);
+  border-bottom-left-radius: 150% 200px;
+  border-bottom-right-radius: 150% 200px;
+}
+
+<div
+  className="c0"
+  id="test-hero"
+/>
+`;
