@@ -73,7 +73,7 @@ export default class BraveShields extends React.Component<BraveShieldsProps, {}>
           allowScriptOriginsOnce={actions.allowScriptOriginsOnce}
           changeNoScriptSettings={actions.changeNoScriptSettings}
         />
-        <BraveShieldsFooter />
+        <BraveShieldsFooter tabId={shieldsPanelTabData.id} />
       </div>
     )
   }
