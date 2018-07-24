@@ -17,3 +17,20 @@ R_LINE_TO, -6.65f, -3.88f,
 R_LINE_TO, -6.65f, 3.88f,
 R_ARC_TO, 2.56f, 2.56f, 0, 0, 1, -1.29f, 0.35f,
 CLOSE
+
+
+CANVAS_DIMENSIONS, 16,
+MOVE_TO, 4.28f, 15.25f,
+R_CUBIC_TO, -0.22f, 0, -0.44f, -0.06f, -0.64f, -0.17f,
+CUBIC_TO, 3.24f, 14.85f, 3, 14.43f, 3, 13.97f,
+V_LINE_TO, 2.28f,
+CUBIC_TO, 3, 1.57f, 3.57f, 1, 4.28f, 1,
+R_H_LINE_TO, 7.94f,
+CUBIC_TO, 12.93f, 1, 13.5f, 1.57f, 13.5f, 2.28f,
+R_V_LINE_TO, 11.69f,
+R_CUBIC_TO, 0, 0.46f, -0.24f, 0.88f, -0.64f, 1.11f,
+R_CUBIC_TO, -0.4f, 0.23f, -0.89f, 0.22f, -1.28f, 0,
+R_LINE_TO, -3.32f, -1.94f,
+R_LINE_TO, -3.32f, 1.94f,
+R_CUBIC_TO, -0.2f, 0.12f, -0.42f, 0.17f, -0.65f, 0.17f,
+CLOSE
