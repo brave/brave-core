@@ -1,0 +1,15 @@
+diff --git a/build/config/clang/BUILD.gn b/build/config/clang/BUILD.gn
+index 11dba3580ad216e6ebd209a333f39f6307bd2baf..fc72f423f60306081fa77fc80f1ed2bb30ec8f21 100644
+--- a/build/config/clang/BUILD.gn
++++ b/build/config/clang/BUILD.gn
+@@ -58,6 +58,10 @@ config("find_bad_constructs") {
+         "check-ipc",
+       ]
+     }
++
++    if (host_os == "win" && !is_official_build) {
++      cflags = []
++    }
+   }
+ }
+ 
