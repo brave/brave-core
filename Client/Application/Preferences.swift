@@ -89,10 +89,6 @@ extension Preferences {
         ///
         static let useRegionAdBlock = Option<Bool>(key: "shields.regional-adblock", default: false)
     }
-    final class Support {
-        /// Whether or not the user has opted in to sending crash reports to Brave
-        static let sendsCrashReportsAndMetrics = Option<Bool>(key: "support.send-reports", default: true)
-    }
 }
 
 /// Defines an object which may watch a set of `Preference.Option`s

@@ -21,7 +21,6 @@ extension ContentBlockerHelper {
 
     static func whitelistFileURL() -> URL? {
         guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            Sentry.shared.send(message: "Failed to get doc dir for whitelist file.")
             return nil
         }
         return dir.appendingPathComponent("whitelist")
@@ -73,7 +72,6 @@ extension ContentBlockerHelper {
         do {
             try list.write(to: fileURL, atomically: true, encoding: .utf8)
         } catch {
-            Sentry.shared.send(message: "Failed to save whitelist file")
         }
     }
     // Ensure domains used for whitelisting are standardized by using this function.
