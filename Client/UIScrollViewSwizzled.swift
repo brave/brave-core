@@ -4,6 +4,8 @@
 
 import Shared
 
+private let log = Logger.browserLogger
+
 // Workaround for bug 1417152, whereby NaN bounds are being set on the scrollview when viewing PDFs in the web view.
 // Is fixed in WebKit, remove this file when the fix arrives in iOS release.
 
@@ -30,6 +32,7 @@ extension UIScrollView {
         let validBounds = [bounds.size.width, bounds.size.height].every({ $0 >= 0 })
 
         guard validBounds && validSize && !bounds.isInfinite else {
+            log.debug("Bad scrollview bounds detected [negative size].")
             return
         }
         self.swizzle_setBounds(bounds: bounds)

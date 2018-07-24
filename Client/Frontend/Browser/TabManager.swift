@@ -490,6 +490,7 @@ class TabManager: NSObject {
         hideNetworkActivitySpinner()
 
         guard let removalIndex = tabs.index(where: { $0 === tab }) else {
+            log.debug("Could not find index of tab to remove")
             return
         }
 
@@ -850,7 +851,8 @@ extension TabManager {
                 withTry: { () -> Void in
                     self.restoreTabsInternal()
                 },
-                catch: { _ in
+                catch: { exception in
+                    log.error("Failed to restore tabs: \(String(describing: exception))")
                 }
             )
         }

@@ -6,6 +6,8 @@ import WebKit
 import Shared
 import Deferred
 
+private let log = Logger.browserLogger
+
 struct WhitelistedDomains {
     var domainSet = Set<String>() {
         didSet {
@@ -21,6 +23,7 @@ extension ContentBlockerHelper {
 
     static func whitelistFileURL() -> URL? {
         guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            log.error("Failed to get doc dir for whitelist file.")
             return nil
         }
         return dir.appendingPathComponent("whitelist")
@@ -72,6 +75,7 @@ extension ContentBlockerHelper {
         do {
             try list.write(to: fileURL, atomically: true, encoding: .utf8)
         } catch {
+            log.error("Failed to save whitelist file")
         }
     }
     // Ensure domains used for whitelisting are standardized by using this function.

@@ -17,6 +17,8 @@ import SwiftyJSON
 import Deferred
 import Data
 
+private let log = Logger.browserLogger
+
 private let KVOs: [KVOConstants] = [
     .estimatedProgress,
     .loading,
@@ -2343,7 +2345,8 @@ extension BrowserViewController {
         customSearchBarButton = item
         _ = Try(withTry: {
             inputAssistant.trailingBarButtonGroups.last?.barButtonItems.append(item)
-        }) { _ in
+        }) { exception in
+            log.error("Failed adding custom search button to input assistant: \(String(describing: exception))")
         }
     }
 
