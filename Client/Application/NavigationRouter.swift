@@ -5,10 +5,6 @@
 import Foundation
 import Shared
 
-struct FxALaunchParams {
-    var query: [String: String]
-}
-
 // An enum to route to HomePanels
 enum HomePanelPath: String {
     case bookmarks

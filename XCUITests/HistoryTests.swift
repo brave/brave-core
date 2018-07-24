@@ -14,7 +14,6 @@ class HistoryTests: BaseTestCase {
         navigator.goto(HomePanel_History)
         waitforExistence(app.tables.cells["HistoryPanel.recentlyClosedCell"])
         XCTAssertTrue(app.tables.cells["HistoryPanel.recentlyClosedCell"].exists)
-        XCTAssertTrue(app.tables.cells["HistoryPanel.syncedDevicesCell"].exists)
         XCTAssertFalse(app.tables.otherElements.staticTexts["Today"].exists)
     }
 
@@ -26,13 +25,6 @@ class HistoryTests: BaseTestCase {
         waitforExistence(app.tables.cells["HistoryPanel.recentlyClosedCell"])
         XCTAssertTrue(app.tables.otherElements.staticTexts["Today"].exists)
         XCTAssertTrue(app.tables.cells.staticTexts[webpage["label"]!].exists)
-    }
-
-    func testOpenSyncDevices() {
-        navigator.goto(HomePanel_History)
-        app.tables.cells["HistoryPanel.syncedDevicesCell"].tap()
-        waitforExistence(app.tables.cells.staticTexts["Firefox Sync"])
-        XCTAssertTrue(app.tables.buttons["Sign in to Sync"].exists, "Sing in button does not appear")
     }
 
     func testClearHistoryFromSettings() {

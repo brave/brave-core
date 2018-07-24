@@ -504,7 +504,6 @@ public enum PhotonActionSheetCellAccessoryType {
     case Disclosure
     case Switch
     case Text
-    case Sync // Sync is a special case.
     case None
 }
 
@@ -683,8 +682,6 @@ private class PhotonActionSheetCell: UITableViewCell {
             toggleSwitch.accessibilityIdentifier = action.isEnabled ? "enabled" : "disabled"
             toggleSwitch.image = image
             stackView.addArrangedSubview(toggleSwitch)
-        case .Sync:
-            break
         default:
             break // Do nothing. The rest are not supported yet.
         }

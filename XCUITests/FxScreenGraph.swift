@@ -22,8 +22,6 @@ let ToolsMenu = "ToolsMenu"
 let FindInPage = "FindInPage"
 let SettingsScreen = "SettingsScreen"
 let SyncSettings = "SyncSettings"
-let FxASigninScreen = "FxASigninScreen"
-let FxCreateAccount = "FxCreateAccount"
 let HomePageSettings = "HomePageSettings"
 let PasscodeSettings = "PasscodeSettings"
 let PasscodeIntervalSettings = "PasscodeIntervalSettings"
@@ -34,7 +32,6 @@ let LoginsSettings = "LoginsSettings"
 let OpenWithSettings = "OpenWithSettings"
 let ShowTourInSettings = "ShowTourInSettings"
 let TrackingProtectionSettings = "TrackingProtectionSettings"
-let Intro_FxASignin = "Intro_FxASignin"
 let WebImageContextMenu = "WebImageContextMenu"
 let WebLinkContextMenu = "WebLinkContextMenu"
 let CloseTabMenu = "CloseTabMenu"
@@ -161,10 +158,6 @@ class Action {
     static let CloseTabFromPageOptions = "CloseTabFromPageOptions"
     static let CloseTabFromTabTrayLongPressMenu = "CloseTabFromTabTrayLongPressMenu"
 
-    static let FxATypeEmail = "FxATypeEmail"
-    static let FxATypePassword = "FxATypePassword"
-    static let FxATapOnSignInButton = "FxATapOnSignInButton"
-
     static let PinToTopSitesPAM = "PinToTopSitesPAM"
 }
 
@@ -198,10 +191,7 @@ class FxUserState: MMUserState {
 
     var bookmarksInNewTab = true
     var historyInNewTab = true
-
-    var fxaUsername: String? = nil
-    var fxaPassword: String? = nil
-
+    
     var numTabs: Int = 0
 
     var trackingProtectionPerTabEnabled = true // TP can be shut off on a per-tab basis
@@ -471,8 +461,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
     map.addScreenState(SettingsScreen) { screenState in
         let table = app.tables.element(boundBy: 0)
 
-        screenState.tap(table.cells["Sync"], to: SyncSettings, if: "fxaUsername != nil")
-        screenState.tap(table.cells["SignInToSync"], to: FxASigninScreen, if: "fxaUsername == nil")
         screenState.tap(table.cells["Search"], to: SearchSettings)
         screenState.tap(table.cells["NewTab"], to: NewTabSettings)
         screenState.tap(table.cells["Homepage"], to: HomePageSettings)
@@ -498,27 +486,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
     }
 
     map.addScreenState(SyncSettings) { screenState in
-        screenState.backAction = navigationControllerBackAction
-    }
-
-    map.addScreenState(FxASigninScreen) { screenState in
-        screenState.backAction = navigationControllerBackAction
-
-        screenState.gesture(forAction: Action.FxATypeEmail) { userState in
-            app.webViews.textFields["Email"].tap()
-            type(text: userState.fxaUsername!)
-        }
-        screenState.gesture(forAction: Action.FxATypePassword) { userState in
-            app.webViews.secureTextFields["Password"].tap()
-            type(text: userState.fxaPassword!)
-        }
-        screenState.gesture(forAction: Action.FxATapOnSignInButton) { userState in
-            app.webViews.buttons["Sign in"].tap()
-        }
-        screenState.tap(app.webViews.links["Create an account"], to: FxCreateAccount)
-    }
-
-    map.addScreenState(FxCreateAccount) { screenState in
         screenState.backAction = navigationControllerBackAction
     }
 
@@ -662,13 +629,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
     }
 
     map.addScreenState(ShowTourInSettings) { screenState in
-        screenState.gesture(to: Intro_FxASignin) {
-            let introScrollView = app.scrollViews["IntroViewController.scrollView"]
-            for _ in 1...4 {
-                introScrollView.swipeLeft()
-            }
-            app.buttons["Sign in to Firefox"].tap()
-        }
         screenState.backAction = {
             introScrollView.swipeLeft()
             let startBrowsingButton = app.buttons["IntroViewController.startBrowsingButton"]
@@ -686,10 +646,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
         screenState.tap(app.toggles["Private Browsing Mode"], forAction: Action.ToggleTrackingProtectionSettingOnPrivateMode) { userState in
             userState.trackingProtectionSettingOnPrivateMode = !userState.trackingProtectionSettingOnPrivateMode
         }
-    }
-
-    map.addScreenState(Intro_FxASignin) { screenState in
-        screenState.tap(app.navigationBars["Client.FxAContentView"].buttons.element(boundBy: 0), to: HomePanelsScreen)
     }
 
     map.addScreenState(TabTray) { screenState in
@@ -818,7 +774,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
     map.addScreenState(BrowserTabMenu) { screenState in
         screenState.tap(app.tables.cells["menu-Settings"], to: SettingsScreen)
 
-        screenState.tap(app.tables.cells["menu-sync"], to: FxASigninScreen, if: "fxaUsername == nil")
         screenState.tap(app.tables.cells["menu-panel-TopSites"], to: HomePanel_TopSites)
         screenState.tap(app.tables.cells["menu-panel-Bookmarks"], to: HomePanel_Bookmarks)
         screenState.tap(app.tables.cells["menu-panel-History"], to: HomePanel_History)
