@@ -205,7 +205,6 @@ class ContentBlockerHelper {
             ContentBlockerHelper.ruleStore.lookUpContentRuleList(forIdentifier: name) { rule, error in
                 guard let rule = rule else {
                     let msg = "lookUpContentRuleList for \(name):  \(error?.localizedDescription ?? "empty rules")"
-                    Sentry.shared.send(message: "Content blocker error", tag: .general, description: msg)
                     return
                 }
                 self.addToTab(contentRuleList: rule)
@@ -364,7 +363,6 @@ extension ContentBlockerHelper {
                     str.insert(contentsOf: whitelistAsJSON(), at: str.index(str.endIndex, offsetBy: -1))
                     ruleStore.compileContentRuleList(forIdentifier: filename, encodedContentRuleList: str) { rule, error in
                         if let error = error {
-                            Sentry.shared.send(message: "Content blocker error", tag: .general, description: error.localizedDescription)
                             assert(false)
                         }
                         assert(rule != nil)

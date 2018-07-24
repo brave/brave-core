@@ -281,7 +281,6 @@ class SettingsViewController: TableViewController {
         return Section(
             header: .title(Strings.Support),
             rows: [
-                BoolRow(title: Strings.Opt_in_to_telemetry, option: Preferences.Support.sendsCrashReportsAndMetrics),
                 Row(text: Strings.Report_a_bug,
                     selection: { [unowned self] in
                         // Report a bug

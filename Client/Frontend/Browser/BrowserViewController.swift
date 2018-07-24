@@ -14,7 +14,6 @@ import Alamofire
 import MobileCoreServices
 import SDWebImage
 import SwiftyJSON
-import Sentry
 import Deferred
 import Data
 
@@ -469,26 +468,13 @@ class BrowserViewController: UIViewController {
         }
     }
 
-    // Because crashedLastLaunch is sticky, it does not get reset, we need to remember its
-    // value so that we do not keep asking the user to restore their tabs.
-    var displayedRestoreTabsAlert = false
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if !displayedRestoreTabsAlert && !cleanlyBackgrounded() && crashedLastLaunch() {
-            displayedRestoreTabsAlert = true
-            showRestoreTabsAlert()
-        } else {
-            tabManager.restoreTabs()
-        }
-
+        tabManager.restoreTabs()
+        
         updateTabCountUsingTabManager(tabManager, animated: false)
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
-    }
-
-    fileprivate func crashedLastLaunch() -> Bool {
-        return Sentry.crashedLastLaunch
     }
 
     fileprivate func cleanlyBackgrounded() -> Bool {
@@ -2357,8 +2343,7 @@ extension BrowserViewController {
         customSearchBarButton = item
         _ = Try(withTry: {
             inputAssistant.trailingBarButtonGroups.last?.barButtonItems.append(item)
-        }) { (exception) in
-            Sentry.shared.send(message: "Failed adding custom search button to input assistant", tag: .general, severity: .error, description: "\(exception ??? "nil")")
+        }) { _ in
         }
     }
 
