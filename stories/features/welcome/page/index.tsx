@@ -131,7 +131,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
           </Column>
           <Column size={1} theme={theme.footerColumnCenter}>
             {
-              Array.from({length: this.totalScreensSize}, (v: undefined, k: number) => {
+              Array.from({ length: this.totalScreensSize }, (v: undefined, k: number) => {
                 return (
                   <UnstyledButton
                     theme={
@@ -144,8 +144,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
                     onClick={this.onClickSlideBullet.bind(this, k + 1)}
                   />
                 )
-              })
-            }
+              })}
           </Column>
           <Column size={1} theme={theme.footerColumnRight}>
           {
@@ -154,12 +153,15 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
               <PushButton
                 theme={theme.sideButton}
                 color='secondary'
-                onClick={this.onClickNext}>
-                <span style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-evenly'
-                }}>
+                onClick={this.onClickNext}
+              >
+                <span
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly'
+                  }}
+                >
                   {locale.next} <ArrowRight />
                 </span>
               </PushButton>
@@ -168,7 +170,8 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
               <PushButton
                 theme={theme.sideButton}
                 color='secondary'
-                onClick={this.onClickDone}>
+                onClick={this.onClickDone}
+              >
                 {locale.done}
               </PushButton>
             )
@@ -184,7 +187,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
   }
 
   onClickNext () {
-    this.setState({ currentScreen:this.state.currentScreen + 1 })
+    this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
   onClickDone () {
@@ -216,19 +219,21 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   render () {
     return (
-      <div style={{
-        height: '-webkit-fill-available',
-        width: '-webkit-fill-available',
-        backgroundImage: `url('${background}')`,
-        backgroundRepeat: 'repeat-x',
-        backgroundSize: 'contain',
-        transition: 'background-position-x 0.6s ease-out',
-        backgroundPositionX: this.backgroundPosition
-      }}>
+      <div
+        style={{
+          height: '-webkit-fill-available',
+          width: '-webkit-fill-available',
+          backgroundImage: `url('${background}')`,
+          backgroundRepeat: 'repeat-x',
+          backgroundSize: 'contain',
+          transition: 'background-position-x 0.6s ease-out',
+          backgroundPositionX: this.backgroundPosition
+        }}
+      >
         <Page theme={theme.welcomePage}>
           <Panel theme={theme.panel}>
-            { this.currentScreen }
-            { this.footer }
+            {this.currentScreen}
+            {this.footer}
           </Panel>
         </Page>
       </div>
