@@ -5,7 +5,7 @@
 #ifndef BRAVE_BROWSER_MAC_SPARKLE_GLUE_H_
 #define BRAVE_BROWSER_MAC_SPARKLE_GLUE_H_
 
-#include <string>
+#include "base/strings/string16.h"
 
 #if defined(__OBJC__)
 
@@ -67,5 +67,13 @@ extern NSString* const kBraveAutoupdateStatusErrorMessages;
 @end  // @interface SparkleGlue
 
 #endif  // __OBJC__
+
+namespace sparkle_glue {
+
+bool SparkleEnabled();
+
+base::string16 CurrentlyInstalledVersion();
+
+}  // namespace sparkle_glue
 
 #endif  // BRAVE_BROWSER_MAC_SPARKLE_GLUE_H_

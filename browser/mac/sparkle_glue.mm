@@ -470,3 +470,17 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
                error:[error localizedDescription]];
 }
 @end
+
+namespace sparkle_glue {
+
+bool SparkleEnabled() {
+  return [SparkleGlue sharedSparkleGlue] != nil;
+}
+
+base::string16 CurrentlyInstalledVersion() {
+  SparkleGlue* sparkleGlue = [SparkleGlue sharedSparkleGlue];
+  NSString* version = [sparkleGlue currentlyInstalledVersion];
+  return base::SysNSStringToUTF16(version);
+}
+
+}  // namespace sparkle_glue
