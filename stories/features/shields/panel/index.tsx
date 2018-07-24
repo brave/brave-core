@@ -11,7 +11,7 @@ import BraveShieldsFooter from './components/footer'
 export default class BraveShields extends React.PureComponent {
   render () {
     return (
-      <div style={{maxWidth: '300px'}}>
+      <div style={{ maxWidth: '300px' }}>
         <BraveShieldsHeader />
         <BraveShieldsStats />
         <BraveShieldsControls />

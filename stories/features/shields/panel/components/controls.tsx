@@ -3,45 +3,53 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { Grid, Column } from '../../../../../src/components/layout/gridList/index'
-import SelectOption from '../../../../../src/old/selectOption/index'
-import SwitchButton from '../../../../../src/old/switchButton/index'
-import ContentToggleArrow from '../../../../../src/old/contentToggleArrow/index'
-import BoxedContent from '../../../../../src/old/boxedContent/index'
+import { Grid, Column } from '../../../../../src/components/layout/gridList'
+import SelectOption from '../../../../../src/old/selectOption'
+import SwitchButton from '../../../../../src/old/switchButton'
+import ContentToggleArrow from '../../../../../src/old/contentToggleArrow'
+import BoxedContent from '../../../../../src/old/boxedContent'
 import locale from '../fakeLocale'
 import theme from '../theme'
+
+const log = (text: string) => {
+  console.log(text)
+}
 
 class BraveShieldsControls extends React.PureComponent {
   render () {
     return (
       <Grid
         id='braveShieldsControls'
-        theme={theme.braveShieldsControls}>
+        theme={theme.braveShieldsControls}
+      >
         <Column>
           <ContentToggleArrow
             withSeparator={true}
             defaultOpen={true}
             summary={locale.shieldsControlsAdvancedControls}
-            onClick={() => console.log('fired onClick')}>
+            onClick={log.bind(this, 'fired onClick')}
+          >
             <BoxedContent theme={theme.braveShieldsControlsContent}>
               <SelectOption
                 disabled={false}
-                titleName={locale.shieldsControlsAdControl}>
+                titleName={locale.shieldsControlsAdControl}
+              >
                 {/* TODO needs "show brave ads" */}
                 <option value='allow'>{locale.shieldsControlsAdControlOptionBlockAds}</option>
                 <option value='block'>{locale.shieldsControlsAdControlOptionAllowAdsTracking}</option>
               </SelectOption>
               <SelectOption
                 disabled={false}
-                titleName={locale.shieldsControlsCookieControl}>
+                titleName={locale.shieldsControlsCookieControl}
+              >
                 <option value='SOME'>{locale.shieldsControlsCookieOptionBlock3p}</option>
                 <option value='SOME'>{locale.shieldsControlsCookieOptionAllowAll}</option>
                 <option value='SOME'>{locale.shieldsControlsCookieOptionBlockAll}</option>
               </SelectOption>
-
               <SelectOption
                 disabled={false}
-                titleName={locale.shieldsControlsFingerprintingProtection}>
+                titleName={locale.shieldsControlsFingerprintingProtection}
+              >
                 <option value='block_third_party'>{locale.shieldsControlsFingerprintingOptionBlock3p}</option>
                 <option value='block'>{locale.shieldsControlsFingerprintingOptionBlockAll}</option>
                 <option value='allow'>{locale.shieldsControlsFingerprintingOptionAllowAll}</option>
@@ -53,7 +61,8 @@ class BraveShieldsControls extends React.PureComponent {
                     disabled={false}
                     rightText={locale.shieldsControlsHttpsEverywhereSwitch}
                     checked={true}
-                    onChange={() => console.log('httpsE')} />
+                    onChange={log.bind(this, 'httpsE')}
+                  />
                 </Column>
                 <Column>
                   <SwitchButton
@@ -61,7 +70,8 @@ class BraveShieldsControls extends React.PureComponent {
                     disabled={false}
                     rightText={locale.shieldsControlsBlockScriptsSwitch}
                     checked={true}
-                    onChange={() => console.log('block JS')} />
+                    onChange={log.bind(this, 'block JS')}
+                  />
                 </Column>
                 <Column>
                   <SwitchButton
@@ -69,7 +79,8 @@ class BraveShieldsControls extends React.PureComponent {
                     checked={true}
                     disabled={false}
                     rightText={locale.shieldsControlsBlockPhishingMalwareSwitch}
-                    onChange={() => console.log('block Pishing/Malware')} />
+                    onChange={log.bind(this, 'block Pishing/Malware')}
+                  />
                 </Column>
               </Grid>
             </BoxedContent>

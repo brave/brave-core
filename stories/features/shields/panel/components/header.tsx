@@ -11,12 +11,17 @@ import TextLabel from '../../../../../src/old/textLabel/index'
 import locale from '../fakeLocale'
 import theme from '../theme'
 
+const doNothing = () => {
+  console.log('nothing')
+}
+
 class BraveShieldsHeader extends React.PureComponent {
   render () {
     return (
       <Grid
         id='braveShieldsHeader'
-        theme={theme.braveShieldsHeader}>
+        theme={theme.braveShieldsHeader}
+      >
         <Column size={4} theme={theme.columnVerticalCenter}>
           <TextLabel theme={theme.title} text={locale.shieldsHeaderShieldsToggle} />
         </Column>
@@ -26,13 +31,15 @@ class BraveShieldsHeader extends React.PureComponent {
             leftText={locale.shieldsHeaderToggleLeftPosition}
             rightText={locale.shieldsHeaderToggleRightPosition}
             checked={true}
-            onChange={() => {}} />
+            onChange={doNothing}
+          />
         </Column>
         <Column size={2} theme={theme.columnVerticalCenterEnd}>
           <UnstyledButton
             theme={theme.closeButton}
             text='&times;'
-            onClick={() => {}} />
+            onClick={doNothing}
+          />
         </Column>
         <Column>
           <Separator />

@@ -18,7 +18,8 @@ class BraveShieldsFooter extends React.PureComponent {
             theme={theme.editLink}
             href='chrome://settings'
             target='_blank'
-            text={locale.shieldsFooterEditDefault} />
+            text={locale.shieldsFooterEditDefault}
+          />
         </Column>
         <Column size={3} theme={theme.columnEnd}>
           <UnstyledButton text={locale.shieldsFooterReload} />
