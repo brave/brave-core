@@ -456,6 +456,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         // If we cannot even open the database file, return `nil` to force SwiftData
         // into using a `FailedSQLiteDBConnection` so we can retry opening again later.
         if !doOpen() {
+            log.error("Cannot open a database connection with filename: \(filename).")
             return nil
         }
 
@@ -471,6 +472,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         case .success:
             log.debug("Database successfully created or updated.")
         case .failure:
+            log.error("Failed to create or update the database schema.")
             return nil
         case .needsRecovery:
             // We need to close this new connection before we can move the database file to
@@ -478,6 +480,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
             // gone really wrong. In that case, bail out and return `nil` to force SwiftData
             // into using a `FailedSQLiteDBConnection` so we can retry again later.
             if let error = self.closeCustomConnection(immediately: true) {
+                log.error("Database schema cannot be created or updated due to an unrecoverable error: \(error.localizedDescription).")
                 return nil
             }
 
@@ -581,10 +584,12 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
                 throw err
             }
             if let err = openWithFlags(flags) {
+                log.error("Error opening database with flags. \(err.code), \(err)")
                 throw err
             }
             if let err = reKey(prevKey, newKey: key) {
                 // Note: Don't log the error here as it may contain sensitive data.
+                log.error("Unable to encrypt database.")
                 throw err
             }
         }
@@ -738,6 +743,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         // This should not ever happen since the schema version should always be
         // increasing whenever a structural change is made in an app update.
         guard currentVersion <= schema.version else {
+            log.error("\(self.schema.name) cannot be downgraded from version \(currentVersion) to \(self.schema.version).")
             return .failure
         }
         
@@ -767,6 +773,8 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
                         return success
                     }
                 }
+                
+                log.debug("Attempting to update schema from \(currentVersion) to \(self.schema.version)")
 
                 // If we can't create a brand new schema from scratch, we must
                 // call `updateSchema()` to go through the update process.
@@ -779,11 +787,13 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
                 // If we failed to update the schema, we'll drop everything from the DB
                 // and create everything again from scratch. Assuming our schema upgrade
                 // code is correct, this *shouldn't* happen.
+                log.error("Update \(self.schema.name) from version \(currentVersion) to \(self.schema.version) failed for schema. Dropping and re-creating.")
 
                 // If we can't even drop the schema here, something has gone really wrong, so
                 // return `false` which should force us into recovery.
                 if !self.dropSchema() {
                     success = false
+                    log.error("Unable to drop schema \(self.schema.name) from version \(currentVersion).")
                     return success
                 }
 
@@ -796,6 +806,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
             // If we got an error trying to get a transaction, then we either bail out early and return
             // `.failure` if we think we can retry later or return `.needsRecovery` if the error is not
             // recoverable.
+            log.error("Unable to get a transaction: \(error.localizedDescription)")
 
             // Check if the error we got is recoverable (e.g. SQLITE_BUSY, SQLITE_LOCK, SQLITE_FULL).
             // If so, just return `.failure` so we can retry preparing the schema again later.
@@ -823,6 +834,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
         // Attempt to make a backup as long as the database file still exists.
         if files.exists(baseFilename) {
+            log.debug("Couldn't create or update schema. Attempting to move '\(baseFilename)' for schema '\(self.schema.name)' to another location")
             
             // Note that a backup file might already exist! We append a counter to avoid this.
             var bakCounter = 0
@@ -849,7 +861,11 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
                 
                 log.debug("Finished moving database \(baseFilename) successfully.")
             } catch {
+                log.error("Unable to move DB file '\(baseFilename)' to another location. \(error.localizedDescription)")
             }
+        } else {
+            // No backup was attempted since the database file did not exist.
+            log.debug("The DB file '\(baseFilename)' has been deleted while previously in use.")
         }
     }
     
@@ -931,6 +947,8 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         var status = sqlite3_close(db)
 
         if status != SQLITE_OK {
+            log.error("Got error status while attempting to close. SQLite status: \(status)")
+            
             if immediately {
                 return createErr("During: closing database with flags", status: Int(status))
             }
@@ -940,7 +958,8 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
             status = sqlite3_close_v2(db)
             
             if status != SQLITE_OK {
-                
+                log.error("Got error status while attempting to close_v2. SQLite status: \(status)")
+
                 // Based on the above comment regarding sqlite3_close_v2, this shouldn't happen.
                 return createErr("During: closing database with flags", status: Int(status))
             }
@@ -983,8 +1002,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
                 writeCorruptionInfoForDBNamed(filename, toLogger: Logger.corruptLogger)
             }
 
-            let message = "Error code: \(error.code), \(error) for SQL \(String(sqlStr.prefix(500)))."
-
+            log.error("SQL Error code: \(error.code), \(error) for SQL \(String(sqlStr.prefix(500))).")
             throw error
         }
 
@@ -1034,7 +1052,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
             if error.code == Int(SQLITE_CORRUPT) {
                 writeCorruptionInfoForDBNamed(filename, toLogger: Logger.corruptLogger)
             }
-
+            log.error("SQL Error code: \(error.code), \(error) for SQL \(String(sqlStr.prefix(500))).")
             return Cursor<T>(err: error)
         }
 
@@ -1118,6 +1136,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         do {
             try executeChange("BEGIN EXCLUSIVE")
         } catch let err as NSError {
+            log.error("BEGIN EXCLUSIVE failed: \(err.code), \(err)")
             throw err
         }
 
@@ -1131,6 +1150,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
             do {
                 try executeChange("ROLLBACK")
             } catch let err as NSError {
+                log.error("ROLLBACK after errored op in transaction failed: \(err.code), \(err)")
                 throw err
             }
 
@@ -1142,12 +1162,14 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         do {
             try executeChange("COMMIT")
         } catch let err as NSError {
+            log.error("COMMIT failed, rolling back: \(err.code), \(err)")
+            
             do {
                 try executeChange("ROLLBACK")
             } catch let err as NSError {
+                log.error("ROLLBACK after failed COMMIT failed.: \(err.code), \(err)")
                 throw err
             }
-
             throw err
         }
 

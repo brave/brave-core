@@ -1309,6 +1309,7 @@ open class BrowserSchema: Schema {
         do {
             try db.executeChange(sql)
         } catch {
+            log.error("Error dropping tableList table: \(error.localizedDescription)")
             return false
         }
 
@@ -1317,6 +1318,7 @@ open class BrowserSchema: Schema {
         do {
             try db.setVersion(previousVersion)
         } catch {
+            log.error("Error setting database version: \(error.localizedDescription)")
             return false
         }
         
