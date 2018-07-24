@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContributeTable tests basic tests matches the snapshot 1`] = `
+.c1 {
+  font-family: Poppins;
+  font-size: 13px;
+  color: #4c54d2;
+  text-align: right;
+  text-transform: capitalize;
+}
+
+.c0 {
+  text-align: center;
+  padding: 30px 0;
+  color: #999ea2;
+  font-size: 14px;
+}
+
+<div
+  className=""
+  id="table"
+>
+  <div
+    className=""
+    id={undefined}
+  >
+    <div
+      className="c0"
+    />
+  </div>
+  <div
+    className="c1"
+    onClick={undefined}
+  >
+    MISSING: seeAllSites
+  </div>
+</div>
+`;

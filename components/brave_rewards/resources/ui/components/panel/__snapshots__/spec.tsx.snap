@@ -1,0 +1,218 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Panel tests basic tests matches the snapshot 1`] = `
+.c0 {
+  border-radius: 6px;
+  box-shadow: 0 0 8px 0 rgba(99,105,110,0.12);
+  overflow: hidden;
+  font-family: Poppins;
+  width: 373px;
+  background: url("data:image/svg+xml,undefined") no-repeat top left, linear-gradient(172deg,#392dd1,rgba(255,26,26,0.53)), linear-gradient(#7d7bdc,#7d7bdc);
+}
+
+.c1 {
+  padding: 16px 21px 0 19px;
+  position: relative;
+}
+
+.c2 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.38;
+  -webkit-letter-spacing: -0.2px;
+  -moz-letter-spacing: -0.2px;
+  -ms-letter-spacing: -0.2px;
+  letter-spacing: -0.2px;
+  color: rgba(255,255,255,0.65);
+}
+
+.c3 {
+  text-align: center;
+}
+
+.c4 {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.83;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #6cc7fd;
+}
+
+.c5 {
+  font-size: 36px;
+  line-height: 0.61;
+  -webkit-letter-spacing: -0.4px;
+  -moz-letter-spacing: -0.4px;
+  -ms-letter-spacing: -0.4px;
+  letter-spacing: -0.4px;
+  color: #fff;
+  margin-top: 10px;
+}
+
+.c10 {
+  padding: 31px 25px 19px;
+  position: relative;
+  background: #f9fbfc;
+}
+
+.c6 {
+  font-family: Muli;
+  font-size: 12px;
+  line-height: 1.17;
+  text-align: center;
+  color: rgba(255,255,255,0.65);
+  margin: 15px 0 10px;
+}
+
+.c9 {
+  text-align: center;
+  font-size: 12px;
+  color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+  margin: 20px 0 0;
+  padding-bottom: 20px;
+}
+
+.c7 {
+  display: inline-block;
+  overflow: hidden;
+  border: 1px solid rgba(184,185,196,1);
+  opacity: 0.4;
+  color: rgba(184,185,196,1);
+  font-size: 11px;
+  border-radius: 16px;
+  min-width: 88px;
+  padding: 10.5px 10px;
+  text-align: center;
+  box-sizing: border-box;
+  font-family: Poppins;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 500;
+}
+
+.c8 {
+  display: inline-block;
+  vertical-align: bottom;
+  margin: 0 0 0 10px;
+}
+
+<div
+  className="c0"
+  id="panel"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      MISSING: yourWallet
+    </div>
+    <div
+      className="c3"
+    >
+      <div
+        className="c4"
+      >
+        MISSING: tokenBalance
+      </div>
+      <div
+        className="c5"
+      >
+        00.00
+      </div>
+      <div
+        className="c6"
+      >
+        ~ 
+      </div>
+      <div
+        className="c7"
+        color="subtle"
+        disabled={true}
+        icon={
+          Object {
+            "image": <svg
+              height="5"
+              width="8"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
+                fill="#FFF"
+                fillOpacity="0.55"
+                fillRule="evenodd"
+              />
+            </svg>,
+            "position": "right",
+          }
+        }
+        onClick={undefined}
+        size="small"
+      >
+        MISSING: detail
+        <span
+          className="c8"
+          icon={
+            Object {
+              "image": <svg
+                height="5"
+                width="8"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
+                  fill="#FFF"
+                  fillOpacity="0.55"
+                  fillRule="evenodd"
+                />
+              </svg>,
+              "position": "right",
+            }
+          }
+        >
+          <svg
+            height="5"
+            width="8"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
+              fill="#FFF"
+              fillOpacity="0.55"
+              fillRule="evenodd"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div
+      className="c9"
+    />
+  </div>
+  <div
+    className="c10"
+  />
+</div>
+`;

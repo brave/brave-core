@@ -1,0 +1,240 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainToggle tests basic tests matches the snapshot 1`] = `
+.c0 {
+  font-family: Poppins;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  border-radius: 6px;
+  background-color: #dee2e6;
+  border: 1px solid #dbdfe3;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: 22px 34px 18px;
+  margin-bottom: 25px;
+}
+
+.c1 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c4 {
+  padding: 10px 0 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c2 {
+  font-size: 28px;
+  font-weight: 600;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  color: #4b4c5c;
+  margin: 4px 0 0 11px;
+}
+
+.c3 {
+  font-size: 10px;
+  font-weight: 300;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: #222326;
+  vertical-align: text-top;
+}
+
+.c9 {
+  font-size: 22px;
+  line-height: 1.27;
+  color: #4b4c5c;
+  margin-top: 40px;
+}
+
+.c10 {
+  font-family: Muli;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: #838391;
+}
+
+.c8 {
+  -webkit-flex-basis: 100%;
+  -ms-flex-preferred-size: 100%;
+  flex-basis: 100%;
+}
+
+.c5 {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 24px;
+}
+
+.c6 {
+  background: #A7ACB2;
+  width: 100%;
+  border-radius: 3px;
+  height: 8px;
+  margin-top: 8px;
+}
+
+.c7 {
+  position: relative;
+  z-index: 2;
+  border-radius: 50%;
+  -webkit-transition: 200ms ease-out;
+  transition: 200ms ease-out;
+  background-color: #CDD1D5;
+  -webkit-transform: translate(0,calc(-50% - 4px));
+  -ms-transform: translate(0,calc(-50% - 4px));
+  transform: translate(0,calc(-50% - 4px));
+  width: 24px;
+  height: 24px;
+}
+
+<div
+  className="c0"
+  id="mainToggle"
+>
+  <div
+    className="c1"
+  >
+    <span
+      className=""
+    >
+      <svg
+        height="48"
+        width="50"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g
+          fill="none"
+          fillRule="evenodd"
+        >
+          <path
+            d="M37.55 47.795l12.43.03-5.238-9.696-44.68.06z"
+            fill="#373743"
+            opacity="0.2"
+          />
+          <path
+            d="M24.01 0L24 26.054 47 39z"
+            fill="#9E1F63"
+          />
+          <path
+            d="M0 39l22.978-12.909L23 0z"
+            fill="#FB542B"
+          />
+          <path
+            d="M1 39l44-.002L23.044 27z"
+            fill="#662D91"
+          />
+          <path
+            d="M23.426 16L14 31h19z"
+            fill="#FFF"
+          />
+          <path
+            d="M23.426 16L14 31h19z"
+            stroke="#999EA2"
+            strokeWidth="0.88"
+          />
+        </g>
+      </svg>
+    </span>
+    <div
+      className="c2"
+    >
+      MISSING: braveRewards
+       
+      <span
+        className="c3"
+      >
+        TM
+      </span>
+    </div>
+  </div>
+  <div
+    className="c4"
+  >
+    <div
+      checked={undefined}
+      className="c5"
+      disabled={undefined}
+      id={undefined}
+      onClick={undefined}
+      size="large"
+    >
+      <div
+        className="c6"
+        size="large"
+      />
+      <div
+        checked={undefined}
+        className="c7"
+        size="large"
+      />
+    </div>
+  </div>
+  <div
+    className="c8"
+  >
+    <div
+      className="c9"
+    >
+      MISSING: rewardsWhy
+    </div>
+    <div
+      className="c10"
+    >
+      MISSING: rewardsOffText1
+       
+      <br />
+      <b>
+        MISSING: rewardsOffText2
+      </b>
+    </div>
+    <div
+      className="c9"
+    >
+      MISSING: rewardsOffText3
+    </div>
+    <div
+      className="c10"
+    >
+      MISSING: rewardsOffText4
+    </div>
+  </div>
+</div>
+`;

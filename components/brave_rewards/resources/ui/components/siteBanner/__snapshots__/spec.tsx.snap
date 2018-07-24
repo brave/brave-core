@@ -1,0 +1,442 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List tests basic tests matches the snapshot 1`] = `
+.c0 {
+  background-color: rgba(12,13,33,0.85);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  font-family: Poppins;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+}
+
+.c6 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: calc(100% - 336px);
+  -ms-flex-preferred-size: calc(100% - 336px);
+  flex-basis: calc(100% - 336px);
+  background: #e9f0ff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  -webkit-align-content: space-between;
+  -ms-flex-line-pack: space-between;
+  align-content: space-between;
+}
+
+.c13 {
+  -webkit-flex-basis: 336px;
+  -ms-flex-preferred-size: 336px;
+  flex-basis: 336px;
+  background: #696fdc;
+}
+
+.c1 {
+  position: relative;
+  min-width: 1024px;
+}
+
+.c3 {
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 0.74;
+  color: #d1d1db;
+  height: 176px;
+  background: url(test-file-stub) no-repeat top left,url(test-file-stub) no-repeat top right,#9e9fab;
+}
+
+.c2 {
+  top: 14px;
+  right: 17px;
+  position: absolute;
+}
+
+.c7 {
+  padding-left: 45px;
+  -webkit-flex-basis: 217px;
+  -ms-flex-preferred-size: 217px;
+  flex-basis: 217px;
+}
+
+.c9 {
+  background: inherit;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-filter: invert(1) grayscale(1) contrast(9);
+  filter: invert(1) grayscale(1) contrast(9);
+  font-size: 80px;
+  font-weight: 600;
+  text-align: center;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.c8 {
+  border: 6px solid #fff;
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  background: #DE4D26;
+  padding-top: 35px;
+  margin: -66px 0 25px;
+  overflow: hidden;
+}
+
+.c10 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: calc(100% - 217px);
+  -ms-flex-preferred-size: calc(100% - 217px);
+  flex-basis: calc(100% - 217px);
+}
+
+.c11 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  color: #4b4c5c;
+  margin: 41px 0 0;
+}
+
+.c12 {
+  font-family: Muli;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #686978;
+  padding-right: 37px;
+}
+
+.c14 {
+  font-size: 12px;
+  color: #afb2f1;
+  text-align: right;
+  margin: 8px 0 10px;
+  padding: 0 19px 0 55px;
+}
+
+.c15 {
+  color: #fff;
+}
+
+.c25 {
+  display: inline-block;
+  margin-left: 6px;
+}
+
+.c24 {
+  color: rgba(255,255,255,0.65);
+}
+
+.c4 {
+  max-width: 1024px;
+  padding: 126px 0 0 238px;
+  margin: 0 auto;
+}
+
+.c16 {
+  position: relative;
+  font-family: Poppins;
+}
+
+.c17 {
+  padding: 0 19px 0 55px;
+}
+
+.c18 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: #fff;
+  margin-bottom: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 167px;
+}
+
+.c26 {
+  background: #4c54d2;
+  font-size: 13px;
+  font-weight: 600;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  color: #3e45b2;
+  padding: 16px 19px 16px 55px;
+  text-transform: uppercase;
+}
+
+.c27 {
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 18px;
+}
+
+.c19 {
+  max-width: 254px;
+  width: 100%;
+}
+
+.c21 {
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 1.3;
+  color: #686978;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.c22 {
+  -webkit-flex-basis: 18px;
+  -ms-flex-preferred-size: 18px;
+  flex-basis: 18px;
+  width: 18px;
+  height: 18px;
+  border-radius: 2px;
+  border: solid 1px #a1a8f2;
+  margin-right: 11px;
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c23 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c20 {
+  max-width: 254px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+<div
+  className="c0"
+  id="list"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+      onClick={undefined}
+    >
+      <svg
+        height="11"
+        width="11"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
+          fill="#DFDFE8"
+          fillRule="evenodd"
+        />
+      </svg>
+    </div>
+    <div
+      className="c3"
+    >
+      <div
+        className="c4"
+      />
+    </div>
+    <div
+      className="c5"
+    >
+      <div
+        className="c6"
+      >
+        <div
+          className="c7"
+        >
+          <div
+            className="c8"
+          >
+            <div
+              className="c9"
+            >
+              
+            </div>
+          </div>
+        </div>
+        <div
+          className="c10"
+        >
+          <div
+            className="c11"
+          >
+            MISSING: welcome
+          </div>
+          <div
+            className="c12"
+          >
+            <p>
+              MISSING: rewardsBannerText1
+            </p>
+            <p>
+              MISSING: rewardsBannerText2
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c13"
+      >
+        <div
+          className="c14"
+        >
+          MISSING: walletBalance
+           
+          <span
+            className="c15"
+          >
+             
+            MISSING: tokens
+          </span>
+        </div>
+        <div
+          className="c16"
+        >
+          <div
+            className="c17"
+            id={undefined}
+          >
+            <div
+              className="c18"
+            >
+              MISSING: donationAmount
+            </div>
+            <div
+              className="c19"
+              id={undefined}
+            >
+              <div
+                className="c20"
+                id={undefined}
+              >
+                <div
+                  className="c21"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="c22"
+                    selected={false}
+                  />
+                  <span
+                    className="c23"
+                  >
+                    <span
+                      className="c24"
+                    >
+                      MISSING: makeMonthly
+                    </span>
+                     
+                    <span
+                      className="c25"
+                    >
+                      <svg
+                        height="11"
+                        width="12"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.425 3.106h-.004l-.114-.23C9.277 1.023 7.615 0 5.621 0 2.52 0 0 2.465 0 5.504 0 8.534 2.521 11 5.628 11a5.67 5.67 0 0 0 3.275-1.029.452.452 0 0 0 .107-.64.474.474 0 0 0-.654-.104 4.73 4.73 0 0 1-2.735.856C3.039 10.083.937 8.03.937 5.496c0-2.525 2.102-4.58 4.691-4.58 2.086 0 3.249 1.305 3.845 2.377l.047.096c-.404.278-.67.737-.67 1.257 0 .85.705 1.54 1.575 1.54S12 5.496 12 4.646c0-.851-.705-1.54-1.575-1.54"
+                          fill="#A1A8F2"
+                          fillRule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c26"
+            disabled={true}
+            onClick={undefined}
+          >
+            <span
+              className="c27"
+            >
+              <svg
+                height="21"
+                width="22"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.248 13.348L2.84 17.23l-1.2-14.418 9.607 10.536zm8.214-3.794l-6.818 3.148-9.088-9.968 15.906 6.82zm-7.73 8.182l-1.769-2.178 1.769-.817v2.995zm-10.265.66A.73.73 0 0 0 2.506 19l6.083-2.81 3.307 4.075a.731.731 0 0 0 .814.23.733.733 0 0 0 .489-.692v-5.74l8.374-3.867a.736.736 0 0 0-.017-1.342L1.036.056 1.018.048C1.008.044.995.048.984.044A.728.728 0 0 0 .688 0C.658.003.631.01.602.015a.694.694 0 0 0-.238.09C.344.117.32.115.3.13.292.136.288.149.279.157.266.169.249.172.236.183a.717.717 0 0 0-.23.567C.008.763-.001.773 0 .787l1.467 17.61z"
+                  fill="#3e45b2"
+                  fillRule="evenodd"
+                />
+              </svg>
+            </span>
+            MISSING: sendDonation
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

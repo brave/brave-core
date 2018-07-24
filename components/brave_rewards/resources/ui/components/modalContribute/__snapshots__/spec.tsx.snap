@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
+.c3 {
+  font-family: Poppins;
+}
+
+.c4 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 2;
+  color: #4b4c5c;
+}
+
+.c5 {
+  font-size: 28px;
+  color: #696fdc;
+  margin-bottom: 33px;
+}
+
+.c6 {
+  font-weight: 500;
+  color: #0c0d21;
+}
+
+.c0 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(12,13,33,0.85);
+  z-index: 99;
+  padding: 0 20px;
+}
+
+.c1 {
+  max-width: 920px;
+  margin: 52px auto;
+  padding: 61px 50px;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.c2 {
+  position: absolute;
+  top: 19px;
+  right: 19px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.c10 {
+  text-align: right;
+}
+
+.c9 {
+  padding-right: 7px;
+}
+
+.c7 {
+  width: 100%;
+  margin-bottom: 11px;
+}
+
+.c8 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 2.33;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 9px 0;
+}
+
+<div
+  className="c0"
+  id="modal"
+  onClick={[Function]}
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+      onClick={undefined}
+    >
+      <svg
+        height="11"
+        width="11"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
+          fill="#DFDFE8"
+          fillRule="evenodd"
+        />
+      </svg>
+    </div>
+    <div
+      className=""
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        >
+          MISSING: rewardsContribute
+        </div>
+        <div
+          className="c5"
+        >
+          MISSING: rewardsContributeText1
+           
+          <span
+            className="c6"
+          >
+            0
+          </span>
+           
+          MISSING: sites
+          .
+        </div>
+        <div
+          className=""
+          id={undefined}
+        >
+          <div
+            className=""
+            id={undefined}
+          >
+            <table
+              className="c7"
+            >
+              <thead>
+                <tr>
+                  <th
+                    className="c8"
+                  >
+                    <div
+                      className=""
+                    >
+                      MISSING: rewardsContributeVisited
+                    </div>
+                  </th>
+                  <th
+                    className="c8"
+                  >
+                    <div
+                      className="c9 c10"
+                    >
+                      MISSING: rewardsContributeAttention
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

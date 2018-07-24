@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Amount tests basic tests matches the snapshot 1`] = `
+.c0 {
+  margin-bottom: 8px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Poppins;
+}
+
+.c1 {
+  opacity: 1;
+  border-radius: 20px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: transparent;
+  vertical-align: baseline;
+  padding: 7px 12px 9px;
+  min-width: 69px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.c3 {
+  font-weight: 400;
+}
+
+.c2 {
+  vertical-align: text-bottom;
+  margin-right: 6px;
+}
+
+.c4 {
+  vertical-align: baseline;
+  opacity: 0.4;
+  font-size: 10px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+<div
+  className="c0"
+  id="amount"
+  onClick={[Function]}
+>
+  <span
+    className="c1"
+    selected={undefined}
+    type={undefined}
+  >
+    <span
+      className="c2"
+    >
+      <svg
+        height="14"
+        width="17"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g
+          fill="none"
+          fillRule="evenodd"
+        >
+          <path
+            d="M8.803 0L8.8 9.085l8 4.515L8.803 0"
+            fill="#8D2557"
+          />
+          <path
+            d="M.8 13.6l7.992-4.502L8.8 0l-8 13.6"
+            fill="#DE4E2A"
+          />
+          <path
+            d="M16.8 13.6l-7.984-4-8.016 4h16"
+            fill="#582D7A"
+          />
+          <path
+            d="M5.6 10.4h5.6L8.378 5.6z"
+            fill="#FFFFFE"
+          />
+          <path
+            d="M7.975 4.901l-.043-.026L4.8 10.4h6.4L7.975 4.8l-.043.075.043.026-.042.027 3.091 5.369h-6.05l3.044-5.37-.043-.026-.042.027.042-.027"
+            fill="#DE4E2A"
+          />
+        </g>
+      </svg>
+    </span>
+    1
+     
+    <span
+      className="c3"
+    />
+  </span>
+  <span
+    className="c4"
+    selected={undefined}
+    type={undefined}
+  >
+    MISSING: about
+     
+    0.40
+     
+    USD
+  </span>
+</div>
+`;

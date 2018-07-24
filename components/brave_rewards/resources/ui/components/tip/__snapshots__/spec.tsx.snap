@@ -1,0 +1,208 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tip tests basic tests matches the snapshot 1`] = `
+.c0 {
+  border-radius: 8px;
+  background-image: linear-gradient(148deg,#2825a7,#5465e8),linear-gradient(#696fdc,#696fdc);
+  width: 214px;
+  overflow: hidden;
+  position: relative;
+  padding: 16px 0 0;
+  font-family: Poppins;
+}
+
+.c2 {
+  font-size: 12px;
+  line-height: 1.83;
+  color: #fff;
+  opacity: 0.6;
+  padding-left: 23px;
+}
+
+.c7 {
+  display: inline-block;
+  margin-left: 33px;
+  vertical-align: middle;
+  padding-top: 2px;
+}
+
+.c6 {
+  opacity: 0.65;
+  font-size: 10px;
+  line-height: 3.9;
+  color: #fff;
+}
+
+.c1 {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.c3 {
+  position: relative;
+  font-family: Poppins;
+}
+
+.c4 {
+  padding: 0 0 0 23px;
+}
+
+.c5 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: #fff;
+  margin-bottom: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 167px;
+}
+
+.c11 {
+  background: #392dd1;
+  font-size: 13px;
+  font-weight: 600;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  color: #1a22a8;
+  padding: 16px 0 16px 51px;
+  text-transform: uppercase;
+}
+
+.c12 {
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 18px;
+}
+
+.c8 {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 11px;
+}
+
+.c9 {
+  background: #A7ACB2;
+  width: 100%;
+  border-radius: 3px;
+  height: 4px;
+  margin-top: 4.5px;
+}
+
+.c10 {
+  position: relative;
+  z-index: 2;
+  border-radius: 50%;
+  -webkit-transition: 200ms ease-out;
+  transition: 200ms ease-out;
+  background-color: #fb542b;
+  -webkit-transform: translate(0,calc(-50% - 4px));
+  -ms-transform: translate(0,calc(-50% - 4px));
+  transform: translate(0,calc(-50% - 4px));
+  width: 11px;
+  height: 11px;
+  -webkit-transform: translate(0,calc(-50% - 2px));
+  -ms-transform: translate(0,calc(-50% - 2px));
+  transform: translate(0,calc(-50% - 2px));
+}
+
+<div
+  className="c0"
+  id="tip"
+>
+  <div
+    className="c1"
+    onClick={undefined}
+  >
+    <svg
+      height="11"
+      width="11"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
+        fill="#DFDFE8"
+        fillRule="evenodd"
+      />
+    </svg>
+  </div>
+  <div
+    className="c2"
+  >
+    Send my tip to
+  </div>
+  <div
+    className="c3"
+  >
+    <div
+      className="c4"
+      id={undefined}
+    >
+      <div
+        className="c5"
+      >
+        
+      </div>
+      <div
+        className=""
+      >
+        <span
+          className="c6"
+        >
+          MISSING: allowTip
+           
+        </span>
+        <span
+          className="c7"
+        >
+          <div
+            checked={undefined}
+            className="c8"
+            disabled={undefined}
+            id={undefined}
+            onClick={[Function]}
+            size="small"
+          >
+            <div
+              className="c9"
+              size="small"
+            />
+            <div
+              checked={undefined}
+              className="c10"
+              size="small"
+            />
+          </div>
+        </span>
+      </div>
+    </div>
+    <div
+      className="c11"
+      disabled={true}
+      onClick={undefined}
+    >
+      <span
+        className="c12"
+      >
+        <svg
+          height="21"
+          width="22"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.248 13.348L2.84 17.23l-1.2-14.418 9.607 10.536zm8.214-3.794l-6.818 3.148-9.088-9.968 15.906 6.82zm-7.73 8.182l-1.769-2.178 1.769-.817v2.995zm-10.265.66A.73.73 0 0 0 2.506 19l6.083-2.81 3.307 4.075a.731.731 0 0 0 .814.23.733.733 0 0 0 .489-.692v-5.74l8.374-3.867a.736.736 0 0 0-.017-1.342L1.036.056 1.018.048C1.008.044.995.048.984.044A.728.728 0 0 0 .688 0C.658.003.631.01.602.015a.694.694 0 0 0-.238.09C.344.117.32.115.3.13.292.136.288.149.279.157.266.169.249.172.236.183a.717.717 0 0 0-.23.567C.008.763-.001.773 0 .787l1.467 17.61z"
+            fill="#1a22a8"
+            fillRule="evenodd"
+          />
+        </svg>
+      </span>
+      MISSING: sendTip
+    </div>
+  </div>
+</div>
+`;

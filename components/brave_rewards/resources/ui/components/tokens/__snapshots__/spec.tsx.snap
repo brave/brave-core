@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tokens tests basic tests matches the snapshot 1`] = `
+.c0 {
+  font-family: Poppins;
+  font-weight: 300;
+  line-height: 1.4;
+  color: #4b4c5c;
+  font-size: 16px;
+  display: inline-block;
+}
+
+.c1 {
+  color: inherit;
+  font-weight: 600;
+}
+
+<span
+  id="tokens"
+>
+  <span
+    className="c0"
+  >
+    <span
+      className="c1"
+    >
+      
+      10
+    </span>
+     
+    <span>
+      MISSING: tokens
+    </span>
+  </span>
+</span>
+`;

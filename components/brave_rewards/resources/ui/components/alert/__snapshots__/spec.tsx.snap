@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Alert tests basic tests matches the snapshot 1`] = `
+.c0 {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  background-color: #fff;
+  box-shadow: 0 1px 0 0 #dfdfe8;
+  padding: 30px 38px 33px 19px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Poppins;
+}
+
+.c1 {
+  width: 40px;
+  height: 40px;
+  -webkit-flex-basis: 40px;
+  -ms-flex-preferred-size: 40px;
+  flex-basis: 40px;
+}
+
+.c2 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-basis: 50%;
+  -ms-flex-preferred-size: 50%;
+  flex-basis: 50%;
+  padding-left: 11px;
+  font-size: 14px;
+  line-height: 1.57;
+  color: #838391;
+}
+
+.c2 b {
+  font-weight: 600;
+  color: #4b4c5c;
+}
+
+<div
+  className="c0"
+  id="alert"
+>
+  <span
+    className="c1"
+  >
+    <svg
+      height="42"
+      width="42"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g
+        fill="none"
+        fillRule="evenodd"
+        transform="translate(1 1)"
+      >
+        <path
+          d="M13 21.045l1.6-1.48 3.166 2.848h1.483L27.48 15l1.49 1.39-9.72 10.117h-.69z"
+          fill="#1BBA6A"
+        />
+        <circle
+          cx="20"
+          cy="20"
+          r="20"
+          stroke="#67D79D"
+        />
+      </g>
+    </svg>
+  </span>
+  <div
+    className="c2"
+  />
+</div>
+`;

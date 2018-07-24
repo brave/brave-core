@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListToken tests basic tests matches the snapshot 1`] = `
+.c0 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #d0d6dc;
+  border-top: none;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  margin-bottom: 8px;
+  font-family: Poppins;
+}
+
+.c1 {
+  font-size: 14px;
+  line-height: 2.79;
+  color: #4b4c5c;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: 60%;
+  -ms-flex-preferred-size: 60%;
+  flex-basis: 60%;
+}
+
+.c2 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: 40%;
+  -ms-flex-preferred-size: 40%;
+  flex-basis: 40%;
+  text-align: right;
+}
+
+.c3 {
+  font-family: Poppins;
+  font-weight: 300;
+  line-height: 1.4;
+  color: #686978;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.c4 {
+  color: #686978;
+  font-weight: 600;
+}
+
+<div
+  className="c0"
+  id="list"
+>
+  <div
+    className="c1"
+  />
+  <div
+    className="c2"
+  >
+    <span
+      id={undefined}
+    >
+      <span
+        className="c3"
+      >
+        <span
+          className="c4"
+        >
+          
+        </span>
+         
+        <span>
+          MISSING: tokens
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+`;

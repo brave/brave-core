@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Disabled Content tests basic tests matches the snapshot 1`] = `
+.c3 {
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #4b4c5c;
+}
+
+.c3 b,
+.c3 a {
+  font-weight: 500;
+  color: #4b4c5c;
+}
+
+.c3 h3 {
+  margin: 0;
+  display: inline-block;
+  padding: 0;
+  font-family: Poppins;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 0.5;
+  color: #ceb4e1;
+}
+
+.c0 {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: 32px;
+  padding: 0;
+  margin: 0;
+  max-width: initial;
+  height: initial;
+  color: inherit;
+  background-color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c1 {
+  box-sizing: border-box;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  grid-column: span 1;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-align-items: initial;
+  -webkit-box-align: initial;
+  -ms-flex-align: initial;
+  align-items: initial;
+  background-color: inherit;
+  -webkit-flex-direction: initial;
+  -ms-flex-direction: initial;
+  flex-direction: initial;
+  -webkit-flex-wrap: initial;
+  -ms-flex-wrap: initial;
+  flex-wrap: initial;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.c2 {
+  box-sizing: border-box;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  grid-column: span 2;
+  -webkit-box-pack: initial;
+  -webkit-justify-content: initial;
+  -ms-flex-pack: initial;
+  justify-content: initial;
+  -webkit-align-items: initial;
+  -webkit-box-align: initial;
+  -ms-flex-align: initial;
+  align-items: initial;
+  background-color: inherit;
+  -webkit-flex-direction: initial;
+  -ms-flex-direction: initial;
+  flex-direction: initial;
+  -webkit-flex-wrap: initial;
+  -ms-flex-wrap: initial;
+  flex-wrap: initial;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+<div
+  className=""
+  id="disabled"
+>
+  <div
+    className="c0"
+    disabled={false}
+    id={undefined}
+    onClick={undefined}
+  >
+    <div
+      className="c1"
+      id={undefined}
+      onClick={undefined}
+      size={1}
+    >
+      <img
+        className=""
+        src={undefined}
+      />
+    </div>
+    <div
+      className="c2"
+      id={undefined}
+      onClick={undefined}
+      size={2}
+    >
+      <div
+        className="c3"
+      />
+    </div>
+  </div>
+</div>
+`;

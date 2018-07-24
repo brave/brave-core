@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Box tests basic tests matches the snapshot 1`] = `
+.c0 {
+  width: 100%;
+  position: relative;
+  height: auto;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 0 8px 0 rgba(99,105,110,0.12);
+  padding: 30px 36px;
+  margin-bottom: 28px;
+  font-family: Poppins;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 200%;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: auto;
+  -webkit-flex-basis: 50%;
+  -ms-flex-preferred-size: 50%;
+  flex-basis: 50%;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.c3 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: 50%;
+  -ms-flex-preferred-size: 50%;
+  flex-basis: 50%;
+}
+
+.c5 {
+  -webkit-flex-basis: 40px;
+  -ms-flex-preferred-size: 40px;
+  flex-basis: 40px;
+}
+
+.c4 {
+  height: 36px;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.27;
+  -webkit-letter-spacing: normal;
+  -moz-letter-spacing: normal;
+  -ms-letter-spacing: normal;
+  letter-spacing: normal;
+  color: #4b4c5c;
+}
+
+.c6 {
+  width: 100%;
+  display: block;
+}
+
+.c7 {
+  width: 100%;
+  padding-right: 20px;
+  font-family: Muli;
+  font-size: 14px;
+  line-height: 1.29;
+  -webkit-letter-spacing: normal;
+  -moz-letter-spacing: normal;
+  -ms-letter-spacing: normal;
+  letter-spacing: normal;
+  color: #a4aeb8;
+}
+
+.c12 {
+  width: 20px;
+  float: none;
+  margin-top: 8px;
+}
+
+.c8 {
+  -webkit-flex-basis: 100%;
+  -ms-flex-preferred-size: 100%;
+  flex-basis: 100%;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  margin-top: 25px;
+}
+
+.c9 {
+  background: #fff;
+  overflow: hidden;
+  height: 0;
+  -webkit-flex-basis: 0;
+  -ms-flex-preferred-size: 0;
+  flex-basis: 0;
+}
+
+.c10 {
+  display: none;
+  position: absolute;
+  right: 35px;
+  top: 35px;
+  width: 13px;
+  height: 13px;
+}
+
+.c11 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.c13 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: #4b4c5c;
+  position: relative;
+  top: -4px;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+<div
+  className="c0"
+  id="box"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+      open={true}
+    >
+      <div
+        className="c3"
+      >
+        <div
+          checked={undefined}
+          className="c4"
+        >
+          test
+        </div>
+      </div>
+      <div
+        className="c5"
+      />
+      <div
+        className="c6"
+      />
+      <div
+        className="c3"
+      >
+        <div
+          className="c7"
+        />
+      </div>
+      <div
+        className="c5"
+      />
+      <div
+        className="c8"
+      />
+    </div>
+    <div
+      className="c9"
+      open={false}
+    >
+      <div
+        className="c10"
+        onClick={[Function]}
+        open={false}
+      >
+        <svg
+          height="11"
+          width="11"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
+            fill="#DFDFE8"
+            fillRule="evenodd"
+          />
+        </svg>
+      </div>
+      <div
+        className="c11"
+      >
+        <span
+          className="c12"
+        >
+          <svg
+            height="20"
+            width="21"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12.757 10H1.625M20.375 10h-2.868M17.507 10a2.375 2.375 0 1 0-4.75 0 2.375 2.375 0 0 0 4.75 0zM9.244 3h11.131M1.463 3H4.87M5.494 3a2.375 2.375 0 1 0 4.75 0 2.375 2.375 0 0 0-4.75 0zM6.4 17H1.625M20.375 17H11.15M12.15 17a2.375 2.375 0 1 0-4.749 0 2.375 2.375 0 0 0 4.75 0z"
+              fill="none"
+              fillRule="evenodd"
+              stroke="#A1A8F2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.25"
+            />
+          </svg>
+        </span>
+        <span
+          className="c13"
+        >
+          test
+           
+          MISSING: settings
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

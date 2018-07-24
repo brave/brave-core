@@ -1,0 +1,357 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
+.c3 {
+  margin-top: 33px;
+}
+
+.c8 {
+  font-family: Muli;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.63;
+  color: #686978;
+  margin-bottom: 39px;
+}
+
+.c13 {
+  text-align: center;
+}
+
+.c13 > div {
+  margin: 0 4px;
+}
+
+.c15 {
+  text-align: center;
+  margin-top: 59px;
+}
+
+.c4 {
+  border-bottom: 1px solid #DFDFE8;
+  text-align: center;
+  font-family: Poppins;
+}
+
+.c5 {
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #DFDFE8;
+  border-bottom: 1px solid #FFF;
+  color: #FB542B;
+  font-size: 16px;
+  font-weight: 500;
+  -webkit-letter-spacing: -0.29px;
+  -moz-letter-spacing: -0.29px;
+  -ms-letter-spacing: -0.29px;
+  letter-spacing: -0.29px;
+  line-height: 44px;
+  display: inline-block;
+  cursor: pointer;
+  min-width: 230px;
+  padding: 0 10px;
+  margin: 0 2px;
+  position: relative;
+  top: 1px;
+}
+
+.c6 {
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #DFDFE8;
+  border-bottom: 1px solid #DFDFE8;
+  color: #686978;
+  font-size: 16px;
+  font-weight: 500;
+  -webkit-letter-spacing: -0.29px;
+  -moz-letter-spacing: -0.29px;
+  -ms-letter-spacing: -0.29px;
+  letter-spacing: -0.29px;
+  line-height: 44px;
+  display: inline-block;
+  cursor: pointer;
+  min-width: 230px;
+  padding: 0 10px;
+  margin: 0 2px;
+  position: relative;
+  top: 1px;
+}
+
+.c7 {
+  padding: 34px 56px 20px;
+}
+
+.c9 {
+  max-width: 100%;
+  width: 100%;
+}
+
+.c12 {
+  min-height: 112px;
+  box-sizing: border-box;
+  width: 100%;
+  font-family: Muli;
+  border: 1px solid #DFDFE8;
+  border-radius: 6px;
+  padding: 15px 0px 15px 20px;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.c10 {
+  max-width: 100%;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.c11 {
+  width: 100%;
+  font-family: Poppins;
+  line-height: normal;
+  font-size: 14px;
+  font-weight: 500;
+  color: #686978;
+  margin-bottom: 6px;
+}
+
+.c0 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(12,13,33,0.85);
+  z-index: 99;
+  padding: 0 20px;
+}
+
+.c1 {
+  max-width: 666px;
+  margin: 52px auto;
+  padding: 61px 50px;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.c2 {
+  position: absolute;
+  top: 19px;
+  right: 19px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.c16 {
+  display: inline-block;
+  overflow: hidden;
+  background: #fff;
+  font-size: 13px;
+  border-radius: 20px;
+  min-width: 104px;
+  font-family: Poppins;
+}
+
+.c17 {
+  text-align: center;
+  box-sizing: border-box;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: rgba(251,84,43,0.9);
+  color: #fff;
+  padding: 13.5px 10px;
+}
+
+.c17:hover {
+  background: rgba(251,84,43,1);
+}
+
+.c17:active {
+  background: rgba(251,84,43,0.4);
+}
+
+.c14 {
+  display: inline-block;
+  overflow: hidden;
+  border: 1px solid rgba(184,185,196,0.9);
+  color: rgba(184,185,196,0.9);
+  font-size: 11px;
+  border-radius: 16px;
+  min-width: 88px;
+  padding: 10.5px 10px;
+  text-align: center;
+  box-sizing: border-box;
+  font-family: Poppins;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 500;
+}
+
+.c14:hover {
+  border-color: rgba(184,185,196,1);
+}
+
+.c14:active {
+  border-color: rgba(184,185,196,0.4);
+}
+
+.c14:hover {
+  color: rgba(184,185,196,1);
+}
+
+.c14:active {
+  color: rgba(184,185,196,0.4);
+}
+
+<div
+  className="c0"
+  id="modal"
+  onClick={[Function]}
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+      onClick={[Function]}
+    >
+      <svg
+        height="11"
+        width="11"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
+          fill="#DFDFE8"
+          fillRule="evenodd"
+        />
+      </svg>
+    </div>
+    <div
+      className=""
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className=""
+          id={undefined}
+        >
+          <div
+            className="c4"
+          >
+            <div
+              className="c5"
+              onClick={[Function]}
+              selected={true}
+            >
+              MISSING: rewardsBackupText1
+            </div>
+            <div
+              className="c6"
+              onClick={[Function]}
+              selected={false}
+            >
+              MISSING: rewardsRestoreText1
+            </div>
+          </div>
+          <div
+            className="c7"
+          >
+            <div
+              className="c8"
+            >
+              MISSING: rewardsBackupText2
+            </div>
+            <div
+              className="c9"
+              id={undefined}
+            >
+              <div
+                className="c10"
+                id={undefined}
+              >
+                <div
+                  className="c11"
+                >
+                  MISSING: recoveryKeys
+                </div>
+                <textarea
+                  className="c12"
+                  defaultValue=""
+                  disabled={true}
+                  onChange={undefined}
+                />
+              </div>
+            </div>
+            <div
+              className="c13"
+            >
+              <div
+                className="c14"
+                color="subtle"
+                onClick={[Function]}
+                size="small"
+              >
+                MISSING: copy
+              </div>
+              <div
+                className="c14"
+                color="subtle"
+                onClick={[Function]}
+                size="small"
+              >
+                MISSING: print
+              </div>
+              <div
+                className="c14"
+                color="subtle"
+                onClick={[Function]}
+                size="small"
+              >
+                MISSING: saveAsFile
+              </div>
+            </div>
+            <div
+              className="c15"
+            >
+              <div
+                className="c16"
+                color="brand"
+                onClick={[Function]}
+                size="medium"
+              >
+                <div
+                  className="c17"
+                  color="brand"
+                  disabled={undefined}
+                  size="medium"
+                >
+                  MISSING: done
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

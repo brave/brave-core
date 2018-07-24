@@ -1,0 +1,174 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+import { withState } from '@dump247/storybook-state';
+import { storiesOf, addDecorator } from '@storybook/react'
+import { withKnobs, boolean, select, text, object, number } from '@storybook/addon-knobs'
+import { BetterPageVisualizer } from '../../storyUtil'
+
+// Components
+import {
+  Box,
+  DisabledContent,
+  Alert,
+  MainToggle,
+  Donate,
+  List,
+  ListToken,
+  Tokens,
+  Profile,
+  Tooltip,
+  Amount
+} from '../../../src/features/rewards'
+
+const donate = require('../../assets/img/rewards_donate.svg')
+const bart = require('../../assets/img/bartBaker.jpeg')
+
+const donationAmount = [
+  {tokens: 1, converted: 0.3, selected: false},
+  {tokens: 5, converted: 1.5, selected: false},
+  {tokens: 10, converted: 3, selected: false}
+]
+
+addDecorator(withKnobs)
+
+// Globally adapt the story visualizer for this story
+addDecorator(BetterPageVisualizer)
+
+storiesOf('Feature Components/Rewards/Other', module)
+  .add('Box', withState({ checked: false, toggle: true }, (store) => {
+    return <div style={{width: '595px'}}>
+      <Box
+        title={text('Title', 'Brave ads')}
+        theme={{titleColor: '#9752cb'}}
+        toggle={boolean('Show toggle', store.state.toggle)}
+        checked={boolean('Toggle checked', store.state.checked)}
+        description={
+          text('Description', `Earn tokens by seeing ads on Brave. Ads are matched
+          from machine learning and the data temporarily present in your browser without tracking your
+          information or sending it outside.`)
+        }
+        onToggle={() => (
+          store.set({ checked: !store.state.checked })
+        )}
+        settingsChild={<div>Settings content</div>}
+      >
+        <div>Some content</div>
+      </Box>
+    </div>
+  }))
+  .add('Disabled content',() => {
+    return <DisabledContent
+      image={donate}
+      theme={{color: '#AC9CCF', boldColor: '#696fdc'}}
+    >
+      • Donate on the spot as you find gems. <br/>
+      • <b>Enable Tips </b> on Twitter, YouTube, and more, to give tips to posts you ‘Like’.
+    </DisabledContent>
+  })
+  .add('Alert',() => {
+    return <Alert
+      type={select('Type', {error: 'error', success: 'success'}, 'success')}
+      onClose={() => {}}
+    >
+      <b>Funds received!</b> 25 tokens are added to your wallet successfully.
+    </Alert>
+  })
+  .add('Main toggle', withState({ checked: false }, (store) => {
+    return <div style={{width: '800px'}}>
+      <MainToggle
+      enabled={boolean('Enable', store.state.checked)}
+      onToggle={() => (
+        store.set({ checked: !store.state.checked })
+      )}
+    />
+    </div>
+  }))
+  .add('Donate', withState({donationAmount}, (store) => {
+    return <div style={{background: '#696fdc'}}>
+      <Donate
+        theme={{
+          paddingFunds: '14px 12px 16px 24px',
+          paddingSend: '16px 19px 16px 40px',
+          paddingBox: '16px 19px 16px 20px'
+        }}
+        balance={number('Balance ', 5)}
+        donationAmounts={object('Donations', store.state.donationAmount)}
+        onDonate={() => {}}
+        title={'Donation amount'}
+        actionText={text('Action text', 'Send my Donation')}
+        onAmountSelection={(tokens: number) => {
+          const list = store.state.donationAmount.map((item) => {
+            item.selected = item.tokens === tokens
+            return item
+          })
+          store.set({donationAmount: list})
+        }}
+      >
+    </Donate>
+    </div>
+  }))
+    .add('List',() => {
+      return <div style={{width: '595px'}}>
+        <List
+          title={text('Title', 'Earnings this month')}
+        >
+          Some content
+        </List>
+      </div>
+    })
+    .add('List - Token',() => {
+      return <div style={{width: '400px'}}>
+        <ListToken
+          title={text('Title', 'Brave Contribute')}
+          value={number('Value', 10)}
+          converted={number('Converted', 0.25)}
+          isNegative={boolean('Is negative', false)}
+          theme={{color: text('Color', '#9752cb')}}
+        />
+      </div>
+    })
+    .add('Tokens',() => {
+      return <Tokens
+        value={text('Tokens value', '10')}
+        converted={text('Converted value', '4')}
+        currency={text('Currency', 'USD')}
+        isNegative={boolean('Is negative', false)}
+      />
+    })
+    .add('Profile',() => {
+      return <div style={{width: '400px'}}>
+        <Profile
+        type={select('Type', {big: 'big', small: 'small'}, 'big')}
+        title={'Bart Baker'}
+        verified={boolean('Verified', false)}
+        provider={select('Provider', {youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch'}, 'youtube')}
+        src={bart}
+      />
+      </div>
+    })
+    .add('Tooltip',() => {
+      return <Tooltip
+        position={select('Type', {left: 'left', right: 'right', top: 'top', bottom: 'bottom'}, 'bottom')}
+        content={'This is tooltip!'}
+      >
+        <div style={{border: '1px solid red'}}>
+          I have tooltip
+        </div>
+      </Tooltip>
+    })
+    .add('Amount', withState({selected: false}, (store) => {
+      return <div style={{background: '#696fdc', width: '335px', padding: '50px'}}>
+        <Amount
+        amount={number('Amount', 5)}
+        converted={number('Converted', 1.5)}
+        selected={boolean('Selected', store.state.selected)}
+        type={select('Type', {big: 'Big', small: 'Small'}, 'big')}
+        onSelect={() => (
+          store.set({ selected: !store.state.selected })
+        )}
+      />
+      </div>
+    }))

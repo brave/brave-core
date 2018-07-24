@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Profile tests basic tests matches the snapshot 1`] = `
+.c0 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  font-family: Poppins;
+}
+
+.c1 {
+  -webkit-flex-basis: 30px;
+  -ms-flex-preferred-size: 30px;
+  flex-basis: 30px;
+  position: relative;
+}
+
+.c2 {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+}
+
+.c3 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: 50%;
+  -ms-flex-preferred-size: 50%;
+  flex-basis: 50%;
+  margin-top: -5px;
+  padding-left: 0;
+}
+
+.c4 {
+  margin-left: 10px;
+}
+
+.c5 {
+  white-space: nowrap;
+  font-family: Muli;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.29;
+  -webkit-letter-spacing: -0.1px;
+  -moz-letter-spacing: -0.1px;
+  -ms-letter-spacing: -0.1px;
+  letter-spacing: -0.1px;
+  color: #686978;
+}
+
+<div
+  className="c0"
+  id="profile"
+>
+  <div
+    className="c1"
+  >
+    <img
+      className="c2"
+      src=""
+      type={undefined}
+    />
+  </div>
+  <div
+    className="c3"
+    type={undefined}
+  >
+    <div
+      className="c4"
+      type={undefined}
+    >
+      <span
+        className="c5"
+        type={undefined}
+      />
+    </div>
+  </div>
+</div>
+`;
