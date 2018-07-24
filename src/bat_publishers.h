@@ -11,15 +11,12 @@
 #include <mutex>
 #include <vector>
 
+#include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat_helper.h"
 
 namespace bat_ledger {
 class LedgerImpl;
-}
-
-namespace leveldb {
-class DB;
 }
 
 namespace braveledger_bat_helper {
@@ -37,17 +34,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void initSynopsis();
 
-  void saveVisit(std::string publisher, uint64_t duration, braveledger_bat_helper::SaveVisitCallback callback, bool ignoreMinTime);
-
-  void setPublisherTimestampVerified(std::string publisher, uint64_t verifiedTimestamp, bool verified);
-
-  void setPublisherFavIcon(std::string publisher, std::string favicon_url);
-
-  void setPublisherInclude(std::string publisher, bool include);
-
-  void setPublisherDeleted(std::string publisher, bool deleted);
-
-  void setPublisherPinPercentage(std::string publisher, bool pinPercentage);
+  void saveVisit(const ledger::VisitData& visit_data);
 
   void setPublisherMinVisitTime(const uint64_t& duration); // In milliseconds
 
@@ -59,61 +46,44 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   unsigned int getPublisherMinVisits() const;
   bool getPublisherAllowNonVerified() const;
 
-  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> getPublishersData();
-
   std::vector<braveledger_bat_helper::WINNERS_ST> winners(const unsigned int& ballots);
 
-  bool isEligableForContribution(const braveledger_bat_helper::PUBLISHER_DATA_ST& publisherData);
-
-  void loadState(bool success, const std::string& data);
+  std::unique_ptr<ledger::PublisherInfo> onPublisherInfoUpdated(
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo>);
 
  private:
   // LedgerCallbackHandler impl
-  void OnLedgerStateLoaded(ledger::Result result,
-                           const std::string& data) override;
   void OnPublisherStateLoaded(ledger::Result result,
                               const std::string& data) override;
+  void OnPublisherStateSaved(ledger::Result result) override;
+
+  bool isEligableForContribution(const ledger::PublisherInfo& info);
+  bool isVerified(const ledger::PublisherInfo& publisher_id);
+  void saveVisitInternal(
+      const ledger::PublisherInfo::id_type& publisher_id,
+      const ledger::VisitData& visit_data,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> publisher_info);
+
+
+  void loadState(const std::string& data);
 
   double concaveScore(const uint64_t& duration);
 
   void saveState();
 
-  bool Init();
-  bool EnsureInitialized();
-
-  void loadPublishers();
-
-  void saveVisitInternal(const std::string& publisher, uint64_t duration,
-    braveledger_bat_helper::SaveVisitCallback callback);
-
-  void setPublisherFavIconInternal(const std::string& publisher, const std::string& favicon_url);
-
-  void setPublisherTimestampVerifiedInternal(const std::string& publisher,
-    const uint64_t& verifiedTimestamp, const bool& verified);
-
-  void setPublisherDeletedInternal(const std::string& publisher, const bool& deleted);
-
-  void setPublisherIncludeInternal(const std::string& publisher, const bool& include);
-
-  void setPublisherPinPercentageInternal(const std::string& publisher, const bool& pinPercentage);
-
   void calcScoreConsts();
 
   void synopsisNormalizer();
-
-  void synopsisNormalizerInternal();
 
   bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
-  std::vector<braveledger_bat_helper::PUBLISHER_DATA_ST> topN();
+  std::vector<braveledger_bat_helper::PUBLISHER_ST> topN();
 
   std::map<std::string, braveledger_bat_helper::PUBLISHER_ST> publishers_;
-
-  std::mutex publishers_map_mutex_;
-
-  std::unique_ptr<leveldb::DB> level_db_;
 
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
 

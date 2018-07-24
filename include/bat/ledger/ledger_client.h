@@ -5,6 +5,7 @@
 #ifndef BAT_LEDGER_LEDGER_CLIENT_H_
 #define BAT_LEDGER_LEDGER_CLIENT_H_
 
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -12,6 +13,7 @@
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_task_runner.h"
 #include "bat/ledger/ledger_url_loader.h"
+#include "bat/ledger/publisher_info.h"
 
 namespace ledger {
 
@@ -20,6 +22,11 @@ LEDGER_EXPORT enum URL_METHOD {
   PUT = 1,
   POST = 2
 };
+
+using PublisherInfoCallback = std::function<void(Result,
+    std::unique_ptr<PublisherInfo>)>;
+using GetPublisherInfoListCallback =
+    std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -30,13 +37,25 @@ class LEDGER_EXPORT LedgerClient {
   virtual void OnWalletCreated(Result result) = 0;
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id) = 0;
+
   virtual void LoadLedgerState(LedgerCallbackHandler* handler) = 0;
-  virtual void LoadPublisherState(LedgerCallbackHandler* handler) = 0;
   virtual void SaveLedgerState(const std::string& ledger_state,
                                LedgerCallbackHandler* handler) = 0;
+
+  virtual void LoadPublisherState(LedgerCallbackHandler* handler) = 0;
   virtual void SavePublisherState(const std::string& publisher_state,
                                   LedgerCallbackHandler* handler) = 0;
-  virtual std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
+
+  virtual void SavePublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
+                                PublisherInfoCallback callback) = 0;
+  virtual void LoadPublisherInfo(const PublisherInfo::id_type& publisher_id,
+                                PublisherInfoCallback callback) = 0;
+  virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
+                                    PublisherInfoFilter filter,
+                                    GetPublisherInfoListCallback callback) = 0;
+
+  virtual std::unique_ptr<ledger::LedgerURLLoader> LoadURL(
+      const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,

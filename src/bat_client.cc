@@ -36,7 +36,6 @@ BatClient::BatClient(bat_ledger::LedgerImpl* ledger, bool useProxy) :
       ledger_(ledger),
       useProxy_(useProxy),
       state_(new braveledger_bat_helper::CLIENT_STATE_ST()),
-      publisherTimestamp_(0),
       currentReconcile_(new braveledger_bat_helper::CURRENT_RECONCILE) {
   // Enable emscripten calls
   //braveledger_bat_helper::readEmscripten();
@@ -71,7 +70,6 @@ void BatClient::loadStateOrRegisterPersonaCallback(bool success, const std::stri
   LOG(ERROR) << "!!!card address == " << state.walletInfo_.addressCARD_ID_;
 
   state_.reset(new braveledger_bat_helper::CLIENT_STATE_ST(state));
-  publisherTimestamp(false);
   ledger_->OnWalletCreated(ledger::Result::OK);
 }
 
@@ -187,55 +185,11 @@ void BatClient::registerPersonaCallback(bool result,
   braveledger_bat_helper::getJSONWalletInfo(response, state_->walletInfo_, state_->fee_currency_, state_->fee_amount_, state_->days_);
   state_->bootStamp_ = braveledger_bat_helper::currentTime() * 1000;
   state_->reconcileStamp_ = state_->bootStamp_ + state_->days_ * 24 * 60 * 60 * 1000;
-  publisherTimestamp();
 
   // TODO debug
   //getPromotionCaptcha();
   //
   ledger_->OnWalletCreated(ledger::Result::OK);
-}
-
-void BatClient::publisherTimestamp( bool save_state) {
-  // We should use simple callbacks on iOS
-  braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST extra_data;
-  extra_data.boolean1 = save_state;
-
-  auto request_id = ledger_->LoadURL(buildURL(PUBLISHER_TIMESTAMP, PREFIX_V3), std::vector<std::string>(), "", "",
-    ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(&BatClient::publisherTimestampCallback,
-                                       this,
-                                       _1,
-                                       _2,
-                                       extra_data));
-}
-
-void BatClient::publisherTimestampCallback(bool result, const std::string& response,
-    const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extra_data) {
-  LOG(ERROR) << "response " << response;
-  if (!result) {
-    // TODO errors handling
-    return;
-  }
-  braveledger_bat_helper::getJSONPublisherTimeStamp(response, publisherTimestamp_);
-  if (!extra_data.boolean1) {
-    LOG(ERROR) << "BatClient::publisherTimestampCallback !extra_data.boolean1";
-  }
-  else
-  {
-    saveState();
-  }
-}
-
-uint64_t BatClient::getPublisherTimestamp() {
-  return publisherTimestamp_;
-}
-
-std::unique_ptr<ledger::LedgerURLLoader> BatClient::publisherInfo(
-    const std::string& publisher,
-    ledger::LedgerCallbackHandler* handler){
-  return ledger_->LoadURL(buildURL(PUBLISHER_INFO + publisher, PREFIX_V3),
-      std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, handler);
 }
 
 void BatClient::setContributionAmount(const double& amount) {

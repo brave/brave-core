@@ -604,133 +604,18 @@ namespace braveledger_bat_helper {
 
   /////////////////////////////////////////////////////////////////////////////
   PUBLISHER_ST::PUBLISHER_ST():
+    id_(""),
     duration_(0),
     score_(0),
     visits_(0),
-    verified_(false),
-    exclude_(false),
-    pinPercentage_(false),
-    verifiedTimeStamp_(0),
     percent_(0),
-    deleted_(false),
     weight_(0) {}
-
-  PUBLISHER_ST::PUBLISHER_ST(const PUBLISHER_ST& publisher) :
-    duration_(publisher.duration_),
-    favicon_url_(publisher.favicon_url_),
-    score_(publisher.score_),
-    visits_(publisher.visits_),
-    verified_(publisher.verified_),
-    exclude_(publisher.exclude_),
-    pinPercentage_(publisher.pinPercentage_),
-    verifiedTimeStamp_(publisher.verifiedTimeStamp_),
-    percent_(publisher.percent_),
-    deleted_(publisher.deleted_),
-    weight_(publisher.weight_)
-    {}
 
   PUBLISHER_ST::~PUBLISHER_ST() {}
 
-  bool PUBLISHER_ST::loadFromJson(const std::string & json) {
-    rapidjson::Document d;
-    d.Parse(json.c_str());
-
-    //has parser errors or wrong types
-    bool error = d.HasParseError();
-    if (false == error) {
-      error = !(d.HasMember("duration") && d["duration"].IsUint64() &&
-        d.HasMember("favicon_url") && d["favicon_url"].IsString() &&
-        d.HasMember("score") && d["score"].IsDouble() &&
-        d.HasMember("visits") && d["visits"].IsUint() &&
-        d.HasMember("verified") && d["verified"].IsBool() &&
-        d.HasMember("exclude") && d["exclude"].IsBool() &&
-        d.HasMember("pinPercentage") && d["pinPercentage"].IsBool() &&
-        d.HasMember("verifiedTimeStamp") && d["verifiedTimeStamp"].IsUint64() &&
-        d.HasMember("percent") && d["percent"].IsUint() &&
-        d.HasMember("deleted") && d["deleted"].IsBool() &&
-        d.HasMember("weight") && d["weight"].IsDouble() );
-    }
-
-    if (false == error) {
-      //TODO: Uint64 or string?
-      duration_ = d["duration"].GetUint64();
-      favicon_url_ = d["favicon_url"].GetString();
-      score_ = d["score"].GetDouble();
-      visits_ = d["visits"].GetUint();
-      verified_ = d["verified"].GetBool();
-      exclude_ = d["exclude"].GetBool();
-      pinPercentage_ = d["pinPercentage"].GetBool();
-      verifiedTimeStamp_ = d["verifiedTimeStamp"].GetUint64();
-      percent_ = d["percent"].GetUint();
-      deleted_ = d["deleted"].GetBool();
-      weight_ = d["weight"].GetDouble();
-    }
-
-    return !error;
+  bool PUBLISHER_ST::operator<(const PUBLISHER_ST& rhs) const {
+    return score_ > rhs.score_;
   }
-
-  void saveToJson(JsonWriter & writer, const PUBLISHER_ST& data) {
-    writer.StartObject();
-
-    //TODO: uint64 or string
-    writer.String("duration");
-    writer.Uint64(data.duration_);
-
-    writer.String("favicon_url");
-    writer.String(data.favicon_url_.c_str());
-
-    writer.String("score");
-    writer.Double(data.score_);
-
-    writer.String("visits");
-    writer.Uint(data.visits_);
-
-    writer.String("verified");
-    writer.Bool(data.verified_);
-
-    writer.String("exclude");
-    writer.Bool(data.exclude_);
-
-    writer.String("pinPercentage");
-    writer.Bool(data.pinPercentage_);
-
-    //TODO: uint64 or string
-    writer.String("verifiedTimeStamp");
-    writer.Uint64(data.verifiedTimeStamp_);
-
-    writer.String("percent");
-    writer.Uint(data.percent_);
-
-    writer.String("deleted");
-    writer.Bool(data.deleted_);
-
-    writer.String("weight");
-    writer.Double(data.weight_);
-
-    writer.EndObject();
-  }
-
-  /////////////////////////////////////////////////////////////////////////////
-  PUBLISHER_DATA_ST::PUBLISHER_DATA_ST() :
-    daysSpent_(0),
-    hoursSpent_(0),
-    minutesSpent_(0),
-    secondsSpent_(0) {}
-
-  PUBLISHER_DATA_ST::PUBLISHER_DATA_ST(const PUBLISHER_DATA_ST& publisherData) :
-    publisherKey_(publisherData.publisherKey_),
-    publisher_(publisherData.publisher_),
-    daysSpent_(publisherData.daysSpent_),
-    hoursSpent_(publisherData.hoursSpent_),
-    minutesSpent_(publisherData.minutesSpent_),
-    secondsSpent_(publisherData.secondsSpent_) {}
-
-  PUBLISHER_DATA_ST::~PUBLISHER_DATA_ST() {}
-
-  bool PUBLISHER_DATA_ST::operator<(const PUBLISHER_DATA_ST &rhs) const {
-    return publisher_.score_ > rhs.publisher_.score_;
-  }
-
   /////////////////////////////////////////////////////////////////////////////
   WINNERS_ST::WINNERS_ST() :
     votes_(0) {}
@@ -1153,24 +1038,6 @@ namespace braveledger_bat_helper {
         fee_currency = itr->name.GetString();
         fee_amount = itr->value.GetDouble();
       }
-    }
-    return !error;
-  }
-
-  bool getJSONPublisherTimeStamp(const std::string& json, uint64_t& publisherTimestamp) {
-    publisherTimestamp = 0;
-
-    rapidjson::Document d;
-    d.Parse(json.c_str());
-
-    //has parser errors or wrong types
-    bool error = d.HasParseError();
-    if (false == error) {
-      error = !(d.HasMember("timestamp") && d["timestamp"].IsUint64());
-    }
-
-    if (false == error) {
-      publisherTimestamp = d["timestamp"].GetUint64();
     }
     return !error;
   }

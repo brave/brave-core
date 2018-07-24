@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 #ifndef BRAVELEDGER_STATIC_VALUES_H_
 #define BRAVELEDGER_STATIC_VALUES_H_
 
@@ -17,8 +17,6 @@
 #define PREFIX_V3                       "/v3"
 #define REGISTER_PERSONA                "/registrar/persona"
 #define REGISTER_VIEWING                "/registrar/viewing"
-#define PUBLISHER_TIMESTAMP             "/publisher/timestamp"
-#define PUBLISHER_INFO                  "/publisher/identity?publisher="
 #define WALLET_PROPERTIES               "/v2/wallet/"
 #define WALLET_PROPERTIES_END           "/balance"
 #define RECONCILE_CONTRIBUTION          "/surveyor/contribution/current/"
