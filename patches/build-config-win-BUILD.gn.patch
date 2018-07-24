@@ -1,0 +1,15 @@
+diff --git a/build/config/win/BUILD.gn b/build/config/win/BUILD.gn
+index ce8128b4092272df18ad748c19812a1646936af8..60865407f0cc1d1cbe7f44dae979149024dc9643 100644
+--- a/build/config/win/BUILD.gn
++++ b/build/config/win/BUILD.gn
+@@ -103,7 +103,9 @@ config("compiler") {
+     # lld and get more deterministic compiler output in return.
+     # In LTO builds, the compiler doesn't write .obj files containing mtimes,
+     # so /Brepro is ignored there.
+-    cflags += [ "/Brepro" ]
++    if (is_official_build) {
++      cflags += [ "/Brepro" ]
++    }
+   }
+ 
+   if (!is_debug && !is_component_build) {

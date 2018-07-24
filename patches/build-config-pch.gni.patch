@@ -1,0 +1,12 @@
+diff --git a/build/config/pch.gni b/build/config/pch.gni
+index 93bd2fedc38090e0604e974bbeed3a1e1ebbd29c..2e3bc92261b1905c93f15405fda82c8cb1f723c1 100644
+--- a/build/config/pch.gni
++++ b/build/config/pch.gni
+@@ -9,4 +9,7 @@ declare_args() {
+   # but for distributed build system uses (like goma) or when
+   # doing official builds.
+   enable_precompiled_headers = !is_official_build && !use_goma
++  if (!is_official_build && host_os == "win") {
++    enable_precompiled_headers = false
++  }
+ }
