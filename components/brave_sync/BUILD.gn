@@ -1,0 +1,73 @@
+import("//build/config/features.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+source_set("brave_sync") {
+  sources = [
+    "api/brave_sync_api.cc",
+    "api/brave_sync_api.h",
+    "api/brave_sync_event_router.cc",
+    "api/brave_sync_event_router.h",
+    "bookmarks.cc",
+    "bookmarks.h",
+    "bookmark_order_util.cc",
+    "bookmark_order_util.h",
+    "client/client.h",
+    "client/client_ext_impl.cc",
+    "client/client_ext_impl.h",
+    "client/client_ext_impl_data.cc",
+    "client/client_ext_impl_data.h",
+    "client/client_data.cc",
+    "client/client_data.h",
+    "client/client_factory.cc",
+    "client/client_factory.h",
+    "controller.h",
+    "controller_factory.h",
+    "controller_factory.cc",
+    "controller_impl.cc",
+    "controller_impl.h",
+    "cansendbookmarks.h",
+    "can_send_history.h",
+    "debug.cc",
+    "debug.h",
+    "devices.cc",
+    "devices.h",
+    "history.h",
+    "history.cc",
+    "jslib_const.cc",
+    "jslib_const.h",
+    "jslib_messages.cc",
+    "jslib_messages.h",
+    "object_map.cc",
+    "object_map.h",
+    "pref_names.cc",
+    "pref_names.h",
+    "profile_prefs.cc",
+    "profile_prefs.h",
+    "settings.cc",
+    "settings.h",
+    "tools.cc",
+    "tools.h",
+    "values_conv.cc",
+    "values_conv.h",
+    "value_debug.cc",
+    "value_debug.h",
+  ]
+
+  public_deps = [
+    "//content/public/browser",
+    "//brave/common/extensions/api",
+  ]
+}
+
+grit("resources") {
+  source = "resources.grd"
+  outputs = [
+    "grit/brave_sync_resources_map.cc",
+    "grit/brave_sync_resources_map.h",
+    "grit/brave_sync_resources.h",
+    "brave_sync_resources.pak",
+  ]
+
+  resource_ids = ""
+}

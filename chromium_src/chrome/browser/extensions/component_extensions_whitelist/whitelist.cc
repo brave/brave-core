@@ -9,6 +9,7 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/extension/grit/brave_rewards_resources.h"
+#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 
 namespace extensions {
@@ -18,6 +19,7 @@ namespace extensions {
       brave_extension_id,
       pdfjs_extension_id,
       brave_rewards_extension_id,
+      brave_sync_extension_id,
       brave_webtorrent_extension_id
     };
 
@@ -34,6 +36,7 @@ namespace extensions {
       // Please keep the list in alphabetical order.
       case IDR_BRAVE_EXTENSON:
       case IDR_BRAVE_REWARDS:
+      case IDR_BRAVE_SYNC_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:
         return true;
     }
@@ -42,4 +45,3 @@ namespace extensions {
   }
 
 }  // namespace extensions
-

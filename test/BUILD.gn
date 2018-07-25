@@ -57,6 +57,7 @@ test("brave_unit_tests") {
     "//brave/common/tor/tor_test_constants.cc",
     "//brave/common/tor/tor_test_constants.h",
     "//brave/components/brave_shields/browser/ad_block_regional_service_unittest.cc",
+    "//brave/components/brave_sync/bookmark_order_util_unittest.cc",    
     "//brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_host_content_settings_map_unittest.cc",
     "//chrome/common/importer/mock_importer_bridge.cc",

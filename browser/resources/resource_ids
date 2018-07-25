@@ -25,6 +25,7 @@
   "brave/app/theme/brave_unscaled_resources.grd": {
     "includes": [36500],
   },
+  # brave sync 3700
   # brave webtorrent 37500
   # brave rewards 38000
 }

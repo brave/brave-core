@@ -8,6 +8,10 @@
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/brave_rewards_ui.h"
+
+#include "brave/browser/ui/webui/sync/sync_ui_impl.h"
+
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/common/url_constants.h"
@@ -38,6 +42,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 template<>
 WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
+  if (host == kBraveUISyncHost) {
+    return new SyncUIImpl(web_ui, url.host(), kBraveSyncJS,
+        IDR_BRAVE_SYNC_JS, IDR_BRAVE_SYNC_HTML);
+  } else
   if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -68,6 +76,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == kBraveUIWelcomeURL ||
+      url.host_piece() == kBraveUISyncHost ||
       url.host_piece() == chrome::kChromeUINewTabHost ||
       url.host_piece() == chrome::kChromeUISettingsHost) {
     return &NewWebUI<BasicUI>;
@@ -113,4 +122,3 @@ BraveWebUIControllerFactory::BraveWebUIControllerFactory() {
 
 BraveWebUIControllerFactory::~BraveWebUIControllerFactory() {
 }
-
