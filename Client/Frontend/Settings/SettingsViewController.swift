@@ -82,13 +82,11 @@ extension DataSource {
 
 protocol SettingsDelegate: class {
     func settingsOpenURLInNewTab(_ url: URL)
+    func settingsDidFinish(_ settingsViewController: SettingsViewController)
 }
 
 class SettingsViewController: TableViewController {
-    
     weak var settingsDelegate: SettingsDelegate?
-    
-    private var settings: [Section] = []
     
     private let profile: Profile
     private let tabManager: TabManager
@@ -129,7 +127,7 @@ class SettingsViewController: TableViewController {
     }
     
     @objc private func tappedDone() {
-        dismiss(animated: true)
+        settingsDelegate?.settingsDidFinish(self)
     }
     
     // MARK: - Sections

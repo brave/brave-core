@@ -25,7 +25,7 @@ private struct LoginDetailUX {
     static let SeparatorHeight: CGFloat = 44
 }
 
-class LoginDetailViewController: SensitiveViewController {
+class LoginDetailViewController: UIViewController {
 
     fileprivate let profile: Profile
 

@@ -702,13 +702,6 @@ extension TabTrayController: TabCellDelegate {
     }
 }
 
-extension TabTrayController: SettingsDelegate {
-    func settingsOpenURLInNewTab(_ url: URL) {
-        let request = URLRequest(url: url)
-        openNewTab(request)
-    }
-}
-
 extension TabTrayController: PhotonActionSheetProtocol {
     @objc func didTapDelete(_ sender: UIButton) {
         let controller = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)

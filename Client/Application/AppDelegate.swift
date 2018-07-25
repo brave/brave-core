@@ -39,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 
     var receivedURLs: [URL]?
+    
+    var authenticator: AppAuthenticator?
 
     @discardableResult func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         //
@@ -190,6 +192,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         #endif
         
         window!.makeKeyAndVisible()
+        
+        authenticator = AppAuthenticator(protectedWindow: window!, promptImmediately: true, isPasscodeEntryCancellable: false)
 
         // Now roll logs.
         DispatchQueue.global(qos: DispatchQoS.background.qosClass).async {
@@ -246,6 +250,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     // We sync in the foreground only, to avoid the possibility of runaway resource usage.
     // Eventually we'll sync in response to notifications.
     func applicationDidBecomeActive(_ application: UIApplication) {
+        authenticator?.hideBackgroundedBlur()
+        
         guard !DebugSettingsBundleOptions.launchIntoEmailComposer else {
             return
         }
@@ -332,6 +338,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // is that this method is only invoked whenever the application is entering the foreground where as
         // `applicationDidBecomeActive` will get called whenever the Touch ID authentication overlay disappears.
         self.updateAuthenticationInfo()
+        
+        if let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo(), authInfo.isPasscodeRequiredImmediately {
+            authenticator?.promptUserForAuthentication()
+        }
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        if KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() != nil {
+            authenticator?.showBackgroundBlur()
+        }
     }
 
     fileprivate func updateAuthenticationInfo() {

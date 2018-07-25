@@ -36,7 +36,7 @@ private struct BrowserViewControllerUX {
     fileprivate static let BookmarkStarAnimationOffset: CGFloat = 80
 }
 
-class BrowserViewController: SensitiveViewController {
+class BrowserViewController: UIViewController {
     var topSitesViewController: TopSitesViewController?
     var webViewContainer: UIView!
     var urlBar: URLBarView!
@@ -159,7 +159,6 @@ class BrowserViewController: SensitiveViewController {
     }
 
     fileprivate func didInit() {
-        isPasscodeEntryCancellable = false
         screenshotHelper = ScreenshotHelper(controller: self)
         tabManager.addDelegate(self)
         tabManager.addNavigationDelegate(self)
@@ -1156,6 +1155,10 @@ extension BrowserViewController: QRCodeViewControllerDelegate {
 extension BrowserViewController: SettingsDelegate {
     func settingsOpenURLInNewTab(_ url: URL) {
         self.openURLInNewTab(url, isPrivileged: false)
+    }
+    
+    func settingsDidFinish(_ settingsViewController: SettingsViewController) {
+        settingsViewController.dismiss(animated: true)
     }
 }
 
