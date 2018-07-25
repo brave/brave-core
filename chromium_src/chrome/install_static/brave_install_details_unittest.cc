@@ -8,7 +8,7 @@
 
 #include "base/macros.h"
 #include "chrome/install_static/install_modes.h"
-#include "components/version_info/version_info_values.h"
+#include "components/version_info/version_info.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

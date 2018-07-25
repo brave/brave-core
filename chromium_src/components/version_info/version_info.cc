@@ -8,8 +8,6 @@
 #undef GetChannelString
 #undef GetProductNameAndVersionForUserAgent
 
-#include "brave/version.h"
-
 namespace version_info {
 
 std::string GetProductNameAndVersionForUserAgent() {

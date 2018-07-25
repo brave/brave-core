@@ -7,7 +7,6 @@
 #include "base/sys_info.h"
 #include "brave/browser/brave_stats_updater_params.h"
 #include "brave/common/pref_names.h"
-#include "brave/version.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/channel_info.h"
