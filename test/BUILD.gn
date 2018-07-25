@@ -1,3 +1,4 @@
+import("//brave/build/config.gni")
 import("//testing/test.gni")
 
 static_library("brave_test_support_unit") {
@@ -98,11 +99,14 @@ test("brave_unit_tests") {
 }
 
 group("brave_browser_tests_deps") {
-  deps = [
-    "//brave:browser_dependencies",
-    "//brave:child_dependencies",
-    "//brave:brave",
-  ]
+  if (brave_chromium_build) {
+    # force these to build for tests
+    deps = [
+      "//brave:browser_dependencies",
+      "//brave:child_dependencies",
+      "//brave:brave",
+    ]
+  }
 }
 
 static_library("browser_test_support") {

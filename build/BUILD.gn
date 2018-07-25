@@ -6,14 +6,17 @@ brave_include_dirs_ = [
   root_out_dir,
 ]
 
-config("brave_include_dirs") {
-  include_dirs = brave_include_dirs_
+if (brave_chromium_build) {
+  config("compiler") {
+    include_dirs = brave_include_dirs_
+    defines = [ "BRAVE_CHROMIUM_BUILD" ]
+  }
+} else {
+  config("compiler") {}
 }
 
-config("feature_flags") {
+config("version") {
   defines = [
     "BRAVE_CHROMIUM_VERSION=\"$chrome_version_string\"",
-    "BRAVE_BROWSER_VERSION=\"$brave_version\"",
-    "BRAVE_CHROMIUM_BUILD",
   ]
 }
