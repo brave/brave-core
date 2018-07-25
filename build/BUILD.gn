@@ -12,8 +12,8 @@ config("brave_include_dirs") {
 
 config("feature_flags") {
   defines = [
-    "BRAVE_CHROMIUM_VERSION='$chrome_version_string'",
-    "BRAVE_BROWSER_VERSION='$brave_version'",
+    "BRAVE_CHROMIUM_VERSION=\"$chrome_version_string\"",
+    "BRAVE_BROWSER_VERSION=\"$brave_version\"",
   ]
 
   if (brave_chromium_build) {
