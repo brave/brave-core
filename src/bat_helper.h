@@ -113,7 +113,7 @@ namespace braveledger_bat_helper {
     BALLOT_ST(const BALLOT_ST& ballot);
     ~BALLOT_ST();
 
-    //load from json string
+    // Load from json string
     bool loadFromJson(const std::string & json);
 
     std::string viewingId_;
@@ -125,12 +125,36 @@ namespace braveledger_bat_helper {
     uint64_t delayStamp_ = 0u;
   };
 
+  struct BATCH_VOTES_INFO_ST {
+    BATCH_VOTES_INFO_ST();
+    BATCH_VOTES_INFO_ST(const BATCH_VOTES_INFO_ST&);
+    ~BATCH_VOTES_INFO_ST();
+
+    // Load from json string
+    bool loadFromJson(const std::string & json);
+
+    std::string surveyorId_;
+    std::string proof_;
+  };
+
+  struct BATCH_VOTES_ST {
+    BATCH_VOTES_ST();
+    BATCH_VOTES_ST(const BATCH_VOTES_ST&);
+    ~BATCH_VOTES_ST();
+
+    // Load from json string
+    bool loadFromJson(const std::string & json);
+
+    std::string publisher_;
+    std::vector<BATCH_VOTES_INFO_ST> batchVotesInfo_;
+  };
+
   struct CLIENT_STATE_ST {
     CLIENT_STATE_ST();
     CLIENT_STATE_ST(const CLIENT_STATE_ST&);
     ~CLIENT_STATE_ST();
 
-    //load from json string
+    // Load from json string
     bool loadFromJson(const std::string & json);
 
     WALLET_INFO_ST walletInfo_;
@@ -149,6 +173,7 @@ namespace braveledger_bat_helper {
     std::vector<BALLOT_ST> ballots_;
     std::string ruleset_;
     std::string rulesetV2_;
+    std::vector<BATCH_VOTES_ST> batch_;
   };
 
   struct PUBLISHER_STATE_ST {
@@ -326,6 +351,8 @@ namespace braveledger_bat_helper {
   std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload);
 
   std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx);
+
+  std::string stringifyBatch(std::vector<BATCH_VOTES_INFO_ST> payload);
 
   std::vector<uint8_t> getSHA256(const std::string& in);
 
