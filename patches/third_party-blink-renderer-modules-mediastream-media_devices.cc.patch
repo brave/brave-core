@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 891c586853c02658696295ce05c0ac2fefbde749..c6743db66c255203baa90964a574ef3c65b8e668 100644
+index 0d835761e04306b02f87b020c24385788fd9224e..809e2f4a72646fa4f19589b2b1ca6282928c55c5 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
 @@ -4,6 +4,7 @@
@@ -10,9 +10,9 @@ index 891c586853c02658696295ce05c0ac2fefbde749..c6743db66c255203baa90964a574ef3c
  #include "services/service_manager/public/cpp/interface_provider.h"
  #include "third_party/blink/public/platform/platform.h"
  #include "third_party/blink/public/platform/task_type.h"
-@@ -90,6 +91,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state) {
-         script_state,
-         DOMException::Create(kNotSupportedError, "Current frame is detached."));
+@@ -89,6 +90,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state) {
+         script_state, DOMException::Create(DOMExceptionCode::kNotSupportedError,
+                                            "Current frame is detached."));
    }
 +  if (!AllowFingerprinting(frame)) {
 +    return ScriptPromise::CastUndefined(script_state);

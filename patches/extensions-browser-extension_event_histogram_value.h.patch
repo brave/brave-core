@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 11bc707d13704373055a4dc4294b2ecb83ce2cdb..f7797cce606a9075173fc6c61b023bd515a64e2f 100644
+index 8312660d4edae8639828f217e82db6a4b3d51a15..1f147c7d7fbb4e676750e793611c41ca997f2643 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -438,6 +438,8 @@ enum HistogramValue {
-   SAFE_BROWSING_PRIVATE_ON_SECURITY_INTERSTITIAL_PROCEEDED,
+@@ -439,6 +439,8 @@ enum HistogramValue {
    ACCESSIBILITY_PRIVATE_ON_SELECT_TO_SPEAK_STATE_CHANGE_REQUESTED,
    INPUT_METHOD_PRIVATE_ON_FOCUS,
+   SYSTEM_POWER_SOURCE_ONPOWERCHANGED,
 +  BRAVE_START = 5000,
 +  BRAVE_AD_BLOCKED,
    // Last entry: Add new entries above, then run:

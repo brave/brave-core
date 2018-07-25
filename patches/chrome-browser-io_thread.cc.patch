@@ -1,21 +1,21 @@
 diff --git a/chrome/browser/io_thread.cc b/chrome/browser/io_thread.cc
-index ff53e822d3d2e3b550904e191277bf893751ecb4..9a2d8523e4bdac5efbf78b83e35789dde6129691 100644
+index 55df34044af7bafb55521738a6581410877494c0..9e67082d83f5f2c6a27eec7938b47e108dbc44f7 100644
 --- a/chrome/browser/io_thread.cc
 +++ b/chrome/browser/io_thread.cc
-@@ -30,6 +30,7 @@
+@@ -27,6 +27,7 @@
  #include "base/threading/thread.h"
  #include "base/time/time.h"
  #include "base/trace_event/trace_event.h"
 +#include "brave/browser/net/brave_system_network_delegate.h"
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
- #include "chrome/browser/data_usage/tab_id_annotator.h"
-@@ -699,7 +700,7 @@ void IOThread::ConstructSystemRequestContext() {
-       std::make_unique<network::URLRequestContextBuilderMojo>();
+ #include "chrome/browser/data_use_measurement/chrome_data_use_ascriber.h"
+@@ -432,7 +433,7 @@ void IOThread::ConstructSystemRequestContext() {
+     std::unique_ptr<network::URLRequestContextBuilderMojo> builder =
+         std::make_unique<network::URLRequestContextBuilderMojo>();
  
-   if (!base::FeatureList::IsEnabled(network::features::kNetworkService)) {
 -    auto chrome_network_delegate = std::make_unique<ChromeNetworkDelegate>(
 +    auto chrome_network_delegate = std::make_unique<BraveSystemNetworkDelegate>(
-         extension_event_router_forwarder(), &system_enable_referrers_);
-     // By default, data usage is considered off the record.
-     chrome_network_delegate->set_data_use_aggregator(
+         extension_event_router_forwarder());
+     builder->set_network_delegate(
+         globals_->data_use_ascriber->CreateNetworkDelegate(

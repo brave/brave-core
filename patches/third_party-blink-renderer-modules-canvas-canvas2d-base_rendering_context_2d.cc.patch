@@ -1,22 +1,16 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 357d8c5a187c67901741e3dd5b4187d9e2be0f33..1aaf1333a9c4213ba9d940d80812427cd0d24212 100644
+index 783f5c3e3ddf5c33f43b9cccc4070cfc7c866e86..fc24e3a739e6e73b734c6506888cc6207a8b593e 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -4,11 +4,13 @@
- 
+@@ -5,6 +5,7 @@
  #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
  
+ #include "base/numerics/checked_math.h"
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
- #include "third_party/blink/renderer/bindings/core/v8/exception_messages.h"
- #include "third_party/blink/renderer/bindings/core/v8/exception_state.h"
  #include "third_party/blink/renderer/core/css/cssom/css_url_image_value.h"
  #include "third_party/blink/renderer/core/css/parser/css_parser.h"
  #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
- #include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
- #include "third_party/blink/renderer/core/html/canvas/image_data.h"
- #include "third_party/blink/renderer/core/html/canvas/text_metrics.h"
-@@ -350,7 +352,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
+@@ -355,7 +356,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
    ModifiableState().SetShadowColor(color.Rgb());
  }
  
@@ -30,7 +24,7 @@ index 357d8c5a187c67901741e3dd5b4187d9e2be0f33..1aaf1333a9c4213ba9d940d80812427c
    return GetState().LineDash();
  }
  
-@@ -789,16 +796,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
+@@ -794,16 +800,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
    ClipInternal(dom_path->GetPath(), winding_rule_string);
  }
  
@@ -59,7 +53,7 @@ index 357d8c5a187c67901741e3dd5b4187d9e2be0f33..1aaf1333a9c4213ba9d940d80812427c
    return IsPointInPathInternal(dom_path->GetPath(), x, y, winding_rule_string);
  }
  
-@@ -823,13 +840,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
+@@ -828,13 +844,22 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
                         SkFillTypeToWindRule(ParseWinding(winding_rule_string)));
  }
  
@@ -75,7 +69,6 @@ index 357d8c5a187c67901741e3dd5b4187d9e2be0f33..1aaf1333a9c4213ba9d940d80812427c
 -bool BaseRenderingContext2D::isPointInStroke(Path2D* dom_path,
 -                                             const double x,
 -                                             const double y) {
-+
 +bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state,
 +                                             Path2D* dom_path,
 +                                              const double x,
@@ -87,7 +80,7 @@ index 357d8c5a187c67901741e3dd5b4187d9e2be0f33..1aaf1333a9c4213ba9d940d80812427c
    return IsPointInStrokeInternal(dom_path->GetPath(), x, y);
  }
  
-@@ -1605,11 +1632,14 @@ ImageData* BaseRenderingContext2D::createImageData(
+@@ -1610,11 +1635,14 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageData(
@@ -99,6 +92,6 @@ index 357d8c5a187c67901741e3dd5b4187d9e2be0f33..1aaf1333a9c4213ba9d940d80812427c
      ExceptionState& exception_state) {
 +  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
 +  if (window && !AllowFingerprinting(window->GetFrame())) return nullptr;
-   if (!WTF::CheckMul(sw, sh).IsValid<int>()) {
+   if (!base::CheckMul(sw, sh).IsValid<int>()) {
      exception_state.ThrowRangeError("Out of memory at ImageData creation");
      return nullptr;

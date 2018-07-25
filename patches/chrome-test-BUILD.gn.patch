@@ -1,12 +1,13 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 385567746af391a190b6aa369ab2c2a088ff1e6a..aa63ff30cc12288657d5b4a09cad40aa682ede30 100644
+index 8b41158bbda65299cda680976a6c20b3de631b3f..9a31ec277eede5191509c04b4a7509bec6d97508 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -374,6 +374,7 @@ test("browser_tests") {
-     "//rlz/buildflags",
+@@ -378,6 +378,8 @@ test("browser_tests") {
      "//third_party/blink/public:buildflags",
    ]
-+  deps += [ "//brave/test:brave_browser_tests_deps", ]
  
++  deps += [ "//brave/test:brave_browser_tests_deps", ]
++
    data_deps = [
      "//testing/buildbot/filters:browser_tests_filters",
+     "//tools/media_engagement_preload:generator",

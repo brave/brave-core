@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 64a3c7982c9f23dbef8cd3061b3bface7cd65997..85414c0296e9125999713597deb35cbf5c3f0f31 100644
+index 2951ee282f4cf3a9ba3847f3cf59b2437873aaa1..eb85f9ef13acde5d66c0c7c6aaec41070dfdde4f 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -19,6 +19,7 @@
@@ -10,7 +10,7 @@ index 64a3c7982c9f23dbef8cd3061b3bface7cd65997..85414c0296e9125999713597deb35cbf
  #include "build/build_config.h"
  #include "chrome/common/buildflags.h"
  #include "chrome/common/channel_info.h"
-@@ -513,7 +514,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -512,7 +513,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
    ext_dispatcher =
        ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher();
  #endif

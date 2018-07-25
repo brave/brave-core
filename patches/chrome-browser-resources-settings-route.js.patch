@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 819467b388781db13d70b70cc5ebbe8c8966834b..52df670bda37b374da3d58f4b1a2454226373656 100644
+index e54cecc1c480327d03e5e9a0a59ccd7f1fdbbc65..40e3f3aad61ef092022c904a349da9f8767facaf 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -381,7 +381,9 @@ cr.define('settings', function() {
+@@ -393,7 +393,9 @@ cr.define('settings', function() {
        }
  
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');
@@ -11,4 +11,4 @@ index 819467b388781db13d70b70cc5ebbe8c8966834b..52df670bda37b374da3d58f4b1a24542
 +      // </if>
        // <if expr="chromeos">
        r.CUPS_PRINTERS = r.PRINTING.createChild('/cupsPrinters');
- 
+       // </if>
