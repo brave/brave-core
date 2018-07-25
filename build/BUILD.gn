@@ -14,9 +14,6 @@ config("feature_flags") {
   defines = [
     "BRAVE_CHROMIUM_VERSION=\"$chrome_version_string\"",
     "BRAVE_BROWSER_VERSION=\"$brave_version\"",
+    "BRAVE_CHROMIUM_BUILD",
   ]
-
-  if (brave_chromium_build) {
-    defines += [ "BRAVE_CHROMIUM_BUILD" ]
-  }
 }
