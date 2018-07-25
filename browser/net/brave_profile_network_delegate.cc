@@ -8,9 +8,8 @@
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 
 BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
-    extensions::EventRouterForwarder* event_router,
-    BooleanPrefMember* enable_referrers) :
-    BraveNetworkDelegateBase(event_router, enable_referrers) {
+    extensions::EventRouterForwarder* event_router) :
+    BraveNetworkDelegateBase(event_router) {
   brave::OnBeforeURLRequestCallback callback =
       base::Bind(
           brave::OnBeforeURLRequest_SiteHacksWork);

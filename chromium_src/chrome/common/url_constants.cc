@@ -22,6 +22,16 @@ const char kBluetoothAdapterOffHelpURL[] =
     "https://community.brave.com";
 #endif
 
+// TODO(https://crbug.com/852139): Replace this numbered link with a P-link once
+// we have one.
+const char kCastCloudServicesHelpURL[] =
+    "https://community.brave.com";
+
+// TODO(https://crbug.com/852139): Replace this numbered link with a P-link once
+// we have one.
+const char kCastNoDestinationFoundURL[] =
+    "https://community.brave.com";
+
 const char kChooserBluetoothOverviewURL[] =
     "https://community.brave.com";
 
@@ -72,6 +82,10 @@ const char kChromeSearchLocalNtpUrl[] =
 
 const char kChromeSearchMostVisitedHost[] = "most-visited";
 const char kChromeSearchMostVisitedUrl[] = "chrome-search://most-visited/";
+
+const char kChromeSearchLocalNtpBackgroundUrl[] =
+    "chrome-search://local-ntp/background.jpg";
+const char kChromeSearchLocalNtpBackgroundFilename[] = "background.jpg";
 
 const char kChromeSearchRemoteNtpHost[] = "remote-ntp";
 
@@ -143,8 +157,10 @@ const char kLearnMoreReportingURL[] =
 
 const char kLegacySupervisedUserManagementDisplayURL[] =
     "https://community.brave.com";
+
 const char kLegacySupervisedUserManagementURL[] =
     "https://community.brave.com";
+
 
 const char kMyActivityUrlInClearBrowsingData[] =
     "https://community.brave.com";
@@ -263,10 +279,16 @@ const char kGoogleNameserversLearnMoreURL[] =
 const char kInstantTetheringLearnMoreURL[] =
     "https://community.brave.com";
 
+const char kMultiDeviceLearnMoreURL[] =
+    "https://community.brave.com";
+
 const char kLanguageSettingsLearnMoreUrl[] =
     "https://community.brave.com";
 
 const char kLearnMoreEnterpriseURL[] =
+    "https://community.brave.com";
+
+const char kLinuxAppsLearnMoreURL[] =
     "https://community.brave.com";
 
 const char kNaturalScrollHelpURL[] =
@@ -298,6 +320,7 @@ const char kChromeCleanerLearnMoreURL[] =
 
 const char kWindowsXPVistaDeprecationURL[] =
     "https://community.brave.com";
+
 #endif
 
 #if BUILDFLAG(ENABLE_ONE_CLICK_SIGNIN)

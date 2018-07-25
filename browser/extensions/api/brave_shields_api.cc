@@ -29,7 +29,7 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   if (!ExtensionTabUtil::GetTabById(
         params->tab_id,
         Profile::FromBrowserContext(browser_context()),
-        include_incognito(),
+        include_incognito_information(),
         nullptr,
         nullptr,
         &contents,

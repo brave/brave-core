@@ -76,7 +76,8 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
   return ChromeWebUIControllerFactory::GetWebUIType(browser_context, url);
 }
 
-WebUIController* BraveWebUIControllerFactory::CreateWebUIControllerForURL(
+std::unique_ptr<WebUIController>
+BraveWebUIControllerFactory::CreateWebUIControllerForURL(
     WebUI* web_ui,
     const GURL& url) const {
 
@@ -86,7 +87,7 @@ WebUIController* BraveWebUIControllerFactory::CreateWebUIControllerForURL(
         web_ui, url);
   }
 
-  return (*function)(web_ui, url);
+  return base::WrapUnique((*function)(web_ui, url));
 }
 
 

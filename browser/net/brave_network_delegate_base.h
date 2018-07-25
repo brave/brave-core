@@ -5,12 +5,9 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_BASE_H_
 #define BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_BASE_H_
 
-#include "chrome/browser/net/chrome_network_delegate.h"
 #include "brave/browser/net/url_context.h"
-
-template<class T> class PrefMember;
-
-typedef PrefMember<bool> BooleanPrefMember;
+#include "chrome/browser/net/chrome_network_delegate.h"
+#include "net/base/completion_callback.h"
 
 namespace extensions {
 class EventRouterForwarder;
@@ -29,21 +26,18 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   using ResponseListener = base::Callback<void(const base::DictionaryValue&,
                                                const ResponseCallback&)>;
 
-  // |enable_referrers| (and all of the other optional PrefMembers) should be
-  // initialized on the UI thread (see below) beforehand. This object's owner is
-  // responsible for cleaning them up at shutdown.
-  BraveNetworkDelegateBase(extensions::EventRouterForwarder* event_router,
-                        BooleanPrefMember* enable_referrers);
+  BraveNetworkDelegateBase(extensions::EventRouterForwarder* event_router);
   ~BraveNetworkDelegateBase() override;
 
   // NetworkDelegate implementation.
   int OnBeforeURLRequest(net::URLRequest* request,
-                         const net::CompletionCallback& callback,
+                         net::CompletionOnceCallback callback,
                          GURL* new_url) override;
   int OnBeforeStartTransaction(net::URLRequest* request,
-                               const net::CompletionCallback& callback,
+                               net::CompletionOnceCallback callback,
                                net::HttpRequestHeaders* headers) override;
   void OnURLRequestDestroyed(net::URLRequest* request) override;
+  void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
  protected:
   void RunNextCallback(
@@ -56,7 +50,7 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
       before_start_transaction_callbacks_;
 
  private:
-  std::map<uint64_t, net::CompletionCallback> callbacks_;
+  std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);
 };
