@@ -43,4 +43,8 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
         IDC_NEW_OFFTHERECORD_WINDOW_TOR,
         IDS_NEW_OFFTHERECORD_WINDOW_TOR);
   }
+  InsertItemWithStringIdAt(
+      GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
+      IDC_SHOW_BRAVE_SYNC,
+      IDS_SHOW_BRAVE_SYNC);
 }

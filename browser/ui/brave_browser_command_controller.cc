@@ -78,6 +78,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandForBraveAdblock();
   UpdateCommandForTor();
+  UpdateCommandForBraveSync();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -91,6 +92,10 @@ void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
 void BraveBrowserCommandController::UpdateCommandForTor() {
   UpdateCommandEnabled(IDC_NEW_TOR_IDENTITY, true);
   UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, true);
+}
+
+void BraveBrowserCommandController::UpdateCommandForBraveSync() {
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_SYNC, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -116,6 +121,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_NEW_TOR_IDENTITY:
       brave::NewTorIdentity(browser_);
+      break;
+    case IDC_SHOW_BRAVE_SYNC:
+      brave::ShowBraveSync(browser_);
       break;
 
     default:

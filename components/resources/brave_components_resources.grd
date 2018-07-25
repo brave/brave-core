@@ -16,7 +16,7 @@
       <include name="IDR_BRAVE_COMMON_FONT_AWESOME_3" file="${root_gen_dir}/brave/b06871f281fee6b241d60582ae9369b9.ttf" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
 
-      <!-- Browser resrouces -->
+      <!-- Browser resources -->
       <include name="IDR_BRAVE_EXTENSON" file="${root_gen_dir}/brave_extension/manifest.json" type="BINDATA" use_base_dir="false"/>
 
       <!-- WebUI adblock resources -->
@@ -66,6 +66,11 @@
       <!-- WebUI private new tab resources -->
       <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />
       <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
+
+      <!-- WebUI sync resources -->
+      <include name="IDR_BRAVE_SYNC_HTML" file="../brave_sync/ui/brave_sync.html" type="BINDATA" />
+      <include name="IDR_BRAVE_SYNC_JS" file="${root_gen_dir}/brave/brave_sync.bundle.js" type="BINDATA" use_base_dir="false" />
+      <include name="IDR_BRAVE_SYNC_QR" file="../../node_modules/qrcode-generator/qrcode.js" type="BINDATA" />
     </includes>
   </release>
 </grit>

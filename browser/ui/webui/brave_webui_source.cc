@@ -108,6 +108,10 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_DONATE_BG_1 },
         { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_DONATE_BG_2 },
       }
+    }, {
+      std::string("bravesync"), {
+      { "qrcode.js", IDR_BRAVE_SYNC_QR }
+      }
     }
   };
   AddResourcePaths(source, resources[name]);

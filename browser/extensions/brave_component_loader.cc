@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/browser/extension_prefs.h"
 
@@ -90,6 +91,11 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   brave_webtorrent_path =
     brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
   Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
+
+  base::FilePath brave_sync_extension_path(FILE_PATH_LITERAL(""));
+  brave_sync_extension_path =
+      brave_sync_extension_path.Append(FILE_PATH_LITERAL("brave_sync"));
+  Add(IDR_BRAVE_SYNC_EXTENSION, brave_sync_extension_path);
 }
 
 }  // namespace extensions
