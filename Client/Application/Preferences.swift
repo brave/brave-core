@@ -45,6 +45,12 @@ extension Preferences {
         /// Defaults to nil, meaning the user has not been given the choice yet
         static let duckDuckGoPrivateSearch = Option<Bool?>(key: "popups.ddg-private-search", default: nil)
     }
+    final class AppState {
+        /// A flag for determining if the app exited with user interaction in the previous session
+        ///
+        /// Value should only be checked on launch
+        static let backgroundedCleanly = Option<Bool>(key: "appstate.backgrounded-cleanly", default: true)
+    }
 }
 
 // MARK: - User Preferences

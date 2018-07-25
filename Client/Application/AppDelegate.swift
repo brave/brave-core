@@ -17,7 +17,6 @@ import BraveShared
 private let log = Logger.browserLogger
 
 let LatestAppVersionProfileKey = "latestAppVersion"
-let AllowThirdPartyKeyboardsKey = "settings.allowThirdPartyKeyboards"
 private let InitialPingSentKey = "initialPingSent"
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestoration {
@@ -31,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     weak var profile: Profile?
     var tabManager: TabManager!
     var adjustIntegration: AdjustIntegration?
-    var applicationCleanlyBackgrounded = true
 
     weak var application: UIApplication?
     var launchOptions: [AnyHashable: Any]?
@@ -52,15 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // is backgrounded.
         //
 
-        self.applicationCleanlyBackgrounded = true
-
-        let defaults = UserDefaults()
-        if defaults.object(forKey: "ApplicationCleanlyBackgrounded") != nil {
-            self.applicationCleanlyBackgrounded = defaults.bool(forKey: "ApplicationCleanlyBackgrounded")
-        }
-        defaults.set(false, forKey: "ApplicationCleanlyBackgrounded")
-        defaults.synchronize()
-
         // Hold references to willFinishLaunching parameters for delayed app launch
         self.application = application
         self.launchOptions = launchOptions
@@ -80,6 +69,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
     @discardableResult fileprivate func startApplication(_ application: UIApplication, withLaunchOptions launchOptions: [AnyHashable: Any]?) -> Bool {
         log.info("startApplication begin")
+        
+        let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value
+        Preferences.AppState.backgroundedCleanly.value = false
         
         // Set the Firefox UA for browsing.
         setUserAgent()
@@ -125,6 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         browserViewController.restorationIdentifier = NSStringFromClass(BrowserViewController.self)
         browserViewController.restorationClass = AppDelegate.self
+        browserViewController.crashedLastSession = crashedLastSession
 
         let navigationController = UINavigationController(rootViewController: browserViewController)
         navigationController.delegate = self
@@ -247,18 +240,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     func applicationDidBecomeActive(_ application: UIApplication) {
         authenticator?.hideBackgroundedBlur()
         
+        Preferences.AppState.backgroundedCleanly.value = false
+        
         guard !DebugSettingsBundleOptions.launchIntoEmailComposer else {
             return
         }
-
-        //
-        // We are back in the foreground, so set CleanlyBackgrounded to false so that we can detect that
-        // the application was cleanly backgrounded later.
-        //
-
-        let defaults = UserDefaults()
-        defaults.set(false, forKey: "ApplicationCleanlyBackgrounded")
-        defaults.synchronize()
 
         if let profile = self.profile {
             profile.reopen()
@@ -281,16 +267,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        //
-        // At this point we are happy to mark the app as CleanlyBackgrounded. If a crash happens in background
-        // sync then that crash will still be reported. But we won't bother the user with the Restore Tabs
-        // dialog. We don't have to because at this point we already saved the tab state properly.
-        //
-
-        let defaults = UserDefaults()
-        defaults.set(true, forKey: "ApplicationCleanlyBackgrounded")
-        defaults.synchronize()
-
         syncOnDidEnterBackground(application: application)
     }
 
@@ -343,6 +319,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         if KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() != nil {
             authenticator?.showBackgroundBlur()
         }
+        
+        Preferences.AppState.backgroundedCleanly.value = true
     }
 
     fileprivate func updateAuthenticationInfo() {
