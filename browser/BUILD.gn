@@ -113,6 +113,7 @@ source_set("browser") {
     "//brave/components/resources:brave_components_resources_grit",
     "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser",
+    "//brave/components/brave_sync",
     "extensions",
     "net",
     "permissions",

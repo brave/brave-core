@@ -70,6 +70,9 @@
       <message name="IDS_SHOW_BRAVE_ADBLOCK" desc="The show Brave Ad Block menu in the app menu">
         Brave Ad Block
       </message>
+      <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
+        Brave Sync
+      </message>
       <message name="IDS_EXTENSION_CANT_INSTALL_ON_BRAVE" desc="Error message when user tries to install an extension that is not allowed in Brave.">
         <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.
       </message>

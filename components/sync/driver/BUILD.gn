@@ -1,0 +1,14 @@
+source_set("brave_sync_subclassing") {
+  sources = [
+    "brave_sync_service_base.cc",
+    "brave_sync_service_base.h",
+  ]
+
+  deps = [
+    "//components/sync",
+  ]
+  public_deps = [
+    #"//chrome/common",
+
+  ]
+}

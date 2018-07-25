@@ -1,0 +1,50 @@
+
+action("brave_sync_js_lib_bundle") {
+  script = "//brave/script/build-simple-js-bundle.py"
+
+  inputs = [
+    "//brave/vendor/brave-sync/lib/api.proto",
+    "//brave/vendor/brave-sync/client/bookmarkUtil.js",
+    "//brave/vendor/brave-sync/client/config.js",
+    "//brave/vendor/brave-sync/client/cryptoUtil.js",
+    "//brave/vendor/brave-sync/client/init.js",
+    "//brave/vendor/brave-sync/client/recordUtil.js",
+    "//brave/vendor/brave-sync/client/requestUtil.js",
+    "//brave/vendor/brave-sync/client/sync.js",
+    "//brave/vendor/brave-sync/client/constants/messages.js",
+    "//brave/vendor/brave-sync/client/constants/proto.js",
+    "//brave/vendor/brave-sync/client/polyfill/chrome.js",
+    "//brave/vendor/brave-sync/client/polyfill/fetch.js",
+    "//brave/vendor/brave-sync/package.json",
+  ]
+
+  outputs = [
+    "$root_gen_dir/brave-sync/bundles/bundle.js",
+  ]
+  repo_dir_path = rebase_path("//brave/vendor/brave-sync")
+  result_dst = rebase_path("$root_gen_dir/brave-sync")
+  args = [
+    "--repo_dir_path=$repo_dir_path",
+    "--result_src=bundles/bundle.js",
+    "--result_dst=$result_dst",
+  ]
+}
+
+action("brave_crypto_js_lib_bundle") {
+  script = "//brave/script/build-simple-js-bundle.py"
+
+  inputs = [
+    "//brave/vendor/brave-crypto/index.js",
+  ]
+
+  outputs = [
+    "$root_gen_dir/brave-crypto/browser/crypto.js",
+  ]
+  repo_dir_path = rebase_path("//brave/vendor/brave-crypto")
+  result_dst = rebase_path("$root_gen_dir/brave-crypto")
+  args = [
+    "--repo_dir_path=$repo_dir_path",
+    "--result_src=browser/crypto.js",
+    "--result_dst=$result_dst",
+  ]
+}

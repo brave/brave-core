@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/api/web_request/web_request_permissions.cc b/extensions/browser/api/web_request/web_request_permissions.cc
+index 2165a0e9d5aea73ba578e3dcacdf5e71e2241814..d75de4add34df01fa4d522f3801a4f80fb36f48f 100644
+--- a/extensions/browser/api/web_request/web_request_permissions.cc
++++ b/extensions/browser/api/web_request/web_request_permissions.cc
+@@ -85,6 +85,7 @@ bool IsWebUIAllowedToMakeNetworkRequests(const url::Origin& origin) {
+   // If you are adding a new host to this list, please file a corresponding bug
+   // to track its removal. See https://crbug.com/829412 for the metabug.
+   return
++      origin.host() == "bravesynclib" ||
+       // https://crbug.com/829414
+       origin.host() == "print" ||
+       // https://crbug.com/831812

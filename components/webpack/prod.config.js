@@ -8,9 +8,10 @@ module.exports = {
     brave_adblock: path.join(__dirname, '../brave_adblock_ui/brave_adblock'),
     brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
     brave_rewards: path.join(__dirname, '../brave_rewards/ui/brave_rewards'),
+    brave_sync: path.join(__dirname, '../brave_sync_ui/brave_sync'),
     brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome'),
     brave_webtorrent: path.join(__dirname, '../brave_webtorrent/extension/brave_webtorrent'),
-    brave_webtorrent_background: path.join(__dirname, '../brave_webtorrent/extension/background'),
+    brave_webtorrent_background: path.join(__dirname, '../brave_webtorrent/extension/background')
   },
   output: {
     path: process.env.TARGET_GEN_DIR,
