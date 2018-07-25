@@ -15,6 +15,7 @@ if (brave_chromium_build) {
   config("compiler") {}
 }
 
+# do not expose this as a public config anywhere
 config("version") {
   defines = [
     "BRAVE_CHROMIUM_VERSION=\"$chrome_version_string\"",
