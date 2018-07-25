@@ -99,6 +99,15 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
     }, {
       std::string("adblock"), {
       }
+    }, {
+      std::string("bravesynclib"), {
+      { "bundle.js", IDR_BRAVE_SYNC_LIB_JS_BUNDLE },
+      { "crypto.js", IDR_BRAVE_SYNC_LIB_JS_CRYPTO }
+      }
+    }, {
+      std::string("bravesync"), {
+      { "qrcode.js", IDR_BRAVE_SYNC_QR }
+      }
     }
   };
   AddResourcePaths(source, resources[name]);

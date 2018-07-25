@@ -135,6 +135,16 @@
       <include name="IDR_BRAVE_REWARDS_IMG_ETH" file="../img/rewards/ETH.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_LTC" file="../img/rewards/LTC.svg" type="BINDATA" />
 
+      <!-- WebUI sync resources -->
+      <include name="IDR_BRAVE_SYNC_HTML" file="../brave_sync_ui/brave_sync.html" type="BINDATA" />
+      <include name="IDR_BRAVE_SYNC_JS" file="${root_gen_dir}/brave/brave_sync.bundle.js" type="BINDATA" use_base_dir="false" />
+
+      <!-- Sync lib resources -->
+      <include name="IDR_BRAVE_SYNC_LIB_HTML" file="../brave_sync_lib/brave_sync_lib.html" type="BINDATA" />
+      <include name="IDR_BRAVE_SYNC_LIB_JS" file="../brave_sync_lib/brave_sync_lib.js" type="BINDATA" />
+      <include name="IDR_BRAVE_SYNC_LIB_JS_BUNDLE" file="$root_gen_dir/brave-sync/bundles/bundle.js" type="BINDATA" use_base_dir="false" />
+      <include name="IDR_BRAVE_SYNC_LIB_JS_CRYPTO" file="$root_gen_dir/brave-crypto/browser/crypto.js" type="BINDATA" use_base_dir="false" />
+      <include name="IDR_BRAVE_SYNC_QR" file="../../node_modules/qrcode-generator/qrcode.js" type="BINDATA" />
     </includes>
     <messages fallback_to_english="true">
       <!-- WebUI newtab resources -->

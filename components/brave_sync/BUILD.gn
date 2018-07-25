@@ -1,0 +1,38 @@
+import("//build/config/features.gni")
+
+source_set("brave_sync") {
+  sources = [
+    "brave_sync_bookmarks.h",
+    "brave_sync_bookmarks.cc",
+    "brave_sync_controller.h",
+    "brave_sync_controller_impl.h",
+    "brave_sync_controller_impl.cc",
+    "brave_sync_devices.cc",
+    "brave_sync_devices.h",
+    "brave_sync_jslib_const.cc",
+    "brave_sync_jslib_const.h",
+    "brave_sync_obj_map.h",
+    "brave_sync_obj_map.cc",
+    "brave_sync_pref_names.cc",
+    "brave_sync_pref_names.h",
+    "brave_sync_profile_prefs.cc",
+    "brave_sync_profile_prefs.h",
+    "brave_sync_settings.cc",
+    "brave_sync_settings.h",
+    "brave_sync_tools.cc",
+    "brave_sync_tools.h",
+    "debug.cc",
+    "debug.h",
+    "values_conv.cc",
+    "values_conv.h",
+    "value_debug.cc",
+    "value_debug.h",
+  ]
+
+  deps = [
+  ]
+
+  public_deps = [
+    "//content/public/browser",
+  ]
+}

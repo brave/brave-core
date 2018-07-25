@@ -15,6 +15,7 @@ grit("brave_components_resources_grit") {
     "//brave/components/brave_new_tab_ui",
     "//brave/components/brave_welcome_ui",
     "//brave/vendor/brave-extension",
+    "//brave/components/brave_sync/ui",
   ]
 
   if (brave_rewards_enabled) {
@@ -27,6 +28,4 @@ grit("brave_components_resources_grit") {
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
   ]
   output_dir = "$root_gen_dir/components"
-  resource_ids = "//brave/browser/resources/resource_ids"
 }
-
