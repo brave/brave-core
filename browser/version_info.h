@@ -8,6 +8,7 @@
 #include <string>
 
 namespace version_info {
+std::string GetBraveVersionWithoutChromiumMajorVersion();
 std::string GetBraveVersionNumberForDisplay();
 }  // namespace version_info
 
