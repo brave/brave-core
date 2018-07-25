@@ -4,6 +4,7 @@ import("//brave/build/config.gni")
 import("//ui/base/ui_features.gni")
 import("//third_party/icu/config.gni")
 import("//build/config/locales.gni")
+import("//build/util/process_version.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
 import("//brave/brave_paks.gni")
 
@@ -38,7 +39,7 @@ group("brave") {
   public_deps = [
     "//chrome",
   ]
-  deps = []
+  deps = [ ":generate_version" ]
   if (is_win) {
     deps += [
       "build/win:copy_exe",
@@ -168,35 +169,44 @@ copy("brave_license_dist_resources") {
   ]
 }
 
-if (is_mac) {
-  group("brave_dist_resources") {}
-} else {
-  copy("brave_dist_resources") {
-    if (!is_mac) {
-      sources = [
-        "$root_out_dir/brave_resources.pak",
-        "$root_out_dir/brave_100_percent.pak",
-        "$root_out_dir/brave_200_percent.pak",
-        "$root_out_dir/$brave_exe"
-      ]
-    }
+process_version("generate_version") {
+  template_file = "version.version"
+  sources = [
+    "//chrome/VERSION",
+  ]
 
-    deps = [
-      ":brave",
-      ":brave_license_dist_resources",
-      ":packed_resources",
-    ]
+  extra_args = [ "-e", "BRAVE_BROWSER_VERSION=\"$brave_version\"" ]
+  output = "$root_out_dir/version"
+}
 
-    if (is_win) {
-      deps += [
-        "//brave/build/win:copy_exe"
-      ]
-    }
+copy("brave_dist_resources") {
+  sources = [ "$root_out_dir/version" ]
 
-    outputs = [
-      "$brave_dist_dir/{{source_file_part}}"
+  if (!is_mac) {
+    sources = [
+      "$root_out_dir/brave_resources.pak",
+      "$root_out_dir/brave_100_percent.pak",
+      "$root_out_dir/brave_200_percent.pak",
+      "$root_out_dir/$brave_exe"
     ]
   }
+
+  deps = [
+    ":brave",
+    ":generate_version",
+    ":brave_license_dist_resources",
+    ":packed_resources",
+  ]
+
+  if (is_win) {
+    deps += [
+      "//brave/build/win:copy_exe"
+    ]
+  }
+
+  outputs = [
+    "$brave_dist_dir/{{source_file_part}}"
+  ]
 }
 
 zip("chromedriver_zip") {
