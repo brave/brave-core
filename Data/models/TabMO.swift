@@ -127,12 +127,11 @@ public class TabMO: NSManagedObject {
         return []
     }
     
-    public class func clearAllPrivate() {
+    public class func removeAll() {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         let context = DataController.shared.mainThreadContext
         
         fetchRequest.entity = TabMO.entity(context)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(TabMO.order), ascending: true)]
         do {
             let results = try context.fetch(fetchRequest) as? [TabMO] ?? []
             for tab in results {
