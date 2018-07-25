@@ -3,7 +3,7 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 import("//tools/grit/grit_rule.gni")
 json_features("api_features") {
   feature_type = "APIFeature"
-  provider_class = "BraveAPIFeatureProvider"
+  method_name = "AddBraveAPIFeatures"
   sources = [
     "//chrome/common/extensions/api/_api_features.json",
     "//extensions/common/api/_api_features.json",
@@ -13,7 +13,7 @@ json_features("api_features") {
 
 json_features("permission_features") {
   feature_type = "PermissionFeature"
-  provider_class = "BravePermissionFeatureProvider"
+  method_name = "AddBravePermissionFeatures"
   sources = [
     "//chrome/common/extensions/api/_permission_features.json",
     "//extensions/common/api/_permission_features.json",
@@ -22,7 +22,7 @@ json_features("permission_features") {
 
 json_features("manifest_features") {
   feature_type = "ManifestFeature"
-  provider_class = "BraveManifestFeatureProvider"
+  method_name = "AddBraveManifestFeatures"
   sources = [
     "//chrome/common/extensions/api/_manifest_features.json",
     "//extensions/common/api/_manifest_features.json",
@@ -31,7 +31,7 @@ json_features("manifest_features") {
 
 json_features("behavior_features") {
   feature_type = "BehaviorFeature"
-  provider_class = "BraveBehaviorFeatureProvider"
+  method_name = "AddBraveBehaviorFeatures"
   sources = [
     "//extensions/common/api/_behavior_features.json",
   ]

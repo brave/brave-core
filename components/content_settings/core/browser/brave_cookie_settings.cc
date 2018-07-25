@@ -8,22 +8,6 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
-namespace {
-
-bool IsValidSetting(ContentSetting setting) {
-  return (setting == CONTENT_SETTING_ALLOW ||
-          setting == CONTENT_SETTING_SESSION_ONLY ||
-          setting == CONTENT_SETTING_BLOCK);
-}
-
-bool IsAllowed(ContentSetting setting) {
-  DCHECK(IsValidSetting(setting));
-  return (setting == CONTENT_SETTING_ALLOW ||
-          setting == CONTENT_SETTING_SESSION_ONLY);
-}
-
-}  // namespace
-
 namespace content_settings {
 
 using namespace net::registry_controlled_domains;
@@ -113,7 +97,11 @@ bool BraveCookieSettings::IsCookieAccessAllowed(const GURL& url,
                                                 const GURL& tab_url) const {
   ContentSetting setting;
   GetCookieSetting(url, first_party_url, tab_url, nullptr, &setting);
-  return IsAllowed(setting);
+  DCHECK(setting == CONTENT_SETTING_ALLOW ||
+         setting == CONTENT_SETTING_SESSION_ONLY ||
+         setting == CONTENT_SETTING_BLOCK);
+  return setting == CONTENT_SETTING_ALLOW ||
+         setting == CONTENT_SETTING_SESSION_ONLY;
 }
 
 }  // namespace content_settings
