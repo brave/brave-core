@@ -1,29 +1,20 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 93a97ff2803fe335be4537bc2d21a493468a2a23..b2073ca826d7f488ffb4ebcbb6cf00af58cdf37f 100644
+index 93a97ff2803fe335be4537bc2d21a493468a2a23..5d5605ad4b8f88b717f5a725fa81321a0bad2947 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -46,6 +46,8 @@
- # When writing build files, to do something only for the host:
- #   if (current_toolchain == host_toolchain) { ...
+@@ -509,6 +509,7 @@ set_sources_assignment_filter(sources_assignment_filter)
  
-+import("//brave/brave_init_settings.gni")
-+
- if (target_os == "") {
-   target_os = host_os
- }
-@@ -528,7 +530,14 @@ default_compiler_configs = [
+ # Holds all configs used for running the compiler.
+ default_compiler_configs = [
++  "//brave/build:compiler",
+   "//build/config:feature_flags",
+   "//build/config/compiler:afdo",
+   "//build/config/compiler:afdo_optimize_size",
+@@ -528,7 +529,6 @@ default_compiler_configs = [
    "//build/config/coverage:default_coverage",
    "//build/config/sanitizers:default_sanitizer_flags",
  ]
 -
-+if (brave_chromium_build) {
-+  default_compiler_configs -= [ "//build/config/compiler:default_include_dirs" ]
-+  default_compiler_configs += [
-+    "//brave/build:feature_flags",
-+    "//brave/build:brave_include_dirs",
-+    "//build/config/compiler:default_include_dirs"
-+  ]
-+}
  if (is_win) {
    default_compiler_configs += [
      "//build/config/win:default_crt",

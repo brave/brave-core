@@ -1,8 +1,16 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index c66a6f6245ebe7d4abb1993c93f279e9e8442993..8b3eed687137c5b7cba118b78f48022bc2b30e59 100644
+index c66a6f6245ebe7d4abb1993c93f279e9e8442993..4168386d2926804234c5895678eb2b793d3b7287 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
-@@ -246,9 +246,24 @@ action("generate_strings") {
+@@ -4,6 +4,7 @@
+ 
+ import("//build/config/chrome_build.gni")
+ import("//testing/test.gni")
++import("//brave/build/config.gni")
+ 
+ # This file deliberately has no default "util" target so dependants have to
+ # specify with the ":with_no_strings" or ":with_rc_strings" variants. Random
+@@ -246,9 +247,24 @@ action("generate_strings") {
      "$target_gen_dir/installer_util_strings.rc",
    ]
  
@@ -11,7 +19,7 @@ index c66a6f6245ebe7d4abb1993c93f279e9e8442993..8b3eed687137c5b7cba118b78f48022b
 +  if (brave_chromium_build) {
 +    # When brave_strings.grd is modified, outputs should be re-generated.
 +    # This is workaround. Need to change the way of using |brave_strings.grd|
-+    # in |create_string_rc.py|.
++    # in |create_string_rc.py|. - also remove import for brave config.gni
 +    sources = [
 +      "//chrome/app/brave_strings.grd"
 +    ]

@@ -1,23 +1,27 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd7463ba09a0 100644
+index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..6577f34f0f8b7fa5f513d7d7e0507528dd4bfdeb 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -183,6 +183,14 @@ if (!is_android && !is_mac) {
+@@ -26,6 +26,7 @@ import("//tools/resources/generate_resource_whitelist.gni")
+ import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
+ import("//ui/gl/features.gni")
+ import("//v8/gni/v8.gni")
++import("//brave/build/config.gni")
+ 
+ if (is_android) {
+   import("//build/config/android/rules.gni")
+@@ -183,6 +184,10 @@ if (!is_android && !is_mac) {
            "common/crash_keys.cc",
            "common/crash_keys.h",
          ]
 +        if (brave_chromium_build) {
-+          sources -= [
-+            "app/chrome_exe.rc",
-+          ]
-+          sources += [
-+            "//brave/app/brave_exe.rc",
-+          ]
++          sources -= [ "app/chrome_exe.rc", ]
++          sources += [ "//brave/app/brave_exe.rc", ]
 +        }
  
          deps += [
            ":chrome_dll",
-@@ -248,6 +256,8 @@ if (!is_android && !is_mac) {
+@@ -248,6 +253,8 @@ if (!is_android && !is_mac) {
            "app/chrome_main.cc",
            "app/chrome_main_delegate.cc",
            "app/chrome_main_delegate.h",
@@ -26,7 +30,7 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
          ]
  
          deps += [
-@@ -338,7 +348,7 @@ if (!is_android && !is_mac) {
+@@ -338,7 +345,7 @@ if (!is_android && !is_mac) {
      if (is_win) {
        output_name = "initialexe/chrome"
      } else {
@@ -35,7 +39,7 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
      }
  
      sources = []
-@@ -387,6 +397,8 @@ if (is_win) {
+@@ -387,6 +394,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -44,7 +48,7 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
      ]
  
      output_name = "chrome"
-@@ -494,6 +506,8 @@ if (is_win) {
+@@ -494,6 +503,8 @@ if (is_win) {
          "app/chrome_main.cc",
          "app/chrome_main_delegate.cc",
          "app/chrome_main_delegate.h",
@@ -53,21 +57,19 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
        ]
  
        configs += [ "//build/config/compiler:wexit_time_destructors" ]
-@@ -614,6 +628,13 @@ if (is_win) {
+@@ -614,6 +625,11 @@ if (is_win) {
      ]
    }
  
 +if (brave_chromium_build) {
 +  group("chrome_app") {
-+    public_deps = [
-+      "//brave:chrome_app",
-+    ]
++    public_deps = [ "//brave:chrome_app", ]
 +  }
 +} else {
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
-@@ -651,6 +672,7 @@ if (is_win) {
+@@ -651,6 +667,7 @@ if (is_win) {
                    rebase_path("app/app.exports", root_build_dir) ]
      }
    }
@@ -75,7 +77,7 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
  
    compiled_action("chrome_app_strings") {
      tool = "//chrome/tools/build/mac:infoplist_strings_tool"
-@@ -680,7 +702,7 @@ if (is_win) {
+@@ -680,7 +697,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -84,28 +86,24 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -729,6 +751,20 @@ if (is_win) {
+@@ -729,6 +746,16 @@ if (is_win) {
        "app/theme/$branding_path_component/mac/document.icns",
        "browser/ui/cocoa/applescript/scripting.sdef",
      ]
 +    if (brave_chromium_build) {
-+      sources -= [
-+        "app/theme/$branding_path_component/mac/app.icns",
-+      ]
++      sources -= [ "app/theme/$branding_path_component/mac/app.icns", ]
++      # TODO(bridiver) - these additions are not necessary and should be moved
++      # to brave config files
 +      if (is_official_build) {
-+        sources += [
-+          "app/theme/$branding_path_component/mac/$brave_channel/app.icns",
-+        ]
++        sources += [ "app/theme/$branding_path_component/mac/$brave_channel/app.icns", ]
 +      } else {
-+        sources += [
-+          "app/theme/$branding_path_component/mac/development/app.icns",
-+        ]
++        sources += [ "app/theme/$branding_path_component/mac/development/app.icns", ]
 +      }
 +    }
      outputs = [
        "{{bundle_resources_dir}}/{{source_file_part}}",
      ]
-@@ -1193,6 +1229,8 @@ if (is_win) {
+@@ -1193,6 +1220,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -114,25 +112,18 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
        "app/chrome_main_mac.h",
        "app/chrome_main_mac.mm",
      ]
-@@ -1276,6 +1314,17 @@ if (is_win) {
+@@ -1276,6 +1305,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
 +    if (brave_chromium_build) {
-+      deps += [
-+        "//brave/vendor/brave-extension:brave_extension_framework_bundle_data",
-+      ]
-+
-+      if (defined(chrome_framework_version)) {
-+        framework_contents += [
-+          "Frameworks", # for Sparkle.framework
-+        ]
-+      }
++      deps += [ "//brave/vendor/brave-extension:brave_extension_framework_bundle_data", ]
++      if (defined(chrome_framework_version)) { framework_contents += [ "Frameworks", ] }
 +    }
  
      ldflags = [
        "-Wl,-install_name,@executable_path/../Versions/$chrome_version_full/$chrome_framework_name.framework/$chrome_framework_name",
-@@ -1433,6 +1482,7 @@ if (is_win) {
+@@ -1433,6 +1466,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -140,7 +131,7 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
      "//chrome/browser",
      "//chrome/common",
      "//components/sync",
-@@ -1469,6 +1519,7 @@ group("browser_dependencies") {
+@@ -1469,6 +1503,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -148,7 +139,7 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1490,7 +1541,7 @@ group("child_dependencies") {
+@@ -1490,7 +1525,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -157,7 +148,7 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1795,6 +1846,8 @@ if (is_android) {
+@@ -1795,6 +1830,8 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -166,7 +157,7 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..30e469b04b8d0c24c12f0f472dcbcd74
      ]
  
      include_dirs = [ android_ndk_include_dir ]
-@@ -1847,7 +1900,7 @@ if (enable_resource_whitelist_generation) {
+@@ -1847,7 +1884,7 @@ if (enable_resource_whitelist_generation) {
  if (is_linux) {
    if (is_official_build) {
      extract_symbols("linux") {
