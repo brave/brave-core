@@ -11,7 +11,7 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "components/version_info/version_info.h"
+#include "brave/browser/version_info.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -57,7 +57,7 @@ GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
   update_url =
       net::AppendQueryParameter(update_url, "channel", GetChannelName());
   update_url = net::AppendQueryParameter(update_url, "version",
-                                         BRAVE_BROWSER_VERSION);
+                    version_info::GetBraveVersionWithoutChromiumMajorVersion());
   update_url = net::AppendQueryParameter(update_url, "daily",
                                          stats_updater_params.GetDailyParam());
   update_url = net::AppendQueryParameter(update_url, "weekly",
