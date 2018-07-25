@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 7f8265a3e0c623d36266e683666dabebd5c40ffa..d5a44178c413299dbe0ff9874ca86cf777b42199 100644
+index 7f8265a3e0c623d36266e683666dabebd5c40ffa..ac664e477dfc72ea41621e3d2ae25ea6bc7732d7 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -22,15 +22,18 @@
@@ -29,8 +29,21 @@ index 7f8265a3e0c623d36266e683666dabebd5c40ffa..d5a44178c413299dbe0ff9874ca86cf7
      <settings-toggle-button hidden="[[!pageVisibility.networkPrediction]]"
          pref="{{prefs.net.network_prediction_options}}"
          label="$i18n{networkPredictionEnabled}"
-@@ -90,4 +94,4 @@
- </if><!-- _google_chrome -->
+@@ -74,6 +78,8 @@
+         sub-label="$i18n{enableLoggingDesc}">
+     </settings-toggle-button>
+ </if><!-- chromeos -->
++</if><!-- _google_chrome -->
++<if expr="_chromium">
+ <if expr="not chromeos">
+     <settings-toggle-button id="metricsReportingControl"
+         pref="[[metricsReportingPref_]]" label="$i18n{enableLogging}"
+@@ -87,7 +93,7 @@
+       </template>
+     </settings-toggle-button>
+ </if><!-- not chromeos -->
+-</if><!-- _google_chrome -->
++</if><!-- _chromium -->
    </template>
    <script src="personalization_options.js"></script>
 -</dom-module>
