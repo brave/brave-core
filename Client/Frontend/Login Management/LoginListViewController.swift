@@ -29,7 +29,7 @@ private extension UITableView {
 
 private let LoginCellIdentifier = "LoginCell"
 
-class LoginListViewController: SensitiveViewController {
+class LoginListViewController: UIViewController {
 
     fileprivate lazy var loginSelectionController: ListSelectionController = {
         return ListSelectionController(tableView: self.tableView)
