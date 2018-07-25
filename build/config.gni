@@ -1,24 +1,46 @@
-import("//build/toolchain/toolchain.gni")
 import("//build/util/branding.gni")
 
 declare_args() {
+  brave_chromium_build = true
+
+  # Release channel support.
+  # "beta" for beta release.
+  # "dev" for dev channel release.
+  # "nightly" for nightly channel release.
+  # "" for stable channel release.
+  brave_channel = ""
+
+  base_sparkle_update_url = ""
+
+  brave_dsa_file = "dsa_pub.pem"
+
   brave_product_name = ""
   brave_project_name = ""
-  executable_name = ""
+  brave_exe = ""
   brave_version_major = ""
   brave_version_minor = ""
   brave_version_build = ""
   brave_version_patch = 0
+  chrome_version_string = ""
 }
+
+if (base_sparkle_update_url == "") {
+  base_sparkle_update_url = "https://updates.bravesoftware.com/sparkle/Brave-Browser"
+}
+_update_channel = brave_channel
+if (_update_channel == "") {
+  _update_channel = "stable"
+}
+brave_feed_url = "$base_sparkle_update_url/$_update_channel/appcast.xml"
+
 
 brave_version = "$brave_version_major.$brave_version_minor.$brave_version_build"
 
-if (executable_name == "") {
-  executable_name = brave_project_name
+if (brave_exe == "") {
+  brave_exe = brave_project_name
 }
 
 brave_dist_dir = "$root_out_dir/dist"
-brave_exe = executable_name
 if (is_win) {
   brave_exe = "$brave_exe.exe"
 } else if (is_mac) {

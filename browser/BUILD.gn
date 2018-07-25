@@ -1,3 +1,4 @@
+import("//brave/build/config.gni")
 import("//build/config/features.gni")
 
 source_set("browser_process") {
@@ -44,12 +45,11 @@ source_set("browser_process") {
     "sparkle_glue_mac.h",
     "update_util.cc",
     "update_util.h",
-    "version_info_values.cc",
-    "version_info_values.h",
+
   ]
 
   deps = [
-    "//brave:generate_version",
+    ":version_info",
     "//brave/browser/payments",
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/content_settings/core/browser",
@@ -71,6 +71,19 @@ source_set("browser_process") {
       "//google_update",
     ]
   }
+}
+
+source_set("version_info") {
+  # these are only for version_info.cc and should not be exposed as public configs
+  configs += [ "//brave/build:version" ]
+  defines = [
+    "BRAVE_BROWSER_VERSION=\"$brave_version\"",
+  ]
+
+  sources = [
+    "version_info.cc",
+    "version_info.h",
+  ]
 }
 
 source_set("browser") {

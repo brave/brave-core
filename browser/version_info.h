@@ -6,11 +6,10 @@
 #define BRAVE_BROWSER_VERSION_INFO_VALUES_H_
 
 #include <string>
-#include "brave/version.h"
-#include "components/version_info/version_info_values.h"
 
 namespace version_info {
-std::string GetBraveVersionNumber();
+std::string GetBraveVersionWithoutChromiumMajorVersion();
+std::string GetBraveVersionNumberForDisplay();
 }  // namespace version_info
 
 #endif  // BRAVE_BROWSER_VERSION_INFO_VALUES_H_
