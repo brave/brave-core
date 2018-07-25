@@ -171,10 +171,6 @@ copy("brave_license_dist_resources") {
 
 process_version("generate_version") {
   template_file = "version.version"
-  sources = [
-    "//chrome/VERSION",
-  ]
-
   extra_args = [ "-e", "BRAVE_BROWSER_VERSION=\"$brave_version\"" ]
   output = "$root_out_dir/version"
 }
