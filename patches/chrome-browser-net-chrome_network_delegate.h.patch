@@ -1,13 +1,12 @@
 diff --git a/chrome/browser/net/chrome_network_delegate.h b/chrome/browser/net/chrome_network_delegate.h
-index 7b9e0780ad1aed8c99ce48da894f7a569fdca60c..739af1cfdc1ccbe1a201e56a31ce784c4bf1ff7a 100644
+index 7bb6cbcd5da2cd4798d4ffdaf1269edbaa70fa55..019a08aaafbc280ab355eb3745409e707a671f69 100644
 --- a/chrome/browser/net/chrome_network_delegate.h
 +++ b/chrome/browser/net/chrome_network_delegate.h
-@@ -148,6 +148,8 @@ class ChromeNetworkDelegate : public net::NetworkDelegateImpl {
+@@ -139,6 +139,7 @@ class ChromeNetworkDelegate : public net::NetworkDelegateImpl {
    static void EnableAccessToAllFilesForTesting(bool enabled);
  
   private:
 +  friend class BraveNetworkDelegateBase;
-+
    // NetworkDelegate implementation.
    int OnBeforeURLRequest(net::URLRequest* request,
-                          const net::CompletionCallback& callback,
+                          net::CompletionOnceCallback callback,

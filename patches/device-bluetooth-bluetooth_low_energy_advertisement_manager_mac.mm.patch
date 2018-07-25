@@ -1,0 +1,13 @@
+diff --git a/device/bluetooth/bluetooth_low_energy_advertisement_manager_mac.mm b/device/bluetooth/bluetooth_low_energy_advertisement_manager_mac.mm
+index 065c4e0ec2008cead575c9e0cafc22f952bac883..5aa900e42f40feb65d33f234a0687bd42be03e14 100644
+--- a/device/bluetooth/bluetooth_low_energy_advertisement_manager_mac.mm
++++ b/device/bluetooth/bluetooth_low_energy_advertisement_manager_mac.mm
+@@ -23,7 +23,7 @@ void BluetoothLowEnergyAdvertisementManagerMac::TryStartAdvertisement() {
+     return;
+   }
+ 
+-  if ([peripheral_manager_ state] < CBPeripheralManagerStatePoweredOn) {
++  if ((CBPeripheralManagerState)[peripheral_manager_ state] < CBPeripheralManagerStatePoweredOn) {
+     return;
+   }
+ 

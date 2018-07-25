@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/cocoa/app_menu/app_menu_controller.mm b/chrome/browser/ui/cocoa/app_menu/app_menu_controller.mm
-index 89f8b4bbba39c990b65c62159a00e51eff0b53ab..094303f8643eb1471a77a2b5e3e8e3d880b5ee7d 100644
+index e5ed7c24fab6110327985fd6ef4e64fb5e389c96..e44d12a97c36bf9a7f93e0de41978bf2b0e17d5e 100644
 --- a/chrome/browser/ui/cocoa/app_menu/app_menu_controller.mm
 +++ b/chrome/browser/ui/cocoa/app_menu/app_menu_controller.mm
 @@ -17,6 +17,7 @@
@@ -10,7 +10,7 @@ index 89f8b4bbba39c990b65c62159a00e51eff0b53ab..094303f8643eb1471a77a2b5e3e8e3d8
  #include "chrome/app/chrome_command_ids.h"
  #import "chrome/browser/app_controller_mac.h"
  #include "chrome/browser/profiles/profile.h"
-@@ -495,7 +496,7 @@ class ToolbarActionsBarObserverHelper : public ToolbarActionsBarObserver {
+@@ -510,7 +511,7 @@ class ToolbarActionsBarObserverHelper : public ToolbarActionsBarObserver {
  - (void)createModel {
    DCHECK(browser_);
    recentTabsMenuModelDelegate_.reset();

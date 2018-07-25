@@ -1,11 +1,12 @@
 diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
-index ecc9736c95c601910e328ac6fa1a55044496abbe..ae4e94654218b07fbdd39310cf2dabd1af9d926f 100644
+index 7fab20e8173e7938bb790ab56f377cf0576da4a3..588694f95db59b4332615258d3995f986e36d87b 100644
 --- a/content/browser/frame_host/navigation_request.cc
 +++ b/content/browser/frame_host/navigation_request.cc
-@@ -1527,6 +1527,28 @@ void NavigationRequest::CommitNavigation() {
-          render_frame_host ==
-              frame_tree_node_->render_manager()->speculative_frame_host());
- 
+@@ -1645,6 +1645,29 @@ void NavigationRequest::CommitNavigation() {
+     }
+     associated_site_instance_id_.reset();
+   }
++
 +  auto* pending_entry =
 +    frame_tree_node_->navigator()->GetController()->GetPendingEntry();
 +  if (pending_entry) {
@@ -28,6 +29,6 @@ index ecc9736c95c601910e328ac6fa1a55044496abbe..ae4e94654218b07fbdd39310cf2dabd1
 +    }
 +  }
 +
-   frame_tree_node_->TransferNavigationRequestOwnership(render_frame_host);
    render_frame_host->CommitNavigation(
-       response_.get(), std::move(url_loader_client_endpoints_), common_params_,
+       navigation_handle_->GetNavigationId(), response_.get(),
+       std::move(url_loader_client_endpoints_), common_params_, request_params_,
