@@ -1,19 +1,8 @@
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index ec54b365d46d8b3d095970cded217d090e3757e6..35851877d4b104d251d90b370def8a4b289c8967 100644
+index ec54b365d46d8b3d095970cded217d090e3757e6..9c51e74d2fe2add3bbef80f38e8b358d0bba94cd 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -465,6 +465,10 @@
- #include "chrome/services/file_util/public/mojom/constants.mojom.h"
- #endif
- 
-+#if defined(BRAVE_CHROMIUM_BUILD) && defined(OS_LINUX)
-+#include "brave/browser/ui/views/brave_browser_main_extra_parts_views_linux.h"
-+#endif
-+
- using base::FileDescriptor;
- using content::BrowserThread;
- using content::BrowserURLHandler;
-@@ -804,6 +808,16 @@ void GetGuestViewDefaultContentSettingRules(
+@@ -804,6 +804,16 @@ void GetGuestViewDefaultContentSettingRules(
        base::Value::FromUniquePtrValue(
            content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
        std::string(), incognito));
@@ -30,15 +19,3 @@ index ec54b365d46d8b3d095970cded217d090e3757e6..35851877d4b104d251d90b370def8a4b
  }
  
  AppLoadedInTabSource ClassifyAppLoadedInTabSource(
-@@ -1082,7 +1096,11 @@ content::BrowserMainParts* ChromeContentBrowserClient::CreateBrowserMainParts(
-   // which they are added.
- #if defined(TOOLKIT_VIEWS)
- #if defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(USE_OZONE)
-+#if defined(BRAVE_CHROMIUM_BUILD)
-+  main_parts->AddParts(new BraveBrowserMainExtraPartsViewsLinux());
-+#else
-   main_parts->AddParts(new ChromeBrowserMainExtraPartsViewsLinux());
-+#endif
- #else
-   main_parts->AddParts(new ChromeBrowserMainExtraPartsViews());
- #endif

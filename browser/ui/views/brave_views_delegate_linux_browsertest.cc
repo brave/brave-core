@@ -11,6 +11,14 @@
 using BraveViewsDelegateViewLinuxBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveViewsDelegateViewLinuxBrowserTest, GetDefaultWindowIconTest) {
+  // In test, our BraveViewsDelegateLinux isn't set because ChromeViewsDelegate is set
+  // at the very early state by AccessibilityChecker(subclass of ChromeViewsDelegate)
+  // in ctor of InProcessBrowserTest. Introduced in v68.
+  // To have a test, explicitly set views delegate by initializing here.
+  // This is only effective in release mode because initializing views delegate twice isn't
+  // allowed by dcheck.
+  BraveViewsDelegateLinux brave_views_delegate;
+
   auto env = base::Environment::Create();
   views::ViewsDelegate* views_delegate = views::ViewsDelegate::GetInstance();
   auto& rb = ui::ResourceBundle::GetSharedInstance();
@@ -32,6 +40,7 @@ IN_PROC_BROWSER_TEST_F(BraveViewsDelegateViewLinuxBrowserTest, GetDefaultWindowI
   EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128_NIGHTLY)->bitmap(),
             views_delegate->GetDefaultWindowIcon()->bitmap());
 #else  // OFFICIAL_BUILD
+  // TODO(simonhong): Enable this test in debug mode.
   EXPECT_EQ(rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128_DEVELOPMENT)->bitmap(),
             views_delegate->GetDefaultWindowIcon()->bitmap());
 #endif
