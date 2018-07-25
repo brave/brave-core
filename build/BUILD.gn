@@ -1,3 +1,5 @@
+import("//brave/build/config.gni")
+
 # Changing these will cause a full rebuild
 brave_include_dirs_ = [
   "//brave/chromium_src",
@@ -9,7 +11,12 @@ config("brave_include_dirs") {
 }
 
 config("feature_flags") {
+  defines = [
+    "BRAVE_CHROMIUM_VERSION='$chrome_version_string'",
+    "BRAVE_BROWSER_VERSION='$brave_version'",
+  ]
+
   if (brave_chromium_build) {
-    defines = [ "BRAVE_CHROMIUM_BUILD" ]
+    defines += [ "BRAVE_CHROMIUM_BUILD" ]
   }
 }

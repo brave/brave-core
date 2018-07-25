@@ -34,19 +34,6 @@ group("browser_dependencies") {
   ]
 }
 
-action("generate_version") {
-  script = "//brave/script/version.py"
-  gen_dir = rebase_path(root_gen_dir, "//")
-  args = [
-    "--target_gen_dir=$gen_dir"
-  ]
-  inputs = [ "../../package.json" ]
-  outputs = [
-    "$root_gen_dir/brave/version.h",
-    "$root_out_dir/version",
-  ]
-}
-
 group("brave") {
   public_deps = [
     "//chrome",
@@ -58,9 +45,6 @@ group("brave") {
       "build/win:copy_pdb"
     ]
   }
-  deps += [
-    ":generate_version",
-  ]
 }
 
 group("brave_tests") {
@@ -100,37 +84,6 @@ group("create_dist") {
       "//brave/app/linux:dist_resources",
     ]
   }
-}
-
-copy("brave_dist_resources") {
-  if (is_mac) {
-    sources = []
-  } else {
-    sources = [
-      "$root_out_dir/brave_resources.pak",
-      "$root_out_dir/brave_100_percent.pak",
-      "$root_out_dir/brave_200_percent.pak",
-      "$root_out_dir/$brave_exe"
-    ]
-  }
-
-  sources += get_target_outputs(":generate_version")
-
-  deps = [
-    ":brave",
-    ":generate_version",
-    ":packed_resources",
-  ]
-
-  if (is_win) {
-    deps += [
-      "//brave/build/win:copy_exe"
-    ]
-  }
-
-  outputs = [
-    "$brave_dist_dir/{{source_file_part}}"
-  ]
 }
 
 if (!is_mac) {
@@ -215,6 +168,37 @@ copy("brave_license_dist_resources") {
   ]
 }
 
+if (is_mac) {
+  group("brave_dist_resources") {}
+} else {
+  copy("brave_dist_resources") {
+    if (!is_mac) {
+      sources = [
+        "$root_out_dir/brave_resources.pak",
+        "$root_out_dir/brave_100_percent.pak",
+        "$root_out_dir/brave_200_percent.pak",
+        "$root_out_dir/$brave_exe"
+      ]
+    }
+
+    deps = [
+      ":brave",
+      ":brave_license_dist_resources",
+      ":packed_resources",
+    ]
+
+    if (is_win) {
+      deps += [
+        "//brave/build/win:copy_exe"
+      ]
+    }
+
+    outputs = [
+      "$brave_dist_dir/{{source_file_part}}"
+    ]
+  }
+}
+
 zip("chromedriver_zip") {
   inputs = get_target_outputs(":brave_chromedriver_dist_resources")
   inputs += get_target_outputs(":brave_license_dist_resources")
@@ -228,7 +212,6 @@ zip("chromedriver_zip") {
     ":brave_license_dist_resources",
   ]
 }
-
 
 action("create_symbols_dist") {
   output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"

@@ -44,12 +44,11 @@ source_set("browser_process") {
     "sparkle_glue_mac.h",
     "update_util.cc",
     "update_util.h",
-    "version_info_values.cc",
-    "version_info_values.h",
+    "version_info.cc",
+    "version_info.h",
   ]
 
   deps = [
-    "//brave:generate_version",
     "//brave/browser/payments",
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/content_settings/core/browser",
