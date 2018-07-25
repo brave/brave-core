@@ -4,25 +4,48 @@
 
 import * as React from 'react'
 import { Grid, Column } from 'brave-ui/gridSystem'
-import Anchor from 'brave-ui/anchor'
 import UnstyledButton from 'brave-ui/unstyledButton'
 import { getMessage } from '../../background/api/localeAPI'
 import theme from '../../theme'
+import * as tabsAPI from '../../background/api/tabsAPI'
 
-export default class BraveShieldsFooter extends React.PureComponent<{}, {}> {
+export interface BraveShieldsStatsProps {
+  tabId: number
+}
+
+export default class BraveShieldsFooter extends React.PureComponent<BraveShieldsStatsProps, {}> {
+  constructor (props: BraveShieldsStatsProps) {
+    super(props)
+    this.openSettings = this.openSettings.bind(this)
+    this.reloadShields = this.reloadShields.bind(this)
+  }
+
+  openSettings () {
+    tabsAPI.createTab({ url: 'chrome://settings' })
+      .catch((err) => console.log(err))
+  }
+
+  reloadShields () {
+    tabsAPI.reloadTab(this.props.tabId, true)
+      .catch((err) => console.log(err))
+  }
+
   render () {
     return (
       <Grid id='braveShieldsFooter' theme={theme.braveShieldsFooter}>
         <Column size={9} theme={theme.columnStart}>
-          <Anchor
-            theme={theme.editLink}
-            href='chrome://settings'
-            target='_blank'
+          <UnstyledButton
+            theme={theme.noUserSelect}
+            onClick={this.openSettings}
             text={getMessage('shieldsFooterEditDefault')}
           />
         </Column>
         <Column size={3} theme={theme.columnEnd}>
-          <UnstyledButton theme={theme.noUserSelect} text={getMessage('shieldsFooterReload')} />
+          <UnstyledButton
+            onClick={this.reloadShields}
+            theme={theme.noUserSelect}
+            text={getMessage('shieldsFooterReload')}
+          />
         </Column>
       </Grid>
     )
