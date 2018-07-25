@@ -9,7 +9,7 @@
 BraveMdSettingsUI::BraveMdSettingsUI(content::WebUI* web_ui,
                                      const std::string& host)
     : MdSettingsUI(web_ui) {
-#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
+#if defined(BRAVE_CHROMIUM_BUILD)
   web_ui->AddMessageHandler(std::make_unique<settings::MetricsReportingHandler>());
 #endif
 }
