@@ -1,4 +1,8 @@
 declare_args() {
   brave_chromium_build = true
+  brave_branding_path_component = ""
+}
+
+if (brave_chromium_build) {
   brave_branding_path_component = "brave"
 }
