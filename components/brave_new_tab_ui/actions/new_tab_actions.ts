@@ -5,7 +5,7 @@
 import { action } from 'typesafe-actions'
 
 // Constants
-import { types } from '../constants/newTabTypes'
+import { types } from '../constants/new_tab_types'
 
 export const topSitesDataUpdated = (topSites: NewTab.Site[]) => action(types.NEW_TAB_TOP_SITES_DATA_UPDATED, {
   topSites

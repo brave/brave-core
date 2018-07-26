@@ -5,7 +5,7 @@
 import { Reducer } from 'redux'
 
 // Constants
-import { types } from '../constants/newTabTypes'
+import { types } from '../constants/new_tab_types'
 
 // Utils
 import * as storage from '../storage'

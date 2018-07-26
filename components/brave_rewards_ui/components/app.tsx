@@ -14,7 +14,7 @@ interface Props {
   rewardsData: Rewards.State
 }
 
-class RewardsPage extends React.Component<Props, {}> {
+export class RewardsPage extends React.Component<Props, {}> {
   onCreateWalletClicked = () => {
     this.actions.createWalletRequested()
   }
@@ -26,7 +26,7 @@ class RewardsPage extends React.Component<Props, {}> {
   render () {
     const { rewardsData } = this.props
     return (
-      <div>
+      <div id='rewardsPage'>
         <div>
           <a href='#' onClick={this.onCreateWalletClicked}>Create Wallet</a>
         </div>
@@ -45,11 +45,11 @@ class RewardsPage extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: Rewards.ApplicationState) => ({
+export const mapStateToProps = (state: Rewards.ApplicationState) => ({
   rewardsData: state.rewardsData
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+export const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(rewardsActions, dispatch)
 })
 

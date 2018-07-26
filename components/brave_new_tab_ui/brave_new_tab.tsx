@@ -12,7 +12,7 @@ import App from './components/app'
 
 // Utils
 import store from './store'
-import * as newTabActions from './actions/newTabActions'
+import * as newTabActions from './actions/new_tab_actions'
 
 window.cr.define('brave_new_tab', function () {
   'use strict'

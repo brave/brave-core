@@ -5,7 +5,7 @@
 import { bindActionCreators } from 'redux'
 
 // Utils
-import * as newTabActions from './actions/newTabActions'
+import * as newTabActions from './actions/new_tab_actions'
 import { debounce } from '../common/debounce'
 import store from './store'
 

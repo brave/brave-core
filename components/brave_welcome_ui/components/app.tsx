@@ -32,7 +32,7 @@ interface Props {
   actions: any
 }
 
-class WelcomePage extends React.Component<Props, {}> {
+export class WelcomePage extends React.Component<Props, {}> {
   get pageIndex () {
     return this.props.welcomeData.pageIndex
   }
@@ -136,7 +136,7 @@ class WelcomePage extends React.Component<Props, {}> {
 
   render () {
     return (
-      <div style={this.backgroundStyle}>
+      <div id='welcomePage' style={this.backgroundStyle}>
         <Panel theme={theme.panel}>
           {this.activeScreen}
           <Footer
@@ -152,11 +152,11 @@ class WelcomePage extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: Welcome.ApplicationState) => ({
+export const mapStateToProps = (state: Welcome.ApplicationState) => ({
   welcomeData: state.welcomeData
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+export const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(welcomeActions, dispatch)
 })
 
