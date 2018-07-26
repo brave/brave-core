@@ -6,7 +6,7 @@ import CoreData
 import Foundation
 import BraveShared
 
-public class Domain: NSManagedObject {
+public final class Domain: NSManagedObject, CRUD {
     
     @NSManaged public var url: String?
     @NSManaged public var visits: Int32
@@ -65,44 +65,25 @@ public class Domain: NSManagedObject {
     class func blockFromTopSites(_ url: URL, context: NSManagedObjectContext) {
         if let domain = getOrCreateForUrl(url, context: context) {
             domain.blockedFromTopSites = true
-            DataController.saveContext(context: context)
+            DataController.save(context)
         }
     }
 
     class func blockedTopSites(_ context: NSManagedObjectContext) -> [Domain] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        fetchRequest.entity = Domain.entity(context)
-        fetchRequest.predicate = NSPredicate(format: "blockedFromTopSites == %@", NSNumber(value: true as Bool))
-        do {
-            if let results = try context.fetch(fetchRequest) as? [Domain] {
-                return results
-            }
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-        return [Domain]()
+        let blockedFromTopSitesKeyPath = #keyPath(Domain.blockedFromTopSites)
+        let predicate = NSPredicate(format: "\(blockedFromTopSitesKeyPath) = YES")
+        return getAll(predicate: predicate) ?? []
     }
 
     class func topSitesQuery(_ limit: Int, context: NSManagedObjectContext) -> [Domain] {
-        assert(!Thread.isMainThread)
-
+        let visitsKeyPath = #keyPath(Domain.visits)
+        let blockedFromTopSitesKeyPath = #keyPath(Domain.blockedFromTopSites)
         let minVisits = 5
-
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        fetchRequest.fetchLimit = limit
-        fetchRequest.entity = Domain.entity(context)
-        fetchRequest.predicate = NSPredicate(format: "visits > %i AND blockedFromTopSites != %@", minVisits, NSNumber(value: true as Bool))
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "visits", ascending: false)]
-        do {
-            if let results = try context.fetch(fetchRequest) as? [Domain] {
-                return results
-            }
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-        return [Domain]()
+        
+        let predicate = NSPredicate(format: "\(visitsKeyPath) > %i AND \(blockedFromTopSitesKeyPath) != YES", minVisits)
+        let sortDescriptors = [NSSortDescriptor(key: visitsKeyPath, ascending: false)]
+        
+        return getAll(predicate: predicate, sortDescriptors: sortDescriptors) ?? []
     }
 
     class func setBraveShield(forDomain domainString: String, state: Bool?, context: NSManagedObjectContext) {
@@ -125,7 +106,7 @@ public class Domain: NSManagedObject {
         // Brave TODO:
 //        BraveShieldState.perNormalizedDomain.removeAll()
 
-        let context = DataController.shared.workerContext
+        let context = DataController.backgroundContext
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
             fetchRequest.entity = Domain.entity(context)
@@ -168,7 +149,7 @@ public class Domain: NSManagedObject {
     }
 
     class func deleteNonBookmarkedAndClearSiteVisits(_ completionOnMain: @escaping ()->()) {
-        let context = DataController.shared.workerContext
+        let context = DataController.backgroundContext
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
             fetchRequest.entity = Domain.entity(context)
@@ -192,7 +173,7 @@ public class Domain: NSManagedObject {
                 print(fetchError)
             }
 
-            DataController.saveContext(context: context)
+            DataController.save(context)
             DispatchQueue.main.async {
                 completionOnMain()
             }

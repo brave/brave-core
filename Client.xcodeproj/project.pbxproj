@@ -12,6 +12,7 @@
 		0A4B012220D02F26004D4011 /* TabBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012120D02F26004D4011 /* TabBarCell.swift */; };
 		0A4B012420D0321A004D4011 /* UX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012320D0321A004D4011 /* UX.swift */; };
 		0A4CB76920D8178E00A9CF4A /* HomePanelDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4CB76820D8178E00A9CF4A /* HomePanelDelegates.swift */; };
+		0AA4FC392109D685000B173A /* CRUDProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA4FC382109D685000B173A /* CRUDProtocols.swift */; };
 		0AADC4C820D2A55A00FDE368 /* TopSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4C720D2A55A00FDE368 /* TopSitesViewController.swift */; };
 		0AADC4CA20D2A66E00FDE368 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4C920D2A66E00FDE368 /* FavoriteCell.swift */; };
 		0AADC4D220D2A6A200FDE368 /* FavoritesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4CE20D2A6A200FDE368 /* FavoritesHelper.swift */; };
@@ -876,6 +877,7 @@
 		0A4B012320D0321A004D4011 /* UX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UX.swift; sourceTree = "<group>"; };
 		0A4CB76820D8178E00A9CF4A /* HomePanelDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePanelDelegates.swift; sourceTree = "<group>"; };
 		0A9B6A3420E6453400712BC9 /* Model8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model8.xcdatamodel; sourceTree = "<group>"; };
+		0AA4FC382109D685000B173A /* CRUDProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDProtocols.swift; sourceTree = "<group>"; };
 		0AADC4C720D2A55A00FDE368 /* TopSitesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesViewController.swift; sourceTree = "<group>"; };
 		0AADC4C920D2A66E00FDE368 /* FavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCell.swift; sourceTree = "<group>"; };
 		0AADC4CE20D2A6A200FDE368 /* FavoritesHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesHelper.swift; sourceTree = "<group>"; };
@@ -2029,9 +2031,10 @@
 		5D1DC54020AE004600905E5A /* models */ = {
 			isa = PBXGroup;
 			children = (
+				5D1DC54320AE004600905E5A /* DataController.swift */,
+				0AA4FC382109D685000B173A /* CRUDProtocols.swift */,
 				5D1DC54120AE004600905E5A /* WebsitePresentable.swift */,
 				5D1DC54220AE004600905E5A /* TabMO.swift */,
-				5D1DC54320AE004600905E5A /* DataController.swift */,
 				5D1DC54420AE004600905E5A /* TopSite.swift */,
 				5D1DC54620AE004600905E5A /* Bookmark.swift */,
 				5D1DC54720AE004600905E5A /* FaviconMO.swift */,
@@ -3998,6 +4001,7 @@
 				5D1DC57220AE005400905E5A /* JSInjector.swift in Sources */,
 				5D1DC55920AE004600905E5A /* Bookmark.swift in Sources */,
 				5D1DC55B20AE004600905E5A /* Domain.swift in Sources */,
+				0AA4FC392109D685000B173A /* CRUDProtocols.swift in Sources */,
 				5D1DC56B20AE005400905E5A /* SyncCrypto.swift in Sources */,
 				5D1DC55F20AE004600905E5A /* Model.xcdatamodeld in Sources */,
 				5D1DC57020AE005400905E5A /* SyncRecord.swift in Sources */,

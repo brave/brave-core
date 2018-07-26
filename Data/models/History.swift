@@ -36,7 +36,7 @@ public func isIgnoredURL(_ url: String) -> Bool {
     return false
 }
 
-public class History: NSManagedObject, WebsitePresentable {
+public final class History: NSManagedObject, WebsitePresentable, CRUD {
 
     @NSManaged public var title: String?
     @NSManaged public var url: String?
@@ -56,7 +56,7 @@ public class History: NSManagedObject, WebsitePresentable {
     }
 
     public class func add(_ title: String, url: URL) {
-        let context = DataController.shared.workerContext
+        let context = DataController.backgroundContext
         context.perform {
             var item = History.getExisting(url, context: context)
             if item == nil {
@@ -70,13 +70,13 @@ public class History: NSManagedObject, WebsitePresentable {
             // BRAVE TODO:
 //            item?.sectionIdentifier = BraveStrings.Today
 
-            DataController.saveContext(context: context)
+            DataController.save(context)
         }
     }
 
     public class func frc() -> NSFetchedResultsController<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        let context = DataController.shared.mainThreadContext
+        let context = DataController.mainContext
         
         fetchRequest.entity = History.entity(context)
         fetchRequest.fetchBatchSize = 20
@@ -104,60 +104,26 @@ public class History: NSManagedObject, WebsitePresentable {
     }
 
     class func getExisting(_ url: URL, context: NSManagedObjectContext) -> History? {
-        assert(!Thread.isMainThread)
-
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        fetchRequest.entity = History.entity(context)
-        fetchRequest.predicate = NSPredicate(format: "url == %@", url.absoluteString)
-        var result: History? = nil
-        do {
-            let results = try context.fetch(fetchRequest) as? [History]
-            if let item = results?.first {
-                result = item
-            }
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-        return result
+        let urlKeyPath = #keyPath(History.url)
+        let predicate = NSPredicate(format: "\(urlKeyPath) == %@", url.absoluteString)
+        
+        return getFirst(predicate: predicate)
     }
 
     class func frecencyQuery(_ context: NSManagedObjectContext, containing:String? = nil) -> [History] {
-        assert(!Thread.isMainThread)
+        let urlKeyPath = #keyPath(History.url)
+        let visitedOnKeyPath = #keyPath(History.visitedOn) 
 
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        fetchRequest.fetchLimit = 100
-        fetchRequest.entity = History.entity(context)
-        
-        var predicate = NSPredicate(format: "visitedOn > %@", History.ThisWeek as CVarArg)
+        var predicate = NSPredicate(format: "\(visitedOnKeyPath) > %@", History.ThisWeek as CVarArg)
         if let query = containing {
-            predicate = NSPredicate(format: predicate.predicateFormat + " AND url CONTAINS %@", query)
+            predicate = NSPredicate(format: predicate.predicateFormat + " AND \(urlKeyPath) CONTAINS %@", query)
         }
         
-        fetchRequest.predicate = predicate
-
-        do {
-            if let results = try context.fetch(fetchRequest) as? [History] {
-                return results
-            }
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-        return []
-    }
-    
-    public func remove(save: Bool) {
-        guard let context = managedObjectContext else { return }
-        context.delete(self)
-        
-        if save {
-            DataController.saveContext(context: context)
-        }
+        return getAll(predicate: predicate, fetchLimit: 100) ?? []
     }
     
     public class func deleteAll(_ completionOnMain: @escaping ()->()) {
-        let context = DataController.shared.workerContext
+        let context = DataController.backgroundContext
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
             fetchRequest.entity = History.entity(context)
