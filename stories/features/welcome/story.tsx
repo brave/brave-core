@@ -3,17 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { storiesOf, addDecorator } from '@storybook/react'
-import { withKnobs } from '@storybook/addon-knobs'
-import { BetterPageVisualizer } from '../../storyUtil'
+import { storiesOf } from '@storybook/react'
 
 // Components
 import WelcomePage from './page/index'
-
-addDecorator(withKnobs)
-
-// Globally adapt the story visualizer for this story
-addDecorator(BetterPageVisualizer)
 
 storiesOf('Feature Components/Welcome', module)
   .add('Page', () => <WelcomePage />)
