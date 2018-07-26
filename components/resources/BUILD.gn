@@ -28,4 +28,5 @@ grit("brave_components_resources_grit") {
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
   ]
   output_dir = "$root_gen_dir/components"
+  resource_ids = "//brave/browser/resources/resource_ids"
 }
