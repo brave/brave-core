@@ -1,11 +1,11 @@
-// Copyright 2017 The Brave Authors. All rights reserved.
+// Copyright 2018 The Brave Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef NET_SOCKET_SOCKS5_CLIENT_SOCKET_AUTH_H_
-#define NET_SOCKET_SOCKS5_CLIENT_SOCKET_AUTH_H_
+#ifndef BRAVE_NET_SOCKET_SOCKS5_CLIENT_SOCKET_AUTH_H_
+#define BRAVE_NET_SOCKET_SOCKS5_CLIENT_SOCKET_AUTH_H_
 
-#include "net/socket/socks5_client_socket.h"
+#include "../../../../net/socket/socks5_client_socket.h"
 
 namespace net {
 
@@ -43,4 +43,4 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocketAuth : public SOCKS5ClientSocket {
 
 }  // namespace net
 
-#endif  // NET_SOCKET_SOCKS5_CLIENT_SOCKET_AUTH_H_
+#endif  // BRAVE_NET_SOCKET_SOCKS5_CLIENT_SOCKET_AUTH_H_

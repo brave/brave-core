@@ -1,9 +1,11 @@
-// Copyright 2017 The Brave Authors. All rights reserved.
+// Copyright 2018 The Brave Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "../../../../net/socket/socks5_client_socket.cc"
+
 #include "net/base/io_buffer.h"
-#include "net/socket/socks5_client_socket_auth.h"
+#include "net/socket/socks5_client_socket.h"
 
 namespace net {
 

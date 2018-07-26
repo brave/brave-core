@@ -2,18 +2,23 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef NET_BASE_URL_AUTH_UTIL_H_
-#define NET_BASE_URL_AUTH_UTIL_H_
+#ifndef BRAVE_NET_BASE_URL_AUTH_UTIL_H_
+#define BRAVE_NET_BASE_URL_AUTH_UTIL_H_
 
+#include "../../../../net/base/url_util.h"
+
+#include "base/strings/string_piece_forward.h"
 #include "net/base/net_export.h"
 
 namespace net {
 
 NET_EXPORT bool ParseAuthHostAndPort(
     base::StringPiece input,
-    std::string* up_host_ret,
+    std::string* username,
+    std::string* password,
+    std::string* host,
     int* port);
 
 }
 
-#endif  // NET_BASE_URL_AUTH_UTIL_H_
+#endif  // BRAVE_NET_BASE_URL_AUTH_UTIL_H_
