@@ -3,7 +3,7 @@ import("//brave/build/linux/channels.gni")
 assert(is_linux)
 
 group("brave") {
-  deps = [
+  public_deps = [
     ":copy_exe",
   ]
 }
