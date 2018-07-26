@@ -4,9 +4,8 @@
 
 import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
-import { storiesOf, addDecorator } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
 import { withKnobs, text } from '@storybook/addon-knobs'
-import { BetterPageVisualizer } from '../../storyUtil'
 
 // Components
 import { TabsType } from '../../../src/features/rewards/modalBackupRestore'
@@ -19,16 +18,12 @@ const wiki = require('../../assets/img/wiki.jpg')
 const buzz = require('../../assets/img/buzz.jpg')
 const guardian = require('../../assets/img/guardian.jpg')
 
-addDecorator(withKnobs)
-
-// Globally adapt the story visualizer for this story
-addDecorator(BetterPageVisualizer)
-
 const doNothing = () => {
   console.log('nothing')
 }
 
 storiesOf('Feature Components/Rewards/Modal', module)
+  .addDecorator(withKnobs)
   .add('Backup/Restore', withState({ tabId: 'backup' }, (store) => {
     const onTabChange = (tabId: string) => {
       store.set({ tabId })

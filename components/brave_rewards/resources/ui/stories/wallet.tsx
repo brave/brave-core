@@ -3,9 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { storiesOf, addDecorator } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
 import { withKnobs, object, number, text, boolean } from '@storybook/addon-knobs'
-import { BetterPageVisualizer } from '../../storyUtil'
+// @ts-ignore
+import centered from '@storybook/addon-centered/dist'
 
 // Components
 import { PanelSummary, PanelEmpty, PanelOff, Panel } from '../../../src/features/rewards'
@@ -14,16 +15,13 @@ import { PanelSummary, PanelEmpty, PanelOff, Panel } from '../../../src/features
 const wallet = require('../../assets/img/rewards_wallet.svg')
 const funds = require('../../assets/img/rewards_funds.svg')
 
-addDecorator(withKnobs)
-
-// Globally adapt the story visualizer for this story
-addDecorator(BetterPageVisualizer)
-
 const doNothing = () => {
   console.log('nothing')
 }
 
 storiesOf('Feature Components/Rewards/Wallet', module)
+  .addDecorator(withKnobs)
+  .addDecorator(centered)
   .add('Base',() => {
     return (
       <Panel

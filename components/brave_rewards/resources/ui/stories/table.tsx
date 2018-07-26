@@ -3,9 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { storiesOf, addDecorator } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean, object, number } from '@storybook/addon-knobs'
-import { BetterPageVisualizer } from '../../storyUtil'
+// @ts-ignore
+import centered from '@storybook/addon-centered/dist'
 
 // Components
 import ContributeTable, { DetailRow as ContributeDetailRow } from '../../../src/features/rewards/contributeTable'
@@ -18,16 +19,13 @@ const buzz = require('../../assets/img/buzz.jpg')
 const guardian = require('../../assets/img/guardian.jpg')
 const eich = require('../../assets/img/eich.jpg')
 
-addDecorator(withKnobs)
-
-// Globally adapt the story visualizer for this story
-addDecorator(BetterPageVisualizer)
-
 const doNothing = () => {
   console.log('nothing')
 }
 
 storiesOf('Feature Components/Rewards/Table', module)
+  .addDecorator(withKnobs)
+  .addDecorator(centered)
   .add('Contribution',() => {
     const header: string[] = [
       'Site visited',

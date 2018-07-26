@@ -4,9 +4,8 @@
 
 import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
-import { storiesOf, addDecorator } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean, text, object, number } from '@storybook/addon-knobs'
-import { BetterPageVisualizer } from '../../storyUtil'
 
 // Components
 import Settings from './settings/index'
@@ -23,12 +22,8 @@ const donationAmount = [
   { tokens: 10, converted: 3, selected: false }
 ]
 
-addDecorator(withKnobs)
-
-// Globally adapt the story visualizer for this story
-addDecorator(BetterPageVisualizer)
-
 storiesOf('Feature Components/Rewards/Concepts', module)
+  .addDecorator(withKnobs)
   .add('Settings', () => <Settings />)
   .add('Site Banner', withState({ donationAmount }, (store) => {
     const onDonate = () => {

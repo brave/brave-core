@@ -4,10 +4,10 @@
 
 import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
-import { storiesOf, addDecorator } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean, select, text, object, number } from '@storybook/addon-knobs'
-import { BetterPageVisualizer } from '../../storyUtil'
-
+// @ts-ignore
+import centered from '@storybook/addon-centered/dist'
 // Components
 import {
   Box,
@@ -32,12 +32,9 @@ const donationAmount = [
   { tokens: 10, converted: 3, selected: false }
 ]
 
-addDecorator(withKnobs)
-
-// Globally adapt the story visualizer for this story
-addDecorator(BetterPageVisualizer)
-
 storiesOf('Feature Components/Rewards/Other', module)
+  .addDecorator(withKnobs)
+  .addDecorator(centered)
   .add('Box', withState({ checked: false, toggle: true }, (store) => {
     const onToggle = () => {
       store.set({ checked: !store.state.checked })
