@@ -1,0 +1,31 @@
+diff --git a/net/base/host_port_pair.cc b/net/base/host_port_pair.cc
+index ec8248449dbcd4156e361fcc8781ce0712f26a02..77f5a3653083625f8043147d42297dba05bb79a9 100644
+--- a/net/base/host_port_pair.cc
++++ b/net/base/host_port_pair.cc
+@@ -18,9 +18,11 @@
+ namespace net {
+ 
+ HostPortPair::HostPortPair() : port_(0) {}
++#if 0                           // brave override
+ HostPortPair::HostPortPair(const std::string& in_host, uint16_t in_port)
+     : host_(in_host), port_(in_port) {
+ }
++#endif
+ 
+ // static
+ HostPortPair HostPortPair::FromURL(const GURL& url) {
+@@ -50,12 +52,14 @@ HostPortPair HostPortPair::FromString(const std::string& str) {
+   return host_port_pair;
+ }
+ 
++#if 0                           // brave override
+ std::string HostPortPair::ToString() const {
+   std::string ret(HostForURL());
+   ret += ':';
+   ret += base::UintToString(port_);
+   return ret;
+ }
++#endif
+ 
+ std::string HostPortPair::HostForURL() const {
+   // TODO(rtenneti): Add support for |host| to have '\0'.
