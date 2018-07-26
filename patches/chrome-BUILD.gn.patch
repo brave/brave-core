@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..ea47742c7417c5c4794593dcdefe22e42c241b47 100644
+index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..79b6aea1f2465e66338452c97ee897761a2e761f 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -183,6 +183,10 @@ if (!is_android && !is_mac) {
@@ -22,15 +22,6 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..ea47742c7417c5c4794593dcdefe22e4
          ]
  
          deps += [
-@@ -338,7 +344,7 @@ if (!is_android && !is_mac) {
-     if (is_win) {
-       output_name = "initialexe/chrome"
-     } else {
--      output_name = "chrome"
-+      output_name = "brave"
-     }
- 
-     sources = []
 @@ -387,6 +393,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
@@ -149,12 +140,3 @@ index 395d16c7cef21407a233cdb79aaa88a5c5b6e72b..ea47742c7417c5c4794593dcdefe22e4
      ]
  
      include_dirs = [ android_ndk_include_dir ]
-@@ -1847,7 +1883,7 @@ if (enable_resource_whitelist_generation) {
- if (is_linux) {
-   if (is_official_build) {
-     extract_symbols("linux") {
--      binary = "$root_out_dir/chrome"
-+      binary = "$root_out_dir/brave"
- 
-       if (current_cpu == "x86") {
-         # GYP used "ia32" so keep that naming for back-compat.

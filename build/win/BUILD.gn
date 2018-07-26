@@ -1,3 +1,10 @@
+group("brave") {
+  deps = [
+    ":copy_exe",
+    ":copy_pdb",
+  ]
+}
+
 copy("copy_exe") {
   sources = [
     "$root_out_dir/chrome.exe",
@@ -25,7 +32,6 @@ copy("copy_pdb") {
     "//chrome:reorder_imports"
   ]
 }
-
 
 action("create_signed_installer") {
   script = "//brave/script/create-signed-installer.py"
