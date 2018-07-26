@@ -1,17 +1,22 @@
 diff --git a/net/base/host_port_pair.h b/net/base/host_port_pair.h
-index a5ee6bda3ff542624b484b7a11811b708fec3e11..0d635e6dd1242382bd5845f6cb7674dc32c58b5d 100644
+index a5ee6bda3ff542624b484b7a11811b708fec3e11..084616da28ba3569cc75d1b0fef51a0b89a9f54e 100644
 --- a/net/base/host_port_pair.h
 +++ b/net/base/host_port_pair.h
-@@ -23,6 +23,8 @@ class NET_EXPORT HostPortPair {
-   HostPortPair();
+@@ -24,6 +24,13 @@ class NET_EXPORT HostPortPair {
    // If |in_host| represents an IPv6 address, it should not bracket the address.
    HostPortPair(const std::string& in_host, uint16_t in_port);
+ 
++  // Brave addition.  Nudges HostPortPair past Chromium's style
++  // threshold for in-line constructors and destructors.
 +  HostPortPair(const std::string& username, const std::string& password,
 +               const std::string& in_host, uint16_t in_port);
- 
++  ~HostPortPair();
++  HostPortPair(const HostPortPair&);
++
    // Creates a HostPortPair for the origin of |url|.
    static HostPortPair FromURL(const GURL& url);
-@@ -37,18 +39,23 @@ class NET_EXPORT HostPortPair {
+ 
+@@ -37,18 +44,23 @@ class NET_EXPORT HostPortPair {
    // TODO(willchan): Define a functor instead.
    // Comparator function so this can be placed in a std::map.
    bool operator<(const HostPortPair& other) const {
@@ -37,7 +42,7 @@ index a5ee6bda3ff542624b484b7a11811b708fec3e11..0d635e6dd1242382bd5845f6cb7674dc
    const std::string& host() const {
      return host_;
    }
-@@ -72,6 +79,8 @@ class NET_EXPORT HostPortPair {
+@@ -72,6 +84,8 @@ class NET_EXPORT HostPortPair {
    size_t EstimateMemoryUsage() const;
  
   private:

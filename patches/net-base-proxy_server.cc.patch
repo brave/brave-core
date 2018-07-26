@@ -1,21 +1,29 @@
 diff --git a/net/base/proxy_server.cc b/net/base/proxy_server.cc
-index da31a40fbe8dc454dd24cb368c3af7d0b8c3506d..624d663b070e0eaf96a420c52a529525d7b7fed3 100644
+index da31a40fbe8dc454dd24cb368c3af7d0b8c3506d..85f8ee0367f949809e18bd7ec1eab0010975a87d 100644
 --- a/net/base/proxy_server.cc
 +++ b/net/base/proxy_server.cc
-@@ -8,6 +8,7 @@
+@@ -223,10 +223,13 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(
+   HostPortPair host_port_pair;
  
- #include "base/strings/string_util.h"
- #include "base/trace_event/memory_usage_estimator.h"
-+#include "net/base/url_auth_util.h"
- #include "net/base/url_util.h"
- #include "net/http/http_util.h"
- 
-@@ -226,7 +227,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(
+   if (scheme != SCHEME_INVALID && scheme != SCHEME_DIRECT) {
++    std::string username;
++    std::string password;
      std::string host;
      int port = -1;
      // If the scheme has a host/port, parse it.
 -    bool ok = ParseHostAndPort(host_and_port, &host, &port);
-+    bool ok = ParseAuthHostAndPort(host_and_port, &host, &port);
++    bool ok = ParseAuthHostAndPort(host_and_port, &username, &password,
++                                   &host, &port);
      if (!ok)
        return ProxyServer();  // Invalid -- failed parsing <host>[":"<port>]
  
+@@ -234,7 +237,8 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(
+     if (port == -1)
+       port = GetDefaultPortForScheme(scheme);
+ 
+-    host_port_pair = HostPortPair(host, static_cast<uint16_t>(port));
++    host_port_pair = HostPortPair(username, password, host,
++                                  static_cast<uint16_t>(port));
+   }
+ 
+   return ProxyServer(scheme, host_port_pair);

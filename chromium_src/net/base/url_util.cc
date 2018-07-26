@@ -2,11 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "../../../../net/base/url_util.cc"
+
 #include <iostream>
 #include <string>
 
 #include "base/strings/string_piece.h"
-#include "net/base/url_auth_util.h"
 #include "url/third_party/mozilla/url_parse.h"
 #include "url/url_canon_ip.h"
 
@@ -15,7 +16,9 @@ namespace net {
 // Copypasta of ParseHostAndPort that extracts the username and
 // password instead of rejecting them.
 bool ParseAuthHostAndPort(base::StringPiece input,
-                          std::string* up_host_ret,
+                          std::string* username,
+                          std::string* password,
+                          std::string* host,
                           int* port) {
   if (input.empty())
     return false;
@@ -62,28 +65,16 @@ bool ParseAuthHostAndPort(base::StringPiece input,
     }
   }
 
-  // Reassemble user:pass@host as up_host.
-  std::string up_host;
-  if (username_component.is_valid() || password_component.is_valid()) {
-    if (username_component.is_valid()) {
-      std::string username(input.data() + username_component.begin,
-                           username_component.len);
-      up_host += username;
-    }
-    if (password_component.is_valid()) {
-      std::string password(input.data() + password_component.begin,
-                           password_component.len);
-      up_host += ":";
-      up_host += password;
-    }
-    up_host += "@";
-  }
-  std::string hostname(input.data() + hostname_component.begin,
-                       hostname_component.len);
-  up_host += hostname;
-
   // Pass results back to caller.
-  *up_host_ret = up_host;
+  if (username_component.is_valid()) {
+    username->assign(input.data() + username_component.begin,
+                     username_component.len);
+  }
+  if (password_component.is_valid()) {
+    password->assign(input.data() + password_component.begin,
+                     password_component.len);
+  }
+  host->assign(input.data() + hostname_component.begin, hostname_component.len);
   *port = parsed_port_number;
 
   return true;  // Success.
