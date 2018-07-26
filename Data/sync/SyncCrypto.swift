@@ -38,10 +38,9 @@ class SyncCrypto: JSInjector {
         return webCfg
     }
     
-    ///
-    func uniqueSerialBytes(count byteCount: Int) -> [Int]? {
+    class func uniqueSerialBytes(count byteCount: Int) -> [Int]? {
         if byteCount % 2 != 0 { return nil }
-        return (0..<byteCount).map { _ in Int(arc4random_uniform(256)) }
+        return (0..<byteCount).map { _ in Int.random(in: 0 ... 256) }
     }
     
     /// Used to retrive unique bytes for UUIDs (e.g. bookmarks), that will map well with niceware
