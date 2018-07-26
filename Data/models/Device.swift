@@ -34,7 +34,7 @@ class Device: NSManagedObject, Syncable {
         return SyncDevice(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
     }
     
-    static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
+    @discardableResult static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
         
         // No guard, let bleed through to allow 'empty' devices (e.g. local)
         let root = root as? SyncDevice

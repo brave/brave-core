@@ -133,7 +133,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         }
     }
 
-    public static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
+    @discardableResult public static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
         // Explicit parentFolder to force method decision
         return add(rootObject: root as? SyncBookmark, save: save, sendToSync: sendToSync, parentFolder: nil, context: context)
     }

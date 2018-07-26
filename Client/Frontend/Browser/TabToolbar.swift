@@ -7,7 +7,7 @@ import SnapKit
 import Shared
 
 protocol TabToolbarProtocol: class {
-    weak var tabToolbarDelegate: TabToolbarDelegate? { get set }
+    var tabToolbarDelegate: TabToolbarDelegate? { get set }
     var tabsButton: TabsButton { get }
     var menuButton: ToolbarButton { get }
     var forwardButton: ToolbarButton { get }
