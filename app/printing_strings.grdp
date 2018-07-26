@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This file is created by l10nUtil.js. Do not edit manually. -->
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Printing specific strings (included from generated_resources.grd). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <message name="IDS_UTILITY_PROCESS_PDF_COMPOSITOR_SERVICE_NAME" desc="The name of the utility process used for PDF compositing.">
     PDF Compositor Service
@@ -89,12 +89,10 @@
     <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_RADIO" desc="Aria-label page range radio.">
       page range radio button
     </message>
-    <message name="IDS_PRINT_PREVIEW_PRINT_TO_PDF"
-             desc="Option shown on printer drop-down list for saving previewed document as a PDF.">
+    <message name="IDS_PRINT_PREVIEW_PRINT_TO_PDF" desc="Option shown on printer drop-down list for saving previewed document as a PDF.">
       Save as PDF
     </message>
-    <message name="IDS_PRINT_PREVIEW_PRINT_WITH_CLOUD_PRINT_WAIT"
-        desc="Message shown in the print preview page after choosing cloud print before the dialog displays">
+    <message name="IDS_PRINT_PREVIEW_PRINT_WITH_CLOUD_PRINT_WAIT" desc="Message shown in the print preview page after choosing cloud print before the dialog displays">
       Loading <ph name="CLOUD_PRINT_NAME">$1<ex>Brave Cloud Print</ex></ph>
     </message>
     <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_LONG" desc="Print summary, explaining to the user how many pages will be printed.">

@@ -1,1460 +1,467 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This file is created by l10nUtil.js. Do not edit manually. -->
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit latest_public_release="0" current_release="1" output_all_resource_defines="false">
   <outputs>
     <output filename="grit/settings_resources.h" type="rc_header">
-      <emit emit_type='prepend'></emit>
+      <emit emit_type="prepend" />
     </output>
-    <output filename="grit/settings_resources_map.cc"
-            type="resource_file_map_source" />
-    <output filename="grit/settings_resources_map.h"
-            type="resource_map_header" />
+    <output filename="grit/settings_resources_map.cc" type="resource_file_map_source" />
+    <output filename="grit/settings_resources_map.h" type="resource_map_header" />
     <output filename="settings_resources.pak" type="data_package" />
   </outputs>
   <release seq="1">
     <structures>
-      <structure name="IDR_SETTINGS_A11Y_PAGE_JS"
-                 file="a11y_page/a11y_page.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_A11Y_PAGE_HTML"
-                 file="a11y_page/a11y_page.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_A11Y_PAGE_JS" file="a11y_page/a11y_page.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_A11Y_PAGE_HTML" file="a11y_page/a11y_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <if expr="chromeos">
-        <structure name="IDR_SETTINGS_MANAGE_A11Y_PAGE_JS"
-                   file="a11y_page/manage_a11y_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_MANAGE_A11Y_PAGE_HTML"
-                   file="a11y_page/manage_a11y_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_TTS_SUBPAGE_JS"
-                   file="a11y_page/tts_subpage.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_TTS_SUBPAGE_HTML"
-                   file="a11y_page/tts_subpage.html"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_MANAGE_A11Y_PAGE_JS" file="a11y_page/manage_a11y_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MANAGE_A11Y_PAGE_HTML" file="a11y_page/manage_a11y_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_TTS_SUBPAGE_JS" file="a11y_page/tts_subpage.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_TTS_SUBPAGE_HTML" file="a11y_page/tts_subpage.html" type="chrome_html" />
       </if>
-      <structure name="IDR_SETTINGS_ABOUT_PAGE_BROWSER_PROXY_HTML"
-                 file="about_page/about_page_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ABOUT_PAGE_BROWSER_PROXY_JS"
-                 file="about_page/about_page_browser_proxy.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_ABOUT_PAGE_JS"
-                 file="about_page/about_page.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_ABOUT_PAGE_HTML"
-                 file="about_page/about_page.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_ABOUT_PAGE_BROWSER_PROXY_HTML" file="about_page/about_page_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ABOUT_PAGE_BROWSER_PROXY_JS" file="about_page/about_page_browser_proxy.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_ABOUT_PAGE_JS" file="about_page/about_page.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_ABOUT_PAGE_HTML" file="about_page/about_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <if expr="chromeos">
-        <structure name="IDR_SETTINGS_CHANNEL_SWITCHER_DIALOG_HTML"
-                   file="about_page/channel_switcher_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CHANNEL_SWITCHER_DIALOG_JS"
-                   file="about_page/channel_switcher_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DETAILED_BUILD_INFO_JS"
-                   file="about_page/detailed_build_info.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DETAILED_BUILD_INFO_HTML"
-                   file="about_page/detailed_build_info.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_UPDATE_WARNING_DIALOG_HTML"
-                   file="about_page/update_warning_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_UPDATE_WARNING_DIALOG_JS"
-                   file="about_page/update_warning_dialog.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_CHANNEL_SWITCHER_DIALOG_HTML" file="about_page/channel_switcher_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CHANNEL_SWITCHER_DIALOG_JS" file="about_page/channel_switcher_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DETAILED_BUILD_INFO_JS" file="about_page/detailed_build_info.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DETAILED_BUILD_INFO_HTML" file="about_page/detailed_build_info.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_UPDATE_WARNING_DIALOG_HTML" file="about_page/update_warning_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_UPDATE_WARNING_DIALOG_JS" file="about_page/update_warning_dialog.js" type="chrome_html" />
       </if>
-      <structure name="IDR_SETTINGS_ADD_SITE_DIALOG_HTML"
-                 file="site_settings/add_site_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ADD_SITE_DIALOG_JS"
-                 file="site_settings/add_site_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ALL_SITES_HTML"
-                 file="site_settings/all_sites.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ALL_SITES_JS"
-                 file="site_settings/all_sites.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_SITE_ENTRY_HTML"
-                 file="site_settings/site_entry.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_ENTRY_JS"
-                 file="site_settings/site_entry.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CATEGORY_DEFAULT_SETTING_HTML"
-                 file="site_settings/category_default_setting.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CATEGORY_DEFAULT_SETTING_JS"
-                 file="site_settings/category_default_setting.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CATEGORY_SETTING_EXCEPTIONS_HTML"
-                 file="site_settings/category_setting_exceptions.html"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_CATEGORY_SETTING_EXCEPTIONS_JS"
-                 file="site_settings/category_setting_exceptions.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ANIMATION_ANIMATION_HTML"
-                 file="animation/animation.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ANIMATION_ANIMATION_JS"
-                 file="animation/animation.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ANIMATION_FADE_ANIMATIONS_HTML"
-                 file="animation/fade_animations.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ANIMATION_FADE_ANIMATIONS_JS"
-                 file="animation/fade_animations.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_ANIMATED_PAGES_HTML"
-                 file="settings_page/settings_animated_pages.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_ANIMATED_PAGES_JS"
-                 file="settings_page/settings_animated_pages.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_APPEARANCE_BROWSER_PROXY_HTML"
-                 file="appearance_page/appearance_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_APPEARANCE_BROWSER_PROXY_JS"
-                 file="appearance_page/appearance_browser_proxy.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_APPEARANCE_FONTS_PAGE_HTML" preprocess="true"
-                 file="appearance_page/appearance_fonts_page.html"
-                 type="chrome_html"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_APPEARANCE_FONTS_PAGE_JS"
-                 file="appearance_page/appearance_fonts_page.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_APPEARANCE_PAGE_HTML"
-                 file="appearance_page/appearance_page.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_APPEARANCE_PAGE_JS"
-                 file="appearance_page/appearance_page.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_APPEARANCE_HOME_URL_INPUT_HTML"
-                 file="appearance_page/home_url_input.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_APPEARANCE_HOME_URL_INPUT_JS"
-                 file="appearance_page/home_url_input.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_BASIC_PAGE_JS"
-                 file="basic_page/basic_page.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_BASIC_PAGE_HTML"
-                 file="basic_page/basic_page.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_EDIT_EXCEPTION_DIALOG_HTML"
-                 file="site_settings/edit_exception_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_EDIT_EXCEPTION_DIALOG_JS"
-                 file="site_settings/edit_exception_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_EXTENSION_CONTROL_BROWSER_PROXY_JS"
-                 file="extension_control_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_EXTENSION_CONTROL_BROWSER_PROXY_HTML"
-                 file="extension_control_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_FONTS_BROWSER_PROXY_HTML"
-                 file="appearance_page/fonts_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_FONTS_BROWSER_PROXY_JS"
-                 file="appearance_page/fonts_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LIFETIME_BROWSER_PROXY_HTML"
-                 file="lifetime_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LIFETIME_BROWSER_PROXY_JS"
-                 file="lifetime_browser_proxy.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_ON_STARTUP_BROWSER_PROXY_HTML"
-                 file="on_startup_page/on_startup_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ON_STARTUP_BROWSER_PROXY_JS"
-                 file="on_startup_page/on_startup_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ON_STARTUP_PAGE_HTML"
-                 file="on_startup_page/on_startup_page.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ON_STARTUP_PAGE_JS"
-                 file="on_startup_page/on_startup_page.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SEARCH_SETTINGS_JS"
-                 file="search_settings.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_STARTUP_URLS_PAGE_HTML"
-                 file="on_startup_page/startup_urls_page.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_STARTUP_URLS_PAGE_JS"
-                 file="on_startup_page/startup_urls_page.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_STARTUP_URLS_PAGE_BROWSER_PROXY_JS"
-                 file="on_startup_page/startup_urls_page_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_STARTUP_URLS_PAGE_BROWSER_PROXY_HTML"
-                 file="on_startup_page/startup_urls_page_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_STARTUP_URL_DIALOG_JS"
-                 file="on_startup_page/startup_url_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_STARTUP_URL_DIALOG_HTML"
-                 file="on_startup_page/startup_url_dialog.html"
-                 type="chrome_html"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_STARTUP_URL_ENTRY_JS"
-                 file="on_startup_page/startup_url_entry.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_STARTUP_URL_ENTRY_HTML"
-                 file="on_startup_page/startup_url_entry.html"
-                 type="chrome_html"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_MAIN_HTML"
-                 file="settings_main/settings_main.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_MAIN_JS"
-                 file="settings_main/settings_main.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_MENU_HTML"
-                 file="settings_menu/settings_menu.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_MENU_JS"
-                 file="settings_menu/settings_menu.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_SECTION_HTML"
-                 file="settings_page/settings_section.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_SECTION_JS"
-                 file="settings_page/settings_section.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_SUBPAGE_HTML"
-                 file="settings_page/settings_subpage.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_SUBPAGE_JS"
-                 file="settings_page/settings_subpage.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_SUBPAGE_SEARCH_HTML"
-                 file="settings_page/settings_subpage_search.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_SUBPAGE_SEARCH_JS"
-                 file="settings_page/settings_subpage_search.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_PAGE_CSS_HTML"
-                 file="settings_page_css.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_ICONS_CSS_HTML"
-                 file="settings_icons_css.html"
-                 flattenhtml="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_MAIN_PAGE_BEHAVIOR_HTML"
-                 file="settings_page/main_page_behavior.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_MAIN_PAGE_BEHAVIOR_JS"
-                 file="settings_page/main_page_behavior.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SETTINGS_VARS_CSS_HTML"
-                 file="settings_vars_css.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SETTINGS_SHARED_CSS_HTML"
-                 file="settings_shared_css.html"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_UI_HTML"
-                 file="settings_ui/settings_ui.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_CR_SETTINGS_UI_JS"
-                 file="settings_ui/settings_ui.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_GLOBAL_SCROLL_TARGET_BEHAVIOR_HTML"
-                 file="global_scroll_target_behavior.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_GLOBAL_SCROLL_TARGET_BEHAVIOR_JS"
-                 file="global_scroll_target_behavior.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_FOCUS_ROW_BEHAVIOR_HTML"
-                 file="focus_row_behavior.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_FOCUS_ROW_BEHAVIOR_JS"
-                 file="focus_row_behavior.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CHANGE_PASSWORD_BROWSER_PROXY_HTML"
-                 file="change_password_page/change_password_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CHANGE_PASSWORD_BROWSER_PROXY_JS"
-                 file="change_password_page/change_password_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CHANGE_PASSWORD_PAGE_HTML"
-                 file="change_password_page/change_password_page.html"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_CHANGE_PASSWORD_PAGE_JS"
-                 file="change_password_page/change_password_page.js"
-                 type="chrome_html"
-                 preprocess="true" />
+      <structure name="IDR_SETTINGS_ADD_SITE_DIALOG_HTML" file="site_settings/add_site_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ADD_SITE_DIALOG_JS" file="site_settings/add_site_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ALL_SITES_HTML" file="site_settings/all_sites.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ALL_SITES_JS" file="site_settings/all_sites.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_SITE_ENTRY_HTML" file="site_settings/site_entry.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_ENTRY_JS" file="site_settings/site_entry.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CATEGORY_DEFAULT_SETTING_HTML" file="site_settings/category_default_setting.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CATEGORY_DEFAULT_SETTING_JS" file="site_settings/category_default_setting.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CATEGORY_SETTING_EXCEPTIONS_HTML" file="site_settings/category_setting_exceptions.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_CATEGORY_SETTING_EXCEPTIONS_JS" file="site_settings/category_setting_exceptions.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ANIMATION_ANIMATION_HTML" file="animation/animation.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ANIMATION_ANIMATION_JS" file="animation/animation.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ANIMATION_FADE_ANIMATIONS_HTML" file="animation/fade_animations.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ANIMATION_FADE_ANIMATIONS_JS" file="animation/fade_animations.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_ANIMATED_PAGES_HTML" file="settings_page/settings_animated_pages.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_ANIMATED_PAGES_JS" file="settings_page/settings_animated_pages.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_APPEARANCE_BROWSER_PROXY_HTML" file="appearance_page/appearance_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_APPEARANCE_BROWSER_PROXY_JS" file="appearance_page/appearance_browser_proxy.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_APPEARANCE_FONTS_PAGE_HTML" file="appearance_page/appearance_fonts_page.html" type="chrome_html" allowexternalscript="true" preprocess="true" />
+      <structure name="IDR_SETTINGS_APPEARANCE_FONTS_PAGE_JS" file="appearance_page/appearance_fonts_page.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_APPEARANCE_PAGE_HTML" file="appearance_page/appearance_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_APPEARANCE_PAGE_JS" file="appearance_page/appearance_page.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_APPEARANCE_HOME_URL_INPUT_HTML" file="appearance_page/home_url_input.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_APPEARANCE_HOME_URL_INPUT_JS" file="appearance_page/home_url_input.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BASIC_PAGE_JS" file="basic_page/basic_page.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BASIC_PAGE_HTML" file="basic_page/basic_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_EDIT_EXCEPTION_DIALOG_HTML" file="site_settings/edit_exception_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_EDIT_EXCEPTION_DIALOG_JS" file="site_settings/edit_exception_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_EXTENSION_CONTROL_BROWSER_PROXY_JS" file="extension_control_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_EXTENSION_CONTROL_BROWSER_PROXY_HTML" file="extension_control_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_FONTS_BROWSER_PROXY_HTML" file="appearance_page/fonts_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_FONTS_BROWSER_PROXY_JS" file="appearance_page/fonts_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LIFETIME_BROWSER_PROXY_HTML" file="lifetime_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LIFETIME_BROWSER_PROXY_JS" file="lifetime_browser_proxy.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_ON_STARTUP_BROWSER_PROXY_HTML" file="on_startup_page/on_startup_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ON_STARTUP_BROWSER_PROXY_JS" file="on_startup_page/on_startup_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ON_STARTUP_PAGE_HTML" file="on_startup_page/on_startup_page.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ON_STARTUP_PAGE_JS" file="on_startup_page/on_startup_page.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SEARCH_SETTINGS_JS" file="search_settings.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_STARTUP_URLS_PAGE_HTML" file="on_startup_page/startup_urls_page.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_STARTUP_URLS_PAGE_JS" file="on_startup_page/startup_urls_page.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_STARTUP_URLS_PAGE_BROWSER_PROXY_JS" file="on_startup_page/startup_urls_page_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_STARTUP_URLS_PAGE_BROWSER_PROXY_HTML" file="on_startup_page/startup_urls_page_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_STARTUP_URL_DIALOG_JS" file="on_startup_page/startup_url_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_STARTUP_URL_DIALOG_HTML" file="on_startup_page/startup_url_dialog.html" type="chrome_html" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_STARTUP_URL_ENTRY_JS" file="on_startup_page/startup_url_entry.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_STARTUP_URL_ENTRY_HTML" file="on_startup_page/startup_url_entry.html" type="chrome_html" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_MAIN_HTML" file="settings_main/settings_main.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_MAIN_JS" file="settings_main/settings_main.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_MENU_HTML" file="settings_menu/settings_menu.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_MENU_JS" file="settings_menu/settings_menu.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_SECTION_HTML" file="settings_page/settings_section.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_SECTION_JS" file="settings_page/settings_section.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_SUBPAGE_HTML" file="settings_page/settings_subpage.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_SUBPAGE_JS" file="settings_page/settings_subpage.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_SUBPAGE_SEARCH_HTML" file="settings_page/settings_subpage_search.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_SUBPAGE_SEARCH_JS" file="settings_page/settings_subpage_search.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_PAGE_CSS_HTML" file="settings_page_css.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_ICONS_CSS_HTML" file="settings_icons_css.html" flattenhtml="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_MAIN_PAGE_BEHAVIOR_HTML" file="settings_page/main_page_behavior.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_MAIN_PAGE_BEHAVIOR_JS" file="settings_page/main_page_behavior.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SETTINGS_VARS_CSS_HTML" file="settings_vars_css.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SETTINGS_SHARED_CSS_HTML" file="settings_shared_css.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_UI_HTML" file="settings_ui/settings_ui.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_CR_SETTINGS_UI_JS" file="settings_ui/settings_ui.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_GLOBAL_SCROLL_TARGET_BEHAVIOR_HTML" file="global_scroll_target_behavior.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_GLOBAL_SCROLL_TARGET_BEHAVIOR_JS" file="global_scroll_target_behavior.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_FOCUS_ROW_BEHAVIOR_HTML" file="focus_row_behavior.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_FOCUS_ROW_BEHAVIOR_JS" file="focus_row_behavior.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CHANGE_PASSWORD_BROWSER_PROXY_HTML" file="change_password_page/change_password_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CHANGE_PASSWORD_BROWSER_PROXY_JS" file="change_password_page/change_password_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CHANGE_PASSWORD_PAGE_HTML" file="change_password_page/change_password_page.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_CHANGE_PASSWORD_PAGE_JS" file="change_password_page/change_password_page.js" type="chrome_html" preprocess="true" />
       <if expr="is_win">
-        <structure name="IDR_SETTINGS_CHROME_CLEANUP_PROXY_HTML"
-                   file="chrome_cleanup_page/chrome_cleanup_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CHROME_CLEANUP_PROXY_JS"
-                   file="chrome_cleanup_page/chrome_cleanup_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CHROME_CLEANUP_PAGE_HTML"
-                   file="chrome_cleanup_page/chrome_cleanup_page.html"
-                   type="chrome_html"
-                   preprocess="true" />
-        <structure name="IDR_SETTINGS_CHROME_CLEANUP_PAGE_JS"
-                   file="chrome_cleanup_page/chrome_cleanup_page.js"
-                   type="chrome_html"
-                   preprocess="true" />
-        <structure name="IDR_SETTINGS_CHROME_CLEANUP_ITEMS_TO_REMOVE_LIST_HTML"
-                   file="chrome_cleanup_page/items_to_remove_list.html"
-                   type="chrome_html"/>
-        <structure name="IDR_SETTINGS_CHROME_CLEANUP_ITEMS_TO_REMOVE_LIST_JS"
-                   file="chrome_cleanup_page/items_to_remove_list.js"
-                   type="chrome_html"/>
+        <structure name="IDR_SETTINGS_CHROME_CLEANUP_PROXY_HTML" file="chrome_cleanup_page/chrome_cleanup_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CHROME_CLEANUP_PROXY_JS" file="chrome_cleanup_page/chrome_cleanup_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CHROME_CLEANUP_PAGE_HTML" file="chrome_cleanup_page/chrome_cleanup_page.html" type="chrome_html" preprocess="true" />
+        <structure name="IDR_SETTINGS_CHROME_CLEANUP_PAGE_JS" file="chrome_cleanup_page/chrome_cleanup_page.js" type="chrome_html" preprocess="true" />
+        <structure name="IDR_SETTINGS_CHROME_CLEANUP_ITEMS_TO_REMOVE_LIST_HTML" file="chrome_cleanup_page/items_to_remove_list.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CHROME_CLEANUP_ITEMS_TO_REMOVE_LIST_JS" file="chrome_cleanup_page/items_to_remove_list.js" type="chrome_html" />
       </if>
       <if expr="is_win and _google_chrome">
-        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_PAGE_HTML"
-                   file="incompatible_applications_page/incompatible_applications_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_PAGE_JS"
-                   file="incompatible_applications_page/incompatible_applications_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_BROWSER_PROXY_HTML"
-                   file="incompatible_applications_page/incompatible_applications_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_BROWSER_PROXY_JS"
-                   file="incompatible_applications_page/incompatible_applications_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_INCOMPATIBLE_APPLICATION_ITEM_HTML"
-                   file="incompatible_applications_page/incompatible_application_item.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_INCOMPATIBLE_APPLICATION_ITEM_JS"
-                   file="incompatible_applications_page/incompatible_application_item.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_PAGE_HTML" file="incompatible_applications_page/incompatible_applications_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_PAGE_JS" file="incompatible_applications_page/incompatible_applications_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_BROWSER_PROXY_HTML" file="incompatible_applications_page/incompatible_applications_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_BROWSER_PROXY_JS" file="incompatible_applications_page/incompatible_applications_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_INCOMPATIBLE_APPLICATION_ITEM_HTML" file="incompatible_applications_page/incompatible_application_item.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INCOMPATIBLE_APPLICATIONS_INCOMPATIBLE_APPLICATION_ITEM_JS" file="incompatible_applications_page/incompatible_application_item.js" type="chrome_html" />
       </if>
-      <structure name="IDR_SETTINGS_CLEAR_BROWSING_DATA_BROWSER_PROXY_HTML"
-                 file="clear_browsing_data_dialog/clear_browsing_data_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CLEAR_BROWSING_DATA_BROWSER_PROXY_JS"
-                 file="clear_browsing_data_dialog/clear_browsing_data_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CLEAR_BROWSING_DATA_DIALOG_HTML"
-                 file="clear_browsing_data_dialog/clear_browsing_data_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CLEAR_BROWSING_DATA_DIALOG_JS"
-                 file="clear_browsing_data_dialog/clear_browsing_data_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_HISTORY_DELETION_DIALOG_HTML"
-                 file="clear_browsing_data_dialog/history_deletion_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_HISTORY_DELETION_DIALOG_JS"
-                 file="clear_browsing_data_dialog/history_deletion_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_BOOLEAN_CONTROL_BEHAVIOR_HTML"
-                 file="controls/settings_boolean_control_behavior.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_BOOLEAN_CONTROL_BEHAVIOR_JS"
-                 file="controls/settings_boolean_control_behavior.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_CONTROLLED_BUTTON_JS"
-                 file="controls/controlled_button.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_CONTROLLED_BUTTON_HTML"
-                 file="controls/controlled_button.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_CONTROLLED_RADIO_BUTTON_JS"
-                 file="controls/controlled_radio_button.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_CONTROLLED_RADIO_BUTTON_HTML"
-                 file="controls/controlled_radio_button.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_EXTENSION_CONTROLLED_INDICATOR_JS"
-                 file="controls/extension_controlled_indicator.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_EXTENSION_CONTROLLED_INDICATOR_HTML"
-                 file="controls/extension_controlled_indicator.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_CHECKBOX_HTML"
-                 file="controls/settings_checkbox.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_CHECKBOX_JS"
-                 file="controls/settings_checkbox.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_IMPORTANT_SITE_CHECKBOX_HTML"
-                 file="controls/important_site_checkbox.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_IMPORTANT_SITE_CHECKBOX_JS"
-                 file="controls/important_site_checkbox.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_DROPDOWN_MENU_HTML"
-                 file="controls/settings_dropdown_menu.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_DROPDOWN_MENU_JS"
-                 file="controls/settings_dropdown_menu.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_PREF_CONTROL_BEHAVIOR_HTML"
-                 file="controls/pref_control_behavior.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_PREF_CONTROL_BEHAVIOR_JS"
-                 file="controls/pref_control_behavior.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_RADIO_GROUP_HTML"
-                 file="controls/settings_radio_group.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_RADIO_GROUP_JS"
-                 file="controls/settings_radio_group.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_SETTINGS_IDLE_LOAD_HTML"
-                 file="controls/settings_idle_load.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_SETTINGS_IDLE_LOAD_JS"
-                 file="controls/settings_idle_load.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_SLIDER_HTML"
-                 file="controls/settings_slider.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_SLIDER_JS"
-                 file="controls/settings_slider.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_TOGGLE_BUTTON_HTML"
-                 file="controls/settings_toggle_button.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_TOGGLE_BUTTON_JS"
-                 file="controls/settings_toggle_button.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_COOKIE_INFO_HTML"
-                 file="site_settings/cookie_info.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_COOKIE_INFO_JS"
-                 file="site_settings/cookie_info.js"
-                 type="chrome_html" />
+      <structure name="IDR_SETTINGS_CLEAR_BROWSING_DATA_BROWSER_PROXY_HTML" file="clear_browsing_data_dialog/clear_browsing_data_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CLEAR_BROWSING_DATA_BROWSER_PROXY_JS" file="clear_browsing_data_dialog/clear_browsing_data_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CLEAR_BROWSING_DATA_DIALOG_HTML" file="clear_browsing_data_dialog/clear_browsing_data_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CLEAR_BROWSING_DATA_DIALOG_JS" file="clear_browsing_data_dialog/clear_browsing_data_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_HISTORY_DELETION_DIALOG_HTML" file="clear_browsing_data_dialog/history_deletion_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_HISTORY_DELETION_DIALOG_JS" file="clear_browsing_data_dialog/history_deletion_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_BOOLEAN_CONTROL_BEHAVIOR_HTML" file="controls/settings_boolean_control_behavior.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_BOOLEAN_CONTROL_BEHAVIOR_JS" file="controls/settings_boolean_control_behavior.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_CONTROLLED_BUTTON_JS" file="controls/controlled_button.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_CONTROLLED_BUTTON_HTML" file="controls/controlled_button.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_CONTROLLED_RADIO_BUTTON_JS" file="controls/controlled_radio_button.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_CONTROLLED_RADIO_BUTTON_HTML" file="controls/controlled_radio_button.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_EXTENSION_CONTROLLED_INDICATOR_JS" file="controls/extension_controlled_indicator.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_EXTENSION_CONTROLLED_INDICATOR_HTML" file="controls/extension_controlled_indicator.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_CHECKBOX_HTML" file="controls/settings_checkbox.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_CHECKBOX_JS" file="controls/settings_checkbox.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_IMPORTANT_SITE_CHECKBOX_HTML" file="controls/important_site_checkbox.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_IMPORTANT_SITE_CHECKBOX_JS" file="controls/important_site_checkbox.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_DROPDOWN_MENU_HTML" file="controls/settings_dropdown_menu.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_DROPDOWN_MENU_JS" file="controls/settings_dropdown_menu.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_PREF_CONTROL_BEHAVIOR_HTML" file="controls/pref_control_behavior.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_PREF_CONTROL_BEHAVIOR_JS" file="controls/pref_control_behavior.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_RADIO_GROUP_HTML" file="controls/settings_radio_group.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_RADIO_GROUP_JS" file="controls/settings_radio_group.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_SETTINGS_IDLE_LOAD_HTML" file="controls/settings_idle_load.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_SETTINGS_IDLE_LOAD_JS" file="controls/settings_idle_load.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_SLIDER_HTML" file="controls/settings_slider.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_SLIDER_JS" file="controls/settings_slider.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_TOGGLE_BUTTON_HTML" file="controls/settings_toggle_button.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_TOGGLE_BUTTON_JS" file="controls/settings_toggle_button.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_COOKIE_INFO_HTML" file="site_settings/cookie_info.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_COOKIE_INFO_JS" file="site_settings/cookie_info.js" type="chrome_html" />
       <if expr="not chromeos">
-        <structure name="IDR_SETTINGS_DEFAULT_BROWSER_BROWSER_PROXY_HTML"
-                   file="default_browser_page/default_browser_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEFAULT_BROWSER_BROWSER_PROXY_JS"
-                   file="default_browser_page/default_browser_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEFAULT_BROWSER_PAGE_HTML"
-                   file="default_browser_page/default_browser_page.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_DEFAULT_BROWSER_PAGE_JS"
-                   file="default_browser_page/default_browser_page.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEFAULT_BROWSER_BROWSER_PROXY_HTML" file="default_browser_page/default_browser_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEFAULT_BROWSER_BROWSER_PROXY_JS" file="default_browser_page/default_browser_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEFAULT_BROWSER_PAGE_HTML" file="default_browser_page/default_browser_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_DEFAULT_BROWSER_PAGE_JS" file="default_browser_page/default_browser_page.js" type="chrome_html" />
       </if>
       <if expr="chromeos">
-        <structure name="IDR_SETTINGS_DEVICE_BROWSER_PROXY_HTML"
-                   file="device_page/device_page_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_BROWSER_PROXY_JS"
-                   file="device_page/device_page_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_HTML"
-                   file="device_page/display.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_JS"
-                   file="device_page/display.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_LAYOUT_HTML"
-                   file="device_page/display_layout.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_LAYOUT_JS"
-                   file="device_page/display_layout.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_OVERSCAN_DIALOG_HTML"
-                   file="device_page/display_overscan_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_OVERSCAN_DIALOG_JS"
-                   file="device_page/display_overscan_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DRIVE_CACHE_DIALOG_HTML"
-                   file="device_page/drive_cache_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DRIVE_CACHE_DIALOG_JS"
-                   file="device_page/drive_cache_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_KEYBOARD_HTML"
-                   file="device_page/keyboard.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_KEYBOARD_JS"
-                   file="device_page/keyboard.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_POWER_HTML"
-                   file="device_page/power.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_POWER_JS"
-                   file="device_page/power.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_STORAGE_HTML"
-                   file="device_page/storage.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_STORAGE_JS"
-                   file="device_page/storage.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_STYLUS_HTML"
-                   file="device_page/stylus.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_STYLUS_JS"
-                   file="device_page/stylus.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_PAGE_HTML"
-                   file="device_page/device_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_PAGE_JS"
-                   file="device_page/device_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_POINTERS_HTML"
-                   file="device_page/pointers.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_POINTERS_JS"
-                   file="device_page/pointers.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DRAG_BEHAVIOR_HTML"
-                   file="device_page/drag_behavior.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DRAG_BEHAVIOR_JS"
-                   file="device_page/drag_behavior.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_LAYOUT_BEHAVIOR_HTML"
-                   file="device_page/layout_behavior.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_LAYOUT_BEHAVIOR_JS"
-                   file="device_page/layout_behavior.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_NIGHT_LIGHT_SLIDER_HTML"
-                   file="device_page/night_light_slider.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_NIGHT_LIGHT_SLIDER_JS"
-                   file="device_page/night_light_slider.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_SIZE_SLIDER_HTML"
-                   file="device_page/display_size_slider.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_SIZE_SLIDER_JS"
-                   file="device_page/display_size_slider.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_BROWSER_PROXY_HTML" file="device_page/device_page_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_BROWSER_PROXY_JS" file="device_page/device_page_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_HTML" file="device_page/display.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_JS" file="device_page/display.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_LAYOUT_HTML" file="device_page/display_layout.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_LAYOUT_JS" file="device_page/display_layout.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_OVERSCAN_DIALOG_HTML" file="device_page/display_overscan_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_OVERSCAN_DIALOG_JS" file="device_page/display_overscan_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DRIVE_CACHE_DIALOG_HTML" file="device_page/drive_cache_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DRIVE_CACHE_DIALOG_JS" file="device_page/drive_cache_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_KEYBOARD_HTML" file="device_page/keyboard.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_KEYBOARD_JS" file="device_page/keyboard.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_POWER_HTML" file="device_page/power.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_POWER_JS" file="device_page/power.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_STORAGE_HTML" file="device_page/storage.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_STORAGE_JS" file="device_page/storage.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_STYLUS_HTML" file="device_page/stylus.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_STYLUS_JS" file="device_page/stylus.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_PAGE_HTML" file="device_page/device_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_PAGE_JS" file="device_page/device_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_POINTERS_HTML" file="device_page/pointers.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_POINTERS_JS" file="device_page/pointers.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DRAG_BEHAVIOR_HTML" file="device_page/drag_behavior.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DRAG_BEHAVIOR_JS" file="device_page/drag_behavior.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_LAYOUT_BEHAVIOR_HTML" file="device_page/layout_behavior.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_LAYOUT_BEHAVIOR_JS" file="device_page/layout_behavior.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_NIGHT_LIGHT_SLIDER_HTML" file="device_page/night_light_slider.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_NIGHT_LIGHT_SLIDER_JS" file="device_page/night_light_slider.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_SIZE_SLIDER_HTML" file="device_page/display_size_slider.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DEVICE_DISPLAY_SIZE_SLIDER_JS" file="device_page/display_size_slider.js" type="chrome_html" />
 
       </if>
-      <structure name="IDR_SETTINGS_DOWNLOADS_BROWSER_PROXY_HTML"
-                 file="downloads_page/downloads_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_DOWNLOADS_BROWSER_PROXY_JS"
-                 file="downloads_page/downloads_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_DOWNLOADS_PAGE_HTML"
-                 file="downloads_page/downloads_page.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_DOWNLOADS_PAGE_JS"
-                 file="downloads_page/downloads_page.js"
-                 type="chrome_html"
-                 preprocess="true" />
+      <structure name="IDR_SETTINGS_DOWNLOADS_BROWSER_PROXY_HTML" file="downloads_page/downloads_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_DOWNLOADS_BROWSER_PROXY_JS" file="downloads_page/downloads_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_DOWNLOADS_PAGE_HTML" file="downloads_page/downloads_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_DOWNLOADS_PAGE_JS" file="downloads_page/downloads_page.js" type="chrome_html" preprocess="true" />
       <if expr="chromeos">
-        <structure name="IDR_SETTINGS_SMB_BROWSER_PROXY_HTML"
-                   file="downloads_page/smb_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_SMB_BROWSER_PROXY_JS"
-                   file="downloads_page/smb_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_SMB_SHARES_PAGE_HTML"
-                   file="downloads_page/smb_shares_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_SMB_SHARES_PAGE_JS"
-                   file="downloads_page/smb_shares_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_ADD_SMB_SHARE_DIALOG_HTML"
-                   file="downloads_page/add_smb_share_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_ADD_SMB_SHARE_DIALOG_JS"
-                   file="downloads_page/add_smb_share_dialog.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_SMB_BROWSER_PROXY_HTML" file="downloads_page/smb_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_SMB_BROWSER_PROXY_JS" file="downloads_page/smb_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_SMB_SHARES_PAGE_HTML" file="downloads_page/smb_shares_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_SMB_SHARES_PAGE_JS" file="downloads_page/smb_shares_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_ADD_SMB_SHARE_DIALOG_HTML" file="downloads_page/add_smb_share_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_ADD_SMB_SHARE_DIALOG_JS" file="downloads_page/add_smb_share_dialog.js" type="chrome_html" />
       </if>
-      <structure name="IDR_SETTINGS_I18n_SETUP_HTML"
-                 file="i18n_setup.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ICONS"
-                 file="icons.html"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_FIND_SHORTCUT_BEHAVIOR_HTML"
-                 file ="find_shortcut_behavior.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_FIND_SHORTCUT_BEHAVIOR_JS"
-                 file ="find_shortcut_behavior.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_POWERWASH_DIALOG_HTML"
-                 file="reset_page/powerwash_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_POWERWASH_DIALOG_JS"
-                 file="reset_page/powerwash_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_RESET_PAGE_HTML"
-                 file="reset_page/reset_page.html"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_RESET_PAGE_JS"
-                 file="reset_page/reset_page.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_RESET_PROFILE_DIALOG_HTML"
-                 file="reset_page/reset_profile_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_RESET_PROFILE_DIALOG_JS"
-                 file="reset_page/reset_profile_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_RESET_PROFILE_BANNER_HTML"
-                 file="reset_page/reset_profile_banner.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_RESET_PROFILE_BANNER_JS"
-                 file="reset_page/reset_profile_banner.js"
-                 type="chrome_html"/>
-      <structure name="IDR_SETTINGS_RESET_BROWSER_PROXY_JS"
-                 file="reset_page/reset_browser_proxy.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_RESET_BROWSER_PROXY_HTML"
-                 file="reset_page/reset_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LANGUAGES_HTML"
-                 file="languages_page/languages.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LANGUAGES_JS"
-                 file="languages_page/languages.js"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_LANGUAGES_BROWSER_PROXY_HTML"
-                 file="languages_page/languages_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LANGUAGES_BROWSER_PROXY_JS"
-                 file="languages_page/languages_browser_proxy.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LANGUAGES_ADD_LANGUAGES_DIALOG_HTML"
-                 file="languages_page/add_languages_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LANGUAGES_ADD_LANGUAGES_DIALOG_JS"
-                 file="languages_page/add_languages_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LANGUAGES_PAGE_HTML"
-                 file="languages_page/languages_page.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_LANGUAGES_PAGE_JS"
-                 file="languages_page/languages_page.js"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_I18n_SETUP_HTML" file="i18n_setup.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ICONS" file="icons.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_FIND_SHORTCUT_BEHAVIOR_HTML" file="find_shortcut_behavior.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_FIND_SHORTCUT_BEHAVIOR_JS" file="find_shortcut_behavior.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_POWERWASH_DIALOG_HTML" file="reset_page/powerwash_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_POWERWASH_DIALOG_JS" file="reset_page/powerwash_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_RESET_PAGE_HTML" file="reset_page/reset_page.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_RESET_PAGE_JS" file="reset_page/reset_page.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_RESET_PROFILE_DIALOG_HTML" file="reset_page/reset_profile_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_RESET_PROFILE_DIALOG_JS" file="reset_page/reset_profile_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_RESET_PROFILE_BANNER_HTML" file="reset_page/reset_profile_banner.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_RESET_PROFILE_BANNER_JS" file="reset_page/reset_profile_banner.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_RESET_BROWSER_PROXY_JS" file="reset_page/reset_browser_proxy.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_RESET_BROWSER_PROXY_HTML" file="reset_page/reset_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LANGUAGES_HTML" file="languages_page/languages.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LANGUAGES_JS" file="languages_page/languages.js" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_LANGUAGES_BROWSER_PROXY_HTML" file="languages_page/languages_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LANGUAGES_BROWSER_PROXY_JS" file="languages_page/languages_browser_proxy.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LANGUAGES_ADD_LANGUAGES_DIALOG_HTML" file="languages_page/add_languages_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LANGUAGES_ADD_LANGUAGES_DIALOG_JS" file="languages_page/add_languages_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LANGUAGES_PAGE_HTML" file="languages_page/languages_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_LANGUAGES_PAGE_JS" file="languages_page/languages_page.js" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <if expr="chromeos">
-        <structure name="IDR_SETTINGS_LANGUAGES_MANAGE_INPUT_METHODS_PAGE_HTML"
-                   file="languages_page/manage_input_methods_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_LANGUAGES_MANAGE_INPUT_METHODS_PAGE_JS"
-                   file="languages_page/manage_input_methods_page.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_LANGUAGES_MANAGE_INPUT_METHODS_PAGE_HTML" file="languages_page/manage_input_methods_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_LANGUAGES_MANAGE_INPUT_METHODS_PAGE_JS" file="languages_page/manage_input_methods_page.js" type="chrome_html" />
       </if>
       <if expr="not is_macosx">
-        <structure name="IDR_SETTINGS_LANGUAGES_EDIT_DICTIONARY_PAGE_HTML"
-                   file="languages_page/edit_dictionary_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_LANGUAGES_EDIT_DICTIONARY_PAGE_JS"
-                   file="languages_page/edit_dictionary_page.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_LANGUAGES_EDIT_DICTIONARY_PAGE_HTML" file="languages_page/edit_dictionary_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_LANGUAGES_EDIT_DICTIONARY_PAGE_JS" file="languages_page/edit_dictionary_page.js" type="chrome_html" />
       </if>
-      <structure name="IDR_SETTINGS_MEDIA_PICKER_HTML"
-                 file="site_settings/media_picker.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_MEDIA_PICKER_JS"
-                 file="site_settings/media_picker.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORDS_AND_FORMS_PAGE_HTML"
-                 file="passwords_and_forms_page/passwords_and_forms_page.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORDS_AND_FORMS_PAGE_JS"
-                 file="passwords_and_forms_page/passwords_and_forms_page.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORDS_SHARED_CSS_HTML"
-                 file="passwords_and_forms_page/passwords_shared_css.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CREDIT_CARD_EDIT_DIALOG_HTML"
-                 file="passwords_and_forms_page/credit_card_edit_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CREDIT_CARD_EDIT_DIALOG_JS"
-                 file="passwords_and_forms_page/credit_card_edit_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_AUTOFILL_SECTION_HTML"
-                 file="passwords_and_forms_page/autofill_section.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_AUTOFILL_SECTION_JS"
-                 file="passwords_and_forms_page/autofill_section.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ADDRESS_EDIT_DIALOG_HTML"
-                 file="passwords_and_forms_page/address_edit_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ADDRESS_EDIT_DIALOG_JS"
-                 file="passwords_and_forms_page/address_edit_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SHOW_PASSWORD_BEHAVIOR_HTML"
-                 file="passwords_and_forms_page/show_password_behavior.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SHOW_PASSWORD_BEHAVIOR_JS"
-                 file="passwords_and_forms_page/show_password_behavior.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORD_LIST_ITEM_HTML"
-                 file="passwords_and_forms_page/password_list_item.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORD_LIST_ITEM_JS"
-                 file="passwords_and_forms_page/password_list_item.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORD_MANAGER_PROXY_HTML"
-                 file="passwords_and_forms_page/password_manager_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORD_MANAGER_PROXY_JS"
-                 file="passwords_and_forms_page/password_manager_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORDS_SECTION_HTML" preprocess="true"
-                 file="passwords_and_forms_page/passwords_section.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORDS_SECTION_JS"
-                 file="passwords_and_forms_page/passwords_section.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_PASSWORD_EDIT_DIALOG_HTML"
-                 file="passwords_and_forms_page/password_edit_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORD_EDIT_DIALOG_JS"
-                 file="passwords_and_forms_page/password_edit_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORDS_EXPORT_DIALOG_HTML"
-                 file="passwords_and_forms_page/passwords_export_dialog.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PASSWORDS_EXPORT_DIALOG_JS"
-                 file="passwords_and_forms_page/passwords_export_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PEOPLE_PAGE_HTML"
-                 file="people_page/people_page.html"
-                 type="chrome_html"
-                 flattenhtml="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_PEOPLE_PAGE_JS"
-                 file="people_page/people_page.js"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_MEDIA_PICKER_HTML" file="site_settings/media_picker.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_MEDIA_PICKER_JS" file="site_settings/media_picker.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORDS_AND_FORMS_PAGE_HTML" file="passwords_and_forms_page/passwords_and_forms_page.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORDS_AND_FORMS_PAGE_JS" file="passwords_and_forms_page/passwords_and_forms_page.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORDS_SHARED_CSS_HTML" file="passwords_and_forms_page/passwords_shared_css.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CREDIT_CARD_EDIT_DIALOG_HTML" file="passwords_and_forms_page/credit_card_edit_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CREDIT_CARD_EDIT_DIALOG_JS" file="passwords_and_forms_page/credit_card_edit_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_AUTOFILL_SECTION_HTML" file="passwords_and_forms_page/autofill_section.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_AUTOFILL_SECTION_JS" file="passwords_and_forms_page/autofill_section.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ADDRESS_EDIT_DIALOG_HTML" file="passwords_and_forms_page/address_edit_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ADDRESS_EDIT_DIALOG_JS" file="passwords_and_forms_page/address_edit_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SHOW_PASSWORD_BEHAVIOR_HTML" file="passwords_and_forms_page/show_password_behavior.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SHOW_PASSWORD_BEHAVIOR_JS" file="passwords_and_forms_page/show_password_behavior.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORD_LIST_ITEM_HTML" file="passwords_and_forms_page/password_list_item.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORD_LIST_ITEM_JS" file="passwords_and_forms_page/password_list_item.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORD_MANAGER_PROXY_HTML" file="passwords_and_forms_page/password_manager_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORD_MANAGER_PROXY_JS" file="passwords_and_forms_page/password_manager_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORDS_SECTION_HTML" file="passwords_and_forms_page/passwords_section.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_PASSWORDS_SECTION_JS" file="passwords_and_forms_page/passwords_section.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_PASSWORD_EDIT_DIALOG_HTML" file="passwords_and_forms_page/password_edit_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORD_EDIT_DIALOG_JS" file="passwords_and_forms_page/password_edit_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORDS_EXPORT_DIALOG_HTML" file="passwords_and_forms_page/passwords_export_dialog.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PASSWORDS_EXPORT_DIALOG_JS" file="passwords_and_forms_page/passwords_export_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PEOPLE_PAGE_HTML" file="people_page/people_page.html" type="chrome_html" flattenhtml="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_PEOPLE_PAGE_JS" file="people_page/people_page.js" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <if expr="not chromeos">
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_SYNC_ACCOUNT_CONTROL_HTML"
-                   file="people_page/sync_account_control.html"
-                   type="chrome_html"
-                   flattenhtml="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_SYNC_ACCOUNT_CONTROL_JS"
-                   file="people_page/sync_account_control.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_IMPORT_DATA_DIALOG_HTML"
-                   file="people_page/import_data_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_IMPORT_DATA_DIALOG_JS"
-                   file="people_page/import_data_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_IMPORT_DATA_BROWSER_PROXY_HTML"
-                   file="people_page/import_data_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_IMPORT_DATA_BROWSER_PROXY_JS"
-                   file="people_page/import_data_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_MANAGE_PROFILE_HTML"
-                   file="people_page/manage_profile.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_MANAGE_PROFILE_JS"
-                   file="people_page/manage_profile.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_MANAGE_PROFILE_BROWSER_PROXY_HTML"
-                   file="people_page/manage_profile_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_MANAGE_PROFILE_BROWSER_PROXY_JS"
-                   file="people_page/manage_profile_browser_proxy.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_SYNC_ACCOUNT_CONTROL_HTML" file="people_page/sync_account_control.html" type="chrome_html" flattenhtml="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_SYNC_ACCOUNT_CONTROL_JS" file="people_page/sync_account_control.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_IMPORT_DATA_DIALOG_HTML" file="people_page/import_data_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_IMPORT_DATA_DIALOG_JS" file="people_page/import_data_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_IMPORT_DATA_BROWSER_PROXY_HTML" file="people_page/import_data_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_IMPORT_DATA_BROWSER_PROXY_JS" file="people_page/import_data_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_MANAGE_PROFILE_HTML" file="people_page/manage_profile.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_MANAGE_PROFILE_JS" file="people_page/manage_profile.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_MANAGE_PROFILE_BROWSER_PROXY_HTML" file="people_page/manage_profile_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_MANAGE_PROFILE_BROWSER_PROXY_JS" file="people_page/manage_profile_browser_proxy.js" type="chrome_html" />
       </if>
-      <structure name="IDR_SETTINGS_PEOPLE_PAGE_PROFILE_INFO_BROWSER_PROXY_HTML"
-                 file="people_page/profile_info_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PEOPLE_PAGE_PROFILE_INFO_BROWSER_PROXY_JS"
-                 file="people_page/profile_info_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PEOPLE_PAGE_SYNC_BROWSER_PROXY_HTML"
-                 file="people_page/sync_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PEOPLE_PAGE_SYNC_BROWSER_PROXY_JS"
-                 file="people_page/sync_browser_proxy.js"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true"  />
-      <structure name="IDR_SETTINGS_PREF_UTIL_HTML"
-                 file="prefs/pref_util.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PREF_UTIL_JS"
-                 file="prefs/pref_util.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PREFS_HTML"
-                 file="prefs/prefs.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PREFS_JS"
-                 file="prefs/prefs.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PREFS_BEHAVIOR_HTML"
-                 file="prefs/prefs_behavior.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PREFS_BEHAVIOR_JS"
-                 file="prefs/prefs_behavior.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PREFS_TYPES_HTML"
-                 file="prefs/prefs_types.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PREFS_TYPES_JS"
-                 file="prefs/prefs_types.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PRINTING_PAGE_HTML"
-                 file="printing_page/printing_page.html"
-                 preprocess="true"
-                 allowexternalscript="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PRINTING_PAGE_JS"
-                 file="printing_page/printing_page.js"
-                 preprocess="true"
-                 type="chrome_html" />
+      <structure name="IDR_SETTINGS_PEOPLE_PAGE_PROFILE_INFO_BROWSER_PROXY_HTML" file="people_page/profile_info_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PEOPLE_PAGE_PROFILE_INFO_BROWSER_PROXY_JS" file="people_page/profile_info_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PEOPLE_PAGE_SYNC_BROWSER_PROXY_HTML" file="people_page/sync_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PEOPLE_PAGE_SYNC_BROWSER_PROXY_JS" file="people_page/sync_browser_proxy.js" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_PREF_UTIL_HTML" file="prefs/pref_util.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PREF_UTIL_JS" file="prefs/pref_util.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PREFS_HTML" file="prefs/prefs.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PREFS_JS" file="prefs/prefs.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PREFS_BEHAVIOR_HTML" file="prefs/prefs_behavior.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PREFS_BEHAVIOR_JS" file="prefs/prefs_behavior.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PREFS_TYPES_HTML" file="prefs/prefs_types.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PREFS_TYPES_JS" file="prefs/prefs_types.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PRINTING_PAGE_HTML" file="printing_page/printing_page.html" preprocess="true" allowexternalscript="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PRINTING_PAGE_JS" file="printing_page/printing_page.js" preprocess="true" type="chrome_html" />
       <if expr="chromeos">
-        <structure name="IDR_SETTINGS_CUPS_PRINTER_SHARED_CSS_HTML"
-                   file="printing_page/cups_printer_shared_css.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_PRINTING_PAGE_HTML"
-                   file="printing_page/cups_printers.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_PRINTING_PAGE_JS"
-                   file="printing_page/cups_printers.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_PRINTERS_BROWSER_PROXY_HTML"
-                   file="printing_page/cups_printers_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_PRINTERS_BROWSER_PROXY_JS"
-                   file="printing_page/cups_printers_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_PRINTERS_LIST_HTML"
-                   file="printing_page/cups_printers_list.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_PRINTERS_LIST_JS"
-                   file="printing_page/cups_printers_list.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_SET_MANUFACTURER_MODEL_BEHAVIOR_HTML"
-                   file="printing_page/cups_set_manufacturer_model_behavior.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_SET_MANUFACTURER_MODEL_BEHAVIOR_JS"
-                   file="printing_page/cups_set_manufacturer_model_behavior.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_EDIT_PRINTER_DIALOG_HTML"
-                   file="printing_page/cups_edit_printer_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_EDIT_PRINTER_DIALOG_JS"
-                   file="printing_page/cups_edit_printer_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_ADD_PRINTER_DIALOG_HTML"
-                   file="printing_page/cups_add_printer_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_ADD_PRINTER_DIALOG_JS"
-                   file="printing_page/cups_add_printer_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_ADD_PRINTER_DIALOG_UTIL_HTML"
-                   file="printing_page/cups_add_printer_dialog_util.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CUPS_ADD_PRINTER_DIALOG_UTIL_JS"
-                   file="printing_page/cups_add_printer_dialog_util.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_PRINTER_SHARED_CSS_HTML" file="printing_page/cups_printer_shared_css.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_PRINTING_PAGE_HTML" file="printing_page/cups_printers.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_PRINTING_PAGE_JS" file="printing_page/cups_printers.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_PRINTERS_BROWSER_PROXY_HTML" file="printing_page/cups_printers_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_PRINTERS_BROWSER_PROXY_JS" file="printing_page/cups_printers_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_PRINTERS_LIST_HTML" file="printing_page/cups_printers_list.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_PRINTERS_LIST_JS" file="printing_page/cups_printers_list.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_SET_MANUFACTURER_MODEL_BEHAVIOR_HTML" file="printing_page/cups_set_manufacturer_model_behavior.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_SET_MANUFACTURER_MODEL_BEHAVIOR_JS" file="printing_page/cups_set_manufacturer_model_behavior.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_EDIT_PRINTER_DIALOG_HTML" file="printing_page/cups_edit_printer_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_EDIT_PRINTER_DIALOG_JS" file="printing_page/cups_edit_printer_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_ADD_PRINTER_DIALOG_HTML" file="printing_page/cups_add_printer_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_ADD_PRINTER_DIALOG_JS" file="printing_page/cups_add_printer_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_ADD_PRINTER_DIALOG_UTIL_HTML" file="printing_page/cups_add_printer_dialog_util.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CUPS_ADD_PRINTER_DIALOG_UTIL_JS" file="printing_page/cups_add_printer_dialog_util.js" type="chrome_html" />
       </if>
       <if expr="not chromeos">
-        <structure name="IDR_SETTINGS_PRINTING_BROWSER_PROXY_HTML"
-                   file="printing_page/printing_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PRINTING_BROWSER_PROXY_JS"
-                   file="printing_page/printing_browser_proxy.js"
-                   type="chrome_html" />
+        <structure name="IDR_SETTINGS_PRINTING_BROWSER_PROXY_HTML" file="printing_page/printing_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PRINTING_BROWSER_PROXY_JS" file="printing_page/printing_browser_proxy.js" type="chrome_html" />
       </if>
-      <structure name="IDR_SETTINGS_CLOUD_PRINTING_PAGE_HTML"
-                 file="printing_page/cloud_printers.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CLOUD_PRINTING_PAGE_JS"
-                 file="printing_page/cloud_printers.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LOCAL_DATA_BROWSER_PROXY_HTML"
-                 file="site_settings/local_data_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LOCAL_DATA_BROWSER_PROXY_JS"
-                 file="site_settings/local_data_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PAGE_VISIBILITY_HTML"
-                 file="page_visibility.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS"
-                 file="brave_page_visibility.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PAGE_VISIBILITY_JS"
-                 file="page_visibility.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_PDF_DOCUMENTS_HTML"
-                 file="site_settings/pdf_documents.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PDF_DOCUMENTS_JS"
-                 file="site_settings/pdf_documents.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PERSONALIZATION_OPTIONS_HTML"
-                 file="privacy_page/personalization_options.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_PERSONALIZATION_OPTIONS_JS"
-                 file="privacy_page/personalization_options.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PRIVACY_PAGE_HTML"
-                 file="privacy_page/privacy_page.html"
-                 type="chrome_html"
-                 flattenhtml="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_PRIVACY_PAGE_JS"
-                 file="privacy_page/privacy_page.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PRIVACY_PAGE_BROWSER_PROXY_HTML"
-                 file="privacy_page/privacy_page_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PRIVACY_PAGE_BROWSER_PROXY_JS"
-                 file="privacy_page/privacy_page_browser_proxy.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PROTOCOL_HANDLERS_HTML"
-                 file="site_settings/protocol_handlers.html"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_PROTOCOL_HANDLERS_JS"
-                 file="site_settings/protocol_handlers.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ROUTE_HTML"
-                 file="route.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ROUTE_JS"
-                 file="route.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_SITE_DATA_HTML"
-                 file="site_settings/site_data.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_DATA_JS"
-                 file="site_settings/site_data.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_DATA_DETAILS_SUBPAGE_HTML"
-                 file="site_settings/site_data_details_subpage.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_DATA_DETAILS_SUBPAGE_JS"
-                 file="site_settings/site_data_details_subpage.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_LIST_HTML"
-                 file="site_settings/site_list.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_LIST_JS"
-                 file="site_settings/site_list.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_SETTINGS_BEHAVIOR_HTML"
-                 file="site_settings/site_settings_behavior.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_SETTINGS_BEHAVIOR_JS"
-                 file="site_settings/site_settings_behavior.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONSTANTS_JS"
-                 file="site_settings/constants.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONSTANTS_HTML"
-                 file="site_settings/constants.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_SETTINGS_PAGE_HTML"
-                 file="site_settings_page/site_settings_page.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_SETTINGS_PAGE_JS"
-                 file="site_settings_page/site_settings_page.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_SITE_SETTINGS_PREFS_BROWSER_PROXY_HTML"
-                 file="site_settings/site_settings_prefs_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_SETTINGS_PREFS_BROWSER_PROXY_JS"
-                 file="site_settings/site_settings_prefs_browser_proxy.js"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_DETAILS_HTML"
-                 file="site_settings/site_details.html"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_SITE_DETAILS_JS"
-                 file="site_settings/site_details.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_SITE_DETAILS_PERMISSION_HTML"
-                 file="site_settings/site_details_permission.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_DETAILS_PERMISSION_JS"
-                 file="site_settings/site_details_permission.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_DIALOG_JS"
-                 file="search_engines_page/search_engine_dialog.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_DIALOG_HTML"
-                 file="search_engines_page/search_engine_dialog.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_ENTRY_JS"
-                 file="search_engines_page/search_engine_entry.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_ENTRY_HTML"
-                 file="search_engines_page/search_engine_entry.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_ENTRY_CSS_HTML"
-                 file="search_engines_page/search_engine_entry_css.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_OMNIBOX_EXTENSION_ENTRY_JS"
-                 file="search_engines_page/omnibox_extension_entry.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_OMNIBOX_EXTENSION_ENTRY_HTML"
-                 file="search_engines_page/omnibox_extension_entry.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINES_LIST_JS"
-                 file="search_engines_page/search_engines_list.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINES_LIST_HTML"
-                 file="search_engines_page/search_engines_list.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINES_PAGE_JS"
-                 file="search_engines_page/search_engines_page.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINES_PAGE_HTML"
-                 file="search_engines_page/search_engines_page.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_BROWSER_PROXY_JS"
-                 file="search_engines_page/search_engines_browser_proxy.js"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_SEARCH_ENGINES_BROWSER_PROXY_HTML"
-                 file="search_engines_page/search_engines_browser_proxy.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_CLOUD_PRINTING_PAGE_HTML" file="printing_page/cloud_printers.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CLOUD_PRINTING_PAGE_JS" file="printing_page/cloud_printers.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LOCAL_DATA_BROWSER_PROXY_HTML" file="site_settings/local_data_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LOCAL_DATA_BROWSER_PROXY_JS" file="site_settings/local_data_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PAGE_VISIBILITY_HTML" file="page_visibility.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS" file="brave_page_visibility.js" type="chrome_html" /><structure name="IDR_SETTINGS_PAGE_VISIBILITY_JS" file="page_visibility.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_PDF_DOCUMENTS_HTML" file="site_settings/pdf_documents.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PDF_DOCUMENTS_JS" file="site_settings/pdf_documents.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PERSONALIZATION_OPTIONS_HTML" file="privacy_page/personalization_options.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_PERSONALIZATION_OPTIONS_JS" file="privacy_page/personalization_options.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PRIVACY_PAGE_HTML" file="privacy_page/privacy_page.html" type="chrome_html" flattenhtml="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_PRIVACY_PAGE_JS" file="privacy_page/privacy_page.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PRIVACY_PAGE_BROWSER_PROXY_HTML" file="privacy_page/privacy_page_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PRIVACY_PAGE_BROWSER_PROXY_JS" file="privacy_page/privacy_page_browser_proxy.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PROTOCOL_HANDLERS_HTML" file="site_settings/protocol_handlers.html" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PROTOCOL_HANDLERS_JS" file="site_settings/protocol_handlers.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ROUTE_HTML" file="route.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ROUTE_JS" file="route.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_SITE_DATA_HTML" file="site_settings/site_data.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_DATA_JS" file="site_settings/site_data.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_DATA_DETAILS_SUBPAGE_HTML" file="site_settings/site_data_details_subpage.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_DATA_DETAILS_SUBPAGE_JS" file="site_settings/site_data_details_subpage.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_LIST_HTML" file="site_settings/site_list.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_LIST_JS" file="site_settings/site_list.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_SETTINGS_BEHAVIOR_HTML" file="site_settings/site_settings_behavior.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_SETTINGS_BEHAVIOR_JS" file="site_settings/site_settings_behavior.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONSTANTS_JS" file="site_settings/constants.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONSTANTS_HTML" file="site_settings/constants.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_SETTINGS_PAGE_HTML" file="site_settings_page/site_settings_page.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_SETTINGS_PAGE_JS" file="site_settings_page/site_settings_page.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_SITE_SETTINGS_PREFS_BROWSER_PROXY_HTML" file="site_settings/site_settings_prefs_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_SETTINGS_PREFS_BROWSER_PROXY_JS" file="site_settings/site_settings_prefs_browser_proxy.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_DETAILS_HTML" file="site_settings/site_details.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_SITE_DETAILS_JS" file="site_settings/site_details.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_SITE_DETAILS_PERMISSION_HTML" file="site_settings/site_details_permission.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_DETAILS_PERMISSION_JS" file="site_settings/site_details_permission.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_DIALOG_JS" file="search_engines_page/search_engine_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_DIALOG_HTML" file="search_engines_page/search_engine_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_ENTRY_JS" file="search_engines_page/search_engine_entry.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_ENTRY_HTML" file="search_engines_page/search_engine_entry.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINE_ENTRY_CSS_HTML" file="search_engines_page/search_engine_entry_css.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_OMNIBOX_EXTENSION_ENTRY_JS" file="search_engines_page/omnibox_extension_entry.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_OMNIBOX_EXTENSION_ENTRY_HTML" file="search_engines_page/omnibox_extension_entry.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINES_LIST_JS" file="search_engines_page/search_engines_list.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINES_LIST_HTML" file="search_engines_page/search_engines_list.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINES_PAGE_JS" file="search_engines_page/search_engines_page.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_PAGE_SEARCH_ENGINES_PAGE_HTML" file="search_engines_page/search_engines_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_BROWSER_PROXY_JS" file="search_engines_page/search_engines_browser_proxy.js" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_SEARCH_ENGINES_BROWSER_PROXY_HTML" file="search_engines_page/search_engines_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <if expr="chromeos">
-        <structure name="IDR_SETTINGS_GOOGLE_ASSISTANT_PAGE_GOOGLE_ASSISTANT_PAGE_JS"
-                   file="google_assistant_page/google_assistant_page.js"
-                   type="chrome_html"
-                   allowexternalscript="true"/>
-        <structure name="IDR_SETTINGS_GOOGLE_ASSISTANT_PAGE_GOOGLE_ASSISTANT_PAGE_HTML"
-                   file="google_assistant_page/google_assistant_page.html"
-                   type="chrome_html"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_GOOGLE_ASSISTANT_PAGE_GOOGLE_ASSISTANT_BROWSER_PROXY_JS"
-                   file="google_assistant_page/google_assistant_browser_proxy.js"
-                   type="chrome_html"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_GOOGLE_ASSISTANT_PAGE_GOOGLE_ASSISTANT_BROWSER_PROXY_HTML"
-                   file="google_assistant_page/google_assistant_browser_proxy.html"
-                   type="chrome_html"
-                   allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_GOOGLE_ASSISTANT_PAGE_GOOGLE_ASSISTANT_PAGE_JS" file="google_assistant_page/google_assistant_page.js" type="chrome_html" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_GOOGLE_ASSISTANT_PAGE_GOOGLE_ASSISTANT_PAGE_HTML" file="google_assistant_page/google_assistant_page.html" type="chrome_html" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_GOOGLE_ASSISTANT_PAGE_GOOGLE_ASSISTANT_BROWSER_PROXY_JS" file="google_assistant_page/google_assistant_browser_proxy.js" type="chrome_html" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_GOOGLE_ASSISTANT_PAGE_GOOGLE_ASSISTANT_BROWSER_PROXY_HTML" file="google_assistant_page/google_assistant_browser_proxy.html" type="chrome_html" allowexternalscript="true" />
       </if>
-      <structure name="IDR_SETTINGS_SEARCH_PAGE_JS"
-                 file="search_page/search_page.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_SEARCH_PAGE_HTML"
-                 file="search_page/search_page.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_SYNC_PAGE_JS"
-                 file="people_page/sync_page.js"
-                 type="chrome_html"
-                 preprocess="true" />
-      <structure name="IDR_SETTINGS_SYNC_PAGE_HTML"
-                 file="people_page/sync_page.html"
-                 type="chrome_html"
-                 preprocess="true"
-                 allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_SYSTEM_PAGE_BROWSER_PROXY_HTML"
-                 file="system_page/system_page_browser_proxy.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SYSTEM_PAGE_BROWSER_PROXY"
-                 file="system_page/system_page_browser_proxy.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SYSTEM_PAGE_HTML"
-                 file="system_page/system_page.html"
-                 preprocess="true"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SYSTEM_PAGE_JS"
-                 file="system_page/system_page.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_SETTINGS_HTML"
-                 preprocess="true"
-                 file="settings.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_LAZY_LOAD_HTML"
-                 preprocess="true"
-                 file="lazy_load.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_USB_DEVICES_HTML"
-                 file="site_settings/usb_devices.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_USB_DEVICES_JS"
-                 file="site_settings/usb_devices.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_WEBSITE_USAGE_PRIVATE_API_HTML"
-                 file="site_settings/website_usage_private_api.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_WEBSITE_USAGE_PRIVATE_API_JS"
-                 file="site_settings/website_usage_private_api.js"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ZOOM_LEVELS_HTML"
-                 file="site_settings/zoom_levels.html"
-                 type="chrome_html" />
-      <structure name="IDR_SETTINGS_ZOOM_LEVELS_JS"
-                 file="site_settings/zoom_levels.js"
-                 type="chrome_html" />
+      <structure name="IDR_SETTINGS_SEARCH_PAGE_JS" file="search_page/search_page.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_SEARCH_PAGE_HTML" file="search_page/search_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_SYNC_PAGE_JS" file="people_page/sync_page.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_SYNC_PAGE_HTML" file="people_page/sync_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_SYSTEM_PAGE_BROWSER_PROXY_HTML" file="system_page/system_page_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SYSTEM_PAGE_BROWSER_PROXY" file="system_page/system_page_browser_proxy.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SYSTEM_PAGE_HTML" file="system_page/system_page.html" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SYSTEM_PAGE_JS" file="system_page/system_page.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SETTINGS_HTML" preprocess="true" file="settings.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_LAZY_LOAD_HTML" preprocess="true" file="lazy_load.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_USB_DEVICES_HTML" file="site_settings/usb_devices.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_USB_DEVICES_JS" file="site_settings/usb_devices.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_WEBSITE_USAGE_PRIVATE_API_HTML" file="site_settings/website_usage_private_api.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_WEBSITE_USAGE_PRIVATE_API_JS" file="site_settings/website_usage_private_api.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ZOOM_LEVELS_HTML" file="site_settings/zoom_levels.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_ZOOM_LEVELS_JS" file="site_settings/zoom_levels.js" type="chrome_html" />
       <if expr="chromeos">
-        <structure name="IDR_SETTINGS_CROSTINI_PAGE_HTML"
-                   file="crostini_page/crostini_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CROSTINI_PAGE_JS"
-                   file="crostini_page/crostini_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CROSTINI_SUBPAGE_HTML"
-                   file="crostini_page/crostini_subpage.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CROSTINI_SUBPAGE_JS"
-                   file="crostini_page/crostini_subpage.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_CROSTINI_BROWSER_PROXY_JS"
-                   file="crostini_page/crostini_browser_proxy.js"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_CROSTINI_BROWSER_PROXY_HTML"
-                   file="crostini_page/crostini_browser_proxy.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_ANDROID_APPS_PAGE_HTML"
-                   file="android_apps_page/android_apps_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_ANDROID_APPS_PAGE_JS"
-                   file="android_apps_page/android_apps_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_ANDROID_APPS_SUBPAGE_HTML"
-                   file="android_apps_page/android_apps_subpage.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_ANDROID_APPS_SUBPAGE_JS"
-                   file="android_apps_page/android_apps_subpage.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_ANDROID_APPS_BROWSER_PROXY_JS"
-                   file="android_apps_page/android_apps_browser_proxy.js"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_ANDROID_APPS_BROWSER_PROXY_HTML"
-                   file="android_apps_page/android_apps_browser_proxy.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_ANDROID_SETTINGS_ELEMENT_HTML"
-                   file="android_apps_page/android_settings_element.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_ANDROID_SETTINGS_ELEMENT_JS"
-                   file="android_apps_page/android_settings_element.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_BLUETOOTH_DEVICE_LIST_ITEM_HTML"
-                   file="bluetooth_page/bluetooth_device_list_item.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_BLUETOOTH_DEVICE_LIST_ITEM_JS"
-                   file="bluetooth_page/bluetooth_device_list_item.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_BLUETOOTH_PAGE_HTML"
-                   file="bluetooth_page/bluetooth_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_BLUETOOTH_PAGE_JS"
-                   file="bluetooth_page/bluetooth_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_BLUETOOTH_SUBPAGE_HTML"
-                   file="bluetooth_page/bluetooth_subpage.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_BLUETOOTH_SUBPAGE_JS"
-                   file="bluetooth_page/bluetooth_subpage.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DATE_TIME_PAGE_HTML"
-                   file="date_time_page/date_time_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DATE_TIME_PAGE_JS"
-                   file="date_time_page/date_time_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DATE_TIME_TYPES_HTML"
-                   file="date_time_page/date_time_types.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_DATE_TIME_TYPES_JS"
-                   file="date_time_page/date_time_types.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_TIMEZONE_SELECTOR_HTML"
-                   file="date_time_page/timezone_selector.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_TIMEZONE_SELECTOR_JS"
-                   file="date_time_page/timezone_selector.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_TIMEZONE_SUBPAGE_HTML"
-                   file="date_time_page/timezone_subpage.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_TIMEZONE_SUBPAGE_JS"
-                   file="date_time_page/timezone_subpage.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_CONFIG_HTML"
-                   file="internet_page/internet_config.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_CONFIG_JS"
-                   file="internet_page/internet_config.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_DETAIL_PAGE_HTML"
-                   file="internet_page/internet_detail_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_DETAIL_PAGE_JS"
-                   file="internet_page/internet_detail_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_KNOWN_NETWORKS_PAGE_HTML"
-                   file="internet_page/internet_known_networks_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_KNOWN_NETWORKS_PAGE_JS"
-                   file="internet_page/internet_known_networks_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_PAGE_BROWSER_PROXY_HTML"
-                   file="internet_page/internet_page_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_PAGE_BROWSER_PROXY_JS"
-                   file="internet_page/internet_page_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_PAGE_HTML"
-                   file="internet_page/internet_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_PAGE_JS"
-                   file="internet_page/internet_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_SHARED_CSS_HTML"
-                   file="internet_page/internet_shared_css.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_SUBPAGE_HTML"
-                   file="internet_page/internet_subpage.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_INTERNET_SUBPAGE_JS"
-                   file="internet_page/internet_subpage.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_MULTIDEVICE_PAGE_HTML"
-                   file="multidevice_page/multidevice_page.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_MULTIDEVICE_PAGE_JS"
-                   file="multidevice_page/multidevice_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_NETWORK_PROXY_SECTION_HTML"
-                   file="internet_page/network_proxy_section.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_NETWORK_PROXY_SECTION_JS"
-                   file="internet_page/network_proxy_section.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_NETWORK_SUMMARY_HTML"
-                   file="internet_page/network_summary.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_NETWORK_SUMMARY_JS"
-                   file="internet_page/network_summary.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_NETWORK_SUMMARY_ITEM_HTML"
-                   file="internet_page/network_summary_item.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_NETWORK_SUMMARY_ITEM_JS"
-                   file="internet_page/network_summary_item.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_TETHER_CONNECTION_DIALOG_HTML"
-                   file="internet_page/tether_connection_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_TETHER_CONNECTION_DIALOG_JS"
-                   file="internet_page/tether_connection_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_ACCOUNT_MANAGER_HTML"
-                   file="people_page/account_manager.html"
-                   type="chrome_html"
-                   preprocess="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_ACCOUNT_MANAGER_JS"
-                   file="people_page/account_manager.js"
-                   type="chrome_html"
-                   preprocess="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_CHANGE_PICTURE_HTML"
-                   file="people_page/change_picture.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_PAGE_CHANGE_PICTURE_JS"
-                   file="people_page/change_picture.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_CHANGE_PICTURE_BROWSER_PROXY_JS"
-                   file="people_page/change_picture_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_CHANGE_PICTURE_BROWSER_PROXY_HTML"
-                   file="people_page/change_picture_browser_proxy.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_BROWSER_PROXY_JS"
-                   file="people_page/easy_unlock_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_BROWSER_PROXY_HTML"
-                   file="people_page/easy_unlock_browser_proxy.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_TURN_OFF_DIALOG_JS"
-                   file="people_page/easy_unlock_turn_off_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_TURN_OFF_DIALOG_HTML"
-                   file="people_page/easy_unlock_turn_off_dialog.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_PASSWORD_PROMPT_DIALOG_JS"
-                   file="people_page/password_prompt_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PASSWORD_PROMPT_DIALOG_HTML"
-                   file="people_page/password_prompt_dialog.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_JS"
-                   file="people_page/lock_screen.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_HTML"
-                   file="people_page/lock_screen.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_CONSTANTS_JS"
-                   file="people_page/lock_screen_constants.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_CONSTANTS_HTML"
-                   file="people_page/lock_screen_constants.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_LOCK_STATE_BEHAVIOR_JS"
-                   file="people_page/lock_state_behavior.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_LOCK_STATE_BEHAVIOR_HTML"
-                   file="people_page/lock_state_behavior.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_SETUP_PIN_DIALOG_JS"
-                   file="people_page/setup_pin_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_SETUP_PIN_DIALOG_HTML"
-                   file="people_page/setup_pin_dialog.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_LIST_JS"
-                   file="people_page/fingerprint_list.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_LIST_HTML"
-                   file="people_page/fingerprint_list.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_SETUP_FINGERPRINT_DIALOG_JS"
-                   file="people_page/setup_fingerprint_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_SETUP_FINGERPRINT_DIALOG_HTML"
-                   file="people_page/setup_fingerprint_dialog.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_PROGRESS_ARC_JS"
-                   file="people_page/fingerprint_progress_arc.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_PROGRESS_ARC_HTML"
-                   file="people_page/fingerprint_progress_arc.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_BROWSER_PROXY_JS"
-                   file="people_page/fingerprint_browser_proxy.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_BROWSER_PROXY_HTML"
-                   file="people_page/fingerprint_browser_proxy.html"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_USERS_PAGE_ADD_USER_DIALOG_JS"
-                   file="people_page/users_add_user_dialog.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_USERS_PAGE_ADD_USER_DIALOG_HTML"
-                   file="people_page/users_add_user_dialog.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_USERS_PAGE_USER_LIST_JS"
-                   file="people_page/user_list.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_USERS_PAGE_USER_LIST_HTML"
-                   file="people_page/user_list.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_USERS_PAGE_JS"
-                   file="people_page/users_page.js"
-                   type="chrome_html" />
-        <structure name="IDR_SETTINGS_USERS_PAGE_HTML"
-                   file="people_page/users_page.html"
-                   type="chrome_html"
-                   preprocess="true"
-                   allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_CROSTINI_PAGE_HTML" file="crostini_page/crostini_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CROSTINI_PAGE_JS" file="crostini_page/crostini_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CROSTINI_SUBPAGE_HTML" file="crostini_page/crostini_subpage.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CROSTINI_SUBPAGE_JS" file="crostini_page/crostini_subpage.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CROSTINI_BROWSER_PROXY_JS" file="crostini_page/crostini_browser_proxy.js" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_CROSTINI_BROWSER_PROXY_HTML" file="crostini_page/crostini_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_ANDROID_APPS_PAGE_HTML" file="android_apps_page/android_apps_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_ANDROID_APPS_PAGE_JS" file="android_apps_page/android_apps_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_ANDROID_APPS_SUBPAGE_HTML" file="android_apps_page/android_apps_subpage.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_ANDROID_APPS_SUBPAGE_JS" file="android_apps_page/android_apps_subpage.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_ANDROID_APPS_BROWSER_PROXY_JS" file="android_apps_page/android_apps_browser_proxy.js" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_ANDROID_APPS_BROWSER_PROXY_HTML" file="android_apps_page/android_apps_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_ANDROID_SETTINGS_ELEMENT_HTML" file="android_apps_page/android_settings_element.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_ANDROID_SETTINGS_ELEMENT_JS" file="android_apps_page/android_settings_element.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_BLUETOOTH_DEVICE_LIST_ITEM_HTML" file="bluetooth_page/bluetooth_device_list_item.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_BLUETOOTH_DEVICE_LIST_ITEM_JS" file="bluetooth_page/bluetooth_device_list_item.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_BLUETOOTH_PAGE_HTML" file="bluetooth_page/bluetooth_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_BLUETOOTH_PAGE_JS" file="bluetooth_page/bluetooth_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_BLUETOOTH_SUBPAGE_HTML" file="bluetooth_page/bluetooth_subpage.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_BLUETOOTH_SUBPAGE_JS" file="bluetooth_page/bluetooth_subpage.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DATE_TIME_PAGE_HTML" file="date_time_page/date_time_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DATE_TIME_PAGE_JS" file="date_time_page/date_time_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DATE_TIME_TYPES_HTML" file="date_time_page/date_time_types.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_DATE_TIME_TYPES_JS" file="date_time_page/date_time_types.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_TIMEZONE_SELECTOR_HTML" file="date_time_page/timezone_selector.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_TIMEZONE_SELECTOR_JS" file="date_time_page/timezone_selector.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_TIMEZONE_SUBPAGE_HTML" file="date_time_page/timezone_subpage.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_TIMEZONE_SUBPAGE_JS" file="date_time_page/timezone_subpage.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_CONFIG_HTML" file="internet_page/internet_config.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_CONFIG_JS" file="internet_page/internet_config.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_DETAIL_PAGE_HTML" file="internet_page/internet_detail_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_DETAIL_PAGE_JS" file="internet_page/internet_detail_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_KNOWN_NETWORKS_PAGE_HTML" file="internet_page/internet_known_networks_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_KNOWN_NETWORKS_PAGE_JS" file="internet_page/internet_known_networks_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_PAGE_BROWSER_PROXY_HTML" file="internet_page/internet_page_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_PAGE_BROWSER_PROXY_JS" file="internet_page/internet_page_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_PAGE_HTML" file="internet_page/internet_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_PAGE_JS" file="internet_page/internet_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_SHARED_CSS_HTML" file="internet_page/internet_shared_css.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_SUBPAGE_HTML" file="internet_page/internet_subpage.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_INTERNET_SUBPAGE_JS" file="internet_page/internet_subpage.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_PAGE_HTML" file="multidevice_page/multidevice_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_PAGE_JS" file="multidevice_page/multidevice_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_NETWORK_PROXY_SECTION_HTML" file="internet_page/network_proxy_section.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_NETWORK_PROXY_SECTION_JS" file="internet_page/network_proxy_section.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_NETWORK_SUMMARY_HTML" file="internet_page/network_summary.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_NETWORK_SUMMARY_JS" file="internet_page/network_summary.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_NETWORK_SUMMARY_ITEM_HTML" file="internet_page/network_summary_item.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_NETWORK_SUMMARY_ITEM_JS" file="internet_page/network_summary_item.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_TETHER_CONNECTION_DIALOG_HTML" file="internet_page/tether_connection_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_TETHER_CONNECTION_DIALOG_JS" file="internet_page/tether_connection_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_ACCOUNT_MANAGER_HTML" file="people_page/account_manager.html" type="chrome_html" preprocess="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_ACCOUNT_MANAGER_JS" file="people_page/account_manager.js" type="chrome_html" preprocess="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_CHANGE_PICTURE_HTML" file="people_page/change_picture.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_CHANGE_PICTURE_JS" file="people_page/change_picture.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_CHANGE_PICTURE_BROWSER_PROXY_JS" file="people_page/change_picture_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_CHANGE_PICTURE_BROWSER_PROXY_HTML" file="people_page/change_picture_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_BROWSER_PROXY_JS" file="people_page/easy_unlock_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_BROWSER_PROXY_HTML" file="people_page/easy_unlock_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_TURN_OFF_DIALOG_JS" file="people_page/easy_unlock_turn_off_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_TURN_OFF_DIALOG_HTML" file="people_page/easy_unlock_turn_off_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_PASSWORD_PROMPT_DIALOG_JS" file="people_page/password_prompt_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_PASSWORD_PROMPT_DIALOG_HTML" file="people_page/password_prompt_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_JS" file="people_page/lock_screen.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_HTML" file="people_page/lock_screen.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_CONSTANTS_JS" file="people_page/lock_screen_constants.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_CONSTANTS_HTML" file="people_page/lock_screen_constants.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_LOCK_STATE_BEHAVIOR_JS" file="people_page/lock_state_behavior.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_LOCK_STATE_BEHAVIOR_HTML" file="people_page/lock_state_behavior.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_SETUP_PIN_DIALOG_JS" file="people_page/setup_pin_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_SETUP_PIN_DIALOG_HTML" file="people_page/setup_pin_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_LIST_JS" file="people_page/fingerprint_list.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_LIST_HTML" file="people_page/fingerprint_list.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_SETUP_FINGERPRINT_DIALOG_JS" file="people_page/setup_fingerprint_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_SETUP_FINGERPRINT_DIALOG_HTML" file="people_page/setup_fingerprint_dialog.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_PROGRESS_ARC_JS" file="people_page/fingerprint_progress_arc.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_PROGRESS_ARC_HTML" file="people_page/fingerprint_progress_arc.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_BROWSER_PROXY_JS" file="people_page/fingerprint_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_FINGERPRINT_BROWSER_PROXY_HTML" file="people_page/fingerprint_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_USERS_PAGE_ADD_USER_DIALOG_JS" file="people_page/users_add_user_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_USERS_PAGE_ADD_USER_DIALOG_HTML" file="people_page/users_add_user_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_USERS_PAGE_USER_LIST_JS" file="people_page/user_list.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_USERS_PAGE_USER_LIST_HTML" file="people_page/user_list.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_USERS_PAGE_JS" file="people_page/users_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_USERS_PAGE_HTML" file="people_page/users_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       </if>
     </structures>
   </release>

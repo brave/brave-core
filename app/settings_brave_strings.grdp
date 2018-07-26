@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This file is created by l10nUtil.js. Do not edit manually. -->
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Settings-specific Brave strings (included from chromium_strings.grd). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <!-- About Page -->
   <if expr="not chromeos">

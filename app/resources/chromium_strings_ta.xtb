@@ -1,31 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ta">
-<translation id="5194812628624740897"><ph name="USERNAME"/> ஐத் துண்டிப்பது, இந்தச் சாதனத்தில் உள்ள உங்கள் வரலாறு, புத்தகக்குறிகள், அமைப்புகள் மற்றும் பிற Brave தரவை அழிக்கும். உங்கள் Brave Software கணக்கில் சேமிக்கப்பட்ட தரவு அழிக்கப்படாது, மேலும் <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software டாஷ்போர்டில்<ph name="END_GOOGLE_DASHBOARD_LINK"/> நிர்வகிக்கலாம்.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave லோகோ</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">Brave இல் உள்நுழைக</translation>
 <translation id="5516268345616100622">பணி நிர்வாகி - Brave</translation>
-<translation id="7918740962659365265">சிதைவு அறிக்கைகளையும் <ph name="UMA_LINK"/> உம் Brave Software க்கு அனுப்புவதன் மூலம் Brave ஐ மேலும் சிறப்பானதாக்க உதவவும்</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave பீட்டா</translation>
-<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - டெவெலப்பர்களுக்கான Brave</translation>
-<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Brave OS பயன்படுத்தி உதவி பெறுக</translation>
 <translation id="8992261409816268381">Brave அங்கீகரிப்பாளர்கள்</translation>
-<translation id="4651430425715739110">பதிப்புரிமை <ph name="YEAR"/> Brave உருவாக்குநர்கள். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.</translation>
 <translation id="9179832504443063758">Brave ஓப்பன் சோர்ஸ் உரிமங்கள்</translation>
-<translation id="2310890394934209120">கூடுதலான <ph name="BEGIN_LINK_CROS_OSS"/>ஓப்பன் சோர்ஸ் மென்பொருட்களால்<ph name="END_LINK_CROS_OSS"/> Brave Software Brave OS ஐ உருவாக்குவது சாத்தியமானது.</translation>
 <translation id="8372475781172910778">Brave OS ஓப்பன் சோர்ஸ் உரிமங்கள்</translation>
 <translation id="5019879183386042809">Brave ஐ இயல்புநிலை உலாவியாக மாற்று</translation>
 <translation id="5063987220091207247">Brave OS ஆல் இந்தப் பக்கத்தைத் திறக்க முடியாது.</translation>
 <translation id="4065288863231444640">பின்னணியில் Braveஐ இயங்க அனுமதி</translation>
-<translation id="2585240446624043880">தன்னுடைய தரவுக் கோப்பகத்தில் Brave படிக்கவும் எழுதவும் செய்யாது:
-
-<ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8417700129970341035">விருப்பத்தேர்வு: பயன்பாட்டு புள்ளிவிவரங்களையும், சிதைவு அறிக்கைகளையும் Brave Software க்கு தானாகவே அனுப்புவதன் மூலம் Brave ஐ இன்னும் சிறந்ததாக்க உதவுக.</translation>
 <translation id="1489465648257900784">உங்கள் சுயவிவரம் Brave இன் புதிய பதிப்பில் உள்ளதால், அதைப் பயன்படுத்த முடியாது.
 
@@ -34,22 +22,17 @@
 <translation id="3403365884036456766">உங்கள் விருப்பத்தேர்வுகளின் கோப்பு சிதைவடைந்துள்ளது அல்லது தவறானது.
 
 உங்கள் அமைப்புகளை Brave ஆல் மீட்டெடுக்க முடியவில்லை.</translation>
-<translation id="8554809439398012115">Brave இந்தக் கடவுச்சொல்லை <ph name="SAVED_PASSWORD_LINK"/> இல் சேமிக்கும். அதை நினைவில் வைத்திருக்க வேண்டிய அவசியமில்லை.</translation>
 <translation id="5316336629760101484">Brave உருவாக்கிய வலிமையான கடவுச்சொல்லைப் பயன்படுத்தவும்</translation>
 <translation id="3343095737966473035">Brave, உங்கள் இயல்புநிலை உலாவியாக இல்லை</translation>
 <translation id="6715663530666325392">உங்கள் தனிப்பயனாக்கப்பட்ட உலாவி அம்சங்களை வலையில் சேமிக்க, ஒத்திசைவை அமைத்து, எந்தக் கணினியில் உள்ள Brave இலிருந்தும் அவற்றை அணுகலாம்.</translation>
 <translation id="2708027082363760195">அச்சிடல் முன்னோட்டத்தைச் செயல்படுத்த தேவைப்படும் PDF வியூவர், Brave இல் சேர்க்கப்படவில்லை.</translation>
 <translation id="8880183781256147665">Brave இல் சேர்க்கிறது...</translation>
-<translation id="3561569806301739367"><ph name="FILE_NAME"/> ஆபத்தானதாக இருக்கலாம் என்பதால் Brave அதைத் தடுத்துள்ளது.</translation>
 <translation id="9067428552314418522">இந்தக் கோப்பு ஆபத்தானது என்பதால், அதை Brave தடுத்துள்ளது.</translation>
-<translation id="4168372721886011198"><ph name="FILE_NAME"/> ஆபத்தானது என்பதால் Brave அதைத் தடுத்துள்ளது.</translation>
 <translation id="89367911614620585">இந்தக் கோப்பு ஆபத்தானதாக இருக்கக்கூடும் என்பதால், அதை Brave தடுத்துள்ளது.</translation>
 <translation id="2339258256897053758">Brave Software API விசைகள் காணப்படவில்லை. Brave இன் சில செயல்பாடுகள் முடக்கப்படும்.</translation>
 <translation id="5906655207909574370">கிட்டத்தட்ட புதுப்பிக்கப்பட்டது! புதுப்பிப்பதை முடிக்க, சாதனத்தை மறுதொடக்கம் செய்யவும்.</translation>
 <translation id="5877064549588274448">சேனல் மாற்றப்பட்டது. மாற்றங்களைச் செயல்படுத்த உங்கள் சாதனத்தை மீண்டும் தொடங்கவும்.</translation>
-<translation id="8667808506758191620">உங்கள் <ph name="DEVICE_TYPE"/> புதுப்பித்த நிலையில் உள்ளது.</translation>
 <translation id="6970811910055250180">உங்கள் சாதனம் புதுப்பிக்கப்படுகிறது...</translation>
-<translation id="8030318113982266900">உங்கள் சாதனத்தை <ph name="CHANNEL_NAME"/> சேனலுக்குப் புதுப்பிக்கிறது...</translation>
 <translation id="7355059611036077582">Brave இல் சேர்</translation>
 <translation id="7456658570432774853">நடப்பு அமைப்புகள் குறித்து தெரிவிப்பதன் மூலம் Braveஐச் சிறந்ததாக்க உதவவும்</translation>
 <translation id="5436841087823876677">எச்சரிக்கை: நீட்டிப்புகள் உங்கள் உலாவல் வரலாற்றைப் பதிவுசெய்வதை Brave ஆல் தடுக்க முடியவில்லை. மறைநிலையில் இந்த நீட்டிப்பை முடக்க, இந்த விருப்பத்தைத் தேர்வுநீக்கவும்.</translation>
@@ -66,7 +49,6 @@
 <translation id="4100716194836114130">இது உங்கள் Brave ஆகும்</translation>
 <translation id="8296145982386097283">கணினியைப் பகிர்ந்து கொண்டுள்ளீர்களா? இப்போது நீங்கள் விரும்பும் விதத்தில் Braveஐ அமைக்கலாம்.</translation>
 <translation id="1672124279374861424">Brave இலிருந்து உங்கள் கணக்கை அகற்றிய பின்னர், செயல்படுத்த உங்கள் திறந்த தாவல்களை மீண்டும் ஏற்ற வேண்டியிருக்கலாம்.</translation>
-<translation id="9197493712748167998">உங்கள் Brave விஷயங்களை ஒத்திசைக்க, <ph name="PROFILE_EMAIL"/> ஐப் பயன்படுத்துகிறீர்கள். உங்கள் ஒத்திசைவு விருப்பத்தேர்வைப் புதுப்பிக்க அல்லது Brave Software கணக்கு இல்லாமல் Brave ஐப் பயன்படுத்த, <ph name="SETTINGS_LINK"/> ஐப் பார்வையிடவும்.</translation>
 <translation id="3968006371075376562">Brave OS ஆல் உங்கள் தரவை ஒத்திசைக்க முடியவில்லை. உங்கள் ஒத்திசைவு கடவுச்சொற்றொடரைப் புதுப்பிக்கவும்.</translation>
 <translation id="6746636977031158624">உங்கள் கணக்கின் உள்நுழைவு விவரங்கள் காலாவதியாகிவிட்டதால், உங்கள் தரவை Brave OS ஆல் ஒத்திசைக்க முடியவில்லை.</translation>
 <translation id="2999152167963026588">உங்கள் களத்திற்கு ஒத்திசைவு கிடைக்கவில்லை என்பதால், Brave OS ஆல் உங்கள் தரவை ஒத்திசைக்க முடியவில்லை.</translation>
@@ -76,12 +58,10 @@
 <translation id="663059986967017181">Brave இல் நகலெடுக்கப்பட்டது</translation>
 <translation id="5225129378754387452">Brave மெனுவைக் காட்டு</translation>
 <translation id="300669147395456190">Brave பயன்பாடுகள்</translation>
-<translation id="3421950102518690868">இந்தச் சாதனத்தைப் பயன்படுத்துவதற்கு முன் பின்வரும் சேவை விதிமுறைகளைப் படித்து ஏற்றுக்கொள்வது <ph name="DOMAIN"/> க்கு அவசியமாகும். இந்த விதிமுறைகளானது Brave OS விதிமுறைகளை விரிவாக்கவோ, மாற்றவோ அல்லது கட்டுப்படுத்தவோ செய்யாது.</translation>
 <translation id="3293668930608086049">Brave உங்கள் கேமராவையும் மைக்ரோஃபோனையும் பயன்படுத்துகிறது.</translation>
 <translation id="8919461291440820124">Brave உங்கள் மைக்ரோஃபோனைப் பயன்படுத்துகிறது.</translation>
 <translation id="3205074487970075628">Brave உங்கள் கேமராவைப் பயன்படுத்துகிறது.</translation>
 <translation id="3813272600615358652">Braveஐத் தொடங்கும் போது காண்பிக்கப்படும் பக்கத்தை இந்த நீட்டிப்பு மாற்றியுள்ளது.</translation>
-<translation id="2576129394594491151">Braveஐத் தொடங்கும் போது காண்பிக்கப்படும் பக்கத்தை, "<ph name="EXTENSION_NAME"/>" நீட்டிப்பு மாற்றியுள்ளது.</translation>
 <translation id="2675662665675552980">Brave ஐத் தொடங்கும்போது காண்பிக்கப்படும் பக்கத்தையும் இது கட்டுப்படுத்துகிறது.</translation>
 <translation id="3215652305414474626">Brave ஐத் தொடங்கும்போது அல்லது முகப்புப் பொத்தானைக் கிளிக் செய்யும்போது காண்பிக்கப்படும் பக்கத்தையும் இது கட்டுப்படுத்துகிறது.</translation>
 <translation id="2433912322225810055">Brave ஐத் தொடங்கும்போது அல்லது சர்வபுலத்திலிருந்து தேடலை மேற்கொள்ளும்போது காண்பிக்கப்படும் பக்கத்தையும் இது கட்டுப்படுத்துகிறது.</translation>
@@ -104,9 +84,7 @@
 <translation id="3009995890652266099">ஆபத்தான பயன்பாடுகளையும் தளங்களையும் கண்டறிவதற்கு உதவியாக, சில சாதனத் தகவலையும் பக்க உள்ளடக்கத்தையும் Brave Softwareக்குத் தானாக அனுப்புவதன் மூலம், Braveஐ எளிதாகவும் பாதுகாப்பாகவும் பயன்படுத்தும்படி மேம்படுத்துவதற்கு நீங்கள் உதவலாம்.</translation>
 <translation id="6791166902140255175">Brave தாவல்</translation>
 <translation id="8899693649891674038">உங்கள் மொபைலில் Braveஐ நிறுவவும். மொபைல் எண்ணுக்கு SMS ஒன்றை அனுப்புவோம்.</translation>
-<translation id="1570795130102031380">உங்கள் மொபைலில் Braveஐ நிறுவவும். மொபைல் எண்ணுக்கு SMS ஒன்றை அனுப்புவோம்: <ph name="PHONE_NUMBER"/></translation>
 <translation id="1609678321160597289">உங்கள் மொபைலில் Braveஐ நிறுவவும். கணக்கின் மீட்பு மொபைல் எண்ணுக்கு SMS ஒன்றை அனுப்புவோம்.</translation>
-<translation id="2965084188004448871">உங்கள் மொபைலில் Braveஐ நிறுவவும். கணக்கின் மீட்பு மொபைல் எண்ணுக்கு SMS ஒன்றை அனுப்புவோம்: <ph name="PHONE_NUMBER"/></translation>
 <translation id="8358191771897395012">iPhone இல் Braveஐப் பெறுக</translation>
 <translation id="1744365871163268756">சமீபத்திய முறைமை புதுப்பிப்புகளை Brave நிறுவும் வரை காத்திருக்கவும்.</translation>
 <translation id="5693614905241031118">Brave தானாகவே புதுப்பித்துக்கொள்வதால், எப்போதுமே புதிய பதிப்பைப் பெறுவீர்கள்.</translation>
@@ -115,15 +93,10 @@
 <translation id="6686872257969654608">Brave OS அறிமுகம்</translation>
 <translation id="2280363356796735201">Brave OS தொடர்பான உதவி பெறுக</translation>
 <translation id="5253815230176279256">Brave Software Pay (Braveக்கு நகலெடுக்கப்பட்டது)</translation>
-<translation id="7977435741986383568">உங்கள் உலாவல் அனுபவத்தை மேம்படுத்த, Brave ஆனது இணையச் சேவைகளைப் பயன்படுத்தலாம். நீங்கள் விரும்பினால் இந்தச் சேவைகளை முடக்கிக்கொள்ளலாம். <ph name="BEGIN_LINK"/>மேலும் அறிக<ph name="END_LINK"/></translation>
 <translation id="6274110506580702455">Brave இல் உள்நுழைவதை, இந்தச் சாதனத்தின் நிர்வாகி முடக்கியுள்ளார்.</translation>
-<translation id="9220324636239049437">வெளியேறினால், இந்தச் சாதனத்திலிருந்து ஓர் உருப்படி நீக்கப்படும். பின்னர் தரவை மீட்டமைக்க, Brave இல் <ph name="USER_EMAIL"/> எனும் முகவரியின் மூலம் உள்நுழையவும்.</translation>
-<translation id="5853262807109651878">வெளியேறினால், இந்தச் சாதனத்திலிருந்து <ph name="ITEMS_COUNT"/> உருப்படிகள் நீக்கப்படும். பின்னர் தரவை மீட்டமைக்க, Brave இல் <ph name="USER_EMAIL"/> எனும் முகவரியின் மூலம் உள்நுழையவும்.</translation>
-<translation id="4784414698887946907">வெளியேறினால், இந்தச் சாதனத்திலிருந்து உங்கள் உலாவல் தரவு நீக்கப்படும். பின்னர் தரவை மீட்டமைக்க, Brave இல் <ph name="USER_EMAIL"/> எனும் முகவரியின் மூலம் உள்நுழையவும்.</translation>
 <translation id="82609232232243542">Brave இல் உள்நுழைக</translation>
 <translation id="8372880274820509128">கூடுதல் பாதுகாப்பிற்கு, Brave உங்கள் தரவை என்க்ரிப்ட் செய்யும்.</translation>
 <translation id="6234515504547364178">Brave இலிருந்து வெளியேறு</translation>
 <translation id="7713466009760073734">Brave OS இந்த மொழியில் காட்டப்படுகிறது</translation>
 <translation id="3518788198614984730">Brave OSஐ இந்த மொழியில் காட்டு</translation>
-<translation id="6056473803837713617"><ph name="BEGIN_LINK"/>தற்போதைய அமைப்புகளைப்<ph name="END_LINK"/> பற்றிய அறிக்கையை அனுப்பி, Braveஐ இன்னும் சிறந்ததாக்க உதவவும்</translation>
 </translationbundle>

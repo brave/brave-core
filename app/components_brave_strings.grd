@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This file is created by l10nUtil.js. Do not edit manually. -->
-
-<grit latest_public_release="0" current_release="1"
-      output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
   <outputs>
     <output filename="grit/components_chromium_strings.h" type="rc_header">
-      <emit emit_type='prepend'></emit>
+      <emit emit_type="prepend" />
     </output>
     <output filename="components_chromium_strings_am.pak" type="data_package" lang="am" />
     <output filename="components_chromium_strings_ar.pak" type="data_package" lang="ar" />
@@ -141,7 +139,7 @@
           <ph name="SETTINGS_TITLE">&lt;span jscontent="settingsTitle"&gt;&lt;/span&gt;<ex>Settings</ex></ph>
           &gt;
           <ph name="ADVANCED_TITLE">&lt;span jscontent="advancedTitle"&gt;&lt;/span&gt;<ex>Under the Hood</ex></ph>
-          and deselect &quot;<ph name="NO_PREFETCH_DESCRIPTION">&lt;span jscontent="noNetworkPredictionTitle"&gt;&lt;/span&gt;<ex>Use a prediction service to load pages more quickly</ex></ph>.&quot;
+          and deselect "<ph name="NO_PREFETCH_DESCRIPTION">&lt;span jscontent="noNetworkPredictionTitle"&gt;&lt;/span&gt;<ex>Use a prediction service to load pages more quickly</ex></ph>."
           If this does not resolve the issue, we recommend selecting this option
           again for improved performance.
         </message>
@@ -169,7 +167,7 @@
           <ph name="ADVANCED_TITLE">&lt;span jscontent="advancedTitle"&gt;&lt;/span&gt;<ex>Under the Hood</ex></ph>
           &gt;
           <ph name="PROXIES_TITLE">&lt;span jscontent="proxyTitle"&gt;&lt;/span&gt;<ex>Change proxy settings...</ex></ph>
-          and make sure your configuration is set to &quot;no proxy&quot; or &quot;direct.&quot;
+          and make sure your configuration is set to "no proxy" or "direct."
         </message>
       </if>
       <if expr="is_win">
@@ -183,7 +181,7 @@
           <ph name="PROXIES_TITLE">&lt;span jscontent="proxyTitle"&gt;&lt;/span&gt;<ex>Change proxy settings...</ex></ph>
           &gt;
           LAN Settings
-          and deselect the &quot;Use a proxy server for your LAN&quot; checkbox.
+          and deselect the "Use a proxy server for your LAN" checkbox.
         </message>
       </if>
 

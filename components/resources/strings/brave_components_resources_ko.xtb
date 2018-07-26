@@ -21,4 +21,23 @@
 <translation id="7463160927746266889">참고 : 비공개 탭으로 방문하는 사이트는 로컬에 저장되지 않지만 IPS(인터넷 사업자), 고용주, 방문중인 사이트에는 익명으로 보이도록 할 수는 없습니다.</translation>
 <translation id="910419239800579753">비공개 검색, Brave로 비공개 탭에 있는 동안 DuckDuckGo를 사용하여 검색합니다. DuckDuckGo는 검색 기록을 추적하지 않는 검색 엔진이므로 비공개로 검색 할 수 있습니다.</translation>
 <translation id="3643126010006741083">DuckDuckGo로 비공개 검색</translation>
+<translation id="1869685517625607604">총 차단된 광고 수:</translation>
+<translation id="6200814343085745765">특정 광고 차단:</translation>
+<translation id="59174027418879706">사용함</translation>
+<translation id="4176463684765177261">사용 중지함</translation>
+<translation id="7207456302801184289">Brave에 오신걸 환영합니다</translation>
+<translation id="2397594719604560027">Brave는 보통의 브라우저 이상의 기능을 가지고 있습니다. 이 기능들을 최대한 활용하는 방법을 알아봅시다.</translation>
+<translation id="6001839398155993679">시작</translation>
+<translation id="8050847734948770789">Brave 리워드 사용</translation>
+<translation id="6499160071547407539">Brave 리워드를 설정하면 간단하게 즐겨 찾는 콘텐츠 제작자에게 보상을 제공 할 수 있도록 블록 체인 기반의 토큰을 얻을 수 있습니다.</translation>
+<translation id="4942016616604700968">리워드 사용</translation>
+<translation id="6450867671997742789">다른 브라우저에서 가져오기</translation>
+<translation id="5521187896304743452">컴퓨터에 설치된 다른 브라우저에서 북마크 및 설정을 가져와 Brave 브라우저의 기본 설정을 쉽게 할 수 있습니다.</translation>
+<translation id="4138981897709579987">지금 가져오기</translation>
+<translation id="9152220852742774324">차단 설정 관리</translation>
+<translation id="2043261199283617849">도구바에서 Brave 로고를 클릭하여 보호 수준을 확인하고 조정합니다. 환경 설정 패널에서 전체 차단 설정을 관리하십시오.</translation>
+<translation id="3366308997091824722">차단 설정</translation>
+<translation id="7024124499777560832">환경 설정 사용자 정의</translation>
+<translation id="2498783234010887316">탭, 모양, 확장 프로그램 및 방문 기록 설정은 환경 설정 패널에서 구성 할 수 있습니다. 여기에서 어두운 테마가 있을 수도 있습니다 ;)</translation>
+<translation id="5801568494490449797">환경 설정</translation>
 </translationbundle>

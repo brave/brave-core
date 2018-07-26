@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This file is created by l10nUtil.js. Do not edit manually. -->
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- This file contains definitions of strings that are distribution specific.
 If you update this file, be sure also to update google_chrome_strings.grd. -->
-
-<grit base_dir="." latest_public_release="0" current_release="1"
-      output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit base_dir="." latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
   <outputs>
     <output filename="grit/chromium_strings.h" type="rc_header">
-      <emit emit_type='prepend'></emit>
+      <emit emit_type="prepend" />
     </output>
     <output filename="chromium_strings_am.pak" type="data_package" lang="am" />
     <output filename="chromium_strings_ar.pak" type="data_package" lang="ar" />
@@ -137,12 +135,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         Brave
       </message>
       <if expr="is_win">
-        <message name="IDS_SXS_SHORTCUT_NAME" desc="Unused in Brave builds" translateable="false">
-        </message>
-        <message name="IDS_SHORTCUT_NAME_BETA" desc="Unused in Brave builds" translateable="false">
-        </message>
-        <message name="IDS_SHORTCUT_NAME_DEV" desc="Unused in Brave builds" translateable="false">
-        </message>
+        <message name="IDS_SXS_SHORTCUT_NAME">Brave Nightly</message>
+        <message name="IDS_SHORTCUT_NAME_BETA">Brave Beta</message>
+        <message name="IDS_SHORTCUT_NAME_DEV">Brave Dev</message>
         <message name="IDS_PRODUCT_DESCRIPTION" desc="Browser description">
           Brave is a web browser that runs webpages and applications with lightning speed. It's fast, stable, and easy to use. Browse the web more safely with malware and phishing protection built into Brave.
         </message>
@@ -159,7 +154,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         Brave logo
       </message>
       <!-- Brave enterprise logo won't be used in Brave -->
-      <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image."/>
+      <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image." />
       <if expr="is_win">
         <message name="IDS_SHORTCUT_NEW_WINDOW" desc="The text label of the New window shortcut context menu entry as of Windows 8">
           New window
@@ -223,7 +218,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <message name="IDS_ABOUT_CROS_VERSION_LICENSE" desc="Additional text displayed beneath the Brave open source URLs for Brave OS.">
           Brave OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>.
         </message>
-        <message name="IDS_ABOUT_CROS_VERSION_LICENSE_EULA"  desc="Additional text displayed beneath the Brave open source URLs for Brave OS.">
+        <message name="IDS_ABOUT_CROS_VERSION_LICENSE_EULA" desc="Additional text displayed beneath the Brave open source URLs for Brave OS.">
           Brave OS open source licenses
         </message>
       </if>
@@ -433,30 +428,24 @@ Brave is unable to recover your settings.
       </message>
 
       <!-- Download Shelf Items -->
-      <message name="IDS_DOWNLOAD_STATUS_CRX_INSTALL_RUNNING"
-               desc="Message shown when a CRX has been downloaded and is being unpacked.">
+      <message name="IDS_DOWNLOAD_STATUS_CRX_INSTALL_RUNNING" desc="Message shown when a CRX has been downloaded and is being unpacked.">
         Adding to Brave...
       </message>
 
-      <message name="IDS_PROMPT_DOWNLOAD_CHANGES_SETTINGS"
-               desc="Message shown on the download shelf when the download is known to change settings in the browser in a malicious way.">
+      <message name="IDS_PROMPT_DOWNLOAD_CHANGES_SETTINGS" desc="Message shown on the download shelf when the download is known to change settings in the browser in a malicious way.">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous, so Brave has blocked it.
       </message>
 
-      <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_URL"
-         desc="Message shown to the user to validate the download when the download url is classified to lead to malware by the safebrowsing database.">
+      <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_URL" desc="Message shown to the user to validate the download when the download url is classified to lead to malware by the safebrowsing database.">
         This file is dangerous, so Brave has blocked it.
       </message>
-      <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_CONTENT"
-         desc="Message shown to the user to validate the download when the download content is classified to lead to malware by safebrowsing.">
+      <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_CONTENT" desc="Message shown to the user to validate the download when the download content is classified to lead to malware by safebrowsing.">
         <ph name="FILE_NAME">$1<ex>malware.exe</ex></ph> is dangerous, so Brave has blocked it.
       </message>
-      <message name="IDS_BLOCK_REASON_DANGEROUS_DOWNLOAD"
-         desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is malware.">
+      <message name="IDS_BLOCK_REASON_DANGEROUS_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is malware.">
         This file is dangerous, so Brave has blocked it.
       </message>
-      <message name="IDS_BLOCK_REASON_UNWANTED_DOWNLOAD"
-         desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is unwanted sofware.">
+      <message name="IDS_BLOCK_REASON_UNWANTED_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is unwanted sofware.">
         This file may be dangerous, so Brave has blocked it.
       </message>
 
@@ -806,10 +795,8 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         Brave Apps
       </message>
       <if expr="is_win">
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA" desc="Unused in Brave builds" translateable="false">
-        </message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV" desc="Unused in Brave builds" translateable="false">
-        </message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">Brave Apps</message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">Brave Apps</message>
       </if>
 
       <!-- Brave Conflicts bubble -->
@@ -922,21 +909,15 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         <message name="IDS_INBOUND_MDNS_RULE_NAME" desc="The name of the firewall rule allowing inbound mDNS traffic.">
           Brave (mDNS-In)
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA" desc="Unused in Brave builds" translateable="false">
-        </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY" desc="Unused in Brave builds" translateable="false">
-        </message>
-        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV" desc="Unused in Brave builds" translateable="false">
-        </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION" desc="The description of the firewall rule allowing inbound mDNS traffic.">
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_BETA">Brave Beta (mDNS-In)</message>
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_CANARY">Brave Nightly (mDNS-In)</message>
+        <message name="IDS_INBOUND_MDNS_RULE_NAME_DEV">Brave Dev (mDNS-In)</message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION">
           Inbound rule for Brave to allow mDNS traffic.
         </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA" desc="Unused in Brave builds" translateable="false">
-        </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY" desc="Unused in Brave builds" translateable="false">
-        </message>
-        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV" desc="Unused in Brave builds" translateable="false">
-        </message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA">Inbound rule for Brave Beta to allow mDNS traffic.</message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY">Inbound rule for Brave Nightly to allow mDNS traffic.</message>
+        <message name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV">Inbound rule for Brave Dev to allow mDNS traffic.</message>
       </if>
 
       <if expr="not is_android">
@@ -1145,12 +1126,10 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
 
       <!-- Windows 8 Metro mode. -->
       <if expr="is_win">
-        <message name="IDS_METRO_FLOW_TAB_TITLE"
-                 desc="The dialog window title.">
+        <message name="IDS_METRO_FLOW_TAB_TITLE" desc="The dialog window title.">
           Welcome to Brave
         </message>
-        <message name="IDS_METRO_FLOW_TITLE_SHORT"
-                 desc="The title at the top of the window guiding user through making Brave default in Metro.">
+        <message name="IDS_METRO_FLOW_TITLE_SHORT" desc="The title at the top of the window guiding user through making Brave default in Metro.">
           Brave is almost ready.
         </message>
       </if>
