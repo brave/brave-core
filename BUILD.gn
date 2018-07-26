@@ -179,7 +179,7 @@ copy("brave_dist_resources") {
   sources = [ "$root_out_dir/version" ]
 
   if (!is_mac) {
-    sources = [
+    sources += [
       "$root_out_dir/brave_resources.pak",
       "$root_out_dir/brave_100_percent.pak",
       "$root_out_dir/brave_200_percent.pak",
