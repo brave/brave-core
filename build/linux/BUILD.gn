@@ -2,6 +2,26 @@ import("//brave/build/linux/channels.gni")
 
 assert(is_linux)
 
+group("brave") {
+  deps = [
+    ":copy_exe",
+  ]
+}
+
+copy("copy_exe") {
+  sources = [
+    "$root_out_dir/chrome",
+  ]
+
+  outputs = [
+    "$root_out_dir/brave",
+  ]
+
+  deps = [
+    "//chrome:chrome_initial",
+  ]
+}
+
 config("linux_channel_names") {
   defines= [
     "BRAVE_LINUX_CHANNEL_STABLE=\"$brave_linux_channel_stable\"",

@@ -10,6 +10,8 @@ keychain_db = getenv("HOME") + "/Library/Keychains/login.${mac_signing_keychain}
 
 _target_app_path = "$root_out_dir/signing/$brave_target_app_name.app"
 
+group("brave") {}
+
 action("sign_app") {
   brave_app = "$root_build_dir/Brave.app"
 

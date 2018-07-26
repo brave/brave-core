@@ -1,16 +1,8 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index c66a6f6245ebe7d4abb1993c93f279e9e8442993..4168386d2926804234c5895678eb2b793d3b7287 100644
+index c66a6f6245ebe7d4abb1993c93f279e9e8442993..25f2b17f1d2fd7c2602f31de1fb91f72fdb176c7 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
-@@ -4,6 +4,7 @@
- 
- import("//build/config/chrome_build.gni")
- import("//testing/test.gni")
-+import("//brave/build/config.gni")
- 
- # This file deliberately has no default "util" target so dependants have to
- # specify with the ":with_no_strings" or ":with_rc_strings" variants. Random
-@@ -246,9 +247,24 @@ action("generate_strings") {
+@@ -246,9 +246,24 @@ action("generate_strings") {
      "$target_gen_dir/installer_util_strings.rc",
    ]
  
