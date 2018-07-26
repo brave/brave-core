@@ -1,5 +1,5 @@
 group("brave") {
-  deps = [
+  public_deps = [
     ":copy_exe",
     ":copy_pdb",
   ]

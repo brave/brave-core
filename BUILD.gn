@@ -189,13 +189,8 @@ copy("brave_dist_resources") {
     ":generate_version",
     ":brave_license_dist_resources",
     ":packed_resources",
+    "build/$target_os:brave",
   ]
-
-  if (is_win) {
-    deps += [
-      "//brave/build/win:copy_exe"
-    ]
-  }
 
   outputs = [
     "$brave_dist_dir/{{source_file_part}}"

@@ -3,8 +3,9 @@ import("//brave/build/linux/channels.gni")
 assert(is_linux)
 
 group("brave") {
-  deps = [
+  public_deps = [
     ":copy_exe",
+    ":copy_sandbox",
   ]
 }
 
@@ -20,6 +21,21 @@ copy("copy_exe") {
   deps = [
     "//chrome:chrome_initial",
   ]
+}
+
+copy("copy_sandbox") {
+  sources = [
+    "$root_out_dir/chrome_sandbox",
+  ]
+
+  outputs = [
+    "$root_out_dir/brave_sandbox",
+  ]
+
+  deps = [
+    "//sandbox/linux:chrome_sandbox",
+  ]
+
 }
 
 config("linux_channel_names") {
