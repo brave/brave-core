@@ -1,8 +1,7 @@
+import("//brave/build/features.gni")
 import("//build/util/branding.gni")
 
 declare_args() {
-  brave_chromium_build = true
-
   # Release channel support.
   # "beta" for beta release.
   # "dev" for dev channel release.

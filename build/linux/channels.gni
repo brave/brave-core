@@ -1,3 +1,5 @@
+import("//brave/build/config.gni")
+
 assert(is_linux)
 
 brave_linux_channel_stable = ""

@@ -1,0 +1,3 @@
+declare_args() {
+  brave_chromium_build = true
+}
