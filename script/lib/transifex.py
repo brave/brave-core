@@ -146,17 +146,9 @@ def clean_triple_quoted_string(val):
 
 def textify(t):
   """Returns the text of a node to be translated"""
-  s = []
-  if t.text:
-    s.append(t.text)
-  s.append(''.join([lxml.etree.tostring(child) for child in t.iterdescendants()]).strip())
-  if t.tail:
-    s.append(t.tail)
-  val = ''.join(s).strip()
-
+  val = lxml.etree.tostring(t, method='xml', encoding='unicode')
+  val = val[val.index('>')+1:val.rindex('<')]
   val = clean_triple_quoted_string(val)
-  # Get rid fo all of the encode entities
-  val = HTMLParser.HTMLParser().unescape(val).strip().replace('&', '&amp;')
   return val
 
 
