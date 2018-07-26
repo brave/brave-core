@@ -1,5 +1,5 @@
 diff --git a/net/socket/socks5_client_socket.cc b/net/socket/socks5_client_socket.cc
-index 784bcef533288d1eced7daa5b470b8d99550cd98..490766ba173a5f15f618a8fcdd0de8bfa8c5328d 100644
+index 784bcef533288d1eced7daa5b470b8d99550cd98..f5bb562a155df94875ee722c3d3ed26ee1cdb2be 100644
 --- a/net/socket/socks5_client_socket.cc
 +++ b/net/socket/socks5_client_socket.cc
 @@ -241,6 +241,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
@@ -36,7 +36,7 @@ index 784bcef533288d1eced7daa5b470b8d99550cd98..490766ba173a5f15f618a8fcdd0de8bf
      bytes_sent_ = 0;
    }
  
-@@ -341,14 +346,32 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
+@@ -341,14 +346,14 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
                        NetLog::IntCallback("version", buffer_[0]));
      return ERR_SOCKS_CONNECTION_FAILED;
    }
@@ -50,24 +50,6 @@ index 784bcef533288d1eced7daa5b470b8d99550cd98..490766ba173a5f15f618a8fcdd0de8bf
    buffer_.clear();
 -  next_state_ = STATE_HANDSHAKE_WRITE;
 +  next_state_ = STATE_AUTH;
-+  return OK;
-+}
-+
-+int SOCKS5ClientSocket::DoAuth(int rv) {
-+  rv = Authenticate(rv, *transport_, net_log_, io_callback_);
-+  next_state_ = (rv == OK ? STATE_HANDSHAKE_WRITE : STATE_AUTH);
-+  return rv;
-+}
-+
-+uint8_t SOCKS5ClientSocket::auth_method() {
-+  return 0x00;
-+}
-+
-+int SOCKS5ClientSocket::Authenticate(int rv,
-+                                     ClientSocketHandle& socket,
-+                                     NetLogWithSource& net_log,
-+                                     CompletionCallback& callback) {
-+  DCHECK_EQ(OK, rv);
    return OK;
  }
  

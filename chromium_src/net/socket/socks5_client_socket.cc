@@ -1,11 +1,31 @@
-// Copyright 2017 The Brave Authors. All rights reserved.
+// Copyright 2018 The Brave Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "../../../../net/socket/socks5_client_socket.cc"
+
 #include "net/base/io_buffer.h"
-#include "net/socket/socks5_client_socket_auth.h"
+#include "net/socket/socks5_client_socket.h"
 
 namespace net {
+
+int SOCKS5ClientSocket::DoAuth(int rv) {
+  rv = Authenticate(rv, *transport_, net_log_, io_callback_);
+  next_state_ = (rv == OK ? STATE_HANDSHAKE_WRITE : STATE_AUTH);
+  return rv;
+}
+
+uint8_t SOCKS5ClientSocket::auth_method() {
+  return 0x00;
+}
+
+int SOCKS5ClientSocket::Authenticate(int rv,
+                                     ClientSocketHandle& socket,
+                                     NetLogWithSource& net_log,
+                                     CompletionCallback& callback) {
+  DCHECK_EQ(OK, rv);
+  return OK;
+}
 
 SOCKS5ClientSocketAuth::SOCKS5ClientSocketAuth(
     std::unique_ptr<ClientSocketHandle> transport_socket,
