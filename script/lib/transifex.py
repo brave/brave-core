@@ -278,6 +278,8 @@ def get_original_grd(src_root, grd_file_path):
     return os.path.join(src_root, 'components', 'components_chromium_strings.grd')
   elif grd_file_name == 'brave_strings.grd':
     return os.path.join(src_root, 'chrome', 'app', 'chromium_strings.grd')
+  elif grd_file_name == 'generated_resources.grd':
+    return os.path.join(src_root, 'chrome', 'app', 'generated_resources.grd')
 
 
 def check_for_chromium_upgrade_extra_langs(src_root, grd_file_path):
