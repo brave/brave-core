@@ -1,0 +1,73 @@
+diff --git a/net/socket/socks5_client_socket.cc b/net/socket/socks5_client_socket.cc
+index 784bcef533288d1eced7daa5b470b8d99550cd98..490766ba173a5f15f618a8fcdd0de8bfa8c5328d 100644
+--- a/net/socket/socks5_client_socket.cc
++++ b/net/socket/socks5_client_socket.cc
+@@ -241,6 +241,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
+         net_log_.EndEventWithNetErrorCode(NetLogEventType::SOCKS5_GREET_READ,
+                                           rv);
+         break;
++      case STATE_AUTH:
++        rv = DoAuth(rv);
++        break;
+       case STATE_HANDSHAKE_WRITE:
+         DCHECK_EQ(OK, rv);
+         net_log_.BeginEvent(NetLogEventType::SOCKS5_HANDSHAKE_WRITE);
+@@ -270,8 +273,6 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
+   return rv;
+ }
+ 
+-const char kSOCKS5GreetWriteData[] = { 0x05, 0x01, 0x00 };  // no authentication
+-
+ int SOCKS5ClientSocket::DoGreetWrite() {
+   // Since we only have 1 byte to send the hostname length in, if the
+   // URL has a hostname longer than 255 characters we can't send it.
+@@ -281,8 +282,12 @@ int SOCKS5ClientSocket::DoGreetWrite() {
+   }
+ 
+   if (buffer_.empty()) {
+-    buffer_ = std::string(kSOCKS5GreetWriteData,
+-                          arraysize(kSOCKS5GreetWriteData));
++    const char greeting[] = {
++      0x05,			// SOCKS version
++      0x01,			// number of authentication methods
++      auth_method(),
++    };
++    buffer_ = std::string(greeting, sizeof(greeting));
+     bytes_sent_ = 0;
+   }
+ 
+@@ -341,14 +346,32 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
+                       NetLog::IntCallback("version", buffer_[0]));
+     return ERR_SOCKS_CONNECTION_FAILED;
+   }
+-  if (buffer_[1] != 0x00) {
++  if (buffer_[1] != auth_method()) {
+     net_log_.AddEvent(NetLogEventType::SOCKS_UNEXPECTED_AUTH,
+                       NetLog::IntCallback("method", buffer_[1]));
+     return ERR_SOCKS_CONNECTION_FAILED;
+   }
+ 
+   buffer_.clear();
+-  next_state_ = STATE_HANDSHAKE_WRITE;
++  next_state_ = STATE_AUTH;
++  return OK;
++}
++
++int SOCKS5ClientSocket::DoAuth(int rv) {
++  rv = Authenticate(rv, *transport_, net_log_, io_callback_);
++  next_state_ = (rv == OK ? STATE_HANDSHAKE_WRITE : STATE_AUTH);
++  return rv;
++}
++
++uint8_t SOCKS5ClientSocket::auth_method() {
++  return 0x00;
++}
++
++int SOCKS5ClientSocket::Authenticate(int rv,
++                                     ClientSocketHandle& socket,
++                                     NetLogWithSource& net_log,
++                                     CompletionCallback& callback) {
++  DCHECK_EQ(OK, rv);
+   return OK;
+ }
+ 

@@ -1,0 +1,14 @@
+diff --git a/net/BUILD.gn b/net/BUILD.gn
+index 9d59189d80aea8f99b73020f36a578a96667af37..d5aa98b8f2f44f6acec58c124c262bd1ddcabe31 100644
+--- a/net/BUILD.gn
++++ b/net/BUILD.gn
+@@ -355,6 +355,9 @@ component("net") {
+     "ssl/token_binding.h",
+     "third_party/quic/core/quic_error_codes.cc",
+     "third_party/quic/core/quic_error_codes.h",
++    "//brave/chromium_src/net/base/host_port_pair_auth.cc",
++    "//brave/chromium_src/net/base/url_auth_util.cc",
++    "//brave/chromium_src/net/socket/socks5_client_socket_auth.cc",
+   ]
+   net_unfiltered_sources = []
+ 
