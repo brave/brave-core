@@ -34,6 +34,42 @@ void LedgerImpl::CreateWallet() {
   LoadLedgerState(this);
 }
 
+void LedgerImpl::OnLoad(const ledger::VisitData& visit_data) {
+
+}
+
+void LedgerImpl::OnUnload(uint32_t tab_id) {
+
+}
+
+void LedgerImpl::OnShow(uint32_t tab_id) {
+
+}
+
+void LedgerImpl::OnHide(uint32_t tab_id) {
+
+}
+
+void LedgerImpl::OnForeground(uint32_t tab_id) {
+
+}
+
+void LedgerImpl::OnBackground(uint32_t tab_id) {
+
+}
+
+void LedgerImpl::OnMediaStart(uint32_t tab_id) {
+
+}
+
+void LedgerImpl::OnMediaStop(uint32_t tab_id) {
+
+}
+
+void LedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url) {
+
+}
+
 void LedgerImpl::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
   ledger_client_->LoadLedgerState(handler);
 }
@@ -95,10 +131,6 @@ void LedgerImpl::initSynopsis() {
 //   braveledger_bat_helper::loadFromJson(walletProperties, response);
 //   // TODO send the balance to the UI via observer or callback
 // }
-
-void LedgerImpl::OnVisit(const ledger::VisitData& visit_data) {
-  bat_publishers_->saveVisit(visit_data);
-}
 
 void LedgerImpl::RunIOTask(LedgerTaskRunnerImpl::Task io_task) {
   std::unique_ptr<LedgerTaskRunnerImpl> task_runner(
