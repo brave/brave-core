@@ -91,6 +91,21 @@
   <message name="IDS_MD_EXTENSIONS_ITEM_ERRORS" desc="The label of the button to bring the user to the page showing an extension's errors.">
     Errors
   </message>
+  <message name="IDS_MD_EXTENSIONS_ITEM_HOST_PERMISSIONS_HEADING" desc="The heading above the details of which websites an extension is allowed to run on.">
+    Allow this extension to read and change all your data on websites you visit:
+  </message>
+  <message name="IDS_MD_EXTENSIONS_HOST_ACCESS_ON_CLICK" desc="The text for the option to only allow an extension to read and change data when the user clicks on the extension.">
+    On click
+  </message>
+  <message name="IDS_MD_EXTENSIONS_HOST_ACCESS_ON_SPECIFIC_SITES" desc="The text for the option to allow an extension to read and change data on a select set of sites.">
+    On specific sites
+  </message>
+  <message name="IDS_MD_EXTENSIONS_HOST_ACCESS_ON_ALL_SITES" desc="The text for the option to allow an extension to read and change data on all websites.">
+    On all sites
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_ALLOWED_HOSTS" desc="The heading above the section listing any sites the extension is allowed to run on.">
+    Allowed sites
+  </message>
   <message name="IDS_MD_EXTENSIONS_ACCESSIBILITY_ERROR_LINE" desc="Accessibility message to indicate what line an error is on. The line of code will be read to the user. The place holder will be a number.">
     Error on line <ph name="ERROR_LINE">$1</ph>
   </message>
