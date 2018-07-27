@@ -3,7 +3,7 @@
 This file contains definitions of resources that will be translated for each
 locale.  The variables is_win, is_macosx, is_linux, and is_posix are available
 for making strings OS specific.  Other platform defines such as use_titlecase
-are declared in build/common.gypi.
+are declared in tools/grit/grit_rule.gni.
 -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit base_dir="." latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
@@ -177,13 +177,16 @@ are declared in build/common.gypi.
       <!-- Bookmarks specific strings -->
       <part file="bookmarks_strings.grdp" />
 
+      <!-- Media Router specific strings -->
+      <part file="media_router_strings.grdp" />
+
+      <!-- Profiles specific strings -->
+      <part file="profiles_strings.grdp" />
+
       <!-- Brave-OS-specific strings -->
       <if expr="chromeos">
         <part file="chromeos_strings.grdp" />
       </if>
-
-      <!-- Media Router specific strings -->
-      <part file="media_router_strings.grdp" />
 
       <!-- Settings specific strings -->
       <if expr="not is_android">
@@ -198,6 +201,11 @@ are declared in build/common.gypi.
       <!-- Printing specific strings -->
       <if expr="enable_printing">
         <part file="printing_strings.grdp" />
+      </if>
+
+      <!-- Strings that are only used when VR devices are supported -->
+      <if expr="enable_vr">
+        <part file="vr_strings.grdp" />
       </if>
 
       <!-- TODO add all of your "string table" messages here.  Remember to
@@ -229,9 +237,6 @@ are declared in build/common.gypi.
         </message>
       </if>
 
-      <message name="IDS_PERMISSIONS_BUBBLE_PERSIST_TEXT" desc="The label for the checkbox used to allow users to optionally persist a permission request decision">
-        Remember my decision
-      </message>
       <message name="IDS_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> wants to
       </message>
@@ -473,10 +478,16 @@ are declared in build/common.gypi.
           <message name="IDS_CONTENT_CONTEXT_OPENAUDIONEWTAB" desc="The name of the Open Audio in New Tab command in the content area context menu">
             &amp;Open audio in new tab
           </message>
-          <message name="IDS_CONTENT_CONTENT_PICTUREINPICTURE" desc="The name of the Picture-in-Picture command in the content area context menu.">
-            Picture-in-Picture
-          </message>
-
+          <if expr="is_macosx">
+            <message name="IDS_CONTENT_CONTEXT_PICTUREINPICTURE" desc="The name of the Picture-in-Picture command in the content area context menu.">
+              Picture in Picture
+            </message>
+          </if>
+          <if expr="not is_macosx">
+            <message name="IDS_CONTENT_CONTEXT_PICTUREINPICTURE" desc="The name of the Picture-in-Picture command in the content area context menu.">
+              Picture in picture
+            </message>
+          </if>
           <message name="IDS_CONTENT_CONTEXT_UNDO" desc="The name of the Undo command in the content area context menu">
             &amp;Undo
           </message>
@@ -679,9 +690,16 @@ are declared in build/common.gypi.
           <message name="IDS_CONTENT_CONTEXT_OPENAUDIONEWTAB" desc="In Title Case: The name of the Open Audio in New Tab command in the content area context menu">
             &amp;Open Audio in New Tab
           </message>
-          <message name="IDS_CONTENT_CONTENT_PICTUREINPICTURE" desc="In Title Case: The name of the Picture-in-Picture command in the content area context menu.">
-            Picture-in-Picture
-          </message>
+          <if expr="is_macosx">
+            <message name="IDS_CONTENT_CONTEXT_PICTUREINPICTURE" desc="In Title Case: The name of the Picture-in-Picture command in the content area context menu.">
+              Picture in Picture
+            </message>
+          </if>
+          <if expr="not is_macosx">
+            <message name="IDS_CONTENT_CONTEXT_PICTUREINPICTURE" desc="In Title Case: The name of the Picture-in-Picture command in the content area context menu.">
+              Picture in picture
+            </message>
+          </if>
 
           <message name="IDS_CONTENT_CONTEXT_UNDO" desc="In Title Case: The name of the Undo command in the content area context menu">
             &amp;Undo
@@ -865,9 +883,6 @@ are declared in build/common.gypi.
           <message name="IDS_COPY_URL" desc="The text label of the Copy URL menu item for the Hosted App app menu">
             Copy &amp;URL
           </message>
-          <message name="IDS_SITE_SETTINGS" desc="The text label of the Site Settings menu item for the Hosted App app menu">
-            &amp;Site settings
-          </message>
           <message name="IDS_OPEN_IN_APP_WINDOW" desc="The text label of the menu item for moving the current tab to a standalone app window">
             Open in <ph name="APP">$1<ex>Gmail App</ex></ph>
           </message>
@@ -938,9 +953,6 @@ are declared in build/common.gypi.
           </message>
           <message name="IDS_COPY_URL" desc="In Title Case: The text label of the Copy URL menu item for the Hosted App app menu">
             Copy &amp;URL
-          </message>
-          <message name="IDS_SITE_SETTINGS" desc="In Title Case: The text label of the Site Settings menu item for the Hosted App app menu">
-            &amp;Site Settings
           </message>
           <message name="IDS_OPEN_IN_APP_WINDOW" desc="In Title Case: The text label of the menu item for moving the current tab to a standalone app window">
             Open in <ph name="APP">$1<ex>Gmail App</ex></ph>
@@ -1032,9 +1044,6 @@ are declared in build/common.gypi.
       </if>
 
       <!-- App menu -->
-      <message name="IDS_VIEW_INCOMPATIBILITIES" desc="The text label of the View incompatibilities menu item">
-        Software incompatibility: Learn more
-      </message>
       <if expr="chromeos">
         <message name="IDS_TOGGLE_REQUEST_TABLET_SITE" desc="The toggle to request tablet site on a touch dev.">
           Request tablet site
@@ -1141,15 +1150,6 @@ are declared in build/common.gypi.
       </message>
       <message name="IDS_SEARCH_ENGINES_EDITOR_DESCRIPTION_COLUMN" desc="Title of the description column in the search engines editor">
         Name
-      </message>
-      <message name="IDS_SEARCH_ENGINES_EDITOR_MAIN_SEPARATOR" desc="Title above the set of keywords the user has modified and or explicitly created">
-        Default search settings
-      </message>
-      <message name="IDS_SEARCH_ENGINES_EDITOR_OTHER_SEPARATOR" desc="Title above the set of keywords Brave automatically created as the user browses">
-        Other search engines
-      </message>
-      <message name="IDS_SEARCH_ENGINES_EDITOR_EXTENSIONS_SEPARATOR" desc="Title above the set of keywords installed by active extensions">
-        Search engines added by extensions
       </message>
 
       <message name="IDS_SEARCH_ENGINES_EDITOR_DEFAULT_ENGINE" desc="Engine name displayed for the engine in the list that is currently marked as default">
@@ -1360,9 +1360,6 @@ are declared in build/common.gypi.
       <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS" desc="Size and units downloaded, time remaining.">
         <ph name="DOWNLOAD_RECEIVED">$1<ex>54/154 MB</ex></ph>, <ph name="TIME_LEFT">$2<ex>5s</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_WITH_DOMAIN" desc="Size and units downloaded, time remaining.">
-        <ph name="DOWNLOAD_RECEIVED">$1<ex>54/154 MB</ex></ph> from <ph name="DOWNLOAD_DOMAIN">$2<ex>example.com</ex></ph>, <ph name="TIME_LEFT">$3<ex>5s</ex></ph>
-      </message>
       <message name="IDS_DOWNLOAD_STATUS_SIZES" desc="Size and units downloaded.">
         <ph name="DOWNLOAD_RECEIVED">$1<ex>54kB</ex></ph>/<ph name="DOWNLOAD_TOTAL">$2<ex>154MB</ex></ph>
       </message>
@@ -1501,9 +1498,6 @@ are declared in build/common.gypi.
           Show in Finder
         </message>
       </if>
-      <message name="IDS_DOWNLOAD_LINK_SHOW_ALL_DOWNLOADS" desc="In the download notification, 'Show all downloads' button text.">
-        Show all downloads
-      </message>
       <if expr="chromeos">
       </if>
       <message name="IDS_DOWNLOAD_TAB_CANCELLED" desc="Text that appears next to the downloaded files that have been canceled">
@@ -1685,12 +1679,6 @@ are declared in build/common.gypi.
         <message name="IDS_TOUCH_BAR_SEARCH" desc="Text for the search button in the touch bar when Brave is not the default search provider. Pressing the button will bring focus to the omnibox. $1 is the name of the search provider)">
           Search <ph name="SEARCH_ENGINE">$1<ex>Bing</ex></ph>
         </message>
-        <message name="IDS_TOOLTIP_TOUCH_BAR_BACK" desc="The tooltip for the touch bar back button.">
-        Touch to go back.
-        </message>
-        <message name="IDS_TOOLTIP_TOUCH_BAR_FORWARD" desc="The tooltip for the touch bar forward button.">
-        Touch to go forward.
-        </message>
         <message name="IDS_TOUCH_BAR_BACK_FORWARD_CUSTOMIZATION_LABEL" desc="Customization label for the back and forward buttons in the touch bar.">
           Back/Forward
         </message>
@@ -1705,9 +1693,6 @@ are declared in build/common.gypi.
         </message>
         <message name="IDS_TOUCH_BAR_NEW_TAB_CUSTOMIZATION_LABEL" desc="Customization label for the new tab button in the touch bar.">
           New Tab
-        </message>
-        <message name="IDS_TOUCH_BAR_EXIT_FULLSCREEN" desc="Text for the exit fullscreen button in the touch bar.">
-        Exit Full Screen
         </message>
       </if>
 
@@ -1744,6 +1729,9 @@ are declared in build/common.gypi.
       </if>
 
       <!-- Dialog that asks whether user wants to participate in Safe Browsing Extended Reporting -->
+      <message name="IDS_FEEDBACK_SERVICE_DIALOG_EXPLANATION_SCOUT" desc="Explanation of the dialog asking whether the user wants to upload some system information and page content for Safe Browsing analysis">
+        You can help improve Safe Browsing by sending some system information and page content to Brave.
+      </message>
       <message name="IDS_FEEDBACK_SERVICE_DIALOG_OK_BUTTON_LABEL" desc="Button that elects to upload suspected malicious files for analysis">
         Yes, I want to help
       </message>
@@ -2061,9 +2049,6 @@ are declared in build/common.gypi.
       <message name="IDS_BLOCKED_IMAGES_NO_ACTION" desc="Radio button choice to continue blocking a site from showing images, displayed in bubble when a page tries to display images.">
         Continue blocking images
       </message>
-      <message name="IDS_BLOCKED_IMAGES_LINK" desc="Link to images section of content blocking management dialog, displayed in bubble when a page tries to display images.">
-        Manage image blocking...
-      </message>
       <message name="IDS_BLOCKED_POPUPS_TOOLTIP" desc="Tooltip text when a page is not allowed to display popups.">
         Pop-ups were blocked on this page.
       </message>
@@ -2141,9 +2126,6 @@ are declared in build/common.gypi.
       </message>
       <message name="IDS_BLOCKED_JAVASCRIPT_NO_ACTION" desc="Radio button choice to continue blocking a site from running JavaScript, displayed in bubble when a page tries to run JavaScript.">
         Continue blocking JavaScript
-      </message>
-      <message name="IDS_BLOCKED_JAVASCRIPT_LINK" desc="Link to JavaScript section of content blocking management dialog, displayed in bubble when a page tries to run JavaScript.">
-        Manage JavaScript blocking...
       </message>
       <message name="IDS_BLOCKED_PLUGINS_TITLE" desc="Bubble info header text when a page is not allowed to run Flash. 'Flash' is the name of a plugin and should not be translated.">
         Flash was blocked on this page
@@ -2726,12 +2708,6 @@ are declared in build/common.gypi.
         <message name="IDS_CERTIFICATE_MANAGER_TITLE" desc="String to be displayed in the title bar of the certificate manager dialog">
           Certificate manager
         </message>
-        <message name="IDS_CERT_MANAGER_PKCS12_FILES" desc="The label in the file selector dialog for PKCS #12 file type.">
-          PKCS #12 Files
-        </message>
-        <message name="IDS_CERT_MANAGER_PKCS12_EXPORT_ERROR_TITLE" desc="The title in the error dialog for PKCS #12 file export errors.">
-          PKCS #12 Export Error
-        </message>
         <message name="IDS_CERT_MANAGER_HARDWARE_BACKED_KEY_FORMAT" desc="A format used to create label for hardware-backed keys.">
           <ph name="KEY_NAME">$1<ex>John Doe</ex></ph> (<ph name="DEVICE">$2<ex>hardware-backed</ex></ph>)
         </message>
@@ -2740,15 +2716,6 @@ are declared in build/common.gypi.
         </message>
         <message name="IDS_CERT_MANAGER_EXTENSION_PROVIDED_FORMAT" desc="Format used for showing extension provided certificates.">
           <ph name="CERTIFICATE_NAME">$1<ex>Example Certificate</ex></ph> (extension provided)
-        </message>
-      </if>
-
-      <if expr="chromeos">
-        <message name="IDS_CERT_MANAGER_KEY_FORMAT_LONG" desc="A longer format for keys in the wifi / vpn config dialogs.">
-          <ph name="ISSUED_BY">$1<ex>Brave Inc</ex></ph> [<ph name="ISSUED_TO">$2<ex>John Doe</ex></ph>]
-        </message>
-        <message name="IDS_CERT_MANAGER_HARDWARE_BACKED_KEY_FORMAT_LONG" desc="A longer format for hardware-backed keys in the wifi / vpn config dialogs.">
-          <ph name="ISSUED_BY">$1<ex>Brave Inc</ex></ph> [<ph name="ISSUED_TO">$2<ex>John Doe</ex></ph>] (<ph name="DEVICE">$3<ex>hardware-backed</ex></ph>)
         </message>
       </if>
 
@@ -2781,27 +2748,10 @@ are declared in build/common.gypi.
         Empty Cache and Hard Reload
       </message>
 
-      <!-- User Image Selection Dialog -->
-      <if expr="chromeos">
-        <message name="IDS_USER_IMAGE_SCREEN_TITLE" desc="String to be displayed in the title bar of the oobe/login user image selection dialog">
-          Set your profile picture
-        </message>
-        <message name="IDS_USER_IMAGE_SCREEN_DESCRIPTION" desc="Description text for the oobe/login user image selection dialog.">
-          Take a new photo or choose an existing photo or icon.
-          <ph name="LINE_BREAK">&lt;br&gt;&lt;br&gt;</ph>
-          This picture will show up on the Bravebook sign in screen and lock screen.
-        </message>
-      </if>
-
       <!-- Fullscreen mode -->
       <message name="IDS_EXIT_FULLSCREEN_MODE" desc="Clickable message displayed on entering full screen mode. Clicking on the link exits full screen mode.">
         Exit full screen
       </message>
-      <if expr="not chromeos">
-        <message name="IDS_EXIT_FULLSCREEN_MODE_ACCELERATOR" desc="Accelerator description shown next to a link showing 'Exit full screen' e.g. 'Exit full screen (Esc)', where 'Exit full screen' is a link.">
-          (<ph name="ACCELERATOR">$1<ex>Esc</ex></ph>)
-        </message>
-      </if>
 
       <!-- Task Manager Window -->
       <if expr="not is_android">
@@ -3075,15 +3025,17 @@ are declared in build/common.gypi.
         </message>
       </if>
 
-      <message name="IDS_UTILITY_PROCESS_COMPONENT_PATCHER_NAME" desc="The name of the utility process used for patching components.">
-        Component Patcher
-      </message>
       <message name="IDS_UTILITY_PROCESS_IMAGE_DECODER_NAME" desc="The name of the utility process used for decoding images.">
         Image Decoder
       </message>
       <message name="IDS_UTILITY_PROCESS_PROXY_RESOLVER_NAME" desc="The name of the utility process used for out-of-process V8 proxy resolution.">
         V8 Proxy Resolver
       </message>
+      <if expr="chromeos">
+        <message name="IDS_UTILITY_PROCESS_CUPS_IPP_VALIDATOR_SERVICE_NAME" desc="The name of the utility process used for validating IPP requests out-of-process.">
+          CUPS IPP Validator
+        </message>
+      </if>
       <message name="IDS_UTILITY_PROCESS_FILE_UTILITY_NAME" desc="The name of the utility process used for various Brave specific file operations.">
           Brave File Utilities
       </message>
@@ -3091,14 +3043,8 @@ are declared in build/common.gypi.
         <message name="IDS_UTILITY_PROCESS_PROFILE_IMPORTER_NAME" desc="The name of the utility process used for importing profiles.">
           Profile Importer
         </message>
-        <message name="IDS_UTILITY_PROCESS_SAFE_BROWSING_ZIP_FILE_ANALYZER_NAME" desc="The name of the utility process used for analyzing .zip files for Safe Browsing.">
-          Safe Browsing Zip File Analyzer
-        </message>
       </if>
       <if expr="is_win">
-        <message name="IDS_UTILITY_PROCESS_FILE_DIALOG_NAME" desc="The name of the utility process used for handling a file open/save dialog.">
-          File Open/Save Dialog
-        </message>
         <message name="IDS_UTILITY_PROCESS_WIFI_CREDENTIALS_GETTER_NAME" desc="The name of the utility process used for getting the WiFi credentials">
           WiFi Credentials Getter
         </message>
@@ -3756,9 +3702,6 @@ are declared in build/common.gypi.
         <message name="IDS_EXTENSIONS_LOAD_ERROR_MESSAGE" desc="The message which tells the user that an extension failed to load.">
           Failed to load extension from:
         </message>
-        <message name="IDS_EXTENSIONS_OPTIONS_LINK" desc="The link text for the Options link.">
-          Options
-        </message>
         <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS" desc="The label in an extension's context menu for the submenu specifying whether or not the extension can run on the current page (sentence case).">
             Allow access
@@ -4088,9 +4031,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
-      <message name="IDS_HOSTED_APP_NAME_AND_DOMAIN" desc="The string that is always displayed in the window title in Hosted App app windows.">
-        <ph name="APP_NAME">$1<ex>GMail</ex></ph> by <ph name="SITE_ORIGIN">$2<ex>google.com</ex></ph>
-      </message>
       <message name="IDS_HOSTED_APPMENU_TOOLTIP">
         Customize and control <ph name="APP_NAME">$1<ex>GMail</ex></ph>
       </message>
@@ -4193,20 +4133,29 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PASSWORD_MANAGER_CONFIRM_SAVED_TITLE" desc="The title text used in the passwords bubble when the user has saved a password.">
         Password saved
       </message>
+      <message name="IDS_PASSWORD_GENERATION_SUGGESTION" desc="Text shown next to a generated password describing it as a suggestion.">
+        Use suggested password
+      </message>
+       <message name="IDS_PASSWORD_GENERATION_EDITING_SUGGESTION" desc="Notification text next to the generated password assuring the user that the password has been saved.">
+        Saved password
+      </message>
       <message name="IDS_SAVE_PASSWORD" desc="The title of the save password bubble when a password can be saved.">
-        Do you want <ph name="PASSWORD_MANAGER_BRAND">$1<ex>Brave</ex></ph> to save your password for this site?
+        Save password?
       </message>
       <message name="IDS_SAVE_ACCOUNT" desc="The title of the save password bubble when a federated credential can be saved.">
         Do you want <ph name="PASSWORD_MANAGER_BRAND">$1<ex>Brave</ex></ph> to save your account for this site?
       </message>
       <message name="IDS_UPDATE_PASSWORD" desc="The title of the save password bubble when a password can be updated.">
-        Do you want <ph name="PASSWORD_MANAGER_BRAND">$1<ex>Brave</ex></ph> to update your password for this site?
+        Update password?
       </message>
       <message name="IDS_SAVE_PASSWORD_DIFFERENT_DOMAINS_TITLE" desc="The title of the save password bubble when the submitted form origin isn't equal to the page origin.">
-        Do you want <ph name="PASSWORD_MANAGER_BRAND">$1<ex>Brave</ex></ph> to save your password for <ph name="ORIGIN">$2<ex>example.com</ex></ph>?
+        Save password for <ph name="ORIGIN">$1<ex>example.com</ex></ph>?
       </message>
       <message name="IDS_UPDATE_PASSWORD_DIFFERENT_DOMAINS_TITLE" desc="The title of the update password bubble when the submitted form origin isn't equal to saved credentials origin.">
-        Do you want <ph name="PASSWORD_MANAGER_BRAND">$1<ex>Brave</ex></ph> to update your password for <ph name="ORIGIN">$2<ex>example.com</ex></ph>?
+        Update password for <ph name="ORIGIN">$1<ex>example.com</ex></ph>?
+      </message>
+      <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
+        Passwords are saved in your Brave Account so you can use them on any device
       </message>
       <if expr="use_titlecase">
         <message name="IDS_PASSWORD_MANAGER_ACCOUNT_CHOOSER_SIGN_IN" desc="In Title Case: The title of the Sign in button in the account chooser when there is one account.">
@@ -4218,9 +4167,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_SIGNIN_PROMO_SIGN_IN" desc="In Title Case: The title of the Sign in button in the bubble promoting Brave sign-in.">
           Sign In
         </message>
-        <message name="IDS_PASSWORD_MANAGER_SIGNIN_PROMO_NO_THANKS" desc="In Title Case: The title of the No Thanks button in the bubble promoting Brave sign-in.">
-          No Thanks
-        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_PASSWORD_MANAGER_ACCOUNT_CHOOSER_SIGN_IN" desc="The title of the Sign in button in the account chooser when there is one account.">
@@ -4231,9 +4177,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_PASSWORD_MANAGER_SIGNIN_PROMO_SIGN_IN" desc="The title of the Sign in button in the bubble promoting Brave sign-in.">
           Sign in
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_SIGNIN_PROMO_NO_THANKS" desc="The title of the No Thanks button in the bubble promoting Brave sign-in.">
-          No thanks
         </message>
       </if>
       <message name="IDS_PASSWORD_MANAGER_SIGNIN_PROMO_LABEL" desc="Promotion text for Brave sign-in appearing in the password bubble after a password is saved.">
@@ -4267,19 +4210,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
           No thanks
         </message>
       </if>
-
-      <message name="IDS_TRACE_UPLOAD_URL_CHOICE_OTHER">
-        Other
-      </message>
-      <message name="IDS_TRACE_UPLOAD_URL_CHOICE_EMLOADING">
-        emloading
-      </message>
-      <message name="IDS_TRACE_UPLOAD_URL_CHOICE_QA">
-        QA
-      </message>
-      <message name="IDS_TRACE_UPLOAD_URL_CHOICE_TESTING">
-        Testing
-      </message>
 
       <!-- Preview InfoBar -->
       <message name="IDS_PREVIEWS_INFOBAR_SAVED_DATA_TITLE" desc="The text of the infobar notifying the user that mobile data usage was reduced by showing a preview version of the web page instead of the full page.">
@@ -4350,76 +4280,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         You have no recently captured WebRTC logs.
       </message>
 
-      <!-- Search -->
-      <message name="IDS_SEARCH_PREF_EXPLANATION" desc="Description of the search engine preference">
-        Set which search engine is used when searching from the
-        <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>omnibox<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-      </message>
-      <if expr="is_win">
-        <!-- Conflicts page -->
-        <message name="IDS_CONFLICTS_CHECK_PAGE_TABLE_TITLE_SUFFIX_ONE" desc="What gets appended after the page title if no conflicts were found.">
-          Modules (<ph name="TOTAL_COUNT">$1<ex>50</ex></ph>) - No conflicts detected
-        </message>
-        <message name="IDS_CONFLICTS_CHECK_PAGE_TABLE_TITLE_SUFFIX_TWO" desc="What gets appended after the page title (number of conflicts found).">
-          Modules (<ph name="TOTAL_COUNT">$1<ex>50</ex></ph>) - Known conflicts: <ph name="BAD_COUNT">$2<ex>3</ex></ph>, suspected: <ph name="SUSPICIOUS_COUNT">$3<ex>2</ex></ph>
-        </message>
-        <message name="IDS_CONFLICTS_EXPLANATION_TEXT" desc="The text blurb explaining what the compatibility page is.">
-          This page lists all modules loaded into the main process and modules registered to load at a later point.
-        </message>
-        <message name="IDS_CONFLICTS_CHECK_INVESTIGATING" desc="A label on the compatibility page saying we are investigating.">
-          We are currently investigating this issue.
-        </message>
-        <message name="IDS_CONFLICTS_CHECK_POSSIBLE_ACTIONS" desc="A label on the compatibility page describing possible resolutions.">
-          If you are experiencing frequent problems, you could try the following to resolve the issue with this module:
-        </message>
-        <message name="IDS_CONFLICTS_CHECK_POSSIBLE_ACTION_UNINSTALL" desc="An uninstall label. 'It' refers to 'a module'.">
-          Uninstalling
-        </message>
-        <message name="IDS_CONFLICTS_CHECK_POSSIBLE_ACTION_UPDATE" desc="An update label. 'It' refers to 'a module'.">
-          Updating
-        </message>
-        <message name="IDS_CONFLICTS_CHECK_POSSIBLE_ACTION_DISABLE" desc="A disable label. 'It' refers to 'a module'.">
-          Disabling
-        </message>
-        <message name="IDS_CONFLICTS_CHECK_POSSIBLE_ACTION_SEPARATOR" desc="The separator separating the words 'Uninstalling it', 'Updating it' and 'Disabling it'">
-          /
-        </message>
-        <message name="IDS_CONFLICTS_NO_MODULES_LOADED" desc="Error message for when no modules were found in the process">
-          Unable to detect any modules loaded.
-        </message>
-        <message name="IDS_CONFLICTS_HEADER_SOFTWARE" desc="The 'Software' header for each module item in the list">
-          Software
-        </message>
-        <message name="IDS_CONFLICTS_HEADER_SIGNED_BY" desc="The 'Signed by' header for each module item in the list">
-          Signed by
-        </message>
-        <message name="IDS_CONFLICTS_HEADER_LOCATION" desc="The 'Location' header for each module item in the list" meaning="File location">
-          Location
-        </message>
-        <message name="IDS_CONFLICTS_HEADER_VERSION" desc="The 'Version' header for each module item in the list">
-          Version
-        </message>
-        <message name="IDS_CONFLICTS_HEADER_HELP_TIP" desc="The 'Help tip:' header for each module item in the list">
-          Help tip
-        </message>
-        <message name="IDS_CONFLICTS_LOADING_MESSAGE" desc="Shown while loading until full list of modules is retrieved">
-          Loading...
-        </message>
-        <message name="IDS_CONFLICTS_NOT_LOADED_YET" desc="Shown next to a module that has not been loaded into memory yet">
-          Not loaded yet
-        </message>
-        <if expr="use_titlecase">
-        <message name="IDS_CONFLICTS_LEARN_MORE" desc="The Learn More button in the conflicting module bubble">
-            Learn More
-        </message>
-        </if>
-        <if expr="not use_titlecase">
-        <message name="IDS_CONFLICTS_LEARN_MORE" desc="The Learn More button in the conflicting module bubble">
-            Learn more
-        </message>
-        </if>
-      </if> <!-- is_win -->
-
       <!-- Plugin placeholders -->
       <message name="IDS_PLUGIN_HIDE" desc="The tooltip for hiding a blocked plugin, displayed in the click to play UI.">
         Hide this plugin
@@ -4463,9 +4323,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PLUGIN_DOWNLOAD_ERROR_SHORT" desc="The placeholder text when there was an error download a missing plugin.">
         <ph name="PLUGIN_NAME">$1<ex>Realplayer</ex></ph> download failed
       </message>
-      <message name="IDS_PLUGIN_DOWNLOAD_CANCELLED" desc="The placeholder text when the user canceled downloading the plugin.">
-        Canceled
-      </message>
       <message name="IDS_PLUGIN_UPDATING" desc="The placeholder text when updating an out-of-date plugin.">
         When <ph name="PLUGIN_NAME">$1<ex>Realplayer</ex></ph> finishes updating, reload the page to activate it
       </message>
@@ -4495,49 +4352,41 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Pepper Broker Infobar -->
-      <if expr="is_android">
-        <message name="IDS_PEPPER_BROKER_MESSAGE" desc="Mobile: Message shown when a pepper plugin wants to launch its broker. This message is followed by a 'Learn more' link.">
-          <ph name="PEPPER_PLUGIN_NAME">$1<ex>Flash</ex></ph> on <ph name="PEPPER_PLUGIN_DOMAIN">$2<ex>example.com</ex></ph> wants to access your device
-        </message>
-      </if>
-      <if expr="not is_android">
+      <if expr="enable_plugins">
         <message name="IDS_PEPPER_BROKER_MESSAGE" desc="Message shown when a pepper plugin wants to launch its broker. This message is followed by a 'Learn more' link.">
           <ph name="PEPPER_PLUGIN_NAME">$1<ex>Flash</ex></ph> on <ph name="PEPPER_PLUGIN_DOMAIN">$2<ex>example.com</ex></ph> wants to access your computer
         </message>
+        <message name="IDS_PEPPER_BROKER_ALLOW_BUTTON" desc="Text for the allow button on the pepper broker launch prompt">
+          Allow
+        </message>
+        <message name="IDS_PEPPER_BROKER_DENY_BUTTON" desc="Text for the deny button on the pepper broker launch prompt">
+          Deny
+        </message>
+        <message name="IDS_BLOCKED_PPAPI_BROKER_TITLE" desc="Title for the page action when Pepper sandbox access was blocked.">
+          Unsandboxed plugin blocked
+        </message>
+        <message name="IDS_ALLOWED_PPAPI_BROKER_TITLE" desc="Title for the page action when Pepper sandbox access was allowed.">
+          Unsandboxed plugin allowed
+        </message>
+        <message name="IDS_BLOCKED_PPAPI_BROKER_MESSAGE" desc="Message for the page action when Pepper broker access was blocked">
+          An unsandboxed plugin was prevented from running on this page.
+        </message>
+        <message name="IDS_ALLOWED_PPAPI_BROKER_MESSAGE" desc="Message for the page action when Pepper broker access was allowed">
+          An unsandboxed plugin was allowed to run on this page.
+        </message>
+        <message name="IDS_BLOCKED_PPAPI_BROKER_UNBLOCK" desc="Radio button to unblock the Pepper broker">
+          Always allow unsandboxed plugins on <ph name="HOST">$1<ex>example.com</ex></ph>
+        </message>
+        <message name="IDS_BLOCKED_PPAPI_BROKER_NO_ACTION" desc="Radio button to keep blocking the Pepper broker">
+          Continue blocking unsandboxed plugins
+        </message>
+        <message name="IDS_ALLOWED_PPAPI_BROKER_NO_ACTION" desc="Radio button to keep allowing the Pepper broker">
+          Continue allowing unsandboxed plugins
+        </message>
+        <message name="IDS_ALLOWED_PPAPI_BROKER_BLOCK" desc="Radio button to block the Pepper broker">
+          Always block unsandboxed plugins on <ph name="HOST">$1<ex>example.com</ex></ph>
+        </message>
       </if>
-      <message name="IDS_PEPPER_BROKER_ALLOW_BUTTON" desc="Text for the allow button on the pepper broker launch prompt">
-        Allow
-      </message>
-      <message name="IDS_PEPPER_BROKER_DENY_BUTTON" desc="Text for the deny button on the pepper broker launch prompt">
-        Deny
-      </message>
-      <message name="IDS_BLOCKED_PPAPI_BROKER_TITLE" desc="Title for the page action when Pepper sandbox access was blocked.">
-        Unsandboxed plugin blocked
-      </message>
-      <message name="IDS_ALLOWED_PPAPI_BROKER_TITLE" desc="Title for the page action when Pepper sandbox access was allowed.">
-        Unsandboxed plugin allowed
-      </message>
-      <message name="IDS_BLOCKED_PPAPI_BROKER_MESSAGE" desc="Message for the page action when Pepper broker access was blocked">
-        An unsandboxed plugin was prevented from running on this page.
-      </message>
-      <message name="IDS_ALLOWED_PPAPI_BROKER_MESSAGE" desc="Message for the page action when Pepper broker access was allowed">
-        An unsandboxed plugin was allowed to run on this page.
-      </message>
-      <message name="IDS_BLOCKED_PPAPI_BROKER_UNBLOCK" desc="Radio button to unblock the Pepper broker">
-        Always allow unsandboxed plugins on <ph name="HOST">$1<ex>example.com</ex></ph>
-      </message>
-      <message name="IDS_BLOCKED_PPAPI_BROKER_NO_ACTION" desc="Radio button to keep blocking the Pepper broker">
-        Continue blocking unsandboxed plugins
-      </message>
-      <message name="IDS_ALLOWED_PPAPI_BROKER_NO_ACTION" desc="Radio button to keep allowing the Pepper broker">
-        Continue allowing unsandboxed plugins
-      </message>
-      <message name="IDS_ALLOWED_PPAPI_BROKER_BLOCK" desc="Radio button to block the Pepper broker">
-        Always block unsandboxed plugins on <ph name="HOST">$1<ex>example.com</ex></ph>
-      </message>
-      <message name="IDS_PPAPI_BROKER_BUBBLE_MANAGE_LINK" desc="Link title to manage Pepper broker settings">
-        Manage unsandboxed plugin blocking...
-      </message>
 
       <!-- Blocked Displaying/Running Insecure Content bubble -->
       <message name="IDS_BLOCKED_DISPLAYING_INSECURE_CONTENT_TITLE" desc="Title of the bubble shown when a message has asked Brave to display mixed content.">
@@ -4626,6 +4475,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- Omnibox -->
+      <message name="IDS_OMNIBOX_PLACEHOLDER_TEXT" desc="The text displayed in the Omnibox when it is empty and unfocused.">
+        Search <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph> or type a URL
+      </message>
       <if expr="not use_titlecase">
         <message name="IDS_PASTE_AND_GO" desc="The text label of the Paste And Go menu item when the clipboard contains a URL">
           Pa&amp;ste and go
@@ -4665,9 +4517,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_CLICK_TO_VIEW_DOODLE" desc="Prompts users to click on an icon to view a Brave doodle. Normally, today's Brave doodle is shown when the user opens a new tab (if there is a doodle today). If there is a doodle, but it cannot be shown, Brave puts an icon next to the regular Brave logo. The icon uses this label for accessibility. If the user clicks the icon, Brave will show the doodle.">
         Click to view today’s doodle
-      </message>
-      <message name="IDS_OMNIBOX_ACCESSIBLE_ANSWER" desc="Readable text represening a query typed by the user in the omnibox, followed by an indication that an answer to that query will follow, followed by the answer. The commas are significant as they will introduce a pause in the spoken text.">
-        <ph name="QUERY">$1<ex>weather in los angeles</ex></ph>, answer, <ph name="ANSWER">$2<ex>sunny and 84 degrees</ex></ph>
       </message>
       <message name="IDS_OMNIBOX_CLEAR_ALL" desc="Accessibility text for the button that deletes all text input from the omnibox on touch devices.">
         Clear input
@@ -4733,8 +4582,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOM_BG_GOOGLE_PHOTOS" desc="The text label of the Brave Photos option for background customization. (On the New Tab Page)">
         Brave Photos
       </message>
-      <message name="IDS_NTP_CUSTOM_BG_CHROME_WALLPAPERS" desc="The text label of the Brave wallpapers option for background customization.(On the New Tab Page)">
-        Brave wallpapers
+      <message name="IDS_NTP_CUSTOM_BG_CHROME_WALLPAPERS" desc="The text label of the Brave backgrounds option for background customization.(On the New Tab Page)">
+        Brave backgrounds
       </message>
       <message name="IDS_NTP_CUSTOM_BG_UPLOAD_AN_IMAGE" desc="The text label of the upload an image option for background customization. (On the New Tab Page)">
         Upload an image
@@ -4746,13 +4595,34 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Select a Brave Photo Album
       </message>
       <message name="IDS_NTP_CUSTOM_BG_DAILY_REFRESH" desc="The text label for the daily background randomization option.  (On the New Tab Page)">
-        Daily refresh
+        Refresh daily
       </message>
       <message name="IDS_NTP_CUSTOM_BG_SURPRISE_ME" desc="The text label for the random background option. (On the New Tab Page)">
         Surprise me
       </message>
       <message name="IDS_NTP_CUSTOM_BG_RESTORE_DEFAULT" desc="The text label for the restore default option for background customization. (On the New Tab Page)">
         Restore default background
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_CANCEL" desc="The text label for the cancel option for background customization. (On the New Tab Page)">
+        Cancel
+      </message>
+      <message name="IDS_NTP_CONNECTION_ERROR_NO_PERIOD" desc="Error message for when a connection cannot be established. (On the New Tab Page)">
+        Connection error
+      </message>
+      <message name="IDS_NTP_CONNECTION_ERROR" desc="Error message for when a connection cannot be established. (On the New Tab Page)">
+        Connection error.
+      </message>
+      <message name="IDS_NTP_ERROR_MORE_INFO" desc="Link to more detailed information when a connection cannot be established. (On the New Tab Page)">
+        More info
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_BACKGROUNDS_UNAVAILABLE" desc="Error message for when background customization is not available. (On the New Tab Page)">
+        Backgrounds are unavailable. Try again later.
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_IMAGE_UNAVAILABLE" desc="Error message for when the selected background image is not available. (On the New Tab Page)">
+        Image is unavailable. Try again later.
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_IMAGE_NOT_USABLE" desc="Error message for when an uploaded image is not usuable as a custom background. (On the New Tab Page)">
+        This image can't be used. Choose a different image.
       </message>
 
       <!--Tooltip strings-->
@@ -4811,6 +4681,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Save Card
         </message>
        </if>
+      <message name="IDS_TOOLTIP_MIGRATE_LOCAL_CARD" desc="The tooltip for the icon that shows the local card migration bubble">
+        Have your cards in one place
+      </message>
       <message name="IDS_TOOLTIP_TRANSLATE" desc="The tooltip for translate">
         Translate this page
       </message>
@@ -4964,6 +4837,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Open a new tab to browse two sites at once
       </message>
 
+      <!-- NUX Experiment strings -->
+      <if expr="is_win">
+        <!-- Note: Each experiment should add their own message instead of using this default -->
+        <message name="IDS_BOOKMARK_BAR_PROMO_DEFAULT" desc="Default text shown when promoting a bookmark in the bookmark bar.">
+          A bookmark has been added for you
+        </message>
+      </if>
+
       <!-- Browser Hung Plugin Detector -->
       <if expr="is_win">
         <message name="IDS_BROWSER_HANGMONITOR" desc="A plugin on a page has hung">
@@ -5015,10 +4896,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Stop plugin
       </message>
 
-      <!-- Passwords and Exceptions Dialog -->
-      <message name="IDS_PASSWORDS_EXCEPTIONS_WINDOW_TITLE" desc="Title for 'Passwords and exceptions dialog'">
-        Passwords
+      <message name="IDS_BROWSER_BLOATED_RENDERER_INFOBAR" desc="The text of the infobar notifying the user that the page ran out of memory">
+        The web page was reloaded because it ran out of memory.
       </message>
+
+      <!-- Passwords and Exceptions Dialog -->
       <message name="IDS_PASSWORDS_AUTO_SIGNIN_TITLE" desc="Title for 'Auto sign-in' checkbox in the password dialog">
         Auto sign-in
       </message>
@@ -5028,23 +4910,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PASSWORDS_VIA_FEDERATION" desc="Text for federated credential's value.">
         with <ph name="PROVIDER">$1<ex>facebook.com</ex></ph>
       </message>
-      <message name="IDS_PASSWORDS_PAGE_SEARCH_PASSWORDS" desc="Placeholder text shown in password table search box">
-        Search passwords
-      </message>
-      <message name="IDS_PASSWORDS_PAGE_VIEW_SHOW_BUTTON" desc="Text for passwords page view's button to show a stored password">
-        Show
-      </message>
       <message name="IDS_PASSWORDS_PAGE_VIEW_HIDE_BUTTON" desc="Text for passwords page view's button to hide a stored password">
         Hide
-      </message>
-      <message name="IDS_PASSWORDS_PAGE_VIEW_NO_PASSWORDS_DESCRIPTION" desc="Text for passwords page view when there are no passwords to show.">
-        Your saved passwords will appear here.
-      </message>
-      <message name="IDS_PASSWORDS_PAGE_VIEW_NO_EXCEPTIONS_DESCRIPTION" desc="Text for passwords page view when there are no password exceptions to show.">
-        Sites which never save passwords will appear here.
-      </message>
-      <message name="IDS_PASSWORDS_ANDROID_URI_SUFFIX" desc="Text that is appended to Android credential's origin on passwords page. The triple single quotes are needed to preserve the space before the sentence which is needed when the language (Brave is being translated to) uses space as word separator. Please preserve it, unless the language being translated to does not use space as word separator.">
-        ''' (Android)'''
       </message>
 
       <!-- Confirm MessageBox Dialog -->
@@ -5060,9 +4927,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Nope
       </message>
       <if expr="not is_android">
-        <message name="IDS_PASSWORD_MANAGER_EDIT_BUTTON" desc="Edit button text for password manager">
-          Edit
-        </message>
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Save button text for password manager">
           Save
         </message>
@@ -5114,6 +4978,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="Label for the 'update' button in the Update Password infobar. This infobar asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update.">
           Update
         </message>
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_PASSWORD_DESCRIPTION" desc="Description for a field containing a password that belongs to a user.">
+          Password for <ph name="username">$1<ex>Alexander</ex></ph>
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_PASSWORD_LIST_EMPTY_MESSAGE" desc="Message indicating that the list of saved passwords for this site is empty.">
+          No saved passwords for <ph name="domain">$1<ex>example.com</ex></ph>
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_PASSWORD_LIST_TITLE" desc="The title of a list of saved passwords for the currently visible site.">
+          Saved passwords for <ph name="domain">$1<ex>example.com</ex></ph>
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_ALL_PASSWORDS_LINK" desc="The text of the link in the password sheet that opens the password management section.">
+          Manage passwords...
+        </message>
       </if>
 
       <!-- Android uses custom UI for Bookmark importing -->
@@ -5155,10 +5031,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <if expr="is_macosx">
         <!-- Confirm to quit panel -->
         <message name="IDS_CONFIRM_TO_QUIT_DESCRIPTION" desc="Instructions for how the user should confirm quitting.">
-          Hold <ph name="KEY_EQUIVALENT">$1<ex>⌘Q</ex></ph> to Quit.
+          Hold <ph name="KEY_EQUIVALENT">$1<ex>⌘Q</ex></ph> to Quit
         </message>
         <message name="IDS_CONFIRM_TO_QUIT_OPTION" desc="The label of the checkbox preference that enables the confirm-to-quit feature.">
           Warn Before Quitting (<ph name="KEY_EQUIVALENT">$1<ex>⌘Q</ex></ph>)
+        </message>
+      </if>
+
+      <if expr="is_win or (is_linux and not chromeos)">
+        <!-- Confirm to quit panel -->
+        <message name="IDS_CONFIRM_TO_QUIT_DESCRIPTION" desc="Instructions for how the user should confirm quitting.">
+          Hold |<ph name="ACCELERATOR1">$1<ex>Ctrl</ex></ph>|+|<ph name="ACCELERATOR2">$2<ex>Shift</ex></ph>|+|<ph name="ACCELERATOR3">$3<ex>Q</ex></ph>| to exit
+        </message>
+        <message name="IDS_CONFIRM_TO_QUIT_OPTION" desc="The label of the checkbox preference that enables the confirm-to-quit feature.">
+          Warn before exiting (<ph name="KEY_EQUIVALENT">$1<ex>Ctrl+Shift+Q</ex></ph>)
         </message>
       </if>
 
@@ -5250,16 +5136,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_FEEDBACK_ATTACH_FILE_TO_BIG" desc="Text to display if the file being attached is too big">
           Selected file is too big (max size: 3mb).
         </message>
-        <message name="IDS_FEEDBACK_PRIVACY_NOTE" desc="Text for the privacy note included with Brave OS">
-          Your Brave and operating system version will be submitted in addition
-          to any information you choose to include above. If you include your email
-          address, Brave may contact you regarding your feedback report. This feedback
-          is used to diagnose problems and help improve Brave. Any personal information
-          you submit, whether explicitly or incidentally will be protected in
-          accordance with our privacy policies.<ph name="BEGIN_BOLD">&lt;strong&gt;
-          </ph> By submitting this feedback, you agree that Brave may use feedback
-          that you provide to improve any Brave product or service.
-          <ph name="END_BOLD">&lt;/strong&gt;</ph>
+        <message name="IDS_FEEDBACK_IWLWIFI_DEBUG_DUMP_EXPLAINER" desc="Displayed in the system information dialog instead of the actual contents of Intel WiFi debug logs, which are too large to display and too obscure and proprietary for users to understand.">
+          &lt;Four files generated by Intel Wi-Fi firmware: csr.lst, fh_regs.lst, radio_reg.lst, monitor.lst.sysmon.  The first three are binary files containing register dumps, and are asserted by Intel to contain no personal or device-identifying information.  The last file is an execution trace from the Intel firmware; it has been scrubbed of any personal or device-identifying information, but is too large to display here.  These files were generated in response to recent Wi-Fi problems with your device, and will be shared with Intel to help troubleshoot these problems.&gt;
+        </message>
+        <message name="IDS_FEEDBACK_PRIVACY_NOTE" desc="Text for the privacy note included in the feedback app">
+          Go to the <ph name="BEGIN_LINK1">&lt;a href="#" id="legal-help-page-url"&gt;</ph>Legal Help page<ph name="END_LINK1">&lt;/a&gt;</ph> to request content changes for legal reasons.  Some account and system information may be sent to Brave.  We will use the information you give us to help address technical issues and to improve our services, subject to our <ph name="BEGIN_LINK2">&lt;a href="#" id="privacy-policy-url"&gt;</ph>Privacy Policy<ph name="END_LINK2">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK3">&lt;a href="#" id="terms-of-service-url"&gt;</ph>Terms of Service<ph name="END_LINK3">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_FEEDBACK_NO_DESCRIPTION" desc="Message shown when no text is entered before hitting send feedback">
           Please tell us what is happening before sending the feedback.
@@ -5296,9 +5177,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_FLASH_PERMISSION_FRAGMENT" desc="Permission asked in the permission bubble when a URL wants to use Flash Plugins on the page. Preceded by the prompt 'This site would like to:'. 'Flash' is the name of a plugin and should not be translated.">
         Run Flash
       </message>
-      <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_FOOTER" desc="A text shown at the bottom of the Clear Browsing Data dialog, informing the user that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity.">
-        Your Brave Account may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>history.google.com<ph name="END_LINK">&lt;/a&gt;</ph>
-      </message>
       <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_NOTICE" desc="A dialog informing the user that their Brave browsing history was deleted, but other forms of history can still be found on Brave My Activity.">
         The selected data has been removed from Brave and synced devices. Your Brave Account may have other forms of browsing history like searches and activity from other Brave services at <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
@@ -5309,43 +5187,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Ok, got it
       </message>
 
-      <!-- Supervised User (Legacy and Accounts for Kids) Avatar Menu -->
-      <message name="IDS_LEGACY_SUPERVISED_USER_INFO" desc="Text which explains that a supervised user is managed by a custodian.">
-        Usage and history can be reviewed by the manager (<ph name="CUSTODIAN_EMAIL">$1<ex>Jane.Doe@gmail.com</ex></ph>) on chrome.com.
-      </message>
-      <message name="IDS_CHILD_INFO_ONE_CUSTODIAN" desc="Text which explains that a child user is managed by a single parent.">
-        This is an account for kids managed by <ph name="CUSTODIAN_EMAIL">$1<ex>Jane.Doe@gmail.com</ex></ph>.
-      </message>
-      <message name="IDS_CHILD_INFO_TWO_CUSTODIANS" desc="Text which explains that a child user is managed by two parents.">
-        This is an account for kids managed by <ph name="CUSTODIAN_EMAIL">$1<ex>John.Doe@gmail.com</ex></ph> and <ph name="SECOND_CUSTODIAN_EMAIL">$2<ex>Jane.Doe@gmail.com</ex></ph>.
-      </message>
-      <message name="IDS_LEGACY_SUPERVISED_USER_AVATAR_LABEL" desc="A label for the supervised user which is used in the avatar menu and as a label in the titlebar.">
-        Supervised user
-      </message>
-      <message name="IDS_GENERIC_USER_AVATAR_LABEL" desc="Label shown for the user that is currently active, when there are multiple user accounts.">
-        Current user
-      </message>
-      <message name="IDS_INCOGNITO_AVATAR_BUTTON_TOOLTIP" desc="Tooltip for the inactive avatar button when the user is in incognito mode.">
-        You're incognito
-      </message>
-      <message name="IDS_LEGACY_SUPERVISED_USER_NEW_AVATAR_LABEL" desc="Label shown in the new avatar menu for a supervised user.">
-        <ph name="PROFILE_DISPLAY_NAME">$1<ex>Markus</ex></ph> (Supervised)
-      </message>
-      <message name="IDS_CHILD_AVATAR_LABEL" desc="Label shown in the new avatar menu for a child user.">
-        <ph name="PROFILE_DISPLAY_NAME">$1<ex>Markus</ex></ph> (Account for kids)
-      </message>
-
-      <!-- Supervised User Block Interstitial data -->
-
-       <message name="IDS_BLOCK_INTERSTITIAL_DEFAULT_FEEDBACK_TEXT" desc="The default text for feedback about a blocked site.">
-        <ph name="REASON">$1<ex>It may have mature content.</ex></ph>
-I don't think this site should be blocked!
-      </message>
-
       <!-- Content Settings dialog data -->
-      <message name="IDS_COOKIES_BLOCK_3RDPARTY_CHKBOX" desc="A checkbox in the Content Settings dialog for blocking all 3rd party cookies.">
-        Block third-party cookies and site data
-      </message>
       <message name="IDS_MEDIA_SELECTED_MIC_LABEL" desc="The label of the 'microphone device' select menu">
         Microphone:
       </message>
@@ -5363,63 +5205,12 @@ I don't think this site should be blocked!
           {NUM_POPUPS,plural,=1{Pop-up blocked} other{# pop-ups blocked}}
         </message>
       </if>
-      <message name="IDS_PDF_TAB_LABEL" desc="Label for the pdf plugin tab on Content Settings dialog">
-        PDF Documents
-      </message>
-      <message name="IDS_PDF_ENABLE_CHECKBOX" desc="A checkbox in the Content Settings dialog for forcing an external PDF viewer app in place of the internal PDF plugin.">
-        Open PDF files in the default PDF viewer application.
-      </message>
-    <message name="IDS_HANDLERS_BUBBLE_MANAGE_LINK" desc="Link on the register protocol handler bubble that opens up the Content Settings management dialog.">
-      Manage handler settings...
-    </message>
-      <message name="IDS_PROTECTED_CONTENT_TAB_LABEL" desc="Label for the Protected Content tab on the Content Settings dialog.">
-        Protected content
-      </message>
-      <message name="IDS_PROTECTED_CONTENT_ENABLE_CHECKBOX" desc="The label of the checkbox for enabling protected content.">
-        Allow sites to play protected content (recommended)
-      </message>
-      <if expr="chromeos or is_win">
-        <message name="IDS_PROTECTED_CONTENT_INFO" desc="Text that is displayed on the Protected Content tab of the Content Settings dialog. This text explains that enabling protected content may require using a uniquely identifiable machine identifier.">
-          Some content services use machine identifiers to uniquely identify you for the purposes of authorizing access to protected content.
-        </message>
-        <message name="IDS_PROTECTED_CONTENT_ENABLE_IDENTIFIERS_CHECKBOX" desc="The label of the checkbox for enabling machine identifiers to uniquely identiy the user for protected content.">
-          Allow identifiers for protected content (computer restart may be required)
-        </message>
-        <message name="IDS_PROTECTED_CONTENT_HEADER" desc="Text label for the managing exceptions of Protected Content.">
-          Protected content exceptions
-        </message>
-      </if>
-      <message name="IDS_PPAPI_BROKER_TAB_LABEL" desc="Label for PPAPI broker tab on Content Settings dialog">
-        Unsandboxed plugin access
-      </message>
-      <message name="IDS_PPAPI_BROKER_HEADER" desc="Label for PPAPI broker tab exception management page on Content Settings dialog">
-        Unsandboxed plugin access exceptions
-      </message>
-      <message name="IDS_PPAPI_BROKER_ALLOW_RADIO" desc="A radio button in Content Settings dialog to allow all sites to access the PPAPI broker.">
-        Allow all sites to use a plugin to access your computer
-      </message>
-      <message name="IDS_PPAPI_BROKER_BLOCK_RADIO" desc="A radio button in Content Settings dialog to deny all sites to access the PPAPI broker.">
-        Do not allow any sites to use a plugin to access your computer
-      </message>
-      <message name="IDS_PPAPI_BROKER_ASK_RADIO" desc="A radio button in Content Settings dialog to allow site to query the permision to access the PPAPI broker.">
-        Ask when a site wants to use a plugin to access your computer (recommended)
+      <message name="IDS_HANDLERS_BUBBLE_MANAGE_LINK" desc="Link on the register protocol handler bubble that opens up the Content Settings management dialog.">
+        Manage handler settings...
       </message>
 
-      <message name="IDS_USB_DEVICES_HEADER_AND_TAB_LABEL" desc="Label for USB devices tab and a header on the Content Settings dialog (a page may be granted permission to connect to individual USB devices).">
-        USB Devices
-      </message>
-      <message name="IDS_USB_DEVICES_MANAGE_BUTTON" desc="Button on the Content Settings dialog that opens a dialog to manage USB devices pages have permission to connect to.">
-        Manage...
-      </message>
-
-      <message name="IDS_ZOOMLEVELS_HEADER_AND_TAB_LABEL" desc="Label for Zoom Level tab and a header the on Content Settings dialog (zoom levels indicate that a page should be shown for example at 110% magnification).">
-        Zoom Levels
-      </message>
       <message name="IDS_ZOOMLEVELS_CHROME_ERROR_PAGES_LABEL" desc="Label for zoom level list entry for Brave error pages.">
         (Brave error pages)
-      </message>
-      <message name="IDS_ZOOMLEVELS_MANAGE_BUTTON" desc="Button on the Content Settings dialog that opens a dialog to manage your page zoom levels (zoom levels indicate that a page should be shown for example at 110% magnification).">
-        Manage...
       </message>
 
       <!-- Automatic updates -->
@@ -5445,14 +5236,6 @@ I don't think this site should be blocked!
       </if>
 
       <!-- About Brave View -->
-      <if expr="is_macosx">
-        <message name="IDS_ABOUT_CHROME_PROMOTE_UPDATER" desc="The 'Set Up Automatic Updates for All Users' button in the About window.  Mac-only.">
-          Set Up Automatic Updates for All Users
-        </message>
-      </if>
-      <message name="IDS_UPGRADE_CHECK_STARTED" desc="Status label: About to start checking for updates">
-        Checking for updates...
-      </message>
       <if expr="is_win or is_macosx">
         <message name="IDS_UPGRADE_ERROR" desc="Status label: Error occurred during upgrade">
           Update failed (error: <ph name="ERROR_NUMBER">$1<ex>1</ex></ph>)
@@ -5530,9 +5313,16 @@ I don't think this site should be blocked!
       </message>
 
       <!-- Picture-in-Picture -->
-      <message name="IDS_PICTURE_IN_PICTURE_TITLE_TEXT" desc="Title of the Picture-in-Picture window. This appears in the system tray and window header.">
-        Picture-in-Picture
-      </message>
+      <if expr="is_macosx">
+        <message name="IDS_PICTURE_IN_PICTURE_TITLE_TEXT" desc="Title of the Picture-in-Picture window. This appears in the system tray and window header.">
+          Picture in Picture
+        </message>
+      </if>
+      <if expr="not is_macosx">
+        <message name="IDS_PICTURE_IN_PICTURE_TITLE_TEXT" desc="Title of the Picture-in-Picture window. This appears in the system tray and window header.">
+          Picture in picture
+        </message>
+      </if>
       <message name="IDS_PICTURE_IN_PICTURE_PAUSE_CONTROL_TEXT" desc="Text label of the pause control button. The button appears when the user hovers over the Picture-in-Picture window and the video is currently playing.">
         Pause
       </message>
@@ -5544,6 +5334,24 @@ I don't think this site should be blocked!
       </message>
       <message name="IDS_PICTURE_IN_PICTURE_PLAY_PAUSE_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button toggles between play and pause controls.">
         Toggle video to play or pause
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_CLOSE_TITLE" desc="Text label of the title for the confirmation dialog. This dialog appears when the user tries to close a tab / window while in Picture-in-Picture mode.">
+        Are you sure you want to close this tab?
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_LEAVE_TITLE" desc="Text label of the description for the confirmation dialog. This dialog appears when the user tries to leave a page while in Picture-in-Picture mode.">
+        Are you sure you want to leave this page?
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_DESCRIPTION" desc="Text label of the description for the confirmation dialog. This dialog appears when the user tries to close a tab / window or leave a page while in Picture-in-Picture mode.">
+        The video in picture-in-picture mode will stop playing.
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_CLOSE_TEXT" desc="Text label of the close button. The button appears in the confirmation dialog when the user tries to close a tab or window while in Picture-in-Picture mode.">
+        Close
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_CONFIRM_LEAVE_TEXT" desc="Text label of the leave button. The button appears in the confirmation dialog when the user tries to leave a page while in Picture-in-Picture mode.">
+        Leave
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_CANCEL_TEXT" desc="Text label of the cancel button. The button appears in the confirmation dialog when the user tries to close a tab / window or leave a page while in Picture-in-Picture mode.">
+        Cancel
       </message>
 
       <!-- Load State -->
@@ -5880,15 +5688,6 @@ I don't think this site should be blocked!
 
       <!-- chrome://help -->
       <if expr="not is_android">
-        <if expr="chromeos">
-          <message name="IDS_SHOW_MORE_INFO" desc="The label of the 'More info' link.">
-            More info...
-          </message>
-          <message name="IDS_HIDE_MORE_INFO" desc="The label of the 'Hide info' link.">
-            Hide info...
-          </message>
-        </if>
-
         <if expr="not chromeos and use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="Titlecase: The label for the relaunch button that relaunches the browser once update is complete">
             Relaunch
@@ -5903,16 +5702,10 @@ I don't think this site should be blocked!
           <message name="IDS_RELAUNCH_BUTTON" desc="Titlecase: The label for the relaunch button that relaunches the browser once update is complete">
             Restart
           </message>
-          <message name="IDS_RELAUNCH_AND_POWERWASH_BUTTON" desc="Titlecase: The label for the  button that relaunches and powerwashes the browser once update is complete">
-            Relaunch and Powerwash
-          </message>
         </if>
         <if expr="chromeos and not use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="The label for the relaunch button that relaunches the browser once update is complete">
             Restart
-          </message>
-          <message name="IDS_RELAUNCH_AND_POWERWASH_BUTTON" desc="Titlecase: The label for the  button that relaunches and powerwashes the browser once update is complete">
-            Relaunch and Powerwash
           </message>
         </if>
       </if> <!-- not is_android -->
@@ -5937,9 +5730,6 @@ I don't think this site should be blocked!
         <message name="IDS_AUTOFILL_POPUP_ACCESSIBLE_NODE_DATA" desc="The accessibility text to speak when we display an autofill popup.">
           Autofill
         </message>
-        <message name="IDS_AUTOFILL_ADD_CONTACT_CAPTION" desc="The caption on the edit Autofill contact dialog for the new entry.">
-          Add a contact
-        </message>
 
         <message name="IDS_AUTOFILL_FIELD_LABEL_PHONE" desc="The label of the Phone entry.">
           Phone
@@ -5961,9 +5751,6 @@ I don't think this site should be blocked!
         </message>
         <message name="IDS_AUTOFILL_FIELD_LABEL_BILLING_ADDRESS" desc="The label of the Billing Address chooser.">
           Billing address
-        </message>
-        <message name="IDS_AUTOFILL_BUTTON_LABEL_ADD_BILLING_ADDRESS" desc="The label of the button to add a new billing address.">
-          Add billing address
         </message>
 
         <!-- Extension settings -->
@@ -6034,20 +5821,8 @@ I don't think this site should be blocked!
         </message>
 
         <!-- Reset Profile Settings strings -->
-        <message name="IDS_RESET_PROFILE_SETTINGS_SECTION_TITLE" desc="The title of the section in chrome://settings that allows resetting some settings in a profile">
-          Reset settings
-        </message>
-        <message name="IDS_RESET_PROFILE_SETTINGS_DESCRIPTION" desc="A label describing the purpose of the 'reset profile settings' feature">
-          Restore settings to their original defaults.
-        </message>
         <message name="IDS_RESET_PROFILE_SETTINGS_EXPLANATION" desc="A label describing the consequences of the 'reset profile settings' feature">
           This will reset your startup page, new tab page, search engine, and pinned tabs. It will also disable all extensions and clear temporary data like cookies. Your bookmarks, history and saved passwords will not be cleared.
-        </message>
-        <message name="IDS_RESET_PROFILE_SETTINGS_BUTTON" desc="The text on the button in chrome://settings that allows resetting some settings in a profile">
-          Reset settings
-        </message>
-        <message name="IDS_RESET_PROFILE_SETTINGS_TITLE" desc="Dialog title">
-          Reset settings
         </message>
         <message name="IDS_TRIGGERED_RESET_PROFILE_SETTINGS_TITLE" desc="Dialog title for reset dialog triggered by a third party tool">
           <ph name="THIRD_PARTY_TOOL_NAME">$1<ex>SuperDuper PC Cleaner Pro</ex></ph> wants to reset your settings.
@@ -6057,9 +5832,6 @@ I don't think this site should be blocked!
         </message>
         <message name="IDS_TRIGGERED_RESET_PROFILE_SETTINGS_DEFAULT_TOOL_NAME" desc="Default tool name when a reset was triggered but a name could not be found.">
           A cleanup tool
-        </message>
-        <message name="IDS_RESET_PROFILE_SETTINGS_COMMIT_BUTTON" desc="Reset button of the Reset Profile Settings dialog">
-          Reset
         </message>
         <message name="IDS_RESET_PROFILE_SETTINGS_LOCALE" desc="Locale field in the feedback details of the Reset Profile Settings dialog">
           Locale
@@ -6116,28 +5888,11 @@ I don't think this site should be blocked!
         Brave Pay
       </message>
 
-      <if expr="not is_linux or chromeos">
-        <message name="IDS_THEMES_GROUP_NAME" desc="The title of the themes group">
-          Themes
-        </message>
-      </if>
-      <message name="IDS_THEMES_RESET_BUTTON" desc="The button to reset your theme">
-        Reset to default theme
-      </message>
       <if expr="is_linux and not chromeos">
-        <message name="IDS_THEMES_GTK_BUTTON" desc="The button to choose GTK colors and icons as the current theme.">
-          Use GTK+ theme
-        </message>
-        <message name="IDS_THEMES_SET_CLASSIC" desc="The button to choose the classic windows theme in GTK">
-          Use Classic theme
-        </message>
         <message name="IDS_SHOW_WINDOW_DECORATIONS" desc="The label of a radio button in the options dialog for using the system title bar and borders.">
           Use system title bar and borders
         </message>
       </if>
-      <message name="IDS_THEMES_GALLERY_BUTTON" desc="The button to get more themes">
-        Get themes
-      </message>
 
       <!-- Collected cookies window -->
       <message name="IDS_COLLECTED_COOKIES_DIALOG_TITLE" desc="The title of the collect cookies dialog">
@@ -6606,393 +6361,6 @@ I don't think this site should be blocked!
         </if>
       </if>
 
-      <!-- Multi-profile -->
-      <message name="IDS_PROFILES_OPTIONS_GROUP_NAME" desc="The name of the sync group in the options dialog when using the new Profiles UI.">
-        People
-      </message>
-      <if expr="is_macosx">
-        <message name="IDS_PROFILES_BUBBLE_ACCESSIBLE_NAME" desc="Title of the avatar bubble menu for accessibility">
-          Switch Users
-        </message>
-        <message name="IDS_PROFILES_BUBBLE_ACCESSIBLE_DESCRIPTION" desc="The help text for the avatar bubble.">
-          Switch to a different user.
-        </message>
-        <message name="IDS_PROFILES_CREATE_NEW_PROFILE_OPTION" desc="In Title Case. Create new profile menu item and button title.">
-          Add Person...
-        </message>
-        <message name="IDS_PROFILES_NEW_AVATAR_BUTTON_ACCESSIBLE_NAME" desc="Title of the avatar button for accessibility">
-          <ph name="PROFILE_NAME">$1<ex>User</ex></ph> Switch person
-        </message>
-        <message name="IDS_PROFILES_ACCOUNT_BUTTON_AUTH_ERROR_ACCESSIBLE_NAME" desc="Title of the avatar button for accessibility">
-          <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: sign in error
-        </message>
-        <message name="IDS_PROFILES_NEW_AVATAR_MENU_CHANGE_PHOTO_ACCESSIBLE_NAME" desc="Title of the change photo button for accessibility">
-          Change Photo
-        </message>
-        <message name="IDS_PROFILES_NEW_AVATAR_MENU_PHOTO_ACCESSIBLE_NAME" desc="Title of the change photo button for accessibility">
-          Photo
-        </message>
-        <message name="IDS_PROFILES_NEW_AVATAR_MENU_EDIT_NAME_ACCESSIBLE_NAME" desc="Title of the edit profile name button for accessibility">
-          <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: select to edit
-        </message>
-      </if>
-      <message name="IDS_PROFILES_PROFILE_SIGNOUT_BUTTON" desc="Button in the avatar menu bubble view to sign-out the current profile.">
-        Exit and childlock
-      </message>
-      <message name="IDS_PROFILES_EXIT_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile when there is more than one profile.">
-        Exit <ph name="PROFILE_NAME">$1<ex>User</ex></ph>
-      </message>
-      <message name="IDS_PROFILES_GAIA_SIGNIN_TITLE" desc="Title of the account removal view in the avatar menu bubble.">
-        Sign in
-      </message>
-      <message name="IDS_PROFILES_GAIA_ADD_ACCOUNT_TITLE" desc="Title of the account removal view in the avatar menu bubble.">
-        Add account
-      </message>
-      <message name="IDS_PROFILES_GAIA_REAUTH_TITLE" desc="Title of the account reauthentication view in the avatar menu bubble. Also used in other places to indicate a reauthentication action.">
-        Sign in again
-      </message>
-      <message name="IDS_PROFILES_ACCOUNT_REMOVAL_TITLE" desc="Title of the account removal view in the avatar menu bubble.">
-        Remove account
-      </message>
-      <message name="IDS_PROFILES_SETTINGS_LINK" desc="The link text to the Brave settings page in the account removal view.">
-        settings
-      </message>
-      <message name="IDS_PROFILES_SYNC_COMPLETE_TITLE" desc="Title of the profile card when sync is complete.">
-        Syncing to
-      </message>
-      <message name="IDS_PROFILES_SYNC_SETTINGS_LINK" desc="The link text to the Brave sync settings page in the avatar menu tutorial card.">
-        Settings
-      </message>
-      <message name="IDS_PROFILES_DICE_SIGNIN_BUTTON" desc="Button in the profile user menu to sign in and turn on Sync.">
-        Sign in
-      </message>
-      <message name="IDS_PROFILES_DICE_SIGNIN_FIRST_ACCOUNT_BUTTON" desc="Button to sign in and turn on Sync for a specific web account.">
-        Sync as <ph name="ACCOUNT_FULL_NAME">$1<ex>John Doe</ex></ph>
-      </message>
-      <message name="IDS_PROFILES_DICE_SIGNIN_FIRST_ACCOUNT_BUTTON_NO_NAME" desc="Button to sign in and turn on Sync for a web account when the name is empty.">
-        Sync to your account
-      </message>
-      <message name="IDS_PROFILES_DICE_SIGNIN_WITH_ANOTHER_ACCOUNT_BUTTON" desc="Button to sign in and turn on Sync with another web account.">
-        Sync to another account
-      </message>
-      <message name="IDS_PROFILES_DICE_SYNC_DISABLED_TITLE" desc="Title of the profile user menu when sync is disabled.">
-        Sync disabled
-      </message>
-       <message name="IDS_PROFILES_DICE_SYNC_PAUSED_TITLE" desc="Title of the profile user menu when sync is paused.">
-        Sync is paused
-      </message>
-      <message name="IDS_PROFILES_DICE_USE_ANOTHER_ACCOUNT_BUTTON" desc="Button to use another account to sign in and turn on Sync.">
-        Use another account
-      </message>
-      <message name="IDS_PROFILES_ACCOUNT_REMOVAL_BUTTON" desc="Text of the ok button on the account removal view in the avatar menu bubble.">
-        Remove account
-      </message>
-      <message name="IDS_PROFILES_CONFIRM_SIGNIN_TUTORIAL_CONTENT_TEXT" desc="Content of the tutorial card in the avatar menu bubble view shown when a user successfully signs in to Brave.">
-        Your bookmarks, history, passwords, and other settings will be synced to your Brave Account.
-      </message>
-      <message name="IDS_PROFILES_TUTORIAL_OK_BUTTON" desc="Button in the avatar menu tutorial card for dismissing the signin confirmation bubble">
-        OK, got it
-      </message>
-      <message name="IDS_PROFILES_ERROR_TUTORIAL_TITLE" desc="Title in the tutorial card for showing signin errors">
-        Uh-oh!
-      </message>
-      <message name="IDS_PROFILES_TUTORIAL_WHATS_NEW_BUTTON" desc="Button in the avatar menu tutorial card for seeing what is new with the new profile management UI">
-        See what's new
-      </message>
-      <message name="IDS_PROFILES_EXIT_GUEST" desc="Button in the avatar menu bubble view for exiting the active guest session.">
-        Exit Guest
-      </message>
-      <message name="IDS_PROFILES_SIGNIN_PROMO" desc="Text describing the benefits of signing in.">
-        Sign in to get your bookmarks, history, passwords, and other settings on all your devices.
-      </message>
-      <if expr="not use_titlecase">
-        <message name="IDS_PROFILES_PROFILE_ADD_ACCOUNT_BUTTON" desc="Button in the avatar menu bubble view used to add an account to a profile.">
-          Add account for <ph name="PROFILE_NAME">$1<ex>John</ex></ph>
-        </message>
-        <message name="IDS_PROFILES_PROFILE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to manage accounts for a profile.">
-          Your accounts
-        </message>
-        <message name="IDS_PROFILES_PROFILE_HIDE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to hide the accounts for a profile.">
-          Hide accounts
-        </message>
-        <message name="IDS_PROFILES_SWITCH_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-          Switch person
-        </message>
-        <message name="IDS_PROFILES_GO_INCOGNITO_BUTTON" desc="Button in the avatar menu bubble view for launching an incognito browser.">
-          Go incognito
-        </message>
-        <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-          Manage people
-        </message>
-        <message name="IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a guest window.">
-          Open Guest window
-        </message>
-        <message name="IDS_PROFILES_CLOSE_ALL_WINDOWS_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile.">
-          Close all your windows
-        </message>
-      </if>
-      <if expr="use_titlecase">
-        <message name="IDS_PROFILES_PROFILE_ADD_ACCOUNT_BUTTON" desc="Button in the avatar menu bubble view used to add an account to a profile.">
-          Add Account for <ph name="PROFILE_NAME">$1<ex>John</ex></ph>
-        </message>
-        <message name="IDS_PROFILES_PROFILE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to manage accounts for a profile.">
-          Your Accounts
-        </message>
-        <message name="IDS_PROFILES_PROFILE_HIDE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to hide the accounts for a profile.">
-          Hide Accounts
-        </message>
-        <message name="IDS_PROFILES_PROFILE_TUTORIAL_LEARN_MORE" desc="The Learn More link in the avatar tutorial bubble.">
-          Learn More
-        </message>
-        <message name="IDS_PROFILES_SWITCH_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-          Switch Person
-        </message>
-        <message name="IDS_PROFILES_GO_INCOGNITO_BUTTON" desc="Button in the avatar menu bubble view for launching an incognito browser.">
-          Go Incognito
-        </message>
-        <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-          Manage People
-        </message>
-        <message name="IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a guest window.">
-          Open Guest Window
-        </message>
-        <message name="IDS_PROFILES_CLOSE_ALL_WINDOWS_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile.">
-          Close all your Windows
-        </message>
-      </if>
-      <message name="IDS_PROFILES_EDIT_PROFILE_ACCESSIBLE_NAME" desc="Description of the Edit Profile button. This is used for accessibility.">
-        Edit person, <ph name="PROFILE_NAME">$1<ex>Jane Doe</ex></ph>
-      </message>
-      <message name="IDS_PROFILES_EDIT_SIGNED_IN_PROFILE_ACCESSIBLE_NAME" desc="Description of the Edit Profile button for a signed-in profile. This is used for accessibility.">
-        Edit person, <ph name="PROFILE_NAME">$1<ex>Jane Doe</ex></ph>, <ph name="USERNAME">$2<ex>jane.doe@gmail.com</ex></ph>
-      </message>
-      <message name="IDS_PROFILES_GUEST_PROFILE_NAME" desc="Name of the guest profile.">
-        Guest
-      </message>
-      <message name="IDS_DEFAULT_PROFILE_NAME" desc="The default name given to a profile. Displayed in wrench menu and settings UI.">
-        First user
-      </message>
-      <message name="IDS_LEGACY_DEFAULT_PROFILE_NAME" desc="The legacy default name given to a new profile.">
-        Default Profile
-      </message>
-      <message name="IDS_NUMBERED_PROFILE_NAME" desc="The name given to a newly created profile. Displayed in wrench menu and settings UI.">
-        User <ph name="VALUE">$1<ex>1</ex></ph>
-      </message>
-      <message name="IDS_NEW_NUMBERED_PROFILE_NAME" desc="The name given to a newly created profile. Displayed in wrench menu and settings UI using the --new-profile-management flag.">
-        Person <ph name="VALUE">$1<ex>1</ex></ph>
-      </message>
-      <message name="IDS_SINGLE_PROFILE_DISPLAY_NAME" desc="The name displayed by the avatar button if only one profile exists.">
-        You
-      </message>
-      <message name="IDS_GUEST_PROFILE_NAME" desc="The name given to the guest       browsing profile. Displayed in the avatar menu bubble and button UI.">
-        Guest
-      </message>
-
-      <message name="IDS_DEFAULT_AVATAR_NAME_8" desc="The default name given to a newly created profile with the female spy avatar.">
-        Agent X
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_9" desc="The default name given to a newly created profile with the male hero avatar.">
-        Spandex
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_10" desc="The default name given to a newly created profile with the female athlete avatar.">
-        Mia
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_11" desc="The default name given to a newly created profile with the male businessman avatar.">
-        Buttondown
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_12" desc="The default name given to a newly created profile with the ninja avatar.">
-        Sneaky
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_13" desc="The default name given to a newly created profile with the alien avatar.">
-        Moonbeam
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_14" desc="The default name given to a newly created profile with the awesome face avatar.">
-        Awesome
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_15" desc="The default name given to a newly created profile with the flower avatar.">
-        Petals
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_16" desc="The default name given to a newly created profile with the pizza avatar.">
-        Slice
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_17" desc="The default name given to a newly created profile with the soccer ball avatar.">
-        Fritz
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_18" desc="The default name given to a newly created profile with the hamburger avatar.">
-        Pickles
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_19" desc="The default name given to a newly created profile with the cat avatar.">
-        Fluffy
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_20" desc="The default name given to a newly created profile with the cupcake avatar.">
-        Sweetness
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_21" desc="The default name given to a newly created profile with the dog avatar.">
-        Sparky
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_22" desc="The default name given to a newly created profile with the horse avatar.">
-        Saratoga
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_23" desc="The default name given to a newly created profile with the martini glass avatar.">
-        Lemonade
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_24" desc="The default name given to a newly created profile with the musical notes avatar.">
-        Bluesy
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_25" desc="The default name given to a newly created profile with the sun and cloud avatar.">
-        Shady
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_NAME_26" desc="The default name given to a newly created profile with the default placeholder avatar.">
-        Shadow
-      </message>
-
-      <message name="IDS_DEFAULT_AVATAR_LABEL_0" desc="The label for the default white avatar.">
-        Default white avatar
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_1" desc="The label for the default teal avatar.">
-        Default teal avatar
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_2" desc="The label for the default blue avatar.">
-        Default blue avatar
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_3" desc="The label for the default green avatar.">
-        Default green avatar
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_4" desc="The label for the default orange avatar.">
-        Default orange avatar
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_5" desc="The label for the default purple avatar.">
-        Default purple avatar
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_6" desc="The label for the default red avatar.">
-        Default red avatar
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_7" desc="The label for the default yellow avatar.">
-        Default yellow avatar
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_8" desc="The label for the the female spy avatar.">
-        Spy
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_9" desc="The label for the male hero avatar.">
-        Hero
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_10" desc="The label for the female athlete avatar.">
-        Athlete
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_11" desc="The label for the male businessman avatar.">
-        Businessman
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_12" desc="The label for the ninja avatar.">
-        Ninja
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_13" desc="The label for the alien avatar.">
-        Alien
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_14" desc="The label for the awesome face avatar.">
-        Awesome face
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_15" desc="The label for the flower avatar.">
-        Yellow and white flower
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_16" desc="The label for the pizza avatar.">
-        Pizza slice
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_17" desc="The label for the soccer ball avatar.">
-        Soccer ball
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_18" desc="The label for the hamburger avatar.">
-        Hamburger
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_19" desc="The label for the cat avatar.">
-        Cat
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_20" desc="The label for the cupcake avatar.">
-        Cupcake
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_21" desc="The label for the dog avatar.">
-        Dog
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_22" desc="The label for the horse avatar.">
-        Horse
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_23" desc="The label for the martini glass avatar.">
-        Martini glass
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_24" desc="The label for the musical notes avatar.">
-        Music note
-      </message>
-      <message name="IDS_DEFAULT_AVATAR_LABEL_25" desc="The label for the sun and cloud avatar.">
-        Sun and clouds
-      </message>
-
-      <message name="IDS_PROFILES_LOCAL_PROFILE_STATE" desc="This is displayed underneath the profile name for profiles that are not signed in to sync.">
-        Not signed in
-      </message>
-      <message name="IDS_PROFILES_CREATE_BUTTON_LABEL" desc="The label that appears on the profile create button in the options dialog to allow a user to create a new profile.">
-        Add person...
-      </message>
-      <message name="IDS_PROFILES_MANAGE_BUTTON_LABEL" desc="The label that appears on the profile manage button in the options dialog to allow a user to manage their profile.">
-        Edit...
-      </message>
-      <message name="IDS_PROFILES_DELETE_BUTTON_LABEL" desc="The label that appears on the profile delete button in the options dialog to allow a user to delete their profile.">
-        Remove...
-      </message>
-      <message name="IDS_PROFILES_DELETE_SINGLE_BUTTON_LABEL" desc="The label that appears on the profile delete button in the options dialog to allow a user with only one profile to delete it.">
-        Delete this person
-      </message>
-      <message name="IDS_PROFILES_DEFAULT_NAME" desc="The name to display for a profile when the user is not signed in.">
-        Default
-      </message>
-      <message name="IDS_PROFILE_ADD_PERSON_ENABLE" desc="The text for the settings checkbox that indicates whether new profiles can be added from the user manager.">
-        Let anyone add a person to Brave
-      </message>
-      <message name="IDS_PROFILE_BROWSER_GUEST_ENABLE" desc="The text for the settings checkbox that indicates whether guest mode is available for this browser.">
-        Enable Guest browsing
-      </message>
-      <message name="IDS_SYNC_CUSTOMIZE_LINK_LABEL" desc="The text to display on the link to customize the sync settings.">
-        Advanced
-      </message>
-      <message name="IDS_SYNC_USE_DEFAULT_SETTINGS" desc="The text to display on the link to go back to the default sync settings.">
-        Use default settings
-      </message>
-      <message name="IDS_SYNC_LOGIN_NAME_PROHIBITED" desc="The error message shown when the user tries to sign in to sync using a name that is not allowed by the admin policy">
-        Signing in with this username has been disabled by your administrator.
-      </message>
-      <message name="IDS_SUPERVISED_USER_NOT_ALLOWED_BY_POLICY" desc="The error message shown when the user tries to use the supervised user profile when it's disabled by policy">
-        Supervised users have been disabled by your administrator.
-      </message>
-      <message name="IDS_USER_NOT_ALLOWED_BY_POLICY" desc="The error message shown when the user tries to use a profile that is blocked by policy">
-        This user has been disabled by your administrator.
-      </message>
-      <message name="IDS_OLD_PROFILES_DISABLED_TITLE" desc="The title of the error page shown when the user tries to use an old profile that is disabled by policy">
-        Can't use this profile
-      </message>
-      <message name="IDS_OLD_PROFILES_DISABLED_MESSAGE" desc="The error message shown when the user tries to use an old profile that is disabled by policy">
-        Your administrator has made a system-wide change that disables some old profiles.
-      </message>
-      <message name="IDS_OLD_PROFILES_DISABLED_ADD_PERSON_SUGGESTION" desc="The suggestion that tells the user to create a new profile when the user tries to use an old profile that is disabled by policy">
-        To continue, click OK, then click Add Person to create a new profile for your email address.
-      </message>
-      <message name="IDS_OLD_PROFILES_DISABLED_ADD_PERSON_SUGGESTION_WITH_DOMAIN" desc="The suggestion that tells the user to create a new profile with the domain when the user tries to use an old profile that is disabled by policy">
-        To continue, click OK, then click Add Person to create a new profile for your <ph name="DOMAIN">$1<ex>example.com</ex></ph> email address.
-      </message>
-      <message name="IDS_OLD_PROFILES_DISABLED_REMOVED_OLD_PROFILE" desc="The suggestion that tells the user to delete old profile when the user tries to use an old profile that is disabled by policy">
-        Although you can no longer access your old profile, you can still remove it.
-      </message>
-      <if expr="is_android">
-        <message name="IDS_SYNC_USER_NAME_IN_USE_ERROR" desc="Mobile: An error message shown when a user tries to sign in to sync using a user name that's already in use by another profile.">
-          This account is already being used on this device.
-        </message>
-      </if>
-      <if expr="not is_android">
-        <message name="IDS_SYNC_USER_NAME_IN_USE_ERROR" desc="An error message shown when a user tries to sign in to sync using a user name that's already in use by another profile.">
-          This account is already being used on this computer.
-        </message>
-        <message name="IDS_SYNC_USER_NAME_IN_USE_BY_ERROR" desc="An error message shown when a user tries to sign in to sync using a user name that's already in use by another profile. This error message includes the avatar name of the existing duplicate profile and only appears in the signin error tab modal dialog.">
-          This account is already being used on this computer by <ph name="AVATAR_NAME">$1<ex>Jane</ex></ph>.
-        </message>
-      </if>
-
       <!--  Sync Confirmation section of the tab modal signin flow -->
       <message name="IDS_SYNC_CONFIRMATION_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow">
         You've signed in and turned on Sync
@@ -7010,10 +6378,10 @@ I don't think this site should be blocked!
         More options
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_MORE_OPTIONS_TITLE" desc="Title of the sync confirmation more options dialog">
-        Sync and personalization options
+        Control sync, personalization, and more
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_MORE_OPTIONS_SUBTITLE" desc="Subitle of the sync confirmation more options dialog">
-        Features related to sync and personalization are now under a single control. Turning this on may change your current settings.
+        The settings that control sync, personalization, and other Brave services in Brave have changed. This may affect your current settings.
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_REVIEW_SETTINGS_TITLE" desc="Title of the sync confirmation option to review settings">
         Review your settings on the next screen
@@ -7025,13 +6393,10 @@ I don't think this site should be blocked!
         The data you sync to Brave and the features you use will not change
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_USE_DEFAULT_TITLE" desc="Title of the sync confirmation option to use the default settings">
-        Yes, turn on sync and personalization
+        Turn on sync, personalization, and other Brave services
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_USE_DEFAULT_SUBTITLE" desc="Subtitle of the sync confirmation option to use the default settings">
         You can customize this anytime in Brave Settings
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_CONFIRM_BUTTON_LABEL" desc="Label of the sync confirmation options confirm button">
-        Ok
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_OPTIONS_BACK_BUTTON_LABEL" desc="Label of the sync confirmation options button to go to the previous screen">
         Back
@@ -7069,7 +6434,7 @@ I don't think this site should be blocked!
         You can customize what information Brave collects in <ph name="BEGIN_LINK">&lt;a id="settingsLink" href="chrome://settings"&gt;</ph>Settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> anytime.
       </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_SYNC_SETTINGS_DESCRIPTION" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow for child accounts">
-        Brave may use content on sites you visit and browsing activity and interactions to personalize Brave and other Brave services like Translate, Search, and ads. You can customize this in Settings.
+        Brave may use content on sites you visit, plus browser activity and interactions, to personalize Brave and other Brave services like Translate, Search, and ads. You can customize this in Settings.
       </message>
       <message name="IDS_SYNC_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
         Ok, got it
@@ -7264,12 +6629,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MULTI_DOWNLOAD_PERMISSION_FRAGMENT" desc="Permission request shown if multiple downloads are attempted without user interaction and there are multiple permissions requested. Follows a prompt: 'This site would like to:'">
         Download multiple files
       </message>
-      <message name="IDS_MULTI_DOWNLOAD_WARNING_ALLOW" desc="Text on the allow button in the IDS_MULTI_DOWNLOAD_WARNING dialog">
-        Allow
-      </message>
-      <message name="IDS_MULTI_DOWNLOAD_WARNING_BLOCK" desc="Text on the block button in the IDS_MULTI_DOWNLOAD_WARNING dialog">
-        Block
-      </message>
 
       <if expr="use_titlecase">
         <message name="IDS_RECENT_TABS_MENU" desc="In Title Case: The title of the Recent Tabs menu in the wrench menu.">
@@ -7400,21 +6759,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SYNC_ERROR_USER_MENU_CONFIRM_SYNC_SETTINGS_BUTTON" desc="Button in the header of desktop user menu prompting users to confirm their sync settings.">
         Open settings
       </message>
-      <if expr="chromeos">
-        <message name="IDS_SYNC_NOTIFICATION_ACCEPT" desc="A button label shown in the sync error notification when the passphrase needs to be updated.">
-          Update sync passphrase
-        </message>
-      </if>
 
       <if expr="not use_titlecase">
-        <message name="IDS_SYNC_PASSPHRASE_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when the user needs to update the passphrase.">
-          Update...
-        </message>
         <message name="IDS_SYNC_UNAVAILABLE_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when sync is not available for their domain.">
           OK...
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_ERROR_WRENCH_MENU_ITEM" desc="The sync error wrench menu item when the user needs to update the passphrase.">
-          Sync Error: Update Sync passphrase...
         </message>
         <if expr="chromeos">
           <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view/notification when the user needs to sign out and sign in again to Brave OS.">
@@ -7434,14 +6782,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </if>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_SYNC_PASSPHRASE_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when the user needs to update the passphrase.">
-          Update...
-        </message>
         <message name="IDS_SYNC_UNAVAILABLE_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when sync is not available for their domain.">
           OK...
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_ERROR_WRENCH_MENU_ITEM" desc="The sync error wrench menu item when the user needs to update the passphrase.">
-          Sync Error: Update Sync Passphrase...
         </message>
         <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when the user needs to sign in again.">
           Sign in Again...
@@ -7454,9 +6796,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <!-- Android uses native UI to handle Sync settings -->
       <if expr="not is_android">
         <!-- Sync options dialog strings -->
-        <message name="IDS_SYNC_OPTIONS_GROUP_NAME" desc="The name of the sync group in the options dialog.">
-          Sign in
-        </message>
         <if expr="not chromeos">
           <message name="IDS_SYNC_OVERVIEW" desc="The message that appears in the options dialog when sync has not been set up by the user.">
             Sign in to get your bookmarks, history, passwords and other settings on all your devices. You'll also automatically be signed in to your Brave services.
@@ -7464,12 +6803,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </if>
         <message name="IDS_SYNC_START_SYNC_BUTTON_LABEL" desc="The label that appears on the sync button in the options dialog when sync has not been set up by the user.">
           Sign in to <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>
-        </message>
-        <message name="IDS_SYNC_SETUP_BUTTON_LABEL" desc="The label that appears on the sync setup button in the options dialog when sync has been disabled by the user.">
-          Set up sync...
-        </message>
-        <message name="IDS_SYNC_SETUP_ABORTED_BY_PENDING_CLEAR" desc="The error message displayed to the user when setup was aborted because the server reported that a pending clear private data operation is in progress">
-          The sync server is busy, please try again later.
         </message>
         <message name="IDS_SIGNED_IN_WITH_SYNC_DISABLED" desc="The message that appears in the settings page indicating that user is signed in, but sync is not enabled.">
           Sync is disabled by your administrator.
@@ -7508,12 +6841,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Sync is disabled by your administrator
         </message>
 
-        <message name="IDS_SYNC_PASSPHRASE_MSG_EXPLICIT_PREFIX" desc="Message when explicit passphrase is selected.">
-          Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase, you will need to
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_MSG_EXPLICIT_POSTFIX" desc="Postfix of the message show when explicit passphrase is selected.">
-          reset sync
-        </message>
         <message name="IDS_SYNC_SERVER_IS_UNREACHABLE" desc="The message to display in the New Tab Page and Settings Page sync section when the server is unreachable.">
           Couldn't connect to the sync server. Retrying...
         </message>
@@ -7546,32 +6873,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
             Failed to get authentication token. Please sign out then sign in again to try again.
           </message>
         </if>
-        <message name="IDS_SYNC_STOP_SYNCING_BUTTON_LABEL" desc="The text to display on the button to indicate stop syncing functionality.">
-          Disconnect your Brave Account...
-        </message>
-        <message name="IDS_SYNC_STOP_SYNCING_CONFIRM_BUTTON_LABEL" desc="The text to display on the button to confirm the user wishes to stop syncing.">
-          Sign Out
-        </message>
-        <message name="IDS_SYNC_STOP_SYNCING_DIALOG_TITLE" desc="The title of the dialog that explains what 'stop syncing' means.">
-          Disconnect your Brave Account
-        </message>
-        <message name="IDS_SYNC_STOP_SYNCING_EXPLANATION_LABEL" desc="The text to display below the 'Stop syncing this account' button on the options pane, explaining what the button does.">
-          By disconnecting your Brave Account from <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>, your data will remain on this computer but changes will no longer be synced to your Brave Account. Data already stored in your Brave Account will remain there until you remove it using <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-        </message>
-        <message name="IDS_SYNC_STOP_DELETE_PROFILE_LABEL" desc="The text to display by the checkbox asking user whether to also delete profile when stopping sync.">
-          Also clear your history, bookmarks, settings, and other Brave data stored on this device.
-        </message>
         <message name="IDS_SYNC_ADVANCED_OPTIONS" desc="The text in the link that brings up the sync configure screen in the new tab page new data type notification.">
           Advanced settings
         </message>
 
         <!-- Sync New Tab Page strings -->
-        <message name="IDS_SYNC_NTP_PASSWORD_PROMO" desc="The message to display to promote passwords sync now being available.">
-          <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> can now sync your passwords.
-        </message>
-        <message name="IDS_SYNC_NTP_PASSWORD_ENABLE" desc="The link text to present for passwords sync.">
-          Enable
-        </message>
         <message name="IDS_SYNC_NTP_SETUP_IN_PROGRESS" desc="The message to display in the New Tab Page sync section when the sync setup is underway.">
           Setup in progress...
         </message>
@@ -7596,67 +6902,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
         </if>
 
-        <!-- Customize Sync dialog -->
-        <message name="IDS_SYNC_SETUP_CONFIGURE_TITLE" desc="The title of the Customize page of the sync setup dialog.">
-          Advanced sync settings
-        </message>
-        <message name="IDS_SYNC_CONFIRM_SYNC_PREFERENCES" desc="The title of the 'Confirm Sync Settings' page of the customize sync dialog.">
-          Confirm sync settings
-        </message>
-        <message name="IDS_SYNC_SYNC_EVERYTHING" desc="The text of the OK button of the 'Confirm Sync Settings' page of the customize sync dialog.">
-          OK, sync everything
-        </message>
-
         <!-- Spinner dialog for waiting sync backend to start up -->
         <message name="IDS_SYNC_SETUP_SPINNER_TITLE" desc="The title of the sync setup dialog showing spinner.">
           Please wait...
         </message>
 
-        <!-- Notify network connection goes time out -->
-        <message name="IDS_SYNC_SETUP_TIME_OUT_TITLE" desc="The title of the 'Timeout' page for sync settings.">
-          Failed to start up the sync backend
-        </message>
-        <message name="IDS_SYNC_SETUP_TIME_OUT_CONTENT" desc="Text explaining what to do if sync times out.">
-          Please make sure your network connection is working and if the problem persists, please sign out and sign in again to refresh your credentials.
-        </message>
-
         <!-- Choose data types dialog strings -->
-        <message name="IDS_SYNC_CHOOSE_DATATYPES_INSTRUCTIONS" desc="Text explaining the 'Choose Datatypes' dialog.">
-          <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> securely syncs your data with your Brave account. Keep everything synced or customize synced data types and encryption settings.
-        </message>
         <message name="IDS_SYNC_EVERYTHING" desc="A drop-down menu item for users who want to sync all data types.">
           Sync everything
         </message>
-        <message name="IDS_SYNC_CHOOSE_DATATYPES" desc="A drop-down menu item for users who want to select some datatypes to sync.">
-          Choose what to sync
-        </message>
-        <if expr="chromeos">
-          <message name="IDS_SYNC_DATATYPE_THEMES" desc="Themes, one of the data types that we allow syncing.">
-            Themes &amp; wallpapers
-          </message>
-        </if>
-        <if expr="not chromeos">
-          <message name="IDS_SYNC_DATATYPE_THEMES" desc="Themes, one of the data types that we allow syncing.">
-            Themes
-          </message>
-        </if>
-        <message name="IDS_SYNC_DATATYPE_EXTENSIONS" desc="Extensions, one of the data types that we allow syncing.">
-          Extensions
-        </message>
-        <message name="IDS_SYNC_DATATYPE_APPS" desc="Apps, one of the data types that we allow syncing.">
-          Apps
-        </message>
 
         <!-- Encryption tab of the configure sync dialog -->
-        <message name="IDS_SYNC_ENCRYPTION_INSTRUCTIONS" desc="Instructions for the encryption settings tab.">
-          <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> requires you to encrypt your data using either your Brave password or your own passphrase.
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_WARNING" desc="Warning message about using a passphrase for sync.">
-          You are currently using a passphrase.  If you have forgotten your passphrase, you can reset sync to clear your data from Brave's servers using the Brave Dashboard.
-        </message>
-        <message name="IDS_SYNC_ENCRYPTION_SECTION_MESSAGE" desc="Message explaining that sync data can be encrypted.">
-          For added security, <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> will encrypt your data.
-        </message>
         <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_CUSTOM" desc="Text of the radio that when selected enables full encryption.">
           All data is encrypted with your sync passphrase
         </message>
@@ -7669,49 +6925,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>
         </message>
 
-        <!-- Personalize Brave Services section of the configure sync dialog -->
-        <message name="IDS_SYNC_PERSONALIZE_GOOGLE_SERVICES_MESSAGE" desc="Text of the section containing a link to the Brave Activity Controls.">
-          Control how Brave uses your browsing history to personalize Search, ads, and other Brave services from <ph name="BEGIN_LINK">&lt;a id="activity-controls" href="$1" target="_blank"&gt;<ex>&lt;a id="activity-controls" href="$1" target="_blank"&gt;</ex></ph>Brave Activity Controls<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-        </message>
-
-        <!-- Passphrase dialog strings -->
-        <message name="IDS_SYNC_CONFIRM_PASSPHRASE_LABEL" desc="Label for the confirm-passphrase field.">
-          Confirm passphrase
-        </message>
-        <message name="IDS_SYNC_INCORRECT_PASSPHRASE" desc="Message when the passphrase is incorrect.">
-          The passphrase you entered is incorrect.
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_RECOVER" desc="Message about how to recover from a lost passphrase.">
-          If you've forgotten your passphrase, stop and reset Sync via <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_CANCEL_YES" desc="String for 'yes' button on passphrase cancel warning dialog.">
-          Skip
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_CANCEL_NO" desc="String for 'no' button on passphrase cancel warning dialog.">
-          Enter passphrase
-        </message>
-
-        <!-- Login dialog strings -->
-        <message name="IDS_SYNC_SETUP_TITLE" desc="The title of the Sync Setup overlay.">
-          Sign in with your Brave Account
-        </message>
-        <message name="IDS_SYNC_SUCCESS" desc="Operation successful">
-          Success!
-        </message>
-
         <!-- Sync promo page chrome://signin -->
-        <message name="IDS_SYNC_PROMO_TAB_TITLE" desc="The title of the sync promo tab.">
-          Sign in
-        </message>
-        <message name="IDS_SYNC_PROMO_MESSAGE_TITLE_SHORT" desc="A short sync promo message displayed under the title.">
-          Sign in to get your bookmarks, history, and settings on all your devices.
-        </message>
-        <message name="IDS_SYNC_PROMO_SKIP_BUTTON" desc="The link button at the bottom to let the user skip the sync promo.">
-          Skip for now
-        </message>
-        <message name="IDS_SYNC_PROMO_ADVANCED" desc="The link button at the bottom to let the user customize the sync settings.">
-          Advanced...
-        </message>
         <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_HEADER" desc="The first line of the of the message shown in NTP when a user is not signed into sync.">
           Not signed in to <ph name="SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph>
         </message>
@@ -8369,12 +7583,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MEDIASTREAM_BUBBLE_MANAGE_LINK" desc="Link on the media (camera and microphone) bubble that opens up the Content Settings management dialog for media settings.">
         Manage media settings...
       </message>
-      <message name="IDS_MEDIASTREAM_MICROPHONE_BUBBLE_MANAGE_LINK" desc="Link on the microphone bubble that opens up the Content Settings management dialog for microphone settings.">
-        Manage microphone settings...
-      </message>
-      <message name="IDS_MEDIASTREAM_CAMERA_BUBBLE_MANAGE_LINK" desc="Link on the camera bubble that opens up the Content Settings management dialog for camera settings.">
-        Manage camera settings...
-      </message>
       <message name="IDS_MICROPHONE_CAMERA_ALLOWED" desc="Status text that is used as location bar icon tooltip text and as media settings bubble status text when a page is allowed to use the camera and microphone.">
         This page is accessing your camera and microphone.
       </message>
@@ -8427,15 +7635,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
       </if>
       <message name="IDS_MANAGE_PASSWORDS_CONFIRM_GENERATED_TEXT" desc="A message that the browser shows after saving a password it has autogenerated for the user. This message appears in a bubble and contains a link to all the user's saved autogenerated passwords. The link text is a separate string in the translation console and appears here as placeholder text.">
-        View and manage saved passwords at <ph name="SAVED_PASSWORDS_LINK">$1<ex>passwords.google.com</ex></ph>
+        View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE">$1<ex>Brave Account</ex></ph>
+      </message>
+      <message name="IDS_PASSWORDS_WEB_LINK" translateable="false">
+        https://passwords.google.com
       </message>
       <if expr="is_android">
         <message name="IDS_MANAGE_PASSWORDS_CONFIRM_GENERATED_TEXT_INFOBAR" desc="A message that the browser shows after saving a password it has autogenerated for the user. This message appears in an infobar and contains a link to all the user's saved autogenerated passwords. The link text is a separate string in the translation console and appears here as placeholder text.">
-          Password saved. View and manage saved passwords at <ph name="SAVED_PASSWORDS_LINK">$1<ex>passwords.google.com</ex></ph>
+          Password saved. View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE">$1<ex>Brave Account</ex></ph>.
         </message>
       </if>
       <message name="IDS_MANAGE_PASSWORDS_LINK" desc="The text for a link to the user's saved passwords. This is inserted into an infobar or a bubble that the browser shows to the user. The infobar and the bubble use a separate string in the translation console that has a placeholder for this link title.">
-        Brave saved passwords
+        Brave Account
       </message>
       <message name="IDS_MANAGE_PASSWORDS_TITLE" desc="The title text that is used in the manage passwords bubble when a password is autofilled or after a user has stored a password.">
         Saved passwords for this site
@@ -8609,14 +7820,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Press and hold |<ph name="ACCELERATOR">$1<ex>Esc</ex></ph>| to exit full screen
       </message>
 
-      <!-- Backspace shortcut notification strings -->
-      <message name="IDS_PRESS_SHORTCUT_TO_GO_BACK" desc="Text displayed in the bubble to explain the keyboard shortcut to go back to the previous web page in history. The shortcut names a keyboard key or key chord. Please surround the shortcut in pipe characters so it can be rendered correctly.">
-        Press |<ph name="SHORTCUT">$1<ex>Alt-Left</ex></ph>| to go back
-      </message>
-      <message name="IDS_PRESS_SHORTCUT_TO_GO_FORWARD" desc="Text displayed in the bubble to explain the keyboard shortcut to go forward to the next web page in history. The accelerators are names of keyboard keys. The shortcut names a keyboard key or key chord. Please surround the shortcut in pipe characters so it can be rendered correctly.">
-        Press |<ph name="SHORTCUT">$1<ex>Alt-Right</ex></ph>| to go forward
-      </message>
-
       <!-- Register Protocol Handler Strings -->
       <message name="IDS_REGISTER_PROTOCOL_HANDLER_MAILTO_NAME" desc="A more user friendly way of describing mailto: links.">
         email
@@ -8660,20 +7863,43 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MEDIA_CAPTURE_SCREEN_INFOBAR_TEXT" desc="Text requesting permission for a site to access the device's screen.">
         <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to share your screen
       </message>
-      <message name="IDS_MEDIA_CAPTURE_AUDIO_AND_VIDEO_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's microphone and camera.">
-        Use your camera and microphone
-      </message>
       <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's microphone.">
         Use your microphone
       </message>
       <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's camera.">
         Use your camera
       </message>
-      <message name="IDS_MEDIA_CAPTURE_ALLOW" desc="Label for a button that grants access to a web page, so they can use a camera and/or a microphone.">
-        Allow
+
+      <!-- Sensor messages -->
+      <message name="IDS_SENSORS_ALLOWED_TOOLTIP" desc="Location bar icon tooltip text when a page is allowed to use device's sensors.">
+        This site is using motion or light sensors.
       </message>
-      <message name="IDS_MEDIA_CAPTURE_BLOCK" desc="Label for a button that blocks access to a web page, so they can't use a camera and/or a microphone.">
-        Block
+      <message name="IDS_SENSORS_BLOCKED_TOOLTIP" desc="Location bar icon tooltip text when a page is blocked from using device's sensors.">
+        This site has been blocked from using motion and light sensors.
+      </message>
+      <message name="IDS_BLOCKED_SENSORS_UNBLOCK" desc="Radio button choice to unblock a site from using device's sensors, displayed in bubble when blocked indicator icon is clicked.">
+        Always allow <ph name="HOST">$1<ex>mail.google.com</ex></ph> to access sensors
+      </message>
+      <message name="IDS_BLOCKED_SENSORS_NO_ACTION" desc="Radio button choice to continue blocking a site from using device's motion or light sensors, displayed in bubble when blocked indicator icon is clicked.">
+        Continue blocking sensor access
+      </message>
+      <message name="IDS_ALLOWED_SENSORS_TITLE" desc="Bubble info header text when a page is allowed to use device's sensors.">
+        Sensors allowed
+      </message>
+      <message name="IDS_BLOCKED_SENSORS_TITLE" desc="Bubble info header text when a page is not allowed to use device's sensors.">
+        Sensors blocked
+      </message>
+      <message name="IDS_ALLOWED_SENSORS_MESSAGE" desc="Message for the page action when access to sensors was allowed">
+        This site is accessing your motion or light sensors.
+      </message>
+      <message name="IDS_BLOCKED_SENSORS_MESSAGE" desc="Message for the page action when access to sensors was blocked">
+        This site has been blocked from accessing your motion or light sensors.
+      </message>
+      <message name="IDS_ALLOWED_SENSORS_NO_ACTION" desc="Radio button choice to keep allowing a site to use device's sensors, displayed in bubble when location bar is clicked.">
+        Continue allowing sensor access
+      </message>
+      <message name="IDS_ALLOWED_SENSORS_BLOCK" desc="Radio button choice to block a site from accessing device's sensors, displayed in bubble when location bar indicator inside is clicked.">
+        Always block <ph name="HOST">$1<ex>mail.google.com</ex></ph> from accessing sensors
       </message>
 
       <!-- Quota messages -->
@@ -8696,269 +7922,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_REQUEST_QUOTA_PERMISSION_FRAGMENT" desc="Permission fragment presented in the permission bubble when the webapp requests new larger quota to persistently store data on the device. Follows a 'This site would like to:' prompt.">
         Store files on this device
       </message>
-
-      <!-- Android does not support multiple profiles and supervised users -->
-      <if expr="not is_android">
-        <!-- Manage Profile Dialog -->
-        <message name="IDS_PROFILES_MANAGE_TITLE" desc="Title of the manage profile dialog">
-          Edit
-        </message>
-        <message name="IDS_PROFILES_MANAGE_NAME_LABEL" desc="Label next to the profile name text field.">
-          Name:
-        </message>
-        <message name="IDS_PROFILES_MANAGE_ICON_LABEL" desc="Label above the profile avatar icon chooser.">
-          Choose a picture and name
-        </message>
-
-        <!-- Delete Profile Dialog -->
-        <message name="IDS_PROFILES_DELETE_TITLE" desc="Title of the delete profile dialog">
-          Remove person?
-        </message>
-        <message name="IDS_PROFILES_DELETE_OK_BUTTON_LABEL" desc="The text to display on the button to confirm deleting the profile.">
-          Remove
-        </message>
-        <message name="IDS_PROFILES_DELETE_MESSAGE" desc="Message explaining to the user what will happen if they delete this profile">
-          Are you sure you want to remove "<ph name="PROFILE_NAME">$1<ex>New User</ex></ph>" and all associated Brave data from this computer? This cannot be undone.
-        </message>
-        <message name="IDS_PROFILES_DISCONNECT_MANAGED_PROFILE_TITLE" desc="Title of the disconnect managed profile dialog.">
-          Disconnect your Brave Account
-        </message>
-        <message name="IDS_PROFILES_DISCONNECT_MANAGED_PROFILE_DOMAIN_INFORMATION" desc="The text that provides the domain information.">
-          This account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>
-        </message>
-        <message name="IDS_PROFILES_DISCONNECT_MANAGED_PROFILE_OK_BUTTON_LABEL" desc="The text to display on the button that clears the data and disconnect user account.">
-          Clear data and disconnect
-        </message>
-        <message name="IDS_PROFILES_LIST_ITEM_CURRENT" desc="Text to display in the multi-profiles list when this profile is the current profile">
-          <ph name="PROFILE_NAME">$1<ex>New User</ex></ph> (current)
-        </message>
-        <message name="IDS_PROFILES_SINGLE_USER_MESSAGE" desc="Text to display in the multi-profiles section when there is only one user">
-          You are currently the only <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> user.
-        </message>
-
-        <!-- Create Profile Dialog -->
-        <message name="IDS_PROFILES_CREATE_TITLE" desc="Title of the create profile dialog">
-          Add person
-        </message>
-        <message name="IDS_PROFILES_CREATE_INSTRUCTIONS" desc="Instructions for the create profile dialog">
-          Choose a picture and name
-        </message>
-        <message name="IDS_PROFILES_CREATE_LOCAL_ERROR" desc="Message shown when a local error (for example, a disk error) occurs during profile creation.">
-          The new user couldn't be created. Please check your hard drive space and permissions and try again.
-        </message>
-        <message name="IDS_PROFILES_CREATE_REMOTE_ERROR" desc="Message shown when a remote error (for example, a network error) occurs during creation of a new supervised user.">
-          The new supervised user couldn't be created. Please check your network connection and try again later.
-        </message>
-        <message name="IDS_PROFILES_CREATE_SIGN_IN_ERROR" desc="Message shown when a sign-in error occurs during creation of a new supervised user.">
-          The new supervised user couldn't be created. Please make sure you're signed in properly and try again.
-        </message>
-        <message name="IDS_PROFILES_CREATE_DESKTOP_SHORTCUT_LABEL" desc="Label for the checkbox that controls whether a desktop shortcut should be created for the new profile.">
-          Create a desktop shortcut for this user
-        </message>
-        <message name="IDS_PROFILES_CREATE_CUSTODIAN_ACCOUNT_DETAILS_OUT_OF_DATE_ERROR" desc="Message shown when the custodian is signed in, but their sign-in information is invalid.">
-          Your account details are out of date. <ph name="BEGIN_LINK">&lt;a is="action-link" id="reauth" data-user-email="$1"&gt;</ph>Sign in again<ph name="END_LINK">&lt;/a&gt;</ph>.
-        </message>
-        <message name="IDS_PROFILES_CREATE_SUPERVISED_JUST_SIGNED_IN" desc="Warning message shown in the create-profile dialog when the custodian signed in recently, sync has not yet finished initializing, and so the creation process is likely to take extra time.">
-          Creating your supervised user. This may take a few moments.
-        </message>
-        <message name="IDS_PROFILES_CREATE_SHORTCUT_CHECKBOX" desc="Create Shortcut checkbox when creating a new profile">
-          Create a desktop shortcut for this user
-        </message>
-        <message name="IDS_PROFILES_CREATE_SHORTCUT_BUTTON" desc="Create Shortcut button when editing an existing profile">
-          Add desktop shortcut
-        </message>
-        <message name="IDS_PROFILES_REMOVE_SHORTCUT_BUTTON" desc="Remove Shortcut button when editing an existing profile">
-          Remove desktop shortcut
-        </message>
-
-        <!-- Import existing supervised user dialog -->
-        <message name="IDS_IMPORT_EXISTING_LEGACY_SUPERVISED_USER_TITLE" desc="Title for the dialog used to import existing supervised users. The dialog appears when the custodian clicks on 'Import existing supervised user' during the user creation flow. The dialog displays a list of existing supervised users for the custodian to choose from">
-          Import an existing supervised user
-        </message>
-        <message name="IDS_IMPORT_EXISTING_LEGACY_SUPERVISED_USER_TEXT" desc="Text that instructs the user to choose one of the displayed supervised users to import to this device.">
-          Choose a supervised user to add to this device.
-        </message>
-        <message name="IDS_CREATE_NEW_LEGACY_SUPERVISED_USER_LINK" desc="The text for the link button that takes the user back from the dialog for importing an existing supervised user to the user creation dialog.">
-          Create a new supervised user
-        </message>
-        <message name="IDS_IMPORT_EXISTING_LEGACY_SUPERVISED_USER_OK" desc="Text on the button to confirm importing an existing supervised user.">
-          Import supervised user
-        </message>
-      </if>
-
-      <if expr="not is_android">
-        <!-- User manager web UI -->
-        <if expr="use_titlecase">
-          <message name="IDS_ADD_USER_BUTTON" desc="Text shown on an add user button on login/locker screen">
-            Add Person
-          </message>
-          <if expr="not chromeos">
-            <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-              Remove This Person
-            </message>
-            <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
-              Add Supervised Person
-            </message>
-          </if>
-          <if expr="chromeos">
-            <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-              Remove This User
-            </message>
-            <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
-              Add Supervised User
-            </message>
-          </if>
-          <message name="IDS_SCREEN_LOCK_SIGN_OUT">
-            Sign out
-          </message>
-        </if>
-        <if expr="not use_titlecase">
-          <message name="IDS_ADD_USER_BUTTON" desc="Text shown on an add user button on login/locker screen">
-            Add person
-          </message>
-          <if expr="not chromeos">
-            <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-              Remove this person
-            </message>
-            <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
-              Add supervised person
-            </message>
-          </if>
-          <if expr="chromeos">
-            <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-              Remove this user
-            </message>
-            <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
-              Add supervised user
-            </message>
-          </if>
-          <message name="IDS_SCREEN_LOCK_SIGN_OUT">
-            Sign out
-          </message>
-        </if>
-        <if expr="chromeos">
-          <message name="IDS_LAUNCH_APP_BUTTON" desc="Text shown on the button that launches kiosk app from Brave OS login UI">
-            Launch app
-          </message>
-        </if>
-        <message name="IDS_BROWSE_AS_GUEST_BUTTON" desc="Text shown on Brave OS sign-in screen button that launches guest session. Should be short.">
-          Browse as Guest
-        </message>
-        <message name="IDS_MORE_OPTIONS_BUTTON" desc="Text read but not shown on the [...] button on login screen">
-          More Options
-        </message>
-        <message name="IDS_SCREEN_LOCK_ACTIVE_USER">
-          Currently signed in
-        </message>
-        <if expr="chromeos">
-          <message name="IDS_PIN_KEYBOARD_HINT_TEXT_PIN" desc="Text to display in the pin field for user pod when no pin has been entered.">
-            PIN
-          </message>
-          <message name="IDS_PIN_KEYBOARD_HINT_TEXT_PIN_PASSWORD" desc="Text to display in the pin field for user pod when no pin has been entered, and passwords are allowed.">
-            PIN or password
-          </message>
-          <message name="IDS_PIN_KEYBOARD_DELETE_ACCESSIBLE_NAME" desc="Text to be spoken when the focus is set to the delete button of the PIN keyboard.">
-            Delete
-          </message>
-          <message name="IDS_FINGERPRINT_HINT_TEXT" desc="Text to display in the password field for user pod when user moves his mouse over the fingerprint icon.">
-            Touch to sign in
-          </message>
-          <message name="IDS_FINGERPRINT_LOGIN_TEXT" desc="Text to display in the password field for user pod when user is trying to login with fingerprint.">
-            Signing in...
-          </message>
-          <message name="IDS_FINGERPRINT_LOGIN_FAILED_TEXT" desc="Text to display in the password field for user pod when user failed to login with fingerprint.">
-            Not recognized
-          </message>
-          <message name="IDS_FINGERPRINT_ICON_MESSAGE" desc="Message to display when user moves his mouse over the fingerprint icon in the user pod.">
-            Place your finger on the fingerprint sensor to unlock the device.
-          </message>
-          <message name="IDS_LOGIN_ERROR_FINGERPRINT_MAX_ATTEMPT" desc="Couldn't sign in because fingerprint unlock has reached maximum attempt">
-            Sorry, your fingerprint is still not recognized. Please enter your password.
-          </message>
-        </if>
-        <message name="IDS_LOGIN_ERROR_AUTHENTICATING" desc="Couldn't sign in because password is invalid">
-          Sorry, your password could not be verified. Please try again.
-        </message>
-        <message name="IDS_LOGIN_ERROR_AUTHENTICATING_OFFLINE" desc="Couldn't unlock because the password can't be validated locally and the user is offline">
-          Sorry, your password could not be verified because you are offline.
-        </message>
-        <message name="IDS_LOGIN_POD_EMPTY_PASSWORD_TEXT" desc="Text to display in the password field for user pod when no password has been entered.">
-          Password
-        </message>
-        <message name="IDS_LOGIN_POD_SIGNING_IN" desc="Text to display at the bottom of a user pod during signing in the user. The translation should be as short as possible because of limited UI space.">
-          Signing in
-        </message>
-        <message name="IDS_LOGIN_POD_PASSWORD_FIELD_ACCESSIBLE_NAME" desc="Text to be spoken when the focus is set to the password field of a user pod on the sign-in screen.">
-          Password for <ph name="USER_EMAIL_ADDRESS">$1<ex>john.doe@example.com</ex></ph>
-        </message>
-        <message name="IDS_LOGIN_POD_SUBMIT_BUTTON_ACCESSIBLE_NAME" desc="Text to be spoken when the focus is set to the submit button of a user pod on the sign-in screen.">
-          Submit
-        </message>
-        <message name="IDS_LOGIN_POD_MENU_BUTTON_ACCESSIBLE_NAME" desc="Text to be spoken when the focus is set to the menu button of the user pod on the login screen.">
-          Options menu for <ph name="USER_EMAIL_ADDRESS">$1<ex>john.doe@example.com</ex></ph>
-        </message>
-        <message name="IDS_LOGIN_POD_MENU_REMOVE_ITEM_ACCESSIBLE_NAME" desc="Text to be spoken when 'Remove user' item is selected on the pod menu.">
-          Remove this user
-        </message>
-        <message name="IDS_LOGIN_POD_LEGACY_SUPERVISED_USER_REMOVE_WARNING" desc="Text shown as a warning when attempting to remove legacy supervised user.">
-          All files and local data associated with the supervised user will be permanently deleted once this supervised user is removed. Visited websites and settings for this supervised user may still be visible by the manager at <ph name="MANAGEMENT_URL">$1<ex>www.example.com</ex></ph>.
-        </message>
-        <message name="IDS_LOGIN_POD_NON_OWNER_USER_REMOVE_WARNING" desc="Text shown as a warning when attempting to remove non-owner user.">
-          All files and local data associated with this user will be permanently deleted once this user is removed. $1 can still sign in later.
-        </message>
-        <if expr="not chromeos">
-          <message name="IDS_USER_MANAGER_GO_GUEST_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to browser as guest while all profiles are locked.">
-            Please unlock your profile before browsing as a guest.
-          </message>
-          <message name="IDS_USER_MANAGER_REMOVE_PROFILE_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to remove a profile while all profiles are locked.">
-            Please unlock your profile before removing a person.
-          </message>
-          <message name="IDS_USER_MANAGER_ADD_PROFILE_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to add a profile while all profiles are locked.">
-            Please unlock your profile before adding a person.
-          </message>
-          <message name="IDS_USER_MANAGER_PROMPT_MESSAGE" desc="Prompt message displayed on UserManager when force-sign-in policy is enabled.">
-            To use Brave, please sign in
-          </message>
-          <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_NONSYNC" desc="Main text shown as a warning when attempting to remove an user.">
-            This will permanently delete your browsing data from this device.
-          </message>
-          <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_HISTORY" desc="The title of a statistic (browsing history) shown inside a table below the warning text when attempting to remove an user. A number is displayed next to it.">
-            Browsing history
-          </message>
-          <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_PASSWORDS" desc="The title of a statistic (passwords) shown inside a table below the warning text when attempting to remove an user. A number is displayed next to it.">
-            Passwords
-          </message>
-          <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BOOKMARKS" desc="The title of a statistic (bookmarks) shown inside a table below the warning text when attempting to remove an user. A number is displayed next to it.">
-            Bookmarks
-          </message>
-          <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_AUTOFILL" desc="The title of a statistic (autofill) shown inside a table below the warning text when attempting to remove an user. A number is displayed next to it.">
-            Autofill form data
-          </message>
-          <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_CALCULATING" desc="This is used in '...' of the warning message 'This will permanently delete ... items from the device.', which is shown when attempting to remove an user. Also shown next to the loading statistics below this warning. All occurrences of '...' will be eventually replaced by numbers when the statistics are loaded.">
-            ...
-          </message>
-        </if>
-
-        <!-- User manager tutorial -->
-        <message name="IDS_USER_MANAGER_TUTORIAL_NEXT" desc="Text of the button that advances the tutorial to the next slide">
-          Next
-        </message>
-        <message name="IDS_USER_MANAGER_TUTORIAL_DONE" desc="The text of the OK button on the last tutorial slide">
-          OK, got it
-        </message>
-        <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_GUEST_TITLE" desc="Title of the guest user slide">
-          Share with guests
-        </message>
-        <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_FRIENDS_TITLE" desc="Title of the friends and family slide">
-          Add family and friends
-        </message>
-        <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_OUTRO_TITLE" desc="Title of the tutorial completion slide">
-          You're almost done!
-        </message>
-        <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_OUTRO_USER_NOT_FOUND" desc="Text of the label asking the user if they see their name">
-          Don't see your name?
-        </message>
-      </if>
 
       <!-- Shelf strings -->
       <if expr="chromeos">
@@ -8997,18 +7960,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_METRO_FLOW_SET_DEFAULT" desc="The label of the button invoking Windows8 default app settings window.">
           Next
-        </message>
-        <message name="IDS_METRO_MISSING_PLUGIN_PROMPT" desc="Infobar message to let user do something about the missing plugin">
-          <ph name="PLUGIN_NAME">$1<ex>Quicktime</ex></ph> is required to display some elements on this page
-        </message>
-        <message name="IDS_METRO_NPAPI_PLUGIN_PROMPT" desc="Infobar message when an NPAPI plugin doesn't run in Metro mode.">
-          <ph name="PLUGIN_NAME">$1<ex>Quicktime</ex></ph> only works on the desktop
-        </message>
-        <message name="IDS_METRO_DOWNLOAD_COMPLETE_NOTIFICATION" desc="Notification displayed when a download request is completed">
-          Your download has completed
-        </message>
-        <message name="IDS_METRO_DOWNLOAD_COMPLETE_NOTIFICATION_TITLE" desc="Title for notification displayed when a download request is completed">
-          Download complete notification
         </message>
       </if>
 
@@ -9070,9 +8021,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <!-- App List. -->
       <if expr="enable_app_list">
-        <message name="IDS_APP_LIST_START_SPEECH_RECOGNITION" desc="Tooltip text for the button to start the speech recognition.">
-          Click to start voice search
-        </message>
         <message name="IDS_SEARCH_BOX_ACCESSIBILITY_NAME" desc="Hint text for the search box in fullscreen app list window with additional instructions to use the arrow keys in Accessibility mode.">
           Search your device, apps, and web. Use the arrow keys to navigate your apps.
         </message>
@@ -9113,6 +8061,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_APP_LIST_OEM_DEFAULT_FOLDER_NAME" desc="The default name for OEM folders in the App Launcher">
             OEM folder
           </message>
+          <message name="IDS_APP_LIST_CROSTINI_DEFAULT_FOLDER_NAME" desc="The default name for the Linux (Crostini) apps folder in the App Launcher">
+            Linux apps
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_APP_LIST_CONTEXT_MENU_NEW_TAB" desc="Title text for the 'open new' context menu item of an app list item configured to open in a tab">
@@ -9144,6 +8095,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
           <message name="IDS_APP_LIST_OEM_DEFAULT_FOLDER_NAME" desc="The default name for OEM folders in the App Launcher">
             OEM Folder
+          </message>
+          <message name="IDS_APP_LIST_CROSTINI_DEFAULT_FOLDER_NAME" desc="The default name for the Linux (Crostini) apps folder in the App Launcher">
+            Linux Apps
           </message>
         </if>
       </if>
@@ -9259,9 +8213,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_LOCAL_DISCOVERY_DEVICES_PAGE_TITLE" desc="Title for devices page">
           Devices
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_REGISTER_DEVICE_CONFIRMATION" desc="Confirmation for registering a device to Brave Cloud Devices">
-          Do you wish to register <ph name="DEVICE_NAME">$1</ph> to Brave Cloud Devices?
         </message>
         <message name="IDS_LOCAL_DISCOVERY_REGISTER_USER" desc="Label for user picker in registration dialog">
           User:
@@ -9385,7 +8336,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         This tab is connected to a USB device.
       </message>
       <message name="IDS_TOOLTIP_TAB_ALERT_STATE_PIP_PLAYING" desc="Extra tool tip text, when tab is playing a video in Picture-in-Picture.">
-        This tab is playing a video in Picture-in-Picture.
+        This tab is playing a video in picture-in-picture mode.
+      </message>
+      <message name="IDS_TOOLTIP_TAB_ALERT_STATE_DESKTOP_CAPTURING" desc="Extra tool tip text, when the tab is caturing desktop contents.">
+        This tab is sharing your desktop content.
       </message>
 
       <!-- Tab accessibility labels -->
@@ -9395,8 +8349,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_LABEL_TAB_CAPTURING_FORMAT" desc="Accessibility label text, when the tab content is being captured and shared using screen sharing. Example: 'Brave Hangouts - Tab content shared'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Tab content shared
       </message>
-        <message name="IDS_TAB_AX_LABEL_PIP_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing a persistent video in Picture-in-Picture. Example: 'Brave Hangouts - Video playing in Picture-in-Picture'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Video playing in Picture-in-Picture
+      <message name="IDS_TAB_AX_LABEL_PIP_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing a persistent video in Picture-in-Picture. Example: 'Brave Hangouts - Video playing in picture-in-picture mode'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Video playing in picture-in-picture mode
       </message>
       <message name="IDS_TAB_AX_LABEL_AUDIO_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing audio. Example: 'Brave Play Music - Audio playing'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Play Music</ex></ph> - Audio playing
@@ -9415,6 +8369,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_TAB_AX_LABEL_CRASHED_FORMAT" desc="Accessibility label text, when a tab has crashed. Example: 'Brave Search - Crashed'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Crashed
+      </message>
+      <message name="IDS_TAB_AX_LABEL_DESKTOP_CAPTURING_FORMAT" desc="Accessibility label text, when the tab is capturing and sharing desktop content using screen sharing. Example: 'Brave Hangouts - Desktop content shared'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Desktop content shared
       </message>
 
       <!-- ProcessSingleton -->
@@ -9455,226 +8412,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Push messaging strings -->
-      <message name="IDS_PUSH_MESSAGES_TAB_LABEL" desc="Label for the push messages section on Content Settings dialog">
-        Push Messages
-      </message>
-      <message name="IDS_PUSH_MESSSAGING_ALLOW_RADIO" desc="A radio button in Content Settings dialog to allow a site to send push messages.">
-        Allow all sites to send background push messages
-      </message>
-      <message name="IDS_PUSH_MESSSAGING_ASK_RADIO" desc="A radio button in Content Settings dialog to allow a site to query the permision send push messages.">
-        Ask me when a site wants to send me push messages (recommended)
-      </message>
-      <message name="IDS_PUSH_MESSSAGING_BLOCK_RADIO" desc="A radio button in Content Settings dialog to deny a site to send push messages.">
-        Do not allow any sites to send push messages
-      </message>
       <message name="IDS_PUSH_MESSAGING_GENERIC_NOTIFICATION_BODY" desc="Body text of an auto-generated notification informing the user that the site may have received an update in the background, in case the site did not satisfy the visible notification requirement itself.">
         This site has been updated in the background.
-      </message>
-
-      <!-- Easy Unlock strings -->
-      <!-- Strings for the Easy Unlock promo notification -->
-      <message name="IDS_EASY_UNLOCK_SETUP_NOTIFICATION_TITLE" desc="Title for the notification inviting the user to use the Easy Unlock feature.">
-        Automatically unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_NOTIFICATION_MESSAGE" desc="The body text for the notification inviting the user to use the Easy Unlock feature.">
-        Try Smart Lock to unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> without a password when your phone is nearby.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_NOTIFICATION_BUTTON_TITLE" desc="The text to show on the button in the notification inviting the user to use the Easy Unlock feature.">
-        Start setup
-      </message>
-      <!-- Strings for notification shown when the Bravebook is added to Easy Unlock -->
-      <message name="IDS_EASY_UNLOCK_CHROMEBOOK_ADDED_NOTIFICATION_TITLE" desc="Title for notification shown when this Bravebook is added to Easy Unlock as an additional Easy Unlock device.">
-        Smart Lock is turned on
-      </message>
-      <message name="IDS_EASY_UNLOCK_CHROMEBOOK_ADDED_NOTIFICATION_MESSAGE" desc="Message for the notification shown when this Bravebook is added to Easy Unlock as an additional Easy Unlock device.">
-        Next time, your phone will unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Turn off Smart Lock in Settings.
-      </message>
-      <message name="IDS_EASY_UNLOCK_CHROMEBOOK_ADDED_NOTIFICATION_ABOUT_BUTTON" desc="Label of a button on the new chrome notification to bring user to smart lock settings.">
-        Change settings
-      </message>
-      <!-- Strings for the phone changed (aka old Bravebook setup) notification -->
-      <message name="IDS_EASY_UNLOCK_PAIRING_CHANGED_NOTIFICATION_TITLE" desc="Title for notification shown when the paired phone is changed.">
-        Smart Lock phone changed
-      </message>
-      <message name="IDS_EASY_UNLOCK_PAIRING_CHANGED_NOTIFICATION_MESSAGE" desc="Message for notification shown when the paired phone is changed.">
-        Next time, a new phone will unlock this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Turn off Smart Lock in Settings.
-      </message>
-      <message name="IDS_EASY_UNLOCK_PAIRING_CHANGED_NOTIFICATION_UPDATE_BUTTON" desc="Label of a button on the notification shown when the paired phone is changed to update Smart lock now.">
-        Update now
-      </message>
-      <message name="IDS_EASY_UNLOCK_NOTIFICATION_LEARN_MORE_BUTTON" desc="Label of a button on the notification to show Smart lock settings.">
-        Change settings
-      </message>
-      <!-- Strings for the phone change applied notification -->
-      <message name="IDS_EASY_UNLOCK_PAIRING_CHANGE_APPLIED_NOTIFICATION_TITLE" desc="Title for notification shown when the pairing change is applied.">
-        Phone change updated
-      </message>
-      <message name="IDS_EASY_UNLOCK_PAIRING_CHANGE_APPLIED_NOTIFICATION_MESSAGE" desc="Message for notification shown when the pairing change is applied.">
-        Your <ph name="PHONE_NAME">$1<ex>Moto X</ex></ph> can now unlock this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> too.
-      </message>
-
-      <!-- Strings for the Easy Unlock setup dialog -->
-      <!-- Step 1: Intro -->
-      <message name="IDS_EASY_UNLOCK_SETUP_INTRO_HEADER_TITLE" desc="The text to show as the header title of the Easy Unlock dialog during the first, introductory step.">
-        Set up Smart Lock for your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_INTRO_HEADER_TEXT" desc="The text to show as the header body text of the Easy Unlock dialog during the first, introductory step. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        Make sure your phone is nearby. To find your phone, Bluetooth will be turned on for all devices that have your account. &lt;a&gt;Learn more&lt;/a&gt;
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_INTRO_FIND_PHONE_BUTTON_LABEL" desc="The text to show as the 'Find phone' button label in the Easy Unlock dialog. This button is visible during the first, introductory step.">
-        Find your phone
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_INTRO_FINDING_PHONE_BUTTON_LABEL" desc="The text to show as the 'Finding phone...' button label in the Easy Unlock dialog. This button is visible during the first, introductory step.">
-        Finding your phone
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_INTRO_RETRY_FIND_PHONE_BUTTON_LABEL" desc="The text to show as a label for the button in Easy Unlock setup dialog when the setup app fails to find any phones to be used. Finding a phone is the first setup step. Clicking the button restarts the setup flow.">
-        Retry
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_INTRO_CLOSE_FIND_PHONE_BUTTON_LABEL" desc="The text to show as a label for the button in Easy Unlock setup dialog when the setup app finds only phones with out-of-date software. Finding a phone is the first setup step. Clicking the button closes the setup dialog.">
-        Close
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_INTRO_HOW_IS_THIS_SECURE_LINK_TEXT" desc="The displayed text for the link that explains how the Easy Unlock feature is secure. This link is visible during the first, introductory step of the Easy Unlock setup dialog.">
-        How this is secure
-      </message>
-      <!-- Step 1.5: "Secure this phone to continue" -->
-      <message name="IDS_EASY_UNLOCK_SETUP_SECURE_PHONE_HEADER_TITLE" desc="The text to show as the header title of the Easy Unlock dialog after a phone has been found but is not secured by a lock screen.">
-        Set a screen lock for safety
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_SECURE_PHONE_HEADER_TEXT" desc="The text to show as the header body text of the Easy Unlock dialog after a suitable phone has been found but is not secured by a lock screen. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        The phone you used to unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> needs a screen lock for security. Usually, that’s a PIN, pattern, or password. Already have a screen lock? Select Check again to verify and continue setup.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_SECURE_PHONE_BUTTON_LABEL" desc="The text to show as the 'How to secure the phone' button label in the Easy Unlock dialog. This button is visible during step 1.5, if the user is prompted to secure their phone.">
-        Set a Screen Lock
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_SECURE_PHONE_LINK_TEXT" desc="The text to show for the link to check the phone again, after the user has enabled a secure lock screen. This button is visible during the 1.5th step of the Easy Unlock dialog, when the user is prompted to secure their phone.">
-        Check again
-      </message>
-      <!-- Step 2: Phone Found -->
-      <message name="IDS_EASY_UNLOCK_SETUP_FOUND_PHONE_HEADER_TITLE" desc="The text to show as the header title of the Easy Unlock dialog during the second step, after a suitable phone has been found.">
-        Choose a phone to unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_FOUND_PHONE_HEADER_TEXT" desc="The text to show as the header body text of the Easy Unlock dialog during the second step, after a suitable phone has been found. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        You’ll get a notification on this phone so keep the phone nearby.
-      </message>
-      <!-- TODO(isherman): Remove this duplicate string once proximity work is completed. -->
-      <message name="IDS_EASY_UNLOCK_SETUP_FOUND_PHONE_USE_THIS_PHONE_BUTTON_LABEL" desc="The text to show as the 'Use this phone' button label in the Easy Unlock dialog. This button is visible during the second step, after a suitable phone is found.">
-        Use this phone
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_FOUND_PHONE_DEVICE_FORMATTED_BUTTON_LABEL" desc="The text to show as the 'Use [insert_phone_name]' button label in the Easy Unlock dialog. This button is visible during the second step, after a suitable phone is found.">
-        <ph name="PHONE_NAME">$1<ex>Nexus 6</ex></ph>
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_FOUND_PHONE_SWITCH_PHONE_LINK_LABEL" desc="The text to show for the link to switch phones in the Easy Unlock dialog. This button is visible during the second step, after serveral suitable phones are found.">
-        Show another phone
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_PAIRING_PHONE_FAILED_BUTTON_LABEL" desc="Text to show as a label for the button in Easy Unlock setup dialog when pairing Brave with the phone detected during setup fails. Pairing is the second step in the setup. Clicking the button restarts the whole setup flow.">
-        Restart
-      </message>
-      <!-- Step 2.5: "Recommended: Set up Smart Lock for Android" -->
-      <message name="IDS_EASY_UNLOCK_SETUP_ANDROID_SMART_LOCK_HEADER_TITLE" desc="The text to show as the header title of the Easy Unlock dialog to encourage the user to enable Smart Lock for Android if it is not currently enabled.">
-        Set up Smart Lock for Android
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_ANDROID_SMART_LOCK_HEADER_TEXT" desc="The text to show as the header body text of the Easy Unlock dialog to encourage the user to enable Smart Lock for Android if it is not currently enabled. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        Update your phone's screen lock so it turns off when you're nearby. You'll unlock the phone faster, and enjoy a better Smart Lock experience on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_ANDROID_SMART_LOCK_DONE_BUTTON_LABEL" desc="The text to show as the button label in the Easy Unlock dialog step for encouraging the user to enable Smart Lock for Android. Clicking this button advances the dialog to step 3.">
-        Next
-      </message>
-      <!-- Step 3: "You're all set" -->
-      <message name="IDS_EASY_UNLOCK_SETUP_COMPLETE_HEADER_TITLE" desc="The text to show as the header title of the Easy Unlock dialog during the penultimate step, confirming success.">
-        Smart Lock is all set
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_COMPLETE_HEADER_TEXT" desc="The text to show as the header body text of the Easy Unlock dialog during the penultimate step, confirming success.">
-        Your phone also unlocks your other <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>s because they are automatically synced.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_COMPLETE_TRY_IT_OUT_BUTTON_LABEL" desc="The text to show as the 'Try it out' button label in the Easy Unlock dialog. This button is visible during the penultimate step, once the Easy Unlock setup succeeds.">
-        Try Smart Lock
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_COMPLETE_SETTINGS_LINK_TEXT" desc="The text to show as the link text to access Easy Unlock settings. This button is visible during the penultimate step, once the Easy Unlock setup succeeds.">
-        Settings
-      </message>
-      <!-- Step 4: Post Lock Screen -->
-      <message name="IDS_EASY_UNLOCK_SETUP_POST_LOCK_DISMISS_BUTTON_LABEL" desc="The text to show as the button label in the Easy Unlock dialog during the post lockscreen step. Clicking this button dismisses the dialog.">
-        Done
-      </message>
-      <!-- Error strings for the Easy Unlock setup dialog -->
-      <message name="IDS_EASY_UNLOCK_SETUP_ERROR_BLUETOOTH_UNAVAILBLE" desc="The error message to display when the user's Bravebook might not have Bluetooth functionality during Easy Unlock setup. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        Can’t find your phone. Make sure your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>'s Bluetooth is turned on. &lt;a&gt;Learn more&lt;/a&gt;
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_ERROR_OFFLINE" desc="The error message to display when the user's Bravebook appears to be offline during Easy Unlock setup. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        Can’t find your phone. Make sure your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is connected to Wi-Fi or a mobile network. &lt;a&gt;Learn more&lt;/a&gt;
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_ERROR_REMOTE_SOFTWARE_OUT_OF_DATE" desc="The error message to display when the user's phone software is too old for compatibility with Easy Unlock. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        Found your <ph name="PHONE_TYPE">$1<ex>LGE Nexus 5</ex></ph>. But Smart Lock only works on devices with Android 5.0 and up. &lt;a&gt;Learn more&lt;/a&gt;
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_ERROR_REMOTE_SOFTWARE_OUT_OF_DATE_GENERIC" desc="The generic error message to display when the user's phone software is too old for compatibility with Easy Unlock. This is only shown when the user's phone type is not known. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        Found your phone. But Smart Lock only works on devices with Android 5.0 and up. &lt;a&gt;Learn more&lt;/a&gt;
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_ERROR_FINDING_PHONE" desc="A generic catch-all error message to display when something goes wrong after the user clicks 'Find my phone' during Easy Unlock setup. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        Can’t find your phone. Make sure you’re using a compatible Android phone that’s turned on and handy. &lt;a&gt;Learn more&lt;/a&gt;
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_ERROR_SYNC_PHONE_STATE_FAILED" desc="The error message to display when the Bravebook fails to sync the phone's state.">
-        Smart Lock is currently unavailable. Please try again later.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SETUP_ERROR_CONNECTING_TO_PHONE" desc="A generic catch-all error message to display when something goes wrong after the user clicks 'Use this phone' during Easy Unlock setup. Note that the &lt;a&gt; element surrounds a link; these HTML elements should be preserved in the translation.">
-        Can't connect to your phone. Make sure you’re using a compatible Android phone that is turned on and handy. &lt;a&gt;Learn more&lt;/a&gt;
-      </message>
-      <!-- Easy Unlock strings shown on the lock screen -->
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_NO_BLUETOOTH" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when the Bravebook doesn't have Bluetooth enabled.">
-        Bluetooth is off on this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Enter your password, and turn on Bluetooth.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_NO_PHONE" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook cannot be found.">
-        Can’t find your phone. Make sure it’s handy and Bluetooth is turned on.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_PHONE_NOT_AUTHENTICATED" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when no phones eligible to unlock the Bravebook can be authenticated.">
-        Unable to unlock. Enter your password.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_PHONE_LOCKED" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected, but it's locked and thus not allowed to unlock the Bravebook.">
-        Your phone is locked. Unlock it to enter.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_PHONE_UNLOCKABLE" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected, but it does not have lock screen enabled, in which case it is not allowed to unlock Bravebooks.">
-        To keep your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> safe, Smart Lock requires a screen lock on your phone.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_RSSI_TOO_LOW" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected, but it's not in the Bravebook's proximity (&gt; 30 feet away).">
-        Bring your phone closer to unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_PHONE_LOCKED_AND_RSSI_TOO_LOW" desc="Tooltip for an icon on a user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected, but it's both (a) locked and (b) not in the Bravebook's proximity (&gt; 1 foot away).">
-        Unlock your phone and bring it closer to unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_INITIAL_AUTHENTICATED" desc="Tooltip text shown on lock screen when a phone eligible to unlock the Bravebook via Easy Unlock is detected and authenticated for the first time.">
-        When your phone is unlocked and nearby, just select to unlock. Otherwise, enter your password or PIN.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_HARDLOCK_INSTRUCTIONS" desc="Tooltip for an icon on user's lock screen pod shown by Easy Unlock when a phone eligible to unlock the Bravebook is detected and authenticated. The tooltip shows instructions for hard-locking the Bravebook.">
-        If you click this icon, you will manually lock this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Next time, you’ll need to type your password to enter.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_PASSWORD_REAUTH" desc="Tooltip for an icon on user's lock screen pod shown by EasyUnlock when the user must enter their password instead of using EasyUnlock, because too much time has passed since their last password entry.">
-        For added security, Smart Lock will ask you to enter your password after 20 hours.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_PASSWORD_REQUIRED_FOR_LOGIN" desc="Tooltip for an icon on user's lock screen pod shown by EasyUnlock when a password is required to login to the Bravebook.">
-        To start Smart Lock, enter your password. Next time, you can use your phone to unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_UNSUPPORTED_ANDROID_VERSION" desc="Tooltip for the icon on user's lock screen pod shown by Easy Unlock when a phone set up to unlock the Bravebook is detected, but has an unsupported Android version. The user is asked to update the phone.">
-        Please update your phone to a newer version of Android to unlock this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_HARDLOCK_USER" desc="Tooltip text shown on a user's lock screen pod when Easy Unlock feature is enabled for the user, but the user hard locked the device. Hard lock is done by clicking the Easy Unlock icon on the user's pod. When a device is hard locked by a user, the Easy Unlock cannot be used to unlock the device as that user. A password has to be entered to unlock the device.">
-        Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is locked for security. Manually enter your password to continue.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_HARDLOCK_PAIRING_CHANGED" desc="Tooltip text shown on a user's lock screen pod when Easy Unlock feature is enabled for the user, but the pairing data is changed. A password has to be entered to unlock the device.">
-        Smart Lock phone changed. Enter your password to update Smart Lock. Next time, your phone will unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Turn off Smart Lock in Settings.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_HARDLOCK_PAIRING_ADDED" desc="Tooltip text shown on a user's lock screen pod when Easy Unlock pairing data is synced on a new Bravebook.">
-        Enter your password to turn on Smart Lock. Next time, your phone will unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Turn off Smart Lock in Settings.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_TOOLTIP_LOGIN_FAILURE" desc="Tooltip text shown on a user's lock screen when Smart Lock signin attempt fails.">
-        Smart Lock couldn’t verify your account. Type your password to enter.
-      </message>
-      <message name="IDS_SMART_LOCK_SCREENLOCK_TOOLTIP_HARDLOCK_REAUTH_USER" desc="Tooltip text shown on a user's lock screen pod to reauthenticate the user before setting up Smart Lock. A password has to be entered to unlock the device.">
-        To set up Smart Lock for Bravebook, Brave needs to make sure it’s you—type your password to get started.
-      </message>
-      <message name="IDS_EASY_UNLOCK_SCREENLOCK_USER_POD_AUTH_VALUE" desc="Message on lock screen user pod shown in place of password field when Easy Unlock is enabled and a phone that can unlock the Bravebook is detected in proximity.">
-        Click your photo
-      </message>
-      <message name="IDS_SMART_LOCK_SPINNER_ACCESSIBILITY_LABEL" desc="Label for the spinner icon used for accessibility purposes. This label is needed because this state does not have a tooltip.">
-        Finding your phone
       </message>
 
       <!-- Device permissions dialog strings. -->
@@ -9759,22 +8498,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
       </if>
 
-      <!-- Strings for ARC intent picker -->
-      <if expr="chromeos">
-        <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_OPEN_WITH" desc="Message contained in a label used as a header for a list of applications from which the user will pick one.">
-          Open with
-        </message>
-        <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_REMEMBER_SELECTION" desc="Message contained in a checkbox that must be marked in order for the intent picker to not be shown again for a similar URL.">
-          Remember my choice
-        </message>
-        <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_USE_APP" desc="Message contained in a button to continue the navigation in an ARC app selected by the user.">
-          Use app
-        </message>
-        <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_STAY_IN_CHROME" desc="Message contained in a button to continue the navigation within Brave.">
-          Stay in Brave
-        </message>
-      </if>
-
     <!-- WebUsb Notification -->
     <message name="IDS_WEBUSB_DEVICE_DETECTED_NOTIFICATION" desc="Content for notification shown to the user when a USB device gets plugged in.">
       Go to <ph name="LANDING_PAGE">$1<ex>www.google.com</ex></ph> to connect.
@@ -9790,34 +8513,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <if expr="is_win">
       <message name="IDS_COMMUNICATIONS_AUDIO_DEVICE_NAME" desc="System default communications audio device (microphone or loudspeaker). This is typically presented to users in a drop-down list of device choices.">
         Communications
-      </message>
-    </if>
-
-    <if expr="is_android">
-      <!-- Data Use -->
-      <message name="IDS_DATA_USE_TRACKING_STARTED_SNACKBAR_MESSAGE" desc="Message shown when data use tracking starts.">
-        Data use is being measured
-      </message>
-      <message name="IDS_DATA_USE_TRACKING_SNACKBAR_ACTION" desc="Button to learn more when data use tracking starts or ends.">
-        More
-      </message>
-      <message name="IDS_DATA_USE_TRACKING_ENDED_SNACKBAR_MESSAGE" desc="Message shown when data use tracking has ended.">
-        Data use measuring has ended
-      </message>
-      <message name="IDS_DATA_USE_TRACKING_ENDED_TITLE" desc="Message shown on the dialog when data use tracking has ended.">
-        Data use measuring ended
-      </message>
-      <message name="IDS_DATA_USE_TRACKING_ENDED_MESSAGE" desc="Message shown on the dialog when data use tracking has ended.">
-        Your data use will no longer be measured.
-      </message>
-      <message name="IDS_DATA_USE_TRACKING_ENDED_CHECKBOX_MESSAGE" desc="Message shown to opt out of seeing dialogs when data use tracking has ended.">
-        Don’t show this again
-      </message>
-      <message name="IDS_DATA_USE_TRACKING_ENDED_CONTINUE" desc="Continue button for the dialog shown when data use tracking has ended. When clicked, the page resumes loading.">
-        Continue
-      </message>
-      <message name="IDS_DATA_USE_LEARN_MORE_LINK_URL" desc="URL for the 'Learn more' link in the the dialog shown when data use tracking has ended.">
-        <!-- Intentionally empty. This is overridden via Finch. -->
       </message>
     </if>
 
@@ -9908,9 +8603,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_ALWAYS_ALLOW_ADS" desc="Explanation associated with a toggle to allow ads after ads have been blocked on the page. To be used on pages where the ad blocking UI is governed by a persistent permissions-based whitelist.">
       Always allow ads on this site
     </message>
-    <message name="IDS_ALLOW_ADS" desc="Explanation associated with a toggle to allow ads after ads have been blocked on the page. To be used on pages where the ad blocking UI is governed by a per-tab whitelist.">
-      Allow ads on this site
-    </message>
     <message name="IDS_BLOCKED_ADS_INFOBAR_MESSAGE" desc="The mini infobar message shown to users on Android when Brave has blocked ads on the site because the site tends to show intrusive ads. Will be presented as a sentence, next to a Details link to expand the infobar.">
       Ads blocked.
     </message>
@@ -9936,16 +8628,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
         Redirect blocked:
       </message>
-      <if expr="use_titlecase">
-        <message name="IDS_REDIRECT_BLOCKED_GOT_IT" desc="In Title Case: The text of the OK button for the blocked redirect dialog.">
-          Got It
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_REDIRECT_BLOCKED_GOT_IT" desc="The text of the OK button for the blocked redirect dialog.">
-          Got it
-        </message>
-      </if>
       <message name="IDS_REDIRECT_BLOCKED_TITLE" desc="The short message stating that a redirect (noun) was blocked on this page. Same as IDS_REDIRECT_BLOCKED_SHORT_MESSAGE but without the period.">
          Redirect blocked
       </message>
@@ -10076,9 +8758,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_VIDEO_AUDIO_CALL_NOTIFICATION_TEXT_2" desc="Text to be shown as a notification when a WebRTC video and audio call is in progress" formatter_data="android_java">
         Accessing audio and video input
       </message>
-      <message name="IDS_SCREEN_CAPTURE_NOTIFICATION_TEXT_2" desc="Text to be shown as a notification when screen capture is in progress.">
-        Sharing screen
-      </message>
     </if>
 
     <!-- Download open confirmation dialog -->
@@ -10088,157 +8767,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_DOWNLOAD_OPEN_CONFIRMATION_DIALOG_MESSAGE" desc="Text of the message of the download open confirmation dialog.">
         Allow <ph name="EXTENSION_NAME">$1<ex>Download Viewer</ex></ph> to open <ph name="FILE_NAME">$2<ex>abc.jpg</ex></ph>?
-      </message>
-    </if>
-
-    <!-- Strings that are only used when VR devices are supported -->
-    <!-- TODO(ddorwin): Use consistent naming schemes for VR strings. -->
-    <if expr="enable_vr">
-      <message name="IDS_PRESS_APP_TO_EXIT" desc="Text displayed in a transient bubble to tell users how to return from presentation mode (where the WebVR page occupies the entire screen) to normal mode.">
-        Press App button to exit
-      </message>
-      <message name="IDS_VR_SHELL_SITE_IS_TRACKING_LOCATION" desc="Text displayed in a transient bubble to inform the user that the page is tracking location.">
-        Site is tracking your location
-      </message>
-      <message name="IDS_VR_SHELL_SITE_IS_USING_MICROPHONE" desc="Text displayed in a transient bubble to inform the user that the page is using the microphone.">
-        Site is using your microphone
-      </message>
-      <message name="IDS_VR_SHELL_SITE_IS_USING_BLUETOOTH" desc="Text displayed in a transient bubble to inform the user that the page is using bluetooth.">
-        Site is using bluetooth
-      </message>
-      <message name="IDS_VR_SHELL_SITE_IS_USING_CAMERA" desc="Text displayed in a transient bubble to inform the user that the page is using the camera.">
-        Site is using your camera
-      </message>
-      <message name="IDS_VR_SHELL_SITE_IS_SHARING_SCREEN" desc="Text displayed in a transient bubble to inform the user that the page is sharing the screen.">
-        Site is sharing your screen
-      </message>
-      <message name="IDS_VR_SHELL_BG_IS_USING_MICROPHONE" desc="Text displayed in a transient bubble to inform the user that a background tab is using the microphone.">
-        Background tab is using your microphone
-      </message>
-      <message name="IDS_VR_SHELL_BG_IS_USING_BLUETOOTH" desc="Text displayed in a transient bubble to inform the user that a background tab is using bluetooth.">
-        Background tab is using bluetooth
-      </message>
-      <message name="IDS_VR_SHELL_BG_IS_USING_CAMERA" desc="Text displayed in a transient bubble to inform the user that a background tab is using the camera.">
-        Background tab is using your camera
-      </message>
-      <message name="IDS_VR_SHELL_BG_IS_SHARING_SCREEN" desc="Text displayed in a transient bubble to inform the user that a background tab is sharing the screen.">
-        Background tab is sharing your screen
-      </message>
-      <message name="IDS_VR_SHELL_SITE_CAN_TRACK_LOCATION" desc="Text displayed in a transient bubble to inform the user that the page may track location, but isn't doing so yet.">
-        Site can track your location
-      </message>
-      <message name="IDS_VR_SHELL_SITE_CAN_USE_MICROPHONE" desc="Text displayed in a transient bubble to inform the user that the page may use the microphone, but isn't doing so yet.">
-        Site can use your microphone
-      </message>
-      <message name="IDS_VR_SHELL_SITE_CAN_USE_BLUETOOTH" desc="Text displayed in a transient bubble to inform the user that the page may use bluetooth, but isn't doing so yet.">
-        Site can use bluetooth
-      </message>
-      <message name="IDS_VR_SHELL_SITE_CAN_USE_CAMERA" desc="Text displayed in a transient bubble to inform the user that the page may use the camera, but isn't doing so yet.">
-        Site can use your camera
-      </message>
-      <message name="IDS_VR_SHELL_SITE_CAN_SHARE_SCREEN" desc="Text displayed in a transient bubble to inform the user that the page may share your screen, but isn't doing so yet.">
-        Site can share your screen
-      </message>
-
-      <!-- VR browser -->
-      <!-- TODO(https://crbug.com/731802): Only build these when the VR browser is supported. -->
-      <message name="IDS_VR_UPDATE_KEYBOARD_PROMPT" desc="Text shown when the keyboard is not installed or needs to be updated on the user's device">
-        Install or update Daydream Keyboard to use Brave in VR
-      </message>
-      <message name="IDS_VR_SHELL_EXIT_PROMPT_DESCRIPTION" desc="Text on the exit prompt that shows up when the user tries to use a feature that is not supported in VR">
-        This feature is not supported in VR
-      </message>
-      <message name="IDS_VR_SHELL_EXIT_PROMPT_DESCRIPTION_SITE_INFO" desc="Text on the exit prompt that shows up when the user clicks on URL bar security icon in VR">
-        Site information is not available in VR
-      </message>
-      <message name="IDS_VR_SHELL_AUDIO_PERMISSION_PROMPT_DESCRIPTION" desc="Text on the exit prompt in VR that shows up when the user needs to grant audio permission to Brave">
-        Allow Brave to record audio?
-      </message>
-      <message name="IDS_VR_SHELL_AUDIO_PERMISSION_PROMPT_ABORT_BUTTON" desc="Text on the cancel button of the prompt that shows up in VR when user needs to grant audio permission to Brave">
-        Cancel
-      </message>
-      <message name="IDS_VR_SHELL_AUDIO_PERMISSION_PROMPT_CONTINUE_BUTTON" desc="Text on the exit button of the prompt that shows up when user needs to grant audio permission to Brave to perform a voice search">
-        Continue
-      </message>
-      <!-- TODO(https://crbug.com/787654): Make mixed case before using in production on a non-Android platform. -->
-      <message name="IDS_VR_SHELL_EXIT_PROMPT_EXIT_VR_BUTTON" desc="Text on the exit button of the exit prompt that shows up when the user clicks on URL bar security icon in VR">
-        EXIT VR
-      </message>
-      <message name="IDS_VR_BROWSER_UNSUPPORTED_PAGE" desc="This text is displayed as a large toast to inform the user that they cannot currently browse the current page in VR and they will soon exit VR mode.">
-        This page contains features not yet supported in VR. Exiting...
-      </message>
-      <message name="IDS_VR_WEB_VR_TIMEOUT_MESSAGE" desc="A message that is shown to the user when the WebVR experience is taking too long to start up.">
-        The page isn't responding. You can wait for it or exit.
-      </message>
-      <message name="IDS_VR_WEB_VR_EXIT_BUTTON_LABEL" desc="This label is shown below the button that accompanies the message shown when the WebVR experience is taking too long to start up. The intent of this label is to let the user know that clicking the button will cause them to exit VR mode.">
-        Exit
-      </message>
-      <!-- TODO(https://crbug.com/774199): Make this <if expr="is_android"> -->
-      <message name="IDS_VR_RUNNING_IN_CHROME_MESSAGE" desc="A message indicating that the current page is running in Brave.">
-        Running in Brave
-      </message>
-      <message name="IDS_VR_NO_SPEECH_RECOGNITION_RESULT" desc="Text to be shown if speech recognition failed to recognize a speech due to either no sound or noise.">
-        Sorry, didn't catch that.
-      </message>
-      <message name="IDS_VR_COMPONENT_UPDATE_READY" desc="Text to be shown to indicate a VR component update is ready to be applied.">
-        Update ready
-      </message>
-      <message name="IDS_VR_COMPONENT_APPLY" desc="Text to be shown on the button to apply a new component update.">
-        Apply
-      </message>
-      <message name="IDS_VR_BUTTON_TRACKPAD" desc="The label for the trackpad on the VR controller.">
-        Scroll / Click
-      </message>
-      <message name="IDS_VR_BUTTON_EXIT" desc="The label for the exit button on the VR controller -- shown when in fullscreen mode.">
-        Exit Fullscreen
-      </message>
-      <message name="IDS_VR_BUTTON_BACK" desc="The label for the back button on the VR controller -- shown when the keyboard is visible, we are in voice search, or we are repositioning.">
-        Back
-      </message>
-      <message name="IDS_VR_BUTTON_TRACKPAD_REPOSITION" desc="The label for the trackpad while in window repositioning/resizing mode.">
-        Touch to resize
-      </message>
-      <message name="IDS_VR_BUTTON_APP_REPOSITION" desc="This is the label for the app button while in reposition mode">
-        Finish
-      </message>
-      <message name="IDS_VR_MENU_NEW_TAB" desc="Menu item for opening a new tab. [CHAR-LIMIT=27]">
-        New tab
-      </message>
-      <message name="IDS_VR_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new incognito tab that facilitates pseudononymous browsing. [CHAR-LIMIT=27]">
-        New incognito tab
-      </message>
-      <message name="IDS_VR_MENU_BOOKMARKS" desc="Menu item for opening the bookmarks page that contains all the user's bookmarks. [CHAR-LIMIT=27]">
-        Bookmarks
-      </message>
-      <message name="IDS_VR_MENU_RECENT_TABS" desc="Menu item for opening the 'Recent tabs' page that shows recently closed tabs and pages the user has opened on his/her other devices. [CHAR-LIMIT=27]">
-        Recent tabs
-      </message>
-      <message name="IDS_VR_MENU_HISTORY" desc="Menu item for opening the history page. [CHAR-LIMIT=27]">
-        History
-      </message>
-      <message name="IDS_VR_MENU_DOWNLOADS" desc="Menu item for opening the downloads page. [CHAR-LIMIT=27]">
-        Downloads
-      </message>
-      <message name="IDS_VR_MENU_SHARE" desc="Menu item for sharing the current URL. [CHAR-LIMIT=27]">
-        Share...
-      </message>
-      <message name="IDS_VR_MENU_PREFERENCES" desc="Menu item for opening browser preferences. [CHAR-LIMIT=27]">
-        Settings
-      </message>
-      <message name="IDS_VR_MENU_CLOSE_ALL_TABS" desc="Menu item for closing all open tabs. [CHAR-LIMIT=27]">
-        Close all tabs
-      </message>
-      <message name="IDS_VR_MENU_CLOSE_INCOGNITO_TABS" desc="Menu item for closing all open incognito tabs. [CHAR-LIMIT=27]">
-        Close incognito tabs
-      </message>
-      <message name="IDS_VR_MENU_SEND_FEEDBACK" desc="Menu item for sending feedback. [CHAR-LIMIT=27]">
-        Send feedback
-      </message>
-      <message name="IDS_VR_TABS_BUTTON_REGULAR" desc="Text on button for selecting regular tabs">
-        Tabs
-      </message>
-      <message name="IDS_VR_TABS_BUTTON_INCOGNITO" desc="Text on button for selecting incognito tabs">
-        Incognito
       </message>
     </if>
 
@@ -10263,6 +8791,101 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Got it
       </message>
     </if>
+
+    <!-- Web-modal dialog shown during Web Authenticaton API requests. -->
+    <message name="IDS_WEBAUTHN_INITIAL_SHEET_TITLE" desc="Title of the dialog shown when a web site wants to register/verify a user's security key through the Web Authentication API.">
+    <ph name="APP_NAME">$1<ex>google.com</ex></ph> wants to verify your identity
+    </message>
+    <message name="IDS_WEBAUTHN_INITIAL_SHEET_DESCRIPTION" desc="Contents of the dialog shown when a web site wants to register/verify a user's security key through the Web Authentication API.">
+      Verifying your identity helps protect your private data
+    </message>
+    <message name="IDS_WEBAUTHN_INITIAL_SHEET_NEXT" desc="Contents of the button shown to let the user continue to register/verify his/her identity via using a security key.">
+      Continue
+    </message>
+    <message name="IDS_WEBAUTHN_TRANSPORT_SELECTION_TITLE" desc="Title of the dialog shown when instructing the user to choose transport type to use to register/verfify using a security key.">
+    Verify your identity with <ph name="APP_NAME">$1<ex>google.com</ex></ph>
+    </message>
+    <message name="IDS_WEBAUTHN_TRANSPORT_SELECTION_DESCRIPTION" desc="Contents of the dialog shown when instructing the user to choose transport type for the security key to be used by the Web Authentication API.">
+      Pick an option
+    </message>
+    <message name="IDS_WEBAUTHN_TRANSPORT_BLE" desc="Use a Security Key with the Web Authentication API over Bluetooth Low Energy.">
+      Use your Security Key with Bluetooth
+    </message>
+    <message name="IDS_WEBAUTHN_TRANSPORT_USB" desc="Use a Security Key with the Web Authentication API over Universal Serial Bus (USB).">
+      Use your Security Key with USB
+    </message>
+    <message name="IDS_WEBAUTHN_TRANSPORT_NFC" desc="Use a Security Key with the Web Authentication API over Near-Field Communication (NFC).">
+      Use your Security Key with NFC
+    </message>
+    <message name="IDS_WEBAUTHN_TRANSPORT_INTERNAL" desc="Use a Security Key with the Web Authentication API that is built in to the platform, such as Touch ID or Face ID.">
+      Use a built-in Security Key
+    </message>
+    <message name="IDS_WEBAUTHN_TRANSPORT_CABLE" desc="Use a phone as a Security Key over cloud-assisted BLE with the Web Authentication API.">
+      Use your phone as a Security Key
+    </message>
+    <message name="IDS_WEBAUTHN_USB_TITLE_ON_REGISTER" desc="Title of the dialog shown when the user has choosen to access their security key through USB during registration.">
+      Use USB Security Key
+    </message>
+    <message name="IDS_WEBAUTHN_USB_TITLE_ON_SIGNIN" desc="Title of the dialog shown when the user has choosen to access their security key through USB during sign-in.">
+      Use USB Security Key with <ph name="APP_NAME">$1<ex>google.com</ex></ph>
+    </message>
+    <message name="IDS_WEBAUTHN_USB_INSERT_DESCRIPTION" desc="Contents of the dialog shown instructing the user to plug in their USB security key.">
+      Plug in your Security Key and activate it
+    </message>
+    <message name="IDS_WEBAUTHN_TIMEOUT_TITLE" desc="Title of the dialog shown when the Web Authentication request times out.">
+      Time out
+    </message>
+    <message name="IDS_WEBAUTHN_TIMEOUT_DESCRIPTION" desc="Contents of the dialog shown when Web Authentication request times out due to inactivity or error.">
+      The request timed out
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_POWER_ON_MANUAL_TITLE" desc="Title of the dialog shown when instructing the user to manually turn on Bluetooth so that security keys can be used over Bluetooth.">
+      Turn on Bluetooth
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_POWER_ON_MANUAL_DESCRIPTION" desc="Contents of the dialog shown instructing the user to turn on bluetooth so that security keys can be used over Bluetooth.">
+      Your Security Key only works when your device's Bluetooth is on
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_POWER_ON_MANUAL_TRY_AGAIN" desc="Contents of the button shown to let the user restart the Bluetooth pairing process with Bluetooth powered on.">
+      Try again
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_PAIRING_BEGIN_TITLE" desc="Title of the dialog shown when preparing the user to pair Bluetooth security key.">
+      Ready to pair your Security Key?
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_PAIRING_BEGIN_DESCRIPTION" desc="Contents of the dialog shown when initiating the user to pair Bluetooth security key.">
+      Pair your key to this device so you can use it to sign into your account
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_PAIRING_BEGIN_START" desc="Contents of the button that lets the user initiate Bluetooth pairing process.">
+     Begin
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_ENTER_PAIRING_MODE_TITLE" desc="Title of the dialog shown when instructing the user to put security key into pairing mode.">
+      Allow the use of your Security Key
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_ENTER_PAIRING_MODE_DESCRIPTION" desc="Contents of the dialog shown when instructing the user to put security key into pairing mode.">
+      Press and hold the button on your Security Key for at least 5 seconds
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_DEVICE_SELECTION_TITLE" desc="Title of the dialog shown when instructing the user to select security key to connect.">
+      Select your Security Key
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_DEVICE_SELECTION_DESCRIPTION" desc="Contents of the dialog shown when instructing the user to select his/her security key from list of near by BLE devices.">
+      Find the name printed on the back of your key
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_PIN_ENTRY_TITLE" desc="Title of the dialog shown when instructing the user to enter the PIN code to pair a Bluetooth security key.">
+      Pair with <ph name="DEVICE_NAME">$1<ex>VHGSHSSN</ex></ph>
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_PIN_ENTRY_DESCRIPTION" desc="Contents of the dialog shown when instructing the user to enter the PIN code to pair a Bluetooth security key.">
+     Find the 6-digit PIN on the back of your key
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_PIN_ENTRY_NEXT" desc="Contents of the button that lets the user continue the pairing process with the entered Bluetooth PIN code.">
+     Next
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_VERIFYING_TITLE" desc="Title of the dialog shown when the user has established BLE connection with the security key.">
+      Verifying your Security Key
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_ACTIVATE_TITLE" desc="Title of the dialog shown when the user tries to sign-in using a security key.">
+      Use your Security Key with <ph name="APP_NAME">$1<ex>airbnb.com</ex></ph>
+    </message>
+    <message name="IDS_WEBAUTHN_BLE_ACTIVATE_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a security key.">
+      To use most keys, simply press the button
+   </message>
   </messages>
  </release>
 </grit>

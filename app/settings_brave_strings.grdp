@@ -57,6 +57,12 @@
   <message name="IDS_SETTINGS_IMPROVE_BROWSING_EXPERIENCE" desc="The text in the options panel that describes how we use web services to improve browsing experience.">
     Brave may use web services to improve your browsing experience. You may optionally disable these services. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_SPELLING_DESCRIPTION_UNIFIED_CONSENT" desc="Description of using a web serviced to help resolve spelling errors. It is important to convey that what the user types will be sent to Brave.">
+    To fix spelling errors, Brave sends the text you type in text fields to Brave
+  </message>
+  <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_DESC" desc="Brief explanation of the capability of Brave services.">
+    Communicates with Brave to improve browsing and Brave
+  </message>
 
   <!-- People Page -->
   <message name="IDS_SETTINGS_SYNC_DISABLED_BY_ADMINISTRATOR" desc="The text to display when sync is disabled by administrator policy.">
@@ -91,7 +97,10 @@
     For added security, Brave will encrypt your data.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_TITLE" desc="The title of the dialog to stop syncing and sign out.">
-    Sign out of Brave
+    Sign out of Brave?
+  </message>
+  <message name="IDS_DRIVE_SUGGEST_PREF_DESC" desc="The documentation string of the 'Show Drive Results in Omnibox' - full description sentence">
+    Brave will access your Drive to make suggestions in the address bar
   </message>
 <if expr="not chromeos">
     <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT_WITH_NO_ACCOUNT" desc="The text displayed to prompt users to sign in to Brave.">
