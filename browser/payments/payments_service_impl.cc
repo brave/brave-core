@@ -49,6 +49,16 @@ class LedgerURLLoaderImpl : public ledger::LedgerURLLoader {
   net::URLFetcher* fetcher_;  // NOT OWNED
 };
 
+ContentSite PublisherInfoToContentSite(
+    const ledger::PublisherInfo& publisher_info) {
+  ContentSite content_site(publisher_info.id);
+  content_site.score = publisher_info.score;
+  content_site.pinned = publisher_info.pinned;
+  content_site.percentage = publisher_info.percent;
+  content_site.excluded = publisher_info.excluded;
+  return content_site;
+}
+
 net::URLFetcher::RequestType URLMethodToRequestType(ledger::URL_METHOD method) {
   switch(method) {
     case ledger::URL_METHOD::GET:
