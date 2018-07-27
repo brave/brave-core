@@ -1,0 +1,17 @@
+diff --git a/net/socket/socket_test_util.cc b/net/socket/socket_test_util.cc
+index 5aa92f53bb3bcc8423ded1f1086ae91d1d77163a..53dd38d2e0485ee2f91483dfdbc1d6b9d241818d 100644
+--- a/net/socket/socket_test_util.cc
++++ b/net/socket/socket_test_util.cc
+@@ -2257,6 +2257,12 @@ const int kSOCKS5GreetRequestLength = base::size(kSOCKS5GreetRequest);
+ const char kSOCKS5GreetResponse[] = { 0x05, 0x00 };
+ const int kSOCKS5GreetResponseLength = base::size(kSOCKS5GreetResponse);
+ 
++const char kSOCKS5GreetRequestAuth[] = { 0x05, 0x01, 0x02 };
++const int kSOCKS5GreetRequestAuthLength = arraysize(kSOCKS5GreetRequestAuth);
++
++const char kSOCKS5GreetResponseAuth[] = { 0x05, 0x02 };
++const int kSOCKS5GreetResponseAuthLength = arraysize(kSOCKS5GreetResponseAuth);
++
+ const char kSOCKS5OkRequest[] =
+     { 0x05, 0x01, 0x00, 0x03, 0x04, 'h', 'o', 's', 't', 0x00, 0x50 };
+ const int kSOCKS5OkRequestLength = base::size(kSOCKS5OkRequest);

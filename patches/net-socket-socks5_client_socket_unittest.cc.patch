@@ -1,0 +1,182 @@
+diff --git a/net/socket/socks5_client_socket_unittest.cc b/net/socket/socks5_client_socket_unittest.cc
+index e5648cad24301b49302d1fe4d403c6010b414fef..12f7bf840014af46b1d075c268a37d911322f68f 100644
+--- a/net/socket/socks5_client_socket_unittest.cc
++++ b/net/socket/socks5_client_socket_unittest.cc
+@@ -49,12 +49,25 @@ class SOCKS5ClientSocketTest : public PlatformTest,
+  public:
+   SOCKS5ClientSocketTest();
+   // Create a SOCKSClientSocket on top of a MockSocket.
++  std::unique_ptr<ClientSocketHandle> MockConnect(
++      base::span<const MockRead> reads,
++      base::span<const MockWrite> writes,
++      int port,
++      NetLog* net_log);
+   std::unique_ptr<SOCKS5ClientSocket> BuildMockSocket(
+       base::span<const MockRead> reads,
+       base::span<const MockWrite> writes,
+       const std::string& hostname,
+       int port,
+       NetLog* net_log);
++  std::unique_ptr<SOCKS5ClientSocketAuth> BuildMockSocketAuth(
++      base::span<const MockRead> reads,
++      base::span<const MockWrite> writes,
++      const std::string& username,
++      const std::string& password,
++      const std::string& hostname,
++      int port,
++      NetLog* net_log);
+ 
+   void SetUp() override;
+ 
+@@ -95,10 +108,9 @@ void SOCKS5ClientSocketTest::SetUp() {
+   ASSERT_THAT(rv, IsOk());
+ }
+ 
+-std::unique_ptr<SOCKS5ClientSocket> SOCKS5ClientSocketTest::BuildMockSocket(
++std::unique_ptr<ClientSocketHandle> SOCKS5ClientSocketTest::MockConnect(
+     base::span<const MockRead> reads,
+     base::span<const MockWrite> writes,
+-    const std::string& hostname,
+     int port,
+     NetLog* net_log) {
+   TestCompletionCallback callback;
+@@ -115,12 +127,42 @@ std::unique_ptr<SOCKS5ClientSocket> SOCKS5ClientSocketTest::BuildMockSocket(
+   // |connection| takes ownership of |tcp_sock_|, but keep a
+   // non-owning pointer to it.
+   connection->SetSocket(std::unique_ptr<StreamSocket>(tcp_sock_));
++
++  return connection;
++}
++
++std::unique_ptr<SOCKS5ClientSocket> SOCKS5ClientSocketTest::BuildMockSocket(
++    base::span<const MockRead> reads,
++    base::span<const MockWrite> writes,
++    const std::string& hostname,
++    int port,
++    NetLog* net_log) {
++  std::unique_ptr<ClientSocketHandle> connection(MockConnect(
++      reads, writes, port, net_log));
+   return std::unique_ptr<SOCKS5ClientSocket>(new SOCKS5ClientSocket(
+       std::move(connection),
+       HostResolver::RequestInfo(HostPortPair(hostname, port)),
+       TRAFFIC_ANNOTATION_FOR_TESTS));
+ }
+ 
++std::unique_ptr<SOCKS5ClientSocketAuth> SOCKS5ClientSocketTest::BuildMockSocketAuth(
++    base::span<const MockRead> reads,
++    base::span<const MockWrite> writes,
++    const std::string& username,
++    const std::string& password,
++    const std::string& hostname,
++    int port,
++    NetLog* net_log) {
++  std::unique_ptr<ClientSocketHandle> connection(MockConnect(
++      reads, writes, port, net_log));
++  HostPortPair host_port = HostPortPair(username, password, hostname, port);
++  return std::unique_ptr<SOCKS5ClientSocketAuth>(new SOCKS5ClientSocketAuth(
++      std::move(connection),
++      HostResolver::RequestInfo(host_port),
++      TRAFFIC_ANNOTATION_FOR_TESTS,
++      host_port));
++}
++
+ // Tests a complete SOCKS5 handshake and the disconnection.
+ TEST_F(SOCKS5ClientSocketTest, CompleteHandshake) {
+   const std::string payload_write = "random data";
+@@ -400,6 +442,96 @@ TEST_F(SOCKS5ClientSocketTest, Tag) {
+ #endif  // OS_ANDROID
+ }
+ 
++// Tests a complete SOCKS5 handshake and the disconnection with
++// username and password authentication.
++TEST_F(SOCKS5ClientSocketTest, CompleteHandshakeUsernamePassword) {
++  const std::string payload_write = "random data";
++  const std::string payload_read = "moar random data";
++
++  const char kAuthRequest[] = {
++    0x01,  // Version
++    0x05,  // Username length
++    // Username:
++    'w', 'a', 'g', 'o', 'n',
++    0x08,  // Password length
++    // Password:
++    'm', 'c', 'd', 'r', 'a', 'g', 'o', 'n',
++  };
++  const char kAuthResponse[] = {
++    0x01,  // Version
++    0x00,  // Success
++  };
++
++  const char kOkRequest[] = {
++    0x05,  // Version
++    0x01,  // Command (CONNECT)
++    0x00,  // Reserved.
++    0x03,  // Address type (DOMAINNAME).
++    0x09,  // Length of domain (9)
++    // Domain string:
++    'l', 'o', 'c', 'a', 'l', 'h', 'o', 's', 't',
++    0x00, 0x50,  // 16-bit port (80)
++  };
++
++  MockWrite data_writes[] = {
++      MockWrite(ASYNC, kSOCKS5GreetRequestAuth, kSOCKS5GreetRequestAuthLength),
++      MockWrite(ASYNC, kAuthRequest, arraysize(kAuthRequest)),
++      MockWrite(ASYNC, kOkRequest, arraysize(kOkRequest)),
++      MockWrite(ASYNC, payload_write.data(), payload_write.size()) };
++  MockRead data_reads[] = {
++      MockRead(ASYNC, kSOCKS5GreetResponseAuth, kSOCKS5GreetResponseAuthLength),
++      MockRead(ASYNC, kAuthResponse, arraysize(kAuthResponse)),
++      MockRead(ASYNC, kSOCKS5OkResponse, kSOCKS5OkResponseLength),
++      MockRead(ASYNC, payload_read.data(), payload_read.size()) };
++
++  user_sock_ = BuildMockSocketAuth(data_reads, data_writes,
++                                   "wagon", "mcdragon", "localhost", 80,
++                                   &net_log_);
++
++  // At this state the TCP connection is completed but not the SOCKS handshake.
++  EXPECT_TRUE(tcp_sock_->IsConnected());
++  EXPECT_FALSE(user_sock_->IsConnected());
++
++  int rv = user_sock_->Connect(callback_.callback());
++  EXPECT_THAT(rv, IsError(ERR_IO_PENDING));
++  EXPECT_FALSE(user_sock_->IsConnected());
++
++  TestNetLogEntry::List net_log_entries;
++  net_log_.GetEntries(&net_log_entries);
++  EXPECT_TRUE(LogContainsBeginEvent(net_log_entries, 0,
++                                    NetLogEventType::SOCKS5_CONNECT));
++
++  rv = callback_.WaitForResult();
++
++  EXPECT_THAT(rv, IsOk());
++  EXPECT_TRUE(user_sock_->IsConnected());
++
++  net_log_.GetEntries(&net_log_entries);
++  EXPECT_TRUE(LogContainsEndEvent(net_log_entries, -1,
++                                  NetLogEventType::SOCKS5_CONNECT));
++
++  scoped_refptr<IOBuffer> buffer(new IOBuffer(payload_write.size()));
++  memcpy(buffer->data(), payload_write.data(), payload_write.size());
++  rv = user_sock_->Write(
++      buffer.get(), payload_write.size(), callback_.callback(),
++      TRAFFIC_ANNOTATION_FOR_TESTS);
++  EXPECT_THAT(rv, IsError(ERR_IO_PENDING));
++  rv = callback_.WaitForResult();
++  EXPECT_EQ(static_cast<int>(payload_write.size()), rv);
++
++  buffer = new IOBuffer(payload_read.size());
++  rv =
++      user_sock_->Read(buffer.get(), payload_read.size(), callback_.callback());
++  EXPECT_THAT(rv, IsError(ERR_IO_PENDING));
++  rv = callback_.WaitForResult();
++  EXPECT_EQ(static_cast<int>(payload_read.size()), rv);
++  EXPECT_EQ(payload_read, std::string(buffer->data(), payload_read.size()));
++
++  user_sock_->Disconnect();
++  EXPECT_FALSE(tcp_sock_->IsConnected());
++  EXPECT_FALSE(user_sock_->IsConnected());
++}
++
+ }  // namespace
+ 
+ }  // namespace net
