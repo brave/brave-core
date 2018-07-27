@@ -4,7 +4,6 @@
 <translation id="5246282308050205996"><ph name="APP_NAME"/> har kraschat. Klicka på ballongen för att starta om appen.</translation>
 <translation id="2025632980034333559"><ph name="APP_NAME"/> har kraschat. Klicka på ballongen för att ladda om tillägget.</translation>
 <translation id="1090126737595388931">Inga bakgrundsprogram körs</translation>
-<translation id="572392919096807438">Kom ihåg detta</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> vill</translation>
 <translation id="5039804452771397117">Tillåt</translation>
 <translation id="7053983685419859001">Blockera</translation>
@@ -44,7 +43,6 @@
 <translation id="6277518330158259200">T&amp;amp;a en skärmdump</translation>
 <translation id="5288678174502918605">Ö&amp;amp;ppna en stängd flik igen</translation>
 <translation id="2731392572903530958">Ö&amp;amp;ppna ett stängt fönster igen</translation>
-<translation id="4345703751611431217">Inkompatibel programvara: läs mer</translation>
 <translation id="7607274158153386860">Begär webbplats för surfplatta</translation>
 <translation id="4408599188496843485">H&amp;amp;jälp</translation>
 <translation id="3855676282923585394">Importera bokmärken och inställningar...</translation>
@@ -63,9 +61,6 @@
 <translation id="5702898740348134351">&amp;amp;Redigera sökmotorer...</translation>
 <translation id="2454247629720664989">Sökord</translation>
 <translation id="5327248766486351172">Namn</translation>
-<translation id="2585300050980572691">Standardinställningar för sökning</translation>
-<translation id="5605623530403479164">Andra sökmotorer</translation>
-<translation id="1459967076783105826">Sökmotorer som lagts till av tilläggsprogram</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (Standard)</translation>
 <translation id="846374874681391779">Nedladdningsfält</translation>
 <translation id="1743970419083351269">Stäng nedladdningsfältet</translation>
@@ -128,7 +123,6 @@
 <translation id="7764256770584298012"><ph name="DOWNLOAD_RECEIVED"/> från <ph name="DOWNLOAD_DOMAIN"/></translation>
 <translation id="3879748587602334249">Nedladdningshanterare</translation>
 <translation id="340282674066624"><ph name="DOWNLOAD_RECEIVED"/>, <ph name="TIME_LEFT"/></translation>
-<translation id="9183836083779743117"><ph name="DOWNLOAD_RECEIVED"/> från <ph name="DOWNLOAD_DOMAIN"/>, <ph name="TIME_LEFT"/></translation>
 <translation id="3076909148546628648"><ph name="DOWNLOAD_RECEIVED"/>/<ph name="DOWNLOAD_TOTAL"/></translation>
 <translation id="1168020859489941584">Öppnar om <ph name="TIME_REMAINING"/>...</translation>
 <translation id="1383861834909034572">Öppna när klar</translation>
@@ -160,7 +154,6 @@
 <translation id="2770465223704140727">Ta bort från listan</translation>
 <translation id="7658239707568436148">Avbryt</translation>
 <translation id="7144878232160441200">Försök igen</translation>
-<translation id="2541423446708352368">Visa alla hämtade filer</translation>
 <translation id="6910211073230771657">Borttagen</translation>
 <translation id="4057041477816018958"><ph name="SPEED"/> - <ph name="RECEIVED_AMOUNT"/></translation>
 <translation id="816095449251911490"><ph name="SPEED"/> - <ph name="RECEIVED_AMOUNT"/>, <ph name="TIME_REMAINING"/></translation>
@@ -181,6 +174,7 @@
 <translation id="883911313571074303">Kommentera bild</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Nedladdning pågår}other{Nedladdningar pågår}}</translation>
 <translation id="5284445933715251131">Fortsätt nedladdning</translation>
+<translation id="7707599169365957976">Du kan hjälpa oss att förbättra Säker webbsökning genom att låta viss systeminformation och visst sidinnehåll skickas automatiskt till Brave Software.</translation>
 <translation id="4923279099980110923">Ja, jag vill hjälpa till</translation>
 <translation id="2316129865977710310">Nej tack</translation>
 <translation id="5280426389926346830">Vill du skapa en genväg?</translation>
@@ -236,7 +230,6 @@
 <translation id="2796740370559399562">Fortsätt att tillåta cookies</translation>
 <translation id="540296380408672091">Blockera alltid cookies på <ph name="HOST"/></translation>
 <translation id="6622980291894852883">Fortsätt att blockera bilder</translation>
-<translation id="1753682364559456262">Hantera blockering av bilder...</translation>
 <translation id="7810202088502699111">Popup-fönster är blockerade på den här sidan.</translation>
 <translation id="4808667324955055115">Popup-fönster har blockerats</translation>
 <translation id="1260451001046713751">Tillåt alltid popup-fönster och omdirigeringar från <ph name="HOST"/></translation>
@@ -263,7 +256,6 @@
 <translation id="4085298594534903246">JavaScript är blockerat på den här sidan.</translation>
 <translation id="527605982717517565">Tillåt alltid JavaScript på <ph name="HOST"/></translation>
 <translation id="645705751491738698">Fortsätt blockera JavaScript</translation>
-<translation id="6458308652667395253">Hantera blockering av JavaScript...</translation>
 <translation id="1802931390041703523">Flash är blockerat på den här sidan</translation>
 <translation id="8976520271376534479">Flash är blockerat på den här sidan.</translation>
 <translation id="412940972494182898">Kör Flash den här gången</translation>
@@ -289,20 +281,13 @@
 <translation id="2989786307324390836">DER-kodat binärt enstaka certifikat</translation>
 <translation id="7339763383339757376">PKCS #7, enstaka certifikat</translation>
 <translation id="8326478304147373412">PKCS #7, certifikatkedja</translation>
-<translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
-<translation id="8997135628821231"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>] (<ph name="DEVICE"/>)</translation>
 <translation id="4013132157686828973"><ph name="CLIENT_NAME"/> felsöker webbläsaren</translation>
 <translation id="5620568081365989559">DevTools kräver fullständig åtkomst till <ph name="FOLDER_PATH"/>. Lämna inte ut känsliga uppgifter.</translation>
 <translation id="3927932062596804919">Neka</translation>
 <translation id="6056710589053485679">Normal inläsning</translation>
 <translation id="3150927491400159470">Hård inläsning</translation>
 <translation id="8276560076771292512">Töm cacheminne och gör hård inläsning</translation>
-<translation id="2864601841139725659">Ange profilbild</translation>
-<translation id="6210656810416329025">Ta ett nytt foto eller välj ett foto eller en ikon som redan finns.
-          <ph name="LINE_BREAK"/>
-          Den här bilden visas på inloggnings- och låsskärmen på Bravebook.</translation>
 <translation id="6398765197997659313">Avsluta helskärmsläge</translation>
-<translation id="7973320858902175766">Patchfunktion för komponenter</translation>
 <translation id="8559694214572302298">Bildavkodare</translation>
 <translation id="8191453843330043793">V8-proxytolk</translation>
 <translation id="7171242884588191792">Braves filverktyg</translation>
@@ -464,7 +449,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6445450263907939268">Om du inte vill ha dessa ändringar kan du återställa dina tidigare inställningar.</translation>
 <translation id="4423376891418188461">Återställ inställningar</translation>
 <translation id="8523493869875972733">Behåll ändringarna</translation>
-<translation id="543754252619196907"><ph name="APP_NAME"/> från <ph name="SITE_ORIGIN"/></translation>
 <translation id="2300383962156589922">Anpassa och kontrollera <ph name="APP_NAME"/></translation>
 <translation id="413121957363593859">Komponenter</translation>
 <translation id="1931152874660185993">Det finns inga installerade komponenter.</translation>
@@ -494,21 +478,14 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1295794900245526845">Välj kontot som du har sparat med <ph name="PASSWORD_MANAGER_BRAND"/> för att logga in</translation>
 <translation id="8399276228600040370">Logga in med kontot som sparats med <ph name="PASSWORD_MANAGER_BRAND"/></translation>
 <translation id="3190558889382726167">Lösenordet sparades</translation>
-<translation id="1504682556807808151">Vill du spara lösenordet för den här webbplatsen med <ph name="PASSWORD_MANAGER_BRAND"/>?</translation>
+<translation id="5079950360618752063">Använd det föreslagna lösenordet</translation>
+<translation id="8084114998886531721">Sparat lösenord</translation>
 <translation id="1405476660552109915">Vill du spara kontot för den här webbplatsen med <ph name="PASSWORD_MANAGER_BRAND"/>?</translation>
-<translation id="4875622588773761625">Vill du att lösenordet för den här webbplatsen ska uppdateras med <ph name="PASSWORD_MANAGER_BRAND"/>?</translation>
-<translation id="8837103518490433332">Vill du att <ph name="PASSWORD_MANAGER_BRAND"/> sparar lösenordet för <ph name="ORIGIN"/>?</translation>
-<translation id="4871833665870725367">Vill du att <ph name="PASSWORD_MANAGER_BRAND"/> uppdaterar lösenordet för <ph name="ORIGIN"/>?</translation>
 <translation id="8286036467436129157">Logga in</translation>
 <translation id="8009225694047762179">Hantera Lösenord</translation>
-<translation id="7473891865547856676">Nej tack</translation>
 <translation id="9135262959729602463">Logga in i Brave om du vill få tillgång till lösenorden på alla enheter.</translation>
 <translation id="8919275547519617350">Logga in och aktivera synkronisering om du vill ha tillgång till alla lösenord oavsett vilken enhet du använder.</translation>
 <translation id="8470028084415844044">Aktivera synkronisering om du vill ha tillgång till alla lösenord oavsett vilken enhet du använder.</translation>
-<translation id="7138678301420049075">Övrigt</translation>
-<translation id="4532499992208253975">em-inläsning</translation>
-<translation id="771953673318695590">Kvalitetssäkring</translation>
-<translation id="8820961991571528294">Testning</translation>
 <translation id="3987348946546879621">Sparar data</translation>
 <translation id="6228516488918914827">Sidan lästes in snabbare</translation>
 <translation id="9137013805542155359">Visa original</translation>
@@ -529,7 +506,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1737968601308870607">Rapportera fel</translation>
 <translation id="1188807932851744811">Loggen har inte laddats upp.</translation>
 <translation id="3925247638945319984">Du har inga nyligen registrerade WebRTC-loggar.</translation>
-<translation id="1476949146811612304">Ange vilken sökmotor som används när du söker från <ph name="BEGIN_LINK"/>adressfältet<ph name="END_LINK"/>.</translation>
 <translation id="2076269580855484719">Dölj det här plugin-programmet</translation>
 <translation id="2129825002735785149">Uppdatera pluginprogrammet</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> har blockerats av en företagspolicy</translation>
@@ -547,21 +523,13 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5620612546311710611">användningsstatistik</translation>
 <translation id="8871696467337989339">Du använder en kommandoradsflagga som inte stöds: <ph name="BAD_FLAG"/>. Detta påverkar stabilitet och säkerhet negativt.</translation>
 <translation id="9140067245205650184">Du använder en funktionsflagga som inte stöds: <ph name="BAD_FLAG"/>. Detta påverkar stabilitet och säkerhet negativt.</translation>
-<translation id="8598453409908276158">Plugin utanför sandlåda har blockerats</translation>
-<translation id="1919814239594435008">Plugin utanför sandlåda har tillåtits</translation>
-<translation id="855773602626431402">Ett pluginprogram utanför sandlådan hindrades från att köras på den här sidan.</translation>
-<translation id="1013707859758800957">Ett pluginprogram utanför sandlådan har getts behörighet att köras på den här sidan.</translation>
-<translation id="1554390798506296774">Tillåt alltid pluginprogram utanför sandlådan på <ph name="HOST"/></translation>
-<translation id="2889925978073739256">Fortsätt att blockera pluginprogram utanför sandlåda</translation>
-<translation id="3827306204503227641">Fortsätt att tillåta pluginprogram utanför sandlådan</translation>
-<translation id="4538684596480161368">Blockera alltid plugin-program som inte är i sandlådeläge på <ph name="HOST"/></translation>
-<translation id="7615910377284548269">Hantera blockering av pluginprogram utanför sandlådan ...</translation>
 <translation id="3589766037099229847">Osäkert innehåll har blockerats</translation>
 <translation id="4842976633412754305">Sidan försöker att läsa in skript från overifierade källor.</translation>
 <translation id="1422159345171879700">Läs in osäkra skript</translation>
 <translation id="3630995161997703415">Lägg till den här webbplatsen på hyllan och använd den när som helst</translation>
 <translation id="3011284594919057757">Om Flash</translation>
 <translation id="1962233722219655970">Denna sida använder en Native Client-app som inte fungerar på din dator.</translation>
+<translation id="4453946976636652378">Sök på <ph name="SEARCH_ENGINE_NAME"/> eller skriv en webbadress</translation>
 <translation id="5731247495086897348">Kl&amp;amp;istra in och öppna</translation>
 <translation id="8425755597197517046">Kl&amp;amp;istra in och sök</translation>
 <translation id="6151323131516309312">Tryck på <ph name="SEARCH_KEY"/> för att söka i <ph name="SITE_NAME"/></translation>
@@ -571,7 +539,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5781865261247219930">Skicka kommandon till <ph name="EXTENSION_NAME"/></translation>
 <translation id="5436510242972373446">Sök <ph name="SITE_NAME"/>:</translation>
 <translation id="223106756035922488">Klicka här om du vill visa dagens doodle</translation>
-<translation id="8680536109547170164"><ph name="QUERY"/>, svar, <ph name="ANSWER"/></translation>
 <translation id="8676374126336081632">Radera inmatning</translation>
 <translation id="2129873093718581193">Sök på Brave Software eller skriv webbadressen</translation>
 <translation id="6363797201514053536">Sök på Brave Software eller skriv en webbadress</translation>
@@ -586,13 +553,19 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2926085873880284723">Återställ standardgenvägarna</translation>
 <translation id="7413455776853560343">Anpassa bakgrunden</translation>
 <translation id="2187700606737131818">Brave Software Foto</translation>
-<translation id="4864907324828007775">Bakgrunder i Brave</translation>
+<translation id="5801450813341024983">Brave-bakgrunder</translation>
 <translation id="2800760947029405028">Ladda upp en bild</translation>
 <translation id="8342861492835240085">Välj en samling</translation>
 <translation id="6017211263306518045">Välj ett fotoalbum i Brave Software Foto</translation>
-<translation id="3313965159808871019">Daglig uppdatering</translation>
+<translation id="3132996321662585180">Uppdatera dagligen</translation>
 <translation id="9062065967472365419">Överraska mig</translation>
 <translation id="7287411021188441799">Återställ standardbakgrund</translation>
+<translation id="3355936511340229503">Anslutningsfel</translation>
+<translation id="4519935350946509010">Anslutningsfel.</translation>
+<translation id="8184318863960255706">Mer info</translation>
+<translation id="3617891479562106823">Inga bakgrunder är tillgängliga. Försök igen senare.</translation>
+<translation id="8391712576156218334">Bilden är inte tillgänglig. Försök igen senare.</translation>
+<translation id="1564414980088536597">Det går inte att använda den här bilden. Välj en annan.</translation>
 <translation id="5376169624176189338">Klicka för att återvända, håll ned för att se historik</translation>
 <translation id="9103868373786083162">Tryck här om du vill återgå till föregående, visa historiken med snabbmenyn</translation>
 <translation id="2961695502793809356">Klicka för att fortsätta, håll ned för att se historik</translation>
@@ -654,16 +627,11 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{Lämna sidan}other{Lämna sidorna}}</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> svarar inte</translation>
 <translation id="8393511274964623038">Stoppa pluginprogram</translation>
-<translation id="7029809446516969842">Lösenord</translation>
+<translation id="82871696630048499">Webbsidan lästes in igen eftersom minnet tog slut.</translation>
 <translation id="5578059481725149024">Autoinloggning</translation>
 <translation id="6810613314571580006">Logga in automatiskt på webbplatser med hjälp av lagrade inloggningsuppgifter. När funktionen är inaktiverad måste du bekräfta inloggningen varje gång du besöker en webbplats.</translation>
 <translation id="5454166040603940656">med <ph name="PROVIDER"/></translation>
-<translation id="1486096554574027028">Sök efter lösenord</translation>
-<translation id="5300589172476337783">Visa</translation>
 <translation id="7108338896283013870">Dölj</translation>
-<translation id="661719348160586794">Dina sparade lösenord visas här.</translation>
-<translation id="1548132948283577726">Webbplatser som aldrig sparar lösenord visas här.</translation>
-<translation id="4603234488640507661">(Android)</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="4250680216510889253">Nej</translation>
 <translation id="7378627244592794276">Nej</translation>
@@ -672,39 +640,14 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6374469231428023295">Försök igen</translation>
 <translation id="8026334261755873520">Rensa webbinformation</translation>
 <translation id="7409836189476010449">Kör Flash</translation>
-<translation id="1384433374273142931">Andra former av webbhistorik för Brave Software-kontot kan finnas på <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/></translation>
 <translation id="4718442817388594217">Den data som markerades har tagits bort från Brave och från synkroniserade enheter. Det kan finnas webbhistorik av annat slag i Brave Software-kontot på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>, t.ex. sökningar och aktivitet på andra tjänster från Brave Software.</translation>
 <translation id="7814200940910057384">Data i Brave har rensats</translation>
 <translation id="7346909386216857016">Ok, jag förstår</translation>
-<translation id="4707302005824653064">Den ansvariga (<ph name="CUSTODIAN_EMAIL"/>) kan se användning och historik på chrome.com.</translation>
-<translation id="346431825526753">Det här är ett konto för barn som hanteras av <ph name="CUSTODIAN_EMAIL"/>.</translation>
-<translation id="4159681666905192102">Det här är ett konto för barn som hanteras av <ph name="CUSTODIAN_EMAIL"/> och <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
-<translation id="5958529069007801266">Kontrollerad användare</translation>
-<translation id="5720705177508910913">Aktuell användare</translation>
-<translation id="7081952801286122383">Du använder inkognitoläget</translation>
-<translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (kontrollerad)</translation>
-<translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (barnkonto)</translation>
-<translation id="2440300961915670171"><ph name="REASON"/>
-Jag tycker inte att den här webbplatsen ska blockeras!</translation>
-<translation id="4667176955651319626">Blockera cookies och webbplatsdata från tredje part</translation>
 <translation id="8493236660459102203">Mikrofon:</translation>
 <translation id="3925573269917483990">Kamera:</translation>
 <translation id="648927581764831596">Inte tillgängligt</translation>
-<translation id="5131347545782851480">PDF-dokument</translation>
-<translation id="7628127343934101653">Öppna PDF-filer i standardappen för att läsa PDF-filer.</translation>
 <translation id="3759371141211657149">Hantera inställningar för hanterare</translation>
-<translation id="6612358246767739896">Skyddat innehåll</translation>
-<translation id="3955193568934677022">Tillåt att skyddat innehåll spelas upp på webbplatser (rekommenderas)</translation>
-<translation id="7311079019872751559">Åtkomst till plugin utanför sandlåda</translation>
-<translation id="7262221505565121">Undantag från åtkomstbehörighet för plugin som inte körs i sandlåda</translation>
-<translation id="3153177132960373163">Tillåt alla webbplatser att använda en plugin för att få åtkomst till datorn</translation>
-<translation id="1878524442024357078">Tillåt inte några webbplatser att använda en plugin för få åtkomst till datorn</translation>
-<translation id="3523642406908660543">Fråga om en webbplats försöker använda en plugin för att få åtkomst till datorn (rekommenderas)</translation>
-<translation id="2706892089432507937">USB-enheter</translation>
-<translation id="5829401023154985950">Hantera ...</translation>
-<translation id="3564708465992574908">Zoomnivåer</translation>
 <translation id="4156865452842056672">(Felsidor i Brave)</translation>
-<translation id="2339641773402824483">Söker efter uppdateringar...</translation>
 <translation id="2220529011494928058">Rapportera ett problem</translation>
 <translation id="4099060993766194518">Vill du återställa standardinställningen för sökmotorn?</translation>
 <translation id="138784436342154190">Vill du återställa standardinställningen för startfliken?</translation>
@@ -714,9 +657,11 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="3702500414347826004"><ph name="URL"/> har lagts till i startflikarna.</translation>
 <translation id="7837776265184002579">Startsidan har ändrats till <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">Aktivera automatiska uppdateringar</translation>
-<translation id="8741316211671074806">Bild i bild</translation>
 <translation id="6790428901817661496">Spela</translation>
 <translation id="4514610446763173167">Växla mellan att spela upp och pausa video</translation>
+<translation id="2631120081682787498">Vill du stänga fliken?</translation>
+<translation id="111844081046043029">Vill du lämna den här sidan?</translation>
+<translation id="2677748264148917807">Lämna</translation>
 <translation id="2520644704042891903">Väntar på tillgänglig plats ...</translation>
 <translation id="1493892686965953381">Väntar på <ph name="LOAD_STATE_PARAMETER"/> ...</translation>
 <translation id="1225177025209879837">Begäran bearbetas ...</translation>
@@ -786,8 +731,6 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="8987927404178983737">Månad</translation>
 <translation id="6015796118275082299">År</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
-<translation id="3646789916214779970">Återställ till standardtema</translation>
-<translation id="5963026469094486319">Hämta teman</translation>
 <translation id="4520385623207007473">Cookies är aktiverade</translation>
 <translation id="4763408175235639573">Följande cookies sparades när du visade denna sida</translation>
 <translation id="2719936478972253983">Följande cookies blockerades</translation>
@@ -871,118 +814,18 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="6022526133015258832">Öppna helskärmsläge</translation>
 <translation id="6845038076637626672">Öppna maximerad</translation>
 <translation id="6860427144121307915">Öppna i en flik</translation>
-<translation id="8662795692588422978">Personer</translation>
-<translation id="4974733135013075877">Stäng och aktivera barnspärr</translation>
-<translation id="3965965397408324205">Stäng <ph name="PROFILE_NAME"/></translation>
-<translation id="3950820424414687140">Logga in</translation>
-<translation id="7665369617277396874">Lägg till konto</translation>
-<translation id="9148126808321036104">Logga in igen</translation>
-<translation id="9220525904950070496">Ta bort konto</translation>
-<translation id="3340978935015468852">inställningar</translation>
-<translation id="5704875434923668958">Synkroniserar till</translation>
-<translation id="8428213095426709021">Inställningar</translation>
-<translation id="5781092003150880845">Synkronisera till <ph name="ACCOUNT_FULL_NAME"/></translation>
-<translation id="1372841398847029212">Synkronisera till ditt konto</translation>
-<translation id="454547174531670764">Synkronisera till ett annat konto</translation>
-<translation id="2538361623464451692">Synkronisering inaktiverad</translation>
-<translation id="1316495628809031177">Synkroniseringen har pausats</translation>
-<translation id="1692115862433274081">Använd ett annat konto</translation>
-<translation id="2660646897440651313">Bokmärken, historik, lösenord och andra inställningar synkroniseras till ditt Brave Software-konto.</translation>
-<translation id="5350965906220856151">Oj!</translation>
-<translation id="672609503628871915">Kolla nyheterna</translation>
-<translation id="7786207843293321886">Avsluta gästsession</translation>
-<translation id="2329597144923131178">Logga in så blir bokmärken, historik, lösenord med mera tillgängligt på alla dina enheter.</translation>
-<translation id="4235813040357936597">Lägg till ett konto för <ph name="PROFILE_NAME"/></translation>
-<translation id="1464258312790801189">Dina konton</translation>
-<translation id="6655458902729017087">Dölj konton</translation>
-<translation id="8446884382197647889">Läs mer</translation>
-<translation id="3420980393175304359">Byt till ett annat konto</translation>
-<translation id="2326606747676847821">Surfa inkognito</translation>
-<translation id="8770507190024617908">Hantera personer</translation>
-<translation id="2666990579225592931">Öppna ett gästfönster</translation>
-<translation id="8474229360677287535">Stäng alla fönster</translation>
-<translation id="7652808307838961528">Redigera personen <ph name="PROFILE_NAME"/></translation>
-<translation id="6112952769866305444">Redigera personen <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
-<translation id="3294437725009624529">Gäst</translation>
-<translation id="475088594373173692">Första användare</translation>
-<translation id="4535127706710932914">Standardprofil</translation>
-<translation id="4389091756366370506">Användare <ph name="VALUE"/></translation>
-<translation id="749028671485790643">Person <ph name="VALUE"/></translation>
-<translation id="5397794290049113714">Du</translation>
-<translation id="3031417829280473749">Agent X</translation>
-<translation id="412730574613779332">Superhjälte</translation>
-<translation id="5109044022078737958">Mia</translation>
-<translation id="3605780360466892872">Proper</translation>
-<translation id="2772936498786524345">Ninja</translation>
-<translation id="3809280248639369696">Utomjording</translation>
-<translation id="6442187272350399447">Fenomenal</translation>
-<translation id="8631032106121706562">Blomster</translation>
-<translation id="5854912040170951372">Pizzaslajs</translation>
-<translation id="4858913220355269194">Fotboll</translation>
-<translation id="8711402221661888347">Burgare</translation>
-<translation id="4421932782753506458">Misse</translation>
-<translation id="6624687053722465643">Sockersöt</translation>
-<translation id="8256319818471787266">Ludde</translation>
-<translation id="438503109373656455">Brunte</translation>
-<translation id="7548856833046333824">Drink</translation>
-<translation id="8206745257863499010">Bluesig</translation>
-<translation id="8241040075392580210">Molnig</translation>
-<translation id="4555769855065597957">Skugga</translation>
-<translation id="1576594961618857597">Vit standardavatar</translation>
-<translation id="5227679487546032910">Blågrön standardavatar</translation>
-<translation id="4544174279960331769">Blå standardavatar</translation>
-<translation id="8063235345342641131">Grön standardavatar</translation>
-<translation id="4953808748584563296">Orange standardavatar</translation>
-<translation id="3225084153129302039">Lila standardavatar</translation>
-<translation id="1916502483199172559">Röd standardavatar</translation>
-<translation id="3139925690611372679">Gul standardavatar</translation>
-<translation id="6399774419735315745">Spion</translation>
-<translation id="6964390816189577014">Hjälte</translation>
-<translation id="4476590490540813026">Idrottare</translation>
-<translation id="5646558797914161501">Affärsman</translation>
-<translation id="3438633801274389918">Ninja</translation>
-<translation id="4206144641569145248">Utomjording</translation>
-<translation id="6087960857463881712">Entusiastiskt ansikte</translation>
-<translation id="81238879832906896">Gul och vit blomma</translation>
-<translation id="1465827627707997754">Pizzabit</translation>
-<translation id="2642111877055905627">Fotboll</translation>
-<translation id="8838770651474809439">Hamburgare</translation>
-<translation id="8808686172382650546">Katt</translation>
-<translation id="9214695392875603905">Muffin</translation>
-<translation id="5275352920323889391">Hund</translation>
-<translation id="4037084878352560732">Häst</translation>
-<translation id="2272570998639520080">Martiniglas</translation>
-<translation id="120368089816228251">Musiknot</translation>
-<translation id="1393283411312835250">Sol och moln</translation>
-<translation id="1830550083491357902">Inte inloggad</translation>
-<translation id="5941153596444580863">Lägg till person …</translation>
-<translation id="9149866541089851383">Redigera...</translation>
-<translation id="7903128267494448252">Ta bort personen</translation>
-<translation id="8798099450830957504">Standard</translation>
-<translation id="6292216088769220329">Låt vem som helst lägga till en person i Brave</translation>
-<translation id="7299337219131431707">Aktivera gästsurfning</translation>
-<translation id="2608770217409477136">Använd standardinställningar</translation>
-<translation id="2836635946302913370">Inloggningar med detta användarnamn har inaktiverats av administratören.</translation>
-<translation id="2721695630904737430">Kontrollerade användare har inaktiverats av administratören.</translation>
-<translation id="7477746269122340519">Användaren har inaktiverats av administratören.</translation>
-<translation id="1468571364034902819">Profilen kan inte användas</translation>
-<translation id="2261323523305321874">Vissa äldre profiler har inaktiverats på grund av en ändring i systemet som administratören gjort.</translation>
-<translation id="2684004000387153598">Fortsätt genom att klicka på OK. Skapa sedan en ny profil för din e-postadress genom att klicka på Lägg till person.</translation>
-<translation id="7683373461016844951">Fortsätt genom att klicka på OK. Skapa sedan en ny profil för e-postadressen på <ph name="DOMAIN"/> genom att klicka på Lägg till person.</translation>
-<translation id="8650543407998814195">Du har inte längre åtkomst till den gamla profilen, men du kan fortfarande ta bort den.</translation>
 <translation id="3074037959626057712">Du är inloggad och har aktiverat synkronisering</translation>
 <translation id="6264422956566238156">Du har aktiverat Sync</translation>
 <translation id="9125982323641182972">Få Brave Software-teknik i Brave</translation>
 <translation id="7988117629517051942">Få mer Brave Software-teknik</translation>
 <translation id="5596627076506792578">Fler alternativ</translation>
-<translation id="6397094776139756010">Alternativ för synkronisering och anpassning</translation>
-<translation id="6670647982128220776">Funktioner som rör synkronisering och anpassning styrs nu från ett och samma ställe. Om du aktiverar detta kan de nuvarande inställningarna ändras.</translation>
+<translation id="4419556793104466535">Styr synkronisering, anpassning med mera</translation>
+<translation id="184568702928428857">Inställningarna som styr synkronisering, anpassning och andra tjänster från Brave Software i Brave har ändrats. Detta kan påverka dina nuvarande inställningar.</translation>
 <translation id="4192273449750167573">Granska inställningarna på nästa skärm</translation>
 <translation id="685040365210406336">Ändra ingenting</translation>
 <translation id="6418273007044911016">Ingenting ändras i fråga om vilken data som synkroniseras med Brave Software eller vilka funktioner du använder</translation>
-<translation id="8411022984399993066">Ja, aktivera synkronisering och anpassning</translation>
+<translation id="8372733498235009300">Aktivera synkronisering, anpassning och andra tjänster från Brave Software</translation>
 <translation id="8340964510643644301">Du kan när som helst ändra detta i Brave-inställningarna</translation>
-<translation id="2740531572673183784">OK</translation>
 <translation id="385051799172605136">Bakåt</translation>
 <translation id="3149880132460839085">Synkronisera med Brave</translation>
 <translation id="3796902758602917951">Bokmärken, historik, lösenord och andra inställningar synkroniseras med ditt Brave Software-konto så att du kan använda dem på alla enheter.</translation>
@@ -994,8 +837,8 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="2532167245710864499">Gör Brave bättre och säkrare genom att skicka information om system och användning till Brave Software</translation>
 <translation id="2709453993673701466">Vill du hantera synkronisering och anpassning innan du aktiverar det? Öppna <ph name="BEGIN_LINK"/>inställningarna<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">I <ph name="BEGIN_LINK"/>Inställningar<ph name="END_LINK"/> kan du när som helst anpassa vilken information Brave Software samlar in.</translation>
-<translation id="3978646980514162128">Brave Software kan anpassa Brave och andra tjänster från Brave Software som Översätt, Sök och annonser utifrån innehållet på webbplatser du besöker, webbaktivitet och vad du interagerar med på webben. Du kan anpassa detta i inställningarna.</translation>
 <translation id="741204030948306876">Ja</translation>
+<translation id="8428213095426709021">Inställningar</translation>
 <translation id="2497852260688568942">Synkronisering har inaktiverats av administratören</translation>
 <translation id="562935524653278697">Administratören har inaktiverat synkronisering av bokmärken, historik, lösenord och andra inställningar.</translation>
 <translation id="2169062631698640254">Logga in ändå</translation>
@@ -1047,16 +890,14 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="7979036127916589816">Synkroniseringsfel</translation>
 <translation id="7605594153474022051">Det går inte att synkronisera</translation>
 <translation id="1648943974594387137">Inloggningsuppgifterna är inaktuella</translation>
+<translation id="9148126808321036104">Logga in igen</translation>
 <translation id="2638087589890736295">Lösenfras krävs för att starta synkroniseringen</translation>
 <translation id="939598580284253335">Ange lösenfras</translation>
 <translation id="8260126382462817229">Försök att logga in igen</translation>
 <translation id="2812944337881233323">Testa att logga ut och logga in igen</translation>
 <translation id="5222676887888702881">Logga ut</translation>
 <translation id="4242533952199664413">Öppna Inställningar</translation>
-<translation id="3530751398950974194">Uppdatera lösenfrasen för synkronisering</translation>
-<translation id="2638286699381354126">Uppdatera ...</translation>
 <translation id="3752582316358263300">OK ...</translation>
-<translation id="2129904043921227933">Synkroniseringsfel. Uppdatera lösenfras för synkronisering ...</translation>
 <translation id="7117247127439884114">Logga in igen ...</translation>
 <translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
@@ -1081,8 +922,6 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="5972017421290582825">Hantera MIDI-inställningar ...</translation>
 <translation id="230927227160767054">Den här sidan vill installera en tjänsthanterare.</translation>
 <translation id="5885324376209859881">Hantera inställningar för media ...</translation>
-<translation id="8165383685500900731">Hantera mikrofoninställningar …</translation>
-<translation id="8381179624334829711">Hantera kamerainställningar …</translation>
 <translation id="2624142942574147739">Din kamera och mikrofon används på sidan.</translation>
 <translation id="4249373718504745892">Den här sidan har blockerats och kan inte komma åt kameran och mikrofonen.</translation>
 <translation id="1658424621194652532">Den här sidan använder din mikrofon.</translation>
@@ -1096,8 +935,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="8363142353806532503">Mikrofon är blockerad</translation>
 <translation id="2762441749940182211">Kamera är blockerad</translation>
 <translation id="5074318175948309511">Den här sidan kan behöva läsas in igen innan den nya inställningen börjar gälla.</translation>
-<translation id="1210982357925844241">Visa och hantera sparade lösenord på <ph name="SAVED_PASSWORDS_LINK"/></translation>
-<translation id="2297469692499590335">Lösenord som Brave Software sparat</translation>
+<translation id="5713644099811900409">Brave Software-konto</translation>
 <translation id="3785727820640310185">Sparade lösenord för den här webbplatsen</translation>
 <translation id="3404065873681873169">Inga lösenord har sparats för den här webbplatsen</translation>
 <translation id="8470513973197838199">Sparade lösenord för <ph name="ORIGIN"/></translation>
@@ -1130,8 +968,6 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="1036982837258183574">Tryck på |<ph name="ACCELERATOR"/>| för att stänga helskärmen</translation>
 <translation id="6279183038361895380">Tryck på |<ph name="ACCELERATOR"/>| om du vill visa markören</translation>
 <translation id="6049004884579590341">Avsluta helskärmsläget genom att trycka på |<ph name="ACCELERATOR"/>| och hålla kvar</translation>
-<translation id="6115424132962100663">Återgå med |<ph name="SHORTCUT"/>|</translation>
-<translation id="3181110748548073003">Fortsätt med |<ph name="SHORTCUT"/>|</translation>
 <translation id="901834265349196618">e-post</translation>
 <translation id="3714633008798122362">webbkalender</translation>
 <translation id="2436186046335138073">Vill du tillåta att <ph name="HANDLER_HOSTNAME"/> öppnar alla <ph name="PROTOCOL"/>-länkar?</translation>
@@ -1143,9 +979,18 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> vill använda din mikrofon</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> vill använda kameran</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> vill dela skärmen</translation>
-<translation id="6105158702728922449">Använda kameran och mikrofonen</translation>
 <translation id="4761104368405085019">Använd mikrofonen</translation>
 <translation id="9150045010208374699">Använd kameran</translation>
+<translation id="8962918469425892674">Den här webbplatsen använder enhetens rörelse- eller ljussensor.</translation>
+<translation id="6057381398996433816">Den här webbplatsen får inte använda enhetens rörelse- och ljussensor.</translation>
+<translation id="1151917987301063366">Låt alltid <ph name="HOST"/> använda enhetens sensorer</translation>
+<translation id="7377451353532943397">Fortsätt att blockera sensoråtkomst</translation>
+<translation id="6878422606530379992">Användning av sensorer har tillåtits</translation>
+<translation id="4031527940632463547">Användning av sensorer har blockerats</translation>
+<translation id="4559617833001311418">Den här webbplatsen använder enhetens rörelse- eller ljussensor.</translation>
+<translation id="2309620859903500144">Den här webbplatsen får inte använda enhetens rörelse- eller ljussensor.</translation>
+<translation id="8645354835496065562">Fortsätt att tillåta sensoråtkomst</translation>
+<translation id="2903882649406874750"><ph name="HOST"/> får aldrig använda sensorerna</translation>
 <translation id="7648992873808071793">Spara filer på enheten</translation>
 <translation id="7461924472993315131">Fäst</translation>
 <translation id="4285498937028063278">Lossa</translation>
@@ -1188,10 +1033,8 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="3202173864863109533">Ljudet är avstängt på den här fliken.</translation>
 <translation id="5562781907504170924">Den här fliken är ansluten till en Bluetooth-enhet.</translation>
 <translation id="5884474295213649357">Den här fliken är ansluten till en USB-enhet.</translation>
-<translation id="958416628331784386">På den här fliken spelas en video upp bild-i-bild</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kameran eller mikrofonen spelar in</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – innehållet på fliken delas</translation>
-<translation id="4862042298115071399"><ph name="WINDOW_TITLE"/>– video spelas upp bild-i-bild</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/> – spelar upp ljud</translation>
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> – ljud av</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> – Bluetooth-enhet ansluten</translation>
@@ -1207,67 +1050,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="6459799433792303855">Det aktiva fönstret har flyttats till en annan skärm.</translation>
 <translation id="6551508934388063976">Kommandot är inte tillgängligt. Tryck på Ctrl+N om du vill öppna ett nytt fönster.</translation>
 <translation id="3831486154586836914">Fönsteröversiktsläget har startats</translation>
-<translation id="4140559601186535628">Push-meddelanden</translation>
-<translation id="3819007103695653773">Tillåt alla webbplatser att skicka push-meddelanden i bakgrunden</translation>
-<translation id="580961539202306967">Fråga mig när en webbplats vill skicka push-meddelanden (rekommenderas)</translation>
-<translation id="8061298200659260393">Tillåt inga webbplatser att skicka push-meddelanden</translation>
 <translation id="8736288397686080465">Den här webbplatsen har uppdaterats i bakgrunden.</translation>
-<translation id="1981115145845865539">Lås upp din <ph name="DEVICE_TYPE"/> automatiskt</translation>
-<translation id="3857228364945137633">Testa att låsa upp din <ph name="DEVICE_TYPE"/> utan lösenord när mobilen finns i närheten med Smart Lock.</translation>
-<translation id="2737492745329609575">Börja med konfigureringen</translation>
-<translation id="4282196459431406533">Smart Lock är aktiverat</translation>
-<translation id="9038430547971207796">Nästa gång låser mobilen upp din <ph name="DEVICE_TYPE"/>. Du kan inaktivera Smart Lock i inställningarna.</translation>
-<translation id="1306606229401759371">Ändra inställningar</translation>
-<translation id="3926002189479431949">Du har bytt ut mobilen som är kopplad till Smart Lock</translation>
-<translation id="1478233201128522094">Nästa gång låser en ny mobil upp denna <ph name="DEVICE_TYPE"/>. Du kan inaktivera Smart Lock i inställningarna.</translation>
-<translation id="6745592621698551453">Uppdatera nu</translation>
-<translation id="1832511806131704864">Mobiländringen har uppdaterats</translation>
-<translation id="3755411799582650620"><ph name="PHONE_NAME"/> kan nu även låsa upp <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="1817310072033858383">Konfigurera Smart Lock för din <ph name="DEVICE_TYPE"/></translation>
-<translation id="4063283930106169759">Mobilen måste finnas i närheten. Bluetooth aktiveras på alla enheter som ditt konto finns på så att mobilen går att hitta. &amp;lt;a&amp;gt;Läs mer&amp;lt;/a&amp;gt;</translation>
-<translation id="8398790343843005537">Sök efter mobilen</translation>
-<translation id="1782196717298160133">Sök efter din mobil</translation>
-<translation id="4047112090469382184">Därför är detta säkert</translation>
-<translation id="9148116311817999634">Skydda mobilen med ett skärmlås</translation>
-<translation id="4677692029604506169">Mobilen som du låste upp din <ph name="DEVICE_TYPE"/> med behöver ha ett skärmlås som skydd. Det brukar vara en pinkod, ett grafiskt lösenord eller ett lösenord. Använder du redan ett skärmlås? Välj Kontrollera igen så att vi kan verifiera detta och fortsätt sedan med konfigureringen,</translation>
-<translation id="5807290661599647102">Konfigurera ett skärmlås</translation>
-<translation id="9003677638446136377">Kontrollera igen</translation>
-<translation id="8234989666557591529">Välj vilken mobil som ska låsa upp din <ph name="DEVICE_TYPE"/></translation>
-<translation id="8529026713753283969">En avisering skickas till mobilen, så ha den i närheten.</translation>
-<translation id="8410073653152358832">Använd den här mobilen</translation>
-<translation id="9014987600015527693">Visa en annan mobil</translation>
-<translation id="5895138241574237353">Starta om</translation>
-<translation id="6374108032506706911">Konfigurera Smart Lock för Android</translation>
-<translation id="5186650237607254032">Uppdatera mobilens skärmlås så att det inaktiveras när du är i närheten. Du låser upp mobilen snabbare och får en bättre upplevelse av Smart Lock på <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="1201402288615127009">Nästa</translation>
-<translation id="7035437538340499453">Smart Lock är klart att använda</translation>
-<translation id="1774349594977710164">Mobilen låser även upp dina andra <ph name="DEVICE_TYPE"/>-enheter eftersom de synkroniseras automatiskt.</translation>
-<translation id="3246097286174000800">Testa Smart Lock</translation>
-<translation id="248861575772995840">Mobilen hittades inte. Kontrollera att Bluetooth är aktiverat på <ph name="DEVICE_TYPE"/>. &amp;lt;a&amp;gt;Läs mer&amp;lt;/a&amp;gt;</translation>
-<translation id="2575268751393592580">Mobilen hittades inte. Kontrollera att din <ph name="DEVICE_TYPE"/> är ansluten till Wi-Fi eller ett mobilnätverk. &amp;lt;a&amp;gt;Läs mer&amp;lt;/a&amp;gt;</translation>
-<translation id="3002017044809397427">Din <ph name="PHONE_TYPE"/> hittades, men Smart Lock fungerar bara för enheter med Android 5.0 och senare. &amp;lt;a&amp;gt;Läs mer&amp;lt;/a&amp;gt;</translation>
-<translation id="140250605646987970">Din mobil hittades, men Smart Lock fungerar bara för enheter med Android 5.0 och senare. &amp;lt;a&amp;gt;Läs mer&amp;lt;/a&amp;gt;</translation>
-<translation id="3358935496594837302">Mobilen hittades inte. Använd en kompatibel Android-mobil som är på och finns till hands. &amp;lt;a&amp;gt;Läs mer&amp;lt;/a&amp;gt;</translation>
-<translation id="7334190995941642545">Smart Lock är för närvarande inte tillgängligt. Försök igen senare.</translation>
-<translation id="2468902267404883140">Det gick inte att ansluta till mobilen. Använd en kompatibel Android-mobil som är på och finns till hands. &amp;lt;a&amp;gt;Läs mer&amp;lt;/a&amp;gt;</translation>
-<translation id="7893153962594818789">Bluetooth är inaktiverat på <ph name="DEVICE_TYPE"/>. Ange lösenordet och aktivera Bluetooth.</translation>
-<translation id="3115128645424181617">Mobilen hittades inte. Den måste finnas i närheten och Bluetooth måste vara på.</translation>
-<translation id="5711983031544731014">Det går inte att låsa upp. Ange ditt lösenord.</translation>
-<translation id="5368720394188453070">Din mobil är låst. Lås upp den.</translation>
-<translation id="1645516838734033527">Mobilen behöver ha ett skärmlås när du använder Smart Lock så att din <ph name="DEVICE_TYPE"/> förblir skyddad.</translation>
-<translation id="1977965994116744507">Håll mobilen närmare om du vill låsa upp din <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="3994374631886003300">Lås upp mobilen och håll den närmare din <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="8366947248864804596">När mobilen är olåst och finns i närheten väljer du bara detta för att låsa upp enheten. I annat fall anger du lösenordet eller pinkoden.</translation>
-<translation id="5113739826273394829">Om du klickar på ikonen låser du <ph name="DEVICE_TYPE"/> manuellt. Nästa gång måste du ange ditt lösenord för att öppna den.</translation>
-<translation id="5658415415603568799">Av säkerhetsskäl blir du ombedd att ange lösenordet efter 20 timmar med Smart Lock.</translation>
-<translation id="1195076408729068893">Starta Smart Lock genom att ange ditt lösenord. Nästa gång kan du låsa upp din <ph name="DEVICE_TYPE"/> med mobilen.</translation>
-<translation id="9188441292293901223">Uppdatera mobilen till en nyare version av Android om du vill låsa upp denna <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="5485080380723335835">Din <ph name="DEVICE_TYPE"/> är låst. Du måste ange lösenordet manuellt innan du fortsätter.</translation>
-<translation id="6456631036739229488">Smart Lock används med en annan mobil än tidigare. Ange lösenordet och uppdatera Smart Lock. Nästa gång låser mobilen upp denna <ph name="DEVICE_TYPE"/>. Du kan inaktivera Smart Lock i inställningarna.</translation>
-<translation id="4658312088164718891">Aktivera Smart Lock genom att ange lösenordet. Nästa gång låser din mobil upp denna <ph name="DEVICE_TYPE"/>. Du kan inaktivera Smart Lock i inställningarna.</translation>
-<translation id="7556033326131260574">Smart Lock kunde inte verifiera ditt konto. Ange ditt lösenord.</translation>
-<translation id="5188776222806046587">Om du vill konfigurera Smart Lock för Brave måste Brave Software vara säker på att det är du som gör ändringen, så du måste först ange ditt lösenord.</translation>
-<translation id="3465566417615315331">Klicka på ditt foto</translation>
 <translation id="6945221475159498467">Välj</translation>
 <translation id="4130199216115862831">Enhetslogg</translation>
 <translation id="6231881193380278751">Lägg till en frågeparameter i webbadressen för att automatiskt uppdatera sidan: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
@@ -1289,12 +1072,9 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="192494336144674234">Öppna med</translation>
-<translation id="9053893665344928494">Kom ihåg mitt val</translation>
-<translation id="5541687815721799001">Använd app</translation>
-<translation id="5340857474604400806">Fortsätt i Brave</translation>
 <translation id="760197030861754408">Besök <ph name="LANDING_PAGE"/> om du vill ansluta.</translation>
 <translation id="3648348069317717750"><ph name="USB_DEVICE_NAME"/> hittades</translation>
+<translation id="8798099450830957504">Standard</translation>
 <translation id="3271648667212143903"><ph name="ORIGIN"/> vill ansluta</translation>
 <translation id="7945031593909029181"><ph name="CHROME_EXTENSION_NAME"/> vill ansluta</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
@@ -1305,7 +1085,6 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="7493386493263658176">Tillägget <ph name="EXTENSION_NAME"/> kan samla in all text du skriver, inklusive personlig information som lösenord och kreditkortsnummer. Vill du fortsätta att använda tillägget?</translation>
 <translation id="7067725467529581407">Visa aldrig detta igen.</translation>
 <translation id="8922013791253848639">Tillåt alltid annonser på den här webbplatsen</translation>
-<translation id="2540384386570049483">Tillåt annonser på den här webbplatsen</translation>
 <translation id="7359588939039777303">Annonser blockeras.</translation>
 <translation id="5398772614898833570">Annonser blockeras</translation>
 <translation id="6722303473865663493">Brave blockerar annonser på den här webbplatsen eftersom den brukar visa påträngande annonser.</translation>
@@ -1316,6 +1095,31 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="874689135111202667">{0,plural, =1{Vill du ladda upp en fil på webbplatsen?}other{Vill du ladda upp # filer på webbplatsen?}}</translation>
 <translation id="1956390763342388273">Alla filer från <ph name="FOLDER_PATH"/> laddas upp. Gör bara detta om du litar på webbplatsen.</translation>
 <translation id="1243314992276662751">Ladda upp</translation>
+<translation id="7490950320178383728">Använd säkerhetsnyckeln med Bluetooth</translation>
+<translation id="414599683948988413">Använd säkerhetsnyckeln med USB</translation>
+<translation id="7851816139220202929">Använd säkerhetsnyckeln med NFC</translation>
+<translation id="5392327114396848796">Använd en inbyggd säkerhetsnyckel</translation>
+<translation id="5104546332954397226">Använd mobilen som säkerhetsnyckel</translation>
+<translation id="2876441201733326392">Använd USB-säkerhetsnyckeln</translation>
+<translation id="5842053879378944309">Använd USB-säkerhetsnyckeln med <ph name="APP_NAME"/></translation>
+<translation id="6896398788631624004">Sätt i säkerhetsnyckeln och aktivera den</translation>
+<translation id="8033958968890501070">Tidsgränsen överskreds</translation>
+<translation id="7102832101143475489">Begäran tog för lång tid</translation>
+<translation id="3670229581627177274">Aktivera Bluetooth</translation>
+<translation id="3880709822663530586">Säkerhetsnyckeln fungerar bara när Bluetooth har aktiverats på enheten</translation>
+<translation id="1183378459020939734">Vill du parkoppla säkerhetsnyckeln nu?</translation>
+<translation id="237058345584060620">Parkoppla nyckeln till den här enheten så att du kan logga in på ditt konto med den</translation>
+<translation id="1875312262568496299">Börja</translation>
+<translation id="3104900172193317662">Tillåt att säkerhetsnyckeln används</translation>
+<translation id="2492040222276243256">Håll knappen på säkerhetsnyckeln nedtryckt i minst fem sekunder</translation>
+<translation id="6427415464407526111">Välj säkerhetsnyckel</translation>
+<translation id="2633326789677284179">Leta reda på namnet som står på nyckelns baksida</translation>
+<translation id="5660204307954428567">Parkoppla med <ph name="DEVICE_NAME"/></translation>
+<translation id="8984872292925913496">Titta efter den sexsiffriga pinkoden på nyckelns baksida</translation>
+<translation id="1201402288615127009">Nästa</translation>
+<translation id="1792161662640298233">Säkerhetsnyckeln verifieras</translation>
+<translation id="2321482478556590128">Använd säkerhetsnyckeln med <ph name="APP_NAME"/></translation>
+<translation id="5292195676005197571">På de flesta nycklar trycker du bara på knappen</translation>
 <translation id="3785308913036335955">Visa genväg för appar</translation>
 <translation id="711840821796638741">Visa hanterade bokmärken</translation>
 <translation id="3613134908380545408">Visa <ph name="FOLDER_NAME"/></translation>
@@ -1415,6 +1219,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="8627151598708688654">Välj källa</translation>
 <translation id="3468275649641751422">Streama en video eller ljudfil</translation>
 <translation id="781167124805380294">Casta <ph name="FILE_NAME"/></translation>
+<translation id="8890516388109605451">Källor</translation>
 <translation id="1116694919640316211">Om</translation>
 <translation id="3596235046596950091">Aktivera molntjänster</translation>
 <translation id="7649070708921625228">Hjälp</translation>
@@ -1445,11 +1250,118 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="3279741024917655738">Visa videor i helskärmsläge på</translation>
 <translation id="4772404146526168240">Båda skärmarna</translation>
 <translation id="3766223500670287046">Fjärrskärm</translation>
+<translation id="3930737994424905957">Söker efter enheter</translation>
+<translation id="5209320130288484488">Det gick inte att hitta några enheter</translation>
 <translation id="4363771538994847871">Ingen Cast-destination hittades. Behöver du hjälp?</translation>
 <translation id="4271396100647220620">Inga träffar</translation>
 <translation id="6972180789171089114">Ljud/video</translation>
+<translation id="2541002089857695151">Vill du optimera det du castar för helskärm?</translation>
+<translation id="4144218403971135344">Få bättre videokvalitet och spara på batteriet. Videor spelas bara upp på den Cast-kompatibla skärmen.</translation>
+<translation id="8926389886865778422">Fråga inte igen.</translation>
+<translation id="236117173274098341">Optimera</translation>
+<translation id="780301667611848630">Nej tack</translation>
+<translation id="7473891865547856676">Nej tack</translation>
+<translation id="8538358978858059843">Vill du aktivera molntjänster för Cast-funktionen?</translation>
+<translation id="3856595552313160385">Användning av Hangouts och Cast for Education regleras av Brave Softwares sekretesspolicy.</translation>
 <translation id="3700888195348409686">Presenteras (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Skärm <ph name="DISPLAY_ID"/></translation>
+<translation id="4707302005824653064">Den ansvariga (<ph name="CUSTODIAN_EMAIL"/>) kan se användning och historik på chrome.com.</translation>
+<translation id="346431825526753">Det här är ett konto för barn som hanteras av <ph name="CUSTODIAN_EMAIL"/>.</translation>
+<translation id="4159681666905192102">Det här är ett konto för barn som hanteras av <ph name="CUSTODIAN_EMAIL"/> och <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
+<translation id="5958529069007801266">Kontrollerad användare</translation>
+<translation id="5720705177508910913">Aktuell användare</translation>
+<translation id="7081952801286122383">Du använder inkognitoläget</translation>
+<translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Synkroniseringen fungerar inte</translation>
+<translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: Synkroniseringen har pausats</translation>
+<translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (kontrollerad)</translation>
+<translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (barnkonto)</translation>
+<translation id="8182664696082410784"><ph name="REASON"/>
+    Jag tycker inte att den här webbplatsen ska blockeras.</translation>
+<translation id="8662795692588422978">Personer</translation>
+<translation id="4974733135013075877">Stäng och aktivera barnspärr</translation>
+<translation id="3965965397408324205">Stäng <ph name="PROFILE_NAME"/></translation>
+<translation id="3950820424414687140">Logga in</translation>
+<translation id="9220525904950070496">Ta bort konto</translation>
+<translation id="3340978935015468852">inställningar</translation>
+<translation id="5704875434923668958">Synkroniserar till</translation>
+<translation id="5781092003150880845">Synkronisera till <ph name="ACCOUNT_FULL_NAME"/></translation>
+<translation id="1372841398847029212">Synkronisera till ditt konto</translation>
+<translation id="2538361623464451692">Synkronisering inaktiverad</translation>
+<translation id="1316495628809031177">Synkroniseringen har pausats</translation>
+<translation id="7786207843293321886">Avsluta gästsession</translation>
+<translation id="2329597144923131178">Logga in så blir bokmärken, historik, lösenord med mera tillgängligt på alla dina enheter.</translation>
+<translation id="984275831282074731">Betalningsmetoder</translation>
+<translation id="8883847527783433352">Synkronisera med ett annat konto</translation>
+<translation id="2761898608071930085">Använd ett annat konto</translation>
+<translation id="4235813040357936597">Lägg till ett konto för <ph name="PROFILE_NAME"/></translation>
+<translation id="1464258312790801189">Dina konton</translation>
+<translation id="6655458902729017087">Dölj konton</translation>
+<translation id="8770507190024617908">Hantera personer</translation>
+<translation id="2666990579225592931">Öppna ett gästfönster</translation>
+<translation id="5869948122057593679">Stäng alla fönster</translation>
+<translation id="7652808307838961528">Redigera personen <ph name="PROFILE_NAME"/></translation>
+<translation id="6112952769866305444">Redigera personen <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="3294437725009624529">Gäst</translation>
+<translation id="475088594373173692">Första användare</translation>
+<translation id="4535127706710932914">Standardprofil</translation>
+<translation id="4389091756366370506">Användare <ph name="VALUE"/></translation>
+<translation id="749028671485790643">Person <ph name="VALUE"/></translation>
+<translation id="5397794290049113714">Du</translation>
+<translation id="3031417829280473749">Agent X</translation>
+<translation id="412730574613779332">Superhjälte</translation>
+<translation id="5109044022078737958">Mia</translation>
+<translation id="3605780360466892872">Proper</translation>
+<translation id="2772936498786524345">Ninja</translation>
+<translation id="3809280248639369696">Utomjording</translation>
+<translation id="6442187272350399447">Fenomenal</translation>
+<translation id="8631032106121706562">Blomster</translation>
+<translation id="5854912040170951372">Pizzaslajs</translation>
+<translation id="4858913220355269194">Fotboll</translation>
+<translation id="8711402221661888347">Burgare</translation>
+<translation id="4421932782753506458">Misse</translation>
+<translation id="6624687053722465643">Sockersöt</translation>
+<translation id="8256319818471787266">Ludde</translation>
+<translation id="438503109373656455">Brunte</translation>
+<translation id="7548856833046333824">Drink</translation>
+<translation id="8206745257863499010">Bluesig</translation>
+<translation id="8241040075392580210">Molnig</translation>
+<translation id="4555769855065597957">Skugga</translation>
+<translation id="1576594961618857597">Vit standardavatar</translation>
+<translation id="5227679487546032910">Blågrön standardavatar</translation>
+<translation id="4544174279960331769">Blå standardavatar</translation>
+<translation id="8063235345342641131">Grön standardavatar</translation>
+<translation id="4953808748584563296">Orange standardavatar</translation>
+<translation id="3225084153129302039">Lila standardavatar</translation>
+<translation id="1916502483199172559">Röd standardavatar</translation>
+<translation id="3139925690611372679">Gul standardavatar</translation>
+<translation id="6399774419735315745">Spion</translation>
+<translation id="6964390816189577014">Hjälte</translation>
+<translation id="4476590490540813026">Idrottare</translation>
+<translation id="5646558797914161501">Affärsman</translation>
+<translation id="3438633801274389918">Ninja</translation>
+<translation id="4206144641569145248">Utomjording</translation>
+<translation id="6087960857463881712">Entusiastiskt ansikte</translation>
+<translation id="81238879832906896">Gul och vit blomma</translation>
+<translation id="1465827627707997754">Pizzabit</translation>
+<translation id="2642111877055905627">Fotboll</translation>
+<translation id="8838770651474809439">Hamburgare</translation>
+<translation id="8808686172382650546">Katt</translation>
+<translation id="9214695392875603905">Muffin</translation>
+<translation id="5275352920323889391">Hund</translation>
+<translation id="4037084878352560732">Häst</translation>
+<translation id="2272570998639520080">Martiniglas</translation>
+<translation id="120368089816228251">Musiknot</translation>
+<translation id="1393283411312835250">Sol och moln</translation>
+<translation id="1830550083491357902">Inte inloggad</translation>
+<translation id="5941153596444580863">Lägg till person …</translation>
+<translation id="9149866541089851383">Redigera...</translation>
+<translation id="2836635946302913370">Inloggningar med detta användarnamn har inaktiverats av administratören.</translation>
+<translation id="2721695630904737430">Kontrollerade användare har inaktiverats av administratören.</translation>
+<translation id="1468571364034902819">Profilen kan inte användas</translation>
+<translation id="2261323523305321874">Vissa äldre profiler har inaktiverats på grund av en ändring i systemet som administratören gjort.</translation>
+<translation id="2684004000387153598">Fortsätt genom att klicka på OK. Skapa sedan en ny profil för din e-postadress genom att klicka på Lägg till person.</translation>
+<translation id="7683373461016844951">Fortsätt genom att klicka på OK. Skapa sedan en ny profil för e-postadressen på <ph name="DOMAIN"/> genom att klicka på Lägg till person.</translation>
+<translation id="8650543407998814195">Du har inte längre åtkomst till den gamla profilen, men du kan fortfarande ta bort den.</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Vissa inställningar som tillhör <ph name="PRIMARY_EMAIL"/> delas med dig. Dessa inställningar påverkar bara ditt konto när du använder multiinloggning.</translation>
 <translation id="5860491529813859533">Aktivera</translation>
@@ -1464,6 +1376,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="7456142309650173560">utvecklare</translation>
 <translation id="6647838571840953560">För närvarande på <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Fast programvara</translation>
+<translation id="5895138241574237353">Starta om</translation>
 <translation id="7409233648990234464">Starta om och använd Powerwash</translation>
 <translation id="4716483597559580346">Gör en powerwash för ökad säkerhet</translation>
 <translation id="4089922565956168950">Med den här uppgraderingen återställs Bravebook och nuvarande användardata tas bort.</translation>
@@ -1537,7 +1450,6 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="1568323446248056064">Öppna enhetsinställningarna för skärm</translation>
 <translation id="6237816943013845465">Ger möjlighet att ändra skärmupplösningen</translation>
 <translation id="1171135284592304528">Markera objektet med tangentbordsfokus när det ändras</translation>
-<translation id="7846634333498149051">Tangentbord</translation>
 <translation id="5551573675707792127">Tangentbord och textinmatning</translation>
 <translation id="7957615753207896812">Öppna tangentbordsinställningarna</translation>
 <translation id="1632803087685957583">Här kan du ändra tangentbordsinställningar som upprepningsintervall, ordförslag med mera</translation>
@@ -1555,6 +1467,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="9066782832737749352">Text till tal</translation>
 <translation id="6002458620803359783">Önskade röster</translation>
 <translation id="7776701556330691704">Inga röster hittades</translation>
+<translation id="124116460088058876">Fler språk</translation>
 <translation id="1288300545283011870">Talegenskaper</translation>
 <translation id="6680650203439190394">Hastighet</translation>
 <translation id="6029587122245504742">Långsammast</translation>
@@ -1570,7 +1483,6 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="5471768120198416576">Hejsan! Nu används min röst för text till tal.</translation>
 <translation id="6902066522699286937">Röst att förhandsgranska</translation>
 <translation id="304747341537320566">Talmotorer</translation>
-<translation id="4423104065312875417">Installera ytterligare talmotorer</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
 <translation id="6963573437985514722">Kör verktyg, redigerare och IDE:er för Linux på Bravebook.</translation>
 <translation id="6869910261738842136">Ta bort Linux-appar för Bravebook</translation>
@@ -1611,6 +1523,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="8647834505253004544">Webbadressen är inte giltig</translation>
 <translation id="2149850907588596975">Lösenord och formulär</translation>
 <translation id="8639963783467694461">Inställningar för Autofyll</translation>
+<translation id="3431019676184503003">Adresser och betalningsmetoder</translation>
 <translation id="2512222046227390255">Fyll i formulär automatiskt</translation>
 <translation id="2903493209154104877">Adresser</translation>
 <translation id="7764225426217299476">Lägg till adress</translation>
@@ -1638,16 +1551,16 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="1375321115329958930">Sparade lösenord</translation>
 <translation id="152234381334907219">Aldrig sparat</translation>
 <translation id="5137501176474113045">Ta bort det här objektet</translation>
+<translation id="1486096554574027028">Sök efter lösenord</translation>
 <translation id="6286708577777130801">Sparad lösenordsinformation</translation>
 <translation id="1566049601598938765">Webbplats</translation>
 <translation id="8503813439785031346">Användarnamn</translation>
 <translation id="6657585470893396449">Lösenord</translation>
 <translation id="137651782282853227">Sparade adresser visas här</translation>
 <translation id="1529116897397289129">Sparade kort visas här</translation>
-<translation id="4907824805858067479">Administratören har inaktiverat sparade kort</translation>
+<translation id="7930294771522048157">Sparade betalningsmetoder visas här</translation>
 <translation id="9124003689441359348">Sparade lösenord visas här</translation>
 <translation id="4400367121200150367">Webbplatser som aldrig sparar lösenord visas här</translation>
-<translation id="8858798938034909167">Kom åt lösenorden från alla enheter via <ph name="BEGIN_LINK"/>passwords.google.com<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Exportera lösenord …</translation>
 <translation id="3900966090527141178">Exportera lösenord</translation>
 <translation id="6914783257214138813">Alla med tillgång till den exporterade filen kan läsa dina lösenord.</translation>
@@ -1703,6 +1616,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="4699172675775169585">Cachade bilder och filer</translation>
 <translation id="1274997165432133392">Cookies och andra webbplatsdata</translation>
 <translation id="3838543471119263078">Cookies och andra webbplats- och plugindata</translation>
+<translation id="7029809446516969842">Lösenord</translation>
 <translation id="6865313869410766144">Formuläruppgifter för Autofyll</translation>
 <translation id="177336675152937177">Appdata som har en värd</translation>
 <translation id="1718835860248848330">Senaste timmen</translation>
@@ -1710,8 +1624,6 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="5648166631817621825">Senaste sju dagarna</translation>
 <translation id="8571213806525832805">Senaste fyra veckorna</translation>
 <translation id="6979737339423435258">Genom tiderna</translation>
-<translation id="2949037475046662832">Cookies och webbplatsdata rensas för alla webbplatser, inklusive:</translation>
-<translation id="9174212595744391062">Cookies och cacheminne för alla webbplatser tas bort, inklusive</translation>
 <translation id="3399432415385675819">Aviseringar inaktiveras</translation>
 <translation id="3459509316159669723">Skriva ut</translation>
 <translation id="1563008449513980623">Konfigurera eller hantera skrivare i Brave Software Cloud Print.</translation>
@@ -1767,6 +1679,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="6189273858858366896">Konfigurera eller hantera Network File Share.</translation>
 <translation id="2367199180085172140">Lägg till File Share</translation>
 <translation id="8984654317541110628">Webbadress för filresurs</translation>
+<translation id="5247051749037287028">Visningsnamn (valfritt)</translation>
 <translation id="6091761513005122595">Den delade resursen har monterats.</translation>
 <translation id="9024158959543687197">Det gick inte att montera den delade resursen. Kontrollera filresursens webbadress och försök igen.</translation>
 <translation id="1954813140452229842">Det gick inte att montera den delade resursen. Kontrollera användaruppgifterna och försök igen.</translation>
@@ -1785,21 +1698,25 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="4005817994523282006">Metod för tidszonsidentifiering</translation>
 <translation id="3024374909719388945">Använd 24-timmars klocka</translation>
 <translation id="6444070574980481588">Ange datum och tid</translation>
-<translation id="716945929772164358">Smart Lock för Bravebook (beta)</translation>
+<translation id="5065775832226780415">Smart Lock</translation>
 <translation id="8468750959626135884">Lås upp <ph name="DEVICE_TYPE"/> med Android-mobilen.</translation>
 <translation id="3571734092741541777">Konfigurera</translation>
-<translation id="8946284507644756416"><ph name="DEVICE_TYPE"/> kan låsas upp med Android-mobilen.</translation>
+<translation id="3336664756920573711">Lås upp <ph name="DEVICE_TYPE"/> med Android-mobilen</translation>
 <translation id="1036348656032585052">Inaktivera</translation>
 <translation id="1164674268730883318">Vill du inaktivera Smart Lock för <ph name="DEVICE_TYPE"/>?</translation>
 <translation id="2739030071582769583">Om du inaktiverar Smart Lock för <ph name="DEVICE_TYPE"/> kan du inte låsa upp dina Brave-enheter med mobilen. Du måste ange ditt lösenord.</translation>
 <translation id="4737715515457435632">Anslut till ett nätverk</translation>
 <translation id="5425722269016440406">Du måste vara online för att kunna inaktivera Smart Lock eftersom den här inställningen är synkroniserad med din mobil och andra enheter. Anslut först till ett nätverk.</translation>
 <translation id="8885197664446363138">Smart Lock är inte tillgängligt</translation>
-<translation id="379422718204375917">Logga in på ditt konto med Smart Lock</translation>
+<translation id="7334190995941642545">Smart Lock är för närvarande inte tillgängligt. Försök igen senare.</translation>
+<translation id="8112427115751454716">Logga in på ditt Brave Software-konto med Smart Lock</translation>
 <translation id="2043818754674261542"><ph name="DEVICE_TYPE"/>-enheten låses upp när mobilen kommer inom följande avstånd</translation>
 <translation id="2522791476825452208">Mycket nära</translation>
 <translation id="5750324801516359607">Långt</translation>
 <translation id="5595152862129936745">Mycket långt</translation>
+<translation id="8748384418490037181">Alternativ för Smart Lock</translation>
+<translation id="2433836460518180625">Lås bara upp enheten</translation>
+<translation id="3300552672525741457">Lås upp enheten och logga in på Brave Software-kontot</translation>
 <translation id="2307462900900812319">Konfigurera nätverk</translation>
 <translation id="7175037578838465313">Konfigurera <ph name="NAME"/></translation>
 <translation id="8662671328352114214">Anslut till <ph name="TYPE"/>-nätverket</translation>
@@ -1818,8 +1735,10 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="9153934054460603056">Spara identitet och lösenord</translation>
 <translation id="8656768832129462377">Kontrollera inte</translation>
 <translation id="1399511500114202393">Inget användarcertifikat</translation>
+<translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
 <translation id="3160842278951476457"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>] (med maskinvarustöd)</translation>
 <translation id="5305688511332277257">Ingen installerad</translation>
+<translation id="5512653252560939721">Användarcertifikat måste vara maskinvarustödda.</translation>
 <translation id="5422221874247253874">Åtkomstpunkt</translation>
 <translation id="1726100011689679555">Namnservrar</translation>
 <translation id="1209796539517632982">Automatiska namnservrar</translation>
@@ -1930,6 +1849,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="952992212772159698">Inte aktiverat</translation>
 <translation id="3488065109653206955">Delvis aktiverat</translation>
 <translation id="4880328057631981605">Namn på åtkomstpunkt (APN)</translation>
+<translation id="5142961317498132443">Autentisering</translation>
 <translation id="1244147615850840081">Operatör</translation>
 <translation id="5691511426247308406">Familj</translation>
 <translation id="6977381486153291903">Revision av firmware</translation>
@@ -2019,8 +1939,10 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="1756681705074952506">Inmatningsmetod</translation>
 <translation id="59174027418879706">Aktiverat</translation>
 <translation id="1650371550981945235">Visa inmatningsalternativ</translation>
+<translation id="4992473555164495036">Administratören har begränsat vilka inmatningsmetoder som är tillgängliga.</translation>
 <translation id="5229189185761556138">Hantera inmatningsmetoder</translation>
 <translation id="2631498379019108537">Visa inmatningsalternativ på hyllan</translation>
+<translation id="3691231116639905343">Tangentbordsappar</translation>
 <translation id="3161522574479303604">Alla språk</translation>
 <translation id="3312424061798279731">Aktiverade språk</translation>
 <translation id="9042893549633094279">Sekretess och säkerhet</translation>
@@ -2028,26 +1950,22 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="6697492270171225480">Visa förslag på liknande sidor om en sida inte hittas</translation>
 <translation id="4534361985432360439">Skickar webbadresserna till sidor som du försöker nå till Brave Software</translation>
 <translation id="6545834809683560467">Använd en förslagstjänst om du vill ha hjälp att slutföra sökningar och fylla i webbadresser i adressfältet eller i sökrutan i startprogrammet för appar</translation>
-<translation id="3798133693323981089">Autoslutför sökningar och webbadresser</translation>
-<translation id="1271317946095246719">Skickar sökningar från adressfältet och sökrutan och vissa cookies till standardsökmotorn</translation>
+<translation id="7704317875155739195">Autoslutför sökningar och webbadresser</translation>
 <translation id="9038649477754266430">Använd en förslagstjänst om du vill läsa in sidor snabbare</translation>
 <translation id="7981313251711023384">Läs in sidor i förväg så att det går snabbare att surfa och söka</translation>
 <translation id="2468205691404969808">Kommer ihåg med hjälp av cookies vad du brukar välja även om du inte besöker sidorna i fråga</translation>
-<translation id="219985413780390209">Skydda dig själv och enheten från farliga webbplatser</translation>
-<translation id="4354266305752237763">Skydda dig själv och enheten från farliga webbplatser (Säker webbsökning)</translation>
-<translation id="5558446705802335921">Kontrollerar om webbplatser du besöker och filer du laddar ned kan vara skadliga, t.ex. om det förekommer nätfiske eller skadlig programvara</translation>
-<translation id="2838616112108574688">Rapportera uppgifter om möjliga säkerhetsincidenter till Brave Software automatiskt</translation>
-<translation id="6435279463765872881">Skicka automatiskt viss information om systemet och sidors innehåll till Brave Software i syfte att identifiera skadliga appar och webbplatser.</translation>
+<translation id="1641113438599504367">Säker webbsökning</translation>
+<translation id="773905249182896430">Skyddar dig och enheten från skadliga webbplatser</translation>
 <translation id="8983677657449185470">Bidra till att förbättra Säker webbsökning</translation>
 <translation id="199861668945335092">Skickar viss information om systemet och sidors innehåll till Brave Software</translation>
 <translation id="490074449735753175">Åtgärda stavfel med hjälp av en webbtjänst</translation>
 <translation id="3523078749603005179">Smartare stavningskontroll genom att skicka det som du skriver i webbläsaren till Brave Software</translation>
-<translation id="3182749001423093222">Stavningskontroll</translation>
-<translation id="4370373819607756384">Du kan ändra den här inställningen under <ph name="BEGIN_LINK"/>Språk<ph name="END_LINK"/></translation>
-<translation id="5713638588895952380">Skicka användningsstatistik och kraschrapporter till Brave Software automatiskt</translation>
+<translation id="2564653188463346023">Förbättrad stavningskontroll</translation>
+<translation id="9079153198295609735">Skicka användningsstatistik och kraschrapporter till Brave Software automatiskt</translation>
 <translation id="5941220456342415404">Skicka diagnostik- och användningsdata automatiskt till Brave Software</translation>
 <translation id="918192811481327695">Bidra till att förbättra Braves funktioner och prestanda</translation>
-<translation id="6538479075382111079">Skickar användningsstatistik och felrapporter till Brave Software automatiskt</translation>
+<translation id="8438566539970814960">Förbättra sökningar och surfandet</translation>
+<translation id="284843628681142937">Skickar webbadresserna till sidor du besöker till Brave Software</translation>
 <translation id="8791534160414513928">Skicka en begäran om att inte spåra med webbtrafik</translation>
 <translation id="5299109548848736476">Do Not Track</translation>
 <translation id="5282733140964383898">Om du aktiverar Do Not Track innebär det att en begäran skickas med webbtrafiken. Vad som händer sedan beror på om webbplatserna svarar på din begäran och hur begäran tolkas. En del webbplatser kan till exempel svara genom att visa annonser som inte baseras på webbplatser du har besökt tidigare. Många webbplatser fortsätter att samla in och använda din webbinformation, till exempel för att förbättra säkerheten, för att erbjuda innehåll, tjänster, annonser och rekommendationer på sina webbplatser och för att generera statistik för rapporteringsändamål. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
@@ -2062,6 +1980,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="3151562827395986343">Rensa historik, cookies, cacheminne med mera</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Fler inställningar som rör sekretess, säkerhet och datainsamling finns under <ph name="BEGIN_LINK"/>Synkronisering och anpassning<ph name="END_LINK"/></translation>
+<translation id="7222718784508482526">Fler inställningar som rör sekretess, säkerhet och datainsamling finns under <ph name="BEGIN_LINK"/>Synkronisering och Brave Softwares tjänster<ph name="END_LINK"/></translation>
 <translation id="6438234780621650381">Återställ inställningarna</translation>
 <translation id="5293170712604732402">Återställ inställningarna till standardinställningarna</translation>
 <translation id="892706138619340876">Vissa inställningar återställdes</translation>
@@ -2081,18 +2000,23 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="6410668567036790476">Lägg till sökmotor</translation>
 <translation id="1128591060186966949">Redigera sökmotor</translation>
 <translation id="5719603411793408026">Standardsökmotorer</translation>
+<translation id="5605623530403479164">Andra sökmotorer</translation>
 <translation id="7098447629416471489">Andra sparade sökmotorer visas här</translation>
+<translation id="1459967076783105826">Sökmotorer som lagts till av tilläggsprogram</translation>
 <translation id="6678717876183468697">Frågewebbadress</translation>
 <translation id="1545786162090505744">Webbadress med %s istället för sökfråga</translation>
 <translation id="7136694880210472378">Ange som standard</translation>
 <translation id="102272308210570439">Låt assistenten använda det som visas på skärmen</translation>
 <translation id="8624205858755890468">Tillåter att assistenten visar relaterade uppgifter, appar och åtgärder.</translation>
+<translation id="178309940312315155">Identifiering av ”Ok Brave Software”</translation>
+<translation id="3476912025629168202">Få tillgång till assistenten när du säger ”Ok Brave Software” och skärmen är aktiverad.</translation>
 <translation id="3908743412684152579">Inställningar för Brave Software Assistent</translation>
 <translation id="4933484234309072027">inbäddad på <ph name="URL"/></translation>
 <translation id="8427292751741042100">inbäddad på någon värd</translation>
 <translation id="4907306957610201395">Behörighetskategori</translation>
 <translation id="6295158916970320988">Alla webbplatser</translation>
 <translation id="7625568159987162309">Visa behörigheter och data som har lagrats på webbplatser</translation>
+<translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Annonser</translation>
 <translation id="5649053991847567735">Automatiska nedladdningar</translation>
 <translation id="3744111561329211289">Synkronisera i bakgrunden</translation>
@@ -2114,7 +2038,10 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="8270242299912238708">PDF-dokument</translation>
 <translation id="539658326146969381">Ladda ned PDF-filer i stället för att låta dem öppnas automatiskt i Brave</translation>
 <translation id="4434045419905280838">Popup-fönster och omdirigeringar</translation>
+<translation id="6612358246767739896">Skyddat innehåll</translation>
 <translation id="4252852543720145436">Identifierare för skyddat innehåll</translation>
+<translation id="3955193568934677022">Tillåt att skyddat innehåll spelas upp på webbplatser (rekommenderas)</translation>
+<translation id="7311079019872751559">Åtkomst till plugin utanför sandlåda</translation>
 <translation id="3013291976881901233">MIDI-enheter</translation>
 <translation id="7270858098575133036">Fråga när en webbplats vill använda systemexklusiva meddelanden för att komma åt MIDI-enheter</translation>
 <translation id="6817174620439930047">Fråga när en webbplats vill använda systemexklusiva meddelanden för att komma åt MIDI-enheter (rekommenderas)</translation>
@@ -2140,6 +2067,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="7661259717474717992">Tillåt att webbplatser sparar och läser data i cookies</translation>
 <translation id="2913331724188855103">Tillåt att webbplatser sparar och läser cookiedata (rekommenderas)</translation>
 <translation id="5908769186679515905">Förhindra att webbplatser kör Flash</translation>
+<translation id="6096007141921397775">Flash-inställningarna sparas tills du avslutar Brave.</translation>
 <translation id="2972642118232180842">Kör bara viktigt innehåll (rekommenderas)</translation>
 <translation id="7084192839369222683">Kör bara viktigt innehåll</translation>
 <translation id="8074127646604999664">Tillåt webbplatser som nyligen har stängts att slutföra överföringen av data</translation>
@@ -2159,6 +2087,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="3494769164076977169">Fråga när en webbplats försöker ladda ned filer automatiskt efter den första filen (rekommenderas)</translation>
 <translation id="5036662165765606524">Tillåt inte att någon webbplats laddar ned flera filer automatiskt</translation>
 <translation id="3440761377721825626">Fråga om en webbplats försöker använda en plugin för att få åtkomst till datorn</translation>
+<translation id="3523642406908660543">Fråga om en webbplats försöker använda en plugin för att få åtkomst till datorn (rekommenderas)</translation>
 <translation id="3038675903128704560">Tillåt inte några webbplatser att använda en plugin för få åtkomst till datorn</translation>
 <translation id="857943718398505171">Tillåten (rekommenderas)</translation>
 <translation id="5000922062037820727">Blockerad (rekommenderas)</translation>
@@ -2174,15 +2103,18 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="184823282865851239">Blockera om webbplatsen brukar visa påträngande annonser</translation>
 <translation id="3083193146044397360">Blockerades tillfälligt av säkerhetsskäl</translation>
 <translation id="2500471369733289700">Blockerades av säkerhetsskäl</translation>
-<translation id="5225360179303283478">Återställ webbplatsinställningarna</translation>
+<translation id="3008272652534848354">Återställ behörigheter</translation>
 <translation id="2277255602909579701">Alla cookies och all webbplatsdata</translation>
 <translation id="327147043223061465">Visa alla cookies och webbplatsuppgifter</translation>
 <translation id="1963227389609234879">Ta bort &amp;amp;alla</translation>
 <translation id="3432227430032737297">Ta bort alla som visas</translation>
 <translation id="6011449291337289699">Rensa webbplatsdata</translation>
 <translation id="8339059274628563283">Lokalt lagrad data för <ph name="SITE"/></translation>
-<translation id="67211069045302358">Vill du återställa inställningarna för den här webbplatsen?</translation>
-<translation id="1596708901665680416">Behörigheter i Brave återställs till standardinställningarna</translation>
+<translation id="4090947011087001172">Vill du återställa behörigheterna för webbplatsen <ph name="SITE"/>?</translation>
+<translation id="1688867105868176567">Vill du ta bort webbplatsdata?</translation>
+<translation id="2369536625682139252">All data som sparats av <ph name="SITE"/> tas bort utom cookies.</translation>
+<translation id="5300287940468717207">Vill du återställa webbplatsernas behörigheter?</translation>
+<translation id="2734760316755174687">Webbplatser som är underordnade <ph name="SITE_GROUP_NAME"/> återställs också.</translation>
 <translation id="3127156390846601284">Det här raderar all data som lagrats på enheten av alla webbplatser som visas. Vill du fortsätta?</translation>
 <translation id="150411034776756821">Ta bort <ph name="SITE"/></translation>
 <translation id="577624874850706961">Sök efter cookies</translation>
@@ -2203,8 +2135,6 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="6742339027238151589">Tillgänglig för skript</translation>
 <translation id="361106536627977100">Flash-data</translation>
 <translation id="8557930019681227453">Manifest</translation>
-<translation id="2694026874607847549">1 cookie</translation>
-<translation id="2956763290572484660"><ph name="COOKIES"/> cookies</translation>
 <translation id="3866249974567520381">Beskrivning</translation>
 <translation id="4530494379350999373">Ursprung</translation>
 <translation id="8195027750202970175">Storlek på disk</translation>
@@ -2216,8 +2146,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="1296497012903089238">Certifikattyp</translation>
 <translation id="8553342806078037065">Hantera andra personer</translation>
 <translation id="8907706281008466056">Profilbild i Brave Software Profiler</translation>
-<translation id="7565981526226997270">Synkronisera och anpassa Brave på alla enheter du använder</translation>
-<translation id="4710251968215868702">Använder innehåll på webbplatser du besöker samt aktivitet i och interaktion med webbläsaren.</translation>
+<translation id="127138278192656016">Använd synkronisering och alla tjänster</translation>
 <translation id="2408955596600435184">Ange din pinkod</translation>
 <translation id="6619990499523117484">Bekräfta pinkoden</translation>
 <translation id="2023167225947895179">Pinkoden kan vara lätt att lista ut</translation>
@@ -2241,6 +2170,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="1719312230114180055">Obs! Fingeravtryck kan vara mindre säkra än starka lösenord och pinkoder.</translation>
 <translation id="1927632033341042996">Finger <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="2136573720723402846">Aktivera upplåsning med fingeravtryck</translation>
+<translation id="7665369617277396874">Lägg till konto</translation>
 <translation id="3422989461909154470">Alla inloggade Brave Software-konton från appar och webbplatser kan hanteras här.</translation>
 <translation id="1987317783729300807">Konton</translation>
 <translation id="8418661265246754237">Brave Software Konton</translation>
@@ -2257,8 +2187,8 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="7311891583377621132">Flytta fingret något så att en annan del av fingeravtrycket registreras</translation>
 <translation id="7345706641791090287">Bekräfta lösenordet</translation>
 <translation id="381202950560906753">Lägg till ett till</translation>
-<translation id="6968288415730398122">Ange lösenordet om du vill konfigurera skärmlås</translation>
-<translation id="4103091233824664032">Ange lösenordet om du vill konfigurera skärmlåset och logga in</translation>
+<translation id="3625538291267447988">Ange ditt lösenord om du vill konfigurera Smart Lock</translation>
+<translation id="6658023813581644008">Ange ditt lösenord om du vill konfigurera Smart Lock för inloggning</translation>
 <translation id="5449551289610225147">Ogiltigt lösenord</translation>
 <translation id="5374359983950678924">Byt bild</translation>
 <translation id="6984299437918708277">Välj en bild som ska visas för ditt konto på inloggningsskärmen</translation>
@@ -2276,18 +2206,19 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="2114896190328250491">Foto taget av <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Befintligt foto från kamera eller fil</translation>
 <translation id="7548737591211512046">Logga in om du vill få tillgång till samma bokmärken, historik, lösenord och andra inställningar på alla dina enheter. Dessutom loggas du in automatiskt på Brave Softwares tjänster.</translation>
-<translation id="3989635538409502728">Logga ut</translation>
 <translation id="2951604498031550705">När bokmärken, historik, lösenord och andra inställningar ändras kommer dessa ändringar inte längre att synkroniseras med Brave Software-kontot. Uppgifter som redan har sparats i Brave Software-kontot finns däremot kvar och kan hanteras via <ph name="BEGIN_LINK"/>Brave Software Översikt<ph name="END_LINK"/>.</translation>
+<translation id="138229770216285283">Du loggas ut från dina Brave Software-konton. När bokmärken, historik, lösenord och andra inställningar ändras kommer dessa ändringar inte längre att synkroniseras med Brave Software-kontot. Uppgifter som redan har sparats i Brave Software-kontot finns däremot kvar och kan hanteras via <ph name="BEGIN_LINK"/>Brave Software Översikt<ph name="END_LINK"/>.</translation>
 <translation id="8588866096426746242">Visa profilstatistik</translation>
 <translation id="5535941515421698170">Ta även bort befintlig data från den här enheten</translation>
 <translation id="7243632151880336635">Rensa och logga ut</translation>
 <translation id="6406506848690869874">Synkronisera</translation>
-<translation id="1136155683023653803">Bland annat bokmärken och historik synkroniseras med ditt konto</translation>
-<translation id="1123187597739372905">Visa synkroniseringsinställningar</translation>
-<translation id="5428209950370661546">Andra Brave Software-tjänster</translation>
-<translation id="8608798913004137607">Kontakta Brave Software om att förbättra surfandet och Brave</translation>
-<translation id="2055016640093734678">Visa inställningar för Brave Softwares tjänster</translation>
 <translation id="1397854323885047133">Synkronisering och anpassning</translation>
+<translation id="1136155683023653803">Bland annat bokmärken och historik synkroniseras med ditt konto</translation>
+<translation id="3267417306184901318">Din webbinformation och aktivitet som synkroniseras med Brave Software-kontot</translation>
+<translation id="1123187597739372905">Visa synkroniseringsinställningar</translation>
+<translation id="8420510748452002155">Tjänster som inte använder anpassning</translation>
+<translation id="2055016640093734678">Visa inställningar för Brave Softwares tjänster</translation>
+<translation id="7956662517480676674">Synk och Brave Softwares tjänster</translation>
 <translation id="2453021845418314664">Avancerade synkroniseringsinställningar</translation>
 <translation id="2731700343119398978">Vänta ...</translation>
 <translation id="7529411698175791732">Kontrollera internetanslutningen. Om problemet kvarstår testar du att logga ut och logga in igen.</translation>
@@ -2296,7 +2227,9 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="1644574205037202324">Historik</translation>
 <translation id="5117427536932535467">Teman och bakgrunder</translation>
 <translation id="3259418918864581163">Kreditkort och adresser som används med Brave Software Pay.</translation>
+<translation id="4439834757335393741">Betalningsmetoder och adresser som används med Brave Software Pay.</translation>
 <translation id="3268451620468152448">Öppna flikar</translation>
+<translation id="2120297377148151361">Aktivitet och interaktion</translation>
 <translation id="8135094938656535588">Hantera synkroniserad data via Brave Software Översikt</translation>
 <translation id="6596325263575161958">Krypteringsalternativ</translation>
 <translation id="2459230470861708651">Kryptera synkroniserade lösenord med ditt användarnamn och lösenord på Brave Software</translation>
@@ -2310,9 +2243,11 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="9050666287014529139">Lösenfras</translation>
 <translation id="7772032839648071052">Bekräfta lösenfras</translation>
 <translation id="2653659639078652383">Skicka</translation>
-<translation id="7569276629154082906">Styr hur Sök, annonser och andra tjänster från Brave Software ska anpassas utifrån webbhistoriken</translation>
+<translation id="2608770217409477136">Använd standardinställningar</translation>
+<translation id="4882831918239250449">Styr hur Sök, annonser och annat ska anpassas utifrån webbhistoriken</translation>
 <translation id="5833726373896279253">Inställningarna kan bara ändras av ägaren:</translation>
 <translation id="1926339101652878330">Inställningarna styrs av en företagspolicy. Kontakta administratören om du vill veta mer.</translation>
+<translation id="7299337219131431707">Aktivera gästsurfning</translation>
 <translation id="4138267921960073861">Visa användarnamn och foton på inloggningssidan</translation>
 <translation id="6828153365543658583">Begränsa inloggning till följande användare:</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (ägare)</translation>
@@ -2342,6 +2277,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="6965978654500191972">Enhet</translation>
 <translation id="8260864402787962391">Mus</translation>
 <translation id="155865706765934889">Styrplatta</translation>
+<translation id="7846634333498149051">Tangentbord</translation>
 <translation id="4194570336751258953">Aktivera klick på styrplattan</translation>
 <translation id="270516211545221798">Hastighet för styrplatta</translation>
 <translation id="8044899503464538266">Långsamt</translation>
@@ -2427,6 +2363,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="1082725763867769612">Offlinefiler</translation>
 <translation id="7366909168761621528">Webbinformation</translation>
 <translation id="5568144734023334204">Android-lagring</translation>
+<translation id="938339467127511841">Lagringsutrymme för Linux (beta)</translation>
 <translation id="7441830548568730290">Andra användare</translation>
 <translation id="8546186510985480118">Enheten har ont om diskutrymme</translation>
 <translation id="9109122242323516435">Frigör utrymme genom att ta bort filer från lagringsutrymmet på enheten.</translation>
@@ -2445,6 +2382,7 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="2610157865375787051">Viloläge</translation>
 <translation id="6212168817037875041">Stäng av skärmen</translation>
 <translation id="5495597166260341369">Låt skärmen vara på</translation>
+<translation id="7138678301420049075">Övrigt</translation>
 <translation id="1114525161406758033">Aktivera viloläget när locket stängs</translation>
 <translation id="1848219224579402567">Logga ut när locket stängs</translation>
 <translation id="8781980678064919987">Stäng av när locket stängs</translation>
@@ -2452,8 +2390,17 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/> % – <ph name="TIME"/> tills batteriet är fulladdat</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/> %</translation>
 <translation id="1940546824932169984">Anslutna enheter</translation>
-<translation id="1108164192735968833">Sms-koppling</translation>
-<translation id="564515084282424541">Läs och svara på sms på Bravebook</translation>
+<translation id="5235565664420173924">Better Together</translation>
+<translation id="5375767622559981303">Chomebook fungerar ännu bättre ihop med mobilen. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
+<translation id="3465800511193611451">Väntar på verifiering. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
+<translation id="2315821125498993513">Det gick inte att ansluta till mobilen. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
+<translation id="5598551463564921617">Better Together har aktiverats</translation>
+<translation id="3088402208262982892">Better Together har inaktiverats</translation>
+<translation id="2079079131837725321">Lås upp Chomebook med mobilen. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
+<translation id="5430931332414098647">Direktinternetdelning</translation>
+<translation id="7095175330464035635">Skicka och ta emot sms på Bravebook</translation>
+<translation id="3936335337858561470">Glöm den här enheten</translation>
+<translation id="3606712892509067288">Ta bort från Better Together</translation>
 <translation id="7878562273885520351">Lösenordet kan vara utsatt för risk</translation>
 <translation id="6582421931165117398">Ändra lösenordet nu så att dina personliga uppgifter skyddas. Du måste logga in innan du kan ändra lösenordet.</translation>
 <translation id="1089439967362294234">Ändra lösenordet</translation>
@@ -2481,6 +2428,8 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="1607139524282324606">Rensa post</translation>
 <translation id="6025215716629925253">Stack trace</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 rad visas inte&amp;gt;}other{&amp;lt;$1 rader visas inte&amp;gt;}}</translation>
+<translation id="407173827865827707">Vid klick</translation>
+<translation id="4225397296022057997">På alla webbplatser</translation>
 <translation id="3732078975418297900">Fel på rad <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Fel på rad <ph name="ERROR_LINE_START"/> till och med <ph name="ERROR_LINE_END"/></translation>
 <translation id="1890674179660343635">&amp;lt;span&amp;gt;Id: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
@@ -2548,4 +2497,36 @@ Jag tycker inte att den här webbplatsen ska blockeras!</translation>
 <translation id="9004952710076978168">Ett meddelande om en okänd skrivare mottogs.</translation>
 <translation id="2202898655984161076">Ett problem uppstod när skrivare skulle listas. Vissa av dina skrivare kanske inte har registrerats med <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Anslutningen till <ph name="CLOUD_PRINT_NAME"/> har kraschat. Vill du starta om?</translation>
+<translation id="6904655473976120856">Tryck på appknappen för att avsluta</translation>
+<translation id="8909833622202089127">Webbplatsen spårar din plats</translation>
+<translation id="375636864092143889">Webbplatsen använder din mikrofon</translation>
+<translation id="310671807099593501">Webbplatsen använder Bluetooth</translation>
+<translation id="7256069762010468647">Webbplatsen använder kameran</translation>
+<translation id="7340650977506865820">Webbplatsen delar din skärm</translation>
+<translation id="1805738995123446102">En flik i bakgrunden använder din mikrofon</translation>
+<translation id="1112420131909513020">En flik i bakgrunden använder Bluetooth</translation>
+<translation id="8715480913140015283">En flik i bakgrunden använder kameran</translation>
+<translation id="6155141482566063812">En flik i bakgrunden delar din skärm</translation>
+<translation id="661907246513853610">Webbplatsen kan spåra din plats</translation>
+<translation id="8991520179165052608">Webbplatsen har åtkomst till din mikrofon</translation>
+<translation id="7681095912841365527">Webbplatsen har åtkomst till Bluetooth</translation>
+<translation id="3085412380278336437">Webbplatsen har åtkomst till kameran</translation>
+<translation id="9180380851667544951">Webbplatsen kan dela din skärm</translation>
+<translation id="4992630054488400221">Om du vill använda Brave i VR installerar eller uppdaterar du tangentbordet för Daydream</translation>
+<translation id="983511809958454316">Den här funktionen stöds inte i VR-läget</translation>
+<translation id="4008291085758151621">Information om webbplatsen är inte tillgänglig i VR-läget</translation>
+<translation id="1439926347196400598">Tillåter du ljudinspelning i Brave?</translation>
+<translation id="6313641880021325787">AVSLUTA VR-LÄGET</translation>
+<translation id="2670429602441959756">Den här sidan har funktioner som inte stöds i VR ännu. VR-läget avslutas …</translation>
+<translation id="1802687198411089702">Sidan svarar inte. Vänta tills den svarar eller avbryt.</translation>
+<translation id="9148058034647219655">Avsluta</translation>
+<translation id="3987938432087324095">Det gick inte att uppfatta vad du sade.</translation>
+<translation id="6923132443355966645">Rulla/klicka</translation>
+<translation id="6041155700700864984">Avsluta helskärmsläget</translation>
+<translation id="6112294629795967147">Ändra storlek genom att trycka</translation>
+<translation id="2453860139492968684">Slutför</translation>
+<translation id="1853692000353488670">Ny inkognitoflik</translation>
+<translation id="5530766185686772672">Stäng inkognitoflikar</translation>
+<translation id="8076492880354921740">Flikar</translation>
+<translation id="1049743911850919806">Inkognito</translation>
 </translationbundle>

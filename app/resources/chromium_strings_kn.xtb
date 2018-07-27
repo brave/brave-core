@@ -1,34 +1,45 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="kn">
+<translation id="5194812628624740897"><ph name="USERNAME"/> ಅವರ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸುವುದರಿಂದ ನಿಮ್ಮ ಇತಿಹಾಸ, ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು, ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಮತ್ತು ಈ ಸಾಧನದಲ್ಲಿ ಸಂಗ್ರಹವಾಗಿರುವ ಇತರ Brave ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸಲಾಗುತ್ತದೆ. ನಿಮ್ಮ Brave Software ಖಾತೆಯಲ್ಲಿ ಸಂಗ್ರಹವಾಗಿರುವ ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿ<ph name="END_GOOGLE_DASHBOARD_LINK"/> ನಿರ್ವಹಿಸಬಹುದಾಗಿದೆ.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave ಲೋಗೋ</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">Brave ಗೆ ಸೈನ್ ಇನ್ ಆಗಿ</translation>
 <translation id="5516268345616100622">ಕಾರ್ಯನಿರ್ವಾಹಕ - Brave</translation>
+<translation id="7918740962659365265">Brave Software ಗೆ ಕ್ರ್ಯಾಶ್ ವರದಿಗಳನ್ನು ಮತ್ತು <ph name="UMA_LINK"/> ಕಳುಹಿಸುವುದರಿಂದ Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
+<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave ಬೀಟಾ</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Brave OS ಅನ್ನು ಬಳಸುತ್ತಿರುವುದರ ಜೊತೆಗೆ ಸಹಾಯವನ್ನು ಪಡೆಯಿರಿ</translation>
 <translation id="8992261409816268381">Brave ಲೇಖಕರು</translation>
-<translation id="9179832504443063758">Brave ಓಪನ್ ಸೋರ್ಸ್ ಪರವಾನಗಿಗಳು</translation>
-<translation id="8372475781172910778">Brave OS ಓಪನ್ ಸೋರ್ಸ್ ಪರವಾನಗಿಗಳು</translation>
+<translation id="4651430425715739110">ಹಕ್ಕುಸ್ವಾಮ್ಯ <ph name="YEAR"/> Brave ಲೇಖಕರು. ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.</translation>
+<translation id="2310890394934209120">ಹೆಚ್ಚುವರಿ <ph name="BEGIN_LINK_CROS_OSS"/>ತೆರೆದ ಮೂಲ ಸಾಫ್ಟ್‌ವೇರ್<ph name="END_LINK_CROS_OSS"/> ನಿಂದ Brave OS ಮಾಡಲು ಸಾಧ್ಯ.</translation>
 <translation id="5019879183386042809">Brave ಅನ್ನು ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಮಾಡಿ</translation>
 <translation id="5063987220091207247">Brave OS ಗೆ ಈ ಪುಟ ತೆರೆಯಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="4065288863231444640">Brave ಹಿನ್ನೆಲೆಯಲ್ಲಿ ರನ್ ಆಗಲು ಅನುಮತಿಸಿ</translation>
+<translation id="2585240446624043880">Brave ಗೆ ಇದರ ಡೇಟಾ ಡೈರೆಕ್ಟರಿಯನ್ನು ಓದಲಾಗುವುದಿಲ್ಲ ಮತ್ತು ಬರೆಯಲಾಗುವುದಿಲ್ಲ: <ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8417700129970341035">ಐಚ್ಚಿಕ: Brave Software ಗೆ ಬಳಕೆಯ ಅಂಕಿಅಂಶಗಳು ಮತ್ತು ಕ್ರ್ಯಾಷ್ ವರದಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸುವುದರಿಂದ Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿ.</translation>
 <translation id="1489465648257900784">Brave ನ ಹೊಸ ಆವೃತ್ತಿಯಾಗಿರುವುದರಿಂದ ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಬಳಸಲಾಗುವುದಿಲ್ಲ. ಕೆಲವೊಂದು ವೈಶಿಷ್ಟ್ಯಗಳು ಲಭ್ಯವಿಲ್ಲದಿರಬಹುದು. ದಯವಿಟ್ಟು ಬೇರೆ ಒಂದು ಪೊಫೈಲ್ ಡೈರೆಕ್ಟರಿ ಅನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಿ ಅಥವಾ Brave ನ ಹೊಸ ಆವೃತ್ತಿಯನ್ನು ಬಳಸಿ.</translation>
 <translation id="1065672644894730302">ನಿಮ್ಮ ಪ್ರಾಶಸ್ತ್ಯಗಳನ್ನು ರೀಡ್‌ ಮಾಡಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. ಅಲ್ಲದೇ, ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳು ಲಭ್ಯವಿಲ್ಲದಿರಬಹುದು ಮತ್ತು ಪ್ರಾಶಸ್ತ್ಯಗಳಲ್ಲಿ ಮಾಡಿದ ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="3403365884036456766">ನಿಮ್ಮ ಪ್ರಾಶಸ್ತ್ಯಗಳ ಫೈಲ್ ದೋಷಪೂರಿತವಾಗಿದೆ ಅಥವಾ ಅಮಾನ್ಯವಾಗಿದೆ. ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮರುಪಡೆದುಕೊಳ್ಳುವಲ್ಲಿ Brave ವಿಫಲಗೊಂಡಿದೆ.</translation>
-<translation id="5316336629760101484">Brave ಸೃಷ್ಟಿಸಿರುವ ಬಲಿಷ್ಠ ಪಾಸ್‌ವರ್ಡ್ ಬಳಸಿ</translation>
 <translation id="3343095737966473035">Brave ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಅಲ್ಲ</translation>
 <translation id="6715663530666325392">ವೆಬ್‌ಗೆ ನಿಮ್ಮ ವೈಯಕ್ತಿಕಗೊಳಿಸಿದ ಬ್ರೌಸರ್ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಉಳಿಸಲು ಸಿಂಕ್ ಅನ್ನು ಹೊಂದಿಸಿ ಮತ್ತು ಯಾವುದೇ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ Brave ನಿಂದ ಅವುಗಳನ್ನು ಪ್ರವೇಶಿಸಿ.</translation>
 <translation id="2708027082363760195">ಕಾರ್ಯಾಚರಣೆ ನಡೆಸಲು ಮುದ್ರಣ ಪೂರ್ವವೀಕ್ಷಣೆಗೆ ಅಗತ್ಯವಿರುವಂತಹ PDF ವೀಕ್ಷಕರನ್ನು Brave ಒಳಗೊಂಡಿಲ್ಲ.</translation>
 <translation id="8880183781256147665">Brave ಗೆ ಸೇರಿಸಲಾಗುತ್ತಿದೆ...</translation>
+<translation id="3561569806301739367"><ph name="FILE_NAME"/> ಅಪಾಯಕಾರಿಯಾಗಿರಬಹುದು, ಹಾಗಾಗಿ Brave ಅದನ್ನು ನಿರ್ಬಂಧಿಸಿದೆ.</translation>
 <translation id="9067428552314418522">ಈ ಫೈಲ್ ಅಪಾಯಕಾರಿಯಾಗಿದೆ, ಹೀಗಾಗಿ Brave ಇದನ್ನು ನಿರ್ಬಂಧಿಸಿದೆ.</translation>
+<translation id="4168372721886011198"><ph name="FILE_NAME"/> ಅಪಾಯಕಾರಿಯಾಗಿದೆ, ಹಾಗಾಗಿ Brave ಅದನ್ನು ನಿರ್ಬಂಧಿಸಿದೆ.</translation>
 <translation id="89367911614620585">ಈ ಫೈಲ್ ಅಪಾಯಕಾರಿಯಾಗಿರಬಹುದು, ಹೀಗಾಗಿ Brave ಇದನ್ನು ನಿರ್ಬಂಧಿಸಿದೆ.</translation>
 <translation id="2339258256897053758">Brave Software API ಕೀಗಳು ಕಾಣೆಯಾಗಿವೆ. Brave ನ ಕೆಲವು ಕಾರ್ಯವಿಧಾನಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗುತ್ತದೆ.</translation>
 <translation id="5906655207909574370">ಬಹುಪಾಲು ನವೀಕೃತವಾಗಿದೆ! ಅಪ್‌ಡೇಟ್ ಮಾಡುವುದನ್ನು ಮುಗಿಸಲು ನಿಮ್ಮ ಸಾಧನವನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ.</translation>
 <translation id="5877064549588274448">ಚಾನಲ್ ಬದಲಾಗಿದೆ. ಬದಲಾವಣೆಗಳನ್ನು ಅನ್ವಯಿಸಲು ನಿಮ್ಮ ಸಾಧನವನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ.</translation>
+<translation id="8667808506758191620">ನಿಮ್ಮ <ph name="DEVICE_TYPE"/> ನವೀಕೃತವಾಗಿದೆ.</translation>
 <translation id="6970811910055250180">ನಿಮ್ಮ ಸಾಧನವನ್ನು ನವೀಕರಿಸಲಾಗುತ್ತಿದೆ...</translation>
+<translation id="8030318113982266900">ನಿಮ್ಮ ಸಾಧನವನ್ನು <ph name="CHANNEL_NAME"/> ಚಾನಲ್‌ಗೆ ನವೀಕರಿಸಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="7355059611036077582">Brave ಗೆ ಸೇರಿಸಿ</translation>
 <translation id="7456658570432774853">ಪ್ರಸ್ತುತ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ವರದಿ ಮಾಡುವುದರ ಮೂಲಕ Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯಮಾಡಿ</translation>
 <translation id="5436841087823876677">ಎಚ್ಚರಿಕೆ: ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್‌ ಇತಿಹಾಸದಲ್ಲಿ ರೆಕಾರ್ಡಿಂಗ್‌ನಿಂದ ವಿಸ್ತರಣೆಗಳನ್ನು ತಡೆಯುವುದಿಲ್ಲ. ಅಜ್ಞಾತ ಮೋಡ್‌ನಲ್ಲಿ ವಿಸ್ತರಣೆಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಈ ಆಯ್ಕೆಯನ್ನು ಆರಿಸಬೇಡಿ.</translation>
@@ -45,6 +56,7 @@
 <translation id="4100716194836114130">ಇದು ನಿಮ್ಮ Brave</translation>
 <translation id="8296145982386097283">ಕಂಪ್ಯೂಟರ್‌ ಅನ್ನು ಹಂಚಿಕೊಳ್ಳುವುದೇ? ಇದೀಗ ನೀವು ಇಷ್ಟಪಡುವ ರೀತಿಯಲ್ಲಿ ನೀವು Brave ಹೊಂದಿಸಬಹುದು.</translation>
 <translation id="1672124279374861424">Brave ನಿಂದ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ತೆಗೆದುಹಾಕಿದ ನಂತರ, ಪರಿಣಾಮಕಾರಿಯಾಗಲು ನಿಮ್ಮ ತೆರೆದ ಟ್ಯಾಬ್‌ಗಳನ್ನು ನೀವು ಮರುಲೋಡ್‌ ಮಾಡುವ ಅಗತ್ಯವಿದೆ.</translation>
+<translation id="9197493712748167998">ನಿಮ್ಮ Brave ವಿಷಯವನ್ನು ಸಿಂಕ್ ಮಾಡಲು ನೀವು <ph name="PROFILE_EMAIL"/> ಅನ್ನು ಬಳಸುತ್ತಿರುವಿರಿ. Brave Software ಖಾತೆ ಇಲ್ಲದೆ ನಿಮ್ಮ ಸಿಂಕ್ ಪ್ರಾಶಸ್ತ್ಯಗಳನ್ನು ನವೀಕರಿಸಲು ಅಥವಾ Brave ಬಳಸಲು, <ph name="SETTINGS_LINK"/> ಭೇಟಿ ನೀಡಿ.</translation>
 <translation id="3968006371075376562">ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ಸಿಂಕ್ ಪಾಸ್‌ಫ್ರೇಸ್ ಅನ್ನು ನವೀಕರಿಸಿ.</translation>
 <translation id="6746636977031158624">ನಿಮ್ಮ ಖಾತೆಯ ಸೈನ್ ಇನ್ ವಿವರಗಳು ತೀರಾ ಹಳೆಯದಾಗಿರುವ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</translation>
 <translation id="2999152167963026588">ನಿಮ್ಮ ಡೊಮೇನ್‌ನಲ್ಲಿ ಸಿಂಕ್ ಮಾಡುವ ಸೌಲಭ್ಯವಿಲ್ಲದ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
@@ -54,10 +66,12 @@
 <translation id="663059986967017181">Brave ಗೆ ನಕಲಿಸಲಾಗಿದೆ</translation>
 <translation id="5225129378754387452">Brave ಮೆನು ತೋರಿಸಿ</translation>
 <translation id="300669147395456190">Brave ಅಪ್ಲಿಕೇಶನ್‌ಗಳು</translation>
+<translation id="3421950102518690868"><ph name="DOMAIN"/> ಈ ಸಾಧನವನ್ನು ಬಳಸುವ ಮೊದಲು ಕೆಳಗಿನ ಸೇವಾ ನಿಯಗಳನ್ನು ನೀವು ಓದುವ ಹಾಗೂ ಸಮ್ಮತಿಸುವ ಅವಶ್ಯಕತೆ ಇದೆ. ಈ ನಿಯಮಗಳು ವಿಸ್ತರಗೊಳ್ಳುವುದಿಲ್ಲ, ಮಾರ್ಪಡಾಗುವುದಿಲ್ಲ, ಅಥವಾ Brave OS ನಿಯಮಗಳನ್ನು ಉಲ್ಲಂಘಿಸುವುದಿಲ್ಲ.</translation>
 <translation id="3293668930608086049">Brave ನಿಮ್ಮ ಕ್ಯಾಮರಾ ಮತ್ತು ಮೈಕ್ರೋಫೋನ್ ಬಳಸುತ್ತಿದೆ.</translation>
 <translation id="8919461291440820124">Brave ನಿಮ್ಮ ಮೈಕ್ರೋಫೋನ್ ಬಳಸುತ್ತಿದೆ.</translation>
 <translation id="3205074487970075628">Brave ನಿಮ್ಮ ಕ್ಯಾಮರಾ ಬಳಸುತ್ತಿದೆ.</translation>
 <translation id="3813272600615358652">ನೀವು Brave ಪ್ರಾರಂಭಿಸಿದಾಗ ಯಾವ ಪುಟ ತೋರಿಸಬೇಕೆಂಬುದನ್ನು ಈ ವಿಸ್ತರಣೆಯು ಬದಲಾಯಿಸಿದೆ.</translation>
+<translation id="2576129394594491151">ನೀವು Brave ಪ್ರಾರಂಭಿಸಿದಾಗ ತೋರಿಸಬೇಕಾದ ಪುಟವನ್ನು "<ph name="EXTENSION_NAME"/>" ವಿಸ್ತರಣೆಯು ಬದಲಾಯಿಸಿದೆ.</translation>
 <translation id="2675662665675552980">ನೀವು Brave ಪ್ರಾರಂಭಿಸಿದಾಗ ತೋರಿಸಬೇಕಾದ ಪುಟವನ್ನು ಕೂಡಾ ಇದು ನಿಯಂತ್ರಿಸುತ್ತದೆ.</translation>
 <translation id="3215652305414474626">ನೀವು Brave ಪ್ರಾರಂಭಿಸಿದಾಗ ಅಥವಾ ಮುಖಪುಟ ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿದಾಗ ತೋರಿಸಬೇಕಾದ ಪುಟವನ್ನು ಕೂಡಾ ಇದು ನಿಯಂತ್ರಿಸುತ್ತದೆ.</translation>
 <translation id="2433912322225810055">ನೀವು Brave ಪ್ರಾರಂಭಿಸಿದಾಗ ಅಥವಾ ಓಮ್ನಿಬಾಕ್ಸ್‌ನಿಂದ ಹುಡುಕಿದಾಗ ತೋರಿಸಬೇಕಾದ ಪುಟವನ್ನು ಕೂಡಾ ಇದು ನಿಯಂತ್ರಿಸುತ್ತದೆ.</translation>
@@ -77,10 +91,11 @@
 <translation id="9203540365585059272">Brave ಗೆ ವಿಶೇಷ ಸುರಕ್ಷತೆಯ ಅಪ್‌ಡೇಟ್‌‌ ಅನ್ನು ಅನ್ವಯಿಸಲಾಗಿದೆ; ಇದನ್ನು ಪರಿಣಾಮಕಾರಿಯನ್ನಾಗಿಸಲು ಇದೀಗ ನೀವು ಮರುಪ್ರಾರಂಭಿಸಬೇಕು (ನಿಮ್ಮ ಟ್ಯಾಬ್‌ಗಳನ್ನು ನಾವು ಮರುಸ್ಥಾಪಿಸುತ್ತೇವೆ).</translation>
 <translation id="763369711159699222">Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
 <translation id="1156940037717341650">Brave Software ಗೆ ಸಂಭವನೀಯ ಭದ್ರತೆ ಘಟನೆಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ವಿವರಗಳನ್ನು ವರದಿ ಮಾಡುವ ಮೂಲಕ Brave ಅನ್ನು ಸುರಕ್ಷಿತ ಮತ್ತು ಸುಲಭಗೊಳಿಸಲು ನೀವು ಸಹಾಯ ಮಾಡಬಹುದು.</translation>
-<translation id="3009995890652266099">ಅಪಾಯಕಾರಿ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ಮತ್ತು ಸೈಟ್‌ಗಳ ಪತ್ತೆಗೆ ಸಹಾಯಮಾಡಲು Brave Software ಗೆ ಕೆಲವು ಸಿಸ್ಟಂ ಮಾಹಿತಿ ಮತ್ತು ಪುಟ ವಿಷಯವನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸುವ ಮೂಲಕ, ನೀವು Brave ಅನ್ನು ಬಳಸುವುದಕ್ಕಾಗಿ ಸುರಕ್ಷಿತ ಮತ್ತು ಸರಳವಾಗಿ ಮಾಡಲು ಸಹಾಯ ಮಾಡಬಹುದು.</translation>
 <translation id="6791166902140255175">Brave ಟ್ಯಾಬ್</translation>
 <translation id="8899693649891674038">ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿ Brave ಅನ್ನು ಸ್ಥಾಪಿಸಿ. ನಿಮ್ಮ ಫೋನ್‌‌ಗೆ ನಾವು ಎಸ್ಎಂಎಸ್ ಕಳುಹಿಸುತ್ತೇವೆ.</translation>
+<translation id="1570795130102031380">ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿ Brave ಅನ್ನು ಸ್ಥಾಪಿಸಿ. ನಿಮ್ಮ ಫೋನ್‌‌ಗೆ ನಾವು ಎಸ್ಎಂಎಸ್ ಕಳುಹಿಸುತ್ತೇವೆ: <ph name="PHONE_NUMBER"/></translation>
 <translation id="1609678321160597289">ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿ Brave ಅನ್ನು ಸ್ಥಾಪಿಸಿ. ನಿಮ್ಮ ಖಾತೆ ಮರುಪ್ರಾಪ್ತಿ ಫೋನ್ ಸಂಖ್ಯೆ‌ಗೆ ನಾವು ಎಸ್ಎಂಎಸ್ ಕಳುಹಿಸುತ್ತೇವೆ.</translation>
+<translation id="2965084188004448871">ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿ Brave ಅನ್ನು ಸ್ಥಾಪಿಸಿ. ನಿಮ್ಮ ಖಾತೆ ಮರುಪ್ರಾಪ್ತಿ ಫೋನ್ ಸಂಖ್ಯೆ‌ಗೆ ನಾವು ಎಸ್ಎಂಎಸ್ ಕಳುಹಿಸುತ್ತೇವೆ: <ph name="PHONE_NUMBER"/></translation>
 <translation id="8358191771897395012">ನಿಮ್ಮ iPhone ನಲ್ಲಿ Brave ಪಡೆದುಕೊಳ್ಳಿ</translation>
 <translation id="1744365871163268756">ದಯವಿಟ್ಟು ಇತ್ತೀಚಿನ ಸಿಸ್ಟಂ ನವೀಕರಣಗಳನ್ನು Brave ಸ್ಥಾಪಿಸುವಾಗ ಕಾಯಿರಿ.</translation>
 <translation id="5693614905241031118">Brave ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನವೀಕರಣಗೊಳ್ಳುತ್ತದೆ ಈ ಮೂಲಕ ನೀವು ಯಾವಾಗಲೂ ತಾಜಾ ಆವೃತ್ತಿಯನ್ನು ಹೊಂದಿರುತ್ತೀರಿ.</translation>
@@ -89,10 +104,17 @@
 <translation id="6686872257969654608">Brave OS ಕುರಿತು</translation>
 <translation id="2280363356796735201">Brave OS ಕುರಿತಾಗಿ ಸಹಾಯ ಪಡೆಯಿರಿ</translation>
 <translation id="5253815230176279256">Brave Software Pay (Brave ಗೆ ನಕಲಿಸಲಾಗಿದೆ)</translation>
+<translation id="7977435741986383568">ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಅನುಭವವನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ವೆಬ್‍ ಸೇವೆಗಳನ್ನು Brave ಬಳಸಬಹುದು. ನೀವು ಐಚ್ಛಿಕವಾಗಿ ಈ ಸೇವೆಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು. <ph name="BEGIN_LINK"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="END_LINK"/></translation>
+<translation id="2312399718665761438">ಕಾಗುಣಿತ ದೋಷಗಳನ್ನು ಸರಿಪಡಿಸಲು, ನೀವು ಪಠ್ಯ ಕ್ಷೇತ್ರಗಳಲ್ಲಿ ಟೈಪ್ ಮಾಡುವ ಪಠ್ಯವನ್ನು Brave, Brave Software ಗೆ ಕಳುಹಿಸುತ್ತದೆ</translation>
+<translation id="815816884817177844">ಬ್ರೌಸಿಂಗ್ ಮತ್ತು Brave ಅನ್ನು ಸುಧಾರಿಸಲು Brave Software ನೊಂದಿಗೆ ಸಂವಹಿಸುತ್ತದೆ</translation>
 <translation id="6274110506580702455">ಈ ಸಾಧನದ ನಿರ್ವಾಹಕರಿಂದ Brave ಗೆ ಸೈನ್‌ ಇನ್‌ ಆಗುವುದನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ.</translation>
+<translation id="9220324636239049437">ಈ ಸಾಧನದಿಂದ 1 ಐಟಂ ಅನ್ನು ಇದು ಅಳಿಸುತ್ತದೆ. ನಂತರ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಮರುಪಡೆಯಲು, <ph name="USER_EMAIL"/> ನಂತೆ Brave ಗೆ ಸೈನ್‌ಇನ್ ಮಾಡಿ.</translation>
+<translation id="5853262807109651878">ಈ ಸಾಧನದಿಂದ <ph name="ITEMS_COUNT"/> ಐಟಂಗಳನ್ನು ಇದು ಅಳಿಸುತ್ತದೆ. ನಂತರ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಮರುಪಡೆಯಲು, <ph name="USER_EMAIL"/> ನಂತೆ Brave ಗೆ ಸೈನ್‌ಇನ್ ಮಾಡಿ.</translation>
+<translation id="4784414698887946907">ಈ ಸಾಧನದಿಂದ ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಡೇಟಾವನ್ನು ಇದು ಅಳಿಸುತ್ತದೆ. ನಂತರ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಮರುಪಡೆಯಲು, <ph name="USER_EMAIL"/> ನಂತೆ Brave ಗೆ ಸೈನ್‌ ಇನ್ ಮಾಡಿ.</translation>
 <translation id="82609232232243542">Brave ಗೆ ಸೈನ್ ಇನ್ ಆಗಿ</translation>
 <translation id="8372880274820509128">ಹೆಚ್ಚುವರಿ ಭದ್ರತೆಗಾಗಿ, Brave ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡುತ್ತದೆ.</translation>
-<translation id="6234515504547364178">Brave ನಿಂದ ಸೈನ್‌ ಔಟ್‌ ಮಾಡಿ</translation>
+<translation id="7445061995866044926">Brave ನಿಂದ ಸೈನ್‌ ಔಟ್‌ ಮಾಡುವುದೇ?</translation>
 <translation id="7713466009760073734">ಈ ಭಾಷೆಯಲ್ಲಿ Brave OS ಪ್ರದರ್ಶನಗೊಂಡಿದೆ</translation>
 <translation id="3518788198614984730">ಈ ಭಾಷೆಯಲ್ಲಿ Brave OS ಪ್ರದರ್ಶಿಸು</translation>
+<translation id="6056473803837713617"><ph name="BEGIN_LINK"/>ಪ್ರಸ್ತುತ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು<ph name="END_LINK"/> ವರದಿ ಮಾಡುವ ಮೂಲಕ Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
 </translationbundle>

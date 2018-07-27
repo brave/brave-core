@@ -1,19 +1,29 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="et">
+<translation id="5194812628624740897">Kui katkestate ühenduse kasutajaga <ph name="USERNAME"/>, siis kustutatakse sellesse seadmesse salvestatud ajalugu, järjehoidjad, seaded ja muud Bravei andmed. Brave Software'i kontole salvestatud andmeid ei kustutata ja neid saab hallata <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software'i juhtpaneelil<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Bravei logo</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">logige Bravei sisse</translation>
 <translation id="5516268345616100622">Tegumihaldur – Brave</translation>
+<translation id="7918740962659365265">Aidake Bravei täiustada, saates Brave Software'ile krahhiaruandeid ja lingi <ph name="UMA_LINK"/></translation>
+<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Bravei beetaversioon</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="6474707902830053522">Hangi abi Brave OS-i kasutamise kohta</translation>
 <translation id="8992261409816268381">The Brave Authors</translation>
-<translation id="9179832504443063758">Bravei avatud lähtekoodi litsentsid</translation>
-<translation id="8372475781172910778">Brave OS-i avatud lähtekoodi litsentsid</translation>
+<translation id="4651430425715739110">Autoriõigus <ph name="YEAR"/> The Brave Authors. Kõik õigused on kaitstud.</translation>
+<translation id="2310890394934209120">Brave OS-i aluseks on täiendav <ph name="BEGIN_LINK_CROS_OSS"/>avatud lähtekoodiga tarkvara<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="5019879183386042809">Määra Brave vaikebrauseriks</translation>
 <translation id="5063987220091207247">Brave OS ei saa seda lehte avada.</translation>
 <translation id="4065288863231444640">Luba Braveil taustal töötada</translation>
+<translation id="2585240446624043880">Brave ei saa andmekataloogi lugeda ega sellesse kirjutada:
+
+<ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8417700129970341035">Valikuline: aidake muuta Bravei paremaks, saates Brave Software'ile automaatselt kasutusstatistikat ja krahhiaruandeid.</translation>
 <translation id="1489465648257900784">Teie profiili ei saa kasutada, kuna see pärineb Bravei uuemast versioonist.
 
@@ -22,17 +32,20 @@ On võimalik, et mõni funktsioon ei ole saadaval. Määrake muu profiilikataloo
 <translation id="3403365884036456766">Teie eelistuste fail on rikutud või kehtetu.
 
 Brave ei saa teie seadeid taastada.</translation>
-<translation id="5316336629760101484">Kasutage Bravei loodud tugevat parooli</translation>
 <translation id="3343095737966473035">Brave ei ole teie vaikebrauser</translation>
 <translation id="6715663530666325392">Seadistage sünkroonimine, et salvestada isikupärastatud brauserifunktsioonid veebi, misjuhul pääsete igast arvutist Bravei kaudu nende juurde.</translation>
 <translation id="2708027082363760195">Brave ei sisalda PDF-vaaturit, mida on printimise eelvaate jaoks vaja.</translation>
 <translation id="8880183781256147665">Bravei lisamine ...</translation>
+<translation id="3561569806301739367"><ph name="FILE_NAME"/> võib olla ohtlik, mistõttu Brave blokeeris selle.</translation>
 <translation id="9067428552314418522">Brave blokeeris faili, kuna see on ohtlik.</translation>
+<translation id="4168372721886011198"><ph name="FILE_NAME"/> on ohtlik, mistõttu Brave blokeeris selle.</translation>
 <translation id="89367911614620585">Brave blokeeris faili, kuna see võib olla ohtlik.</translation>
 <translation id="2339258256897053758">Brave Software API võtmed on puudu. Teatud Bravei funktsioonid keelatakse.</translation>
 <translation id="5906655207909574370">Seade on peaaegu ajakohane. Värskenduse lõpuleviimiseks taaskäivitage seade.</translation>
 <translation id="5877064549588274448">Kanal on muutunud. Muudatuste rakendamiseks taaskäivitage oma seade.</translation>
+<translation id="8667808506758191620">Teie <ph name="DEVICE_TYPE"/> on ajakohane.</translation>
 <translation id="6970811910055250180">Teie seadme täiendamine ...</translation>
+<translation id="8030318113982266900">Seadet värskendatakse kanalile <ph name="CHANNEL_NAME"/> ...</translation>
 <translation id="7355059611036077582">Bravei lisamine</translation>
 <translation id="7456658570432774853">Aidake muuta Bravei paremaks, teavitades meid praegustest seadetest</translation>
 <translation id="5436841087823876677">Hoiatus. Brave ei saa takistada laiendustel teie sirvimisajalugu salvestada. Kui soovite laienduse inkognito režiimis keelata, siis tühistage see valik.</translation>
@@ -49,6 +62,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="4100716194836114130">See on teie Brave</translation>
 <translation id="8296145982386097283">Kas jagage arvutit? Saate nüüd seadistada Bravei just nii, nagu teile meeldib.</translation>
 <translation id="1672124279374861424">Pärast konto eemaldamist Braveist tuleb avatud vahekaardid võib-olla uuesti laadida, et need toimiksid.</translation>
+<translation id="9197493712748167998">Kasutate Bravei kraami sünkroonimiseks kontot <ph name="PROFILE_EMAIL"/>. Sünkroonimiseelistuste värskendamiseks või Bravei kasutamiseks ilma Brave Software'i kontota avage <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3968006371075376562">Brave OS ei saanud teie andmeid sünkroonida. Värskendage oma sünkroonimisparooli.</translation>
 <translation id="6746636977031158624">Brave OS ei saanud andmeid sünkroonida, sest teie konto sisselogimisandmed on aegunud.</translation>
 <translation id="2999152167963026588">Brave OS ei saanud teie andmeid sünkroonida, sest teie domeenil pole sünkroonimine saadaval.</translation>
@@ -58,10 +72,12 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="663059986967017181">Kopeeritud Bravei</translation>
 <translation id="5225129378754387452">Kuva Bravei menüü</translation>
 <translation id="300669147395456190">Bravei rakendused</translation>
+<translation id="3421950102518690868">Domeen <ph name="DOMAIN"/> nõuab, et loete enne selle seadme kasutamist läbi järgmised teenusetingimused ja nõustute nendega. Need tingimused ei laienda, muuda ega piira Brave OS-i tingimusi.</translation>
 <translation id="3293668930608086049">Brave kasutab kaamerat ja mikrofoni.</translation>
 <translation id="8919461291440820124">Brave kasutab teie mikrofoni.</translation>
 <translation id="3205074487970075628">Brave kasutab teie kaamerat.</translation>
 <translation id="3813272600615358652">See laiendus muutis seda, milline leht kuvatakse Bravei käivitamisel.</translation>
+<translation id="2576129394594491151">Laiendus „<ph name="EXTENSION_NAME"/>” muutis seda, milline leht kuvatakse Bravei käivitamisel.</translation>
 <translation id="2675662665675552980">Lisaks juhib see seda, mis leht kuvatakse Bravei käivitamisel.</translation>
 <translation id="3215652305414474626">Lisaks juhib see seda, mis leht kuvatakse Bravei käivitamisel või avalehe nupul klõpsamisel.</translation>
 <translation id="2433912322225810055">Lisaks juhib see seda, mis leht kuvatakse Bravei käivitamisel või omnikastikeses otsingu tegemisel.</translation>
@@ -81,10 +97,11 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="9203540365585059272">Äsja rakendati Bravei spetsiaalne turvavärskendus. Selle jõustamiseks taaskäivitage brauser (teie vahelehed taastatakse).</translation>
 <translation id="763369711159699222">Aidake muuta Bravei paremaks</translation>
 <translation id="1156940037717341650">Saate aidata muuta Bravei turvalisemaks ja lihtsamalt kasutatavaks, kui teavitate Brave Software'it automaatselt võimalike turvaintsidentide üksikasjadest.</translation>
-<translation id="3009995890652266099">Saate aidata muuta Bravei turvalisemaks ja hõlpsamini kasutatavaks, kui lubate saata Brave Software'ile automaatselt teatud süsteemiteavet ning lehesisu, mis aitab tuvastada ohtlikke rakendusi ja saite.</translation>
 <translation id="6791166902140255175">Bravei vaheleht</translation>
 <translation id="8899693649891674038">Installige Brave oma telefoni. Saadame SMS-i teie telefoni.</translation>
+<translation id="1570795130102031380">Installige Brave oma telefoni. Saadame SMS-i teie telefoni: <ph name="PHONE_NUMBER"/></translation>
 <translation id="1609678321160597289">Installige Brave oma telefoni. Saadame SMS-i teie konto taastamise telefoninumbrile.</translation>
+<translation id="2965084188004448871">Installige Brave oma telefoni. Saadame SMS-i teie konto taastamise telefoninumbrile: <ph name="PHONE_NUMBER"/>.</translation>
 <translation id="8358191771897395012">hankige oma iPhone'ile Brave</translation>
 <translation id="1744365871163268756">Oodake, kuni Brave installib uusimad süsteemivärskendused.</translation>
 <translation id="5693614905241031118">Brave teeb värskendused automaatselt, nii et kasutate alati uusimat versiooni.</translation>
@@ -93,10 +110,17 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="6686872257969654608">Teave Brave OS-i kohta</translation>
 <translation id="2280363356796735201">Brave OS-i puhul abi hankimine</translation>
 <translation id="5253815230176279256">Brave Software Pay (kopeeritud Bravei)</translation>
+<translation id="7977435741986383568">Brave võib sirvimiskogemuse parandamiseks kasutada veebiteenuseid. Võite need teenused valikuliselt keelata. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
+<translation id="2312399718665761438">Õigekirjavigade parandamiseks saadab Brave teie tekstiväljadel sisestatud teksti Brave Software'ile</translation>
+<translation id="815816884817177844">Antakse Brave Software'ile tagasisidet, et sirvimist ja Bravei paremaks muuta</translation>
 <translation id="6274110506580702455">Administraator on selles seadmes Braveisse sisselogimise keelanud.</translation>
+<translation id="9220324636239049437">See kustutab seadmest ühe üksuse. Hiljem oma andmete toomiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>
+<translation id="5853262807109651878">See kustutab seadmest <ph name="ITEMS_COUNT"/> üksust. Hiljem oma andmete toomiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>
+<translation id="4784414698887946907">See kustutab sellest seadmest teie sirvimisandmed. Hiljem oma andmete toomiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>
 <translation id="82609232232243542">Logige Bravei sisse</translation>
 <translation id="8372880274820509128">Turvalisuse suurendamiseks krüptib Brave teie andmed.</translation>
-<translation id="6234515504547364178">Braveist väljalogimine</translation>
+<translation id="7445061995866044926">Kas logida Braveist välja?</translation>
 <translation id="7713466009760073734">Brave OS kuvatakse selles keeles</translation>
 <translation id="3518788198614984730">Kuva Brave OS selles keeles</translation>
+<translation id="6056473803837713617">Aidake Bravei paremaks muuta, teavitades meid <ph name="BEGIN_LINK"/>praegustest seadetest<ph name="END_LINK"/></translation>
 </translationbundle>
