@@ -32,9 +32,8 @@ namespace braveledger_bat_client {
 //   }
 // }
 
-BatClient::BatClient(bat_ledger::LedgerImpl* ledger, bool useProxy) :
+BatClient::BatClient(bat_ledger::LedgerImpl* ledger) :
       ledger_(ledger),
-      useProxy_(useProxy),
       state_(new braveledger_bat_helper::CLIENT_STATE_ST()),
       currentReconcile_(new braveledger_bat_helper::CURRENT_RECONCILE) {
   // Enable emscripten calls
@@ -48,7 +47,7 @@ BatClient::~BatClient() {
 std::string BatClient::buildURL(const std::string& path, const std::string& prefix) {
   std::string url;
   if (braveledger_ledger::g_isProduction) {
-    url = useProxy_ ? LEDGER_PRODUCTION_PROXY_SERVER : LEDGER_PRODUCTION_SERVER;
+    url = LEDGER_PRODUCTION_SERVER;
   } else {
     url = LEDGER_STAGING_SERVER;
   }

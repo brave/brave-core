@@ -22,7 +22,7 @@ namespace braveledger_bat_client {
 
 class BatClient : public ledger::LedgerCallbackHandler {
  public:
-  explicit BatClient(bat_ledger::LedgerImpl* ledger, bool useProxy = true);
+  explicit BatClient(bat_ledger::LedgerImpl* ledger);
   ~BatClient() override;
 
   void loadStateOrRegisterPersonaCallback(bool success, const std::string& data);
@@ -77,7 +77,6 @@ class BatClient : public ledger::LedgerCallbackHandler {
   std::string buildURL(const std::string& path, const std::string& prefix);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  bool useProxy_;
   std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;
   std::mutex state_mutex_;
   std::mutex transactions_access_mutex_;
