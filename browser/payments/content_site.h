@@ -6,12 +6,9 @@
 #define BRAVE_BROWSER_PAYMENTS_CONTENT_SITE_
 
 #include <string>
+#include <vector>
 
 #include "base/macros.h"
-
-namespace ledger {
-struct PublisherInfo;
-}
 
 namespace payments {
 
@@ -25,9 +22,6 @@ struct ContentSite {
   double percentage;
   bool excluded;
 };
-
-ContentSite PublisherInfoToContentSite(
-    const ledger::PublisherInfo& publisher_info);
 
 typedef std::vector<const ContentSite> ContentSiteList;
 
