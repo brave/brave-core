@@ -8,17 +8,18 @@
 
 namespace payments {
 
-  PaymentsService::PaymentsService() {
-  }
+PaymentsService::PaymentsService() {
+}
 
-  PaymentsService::~PaymentsService() {
-  }
+PaymentsService::~PaymentsService() {
+}
 
-  void PaymentsService::AddObserver(PaymentsServiceObserver* observer) {
-    observers_.AddObserver(observer);
-  }
+void PaymentsService::AddObserver(PaymentsServiceObserver* observer) {
+  observers_.AddObserver(observer);
+}
 
-  void PaymentsService::RemoveObserver(PaymentsServiceObserver* observer) {
-    observers_.RemoveObserver(observer);
-  }
+void PaymentsService::RemoveObserver(PaymentsServiceObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
+
 }  // namespace payments

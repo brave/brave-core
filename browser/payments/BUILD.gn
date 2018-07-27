@@ -1,23 +1,13 @@
-declare_args() {
-  # anonize doesn't currently build on windows
-  brave_payments_enabled = is_mac || is_linux
-}
-
-config("external_config") {
-  visibility = [ ":payments" ]
-
-  defines = []
-  if (brave_payments_enabled) {
-    defines += [ "BRAVE_PAYMENTS_ENABLED" ]
-  }
-}
+import("//brave/browser/payments/buildflags/buildflags.gni")
 
 source_set("payments") {
-  public_configs = [
-    ":external_config"
+  public_deps = [
+    "buildflags",
   ]
 
   sources = [
+    "content_site.cc",
+    "content_site.h",
     "payments_service.cc",
     "payments_service.h",
     "payments_service_factory.cc",
@@ -29,16 +19,22 @@ source_set("payments") {
     "//base",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+    "//components/sessions",
     # for profile.h
     "//components/domain_reliability",
     "//content/public/browser",
     "//services/network/public/mojom",
+    "//third_party/leveldatabase",
   ]
 
   if (brave_payments_enabled) {
     sources += [
       "payments_service_impl.cc",
       "payments_service_impl.h",
+      "payments_helper.cc",
+      "payments_helper.h",
+      "publisher_info_backend.cc",
+      "publisher_info_backend.h",
     ]
 
     deps += [

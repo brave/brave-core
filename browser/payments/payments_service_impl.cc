@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "brave/browser/payments/payments_service_impl.h"
 
+#include <functional>
+
 #include "base/bind.h"
 #include "base/guid.h"
 #include "base/files/file_util.h"
@@ -13,10 +15,15 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
 #include "brave/browser/payments/payments_service_observer.h"
+#include "brave/browser/payments/publisher_info_backend.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_fetcher.h"
 #include "url/gurl.h"
+
+using namespace net::registry_controlled_domains;
+using namespace std::placeholders;
 
 namespace payments {
 
@@ -69,8 +76,49 @@ std::string LoadStateOnFileTaskRunner(
   return data;
 }
 
+bool SavePublisherInfoOnFileTaskRunner(
+    const ledger::PublisherInfo publisher_info,
+    PublisherInfoBackend* backend) {
+  if (backend && backend->Put(publisher_info.id, publisher_info.ToJSON()))
+    return true;
+
+  return false;
+}
+
+ledger::PublisherInfoList LoadPublisherInfoListOnFileTaskRunner(
+    uint32_t start,
+    uint32_t limit,
+    ledger::PublisherInfoFilter filter,
+    PublisherInfoBackend* backend) {
+  ledger::PublisherInfoList list;
+
+  std::vector<const std::string> results;
+  if (backend && backend->Load(start, limit, results)) {
+    for (std::vector<const std::string>::const_iterator it =
+        results.begin(); it != results.end(); ++it) {
+      list.push_back(ledger::PublisherInfo::FromJSON(*it));
+    }
+  }
+
+  return list;
+}
+
+std::unique_ptr<ledger::PublisherInfo> LoadPublisherInfoOnFileTaskRunner(
+    const std::string& id,
+    PublisherInfoBackend* backend) {
+  std::unique_ptr<ledger::PublisherInfo> info;
+
+  std::string json;
+  if (backend && backend->Get(id, &json)) {
+    info.reset(
+        new ledger::PublisherInfo(ledger::PublisherInfo::FromJSON(json)));
+  }
+
+  return info;
+}
+
 // `callback` has a WeakPtr so this won't crash if the file finishes
-// writing after PaymentServiceImpl has been destroyed
+// writing after PaymentsServiceImpl has been destroyed
 void PostWriteCallback(
     const base::Callback<void(bool success)>& callback,
     scoped_refptr<base::SequencedTaskRunner> reply_task_runner,
@@ -79,6 +127,20 @@ void PostWriteCallback(
   // the |reply_task_runner| which is the correct sequenced thread.
   reply_task_runner->PostTask(FROM_HERE,
                               base::Bind(callback, write_success));
+}
+
+void GetContentSiteListInternal(
+    uint32_t start,
+    uint32_t limit,
+    const GetContentSiteListCallback& callback,
+    const ledger::PublisherInfoList& publisher_list,
+    uint32_t next_record) {
+  std::unique_ptr<ContentSiteList> site_list(new ContentSiteList);
+  for (ledger::PublisherInfoList::const_iterator it =
+      publisher_list.begin(); it != publisher_list.end(); ++it) {
+    site_list->push_back(PublisherInfoToContentSite(*it));
+  }
+  callback.Run(std::move(site_list), next_record);
 }
 
 static uint64_t next_id = 1;
@@ -92,14 +154,74 @@ PaymentsServiceImpl::PaymentsServiceImpl(Profile* profile) :
         {base::MayBlock(), base::TaskPriority::BACKGROUND,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     ledger_state_path_(profile_->GetPath().Append("ledger_state")),
-    publisher_state_path_(profile_->GetPath().Append("publisher_state")) {
+    publisher_state_path_(profile_->GetPath().Append("publisher_state")),
+    publisher_info_db_path_(profile->GetPath().Append("publisher_info")),
+    publisher_info_backend_(new PublisherInfoBackend(publisher_info_db_path_)) {
 }
 
 PaymentsServiceImpl::~PaymentsServiceImpl() {
+  file_task_runner_->DeleteSoon(FROM_HERE, publisher_info_backend_.release());
 }
 
 void PaymentsServiceImpl::CreateWallet() {
   ledger_->CreateWallet();
+}
+
+void PaymentsServiceImpl::GetContentSiteList(
+    uint32_t start, uint32_t limit,
+    const GetContentSiteListCallback& callback) {
+  ledger_->GetPublisherInfoList(start, limit,
+      ledger::PublisherInfoFilter::DEFAULT,
+      std::bind(&GetContentSiteListInternal,
+                start,
+                limit,
+                std::cref(callback), _1, _2));
+}
+
+void PaymentsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
+  auto origin = url.GetOrigin();
+  const std::string tld =
+      GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
+
+  if (tld == "")
+    return;
+
+  // TODO(bridiver) - add query parts
+  ledger::VisitData data(tld, origin.host(), url.path(), tab_id.id());
+  ledger_->OnLoad(data);
+}
+
+void PaymentsServiceImpl::OnUnload(SessionID tab_id) {
+  ledger_->OnUnload(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnShow(SessionID tab_id) {
+  ledger_->OnShow(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnHide(SessionID tab_id) {
+  ledger_->OnHide(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnForeground(SessionID tab_id) {
+  ledger_->OnForeground(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnBackground(SessionID tab_id) {
+  ledger_->OnBackground(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnMediaStart(SessionID tab_id) {
+  ledger_->OnMediaStart(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnMediaStop(SessionID tab_id) {
+  ledger_->OnMediaStop(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnXHRLoad(SessionID tab_id, const GURL& url) {
+  // TODO(bridiver) - add query parts
+  ledger_->OnXHRLoad(tab_id.id(), url.spec());
 }
 
 std::string PaymentsServiceImpl::GenerateGUID() const {
@@ -119,6 +241,7 @@ void PaymentsServiceImpl::OnWalletCreated(ledger::Result result) {
 void PaymentsServiceImpl::OnReconcileComplete(ledger::Result result,
                                               const std::string& viewing_id) {
   LOG(ERROR) << "reconcile complete " << viewing_id;
+  // TODO - TriggerOnReconcileComplete
 }
 
 void PaymentsServiceImpl::LoadLedgerState(
@@ -198,6 +321,73 @@ void PaymentsServiceImpl::OnPublisherStateSaved(
     bool success) {
   handler->OnPublisherStateSaved(success ? ledger::Result::OK
                                          : ledger::Result::ERROR);
+}
+
+void PaymentsServiceImpl::SavePublisherInfo(
+    std::unique_ptr<ledger::PublisherInfo> publisher_info,
+    ledger::PublisherInfoCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&SavePublisherInfoOnFileTaskRunner,
+                    *publisher_info,
+                    publisher_info_backend_.get()),
+      base::Bind(&PaymentsServiceImpl::OnPublisherInfoSaved,
+                     AsWeakPtr(),
+                     callback,
+                     base::Passed(std::move(publisher_info))));
+
+}
+
+void PaymentsServiceImpl::OnPublisherInfoSaved(
+    ledger::PublisherInfoCallback callback,
+    std::unique_ptr<ledger::PublisherInfo> info,
+    bool success) {
+  callback(success ? ledger::Result::OK
+                   : ledger::Result::ERROR, std::move(info));
+}
+
+void PaymentsServiceImpl::LoadPublisherInfo(
+    const ledger::PublisherInfo::id_type& publisher_id,
+    ledger::PublisherInfoCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&LoadPublisherInfoOnFileTaskRunner,
+          publisher_id, publisher_info_backend_.get()),
+      base::Bind(&PaymentsServiceImpl::OnPublisherInfoLoaded,
+                     AsWeakPtr(),
+                     callback));
+}
+
+void PaymentsServiceImpl::OnPublisherInfoLoaded(
+    ledger::PublisherInfoCallback callback,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+  callback(ledger::Result::OK, std::move(info));
+}
+
+void PaymentsServiceImpl::LoadPublisherInfoList(
+    uint32_t start,
+    uint32_t limit,
+    ledger::PublisherInfoFilter filter,
+    ledger::GetPublisherInfoListCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
+                    start, limit, filter,
+                    publisher_info_backend_.get()),
+      base::Bind(&PaymentsServiceImpl::OnPublisherInfoListLoaded,
+                    AsWeakPtr(),
+                    start,
+                    limit,
+                    callback));
+}
+
+void PaymentsServiceImpl::OnPublisherInfoListLoaded(
+    uint32_t start,
+    uint32_t limit,
+    ledger::GetPublisherInfoListCallback callback,
+    const ledger::PublisherInfoList& list) {
+  uint32_t next_record = 0;
+  if (list.size() == limit)
+    next_record = start + limit + 1;
+
+  callback(std::cref(list), next_record);
 }
 
 std::unique_ptr<ledger::LedgerURLLoader> PaymentsServiceImpl::LoadURL(const std::string& url,
