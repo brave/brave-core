@@ -4,6 +4,8 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
+#include "brave/browser/payments/buildflags/buildflags.h"
+#include "brave/browser/payments/payments_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "content/public/browser/web_contents.h"
 
@@ -12,6 +14,9 @@ namespace brave {
 void AttachTabHelpers(content::WebContents* web_contents) {
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
+#if BUILDFLAG(BRAVE_PAYMENTS_ENABLED)
+  payments::PaymentsHelper::CreateForWebContents(web_contents);
+#endif
 }
 
 }  // namespace brave
