@@ -53,6 +53,15 @@ class PaymentsServiceImpl : public PaymentsService,
   void GetContentSiteList(uint32_t start,
                           uint32_t limit,
      const GetContentSiteListCallback& callback) override;
+  void OnLoad(SessionID tab_id, const GURL& url) override;
+  void OnUnload(SessionID tab_id) override;
+  void OnShow(SessionID tab_id) override;
+  void OnHide(SessionID tab_id) override;
+  void OnForeground(SessionID tab_id) override;
+  void OnBackground(SessionID tab_id) override;
+  void OnMediaStart(SessionID tab_id) override;
+  void OnMediaStop(SessionID tab_id) override;
+  void OnXHRLoad(SessionID tab_id, const GURL& url) override;
 
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;

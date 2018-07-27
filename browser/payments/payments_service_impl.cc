@@ -18,9 +18,11 @@
 #include "brave/browser/payments/publisher_info_backend.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_fetcher.h"
 #include "url/gurl.h"
 
+using namespace net::registry_controlled_domains;
 using namespace std::placeholders;
 
 namespace payments {
@@ -174,6 +176,52 @@ void PaymentsServiceImpl::GetContentSiteList(
                 start,
                 limit,
                 std::cref(callback), _1, _2));
+}
+
+void PaymentsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
+  auto origin = url.GetOrigin();
+  const std::string tld =
+      GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
+
+  if (tld == "")
+    return;
+
+  // TODO(bridiver) - add query parts
+  ledger::VisitData data(tld, origin.host(), url.path(), tab_id.id());
+  ledger_->OnLoad(data);
+}
+
+void PaymentsServiceImpl::OnUnload(SessionID tab_id) {
+  ledger_->OnUnload(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnShow(SessionID tab_id) {
+  ledger_->OnShow(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnHide(SessionID tab_id) {
+  ledger_->OnHide(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnForeground(SessionID tab_id) {
+  ledger_->OnForeground(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnBackground(SessionID tab_id) {
+  ledger_->OnBackground(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnMediaStart(SessionID tab_id) {
+  ledger_->OnMediaStart(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnMediaStop(SessionID tab_id) {
+  ledger_->OnMediaStop(tab_id.id());
+}
+
+void PaymentsServiceImpl::OnXHRLoad(SessionID tab_id, const GURL& url) {
+  // TODO(bridiver) - add query parts
+  ledger_->OnXHRLoad(tab_id.id(), url.spec());
 }
 
 std::string PaymentsServiceImpl::GenerateGUID() const {
