@@ -62,12 +62,6 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
-	<key>LeanplumAppId</key>
-	<string></string>
-	<key>LeanplumDevelopmentKey</key>
-	<string></string>
-	<key>LeanplumProductionKey</key>
-	<string></string>
 	<key>MozDevelopmentTeam</key>
 	<string>$(DEVELOPMENT_TEAM)</string>
 	<key>MozWhatsNewTopic</key>
@@ -93,8 +87,6 @@
 	<array>
 		<string>org.mozilla.ios.firefox.browsing</string>
 	</array>
-	<key>SentryDSN</key>
-	<string>$(SENTRY_DSN)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>CharisSILB.ttf</string>

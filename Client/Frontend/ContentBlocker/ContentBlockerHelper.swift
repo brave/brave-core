@@ -6,6 +6,8 @@ import WebKit
 import Shared
 import Deferred
 
+private let log = Logger.browserLogger
+
 enum BlocklistName: String {
     case advertising = "disconnect-advertising"
     case analytics = "disconnect-analytics"
@@ -205,7 +207,7 @@ class ContentBlockerHelper {
             ContentBlockerHelper.ruleStore.lookUpContentRuleList(forIdentifier: name) { rule, error in
                 guard let rule = rule else {
                     let msg = "lookUpContentRuleList for \(name):  \(error?.localizedDescription ?? "empty rules")"
-                    Sentry.shared.send(message: "Content blocker error", tag: .general, description: msg)
+                    log.error("Content blocker error: \(msg)")
                     return
                 }
                 self.addToTab(contentRuleList: rule)
@@ -364,7 +366,7 @@ extension ContentBlockerHelper {
                     str.insert(contentsOf: whitelistAsJSON(), at: str.index(str.endIndex, offsetBy: -1))
                     ruleStore.compileContentRuleList(forIdentifier: filename, encodedContentRuleList: str) { rule, error in
                         if let error = error {
-                            Sentry.shared.send(message: "Content blocker error", tag: .general, description: error.localizedDescription)
+                            log.error("Content blocker error: \(error.localizedDescription)")
                             assert(false)
                         }
                         assert(rule != nil)
