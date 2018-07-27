@@ -28,6 +28,13 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state = { ...state }
       state.walletCreateFailed = true
       break
+    case types.GET_WALLET_PROPERTIES:
+      chrome.send('getWalletProperties', [])
+      break
+    case types.ON_WALLET_PROPERTIES:
+      state = { ...state }
+      console.log(action.payload)
+      break
   }
 
   if (state !== startingState) {

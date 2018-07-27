@@ -12,3 +12,9 @@ export const createWalletRequested = () => action(types.CREATE_WALLET_REQUESTED)
 export const walletCreated = () => action(types.WALLET_CREATED)
 
 export const walletCreateFailed = () => action(types.WALLET_CREATE_FAILED)
+
+export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
+
+export const onWalletProperties = (result: any) => action(types.ON_WALLET_PROPERTIES, {
+  result
+})

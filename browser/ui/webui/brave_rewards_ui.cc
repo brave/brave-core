@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/wallet_info.h"
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 
 #include "brave/browser/payments/payments_service.h"
@@ -34,10 +35,14 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void HandleCreateWalletRequested(const base::ListValue* args);
   void OnWalletCreated();
   void OnWalletCreateFailed();
+  void GetWalletProperties();
+  void OnWalletProperties(ledger::WalletInfo result);
 
   // PaymentServiceObserver implementation
   void OnWalletCreated(payments::PaymentsService* payment_service,
                        int error_code) override;
+  void OnWalletProperties(payments::PaymentsService* payment_service,
+                       ledger::WalletInfo result) override;
 
   payments::PaymentsService* payments_service_;  // NOT OWNED
 
@@ -53,6 +58,9 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("createWalletRequested",
       base::BindRepeating(&RewardsDOMHandler::HandleCreateWalletRequested,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("getWalletProperties",
+      base::BindRepeating(&RewardsDOMHandler::GetWalletProperties,
+                          base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
@@ -67,6 +75,12 @@ void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args)
     payments_service_->CreateWallet();
   } else {
     OnWalletCreateFailed();
+  }
+}
+
+void RewardsDOMHandler::GetWalletProperties() {
+  if (payments_service_) {
+    payments_service_->GetWalletProperties();
   }
 }
 
@@ -88,6 +102,18 @@ void RewardsDOMHandler::OnWalletCreated() {
 void RewardsDOMHandler::OnWalletCreateFailed() {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreateFailed");
+  }
+}
+
+  void RewardsDOMHandler::OnWalletProperties(
+      payments::PaymentsService* payment_service,
+      ledger::WalletInfo result) {
+    OnWalletProperties(result);
+  }
+
+void RewardsDOMHandler::OnWalletProperties(ledger::WalletInfo result) {
+  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    web_ui()->CallJavascriptFunction("brave_rewards.walletProperties", result);
   }
 }
 

@@ -19,6 +19,10 @@ export class RewardsPage extends React.Component<Props, {}> {
     this.actions.createWalletRequested()
   }
 
+  getWalletProperties = () => {
+    this.actions.getWalletProperties()
+  }
+
   get actions () {
     return this.props.actions
   }
@@ -32,7 +36,10 @@ export class RewardsPage extends React.Component<Props, {}> {
         </div>
         {
           rewardsData.walletCreated
-          ? <div>Wallet Created!</div>
+          ? <div>
+              Wallet Created!
+              <a href='#' onClick={this.getWalletProperties}>Get wallet data</a>
+            </div>
           : null
         }
         {
