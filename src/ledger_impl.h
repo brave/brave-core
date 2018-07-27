@@ -73,6 +73,8 @@ class LedgerImpl : public ledger::Ledger,
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler);
 
   void OnWalletCreated(ledger::Result);
+  void OnWalletProperties(const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
+  void GetWalletProperties() const override;
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,

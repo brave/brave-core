@@ -14,6 +14,7 @@
 #include "bat/ledger/ledger_task_runner.h"
 #include "bat/ledger/ledger_url_loader.h"
 #include "bat/ledger/publisher_info.h"
+#include "bat/ledger/wallet_info.h"
 
 namespace ledger {
 
@@ -35,6 +36,8 @@ class LEDGER_EXPORT LedgerClient {
   // called when the wallet creation has completed
   virtual std::string GenerateGUID() const = 0;
   virtual void OnWalletCreated(Result result) = 0;
+  virtual void GetWalletProperties() = 0;
+  virtual void OnWalletProperties(ledger::WalletInfo) = 0;
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id) = 0;
 

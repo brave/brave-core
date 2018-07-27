@@ -149,6 +149,32 @@ namespace braveledger_bat_helper {
     std::vector<BATCH_VOTES_INFO_ST> batchVotesInfo_;
   };
 
+  struct GRANT {
+    GRANT();
+    ~GRANT();
+    std::string altcurrency;
+    std::string probi;
+    uint64_t expiryTime;
+  };
+
+  struct WALLET_PROPERTIES_ST {
+    WALLET_PROPERTIES_ST();
+    ~WALLET_PROPERTIES_ST();
+    WALLET_PROPERTIES_ST(const WALLET_PROPERTIES_ST& properties);
+
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    std::string altcurrency_;
+    std::string probi_;
+    double balance_;
+    std::map<std::string, double> rates_;
+    std::vector<double> parameters_choices_;
+    std::vector<double> parameters_range_;
+    unsigned int parameters_days_;
+    std::vector<GRANT> grants_;
+  };
+
   struct CLIENT_STATE_ST {
     CLIENT_STATE_ST();
     CLIENT_STATE_ST(const CLIENT_STATE_ST&);
@@ -158,6 +184,7 @@ namespace braveledger_bat_helper {
     bool loadFromJson(const std::string & json);
 
     WALLET_INFO_ST walletInfo_;
+    WALLET_PROPERTIES_ST walletProperties_;
     uint64_t bootStamp_ = 0u;
     uint64_t reconcileStamp_ = 0u;
     std::string personaId_;
@@ -207,23 +234,6 @@ namespace braveledger_bat_helper {
 
     PUBLISHER_ST publisher_data_;
     unsigned int votes_ = 0;
-  };
-
-  struct WALLET_PROPERTIES_ST {
-    WALLET_PROPERTIES_ST();
-    ~WALLET_PROPERTIES_ST();
-
-    //load from json string
-    bool loadFromJson(const std::string & json);
-
-    std::string altcurrency_;
-    double balance_;
-    std::map<std::string, double> rates_;
-    std::string parameters_currency_;
-    double parameters_fee_;
-    std::vector<double> parameters_choices_;
-    std::vector<double> parameters_range_;
-    unsigned int parameters_days_;
   };
 
   struct SURVEYOR_INFO_ST {

@@ -11,6 +11,7 @@
 #include <ctime>
 #include <memory>
 #include <iostream>
+#include <string>
 
 #include <openssl/base64.h>
 #include <openssl/digest.h>
@@ -741,9 +742,20 @@ namespace braveledger_bat_helper {
   WINNERS_ST::~WINNERS_ST() {}
 
   /////////////////////////////////////////////////////////////////////////////
-  WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST() {}
+  WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST() : balance_(0), parameters_days_(0) {}
 
   WALLET_PROPERTIES_ST::~WALLET_PROPERTIES_ST() {}
+
+  WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST(const WALLET_PROPERTIES_ST &properties) {
+    altcurrency_ = properties.altcurrency_;
+    probi_ = properties.probi_;
+    balance_ = properties.balance_;
+    rates_ = properties.rates_;
+    parameters_choices_ = properties.parameters_choices_;
+    parameters_range_ = properties.parameters_range_;
+    parameters_days_ = properties.parameters_days_;
+    grants_ = properties.grants_;
+  }
 
   bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
     rapidjson::Document d;
@@ -752,22 +764,31 @@ namespace braveledger_bat_helper {
     //has parser errors or wrong types
     bool error = d.HasParseError();
     if (false == error) {
-      error = !(d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
-        d.HasMember("balance") && d["balance"].IsDouble() &&
+      error = !(
+        d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
+        d.HasMember("balance") && d["balance"].IsString() &&
+        d.HasMember("probi") && d["probi"].IsString() &&
         d.HasMember("rates") && d["rates"].IsObject() &&
-        d.HasMember("parameters") && d["parameters"].IsObject() );
+        d.HasMember("parameters") && d["parameters"].IsObject()
+      );
     }
 
     if (false == error) {
       altcurrency_ = d["altcurrency"].GetString();
-      balance_ = d["balance"].GetDouble();
+      balance_ = std::stod(d["balance"].GetString());
+      probi_ = d["probi"].GetString();
 
       for (auto & i : d["rates"].GetObject()) {
-        rates_.insert(std::make_pair(i.name.GetString(), i.value.GetDouble()));
-      }
+        double value = 0.0;
 
-      parameters_currency_ = d["parameters"]["adFree"]["currency"].GetString();
-      parameters_fee_ = d["parameters"]["adFree"]["fee"]["BAT"].GetDouble();
+        // For some reason BTC is returned as string, where others are double
+        if (i.value.IsDouble()) {
+          value = i.value.GetDouble();
+        } else if (i.value.IsString()) {
+          value = std::stod(i.value.GetString());
+        }
+        rates_.insert(std::make_pair(i.name.GetString(), value));
+      }
 
       for (auto & i : d["parameters"]["adFree"]["choices"]["BAT"].GetArray()) {
         parameters_choices_.push_back(i.GetDouble());
@@ -778,9 +799,36 @@ namespace braveledger_bat_helper {
       }
 
       parameters_days_ = d["parameters"]["adFree"]["days"].GetUint();
+
+      if (d.HasMember("grants") && d["grants"].IsObject()) {
+        for (auto &i : d["grants"].GetArray()) {
+          GRANT grant;
+          auto obj = i.GetObject();
+          if (obj.HasMember("probi")) {
+            grant.probi = obj["probi"].GetString();
+          }
+
+          if (obj.HasMember("altcurrency")) {
+            grant.altcurrency = obj["altcurrency"].GetString();
+          }
+
+          if (obj.HasMember("expiryTime")) {
+            grant.expiryTime = obj["expiryTime"].GetUint64();
+          }
+
+          grants_.push_back(grant);
+        }
+      } else {
+        grants_.clear();
+      }
     }
     return !error;
   }
+
+  /////////////////////////////////////////////////////////////////////////////
+  GRANT::GRANT() : expiryTime(0) {}
+
+  GRANT::~GRANT() {}
 
   /////////////////////////////////////////////////////////////////////////////
   SURVEYOR_INFO_ST::SURVEYOR_INFO_ST() {}

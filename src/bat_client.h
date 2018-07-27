@@ -40,11 +40,12 @@ class BatClient : public ledger::LedgerCallbackHandler {
   void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);
   void prepareBallots();
   std::string getWalletPassphrase();
+  void walletPropertiesCallback(bool success, const std::string& response);
   void recoverWallet(const std::string& passPhrase);
   void getPromotion(const std::string& lang, const std::string& forPaymentId);
   void setPromotion(const std::string& promotionId, const std::string& captchaResponse);
   void getPromotionCaptcha();
-  //void getWalletProperties(const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void getWalletProperties();
 
  private:
   void saveState();
@@ -76,7 +77,7 @@ class BatClient : public ledger::LedgerCallbackHandler {
   void viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId);
   void viewingCredentialsCallback(bool result, const std::string& response);
   std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
-  std::string buildURL(const std::string& path, const std::string& prefix);
+  std::string buildURL(const std::string& path, const std::string& prefix, const bool isBalance);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;

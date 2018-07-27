@@ -72,6 +72,7 @@ class LEDGER_EXPORT Ledger {
   virtual unsigned int GetPublisherMinVisits() const = 0;
   virtual bool GetPublisherAllowNonVerified() const = 0;
   virtual double GetContributionAmount() const = 0;
+  virtual void GetWalletProperties() const = 0;
 };
 
 }  // namespace ledger
