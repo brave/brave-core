@@ -61,8 +61,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool isEligableForContribution(const ledger::PublisherInfo& info);
   bool isVerified(const ledger::PublisherInfo& publisher_id);
   void saveVisitInternal(
-      const ledger::PublisherInfo::id_type& publisher_id,
-      const ledger::VisitData& visit_data,
+      ledger::PublisherInfo::id_type publisher_id,
+      ledger::VisitData visit_data,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 

@@ -85,7 +85,7 @@ void BatPublishers::saveVisit(const ledger::VisitData& visit_data) {
 
   ledger_->GetPublisherInfo(publisher_id,
       std::bind(&BatPublishers::saveVisitInternal, this,
-                    std::cref(publisher_id), std::cref(visit_data), _1, _2));
+                    publisher_id, visit_data, _1, _2));
 }
 
 void onVisitSavedDummy(ledger::Result result,
@@ -94,8 +94,8 @@ void onVisitSavedDummy(ledger::Result result,
 }
 
 void BatPublishers::saveVisitInternal(
-    const ledger::PublisherInfo::id_type& publisher_id,
-    const ledger::VisitData& visit_data,
+    ledger::PublisherInfo::id_type publisher_id,
+    ledger::VisitData visit_data,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   if (result != ledger::Result::OK) {

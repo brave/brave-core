@@ -188,6 +188,7 @@ void BatClient::registerPersonaCallback(bool result,
   // TODO debug
   //getPromotionCaptcha();
   //
+  saveState();
   ledger_->OnWalletCreated(ledger::Result::OK);
 }
 

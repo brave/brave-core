@@ -20,6 +20,12 @@ VisitData::VisitData(const std::string& _tld,
     path(_path),
     tab_id(_tab_id) {}
 
+VisitData::VisitData(const VisitData& data) :
+    tld(data.tld),
+    domain(data.domain),
+    path(data.path),
+    duration(data.duration) {}
+
 const PublisherInfo invalid("");
 
 PublisherInfo::PublisherInfo(const id_type& publisher_id) :
@@ -58,8 +64,11 @@ const std::string PublisherInfo::ToJSON() const {
   writer.String("duration");
   writer.Uint(duration);
 
+  writer.String("score");
+  writer.Double(score);
+
   writer.String("visits");
-  writer.Double(visits);
+  writer.Uint(visits);
 
   writer.String("pinned");
   writer.Bool(pinned);
@@ -95,7 +104,7 @@ bool PublisherInfo::Matches(PublisherInfoFilter filter) const {
 }
 
 // static
-const PublisherInfo PublisherInfo::FromJSON(const std::string json) {
+const PublisherInfo PublisherInfo::FromJSON(const std::string& json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -107,8 +116,9 @@ const PublisherInfo PublisherInfo::FromJSON(const std::string json) {
       !d["pinned"].IsBool() ||
       !d["percent"].IsUint() ||
       !d["weight"].IsDouble() ||
-      !d["excluded"].IsBool())
+      !d["excluded"].IsBool()) {
     return invalid;
+  }
 
   PublisherInfo info(d["id"].GetString());
   info.duration = d["duration"].GetUint();

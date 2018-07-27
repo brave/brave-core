@@ -24,7 +24,7 @@ LEDGER_EXPORT struct PublisherInfo {
   PublisherInfo(const id_type& publisher_id);
   PublisherInfo(const PublisherInfo& info);
 
-  static const PublisherInfo FromJSON(const std::string json);
+  static const PublisherInfo FromJSON(const std::string& json);
   const std::string ToJSON() const;
   bool Matches(PublisherInfoFilter filter) const;
   bool is_valid() const;
