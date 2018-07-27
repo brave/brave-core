@@ -10,6 +10,7 @@
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "brave/browser/ui/webui/sync/sync_js_layer.h"
 #include "brave/components/brave_sync/brave_sync_controller.h"
+#include "brave/components/brave_sync/brave_sync_cansendbookmarks.h"
 
 class Browser;
 class SyncJsLayer;
@@ -38,10 +39,12 @@ class SyncDevices;
 class BraveSyncController;
 struct BraveSyncSettings;
 class BraveSyncBookmarks;
+class BraveSyncDataObserver;
 
 class BraveSyncControllerImpl : public BraveSyncController,
                             public SyncJsLayerResponseReceiver,
-                            public BrowserListObserver {
+                            public BrowserListObserver,
+                            public CanSendSyncBookmarks {
 public:
   BraveSyncControllerImpl();
   ~BraveSyncControllerImpl() override;
@@ -114,7 +117,7 @@ private:
     const int &action,
     const std::vector<const bookmarks::BookmarkNode*> &list,
     const bool &addIdsToNotSynced,
-    const bool &isInitialSync);
+    const bool &isInitialSync) override;
 
   std::string CreateDeviceCreationRecord(
     const std::string &deviceName,

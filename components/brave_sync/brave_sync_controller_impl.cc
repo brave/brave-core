@@ -85,7 +85,7 @@ BraveSyncControllerImpl::BraveSyncControllerImpl() :
 
   sync_obj_map_ = std::make_unique<storage::BraveSyncObjMap>();
 
-  bookmarks_ = std::make_unique<BraveSyncBookmarks>();
+  bookmarks_ = std::make_unique<BraveSyncBookmarks>(this);
 
   if (!sync_prefs_->GetThisDeviceId().empty()) {
     bookmarks_->SetThisDeviceId(sync_prefs_->GetThisDeviceId());

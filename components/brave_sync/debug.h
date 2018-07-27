@@ -6,7 +6,10 @@
 #define _BRAVE_COMPONENTS_BRAVE_SYNC_DEBUG_H_
 
 #include <string>
+// cannot do forward declaration of nested class
+#include "components/bookmarks/browser/bookmark_node.h"
 
 std::string GetThreadInfoString();
+const char *GetBookmarkNodeString(bookmarks::BookmarkNode::Type type);
 
 #endif // _BRAVE_COMPONENTS_BRAVE_SYNC_DEBUG_H_
