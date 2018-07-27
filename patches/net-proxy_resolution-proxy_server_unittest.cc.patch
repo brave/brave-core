@@ -1,0 +1,223 @@
+diff --git a/net/proxy_resolution/proxy_server_unittest.cc b/net/proxy_resolution/proxy_server_unittest.cc
+index 67fadd6d07ac40baaea3042a6988cdb00b46a40c..84b72a7e1f30f1b02835b0fc5e3e780a5f366201 100644
+--- a/net/proxy_resolution/proxy_server_unittest.cc
++++ b/net/proxy_resolution/proxy_server_unittest.cc
+@@ -20,6 +20,8 @@ TEST(ProxyServerTest, FromURI) {
+     ProxyServer::Scheme expected_scheme;
+     const char* const expected_host;
+     int expected_port;
++    const char* const expected_username;
++    const char* const expected_password;
+     const char* const expected_pac_string;
+   } tests[] = {
+       // HTTP proxy URIs:
+@@ -28,18 +30,21 @@ TEST(ProxyServerTest, FromURI) {
+        ProxyServer::SCHEME_HTTP,
+        "foopy",
+        10,
++       "", "",
+        "PROXY foopy:10"},
+       {"http://foopy",  // No port.
+        "foopy:80",
+        ProxyServer::SCHEME_HTTP,
+        "foopy",
+        80,
++       "", "",
+        "PROXY foopy:80"},
+       {"http://foopy:10",
+        "foopy:10",
+        ProxyServer::SCHEME_HTTP,
+        "foopy",
+        10,
++       "", "",
+        "PROXY foopy:10"},
+ 
+       // IPv6 HTTP proxy URIs:
+@@ -48,24 +53,28 @@ TEST(ProxyServerTest, FromURI) {
+        ProxyServer::SCHEME_HTTP,
+        "FEDC:BA98:7654:3210:FEDC:BA98:7654:3210",
+        10,
++       "", "",
+        "PROXY [FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:10"},
+       {"http://[3ffe:2a00:100:7031::1]",  // No port.
+        "[3ffe:2a00:100:7031::1]:80",
+        ProxyServer::SCHEME_HTTP,
+        "3ffe:2a00:100:7031::1",
+        80,
++       "", "",
+        "PROXY [3ffe:2a00:100:7031::1]:80"},
+       {"http://[::192.9.5.5]",
+        "[::192.9.5.5]:80",
+        ProxyServer::SCHEME_HTTP,
+        "::192.9.5.5",
+        80,
++       "", "",
+        "PROXY [::192.9.5.5]:80"},
+       {"http://[::FFFF:129.144.52.38]:80",
+        "[::FFFF:129.144.52.38]:80",
+        ProxyServer::SCHEME_HTTP,
+        "::FFFF:129.144.52.38",
+        80,
++       "", "",
+        "PROXY [::FFFF:129.144.52.38]:80"},
+ 
+       // SOCKS4 proxy URIs:
+@@ -74,12 +83,14 @@ TEST(ProxyServerTest, FromURI) {
+        ProxyServer::SCHEME_SOCKS4,
+        "foopy",
+        1080,
++       "", "",
+        "SOCKS foopy:1080"},
+       {"socks4://foopy:10",
+        "socks4://foopy:10",
+        ProxyServer::SCHEME_SOCKS4,
+        "foopy",
+        10,
++       "", "",
+        "SOCKS foopy:10"},
+ 
+       // SOCKS5 proxy URIs
+@@ -88,12 +99,14 @@ TEST(ProxyServerTest, FromURI) {
+        ProxyServer::SCHEME_SOCKS5,
+        "foopy",
+        1080,
++       "", "",
+        "SOCKS5 foopy:1080"},
+       {"socks5://foopy:10",
+        "socks5://foopy:10",
+        ProxyServer::SCHEME_SOCKS5,
+        "foopy",
+        10,
++       "", "",
+        "SOCKS5 foopy:10"},
+ 
+       // SOCKS proxy URIs (should default to SOCKS5)
+@@ -102,13 +115,50 @@ TEST(ProxyServerTest, FromURI) {
+        ProxyServer::SCHEME_SOCKS5,
+        "foopy",
+        1080,
++       "", "",
+        "SOCKS5 foopy:1080"},
+       {"socks://foopy:10",
+        "socks5://foopy:10",
+        ProxyServer::SCHEME_SOCKS5,
+        "foopy",
+        10,
++       "", "",
+        "SOCKS5 foopy:10"},
++      {"socks://@foopy:10",
++       "socks5://foopy:10",
++       ProxyServer::SCHEME_SOCKS5,
++       "foopy",
++       10,
++       "", "",
++       "SOCKS5 foopy:10"},
++      {"socks://user@foopy:10",
++       "socks5://user@foopy:10",
++       ProxyServer::SCHEME_SOCKS5,
++       "foopy",
++       10,
++       "user", "",
++       "SOCKS5 user@foopy:10"},
++      {"socks://:pass@foopy:10",
++       "socks5://:pass@foopy:10",
++       ProxyServer::SCHEME_SOCKS5,
++       "foopy",
++       10,
++       "", "pass",
++       "SOCKS5 :pass@foopy:10"},
++      {"socks://:pass@foopy:10",
++       "socks5://:pass@foopy:10",
++       ProxyServer::SCHEME_SOCKS5,
++       "foopy",
++       10,
++       "", "pass",
++       "SOCKS5 :pass@foopy:10"},
++      {"socks://user:pass@foopy:10",
++       "socks5://user:pass@foopy:10",
++       ProxyServer::SCHEME_SOCKS5,
++       "foopy",
++       10,
++       "user", "pass",
++       "SOCKS5 user:pass@foopy:10"},
+ 
+       // HTTPS proxy URIs:
+       {"https://foopy",  // No port
+@@ -116,18 +166,21 @@ TEST(ProxyServerTest, FromURI) {
+        ProxyServer::SCHEME_HTTPS,
+        "foopy",
+        443,
++       "", "",
+        "HTTPS foopy:443"},
+       {"https://foopy:10",  // Non-standard port
+        "https://foopy:10",
+        ProxyServer::SCHEME_HTTPS,
+        "foopy",
+        10,
++       "", "",
+        "HTTPS foopy:10"},
+       {"https://1.2.3.4:10",  // IP Address
+        "https://1.2.3.4:10",
+        ProxyServer::SCHEME_HTTPS,
+        "1.2.3.4",
+        10,
++       "", "",
+        "HTTPS 1.2.3.4:10"},
+   };
+ 
+@@ -140,6 +193,8 @@ TEST(ProxyServerTest, FromURI) {
+     EXPECT_EQ(tests[i].expected_scheme, uri.scheme());
+     EXPECT_EQ(tests[i].expected_host, uri.host_port_pair().host());
+     EXPECT_EQ(tests[i].expected_port, uri.host_port_pair().port());
++    EXPECT_EQ(tests[i].expected_username, uri.host_port_pair().username());
++    EXPECT_EQ(tests[i].expected_password, uri.host_port_pair().password());
+     EXPECT_EQ(tests[i].expected_pac_string, uri.ToPacString());
+   }
+ }
+@@ -245,6 +300,46 @@ TEST(ProxyServerTest, FromPACString) {
+        "https foopy:10",
+        "https://foopy:10",
+     },
++    {
++       "socks5 @foopy",
++       "socks5://foopy:1080",
++    },
++    {
++       "socks5 user@foopy",
++       "socks5://user@foopy:1080",
++    },
++    {
++       "socks5 user:@foopy",
++       "socks5://user@foopy:1080",
++    },
++    {
++       "socks5 :pass@foopy",
++       "socks5://:pass@foopy:1080",
++    },
++    {
++       "socks5 user:pass@foopy",
++       "socks5://user:pass@foopy:1080",
++    },
++    {
++       "socks5 @foopy:10",
++       "socks5://foopy:10",
++    },
++    {
++       "socks5 user@foopy:10",
++       "socks5://user@foopy:10",
++    },
++    {
++       "socks5 user:@foopy:10",
++       "socks5://user@foopy:10",
++    },
++    {
++       "socks5 :pass@foopy:10",
++       "socks5://:pass@foopy:10",
++    },
++    {
++       "socks5 user:pass@foopy:10",
++       "socks5://user:pass@foopy:10",
++    },
+   };
+ 
+   for (size_t i = 0; i < arraysize(tests); ++i) {
