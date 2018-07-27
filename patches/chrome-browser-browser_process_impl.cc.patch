@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browser_process_impl.cc b/chrome/browser/browser_process_impl.cc
-index a5237f650fa0d53ba0d7aa80dbcad697d860585c..3c97489827386098d7f495f340cc34ddd1df34ac 100644
+index dd9b67d7a8705edd6f7665a4d8ffa12ed4f6b375..20cd90a28e6a9bca32a410435a56c1063003ae41 100644
 --- a/chrome/browser/browser_process_impl.cc
 +++ b/chrome/browser/browser_process_impl.cc
 @@ -33,6 +33,7 @@
@@ -10,7 +10,7 @@ index a5237f650fa0d53ba0d7aa80dbcad697d860585c..3c97489827386098d7f495f340cc34dd
  #include "build/build_config.h"
  #include "chrome/browser/chrome_browser_main.h"
  #include "chrome/browser/chrome_child_process_watcher.h"
-@@ -1011,7 +1012,7 @@ BrowserProcessImpl::supervised_user_whitelist_installer() {
+@@ -1063,7 +1064,7 @@ BrowserProcessImpl::supervised_user_whitelist_installer() {
  
  void BrowserProcessImpl::ResourceDispatcherHostCreated() {
    resource_dispatcher_host_delegate_ =

@@ -1,8 +1,8 @@
 diff --git a/chrome/common/pref_names.cc b/chrome/common/pref_names.cc
-index acb5c9d57c34810d93b9d0d28c8bce55c664462b..03097b0618e6d0f886bb8b7ad9f563b66dae72d1 100644
+index 7ad9c3fdf2044a5f6fa55fddde76a377dd0960e4..b1338fc73c16e7243514d69e7f7f031da802b5ea 100644
 --- a/chrome/common/pref_names.cc
 +++ b/chrome/common/pref_names.cc
-@@ -1067,6 +1067,7 @@ const char kImportDialogBookmarks[] = "import_dialog_bookmarks";
+@@ -1075,6 +1075,7 @@ const char kImportDialogBookmarks[] = "import_dialog_bookmarks";
  const char kImportDialogHistory[] = "import_dialog_history";
  const char kImportDialogSavedPasswords[] = "import_dialog_saved_passwords";
  const char kImportDialogSearchEngine[] = "import_dialog_search_engine";

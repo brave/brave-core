@@ -1,8 +1,8 @@
 diff --git a/chrome/app/nibs/MainMenu.xib b/chrome/app/nibs/MainMenu.xib
-index dbe2f9e9187706991898271355a14323472a3a06..4afe47e1db4835be17b71b309474ef493c3f75c2 100644
+index 4ac904f7895a4ddce59feeb8aea26875951464ee..6a45f5d32a715d15d856b51bdcf48e000168d23e 100644
 --- a/chrome/app/nibs/MainMenu.xib
 +++ b/chrome/app/nibs/MainMenu.xib
-@@ -26,6 +26,11 @@
+@@ -25,6 +25,11 @@
                                      <action selector="orderFrontStandardAboutPanel:" target="483" id="644"/>
                                  </connections>
                              </menuItem>
@@ -14,7 +14,7 @@ index dbe2f9e9187706991898271355a14323472a3a06..4afe47e1db4835be17b71b309474ef49
                              <menuItem isSeparatorItem="YES" id="236"/>
                              <menuItem title="^IDS_PREFERENCES" keyEquivalent="," id="129">
                                  <connections>
-@@ -574,7 +579,7 @@ CA
+@@ -579,7 +584,7 @@ CQ
                  <outlet property="owner_" destination="-2" id="642"/>
              </connections>
          </customObject>

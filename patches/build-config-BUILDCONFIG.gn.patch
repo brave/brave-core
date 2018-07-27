@@ -1,8 +1,8 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 93a97ff2803fe335be4537bc2d21a493468a2a23..5d5605ad4b8f88b717f5a725fa81321a0bad2947 100644
+index fcc00ee0e49f101cb1b10629747c4c4fa521776d..ddab38e8fd1a1424357a942883f2b868efd0c237 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -509,6 +509,7 @@ set_sources_assignment_filter(sources_assignment_filter)
+@@ -518,6 +518,7 @@ set_sources_assignment_filter(sources_assignment_filter)
  
  # Holds all configs used for running the compiler.
  default_compiler_configs = [
@@ -10,11 +10,3 @@ index 93a97ff2803fe335be4537bc2d21a493468a2a23..5d5605ad4b8f88b717f5a725fa81321a
    "//build/config:feature_flags",
    "//build/config/compiler:afdo",
    "//build/config/compiler:afdo_optimize_size",
-@@ -528,7 +529,6 @@ default_compiler_configs = [
-   "//build/config/coverage:default_coverage",
-   "//build/config/sanitizers:default_sanitizer_flags",
- ]
--
- if (is_win) {
-   default_compiler_configs += [
-     "//build/config/win:default_crt",

@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 7bc895e0c88f868d91ff7847323f98efede31d02..b3cf3ecece505b29be00afa41ffc55af88ff3fb0 100644
+index dbcbbff858e9b9483b3ec76cd7d9991fe150af49..994828cc06d53c8d5adbabe89c8c6334c2746860 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
-@@ -1455,7 +1455,7 @@ TabStrip::NewTabButtonPosition TabStrip::GetNewTabButtonPosition() const {
+@@ -1595,7 +1595,7 @@ int TabStrip::TabToFollowingNewTabButtonSpacing() const {
+   // Pre-refresh, there are a variety of hardcoded values.
+   const int mode = MD::GetMode();
+   DCHECK_LE(mode, 2);
+-  constexpr int kNewTabButtonSpacing[] = {-5, -6, 6};
++  constexpr int kNewTabButtonSpacing[] = {6, 7, 7};
+   return kNewTabButtonSpacing[mode];
  }
- 
- int TabStrip::GetNewTabButtonSpacing() const {
--  constexpr int kSpacing[] = {-5, -6, 6, 8, 8};
-+  constexpr int kSpacing[] = {6, 7, 7, 6, 6};
-   const auto mode = MD::GetMode();
-   int spacing = kSpacing[mode];
  

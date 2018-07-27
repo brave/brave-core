@@ -1,36 +1,37 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 7f8265a3e0c623d36266e683666dabebd5c40ffa..ac664e477dfc72ea41621e3d2ae25ea6bc7732d7 100644
+index 344da18793c3ad9d2c73af1dcfd2a0da9c59bb71..0a547a664d1c23d87337591fdbce12949f86633b 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-@@ -22,15 +22,18 @@
-         border-top: none;
-       }
-     </style>
+@@ -35,16 +35,19 @@
+         numeric-unchecked-value="[[networkPredictionEnum_.NEVER]]"
+         disabled="[[unifiedConsentGiven]]">
+     </settings-toggle-button>
 +    <if expr="_google_chrome">
      <settings-toggle-button pref="{{prefs.alternate_error_pages.enabled}}"
          label="$i18n{linkDoctorPref}"
-         sub-label="$i18n{linkDoctorPrefDesc}">
+         sub-label="$i18n{linkDoctorPrefDesc}"
+         disabled="[[unifiedConsentGiven]]">
      </settings-toggle-button>
 +    </if>
-     <settings-toggle-button hidden="[[!pageVisibility.searchPrediction]]"
-         pref="{{prefs.search.suggest_enabled}}"
-         label="$i18n{searchSuggestPref}"
-         sub-label="$i18n{searchSuggestPrefDesc}">
+     <settings-toggle-button pref="{{prefs.safebrowsing.enabled}}"
+         label="$i18n{safeBrowsingEnableProtection}"
+         sub-label="$i18n{safeBrowsingEnableProtectionDesc}"
+         disabled="[[unifiedConsentGiven]]">
      </settings-toggle-button>
 +    <if expr="_google_chrome">
      <settings-toggle-button id="safeBrowsingExtendedReportingControl"
          pref="[[safeBrowsingExtendedReportingPref_]]"
          label="$i18n{safeBrowsingEnableExtendedReporting}"
-@@ -38,6 +41,7 @@
-         on-settings-boolean-control-change="onSberChange_"
-         no-set-pref>
+@@ -53,6 +56,7 @@
+         no-set-pref
+         disabled="[[unifiedConsentGiven]]">
      </settings-toggle-button>
 +    </if>
-     <settings-toggle-button hidden="[[!pageVisibility.networkPrediction]]"
-         pref="{{prefs.net.network_prediction_options}}"
-         label="$i18n{networkPredictionEnabled}"
-@@ -74,6 +78,8 @@
-         sub-label="$i18n{enableLoggingDesc}">
+ <if expr="_google_chrome">
+ <if expr="chromeos">
+     <settings-toggle-button pref="{{prefs.cros.metrics.reportingEnabled}}"
+@@ -61,6 +65,8 @@
+         disabled="[[unifiedConsentGiven]]">
      </settings-toggle-button>
  </if><!-- chromeos -->
 +</if><!-- _google_chrome -->
@@ -38,14 +39,12 @@ index 7f8265a3e0c623d36266e683666dabebd5c40ffa..ac664e477dfc72ea41621e3d2ae25ea6
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          pref="[[metricsReportingPref_]]" label="$i18n{enableLogging}"
-@@ -87,7 +93,7 @@
+@@ -75,7 +81,7 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
 -</if><!-- _google_chrome -->
 +</if><!-- _chromium -->
-   </template>
-   <script src="personalization_options.js"></script>
--</dom-module>
-\ No newline at end of file
-+</dom-module>
+     <settings-toggle-button
+         pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
+         label="$i18n{urlKeyedAnonymizedDataCollection}"

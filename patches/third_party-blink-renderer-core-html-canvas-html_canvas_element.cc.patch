@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index d61466f5894555c316beb0c54015f80a0ded4da0..caa5a225ca360bf036c19131f03dea2404ee3e01 100644
+index 8596b77e5f70279ea162d9998a5ea51daf89bba7..cbae714519427ca09bc1a4e6181256c09f5579b0 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-@@ -39,6 +39,7 @@
- #include "third_party/blink/renderer/bindings/core/v8/exception_messages.h"
- #include "third_party/blink/renderer/bindings/core/v8/exception_state.h"
- #include "third_party/blink/renderer/bindings/core/v8/script_controller.h"
+@@ -35,6 +35,7 @@
+ 
+ #include "base/location.h"
+ #include "base/numerics/checked_math.h"
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
- #include "third_party/blink/renderer/core/css/css_font_selector.h"
- #include "third_party/blink/renderer/core/css/style_engine.h"
- #include "third_party/blink/renderer/core/dom/document.h"
-@@ -851,6 +852,8 @@ String HTMLCanvasElement::ToDataURLInternal(
+ #include "build/build_config.h"
+ #include "third_party/blink/public/platform/task_type.h"
+ #include "third_party/blink/renderer/bindings/core/v8/script_controller.h"
+@@ -852,6 +853,8 @@ String HTMLCanvasElement::ToDataURLInternal(
  String HTMLCanvasElement::toDataURL(const String& mime_type,
                                      const ScriptValue& quality_argument,
                                      ExceptionState& exception_state) const {
@@ -19,7 +19,7 @@ index d61466f5894555c316beb0c54015f80a0ded4da0..caa5a225ca360bf036c19131f03dea24
    if (!OriginClean()) {
      exception_state.ThrowSecurityError("Tainted canvases may not be exported.");
      return String();
-@@ -870,6 +873,8 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+@@ -871,6 +874,8 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
                                 const String& mime_type,
                                 const ScriptValue& quality_argument,
                                 ExceptionState& exception_state) {

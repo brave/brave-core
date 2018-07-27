@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/content_settings/host_content_settings_map_factory.cc b/chrome/browser/content_settings/host_content_settings_map_factory.cc
-index 607dfe4d4c99b2f78e5bf982e9c4738e88909bcf..24193ddb8baa7ae15a70687e82ba484e99e9ddeb 100644
+index eae14e50a89477fc4d856e659d2ceb0060057af2..b83ec7126c543cef28f574ebd47ffdcc220a9f7e 100644
 --- a/chrome/browser/content_settings/host_content_settings_map_factory.cc
 +++ b/chrome/browser/content_settings/host_content_settings_map_factory.cc
 @@ -7,6 +7,7 @@

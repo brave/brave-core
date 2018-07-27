@@ -49,39 +49,42 @@
 
   <!-- Cast Mode Picker -->
   <message name="IDS_MEDIA_ROUTER_SELECT_CAST_MODE_HEADER" desc="Header for the select cast mode view, which shows a list of cast modes that the user can select.">
-   Select source
+    Select source
   </message>
   <message name="IDS_MEDIA_ROUTER_SHARE_YOUR_SCREEN_SUBHEADING" desc="Subheading for screen sharing cast modes. The subheading appears above a list of screen sharing cast modes.">
-   Share your screen
+    Share your screen
   </message>
   <message name="IDS_MEDIA_ROUTER_CAST_LOCAL_MEDIA_SUBHEADING" desc="Subheading for local file cast modes. The subheading appears above a list of media cast modes.">
-   Stream a video or audio file
+    Stream a video or audio file
   </message>
   <message name="IDS_MEDIA_ROUTER_CAST_LOCAL_MEDIA_TITLE" desc="Title of the local file cast mode after a local file is selected for casting.">
-   Cast <ph name="FILE_NAME">$1<ex>my_media.mp3</ex></ph>
+    Cast <ph name="FILE_NAME">$1<ex>my_media.mp3</ex></ph>
+  </message>
+  <message name="IDS_MEDIA_ROUTER_ALTERNATIVE_SOURCES_BUTTON" desc="Label for the button which, on click, shows a list of Cast sources (tab, desktop, local media file).">
+    Sources
   </message>
 
   <!-- Contextual Menu -->
   <message name="IDS_MEDIA_ROUTER_ABOUT" desc="Title of a menu item which, on click, opens a page with product information about Bravecast.">
-   About
+    About
   </message>
   <message name="IDS_MEDIA_ROUTER_CLOUD_SERVICES_TOGGLE" desc="Title of a menu item which, on click, toggles the preference to opt in or out of cloud services.">
     Enable cloud services
   </message>
   <message name="IDS_MEDIA_ROUTER_HELP" desc="Title of a menu item which, on click, opens a page to the Bravecast help center.">
-   Help
+    Help
   </message>
   <message name="IDS_MEDIA_ROUTER_ALWAYS_SHOW_TOOLBAR_ACTION" desc="Title of a menu item which, on click, toggles whether or not the Media Router action icon is always shown. When toggled off, the icon is shown only when the Media Router dialog is open or if there is an active local Media Route or an issue.">
-   Always show icon
+    Always show icon
   </message>
   <message name="IDS_MEDIA_ROUTER_REPORT_ISSUE" desc="Title of a menu item which, on click, opens a page to give feedback or report an issue with Bravecast integration.">
-   Report an issue
+    Report an issue
   </message>
   <message name="IDS_MEDIA_ROUTER_MANAGE_DEVICES" desc="Title of a menu item which, on click, opens a page that allows the user to manage Cast devices: view, reboot, reset, and manage settings of available Cast devices, or set up new Cast devices.">
-   Manage Cast devices
+    Manage Cast devices
   </message>
   <message name="IDS_MEDIA_ROUTER_SHOWN_BY_POLICY" desc="Title of a menu item, which indicates that the Media Router action icon was added to the toolbar by the policy enabled by the user's administrator.">
-   Added by your administrator
+    Added by your administrator
   </message>
 
   <!-- First Run Flow -->
@@ -193,8 +196,20 @@
   </message>
 
   <!-- Sink List -->
+  <message name="IDS_MEDIA_ROUTER_STATUS_LOOKING_FOR_DEVICES" desc="Status text temporarily shown while searching for Cast devices but none have been found.">
+    Looking for devices
+  </message>
+  <message name="IDS_MEDIA_ROUTER_STATUS_NO_DEVICES_FOUND" desc="Status text shown to indicate that no Cast device was found.">
+    No devices found
+  </message>
   <message name="IDS_MEDIA_ROUTER_DESTINATION_MISSING" desc="Link to display when no Cast destinations are found which, on click, opens a page to the Bravecast help center explaining possible reasons why none are detected.">
     No Cast destinations found. Need help?
+  </message>
+  <message name="IDS_MEDIA_ROUTER_SINK_AVAILABLE" desc="Text shown as the status of a Cast destination that the user can Cast to.">
+    Available
+  </message>
+  <message name="IDS_MEDIA_ROUTER_SINK_CONNECTING" desc="Text shown as the status of a Cast destination that we are starting a Cast session on.">
+    Connecting...
   </message>
 
   <!-- Sink Search -->
@@ -208,6 +223,40 @@
   <!-- File Dialog -->
   <message name="IDS_MEDIA_ROUTER_FILE_DIALOG_AUDIO_VIDEO_FILTER" desc="Label for the drop down menu in the file selection dialog to show only audio and video files, instead of all files.">
     Audio/Video
+  </message>
+
+  <!-- Media Remoting Dialog -->
+  <message name="IDS_MEDIA_ROUTER_REMOTING_DIALOG_TITLE" desc="Title text shown at the top of the dialog asking the user whether they want to enable the Media Remoting feature. Media Remoting is a feature that can be enabled during a Cast session for improved playback.">
+    Optimize fullscreen casting?
+  </message>
+  <message name="IDS_MEDIA_ROUTER_REMOTING_DIALOG_BODY_TEXT" desc="Body text shown in the dialog to enable/disable Media Remoting. Media Remoting is a feature that can be enabled during a Cast session for improved playback.">
+    Get better quality video and save battery life. Video will play only on your Cast-enabled screen.
+  </message>
+  <message name="IDS_MEDIA_ROUTER_REMOTING_DIALOG_CHECKBOX" desc="Label for the checkbox that the user can click on to get their preference to enable/disable Media Remoting recorded. Media Remoting is a feature that can be enabled during a Cast session for improved playback.">
+    Don't ask again
+  </message>
+  <message name="IDS_MEDIA_ROUTER_REMOTING_DIALOG_OPTIMIZE_BUTTON" desc="Label for a button in the Media Remoting dialog that the user can click on to enable the feature. Shown next to the 'Cancel' button. Media Remoting is a feature that can be enabled during a Cast session for improved playback.">
+    Optimize
+  </message>
+  <message name="IDS_MEDIA_ROUTER_REMOTING_DIALOG_CANCEL_BUTTON" desc="Label for a button in the Media Remoting dialog that the user can click on to cancel enabling the feature. Shown next to the 'Optimize' button. Media Remoting is a feature that can be enabled during a Cast session for improved playback.">
+    No thanks
+  </message>
+  <message name="IDS_MEDIA_ROUTER_REMOTING_DIALOG_CANCEL_BUTTON_MACOS" desc="Label for a button in the Media Remoting dialog that the user can click on to cancel enabling the feature, shown on macOS. Shown next to the 'Optimize' button. Media Remoting is a feature that can be enabled during a Cast session for improved playback.">
+    No Thanks
+  </message>
+
+  <!-- Cloud Services Dialog -->
+  <message name="IDS_MEDIA_ROUTER_CLOUD_SERVICES_DIALOG_TITLE" desc="Title of the dialog asking whether the user wants to enable the feature allowing them to Cast to cloud services (Brave Hangouts, Brave Meet, Cast for Education extension).">
+    Enable cloud services for Cast?
+  </message>
+  <message name="IDS_MEDIA_ROUTER_CLOUD_SERVICES_DIALOG_BODY" desc="Body text of the dialog asking whether the user wants to enable the feature allowing them to Cast to cloud services (Brave Hangouts, Brave Meet, Cast for Education extension).">
+    Use of Hangouts and Cast for Education is governed by the Brave Privacy Policy.
+  </message>
+  <message name="IDS_MEDIA_ROUTER_CLOUD_SERVICES_DIALOG_ENABLE" desc="Label for a button in the dialog asking whether the user wants to enable the feature allowing them to Cast to cloud services. When this button is clicked, the preference to enable the feature gets saved.">
+    Enable
+  </message>
+  <message name="IDS_MEDIA_ROUTER_CLOUD_SERVICES_DIALOG_CANCEL" desc="Label for a button in the dialog asking whether the user wants to enable the feature allowing them to Cast to cloud services. No changes are made when this button is clicked.">
+    Cancel
   </message>
 
   <!-- Wired Display Media Route Provider -->

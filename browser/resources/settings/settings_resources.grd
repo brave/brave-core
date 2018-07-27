@@ -136,8 +136,6 @@
       <structure name="IDR_SETTINGS_CONTROLS_EXTENSION_CONTROLLED_INDICATOR_HTML" file="controls/extension_controlled_indicator.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_CHECKBOX_HTML" file="controls/settings_checkbox.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_CHECKBOX_JS" file="controls/settings_checkbox.js" type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_IMPORTANT_SITE_CHECKBOX_HTML" file="controls/important_site_checkbox.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_CONTROLS_IMPORTANT_SITE_CHECKBOX_JS" file="controls/important_site_checkbox.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_DROPDOWN_MENU_HTML" file="controls/settings_dropdown_menu.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_DROPDOWN_MENU_JS" file="controls/settings_dropdown_menu.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_PREF_CONTROL_BEHAVIOR_HTML" file="controls/pref_control_behavior.html" type="chrome_html" />
@@ -148,6 +146,8 @@
       <structure name="IDR_SETTINGS_CONTROLS_SETTINGS_IDLE_LOAD_JS" file="controls/settings_idle_load.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_SLIDER_HTML" file="controls/settings_slider.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_SLIDER_JS" file="controls/settings_slider.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_TEXTAREA_HTML" file="controls/settings_textarea.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_TEXTAREA_JS" file="controls/settings_textarea.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_TOGGLE_BUTTON_HTML" file="controls/settings_toggle_button.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_TOGGLE_BUTTON_JS" file="controls/settings_toggle_button.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_COOKIE_INFO_HTML" file="site_settings/cookie_info.html" type="chrome_html" />
@@ -327,10 +327,12 @@
       <structure name="IDR_SETTINGS_SITE_DATA_JS" file="site_settings/site_data.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_SITE_DATA_DETAILS_SUBPAGE_HTML" file="site_settings/site_data_details_subpage.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_SITE_DATA_DETAILS_SUBPAGE_JS" file="site_settings/site_data_details_subpage.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_DATA_ENTRY_HTML" file="site_settings/site_data_entry.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_DATA_ENTRY_JS" file="site_settings/site_data_entry.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_SITE_LIST_HTML" file="site_settings/site_list.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_SITE_LIST_JS" file="site_settings/site_list.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_SITE_SETTINGS_BEHAVIOR_HTML" file="site_settings/site_settings_behavior.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_SETTINGS_BEHAVIOR_JS" file="site_settings/site_settings_behavior.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_SETTINGS_BEHAVIOR_JS" file="site_settings/site_settings_behavior.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_CONSTANTS_JS" file="site_settings/constants.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONSTANTS_HTML" file="site_settings/constants.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_SITE_SETTINGS_PAGE_HTML" file="site_settings_page/site_settings_page.html" type="chrome_html" />
@@ -418,10 +420,22 @@
         <structure name="IDR_SETTINGS_INTERNET_SHARED_CSS_HTML" file="internet_page/internet_shared_css.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_INTERNET_SUBPAGE_HTML" file="internet_page/internet_subpage.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_INTERNET_SUBPAGE_JS" file="internet_page/internet_subpage.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_BROWSER_PROXY_HTML" file="multidevice_page/multidevice_browser_proxy.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_BROWSER_PROXY_JS" file="multidevice_page/multidevice_browser_proxy.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_CONSTANTS_HTML" file="multidevice_page/multidevice_constants.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_CONSTANTS_JS" file="multidevice_page/multidevice_constants.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_FEATURE_ITEM_HTML" file="multidevice_page/multidevice_feature_item.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_FEATURE_ITEM_JS" file="multidevice_page/multidevice_feature_item.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_MULTIDEVICE_PAGE_HTML" file="multidevice_page/multidevice_page.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_MULTIDEVICE_PAGE_JS" file="multidevice_page/multidevice_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_PAGE_CONTAINER_HTML" file="multidevice_page/multidevice_page_container.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_PAGE_CONTAINER_JS" file="multidevice_page/multidevice_page_container.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_SUBPAGE_HTML" file="multidevice_page/multidevice_subpage.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_SUBPAGE_JS" file="multidevice_page/multidevice_subpage.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_NETWORK_PROXY_SECTION_HTML" file="internet_page/network_proxy_section.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_NETWORK_PROXY_SECTION_JS" file="internet_page/network_proxy_section.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_NETWORK_LISTENER_BEHAVIOR_HTML" file="internet_page/network_listener_behavior.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_NETWORK_LISTENER_BEHAVIOR_JS" file="internet_page/network_listener_behavior.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_NETWORK_SUMMARY_HTML" file="internet_page/network_summary.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_NETWORK_SUMMARY_JS" file="internet_page/network_summary.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_NETWORK_SUMMARY_ITEM_HTML" file="internet_page/network_summary_item.html" type="chrome_html" />
@@ -430,6 +444,8 @@
         <structure name="IDR_SETTINGS_TETHER_CONNECTION_DIALOG_JS" file="internet_page/tether_connection_dialog.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_PEOPLE_PAGE_ACCOUNT_MANAGER_HTML" file="people_page/account_manager.html" type="chrome_html" preprocess="true" />
         <structure name="IDR_SETTINGS_PEOPLE_PAGE_ACCOUNT_MANAGER_JS" file="people_page/account_manager.js" type="chrome_html" preprocess="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_ACCOUNT_MANAGER_BROWSER_PROXY_HTML" file="people_page/account_manager_browser_proxy.html" type="chrome_html" preprocess="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_PAGE_ACCOUNT_MANAGER_BROWSER_PROXY_JS" file="people_page/account_manager_browser_proxy.js" type="chrome_html" preprocess="true" />
         <structure name="IDR_SETTINGS_PEOPLE_PAGE_CHANGE_PICTURE_HTML" file="people_page/change_picture.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
         <structure name="IDR_SETTINGS_PEOPLE_PAGE_CHANGE_PICTURE_JS" file="people_page/change_picture.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_PEOPLE_CHANGE_PICTURE_BROWSER_PROXY_JS" file="people_page/change_picture_browser_proxy.js" type="chrome_html" />

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index c66a6f6245ebe7d4abb1993c93f279e9e8442993..25f2b17f1d2fd7c2602f31de1fb91f72fdb176c7 100644
+index c66a6f6245ebe7d4abb1993c93f279e9e8442993..8b3eed687137c5b7cba118b78f48022bc2b30e59 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
 @@ -246,9 +246,24 @@ action("generate_strings") {
@@ -11,7 +11,7 @@ index c66a6f6245ebe7d4abb1993c93f279e9e8442993..25f2b17f1d2fd7c2602f31de1fb91f72
 +  if (brave_chromium_build) {
 +    # When brave_strings.grd is modified, outputs should be re-generated.
 +    # This is workaround. Need to change the way of using |brave_strings.grd|
-+    # in |create_string_rc.py|. - also remove import for brave config.gni
++    # in |create_string_rc.py|.
 +    sources = [
 +      "//chrome/app/brave_strings.grd"
 +    ]

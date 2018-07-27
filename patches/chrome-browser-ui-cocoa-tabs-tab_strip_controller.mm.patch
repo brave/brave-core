@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm b/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm
-index bfd79bb1f56ff2b30de970e0fe09a953c168453e..1295e0c057785ec838ae93131fb2b8e51acbecb8 100644
+index b2f3104bbfb653b8c4709ecee4368104fc1faccd..eb6c844abfb99b62445638fd9819e0fa00ed3e4e 100644
 --- a/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm
 +++ b/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm
 @@ -92,7 +92,7 @@ const CGFloat kUseFullAvailableWidth = -1.0;
@@ -9,7 +9,7 @@ index bfd79bb1f56ff2b30de970e0fe09a953c168453e..1295e0c057785ec838ae93131fb2b8e5
 -const CGFloat kNewTabButtonOffset = 10.0;
 +const CGFloat kNewTabButtonOffset = -7.0;
  
- const NSTimeInterval kAnimationDuration = 0.125;
+ const NSTimeInterval kTabAnimationDuration = 0.125;
  
 @@ -592,7 +592,7 @@ NSRect FlipRectInView(NSView* view, NSRect rect) {
    // tab. Else, every time the throbber is painted, the throbber's invalidation
