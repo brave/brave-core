@@ -43,10 +43,6 @@ class LedgerImpl : public ledger::Ledger,
   std::string GenerateGUID() const;
   void Reconcile() override;
   void CreateWallet() override;
-  void OnVisit(const ledger::VisitData& visit_data) override;
-  void OnMediaRequest(const std::string& url,
-                      const std::string& urlQuery,
-                      const std::string& type) override;
 
   void SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
                         ledger::PublisherInfoCallback callback) override;
@@ -90,6 +86,16 @@ class LedgerImpl : public ledger::Ledger,
   void RunTask(LedgerTaskRunnerImpl::Task task);
 
  private:
+  void OnLoad(const ledger::VisitData& visit_data) override;
+  void OnUnload(uint32_t tab_id) override;
+  void OnShow(uint32_t tab_id) override;
+  void OnHide(uint32_t tab_id) override;
+  void OnForeground(uint32_t tab_id) override;
+  void OnBackground(uint32_t tab_id) override;
+  void OnMediaStart(uint32_t tab_id) override;
+  void OnMediaStop(uint32_t tab_id) override;
+  void OnXHRLoad(uint32_t tab_id, const std::string& url) override;
+
   void initSynopsis();
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                           ledger::Result result,
@@ -100,6 +106,10 @@ class LedgerImpl : public ledger::Ledger,
                     const std::string& type);
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
+  void OnMediaRequest(const std::string& url,
+                      const std::string& urlQuery,
+                      const std::string& type);
+
   void OnMediaRequestCallback(uint64_t duration,
                               const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
 

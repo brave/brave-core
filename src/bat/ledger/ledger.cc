@@ -14,11 +14,11 @@ namespace ledger {
 VisitData::VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
-            uint64_t _duration) :
+            uint32_t _tab_id) :
     tld(_tld),
     domain(_domain),
     path(_path),
-    duration(_duration) {}
+    tab_id(_tab_id) {}
 
 const PublisherInfo invalid("");
 
