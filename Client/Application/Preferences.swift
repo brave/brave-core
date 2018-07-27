@@ -45,6 +45,12 @@ extension Preferences {
         /// Defaults to nil, meaning the user has not been given the choice yet
         static let duckDuckGoPrivateSearch = Option<Bool?>(key: "popups.ddg-private-search", default: nil)
     }
+    final class AppState {
+        /// A flag for determining if the app exited with user interaction in the previous session
+        ///
+        /// Value should only be checked on launch
+        static let backgroundedCleanly = Option<Bool>(key: "appstate.backgrounded-cleanly", default: true)
+    }
 }
 
 // MARK: - User Preferences
@@ -88,10 +94,6 @@ extension Preferences {
         static let fingerprintingProtection = Option<Bool>(key: "shields.fingerprinting-protection", default: false)
         ///
         static let useRegionAdBlock = Option<Bool>(key: "shields.regional-adblock", default: false)
-    }
-    final class Support {
-        /// Whether or not the user has opted in to sending crash reports to Brave
-        static let sendsCrashReportsAndMetrics = Option<Bool>(key: "support.send-reports", default: true)
     }
 }
 
