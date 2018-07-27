@@ -6,6 +6,7 @@
 
 #include "base/macros.h"
 #include "base/values.h"
+#include "components/bookmarks/browser/bookmark_model_observer.h"
 
 class Browser;
 
@@ -19,11 +20,14 @@ namespace brave_sync {
 namespace storage {
   class BraveSyncObjMap;
 }
+class BraveSyncDataObserver;
+class BraveSyncController;
+class CanSendSyncBookmarks;
 
-class BraveSyncBookmarks {
+class BraveSyncBookmarks : public bookmarks::BookmarkModelObserver {
 public:
-  BraveSyncBookmarks();
-  virtual ~BraveSyncBookmarks();
+  BraveSyncBookmarks(CanSendSyncBookmarks *send_bookmarks);
+  ~BraveSyncBookmarks() override;
   void SetBrowser(Browser* browser);
   void SetThisDeviceId(const std::string &device_id);
   void SetObjMap(storage::BraveSyncObjMap* sync_obj_map);
@@ -36,6 +40,42 @@ public:
 
   void GetAllBookmarks(std::vector<const bookmarks::BookmarkNode*> &nodes);
   std::unique_ptr<base::Value>NativeBookmarksToSyncLV(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
+
+  // bookmarks::BookmarkModelObserver overrides
+  void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
+                           bool ids_reassigned) override;
+
+  void BookmarkNodeMoved(bookmarks::BookmarkModel* model,
+                         const bookmarks::BookmarkNode* old_parent,
+                         int old_index,
+                         const bookmarks::BookmarkNode* new_parent,
+                         int new_index) override;
+
+  void BookmarkNodeAdded(bookmarks::BookmarkModel* model,
+                         const bookmarks::BookmarkNode* parent,
+                         int index) override;
+
+  void BookmarkNodeRemoved(
+      bookmarks::BookmarkModel* model,
+      const bookmarks::BookmarkNode* parent,
+      int old_index,
+      const bookmarks::BookmarkNode* node,
+      const std::set<GURL>& no_longer_bookmarked) override;
+
+  void BookmarkNodeChanged(bookmarks::BookmarkModel* model,
+                           const bookmarks::BookmarkNode* node) override;
+
+
+  void BookmarkNodeFaviconChanged(bookmarks::BookmarkModel* model,
+                                  const bookmarks::BookmarkNode* node) override;
+
+
+  void BookmarkNodeChildrenReordered(bookmarks::BookmarkModel* model,
+                                     const bookmarks::BookmarkNode* node) override;
+
+  void BookmarkAllUserNodesRemoved(
+      bookmarks::BookmarkModel* model,
+      const std::set<GURL>& removed_urls) override;
 
 private:
   std::unique_ptr<base::Value> BookmarkToValue(const bookmarks::BookmarkNode* node, const std::string &object_id);
@@ -51,6 +91,10 @@ private:
   std::string device_id_;
 
   storage::BraveSyncObjMap* sync_obj_map_;
+  //std::unique_ptr<BraveSyncDataObserver> data_observer_;
+  bool observer_is_set_;
+
+  CanSendSyncBookmarks *send_bookmarks_;
 };
 
 } // namespace brave_sync

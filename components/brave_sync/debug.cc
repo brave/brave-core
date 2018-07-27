@@ -5,6 +5,7 @@
 #include <sstream>
 #include "base/threading/platform_thread.h"
 #include "content/public/browser/browser_thread.h"
+#include "components/bookmarks/browser/bookmark_node.h"
 
 std::string GetThreadInfoString() {
    using content::BrowserThread;
@@ -27,4 +28,22 @@ std::string GetThreadInfoString() {
    }
 
    return res.str();
+}
+
+const char *GetBookmarkNodeString(bookmarks::BookmarkNode::Type type) {
+  switch (type) {
+    case bookmarks::BookmarkNode::URL:
+      return "URL";
+    case bookmarks::BookmarkNode::FOLDER:
+      return "FOLDER";
+    case bookmarks::BookmarkNode::BOOKMARK_BAR:
+      return "BOOKMARK_BAR";
+    case bookmarks::BookmarkNode::OTHER_NODE:
+      return "OTHER_NODE";
+    case bookmarks::BookmarkNode::MOBILE:
+      return "MOBILE";
+    default:
+      NOTREACHED();
+      return nullptr;
+  }
 }
