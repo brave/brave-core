@@ -4,7 +4,6 @@
 <translation id="5246282308050205996"><ph name="APP_NAME"/> ha deixat de funcionar. Feu clic en aquest globus per reiniciar l'aplicació.</translation>
 <translation id="2025632980034333559"><ph name="APP_NAME"/> ha deixat de funcionar. Feu clic en aquest globus per tornar a carregar l'extensió.</translation>
 <translation id="1090126737595388931">No hi cap aplicació en execució en segon pla</translation>
-<translation id="572392919096807438">Recorda la meva decisió</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> vol</translation>
 <translation id="5039804452771397117">Permet</translation>
 <translation id="7053983685419859001">Bloqueja</translation>
@@ -44,7 +43,6 @@
 <translation id="6277518330158259200">Fes una c&amp;amp;aptura de pantalla</translation>
 <translation id="5288678174502918605">T&amp;amp;orna a obrir la pestanya tancada</translation>
 <translation id="2731392572903530958">T&amp;amp;orna a obrir la finestra tancada</translation>
-<translation id="4345703751611431217">Incompatibilitat de programari: més informació</translation>
 <translation id="7607274158153386860">Sol·licita el lloc per a la tauleta</translation>
 <translation id="4408599188496843485">A&amp;amp;juda</translation>
 <translation id="3855676282923585394">Importa les adreces d'interès i la configuració...</translation>
@@ -63,9 +61,6 @@
 <translation id="5702898740348134351">&amp;amp;Edita els motors de cerca...</translation>
 <translation id="2454247629720664989">Paraula clau</translation>
 <translation id="5327248766486351172">Nom</translation>
-<translation id="2585300050980572691">Configuració de cerca predeterminada</translation>
-<translation id="5605623530403479164">Altres motors de cerca</translation>
-<translation id="1459967076783105826">Les extensions han afegit motors de cerca</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (Predeterminada)</translation>
 <translation id="846374874681391779">Barra de baixades</translation>
 <translation id="1743970419083351269">Tanca la barra de baixades</translation>
@@ -128,7 +123,6 @@
 <translation id="7764256770584298012"><ph name="DOWNLOAD_RECEIVED"/> del domini <ph name="DOWNLOAD_DOMAIN"/></translation>
 <translation id="3879748587602334249">Gestor de baixades</translation>
 <translation id="340282674066624"><ph name="DOWNLOAD_RECEIVED"/>, <ph name="TIME_LEFT"/></translation>
-<translation id="9183836083779743117"><ph name="DOWNLOAD_RECEIVED"/> de <ph name="DOWNLOAD_DOMAIN"/>, <ph name="TIME_LEFT"/></translation>
 <translation id="3076909148546628648"><ph name="DOWNLOAD_RECEIVED"/>/<ph name="DOWNLOAD_TOTAL"/></translation>
 <translation id="1168020859489941584">Obrint a <ph name="TIME_REMAINING"/>...</translation>
 <translation id="1383861834909034572">S'obre després de finalitzar</translation>
@@ -160,7 +154,6 @@
 <translation id="2770465223704140727">Suprimeix de la llista</translation>
 <translation id="7658239707568436148">Cancel·la</translation>
 <translation id="7144878232160441200">Torna-ho a provar</translation>
-<translation id="2541423446708352368">Mostra totes les baixades</translation>
 <translation id="6910211073230771657">Suprimit</translation>
 <translation id="4057041477816018958"><ph name="SPEED"/>: <ph name="RECEIVED_AMOUNT"/></translation>
 <translation id="816095449251911490"><ph name="SPEED"/> - <ph name="RECEIVED_AMOUNT"/>, <ph name="TIME_REMAINING"/></translation>
@@ -181,6 +174,7 @@
 <translation id="883911313571074303">Afegeix una anotació a la imatge</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Baixada en curs}other{Baixades en curs}}</translation>
 <translation id="5284445933715251131">Continua la baixada</translation>
+<translation id="7707599169365957976">Per ajudar a millorar Navegació segura, envia a Brave Software algunes dades del sistema i contingut de les pàgines.</translation>
 <translation id="4923279099980110923">Sí, vull contribuir-hi</translation>
 <translation id="2316129865977710310">No, gràcies</translation>
 <translation id="5280426389926346830">Vols crear una drecera?</translation>
@@ -236,7 +230,6 @@
 <translation id="2796740370559399562">Continua permetent les galetes</translation>
 <translation id="540296380408672091">Bloqueja sempre les galetes a <ph name="HOST"/></translation>
 <translation id="6622980291894852883">Continua bloquejant les imatges</translation>
-<translation id="1753682364559456262">Gestiona el bloqueig d'imatges...</translation>
 <translation id="7810202088502699111">S'han bloquejat finestres emergents en aquesta pàgina.</translation>
 <translation id="4808667324955055115">S'han bloquejat les finestres emergents:</translation>
 <translation id="1260451001046713751">Permet sempre les finestres emergents i les redireccions iniciades per <ph name="HOST"/></translation>
@@ -263,7 +256,6 @@
 <translation id="4085298594534903246">S'ha bloquejat JavaScript en aquesta pàgina.</translation>
 <translation id="527605982717517565">Permet sempre JavaScript a <ph name="HOST"/></translation>
 <translation id="645705751491738698">Continua bloquejant JavaScript</translation>
-<translation id="6458308652667395253">Gestiona el bloqueig de JavaScript...</translation>
 <translation id="1802931390041703523">Flash està bloquejat en aquesta pàgina</translation>
 <translation id="8976520271376534479">Flash està bloquejat en aquesta pàgina.</translation>
 <translation id="412940972494182898">Executa Flash aquesta vegada</translation>
@@ -289,8 +281,6 @@
 <translation id="2989786307324390836">Binari codificat amb DER, certificat únic</translation>
 <translation id="7339763383339757376">PKCS #7, certificat únic</translation>
 <translation id="8326478304147373412">PKCS #7, cadena de certificats</translation>
-<translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
-<translation id="8997135628821231"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>] (<ph name="DEVICE"/>)</translation>
 <translation id="4013132157686828973"><ph name="CLIENT_NAME"/> està depurant aquest navegador</translation>
 <translation id="5620568081365989559">DevTools sol·licita accés complet a <ph name="FOLDER_PATH"/>.
 Assegureu-vos que no es pugui accedir a informació sensible.</translation>
@@ -298,14 +288,10 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6056710589053485679">Torna a carregar de manera normal</translation>
 <translation id="3150927491400159470">Torna a carregar de manera forçada</translation>
 <translation id="8276560076771292512">Buida la memòria cau i torna a carregar de manera forçada</translation>
-<translation id="2864601841139725659">Estableix la teva foto de perfil</translation>
-<translation id="6210656810416329025">Fes una foto o tria una foto o una icona existents.
-          <ph name="LINE_BREAK"/>
-          Aquesta foto es mostrarà a la pantalla d'inici de sessió i a la pantalla de bloqueig de Bravebook.</translation>
 <translation id="6398765197997659313">Surt del mode de pantalla completa</translation>
-<translation id="7973320858902175766">Eina d'aplicació de pedaços en components</translation>
 <translation id="8559694214572302298">Descodificador d'imatges</translation>
 <translation id="8191453843330043793">Solucionador de servidors intermediaris V8</translation>
+<translation id="6185617499004995178">Validador d'IPP per a CUPS</translation>
 <translation id="7171242884588191792">Utilitats per a fitxers de Brave</translation>
 <translation id="3061707000357573562">Servei de pedaç</translation>
 <translation id="3580923162759633716">Servei d'anàlisi de perfils</translation>
@@ -465,7 +451,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6445450263907939268">Si no volíeu aplicar aquests canvis, podeu restaurar la configuració anterior.</translation>
 <translation id="4423376891418188461">Restaura la configuració</translation>
 <translation id="8523493869875972733">Mantén els canvis</translation>
-<translation id="543754252619196907"><ph name="APP_NAME"/> de <ph name="SITE_ORIGIN"/></translation>
 <translation id="2300383962156589922">Personalitza i controla <ph name="APP_NAME"/></translation>
 <translation id="413121957363593859">Components</translation>
 <translation id="1931152874660185993">No hi ha cap component instal·lat.</translation>
@@ -495,21 +480,14 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1295794900245526845">Trieu el compte desat a <ph name="PASSWORD_MANAGER_BRAND"/> per iniciar la sessió</translation>
 <translation id="8399276228600040370">Inicieu la sessió amb el compte desat a <ph name="PASSWORD_MANAGER_BRAND"/></translation>
 <translation id="3190558889382726167">S'ha desat la contrasenya</translation>
-<translation id="1504682556807808151">Voleu que <ph name="PASSWORD_MANAGER_BRAND"/> desi la vostra contrasenya per a aquest lloc?</translation>
+<translation id="5079950360618752063">Utilitza la contrasenya suggerida</translation>
+<translation id="8084114998886531721">Contrasenya desada</translation>
 <translation id="1405476660552109915">Voleu que <ph name="PASSWORD_MANAGER_BRAND"/> desi el vostre compte per a aquest lloc?</translation>
-<translation id="4875622588773761625">Voleu que <ph name="PASSWORD_MANAGER_BRAND"/> actualitzi la vostra contrasenya per a aquest lloc?</translation>
-<translation id="8837103518490433332">Voleu que <ph name="PASSWORD_MANAGER_BRAND"/> desi la vostra contrasenya per a <ph name="ORIGIN"/>?</translation>
-<translation id="4871833665870725367">Voleu que <ph name="PASSWORD_MANAGER_BRAND"/> actualitzi la vostra contrasenya per a <ph name="ORIGIN"/>?</translation>
 <translation id="8286036467436129157">Inicia la sessió</translation>
 <translation id="8009225694047762179">Gestiona les contrasenyes</translation>
-<translation id="7473891865547856676">No, gràcies</translation>
 <translation id="9135262959729602463">Inicia la sessió a Brave per tenir les contrasenyes en tots els teus dispositius.</translation>
 <translation id="8919275547519617350">Per tenir totes les teves contrasenyes en tots els dispositius, inicia la sessió i activa la sincronització.</translation>
 <translation id="8470028084415844044">Per tenir totes les teves contrasenyes en tots els dispositius, activa la sincronització.</translation>
-<translation id="7138678301420049075">Altres</translation>
-<translation id="4532499992208253975">emloading</translation>
-<translation id="771953673318695590">Control de qualitat</translation>
-<translation id="8820961991571528294">Proves</translation>
 <translation id="3987348946546879621">Dades estalviades</translation>
 <translation id="6228516488918914827">S'ha carregat una pàgina més ràpidament</translation>
 <translation id="9137013805542155359">Mostra l'original</translation>
@@ -530,7 +508,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1737968601308870607">Arxiva l'error</translation>
 <translation id="1188807932851744811">El registre no s'ha penjat.</translation>
 <translation id="3925247638945319984">No teniu registres de WebRTC capturats recentment.</translation>
-<translation id="1476949146811612304">Definiu el motor de cerca que s'ha de fer servir en fer una cerca des de l'<ph name="BEGIN_LINK"/>omnibox<ph name="END_LINK"/>.</translation>
 <translation id="2076269580855484719">Amaga aquest connector</translation>
 <translation id="2129825002735785149">Actualitza el connector</translation>
 <translation id="9088234649737575428">La política d'empresa té el connector <ph name="PLUGIN_NAME"/> bloquejat</translation>
@@ -548,21 +525,13 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5620612546311710611">estadístiques d'ús</translation>
 <translation id="8871696467337989339">Utilitzeu una marca de la línia d'ordres que no és compatible: <ph name="BAD_FLAG"/>. Se'n ressentiran l'estabilitat i la seguretat.</translation>
 <translation id="9140067245205650184">Utilitzes una marca de funció que no és compatible: <ph name="BAD_FLAG"/>. Se'n ressentiran l'estabilitat i la seguretat.</translation>
-<translation id="8598453409908276158">S'ha bloquejat l'accés al connector de fora de la zona de proves</translation>
-<translation id="1919814239594435008">S'ha permès l'accés al connector de fora de la zona de proves</translation>
-<translation id="855773602626431402">No s'ha pogut executar un connector de fora de la zona de proves en aquesta pàgina.</translation>
-<translation id="1013707859758800957">S'ha pogut executar un connector de fora de la zona de proves en aquesta pàgina.</translation>
-<translation id="1554390798506296774">Permet sempre els connectors de fora de la zona de proves a <ph name="HOST"/></translation>
-<translation id="2889925978073739256">Continua bloquejant els connectors de fora de la zona de proves</translation>
-<translation id="3827306204503227641">Continua permetent els connectors de fora de la zona de proves</translation>
-<translation id="4538684596480161368">Bloqueja sempre els connectors fora de la zona de proves a <ph name="HOST"/></translation>
-<translation id="7615910377284548269">Gestiona el bloqueig dels connectors de fora de la zona de proves...</translation>
 <translation id="3589766037099229847">S'ha bloquejat el contingut no segur</translation>
 <translation id="4842976633412754305">Aquesta pàgina està provant de carregar scripts de fonts no autenticades.</translation>
 <translation id="1422159345171879700">Carrega els scripts no segurs</translation>
 <translation id="3630995161997703415">Afegeix aquest lloc web al teu prestatge per utilitzar-lo en qualsevol moment</translation>
 <translation id="3011284594919057757">Quant a Flash</translation>
 <translation id="1962233722219655970">Aquesta pàgina fa servir una aplicació de Native Client que no funciona al vostre ordinador.</translation>
+<translation id="4453946976636652378">Cerca <ph name="SEARCH_ENGINE_NAME"/> o escriu un URL</translation>
 <translation id="5731247495086897348">En&amp;amp;ganxa i ves-hi</translation>
 <translation id="8425755597197517046">En&amp;amp;ganxa i cerca</translation>
 <translation id="6151323131516309312">Prem <ph name="SEARCH_KEY"/> per cercar <ph name="SITE_NAME"/></translation>
@@ -572,7 +541,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5781865261247219930">Envia les ordres a <ph name="EXTENSION_NAME"/></translation>
 <translation id="5436510242972373446">Cerca <ph name="SITE_NAME"/>:</translation>
 <translation id="223106756035922488">Fes clic per veure el doodle del dia</translation>
-<translation id="8680536109547170164"><ph name="QUERY"/>, resposta, <ph name="ANSWER"/></translation>
 <translation id="8676374126336081632">Esborra l'entrada</translation>
 <translation id="2129873093718581193">Fes una cerca a Brave Software o escriu l'URL</translation>
 <translation id="6363797201514053536">Fes una cerca a Brave Software o escriu un URL</translation>
@@ -587,13 +555,19 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2926085873880284723">Restaura les dreceres predeterminades</translation>
 <translation id="7413455776853560343">Personalitza el fons</translation>
 <translation id="2187700606737131818">Brave Software Fotos</translation>
-<translation id="4864907324828007775">Fons de pantalla de Brave</translation>
+<translation id="5801450813341024983">Fons de pantalla de Brave</translation>
 <translation id="2800760947029405028">Penja una imatge</translation>
 <translation id="8342861492835240085">Selecciona una col·lecció</translation>
 <translation id="6017211263306518045">Selecciona un àlbum de Brave Software Fotos</translation>
-<translation id="3313965159808871019">Actualització diària</translation>
+<translation id="3132996321662585180">Actualitza diàriament</translation>
 <translation id="9062065967472365419">Sorprèn-me</translation>
 <translation id="7287411021188441799">Restaura el fons predeterminat</translation>
+<translation id="3355936511340229503">Error de connexió</translation>
+<translation id="4519935350946509010">Error de connexió</translation>
+<translation id="8184318863960255706">Més informació</translation>
+<translation id="3617891479562106823">Els fons de pantalla no estan disponibles. Torna-ho a provar més tard.</translation>
+<translation id="8391712576156218334">La imatge no està disponible. Torna-ho a provar més tard.</translation>
+<translation id="1564414980088536597">Aquesta imatge no es pot utilitzar. Tria'n una altra.</translation>
 <translation id="5376169624176189338">Feu clic per tornar enrere o manteniu premut per veure l'historial</translation>
 <translation id="9103868373786083162">Premeu per anar cap enrere, menú contextual per veure l'historial</translation>
 <translation id="2961695502793809356">Feu clic per anar endavant o manteniu premut per veure l'historial</translation>
@@ -606,6 +580,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7554791636758816595">Pestanya nova</translation>
 <translation id="3915280005470252504">Cerca per veu</translation>
 <translation id="3153862085237805241">Desa la targeta</translation>
+<translation id="4961000125720751066">Aplega les targetes en un sol lloc</translation>
 <translation id="2473195200299095979">Tradueix aquesta pàgina</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">L'extensió <ph name="NAME"/> ha fet zoom en aquesta pàgina</translation>
@@ -655,16 +630,11 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{Surt de la pàgina}other{Surt de les pàgines}}</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> no respon</translation>
 <translation id="8393511274964623038">Atura el connector</translation>
-<translation id="7029809446516969842">Contrasenyes</translation>
+<translation id="82871696630048499">La pàgina web s'ha tornat a carregar perquè s'ha quedat sense memòria.</translation>
 <translation id="5578059481725149024">Inici de sessió automàtic</translation>
 <translation id="6810613314571580006">Inicieu la sessió automàticament als llocs web amb les credencials emmagatzemades. Si la funció està desactivada, se us demana sempre que confirmeu les credencials per iniciar la sessió en un lloc web.</translation>
 <translation id="5454166040603940656">amb <ph name="PROVIDER"/></translation>
-<translation id="1486096554574027028">Cerca contrasenyes</translation>
-<translation id="5300589172476337783">Mostra</translation>
 <translation id="7108338896283013870">Amaga</translation>
-<translation id="661719348160586794">Les contrasenyes desades apareixeran aquí.</translation>
-<translation id="1548132948283577726">Els llocs que mai desen les contrasenyes apareixeran aquí.</translation>
-<translation id="4603234488640507661">(Android)</translation>
 <translation id="1426410128494586442">Sí</translation>
 <translation id="4250680216510889253">No</translation>
 <translation id="7378627244592794276">No</translation>
@@ -673,39 +643,14 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6374469231428023295">Torna-ho a provar</translation>
 <translation id="8026334261755873520">Esborra les dades de navegació</translation>
 <translation id="7409836189476010449">Executar Flash</translation>
-<translation id="1384433374273142931">És possible que el teu compte de Brave Software tingui altres formes de l'historial de navegació a <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/></translation>
 <translation id="4718442817388594217">Les dades seleccionades s'han suprimit de Brave i dels dispositius sincronitzats. És possible que el teu compte de Brave Software tingui altres formes de l'historial de navegació, com ara les cerques i l'activitat d'altres serveis de Brave Software a <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7814200940910057384">S'han esborrat les dades de Brave</translation>
 <translation id="7346909386216857016">D'acord</translation>
-<translation id="4707302005824653064">El gestor (<ph name="CUSTODIAN_EMAIL"/>) pot revisar-ne l'ús i l'historial a chrome.com.</translation>
-<translation id="346431825526753">Aquest és un compte infantil gestionat per <ph name="CUSTODIAN_EMAIL"/>.</translation>
-<translation id="4159681666905192102">Aquest és un compte infantil gestionat per <ph name="CUSTODIAN_EMAIL"/> i per <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
-<translation id="5958529069007801266">Usuari supervisat</translation>
-<translation id="5720705177508910913">Usuari actual</translation>
-<translation id="7081952801286122383">Estàs en mode d'incògnit</translation>
-<translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (supervisat)</translation>
-<translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (compte infantil)</translation>
-<translation id="2440300961915670171"><ph name="REASON"/>
-No crec que calgui bloquejar aquest lloc.</translation>
-<translation id="4667176955651319626">Bloqueja les galetes de tercers i les dades de llocs web</translation>
 <translation id="8493236660459102203">Micròfon:</translation>
 <translation id="3925573269917483990">Càmera:</translation>
 <translation id="648927581764831596">No n'hi ha cap de disponible</translation>
-<translation id="5131347545782851480">Documents PDF</translation>
-<translation id="7628127343934101653">Obre els fitxers PDF a l'aplicació predeterminada de lector de PDF.</translation>
 <translation id="3759371141211657149">Gestiona la configuració de gestors...</translation>
-<translation id="6612358246767739896">Contingut protegit</translation>
-<translation id="3955193568934677022">Permet que els llocs web reprodueixin contingut protegit (opció recomanada)</translation>
-<translation id="7311079019872751559">Accés del connector de fora de la zona de proves</translation>
-<translation id="7262221505565121">Excepcions d'accés del connector de fora de la zona de proves</translation>
-<translation id="3153177132960373163">Permet que tots els llocs utilitzin un connector per accedir a l'ordinador</translation>
-<translation id="1878524442024357078">No permetis que cap lloc utilitzi un connector per accedir a l'ordinador</translation>
-<translation id="3523642406908660543">Pregunta'm quan un lloc vulgui fer servir un connector per accedir a l'ordinador (opció recomanada)</translation>
-<translation id="2706892089432507937">Dispositius USB</translation>
-<translation id="5829401023154985950">Gestiona...</translation>
-<translation id="3564708465992574908">Nivells de zoom</translation>
 <translation id="4156865452842056672">(Pàgines d'error de Brave)</translation>
-<translation id="2339641773402824483">Cerca actualitzacions...</translation>
 <translation id="2220529011494928058">Informa d'un problema</translation>
 <translation id="4099060993766194518">Vols restablir el motor de cerca predeterminat?</translation>
 <translation id="138784436342154190">Vols restaurar la pàgina d'inici predeterminada?</translation>
@@ -715,9 +660,12 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="3702500414347826004">Les pàgines d'inici han canviat per incloure <ph name="URL"/>.</translation>
 <translation id="7837776265184002579">La pàgina d'inici ha canviat a <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">Activa l'actualització automàtica</translation>
-<translation id="8741316211671074806">Pantalla en pantalla</translation>
 <translation id="6790428901817661496">Reprodueix</translation>
 <translation id="4514610446763173167">Reprodueix o posa en pausa el vídeo</translation>
+<translation id="2631120081682787498">Confirmes que vols tancar aquesta pestanya?</translation>
+<translation id="111844081046043029">Confirmes que vols marxar d'aquesta pàgina?</translation>
+<translation id="245661998428026871">El vídeo en mode de pantalla en pantalla deixarà de reproduir-se.</translation>
+<translation id="2677748264148917807">Surt</translation>
 <translation id="2520644704042891903">Estem esperant que hi hagi un sòcol disponible...</translation>
 <translation id="1493892686965953381">S'està esperant <ph name="LOAD_STATE_PARAMETER"/>...</translation>
 <translation id="1225177025209879837">S'està processant la sol·licitud...</translation>
@@ -787,8 +735,6 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="8987927404178983737">Mes</translation>
 <translation id="6015796118275082299">Any</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
-<translation id="3646789916214779970">Restableix el tema predeterminat</translation>
-<translation id="5963026469094486319">Cerca temes</translation>
 <translation id="4520385623207007473">Galetes en ús</translation>
 <translation id="4763408175235639573">S'han permès les galetes següents en visitar aquesta pàgina</translation>
 <translation id="2719936478972253983">S'han bloquejat les galetes següents</translation>
@@ -872,118 +818,18 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="6022526133015258832">Obre en pantalla completa</translation>
 <translation id="6845038076637626672">Obre-la maximitzada</translation>
 <translation id="6860427144121307915">Obre en una pestanya</translation>
-<translation id="8662795692588422978">Usuaris</translation>
-<translation id="4974733135013075877">Surt i estableix el bloqueig infantil</translation>
-<translation id="3965965397408324205">Surt del perfil <ph name="PROFILE_NAME"/></translation>
-<translation id="3950820424414687140">Inicia la sessió</translation>
-<translation id="7665369617277396874">Afegeix un compte</translation>
-<translation id="9148126808321036104">Torneu a iniciar la sessió</translation>
-<translation id="9220525904950070496">Suprimir el compte</translation>
-<translation id="3340978935015468852">configuració</translation>
-<translation id="5704875434923668958">S'està sincronitzant amb</translation>
-<translation id="8428213095426709021">Configuració</translation>
-<translation id="5781092003150880845">Sincronitza com a <ph name="ACCOUNT_FULL_NAME"/></translation>
-<translation id="1372841398847029212">Sincronitza amb el meu compte</translation>
-<translation id="454547174531670764">Sincronitza amb un altre compte</translation>
-<translation id="2538361623464451692">Sincronització desactivada</translation>
-<translation id="1316495628809031177">La sincronització està en pausa</translation>
-<translation id="1692115862433274081">Utilitza un altre compte</translation>
-<translation id="2660646897440651313">Les adreces d'interès, l'historial, les contrasenyes i altres configuracions es sincronitzaran amb el vostre compte de Brave Software.</translation>
-<translation id="5350965906220856151">Oh, oh...</translation>
-<translation id="672609503628871915">Novetats</translation>
-<translation id="7786207843293321886">Surt de la sessió de convidat</translation>
-<translation id="2329597144923131178">Inicieu la sessió per tenir adreces d'interès, historial, contrasenyes i altres opcions de configuració en tots els dispositius.</translation>
-<translation id="4235813040357936597">Afegeix un compte per a: <ph name="PROFILE_NAME"/></translation>
-<translation id="1464258312790801189">Els comptes</translation>
-<translation id="6655458902729017087">Amaga els comptes</translation>
-<translation id="8446884382197647889">Més informació</translation>
-<translation id="3420980393175304359">Canviar de persona</translation>
-<translation id="2326606747676847821">Passa al mode d'incògnit</translation>
-<translation id="8770507190024617908">Gestiona persones</translation>
-<translation id="2666990579225592931">Obre la finestra de convidat</translation>
-<translation id="8474229360677287535">Tanca totes les finestres</translation>
-<translation id="7652808307838961528">Edita la persona (<ph name="PROFILE_NAME"/>)</translation>
-<translation id="6112952769866305444">Edita la persona (<ph name="PROFILE_NAME"/>, <ph name="USERNAME"/>)</translation>
-<translation id="3294437725009624529">Convidat</translation>
-<translation id="475088594373173692">Primer usuari</translation>
-<translation id="4535127706710932914">Perfil predeterminat</translation>
-<translation id="4389091756366370506">Usuari <ph name="VALUE"/></translation>
-<translation id="749028671485790643">Persona <ph name="VALUE"/></translation>
-<translation id="5397794290049113714">Usuari</translation>
-<translation id="3031417829280473749">Agent X</translation>
-<translation id="412730574613779332">Superheroi</translation>
-<translation id="5109044022078737958">Atleta</translation>
-<translation id="3605780360466892872">Executiu</translation>
-<translation id="2772936498786524345">Ninja</translation>
-<translation id="3809280248639369696">Extraterrestre</translation>
-<translation id="6442187272350399447">Content</translation>
-<translation id="8631032106121706562">Flor</translation>
-<translation id="5854912040170951372">Pizza</translation>
-<translation id="4858913220355269194">Pilota</translation>
-<translation id="8711402221661888347">Hamburguesa</translation>
-<translation id="4421932782753506458">Gatet</translation>
-<translation id="6624687053722465643">Pastisset</translation>
-<translation id="8256319818471787266">Gosset</translation>
-<translation id="438503109373656455">Cavall</translation>
-<translation id="7548856833046333824">Còctel</translation>
-<translation id="8206745257863499010">Música</translation>
-<translation id="8241040075392580210">Ennuvolat</translation>
-<translation id="4555769855065597957">Ombra</translation>
-<translation id="1576594961618857597">Avatar blanc predeterminat</translation>
-<translation id="5227679487546032910">Avatar turquesa predeterminat</translation>
-<translation id="4544174279960331769">Avatar blau predeterminat</translation>
-<translation id="8063235345342641131">Avatar verd predeterminat</translation>
-<translation id="4953808748584563296">Avatar taronja predeterminat</translation>
-<translation id="3225084153129302039">Avatar morat predeterminat</translation>
-<translation id="1916502483199172559">Avatar vermell predeterminat</translation>
-<translation id="3139925690611372679">Avatar groc predeterminat</translation>
-<translation id="6399774419735315745">Espia</translation>
-<translation id="6964390816189577014">Heroi</translation>
-<translation id="4476590490540813026">Atleta</translation>
-<translation id="5646558797914161501">Home de negocis</translation>
-<translation id="3438633801274389918">Ninja</translation>
-<translation id="4206144641569145248">Extraterrestre</translation>
-<translation id="6087960857463881712">Cara de fascinació</translation>
-<translation id="81238879832906896">Flor groga i blanca</translation>
-<translation id="1465827627707997754">Tall de pizza</translation>
-<translation id="2642111877055905627">Pilota de futbol</translation>
-<translation id="8838770651474809439">Hamburguesa</translation>
-<translation id="8808686172382650546">Gat</translation>
-<translation id="9214695392875603905">Cupcake</translation>
-<translation id="5275352920323889391">Gos</translation>
-<translation id="4037084878352560732">Cavall</translation>
-<translation id="2272570998639520080">Copa de Martini</translation>
-<translation id="120368089816228251">Nota musical</translation>
-<translation id="1393283411312835250">Sol i núvols</translation>
-<translation id="1830550083491357902">Sessió no iniciada</translation>
-<translation id="5941153596444580863">Afegeix una persona...</translation>
-<translation id="9149866541089851383">Edita...</translation>
-<translation id="7903128267494448252">Suprimeix aquesta persona</translation>
-<translation id="8798099450830957504">Predeterminat</translation>
-<translation id="6292216088769220329">Permet que qualsevol persona pugui afegir una persona a Brave</translation>
-<translation id="7299337219131431707">Activa la navegació com a convidat</translation>
-<translation id="2608770217409477136">Fes servir la configuració predeterminada</translation>
-<translation id="2836635946302913370">L'administrador ha desactivat l'inici de sessió amb aquest nom d'usuari.</translation>
-<translation id="2721695630904737430">L'administrador ha desactivat els usuaris supervisats.</translation>
-<translation id="7477746269122340519">L'administrador ha desactivat aquest usuari.</translation>
-<translation id="1468571364034902819">Aquest perfil no es pot utilitzar</translation>
-<translation id="2261323523305321874">L'administrador ha fet un canvi que desactiva alguns perfils antics en tot el sistema.</translation>
-<translation id="2684004000387153598">Per continuar, fes clic a D'acord i, a continuació, a Afegeix una persona per crear un perfil per a la teva adreça electrònica.</translation>
-<translation id="7683373461016844951">Per continuar, fes clic a D'acord i, a continuació, a Afegeix una persona per crear un perfil per a la teva adreça electrònica del domini <ph name="DOMAIN"/>.</translation>
-<translation id="8650543407998814195">Tot i que ja no pots accedir al perfil antic, sí que el pots suprimir.</translation>
 <translation id="3074037959626057712">Has iniciat la sessió i has activat la sincronització</translation>
 <translation id="6264422956566238156">Has activat la sincronització</translation>
 <translation id="9125982323641182972">Eines intel·ligents a Brave</translation>
 <translation id="7988117629517051942">Gaudeix de més eines intel·ligents de Brave Software</translation>
 <translation id="5596627076506792578">Més opcions</translation>
-<translation id="6397094776139756010">Opcions de sincronització i personalització</translation>
-<translation id="6670647982128220776">Les funcions relacionades amb la sincronització i la personalització ara s'engloben en un mateix control. En activar-lo, pot ser que la configuració actual canviï.</translation>
+<translation id="4419556793104466535">Controla la sincronització i la personalització, entre d'altres</translation>
+<translation id="184568702928428857">La configuració que controla la sincronització, la personalització i altres serveis de Brave Software a Brave ha canviat. Això pot afectar la teva configuració actual.</translation>
 <translation id="4192273449750167573">Revisa la configuració a la pantalla següent</translation>
 <translation id="685040365210406336">No facis canvis</translation>
 <translation id="6418273007044911016">Les dades que sincronitzis a Brave Software i les funcions que utilitzis no canviaran</translation>
-<translation id="8411022984399993066">Sí, activa la sincronització i la personalització</translation>
+<translation id="8372733498235009300">Activa la sincronització, la personalització i altres serveis de Brave Software</translation>
 <translation id="8340964510643644301">Pots personalitzar aquesta opció en qualsevol moment des de la configuració de Brave</translation>
-<translation id="2740531572673183784">D'acord</translation>
 <translation id="385051799172605136">Enrere</translation>
 <translation id="3149880132460839085">Sincronització de Brave Software Brave</translation>
 <translation id="3796902758602917951">Les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració se sincronitzaran amb el teu compte de Brave Software, perquè els puguis utilitzar en tots els dispositius</translation>
@@ -995,8 +841,8 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="2532167245710864499">Envia a Brave Software informació del sistema i dades sobre l'ús de Brave per millorar aquest servei i la seva seguretat</translation>
 <translation id="2709453993673701466">Vols gestionar la sincronització i la personalització abans que s'activin? Ves a <ph name="BEGIN_LINK"/>Configuració<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Per personalitzar la informació que Brave Software recopila, ves a <ph name="BEGIN_LINK"/>Configuració<ph name="END_LINK"/> en qualsevol moment.</translation>
-<translation id="3978646980514162128">Brave Software pot utilitzar contingut dels llocs web que visites, així com l'activitat i les interaccions de navegació per personalitzar Brave i altres serveis de Brave Software, com ara el Traductor, la Cerca i els anuncis. Pots personalitzar aquesta opció a Configuració.</translation>
 <translation id="741204030948306876">Sí, ho accepto</translation>
+<translation id="8428213095426709021">Configuració</translation>
 <translation id="2497852260688568942">L'administrador ha desactivat la sincronització</translation>
 <translation id="562935524653278697">L'administrador ha desactivat la sincronització de les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració.</translation>
 <translation id="2169062631698640254">Inicia la sessió de tota manera</translation>
@@ -1048,16 +894,14 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="7979036127916589816">Error de sincronització</translation>
 <translation id="7605594153474022051">La sincronització no funciona</translation>
 <translation id="1648943974594387137">Les dades d'inici de sessió no estan actualitzades</translation>
+<translation id="9148126808321036104">Torneu a iniciar la sessió</translation>
 <translation id="2638087589890736295">Cal una frase de contrasenya per iniciar la sincronització</translation>
 <translation id="939598580284253335">Introduïu la frase de contrasenya</translation>
 <translation id="8260126382462817229">Torna a iniciar la sessió</translation>
 <translation id="2812944337881233323">Tanca la sessió i torna-la a iniciar</translation>
 <translation id="5222676887888702881">Tanca la sessió</translation>
 <translation id="4242533952199664413">Obre la configuració</translation>
-<translation id="3530751398950974194">Actualitza la frase de contrasenya de sincronització</translation>
-<translation id="2638286699381354126">Actualitza...</translation>
 <translation id="3752582316358263300">D'acord...</translation>
-<translation id="2129904043921227933">Error de sincronització: actualitzeu la frase de contrasenya de sincronització...</translation>
 <translation id="7117247127439884114">Torna a iniciar la sessió...</translation>
 <translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
@@ -1082,8 +926,6 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="5972017421290582825">Gestiona la configuració de MIDI...</translation>
 <translation id="230927227160767054">Aquesta pàgina vol instal·lar un gestor de serveis.</translation>
 <translation id="5885324376209859881">Gestiona la configuració dels elements multimèdia...</translation>
-<translation id="8165383685500900731">Gestioneu la configuració del micròfon…</translation>
-<translation id="8381179624334829711">Gestioneu la configuració de la càmera…</translation>
 <translation id="2624142942574147739">Aquesta pàgina té accés a la càmera i al micròfon</translation>
 <translation id="4249373718504745892">S'ha bloquejat l'accés d'aquesta pàgina a la càmera i al micròfon</translation>
 <translation id="1658424621194652532">Aquesta pàgina té accés al micròfon.</translation>
@@ -1097,8 +939,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="8363142353806532503">El micròfon està bloquejat</translation>
 <translation id="2762441749940182211">La càmera està bloquejada</translation>
 <translation id="5074318175948309511">És possible que hàgiu de tornar a carregar aquesta pàgina perquè s'apliqui la configuració nova.</translation>
-<translation id="1210982357925844241">Consulta i gestiona les contrasenyes desades a <ph name="SAVED_PASSWORDS_LINK"/></translation>
-<translation id="2297469692499590335">Contrasenyes desades de Brave Software</translation>
+<translation id="5713644099811900409">Compte de Brave Software</translation>
 <translation id="3785727820640310185">Contrasenyes desades per a aquest lloc web</translation>
 <translation id="3404065873681873169">No hi ha cap contrasenya desada per a aquest lloc web</translation>
 <translation id="8470513973197838199">Contrasenyes desades per a <ph name="ORIGIN"/></translation>
@@ -1131,8 +972,6 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="1036982837258183574">Premeu |<ph name="ACCELERATOR"/>| per sortir de la pantalla completa</translation>
 <translation id="6279183038361895380">Premeu |<ph name="ACCELERATOR"/>| per veure el cursor</translation>
 <translation id="6049004884579590341">Mantén premut |<ph name="ACCELERATOR"/>| per sortir del mode de pantalla completa</translation>
-<translation id="6115424132962100663">Prem |<ph name="SHORTCUT"/>| per tornar enrere</translation>
-<translation id="3181110748548073003">Prem |<ph name="SHORTCUT"/>| per avançar</translation>
 <translation id="901834265349196618">correu electrònic</translation>
 <translation id="3714633008798122362">calendari web</translation>
 <translation id="2436186046335138073">Voleu permetre que <ph name="HANDLER_HOSTNAME"/> obri tots els enllaços de <ph name="PROTOCOL"/>?</translation>
@@ -1144,9 +983,18 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> vol utilitzar el micròfon</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> vol utilitzar la càmera</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> vol compartir la teva pantalla</translation>
-<translation id="6105158702728922449">Utilitzar la càmera i el micròfon</translation>
 <translation id="4761104368405085019">Utilitzar el micròfon</translation>
 <translation id="9150045010208374699">Utilitzar la càmera</translation>
+<translation id="8962918469425892674">Aquest lloc web utilitza sensors de llum o moviment.</translation>
+<translation id="6057381398996433816">No es permet que aquest lloc web utilitzi els sensors de llum i moviment.</translation>
+<translation id="1151917987301063366">Permet sempre que <ph name="HOST"/> accedeixi als sensors</translation>
+<translation id="7377451353532943397">Continua bloquejant l'accés als sensors</translation>
+<translation id="6878422606530379992">Sensors permesos</translation>
+<translation id="4031527940632463547">Sensors bloquejats</translation>
+<translation id="4559617833001311418">Aquest lloc web està accedint als teus sensors de llum i moviment.</translation>
+<translation id="2309620859903500144">Aquest lloc web no té permís per accedir als sensors de llum o moviment.</translation>
+<translation id="8645354835496065562">Continua permetent l'accés als sensors</translation>
+<translation id="2903882649406874750">Impedeix sempre que <ph name="HOST"/> accedeixi als sensors</translation>
 <translation id="7648992873808071793">Emmagatzema fitxers en aquest dispositiu</translation>
 <translation id="7461924472993315131">Fixa</translation>
 <translation id="4285498937028063278">No fixis</translation>
@@ -1189,16 +1037,18 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="3202173864863109533">S'està silenciant l'àudio d'aquesta pestanya.</translation>
 <translation id="5562781907504170924">Aquesta pestanya està connectada a un dispositiu Bluetooth</translation>
 <translation id="5884474295213649357">Aquesta pestanya està connectada a un dispositiu USB</translation>
-<translation id="958416628331784386">En aquesta pestanya s'està reproduint un vídeo en mode de pantalla en pantalla.</translation>
+<translation id="8466417995783206254">En aquesta pestanya s'està reproduint un vídeo en mode de pantalla en pantalla.</translation>
+<translation id="6235700927623181151">Aquesta pestanya està compartint el contingut del teu escriptori.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/>: la càmera o el micròfon estan enregistrant contingut</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/>: el contingut de les pestanyes es comparteix</translation>
-<translation id="4862042298115071399"><ph name="WINDOW_TITLE"/>: s'està reproduint el vídeo en mode de pantalla en pantalla</translation>
+<translation id="3334632933872291866"><ph name="WINDOW_TITLE"/>: s'està reproduint el vídeo en mode de pantalla en pantalla</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/>: s'està reproduint àudio</translation>
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/>: l'àudio està desactivat</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/>: hi ha un dispositiu Bluetooth connectat</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/>: hi ha un dispositiu USB connectat</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/>: error de xarxa</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/>: ha fallat</translation>
+<translation id="6579705087617859690"><ph name="WINDOW_TITLE"/>: el contingut de l'escriptori es comparteix</translation>
 <translation id="973473557718930265">Surt</translation>
 <translation id="3590194807845837023">Desbloqueja el perfil i torna a iniciar</translation>
 <translation id="7624337243375417909">bloqueig de majúscules desactivat</translation>
@@ -1208,67 +1058,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="6459799433792303855">La finestra activa s'ha mogut a una altra pantalla.</translation>
 <translation id="6551508934388063976">L'ordre no està disponible. Premeu Ctrl + N per obrir una finestra nova.</translation>
 <translation id="3831486154586836914">Heu entrat al mode de visió general de la finestra.</translation>
-<translation id="4140559601186535628">Missatges de tramesa automàtica</translation>
-<translation id="3819007103695653773">Permet que tots els llocs enviïn missatges de tramesa automàtica en segon pla</translation>
-<translation id="580961539202306967">Pregunta'm quan un lloc vulgui enviar-me missatges de tramesa automàtica (recomanat)</translation>
-<translation id="8061298200659260393">No permetis que cap lloc enviï missatges de tramesa automàtica</translation>
 <translation id="8736288397686080465">El lloc s'ha actualitzat en segon pla.</translation>
-<translation id="1981115145845865539">Desbloqueja <ph name="DEVICE_TYPE"/> automàticament</translation>
-<translation id="3857228364945137633">Prova Smart Lock per desbloquejar <ph name="DEVICE_TYPE"/> sense contrasenya quan tinguis el telèfon a prop.</translation>
-<translation id="2737492745329609575">Inicia la configuració</translation>
-<translation id="4282196459431406533">Smart Lock està activat</translation>
-<translation id="9038430547971207796">La propera vegada, el telèfon desbloquejarà <ph name="DEVICE_TYPE"/>. Desactiva Smart Lock a Configuració.</translation>
-<translation id="1306606229401759371">Canvia la configuració</translation>
-<translation id="3926002189479431949">El telèfon amb Smart Lock ha canviat</translation>
-<translation id="1478233201128522094">La propera vegada, <ph name="DEVICE_TYPE"/> es desbloquejarà amb un altre telèfon. Pots desactivar Smart Lock des de Configuració.</translation>
-<translation id="6745592621698551453">Actualitza ara</translation>
-<translation id="1832511806131704864">Canvi de telèfon actualitzat</translation>
-<translation id="3755411799582650620">També podeu desbloquejar aquest <ph name="DEVICE_TYPE"/> mitjançant <ph name="PHONE_NAME"/>.</translation>
-<translation id="1817310072033858383">Configura Smart Lock a <ph name="DEVICE_TYPE"/></translation>
-<translation id="4063283930106169759">Assegura't que el telèfon sigui a prop. Per trobar-lo, el Bluetooth s'activarà en tots els dispositius en què hagis configurat el teu compte. &amp;lt;a&amp;gt;Més informació&amp;lt;/a&amp;gt;</translation>
-<translation id="8398790343843005537">Troba el teu telèfon</translation>
-<translation id="1782196717298160133">S'està cercant el telèfon</translation>
-<translation id="4047112090469382184">Descripció de la seguretat</translation>
-<translation id="9148116311817999634">Defineix un bloqueig de pantalla per seguretat</translation>
-<translation id="4677692029604506169">Per motius de seguretat, has d'utilitzar un bloqueig de pantalla (normalment un PIN, un patró o una contrasenya) al telèfon que feies servir per desbloquejar <ph name="DEVICE_TYPE"/>. Si ja en tens un, selecciona Torna-ho a provar per verificar-ho i continuar amb la configuració.</translation>
-<translation id="5807290661599647102">Defineix un bloqueig de pantalla</translation>
-<translation id="9003677638446136377">Torna-ho a provar</translation>
-<translation id="8234989666557591529">Tria un telèfon per desbloquejar <ph name="DEVICE_TYPE"/></translation>
-<translation id="8529026713753283969">Rebràs una notificació en aquest telèfon, així que no te n'allunyis.</translation>
-<translation id="8410073653152358832">Utilitza aquest telèfon</translation>
-<translation id="9014987600015527693">Mostra un altre telèfon</translation>
-<translation id="5895138241574237353">Reinicia</translation>
-<translation id="6374108032506706911">Configura Smart Lock per a Android</translation>
-<translation id="5186650237607254032">Modifiqueu el bloqueig de pantalla del telèfon perquè es desactivi quan el tingueu a prop. D'aquesta manera podreu desbloquejar el telèfon més ràpidament i gaudireu d'una millor experiència de Smart Lock a <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="1201402288615127009">Següent</translation>
-<translation id="7035437538340499453">Smart Lock ja està configurat</translation>
-<translation id="1774349594977710164">El telèfon també desbloqueja els altres dispositius <ph name="DEVICE_TYPE"/> que tinguis, perquè se sincronitzen automàticament.</translation>
-<translation id="3246097286174000800">Prova Smart Lock</translation>
-<translation id="248861575772995840">No es troba el telèfon. Comprova que <ph name="DEVICE_TYPE"/> tingui el Bluetooth activat. &amp;lt;a&amp;gt;Més informació&amp;lt;/a&amp;gt;</translation>
-<translation id="2575268751393592580">No es troba el telèfon. Comprova que <ph name="DEVICE_TYPE"/> estigui connectat a la xarxa Wi-Fi o a una xarxa mòbil. &amp;lt;a&amp;gt;Més informació&amp;lt;/a&amp;gt;</translation>
-<translation id="3002017044809397427">Hem trobat <ph name="PHONE_TYPE"/>, però Smart Lock només funciona en dispositius amb Android 5.0 o una versió posterior. &amp;lt;a&amp;gt;Més informació&amp;lt;/a&amp;gt;</translation>
-<translation id="140250605646987970">Hem trobat el telèfon, però Smart Lock només funciona en dispositius amb Android 5.0 o una versió posterior. &amp;lt;a&amp;gt;Més informació&amp;lt;/a&amp;gt;</translation>
-<translation id="3358935496594837302">No es troba el telèfon. Comprova que estiguis utilitzant un telèfon Android compatible, que estigui encès i que sigui a prop. &amp;lt;a&amp;gt;Més informació&amp;lt;/a&amp;gt;</translation>
-<translation id="7334190995941642545">Smart Lock no està disponible actualment. Torneu-ho a provar més tard.</translation>
-<translation id="2468902267404883140">No es pot connectar amb el telèfon. Comprova que estiguis utilitzant un telèfon Android compatible, que estigui encès i que sigui a prop. &amp;lt;a&amp;gt;Més informació&amp;lt;/a&amp;gt;</translation>
-<translation id="7893153962594818789">El Bluetooth està desactivat en aquest <ph name="DEVICE_TYPE"/>. Introdueix la contrasenya i activa el Bluetooth.</translation>
-<translation id="3115128645424181617">No es troba el telèfon. Comprova que sigui a prop i que tingui el Bluetooth activat.</translation>
-<translation id="5711983031544731014">No es pot desbloquejar: introduïu la contrasenya</translation>
-<translation id="5368720394188453070">El telèfon està bloquejat. Desbloquegeu-lo per accedir-hi.</translation>
-<translation id="1645516838734033527">Per mantenir la seguretat a <ph name="DEVICE_TYPE"/>, Smart Lock requereix que el telèfon tingui configurat un bloqueig de pantalla.</translation>
-<translation id="1977965994116744507">Acosta el telèfon per desbloquejar <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="3994374631886003300">Desbloqueja el telèfon i acosta'l per desbloquejar <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="8366947248864804596">Si el telèfon està desbloquejat i és a prop, selecciona l'opció per desbloquejar. En cas contrari, introdueix la contrasenya o el PIN.</translation>
-<translation id="5113739826273394829">Si feu clic en aquesta icona, bloquejareu aquest dispositiu <ph name="DEVICE_TYPE"/>. La propera vegada, haureu d'escriure la contrasenya per accedir-hi.</translation>
-<translation id="5658415415603568799">Per a més seguretat, Smart Lock et demanarà que introdueixis la contrasenya al cap de 20 hores.</translation>
-<translation id="1195076408729068893">Per iniciar Smart Lock, introdueix la contrasenya. La propera vegada, podràs fer servir el telèfon per desbloquejar <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="9188441292293901223">Feu l'actualització del telèfon a una versió més recent d'Android per desbloquejar aquest dispositiu <ph name="DEVICE_TYPE"/></translation>
-<translation id="5485080380723335835"><ph name="DEVICE_TYPE"/> està bloquejat per seguretat. Introdueix la contrasenya manualment per continuar.</translation>
-<translation id="6456631036739229488">El telèfon Smart Lock ha canviat. Introdueix la contrasenya per actualitzar Smart Lock. La propera vegada, el telèfon desbloquejarà <ph name="DEVICE_TYPE"/>. Desactiva Smart Lock a Configuració.</translation>
-<translation id="4658312088164718891">Introdueix la contrasenya per activar Smart Lock. La propera vegada, el telèfon desbloquejarà <ph name="DEVICE_TYPE"/>. Pots desactivar Smart Lock des de Configuració.</translation>
-<translation id="7556033326131260574">Smart Lock no ha pogut verificar el vostre compte. Escriviu la contrasenya per accedir-hi.</translation>
-<translation id="5188776222806046587">Per configurar Smart Lock per a Bravebook, Brave Software ha de comprovar la vostra identitat. Escriviu la contrasenya per començar.</translation>
-<translation id="3465566417615315331">Feu clic a la foto</translation>
 <translation id="6945221475159498467">Selecciona</translation>
 <translation id="4130199216115862831">Registre del dispositiu</translation>
 <translation id="6231881193380278751">Afegiu un paràmetre de consulta a l'URL per actualitzar la pàgina de manera automàtica: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
@@ -1290,12 +1080,9 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="192494336144674234">Obre amb</translation>
-<translation id="9053893665344928494">Recorda la meva tria</translation>
-<translation id="5541687815721799001">Utilitza l'aplicació</translation>
-<translation id="5340857474604400806">Continua a Brave</translation>
 <translation id="760197030861754408">Aneu a <ph name="LANDING_PAGE"/> per connectar-vos-hi.</translation>
 <translation id="3648348069317717750">S'ha detectat <ph name="USB_DEVICE_NAME"/></translation>
+<translation id="8798099450830957504">Predeterminat</translation>
 <translation id="3271648667212143903"><ph name="ORIGIN"/> es vol connectar</translation>
 <translation id="7945031593909029181">"<ph name="CHROME_EXTENSION_NAME"/>" es vol connectar</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
@@ -1306,7 +1093,6 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="7493386493263658176">És possible que l'extensió <ph name="EXTENSION_NAME"/> recopili tot el que escriviu, incloses les dades personals, com ara les contrasenyes i els números de targetes de crèdit. Voleu fer-la servir?</translation>
 <translation id="7067725467529581407">No m'ho tornis a mostrar</translation>
 <translation id="8922013791253848639">Permet sempre els anuncis en aquest lloc web</translation>
-<translation id="2540384386570049483">Permet anuncis en aquest lloc web</translation>
 <translation id="7359588939039777303">S'han bloquejat els anuncis.</translation>
 <translation id="5398772614898833570">Anuncis bloquejats</translation>
 <translation id="6722303473865663493">Brave ha bloquejat els anuncis en aquest lloc web perquè acostuma a mostrar anuncis intrusius.</translation>
@@ -1317,6 +1103,35 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="874689135111202667">{0,plural, =1{Vols penjar 1 fitxer a aquest lloc web?}other{Vols penjar # fitxers a aquest lloc web?}}</translation>
 <translation id="1956390763342388273">Es penjaran tots els fitxers que hi ha a <ph name="FOLDER_PATH"/>. Fes-ho només si confies en el lloc web.</translation>
 <translation id="1243314992276662751">Penja</translation>
+<translation id="2446585455334014596"><ph name="APP_NAME"/> vol verificar la teva identitat</translation>
+<translation id="3738671331307774213">Verificar la teva identitat t'ajuda a protegir les dades privades</translation>
+<translation id="8435395510592618362">Verifica la teva identitat amb <ph name="APP_NAME"/></translation>
+<translation id="3854599674806204102">Tria una opció</translation>
+<translation id="7490950320178383728">Utilitza la clau de seguretat amb Bluetooth</translation>
+<translation id="414599683948988413">Utilitza la clau de seguretat amb USB</translation>
+<translation id="7851816139220202929">Utilitza la clau de seguretat amb NFC</translation>
+<translation id="5392327114396848796">Fes servir una clau de seguretat integrada</translation>
+<translation id="5104546332954397226">Fes servir el telèfon com a clau de seguretat</translation>
+<translation id="2876441201733326392">Utilitza la clau de seguretat USB</translation>
+<translation id="5842053879378944309">Fes servir la clau de seguretat USB amb <ph name="APP_NAME"/></translation>
+<translation id="6896398788631624004">Connecta la clau de seguretat i activa-la</translation>
+<translation id="8033958968890501070">Temps d'espera esgotat</translation>
+<translation id="7102832101143475489">S'ha esgotat el temps d'espera de la sol·licitud</translation>
+<translation id="3670229581627177274">Activa el Bluetooth</translation>
+<translation id="3880709822663530586">La clau de seguretat només funciona quan el Bluetooth del dispositiu està activat</translation>
+<translation id="1183378459020939734">Estàs a punt per vincular la clau de seguretat?</translation>
+<translation id="237058345584060620">Vincula la teva clau amb aquest dispositiu per poder utilitzar-la per iniciar la sessió al teu compte</translation>
+<translation id="1875312262568496299">Comença</translation>
+<translation id="3104900172193317662">Permet que s'utilitzi la teva clau de seguretat</translation>
+<translation id="2492040222276243256">Mantén premut el botó de la clau de seguretat durant 5 segons com a mínim</translation>
+<translation id="6427415464407526111">Selecciona la teva clau de seguretat</translation>
+<translation id="2633326789677284179">Cerca el nom imprès a la part posterior de la clau</translation>
+<translation id="5660204307954428567">Vincula la clau amb <ph name="DEVICE_NAME"/></translation>
+<translation id="8984872292925913496">Cerca el PIN de 6 dígits a la part posterior de la clau</translation>
+<translation id="1201402288615127009">Següent</translation>
+<translation id="1792161662640298233">S'està verificant la clau de seguretat</translation>
+<translation id="2321482478556590128">Utilitza la clau de seguretat amb <ph name="APP_NAME"/></translation>
+<translation id="5292195676005197571">Per fer servir la majoria de les claus, només cal prémer el botó</translation>
 <translation id="3785308913036335955">Mostra la drecera d'aplicacions</translation>
 <translation id="711840821796638741">Mostra les adreces d'interès gestionades</translation>
 <translation id="3613134908380545408">Mostra <ph name="FOLDER_NAME"/></translation>
@@ -1416,6 +1231,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="8627151598708688654">Seleccioneu una font</translation>
 <translation id="3468275649641751422">Reprodueix un fitxer de vídeo o d'àudio en temps real</translation>
 <translation id="781167124805380294">Emet <ph name="FILE_NAME"/></translation>
+<translation id="8890516388109605451">Fonts</translation>
 <translation id="1116694919640316211">Informació</translation>
 <translation id="3596235046596950091">Activa els serveis en núvol</translation>
 <translation id="7649070708921625228">Ajuda</translation>
@@ -1446,11 +1262,118 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="3279741024917655738">Mostra els vídeos en pantalla completa a</translation>
 <translation id="4772404146526168240">Les dues pantalles</translation>
 <translation id="3766223500670287046">Pantalla remota</translation>
+<translation id="3930737994424905957">S'estan cercant dispositius</translation>
+<translation id="5209320130288484488">No s'ha trobat cap dispositiu</translation>
 <translation id="4363771538994847871">No s'ha trobat cap destinació per a Cast. Necessites ajuda?</translation>
 <translation id="4271396100647220620">Cap coincidència</translation>
 <translation id="6972180789171089114">Àudio/Vídeo</translation>
+<translation id="2541002089857695151">Vols optimitzar l'emissió en pantalla completa?</translation>
+<translation id="4144218403971135344">Obtén una millor qualitat de vídeo i estalvia bateria. El vídeo només es reproduirà a la pantalla compatible amb Cast.</translation>
+<translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
+<translation id="236117173274098341">Optimitza</translation>
+<translation id="780301667611848630">No, gràcies</translation>
+<translation id="7473891865547856676">No, gràcies</translation>
+<translation id="8538358978858059843">Vols activar els serveis al núvol per a Brave Software Cast?</translation>
+<translation id="3856595552313160385">L'ús de Hangouts i Cast for Education està regit per la política de privadesa de Brave Software.</translation>
 <translation id="3700888195348409686">S'està presentant (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Pantalla <ph name="DISPLAY_ID"/></translation>
+<translation id="4707302005824653064">El gestor (<ph name="CUSTODIAN_EMAIL"/>) pot revisar-ne l'ús i l'historial a chrome.com.</translation>
+<translation id="346431825526753">Aquest és un compte infantil gestionat per <ph name="CUSTODIAN_EMAIL"/>.</translation>
+<translation id="4159681666905192102">Aquest és un compte infantil gestionat per <ph name="CUSTODIAN_EMAIL"/> i per <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
+<translation id="5958529069007801266">Usuari supervisat</translation>
+<translation id="5720705177508910913">Usuari actual</translation>
+<translation id="7081952801286122383">Estàs en mode d'incògnit</translation>
+<translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: la sincronització no funciona</translation>
+<translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: la sincronització s'ha posat en pausa</translation>
+<translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (supervisat)</translation>
+<translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (compte infantil)</translation>
+<translation id="8182664696082410784"><ph name="REASON"/>
+    No crec que calgui bloquejar aquest lloc web.</translation>
+<translation id="8662795692588422978">Usuaris</translation>
+<translation id="4974733135013075877">Surt i estableix el bloqueig infantil</translation>
+<translation id="3965965397408324205">Surt del perfil <ph name="PROFILE_NAME"/></translation>
+<translation id="3950820424414687140">Inicia la sessió</translation>
+<translation id="9220525904950070496">Suprimir el compte</translation>
+<translation id="3340978935015468852">configuració</translation>
+<translation id="5704875434923668958">S'està sincronitzant amb</translation>
+<translation id="5781092003150880845">Sincronitza com a <ph name="ACCOUNT_FULL_NAME"/></translation>
+<translation id="1372841398847029212">Sincronitza amb el meu compte</translation>
+<translation id="2538361623464451692">Sincronització desactivada</translation>
+<translation id="1316495628809031177">La sincronització està en pausa</translation>
+<translation id="7786207843293321886">Surt de la sessió de convidat</translation>
+<translation id="2329597144923131178">Inicieu la sessió per tenir adreces d'interès, historial, contrasenyes i altres opcions de configuració en tots els dispositius.</translation>
+<translation id="984275831282074731">Formes de pagament</translation>
+<translation id="8883847527783433352">Sincronitza amb un altre compte</translation>
+<translation id="2761898608071930085">Utilitza un altre compte</translation>
+<translation id="4235813040357936597">Afegeix un compte per a: <ph name="PROFILE_NAME"/></translation>
+<translation id="1464258312790801189">Els comptes</translation>
+<translation id="6655458902729017087">Amaga els comptes</translation>
+<translation id="8770507190024617908">Gestiona persones</translation>
+<translation id="2666990579225592931">Obre la finestra de convidat</translation>
+<translation id="5869948122057593679">Tanca totes les finestres</translation>
+<translation id="7652808307838961528">Edita la persona (<ph name="PROFILE_NAME"/>)</translation>
+<translation id="6112952769866305444">Edita la persona (<ph name="PROFILE_NAME"/>, <ph name="USERNAME"/>)</translation>
+<translation id="3294437725009624529">Convidat</translation>
+<translation id="475088594373173692">Primer usuari</translation>
+<translation id="4535127706710932914">Perfil predeterminat</translation>
+<translation id="4389091756366370506">Usuari <ph name="VALUE"/></translation>
+<translation id="749028671485790643">Persona <ph name="VALUE"/></translation>
+<translation id="5397794290049113714">Usuari</translation>
+<translation id="3031417829280473749">Agent X</translation>
+<translation id="412730574613779332">Superheroi</translation>
+<translation id="5109044022078737958">Atleta</translation>
+<translation id="3605780360466892872">Executiu</translation>
+<translation id="2772936498786524345">Ninja</translation>
+<translation id="3809280248639369696">Extraterrestre</translation>
+<translation id="6442187272350399447">Content</translation>
+<translation id="8631032106121706562">Flor</translation>
+<translation id="5854912040170951372">Pizza</translation>
+<translation id="4858913220355269194">Pilota</translation>
+<translation id="8711402221661888347">Hamburguesa</translation>
+<translation id="4421932782753506458">Gatet</translation>
+<translation id="6624687053722465643">Pastisset</translation>
+<translation id="8256319818471787266">Gosset</translation>
+<translation id="438503109373656455">Cavall</translation>
+<translation id="7548856833046333824">Còctel</translation>
+<translation id="8206745257863499010">Música</translation>
+<translation id="8241040075392580210">Ennuvolat</translation>
+<translation id="4555769855065597957">Ombra</translation>
+<translation id="1576594961618857597">Avatar blanc predeterminat</translation>
+<translation id="5227679487546032910">Avatar turquesa predeterminat</translation>
+<translation id="4544174279960331769">Avatar blau predeterminat</translation>
+<translation id="8063235345342641131">Avatar verd predeterminat</translation>
+<translation id="4953808748584563296">Avatar taronja predeterminat</translation>
+<translation id="3225084153129302039">Avatar morat predeterminat</translation>
+<translation id="1916502483199172559">Avatar vermell predeterminat</translation>
+<translation id="3139925690611372679">Avatar groc predeterminat</translation>
+<translation id="6399774419735315745">Espia</translation>
+<translation id="6964390816189577014">Heroi</translation>
+<translation id="4476590490540813026">Atleta</translation>
+<translation id="5646558797914161501">Home de negocis</translation>
+<translation id="3438633801274389918">Ninja</translation>
+<translation id="4206144641569145248">Extraterrestre</translation>
+<translation id="6087960857463881712">Cara de fascinació</translation>
+<translation id="81238879832906896">Flor groga i blanca</translation>
+<translation id="1465827627707997754">Tall de pizza</translation>
+<translation id="2642111877055905627">Pilota de futbol</translation>
+<translation id="8838770651474809439">Hamburguesa</translation>
+<translation id="8808686172382650546">Gat</translation>
+<translation id="9214695392875603905">Cupcake</translation>
+<translation id="5275352920323889391">Gos</translation>
+<translation id="4037084878352560732">Cavall</translation>
+<translation id="2272570998639520080">Copa de Martini</translation>
+<translation id="120368089816228251">Nota musical</translation>
+<translation id="1393283411312835250">Sol i núvols</translation>
+<translation id="1830550083491357902">Sessió no iniciada</translation>
+<translation id="5941153596444580863">Afegeix una persona...</translation>
+<translation id="9149866541089851383">Edita...</translation>
+<translation id="2836635946302913370">L'administrador ha desactivat l'inici de sessió amb aquest nom d'usuari.</translation>
+<translation id="2721695630904737430">L'administrador ha desactivat els usuaris supervisats.</translation>
+<translation id="1468571364034902819">Aquest perfil no es pot utilitzar</translation>
+<translation id="2261323523305321874">L'administrador ha fet un canvi que desactiva alguns perfils antics en tot el sistema.</translation>
+<translation id="2684004000387153598">Per continuar, fes clic a D'acord i, a continuació, a Afegeix una persona per crear un perfil per a la teva adreça electrònica.</translation>
+<translation id="7683373461016844951">Per continuar, fes clic a D'acord i, a continuació, a Afegeix una persona per crear un perfil per a la teva adreça electrònica del domini <ph name="DOMAIN"/>.</translation>
+<translation id="8650543407998814195">Tot i que ja no pots accedir al perfil antic, sí que el pots suprimir.</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Alguns paràmetres de configuració que pertanyen a <ph name="PRIMARY_EMAIL"/> es comparteixen amb l'usuari. Aquests paràmetres només afecten el vostre compte quan s'utilitza l'inici de sessió múltiple.</translation>
 <translation id="5860491529813859533">Activa</translation>
@@ -1465,6 +1388,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="7456142309650173560">dev</translation>
 <translation id="6647838571840953560">Actualment a <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Microprogramari</translation>
+<translation id="5895138241574237353">Reinicia</translation>
 <translation id="7409233648990234464">Torna a iniciar i fes powerwash</translation>
 <translation id="4716483597559580346">Powerwash per a més seguretat</translation>
 <translation id="4089922565956168950">Amb aquesta actualització es restableix el dispositiu Bravebook i se suprimeixen les dades d'usuari actuals.</translation>
@@ -1525,6 +1449,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="4305227814872083840">llarg (2 s)</translation>
 <translation id="2860150991415616761">molt llarg (4 s)</translation>
 <translation id="1330145147221172764">Activa el teclat en pantalla</translation>
+<translation id="1800308196794859773">Envia la teva veu a Brave Software per permetre els dictats en qualsevol camp de text.</translation>
 <translation id="8758418656925882523">Activa el dictat (parlar per escriure)</translation>
 <translation id="7580671184200851182">Reprodueix el mateix àudio per tots els altaveus (àudio mono)</translation>
 <translation id="1189418886587279221">Activeu les funcions d'accessibilitat per facilitar l'ús del dispositiu.</translation>
@@ -1538,7 +1463,6 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="1568323446248056064">Obre la configuració de la pantalla</translation>
 <translation id="6237816943013845465">Permet ajustar la resolució de pantalla</translation>
 <translation id="1171135284592304528">Ressalta l'objecte amb el focus del teclat quan canviï</translation>
-<translation id="7846634333498149051">Teclat</translation>
 <translation id="5551573675707792127">Teclat i introducció de text</translation>
 <translation id="7957615753207896812">Obre la configuració del teclat</translation>
 <translation id="1632803087685957583">Permet ajustar la freqüència de repetició del teclat, la predicció de paraules i molt més</translation>
@@ -1556,6 +1480,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="9066782832737749352">Síntesi de veu</translation>
 <translation id="6002458620803359783">Veus preferides</translation>
 <translation id="7776701556330691704">No s'ha trobat cap veu</translation>
+<translation id="124116460088058876">Més idiomes</translation>
 <translation id="1288300545283011870">Propietats de la veu</translation>
 <translation id="6680650203439190394">Puntua</translation>
 <translation id="6029587122245504742">Mínima</translation>
@@ -1571,7 +1496,6 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="5471768120198416576">Hola! Soc la veu de la teva síntesi de veu.</translation>
 <translation id="6902066522699286937">Veu de prova</translation>
 <translation id="304747341537320566">Motors de veu</translation>
-<translation id="4423104065312875417">Instal·la motors de veu addicionals</translation>
 <translation id="1067291318998134776">Linux (versió beta)</translation>
 <translation id="6963573437985514722">Executa les eines, els editors i els IDE de Linux a Bravebook.</translation>
 <translation id="6869910261738842136">Suprimeix les aplicacions per a Linux de Bravebook</translation>
@@ -1612,6 +1536,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="8647834505253004544">No és una adreça web vàlida</translation>
 <translation id="2149850907588596975">Contrasenyes i formularis</translation>
 <translation id="8639963783467694461">Configuració d'Emplenament automàtic</translation>
+<translation id="3431019676184503003">Adreces i formes de pagament</translation>
 <translation id="2512222046227390255">Emplena formularis automàticament</translation>
 <translation id="2903493209154104877">Adreces</translation>
 <translation id="7764225426217299476">Afegeix una adreça</translation>
@@ -1639,16 +1564,16 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="1375321115329958930">Contrasenyes desades</translation>
 <translation id="152234381334907219">Contrasenyes que no es desen mai</translation>
 <translation id="5137501176474113045">Suprimeix aquest element</translation>
+<translation id="1486096554574027028">Cerca contrasenyes</translation>
 <translation id="6286708577777130801">Detalls de la contrasenya desada</translation>
 <translation id="1566049601598938765">Lloc web</translation>
 <translation id="8503813439785031346">Nom d'usuari</translation>
 <translation id="6657585470893396449">Contrasenya</translation>
 <translation id="137651782282853227">Les adreces desades es mostraran aquí</translation>
 <translation id="1529116897397289129">Les targetes desades es mostraran aquí</translation>
-<translation id="4907824805858067479">El teu administrador ha desactivat les targetes desades</translation>
+<translation id="7930294771522048157">Les formes de pagament desades es mostraran aquí</translation>
 <translation id="9124003689441359348">Les contrasenyes desades es mostraran aquí</translation>
 <translation id="4400367121200150367">Els llocs que no desen contrasenyes mai es mostraran aquí</translation>
-<translation id="8858798938034909167">Accedeix a les contrasenyes des de qualsevol dispositiu a <ph name="BEGIN_LINK"/>passwords.google.com<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Exporta les contrasenyes...</translation>
 <translation id="3900966090527141178">Exporta les contrasenyes</translation>
 <translation id="6914783257214138813">Tothom que pugui veure el fitxer exportat podrà veure també les teves contrasenyes.</translation>
@@ -1704,6 +1629,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="4699172675775169585">Imatges i fitxers desats a la memòria cau</translation>
 <translation id="1274997165432133392">Galetes i altres dades dels llocs web</translation>
 <translation id="3838543471119263078">Galetes i altres dades de llocs i de connectors</translation>
+<translation id="7029809446516969842">Contrasenyes</translation>
 <translation id="6865313869410766144">Dades d'Emplenament automàtic de formularis</translation>
 <translation id="177336675152937177">Dades d'aplicacions allotjades</translation>
 <translation id="1718835860248848330">Darrera hora</translation>
@@ -1711,8 +1637,6 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="5648166631817621825">7 darrers dies</translation>
 <translation id="8571213806525832805">Quatre darreres setmanes</translation>
 <translation id="6979737339423435258">Tot el període</translation>
-<translation id="2949037475046662832">Amb aquesta acció, s'esborraran les galetes i les dades de tots els llocs web, com ara:</translation>
-<translation id="9174212595744391062">Amb aquesta acció, s'esborraran les galetes i la memòria cau de tots els llocs web, com ara:</translation>
 <translation id="3399432415385675819">Les notificacions es desactivaran</translation>
 <translation id="3459509316159669723">Imprimeix</translation>
 <translation id="1563008449513980623">Configura o gestiona les impressores a Brave Software Cloud Print.</translation>
@@ -1768,6 +1692,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="6189273858858366896">Configura o gestiona l'ús compartit dels fitxers de la xarxa.</translation>
 <translation id="2367199180085172140">Afegeix un nou ús compartit de fitxers</translation>
 <translation id="8984654317541110628">URL de l'ús compartit del fitxer</translation>
+<translation id="5247051749037287028">Nom de visualització (opcional)</translation>
 <translation id="6091761513005122595">L'ús compartit s'ha activat correctament.</translation>
 <translation id="9024158959543687197">S'ha produït un error en activar l'ús compartit. Comprova l'URL de l'ús compartit del fitxer i torna-ho a provar.</translation>
 <translation id="1954813140452229842">S'ha produït un error en activar l'ús compartit. Comprova les credencials i torna-ho a provar.</translation>
@@ -1786,21 +1711,25 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="4005817994523282006">Mètode de detecció de la zona horària</translation>
 <translation id="3024374909719388945">Utilitza el rellotge de 24 hores</translation>
 <translation id="6444070574980481588">Defineix la data i l'hora</translation>
-<translation id="716945929772164358">Smart Lock per a Bravebook (beta)</translation>
+<translation id="5065775832226780415">Smart Lock</translation>
 <translation id="8468750959626135884">Desbloqueja <ph name="DEVICE_TYPE"/> amb el telèfon Android.</translation>
 <translation id="3571734092741541777">Configura</translation>
-<translation id="8946284507644756416"><ph name="DEVICE_TYPE"/> es pot desbloquejar amb el telèfon Android.</translation>
+<translation id="3336664756920573711">Desbloqueja <ph name="DEVICE_TYPE"/> amb el telèfon Android</translation>
 <translation id="1036348656032585052">Desactiva</translation>
 <translation id="1164674268730883318">Vols desactivar Smart Lock per a <ph name="DEVICE_TYPE"/>?</translation>
 <translation id="2739030071582769583">Si desactives Smart Lock per a <ph name="DEVICE_TYPE"/>, no podràs desbloquejar els dispositius Brave amb el telèfon, sinó que hauràs d'escriure la contrasenya.</translation>
 <translation id="4737715515457435632">Connecteu-vos a una xarxa</translation>
 <translation id="5425722269016440406">Heu d'estar connectat a Internet per desactivar Smart Lock, perquè aquesta opció se sincronitza amb el telèfon i amb altres dispositius. Connecteu-vos a una xarxa en primer lloc.</translation>
 <translation id="8885197664446363138">Smart Lock no està disponible</translation>
-<translation id="379422718204375917">Utilitza Smart Lock per iniciar la sessió al teu compte</translation>
+<translation id="7334190995941642545">Smart Lock no està disponible actualment. Torneu-ho a provar més tard.</translation>
+<translation id="8112427115751454716">Utilitza Smart Lock per iniciar la sessió al teu Compte de Brave Software</translation>
 <translation id="2043818754674261542">Distància necessària perquè el telèfon desbloquegi aquest <ph name="DEVICE_TYPE"/></translation>
 <translation id="2522791476825452208">Molt a prop</translation>
 <translation id="5750324801516359607">Lluny</translation>
 <translation id="5595152862129936745">Molt lluny</translation>
+<translation id="8748384418490037181">Opcions de Smart Lock</translation>
+<translation id="2433836460518180625">Desbloqueja només el dispositiu</translation>
+<translation id="3300552672525741457">Desbloqueja el dispositiu i inicia la sessió al Compte de Brave Software</translation>
 <translation id="2307462900900812319">Configura la xarxa</translation>
 <translation id="7175037578838465313">Configura <ph name="NAME"/></translation>
 <translation id="8662671328352114214">Connecta't a una xarxa <ph name="TYPE"/></translation>
@@ -1819,8 +1748,10 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="9153934054460603056">Desa la identitat i la contrasenya</translation>
 <translation id="8656768832129462377">No els comprovis</translation>
 <translation id="1399511500114202393">Sense certificat d'usuari</translation>
+<translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
 <translation id="3160842278951476457"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>] (emmagatzemat en maquinari)</translation>
 <translation id="5305688511332277257">Cap d'instal·lat</translation>
+<translation id="5512653252560939721">El certificat d'usuari ha de ser al maquinari.</translation>
 <translation id="5422221874247253874">Punt d'accés</translation>
 <translation id="1726100011689679555">Servidors de noms</translation>
 <translation id="1209796539517632982">Servidors de noms automàtics</translation>
@@ -1931,6 +1862,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="952992212772159698">No activat</translation>
 <translation id="3488065109653206955">Activat parcialment</translation>
 <translation id="4880328057631981605">Nom del punt d'accés</translation>
+<translation id="5142961317498132443">Autenticació</translation>
 <translation id="1244147615850840081">Operador</translation>
 <translation id="5691511426247308406">Família</translation>
 <translation id="6977381486153291903">Revisió de microprogramari</translation>
@@ -2020,8 +1952,10 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="1756681705074952506">Mètode d'introducció de text</translation>
 <translation id="59174027418879706">Activada</translation>
 <translation id="1650371550981945235">Mostra les opcions d'entrada</translation>
+<translation id="4992473555164495036">L'administrador ha limitat els mètodes d'entrada disponibles.</translation>
 <translation id="5229189185761556138">Gestiona els mètodes d'introducció</translation>
 <translation id="2631498379019108537">Mostra opcions d'introducció al prestatge</translation>
+<translation id="3691231116639905343">Aplicacions de teclat</translation>
 <translation id="3161522574479303604">Tots els idiomes</translation>
 <translation id="3312424061798279731">Idiomes activats</translation>
 <translation id="9042893549633094279">Privadesa i seguretat</translation>
@@ -2029,26 +1963,22 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="6697492270171225480">Mostra suggeriments de pàgines similars quan no se'n trobi una</translation>
 <translation id="4534361985432360439">Envia a Brave Software l'adreça web de la pàgina que estàs provant de visitar</translation>
 <translation id="6545834809683560467">Utilitza un servei de predicció per completar fàcilment les cerques i els URL introduïts a la barra d'adreces o al quadre de cerca del menú d'aplicacions.</translation>
-<translation id="3798133693323981089">Completa automàticament les cerques i les adreces web</translation>
-<translation id="1271317946095246719">Envia al motor de cerca predeterminat algunes galetes i cerques de la barra d'adreces i del quadre de cerca</translation>
+<translation id="7704317875155739195">Completa automàticament les cerques i els URL</translation>
 <translation id="9038649477754266430">Utilitza un servei de predicció per poder carregar les pàgines més ràpidament</translation>
 <translation id="7981313251711023384">Carrega les pàgines prèviament per poder-hi navegar i fer cerques més de pressa</translation>
 <translation id="2468205691404969808">Utilitza galetes per recordar les teves preferències, fins i tot si no visites aquestes pàgines</translation>
-<translation id="219985413780390209">Protegeix-me a mi i al meu dispositiu de llocs web perillosos</translation>
-<translation id="4354266305752237763">Protegeix-me a mi i al meu dispositiu de llocs web perillosos (Navegació segura)</translation>
-<translation id="5558446705802335921">Analitza els llocs web que visites i els fitxers que baixes per cercar-hi comportament o contingut nocius, com ara pesca o programari maliciós</translation>
-<translation id="2838616112108574688">Informa automàticament Brave Software dels detalls sobre possibles incidències de seguretat</translation>
-<translation id="6435279463765872881">Envia automàticament algunes dades del sistema i contingut de les pàgines a Brave Software per ajudar a detectar les aplicacions i els llocs web perillosos</translation>
+<translation id="1641113438599504367">Navegació segura</translation>
+<translation id="773905249182896430">Et protegeix i protegeix el teu dispositiu de llocs web perillosos</translation>
 <translation id="8983677657449185470">Ajuda a millorar Navegació segura</translation>
 <translation id="199861668945335092">Envia a Brave Software algunes dades del sistema i contingut de les pàgines</translation>
 <translation id="490074449735753175">Utilitza un servei web per revisar l'ortografia</translation>
 <translation id="3523078749603005179">Aconsegueix un corrector ortogràfic més útil enviant a Brave Software el text que escrius al navegador</translation>
-<translation id="3182749001423093222">Corrector ortogràfic</translation>
-<translation id="4370373819607756384">Controla aquesta opció a <ph name="BEGIN_LINK"/>Idiomes<ph name="END_LINK"/></translation>
-<translation id="5713638588895952380">Envia automàticament estadístiques d'ús i informes d'error a Brave Software</translation>
+<translation id="2564653188463346023">Corrector ortogràfic millorat</translation>
+<translation id="9079153198295609735">Envia automàticament estadístiques d'ús i informes d'error a Brave Software</translation>
 <translation id="5941220456342415404">Envia automàticament dades de diagnòstic i d'ús a Brave Software</translation>
 <translation id="918192811481327695">Ajuda a millorar les funcions i el rendiment de Brave</translation>
-<translation id="6538479075382111079">Envia automàticament a Brave Software estadístiques d'ús i informes d'error</translation>
+<translation id="8438566539970814960">Millora les cerques i la navegació</translation>
+<translation id="284843628681142937">Envia a Brave Software els URL de les pàgines que visites</translation>
 <translation id="8791534160414513928">Envia una sol·licitud de no seguiment amb el trànsit de navegació</translation>
 <translation id="5299109548848736476">Opció de no seguiment</translation>
 <translation id="5282733140964383898">Si s'activa l'opció No segueixis, s'inclourà una sol·licitud amb el teu trànsit de navegació. Els efectes depenen de si un lloc web respon o no a la sol·licitud, així com de la manera en què s'interpreta la sol·licitud. Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud mostrant-te anuncis que no estiguin basats en altres llocs web que hagis visitat. Molts llocs web continuaran recopilant i utilitzant les teves dades de navegació (per exemple, per millorar la seguretat, per proporcionar contingut, serveis, anuncis i recomanacions als seus llocs web o per generar estadístiques d'informes).<ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
@@ -2063,6 +1993,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="3151562827395986343">Esborra l'historial, les galetes, la memòria cau i altres dades</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> (<ph name="COUNT"/>)</translation>
 <translation id="3407837288045706722">Per trobar més opcions relacionades amb la privadesa, la seguretat i la recopilació de dades, consulta <ph name="BEGIN_LINK"/>Sincronització i personalització<ph name="END_LINK"/></translation>
+<translation id="7222718784508482526">Per trobar més opcions relacionades amb la privadesa, la seguretat i la recopilació de dades, consulta <ph name="BEGIN_LINK"/>Sincronització i serveis de Brave Software<ph name="END_LINK"/></translation>
 <translation id="6438234780621650381">Restablir la configuració</translation>
 <translation id="5293170712604732402">Restableix la configuració als valors predeterminats originals</translation>
 <translation id="892706138619340876">S'han restablert algunes opcions de configuració</translation>
@@ -2082,18 +2013,24 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="6410668567036790476">Afegeix un motor de cerca</translation>
 <translation id="1128591060186966949">Edita el motor de cerca</translation>
 <translation id="5719603411793408026">Motors de cerca predeterminats</translation>
+<translation id="5605623530403479164">Altres motors de cerca</translation>
 <translation id="7098447629416471489">Els altres motors de cerca desats es mostraran aquí</translation>
+<translation id="1459967076783105826">Les extensions han afegit motors de cerca</translation>
 <translation id="6678717876183468697">URL de la consulta</translation>
 <translation id="1545786162090505744">URL amb %s en el lloc de la consulta</translation>
 <translation id="7136694880210472378">Estableix com a predeterminat</translation>
 <translation id="102272308210570439">Permet que l'Assistent utilitzi el que es mostra a la pantalla</translation>
 <translation id="8624205858755890468">Permet que l'Assistent et mostri informació, aplicacions i accions relacionades.</translation>
+<translation id="178309940312315155">Detecció d'"Ok Brave Software"</translation>
+<translation id="3476912025629168202">Accedeix a l'Assistent sempre que diguis "Ok Brave Software" quan la pantalla estigui activada.</translation>
 <translation id="3908743412684152579">Configuració de l'Assistent de Brave Software</translation>
 <translation id="4933484234309072027">incrustada a <ph name="URL"/></translation>
 <translation id="8427292751741042100">inserida en qualsevol amfitrió</translation>
 <translation id="4907306957610201395">Categoria de permisos</translation>
 <translation id="6295158916970320988">Tots els llocs</translation>
 <translation id="7625568159987162309">Mostra els permisos i les dades emmagatzemades als llocs web</translation>
+<translation id="3735740477244556633">Ordena per</translation>
+<translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Anuncis</translation>
 <translation id="5649053991847567735">Baixades automàtiques</translation>
 <translation id="3744111561329211289">Sincronització en segon pla</translation>
@@ -2115,7 +2052,10 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="8270242299912238708">Documents PDF</translation>
 <translation id="539658326146969381">Baixa els fitxers PDF en lloc d'obrir-los automàticament a Brave</translation>
 <translation id="4434045419905280838">Finest. emergents i redireccions</translation>
+<translation id="6612358246767739896">Contingut protegit</translation>
 <translation id="4252852543720145436">Identificadors de contingut protegit</translation>
+<translation id="3955193568934677022">Permet que els llocs web reprodueixin contingut protegit (opció recomanada)</translation>
+<translation id="7311079019872751559">Accés del connector de fora de la zona de proves</translation>
 <translation id="3013291976881901233">Dispositius MIDI</translation>
 <translation id="7270858098575133036">Pregunta'm quan un lloc vulgui utilitzar els missatges exclusius del sistema per accedir a dispositius MIDI</translation>
 <translation id="6817174620439930047">Pregunta'm quan un lloc vulgui utilitzar els missatges exclusius del sistema per accedir a dispositius MIDI (recomanat)</translation>
@@ -2141,6 +2081,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="7661259717474717992">Permet que els llocs web desin i llegeixin les dades de les galetes</translation>
 <translation id="2913331724188855103">Permet que els llocs web desin i llegeixin les dades de les galetes (recomanat)</translation>
 <translation id="5908769186679515905">Impedeix que els llocs executin Flash</translation>
+<translation id="6096007141921397775">La configuració de Flash es conservarà fins que surtis de Brave.</translation>
 <translation id="2972642118232180842">Executa només contingut important (recomanat)</translation>
 <translation id="7084192839369222683">Executa només el contingut important</translation>
 <translation id="8074127646604999664">Permet que els llocs tancats fa poc acabin d'enviar i rebre dades</translation>
@@ -2160,6 +2101,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="3494769164076977169">Pregunta'm quan un lloc provi de baixar fitxers automàticament després del primer fitxer (opció recomanada)</translation>
 <translation id="5036662165765606524">No permetis que cap lloc baixi diversos fitxers automàticament</translation>
 <translation id="3440761377721825626">Pregunta'm quan un lloc vulgui fer servir un connector per accedir a l'ordinador</translation>
+<translation id="3523642406908660543">Pregunta'm quan un lloc vulgui fer servir un connector per accedir a l'ordinador (opció recomanada)</translation>
 <translation id="3038675903128704560">No permetis que cap lloc utilitzi un connector per accedir a l'ordinador</translation>
 <translation id="857943718398505171">Permès (recomanat)</translation>
 <translation id="5000922062037820727">Bloquejat (recomanat)</translation>
@@ -2175,15 +2117,18 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="184823282865851239">Bloqueja si el lloc web acostuma a mostrar anuncis intrusius</translation>
 <translation id="3083193146044397360">S'ha bloquejat de manera temporal per protegir la teva seguretat</translation>
 <translation id="2500471369733289700">S'ha bloquejat per protegir la teva privadesa</translation>
-<translation id="5225360179303283478">Restableix la configuració del lloc web</translation>
+<translation id="3008272652534848354">Restableix els permisos</translation>
 <translation id="2277255602909579701">Totes les galetes i les dades del lloc web</translation>
 <translation id="327147043223061465">Mostra totes les galetes i les dades del lloc web</translation>
 <translation id="1963227389609234879">Suprimeix-ho tot</translation>
 <translation id="3432227430032737297">Suprimeix totes les que es mostren</translation>
 <translation id="6011449291337289699">Esborra les dades dels llocs</translation>
 <translation id="8339059274628563283">Dades emmagatzemades localment per <ph name="SITE"/></translation>
-<translation id="67211069045302358">Vols restablir la configuració d'aquest lloc web?</translation>
-<translation id="1596708901665680416">Brave restablirà la configuració predeterminada dels permisos</translation>
+<translation id="4090947011087001172">Vols restablir els permisos del lloc web <ph name="SITE"/>?</translation>
+<translation id="1688867105868176567">Vols esborrar les dades del lloc web?</translation>
+<translation id="2369536625682139252">Se suprimiran totes les dades que <ph name="SITE"/> hagi emmagatzemat, tret de les galetes.</translation>
+<translation id="5300287940468717207">Vols restablir els permisos del lloc web?</translation>
+<translation id="2734760316755174687">Els llocs web del domini <ph name="SITE_GROUP_NAME"/> també es restabliran.</translation>
 <translation id="3127156390846601284">Se suprimiran totes les dades emmagatzemades al dispositiu per a tots els llocs mostrats. Vols continuar?</translation>
 <translation id="150411034776756821">Suprimeix <ph name="SITE"/></translation>
 <translation id="577624874850706961">Cerca galetes</translation>
@@ -2204,8 +2149,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="6742339027238151589">Accessible a l'script</translation>
 <translation id="361106536627977100">Dades Flash</translation>
 <translation id="8557930019681227453">Fitxer de manifest</translation>
-<translation id="2694026874607847549">Una galeta</translation>
-<translation id="2956763290572484660"><ph name="COOKIES"/> galetes</translation>
+<translation id="7868378670806575181">{NUM_COOKIES,plural, =1{1 galeta}other{# galetes}}</translation>
 <translation id="3866249974567520381">Descripció</translation>
 <translation id="4530494379350999373">Origen</translation>
 <translation id="8195027750202970175">Espai ocupat al disc</translation>
@@ -2217,8 +2161,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="1296497012903089238">Tipus de certificat</translation>
 <translation id="8553342806078037065">Gestiona altres usuaris</translation>
 <translation id="8907706281008466056">Foto del perfil de Brave Software</translation>
-<translation id="7565981526226997270">Sincronitza i personalitza Brave en els teus dispositius</translation>
-<translation id="4710251968215868702">Utilitza el contingut dels llocs web que visites i l'activitat i les interaccions del navegador.</translation>
+<translation id="127138278192656016">Fes servir la sincronització i tots els serveis</translation>
 <translation id="2408955596600435184">Introdueix el PIN</translation>
 <translation id="6619990499523117484">Confirma el teu PIN</translation>
 <translation id="2023167225947895179">El PIN sembla fàcil d'endevinar</translation>
@@ -2242,6 +2185,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="1719312230114180055">Nota: és possible que fer servir una empremta digital sigui menys segur que utilitzar una contrasenya segura o un PIN.</translation>
 <translation id="1927632033341042996">Dit <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="2136573720723402846">Activa el desbloqueig amb empremta digital</translation>
+<translation id="7665369617277396874">Afegeix un compte</translation>
 <translation id="3422989461909154470">Tots els comptes de Brave Software amb la sessió iniciada en aplicacions i llocs web es poden gestionar aquí.</translation>
 <translation id="1987317783729300807">Comptes</translation>
 <translation id="8418661265246754237">Comptes de Brave Software</translation>
@@ -2258,8 +2202,8 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="7311891583377621132">Mou el dit lleugerament perquè es pugui captar una altra part de l’empremta digital</translation>
 <translation id="7345706641791090287">Confirma la contrasenya</translation>
 <translation id="381202950560906753">Afegeix-ne una altra</translation>
-<translation id="6968288415730398122">Introdueix la contrasenya per configurar el bloqueig de pantalla</translation>
-<translation id="4103091233824664032">Introdueix la contrasenya per configurar el bloqueig de pantalla i l'inici de sessió</translation>
+<translation id="3625538291267447988">Per configurar Smart Lock, introdueix la contrasenya</translation>
+<translation id="6658023813581644008">Per configurar Smart Lock per iniciar la sessió, introdueix la contrasenya</translation>
 <translation id="5449551289610225147">La contrasenya no és vàlida</translation>
 <translation id="5374359983950678924">Canvia la imatge</translation>
 <translation id="6984299437918708277">Tria una imatge per al teu compte perquè es mostri a la pantalla d'inici de sessió</translation>
@@ -2277,18 +2221,19 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="2114896190328250491">Foto feta per <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Foto existent de la càmera o d'un fitxer</translation>
 <translation id="7548737591211512046">Inicia la sessió per tenir les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració en tots els dispositius. A més, iniciaràs la sessió automàticament als serveis de Brave Software.</translation>
-<translation id="3989635538409502728">Tanca la sessió</translation>
 <translation id="2951604498031550705">Els canvis que es facin a les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració es deixaran de sincronitzar amb el compte de Brave Software. No obstant això, les dades existents continuaran emmagatzemades al teu compte de Brave Software i es podran gestionar al <ph name="BEGIN_LINK"/>Tauler de control de Brave Software<ph name="END_LINK"/>.</translation>
+<translation id="138229770216285283">Es tancarà la sessió dels comptes de Brave Software. Els canvis que es facin a les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració es deixaran de sincronitzar amb el Compte de Brave Software. No obstant això, les dades existents continuaran emmagatzemades al teu Compte de Brave Software i es podran gestionar des del <ph name="BEGIN_LINK"/>Tauler de control de Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="8588866096426746242">Mostra les estadístiques del perfil</translation>
 <translation id="5535941515421698170">Suprimeix també les teves dades d'aquest dispositiu</translation>
 <translation id="7243632151880336635">Esborra i tanca la sessió</translation>
 <translation id="6406506848690869874">Sincronització</translation>
-<translation id="1136155683023653803">Les contrasenyes, les adreces d'interès, l'historial i més elements se sincronitzen amb el teu compte</translation>
-<translation id="1123187597739372905">Mostra la configuració de sincronització</translation>
-<translation id="5428209950370661546">Altres serveis de Brave Software</translation>
-<translation id="8608798913004137607">Comunica't amb Brave Software per millorar Brave i la navegació</translation>
-<translation id="2055016640093734678">Mostra la configuració dels serveis de Brave Software</translation>
 <translation id="1397854323885047133">Sincronització i personalització</translation>
+<translation id="1136155683023653803">Les contrasenyes, les adreces d'interès, l'historial i més elements se sincronitzen amb el teu compte</translation>
+<translation id="3267417306184901318">Les teves dades de navegació i activitat, sincronitzades al teu Compte de Brave Software</translation>
+<translation id="1123187597739372905">Mostra la configuració de sincronització</translation>
+<translation id="8420510748452002155">Serveis no personalitzats</translation>
+<translation id="2055016640093734678">Mostra la configuració dels serveis de Brave Software</translation>
+<translation id="7956662517480676674">Sincronització i serveis de Brave Software</translation>
 <translation id="2453021845418314664">Configuració avançada de sincronització</translation>
 <translation id="2731700343119398978">Espereu...</translation>
 <translation id="7529411698175791732">Comprova la connexió a Internet. Si el problema continua, prova de tancar la sessió i tornar-la a iniciar.</translation>
@@ -2297,7 +2242,9 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="1644574205037202324">Historial</translation>
 <translation id="5117427536932535467">Temes i fons de pantalla</translation>
 <translation id="3259418918864581163">Targetes de crèdit i adreces que fan servir Brave Software Pay.</translation>
+<translation id="4439834757335393741">Formes de pagament i adreces que fan servir Brave Software Pay.</translation>
 <translation id="3268451620468152448">Pestanyes obertes</translation>
+<translation id="2120297377148151361">Activitat i interaccions</translation>
 <translation id="8135094938656535588">Gestiona les dades sincronitzades des del Tauler de control de Brave Software</translation>
 <translation id="6596325263575161958">Opcions d'encriptació</translation>
 <translation id="2459230470861708651">Encripta les contrasenyes sincronitzades amb el teu nom d'usuari i la teva contrasenya de Brave Software</translation>
@@ -2311,9 +2258,11 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="9050666287014529139">Frase de contrasenya</translation>
 <translation id="7772032839648071052">Confirmeu la frase de contrasenya</translation>
 <translation id="2653659639078652383">Envia</translation>
-<translation id="7569276629154082906">Controla com l'historial de navegació personalitza la Cerca, els anuncis i altres serveis de Brave Software</translation>
+<translation id="2608770217409477136">Fes servir la configuració predeterminada</translation>
+<translation id="4882831918239250449">Controla com s'utilitza l'historial de navegació per personalitzar la Cerca, els anuncis i molt més</translation>
 <translation id="5833726373896279253">Només el propietari d'aquesta configuració la pot modificar:</translation>
 <translation id="1926339101652878330">Aquesta configuració està controlada per una política d'empresa. Contacteu amb l'administrador per obtenir més informació.</translation>
+<translation id="7299337219131431707">Activa la navegació com a convidat</translation>
 <translation id="4138267921960073861">Mostra els noms d'usuari i les fotos a la pantalla d'inici de sessió</translation>
 <translation id="6828153365543658583">Restringeix l'inici de sessió als usuaris següents:</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (propietari)</translation>
@@ -2343,6 +2292,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="6965978654500191972">Dispositiu</translation>
 <translation id="8260864402787962391">Ratolí</translation>
 <translation id="155865706765934889">Ratolí tàctil</translation>
+<translation id="7846634333498149051">Teclat</translation>
 <translation id="4194570336751258953">Activa la funció de tocar per fer clic</translation>
 <translation id="270516211545221798">Velocitat del ratolí tàctil</translation>
 <translation id="8044899503464538266">Lent</translation>
@@ -2428,6 +2378,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="1082725763867769612">Fitxers sense connexió</translation>
 <translation id="7366909168761621528">Dades de navegació</translation>
 <translation id="5568144734023334204">Emmagatzematge d'Android</translation>
+<translation id="938339467127511841">Emmagatzematge a Linux (beta)</translation>
 <translation id="7441830548568730290">Altres usuaris</translation>
 <translation id="8546186510985480118">Queda poc espai al dispositiu</translation>
 <translation id="9109122242323516435">Per alliberar espai, suprimeix fitxers de l'emmagatzematge del dispositiu.</translation>
@@ -2446,6 +2397,7 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="2610157865375787051">Repòs</translation>
 <translation id="6212168817037875041">Desactiva la pantalla</translation>
 <translation id="5495597166260341369">Mantén la pantalla activa</translation>
+<translation id="7138678301420049075">Altres</translation>
 <translation id="1114525161406758033">Posa en repòs quan es tanqui la tapa</translation>
 <translation id="1848219224579402567">Tanca la sessió quan es tanqui la tapa</translation>
 <translation id="8781980678064919987">Apaga quan es tanqui la tapa</translation>
@@ -2453,8 +2405,18 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - Temps restant fins que es completi la càrrega: <ph name="TIME"/></translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="1940546824932169984">Dispositius connectats</translation>
-<translation id="1108164192735968833">Connexió d'SMS</translation>
-<translation id="564515084282424541">Llegeix i respon als missatges de text a Bravebook</translation>
+<translation id="5235565664420173924">Better Together</translation>
+<translation id="5375767622559981303">Bravebook funciona encara millor amb el telèfon. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
+<translation id="3465800511193611451">S'està esperant la verificació. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
+<translation id="2315821125498993513">No s'ha pogut connectar amb el telèfon. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
+<translation id="5598551463564921617">Better Together està activat</translation>
+<translation id="3088402208262982892">Better Together està desactivat</translation>
+<translation id="2079079131837725321">Desbloqueja el dispositiu Bravebook amb el telèfon. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
+<translation id="5430931332414098647">Compartició de xarxa instantània</translation>
+<translation id="3059313675706898490">Missatges Android</translation>
+<translation id="7095175330464035635">Envia i rep missatges de text amb Bravebook</translation>
+<translation id="3936335337858561470">Oblida aquest dispositiu</translation>
+<translation id="3606712892509067288">Suprimeix de Better Together</translation>
 <translation id="7878562273885520351">La teva contrasenya pot estar en perill</translation>
 <translation id="6582421931165117398">Per protegir la teva informació personal, canvia la contrasenya ara. Per poder-la canviar se't demanarà que iniciïs la sessió.</translation>
 <translation id="1089439967362294234">Canvia la contrasenya</translation>
@@ -2482,6 +2444,11 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="1607139524282324606">Esborra l'entrada</translation>
 <translation id="6025215716629925253">Traça de la pila</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;Hi ha 1 línia que no es mostra&amp;gt;}other{&amp;lt;Hi ha $1 línies que no es mostren&amp;gt;}}</translation>
+<translation id="8389492867173948260">Permet que aquesta extensió llegeixi i modifiqui totes les dades dels llocs web que visitis.</translation>
+<translation id="407173827865827707">En fer clic</translation>
+<translation id="6455264371803474013">En llocs web específics</translation>
+<translation id="4225397296022057997">En tots els llocs web</translation>
+<translation id="3729506734996624908">Llocs web permesos</translation>
 <translation id="3732078975418297900">Hi ha un error a la línia <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Error des de la línia <ph name="ERROR_LINE_START"/> fins a la <ph name="ERROR_LINE_END"/></translation>
 <translation id="1890674179660343635">&amp;lt;span&amp;gt;Identificador: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
@@ -2549,4 +2516,36 @@ No crec que calgui bloquejar aquest lloc.</translation>
 <translation id="9004952710076978168">Hem rebut la notificació d'una impressora desconeguda.</translation>
 <translation id="2202898655984161076">S'ha produït un problema en enumerar les impressores. Pot ser que algunes impressores no s'hagin registrat correctament a <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">El procés del connector <ph name="CLOUD_PRINT_NAME"/> s'ha bloquejat. Voleu reiniciar-lo?</translation>
+<translation id="6904655473976120856">Prem el botó Aplicació per sortir</translation>
+<translation id="8909833622202089127">El lloc web està fent un seguiment de la teva ubicació</translation>
+<translation id="375636864092143889">El lloc web està utilitzant el micròfon</translation>
+<translation id="310671807099593501">El lloc web està utilitzant el Bluetooth</translation>
+<translation id="7256069762010468647">El lloc web està utilitzant la càmera</translation>
+<translation id="7340650977506865820">El lloc web està compartint la pantalla</translation>
+<translation id="1805738995123446102">Una pestanya de fons està utilitzant el micròfon</translation>
+<translation id="1112420131909513020">Una pestanya de fons utilitza el Bluetooth</translation>
+<translation id="8715480913140015283">Una pestanya de fons està utilitzant la càmera</translation>
+<translation id="6155141482566063812">La pestanya de fons està compartint la teva pantalla</translation>
+<translation id="661907246513853610">El lloc web pot fer un seguiment de la teva ubicació</translation>
+<translation id="8991520179165052608">El lloc web pot utilitzar el micròfon</translation>
+<translation id="7681095912841365527">El lloc web pot utilitzar el Bluetooth</translation>
+<translation id="3085412380278336437">El lloc web pot utilitzar la càmera</translation>
+<translation id="9180380851667544951">El lloc web pot compartir la pantalla</translation>
+<translation id="4992630054488400221">Instal·la o actualitza el Teclat Daydream per utilitzar Brave en RV</translation>
+<translation id="983511809958454316">Aquesta funció no s'admet en el mode RV</translation>
+<translation id="4008291085758151621">La informació del lloc web no està disponible en el mode RV</translation>
+<translation id="1439926347196400598">Vols permetre que Brave gravi àudio?</translation>
+<translation id="6313641880021325787">SURT DEL MODE RV</translation>
+<translation id="2670429602441959756">Aquesta pàgina conté funcions que encara no s'admeten en RV. Se n'està sortint...</translation>
+<translation id="1802687198411089702">La pàgina no respon. Pots esperar que respongui o pots sortir-ne.</translation>
+<translation id="9148058034647219655">Surt</translation>
+<translation id="3987938432087324095">No ho he entès.</translation>
+<translation id="6923132443355966645">Desplaça't / fes clic</translation>
+<translation id="6041155700700864984">Surt de la pantalla completa</translation>
+<translation id="6112294629795967147">Toca la finestra per canviar-ne la mida</translation>
+<translation id="2453860139492968684">Finalitza</translation>
+<translation id="1853692000353488670">Pestanya d'incògnit nova</translation>
+<translation id="5530766185686772672">Tanca pestanyes d'incògnit</translation>
+<translation id="8076492880354921740">Pestanyes</translation>
+<translation id="1049743911850919806">Incògnit</translation>
 </translationbundle>
