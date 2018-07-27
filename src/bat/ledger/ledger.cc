@@ -24,6 +24,7 @@ VisitData::VisitData(const VisitData& data) :
     tld(data.tld),
     domain(data.domain),
     path(data.path),
+    tab_id(data.tab_id),
     duration(data.duration) {}
 
 const PublisherInfo invalid("");

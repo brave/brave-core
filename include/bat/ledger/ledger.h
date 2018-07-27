@@ -18,7 +18,7 @@ LEDGER_EXPORT struct VisitData {
   VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
-            uint64_t _duration);
+            uint32_t tab_id);
   VisitData(const VisitData& data);
   const std::string tld;
   const std::string domain;
