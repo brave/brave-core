@@ -80,10 +80,6 @@ class BatClient : public ledger::LedgerCallbackHandler {
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;
-  std::mutex state_mutex_;
-  std::mutex transactions_access_mutex_;
-  std::mutex ballots_access_mutex_;
-  std::mutex batch_access_mutex_;
   std::unique_ptr<braveledger_bat_helper::CURRENT_RECONCILE> currentReconcile_;
 
   bat_ledger::URLRequestHandler handler_;
