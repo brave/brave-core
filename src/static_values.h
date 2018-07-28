@@ -20,7 +20,7 @@
 #define WALLET_PROPERTIES_END           "/balance"
 #define RECONCILE_CONTRIBUTION          "/surveyor/contribution/current/"
 #define SURVEYOR_VOTING                 "/surveyor/voting/"
-#define SURVEYOR_BATCH_VOTING            "/batch/surveyor/voting/"
+#define SURVEYOR_BATCH_VOTING           "/batch/surveyor/voting"
 #define UPDATE_RULES_V1                 "/v1/publisher/ruleset?consequential=true"
 #define UPDATE_RULES_V2                 "/v2/publisher/ruleset?limit=512&excludedOnly=false"
 #define RECOVER_WALLET_PUBLIC_KEY       "/v2/wallet?publicKey="
@@ -55,7 +55,7 @@
 #define TWITCH_MINIMUM_SECONDS          10
 #define TWITCH_MAXIMUM_SECONDS_CHUNK    120
 
-#define VOTE_BATCH_SIZE                  10
+#define VOTE_BATCH_SIZE                 10
 
 namespace braveledger_ledger {
 

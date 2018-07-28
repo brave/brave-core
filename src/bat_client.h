@@ -56,7 +56,9 @@ class BatClient : public ledger::LedgerCallbackHandler {
   void prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   void prepareBatchCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof);
-  void prepareVoteBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof);
+  void prepareVoteBatch();
+  void voteBatch();
+  void voteBatchCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   void prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   void commitBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   void prepareBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
@@ -78,9 +80,6 @@ class BatClient : public ledger::LedgerCallbackHandler {
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;
-  std::mutex state_mutex_;
-  std::mutex transactions_access_mutex_;
-  std::mutex ballots_access_mutex_;
   std::unique_ptr<braveledger_bat_helper::CURRENT_RECONCILE> currentReconcile_;
 
   bat_ledger::URLRequestHandler handler_;

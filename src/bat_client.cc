@@ -188,11 +188,11 @@ void BatClient::registerPersonaCallback(bool result,
   // TODO debug
   //getPromotionCaptcha();
   //
+  saveState();
   ledger_->OnWalletCreated(ledger::Result::OK);
 }
 
 void BatClient::setContributionAmount(const double& amount) {
-  std::lock_guard<std::mutex> guard(state_mutex_);
   state_->fee_amount_ = amount;
   saveState();
 }
@@ -345,7 +345,7 @@ void BatClient::currentReconcileCallback(bool result, const std::string& respons
 }
 
 void BatClient::reconcilePayloadCallback(bool result, const std::string& response) {
-  //LOG(ERROR) << "!!!response == " << response;
+  //LOG(ERROR) << "!!!response reconcilePayloadCallback == " << response;
   if (!result) {
     // TODO errors handling
     return;
@@ -358,14 +358,14 @@ void BatClient::reconcilePayloadCallback(bool result, const std::string& respons
   transaction.contribution_fiat_amount_ = currentReconcile_->amount_;
   transaction.contribution_fiat_currency_ = currentReconcile_->currency_;
 
-  {
-    std::lock_guard<std::mutex> guard(transactions_access_mutex_);
-    state_->transactions_.push_back(transaction);
-  }
+  state_->transactions_.push_back(transaction);
   saveState();
   // TODO set a new timestamp for the next reconcile
   // TODO self.state.updateStamp var in old lib
-  braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST stExtraData;
+  // TODO do we need to call update rules v1 at all?
+  registerViewing();
+  //
+  /*braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST stExtraData;
   stExtraData.boolean1 = true;
 
   auto request_id = ledger_->LoadURL(buildURL(UPDATE_RULES_V1, ""),
@@ -375,11 +375,11 @@ void BatClient::reconcilePayloadCallback(bool result, const std::string& respons
                                        this,
                                        _1,
                                        _2,
-                                       stExtraData));
+                                       stExtraData));*/
 }
 
 void BatClient::updateRulesCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
-  //LOG(ERROR) << "!!!response updateRulesCallback == " << response;
+  LOG(ERROR) << "!!!response updateRulesCallback == " << response;
   if (!result) {
     // TODO errors handling
     return;
@@ -398,7 +398,7 @@ void BatClient::updateRulesCallback(bool result, const std::string& response, co
 }
 
 void BatClient::updateRulesV2Callback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
-  //LOG(ERROR) << "!!!response updateRulesV2Callback == " << response;
+  LOG(ERROR) << "!!!response updateRulesV2Callback == " << response;
   if (!result) {
     // TODO errors handling
     return;
@@ -477,17 +477,14 @@ void BatClient::viewingCredentialsCallback(bool result, const std::string& respo
   std::vector<std::string> surveyors;
   braveledger_bat_helper::getJSONList(SURVEYOR_IDS, response, surveyors);
   // Save the rest values to transactions
-  {
-    std::lock_guard<std::mutex> guard(transactions_access_mutex_);
-    for (size_t i = 0; i < state_->transactions_.size(); i++) {
-      if (state_->transactions_[i].viewingId_ != currentReconcile_->viewingId_) {
-        continue;
-      }
-      state_->transactions_[i].anonizeViewingId_ = currentReconcile_->anonizeViewingId_;
-      state_->transactions_[i].registrarVK_ = currentReconcile_->registrarVK_;
-      state_->transactions_[i].masterUserToken_ = currentReconcile_->masterUserToken_;
-      state_->transactions_[i].surveyorIds_ = surveyors;
+  for (size_t i = 0; i < state_->transactions_.size(); i++) {
+    if (state_->transactions_[i].viewingId_ != currentReconcile_->viewingId_) {
+      continue;
     }
+    state_->transactions_[i].anonizeViewingId_ = currentReconcile_->anonizeViewingId_;
+    state_->transactions_[i].registrarVK_ = currentReconcile_->registrarVK_;
+    state_->transactions_[i].masterUserToken_ = currentReconcile_->masterUserToken_;
+    state_->transactions_[i].surveyorIds_ = surveyors;
   }
 
   saveState();
@@ -496,7 +493,6 @@ void BatClient::viewingCredentialsCallback(bool result, const std::string& respo
 }
 
 unsigned int BatClient::ballots(const std::string& viewingId) {
-  std::lock_guard<std::mutex> guard(transactions_access_mutex_);
   unsigned int count = 0;
   for (size_t i = 0; i < state_->transactions_.size(); i++) {
     if (state_->transactions_[i].votes_ < state_->transactions_[i].surveyorIds_.size()
@@ -521,60 +517,52 @@ void BatClient::vote(const std::string& publisher, const std::string& viewingId)
     return;
   }
   braveledger_bat_helper::BALLOT_ST ballot;
-  {
-    std::lock_guard<std::mutex> guard(transactions_access_mutex_);
-    int i = 0;
-    for (i = state_->transactions_.size() - 1; i >=0; i--) {
-      if (state_->transactions_[i].votes_ >= state_->transactions_[i].surveyorIds_.size()) {
-        continue;
-      }
-      if (state_->transactions_[i].viewingId_ == viewingId || viewingId.empty()) {
-        break;
-      }
+  int i = 0;
+  for (i = state_->transactions_.size() - 1; i >=0; i--) {
+    if (state_->transactions_[i].votes_ >= state_->transactions_[i].surveyorIds_.size()) {
+      continue;
     }
-    if (i < 0) {
-      return;
+    if (state_->transactions_[i].viewingId_ == viewingId || viewingId.empty()) {
+      break;
     }
-    ballot.viewingId_ = state_->transactions_[i].viewingId_;
-    ballot.surveyorId_ = state_->transactions_[i].surveyorIds_[state_->transactions_[i].votes_];
-    ballot.publisher_ = publisher;
-    ballot.offset_ = state_->transactions_[i].votes_;
-    state_->transactions_[i].votes_++;
-    //LOG(ERROR) << "!!!prepared ballout " << publisher << ", votes == " << state_->transactions_[i].votes_;
   }
-  std::lock_guard<std::mutex> guard(ballots_access_mutex_);
+  if (i < 0) {
+    return;
+  }
+  ballot.viewingId_ = state_->transactions_[i].viewingId_;
+  ballot.surveyorId_ = state_->transactions_[i].surveyorIds_[state_->transactions_[i].votes_];
+  ballot.publisher_ = publisher;
+  ballot.offset_ = state_->transactions_[i].votes_;
+  state_->transactions_[i].votes_++;
+  //LOG(ERROR) << "!!!prepared ballout " << publisher << ", votes == " << state_->transactions_[i].votes_;
   state_->ballots_.push_back(ballot);
 }
 
 void BatClient::prepareBallots() {
   //uint64_t currentTime = braveledger_bat_helper::currentTime() * 1000;
   //std::vector<BATCH_PROOF> batchProof;
-  {
-    std::lock_guard<std::mutex> guard(ballots_access_mutex_);
-    for (int i = state_->ballots_.size() - 1; i >= 0; i--) {
-      bool breakTheLoop = false;
-      std::lock_guard<std::mutex> guard(transactions_access_mutex_);
-      for (size_t j = 0; j < state_->transactions_.size(); j++) {
-        // TODO check on valid credentials for transaction
-        if (state_->transactions_[j].viewingId_ == state_->ballots_[i].viewingId_
-            /*&& (state_->ballots_[i].prepareBallot_.empty() || 0 == state_->ballots_[i].delayStamp_
-              || state_->ballots_[i].delayStamp_ <= currentTime)*/) {
-          // TODO check on ballot.prepareBallot and call commitBallot if it exist
-          if (state_->ballots_[i].prepareBallot_.empty()) {
-            prepareBatch(state_->ballots_[i], state_->transactions_[j]);
-            //prepareBallot(state_->ballots_[i], state_->transactions_[j]);
-            breakTheLoop = true;
-            break;
-          }
-          //BATCH_PROOF batchProofEl;
-          //batchProofEl.transaction_ = state_->transactions_[j];
-          //batchProofEl.ballot_ = state_->ballots_[i];
-          //batchProof.push_back(batchProofEl);
+  for (int i = state_->ballots_.size() - 1; i >= 0; i--) {
+    bool breakTheLoop = false;
+    for (size_t j = 0; j < state_->transactions_.size(); j++) {
+      // TODO check on valid credentials for transaction
+      if (state_->transactions_[j].viewingId_ == state_->ballots_[i].viewingId_
+          /*&& (state_->ballots_[i].prepareBallot_.empty() || 0 == state_->ballots_[i].delayStamp_
+            || state_->ballots_[i].delayStamp_ <= currentTime)*/) {
+        // TODO check on ballot.prepareBallot and call commitBallot if it exist
+        if (state_->ballots_[i].prepareBallot_.empty()) {
+          prepareBatch(state_->ballots_[i], state_->transactions_[j]);
+          //prepareBallot(state_->ballots_[i], state_->transactions_[j]);
+          breakTheLoop = true;
+          break;
         }
+        //BATCH_PROOF batchProofEl;
+        //batchProofEl.transaction_ = state_->transactions_[j];
+        //batchProofEl.ballot_ = state_->ballots_[i];
+        //batchProof.push_back(batchProofEl);
       }
-      if (breakTheLoop) {
-        break;
-      }
+    }
+    if (breakTheLoop) {
+      break;
     }
   }
 
@@ -587,7 +575,7 @@ void BatClient::prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, co
   extraData.string1 = ballot.viewingId_;
   extraData.string2 = ballot.surveyorId_;
 
-  auto request_id = ledger_->LoadURL(buildURL((std::string)SURVEYOR_BATCH_VOTING + transaction.anonizeViewingId_, PREFIX_V2),
+  auto request_id = ledger_->LoadURL(buildURL((std::string)SURVEYOR_BATCH_VOTING + "/" + transaction.anonizeViewingId_, PREFIX_V2),
     std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::prepareBatchCallback,
@@ -608,12 +596,10 @@ void BatClient::prepareBatchCallback(bool result, const std::string& response, c
     if (!error.empty()) {
       continue;
     }
-    std::lock_guard<std::mutex> guard(ballots_access_mutex_);
     for (int i = state_->ballots_.size() - 1; i >= 0; i--) {
       std::string survId;
       braveledger_bat_helper::getJSONValue("surveyorId", surveyors[j], survId);
       if (state_->ballots_[i].surveyorId_ == survId) {
-        std::lock_guard<std::mutex> guard(transactions_access_mutex_);
         for (size_t k = 0; k < state_->transactions_.size(); k++) {
           if (state_->transactions_[k].viewingId_ == state_->ballots_[i].viewingId_) {
             state_->ballots_[i].prepareBallot_ = surveyors[j];
@@ -629,7 +615,8 @@ void BatClient::prepareBatchCallback(bool result, const std::string& response, c
 
   saveState();
   proofBatch(batchProof);
-  LOG(ERROR) << "!!! 2 batchProof.size() == " << batchProof.size();
+  prepareVoteBatch();
+  voteBatch();
 }
 
 void BatClient::proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof) {
@@ -641,11 +628,9 @@ void BatClient::proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF
     braveledger_bat_helper::encodeURIComponent(surveyor.surveyorId_, surveyorIdEncoded);
 
     std::string signatureToSend;
-    LOG(ERROR) << "!!!full signature == " << surveyor.signature_;
     size_t delimeterPos = surveyor.signature_.find(',');
     if (std::string::npos != delimeterPos && delimeterPos + 1 <= surveyor.signature_.length()) {
       signatureToSend = surveyor.signature_.substr(delimeterPos + 1);
-      LOG(ERROR) << "!!!signatureToSend == " << signatureToSend;
       if (signatureToSend.length() > 1 && signatureToSend[0] == ' ') {
         signatureToSend.erase(0, 1);
       }
@@ -665,17 +650,129 @@ void BatClient::proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF
       free((void*)proof);
     }
 
-    std::lock_guard<std::mutex> guard(ballots_access_mutex_);
     for (size_t j = 0; j < state_->ballots_.size(); j++) {
       if (state_->ballots_[j].surveyorId_ == batchProof[i].ballot_.surveyorId_) {
         state_->ballots_[j].proofBallot_ = anonProof;
       }
     }
   }
-  // TODO make wait
+  // TODO make wait and call prepareVoteBatch after that only
   // const delayTime = random.randomInt({ min: 10 * msecs.second, max: 1 * msecs.minute })
 }
 
+void BatClient::prepareVoteBatch() {
+  for (int i = state_->ballots_.size() - 1; i >= 0; i--) {
+    if (state_->ballots_[i].prepareBallot_.empty() || state_->ballots_[i].proofBallot_.empty()) {
+      // TODO error handling
+      continue;
+    }
+    bool transactionExist = false;
+    for (size_t k = 0; k < state_->transactions_.size(); k++) {
+      if (state_->transactions_[k].viewingId_ == state_->ballots_[i].viewingId_) {
+        bool existBallot = false;
+        for (size_t j = 0; j < state_->transactions_[k].ballots_.size(); j++) {
+          if (state_->transactions_[k].ballots_[j].publisher_ == state_->ballots_[i].publisher_) {
+            state_->transactions_[k].ballots_[j].offset_++;
+            existBallot = true;
+            break;
+          }
+        }
+        if (!existBallot) {
+          braveledger_bat_helper::TRANSACTION_BALLOT_ST transactionBallot;
+          transactionBallot.publisher_ = state_->ballots_[i].publisher_;
+          transactionBallot.offset_++;
+          state_->transactions_[k].ballots_.push_back(transactionBallot);
+        }
+        transactionExist = true;
+        break;
+      }
+    }
+    if (!transactionExist) {
+      continue;
+    }
+    bool existBatch = false;
+    braveledger_bat_helper::BATCH_VOTES_INFO_ST batchVotesInfoSt;
+    batchVotesInfoSt.surveyorId_ = state_->ballots_[i].surveyorId_;
+    batchVotesInfoSt.proof_ = state_->ballots_[i].proofBallot_;
+    for (size_t k = 0; k < state_->batch_.size(); k++) {
+      if (state_->batch_[k].publisher_ == state_->ballots_[i].publisher_) {
+        existBatch = true;
+        state_->batch_[k].batchVotesInfo_.push_back(batchVotesInfoSt);
+      }
+    }
+    if (!existBatch) {
+      braveledger_bat_helper::BATCH_VOTES_ST batchVotesSt;
+      batchVotesSt.publisher_ = state_->ballots_[i].publisher_;
+      batchVotesSt.batchVotesInfo_.push_back(batchVotesInfoSt);
+      state_->batch_.push_back(batchVotesSt);
+    }
+    state_->ballots_.erase(state_->ballots_.begin() + i);
+  }
+  saveState();
+
+  // TODO make wait and call voteBatch after that only
+  // const delayTime = random.randomInt({ min: 10 * msecs.second, max: 1 * msecs.minute })
+}
+
+void BatClient::voteBatch() {
+  if (0 == state_->batch_.size()) {
+    return;
+  }
+  braveledger_bat_helper::BATCH_VOTES_ST batchVotes = state_->batch_[0];
+  std::vector<braveledger_bat_helper::BATCH_VOTES_INFO_ST> voteBatch;
+  if (batchVotes.batchVotesInfo_.size() > VOTE_BATCH_SIZE) {
+    voteBatch.assign(batchVotes.batchVotesInfo_.begin(), batchVotes.batchVotesInfo_.begin() + VOTE_BATCH_SIZE);
+  } else {
+    voteBatch = batchVotes.batchVotesInfo_;
+  }
+  //std::string keysMsg[1] = {"payload"};
+  //std::string valuesMsg[1] = {braveledger_bat_helper::stringifyBatch(voteBatch)};
+  std::string payload = braveledger_bat_helper::stringifyBatch(voteBatch);//braveledger_bat_helper::stringify(keysMsg, valuesMsg, 1);
+
+  braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST extraData;
+  extraData.string1 = batchVotes.publisher_;
+
+  auto request_id = ledger_->LoadURL(
+    buildURL((std::string)SURVEYOR_BATCH_VOTING , PREFIX_V2),
+    std::vector<std::string>(), payload, "application/json; charset=utf-8", ledger::URL_METHOD::POST, &handler_);
+  handler_.AddRequestHandler(std::move(request_id),
+                             std::bind(&BatClient::voteBatchCallback,
+                                       this,
+                                       _1,
+                                       _2,
+                                       extraData));
+  // TODO make wait and call voteBatch again after that only
+  // const delayTime = random.randomInt({ min: 10 * msecs.second, max: 1 * msecs.minute })
+}
+
+void BatClient::voteBatchCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+  //LOG(ERROR) << "!!!voteBatchCallback response == " << response;
+  std::vector<std::string> surveyors;
+  braveledger_bat_helper::getJSONBatchSurveyors(response, surveyors);
+  for (size_t i = 0; i < state_->batch_.size(); i++) {
+    if (state_->batch_[i].publisher_ == extraData.string1) {
+      size_t sizeToCheck = VOTE_BATCH_SIZE;
+      if (state_->batch_[i].batchVotesInfo_.size() < VOTE_BATCH_SIZE) {
+        sizeToCheck = state_->batch_[i].batchVotesInfo_.size();
+      }
+      for (int j = sizeToCheck - 1; j >= 0; j--) {
+        for (size_t k = 0; k < surveyors.size(); k++) {
+          std::string surveyorId;
+          braveledger_bat_helper::getJSONValue("surveyorId", surveyors[k], surveyorId);
+          if (surveyorId == state_->batch_[i].batchVotesInfo_[j].surveyorId_) {
+            state_->batch_[i].batchVotesInfo_.erase(state_->batch_[i].batchVotesInfo_.begin() + j);
+            break;
+          }
+        }
+      }
+      if (0 == state_->batch_[i].batchVotesInfo_.size()) {
+        state_->batch_.erase(state_->batch_.begin() + i);
+      }
+      break;
+    }
+  }
+  saveState();
+}
 
 void BatClient::prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction) {
   std::string surveyorIdEncoded;
@@ -697,25 +794,19 @@ void BatClient::prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, c
 
 void BatClient::prepareBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
   LOG(ERROR) << "!!!!prepareBallotCallback response == " << response;
-  {
-    std::lock_guard<std::mutex> guard(ballots_access_mutex_);
-    for (int i = state_->ballots_.size() - 1; i >= 0; i--) {
-      if (state_->ballots_[i].viewingId_ == extraData.string1
-          && state_->ballots_[i].surveyorId_ == extraData.string2) {
-        state_->ballots_[i].prepareBallot_ = response;
-        // TODO make random from 1 second to 3 hours.
-        state_->ballots_[i].delayStamp_ = braveledger_bat_helper::currentTime() * 1000;
-        // TODO debug, just calling commitBallot here for testing purposes
-        {
-          std::lock_guard<std::mutex> guard(transactions_access_mutex_);
-          for (size_t j = 0; j < state_->transactions_.size(); j++) {
-            if (state_->transactions_[j].viewingId_ == state_->ballots_[i].viewingId_) {
-              commitBallot(state_->ballots_[i], state_->transactions_[j]);
-            }
-          }
+  for (int i = state_->ballots_.size() - 1; i >= 0; i--) {
+    if (state_->ballots_[i].viewingId_ == extraData.string1
+        && state_->ballots_[i].surveyorId_ == extraData.string2) {
+      state_->ballots_[i].prepareBallot_ = response;
+      // TODO make random from 1 second to 3 hours.
+      state_->ballots_[i].delayStamp_ = braveledger_bat_helper::currentTime() * 1000;
+      // TODO debug, just calling commitBallot here for testing purposes
+      for (size_t j = 0; j < state_->transactions_.size(); j++) {
+        if (state_->transactions_[j].viewingId_ == state_->ballots_[i].viewingId_) {
+          commitBallot(state_->ballots_[i], state_->transactions_[j]);
         }
-        break;
       }
+      break;
     }
   }
   saveState();

@@ -400,6 +400,100 @@ namespace braveledger_bat_helper {
   }
 
   /////////////////////////////////////////////////////////////////////////////
+  BATCH_VOTES_INFO_ST::BATCH_VOTES_INFO_ST() {}
+
+  BATCH_VOTES_INFO_ST::BATCH_VOTES_INFO_ST(const BATCH_VOTES_INFO_ST& other) {
+    surveyorId_ = other.surveyorId_;
+    proof_ = other.proof_;
+  }
+
+  BATCH_VOTES_INFO_ST::~BATCH_VOTES_INFO_ST() {}
+
+  bool BATCH_VOTES_INFO_ST::loadFromJson(const std::string & json) {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    // Has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error) {
+      error = !(d.HasMember("surveyorId") && d["surveyorId"].IsString() &&
+        d.HasMember("proof") && d["proof"].IsString());
+    }
+
+    if (false == error) {
+      surveyorId_ = d["surveyorId"].GetString();
+      proof_ = d["proof"].GetString();
+    }
+
+    return !error;
+  }
+
+  void saveToJson(JsonWriter & writer, const BATCH_VOTES_INFO_ST& data) {
+    writer.StartObject();
+
+    writer.String("surveyorId");
+    writer.String(data.surveyorId_.c_str());
+
+    writer.String("proof");
+    writer.String(data.proof_.c_str());
+
+    writer.EndObject();
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
+  BATCH_VOTES_ST::BATCH_VOTES_ST() {}
+
+  BATCH_VOTES_ST::BATCH_VOTES_ST(const BATCH_VOTES_ST& other) {
+    publisher_ = other.publisher_;
+    batchVotesInfo_ = other.batchVotesInfo_;
+  }
+
+  BATCH_VOTES_ST::~BATCH_VOTES_ST() {}
+
+  bool BATCH_VOTES_ST::loadFromJson(const std::string & json) {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    // Has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error) {
+      error = !(d.HasMember("publisher") &&  d["publisher"].IsString() &&
+        d.HasMember("batchVotesInfo") && d["batchVotesInfo"].IsArray());
+    }
+
+    if (false == error) {
+      publisher_ = d["publisher"].GetString();
+      for (const auto & i : d["batchVotesInfo"].GetArray()) {
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+
+        BATCH_VOTES_INFO_ST b;
+        b.loadFromJson(sb.GetString());
+        batchVotesInfo_.push_back(b);
+      }
+    }
+
+    return !error;
+  }
+
+  void saveToJson(JsonWriter & writer, const BATCH_VOTES_ST& data) {
+    writer.StartObject();
+
+    writer.String("publisher");
+    writer.String(data.publisher_.c_str());
+
+    writer.String("batchVotesInfo");
+    writer.StartArray();
+    for (auto & b : data.batchVotesInfo_) {
+      saveToJson(writer, b);
+    }
+    writer.EndArray();
+
+    writer.EndObject();
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
   CLIENT_STATE_ST::CLIENT_STATE_ST():
     bootStamp_(0),
     reconcileStamp_(0),
@@ -424,6 +518,7 @@ namespace braveledger_bat_helper {
     ballots_ = other.ballots_;
     ruleset_ = other.ruleset_;
     rulesetV2_ = other.rulesetV2_;
+    batch_ = other.batch_;
   }
 
   CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
@@ -448,7 +543,10 @@ namespace braveledger_bat_helper {
         d.HasMember("fee_amount") && d["fee_amount"].IsDouble() &&
         d.HasMember("days") && d["days"].IsUint() &&
         d.HasMember("transactions") && d["transactions"].IsArray() &&
-        d.HasMember("ballots") && d["ballots"].IsArray() );
+        d.HasMember("ballots") && d["ballots"].IsArray() &&
+        d.HasMember("ruleset") && d["ruleset"].IsString() &&
+        d.HasMember("rulesetV2") && d["rulesetV2"].IsString() &&
+        d.HasMember("batch") && d["batch"].IsArray() );
     }
 
     if (false == error) {
@@ -490,6 +588,19 @@ namespace braveledger_bat_helper {
         BALLOT_ST b;
         b.loadFromJson(sb.GetString());
         ballots_.push_back(b);
+      }
+
+      ruleset_ = d["ruleset"].GetString();
+      rulesetV2_ = d["rulesetV2"].GetString();
+
+      for (const auto & i : d["batch"].GetArray()) {
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+
+        BATCH_VOTES_ST b;
+        b.loadFromJson(sb.GetString());
+        batch_.push_back(b);
       }
     }
 
@@ -554,6 +665,13 @@ namespace braveledger_bat_helper {
 
     writer.String("rulesetV2");
     writer.String(data.rulesetV2_.c_str());
+
+    writer.String("batch");
+    writer.StartArray();
+    for (auto & b : data.batch_) {
+      saveToJson(writer, b);
+    }
+    writer.EndArray();
 
     writer.EndObject();
   }
@@ -1086,6 +1204,19 @@ namespace braveledger_bat_helper {
     return res.str();
   }
 
+
+  std::string stringifyBatch(std::vector<BATCH_VOTES_INFO_ST> payload) {
+    rapidjson::StringBuffer buffer;
+    JsonWriter writer(buffer);
+
+    writer.StartArray();
+    for (auto & d : payload) {
+      saveToJson(writer, d);
+    }
+    writer.EndArray();
+
+    return buffer.GetString();
+  }
 
   std::string stringify(std::string* keys, std::string* values, const unsigned int& size) {
     rapidjson::StringBuffer buffer;

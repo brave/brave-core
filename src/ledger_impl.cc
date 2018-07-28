@@ -96,7 +96,7 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
                                      const std::string& data) {
   if (result != ledger::Result::OK) {
     LOG(ERROR) << "Could not load ledger state";
-    return;
+    //return;
     // TODO - error handling
   }
 
