@@ -10,7 +10,6 @@
 #include "build/build_config.h"
 #include "brave/test/base/brave_unit_test_suite.h"
 #include "content/public/test/unittest_test_suite.h"
-#include "mojo/edk/embedder/scoped_ipc_support.h"
 
 #if defined(OS_WIN)
 #include "chrome/install_static/test/scoped_install_details.h"
