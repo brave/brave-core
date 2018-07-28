@@ -52,6 +52,7 @@ class PaymentsServiceImpl : public PaymentsService,
   void Shutdown() override;
 
   void CreateWallet() override;
+  void GetWalletProperties() override;
   void GetContentSiteList(uint32_t start,
                           uint32_t limit,
      const GetContentSiteListCallback& callback) override;
@@ -92,7 +93,6 @@ class PaymentsServiceImpl : public PaymentsService,
   std::string GenerateGUID() const override;
   void OnWalletCreated(ledger::Result result) override;
   void OnWalletProperties(ledger::WalletInfo result) override;
-  void GetWalletProperties() override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;

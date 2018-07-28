@@ -32,13 +32,17 @@ export class RewardsPage extends React.Component<Props, {}> {
     return (
       <div id='rewardsPage'>
         <div>
-          <a href='#' onClick={this.onCreateWalletClicked}>Create Wallet</a>
+          <button onClick={this.onCreateWalletClicked}>
+            Create Wallet
+          </button>
         </div>
         {
           rewardsData.walletCreated
           ? <div>
               Wallet Created!
-              <a href='#' onClick={this.getWalletProperties}>Get wallet data</a>
+              <button onClick={this.getWalletProperties}>
+                Get wallet data
+              </button>
             </div>
           : null
         }

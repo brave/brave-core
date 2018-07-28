@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/wallet_info.h"
+#include <bat/ledger/wallet_info.h>
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 
 #include "brave/browser/payments/payments_service.h"
@@ -12,6 +12,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "content/public/browser/web_ui_message_handler.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/render_view_host.h"
 #include "content/public/common/bindings_policy.h"
 
 
@@ -35,7 +39,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void HandleCreateWalletRequested(const base::ListValue* args);
   void OnWalletCreated();
   void OnWalletCreateFailed();
-  void GetWalletProperties();
+  void GetWalletProperties(const base::ListValue* args);
   void OnWalletProperties(ledger::WalletInfo result);
 
   // PaymentServiceObserver implementation
@@ -78,7 +82,7 @@ void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args)
   }
 }
 
-void RewardsDOMHandler::GetWalletProperties() {
+void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
   if (payments_service_) {
     payments_service_->GetWalletProperties();
   }
@@ -113,7 +117,18 @@ void RewardsDOMHandler::OnWalletCreateFailed() {
 
 void RewardsDOMHandler::OnWalletProperties(ledger::WalletInfo result) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    web_ui()->CallJavascriptFunction("brave_rewards.walletProperties", result);
+    auto* web_contents = web_ui()->GetWebContents();
+    if (web_contents) {
+      auto* render_view_host = web_contents->GetRenderViewHost();
+      if (render_view_host) {
+        render_view_host->SetWebUIProperty("rewards.walletInfo.probi", result.probi_);
+        render_view_host->SetWebUIProperty("rewards.walletInfo.balance", std::to_string(result.balance_));
+        for (auto const& rate : result.rates_) {
+          render_view_host->SetWebUIProperty("rewards.walletInfo.rates." + rate.first, base::NumberToString(rate.second));
+        }
+      }
+    }
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletProperties");
   }
 }
 

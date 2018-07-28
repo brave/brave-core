@@ -15,6 +15,4 @@ export const walletCreateFailed = () => action(types.WALLET_CREATE_FAILED)
 
 export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
 
-export const onWalletProperties = (result: any) => action(types.ON_WALLET_PROPERTIES, {
-  result
-})
+export const onWalletProperties = () => action(types.ON_WALLET_PROPERTIES)
