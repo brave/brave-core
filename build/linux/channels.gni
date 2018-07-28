@@ -18,6 +18,10 @@ if (brave_channel == "") {
   linux_channel = linux_channel_dev
 } else if (brave_channel == "nightly") {
   linux_channel = brave_linux_channel_nightly
+} else if (brave_channel == "development") {
+  # To avoid gn error, just fills with stable.
+  # This doesn't have meaning in debug build.
+  linux_channel = linux_channel_stable
 } else {
   assert(false, "Not supported channel name: $brave_channel")
 }
