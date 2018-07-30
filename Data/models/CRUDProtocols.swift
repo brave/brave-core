@@ -19,8 +19,8 @@ public protocol Deletable where Self: NSManagedObject {
 
 public protocol Readable where Self: NSManagedObject {
     static func count(predicate: NSPredicate?) -> Int?
-    static func getFirst(predicate: NSPredicate?, context: NSManagedObjectContext) -> Self?
-    static func getAll(predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, fetchLimit: Int, 
+    static func first(where predicate: NSPredicate?, context: NSManagedObjectContext) -> Self?
+    static func all(where predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, fetchLimit: Int, 
                        context: NSManagedObjectContext) -> [Self]?
 }
 
@@ -79,11 +79,11 @@ public extension Readable where Self: NSManagedObject {
         return nil
     }
     
-    static func getFirst(predicate: NSPredicate?, context: NSManagedObjectContext = DataController.mainContext) -> Self? {
-        return getAll(predicate: predicate, fetchLimit: 1, context: context)?.first
+    static func first(where predicate: NSPredicate?, context: NSManagedObjectContext = DataController.mainContext) -> Self? {
+        return all(where: predicate, fetchLimit: 1, context: context)?.first
     }
     
-    static func getAll(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, 
+    static func all(where predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, 
                        fetchLimit: Int = 0, context: NSManagedObjectContext = DataController.mainContext) -> [Self]? {
         let request = getFetchRequest()
         

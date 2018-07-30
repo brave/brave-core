@@ -281,7 +281,7 @@ extension Bookmark {
         let isFavoritePredicate = getFavorites ? "YES" : "NO"
         let predicate = NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(isFavoritePredicate)", url.absoluteString)
         
-        return getAll(predicate: predicate)
+        return all(where: predicate)
     }
     
     fileprivate static func count(forUrl url: URL, getFavorites: Bool = false) -> Int? {
@@ -305,7 +305,7 @@ extension Bookmark {
         let predicate = NSPredicate(format: "\(syncParentDisplayUUIDKeyPath) == %@ AND \(isFolderKeyPath) == %@",  
                                     searchableUUID, ignoreFolders ? "YES" : "NO")
         
-        return getAll(predicate: predicate)
+        return all(where: predicate)
     }
     
     static func get(parentSyncUUID parentUUID: [Int]?, context: NSManagedObjectContext?) -> Bookmark? {
@@ -314,7 +314,7 @@ extension Bookmark {
         }
         
         let predicate = NSPredicate(format: "syncDisplayUUID == %@", searchableUUID)
-        return getFirst(predicate: predicate, context: context)
+        return first(where: predicate, context: context)
     }
     
     public static func getFolders(bookmark: Bookmark?, context: NSManagedObjectContext) -> [Bookmark] {
@@ -325,13 +325,13 @@ extension Bookmark {
             predicate = NSPredicate(format: "isFolder == true and parentFolder.@count = 0")
         }
         
-        return getAll(predicate: predicate) ?? []
+        return all(where: predicate) ?? []
     }
     
     static func getAllBookmarks(context: NSManagedObjectContext) -> [Bookmark] {
         let predicate = NSPredicate(format: "isFavorite == NO")
         
-        return getAll(predicate: predicate) ?? []
+        return all(where: predicate) ?? []
     }
 }
 

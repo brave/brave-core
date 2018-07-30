@@ -109,13 +109,13 @@ public final class TabMO: NSManagedObject, CRUD {
 
     public class func getAll() -> [TabMO] {
         let sortDescriptors = [NSSortDescriptor(key: #keyPath(TabMO.order), ascending: true)]
-        return getAll(predicate: nil, sortDescriptors: sortDescriptors) ?? []
+        return all(sortDescriptors: sortDescriptors) ?? []
     }
     
     public class func get(fromId id: String?, context: NSManagedObjectContext) -> TabMO? {
         guard let id = id else { return nil }
         let predicate = NSPredicate(format: "\(#keyPath(TabMO.syncUUID)) == %@", id)
         
-        return getFirst(predicate: predicate, context: context)
+        return first(where: predicate, context: context)
     }
 }
