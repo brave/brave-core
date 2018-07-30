@@ -259,7 +259,7 @@ class Sync: JSInjector {
     
     var syncSeedArray: [Int]? {
         let splitBytes = syncSeed?.components(separatedBy: CharacterSet(charactersIn: "[], ")).filter { !$0.isEmpty }
-        let seed = splitBytes?.map{ Int($0) }.flatMap{ $0 }
+        let seed = splitBytes?.compactMap { Int($0) }
         return seed?.count == Sync.SeedByteLength ? seed : nil
     }
     
@@ -553,7 +553,7 @@ extension Sync {
     func saveInitData(_ data: JSON) {
         // Sync Seed
         if let seedJSON = data["arg1"].array {
-            let seed = seedJSON.map({ $0.int }).flatMap({ $0 })
+            let seed = seedJSON.compactMap { $0.int }
             
             // TODO: Move to constant
             if seed.count < Sync.SeedByteLength {

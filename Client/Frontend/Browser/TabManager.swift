@@ -490,7 +490,7 @@ class TabManager: NSObject {
         hideNetworkActivitySpinner()
 
         guard let removalIndex = tabs.index(where: { $0 === tab }) else {
-            Sentry.shared.sendWithStacktrace(message: "Could not find index of tab to remove", tag: .tabManager, severity: .fatal, description: "Tab count: \(count)")
+            log.debug("Could not find index of tab to remove")
             return
         }
 
@@ -852,7 +852,7 @@ extension TabManager {
                     self.restoreTabsInternal()
                 },
                 catch: { exception in
-                    Sentry.shared.send(message: "Failed to restore tabs: ", tag: SentryTag.tabManager, severity: .error, description: "\(exception ??? "nil")")
+                    log.error("Failed to restore tabs: \(String(describing: exception))")
                 }
             )
         }

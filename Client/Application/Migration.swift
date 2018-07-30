@@ -64,9 +64,6 @@ extension Preferences {
         migrate(key: "fingerprintprotection_on", to: Preferences.Shields.fingerprintingProtection)
         migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
         
-        // Support
-        migrate(key: "userallowstelemetry", to: Preferences.Support.sendsCrashReportsAndMetrics)
-        
         // Popups
         migrate(key: "popupForDDG", to: Preferences.Popups.duckDuckGoPrivateSearch)
         

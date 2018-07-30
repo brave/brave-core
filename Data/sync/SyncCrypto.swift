@@ -99,7 +99,7 @@ class SyncCrypto: JSInjector {
     /// fromJoinedBytes: a single string of hex data (even # of chars required): 897a6f0219fd2950
     /// return: integer values split into 8 bit groupings [0x98, 0x7a, 0x6f, ...]
     func splitBytes(fromJoinedBytes bytes: String) -> [Int]? {
-        var chars = bytes.characters.map { String($0) }
+        var chars = bytes.map { String($0) }
         
         if chars.count % 2 == 1 {
             // Must be an even array
@@ -130,7 +130,7 @@ class SyncCrypto: JSInjector {
         let hex = bytes.map { String($0, radix: 16, uppercase: false) }
         
         // Sync hex must be 2 chars, with optional leading 0
-        let fullHex = hex.map { $0.characters.count == 2 ? $0 : "0" + $0 }
+        let fullHex = hex.map { $0.count == 2 ? $0 : "0" + $0 }
         let combinedHex = fullHex.joined(separator: "")
         return combinedHex
     }
