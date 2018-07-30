@@ -1,8 +1,30 @@
 diff --git a/chrome/browser/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector_impl.cc
-index b077698a86f2f661d0b6308a824e565cfeac05e4..6a0b7f11f10b5c672f84685b7b70749b1eec72e1 100644
+index b077698a86f2f661d0b6308a824e565cfeac05e4..82e45081e07853319772e3daf4fc419d1054297a 100644
 --- a/chrome/browser/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector_impl.cc
-@@ -227,7 +227,7 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::TickClock* tick_clock)
+@@ -42,6 +42,9 @@
+ #include "chrome/installer/util/install_util.h"
+ #elif defined(OS_MACOSX)
+ #include "chrome/browser/mac/keystone_glue.h"
++#if defined(BRAVE_CHROMIUM_BUILD)
++#include "brave/browser/mac/sparkle_glue.h"
++#endif
+ #endif
+ 
+ namespace {
+@@ -132,7 +135,11 @@ base::Version GetCurrentlyInstalledVersionImpl(base::Version* critical_update) {
+   }
+ #elif defined(OS_MACOSX)
+   installed_version = base::Version(
++#if defined(BRAVE_CHROMIUM_BUILD)
++      base::UTF16ToASCII(sparkle_glue::CurrentlyInstalledVersion()));
++#else
+       base::UTF16ToASCII(keystone_glue::CurrentlyInstalledVersion()));
++#endif
+ #elif defined(OS_POSIX)
+   // POSIX but not Mac OS X: Linux, etc.
+   base::CommandLine command_line(*base::CommandLine::ForCurrentProcess());
+@@ -227,7 +234,7 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::TickClock* tick_clock)
  #if defined(OS_WIN)
  // Only enable upgrade notifications for Google Chrome builds. Chromium does not
  // use an auto-updater.
@@ -11,7 +33,19 @@ index b077698a86f2f661d0b6308a824e565cfeac05e4..6a0b7f11f10b5c672f84685b7b70749b
    // There might be a policy/enterprise environment preventing updates, so
    // validate updatability and then call StartTimerForUpgradeCheck
    // appropriately. Skip this step if a past attempt has been made to enable
-@@ -574,7 +574,7 @@ void UpgradeDetectorImpl::OnRelaunchNotificationPeriodPrefChanged() {
+@@ -247,7 +254,11 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::TickClock* tick_clock)
+ #else   // defined(OS_WIN)
+ #if defined(OS_MACOSX)
+   // Only enable upgrade notifications if the updater (Keystone) is present.
++#if defined(BRAVE_CHROMIUM_BUILD)
++  if (!sparkle_glue::SparkleEnabled()) {
++#else
+   if (!keystone_glue::KeystoneEnabled()) {
++#endif
+     is_auto_update_enabled_ = false;
+     return;
+   }
+@@ -574,7 +585,7 @@ void UpgradeDetectorImpl::OnRelaunchNotificationPeriodPrefChanged() {
      NotifyOnUpgrade();
  }
  
