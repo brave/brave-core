@@ -81,7 +81,8 @@ public final class TabMO: NSManagedObject, CRUD {
     }
 
     // Updates existing tab with new data. Usually called when user navigates to a new website for in his existing tab.
-    @discardableResult public class func update(with id: String, tabData: SavedTab, context: NSManagedObjectContext) -> TabMO? {
+    @discardableResult public class func update(with id: String, tabData: SavedTab) -> TabMO? {
+        let context = DataController.backgroundContext
         guard let tab = get(fromId: id, context: context) else { return nil }
         
         if let screenshot = tabData.screenshot {
@@ -97,13 +98,6 @@ public final class TabMO: NSManagedObject, CRUD {
         DataController.save(context)
         
         return tab
-    }
-    
-    public class func preserve(savedTab: SavedTab) {
-        let context = DataController.backgroundContext
-        context.perform {
-            TabMO.update(with: savedTab.id, tabData: savedTab, context: context)
-        }
     }
     
     public class func saveScreenshotUUID(_ uuid: UUID?, tabId: String?) {
@@ -122,6 +116,6 @@ public final class TabMO: NSManagedObject, CRUD {
         guard let id = id else { return nil }
         let predicate = NSPredicate(format: "\(#keyPath(TabMO.syncUUID)) == %@", id)
         
-        return getFirst(predicate: predicate)
+        return getFirst(predicate: predicate, context: context)
     }
 }
