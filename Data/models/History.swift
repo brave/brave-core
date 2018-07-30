@@ -107,7 +107,7 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
         let urlKeyPath = #keyPath(History.url)
         let predicate = NSPredicate(format: "\(urlKeyPath) == %@", url.absoluteString)
         
-        return getFirst(predicate: predicate)
+        return first(where: predicate)
     }
 
     class func frecencyQuery(_ context: NSManagedObjectContext, containing:String? = nil) -> [History] {
@@ -119,7 +119,7 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
             predicate = NSPredicate(format: predicate.predicateFormat + " AND \(urlKeyPath) CONTAINS %@", query)
         }
         
-        return getAll(predicate: predicate, fetchLimit: 100) ?? []
+        return all(where: predicate, fetchLimit: 100) ?? []
     }
     
     public class func deleteAll(_ completionOnMain: @escaping ()->()) {

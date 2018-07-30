@@ -72,7 +72,7 @@ public final class Domain: NSManagedObject, CRUD {
     class func blockedTopSites(_ context: NSManagedObjectContext) -> [Domain] {
         let blockedFromTopSitesKeyPath = #keyPath(Domain.blockedFromTopSites)
         let predicate = NSPredicate(format: "\(blockedFromTopSitesKeyPath) = YES")
-        return getAll(predicate: predicate) ?? []
+        return all(where: predicate) ?? []
     }
 
     class func topSitesQuery(_ limit: Int, context: NSManagedObjectContext) -> [Domain] {
@@ -83,7 +83,7 @@ public final class Domain: NSManagedObject, CRUD {
         let predicate = NSPredicate(format: "\(visitsKeyPath) > %i AND \(blockedFromTopSitesKeyPath) != YES", minVisits)
         let sortDescriptors = [NSSortDescriptor(key: visitsKeyPath, ascending: false)]
         
-        return getAll(predicate: predicate, sortDescriptors: sortDescriptors) ?? []
+        return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
     }
 
     class func setBraveShield(forDomain domainString: String, state: Bool?, context: NSManagedObjectContext) {
