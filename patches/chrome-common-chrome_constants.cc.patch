@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_constants.cc b/chrome/common/chrome_constants.cc
-index 38f30f6ecd6c2073f4f18922c786b93517cf39e8..73d6276d9904d0f09c32cda6210ecf9563f738e9 100644
+index 38f30f6ecd6c2073f4f18922c786b93517cf39e8..96cf9d46e0cbb686567eb394d56b0b8757439b7b 100644
 --- a/chrome/common/chrome_constants.cc
 +++ b/chrome/common/chrome_constants.cc
 @@ -10,11 +10,11 @@
@@ -7,12 +7,12 @@ index 38f30f6ecd6c2073f4f18922c786b93517cf39e8..73d6276d9904d0f09c32cda6210ecf95
  
  #if defined(OS_MACOSX)
 -#define CHROMIUM_PRODUCT_STRING "Chromium"
-+#define CHROMIUM_PRODUCT_STRING "Brave"
++#define CHROMIUM_PRODUCT_STRING BRAVE_PRODUCT_STRING
  #if defined(GOOGLE_CHROME_BUILD)
  #define PRODUCT_STRING "Google Chrome"
  #elif defined(CHROMIUM_BUILD)
 -#define PRODUCT_STRING "Chromium"
-+#define PRODUCT_STRING "Brave"
++#define PRODUCT_STRING BRAVE_PRODUCT_STRING
  #else
  #error Unknown branding
  #endif
