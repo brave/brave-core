@@ -20,6 +20,7 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
+#include "components/password_manager/core/common/password_manager_features.h"
 #include "ui/base/ui_base_features.h"
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
@@ -116,7 +117,8 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   std::stringstream enabled_features;
   enabled_features << features::kEnableEmojiContextMenu.name
-    << "," << features::kDesktopPWAWindowing.name;
+    << "," << features::kDesktopPWAWindowing.name
+    << "," << password_manager::features::kFillOnAccountSelect.name;
   command_line.AppendSwitchASCII(switches::kEnableFeatures,
       enabled_features.str());
   return ChromeMainDelegate::BasicStartupComplete(exit_code);

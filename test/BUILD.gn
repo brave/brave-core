@@ -143,6 +143,7 @@ test("brave_browser_tests") {
     "//brave/chromium_src/third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/credentialmanager/credentials_containertest.cc",
     "//brave/browser/brave_content_browser_client_browsertest.cc",
+    "//brave/browser/brave_features_browsertest.cc",
     "//brave/browser/brave_profile_prefs_browsertest.cc",
     "//brave/browser/brave_resources_browsertest.cc",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
