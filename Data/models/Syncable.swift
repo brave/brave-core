@@ -38,7 +38,7 @@ extension Syncable {
         
         // TODO: filter a unique set of syncUUIDs
         
-        let searchableUUIDs = syncUUIDs.map { SyncHelpers.syncDisplay(fromUUID: $0) }.flatMap { $0 }
+        let searchableUUIDs = syncUUIDs.compactMap { SyncHelpers.syncDisplay(fromUUID: $0) }
         return get(predicate: NSPredicate(format: "syncDisplayUUID IN %@", searchableUUIDs), context: context)
     }
     
@@ -125,10 +125,10 @@ class SyncHelpers {
     
     /// DisplayUUID -> UUID
     static func syncUUID(fromString string: String?) -> [Int]? {
-        return string?.components(separatedBy: ",").flatMap { Int($0) }
+        return string?.components(separatedBy: ",").compactMap { Int($0) }
     }
     
     static func syncUUID(fromJSON json: JSON?) -> [Int]? {
-        return json?.array?.flatMap { $0.int }
+        return json?.array?.compactMap { $0.int }
     }
 }

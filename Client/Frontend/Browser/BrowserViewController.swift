@@ -14,9 +14,10 @@ import Alamofire
 import MobileCoreServices
 import SDWebImage
 import SwiftyJSON
-import Sentry
 import Deferred
 import Data
+
+private let log = Logger.browserLogger
 
 private let KVOs: [KVOConstants] = [
     .estimatedProgress,
@@ -468,34 +469,25 @@ class BrowserViewController: UIViewController {
             }
         }
     }
-
-    // Because crashedLastLaunch is sticky, it does not get reset, we need to remember its
+    
+    // Because crashedLastSession is sticky, it does not get reset, we need to remember its
     // value so that we do not keep asking the user to restore their tabs.
     var displayedRestoreTabsAlert = false
+    
+    var crashedLastSession = false
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if !displayedRestoreTabsAlert && !cleanlyBackgrounded() && crashedLastLaunch() {
+        if !displayedRestoreTabsAlert && crashedLastSession {
             displayedRestoreTabsAlert = true
             showRestoreTabsAlert()
         } else {
             tabManager.restoreTabs()
         }
-
+        
         updateTabCountUsingTabManager(tabManager, animated: false)
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
-    }
-
-    fileprivate func crashedLastLaunch() -> Bool {
-        return Sentry.crashedLastLaunch
-    }
-
-    fileprivate func cleanlyBackgrounded() -> Bool {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return false
-        }
-        return appDelegate.applicationCleanlyBackgrounded
     }
 
     fileprivate func showRestoreTabsAlert() {
@@ -508,6 +500,7 @@ class BrowserViewController: UIViewController {
                 self.tabManager.restoreTabs()
             },
             noCallback: { _ in
+                TabMO.deleteAll()
                 self.tabManager.addTabAndSelect()
             }
         )
@@ -515,7 +508,8 @@ class BrowserViewController: UIViewController {
     }
 
     fileprivate func canRestoreTabs() -> Bool {
-        return !TabMO.getAll().isEmpty
+        // Make sure there's at least one real tab open
+        return !TabMO.getAll().compactMap({ $0.url }).isEmpty
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -2357,8 +2351,8 @@ extension BrowserViewController {
         customSearchBarButton = item
         _ = Try(withTry: {
             inputAssistant.trailingBarButtonGroups.last?.barButtonItems.append(item)
-        }) { (exception) in
-            Sentry.shared.send(message: "Failed adding custom search button to input assistant", tag: .general, severity: .error, description: "\(exception ??? "nil")")
+        }) { exception in
+            log.error("Failed adding custom search button to input assistant: \(String(describing: exception))")
         }
     }
 
