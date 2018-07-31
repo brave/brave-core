@@ -218,7 +218,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             $0.onTintColor = BraveUX.BraveOrange
         }
       
-        HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value) ?? .onlyFromMainDocumentDomain
+        HTTPCookieStorage.shared.updateCookieAcceptPolicy(to: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value))
       
         return shouldPerformAdditionalDelegateHandling
     }
