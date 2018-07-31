@@ -99,11 +99,6 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
   std::string mediaURLEncoded;
   braveledger_bat_helper::encodeURIComponent(mediaURL, mediaURLEncoded);
 
-  braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST extraData;
-  extraData.value1 = duration;
-  extraData.string5 = mediaKey;
-  extraData.string1 = providerName;
-  extraData.string2 = mediaURL;
   {
     // TODO(bridiver) - need to find out what is going on with mapCallbacks_
     // it's keyed to the mediaKey, but every lookup just gets the last entry
@@ -119,9 +114,12 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
     handler_.AddRequestHandler(std::move(request),
         std::bind(&BatGetMedia::getPublisherFromMediaPropsCallback,
         this,
+        duration,
+        mediaKey,
+        providerName,
+        mediaURL,
         _1,
-        _2,
-        extraData));
+        _2));
   } else if (TWITCH_MEDIA_TYPE == providerName) {
     braveledger_bat_helper::MEDIA_PUBLISHER_INFO publisherInfo;
     publisherInfo.favIconURL_ = "";
@@ -152,7 +150,7 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
     {
       std::lock_guard<std::mutex> guard(callbacks_access_mutex_);
 
-      std::map<std::string, braveledger_bat_helper::GetMediaPublisherInfoCallback>::iterator iter = mapCallbacks_.find(extraData.string5);
+      std::map<std::string, braveledger_bat_helper::GetMediaPublisherInfoCallback>::iterator iter = mapCallbacks_.find(mediaKey);
       DCHECK(iter != mapCallbacks_.end());
       braveledger_bat_helper::GetMediaPublisherInfoCallback callback = iter->second;
       mapCallbacks_.erase(iter);
@@ -248,35 +246,38 @@ uint64_t BatGetMedia::getTwitchDuration(const braveledger_bat_helper::TWITCH_EVE
   return (uint64_t)(time * 1000.0);
 }
 
-void BatGetMedia::getPublisherFromMediaPropsCallback(bool result, const std::string& response,
-    const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, const std::string& mediaKey,
+    const std::string& providerName, const std::string& mediaURL, bool result, const std::string& response) {
   //LOG(ERROR) << "!!!!getPublisherFromMediaPropsCallback response == " << response;
-  if (YOUTUBE_MEDIA_TYPE == extraData.string1) {
+  if (YOUTUBE_MEDIA_TYPE == providerName) {
     std::string publisherURL;
     braveledger_bat_helper::getJSONValue("author_url", response, publisherURL);
     std::string publisherName;
     braveledger_bat_helper::getJSONValue("author_name", response, publisherName);
     //LOG(ERROR) << "!!!!publisherURL == " << publisherURL;
     //LOG(ERROR) << "!!!!publisherName == " << publisherName;
-    braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST newExtraData(extraData);
-    newExtraData.string3 = publisherURL;
-    newExtraData.string4 = publisherName;
 
     auto request = ledger_->LoadURL(publisherURL,
         std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
     handler_.AddRequestHandler(std::move(request),
         std::bind(&BatGetMedia::getPublisherInfoCallback,
                   this,
+                  duration, 
+                  mediaKey,
+                  providerName, 
+                  mediaURL,
+                  publisherURL,
+                  publisherName,
                   _1,
-                  _2,
-                  newExtraData));
+                  _2));
   }
 }
 
-void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& response,
-    const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
+void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::string& mediaKey,
+    const std::string& providerName, const std::string& mediaURL, const std::string& publisherURL,
+    const std::string& publisherName, bool result, const std::string& response) {
   //LOG(ERROR) << "!!!!getPublisherInfoCallback == " << response;
-  if (YOUTUBE_MEDIA_TYPE == extraData.string1) {
+  if (YOUTUBE_MEDIA_TYPE == providerName) {
     size_t pos = response.find("<div id=\"img-preload\"");
     std::string favIconURL;
     do {
@@ -298,16 +299,16 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
       }
     } while (favIconURL.find("photo.jpg") == std::string::npos);
     //LOG(ERROR) << "publisher's picture URL == " << favIconURL;
-    std::string channelName = extraData.string3 + "/videos";
-    pos = extraData.string3.rfind("/");
-    std::string publisher = extraData.string1 + "#channel:";
-    if (pos != std::string::npos && pos < extraData.string3.length() - 1) {
-      publisher += extraData.string3.substr(pos + 1);
+    std::string channelName = publisherURL + "/videos";
+    pos = publisherURL.rfind("/");
+    std::string publisher = providerName + "#channel:";
+    if (pos != std::string::npos && pos < publisherURL.length() - 1) {
+      publisher += publisherURL.substr(pos + 1);
       //LOG(ERROR) << "!!!publisher == " << publisher;
     }
     braveledger_bat_helper::MEDIA_PUBLISHER_INFO publisherInfo;
-    publisherInfo.publisherName_ = extraData.string4;
-    publisherInfo.publisherURL_ = extraData.string3;
+    publisherInfo.publisherName_ = publisherName;
+    publisherInfo.publisherURL_ = publisherURL;
     publisherInfo.favIconURL_ = favIconURL;
     publisherInfo.channelName_ = channelName;
     publisherInfo.publisher_ = publisher;
@@ -315,17 +316,17 @@ void BatGetMedia::getPublisherInfoCallback(bool result, const std::string& respo
     std::string medPubJson;
     braveledger_bat_helper::saveToJsonString(publisherInfo, medPubJson);
 
-    auto io_task = std::bind(&BatGetMedia::saveMediaPublisherInfo, this, extraData.string5, medPubJson);
+    auto io_task = std::bind(&BatGetMedia::saveMediaPublisherInfo, this, mediaKey, medPubJson);
     ledger_->RunIOTask(io_task);
 
     {
       std::lock_guard<std::mutex> guard(callbacks_access_mutex_);
 
-      std::map<std::string, braveledger_bat_helper::GetMediaPublisherInfoCallback>::iterator iter = mapCallbacks_.find(extraData.string5);
+      std::map<std::string, braveledger_bat_helper::GetMediaPublisherInfoCallback>::iterator iter = mapCallbacks_.find(mediaKey);
       DCHECK(iter != mapCallbacks_.end());
       braveledger_bat_helper::GetMediaPublisherInfoCallback callback = iter->second;
       mapCallbacks_.erase(iter);
-      callback(extraData.value1, publisherInfo);
+      callback(duration, publisherInfo);
     }
   }
 }

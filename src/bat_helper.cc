@@ -783,22 +783,6 @@ namespace braveledger_bat_helper {
   }
 
   /////////////////////////////////////////////////////////////////////////////
-  FETCH_CALLBACK_EXTRA_DATA_ST::FETCH_CALLBACK_EXTRA_DATA_ST():
-    value1(0),
-    boolean1(true) {}
-
-  FETCH_CALLBACK_EXTRA_DATA_ST::FETCH_CALLBACK_EXTRA_DATA_ST(const FETCH_CALLBACK_EXTRA_DATA_ST& extraData):
-    value1(extraData.value1),
-    string1(extraData.string1),
-    string2(extraData.string2),
-    string3(extraData.string3),
-    string4(extraData.string4),
-    string5(extraData.string5),
-    boolean1(extraData.boolean1) {}
-
-  FETCH_CALLBACK_EXTRA_DATA_ST::~FETCH_CALLBACK_EXTRA_DATA_ST() {}
-
-  /////////////////////////////////////////////////////////////////////////////
   SURVEYOR_INFO_ST::SURVEYOR_INFO_ST() {}
 
   SURVEYOR_INFO_ST::~SURVEYOR_INFO_ST() {}
