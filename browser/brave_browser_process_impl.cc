@@ -65,7 +65,7 @@ BraveBrowserProcessImpl::component_updater() {
   component_updater_ = component_updater::ComponentUpdateServiceFactory(
       component_updater::MakeBraveComponentUpdaterConfigurator(
           base::CommandLine::ForCurrentProcess(),
-          g_browser_process->local_state(), use_brave_server),
+          g_browser_process->local_state()),
       std::move(scheduler));
 
   return component_updater_.get();
