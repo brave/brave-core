@@ -1,19 +1,29 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
+<translation id="5194812628624740897">Memutuskan sambungan <ph name="USERNAME"/> akan mengosongkan sejarah anda, penanda halaman, tetapan dan data Brave lain yang disimpan pada peranti ini. Data yang disimpan dalam Akaun Brave Software anda tidak akan dikosongkan dan boleh diuruskan pada <ph name="GOOGLE_DASHBOARD_LINK"/>Papan Pemuka Brave Software<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">log masuk ke Brave</translation>
 <translation id="5516268345616100622">Pengurus Tugas - Brave</translation>
+<translation id="7918740962659365265">Bantu jadikan Brave lebih baik dengan menghantar laporan ranap dan <ph name="UMA_LINK"/> kepada Brave Software.</translation>
+<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
+<translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
+<translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="6474707902830053522">Dapatkan bantuan untuk menggunakan Brave OS</translation>
 <translation id="8992261409816268381">Pengarang Brave</translation>
-<translation id="9179832504443063758">Lesen sumber terbuka Brave</translation>
-<translation id="8372475781172910778">Lesen sumber terbuka Brave OS</translation>
+<translation id="4651430425715739110">Hak Cipta <ph name="YEAR"/> Pengarang Brave. Hak cipta terpelihara.</translation>
+<translation id="2310890394934209120">Brave OS berjaya dilaksanakan dengan adanya <ph name="BEGIN_LINK_CROS_OSS"/>perisian sumber terbuka<ph name="END_LINK_CROS_OSS"/> tambahan.</translation>
 <translation id="5019879183386042809">Jadikan Brave penyemak imbas lalai</translation>
 <translation id="5063987220091207247">OS Brave tidak boleh membuka halaman ini.</translation>
 <translation id="4065288863231444640">Benarkan Brave Dijalankan dalam Latar Belakang</translation>
+<translation id="2585240446624043880">Brave tidak dapat membaca atau menulis pada direktori datanya:
+
+<ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8417700129970341035">Pilihan: Bantu jadikan Brave lebih baik dengan menghantar statistik penggunaan dan laporan ranap kepada Brave Software secara automatik.</translation>
 <translation id="1489465648257900784">Profil anda tidak boleh digunakan kerana profil anda dihasilkan dari versi Brave yang lebih baharu.
 
@@ -22,17 +32,20 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="3403365884036456766">Fail pilihan anda rosak atau tidak sah.
 
 Brave tidak dapat mengembalikan tetapan anda.</translation>
-<translation id="5316336629760101484">Gunakan kata laluan kukuh yang dijana oleh Brave</translation>
 <translation id="3343095737966473035">Brave bukan penyemak imbas lalai anda</translation>
 <translation id="6715663530666325392">Sediakan Penyegerakan untuk menyimpan ciri penyemak imbas yang diperibadikan di web dan aksesnya dari Brave pada mana-mana komputer.</translation>
 <translation id="2708027082363760195">Brave tidak menyertakan pemapar PDF yang diperlukan oleh Pratonton Cetakan untuk berfungsi.</translation>
 <translation id="8880183781256147665">Menambah ke Brave...</translation>
+<translation id="3561569806301739367"><ph name="FILE_NAME"/> mungkin berbahaya, jadi Brave telah menyekat fail itu.</translation>
 <translation id="9067428552314418522">Fail ini berbahaya, maka Brave telah menyekatnya.</translation>
+<translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, jadi Brave telah menyekat fail itu.</translation>
 <translation id="89367911614620585">Fail ini mungkin berbahaya, maka Brave telah menyekatnya.</translation>
 <translation id="2339258256897053758">Kunci API Brave Software tiada. Sesetengah fungsi Brave akan dilumpuhkan.</translation>
 <translation id="5906655207909574370">Hampir terkini! Mulakan semula peranti anda untuk menyelesaikan kemas kini.</translation>
 <translation id="5877064549588274448">Saluran berubah. Mulakan semula peranti anda untuk menggunakan perubahan.</translation>
+<translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> anda sudah dikemas kini.</translation>
 <translation id="6970811910055250180">Mengemas kini peranti anda...</translation>
+<translation id="8030318113982266900">Mengemas kini peranti anda kepada saluran <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Tambah ke Brave</translation>
 <translation id="7456658570432774853">Bantu jadikan Brave lebih baik dengan melaporkan tetapan semasa</translation>
 <translation id="5436841087823876677">Amaran: Brave tidak dapat menghalang sambungan daripada merakamkan sejarah penyemakan imbas anda. Untuk melumpuhkan sambungan ini dalam mod inkognito, nyahpilih pilihan ini.</translation>
@@ -49,6 +62,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="4100716194836114130">Ini Brave anda</translation>
 <translation id="8296145982386097283">Berkongsi komputer? Sekarang anda boleh menyediakan Brave menurut cara yang anda suka.</translation>
 <translation id="1672124279374861424">Selepas mengalih keluar akaun anda daripada Brave, anda mungkin perlu memuatkan semula tab yang dibuka untuk memberi kesan.</translation>
+<translation id="9197493712748167998">Anda menggunakan <ph name="PROFILE_EMAIL"/> untuk menyegerakkan bahan digital chromium anda. Untuk mengemas kini pilihan penyegerakan anda atau menggunakan Brave tanpa akaun Brave Software, lawati <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3968006371075376562">OS Brave tidak dapat menyegerakkan data anda. Sila kemas kini frasa laluan Segerak anda.</translation>
 <translation id="6746636977031158624">OS Brave tidak dapat menyegerakkan data anda kerana butiran log masuk akaun anda sudah lapuk.</translation>
 <translation id="2999152167963026588">OS Brave tidak dapat menyegerakkan data anda kerana Segerak tidak tersedia untuk domain anda.</translation>
@@ -58,10 +72,12 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="663059986967017181">Disalin ke Brave</translation>
 <translation id="5225129378754387452">Paparkan menu Brave</translation>
 <translation id="300669147395456190">Apl Brave</translation>
+<translation id="3421950102518690868"><ph name="DOMAIN"/> menghendaki anda membaca dan menerima Syarat Perkhidmatan berikut sebelum menggunakan peranti ini. Syarat ini tidak meluaskan, mengubah suai atau mengehadkan Syarat OS Brave.</translation>
 <translation id="3293668930608086049">Brave menggunakan kamera dan mikrofon anda.</translation>
 <translation id="8919461291440820124">Brave menggunakan mikrofon anda.</translation>
 <translation id="3205074487970075628">Brave menggunakan kamera anda.</translation>
 <translation id="3813272600615358652">Sambungan ini telah menukar halaman yang ditunjukkan apabila anda memulakan Brave.</translation>
+<translation id="2576129394594491151">Sambungan "<ph name="EXTENSION_NAME"/>" telah menukar halaman yang ditunjukkan apabila anda memulakan Brave.</translation>
 <translation id="2675662665675552980">Sambungan turut mengawal halaman yang ditunjukkan apabila anda memulakan Brave.</translation>
 <translation id="3215652305414474626">Sambungan turut mengawal halaman yang ditunjukkan apabila anda memulakan Brave atau mengklik butang Laman Utama.</translation>
 <translation id="2433912322225810055">Sambungan turut mengawal halaman yang ditunjukkan apabila anda memulakan Brave atau membuat carian dari Kotak Omni.</translation>
@@ -81,10 +97,11 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="9203540365585059272">Kemas kini keselamatan khas untuk Brave baru sahaja dilakukan; anda perlu memulakan semula peranti ini sekarang supaya kemas kini ini berkesan (kami akan memulihkan tab anda).</translation>
 <translation id="763369711159699222">Bantu menjadikan Brave lebih baik</translation>
 <translation id="1156940037717341650">Anda boleh membantu menjadikan Brave lebih selamat dan lebih mudah untuk digunakan dengan melaporkan butiran kemungkinan insiden keselamatan secara automatik kepada Brave Software.</translation>
-<translation id="3009995890652266099">Anda boleh membantu menjadikan Brave lebih selamat dan mudah digunakan dengan menghantar secara automatik beberapa maklumat sistem dan kandungan halaman kepada Brave Software untuk membantu mengesan apl dan tapak yang berbahaya.</translation>
 <translation id="6791166902140255175">Tab Brave</translation>
 <translation id="8899693649891674038">Pasang Brave pada telefon anda. Kami akan menghantar SMS ke telefon anda.</translation>
+<translation id="1570795130102031380">Pasang Brave pada telefon anda. Kami akan menghantar SMS ke telefon anda: <ph name="PHONE_NUMBER"/></translation>
 <translation id="1609678321160597289">Pasang Brave pada telefon anda. Kami akan menghantar SMS ke nombor telefon pemulihan akaun anda.</translation>
+<translation id="2965084188004448871">Pasang Brave pada telefon anda. Kami akan menghantar SMS ke nombor telefon pemulihan akaun anda: <ph name="PHONE_NUMBER"/></translation>
 <translation id="8358191771897395012">dapatkan Brave pada iPhone anda</translation>
 <translation id="1744365871163268756">Sila tunggu sementara Brave memasang kemas kini sistem terkini.</translation>
 <translation id="5693614905241031118">Brave dikemas kini secara automatik supaya anda sentiasa mempunyai versi yang terbaharu.</translation>
@@ -93,10 +110,17 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="6686872257969654608">Mengenai Brave OS</translation>
 <translation id="2280363356796735201">Dapatkan bantuan berkenaan Brave OS</translation>
 <translation id="5253815230176279256">Brave Software Pay (disalin ke Brave)</translation>
+<translation id="7977435741986383568">Brave boleh menggunakan perkhidmatan web untuk meningkatkan pengalaman penyemakan imbas anda. Anda boleh memilih untuk melumpuhkan perkhidmatan ini. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
+<translation id="2312399718665761438">Untuk membetulkan kesilapan ejaan, Brave menghantar teks yang anda taip dalam medan teks kepada Brave Software</translation>
+<translation id="815816884817177844">Berkomunikasi dengan Brave Software untuk meningkatkan penyemakan imbas dan Brave</translation>
 <translation id="6274110506580702455">Log masuk ke Brave dilumpuhkan oleh pentadbir peranti ini.</translation>
+<translation id="9220324636239049437">Tindakan ini akan memadamkan 1 item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
+<translation id="5853262807109651878">Tindakan ini akan memadamkan <ph name="ITEMS_COUNT"/> item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
+<translation id="4784414698887946907">Tindakan ini akan memadamkan data semakan imbas anda daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="82609232232243542">Log masuk ke Brave</translation>
 <translation id="8372880274820509128">Untuk keselamatan tambahan, Brave akan menyulitkan data anda.</translation>
-<translation id="6234515504547364178">Log keluar daripada Brave</translation>
+<translation id="7445061995866044926">Log keluar daripada Brave?</translation>
 <translation id="7713466009760073734">OS Brave dipaparkan dalam bahasa ini</translation>
 <translation id="3518788198614984730">Paparkan OS Brave dalam bahasa ini</translation>
+<translation id="6056473803837713617">Bantu jadikan Brave lebih baik dengan melaporkan <ph name="BEGIN_LINK"/>tetapan semasa<ph name="END_LINK"/></translation>
 </translationbundle>

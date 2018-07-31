@@ -27,6 +27,7 @@ void ComponentsUI::OnDemandUpdate(
     component_updater::ComponentUpdateService* cus,
     const std::string& component_id) {
   cus->GetOnDemandUpdater().OnDemandUpdate(component_id,
+      component_updater::OnDemandUpdater::Priority::FOREGROUND,
       component_updater::Callback());
 }
 

@@ -9,8 +9,7 @@
 
 class BraveProfileNetworkDelegate : public BraveNetworkDelegateBase {
  public:
-  BraveProfileNetworkDelegate(extensions::EventRouterForwarder* event_router,
-                        BooleanPrefMember* enable_referrers);
+  BraveProfileNetworkDelegate(extensions::EventRouterForwarder* event_router);
   ~BraveProfileNetworkDelegate() override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveProfileNetworkDelegate);

@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/plugins/chrome_plugin_service_filter.cc b/chrome/browser/plugins/chrome_plugin_service_filter.cc
-index e47d5ea63e5a690e2133e24ec37141510f41f7dc..0c6a307d32efdab8b9afa67da91ee23f5a943083 100644
+index 9f0645f8ae2021d194904b82982d35b0a633fdd9..4447bbd5a0c5a3a8e5230539f6cf4f4b998732a6 100644
 --- a/chrome/browser/plugins/chrome_plugin_service_filter.cc
 +++ b/chrome/browser/plugins/chrome_plugin_service_filter.cc
-@@ -42,7 +42,7 @@ class ProfileContentSettingObserver : public content_settings::Observer {
-                                const ContentSettingsPattern& secondary_pattern,
-                                ContentSettingsType content_type,
-                                std::string resource_identifier) override {
--    if (content_type != CONTENT_SETTINGS_TYPE_PLUGINS)
-+    if (content_type != CONTENT_SETTINGS_TYPE_PLUGINS || resource_identifier.length() != 0)
-       return;
+@@ -52,7 +52,7 @@ class ProfileContentSettingObserver : public content_settings::Observer {
+       PluginService::GetInstance()->PurgePluginListCache(profile_, false);
  
-     HostContentSettingsMap* map =
+     const GURL primary(primary_pattern.ToString());
+-    if (primary.is_valid()) {
++    if (primary.is_valid() && resource_identifier.length() == 0) {
+       DCHECK_EQ(ContentSettingsPattern::Relation::IDENTITY,
+                 ContentSettingsPattern::Wildcard().Compare(secondary_pattern));
+       PluginUtils::RememberFlashChangedForSite(map, primary);

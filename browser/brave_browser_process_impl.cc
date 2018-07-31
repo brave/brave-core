@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/io_thread.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
 
 BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
@@ -50,10 +51,23 @@ BraveBrowserProcessImpl::component_updater(
   if (!BrowserThread::CurrentlyOn(BrowserThread::UI))
     return nullptr;
 
+  std::unique_ptr<component_updater::UpdateScheduler> scheduler;
+#if defined(OS_ANDROID)
+  if (base::FeatureList::IsEnabled(
+          chrome::android::kBackgroundTaskComponentUpdate) &&
+      component_updater::BackgroundTaskUpdateScheduler::IsAvailable()) {
+    scheduler =
+        std::make_unique<component_updater::BackgroundTaskUpdateScheduler>();
+  }
+#endif
+  if (!scheduler)
+    scheduler = std::make_unique<component_updater::TimerUpdateScheduler>();
+
   component_updater = component_updater::ComponentUpdateServiceFactory(
       component_updater::MakeBraveComponentUpdaterConfigurator(
           base::CommandLine::ForCurrentProcess(),
-          g_browser_process->local_state(), use_brave_server));
+          g_browser_process->local_state(), use_brave_server),
+      std::move(scheduler));
 
   return component_updater.get();
 }

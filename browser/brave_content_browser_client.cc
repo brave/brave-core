@@ -126,8 +126,7 @@ bool BraveContentBrowserClient::AllowSetCookie(
     const net::CanonicalCookie& cookie,
     content::ResourceContext* context,
     int render_process_id,
-    int render_frame_id,
-    const net::CookieOptions& options) {
+    int render_frame_id) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
 
@@ -145,6 +144,6 @@ bool BraveContentBrowserClient::AllowSetCookie(
   BrowserThread::PostTask(
       BrowserThread::UI, FROM_HERE,
       base::BindOnce(&TabSpecificContentSettings::CookieChanged, wc_getter, url,
-                     first_party, cookie, options, !allow));
+                     first_party, cookie, !allow));
   return allow;
 }

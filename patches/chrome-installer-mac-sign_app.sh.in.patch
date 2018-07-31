@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/sign_app.sh.in b/chrome/installer/mac/sign_app.sh.in
-index a2694af5cc7a66103ad4f88778c2bc25133c97b9..f0a70b137f10f971d4d81c5bd8be5311182bdcb3 100644
+index 4383c826c43588aa8fc0819b8a7669364815d2d9..a463cb050a74234615b2cb22b45fd6e799fdf379 100644
 --- a/chrome/installer/mac/sign_app.sh.in
 +++ b/chrome/installer/mac/sign_app.sh.in
-@@ -40,10 +40,7 @@ if [[ ${#} == 4 && "${4}" == "--development" ]]; then
+@@ -42,10 +42,7 @@ if [[ ${#} == 6 && "${6}" == "--development" ]]; then
  fi
  
  script_dir="$(dirname "${0}")"
@@ -12,9 +12,9 @@ index a2694af5cc7a66103ad4f88778c2bc25133c97b9..f0a70b137f10f971d4d81c5bd8be5311
 -browser_app_rules="${script_dir}/app_resource_rules.plist"
 +codesign_id=$codesign_id source "${script_dir}/variables.sh"
  
- versioned_dir="${app_path}/Contents/Versions/@VERSION@"
- 
-@@ -57,10 +54,7 @@ app_mode_loader="${app_mode_loader_app}/Contents/MacOS/app_mode_loader"
+ contents_dir="${app_path}/Contents"
+ versioned_dir="${contents_dir}/Versions/@VERSION@"
+@@ -63,10 +60,7 @@ cp "${provisioning_profile}" "${contents_dir}/embedded.provisionprofile"
  
  requirement="\
  designated => \
@@ -26,11 +26,11 @@ index a2694af5cc7a66103ad4f88778c2bc25133c97b9..f0a70b137f10f971d4d81c5bd8be5311
  ${requirement_suffix} \
  "
  
-@@ -68,7 +62,6 @@ codesign_cmd=(
+@@ -74,7 +68,6 @@ codesign_cmd=(
    codesign --sign "${codesign_id}" --keychain "${codesign_keychain}"
    "${browser_app}"
    --options "${enforcement_flags_app}"
 -  --resource-rules "${browser_app_rules}"
+   --entitlements "${entitlements_plist}"
  )
  if [[ -z "${is_development}" ]]; then
-   codesign_cmd+=( -r="${requirement}" )

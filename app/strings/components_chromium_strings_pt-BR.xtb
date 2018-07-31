@@ -4,6 +4,8 @@
 <translation id="7460648687895344848">O Brave OS não concluiu a confirguração original</translation>
 <translation id="130631256467250065">As alterações entrarão em vigor na próxima vez que você reiniciar o dispositivo.</translation>
 <translation id="7999989146447764333">O relatório de erros não está disponível no Brave.</translation>
+<translation id="7932149101545999102">O Brave tornou-se possível graças ao projeto de código aberto <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> e outros <ph name="BEGIN_LINK_OSS"/>softwares de código aberto<ph name="END_LINK_OSS"/>.</translation>
 <translation id="1953231710324290369">Você está vendo uma página segura do Brave</translation>
+<translation id="2305018990464327944">O Brave verificou que <ph name="ISSUER"/> emitiu o certificado deste website.</translation>
 <translation id="88187049159266777">O Brave não foi encerrado corretamente.</translation>
 </translationbundle>

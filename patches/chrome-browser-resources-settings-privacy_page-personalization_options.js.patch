@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index 3d5887b2a17c10914f5c202b29790525405d78c8..d024d37918bae787722c0d0a8031cde2809fe1c0 100644
+index 8ba2842ded946935daa06d26818746763c5f8e3d..c87216485ad4cd1326ed36bea643afb5302e36b0 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-@@ -60,7 +60,7 @@ Polymer({
+@@ -62,7 +62,7 @@ Polymer({
  
-     unifiedConsentEnabled: Boolean,
+     unifiedConsentGiven: Boolean,
  
 -    // <if expr="_google_chrome and not chromeos">
 +    // <if expr="_chromium and not chromeos">
      // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
      // (but handled differently in C++).
      /** @private {chrome.settingsPrivate.PrefObject} */
-@@ -86,7 +86,7 @@ Polymer({
+@@ -88,7 +88,7 @@ Polymer({
      this.addWebUIListener('safe-browsing-extended-reporting-change', setSber);
      this.browserProxy_.getSafeBrowsingExtendedReporting().then(setSber);
  
@@ -20,7 +20,7 @@ index 3d5887b2a17c10914f5c202b29790525405d78c8..d024d37918bae787722c0d0a8031cde2
      const setMetricsReportingPref = this.setMetricsReportingPref_.bind(this);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
      this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
-@@ -128,7 +128,7 @@ Polymer({
+@@ -130,7 +130,7 @@ Polymer({
      this.safeBrowsingExtendedReportingPref_ = pref;
    },
  

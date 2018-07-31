@@ -8,9 +8,8 @@
 
 
 BraveSystemNetworkDelegate::BraveSystemNetworkDelegate(
-    extensions::EventRouterForwarder* event_router,
-    BooleanPrefMember* enable_referrers) :
-    BraveNetworkDelegateBase(event_router, enable_referrers) {
+    extensions::EventRouterForwarder* event_router) :
+    BraveNetworkDelegateBase(event_router) {
   brave::OnBeforeURLRequestCallback callback =
       base::Bind(
           brave::OnBeforeURLRequest_StaticRedirectWork);

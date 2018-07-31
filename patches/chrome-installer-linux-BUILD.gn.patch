@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..094971319b2c5a2743ec53614866f26c78f57d64 100644
+index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..78b5a943e9c3020dfd5fca0b52701cd284b013b1 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -25,11 +25,10 @@ declare_args() {
+@@ -25,8 +25,8 @@ declare_args() {
  assert(is_linux)
  
  packaging_files_executables = [
@@ -12,11 +12,8 @@ index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..094971319b2c5a2743ec53614866f26c
 +  "$root_out_dir/brave_sandbox",
  ]
  packaging_files_shlibs = []
--
- if (enable_nacl) {
-   packaging_files_executables += [
-     "$root_out_dir/nacl_helper",
-@@ -159,12 +158,17 @@ action("merge_rpm_dependencies") {
+ 
+@@ -159,12 +159,17 @@ action("merge_rpm_dependencies") {
  }
  
  action("strip_chrome_binary") {
@@ -35,7 +32,7 @@ index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..094971319b2c5a2743ec53614866f26c
    script = "//build/gn_run_binary.py"
    sources = [
      prog_name,
-@@ -246,8 +250,8 @@ copy("common_packaging_files") {
+@@ -246,8 +251,8 @@ copy("common_packaging_files") {
      ]
    } else {
      sources += [
@@ -46,7 +43,7 @@ index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..094971319b2c5a2743ec53614866f26c
      ]
    }
  
-@@ -357,6 +361,12 @@ group("installer_deps") {
+@@ -357,6 +362,12 @@ group("installer_deps") {
      "//chrome/browser/resources/media/mei_preload:component",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -59,7 +56,7 @@ index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..094971319b2c5a2743ec53614866f26c
    if (enable_nacl) {
      public_deps += [
        "//components/nacl/loader:nacl_helper",
-@@ -386,6 +396,9 @@ group("installer_deps") {
+@@ -386,6 +397,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -69,7 +66,7 @@ index fbabd6c3414f5cb69cf4c7ab6ef5f957cb391376..094971319b2c5a2743ec53614866f26c
  
    if (current_cpu == "x86") {
      # The shell scripts use "ia32" instead of "x86".
-@@ -524,3 +537,6 @@ linux_package("beta") {
+@@ -528,3 +542,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

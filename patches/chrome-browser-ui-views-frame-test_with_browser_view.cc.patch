@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/test_with_browser_view.cc b/chrome/browser/ui/views/frame/test_with_browser_view.cc
-index f028f99fde857c1f77ce54b5f27bb6d292bb4200..c2547aae815721666a95d25b7540034772a7fa60 100644
+index 71e2d0d115afe42838287cccc8830f07cafc977c..fc15c1c6712300ea28b2238fbce92d390b204662 100644
 --- a/chrome/browser/ui/views/frame/test_with_browser_view.cc
 +++ b/chrome/browser/ui/views/frame/test_with_browser_view.cc
-@@ -50,7 +50,7 @@ std::unique_ptr<KeyedService> CreateAutocompleteClassifier(
+@@ -53,7 +53,7 @@ std::unique_ptr<KeyedService> CreateAutocompleteClassifier(
      content::BrowserContext* context) {
    Profile* profile = static_cast<Profile*>(context);
    return std::make_unique<AutocompleteClassifier>(

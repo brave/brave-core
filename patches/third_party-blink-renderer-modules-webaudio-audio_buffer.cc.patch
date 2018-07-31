@@ -1,26 +1,16 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index 71da68ca003c15e2f0bf5e1e094c3b2043652ad3..c78f8a26efb0d97ec242bdbeb29286b7f905e1f5 100644
+index e3133cde0dacf7e84e11de1896b5cb395ee4d53e..ab242c516f503e71a83a1d95b99023e1c1c841b9 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-@@ -28,14 +28,17 @@
+@@ -28,6 +28,7 @@
  
  #include "third_party/blink/renderer/modules/webaudio/audio_buffer.h"
  
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
- #include "third_party/blink/renderer/bindings/core/v8/exception_messages.h"
- #include "third_party/blink/renderer/bindings/core/v8/exception_state.h"
- #include "third_party/blink/renderer/core/dom/exception_code.h"
-+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
  #include "third_party/blink/renderer/modules/webaudio/audio_buffer_options.h"
  #include "third_party/blink/renderer/modules/webaudio/base_audio_context.h"
  #include "third_party/blink/renderer/platform/audio/audio_bus.h"
- #include "third_party/blink/renderer/platform/audio/audio_file_reader.h"
- #include "third_party/blink/renderer/platform/audio/audio_utilities.h"
-+#include "third_party/blink/renderer/platform/bindings/script_state.h"
- #include "third_party/blink/renderer/platform/wtf/typed_arrays/float32_array.h"
- 
- namespace blink {
-@@ -220,8 +223,13 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
+@@ -221,8 +222,13 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
  }
  
  NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
@@ -33,8 +23,8 @@ index 71da68ca003c15e2f0bf5e1e094c3b2043652ad3..c78f8a26efb0d97ec242bdbeb29286b7
 +  }
    if (channel_index >= channels_.size()) {
      exception_state.ThrowDOMException(
-         kIndexSizeError, "channel index (" + String::Number(channel_index) +
-@@ -240,16 +248,22 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
+         DOMExceptionCode::kIndexSizeError,
+@@ -242,16 +248,22 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
    return NotShared<DOMFloat32Array>(channels_[channel_index].Get());
  }
  

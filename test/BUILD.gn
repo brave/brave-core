@@ -16,7 +16,6 @@ static_library("brave_test_support_unit") {
     "//chrome:strings",
     "//chrome/browser",
     "//chrome/common",
-    "//mojo/edk/test:test_support",
   ]
 
   if (is_win) {

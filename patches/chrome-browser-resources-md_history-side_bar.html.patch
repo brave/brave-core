@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/md_history/side_bar.html b/chrome/browser/resources/md_history/side_bar.html
-index 49b11840b7b7215cb8cf8ce641883c48072a53d2..5237c1b68dc73ed0c81eb7a91c387633093c4477 100644
+index e49ca4f078d9475cb48d1706480c77457be892a8..d4963cb1fa37e87ae8af01eb6d0cfa0e3e10ebf5 100644
 --- a/chrome/browser/resources/md_history/side_bar.html
 +++ b/chrome/browser/resources/md_history/side_bar.html
-@@ -99,11 +99,13 @@
+@@ -96,11 +96,13 @@
          $i18n{historyMenuItem}
          <paper-ripple></paper-ripple>
        </a>

@@ -1,40 +1,32 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 284a5324b06e5669800bfddd66c06d097f4256ef..cd3e6c5129151a06ac6e0f64f65ed63d5277579c 100644
+index 7dc4bbb112a571513d4d2fbf0e174e60394a2b68..1a948653d45afecf1838665e1f8b765045f9c55a 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
-@@ -13,6 +13,13 @@
+@@ -13,6 +13,7 @@
  #include "base/metrics/histogram_macros.h"
  #include "base/strings/string_util.h"
  #include "base/values.h"
-+#include "brave/common/extensions/api/api_features.h"
-+#include "brave/common/extensions/api/behavior_features.h"
-+#include "brave/common/extensions/api/generated_api_registration.h"
-+#include "brave/common/extensions/api/generated_schemas.h"
-+#include "brave/common/extensions/api/grit/brave_api_resources.h"
-+#include "brave/common/extensions/api/manifest_features.h"
-+#include "brave/common/extensions/api/permission_features.h"
++#include "brave/common/extensions/api/generated_includes.h"
  #include "chrome/common/chrome_content_client.h"
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/api/api_features.h"
-@@ -155,13 +162,13 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
-     const std::string& name) const {
-   std::unique_ptr<FeatureProvider> provider;
+@@ -160,12 +161,15 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
    if (name == "api") {
--    provider.reset(new APIFeatureProvider());
-+    provider.reset(new BraveAPIFeatureProvider());
+     AddCoreAPIFeatures(provider.get());
+     AddChromeAPIFeatures(provider.get());
++    AddBraveAPIFeatures(provider.get());
    } else if (name == "manifest") {
--    provider.reset(new ManifestFeatureProvider());
-+    provider.reset(new BraveManifestFeatureProvider());
+     AddCoreManifestFeatures(provider.get());
+     AddChromeManifestFeatures(provider.get());
++    AddBraveManifestFeatures(provider.get());
    } else if (name == "permission") {
--    provider.reset(new PermissionFeatureProvider());
-+    provider.reset(new BravePermissionFeatureProvider());
+     AddCorePermissionFeatures(provider.get());
+     AddChromePermissionFeatures(provider.get());
++    AddBravePermissionFeatures(provider.get());
    } else if (name == "behavior") {
--    provider.reset(new BehaviorFeatureProvider());
-+    provider.reset(new BraveBehaviorFeatureProvider());
-   } else {
-     NOTREACHED();
-   }
-@@ -174,6 +181,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
+     // Note: There are no chrome-specific behavior features.
+     AddCoreBehaviorFeatures(provider.get());
+@@ -181,6 +185,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
        new JSONFeatureProviderSource("api"));
    source->LoadJSON(IDR_EXTENSION_API_FEATURES);
    source->LoadJSON(IDR_CHROME_EXTENSION_API_FEATURES);
@@ -42,7 +34,7 @@ index 284a5324b06e5669800bfddd66c06d097f4256ef..cd3e6c5129151a06ac6e0f64f65ed63d
    return source;
  }
  
-@@ -251,7 +259,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
+@@ -258,7 +263,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
  bool ChromeExtensionsClient::IsAPISchemaGenerated(
      const std::string& name) const {
    // Test from most common to least common.
@@ -52,13 +44,12 @@ index 284a5324b06e5669800bfddd66c06d097f4256ef..cd3e6c5129151a06ac6e0f64f65ed63d
           api::GeneratedSchemas::IsGenerated(name);
  }
  
-@@ -262,6 +271,9 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
+@@ -268,6 +274,8 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
+   base::StringPiece chrome_schema = api::ChromeGeneratedSchemas::Get(name);
    if (!chrome_schema.empty())
      return chrome_schema;
- 
 +  if (api::BraveGeneratedSchemas::IsGenerated(name))
 +    return api::BraveGeneratedSchemas::Get(name);
-+
+ 
    return api::GeneratedSchemas::Get(name);
  }
- 

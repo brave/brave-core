@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index 22d90e5273991555ca613b322cc84afd25a45d85..bc61fe8ce80c19c765656c820990e1b68e9be0a4 100644
+index b9e2b3e15170ad5eae6d5d160e4085aa0727f001..1a90e5f2de62865244c5d7473ccd3bf98c4e94ce 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
 @@ -24,6 +24,7 @@
@@ -10,12 +10,12 @@ index 22d90e5273991555ca613b322cc84afd25a45d85..bc61fe8ce80c19c765656c820990e1b6
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -1057,7 +1058,7 @@ void ProfileIOData::Init(
-   ChromeNetworkDelegate* chrome_network_delegate_unowned = nullptr;
-   if (!base::FeatureList::IsEnabled(network::features::kNetworkService)) {
-     std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
--        new ChromeNetworkDelegate(
-+        new BraveProfileNetworkDelegate(
+@@ -1055,7 +1056,7 @@ void ProfileIOData::Init(
+     ChromeNetworkDelegate* chrome_network_delegate_unowned = nullptr;
+     if (!base::FeatureList::IsEnabled(network::features::kNetworkService)) {
+       std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
+-          new ChromeNetworkDelegate(
++          new BraveProfileNetworkDelegate(
  #if BUILDFLAG(ENABLE_EXTENSIONS)
-             io_thread_globals->extension_event_router_forwarder.get(),
+               io_thread_globals->extension_event_router_forwarder.get()));
  #else

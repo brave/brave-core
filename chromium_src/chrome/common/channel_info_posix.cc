@@ -9,6 +9,10 @@
 #include "build/build_config.h"
 #include "components/version_info/version_info.h"
 
+// Including here instead of build config because
+// our brave/common BUILD config still gets linking errors.
+#include "brave/common/brave_channel_info_posix.cc"
+
 namespace chrome {
 
 std::string GetChannelName() {

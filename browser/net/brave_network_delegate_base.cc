@@ -14,23 +14,22 @@
 using content::BrowserThread;
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
-    extensions::EventRouterForwarder* event_router,
-    BooleanPrefMember* enable_referrers) :
-    ChromeNetworkDelegate(event_router, enable_referrers) {
+    extensions::EventRouterForwarder* event_router) :
+    ChromeNetworkDelegate(event_router) {
 }
 
 BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {
 }
 
 int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
-    const net::CompletionCallback& callback,
+    net::CompletionOnceCallback callback,
     GURL* new_url) {
   if (before_url_request_callbacks_.empty() || !request) {
-    return ChromeNetworkDelegate::OnBeforeURLRequest(request, callback, new_url);
+    return ChromeNetworkDelegate::OnBeforeURLRequest(request, std::move(callback), new_url);
   }
   std::shared_ptr<brave::BraveRequestInfo> ctx(
       new brave::BraveRequestInfo());
-  callbacks_[request->identifier()] = callback;
+  callbacks_[request->identifier()] = std::move(callback);
   ctx->request_identifier = request->identifier();
   ctx->event_type = brave::kOnBeforeRequest;
   RunNextCallback(request, new_url, ctx);
@@ -38,20 +37,26 @@ int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
 }
 
 int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
-    const net::CompletionCallback& callback,
+    net::CompletionOnceCallback callback,
     net::HttpRequestHeaders* headers) {
   if (before_start_transaction_callbacks_.empty() || !request) {
-    return ChromeNetworkDelegate::OnBeforeStartTransaction(request, callback,
+    return ChromeNetworkDelegate::OnBeforeStartTransaction(request, std::move(callback),
                                                            headers);
   }
   std::shared_ptr<brave::BraveRequestInfo> ctx(
       new brave::BraveRequestInfo());
-  callbacks_[request->identifier()] = callback;
+  callbacks_[request->identifier()] = std::move(callback);
   ctx->headers = headers;
   ctx->request_identifier = request->identifier();
   ctx->event_type = brave::kOnBeforeStartTransaction;
   RunNextCallback(request, nullptr, ctx);
   return net::ERR_IO_PENDING;
+}
+
+void BraveNetworkDelegateBase::RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv) {
+  std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
+      callbacks_.find(request_identifier);
+  std::move(it->second).Run(rv);
 }
 
 void BraveNetworkDelegateBase::RunNextCallback(
@@ -99,23 +104,28 @@ void BraveNetworkDelegateBase::RunNextCallback(
     }
   }
 
-  const net::CompletionCallback& net_completion_callback =
-    callbacks_[ctx->request_identifier];
+  std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
+      callbacks_.find(ctx->request_identifier);
   if (rv == net::ERR_ABORTED) {
-    net_completion_callback.Run(rv);
+    std::move(it->second).Run(rv);
     return;
   }
 
+  net::CompletionOnceCallback wrapped_callback = base::BindOnce(
+      &BraveNetworkDelegateBase::RunCallbackForRequestIdentifier, base::Unretained(this), ctx->request_identifier);
+
   if (ctx->event_type == brave::kOnBeforeRequest) {
     rv = ChromeNetworkDelegate::OnBeforeURLRequest(request,
-        net_completion_callback, new_url);
+        std::move(wrapped_callback), new_url);
   } else if (ctx->event_type == brave::kOnBeforeStartTransaction) {
     rv = ChromeNetworkDelegate::OnBeforeStartTransaction(request,
-        net_completion_callback, ctx->headers);
+        std::move(wrapped_callback), ctx->headers);
   }
 
+  // ChromeNetworkDelegate returns net::ERR_IO_PENDING if an extension is
+  // intercepting the request and OK if the request should proceed normally.
   if (rv != net::ERR_IO_PENDING) {
-    net_completion_callback.Run(rv);
+    RunCallbackForRequestIdentifier(ctx->request_identifier, rv);
   }
 }
 

@@ -15,7 +15,7 @@ class BraveWebUIControllerFactory : public ChromeWebUIControllerFactory {
  public:
   content::WebUI::TypeID GetWebUIType(content::BrowserContext* browser_context,
                                       const GURL& url) const override;
-  content::WebUIController* CreateWebUIControllerForURL(
+  std::unique_ptr<content::WebUIController> CreateWebUIControllerForURL(
       content::WebUI* web_ui,
       const GURL& url) const override;
 

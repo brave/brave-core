@@ -71,6 +71,8 @@ const InstallConstants kInstallModes[] = {
         true,  // Supported multi-install.
         icon_resources::kApplicationIndex,  // App icon resource index.
         IDR_MAINFRAME,                      // App icon resource id.
+        L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
+        L"934012149-",  // App container sid prefix for sandbox.
     },
     // A secondary install mode for Brave Beta
     {
@@ -104,6 +106,8 @@ const InstallConstants kInstallModes[] = {
         false,  // Did not support multi-install.
         icon_resources::kBetaApplicationIndex,  // App icon resource index.
         IDR_X005_BETA,                          // App icon resource id.
+        L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
+        L"934012150-",  // App container sid prefix for sandbox.
     },
     // A secondary install mode for Brave Dev
     {
@@ -137,6 +141,8 @@ const InstallConstants kInstallModes[] = {
         false,  // Did not support multi-install.
         icon_resources::kDevApplicationIndex,  // App icon resource index.
         IDR_X004_DEV,                          // App icon resource id.
+        L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
+        L"934012151-",  // App container sid prefix for sandbox.
     },
     // A secondary install mode for Brave SxS (canary).
     {
@@ -170,6 +176,8 @@ const InstallConstants kInstallModes[] = {
         false,  // Did not support multi-install.
         icon_resources::kSxSApplicationIndex,  // App icon resource index.
         IDR_SXS,                               // App icon resource id.
+        L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
+        L"934012152-",  // App container sid prefix for sandbox.
     },
 };
 #else
@@ -206,6 +214,8 @@ const InstallConstants kInstallModes[] = {
         true,   // Supported multi-install.
         icon_resources::kApplicationIndex,  // App icon resource index.
         IDR_MAINFRAME,                      // App icon resource id.
+        L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
+        L"934012148-",  // App container sid prefix for sandbox.
     },
 };
 #endif
