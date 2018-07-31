@@ -1,31 +1,11 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..b58cb1e920cc86b2999f72f5f7f09bbcb19d2613 100644
+index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..bd9057ae0f16e75e14d03469deea0301a0cb68c9 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-@@ -5,6 +5,7 @@
- #include "third_party/blink/renderer/core/html/media/autoplay_policy.h"
- 
- #include "third_party/blink/public/mojom/feature_policy/feature_policy.mojom-blink.h"
-+#include "third_party/blink/public/platform/modules/permissions/permission.mojom-blink.h"
- #include "third_party/blink/public/platform/autoplay.mojom-blink.h"
- #include "third_party/blink/public/platform/web_media_player.h"
- #include "third_party/blink/public/web/web_settings.h"
-@@ -17,6 +18,7 @@
- #include "third_party/blink/renderer/core/html/media/html_media_element.h"
- #include "third_party/blink/renderer/core/inspector/console_message.h"
- #include "third_party/blink/renderer/core/page/page.h"
-+#include "third_party/blink/renderer/modules/permissions/permission_utils.h"
- #include "third_party/blink/renderer/platform/network/network_state_notifier.h"
- #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
- #include "third_party/blink/renderer/platform/wtf/assertions.h"
-@@ -341,6 +343,15 @@ bool AutoplayPolicy::IsGestureNeededForPlaybackIfPendingUserGestureIsLocked()
+@@ -341,6 +341,11 @@ bool AutoplayPolicy::IsGestureNeededForPlaybackIfPendingUserGestureIsLocked()
    if (element_->GetLoadType() == WebMediaPlayer::kLoadTypeMediaStream)
      return false;
  
-+  // brave(darkdh): default allow local files
-+  if (element_->GetDocument().origin() == String("null") || element_->GetDocument().origin() == String("file://"))
-+    return false;
-+
 +#if defined(BRAVE_CHROMIUM_BUILD)
 +  if (IsAutoplayAllowedPerSettings())
 +    return false;
@@ -34,21 +14,10 @@ index b46d047161d41aae70b8485a2b95a38bbb8c3e4d..b58cb1e920cc86b2999f72f5f7f09bbc
    // We want to allow muted video to autoplay if:
    // - the flag is enabled;
    // - Data Saver is not enabled;
-@@ -414,6 +425,18 @@ bool AutoplayPolicy::IsAutoplayAllowedPerSettings() const {
+@@ -414,6 +419,7 @@ bool AutoplayPolicy::IsAutoplayAllowedPerSettings() const {
    LocalFrame* frame = element_->GetDocument().GetFrame();
    if (!frame)
      return false;
-+
-+  mojom::blink::PermissionServicePtr permission_service;
-+
-+  ConnectToPermissionService(element_->GetDocument().ContextDocument(),
-+                             mojo::MakeRequest(&permission_service));
-+
-+  if (permission_service.get()) {
-+    permission_service->RequestPermission(
-+      CreatePermissionDescriptor(mojom::blink::PermissionName::AUTOPLAY),
-+      true, base::DoNothing());
-+  }
 +
    return frame->GetContentSettingsClient()->AllowAutoplay(true);
  }
