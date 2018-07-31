@@ -26,8 +26,8 @@ class BatClient : public ledger::LedgerCallbackHandler {
   ~BatClient() override;
 
   void loadStateOrRegisterPersonaCallback(bool success, const std::string& data);
-  void requestCredentialsCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void registerPersonaCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void requestCredentialsCallback(bool result, const std::string& response);
+  void registerPersonaCallback(bool result, const std::string& response);
   void setContributionAmount(const double& amount);
   const std::string& getBATAddress() const;
   const std::string& getBTCAddress() const;
@@ -44,7 +44,7 @@ class BatClient : public ledger::LedgerCallbackHandler {
   void getPromotion(const std::string& lang, const std::string& forPaymentId);
   void setPromotion(const std::string& promotionId, const std::string& captchaResponse);
   void getPromotionCaptcha();
-  void getWalletProperties(const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  //void getWalletProperties(const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
 
  private:
   void saveState();
@@ -54,23 +54,23 @@ class BatClient : public ledger::LedgerCallbackHandler {
   void recoverWalletPublicKeyCallback(bool result, const std::string& response);
   void recoverWalletCallback(bool result, const std::string& response);
   void prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
-  void prepareBatchCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void prepareBatchCallback(bool result, const std::string& response);
   void proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof);
   void prepareVoteBatch();
   void voteBatch();
-  void voteBatchCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
-  void commitBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
-  void prepareBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void commitBallotCallback(bool result, const std::string& response);
+  void voteBatchCallback(const std::string& publisher, bool result, const std::string& response);
+  //void prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
+  //void commitBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
+  //void prepareBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  //void commitBallotCallback(bool result, const std::string& response);
   void vote(const std::string& publisher, const std::string& viewingId);
   void registerPersona();
   void reconcileCallback(bool result, const std::string& response);
   void currentReconcile();
   void currentReconcileCallback(bool result, const std::string& response);
   void reconcilePayloadCallback(bool result, const std::string& response);
-  void updateRulesCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
-  void updateRulesV2Callback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
+  void updateRulesCallback(bool reconcile, bool result, const std::string& response);
+  void updateRulesV2Callback(bool reconcile, bool result, const std::string& response);
   void registerViewing();
   void registerViewingCallback(bool result, const std::string& response);
   void viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId);

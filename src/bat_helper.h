@@ -226,20 +226,6 @@ namespace braveledger_bat_helper {
     unsigned int parameters_days_;
   };
 
-  struct FETCH_CALLBACK_EXTRA_DATA_ST {
-    FETCH_CALLBACK_EXTRA_DATA_ST();
-    FETCH_CALLBACK_EXTRA_DATA_ST(const FETCH_CALLBACK_EXTRA_DATA_ST&);
-    ~FETCH_CALLBACK_EXTRA_DATA_ST();
-
-    uint64_t value1 = 0u;
-    std::string string1;
-    std::string string2;
-    std::string string3;
-    std::string string4;
-    std::string string5;
-    bool boolean1 = true;
-  };
-
   struct SURVEYOR_INFO_ST {
     SURVEYOR_INFO_ST();
     ~SURVEYOR_INFO_ST();
