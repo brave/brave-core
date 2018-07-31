@@ -52,7 +52,7 @@ void BraveWidevineContentSettingPluginBubbleModel::RunPluginsOnPage() {
 
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   prefs->SetBoolean(kWidevineOptedIn, true);
-  RegisterWidevineCdmComponent(g_brave_browser_process->google_component_updater());
+  RegisterWidevineCdmComponent(g_brave_browser_process->component_updater());
   ChromeSubresourceFilterClient::FromWebContents(web_contents())
         ->OnReloadRequested();
 }

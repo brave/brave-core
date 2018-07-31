@@ -31,7 +31,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 
   // BrowserProcess implementation.
   component_updater::ComponentUpdateService* component_updater() override;
-  component_updater::ComponentUpdateService* google_component_updater();
 
   brave_shields::AdBlockService* ad_block_service();
   brave_shields::AdBlockRegionalService* ad_block_regional_service();
@@ -49,15 +48,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       https_everywhere_service_;
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
   std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;
-
-  component_updater::ComponentUpdateService* component_updater(
-      std::unique_ptr<component_updater::ComponentUpdateService>&,
-      bool use_brave_server);
-  std::unique_ptr<component_updater::ComponentUpdateService>
-      google_component_updater_;
-  std::unique_ptr<component_updater::ComponentUpdateService>
-      brave_component_updater_;
-
   std::unique_ptr<ProfileCreationMonitor> profile_creation_monitor_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcessImpl);
