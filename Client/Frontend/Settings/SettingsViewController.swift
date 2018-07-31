@@ -23,9 +23,9 @@ extension HTTPCookie.AcceptPolicy: RepresentableOptionType {
     
     public var displayString: String {
         switch self {
-        case .always: return Strings.Block_all_cookies
+        case .always: return Strings.Dont_block_cookies
         case .onlyFromMainDocumentDomain: return Strings.Block_3rd_party_cookies
-        case .never: return Strings.Dont_block_cookies
+        case .never: return Strings.Block_all_cookies
         }
     }
 }
@@ -218,7 +218,7 @@ class SettingsViewController: TableViewController {
         cookieControlRow.selection = { [unowned self] in
             // Show Options for cookie control
             let optionsViewController = OptionSelectionViewController<HTTPCookie.AcceptPolicy>(
-                options: [.onlyFromMainDocumentDomain, .always, .never],
+                options: [.onlyFromMainDocumentDomain, .never, .always],
                 selectedOption: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value),
                 optionChanged: { [unowned self] _, option in
                     Preferences.Privacy.cookieAcceptPolicy.value = option.rawValue
