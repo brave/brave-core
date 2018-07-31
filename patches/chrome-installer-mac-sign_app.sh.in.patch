@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/sign_app.sh.in b/chrome/installer/mac/sign_app.sh.in
-index 4383c826c43588aa8fc0819b8a7669364815d2d9..a463cb050a74234615b2cb22b45fd6e799fdf379 100644
+index 4383c826c43588aa8fc0819b8a7669364815d2d9..69db6f7afbd00ca7f208c5e0c5778be3d5b0b4c9 100644
 --- a/chrome/installer/mac/sign_app.sh.in
 +++ b/chrome/installer/mac/sign_app.sh.in
 @@ -42,10 +42,7 @@ if [[ ${#} == 6 && "${6}" == "--development" ]]; then
@@ -14,7 +14,7 @@ index 4383c826c43588aa8fc0819b8a7669364815d2d9..a463cb050a74234615b2cb22b45fd6e7
  
  contents_dir="${app_path}/Contents"
  versioned_dir="${contents_dir}/Versions/@VERSION@"
-@@ -63,10 +60,7 @@ cp "${provisioning_profile}" "${contents_dir}/embedded.provisionprofile"
+@@ -63,10 +60,10 @@ cp "${provisioning_profile}" "${contents_dir}/embedded.provisionprofile"
  
  requirement="\
  designated => \
@@ -22,11 +22,14 @@ index 4383c826c43588aa8fc0819b8a7669364815d2d9..a463cb050a74234615b2cb22b45fd6e7
 -identifier \"com.google.Chrome.beta\" or \
 -identifier \"com.google.Chrome.dev\" or \
 -identifier \"com.google.Chrome.canary\") \
-+identifier \"org.brave.Brave\" \
++(identifier \"org.brave.Brave\" or \
++identifier \"org.brave.Brave.beta\" or \
++identifier \"org.brave.Brave.dev\" or \
++identifier \"org.brave.Brave.nightly\") \
  ${requirement_suffix} \
  "
  
-@@ -74,7 +68,6 @@ codesign_cmd=(
+@@ -74,7 +71,6 @@ codesign_cmd=(
    codesign --sign "${codesign_id}" --keychain "${codesign_keychain}"
    "${browser_app}"
    --options "${enforcement_flags_app}"

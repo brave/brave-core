@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/sign_versioned_dir.sh.in b/chrome/installer/mac/sign_versioned_dir.sh.in
-index 7a853e3dcbffa5e7a218742ba55e4e629544d27b..434951f16964e2a11c4bccae87683b51f3e3b93f 100644
+index 7a853e3dcbffa5e7a218742ba55e4e629544d27b..04c77355a2db7a64e62a41253369570bd9a7650b 100644
 --- a/chrome/installer/mac/sign_versioned_dir.sh.in
 +++ b/chrome/installer/mac/sign_versioned_dir.sh.in
 @@ -24,7 +24,6 @@ ME="$(basename "${0}")"
@@ -26,19 +26,31 @@ index 7a853e3dcbffa5e7a218742ba55e4e629544d27b..434951f16964e2a11c4bccae87683b51
  notification_service="${framework}/XPCServices/AlertNotificationService.xpc"
  crashpad_handler="${framework}/Helpers/crashpad_handler"
  helper_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper.app"
-@@ -119,18 +120,17 @@ codesign_with_options "${notification_service}" \
+@@ -115,22 +116,29 @@ xpc_plist="${notification_service}/Contents/Info"
+ xpc_bundle_id="$(__CFPREFERENCES_AVOID_DAEMON=1 defaults read \
+     "${xpc_plist}" "CFBundleIdentifier")"
+ 
++framework_plist="${framework}/Resources/Info"
++framework_bundle_id="$(__CFPREFERENCES_AVOID_DAEMON=1 defaults read \
++    "${framework_plist}" "CFBundleIdentifier")"
++helper_app_plist="${helper_app}/Contents/Info"
++helper_app_id="$(__CFPREFERENCES_AVOID_DAEMON=1 defaults read \
++    "${helper_app_plist}" "CFBundleIdentifier")"
++
+ codesign_with_options "${notification_service}" \
                        "${enforcement_flags_helpers}" \
                        "${xpc_bundle_id}"
  
 +codesign_with_options "${sparkle_framework}" "" "org.sparkle-project.Sparkle"
  # The framework is a dylib, so ${enforcement_flags_helpers} are meaningless.
 -codesign_with_options "${framework}" "" "com.google.Chrome.framework"
-+codesign_with_options "${framework}" "" "org.brave.Brave.framework"
++codesign_with_options "${framework}" "" "${framework_bundle_id}"
  
  codesign_with_options "${helper_app}" \
                        "${enforcement_flags_app}" \
 -                      "com.google.Chrome.helper"
-+                      "org.brave.Brave.helper"
++                      "${helper_app_id}"
++
  
  codesign_display_and_verify "${crashpad_handler}" --deep
  codesign_display_and_verify "${app_mode_loader}" --ignore-resources
