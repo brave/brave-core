@@ -20,7 +20,7 @@ module.exports = {
     new webpack.IgnorePlugin(/[^/]+\/[\S]+.dev$/)
   ],
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.js', '.tsx', '.ts']
   },
   module: {
     rules: [

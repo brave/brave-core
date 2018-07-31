@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { DataBlock, DataItem } from 'brave-ui/dataBlock'
+import { DataBlock, DataItem } from 'brave-ui/old'
 
 // Constants
 import { theme } from '../constants/theme'

@@ -7,7 +7,8 @@ import { DragDropContext } from 'react-dnd'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import HTML5Backend from 'react-dnd-html5-backend'
-import { Grid, Column, Clock } from 'brave-ui'
+import { Grid, Column } from 'brave-ui/components'
+import { Clock } from 'brave-ui/old'
 
 // Components
 import Stats from './stats'
