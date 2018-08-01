@@ -17,6 +17,9 @@ namespace bookmarks {
 
 namespace brave_sync {
 
+namespace jslib {
+  class SyncRecord;
+}
 namespace storage {
   class BraveSyncObjMap;
 }
@@ -33,10 +36,9 @@ public:
   void SetObjMap(storage::BraveSyncObjMap* sync_obj_map);
 
   std::unique_ptr<base::Value> GetResolvedBookmarkValue(
-    const std::string &object_id,
-    const std::string &local_object_id);
+    const std::string &object_id);
 
-  void AddBookmark(const std::string &location, const std::string &title);
+  void AddBookmark(const jslib::SyncRecord &sync_record);
 
   void GetAllBookmarks(std::vector<const bookmarks::BookmarkNode*> &nodes);
   std::unique_ptr<base::Value>NativeBookmarksToSyncLV(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
@@ -81,6 +83,7 @@ private:
   std::unique_ptr<base::Value> BookmarkToValue(const bookmarks::BookmarkNode* node, const std::string &object_id);
 
   std::string GetOrCreateObjectByLocalId(const int64_t &local_id);
+  void SaveIdMap(const int64_t &local_id, const std::string &sync_object_id);
 
   void PauseObserver();
   void ResumeObserver();
@@ -91,7 +94,6 @@ private:
   std::string device_id_;
 
   storage::BraveSyncObjMap* sync_obj_map_;
-  //std::unique_ptr<BraveSyncDataObserver> data_observer_;
   bool observer_is_set_;
 
   CanSendSyncBookmarks *send_bookmarks_;
