@@ -10,11 +10,12 @@ import {
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
+import BigNumber from 'bignumber.js'
 
 // Utils
 import { getLocale } from '../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
-
+import * as utils from '../utils'
 // Assets
 const walletIcon = require('../../img/rewards/wallet_icon.svg')
 const fundsIcon = require('../../img/rewards/funds_icon.svg')
@@ -24,8 +25,11 @@ interface State {
   modalBackupActive: 'backup' | 'restore'
 }
 
-class PageWallet extends React.Component<{}, State> {
-  constructor (props: {}) {
+interface Props extends Rewards.ComponentProps {
+}
+
+class PageWallet extends React.Component<Props, State> {
+  constructor (props: Props) {
     super(props)
     this.state = {
       modalBackup: false,
@@ -46,17 +50,40 @@ class PageWallet extends React.Component<{}, State> {
   }
 
   onModalBackupAction (action: string) {
+    // TODO NZ implement
     console.log(action)
   }
 
+  getConversion = () => {
+    const walletInfo = this.props.rewardsData.walletInfo
+    return utils.convertBalance(walletInfo.balance, walletInfo.rates)
+  }
+
+  getGrants = () => {
+    const grants = this.props.rewardsData.walletInfo.grants
+    if (!grants) {
+      return []
+    }
+
+    return grants.map((grant: Rewards.Grant) => {
+      return {
+        tokens: new BigNumber(grant.probi.toString()).dividedBy('1e18').toNumber(),
+        expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString()
+      }
+    })
+  }
+
   render () {
+    const { connectedWallet, recoveryKey, wasFunded } = this.props.rewardsData
+    const { balance } = this.props.rewardsData.walletInfo
+
     return (
       <>
         {
           this.state.modalBackup
             ? <ModalBackupRestore
               activeTabId={this.state.modalBackupActive}
-              recoveryKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
+              recoveryKey={recoveryKey}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupToggle}
               onCopy={this.onModalBackupAction.bind('onCopy')}
@@ -68,8 +95,8 @@ class PageWallet extends React.Component<{}, State> {
             : null
         }
         <Panel
-          tokens={25}
-          converted={'6.0 USD'}
+          tokens={balance}
+          converted={utils.formatConverted(this.getConversion())}
           actions={[
             {
               name: getLocale('panelAddFunds'),
@@ -85,23 +112,14 @@ class PageWallet extends React.Component<{}, State> {
           onSettingsClick={this.onModalBackupToggle}
           showCopy={true}
           showSecActions={true}
-          grants={[
-            {
-              tokens: 8,
-              expireDate: '7/15/2018'
-            },
-            {
-              tokens: 10,
-              expireDate: '9/10/2018'
-            },
-            {
-              tokens: 10,
-              expireDate: '10/10/2018'
-            }
-          ]}
-          connectedWallet={false}
+          grants={this.getGrants()}
+          connectedWallet={connectedWallet}
         >
-          <PanelEmpty />
+          {
+            wasFunded
+            ? null // TODO NZ <PanelSummary grant={} ads={} contribute={} donation={} tips={} onActivity={} />
+            : <PanelEmpty />
+          }
         </Panel>
       </>
     )

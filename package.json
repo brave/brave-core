@@ -127,6 +127,7 @@
   "dependencies": {
     "@types/webtorrent": "^0.98.4",
     "bittorrent-tracker": "github:brave/bittorrent-tracker#87cd1bba3ce2f40159210b904db3420e8b237b0a",
+    "bignumber.js": "^7.2.1",
     "chrome-dgram": "^3.0.1",
     "chrome-net": "^3.3.1",
     "clipboard-copy": "^2.0.0",

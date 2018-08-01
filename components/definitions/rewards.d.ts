@@ -18,10 +18,29 @@ declare namespace Rewards {
     contributionVideos: boolean
     donationAbilityYT: boolean
     donationAbilityTwitter: boolean
+    walletInfo: WalletProperties
+    connectedWallet: boolean
+    recoveryKey: string
+    wasFunded: boolean
   }
 
   export interface ComponentProps {
     rewardsData: State
     actions: any
+  }
+
+  export interface Grant {
+    altcurrency: string
+    probi: string
+    expiryTime: number
+  }
+
+  export interface WalletProperties {
+    balance: number
+    choices: number[]
+    probi: string
+    range?: number[]
+    rates?: Record<string, number>
+    grants?: Grant[]
   }
 }

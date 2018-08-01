@@ -33,6 +33,7 @@ class PaymentsService : public KeyedService {
   ~PaymentsService() override;
 
   virtual void CreateWallet() = 0;
+  virtual void GetWalletProperties() = 0;
   virtual void GetContentSiteList(uint32_t start,
                                   uint32_t limit,
                                 const GetContentSiteListCallback& callback) = 0;

@@ -79,6 +79,7 @@ source_set("ui") {
 
   deps = [
     "//base",
+    "//brave/vendor/bat-native-ledger",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/theme:brave_theme_resources",

@@ -35,6 +35,8 @@ class SettingsPage extends React.Component<Props, {}> {
     } else if (this.props.rewardsData.firstLoad) {
       this.actions.onSettingSave('firstLoad', false)
     }
+
+    this.actions.getWalletProperties()
   }
 
   render () {

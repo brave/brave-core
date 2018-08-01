@@ -16,60 +16,10 @@ import * as rewardsActions from '../actions/rewards_actions'
 // Assets
 const donate = require('../../img/rewards/donate_disabled.svg')
 
-// TODO temp, remove
-const bartBaker = require('../../img/rewards/temp/bartBaker.jpeg')
-
 interface Props extends Rewards.ComponentProps {
 }
 
 class DonationBox extends React.Component<Props, {}> {
-  // TODO remove
-  get donationRows () {
-    return [
-      {
-        profile: {
-          name: 'Bart Baker',
-          verified: true,
-          provider: 'youtube',
-          src: bartBaker
-        },
-        type: 'recurring',
-        contribute: {
-          tokens: 2,
-          converted: 0.2
-        },
-        onRemove: () => { console.log('Bar') }
-      },
-      {
-        profile: {
-          verified: false,
-          name: 'theguardian.com',
-          src: bartBaker
-        },
-        type: 'donation',
-        contribute: {
-          tokens: 12,
-          converted: 6.2
-        },
-        text: 'May 7'
-      },
-      {
-        profile: {
-          verified: false,
-          name: 'BrendanEich',
-          provider: 'twitter',
-          src: bartBaker
-        },
-        type: 'tip',
-        contribute: {
-          tokens: 7,
-          converted: 3.2
-        },
-        text: 'May 2'
-      }
-    ] as any
-  }
-
   get actions () {
     return this.props.actions
   }
@@ -124,13 +74,13 @@ class DonationBox extends React.Component<Props, {}> {
         settingsChild={this.donationSettings()}
       >
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens value={21} converted={7} />
+          <Tokens value={0} converted={0} />
         </List>
         <List title={getLocale('donationList')}>
-          {getLocale('donationTotal')} &nbsp;<Tokens value={3} hideText={true} />
+          {getLocale('donationTotal')} &nbsp;<Tokens value={0} hideText={true} />
         </List>
         <DonationTable
-          rows={this.donationRows}
+          rows={[]}
           allItems={true}
           theme={{
             headerColor: '#696FDC'

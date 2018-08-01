@@ -13,6 +13,7 @@ const defaultState: Rewards.State = {
   enabledAds: true,
   enabledContribute: true,
   firstLoad: null,
+  wasFunded: false,
   walletCreated: false,
   walletCreateFailed: false,
   contributionMinTime: 8000,
@@ -21,7 +22,14 @@ const defaultState: Rewards.State = {
   contributionNonVerified: true,
   contributionVideos: true,
   donationAbilityYT: true,
-  donationAbilityTwitter: true
+  donationAbilityTwitter: true,
+  walletInfo: {
+    balance: 0,
+    choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0],
+    probi: '0'
+  },
+  connectedWallet: false,
+  recoveryKey: ''
 }
 
 const cleanData = (state: Rewards.State) => state

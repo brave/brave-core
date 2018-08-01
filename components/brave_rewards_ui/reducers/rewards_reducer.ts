@@ -38,6 +38,13 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         state[action.payload.key] = action.payload.value
       }
       break
+    case types.GET_WALLET_PROPERTIES:
+      chrome.send('getWalletProperties', [])
+      break
+    case types.ON_WALLET_PROPERTIES:
+      state = { ...state }
+      state.walletInfo = action.payload.properties
+      break
   }
 
   if (state !== startingState) {
