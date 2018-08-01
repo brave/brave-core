@@ -10,6 +10,7 @@
 #include "brave/components/brave_sync/brave_sync_settings.h"
 #include "brave/components/brave_sync/brave_sync_devices.h"
 #include "brave/components/brave_sync/brave_sync_jslib_const.h"
+#include "brave/components/brave_sync/brave_sync_jslib_messages.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "brave/components/brave_sync/value_debug.h"
 
@@ -32,17 +33,17 @@ std::unique_ptr<Value> BraveSyncSettingsToValue(BraveSyncSettings *brave_sync_se
   return result;
 }
 
-std::string ExtractObjectIdFromDict(const base::Value *val) {
+std::string ExtractIdFieldFromDict(const base::Value *val, const std::string &fileld_name) {
   CHECK(val);
   DCHECK(val->is_dict());
-  LOG(ERROR) << "TAGAB ExtractObjectId val=" << brave::debug::ToPrintableString(*val);
+  LOG(ERROR) << "TAGAB ExtractIdFieldFromDict val=" << brave::debug::ToPrintableString(*val);
   if (!val->is_dict()) {
     return "";
   }
-  const base::Value *p_object_id = val->FindKey("objectId");
-  LOG(ERROR) << "TAGAB ExtractObjectId p_object_data="<<p_object_id;
+  const base::Value *p_object_id = val->FindKey(fileld_name);
+  LOG(ERROR) << "TAGAB ExtractIdFieldFromDict p_object_data="<<p_object_id;
   DCHECK(p_object_id);
-  if (p_object_id == nullptr) {
+  if (p_object_id == nullptr || p_object_id->is_none()) {
     return "";
   }
 
@@ -59,6 +60,76 @@ std::string ExtractObjectIdFromDict(const base::Value *val) {
 
   return object_id;
 }
+
+std::string ExtractObjectIdFromDict(const base::Value *val) {
+  return ExtractIdFieldFromDict(val, "objectId");
+}
+
+std::string ExtractDeviceIdFromDict(const base::Value *val) {
+  return ExtractIdFieldFromDict(val, "deviceId");
+}
+
+base::Time ExtractTimeFieldFromDict(const base::Value *val, const std::string &time_fileld_name) {
+  CHECK(val);
+  DCHECK(val->is_dict());
+  base::Time time;
+
+  const base::Value *time_value = val->FindKeyOfType(time_fileld_name, base::Value::Type::DOUBLE);
+  if (time_value) {
+    double d_time = time_value->GetDouble();
+    time = base::Time::FromJsTime(d_time);
+  } else {
+    const base::Value *int_time_value = val->FindKeyOfType(time_fileld_name, base::Value::Type::INTEGER);
+    DCHECK(int_time_value);
+    int int_time = int_time_value->GetInt();
+    time = base::Time::FromJsTime(int_time);
+  }
+
+  return time;
+}
+
+bool ExtractBool(const base::Value *val, const std::string &fileld_name) {
+  const base::Value *bool_value = val->FindKeyOfType(fileld_name, base::Value::Type::BOOLEAN);
+  DCHECK(bool_value);
+  bool result = bool_value->GetBool();
+  return result;
+}
+
+template <typename TEnum>
+TEnum ExtractEnum(const base::Value *val, const std::string &fileld_name,
+  TEnum min, TEnum max, TEnum def
+  ) {
+  DCHECK(val);
+  DCHECK(!fileld_name.empty());
+  DCHECK(val->is_dict());
+
+  const base::Value *int_value = val->FindKeyOfType(fileld_name, base::Value::Type::INTEGER);
+  DCHECK(int_value);
+  if (!int_value) {
+    return def;
+  }
+
+  int ival = int_value->GetInt();
+  DCHECK(ival >= min && ival <= max) << " Unexpected enum value " << ival <<
+    " Should be between or include " << min << " and " << max;
+  if (ival < min && ival > max) {
+    return def;
+  }
+
+  return static_cast<TEnum>(ival);
+}
+
+template
+jslib::SiteSetting::AdControl ExtractEnum<jslib::SiteSetting::AdControl>(const base::Value *val, const std::string &fileld_name,
+  jslib::SiteSetting::AdControl, jslib::SiteSetting::AdControl, jslib::SiteSetting::AdControl);
+
+template
+jslib::SiteSetting::CookieControl ExtractEnum<jslib::SiteSetting::CookieControl>(const base::Value *val, const std::string &fileld_name,
+  jslib::SiteSetting::CookieControl, jslib::SiteSetting::CookieControl, jslib::SiteSetting::CookieControl);
+
+template
+jslib::SyncRecord::Action ExtractEnum<jslib::SyncRecord::Action>(const base::Value *val, const std::string &fileld_name,
+  jslib::SyncRecord::Action, jslib::SyncRecord::Action, jslib::SyncRecord::Action);
 
 std::string ExtractObjectIdFromList(const base::Value *val) {
   CHECK(val);
@@ -314,26 +385,35 @@ std::unique_ptr<base::Value> BlobFromSingleIntStr(const std::string &data_string
 }
 
 std::string GetAction(const base::Value &sync_record) {
+  const int iaction = GetIntAction(sync_record);
+  if (iaction == -1) {
+    return "";
+  }
+
+  std::string action = base::IntToString(iaction);
+  CHECK(action == jslib_const::CREATE_RECORD || action == jslib_const::UPDATE_RECORD
+    || action == jslib_const::DELETE_RECORD);
+  return action;
+}
+
+int GetIntAction(const base::Value &sync_record) {
   CHECK(sync_record.is_dict());
 
   const base::Value* val_action = sync_record.FindKey("action");
   DCHECK(val_action != nullptr);
   if (val_action == nullptr) {
-    return "";
+    return -1;
   }
   DCHECK(val_action->is_int());
   if (!val_action->is_int()) {
-    return "";
+    return -1;
   }
 
   int iaction = val_action->GetInt();
   DCHECK(iaction == jslib_const::kActionCreate ||
     iaction == jslib_const::kActionUpdate || iaction == jslib_const::kActionDelete);
 
-  std::string action = base::IntToString(iaction);
-  CHECK(action == jslib_const::CREATE_RECORD || action == jslib_const::CREATE_RECORD
-    || action == jslib_const::DELETE_RECORD);
-  return action;
+  return iaction;
 }
 
 std::string ExtractBookmarkLocation(const base::Value *sync_record) {

@@ -24,6 +24,7 @@
 #include "brave/components/brave_sync/brave_sync_profile_prefs.h"
 #include "brave/components/brave_sync/brave_sync_settings.h"
 #include "brave/components/brave_sync/brave_sync_jslib_const.h"
+#include "brave/components/brave_sync/brave_sync_jslib_messages.h"
 #include "brave/components/brave_sync/brave_sync_obj_map.h"
 #include "brave/components/brave_sync/brave_sync_tools.h"
 #include "brave/components/brave_sync/debug.h"
@@ -680,7 +681,7 @@ void BraveSyncControllerImpl::OnResolvedSyncRecords(const base::ListValue* args)
   if (category_name == brave_sync::jslib_const::kPreferences) {
     OnResolvedPreferences(category_name, std::move(records_v));
   } else if (category_name == brave_sync::jslib_const::kBookmarks) {
-    OnResolvedBookmarks(category_name, std::move(records_v));
+    OnResolvedBookmarks(std::move(records_v));
   } else if (category_name == brave_sync::jslib_const::kHistorySites) {
     OnResolvedHistorySites(category_name, std::move(records_v));
   }
@@ -719,6 +720,8 @@ void BraveSyncControllerImpl::OnResolvedPreferences(const std::string &category_
   // std::unique_ptr<base::Value> arr_devices = std::make_unique<base::Value>(base::Value::Type::LIST);
 
   for (const auto &val : records_v->GetList() ) {
+brave_sync::jslib::SyncRecord sr(&val);
+
     const base::Value *p_name = val.FindPath({"device","name"});
     LOG(ERROR) << "TAGAB OnResolvedPreferences p_name="<<p_name;
     LOG(ERROR) << "TAGAB OnResolvedPreferences p_name->GetString()="<<p_name->GetString();
@@ -764,7 +767,6 @@ void BraveSyncControllerImpl::OnResolvedPreferences(const std::string &category_
         object_id, base::IntToString(p_device_id->GetInt()), i64_sync_timestampt), p_action->GetInt());
   } // for each device
 
-  //DCHECK(sync_devices.devices_.size() > 0);
   // if (existing_sync_devices.devices_.empty()) {
   //   return;
   // }
@@ -787,30 +789,38 @@ void BraveSyncControllerImpl::OnResolvedPreferences(const std::string &category_
   LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged() done";
 }
 
-void BraveSyncControllerImpl::OnResolvedBookmarks(const std::string &category_name,
-  std::unique_ptr<base::Value> records_v) {
-  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: category_name="<<category_name;
+void BraveSyncControllerImpl::OnResolvedBookmarks(std::unique_ptr<base::Value> sync_records_list) {
+  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: ";
 
-  for (const auto &sync_record : records_v->GetList()) {
-    LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: sync_record="<<sync_record;
+  for (const auto &sync_record_value : sync_records_list->GetList()) {
+    LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: sync_record_value="<<sync_record_value;
+    brave_sync::jslib::SyncRecord sync_record(&sync_record_value);
+    DCHECK(sync_record.has_bookmark());
 
-    std::string action = GetAction(sync_record);
+    std::string action = GetAction(sync_record_value);
     LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: action=" << action;
     if (action.empty()) {
       continue;
     }
 
-    std::string object_id = ExtractObjectIdFromDict(&sync_record);
+    std::string object_id = ExtractObjectIdFromDict(&sync_record_value);
     LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: object_id=" << object_id;
     std::string local_id = sync_obj_map_->GetLocalIdByObjectId(object_id);
     LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: local_id=" << local_id;
 
+    DCHECK(sync_record.objectId == object_id);
+    DCHECK( base::NumberToString(sync_record.action) == action);
+
     if (action == jslib_const::CREATE_RECORD && local_id.empty()) {
-      std::string location = ExtractBookmarkLocation(&sync_record);
-      std::string title = ExtractBookmarkLocation(&sync_record);
-      LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: =location" << location;
-      LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: =title" << title;
-      bookmarks_->AddBookmark(location, title);
+      std::string location = ExtractBookmarkLocation(&sync_record_value);
+      std::string title = ExtractBookmarkTitle(&sync_record_value);
+      LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: location=" << location;
+      LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: title=" << title;
+      LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: site.location=" << sync_record.GetBookmark().site.location;
+      LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedBookmarks: site.title=" << sync_record.GetBookmark().site.title;
+      DCHECK(location == sync_record.GetBookmark().site.location);
+      DCHECK(title == sync_record.GetBookmark().site.title);
+      bookmarks_->AddBookmark(sync_record);
     }
   }
 }
@@ -822,47 +832,72 @@ void BraveSyncControllerImpl::OnResolvedHistorySites(const std::string &category
 
 std::unique_ptr<base::Value> BraveSyncControllerImpl::PrepareResolvedResponse(
   const std::string &category_name,
-  const std::unique_ptr<base::Value> &records) {
+  const std::unique_ptr<base::Value> &sync_records_list) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse: category_name="<<category_name;
 
   std::unique_ptr<base::Value> resolvedResponse(new base::Value(base::Value::Type::LIST));
 
-  for (const base::Value &val : records->GetList() ) {
+  for (const base::Value &val : sync_records_list->GetList() ) {
     LOG(ERROR) << "TAGAB val.type()="<< base::Value::GetTypeName(val.type());
     DCHECK(val.is_dict());
-
+brave_sync::jslib::SyncRecord sr(&val);
     base::Value server_record(val.Clone());
 
     //base::Value local_record(base::Value::Type::NONE);
-    std::unique_ptr<base::Value> p_local_record;
+    std::unique_ptr<base::Value> p_local_record = std::make_unique<base::Value>(base::Value::Type::NONE);
     // local_record should be get by server_record->objectId => <local object id> => <local object>
     // if we cannot get local object id, then specify local record is <empty>
     std::string object_id = ExtractObjectIdFromDict(&val);
+    LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse object_id=" << object_id;
 
-    std::string local_object_id = sync_obj_map_->GetLocalIdByObjectId(object_id);
-    if (local_object_id.empty()) {
+    if (category_name == jslib_const::kBookmarks) {
+      //"BOOKMARKS"
+      p_local_record = bookmarks_->GetResolvedBookmarkValue(object_id);
+    } else if (category_name == jslib_const::kHistorySites) {
+      //"HISTORY_SITES";
       p_local_record = std::make_unique<base::Value>(base::Value::Type::NONE);
-    } else {
-      if (category_name == jslib_const::kBookmarks) {
-        //"BOOKMARKS"
-        p_local_record = bookmarks_->GetResolvedBookmarkValue(object_id, local_object_id);
-      } else if (category_name == jslib_const::kHistorySites) {
-        //"HISTORY_SITES";
-p_local_record = std::make_unique<base::Value>(base::Value::Type::NONE);
-      } else if (category_name == jslib_const::kPreferences) {
-        //"PREFERENCES"
-p_local_record = std::make_unique<base::Value>(base::Value::Type::NONE);
-      }
+      NOTIMPLEMENTED();
+    } else if (category_name == jslib_const::kPreferences) {
+      //"PREFERENCES"
+      LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse: resolving device";
+      p_local_record = PrepareResolvedDevice(object_id);
+      LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse *p_local_record=" << std::endl << brave::debug::ToPrintableString(*p_local_record);
+      LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse: -----------------";
     }
+
+// if (p_local_record->is_none()) {
+//   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse" <<std::endl
+//     <<"unexpected empty resolve for object_id="<<object_id;
+//   NOTREACHED();
+// }
 
     std::unique_ptr<base::Value> resolvedResponseRow(new base::Value(base::Value::Type::LIST));
     resolvedResponseRow->GetList().push_back(std::move(server_record));
-    resolvedResponseRow->GetList().push_back(/*std::move(local_record)*/std::move(*p_local_record));
+    resolvedResponseRow->GetList().push_back(std::move(*p_local_record));
     resolvedResponse->GetList().push_back(std::move(*resolvedResponseRow));
   }
 
-  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse" << std::endl << brave::debug::ToPrintableString(*resolvedResponse);
+  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse *resolvedResponse" << std::endl << brave::debug::ToPrintableString(*resolvedResponse);
+  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse -----------------------------";
   return resolvedResponse;
+}
+
+std::unique_ptr<base::Value> BraveSyncControllerImpl::PrepareResolvedDevice(const std::string &object_id) {
+  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse object_id=" << object_id;
+  return std::make_unique<base::Value>(base::Value::Type::NONE);
+  // std::string json = sync_obj_map_->GetObjectIdByLocalId(jslib_const::DEVICES_NAMES);
+  // SyncDevices devices;
+  // devices.FromJson(json);
+  //
+  // SyncDevice* device = devices.GetByObjectId(object_id);
+  // LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse device=" << device;
+  // if (device) {
+  //   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse will ret value";
+  //   return device->ToValue();
+  // } else {
+  //   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::PrepareResolvedResponse will ret none";
+  //   return std::make_unique<base::Value>(base::Value::Type::NONE);
+  // }
 }
 
 void BraveSyncControllerImpl::SendResolveSyncRecords(

@@ -8,6 +8,8 @@
 #include <vector>
 #include <string>
 
+#include <base/time/time.h>
+
 namespace base {
   class Value;
 }
@@ -24,6 +26,17 @@ std::unique_ptr<base::Value> BraveSyncSettingsToValue(BraveSyncSettings *brave_s
 
 std::string ExtractObjectIdFromDict(const base::Value *val);
 std::string ExtractObjectIdFromList(const base::Value *val);
+
+std::string ExtractDeviceIdFromDict(const base::Value *val);
+std::string ExtractIdFieldFromDict(const base::Value *val, const std::string &fileld_name);
+
+base::Time ExtractTimeFieldFromDict(const base::Value *val, const std::string &time_fileld_name);
+
+bool ExtractBool(const base::Value *val, const std::string &fileld_name);
+
+template <typename TEnum>
+TEnum ExtractEnum(const base::Value *val, const std::string &fileld_name,
+  TEnum min, TEnum max, TEnum def);
 
 // see brave-sync/lib/api.proto
 
@@ -55,6 +68,7 @@ std::unique_ptr<base::Value> BlobFromString(const std::string &data_string);
 std::unique_ptr<base::Value> BlobFromSingleIntStr(const std::string &data_string);
 
 std::string GetAction(const base::Value &sync_record);
+int GetIntAction(const base::Value &sync_record);
 
 std::string ExtractBookmarkLocation(const base::Value *sync_record);
 std::string ExtractBookmarkTitle(const base::Value *sync_record);

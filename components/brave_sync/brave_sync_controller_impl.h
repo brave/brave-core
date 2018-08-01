@@ -96,8 +96,7 @@ private:
 
   void OnResolvedPreferences(const std::string &category_name,
     std::unique_ptr<base::Value> records_v);
-  void OnResolvedBookmarks(const std::string &category_name,
-    std::unique_ptr<base::Value> records_v);
+  void OnResolvedBookmarks(std::unique_ptr<base::Value> records_v);
   void OnResolvedHistorySites(const std::string &category_name,
     std::unique_ptr<base::Value> records_v);
 
@@ -106,7 +105,7 @@ private:
     const bool &history, const bool &preferences, int64_t start_at, int max_records);
 
   std::unique_ptr<base::Value> PrepareResolvedResponse(const std::string &category_name, const std::unique_ptr<base::Value> &records);
-  //std::unique_ptr<base::Value> GetResolvedBookmarkValue(const std::string &local_object_id);
+  std::unique_ptr<base::Value> PrepareResolvedDevice(const std::string &object_id);
   void SendResolveSyncRecords(const std::string &category_name, const base::Value* response);
 
   void SendCreateDevice();

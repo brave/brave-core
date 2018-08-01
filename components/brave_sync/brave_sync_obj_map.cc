@@ -31,6 +31,17 @@ BraveSyncObjMap::~BraveSyncObjMap() {
   Close();
 }
 
+void TraceAll() {
+  LOG(ERROR) << "TAGAB BraveSyncObjMap::TraceAll:-----------------------";
+  leveldb::Iterator* it = g_level_db->NewIterator(leveldb::ReadOptions());
+  for (it->SeekToFirst(); it->Valid(); it->Next()) {
+    LOG(ERROR) << "<" << it->key().ToString() << ">: <" << it->value().ToString() << ">";
+  }
+  DCHECK(it->status().ok());  // Check for any errors found during the scan
+  delete it;
+  LOG(ERROR) << "TAGAB BraveSyncObjMap::TraceAll:^----------------------";
+}
+
 void CreateOpenDatabase() {
   if (!g_pLevel_db_init_mutex) {
     return;
@@ -60,6 +71,7 @@ void CreateOpenDatabase() {
         return;
     }
     LOG(ERROR) << "TAGAB DB opened";
+    TraceAll();
   }
 }
 

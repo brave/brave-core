@@ -109,7 +109,7 @@ void SyncDevices::FromJson(const std::string &str_json) {
   if (!records_v) {
     return;
   }
-  LOG(ERROR) << "SyncDevices::FromJson bv_devices: " << brave::debug::ToPrintableString(*records_v);
+  //LOG(ERROR) << "SyncDevices::FromJson bv_devices: " << brave::debug::ToPrintableString(*records_v);
 
   devices_.clear();
   const base::Value* pv_arr = records_v->FindKey("devices");
