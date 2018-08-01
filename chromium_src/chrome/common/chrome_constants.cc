@@ -155,6 +155,8 @@ const base::FilePath::CharType kOfflinePagePrefetchStoreDirname[] =
     FPL("Offline Pages/prefech_store");
 const base::FilePath::CharType kOfflinePageRequestQueueDirname[] =
     FPL("Offline Pages/request_queue");
+const base::FilePath::CharType kPageLoadCappingOptOutDBFilename[] =
+    FPL("page_load_capping_opt_out.db");
 const base::FilePath::CharType kPreferencesFilename[] = FPL("Preferences");
 const base::FilePath::CharType kPreviewsOptOutDBFilename[] =
     FPL("previews_opt_out.db");
