@@ -16,7 +16,7 @@
 #define PREFIX_V3                       "/v3"
 #define REGISTER_PERSONA                "/registrar/persona"
 #define REGISTER_VIEWING                "/registrar/viewing"
-#define WALLET_PROPERTIES               "/v2/wallet/"
+#define WALLET_PROPERTIES               "/wallet/"
 #define WALLET_PROPERTIES_END           "/balance"
 #define RECONCILE_CONTRIBUTION          "/surveyor/contribution/current/"
 #define SURVEYOR_VOTING                 "/surveyor/voting/"

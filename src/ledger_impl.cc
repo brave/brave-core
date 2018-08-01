@@ -121,17 +121,6 @@ void LedgerImpl::initSynopsis() {
   bat_publishers_->initSynopsis();
 }
 
-// void LedgerImpl::walletPropertiesCallback(bool success,
-//                                           const std::string& response) {
-//   if (!success) {
-//     // TODO errors handling
-//     return;
-//   }
-//   braveledger_bat_helper::WALLET_PROPERTIES_ST walletProperties;
-//   braveledger_bat_helper::loadFromJson(walletProperties, response);
-//   // TODO send the balance to the UI via observer or callback
-// }
-
 void LedgerImpl::RunIOTask(LedgerTaskRunnerImpl::Task io_task) {
   std::unique_ptr<LedgerTaskRunnerImpl> task_runner(
       new LedgerTaskRunnerImpl(io_task));
@@ -296,6 +285,34 @@ void LedgerImpl::processMedia(const std::map<std::string, std::string>& parts, c
 
 void LedgerImpl::OnMediaRequestCallback(uint64_t duration, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
   // SaveVisit(mediaPublisherInfo.publisher_, duration, true);
+}
+
+void LedgerImpl::OnWalletProperties(const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
+  ledger::WalletInfo info;
+
+  info.altcurrency_ = properties.altcurrency_;
+  info.probi_ = properties.probi_;
+  info.balance_ = properties.balance_;
+  info.rates_ = properties.rates_;
+  info.parameters_choices_ = properties.parameters_choices_;
+  info.parameters_range_ = properties.parameters_range_;
+  info.parameters_days_ = properties.parameters_days_;
+
+  for (size_t i = 0; i < properties.grants_.size(); i ++) {
+    ledger::GRANT grant;
+
+    grant.altcurrency = properties.grants_[i].altcurrency;
+    grant.probi = properties.grants_[i].probi;
+    grant.expiryTime = properties.grants_[i].expiryTime;
+
+    info.grants_.push_back(grant);
+  }
+
+  ledger_client_->OnWalletProperties(info);
+}
+
+void LedgerImpl::GetWalletProperties() const {
+  bat_client_->getWalletProperties();
 }
 
 }  // namespace bat_ledger

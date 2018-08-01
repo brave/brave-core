@@ -19,19 +19,6 @@ using namespace std::placeholders;
 
 namespace braveledger_bat_client {
 
-// namespace {
-//   std::string GetBalanceURL(const std::string& path, const std::string& prefix) {
-//     std::string url;
-//     if (braveledger_ledger::g_isProduction) {
-//       url = BALANCE_PRODUCTION_SERVER;
-//     } else {
-//       url = BALANCE_STAGING_SERVER;
-//     }
-
-//     return url + prefix + path;
-//   }
-// }
-
 BatClient::BatClient(bat_ledger::LedgerImpl* ledger) :
       ledger_(ledger),
       state_(new braveledger_bat_helper::CLIENT_STATE_ST()),
@@ -44,12 +31,20 @@ BatClient::BatClient(bat_ledger::LedgerImpl* ledger) :
 BatClient::~BatClient() {
 }
 
-std::string BatClient::buildURL(const std::string& path, const std::string& prefix) {
+std::string BatClient::buildURL(const std::string& path, const std::string& prefix, const bool isBalance = false) {
   std::string url;
-  if (braveledger_ledger::g_isProduction) {
-    url = LEDGER_PRODUCTION_SERVER;
+  if (isBalance) {
+    if (braveledger_ledger::g_isProduction) {
+      url = BALANCE_PRODUCTION_SERVER;
+    } else {
+      url = BALANCE_STAGING_SERVER;
+    }
   } else {
-    url = LEDGER_STAGING_SERVER;
+    if (braveledger_ledger::g_isProduction) {
+      url = LEDGER_PRODUCTION_SERVER;
+    } else {
+      url = LEDGER_STAGING_SERVER;
+    }
   }
 
   return url + prefix + path;
@@ -214,20 +209,35 @@ const std::string& BatClient::getLTCAddress() const {
   return state_->walletInfo_.addressLTC_;
 }
 
-// void BatClient::getWalletProperties(const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData) {
-//   auto request_id = ledger_->LoadURL(
-//       GetBalanceURL((std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_ + WALLET_PROPERTIES_END, ""),
-//       std::vector<std::string>(),
-//       "",
-//       "",
-//       ledger::URL_METHOD::GET, &handler_);
-//   handler_.AddRequestHandler(std::move(request_id),
-//                              std::bind(&BatClient::publisherTimestampCallback,
-//                                        this,
-//                                        _1,
-//                                        _2,
-//                                        extra_data));
-// }
+void BatClient::getWalletProperties() {
+  std::string path = (std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_ + WALLET_PROPERTIES_END;
+   auto request_id = ledger_->LoadURL(
+       buildURL(path, PREFIX_V2, true),
+       std::vector<std::string>(),
+       "",
+       "",
+       ledger::URL_METHOD::GET,
+       &handler_);
+
+   handler_.AddRequestHandler(std::move(request_id),
+                              std::bind(&BatClient::walletPropertiesCallback,
+                                        this,
+                                        _1,
+                                        _2));
+ }
+
+ void BatClient::walletPropertiesCallback(bool success,
+                                           const std::string& response) {
+   if (!success) {
+     LOG(ERROR) << "walletPropertiesCallback error";
+     return;
+   }
+
+   braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
+   braveledger_bat_helper::loadFromJson(properties, response);
+   state_->walletProperties_ = properties;
+   ledger_->OnWalletProperties(properties);
+ }
 
 bool BatClient::isReadyForReconcile() {
   // TODO real check of reconcile timestamp
