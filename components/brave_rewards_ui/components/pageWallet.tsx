@@ -6,7 +6,7 @@ import {
   ModalBackupRestore,
   Panel,
   PanelEmpty
-} from 'brave-ui'
+} from 'brave-ui/features/rewards'
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'

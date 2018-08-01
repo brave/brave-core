@@ -2,23 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  Box,
-  Column,
-  DonationTable,
-  Grid,
-  List,
-  Tokens
-} from 'brave-ui'
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
+import { Checkbox, Column, Grid } from 'brave-ui/components'
+import { DisabledContent, Box, DonationTable, List, Tokens } from 'brave-ui/features/rewards'
+
 // Utils
 import { getLocale } from '../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
-import Checkbox from 'brave-ui/rewards/checkbox'
-import DisabledContent from 'brave-ui/rewards/disabledContent'
 
 // Assets
 const donate = require('../../img/rewards/donate_disabled.svg')
