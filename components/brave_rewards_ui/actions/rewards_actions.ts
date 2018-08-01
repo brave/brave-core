@@ -17,3 +17,9 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
   key,
   value
 })
+
+export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
+
+export const onWalletProperties = (properties: Rewards.WalletProperties) => action(types.ON_WALLET_PROPERTIES, {
+  properties
+})

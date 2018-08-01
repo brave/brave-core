@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "bat/ledger/ledger.h"
+#include "bat/ledger/wallet_info.h"
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
 #include "base/memory/weak_ptr.h"
@@ -50,6 +52,7 @@ class PaymentsServiceImpl : public PaymentsService,
   void Shutdown() override;
 
   void CreateWallet() override;
+  void GetWalletProperties() override;
   void GetContentSiteList(uint32_t start,
                           uint32_t limit,
      const GetContentSiteListCallback& callback) override;
@@ -75,6 +78,7 @@ class PaymentsServiceImpl : public PaymentsService,
   void OnPublisherStateLoaded(ledger::LedgerCallbackHandler* handler,
                               const std::string& data);
   void TriggerOnWalletCreated(int error_code);
+  void TriggerOnWalletProperties(ledger::WalletInfo result);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
@@ -88,6 +92,7 @@ class PaymentsServiceImpl : public PaymentsService,
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletCreated(ledger::Result result) override;
+  void OnWalletProperties(ledger::WalletInfo result) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;

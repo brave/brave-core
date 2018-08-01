@@ -11,6 +11,7 @@ import { Box, ContributeTable, DisabledContent, List, ModalContribute, Tokens } 
 // Utils
 import { getLocale } from '../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
+import * as utils from '../utils'
 
 // Assets
 const contributeDisabledIcon = require('../../img/rewards/contribute_disabled.svg')
@@ -20,6 +21,11 @@ const bartBaker = require('../../img/rewards/temp/bartBaker.jpeg')
 
 interface State {
   modalContribute: boolean
+}
+
+interface MonthlyChoice {
+  tokens: number
+  converted: number
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -119,8 +125,14 @@ class ContributeBox extends React.Component<Props, State> {
     this.actions.onSettingSave(key, selected)
   }
 
-  contributeSettings = () => {
-    const data = this.props.rewardsData
+  contributeSettings = (monthlyList: MonthlyChoice[]) => {
+    const {
+      contributionMinTime,
+      contributionMinVisits,
+      contributionNonVerified,
+      contributionVideos,
+      contributionMonthly
+    } = this.props.rewardsData
 
     return (
       <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>
@@ -128,17 +140,20 @@ class ContributeBox extends React.Component<Props, State> {
           <Select
             title={getLocale('contributionMonthly')}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-            value={(data.contributionMonthly || '').toString()}
+            value={(contributionMonthly || '').toString()}
           >
-            <div data-value='10'><Tokens value={10} converted={'4'} /></div>
-            <div data-value='20'><Tokens value={20} converted={'6'} /></div>
-            <div data-value='40'><Tokens value={40} converted={'12'} /></div>
-            <div data-value='100'><Tokens value={100} converted={'40'} /></div>
+            {
+              monthlyList.map((choice: MonthlyChoice) => {
+                return <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
+                  <Tokens value={choice.tokens} converted={choice.converted} />
+                </div>
+              })
+            }
           </Select>
           <Select
             title={getLocale('contributionMinTime')}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMinTime')}
-            value={(data.contributionMinTime || '').toString()}
+            value={(contributionMinTime || '').toString()}
           >
             <div data-value='5000'>{getLocale('contributionTime5')}</div>
             <div data-value='8000'>{getLocale('contributionTime8')}</div>
@@ -147,7 +162,7 @@ class ContributeBox extends React.Component<Props, State> {
           <Select
             title={getLocale('contributionMinVisits')}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMinVisits')}
-            value={(data.contributionMinVisits || '').toString()}
+            value={(contributionMinVisits || '').toString()}
           >
             <div data-value='1'>{getLocale('contributionVisit1')}</div>
             <div data-value='5'>{getLocale('contributionVisit5')}</div>
@@ -156,8 +171,8 @@ class ContributeBox extends React.Component<Props, State> {
           <Checkbox
             title={getLocale('contributionAllowed')}
             value={{
-              contributionNonVerified: data.contributionNonVerified,
-              contributionVideos: data.contributionVideos
+              contributionNonVerified: contributionNonVerified,
+              contributionVideos: contributionVideos
             }}
             multiple={true}
             onChange={this.onCheckSettingChange}
@@ -171,8 +186,15 @@ class ContributeBox extends React.Component<Props, State> {
   }
 
   render () {
-    const { rewardsData } = this.props
-    const toggleOn = !(rewardsData.firstLoad !== false || !rewardsData.enabledMain)
+    const {
+      firstLoad,
+      enabledMain,
+      walletInfo,
+      contributionMonthly,
+      enabledContribute
+    } = this.props.rewardsData
+    const toggleOn = !(firstLoad !== false || !enabledMain)
+    const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, walletInfo.rates)
 
     return (
       <Box
@@ -180,10 +202,10 @@ class ContributeBox extends React.Component<Props, State> {
         theme={{ titleColor: '#9F22A1' }}
         description={getLocale('contributionDesc')}
         toggle={toggleOn}
-        checked={toggleOn ? rewardsData.enabledContribute : false}
+        checked={toggleOn ? enabledContribute : false}
         disabledContent={this.contributeDisabled()}
         onToggle={this.onToggleContribution}
-        settingsChild={this.contributeSettings()}
+        settingsChild={this.contributeSettings(monthlyList)}
       >
         {
           this.state.modalContribute
@@ -201,12 +223,15 @@ class ContributeBox extends React.Component<Props, State> {
               arrowPadding: '0'
             }}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-            value={(rewardsData.contributionMonthly || '').toString()}
+            value={(contributionMonthly || '').toString()}
           >
-            <div data-value='10'><Tokens value={10} converted={'4'} /></div>
-            <div data-value='20'><Tokens value={20} converted={'6'} /></div>
-            <div data-value='40'><Tokens value={40} converted={'12'} /></div>
-            <div data-value='100'><Tokens value={100} converted={'40'} /></div>
+            {
+              monthlyList.map((choice: MonthlyChoice) => {
+                return <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
+                  <Tokens value={choice.tokens} converted={choice.converted} />
+                </div>
+              })
+            }
           </Select>
         </List>
         <List
