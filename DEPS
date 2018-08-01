@@ -11,10 +11,10 @@ deps = {
   "vendor/python-patch": "https://github.com/svn2github/python-patch@a336a458016ced89aba90dfc3f4c8222ae3b1403",
   "vendor/sparkle": "https://github.com/brave/Sparkle.git@c0759cce415d7c0feae45005c8a013b1898711f0",
   "vendor/bat-native-ledger": "https://github.com/brave-intl/bat-native-ledger@a3e64797bf6ebbfa39a60240db8d82995f97ebd9",
-  "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@744b43313525a047eda4f2e2e689aa88b6c596fa",
-  "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@e5aba371a56d3e41f7e80e868312446ce7bd434c",
-  "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@8f60c03329f475959b44cd22838284e19508ec80",
-  "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@d61f0cdc88dd2c4320176d2c514b8dd8dd1f22c2",
+  "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@86aafe2ef89835ae71c9ed7c2527e3bb3000930e",
+  "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@9b119931c702d55be994117eb505d56310720b1d",
+  "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@6f5817c5a4dcabb49e22b578ecae4993159e6481",
+  "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@a53821a2efb661a0b5a5aaa2b419310706a96042",
 }
 
 hooks = [
