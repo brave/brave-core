@@ -1,3 +1,16 @@
+source_set("channel_info") {
+  if (is_linux) {
+    sources = [
+      "brave_channel_info_posix.cc",
+      "brave_channel_info_posix.h",
+    ]
+
+    configs += [
+      "//brave/build/linux:linux_channel_names",
+    ]
+  }
+}
+
 source_set("common") {
   sources = [
     "brave_paths.cc",
@@ -44,10 +57,6 @@ source_set("common") {
     sources += [
       "importer/brave_importer_utils_linux.cc",
       "importer/chrome_importer_utils_linux.cc",
-    ]
-
-    configs += [
-      "//brave/build/linux:linux_channel_names",
     ]
   }
 
