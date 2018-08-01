@@ -38,10 +38,15 @@ window.cr.define('brave_rewards', function () {
     getActions().walletCreateFailed()
   }
 
+  function walletProperties () {
+    getActions().onWalletProperties()
+  }
+
   return {
     initialize,
     walletCreated,
-    walletCreateFailed
+    walletCreateFailed,
+    walletProperties
   }
 })
 

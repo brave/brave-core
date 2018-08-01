@@ -28,6 +28,15 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state = { ...state }
       state.walletCreateFailed = true
       break
+    case types.GET_WALLET_PROPERTIES:
+      chrome.send('getWalletProperties', [])
+      break
+    case types.ON_WALLET_PROPERTIES:
+      state = { ...state }
+      console.log(chrome.getVariableValue('rewards.walletInfo.probi'))
+      console.log(chrome.getVariableValue('rewards.walletInfo.rates.USD'))
+      console.log(chrome.getVariableValue('rewards.walletInfo.rates.EUR'))
+      break
   }
 
   if (state !== startingState) {

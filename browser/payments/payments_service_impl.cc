@@ -14,6 +14,7 @@
 #include "base/task_scheduler/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/wallet_info.h"
 #include "brave/browser/payments/payments_service_observer.h"
 #include "brave/browser/payments/publisher_info_backend.h"
 #include "chrome/browser/browser_process_impl.h"
@@ -248,6 +249,10 @@ void PaymentsServiceImpl::OnWalletCreated(ledger::Result result) {
   TriggerOnWalletCreated(result);
 }
 
+void PaymentsServiceImpl::OnWalletProperties(ledger::WalletInfo result) {
+  TriggerOnWalletProperties(result);
+}
+
 void PaymentsServiceImpl::OnReconcileComplete(ledger::Result result,
                                               const std::string& viewing_id) {
   LOG(ERROR) << "reconcile complete " << viewing_id;
@@ -464,6 +469,15 @@ void PaymentsServiceImpl::RunTask(
 void PaymentsServiceImpl::TriggerOnWalletCreated(int error_code) {
   for (auto& observer : observers_)
     observer.OnWalletCreated(this, error_code);
+}
+
+void PaymentsServiceImpl::TriggerOnWalletProperties(ledger::WalletInfo result) {
+  for (auto& observer : observers_)
+    observer.OnWalletProperties(this, result);
+}
+
+void PaymentsServiceImpl::GetWalletProperties() {
+  ledger_->GetWalletProperties();
 }
 
 }  // namespace payments
