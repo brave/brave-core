@@ -9,10 +9,22 @@ import { types } from '../../../brave_rewards_ui/constants/rewards_types'
 
 describe('rewardsReducer', () => {
   it('should handle initial state', () => {
-    const assertion = rewardsReducer(undefined, actions.walletCreated())
+    const assertion = rewardsReducer(undefined, actions.createWallet())
     expect(assertion).toEqual({
+      walletCreated: false,
       walletCreateFailed: false,
-      walletCreated: true
+      createdTimestamp: null,
+      enabledMain: false,
+      enabledAds: false,
+      enabledContribute: false,
+      firstLoad: null,
+      contributionMinTime: 8000,
+      contributionMinVisits: 1,
+      contributionMonthly: 10,
+      contributionNonVerified: true,
+      contributionVideos: true,
+      donationAbilityYT: true,
+      donationAbilityTwitter: true
     })
   })
 
@@ -32,8 +44,20 @@ describe('rewardsReducer', () => {
         }
       })
       expect(assertion).toEqual({
+        walletCreated: true,
         walletCreateFailed: false,
-        walletCreated: true
+        createdTimestamp: null,
+        enabledMain: false,
+        enabledAds: false,
+        enabledContribute: false,
+        firstLoad: null,
+        contributionMinTime: 8000,
+        contributionMinVisits: 1,
+        contributionMonthly: 10,
+        contributionNonVerified: true,
+        contributionVideos: true,
+        donationAbilityYT: true,
+        donationAbilityTwitter: true
       })
     })
   })
@@ -48,8 +72,20 @@ describe('rewardsReducer', () => {
         }
       })
       expect(assertion).toEqual({
+        walletCreated: false,
         walletCreateFailed: true,
-        walletCreated: false
+        createdTimestamp: null,
+        enabledMain: false,
+        enabledAds: false,
+        enabledContribute: false,
+        firstLoad: null,
+        contributionMinTime: 8000,
+        contributionMinVisits: 1,
+        contributionMonthly: 10,
+        contributionNonVerified: true,
+        contributionVideos: true,
+        donationAbilityYT: true,
+        donationAbilityTwitter: true
       })
     })
   })

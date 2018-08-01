@@ -2,25 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  Box,
-  Column,
-  ContributeTable,
-  DisabledContent,
-  Grid,
-  List,
-  ModalContribute,
-  Select,
-  Tokens
-} from 'brave-ui'
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
+import { Checkbox, Grid, Column, Select } from 'brave-ui/components'
+import { Box, ContributeTable, DisabledContent, List, ModalContribute, Tokens } from 'brave-ui/features/rewards'
 
 // Utils
 import { getLocale } from '../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
-import Checkbox from 'brave-ui/rewards/checkbox'
 
 // Assets
 const contributeDisabledIcon = require('../../img/rewards/contribute_disabled.svg')
@@ -138,7 +128,7 @@ class ContributeBox extends React.Component<Props, State> {
           <Select
             title={getLocale('contributionMonthly')}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-            value={data.contributionMonthly.toString()}
+            value={(data.contributionMonthly || '').toString()}
           >
             <div data-value='10'><Tokens value={10} converted={'4'} /></div>
             <div data-value='20'><Tokens value={20} converted={'6'} /></div>
@@ -148,7 +138,7 @@ class ContributeBox extends React.Component<Props, State> {
           <Select
             title={getLocale('contributionMinTime')}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMinTime')}
-            value={data.contributionMinTime.toString()}
+            value={(data.contributionMinTime || '').toString()}
           >
             <div data-value='5000'>{getLocale('contributionTime5')}</div>
             <div data-value='8000'>{getLocale('contributionTime8')}</div>
@@ -157,7 +147,7 @@ class ContributeBox extends React.Component<Props, State> {
           <Select
             title={getLocale('contributionMinVisits')}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMinVisits')}
-            value={data.contributionMinVisits.toString()}
+            value={(data.contributionMinVisits || '').toString()}
           >
             <div data-value='1'>{getLocale('contributionVisit1')}</div>
             <div data-value='5'>{getLocale('contributionVisit5')}</div>
@@ -211,7 +201,7 @@ class ContributeBox extends React.Component<Props, State> {
               arrowPadding: '0'
             }}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-            value={rewardsData.contributionMonthly.toString()}
+            value={(rewardsData.contributionMonthly || '').toString()}
           >
             <div data-value='10'><Tokens value={10} converted={'4'} /></div>
             <div data-value='20'><Tokens value={20} converted={'6'} /></div>

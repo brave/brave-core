@@ -35,7 +35,7 @@ describe('adblockPage component', () => {
       const wrapper = shallow(
         <AdblockPage
           actions={{}}
-          adblockData={adblockInitialState.adblockData}
+          adblockData={adblockInitialState.adblockData as AdBlock.State}
         />
       )
       const assertion = wrapper.find('#adblockPage')

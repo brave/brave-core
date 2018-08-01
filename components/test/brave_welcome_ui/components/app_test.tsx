@@ -39,7 +39,7 @@ describe('welcomePage component', () => {
       const wrapper = shallow(
         <WelcomePage
           actions={{}}
-          welcomeData={welcomeInitialState.welcomeData}
+          welcomeData={welcomeInitialState.welcomeData as Welcome.State}
         />
       )
       const assertion = wrapper.find('#welcomePage')
