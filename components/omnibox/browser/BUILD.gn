@@ -1,4 +1,4 @@
-source_set("brave_autocomplete") {
+source_set("browser") {
   sources = [
     "brave_autocomplete_controller.cc",
     "brave_autocomplete_controller.h",
@@ -7,9 +7,10 @@ source_set("brave_autocomplete") {
     "topsites_provider.h",
   ]
 
+  # Don't make this target depends on chrome layer.
+  # This target is compiled together with //components/omnibox/browser static lib.
   deps = [
-  ]
-  public_deps = [
-    "//chrome/common",
+     "//skia",
+     "//third_party/metrics_proto",
   ]
 }
