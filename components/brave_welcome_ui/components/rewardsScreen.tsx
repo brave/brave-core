@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { Heading, Paragraph } from 'brave-ui'
-import Image from 'brave-ui/v1/image'
-import { PushButtonLink } from 'brave-ui/v1/pushButton'
+import { Heading, Paragraph } from 'brave-ui/old'
+import Image from 'brave-ui/old/v1/image'
+import { PushButtonLink } from 'brave-ui/old/v1/pushButton'
 
 // Constants
 import { theme } from '../constants/theme'

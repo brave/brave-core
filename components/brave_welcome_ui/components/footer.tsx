@@ -3,9 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { PushButton, PushButtonLink } from 'brave-ui/v1/pushButton'
-import ArrowRight from 'brave-ui/v1/icons/arrowRight'
-import { Grid, Column, Anchor } from 'brave-ui'
+import { PushButton, PushButtonLink } from 'brave-ui/old/v1/pushButton'
+import ArrowRight from 'brave-ui/old/v1/icons/arrowRight'
+import { Grid, Column } from 'brave-ui/components'
+import { Anchor } from 'brave-ui/old'
 
 // Constants
 import { theme } from '../constants/theme'

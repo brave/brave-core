@@ -4,17 +4,16 @@
 
 import * as React from 'react'
 import { getLocale } from '../../common/locale'
+import { Grid, Column } from 'brave-ui/components'
 import {
   Page,
-  Grid,
-  Column,
   MediaContent,
   BoxedContent,
   Heading,
   Paragraph,
   SwitchButton,
   Clock
-} from 'brave-ui'
+} from 'brave-ui/old'
 
 // Components
 import Stats from './stats'

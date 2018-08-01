@@ -5,8 +5,8 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { UnstyledButton } from 'brave-ui'
-import Panel from 'brave-ui/v1/panel'
+import { UnstyledButton } from 'brave-ui/old'
+import Panel from 'brave-ui/old/v1/panel'
 
 // Components
 import BraveScreen from './braveScreen'
