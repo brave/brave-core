@@ -1,25 +1,22 @@
 diff --git a/chrome/browser/permissions/permission_uma_util.cc b/chrome/browser/permissions/permission_uma_util.cc
-index 14efe3ccb3906516ba5c13a1c1ba78fb2ccd2d7d..1f24a413c7d023ad9b0d921d3b277b50e1132d8b 100644
+index 14efe3ccb3906516ba5c13a1c1ba78fb2ccd2d7d..cf3ac17e8b5e3c59a4c880ddc3861875dda1c3c8 100644
 --- a/chrome/browser/permissions/permission_uma_util.cc
 +++ b/chrome/browser/permissions/permission_uma_util.cc
-@@ -94,6 +94,8 @@ std::string GetPermissionRequestString(PermissionRequestType type) {
-       return "SecurityKeyAttestation";
-     case PermissionRequestType::PERMISSION_PAYMENT_HANDLER:
-       return "PaymentHandler";
-+    case PermissionRequestType::PERMISSION_AUTOPLAY:
-+      return "Autoplay";
-     default:
-       NOTREACHED();
-       return "";
-@@ -401,6 +403,12 @@ void PermissionUmaUtil::RecordPermissionAction(
+@@ -64,7 +64,7 @@ namespace {
+ 
+ const int kPriorCountCap = 10;
+ 
+-std::string GetPermissionRequestString(PermissionRequestType type) {
++std::string GetPermissionRequestString_ChromiumImpl(PermissionRequestType type) {
+   switch (type) {
+     case PermissionRequestType::MULTIPLE:
+       return "AudioAndVideoCapture";
+@@ -401,6 +401,9 @@ void PermissionUmaUtil::RecordPermissionAction(
        UMA_HISTOGRAM_ENUMERATION("Permissions.Action.PaymentHandler", action,
                                  PermissionAction::NUM);
        break;
 +    case CONTENT_SETTINGS_TYPE_AUTOPLAY:
-+      PERMISSION_ACTION_UMA(secure_origin, "Permissions.Action.Autoplay",
-+                            "Permissions.Action.SecureOrigin.Autoplay",
-+                            "Permissions.Action.InsecureOrigin.Autoplay",
-+                            action);
++      BraveRecordPermissionAction(permission, secure_origin, action);
 +      break;
      // The user is not prompted for these permissions, thus there is no
      // permission action recorded for them.
