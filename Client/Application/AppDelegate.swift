@@ -117,7 +117,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         browserViewController.restorationIdentifier = NSStringFromClass(BrowserViewController.self)
         browserViewController.restorationClass = AppDelegate.self
-        browserViewController.crashedLastSession = crashedLastSession
+        // Don't track crashes if we're building the local Fennec environment due to the fact that terminating/stopping
+        // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
+        #if !MOZ_CHANNEL_FENNEC
+            browserViewController.crashedLastSession = crashedLastSession
+        #endif
 
         let navigationController = UINavigationController(rootViewController: browserViewController)
         navigationController.delegate = self
