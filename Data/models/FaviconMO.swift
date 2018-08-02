@@ -26,7 +26,7 @@ public final class FaviconMO: NSManagedObject, CRUD {
     }
 
     public class func add(_ favicon: Favicon, forSiteUrl siteUrl: URL) {
-        let context = DataController.backgroundContext
+        let context = DataController.newBackgroundContext()
         context.perform {
             var item = FaviconMO.get(forFaviconUrl: favicon.url, context: context)
             if item == nil {

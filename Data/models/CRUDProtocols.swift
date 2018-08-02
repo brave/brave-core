@@ -27,12 +27,12 @@ public protocol Readable where Self: NSManagedObject {
 // MARK: - Implementations
 public extension Deletable where Self: NSManagedObject {
     func delete() {
-        let context = self.managedObjectContext ?? DataController.backgroundContext
+        let context = self.managedObjectContext ?? DataController.newBackgroundContext()
         DataController.save(context: context)
     }
     
     static func deleteAll(predicate: NSPredicate? = nil) {
-        let context = DataController.backgroundContext
+        let context = DataController.newBackgroundContext()
         let request = getFetchRequest()
         
         request.predicate = predicate

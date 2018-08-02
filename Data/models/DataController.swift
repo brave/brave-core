@@ -36,13 +36,6 @@ public class DataController: NSObject {
         return container.viewContext
     }
     
-    /// Creates a new background context each time this getter is called.
-    private var backgroundThreadContext: NSManagedObjectContext {
-        let backgroundContext = container.newBackgroundContext()
-        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
-        return backgroundContext
-    }
-    
     public static func save(context: NSManagedObjectContext?) {
         guard let context = context else {
             log.warning("No context on save")
@@ -64,7 +57,9 @@ public class DataController: NSObject {
         return DataController.shared.viewContext
     }
     
-    public static var backgroundContext: NSManagedObjectContext {
-        return DataController.shared.backgroundThreadContext
+    public static func newBackgroundContext() -> NSManagedObjectContext {
+        let backgroundContext = DataController.shared.container.newBackgroundContext()
+        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
+        return backgroundContext
     }
 }

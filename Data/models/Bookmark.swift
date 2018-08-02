@@ -144,7 +144,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     
     // Should not be used for updating, modify to increase protection
     class func add(rootObject root: SyncBookmark?, save: Bool = false, sendToSync: Bool = false, parentFolder: Bookmark? = nil, color: UIColor? = nil) {
-        let context = DataController.backgroundContext
+        let context = DataController.newBackgroundContext()
         
         let bookmark = root
         let site = bookmark?.site
@@ -322,7 +322,7 @@ extension Bookmark {
     }
     
     public class func remove(forUrl url: URL) {
-        let context = DataController.backgroundContext
+        let context = DataController.newBackgroundContext()
         let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: false)
         
         let record = first(where: predicate, context: context)
