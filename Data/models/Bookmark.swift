@@ -270,21 +270,20 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
 // MARK: - Getters
 extension Bookmark {
     fileprivate static func get(forUrl url: URL, countOnly: Bool = false, getFavorites: Bool = false, context: NSManagedObjectContext) -> [Bookmark]? {
-        let urlKeyPath = #keyPath(Bookmark.url)
-        let isFavoriteKeyPath = #keyPath(Bookmark.isFavorite)
-         
-        let predicate = NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(NSNumber(value: getFavorites))", url.absoluteString)
-        
+        let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: getFavorites)
         return all(where: predicate)
     }
     
     fileprivate static func count(forUrl url: URL, getFavorites: Bool = false) -> Int? {
+        let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: getFavorites)
+        return count(predicate: predicate)
+    }
+    
+    private static func isFavoriteOrBookmarkByUrlPredicate(url: URL, getFavorites: Bool) -> NSPredicate {
         let urlKeyPath = #keyPath(Bookmark.url)
         let isFavoriteKeyPath = #keyPath(Bookmark.isFavorite)
         
-        let predicate = NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(NSNumber(value: getFavorites))", url.absoluteString)
-        
-        return count(predicate: predicate)
+        return NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(NSNumber(value: getFavorites))", url.absoluteString)
     }
     
     public static func getChildren(forFolderUUID syncUUID: [Int]?, ignoreFolders: Bool = false) -> [Bookmark]? {
