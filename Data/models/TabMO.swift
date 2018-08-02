@@ -81,9 +81,9 @@ public final class TabMO: NSManagedObject, CRUD {
     }
 
     // Updates existing tab with new data. Usually called when user navigates to a new website for in his existing tab.
-    @discardableResult public class func update(with id: String, tabData: SavedTab) -> TabMO? {
+    @discardableResult public class func update(tabData: SavedTab) -> TabMO? {
         let context = DataController.backgroundContext
-        guard let tab = get(fromId: id, context: context) else { return nil }
+        guard let tab = get(fromId: tabData.id, context: context) else { return nil }
         
         if let screenshot = tabData.screenshot {
             tab.screenshot = UIImageJPEGRepresentation(screenshot, 1)
