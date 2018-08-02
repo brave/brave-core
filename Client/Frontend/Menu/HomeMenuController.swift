@@ -168,7 +168,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     onClickPageButton(bookmarksButton)
     
     if Bookmark.contains(url: url) {
-      Bookmark.remove(forUrl: url, context: DataController.viewContext)
+      Bookmark.remove(forUrl: url)
     } else {
       Bookmark.add(url: url, title: tabState.title, parentFolder: bookmarksController.currentBookmarksPanel().currentFolder)
     }

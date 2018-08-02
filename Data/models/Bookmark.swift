@@ -268,12 +268,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
 
 // TODO: Document well
 // MARK: - Getters
-extension Bookmark {
-    fileprivate static func get(forUrl url: URL, countOnly: Bool = false, getFavorites: Bool = false, context: NSManagedObjectContext) -> [Bookmark]? {
-        let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: getFavorites)
-        return all(where: predicate)
-    }
-    
+extension Bookmark {    
     fileprivate static func count(forUrl url: URL, getFavorites: Bool = false) -> Int? {
         let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: getFavorites)
         return count(predicate: predicate)
@@ -325,17 +320,12 @@ extension Bookmark {
         
         return all(where: predicate) ?? []
     }
-}
-
-// TODO: REMOVE!! This should be located in abstraction
-extension Bookmark {
-    @discardableResult
-    public class func remove(forUrl url: URL, save: Bool = true, context: NSManagedObjectContext) -> Bool {
-        if let bm = get(forUrl: url, context: context)?.first {
-            bm.remove(save: save)
-            return true
-        }
-        return false
+    
+    public class func remove(forUrl url: URL, save: Bool = true) {
+        let context = DataController.backgroundContext
+        let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: false)
+        
+        let record = first(where: predicate, context: context)
+        record?.delete()
     }
 }
-
