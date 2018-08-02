@@ -1417,6 +1417,14 @@ extension BrowserViewController: URLBarDelegate {
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView) {
         dismissVisibleMenus()
     }
+    
+    func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView) {
+        // BRAVE TODO: Insert shield block stats here
+        let shields = ShieldsViewController(url: tabManager.selectedTab?.url, shieldBlockStats: nil)
+        shields.preferredContentSize = CGSize(width: 320, height: 600.0)
+        let popover = PopoverController(contentController: shields, contentSizeBehavior: .preferredContentSize)
+        popover.present(from: urlBar.locationView.shieldsButton, on: self)
+    }
 }
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
@@ -1471,18 +1479,6 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         //        homePanel.view.heightAnchor.constraint(equalToConstant: 580.0).isActive = true
         let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
         popover.present(from: button, on: self)
-        return;
-
-        // ensure that any keyboards or spinners are dismissed before presenting the menu
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        var actions: [[PhotonActionSheetItem]] = []
-
-        actions.append(getHomePanelActions())
-        actions.append(getOtherPanelActions(vcDelegate: self))
-        // force a modal if the menu is being displayed in compact split screen
-        let isCompact = traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact
-        let shouldSuppress = isCompact && UIDevice.current.userInterfaceIdiom == .pad
-        presentSheetWith(actions: actions, on: self, from: button, suppressPopover: shouldSuppress)
     }
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {

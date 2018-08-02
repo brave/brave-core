@@ -47,7 +47,7 @@ public struct BraveShieldState {
         perNormalizedDomain[domain] = shields!
     }
 
-    static func getStateForDomain(_ domain: String) -> BraveShieldState? {
+    public static func getStateForDomain(_ domain: String) -> BraveShieldState? {
         return perNormalizedDomain[domain]
     }
 
@@ -85,32 +85,8 @@ public struct BraveShieldState {
         }
     }
 
-    func isAllOff() -> Bool {
-        return state[.AllOff] ?? false
-    }
-
-    func isNotSet() -> Bool {
-        return state.count < 1
-    }
-
-    func isOnAdBlockAndTp() -> Bool? {
-        return state[.AdblockAndTp] ?? nil
-    }
-
-    func isOnHTTPSE() -> Bool? {
-        return state[.HTTPSE] ?? nil
-    }
-
-    func isOnSafeBrowsing() -> Bool? {
-        return state[.SafeBrowsing] ?? nil
-    }
-
-    func isOnScriptBlocking() -> Bool? {
-        return state[.NoScript] ?? nil
-    }
-
-    func isOnFingerprintProtection() -> Bool? {
-        return state[.FpProtection] ?? nil
+    public func isShieldEnabled(_ shield: Shield) -> Bool {
+        return state[shield] != nil
     }
 
     mutating func setStateFromPerPageShield(_ pageState: BraveShieldState?) {
