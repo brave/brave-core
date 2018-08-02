@@ -143,7 +143,9 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     }
     
     // Should not be used for updating, modify to increase protection
-    class func add(rootObject root: SyncBookmark?, save: Bool = false, sendToSync: Bool = false, parentFolder: Bookmark? = nil, color: UIColor? = nil, context: NSManagedObjectContext = DataController.backgroundContext) {
+    class func add(rootObject root: SyncBookmark?, save: Bool = false, sendToSync: Bool = false, parentFolder: Bookmark? = nil, color: UIColor? = nil) {
+        let context = DataController.backgroundContext
+        
         let bookmark = root
         let site = bookmark?.site
         
@@ -220,14 +222,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         bookmark.parentFolderObjectId = parentFolder?.syncUUID
         bookmark.site = site
         
-        let context = DataController.backgroundContext
-        
-        var folderOnWorkerContext: Bookmark?
-        if let folder = parentFolder {
-            folderOnWorkerContext = (try? context.existingObject(with: folder.objectID)) as? Bookmark
-        }
-        
-        add(rootObject: bookmark, save: true, sendToSync: true, parentFolder: folderOnWorkerContext, color: color, context: context)
+        add(rootObject: bookmark, save: true, sendToSync: true, parentFolder: parentFolder, color: color)
     }
 
     public class func contains(url: URL, getFavorites: Bool = false) -> Bool {
