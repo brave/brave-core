@@ -134,7 +134,7 @@ class HistoryViewController: SiteTableViewController, HomePanel {
       }
       else {
         // no relationship - attempt to resolove domain problem
-        let context = DataController.mainContext
+        let context = DataController.viewContext
         if let domain = Domain.getOrCreateForUrl(siteUrl, context: context), let faviconMO = domain.favicon, let urlString = faviconMO.url, let url = URL(string: urlString) {
           DispatchQueue.main.async {
             self.setCellImage(cell, iconUrl: url, cacheWithUrl: siteUrl)

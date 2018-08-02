@@ -50,7 +50,7 @@ class BookmarkEditingViewController: FormViewController {
     self.bookmarkIndexPath = indexPath
     
     // get top-level folders
-    folders = Bookmark.getFolders(bookmark: nil, context: DataController.mainContext)
+    folders = Bookmark.getFolders(bookmark: nil, context: DataController.viewContext)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -354,7 +354,7 @@ class BookmarksViewController: SiteTableViewController, HomePanel {
         }
         else {
           // no relationship - attempt to resolove domain problem
-          let context = DataController.mainContext
+          let context = DataController.viewContext
           if let domain = Domain.getOrCreateForUrl(bookmarkUrl, context: context), let faviconMO = domain.favicon, let urlString = faviconMO.url, let url = URL(string: urlString) {
             DispatchQueue.main.async {
               self.setCellImage(cell, iconUrl: url, cacheWithUrl: bookmarkUrl)

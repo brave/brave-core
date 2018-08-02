@@ -65,7 +65,7 @@ public extension Deletable where Self: NSManagedObject {
 
 public extension Readable where Self: NSManagedObject { 
     static func count(predicate: NSPredicate? = nil) -> Int? {
-        let context = DataController.mainContext
+        let context = DataController.viewContext
         let request = getFetchRequest()
         
         request.predicate = predicate
@@ -79,12 +79,12 @@ public extension Readable where Self: NSManagedObject {
         return nil
     }
     
-    static func first(where predicate: NSPredicate?, context: NSManagedObjectContext = DataController.mainContext) -> Self? {
+    static func first(where predicate: NSPredicate?, context: NSManagedObjectContext = DataController.viewContext) -> Self? {
         return all(where: predicate, fetchLimit: 1, context: context)?.first
     }
     
     static func all(where predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, 
-                       fetchLimit: Int = 0, context: NSManagedObjectContext = DataController.mainContext) -> [Self]? {
+                       fetchLimit: Int = 0, context: NSManagedObjectContext = DataController.viewContext) -> [Self]? {
         let request = getFetchRequest()
         
         request.predicate = predicate

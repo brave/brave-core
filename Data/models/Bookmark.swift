@@ -73,7 +73,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     }
 
     public class func frc(parentFolder: Bookmark?) -> NSFetchedResultsController<NSFetchRequestResult> {
-        let context = DataController.mainContext
+        let context = DataController.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         
         fetchRequest.entity = Bookmark.entity(context: context)

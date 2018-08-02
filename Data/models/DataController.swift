@@ -32,7 +32,7 @@ public class DataController: NSObject {
         return container
     }()
     
-    private var mainThreadContext: NSManagedObjectContext {
+    private var viewContext: NSManagedObjectContext {
         return container.viewContext
     }
     
@@ -60,8 +60,8 @@ public class DataController: NSObject {
         }
     }
     
-    public static var mainContext: NSManagedObjectContext {
-        return DataController.shared.mainThreadContext
+    public static var viewContext: NSManagedObjectContext {
+        return DataController.shared.viewContext
     }
     
     public static var backgroundContext: NSManagedObjectContext {

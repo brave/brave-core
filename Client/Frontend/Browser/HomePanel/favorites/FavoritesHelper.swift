@@ -14,7 +14,7 @@ struct FavoritesHelper {
     static let initPrefsKey = "FavoritesHelperInitPrefsKey"
 
     static func frc() -> NSFetchedResultsController<NSFetchRequestResult> {
-        let context = DataController.mainContext
+        let context = DataController.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
 
         fetchRequest.entity = Bookmark.entity(context: context)
