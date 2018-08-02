@@ -28,20 +28,7 @@ public protocol Readable where Self: NSManagedObject {
 public extension Deletable where Self: NSManagedObject {
     func delete() {
         let context = self.managedObjectContext ?? DataController.backgroundContext
-        
-        context.perform {
-            context.delete(self)
-            if !context.hasChanges {
-                log.debug("Wanting to remove object \(self) but context registered no changes.")
-                return
-            }
-            
-            do {
-                try context.save()
-            } catch {
-                log.debug("Failed to save context after removing object \(self), error: \(error)")
-            }
-        }
+        DataController.save(context: context)
     }
     
     static func deleteAll(predicate: NSPredicate? = nil) {
