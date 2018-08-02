@@ -110,7 +110,7 @@ extension Syncable /* where Self: NSManagedObject */ {
         // Force a sync resync instead, should not be slow
         context.delete(s)
         if save {
-            DataController.save(context)
+            DataController.save(context: context)
         }
     }
 }

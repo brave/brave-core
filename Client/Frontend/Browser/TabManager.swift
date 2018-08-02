@@ -360,7 +360,7 @@ class TabManager: NSObject {
                 managedObject.order = Int16(i)
             }
             
-            DataController.save(context)
+            DataController.save(context: context)
         }
     }
 

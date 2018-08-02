@@ -70,7 +70,7 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
             // BRAVE TODO:
 //            item?.sectionIdentifier = BraveStrings.Today
 
-            DataController.save(context)
+            DataController.save(context: context)
         }
     }
 

@@ -76,7 +76,7 @@ public final class TabMO: NSManagedObject, CRUD {
         // TODO: replace with logic to create sync uuid then buble up new uuid to browser.
         tab.syncUUID = UUID().uuidString
         tab.title = Strings.New_Tab
-        DataController.save(context)
+        DataController.save(context: context)
         return tab
     }
 
@@ -95,7 +95,7 @@ public final class TabMO: NSManagedObject, CRUD {
         tab.urlHistoryCurrentIndex = tabData.historyIndex
         tab.isSelected = tabData.isSelected
         
-        DataController.save(context)
+        DataController.save(context: context)
         
         return tab
     }
@@ -104,7 +104,7 @@ public final class TabMO: NSManagedObject, CRUD {
         let context = DataController.backgroundContext
         let tabMO = TabMO.get(fromId: tabId, context: context)
         tabMO?.screenshotUUID = uuid
-        DataController.save(context)
+        DataController.save(context: context)
     }
 
     public class func getAll() -> [TabMO] {

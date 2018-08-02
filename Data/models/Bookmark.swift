@@ -125,7 +125,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         }
         
         if save {
-            DataController.save(self.managedObjectContext)
+            DataController.save(context: self.managedObjectContext)
         }
         
         if !isFavorite {
@@ -192,7 +192,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         }
         
         if save {
-            DataController.save(context)
+            DataController.save(context: context)
         }
         
         if sendToSync && !bk.isFavorite {
@@ -265,7 +265,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         // If I save while the animation is happening, the rows look screwed up (draw on top of each other).
         // Adding a delay to let animation complete avoids this problem
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
-            DataController.save(frc?.managedObjectContext)
+            DataController.save(context: frc?.managedObjectContext)
         }
 
     }

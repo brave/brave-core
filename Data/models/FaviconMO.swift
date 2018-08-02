@@ -53,7 +53,7 @@ public final class FaviconMO: NSManagedObject, CRUD {
                 item!.type = t
             }
 
-            DataController.save(context)
+            DataController.save(context: context)
         }
     }
 }
