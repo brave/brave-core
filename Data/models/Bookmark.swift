@@ -272,9 +272,8 @@ extension Bookmark {
     fileprivate static func get(forUrl url: URL, countOnly: Bool = false, getFavorites: Bool = false, context: NSManagedObjectContext) -> [Bookmark]? {
         let urlKeyPath = #keyPath(Bookmark.url)
         let isFavoriteKeyPath = #keyPath(Bookmark.isFavorite)
-        
-        let isFavoritePredicate = getFavorites ? "YES" : "NO"
-        let predicate = NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(isFavoritePredicate)", url.absoluteString)
+         
+        let predicate = NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(NSNumber(value: getFavorites))", url.absoluteString)
         
         return all(where: predicate)
     }
@@ -283,8 +282,7 @@ extension Bookmark {
         let urlKeyPath = #keyPath(Bookmark.url)
         let isFavoriteKeyPath = #keyPath(Bookmark.isFavorite)
         
-        let isFavoritePredicate = getFavorites ? "YES" : "NO"
-        let predicate = NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(isFavoritePredicate)", url.absoluteString)
+        let predicate = NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(NSNumber(value: getFavorites))", url.absoluteString)
         
         return count(predicate: predicate)
     }
