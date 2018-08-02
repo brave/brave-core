@@ -76,7 +76,7 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
 
     public class func frc() -> NSFetchedResultsController<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        let context = DataController.mainContext
+        let context = DataController.viewContext
         
         fetchRequest.entity = History.entity(context)
         fetchRequest.fetchBatchSize = 20

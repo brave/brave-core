@@ -444,7 +444,7 @@ class TabManager: NSObject {
         
         guard let webView = tab.webView, let order = indexOfWebView(webView) else { return nil }
         
-        let context = DataController.mainContext
+        let context = DataController.viewContext
         
         // Ignore session restore data.
         guard let urlString = tab.url?.absoluteString, !urlString.contains("localhost") else { return nil }
@@ -511,7 +511,7 @@ class TabManager: NSObject {
         let prevCount = count
         tabs.remove(at: removalIndex)
         
-        let context = DataController.mainContext
+        let context = DataController.viewContext
         if let tab = TabMO.get(fromId: tab.id, context: context) {
             tab.delete()
         }
@@ -831,7 +831,7 @@ extension TabManager {
     
     func restoreTab(_ tab: Tab) {
         // Tab was created with no active webview or session data. Restore tab data from CD and configure.
-        guard let savedTab = TabMO.get(fromId: tab.id, context: DataController.mainContext) else { return }
+        guard let savedTab = TabMO.get(fromId: tab.id, context: DataController.viewContext) else { return }
         
         if let history = savedTab.urlHistorySnapshot as? [String], let tabUUID = savedTab.syncUUID, let url = savedTab.url {
             let data = SavedTab(id: tabUUID, title: savedTab.title, url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)

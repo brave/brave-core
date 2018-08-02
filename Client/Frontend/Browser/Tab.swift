@@ -316,7 +316,7 @@ class Tab: NSObject {
         guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
             if let title = url?.absoluteString {
                 return title
-            } else if let tab = TabMO.get(fromId: id, context: DataController.mainContext) {
+            } else if let tab = TabMO.get(fromId: id, context: DataController.viewContext) {
                 return tab.title ?? tab.url ?? ""
             }
             return ""
