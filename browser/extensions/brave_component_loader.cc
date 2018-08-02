@@ -34,6 +34,8 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     base::FilePath brave_extension_path(FILE_PATH_LITERAL(""));
     brave_extension_path =
         brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
+LOG(ERROR) << "BraveComponentLoader::AddDefaultComponentExtensions IDR_BRAVE_EXTENSON="<<IDR_BRAVE_EXTENSON;
+LOG(ERROR) << "BraveComponentLoader::AddDefaultComponentExtensions brave_extension_path="<<brave_extension_path;
     Add(IDR_BRAVE_EXTENSON, brave_extension_path);
   }
 

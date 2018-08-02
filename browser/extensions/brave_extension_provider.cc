@@ -91,7 +91,10 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
     // Test ID: Brave HTTPS Everywhere Updater
     "bhlmpjhncoojbkemjkeppfahkglffilp",
     // Test ID: Brave Tor Client Updater
-    "ngicbhhaldfdgmjhilmnleppfpmkgbbk"
+    "ngicbhhaldfdgmjhilmnleppfpmkgbbk",
+    // Test ID: Brave Sync Extension
+    "lmgeoagppogecnmmdbpaglljjoekgpge",
+    "gjnkdbfjlklmcfnhjncapjfeijemelkl",
   });
   return std::find(vetted_extensions.begin(), vetted_extensions.end(),
       extension->id()) != vetted_extensions.end();

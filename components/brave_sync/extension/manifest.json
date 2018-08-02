@@ -1,0 +1,11 @@
+{
+   "name":"Brave Sync Extension",
+   "description":"Extension to keep running Brave-Sync-Js lib",
+   "permissions": ["storage"],
+   "version":"1.0",
+   "manifest_version":2,
+   "background": {
+     "scripts": ["background.js"],
+     "persistent": true
+   }
+}
