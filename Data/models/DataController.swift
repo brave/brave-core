@@ -43,7 +43,7 @@ public class DataController: NSObject {
         return backgroundContext
     }
     
-    public static func save(_ context: NSManagedObjectContext?) {
+    public static func save(context: NSManagedObjectContext?) {
         guard let context = context else {
             log.warning("No context on save")
             return

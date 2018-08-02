@@ -171,7 +171,7 @@ class Sync: JSInjector {
         // Check to not override deviceName with `nil` on sync init, which happens every app launch
         if let deviceName = deviceName {
             Device.currentDevice()?.name = deviceName
-            DataController.save(Device.currentDevice()?.managedObjectContext)
+            DataController.save(context: Device.currentDevice()?.managedObjectContext)
         }
         
         // Autoload sync if already connected to a sync group, otherwise just wait for user initiation
@@ -187,7 +187,7 @@ class Sync: JSInjector {
         }
         
         Device.currentDevice()?.name = name
-        DataController.save(Device.currentDevice()?.managedObjectContext)
+        DataController.save(context: Device.currentDevice()?.managedObjectContext)
         
         self.webView.loadHTMLString("<body>TEST</body>", baseURL: nil)
     }
@@ -303,7 +303,7 @@ class Sync: JSInjector {
                 
                 // Currently just force this, should use network, but too error prone currently
                 Device.currentDevice()?.isSynced = true
-                DataController.save(Device.currentDevice()?.managedObjectContext)
+                DataController.save(context: Device.currentDevice()?.managedObjectContext)
             }
             
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationSyncReady), object: nil)
@@ -465,7 +465,7 @@ extension Sync {
             }
         }
         
-        DataController.save(context)
+        DataController.save(context: context)
         print("\(fetchedRecords.count) \(recordType.rawValue) processed")
         
         // Make generic when other record types are supported
@@ -572,7 +572,7 @@ extension Sync {
         if let deviceArray = data["arg2"].array, deviceArray.count > 0 {
             // TODO: Just don't set, if bad, allow sync to recover on next init
             Device.currentDevice()?.deviceId = deviceArray.map { $0.intValue }
-            DataController.save(Device.currentDevice()?.managedObjectContext)
+            DataController.save(context: Device.currentDevice()?.managedObjectContext)
         } else if Device.currentDevice()?.deviceId == nil {
             print("Device Id expected!")
         }

@@ -65,7 +65,7 @@ public final class Domain: NSManagedObject, CRUD {
     class func blockFromTopSites(_ url: URL, context: NSManagedObjectContext) {
         if let domain = getOrCreateForUrl(url, context: context) {
             domain.blockedFromTopSites = true
-            DataController.save(context)
+            DataController.save(context: context)
         }
     }
 
@@ -173,7 +173,7 @@ public final class Domain: NSManagedObject, CRUD {
                 print(fetchError)
             }
 
-            DataController.save(context)
+            DataController.save(context: context)
             DispatchQueue.main.async {
                 completionOnMain()
             }

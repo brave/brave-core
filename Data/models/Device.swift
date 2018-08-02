@@ -47,7 +47,7 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         device.update(syncRecord: root)
         
         if save {
-            DataController.save(context)
+            DataController.save(context: context)
         }
         
         return device
@@ -78,7 +78,7 @@ public final class Device: NSManagedObject, Syncable, CRUD {
                 // Create
                 localDevice = add(context: context)
                 localDevice?.isCurrentDevice = true
-                DataController.save(context)
+                DataController.save(context: context)
             }
             
             sharedCurrentDevice = localDevice
@@ -106,7 +106,7 @@ public final class Device: NSManagedObject, Syncable, CRUD {
             // Destroy handle to local device instance, otherwise it is locally retained and will throw console errors
             sharedCurrentDevice = nil
             
-            DataController.save(context)
+            DataController.save(context: context)
         }
     }
     

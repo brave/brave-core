@@ -56,7 +56,7 @@ public extension Deletable where Self: NSManagedObject {
                 context.delete($0)
             }
             
-            DataController.save(context)
+            DataController.save(context: context)
         } catch {
             log.error("Delete all error: \(error)")
         }
