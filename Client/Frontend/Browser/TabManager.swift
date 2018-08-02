@@ -434,7 +434,7 @@ class TabManager: NSObject {
     func saveTab(_ tab: Tab, saveOrder: Bool = false) {
         guard let data = savedTabData(tab: tab) else { return }
         
-        TabMO.update(with: data.id, tabData: data)
+        TabMO.update(tabData: data)
         if saveOrder {
             saveTabOrder()
         }
