@@ -350,7 +350,7 @@ class TabManager: NSObject {
     }
     
     private func saveTabOrder() {
-        let context = DataController.backgroundContext
+        let context = DataController.newBackgroundContext()
         context.perform {
             for (i, tab) in self.tabs.enumerated() {
                 guard let managedObject = TabMO.get(fromId: tab.id, context: context) else { 
