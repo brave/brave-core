@@ -164,6 +164,7 @@ class BrowserViewController: UIViewController {
         tabManager.addDelegate(self)
         tabManager.addNavigationDelegate(self)
         downloadQueue.delegate = self
+        Preferences.Privacy.cookieAcceptPolicy.observe(from: self)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -1796,11 +1797,11 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     fileprivate func updateTabCountUsingTabManager(_ tabManager: TabManager, animated: Bool = true) {
-        if let selectedTab = tabManager.selectedTab {
-            let count = selectedTab.isPrivate ? tabManager.privateTabs.count : tabManager.normalTabs.count
-            toolbar?.updateTabCount(count, animated: animated)
-            urlBar.updateTabCount(count, animated: !urlBar.inOverlayMode)
-        }
+        // BRAVE TODO: When we port PrivateBrowsing we need to update this to count the number of tabs correctly
+        // in private mode
+        let count = tabManager.tabs.count
+        toolbar?.updateTabCount(count, animated: animated)
+        urlBar.updateTabCount(count, animated: !urlBar.inOverlayMode)
     }
 }
 
@@ -2596,6 +2597,7 @@ extension BrowserViewController: TopSitesDelegate {
 
 extension BrowserViewController: PreferencesObserver {
     func preferencesDidChange(for key: String) {
+        HTTPCookieStorage.shared.updateCookieAcceptPolicy(to: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value))
         // TODO: Update tab bar visiblity based on `Preferences.tabBarVisibility` once BraveURLBarView is back
         // TODO: Update fingerprinting protection based on `Preferences.Shields.fingerprintingProtection` once fingerprinting protection is added back
         if Preferences.Privacy.privateBrowsingOnly.value {
