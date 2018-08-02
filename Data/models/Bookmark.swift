@@ -321,7 +321,7 @@ extension Bookmark {
         return all(where: predicate) ?? []
     }
     
-    public class func remove(forUrl url: URL, save: Bool = true) {
+    public class func remove(forUrl url: URL) {
         let context = DataController.backgroundContext
         let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: false)
         
