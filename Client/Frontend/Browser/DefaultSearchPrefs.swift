@@ -11,6 +11,7 @@ import SwiftyJSON
 */
 class DefaultSearchPrefs {
     fileprivate let defaultSearchList: [String]
+    fileprivate let allLocalesSearchList: [String]
     fileprivate let locales: JSON
     fileprivate let regionOverrides: JSON
     fileprivate let globalDefaultEngine: String
@@ -20,10 +21,13 @@ class DefaultSearchPrefs {
             assertionFailure("Search list not found. Check bundle")
             return nil
         }
+
         let json = JSON(parseJSON: searchManifest)
+
         // Split up the JSON into useful parts
         locales = json["locales"]
         regionOverrides = json["regionOverrides"]
+
         // These are the fallback defaults
         guard let searchList = json["default"]["visibleDefaultEngines"].array?.compactMap({ $0.string }),
             let engine = json["default"]["searchDefault"].string else {
@@ -31,6 +35,14 @@ class DefaultSearchPrefs {
                 return nil
         }
         defaultSearchList = searchList
+
+        // These are to be used by all locales
+        guard let allLocalesSearchList = json["allLocales"]["visibleDefaultEngines"].array?.compactMap({ $0.string }) else {
+            assertionFailure("All locales are not set up correctly in List.json")
+            return nil
+        }
+        self.allLocalesSearchList = allLocalesSearchList
+
         globalDefaultEngine = engine
     }
 
@@ -45,6 +57,9 @@ class DefaultSearchPrefs {
 
         // If the engineList is empty then go ahead and use the default
         var usersEngineList = engineList ?? defaultSearchList
+
+        // Append "all locales" search engines to the users engine list
+        usersEngineList = usersEngineList + allLocalesSearchList
 
         // Overrides for specfic regions.
         if let overrides = regionOverrides[region].dictionary {
