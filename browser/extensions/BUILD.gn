@@ -12,6 +12,8 @@ source_set("extensions") {
     "brave_component_extension_resource_manager.h",
     "brave_component_loader.cc",
     "brave_component_loader.h",
+    "brave_extension_install_prompt.cc",
+    "brave_extension_install_prompt.h",
     "brave_extension_management.cc",
     "brave_extension_management.h",
     "brave_extension_provider.cc",

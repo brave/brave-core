@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/extensions/extension_install_prompt.h b/chrome/browser/extensions/extension_install_prompt.h
+index db454db003ec58d6a0f23f6e6c70a1f106350907..77c6350e77412d5a61adab52511548a00b7018c1 100644
+--- a/chrome/browser/extensions/extension_install_prompt.h
++++ b/chrome/browser/extensions/extension_install_prompt.h
+@@ -86,7 +86,7 @@ class ExtensionInstallPrompt {
+   class Prompt {
+    public:
+     explicit Prompt(PromptType type);
+-    ~Prompt();
++    virtual ~Prompt();
+ 
+     void AddPermissions(const extensions::PermissionMessages& permissions);
+     void SetIsShowingDetails(DetailsType type,
+@@ -100,7 +100,7 @@ class ExtensionInstallPrompt {
+     PromptType type() const { return type_; }
+ 
+     // Getters for UI element labels.
+-    base::string16 GetDialogTitle() const;
++    virtual base::string16 GetDialogTitle() const;
+     int GetDialogButtons() const;
+     // Returns the empty string when there should be no "accept" button.
+     base::string16 GetAcceptButtonLabel() const;
+@@ -165,6 +165,7 @@ class ExtensionInstallPrompt {
+ 
+    private:
+     friend class base::RefCountedThreadSafe<Prompt>;
++    friend class BravePrompt;
+ 
+     struct InstallPromptPermissions {
+       InstallPromptPermissions();
