@@ -10,8 +10,7 @@ import {
   StyledRemove,
   StyledToggle,
   StyledTHSite,
-  StyledTHOther,
-  StyledTHLast
+  StyledTHOther
 } from './style'
 import Table, { Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
@@ -69,9 +68,7 @@ export default class ContributeTable extends React.PureComponent<Props, {}> {
       return {
         content: i === 0
         ? <StyledTHSite>{item}</StyledTHSite>
-        : (i - 1) === header.length
-          ? <StyledTHOther>{item}</StyledTHOther>
-          : <StyledTHLast>{item}</StyledTHLast>,
+        : <StyledTHOther>{item}</StyledTHOther>,
         theme: theme
       }
     })
@@ -99,9 +96,17 @@ export default class ContributeTable extends React.PureComponent<Props, {}> {
           {
             content: (
               <StyledText>
-                {row.attention}% <StyledRemove onClick={row.onRemove}>{removeIcon}</StyledRemove>
+                {row.attention}%
               </StyledText>
             )
+          },
+          {
+            content: (
+              <StyledRemove onClick={row.onRemove}>{removeIcon}</StyledRemove>
+            ),
+            theme: {
+              textAlign: 'right'
+            }
           }
         ]
       }
@@ -129,7 +134,7 @@ export default class ContributeTable extends React.PureComponent<Props, {}> {
           rows={this.getRows(rows)}
         />
         {
-          !allSites
+          !allSites && numSites > 0
           ? <StyledToggle onClick={onShowAll}>{getLocale('seeAllSites', { numSites })}</StyledToggle>
           : null
         }

@@ -107,10 +107,9 @@ export default class DonationTable extends React.PureComponent<Props, {}> {
               <Tokens
                 value={row.contribute.tokens}
                 converted={row.contribute.converted}
-                hideText={true}
                 theme={{
                   display: 'block',
-                  size: { token: '14px', text: '10px' },
+                  size: { token: '12px', text: '10px', tokenNum: '14px' },
                   color: { token: '#686978', text: '#9e9fab' }
                 }}
               />
@@ -169,7 +168,7 @@ export default class DonationTable extends React.PureComponent<Props, {}> {
           header={this.headers}
         />
         {
-          !allItems
+          !allItems && numItems > 0
           ? <StyledToggle onClick={onClick}>
               {getLocale('seeAllItems', { numItems })}
           </StyledToggle>

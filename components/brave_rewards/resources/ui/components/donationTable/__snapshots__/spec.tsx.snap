@@ -2,11 +2,10 @@
 
 exports[`DonationTable tests basic tests matches the snapshot 1`] = `
 .c3 {
-  font-family: Poppins;
-  font-size: 13px;
-  color: #4c54d2;
-  text-align: right;
-  text-transform: capitalize;
+  text-align: center;
+  padding: 30px 0;
+  color: #999ea2;
+  font-size: 14px;
 }
 
 .c0 {
@@ -74,12 +73,9 @@ exports[`DonationTable tests basic tests matches the snapshot 1`] = `
         </tr>
       </thead>
     </table>
-  </div>
-  <div
-    className="c3"
-    onClick={undefined}
-  >
-    MISSING: seeAllItems
+    <div
+      className="c3"
+    />
   </div>
 </div>
 `;

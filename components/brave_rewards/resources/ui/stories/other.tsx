@@ -22,9 +22,14 @@ import {
   Tooltip,
   Amount
 } from '../../../src/features/rewards'
+import GrantClaim from '../../../src/features/rewards/grantClaim'
 
 const donate = require('../../assets/img/rewards_donate.svg')
 const bart = require('../../assets/img/bartBaker.jpeg')
+
+const dummyClick = () => {
+  console.log(dummyClick)
+}
 
 const donationAmount = [
   { tokens: 1, converted: 0.3, selected: false },
@@ -148,8 +153,8 @@ storiesOf('Feature Components/Rewards/Other', module)
     .add('Tokens',() => {
       return (
         <Tokens
-          value={text('Tokens value', '10')}
-          converted={text('Converted value', '4')}
+          value={number('Tokens value', 10)}
+          converted={number('Converted value', 4)}
           currency={text('Currency', 'USD')}
           isNegative={boolean('Is negative', false)}
         />
@@ -197,3 +202,10 @@ storiesOf('Feature Components/Rewards/Other', module)
         </div>
       )
     }))
+    .add('Grant claim',() => {
+      return (
+        <GrantClaim
+          onClick={dummyClick}
+        />
+      )
+    })

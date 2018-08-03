@@ -8,40 +8,29 @@ import {
   StyledTitle,
   StyledSummary,
   StyledTokensWrapper,
-  StyledGrantTitle,
-  StyledGrantIcon,
-  StyledGrant,
-  StyledGrantText,
-  StyledGrantClaim,
   StyledActivity,
-  StyledActivityIcon,
-  StyledGrantEmpty
+  StyledActivityIcon
 } from './style'
-import Tokens from '../tokens/index'
 import ListToken from '../listToken/index'
 import { getLocale } from '../../../helpers'
 
-const coinsIcon = require('./assets/coins')
 const activityIcon = require('./assets/activity')
 
 type Token = {color: string, tokens: number, converted: number}
-type Grant = {id: string, tokens: number, converted: number}
 
 export interface Props {
-  grant: Token
-  ads: Token
-  contribute: Token
-  donation: Token
-  tips: Token
   onActivity: () => void
+  grant?: Token
+  ads?: Token
+  contribute: Token
+  donation?: Token
+  tips?: Token
   id?: string
-  grants?: Grant[]
-  onClaim?: (id: string) => void
 }
 
 export default class PanelSummary extends React.PureComponent<Props, {}> {
   render () {
-    const { id, grant, ads, contribute, donation, tips, grants, onClaim, onActivity } = this.props
+    const { id, grant, ads, contribute, donation, tips, onActivity } = this.props
     const date = new Date()
     const month = getLocale(`month${date.toLocaleString('en-us', { month: 'short' })}`)
     const year = date.getFullYear()
@@ -51,18 +40,26 @@ export default class PanelSummary extends React.PureComponent<Props, {}> {
         <StyledSummary>{getLocale('rewardsSummary')}</StyledSummary>
         <StyledTitle>{month} {year}</StyledTitle>
         <StyledTokensWrapper>
-          <ListToken
-            value={grant.tokens}
-            converted={grant.converted}
-            theme={{ color: grant.color }}
-            title={getLocale('tokenGrant')}
-          />
-          <ListToken
-            value={ads.tokens}
-            converted={ads.converted}
-            theme={{ color: ads.color }}
-            title={getLocale('earningsAds')}
-          />
+          {
+            grant
+            ? <ListToken
+              value={grant.tokens}
+              converted={grant.converted}
+              theme={{ color: grant.color }}
+              title={getLocale('tokenGrant')}
+            />
+            : null
+          }
+          {
+            ads
+            ? <ListToken
+              value={ads.tokens}
+              converted={ads.converted}
+              theme={{ color: ads.color }}
+              title={getLocale('earningsAds')}
+            />
+            : null
+          }
           <ListToken
             value={contribute.tokens}
             converted={contribute.converted}
@@ -70,53 +67,29 @@ export default class PanelSummary extends React.PureComponent<Props, {}> {
             title={getLocale('rewardsContribute')}
             isNegative={true}
           />
-          <ListToken
-            value={donation.tokens}
-            converted={donation.converted}
-            theme={{ color: donation.color }}
-            title={getLocale('recurringDonations')}
-            isNegative={true}
-          />
-          <ListToken
-            value={tips.tokens}
-            converted={tips.converted}
-            theme={{ color: tips.color, borderBottom: 'none' }}
-            title={getLocale('oneTimeDonation')}
-            isNegative={true}
-          />
+          {
+            donation
+            ? <ListToken
+              value={donation.tokens}
+              converted={donation.converted}
+              theme={{ color: donation.color }}
+              title={getLocale('recurringDonations')}
+              isNegative={true}
+            />
+            : null
+          }
+          {
+            tips
+            ? <ListToken
+              value={tips.tokens}
+              converted={tips.converted}
+              theme={{ color: tips.color, borderBottom: 'none' }}
+              title={getLocale('oneTimeDonation')}
+              isNegative={true}
+            />
+            : null
+          }
         </StyledTokensWrapper>
-        <StyledGrantTitle>
-          <StyledGrantIcon>{coinsIcon}</StyledGrantIcon> {getLocale('tokenGrant')}
-        </StyledGrantTitle>
-        {
-          grants && grants.map((grant: Grant, i: number) => {
-            return <StyledGrant key={`${id}-grant-${i}`}>
-              <StyledGrantText>
-                <Tokens
-                  value={grant.tokens}
-                  converted={grant.converted}
-                  theme={{
-                    color: {
-                      text: 'rgba(255, 255, 255, 0.65)',
-                      token: '#fff',
-                      tokenNum: '#fff'
-                    },
-                    size: {
-                      token: '22px',
-                      text: '14px'
-                    }
-                  }}
-                />
-              </StyledGrantText>
-              <StyledGrantClaim onClick={onClaim && onClaim.bind(this, grant.id)}>{getLocale('claim')}</StyledGrantClaim>
-            </StyledGrant>
-          })
-        }
-        {
-          !grants || grants.length === 0
-          ? <StyledGrantEmpty>{getLocale('noGrants')}</StyledGrantEmpty>
-          : null
-        }
         <StyledActivity onClick={onActivity}>
           <StyledActivityIcon>{activityIcon}</StyledActivityIcon> {getLocale('walletActivity')}
         </StyledActivity>

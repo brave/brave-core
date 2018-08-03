@@ -8,7 +8,6 @@ import {
   StyledHeader,
   StyledTitle,
   StyledBalance,
-  StyledBalanceTitle,
   StyledBalanceTokens,
   StyledContent,
   StyledAction,
@@ -19,16 +18,20 @@ import {
   StyledBalanceConverted,
   StyledGrantWrapper,
   StyledGrant,
-  StyledActionWrapper
+  StyledActionWrapper,
+  StyledBalanceCurrency
 } from './style'
 import ButtonSecondary from '../../../components/buttonsIndicators/buttonSecondary/index'
 import { getLocale } from '../../../helpers'
 
-type Grant = {tokens: number, expireDate: string}
+type Grant = {
+  tokens: number,
+  expireDate: string
+}
 
 export interface Props {
   tokens: number
-  converted: string
+  converted: string | null
   actions: {icon: string, name: string, action: () => void}[]
   connectedWallet?: boolean
   showCopy?: boolean
@@ -40,7 +43,6 @@ export interface Props {
   id?: string
 }
 
-const panel = require('./assets/panel')
 const upholdIcon = require('./assets/uphold')
 const upholdColorIcon = require('./assets/upholdColor')
 const gearIcon = require('./assets/gear')
@@ -103,7 +105,7 @@ export default class Panel extends React.PureComponent<Props, State> {
 
     return (
       <StyledWrapper id={id}>
-        <StyledHeader bg={panel}>
+        <StyledHeader>
           <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
           {
             showSecActions
@@ -114,11 +116,16 @@ export default class Panel extends React.PureComponent<Props, State> {
           }
 
           <StyledBalance>
-            <StyledBalanceTitle>{getLocale('tokenBalance')}</StyledBalanceTitle>
-            <StyledBalanceTokens>{this.formatTokens(tokens)}</StyledBalanceTokens>
-            <StyledBalanceConverted>~ {converted}</StyledBalanceConverted>
+            <StyledBalanceTokens>
+              {this.formatTokens(tokens)} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
+            </StyledBalanceTokens>
+            {
+              converted
+              ? <StyledBalanceConverted>{converted}</StyledBalanceConverted>
+              : null
+            }
             <ButtonSecondary
-              text={getLocale('detail')}
+              text={getLocale('grants')}
               size={'small'}
               color={'subtle'}
               onClick={enabled ? this.toggleGrantDetails : undefined}

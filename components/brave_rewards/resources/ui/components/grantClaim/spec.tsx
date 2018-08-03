@@ -2,10 +2,10 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import ListToken from './index'
+import List from './index'
 
-describe('ListToken tests', () => {
-  const baseComponent = (props?: object) => <ListToken id='list' {...props} value={10} />
+describe('List tests', () => {
+  const baseComponent = (props?: object) => <List id='list' {...props} />
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

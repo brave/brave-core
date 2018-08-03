@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { Grid, Column } from '../../../../src/components/layout/gridList/index'
+import { Grid, Column } from '../../../../src/components/layout/gridList'
 import Box from '../../../../src/features/rewards/box/index'
 
 // Assets
@@ -29,6 +29,7 @@ import PanelEmpty from '../../../../src/features/rewards/panelEmpty'
 import PanelSummary from '../../../../src/features/rewards/panelSummary'
 import PanelOff from '../../../../src/features/rewards/panelOff'
 import SettingsPage from '../../../../src/features/rewards/settingsPage'
+import GrantClaim from '../../../../src/features/rewards/grantClaim'
 
 // Images
 const adsImg = require('../../../assets/img/rewards_ads.svg')
@@ -182,10 +183,10 @@ class Settings extends React.PureComponent<{}, State> {
         <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>
             <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <Select title={locale.contributionMonthly}>
-                <div data-value='10'><Tokens value={10} converted={'4'}/></div>
-                <div data-value='20'><Tokens value={20} converted={'6'}/></div>
-                <div data-value='40'><Tokens value={40} converted={'12'}/></div>
-                <div data-value='100'><Tokens value={100} converted={'40'}/></div>
+                <div data-value='10'><Tokens value={10} converted={4}/></div>
+                <div data-value='20'><Tokens value={20} converted={6}/></div>
+                <div data-value='40'><Tokens value={40} converted={12}/></div>
+                <div data-value='100'><Tokens value={100} converted={40}/></div>
               </Select>
                <Select title={locale.contributionSitesLimit}>
                 <div data-value='0'>{locale.contributionSitesNoLimit}</div>
@@ -308,21 +309,21 @@ class Settings extends React.PureComponent<{}, State> {
                 <Select
                   theme={{
                     border: 'none',
-                    padding: '0 20px 0 0',
-                    arrowPadding: '0'
+                    padding: '0',
+                    arrowPadding: '0',
+                    maxWidth: '100%'
                   }}
                 >
-                  <div data-value='10'><Tokens value={10} converted={'4'}/></div>
-                  <div data-value='20'><Tokens value={20} converted={'6'}/></div>
-                  <div data-value='40'><Tokens value={40} converted={'12'}/></div>
-                  <div data-value='100'><Tokens value={100} converted={'40'}/></div>
+                  <div data-value='10'><Tokens value={10} converted={4}/></div>
+                  <div data-value='20'><Tokens value={20} converted={6}/></div>
+                  <div data-value='40'><Tokens value={40} converted={12}/></div>
+                  <div data-value='100'><Tokens value={100} converted={40}/></div>
                 </Select>
               </List>
               <List
                 title={locale.contributionNextDate}
                 theme={{
-                  'font-size': '16px',
-                  'font-weight': '600',
+                  'font-size': '14px',
                   'text-align': 'right',
                   'border-radius': '6px',
                   color: '#4b4c5c',
@@ -334,12 +335,13 @@ class Settings extends React.PureComponent<{}, State> {
                 July 25th
               </List>
               <List title={locale.contributionSites}>
-                Total &nbsp;<Tokens value={55} hideText={true}/>
+                Total &nbsp;<Tokens value={55} hideText={true} toFixed={false}/>
               </List>
               <ContributeTable
                 header={[
                   'Site visited',
-                  'Attentions'
+                  'Attention score',
+                  ''
                 ]}
                 rows={this.contributeRows}
                 allSites={false}
@@ -362,7 +364,7 @@ class Settings extends React.PureComponent<{}, State> {
                 <Tokens value={21} converted={7} />
               </List>
               <List title={locale.donationList}>
-                Total &nbsp;<Tokens value={3} hideText={true}/>
+                Total &nbsp;<Tokens value={3} hideText={true} toFixed={false} />
               </List>
               <DonationTable
                 rows={this.donationRows}
@@ -375,22 +377,23 @@ class Settings extends React.PureComponent<{}, State> {
               </DonationTable>
             </Box>
           </Column>
-          <Column size={1}>
+          <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             {
-                this.state.modalBackup
-                ? <ModalBackupRestore
-                  activeTabId={this.state.modalBackupActive}
-                  recoveryKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
-                  onTabChange={this.onBackupTabChange.bind(self)}
-                  onClose={this.onBackupModalClose.bind(self)}
-                  onCopy={doNothing}
-                  onPrint={doNothing}
-                  onSaveFile={doNothing}
-                  onRestore={doNothing}
-                  onImport={doNothing}
-                />
-                : null
-              }
+              this.state.modalBackup
+              ? <ModalBackupRestore
+                activeTabId={this.state.modalBackupActive}
+                recoveryKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
+                onTabChange={this.onBackupTabChange.bind(self)}
+                onClose={this.onBackupModalClose.bind(self)}
+                onCopy={doNothing}
+                onPrint={doNothing}
+                onSaveFile={doNothing}
+                onRestore={doNothing}
+                onImport={doNothing}
+              />
+              : null
+            }
+            <GrantClaim onClick={doNothing}/>
             <Panel
               tokens={25}
               converted={'6.0 USD'}
@@ -444,18 +447,6 @@ class Settings extends React.PureComponent<{}, State> {
                   contribute={{ color: '#9752CB', tokens: 10, converted: 0.25 }}
                   donation={{ color: '#4C54D2', tokens: 2, converted: 0.25 }}
                   tips={{ color: '#4C54D2', tokens: 19, converted: 5.25 }}
-                  grants={object('Active grants',[
-                    {
-                      id: '1',
-                      tokens: 15,
-                      converted: 0.75
-                    },
-                    {
-                      id: '2',
-                      tokens: 10,
-                      converted: 0.50
-                    }
-                  ])}
                   onActivity={doNothing}
                 />
                 : null

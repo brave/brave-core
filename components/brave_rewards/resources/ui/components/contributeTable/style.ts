@@ -10,7 +10,6 @@ export const StyledWrapper = styled.div`
 export const StyledText = styled.div`
   font-family: Muli;
   font-size: 14px;
-  font-weight: bold;
   line-height: 1.29;
   text-align: right;
   color: #686978;
@@ -26,10 +25,6 @@ export const StyledTHSite = styled.div`
 
 export const StyledTHOther = styled.div`
   text-align: right;
-` as any
-
-export const StyledTHLast = styled(StyledTHOther)`
-  padding-right: 7px;
 ` as any
 
 export const StyledToggle = styled.div`

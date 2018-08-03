@@ -52,12 +52,15 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c10 {
+.c9 {
   text-align: right;
 }
 
-.c9 {
-  padding-right: 7px;
+.c10 {
+  text-align: center;
+  padding: 30px 0;
+  color: #999ea2;
+  font-size: 14px;
 }
 
 .c7 {
@@ -153,7 +156,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
                     className="c8"
                   >
                     <div
-                      className="c9 c10"
+                      className="c9"
                     >
                       MISSING: rewardsContributeAttention
                     </div>
@@ -161,6 +164,9 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
                 </tr>
               </thead>
             </table>
+            <div
+              className="c10"
+            />
           </div>
         </div>
       </div>

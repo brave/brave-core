@@ -4,8 +4,7 @@
 
 import * as React from 'react'
 import * as CSS from 'csstype'
-import { StyledTokens, StyledContent, StyledTokenValue } from './style'
-import { getLocale } from '../../../helpers'
+import { StyledTokens, StyledContent, StyledTokenValue, StyledTokenCurrency } from './style'
 
 interface Theme {
   color?: {
@@ -15,17 +14,19 @@ interface Theme {
   }
   size?: {
     token?: CSS.FontSizeProperty<1>
+    tokenNum?: CSS.FontSizeProperty<1>
     text?: CSS.FontSizeProperty<1>
   }
   display?: CSS.DisplayProperty
 }
 
 export interface Props {
-  value: string | number
+  value: number
   id?: string
-  converted?: string | number
+  converted?: number
   currency?: string
   hideText?: boolean
+  toFixed?: boolean
   isNegative?: boolean
   theme?: Theme
 }
@@ -34,18 +35,24 @@ export default class Tokens extends React.PureComponent<Props, {}> {
   render () {
     const { id, converted, value, hideText, isNegative, theme } = this.props
     const currency = this.props.currency || 'USD'
+    const toFixed = this.props.toFixed === undefined ? true : this.props.toFixed
 
     return (
       <span id={id}>
         <StyledTokens theme={theme}>
           <StyledTokenValue theme={theme}>
-            {isNegative ? '-' : ''}{value}
-          </StyledTokenValue> {!hideText ? <span>{getLocale('tokens')}</span> : null}
+            {isNegative ? '-' : ''}{toFixed ? value.toFixed(2) : value}
+          </StyledTokenValue>
+          {
+            !hideText
+            ? <StyledTokenCurrency theme={theme}>BAT</StyledTokenCurrency>
+            : null
+          }
         </StyledTokens>
         {
           converted
           ? <StyledContent theme={theme}>
-            ~ {converted} {currency}
+            {toFixed ? converted.toFixed(2) : converted} {currency}
           </StyledContent>
           : null
         }

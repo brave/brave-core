@@ -6,13 +6,20 @@ exports[`Tokens tests basic tests matches the snapshot 1`] = `
   font-weight: 300;
   line-height: 1.4;
   color: #4b4c5c;
-  font-size: 16px;
   display: inline-block;
 }
 
 .c1 {
   color: inherit;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.c2 {
+  font-size: 14px;
+  font-weight: 300;
+  display: inline-block;
+  margin-left: 4px;
 }
 
 <span
@@ -25,11 +32,12 @@ exports[`Tokens tests basic tests matches the snapshot 1`] = `
       className="c1"
     >
       
-      10
+      10.00
     </span>
-     
-    <span>
-      MISSING: tokens
+    <span
+      className="c2"
+    >
+      BAT
     </span>
   </span>
 </span>
