@@ -5,10 +5,13 @@
 #include "brave/browser/ui/content_settings/brave_content_setting_image_models.h"
 
 #include "brave/browser/ui/content_settings/brave_widevine_blocked_image_model.h"
+#include "brave/browser/ui/content_settings/brave_autoplay_blocked_image_model.h"
 
 void BraveGenerateContentSettingImageModels(
     std::vector<std::unique_ptr<ContentSettingImageModel>>& result) {
   result.push_back(std::make_unique<BraveWidevineBlockedImageModel>(
       BraveWidevineBlockedImageModel::ImageType::PLUGINS,
       CONTENT_SETTINGS_TYPE_PLUGINS));
+
+  result.push_back(std::make_unique<BraveAutoplayBlockedImageModel>());
 }
