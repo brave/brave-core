@@ -2,10 +2,10 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import PanelEmpty from './index'
+import WalletOff from './index'
 
-describe('PanelEmpty tests', () => {
-  const baseComponent = () => <PanelEmpty id='empty' />
+describe('WalletOff tests', () => {
+  const baseComponent = () => <WalletOff id='off' />
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {
@@ -16,7 +16,7 @@ describe('PanelEmpty tests', () => {
 
     it('renders the component', () => {
       const wrapper = shallow(baseComponent())
-      const assertion = wrapper.find('#empty').length
+      const assertion = wrapper.find('#off').length
       expect(assertion).toBe(1)
     })
   })

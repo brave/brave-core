@@ -6,16 +6,24 @@ import * as React from 'react'
 import { StyledWrapper, StyledTitle, StyledContent } from './style'
 import { getLocale } from '../../../helpers'
 
+const coins = require('./assets/coins')
+
 interface Props {
   id?: string
 }
 
-export default class PanelOff extends React.PureComponent<Props, {}> {
+export default class WalletEmpty extends React.PureComponent<Props, {}> {
   render () {
     return (
       <StyledWrapper id={this.props.id}>
-        <StyledTitle>{getLocale('rewardsPanelOffText1')}</StyledTitle>
-        <StyledContent>{getLocale('rewardsPanelOffText2')}</StyledContent>
+        {coins}
+        <StyledTitle>{getLocale('rewardsPanelEmptyText1')}</StyledTitle>
+        <StyledContent>
+          <b>{getLocale('rewardsPanelEmptyText2')}</b><br/>
+          • {getLocale('rewardsPanelEmptyText3')}<br/>
+          • {getLocale('rewardsPanelEmptyText4')}<br/>
+          • {getLocale('rewardsPanelEmptyText5')}
+        </StyledContent>
       </StyledWrapper>
     )
   }

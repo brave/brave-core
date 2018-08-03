@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PanelSummary tests basic tests matches the snapshot 1`] = `
+exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 .c0 {
   font-family: Poppins;
   margin-top: 21px;

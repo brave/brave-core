@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Panel tests basic tests matches the snapshot 1`] = `
+exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
 .c0 {
   border-radius: 6px;
   box-shadow: 0 0 8px 0 rgba(99,105,110,0.12);

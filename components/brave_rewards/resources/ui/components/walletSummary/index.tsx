@@ -28,7 +28,7 @@ export interface Props {
   id?: string
 }
 
-export default class PanelSummary extends React.PureComponent<Props, {}> {
+export default class WalletSummary extends React.PureComponent<Props, {}> {
   render () {
     const { id, grant, ads, contribute, donation, tips, onActivity } = this.props
     const date = new Date()

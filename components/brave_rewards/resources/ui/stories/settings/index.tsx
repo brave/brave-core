@@ -18,16 +18,16 @@ import Select from '../../../../src/components/formControls/select'
 import Checkbox from '../../../../src/components/formControls/checkbox'
 import DisabledContent from '../../../../src/features/rewards/disabledContent'
 import MainToggle from '../../../../src/features/rewards/mainToggle'
-import Panel from '../../../../src/features/rewards/panel'
+import WalletWrapper from '../../../../src/features/rewards/walletWrapper'
 import ContributeTable, { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/contributeTable'
 import { boolean, select, object } from '@storybook/addon-knobs'
 import Alert from '../../../../src/features/rewards/alert'
 import DonationTable, { DetailRow as DonationDetailRow } from '../../../../src/features/rewards/donationTable'
 import ModalContribute from '../../../../src/features/rewards/modalContribute'
 import ModalBackupRestore, { TabsType } from '../../../../src/features/rewards/modalBackupRestore'
-import PanelEmpty from '../../../../src/features/rewards/panelEmpty'
-import PanelSummary from '../../../../src/features/rewards/panelSummary'
-import PanelOff from '../../../../src/features/rewards/panelOff'
+import WalletEmpty from '../../../../src/features/rewards/walletEmpty'
+import WalletSummary from '../../../../src/features/rewards/walletSummary'
+import WalletOff from '../../../../src/features/rewards/walletOff'
 import SettingsPage from '../../../../src/features/rewards/settingsPage'
 import GrantClaim from '../../../../src/features/rewards/grantClaim'
 
@@ -394,7 +394,7 @@ class Settings extends React.PureComponent<{}, State> {
               : null
             }
             <GrantClaim onClick={doNothing}/>
-            <Panel
+            <WalletWrapper
               tokens={25}
               converted={'6.0 USD'}
               actions={[
@@ -437,11 +437,11 @@ class Settings extends React.PureComponent<{}, State> {
                 : null
               }
               {
-                content === 'empty' ? <PanelEmpty/> : null
+                content === 'empty' ? <WalletEmpty/> : null
               }
               {
                 content === 'summary'
-                ? <PanelSummary
+                ? <WalletSummary
                   grant={{ color: '#C12D7C', tokens: 10, converted: 0.25 }}
                   ads={{ color: '#C12D7C', tokens: 10, converted: 0.25 }}
                   contribute={{ color: '#9752CB', tokens: 10, converted: 0.25 }}
@@ -452,9 +452,9 @@ class Settings extends React.PureComponent<{}, State> {
                 : null
               }
               {
-                content === 'off' ? <PanelOff/> : null
+                content === 'off' ? <WalletOff/> : null
               }
-            </Panel>
+            </WalletWrapper>
           </Column>
         </Grid>
       </SettingsPage>

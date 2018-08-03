@@ -9,7 +9,7 @@ import { withKnobs, object, number, text, boolean } from '@storybook/addon-knobs
 import centered from '@storybook/addon-centered/dist'
 
 // Components
-import { PanelSummary, PanelEmpty, PanelOff, Panel } from '../../../src/features/rewards'
+import { WalletSummary, WalletEmpty, WalletOff, WalletWrapper } from '../../../src/features/rewards'
 
 // Assets
 const wallet = require('../../assets/img/rewards_wallet.svg')
@@ -24,7 +24,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
   .addDecorator(centered)
   .add('Base',() => {
     return (
-      <Panel
+      <WalletWrapper
         tokens={number('Tokens', 25)}
         converted={text('Converted', '163230.50 USD')}
         actions={[
@@ -58,37 +58,25 @@ storiesOf('Feature Components/Rewards/Wallet', module)
         ])}
       >
        Some content
-      </Panel>
+      </WalletWrapper>
     )
   })
   .add('Empty', () => {
     return (
       <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
-        <PanelEmpty/>
+        <WalletEmpty/>
       </div>
     )
   })
   .add('Summary', () => {
     return (
       <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
-        <PanelSummary
+        <WalletSummary
           grant={object('Grant', { color: '#C12D7C', tokens: 10, converted: 0.25 })}
           ads={object('Ads', { color: '#C12D7C', tokens: 10, converted: 0.25 })}
           contribute={object('Contribute', { color: '#9752CB', tokens: 10, converted: 0.25 })}
           donation={object('Donation', { color: '#4C54D2', tokens: 2, converted: 0.25 })}
           tips={object('Tips', { color: '#4C54D2', tokens: 19, converted: 5.25 })}
-          grants={[
-            {
-              id: '1',
-              tokens: 15,
-              converted: 0.75
-            },
-            {
-              id: '2',
-              tokens: 10,
-              converted: 0.50
-            }
-          ]}
           onActivity={doNothing}
         />
       </div>
@@ -97,7 +85,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
   .add('Off', () => {
     return (
       <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
-        <PanelOff/>
+        <WalletOff/>
       </div>
     )
   })

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PanelOff tests basic tests matches the snapshot 1`] = `
+exports[`WalletOff tests basic tests matches the snapshot 1`] = `
 .c0 {
   padding: 32px 20px 46px;
   text-align: center;

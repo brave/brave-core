@@ -53,7 +53,7 @@ interface State {
   grantDetails: boolean
 }
 
-export default class Panel extends React.PureComponent<Props, State> {
+export default class WalletWrapper extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {

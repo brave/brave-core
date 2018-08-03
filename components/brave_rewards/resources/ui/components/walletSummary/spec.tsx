@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import PanelSummary, { Props } from './index'
+import WalletSummary, { Props } from './index'
 
 const props = {
   grant: {color: '#C12D7C', tokens: 10, converted: 0.25},
@@ -25,8 +25,8 @@ const props = {
   onActivity: ()=>{}
 }
 
-describe('PanelSummary tests', () => {
-  const baseComponent = (props: Props) => <PanelSummary id='empty' {...props} />
+describe('WalletSummary tests', () => {
+  const baseComponent = (props: Props) => <WalletSummary id='empty' {...props} />
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {
