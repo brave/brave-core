@@ -7,20 +7,6 @@ import * as React from 'react'
 // Components
 import { Grid, Column } from '../../../../src/components/layout/gridList'
 import Box from '../../../../src/features/rewards/box/index'
-
-// Assets
-import locale from './fakeLocale'
-import '../../../assets/fonts/muli.css'
-import '../../../assets/fonts/poppins.css'
-import List from '../../../../src/features/rewards/list'
-import Tokens from '../../../../src/features/rewards/tokens'
-import Select from '../../../../src/components/formControls/select'
-import Checkbox from '../../../../src/components/formControls/checkbox'
-import DisabledContent from '../../../../src/features/rewards/disabledContent'
-import MainToggle from '../../../../src/features/rewards/mainToggle'
-import WalletWrapper from '../../../../src/features/rewards/walletWrapper'
-import ContributeTable, { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/contributeTable'
-import { boolean, select, object } from '@storybook/addon-knobs'
 import Alert from '../../../../src/features/rewards/alert'
 import DonationTable, { DetailRow as DonationDetailRow } from '../../../../src/features/rewards/donationTable'
 import ModalContribute from '../../../../src/features/rewards/modalContribute'
@@ -30,6 +16,24 @@ import WalletSummary from '../../../../src/features/rewards/walletSummary'
 import WalletOff from '../../../../src/features/rewards/walletOff'
 import SettingsPage from '../../../../src/features/rewards/settingsPage'
 import GrantClaim from '../../../../src/features/rewards/grantClaim'
+import GrantInit from '../../../../src/features/rewards/grantInit'
+import GrantWrapper from '../../../../src/features/rewards/grantWrapper'
+import GrantCaptcha from '../../../../src/features/rewards/grantCaptcha'
+import GrantComplete from '../../../../src/features/rewards/grantComplete'
+import List from '../../../../src/features/rewards/list'
+import Tokens from '../../../../src/features/rewards/tokens'
+import Select from '../../../../src/components/formControls/select'
+import Checkbox from '../../../../src/components/formControls/checkbox'
+import DisabledContent from '../../../../src/features/rewards/disabledContent'
+import MainToggle from '../../../../src/features/rewards/mainToggle'
+import WalletWrapper from '../../../../src/features/rewards/walletWrapper'
+import ContributeTable, { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/contributeTable'
+
+// Assets
+import locale from './fakeLocale'
+import '../../../assets/fonts/muli.css'
+import '../../../assets/fonts/poppins.css'
+import { boolean, select, object } from '@storybook/addon-knobs'
 
 // Images
 const adsImg = require('../../../assets/img/rewards_ads.svg')
@@ -42,6 +46,7 @@ const wiki = require('../../../assets/img/wiki.jpg')
 const buzz = require('../../../assets/img/buzz.jpg')
 const guardian = require('../../../assets/img/guardian.jpg')
 const eich = require('../../../assets/img/eich.jpg')
+const captchaDrop = require('../../../assets/img/captchaDrop.png')
 
 interface State {
   adsToggle: boolean
@@ -50,6 +55,8 @@ interface State {
   modalContribute: boolean
   modalBackup: boolean
   modalBackupActive: TabsType
+  grantShow: boolean
+  grantStep: string
 }
 
 const doNothing = () => {
@@ -65,7 +72,9 @@ class Settings extends React.PureComponent<{}, State> {
       mainToggle: true,
       modalContribute: false,
       modalBackup: false,
-      modalBackupActive: 'backup'
+      modalBackupActive: 'backup',
+      grantShow: true,
+      grantStep: ''
     }
   }
 
@@ -259,6 +268,18 @@ class Settings extends React.PureComponent<{}, State> {
     this.setState({ modalBackup: true })
   }
 
+  onGrantShow = () => {
+    this.setState({ grantShow: false, grantStep: 'init' })
+  }
+
+  onGrantHide = () => {
+    this.setState({ grantStep: '' })
+  }
+
+  onGrantStep = (step: string) => {
+    this.setState({ grantStep: step })
+  }
+
   render () {
     const showNotification = boolean('Show notification', false)
     const content = select(
@@ -393,7 +414,44 @@ class Settings extends React.PureComponent<{}, State> {
               />
               : null
             }
-            <GrantClaim onClick={doNothing}/>
+            {
+              this.state.grantShow
+              ? <GrantClaim onClick={this.onGrantShow}/>
+              : null
+            }
+            {
+              this.state.grantStep === 'init'
+              ? <GrantWrapper
+                  onClose={this.onGrantHide}
+                  title={'Good news!'}
+                  text={'Free 30 BAT have been awarded to you so you can support more publishers.'}
+              >
+                <GrantInit onAccept={this.onGrantStep.bind(this, 'captcha')} onLater={this.onGrantHide} />
+              </GrantWrapper>
+              : null
+            }
+            {
+              this.state.grantStep === 'captcha'
+              ? <GrantWrapper
+                  onClose={this.onGrantHide}
+                  title={'Almost there…'}
+                  text={'Prove that you are human!'}
+              >
+                <GrantCaptcha onSolution={this.onGrantStep.bind(this, 'complete')} dropBgImage={captchaDrop} />
+              </GrantWrapper>
+              : null
+            }
+            {
+              this.state.grantStep === 'complete'
+              ? <GrantWrapper
+                onClose={this.onGrantHide}
+                title={'It’s your lucky day!'}
+                text={'Your token grant is on its way.'}
+              >
+                <GrantComplete onClose={this.onGrantHide} amount={30} date={'8/15/2018'} />
+              </GrantWrapper>
+              : null
+            }
             <WalletWrapper
               tokens={25}
               converted={'6.0 USD'}

@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Grant complete tests basic tests matches the snapshot 1`] = `
+.c0 {
+  text-align: center;
+  width: 100%;
+  margin: 40px 0 0;
+  font-family: Poppins;
+}
+
+.c1 {
+  border-radius: 6px;
+  background-color: #f1f1f5;
+  padding: 5px 10px 20px;
+}
+
+.c2 {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.57;
+  color: #838391;
+  margin: 11px 0 5px;
+}
+
+.c3 {
+  font-size: 18px;
+  line-height: 1.22;
+  text-align: center;
+  color: #c12d7c;
+}
+
+.c4 {
+  font-family: Muli;
+  font-size: 14px;
+  line-height: 1.29;
+  color: #838391;
+  margin: 44px 0 25px;
+}
+
+.c5 {
+  display: inline-block;
+  overflow: hidden;
+  background: #fff;
+  font-size: 13px;
+  border-radius: 20px;
+  min-width: 104px;
+  font-family: Poppins;
+}
+
+.c6 {
+  text-align: center;
+  box-sizing: border-box;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: rgba(251,84,43,0.9);
+  color: #fff;
+  padding: 13.5px 10px;
+}
+
+.c6:hover {
+  background: rgba(251,84,43,1);
+}
+
+.c6:active {
+  background: rgba(251,84,43,0.4);
+}
+
+<div
+  className="c0"
+  id="complete"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      MISSING: newTokenGrant
+    </div>
+    <div
+      className="c3"
+    />
+    <div
+      className="c2"
+    >
+      MISSING: grantExpire
+    </div>
+    <div
+      className="c3"
+    />
+  </div>
+  <div
+    className="c4"
+  >
+    MISSING: grantDisclaimer
+  </div>
+  <div
+    className="c5"
+    color="brand"
+    onClick={undefined}
+    size="medium"
+  >
+    <div
+      className="c6"
+      color="brand"
+      disabled={undefined}
+      size="medium"
+    >
+      MISSING: ok
+    </div>
+  </div>
+</div>
+`;

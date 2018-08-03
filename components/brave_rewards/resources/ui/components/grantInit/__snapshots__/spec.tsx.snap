@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Grant init tests basic tests matches the snapshot 1`] = `
+.c0 {
+  text-align: center;
+  width: 100%;
+  margin: 70px 0 0;
+}
+
+.c1 {
+  display: inline-block;
+  overflow: hidden;
+  background: #fff;
+  font-size: 13px;
+  border-radius: 20px;
+  min-width: 104px;
+  font-family: Poppins;
+}
+
+.c2 {
+  text-align: center;
+  box-sizing: border-box;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: rgba(251,84,43,0.9);
+  color: #fff;
+  padding: 13.5px 10px;
+}
+
+.c2:hover {
+  background: rgba(251,84,43,1);
+}
+
+.c2:active {
+  background: rgba(251,84,43,0.4);
+}
+
+.c3 {
+  display: inline-block;
+  text-align: center;
+  box-sizing: border-box;
+  font-family: Poppins;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: rgba(251,84,43,0.9);
+  font-size: 14px;
+  border-radius: 24px;
+  min-width: 116px;
+  padding: 17px 15px;
+}
+
+.c3:hover {
+  color: rgba(251,84,43,1);
+}
+
+.c3:active {
+  color: rgba(251,84,43,0.4);
+}
+
+<div
+  className="c0"
+  id="init"
+>
+  <div>
+    <div
+      className="c1"
+      color="brand"
+      onClick={undefined}
+      size="medium"
+    >
+      <div
+        className="c2"
+        color="brand"
+        disabled={undefined}
+        size="medium"
+      >
+        MISSING: accept
+      </div>
+    </div>
+  </div>
+  <div
+    className="c3"
+    color="brand"
+    onClick={undefined}
+    size="large"
+  >
+    MISSING: maybeLater
+  </div>
+</div>
+`;

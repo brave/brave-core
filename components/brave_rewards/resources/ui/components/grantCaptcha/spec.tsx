@@ -2,10 +2,10 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import GrantClaim from './index';
+import GrantCaptcha from './index';
 
-describe('Grant claim tests', () => {
-  const baseComponent = (props?: object) => <GrantClaim id='claim' {...props} />
+describe('Grant captcha tests', () => {
+  const baseComponent = (props?: object) => <GrantCaptcha id='captcha' {...props} />
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {
@@ -16,7 +16,7 @@ describe('Grant claim tests', () => {
 
     it('renders the component', () => {
       const wrapper = shallow(baseComponent())
-      const assertion = wrapper.find('#claim').length
+      const assertion = wrapper.find('#captcha').length
       expect(assertion).toBe(1)
     })
   })

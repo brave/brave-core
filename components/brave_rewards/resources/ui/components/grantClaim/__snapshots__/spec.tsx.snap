@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`List tests basic tests matches the snapshot 1`] = `
+exports[`Grant claim tests basic tests matches the snapshot 1`] = `
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -93,7 +93,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
 
 <div
   className="c0"
-  id="list"
+  id="claim"
 >
   <div
     className="c1"

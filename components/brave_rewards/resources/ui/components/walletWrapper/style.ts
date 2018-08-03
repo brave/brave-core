@@ -16,6 +16,7 @@ export const StyledWrapper = styled.div`
     url(${panelBg}) no-repeat top left,
     linear-gradient(172deg, #392dd1, rgba(255, 26, 26, 0.53)),
     linear-gradient(#7d7bdc, #7d7bdc);
+  // min-height: 715px; TODO NZ we need to add this
 ` as any
 
 export const StyledHeader = styled.div`

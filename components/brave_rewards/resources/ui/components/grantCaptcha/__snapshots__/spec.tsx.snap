@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
+.c0 {
+  text-align: center;
+  width: 100%;
+  margin: 28px 0 0;
+}
+
+.c5 {
+  width: 333px;
+  height: 296px;
+  margin-left: -32px;
+  margin-top: 20px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c3 {
+  width: 60px;
+}
+
+.c2 {
+  -webkit-flex-basis: 60px;
+  -ms-flex-preferred-size: 60px;
+  flex-basis: 60px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c4 {
+  -webkit-flex-basis: 130px;
+  -ms-flex-preferred-size: 130px;
+  flex-basis: 130px;
+  font-family: Muli;
+  font-size: 14px;
+  line-height: 1.29;
+  color: #686978;
+  text-align: left;
+  padding-left: 17px;
+}
+
+<div
+  className="c0"
+  id="captcha"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+      draggable="true"
+      onDragStart={[Function]}
+    >
+      <img
+        className="c3"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      className="c4"
+    >
+      MISSING: dndCaptcha
+    </div>
+  </div>
+  <img
+    className="c5"
+    draggable="false"
+    onDragOver={[Function]}
+    onDrop={[Function]}
+    src={undefined}
+  />
+</div>
+`;
