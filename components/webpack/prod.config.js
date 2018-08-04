@@ -11,7 +11,7 @@ module.exports = {
     brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome')
   },
   output: {
-    path: path.join(__dirname, '..', '..', '..', process.env.TARGET_GEN_DIR, 'brave'),
+    path: process.env.TARGET_GEN_DIR,
     filename: '[name].bundle.js',
     chunkFilename: '[id].chunk.js'
   },

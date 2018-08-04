@@ -1,0 +1,24 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("brave_welcome_ui") {
+  inputs = [
+    "brave_welcome.html",
+    "brave_welcome.tsx",
+    "storage.ts",
+    "store.ts",
+    "actions/welcome_actions.ts",
+    "components/app.tsx",
+    "components/braveScreen.tsx",
+    "components/featuresScreen.tsx",
+    "components/footer.tsx",
+    "components/importScreen.tsx",
+    "components/rewardsScreen.tsx",
+    "components/shieldsScreen.tsx",
+    "constants/theme.ts",
+    "constants/welcome_types.ts",
+    "reducers/index.ts",
+    "reducers/welcome_reducer.ts",
+  ]
+
+  bundle_name = "brave_welcome.bundle.js"
+}
