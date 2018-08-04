@@ -1,13 +1,14 @@
 diff --git a/content/browser/permissions/permission_service_impl.cc b/content/browser/permissions/permission_service_impl.cc
-index f6c0538a690fb436d7f1da3fd889525936c8a58a..8d75787e27f4eef9c7e30c79ebf8143c6ffe60bf 100644
+index f84599df41c5f61c39a3a71fb62797632bb360a5..19f377148b387bdc34225fab6ada8fafe3790818 100644
 --- a/content/browser/permissions/permission_service_impl.cc
 +++ b/content/browser/permissions/permission_service_impl.cc
-@@ -58,6 +58,8 @@ PermissionType PermissionDescriptorToPermissionType(
-       return PermissionType::CLIPBOARD_WRITE;
+@@ -82,6 +82,9 @@ bool PermissionDescriptorToPermissionType(
      case PermissionName::PAYMENT_HANDLER:
-       return PermissionType::PAYMENT_HANDLER;
+       *permission_type = PermissionType::PAYMENT_HANDLER;
+       return true;
 +    case PermissionName::AUTOPLAY:
-+      return PermissionType::AUTOPLAY;
++      *permission_type  = PermissionType::AUTOPLAY;
++      return true;
    }
  
    NOTREACHED();

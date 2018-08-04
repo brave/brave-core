@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/permissions/permission_manager.cc b/chrome/browser/permissions/permission_manager.cc
-index af0c4c0e74fbcf78f02fe112f19724260dda456a..eb865ab50f8011d03a93d659a5f94b3699ca50ae 100644
+index c3e0e0bfecc85e5bbc36091c4c9f9454a1dfdc22..add6fa014288a8384fb3688f056994da9af988d2 100644
 --- a/chrome/browser/permissions/permission_manager.cc
 +++ b/chrome/browser/permissions/permission_manager.cc
-@@ -84,7 +84,7 @@ PermissionStatus ContentSettingToPermissionStatus(ContentSetting setting) {
+@@ -85,7 +85,7 @@ PermissionStatus ContentSettingToPermissionStatus(ContentSetting setting) {
  }
  
  // Helper method to convert PermissionType to ContentSettingType.
@@ -11,7 +11,7 @@ index af0c4c0e74fbcf78f02fe112f19724260dda456a..eb865ab50f8011d03a93d659a5f94b36
    switch (permission) {
      case PermissionType::MIDI:
        return CONTENT_SETTINGS_TYPE_MIDI;
-@@ -122,6 +122,7 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
+@@ -123,6 +123,7 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
      case PermissionType::PAYMENT_HANDLER:
        return CONTENT_SETTINGS_TYPE_PAYMENT_HANDLER;
      case PermissionType::NUM:

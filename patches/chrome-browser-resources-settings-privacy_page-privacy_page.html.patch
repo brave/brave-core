@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index c938b42ff11691e4e5e915e7c4d6f36de58d82cb..79ec3a92e11f41417fe7e024c9321eea89700f5c 100644
+index f14f0e747257429d4df1dc1eea95bcd930aba278..da6a83b4b20e13f6623213a8e2061c49dde5ba6e 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -400,6 +400,19 @@
+@@ -369,6 +369,19 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -21,4 +21,4 @@ index c938b42ff11691e4e5e915e7c4d6f36de58d82cb..79ec3a92e11f41417fe7e024c9321eea
 +      </template>
        <template is="dom-if" route-path="/content/flash" no-search>
          <settings-subpage page-title="$i18n{siteSettingsFlash}">
-           <category-default-setting category="{{ContentSettingsTypes.PLUGINS}}"
+           <template is="dom-if" if="[[enableEphemeralFlashPermission_]]">

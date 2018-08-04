@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-index 32d1f2a9a7acd05e027ae146deaa8721192ed557..6baf532f3d817442248d0e4b8d60033aae49f77f 100644
+index 92c863fcf9ead0637947b1ed4004ab85d1d23346..7767f7ee49d8e1ba4012a25ec049661f989f2a5c 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-@@ -144,6 +144,25 @@
+@@ -147,6 +147,25 @@
              aria-describedby="notificationsSecondary"></button>
        </paper-icon-button-light>
      </div>
