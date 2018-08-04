@@ -1,0 +1,22 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("brave_new_tab_ui") {
+  inputs = [
+    "brave_new_tab.html",
+    "brave_new_tab.tsx",
+    "storage.ts",
+    "store.ts",
+    "actions/new_tab_actions.ts",
+    "components/app.tsx",
+    "components/block.tsx",
+    "components/footerInfo.tsx",
+    "components/siteRemovalNotification.tsx",
+    "components/stats.tsx",
+    "constants/backgrounds.ts",
+    "constants/new_tab_types.ts",
+    "constants/theme.ts",
+    "reducers/index.ts",
+    "reducers/new_tab_reducer.tsx",
+  ]
+  bundle_name = "brave_new_tab.bundle.js"
+}
