@@ -18,18 +18,18 @@ class BraveAutoplayContentSettingBubbleModel : public ContentSettingSimpleBubble
                                           Profile* profile);
    ~BraveAutoplayContentSettingBubbleModel() override;
 
+  // ContentSettingSimpleBubbleModel:
+  void CommitChanges() override;
+
  protected:
   bool settings_changed() const;
-  int selected_item() const { return selected_item_; }
 
  private:
   void SetTitle();
   void SetRadioGroup();
   void SetNarrowestContentSetting(ContentSetting setting);
-  void OnRadioClicked(int radio_index) override;
 
   ContentSetting block_setting_;
-  int selected_item_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveAutoplayContentSettingBubbleModel);
 };

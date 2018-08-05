@@ -13,7 +13,8 @@ void ContentSettingsRegistry::BraveInit() {
            WebsiteSettingsInfo::REQUESTING_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
-           ContentSettingsInfo::INHERIT_IN_INCOGNITO);
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           ContentSettingsInfo::PERSISTENT);
 
 }
 

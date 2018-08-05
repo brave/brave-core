@@ -4,11 +4,13 @@
 
 #include "brave/browser/ui/content_settings/brave_autoplay_content_setting_bubble_model.h"
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
@@ -28,15 +30,16 @@ BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
                                       web_contents,
                                       profile,
                                       CONTENT_SETTINGS_TYPE_AUTOPLAY),
-      block_setting_(CONTENT_SETTING_BLOCK),
-      selected_item_(0) {
+      block_setting_(CONTENT_SETTING_BLOCK) {
   SetTitle();
   SetRadioGroup();
 }
 
-BraveAutoplayContentSettingBubbleModel::~BraveAutoplayContentSettingBubbleModel() {
+BraveAutoplayContentSettingBubbleModel::~BraveAutoplayContentSettingBubbleModel() {}
+
+void BraveAutoplayContentSettingBubbleModel::CommitChanges() {
   if (settings_changed()) {
-    ContentSetting setting = selected_item_ == kAllowButtonIndex
+    ContentSetting setting = selected_item() == kAllowButtonIndex
                                  ? CONTENT_SETTING_ALLOW
                                  : block_setting_;
     SetNarrowestContentSetting(setting);
@@ -44,7 +47,7 @@ BraveAutoplayContentSettingBubbleModel::~BraveAutoplayContentSettingBubbleModel(
 }
 
 bool BraveAutoplayContentSettingBubbleModel::settings_changed() const {
-  return selected_item_ != bubble_content().radio_group.default_item;
+  return selected_item() != bubble_content().radio_group.default_item;
 }
 
 void BraveAutoplayContentSettingBubbleModel::SetTitle() {
@@ -95,7 +98,6 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
 
   set_radio_group_enabled(is_valid && setting_source == SETTING_SOURCE_USER);
 
-  selected_item_ = radio_group.default_item;
   set_radio_group(radio_group);
 }
 
@@ -109,8 +111,3 @@ void BraveAutoplayContentSettingBubbleModel::SetNarrowestContentSetting(
                                   bubble_content().radio_group.url,
                                   content_type(), setting);
 }
-
-void BraveAutoplayContentSettingBubbleModel::OnRadioClicked(int radio_index) {
-  selected_item_ = radio_index;
-}
-
