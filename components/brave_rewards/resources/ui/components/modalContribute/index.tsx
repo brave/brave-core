@@ -39,6 +39,7 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
             numSites={numSites}
             allSites={true}
             showRowAmount={true}
+            showRemove={true}
           />
         </StyledWrapper>
       </Modal>

@@ -17,7 +17,7 @@ export const StyledText = styled.div`
 
 export const StyledRemove = styled.span`
   margin-left: 10px;
-  padding-right: 7px;
+  padding-right: 10px;
 ` as any
 
 export const StyledTHSite = styled.div`

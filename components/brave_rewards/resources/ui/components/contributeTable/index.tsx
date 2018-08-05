@@ -32,6 +32,7 @@ export interface DetailRow {
 export interface Props {
   header: string[]
   showRowAmount?: boolean
+  showRemove?: boolean
   id?: string
   children?: React.ReactNode
   theme?: Theme
@@ -51,6 +52,10 @@ export default class ContributeTable extends React.PureComponent<Props, {}> {
   getHeader = (header: string[]) => {
     if (!header) {
       return
+    }
+
+    if (this.props.showRemove) {
+      header.push('')
     }
 
     let theme = {}
@@ -112,9 +117,26 @@ export default class ContributeTable extends React.PureComponent<Props, {}> {
       }
 
       if (this.props.showRowAmount) {
-        const remaining = 100 - row.attention
-        cell.theme = {
-          background: `linear-gradient(90deg, #FFF ${remaining}%, #d2c6f3 ${row.attention}%)`
+        if (this.props.showRemove) {
+          const remaining = (100 - row.attention) / 1.04
+          const attention = row.attention / 1.04
+          const diff = remaining + attention
+          cell.theme = {
+            background: `linear-gradient(
+              to right,
+              transparent 0%,
+              transparent ${remaining}%,
+              #d2c6f3 ${remaining}%,
+              #d2c6f3 ${diff}%,
+              transparent ${diff}%,
+              transparent 100%
+            )`
+          }
+        } else {
+          const remaining = 100 - row.attention
+          cell.theme = {
+            background: `linear-gradient(90deg, transparent ${remaining}%, #d2c6f3 ${row.attention}%)`
+          }
         }
       }
 

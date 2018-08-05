@@ -87,6 +87,8 @@ storiesOf('Feature Components/Rewards/Table', module)
           rows={object('Rows', rows)}
           allSites={boolean('Are this all sites?', false)}
           numSites={number('Number of all sites?', 55)}
+          showRowAmount={boolean('Show row amount', false)}
+          showRemove={boolean('Show remove action', true)}
         >
           Please visit some sites
         </ContributeTable>

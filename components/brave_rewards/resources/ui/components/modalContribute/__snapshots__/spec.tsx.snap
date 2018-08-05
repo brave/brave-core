@@ -161,6 +161,15 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
                       MISSING: rewardsContributeAttention
                     </div>
                   </th>
+                  <th
+                    className="c8"
+                  >
+                    <div
+                      className="c9"
+                    >
+                      
+                    </div>
+                  </th>
                 </tr>
               </thead>
             </table>
