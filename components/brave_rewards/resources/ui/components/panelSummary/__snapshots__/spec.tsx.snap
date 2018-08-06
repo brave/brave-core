@@ -263,7 +263,7 @@ exports[`PanelSummary tests basic tests matches the snapshot 1`] = `
   <div
     className="c2"
   >
-    MISSING: monthJul
+    MISSING: monthAug
      
     2018
   </div>
