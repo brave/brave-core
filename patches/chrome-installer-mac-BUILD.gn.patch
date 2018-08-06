@@ -1,0 +1,20 @@
+diff --git a/chrome/installer/mac/BUILD.gn b/chrome/installer/mac/BUILD.gn
+index e30b17ba2e1efbad772d8561a082b677e40bdd90..8bb9925f4aeb856ba79e778c461d6555a4d48206 100644
+--- a/chrome/installer/mac/BUILD.gn
++++ b/chrome/installer/mac/BUILD.gn
+@@ -72,7 +72,6 @@ copy("copies") {
+ 
+   deps = [
+     ":copy_variables",
+-    "//chrome:entitlements",
+     "//chrome/installer/mac/third_party/bsdiff:goobsdiff",
+     "//chrome/installer/mac/third_party/bsdiff:goobspatch",
+     "//chrome/installer/mac/third_party/xz:lzma_decompress",
+@@ -81,7 +80,6 @@ copy("copies") {
+   ]
+ 
+   sources = [
+-    "$root_gen_dir/chrome/entitlements.plist",
+     "$root_out_dir/goobsdiff",
+     "$root_out_dir/goobspatch",
+     "$root_out_dir/liblzma_decompress.dylib",

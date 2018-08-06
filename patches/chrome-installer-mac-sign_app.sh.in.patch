@@ -1,8 +1,28 @@
 diff --git a/chrome/installer/mac/sign_app.sh.in b/chrome/installer/mac/sign_app.sh.in
-index 4383c826c43588aa8fc0819b8a7669364815d2d9..a463cb050a74234615b2cb22b45fd6e799fdf379 100644
+index 4383c826c43588aa8fc0819b8a7669364815d2d9..9242d7cbc4b8c6c50fb3a78350f748646facb58c 100644
 --- a/chrome/installer/mac/sign_app.sh.in
 +++ b/chrome/installer/mac/sign_app.sh.in
-@@ -42,10 +42,7 @@ if [[ ${#} == 6 && "${6}" == "--development" ]]; then
+@@ -24,17 +24,15 @@ export -n SHELLOPTS
+ ME="$(basename "${0}")"
+ readonly ME
+ 
+-if [[ ${#} -ne 5 && ${#} -ne 6 ]]; then
++if [[ ${#} -ne 3 && ${#} -ne 4 ]]; then
+   echo "usage: ${ME} app_path codesign_keychain codesign_id \
+-provisioning_profile entitlements_plist [--development]" >& 2
++[--development]" >& 2
+   exit 1
+ fi
+ 
+ app_path="${1}"
+ codesign_keychain="${2}"
+ codesign_id="${3}"
+-provisioning_profile="${4}"
+-entitlements_plist="${5}"
+ is_development=
+ 
+ if [[ ${#} == 6 && "${6}" == "--development" ]]; then
+@@ -42,10 +40,7 @@ if [[ ${#} == 6 && "${6}" == "--development" ]]; then
  fi
  
  script_dir="$(dirname "${0}")"
@@ -14,8 +34,13 @@ index 4383c826c43588aa8fc0819b8a7669364815d2d9..a463cb050a74234615b2cb22b45fd6e7
  
  contents_dir="${app_path}/Contents"
  versioned_dir="${contents_dir}/Versions/@VERSION@"
-@@ -63,10 +60,7 @@ cp "${provisioning_profile}" "${contents_dir}/embedded.provisionprofile"
+@@ -58,15 +53,9 @@ helper_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper.app"
+ app_mode_loader_app="${framework}/Resources/app_mode_loader.app"
+ app_mode_loader="${app_mode_loader_app}/Contents/MacOS/app_mode_loader"
  
+-# Embed the supplied provisioning profile.
+-cp "${provisioning_profile}" "${contents_dir}/embedded.provisionprofile"
+-
  requirement="\
  designated => \
 -(identifier \"com.google.Chrome\" or \
@@ -26,11 +51,12 @@ index 4383c826c43588aa8fc0819b8a7669364815d2d9..a463cb050a74234615b2cb22b45fd6e7
  ${requirement_suffix} \
  "
  
-@@ -74,7 +68,6 @@ codesign_cmd=(
+@@ -74,8 +63,6 @@ codesign_cmd=(
    codesign --sign "${codesign_id}" --keychain "${codesign_keychain}"
    "${browser_app}"
    --options "${enforcement_flags_app}"
 -  --resource-rules "${browser_app_rules}"
-   --entitlements "${entitlements_plist}"
+-  --entitlements "${entitlements_plist}"
  )
  if [[ -z "${is_development}" ]]; then
+   codesign_cmd+=( -r="${requirement}" )
