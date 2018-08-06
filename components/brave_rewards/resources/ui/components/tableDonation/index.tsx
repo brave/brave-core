@@ -47,7 +47,7 @@ interface Theme {
 const removeIcon = require('./assets/close')
 const monthlyIcon = require('./assets/monthly')
 
-export default class DonationTable extends React.PureComponent<Props, {}> {
+export default class TableDonation extends React.PureComponent<Props, {}> {
   getTypeContent (row: DetailRow): Cell {
     switch (row.type) {
       case 'recurring':

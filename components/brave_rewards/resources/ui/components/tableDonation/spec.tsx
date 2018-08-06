@@ -2,10 +2,10 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import DonationTable from './index'
+import TableDonation from './index'
 
-describe('DonationTable tests', () => {
-  const baseComponent = (props?: object) => <DonationTable id='table' {...props} />
+describe('TableDonation tests', () => {
+  const baseComponent = (props?: object) => <TableDonation id='table' {...props} />
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

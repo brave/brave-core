@@ -9,8 +9,8 @@ import { withKnobs, boolean, object, number } from '@storybook/addon-knobs'
 import centered from '@storybook/addon-centered/dist'
 
 // Components
-import ContributeTable, { DetailRow as ContributeDetailRow } from '../../../src/features/rewards/contributeTable'
-import DonationTable, { DetailRow as DonationDetailRow } from '../../../src/features/rewards/donationTable'
+import TableContribute, { DetailRow as ContributeDetailRow } from '../../../src/features/rewards/tableContribute'
+import TableDonation, { DetailRow as DonationDetailRow } from '../../../src/features/rewards/tableDonation'
 
 const bart = require('../../assets/img/bartBaker.jpeg')
 const ddgo = require('../../assets/img/ddgo.jpg')
@@ -82,7 +82,7 @@ storiesOf('Feature Components/Rewards/Table', module)
     ]
     return (
       <div style={{ width: '595px' }}>
-        <ContributeTable
+        <TableContribute
           header={object('Header', header)}
           rows={object('Rows', rows)}
           allSites={boolean('Are this all sites?', false)}
@@ -91,7 +91,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           showRemove={boolean('Show remove action', true)}
         >
           Please visit some sites
-        </ContributeTable>
+        </TableContribute>
       </div>
     )
   })
@@ -141,13 +141,13 @@ storiesOf('Feature Components/Rewards/Table', module)
     ]
     return (
       <div style={{ width: '595px' }}>
-        <DonationTable
+        <TableDonation
           rows={object('Rows', rows)}
           allItems={boolean('Are this all items?', false)}
           numItems={number('Number of all items?', 55)}
         >
           Please visit some sites
-        </DonationTable>
+        </TableDonation>
       </div>
     )
   })

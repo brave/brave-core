@@ -48,7 +48,7 @@ interface Theme {
 
 const removeIcon = require('./assets/close')
 
-export default class ContributeTable extends React.PureComponent<Props, {}> {
+export default class TableContribute extends React.PureComponent<Props, {}> {
   getHeader = (header: string[]) => {
     if (!header) {
       return

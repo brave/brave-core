@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { StyledWrapper, StyledTitle, StyledContent, StyledNum } from './style'
 import Modal from '../../../components/popupModals/modal/index'
-import ContributeTable, { DetailRow } from '../contributeTable/index'
+import TableContribute, { DetailRow } from '../tableContribute/index'
 import { getLocale } from '../../../helpers'
 
 export interface Props {
@@ -33,7 +33,7 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
           <StyledContent>
             {getLocale('rewardsContributeText1')} <StyledNum>{numSites}</StyledNum> {getLocale('sites')}.
           </StyledContent>
-          <ContributeTable
+          <TableContribute
             header={this.headers}
             rows={rows}
             numSites={numSites}

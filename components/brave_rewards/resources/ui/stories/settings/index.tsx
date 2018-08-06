@@ -8,7 +8,7 @@ import * as React from 'react'
 import { Grid, Column } from '../../../../src/components/layout/gridList'
 import Box from '../../../../src/features/rewards/box/index'
 import Alert from '../../../../src/features/rewards/alert'
-import DonationTable, { DetailRow as DonationDetailRow } from '../../../../src/features/rewards/donationTable'
+import TableDonation, { DetailRow as DonationDetailRow } from '../../../../src/features/rewards/tableDonation'
 import ModalContribute from '../../../../src/features/rewards/modalContribute'
 import ModalBackupRestore, { TabsType } from '../../../../src/features/rewards/modalBackupRestore'
 import WalletEmpty from '../../../../src/features/rewards/walletEmpty'
@@ -27,7 +27,7 @@ import Checkbox from '../../../../src/components/formControls/checkbox'
 import DisabledContent from '../../../../src/features/rewards/disabledContent'
 import MainToggle from '../../../../src/features/rewards/mainToggle'
 import WalletWrapper from '../../../../src/features/rewards/walletWrapper'
-import ContributeTable, { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/contributeTable'
+import TableContribute, { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
 
 // Assets
 import locale from './fakeLocale'
@@ -358,7 +358,7 @@ class Settings extends React.PureComponent<{}, State> {
               <List title={locale.contributionSites}>
                 Total &nbsp;<Tokens value={55} hideText={true} toFixed={false}/>
               </List>
-              <ContributeTable
+              <TableContribute
                 header={[
                   'Site visited',
                   'Attention score',
@@ -373,7 +373,7 @@ class Settings extends React.PureComponent<{}, State> {
                 }}
               >
                 Please visit some sites
-              </ContributeTable>
+              </TableContribute>
             </Box>
             <Box
               title={locale.donationTitle}
@@ -387,7 +387,7 @@ class Settings extends React.PureComponent<{}, State> {
               <List title={locale.donationList}>
                 Total &nbsp;<Tokens value={3} hideText={true} toFixed={false} />
               </List>
-              <DonationTable
+              <TableDonation
                 rows={this.donationRows}
                 allItems={true}
                 theme={{
@@ -395,7 +395,7 @@ class Settings extends React.PureComponent<{}, State> {
                 }}
               >
                 Please visit some sites
-              </DonationTable>
+              </TableDonation>
             </Box>
           </Column>
           <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>

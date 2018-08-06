@@ -2,10 +2,10 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import ContributeTable from './index'
+import TableContribute from './index'
 
-describe('ContributeTable tests', () => {
-  const baseComponent = (props?: object) => <ContributeTable id='table' {...props} />
+describe('TableContribute tests', () => {
+  const baseComponent = (props?: object) => <TableContribute id='table' {...props} />
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

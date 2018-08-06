@@ -12,11 +12,11 @@ import Donate from './donate'
 import WalletOff from './walletOff'
 import Tokens from './tokens'
 import Box from './box'
-import DonationTable from './donationTable'
+import TableDonation from './tableDonation'
+import TableContribute from './tableContribute'
 import ModalBackupRestore from './modalBackupRestore'
 import WalletSummary from './walletSummary'
 import Tooltip from './tooltip'
-import ContributeTable from './contributeTable'
 import List from './list'
 import ModalContribute from './modalContribute'
 import Profile from './profile'
@@ -37,11 +37,11 @@ export {
   WalletOff,
   Tokens,
   Box,
-  DonationTable,
+  TableDonation,
   ModalBackupRestore,
   WalletSummary,
   Tooltip,
-  ContributeTable,
+  TableContribute,
   List,
   ModalContribute,
   Profile,

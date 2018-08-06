@@ -9,7 +9,7 @@ import { withKnobs, text } from '@storybook/addon-knobs'
 
 // Components
 import { TabsType } from '../../../src/features/rewards/modalBackupRestore'
-import { DetailRow } from '../../../src/features/rewards/contributeTable'
+import { DetailRow } from '../../../src/features/rewards/tableContribute'
 import { ModalContribute, ModalBackupRestore } from '../../../src/features/rewards'
 
 const bart = require('../../assets/img/bartBaker.jpeg')
