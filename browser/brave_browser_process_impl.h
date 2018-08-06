@@ -7,6 +7,8 @@
 
 #include "chrome/browser/browser_process_impl.h"
 
+class ProfileCreationMonitor;
+
 namespace brave {
 class BraveStatsUpdater;
 }
@@ -55,6 +57,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       google_component_updater_;
   std::unique_ptr<component_updater::ComponentUpdateService>
       brave_component_updater_;
+
+  std::unique_ptr<ProfileCreationMonitor> profile_creation_monitor_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcessImpl);
 };
