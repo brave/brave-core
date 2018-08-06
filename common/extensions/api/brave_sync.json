@@ -11,7 +11,7 @@
     },
     "events": [
       {
-        "name": "onWebViewToBrowser",
+        "name": "onBrowserToBackgroundPage",
         "type": "function",
         "description": "Fired when sync lib sends data to browser.",
         "parameters": [
