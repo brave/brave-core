@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
-.c3 {
+.c4 {
   margin-top: 33px;
 }
 
-.c8 {
+.c9 {
   font-family: Muli;
   font-size: 16px;
   font-weight: 300;
@@ -14,26 +14,26 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   margin-bottom: 39px;
 }
 
-.c13 {
+.c14 {
   text-align: center;
 }
 
-.c13 > div {
+.c14 > div {
   margin: 0 4px;
 }
 
-.c15 {
+.c16 {
   text-align: center;
   margin-top: 59px;
 }
 
-.c4 {
+.c5 {
   border-bottom: 1px solid #DFDFE8;
   text-align: center;
   font-family: Poppins;
 }
 
-.c5 {
+.c6 {
   border-radius: 6px 6px 0 0;
   border: 1px solid #DFDFE8;
   border-bottom: 1px solid #FFF;
@@ -54,7 +54,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   top: 1px;
 }
 
-.c6 {
+.c7 {
   border-radius: 6px 6px 0 0;
   border: 1px solid #DFDFE8;
   border-bottom: 1px solid #DFDFE8;
@@ -75,16 +75,16 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   top: 1px;
 }
 
-.c7 {
+.c8 {
   padding: 34px 56px 20px;
 }
 
-.c9 {
+.c10 {
   max-width: 100%;
   width: 100%;
 }
 
-.c12 {
+.c13 {
   min-height: 112px;
   box-sizing: border-box;
   width: 100%;
@@ -96,13 +96,13 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   line-height: 26px;
 }
 
-.c10 {
+.c11 {
   max-width: 100%;
   width: 100%;
   margin-bottom: 12px;
 }
 
-.c11 {
+.c12 {
   width: 100%;
   font-family: Poppins;
   line-height: normal;
@@ -121,12 +121,12 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   background: rgba(12,13,33,0.85);
   z-index: 99;
   padding: 0 20px;
+  overflow: hidden;
 }
 
 .c1 {
   max-width: 666px;
   margin: 52px auto;
-  padding: 61px 50px;
   background: #fff;
   border-radius: 6px;
   overflow: hidden;
@@ -141,7 +141,13 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c16 {
+.c3 {
+  padding: 61px 50px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
+.c17 {
   display: inline-block;
   overflow: hidden;
   background: #fff;
@@ -151,7 +157,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   font-family: Poppins;
 }
 
-.c17 {
+.c18 {
   text-align: center;
   box-sizing: border-box;
   -webkit-letter-spacing: 0;
@@ -170,15 +176,15 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   padding: 13.5px 10px;
 }
 
-.c17:hover {
+.c18:hover {
   background: rgba(251,84,43,1);
 }
 
-.c17:active {
+.c18:active {
   background: rgba(251,84,43,0.4);
 }
 
-.c14 {
+.c15 {
   display: inline-block;
   overflow: hidden;
   border: 1px solid rgba(184,185,196,0.9);
@@ -204,19 +210,19 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   font-weight: 500;
 }
 
-.c14:hover {
+.c15:hover {
   border-color: rgba(184,185,196,1);
 }
 
-.c14:active {
+.c15:active {
   border-color: rgba(184,185,196,0.4);
 }
 
-.c14:hover {
+.c15:hover {
   color: rgba(184,185,196,1);
 }
 
-.c14:active {
+.c15:active {
   color: rgba(184,185,196,0.4);
 }
 
@@ -245,27 +251,27 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
       </svg>
     </div>
     <div
-      className=""
+      className="c3"
     >
       <div
-        className="c3"
+        className="c4"
       >
         <div
           className=""
           id={undefined}
         >
           <div
-            className="c4"
+            className="c5"
           >
             <div
-              className="c5"
+              className="c6"
               onClick={[Function]}
               selected={true}
             >
               MISSING: rewardsBackupText1
             </div>
             <div
-              className="c6"
+              className="c7"
               onClick={[Function]}
               selected={false}
             >
@@ -273,28 +279,28 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
             </div>
           </div>
           <div
-            className="c7"
+            className="c8"
           >
             <div
-              className="c8"
+              className="c9"
             >
               MISSING: rewardsBackupText2
             </div>
             <div
-              className="c9"
+              className="c10"
               id={undefined}
             >
               <div
-                className="c10"
+                className="c11"
                 id={undefined}
               >
                 <div
-                  className="c11"
+                  className="c12"
                 >
                   MISSING: recoveryKeys
                 </div>
                 <textarea
-                  className="c12"
+                  className="c13"
                   defaultValue=""
                   disabled={true}
                   onChange={undefined}
@@ -302,10 +308,10 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               </div>
             </div>
             <div
-              className="c13"
+              className="c14"
             >
               <div
-                className="c14"
+                className="c15"
                 color="subtle"
                 onClick={[Function]}
                 size="small"
@@ -313,7 +319,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
                 MISSING: copy
               </div>
               <div
-                className="c14"
+                className="c15"
                 color="subtle"
                 onClick={[Function]}
                 size="small"
@@ -321,7 +327,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
                 MISSING: print
               </div>
               <div
-                className="c14"
+                className="c15"
                 color="subtle"
                 onClick={[Function]}
                 size="small"
@@ -330,16 +336,16 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               </div>
             </div>
             <div
-              className="c15"
+              className="c16"
             >
               <div
-                className="c16"
+                className="c17"
                 color="brand"
                 onClick={[Function]}
                 size="medium"
               >
                 <div
-                  className="c17"
+                  className="c18"
                   color="brand"
                   disabled={undefined}
                   size="medium"

@@ -10,11 +10,13 @@ import {
   StyledRemove,
   StyledToggle,
   StyledTHSite,
-  StyledTHOther
+  StyledTHOther,
+  StyledTHLast
 } from './style'
 import Table, { Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
 import { getLocale } from '../../../helpers'
+import Tokens from '../tokens'
 
 interface ProfileCell {
   verified: boolean
@@ -27,6 +29,7 @@ export interface DetailRow {
   profile: ProfileCell
   attention: number
   onRemove?: () => void
+  token?: { value: number, converted: number }
 }
 
 export interface Props {
@@ -73,7 +76,9 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
       return {
         content: i === 0
         ? <StyledTHSite>{item}</StyledTHSite>
-        : <StyledTHOther>{item}</StyledTHOther>,
+        : i === header.length - 1
+          ? <StyledTHLast>{item}</StyledTHLast>
+          : <StyledTHOther>{item}</StyledTHOther>,
         theme: theme
       }
     })
@@ -104,16 +109,46 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
                 {row.attention}%
               </StyledText>
             )
-          },
-          {
-            content: (
-              <StyledRemove onClick={row.onRemove}>{removeIcon}</StyledRemove>
-            ),
-            theme: {
-              textAlign: 'right'
-            }
           }
         ]
+      }
+
+      if (row.token) {
+        cell.content.push({
+          content: (
+            <Tokens
+              value={row.token.value}
+              converted={row.token.converted}
+              theme={{
+                color: {
+                  tokenNum: '#686978',
+                  token: '#a7acb2',
+                  text: '#a7acb2'
+                },
+                size: {
+                  text: '10px',
+                  token: '12px',
+                  tokenNum: '14px'
+                }
+              }}
+            />
+          ),
+          theme: {
+            textAlign: 'right',
+            paddingRight: '10px'
+          }
+        })
+      }
+
+      if (this.props.showRemove) {
+        cell.content.push({
+          content: (
+            <StyledRemove onClick={row.onRemove}>{removeIcon}</StyledRemove>
+          ),
+          theme: {
+            textAlign: 'right'
+          }
+        })
       }
 
       if (this.props.showRowAmount) {
@@ -126,8 +161,8 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
               to right,
               transparent 0%,
               transparent ${remaining}%,
-              #d2c6f3 ${remaining}%,
-              #d2c6f3 ${diff}%,
+              rgba(210, 198, 243, 0.39) ${remaining}%,
+              rgba(210, 198, 243, 0.39) ${diff}%,
               transparent ${diff}%,
               transparent 100%
             )`
@@ -135,7 +170,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
         } else {
           const remaining = 100 - row.attention
           cell.theme = {
-            background: `linear-gradient(90deg, transparent ${remaining}%, #d2c6f3 ${row.attention}%)`
+            background: `linear-gradient(90deg, transparent ${remaining}%, rgba(210, 198, 243, 0.39) ${row.attention}%)`
           }
         }
       }

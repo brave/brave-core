@@ -28,12 +28,14 @@ import DisabledContent from '../../../../src/features/rewards/disabledContent'
 import MainToggle from '../../../../src/features/rewards/mainToggle'
 import WalletWrapper from '../../../../src/features/rewards/walletWrapper'
 import TableContribute, { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
+import { DetailRow as TransactionsRow } from '../../../../src/features/rewards/tableTransactions'
 
 // Assets
 import locale from './fakeLocale'
 import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
 import { boolean, select, object } from '@storybook/addon-knobs'
+import ModalActivity from '../../../../src/features/rewards/modalActivity'
 
 // Images
 const adsImg = require('../../../assets/img/rewards_ads.svg')
@@ -55,6 +57,7 @@ interface State {
   modalContribute: boolean
   modalBackup: boolean
   modalBackupActive: TabsType
+  modalActivity: boolean
   grantShow: boolean
   grantStep: string
 }
@@ -73,9 +76,169 @@ class Settings extends React.PureComponent<{}, State> {
       modalContribute: false,
       modalBackup: false,
       modalBackupActive: 'backup',
+      modalActivity: false,
       grantShow: true,
       grantStep: ''
     }
+  }
+
+  get activityContributions (): ContributeDetailRow[] {
+    return [
+      {
+        profile: {
+          name: 'Bart Baker',
+          verified: true,
+          provider: 'youtube',
+          src: bartBaker
+        },
+        attention: 40,
+        onRemove: doNothing,
+        token: {
+          value: 5,
+          converted: 5
+        }
+      },
+      {
+        profile: {
+          name: 'duckduckgo.com',
+          verified: true,
+          src: ddgo
+        },
+        attention: 20,
+        onRemove: doNothing,
+        token: {
+          value: 4,
+          converted: 11
+        }
+      },
+      {
+        profile: {
+          name: 'buzzfeed.com',
+          verified: false,
+          src: buzz
+        },
+        attention: 10,
+        onRemove: doNothing,
+        token: {
+          value: 3,
+          converted: 15
+        }
+      },
+      {
+        profile: {
+          name: 'theguardian.com',
+          verified: true,
+          src: guardian
+        },
+        attention: 5,
+        onRemove: doNothing,
+        token: {
+          value: 2,
+          converted: 17
+        }
+      },
+      {
+        profile: {
+          name: 'wikipedia.org',
+          verified: false,
+          src: wiki
+        },
+        attention: 4,
+        onRemove: doNothing,
+        token: {
+          value: 1,
+          converted: 11
+        }
+      }
+    ]
+  }
+
+  get activityTransactions (): TransactionsRow[] {
+    return [
+      {
+        date: '6/1',
+        type: 'deposit',
+        description: 'Brave Ads payment for May',
+        amount: {
+          value: 5,
+          converted: 5
+        }
+      },
+      {
+        date: '6/9',
+        type: 'tipOnLike',
+        description: {
+          publisher: 'Bart Baker',
+          platform: 'YouTube'
+        },
+        amount: {
+          isNegative: true,
+          value: 5,
+          converted: 11
+        }
+      },
+      {
+        date: '6/10',
+        type: 'deposit',
+        description: 'Token grant made available or unlocked',
+        amount: {
+          value: 10,
+          converted: 15
+        }
+      },
+      {
+        date: '6/12',
+        type: 'donation',
+        description: 'coinmarketcap.com',
+        amount: {
+          isNegative: true,
+          value: 10,
+          converted: 15
+        }
+      },
+      {
+        date: '6/14',
+        type: 'tipOnLike',
+        description: {
+          publisher: 'BrendanEich',
+          platform: 'Twitter'
+        },
+        amount: {
+          isNegative: true,
+          value: 1,
+          converted: 2
+        }
+      },
+      {
+        date: '6/26',
+        type: 'deposit',
+        description: 'Added via Uphold',
+        amount: {
+          value: 10,
+          converted: 15
+        }
+      },
+      {
+        date: '6/31',
+        type: 'contribute',
+        description: 'Monthly payment',
+        amount: {
+          isNegative: true,
+          value: 10,
+          converted: 15
+        }
+      },
+      {
+        date: '6/31',
+        type: 'recurringDonation',
+        description: 'Monthly payment',
+        amount: {
+          isNegative: true,
+          value: 5,
+          converted: 15
+        }
+      }
+    ]
   }
 
   get contributeRows (): ContributeDetailRow[] {
@@ -278,6 +441,14 @@ class Settings extends React.PureComponent<{}, State> {
 
   onGrantStep = (step: string) => {
     this.setState({ grantStep: step })
+  }
+
+  onActivity = () => {
+    this.setState({ modalActivity: true })
+  }
+
+  onActivityClose = () => {
+    this.setState({ modalActivity: false })
   }
 
   render () {
@@ -505,7 +676,7 @@ class Settings extends React.PureComponent<{}, State> {
                   contribute={{ color: '#9752CB', tokens: 10, converted: 0.25 }}
                   donation={{ color: '#4C54D2', tokens: 2, converted: 0.25 }}
                   tips={{ color: '#4C54D2', tokens: 19, converted: 5.25 }}
-                  onActivity={doNothing}
+                  onActivity={this.onActivity}
                 />
                 : null
               }
@@ -513,6 +684,80 @@ class Settings extends React.PureComponent<{}, State> {
                 content === 'off' ? <WalletOff/> : null
               }
             </WalletWrapper>
+            {
+              this.state.modalActivity
+              ? <ModalActivity
+                contributeRows={this.activityContributions}
+                transactionRows={this.activityTransactions}
+                onClose={this.onActivityClose}
+                onPrint={doNothing}
+                onDownloadPDF={doNothing}
+                onMonthChange={doNothing}
+                months={{ 'jun-2018': 'June 2018', 'may-2018': 'May 2018', 'apr-2018': 'April 2018' }}
+                currentMonth={'jun-2018'}
+                summary={[
+                  {
+                    text: 'Token Grant available',
+                    type: 'grant',
+                    token: {
+                      value: 10,
+                      converted: 5.20
+                    }
+                  },
+                  {
+                    text: 'Earnings from Brave Ads',
+                    type: 'ads',
+                    token: {
+                      value: 10,
+                      converted: 5.20
+                    }
+                  },
+                  {
+                    text: 'Brave Contribute',
+                    type: 'contribute',
+                    notPaid: true,
+                    token: {
+                      value: 10,
+                      converted: 5.20,
+                      isNegative: true
+                    }
+                  },
+                  {
+                    text: 'Recurring Donations',
+                    type: 'recurring',
+                    notPaid: true,
+                    token: {
+                      value: 2,
+                      converted: 1.1,
+                      isNegative: true
+                    }
+                  },
+                  {
+                    text: 'One-time Donations/Tips',
+                    type: 'donations',
+                    token: {
+                      value: 19,
+                      converted: 10.10,
+                      isNegative: true
+                    }
+                  }
+                ]}
+                total={{
+                  value: 1,
+                  converted: 0.5
+                }}
+                paymentDay={12}
+                openBalance={{
+                  value: 10,
+                  converted: 5.20
+                }}
+                closingBalance={{
+                  value: 11,
+                  converted: 5.30
+                }}
+              />
+              : null
+            }
           </Column>
         </Grid>
       </SettingsPage>

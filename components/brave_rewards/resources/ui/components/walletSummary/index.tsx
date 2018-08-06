@@ -91,7 +91,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           }
         </StyledTokensWrapper>
         <StyledActivity onClick={onActivity}>
-          <StyledActivityIcon>{activityIcon}</StyledActivityIcon> {getLocale('walletActivity')}
+          <StyledActivityIcon>{activityIcon}</StyledActivityIcon> {getLocale('viewMonthly')}
         </StyledActivity>
       </StyledWrapper>
     )

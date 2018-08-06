@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
-.c3 {
+.c4 {
   font-family: Poppins;
 }
 
-.c4 {
+.c5 {
   font-size: 16px;
   font-weight: 600;
   line-height: 2;
   color: #4b4c5c;
 }
 
-.c5 {
+.c6 {
   font-size: 28px;
   color: #696fdc;
   margin-bottom: 33px;
 }
 
-.c6 {
+.c7 {
   font-weight: 500;
   color: #0c0d21;
 }
@@ -32,12 +32,12 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
   background: rgba(12,13,33,0.85);
   z-index: 99;
   padding: 0 20px;
+  overflow: hidden;
 }
 
 .c1 {
   max-width: 920px;
   margin: 52px auto;
-  padding: 61px 50px;
   background: #fff;
   border-radius: 6px;
   overflow: hidden;
@@ -52,23 +52,33 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c9 {
-  text-align: right;
+.c3 {
+  padding: 61px 50px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
 }
 
 .c10 {
+  text-align: right;
+}
+
+.c11 {
+  padding-right: 10px;
+}
+
+.c12 {
   text-align: center;
   padding: 30px 0;
   color: #999ea2;
   font-size: 14px;
 }
 
-.c7 {
+.c8 {
   width: 100%;
   margin-bottom: 11px;
 }
 
-.c8 {
+.c9 {
   text-transform: uppercase;
   text-align: left;
   font-family: Poppins;
@@ -106,23 +116,23 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
       </svg>
     </div>
     <div
-      className=""
+      className="c3"
     >
       <div
-        className="c3"
+        className="c4"
       >
         <div
-          className="c4"
+          className="c5"
         >
           MISSING: rewardsContribute
         </div>
         <div
-          className="c5"
+          className="c6"
         >
           MISSING: rewardsContributeText1
            
           <span
-            className="c6"
+            className="c7"
           >
             0
           </span>
@@ -139,12 +149,12 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
             id={undefined}
           >
             <table
-              className="c7"
+              className="c8"
             >
               <thead>
                 <tr>
                   <th
-                    className="c8"
+                    className="c9"
                   >
                     <div
                       className=""
@@ -153,19 +163,19 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
                     </div>
                   </th>
                   <th
-                    className="c8"
+                    className="c9"
                   >
                     <div
-                      className="c9"
+                      className="c10"
                     >
                       MISSING: rewardsContributeAttention
                     </div>
                   </th>
                   <th
-                    className="c8"
+                    className="c9"
                   >
                     <div
-                      className="c9"
+                      className="c11 c10"
                     >
                       
                     </div>
@@ -174,7 +184,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
               </thead>
             </table>
             <div
-              className="c10"
+              className="c12"
             />
           </div>
         </div>

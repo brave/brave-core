@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableContribute tests basic tests matches the snapshot 1`] = `
+.c2 {
+  text-align: right;
+  padding-right: 14px;
+}
+
+.c3 {
+  text-align: center;
+  padding: 30px 0;
+  color: #999ea2;
+  font-size: 14px;
+}
+
+.c0 {
+  width: 100%;
+  margin-bottom: 11px;
+}
+
+.c1 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 2.33;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 9px 0;
+}
+
+<div
+  className=""
+  id="table"
+>
+  <div
+    className=""
+    id={undefined}
+  >
+    <table
+      className="c0"
+    >
+      <thead>
+        <tr>
+          <th
+            className="c1"
+          >
+            MISSING: date
+          </th>
+          <th
+            className="c1"
+          >
+            MISSING: type
+          </th>
+          <th
+            className="c1"
+          >
+            MISSING: description
+          </th>
+          <th
+            className="c1"
+          >
+            <div
+              className="c2"
+            >
+              MISSING: amount
+            </div>
+          </th>
+        </tr>
+      </thead>
+    </table>
+    <div
+      className="c3"
+    />
+  </div>
+</div>
+`;

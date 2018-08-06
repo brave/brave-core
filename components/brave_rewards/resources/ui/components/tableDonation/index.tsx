@@ -150,8 +150,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
         content: getLocale('tokens'),
         theme: Object.assign({
           'text-align': 'right',
-          'padding-right': '7px',
-          'text-transform': 'capitalize'
+          'padding-right': '7px'
         }, theme)
       }
     ]

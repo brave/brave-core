@@ -11,6 +11,7 @@ import centered from '@storybook/addon-centered/dist'
 // Components
 import TableContribute, { DetailRow as ContributeDetailRow } from '../../../src/features/rewards/tableContribute'
 import TableDonation, { DetailRow as DonationDetailRow } from '../../../src/features/rewards/tableDonation'
+import TableTransactions, { DetailRow as TransactionsRow } from '../../../src/features/rewards/tableTransactions'
 
 const bart = require('../../assets/img/bartBaker.jpeg')
 const ddgo = require('../../assets/img/ddgo.jpg')
@@ -148,6 +149,51 @@ storiesOf('Feature Components/Rewards/Table', module)
         >
           Please visit some sites
         </TableDonation>
+      </div>
+    )
+  })
+  .add('Transactions',() => {
+    const rows: TransactionsRow[] = [
+      {
+        date: '6/1',
+        type: 'deposit',
+        description: 'Brave Ads payment for May',
+        amount: {
+          value: 5,
+          converted: 5
+        }
+      },
+      {
+        date: '6/9',
+        type: 'tipOnLike',
+        description: {
+          publisher: 'Bart Baker',
+          platform: 'YouTube'
+        },
+        amount: {
+          isNegative: true,
+          value: 5,
+          converted: 11
+        }
+      },
+      {
+        date: '6/31',
+        type: 'contribute',
+        description: 'Monthly payment',
+        amount: {
+          isNegative: true,
+          value: 5,
+          converted: 15
+        }
+      }
+    ]
+    return (
+      <div style={{ width: '595px' }}>
+        <TableTransactions
+          rows={object('Rows', rows)}
+        >
+          Sorry no transactions.
+        </TableTransactions>
       </div>
     )
   })

@@ -27,6 +27,10 @@ export const StyledTHOther = styled.div`
   text-align: right;
 ` as any
 
+export const StyledTHLast = styled(StyledTHOther)`
+  padding-right: 10px;
+` as any
+
 export const StyledToggle = styled.div`
   font-family: Poppins;
   font-size: 13px;
