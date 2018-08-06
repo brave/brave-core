@@ -16,6 +16,9 @@ ExtensionFunction::ResponseAction BraveSyncBackgroundPageToBrowserFunction::Run(
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   LOG(ERROR) << "TAGAB BraveSyncBackgroundPageToBrowserFunction::Run params->arg1=" << params->arg1;
+  // if (error) {
+  //   return RespondNow(Error(error));
+  // }
 
   auto result = std::make_unique<base::Value>(43);
   return RespondNow(OneArgument(std::move(result)));

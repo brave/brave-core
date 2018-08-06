@@ -17,6 +17,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 
+#include "brave/browser/extensions/api/brave_sync/brave_sync_event_router.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
 #include "brave/components/brave_sync/brave_sync_bookmarks.h"
@@ -35,7 +36,6 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser.h"
 #include "content/public/browser/browser_thread.h"
-
 
 namespace brave_sync {
 
@@ -274,6 +274,11 @@ void BraveSyncControllerImpl::OnBrowserSetLastActive(Browser* browser) {
   LOG(ERROR) << "TAGAB  BraveSyncControllerImpl::OnBrowserSetLastActive browser="<<browser;
   browser_ = browser;
   bookmarks_->SetBrowser(browser);
+
+  //TODO, AB: need several profiles, BraveSyncControllerImpl per profile
+  if (!brave_sync_event_router_) {
+    brave_sync_event_router_ = std::make_unique<extensions::BraveSyncEventRouter>(browser_->profile());
+  }
 
   LOG(ERROR) << "TAGAB  BraveSyncControllerImpl::OnBrowserSetLastActive sync_js_layer_="<<sync_js_layer_;
   if (sync_js_layer_) {
@@ -706,6 +711,8 @@ void BraveSyncControllerImpl::OnSyncDebug(const base::ListValue* args) {
 void BraveSyncControllerImpl::OnResolvedPreferences(const std::string &category_name,
   std::unique_ptr<base::Value> records_v) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedPreferences:";
+
+  brave_sync_event_router_->BrowserToBackgroundPage("can see OnResolvedPreferences");
 
   SyncDevices existing_sync_devices;
   std::string json = sync_obj_map_->GetObjectIdByLocalId(jslib_const::DEVICES_NAMES);

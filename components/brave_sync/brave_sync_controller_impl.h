@@ -21,6 +21,10 @@ namespace base {
   class SequencedTaskRunner;
 }
 
+namespace extensions {
+class BraveSyncEventRouter;
+}
+
 namespace bookmarks {
   class BookmarkNode;
 }
@@ -39,7 +43,6 @@ class SyncDevices;
 class BraveSyncController;
 struct BraveSyncSettings;
 class BraveSyncBookmarks;
-class BraveSyncDataObserver;
 
 class BraveSyncControllerImpl : public BraveSyncController,
                             public SyncJsLayerResponseReceiver,
@@ -180,8 +183,9 @@ private:
   std::unique_ptr<BraveSyncSettings> settings_;
   std::unique_ptr<storage::BraveSyncObjMap> sync_obj_map_;
   std::unique_ptr<BraveSyncBookmarks> bookmarks_;
+  std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
 
-  Browser* browser_;
+  Browser *browser_;
 
   std::unique_ptr<base::RepeatingTimer> timer_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;

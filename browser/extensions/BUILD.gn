@@ -10,6 +10,8 @@ source_set("extensions") {
     "api/settings_private/brave_prefs_util.h",
     "api/brave_sync/brave_sync_api.cc",
     "api/brave_sync/brave_sync_api.h",
+    "api/brave_sync/brave_sync_event_router.cc",
+    "api/brave_sync/brave_sync_event_router.h",
     "brave_component_extension.cc",
     "brave_component_extension.h",
     "brave_component_extension_resource_manager.cc",
