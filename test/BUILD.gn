@@ -164,6 +164,14 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/updater/extension_cache_fake.cc",
     "//chrome/browser/extensions/updater/extension_cache_fake.h",
   ]
+
+  # API tests
+  sources += [
+    "//brave/browser/extensions/brave_shields_apitest.cc",
+    "//chrome/browser/extensions/extension_apitest.cc",
+    "//chrome/browser/extensions/extension_apitest.h",
+  ]
+
   if (is_linux && is_official_build) {
     sources += [
       # BraveViewsDelegateLinuxBrowserTest only works in release(official) build.
