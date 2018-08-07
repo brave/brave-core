@@ -1,7 +1,8 @@
+#!/usr/bin/env python
+
 import argparse
 import os
 import sys
-#from lib.util import execute_stdout, scoped_cwd
 import contextlib
 import subprocess
 from shutil import copyfile
@@ -62,9 +63,6 @@ def build_bundle(dir_path, result_src, result_dst, env=None):
 
   result_src_file_path = os.path.join(dir_path, result_src);
   result_dest_file_path = os.path.join(result_dst, result_src)
-  #os.path.basename(result_src));
-  print 'result_src_file_path=', result_src_file_path
-  print 'result_dest_file_path=', result_dest_file_path
 
   try:
     os.stat(os.path.dirname(result_dest_file_path))

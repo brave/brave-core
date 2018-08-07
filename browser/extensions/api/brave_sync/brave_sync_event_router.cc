@@ -19,7 +19,7 @@ BraveSyncEventRouter::~BraveSyncEventRouter() {
 
 void BraveSyncEventRouter::BrowserToBackgroundPage(const std::string &arg1) {
    if (!profile_) {
-     LOG(ERROR) << "TAGAB BraveSyncEventRouter::BrowserToBackgroundPage profiel is not set";
+     LOG(ERROR) << "TAGAB BraveSyncEventRouter::BrowserToBackgroundPage profile is not set";
      return;
    }
 

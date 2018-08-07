@@ -93,8 +93,9 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
     // Test ID: Brave Tor Client Updater
     "ngicbhhaldfdgmjhilmnleppfpmkgbbk",
     // Test ID: Brave Sync Extension
-    "lmgeoagppogecnmmdbpaglljjoekgpge",
-    "gjnkdbfjlklmcfnhjncapjfeijemelkl",
+    // duplicated in common/extensions/extension_constants.cc
+    // and chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
+    "nomlkjnggnifocmealianaaiobmebgil",
   });
   return std::find(vetted_extensions.begin(), vetted_extensions.end(),
       extension->id()) != vetted_extensions.end();
@@ -138,7 +139,8 @@ bool BraveExtensionProvider::MustRemainInstalled(const Extension* extension,
                                                  base::string16* error) const {
   return extension->id() == brave_extension_id ||
     extension->id() == brave_rewards_extension_id ||
-    extension->id() == brave_webtorrent_extension_id;
+    extension->id() == brave_webtorrent_extension_id ||
+    extension->id() == brave_sync_extension_id;
 }
 
 }  // namespace extensions

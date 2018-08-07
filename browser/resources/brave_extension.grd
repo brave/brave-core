@@ -25,6 +25,10 @@
       <include name="IDR_BRAVE_EXTENSON_EN_US_MESSAGES_JSON" file="brave_extension/_locales/en_US/messages.json" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_BRAVE_SHIELDS_HTML" file="brave_extension/braveShieldsPanel.html" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_BRAVELIZER_JS" file="brave_extension/bravelizer.css" type="BINDATA" />
+
+      <include name="IDR_BRAVE_SYNC_EXTENSON_BACKGROUND_JS" file="brave_sync_extension/background.js" type="BINDATA" />
+      <include name="IDR_BRAVE_SYNC_EXTENSON_BUNDLE_JS" file="brave_sync_extension/bundle.js" type="BINDATA" />
+      <include name="IDR_BRAVE_SYNC_EXTENSON_CRYPTO_JS" file="brave_sync_extension/crypto.js" type="BINDATA" />
     </includes>
   </release>
 </grit>
