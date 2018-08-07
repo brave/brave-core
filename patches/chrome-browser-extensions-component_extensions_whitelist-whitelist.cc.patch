@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
-index dfc12043f6c68fd0a258ae54cb2dd8e12f9117a0..2e56d1e21fbc2a6ba1149be0de102a80b4698c52 100644
+index dfc12043f6c68fd0a258ae54cb2dd8e12f9117a0..a9bf2f0d601423678a9382dcca912b924c12caba 100644
 --- a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
 +++ b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
 @@ -12,6 +12,7 @@
@@ -18,11 +18,12 @@ index dfc12043f6c68fd0a258ae54cb2dd8e12f9117a0..2e56d1e21fbc2a6ba1149be0de102a80
    };
  
    for (size_t i = 0; i < arraysize(kAllowed); ++i) {
-@@ -60,6 +62,7 @@ bool IsComponentExtensionWhitelisted(const std::string& extension_id) {
+@@ -60,6 +62,8 @@ bool IsComponentExtensionWhitelisted(const std::string& extension_id) {
  bool IsComponentExtensionWhitelisted(int manifest_resource_id) {
    switch (manifest_resource_id) {
      // Please keep the list in alphabetical order.
 +    case IDR_BRAVE_EXTENSON:
++    case IDR_BRAVE_WEBTORRENT:
  #if BUILDFLAG(ENABLE_APP_LIST)
      case IDR_CHROME_APP_MANIFEST:
  #endif

@@ -2,7 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-extern const char brave_extension_id[];
-extern const char brave_webtorrent_extension_id[];
-extern const char pdfjs_extension_id[];
-extern const char widevine_extension_id[];
+import { Instance } from 'webtorrent'
+
+export const addWebtorrentEvents = (webtorrent: Instance) => {
+  webtorrent.on('error', (e: Error | string) => {
+    console.log('WebTorrent error: ', e)
+  })
+}

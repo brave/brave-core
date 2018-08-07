@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-extern const char brave_extension_id[];
-extern const char brave_webtorrent_extension_id[];
-extern const char pdfjs_extension_id[];
-extern const char widevine_extension_id[];
+import { bindActionCreators } from 'redux'
+import store from '../store'
+import * as windowActions from '../../actions/window_actions'
+export default bindActionCreators(windowActions, store.dispatch)

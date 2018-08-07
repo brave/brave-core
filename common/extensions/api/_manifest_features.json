@@ -5,6 +5,7 @@
 {
   "sockets": {
     "channel": "stable",
-    "extension_types": ["extension", "platform_app"]
+    "extension_types": ["extension", "platform_app"],
+    "whitelist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423"]
   }
 }

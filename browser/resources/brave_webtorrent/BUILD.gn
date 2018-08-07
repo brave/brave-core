@@ -1,0 +1,22 @@
+import("//tools/grit/grit_rule.gni")
+
+action("brave_webtorrent") {
+  script = "//brave/script/build-brave-webtorrent.py"
+  inputs = [
+    "background.ts",
+    "brave_webtorrent.tsx",
+  ]
+  outputs = [
+    "$target_out_dir/brave_webtorrent_background.bundle.js",
+    "$target_out_dir/brave_webtorrent.bundle.js",
+  ]
+  gen_dir = rebase_path(root_gen_dir, "//")
+  args = [
+    "--target_gen_dir=$gen_dir"
+  ]
+  if (is_official_build) {
+    args += [
+      "--production",
+    ]
+  }
+}

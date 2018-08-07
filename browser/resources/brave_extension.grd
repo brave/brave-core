@@ -20,6 +20,11 @@
       <include name="IDR_BRAVE_EXTENSON_EN_US_MESSAGES_JSON" file="brave_extension/_locales/en_US/messages.json" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_BRAVE_SHIELDS_HTML" file="brave_extension/braveShieldsPanel.html" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_BRAVELIZER_JS" file="brave_extension/bravelizer.css" type="BINDATA" />
+
+      <!-- Brave Webtorrent -->
+      <include name="IDR_BRAVE_WEBTORRENT_BACKGROUND_JS" file="brave_webtorrent/brave_webtorrent_background.bundle.js" type="BINDATA" />
+      <include name="IDR_BRAVE_WEBTORRENT_HTML" file="brave_webtorrent/brave_webtorrent.html" type="BINDATA" />
+      <include name="IDR_BRAVE_WEBTORRENT_BUNDLE_JS" file="brave_webtorrent/brave_webtorrent.bundle.js" type="BINDATA" />
     </includes>
   </release>
 </grit>

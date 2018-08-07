@@ -33,6 +33,11 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
         brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
     Add(IDR_BRAVE_EXTENSON, brave_extension_path);
   }
+
+  base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
+  brave_webtorrent_path =
+    brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
+  Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
 }
 
 }  // namespace extensions
