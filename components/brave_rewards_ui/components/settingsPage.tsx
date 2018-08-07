@@ -5,10 +5,10 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { Column, Grid } from 'brave-ui/components'
-import { MainToggle, SettingsPage as Page } from 'brave-ui/features/rewards'
 
 // Components
+import { Column, Grid } from 'brave-ui/components'
+import { MainToggle, SettingsPage as Page } from 'brave-ui/features/rewards'
 import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
@@ -54,7 +54,7 @@ class SettingsPage extends React.Component<Props, {}> {
             <ContributeBox />
             <DonationBox />
           </Column>
-          <Column size={1}>
+          <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <PageWallet />
           </Column>
         </Grid>

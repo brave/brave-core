@@ -2,15 +2,22 @@ import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("brave_rewards_ui") {
   inputs = [
+    "actions/rewards_actions.ts",
     "brave_rewards.html",
     "brave_rewards.tsx",
-    "storage.ts",
-    "store.ts",
-    "actions/rewards_actions.ts",
+    "components/adsBox.tsx",
     "components/app.tsx",
+    "components/contributeBox.tsx",
+    "components/donationsBox.tsx",
+    "components/grant.tsx",
+    "components/pageWallet.tsx",
+    "components/settingsPage.tsx",
     "constants/rewards_types.ts",
     "reducers/index.ts",
     "reducers/rewards_reducer.ts",
+    "storage.ts",
+    "store.ts",
+    "utils.ts",
   ]
 
   bundle_name = "brave_rewards.bundle.js"
