@@ -19,10 +19,10 @@ grit("brave_extension_grit") {
 
   deps = [
     "//brave/vendor/brave-extension",
+    "//brave/components/brave_sync:copy-sync-extension-resources",
   ]
 
   output_dir = "$target_gen_dir"
   # Empty string means use value from the grit element
   resource_ids = ""
 }
-

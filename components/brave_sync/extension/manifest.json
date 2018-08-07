@@ -5,7 +5,9 @@
    "version":"1.0",
    "manifest_version":2,
    "background": {
-     "scripts": ["background.js"],
+     "scripts": ["background.js", "crypto.js"],
      "persistent": true
-   }
+   },
+   "web_accessible_resources": ["bundle.js"],
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0Etq63ZwZSpwQ46/qxl9ywT1501CxxMTR1Cb9HqslWTRE6ZHIXogyMB+XhQEDJuqQsuLfe4F2ciVoIwff2VMCTkpS11kUwRDH838xwFuU4K7OsfDV7VFelK7CjTYoYyQ+rIXhheGtz/SP1RKRRpguNpaAEltiE6S235sRCOu4ICIDJ/dsCoeacq78cShtFawNuu/e3GpQZVyFVb4x3v+aLeyarqJR/YwxnTsVw/aD/IUj4vbfzOVG61kYMB6WeyLCNsjiMryc9EPXqkvz0aGUXmBMzxMM5zAGHoic3WqbJ769VKCGWMLWN7utO3xsxk0FTTOUBXCF4eVZdhRfT0AYQIDAQAB"
 }

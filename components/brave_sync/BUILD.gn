@@ -40,3 +40,28 @@ source_set("brave_sync") {
     "//content/public/browser",
   ]
 }
+
+# Somehow 'brave_resources.pak' gets updated just on 2nd build
+# brave-extension/app/manifest.prod.json needs two builds to get
+# 'brave_resources.pak' updated
+# this may be the side effect of using $target_gen_dir when files indeed
+# are copied into //brave/browser/resources/
+action("copy-sync-extension-resources") {
+  script = "//brave/script/copy-sync-extension.py"
+  args = []
+  inputs = [
+    "//brave/components/brave_sync/extension/background.js",
+    "//brave/vendor/brave-sync/bundles/bundle.js",
+    "//brave/vendor/brave-crypto/browser/crypto.js",
+  ]
+  # Cannot use any `src` directory except `out` as a parent for any output
+  outputs = [
+    "$target_gen_dir/brave_sync_extension/background.js",
+    "$target_gen_dir/brave_sync_extension/bundle.js",
+    "$target_gen_dir/brave_sync_extension/crypto.js",
+  ]
+  public_deps = [
+    "//brave/components/brave_sync_lib:brave_sync_js_lib_bundle",
+    "//brave/components/brave_sync_lib:brave_crypto_js_lib_bundle",
+  ]
+}
