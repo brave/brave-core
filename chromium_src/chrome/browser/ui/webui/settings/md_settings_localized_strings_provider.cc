@@ -1,7 +1,7 @@
 #include "chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.h"
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
-}
+} // namespace settings
 #include "../../../../../../chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc"
 
 namespace settings {
@@ -37,4 +37,4 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BraveAddCommonStrings(html_source, profile);
 }
 
-}
+} // namespace settings

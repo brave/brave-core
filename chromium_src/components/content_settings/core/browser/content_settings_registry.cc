@@ -18,4 +18,4 @@ void ContentSettingsRegistry::BraveInit() {
 
 }
 
-}
+} // namespace content_settings

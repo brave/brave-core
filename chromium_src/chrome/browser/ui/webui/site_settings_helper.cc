@@ -26,4 +26,4 @@ std::string ContentSettingsTypeToGroupName(ContentSettingsType type) {
   return ContentSettingsTypeToGroupName_ChromiumImpl(type);
 }
 
-}
+} // namespace site_settings

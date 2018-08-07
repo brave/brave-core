@@ -11,4 +11,4 @@ void SetRuntimeFeaturesDefaultsAndUpdateFromArgs(
   WebRuntimeFeatures::EnableAutoplayMutedVideos(false);
 }
 
-}
+} // namespace content

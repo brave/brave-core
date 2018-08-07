@@ -15,7 +15,7 @@ std::string GetPermissionRequestString(PermissionRequestType type) {
   return GetPermissionRequestString_ChromiumImpl(type);
 }
 
-}
+} // namespace
 
 #include "../../../../../chrome/browser/permissions/permission_uma_util.cc"
 
@@ -36,4 +36,4 @@ void BraveRecordPermissionAction (ContentSettingsType permission,
   }
 }
 
-}
+} // namespace

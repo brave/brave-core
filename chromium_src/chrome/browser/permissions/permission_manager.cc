@@ -13,7 +13,8 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
     return CONTENT_SETTINGS_TYPE_AUTOPLAY;
   return PermissionTypeToContentSetting_ChromiumImpl(permission);
 }
-}
+
+} // namespace
 
 #define PermissionManagerFactory BravePermissionManagerFactory
 #include "../../../../../chrome/browser/permissions/permission_manager.cc"

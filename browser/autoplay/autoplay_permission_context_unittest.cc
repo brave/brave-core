@@ -22,7 +22,6 @@
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-
 namespace {
 
 class AutoplayPermissionContextTest : public AutoplayPermissionContext {
@@ -107,8 +106,8 @@ TEST_F(AutoplayPermissionContextTests, TestInsecureQueryingUrl) {
                 .content_setting);
 }
 
-// There is no way to genearte a request that is automatically accepted in
-// unittest by RequestPermission so we test reverse cases here
+// There is no way to generate a request that is automatically accepted in
+// unittest by RequestPermission, so we test reverse cases here
 TEST_F(AutoplayPermissionContextTests, TestNonAutoRefresh) {
   AutoplayPermissionContextTest permission_context(profile());
   GURL url("https://www.example.com");
