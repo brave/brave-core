@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean, text, object, number } from '@storybook/addon-knobs'
 
 // Components
-import Settings from './settings/index'
+import Settings from './settings/settings'
 import { SiteBanner, Tip } from '../../../src/features/rewards'
 
 const siteBgImage = require('../../assets/img/bg_siteBanner.jpg')
@@ -24,7 +24,7 @@ const donationAmount = [
 
 storiesOf('Feature Components/Rewards/Concepts', module)
   .addDecorator(withKnobs)
-  .add('Settings', () => <Settings />)
+  .add('Settings Page', () => <Settings />)
   .add('Site Banner', withState({ donationAmount }, (store) => {
     const onDonate = () => {
       console.log('onDonate')
