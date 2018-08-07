@@ -3,51 +3,65 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Alert from './alert'
-import DisabledContent from './disabledContent'
-import MainToggle from './mainToggle'
-import WalletEmpty from './walletEmpty'
-import SiteBanner from './siteBanner'
 import Amount from './amount'
-import Donate from './donate'
-import WalletOff from './walletOff'
-import Tokens from './tokens'
 import Box from './box'
-import TableDonation from './tableDonation'
-import TableContribute from './tableContribute'
-import ModalBackupRestore from './modalBackupRestore'
-import WalletSummary from './walletSummary'
-import Tooltip from './tooltip'
+import ControlWrapper from './controlWrapper'
+import DisabledContent from './disabledContent'
+import Donate from './donate'
+import GrantCaptcha from './grantCaptcha'
+import GrantClaim from './grantClaim'
+import GrantComplete from './grantComplete'
+import GrantInit from './grantInit'
+import GrantWrapper from './grantWrapper'
 import List from './list'
+import ListToken from './listToken'
+import MainToggle from './mainToggle'
+import ModalActivity from './modalActivity'
+import ModalBackupRestore from './modalBackupRestore'
 import ModalContribute from './modalContribute'
 import Profile from './profile'
-import ControlWrapper from './controlWrapper'
-import ListToken from './listToken'
-import WalletWrapper from './walletWrapper'
-import Tip from './tip'
 import SettingsPage from './settingsPage'
+import SiteBanner from './siteBanner'
+import TableContribute from './tableContribute'
+import TableDonation from './tableDonation'
+import TableTransactions from './tableTransactions'
+import Tip from './tip'
+import Tokens from './tokens'
+import Tooltip from './tooltip'
+import WalletEmpty from './walletEmpty'
+import WalletOff from './walletOff'
+import WalletSummary from './walletSummary'
+import WalletWrapper from './walletWrapper'
 
 export {
   Alert,
-  DisabledContent,
-  MainToggle,
-  WalletEmpty,
-  SiteBanner,
   Amount,
-  Donate,
-  WalletOff,
-  Tokens,
   Box,
-  TableDonation,
-  ModalBackupRestore,
-  WalletSummary,
-  Tooltip,
-  TableContribute,
+  ControlWrapper,
+  DisabledContent,
+  Donate,
+  GrantCaptcha,
+  GrantClaim,
+  GrantComplete,
+  GrantInit,
+  GrantWrapper,
   List,
+  ListToken,
+  MainToggle,
+  ModalActivity,
+  ModalBackupRestore,
   ModalContribute,
   Profile,
-  ControlWrapper,
-  ListToken,
-  WalletWrapper,
+  SettingsPage,
+  SiteBanner,
+  TableContribute,
+  TableDonation,
+  TableTransactions,
   Tip,
-  SettingsPage
+  Tokens,
+  Tooltip,
+  WalletEmpty,
+  WalletOff,
+  WalletSummary,
+  WalletWrapper
 }
