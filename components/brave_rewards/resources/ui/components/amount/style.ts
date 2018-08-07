@@ -8,7 +8,7 @@ import { Props } from './index'
 export const StyledWrapper = styled.div`
   margin-bottom: 8px;
   user-select: none;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledAmount = styled.span`

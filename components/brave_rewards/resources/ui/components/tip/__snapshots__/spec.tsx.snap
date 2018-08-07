@@ -8,7 +8,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   overflow: hidden;
   position: relative;
   padding: 16px 0 0;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c2 {
@@ -41,7 +41,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
 
 .c3 {
   position: relative;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c4 {
@@ -148,9 +148,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
       >
         
       </div>
-      <div
-        className=""
-      >
+      <div>
         <span
           className="c6"
         >

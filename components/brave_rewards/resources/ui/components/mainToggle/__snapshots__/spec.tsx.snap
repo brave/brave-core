@@ -2,7 +2,7 @@
 
 exports[`MainToggle tests basic tests matches the snapshot 1`] = `
 .c0 {
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -83,7 +83,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
 }
 
 .c10 {
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.75;
@@ -132,9 +132,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   <div
     className="c1"
   >
-    <span
-      className=""
-    >
+    <span>
       <svg
         height="48"
         width="50"

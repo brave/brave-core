@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled.div`
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledTitle = styled.div`

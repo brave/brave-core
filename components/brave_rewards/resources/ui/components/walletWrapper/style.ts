@@ -6,17 +6,17 @@ import styled from 'styled-components'
 
 const panelBg = require('./assets/panel.svg')
 
+// min-height: 715px; TODO NZ we need to add this
 export const StyledWrapper = styled.div`
   border-radius: 6px;
   box-shadow: 0 0 8px 0 rgba(99, 105, 110, 0.12);
   overflow: hidden;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   width: 373px;
   background:
     url(${panelBg}) no-repeat top left,
     linear-gradient(172deg, #392dd1, rgba(255, 26, 26, 0.53)),
     linear-gradient(#7d7bdc, #7d7bdc);
-  // min-height: 715px; TODO NZ we need to add this
 ` as any
 
 export const StyledHeader = styled.div`
@@ -84,7 +84,7 @@ export const StyledIconAction = styled.div`
 ` as any
 
 export const StyledBalanceConverted = styled.div`
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 12px;
   line-height: 1.17;
   text-align: center;
@@ -97,7 +97,7 @@ export const StyledGrantWrapper = styled.div`
 ` as any
 
 export const StyledGrant = styled.div`
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.60);
   text-align: center;
@@ -131,7 +131,7 @@ export const StyledActionWrapper = styled.div`
 export const StyledBalanceCurrency = styled.span`
   text-transform: uppercase;
   opacity: 0.66;
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 16px;
   line-height: 0.88;
   color: #fff;

@@ -4,7 +4,7 @@ exports[`WalletEmpty tests basic tests matches the snapshot 1`] = `
 .c0 {
   padding-top: 32px;
   text-align: center;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c1 {
@@ -16,7 +16,7 @@ exports[`WalletEmpty tests basic tests matches the snapshot 1`] = `
 }
 
 .c2 {
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   font-size: 14px;
   line-height: 1.57;
   color: #999ea2;

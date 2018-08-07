@@ -5,9 +5,6 @@
 import styled from 'styled-components'
 import { setTheme } from '../../../helpers'
 
-export const StyledWrapper = styled.div`
-` as any
-
 export const StyledTHLast = styled.div`
   text-align: right;
   padding-right: 14px;

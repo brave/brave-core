@@ -9,7 +9,7 @@ export const StyledWrapper = styled.div`
 ` as any
 
 export const StyledContent = styled.div`
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.63;

@@ -24,7 +24,7 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
   margin-bottom: 8px;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c1 {
@@ -58,7 +58,7 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
 }
 
 .c3 {
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   font-weight: 300;
   line-height: 1.4;
   color: #686978;

@@ -9,7 +9,7 @@ export const StyledWrapper = styled.div`
   align-items: stretch;
   align-content: flex-start;
   flex-wrap: nowrap;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   border-radius: 6px;
   background-color: #fff;
   overflow: hidden;
@@ -46,7 +46,7 @@ export const StyledText = styled.div`
 export const StyledClaim = styled.button`
   flex-basis: 90px;
   background-color: #fb542b;
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 12px;
   line-height: 1.83;
   letter-spacing: 0.4px;

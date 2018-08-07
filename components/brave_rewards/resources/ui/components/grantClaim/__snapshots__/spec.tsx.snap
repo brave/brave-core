@@ -16,7 +16,7 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   border-radius: 6px;
   background-color: #fff;
   overflow: hidden;
@@ -78,7 +78,7 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   -ms-flex-preferred-size: 90px;
   flex-basis: 90px;
   background-color: #fb542b;
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   font-size: 12px;
   line-height: 1.83;
   -webkit-letter-spacing: 0.4px;

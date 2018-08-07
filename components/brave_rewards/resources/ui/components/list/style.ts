@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div`
   align-content: flex-start;
   flex-wrap: nowrap;
   margin-bottom: 8px;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledTitle = styled.div`

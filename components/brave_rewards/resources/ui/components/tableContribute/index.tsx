@@ -5,11 +5,9 @@
 import * as React from 'react'
 import * as CSS from 'csstype'
 import {
-  StyledWrapper,
   StyledText,
   StyledRemove,
   StyledToggle,
-  StyledTHSite,
   StyledTHOther,
   StyledTHLast
 } from './style'
@@ -75,7 +73,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
     return header.map((item: string, i: number) => {
       return {
         content: i === 0
-        ? <StyledTHSite>{item}</StyledTHSite>
+        ? <div>{item}</div>
         : i === header.length - 1
           ? <StyledTHLast>{item}</StyledTHLast>
           : <StyledTHOther>{item}</StyledTHOther>,
@@ -184,7 +182,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
     const numSites = this.props.numSites || 0
 
     return (
-      <StyledWrapper id={id}>
+      <div id={id}>
         <Table
           header={this.getHeader(header)}
           children={children}
@@ -195,7 +193,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
           ? <StyledToggle onClick={onShowAll}>{getLocale('seeAllSites', { numSites })}</StyledToggle>
           : null
         }
-      </StyledWrapper>
+      </div>
     )
   }
 }

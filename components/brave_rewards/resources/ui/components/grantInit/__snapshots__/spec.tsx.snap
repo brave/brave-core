@@ -14,7 +14,7 @@ exports[`Grant init tests basic tests matches the snapshot 1`] = `
   font-size: 13px;
   border-radius: 20px;
   min-width: 104px;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c2 {
@@ -48,7 +48,7 @@ exports[`Grant init tests basic tests matches the snapshot 1`] = `
   display: inline-block;
   text-align: center;
   box-sizing: border-box;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   -webkit-letter-spacing: 0;
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;

@@ -23,7 +23,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
   margin-bottom: 8px;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c1 {

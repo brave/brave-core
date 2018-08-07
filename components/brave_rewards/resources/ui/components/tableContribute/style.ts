@@ -4,11 +4,8 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
-` as any
-
 export const StyledText = styled.div`
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1.29;
   text-align: right;
@@ -20,9 +17,6 @@ export const StyledRemove = styled.span`
   padding-right: 10px;
 ` as any
 
-export const StyledTHSite = styled.div`
-` as any
-
 export const StyledTHOther = styled.div`
   text-align: right;
 ` as any
@@ -32,7 +26,7 @@ export const StyledTHLast = styled(StyledTHOther)`
 ` as any
 
 export const StyledToggle = styled.div`
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-size: 13px;
   color: #4c54d2;
   text-align: right;

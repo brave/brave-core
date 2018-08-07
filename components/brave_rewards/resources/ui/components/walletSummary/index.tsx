@@ -7,7 +7,6 @@ import {
   StyledWrapper,
   StyledTitle,
   StyledSummary,
-  StyledTokensWrapper,
   StyledActivity,
   StyledActivityIcon
 } from './style'
@@ -39,7 +38,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
       <StyledWrapper id={id}>
         <StyledSummary>{getLocale('rewardsSummary')}</StyledSummary>
         <StyledTitle>{month} {year}</StyledTitle>
-        <StyledTokensWrapper>
+        <div>
           {
             grant
             ? <ListToken
@@ -89,7 +88,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             />
             : null
           }
-        </StyledTokensWrapper>
+        </div>
         <StyledActivity onClick={onActivity}>
           <StyledActivityIcon>{activityIcon}</StyledActivityIcon> {getLocale('viewMonthly')}
         </StyledActivity>

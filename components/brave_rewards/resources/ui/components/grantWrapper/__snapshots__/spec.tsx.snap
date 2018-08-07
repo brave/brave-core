@@ -20,14 +20,13 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   background-color: rgba(255,255,255,0.95);
   overflow: hidden;
   width: 100%;
   padding: 0 52px 20px;
   border-radius: 6px;
   height: 100%;
-  width: 100%;
 }
 
 .c2 {
@@ -57,7 +56,7 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
 
 .c4 {
   width: 100%;
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.63;

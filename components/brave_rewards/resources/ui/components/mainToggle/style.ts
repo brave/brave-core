@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled.div`
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   position: relative;
   display: flex;
   width: 100%;
@@ -29,9 +29,6 @@ export const StyledLeft = styled.div`
 export const StyledRight = styled.div`
   padding: 10px 0 0;
   display: flex;
-` as any
-
-export const StyledLogo = styled.span`
 ` as any
 
 export const StyledTitle = styled.div`
@@ -59,7 +56,7 @@ export const StyleTitle = styled.div`
 ` as any
 
 export const StyleText = styled.div`
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.75;

@@ -11,7 +11,7 @@ export const StyledWrapper = styled.div`
   overflow: hidden;
   position: relative;
   padding: 16px 0 0;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledTitle = styled.div`
@@ -20,9 +20,6 @@ export const StyledTitle = styled.div`
   color: #fff;
   opacity: 0.6;
   padding-left: 23px;
-` as any
-
-export const StyledAllow = styled.div`
 ` as any
 
 export const StyledAllowToggle = styled.span`

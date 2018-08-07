@@ -9,11 +9,9 @@ exports[`TableContribute tests basic tests matches the snapshot 1`] = `
 }
 
 <div
-  className=""
   id="table"
 >
   <div
-    className=""
     id={undefined}
   >
     <div

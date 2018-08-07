@@ -26,7 +26,7 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c1 {

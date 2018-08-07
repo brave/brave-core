@@ -5,7 +5,7 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   text-align: center;
   width: 100%;
   margin: 40px 0 0;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c1 {
@@ -30,7 +30,7 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
 }
 
 .c4 {
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   font-size: 14px;
   line-height: 1.29;
   color: #838391;
@@ -44,7 +44,7 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   font-size: 13px;
   border-radius: 20px;
   min-width: 104px;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c6 {

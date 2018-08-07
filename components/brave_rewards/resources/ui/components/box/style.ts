@@ -15,7 +15,7 @@ export const StyledWrapper = styled.div`
   box-shadow: 0 0 8px 0 rgba(99, 105, 110, 0.12);
   padding: 30px 36px;
   margin-bottom: 28px;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledFlip = styled.div`
@@ -61,7 +61,7 @@ export const StyledBreak = styled.div`
 export const StyledDescription = styled.div`
   width: 100%;
   padding-right: 20px;
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1.29;
   letter-spacing: normal;

@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled.div`
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   margin-top: 21px;
 ` as any
 
@@ -26,9 +26,6 @@ export const StyledTitle = styled.div`
   color: #4c54d2;
   margin-bottom: 26px;
   text-transform: uppercase;
-` as any
-
-export const StyledTokensWrapper = styled.div`
 ` as any
 
 export const StyledActivity = styled.div`

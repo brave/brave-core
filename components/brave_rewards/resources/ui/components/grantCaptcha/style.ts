@@ -33,7 +33,7 @@ export const StyledImageWrap = styled.div`
 
 export const StyledText = styled.div`
   flex-basis: 130px;
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1.29;
   color: #686978;

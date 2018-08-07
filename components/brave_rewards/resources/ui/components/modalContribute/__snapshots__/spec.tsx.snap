@@ -2,7 +2,7 @@
 
 exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
 .c4 {
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c5 {
@@ -81,7 +81,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
 .c9 {
   text-transform: uppercase;
   text-align: left;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   font-size: 12px;
   font-weight: 500;
   line-height: 2.33;
@@ -141,11 +141,9 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
           .
         </div>
         <div
-          className=""
           id={undefined}
         >
           <div
-            className=""
             id={undefined}
           >
             <table
@@ -156,9 +154,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
                   <th
                     className="c9"
                   >
-                    <div
-                      className=""
-                    >
+                    <div>
                       MISSING: rewardsContributeVisited
                     </div>
                   </th>

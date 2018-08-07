@@ -42,7 +42,7 @@ exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
   -webkit-flex-basis: 130px;
   -ms-flex-preferred-size: 130px;
   flex-basis: 130px;
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   font-size: 14px;
   line-height: 1.29;
   color: #686978;

@@ -16,7 +16,7 @@ export const StyledWrapper = styled.div`
   left: 0;
   height: 100vh;
   width: 100%;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledContentWrapper = styled.div`
@@ -110,7 +110,7 @@ export const StyledTitle = styled.div`
 ` as any
 
 export const StyledText = styled.div`
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   color: #686978;
@@ -128,7 +128,7 @@ export const StyledRecurring = styled.div`
 ` as any
 
 export const StyledRemove = styled.span`
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1.29;
   color: #d1d1db;
@@ -146,9 +146,6 @@ export const StyledWallet = styled.div`
 
 export const StyledTokens = styled.span`
   color: #fff;
-` as any
-
-export const StyledLogoImage = styled.img`
 ` as any
 
 export const StyledIconRecurring = styled.span`

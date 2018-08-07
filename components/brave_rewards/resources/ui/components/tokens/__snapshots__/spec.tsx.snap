@@ -2,7 +2,7 @@
 
 exports[`Tokens tests basic tests matches the snapshot 1`] = `
 .c0 {
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   font-weight: 300;
   line-height: 1.4;
   color: #4b4c5c;

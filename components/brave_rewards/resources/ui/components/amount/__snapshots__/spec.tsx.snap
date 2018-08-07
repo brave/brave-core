@@ -7,7 +7,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c1 {

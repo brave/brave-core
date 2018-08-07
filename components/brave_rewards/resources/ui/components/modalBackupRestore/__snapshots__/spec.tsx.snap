@@ -6,7 +6,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
 }
 
 .c9 {
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.63;
@@ -30,7 +30,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
 .c5 {
   border-bottom: 1px solid #DFDFE8;
   text-align: center;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c6 {
@@ -88,7 +88,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   min-height: 112px;
   box-sizing: border-box;
   width: 100%;
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   border: 1px solid #DFDFE8;
   border-radius: 6px;
   padding: 15px 0px 15px 20px;
@@ -104,7 +104,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
 
 .c12 {
   width: 100%;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   line-height: normal;
   font-size: 14px;
   font-weight: 500;
@@ -154,7 +154,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   font-size: 13px;
   border-radius: 20px;
   min-width: 104px;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c18 {
@@ -195,7 +195,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   padding: 10.5px 10px;
   text-align: center;
   box-sizing: border-box;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   -webkit-letter-spacing: 0;
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
@@ -257,7 +257,6 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
         className="c4"
       >
         <div
-          className=""
           id={undefined}
         >
           <div

@@ -6,14 +6,8 @@ import styled from 'styled-components'
 import { setTheme } from '../../../helpers'
 import { Props } from './index'
 
-export const StyledWrapper = styled.div`
-` as any
-
-export const StyledImage = styled.img`
-` as any
-
 export const StyledContent = styled.div`
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.5;
@@ -29,7 +23,7 @@ export const StyledContent = styled.div`
     margin: 0;
     display: inline-block;
     padding: 0;
-    font-family: Poppins;
+    font-family: Poppins, sans-serif;
     font-size: 28px;
     font-weight: 500;
     line-height: 0.5;

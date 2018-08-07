@@ -21,7 +21,7 @@ exports[`TableContribute tests basic tests matches the snapshot 1`] = `
 .c1 {
   text-transform: uppercase;
   text-align: left;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   font-size: 12px;
   font-weight: 500;
   line-height: 2.33;
@@ -32,11 +32,9 @@ exports[`TableContribute tests basic tests matches the snapshot 1`] = `
 }
 
 <div
-  className=""
   id="table"
 >
   <div
-    className=""
     id={undefined}
   >
     <table

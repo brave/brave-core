@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import * as CSS from 'csstype'
-import { StyledWrapper, StyledType, StyledDate, StyledRemove, StyledRemoveIcon, StyledToggle, StyledRecurringIcon } from './style'
+import { StyledType, StyledDate, StyledRemove, StyledRemoveIcon, StyledToggle, StyledRecurringIcon } from './style'
 import Table, { Cell, Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
 import Tokens from '../tokens/index'
@@ -160,7 +160,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
     const { id, children, rows, allItems, onClick } = this.props
     const numItems = this.props.numItems || 0
     return (
-      <StyledWrapper id={id}>
+      <div id={id}>
         <Table
           children={children}
           rows={this.getRows(rows)}
@@ -173,7 +173,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
           </StyledToggle>
           : null
         }
-      </StyledWrapper>
+      </div>
     )
   }
 }

@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
   box-shadow: 0 1px 0 0 #dfdfe8;
   padding: 30px 38px 33px 19px;
   align-items: center;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledIcon = styled.span`

@@ -4,7 +4,6 @@
 
 import * as React from 'react'
 import {
-  StyledWrapper,
   StyledTHLast,
   StyledType,
   StyledProvider
@@ -120,13 +119,13 @@ export default class TableTransactions extends React.PureComponent<Props, {}> {
     const { id, children, rows } = this.props
 
     return (
-      <StyledWrapper id={id}>
+      <div id={id}>
         <Table
           header={this.getHeader()}
           children={children}
           rows={this.getRows(rows)}
         />
-      </StyledWrapper>
+      </div>
     )
   }
 }

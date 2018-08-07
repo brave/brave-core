@@ -5,7 +5,6 @@
 import * as React from 'react'
 import {
   StyledWrapper,
-  StyledLogo,
   StyledTitle,
   StyledTM,
   StyledLeft,
@@ -32,7 +31,7 @@ export default class MainToggle extends React.PureComponent<Props, {}> {
     return (
       <StyledWrapper id={id}>
         <StyledLeft>
-          <StyledLogo>{logo}</StyledLogo>
+          <span>{logo}</span>
           <StyledTitle>
             {getLocale('braveRewards')} <StyledTM>TM</StyledTM>
           </StyledTitle>

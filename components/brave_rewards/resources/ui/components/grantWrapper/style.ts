@@ -13,14 +13,13 @@ export const StyledWrapper = styled.div`
   align-items: stretch;
   align-content: flex-start;
   flex-wrap: wrap;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   background-color: rgba(255, 255, 255, 0.95);
   overflow: hidden;
   width: 100%;
   padding: 0 52px 20px;
   border-radius: 6px;
   height: 100%;
-  width: 100%;
 ` as any
 
 export const StyledHeader = styled.div`
@@ -47,7 +46,7 @@ export const StyledClose = styled.div`
 
 export const StyledText = styled.div`
   width: 100%;
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.63;

@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div`
 
 export const StyledTitle = styled.div`
   width: 100%;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   line-height: normal;
   font-size: 14px;
   font-weight: 500;

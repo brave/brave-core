@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledTitle, StyledAllow, StyledAllowText, StyledClose, StyledAllowToggle } from './style'
+import { StyledWrapper, StyledTitle, StyledAllowText, StyledClose, StyledAllowToggle } from './style'
 import Donate from '../donate/index'
 import Toggle from '../../../components/formControls/toggle/index'
 import { getLocale } from '../../../helpers'
@@ -67,7 +67,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
             disabledSendColor: '#1a22a8'
           }}
         >
-          <StyledAllow>
+          <div>
             <StyledAllowText>{getLocale('allowTip')} {provider}</StyledAllowText>
             <StyledAllowToggle>
               <Toggle
@@ -77,7 +77,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
                 size={'small'}
               />
             </StyledAllowToggle>
-          </StyledAllow>
+          </div>
         </Donate>
       </StyledWrapper>
     )

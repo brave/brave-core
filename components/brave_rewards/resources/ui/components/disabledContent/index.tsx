@@ -4,8 +4,8 @@
 
 import * as React from 'react'
 import * as CSS from 'csstype'
-import { StyledWrapper, StyledImage, StyledContent } from './style'
-import { Column, Grid } from '../../../components/layout/gridList/index'
+import { StyledContent } from './style'
+import { Column, Grid } from '../../../components/layout/gridList'
 
 interface Theme {
   color?: CSS.Color
@@ -24,10 +24,10 @@ export default class DisabledContent extends React.PureComponent<Props, {}> {
     const { id, image, theme, children } = this.props
 
     return (
-      <StyledWrapper id={id}>
+      <div id={id}>
         <Grid columns={3} theme={{ gridGap: '32px', alignItems: 'center' }}>
           <Column size={1} theme={{ justifyContent: 'flex-end' }}>
-            <StyledImage src={image} />
+            <img src={image} />
           </Column>
           <Column size={2}>
             <StyledContent theme={theme}>
@@ -35,7 +35,7 @@ export default class DisabledContent extends React.PureComponent<Props, {}> {
             </StyledContent>
           </Column>
         </Grid>
-      </StyledWrapper>
+      </div>
     )
   }
 }

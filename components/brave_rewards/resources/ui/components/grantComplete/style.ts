@@ -8,7 +8,7 @@ export const StyledWrapper = styled.div`
   text-align: center;
   width: 100%;
   margin: 40px 0 0;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledBox = styled.div`
@@ -33,7 +33,7 @@ export const StyledValue = styled.div`
 ` as any
 
 export const StyledText = styled.div`
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1.29;
   color: #838391;

@@ -12,7 +12,7 @@ export const StyledWrapper = styled.div`
   align-items: center;
   align-content: flex-start;
   flex-wrap: nowrap;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledImageWrapper = styled.div`
@@ -74,7 +74,7 @@ export const StyledTitle = styled.span`
 
   ${(p: Props) => p.type !== 'big'
     ? css`
-      font-family: Muli;
+      font-family: Muli, sans-serif;
       font-size: 14px;
       font-weight: 600;
       line-height: 1.29;

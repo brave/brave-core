@@ -5,7 +5,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   border-radius: 6px;
   box-shadow: 0 0 8px 0 rgba(99,105,110,0.12);
   overflow: hidden;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   width: 373px;
   background: url(test-file-stub) no-repeat top left, linear-gradient(172deg,#392dd1,rgba(255,26,26,0.53)), linear-gradient(#7d7bdc,#7d7bdc);
 }
@@ -66,7 +66,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
 .c5 {
   text-transform: uppercase;
   opacity: 0.66;
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   font-size: 16px;
   line-height: 0.88;
   color: #fff;
@@ -84,7 +84,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   padding: 10.5px 10px;
   text-align: center;
   box-sizing: border-box;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   -webkit-letter-spacing: 0;
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;

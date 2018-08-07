@@ -7,7 +7,7 @@ import { Props } from './index'
 import { setTheme } from '../../../helpers'
 
 export const StyledTokens = styled.span`
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-weight: 300;
   line-height: 1.4;
   color: ${(p: Props) => p.theme && p.theme.color && p.theme.color.token ? p.theme.color.token : '#4b4c5c'};
@@ -23,7 +23,7 @@ export const StyledTokenValue = styled.span`
 export const StyledContent = styled.span`
   color: ${(p: Props) => p.theme && p.theme.color && p.theme.color.text ? p.theme.color.text : '#b8b9c4'};
   font-size: ${(p: Props) => p.theme && p.theme.size && p.theme.size.text ? p.theme.size.text : '12px'};
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   line-height: 1.29;
   display: inline-block;
   margin-left: 10px;

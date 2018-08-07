@@ -109,7 +109,7 @@ export const StyledTooltip = styled.div`
   display: ${(p: any) => p.open ? 'block' : 'none'};
   position: absolute;
   border-radius: 4px;
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1.71;
   letter-spacing: -0.1px;

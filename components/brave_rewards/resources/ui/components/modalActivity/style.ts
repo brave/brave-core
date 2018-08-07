@@ -5,13 +5,13 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled.div`
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledTitle = styled.div`
   font-weight: 600;
   color: #4b4c5c;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-size: 16px;
   line-height: 2;
 ` as any
@@ -83,7 +83,7 @@ export const StyledWarning = styled.div`
 
 export const StyledWarningText = styled.div`
   max-width: 508px;
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 12px;
   font-weight: 300;
   line-height: 1.5;
@@ -94,7 +94,7 @@ export const StyledWarningText = styled.div`
 export const StyledNote = styled.div`
   max-width: 508px;
   margin-top: 46px;
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 12px;
   font-weight: 300;
   line-height: 1.5;

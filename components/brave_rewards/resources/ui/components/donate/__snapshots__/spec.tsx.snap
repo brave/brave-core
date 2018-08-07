@@ -3,7 +3,7 @@
 exports[`Donate tests basic tests matches the snapshot 1`] = `
 .c0 {
   position: relative;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c1 {

@@ -21,7 +21,6 @@ import {
   StyledRemove,
   StyledWallet,
   StyledTokens,
-  StyledLogoImage,
   StyledCenter,
   StyledIconRecurringBig,
   StyledIconRemove,
@@ -79,7 +78,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
   getLogo (logo: string | undefined, domain: string) {
     return !logo
       ? <StyledLogoText>{(domain && domain.substring(0,1)) || ''}</StyledLogoText>
-      : <StyledLogoImage src={logo} />
+      : <img src={logo} />
   }
 
   getSocialLink (item: Social) {

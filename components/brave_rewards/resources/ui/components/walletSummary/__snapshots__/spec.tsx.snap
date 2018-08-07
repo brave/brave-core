@@ -2,7 +2,7 @@
 
 exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 .c0 {
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   margin-top: 21px;
 }
 
@@ -66,7 +66,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
   margin-bottom: 8px;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c12 {
@@ -92,7 +92,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
   margin-bottom: 8px;
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
 }
 
 .c4 {
@@ -126,7 +126,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
-  font-family: Poppins;
+  font-family: Poppins,sans-serif;
   font-weight: 300;
   line-height: 1.4;
   color: #686978;
@@ -154,7 +154,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 .c9 {
   color: #9E9FAB;
   font-size: 10px;
-  font-family: Muli;
+  font-family: Muli,sans-serif;
   line-height: 1.29;
   display: inline-block;
   margin-left: 10px;
@@ -183,9 +183,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
      
     2018
   </div>
-  <div
-    className=""
-  >
+  <div>
     <div
       className="c3"
       id={undefined}

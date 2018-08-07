@@ -8,7 +8,7 @@ import { setTheme } from '../../../helpers'
 
 export const StyledWrapper = styled.div`
   position: relative;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
 ` as any
 
 export const StyledContent = styled.div`
@@ -44,7 +44,7 @@ export const StyledIconSend = styled.span`
 ` as any
 
 export const StyledFunds = styled.div`
-  font-family: Muli;
+  font-family: Muli, sans-serif;
   font-size: 13px;
   font-weight: 300;
   line-height: 1.69;
