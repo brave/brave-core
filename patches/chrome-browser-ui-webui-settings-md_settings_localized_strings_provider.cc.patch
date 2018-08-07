@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
-index 59189009c128db5de5d33494e95ea382de8b4ac6..22446f57ef2f69fc117fbb6f338dc56f7491d5ff 100644
+index 59189009c128db5de5d33494e95ea382de8b4ac6..51f279b4a7c4c2702cade75f28034b686990995d 100644
 --- a/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
 +++ b/chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc
-@@ -1018,6 +1018,7 @@ void AddImportDataStrings(content::WebUIDataSource* html_source) {
-     {"importPasswords", IDS_SETTINGS_IMPORT_PASSWORDS_CHECKBOX},
-     {"importSearch", IDS_SETTINGS_IMPORT_SEARCH_ENGINES_CHECKBOX},
-     {"importAutofillFormData", IDS_SETTINGS_IMPORT_AUTOFILL_FORM_DATA_CHECKBOX},
-+    {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
-     {"importChooseFile", IDS_SETTINGS_IMPORT_CHOOSE_FILE},
-     {"importCommit", IDS_SETTINGS_IMPORT_COMMIT},
-     {"noProfileFound", IDS_SETTINGS_IMPORT_NO_PROFILE_FOUND},
+@@ -2665,6 +2665,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
+ #endif
+   policy_indicator::AddLocalizedStrings(html_source);
+ 
++  BraveAddLocalizedStrings(html_source, profile);
+   html_source->SetJsonPath(kLocalizedStringsFile);
+ }
+ 

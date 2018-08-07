@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/permissions/permission_manager_factory.h b/chrome/browser/permissions/permission_manager_factory.h
+index be4990571b35bbdbd8c464c688d6050c0b9202c9..bce2e4efbcab5e366d8e57abe39ee9e4fd95704e 100644
+--- a/chrome/browser/permissions/permission_manager_factory.h
++++ b/chrome/browser/permissions/permission_manager_factory.h
+@@ -23,6 +23,7 @@ class PermissionManagerFactory : public BrowserContextKeyedServiceFactory {
+ 
+  private:
+   friend struct base::DefaultSingletonTraits<PermissionManagerFactory>;
++  friend class BravePermissionManagerFactory;
+ 
+   PermissionManagerFactory();
+   ~PermissionManagerFactory() override;

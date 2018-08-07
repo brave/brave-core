@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/browser/website_settings_registry.h b/components/content_settings/core/browser/website_settings_registry.h
+index f717f0c6ad479bfcc533f441f6e377963943525c..645a9cf52c2b1360b716e06da4e79b334ba8a8f4 100644
+--- a/components/content_settings/core/browser/website_settings_registry.h
++++ b/components/content_settings/core/browser/website_settings_registry.h
+@@ -75,6 +75,7 @@ class WebsiteSettingsRegistry {
+       WebsiteSettingsInfo::ScopingType scoping_type,
+       Platforms platforms,
+       WebsiteSettingsInfo::IncognitoBehavior incognito_behavior);
++  void UnRegister(ContentSettingsType type) {website_settings_info_.erase(type);}
+ 
+   const_iterator begin() const;
+   const_iterator end() const;
