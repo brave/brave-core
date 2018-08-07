@@ -15,4 +15,5 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
 }
 }
 
+#define PermissionManagerFactory BravePermissionManagerFactory
 #include "../../../../../chrome/browser/permissions/permission_manager.cc"
