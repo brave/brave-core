@@ -5,8 +5,10 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
+
+// Components
 import { Checkbox, Grid, Column, Select } from 'brave-ui/components'
-import { Box, ContributeTable, DisabledContent, List, ModalContribute, Tokens } from 'brave-ui/features/rewards'
+import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens } from 'brave-ui/features/rewards'
 
 // Utils
 import { getLocale } from '../../common/locale'
@@ -15,9 +17,7 @@ import * as utils from '../utils'
 
 // Assets
 const contributeDisabledIcon = require('../../img/rewards/contribute_disabled.svg')
-
-// TODO temp, remove
-const bartBaker = require('../../img/rewards/temp/bartBaker.jpeg')
+const bartBaker = require('../../img/rewards/temp/bartBaker.jpeg') // TODO temp, remove
 
 interface State {
   modalContribute: boolean
@@ -40,7 +40,7 @@ class ContributeBox extends React.Component<Props, State> {
   }
 
   // TODO remove
-  get contributeRows () {
+  getContributeRows = () => {
     return [
       {
         profile: {
@@ -86,6 +86,15 @@ class ContributeBox extends React.Component<Props, State> {
           src: bartBaker
         },
         attention: 4,
+        onRemove: () => { console.log('wikipedia') }
+      },
+      {
+        profile: {
+          name: 'wikipedia.org',
+          verified: false,
+          src: bartBaker
+        },
+        attention: 1,
         onRemove: () => { console.log('wikipedia') }
       }
     ] as any
@@ -195,6 +204,9 @@ class ContributeBox extends React.Component<Props, State> {
     } = this.props.rewardsData
     const toggleOn = !(firstLoad !== false || !enabledMain)
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, walletInfo.rates)
+    const contributeRows = this.getContributeRows()
+    const numRows = contributeRows.length
+    const allSites = !(numRows > 5)
 
     return (
       <Box
@@ -210,7 +222,7 @@ class ContributeBox extends React.Component<Props, State> {
         {
           this.state.modalContribute
           ? <ModalContribute
-            rows={this.contributeRows}
+            rows={contributeRows}
             onClose={this.onModalContributeToggle}
           />
           : null
@@ -219,8 +231,9 @@ class ContributeBox extends React.Component<Props, State> {
           <Select
             theme={{
               border: 'none',
-              padding: '0 20px 0 0',
-              arrowPadding: '0'
+              padding: '0',
+              arrowPadding: '0',
+              maxWidth: '100%'
             }}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
             value={(contributionMonthly || '').toString()}
@@ -237,8 +250,7 @@ class ContributeBox extends React.Component<Props, State> {
         <List
           title={getLocale('contributionNextDate')}
           theme={{
-            'font-size': '16px',
-            'font-weight': '600',
+            'font-size': '14px',
             'text-align': 'right',
             'border-radius': '6px',
             color: '#4b4c5c',
@@ -247,26 +259,26 @@ class ContributeBox extends React.Component<Props, State> {
             padding: '9px 10px 9px 13px'
           }}
         >
-          July 25th
+          July 25th TODO
         </List>
         <List title={getLocale('contributionSites')}>
-          Total &nbsp;<Tokens value={55} hideText={true} />
+          {getLocale('total')} &nbsp;<Tokens value={numRows} hideText={true} toFixed={false} />
         </List>
-        <ContributeTable
+        <TableContribute
           header={[
             getLocale('contributionSiteVisited'),
             getLocale('contributionSiteAttention')
           ]}
-          rows={this.contributeRows}
-          allSites={false}
-          numSites={55}
+          rows={contributeRows}
+          allSites={allSites}
+          numSites={numRows}
           onShowAll={this.onModalContributeToggle}
           theme={{
             headerColor: '#9F22A1'
           }}
         >
           {getLocale('contributionVisitSome')}
-        </ContributeTable>
+        </TableContribute>
       </Box>
     )
   }

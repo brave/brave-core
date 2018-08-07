@@ -2,20 +2,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  ModalBackupRestore,
-  Panel,
-  PanelEmpty
-} from 'brave-ui/features/rewards'
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import BigNumber from 'bignumber.js'
 
+// Components
+import {
+  ModalActivity,
+  ModalBackupRestore,
+  WalletWrapper,
+  WalletEmpty
+} from 'brave-ui/features/rewards'
+
 // Utils
 import { getLocale } from '../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
+
 // Assets
 const walletIcon = require('../../img/rewards/wallet_icon.svg')
 const fundsIcon = require('../../img/rewards/funds_icon.svg')
@@ -23,6 +27,7 @@ const fundsIcon = require('../../img/rewards/funds_icon.svg')
 interface State {
   modalBackup: boolean,
   modalBackupActive: 'backup' | 'restore'
+  modalActivity: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -33,7 +38,8 @@ class PageWallet extends React.Component<Props, State> {
     super(props)
     this.state = {
       modalBackup: false,
-      modalBackupActive: 'backup'
+      modalBackupActive: 'backup',
+      modalActivity: false
     }
   }
 
@@ -49,9 +55,29 @@ class PageWallet extends React.Component<Props, State> {
     })
   }
 
-  onModalBackupAction (action: string) {
+  onModalBackupOnCopy = () => {
     // TODO NZ implement
-    console.log(action)
+    console.log('onModalBackupOnCopy')
+  }
+
+  onModalBackupOnPrint = () => {
+    // TODO NZ implement
+    console.log('onModalBackupOnPrint')
+  }
+
+  onModalBackupOnSaveFile = () => {
+    // TODO NZ implement
+    console.log('onModalBackupOnSaveFile')
+  }
+
+  onModalBackupOnRestore = () => {
+    // TODO NZ implement
+    console.log('onModalBackupOnRestore')
+  }
+
+  onModalBackupOnImport = () => {
+    // TODO NZ implement
+    console.log('onModalBackupOnImport')
   }
 
   getConversion = () => {
@@ -73,28 +99,29 @@ class PageWallet extends React.Component<Props, State> {
     })
   }
 
+  onModalActivityToggle = () => {
+    this.setState({
+      modalActivity: !this.state.modalActivity
+    })
+  }
+
+  onModalActivityAction (action: string) {
+    // TODO NZ implement
+    console.log(action)
+  }
+
+  onModalActivityRemove () {
+    // TODO NZ implement
+    console.log('onModalActivityRemove')
+  }
+
   render () {
     const { connectedWallet, recoveryKey, wasFunded } = this.props.rewardsData
     const { balance } = this.props.rewardsData.walletInfo
 
     return (
       <>
-        {
-          this.state.modalBackup
-            ? <ModalBackupRestore
-              activeTabId={this.state.modalBackupActive}
-              recoveryKey={recoveryKey}
-              onTabChange={this.onModalBackupTabChange}
-              onClose={this.onModalBackupToggle}
-              onCopy={this.onModalBackupAction.bind('onCopy')}
-              onPrint={this.onModalBackupAction.bind('onPrint')}
-              onSaveFile={this.onModalBackupAction.bind('onSaveFile')}
-              onRestore={this.onModalBackupAction.bind('onRestore')}
-              onImport={this.onModalBackupAction.bind('onImport')}
-            />
-            : null
-        }
-        <Panel
+        <WalletWrapper
           tokens={balance}
           converted={utils.formatConverted(this.getConversion())}
           actions={[
@@ -118,9 +145,131 @@ class PageWallet extends React.Component<Props, State> {
           {
             wasFunded
             ? null // TODO NZ <PanelSummary grant={} ads={} contribute={} donation={} tips={} onActivity={} />
-            : <PanelEmpty />
+            : <WalletEmpty />
           }
-        </Panel>
+        </WalletWrapper>
+
+        {
+          this.state.modalBackup
+            ? <ModalBackupRestore
+              activeTabId={this.state.modalBackupActive}
+              recoveryKey={recoveryKey}
+              onTabChange={this.onModalBackupTabChange}
+              onClose={this.onModalBackupToggle}
+              onCopy={this.onModalBackupOnCopy}
+              onPrint={this.onModalBackupOnPrint}
+              onSaveFile={this.onModalBackupOnSaveFile}
+              onRestore={this.onModalBackupOnRestore}
+              onImport={this.onModalBackupOnImport}
+            />
+            : null
+        }
+        {
+          // TODO NZ add actual data for the whole section
+          this.state.modalActivity
+            ? <ModalActivity
+              contributeRows={[
+                {
+                  profile: {
+                    name: 'Bart Baker',
+                    verified: true,
+                    provider: 'youtube',
+                    src: ''
+                  },
+                  attention: 40,
+                  onRemove: this.onModalActivityRemove,
+                  token: {
+                    value: 5,
+                    converted: 5
+                  }
+                }
+              ]}
+              transactionRows={[
+                {
+                  date: '6/1',
+                  type: 'deposit',
+                  description: 'Brave Ads payment for May',
+                  amount: {
+                    value: 5,
+                    converted: 5
+                  }
+                }
+              ]}
+              onClose={this.onModalActivityToggle}
+              onPrint={this.onModalActivityAction.bind('onPrint')}
+              onDownloadPDF={this.onModalActivityAction.bind('onDownloadPDF')}
+              onMonthChange={this.onModalActivityAction.bind('onMonthChange')}
+              months={{
+                'aug-2018': 'August 2018',
+                'jul-2018': 'July 2018',
+                'jun-2018': 'June 2018',
+                'may-2018': 'May 2018',
+                'apr-2018': 'April 2018'
+              }}
+              currentMonth={'aug-2018'}
+              summary={[
+                {
+                  text: 'Token Grant available',
+                  type: 'grant',
+                  token: {
+                    value: 10,
+                    converted: 5.20
+                  }
+                },
+                {
+                  text: 'Earnings from Brave Ads',
+                  type: 'ads',
+                  token: {
+                    value: 10,
+                    converted: 5.20
+                  }
+                },
+                {
+                  text: 'Brave Contribute',
+                  type: 'contribute',
+                  notPaid: true,
+                  token: {
+                    value: 10,
+                    converted: 5.20,
+                    isNegative: true
+                  }
+                },
+                {
+                  text: 'Recurring Donations',
+                  type: 'recurring',
+                  notPaid: true,
+                  token: {
+                    value: 2,
+                    converted: 1.1,
+                    isNegative: true
+                  }
+                },
+                {
+                  text: 'One-time Donations/Tips',
+                  type: 'donations',
+                  token: {
+                    value: 19,
+                    converted: 10.10,
+                    isNegative: true
+                  }
+                }
+              ]}
+              total={{
+                value: 1,
+                converted: 0.5
+              }}
+              paymentDay={12}
+              openBalance={{
+                value: 10,
+                converted: 5.20
+              }}
+              closingBalance={{
+                value: 11,
+                converted: 5.30
+              }}
+            />
+            : null
+        }
       </>
     )
   }

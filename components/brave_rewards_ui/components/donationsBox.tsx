@@ -6,8 +6,9 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
+// Components
 import { Checkbox, Column, Grid } from 'brave-ui/components'
-import { DisabledContent, Box, DonationTable, List, Tokens } from 'brave-ui/features/rewards'
+import { DisabledContent, Box, TableDonation, List, Tokens } from 'brave-ui/features/rewards'
 
 // Utils
 import { getLocale } from '../../common/locale'
@@ -61,9 +62,14 @@ class DonationBox extends React.Component<Props, {}> {
     )
   }
 
+  getDonationRows = () => []
+
   render () {
     const { rewardsData } = this.props
     const showDisabled = rewardsData.firstLoad !== false || !rewardsData.enabledMain
+    const donationRows = this.getDonationRows()
+    const numRows = donationRows.length
+    const allSites = !(numRows > 5)
 
     return (
       <Box
@@ -77,17 +83,18 @@ class DonationBox extends React.Component<Props, {}> {
           <Tokens value={0} converted={0} />
         </List>
         <List title={getLocale('donationList')}>
-          {getLocale('donationTotal')} &nbsp;<Tokens value={0} hideText={true} />
+          {getLocale('total')} &nbsp;<Tokens value={numRows} hideText={true} toFixed={false} />
         </List>
-        <DonationTable
-          rows={[]}
-          allItems={true}
+        <TableDonation
+          rows={donationRows}
+          allItems={allSites}
+          numItems={numRows}
           theme={{
             headerColor: '#696FDC'
           }}
         >
           {getLocale('donationVisitSome')}
-        </DonationTable>
+        </TableDonation>
       </Box>
     )
   }
