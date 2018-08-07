@@ -1,20 +1,48 @@
 import("//tools/grit/grit_rule.gni")
 
+transpile_includes = [
+  # Brave Adblock Page
+  "../brave_adblock_ui/brave_adblock.html",
+  # Brave New Tab
+  "../brave_new_tab_ui/brave_new_tab.html",
+  # Brave Rewards
+  "../brave_rewards_ui/brave_rewards.html",
+  # Brave Welcome Page
+  "../brave_welcome_ui/brave_welcome.html"
+]
+
+action("transpile_web_uis") {
+  script = "//brave/script/transpile-web-ui.py"
+  inputs = transpile_includes
+  outputs = [
+    "$target_out_dir/brave_new_tab.bundle.js",
+    "$target_out_dir/brave_rewards.bundle.js",
+    "$target_out_dir/brave_welcome.bundle.js",
+    "$target_out_dir/brave_adblock.bundle.js",
+  ]
+  gen_dir = rebase_path(root_gen_dir, "//")
+  args = [
+    "--target_gen_dir=$gen_dir"
+  ]
+  if (is_official_build) {
+    args += [
+      "--production",
+    ]
+  }
+}
+
 grit("brave_components_resources_grit") {
   source = "brave_components_resources.grd"
 
   output_name = "brave_components_resources_new"
+  inputs = get_target_outputs(":transpile_web_uis")
+  inputs += transpile_includes
 
   outputs = [
     "grit/brave_components_resources.h",
     "brave_components_resources.pak",
   ]
-  deps = [
-    "//brave/components/brave_adblock_ui",
-    "//brave/components/brave_new_tab_ui",
-    "//brave/components/brave_rewards_ui",
-    "//brave/components/brave_welcome_ui",
-  ]
+  deps = [ ":transpile_web_uis" ]
   grit_flags = [
     "-E",
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
