@@ -1423,6 +1423,10 @@ extension BrowserViewController: URLBarDelegate {
         let shields = ShieldsViewController(url: tabManager.selectedTab?.url, shieldBlockStats: nil)
         shields.preferredContentSize = CGSize(width: 320, height: 600.0)
         let popover = PopoverController(contentController: shields, contentSizeBehavior: .preferredContentSize)
+        if UIDevice.current.orientation.isPortrait {
+            // Leave some space near the bottom for easier dismissal
+            popover.outerMargins.bottom = 80.0
+        }
         popover.present(from: urlBar.locationView.shieldsButton, on: self)
     }
 }

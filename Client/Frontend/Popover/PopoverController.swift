@@ -97,19 +97,19 @@ class PopoverController: UIViewController {
             break
         case .preferredContentSize:
             containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height)
-            containerViewHeightConstraint?.priority = .defaultHigh
+            containerViewHeightConstraint?.priority = UILayoutPriority(rawValue: 850.0)
             containerViewHeightConstraint?.isActive = true
             
             containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: contentController.preferredContentSize.width)
-            containerViewWidthConstraint?.priority = .defaultHigh
+            containerViewWidthConstraint?.priority = UILayoutPriority(rawValue: 850.0)
             containerViewWidthConstraint?.isActive = true
         case .fixedSize(let size):
             containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: size.height)
-            containerViewHeightConstraint?.priority = .defaultHigh
+            containerViewHeightConstraint?.priority = UILayoutPriority(rawValue: 850.0)
             containerViewHeightConstraint?.isActive = true
             
             containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: size.width)
-            containerViewWidthConstraint?.priority = .defaultHigh
+            containerViewWidthConstraint?.priority = UILayoutPriority(rawValue: 850.0)
             containerViewWidthConstraint?.isActive = true
         }
     }
@@ -316,17 +316,9 @@ extension PopoverController: BasicAnimationControllerDelegate {
         
         contentController.view.frame = CGRect(origin: .zero, size: popoverContext.presentedSize)
         
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            NSLayoutConstraint.activate([
-                containerView.leftAnchor.constraint(greaterThanOrEqualTo: viewController.view.leftAnchor, constant: outerMargins.left),
-                containerView.rightAnchor.constraint(lessThanOrEqualTo: viewController.view.rightAnchor, constant: -outerMargins.right)
-            ])
-        } else {
-            // iPhone variant will always be full-width
-            NSLayoutConstraint.activate([
-                containerView.leftAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.leftAnchor, constant: outerMargins.left),
-                containerView.rightAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.rightAnchor, constant: -outerMargins.right)
-            ])
+        containerView.snp.makeConstraints {
+            $0.left.greaterThanOrEqualTo(viewController.view.snp.left).offset(outerMargins.left).priority(UILayoutPriority.required.rawValue)
+            $0.right.lessThanOrEqualTo(viewController.view.snp.right).offset(-outerMargins.right).priority(UILayoutPriority.required.rawValue)
         }
         
         let centerX = containerView.centerXAnchor.constraint(equalTo: popoverContext.originView.centerXAnchor)
