@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "brave/browser/payments/payments_service_impl.h"
+#include "brave/browser/payments/wallet_properties.h"
 
 #include <functional>
 
@@ -471,9 +472,28 @@ void PaymentsServiceImpl::TriggerOnWalletCreated(int error_code) {
     observer.OnWalletCreated(this, error_code);
 }
 
-void PaymentsServiceImpl::TriggerOnWalletProperties(ledger::WalletInfo result) {
+void PaymentsServiceImpl::TriggerOnWalletProperties(ledger::WalletInfo info) {
+  payments::WalletProperties properties;
+
+  properties.probi = info.probi_;
+  properties.balance = info.balance_;
+  properties.rates = info.rates_;
+  properties.parameters_choices = info.parameters_choices_;
+  properties.parameters_range = info.parameters_range_;
+  properties.parameters_days = info.parameters_days_;
+
+  for (size_t i = 0; i < info.grants_.size(); i ++) {
+    payments::Grant grant;
+
+    grant.altcurrency = info.grants_[i].altcurrency;
+    grant.probi = info.grants_[i].probi;
+    grant.expiryTime = info.grants_[i].expiryTime;
+
+    properties.grants.push_back(grant);
+  }
+
   for (auto& observer : observers_)
-    observer.OnWalletProperties(this, result);
+    observer.OnWalletProperties(this, properties);
 }
 
 void PaymentsServiceImpl::GetWalletProperties() {
