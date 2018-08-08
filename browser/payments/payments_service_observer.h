@@ -6,6 +6,7 @@
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
 
 #include "brave/browser/payments/wallet_properties.h"
+#include "brave/browser/payments/promotion.h"
 
 namespace payments {
 
@@ -19,6 +20,8 @@ class PaymentsServiceObserver {
                                int error_code) {};
   virtual void OnWalletProperties(PaymentsService* payment_service,
                                payments::WalletProperties properties) {};
+  virtual void OnPromotion(PaymentsService* payment_service,
+                               payments::Promotion properties) {};
 };
 
 }  // namespace payments

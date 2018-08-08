@@ -19,7 +19,7 @@ import {
 import * as rewardsActions from '../actions/rewards_actions'
 
 // Assets
-const captchaDrop = require('../../../assets/img/captchaDrop.png')
+const captchaDrop = require('../../img/rewards/captchaDrop.png')
 
 type Step = '' | 'init' | 'captcha' | 'complete'
 
@@ -40,6 +40,10 @@ class Grant extends React.Component<Props, State> {
     }
   }
 
+  get actions () {
+    return this.props.actions
+  }
+
   onGrantShow = () => {
     this.setState({ grantShow: false, grantStep: 'init' })
   }
@@ -52,23 +56,22 @@ class Grant extends React.Component<Props, State> {
     this.setState({ grantStep: step })
   }
 
+  onAccept = () => {
+    this.actions.getPromotionCaptcha()
+  }
+
   render () {
+    const { promotion } = this.props.rewardsData
+
+    if (!promotion) {
+      return null
+    }
+
     return (
       <>
         {
           this.state.grantShow
             ? <GrantClaim onClick={this.onGrantShow}/>
-            : null
-        }
-        {
-          this.state.grantStep === 'init'
-            ? <GrantWrapper
-              onClose={this.onGrantHide}
-              title={'Good news!'}
-              text={'Free 30 BAT have been awarded to you so you can support more publishers.'}
-            >
-              <GrantInit onAccept={this.onGrantStep.bind(this, 'captcha')} onLater={this.onGrantHide} />
-            </GrantWrapper>
             : null
         }
         {
@@ -79,6 +82,17 @@ class Grant extends React.Component<Props, State> {
               text={'Prove that you are human!'}
             >
               <GrantCaptcha onSolution={this.onGrantStep.bind(this, 'complete')} dropBgImage={captchaDrop} />
+            </GrantWrapper>
+            : null
+        }
+        {
+          this.state.grantStep === 'init'
+            ? <GrantWrapper
+              onClose={this.onGrantHide}
+              title={'Good news!'}
+              text={`Free ${promotion.amount} BAT have been awarded to you so you can support more publishers.`}
+            >
+              <GrantInit onAccept={this.onAccept} onLater={this.onGrantHide} />
             </GrantWrapper>
             : null
         }

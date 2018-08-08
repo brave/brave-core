@@ -19,6 +19,7 @@ import {
 import { getLocale } from '../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
+import Grant from './grant'
 
 // Assets
 const walletIcon = require('../../img/rewards/wallet_icon.svg')
@@ -116,11 +117,16 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   render () {
-    const { connectedWallet, recoveryKey, wasFunded } = this.props.rewardsData
+    const { connectedWallet, recoveryKey, wasFunded, promotion } = this.props.rewardsData
     const { balance } = this.props.rewardsData.walletInfo
 
     return (
       <>
+        {
+          promotion && promotion.promotionId
+          ? <Grant/>
+          : null
+        }
         <WalletWrapper
           tokens={balance}
           converted={utils.formatConverted(this.getConversion())}

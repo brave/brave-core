@@ -23,3 +23,15 @@ export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
 export const onWalletProperties = (properties: Rewards.WalletProperties) => action(types.ON_WALLET_PROPERTIES, {
   properties
 })
+
+export const getPromotion = () => action(types.GET_PROMOTION)
+
+export const onPromotion = (properties: Rewards.Promotion) => action(types.ON_PROMOTION, {
+  properties
+})
+
+export const getPromotionCaptcha = () => action(types.GET_PROMOTION_CAPTCHA)
+
+export const onPromotionCaptcha = (properties: Rewards.Promotion) => action(types.ON_PROMOTION_CAPTCHA, {
+  properties
+})
