@@ -40,13 +40,17 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnWalletCreated();
   void OnWalletCreateFailed();
   void GetWalletProperties(const base::ListValue* args);
+  void GetPromotion(const base::ListValue* args);
   void OnWalletProperties(payments::WalletProperties result);
+  void OnPromotion(payments::Promotion result);
 
   // PaymentServiceObserver implementation
   void OnWalletCreated(payments::PaymentsService* payment_service,
                        int error_code) override;
   void OnWalletProperties(payments::PaymentsService* payment_service,
                        payments::WalletProperties result) override;
+  void OnPromotion(payments::PaymentsService* payment_service,
+                       payments::Promotion result) override;
 
   payments::PaymentsService* payments_service_;  // NOT OWNED
 
@@ -65,6 +69,9 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("getWalletProperties",
       base::BindRepeating(&RewardsDOMHandler::GetWalletProperties,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("getPromotion",
+                                    base::BindRepeating(&RewardsDOMHandler::GetPromotion,
+                                                        base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
@@ -109,11 +116,11 @@ void RewardsDOMHandler::OnWalletCreateFailed() {
   }
 }
 
-  void RewardsDOMHandler::OnWalletProperties(
-      payments::PaymentsService* payment_service,
-      payments::WalletProperties result) {
-    OnWalletProperties(result);
-  }
+void RewardsDOMHandler::OnWalletProperties(
+    payments::PaymentsService* payment_service,
+    payments::WalletProperties result) {
+  OnWalletProperties(result);
+}
 
 void RewardsDOMHandler::OnWalletProperties(payments::WalletProperties result) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
@@ -142,6 +149,32 @@ void RewardsDOMHandler::OnWalletProperties(payments::WalletProperties result) {
     // TODO add grants
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletProperties", *walletInfo);
+  }
+}
+
+void RewardsDOMHandler::OnPromotion(
+    payments::PaymentsService* payment_service,
+    payments::Promotion result) {
+  OnPromotion(result);
+}
+
+void RewardsDOMHandler::GetPromotion(const base::ListValue* args) {
+  if (payments_service_) {
+    std::string lang;
+    std::string paymentId;
+    args->GetString(0, &lang);
+    args->GetString(1, &paymentId);
+    payments_service_->GetPromotion(lang, paymentId);
+  }
+}
+
+void RewardsDOMHandler::OnPromotion(payments::Promotion result) {
+  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    base::DictionaryValue* promotion = new base::DictionaryValue();
+    promotion->SetString("promotionId", result.promotionId);
+    promotion->SetDouble("amount", result.amount);
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotion", *promotion);
   }
 }
 

@@ -9,6 +9,7 @@ namespace payments {
       balance(0.0),
       parameters_days(0) {
   }
+
   WalletProperties::~WalletProperties() { }
 
   WalletProperties::WalletProperties(const WalletProperties &properties) {

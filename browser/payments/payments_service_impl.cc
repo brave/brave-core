@@ -254,6 +254,10 @@ void PaymentsServiceImpl::OnWalletProperties(ledger::WalletInfo result) {
   TriggerOnWalletProperties(result);
 }
 
+void PaymentsServiceImpl::OnPromotion(ledger::Promo result) {
+  TriggerOnPromotion(result);
+}
+
 void PaymentsServiceImpl::OnReconcileComplete(ledger::Result result,
                                               const std::string& viewing_id) {
   LOG(ERROR) << "reconcile complete " << viewing_id;
@@ -472,7 +476,7 @@ void PaymentsServiceImpl::TriggerOnWalletCreated(int error_code) {
     observer.OnWalletCreated(this, error_code);
 }
 
-void PaymentsServiceImpl::TriggerOnWalletProperties(ledger::WalletInfo info) {
+void PaymentsServiceImpl::TriggerOnWalletProperties(const ledger::WalletInfo info) {
   payments::WalletProperties properties;
 
   properties.probi = info.probi_;
@@ -499,5 +503,22 @@ void PaymentsServiceImpl::TriggerOnWalletProperties(ledger::WalletInfo info) {
 void PaymentsServiceImpl::GetWalletProperties() {
   ledger_->GetWalletProperties();
 }
+
+void PaymentsServiceImpl::GetPromotion(const std::string& lang, const std::string& paymentId) {
+  ledger_->GetPromotion(lang, paymentId);
+}
+
+void PaymentsServiceImpl::TriggerOnPromotion(const ledger::Promo result) {
+  payments::Promotion properties;
+
+  properties.promotionId = result.promotionId;
+  properties.amount = result.amount;
+
+  for (auto& observer : observers_)
+    observer.OnPromotion(this, properties);
+}
+
+
+
 
 }  // namespace payments

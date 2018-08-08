@@ -43,7 +43,23 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     case types.ON_WALLET_PROPERTIES:
       state = { ...state }
+      // TODO NZ don't just assign directly
       state.walletInfo = action.payload.properties
+      break
+    case types.GET_PROMOTION:
+      chrome.send('getPromotion', [])
+      break
+    case types.ON_PROMOTION:
+      state.promotion = {
+        amount: action.payload.properties.amount,
+        promotionId: action.payload.properties.promotionId
+      }
+      break
+    case types.GET_PROMOTION_CAPTCHA:
+      chrome.send('getPromotionCaptcha', [])
+      break
+    case types.ON_PROMOTION_CAPTCHA:
+      console.log(action.payload)
       break
   }
 

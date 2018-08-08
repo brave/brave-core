@@ -22,6 +22,7 @@ declare namespace Rewards {
     connectedWallet: boolean
     recoveryKey: string
     wasFunded: boolean
+    promotion?: Promotion
   }
 
   export interface ComponentProps {
@@ -42,5 +43,10 @@ declare namespace Rewards {
     range?: number[]
     rates?: Record<string, number>
     grants?: Grant[]
+  }
+
+  export interface Promotion {
+    promotionId: string
+    amount: number
   }
 }
