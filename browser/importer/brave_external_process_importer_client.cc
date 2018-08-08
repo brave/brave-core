@@ -45,4 +45,12 @@ void BraveExternalProcessImporterClient::OnCookiesImportGroup(
     bridge_->SetCookies(cookies_);
 }
 
+void BraveExternalProcessImporterClient::OnStatsImportReady(
+    const BraveStats& stats) {
+  if (cancelled_)
+    return;
+
+  bridge_->UpdateStats(stats);
+}
+
 BraveExternalProcessImporterClient::~BraveExternalProcessImporterClient() {}

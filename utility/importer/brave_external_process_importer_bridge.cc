@@ -39,6 +39,11 @@ void BraveExternalProcessImporterBridge::SetCookies(
   DCHECK_EQ(0, cookies_left);
 }
 
+void BraveExternalProcessImporterBridge::UpdateStats(
+    const BraveStats& stats) {
+  (*observer_)->OnStatsImportReady(stats);
+}
+
 BraveExternalProcessImporterBridge::BraveExternalProcessImporterBridge(
     const base::flat_map<uint32_t, std::string>& localized_strings,
     scoped_refptr<chrome::mojom::ThreadSafeProfileImportObserverPtr> observer)

@@ -29,7 +29,7 @@ bool BraveImporterCanImport(const base::FilePath& profile,
   if (base::PathExists(history))
     *services_supported |= importer::HISTORY;
   if (base::PathExists(session_store))
-    *services_supported |= importer::FAVORITES;
+    *services_supported |= importer::FAVORITES | importer::STATS;
   if (base::PathExists(passwords))
     *services_supported |= importer::PASSWORDS;
   if (base::PathExists(cookies))
