@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
+index f14f0e747257429d4df1dc1eea95bcd930aba278..da6a83b4b20e13f6623213a8e2061c49dde5ba6e 100644
+--- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
++++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
+@@ -369,6 +369,19 @@
+           </category-setting-exceptions>
+         </settings-subpage>
+       </template>
++      <template is="dom-if" route-path="/content/autoplay" no-search>
++        <settings-subpage page-title="$i18n{siteSettingsCategoryAutoplay}">
++          <category-default-setting
++              toggle-off-label="$i18n{siteSettingsBlocked}"
++              toggle-on-label="$i18n{siteSettingsAutoplayAskRecommended}"
++              category="{{ContentSettingsTypes.AUTOPLAY}}">
++          </category-default-setting>
++          <category-setting-exceptions
++              category="{{ContentSettingsTypes.AUTOPLAY}}"
++              block-header="$i18n{siteSettingsBlock}">
++          </category-setting-exceptions>
++        </settings-subpage>
++      </template>
+       <template is="dom-if" route-path="/content/flash" no-search>
+         <settings-subpage page-title="$i18n{siteSettingsFlash}">
+           <template is="dom-if" if="[[enableEphemeralFlashPermission_]]">

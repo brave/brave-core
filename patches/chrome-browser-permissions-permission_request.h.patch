@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/permissions/permission_request.h b/chrome/browser/permissions/permission_request.h
+index 61522a7ba2db7d5daf98f93bc378eac025b27215..2b509473cf0a927b6929ee616e745988268f319c 100644
+--- a/chrome/browser/permissions/permission_request.h
++++ b/chrome/browser/permissions/permission_request.h
+@@ -45,6 +45,7 @@ enum class PermissionRequestType {
+   PERMISSION_CLIPBOARD_READ = 16,
+   PERMISSION_SECURITY_KEY_ATTESTATION = 17,
+   PERMISSION_PAYMENT_HANDLER = 18,
++  PERMISSION_AUTOPLAY = 19,
+   // NUM must be the last value in the enum.
+   NUM
+ };

@@ -1,0 +1,14 @@
+import("//build/config/features.gni")
+
+source_set("permissions") {
+  sources = [
+    "brave_permission_manager.cc",
+    "brave_permission_manager.h",
+    "brave_permission_manager_factory.cc",
+    "brave_permission_manager_factory.h",
+  ]
+
+  deps = [
+    "//chrome/browser",
+  ]
+}

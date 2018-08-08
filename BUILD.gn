@@ -7,6 +7,7 @@ import("//build/config/locales.gni")
 import("//build/util/process_version.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
 import("//brave/brave_paks.gni")
+import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
 
 if (is_mac) {
   import("//build/config/mac/rules.gni")
@@ -175,22 +176,39 @@ process_version("generate_version") {
 copy("brave_dist_resources") {
   sources = [ "$root_out_dir/version" ]
 
-  if (!is_mac) {
-    sources += [
-      "$root_out_dir/brave_resources.pak",
-      "$root_out_dir/brave_100_percent.pak",
-      "$root_out_dir/brave_200_percent.pak",
-      "$root_out_dir/$brave_exe"
-    ]
-  }
-
   deps = [
     ":brave",
     ":generate_version",
     ":brave_license_dist_resources",
     ":packed_resources",
     "build/$target_os:brave",
+    "//third_party/icu:icudata",
   ]
+
+  if (!is_mac) {
+    sources += [
+      "$root_out_dir/brave_resources.pak",
+      "$root_out_dir/brave_100_percent.pak",
+      "$root_out_dir/brave_200_percent.pak",
+      "$root_out_dir/$brave_exe",
+      "$root_out_dir/chrome_100_percent.pak",
+      "$root_out_dir/chrome_200_percent.pak",
+      "$root_out_dir/icudtl.dat",
+      "$root_out_dir/resources.pak",
+    ]
+
+    if (v8_use_external_startup_data) {
+      sources += [ "$root_out_dir/natives_blob.bin" ]
+      deps += [ "//v8" ]
+
+      if (use_v8_context_snapshot) {
+        sources += [ "$root_out_dir/v8_context_snapshot.bin" ]
+        deps += [ "//tools/v8_context_snapshot" ]
+      } else {
+        sources += [ "$root_out_dir/snapshot_blob.bin" ]
+      }
+    }
+  }
 
   outputs = [
     "$brave_dist_dir/{{source_file_part}}"

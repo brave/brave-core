@@ -1,0 +1,16 @@
+diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
+index 70d1323967869929988baea80ead2fb997244ee6..5e495e9dbc234c580429adbf847449acacafd323 100644
+--- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
++++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
+@@ -343,6 +343,11 @@ bool AutoplayPolicy::IsGestureNeededForPlaybackIfPendingUserGestureIsLocked()
+   if (element_->GetLoadType() == WebMediaPlayer::kLoadTypeMediaStream)
+     return false;
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++  if (IsAutoplayAllowedPerSettings())
++    return false;
++#endif
++
+   // We want to allow muted video to autoplay if:
+   // - the flag is enabled;
+   // - Data Saver is not enabled;

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/permissions/permission_manager.h b/chrome/browser/permissions/permission_manager.h
+index beb9cae183d54a1296b6fc38a8a9d89a24566c5e..9633a76f39a64a7db08d4d6017b91984e542a368 100644
+--- a/chrome/browser/permissions/permission_manager.h
++++ b/chrome/browser/permissions/permission_manager.h
+@@ -120,6 +120,7 @@ class PermissionManager : public KeyedService,
+   bool IsPermissionKillSwitchOn(ContentSettingsType);
+ 
+  private:
++  friend class BravePermissionManager;
+   friend class PermissionManagerTest;
+   friend class GeolocationPermissionContextTests;
+ 

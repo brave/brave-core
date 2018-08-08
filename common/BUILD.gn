@@ -1,3 +1,5 @@
+import("//build/util/branding.gni")
+
 source_set("channel_info") {
   if (is_linux) {
     sources = [
@@ -68,3 +70,11 @@ source_set("common") {
   }
 }
 
+config("constants_configs") {
+  defines = []
+  if (is_mac) {
+    defines += [
+      "BRAVE_PRODUCT_STRING=\"$chrome_product_full_name\"",
+    ]
+  }
+}

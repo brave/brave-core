@@ -11,8 +11,10 @@
 #include "content/public/renderer/render_frame.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/blink/public/platform/web_url.h"
+#include "third_party/blink/public/platform/modules/permissions/permission.mojom-blink.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "url/url_constants.h"
 
 BraveContentSettingsObserver::BraveContentSettingsObserver(
     content::RenderFrame* render_frame,
@@ -189,4 +191,25 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   }
 
   return allow;
+}
+bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  auto origin = frame->GetDocument().GetSecurityOrigin();
+  // default allow local files
+  if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme)
+    return true;
+
+  blink::mojom::blink::PermissionServicePtr permission_service;
+
+  render_frame()->GetRemoteInterfaces()
+    ->GetInterface(mojo::MakeRequest(&permission_service));
+
+  if (permission_service.get()) {
+    auto descriptor = blink::mojom::blink::PermissionDescriptor::New();
+    descriptor->name = blink::mojom::blink::PermissionName::AUTOPLAY;
+    permission_service->RequestPermission(std::move(descriptor), true,
+                                          base::DoNothing());
+  }
+
+  return ContentSettingsObserver::AllowAutoplay(default_value);
 }

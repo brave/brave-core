@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index e54cecc1c480327d03e5e9a0a59ccd7f1fdbbc65..40e3f3aad61ef092022c904a349da9f8767facaf 100644
+index e54cecc1c480327d03e5e9a0a59ccd7f1fdbbc65..a015f05fdde11dee6b68ed551db7811a59181d4b 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -393,7 +393,9 @@ cr.define('settings', function() {
+@@ -329,6 +329,7 @@ cr.define('settings', function() {
+       r.SITE_SETTINGS_ADS = r.SITE_SETTINGS.createChild('ads');
+       r.SITE_SETTINGS_AUTOMATIC_DOWNLOADS =
+           r.SITE_SETTINGS.createChild('automaticDownloads');
++      r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay');
+       r.SITE_SETTINGS_BACKGROUND_SYNC =
+           r.SITE_SETTINGS.createChild('backgroundSync');
+       r.SITE_SETTINGS_CAMERA = r.SITE_SETTINGS.createChild('camera');
+@@ -393,7 +394,9 @@ cr.define('settings', function() {
        }
  
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');

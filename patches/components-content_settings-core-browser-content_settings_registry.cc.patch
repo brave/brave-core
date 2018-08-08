@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
+index 46de20df6899bb467e432f104e7b1266cec56d5d..2e9b9f18f9f2eddbb56a5bb709281071869b1d47 100644
+--- a/components/content_settings/core/browser/content_settings_registry.cc
++++ b/components/content_settings/core/browser/content_settings_registry.cc
+@@ -391,6 +391,7 @@ void ContentSettingsRegistry::Init() {
+                WebsiteSettingsRegistry::PLATFORM_ANDROID,
+            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+            ContentSettingsInfo::PERSISTENT);
++  BraveInit();
+ }
+ 
+ void ContentSettingsRegistry::Register(

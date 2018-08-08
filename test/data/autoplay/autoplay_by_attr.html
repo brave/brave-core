@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Autoplay</title>
+  </head>
+  <body>
+
+    <video width="320" height="240" controls autoplay onplay="playing()">
+      <source src="autoplay.mp4" type="video/mp4">
+    </video>
+
+    <div id='status'>Video not playing</div>
+
+    <script>
+      function playing () {
+        let status = document.getElementById('status')
+        status.textContent = 'Video playing'
+        window.playing = true;
+        if (window.notifyBrowser)
+          notifyWhenPlaying();
+      }
+      function notifyWhenPlaying() {
+        if (playing)
+          window.domAutomationController.send("PLAYING");
+        else
+          window.notifyBrowser = true;
+      }
+    </script>
+
+  </body>
+</html>
