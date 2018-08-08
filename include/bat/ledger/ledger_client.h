@@ -60,6 +60,8 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void GetPromotion(const std::string& lang, const std::string& paymentId) = 0;
   virtual void OnPromotion(ledger::Promo) = 0;
+  virtual void GetPromotionCaptcha() = 0;
+  virtual void OnPromotionCaptcha(std::string image) = 0;
 
   virtual std::unique_ptr<ledger::LedgerURLLoader> LoadURL(
       const std::string& url,

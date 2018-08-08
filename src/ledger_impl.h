@@ -80,6 +80,9 @@ class LedgerImpl : public ledger::Ledger,
   void GetPromotion(const std::string& lang, const std::string& paymentId) const override;
   void OnPromotion(const braveledger_bat_helper::PROMOTION_ST&);
 
+  void GetPromotionCaptcha() const override;
+  void OnPromotionCaptcha(const std::string&);
+
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,

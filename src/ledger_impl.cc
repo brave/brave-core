@@ -328,4 +328,12 @@ void LedgerImpl::OnPromotion(const braveledger_bat_helper::PROMOTION_ST& propert
   ledger_client_->OnPromotion(promo);
 }
 
+void LedgerImpl::GetPromotionCaptcha() const {
+  bat_client_->getPromotionCaptcha();
+}
+
+void LedgerImpl::OnPromotionCaptcha(const std::string& image) {
+  ledger_client_->OnPromotionCaptcha(image);
+}
+
 }  // namespace bat_ledger
