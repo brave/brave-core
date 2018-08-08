@@ -4,6 +4,7 @@
 
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 
+#include "brave/browser/alternate_private_search_engine_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,6 +17,31 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
+
+namespace {
+class NewTabDOMHandler : public content::WebUIMessageHandler {
+ public:
+  NewTabDOMHandler() = default;
+  ~NewTabDOMHandler() override = default;
+
+ private:
+  // WebUIMessageHandler implementation.
+  void RegisterMessages() override {
+    web_ui()->RegisterMessageCallback(
+        "toggleAlternativePrivateSearchEngine",
+        base::BindRepeating(
+            &NewTabDOMHandler::HandleToggleAlternativePrivateSearchEngine,
+            base::Unretained(this)));
+  }
+
+  void HandleToggleAlternativePrivateSearchEngine(const base::ListValue* args) {
+    brave::ToggleUseAlternatePrivateSearchEngine(Profile::FromWebUI(web_ui()));
+  }
+
+  DISALLOW_COPY_AND_ASSIGN(NewTabDOMHandler);
+};
+
+}  // namespace
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name, kBraveNewTabJS,
@@ -30,6 +56,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
   pref_change_registrar_->Add(kHttpsUpgrades,
     base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
+
+  web_ui->AddMessageHandler(std::make_unique<NewTabDOMHandler>());
 }
 
 BraveNewTabUI::~BraveNewTabUI() {
@@ -42,12 +70,25 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties() {
   if (web_contents) {
     auto* render_view_host = web_contents->GetRenderViewHost();
     if (render_view_host) {
-      render_view_host->SetWebUIProperty("adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked)));
-      render_view_host->SetWebUIProperty("trackersBlockedStat", std::to_string(prefs->GetUint64(kTrackersBlocked)));
-      render_view_host->SetWebUIProperty("javascriptBlockedStat", std::to_string(prefs->GetUint64(kJavascriptBlocked)));
-      render_view_host->SetWebUIProperty("javascriptBlockedStat", std::to_string(prefs->GetUint64(kJavascriptBlocked)));
-      render_view_host->SetWebUIProperty("httpsUpgradesStat", std::to_string(prefs->GetUint64(kHttpsUpgrades)));
-      render_view_host->SetWebUIProperty("fingerprintingBlockedStat", std::to_string(prefs->GetUint64(kFingerprintingBlocked)));
+      render_view_host->SetWebUIProperty(
+          "adsBlockedStat",
+          std::to_string(prefs->GetUint64(kAdsBlocked)));
+      render_view_host->SetWebUIProperty(
+          "trackersBlockedStat",
+          std::to_string(prefs->GetUint64(kTrackersBlocked)));
+      render_view_host->SetWebUIProperty(
+          "javascriptBlockedStat",
+          std::to_string(prefs->GetUint64(kJavascriptBlocked)));
+      render_view_host->SetWebUIProperty(
+          "httpsUpgradesStat",
+          std::to_string(prefs->GetUint64(kHttpsUpgrades)));
+      render_view_host->SetWebUIProperty(
+          "fingerprintingBlockedStat",
+          std::to_string(prefs->GetUint64(kFingerprintingBlocked)));
+      render_view_host->SetWebUIProperty(
+          "useAlternativePrivateSearchEngine",
+          prefs->GetBoolean(kUseAlternatePrivateSearchEngine) ? "true"
+                                                              : "false");
     }
   }
 }
