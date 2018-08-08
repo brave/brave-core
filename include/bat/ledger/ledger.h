@@ -73,6 +73,7 @@ class LEDGER_EXPORT Ledger {
   virtual bool GetPublisherAllowNonVerified() const = 0;
   virtual double GetContributionAmount() const = 0;
   virtual void GetWalletProperties() const = 0;
+  virtual void GetPromotion(const std::string& lang, const std::string& paymentId) const = 0;
 };
 
 }  // namespace ledger

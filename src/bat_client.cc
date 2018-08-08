@@ -228,8 +228,10 @@ void BatClient::getWalletProperties() {
 
  void BatClient::walletPropertiesCallback(bool success,
                                            const std::string& response) {
+
+   LOG(ERROR) << "!!!walletPropertiesCallback == " << response;
+
    if (!success) {
-     LOG(ERROR) << "walletPropertiesCallback error";
      return;
    }
 
@@ -965,6 +967,10 @@ void BatClient::getPromotion(const std::string& lang, const std::string& forPaym
 
 void BatClient::getPromotionCallback(bool result, const std::string& response) {
   LOG(ERROR) << "!!!getPromotionCallback == " << response;
+  braveledger_bat_helper::PROMOTION_ST properties;
+  braveledger_bat_helper::loadFromJson(properties, response);
+  state_->promotion_ = properties;
+  ledger_->OnPromotion(properties);
 }
 
 void BatClient::setPromotion(const std::string& promotionId, const std::string& captchaResponse) {

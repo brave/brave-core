@@ -15,6 +15,7 @@
 #include "bat/ledger/ledger_url_loader.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
+#include "bat/ledger/promo.h"
 
 namespace ledger {
 
@@ -56,6 +57,9 @@ class LEDGER_EXPORT LedgerClient {
   virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
                                     GetPublisherInfoListCallback callback) = 0;
+
+  virtual void GetPromotion(const std::string& lang, const std::string& paymentId) = 0;
+  virtual void OnPromotion(ledger::Promo) = 0;
 
   virtual std::unique_ptr<ledger::LedgerURLLoader> LoadURL(
       const std::string& url,

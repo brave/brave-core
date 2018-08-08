@@ -826,6 +826,36 @@ namespace braveledger_bat_helper {
   }
 
   /////////////////////////////////////////////////////////////////////////////
+  PROMOTION_ST::PROMOTION_ST() : amount_(0) {}
+
+  PROMOTION_ST::~PROMOTION_ST() {}
+
+  PROMOTION_ST::PROMOTION_ST(const PROMOTION_ST &properties) {
+    promotionId_ = properties.promotionId_;
+    amount_ = properties.amount_;
+  }
+
+  bool PROMOTION_ST::loadFromJson(const std::string & json) {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (error == false) {
+      error = !(
+          d.HasMember("promotionId") && d["promotionId"].IsString()
+      );
+    }
+
+    if (error == false) {
+      promotionId_ = d["promotionId"].GetString();
+      amount_ = 30; // TODO NZ get data from the server
+    }
+
+    return !error;
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
   GRANT::GRANT() : expiryTime(0) {}
 
   GRANT::~GRANT() {}

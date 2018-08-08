@@ -175,6 +175,19 @@ namespace braveledger_bat_helper {
     std::vector<GRANT> grants_;
   };
 
+
+  struct PROMOTION_ST {
+    PROMOTION_ST();
+    ~PROMOTION_ST();
+    PROMOTION_ST(const PROMOTION_ST& properties);
+
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    std::string promotionId_;
+    double amount_ = .0;
+  };
+
   struct CLIENT_STATE_ST {
     CLIENT_STATE_ST();
     CLIENT_STATE_ST(const CLIENT_STATE_ST&);
@@ -201,6 +214,7 @@ namespace braveledger_bat_helper {
     std::string ruleset_;
     std::string rulesetV2_;
     std::vector<BATCH_VOTES_ST> batch_;
+    PROMOTION_ST promotion_;
   };
 
   struct PUBLISHER_STATE_ST {
