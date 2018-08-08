@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <bat/ledger/wallet_info.h>
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 
 #include "brave/browser/payments/payments_service.h"
+#include "brave/browser/payments/wallet_properties.h"
 #include "brave/browser/payments/payments_service_factory.h"
 #include "brave/browser/payments/payments_service_observer.h"
 #include "brave/common/webui_url_constants.h"
@@ -40,13 +40,13 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnWalletCreated();
   void OnWalletCreateFailed();
   void GetWalletProperties(const base::ListValue* args);
-  void OnWalletProperties(ledger::WalletInfo result);
+  void OnWalletProperties(payments::WalletProperties result);
 
   // PaymentServiceObserver implementation
   void OnWalletCreated(payments::PaymentsService* payment_service,
                        int error_code) override;
   void OnWalletProperties(payments::PaymentsService* payment_service,
-                       ledger::WalletInfo result) override;
+                       payments::WalletProperties result) override;
 
   payments::PaymentsService* payments_service_;  // NOT OWNED
 
@@ -111,30 +111,30 @@ void RewardsDOMHandler::OnWalletCreateFailed() {
 
   void RewardsDOMHandler::OnWalletProperties(
       payments::PaymentsService* payment_service,
-      ledger::WalletInfo result) {
+      payments::WalletProperties result) {
     OnWalletProperties(result);
   }
 
-void RewardsDOMHandler::OnWalletProperties(ledger::WalletInfo result) {
+void RewardsDOMHandler::OnWalletProperties(payments::WalletProperties result) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     base::DictionaryValue* walletInfo = new base::DictionaryValue();
-    walletInfo->SetDouble("balance", result.balance_);
-    walletInfo->SetString("probi", result.probi_);
+    walletInfo->SetDouble("balance", result.balance);
+    walletInfo->SetString("probi", result.probi);
 
     base::DictionaryValue* rates = new base::DictionaryValue();
-    for (auto const& rate : result.rates_) {
+    for (auto const& rate : result.rates) {
       rates->SetDouble(rate.first, rate.second);
     }
     walletInfo->SetDictionary("rates", std::unique_ptr<base::DictionaryValue>(rates));
 
     auto choices (std::make_unique<base::ListValue>());
-    for (double const& choice : result.parameters_choices_) {
+    for (double const& choice : result.parameters_choices) {
       choices->AppendDouble(choice);
     }
     walletInfo->SetList("choices", std::move(choices));
 
     auto range (std::make_unique<base::ListValue>());
-    for (double const& value : result.parameters_range_) {
+    for (double const& value : result.parameters_range) {
       range->AppendDouble(value);
     }
     walletInfo->SetList("range", std::move(range));
