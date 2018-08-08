@@ -55,8 +55,11 @@ class TabLocationView: UIView {
             }
             updateTextWithURL()
             pageOptionsButton.isHidden = (url == nil)
-            if url == nil {
+            if let url = url {
+                shieldsButton.isHidden = url.isLocal
+            } else {
                 trackingProtectionButton.isHidden = true
+                shieldsButton.isHidden = true
             }
             setNeedsUpdateConstraints()
         }
