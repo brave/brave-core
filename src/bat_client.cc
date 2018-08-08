@@ -177,9 +177,6 @@ void BatClient::registerPersonaCallback(bool result,
   state_->bootStamp_ = braveledger_bat_helper::currentTime() * 1000;
   state_->reconcileStamp_ = state_->bootStamp_ + state_->days_ * 24 * 60 * 60 * 1000;
 
-  // TODO debug
-  //getPromotionCaptcha();
-  //
   saveState();
   ledger_->OnWalletCreated(ledger::Result::OK);
 }
@@ -228,8 +225,10 @@ void BatClient::getWalletProperties() {
 
  void BatClient::walletPropertiesCallback(bool success,
                                            const std::string& response) {
+
+   LOG(ERROR) << "!!!walletPropertiesCallback == " << response;
+
    if (!success) {
-     LOG(ERROR) << "walletPropertiesCallback error";
      return;
    }
 
@@ -963,8 +962,17 @@ void BatClient::getPromotion(const std::string& lang, const std::string& forPaym
                                        _2));
 }
 
-void BatClient::getPromotionCallback(bool result, const std::string& response) {
+void BatClient::getPromotionCallback(bool success, const std::string& response) {
   LOG(ERROR) << "!!!getPromotionCallback == " << response;
+
+  if (!success) {
+    return;
+  }
+
+  braveledger_bat_helper::PROMOTION_ST properties;
+  braveledger_bat_helper::loadFromJson(properties, response);
+  state_->promotion_ = properties;
+  ledger_->OnPromotion(properties);
 }
 
 void BatClient::setPromotion(const std::string& promotionId, const std::string& captchaResponse) {
@@ -996,8 +1004,14 @@ void BatClient::getPromotionCaptcha() {
                                        _2));
 }
 
-void BatClient::getPromotionCaptchaCallback(bool result, const std::string& response) {
-  LOG(ERROR) << "!!!getPromotionCaptchaCallback == " << response;
+void BatClient::getPromotionCaptchaCallback(bool success, const std::string& response) {
+  LOG(ERROR) << "!!!getPromotionCaptchaCallback";
+
+  if (!success) {
+    return;
+  }
+
+  ledger_->OnPromotionCaptcha(response);
 }
 
 }  // namespace braveledger_bat_client

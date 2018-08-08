@@ -149,4 +149,11 @@ WalletInfo::WalletInfo (const ledger::WalletInfo &info) {
   parameters_days_ = info.parameters_days_;
   grants_ = info.grants_;
 }
+
+Promo::Promo () : amount(0) {}
+Promo::~Promo () {}
+Promo::Promo (const ledger::Promo &properties) {
+  promotionId = properties.promotionId;
+  amount = properties.amount;
+}
 }

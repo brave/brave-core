@@ -315,4 +315,25 @@ void LedgerImpl::GetWalletProperties() const {
   bat_client_->getWalletProperties();
 }
 
+void LedgerImpl::GetPromotion(const std::string& lang, const std::string& paymentId) const {
+  bat_client_->getPromotion(lang, paymentId);
+}
+
+void LedgerImpl::OnPromotion(const braveledger_bat_helper::PROMOTION_ST& properties) {
+  ledger::Promo promo;
+
+  promo.promotionId = properties.promotionId_;
+  promo.amount = properties.amount_;
+
+  ledger_client_->OnPromotion(promo);
+}
+
+void LedgerImpl::GetPromotionCaptcha() const {
+  bat_client_->getPromotionCaptcha();
+}
+
+void LedgerImpl::OnPromotionCaptcha(const std::string& image) {
+  ledger_client_->OnPromotionCaptcha(image);
+}
+
 }  // namespace bat_ledger
