@@ -35,7 +35,7 @@ class PasscodeEntryViewController: BasePasscodeViewController {
         view.addSubview(passcodePane)
         passcodePane.snp.makeConstraints { make in
             make.bottom.left.right.equalTo(self.view)
-            make.top.equalTo(self.topLayoutGuide.snp.bottom)
+            make.top.equalTo(view.safeArea.top)
         }
     }
 

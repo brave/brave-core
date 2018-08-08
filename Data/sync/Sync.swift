@@ -207,7 +207,7 @@ class Sync: JSInjector {
         get {
             if !UserDefaults.standard.bool(forKey: prefNameSeed) {
                 // This must be true to stay in sync group
-                KeychainWrapper.standard.remove(key: prefNameSeed)
+                KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
                 return nil
             }
             
@@ -250,7 +250,7 @@ class Sync: JSInjector {
             fetchTimer?.invalidate()
             fetchTimer = nil
             
-            KeychainWrapper.standard.remove(key: prefNameSeed)
+            KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
         }
     }
     
