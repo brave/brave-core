@@ -137,6 +137,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_BLOCKED_AUTOPLAY_NO_ACTION" desc="Radio button choice to continue blocking a site from autoplay media, displayed in bubble when a page tries to autoplay media.">
         Continue blocking autoplay
+      </message>
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         NOT A RECOMMENDED BRAVE EXTENSION! Add "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
