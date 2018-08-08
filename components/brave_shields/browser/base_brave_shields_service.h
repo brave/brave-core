@@ -14,28 +14,18 @@
 
 #include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
-#include "components/component_updater/component_updater_service.h"
+#include "brave/browser/extensions/brave_component_extension.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
-
-// Just used to give access to OnDemandUpdater since it's private.
-// Chromium has ComponentsUI which is a friend class, so we just
-// do this hack here to gain access.
-class ComponentsUI {
- public:
-  void OnDemandUpdate(
-      component_updater::ComponentUpdateService* cus,
-      const std::string& component_id);
-};
 
 namespace brave_shields {
 
 // The brave shields service in charge of checking brave shields like ad-block,
 // tracking protection, etc.
-class BaseBraveShieldsService : public ComponentsUI {
+class BaseBraveShieldsService : public BraveComponentExtension {
  public:
   BaseBraveShieldsService();
-  virtual ~BaseBraveShieldsService();
+  ~BaseBraveShieldsService() override;
   bool Start();
   void Stop();
   bool IsInitialized() const;
@@ -49,13 +39,6 @@ class BaseBraveShieldsService : public ComponentsUI {
  protected:
   virtual bool Init() = 0;
   virtual void Cleanup() = 0;
-  virtual void OnComponentRegistered(const std::string& component_id);
-  virtual void OnComponentReady(const std::string& component_id,
-                                const base::FilePath& install_dir);
-  void Register(const std::string& component_name,
-                const std::string& component_id,
-                const std::string& component_base64_public_key);
-  static bool Unregister(const std::string& component_id);
 
  private:
   void InitShields();
@@ -63,9 +46,6 @@ class BaseBraveShieldsService : public ComponentsUI {
   bool initialized_;
   std::mutex initialized_mutex_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  std::string component_name_;
-  std::string component_id_;
-  std::string component_base64_public_key_;
 };
 
 }  // namespace brave_shields
