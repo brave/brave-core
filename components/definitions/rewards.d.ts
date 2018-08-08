@@ -48,5 +48,7 @@ declare namespace Rewards {
   export interface Promotion {
     promotionId: string
     amount: number
+    captcha?: string
+    expireDate?: number
   }
 }

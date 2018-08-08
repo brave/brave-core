@@ -93,7 +93,8 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "5f9c3f06eaead2dd375d8395b3360134.svg", IDR_BRAVE_REWARDS_IMG_FUNDS_ICON },
         { "940b64e76580835ea7ef81bab9d32390.svg", IDR_BRAVE_REWARDS_IMG_WALLET_ICON },
         { "4fcfa7f92c5fc22c2b6f34701bfdcd0a.jpeg", IDR_BRAVE_REWARDS_IMG_BART_TEMP },
-        { "6dd79d472f9c73429b26dae4ef14575e.svg", IDR_BRAVE_REWARDS_IMG_WALLET_BG }
+        { "6dd79d472f9c73429b26dae4ef14575e.svg", IDR_BRAVE_REWARDS_IMG_WALLET_BG },
+        { "a6f0c88adbc3c7a77cbb47e8c4e92f0d.png", IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT }
       }
     }, {
       std::string("adblock"), {

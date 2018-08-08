@@ -130,6 +130,7 @@
       <include name="IDR_BRAVE_REWARDS_IMG_WALLET_ICON" file="../img/rewards/wallet_icon.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_FUNDS_ICON" file="../img/rewards/funds_icon.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_WALLET_BG" file="../img/rewards/wallet_bg.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="../img/rewards/captcha_bat.png" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_BART_TEMP" file="../img/rewards/temp/bartBaker.jpeg" type="BINDATA" />
 
     </includes>
