@@ -7,9 +7,12 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { initLocale } from 'brave-ui'
+require('emptykit.css')
 
 // Components
 import App from './components/app'
+require('../fonts/muli.css')
+require('../fonts/poppins.css')
 
 // Utils
 import store from './store'
