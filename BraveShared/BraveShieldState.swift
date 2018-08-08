@@ -85,8 +85,9 @@ public struct BraveShieldState {
         }
     }
 
-    public func isShieldEnabled(_ shield: Shield) -> Bool {
-        return state[shield] != nil
+    /// Gets whether or not the a site-specific shield override is enabled, or returns nil if it hasn't been set
+    public func isShieldOverrideEnabled(_ shield: Shield) -> Bool? {
+        return state[shield]
     }
 
     mutating func setStateFromPerPageShield(_ pageState: BraveShieldState?) {

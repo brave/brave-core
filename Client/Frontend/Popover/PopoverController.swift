@@ -96,7 +96,7 @@ class PopoverController: UIViewController {
         case .autoLayout:
             break
         case .preferredContentSize:
-            containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height)
+            containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height + PopoverUX.arrowSize.height)
             containerViewHeightConstraint?.priority = UILayoutPriority(rawValue: 850.0)
             containerViewHeightConstraint?.isActive = true
             
@@ -104,7 +104,7 @@ class PopoverController: UIViewController {
             containerViewWidthConstraint?.priority = UILayoutPriority(rawValue: 850.0)
             containerViewWidthConstraint?.isActive = true
         case .fixedSize(let size):
-            containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: size.height)
+            containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: size.height + PopoverUX.arrowSize.height)
             containerViewHeightConstraint?.priority = UILayoutPriority(rawValue: 850.0)
             containerViewHeightConstraint?.isActive = true
             
@@ -129,7 +129,7 @@ class PopoverController: UIViewController {
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         if case .preferredContentSize = contentSizeBehavior {
             self.containerViewHeightConstraint?.springAnimate(property: kPOPLayoutConstraintConstant, key: "constant") { animation, _ in
-                animation.toValue = container.preferredContentSize.height
+                animation.toValue = container.preferredContentSize.height + PopoverUX.arrowSize.height
             }
             self.containerViewWidthConstraint?.springAnimate(property: kPOPLayoutConstraintConstant, key: "constant") { animation, _ in
                 animation.toValue = container.preferredContentSize.width
