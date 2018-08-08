@@ -397,7 +397,7 @@ class TabTrayController: UIViewController {
             make.left.equalTo(view.safeArea.left)
             make.right.equalTo(view.safeArea.right)
             make.bottom.equalTo(view.safeArea.bottom)
-            make.top.equalTo(self.topLayoutGuide.snp.bottom)
+            make.top.equalTo(view.safeArea.top)
         }
 
         toolbar.snp.makeConstraints { make in

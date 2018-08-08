@@ -146,7 +146,7 @@ extension AppAuthenticator {
                 
                 DispatchQueue.main.async {
                     switch code {
-                    case .userFallback, .touchIDNotEnrolled, .touchIDNotAvailable, .touchIDLockout:
+                    case .userFallback, .biometryNotEnrolled, .biometryNotAvailable, .biometryLockout:
                         fallback?()
                     case .userCancel:
                         cancel?()
