@@ -258,6 +258,10 @@ void PaymentsServiceImpl::OnPromotion(ledger::Promo result) {
   TriggerOnPromotion(result);
 }
 
+void PaymentsServiceImpl::OnPromotionCaptcha(std::string image) {
+  TriggerOnPromotionCaptcha(image);
+}
+
 void PaymentsServiceImpl::OnReconcileComplete(ledger::Result result,
                                               const std::string& viewing_id) {
   LOG(ERROR) << "reconcile complete " << viewing_id;
@@ -516,6 +520,15 @@ void PaymentsServiceImpl::TriggerOnPromotion(const ledger::Promo result) {
 
   for (auto& observer : observers_)
     observer.OnPromotion(this, properties);
+}
+
+void PaymentsServiceImpl::GetPromotionCaptcha() {
+  ledger_->GetPromotionCaptcha();
+}
+
+void PaymentsServiceImpl::TriggerOnPromotionCaptcha(std::string image) {
+  for (auto& observer : observers_)
+    observer.OnPromotionCaptcha(this, image);
 }
 
 

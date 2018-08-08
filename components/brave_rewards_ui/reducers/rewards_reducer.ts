@@ -50,6 +50,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('getPromotion', [])
       break
     case types.ON_PROMOTION:
+      state = { ...state }
       state.promotion = {
         amount: action.payload.properties.amount,
         promotionId: action.payload.properties.promotionId
@@ -59,8 +60,46 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('getPromotionCaptcha', [])
       break
     case types.ON_PROMOTION_CAPTCHA:
-      console.log(action.payload)
-      break
+      {
+        if (state.promotion) {
+          let promotion = state.promotion
+          promotion.captcha = `data:image/jpeg;base64,${action.payload.image}`
+          state = {
+            ...state,
+            promotion
+          }
+        }
+
+        break
+      }
+    case types.ON_PROMOTION_RESET:
+      {
+        if (state.promotion) {
+          let promotion: Rewards.Promotion = {
+            promotionId: state.promotion.promotionId,
+            amount: state.promotion.amount
+          }
+
+          state = {
+            ...state,
+            promotion
+          }
+        }
+
+        break
+      }
+    case types.ON_PROMOTION_DELETE:
+      {
+        if (state.promotion) {
+          delete state.promotion
+
+          state = {
+            ...state
+          }
+        }
+
+        break
+      }
   }
 
   if (state !== startingState) {

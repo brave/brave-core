@@ -42,10 +42,6 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletCreated()
   }
 
-  function promotion (properties: Rewards.Promotion) {
-    getActions().onPromotion(properties)
-  }
-
   function walletCreateFailed () {
     getActions().onWalletCreateFailed()
   }
@@ -54,12 +50,21 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletProperties(properties)
   }
 
+  function promotion (properties: Rewards.Promotion) {
+    getActions().onPromotion(properties)
+  }
+
+  function promotionCaptcha (image: string) {
+    getActions().onPromotionCaptcha(image)
+  }
+
   return {
     initialize,
     walletCreated,
     walletCreateFailed,
     walletProperties,
-    promotion
+    promotion,
+    promotionCaptcha
   }
 })
 

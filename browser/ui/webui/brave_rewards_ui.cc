@@ -4,6 +4,8 @@
 
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 
+#include "base/base64.h"
+
 #include "brave/browser/payments/payments_service.h"
 #include "brave/browser/payments/wallet_properties.h"
 #include "brave/browser/payments/payments_service_factory.h"
@@ -40,17 +42,21 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnWalletCreated();
   void OnWalletCreateFailed();
   void GetWalletProperties(const base::ListValue* args);
-  void GetPromotion(const base::ListValue* args);
   void OnWalletProperties(payments::WalletProperties result);
+  void GetPromotion(const base::ListValue* args);
   void OnPromotion(payments::Promotion result);
+  void GetPromotionCaptcha(const base::ListValue* args);
+  void OnPromotionCaptcha(std::string image);
 
   // PaymentServiceObserver implementation
   void OnWalletCreated(payments::PaymentsService* payment_service,
                        int error_code) override;
   void OnWalletProperties(payments::PaymentsService* payment_service,
-                       payments::WalletProperties result) override;
+                          payments::WalletProperties result) override;
   void OnPromotion(payments::PaymentsService* payment_service,
-                       payments::Promotion result) override;
+                   payments::Promotion result) override;
+  void OnPromotionCaptcha(payments::PaymentsService* payment_service,
+                          std::string image) override;
 
   payments::PaymentsService* payments_service_;  // NOT OWNED
 
@@ -71,6 +77,9 @@ void RewardsDOMHandler::RegisterMessages() {
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback("getPromotion",
                                     base::BindRepeating(&RewardsDOMHandler::GetPromotion,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("getPromotionCaptcha",
+                                    base::BindRepeating(&RewardsDOMHandler::GetPromotionCaptcha,
                                                         base::Unretained(this)));
 }
 
@@ -175,6 +184,28 @@ void RewardsDOMHandler::OnPromotion(payments::Promotion result) {
     promotion->SetDouble("amount", result.amount);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotion", *promotion);
+  }
+}
+
+void RewardsDOMHandler::OnPromotionCaptcha(
+    payments::PaymentsService* payment_service,
+    std::string image) {
+  OnPromotionCaptcha(image);
+}
+
+void RewardsDOMHandler::GetPromotionCaptcha(const base::ListValue* args) {
+  if (payments_service_) {
+    payments_service_->GetPromotionCaptcha();
+  }
+}
+
+void RewardsDOMHandler::OnPromotionCaptcha(std::string image) {
+  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    std::string encoded_string;
+    base::Value chunkValue;
+    base::Base64Encode(image, &encoded_string);
+    chunkValue = base::Value(std::move(encoded_string));
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotionCaptcha", chunkValue);
   }
 }
 

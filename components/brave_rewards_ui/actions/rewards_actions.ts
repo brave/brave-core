@@ -32,6 +32,10 @@ export const onPromotion = (properties: Rewards.Promotion) => action(types.ON_PR
 
 export const getPromotionCaptcha = () => action(types.GET_PROMOTION_CAPTCHA)
 
-export const onPromotionCaptcha = (properties: Rewards.Promotion) => action(types.ON_PROMOTION_CAPTCHA, {
-  properties
+export const onPromotionCaptcha = (image: string) => action(types.ON_PROMOTION_CAPTCHA, {
+  image
 })
+
+export const onResetPromotion = () => action(types.ON_PROMOTION_RESET)
+
+export const onDeletePromotion = () => action(types.ON_PROMOTION_DELETE)

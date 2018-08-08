@@ -18,14 +18,9 @@ import {
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 
-// Assets
-const captchaDrop = require('../../img/rewards/captchaDrop.png')
-
-type Step = '' | 'init' | 'captcha' | 'complete'
-
 interface State {
   grantShow: boolean
-  grantStep: Step
+  showWelcome: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -36,7 +31,7 @@ class Grant extends React.Component<Props, State> {
     super(props)
     this.state = {
       grantShow: true,
-      grantStep: ''
+      showWelcome: false
     }
   }
 
@@ -45,19 +40,38 @@ class Grant extends React.Component<Props, State> {
   }
 
   onGrantShow = () => {
-    this.setState({ grantShow: false, grantStep: 'init' })
+    this.setState({
+      showWelcome: true
+    })
   }
 
   onGrantHide = () => {
-    this.setState({ grantStep: '' })
+    this.setState({
+      showWelcome: false
+    })
+    this.actions.onResetPromotion()
   }
 
-  onGrantStep = (step: Step) => {
-    this.setState({ grantStep: step })
+  onSuccess = () => {
+    this.setState({
+      grantShow: false,
+      showWelcome: false
+    })
+    this.actions.onDeletePromotion()
+  }
+
+  onSolution = () => {
+    // TODO implement last step
+    console.log('solved')
   }
 
   onAccept = () => {
     this.actions.getPromotionCaptcha()
+  }
+
+  onLater = () => {
+    // TODO should we delay next fetch?
+    this.actions.onDeletePromotion()
   }
 
   render () {
@@ -75,35 +89,35 @@ class Grant extends React.Component<Props, State> {
             : null
         }
         {
-          this.state.grantStep === 'captcha'
-            ? <GrantWrapper
-              onClose={this.onGrantHide}
-              title={'Almost there…'}
-              text={'Prove that you are human!'}
-            >
-              <GrantCaptcha onSolution={this.onGrantStep.bind(this, 'complete')} dropBgImage={captchaDrop} />
-            </GrantWrapper>
-            : null
-        }
-        {
-          this.state.grantStep === 'init'
-            ? <GrantWrapper
-              onClose={this.onGrantHide}
-              title={'Good news!'}
-              text={`Free ${promotion.amount} BAT have been awarded to you so you can support more publishers.`}
-            >
-              <GrantInit onAccept={this.onAccept} onLater={this.onGrantHide} />
-            </GrantWrapper>
-            : null
-        }
-        {
-          this.state.grantStep === 'complete'
+          promotion.expireDate
             ? <GrantWrapper
               onClose={this.onGrantHide}
               title={'It’s your lucky day!'}
               text={'Your token grant is on its way.'}
             >
-              <GrantComplete onClose={this.onGrantHide} amount={30} date={'8/15/2018'} />
+              <GrantComplete onClose={this.onSuccess} amount={promotion.amount} date={new Date(promotion.expireDate * 1000).toLocaleDateString()} />
+            </GrantWrapper>
+            : null
+        }
+        {
+          !promotion.expireDate && promotion.captcha
+            ? <GrantWrapper
+              onClose={this.onGrantHide}
+              title={'Almost there…'}
+              text={'Prove that you are human!'}
+            >
+              <GrantCaptcha onSolution={this.onSolution} dropBgImage={promotion.captcha} />
+            </GrantWrapper>
+            : null
+        }
+        {
+          !promotion.expireDate && !promotion.captcha && this.state.showWelcome
+            ? <GrantWrapper
+              onClose={this.onGrantHide}
+              title={'Good news!'}
+              text={`Free ${promotion.amount} BAT have been awarded to you so you can support more publishers.`}
+            >
+              <GrantInit onAccept={this.onAccept} onLater={this.onLater} />
             </GrantWrapper>
             : null
         }

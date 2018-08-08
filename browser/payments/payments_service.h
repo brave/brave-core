@@ -38,6 +38,7 @@ class PaymentsService : public KeyedService {
                                   uint32_t limit,
                                 const GetContentSiteListCallback& callback) = 0;
   virtual void GetPromotion(const std::string& lang, const std::string& paymentId) = 0;
+  virtual void GetPromotionCaptcha() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
   virtual void OnShow(SessionID tab_id) = 0;

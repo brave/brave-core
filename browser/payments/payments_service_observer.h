@@ -19,9 +19,11 @@ class PaymentsServiceObserver {
   virtual void OnWalletCreated(PaymentsService* payment_service,
                                int error_code) {};
   virtual void OnWalletProperties(PaymentsService* payment_service,
-                               payments::WalletProperties properties) {};
+                                  payments::WalletProperties properties) {};
   virtual void OnPromotion(PaymentsService* payment_service,
-                               payments::Promotion properties) {};
+                           payments::Promotion properties) {};
+  virtual void OnPromotionCaptcha(PaymentsService* payment_service,
+                                  std::string image) {};
 };
 
 }  // namespace payments
