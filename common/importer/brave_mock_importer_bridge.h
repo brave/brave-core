@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "brave/common/importer/brave_stats.h"
 #include "chrome/common/importer/mock_importer_bridge.h"
 #include "net/cookies/canonical_cookie.h"
 #include "testing/gmock/include/gmock/gmock.h"
