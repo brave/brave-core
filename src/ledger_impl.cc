@@ -336,4 +336,8 @@ void LedgerImpl::OnPromotionCaptcha(const std::string& image) {
   ledger_client_->OnPromotionCaptcha(image);
 }
 
+std::string LedgerImpl::GetWalletPassphrase() const {
+  return bat_client_->getWalletPassphrase();
+}
+
 }  // namespace bat_ledger

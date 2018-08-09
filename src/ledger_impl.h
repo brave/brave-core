@@ -83,6 +83,8 @@ class LedgerImpl : public ledger::Ledger,
   void GetPromotionCaptcha() const override;
   void OnPromotionCaptcha(const std::string&);
 
+  std::string GetWalletPassphrase() const override;
+
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,

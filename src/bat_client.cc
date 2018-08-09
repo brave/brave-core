@@ -857,7 +857,7 @@ void BatClient::voteBatchCallback(const std::string& publisher, bool result, con
 //   // TODO add ballots to transaction, saveState, remove ballots from vector of ballots
 // }
 
-std::string BatClient::getWalletPassphrase() {
+std::string BatClient::getWalletPassphrase() const {
   DCHECK(state_->walletInfo_.keyInfoSeed_.size());
   std::string passPhrase;
   if (0 == state_->walletInfo_.keyInfoSeed_.size()) {

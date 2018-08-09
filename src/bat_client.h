@@ -39,7 +39,7 @@ class BatClient : public ledger::LedgerCallbackHandler {
   unsigned int ballots(const std::string& viewingId);
   void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);
   void prepareBallots();
-  std::string getWalletPassphrase();
+  std::string getWalletPassphrase() const;
   void walletPropertiesCallback(bool success, const std::string& response);
   void recoverWallet(const std::string& passPhrase);
   void getPromotion(const std::string& lang, const std::string& forPaymentId);
