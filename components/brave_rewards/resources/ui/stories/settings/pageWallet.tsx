@@ -315,7 +315,6 @@ class PageWallet extends React.Component<{}, State> {
             onPrint={doNothing}
             onSaveFile={doNothing}
             onRestore={doNothing}
-            onImport={doNothing}
           />
           : null
         }

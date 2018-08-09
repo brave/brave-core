@@ -17,7 +17,7 @@ export const StyledContent = styled.div`
   margin-bottom: 39px;
 ` as any
 
-export const StyledImport = styled.span`
+export const StyledImport = styled.label`
   color: #4c54d2;
   cursor: pointer;
 ` as any

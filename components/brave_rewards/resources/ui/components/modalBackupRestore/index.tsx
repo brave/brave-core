@@ -29,7 +29,6 @@ export interface Props {
   onPrint: (key: string) => void
   onSaveFile: (key: string) => void
   onRestore: (key: string) => void
-  onImport: () => void
   error?: React.ReactNode
   id?: string
 }
@@ -39,6 +38,26 @@ export interface Props {
   - add error flow
  */
 export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
+  onFileUpload = (inputFile: React.ChangeEvent<HTMLInputElement>) => {
+    const input: HTMLInputElement = inputFile.target
+    const self = this
+
+    if (!input.files) {
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = function () {
+      self.props.onRestore((reader.result || '').trim())
+    }
+
+    try {
+      reader.readAsText(input.files[0])
+    } catch (e) {
+      self.props.onRestore('')
+    }
+  }
+
   render () {
     const {
       id,
@@ -50,7 +69,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
       onPrint,
       onSaveFile,
       onRestore,
-      onImport,
       error
     } = this.props
 
@@ -64,7 +82,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
             </StyledContent>
             <TextArea
               title={getLocale('recoveryKeys')}
-              theme={{ maxWidth: '100%', minHeight: '112px' }}
+              theme={{ maxWidth: '100%', minHeight: '140px' }}
               defaultValue={recoveryKey}
               disabled={true}
             />
@@ -108,9 +126,20 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
             }
             <TextArea
               title={<>
-                {getLocale('rewardsRestoreText3')}<StyledImport onClick={onImport}>{getLocale('import')}</StyledImport>
+                {getLocale('rewardsRestoreText3')} <StyledImport
+                  htmlFor={'recoverFile'}
+                >
+                  {getLocale('import')}
+                </StyledImport>
+                <input
+                  type='file'
+                  id='recoverFile'
+                  name='recoverFile'
+                  style={{ display: 'none' }}
+                  onChange={this.onFileUpload}
+                />
               </>}
-              theme={{ maxWidth: '100%', minHeight: '112px' }}
+              theme={{ maxWidth: '100%', minHeight: '140px' }}
               defaultValue={''}
             />
             <StyledActionsWrapper>

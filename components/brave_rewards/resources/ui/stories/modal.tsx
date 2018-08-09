@@ -42,7 +42,6 @@ storiesOf('Feature Components/Rewards/Modal', module)
           onPrint={doNothing}
           onSaveFile={doNothing}
           onRestore={doNothing}
-          onImport={doNothing}
         />
       </div>
     )
