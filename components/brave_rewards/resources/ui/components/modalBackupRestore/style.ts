@@ -15,7 +15,7 @@ export const StyledContent = styled.div`
   font-weight: 300;
   line-height: 1.63;
   color: #686978;
-  margin-bottom: ${(p: Props) => p.success || p.error ? '0' : '39px'};
+  margin-bottom: 39px;
 ` as any
 
 export const StyledImport = styled.label`
@@ -34,6 +34,13 @@ export const StyleButtonWrapper = styled.div`
 export const StyledDoneWrapper = styled.div`
   text-align: center;
   margin-top: 59px;
+` as any
+
+export const StyledStatus = styled.div`
+  display: ${(p: Props) => p.success || p.error ? 'block' : 'none'};
+  margin: -16px 0 16px;
+  border-radius: 6px;
+  overflow: hidden;
 ` as any
 
 export const StyledActionsWrapper = styled.div`

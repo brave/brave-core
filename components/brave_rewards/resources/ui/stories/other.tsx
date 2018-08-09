@@ -78,7 +78,9 @@ storiesOf('Feature Components/Rewards/Other', module)
   .add('Alert',() => {
     return (
       <Alert
-        type={select('Type', { error: 'error', success: 'success' }, 'success')}
+        type={select('Type', { error: 'error', success: 'success', warning: 'warning' }, 'success')}
+        bg={boolean('Background color', false)}
+        color={boolean('Text color', false)}
       >
         <b>Funds received!</b> 25 tokens are added to your wallet successfully.
       </Alert>

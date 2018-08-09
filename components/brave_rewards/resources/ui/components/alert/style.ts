@@ -3,19 +3,20 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import { Props } from './index'
+import { Theme } from './index'
 import { setTheme } from '../../../helpers'
 
 export const StyledWrapper = styled.div`
-  position: ${(p: Props) => setTheme(p.theme, 'position') || 'relative'};
-  top: ${(p: Props) => setTheme(p.theme, 'top') || 0};
-  left: ${(p: Props) => setTheme(p.theme, 'left') || 0};
+  position: ${(p: {theme: Theme, bgColor: string}) => setTheme(p.theme, 'position') || 'relative'};
+  top: ${(p: {theme: Theme, bgColor: string}) => setTheme(p.theme, 'top') || 0};
+  left: ${(p: {theme: Theme , bgColor: string}) => setTheme(p.theme, 'left') || 0};
+  left: ${(p: {theme: Theme , bgColor: string}) => setTheme(p.theme, 'left') || 0};
+  background: ${(p: {theme: Theme , bgColor: string}) => p.bgColor};
   display: flex;
   justify-content: flex-start;
   align-content: flex-start;
   flex-wrap: nowrap;
-  background-color: #fff;
-  padding: 30px 38px 33px 19px;
+  padding: 15px 38px 15px 19px;
   align-items: center;
   font-family: Poppins, sans-serif;
 ` as any
@@ -29,14 +30,16 @@ export const StyledIcon = styled.span`
 export const StyledContent = styled.div`
   flex-grow: 1;
   flex-basis: 50%;
-  padding-left: 11px;
-  font-size: 14px;
-  line-height: 1.57;
-  color: #838391;
+  padding-left: 19px;
+  font-family: Muli, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: -0.3px;
+  color: ${(p: {color: string}) => p.color || '#838391'};
 
   b {
     font-weight: 600;
-    color: #4b4c5c;
+    color: ${(p: {color: string}) => p.color || '#4b4c5c'};
   }
 ` as any
 

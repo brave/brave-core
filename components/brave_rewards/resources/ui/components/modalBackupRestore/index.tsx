@@ -9,7 +9,8 @@ import {
   StyledImport,
   StyleButtonWrapper,
   StyledActionsWrapper,
-  StyledDoneWrapper
+  StyledDoneWrapper,
+  StyledStatus
 } from './style'
 import Tabs from '../../../components/layout/tabs/index'
 import TextArea from '../../../components/formControls/textarea/index'
@@ -148,23 +149,25 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             </StyledDoneWrapper>
           </div>
           <div id={`${id}-restore`} data-key={'restore'} data-title={getLocale('rewardsRestoreText1')}>
-            <StyledContent error={error} success={success}>
+            <StyledContent>
               {getLocale('rewardsRestoreText2')}
             </StyledContent>
-            {
-              error
-              ? <Alert type={'error'}>
-                  {error}
-              </Alert>
-              : null
-            }
-            {
-              success
-              ? <Alert type={'success'}>
-                {success}
-              </Alert>
-              : null
-            }
+            <StyledStatus error={error} success={success}>
+              {
+                error
+                ? <Alert type={'error'} color={true} bg={true}>
+                    {error}
+                </Alert>
+                : null
+              }
+              {
+                success
+                ? <Alert type={'success'} color={true} bg={true}>
+                  {success}
+                </Alert>
+                : null
+              }
+            </StyledStatus>
             <TextArea
               title={<>
                 {getLocale('rewardsRestoreText3')} <StyledImport

@@ -5,6 +5,8 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   position: relative;
   top: 0;
   left: 0;
+  left: 0;
+  background: #fff;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -19,8 +21,7 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-  background-color: #fff;
-  padding: 30px 38px 33px 19px;
+  padding: 15px 38px 15px 19px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -44,9 +45,14 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   -webkit-flex-basis: 50%;
   -ms-flex-preferred-size: 50%;
   flex-basis: 50%;
-  padding-left: 11px;
-  font-size: 14px;
-  line-height: 1.57;
+  padding-left: 19px;
+  font-family: Muli,sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  -webkit-letter-spacing: -0.3px;
+  -moz-letter-spacing: -0.3px;
+  -ms-letter-spacing: -0.3px;
+  letter-spacing: -0.3px;
   color: #838391;
 }
 
@@ -87,6 +93,7 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   </span>
   <div
     className="c2"
+    color={null}
   />
 </div>
 `;
