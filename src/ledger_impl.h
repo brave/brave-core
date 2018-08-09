@@ -81,9 +81,11 @@ class LedgerImpl : public ledger::Ledger,
   void OnPromotion(const braveledger_bat_helper::PROMOTION_ST&);
 
   void GetPromotionCaptcha() const override;
-  void OnPromotionCaptcha(const std::string&);
+  void OnPromotionCaptcha(const std::string& image);
 
   std::string GetWalletPassphrase() const override;
+  void RecoverWallet(const std::string& passPhrase) const override;
+  void OnRecoverWallet(const bool& error, const double& balance);
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,

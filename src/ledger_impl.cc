@@ -340,4 +340,13 @@ std::string LedgerImpl::GetWalletPassphrase() const {
   return bat_client_->getWalletPassphrase();
 }
 
+void LedgerImpl::RecoverWallet(const std::string& passPhrase) const {
+  bat_client_->recoverWallet(passPhrase);
+}
+
+void LedgerImpl::OnRecoverWallet(const bool& error, const double& balance) {
+  ledger_client_->OnRecoverWallet(error, balance);
+}
+
+
 }  // namespace bat_ledger

@@ -891,8 +891,7 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
   int result = bip39_mnemonic_to_bytes(nullptr, passPhrase.c_str(), &newSeed.front(), newSeed.size(), &written);
   LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
   if (0 != result || 0 == written) {
-    DCHECK(false);
-
+    ledger_->OnRecoverWallet(true, 0);
     return;
   }
   state_->walletInfo_.keyInfoSeed_ = newSeed;
@@ -915,7 +914,13 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
 }
 
 void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& response) {
-  //LOG(ERROR) << "!!!recoverWalletPublicKeyCallback == " << response;
+  LOG(ERROR) << "!!!recoverWalletPublicKeyCallback == " << response;
+
+  if (!result) {
+    ledger_->OnRecoverWallet(true, 0);
+    return;
+  }
+
   std::string recoveryId;
   braveledger_bat_helper::getJSONValue("paymentId", response, recoveryId);
 
@@ -929,9 +934,17 @@ void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& r
 }
 
 void BatClient::recoverWalletCallback(bool result, const std::string& response) {
-  //LOG(ERROR) << "!!!recoverWalletCallback == " << response;
+  LOG(ERROR) << "!!!recoverWalletCallback == " << response;
+
+  if (!result) {
+    ledger_->OnRecoverWallet(true, 0);
+    return;
+  }
+
   braveledger_bat_helper::getJSONWalletInfo(response, state_->walletInfo_, state_->fee_currency_, state_->fee_amount_, state_->days_);
+  braveledger_bat_helper::getJSONRecoverWallet(response, state_->walletProperties_.balance_, state_->walletProperties_.probi_);
   saveState();
+  ledger_->OnRecoverWallet(false, state_->walletProperties_.balance_);
 }
 
 void BatClient::getPromotion(const std::string& lang, const std::string& forPaymentId) {
