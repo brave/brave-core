@@ -78,7 +78,9 @@ bool IsWhitelisted(const extensions::Extension* extension) {
     // Test ID: PDFJS
     "kpbdcmcgkedhpbcpfndimofjnefgjidd",
     // Test ID: Brave HTTPS Everywhere Updater
-    "bhlmpjhncoojbkemjkeppfahkglffilp"
+    "bhlmpjhncoojbkemjkeppfahkglffilp",
+    // Test ID: Brave Tor Client Updater
+    "ngicbhhaldfdgmjhilmnleppfpmkgbbk"
   });
   return std::find(whitelist.begin(), whitelist.end(),
       extension->id()) != whitelist.end();
