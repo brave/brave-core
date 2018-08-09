@@ -1,17 +1,27 @@
 diff --git a/chrome/utility/importer/importer_creator.cc b/chrome/utility/importer/importer_creator.cc
-index 2bef627aa890484a3fb75fa9bd04b2994f997305..48b0ce819af1ad86b5ae19ba778dcae79560bae9 100644
+index 2bef627aa890484a3fb75fa9bd04b2994f997305..3478ecfc1ad3c8776b3dae280ca7c529b9f909e6 100644
 --- a/chrome/utility/importer/importer_creator.cc
 +++ b/chrome/utility/importer/importer_creator.cc
-@@ -5,6 +5,8 @@
+@@ -5,9 +5,11 @@
  #include "chrome/utility/importer/importer_creator.h"
  
  #include "base/logging.h"
 +#include "brave/utility/importer/brave_importer.h"
 +#include "brave/utility/importer/chrome_importer.h"
++#include "brave/utility/importer/firefox_importer.h"
  #include "build/build_config.h"
  #include "chrome/utility/importer/bookmarks_file_importer.h"
- #include "chrome/utility/importer/firefox_importer.h"
-@@ -43,6 +45,10 @@ scoped_refptr<Importer> CreateImporterByType(ImporterType type) {
+-#include "chrome/utility/importer/firefox_importer.h"
+ 
+ #if defined(OS_WIN)
+ #include "chrome/common/importer/edge_importer_utils_win.h"
+@@ -38,11 +40,15 @@ scoped_refptr<Importer> CreateImporterByType(ImporterType type) {
+     case TYPE_BOOKMARKS_FILE:
+       return new BookmarksFileImporter();
+     case TYPE_FIREFOX:
+-      return new FirefoxImporter();
++      return new brave::FirefoxImporter();
+ #if defined(OS_MACOSX)
      case TYPE_SAFARI:
        return new SafariImporter(base::mac::GetUserLibraryPath());
  #endif
