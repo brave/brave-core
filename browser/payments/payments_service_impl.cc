@@ -531,7 +531,9 @@ void PaymentsServiceImpl::TriggerOnPromotionCaptcha(std::string image) {
     observer.OnPromotionCaptcha(this, image);
 }
 
-
+std::string PaymentsServiceImpl::GetWalletPassphrase() const {
+  return ledger_->GetWalletPassphrase();
+}
 
 
 }  // namespace payments

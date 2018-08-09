@@ -55,6 +55,7 @@ class PaymentsServiceImpl : public PaymentsService,
   void GetWalletProperties() override;
   void GetPromotion(const std::string& lang, const std::string& paymentId) override;
   void GetPromotionCaptcha() override;
+  std::string GetWalletPassphrase() const override;
   void GetContentSiteList(uint32_t start,
                           uint32_t limit,
      const GetContentSiteListCallback& callback) override;

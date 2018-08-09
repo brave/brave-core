@@ -31,8 +31,11 @@ class SettingsPage extends React.Component<Props, {}> {
 
   componentDidMount () {
     if (this.props.rewardsData.firstLoad === null) {
+      // First load ever
       this.actions.onSettingSave('firstLoad', true)
+      this.actions.getWalletPassphrase()
     } else if (this.props.rewardsData.firstLoad) {
+      // Second load ever
       this.actions.onSettingSave('firstLoad', false)
     }
 

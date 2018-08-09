@@ -39,3 +39,9 @@ export const onPromotionCaptcha = (image: string) => action(types.ON_PROMOTION_C
 export const onResetPromotion = () => action(types.ON_PROMOTION_RESET)
 
 export const onDeletePromotion = () => action(types.ON_PROMOTION_DELETE)
+
+export const getWalletPassphrase = () => action(types.GET_WALLLET_PASSPHRASE)
+
+export const onWalletPassphrase = (pass: string) => action(types.ON_WALLLET_PASSPHRASE, {
+  pass
+})

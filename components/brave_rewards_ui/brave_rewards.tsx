@@ -58,13 +58,18 @@ window.cr.define('brave_rewards', function () {
     getActions().onPromotionCaptcha(image)
   }
 
+  function walletPassphrase (pass: string) {
+    getActions().onWalletPassphrase(pass)
+  }
+
   return {
     initialize,
     walletCreated,
     walletCreateFailed,
     walletProperties,
     promotion,
-    promotionCaptcha
+    promotionCaptcha,
+    walletPassphrase
   }
 })
 
