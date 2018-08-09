@@ -131,9 +131,7 @@ class TabManagerTests: XCTestCase {
             tab.url = URL(string: "http://yahoo.com")!
             manager.configureTab(tab, request: URLRequest(url: tab.url!), flushToDisk: false, zombie: false)
         }
-
-        manager.storeChanges()
-
+        
         XCTAssertEqual(stateDelegate.numberOfTabsStored, 3, "Expected state delegate to have been called with 3 tabs, but called with \(stateDelegate.numberOfTabsStored)")
     }
 
@@ -152,8 +150,6 @@ class TabManagerTests: XCTestCase {
             tab.url = URL(string: "http://yahoo.com")!
             manager.configureTab(tab, request: URLRequest(url: tab.url!), flushToDisk: false, zombie: false)
         }
-
-        manager.storeChanges()
 
         XCTAssertEqual(stateDelegate.numberOfTabsStored, 0, "Expected state delegate to have been called with 3 tabs, but called with \(stateDelegate.numberOfTabsStored)")
     }
