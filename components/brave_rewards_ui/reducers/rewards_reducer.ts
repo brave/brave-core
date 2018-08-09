@@ -100,6 +100,16 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
         break
       }
+    case types.GET_WALLLET_PASSPHRASE:
+      chrome.send('getWalletPassphrase', [])
+      break
+    case types.ON_WALLLET_PASSPHRASE:
+      const value = action.payload.pass
+      if (value && value.length > 0) {
+        state = { ...state }
+        state.recoveryKey = value
+      }
+      break
   }
 
   if (state !== startingState) {

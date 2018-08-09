@@ -44,7 +44,15 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
+  get actions () {
+    return this.props.actions
+  }
+
   onModalBackupToggle = () => {
+    if (!this.state.modalBackup && this.props.rewardsData.recoveryKey.length === 0) {
+      this.actions.getWalletPassphrase()
+    }
+
     this.setState({
       modalBackup: !this.state.modalBackup
     })

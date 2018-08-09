@@ -47,6 +47,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnPromotion(payments::Promotion result);
   void GetPromotionCaptcha(const base::ListValue* args);
   void OnPromotionCaptcha(std::string image);
+  void GetWalletPassphrase(const base::ListValue* args);
 
   // PaymentServiceObserver implementation
   void OnWalletCreated(payments::PaymentsService* payment_service,
@@ -80,6 +81,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("getPromotionCaptcha",
                                     base::BindRepeating(&RewardsDOMHandler::GetPromotionCaptcha,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("getWalletPassphrase",
+                                    base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
                                                         base::Unretained(this)));
 }
 
@@ -206,6 +210,14 @@ void RewardsDOMHandler::OnPromotionCaptcha(std::string image) {
     base::Base64Encode(image, &encoded_string);
     chunkValue = base::Value(std::move(encoded_string));
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotionCaptcha", chunkValue);
+  }
+}
+
+void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
+  if (payments_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    std::string pass = payments_service_->GetWalletPassphrase();
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletPassphrase", base::Value(pass));
   }
 }
 
