@@ -11,6 +11,7 @@
 #include "brave/browser/ui/webui/sync/sync_js_layer.h"
 #include "brave/components/brave_sync/brave_sync_controller.h"
 #include "brave/components/brave_sync/brave_sync_cansendbookmarks.h"
+#include "brave/components/brave_sync/client/brave_sync_client.h"
 
 class Browser;
 class SyncJsLayer;
@@ -45,7 +46,8 @@ struct BraveSyncSettings;
 class BraveSyncBookmarks;
 
 class BraveSyncControllerImpl : public BraveSyncController,
-                            public SyncJsLayerResponseReceiver,
+                            ///public SyncJsLayerResponseReceiver,///
+                            public SyncLibToBrowserHandler,
                             public BrowserListObserver,
                             public CanSendSyncBookmarks {
 public:
@@ -87,15 +89,40 @@ private:
     const std::string &arg4);
 
   // SyncJsLayerResponseReceiver methods and derived methods
+  //void OnJsLibMessage(const std::string &message, const base::ListValue* args) override; //SyncJsLayerResponseReceiver::OnJsLibMessage
+  //
+
+
+  // Compiler complains at
+  void OnMessageFromSyncReceived() override;
+
+  // SyncLibToBrowserHandler overrides
+  void OnSyncDebug(const std::string &message) override;
+  void OnSyncSetupError(const std::string &error) override;
+  void OnGetInitData(const std::string &sync_version) override;
+  void OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) override;
+  void OnSyncReady() override;
+  void OnGetExistingObjects(const std::string &category_name,
+    const RecordsList &records, const base::Time &last_record_time_stamp) override;
+  void OnResolvedSyncRecords(const std::string &category_name,
+    const RecordsList &records) override;
+  void OnDeletedSyncUser() override;
+  void OnDeleteSyncSiteSettings() override;
+  void OnSaveBookmarksBaseOrder(const std::string &order) override;
+  void OnSaveBookmarkOrder(const std::string &order,
+    const std::string &prev_order, const std::string &next_order) override;
+  // Temporary from SyncJsLayerResponseReceiver
   void OnJsLibMessage(const std::string &message, const base::ListValue* args) override;
-  void OnGotInitData(const base::ListValue* args);
-  void OnWordsToBytesDone(const base::ListValue* args);
-  void OnBytesToWordsDone(const base::ListValue* args);
-  void OnSyncReady(const base::ListValue* args);
-  void OnSaveInitData(const base::ListValue* args);
-  void OnGetExistingObjects(const base::ListValue* args);
-  void OnResolvedSyncRecords(const base::ListValue* args);
-  void OnSyncDebug(const base::ListValue* args);
+
+
+  void OnGotInitData_(const base::ListValue* args);
+  void OnWordsToBytesDone_(const base::ListValue* args);
+  void OnBytesToWordsDone_(const base::ListValue* args);
+  void OnSyncReady_(const base::ListValue* args);
+  void OnSaveInitData_(const base::ListValue* args);
+  void OnGetExistingObjects_(const base::ListValue* args);
+  void OnResolvedSyncRecords_(const base::ListValue* args);
+  void OnSyncDebug_(const base::ListValue* args);
 
   void OnResolvedPreferences(const std::string &category_name,
     std::unique_ptr<base::Value> records_v);
@@ -158,8 +185,10 @@ private:
 
   // Messages Controller => SyncWebUi
   SyncUI *sync_ui_;
+
   // Messages Controller => JS lib
-  SyncJsLayer *sync_js_layer_;
+  //SyncJsLayer *sync_js_layer_;//
+  BraveSyncClient *sync_client_;
 
   // True if we have received SyncReady from JS lib
   bool sync_initialized_;

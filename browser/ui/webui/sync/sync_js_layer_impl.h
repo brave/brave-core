@@ -10,7 +10,10 @@ namespace base {
   class Value;
 }  // namespace base
 
-class SyncJsLayerResponseReceiver;
+//class SyncJsLayerResponseReceiver;
+namespace brave_sync {
+  class SyncLibToBrowserHandler;
+} // brave_sync
 
 // The WebUI for chrome://bravesynclib
 class SyncJsLayerImpl : public BasicUI,
@@ -37,7 +40,8 @@ private:
 
   DISALLOW_COPY_AND_ASSIGN(SyncJsLayerImpl);
 
-  SyncJsLayerResponseReceiver *response_receiver_; //TODO AB: the list of delegates?
+  ////SyncJsLayerResponseReceiver *response_receiver_; //TODO AB: the list of delegates?
+  brave_sync::SyncLibToBrowserHandler *sync_lib_to_browser_handler_;
 
   bool init_js_lib_invoked_;
   bool page_loaded_;
