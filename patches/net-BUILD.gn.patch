@@ -1,0 +1,13 @@
+diff --git a/net/BUILD.gn b/net/BUILD.gn
+index 7f9901a8826ce131181b3febdef9b911bae23d12..065e37608dad0cea7903830bab956903463441bb 100644
+--- a/net/BUILD.gn
++++ b/net/BUILD.gn
+@@ -1713,6 +1713,8 @@ component("net") {
+       "url_request/view_cache_helper.h",
+       "url_request/websocket_handshake_userdata_key.cc",
+       "url_request/websocket_handshake_userdata_key.h",
++      "//brave/net/url_request/magnet_protocol_handler.cc",
++      "//brave/net/url_request/magnet_protocol_handler.h",
+     ]
+ 
+     if (enable_reporting) {
