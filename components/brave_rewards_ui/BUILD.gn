@@ -13,5 +13,5 @@ transpile_web_ui("brave_rewards_ui") {
     "reducers/rewards_reducer.ts",
   ]
 
-  bundle_name = "brave_rewards.bundle.js"
+  bundle_names = ["brave_rewards.bundle.js"]
 }

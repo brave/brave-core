@@ -126,6 +126,7 @@
   },
   "dependencies": {
     "@types/webtorrent": "^0.98.4",
+    "bittorrent-tracker": "github:brave/bittorrent-tracker#87cd1bba3ce2f40159210b904db3420e8b237b0a",
     "chrome-dgram": "^3.0.1",
     "chrome-net": "^3.3.1",
     "clipboard-copy": "^2.0.0",
@@ -133,6 +134,6 @@
     "prettier-bytes": "^1.0.4",
     "react-chrome-redux": "^1.5.1",
     "throttleit": "^1.0.0",
-    "webtorrent": "^0.102.0"
+    "webtorrent": "github:brave/webtorrent#600664249258dd7e893789e991d4cc5f481a7bae"
   }
 }

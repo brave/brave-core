@@ -5,8 +5,6 @@ brave_common_typescript_includes = [
 ]
 
 template("transpile_web_ui") {
-  bundle_name = invoker.bundle_name
-
   action(target_name) {
     script = "//brave/script/transpile-web-ui.py"
 
@@ -15,11 +13,16 @@ template("transpile_web_ui") {
       inputs += invoker.inputs
     }
 
-    output_dir = "$root_gen_dir/brave"
+    if (defined(invoker.output_dir)) {
+      output_dir = invoker.output_dir
+    } else {
+      output_dir = "$root_gen_dir/brave"
+    }
 
-    outputs = [
-      "$output_dir/$bundle_name"
-    ]
+    outputs = []
+    foreach(bundle_name, invoker.bundle_names) {
+      outputs += ["$output_dir/$bundle_name"]
+    }
 
     gen_dir = rebase_path(output_dir)
     args = [

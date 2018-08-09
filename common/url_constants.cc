@@ -5,5 +5,6 @@
 #include "brave/common/url_constants.h"
 
 const char kBraveUIScheme[] = "brave";
+const char kMagnetScheme[] = "magnet";
 const char kWidevineMoreInfoURL[] = "https://www.eff.org/issues/drm";
 const char kWidevineTOS[] = "https://policies.google.com/terms";

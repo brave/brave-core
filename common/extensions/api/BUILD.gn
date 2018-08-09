@@ -26,6 +26,7 @@ json_features("manifest_features") {
   sources = [
     "//chrome/common/extensions/api/_manifest_features.json",
     "//extensions/common/api/_manifest_features.json",
+    "_manifest_features.json",
   ]
 }
 

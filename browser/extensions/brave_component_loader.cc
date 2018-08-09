@@ -6,6 +6,7 @@
 
 #include "base/command_line.h"
 #include "brave/common/brave_switches.h"
+#include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "components/grit/brave_components_resources.h"
 
 namespace extensions {
@@ -33,6 +34,11 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
         brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
     Add(IDR_BRAVE_EXTENSON, brave_extension_path);
   }
+
+  base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
+  brave_webtorrent_path =
+    brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
+  Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
 }
 
 }  // namespace extensions
