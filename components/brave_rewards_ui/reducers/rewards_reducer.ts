@@ -110,6 +110,54 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         state.recoveryKey = value
       }
       break
+    case types.RECOVER_WALLET:
+      if (!action.payload.key || action.payload.key.length === 0) {
+        let ui = state.ui
+        ui.walletRecoverySuccess = false
+
+        state = {
+          ...state,
+          ui
+        }
+
+        break
+      }
+
+      chrome.send('recoverWallet', [action.payload.key])
+      break
+    case types.ON_RECOVER_WALLET_DATA:
+      {
+        state = { ...state }
+        const error = action.payload.properties.error
+        const balance = action.payload.properties.balance
+        let ui = state.ui
+        let walletInfo = state.walletInfo
+
+        if (error) {
+          ui.walletRecoverySuccess = false
+        } else {
+          ui.walletRecoverySuccess = true
+          walletInfo.balance = balance
+        }
+
+        state = {
+          ...state,
+          ui,
+          walletInfo
+        }
+        break
+      }
+    case types.ON_MODAL_BACKUP_CLOSE:
+      {
+        state = { ...state }
+        let ui = state.ui
+        ui.walletRecoverySuccess = null
+        state = {
+          ...state,
+          ui
+        }
+        break
+      }
   }
 
   if (state !== startingState) {

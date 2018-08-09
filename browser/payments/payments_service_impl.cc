@@ -262,6 +262,10 @@ void PaymentsServiceImpl::OnPromotionCaptcha(std::string image) {
   TriggerOnPromotionCaptcha(image);
 }
 
+void PaymentsServiceImpl::OnRecoverWallet(const bool& error, const double& balance) {
+  TriggerOnRecoverWallet(error, balance);
+}
+
 void PaymentsServiceImpl::OnReconcileComplete(ledger::Result result,
                                               const std::string& viewing_id) {
   LOG(ERROR) << "reconcile complete " << viewing_id;
@@ -533,6 +537,15 @@ void PaymentsServiceImpl::TriggerOnPromotionCaptcha(std::string image) {
 
 std::string PaymentsServiceImpl::GetWalletPassphrase() const {
   return ledger_->GetWalletPassphrase();
+}
+
+void PaymentsServiceImpl::RecoverWallet(const std::string passPhrase) const {
+  return ledger_->RecoverWallet(passPhrase);
+}
+
+void PaymentsServiceImpl::TriggerOnRecoverWallet(const bool error, const double balance) {
+  for (auto& observer : observers_)
+    observer.OnRecoverWallet(this, error, balance);
 }
 
 

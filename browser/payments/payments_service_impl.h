@@ -56,6 +56,7 @@ class PaymentsServiceImpl : public PaymentsService,
   void GetPromotion(const std::string& lang, const std::string& paymentId) override;
   void GetPromotionCaptcha() override;
   std::string GetWalletPassphrase() const override;
+  void RecoverWallet(const std::string passPhrase) const override;
   void GetContentSiteList(uint32_t start,
                           uint32_t limit,
      const GetContentSiteListCallback& callback) override;
@@ -84,6 +85,7 @@ class PaymentsServiceImpl : public PaymentsService,
   void TriggerOnWalletProperties(const ledger::WalletInfo result);
   void TriggerOnPromotion(const ledger::Promo result);
   void TriggerOnPromotionCaptcha(std::string image);
+  void TriggerOnRecoverWallet(const bool error, const double balance);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
@@ -100,6 +102,7 @@ class PaymentsServiceImpl : public PaymentsService,
   void OnWalletProperties(ledger::WalletInfo result) override;
   void OnPromotion(ledger::Promo result) override;
   void OnPromotionCaptcha(std::string image) override;
+  void OnRecoverWallet(const bool& error, const double& balance) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;

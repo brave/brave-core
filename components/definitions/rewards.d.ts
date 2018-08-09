@@ -23,6 +23,9 @@ declare namespace Rewards {
     recoveryKey: string
     wasFunded: boolean
     promotion?: Promotion
+    ui: {
+      walletRecoverySuccess: boolean | null
+    }
   }
 
   export interface ComponentProps {
@@ -50,5 +53,10 @@ declare namespace Rewards {
     amount: number
     captcha?: string
     expireDate?: number
+  }
+
+  export interface RecoverWallet {
+    error: boolean
+    balance: number
   }
 }
