@@ -5,9 +5,11 @@
 #include "brave/browser/extensions/brave_extension_management.h"
 
 #include "base/command_line.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "extensions/common/extension_urls.h"
 
@@ -24,6 +26,7 @@ BraveExtensionManagement::BraveExtensionManagement(
   if (!command_line.HasSwitch(switches::kDisablePDFJSExtension)) {
     RegisterForceInstalledExtensions();
   }
+  RegisterBraveExtensions();
 }
 
 BraveExtensionManagement::~BraveExtensionManagement() {
@@ -35,6 +38,13 @@ void BraveExtensionManagement::RegisterForceInstalledExtensions() {
       &forced_list_pref, pdfjs_extension_id,
       extension_urls::kChromeWebstoreUpdateURL);
   UpdateForcedExtensions(&forced_list_pref);
+}
+
+void BraveExtensionManagement::RegisterBraveExtensions() {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension))
+    g_brave_browser_process->tor_client_updater()->Register();
 }
 
 }  // namespace extensions

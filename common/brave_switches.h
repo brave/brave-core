@@ -13,9 +13,11 @@ extern const char kDisableBraveExtension[];
 
 extern const char kDisableBraveUpdate[];
 
+extern const char kDisableChromeGoogleURLTrackingClient[];
+
 extern const char kDisablePDFJSExtension[];
 
-extern const char kDisableChromeGoogleURLTrackingClient[];
+extern const char kDisableTorClientUpdaterExtension[];
 
 }  // namespace switches
 

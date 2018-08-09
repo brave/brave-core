@@ -11,13 +11,16 @@ namespace switches {
 // in debug mode with auto-reloading.
 const char kDisableBraveExtension[] = "disable-brave-extension";
 
-// Allows disabling the PDFJS extension.
-const char kDisablePDFJSExtension[] = "disable-pdfjs-extension";
-
 // This switch disables update module(Sparkle).
 const char kDisableBraveUpdate[] = "disable-brave-update";
 
 // This switch disables the ChromeGoogleURLTrackerClient
 const char kDisableChromeGoogleURLTrackingClient[] = "disable-chrome-google-url-tracking-client";
+
+// Allows disabling the PDFJS extension.
+const char kDisablePDFJSExtension[] = "disable-pdfjs-extension";
+
+// Allows disabling the Tor client updater extension.
+const char kDisableTorClientUpdaterExtension[] = "disable-tor-client-updater-extension";
 
 }  // namespace switches
