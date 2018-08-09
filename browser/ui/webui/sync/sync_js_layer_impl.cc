@@ -17,7 +17,8 @@ SyncJsLayerImpl::SyncJsLayerImpl(content::WebUI* web_ui, const std::string& host
 
    RegisterCallbacks();
 
-   response_receiver_ = brave_sync::BraveSyncControllerImpl::GetInstance();
+   //response_receiver_ = brave_sync::BraveSyncControllerImpl::GetInstance();
+   sync_lib_to_browser_handler_ = brave_sync::BraveSyncControllerImpl::GetInstance();
    brave_sync::BraveSyncControllerImpl::GetInstance()->SetupJsLayer(this);
 }
 
@@ -75,8 +76,11 @@ if (message == "words_to_bytes_done" || message == "bytes_to_words_done") {
   LOG(ERROR) << "TAGAB args[4].GetBool()="<<args->GetList()[4].GetBool();
 }
 
-  if (response_receiver_) {
-    response_receiver_->OnJsLibMessage(message, args);
+  // if (response_receiver_) {
+  //   response_receiver_->OnJsLibMessage(message, args);
+  // }
+  if (sync_lib_to_browser_handler_) {
+    sync_lib_to_browser_handler_->OnJsLibMessage(message, args);
   }
 }
 

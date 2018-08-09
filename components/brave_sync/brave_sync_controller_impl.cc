@@ -28,6 +28,7 @@
 #include "brave/components/brave_sync/brave_sync_jslib_messages.h"
 #include "brave/components/brave_sync/brave_sync_obj_map.h"
 #include "brave/components/brave_sync/brave_sync_tools.h"
+#include "brave/components/brave_sync/client/brave_sync_client_web_ui_impl.h"
 #include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/value_debug.h"
@@ -47,7 +48,8 @@ BraveSyncControllerImpl::TempStorage::~TempStorage() {
 
 BraveSyncControllerImpl::BraveSyncControllerImpl() :
   sync_ui_(nullptr),
-  sync_js_layer_(nullptr),
+  //sync_js_layer_(nullptr),
+  sync_client_(nullptr),
   sync_initialized_(false),
   timer_(std::make_unique<base::RepeatingTimer>()) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::BraveSyncControllerImpl CTOR";
@@ -106,6 +108,8 @@ BraveSyncControllerImpl::BraveSyncControllerImpl() :
     LOG(ERROR) << "TAGAB BraveSyncControllerImpl::BraveSyncControllerImpl sync is NOT configured";
   }
 
+//  sync_client_ = new BraveSyncClientWebUiImpl(); for web ui impl assign it in InitJsLib
+
   StartLoop();
 }
 
@@ -114,6 +118,11 @@ BraveSyncControllerImpl::~BraveSyncControllerImpl() {
   BrowserList::GetInstance()->RemoveObserver(this);
 
   StopLoop();
+
+  if (sync_client_) {
+    delete sync_client_;
+    sync_client_ = nullptr;
+  }
 }
 
 BraveSyncControllerImpl* BraveSyncControllerImpl::GetInstance() {
@@ -151,7 +160,8 @@ void BraveSyncControllerImpl::OnDeleteDevice(const std::string &device_id) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnDeleteDevice";
   LOG(ERROR) << "TAGAB device_id="<<device_id;
 
-  CHECK(sync_js_layer_ != nullptr);
+  //CHECK(sync_js_layer_ != nullptr);
+  CHECK(sync_client_ != nullptr);
   CHECK(sync_initialized_);
 
   std::string json = sync_obj_map_->GetObjectIdByLocalId(jslib_const::DEVICES_NAMES);
@@ -178,7 +188,8 @@ void BraveSyncControllerImpl::OnDeleteDevice(const std::string &device_id) {
 
 void BraveSyncControllerImpl::OnResetSync() {
   LOG(ERROR) << "TAGAB  BraveSyncControllerImpl::OnResetSync";
-  CHECK(sync_js_layer_ != nullptr);
+  //CHECK(sync_js_layer_ != nullptr);
+  CHECK(sync_client_ != nullptr);
   CHECK(sync_initialized_);
 
   const std::string device_id = sync_prefs_->GetThisDeviceId();
@@ -280,11 +291,16 @@ void BraveSyncControllerImpl::OnBrowserSetLastActive(Browser* browser) {
     brave_sync_event_router_ = std::make_unique<extensions::BraveSyncEventRouter>(browser_->profile());
   }
 
-  LOG(ERROR) << "TAGAB  BraveSyncControllerImpl::OnBrowserSetLastActive sync_js_layer_="<<sync_js_layer_;
-  if (sync_js_layer_) {
+  // LOG(ERROR) << "TAGAB  BraveSyncControllerImpl::OnBrowserSetLastActive sync_js_layer_="<<sync_js_layer_;
+  // if (sync_js_layer_) {
+  //   return;
+  // }
+  LOG(ERROR) << "TAGAB  BraveSyncControllerImpl::OnBrowserSetLastActive sync_client_="<<sync_client_;
+  if (sync_client_) {
     return;
   }
 
+  LOG(ERROR) << "TAGAB  BraveSyncControllerImpl::OnBrowserSetLastActive sync_client_ null, post in UI BraveSyncControllerImpl::InitJsLib";
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
     FROM_HERE, base::Bind(&BraveSyncControllerImpl::InitJsLib,
          base::Unretained(this), false));
@@ -293,15 +309,24 @@ void BraveSyncControllerImpl::OnBrowserSetLastActive(Browser* browser) {
 void BraveSyncControllerImpl::InitJsLib(const bool &setup_new_sync) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::InitJsLib " << GetThreadInfoString();
 
-  if (!sync_js_layer_) {
+  // if (!sync_js_layer_) {
+  //   LoadJsLibPseudoTab();
+  //   return;
+  // }
+
+  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::InitJsLib sync_client_=" << sync_client_;
+  if (!sync_client_) {
     LoadJsLibPseudoTab();
     return;
   }
-LOG(ERROR) << "TAGAB BraveSyncControllerImpl::InitJsLib (2) " << GetThreadInfoString();
+
+
+  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::InitJsLib (2) " << GetThreadInfoString();
   if ( (!sync_prefs_->GetSeed().empty() && !sync_prefs_->GetThisDeviceName().empty()) ||
       setup_new_sync) {
     LOG(ERROR) << "TAGAB BraveSyncControllerImpl::InitJsLib sync is active or setup_new_sync";
-    sync_js_layer_->LoadJsLibScript();
+    //sync_js_layer_->LoadJsLibScript();//
+    sync_client_->LoadClient();
   } else {
     LOG(ERROR) << "TAGAB BraveSyncControllerImpl::InitJsLib sync is NOT active";
   }
@@ -312,34 +337,54 @@ void BraveSyncControllerImpl::CallJsLibBV(const base::Value &command,
   const base::Value &arg1, const base::Value &arg2, const base::Value &arg3,
   const base::Value &arg4) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::CallJsLibBV";
-  DCHECK(nullptr != sync_js_layer_);
-  if (!sync_js_layer_) {
+  // DCHECK(nullptr != sync_js_layer_);
+  // if (!sync_js_layer_) {
+  //   return;
+  // }
+  DCHECK(nullptr != sync_client_);
+  if (!sync_client_) {
     return;
   }
 
   const std::vector<const base::Value*> args = {&command, &arg1, &arg2, &arg3, &arg4};
-  sync_js_layer_->RunCommandBV(args);
+  //sync_js_layer_->RunCommandBV(args);//
+  sync_client_->RunCommandBV(args);
 }
 
 void BraveSyncControllerImpl::CallJsLibStr(const std::string &command,
   const std::string &arg1, const std::string &arg2, const std::string &arg3,
   const std::string &arg4) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::CallJsLibStr";
-  DCHECK(nullptr != sync_js_layer_);
-  if (!sync_js_layer_) {
+  // DCHECK(nullptr != sync_js_layer_);
+  // if (!sync_js_layer_) {
+  //   return;
+  // }
+  //
+  // sync_js_layer_->RunCommandStr(command, arg1, arg2, arg3, arg4);
+
+  DCHECK(nullptr != sync_client_);
+  if (!sync_client_) {
     return;
   }
 
-  sync_js_layer_->RunCommandStr(command, arg1, arg2, arg3, arg4);
+  sync_client_->RunCommandStr(command, arg1, arg2, arg3, arg4);
 }
 
+// Temporary while moving to extension
 void BraveSyncControllerImpl::SetupJsLayer(SyncJsLayer *sync_js_layer) {
-  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::SetupJsLayer sync_js_layer=" << sync_js_layer;
-  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::SetupJsLayer this->sync_js_layer_=" << this->sync_js_layer_;
-  DCHECK(sync_js_layer);
-  DCHECK(sync_js_layer_ == nullptr);
+  // LOG(ERROR) << "TAGAB BraveSyncControllerImpl::SetupJsLayer sync_js_layer=" << sync_js_layer;
+  // LOG(ERROR) << "TAGAB BraveSyncControllerImpl::SetupJsLayer this->sync_js_layer_=" << this->sync_js_layer_;
+  // DCHECK(sync_js_layer);
+  // DCHECK(sync_js_layer_ == nullptr);
+  //
+  // sync_js_layer_ = sync_js_layer;
 
-  sync_js_layer_ = sync_js_layer;
+
+  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::SetupJsLayer sync_js_layer=" << sync_js_layer;
+  DCHECK(sync_js_layer);
+  DCHECK(!sync_client_);
+  sync_client_ = new BraveSyncClientWebUiImpl();
+  sync_client_->SetupJsLayer(sync_js_layer);
 }
 
 void BraveSyncControllerImpl::SetupUi(SyncUI *sync_ui) {
@@ -351,31 +396,82 @@ void BraveSyncControllerImpl::SetupUi(SyncUI *sync_ui) {
   sync_ui_ = sync_ui;
 }
 
+void BraveSyncControllerImpl::OnMessageFromSyncReceived() {
+  ;
+}
+// SyncLibToBrowserHandler overrides
+void BraveSyncControllerImpl::OnSyncDebug(const std::string &message) {
+  ;
+}
+
+void BraveSyncControllerImpl::OnSyncSetupError(const std::string &error) {
+  ;
+}
+
+void BraveSyncControllerImpl::OnGetInitData(const std::string &sync_version) {
+  ;
+}
+
+void BraveSyncControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) {
+  ;
+}
+
+void BraveSyncControllerImpl::OnSyncReady() {
+  ;
+}
+
+void BraveSyncControllerImpl::OnGetExistingObjects(const std::string &category_name,
+  const RecordsList &records, const base::Time &last_record_time_stamp) {
+  ;
+}
+
+void BraveSyncControllerImpl::OnResolvedSyncRecords(const std::string &category_name,
+  const RecordsList &records) {
+  ;
+}
+
+void BraveSyncControllerImpl::OnDeletedSyncUser() {
+  ;
+}
+
+void BraveSyncControllerImpl::OnDeleteSyncSiteSettings()  {
+  ;
+}
+
+void BraveSyncControllerImpl::OnSaveBookmarksBaseOrder(const std::string &order)  {
+  ;
+}
+
+void BraveSyncControllerImpl::OnSaveBookmarkOrder(const std::string &order,
+  const std::string &prev_order, const std::string &next_order)  {
+  ;
+}
+
 void BraveSyncControllerImpl::OnJsLibMessage(const std::string &message, const base::ListValue* args) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnJsLibMessage, message=" << message;
   if (message == "words_to_bytes_done") {
-    OnWordsToBytesDone(args);
+    OnWordsToBytesDone_(args);
   } else if (message == "bytes_to_words_done") {
-    OnBytesToWordsDone(args);
+    OnBytesToWordsDone_(args);
   }
   else if (message == "get-init-data") {
     ;
   } else if (message == "got-init-data") {
-    OnGotInitData(args);
+    OnGotInitData_(args);
   } else if (message == "save-init-data") {
-    OnSaveInitData(args);
+    OnSaveInitData_(args);
   } else if (message == "sync-ready") {
-    OnSyncReady(args);
+    OnSyncReady_(args);
   } else if (message == "get-existing-objects") {
-    OnGetExistingObjects(args);
+    OnGetExistingObjects_(args);
   } else if (message == "resolved-sync-records") {
-    OnResolvedSyncRecords(args);
+    OnResolvedSyncRecords_(args);
   } else if (message == "sync-debug") {
-    OnSyncDebug(args);
+    OnSyncDebug_(args);
   }
 }
 
-void BraveSyncControllerImpl::OnGotInitData(const base::ListValue* args) {
+void BraveSyncControllerImpl::OnGotInitData_(const base::ListValue* args) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnGotInitData";
 
   //should answer to the lib with words
@@ -423,7 +519,7 @@ void BraveSyncControllerImpl::OnGotInitData(const base::ListValue* args) {
   CallJsLibBV(command, base::Value(), *lv_seed, *lv_deviceId, config);
 }
 
-void BraveSyncControllerImpl::OnWordsToBytesDone(const base::ListValue* args) {
+void BraveSyncControllerImpl::OnWordsToBytesDone_(const base::ListValue* args) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnWordsToBytesDone";
   LOG(ERROR) << "TAGAB args->GetList().size()=" << args->GetList().size();
 
@@ -446,7 +542,7 @@ void BraveSyncControllerImpl::OnWordsToBytesDone(const base::ListValue* args) {
   InitJsLib(true);//Init will cause load of the Script;
 }
 
-void BraveSyncControllerImpl::OnBytesToWordsDone(const base::ListValue* args) {
+void BraveSyncControllerImpl::OnBytesToWordsDone_(const base::ListValue* args) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnWordsToBytesDone";
   LOG(ERROR) << "TAGAB args->GetList().size()=" << args->GetList().size();
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnWordsToBytesDone" <<
@@ -462,7 +558,7 @@ void BraveSyncControllerImpl::OnBytesToWordsDone(const base::ListValue* args) {
   sync_ui_->OnHaveSyncWords(words);
 }
 
-void BraveSyncControllerImpl::OnSyncReady(const base::ListValue* args) {
+void BraveSyncControllerImpl::OnSyncReady_(const base::ListValue* args) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnSyncReady:";
   DCHECK(false == sync_initialized_);
   sync_initialized_ = true;
@@ -527,7 +623,7 @@ void BraveSyncControllerImpl::RequestSyncData() {
   // save last received record time in OnResolved
 }
 
-void BraveSyncControllerImpl::OnSaveInitData(const base::ListValue* args) {
+void BraveSyncControllerImpl::OnSaveInitData_(const base::ListValue* args) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnSaveInitData:";
   DCHECK(false == sync_initialized_);
 
@@ -577,7 +673,7 @@ void BraveSyncControllerImpl::OnSaveInitData(const base::ListValue* args) {
   sync_prefs_->SetSyncHistoryEnabled(true);
 }
 
-void BraveSyncControllerImpl::OnGetExistingObjects(const base::ListValue* args) {
+void BraveSyncControllerImpl::OnGetExistingObjects_(const base::ListValue* args) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnGetExistingObjects:";
   /**
    * webview -> browser
@@ -634,7 +730,7 @@ void BraveSyncControllerImpl::OnGetExistingObjects(const base::ListValue* args) 
   SendResolveSyncRecords(category_name, resolvedResponse.get());
 }
 
-void BraveSyncControllerImpl::OnResolvedSyncRecords(const base::ListValue* args) {
+void BraveSyncControllerImpl::OnResolvedSyncRecords_(const base::ListValue* args) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnResolvedSyncRecords:";
   /**
    * webview -> browser
@@ -693,7 +789,7 @@ void BraveSyncControllerImpl::OnResolvedSyncRecords(const base::ListValue* args)
 
 } // endof BraveSyncControllerImpl::OnResolvedSyncRecords
 
-void BraveSyncControllerImpl::OnSyncDebug(const base::ListValue* args) {
+void BraveSyncControllerImpl::OnSyncDebug_(const base::ListValue* args) {
   LOG(ERROR) << "TAGAB BraveSyncControllerImpl::OnSyncDebug:";
   /**
    * webview -> browser
@@ -1153,7 +1249,7 @@ void BraveSyncControllerImpl::StopLoop() {
 }
 
 void BraveSyncControllerImpl::LoopProc() {
-  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::LoopProc " << GetThreadInfoString();
+//  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::LoopProc " << GetThreadInfoString();
 
   // task_runner_->PostTask(FROM_HERE,
   // base::Bind(&BraveSyncControllerImpl::LoopProcThreadAligned,
@@ -1166,7 +1262,7 @@ void BraveSyncControllerImpl::LoopProc() {
 }
 
 void BraveSyncControllerImpl::LoopProcThreadAligned() {
-  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::LoopProcThreadAligned " << GetThreadInfoString();
+//  LOG(ERROR) << "TAGAB BraveSyncControllerImpl::LoopProcThreadAligned " << GetThreadInfoString();
 
   //LOG(ERROR) << "ChromeNetworkDelegate " << " PID=" << getpid() << " tid="<< gettid();`
   // Ensure not UI thread

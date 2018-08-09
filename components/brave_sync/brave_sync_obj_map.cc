@@ -71,7 +71,7 @@ void CreateOpenDatabase() {
         return;
     }
     LOG(ERROR) << "TAGAB DB opened";
-    TraceAll();
+    ///TraceAll();
   }
 }
 
