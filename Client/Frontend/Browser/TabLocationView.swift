@@ -61,7 +61,18 @@ class TabLocationView: UIView {
                 trackingProtectionButton.isHidden = true
                 shieldsButton.isHidden = true
             }
+            refreshShieldsStatus()
             setNeedsUpdateConstraints()
+        }
+    }
+    
+    /// Update the shields icon based on whether or not shields are enabled for this site
+    func refreshShieldsStatus() {
+        if let url = url, let domain = url.normalizedHost, let state = BraveShieldState.getStateForDomain(domain),
+            let shieldsAllOffOverride = state.isShieldOverrideEnabled(.AllOff), shieldsAllOffOverride {
+            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-off-menu-icon"), for: .normal)
+        } else {
+            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
         }
     }
 

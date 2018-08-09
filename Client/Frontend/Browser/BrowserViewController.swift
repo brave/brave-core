@@ -1422,6 +1422,14 @@ extension BrowserViewController: URLBarDelegate {
         // BRAVE TODO: Insert shield block stats here
         guard let url = tabManager.selectedTab?.url else { return }
         let shields = ShieldsViewController(url: url, shieldBlockStats: nil)
+        shields.shieldsSettingsChanged = { [unowned self] _ in
+            // Reload this tab. This will also trigger an update of the brave icon in `TabLocationView` if
+            // the setting changed is the global `.AllOff` shield
+            self.tabManager.selectedTab?.reload()
+            
+            // In 1.6 we "reload" the whole web view state, dumping caches, etc. (reload():BraveWebView.swift:495)
+            // BRAVE TODO: Port over proper tab reloading with Shields
+        }
         let popover = PopoverController(contentController: shields, contentSizeBehavior: .preferredContentSize)
         if UIDevice.current.orientation.isPortrait {
             // Leave some space near the bottom for easier dismissal

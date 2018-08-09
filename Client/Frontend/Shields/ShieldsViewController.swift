@@ -30,6 +30,8 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         }
     }
     
+    var shieldsSettingsChanged: ((ShieldsViewController) -> Void)?
+    
     init(url: URL, shieldBlockStats: ShieldBlockedStats?) {
         self.url = url
         self.shieldBlockStats = shieldBlockStats
@@ -143,6 +145,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
                     self.updateGlobalShieldState(on, animated: true)
                 }
                 self.updateBraveShieldState(shield: shield, on: on)
+                self.shieldsSettingsChanged?(self)
             }
         }
     }
