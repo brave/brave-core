@@ -44,6 +44,9 @@ class PopoverController: UIViewController {
     /// The arrow direction behavior for this popover
     var arrowDirectionBehavior: ArrowDirectionBehavior = .automatic
     
+    /// Whether or not to automatically dismiss the popup when the device orientation changes
+    var dismissesOnOrientationChanged = true
+    
     let contentSizeBehavior: ContentSizeBehavior
     
     private var containerViewHeightConstraint: NSLayoutConstraint?
@@ -58,6 +61,12 @@ class PopoverController: UIViewController {
         
         self.modalPresentationStyle = .overFullScreen
         self.transitioningDelegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: .UIDeviceOrientationDidChange, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @available(*, unavailable)
@@ -201,6 +210,12 @@ class PopoverController: UIViewController {
         )
         
         viewController.present(self, animated: true)
+    }
+    
+    @objc private func orientationChanged() {
+        if dismissesOnOrientationChanged {
+            dismiss(animated: true)
+        }
     }
 }
 
