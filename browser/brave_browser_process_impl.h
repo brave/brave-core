@@ -18,6 +18,10 @@ class HTTPSEverywhereService;
 class TrackingProtectionService;
 }
 
+namespace extensions {
+class BraveTorClientUpdater;
+}
+
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
   BraveBrowserProcessImpl(base::SequencedTaskRunner* local_state_task_runner);
@@ -31,6 +35,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::AdBlockRegionalService* ad_block_regional_service();
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
+  extensions::BraveTorClientUpdater* tor_client_updater();
 
  private:
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
@@ -41,9 +46,10 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
+  std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;
 
   component_updater::ComponentUpdateService* component_updater(
-      std::unique_ptr<component_updater::ComponentUpdateService> &,
+      std::unique_ptr<component_updater::ComponentUpdateService>&,
       bool use_brave_server);
   std::unique_ptr<component_updater::ComponentUpdateService>
       google_component_updater_;

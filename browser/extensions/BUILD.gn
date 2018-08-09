@@ -16,6 +16,8 @@ source_set("extensions") {
     "brave_extension_management.h",
     "brave_extension_provider.cc",
     "brave_extension_provider.h",
+    "brave_tor_client_updater.cc",
+    "brave_tor_client_updater.h",
   ]
 
   deps = [
