@@ -145,7 +145,11 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
                 self.updateBraveShieldState(shield: shield, on: on)
             }
         }
-     
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
         shieldsView.stackView.layoutIfNeeded()
         preferredContentSize = CGSize(width: 320.0, height: shieldsView.stackView.bounds.height)
     }
