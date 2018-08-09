@@ -41,7 +41,10 @@ void BraveExtensionManagement::RegisterForceInstalledExtensions() {
 }
 
 void BraveExtensionManagement::RegisterBraveExtensions() {
-  g_brave_browser_process->tor_client_updater()->Register();
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension))
+    g_brave_browser_process->tor_client_updater()->Register();
 }
 
 }  // namespace extensions
