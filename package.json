@@ -122,5 +122,18 @@
     "url-loader": "^0.6.2",
     "webpack": "^4.16.0",
     "webpack-cli": "^3.0.8"
+  },
+  "dependencies": {
+    "@types/redux-logger": "^3.0.6",
+    "@types/webtorrent": "^0.98.4",
+    "chrome-dgram": "^3.0.1",
+    "chrome-net": "^3.3.1",
+    "clipboard-copy": "^2.0.0",
+    "http-node": "^1.2.0",
+    "prettier-bytes": "^1.0.4",
+    "react-chrome-redux": "^1.5.1",
+    "redux-logger": "^3.0.6",
+    "throttleit": "^1.0.0",
+    "webtorrent": "^0.102.0"
   }
 }
