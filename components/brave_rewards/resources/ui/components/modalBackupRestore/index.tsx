@@ -21,7 +21,7 @@ import { getLocale } from '../../../helpers'
 export type TabsType = 'backup' | 'restore'
 
 export interface Props {
-  recoveryKey: string
+  backupKey: string
   activeTabId: TabsType
   onTabChange: (tab: TabsType) => void
   onClose: () => void
@@ -38,6 +38,13 @@ export interface Props {
   - add error flow
  */
 export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
+  private recoveryKey: string
+
+  constructor (props: Props) {
+    super(props)
+    this.recoveryKey = ''
+  }
+
   onFileUpload = (inputFile: React.ChangeEvent<HTMLInputElement>) => {
     const input: HTMLInputElement = inputFile.target
     const self = this
@@ -58,17 +65,24 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
     }
   }
 
+  setRecoveryKey = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.recoveryKey = event.target.value
+  }
+
+  onRestore = () => {
+    this.props.onRestore(this.recoveryKey)
+  }
+
   render () {
     const {
       id,
-      recoveryKey,
+      backupKey,
       activeTabId,
       onClose,
       onTabChange,
       onCopy,
       onPrint,
       onSaveFile,
-      onRestore,
       error
     } = this.props
 
@@ -83,7 +97,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
             <TextArea
               title={getLocale('recoveryKeys')}
               theme={{ maxWidth: '100%', minHeight: '140px' }}
-              defaultValue={recoveryKey}
+              defaultValue={backupKey}
               disabled={true}
             />
             <StyleButtonWrapper>
@@ -91,19 +105,19 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
                 text={getLocale('copy')}
                 size={'small'}
                 color={'subtle'}
-                onClick={onCopy.bind(this, recoveryKey)}
+                onClick={onCopy.bind(this, backupKey)}
               />
               <ButtonSecondary
                 text={getLocale('print')}
                 size={'small'}
                 color={'subtle'}
-                onClick={onPrint.bind(this, recoveryKey)}
+                onClick={onPrint.bind(this, backupKey)}
               />
               <ButtonSecondary
                 text={getLocale('saveAsFile')}
                 size={'small'}
                 color={'subtle'}
-                onClick={onSaveFile.bind(this, recoveryKey)}
+                onClick={onSaveFile.bind(this, backupKey)}
               />
             </StyleButtonWrapper>
             <StyledDoneWrapper>
@@ -141,6 +155,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
               </>}
               theme={{ maxWidth: '100%', minHeight: '140px' }}
               defaultValue={''}
+              onChange={this.setRecoveryKey}
             />
             <StyledActionsWrapper>
               <ButtonSecondary
@@ -153,7 +168,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
                 text={getLocale('restore')}
                 size={'medium'}
                 color={'brand'}
-                onClick={onRestore.bind(this, recoveryKey)}
+                onClick={this.onRestore}
               />
             </StyledActionsWrapper>
           </div>
