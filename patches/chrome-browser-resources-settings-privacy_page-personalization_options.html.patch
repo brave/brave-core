@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 344da18793c3ad9d2c73af1dcfd2a0da9c59bb71..0a547a664d1c23d87337591fdbce12949f86633b 100644
+index e50aef026694678e00bee57a5b30b9b5a52b976b..0910a277747bcec43709045588069c84e33d5be5 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -35,16 +35,19 @@
@@ -45,6 +45,6 @@ index 344da18793c3ad9d2c73af1dcfd2a0da9c59bb71..0a547a664d1c23d87337591fdbce1294
  </if><!-- not chromeos -->
 -</if><!-- _google_chrome -->
 +</if><!-- _chromium -->
-     <settings-toggle-button
-         pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
-         label="$i18n{urlKeyedAnonymizedDataCollection}"
+     <template is="dom-if" if="[[unifiedConsentEnabled]]">
+       <settings-toggle-button
+           pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
