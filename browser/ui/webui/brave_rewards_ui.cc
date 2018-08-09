@@ -48,6 +48,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetPromotionCaptcha(const base::ListValue* args);
   void OnPromotionCaptcha(std::string image);
   void GetWalletPassphrase(const base::ListValue* args);
+  void RecoverWallet(const base::ListValue* args);
+  void OnRecoverWallet(bool error, double balance);
 
   // PaymentServiceObserver implementation
   void OnWalletCreated(payments::PaymentsService* payment_service,
@@ -58,6 +60,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                    payments::Promotion result) override;
   void OnPromotionCaptcha(payments::PaymentsService* payment_service,
                           std::string image) override;
+  void OnRecoverWallet(payments::PaymentsService* payment_service,
+                       bool error,
+                       double balance) override;
 
   payments::PaymentsService* payments_service_;  // NOT OWNED
 
@@ -84,6 +89,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("getWalletPassphrase",
                                     base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("recoverWallet",
+                                    base::BindRepeating(&RewardsDOMHandler::RecoverWallet,
                                                         base::Unretained(this)));
 }
 
@@ -218,6 +226,33 @@ void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
     std::string pass = payments_service_->GetWalletPassphrase();
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletPassphrase", base::Value(pass));
+  }
+}
+
+void RewardsDOMHandler::RecoverWallet(const base::ListValue *args) {
+  if (payments_service_) {
+    std::string passPhrase;
+    args->GetString(0, &passPhrase);
+    payments_service_->RecoverWallet(passPhrase);
+  }
+}
+
+void RewardsDOMHandler::OnRecoverWallet(
+    payments::PaymentsService* payment_service,
+    bool error,
+    double balance) {
+  OnRecoverWallet(error, balance);
+}
+
+
+
+void RewardsDOMHandler::OnRecoverWallet(bool error, double balance) {
+  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    base::DictionaryValue* recover = new base::DictionaryValue();
+    recover->SetBoolean("error", error);
+    recover->SetDouble("balance", balance);
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.recoverWalletData", *recover);
   }
 }
 

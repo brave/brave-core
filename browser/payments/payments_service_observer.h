@@ -24,6 +24,9 @@ class PaymentsServiceObserver {
                            payments::Promotion properties) {};
   virtual void OnPromotionCaptcha(PaymentsService* payment_service,
                                   std::string image) {};
+  virtual void OnRecoverWallet(PaymentsService* payment_service,
+                               bool error,
+                               double balance) {};
 };
 
 }  // namespace payments

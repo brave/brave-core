@@ -29,7 +29,10 @@ const defaultState: Rewards.State = {
     probi: '0'
   },
   connectedWallet: false,
-  recoveryKey: ''
+  recoveryKey: '',
+  ui: {
+    walletRecoverySuccess: null
+  }
 }
 
 const cleanData = (state: Rewards.State) => state

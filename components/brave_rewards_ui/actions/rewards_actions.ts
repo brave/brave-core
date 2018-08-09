@@ -45,3 +45,14 @@ export const getWalletPassphrase = () => action(types.GET_WALLLET_PASSPHRASE)
 export const onWalletPassphrase = (pass: string) => action(types.ON_WALLLET_PASSPHRASE, {
   pass
 })
+
+export const recoverWallet = (key: string) => action(types.RECOVER_WALLET, {
+  key
+})
+
+export const onRecoverWalletData = (properties: Rewards.RecoverWallet) => action(types.ON_RECOVER_WALLET_DATA, {
+  properties
+})
+
+
+export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)

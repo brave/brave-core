@@ -53,6 +53,10 @@ class PageWallet extends React.Component<Props, State> {
       this.actions.getWalletPassphrase()
     }
 
+    if (this.state.modalBackup) {
+      this.actions.onModalBackupClose()
+    }
+
     this.setState({
       modalBackup: !this.state.modalBackup
     })
@@ -79,9 +83,8 @@ class PageWallet extends React.Component<Props, State> {
     console.log('onModalBackupOnSaveFile')
   }
 
-  onModalBackupOnRestore = () => {
-    // TODO NZ implement
-    console.log('onModalBackupOnRestore')
+  onModalBackupOnRestore = (key: string) => {
+    this.actions.recoverWallet(key)
   }
 
   onModalBackupOnImport = () => {
@@ -127,6 +130,7 @@ class PageWallet extends React.Component<Props, State> {
   render () {
     const { connectedWallet, recoveryKey, wasFunded, promotion } = this.props.rewardsData
     const { balance } = this.props.rewardsData.walletInfo
+    const { walletRecoverySuccess } = this.props.rewardsData.ui
 
     return (
       <>
@@ -167,14 +171,15 @@ class PageWallet extends React.Component<Props, State> {
           this.state.modalBackup
             ? <ModalBackupRestore
               activeTabId={this.state.modalBackupActive}
-              recoveryKey={recoveryKey}
+              backupKey={recoveryKey}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupToggle}
               onCopy={this.onModalBackupOnCopy}
               onPrint={this.onModalBackupOnPrint}
               onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
-              onImport={this.onModalBackupOnImport}
+              success={walletRecoverySuccess === true ? getLocale('walletRecoverySuccess', { balance: balance.toString() }) : ''}
+              error={walletRecoverySuccess === false ? getLocale('walletRecoveryFail') : ''}
             />
             : null
         }
