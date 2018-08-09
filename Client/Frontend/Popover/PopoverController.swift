@@ -105,6 +105,9 @@ class PopoverController: UIViewController {
         case .autoLayout:
             break
         case .preferredContentSize:
+            // Make sure the view has a frame before we potentially attempt to compute its preferred content size
+            view.layoutIfNeeded()
+            
             containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height + PopoverUX.arrowSize.height)
             containerViewHeightConstraint?.priority = UILayoutPriority(rawValue: 850.0)
             containerViewHeightConstraint?.isActive = true
