@@ -36,8 +36,6 @@ class PanelDataObserversTests: XCTestCase {
         let delegate = MockDataObserverDelegate()
         observer.delegate = delegate
 
-        NotificationCenter.default.post(name: .FirefoxAccountChanged,
-                                        object: nil)
         NotificationCenter.default.post(name: .ProfileDidFinishSyncing,
                                         object: nil)
         NotificationCenter.default.post(name: .PrivateDataClearedHistory,
