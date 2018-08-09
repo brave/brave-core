@@ -300,9 +300,9 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
                 </div>
                 <textarea
                   className="c13"
-                  defaultValue={undefined}
                   disabled={true}
                   onChange={undefined}
+                  value={undefined}
                 />
               </div>
             </div>

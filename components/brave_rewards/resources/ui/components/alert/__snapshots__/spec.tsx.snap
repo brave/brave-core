@@ -20,7 +20,6 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
   background-color: #fff;
-  box-shadow: 0 1px 0 0 #dfdfe8;
   padding: 30px 38px 33px 19px;
   -webkit-align-items: center;
   -webkit-box-align: center;

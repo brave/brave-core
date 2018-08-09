@@ -15,7 +15,6 @@ export const StyledWrapper = styled.div`
   align-content: flex-start;
   flex-wrap: nowrap;
   background-color: #fff;
-  box-shadow: 0 1px 0 0 #dfdfe8;
   padding: 30px 38px 33px 19px;
   align-items: center;
   font-family: Poppins, sans-serif;

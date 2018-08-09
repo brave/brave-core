@@ -17,6 +17,7 @@ import Modal from '../../../components/popupModals/modal/index'
 import ButtonPrimary from '../../../components/buttonsIndicators/buttonPrimary/index'
 import ButtonSecondary from '../../../components/buttonsIndicators/buttonSecondary/index'
 import { getLocale } from '../../../helpers'
+import Alert from '../alert'
 
 export type TabsType = 'backup' | 'restore'
 
@@ -30,19 +31,33 @@ export interface Props {
   onSaveFile: (key: string) => void
   onRestore: (key: string) => void
   error?: React.ReactNode
+  success?: React.ReactNode
   id?: string
+}
+
+interface State {
+  recoveryKey: string
 }
 
 /*
   TODO
   - add error flow
  */
-export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
-  private recoveryKey: string
+export default class ModalBackupRestore extends React.PureComponent<Props, State> {
 
   constructor (props: Props) {
     super(props)
-    this.recoveryKey = ''
+    this.state = {
+      recoveryKey: ''
+    }
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (this.props.success !== prevProps.success) {
+      this.setState({
+        recoveryKey: ''
+      })
+    }
   }
 
   onFileUpload = (inputFile: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,11 +81,13 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
   }
 
   setRecoveryKey = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    this.recoveryKey = event.target.value
+    this.setState({
+      recoveryKey: event.target.value
+    })
   }
 
   onRestore = () => {
-    this.props.onRestore(this.recoveryKey)
+    this.props.onRestore(this.state.recoveryKey)
   }
 
   render () {
@@ -83,7 +100,8 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
       onCopy,
       onPrint,
       onSaveFile,
-      error
+      error,
+      success
     } = this.props
 
     return (
@@ -97,7 +115,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
             <TextArea
               title={getLocale('recoveryKeys')}
               theme={{ maxWidth: '100%', minHeight: '140px' }}
-              defaultValue={backupKey}
+              value={backupKey}
               disabled={true}
             />
             <StyleButtonWrapper>
@@ -130,12 +148,21 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
             </StyledDoneWrapper>
           </div>
           <div id={`${id}-restore`} data-key={'restore'} data-title={getLocale('rewardsRestoreText1')}>
-            <StyledContent>
+            <StyledContent error={error} success={success}>
               {getLocale('rewardsRestoreText2')}
             </StyledContent>
             {
               error
-              ? <div>TODO: {error}</div>
+              ? <Alert type={'error'}>
+                  {error}
+              </Alert>
+              : null
+            }
+            {
+              success
+              ? <Alert type={'success'}>
+                {success}
+              </Alert>
               : null
             }
             <TextArea
@@ -154,7 +181,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, {}> {
                 />
               </>}
               theme={{ maxWidth: '100%', minHeight: '140px' }}
-              defaultValue={''}
+              value={this.state.recoveryKey}
               onChange={this.setRecoveryKey}
             />
             <StyledActionsWrapper>

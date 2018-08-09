@@ -24,16 +24,18 @@ const doNothing = () => {
   console.log('nothing')
 }
 
-const onRestore = (key: string) => {
-  console.log('onRestore', key)
-}
-
 storiesOf('Feature Components/Rewards/Modal', module)
   .addDecorator(withKnobs)
-  .add('Backup/Restore', withState({ tabId: 'backup' }, (store) => {
+  .add('Backup/Restore', withState({ tabId: 'backup', success: '' }, (store) => {
     const onTabChange = (tabId: string) => {
       store.set({ tabId })
     }
+    const onRestore = (key: string) => {
+      console.log('onRestore', key)
+      let success = '0.00 BAT was recovered and transferred to your Brave wallet.'
+      store.set({ success })
+    }
+
     return (
       <div style={{ maxWidth: '900px', background: '#fff', padding: '30px' }}>
         <ModalBackupRestore
@@ -46,6 +48,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           onPrint={doNothing}
           onSaveFile={doNothing}
           onRestore={onRestore}
+          success={store.state.success}
         />
       </div>
     )

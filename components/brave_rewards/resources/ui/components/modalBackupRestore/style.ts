@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
+import { Props } from './index'
 
 export const StyledWrapper = styled.div`
   margin-top: 33px;
@@ -14,7 +15,7 @@ export const StyledContent = styled.div`
   font-weight: 300;
   line-height: 1.63;
   color: #686978;
-  margin-bottom: 39px;
+  margin-bottom: ${(p: Props) => p.success || p.error ? '0' : '39px'};
 ` as any
 
 export const StyledImport = styled.label`
