@@ -1194,7 +1194,7 @@ namespace braveledger_bat_helper {
 
   bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
         std::string& fee_currency, double& fee_amount, unsigned int& days) {
-   rapidjson::Document d;
+    rapidjson::Document d;
     d.Parse(json.c_str());
 
     //has parser errors or wrong types
@@ -1218,6 +1218,24 @@ namespace braveledger_bat_helper {
         fee_currency = itr->name.GetString();
         fee_amount = itr->value.GetDouble();
       }
+    }
+    return !error;
+  }
+
+  bool getJSONRecoverWallet(const std::string& json, double& balance, std::string& probi) {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error) {
+      error = !(d.HasMember("balance") && d["balance"].IsString() &&
+                d.HasMember("probi") && d["probi"].IsString() );
+    }
+
+    if (false == error) {
+      balance = std::stod(d["balance"].GetString());
+      probi = d["probi"].GetString();
     }
     return !error;
   }

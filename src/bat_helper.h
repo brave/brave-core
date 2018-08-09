@@ -346,6 +346,8 @@ namespace braveledger_bat_helper {
 
   bool getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors);
 
+  bool getJSONRecoverWallet(const std::string& json, double& balance, std::string& probi);
+
   std::vector<uint8_t> generateSeed();
 
   std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);

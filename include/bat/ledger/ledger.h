@@ -75,6 +75,8 @@ class LEDGER_EXPORT Ledger {
   virtual void GetWalletProperties() const = 0;
   virtual void GetPromotion(const std::string& lang, const std::string& paymentId) const = 0;
   virtual void GetPromotionCaptcha() const = 0;
+  virtual std::string GetWalletPassphrase() const = 0;
+  virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 };
 
 }  // namespace ledger
