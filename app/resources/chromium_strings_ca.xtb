@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Els autors de Brave</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Els autors de Brave. Tots els drets reservats.</translation>
 <translation id="2310890394934209120">Brave OS és possible gràcies a <ph name="BEGIN_LINK_CROS_OSS"/>programari addicional de codi obert<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="858647341154864560">Brave OS és possible gràcies a <ph name="BEGIN_LINK_CROS_OSS"/>programari lliure<ph name="END_LINK_CROS_OSS"/> addicional, així com Linux (versió beta).</translation>
 <translation id="5019879183386042809">Estableix Brave com a navegador predeterminat</translation>
 <translation id="5063987220091207247">Brave OS no pot obrir aquesta pàgina.</translation>
 <translation id="4065288863231444640">Permet que Brave s'executi en segon pla</translation>
@@ -32,6 +33,7 @@
 <translation id="3403365884036456766">El fitxer de preferències està malmès o no és vàlid.
 
 Brave no pot recuperar la configuració.</translation>
+<translation id="5785919770853225148">Brave desarà aquesta contrasenya al Compte de Brave Software. No caldrà que la recordis.</translation>
 <translation id="3343095737966473035">Brave no és el navegador predeterminat</translation>
 <translation id="6715663530666325392">Configureu la sincronització per desar al web les funcions personalitzades del navegador i per accedir-hi des de qualsevol equip mitjançant Brave.</translation>
 <translation id="2708027082363760195">Brave no inclou el lector de PDF que és necessari perquè la previsualització funcioni.</translation>
@@ -120,6 +122,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="82609232232243542">Inicia la sessió a Brave</translation>
 <translation id="8372880274820509128">Per més seguretat, Brave encriptarà les vostres dades.</translation>
 <translation id="7445061995866044926">Voleu tancar la sessió de Brave?</translation>
+<translation id="7453070689008684791">Brave accedirà a Drive per fer suggeriments a la barra d'adreces</translation>
 <translation id="7713466009760073734">Brave OS es mostra en aquest idioma</translation>
 <translation id="3518788198614984730">Mostra Brave OS en aquest idioma</translation>
 <translation id="6056473803837713617">Informa de la <ph name="BEGIN_LINK"/>configuració actual<ph name="END_LINK"/> per ajudar-nos a millorar Brave</translation>

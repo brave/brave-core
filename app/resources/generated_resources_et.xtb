@@ -481,7 +481,12 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="3190558889382726167">Parool salvestati</translation>
 <translation id="5079950360618752063">Kasuta soovitatud parooli</translation>
 <translation id="8084114998886531721">Salvestatud parool</translation>
+<translation id="5614553682702429503">Kas salvestada parool?</translation>
 <translation id="1405476660552109915">Kas soovite, et rakendus <ph name="PASSWORD_MANAGER_BRAND"/> salvestaks teie konto selle saidi jaoks?</translation>
+<translation id="8756969031206844760">Kas värskendada parooli?</translation>
+<translation id="8230134520748321204">Kas salvestada saidi <ph name="ORIGIN"/> parool?</translation>
+<translation id="9040661932550800571">Kas värskendada saidi <ph name="ORIGIN"/> parooli?</translation>
+<translation id="8284000761603848448">Paroolid salvestatakse teie Brave Software'i kontole, et saaksite neid kasutada mis tahes seadmes</translation>
 <translation id="8286036467436129157">Logi sisse</translation>
 <translation id="8009225694047762179">Halda paroole</translation>
 <translation id="9135262959729602463">Selleks et hankida paroolid kõikidesse oma seadmetesse, logige Brave'i sisse.</translation>
@@ -548,16 +553,18 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="4416582610654027550">Sisestage kehtiv URL</translation>
+<translation id="2806891468525657116">Otsetee on juba olemas</translation>
+<translation id="394183848452296464">Otseteed ei saa luua</translation>
 <translation id="7109543803214225826">Otsetee on eemaldatud</translation>
 <translation id="8017679124341497925">Otsetee on muudetud</translation>
 <translation id="1174073918202301297">Otsetee on lisatud</translation>
 <translation id="2926085873880284723">Vaikeotseteede taastamine</translation>
-<translation id="7413455776853560343">Tausta kohandamine</translation>
+<translation id="2942581856830209953">Selle lehe kohandamine</translation>
 <translation id="2187700606737131818">Brave Software Photos</translation>
 <translation id="5801450813341024983">Brave'i taustad</translation>
 <translation id="2800760947029405028">Laadige üles pilt</translation>
 <translation id="8342861492835240085">Kogu valimine</translation>
-<translation id="6017211263306518045">Teenuse Brave Software Photos albumi valimine</translation>
+<translation id="1734885380062278369">Teenuse Brave Software Photos albumi valimine</translation>
 <translation id="3132996321662585180">Värskendatakse iga päev</translation>
 <translation id="9062065967472365419">Üllata mind</translation>
 <translation id="7287411021188441799">Vaiketausta taastamine</translation>
@@ -567,6 +574,8 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="3617891479562106823">Taustad pole saadaval. Proovige hiljem uuesti</translation>
 <translation id="8391712576156218334">Pilt pole saadaval. Proovige hiljem uuesti.</translation>
 <translation id="1564414980088536597">Seda pilti ei saa kasutada. Valige teine pilt.</translation>
+<translation id="4628948037717959914">Foto</translation>
+<translation id="8033827949643255796">valitud</translation>
 <translation id="5376169624176189338">Klõpsake tagasi minemiseks, hoidke all ajaloo kuvamiseks</translation>
 <translation id="9103868373786083162">Vajutage tagasiliikumiseks, kontekstimenüüd ajaloo nägemiseks</translation>
 <translation id="2961695502793809356">Klõpsake edasi minemiseks, hoidke all ajaloo kuvamiseks</translation>
@@ -840,6 +849,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="2532167245710864499">Täiustage Brave'i ja selle turvalisust, saates Brave Software'ile süsteemi- ja kasutusteavet</translation>
 <translation id="2709453993673701466">Kas soovite sünkroonimist ja isikupärastamist enne nende sisselülitamist hallata? Avage jaotis <ph name="BEGIN_LINK"/>Seaded<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Menüüs <ph name="BEGIN_LINK"/>Seaded<ph name="END_LINK"/> saab alati kohandada, millist teavet Brave Software kogub.</translation>
+<translation id="6035247993547372482">Brave Software võib külastatud saitidel olevat sisu ning brauseri tegevusi ja interaktsioone kasutada Brave'i ning muude Brave Software'i teenuste, näiteks tõlke, otsingu ja reklaamide isikupärastamiseks. Seda saab kohandada jaotises Seaded.</translation>
 <translation id="741204030948306876">Jah, sobib</translation>
 <translation id="8428213095426709021">Seaded</translation>
 <translation id="2497852260688568942">Administraator on sünkroonimise keelanud</translation>
@@ -938,6 +948,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8363142353806532503">Mikrofon on blokeeritud</translation>
 <translation id="2762441749940182211">Kaamera on blokeeritud</translation>
 <translation id="5074318175948309511">Uute seadete jõustamiseks peate lehe võib-olla uuesti laadima.</translation>
+<translation id="1322046419516468189">Vaadake ja hallake oma salvestatud paroole siin: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software'i konto</translation>
 <translation id="3785727820640310185">Selle saidi jaoks salvestatud paroolid</translation>
 <translation id="3404065873681873169">Selle saidi jaoks ei ole salvestatud ühtki parooli</translation>
@@ -1389,7 +1400,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6647838571840953560">Praegu kanalil <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Püsivara</translation>
 <translation id="5895138241574237353">Taaskäivitamine</translation>
-<translation id="7409233648990234464">Taaskäivitus ja Powerwash</translation>
+<translation id="4297219207642690536">Taaskäivita ja lähtesta</translation>
 <translation id="4716483597559580346">Powerwash suurendab turvalisust</translation>
 <translation id="4089922565956168950">See üleviimine lähtestab teie Bravebooki ja eemaldab praegused kasutaja andmed.</translation>
 <translation id="5184662919967270437">Teie seadme värskendamine</translation>
@@ -1397,6 +1408,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="5906655207909574370">Seade on peaaegu ajakohane. Värskenduse lõpuleviimiseks taaskäivitage seade.</translation>
 <translation id="5860494867054883682">Seadme värskendamine kanalile <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanal on muutunud. Muudatuste rakendamiseks taaskäivitage oma seade.</translation>
+<translation id="7133578150266914903">Administraator viib selle seadme vanemale versioonile (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Administraator viis selle seadme vanemale versioonile. Salvestage olulised failid ja seejärel taaskäivitage seade. Kõik seadmes olevad andmed kustutatakse.</translation>
 <translation id="1871615898038944731">Teie seade <ph name="DEVICE_TYPE"/> on ajakohane</translation>
 <translation id="3688526734140524629">Vaheta kanalit</translation>
 <translation id="6410328738210026208">Muuda kanalit ja Powerwashi</translation>
@@ -1497,7 +1510,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6902066522699286937">Eelvaate hääl</translation>
 <translation id="304747341537320566">Kõnesünteesimootorid</translation>
 <translation id="1067291318998134776">Linux (beetaversioon)</translation>
-<translation id="6963573437985514722">Linuxi tööriistade, redaktorite ja IDE-de käitamine teie Bravebookis.</translation>
 <translation id="6869910261738842136">Linuxi rakenduste eemaldamine Bravebookist</translation>
 <translation id="2295473777859797944">Brave Software Play pood</translation>
 <translation id="572155275267014074">Androidi seaded</translation>
@@ -1538,6 +1550,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="8639963783467694461">Automaatse täitmise seaded</translation>
 <translation id="3431019676184503003">Aadressid ja makseviisid</translation>
 <translation id="2512222046227390255">Täida vormid automaatselt</translation>
+<translation id="2283340219607151381">Salvesta ja sisesta aadressid</translation>
+<translation id="1662550410081243962">Salvesta ja sisesta makseviisid</translation>
 <translation id="2903493209154104877">Aadressid</translation>
 <translation id="7764225426217299476">Lisage aadress</translation>
 <translation id="5595485650161345191">Muuda aadressi</translation>
@@ -1574,6 +1588,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7930294771522048157">Salvestatud makseviisid kuvatakse siin</translation>
 <translation id="9124003689441359348">Salvestatud paroolid kuvatakse siin</translation>
 <translation id="4400367121200150367">Siin kuvatakse saidid, millel paroole kunagi ei salvestata</translation>
+<translation id="3098842761938485917">Vaadake ja hallake salvestatud paroole oma <ph name="BEGIN_LINK"/>Brave Software'i kontol<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Paroolide eksportimine …</translation>
 <translation id="3900966090527141178">Paroolide eksportimine</translation>
 <translation id="6914783257214138813">Teie paroolid on nähtavad kõigile, kes saavad vaadata eksporditud faili.</translation>
@@ -1964,6 +1979,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="4534361985432360439">Saadab Brave Software'ile teie soovitud lehe veebiaadressi.</translation>
 <translation id="6545834809683560467">Kasuta ennustusteenust, mis aitab lõpetada otsingud, ja URL-e, mis sisestatakse aadressiribale või rakenduste käivitaja otsingukasti</translation>
 <translation id="7704317875155739195">Otsingute ja URL-ide automaatne täitmine</translation>
+<translation id="2000419248597011803">Saadab teie vaikeotsingumootorile mõned küpsisefailid ja otsingud teie aadressiribalt ning otsingukastist</translation>
 <translation id="9038649477754266430">Kasuta lehtede kiiremaks laadimiseks ennustusteenust</translation>
 <translation id="7981313251711023384">Eellaaditakse lehti kiiremaks sirvimiseks ja otsimiseks</translation>
 <translation id="2468205691404969808">Kasutage küpsisefaile, et oma eelistusi meeles pidada, isegi kui te neid lehti ei külasta</translation>
@@ -1974,6 +1990,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="490074449735753175">Kasuta veebiteenust õigekirjavigade parandamisele kaasaaitamiseks</translation>
 <translation id="3523078749603005179">Nutikam õigekirjakontroll, mis saadab brauserisse sisestatud teksti Brave Software'ile</translation>
 <translation id="2564653188463346023">Täiustatud õigekirjakontroll</translation>
+<translation id="7469406957790636836">Selle sisselülitamiseks lülitage menüüs <ph name="BEGIN_LINK"/>Keeled ja sisend<ph name="END_LINK"/> esmalt sisse õigekirjakontroll</translation>
+<translation id="8699566574894671540">Selle sisselülitamiseks tehke menüüs Muutmine esmalt valik Õigekirja kontrollimine teksti sisestamisel</translation>
 <translation id="9079153198295609735">Saada kasutusstatistika ja krahhiaruanded automaatselt Brave Software'ile</translation>
 <translation id="5941220456342415404">Saada diagnostika- ja kasutusandmed automaatselt Brave Software'ile</translation>
 <translation id="918192811481327695">Aidake täiustada Brave'i funktsioone ja toimivust</translation>
@@ -2223,6 +2241,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7548737591211512046">Logige sisse, et teie järjehoidjad, ajalugu, paroolid ja muud seaded oleksid kõikides teie seadmetes saadaval. Teid logitakse ka automaatselt sisse Brave Software'i teenustesse.</translation>
 <translation id="2951604498031550705">Teie järjehoidjate, ajaloo, paroolide ja muude seadete muudatusi ei sünkroonita enam teie Brave Software'i kontoga. Teie olemasolevad andmed jäävad aga teie Brave Software'i kontole alles ja neid saab hallata <ph name="BEGIN_LINK"/>Brave Software'i juhtpaneelil<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">See logib teid teie Brave Software'i kontodelt välja. Teie järjehoidjate, ajaloo, paroolide ja muude seadete muudatusi ei sünkroonita enam teie Brave Software'i kontoga. Teie olemasolevad andmed jäävad aga teie Brave Software'i kontole alles ja neid saab hallata <ph name="BEGIN_LINK"/>Brave Software'i juhtpaneelil<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">See logib teid teie Brave Software'i kontodelt välja. Teie järjehoidjaid, ajalugu, paroole ja muud ei sünkroonita enam.</translation>
 <translation id="8588866096426746242">Kuva profiili statistika</translation>
 <translation id="5535941515421698170">Eemaldage sellest seadmest ka oma olemasolevad andmed</translation>
 <translation id="7243632151880336635">Kustuta ja logi välja</translation>
@@ -2244,13 +2263,16 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="3259418918864581163">Krediitkaardid ja aadressid, mis kasutavad teenust Brave Software Pay.</translation>
 <translation id="4439834757335393741">Makseviisid ja aadressid, mis kasutavad teenust Brave Software Pay.</translation>
 <translation id="3268451620468152448">Avatud vahelehed</translation>
+<translation id="5241892180459725878">Brave Software Drive'i otsingusoovitused</translation>
 <translation id="2120297377148151361">Tegevused ja interaktsioonid</translation>
+<translation id="5833397272224757657">Kasutab isikupärastamiseks teie külastatavate saitide sisu ning brauseri tegevusi ja interaktsioone</translation>
 <translation id="8135094938656535588">Sünkroonitud andmete haldamine teenuses Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Krüpteerimise valikud</translation>
 <translation id="2459230470861708651">Krüpteeri sünkroonitud paroolid minu Brave Software'i kasutajanime ja parooliga</translation>
 <translation id="6383051423892982287">Krüpteeri sünkroonitud andmed <ph name="BEGIN_LINK"/>sünkroonimisparooliga<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Teie krüpteeritud andmeid saavad lugeda vaid need, kes teavad teie parooli – seda ei saadeta Brave Software'ile ja Brave Software ei talleta seda. Kui unustate parooli või soovite seda seadet muuta, tuleb teil <ph name="BEGIN_LINK"/>sünkroonimine lähtestada<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Selle seade muutmiseks tuleb teil <ph name="BEGIN_LINK"/>sünkroonimine lähtestada<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Selle sisselülitamiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_LINK"/>, et eemaldada oma sünkroonimisparool</translation>
 <translation id="988978206646512040">Tühi parool ei ole lubatud</translation>
 <translation id="1651008383952180276">Peate sisestama sama parooli kaks korda</translation>
 <translation id="2136476978468204130">Sisestatud parool on vale</translation>

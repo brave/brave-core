@@ -482,7 +482,12 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3190558889382726167">Şifre kaydedildi</translation>
 <translation id="5079950360618752063">Önerilen şifreyi kullan</translation>
 <translation id="8084114998886531721">Kayıtlı şifre</translation>
+<translation id="5614553682702429503">Şifre kaydedilsin mi?</translation>
 <translation id="1405476660552109915">Bu siteye ait hesabınızın <ph name="PASSWORD_MANAGER_BRAND"/> tarafından kaydedilmesini ister misiniz?</translation>
+<translation id="8756969031206844760">Şifre güncellensin mi?</translation>
+<translation id="8230134520748321204"><ph name="ORIGIN"/> için şifreniz kaydedilsin mi?</translation>
+<translation id="9040661932550800571"><ph name="ORIGIN"/> için şifre güncellensin mi?</translation>
+<translation id="8284000761603848448">Şifreler Brave Software Hesabınıza kaydedildiğinden bunları herhangi bir cihazda kullanabilirsiniz</translation>
 <translation id="8286036467436129157">Oturum Aç</translation>
 <translation id="8009225694047762179">Şifreleri Yönet</translation>
 <translation id="9135262959729602463">Şifrelerinizi tüm cihazlarınızda almak için Brave'da oturum açın.</translation>
@@ -549,16 +554,18 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Bitti</translation>
 <translation id="4416582610654027550">Geçerli bir URL yazın</translation>
+<translation id="2806891468525657116">Kısayol zaten mevcut</translation>
+<translation id="394183848452296464">Kısayol oluşturulamıyor</translation>
 <translation id="7109543803214225826">Kısayol kaldırıldı</translation>
 <translation id="8017679124341497925">Kısayol düzenlendi</translation>
 <translation id="1174073918202301297">Kısayol eklendi</translation>
 <translation id="2926085873880284723">Varsayılan kısayolları geri yükle</translation>
-<translation id="7413455776853560343">Arka planı özelleştirin</translation>
+<translation id="2942581856830209953">Bu sayfayı özelleştir</translation>
 <translation id="2187700606737131818">Brave Software Fotoğraflar</translation>
 <translation id="5801450813341024983">Brave arka planları</translation>
 <translation id="2800760947029405028">Resim yükle</translation>
 <translation id="8342861492835240085">Koleksiyon seçin</translation>
-<translation id="6017211263306518045">Brave Software Fotoğraf Albümü seçin</translation>
+<translation id="1734885380062278369">Brave Software Fotoğraflar albümü seçin</translation>
 <translation id="3132996321662585180">Günlük olarak yenile</translation>
 <translation id="9062065967472365419">Beni şaşırt</translation>
 <translation id="7287411021188441799">Varsayılan arka planı geri yükle</translation>
@@ -568,6 +575,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3617891479562106823">Arka planlar kullanılamıyor. Daha sonra tekrar deneyin.</translation>
 <translation id="8391712576156218334">Görüntü kullanılamıyor. Daha sonra tekrar deneyin.</translation>
 <translation id="1564414980088536597">Bu resim kullanılamaz. Farklı bir resim seçin.</translation>
+<translation id="4628948037717959914">Fotoğraf</translation>
+<translation id="8033827949643255796">seçildi</translation>
 <translation id="5376169624176189338">Geri dönmek için tıkla, geçmişi görmek için tıklayıp tut</translation>
 <translation id="9103868373786083162">Geri gitmek için içerik menüsüne basarak geçmişi görüntüleyin</translation>
 <translation id="2961695502793809356">İlerlemek için tıkla, geçmişi görmek için tıklayıp tut</translation>
@@ -841,6 +850,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2532167245710864499">Brave Software'a sistem ve kullanım bilgilerini göndererek Brave'u ve güvenliğini iyileştirin</translation>
 <translation id="2709453993673701466">Senkronizasyonu ve kişiselleştirmeyi açılmadan önce yönetmek ister misiniz? <ph name="BEGIN_LINK"/>Ayarlar<ph name="END_LINK"/>'ı ziyaret edin.</translation>
 <translation id="2668128414154024727">Brave Software'ın hangi bilgileri toplayacağını, istediğiniz zaman <ph name="BEGIN_LINK"/>Ayarlar<ph name="END_LINK"/>'dan özelleştirebilirsiniz.</translation>
+<translation id="6035247993547372482">Brave Software, Brave ve diğer Brave Software hizmetlerini (Çeviri, Arama ve reklamlar gibi) kişiselleştirmek için, ziyaret ettiğiniz sitelerdeki içeriğin yanı sıra tarayıcı etkinliğinizi ve etkileşimlerinizi kullanabilir. Bunu Ayarlar'da özelleştirebilirsiniz.</translation>
 <translation id="741204030948306876">Evet, istiyorum</translation>
 <translation id="8428213095426709021">Ayarlar</translation>
 <translation id="2497852260688568942">Yöneticiniz senkronizasyonu devre dışı bıraktı</translation>
@@ -939,6 +949,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8363142353806532503">Mikrofon engellendi</translation>
 <translation id="2762441749940182211">Kamera engellendi</translation>
 <translation id="5074318175948309511">Yeni ayarların geçerli olması için bu sayfanın tekrar yüklenmesi gerekebilir.</translation>
+<translation id="1322046419516468189">Kayıtlı şifreleri <ph name="SAVED_PASSWORDS_STORE"/> üzerinde görüntüleyin ve yönetin</translation>
 <translation id="5713644099811900409">Brave Software Hesabı</translation>
 <translation id="3785727820640310185">Bu site için kaydedilen şifreler</translation>
 <translation id="3404065873681873169">Bu site için hiç şifre kaydedilmedi</translation>
@@ -1389,7 +1400,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6647838571840953560">Şu anda <ph name="CHANNEL_NAME"/> kanalında</translation>
 <translation id="2972557485845626008">Donanım yazılımı</translation>
 <translation id="5895138241574237353">Yeniden başlat</translation>
-<translation id="7409233648990234464">Yeniden başlat ve Powerwash işlemi yap</translation>
+<translation id="4297219207642690536">Yeniden başlat ve sıfırla</translation>
 <translation id="4716483597559580346">Daha fazla güvenlik için Powerwash işlemini uygulayın</translation>
 <translation id="4089922565956168950">Bu sürüm güncellemesi, Bravebook'unuzu sıfırlar ve mevcut kullanıcı verilerini kaldırır.</translation>
 <translation id="5184662919967270437">Cihazınız güncelleniyor</translation>
@@ -1397,6 +1408,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="5906655207909574370">Az kaldı! Güncellemeyi tamamlamak için cihazınızı yeniden başlatın.</translation>
 <translation id="5860494867054883682">Cihazınız <ph name="CHANNEL_NAME"/> kanalına güncelleniyor (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanal değişti. Değişikliklerin uygulanması için cihazınızı yeniden başlatın.</translation>
+<translation id="7133578150266914903">Yöneticiniz bu cihazı ilk haline döndürüyor (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Yöneticiniz bu cihazı ilk haline döndürdü. Lütfen önemli dosyaları kaydedin ve sonra yeniden başlatın. Cihazdaki tüm veriler silinecektir.</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> cihazınız güncel</translation>
 <translation id="3688526734140524629">Kanal değiştir</translation>
 <translation id="6410328738210026208">Kanal değiştir ve Powerwash işlemini yap</translation>
@@ -1497,7 +1510,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6902066522699286937">Önizlenecek ses</translation>
 <translation id="304747341537320566">Konuşma Motorları</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Linux araçları, düzenleyicileri ve IDE'lerini Bravebook'unuzda çalıştırır.</translation>
 <translation id="6869910261738842136">Bravebook için Linux Uygulamalarını Kaldırın</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Android ayarları</translation>
@@ -1538,6 +1550,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8639963783467694461">Otomatik doldurma ayarları</translation>
 <translation id="3431019676184503003">Adresler ve ödeme yöntemleri</translation>
 <translation id="2512222046227390255">Formları otomatik doldurma</translation>
+<translation id="2283340219607151381">Adresleri kaydet ve doldur</translation>
+<translation id="1662550410081243962">Ödeme yöntemlerini kaydet ve doldur</translation>
 <translation id="2903493209154104877">Adresler</translation>
 <translation id="7764225426217299476">Adres ekle</translation>
 <translation id="5595485650161345191">Adresi düzenle</translation>
@@ -1574,6 +1588,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7930294771522048157">Kaydedilen ödeme yöntemleri burada görünecek</translation>
 <translation id="9124003689441359348">Kayıtlı şifreleriniz burada görünür</translation>
 <translation id="4400367121200150367">Şifreleri hiçbir zaman kaydedilmeyecek siteler burada görünür</translation>
+<translation id="3098842761938485917"><ph name="BEGIN_LINK"/>Brave Software Hesabınızdaki<ph name="END_LINK"/> kayıtlı şifrelerinizi görüntüleyin ve yönetin.</translation>
 <translation id="5620655347161642930">Şifreleri dışa aktar...</translation>
 <translation id="3900966090527141178">Şifreleri dışa aktarın</translation>
 <translation id="6914783257214138813">Şifreleriniz, dışa aktarılan dosyayı görebilen herkes tarafından görülebilir.</translation>
@@ -1964,6 +1979,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="4534361985432360439">Erişmeye çalıştığınız sayfanın web adresini Brave Software'a gönderir</translation>
 <translation id="6545834809683560467">Adres çubuğuna veya Uygulama Başlatıcı arama kutusuna yazılan aramaların ve URL'lerin tamamlanmasına yardımcı olması için bir tahmin hizmeti kullan</translation>
 <translation id="7704317875155739195">Aramaları ve URL'leri otomatik tamamla</translation>
+<translation id="2000419248597011803">Adres çubuğundan ve arama kutusundan bazı çerezleri ve aramaları varsayılan arama motorunuza gönderir</translation>
 <translation id="9038649477754266430">Sayfaları daha hızlı yüklemek için bir tahmin hizmeti kullan</translation>
 <translation id="7981313251711023384">Daha hızlı göz atmak ve arama yapmak için sayfaları önceden yükle</translation>
 <translation id="2468205691404969808">Belirtilen sayfaları ziyaret etmiyor olsanız bile tercihlerinizi hatırlamak için çerezler kullanır</translation>
@@ -1974,6 +1990,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="490074449735753175">Yazım hatalarının düzeltilmesine yardımcı olması için bir web hizmeti kullan</translation>
 <translation id="3523078749603005179">Tarayıcınızda yazdıklarınızın Brave Software'a gönderilmesiyle sağlanan daha akıllı yazım denetimi</translation>
 <translation id="2564653188463346023">Geliştirilmiş yazım denetimi</translation>
+<translation id="7469406957790636836">Bu özelliği açmak için önce <ph name="BEGIN_LINK"/>Dil ve giriş<ph name="END_LINK"/>'te yazım denetimini etkinleştirin</translation>
+<translation id="8699566574894671540">Bu özelliği açmak için ilk olarak Düzenleme menüsünde Yazarken Yazımı Denetle'yi seçin</translation>
 <translation id="9079153198295609735">Kullanım istatistiklerini ve çökme raporlarını otomatik olarak Brave Software'a gönder</translation>
 <translation id="5941220456342415404">Teşhis ve kullanım verilerini Brave Software'a otomatik olarak gönder</translation>
 <translation id="918192811481327695">Brave'un özelliklerini ve performansını iyileştirmeye yardımcı olun</translation>
@@ -2223,6 +2241,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7548737591211512046">Tüm cihazlarınızdaki yer işaretlerini, geçmişi, şifreleri ve diğer ayarları almak için oturum açın. Ayrıca Brave Software hizmetlerinizde de otomatik olarak oturum açarsınız.</translation>
 <translation id="2951604498031550705">Yer işaretleri, geçmiş, şifreler ve diğer ayarlarınızla ilgili değişiklikler artık Brave Software Hesabınızla senkronize edilmez. Ancak mevcut verileriniz Brave Software Hesabınızda kalmaya devam eder ve <ph name="BEGIN_LINK"/>Brave Software Hesap Özeti<ph name="END_LINK"/>'nde yönetilebilir.</translation>
 <translation id="138229770216285283">Bu işlem Brave Software hesaplarınızın oturumunu kapatacaktır. Yer işaretleri, geçmiş, şifreler ve diğer ayarlarınızla ilgili değişiklikler artık Brave Software Hesabınızla senkronize edilmeyecek. Ancak mevcut verileriniz Brave Software Hesabınızda kalmaya devam edecek ve <ph name="BEGIN_LINK"/>Brave Software Hesap Özeti<ph name="END_LINK"/>'nde yönetilebilecektir.</translation>
+<translation id="3169352093514419465">Bu işlem Brave Software hesaplarınızın oturumunu kapatacak. Yer işaretleriniz, şifreleriniz ve diğer içerikler artık senkronize edilmeyecek.</translation>
 <translation id="8588866096426746242">Profil istatistiklerini göster</translation>
 <translation id="5535941515421698170">Ayrıca, mevcut verilerinizi bu cihazdan kaldırın</translation>
 <translation id="7243632151880336635">Temizle ve Oturumu Kapat</translation>
@@ -2244,13 +2263,16 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3259418918864581163">Brave Software Pay'i kullanan kredi kartları ve adresler.</translation>
 <translation id="4439834757335393741">Brave Software Pay'i kullanan ödeme yöntemleri ve adresler.</translation>
 <translation id="3268451620468152448">Açık Sekmeler</translation>
+<translation id="5241892180459725878">Brave Software Drive arama önerileri</translation>
 <translation id="2120297377148151361">Etkinlik ve etkileşimler</translation>
+<translation id="5833397272224757657">Kişiselleştirme için ziyaret ettiğiniz sitelerin içeriğinin yanı sıra tarayıcı etkinliğini ve etkileşimlerini kullanır</translation>
 <translation id="8135094938656535588">Brave Software Hesap Özeti'nde senkronize edilen verileri yönet</translation>
 <translation id="6596325263575161958">Şifreleme seçenekleri</translation>
 <translation id="2459230470861708651">Senkronize edilen şifreleri Brave Software kullanıcı adınız ve şifrenizle şifreleyin</translation>
 <translation id="6383051423892982287">Senkronize edilen verileri kendi <ph name="BEGIN_LINK"/>senkronizasyon parolanızla<ph name="END_LINK"/> şifreleyin</translation>
 <translation id="4817583816512767754">Yalnızca parolanızı bilen biri, şifrelenmiş verilerinizi okuyabilir. Parola Brave Software'a gönderilmez veya Brave Software tarafından saklanmaz. Parolanızı unutursanız veya bu ayarı değiştirmek isterseniz <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlamanız<ph name="END_LINK"/> gerekir.</translation>
 <translation id="4300305918532693141">Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlayın<ph name="END_LINK"/></translation>
+<translation id="3873315167136380065">Bu özelliği açmak için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlayarak<ph name="END_LINK"/> senkronizasyon parolanızı kaldırın</translation>
 <translation id="988978206646512040">Boş parolaya izin verilmez</translation>
 <translation id="1651008383952180276">Aynı parolayı iki kez girmelisiniz</translation>
 <translation id="2136476978468204130">Girdiğiniz parola yanlış</translation>

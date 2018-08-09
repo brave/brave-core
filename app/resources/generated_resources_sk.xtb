@@ -481,7 +481,12 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3190558889382726167">Heslo bolo uložené</translation>
 <translation id="5079950360618752063">Použiť navrhované heslo</translation>
 <translation id="8084114998886531721">Uložené heslo</translation>
+<translation id="5614553682702429503">Uložiť heslo?</translation>
 <translation id="1405476660552109915">Chcete, aby prehliadač <ph name="PASSWORD_MANAGER_BRAND"/> uložil váš účet pre tento web?</translation>
+<translation id="8756969031206844760">Aktualizovať heslo?</translation>
+<translation id="8230134520748321204">Uložiť heslo pre adresu <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Aktualizovať heslo pre adresu <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Heslá sa ukladajú do účtu Brave Software, takže ich môžete používať v ľubovoľnom zariadení</translation>
 <translation id="8286036467436129157">Prihlásenie</translation>
 <translation id="8009225694047762179">Spravovať heslá</translation>
 <translation id="9135262959729602463">Ak chcete získať svoje heslá vo všetkých zariadeniach, prihláste sa do Chromu.</translation>
@@ -548,16 +553,18 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7400418766976504921">Webová adresa</translation>
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="4416582610654027550">Zadajte platnú webovú adresu</translation>
+<translation id="2806891468525657116">Skratka už existuje</translation>
+<translation id="394183848452296464">Skratka sa nedá vytvoriť</translation>
 <translation id="7109543803214225826">Skratka bola odstránená</translation>
 <translation id="8017679124341497925">Skratka bola upravená</translation>
 <translation id="1174073918202301297">Odkaz bol pridaný</translation>
 <translation id="2926085873880284723">Obnoviť predvolené skratky</translation>
-<translation id="7413455776853560343">Prispôsobiť pozadie</translation>
+<translation id="2942581856830209953">Prispôsobiť túto stránku</translation>
 <translation id="2187700606737131818">Fotky Brave Software</translation>
 <translation id="5801450813341024983">Pozadia Chromu</translation>
 <translation id="2800760947029405028">Nahrať obrázok</translation>
 <translation id="8342861492835240085">Vybrať zbierku</translation>
-<translation id="6017211263306518045">Vybrať album Fotiek Brave Software</translation>
+<translation id="1734885380062278369">Výber albumu Fotiek Brave Software</translation>
 <translation id="3132996321662585180">Obnovovať denne</translation>
 <translation id="9062065967472365419">Prekvapte ma</translation>
 <translation id="7287411021188441799">Obnoviť predvolené pozadie</translation>
@@ -567,6 +574,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3617891479562106823">Pozadia nie sú k dispozícii. Skúste to znova neskôr.</translation>
 <translation id="8391712576156218334">Obrázok nie je k dispozícii. Skúste to znova neskôr.</translation>
 <translation id="1564414980088536597">Tento obrázok sa nedá použiť. Vyberte iný.</translation>
+<translation id="4628948037717959914">Fotografia</translation>
+<translation id="8033827949643255796">vybrané</translation>
 <translation id="5376169624176189338">Kliknutím prejdete naspäť. Pri dlhšom stlačení sa zobrazí história.</translation>
 <translation id="9103868373786083162">Stlačením tohto tlačidla prejdete späť, históriu si zobrazíte pomocou kontextovej ponuky</translation>
 <translation id="2961695502793809356">Kliknutím prejdete dopredu. Pri dlhšom stlačení sa zobrazí história.</translation>
@@ -840,6 +849,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2532167245710864499">Zlepšite Brave a jeho zabezpečenie odosielaním informácií o systéme a využití do Googlu</translation>
 <translation id="2709453993673701466">Chcete pred zapnutím spravovať možnosti synchronizácie a prispôsobenia? Prejdite do <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">V <ph name="BEGIN_LINK"/>Nastaveniach<ph name="END_LINK"/> môžete kedykoľvek prispôsobiť, aké informácie Brave Software zhromažďuje.</translation>
+<translation id="6035247993547372482">Brave Software môže použiť obsah na weboch, ktoré navštívite, aktivitu prehliadača a interakcie na prispôsobenie Chromu a ďalších služieb Googlu, ako sú Prekladač, Vyhľadávanie a reklamy. Túto voľbu môžete prispôsobiť v Nastaveniach.</translation>
 <translation id="741204030948306876">Áno, súhlasím</translation>
 <translation id="8428213095426709021">Nastavenia</translation>
 <translation id="2497852260688568942">Synchronizácia je zakázaná správcom</translation>
@@ -938,6 +948,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8363142353806532503">Mikrofón je zablokovaný</translation>
 <translation id="2762441749940182211">Kamera je zablokovaná</translation>
 <translation id="5074318175948309511">Na to, aby toto nové nastavenie nadobudlo platnosť, budete možno musieť znova načítať túto stránku.</translation>
+<translation id="1322046419516468189">Uložené heslá si môžete zobraziť a spravovať v časti <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">účtu Brave Software</translation>
 <translation id="3785727820640310185">Uložené heslá pre tento web</translation>
 <translation id="3404065873681873169">Pre tento web neboli uložené žiadne heslá</translation>
@@ -1388,7 +1399,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6647838571840953560">Momentálne v kanáli <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Firmvér</translation>
 <translation id="5895138241574237353">Reštartovať</translation>
-<translation id="7409233648990234464">Znova spustiť a použiť funkciu Powerwash</translation>
+<translation id="4297219207642690536">Reštartovať a resetovať</translation>
 <translation id="4716483597559580346">Vymazanie Powerwash v rámci zvýšenia zabezpečenia</translation>
 <translation id="4089922565956168950">Táto inovácia resetuje Bravebook a odstráni aktuálne dáta používateľa.</translation>
 <translation id="5184662919967270437">Zariadenie sa aktualizuje</translation>
@@ -1396,6 +1407,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5906655207909574370">Aktualizácia je takmer hotová! Dokončite ju reštartovaním zariadenia.</translation>
 <translation id="5860494867054883682">Vaše zariadenie sa aktualizuje na kanál <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanál sa zmenil. Ak chcete zmeny použiť, reštartujte zariadenie.</translation>
+<translation id="7133578150266914903">Správca obnovuje toto zariadenie (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Správca obnovil toto zariadenie. Uložte si dôležité súbory a potom zariadenie reštartujte. Zo zariadenia sa odstránia všetky dáta.</translation>
 <translation id="1871615898038944731">Vaše zariadenie <ph name="DEVICE_TYPE"/> je aktuálne</translation>
 <translation id="3688526734140524629">Zmeniť kanál</translation>
 <translation id="6410328738210026208">Zmeniť kanál a použiť funkciu Powerwash</translation>
@@ -1496,7 +1509,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6902066522699286937">Hlas, ktorého ukážku si chcete vypočuť</translation>
 <translation id="304747341537320566">Nástroje hlasovej odozvy</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Spustite nástroje, editory aj Linux a súbory IDE vo svojom Bravebooku.</translation>
 <translation id="6869910261738842136">Odstrániť aplikácie Linux pre Bravebook</translation>
 <translation id="2295473777859797944">Obchod Brave Software Play</translation>
 <translation id="572155275267014074">Nastavenia Androidu</translation>
@@ -1537,6 +1549,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8639963783467694461">Nastavenia automatického dopĺňania</translation>
 <translation id="3431019676184503003">Adresy a spôsoby platby</translation>
 <translation id="2512222046227390255">Automaticky vypĺňať formuláre</translation>
+<translation id="2283340219607151381">Ukladať a dopĺňať adresy</translation>
+<translation id="1662550410081243962">Ukladať a dopĺňať spôsoby platby</translation>
 <translation id="2903493209154104877">Adresy</translation>
 <translation id="7764225426217299476">Pridať adresu</translation>
 <translation id="5595485650161345191">Upraviť adresu</translation>
@@ -1573,6 +1587,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7930294771522048157">Tu sa zobrazia uložené spôsoby platby</translation>
 <translation id="9124003689441359348">Tu sa zobrazia uložené heslá</translation>
 <translation id="4400367121200150367">Tu sa zobrazia weby, ktoré nikdy neukladajú heslo</translation>
+<translation id="3098842761938485917">Zobrazenie a správa uložených hesiel v <ph name="BEGIN_LINK"/>účte Brave Software<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Exportovať heslá…</translation>
 <translation id="3900966090527141178">Exportovanie hesiel</translation>
 <translation id="6914783257214138813">Vaše heslá uvidí každý, kto si môže zobraziť exportovaný súbor.</translation>
@@ -1963,6 +1978,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4534361985432360439">Odošle Googlu webovú adresu stránky, na ktorú sa pokúšate prejsť</translation>
 <translation id="6545834809683560467">Predpovedať vyhľadávané výrazy a webové adresy zadávané na paneli s adresou alebo vo vyhľadávacom poli spúšťača</translation>
 <translation id="7704317875155739195">Automaticky dopĺňať vyhľadávania a webové adresy</translation>
+<translation id="2000419248597011803">Odošle niektoré súbory cookie a vyhľadávania z panela s adresou a vyhľadávacieho poľa do vášho predvoleného vyhľadávača</translation>
 <translation id="9038649477754266430">Používať službu predpovedí na rýchlejšie načítanie stránok</translation>
 <translation id="7981313251711023384">Vopred načítavať stránky na zrýchlenie prehliadania a vyhľadávania</translation>
 <translation id="2468205691404969808">Používa súbory cookie na zapamätanie si vašich predvolieb, dokonca aj keď dané stránky nenavštívite</translation>
@@ -1973,6 +1989,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="490074449735753175">Riešiť pravopisné chyby pomocou webovej služby</translation>
 <translation id="3523078749603005179">Inteligentnejšia kontrola pravopisu odosielaním textu zadaného v prehliadači do Googlu</translation>
 <translation id="2564653188463346023">Rozšírená kontrola pravopisu</translation>
+<translation id="7469406957790636836">Ak chcete túto funkciu zapnúť, najprv v časti <ph name="BEGIN_LINK"/>Jazyky a vstup<ph name="END_LINK"/> zapnite kontrolu pravopisu</translation>
+<translation id="8699566574894671540">Ak chcete túto funkciu zapnúť, najprv v ponuke Upraviť vyberte možnosť Kontrolovať pravopis počas písania</translation>
 <translation id="9079153198295609735">Automaticky odosielať Googlu štatistiky používania a správy o zlyhaní</translation>
 <translation id="5941220456342415404">Automaticky odosielať diagnostiky a údaje o využívaní Googlu.</translation>
 <translation id="918192811481327695">Pomáhať s vylepšovaním funkcií a výkonu Chromu</translation>
@@ -2222,6 +2240,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7548737591211512046">Prihláste sa, aby ste získali svoje záložky, históriu, heslá a ďalšie nastavenia na všetkých zariadeniach. Navyše vás bude systém automaticky prihlasovať do služieb Brave Software.</translation>
 <translation id="2951604498031550705">Záložky, história, heslá a ďalšie nastavenia sa už nebudú ďalej synchronizovať do vášho účtu Brave Software. Vaše existujúce údaje však zostanú uložené v účte Brave Software a môžete ich spravovať pomocou panela <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Týmto sa odhlásite z účtov Brave Software. Zmeny záložiek, histórie hesiel a ďalších nastavení sa už nebudú synchronizovať do vášho účtu Brave Software. Vaše existujúce dáta však zostanú uložené v účte Brave Software a môžete ich spravovať pomocou služby <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Táto možnosť vás odhlási z účtov Brave Software. Záložky, história, heslá a ďalší obsah sa prestanú synchronizovať.</translation>
 <translation id="8588866096426746242">Zobraziť štatistiky profilu</translation>
 <translation id="5535941515421698170">Zároveň z tohto zariadenia odstrániť existujúce dáta</translation>
 <translation id="7243632151880336635">Vymazať a odhlásiť sa</translation>
@@ -2243,13 +2262,16 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3259418918864581163">Kreditné karty a adresy pomocou služby Brave Software Pay</translation>
 <translation id="4439834757335393741">Spôsoby platby a adresy pomocou Brave Software Pay</translation>
 <translation id="3268451620468152448">Otvorené karty</translation>
+<translation id="5241892180459725878">Návrhy vyhľadávania z Disku Brave Software</translation>
 <translation id="2120297377148151361">Aktivity a interakcie</translation>
+<translation id="5833397272224757657">Používa obsah z navštívených webov, aktivitu prehliadača a interakcie s ním na prispôsobenie</translation>
 <translation id="8135094938656535588">Spravovať synchronizované dáta v službe Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Možnosti šifrovania</translation>
 <translation id="2459230470861708651">Šifrovať synchronizované heslá pomocou používateľského mena a hesla Brave Software</translation>
 <translation id="6383051423892982287">Šifrovať synchronizované údaje pomocou vlastnej <ph name="BEGIN_LINK"/>prístupovej frázy synchronizácie<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Šifrované údaje môže čítať iba používateľ s prístupovou frázou. Prístupová fráza sa do Googlu neodosiela a Brave Software ju ani neukladá. Ak zabudnete prístupovú frázu alebo budete chcieť zmeniť toto nastavenie zmeniť, musíte <ph name="BEGIN_LINK"/>resetovať synchronizáciu<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Ak chcete zmeniť toto nastavenie, <ph name="BEGIN_LINK"/>resetujte synchronizáciu<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Zapnite toto nastavenie, <ph name="BEGIN_LINK"/>resetujte synchronizáciu<ph name="END_LINK"/> a odstráňte tak prístupovú frázu synchronizácie</translation>
 <translation id="988978206646512040">Prístupová fráza nemôže byť prázdna</translation>
 <translation id="1651008383952180276">Rovnakú prístupovú frázu musíte zadať dvakrát</translation>
 <translation id="2136476978468204130">Zadaná prístupová fráza je nesprávna</translation>

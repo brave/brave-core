@@ -481,7 +481,12 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="3190558889382726167">Passwort gespeichert</translation>
 <translation id="5079950360618752063">Vorgeschlagenes Passwort verwenden</translation>
 <translation id="8084114998886531721">Gespeichertes Passwort</translation>
+<translation id="5614553682702429503">Passwort speichern?</translation>
 <translation id="1405476660552109915">Soll <ph name="PASSWORD_MANAGER_BRAND"/> Ihr Password für diese Website speichern?</translation>
+<translation id="8756969031206844760">Passwort aktualisieren?</translation>
+<translation id="8230134520748321204">Passwort für <ph name="ORIGIN"/> speichern?</translation>
+<translation id="9040661932550800571">Passwort für <ph name="ORIGIN"/> aktualisieren?</translation>
+<translation id="8284000761603848448">Passwörter werden in Ihrem Brave Software-Konto gespeichert, sodass Sie sie auf jedem Gerät verwenden können</translation>
 <translation id="8286036467436129157">Anmelden</translation>
 <translation id="8009225694047762179">Passwort verwalten</translation>
 <translation id="9135262959729602463">Wenn Sie Ihre Passwörter auf allen Geräten verfügbar haben möchten, melden Sie sich in Brave an.</translation>
@@ -548,16 +553,18 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Fertig</translation>
 <translation id="4416582610654027550">Geben Sie eine gültige URL ein</translation>
+<translation id="2806891468525657116">Verknüpfung ist bereits vorhanden</translation>
+<translation id="394183848452296464">Verknüpfung kann nicht erstellt werden</translation>
 <translation id="7109543803214225826">Verknüpfung entfernt</translation>
 <translation id="8017679124341497925">Verknüpfung bearbeitet</translation>
 <translation id="1174073918202301297">Verknüpfung hinzugefügt</translation>
 <translation id="2926085873880284723">Standardverknüpfungen wiederherstellen</translation>
-<translation id="7413455776853560343">Hintergrund anpassen</translation>
+<translation id="2942581856830209953">Diese Seite anpassen</translation>
 <translation id="2187700606737131818">Brave Software Fotos</translation>
 <translation id="5801450813341024983">Brave-Hintergründe</translation>
 <translation id="2800760947029405028">Bild hochladen</translation>
 <translation id="8342861492835240085">Sammlung auswählen</translation>
-<translation id="6017211263306518045">Brave Software Fotos-Album auswählen</translation>
+<translation id="1734885380062278369">Brave Software Fotos-Album auswählen</translation>
 <translation id="3132996321662585180">Täglich aktualisieren</translation>
 <translation id="9062065967472365419">Zufällig</translation>
 <translation id="7287411021188441799">Standardhintergrund wiederherstellen</translation>
@@ -567,6 +574,8 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="3617891479562106823">Hintergründe sind nicht verfügbar. Bitte versuchen Sie es später noch einmal.</translation>
 <translation id="8391712576156218334">Bild ist nicht verfügbar. Versuchen Sie es später noch einmal.</translation>
 <translation id="1564414980088536597">Dieses Bild kann nicht verwendet werden. Bitte wählen Sie ein anderes Bild aus.</translation>
+<translation id="4628948037717959914">Foto</translation>
+<translation id="8033827949643255796">Ausgewählt</translation>
 <translation id="5376169624176189338">Klicken, um zurückzugehen. Gedrückt halten, um Verlauf aufzurufen</translation>
 <translation id="9103868373786083162">Drücken, um zurückzugehen. Kontextmenü, um Verlauf aufzurufen</translation>
 <translation id="2961695502793809356">Klicken, um weiterzugehen. Gedrückt halten, um Verlauf aufzurufen</translation>
@@ -840,6 +849,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="2532167245710864499">Verbessern Sie Brave und die Sicherheit, indem Sie System- und Nutzungsdaten an Brave Software senden</translation>
 <translation id="2709453993673701466">Möchten Sie die Einstellungen für Synchronisierung und Personalisierung verwalten, bevor diese Funktionen aktiviert werden? Rufen Sie die <ph name="BEGIN_LINK"/>Einstellungen<ph name="END_LINK"/> auf.</translation>
 <translation id="2668128414154024727">Sie können die von Brave Software erfassten Informationen jederzeit in den <ph name="BEGIN_LINK"/>Einstellungen<ph name="END_LINK"/> anpassen.</translation>
+<translation id="6035247993547372482">Brave Software kann die Inhalte der von Ihnen besuchten Websites, Browseraktivitäten und Ihre anderen Interaktionen nutzen, um Brave und andere Brave Software-Dienste wie Übersetzer, die Brave Software-Suche und Werbung zu personalisieren. Dies lässt sich in den Einstellungen ändern.</translation>
 <translation id="741204030948306876">Ja, bitte</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="2497852260688568942">Die Synchronisierung wurde von Ihrem Administrator deaktiviert</translation>
@@ -938,6 +948,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="8363142353806532503">Mikrofon blockiert</translation>
 <translation id="2762441749940182211">Kamera blockiert</translation>
 <translation id="5074318175948309511">Damit die neuen Einstellungen wirksam werden, muss die Seite eventuell neu geladen werden.</translation>
+<translation id="1322046419516468189">Gespeicherte Passwörter in Ihrem <ph name="SAVED_PASSWORDS_STORE"/> aufrufen und verwalten</translation>
 <translation id="5713644099811900409">Brave Software-Konto</translation>
 <translation id="3785727820640310185">Für diese Website gespeicherte Passwörter</translation>
 <translation id="3404065873681873169">Für diese Website sind keine Passwörter gespeichert</translation>
@@ -1389,7 +1400,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6647838571840953560">Derzeit auf <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Firmware</translation>
 <translation id="5895138241574237353">Neu starten</translation>
-<translation id="7409233648990234464">Neustart und Powerwash</translation>
+<translation id="4297219207642690536">Neu starten und zurücksetzen</translation>
 <translation id="4716483597559580346">Powerwash für mehr Sicherheit</translation>
 <translation id="4089922565956168950">Durch dieses Upgrade wird Ihr Bravebook zurückgesetzt und die aktuellen Nutzerdaten werden entfernt.</translation>
 <translation id="5184662919967270437">Ihr Gerät wird aktualisiert</translation>
@@ -1397,6 +1408,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5906655207909574370">Fast fertig! Starten Sie Ihr Gerät neu, um die Aktualisierung abzuschließen.</translation>
 <translation id="5860494867054883682">Ihr Gerät wird auf Kanal <ph name="CHANNEL_NAME"/> aktualisiert (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanal wurde geändert. Starten Sie Ihr Gerät neu, um die Änderungen zu übernehmen.</translation>
+<translation id="7133578150266914903">Ihr Administrator setzt dieses Gerät zurück (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Ihr Administrator hat dieses Gerät zurückgesetzt. Bitte speichern Sie wichtige Dateien und starten Sie es dann neu. Alle Daten auf dem Gerät werden gelöscht.</translation>
 <translation id="1871615898038944731">Ihr <ph name="DEVICE_TYPE"/> ist auf dem neuesten Stand</translation>
 <translation id="3688526734140524629">Kanal ändern</translation>
 <translation id="6410328738210026208">Kanaländerung und Powerwash</translation>
@@ -1497,7 +1510,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6902066522699286937">Stimme zum Anhören</translation>
 <translation id="304747341537320566">Sprach-Engines</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Führen Sie Linux-Tools, -Editoren und -IDEs auf Ihrem Bravebook aus.</translation>
 <translation id="6869910261738842136">Linux-Apps für Bravebook entfernen</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Android-Einstellungen</translation>
@@ -1538,6 +1550,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8639963783467694461">AutoFill-Einstellungen</translation>
 <translation id="3431019676184503003">Adressen und Zahlungsmethoden</translation>
 <translation id="2512222046227390255">Formulare automatisch ausfüllen</translation>
+<translation id="2283340219607151381">Adressen speichern und ausfüllen</translation>
+<translation id="1662550410081243962">Zahlungsmethode speichern und ausfüllen</translation>
 <translation id="2903493209154104877">Adressen</translation>
 <translation id="7764225426217299476">Adresse hinzufügen</translation>
 <translation id="5595485650161345191">Adresse bearbeiten</translation>
@@ -1574,6 +1588,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7930294771522048157">Gespeicherte Zahlungsmethoden werden hier angezeigt</translation>
 <translation id="9124003689441359348">Hier werden gespeicherte Passwörter angezeigt</translation>
 <translation id="4400367121200150367">Hier werden Websites angezeigt, für die keine Passwörter gespeichert werden</translation>
+<translation id="3098842761938485917">Gespeicherte Passwörter in Ihrem <ph name="BEGIN_LINK"/>Brave Software-Konto<ph name="END_LINK"/> ansehen und verwalten</translation>
 <translation id="5620655347161642930">Passwörter exportieren…</translation>
 <translation id="3900966090527141178">Passwörter exportieren</translation>
 <translation id="6914783257214138813">Ihre Passwörter sind für jeden zugänglich, der die exportierte Passwortdatei aufrufen kann.</translation>
@@ -1964,6 +1979,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4534361985432360439">Die Webadresse der Seite, die Sie aufrufen möchten, wird an Brave Software gesendet</translation>
 <translation id="6545834809683560467">Funktion zur Vervollständigung von Suchanfragen und URLs verwenden, die in die Adressleiste oder die Suchleiste des App Launchers eingegeben werden</translation>
 <translation id="7704317875155739195">Suchanfragen und URLs automatisch vervollständigen</translation>
+<translation id="2000419248597011803">Suchanfragen, die in die Adressleiste und das Suchfeld eingegeben wurden, sowie einige Cookies werden an Ihre Standardsuchmaschine gesendet</translation>
 <translation id="9038649477754266430">Vorhersagefunktion zum schnelleren Laden von Seiten verwenden</translation>
 <translation id="7981313251711023384">Seiten vorab laden, um das Surfen und die Suche zu beschleunigen</translation>
 <translation id="2468205691404969808">Zum Speichern Ihrer Einstellungen werden Cookies verwendet, auch wenn Sie diese Seiten nicht besuchen</translation>
@@ -1974,6 +1990,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="490074449735753175">Rechtschreibfehler mithilfe eines Webdienstes korrigieren</translation>
 <translation id="3523078749603005179">Intelligentere Rechtschreibprüfung, indem der im Browser eingegebene Text an Brave Software gesendet wird</translation>
 <translation id="2564653188463346023">Erweiterte Rechtschreibprüfung</translation>
+<translation id="7469406957790636836">Wenn Sie diese Funktion aktivieren möchten, müssen Sie zuerst die Rechtschreibprüfung unter <ph name="BEGIN_LINK"/>Sprache und Eingabe<ph name="END_LINK"/> einschalten</translation>
+<translation id="8699566574894671540">Wenn Sie diese Funktion aktivieren möchten, müssen Sie zuerst die Option "Rechtschreibung während der Eingabe prüfen" im Menü "Bearbeiten" auswählen</translation>
 <translation id="9079153198295609735">Nutzungsstatistiken und Absturzberichte automatisch an Brave Software senden</translation>
 <translation id="5941220456342415404">Diagnose- und Nutzungsdaten automatisch an Brave Software senden</translation>
 <translation id="918192811481327695">Ich möchte dabei helfen, die Funktionen und die Leistung von Brave zu verbessern</translation>
@@ -2223,6 +2241,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7548737591211512046">Melden Sie sich an, um Ihre Lesezeichen, Ihren Verlauf und Ihre anderen Einstellungen auf allen Ihren Geräten zu sehen. Sie werden auch automatisch in Ihren Brave Software-Diensten angemeldet.</translation>
 <translation id="2951604498031550705">Änderungen an Ihrem Verlauf sowie an Ihren Lesezeichen, Passwörtern und sonstigen Einstellungen werden nicht mehr mit Ihrem Brave Software-Konto synchronisiert. Bereits in Ihrem Brave Software-Konto gespeicherte Daten bleiben dort erhalten und können über das <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/> verwaltet werden.</translation>
 <translation id="138229770216285283">Hierdurch werden Sie von allen Ihren Brave Software-Konten abgemeldet. Änderungen an Ihrem Verlauf sowie an Ihren Lesezeichen, Passwörtern und sonstigen Einstellungen werden nicht mehr mit Ihrem Brave Software-Konto synchronisiert. Bereits in Ihrem Brave Software-Konto gespeicherte Daten bleiben dort erhalten und können über das <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/> verwaltet werden.</translation>
+<translation id="3169352093514419465">Dadurch werden Sie aus Ihren Brave Software-Konten abgemeldet. Ihre Lesezeichen, Ihr Verlauf, Ihre Passwörter usw. werden nicht mehr synchronisiert.</translation>
 <translation id="8588866096426746242">Profilstatistiken anzeigen</translation>
 <translation id="5535941515421698170">Auch vorhandene Daten von diesem Gerät entfernen</translation>
 <translation id="7243632151880336635">Löschen und abmelden</translation>
@@ -2244,13 +2263,16 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3259418918864581163">Kreditkarten und Adressen aus Brave Software Pay.</translation>
 <translation id="4439834757335393741">Zahlungsmethoden und Adressen mit Brave Software Pay.</translation>
 <translation id="3268451620468152448">Geöffnete Tabs</translation>
+<translation id="5241892180459725878">Brave Software Drive-Suchvorschläge</translation>
 <translation id="2120297377148151361">Aktivitäten und Interaktionen</translation>
+<translation id="5833397272224757657">Inhalte von besuchten Websites sowie Browseraktivitäten und -interaktionen werden zur Personalisierung verwendet</translation>
 <translation id="8135094938656535588">Synchronisierte Daten im Brave Software Dashboard verwalten</translation>
 <translation id="6596325263575161958">Verschlüsselungsoptionen</translation>
 <translation id="2459230470861708651">Synchronisierte Passwörter mit meinem Brave Software-Nutzernamen und meinem Passwort verschlüsseln</translation>
 <translation id="6383051423892982287">Alle synchronisierten Daten werden mit meiner eigenen <ph name="BEGIN_LINK"/>Synchronisierungspassphrase<ph name="END_LINK"/> verschlüsselt</translation>
 <translation id="4817583816512767754">Nur Personen mit Ihrer Passphrase können Ihre verschlüsselten Daten lesen. Die Passphrase wird nicht an Brave Software gesendet oder von Brave Software gespeichert. Falls Sie sie vergessen oder diese Einstellung ändern möchten, müssen Sie die <ph name="BEGIN_LINK"/>Synchronisierung zurücksetzen<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie die Synchronisierung zurück<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Wenn Sie diese Funktion aktivieren möchten, müssen Sie die <ph name="BEGIN_LINK"/>Synchronisierung zurücksetzen<ph name="END_LINK"/>, um die Synchronisierungspassphrase zu entfernen</translation>
 <translation id="988978206646512040">Eine leere Passphrase ist nicht zulässig</translation>
 <translation id="1651008383952180276">Sie müssen zweimal dieselbe Passphrase eingeben</translation>
 <translation id="2136476978468204130">Sie haben eine ungültige Passphrase eingegeben</translation>

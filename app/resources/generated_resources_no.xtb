@@ -290,6 +290,7 @@
 <translation id="6398765197997659313">Avslutt fullskjerm</translation>
 <translation id="8559694214572302298">Image Decoder</translation>
 <translation id="8191453843330043793">V8 Proxy Resolver</translation>
+<translation id="6185617499004995178">CUPS IPP-validator</translation>
 <translation id="7171242884588191792">Brave Filverktøy</translation>
 <translation id="3061707000357573562">Feilrettingstjeneste</translation>
 <translation id="3580923162759633716">Profileringstjeneste</translation>
@@ -480,7 +481,12 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="3190558889382726167">Passordet er lagret</translation>
 <translation id="5079950360618752063">Bruk foreslått passord</translation>
 <translation id="8084114998886531721">Lagret passord</translation>
+<translation id="5614553682702429503">Lagre passord?</translation>
 <translation id="1405476660552109915">Vil du at <ph name="PASSWORD_MANAGER_BRAND"/> skal lagre kontoen din for dette nettstedet?</translation>
+<translation id="8756969031206844760">Oppdater passord?</translation>
+<translation id="8230134520748321204">Lagre passord for <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Oppdater passord for <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Passordene er lagret i Brave Software-kontoen din, slik at du kan bruke dem på hvilken som helst enhet</translation>
 <translation id="8286036467436129157">Logg på</translation>
 <translation id="8009225694047762179">Administrer passord</translation>
 <translation id="9135262959729602463">For å få passordene dine på alle enhetene du bruker, logg på Brave.</translation>
@@ -547,16 +553,18 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="7400418766976504921">Nettadresse</translation>
 <translation id="8730621377337864115">Ferdig</translation>
 <translation id="4416582610654027550">Skriv inn en gyldig nettadresse</translation>
+<translation id="2806891468525657116">Snarveien fins allerede.</translation>
+<translation id="394183848452296464">Kan ikke opprette snarvei</translation>
 <translation id="7109543803214225826">Snarveien er fjernet</translation>
 <translation id="8017679124341497925">Snarveien er endret</translation>
 <translation id="1174073918202301297">Snarveien er lagt til</translation>
 <translation id="2926085873880284723">Gjenopprett standardsnarveier</translation>
-<translation id="7413455776853560343">Tilpass bakgrunnen</translation>
+<translation id="2942581856830209953">Tilpass denne siden</translation>
 <translation id="2187700606737131818">Brave Software Foto</translation>
 <translation id="5801450813341024983">Brave-bakgrunner</translation>
 <translation id="2800760947029405028">Last opp et bilde</translation>
 <translation id="8342861492835240085">Velg en samling</translation>
-<translation id="6017211263306518045">Velg et Brave Software Foto-album</translation>
+<translation id="1734885380062278369">Velg et Brave Software Foto-album</translation>
 <translation id="3132996321662585180">Oppdater daglig</translation>
 <translation id="9062065967472365419">Overrask meg</translation>
 <translation id="7287411021188441799">Gjenopprett standardbakgrunnen</translation>
@@ -566,6 +574,8 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="3617891479562106823">Bakgrunner er utilgjengelig. Prøv på nytt senere.</translation>
 <translation id="8391712576156218334">Bildet er ikke tilgjengelig. Prøv på nytt senere.</translation>
 <translation id="1564414980088536597">Dette bildet kan ikke brukes. Velg et annet bilde.</translation>
+<translation id="4628948037717959914">Bilde</translation>
+<translation id="8033827949643255796">valgt</translation>
 <translation id="5376169624176189338">Klikk for å gå tilbake – hold for å se logg</translation>
 <translation id="9103868373786083162">Trykk for å gå tilbake, eller trykk på kontekstmenyen for å se loggen</translation>
 <translation id="2961695502793809356">Klikk for å gå fremover – hold for å se logg</translation>
@@ -578,6 +588,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="7554791636758816595">Ny fane</translation>
 <translation id="3915280005470252504">Søk med tale</translation>
 <translation id="3153862085237805241">Lagre kortet</translation>
+<translation id="4961000125720751066">Ha alle kortene dine på ett sted</translation>
 <translation id="2473195200299095979">Oversett denne siden</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Denne siden ble zoomet inn av utvidelsen «<ph name="NAME"/>»</translation>
@@ -661,6 +672,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="4514610446763173167">Spill av videoen eller sett den på pause</translation>
 <translation id="2631120081682787498">Er du sikker på at du vil lukke denne fanen?</translation>
 <translation id="111844081046043029">Er du sikker på at du vil forlate denne siden?</translation>
+<translation id="245661998428026871">Videoen i bilde-i-bilde-modusen stoppes.</translation>
 <translation id="2677748264148917807">Gå ut</translation>
 <translation id="2520644704042891903">Venter på tilgjengelig socket ...</translation>
 <translation id="1493892686965953381">Venter på <ph name="LOAD_STATE_PARAMETER"/> …</translation>
@@ -837,6 +849,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="2532167245710864499">Gjør Brave bedre og sikrere ved å sende systeminformasjon og bruksinformasjon til Brave Software</translation>
 <translation id="2709453993673701466">Vil du administrere synkronisering og personlig tilpasning før du slår det på? Gå til <ph name="BEGIN_LINK"/>innstillingene<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Du kan når som helst tilpasse hvilken informasjon Brave Software samler inn, i <ph name="BEGIN_LINK"/>innstillingene<ph name="END_LINK"/>.</translation>
+<translation id="6035247993547372482">Brave Software kan bruke innhold på nettsteder du besøker, nettleseraktiviteten din og andre interaksjoner for å gi Brave og andre Brave Software-tjenester (som Oversetter, Søk og annonser) et personlig preg. Du kan tilpasse dette i innstillingene.</translation>
 <translation id="741204030948306876">Ja, jeg er med</translation>
 <translation id="8428213095426709021">Innstillinger</translation>
 <translation id="2497852260688568942">Administratoren din har slått av synkronisering</translation>
@@ -935,6 +948,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="8363142353806532503">Mikrofonen er blokkert</translation>
 <translation id="2762441749940182211">Kameraet er blokkert</translation>
 <translation id="5074318175948309511">Du må kanskje laste inn denne siden på nytt for at innstillingene skal bli gjeldende.</translation>
+<translation id="1322046419516468189">Se og administrer lagrede passord i <ph name="SAVED_PASSWORDS_STORE"/> din</translation>
 <translation id="5713644099811900409">Brave Software-konto</translation>
 <translation id="3785727820640310185">Lagrede passord for dette nettstedet</translation>
 <translation id="3404065873681873169">Ingen passord er lagret for dette nettstedet</translation>
@@ -1033,14 +1047,18 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="3202173864863109533">Lyden er slått av for denne fanen.</translation>
 <translation id="5562781907504170924">Denne fanen er koblet til en Bluetooth-enhet.</translation>
 <translation id="5884474295213649357">Denne fanen er koblet til en USB-enhet.</translation>
+<translation id="8466417995783206254">Denne fanen spiller av en video i bilde-i-bilde-modus.</translation>
+<translation id="6235700927623181151">Denne fanen deler innholdet på skrivebordet ditt.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kamera- eller mikrofonopptak</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – faneinnholdet er delt</translation>
+<translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – videoen spilles av i bilde-i-bilde-modus</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/> – lyd spilles av</translation>
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> – lyden er kuttet</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> – en Bluetooth-enhet er tilkoblet</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> – en USB-enhet er koblet til</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> – nettverksfeil</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> – kræsjet</translation>
+<translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> – skrivebordinnholdet er delt</translation>
 <translation id="973473557718930265">Avslutt</translation>
 <translation id="3590194807845837023">Lås opp profilen og start på nytt</translation>
 <translation id="7624337243375417909">capslock er av</translation>
@@ -1095,6 +1113,10 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="874689135111202667">{0,plural, =1{Vil du laste opp en fil til dette nettstedet?}other{Vil du laste opp # filer til dette nettstedet?}}</translation>
 <translation id="1956390763342388273">Dette fører til at alle filer fra «<ph name="FOLDER_PATH"/>» lastes opp. Du bør bare gjøre dette hvis du stoler på nettstedet.</translation>
 <translation id="1243314992276662751">Last opp</translation>
+<translation id="2446585455334014596"><ph name="APP_NAME"/> ønsker å bekrefte identiteten din</translation>
+<translation id="3738671331307774213">Ved å verifisere identiteten din bidrar du til å beskytte de private dataene dine.</translation>
+<translation id="8435395510592618362">Bekreft identiteten din med <ph name="APP_NAME"/></translation>
+<translation id="3854599674806204102">Velg et alternativ</translation>
 <translation id="7490950320178383728">Bruk sikkerhetsnøkkelen din med Bluetooth</translation>
 <translation id="414599683948988413">Bruk sikkerhetsnøkkelen din med USB</translation>
 <translation id="7851816139220202929">Bruk sikkerhetsnøkkelen din med NFC</translation>
@@ -1377,7 +1399,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6647838571840953560">Nå på <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Fastvare</translation>
 <translation id="5895138241574237353">Start på nytt</translation>
-<translation id="7409233648990234464">Start på nytt og bruk Powerwash</translation>
+<translation id="4297219207642690536">Start på nytt og tilbakestill</translation>
 <translation id="4716483597559580346">Powerwash for økt sikkerhet</translation>
 <translation id="4089922565956168950">Oppgraderingen tilbakestiller Bravebooken og fjerner gjeldende brukerdata.</translation>
 <translation id="5184662919967270437">Oppdaterer enheten</translation>
@@ -1385,6 +1407,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="5906655207909574370">Nå er oppdateringen snart ferdig! Start enheten på nytt for å fullføre oppdateringen.</translation>
 <translation id="5860494867054883682">Oppdaterer enheten din til <ph name="CHANNEL_NAME"/>-kanalen (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanalen ble endret. Start enheten på nytt for å aktivere endringene.</translation>
+<translation id="7133578150266914903">Administratoren din kaller tilbake denne enheten (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Administratoren henter tilbake enheten din. Vennligst lagre viktige filer, og start deretter på nytt. Alle data på enheten vil bli slettet.</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/>-enheten er oppdatert</translation>
 <translation id="3688526734140524629">Bytt kanal</translation>
 <translation id="6410328738210026208">Bytt kanal og bruk Powerwash</translation>
@@ -1437,6 +1461,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4305227814872083840">lang (2 s)</translation>
 <translation id="2860150991415616761">svært lang (4 s)</translation>
 <translation id="1330145147221172764">Slå på skjermtastaturet</translation>
+<translation id="1800308196794859773">Send stemmen din til Brave Software for å tillate diktat til hvilket som helst tekstfelt.</translation>
 <translation id="8758418656925882523">Slå på diktering (snakk for å skrive)</translation>
 <translation id="7580671184200851182">Spill den samme lyden på alle høyttalere (monolyd)</translation>
 <translation id="1189418886587279221">Aktivér tilgjengelighetsfunksjoner for å gjøre enheten din enklere å bruke.</translation>
@@ -1484,7 +1509,6 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6902066522699286937">Forhåndsutdrag av tekst til tale</translation>
 <translation id="304747341537320566">Talemotorer</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Kjør Linux-verktøy, redigeringsverktøy og IDE-er på Bravebook.</translation>
 <translation id="6869910261738842136">Fjern Linux-apper for Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Butikk</translation>
 <translation id="572155275267014074">Android-innstillinger</translation>
@@ -1525,6 +1549,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="8639963783467694461">Innstillinger for autofyll</translation>
 <translation id="3431019676184503003">Adresser og betalingsmåter</translation>
 <translation id="2512222046227390255">Fyll ut skjemaer automatisk</translation>
+<translation id="2283340219607151381">Lagre og fyll inn adresser</translation>
+<translation id="1662550410081243962">Lagre og fyll ut betalingsmåter</translation>
 <translation id="2903493209154104877">Adresser</translation>
 <translation id="7764225426217299476">Legg til adresse</translation>
 <translation id="5595485650161345191">Rediger adresse</translation>
@@ -1561,6 +1587,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="7930294771522048157">Lagrede betalingsmåter vises her</translation>
 <translation id="9124003689441359348">Lagrede passord vises her</translation>
 <translation id="4400367121200150367">Nettsteder som aldri lagrer passord, vises her</translation>
+<translation id="3098842761938485917">Se og administrer lagrede passord i <ph name="BEGIN_LINK"/>Brave Software-kontoen<ph name="END_LINK"/> din</translation>
 <translation id="5620655347161642930">Eksportér passord</translation>
 <translation id="3900966090527141178">Eksportér passord</translation>
 <translation id="6914783257214138813">Passordene dine blir synlige for alle som kan se den eksporterte filen.</translation>
@@ -1951,6 +1978,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4534361985432360439">Sender Brave Software nettadressen til siden du prøver å åpne</translation>
 <translation id="6545834809683560467">Bruk en forslagstjeneste for å fullføre søk og nettadresser som skrives inn i adressefeltet eller søkefeltet i appvelgeren</translation>
 <translation id="7704317875155739195">Autofullfør søk og nettadresser</translation>
+<translation id="2000419248597011803">Sender noen informasjonskapsler og søk fra adressefeltet og søkefeltet samt noen informasjonskapsler til standardsøkemotoren din</translation>
 <translation id="9038649477754266430">Bruk en prediksjonstjeneste for å laste inn sider raskere</translation>
 <translation id="7981313251711023384">Last inn sider på forhånd for raskere nettlesing og søk</translation>
 <translation id="2468205691404969808">Bruker informasjonskapsler til å huske preferansene dine, selv om du ikke går til de sidene</translation>
@@ -1961,6 +1989,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="490074449735753175">Bruk en nettjeneste til å luke ut stavefeil</translation>
 <translation id="3523078749603005179">Få smartere stavekontroll ved å sende det du skriver i nettleseren, til Brave Software</translation>
 <translation id="2564653188463346023">Bedre stavekontroll</translation>
+<translation id="7469406957790636836">For å slå dette på, må du først slå på stavekontrollen i <ph name="BEGIN_LINK"/>Språk og inndata<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">For å lå dette på, må du først velge Kontroller rettskriving mens du skriver inne i Rediger-menyen</translation>
 <translation id="9079153198295609735">Send bruksstatistikk og programstopprapporter automatisk til Brave Software</translation>
 <translation id="5941220456342415404">Send diagnostikk og bruksdata til Brave Software automatisk</translation>
 <translation id="918192811481327695">Hjelp til med å forbedre funksjonene og ytelsen til Brave</translation>
@@ -2016,6 +2046,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4907306957610201395">Tillatelseskategori</translation>
 <translation id="6295158916970320988">Alle nettsteder</translation>
 <translation id="7625568159987162309">Se tillatelser og data lagret på alle nettsteder</translation>
+<translation id="3735740477244556633">Sortér etter</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Annonser</translation>
 <translation id="5649053991847567735">Automatiske nedlastinger</translation>
@@ -2135,6 +2166,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6742339027238151589">Tilgjengelig for skript</translation>
 <translation id="361106536627977100">Flash-data</translation>
 <translation id="8557930019681227453">Manifest</translation>
+<translation id="7868378670806575181">{NUM_COOKIES,plural, =1{1 informasjonskapsel}other{# informasjonskapsler}}</translation>
 <translation id="3866249974567520381">Beskrivelse</translation>
 <translation id="4530494379350999373">Opprinnelse</translation>
 <translation id="8195027750202970175">Lagringsstørrelse</translation>
@@ -2208,6 +2240,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="7548737591211512046">Logg på for å hente bokmerkene dine, loggen din, passordene dine og andre innstillinger på alle enhetene du bruker. Du blir automatisk logget på Brave Software-tjenestene dine.</translation>
 <translation id="2951604498031550705">Endringer i bokmerkene, loggen, passordene og andre innstillinger du har, blir ikke lenger synkronisert med Brave Software-kontoen din. Data som allerede er lagret i Brave Software-kontoen din, blir imidlertid værende og kan administreres ved hjelp av <ph name="BEGIN_LINK"/>Brave Software Oversikt<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Dette logger deg av Brave Software-kontoene dine. Endringer i bokmerkene, loggen, passordene og andre innstillinger du har, blir ikke lenger synkronisert med Brave Software-kontoen din. Data som allerede er lagret i Brave Software-kontoen din, blir imidlertid værende og kan administreres ved hjelp av <ph name="BEGIN_LINK"/>Brave Software Oversikt<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Dette logger deg av Brave Software-kontoene dine. Dine bokmerker, histore, passord, med mer, vil ikke lengre bli synkronisert.</translation>
 <translation id="8588866096426746242">Vis profilstatistikk</translation>
 <translation id="5535941515421698170">Fjern også de eksisterende dataene dine fra denne enheten</translation>
 <translation id="7243632151880336635">Slett og logg av</translation>
@@ -2229,13 +2262,16 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="3259418918864581163">Kredittkort og adresser ved bruk av Brave Software Pay.</translation>
 <translation id="4439834757335393741">Betalingsmåter og adresser ved bruk av Brave Software Pay.</translation>
 <translation id="3268451620468152448">Åpne faner</translation>
+<translation id="5241892180459725878">Søkeforslag fra Brave Software Disk</translation>
 <translation id="2120297377148151361">Aktivitet og interaksjoner</translation>
+<translation id="5833397272224757657">Bruker innhold fra nettsteder du besøker, nettleseraktivitet og andre interaksjoner for å gi ting et personlig preg</translation>
 <translation id="8135094938656535588">Administrer synkroniserte data i Brave Software Oversikt</translation>
 <translation id="6596325263575161958">Krypteringsalternativer</translation>
 <translation id="2459230470861708651">Kryptér synkroniserte passord med Brave Software-brukernavnet og -passordet ditt</translation>
 <translation id="6383051423892982287">Kryptér synkroniserte data med din egen <ph name="BEGIN_LINK"/>passordfrase for synkronisering<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Bare de som har passordfrasen din, kan lese de krypterte dataene dine. Passordfrasen blir verken sendt til Brave Software eller lagret av oss. Hvis du glemmer passordfrasen eller vil endre denne innstillingen, må du <ph name="BEGIN_LINK"/>tilbakestille synkroniseringen<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkroniseringen<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">For å skru dette på, <ph name="BEGIN_LINK"/>tilbakestill synkroniseringen<ph name="END_LINK"/> for å fjerne din synkronisering av passordfrase</translation>
 <translation id="988978206646512040">Tomme passordfraser er ikke tillatt</translation>
 <translation id="1651008383952180276">Du må skrive inn den samme passordfrasen to ganger</translation>
 <translation id="2136476978468204130">Passordfrasen du skrev inn, er feil</translation>
@@ -2398,6 +2434,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="3088402208262982892">Bedre sammen er av</translation>
 <translation id="2079079131837725321">Lås opp Bravebooken med telefonen. <ph name="LINK_BEGIN"/>Finn ut mer.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Umiddelbar internettdeling</translation>
+<translation id="3059313675706898490">Android Messages</translation>
 <translation id="7095175330464035635">Send og motta tekstmeldinger fra Bravebooken</translation>
 <translation id="3936335337858561470">Glem denne enheten</translation>
 <translation id="3606712892509067288">Fjern fra Bedre sammen</translation>
@@ -2428,8 +2465,11 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="1607139524282324606">Tøm oppføring</translation>
 <translation id="6025215716629925253">Stabelsporing</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 linje vises ikke&amp;gt;}other{&amp;lt;$1 linjer vises ikke&amp;gt;}}</translation>
+<translation id="8389492867173948260">La denne utvidelsen lese og endre alle dataene dine på nettsteder du besøker:</translation>
 <translation id="407173827865827707">Ved klikk</translation>
+<translation id="6455264371803474013">På bestemte nettsteder</translation>
 <translation id="4225397296022057997">På alle nettsteder</translation>
+<translation id="3729506734996624908">Tillatte nettsteder</translation>
 <translation id="3732078975418297900">Feil på linje <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Feil fra linje <ph name="ERROR_LINE_START"/> til linje <ph name="ERROR_LINE_END"/></translation>
 <translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>

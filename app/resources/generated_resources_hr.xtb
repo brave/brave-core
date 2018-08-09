@@ -481,7 +481,12 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="3190558889382726167">Zaporka spremljena</translation>
 <translation id="5079950360618752063">Upotrijebite predloženu zaporku</translation>
 <translation id="8084114998886531721">Spremljena zaporka</translation>
+<translation id="5614553682702429503">Želite li spremiti zaporku?</translation>
 <translation id="1405476660552109915">Želite li da <ph name="PASSWORD_MANAGER_BRAND"/> spremi vaš račun za ovu web-lokaciju?</translation>
+<translation id="8756969031206844760">Želite li ažurirati zaporku?</translation>
+<translation id="8230134520748321204">Želite li spremiti zaporku za <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Želite li ažurirati zaporku za <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Zaporke se spremaju na vaš Brave Software račun kako biste ih mogli upotrebljavati na bilo kojem uređaju</translation>
 <translation id="8286036467436129157">Prijava</translation>
 <translation id="8009225694047762179">Upravljanje zaporkama</translation>
 <translation id="9135262959729602463">Da biste imali svoje zaporke na svim svojim uređajima, prijavite se u Brave.</translation>
@@ -548,16 +553,18 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Gotovo</translation>
 <translation id="4416582610654027550">Unesite važeći URL</translation>
+<translation id="2806891468525657116">Prečac već postoji</translation>
+<translation id="394183848452296464">Nije moguće izraditi prečac</translation>
 <translation id="7109543803214225826">Prečac je uklonjen</translation>
 <translation id="8017679124341497925">Prečac je uređen</translation>
 <translation id="1174073918202301297">Prečac je dodan</translation>
 <translation id="2926085873880284723">Vrati zadane prečace</translation>
-<translation id="7413455776853560343">Prilagodite pozadinu</translation>
+<translation id="2942581856830209953">Prilagodba stranice</translation>
 <translation id="2187700606737131818">Brave Software fotografije</translation>
 <translation id="5801450813341024983">Pozadine za Brave</translation>
 <translation id="2800760947029405028">Prenesite sliku</translation>
 <translation id="8342861492835240085">Odaberite zbirku</translation>
-<translation id="6017211263306518045">Odaberite album Brave Software fotografija</translation>
+<translation id="1734885380062278369">Odaberite album Brave Software fotografija</translation>
 <translation id="3132996321662585180">Osvježi svaki dan</translation>
 <translation id="9062065967472365419">Iznenadi me</translation>
 <translation id="7287411021188441799">Vratite zadanu pozadinu</translation>
@@ -567,6 +574,8 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="3617891479562106823">Pozadine nisu dostupne. Pokušajte ponovo kasnije.</translation>
 <translation id="8391712576156218334">Slika nije dostupna. Pokušajte ponovo kasnije.</translation>
 <translation id="1564414980088536597">Ta se slika ne može koristiti. Odaberite neku drugu sliku.</translation>
+<translation id="4628948037717959914">Fotografija</translation>
+<translation id="8033827949643255796">odabrano</translation>
 <translation id="5376169624176189338">Kliknite da biste se vratili natrag, zadržite da biste vidjeli povijest</translation>
 <translation id="9103868373786083162">Pritisnite za povratak, kontekstni izbornik za prikaz povijesti</translation>
 <translation id="2961695502793809356">Kliknite za kretanje prema naprijed, zadržite da biste vidjeli povijest</translation>
@@ -840,6 +849,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="2532167245710864499">Poboljšajte Brave i njegovu sigurnost slanjem podataka o sustavu i upotrebi Brave Softwareu</translation>
 <translation id="2709453993673701466">Želite li upravljati sinkronizacijom i prilagodbom prije uključivanja? Otvorite <ph name="BEGIN_LINK"/>Postavke<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Informacije koje Brave Software prikuplja možete prilagoditi bilo kada u <ph name="BEGIN_LINK"/>Postavkama<ph name="END_LINK"/>.</translation>
+<translation id="6035247993547372482">Brave Software može upotrebljavati sadržaj na web-lokacijama koje posjećujete, kao i vaše aktivnosti i interakcije u pregledniku, kako bi prilagodio Brave i druge Brave Softwareove usluge kao što su Prevoditelj, Pretraživanje i oglasi. To možete prilagoditi u Postavkama.</translation>
 <translation id="741204030948306876">Da, u redu</translation>
 <translation id="8428213095426709021">Postavke</translation>
 <translation id="2497852260688568942">Administrator je onemogućio sinkronizaciju</translation>
@@ -938,6 +948,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="8363142353806532503">Mikrofon je blokiran</translation>
 <translation id="2762441749940182211">Kamera je blokirana</translation>
 <translation id="5074318175948309511">Ovu stranicu možda će biti potrebno ponovo učitati kako bi nove postavke stupile na snagu.</translation>
+<translation id="1322046419516468189">Spremljene zaporke možete pregledati i upravljati njima ovdje: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software Račun</translation>
 <translation id="3785727820640310185">Spremljene zaporke za tu web-lokaciju</translation>
 <translation id="3404065873681873169">Za tu web-lokaciju nema spremljenih zaporki</translation>
@@ -1389,7 +1400,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="6647838571840953560">Trenutačni kanal: <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Oprema</translation>
 <translation id="5895138241574237353">Ponovno pokreni</translation>
-<translation id="7409233648990234464">Pokreni ponovo i izvrši Powerwash</translation>
+<translation id="4297219207642690536">Ponovo pokreni i vrati na prethodno</translation>
 <translation id="4716483597559580346">Powerwash za dodatnu sigurnost</translation>
 <translation id="4089922565956168950">Ovom nadogradnjom Bravebook se vraća na zadano, a trenutačni korisnički podaci se uklanjaju.</translation>
 <translation id="5184662919967270437">Ažuriranje uređaja</translation>
@@ -1397,6 +1408,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="5906655207909574370">Ažuriranje će uskoro biti gotovo. Za dovršetak ponovo pokrenite uređaj.</translation>
 <translation id="5860494867054883682">Ažuriranje uređaja na <ph name="CHANNEL_NAME"/> kanal (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanal je promijenjen. Ponovo pokrenite uređaj za primjenu promjena.</translation>
+<translation id="7133578150266914903">Vaš administrator vraća uređaj na prethodnu verziju sustava (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Vaš administrator vratio je uređaj na prethodnu verziju sustava. Spremite važne datoteke, a zatim ponovo pokrenite uređaj. Izbrisat će se svi podaci s uređaja.</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> je ažuriran</translation>
 <translation id="3688526734140524629">Promijeni kanal</translation>
 <translation id="6410328738210026208">Promijeni kanal i pokreni Powerwash</translation>
@@ -1497,7 +1510,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="6902066522699286937">Glas za pregled</translation>
 <translation id="304747341537320566">Alati za pretvaranje teksta u govor</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Pokretanje Linuxovih alata, uređivača i IDE-ova na Bravebooku.</translation>
 <translation id="6869910261738842136">Ukloni Linux aplikacije za Bravebook</translation>
 <translation id="2295473777859797944">Trgovina Brave Software Play</translation>
 <translation id="572155275267014074">Postavke Androida</translation>
@@ -1538,6 +1550,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8639963783467694461">Postavke automatske ispune</translation>
 <translation id="3431019676184503003">Adrese i načini plaćanja</translation>
 <translation id="2512222046227390255">Automatski popunite obrasce</translation>
+<translation id="2283340219607151381">Spremi i popuni adrese</translation>
+<translation id="1662550410081243962">Spremi i popuni načine plaćanja</translation>
 <translation id="2903493209154104877">Adrese</translation>
 <translation id="7764225426217299476">Dodaj adresu</translation>
 <translation id="5595485650161345191">Uređivanje adrese</translation>
@@ -1574,6 +1588,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="7930294771522048157">Ovdje će se prikazivati spremljeni načini plaćanja</translation>
 <translation id="9124003689441359348">Ovdje će se pojaviti spremljene zaporke</translation>
 <translation id="4400367121200150367">Ovdje će se pojaviti web-lokacije koje nikad ne spremaju zaporke</translation>
+<translation id="3098842761938485917">Spremljene zaporke možete pregledati i upravljati njima na svojem <ph name="BEGIN_LINK"/>Brave Software računu<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Izvoz zaporki...</translation>
 <translation id="3900966090527141178">Izvoz zaporki</translation>
 <translation id="6914783257214138813">Vaše zaporke bit će vidljive svima koji vide izvezenu datoteku.</translation>
@@ -1964,6 +1979,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4534361985432360439">Brave Softwareu se šalje web-adresa stranice koju pokušavate otvoriti.</translation>
 <translation id="6545834809683560467">Upotrijebi uslugu predviđanja za dovršavanje pretraživanja i URL-ova upisanih u adresnu traku ili okvir za pretraživanje pokretača aplikacija</translation>
 <translation id="7704317875155739195">Samodovršavanje pretraživanja i URL-ova</translation>
+<translation id="2000419248597011803">Zadanoj tražilici šalje neke kolačiće i pretraživanja iz adresne trake i okvira za pretraživanje</translation>
 <translation id="9038649477754266430">Upotreba usluge predviđanja za brže učitavanje stranica</translation>
 <translation id="7981313251711023384">Prethodno učitaj stranice za brže pregledavanje i pretraživanje</translation>
 <translation id="2468205691404969808">Upotrebljava kolačiće za pamćenje vaših postavki, čak i ako ne posjetite te stranice</translation>
@@ -1974,6 +1990,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="490074449735753175">Upotrijebi web-uslugu za rješavanje pravopisnih pogrešaka</translation>
 <translation id="3523078749603005179">Bolja provjera pravopisa slanjem teksta koji upišete u preglednik Brave Softwareu</translation>
 <translation id="2564653188463346023">Poboljšana provjera pravopisa</translation>
+<translation id="7469406957790636836">Da biste uključili tu postavku, prvo uključite provjeru pravopisa u odjeljku <ph name="BEGIN_LINK"/>Jezici i unos<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Da biste uključili tu postavku, prvo odaberite opciju Provjeravaj pravopis tijekom pisanja na izborniku Uređivanje</translation>
 <translation id="9079153198295609735">Automatski šalji Brave Softwareu statistiku o upotrebi i izvješća o padu programa</translation>
 <translation id="5941220456342415404">Automatski šalji Brave Softwareu podatke o upotrebi i dijagnostici</translation>
 <translation id="918192811481327695">Pomozite poboljšati Braveove značajke i izvedbu</translation>
@@ -2223,6 +2241,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="7548737591211512046">Prijavite se tako da vam oznake, povijest i druge postavke budu dostupne na svim vašim uređajima. Automatski ćete se prijaviti i na Brave Softwareove usluge.</translation>
 <translation id="2951604498031550705">Promjene vaših oznaka, povijesti, zaporki i drugih postavki više se neće sinkronizirati s vašim Brave Software računom. No vaši podaci ostat će pohranjeni na vašem Brave Software računu i možete upravljati njima na <ph name="BEGIN_LINK"/>Brave Software nadzornoj ploči<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Time ćete se odjaviti s Brave Software računa. Promjene oznaka, povijesti, zaporki i drugih postavki više se neće sinkronizirati s vašim Brave Software računom. No vaši postojeći podaci ostat će pohranjeni na vašem Brave Software računu i možete upravljati njima na <ph name="BEGIN_LINK"/>Brave Software nadzornoj ploči<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Time ćete se odjaviti s Brave Software računa. Vaše se oznake, povijest, zaporke i druge postavke više neće sinkronizirati.</translation>
 <translation id="8588866096426746242">Prikaži statističke podatke o profilu</translation>
 <translation id="5535941515421698170">Također uklonite postojeće podatke s uređaja</translation>
 <translation id="7243632151880336635">Izbriši i odjavi se</translation>
@@ -2244,13 +2263,16 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="3259418918864581163">Kreditne kartice i adrese s Brave Software Paya.</translation>
 <translation id="4439834757335393741">Načini plaćanja i adrese s Brave Software Paya.</translation>
 <translation id="3268451620468152448">Otvorene kartice</translation>
+<translation id="5241892180459725878">Prijedlozi za pretraživanje Brave Software diska</translation>
 <translation id="2120297377148151361">Aktivnost i interakcija</translation>
+<translation id="5833397272224757657">Upotrebljava sadržaj na web-lokacijama koje posjećujete te aktivnosti i interakcije u pregledniku radi prilagodbe</translation>
 <translation id="8135094938656535588">Upravljanje sinkroniziranim podacima na Brave Software nadzornoj ploči</translation>
 <translation id="6596325263575161958">Opcije šifriranja</translation>
 <translation id="2459230470861708651">Šifriraj sinkronizirane zaporke moijm korisničkim imenom i zaporkom za Brave Software</translation>
 <translation id="6383051423892982287">Kriptiraj sinkronizirane podatke vlastitom <ph name="BEGIN_LINK"/>šifrom za sinkronizaciju<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Samo osoba koja ima vašu šifru može čitati vaše kriptirane podatke. Šifra se ne šalje Brave Softwareu i ne pohranjuje na njemu. Ako zaboravite šifru ili želite promijeniti tu postavku, morat ćete <ph name="BEGIN_LINK"/>poništiti sinkronizaciju<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaciju<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Da biste uključili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaciju<ph name="END_LINK"/> radi uklanjanja vaše šifre za sinkronizaciju</translation>
 <translation id="988978206646512040">Prazne šifre nisu dopuštene</translation>
 <translation id="1651008383952180276">Morate dvaput unijeti istu šifru</translation>
 <translation id="2136476978468204130">Šifra koju ste unijeli nije točna</translation>

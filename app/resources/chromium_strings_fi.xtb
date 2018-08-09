@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave Authors. Kaikki oikeudet pidätetään.</translation>
 <translation id="2310890394934209120">Brave-käyttöjärjestelmän ovat tehneet mahdolliseksi muut <ph name="BEGIN_LINK_CROS_OSS"/>avoimen lähdekoodin ohjelmistot<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="858647341154864560">Toinen <ph name="BEGIN_LINK_CROS_OSS"/>avoimen lähdekoodin ohjelmisto<ph name="END_LINK_CROS_OSS"/> tukee Brave-käyttöjärjestelmää, kuten myös Linuxia (beta).</translation>
 <translation id="5019879183386042809">Tee Braveista oletusselain</translation>
 <translation id="5063987220091207247">Brave-käyttöjärjestelmä ei voi avata tätä sivua.</translation>
 <translation id="4065288863231444640">Jätä Brave käyntiin taustalle</translation>
@@ -32,6 +33,7 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 <translation id="3403365884036456766">Asetustiedostosi on virheellinen.
 
 Brave ei voi palauttaa asetuksiasi.</translation>
+<translation id="5785919770853225148">Brave tallentaa tämän salasanan Brave Software-tilillesi. Sinun ei tarvitse muistaa sitä.</translation>
 <translation id="3343095737966473035">Brave ei ole oletusselain.</translation>
 <translation id="6715663530666325392">Määrittämällä synkronoinnin voit tallentaa selaimesi tiedot verkkoon ja käyttää niitä minkä tahansa tietokoneen Braveilla.</translation>
 <translation id="2708027082363760195">Brave ei sisällä PDF-katseluohjelmaa, joka tarvitaan tulostuksen esikatseluun.</translation>
@@ -120,6 +122,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="82609232232243542">Kirjaudu sisään Braveiin</translation>
 <translation id="8372880274820509128">Brave lisää suojausta salaamalla tietosi.</translation>
 <translation id="7445061995866044926">Kirjaudutaanko ulos?</translation>
+<translation id="7453070689008684791">Brave käyttää Drivea antaakseen ehdotuksia osoitepalkissa</translation>
 <translation id="7713466009760073734">Brave-käyttöjärjestelmä näytetään tällä kielellä.</translation>
 <translation id="3518788198614984730">Näytä Brave-käyttöjärjestelmä tällä kielellä</translation>
 <translation id="6056473803837713617">Auta parantamaan Braveia ilmoittamalla <ph name="BEGIN_LINK"/>nykyiset asetukset<ph name="END_LINK"/>.</translation>

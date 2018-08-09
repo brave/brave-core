@@ -480,7 +480,12 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3190558889382726167">Salasana on tallennettu</translation>
 <translation id="5079950360618752063">Käytä salasanaehdotusta</translation>
 <translation id="8084114998886531721">Salasana tallennettu</translation>
+<translation id="5614553682702429503">Tallennetaanko salasana?</translation>
 <translation id="1405476660552109915">Haluatko, että <ph name="PASSWORD_MANAGER_BRAND"/> tallentaa tilisi tällä sivustolla?</translation>
+<translation id="8756969031206844760">Päivitetäänkö salasana?</translation>
+<translation id="8230134520748321204">Tallennetaanko salasanat: <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Päivitetäänkö salasana: <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Salasanat tallennetaan Brave Software-tilillesi, jotta voit käyttää niitä kaikilla laitteilla</translation>
 <translation id="8286036467436129157">Kirjaudu sisään</translation>
 <translation id="8009225694047762179">Salasanojen hallinta</translation>
 <translation id="9135262959729602463">Kirjaudu sisään Braveen, niin voit käyttää salasanojasi kaikilla laitteilla.</translation>
@@ -547,16 +552,18 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7400418766976504921">URL-osoite</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="4416582610654027550">Kirjoita kelvollinen URL-osoite</translation>
+<translation id="2806891468525657116">Pikakuvake on jo olemassa</translation>
+<translation id="394183848452296464">Pikakuvakkeen luominen epäonnistui</translation>
 <translation id="7109543803214225826">Pikanäppäin poistettu</translation>
 <translation id="8017679124341497925">Pikanäppäintä muokattu</translation>
 <translation id="1174073918202301297">Pikanäppäin lisätty</translation>
 <translation id="2926085873880284723">Palauta oletuspikanäppäimet</translation>
-<translation id="7413455776853560343">Räätälöi taustaa</translation>
+<translation id="2942581856830209953">Muokkaa sivua</translation>
 <translation id="2187700606737131818">Brave Software Kuvat</translation>
 <translation id="5801450813341024983">Brave-taustat</translation>
 <translation id="2800760947029405028">Lähetä kuva</translation>
 <translation id="8342861492835240085">Valitse kokoelma</translation>
-<translation id="6017211263306518045">Valitse Brave Software Kuvat ‑albumi</translation>
+<translation id="1734885380062278369">Valitse Brave Software Kuvien albumi</translation>
 <translation id="3132996321662585180">Päivitä päivittäin</translation>
 <translation id="9062065967472365419">Yllätä minut</translation>
 <translation id="7287411021188441799">Palauta oletustausta</translation>
@@ -566,6 +573,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3617891479562106823">Taustat eivät ole käytettävissä. Yritä myöhemmin uudelleen.</translation>
 <translation id="8391712576156218334">Kuva ei ole saatavilla. Yritä myöhemmin uudelleen.</translation>
 <translation id="1564414980088536597">Kuvaa ei voi käyttää. Valitse toinen kuva.</translation>
+<translation id="4628948037717959914">Valokuva</translation>
+<translation id="8033827949643255796">valittu</translation>
 <translation id="5376169624176189338">Siirry taaksepäin klikkaamalla, tarkastele historiaa pitämällä alhaalla</translation>
 <translation id="9103868373786083162">Siirry taaksepäin painamalla tai avaa historia kontekstivalikon kautta.</translation>
 <translation id="2961695502793809356">Siirry eteenpäin klikkaamalla, tarkastele historiaa pitämällä alhaalla</translation>
@@ -839,6 +848,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2532167245710864499">Paranna Bravea ja sen turvallisuutta lähettämällä järjestelmä- ja käyttötietoja Brave Softwarelle</translation>
 <translation id="2709453993673701466">Haluatko hallinnoida synkronointia ja räätälöintiä ennen kuin ne otetaan käyttöön? Siirry <ph name="BEGIN_LINK"/>Asetuksiin<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Voit koska tahansa muokata <ph name="BEGIN_LINK"/>asetuksista<ph name="END_LINK"/>, mitä tietoja Brave Software kerää.</translation>
+<translation id="6035247993547372482">Brave Software voi personoida Bravea ja muita palveluitaan (esim. Kääntäjää, Hakua ja mainoksia) avaamiesi sivustojen sisällön sekä selaus- ja muun toimintasi perusteella. Voit muuttaa tätä asetuksista.</translation>
 <translation id="741204030948306876">Kyllä</translation>
 <translation id="8428213095426709021">Asetukset</translation>
 <translation id="2497852260688568942">Järjestelmänvalvoja on poistanut synkronoinnin käytöstä.</translation>
@@ -937,6 +947,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8363142353806532503">Mikrofoni estetty</translation>
 <translation id="2762441749940182211">Kamera estetty</translation>
 <translation id="5074318175948309511">Tämä sivu on ehkä ladattava uudelleen, ennen kuin uudet asetukset tulevat voimaan.</translation>
+<translation id="1322046419516468189">Katso ja ylläpidä salasanoja: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software-tilisi avulla</translation>
 <translation id="3785727820640310185">Tämän sivuston tallennetut salasanat</translation>
 <translation id="3404065873681873169">Tämän sivuston salasanoja ei ole tallennettu</translation>
@@ -1387,7 +1398,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6647838571840953560">Käytössä: <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Laiteohjelmisto</translation>
 <translation id="5895138241574237353">Käynnistä uudelleen</translation>
-<translation id="7409233648990234464">Käynnistä uudelleen ja tee Powerwash</translation>
+<translation id="4297219207642690536">Käynnistä uudelleen ja palauta</translation>
 <translation id="4716483597559580346">Paranna suojausta powerwashin avulla</translation>
 <translation id="4089922565956168950">Tämä päivitys nollaa Bravebookisi ja poistaa nykyiset käyttäjätiedot.</translation>
 <translation id="5184662919967270437">Päivitetään laitetta.</translation>
@@ -1395,6 +1406,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5906655207909574370">Melkein ajan tasalla. Viimeistele päivitys käynnistämällä laite uudelleen.</translation>
 <translation id="5860494867054883682">Päivitetään laitetta versioon <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanava vaihdettiin. Ota muutokset käyttöön käynnistämällä laite uudelleen.</translation>
+<translation id="7133578150266914903">Järjestelmänvalvoja palauttaa tätä laitetta (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Järjestelmänvalvoja palautti tämän laitteen. Tallenna tärkeät tiedostot ja käynnistä laite sitten uudelleen. Kaikki sillä oleva data poistetaan.</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> on ajan tasalla.</translation>
 <translation id="3688526734140524629">Vaihda kanavaa</translation>
 <translation id="6410328738210026208">Vaihda kanavaa ja tee Powerwash</translation>
@@ -1495,7 +1508,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6902066522699286937">Esikatselun ääni</translation>
 <translation id="304747341537320566">Puhemoottorit</translation>
 <translation id="1067291318998134776">Linux (beta)</translation>
-<translation id="6963573437985514722">Käytä Linux-työkaluja, ‑muokkaustoimintoja ja integroituja Linux-kehitysympäristöjä Bravebookilla.</translation>
 <translation id="6869910261738842136">Poista Linux-sovellukset Bravebookista</translation>
 <translation id="2295473777859797944">Brave Software Play Kauppa</translation>
 <translation id="572155275267014074">Android-asetukset</translation>
@@ -1536,6 +1548,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8639963783467694461">Automaattisen täytön asetukset</translation>
 <translation id="3431019676184503003">Osoitteet ja maksutavat</translation>
 <translation id="2512222046227390255">Täytä lomakkeet automaattisesti</translation>
+<translation id="2283340219607151381">Tallenna ja täytä osoitteet</translation>
+<translation id="1662550410081243962">Tallenna ja täytä maksutavat</translation>
 <translation id="2903493209154104877">Osoitteet</translation>
 <translation id="7764225426217299476">Lisää osoite</translation>
 <translation id="5595485650161345191">Osoitteen muokkaus</translation>
@@ -1572,6 +1586,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7930294771522048157">Tallennetut maksutavat näkyvät täällä</translation>
 <translation id="9124003689441359348">Tässä näytetään tallennetut salasanasi.</translation>
 <translation id="4400367121200150367">Tässä näytetään sivustot, jotka eivät koskaan tallenna salasanoja.</translation>
+<translation id="3098842761938485917">Katso ja ylläpidä <ph name="BEGIN_LINK"/>Brave Software-tilille<ph name="END_LINK"/> tallennettuja salasanoja</translation>
 <translation id="5620655347161642930">Vie salasanat…</translation>
 <translation id="3900966090527141178">Vie salasanat</translation>
 <translation id="6914783257214138813">Salasanasi näkyvät kaikille, jotka näkevät viedyn tiedoston.</translation>
@@ -1962,6 +1977,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="4534361985432360439">Lähettää Brave Softwarelle etsimäsi sivun verkko-osoitteen</translation>
 <translation id="6545834809683560467">Käytä ennakointipalvelua, niin osoitepalkkiin tai sovelluksien käynnistysohjelman hakukenttään kirjoitetut hakulausekkeet ja URL-osoitteet täydennetään</translation>
 <translation id="7704317875155739195">Täydennä automaattisesti hakuja ja URL-osoitteita</translation>
+<translation id="2000419248597011803">Lähettää joitakin osoitekentän ja hakukentän kautta tehtyjä hakuja sekä joitakin evästeitä oletushakukoneellesi</translation>
 <translation id="9038649477754266430">Ennakointipalvelun avulla voit ladata sivuja nopeammin</translation>
 <translation id="7981313251711023384">Esilataa sivuja nopeuttaaksesi lataamista ja hakemista</translation>
 <translation id="2468205691404969808">Käyttää evästeitä asetustesi muistamiseen, vaikka et kävisi kyseisillä sivuilla</translation>
@@ -1972,6 +1988,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="490074449735753175">Käytä verkkopalvelua kirjoitusvirheiden korjaamiseen</translation>
 <translation id="3523078749603005179">Älykkäämpi oikeinkirjoituksen tarkistus lähettämällä selaimeen kirjoittamasi teksti Brave Softwarelle</translation>
 <translation id="2564653188463346023">Parannettu oikeinkirjoituksen tarkistus</translation>
+<translation id="7469406957790636836">Voit käyttää tätä ottamalla käyttöön oikeinkirjoituksen tarkistuksen <ph name="BEGIN_LINK"/>Kieli ja syöttö<ph name="END_LINK"/> ‑kohdasta</translation>
+<translation id="8699566574894671540">Ota tämä käyttöön valitsemalla Muokkaa-valikosta Tarkista oikeinkirjoitus kirjoittaessani.</translation>
 <translation id="9079153198295609735">Lähetä Brave Softwarelle käyttötilastoja ja virheraportteja automaattisesti</translation>
 <translation id="5941220456342415404">Lähetä automaattisesti diagnostiikka- ja käyttötietoja Brave Softwarelle</translation>
 <translation id="918192811481327695">Auta parantamaan Braven ominaisuuksia ja suorituskykyä</translation>
@@ -2221,6 +2239,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7548737591211512046">Kirjaudu sisään, niin voit käyttää kirjanmerkkejä, historiaa, salasanoja ja muita asetuksiasi kaikilla laitteilla. Sinut kirjataan lisäksi automaattisesti sisään käyttämiisi Brave Softwaren palveluihin.</translation>
 <translation id="2951604498031550705">Kirjanmerkkeihin, historiaan, salasanoihin ja muihin asetuksiin tehtyjä muutoksia ei enää synkronoida Brave Software-tilillesi. Nykyiset tietosi pysyvät kuitenkin Brave Software-tilillä ja niitä voidaan hallinnoida <ph name="BEGIN_LINK"/>Brave Software Hallintapaneelissa<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Kirjanmerkkeihin, historiaan, salasanoihin ja muihin asetuksiin tehtyjä muutoksia ei enää synkronoida Brave Software-tilillesi. Nykyiset tietosi pysyvät kuitenkin Brave Software-tilillä ja niitä voidaan ylläpitää <ph name="BEGIN_LINK"/>Brave Software Hallintapaneelissa<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Tämä kirjaa sinut ulos Brave Software-tileiltäsi. Kirjanmerkkejä, historiaa, salasanoja tai muita ei enää synkronoida.</translation>
 <translation id="8588866096426746242">Näytä profiilitiedot</translation>
 <translation id="5535941515421698170">Poista myös olemassa olevat tietosi tältä laitteelta</translation>
 <translation id="7243632151880336635">Tyhjennä ja kirjaudu ulos</translation>
@@ -2242,13 +2261,16 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3259418918864581163">Luottokortit ja osoitteet Brave Software Paysta</translation>
 <translation id="4439834757335393741">Maksutavat ja osoitteet Brave Software Paysta</translation>
 <translation id="3268451620468152448">Avoimet välilehdet</translation>
+<translation id="5241892180459725878">Brave Software Drive ‑hakuehdotukset</translation>
 <translation id="2120297377148151361">Toiminnot ja vuorovaikutukset</translation>
+<translation id="5833397272224757657">Käyttää personointiin avaamiesi sivujen sisältöä, selaustoimintaa ja selainvuorovaikutusta</translation>
 <translation id="8135094938656535588">Hallinnoi synkronoituja tietoja Brave Software Hallintapaneelin avulla</translation>
 <translation id="6596325263575161958">Salausasetukset</translation>
 <translation id="2459230470861708651">Salaa synkronoidut salasanat Brave Software-käyttäjänimellä ja ‑salasanalla</translation>
 <translation id="6383051423892982287">Salaa synkronoidut tiedot oman <ph name="BEGIN_LINK"/>synkronoinnin tunnuslauseesi<ph name="END_LINK"/> avulla</translation>
 <translation id="4817583816512767754">Salattuja tietojasi voi lukea vain tunnuslauseesi avulla. Tunnuslausetta ei lähetetä Brave Softwarelle eikä Brave Software tallenna sitä. Jos unohdat tunnuslauseesi tai haluat muokata tätä asetusta, <ph name="BEGIN_LINK"/>synkronointi on nollattava<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Jos haluat muuttaa tätä asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Jos haluat ottaa tämän käyttöön, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name="END_LINK"/> poistaaksesi synkronoinnin tunnuslauseen</translation>
 <translation id="988978206646512040">Tunnuslause ei voi olla tyhjä.</translation>
 <translation id="1651008383952180276">Kirjoita sama tunnuslause kahdesti.</translation>
 <translation id="2136476978468204130">Antamasi tunnuslause on virheellinen.</translation>

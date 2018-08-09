@@ -481,7 +481,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3190558889382726167">Password saved</translation>
 <translation id="5079950360618752063">Use suggested password</translation>
 <translation id="8084114998886531721">Saved password</translation>
+<translation id="5614553682702429503">Save password?</translation>
 <translation id="1405476660552109915">Do you want <ph name="PASSWORD_MANAGER_BRAND"/> to save your account for this site?</translation>
+<translation id="8756969031206844760">Update password?</translation>
+<translation id="8230134520748321204">Save password for <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Update password for <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Passwords are saved in your Brave Software account so that you can use them on any device</translation>
 <translation id="8286036467436129157">Sign In</translation>
 <translation id="8009225694047762179">Manage Passwords</translation>
 <translation id="9135262959729602463">To get your passwords on all your devices, sign in to Brave.</translation>
@@ -548,16 +553,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Done</translation>
 <translation id="4416582610654027550">Type a valid URL</translation>
+<translation id="2806891468525657116">Shortcut already exists</translation>
+<translation id="394183848452296464">Can’t create shortcut</translation>
 <translation id="7109543803214225826">Shortcut removed</translation>
 <translation id="8017679124341497925">Shortcut edited</translation>
 <translation id="1174073918202301297">Shortcut added</translation>
 <translation id="2926085873880284723">Restore default shortcuts</translation>
-<translation id="7413455776853560343">Customise background</translation>
+<translation id="2942581856830209953">Customise this page</translation>
 <translation id="2187700606737131818">Brave Software Photos</translation>
 <translation id="5801450813341024983">Brave backgrounds</translation>
 <translation id="2800760947029405028">Upload an image</translation>
 <translation id="8342861492835240085">Select a collection</translation>
-<translation id="6017211263306518045">Select a Brave Software Photo Album</translation>
+<translation id="1734885380062278369">Select a Brave Software Photos album</translation>
 <translation id="3132996321662585180">Refresh daily</translation>
 <translation id="9062065967472365419">Surprise me</translation>
 <translation id="7287411021188441799">Restore default background</translation>
@@ -567,6 +574,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3617891479562106823">Backgrounds are unavailable. Try again later.</translation>
 <translation id="8391712576156218334">Image is unavailable. Try again later.</translation>
 <translation id="1564414980088536597">This image can't be used. Choose a different image.</translation>
+<translation id="4628948037717959914">Photo</translation>
+<translation id="8033827949643255796">selected</translation>
 <translation id="5376169624176189338">Click to go back, hold to see history</translation>
 <translation id="9103868373786083162">Press to go back, context menu to see history</translation>
 <translation id="2961695502793809356">Click to go forward, hold to see history</translation>
@@ -840,6 +849,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2532167245710864499">Improve Brave and its security by sending system and usage information to Brave Software</translation>
 <translation id="2709453993673701466">Want to manage sync and personalisation before they’re turned on? Visit <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">You can customise what information Brave Software collects in <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/> any time.</translation>
+<translation id="6035247993547372482">Brave Software may use content on sites that you visit, plus browser activity and interactions, to personalise Brave and other Brave Software services such as Translate, Search and ads. You can customise this in Settings.</translation>
 <translation id="741204030948306876">Yes, I'm in</translation>
 <translation id="8428213095426709021">Settings</translation>
 <translation id="2497852260688568942">Sync is disabled by your administrator</translation>
@@ -938,6 +948,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8363142353806532503">Microphone blocked</translation>
 <translation id="2762441749940182211">Camera blocked</translation>
 <translation id="5074318175948309511">This page may need to be reloaded before the new settings take effect.</translation>
+<translation id="1322046419516468189">View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software Account</translation>
 <translation id="3785727820640310185">Saved passwords for this site</translation>
 <translation id="3404065873681873169">No passwords saved for this site</translation>
@@ -1388,7 +1399,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6647838571840953560">Currently on <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Firmware</translation>
 <translation id="5895138241574237353">Restart</translation>
-<translation id="7409233648990234464">Relaunch and Powerwash</translation>
+<translation id="4297219207642690536">Restart and reset</translation>
 <translation id="4716483597559580346">Powerwash for added security</translation>
 <translation id="4089922565956168950">This upgrade resets your Bravebook and removes current user data.</translation>
 <translation id="5184662919967270437">Updating your device</translation>
@@ -1396,6 +1407,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5906655207909574370">Nearly up to date! Restart your device to finish updating.</translation>
 <translation id="5860494867054883682">Updating your device to <ph name="CHANNEL_NAME"/> channel (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Channel changed. Restart your device to apply changes.</translation>
+<translation id="7133578150266914903">Your administrator is rolling back this device (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Your administrator rolled back this device. Please save important files, then restart. All data on the device will be deleted.</translation>
 <translation id="1871615898038944731">Your <ph name="DEVICE_TYPE"/> is up to date</translation>
 <translation id="3688526734140524629">Change channel</translation>
 <translation id="6410328738210026208">Change channel and Powerwash</translation>
@@ -1496,7 +1509,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6902066522699286937">Voice to preview</translation>
 <translation id="304747341537320566">Speech Engines</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Run Linux tools, editors and IDEs on your Bravebook.</translation>
 <translation id="6869910261738842136">Remove Linux Apps for Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Android settings</translation>
@@ -1537,6 +1549,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8639963783467694461">Auto-fill settings</translation>
 <translation id="3431019676184503003">Addresses &amp;amp; payment methods</translation>
 <translation id="2512222046227390255">Auto-fill forms</translation>
+<translation id="2283340219607151381">Save and fill addresses</translation>
+<translation id="1662550410081243962">Save and fill payment methods</translation>
 <translation id="2903493209154104877">Addresses</translation>
 <translation id="7764225426217299476">Add address</translation>
 <translation id="5595485650161345191">Edit address</translation>
@@ -1573,6 +1587,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7930294771522048157">Saved payment methods will appear here</translation>
 <translation id="9124003689441359348">Saved passwords will appear here</translation>
 <translation id="4400367121200150367">Sites which never save passwords will appear here</translation>
+<translation id="3098842761938485917">View and manage saved passwords in your <ph name="BEGIN_LINK"/>Brave Software account<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Export passwords…</translation>
 <translation id="3900966090527141178">Export passwords</translation>
 <translation id="6914783257214138813">Your passwords will be visible to anyone who can see the exported file.</translation>
@@ -1963,6 +1978,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4534361985432360439">Sends the web address of the page that you're trying to reach to Brave Software</translation>
 <translation id="6545834809683560467">Use a prediction service to help complete searches and URLs typed in the address bar or the app launcher search box</translation>
 <translation id="7704317875155739195">Auto-complete searches and URLs</translation>
+<translation id="2000419248597011803">Sends some cookies and searches from the address bar and search box to your default search engine</translation>
 <translation id="9038649477754266430">Use a prediction service to load pages more quickly</translation>
 <translation id="7981313251711023384">Preload pages for faster browsing and searching</translation>
 <translation id="2468205691404969808">Uses cookies to remember your preferences, even if you don’t visit those pages</translation>
@@ -1973,6 +1989,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="490074449735753175">Use a web service to help resolve spelling errors</translation>
 <translation id="3523078749603005179">Smarter spell-checking by sending what you type in the browser to Brave Software</translation>
 <translation id="2564653188463346023">Enhanced spell check</translation>
+<translation id="7469406957790636836">To turn this on, first turn on spell check in <ph name="BEGIN_LINK"/>Languages and input<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">To turn this on, first select Check Spelling While Typing in the Edit menu</translation>
 <translation id="9079153198295609735">Automatically send usage statistics and crash reports to Brave Software</translation>
 <translation id="5941220456342415404">Automatically send diagnostic and usage data to Brave Software</translation>
 <translation id="918192811481327695">Help improve Brave's features and performance</translation>
@@ -2222,6 +2240,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7548737591211512046">Sign in to get your bookmarks, history, passwords and other settings on all your devices. You'll also automatically be signed in to your Brave Software services.</translation>
 <translation id="2951604498031550705">Changes to your bookmarks, history, passwords and other settings will no longer be synced to your Brave Software account. However, your existing data will remain stored in your Brave Software account and can be managed on <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">This will sign you out of your Brave Software accounts. Changes to your bookmarks, history, passwords and other settings will no longer be synced to your Brave Software account. However, your existing data will remain stored in your Brave Software account and can be managed on <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">This will sign you out of your Brave Software accounts. Your bookmarks, history, passwords and more will no longer be synced.</translation>
 <translation id="8588866096426746242">Show profile stats</translation>
 <translation id="5535941515421698170">Also remove your existing data from this device</translation>
 <translation id="7243632151880336635">Clear and Sign Out</translation>
@@ -2243,13 +2262,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3259418918864581163">Credit cards and addresses using Brave Software Pay.</translation>
 <translation id="4439834757335393741">Payment methods and addresses using Brave Software Pay.</translation>
 <translation id="3268451620468152448">Open Tabs</translation>
+<translation id="5241892180459725878">Brave Software Drive search suggestions</translation>
 <translation id="2120297377148151361">Activity and interactions</translation>
+<translation id="5833397272224757657">Uses content on sites that you visit, plus browser activity and interactions, for personalisation</translation>
 <translation id="8135094938656535588">Manage synced data on Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Encryption options</translation>
 <translation id="2459230470861708651">Encrypt synced passwords with your Brave Software username and password</translation>
 <translation id="6383051423892982287">Encrypt synced data with your own <ph name="BEGIN_LINK"/>sync passphrase<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave Software. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></translation>
+<translation id="3873315167136380065">To turn this on, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/> to remove your sync passphrase</translation>
 <translation id="988978206646512040">Empty passphrase is not allowed</translation>
 <translation id="1651008383952180276">You must enter the same passphrase twice</translation>
 <translation id="2136476978468204130">The passphrase you entered is incorrect</translation>

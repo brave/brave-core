@@ -481,7 +481,12 @@
 <translation id="3190558889382726167">密碼已儲存</translation>
 <translation id="5079950360618752063">使用建議的密碼</translation>
 <translation id="8084114998886531721">已儲存的密碼</translation>
+<translation id="5614553682702429503">要儲存密碼嗎？</translation>
 <translation id="1405476660552109915">您要讓 <ph name="PASSWORD_MANAGER_BRAND"/> 儲存您在這個網站使用的帳戶嗎？</translation>
+<translation id="8756969031206844760">要更新密碼嗎？</translation>
+<translation id="8230134520748321204">要儲存 <ph name="ORIGIN"/> 的密碼嗎？</translation>
+<translation id="9040661932550800571">要更新 <ph name="ORIGIN"/> 的密碼嗎？</translation>
+<translation id="8284000761603848448">系統會將密碼儲存在你的 Brave Software 帳戶中，方便你在任何裝置上使用密碼</translation>
 <translation id="8286036467436129157">登入</translation>
 <translation id="8009225694047762179">管理密碼</translation>
 <translation id="9135262959729602463">如要取得你在所有裝置上的密碼，請登入 Brave。</translation>
@@ -548,16 +553,18 @@
 <translation id="7400418766976504921">網址</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="4416582610654027550">請輸入有效的網址</translation>
+<translation id="2806891468525657116">捷徑已經存在</translation>
+<translation id="394183848452296464">無法建立捷徑</translation>
 <translation id="7109543803214225826">已移除捷徑</translation>
 <translation id="8017679124341497925">已編輯捷徑</translation>
 <translation id="1174073918202301297">已新增捷徑</translation>
 <translation id="2926085873880284723">還原預設捷徑</translation>
-<translation id="7413455776853560343">自訂背景</translation>
+<translation id="2942581856830209953">自訂這個頁面</translation>
 <translation id="2187700606737131818">Brave Software 相簿</translation>
 <translation id="5801450813341024983">Brave 背景</translation>
 <translation id="2800760947029405028">上傳圖片</translation>
 <translation id="8342861492835240085">選取集合</translation>
-<translation id="6017211263306518045">選取 Brave Software 相簿</translation>
+<translation id="1734885380062278369">選取 Brave Software 相簿</translation>
 <translation id="3132996321662585180">每天重新整理</translation>
 <translation id="9062065967472365419">隨機</translation>
 <translation id="7287411021188441799">還原預設背景</translation>
@@ -567,6 +574,8 @@
 <translation id="3617891479562106823">目前無法存取背景，請稍後再試。</translation>
 <translation id="8391712576156218334">目前無法存取圖片，請稍後再試。</translation>
 <translation id="1564414980088536597">無法使用這張圖片，請選擇其他圖片。</translation>
+<translation id="4628948037717959914">相片</translation>
+<translation id="8033827949643255796">已選取</translation>
 <translation id="5376169624176189338">按一下回上一頁，按住可查看記錄</translation>
 <translation id="9103868373786083162">按下即可返回，內容選單會顯示歷史記錄</translation>
 <translation id="2961695502793809356">按一下到下一頁，按住可查看記錄</translation>
@@ -840,6 +849,7 @@
 <translation id="2532167245710864499">傳送系統資訊和使用情形資料給 Brave Software，協助改善 Brave 及其安全性</translation>
 <translation id="2709453993673701466">想在開啟同步功能和個人化功能前先進行管理嗎？請前往「<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>」。</translation>
 <translation id="2668128414154024727">你隨時可以在<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>中自訂 Brave Software 可收集的資訊。</translation>
+<translation id="6035247993547372482">Brave Software 可能會根據你所造訪網站的內容、瀏覽器活動和瀏覽器互動行為，提供個人化的 Brave 體驗和其他 Brave Software 服務體驗，例如翻譯、搜尋和廣告。你可以在「設定」中自訂這項功能。</translation>
 <translation id="741204030948306876">是，我要啟用</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="2497852260688568942">你的管理員停用了同步功能</translation>
@@ -938,6 +948,7 @@
 <translation id="8363142353806532503">無法使用麥克風</translation>
 <translation id="2762441749940182211">無法使用攝影機</translation>
 <translation id="5074318175948309511">你可能需要重新載入這個網頁，新設定才會生效。</translation>
+<translation id="1322046419516468189">你可以查看及管理 <ph name="SAVED_PASSWORDS_STORE"/>中儲存的密碼</translation>
 <translation id="5713644099811900409">Brave Software 帳戶</translation>
 <translation id="3785727820640310185">已儲存這個網站的密碼</translation>
 <translation id="3404065873681873169">系統沒有儲存這個網站的密碼</translation>
@@ -1388,7 +1399,7 @@
 <translation id="6647838571840953560">目前使用<ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">韌體</translation>
 <translation id="5895138241574237353">重新啟動</translation>
-<translation id="7409233648990234464">重新啟動並執行 Powerwash</translation>
+<translation id="4297219207642690536">重新啟動並重設</translation>
 <translation id="4716483597559580346">執行 Powerwash 以提升安全性</translation>
 <translation id="4089922565956168950">這項升級作業會重設你的 Bravebook 並移除目前的使用者資料。</translation>
 <translation id="5184662919967270437">正在更新您的裝置</translation>
@@ -1396,6 +1407,8 @@
 <translation id="5906655207909574370">即將更新為最新版本！重新啟動您的裝置即可完成更新程序。</translation>
 <translation id="5860494867054883682">正在將你的裝置更新至<ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">版本已變更。請重新啟動裝置以套用變更。</translation>
+<translation id="7133578150266914903">你的管理員正在復原這個裝置 (進度：<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">你的管理員已復原這個裝置。請儲存重要檔案後再重新啟動。重新啟動後，裝置上的資料將全數刪除。</translation>
 <translation id="1871615898038944731">你的 <ph name="DEVICE_TYPE"/> 已搭載最新版本的作業系統</translation>
 <translation id="3688526734140524629">變更版本</translation>
 <translation id="6410328738210026208">變更版本並執行 Powerwash</translation>
@@ -1496,7 +1509,6 @@
 <translation id="6902066522699286937">要預覽的語音</translation>
 <translation id="304747341537320566">語音引擎</translation>
 <translation id="1067291318998134776">Linux (測試版)</translation>
-<translation id="6963573437985514722">在你的 Bravebook 上執行 Linux 工具、編輯器和 IDE。</translation>
 <translation id="6869910261738842136">移除 Bravebook 的 Linux 應用程式</translation>
 <translation id="2295473777859797944">Brave Software Play 商店</translation>
 <translation id="572155275267014074">Android 設定</translation>
@@ -1537,6 +1549,8 @@
 <translation id="8639963783467694461">自動填入設定</translation>
 <translation id="3431019676184503003">地址和付款方式</translation>
 <translation id="2512222046227390255">自動填入表單</translation>
+<translation id="2283340219607151381">儲存及填入地址</translation>
+<translation id="1662550410081243962">儲存及填入付款方式</translation>
 <translation id="2903493209154104877">地址</translation>
 <translation id="7764225426217299476">新增地址</translation>
 <translation id="5595485650161345191">編輯地址</translation>
@@ -1573,6 +1587,7 @@
 <translation id="7930294771522048157">已儲存的付款方式會顯示在這裡</translation>
 <translation id="9124003689441359348">你所儲存的密碼會顯示在這裡</translation>
 <translation id="4400367121200150367">一律不儲存密碼的網站會顯示在這裡</translation>
+<translation id="3098842761938485917">你可以查看及管理 <ph name="BEGIN_LINK"/>Brave Software 帳戶<ph name="END_LINK"/>中儲存的密碼</translation>
 <translation id="5620655347161642930">匯出密碼...</translation>
 <translation id="3900966090527141178">匯出密碼</translation>
 <translation id="6914783257214138813">凡是可查看匯出的檔案的使用者都能看到你的密碼。</translation>
@@ -1963,6 +1978,7 @@
 <translation id="4534361985432360439">將你嘗試瀏覽的網頁網址傳送給 Brave Software</translation>
 <translation id="6545834809683560467">使用預測查詢字串服務，讓系統協助完成你在網址列或應用程式啟動器搜尋框中輸入的搜尋字串或網址</translation>
 <translation id="7704317875155739195">自動完成搜尋字詞與網址</translation>
+<translation id="2000419248597011803">將網址列和搜尋框中的部分 Cookie 和搜尋字詞傳送給你的預設搜尋引擎</translation>
 <translation id="9038649477754266430">使用預測查詢字串服務，讓系統更快載入網頁</translation>
 <translation id="7981313251711023384">預先載入網頁，以加快瀏覽及搜尋速度</translation>
 <translation id="2468205691404969808">使用 Cookie 記住你的偏好設定 (即使你沒有造訪這些網頁)</translation>
@@ -1973,6 +1989,8 @@
 <translation id="490074449735753175">使用網路服務來協助解決拼字錯誤</translation>
 <translation id="3523078749603005179">將你在瀏覽器中輸入的文字傳送給 Brave Software，讓 Brave 為你提供更精確的拼字檢查功能。</translation>
 <translation id="2564653188463346023">進階拼字檢查功能</translation>
+<translation id="7469406957790636836">如要啟用這項功能，請先在<ph name="BEGIN_LINK"/>語言與輸入法<ph name="END_LINK"/>設定中開啟拼字檢查</translation>
+<translation id="8699566574894671540">如要啟用這項功能，請先選取 [編輯] 選單中的 [輸入時檢查拼字]</translation>
 <translation id="9079153198295609735">自動傳送使用統計資料及當機報告給 Brave Software</translation>
 <translation id="5941220456342415404">自動將診斷資料和使用情況資料傳送給 Brave Software</translation>
 <translation id="918192811481327695">協助改善 Brave 的功能與效能</translation>
@@ -2222,6 +2240,7 @@
 <translation id="7548737591211512046">只要登入帳戶，你在任何裝置上都能取得自己的書籤、歷史記錄和密碼，並套用相同的設定。此外，系統還會自動讓你登入各項 Brave Software 服務。</translation>
 <translation id="2951604498031550705">你的書籤、歷史記錄、密碼和其他設定的變更將不會再同步到你的 Brave Software 帳戶。不過，你的現有資料仍會儲存在你的 Brave Software 帳戶中，並可透過 <ph name="BEGIN_LINK"/>Brave Software 資訊主頁<ph name="END_LINK"/>管理。</translation>
 <translation id="138229770216285283">你將登出自己的 Brave Software 帳戶。你的書籤、歷史記錄、密碼和其他設定的變更將不會再同步到你的 Brave Software 帳戶。不過，你的現有資料仍會儲存在你的 Brave Software 帳戶中，並可透過 <ph name="BEGIN_LINK"/>Brave Software 資訊主頁<ph name="END_LINK"/>管理。</translation>
+<translation id="3169352093514419465">你將登出自己的 Brave Software 帳戶。你的書籤、歷史記錄、密碼和其他設定將不再保持同步。</translation>
 <translation id="8588866096426746242">顯示設定檔統計資料</translation>
 <translation id="5535941515421698170">將你現有的資料從這個裝置上一併移除</translation>
 <translation id="7243632151880336635">清除並登出</translation>
@@ -2243,13 +2262,16 @@
 <translation id="3259418918864581163">使用 Brave Software Pay 儲存的信用卡和地址資訊。</translation>
 <translation id="4439834757335393741">使用 Brave Software Pay 儲存的付款方式和地址資訊。</translation>
 <translation id="3268451620468152448">開啟的分頁</translation>
+<translation id="5241892180459725878">Brave Software 雲端硬碟搜尋建議</translation>
 <translation id="2120297377148151361">活動與互動行為</translation>
+<translation id="5833397272224757657">使用你所造訪網站的內容、瀏覽器活動和瀏覽器互動行為，提供個人化的使用體驗</translation>
 <translation id="8135094938656535588">管理 Brave Software 資訊主頁中已同步處理的資料</translation>
 <translation id="6596325263575161958">加密選項</translation>
 <translation id="2459230470861708651">使用你的 Brave Software 使用者名稱與密碼將經過同步處理的密碼加密</translation>
 <translation id="6383051423892982287">使用你的<ph name="BEGIN_LINK"/>同步通關密語<ph name="END_LINK"/>將經過同步處理的資料加密</translation>
 <translation id="4817583816512767754">只有知道通關密語的使用者可以讀取你的加密資料。系統不會將通關密語傳送給 Brave Software，Brave Software 也不會儲存通關密語。如果你忘記自己的通關密語，或是想變更這項設定，則必須<ph name="BEGIN_LINK"/>重設同步功能<ph name="END_LINK"/>。</translation>
 <translation id="4300305918532693141">如要變更這項設定，請<ph name="BEGIN_LINK"/>重設同步功能<ph name="END_LINK"/>。</translation>
+<translation id="3873315167136380065">如要啟用這項功能，請<ph name="BEGIN_LINK"/>重設同步功能<ph name="END_LINK"/>以移除同步處理通關密語</translation>
 <translation id="988978206646512040">通關密語欄位不得留空</translation>
 <translation id="1651008383952180276">你必須輸入兩次相同的通關密語</translation>
 <translation id="2136476978468204130">你輸入的通關密語不正確</translation>

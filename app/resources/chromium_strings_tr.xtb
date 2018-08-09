@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="4651430425715739110">Telif Hakkı <ph name="YEAR"/> The Brave Authors. Tüm hakları saklıdır.</translation>
 <translation id="2310890394934209120">Brave OS, ek <ph name="BEGIN_LINK_CROS_OSS"/>açık kaynak yazılımlar<ph name="END_LINK_CROS_OSS"/> ile hazırlanmıştır.</translation>
+<translation id="858647341154864560">Brave OS, Linux'ta (Beta) olduğu gibi ek <ph name="BEGIN_LINK_CROS_OSS"/>açık kaynak yazılımlardan<ph name="END_LINK_CROS_OSS"/> yararlanılarak geliştirilmiştir.</translation>
 <translation id="5019879183386042809">Brave varsayılan tarayıcı olsun</translation>
 <translation id="5063987220091207247">Brave OS bu sayfayı açamıyor.</translation>
 <translation id="4065288863231444640">Brave'un Arka Planda Çalışmasına İzin Ver</translation>
@@ -30,6 +31,7 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 <translation id="3403365884036456766">Tercihler dosyanız bozuk veya geçersiz.
 
 Brave ayarlarınızı kurtaramıyor.</translation>
+<translation id="5785919770853225148">Brave, şifrenizi Brave Software Hesabınızda kaydedecek. Bu şekilde şifreyi hatırlamanız gerekmez.</translation>
 <translation id="3343095737966473035">Brave varsayılan tarayıcınız değil</translation>
 <translation id="6715663530666325392">Kişiselleştirilmiş tarayıcı özelliklerinizi Web'e kaydetmek ve herhangi bir bilgisayardan Brave ile bu özelliklere erişmek için senkronizasyonu ayarlayın.</translation>
 <translation id="2708027082363760195">Brave, Baskı Önizleme için gerekli olan PDF görüntüleyiciyi içermez.</translation>
@@ -118,6 +120,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="82609232232243542">Brave'da oturum aç</translation>
 <translation id="8372880274820509128">Brave ek güvenlik için verilerinizi şifreler.</translation>
 <translation id="7445061995866044926">Brave oturumunu kapatıyor musunuz?</translation>
+<translation id="7453070689008684791">Brave, adres çubuğunda öneriler göstermek için Drive'ınıza erişecektir</translation>
 <translation id="7713466009760073734">Brave OS bu dilde görüntüleniyor</translation>
 <translation id="3518788198614984730">Brave OS'yi bu dilde görüntüle</translation>
 <translation id="6056473803837713617"><ph name="BEGIN_LINK"/>Mevcut ayarlarınızı<ph name="END_LINK"/> bildirerek Brave'u daha iyi hale getirmemize yardımcı olun</translation>

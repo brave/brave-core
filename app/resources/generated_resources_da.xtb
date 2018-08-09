@@ -480,7 +480,12 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3190558889382726167">Adgangskoden er blevet gemt</translation>
 <translation id="5079950360618752063">Brug den foreslåede adgangskode</translation>
 <translation id="8084114998886531721">Gemt adgangskode</translation>
+<translation id="5614553682702429503">Vil du gemme adgangskoden?</translation>
 <translation id="1405476660552109915">Skal <ph name="PASSWORD_MANAGER_BRAND"/> gemme din konto for dette website?</translation>
+<translation id="8756969031206844760">Vil du opdatere adgangskoden?</translation>
+<translation id="8230134520748321204">Vil du gemme adgangskoden til <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Vil du opdatere adgangskoden til <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Adgangskoder gemmes på din Brave Software-konto, så du kan bruge dem på enhver enhed</translation>
 <translation id="8286036467436129157">Log ind</translation>
 <translation id="8009225694047762179">Administrer adgangskoder</translation>
 <translation id="9135262959729602463">Log ind på Brave for at få dine adgangskoder på alle dine enheder.</translation>
@@ -547,16 +552,18 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7400418766976504921">Webadresse</translation>
 <translation id="8730621377337864115">Udfør</translation>
 <translation id="4416582610654027550">Angiv en gyldig webadresse</translation>
+<translation id="2806891468525657116">Genvejen findes allerede</translation>
+<translation id="394183848452296464">Genvejen kan ikke oprettes</translation>
 <translation id="7109543803214225826">Genvejen blev fjernet</translation>
 <translation id="8017679124341497925">Genvejen blev redigeret</translation>
 <translation id="1174073918202301297">Genvejen blev tilføjet</translation>
 <translation id="2926085873880284723">Gendan standardgenveje</translation>
-<translation id="7413455776853560343">Tilpas baggrund</translation>
+<translation id="2942581856830209953">Tilpas denne side</translation>
 <translation id="2187700606737131818">Brave Software Fotos</translation>
 <translation id="5801450813341024983">Brave-baggrunde</translation>
 <translation id="2800760947029405028">Upload et billede</translation>
 <translation id="8342861492835240085">Vælg en samling</translation>
-<translation id="6017211263306518045">Vælg et Brave Software Fotos-album</translation>
+<translation id="1734885380062278369">Vælg et Brave Software Fotos-album</translation>
 <translation id="3132996321662585180">Opdater dagligt</translation>
 <translation id="9062065967472365419">Overrask mig</translation>
 <translation id="7287411021188441799">Gendan standardbaggrund</translation>
@@ -566,6 +573,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3617891479562106823">Baggrunde er utilgængelige. Prøv igen senere.</translation>
 <translation id="8391712576156218334">Billedet er ikke tilgængeligt. Prøv igen senere.</translation>
 <translation id="1564414980088536597">Du kan ikke bruge dette billede. Vælg et andet billede.</translation>
+<translation id="4628948037717959914">Billede</translation>
+<translation id="8033827949643255796">valgt</translation>
 <translation id="5376169624176189338">Klik for at gå tilbage. Hold knappen inde for at se historikken.</translation>
 <translation id="9103868373786083162">Tryk for at gå tilbage til genvejsmenuen for at se historik</translation>
 <translation id="2961695502793809356">Klik for at gå frem. Hold knappen inde for at se historikken.</translation>
@@ -839,6 +848,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2532167245710864499">Gør Brave og dens sikkerhed bedre ved at sende systemoplysninger og oplysninger om brug til Brave Software</translation>
 <translation id="2709453993673701466">Vil du administrere synkronisering og tilpasning, før disse funktioner er slået til? Gå til <ph name="BEGIN_LINK"/>Indstillinger<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Du kan til enhver tid tilpasse, hvilke oplysninger Brave Software indsamler, i <ph name="BEGIN_LINK"/>Indstillinger<ph name="END_LINK"/>.</translation>
+<translation id="6035247993547372482">Brave Software kan bruge indhold på de websites, du besøger, samt browseraktivitet og -interaktioner til at tilpasse Brave og andre Brave Software-tjenester som f.eks. Oversæt, Søgning og annoncer. Du kan tilpasse dette i Indstillinger.</translation>
 <translation id="741204030948306876">Ja tak</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
 <translation id="2497852260688568942">Synkronisering er deaktiveret af din administrator.</translation>
@@ -937,6 +947,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8363142353806532503">Der er blokeret for adgang til mikrofonen</translation>
 <translation id="2762441749940182211">Der er blokeret for adgang til kameraet</translation>
 <translation id="5074318175948309511">Det kan være nødvendigt at genindlæse siden, så de nye indstillinger kan træde i kraft.</translation>
+<translation id="1322046419516468189">Se og administrer gemte adgangskoder på din <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software-konto</translation>
 <translation id="3785727820640310185">Gemte adgangskoder til dette website</translation>
 <translation id="3404065873681873169">Der er ikke gemt nogen adgangskoder til dette website</translation>
@@ -1387,7 +1398,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6647838571840953560">I øjeblikket på <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Firmware</translation>
 <translation id="5895138241574237353">Genstart</translation>
-<translation id="7409233648990234464">Genstart og powerwash</translation>
+<translation id="4297219207642690536">Genstart og nulstil</translation>
 <translation id="4716483597559580346">Udfør powerwash som et ekstra sikkerhedsniveau</translation>
 <translation id="4089922565956168950">Denne opgradering nulstiller din Bravebook og fjerner aktuelle brugerdata.</translation>
 <translation id="5184662919967270437">Opdaterer din enhed</translation>
@@ -1395,6 +1406,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5906655207909574370">Næsten opdateret. Genstart din enhed for at afslutte opdateringen.</translation>
 <translation id="5860494867054883682">Opdaterer din enhed til kanalen <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanalen er ændret. Genstart din enhed for at anvende ændringerne.</translation>
+<translation id="7133578150266914903">Din administrator gendanner en tidligere version på denne enhed (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Din administrator har gendannet en tidligere version på denne enhed. Gem vigtige filer, og genstart. Alle data på enheden slettes.</translation>
 <translation id="1871615898038944731">Din <ph name="DEVICE_TYPE"/> er opdateret</translation>
 <translation id="3688526734140524629">Skift kanal</translation>
 <translation id="6410328738210026208">Skift kanal og powerwash</translation>
@@ -1495,7 +1508,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6902066522699286937">Eksempel på stemme</translation>
 <translation id="304747341537320566">Oplæsningsmaskiner</translation>
 <translation id="1067291318998134776">Linux (beta)</translation>
-<translation id="6963573437985514722">Kør Linux-værktøjer, -redigeringsværktøjer og -IDE'er på din Bravebook.</translation>
 <translation id="6869910261738842136">Fjern Linux-apps til Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Butik</translation>
 <translation id="572155275267014074">Indstillinger for Android</translation>
@@ -1536,6 +1548,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8639963783467694461">Indstillinger for AutoFyld</translation>
 <translation id="3431019676184503003">Adresser og betalingsmetoder</translation>
 <translation id="2512222046227390255">Udfyld formularer automatisk</translation>
+<translation id="2283340219607151381">Gem og udfyld adresser</translation>
+<translation id="1662550410081243962">Gem og udfyld betalingsmetoder</translation>
 <translation id="2903493209154104877">Adresser</translation>
 <translation id="7764225426217299476">Tilføj adresse</translation>
 <translation id="5595485650161345191">Rediger adresse</translation>
@@ -1572,6 +1586,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7930294771522048157">Her kan du se dine gemte betalingsmetoder</translation>
 <translation id="9124003689441359348">Dine gemte adgangskoder vises her</translation>
 <translation id="4400367121200150367">Websites, som aldrig gemmer adgangskoder, vises her</translation>
+<translation id="3098842761938485917">Se og administrer gemte adgangskoder på din <ph name="BEGIN_LINK"/>Brave Software-konto<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Eksportér adgangskoder...</translation>
 <translation id="3900966090527141178">Eksportér adgangskoder</translation>
 <translation id="6914783257214138813">Dine adgangskoder vil være synlige for alle, der kan se den eksporterede fil.</translation>
@@ -1962,6 +1977,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="4534361985432360439">Sender webadressen på den side, du forsøger at åbne, til Brave Software</translation>
 <translation id="6545834809683560467">Brug en forslagstjeneste til at færdiggøre søgninger og webadresser, der indtastes i adresselinjen eller søgefeltet i applisten</translation>
 <translation id="7704317875155739195">Autofuldfør søgninger og webadresser</translation>
+<translation id="2000419248597011803">Sender visse cookies og søgninger fra adresselinjen og søgefeltet til din standardsøgemaskine</translation>
 <translation id="9038649477754266430">Brug en forudsigelsestjeneste til hurtigere sideindlæsning</translation>
 <translation id="7981313251711023384">Forudindlæs sider, så du kan browse og søge hurtigere</translation>
 <translation id="2468205691404969808">Bruger cookies til at huske dine indstillinger, også selvom du ikke besøger siderne</translation>
@@ -1972,6 +1988,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="490074449735753175">Brug en webtjeneste til at hjælpe med at rette stavefejl</translation>
 <translation id="3523078749603005179">Gør stavekontrollen bedre ved at sende det, du indtaster i browseren, til Brave Software</translation>
 <translation id="2564653188463346023">Forbedret stavekontrol</translation>
+<translation id="7469406957790636836">Hvis du vil aktivere indstillingen, skal du først aktivere stavekontrol under <ph name="BEGIN_LINK"/>Sprog og indtastning<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Hvis du vil aktivere indstillingen, skal du først vælge Kontrollér stavning under indtastning i menuen Rediger</translation>
 <translation id="9079153198295609735">Send automatisk brugsstatistikker og nedbrudsrapporter til Brave Software</translation>
 <translation id="5941220456342415404">Send automatisk diagnostik og brugsdata til Brave Software</translation>
 <translation id="918192811481327695">Vær med til at forbedre Braves funktioner og ydeevne</translation>
@@ -2221,6 +2239,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7548737591211512046">Log ind for at få dine bogmærker, din historik, dine adgangskoder og dine øvrige indstillinger på alle dine enheder. Du bliver også automatisk logget ind på dine Brave Software-tjenester.</translation>
 <translation id="2951604498031550705">Ændringer af bogmærker, historik, adgangskoder og andre indstillinger synkroniseres ikke længere med din Brave Software-konto. Dine eksisterende data er dog stadig gemt på din Brave Software-konto og kan administreres i <ph name="BEGIN_LINK"/>Brave Software Betjeningspanel<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Du logges ud af dine Brave Software-konti. Ændringer af bogmærker, historik, adgangskoder og andre indstillinger synkroniseres ikke længere med din Brave Software-konto. Dine eksisterende data er dog stadig gemt på din Brave Software-konto og kan administreres i <ph name="BEGIN_LINK"/>Brave Software Betjeningspanel<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Dermed logges du ud af dine Brave Software-konti. Dine bogmærker, din historik, dine adgangskoder m.m. synkroniseres ikke længere.</translation>
 <translation id="8588866096426746242">Vis profilstatistik</translation>
 <translation id="5535941515421698170">Fjern også dine eksisterende data fra denne enhed</translation>
 <translation id="7243632151880336635">Ryd, og log ud</translation>
@@ -2242,13 +2261,16 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3259418918864581163">Kreditkort og adresser fra Brave Software Pay.</translation>
 <translation id="4439834757335393741">Betalingsmetoder og adresser, der bruger Brave Software Pay.</translation>
 <translation id="3268451620468152448">Åbne faner</translation>
+<translation id="5241892180459725878">Brave Software Drev-søgeforslag</translation>
 <translation id="2120297377148151361">Aktivitet og interaktioner</translation>
+<translation id="5833397272224757657">Anvender indhold på websites, du besøger, samt browseraktivitet og -interaktioner, så din brugeroplevelse tilpasses</translation>
 <translation id="8135094938656535588">Administrer synkroniserede data i Brave Software Betjeningspanel</translation>
 <translation id="6596325263575161958">Krypteringsmuligheder</translation>
 <translation id="2459230470861708651">Kryptér synkroniserede adgangskoder med brugernavnet og adgangskoden til din Brave Software-konto</translation>
 <translation id="6383051423892982287">Kryptér synkroniserede data med din egen <ph name="BEGIN_LINK"/>adgangssætning til synkronisering<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Det er kun personer med din adgangssætning, der kan læse dine krypterede data. Adgangssætningen sendes ikke til og gemmes ikke af Brave Software. Hvis du glemmer din adgangssætning eller vil ændre denne indstilling, skal du <ph name="BEGIN_LINK"/>nulstille synkroniseringen<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Hvis du vil ændre denne indstilling, skal du<ph name="BEGIN_LINK"/>nulstille synkroniseringen<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Du kan aktivere indstillingen ved at <ph name="BEGIN_LINK"/>nulstille synkronisering<ph name="END_LINK"/> for at fjerne din adgangssætning til synkronisering</translation>
 <translation id="988978206646512040">Tomme adgangssætninger er ikke tilladt</translation>
 <translation id="1651008383952180276">Du skal angive den samme adgangssætning to gange</translation>
 <translation id="2136476978468204130">Den adgangssætning, du angav, er forkert.</translation>

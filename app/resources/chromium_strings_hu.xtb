@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">A Brave szerzői</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> – A Brave szerzői. Minden jog fenntartva.</translation>
 <translation id="2310890394934209120">A Brave OS létrejöttéhez további <ph name="BEGIN_LINK_CROS_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_CROS_OSS"/> is hozzájárultak.</translation>
+<translation id="858647341154864560">A Brave OS létrejöttéhez egyéb <ph name="BEGIN_LINK_CROS_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_CROS_OSS"/> is hozzájárultak, ahogyan a Linux (béta) létrejöttéhez is.</translation>
 <translation id="5019879183386042809">Legyen a Brave az alapértelmezett böngészőm</translation>
 <translation id="5063987220091207247">A Brave OS nem tudja megnyitni ezt az oldalt.</translation>
 <translation id="4065288863231444640">A Brave futhat a háttérben</translation>
@@ -30,6 +31,7 @@
 <translation id="3403365884036456766">A beállításait tartalmazó fájl hibás vagy érvénytelen.
 
 A Brave nem tudja visszaállítani a beállításait.</translation>
+<translation id="5785919770853225148">A Brave ezt a jelszót Brave Software-fiókjába menti. Nem kell megjegyeznie.</translation>
 <translation id="3343095737966473035">A Brave nem az alapértelmezett böngésző</translation>
 <translation id="6715663530666325392">A szinkronizálás beállításával személyre szabott beállításait az interneten tárolhatja, így azok elérhetők a Braveból bármelyik számítógépen.</translation>
 <translation id="2708027082363760195">A Brave nem tartalmazza a PDF Viewer alkalmazást, amely a Nyomtatási előnézet működéséhez szükséges.</translation>
@@ -118,6 +120,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="82609232232243542">Bejelentkezés a Braveba</translation>
 <translation id="8372880274820509128">A nagyobb biztonság érdekében a Brave titkosítja az Ön adatait.</translation>
 <translation id="7445061995866044926">Kijelentkezik a Braveból?</translation>
+<translation id="7453070689008684791">A Brave hozzáfér Drive-jához, hogy javaslatokat nyújthasson a címsávon.</translation>
 <translation id="7713466009760073734">A Brave OS ezen a nyelven jelenik meg</translation>
 <translation id="3518788198614984730">A Brave operációs rendszer megjelenítése ezen a nyelven</translation>
 <translation id="6056473803837713617">Segítsen a Brave fejlesztésében a <ph name="BEGIN_LINK"/>jelenlegi beállítások<ph name="END_LINK"/> elküldésével</translation>

@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Autori prehliadača Brave</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Autori Brave. Všetky práva vyhradené.</translation>
 <translation id="2310890394934209120">Prehliadač Brave mohol vzniknúť vďaka ďalšiemu <ph name="BEGIN_LINK_CROS_OSS"/>softvéru s otvoreným zdrojom<ph name="END_LINK_CROS_OSS"/> .</translation>
+<translation id="858647341154864560">Brave OS mohol vzniknúť vďaka ďalšiemu <ph name="BEGIN_LINK_CROS_OSS"/>softvéru open source<ph name="END_LINK_CROS_OSS"/>, ako je Linux (beta).</translation>
 <translation id="5019879183386042809">Nastavte Brave ako svoj predvolený prehliadač</translation>
 <translation id="5063987220091207247">Brave OS nedokáže túto stránku otvoriť.</translation>
 <translation id="4065288863231444640">Povoliť prehliadaču Brave spustenie na pozadí</translation>
@@ -34,6 +35,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="3403365884036456766">Súbor predvolieb je poškodený alebo neplatný. 
 
 Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
+<translation id="5785919770853225148">Brave toto heslo uloží do vášho účtu Brave Software. Nebudete si ho musieť pamätať.</translation>
 <translation id="3343095737966473035">Brave nie je váš predvolený prehliadač</translation>
 <translation id="6715663530666325392">Ak chcete uložiť svoje prispôsobené funkcie prehliadača na webe a pristupovať k nim z prehliadača Brave v ktoromkoľvek počítači, nastavte synchronizáciu.</translation>
 <translation id="2708027082363760195">Prehliadač Brave neobsahuje nástroj na zobrazovanie súborov PDF, ktorý je potrebný pre funkciu Ukážka pred tlačou.</translation>
@@ -122,6 +124,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="82609232232243542">Prihlásiť sa do prehliadača Brave</translation>
 <translation id="8372880274820509128">V záujme vyššej miery zabezpečenia budú dáta v prehliadači Brave šifrované.</translation>
 <translation id="7445061995866044926">Odhlásiť sa z prehliadača Brave?</translation>
+<translation id="7453070689008684791">Brave bude mať prístup na váš Disk, aby mohol v paneli s adresou zobrazovať návrhy</translation>
 <translation id="7713466009760073734">Brave OS sa zobrazuje v tomto jazyku</translation>
 <translation id="3518788198614984730">Zobraziť Brave OS v tomto jazyku</translation>
 <translation id="6056473803837713617">Nahláste <ph name="BEGIN_LINK"/>aktuálne nastavenia<ph name="END_LINK"/> a pomôžte tak zlepšiť prehliadač Brave</translation>

@@ -482,7 +482,12 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3190558889382726167">S'ha desat la contrasenya</translation>
 <translation id="5079950360618752063">Utilitza la contrasenya suggerida</translation>
 <translation id="8084114998886531721">Contrasenya desada</translation>
+<translation id="5614553682702429503">Vols desar la contrasenya?</translation>
 <translation id="1405476660552109915">Voleu que <ph name="PASSWORD_MANAGER_BRAND"/> desi el vostre compte per a aquest lloc?</translation>
+<translation id="8756969031206844760">Vols actualitzar la contrasenya?</translation>
+<translation id="8230134520748321204">Vols desar la contrasenya per a <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Vols actualitzar la contrasenya per a <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Les contrasenyes es desen al Compte de Brave Software perquè les puguis utilitzar en tots els dispositius</translation>
 <translation id="8286036467436129157">Inicia la sessió</translation>
 <translation id="8009225694047762179">Gestiona les contrasenyes</translation>
 <translation id="9135262959729602463">Inicia la sessió a Brave per tenir les contrasenyes en tots els teus dispositius.</translation>
@@ -549,16 +554,18 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Fet</translation>
 <translation id="4416582610654027550">Escriu un URL vàlid</translation>
+<translation id="2806891468525657116">Aquesta drecera ja existeix</translation>
+<translation id="394183848452296464">No es pot crear la drecera</translation>
 <translation id="7109543803214225826">S'ha suprimit la drecera</translation>
 <translation id="8017679124341497925">S'ha editat la drecera</translation>
 <translation id="1174073918202301297">La drecera s'ha afegit</translation>
 <translation id="2926085873880284723">Restaura les dreceres predeterminades</translation>
-<translation id="7413455776853560343">Personalitza el fons</translation>
+<translation id="2942581856830209953">Personalitza aquesta pàgina</translation>
 <translation id="2187700606737131818">Brave Software Fotos</translation>
 <translation id="5801450813341024983">Fons de pantalla de Brave</translation>
 <translation id="2800760947029405028">Penja una imatge</translation>
 <translation id="8342861492835240085">Selecciona una col·lecció</translation>
-<translation id="6017211263306518045">Selecciona un àlbum de Brave Software Fotos</translation>
+<translation id="1734885380062278369">Selecciona un àlbum de Brave Software Fotos</translation>
 <translation id="3132996321662585180">Actualitza diàriament</translation>
 <translation id="9062065967472365419">Sorprèn-me</translation>
 <translation id="7287411021188441799">Restaura el fons predeterminat</translation>
@@ -568,6 +575,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3617891479562106823">Els fons de pantalla no estan disponibles. Torna-ho a provar més tard.</translation>
 <translation id="8391712576156218334">La imatge no està disponible. Torna-ho a provar més tard.</translation>
 <translation id="1564414980088536597">Aquesta imatge no es pot utilitzar. Tria'n una altra.</translation>
+<translation id="4628948037717959914">Foto</translation>
+<translation id="8033827949643255796">seleccionats</translation>
 <translation id="5376169624176189338">Feu clic per tornar enrere o manteniu premut per veure l'historial</translation>
 <translation id="9103868373786083162">Premeu per anar cap enrere, menú contextual per veure l'historial</translation>
 <translation id="2961695502793809356">Feu clic per anar endavant o manteniu premut per veure l'historial</translation>
@@ -841,6 +850,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2532167245710864499">Envia a Brave Software informació del sistema i dades sobre l'ús de Brave per millorar aquest servei i la seva seguretat</translation>
 <translation id="2709453993673701466">Vols gestionar la sincronització i la personalització abans que s'activin? Ves a <ph name="BEGIN_LINK"/>Configuració<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Per personalitzar la informació que Brave Software recopila, ves a <ph name="BEGIN_LINK"/>Configuració<ph name="END_LINK"/> en qualsevol moment.</translation>
+<translation id="6035247993547372482">Brave Software pot utilitzar contingut dels llocs web que visites, així com l'activitat i les interaccions del navegador per personalitzar Brave i altres serveis de Brave Software, com ara el Traductor, la Cerca i els anuncis. Pots personalitzar aquesta opció a Configuració.</translation>
 <translation id="741204030948306876">Sí, ho accepto</translation>
 <translation id="8428213095426709021">Configuració</translation>
 <translation id="2497852260688568942">L'administrador ha desactivat la sincronització</translation>
@@ -939,6 +949,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8363142353806532503">El micròfon està bloquejat</translation>
 <translation id="2762441749940182211">La càmera està bloquejada</translation>
 <translation id="5074318175948309511">És possible que hàgiu de tornar a carregar aquesta pàgina perquè s'apliqui la configuració nova.</translation>
+<translation id="1322046419516468189">Consulta i gestiona les contrasenyes desades al <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Compte de Brave Software</translation>
 <translation id="3785727820640310185">Contrasenyes desades per a aquest lloc web</translation>
 <translation id="3404065873681873169">No hi ha cap contrasenya desada per a aquest lloc web</translation>
@@ -1265,6 +1276,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3930737994424905957">S'estan cercant dispositius</translation>
 <translation id="5209320130288484488">No s'ha trobat cap dispositiu</translation>
 <translation id="4363771538994847871">No s'ha trobat cap destinació per a Cast. Necessites ajuda?</translation>
+<translation id="8688672835843460752">Disponible</translation>
 <translation id="4271396100647220620">Cap coincidència</translation>
 <translation id="6972180789171089114">Àudio/Vídeo</translation>
 <translation id="2541002089857695151">Vols optimitzar l'emissió en pantalla completa?</translation>
@@ -1275,6 +1287,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7473891865547856676">No, gràcies</translation>
 <translation id="8538358978858059843">Vols activar els serveis al núvol per a Brave Software Cast?</translation>
 <translation id="3856595552313160385">L'ús de Hangouts i Cast for Education està regit per la política de privadesa de Brave Software.</translation>
+<translation id="3435896845095436175">Activar</translation>
 <translation id="3700888195348409686">S'està presentant (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Pantalla <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">El gestor (<ph name="CUSTODIAN_EMAIL"/>) pot revisar-ne l'ús i l'historial a chrome.com.</translation>
@@ -1302,7 +1315,9 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1316495628809031177">La sincronització està en pausa</translation>
 <translation id="7786207843293321886">Surt de la sessió de convidat</translation>
 <translation id="2329597144923131178">Inicieu la sessió per tenir adreces d'interès, historial, contrasenyes i altres opcions de configuració en tots els dispositius.</translation>
+<translation id="7029809446516969842">Contrasenyes</translation>
 <translation id="984275831282074731">Formes de pagament</translation>
+<translation id="2903493209154104877">Adreces</translation>
 <translation id="8883847527783433352">Sincronitza amb un altre compte</translation>
 <translation id="2761898608071930085">Utilitza un altre compte</translation>
 <translation id="4235813040357936597">Afegeix un compte per a: <ph name="PROFILE_NAME"/></translation>
@@ -1389,7 +1404,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6647838571840953560">Actualment a <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Microprogramari</translation>
 <translation id="5895138241574237353">Reinicia</translation>
-<translation id="7409233648990234464">Torna a iniciar i fes powerwash</translation>
+<translation id="4297219207642690536">Reinicia i restableix</translation>
 <translation id="4716483597559580346">Powerwash per a més seguretat</translation>
 <translation id="4089922565956168950">Amb aquesta actualització es restableix el dispositiu Bravebook i se suprimeixen les dades d'usuari actuals.</translation>
 <translation id="5184662919967270437">S'està actualitzant el dispositiu</translation>
@@ -1397,6 +1412,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5906655207909574370">Gairebé heu acabat. Reinicieu el dispositiu per completar l'actualització.</translation>
 <translation id="5860494867054883682">S'està actualitzant el dispositiu al canal <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">El canal ha canviat. Reinicieu el dispositiu perquè s'apliquin els canvis.</translation>
+<translation id="7133578150266914903">L'administrador està revertint el dispositiu a una versió anterior (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">L'administrador ha revertit el dispositiu a una versió anterior. Desa els fitxers importants i, després, reinicia el dispositiu. Se'n suprimiran totes les dades.</translation>
 <translation id="1871615898038944731">El dispositiu <ph name="DEVICE_TYPE"/> està actualitzat</translation>
 <translation id="3688526734140524629">Canvia el canal</translation>
 <translation id="6410328738210026208">Canvia el canal i fes Powerwash</translation>
@@ -1497,7 +1514,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6902066522699286937">Veu de prova</translation>
 <translation id="304747341537320566">Motors de veu</translation>
 <translation id="1067291318998134776">Linux (versió beta)</translation>
-<translation id="6963573437985514722">Executa les eines, els editors i els IDE de Linux a Bravebook.</translation>
 <translation id="6869910261738842136">Suprimeix les aplicacions per a Linux de Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Configuració d'Android</translation>
@@ -1538,7 +1554,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8639963783467694461">Configuració d'Emplenament automàtic</translation>
 <translation id="3431019676184503003">Adreces i formes de pagament</translation>
 <translation id="2512222046227390255">Emplena formularis automàticament</translation>
-<translation id="2903493209154104877">Adreces</translation>
+<translation id="2283340219607151381">Desa i emplena les adreces</translation>
+<translation id="1662550410081243962">Desa i emplena les formes de pagament</translation>
 <translation id="7764225426217299476">Afegeix una adreça</translation>
 <translation id="5595485650161345191">Edita l'adreça</translation>
 <translation id="6207937957461833379">País/Regió</translation>
@@ -1574,6 +1591,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7930294771522048157">Les formes de pagament desades es mostraran aquí</translation>
 <translation id="9124003689441359348">Les contrasenyes desades es mostraran aquí</translation>
 <translation id="4400367121200150367">Els llocs que no desen contrasenyes mai es mostraran aquí</translation>
+<translation id="3098842761938485917">Consulta i gestiona les contrasenyes desades al <ph name="BEGIN_LINK"/>Compte de Brave Software<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Exporta les contrasenyes...</translation>
 <translation id="3900966090527141178">Exporta les contrasenyes</translation>
 <translation id="6914783257214138813">Tothom que pugui veure el fitxer exportat podrà veure també les teves contrasenyes.</translation>
@@ -1629,7 +1647,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4699172675775169585">Imatges i fitxers desats a la memòria cau</translation>
 <translation id="1274997165432133392">Galetes i altres dades dels llocs web</translation>
 <translation id="3838543471119263078">Galetes i altres dades de llocs i de connectors</translation>
-<translation id="7029809446516969842">Contrasenyes</translation>
 <translation id="6865313869410766144">Dades d'Emplenament automàtic de formularis</translation>
 <translation id="177336675152937177">Dades d'aplicacions allotjades</translation>
 <translation id="1718835860248848330">Darrera hora</translation>
@@ -1685,6 +1702,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5317780077021120954">Desa</translation>
 <translation id="5696679855467848181">Fitxer PPD en ús: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="5646376287012673985">Ubicació</translation>
 <translation id="7754704193130578113">Pregunta on es desarà cada fitxer abans de baixar-lo</translation>
 <translation id="5713072761819014678">Desconnecta el compte de Brave Software Drive</translation>
 <translation id="486635084936119914">Obre alguns tipus de fitxer automàticament després de baixar-los</translation>
@@ -1964,6 +1982,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4534361985432360439">Envia a Brave Software l'adreça web de la pàgina que estàs provant de visitar</translation>
 <translation id="6545834809683560467">Utilitza un servei de predicció per completar fàcilment les cerques i els URL introduïts a la barra d'adreces o al quadre de cerca del menú d'aplicacions.</translation>
 <translation id="7704317875155739195">Completa automàticament les cerques i els URL</translation>
+<translation id="2000419248597011803">Envia al motor de cerca predeterminat algunes galetes i cerques de la barra d'adreces i del quadre de cerca</translation>
 <translation id="9038649477754266430">Utilitza un servei de predicció per poder carregar les pàgines més ràpidament</translation>
 <translation id="7981313251711023384">Carrega les pàgines prèviament per poder-hi navegar i fer cerques més de pressa</translation>
 <translation id="2468205691404969808">Utilitza galetes per recordar les teves preferències, fins i tot si no visites aquestes pàgines</translation>
@@ -1974,6 +1993,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="490074449735753175">Utilitza un servei web per revisar l'ortografia</translation>
 <translation id="3523078749603005179">Aconsegueix un corrector ortogràfic més útil enviant a Brave Software el text que escrius al navegador</translation>
 <translation id="2564653188463346023">Corrector ortogràfic millorat</translation>
+<translation id="7469406957790636836">Per activar aquesta funció, activa primer el corrector ortogràfic a <ph name="BEGIN_LINK"/>Idiomes i introducció de text<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Per activar aquesta funció, selecciona primer Comprova l'ortografia mentre escric al menú Edita</translation>
 <translation id="9079153198295609735">Envia automàticament estadístiques d'ús i informes d'error a Brave Software</translation>
 <translation id="5941220456342415404">Envia automàticament dades de diagnòstic i d'ús a Brave Software</translation>
 <translation id="918192811481327695">Ajuda a millorar les funcions i el rendiment de Brave</translation>
@@ -2008,7 +2029,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2203682048752833055">Motor de cerca utilitzat a la <ph name="BEGIN_LINK"/>barra d'adreces<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">Gestiona motors de cerca</translation>
 <translation id="2862205630718215619">Assistent de Brave Software</translation>
-<translation id="3435896845095436175">Activa</translation>
 <translation id="6978121630131642226">Motors de cerca</translation>
 <translation id="6410668567036790476">Afegeix un motor de cerca</translation>
 <translation id="1128591060186966949">Edita el motor de cerca</translation>
@@ -2223,6 +2243,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7548737591211512046">Inicia la sessió per tenir les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració en tots els dispositius. A més, iniciaràs la sessió automàticament als serveis de Brave Software.</translation>
 <translation id="2951604498031550705">Els canvis que es facin a les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració es deixaran de sincronitzar amb el compte de Brave Software. No obstant això, les dades existents continuaran emmagatzemades al teu compte de Brave Software i es podran gestionar al <ph name="BEGIN_LINK"/>Tauler de control de Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Es tancarà la sessió dels comptes de Brave Software. Els canvis que es facin a les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració es deixaran de sincronitzar amb el Compte de Brave Software. No obstant això, les dades existents continuaran emmagatzemades al teu Compte de Brave Software i es podran gestionar des del <ph name="BEGIN_LINK"/>Tauler de control de Brave Software<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Aquesta acció tancarà la sessió dels Comptes de Brave Software. Les adreces d'interès, l'historial, les contrasenyes i altres opcions es deixaran de sincronitzar.</translation>
 <translation id="8588866096426746242">Mostra les estadístiques del perfil</translation>
 <translation id="5535941515421698170">Suprimeix també les teves dades d'aquest dispositiu</translation>
 <translation id="7243632151880336635">Esborra i tanca la sessió</translation>
@@ -2244,13 +2265,16 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3259418918864581163">Targetes de crèdit i adreces que fan servir Brave Software Pay.</translation>
 <translation id="4439834757335393741">Formes de pagament i adreces que fan servir Brave Software Pay.</translation>
 <translation id="3268451620468152448">Pestanyes obertes</translation>
+<translation id="5241892180459725878">Suggeriments de cerca de Brave Software Drive</translation>
 <translation id="2120297377148151361">Activitat i interaccions</translation>
+<translation id="5833397272224757657">Utilitza el contingut dels llocs web que visites, així com l'activitat i les interaccions del navegador per oferir una experiència personalitzada.</translation>
 <translation id="8135094938656535588">Gestiona les dades sincronitzades des del Tauler de control de Brave Software</translation>
-<translation id="6596325263575161958">Opcions d'encriptació</translation>
+<translation id="6596325263575161958">Opcions d\'encriptació</translation>
 <translation id="2459230470861708651">Encripta les contrasenyes sincronitzades amb el teu nom d'usuari i la teva contrasenya de Brave Software</translation>
 <translation id="6383051423892982287">Encripta les dades sincronitzades amb la teva <ph name="BEGIN_LINK"/>frase de contrasenya de sincronització<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Només els usuaris que sàpiguen la teva frase de contrasenya poden llegir les dades que encriptis. La frase de contrasenya no s'envia a Brave Software, ni Brave Software l'emmagatzema. Si l'oblides o vols canviar aquesta configuració, hauràs de <ph name="BEGIN_LINK"/>restablir la sincronització<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Per canviar aquesta configuració, <ph name="BEGIN_LINK"/>restableix la sincronització<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Si vols activar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització<ph name="END_LINK"/> per suprimir la frase de contrasenya de sincronització</translation>
 <translation id="988978206646512040">No es permeten les frases de contrasenya buides</translation>
 <translation id="1651008383952180276">Has d'escriure la mateixa frase de contrasenya dues vegades</translation>
 <translation id="2136476978468204130">La frase de contrasenya que has escrit no és correcta</translation>
@@ -2374,7 +2398,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6856623341093082836">Configura i ajusta la precisió de la pantalla tàctil</translation>
 <translation id="4598556348158889687">Gestió de l'emmagatzematge</translation>
 <translation id="8868626022555786497">En ús</translation>
-<translation id="8688672835843460752">Disponible</translation>
 <translation id="1082725763867769612">Fitxers sense connexió</translation>
 <translation id="7366909168761621528">Dades de navegació</translation>
 <translation id="5568144734023334204">Emmagatzematge d'Android</translation>

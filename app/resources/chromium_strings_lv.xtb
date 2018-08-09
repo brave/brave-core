@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Brave autori</translation>
 <translation id="4651430425715739110">Autortiesības <ph name="YEAR"/> Brave autori. Visas tiesības paturētas.</translation>
 <translation id="2310890394934209120">Brave OS ir kļuvusi iespējama, pateicoties papildu <ph name="BEGIN_LINK_CROS_OSS"/>atklātā pirmkoda programmatūrai<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="858647341154864560">Brave OS un Linux (Beta) darbību nodrošina papildu <ph name="BEGIN_LINK_CROS_OSS"/>atklātā pirmkoda programmatūra<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="5019879183386042809">Padarīt Brave par noklusējuma pārlūku</translation>
 <translation id="5063987220091207247">Brave OS nevar atvērt šo lapu.</translation>
 <translation id="4065288863231444640">Ļaut pārlūkam Brave darboties fonā</translation>
@@ -30,6 +31,7 @@
 Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai izmantojiet jaunāku Brave versiju.</translation>
 <translation id="1065672644894730302">Jūsu preferences nevar nolasīt. Dažas funkcijas var nebūt pieejamas, un preferenču izmaiņas netiks saglabātas</translation>
 <translation id="3403365884036456766">Jūsu preferenču fails ir bojāts vai nederīgs. Brave nespēj atkopt jūsu iestatījumus.</translation>
+<translation id="5785919770853225148">Pārlūks Brave saglabās šo paroli jūsu Brave Software kontā. To nav nepieciešams iegaumēt.</translation>
 <translation id="3343095737966473035">Brave nav jūsu noklusējuma pārlūks.</translation>
 <translation id="6715663530666325392">Iestatiet sinhronizāciju, lai saglabātu savas personalizētās pārlūka funkcijas tīmeklī un piekļūtu tām no Brave jebkurā datorā.</translation>
 <translation id="2708027082363760195">Pārlūka Brave komplektācijā nav PDF skatītāja, kas nepieciešams funkcijas Drukas priekšskatījums darbībai.</translation>
@@ -118,6 +120,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="82609232232243542">Pierakstieties pārlūkā Brave</translation>
 <translation id="8372880274820509128">Papildu drošības nolūkos Brave šifrēs jūsu datus.</translation>
 <translation id="7445061995866044926">Vai izrakstīties no Brave?</translation>
+<translation id="7453070689008684791">Pārlūkā Brave tiks izmantota Diskā pieejamā informācija, lai adrešu joslā piedāvātu ieteikumus</translation>
 <translation id="7713466009760073734">Brave OS tiek rādīta šajā valodā.</translation>
 <translation id="3518788198614984730">Rādīt Brave OS šajā valodā</translation>
 <translation id="6056473803837713617">Palīdziet uzlabot pārlūku Brave, ziņojot par <ph name="BEGIN_LINK"/>pašreizējiem iestatījumiem<ph name="END_LINK"/>.</translation>

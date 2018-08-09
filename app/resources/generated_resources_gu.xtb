@@ -475,7 +475,12 @@
 <translation id="3190558889382726167">પાસવર્ડ સાચવ્યો</translation>
 <translation id="5079950360618752063">સૂચવેલ પાસવર્ડનો ઉપયોગ કરો</translation>
 <translation id="8084114998886531721">સાચવેલ પાસવર્ડ</translation>
+<translation id="5614553682702429503">પાસવર્ડ સાચવીએ?</translation>
 <translation id="1405476660552109915">શું તમે ઇચ્છો છો કે <ph name="PASSWORD_MANAGER_BRAND"/> આ સાઇટ માટે તમારા એકાઉન્ટને સાચવે?</translation>
+<translation id="8756969031206844760">પાસવર્ડ અપડેટ કરીએ?</translation>
+<translation id="8230134520748321204"><ph name="ORIGIN"/> માટેનો પાસવર્ડ સાચવીએ?</translation>
+<translation id="9040661932550800571"><ph name="ORIGIN"/> માટેનો પાસવર્ડ અપડેટ કરીએ?</translation>
+<translation id="8284000761603848448">પાસવર્ડ તમારા Brave Software એકાઉન્ટમાં સાચવવામાં આવે છે, જેથી તમે કોઈપણ ઉપકરણ પર તેનો ઉપયોગ કરી શકો</translation>
 <translation id="8286036467436129157">સાઇન ઇન કરો</translation>
 <translation id="8009225694047762179">બધા પાસવર્ડ મેનેજ કરો</translation>
 <translation id="9135262959729602463">તમારા બધા ઉપકરણો પર તમારા પાસવર્ડ મેળવવા માટે, Braveમાં સાઇન ઇન કરો.</translation>
@@ -542,16 +547,18 @@
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">થઈ ગયું</translation>
 <translation id="4416582610654027550">માન્ય URL લખો</translation>
+<translation id="2806891468525657116">શૉર્ટકટ પહેલેથી અસ્તિત્વમાં છે</translation>
+<translation id="394183848452296464">શૉર્ટકટ બનાવી શકતાં નથી</translation>
 <translation id="7109543803214225826">શૉર્ટકટ કાઢી નાખ્યો</translation>
 <translation id="8017679124341497925">શૉર્ટકટમાં ફેરફાર કર્યો</translation>
 <translation id="1174073918202301297">શૉર્ટકટ ઉમેર્યો</translation>
 <translation id="2926085873880284723">ડિફૉલ્ટ શૉર્ટક્ટ ફરી મેળવો</translation>
-<translation id="7413455776853560343">બૅકગ્રાઉન્ડ કસ્ટમાઇઝ કરો</translation>
+<translation id="2942581856830209953">આ પેજને કસ્ટમાઇઝ કરો</translation>
 <translation id="2187700606737131818">Brave Software ફોટો</translation>
 <translation id="5801450813341024983">Brave બૅકગ્રાઉન્ડ</translation>
 <translation id="2800760947029405028">છબી અપલોડ કરો</translation>
 <translation id="8342861492835240085">સંગ્રહ પસંદ કરો</translation>
-<translation id="6017211263306518045">Brave Software ફોટો આલ્બમ પસંદ કરો</translation>
+<translation id="1734885380062278369">Brave Software ફોટો આલ્બમ પસંદ કરો</translation>
 <translation id="3132996321662585180">દરરોજ રિફ્રેશ કરો</translation>
 <translation id="9062065967472365419">મને સરપ્રાઇઝ આપો</translation>
 <translation id="7287411021188441799">ડિફૉલ્ટ બૅકગ્રાઉન્ડ પાછું મેળવો</translation>
@@ -561,6 +568,8 @@
 <translation id="3617891479562106823">બૅકગ્રાઉન્ડ અનુપલબ્ધ છે. થોડા સમય પછી ફરી પ્રયાસ કરો.</translation>
 <translation id="8391712576156218334">છબી અનુપલબ્ધ. થોડા સમય પછી ફરી પ્રયાસ કરો.</translation>
 <translation id="1564414980088536597">આ છબીનો ઉપયોગ કરી શકાતો નથી. અલગ છબી પસંદ કરો.</translation>
+<translation id="4628948037717959914">ફોટો</translation>
+<translation id="8033827949643255796">પસંદ કરેલ</translation>
 <translation id="5376169624176189338">પાછળ જવા માટે ક્લિક કરો, ઇતિહાસ જોવા માટે હોલ્ડ કરો</translation>
 <translation id="9103868373786083162">પાછા જવા માટે દબાવો, ઇતિહાસ જોવા માટે સંદર્ભ મેનૂ પર જાઓ</translation>
 <translation id="2961695502793809356">આગળ જવા માટે ક્લિક કરો, ઇતિહાસ જોવા માટે હોલ્ડ કરો</translation>
@@ -834,6 +843,7 @@
 <translation id="2532167245710864499">Brave Softwareને સિસ્ટમ તથા વપરાશ વિશેની માહિતી મોકલીને Brave અને તેની સુરક્ષા બહેતર બનાવો</translation>
 <translation id="2709453993673701466">સિંક અને વૈયક્તિકરણ ચાલુ થાય તે પહેલાં તેને સંચાલિત કરવા માગો છો? <ph name="BEGIN_LINK"/>સેટિંગ્સ <ph name="END_LINK"/>ની મુલાકાત લો.</translation>
 <translation id="2668128414154024727">Brave Software કઈ માહિતીનો સંગ્રહ કરે તેને તમે <ph name="BEGIN_LINK"/>સેટિંગ<ph name="END_LINK"/>માં કોઈ પણ સમયે કસ્ટમાઇઝ કરી શકો છો.</translation>
+<translation id="6035247993547372482">Brave Software તમે મુલાકાત લીધેલ સાઇટના કન્ટેન્ટનો તથા બ્રાઉઝરની પ્રવૃત્તિ અને ક્રિયાપ્રતિક્રિયાઓનો ઉપયોગ Brave અને બીજી Brave Software સેવાઓ જેમ કે અનુવાદ, શોધ અને જાહેરાતોને વ્યક્તિગત બનાવવા માટે કરી શકે છે. તમે સેટિંગમાં કોઈપણ સમયે તેને કસ્ટમાઇઝ કરી શકો છો.</translation>
 <translation id="741204030948306876">હા, હું સંમત છું</translation>
 <translation id="8428213095426709021">સેટિંગ્સ</translation>
 <translation id="2497852260688568942">સમન્વયન, તમારા વ્યવસ્થાપક દ્વારા અક્ષમ કરવામાં આવ્યું છે</translation>
@@ -932,6 +942,7 @@
 <translation id="8363142353806532503">માઇક્રોફોન અવરોધિત</translation>
 <translation id="2762441749940182211">કૅમેરા અવરોધિત</translation>
 <translation id="5074318175948309511">નવી સેટિંગ્સ પ્રભાવમાં આવે તે પહેલાં આ પૃષ્ઠને ફરીથી લોડ કરવાની જરૂર પડી શકે છે.</translation>
+<translation id="1322046419516468189">સાચવેલા પાસવર્ડ તમારા <ph name="SAVED_PASSWORDS_STORE"/>માં જુઓ અને મેનેજ કરો</translation>
 <translation id="5713644099811900409">Brave Software એકાઉન્ટ</translation>
 <translation id="3785727820640310185">આ સાઇટ માટે પાસવર્ડ સાચવેલા છે</translation>
 <translation id="3404065873681873169">આ સાઇટ માટે કોઈ પાસવર્ડ સાચવેલા નથી</translation>
@@ -1382,7 +1393,7 @@
 <translation id="6647838571840953560">હાલમાં <ph name="CHANNEL_NAME"/> પર છે</translation>
 <translation id="2972557485845626008">ફર્મવેર</translation>
 <translation id="5895138241574237353">પુનઃપ્રારંભ કરો</translation>
-<translation id="7409233648990234464">ફરીથી લૉન્ચ કરો અને Powerwash કરો</translation>
+<translation id="4297219207642690536">ફરી શરૂ કરો અને રીસેટ કરો</translation>
 <translation id="4716483597559580346">વધારાની સુરક્ષા માટે પાવરવૉશ</translation>
 <translation id="4089922565956168950">આ અપગ્રેડ તમારી Bravebookને રીસેટ કરે છે અને હાલનો વપરાશકર્તા ડેટા કાઢી નાખે છે.</translation>
 <translation id="5184662919967270437">તમારા ઉપકરણને અપડેટ કરી રહ્યાં છે</translation>
@@ -1390,6 +1401,8 @@
 <translation id="5906655207909574370">અપ ટૂ ડેટ થવામાં છે! અપડેટ કરવાનું સમાપ્ત કરવા માટે તમારા ઉપકરણને પુનઃપ્રારંભ કરો.</translation>
 <translation id="5860494867054883682">તમારા ઉપકરણને <ph name="CHANNEL_NAME"/> ચેનલ પર અપડેટ કરી રહ્યાં છે (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">ચેનલ બદલી. ફેરફારો લાગુ કરવા માટે તમારા ઉપકરણને પુનઃપ્રારંભ કરો.</translation>
+<translation id="7133578150266914903">તમારા વ્યવસ્થાપક આ ઉપકરણને રોલ બૅક કરી રહ્યા છે (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">તમારા વ્યવસ્થાપકે આ ઉપકરણને રોલ બૅક કર્યું છે. કૃપા કરીને મહત્ત્વપૂર્ણ ફાઇલો સાચવી લો પછી ફરી શરૂ કરો. ઉપકરણમાંનો બધો ડેટા ડિલીટ કરવામાં આવશે.</translation>
 <translation id="1871615898038944731">તમારું <ph name="DEVICE_TYPE"/> અપ ટૂ ડેટ છે</translation>
 <translation id="3688526734140524629">ચેનલ બદલો</translation>
 <translation id="6410328738210026208">ચેનલ બદલો અને Powerwash કરો</translation>
@@ -1490,7 +1503,6 @@
 <translation id="6902066522699286937">પ્રીવ્યૂ કરવા માટે વૉઇસ</translation>
 <translation id="304747341537320566">વાણી એન્જિનો</translation>
 <translation id="1067291318998134776">Linux (બીટા)</translation>
-<translation id="6963573437985514722">તમારા Bravebook પર Linux સાધનો, એડિટર અને IDE ચલાવો.</translation>
 <translation id="6869910261738842136">Bravebook માટે Linux ઍપને કાઢી નાખો</translation>
 <translation id="2295473777859797944">Brave Software Play સ્ટોર</translation>
 <translation id="572155275267014074">Android સેટિંગ્સ</translation>
@@ -1531,6 +1543,8 @@
 <translation id="8639963783467694461">સ્વતઃભરો સેટિંગ્સ</translation>
 <translation id="3431019676184503003">ઍડ્રેસ અને ચુકવણી પદ્ધતિઓ</translation>
 <translation id="2512222046227390255">ફોર્મ સ્વતઃભરો</translation>
+<translation id="2283340219607151381">સરનામાં સાચવો અને ભરો</translation>
+<translation id="1662550410081243962">ચુકવણી પદ્ધતિઓ સાચવો અને ભરો</translation>
 <translation id="2903493209154104877">સરનામાંઓ</translation>
 <translation id="7764225426217299476">સરનામું ઉમેરો</translation>
 <translation id="5595485650161345191">સરનામું સંપાદિત કરો</translation>
@@ -1567,6 +1581,7 @@
 <translation id="7930294771522048157">સાચવેલ ચુકવણી પદ્ધતિઓ અહીં દેખાશે</translation>
 <translation id="9124003689441359348">સાચવેલા પાસવર્ડ અહીં દેખાશે</translation>
 <translation id="4400367121200150367">ક્યારેય પાસવર્ડ ન સાચવતી સાઇટ અહીં દેખાશે</translation>
+<translation id="3098842761938485917">સાચવેલા પાસવર્ડ તમારા <ph name="BEGIN_LINK"/>Brave Software એકાઉન્ટ<ph name="END_LINK"/>માં જુઓ અને મેનેજ કરો</translation>
 <translation id="5620655347161642930">પાસવર્ડની નિકાસ કરો…</translation>
 <translation id="3900966090527141178">પાસવર્ડની નિકાસ કરો</translation>
 <translation id="6914783257214138813">જે કોઈપણ તમારી નિકાસ કરેલ પાસવર્ડની ફાઇલને જોઈ શકશે, તેમને તમારા પાસવર્ડ પણ દૃશ્યક્ષમ થશે.</translation>
@@ -1957,6 +1972,7 @@
 <translation id="4534361985432360439">તમે જે Brave Software સુધી પહોંચવાનો પ્રયાસ કરી રહ્યાં છો તે પેજનું વેબ ઍડ્રેસ મોકલે છે</translation>
 <translation id="6545834809683560467">શોધ અને સરનામાં બાર અથવા એપ લૉન્ચર શોધ બોક્સમાં લખેલા URL ને પૂર્ણ કરવામાં સહાય માટે પૂર્વાનુમાન સેવાનો ઉપયોગ કરો</translation>
 <translation id="7704317875155739195">શોધ અને URLsને આપમેળે પૂર્ણ કરો</translation>
+<translation id="2000419248597011803">ઍડ્રેસ બાર અને શોધ બૉક્સમાંથી કેટલીક કુકી અને શોધને તમારા ડિફૉલ્ટ શોધ એંજિન પર મોકલે છે</translation>
 <translation id="9038649477754266430">પૃષ્ઠોને વધુ ઝડપથી લોડ કરવા માટે પૂર્વાનુમાન સેવાનો ઉપયોગ કરો</translation>
 <translation id="7981313251711023384">ઝડપી બ્રાઉઝિંગ અને શોધ માટે પેજને પહેલેથી લોડ કરો</translation>
 <translation id="2468205691404969808">તમારી પસંદગીઓ યાદ રાખવા માટે કુકીનો ઉપયોગ કરે છે, પછી ભલે તમે તે પેજની મુલાકાત ન પણ લો</translation>
@@ -1967,6 +1983,8 @@
 <translation id="490074449735753175">જોડણી ભૂલોને ઉકેલવામાં સહાય માટે વેબ સેવાનો ઉપયોગ કરો</translation>
 <translation id="3523078749603005179">તમે બ્રાઉઝરમાં જે કંઈપણ લખો છો તે Brave Software ને મોકલીને વધુ સ્માર્ટ જોડણી-તપાસ</translation>
 <translation id="2564653188463346023">વધારેલ જોડણીની તપાસ</translation>
+<translation id="7469406957790636836">આ ચાલુ કરવા માટે, પહેલા <ph name="BEGIN_LINK"/>ભાષાઓ અને ઇનપુટ<ph name="END_LINK"/>માં જોડણીની તપાસ કાર્ય ચાલુ કરો</translation>
+<translation id="8699566574894671540">આ ચાલુ કરવા માટે, પહેલા સંપાદન મેનૂમાં ટાઇપિંગ વખતે જોડણી તપાસો પસંદ કરો</translation>
 <translation id="9079153198295609735">ઉપયોગિતા આંકડાઓ અને ક્રેશ રિપોર્ટ્સ Brave Software ને આપમેળે મોકલો</translation>
 <translation id="5941220456342415404">Brave Software ને આપમેળે નિદાન અને વપરાશ ડેટા મોકલો</translation>
 <translation id="918192811481327695">Braveની સુવિધાઓ અને પ્રદર્શનને સુધારવામાં સહાય કરો</translation>
@@ -2216,6 +2234,7 @@
 <translation id="7548737591211512046">તમારા તમામ ઉપકરણો પર તમારા બુકમાર્ક, ઇતિહાસ, પાસવર્ડ અને અન્ય સેટિંગ્સ મેળવવા માટે સાઇન ઇન કરો. તમે તમારી Brave Software સેવાઓમાં પણ આપમેળે સાઇન ઇન થશો.</translation>
 <translation id="2951604498031550705">તમારા બુકમાર્ક્સ, ઇતિહાસ, પાસવર્ડ્સ અને અન્ય સેટિંગ્સ પરના ફેરફારો હવે તમારો અસ્તિત્વમાંનો ડેટા, તમારા Brave Software એકાઉન્ટમાં સંગ્રહિત રહેશે અને તે <ph name="BEGIN_LINK"/>Brave Software ડેશબોર્ડ<ph name="END_LINK"/> પર સંચાલિત કરવામાં આવી શકે છે.</translation>
 <translation id="138229770216285283">તમારા Brave Software એકાઉન્ટમાંથી આ તમને સાઇન આઉટ કરશે. બુકમાર્ક, ઇતિહાસ, પાસવર્ડ અને અન્ય સેટિંગ પરના ફેરફારો અને અન્ય સેટિંગ, હવે તમારા Brave Software એકાઉન્ટમાં સિંક કરેલ રહેશે નહીં. તેમ છતાં તમારો વર્તમાન ડેટા તમારા Brave Software એકાઉન્ટમાં સંગ્રહિત રહેશે અને તે <ph name="BEGIN_LINK"/>Brave Software ડૅશબોર્ડ<ph name="END_LINK"/> પર મેનેજ કરવામાં આવી શકે છે.</translation>
+<translation id="3169352093514419465">આનાથી તમે તમારા Brave Software એકાઉન્ટમાંથી સાઇન આઉટ થઈ જશો. ત્યાર પછી તમારાં બુકમાર્ક, ઇતિહાસ, પાસવર્ડ અને ઘણું બધું સિંક કરવામાં નહીં આવે.</translation>
 <translation id="8588866096426746242">પ્રોફાઇલના આંકડા બતાવો</translation>
 <translation id="5535941515421698170">આ ઉપકરણ પરથી તમારો અસ્તિત્વમાંનો ડેટા પણ દૂર કરો</translation>
 <translation id="7243632151880336635">સાફ કરો અને સાઇન આઉટ કરો</translation>
@@ -2237,13 +2256,16 @@
 <translation id="3259418918864581163">Brave Software Pay નો ઉપયોગ કરતા ક્રેડિટ કાર્ડ અને સરનામાં.</translation>
 <translation id="4439834757335393741">Brave Software Payનો ઉપયોગ કરતી ચુકવણી પદ્ધતિ અને ઍડ્રેસ.</translation>
 <translation id="3268451620468152448">ઓપન ટેબ્સ</translation>
+<translation id="5241892180459725878">Brave Software ડ્રાઇવ શોધ સૂચનો</translation>
 <translation id="2120297377148151361">પ્રવૃત્તિ અને ક્રિયાપ્રતિક્રિયાઓ</translation>
+<translation id="5833397272224757657">વૈયક્તિકરણ માટે, તમે મુલાકાત લીધેલી સાઇટના કન્ટેન્ટનો, ઉપરાંત બ્રાઉઝરની પ્રવૃત્તિ અને ક્રિયાપ્રતિક્રિયાઓનો ઉપયોગ કરે છે</translation>
 <translation id="8135094938656535588">Brave Software ડૅશબોર્ડ પર સમન્વયિત કરેલ ડેટા સંચાલિત કરો</translation>
 <translation id="6596325263575161958">એન્ક્રિપ્શન વિકલ્પો</translation>
 <translation id="2459230470861708651">તમારા Brave Software વપરાશકર્તાનામ અને પાસવર્ડ સાથે સમન્વયિત પાસવર્ડને એન્ક્રિપ્ટ કરો</translation>
 <translation id="6383051423892982287">તમારા પોતાના <ph name="BEGIN_LINK"/>સમન્વયન પાસફ્રેઝ<ph name="END_LINK"/> સાથે સમન્વયિત ડેટા એન્ક્રિપ્ટ કરો</translation>
 <translation id="4817583816512767754">માત્ર તમારા પાસફ્રેઝ સાથેની કોઈ વ્યક્તિ જ તમારા એન્ક્રિપ્ટ કરેલા ડેટાને વાંચી શકે છે. Brave Software ને પાસફ્રેઝ મોકલવામાં આવતો નથી કે તેના દ્વારા સંગ્રહિત કરવામાં આવતો નથી. જો તમે તમારો પાસફ્રેઝ ભૂલી જાઓ અથવા આ સેટિંગ બદલવા માંગતા હોવ, તો તમારે <ph name="BEGIN_LINK"/>સમન્વયનને ફરીથી સેટ<ph name="END_LINK"/> કરવું પડશે.</translation>
 <translation id="4300305918532693141">આ સેટિંગ બદલવા માટે, <ph name="BEGIN_LINK"/>સમન્વયનને ફરીથી સેટ કરો<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">આ ચાલુ કરવા માટે, તમારો સિંક પાસફ્રેઝ કાઢી નાખવા માટે <ph name="BEGIN_LINK"/>સિંકને રીસેટ કરો<ph name="END_LINK"/></translation>
 <translation id="988978206646512040">ખાલી પાસફ્રેઝને મંજૂરી નથી</translation>
 <translation id="1651008383952180276">તમારે તે જ પાસફ્રેઝ બે વાર દાખલ કરવો આવશ્યક છે</translation>
 <translation id="2136476978468204130">તમે દાખલ કરેલો પાસફ્રેઝ ખોટો છે</translation>

@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Brave രചയിതാക്കൾ</translation>
 <translation id="4651430425715739110">പകർപ്പവകാശം <ph name="YEAR"/> Brave രചയിതാക്കൾ. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്‌തം.</translation>
 <translation id="2310890394934209120">Brave OS നിർമ്മിച്ചത് കൂടുതൽ <ph name="BEGIN_LINK_CROS_OSS"/>ഓപ്പൺ സോഴ്‌സ് സോഫ്റ്റ്‌വെയർ<ph name="END_LINK_CROS_OSS"/> ഉപയോഗിച്ചാകാം.</translation>
+<translation id="858647341154864560">Linux (ബീറ്റ) പോലെ, അധിക <ph name="BEGIN_LINK_CROS_OSS"/>ഓപ്പൺ സോഴ്‌സ് സോഫ്റ്റ്‌വെയർ<ph name="END_LINK_CROS_OSS"/> ഉപയോഗിച്ചായിരിക്കാം, Brave OS നിർമ്മിച്ചിരിക്കുന്നത്.</translation>
 <translation id="5019879183386042809">Brave-ത്തെ സ്ഥിരസ്ഥിതി ബ്രൗസറാക്കി മാറ്റുക</translation>
 <translation id="5063987220091207247">Brave OS-ന് ഈ പേജ് തുറക്കാനാവില്ല.</translation>
 <translation id="4065288863231444640">Brave-ത്തെ പശ്ചാത്തലത്തിൽ പ്രവർത്തിക്കാൻ അനുവദിക്കുക</translation>
@@ -34,6 +35,7 @@
 <translation id="3403365884036456766">നിങ്ങളുടെ മുൻഗണനകൾ ഫയൽ കേടായതാണ് അല്ലെങ്കിൽ അസാധുവാണ്.
 
 നിങ്ങളുടെ ക്രമീകരണങ്ങൾ വീണ്ടെടുക്കാൻ Brave-ത്തിന് കഴിയില്ല.</translation>
+<translation id="5785919770853225148">നിങ്ങളുടെ Brave Software അക്കൗണ്ടിൽ Brave ഈ പാസ്‌വേഡ് സംരക്ഷിക്കും. നിങ്ങൾ അത് ഓർത്ത് വയ്ക്കേണ്ടതില്ല.</translation>
 <translation id="3343095737966473035">Brave നിങ്ങളുടെ ഡിഫോൾട്ട് ബ്രൗസറല്ല</translation>
 <translation id="6715663530666325392">നിങ്ങളുടെ വ്യക്തിപരമാക്കിയ ബ്രൗസർ സവിശേഷതകൾ വെബിലേക്ക് സംരക്ഷിച്ച് അവയെ ഏത് കമ്പ്യൂട്ടറിലെയും Brave-ത്തിൽ നിന്ന് ആക്‌സസ്സുചെയ്യുന്നതിന് സമന്വയം സജ്ജമാക്കുക.</translation>
 <translation id="2708027082363760195">Brave-ത്തിൽ പ്രിന്റ് പ്രിവ്യൂവിന് പ്രവർത്തിക്കുന്നതിന് ആവശ്യമായ PDF വ്യൂവർ ഉൾപ്പെടുന്നില്ല.</translation>
@@ -122,6 +124,7 @@
 <translation id="82609232232243542">Brave-ത്തിലേക്ക് സൈൻ ഇൻ ചെയ്യുക</translation>
 <translation id="8372880274820509128">അധിക സുരക്ഷക്കായി, Brave നിങ്ങളുടെ ഡാറ്റ എന്‍‌ക്രിപ്റ്റ് ചെയ്യും.</translation>
 <translation id="7445061995866044926">Brave-ത്തിൽ നിന്ന് സൈൻ ഔട്ട് ചെയ്യണോ?</translation>
+<translation id="7453070689008684791">വിലാസ ബാറിൽ നിർദ്ദേശങ്ങൾ സൃഷ്‌ടിക്കാൻ Brave നിങ്ങളുടെ ഡ്രൈവ് ആക്‌സസ് ചെയ്യും</translation>
 <translation id="7713466009760073734">Brave OS ഈ ഭാഷയിൽ പ്രദർശിപ്പിച്ചിരിക്കുന്നു</translation>
 <translation id="3518788198614984730">ഈ ഭാഷയിൽ Brave OS പ്രദർശിപ്പിക്കുക</translation>
 <translation id="6056473803837713617"><ph name="BEGIN_LINK"/>നിലവിലെ ക്രമീകരണം<ph name="END_LINK"/> റിപ്പോർട്ടുചെയ്‌തുകൊണ്ട് Brave മികച്ചതാക്കാൻ സഹായിക്കുക</translation>

@@ -480,7 +480,12 @@
 <translation id="3190558889382726167">گذرواژه ذخیره شد</translation>
 <translation id="5079950360618752063">استفاده از گذرواژه پیشنهادی</translation>
 <translation id="8084114998886531721">گذرواژه ذخیره‌شده</translation>
+<translation id="5614553682702429503">گذرواژه ذخیره شود؟</translation>
 <translation id="1405476660552109915">آیا می‌خواهید <ph name="PASSWORD_MANAGER_BRAND"/> حساب شما را برای این سایت ذخیره کند؟</translation>
+<translation id="8756969031206844760">گذرواژه به‌روزرسانی شود؟</translation>
+<translation id="8230134520748321204">گذرواژه <ph name="ORIGIN"/> ذخیره شود؟</translation>
+<translation id="9040661932550800571">گذرواژه <ph name="ORIGIN"/> به‌روزرسانی شود؟</translation>
+<translation id="8284000761603848448">‏گذرواژه‌ها در حساب Brave Software شما ذخیره می‌شود تا بتوانید در همه دستگاه‌هایتان از آن‌ها استفاده کنید</translation>
 <translation id="8286036467436129157">ورود به سیستم</translation>
 <translation id="8009225694047762179">مدیریت گذرواژه</translation>
 <translation id="9135262959729602463">‏برای اینکه گذرواژه‌هایتان را در همه دستگاه‌ها دریافت کنید، به سیستم Brave وارد شوید.</translation>
@@ -547,16 +552,18 @@
 <translation id="7400418766976504921">نشانی وب</translation>
 <translation id="8730621377337864115">تمام</translation>
 <translation id="4416582610654027550">نشانی وب معتبری تایپ کنید</translation>
+<translation id="2806891468525657116">میان‌بر از قبل وجود دارد</translation>
+<translation id="394183848452296464">نمی‌توان میان‌بر ایجاد کرد</translation>
 <translation id="7109543803214225826">میان‌بر حذف شد</translation>
 <translation id="8017679124341497925">میان‌بر ویرایش شد</translation>
 <translation id="1174073918202301297">میان‌بر اضافه شد</translation>
 <translation id="2926085873880284723">بازیابی میان‌برهای پیش‌فرض</translation>
-<translation id="7413455776853560343">سفارشی کردن پس‌زمینه</translation>
+<translation id="2942581856830209953">سفارشی کردن این صفحه</translation>
 <translation id="2187700606737131818">Brave Software Photos</translation>
 <translation id="5801450813341024983">‏پس‌زمینه‌های Bravebook</translation>
 <translation id="2800760947029405028">بارگذاری تصویر</translation>
 <translation id="8342861492835240085">انتخاب مجموعه</translation>
-<translation id="6017211263306518045">‏انتخاب آلبوم Brave Software Photo</translation>
+<translation id="1734885380062278369">‏انتخاب آلبوم Brave Software Photos</translation>
 <translation id="3132996321662585180">بازخوانی روزانه</translation>
 <translation id="9062065967472365419">غافلگیرم کن</translation>
 <translation id="7287411021188441799">بازیابی پس‌زمینه پیش‌فرض</translation>
@@ -566,6 +573,8 @@
 <translation id="3617891479562106823">پس‌زمینه‌ها دردسترس نیست. بعداً دوباره امتحان کنید.</translation>
 <translation id="8391712576156218334">تصویر دردسترس نیست. بعداً دوباره امتحان کنید.</translation>
 <translation id="1564414980088536597">از این تصویر نمی‌توان استفاده کرد. تصویر دیگری انتخاب کنید.</translation>
+<translation id="4628948037717959914">عکس</translation>
+<translation id="8033827949643255796">انتخاب شد</translation>
 <translation id="5376169624176189338">برای برگشت به عقب کلیک کنید، برای دیدن سابقه نگه دارید</translation>
 <translation id="9103868373786083162">برای دیدن سابقه، دکمه را فشار دهید تا به عقب، و به منوی بافت برگردید</translation>
 <translation id="2961695502793809356">برای رفتن به جلو کلیک کنید، برای دیدن سابقه نگه دارید</translation>
@@ -839,6 +848,7 @@
 <translation id="2532167245710864499">‏بهبود Brave و امنیت آن با ارسال اطلاعات و آمار استفاده سیستم به Brave Software</translation>
 <translation id="2709453993673701466">می‌خواهید همگام‌سازی و شخصی‌سازی را پیش از روشن کردن مدیریت کنید؟ از <ph name="BEGIN_LINK"/>تنظیمات<ph name="END_LINK"/> بازدید کنید.</translation>
 <translation id="2668128414154024727">‏هر وقت بخواهید می‌توانید اطلاعاتی را که Brave Software جمع‌آوری می‌کند، در <ph name="BEGIN_LINK"/>تنظیمات<ph name="END_LINK"/> سفارشی کنید.</translation>
+<translation id="6035247993547372482">‏ممکن است Brave Software از محتوای سایت‌هایی که بازدید می‌کنید و فعالیت و تعاملات مرورگر برای شخصی کردن Brave و سایر سرویس‌های Brave Software (مانند «مترجم»، «جستجو» و آگهی‌ها) استفاده کند. می‌توانید این مورد را در «تنظیمات» سفارشی کنید.</translation>
 <translation id="741204030948306876">بله، موافقم</translation>
 <translation id="8428213095426709021">تنظیمات</translation>
 <translation id="2497852260688568942">سرپرستتان همگام‌سازی را غیرفعال کرده است</translation>
@@ -937,6 +947,7 @@
 <translation id="8363142353806532503">میکروفون مسدود شده است</translation>
 <translation id="2762441749940182211">دوربین مسدود شده است</translation>
 <translation id="5074318175948309511">شاید لازم باشد که این صفحه قبل از اعمال شدن تنظیمات جدید، بارگذاری مجدد شود.</translation>
+<translation id="1322046419516468189">در <ph name="SAVED_PASSWORDS_STORE"/> گذرواژه‌های ذخیره‌شده‌تان را مشاهده و مدیریت کنید</translation>
 <translation id="5713644099811900409">‏حساب Brave Software</translation>
 <translation id="3785727820640310185">گذرواژه‌های ذخیره‌شده برای این سایت</translation>
 <translation id="3404065873681873169">هیچ گذرواژه‌ای برای این سایت ذخیره نشده است</translation>
@@ -1387,7 +1398,7 @@
 <translation id="6647838571840953560">درحال‌حاضر در کانال <ph name="CHANNEL_NAME"/> است</translation>
 <translation id="2972557485845626008">سفت‌افزار</translation>
 <translation id="5895138241574237353">راه‌اندازی مجدد</translation>
-<translation id="7409233648990234464">راه‌اندازی مجدد و پاورواش</translation>
+<translation id="4297219207642690536">بازراه‌اندازی و بازنشانی</translation>
 <translation id="4716483597559580346">‏Powerwash برای امنیت بیشتر</translation>
 <translation id="4089922565956168950">‏این ارتقا Bravebook را بازنشانی می‌کند و داده‌های کاربر کنونی را برمی‌دارد.</translation>
 <translation id="5184662919967270437">درحال به‌روزرسانی دستگاه</translation>
@@ -1395,6 +1406,8 @@
 <translation id="5906655207909574370">تقریباً به‌روز شده است! برای تمام کردن به‌روزرسانی، دستگاهتان را دوباره راه‌اندازی کنید.</translation>
 <translation id="5860494867054883682">درحال به‌روزرسانی دستگاه شما به کانال <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">کانال تغییر کرد. برای اعمال تغییرات دستگاه خود را مجدداً راه‌اندازی کنید.</translation>
+<translation id="7133578150266914903">سرپرست درحال عقب‌گرد کردن این دستگاه است (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">سرپرست این دستگاه را عقب‌گرد کرد. لطفاً فایل‌های مهم را ذخیره کنید، سپس دستگاه را بازراه‌اندازی کنید. همه داده‌های دستگاه حذف می‌شود.</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> شما به‌ روز است</translation>
 <translation id="3688526734140524629">تغییر کانال</translation>
 <translation id="6410328738210026208">تغییر کانال و پاکسازی</translation>
@@ -1495,7 +1508,6 @@
 <translation id="6902066522699286937">انتخاب صدا برای پیش‌نمایش</translation>
 <translation id="304747341537320566">موتورهای گفتار</translation>
 <translation id="1067291318998134776">‏Linux (بتا)</translation>
-<translation id="6963573437985514722">‏اجرای ابزارها، ویرایشگرها و محیط‌های یکپارچه توسعه نرم‌افزار (IDEs) ‏Linux در Bravebook.</translation>
 <translation id="6869910261738842136">‏حذف برنامه‌های Linux برای Bravebook</translation>
 <translation id="2295473777859797944">‏فروشگاه Brave Software Play</translation>
 <translation id="572155275267014074">‏تنظیمات Android</translation>
@@ -1536,6 +1548,8 @@
 <translation id="8639963783467694461">تنظیمات تکمیل خودکار</translation>
 <translation id="3431019676184503003">نشانی‌ها و روش‌های پرداخت</translation>
 <translation id="2512222046227390255">تکمیل خودکار فرم‌ها</translation>
+<translation id="2283340219607151381">ذخیره و تکمیل نشانی</translation>
+<translation id="1662550410081243962">ذخیره و تکمیل روش‌های پرداخت</translation>
 <translation id="2903493209154104877">آدرس‌ها</translation>
 <translation id="7764225426217299476">افزودن آدرس</translation>
 <translation id="5595485650161345191">ویرایش آدرس</translation>
@@ -1572,6 +1586,7 @@
 <translation id="7930294771522048157">روش‌های پرداخت ذخیره‌شده در اینجا نشان داده می‌شود</translation>
 <translation id="9124003689441359348">گذرواژه‌های ذخیره‌شده در اینجا ظاهر خواهند شد</translation>
 <translation id="4400367121200150367">سایت‌هایی که هرگز گذرواژه را ذخیره نمی‌کنند در اینجا نشان داده نخواهند شد</translation>
+<translation id="3098842761938485917">‏در <ph name="BEGIN_LINK"/>حساب Brave Software<ph name="END_LINK"/> خود گذرواژه‌های ذخیره‌شده را مشاهده و مدیریت کنید</translation>
 <translation id="5620655347161642930">صادر کردن گذرواژه‌ها...</translation>
 <translation id="3900966090527141178">صادر کردن گذرواژه‌ها</translation>
 <translation id="6914783257214138813">گذرواژه‌های شما برای همه افرادی که می‌توانند فایل صادرشده را ببینید، نمایان خواهند بود.</translation>
@@ -1962,6 +1977,7 @@
 <translation id="4534361985432360439">‏نشانی وب صفحه‌ای را که باز می‌کنید به Brave Software ارسال می‌کند</translation>
 <translation id="6545834809683560467">استفاده از یک سرویس پیش‌بینی برای کمک به تکمیل جستجوها و نشانی‌های وب تایپ شده در نوار آدرس یا کادر جستجوی راه‌انداز برنامه</translation>
 <translation id="7704317875155739195">تکمیل خودکار جستجوها و نشانی‌های وب</translation>
+<translation id="2000419248597011803">برخی کوکی‌ها و جستجوها را از نوار نشانی و جعبه جستجو به موتور جستجوی پیش‌فرض ارسال می‌کند</translation>
 <translation id="9038649477754266430">استفاده از یک سرویس پیش‌بینی برای بار کردن سریع‌تر صفحه‌ها</translation>
 <translation id="7981313251711023384">پیش‌بارگیری صفحه‌ها برای مرور و جستجوی سریع‌تر</translation>
 <translation id="2468205691404969808">از کوکی‌ها برای به خاطر سپردن اولویت‌های شما استفاده می‌کند؛ حتی اگر از آن صفحه‌ها بازدید نکنید</translation>
@@ -1972,6 +1988,8 @@
 <translation id="490074449735753175">استفاده از سرویس وب برای برطرف کردن خطاهای املایی</translation>
 <translation id="3523078749603005179">‏غلط‌گیر املای هوشمندتر با ارسال آنچه در مرورگر تایپ می‌کنید به Brave Software</translation>
 <translation id="2564653188463346023">غلط‌گیر املا بهبودیافته</translation>
+<translation id="7469406957790636836">برای روشن کردن این گزینه، ابتدا غلط‌گیر املا را در <ph name="BEGIN_LINK"/>زبان‌ها و ورودی<ph name="END_LINK"/> روشن کنید</translation>
+<translation id="8699566574894671540">برای روشن کردن این گزینه، ابتدا «بررسی املا هنگام تایپ» را در «منوی ویرایش» روشن کنید</translation>
 <translation id="9079153198295609735">‏ارسال خودکار آمار کاربرد و گزارش‌های خرابی به Brave Software</translation>
 <translation id="5941220456342415404">‏ارسال خودکار داده‌های تشخیصی و میزان استفاده به Brave Software</translation>
 <translation id="918192811481327695">‏کمک به بهبود ویژگی‌ها و عملکرد Brave</translation>
@@ -2221,6 +2239,7 @@
 <translation id="7548737591211512046">‏برای دریافت نشانک‌ها، سابقه، گذرواژه‌ها و تنظیمات دیگر در همه دستگاه‌هایتان، به سیستم وارد شوید. به‌صورت خودکار به سیستم سرویس‌های Brave Software خود نیز وارد می‌شوید.</translation>
 <translation id="2951604498031550705">‏تغییرات ایجادشده در نشانک‌ها، سابقه، گذرواژه‌ها و سایر تنظیمات شما با حساب Brave Software شما دیگر همگام‌سازی نخواهد شد. بااین‌وجود داده‌های قبلاً ذخیره‌شده در حساب Brave Software شما در آنجا می‌مانند و در <ph name="BEGIN_LINK"/>داشبورد Brave Software<ph name="END_LINK"/> می‌توانید آن‌ها را مدیریت کنید.</translation>
 <translation id="138229770216285283">‏با این کار از سیستم همه حساب‌های Brave Software خارج می‌شوید. تغییرات ایجادشده در نشانک‌ها، سابقه، گذرواژه‌ها و سایر تنظیمات، دیگر با حساب Brave Software شما همگام‌سازی نخواهد شد. بااین‌وجود، داده‌های کنونی در حساب Brave Software شما باقی خواهد ماند و می‌توانید در <ph name="BEGIN_LINK"/>داشبورد Brave Software<ph name="END_LINK"/> آن‌ها را مدیریت کنید.</translation>
+<translation id="3169352093514419465">‏با این کار از سیستم حساب Brave Software خود خارج می‌شوید. نشانک‌ها، سابقه، گذرواژه‌ها و سایر موارد دیگر همگام‌سازی نمی‌شوند.</translation>
 <translation id="8588866096426746242">نمایش آمار نمایه</translation>
 <translation id="5535941515421698170">همچنین داده‌های موجودتان را در این دستگاه پاک کنید</translation>
 <translation id="7243632151880336635">پاک کردن و خروج از سیستم</translation>
@@ -2242,13 +2261,16 @@
 <translation id="3259418918864581163">‏کارت‌های اعتباری و نشانی‌های مورداستفاده در Brave Software Pay.</translation>
 <translation id="4439834757335393741">‏روش‌های پرداخت و نشانی‌های مورداستفاده در Brave Software Pay.</translation>
 <translation id="3268451620468152448">برگه‌های باز</translation>
+<translation id="5241892180459725878">‏پیشنهادهای جستجوی Brave Software Drive</translation>
 <translation id="2120297377148151361">فعالیت و تعاملات</translation>
+<translation id="5833397272224757657">از محتوای سایت‌هایی که بازدید می‌کنید و فعالیت و تعاملات مرورگر برای شخصی‌سازی استفاده می‌کند</translation>
 <translation id="8135094938656535588">‏مدیریت داده‌های همگام‌سازی‌شده در داشبورد Brave Software</translation>
 <translation id="6596325263575161958">گزینه‌های رمزگذاری</translation>
 <translation id="2459230470861708651">‏رمزگذاری گذرواژه‌های همگام‌سازی‌شده با گذرواژه و نام کاربری Brave Software شما</translation>
 <translation id="6383051423892982287">رمزگذاری داده‌های همگام‌سازی‌شده با <ph name="BEGIN_LINK"/>عبارت عبور همگام‌سازی<ph name="END_LINK"/> خودتان</translation>
 <translation id="4817583816512767754">‏فقط فردی که عبارت عبور شما را دارد می‌تواند اطلاعات رمزگذاری‌شده‌تان را بخواند. این عبارت عبور به Brave Software ارسال یا در سرورهای آن ذخیره نمی‌شود. اگر عبارت عبورتان را فراموش کنید، باید همگام‌سازی را بازنشانی کنید. <ph name="BEGIN_LINK"/>بازنشانی همگام‌سازی<ph name="END_LINK"/></translation>
 <translation id="4300305918532693141">برای تغییر این تنظیم، <ph name="BEGIN_LINK"/>همگام‌سازی را بازنشانی کنید<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">برای روشن کردن این گزینه، <ph name="BEGIN_LINK"/>همگام‌سازی را بازنشانی کنید<ph name="END_LINK"/> تا عبارت عبور همگام‌سازی حذف شود</translation>
 <translation id="988978206646512040">عبارت عبور خالی مجاز نیست</translation>
 <translation id="1651008383952180276">باید همان عبارت عبور را دو بار وارد کنید</translation>
 <translation id="2136476978468204130">عبارت عبوری که وارد کردید نادرست است</translation>

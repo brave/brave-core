@@ -480,7 +480,12 @@
 <translation id="3190558889382726167">הסיסמה נשמרה</translation>
 <translation id="5079950360618752063">שימוש בסיסמה המוצעת</translation>
 <translation id="8084114998886531721">סיסמה שמורה</translation>
+<translation id="5614553682702429503">לשמור את הסיסמה?</translation>
 <translation id="1405476660552109915">האם ברצונך ש-<ph name="PASSWORD_MANAGER_BRAND"/> ישמור את חשבונך לאתר הזה?</translation>
+<translation id="8756969031206844760">לעדכן את הסיסמה?</translation>
+<translation id="8230134520748321204">האם לשמור את הסיסמה של <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">האם לעדכן את הסיסמה של <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">‏סיסמאות נשמרות בחשבון Brave Software כדי לאפשר לך להשתמש בהן בכל המכשירים</translation>
 <translation id="8286036467436129157">כניסה</translation>
 <translation id="8009225694047762179">ניהול סיסמאות</translation>
 <translation id="9135262959729602463">‏כדי שהסיסמאות שלך יהיו זמינות בכל המכשירים, צריך להיכנס ל-Brave.</translation>
@@ -547,16 +552,18 @@
 <translation id="7400418766976504921">כתובת אתר</translation>
 <translation id="8730621377337864115">בוצע</translation>
 <translation id="4416582610654027550">יש להקליד כתובת אתר חוקית</translation>
+<translation id="2806891468525657116">קיצור הדרך כבר קיים</translation>
+<translation id="394183848452296464">לא ניתן ליצור קיצור דרך</translation>
 <translation id="7109543803214225826">קיצור הדרך הוסר</translation>
 <translation id="8017679124341497925">קיצור הדרך עבר עריכה</translation>
 <translation id="1174073918202301297">קיצור הדרך נוסף</translation>
 <translation id="2926085873880284723">שחזור קיצורי דרך בברירת מחדל</translation>
-<translation id="7413455776853560343">התאמה אישית של הרקע</translation>
+<translation id="2942581856830209953">התאמה אישית של הדף הזה</translation>
 <translation id="2187700606737131818">‏תמונות Brave Software</translation>
 <translation id="5801450813341024983">‏רקעים של Brave</translation>
 <translation id="2800760947029405028">העלאת תמונה</translation>
 <translation id="8342861492835240085">בחירת אוסף</translation>
-<translation id="6017211263306518045">‏בחירת אלבום של תמונות Brave Software</translation>
+<translation id="1734885380062278369">‏בחירת אלבום בתמונות Brave Software</translation>
 <translation id="3132996321662585180">רענון מדי יום</translation>
 <translation id="9062065967472365419">הפתיעו אותי</translation>
 <translation id="7287411021188441799">שחזור רקע ברירת מחדל</translation>
@@ -566,6 +573,8 @@
 <translation id="3617891479562106823">רקעים אינם זמינים. צריך לנסות שוב מאוחר יותר.</translation>
 <translation id="8391712576156218334">התמונה לא זמינה. צריך לנסות שוב מאוחר יותר.</translation>
 <translation id="1564414980088536597">לא ניתן להשתמש בתמונה הזו. צריך לבחור תמונה אחרת.</translation>
+<translation id="4628948037717959914">תמונה</translation>
+<translation id="8033827949643255796">מסומן</translation>
 <translation id="5376169624176189338">לחץ כדי לחזור, לחץ והחזק כדי לראות את ההיסטוריה</translation>
 <translation id="9103868373786083162">לחץ כדי לחזור אחורה, תפריט הקשר כדי לראות היסטוריה</translation>
 <translation id="2961695502793809356">לחץ כדי לעבור קדימה, לחץ והחזק כדי לראות את ההיסטוריה</translation>
@@ -839,6 +848,7 @@
 <translation id="2532167245710864499">‏שליחה של פרטי המערכת ונתוני שימוש אל Brave Software תשפר את Brave ואת האבטחה שלו</translation>
 <translation id="2709453993673701466">רוצה לנהל את הסנכרון וההתאמה האישית לפני הפעלתם? אפשר לעשות זאת ב<ph name="BEGIN_LINK"/>הגדרות<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">‏מתי שרוצים אפשר לקבוע דרך <ph name="BEGIN_LINK"/>ההגדרות<ph name="END_LINK"/> את סוגי המידע ש-Brave Software אוספת.</translation>
+<translation id="6035247993547372482">‏Brave Software עשויה להשתמש בתוכן מאתרים שאליהם נכנסת, ובפעילות הדפדפן והאינטראקציות שלך, כדי להתאים אישית את Brave ושירותים אחרים של Brave Software - כמו Translate, חיפוש ומודעות. אפשר להתאים אישית את התכונה הזו ב'הגדרות'.</translation>
 <translation id="741204030948306876">כן, אני רוצה</translation>
 <translation id="8428213095426709021">הגדרות</translation>
 <translation id="2497852260688568942">מנהל המערכת שלך השבית את הסנכרון</translation>
@@ -937,6 +947,7 @@
 <translation id="8363142353806532503">לא ניתן להשתמש במיקרופון בדף זה</translation>
 <translation id="2762441749940182211">לא ניתן להשתמש במצלמה בדף זה</translation>
 <translation id="5074318175948309511">ייתכן שיהיה צורך לטעון מחדש דף זה על מנת שההגדרות החדשות ייכנסו לתוקף.</translation>
+<translation id="1322046419516468189">הצגה וניהול של סיסמאות שמורות במסגרת <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">‏חשבון Brave Software</translation>
 <translation id="3785727820640310185">סיסמאות שמורות לאתר הזה</translation>
 <translation id="3404065873681873169">לא נשמרו סיסמאות לאתר הזה</translation>
@@ -1387,7 +1398,7 @@
 <translation id="6647838571840953560">עכשיו בערוץ <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">קושחה</translation>
 <translation id="5895138241574237353">הפעל מחדש</translation>
-<translation id="7409233648990234464">‏הפעל מחדש ובצע Powerwash</translation>
+<translation id="4297219207642690536">הפעלה מחדש ואתחול</translation>
 <translation id="4716483597559580346">‏ביצוע Powerwash להגברת האבטחה</translation>
 <translation id="4089922565956168950">‏השדרוג הזה מאפס את ה-Bravebook ומסיר את נתוני המשתמש הנוכחיים.</translation>
 <translation id="5184662919967270437">מעדכן את המכשיר שלך</translation>
@@ -1395,6 +1406,8 @@
 <translation id="5906655207909574370">העדכון כמעט הושלם! הפעל מחדש את המכשיר כדי לסיים את העדכון.</translation>
 <translation id="5860494867054883682">מעדכן את המכשיר שלך לערוץ <ph name="CHANNEL_NAME"/> ‏(<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">הערוץ שונה. הפעל מחדש את המכשיר להחלת השינויים.</translation>
+<translation id="7133578150266914903">מנהל המערכת שלך מחזיר את המכשיר הזה למצב קודם (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">מנהל המערכת שלך החזיר את המכשיר הזה למצב קודם. צריך לשמור קבצים חשובים ולהפעיל מחדש. כל הנתונים במכשיר זה יימחקו.</translation>
 <translation id="1871615898038944731">ה-<ph name="DEVICE_TYPE"/> שלך מעודכן</translation>
 <translation id="3688526734140524629">שנה ערוץ</translation>
 <translation id="6410328738210026208">‏החלף ערוץ ובצע Powerwash</translation>
@@ -1495,7 +1508,6 @@
 <translation id="6902066522699286937">קול להשמעה מקדימה</translation>
 <translation id="304747341537320566">מנועי דיבור</translation>
 <translation id="1067291318998134776">‏Linux (בטא)</translation>
-<translation id="6963573437985514722">‏הפעלת כלים, עורכים וסביבות פיתוח משולבות (IDE) של Linux ב-Bravebook.</translation>
 <translation id="6869910261738842136">‏הסרת אפליקציות Linux מה-Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">‏הגדרות Android</translation>
@@ -1536,6 +1548,8 @@
 <translation id="8639963783467694461">הגדרות מילוי אוטומטי</translation>
 <translation id="3431019676184503003">כתובות ואמצעי תשלום</translation>
 <translation id="2512222046227390255">מילוי אוטומטי של טפסים</translation>
+<translation id="2283340219607151381">שמירה ומילוי של כתובות</translation>
+<translation id="1662550410081243962">שמירה ומילוי של אמצעי תשלום</translation>
 <translation id="2903493209154104877">כתובות</translation>
 <translation id="7764225426217299476">הוסף כתובת</translation>
 <translation id="5595485650161345191">ערוך כתובת</translation>
@@ -1572,6 +1586,7 @@
 <translation id="7930294771522048157">אמצעי תשלום שנשמרו יופיעו כאן</translation>
 <translation id="9124003689441359348">כאן יופיעו הסיסמאות ששמרת</translation>
 <translation id="4400367121200150367">כאן יופיעו האתרים שאף פעם אינם שומרים סיסמאות</translation>
+<translation id="3098842761938485917">‏הצגה וניהול של סיסמאות שמורות ב<ph name="BEGIN_LINK"/>חשבון Brave Software<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">ייצוא סיסמאות...</translation>
 <translation id="3900966090527141178">ייצוא סיסמאות</translation>
 <translation id="6914783257214138813">כל מי שיוכל לגשת אל הקובץ המיוצא יוכל לראות את הסיסמאות שלך.</translation>
@@ -1962,6 +1977,7 @@
 <translation id="4534361985432360439">‏שליחת כתובת האינטרנט של הדף שאליו ניסית להגיע אל Brave Software</translation>
 <translation id="6545834809683560467">השתמש בשירות חיזויים כדי להשלים חיפושים וכתובות אתרים שאתה מזין בסרגל הכתובות או בתיבת החיפוש של מפעיל היישומים</translation>
 <translation id="7704317875155739195">השלמה אוטומטית של חיפושים וכתובות אתרים</translation>
+<translation id="2000419248597011803">‏שליחה של חלק מקובצי ה-Cookie והחיפושים מסרגל הכתובות ומתיבת החיפוש אל מנוע החיפוש שהוגדר כברירת מחדל</translation>
 <translation id="9038649477754266430">השתמש בשירות חיזוי כדי לטעון דפים מהר יותר</translation>
 <translation id="7981313251711023384">טעינה מראש של דפים כדי לאפשר גלישה וחיפוש מהירים יותר</translation>
 <translation id="2468205691404969808">‏שימוש בקובצי cookie כדי לשמור את ההעדפות שלך, גם אם לא נכנסת אל הדפים האלה</translation>
@@ -1972,6 +1988,8 @@
 <translation id="490074449735753175">השתמש בשירות אינטרנט כדי לסייע בפתרון שגיאות איות</translation>
 <translation id="3523078749603005179">‏בדיקת איות חכמה יותר המתבצעת על-ידי שליחת הטקסט שאתה מקליד בדפדפן אל Brave Software</translation>
 <translation id="2564653188463346023">בדיקת איות משופרת</translation>
+<translation id="7469406957790636836">כדי להפעיל את האפשרות הזאת, צריך להפעיל את בדיקת האיות דרך <ph name="BEGIN_LINK"/>שפות וקלט<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">כדי להפעיל את האפשרות הזאת, צריך לבחור 'בדיקת איות בעת ההקלדה' בתפריט 'עריכה'.</translation>
 <translation id="9079153198295609735">‏שלח ל-Brave Software דוחות קריסה וסטטיסטיקת שימוש באופן אוטומטי</translation>
 <translation id="5941220456342415404">‏שליחה אוטומטית של נתוני אבחון ושימוש אל Brave Software</translation>
 <translation id="918192811481327695">‏עזרה בשיפור התכונות והביצועים של Brave</translation>
@@ -2221,6 +2239,7 @@
 <translation id="7548737591211512046">‏היכנס כדי לקבל גישה לסימניות, להיסטוריה, לסיסמאות ולהגדרות נוספות בכל המכשירים שברשותך. בנוסף, תחובר אוטומטית לשירותי Brave Software.</translation>
 <translation id="2951604498031550705">‏שינויים בסימניות, בהיסטוריה, בסיסמאות ובהגדרות אחרות לא יסונכרנו עוד עם חשבון Brave Software שלך. עם זאת, הנתונים הקיימים עדיין יישארו בחשבון Brave Software ותוכל לנהל אותם ב<ph name="BEGIN_LINK"/>מרכז השליטה של Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">‏פעולה זו תוציא אותך מחשבונות Brave Software שלך. שינויים בסימניות, בהיסטוריה, בסיסמאות ובהגדרות נוספות לא יסונכרנו יותר עם חשבון Brave Software שלך. עם זאת, הנתונים הקיימים עדיין יאוחסנו בחשבון Brave Software שלך ואפשר לנהל אותם ב<ph name="BEGIN_LINK"/>מרכז השליטה של Brave Software<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">‏הפעולה הזאת תוציא אותך מחשבונות Brave Software שלך. הסימניות, ההיסטוריה, הסיסמאות ופרטים אחרים יפסיקו לעבור סנכרון.</translation>
 <translation id="8588866096426746242">הצגת נתונים סטטיסטיים של פרופיל</translation>
 <translation id="5535941515421698170">הסר גם את הנתונים הקיימים שלך ממכשיר זה</translation>
 <translation id="7243632151880336635">נקה וצא</translation>
@@ -2242,13 +2261,16 @@
 <translation id="3259418918864581163">‏כרטיסי אשראי וכתובות דרך Brave Software Pay.</translation>
 <translation id="4439834757335393741">‏אמצעי תשלום וכתובות שנשמרו ב-Brave Software Pay.</translation>
 <translation id="3268451620468152448">כרטיסיות פתוחות</translation>
+<translation id="5241892180459725878">‏הצעות לחיפושים של Brave Software Drive</translation>
 <translation id="2120297377148151361">פעילות ואינטראקציות</translation>
+<translation id="5833397272224757657">התוכן מאתרים שנכנסת אליהם, פעילות הדפדפן והאינטראקציות שלך ישמשו לצורך התאמה אישית</translation>
 <translation id="8135094938656535588">‏ניהול נתונים מסוכרנים במרכז השליטה של Brave Software</translation>
 <translation id="6596325263575161958">אפשרויות הצפנה</translation>
 <translation id="2459230470861708651">‏הצפן סיסמאות מסונכרנות עם שם המשתמש והסיסמה שלך ב-Brave Software</translation>
 <translation id="6383051423892982287">הצפן נתונים מסונכרנים בעזרת <ph name="BEGIN_LINK"/>ביטוי סיסמה משלך לסנכרון<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">‏רק מי שיודע את ביטוי הסיסמה יכול לקרוא את הנתונים המוצפנים. ביטוי הסיסמה לא נשלח אל Brave Software והיא אינה מאחסנת אותו. אם תשכח את ביטוי הסיסמה או אם תרצה לשנות את ההגדרה הזו, יהיה עליך <ph name="BEGIN_LINK"/>לאפס את הסנכרון<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141"><ph name="BEGIN_LINK"/>אפס את הסנכרון<ph name="END_LINK"/> כדי לשנות את ההגדרה הזו.</translation>
+<translation id="3873315167136380065">כדי להפעיל את האפשרות הזאת, צריך <ph name="BEGIN_LINK"/>לאפס את הסנכרון<ph name="END_LINK"/> כדי להסיר את ביטוי הסיסמה של הסנכרון</translation>
 <translation id="988978206646512040">השדה של ביטוי הסיסמה לא יכול להישאר ריק</translation>
 <translation id="1651008383952180276">עליך להזין אותו ביטוי סיסמה פעמיים</translation>
 <translation id="2136476978468204130">הזנת ביטוי סיסמה שגוי</translation>

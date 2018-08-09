@@ -481,7 +481,12 @@
 <translation id="3190558889382726167">パスワードを保存しました</translation>
 <translation id="5079950360618752063">提案されたパスワードを使用</translation>
 <translation id="8084114998886531721">保存したパスワード</translation>
+<translation id="5614553682702429503">パスワードを保存しますか？</translation>
 <translation id="1405476660552109915"><ph name="PASSWORD_MANAGER_BRAND"/> でこのサイトのアカウントを保存しますか？</translation>
+<translation id="8756969031206844760">パスワードを更新しますか？</translation>
+<translation id="8230134520748321204"><ph name="ORIGIN"/> のパスワードを保存しますか？</translation>
+<translation id="9040661932550800571"><ph name="ORIGIN"/> のパスワードを更新しますか？</translation>
+<translation id="8284000761603848448">パスワードは Brave Software アカウントに保存されるため、どの端末からでも使用できます</translation>
 <translation id="8286036467436129157">ログイン</translation>
 <translation id="8009225694047762179">パスワードを管理</translation>
 <translation id="9135262959729602463">お使いのどの端末でも同じパスワードを使用するには、Brave にログインします。</translation>
@@ -548,16 +553,18 @@
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">完了</translation>
 <translation id="4416582610654027550">有効な URL を入力してください</translation>
+<translation id="2806891468525657116">ショートカットがすでに存在します</translation>
+<translation id="394183848452296464">ショートカットを作成できません</translation>
 <translation id="7109543803214225826">ショートカットを削除しました</translation>
 <translation id="8017679124341497925">ショートカットを編集しました</translation>
 <translation id="1174073918202301297">ショートカットを追加しました</translation>
 <translation id="2926085873880284723">デフォルトのショートカットに戻す</translation>
-<translation id="7413455776853560343">背景のカスタマイズ</translation>
+<translation id="2942581856830209953">このページをカスタマイズ</translation>
 <translation id="2187700606737131818">Brave Software フォト</translation>
 <translation id="5801450813341024983">Brave の背景</translation>
 <translation id="2800760947029405028">画像をアップロード</translation>
 <translation id="8342861492835240085">コレクションを選択</translation>
-<translation id="6017211263306518045">Brave Software フォトアルバムを選択</translation>
+<translation id="1734885380062278369">Brave Software フォトアルバムを選択</translation>
 <translation id="3132996321662585180">毎日更新する</translation>
 <translation id="9062065967472365419">おまかせ</translation>
 <translation id="7287411021188441799">デフォルトの背景に戻す</translation>
@@ -567,6 +574,8 @@
 <translation id="3617891479562106823">背景を利用できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="8391712576156218334">画像を利用できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="1564414980088536597">この画像は使用できません。別の画像を選択してください。</translation>
+<translation id="4628948037717959914">写真</translation>
+<translation id="8033827949643255796">選択しました</translation>
 <translation id="5376169624176189338">クリックすると前に戻ります。押したまま待つと履歴が表示されます。</translation>
 <translation id="9103868373786083162">ボタンを押して前に戻ります。履歴を表示するにはコンテキスト メニューを選択します</translation>
 <translation id="2961695502793809356">クリックすると次に進みます。押したまま待つと履歴が表示されます。</translation>
@@ -840,6 +849,7 @@
 <translation id="2532167245710864499">システムと使用状況に関する情報が Brave Software に送信され、Brave とそのセキュリティの向上に役立てられます</translation>
 <translation id="2709453993673701466">同期とパーソナライズを有効にする前に管理するには、[<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] に移動します。</translation>
 <translation id="2668128414154024727">Brave Software に送信する情報は、いつでも [<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] ページでカスタマイズできます。</translation>
+<translation id="6035247993547372482">Brave Software は、Brave や他の Brave Software サービス（翻訳、検索、広告など）をカスタマイズする目的で、ユーザーがアクセスしたサイトのコンテンツと、ブラウザのアクティビティおよび操作を使用することがあります。これは [設定] で変更できます。</translation>
 <translation id="741204030948306876">有効にする</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="2497852260688568942">同期は管理者により無効にされています</translation>
@@ -938,6 +948,7 @@
 <translation id="8363142353806532503">マイクがブロックされています</translation>
 <translation id="2762441749940182211">カメラがブロックされています</translation>
 <translation id="5074318175948309511">新しい設定を有効にするには、ページの再読み込みが必要な可能性があります。</translation>
+<translation id="1322046419516468189"><ph name="SAVED_PASSWORDS_STORE"/> での保存パスワードの表示と管理</translation>
 <translation id="5713644099811900409">Brave Software アカウントを使用</translation>
 <translation id="3785727820640310185">このサイト用に保存されているパスワード</translation>
 <translation id="3404065873681873169">このサイト用に保存されているパスワードはありません</translation>
@@ -1388,7 +1399,7 @@
 <translation id="6647838571840953560">現在のチャンネルは <ph name="CHANNEL_NAME"/> です</translation>
 <translation id="2972557485845626008">ファームウェア</translation>
 <translation id="5895138241574237353">再起動</translation>
-<translation id="7409233648990234464">再起動と Powerwash</translation>
+<translation id="4297219207642690536">再起動してリセット</translation>
 <translation id="4716483597559580346">セキュリティ強化に向けて Powerwash を実行する</translation>
 <translation id="4089922565956168950">このアップグレードを行うと、Bravebook がリセットされ、現在のユーザーデータは削除されます。</translation>
 <translation id="5184662919967270437">端末を更新しています</translation>
@@ -1396,6 +1407,8 @@
 <translation id="5906655207909574370">端末を再起動して更新を完了してください。</translation>
 <translation id="5860494867054883682">端末を <ph name="CHANNEL_NAME"/> チャンネルに更新しています（<ph name="PROGRESS_PERCENT"/>）</translation>
 <translation id="5877064549588274448">チャンネルが変更されました。変更を適用するには、デバイスを再起動してください。</translation>
+<translation id="7133578150266914903">管理者がこの端末をロールバックしています（<ph name="PROGRESS_PERCENT"/>）</translation>
+<translation id="9013707997379828817">管理者がこの端末をロールバックしました。重要なファイルを保存してから、再起動してください。端末上のデータはすべて削除されます。</translation>
 <translation id="1871615898038944731">お使いの <ph name="DEVICE_TYPE"/> は最新です</translation>
 <translation id="3688526734140524629">チャンネルを変更</translation>
 <translation id="6410328738210026208">チャンネルを変更して Powerwash</translation>
@@ -1496,7 +1509,6 @@
 <translation id="6902066522699286937">プレビューする音声</translation>
 <translation id="304747341537320566">読み上げエンジン</translation>
 <translation id="1067291318998134776">Linux（ベータ版）</translation>
-<translation id="6963573437985514722">Bravebook で Linux のツール、エディタ、IDE を実行します。</translation>
 <translation id="6869910261738842136">Bravebook から Linux アプリを削除する</translation>
 <translation id="2295473777859797944">Brave Software Play ストア</translation>
 <translation id="572155275267014074">Android 設定</translation>
@@ -1537,6 +1549,8 @@
 <translation id="8639963783467694461">自動入力の設定</translation>
 <translation id="3431019676184503003">住所とお支払い方法</translation>
 <translation id="2512222046227390255">フォームへの自動入力</translation>
+<translation id="2283340219607151381">住所の保存と入力</translation>
+<translation id="1662550410081243962">お支払い方法の保存と入力</translation>
 <translation id="2903493209154104877">住所</translation>
 <translation id="7764225426217299476">住所を追加</translation>
 <translation id="5595485650161345191">住所の編集</translation>
@@ -1573,6 +1587,7 @@
 <translation id="7930294771522048157">保存したお支払い方法がここに表示されます</translation>
 <translation id="9124003689441359348">保存したパスワードがここに表示されます</translation>
 <translation id="4400367121200150367">パスワードを保存していないサイトがここに表示されます</translation>
+<translation id="3098842761938485917"><ph name="BEGIN_LINK"/>Brave Software アカウント<ph name="END_LINK"/>での保存パスワードの表示と管理</translation>
 <translation id="5620655347161642930">パスワードをエクスポート...</translation>
 <translation id="3900966090527141178">パスワードのエクスポート</translation>
 <translation id="6914783257214138813">エクスポートしたファイルを閲覧できるユーザーにパスワードを知られてしまう可能性があります。</translation>
@@ -1963,6 +1978,7 @@
 <translation id="4534361985432360439">アクセスしようとしているページのウェブアドレスを Brave Software に送信します</translation>
 <translation id="6545834809683560467">予測サービスを使用して、アドレスバーまたはアプリ ランチャーの検索ボックスに入力した検索キーワードや URL を補完する</translation>
 <translation id="7704317875155739195">検索語句や URL をオートコンプリートする</translation>
+<translation id="2000419248597011803">Cookie と、アドレスバーや検索ボックスに入力した検索語句を既定の検索エンジンに送信します</translation>
 <translation id="9038649477754266430">予測サービスを使用してページをより迅速に読み込む</translation>
 <translation id="7981313251711023384">ページをプリロードして閲覧と検索をすばやく行えるようにする</translation>
 <translation id="2468205691404969808">Cookie を使って設定を保存する（これらのページにアクセスしない場合も Cookie が保持されます）</translation>
@@ -1973,6 +1989,8 @@
 <translation id="490074449735753175">ウェブ サービスを使用してスペル ミスの解決を支援する</translation>
 <translation id="3523078749603005179">ユーザーがブラウザに入力した内容を Brave Software に送信し、高度なスペルチェックを行います</translation>
 <translation id="2564653188463346023">拡張スペルチェック</translation>
+<translation id="7469406957790636836">この機能をオンにするには、まず [<ph name="BEGIN_LINK"/>言語と入力<ph name="END_LINK"/>] でスペルチェックを有効にします</translation>
+<translation id="8699566574894671540">この機能をオンにするには、まず [編集] メニューの [入力中にスペルチェック] を選択します</translation>
 <translation id="9079153198295609735">使用統計データと障害レポートを Brave Software に自動送信する</translation>
 <translation id="5941220456342415404">診断と使用状況のデータを Brave Software に自動送信する</translation>
 <translation id="918192811481327695">Brave の機能と動作の改善に協力する</translation>
@@ -2222,6 +2240,7 @@
 <translation id="7548737591211512046">ブックマーク、履歴、パスワードなどの設定をすべてのデバイスで使用するにはログインしてください。ログインすると、利用している Brave Software サービスにも自動的にログインすることになります。</translation>
 <translation id="2951604498031550705">ブックマーク、履歴、パスワードなどの設定に行った変更は Brave Software アカウントと同期されなくなります。ただし、既存のデータは Brave Software アカウントに保存され、<ph name="BEGIN_LINK"/>Brave Software ダッシュボード<ph name="END_LINK"/>で管理できます。</translation>
 <translation id="138229770216285283">この操作を行うと Brave Software アカウントからログアウトします。ブックマーク、履歴、パスワードなどの設定に行った変更は Brave Software アカウントと同期されなくなります。ただし、既存のデータは Brave Software アカウントに保存されたまま残り、<ph name="BEGIN_LINK"/>Brave Software ダッシュボード<ph name="END_LINK"/>で管理できます。</translation>
+<translation id="3169352093514419465">この操作を行うと Brave Software アカウントからログアウトし、ブックマーク、履歴、パスワードなどの設定は同期されなくなります。</translation>
 <translation id="8588866096426746242">プロフィール統計情報を表示</translation>
 <translation id="5535941515421698170">この端末から既存のデータも削除する</translation>
 <translation id="7243632151880336635">削除してログアウト</translation>
@@ -2243,13 +2262,16 @@
 <translation id="3259418918864581163">Brave Software Pay のクレジット カードと住所</translation>
 <translation id="4439834757335393741">Brave Software Pay のお支払い方法と住所。</translation>
 <translation id="3268451620468152448">開いているタブ</translation>
+<translation id="5241892180459725878">Brave Software ドライブの検索候補</translation>
 <translation id="2120297377148151361">アクティビティと操作</translation>
+<translation id="5833397272224757657">ユーザーがアクセスしたサイトのコンテンツと、ブラウザのアクティビティおよび操作をカスタマイズに使用します</translation>
 <translation id="8135094938656535588">Brave Software ダッシュボードで同期データを管理</translation>
 <translation id="6596325263575161958">暗号化オプション</translation>
 <translation id="2459230470861708651">Brave Software のユーザー名とパスワードを使用して同期パスワードを暗号化する</translation>
 <translation id="6383051423892982287">同期データを<ph name="BEGIN_LINK"/>同期パスフレーズ<ph name="END_LINK"/>で暗号化する</translation>
 <translation id="4817583816512767754">パスフレーズを知っているユーザーだけが暗号化データを読み取ることができます。パスフレーズが Brave Software に送信されたり Brave Software で保存されたりすることはありません。パスフレーズを忘れた場合や、この設定を変更する場合は、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>する必要があります。</translation>
 <translation id="4300305918532693141">この設定を変更するには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>します。</translation>
+<translation id="3873315167136380065">この設定をオンにするには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>して同期パスフレーズを削除します</translation>
 <translation id="988978206646512040">パスフレーズは必ず指定してください</translation>
 <translation id="1651008383952180276">同じパスフレーズを 2 回入力する必要があります</translation>
 <translation id="2136476978468204130">入力したパスフレーズが正しくありません</translation>

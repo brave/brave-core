@@ -290,6 +290,7 @@
 <translation id="6398765197997659313">Thoát khỏi chế độ toàn màn hình</translation>
 <translation id="8559694214572302298">Trình giải mã hình ảnh</translation>
 <translation id="8191453843330043793">Trình phân giải proxy V8</translation>
+<translation id="6185617499004995178">Trình xác thực IPP CUPS</translation>
 <translation id="7171242884588191792">Tiện ích tệp của Brave</translation>
 <translation id="3061707000357573562">Dịch vụ vá lỗi</translation>
 <translation id="3580923162759633716">Dịch vụ lập hồ sơ</translation>
@@ -480,7 +481,12 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3190558889382726167">Đã lưu mật khẩu</translation>
 <translation id="5079950360618752063">Sử dụng mật khẩu đề xuất</translation>
 <translation id="8084114998886531721">Mật khẩu đã lưu</translation>
+<translation id="5614553682702429503">Bạn có muốn lưu mật khẩu không?</translation>
 <translation id="1405476660552109915">Bạn có muốn <ph name="PASSWORD_MANAGER_BRAND"/> lưu tài khoản của mình cho trang web này không?</translation>
+<translation id="8756969031206844760">Bạn có muốn cập nhật mật khẩu không?</translation>
+<translation id="8230134520748321204">Bạn có muốn lưu mật khẩu cho <ph name="ORIGIN"/> không?</translation>
+<translation id="9040661932550800571">Bạn có muốn cập nhật mật khẩu cho <ph name="ORIGIN"/> không?</translation>
+<translation id="8284000761603848448">Các mật khẩu được lưu trong Tài khoản Brave Software của bạn, vì vậy, bạn có thể sử dụng các mật khẩu đó trên bất cứ thiết bị nào</translation>
 <translation id="8286036467436129157">Đăng nhập</translation>
 <translation id="8009225694047762179">Quản lý mật khẩu</translation>
 <translation id="9135262959729602463">Để lấy các mật khẩu của bạn trên tất cả thiết bị, hãy đăng nhập vào Brave.</translation>
@@ -547,16 +553,18 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Hoàn tất</translation>
 <translation id="4416582610654027550">Nhập một URL hợp lệ</translation>
+<translation id="2806891468525657116">Lối tắt đã tồn tại</translation>
+<translation id="394183848452296464">Không thể tạo lối tắt</translation>
 <translation id="7109543803214225826">Đã xóa phím tắt</translation>
 <translation id="8017679124341497925">Đã chỉnh sửa phím tắt</translation>
 <translation id="1174073918202301297">Đã thêm phím tắt</translation>
 <translation id="2926085873880284723">Khôi phục các phím tắt mặc định</translation>
-<translation id="7413455776853560343">Tùy chỉnh nền</translation>
+<translation id="2942581856830209953">Tùy chỉnh trang này</translation>
 <translation id="2187700606737131818">Brave Software Photos</translation>
 <translation id="5801450813341024983">Nền trong Brave</translation>
 <translation id="2800760947029405028">Tải ảnh lên</translation>
 <translation id="8342861492835240085">Chọn một bộ sưu tập</translation>
-<translation id="6017211263306518045">Chọn một album trên Brave Software Photos</translation>
+<translation id="1734885380062278369">Chọn một album trên Brave Software Photos</translation>
 <translation id="3132996321662585180">Làm mới hàng ngày</translation>
 <translation id="9062065967472365419">Khiến tôi ngạc nhiên</translation>
 <translation id="7287411021188441799">Khôi phục nền mặc định</translation>
@@ -566,6 +574,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3617891479562106823">Không có nền. Hãy thử lại sau.</translation>
 <translation id="8391712576156218334">Không có hình ảnh. Hãy thử lại sau.</translation>
 <translation id="1564414980088536597">Không thể sử dụng hình ảnh này. Hãy chọn một hình ảnh khác.</translation>
+<translation id="4628948037717959914">Ảnh</translation>
+<translation id="8033827949643255796">đã chọn</translation>
 <translation id="5376169624176189338">Nhấp vào để quay lại, giữ để xem lịch sử</translation>
 <translation id="9103868373786083162">Nhấn để quay lại, nhấn menu ngữ cảnh để xem lịch sử</translation>
 <translation id="2961695502793809356">Nhấp vào để tiến, giữ để xem lịch sử</translation>
@@ -578,6 +588,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7554791636758816595">Tab mới</translation>
 <translation id="3915280005470252504">Tìm kiếm bằng giọng nói</translation>
 <translation id="3153862085237805241">Lưu thẻ</translation>
+<translation id="4961000125720751066">Lưu thẻ của bạn ở cùng một nơi</translation>
 <translation id="2473195200299095979">Dịch trang này</translation>
 <translation id="5408750356094797285">Thu phóng: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Trang này được thu phóng bằng tiện ích "<ph name="NAME"/>"</translation>
@@ -661,6 +672,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4514610446763173167">Bật/tắt video để phát hoặc tạm dừng</translation>
 <translation id="2631120081682787498">Bạn có chắc chắn muốn đóng tab này không?</translation>
 <translation id="111844081046043029">Bạn có chắc chắn muốn thoát khỏi trang này không?</translation>
+<translation id="245661998428026871">Video ở chế độ hình trong hình sẽ dừng phát.</translation>
 <translation id="2677748264148917807">Rời khỏi</translation>
 <translation id="2520644704042891903">Đang chờ cổng kết nối hiện có...</translation>
 <translation id="1493892686965953381">Đang đợi <ph name="LOAD_STATE_PARAMETER"/>...</translation>
@@ -837,6 +849,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2532167245710864499">Cải thiện Brave và tăng cường bảo mật bằng cách gửi thông tin sử dụng và thông tin về hệ thống cho Brave Software</translation>
 <translation id="2709453993673701466">Bạn muốn quản lý tính năng đồng bộ hóa và cá nhân hóa trước khi bật? Hãy truy cập vào <ph name="BEGIN_LINK"/>Cài đặt<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Bạn có thể tùy chỉnh thông tin mà Brave Software thu thập trong phần <ph name="BEGIN_LINK"/>Cài đặt<ph name="END_LINK"/> bất cứ lúc nào.</translation>
+<translation id="6035247993547372482">Brave Software có thể sử dụng nội dung trên các trang web bạn truy cập, cùng với các tương tác và hoạt động trên trình duyệt để cá nhân hóa Brave cũng như các dịch vụ khác của Brave Software, chẳng hạn như Dịch, Tìm kiếm và quảng cáo. Bạn có thể tùy chỉnh phần này trong mục Cài đặt.</translation>
 <translation id="741204030948306876">Có, tôi đồng ý</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
 <translation id="2497852260688568942">Đồng bộ hóa bị quản trị viên của bạn tắt</translation>
@@ -935,6 +948,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8363142353806532503">Micrô bị chặn</translation>
 <translation id="2762441749940182211">Máy ảnh bị chặn</translation>
 <translation id="5074318175948309511">Có thể cần phải tải lại trang này trước khi cài đặt mới có hiệu lực.</translation>
+<translation id="1322046419516468189">Xem và quản lý mật khẩu đã lưu trong <ph name="SAVED_PASSWORDS_STORE"/> của bạn</translation>
 <translation id="5713644099811900409">Tài khoản Brave Software</translation>
 <translation id="3785727820640310185">Đã lưu mật khẩu cho trang web này</translation>
 <translation id="3404065873681873169">Không có mật khẩu nào được lưu cho trang web này</translation>
@@ -1033,14 +1047,18 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3202173864863109533">Âm thanh của tab này hiện bị tắt.</translation>
 <translation id="5562781907504170924">Tab này được kết nối với thiết bị Bluetooth.</translation>
 <translation id="5884474295213649357">Tab này được kết nối với một thiết bị USB.</translation>
+<translation id="8466417995783206254">Tab này đang phát video ở chế độ hình trong hình.</translation>
+<translation id="6235700927623181151">Tab này đang chia sẻ nội dung trên màn hình.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Đang ghi âm hoặc quay phim</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Đã chia sẻ nội dung tab</translation>
+<translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Đang phát video ở chế độ hình trong hình</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/> - Phát âm thanh</translation>
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> - Đã tắt âm thanh</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> - Đã kết nối thiết bị Bluetooth</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> - Đã kết nối thiết bị USB</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> - Lỗi mạng</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> - Đã bị lỗi</translation>
+<translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - Đã chia sẻ nội dung trên màn hình</translation>
 <translation id="973473557718930265">Thoát</translation>
 <translation id="3590194807845837023">Mở khóa cấu hình và chạy lại</translation>
 <translation id="7624337243375417909">caps lock tắt</translation>
@@ -1095,6 +1113,10 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="874689135111202667">{0,plural, =1{Bạn muốn tải một tệp lên trang web này?}other{Bạn muốn tải # tệp lên trang web này?}}</translation>
 <translation id="1956390763342388273">Thao tác này sẽ tải tất cả các tệp từ "<ph name="FOLDER_PATH"/>" lên. Chỉ thực hiện thao tác này nếu bạn tin tưởng trang web.</translation>
 <translation id="1243314992276662751">Tải lên</translation>
+<translation id="2446585455334014596"><ph name="APP_NAME"/> muốn xác minh danh tính của bạn</translation>
+<translation id="3738671331307774213">Việc xác minh danh tính giúp bảo vệ dữ liệu riêng tư của bạn</translation>
+<translation id="8435395510592618362">Xác minh danh tính của bạn bằng <ph name="APP_NAME"/></translation>
+<translation id="3854599674806204102">Chọn một tùy chọn</translation>
 <translation id="7490950320178383728">Sử dụng Khóa bảo mật qua Bluetooth</translation>
 <translation id="414599683948988413">Sử dụng Khóa bảo mật qua USB</translation>
 <translation id="7851816139220202929">Sử dụng Khóa bảo mật qua NFC</translation>
@@ -1377,7 +1399,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6647838571840953560">Hiện ở trên <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Chương trình cơ sở</translation>
 <translation id="5895138241574237353">Khởi động lại</translation>
-<translation id="7409233648990234464">Chạy lại và Powerwash</translation>
+<translation id="4297219207642690536">Khởi động lại và đặt lại</translation>
 <translation id="4716483597559580346">Powerwash giúp tăng cường bảo mật</translation>
 <translation id="4089922565956168950">Bản nâng cấp này sẽ đặt lại Bravebook và xóa dữ liệu người dùng hiện tại.</translation>
 <translation id="5184662919967270437">Đang cập nhật thiết bị của bạn</translation>
@@ -1385,6 +1407,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5906655207909574370">Gần được cập nhật! Hãy khởi động lại thiết bị của bạn để hoàn tất cập nhật.</translation>
 <translation id="5860494867054883682">Đang cập nhật thiết bị của bạn tới kênh <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kênh đã thay đổi. Hãy khởi động lại thiết bị để áp dụng thay đổi.</translation>
+<translation id="7133578150266914903">Quản trị viên đang hạ cấp hệ điều hành của thiết bị này (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Quản trị viên đã hạ cấp hệ điều hành của thiết bị này. Vui lòng lưu các tệp quan trọng rồi khởi động lại. Tất cả dữ liệu trên thiết bị sẽ bị xóa.</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> của bạn đã cập nhật</translation>
 <translation id="3688526734140524629">Thay đổi kênh</translation>
 <translation id="6410328738210026208">Thay đổi kênh và Powerwash</translation>
@@ -1437,6 +1461,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4305227814872083840">lâu (2 giây)</translation>
 <translation id="2860150991415616761">rất lâu (4 giây)</translation>
 <translation id="1330145147221172764">Bật bàn phím ảo</translation>
+<translation id="1800308196794859773">Gửi giọng nói của bạn tới Brave Software để cho phép nhập bằng giọng nói vào bất kỳ trường văn bản nào.</translation>
 <translation id="8758418656925882523">Bật tính năng nhập bằng giọng nói (nói để nhập)</translation>
 <translation id="7580671184200851182">Phát cùng một âm thanh qua tất cả các loa (đơn âm)</translation>
 <translation id="1189418886587279221">Bật các tính năng trợ năng để giúp thiết bị của bạn dễ sử dụng hơn.</translation>
@@ -1484,7 +1509,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6902066522699286937">Giọng nói để nghe trước</translation>
 <translation id="304747341537320566">Công cụ chuyển văn bản sang lời nói</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Chạy IDE, trình biên tập và công cụ Linux trên Bravebook của bạn.</translation>
 <translation id="6869910261738842136">Xóa ứng dụng Linux cho Bravebook</translation>
 <translation id="2295473777859797944">Cửa hàng Brave Software Play</translation>
 <translation id="572155275267014074">Cài đặt Android</translation>
@@ -1525,6 +1549,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8639963783467694461">Cài đặt tự động điền</translation>
 <translation id="3431019676184503003">Địa chỉ và phương thức thanh toán</translation>
 <translation id="2512222046227390255">Tự động điền biểu mẫu</translation>
+<translation id="2283340219607151381">Lưu và điền địa chỉ</translation>
+<translation id="1662550410081243962">Lưu và điền phương thức thanh toán</translation>
 <translation id="2903493209154104877">Địa chỉ</translation>
 <translation id="7764225426217299476">Thêm địa chỉ</translation>
 <translation id="5595485650161345191">Chỉnh sửa địa chỉ</translation>
@@ -1561,6 +1587,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7930294771522048157">Các phương thức thanh toán đã lưu sẽ xuất hiện ở đây</translation>
 <translation id="9124003689441359348">Mật khẩu đã lưu của bạn sẽ xuất hiện ở đây</translation>
 <translation id="4400367121200150367">Trang web không bao giờ lưu mật khẩu sẽ xuất hiện tại đây</translation>
+<translation id="3098842761938485917">Xem và quản lý các mật khẩu đã lưu trong <ph name="BEGIN_LINK"/>Tài khoản Brave Software<ph name="END_LINK"/> của bạn</translation>
 <translation id="5620655347161642930">Xuất mật khẩu...</translation>
 <translation id="3900966090527141178">Xuất mật khẩu</translation>
 <translation id="6914783257214138813">Bất cứ ai có thể xem tệp đã xuất đều có thể biết mật khẩu của bạn.</translation>
@@ -1951,6 +1978,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4534361985432360439">Gửi cho Brave Software địa chỉ web của trang mà bạn đang cố gắng truy cập</translation>
 <translation id="6545834809683560467">Sử dụng dịch vụ gợi ý để giúp hoàn thành các tìm kiếm và URL được nhập vào thanh địa chỉ hoặc hộp tìm kiếm của trình chạy ứng dụng</translation>
 <translation id="7704317875155739195">Tự động hoàn thành cụm từ tìm kiếm và URL</translation>
+<translation id="2000419248597011803">Gửi một số cookie và nội dung tìm kiếm từ thanh địa chỉ cũng như hộp tìm kiếm tới công cụ tìm kiếm mặc định</translation>
 <translation id="9038649477754266430">Sử dụng dịch vụ gợi ý để tải trang nhanh hơn</translation>
 <translation id="7981313251711023384">Tải trước các trang để tìm kiếm và duyệt web nhanh hơn</translation>
 <translation id="2468205691404969808">Sử dụng cookie để ghi nhớ tùy chọn của bạn, ngay cả khi bạn không truy cập vào các trang đó</translation>
@@ -1961,6 +1989,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="490074449735753175">Sử dụng dịch vụ web để giúp giải quyết lỗi chính tả</translation>
 <translation id="3523078749603005179">Kiểm tra chính tả thông minh hơn bằng cách gửi nội dung bạn nhập vào trình duyệt cho Brave Software</translation>
 <translation id="2564653188463346023">Kiểm tra lỗi chính tả nâng cao</translation>
+<translation id="7469406957790636836">Để bật tính năng này, trước tiên hãy bật tính năng kiểm tra chính tả trong phần <ph name="BEGIN_LINK"/>Ngôn ngữ và phương thức nhập<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Để bật tính năng này, trước tiên hãy chọn mục Kiểm tra chính tả trong khi nhập trong menu Chỉnh sửa</translation>
 <translation id="9079153198295609735">Tự động gửi số liệu thống kê về việc sử dụng và báo cáo sự cố cho Brave Software</translation>
 <translation id="5941220456342415404">Tự động gửi dữ liệu chẩn đoán và dữ liệu sử dụng cho Brave Software</translation>
 <translation id="918192811481327695">Giúp cải thiện hiệu suất cũng như các tính năng của Brave</translation>
@@ -2016,6 +2046,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4907306957610201395">Danh mục quyền</translation>
 <translation id="6295158916970320988">Tất cả các trang web</translation>
 <translation id="7625568159987162309">Xem quyền và dữ liệu được lưu trữ trên các trang web</translation>
+<translation id="3735740477244556633">Sắp xếp theo</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Quảng cáo</translation>
 <translation id="5649053991847567735">Tự động tải xuống</translation>
@@ -2135,6 +2166,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6742339027238151589">Tập lệnh có thể truy cập</translation>
 <translation id="361106536627977100">Dữ liệu Flash</translation>
 <translation id="8557930019681227453">Tệp kê khai</translation>
+<translation id="7868378670806575181">{NUM_COOKIES,plural, =1{1 cookie}other{# cookie}}</translation>
 <translation id="3866249974567520381">Mô tả</translation>
 <translation id="4530494379350999373">Nguồn gốc</translation>
 <translation id="8195027750202970175">Dung lượng trên đĩa</translation>
@@ -2208,6 +2240,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7548737591211512046">Đăng nhập để nhận dấu trang, lịch sử, mật khẩu và cài đặt khác trên tất cả thiết bị của bạn. Bạn cũng sẽ tự động được đăng nhập vào các dịch vụ Brave Software của mình.</translation>
 <translation id="2951604498031550705">Các thay đổi đối với dấu trang, lịch sử, mật khẩu và các cài đặt khác sẽ không được đồng bộ hóa với Tài khoản Brave Software của bạn nữa. Tuy nhiên, dữ liệu hiện có của bạn sẽ vẫn được lưu trữ trong Tài khoản Brave Software và có thể được quản lý trên <ph name="BEGIN_LINK"/>Trang tổng quan Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Thao tác này sẽ đăng xuất bạn khỏi tài khoản Brave Software. Các thay đổi đối với dấu trang, lịch sử, mật khẩu và các mục cài đặt khác sẽ không đồng bộ hóa với Tài khoản Brave Software của bạn nữa. Tuy nhiên, dữ liệu hiện có sẽ vẫn được lưu trữ trong Tài khoản Brave Software của bạn và có thể quản lý trên <ph name="BEGIN_LINK"/>Trang tổng quan Brave Software<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Việc này này sẽ đăng xuất bạn khỏi các Tài khoản Brave Software. Dấu trang, lịch sử, mật khẩu và các dữ liệu khác của bạn sẽ không còn đồng bộ hóa nữa.</translation>
 <translation id="8588866096426746242">Hiển thị số liệu thống kê hồ sơ</translation>
 <translation id="5535941515421698170">Đồng thời, xóa dữ liệu hiện có của bạn khỏi thiết bị này</translation>
 <translation id="7243632151880336635">Xóa và đăng xuất</translation>
@@ -2229,13 +2262,16 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3259418918864581163">Thẻ tín dụng và địa chỉ sử dụng Brave Software Pay.</translation>
 <translation id="4439834757335393741">Địa chỉ và phương thức thanh toán sử dụng Brave Software Pay.</translation>
 <translation id="3268451620468152448">Tab đang mở</translation>
+<translation id="5241892180459725878">Đề xuất tìm kiếm của Brave Software Drive</translation>
 <translation id="2120297377148151361">Hoạt động và tương tác</translation>
+<translation id="5833397272224757657">Dùng nội dung trên trang web bạn truy cập cũng như các tương tác và hoạt động trên trình duyệt để cá nhân hóa</translation>
 <translation id="8135094938656535588">Quản lý dữ liệu được đồng bộ hóa trên Trang tổng quan của Brave Software</translation>
 <translation id="6596325263575161958">Tùy chọn mã hóa</translation>
 <translation id="2459230470861708651">Mã hóa mật khẩu đã đồng bộ hóa với tên người dùng và mật khẩu Brave Software của bạn</translation>
 <translation id="6383051423892982287">Mã hóa dữ liệu đã đồng bộ hóa bằng <ph name="BEGIN_LINK"/>cụm mật khẩu đồng bộ hóa<ph name="END_LINK"/> của riêng bạn</translation>
 <translation id="4817583816512767754">Chỉ người có cụm mật khẩu mới có thể đọc dữ liệu được mã hóa của bạn. Cụm mật khẩu không được gửi tới hoặc được lưu trữ bởi Brave Software. Nếu bạn quên cụm mật khẩu hoặc muốn thay đổi cài đặt này, bạn sẽ cần <ph name="BEGIN_LINK"/>đặt lại đồng bộ hóa<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Để thay đổi cài đặt này, hãy <ph name="BEGIN_LINK"/>đặt lại đồng bộ hóa<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Để bật tính năng này, hãy <ph name="BEGIN_LINK"/>đặt lại tính năng đồng bộ hóa<ph name="END_LINK"/> để xóa cụm mật khẩu đồng bộ hóa của bạn</translation>
 <translation id="988978206646512040">Không cho phép cụm mật khẩu trống</translation>
 <translation id="1651008383952180276">Bạn phải nhập cùng một cụm mật khẩu hai lần</translation>
 <translation id="2136476978468204130">Cụm mật khẩu bạn đã nhập không chính xác</translation>
@@ -2398,6 +2434,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3088402208262982892">Đã tắt tính năng Better Together</translation>
 <translation id="2079079131837725321">Mở khóa Bravebook của bạn bằng điện thoại. <ph name="LINK_BEGIN"/>Tìm hiểu thêm.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Chia sẻ kết nối tức thì</translation>
+<translation id="3059313675706898490">Android Messages</translation>
 <translation id="7095175330464035635">Gửi và nhận tin nhắn văn bản từ Bravebook của bạn</translation>
 <translation id="3936335337858561470">Quên thiết bị này</translation>
 <translation id="3606712892509067288">Xóa khỏi tính năng Better Together</translation>
@@ -2428,8 +2465,11 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1607139524282324606">Xóa mục nhập</translation>
 <translation id="6025215716629925253">Dấu vết ngăn xếp</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 dòng không hiển thị&amp;gt;}other{&amp;lt;$1 dòng không hiển thị&amp;gt;}}</translation>
+<translation id="8389492867173948260">Cho phép tiện ích này đọc và thay đổi tất cả dữ liệu trên các trang web bạn truy cập:</translation>
 <translation id="407173827865827707">Khi nhấp chuột</translation>
+<translation id="6455264371803474013">Trên các trang web cụ thể</translation>
 <translation id="4225397296022057997">Trên tất cả các trang web</translation>
+<translation id="3729506734996624908">Trang web được phép</translation>
 <translation id="3732078975418297900">Lỗi trên dòng <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Lỗi từ dòng <ph name="ERROR_LINE_START"/> đến <ph name="ERROR_LINE_END"/></translation>
 <translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
