@@ -379,12 +379,6 @@
       <structure name="IDR_SETTINGS_ZOOM_LEVELS_HTML" file="site_settings/zoom_levels.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_ZOOM_LEVELS_JS" file="site_settings/zoom_levels.js" type="chrome_html" />
       <if expr="chromeos">
-        <structure name="IDR_SETTINGS_CROSTINI_PAGE_HTML" file="crostini_page/crostini_page.html" type="chrome_html" />
-        <structure name="IDR_SETTINGS_CROSTINI_PAGE_JS" file="crostini_page/crostini_page.js" type="chrome_html" />
-        <structure name="IDR_SETTINGS_CROSTINI_SUBPAGE_HTML" file="crostini_page/crostini_subpage.html" type="chrome_html" />
-        <structure name="IDR_SETTINGS_CROSTINI_SUBPAGE_JS" file="crostini_page/crostini_subpage.js" type="chrome_html" />
-        <structure name="IDR_SETTINGS_CROSTINI_BROWSER_PROXY_JS" file="crostini_page/crostini_browser_proxy.js" type="chrome_html" preprocess="true" allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_CROSTINI_BROWSER_PROXY_HTML" file="crostini_page/crostini_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
         <structure name="IDR_SETTINGS_ANDROID_APPS_PAGE_HTML" file="android_apps_page/android_apps_page.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_ANDROID_APPS_PAGE_JS" file="android_apps_page/android_apps_page.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_ANDROID_APPS_SUBPAGE_HTML" file="android_apps_page/android_apps_subpage.html" type="chrome_html" />
@@ -393,6 +387,12 @@
         <structure name="IDR_SETTINGS_ANDROID_APPS_BROWSER_PROXY_HTML" file="android_apps_page/android_apps_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
         <structure name="IDR_SETTINGS_ANDROID_SETTINGS_ELEMENT_HTML" file="android_apps_page/android_settings_element.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_ANDROID_SETTINGS_ELEMENT_JS" file="android_apps_page/android_settings_element.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CROSTINI_PAGE_HTML" file="crostini_page/crostini_page.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CROSTINI_PAGE_JS" file="crostini_page/crostini_page.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CROSTINI_SUBPAGE_HTML" file="crostini_page/crostini_subpage.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CROSTINI_SUBPAGE_JS" file="crostini_page/crostini_subpage.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_CROSTINI_BROWSER_PROXY_JS" file="crostini_page/crostini_browser_proxy.js" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_CROSTINI_BROWSER_PROXY_HTML" file="crostini_page/crostini_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
         <structure name="IDR_SETTINGS_BLUETOOTH_DEVICE_LIST_ITEM_HTML" file="bluetooth_page/bluetooth_device_list_item.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_BLUETOOTH_DEVICE_LIST_ITEM_JS" file="bluetooth_page/bluetooth_device_list_item.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_BLUETOOTH_PAGE_HTML" file="bluetooth_page/bluetooth_page.html" type="chrome_html" />

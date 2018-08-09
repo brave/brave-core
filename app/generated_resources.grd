@@ -4561,8 +4561,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOM_LINKS_DONE" desc="The text label of the custom link done button on the edit shortcut dialog. (On the New Tab Page)">
         Done
       </message>
-      <message name="IDS_NTP_CUSTOM_LINKS_INVALID_URL" desc="The text of displayed when an invalid URL is provided when creating a custom link. (On the New Tab Page)">
+      <message name="IDS_NTP_CUSTOM_LINKS_INVALID_URL" desc="Error message for when an invalid URL is provided while creating a custom link. (On the New Tab Page)">
        Type a valid URL
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_SHORTCUT_EXISTS" desc="Error message for when the shortcut being created already exists. (On the New Tab Page)">
+       Shortcut already exists
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_CANT_CREATE" desc="A catchall error message for when the shortcut cannot be created. (On the New Tab Page)">
+       Can’t create shortcut
       </message>
       <message name="IDS_NTP_CONFIRM_MSG_SHORTCUT_REMOVED" desc="The title of the shortcut removed confirmation message when removing a custom link. (On the New Tab Page)">
         Shortcut removed
@@ -4577,7 +4583,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Restore default shortcuts
       </message>
       <message name="IDS_NTP_CUSTOM_BG_CUSTOMIZE_BACKGROUND" desc="The title for the tooltip for background customization. (On the New Tab Page)">
-        Customize background
+        Customize this page
       </message>
       <message name="IDS_NTP_CUSTOM_BG_GOOGLE_PHOTOS" desc="The text label of the Brave Photos option for background customization. (On the New Tab Page)">
         Brave Photos
@@ -4592,7 +4598,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Select a collection
       </message>
       <message name="IDS_NTP_CUSTOM_BG_SELECT_GOOGLE_ALBUM" desc="The text label for the Brave Photos submenu for background customization. (On the New Tab Page)">
-        Select a Brave Photo Album
+        Select a Brave Photos album
       </message>
       <message name="IDS_NTP_CUSTOM_BG_DAILY_REFRESH" desc="The text label for the daily background randomization option.  (On the New Tab Page)">
         Refresh daily
@@ -4623,6 +4629,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOM_BG_IMAGE_NOT_USABLE" desc="Error message for when an uploaded image is not usuable as a custom background. (On the New Tab Page)">
         This image can't be used. Choose a different image.
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_BACK_LABEL" desc="Accessibility label for the back arrow on the background picker dialog. (On the New Tab Page)">
+        Back
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_CUSTOMIZE_NTP_LABEL" desc="Accessibility label for the gear icon. (On the New Tab Page)">
+        Customize this page
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_GOOGLE_PHOTO_LABEL" desc="Accessibility label for a Brave Photos image tile. (On the New Tab Page)">
+        Photo
+      </message>
+      <message name="IDS_NTP_CUSTOM_BG_PHOTO_SELECTED" desc="Label to indicate that a photo has been selected. (On the New Tab Page)">
+       selected
       </message>
 
       <!--Tooltip strings-->
