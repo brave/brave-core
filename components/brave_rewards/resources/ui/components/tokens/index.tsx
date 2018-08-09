@@ -50,7 +50,7 @@ export default class Tokens extends React.PureComponent<Props, {}> {
           }
         </StyledTokens>
         {
-          converted
+          converted !== undefined
           ? <StyledContent theme={theme}>
             {toFixed ? converted.toFixed(2) : converted} {currency}
           </StyledContent>
