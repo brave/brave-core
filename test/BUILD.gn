@@ -43,6 +43,7 @@ test("brave_unit_tests") {
     "../browser/importer/chrome_profile_lock_unittest.cc",
     "../utility/importer/chrome_importer_unittest.cc",
     "../utility/importer/brave_importer_unittest.cc",
+    "../utility/importer/firefox_importer_unittest.cc",
   ]
 
   # On Windows, brave_install_static_unittests covers channel test.
