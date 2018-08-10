@@ -38,7 +38,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual std::string GenerateGUID() const = 0;
   virtual void OnWalletCreated(Result result) = 0;
   virtual void GetWalletProperties() = 0;
-  virtual void OnWalletProperties(ledger::WalletInfo) = 0;
+  virtual void OnWalletProperties(Result result,
+                                  std::unique_ptr<ledger::WalletInfo>) = 0;
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id) = 0;
 
@@ -61,8 +62,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual void GetPromotion(const std::string& lang, const std::string& paymentId) = 0;
   virtual void OnPromotion(ledger::Promo) = 0;
   virtual void GetPromotionCaptcha() = 0;
-  virtual void OnPromotionCaptcha(std::string image) = 0;
-  virtual void OnRecoverWallet(const bool& error, const double& balance) = 0;
+  virtual void OnPromotionCaptcha(const std::string& image) = 0;
+  virtual void OnRecoverWallet(bool error, double balance) = 0;
 
   virtual std::unique_ptr<ledger::LedgerURLLoader> LoadURL(
       const std::string& url,

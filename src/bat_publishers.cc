@@ -57,10 +57,6 @@ double BatPublishers::concaveScore(const uint64_t& duration) {
   return (std::sqrt(b2_ + a4_ * duration) - b_) / (double)a2_;
 }
 
-void BatPublishers::initSynopsis() {
-  ledger_->LoadPublisherState(this);
-}
-
 const ledger::PublisherInfo::id_type getPublisherID(
     const ledger::VisitData& visit_data) {
   return visit_data.tld;
@@ -293,17 +289,6 @@ void BatPublishers::loadState(const std::string& data) {
   braveledger_bat_helper::loadFromJson(state, data.c_str());
   state_.reset(new braveledger_bat_helper::PUBLISHER_STATE_ST(state));
   calcScoreConsts();
-}
-
-void BatPublishers::OnPublisherStateLoaded(ledger::Result result,
-                                           const std::string& data) {
-  if (result != ledger::Result::OK) {
-    LOG(ERROR) << "Could not load publisher state";
-    return;
-    // TODO - error handling
-  }
-
-  loadState(data);
 }
 
 void BatPublishers::OnPublisherStateSaved(ledger::Result result) {

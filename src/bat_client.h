@@ -9,7 +9,6 @@
 #include <vector>
 #include <mutex>
 
-#include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_url_loader.h"
 #include "bat_helper.h"
 #include "url_request_handler.h"
@@ -20,12 +19,13 @@ class LedgerImpl;
 
 namespace braveledger_bat_client {
 
-class BatClient : public ledger::LedgerCallbackHandler {
+class BatClient {
  public:
   explicit BatClient(bat_ledger::LedgerImpl* ledger);
-  ~BatClient() override;
+  ~BatClient();
 
-  void loadStateOrRegisterPersonaCallback(bool success, const std::string& data);
+  void loadStateCallback(bool success, const std::string& data);
+  void registerPersona();
   void requestCredentialsCallback(bool result, const std::string& response);
   void registerPersonaCallback(bool result, const std::string& response);
   void setContributionAmount(const double& amount);
@@ -65,7 +65,6 @@ class BatClient : public ledger::LedgerCallbackHandler {
   //void prepareBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   //void commitBallotCallback(bool result, const std::string& response);
   void vote(const std::string& publisher, const std::string& viewingId);
-  void registerPersona();
   void reconcileCallback(bool result, const std::string& response);
   void currentReconcile();
   void currentReconcileCallback(bool result, const std::string& response);
