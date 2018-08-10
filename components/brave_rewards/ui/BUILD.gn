@@ -1,6 +1,6 @@
 import("//brave/components/common/typescript.gni")
 
-transpile_web_ui("brave_rewards_ui") {
+transpile_web_ui("ui") {
   inputs = [
     "actions/rewards_actions.ts",
     "brave_rewards.html",

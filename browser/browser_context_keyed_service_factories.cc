@@ -4,7 +4,7 @@
 
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
-#include "brave/browser/payments/payments_service_factory.h"
+#include "brave/components/brave_rewards/browser/payments_service_factory.h"
 
 namespace brave {
 

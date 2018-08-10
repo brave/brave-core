@@ -1,8 +1,8 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave/browser/payments/payments_service_impl.h"
-#include "brave/browser/payments/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/payments_service_impl.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
 
 #include <functional>
 
@@ -16,8 +16,8 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/wallet_info.h"
-#include "brave/browser/payments/payments_service_observer.h"
-#include "brave/browser/payments/publisher_info_backend.h"
+#include "brave/components/brave_rewards/browser/payments_service_observer.h"
+#include "brave/components/brave_rewards/browser/publisher_info_backend.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"

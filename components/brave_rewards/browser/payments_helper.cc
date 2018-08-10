@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/payments/payments_helper.h"
+#include "brave/components/brave_rewards/browser/payments_helper.h"
 
-#include "brave/browser/payments/payments_service.h"
-#include "brave/browser/payments/payments_service_factory.h"
+#include "brave/components/brave_rewards/browser/payments_service.h"
+#include "brave/components/brave_rewards/browser/payments_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
 #include "chrome/browser/ui/browser.h"

@@ -13,7 +13,7 @@
 #include "base/observer_list.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
-#include "brave/browser/payments/payments_service.h"
+#include "brave/components/brave_rewards/browser/payments_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/url_request/url_fetcher_delegate.h"
 

@@ -12,7 +12,7 @@ grit("brave_components_resources_grit") {
   deps = [
     "//brave/components/brave_adblock_ui",
     "//brave/components/brave_new_tab_ui",
-    "//brave/components/brave_rewards_ui",
+    "//brave/components/brave_rewards/ui",
     "//brave/components/brave_welcome_ui",
   ]
   grit_flags = [

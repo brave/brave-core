@@ -82,7 +82,7 @@ source_set("ui") {
     "//brave/app:command_ids",
     "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/theme:brave_theme_resources",
-    "//brave/browser/payments",
+    "//brave/components/brave_rewards/browser",
     "//brave/components/resources:brave_components_resources_grit",
     "//chrome/app:command_ids",
     "//skia",

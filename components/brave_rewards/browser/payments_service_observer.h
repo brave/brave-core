@@ -5,8 +5,8 @@
 #ifndef BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
 
-#include "brave/browser/payments/wallet_properties.h"
-#include "brave/browser/payments/promotion.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/promotion.h"
 
 namespace payments {
 

@@ -1,6 +1,6 @@
-import("//brave/browser/payments/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 
-source_set("payments") {
+source_set("browser") {
   public_deps = [
     "buildflags",
   ]
