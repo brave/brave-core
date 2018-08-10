@@ -7,9 +7,12 @@
 
 #include <vector>
 
+#include "brave/common/importer/brave_stats.h"
 #include "chrome/common/importer/mock_importer_bridge.h"
 #include "net/cookies/canonical_cookie.h"
 #include "testing/gmock/include/gmock/gmock.h"
+
+struct BraveStats;
 
 class BraveMockImporterBridge : public MockImporterBridge {
  public:
@@ -17,6 +20,8 @@ class BraveMockImporterBridge : public MockImporterBridge {
 
   MOCK_METHOD1(SetCookies,
                void(const std::vector<net::CanonicalCookie>&));
+  MOCK_METHOD1(UpdateStats,
+               void(const BraveStats&));
 
  private:
   ~BraveMockImporterBridge() override;

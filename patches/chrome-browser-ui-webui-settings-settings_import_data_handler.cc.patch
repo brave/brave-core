@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/settings_import_data_handler.cc b/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
-index 32deebd14fb3383010af01381af9b34442d19b6e..4ee9444e28d9041c3b1dd97fd81f0ce387635982 100644
+index 32deebd14fb3383010af01381af9b34442d19b6e..750216677fccfd62a36937cf020341c0b180732c 100644
 --- a/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
 +++ b/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
 @@ -18,6 +18,8 @@
@@ -26,21 +26,25 @@ index 32deebd14fb3383010af01381af9b34442d19b6e..4ee9444e28d9041c3b1dd97fd81f0ce3
  
    importer::LogImporterUseToMetrics("ImportDataHandler",
                                      source_profile.importer_type);
-@@ -126,6 +128,8 @@ void ImportDataHandler::ImportData(const base::ListValue* args) {
+@@ -126,6 +128,10 @@ void ImportDataHandler::ImportData(const base::ListValue* args) {
      selected_items |= importer::PASSWORDS;
    if (prefs->GetBoolean(prefs::kImportDialogSearchEngine))
      selected_items |= importer::SEARCH_ENGINES;
 +  if (prefs->GetBoolean(prefs::kImportDialogCookies))
 +    selected_items |= importer::COOKIES;
++  if (prefs->GetBoolean(prefs::kImportDialogStats))
++    selected_items |= importer::STATS;
  
    const importer::SourceProfile& source_profile =
        importer_list_->GetSourceProfileAt(browser_index);
-@@ -179,6 +183,8 @@ void ImportDataHandler::SendBrowserProfileData(const std::string& callback_id) {
+@@ -179,6 +185,10 @@ void ImportDataHandler::SendBrowserProfileData(const std::string& callback_id) {
      browser_profile->SetBoolean(
          "autofillFormData",
          (browser_services & importer::AUTOFILL_FORM_DATA) != 0);
 +    browser_profile->SetBoolean("cookies",
 +        (browser_services & importer::COOKIES) != 0);
++    browser_profile->SetBoolean("stats",
++        (browser_services & importer::STATS) != 0);
  
      browser_profiles.Append(std::move(browser_profile));
    }

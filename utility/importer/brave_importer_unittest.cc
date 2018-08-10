@@ -5,6 +5,7 @@
 #include "brave/utility/importer/brave_importer.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/importer/brave_mock_importer_bridge.h"
+#include "brave/common/importer/brave_stats.h"
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -209,3 +210,20 @@ TEST_F(BraveImporterTest, ImportCookies) {
   OSCryptMocker::TearDown();
 }
 #endif
+
+TEST_F(BraveImporterTest, ImportStats) {
+  BraveStats stats;
+
+  EXPECT_CALL(*bridge_, NotifyStarted());
+  EXPECT_CALL(*bridge_, NotifyItemStarted(importer::STATS));
+  EXPECT_CALL(*bridge_, UpdateStats(_))
+      .WillOnce(::testing::SaveArg<0>(&stats));
+  EXPECT_CALL(*bridge_, NotifyItemEnded(importer::STATS));
+  EXPECT_CALL(*bridge_, NotifyEnded());
+
+  importer_->StartImport(profile_, importer::STATS, bridge_.get());
+
+  EXPECT_EQ(9, stats.adblock_count);
+  EXPECT_EQ(0, stats.trackingProtection_count);
+  EXPECT_EQ(0, stats.httpsEverywhere_count);
+}
