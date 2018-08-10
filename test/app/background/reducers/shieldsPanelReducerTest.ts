@@ -160,7 +160,7 @@ describe('braveShieldsPanelReducer', () => {
       this.updateActiveTabSpy = sinon.spy(shieldsPanelState, 'updateActiveTab')
       this.windowId = 1
       this.tabId = 2
-      this.state = deepFreeze({...initialState.shieldsPanel, windows: {1: this.tabId}, tabs: {}})
+      this.state = deepFreeze({ ...initialState.shieldsPanel, windows: { 1: this.tabId }, tabs: {} })
     })
     after(function () {
       this.updateActiveTabSpy.restore()
@@ -308,7 +308,7 @@ describe('braveShieldsPanelReducer', () => {
         httpUpgradableResources: 'block',
         javascript: 'block',
         fingerprinting: 'block',
-        cookies: 'block',
+        cookies: 'block'
       }
       assert.deepEqual(
         shieldsPanelReducer(initialState.shieldsPanel, {
@@ -997,7 +997,7 @@ describe('braveShieldsPanelReducer', () => {
           }
         },
         windows: {
-            1: 2
+          1: 2
         }
       })
     })
@@ -1253,7 +1253,7 @@ describe('braveShieldsPanelReducer', () => {
     })
   })
 
-  describe('ALLOW_SCRIPT_ORIGINS_ONCE', function() {
+  describe('ALLOW_SCRIPT_ORIGINS_ONCE', function () {
     before(function () {
       this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
       this.setAllowScriptOriginsOnceSpy = sinon.spy(shieldsAPI, 'setAllowScriptOriginsOnce')
@@ -1274,7 +1274,7 @@ describe('braveShieldsPanelReducer', () => {
     })
   })
 
-  describe('CHANGE_NO_SCRIPT_SETTINGS', function() {
+  describe('CHANGE_NO_SCRIPT_SETTINGS', function () {
     before(function () {
       this.spy = sinon.spy(shieldsPanelState, 'changeNoScriptSettings')
     })
@@ -1283,7 +1283,7 @@ describe('braveShieldsPanelReducer', () => {
     })
     it('should call changeNoScriptSettings', function () {
       const tabId = 2
-      const stateWithNoScriptInfo : State = {
+      const stateWithNoScriptInfo: State = {
         tabs: {
           2: {
             origin,
@@ -1321,7 +1321,7 @@ describe('braveShieldsPanelReducer', () => {
         },
         currentWindowId: 1
       }
-      let nextState =  shieldsPanelReducer(stateWithNoScriptInfo, {
+      let nextState = shieldsPanelReducer(stateWithNoScriptInfo, {
         type: types.CHANGE_NO_SCRIPT_SETTINGS,
         origin
       })
@@ -1355,15 +1355,15 @@ describe('braveShieldsPanelReducer', () => {
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
             javascriptBlockedResources: [],
-            fingerprintingBlockedResources: [],
+            fingerprintingBlockedResources: []
           }
         },
         windows: {
           1: 2
         },
         currentWindowId: 1
-    })
-    assert.equal(this.spy.withArgs(stateWithNoScriptInfo, tabId, origin).calledOnce, true)
+      })
+      assert.equal(this.spy.withArgs(stateWithNoScriptInfo, tabId, origin).calledOnce, true)
     })
   })
 })

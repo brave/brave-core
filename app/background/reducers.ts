@@ -5,7 +5,9 @@
 import { combineReducers } from 'redux'
 
 import shieldsPanelReducer from './reducers/shieldsPanelReducer'
+import cosmeticFilterReducer from './reducers/cosmeticFilterReducer'
 
 export default combineReducers({
-  shieldsPanel: shieldsPanelReducer
+  shieldsPanel: shieldsPanelReducer,
+  cosmeticFilter: cosmeticFilterReducer
 })

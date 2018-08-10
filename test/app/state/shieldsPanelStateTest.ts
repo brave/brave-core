@@ -24,7 +24,7 @@ const state: State = deepFreeze({
     3: {
       id: 3
     },
-    4: { 
+    4: {
       id: 4
     }
   },

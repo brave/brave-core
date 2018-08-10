@@ -13,3 +13,12 @@ export const onBeforeNavigate: actions.OnBeforeNavigate = (tabId, url, isMainFra
     isMainFrame
   }
 }
+
+export const onCommitted: actions.OnCommitted = (tabId, url, isMainFrame) => {
+  return {
+    type: types.ON_COMMITTED,
+    tabId,
+    url,
+    isMainFrame
+  }
+}

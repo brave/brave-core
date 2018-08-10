@@ -20,4 +20,16 @@ describe('webNavigationActions', () => {
       isMainFrame
     })
   })
+  it('onCommitted', () => {
+    const tabId = 1
+    const url = 'https://www.brave.com'
+    const isMainFrame = true
+    assert.deepEqual(actions.onCommitted(tabId, url, isMainFrame), {
+      type: types.ON_COMMITTED,
+      url,
+      tabId,
+      isMainFrame
+    })
+  })
+
 })

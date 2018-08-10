@@ -8,7 +8,8 @@ const customPath = path.join(__dirname, './customPublicPath')
 module.exports = {
   entry: {
     braveShieldsPanel: [customPath, path.join(__dirname, '../app/braveShieldsPanel')],
-    background: [customPath, path.join(__dirname, '../app/background')]
+    background: [customPath, path.join(__dirname, '../app/background')],
+    content: [customPath, path.join(__dirname, '../app/content')],
   },
   mode: 'production',
   optimization: {
@@ -58,7 +59,7 @@ module.exports = {
         loaders: [
           'style-loader',
           'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-          {loader: 'postcss-loader', options: postCSSConfig}
+          { loader: 'postcss-loader', options: postCSSConfig }
         ]
       }]
   }
