@@ -44,10 +44,22 @@ void BraveProfileWriter::AddCookies(
 void BraveProfileWriter::UpdateStats(const BraveStats& stats) {
   PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
 
-  prefs->SetUint64(kAdsBlocked,
-                   prefs->GetUint64(kAdsBlocked) + stats.adblock_count);
-  prefs->SetUint64(kTrackersBlocked,
-                   prefs->GetUint64(kTrackersBlocked) + stats.trackingProtection_count);
-  prefs->SetUint64(kHttpsUpgrades,
-                   prefs->GetUint64(kHttpsUpgrades) + stats.httpsEverywhere_count);
+  const uint64_t ads_blocked = prefs->GetUint64(kAdsBlocked);
+  const uint64_t trackers_blocked = prefs->GetUint64(kTrackersBlocked);
+  const uint64_t https_upgrades = prefs->GetUint64(kHttpsUpgrades);
+
+  // Only update the current stats if they are less than the imported
+  // stats; intended to prevent incorrectly updating the stats multiple
+  // times from multiple imports.
+  if (ads_blocked < uint64_t{stats.adblock_count}) {
+      prefs->SetUint64(kAdsBlocked, ads_blocked + stats.adblock_count);
+  }
+  if (trackers_blocked < uint64_t{stats.trackingProtection_count}) {
+    prefs->SetUint64(kTrackersBlocked,
+                     trackers_blocked + stats.trackingProtection_count);
+  }
+  if (https_upgrades < uint64_t{stats.httpsEverywhere_count}) {
+    prefs->SetUint64(kHttpsUpgrades,
+                     https_upgrades + stats.httpsEverywhere_count);
+  }
 }
