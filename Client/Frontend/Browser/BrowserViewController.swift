@@ -1486,7 +1486,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         guard let selectedTab = tabManager.selectedTab else { return }
         
         let homePanel = HomeMenuController(profile: profile, tabState: selectedTab.tabState)
-        homePanel.preferredContentSize = CGSize(width: 320, height: 600.0)
+        homePanel.preferredContentSize = CGSize(width: PopoverController.preferredPopoverWidth, height: 600.0)
         homePanel.delegate = self
         //        homePanel.view.heightAnchor.constraint(equalToConstant: 580.0).isActive = true
         let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)

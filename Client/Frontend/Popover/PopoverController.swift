@@ -7,11 +7,23 @@ import UIKit
 import pop
 import SnapKit
 
+extension UILayoutPriority {
+    /// The priority used for the container view's width & height when using ContentSizeBehavior.preferredContentSize
+    /// or ContentSizeBehavior.fixedSize.
+    ///
+    /// Must be higher than `UILayoutPriority.defaultHigh` or width/height constraints with be ignored
+    fileprivate static let popoverPreferredOrFixedSize = UILayoutPriority(rawValue: 850.0)
+}
+
 /// A popover which presents a `UIViewController` from a point of origin
 ///
 /// - note: You must use `present(from:on:)` from an instantiated `PopoverController` to present a popover. Presenting
 /// another way will result in undefined behavior
 class PopoverController: UIViewController {
+    
+    /// The preferred popover width when using `ContentSizeBehavior.preferredContentSize` or
+    /// `ContentSizeBehavior.fixedSize`
+    static let preferredPopoverWidth: CGFloat = 320.0
     
     /// Defines the behavior of the arrow direction and how the popover presents itself
     enum ArrowDirectionBehavior {
@@ -109,19 +121,19 @@ class PopoverController: UIViewController {
             view.layoutIfNeeded()
             
             containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height + PopoverUX.arrowSize.height)
-            containerViewHeightConstraint?.priority = UILayoutPriority(rawValue: 850.0)
+            containerViewHeightConstraint?.priority = .popoverPreferredOrFixedSize
             containerViewHeightConstraint?.isActive = true
             
             containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: contentController.preferredContentSize.width)
-            containerViewWidthConstraint?.priority = UILayoutPriority(rawValue: 850.0)
+            containerViewWidthConstraint?.priority = .popoverPreferredOrFixedSize
             containerViewWidthConstraint?.isActive = true
         case .fixedSize(let size):
             containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: size.height + PopoverUX.arrowSize.height)
-            containerViewHeightConstraint?.priority = UILayoutPriority(rawValue: 850.0)
+            containerViewHeightConstraint?.priority = .popoverPreferredOrFixedSize
             containerViewHeightConstraint?.isActive = true
             
             containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: size.width)
-            containerViewWidthConstraint?.priority = UILayoutPriority(rawValue: 850.0)
+            containerViewWidthConstraint?.priority = .popoverPreferredOrFixedSize
             containerViewWidthConstraint?.isActive = true
         }
     }
