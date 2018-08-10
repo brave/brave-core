@@ -5,7 +5,7 @@
 const theme = {
   braveShieldsHeader: {
     backgroundColor: '#808080',
-    padding: '10px',
+    padding: '8px',
     gridGap: '0',
     color: '#fafafa'
   },
@@ -30,19 +30,19 @@ const theme = {
   },
   braveShieldsControls: {
     backgroundColor: '#eee',
-    padding: '10px 10px 0',
-    gridGap: '10px 5px'
+    padding: '8px 8px 0',
+    gridGap: '8px 5px'
   },
   braveShieldsControlsContent: {
     margin: '0 5px'
   },
   braveShieldsControlsSwitches: {
-    gridGap: '10px 5px',
+    gridGap: '8px 5px',
     padding: '5px 0'
   },
   braveShieldsFooter: {
-    gridGap: '10px',
-    padding: '0 10px 10px',
+    gridGap: '8px',
+    padding: '0 8px 8px',
     backgroundColor: '#eee'
   },
   columnStart: {
@@ -56,7 +56,7 @@ const theme = {
     userSelect: 'none'
   },
   braveShieldsStats: {
-    padding: '10px 15px',
+    padding: '8px 15px',
     gridGap: '10px',
     backgroundColor: '#f7f7f7'
   },
@@ -108,8 +108,8 @@ const theme = {
     cursor: 'pointer'
   },
   noScript: {
-    padding: '10px 0',
-    gridGap: '10px 5px'
+    padding: '8px 0',
+    gridGap: '8px 5px'
   },
   blockedResourcesStats: {
     flexDirection: 'column',
@@ -122,6 +122,14 @@ const theme = {
   },
   noUserSelect: {
     userSelect: 'none'
+  },
+  separator: {
+    background: '#ccc',
+    border: '0px',
+    height: '1px',
+    width: '100%',
+    marginTop: '8px',
+    marginBottom: '8px'
   }
 }
 
