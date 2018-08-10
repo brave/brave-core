@@ -15,6 +15,8 @@ const theme = {
   },
   panel: {
     backgroundColor: 'rgba(255,255,255,0.95)',
+    borderRadius: '20px',
+    boxShadow: '0 6px 12px 0 rgba(39, 46, 64, 0.2)',
     maxWidth: '600px',
     minHeight: '580px',
     display: 'flex',

@@ -8,7 +8,6 @@ import Page from '../../../../src/old/page/index'
 import { Heading } from '../../../../src/old/headings/index'
 import Paragraph from '../../../../src/old/paragraph/index'
 import { Grid, Column } from '../../../../src/components/layout/gridList/index'
-import Panel from '../../../../src/old/v1/panel/index'
 import UnstyledButton from '../../../../src/old/unstyledButton/index'
 import { PushButton } from '../../../../src/old/v1/pushButton/index'
 import Image from '../../../../src/old/v1/image/index'
@@ -231,10 +230,10 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
         }}
       >
         <Page customStyle={customStyle.welcomePage}>
-          <Panel customStyle={customStyle.panel}>
+          <div style={customStyle.panel}>
             {this.currentScreen}
             {this.footer}
-          </Panel>
+          </div>
         </Page>
       </div>
     )
