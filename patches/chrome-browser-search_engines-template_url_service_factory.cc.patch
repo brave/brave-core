@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/search_engines/template_url_service_factory.cc b/chrome/browser/search_engines/template_url_service_factory.cc
+index c137bd1e4cfdf4a4479201d849240245741af390..36785c9794bead23ec5c3c92b2c6c7e29a2bec6a 100644
+--- a/chrome/browser/search_engines/template_url_service_factory.cc
++++ b/chrome/browser/search_engines/template_url_service_factory.cc
+@@ -86,7 +86,12 @@ void TemplateURLServiceFactory::RegisterProfilePrefs(
+ 
+ content::BrowserContext* TemplateURLServiceFactory::GetBrowserContextToUse(
+     content::BrowserContext* context) const {
++#if defined(BRAVE_CHROMIUM_BUILD)
++  // To make different service for normal and incognito profile.
++  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
++#else
+   return chrome::GetBrowserContextRedirectedInIncognito(context);
++#endif
+ }
+ 
+ bool TemplateURLServiceFactory::ServiceIsNULLWhileTesting() const {

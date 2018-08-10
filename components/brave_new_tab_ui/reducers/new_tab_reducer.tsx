@@ -220,6 +220,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
 
     case types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE:
+      chrome.send('toggleAlternativePrivateSearchEngine', [])
       state = { ...state, useAlternativePrivateSearchEngine: payload.shouldUse }
       break
 
