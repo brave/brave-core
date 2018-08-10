@@ -15,6 +15,7 @@ ExtensionFunction::ResponseAction BraveSyncBackgroundPageToBrowserFunction::Run(
       brave_sync::BackgroundPageToBrowser::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
+  LOG(ERROR) << "TAGAB BraveSyncBackgroundPageToBrowserFunction::Run params->message=" << params->message;
   LOG(ERROR) << "TAGAB BraveSyncBackgroundPageToBrowserFunction::Run params->arg1=" << params->arg1;
   // if (error) {
   //   return RespondNow(Error(error));

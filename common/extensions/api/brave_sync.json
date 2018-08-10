@@ -20,6 +20,33 @@
             "name": "arg1"
           }
         ]
+      },
+      {
+        "name": "onBrowserToBackgroundPageRaw",
+        "type": "function",
+        "description": "Fired when sync lib sends data to browser.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "message"
+          },
+          {
+            "type": "any",
+            "name": "arg1"
+          },
+          {
+            "type": "any",
+            "name": "arg2"
+          },
+          {
+            "type": "any",
+            "name": "arg3"
+          },
+          {
+            "type": "any",
+            "name": "arg4"
+          }
+        ]
       }
     ],
     "functions": [
@@ -29,8 +56,24 @@
         "description": "Sends integer to brave_sync api",
         "parameters": [
           {
-            "name": "arg1",
-            "type": "integer"
+            "type": "string",
+            "name": "message"
+          },
+          {
+            "type": "any",
+            "name": "arg1"
+          },
+          {
+            "type": "any",
+            "name": "arg2"
+          },
+          {
+            "type": "any",
+            "name": "arg3"
+          },
+          {
+            "type": "any",
+            "name": "arg4"
           },
           {
             "type": "function",
