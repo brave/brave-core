@@ -178,7 +178,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskByDefault) {
 }
 
 // Click allow from promt
-IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, DISABLED_ClickAllow) {
   std::string result;
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
       contents());
@@ -308,7 +308,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickBlock) {
 }
 
 // Allow autoplay
-IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, DISABLED_AllowAutoplay) {
   std::string result;
   AllowAutoplay();
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
@@ -426,7 +426,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockAutoplay) {
 }
 
 // Default allow autoplay on file urls
-IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, FileAutoplay) {
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, DISABLED_FileAutoplay) {
   std::string result;
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
       contents());
