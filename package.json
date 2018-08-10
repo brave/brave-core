@@ -86,7 +86,7 @@
     "webpack": "^4.16.1",
     "webpack-cli": "^2.0.15",
     "webpack-hot-middleware": "^2.22.3",
-    "webpack-httpolyglot-server": "^0.3.0"
+    "webpack-httpolyglot-server": "github:brave/webpack-httpolyglot-server"
   },
   "dependencies": {
     "@types/selenium-webdriver": "^3.0.8",
@@ -104,7 +104,8 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "2.2.0",
-    "uglifyjs-webpack-plugin": "^1.2.5"
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "unique-selector": "^0.3.6"
   },
   "optionalDependencies": {
     "pre-push": "^0.1.1"

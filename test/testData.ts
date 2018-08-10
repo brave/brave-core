@@ -1,9 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+* License, v. 2.0. If a copy of the MPL was not distributed with this file,
+* You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as deepFreeze from 'deep-freeze-node'
 import { Tab } from '../app/types/state/shieldsPannelState'
+import { BlockDetails } from '../app/types/actions/shieldsPanelActions'
 
 interface CustomTab extends Tab {
   url: string
@@ -73,8 +74,8 @@ export const getMockChrome = () => {
       onStartup: new ChromeEvent()
     },
     browserAction: {
-      setBadgeText: function (text: string) { },
-      setIcon: function (icon: string, tabId: number) { }
+      setBadgeText: function (text: string) {},
+      setIcon: function (icon: string, tabId: number) {}
     },
     tabs: {
       queryAsync: function () {
@@ -89,6 +90,7 @@ export const getMockChrome = () => {
       reload: function (tabId: number, reloadProperties: object, cb: () => void) {
         setImmediate(cb)
       },
+      insertCSS: function (details: any) {},
       onActivated: new ChromeEvent(),
       onCreated: new ChromeEvent(),
       onUpdated: new ChromeEvent()
@@ -103,7 +105,7 @@ export const getMockChrome = () => {
     },
     braveShields: {
       onBlocked: new ChromeEvent(),
-      allowScriptsOnce: function(origins: Array<string>, tabId: number, cb: () => void) {
+      allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
         setImmediate(cb)
       }
     },
@@ -130,12 +132,23 @@ export const getMockChrome = () => {
       }
     },
     i18n: {
-      getMessage: function (message: string) { }
+      getMessage: function (message: string) {}
+    },
+    storage: {
+      local: {
+        get: function (url: string) {},
+        set: function (url: string, cssfilter: string) {}
+      }
     }
   }
 }
 
 export const initialState = deepFreeze({
+  cosmeticFilter: {
+    currentWindowId: -1,
+    tabs: {},
+    windows: {}
+  },
   shieldsPanel: {
     currentWindowId: -1,
     tabs: {},

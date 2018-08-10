@@ -11,7 +11,7 @@ import * as shieldsAPI from '../../../../app/background/api/shieldsAPI'
 import { activeTabData } from '../../../testData'
 import { Tab as TabType } from '../../../../app/types/state/shieldsPannelState'
 import * as resourceIdentifiers from '../../../../app/constants/resourceIdentifiers'
- 
+
 describe('Shields API', () => {
   describe('getShieldSettingsForTabData', function () {
     it('returns a rejected promise when no tab data is specified', function (cb) {
@@ -136,7 +136,7 @@ describe('Shields API', () => {
       this.spy.restore()
     })
 
-    it('calls chrome.tabs.getAsync for the ative tab', function () {
+    it('calls chrome.tabs.getAsync for the active tab', function () {
       assert(this.spy.withArgs(this.tabId).calledOnce)
     })
 
@@ -374,8 +374,8 @@ describe('Shields API', () => {
     it('resolves the returned promise', function (cb) {
       this.p
       .then(function () {
-          cb()
-        })
+        cb()
+      })
         .catch((e: Error) => {
           console.error(e.toString())
         })
@@ -391,7 +391,7 @@ describe('Shields API', () => {
     })
   })
 
-  describe('setAllowScriptOriginsOnce', function() {
+  describe('setAllowScriptOriginsOnce', function () {
     before(function () {
       this.spy = sinon.spy(chrome.braveShields, 'allowScriptsOnce')
       this.p = shieldsAPI.setAllowScriptOriginsOnce(
@@ -411,7 +411,7 @@ describe('Shields API', () => {
     })
     it('resolves the returned promise', function (cb) {
       this.p
-        .then(function() {
+        .then(function () {
           cb()
         })
         .catch((e: Error) => {

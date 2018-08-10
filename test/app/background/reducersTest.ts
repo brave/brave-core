@@ -6,18 +6,18 @@
 import 'mocha'
 import * as assert from 'assert'
 import reducers from '../../../app/background/reducers'
-import {initialState} from '../../testData'
+import { initialState } from '../../testData'
 
 describe('reducers test', () => {
-  it('reduers is a combined reducer function', function () {
+  it('reducers is a combined reducer function', function () {
     assert.equal(typeof reducers, 'function')
   })
 
-  it('reduers passed with an unknown action returns the same input', function () {
+  it('reducers passed with an unknown action returns the same input', function () {
     const unknownAction = {
       type: 'DA07BE00-43FB-44C3-B020-49308A0D3E78'
     }
-    const state = {...initialState }
+    const state = { ...initialState }
     assert.equal(reducers(state, unknownAction), state)
   })
 })

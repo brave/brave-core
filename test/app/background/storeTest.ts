@@ -6,7 +6,7 @@
 import 'mocha'
 import * as assert from 'assert'
 import store from '../../../app/background/store'
-import {initialState} from '../../testData'
+import { initialState } from '../../testData'
 
 describe('store test', () => {
   it('store can get state', function () {

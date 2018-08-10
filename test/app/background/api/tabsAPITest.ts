@@ -43,7 +43,7 @@ describe('tabs API', () => {
       p.then(() => {
         assert(this.spy.calledOnce)
         assert.equal(this.spy.getCall(0).args[0], tabId)
-        assert.deepEqual(this.spy.getCall(0).args[1], {bypassCache})
+        assert.deepEqual(this.spy.getCall(0).args[1], { bypassCache })
         cb()
       })
     })
@@ -54,7 +54,7 @@ describe('tabs API', () => {
       p.then(() => {
         assert(this.spy.calledOnce)
         assert.equal(this.spy.getCall(0).args[0], tabId)
-        assert.deepEqual(this.spy.getCall(0).args[1], {bypassCache})
+        assert.deepEqual(this.spy.getCall(0).args[1], { bypassCache })
         cb()
       })
     })

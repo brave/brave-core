@@ -8,3 +8,8 @@ chrome.webNavigation.onBeforeNavigate.addListener(function ({ tabId, url, frameI
   const isMainFrame: boolean = frameId === 0
   actions.onBeforeNavigate(tabId, url, isMainFrame)
 })
+
+chrome.webNavigation.onCommitted.addListener(function ({ tabId, url, frameId }: chrome.webNavigation.WebNavigationTransitionCallbackDetails) {
+  const isMainFrame: boolean = frameId === 0
+  actions.onCommitted(tabId, url, isMainFrame)
+})

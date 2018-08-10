@@ -3,3 +3,4 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const ON_BEFORE_NAVIGATION = 'ON_BEFORE_NAVIGATION'
+export const ON_COMMITTED = 'ON_COMMITTED'

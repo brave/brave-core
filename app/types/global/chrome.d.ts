@@ -4,7 +4,7 @@
 
  /// <reference path="../../../node_modules/@types/chrome/index.d.ts" />
 
-type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript'
+type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'
 
 interface BlockDetails {
   blockType: BlockTypes
@@ -12,6 +12,11 @@ interface BlockDetails {
   subresource: string
 }
 
+interface BlockDetails {
+  blockType: BlockTypes
+  tabId: number
+  subresource: string
+}
 declare namespace chrome.tabs {
   const setAsync: any
   const getAsync: any
