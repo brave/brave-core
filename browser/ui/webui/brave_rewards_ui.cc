@@ -42,20 +42,17 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnWalletCreated();
   void OnWalletCreateFailed();
   void GetWalletProperties(const base::ListValue* args);
-  void OnWalletProperties(payments::WalletProperties result);
   void GetPromotion(const base::ListValue* args);
-  void OnPromotion(payments::Promotion result);
   void GetPromotionCaptcha(const base::ListValue* args);
-  void OnPromotionCaptcha(std::string image);
   void GetWalletPassphrase(const base::ListValue* args);
   void RecoverWallet(const base::ListValue* args);
-  void OnRecoverWallet(bool error, double balance);
 
   // PaymentServiceObserver implementation
   void OnWalletCreated(payments::PaymentsService* payment_service,
                        int error_code) override;
   void OnWalletProperties(payments::PaymentsService* payment_service,
-                          payments::WalletProperties result) override;
+      int error_code,
+      std::unique_ptr<payments::WalletProperties> wallet_properties) override;
   void OnPromotion(payments::PaymentsService* payment_service,
                    payments::Promotion result) override;
   void OnPromotionCaptcha(payments::PaymentsService* payment_service,
@@ -139,44 +136,52 @@ void RewardsDOMHandler::OnWalletCreateFailed() {
 
 void RewardsDOMHandler::OnWalletProperties(
     payments::PaymentsService* payment_service,
-    payments::WalletProperties result) {
-  OnWalletProperties(result);
-}
+    int error_code,
+    std::unique_ptr<payments::WalletProperties> wallet_properties) {
+  if (error_code != 0 || !wallet_properties) {
+    // TODO - error handling
+    return;
+  }
 
-void RewardsDOMHandler::OnWalletProperties(payments::WalletProperties result) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    base::DictionaryValue* walletInfo = new base::DictionaryValue();
-    walletInfo->SetDouble("balance", result.balance);
-    walletInfo->SetString("probi", result.probi);
+    base::DictionaryValue walletInfo;
+    walletInfo.SetDouble("balance", wallet_properties->balance);
+    walletInfo.SetString("probi", wallet_properties->probi);
 
-    base::DictionaryValue* rates = new base::DictionaryValue();
-    for (auto const& rate : result.rates) {
+    auto rates = std::make_unique<base::DictionaryValue>();
+    for (auto const& rate : wallet_properties->rates) {
       rates->SetDouble(rate.first, rate.second);
     }
-    walletInfo->SetDictionary("rates", std::unique_ptr<base::DictionaryValue>(rates));
+    walletInfo.SetDictionary("rates", std::move(rates));
 
-    auto choices (std::make_unique<base::ListValue>());
-    for (double const& choice : result.parameters_choices) {
+    auto choices = std::make_unique<base::ListValue>();
+    for (double const& choice : wallet_properties->parameters_choices) {
       choices->AppendDouble(choice);
     }
-    walletInfo->SetList("choices", std::move(choices));
+    walletInfo.SetList("choices", std::move(choices));
 
-    auto range (std::make_unique<base::ListValue>());
-    for (double const& value : result.parameters_range) {
+    auto range = std::make_unique<base::ListValue>();
+    for (double const& value : wallet_properties->parameters_range) {
       range->AppendDouble(value);
     }
-    walletInfo->SetList("range", std::move(range));
+    walletInfo.SetList("range", std::move(range));
 
     // TODO add grants
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletProperties", *walletInfo);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletProperties", walletInfo);
   }
 }
 
 void RewardsDOMHandler::OnPromotion(
     payments::PaymentsService* payment_service,
     payments::Promotion result) {
-  OnPromotion(result);
+  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    base::DictionaryValue* promotion = new base::DictionaryValue();
+    promotion->SetString("promotionId", result.promotionId);
+    promotion->SetDouble("amount", result.amount);
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotion", *promotion);
+  }
 }
 
 void RewardsDOMHandler::GetPromotion(const base::ListValue* args) {
@@ -189,35 +194,21 @@ void RewardsDOMHandler::GetPromotion(const base::ListValue* args) {
   }
 }
 
-void RewardsDOMHandler::OnPromotion(payments::Promotion result) {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    base::DictionaryValue* promotion = new base::DictionaryValue();
-    promotion->SetString("promotionId", result.promotionId);
-    promotion->SetDouble("amount", result.amount);
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotion", *promotion);
-  }
-}
-
 void RewardsDOMHandler::OnPromotionCaptcha(
     payments::PaymentsService* payment_service,
     std::string image) {
-  OnPromotionCaptcha(image);
-}
-
-void RewardsDOMHandler::GetPromotionCaptcha(const base::ListValue* args) {
-  if (payments_service_) {
-    payments_service_->GetPromotionCaptcha();
-  }
-}
-
-void RewardsDOMHandler::OnPromotionCaptcha(std::string image) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     std::string encoded_string;
     base::Value chunkValue;
     base::Base64Encode(image, &encoded_string);
     chunkValue = base::Value(std::move(encoded_string));
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotionCaptcha", chunkValue);
+  }
+}
+
+void RewardsDOMHandler::GetPromotionCaptcha(const base::ListValue* args) {
+  if (payments_service_) {
+    payments_service_->GetPromotionCaptcha();
   }
 }
 
@@ -241,12 +232,6 @@ void RewardsDOMHandler::OnRecoverWallet(
     payments::PaymentsService* payment_service,
     bool error,
     double balance) {
-  OnRecoverWallet(error, balance);
-}
-
-
-
-void RewardsDOMHandler::OnRecoverWallet(bool error, double balance) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     base::DictionaryValue* recover = new base::DictionaryValue();
     recover->SetBoolean("error", error);
