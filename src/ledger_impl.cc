@@ -30,8 +30,7 @@ LedgerImpl::~LedgerImpl() {
 }
 
 void LedgerImpl::CreateWallet() {
-  initSynopsis();  // fix race condition here
-  LoadLedgerState(this);
+  LoadPublisherState(this);
 }
 
 void LedgerImpl::OnLoad(const ledger::VisitData& visit_data) {
@@ -74,13 +73,31 @@ void LedgerImpl::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
   ledger_client_->LoadLedgerState(handler);
 }
 
+void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
+                                        const std::string& data) {
+  bat_client_->loadStateCallback(
+      result == ledger::Result::OK, data);
+}
+
 void LedgerImpl::LoadPublisherState(ledger::LedgerCallbackHandler* handler) {
   ledger_client_->LoadPublisherState(handler);
 }
 
-void LedgerImpl::SaveLedgerState(const std::string& data,
-                                 ledger::LedgerCallbackHandler* handler) {
-  ledger_client_->SaveLedgerState(data, handler);
+void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
+                                        const std::string& data) {
+  if (result != ledger::Result::OK) {
+    bat_client_->registerPersona();
+    LOG(ERROR) << "Could not load publisher state";
+    return;
+    // TODO - error handling
+  }
+
+  bat_publishers_->loadState(data);
+  LoadLedgerState(this);
+}
+
+void LedgerImpl::SaveLedgerState(const std::string& data) {
+  ledger_client_->SaveLedgerState(data, this);
 }
 
 void LedgerImpl::SavePublisherState(const std::string& data,
@@ -90,17 +107,6 @@ void LedgerImpl::SavePublisherState(const std::string& data,
 
 std::string LedgerImpl::GenerateGUID() const {
   return ledger_client_->GenerateGUID();
-}
-
-void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
-                                     const std::string& data) {
-  if (result != ledger::Result::OK) {
-    LOG(ERROR) << "Could not load ledger state";
-    //return;
-    // TODO - error handling
-  }
-
-  bat_client_->loadStateOrRegisterPersonaCallback(result == ledger::Result::OK, data);
 }
 
 void LedgerImpl::OnWalletCreated(ledger::Result result) {
@@ -115,10 +121,6 @@ std::unique_ptr<ledger::LedgerURLLoader> LedgerImpl::LoadURL(const std::string& 
     ledger::LedgerCallbackHandler* handler) {
   return ledger_client_->LoadURL(
       url, headers, content, contentType, method, handler);
-}
-
-void LedgerImpl::initSynopsis() {
-  bat_publishers_->initSynopsis();
 }
 
 void LedgerImpl::RunIOTask(LedgerTaskRunnerImpl::Task io_task) {
@@ -287,36 +289,41 @@ void LedgerImpl::OnMediaRequestCallback(uint64_t duration, const braveledger_bat
   // SaveVisit(mediaPublisherInfo.publisher_, duration, true);
 }
 
-void LedgerImpl::OnWalletProperties(const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
-  ledger::WalletInfo info;
+void LedgerImpl::OnWalletProperties(ledger::Result result,
+    const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
+  std::unique_ptr<ledger::WalletInfo> info;
 
-  info.altcurrency_ = properties.altcurrency_;
-  info.probi_ = properties.probi_;
-  info.balance_ = properties.balance_;
-  info.rates_ = properties.rates_;
-  info.parameters_choices_ = properties.parameters_choices_;
-  info.parameters_range_ = properties.parameters_range_;
-  info.parameters_days_ = properties.parameters_days_;
+  if (result == ledger::Result::OK) {
+    info.reset(new ledger::WalletInfo);
+    info->altcurrency_ = properties.altcurrency_;
+    info->probi_ = properties.probi_;
+    info->balance_ = properties.balance_;
+    info->rates_ = properties.rates_;
+    info->parameters_choices_ = properties.parameters_choices_;
+    info->parameters_range_ = properties.parameters_range_;
+    info->parameters_days_ = properties.parameters_days_;
 
-  for (size_t i = 0; i < properties.grants_.size(); i ++) {
-    ledger::GRANT grant;
+    for (size_t i = 0; i < properties.grants_.size(); i ++) {
+      ledger::GRANT grant;
 
-    grant.altcurrency = properties.grants_[i].altcurrency;
-    grant.probi = properties.grants_[i].probi;
-    grant.expiryTime = properties.grants_[i].expiryTime;
+      grant.altcurrency = properties.grants_[i].altcurrency;
+      grant.probi = properties.grants_[i].probi;
+      grant.expiryTime = properties.grants_[i].expiryTime;
 
-    info.grants_.push_back(grant);
+      info->grants_.push_back(grant);
+    }
   }
 
-  ledger_client_->OnWalletProperties(info);
+  ledger_client_->OnWalletProperties(result, std::move(info));
 }
 
 void LedgerImpl::GetWalletProperties() const {
   bat_client_->getWalletProperties();
 }
 
-void LedgerImpl::GetPromotion(const std::string& lang, const std::string& paymentId) const {
-  bat_client_->getPromotion(lang, paymentId);
+void LedgerImpl::GetPromotion(const std::string& lang,
+                              const std::string& payment_id) const {
+  bat_client_->getPromotion(lang, payment_id);
 }
 
 void LedgerImpl::OnPromotion(const braveledger_bat_helper::PROMOTION_ST& properties) {
@@ -344,8 +351,10 @@ void LedgerImpl::RecoverWallet(const std::string& passPhrase) const {
   bat_client_->recoverWallet(passPhrase);
 }
 
-void LedgerImpl::OnRecoverWallet(const bool& error, const double& balance) {
-  ledger_client_->OnRecoverWallet(error, balance);
+void LedgerImpl::OnRecoverWallet(bool error, double balance) {
+  ledger_client_->OnRecoverWallet(error ? ledger::Result::ERROR :
+                                          ledger::Result::OK,
+                                  balance);
 }
 
 

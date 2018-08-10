@@ -10,6 +10,7 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/ledger_url_loader.h"
 #include "bat_helper.h"
@@ -65,8 +66,7 @@ class LedgerImpl : public ledger::Ledger,
   bool GetPublisherAllowNonVerified() const override;
   double GetContributionAmount() const override;
 
-  void SaveLedgerState(const std::string& data,
-                       ledger::LedgerCallbackHandler* handler);
+  void SaveLedgerState(const std::string& data);
   void SavePublisherState(const std::string& data,
                           ledger::LedgerCallbackHandler* handler);
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
@@ -74,7 +74,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnWalletCreated(ledger::Result);
 
-  void OnWalletProperties(const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
+  void OnWalletProperties(ledger::Result result,
+                          const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
   void GetWalletProperties() const override;
 
   void GetPromotion(const std::string& lang, const std::string& paymentId) const override;
@@ -85,7 +86,7 @@ class LedgerImpl : public ledger::Ledger,
 
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string& passPhrase) const override;
-  void OnRecoverWallet(const bool& error, const double& balance);
+  void OnRecoverWallet(bool error, double balance);
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
@@ -109,7 +110,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnMediaStop(uint32_t tab_id) override;
   void OnXHRLoad(uint32_t tab_id, const std::string& url) override;
 
-  void initSynopsis();
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                           ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info);
@@ -126,9 +126,12 @@ class LedgerImpl : public ledger::Ledger,
   void OnMediaRequestCallback(uint64_t duration,
                               const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
 
-  // LedgerCallbackHandler impl
+  // ledger::LedgerCallbacHandler implementation
+  void OnPublisherStateLoaded(ledger::Result result,
+                              const std::string& data) override;
   void OnLedgerStateLoaded(ledger::Result result,
                            const std::string& data) override;
+
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;

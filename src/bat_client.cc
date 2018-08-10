@@ -50,7 +50,7 @@ std::string BatClient::buildURL(const std::string& path, const std::string& pref
   return url + prefix + path;
 }
 
-void BatClient::loadStateOrRegisterPersonaCallback(bool success, const std::string& data) {
+void BatClient::loadStateCallback(bool success, const std::string& data) {
   if (!success) {
     LOG(ERROR) << "!!!here1";
     registerPersona();
@@ -224,18 +224,19 @@ void BatClient::getWalletProperties() {
  }
 
  void BatClient::walletPropertiesCallback(bool success,
-                                           const std::string& response) {
+                                          const std::string& response) {
 
    LOG(ERROR) << "!!!walletPropertiesCallback == " << response;
 
+   braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
    if (!success) {
+      ledger_->OnWalletProperties(ledger::Result::ERROR, properties);
      return;
    }
 
-   braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
    braveledger_bat_helper::loadFromJson(properties, response);
    state_->walletProperties_ = properties;
-   ledger_->OnWalletProperties(properties);
+   ledger_->OnWalletProperties(ledger::Result::OK, properties);
  }
 
 bool BatClient::isReadyForReconcile() {
@@ -881,7 +882,7 @@ std::string BatClient::getWalletPassphrase() const {
 void BatClient::saveState() {
   std::string data;
   braveledger_bat_helper::saveToJsonString(*state_, data);
-  ledger_->SaveLedgerState(data, this);
+  ledger_->SaveLedgerState(data);
 }
 
 void BatClient::recoverWallet(const std::string& passPhrase) {
