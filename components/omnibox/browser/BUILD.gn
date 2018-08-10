@@ -1,4 +1,8 @@
 source_set("browser") {
+  # Only //components/omnibox/browser target can depend on this target
+  # because this target expands //components/omnibox/browser implementation.
+  visibility = [ "//components/omnibox/browser" ]
+
   sources = [
     "brave_autocomplete_controller.cc",
     "brave_autocomplete_controller.h",
@@ -7,8 +11,6 @@ source_set("browser") {
     "topsites_provider.h",
   ]
 
-  # Don't make this target depends on chrome layer.
-  # This target is compiled together with //components/omnibox/browser static lib.
   deps = [
      "//skia",
      "//third_party/metrics_proto",

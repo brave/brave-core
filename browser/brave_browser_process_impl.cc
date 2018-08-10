@@ -7,8 +7,10 @@
 #include "base/bind.h"
 #include "base/task_scheduler/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/brave_stats_updater.h"
+#include "brave/browser/component_updater/brave_component_updater_configurator.h"
+#include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/profile_creation_monitor.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
@@ -27,7 +29,8 @@ BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(
     base::SequencedTaskRunner* local_state_task_runner)
-    : BrowserProcessImpl(local_state_task_runner) {
+    : BrowserProcessImpl(local_state_task_runner),
+      profile_creation_monitor_(new ProfileCreationMonitor) {
   g_browser_process = this;
   g_brave_browser_process = this;
   brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
@@ -118,4 +121,13 @@ BraveBrowserProcessImpl::https_everywhere_service() {
   https_everywhere_service_ =
     brave_shields::HTTPSEverywhereServiceFactory();
   return https_everywhere_service_.get();
+}
+
+extensions::BraveTorClientUpdater*
+BraveBrowserProcessImpl::tor_client_updater() {
+  if (tor_client_updater_)
+    return tor_client_updater_.get();
+
+  tor_client_updater_ = extensions::BraveTorClientUpdaterFactory();
+  return tor_client_updater_.get();
 }

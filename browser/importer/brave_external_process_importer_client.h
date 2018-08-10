@@ -11,6 +11,8 @@
 #include "chrome/browser/importer/external_process_importer_client.h"
 #include "net/cookies/canonical_cookie.h"
 
+struct BraveStats;
+
 class BraveExternalProcessImporterClient : public ExternalProcessImporterClient {
  public:
   BraveExternalProcessImporterClient(
@@ -26,6 +28,8 @@ class BraveExternalProcessImporterClient : public ExternalProcessImporterClient 
       uint32_t total_cookies_count) override;
   void OnCookiesImportGroup(
       const std::vector<net::CanonicalCookie>& cookies_group) override;
+  void OnStatsImportReady(
+       const BraveStats& stats) override;
 
  private:
   ~BraveExternalProcessImporterClient() override;

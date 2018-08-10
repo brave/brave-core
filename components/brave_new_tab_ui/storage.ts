@@ -46,6 +46,7 @@ export const getLoadTimeData = (state: NewTab.State) => {
     'httpsUpgradesStat', 'fingerprintingBlockedStat'].forEach((stat) => {
       state.stats[stat] = parseInt(chrome.getVariableValue(stat), 10) || 0
     })
+  state.useAlternativePrivateSearchEngine = chrome.getVariableValue('useAlternativePrivateSearchEngine') === 'true'
   return state
 }
 

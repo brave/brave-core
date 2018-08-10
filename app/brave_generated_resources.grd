@@ -89,6 +89,9 @@
       <message name="IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX" desc="Checkbox for importing cookies">
         Cookies
       </message>
+      <message name="IDS_SETTINGS_IMPORT_STATS_CHECKBOX" desc="Checkbox for importing stats">
+        Stats
+      </message>
       <message name="IDS_WIDEVINE_NOT_INSTALLED_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address line when Widevine is blocked">
         Widevine is not installed
       </message>

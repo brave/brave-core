@@ -11,11 +11,14 @@
 #include "chrome/browser/importer/profile_writer.h"
 #include "net/cookies/canonical_cookie.h"
 
+struct BraveStats;
+
 class BraveProfileWriter : public ProfileWriter {
  public:
   explicit BraveProfileWriter(Profile* profile);
 
   virtual void AddCookies(const std::vector<net::CanonicalCookie>& cookies);
+  virtual void UpdateStats(const BraveStats& stats);
 
  protected:
   friend class base::RefCountedThreadSafe<BraveProfileWriter>;

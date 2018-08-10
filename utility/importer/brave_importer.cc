@@ -13,6 +13,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+#include "brave/common/importer/brave_stats.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/autofill/core/common/password_form.h"
@@ -84,6 +85,12 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
     bridge_->NotifyItemEnded(importer::COOKIES);
   }
 
+  if ((items & importer::STATS) && !cancelled()) {
+    bridge_->NotifyItemStarted(importer::STATS);
+    ImportStats();
+    bridge_->NotifyItemEnded(importer::STATS);
+  }
+
   bridge_->NotifyEnded();
 }
 
@@ -146,21 +153,9 @@ void BraveImporter::ImportHistory() {
 
 void BraveImporter::ParseBookmarks(
     std::vector<ImportedBookmarkEntry>* bookmarks) {
-  base::FilePath session_store_path =
-    source_path_.Append(
-      base::FilePath::StringType(FILE_PATH_LITERAL("session-store-1")));
-  std::string session_store_content;
-  if (!ReadFileToString(session_store_path, &session_store_content)) {
-    LOG(ERROR) << "Reading Brave session store file failed";
+  std::unique_ptr<base::Value> session_store_json = ParseBraveSessionStore();
+  if (!session_store_json)
     return;
-  }
-
-  std::unique_ptr<base::Value> session_store_json =
-    base::JSONReader::Read(session_store_content);
-  if (!session_store_json) {
-    LOG(ERROR) << "Parsing Brave session store JSON failed";
-    return;
-  }
 
   base::Value* bookmark_folders_dict =
     session_store_json->FindKeyOfType("bookmarkFolders",
@@ -280,4 +275,51 @@ void BraveImporter::ImportBookmarks() {
       bridge_->GetLocalizedString(IDS_BOOKMARK_GROUP_FROM_BRAVE);
     bridge_->AddBookmarks(bookmarks, first_folder_name);
   }
+}
+
+std::unique_ptr<base::Value> BraveImporter::ParseBraveSessionStore() {
+  base::FilePath session_store_path =
+    source_path_.Append(
+      base::FilePath::StringType(FILE_PATH_LITERAL("session-store-1")));
+  std::string session_store_content;
+  if (!ReadFileToString(session_store_path, &session_store_content)) {
+    LOG(ERROR) << "Reading Brave session-store-1 file failed";
+    return nullptr;
+  }
+
+  std::unique_ptr<base::Value> session_store_json =
+    base::JSONReader::Read(session_store_content);
+  if (!session_store_json) {
+    LOG(ERROR) << "Parsing Brave session-store-1 JSON failed";
+  }
+  return session_store_json;
+}
+
+void BraveImporter::ImportStats() {
+  std::unique_ptr<base::Value> session_store_json = ParseBraveSessionStore();
+  if (!session_store_json)
+    return;
+
+  base::Value* adblock_count =
+    session_store_json->FindPathOfType({"adblock", "count"},
+                                       base::Value::Type::INTEGER);
+  base::Value* trackingProtection_count =
+    session_store_json->FindPathOfType({"trackingProtection", "count"},
+                                       base::Value::Type::INTEGER);
+  base::Value* httpsEverywhere_count =
+    session_store_json->FindPathOfType({"httpsEverywhere", "count"},
+                                       base::Value::Type::INTEGER);
+
+  BraveStats stats;
+  if (adblock_count) {
+    stats.adblock_count = adblock_count->GetInt();
+  }
+  if (trackingProtection_count) {
+    stats.trackingProtection_count = trackingProtection_count->GetInt();
+  }
+  if (httpsEverywhere_count) {
+    stats.httpsEverywhere_count = httpsEverywhere_count->GetInt();
+  }
+
+  bridge_->UpdateStats(stats);
 }

@@ -16,4 +16,8 @@ void BraveInProcessImporterBridge::SetCookies(
   writer_->AddCookies(cookies);
 }
 
+void BraveInProcessImporterBridge::UpdateStats(const BraveStats& stats) {
+  writer_->UpdateStats(stats);
+}
+
 BraveInProcessImporterBridge::~BraveInProcessImporterBridge() {}

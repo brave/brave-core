@@ -31,7 +31,7 @@ def transpile_web_uis(production, target_gen_dir, env=None):
   else:
     args = [NPM, 'run', 'web-ui-dev']
 
-  env["TARGET_GEN_DIR"] = target_gen_dir
+  env["TARGET_GEN_DIR"] = os.path.abspath(target_gen_dir)
   dirname = os.path.abspath(os.path.join(__file__, '..', '..'))
   with scoped_cwd(dirname):
     execute_stdout(args, env)
