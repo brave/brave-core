@@ -116,6 +116,8 @@ class TabManagerTests: XCTestCase {
         super.tearDown()
     }
 
+    // BRAVE TODO: We no longer "store tabs", happens async from CoreData, so this test has to reflect CD instead
+    /*
     func testTabManagerCallsTabManagerStateDelegateOnStoreChangesWithNormalTabs() {
         let profile = TabManagerMockProfile()
         let manager = TabManager(prefs: profile.prefs, imageStore: nil)
@@ -134,6 +136,7 @@ class TabManagerTests: XCTestCase {
         
         XCTAssertEqual(stateDelegate.numberOfTabsStored, 3, "Expected state delegate to have been called with 3 tabs, but called with \(stateDelegate.numberOfTabsStored)")
     }
+     */
 
     func testTabManagerDoesNotCallTabManagerStateDelegateOnStoreChangesWithPrivateTabs() {
         let profile = TabManagerMockProfile()
