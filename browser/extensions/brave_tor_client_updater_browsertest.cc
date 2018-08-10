@@ -102,7 +102,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientInstalls) {
 
 // Load the Tor client updater extension and verify that we can launch
 // the client.
-IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientLaunches) {
+IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, DISABLED_TorClientLaunches) {
   SetComponentIdAndBase64PublicKeyForTest(
       kTorClientUpdaterComponentTestId,
       kTorClientUpdaterComponentTestBase64PublicKey);
