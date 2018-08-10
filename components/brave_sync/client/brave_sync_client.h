@@ -81,7 +81,12 @@ public:
   virtual void LoadClient() = 0;
 
   // Browser to BraveSync messages
-  virtual void SendBrowserToSync(const std::string &command, const std::string &arg1) = 0;
+  virtual void SendBrowserToSync(
+      const std::string &message,
+      const base::Value &arg1,
+      const base::Value &arg2,
+      const base::Value &arg3,
+      const base::Value &arg4) = 0;
   //GOT_INIT_DATA
   //FETCH_SYNC_RECORDS
   //FETCH_SYNC_DEVICES

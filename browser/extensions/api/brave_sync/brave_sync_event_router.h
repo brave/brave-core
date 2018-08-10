@@ -19,6 +19,12 @@ public:
 
   void BrowserToBackgroundPage(const std::string &arg1);
 
+  void BrowserToBackgroundPageRaw(const std::string &message,
+    const base::Value &arg1,
+    const base::Value &arg2,
+    const base::Value &arg3,
+    const base::Value &arg4);
+
 private:
   Profile* profile_;
 };

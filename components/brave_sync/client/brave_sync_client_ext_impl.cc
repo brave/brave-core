@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/extensions/api/brave_sync/brave_sync_event_router.h"
 #include "brave/components/brave_sync/client/brave_sync_client_ext_impl.h"
 #include "base/logging.h"
 
@@ -9,6 +10,19 @@ namespace brave_sync {
 
 BraveSyncClientExtImpl::BraveSyncClientExtImpl() : handler_(nullptr) {
   ;
+}
+
+BraveSyncClientExtImpl::~BraveSyncClientExtImpl() {
+  ;
+}
+
+void BraveSyncClientExtImpl::SetProfile(Profile *profile) {
+  DCHECK(profile);
+  DCHECK(!brave_sync_event_router_);
+
+  if (!brave_sync_event_router_) {
+    brave_sync_event_router_ = std::make_unique<extensions::BraveSyncEventRouter>(profile);
+  }
 }
 
 void BraveSyncClientExtImpl::SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) {
@@ -21,8 +35,15 @@ void BraveSyncClientExtImpl::LoadClient() {
   ;
 }
 
-void BraveSyncClientExtImpl::SendBrowserToSync(const std::string &command, const std::string &arg1) {
-  ;
+void BraveSyncClientExtImpl::SendBrowserToSync(
+  const std::string &message,
+  const base::Value &arg1,
+  const base::Value &arg2,
+  const base::Value &arg3,
+  const base::Value &arg4) {
+  DCHECK(!brave_sync_event_router_);
+
+  brave_sync_event_router_->BrowserToBackgroundPageRaw(message, arg1, arg2, arg3, arg4);
 }
 
 void BraveSyncClientExtImpl::SendGotInitDataStr(const std::string &seed, const std::string &device_id, const std::string & config) {

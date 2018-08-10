@@ -25,7 +25,12 @@ public:
   void LoadClient() override;
 
   // Browser to BraveSync messages
-  void SendBrowserToSync(const std::string &command, const std::string &arg1) override;
+  void SendBrowserToSync(
+      const std::string &message,
+      const base::Value &arg1,
+      const base::Value &arg2,
+      const base::Value &arg3,
+      const base::Value &arg4) override;
 
   void SendGotInitDataStr(const std::string &seed, const std::string &device_id, const std::string & config) override;
   void SendFetchSyncRecords(

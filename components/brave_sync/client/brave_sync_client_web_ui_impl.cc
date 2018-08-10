@@ -23,7 +23,12 @@ void BraveSyncClientWebUiImpl::LoadClient() {
   sync_js_layer_->LoadJsLibScript();
 }
 
-void BraveSyncClientWebUiImpl::SendBrowserToSync(const std::string &command, const std::string &arg1)  {
+void BraveSyncClientWebUiImpl::SendBrowserToSync(
+    const std::string &message,
+    const base::Value &arg1,
+    const base::Value &arg2,
+    const base::Value &arg3,
+    const base::Value &arg4) {
   ;
 }
 

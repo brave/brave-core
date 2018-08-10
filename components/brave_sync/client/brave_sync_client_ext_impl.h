@@ -8,12 +8,19 @@
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "base/macros.h"
 
+class Profile;
+namespace extensions {
+class BraveSyncEventRouter;
+}
+
 namespace brave_sync {
 
 class BraveSyncClientExtImpl : public BraveSyncClient {
 public:
   BraveSyncClientExtImpl();
-  ~BraveSyncClientExtImpl() override = default;
+  ~BraveSyncClientExtImpl() override;
+
+  void SetProfile(Profile *profile);
 
   // BraveSyncClient overrides
 
@@ -25,7 +32,12 @@ public:
   void LoadClient() override;
 
   // Browser to BraveSync messages
-  void SendBrowserToSync(const std::string &command, const std::string &arg1) override;
+  void SendBrowserToSync(
+    const std::string &message,
+    const base::Value &arg1,
+    const base::Value &arg2,
+    const base::Value &arg3,
+    const base::Value &arg4) override;
 
   void SendGotInitDataStr(const std::string &seed, const std::string &device_id, const std::string & config) override;
   void SendFetchSyncRecords(
@@ -44,6 +56,7 @@ public:
 private:
   DISALLOW_COPY_AND_ASSIGN(BraveSyncClientExtImpl);
   SyncLibToBrowserHandler *handler_;
+  std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
 };
 
 } // namespace brave_sync
