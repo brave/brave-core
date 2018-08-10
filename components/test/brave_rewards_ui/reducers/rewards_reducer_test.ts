@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global chrome */
 
-import rewardsReducer from '../../../brave_rewards_ui/reducers/rewards_reducer'
-import * as actions from '../../../brave_rewards_ui/actions/rewards_actions'
-import { types } from '../../../brave_rewards_ui/constants/rewards_types'
+import rewardsReducer from '../../../brave_rewards/ui/reducers/rewards_reducer'
+import * as actions from '../../../brave_rewards/ui/actions/rewards_actions'
+import { types } from '../../../brave_rewards/ui/constants/rewards_types'
 
 describe('rewardsReducer', () => {
   it('should handle initial state', () => {

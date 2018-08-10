@@ -6,10 +6,10 @@
 
 #include "base/base64.h"
 
-#include "brave/browser/payments/payments_service.h"
-#include "brave/browser/payments/wallet_properties.h"
-#include "brave/browser/payments/payments_service_factory.h"
-#include "brave/browser/payments/payments_service_observer.h"
+#include "brave/components/brave_rewards/browser/payments_service.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/payments_service_factory.h"
+#include "brave/components/brave_rewards/browser/payments_service_observer.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"

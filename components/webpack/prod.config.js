@@ -7,7 +7,7 @@ module.exports = {
   entry: {
     brave_adblock: path.join(__dirname, '../brave_adblock_ui/brave_adblock'),
     brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
-    brave_rewards: path.join(__dirname, '../brave_rewards_ui/brave_rewards'),
+    brave_rewards: path.join(__dirname, '../brave_rewards/ui/brave_rewards'),
     brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome')
   },
   output: {

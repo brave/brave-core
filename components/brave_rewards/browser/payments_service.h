@@ -9,7 +9,7 @@
 
 #include "base/macros.h"
 #include "base/observer_list.h"
-#include "brave/browser/payments/content_site.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"

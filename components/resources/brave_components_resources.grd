@@ -76,7 +76,7 @@
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
 
       <!-- WebUI Brave Rewards resources -->
-      <include name="IDR_BRAVE_REWARDS_HTML" file="../brave_rewards_ui/brave_rewards.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_HTML" file="../brave_rewards/ui/brave_rewards.html" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_JS" file="${root_gen_dir}/brave/brave_rewards.bundle.js" type="BINDATA" use_base_dir="false" />
 
       <!-- WebUI adblock resources -->
@@ -227,7 +227,7 @@ PrivateSearch with DuckDuckGo</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="">add funds</message> 
+      <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="">add funds</message>
       <message name="IDS_BRAVE_UI_ALLOW_TIP" desc="">Allow tips on</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
       <message name="IDS_BRAVE_UI_CANCEL" desc="">Cancel</message>
