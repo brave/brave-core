@@ -347,8 +347,8 @@ extension PopoverController: BasicAnimationControllerDelegate {
         contentController.view.frame = CGRect(origin: .zero, size: popoverContext.presentedSize)
         
         containerView.snp.makeConstraints {
-            $0.left.greaterThanOrEqualTo(viewController.view.snp.left).offset(outerMargins.left).priority(UILayoutPriority.required.rawValue)
-            $0.right.lessThanOrEqualTo(viewController.view.snp.right).offset(-outerMargins.right).priority(UILayoutPriority.required.rawValue)
+            $0.left.greaterThanOrEqualTo(viewController.view.snp.left).offset(outerMargins.left)
+            $0.right.lessThanOrEqualTo(viewController.view.snp.right).offset(-outerMargins.right)
         }
         
         let centerX = containerView.centerXAnchor.constraint(equalTo: popoverContext.originView.centerXAnchor)
