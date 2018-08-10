@@ -17,6 +17,7 @@ action("sign_app") {
 
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/sign_app.sh"
+  provisioning_profile = "//brave/build/mac/$brave_channel.provisionprofile"
 
   inputs = [
     shell_script,
@@ -33,7 +34,8 @@ action("sign_app") {
     rebase_path(_target_app_path),
     rebase_path(_packaging_dir),
     keychain_db,
-    mac_signing_identifier
+    mac_signing_identifier,
+    provisioning_profile,
   ]
   deps = [
     "//brave:chrome_app",
