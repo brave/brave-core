@@ -18,7 +18,7 @@ TemplateURLData GetPrivateSearchEngineData() {
   private_search_engine_data.SetShortName(base::ASCIIToUTF16("DuckDuckGo"));
   private_search_engine_data.SetKeyword(base::ASCIIToUTF16("duckduckgo.com"));
   private_search_engine_data.SetURL(
-      "https://duckduckgo.com/?q={searchTerms}&atb=v128-6_e");
+      "https://duckduckgo.com/?q={searchTerms}&t=brave");
   private_search_engine_data.favicon_url =
       GURL("https://duckduckgo.com/favicon.ico");
   private_search_engine_data.suggestions_url =
