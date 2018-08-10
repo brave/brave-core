@@ -82,10 +82,11 @@ class PaymentsServiceImpl : public PaymentsService,
   void OnPublisherStateLoaded(ledger::LedgerCallbackHandler* handler,
                               const std::string& data);
   void TriggerOnWalletCreated(int error_code);
-  void TriggerOnWalletProperties(const ledger::WalletInfo result);
+  void TriggerOnWalletProperties(int error_code,
+                                 std::unique_ptr<ledger::WalletInfo> result);
   void TriggerOnPromotion(const ledger::Promo result);
-  void TriggerOnPromotionCaptcha(std::string image);
-  void TriggerOnRecoverWallet(const bool error, const double balance);
+  void TriggerOnPromotionCaptcha(const std::string& image);
+  void TriggerOnRecoverWallet(bool error, double balance);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
@@ -99,10 +100,11 @@ class PaymentsServiceImpl : public PaymentsService,
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletCreated(ledger::Result result) override;
-  void OnWalletProperties(ledger::WalletInfo result) override;
+  void OnWalletProperties(ledger::Result result,
+                          std::unique_ptr<ledger::WalletInfo> info) override;
   void OnPromotion(ledger::Promo result) override;
-  void OnPromotionCaptcha(std::string image) override;
-  void OnRecoverWallet(const bool& error, const double& balance) override;
+  void OnPromotionCaptcha(const std::string& image) override;
+  void OnRecoverWallet(bool error, double balance) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;

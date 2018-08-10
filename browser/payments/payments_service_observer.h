@@ -18,8 +18,10 @@ class PaymentsServiceObserver {
 
   virtual void OnWalletCreated(PaymentsService* payment_service,
                                int error_code) {};
-  virtual void OnWalletProperties(PaymentsService* payment_service,
-                                  payments::WalletProperties properties) {};
+  virtual void OnWalletProperties(
+      PaymentsService* payment_service,
+      int error_code,
+      std::unique_ptr<payments::WalletProperties> properties) {};
   virtual void OnPromotion(PaymentsService* payment_service,
                            payments::Promotion properties) {};
   virtual void OnPromotionCaptcha(PaymentsService* payment_service,

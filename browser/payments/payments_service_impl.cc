@@ -250,19 +250,20 @@ void PaymentsServiceImpl::OnWalletCreated(ledger::Result result) {
   TriggerOnWalletCreated(result);
 }
 
-void PaymentsServiceImpl::OnWalletProperties(ledger::WalletInfo result) {
-  TriggerOnWalletProperties(result);
+void PaymentsServiceImpl::OnWalletProperties(ledger::Result result,
+    std::unique_ptr<ledger::WalletInfo> wallet_info) {
+  TriggerOnWalletProperties(result, std::move(wallet_info));
 }
 
 void PaymentsServiceImpl::OnPromotion(ledger::Promo result) {
   TriggerOnPromotion(result);
 }
 
-void PaymentsServiceImpl::OnPromotionCaptcha(std::string image) {
+void PaymentsServiceImpl::OnPromotionCaptcha(const std::string& image) {
   TriggerOnPromotionCaptcha(image);
 }
 
-void PaymentsServiceImpl::OnRecoverWallet(const bool& error, const double& balance) {
+void PaymentsServiceImpl::OnRecoverWallet(bool error, double balance) {
   TriggerOnRecoverWallet(error, balance);
 }
 
@@ -418,7 +419,8 @@ void PaymentsServiceImpl::OnPublisherInfoListLoaded(
   callback(std::cref(list), next_record);
 }
 
-std::unique_ptr<ledger::LedgerURLLoader> PaymentsServiceImpl::LoadURL(const std::string& url,
+std::unique_ptr<ledger::LedgerURLLoader> PaymentsServiceImpl::LoadURL(
+    const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
@@ -484,36 +486,41 @@ void PaymentsServiceImpl::TriggerOnWalletCreated(int error_code) {
     observer.OnWalletCreated(this, error_code);
 }
 
-void PaymentsServiceImpl::TriggerOnWalletProperties(const ledger::WalletInfo info) {
-  payments::WalletProperties properties;
+void PaymentsServiceImpl::TriggerOnWalletProperties(int error_code,
+    std::unique_ptr<ledger::WalletInfo> wallet_info) {
+  std::unique_ptr<payments::WalletProperties> wallet_properties;
 
-  properties.probi = info.probi_;
-  properties.balance = info.balance_;
-  properties.rates = info.rates_;
-  properties.parameters_choices = info.parameters_choices_;
-  properties.parameters_range = info.parameters_range_;
-  properties.parameters_days = info.parameters_days_;
+  if (wallet_info) {
+    wallet_properties.reset(new payments::WalletProperties);
+    wallet_properties->probi = wallet_info->probi_;
+    wallet_properties->balance = wallet_info->balance_;
+    wallet_properties->rates = wallet_info->rates_;
+    wallet_properties->parameters_choices = wallet_info->parameters_choices_;
+    wallet_properties->parameters_range = wallet_info->parameters_range_;
+    wallet_properties->parameters_days = wallet_info->parameters_days_;
 
-  for (size_t i = 0; i < info.grants_.size(); i ++) {
-    payments::Grant grant;
+    for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
+      payments::Grant grant;
 
-    grant.altcurrency = info.grants_[i].altcurrency;
-    grant.probi = info.grants_[i].probi;
-    grant.expiryTime = info.grants_[i].expiryTime;
+      grant.altcurrency = wallet_info->grants_[i].altcurrency;
+      grant.probi = wallet_info->grants_[i].probi;
+      grant.expiryTime = wallet_info->grants_[i].expiryTime;
 
-    properties.grants.push_back(grant);
+      wallet_properties->grants.push_back(grant);
+    }
   }
 
   for (auto& observer : observers_)
-    observer.OnWalletProperties(this, properties);
+    observer.OnWalletProperties(this, error_code, std::move(wallet_properties));
 }
 
 void PaymentsServiceImpl::GetWalletProperties() {
   ledger_->GetWalletProperties();
 }
 
-void PaymentsServiceImpl::GetPromotion(const std::string& lang, const std::string& paymentId) {
-  ledger_->GetPromotion(lang, paymentId);
+void PaymentsServiceImpl::GetPromotion(const std::string& lang,
+    const std::string& payment_id) {
+  ledger_->GetPromotion(lang, payment_id);
 }
 
 void PaymentsServiceImpl::TriggerOnPromotion(const ledger::Promo result) {
@@ -530,7 +537,7 @@ void PaymentsServiceImpl::GetPromotionCaptcha() {
   ledger_->GetPromotionCaptcha();
 }
 
-void PaymentsServiceImpl::TriggerOnPromotionCaptcha(std::string image) {
+void PaymentsServiceImpl::TriggerOnPromotionCaptcha(const std::string& image) {
   for (auto& observer : observers_)
     observer.OnPromotionCaptcha(this, image);
 }
@@ -543,7 +550,7 @@ void PaymentsServiceImpl::RecoverWallet(const std::string passPhrase) const {
   return ledger_->RecoverWallet(passPhrase);
 }
 
-void PaymentsServiceImpl::TriggerOnRecoverWallet(const bool error, const double balance) {
+void PaymentsServiceImpl::TriggerOnRecoverWallet(bool error, double balance) {
   for (auto& observer : observers_)
     observer.OnRecoverWallet(this, error, balance);
 }
