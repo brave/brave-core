@@ -1417,6 +1417,26 @@ extension BrowserViewController: URLBarDelegate {
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView) {
         dismissVisibleMenus()
     }
+    
+    func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView) {
+        // BRAVE TODO: Insert shield block stats here
+        guard let url = tabManager.selectedTab?.url else { return }
+        let shields = ShieldsViewController(url: url, shieldBlockStats: nil)
+        shields.shieldsSettingsChanged = { [unowned self] _ in
+            // Reload this tab. This will also trigger an update of the brave icon in `TabLocationView` if
+            // the setting changed is the global `.AllOff` shield
+            self.tabManager.selectedTab?.reload()
+            
+            // In 1.6 we "reload" the whole web view state, dumping caches, etc. (reload():BraveWebView.swift:495)
+            // BRAVE TODO: Port over proper tab reloading with Shields
+        }
+        let popover = PopoverController(contentController: shields, contentSizeBehavior: .preferredContentSize)
+        if UIDevice.current.orientation.isPortrait {
+            // Leave some space near the bottom for easier dismissal
+            popover.outerMargins.bottom = 80.0
+        }
+        popover.present(from: urlBar.locationView.shieldsButton, on: self)
+    }
 }
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
@@ -1466,23 +1486,11 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         guard let selectedTab = tabManager.selectedTab else { return }
         
         let homePanel = HomeMenuController(profile: profile, tabState: selectedTab.tabState)
-        homePanel.preferredContentSize = CGSize(width: 320, height: 600.0)
+        homePanel.preferredContentSize = CGSize(width: PopoverController.preferredPopoverWidth, height: 600.0)
         homePanel.delegate = self
         //        homePanel.view.heightAnchor.constraint(equalToConstant: 580.0).isActive = true
         let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
         popover.present(from: button, on: self)
-        return;
-
-        // ensure that any keyboards or spinners are dismissed before presenting the menu
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        var actions: [[PhotonActionSheetItem]] = []
-
-        actions.append(getHomePanelActions())
-        actions.append(getOtherPanelActions(vcDelegate: self))
-        // force a modal if the menu is being displayed in compact split screen
-        let isCompact = traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact
-        let shouldSuppress = isCompact && UIDevice.current.userInterfaceIdiom == .pad
-        presentSheetWith(actions: actions, on: self, from: button, suppressPopover: shouldSuppress)
     }
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
