@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace payments {
+namespace brave_rewards {
   struct Promotion {
     Promotion();
     ~Promotion();
@@ -17,6 +17,6 @@ namespace payments {
     double amount;
   };
 
-}  // namespace payments
+}  // namespace brave_rewards
 
 #endif //BRAVE_BROWSER_PAYMENTS_PROMOTION_

@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave/components/brave_rewards/browser/payments_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 
 #include <functional>
@@ -16,7 +16,7 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/wallet_info.h"
-#include "brave/components/brave_rewards/browser/payments_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/publisher_info_backend.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
@@ -27,7 +27,7 @@
 using namespace net::registry_controlled_domains;
 using namespace std::placeholders;
 
-namespace payments {
+namespace brave_rewards {
 
 namespace {
 
@@ -130,7 +130,7 @@ std::unique_ptr<ledger::PublisherInfo> LoadPublisherInfoOnFileTaskRunner(
 }
 
 // `callback` has a WeakPtr so this won't crash if the file finishes
-// writing after PaymentsServiceImpl has been destroyed
+// writing after RewardsServiceImpl has been destroyed
 void PostWriteCallback(
     const base::Callback<void(bool success)>& callback,
     scoped_refptr<base::SequencedTaskRunner> reply_task_runner,
@@ -159,7 +159,7 @@ static uint64_t next_id = 1;
 
 }  // namespace
 
-PaymentsServiceImpl::PaymentsServiceImpl(Profile* profile) :
+RewardsServiceImpl::RewardsServiceImpl(Profile* profile) :
     profile_(profile),
     ledger_(ledger::Ledger::CreateInstance(this)),
     file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
@@ -171,15 +171,15 @@ PaymentsServiceImpl::PaymentsServiceImpl(Profile* profile) :
     publisher_info_backend_(new PublisherInfoBackend(publisher_info_db_path_)) {
 }
 
-PaymentsServiceImpl::~PaymentsServiceImpl() {
+RewardsServiceImpl::~RewardsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, publisher_info_backend_.release());
 }
 
-void PaymentsServiceImpl::CreateWallet() {
+void RewardsServiceImpl::CreateWallet() {
   ledger_->CreateWallet();
 }
 
-void PaymentsServiceImpl::GetContentSiteList(
+void RewardsServiceImpl::GetContentSiteList(
     uint32_t start, uint32_t limit,
     const GetContentSiteListCallback& callback) {
   ledger_->GetPublisherInfoList(start, limit,
@@ -190,7 +190,7 @@ void PaymentsServiceImpl::GetContentSiteList(
                 std::cref(callback), _1, _2));
 }
 
-void PaymentsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
+void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   auto origin = url.GetOrigin();
   const std::string tld =
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
@@ -203,86 +203,86 @@ void PaymentsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   ledger_->OnLoad(data);
 }
 
-void PaymentsServiceImpl::OnUnload(SessionID tab_id) {
+void RewardsServiceImpl::OnUnload(SessionID tab_id) {
   ledger_->OnUnload(tab_id.id());
 }
 
-void PaymentsServiceImpl::OnShow(SessionID tab_id) {
+void RewardsServiceImpl::OnShow(SessionID tab_id) {
   ledger_->OnShow(tab_id.id());
 }
 
-void PaymentsServiceImpl::OnHide(SessionID tab_id) {
+void RewardsServiceImpl::OnHide(SessionID tab_id) {
   ledger_->OnHide(tab_id.id());
 }
 
-void PaymentsServiceImpl::OnForeground(SessionID tab_id) {
+void RewardsServiceImpl::OnForeground(SessionID tab_id) {
   ledger_->OnForeground(tab_id.id());
 }
 
-void PaymentsServiceImpl::OnBackground(SessionID tab_id) {
+void RewardsServiceImpl::OnBackground(SessionID tab_id) {
   ledger_->OnBackground(tab_id.id());
 }
 
-void PaymentsServiceImpl::OnMediaStart(SessionID tab_id) {
+void RewardsServiceImpl::OnMediaStart(SessionID tab_id) {
   ledger_->OnMediaStart(tab_id.id());
 }
 
-void PaymentsServiceImpl::OnMediaStop(SessionID tab_id) {
+void RewardsServiceImpl::OnMediaStop(SessionID tab_id) {
   ledger_->OnMediaStop(tab_id.id());
 }
 
-void PaymentsServiceImpl::OnXHRLoad(SessionID tab_id, const GURL& url) {
+void RewardsServiceImpl::OnXHRLoad(SessionID tab_id, const GURL& url) {
   // TODO(bridiver) - add query parts
   ledger_->OnXHRLoad(tab_id.id(), url.spec());
 }
 
-std::string PaymentsServiceImpl::GenerateGUID() const {
+std::string RewardsServiceImpl::GenerateGUID() const {
   return base::GenerateGUID();
 }
 
-void PaymentsServiceImpl::Shutdown() {
+void RewardsServiceImpl::Shutdown() {
   fetchers_.clear();
   ledger_.reset();
-  PaymentsService::Shutdown();
+  RewardsService::Shutdown();
 }
 
-void PaymentsServiceImpl::OnWalletCreated(ledger::Result result) {
+void RewardsServiceImpl::OnWalletCreated(ledger::Result result) {
   TriggerOnWalletCreated(result);
 }
 
-void PaymentsServiceImpl::OnWalletProperties(ledger::Result result,
+void RewardsServiceImpl::OnWalletProperties(ledger::Result result,
     std::unique_ptr<ledger::WalletInfo> wallet_info) {
   TriggerOnWalletProperties(result, std::move(wallet_info));
 }
 
-void PaymentsServiceImpl::OnPromotion(ledger::Promo result) {
+void RewardsServiceImpl::OnPromotion(ledger::Promo result) {
   TriggerOnPromotion(result);
 }
 
-void PaymentsServiceImpl::OnPromotionCaptcha(const std::string& image) {
+void RewardsServiceImpl::OnPromotionCaptcha(const std::string& image) {
   TriggerOnPromotionCaptcha(image);
 }
 
-void PaymentsServiceImpl::OnRecoverWallet(bool error, double balance) {
+void RewardsServiceImpl::OnRecoverWallet(bool error, double balance) {
   TriggerOnRecoverWallet(error, balance);
 }
 
-void PaymentsServiceImpl::OnReconcileComplete(ledger::Result result,
+void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
                                               const std::string& viewing_id) {
   LOG(ERROR) << "reconcile complete " << viewing_id;
   // TODO - TriggerOnReconcileComplete
 }
 
-void PaymentsServiceImpl::LoadLedgerState(
+void RewardsServiceImpl::LoadLedgerState(
     ledger::LedgerCallbackHandler* handler) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadStateOnFileTaskRunner, ledger_state_path_),
-      base::Bind(&PaymentsServiceImpl::OnLedgerStateLoaded,
+      base::Bind(&RewardsServiceImpl::OnLedgerStateLoaded,
                      AsWeakPtr(),
                      base::Unretained(handler)));
 }
 
-void PaymentsServiceImpl::OnLedgerStateLoaded(
+void RewardsServiceImpl::OnLedgerStateLoaded(
     ledger::LedgerCallbackHandler* handler,
     const std::string& data) {
   handler->OnLedgerStateLoaded(data.empty() ? ledger::Result::ERROR
@@ -290,16 +290,16 @@ void PaymentsServiceImpl::OnLedgerStateLoaded(
                                data);
 }
 
-void PaymentsServiceImpl::LoadPublisherState(
+void RewardsServiceImpl::LoadPublisherState(
     ledger::LedgerCallbackHandler* handler) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadStateOnFileTaskRunner, publisher_state_path_),
-      base::Bind(&PaymentsServiceImpl::OnPublisherStateLoaded,
+      base::Bind(&RewardsServiceImpl::OnPublisherStateLoaded,
                      AsWeakPtr(),
                      base::Unretained(handler)));
 }
 
-void PaymentsServiceImpl::OnPublisherStateLoaded(
+void RewardsServiceImpl::OnPublisherStateLoaded(
     ledger::LedgerCallbackHandler* handler,
     const std::string& data) {
   handler->OnPublisherStateLoaded(data.empty() ? ledger::Result::ERROR
@@ -307,7 +307,7 @@ void PaymentsServiceImpl::OnPublisherStateLoaded(
                                   data);
 }
 
-void PaymentsServiceImpl::SaveLedgerState(const std::string& ledger_state,
+void RewardsServiceImpl::SaveLedgerState(const std::string& ledger_state,
                                       ledger::LedgerCallbackHandler* handler) {
   base::ImportantFileWriter writer(
       ledger_state_path_, file_task_runner_);
@@ -316,21 +316,21 @@ void PaymentsServiceImpl::SaveLedgerState(const std::string& ledger_state,
       base::Closure(),
       base::Bind(
         &PostWriteCallback,
-        base::Bind(&PaymentsServiceImpl::OnLedgerStateSaved, AsWeakPtr(),
+        base::Bind(&RewardsServiceImpl::OnLedgerStateSaved, AsWeakPtr(),
             base::Unretained(handler)),
         base::SequencedTaskRunnerHandle::Get()));
 
   writer.WriteNow(std::make_unique<std::string>(ledger_state));
 }
 
-void PaymentsServiceImpl::OnLedgerStateSaved(
+void RewardsServiceImpl::OnLedgerStateSaved(
     ledger::LedgerCallbackHandler* handler,
     bool success) {
   handler->OnLedgerStateSaved(success ? ledger::Result::OK
                                       : ledger::Result::ERROR);
 }
 
-void PaymentsServiceImpl::SavePublisherState(const std::string& publisher_state,
+void RewardsServiceImpl::SavePublisherState(const std::string& publisher_state,
                                       ledger::LedgerCallbackHandler* handler) {
   base::ImportantFileWriter writer(publisher_state_path_, file_task_runner_);
 
@@ -338,35 +338,35 @@ void PaymentsServiceImpl::SavePublisherState(const std::string& publisher_state,
       base::Closure(),
       base::Bind(
         &PostWriteCallback,
-        base::Bind(&PaymentsServiceImpl::OnPublisherStateSaved, AsWeakPtr(),
+        base::Bind(&RewardsServiceImpl::OnPublisherStateSaved, AsWeakPtr(),
             base::Unretained(handler)),
         base::SequencedTaskRunnerHandle::Get()));
 
   writer.WriteNow(std::make_unique<std::string>(publisher_state));
 }
 
-void PaymentsServiceImpl::OnPublisherStateSaved(
+void RewardsServiceImpl::OnPublisherStateSaved(
     ledger::LedgerCallbackHandler* handler,
     bool success) {
   handler->OnPublisherStateSaved(success ? ledger::Result::OK
                                          : ledger::Result::ERROR);
 }
 
-void PaymentsServiceImpl::SavePublisherInfo(
+void RewardsServiceImpl::SavePublisherInfo(
     std::unique_ptr<ledger::PublisherInfo> publisher_info,
     ledger::PublisherInfoCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&SavePublisherInfoOnFileTaskRunner,
                     *publisher_info,
                     publisher_info_backend_.get()),
-      base::Bind(&PaymentsServiceImpl::OnPublisherInfoSaved,
+      base::Bind(&RewardsServiceImpl::OnPublisherInfoSaved,
                      AsWeakPtr(),
                      callback,
                      base::Passed(std::move(publisher_info))));
 
 }
 
-void PaymentsServiceImpl::OnPublisherInfoSaved(
+void RewardsServiceImpl::OnPublisherInfoSaved(
     ledger::PublisherInfoCallback callback,
     std::unique_ptr<ledger::PublisherInfo> info,
     bool success) {
@@ -374,24 +374,24 @@ void PaymentsServiceImpl::OnPublisherInfoSaved(
                    : ledger::Result::ERROR, std::move(info));
 }
 
-void PaymentsServiceImpl::LoadPublisherInfo(
+void RewardsServiceImpl::LoadPublisherInfo(
     const ledger::PublisherInfo::id_type& publisher_id,
     ledger::PublisherInfoCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoOnFileTaskRunner,
           publisher_id, publisher_info_backend_.get()),
-      base::Bind(&PaymentsServiceImpl::OnPublisherInfoLoaded,
+      base::Bind(&RewardsServiceImpl::OnPublisherInfoLoaded,
                      AsWeakPtr(),
                      callback));
 }
 
-void PaymentsServiceImpl::OnPublisherInfoLoaded(
+void RewardsServiceImpl::OnPublisherInfoLoaded(
     ledger::PublisherInfoCallback callback,
     std::unique_ptr<ledger::PublisherInfo> info) {
   callback(ledger::Result::OK, std::move(info));
 }
 
-void PaymentsServiceImpl::LoadPublisherInfoList(
+void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
@@ -400,14 +400,14 @@ void PaymentsServiceImpl::LoadPublisherInfoList(
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
                     start, limit, filter,
                     publisher_info_backend_.get()),
-      base::Bind(&PaymentsServiceImpl::OnPublisherInfoListLoaded,
+      base::Bind(&RewardsServiceImpl::OnPublisherInfoListLoaded,
                     AsWeakPtr(),
                     start,
                     limit,
                     callback));
 }
 
-void PaymentsServiceImpl::OnPublisherInfoListLoaded(
+void RewardsServiceImpl::OnPublisherInfoListLoaded(
     uint32_t start,
     uint32_t limit,
     ledger::GetPublisherInfoListCallback callback,
@@ -419,7 +419,7 @@ void PaymentsServiceImpl::OnPublisherInfoListLoaded(
   callback(std::cref(list), next_record);
 }
 
-std::unique_ptr<ledger::LedgerURLLoader> PaymentsServiceImpl::LoadURL(
+std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
     const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
@@ -450,7 +450,7 @@ std::unique_ptr<ledger::LedgerURLLoader> PaymentsServiceImpl::LoadURL(
   return loader;
 }
 
-void PaymentsServiceImpl::OnURLFetchComplete(
+void RewardsServiceImpl::OnURLFetchComplete(
     const net::URLFetcher* source) {
   if (fetchers_.find(source) == fetchers_.end())
     return;
@@ -468,30 +468,30 @@ void PaymentsServiceImpl::OnURLFetchComplete(
   callback.Run(response_code, body);
 }
 
-void PaymentsServiceImpl::RunIOTask(
+void RewardsServiceImpl::RunIOTask(
     std::unique_ptr<ledger::LedgerTaskRunner> task) {
   file_task_runner_->PostTask(FROM_HERE,
       base::BindOnce(&ledger::LedgerTaskRunner::Run, std::move(task)));
 }
 
-void PaymentsServiceImpl::RunTask(
+void RewardsServiceImpl::RunTask(
       std::unique_ptr<ledger::LedgerTaskRunner> task) {
   content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
       base::BindOnce(&ledger::LedgerTaskRunner::Run,
                      std::move(task)));
 }
 
-void PaymentsServiceImpl::TriggerOnWalletCreated(int error_code) {
+void RewardsServiceImpl::TriggerOnWalletCreated(int error_code) {
   for (auto& observer : observers_)
     observer.OnWalletCreated(this, error_code);
 }
 
-void PaymentsServiceImpl::TriggerOnWalletProperties(int error_code,
+void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     std::unique_ptr<ledger::WalletInfo> wallet_info) {
-  std::unique_ptr<payments::WalletProperties> wallet_properties;
+  std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
 
   if (wallet_info) {
-    wallet_properties.reset(new payments::WalletProperties);
+    wallet_properties.reset(new brave_rewards::WalletProperties);
     wallet_properties->probi = wallet_info->probi_;
     wallet_properties->balance = wallet_info->balance_;
     wallet_properties->rates = wallet_info->rates_;
@@ -500,7 +500,7 @@ void PaymentsServiceImpl::TriggerOnWalletProperties(int error_code,
     wallet_properties->parameters_days = wallet_info->parameters_days_;
 
     for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
-      payments::Grant grant;
+      brave_rewards::Grant grant;
 
       grant.altcurrency = wallet_info->grants_[i].altcurrency;
       grant.probi = wallet_info->grants_[i].probi;
@@ -514,17 +514,17 @@ void PaymentsServiceImpl::TriggerOnWalletProperties(int error_code,
     observer.OnWalletProperties(this, error_code, std::move(wallet_properties));
 }
 
-void PaymentsServiceImpl::GetWalletProperties() {
+void RewardsServiceImpl::GetWalletProperties() {
   ledger_->GetWalletProperties();
 }
 
-void PaymentsServiceImpl::GetPromotion(const std::string& lang,
+void RewardsServiceImpl::GetPromotion(const std::string& lang,
     const std::string& payment_id) {
   ledger_->GetPromotion(lang, payment_id);
 }
 
-void PaymentsServiceImpl::TriggerOnPromotion(const ledger::Promo result) {
-  payments::Promotion properties;
+void RewardsServiceImpl::TriggerOnPromotion(const ledger::Promo result) {
+  brave_rewards::Promotion properties;
 
   properties.promotionId = result.promotionId;
   properties.amount = result.amount;
@@ -533,27 +533,27 @@ void PaymentsServiceImpl::TriggerOnPromotion(const ledger::Promo result) {
     observer.OnPromotion(this, properties);
 }
 
-void PaymentsServiceImpl::GetPromotionCaptcha() {
+void RewardsServiceImpl::GetPromotionCaptcha() {
   ledger_->GetPromotionCaptcha();
 }
 
-void PaymentsServiceImpl::TriggerOnPromotionCaptcha(const std::string& image) {
+void RewardsServiceImpl::TriggerOnPromotionCaptcha(const std::string& image) {
   for (auto& observer : observers_)
     observer.OnPromotionCaptcha(this, image);
 }
 
-std::string PaymentsServiceImpl::GetWalletPassphrase() const {
+std::string RewardsServiceImpl::GetWalletPassphrase() const {
   return ledger_->GetWalletPassphrase();
 }
 
-void PaymentsServiceImpl::RecoverWallet(const std::string passPhrase) const {
+void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
   return ledger_->RecoverWallet(passPhrase);
 }
 
-void PaymentsServiceImpl::TriggerOnRecoverWallet(bool error, double balance) {
+void RewardsServiceImpl::TriggerOnRecoverWallet(bool error, double balance) {
   for (auto& observer : observers_)
     observer.OnRecoverWallet(this, error, balance);
 }
 
 
-}  // namespace payments
+}  // namespace brave_rewards

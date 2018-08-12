@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_
-#define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_
+#ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_
+#define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_
 
 #include <memory>
 
@@ -19,18 +19,18 @@ namespace content {
 class NavigationHandle;
 }
 
-namespace payments {
+namespace brave_rewards {
 
-class PaymentsServiceObserver;
+class RewardsServiceObserver;
 
 using GetContentSiteListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>,
         uint32_t /* next_record */)>;
 
-class PaymentsService : public KeyedService {
+class RewardsService : public KeyedService {
  public:
-  PaymentsService();
-  ~PaymentsService() override;
+  RewardsService();
+  ~RewardsService() override;
 
   virtual void CreateWallet() = 0;
   virtual void GetWalletProperties() = 0;
@@ -51,16 +51,16 @@ class PaymentsService : public KeyedService {
   virtual void OnMediaStop(SessionID tab_id) = 0;
   virtual void OnXHRLoad(SessionID tab_id, const GURL& url) = 0;
 
-  void AddObserver(PaymentsServiceObserver* observer);
-  void RemoveObserver(PaymentsServiceObserver* observer);
+  void AddObserver(RewardsServiceObserver* observer);
+  void RemoveObserver(RewardsServiceObserver* observer);
 
  protected:
-  base::ObserverList<PaymentsServiceObserver> observers_;
+  base::ObserverList<RewardsServiceObserver> observers_;
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(PaymentsService);
+  DISALLOW_COPY_AND_ASSIGN(RewardsService);
 };
 
-}  // namespace payments
+}  // namespace brave_rewards
 
-#endif  // BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_
+#endif  // BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_

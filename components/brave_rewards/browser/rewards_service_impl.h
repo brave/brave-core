@@ -13,7 +13,7 @@
 #include "base/observer_list.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
-#include "brave/components/brave_rewards/browser/payments_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/url_request/url_fetcher_delegate.h"
 
@@ -36,17 +36,17 @@ class URLFetcher;
 
 class Profile;
 
-namespace payments {
+namespace brave_rewards {
 
 class PublisherInfoBackend;
 
-class PaymentsServiceImpl : public PaymentsService,
+class RewardsServiceImpl : public RewardsService,
                             public ledger::LedgerClient,
                             public net::URLFetcherDelegate,
-                            public base::SupportsWeakPtr<PaymentsServiceImpl> {
+                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
-  PaymentsServiceImpl(Profile* profile);
-  ~PaymentsServiceImpl() override;
+  RewardsServiceImpl(Profile* profile);
+  ~RewardsServiceImpl() override;
 
   // KeyedService:
   void Shutdown() override;
@@ -147,9 +147,9 @@ class PaymentsServiceImpl : public PaymentsService,
 
   std::map<const net::URLFetcher*, FetchCallback> fetchers_;
 
-  DISALLOW_COPY_AND_ASSIGN(PaymentsServiceImpl);
+  DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };
 
-}  // namespace history
+}  // namespace brave_rewards
 
 #endif  // BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_IMPL_

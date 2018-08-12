@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/browser/content_site.h"
 
-namespace payments {
+namespace brave_rewards {
 
 ContentSite::ContentSite(const id_type site_id) :
     id(site_id),
@@ -13,4 +13,4 @@ ContentSite::ContentSite(const id_type site_id) :
     excluded(false) {
 }
 
-}  // namespace payments
+}  // namespace brave_rewards

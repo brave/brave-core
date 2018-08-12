@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/browser/promotion.h"
 
-namespace payments {
+namespace brave_rewards {
 
   Promotion::Promotion() :
       amount(0.0) {
@@ -16,4 +16,4 @@ namespace payments {
     amount = properties.amount;
   }
 
-}  // namespace payments
+}  // namespace brave_rewards

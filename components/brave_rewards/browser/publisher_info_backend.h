@@ -13,7 +13,7 @@ namespace leveldb {
 class DB;
 }  // namespace leveldb
 
-namespace payments {
+namespace brave_rewards {
 
 class PublisherInfoBackend {
  public:
@@ -34,6 +34,6 @@ class PublisherInfoBackend {
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoBackend);
 };
 
-}  // namespace payments
+}  // namespace brave_rewards
 
 #endif  // BRAVE_BROWSER_PAYMENTS_PUBLISHER_INFO_BACKEND_
