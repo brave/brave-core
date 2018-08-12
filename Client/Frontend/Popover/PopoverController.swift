@@ -7,11 +7,23 @@ import UIKit
 import pop
 import SnapKit
 
+extension UILayoutPriority {
+    /// The priority used for the container view's width & height when using ContentSizeBehavior.preferredContentSize
+    /// or ContentSizeBehavior.fixedSize.
+    ///
+    /// Must be higher than `UILayoutPriority.defaultHigh` or width/height constraints with be ignored
+    fileprivate static let popoverPreferredOrFixedSize = UILayoutPriority(rawValue: 850.0)
+}
+
 /// A popover which presents a `UIViewController` from a point of origin
 ///
 /// - note: You must use `present(from:on:)` from an instantiated `PopoverController` to present a popover. Presenting
 /// another way will result in undefined behavior
 class PopoverController: UIViewController {
+    
+    /// The preferred popover width when using `ContentSizeBehavior.preferredContentSize` or
+    /// `ContentSizeBehavior.fixedSize`
+    static let preferredPopoverWidth: CGFloat = 320.0
     
     /// Defines the behavior of the arrow direction and how the popover presents itself
     enum ArrowDirectionBehavior {
@@ -44,6 +56,9 @@ class PopoverController: UIViewController {
     /// The arrow direction behavior for this popover
     var arrowDirectionBehavior: ArrowDirectionBehavior = .automatic
     
+    /// Whether or not to automatically dismiss the popup when the device orientation changes
+    var dismissesOnOrientationChanged = true
+    
     let contentSizeBehavior: ContentSizeBehavior
     
     private var containerViewHeightConstraint: NSLayoutConstraint?
@@ -58,6 +73,12 @@ class PopoverController: UIViewController {
         
         self.modalPresentationStyle = .overFullScreen
         self.transitioningDelegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: .UIDeviceOrientationDidChange, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @available(*, unavailable)
@@ -96,20 +117,23 @@ class PopoverController: UIViewController {
         case .autoLayout:
             break
         case .preferredContentSize:
-            containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height)
-            containerViewHeightConstraint?.priority = .defaultHigh
+            // Make sure the view has a frame before we potentially attempt to compute its preferred content size
+            view.layoutIfNeeded()
+            
+            containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height + PopoverUX.arrowSize.height)
+            containerViewHeightConstraint?.priority = .popoverPreferredOrFixedSize
             containerViewHeightConstraint?.isActive = true
             
             containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: contentController.preferredContentSize.width)
-            containerViewWidthConstraint?.priority = .defaultHigh
+            containerViewWidthConstraint?.priority = .popoverPreferredOrFixedSize
             containerViewWidthConstraint?.isActive = true
         case .fixedSize(let size):
-            containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: size.height)
-            containerViewHeightConstraint?.priority = .defaultHigh
+            containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: size.height + PopoverUX.arrowSize.height)
+            containerViewHeightConstraint?.priority = .popoverPreferredOrFixedSize
             containerViewHeightConstraint?.isActive = true
             
             containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: size.width)
-            containerViewWidthConstraint?.priority = .defaultHigh
+            containerViewWidthConstraint?.priority = .popoverPreferredOrFixedSize
             containerViewWidthConstraint?.isActive = true
         }
     }
@@ -129,7 +153,7 @@ class PopoverController: UIViewController {
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         if case .preferredContentSize = contentSizeBehavior {
             self.containerViewHeightConstraint?.springAnimate(property: kPOPLayoutConstraintConstant, key: "constant") { animation, _ in
-                animation.toValue = container.preferredContentSize.height
+                animation.toValue = container.preferredContentSize.height + PopoverUX.arrowSize.height
             }
             self.containerViewWidthConstraint?.springAnimate(property: kPOPLayoutConstraintConstant, key: "constant") { animation, _ in
                 animation.toValue = container.preferredContentSize.width
@@ -201,6 +225,12 @@ class PopoverController: UIViewController {
         )
         
         viewController.present(self, animated: true)
+    }
+    
+    @objc private func orientationChanged() {
+        if dismissesOnOrientationChanged {
+            dismiss(animated: true)
+        }
     }
 }
 
@@ -316,17 +346,9 @@ extension PopoverController: BasicAnimationControllerDelegate {
         
         contentController.view.frame = CGRect(origin: .zero, size: popoverContext.presentedSize)
         
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            NSLayoutConstraint.activate([
-                containerView.leftAnchor.constraint(greaterThanOrEqualTo: viewController.view.leftAnchor, constant: outerMargins.left),
-                containerView.rightAnchor.constraint(lessThanOrEqualTo: viewController.view.rightAnchor, constant: -outerMargins.right)
-            ])
-        } else {
-            // iPhone variant will always be full-width
-            NSLayoutConstraint.activate([
-                containerView.leftAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.leftAnchor, constant: outerMargins.left),
-                containerView.rightAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.rightAnchor, constant: -outerMargins.right)
-            ])
+        containerView.snp.makeConstraints {
+            $0.left.greaterThanOrEqualTo(viewController.view.snp.left).offset(outerMargins.left)
+            $0.right.lessThanOrEqualTo(viewController.view.snp.right).offset(-outerMargins.right)
         }
         
         let centerX = containerView.centerXAnchor.constraint(equalTo: popoverContext.originView.centerXAnchor)

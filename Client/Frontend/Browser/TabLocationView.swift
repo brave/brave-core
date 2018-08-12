@@ -6,6 +6,7 @@ import UIKit
 import Shared
 import SnapKit
 import XCGLogger
+import BraveShared
 
 private let log = Logger.browserLogger
 
@@ -13,6 +14,7 @@ protocol TabLocationViewDelegate {
     func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView)
     func tabLocationViewDidLongPressLocation(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView)
+    func tabLocationViewDidTapBraveShieldsButton(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapShield(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapPageOptions(_ tabLocationView: TabLocationView, from button: UIButton)
     func tabLocationViewDidLongPressPageOptions(_ tabLocationVIew: TabLocationView)
@@ -53,10 +55,24 @@ class TabLocationView: UIView {
             }
             updateTextWithURL()
             pageOptionsButton.isHidden = (url == nil)
-            if url == nil {
+            if let url = url {
+                shieldsButton.isHidden = url.isLocal
+            } else {
                 trackingProtectionButton.isHidden = true
+                shieldsButton.isHidden = true
             }
+            refreshShieldsStatus()
             setNeedsUpdateConstraints()
+        }
+    }
+    
+    /// Update the shields icon based on whether or not shields are enabled for this site
+    func refreshShieldsStatus() {
+        if let domain = url?.normalizedHost, let state = BraveShieldState.getStateForDomain(domain),
+            let shieldsAllOffOverride = state.isShieldOverrideEnabled(.AllOff), shieldsAllOffOverride {
+            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-off-menu-icon"), for: .normal)
+        } else {
+            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
         }
     }
 
@@ -164,6 +180,17 @@ class TabLocationView: UIView {
         return pageOptionsButton
     }()
     
+    lazy var shieldsButton: ToolbarButton = {
+        let button = ToolbarButton()
+        button.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
+        button.addTarget(self, action: #selector(tappedBraveShieldsButton), for: .touchUpInside)
+        button.isAccessibilityElement = true
+        button.imageView?.contentMode = .left
+        button.accessibilityLabel = Strings.Brave_Panel
+        button.accessibilityIdentifier = "TabLocationView.shieldsButton"
+        return button
+    }()
+    
     lazy var separatorLine: UIView = {
         let line = UIView()
         line.layer.cornerRadius = 2
@@ -194,7 +221,7 @@ class TabLocationView: UIView {
         let iconStack = UIStackView(arrangedSubviews: [spaceView, lockImageView, trackingProtectionButton])
         iconStack.spacing = TabLocationViewUX.Spacing / 2
 
-        let subviews = [iconStack, urlTextField, readerModeButton, separatorLine, pageOptionsButton]
+        let subviews = [iconStack, urlTextField, readerModeButton, separatorLine, pageOptionsButton, shieldsButton]
         contentView = UIStackView(arrangedSubviews: subviews)
         contentView.distribution = .fill
         contentView.alignment = .center
@@ -216,6 +243,11 @@ class TabLocationView: UIView {
         pageOptionsButton.snp.makeConstraints { make in
             make.size.equalTo(TabLocationViewUX.ButtonSize)
         }
+        
+        shieldsButton.snp.makeConstraints { make in
+            make.size.equalTo(TabLocationViewUX.ButtonSize)
+        }
+        
         separatorLine.snp.makeConstraints { make in
             make.width.equalTo(1)
             make.height.equalTo(26)
@@ -241,11 +273,15 @@ class TabLocationView: UIView {
 
     override var accessibilityElements: [Any]? {
         get {
-            return [lockImageView, urlTextField, readerModeButton, pageOptionsButton].filter { !$0.isHidden }
+            return [lockImageView, urlTextField, readerModeButton, pageOptionsButton, shieldsButton].filter { !$0.isHidden }
         }
         set {
             super.accessibilityElements = newValue
         }
+    }
+    
+    @objc func tappedBraveShieldsButton() {
+        delegate?.tabLocationViewDidTapBraveShieldsButton(self)
     }
 
     @objc func tapReaderModeButton() {
