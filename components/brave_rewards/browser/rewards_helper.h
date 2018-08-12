@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PAYMENTS_PAYMENTS_HELPER_
-#define BRAVE_BROWSER_PAYMENTS_PAYMENTS_HELPER_
+#ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_HELPER_
+#define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_HELPER_
 
 #include <string>
 
@@ -16,19 +16,19 @@
 
 class Browser;
 
-namespace payments {
+namespace brave_rewards {
 
-class PaymentsService;
+class RewardsService;
 
-class PaymentsHelper : public content::WebContentsObserver,
+class RewardsHelper : public content::WebContentsObserver,
                        public BrowserListObserver,
-                       public content::WebContentsUserData<PaymentsHelper> {
+                       public content::WebContentsUserData<RewardsHelper> {
  public:
-  PaymentsHelper(content::WebContents*);
-  ~PaymentsHelper() override;
+  RewardsHelper(content::WebContents*);
+  ~RewardsHelper() override;
 
  private:
-  friend class content::WebContentsUserData<PaymentsHelper>;
+  friend class content::WebContentsUserData<RewardsHelper>;
 
   // content::WebContentsObserver overrides.
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
@@ -54,11 +54,11 @@ class PaymentsHelper : public content::WebContentsObserver,
   void OnBrowserNoLongerActive(Browser* browser) override;
 
   SessionID tab_id_;
-  PaymentsService* payments_service_;  // NOT OWNED
+  RewardsService* rewards_service_;  // NOT OWNED
 
-  DISALLOW_COPY_AND_ASSIGN(PaymentsHelper);
+  DISALLOW_COPY_AND_ASSIGN(RewardsHelper);
 };
 
-}  // namespace brave_shields
+}  // namespace brave_rewards
 
-#endif  // BRAVE_BROWSER_PAYMENTS_PAYMENTS_HELPER_
+#endif  // BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_HELPER_

@@ -8,29 +8,29 @@
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/brave_rewards/browser/promotion.h"
 
-namespace payments {
+namespace brave_rewards {
 
-class PaymentsService;
+class RewardsService;
 
-class PaymentsServiceObserver {
+class RewardsServiceObserver {
  public:
-  virtual ~PaymentsServiceObserver() {}
+  virtual ~RewardsServiceObserver() {}
 
-  virtual void OnWalletCreated(PaymentsService* payment_service,
+  virtual void OnWalletCreated(RewardsService* payment_service,
                                int error_code) {};
   virtual void OnWalletProperties(
-      PaymentsService* payment_service,
+      RewardsService* payment_service,
       int error_code,
-      std::unique_ptr<payments::WalletProperties> properties) {};
-  virtual void OnPromotion(PaymentsService* payment_service,
-                           payments::Promotion properties) {};
-  virtual void OnPromotionCaptcha(PaymentsService* payment_service,
+      std::unique_ptr<brave_rewards::WalletProperties> properties) {};
+  virtual void OnPromotion(RewardsService* payment_service,
+                           brave_rewards::Promotion properties) {};
+  virtual void OnPromotionCaptcha(RewardsService* payment_service,
                                   std::string image) {};
-  virtual void OnRecoverWallet(PaymentsService* payment_service,
+  virtual void OnRecoverWallet(RewardsService* payment_service,
                                bool error,
                                double balance) {};
 };
 
-}  // namespace payments
+}  // namespace brave_rewards
 
 #endif  // BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_

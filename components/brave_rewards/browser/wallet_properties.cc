@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 
-namespace payments {
+namespace brave_rewards {
 
   WalletProperties::WalletProperties() :
       balance(0.0),
@@ -22,4 +22,4 @@ namespace payments {
     grants = properties.grants;
   }
 
-}  // namespace payments
+}  // namespace brave_rewards

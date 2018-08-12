@@ -4,6 +4,6 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
-    "BRAVE_PAYMENTS_ENABLED=$brave_payments_enabled",
+    "BRAVE_REWARDS_ENABLED=$brave_rewards_enabled",
   ]
 }

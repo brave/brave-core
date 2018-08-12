@@ -11,7 +11,7 @@
 #include "third_party/leveldatabase/src/include/leveldb/options.h"
 #include "third_party/leveldatabase/src/include/leveldb/status.h"
 
-namespace payments {
+namespace brave_rewards {
 
 PublisherInfoBackend::PublisherInfoBackend(const base::FilePath& path) :
     path_(path) {}
@@ -103,4 +103,4 @@ bool PublisherInfoBackend::EnsureInitialized() {
   return false;
 }
 
-}  // namespace payments
+}  // namespace brave_rewards

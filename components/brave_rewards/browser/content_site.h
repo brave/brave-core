@@ -10,7 +10,7 @@
 
 #include "base/macros.h"
 
-namespace payments {
+namespace brave_rewards {
 
 struct ContentSite {
   typedef std::string id_type;
@@ -25,6 +25,6 @@ struct ContentSite {
 
 typedef std::vector<const ContentSite> ContentSiteList;
 
-}  // namespace payments
+}  // namespace brave_rewards
 
 #endif  // BRAVE_BROWSER_PAYMENTS_CONTENT_SITE_

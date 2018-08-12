@@ -6,10 +6,10 @@
 
 #include "base/base64.h"
 
-#include "brave/components/brave_rewards/browser/payments_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
-#include "brave/components/brave_rewards/browser/payments_service_factory.h"
-#include "brave/components/brave_rewards/browser/payments_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
@@ -27,7 +27,7 @@ namespace {
 
 // The handler for Javascript messages for Brave about: pages
 class RewardsDOMHandler : public WebUIMessageHandler,
-                          public payments::PaymentsServiceObserver {
+                          public brave_rewards::RewardsServiceObserver {
  public:
   RewardsDOMHandler() {};
   ~RewardsDOMHandler() override;
@@ -48,27 +48,27 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RecoverWallet(const base::ListValue* args);
 
   // PaymentServiceObserver implementation
-  void OnWalletCreated(payments::PaymentsService* payment_service,
+  void OnWalletCreated(brave_rewards::RewardsService* payment_service,
                        int error_code) override;
-  void OnWalletProperties(payments::PaymentsService* payment_service,
+  void OnWalletProperties(brave_rewards::RewardsService* payment_service,
       int error_code,
-      std::unique_ptr<payments::WalletProperties> wallet_properties) override;
-  void OnPromotion(payments::PaymentsService* payment_service,
-                   payments::Promotion result) override;
-  void OnPromotionCaptcha(payments::PaymentsService* payment_service,
+      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) override;
+  void OnPromotion(brave_rewards::RewardsService* payment_service,
+                   brave_rewards::Promotion result) override;
+  void OnPromotionCaptcha(brave_rewards::RewardsService* payment_service,
                           std::string image) override;
-  void OnRecoverWallet(payments::PaymentsService* payment_service,
+  void OnRecoverWallet(brave_rewards::RewardsService* payment_service,
                        bool error,
                        double balance) override;
 
-  payments::PaymentsService* payments_service_;  // NOT OWNED
+  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
 };
 
 RewardsDOMHandler::~RewardsDOMHandler() {
-  if (payments_service_)
-    payments_service_->RemoveObserver(this);
+  if (rewards_service_)
+    rewards_service_->RemoveObserver(this);
 }
 
 void RewardsDOMHandler::RegisterMessages() {
@@ -94,27 +94,28 @@ void RewardsDOMHandler::RegisterMessages() {
 
 void RewardsDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
-  payments_service_ = PaymentsServiceFactory::GetForProfile(profile);
-  if (payments_service_)
-    payments_service_->AddObserver(this);
+  rewards_service_ =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_)
+    rewards_service_->AddObserver(this);
 }
 
 void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args) {
-  if (payments_service_) {
-    payments_service_->CreateWallet();
+  if (rewards_service_) {
+    rewards_service_->CreateWallet();
   } else {
     OnWalletCreateFailed();
   }
 }
 
 void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
-  if (payments_service_) {
-    payments_service_->GetWalletProperties();
+  if (rewards_service_) {
+    rewards_service_->GetWalletProperties();
   }
 }
 
 void RewardsDOMHandler::OnWalletCreated(
-    payments::PaymentsService* payment_service,
+    brave_rewards::RewardsService* payment_service,
     int error_code) {
   if (error_code == 0)
     OnWalletCreated();
@@ -135,9 +136,9 @@ void RewardsDOMHandler::OnWalletCreateFailed() {
 }
 
 void RewardsDOMHandler::OnWalletProperties(
-    payments::PaymentsService* payment_service,
+    brave_rewards::RewardsService* payment_service,
     int error_code,
-    std::unique_ptr<payments::WalletProperties> wallet_properties) {
+    std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
   if (error_code != 0 || !wallet_properties) {
     // TODO - error handling
     return;
@@ -173,8 +174,8 @@ void RewardsDOMHandler::OnWalletProperties(
 }
 
 void RewardsDOMHandler::OnPromotion(
-    payments::PaymentsService* payment_service,
-    payments::Promotion result) {
+    brave_rewards::RewardsService* payment_service,
+    brave_rewards::Promotion result) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     base::DictionaryValue* promotion = new base::DictionaryValue();
     promotion->SetString("promotionId", result.promotionId);
@@ -185,17 +186,17 @@ void RewardsDOMHandler::OnPromotion(
 }
 
 void RewardsDOMHandler::GetPromotion(const base::ListValue* args) {
-  if (payments_service_) {
+  if (rewards_service_) {
     std::string lang;
     std::string paymentId;
     args->GetString(0, &lang);
     args->GetString(1, &paymentId);
-    payments_service_->GetPromotion(lang, paymentId);
+    rewards_service_->GetPromotion(lang, paymentId);
   }
 }
 
 void RewardsDOMHandler::OnPromotionCaptcha(
-    payments::PaymentsService* payment_service,
+    brave_rewards::RewardsService* payment_service,
     std::string image) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     std::string encoded_string;
@@ -207,29 +208,29 @@ void RewardsDOMHandler::OnPromotionCaptcha(
 }
 
 void RewardsDOMHandler::GetPromotionCaptcha(const base::ListValue* args) {
-  if (payments_service_) {
-    payments_service_->GetPromotionCaptcha();
+  if (rewards_service_) {
+    rewards_service_->GetPromotionCaptcha();
   }
 }
 
 void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
-  if (payments_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    std::string pass = payments_service_->GetWalletPassphrase();
+  if (rewards_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    std::string pass = rewards_service_->GetWalletPassphrase();
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletPassphrase", base::Value(pass));
   }
 }
 
 void RewardsDOMHandler::RecoverWallet(const base::ListValue *args) {
-  if (payments_service_) {
+  if (rewards_service_) {
     std::string passPhrase;
     args->GetString(0, &passPhrase);
-    payments_service_->RecoverWallet(passPhrase);
+    rewards_service_->RecoverWallet(passPhrase);
   }
 }
 
 void RewardsDOMHandler::OnRecoverWallet(
-    payments::PaymentsService* payment_service,
+    brave_rewards::RewardsService* payment_service,
     bool error,
     double balance) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {

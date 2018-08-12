@@ -9,7 +9,7 @@
 #include <map>
 #include <vector>
 
-namespace payments {
+namespace brave_rewards {
   struct Grant {
     std::string altcurrency;
     std::string probi;
@@ -30,6 +30,6 @@ namespace payments {
     std::vector<Grant> grants;
   };
 
-}  // namespace payments
+}  // namespace brave_rewards
 
 #endif //BRAVE_BROWSER_PAYMENTS_WALLET_PROPERTIES_

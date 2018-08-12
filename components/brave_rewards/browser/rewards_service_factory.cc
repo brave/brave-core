@@ -2,54 +2,56 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/payments_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/browser/payments_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
-#if BUILDFLAG(BRAVE_PAYMENTS_ENABLED)
-#include "brave/components/brave_rewards/browser/payments_service_impl.h"
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #endif
 
+namespace brave_rewards {
+
 // static
-payments::PaymentsService* PaymentsServiceFactory::GetForProfile(
+RewardsService* RewardsServiceFactory::GetForProfile(
     Profile* profile) {
   if (profile->IsOffTheRecord())
     return NULL;
 
-  return static_cast<payments::PaymentsService*>(
+  return static_cast<RewardsService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
 
 // static
-PaymentsServiceFactory* PaymentsServiceFactory::GetInstance() {
-  return base::Singleton<PaymentsServiceFactory>::get();
+RewardsServiceFactory* RewardsServiceFactory::GetInstance() {
+  return base::Singleton<RewardsServiceFactory>::get();
 }
 
-PaymentsServiceFactory::PaymentsServiceFactory()
+RewardsServiceFactory::RewardsServiceFactory()
     : BrowserContextKeyedServiceFactory(
-          "PaymentsService",
+          "RewardsService",
           BrowserContextDependencyManager::GetInstance()) {
 }
 
-PaymentsServiceFactory::~PaymentsServiceFactory() {
+RewardsServiceFactory::~RewardsServiceFactory() {
 }
 
-KeyedService* PaymentsServiceFactory::BuildServiceInstanceFor(
+KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-#if BUILDFLAG(BRAVE_PAYMENTS_ENABLED)
-  std::unique_ptr<payments::PaymentsService> payments_service(
-      new payments::PaymentsServiceImpl(Profile::FromBrowserContext(context)));
-  return payments_service.release();
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  std::unique_ptr<RewardsService> brave_rewards_service(
+      new RewardsServiceImpl(Profile::FromBrowserContext(context)));
+  return brave_rewards_service.release();
 #else
   return NULL;
 #endif
 }
 
-content::BrowserContext* PaymentsServiceFactory::GetBrowserContextToUse(
+content::BrowserContext* RewardsServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   if (context->IsOffTheRecord())
     return chrome::GetBrowserContextOwnInstanceInIncognito(context);
@@ -58,6 +60,8 @@ content::BrowserContext* PaymentsServiceFactory::GetBrowserContextToUse(
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 
-bool PaymentsServiceFactory::ServiceIsNULLWhileTesting() const {
+bool RewardsServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
+
+}  // namespace brave_rewards
