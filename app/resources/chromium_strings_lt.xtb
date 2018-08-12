@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">„Brave“ autoriai</translation>
 <translation id="4651430425715739110">Autorių teisės priklauso „Brave“ autoriams, <ph name="YEAR"/> m. Visos teisės saugomos.</translation>
 <translation id="2310890394934209120">„Brave“ OS pasiekiama naudojant papildomą <ph name="BEGIN_LINK_CROS_OSS"/>atvirojo šaltinio programinę įrangą<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="858647341154864560">„Brave“ OS (kaip ir „Linux“ (beta vers.) pasiekiama naudojant papildomą <ph name="BEGIN_LINK_CROS_OSS"/>atvirojo šaltinio programinę įrangą<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="5019879183386042809">Padaryti „Brave“ numatytąja naršykle</translation>
 <translation id="5063987220091207247">„Brave“ OS negali atidaryti šio puslapio.</translation>
 <translation id="4065288863231444640">„Brave“ leidimas fone</translation>
@@ -34,6 +35,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="3403365884036456766">Nuostatų failas sugadintas ar netinkamas.
 
 „Brave“ negali atkurti nustatymų.</translation>
+<translation id="5785919770853225148">„Brave“ išsaugos šį slaptažodį „Brave Software“ paskyroje. Jums nereikia jo prisiminti.</translation>
 <translation id="3343095737966473035">„Brave“ nėra numatytoji naršyklė</translation>
 <translation id="6715663530666325392">Nustatykite sinchronizavimą, kad žiniatinklyje išsaugotumėte suasmenintas naršyklės funkcijas ir pasiektumėte jas iš „Brave“ bet kuriuo kompiuteriu.</translation>
 <translation id="2708027082363760195">„Brave“ neįtraukta PDF žiūryklė, reikalinga, kad veiktų „Spaudinio peržiūra“.</translation>
@@ -122,6 +124,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="82609232232243542">Prisijungti prie „Brave“</translation>
 <translation id="8372880274820509128">Kad būtų papildomai užtikrintas saugumas, „Brave“ užšifruos jūsų duomenis.</translation>
 <translation id="7445061995866044926">Atsijungti nuo „Brave“?</translation>
+<translation id="7453070689008684791">„Brave“ turės prieigą prie Disko, kad galėtų teikti pasiūlymus adreso juostoje</translation>
 <translation id="7713466009760073734">„Brave“ OS pateikiama šia kalba</translation>
 <translation id="3518788198614984730">Pateikti „Brave“ OS šia kalba</translation>
 <translation id="6056473803837713617">Padėkite tobulinti „Brave“ pateikę ataskaitą apie <ph name="BEGIN_LINK"/>dabartinius nustatymus<ph name="END_LINK"/>.</translation>

@@ -481,7 +481,12 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3190558889382726167">Parola a fost salvată</translation>
 <translation id="5079950360618752063">Folosește parola sugerată</translation>
 <translation id="8084114998886531721">Parola a fost salvată</translation>
+<translation id="5614553682702429503">Salvezi parola?</translation>
 <translation id="1405476660552109915">Dorești ca <ph name="PASSWORD_MANAGER_BRAND"/> să îți salveze contul pentru acest site?</translation>
+<translation id="8756969031206844760">Actualizezi parola?</translation>
+<translation id="8230134520748321204">Salvezi parola pentru <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Actualizezi parola pentru <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Parolele sunt salvate în Contul tău Brave Software, astfel încât să le poți folosi pe orice dispozitiv</translation>
 <translation id="8286036467436129157">Conectați-vă</translation>
 <translation id="8009225694047762179">Gestionează parolele</translation>
 <translation id="9135262959729602463">Pentru a accesa parolele pe toate dispozitivele, conectează-te la Brave.</translation>
@@ -548,16 +553,18 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="7400418766976504921">Adresă URL</translation>
 <translation id="8730621377337864115">Terminat</translation>
 <translation id="4416582610654027550">Introdu o adresă URL validă</translation>
+<translation id="2806891468525657116">Comanda rapidă există deja</translation>
+<translation id="394183848452296464">Nu se poate crea comanda rapidă</translation>
 <translation id="7109543803214225826">Comanda rapidă a fost eliminată</translation>
 <translation id="8017679124341497925">Comanda rapidă a fost editată</translation>
 <translation id="1174073918202301297">Comanda rapidă a fost adăugată</translation>
 <translation id="2926085873880284723">Restabilește comenzile rapide prestabilite</translation>
-<translation id="7413455776853560343">Personalizează fundalul</translation>
+<translation id="2942581856830209953">Personalizează această pagină</translation>
 <translation id="2187700606737131818">Brave Software Foto</translation>
 <translation id="5801450813341024983">Fundaluri Brave</translation>
 <translation id="2800760947029405028">Încarcă o imagine</translation>
 <translation id="8342861492835240085">Selectează o colecție</translation>
-<translation id="6017211263306518045">Selectează un album Brave Software Foto</translation>
+<translation id="1734885380062278369">Selectează un album Brave Software Foto</translation>
 <translation id="3132996321662585180">Actualizează zilnic</translation>
 <translation id="9062065967472365419">Surpriză</translation>
 <translation id="7287411021188441799">Restabilește fundalul prestabilit</translation>
@@ -567,6 +574,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3617891479562106823">Fundalurile nu sunt disponibile. Încearcă din nou mai târziu.</translation>
 <translation id="8391712576156218334">Imaginea nu este disponibilă. Încearcă din nou mai târziu.</translation>
 <translation id="1564414980088536597">Imaginea nu se poate folosi. Alege altă imagine.</translation>
+<translation id="4628948037717959914">Fotografie</translation>
+<translation id="8033827949643255796">selectate</translation>
 <translation id="5376169624176189338">Dă clic pentru a naviga înapoi, ține apăsat pentru a vedea istoricul</translation>
 <translation id="9103868373786083162">Apasă pentru a naviga înapoi sau folosește meniul contextual pentru a vedea istoricul</translation>
 <translation id="2961695502793809356">Dă clic pentru a naviga înainte, ține apăsat pentru a vedea istoricul</translation>
@@ -840,6 +849,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="2532167245710864499">Poți îmbunătăți browserul Brave și securitatea acestuia dacă trimiți la Brave Software informații despre sistem și utilizare</translation>
 <translation id="2709453993673701466">Dorești să gestionezi sincronizarea și personalizarea înainte de a fi activate? Accesează <ph name="BEGIN_LINK"/>Setările<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Poți personaliza oricând informațiile colectate de Brave Software în <ph name="BEGIN_LINK"/>Setări<ph name="END_LINK"/>.</translation>
+<translation id="6035247993547372482">Brave Software poate folosi conținutul de pe site-urile pe care le accesezi, activitatea browserului și interacțiunile pentru a personaliza Brave și alte servicii Brave Software, precum Traducere, Căutare și anunțuri. Poți personaliza această opțiune în Setări.</translation>
 <translation id="741204030948306876">Da, accept</translation>
 <translation id="8428213095426709021">Setări</translation>
 <translation id="2497852260688568942">Sincronizarea este dezactivată de administrator</translation>
@@ -938,6 +948,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="8363142353806532503">Microfonul este blocat</translation>
 <translation id="2762441749940182211">Camera foto este blocată</translation>
 <translation id="5074318175948309511">Este posibil să fie necesară reîncărcarea acestei pagini înainte ca noile setări să se aplice.</translation>
+<translation id="1322046419516468189">Vezi și gestionează parolele salvate în <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Contul Brave Software</translation>
 <translation id="3785727820640310185">Parolele salvate pentru acest site</translation>
 <translation id="3404065873681873169">Nu s-au salvat parole pentru acest site</translation>
@@ -1388,7 +1399,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6647838571840953560">În prezent, pe <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Firmware</translation>
 <translation id="5895138241574237353">Reîncepe</translation>
-<translation id="7409233648990234464">Relansați și porniți Powerwash</translation>
+<translation id="4297219207642690536">Repornește și resetează</translation>
 <translation id="4716483597559580346">Powerwash pentru securitate suplimentară</translation>
 <translation id="4089922565956168950">Acest upgrade resetează Bravebookul și elimină datele actuale ale utilizatorului.</translation>
 <translation id="5184662919967270437">Se actualizează dispozitivul</translation>
@@ -1396,6 +1407,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="5906655207909574370">Aproape actualizat! Repornește dispozitivul pentru a finaliza actualizarea.</translation>
 <translation id="5860494867054883682">Se actualizează dispozitivul la canalul <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Canalul a fost schimbat. Reporniți dispozitivul pentru a aplica modificările.</translation>
+<translation id="7133578150266914903">Administratorul restabilește o versiune anterioară a OS de pe acest dispozitiv (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Administratorul a restabilit o versiune anterioară a OS de pe acest dispozitiv. Salvează fișierele importante, apoi repornește-l. Toate datele de pe dispozitiv vor fi șterse.</translation>
 <translation id="1871615898038944731">Dispozitivul <ph name="DEVICE_TYPE"/> este actualizat</translation>
 <translation id="3688526734140524629">Schimbați canalul</translation>
 <translation id="6410328738210026208">Schimbați canalul și porniți Powerwash</translation>
@@ -1496,7 +1509,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6902066522699286937">Voce pentru previzualizare</translation>
 <translation id="304747341537320566">Motoare de vorbire</translation>
 <translation id="1067291318998134776">Linux (beta)</translation>
-<translation id="6963573437985514722">Rulează instrumentele, aplicațiile de editare și IDE-urile Linux pe Bravebook.</translation>
 <translation id="6869910261738842136">Elimină aplicațiile Linux pentru Bravebook</translation>
 <translation id="2295473777859797944">Magazinul Brave Software Play</translation>
 <translation id="572155275267014074">Setări Android</translation>
@@ -1537,6 +1549,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="8639963783467694461">Setări pentru Completare automată</translation>
 <translation id="3431019676184503003">Adrese și metode de plată</translation>
 <translation id="2512222046227390255">Completează automat formularele</translation>
+<translation id="2283340219607151381">Salvează și completează adresele</translation>
+<translation id="1662550410081243962">Salvează și completează metodele de plată</translation>
 <translation id="2903493209154104877">Adrese</translation>
 <translation id="7764225426217299476">Adaugă o adresă</translation>
 <translation id="5595485650161345191">Editează adresa</translation>
@@ -1573,6 +1587,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="7930294771522048157">Metodele de plată salvate vor fi afișate aici</translation>
 <translation id="9124003689441359348">Parolele salvate vor fi afișate aici</translation>
 <translation id="4400367121200150367">Site-urile care nu salvează niciodată parole vor apărea aici</translation>
+<translation id="3098842761938485917">Vezi și gestionează parolele salvate în <ph name="BEGIN_LINK"/>Contul Brave Software<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Exportă parolele...</translation>
 <translation id="3900966090527141178">Exportă parolele</translation>
 <translation id="6914783257214138813">Parolele vor fi vizibile pentru toți cei care pot vedea fișierul exportat.</translation>
@@ -1963,6 +1978,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="4534361985432360439">Trimite la Brave Software adresa web a paginii pe care încerci să o accesezi</translation>
 <translation id="6545834809683560467">Folosește un serviciu de predicții pentru a completa căutările și adresele URL introduse în bara de adrese sau în caseta de căutare a lansatorului de aplicații</translation>
 <translation id="7704317875155739195">Completează automat căutările și adresele URL</translation>
+<translation id="2000419248597011803">Trimite anumite cookie-uri și căutări din bara de adrese și din caseta de căutare în motorul de căutare prestabilit</translation>
 <translation id="9038649477754266430">Folosește un serviciu de predicții pentru a încărca paginile mai rapid</translation>
 <translation id="7981313251711023384">Preîncarcă paginile pentru navigare și căutare mai rapide</translation>
 <translation id="2468205691404969808">Folosește cookie-uri pentru a-ți reține preferințele, chiar dacă nu accesezi paginile respective</translation>
@@ -1973,6 +1989,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="490074449735753175">Folosește un serviciu web pentru a corecta greșelile de scriere</translation>
 <translation id="3523078749603005179">O verificare ortografică mai inteligentă trimițând la Brave Software textul introdus în browser</translation>
 <translation id="2564653188463346023">Verificarea îmbunătățită a ortografiei</translation>
+<translation id="7469406957790636836">Pentru a activa această opțiune, activează mai întâi verificarea ortografiei în <ph name="BEGIN_LINK"/>Limbi și mod de introducere<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Pentru a activa această opțiune, selectează mai întâi Verifică ortografia în timp ce se introduce text în meniul Editare</translation>
 <translation id="9079153198295609735">Trimite automat la Brave Software statistici de utilizare și rapoarte de blocare</translation>
 <translation id="5941220456342415404">Trimite automat la Brave Software date de diagnosticare și de utilizare</translation>
 <translation id="918192811481327695">Contribuie la îmbunătățirea funcțiilor și performanței Brave</translation>
@@ -2222,6 +2240,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="7548737591211512046">Conectează-te pentru a-ți accesa marcajele, istoricul, parolele și alte setări pe toate dispozitivele. În plus, te vei conecta automat la serviciile Brave Software.</translation>
 <translation id="2951604498031550705">Modificările marcajelor, istoricului, parolelor sau ale altor setări nu vor mai fi sincronizate cu Contul Brave Software. Totuși, datele existente vor rămâne stocate în Contul Brave Software și pot fi gestionate din <ph name="BEGIN_LINK"/>Tabloul de bord Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Astfel, te vei deconecta de la conturile Brave Software. Modificările marcajelor, istoricului, parolelor sau ale altor setări nu vor mai fi sincronizate cu Contul Brave Software. Totuși, datele existente vor rămâne stocate în Contul Brave Software și pot fi gestionate din <ph name="BEGIN_LINK"/>Tabloul de bord Brave Software<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Astfel, te vei deconecta de la Conturile Brave Software. Marcajele, istoricul, parolele și alte setări nu vor mai fi sincronizate.</translation>
 <translation id="8588866096426746242">Afișează statisticile profilului</translation>
 <translation id="5535941515421698170">De asemenea, elimină datele existente de pe acest dispozitiv</translation>
 <translation id="7243632151880336635">Șterge și deconectează-te</translation>
@@ -2243,13 +2262,16 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3259418918864581163">Carduri de credit și adrese care folosesc Brave Software Pay.</translation>
 <translation id="4439834757335393741">Metodele de plată și adresele care folosesc Brave Software Pay.</translation>
 <translation id="3268451620468152448">File deschise</translation>
+<translation id="5241892180459725878">Sugestii de căutare în Brave Software Drive</translation>
 <translation id="2120297377148151361">Activitate și interacțiuni</translation>
+<translation id="5833397272224757657">Folosește conținutul de pe site-urile pe care le accesezi, activitatea browserului și interacțiunile pentru personalizare</translation>
 <translation id="8135094938656535588">Gestionează datele sincronizate în Tabloul de bord Brave Software</translation>
 <translation id="6596325263575161958">Opțiuni de criptare</translation>
 <translation id="2459230470861708651">Criptează parolele sincronizate folosind numele de utilizator și parola Brave Software</translation>
 <translation id="6383051423892982287">Criptează datele sincronizate folosind propria <ph name="BEGIN_LINK"/>expresie de acces<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Numai un utilizator care are expresia de acces poate citi datele criptate. Expresia de acces nu este trimisă sau stocată la Brave Software. Dacă uiți expresia de acces sau dorești să modifici această setare, va fi necesar să <ph name="BEGIN_LINK"/>resetezi sincronizarea<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizarea<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Ca să activezi această opțiune, <ph name="BEGIN_LINK"/>resetează sincronizarea<ph name="END_LINK"/> pentru a elimina expresia de acces pentru sincronizare</translation>
 <translation id="988978206646512040">Trebuie să fie introdusă expresia de acces</translation>
 <translation id="1651008383952180276">Trebuie să introduci aceeași expresie de acces de două ori</translation>
 <translation id="2136476978468204130">Expresia de acces pe care ai introdus-o nu este corectă</translation>

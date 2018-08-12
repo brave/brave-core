@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
 <translation id="2310890394934209120">Brave OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS"/>open source software<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="858647341154864560">Brave OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS"/>open source software<ph name="END_LINK_CROS_OSS"/>, as is Linux (Beta).</translation>
 <translation id="5019879183386042809">Make Brave the default browser</translation>
 <translation id="5063987220091207247">Brave OS can't open this page.</translation>
 <translation id="4065288863231444640">Let Brave Run in the Background</translation>
@@ -34,6 +35,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="3403365884036456766">Your preferences file is corrupt or invalid.
 
 Brave Software Brave is unable to recover your settings.</translation>
+<translation id="5785919770853225148">Brave will save this password in your Brave Software account. You won’t have to remember it.</translation>
 <translation id="3343095737966473035">Brave isn't your default browser</translation>
 <translation id="6715663530666325392">Set up Sync to save your personalised browser features to the web and access them from Brave on any computer.</translation>
 <translation id="2708027082363760195">Brave does not include the PDF viewer which is required for Print Preview to function.</translation>
@@ -122,6 +124,7 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="82609232232243542">Sign in to Brave</translation>
 <translation id="8372880274820509128">For added security, Brave will encrypt your data.</translation>
 <translation id="7445061995866044926">Sign out of Brave?</translation>
+<translation id="7453070689008684791">Brave will access your Drive to make suggestions in the address bar</translation>
 <translation id="7713466009760073734">Brave OS is displayed in this language</translation>
 <translation id="3518788198614984730">Display Brave OS in this language</translation>
 <translation id="6056473803837713617">Help make Brave better by reporting the <ph name="BEGIN_LINK"/>current settings<ph name="END_LINK"/></translation>

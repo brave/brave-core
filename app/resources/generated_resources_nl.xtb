@@ -480,7 +480,12 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3190558889382726167">Wachtwoord opgeslagen</translation>
 <translation id="5079950360618752063">Voorgesteld wachtwoord gebruiken</translation>
 <translation id="8084114998886531721">Opgeslagen wachtwoord</translation>
+<translation id="5614553682702429503">Wachtwoord opslaan?</translation>
 <translation id="1405476660552109915">Wil je dat <ph name="PASSWORD_MANAGER_BRAND"/> je account voor deze site opslaat?</translation>
+<translation id="8756969031206844760">Wachtwoord updaten?</translation>
+<translation id="8230134520748321204">Wachtwoord opslaan voor <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Wachtwoord updaten voor <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Wachtwoorden worden in je Brave Software-account opgeslagen, zodat je deze op elk apparaat kunt gebruiken</translation>
 <translation id="8286036467436129157">Inloggen</translation>
 <translation id="8009225694047762179">Wachtwoorden beheren</translation>
 <translation id="9135262959729602463">Log in bij Brave om je wachtwoorden op te halen op al je apparaten.</translation>
@@ -547,16 +552,18 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Gereed</translation>
 <translation id="4416582610654027550">Voer een geldige URL in</translation>
+<translation id="2806891468525657116">Snelkoppeling bestaat al</translation>
+<translation id="394183848452296464">Kan snelkoppeling niet maken</translation>
 <translation id="7109543803214225826">Snelkoppeling verwijderd</translation>
 <translation id="8017679124341497925">Snelkoppeling bewerkt</translation>
 <translation id="1174073918202301297">Snelkoppeling toegevoegd</translation>
 <translation id="2926085873880284723">Standaard snelkoppelingen herstellen</translation>
-<translation id="7413455776853560343">Achtergrond aanpassen</translation>
+<translation id="2942581856830209953">Deze pagina aanpassen</translation>
 <translation id="2187700606737131818">Brave Software Foto's</translation>
 <translation id="5801450813341024983">Brave-achtergronden</translation>
 <translation id="2800760947029405028">Een afbeelding uploaden</translation>
 <translation id="8342861492835240085">Een verzameling selecteren</translation>
-<translation id="6017211263306518045">Een Brave Software Foto's-album selecteren</translation>
+<translation id="1734885380062278369">Een Brave Software Foto's-album selecteren</translation>
 <translation id="3132996321662585180">Dagelijks vernieuwen</translation>
 <translation id="9062065967472365419">Verras me</translation>
 <translation id="7287411021188441799">Standaard achtergrond herstellen</translation>
@@ -566,6 +573,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3617891479562106823">Achtergronden zijn niet beschikbaar. Probeer het later opnieuw.</translation>
 <translation id="8391712576156218334">De afbeelding is niet beschikbaar. Probeer het later opnieuw.</translation>
 <translation id="1564414980088536597">Deze afbeelding kan niet worden gebruikt. Kies een andere afbeelding.</translation>
+<translation id="4628948037717959914">Foto</translation>
+<translation id="8033827949643255796">geselecteerd</translation>
 <translation id="5376169624176189338">Klik om terug te gaan, houd ingedrukt om de geschiedenis weer te geven</translation>
 <translation id="9103868373786083162">Druk op Terug &amp;gt; contextmenu om de geschiedenis te bekijken</translation>
 <translation id="2961695502793809356">Klik om verder te gaan, houd ingedrukt om de geschiedenis weer te geven</translation>
@@ -839,6 +848,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2532167245710864499">Verbeter Brave en de beveiliging ervan door systeem- en gebruiksgegevens naar Brave Software te verzenden</translation>
 <translation id="2709453993673701466">Wil je synchronisatie en personalisatie beheren voordat ze worden ingeschakeld? Ga naar <ph name="BEGIN_LINK"/>Instellingen<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Via <ph name="BEGIN_LINK"/>Instellingen<ph name="END_LINK"/> kun je op elk gewenst moment aanpassen welke informatie Brave Software verzamelt.</translation>
+<translation id="6035247993547372482">Brave Software kan content op sites die je bezoekt en je browseractiviteit en -interactie gebruiken om Brave en andere Brave Software-services (zoals Translate, Zoeken en advertenties) te personaliseren. Je kunt deze functies op elk gewenst moment aanpassen via Instellingen.</translation>
 <translation id="741204030948306876">Ja, inschakelen</translation>
 <translation id="8428213095426709021">Instellingen</translation>
 <translation id="2497852260688568942">Synchronisatie is uitgeschakeld door je beheerder</translation>
@@ -937,6 +947,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8363142353806532503">Microfoon geblokkeerd</translation>
 <translation id="2762441749940182211">Camera geblokkeerd</translation>
 <translation id="5074318175948309511">Deze pagina moet eventueel opnieuw worden geladen voordat de nieuwe instellingen van kracht zijn.</translation>
+<translation id="1322046419516468189">Bekijk en beheer opgeslagen wachtwoorden in je <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software-account</translation>
 <translation id="3785727820640310185">Opgeslagen wachtwoorden voor deze site</translation>
 <translation id="3404065873681873169">Geen wachtwoorden opgeslagen voor deze site</translation>
@@ -1387,7 +1398,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6647838571840953560">Momenteel op <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Firmware</translation>
 <translation id="5895138241574237353">Opnieuw starten</translation>
-<translation id="7409233648990234464">Opnieuw starten en Powerwash uitvoeren</translation>
+<translation id="4297219207642690536">Opnieuw opstarten en resetten</translation>
 <translation id="4716483597559580346">Powerwash voor extra beveiliging</translation>
 <translation id="4089922565956168950">Met deze upgrade wordt je Bravebook gereset en worden huidige gebruikersgegevens verwijderd.</translation>
 <translation id="5184662919967270437">Je apparaat updaten</translation>
@@ -1395,6 +1406,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5906655207909574370">Updaten bijna voltooid. Start je apparaat opnieuw op om de update te voltooien.</translation>
 <translation id="5860494867054883682">Je apparaat updaten naar het kanaal <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanaal gewijzigd. Start het apparaat opnieuw op om de wijzigingen door te voeren.</translation>
+<translation id="7133578150266914903">Je beheerder zet dit apparaat terug naar een oudere versie (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Je beheerder heeft dit apparaat teruggezet naar een oudere versie. Sla je belangrijke bestanden op en start je apparaat opnieuw op. Alle gegevens op het apparaat worden verwijderd.</translation>
 <translation id="1871615898038944731">Je <ph name="DEVICE_TYPE"/> is up-to-date.</translation>
 <translation id="3688526734140524629">Kanaal wijzigen</translation>
 <translation id="6410328738210026208">Kanaal wijzigen en Powerwash uitvoeren</translation>
@@ -1495,7 +1508,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6902066522699286937">Stem om als voorbeeld te beluisteren</translation>
 <translation id="304747341537320566">Spraakengines</translation>
 <translation id="1067291318998134776">Linux (bèta)</translation>
-<translation id="6963573437985514722">Voer Linux-tools, -editors en -IDE's op je Bravebook uit.</translation>
 <translation id="6869910261738842136">Linux-apps voor Bravebook verwijderen</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Android-instellingen</translation>
@@ -1536,6 +1548,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8639963783467694461">Instellingen voor Automatisch aanvullen</translation>
 <translation id="3431019676184503003">Adressen en betaalmethoden</translation>
 <translation id="2512222046227390255">Formulieren automatisch invullen</translation>
+<translation id="2283340219607151381">Adressen opslaan en invullen</translation>
+<translation id="1662550410081243962">Betaalmethoden toevoegen en invullen</translation>
 <translation id="2903493209154104877">Adressen</translation>
 <translation id="7764225426217299476">Adres toevoegen</translation>
 <translation id="5595485650161345191">Adres bewerken</translation>
@@ -1572,6 +1586,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7930294771522048157">Opgeslagen betaalmethoden worden hier weergegeven</translation>
 <translation id="9124003689441359348">Opgeslagen wachtwoorden worden hier weergegeven</translation>
 <translation id="4400367121200150367">Sites die nooit wachtwoorden opslaan, worden hier weergegeven</translation>
+<translation id="3098842761938485917">Bekijk en beheer opgeslagen wachtwoorden in je <ph name="BEGIN_LINK"/>Brave Software-account<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Wachtwoorden exporteren...</translation>
 <translation id="3900966090527141178">Wachtwoorden exporteren</translation>
 <translation id="6914783257214138813">Je wachtwoorden zijn zichtbaar voor iedereen die het geëxporteerde bestand kan bekijken.</translation>
@@ -1962,6 +1977,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4534361985432360439">Hiermee wordt het webadres van de pagina die je probeert te openen, verzonden naar Brave Software</translation>
 <translation id="6545834809683560467">Een voorspellingsservice gebruiken om zoekopdrachten en URL's aan te vullen die in de adresbalk of het zoekvak van de App Launcher worden getypt</translation>
 <translation id="7704317875155739195">Zoekopdrachten en URL's automatisch aanvullen</translation>
+<translation id="2000419248597011803">Hiermee worden bepaalde cookies en de zoekopdrachten in de adresbalk en in het zoekvak verzonden naar je standaard zoekmachine</translation>
 <translation id="9038649477754266430">Een voorspellingsservice gebruiken om pagina's sneller te laden</translation>
 <translation id="7981313251711023384">Pagina's vooraf laden voor sneller browsen en zoeken</translation>
 <translation id="2468205691404969808">Maakt gebruik van cookies om je voorkeuren te onthouden, zelfs als je deze pagina's niet bezoekt</translation>
@@ -1972,6 +1988,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="490074449735753175">Een webservice gebruiken voor het oplossen van spelfouten</translation>
 <translation id="3523078749603005179">Betere spellingcontrole door wat je in de browser typt naar Brave Software te verzenden</translation>
 <translation id="2564653188463346023">Uitgebreide spellingcontrole</translation>
+<translation id="7469406957790636836">Als je dit wilt inschakelen, moet je eerst de spellingcontrole inschakelen bij <ph name="BEGIN_LINK"/>Talen en invoer<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Als je dit wilt inschakelen, selecteer je eerst de optie 'Controleer spelling tijdens typen' in het menu 'Bewerken'</translation>
 <translation id="9079153198295609735">Automatisch gebruiksstatistieken en crashrapporten naar Brave Software verzenden</translation>
 <translation id="5941220456342415404">Automatisch diagnostische en gebruiksgegevens verzenden naar Brave Software</translation>
 <translation id="918192811481327695">Help de functies en prestaties van Brave verbeteren</translation>
@@ -2221,6 +2239,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7548737591211512046">Log in om je bladwijzers, geschiedenis, wachtwoorden en andere instellingen op te halen op al je apparaten. Je wordt ook automatisch ingelogd bij je Brave Software-services.</translation>
 <translation id="2951604498031550705">Wijzigingen in je bladwijzers, geschiedenis, wachtwoorden en andere instellingen worden niet meer gesynchroniseerd met je Brave Software-account. Je bestaande gegevens blijven echter opgeslagen in je Brave Software-account en kunnen worden beheerd via <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Hiermee word je uitgelogd van je Brave Software-accounts. Wijzigingen in je bladwijzers, geschiedenis, wachtwoorden en andere instellingen worden niet meer gesynchroniseerd met je Brave Software-account. Je bestaande gegevens blijven echter opgeslagen in je Brave Software-account en kunnen worden beheerd via <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Hiermee word je uitgelogd van je Brave Software-accounts. Onder meer je bladwijzers, geschiedenis en wachtwoorden worden niet meer gesynchroniseerd.</translation>
 <translation id="8588866096426746242">Profielstatistieken weergeven</translation>
 <translation id="5535941515421698170">Ook je bestaande gegevens verwijderen van dit apparaat</translation>
 <translation id="7243632151880336635">Wissen en uitloggen</translation>
@@ -2242,13 +2261,16 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3259418918864581163">Creditcards en adressen die Brave Software Pay gebruiken.</translation>
 <translation id="4439834757335393741">Betaalmethoden en adressen die Brave Software Pay gebruiken.</translation>
 <translation id="3268451620468152448">Geopende tabbladen</translation>
+<translation id="5241892180459725878">Zoeksuggesties voor Brave Software Drive</translation>
 <translation id="2120297377148151361">Activiteit en interacties</translation>
+<translation id="5833397272224757657">Maakt gebruik van content op sites die je bezoekt en browseractiviteit en -interactie voor personalisatie</translation>
 <translation id="8135094938656535588">Gesynchroniseerde gegevens beheren in Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Opties voor encryptie</translation>
 <translation id="2459230470861708651">Gesynchroniseerde wachtwoorden versleutelen met je Brave Software-gebruikersnaam en -wachtwoord</translation>
 <translation id="6383051423892982287">Gesynchroniseerde gegevens versleutelen met je eigen <ph name="BEGIN_LINK"/>wachtwoordzin voor synchronisatie<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Alleen iemand met je wachtwoordzin kan je versleutelde gegevens lezen. De wachtwoordzin wordt niet verzonden naar of opgeslagen door Brave Software. Als je je wachtwoordzin vergeet of deze instelling wilt wijzigen, moet je de <ph name="BEGIN_LINK"/>synchronisatie resetten<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Als je deze instelling wilt wijzigen, moet je de <ph name="BEGIN_LINK"/>synchronisatie resetten<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Als je dit wilt inschakelen, <ph name="BEGIN_LINK"/>reset je de synchronisatie<ph name="END_LINK"/> om de wachtwoordzin voor synchronisatie te verwijderen</translation>
 <translation id="988978206646512040">Een lege wachtwoordzin is niet toegestaan</translation>
 <translation id="1651008383952180276">Je moet twee keer dezelfde wachtwoordzin opgeven</translation>
 <translation id="2136476978468204130">De opgegeven wachtwoordzin is onjuist</translation>

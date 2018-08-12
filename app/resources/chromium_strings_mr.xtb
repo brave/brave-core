@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Brave लेखक</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave लेखक. सर्व हक्क राखीव.</translation>
 <translation id="2310890394934209120">अतिरिक्त <ph name="BEGIN_LINK_CROS_OSS"/>खुले स्रोत सॉफ्‍टवेअर<ph name="END_LINK_CROS_OSS"/> द्वारे Brave OS बनवणे शक्‍य झाले.</translation>
+<translation id="858647341154864560">Linux (बीटा) सारखेच, अतिरिक्त <ph name="BEGIN_LINK_CROS_OSS"/>मुक्त स्त्रोत सॉफ्टवेअर<ph name="END_LINK_CROS_OSS"/> द्वारे Brave OS शक्य झाले आहे.</translation>
 <translation id="5019879183386042809">Brave ला डीफॉल्‍ट ब्राउझर बनवा</translation>
 <translation id="5063987220091207247">Brave OS हे पृष्ठ उघडू शकत नाही.</translation>
 <translation id="4065288863231444640">Brave बॅकग्राउंडमध्ये चालू द्या</translation>
@@ -33,6 +34,7 @@
 <translation id="3403365884036456766">तुमची प्राधान्ये फाइल दूषित किंवा अवैध आहे.
 
 Brave तुमची सेटिंग्ज पुनर्प्राप्त करण्‍यात अक्षम आहे.</translation>
+<translation id="5785919770853225148">Brave हा पासवर्ड तुमच्या Brave Software खात्यामध्ये सेव्ह करेल. तुम्हाला पासवर्ड लक्षात ठेवावा लागणार नाही.</translation>
 <translation id="3343095737966473035">Brave तुमचा डीफॉल्ट ब्राउझर नाही</translation>
 <translation id="6715663530666325392">वेबवर तुमची वैयक्तीकृत केलेली ब्राउझर वैशिष्ट्ये सेव्ह करण्यासाठी समक्रमण सेट करा आणि कोणत्याही संगणकावरील Brave वरून त्यात प्रवेश करा.</translation>
 <translation id="2708027082363760195">Brave कार्य करण्यासाठी प्रिंट पूर्वावलोकनास आवश्यक असलेले PDF viewer समाविष्ट करीत नाही.</translation>
@@ -121,6 +123,7 @@ Brave तुमची सेटिंग्ज पुनर्प्राप्
 <translation id="82609232232243542">Brave वर साइन इन करा</translation>
 <translation id="8372880274820509128">अतिरिक्त सुरक्षिततेसाठी, Brave आपला डेटा कूटबद्ध करेल.</translation>
 <translation id="7445061995866044926">Brave मधून साइन आउट करायचे?</translation>
+<translation id="7453070689008684791">अॅड्रेस बारमध्ये सूचना देण्यासाठी Brave तुमची ड्राइव्ह अॅक्सेस करेल</translation>
 <translation id="7713466009760073734">Brave OS या भाषेत प्रदर्शित केले आहे</translation>
 <translation id="3518788198614984730">Brave OS या भाषेत प्रदर्शि‍त करा</translation>
 <translation id="6056473803837713617"><ph name="BEGIN_LINK"/>वर्तमान सेटिंग्ज<ph name="END_LINK"/> चा अहवाल देऊन Brave उत्कृष्ट बनव‍िण्यात मदत करा</translation>

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index 8ba2842ded946935daa06d26818746763c5f8e3d..c87216485ad4cd1326ed36bea643afb5302e36b0 100644
+index 27b0823183eda3d836cc72c60d2e0777173a71ad..fee2cec1b53b586479413c162c41f430ca136dac 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
 @@ -62,7 +62,7 @@ Polymer({
@@ -20,7 +20,7 @@ index 8ba2842ded946935daa06d26818746763c5f8e3d..c87216485ad4cd1326ed36bea643afb5
      const setMetricsReportingPref = this.setMetricsReportingPref_.bind(this);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
      this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
-@@ -130,7 +130,7 @@ Polymer({
+@@ -131,7 +131,7 @@ Polymer({
      this.safeBrowsingExtendedReportingPref_ = pref;
    },
  

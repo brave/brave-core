@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Авторы Brave</translation>
 <translation id="4651430425715739110">© The Brave Authors, <ph name="YEAR"/> . Все права защищены.</translation>
 <translation id="2310890394934209120">Brave OS обязана своим появлением дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="858647341154864560">Brave OS, как и Linux (бета-версия), работает благодаря дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="5019879183386042809">Назначить Brave браузером по умолчанию</translation>
 <translation id="5063987220091207247">Brave OS не может открыть эту страницу</translation>
 <translation id="4065288863231444640">Разрешить Brave работать в фоновом режиме</translation>
@@ -28,6 +29,7 @@
 Некоторые возможности могут быть недоступны. Укажите другой каталог профиля либо используйте более новую версию Brave.</translation>
 <translation id="1065672644894730302">Не удается получить настройки. Некоторые функции могут быть недоступны, а изменения настроек не будут сохраняться.</translation>
 <translation id="3403365884036456766">Файл настроек поврежден или недействителен. Brave не может восстановить ваши параметры.</translation>
+<translation id="5785919770853225148">Этот пароль будет сохранен в аккаунте Brave Software. Вам не нужно его запоминать.</translation>
 <translation id="3343095737966473035">Brave не является браузером по умолчанию.</translation>
 <translation id="6715663530666325392">Настройте синхронизацию, чтобы сохранить в облаке персонализированные функции браузера и получить к ним доступ из Brave с любого компьютера.</translation>
 <translation id="2708027082363760195">В Brave нет функции просмотра PDF-файлов, которая нужна для предварительного просмотра при печати.</translation>
@@ -116,6 +118,7 @@
 <translation id="82609232232243542">Войти в Brave</translation>
 <translation id="8372880274820509128">В целях повышения безопасности Brave шифрует ваши данные.</translation>
 <translation id="7445061995866044926">Выйти из Brave?</translation>
+<translation id="7453070689008684791">Brave получит доступ к вашему Brave Software Диску, чтобы вы могли просматривать рекомендации в адресной строке.</translation>
 <translation id="7713466009760073734">Этот язык сейчас используется в Brave OS</translation>
 <translation id="3518788198614984730">Отображать Brave OS на этом языке</translation>
 <translation id="6056473803837713617">Отправьте отчет о <ph name="BEGIN_LINK"/>текущих настройках Brave<ph name="END_LINK"/>, чтобы помочь нам улучшить браузер</translation>

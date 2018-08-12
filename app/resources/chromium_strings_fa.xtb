@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Brave Authors</translation>
 <translation id="4651430425715739110">‏حق نسخه‌برداری <ph name="YEAR"/> نویسندگان Brave. کلیه حقوق محفوظ است.</translation>
 <translation id="2310890394934209120">‏سیستم عامل Brave با یک <ph name="BEGIN_LINK_CROS_OSS"/>نرم‌افزار منبع آزاد<ph name="END_LINK_CROS_OSS"/> دیگر امکان‌پذیر است.</translation>
+<translation id="858647341154864560">‏ساخت سیستم‌عامل Brave به کمک <ph name="BEGIN_LINK_CROS_OSS"/>نرم‌افزار منبع آزاد<ph name="END_LINK_CROS_OSS"/> دیگری که Linux (بتا) است، امکان‌پذیر شده است.</translation>
 <translation id="5019879183386042809">‏Brave  مرورگر پیش‌فرض شود</translation>
 <translation id="5063987220091207247">‏Brave OS نمی‌تواند این صفحه را باز کند.</translation>
 <translation id="4065288863231444640">‏اجازه به Brave برای اجرا در پس‌زمینه</translation>
@@ -30,6 +31,7 @@
 <translation id="1065672644894730302">تنظیمات برگزیده شما را نمی‌توان خواند. بعضی ویژگی‌ها ممکن است در دسترس نباشند و تغییرات تنظیمات برگزیده ذخیره نخواهد شد.</translation>
 <translation id="3403365884036456766">‏فایل تنظیمات برگزیده شما خراب یا نامعتبر است. 
 Brave قادر به بازیابی تنظیمات شما نیست.</translation>
+<translation id="5785919770853225148">‏Brave این گذرواژه را در حساب Brave Software شما ذخیره می‌کند. لازم نیست آن را به خاطر بسپارید.</translation>
 <translation id="3343095737966473035">‏Brave مرورگر پیش‌فرض شما نیست</translation>
 <translation id="6715663530666325392">‏برای ذخیره ویژگی‌های مرورگر سفارشی شده خود در وب و دسترسی به آن‌ها از Brave از هر رایانه دیگری، همگام‌سازی را راه‌اندازی کنید.</translation>
 <translation id="2708027082363760195">‏Brave فاقد نمایشگر PDF است که برای عملکرد پیش‌نمایش چاپ لازم است.</translation>
@@ -118,6 +120,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="82609232232243542">‏ورود به سیستم Brave</translation>
 <translation id="8372880274820509128">‏برای امنیت بیشتر، Brave داده‌های شما را رمزگذاری می‌کند.</translation>
 <translation id="7445061995866044926">‏از Brave خارج می‌شوید؟</translation>
+<translation id="7453070689008684791">‏Brave برای ارائه پیشنهاد در نوار نشانی، به Drive شما دسترسی خواهد داشت</translation>
 <translation id="7713466009760073734">‏سیستم عامل Brave به این زبان نشان داده می‌شود</translation>
 <translation id="3518788198614984730">‏نمایش سیستم عامل Brave به این زبان</translation>
 <translation id="6056473803837713617">‏با گزارش <ph name="BEGIN_LINK"/>تنظیمات کنونی<ph name="END_LINK"/>، به بهتر شدن Brave کمک کنید</translation>

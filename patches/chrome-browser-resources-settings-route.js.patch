@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index e54cecc1c480327d03e5e9a0a59ccd7f1fdbbc65..a015f05fdde11dee6b68ed551db7811a59181d4b 100644
+index 7c19ea2f49f48a89be1e587bf06685e2c15d9dc3..8f8afda39125efa26f9d809e43775ef646e2dc44 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
 @@ -329,6 +329,7 @@ cr.define('settings', function() {

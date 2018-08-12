@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Brave 開発者</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
 <translation id="2310890394934209120">Brave OS は、さらに追加の<ph name="BEGIN_LINK_CROS_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_CROS_OSS"/>によって実現しました。</translation>
+<translation id="858647341154864560">Brave OS は、さらに追加の<ph name="BEGIN_LINK_CROS_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_CROS_OSS"/>によって Linux（ベータ版）で実現しました。</translation>
 <translation id="5019879183386042809">Brave を既定のブラウザにする</translation>
 <translation id="5063987220091207247">Brave OS ではこのページを開けません。</translation>
 <translation id="4065288863231444640">Brave をバックグラウンドで実行する</translation>
@@ -32,6 +33,7 @@
 <translation id="3403365884036456766">ユーザー設定ファイルが壊れているか無効です。
 
 設定を復元できません。</translation>
+<translation id="5785919770853225148">このパスワードは Brave Software アカウントに保存されるため、覚えておく必要はありません。</translation>
 <translation id="3343095737966473035">Brave はデフォルトのブラウザとして設定されていません</translation>
 <translation id="6715663530666325392">同期を設定すると、パーソナライズされたブラウザ機能をウェブ上に保存して、どのパソコンの Brave からでも使用できるようになります。</translation>
 <translation id="2708027082363760195">印刷プレビューの表示に必要な PDF ビューアが Brave にインストールされていません。</translation>
@@ -120,6 +122,7 @@
 <translation id="82609232232243542">Brave にログイン</translation>
 <translation id="8372880274820509128">セキュリティ強化のため、Brave ではデータが暗号化されます。</translation>
 <translation id="7445061995866044926">Brave からログアウトしますか？</translation>
+<translation id="7453070689008684791">Brave からお客様のドライブにアクセスして、アドレスバーに候補を表示します</translation>
 <translation id="7713466009760073734">Brave OS はこの言語で表示されています</translation>
 <translation id="3518788198614984730">Brave OS をこの言語で表示</translation>
 <translation id="6056473803837713617"><ph name="BEGIN_LINK"/>現在の設定<ph name="END_LINK"/>を送信して Brave の品質向上にご協力ください</translation>

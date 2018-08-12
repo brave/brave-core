@@ -481,7 +481,12 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3190558889382726167">Hasło zostało zapisane</translation>
 <translation id="5079950360618752063">Użyj sugerowanego hasła</translation>
 <translation id="8084114998886531721">Zapisane hasło</translation>
+<translation id="5614553682702429503">Zapisać hasło?</translation>
 <translation id="1405476660552109915">Czy <ph name="PASSWORD_MANAGER_BRAND"/> ma zapisać konto dla tej strony?</translation>
+<translation id="8756969031206844760">Zaktualizować hasło?</translation>
+<translation id="8230134520748321204">Zapisać hasło do: <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Zaktualizować hasło do: <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Hasła są zapisywane na Twoim koncie Brave Software, dzięki czemu możesz ich używać na dowolnym urządzeniu</translation>
 <translation id="8286036467436129157">Zaloguj się</translation>
 <translation id="8009225694047762179">Zarządzaj hasłami</translation>
 <translation id="9135262959729602463">Aby mieć dostęp do swoich haseł na wszystkich urządzeniach, zaloguj się w Brave.</translation>
@@ -548,16 +553,18 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7400418766976504921">Adres URL</translation>
 <translation id="8730621377337864115">Gotowe</translation>
 <translation id="4416582610654027550">Wpisz prawidłowy URL</translation>
+<translation id="2806891468525657116">Skrót już istnieje</translation>
+<translation id="394183848452296464">Nie można utworzyć skrótu</translation>
 <translation id="7109543803214225826">Skrót został usunięty</translation>
 <translation id="8017679124341497925">Skrót był edytowany</translation>
 <translation id="1174073918202301297">Skrót został dodany</translation>
 <translation id="2926085873880284723">Przywróć domyślne skróty</translation>
-<translation id="7413455776853560343">Dostosuj tło</translation>
+<translation id="2942581856830209953">Dostosuj tę stronę</translation>
 <translation id="2187700606737131818">Zdjęcia Brave Software</translation>
 <translation id="5801450813341024983">Tła Brave</translation>
 <translation id="2800760947029405028">Prześlij obraz</translation>
 <translation id="8342861492835240085">Wybierz kolekcję</translation>
-<translation id="6017211263306518045">Wybierz album w Zdjęciach Brave Software</translation>
+<translation id="1734885380062278369">Wybierz album w Zdjęciach Brave Software</translation>
 <translation id="3132996321662585180">Odświeżaj codziennie</translation>
 <translation id="9062065967472365419">Zaskocz mnie</translation>
 <translation id="7287411021188441799">Przywróć domyślne tło</translation>
@@ -567,6 +574,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3617891479562106823">Tła są niedostępne. Spróbuj ponownie później.</translation>
 <translation id="8391712576156218334">Obraz jest niedostępny. Spróbuj ponownie później.</translation>
 <translation id="1564414980088536597">Nie można użyć tego obrazu. Wybierz inny.</translation>
+<translation id="4628948037717959914">Zdjęcie</translation>
+<translation id="8033827949643255796">wybrano</translation>
 <translation id="5376169624176189338">Kliknij, aby przejść wstecz. Przytrzymaj, aby wyświetlić historię</translation>
 <translation id="9103868373786083162">Naciśnij, by wrócić, lub otwórz menu kontekstowe, by wyświetlić historię</translation>
 <translation id="2961695502793809356">Kliknij, aby przejść dalej. Przytrzymaj, aby wyświetlić historię</translation>
@@ -840,6 +849,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2532167245710864499">Pomóż nam ulepszyć działanie i zwiększyć bezpieczeństwo Brave, wysyłając informacje o systemie i użytkowaniu do Brave Software</translation>
 <translation id="2709453993673701466">Chcesz dostosować ustawienia synchronizacji i personalizacji przed ich włączeniem? Wprowadź zmiany w <ph name="BEGIN_LINK"/>Ustawieniach<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">W <ph name="BEGIN_LINK"/>Ustawieniach<ph name="END_LINK"/> możesz w dowolnym momencie określić, jakie informacje będzie zbierać Brave Software.</translation>
+<translation id="6035247993547372482">Brave Software może używać zawartości odwiedzanych przez Ciebie stron oraz informacji o Twojej aktywności i interakcjach w przeglądarce, by personalizować Brave i inne usługi Brave Software takie jak Tłumacz, wyszukiwarka czy reklamy. Możesz to zmienić w Ustawieniach.</translation>
 <translation id="741204030948306876">Tak</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="2497852260688568942">Synchronizację wyłączył administrator</translation>
@@ -938,6 +948,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8363142353806532503">Zablokowano dostęp do mikrofonu</translation>
 <translation id="2762441749940182211">Zablokowano dostęp do kamery</translation>
 <translation id="5074318175948309511">Aby nowe ustawienia zaczęły działać, być może trzeba odświeżyć tę stronę.</translation>
+<translation id="1322046419516468189">Swoje zapisane hasła znajdziesz tutaj: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Konta Brave Software</translation>
 <translation id="3785727820640310185">Zapisano hasła do tej strony</translation>
 <translation id="3404065873681873169">Nie zapisano żadnych haseł do tej strony</translation>
@@ -1389,7 +1400,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="6647838571840953560">Obecny kanał: <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Oprogramowanie układowe</translation>
 <translation id="5895138241574237353">Uruchom ponownie</translation>
-<translation id="7409233648990234464">Uruchom ponownie i wykonaj Powerwash</translation>
+<translation id="4297219207642690536">Uruchom ponownie i zresetuj</translation>
 <translation id="4716483597559580346">Wykonaj Powerwash, by zwiększyć bezpieczeństwo</translation>
 <translation id="4089922565956168950">Ta aktualizacja resetuje Bravebooka i usuwa dane bieżącego użytkownika.</translation>
 <translation id="5184662919967270437">Aktualizuję urządzenie</translation>
@@ -1397,6 +1408,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="5906655207909574370">Już prawie gotowe. Uruchom ponownie urządzenie, by zakończyć aktualizację.</translation>
 <translation id="5860494867054883682">Aktualizuję Twoje urządzenie do kanału: <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Kanał został zmieniony. Aby zastosować zmiany, uruchom ponownie urządzenie.</translation>
+<translation id="7133578150266914903">Administrator przywraca wcześniejszą wersję oprogramowania na tym urządzeniu (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Administrator przywrócił wcześniejszą wersję oprogramowania na tym urządzeniu. Zapisz ważne pliki, a następnie uruchom ponownie urządzenie. Wszystkie dane zostaną usunięte z pamięci.</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> używa aktualnej wersji oprogramowania</translation>
 <translation id="3688526734140524629">Zmień kanał</translation>
 <translation id="6410328738210026208">Zmień kanał i wykonaj Powerwash</translation>
@@ -1497,7 +1510,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="6902066522699286937">Głos do sprawdzenia mowy</translation>
 <translation id="304747341537320566">Mechanizmy syntezy mowy</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Używaj na Bravebooku narzędzi, edytorów i IDE na Linuksa.</translation>
 <translation id="6869910261738842136">Usuń aplikacje na Linuksa z Bravebooka</translation>
 <translation id="2295473777859797944">Sklep Brave Software Play</translation>
 <translation id="572155275267014074">Ustawienia Androida</translation>
@@ -1538,6 +1550,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="8639963783467694461">Ustawienia autouzupełniania</translation>
 <translation id="3431019676184503003">Adresy i formy płatności</translation>
 <translation id="2512222046227390255">Autouzupełniaj formularze</translation>
+<translation id="2283340219607151381">Zapisuj i automatycznie uzupełniaj adresy</translation>
+<translation id="1662550410081243962">Zapisuj i automatycznie uzupełniaj informacje o formach płatności</translation>
 <translation id="2903493209154104877">Adresy</translation>
 <translation id="7764225426217299476">Dodaj adres</translation>
 <translation id="5595485650161345191">Edytuj adres</translation>
@@ -1574,6 +1588,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="7930294771522048157">Tutaj pojawią się zapisane formy płatności</translation>
 <translation id="9124003689441359348">Tutaj pojawią się zapisane hasła</translation>
 <translation id="4400367121200150367">Tutaj będą wyświetlane strony, które nigdy nie zapisują haseł</translation>
+<translation id="3098842761938485917">Zapisane hasła znajdziesz na swoim <ph name="BEGIN_LINK"/>koncie Brave Software<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Eksportuj hasła…</translation>
 <translation id="3900966090527141178">Eksportuj hasła</translation>
 <translation id="6914783257214138813">Twoje hasła będą widoczne dla każdego, kto może zobaczyć wyeksportowany plik.</translation>
@@ -1964,6 +1979,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="4534361985432360439">Wysyła do Brave Software adres internetowy strony, którą próbujesz otworzyć</translation>
 <translation id="6545834809683560467">Używaj podpowiedzi, by uzupełniać zapytania i adresy URL wpisywane na pasku adresu lub w polu wyszukiwania menu z aplikacjami</translation>
 <translation id="7704317875155739195">Autouzupełnianie wyszukiwania i adresów URL</translation>
+<translation id="2000419248597011803">Niektóre pliki cookie oraz zapytania wpisane na pasku adresu i w polu wyszukiwania zostaną wysłane do domyślnej wyszukiwarki</translation>
 <translation id="9038649477754266430">Używaj podpowiedzi, by strony ładowały się szybciej</translation>
 <translation id="7981313251711023384">Ładuj wstępnie strony, by przyspieszyć przeglądanie i wyszukiwanie</translation>
 <translation id="2468205691404969808">Zapisuje Twoje ustawienia w plikach cookie, nawet jeśli nie odwiedzasz tych stron</translation>
@@ -1974,6 +1990,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="490074449735753175">Używaj usługi internetowej, aby poprawiać błędy ortograficzne</translation>
 <translation id="3523078749603005179">Bardziej inteligentne sprawdzanie pisowni przez wysyłanie tekstu wpisywanego w przeglądarce do Brave Software</translation>
 <translation id="2564653188463346023">Ulepszone sprawdzanie pisowni</translation>
+<translation id="7469406957790636836">Aby włączyć tę funkcję, najpierw włącz sprawdzanie pisowni w sekcji <ph name="BEGIN_LINK"/>Języki i metody wprowadzania<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Aby włączyć tę funkcję, najpierw w menu Edytuj włącz Sprawdzaj pisownię w trakcie pisania</translation>
 <translation id="9079153198295609735">Automatycznie przesyłaj do Brave Software statystyki użytkowania i raporty o awariach</translation>
 <translation id="5941220456342415404">Automatycznie wysyłaj do Brave Software dane diagnostyczne i informacje o użytkowaniu</translation>
 <translation id="918192811481327695">Pomóż w ulepszaniu funkcji i działania Brave</translation>
@@ -2223,6 +2241,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="7548737591211512046">Zaloguj się, by korzystać ze swoich zakładek, historii, haseł i innych ustawień na wszystkich urządzeniach. Będziesz też automatycznie logować się w usługach Brave Software, których używasz.</translation>
 <translation id="2951604498031550705">Twoje zakładki, historia, hasła i inne ustawienia nie będą już synchronizowane z kontem Brave Software. Wcześniejsze dane pozostaną zapisane na koncie Brave Software. Możesz nimi zarządzać w <ph name="BEGIN_LINK"/>Panelu Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Spowoduje to wylogowanie Cię z Twoich kont Brave Software. Zmiany w zakładkach, historii, hasłach i innych ustawieniach nie będą już synchronizowane z Twoim kontem Brave Software. Dane już zapisane na koncie Brave Software pozostaną na nim. Możesz nimi zarządzać w <ph name="BEGIN_LINK"/>Panelu Brave Software<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Spowoduje to wylogowanie Cię z Twoich kont Brave Software. Twoje zakładki, historia, hasła i inne dane przestaną być synchronizowane.</translation>
 <translation id="8588866096426746242">Wyświetl statystyki profilu</translation>
 <translation id="5535941515421698170">Usuń też swoje dane z tego urządzenia</translation>
 <translation id="7243632151880336635">Wyczyść i wyloguj</translation>
@@ -2244,13 +2263,16 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="3259418918864581163">Karty kredytowe i adresy z Brave Software Pay.</translation>
 <translation id="4439834757335393741">Formy płatności i adresy z Brave Software Pay.</translation>
 <translation id="3268451620468152448">Otwarte karty</translation>
+<translation id="5241892180459725878">Podpowiedzi z Dysku Brave Software podczas wyszukiwania</translation>
 <translation id="2120297377148151361">Aktywność i interakcje</translation>
+<translation id="5833397272224757657">Zawartość otwieranych stron oraz informacje o Twoich interakcjach i aktywności w przeglądarce zostaną wykorzystane do personalizacji</translation>
 <translation id="8135094938656535588">Zarządzaj synchronizowanymi danymi w Panelu Brave Software</translation>
 <translation id="6596325263575161958">Opcje szyfrowania</translation>
 <translation id="2459230470861708651">Szyfruj synchronizowane hasła przy użyciu nazwy użytkownika i hasła Brave Software</translation>
 <translation id="6383051423892982287">Szyfruj synchronizowane dane za pomocą własnego <ph name="BEGIN_LINK"/>hasła synchronizacji<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Twoje zaszyfrowane dane może odczytać tylko ktoś znający hasło. Brave Software nie otrzyma Twojego hasła ani nie będzie go przechowywać. Jeśli je zapomnisz lub zechcesz zmienić to ustawienie, musisz <ph name="BEGIN_LINK"/>zresetować synchronizację<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Aby włączyć tę funkcję, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph name="END_LINK"/> w celu usunięcia hasła synchronizacji</translation>
 <translation id="988978206646512040">Puste hasło jest niedozwolone</translation>
 <translation id="1651008383952180276">Musisz dwukrotnie wpisać to samo hasło</translation>
 <translation id="2136476978468204130">Wpisane hasło jest nieprawidłowe</translation>

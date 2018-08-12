@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Forfatterne til Brave</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Forfatterne bag Brave. Alle rettigheder forbeholdes.</translation>
 <translation id="2310890394934209120">Brave OS er realiseret af yderligere <ph name="BEGIN_LINK_CROS_OSS"/>open source-software<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="858647341154864560">Brave OS realiseres ved hjælp af yderligere <ph name="BEGIN_LINK_CROS_OSS"/>open source-software<ph name="END_LINK_CROS_OSS"/>, og det samme gælder for Linux (beta).</translation>
 <translation id="5019879183386042809">Gør Brave til din standardbrowser</translation>
 <translation id="5063987220091207247">Brave OS kan ikke åbne denne side.</translation>
 <translation id="4065288863231444640">Lad Brave køre i baggrunden</translation>
@@ -32,6 +33,7 @@ Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller bru
 <translation id="3403365884036456766">Din præferencefil er beskadiget eller ugyldig.
 
 Brave kan ikke gendanne dine præferencer.</translation>
+<translation id="5785919770853225148">Brave gemmer denne adgangskode på din Brave Software-konto. Du behøver ikke at huske den.</translation>
 <translation id="3343095737966473035">Brave er ikke din standardbrowser</translation>
 <translation id="6715663530666325392">Konfigurer Synkronisering for at gemme dine personlige browserfunktioner på nettet, og få adgang til dem fra Brave på en computer.</translation>
 <translation id="2708027082363760195">Brave inkluderer ikke PDF-fremviseren, som er påkrævet, for at Vis udskrift kan fungere.</translation>
@@ -120,6 +122,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="82609232232243542">Log ind på Brave</translation>
 <translation id="8372880274820509128">Som et ekstra sikkerhedsniveau krypterer Brave dine data.</translation>
 <translation id="7445061995866044926">Vil du logge ud af Brave?</translation>
+<translation id="7453070689008684791">Brave har adgang til Drev, så der kan vises forslag i adresselinjen</translation>
 <translation id="7713466009760073734">Brave OS vises på dette sprog</translation>
 <translation id="3518788198614984730">Vis Brave OS på dette sprog</translation>
 <translation id="6056473803837713617">Hjælp med at gøre Brave bedre ved at rapportere de <ph name="BEGIN_LINK"/>aktuelle indstillinger<ph name="END_LINK"/>.</translation>

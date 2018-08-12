@@ -1,5 +1,5 @@
 diff --git a/chrome/install_static/install_util.cc b/chrome/install_static/install_util.cc
-index 6bbb85ef9bbbff5f6929f74574c99561a20fb582..e095ade8f8f05c414399a7293bf6d2cbc776022a 100644
+index 9e1d3a4b11399b91e84ab1e23a261a0e57305d8e..14c2eefe1c45c606ec05c097e908c54585237217 100644
 --- a/chrome/install_static/install_util.cc
 +++ b/chrome/install_static/install_util.cc
 @@ -624,7 +624,7 @@ void GetExecutableVersionDetails(const std::wstring& exe_path,

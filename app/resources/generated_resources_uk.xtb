@@ -481,7 +481,12 @@
 <translation id="3190558889382726167">Пароль збережено</translation>
 <translation id="5079950360618752063">Використати запропонований пароль</translation>
 <translation id="8084114998886531721">Збережений пароль</translation>
+<translation id="5614553682702429503">Зберегти пароль?</translation>
 <translation id="1405476660552109915">Зберегти обліковий запис для цього сайту в <ph name="PASSWORD_MANAGER_BRAND"/>?</translation>
+<translation id="8756969031206844760">Оновити пароль?</translation>
+<translation id="8230134520748321204">Зберегти пароль для <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Оновити пароль для <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Паролі збережено в обліковому записі Brave Software, щоб ви могли користуватися ними на будь-якому пристрої</translation>
 <translation id="8286036467436129157">Вхід</translation>
 <translation id="8009225694047762179">Керувати паролями</translation>
 <translation id="9135262959729602463">Щоб мати доступ до паролів на всіх своїх пристроях, увійдіть в обліковий запис Brave.</translation>
@@ -548,16 +553,18 @@
 <translation id="7400418766976504921">URL-адреса</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="4416582610654027550">Введіть дійсну URL-адресу</translation>
+<translation id="2806891468525657116">Ярлик уже є</translation>
+<translation id="394183848452296464">Не вдається створити ярлик</translation>
 <translation id="7109543803214225826">Ярлик видалено</translation>
 <translation id="8017679124341497925">Ярлик змінено</translation>
 <translation id="1174073918202301297">Ярлик додано</translation>
 <translation id="2926085873880284723">Відновити ярлики за умовчанням</translation>
-<translation id="7413455776853560343">Налаштування фону</translation>
+<translation id="2942581856830209953">Налаштувати цю сторінку</translation>
 <translation id="2187700606737131818">Brave Software Фото</translation>
 <translation id="5801450813341024983">Фони Brave</translation>
 <translation id="2800760947029405028">Завантажити зображення</translation>
 <translation id="8342861492835240085">Виберіть колекцію</translation>
-<translation id="6017211263306518045">Виберіть альбом Brave Software Фото</translation>
+<translation id="1734885380062278369">Виберіть альбом Brave Software Фото</translation>
 <translation id="3132996321662585180">Оновлювати щодня</translation>
 <translation id="9062065967472365419">Здивуйте мене</translation>
 <translation id="7287411021188441799">Відновити фон за умовчанням</translation>
@@ -567,6 +574,8 @@
 <translation id="3617891479562106823">Фони недоступні. Повторіть спробу пізніше.</translation>
 <translation id="8391712576156218334">Зображення недоступне. Повторіть спробу пізніше.</translation>
 <translation id="1564414980088536597">Неможливо використати це зображення. Виберіть інше.</translation>
+<translation id="4628948037717959914">Фотографія</translation>
+<translation id="8033827949643255796">виділено</translation>
 <translation id="5376169624176189338">Натисніть, щоб повернутися назад; утримуйте, щоб переглянути історію</translation>
 <translation id="9103868373786083162">Натисніть, щоб повернутись, або відкрийте контекстне меню, щоб переглянути історію</translation>
 <translation id="2961695502793809356">Натисніть, щоб перейти далі; утримуйте, щоб переглянути історію</translation>
@@ -840,6 +849,7 @@
 <translation id="2532167245710864499">Покращуйте Brave і функції безпеки, надсилаючи в Brave Software дані про систему та використання</translation>
 <translation id="2709453993673701466">Хочете налаштувати синхронізацію та персоналізацію, перш ніж їх буде ввімкнено? Перейдіть у меню <ph name="BEGIN_LINK"/>Налаштування<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">У <ph name="BEGIN_LINK"/>Налаштуваннях<ph name="END_LINK"/> можна будь-коли вибрати, яку інформацію збирає Brave Software.</translation>
+<translation id="6035247993547372482">Brave Software може використовувати вміст відвіданих сайтів, дані веб-перегляду й взаємодії, щоб персоналізувати Brave та інші служби Brave Software, як-от Перекладач, Пошук і оголошення. Ви можете змінити це в налаштуваннях.</translation>
 <translation id="741204030948306876">Увімкнути</translation>
 <translation id="8428213095426709021">Налаштування</translation>
 <translation id="2497852260688568942">Ваш адміністратор вимкнув синхронізацію</translation>
@@ -938,6 +948,7 @@
 <translation id="8363142353806532503">Заборонено використовувати мікрофон</translation>
 <translation id="2762441749940182211">Заборонено використовувати камеру</translation>
 <translation id="5074318175948309511">Щоб нові налаштування почали діяти, можливо, потрібно буде оновити цю сторінку.</translation>
+<translation id="1322046419516468189">Переглядайте збережені паролі й керуйте ними на сторінці <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Обліковий запис Brave Software</translation>
 <translation id="3785727820640310185">Збережені паролі для цього сайту</translation>
 <translation id="3404065873681873169">Немає збережених паролів для цього сайту</translation>
@@ -1388,7 +1399,7 @@
 <translation id="6647838571840953560">Зараз на каналі <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Мікропрограма</translation>
 <translation id="5895138241574237353">Перезапустити</translation>
-<translation id="7409233648990234464">Перезапустити й виконати Powerwash</translation>
+<translation id="4297219207642690536">Перезапустити й скинути</translation>
 <translation id="4716483597559580346">Powerwash для додаткового захисту</translation>
 <translation id="4089922565956168950">Це оновлення скидає налаштування Bravebook і вилучає дані поточного користувача.</translation>
 <translation id="5184662919967270437">Оновлення пристрою</translation>
@@ -1396,6 +1407,8 @@
 <translation id="5906655207909574370">Майже оновлено. Перезапустіть пристрій, щоб завершити оновлення.</translation>
 <translation id="5860494867054883682">На пристрій установлюється <ph name="CHANNEL_NAME"/> версія (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Канал змінено. Перезапустіть пристрій, щоб застосувати зміни.</translation>
+<translation id="7133578150266914903">Адміністратор відновлює цей пристрій до попереднього стану (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Адміністратор відновив цей пристрій до попереднього стану. Збережіть важливі файли, а потім перезапустіть пристрій. Усі дані на пристрої буде видалено.</translation>
 <translation id="1871615898038944731">Ваш пристрій <ph name="DEVICE_TYPE"/> оновлено</translation>
 <translation id="3688526734140524629">Змінити версію</translation>
 <translation id="6410328738210026208">Змінити версію й виконати Powerwash</translation>
@@ -1496,7 +1509,6 @@
 <translation id="6902066522699286937">Голос для попереднього прослуховування</translation>
 <translation id="304747341537320566">Системи синтезу мовлення</translation>
 <translation id="1067291318998134776">Linux (бета-версія)</translation>
-<translation id="6963573437985514722">Запускає інструменти Linux, редактори й ІСР на Bravebook.</translation>
 <translation id="6869910261738842136">Видалити додатки Linux для Bravebook</translation>
 <translation id="2295473777859797944">Магазин Brave Software Play</translation>
 <translation id="572155275267014074">Налаштування Android</translation>
@@ -1537,6 +1549,8 @@
 <translation id="8639963783467694461">Налаштування автозаповнення</translation>
 <translation id="3431019676184503003">Адреси та способи оплати</translation>
 <translation id="2512222046227390255">Автоматично заповняти форми</translation>
+<translation id="2283340219607151381">Зберігати й заповнювати адреси</translation>
+<translation id="1662550410081243962">Зберігати й заповнювати способи оплати</translation>
 <translation id="2903493209154104877">Адреси</translation>
 <translation id="7764225426217299476">Додати адресу</translation>
 <translation id="5595485650161345191">Редагувати адресу</translation>
@@ -1573,6 +1587,7 @@
 <translation id="7930294771522048157">Тут відображатимуться збережені способи оплати</translation>
 <translation id="9124003689441359348">Тут відображатимуться збережені паролі</translation>
 <translation id="4400367121200150367">Тут відображатимуться сайти, які ніколи не зберігають паролі</translation>
+<translation id="3098842761938485917">Переглядайте збережені паролі й керуйте ними в <ph name="BEGIN_LINK"/>обліковому записі Brave Software<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Експортувати паролі…</translation>
 <translation id="3900966090527141178">Експортувати паролі</translation>
 <translation id="6914783257214138813">Ваші паролі бачитимуть усі, хто може переглядати експортований файл.</translation>
@@ -1963,6 +1978,7 @@
 <translation id="4534361985432360439">Надсилає в Brave Software веб-адресу сторінки, яку ви намагаєтеся відкрити</translation>
 <translation id="6545834809683560467">Використовувати підказки для завершення пошукових запитів і URL-адрес, введених в адресний рядок або вікно пошуку на панелі запуску додатків</translation>
 <translation id="7704317875155739195">Автоматично завершувати пошукові запити та URL-адреси</translation>
+<translation id="2000419248597011803">Надсилає деякі файли cookie й пошукові запити з адресного рядка та вікна пошуку в пошукову систему за умовчанням</translation>
 <translation id="9038649477754266430">Користуйтеся службою передбачення, щоб сторінки завантажувалися швидше</translation>
 <translation id="7981313251711023384">Попередньо завантажувати сторінки, щоб швидше переглядати та шукати</translation>
 <translation id="2468205691404969808">Використовує файли cookie, щоб запам’ятовувати налаштування, навіть якщо ви не відвідуєте ці сторінки</translation>
@@ -1973,6 +1989,8 @@
 <translation id="490074449735753175">Використовувати веб-послугу для виправлення помилок правопису</translation>
 <translation id="3523078749603005179">Отримуйте точніші пропозиції щодо правопису, надсилаючи в Brave Software текст, який ви вводите у веб-переглядачі</translation>
 <translation id="2564653188463346023">Покращена перевірка орфографії</translation>
+<translation id="7469406957790636836">Щоб увімкнути цю функцію, спершу ввімкніть перевірку орфографії в розділі <ph name="BEGIN_LINK"/>Мови та способи введення<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Щоб увімкнути цю функцію, спершу виберіть опцію "Перевіряти правопис під час введення" в меню "Редагування"</translation>
 <translation id="9079153198295609735">Автоматично надсилати статистику використання та звіти про аварійне завершення роботи в Brave Software</translation>
 <translation id="5941220456342415404">Автоматично надсилати в Brave Software дані про діагностику та використання</translation>
 <translation id="918192811481327695">Допоможіть покращити функції й ефективність Brave</translation>
@@ -2222,6 +2240,7 @@
 <translation id="7548737591211512046">Увійдіть в обліковий запис, щоб мати доступ до закладок, історії, паролів та інших налаштувань на всіх своїх пристроях. Крім того, ви автоматично входитимете в служби Brave Software.</translation>
 <translation id="2951604498031550705">Зміни в закладках, історії, паролях та інших налаштуваннях більше не синхронізуватимуться з вашим обліковим записом Brave Software. Дані, які зберігаються в обліковому записі Brave Software, не буде видалено. Ними можна керувати на <ph name="BEGIN_LINK"/>Інформаційній панелі Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Ви вийдете з облікових записів Brave Software. Зміни в закладках, історії, паролях та інших налаштуваннях більше не синхронізуватимуться з ним. Дані, які зберігаються в обліковому записі Brave Software, не буде видалено. Ними можна керувати на <ph name="BEGIN_LINK"/>Інформаційній панелі Brave Software<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Ви вийдете з облікових записів Brave Software. Закладки, історія, паролі тощо більше не синхронізуватимуться.</translation>
 <translation id="8588866096426746242">Показати статистику профілю</translation>
 <translation id="5535941515421698170">Також вилучити всі дані з цього пристрою</translation>
 <translation id="7243632151880336635">Очистити та вийти з облікового запису</translation>
@@ -2243,13 +2262,16 @@
 <translation id="3259418918864581163">Кредитні картки й адреси, пов’язані з Brave Software Pay.</translation>
 <translation id="4439834757335393741">Способи оплати й адреси, пов’язані з Brave Software Pay.</translation>
 <translation id="3268451620468152448">Відкриті вкладки</translation>
+<translation id="5241892180459725878">Пропозиції щодо пошуку на Brave Software Диску</translation>
 <translation id="2120297377148151361">Активність і взаємодії</translation>
+<translation id="5833397272224757657">Використовує вміст відвіданих сайтів, активність у веб-переглядачі та взаємодії для персоналізації</translation>
 <translation id="8135094938656535588">Керувати синхронізованими даними на інформаційній панелі Brave Software</translation>
 <translation id="6596325263575161958">Параметри шифрування</translation>
 <translation id="2459230470861708651">Шифрувати синхронізовані паролі з іменем користувача та паролем Brave Software</translation>
 <translation id="6383051423892982287">Шифрувати синхронізовані дані за допомогою власної <ph name="BEGIN_LINK"/>парольної фрази<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Ваші зашифровані дані можуть переглядати лише користувачі, які знають вашу парольну фразу. Парольна фраза не надсилається й не зберігається в Brave Software. Якщо ви забули її або хочете змінити це налаштування, <ph name="BEGIN_LINK"/>скиньте синхронізацію<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Щоб змінити це налаштування, <ph name="BEGIN_LINK"/>скиньте синхронізацію<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Щоб увімкнути цю функцію, видаліть парольну фразу синхронізації, <ph name="BEGIN_LINK"/>скинувши синхронізацію<ph name="END_LINK"/>.</translation>
 <translation id="988978206646512040">Потрібно вказати парольну фразу</translation>
 <translation id="1651008383952180276">Потрібно двічі ввести однакову парольну фразу</translation>
 <translation id="2136476978468204130">Введена парольна фраза неправильна</translation>

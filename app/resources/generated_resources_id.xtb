@@ -481,7 +481,12 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3190558889382726167">Sandi tersimpan</translation>
 <translation id="5079950360618752063">Gunakan sandi yang disarankan</translation>
 <translation id="8084114998886531721">Sandi tersimpan</translation>
+<translation id="5614553682702429503">Simpan sandi?</translation>
 <translation id="1405476660552109915">Ingin <ph name="PASSWORD_MANAGER_BRAND"/> menyimpan akun untuk situs ini?</translation>
+<translation id="8756969031206844760">Perbarui sandi?</translation>
+<translation id="8230134520748321204">Simpan sandi untuk <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">Perbarui sandi untuk <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Sandi disimpan di Akun Brave Software agar Anda dapat menggunakannya di perangkat mana pun</translation>
 <translation id="8286036467436129157">Masuk</translation>
 <translation id="8009225694047762179">Kelola Kata sandi</translation>
 <translation id="9135262959729602463">Untuk mendapatkan sandi di semua perangkat Anda, login ke Brave.</translation>
@@ -548,16 +553,18 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="4416582610654027550">Ketik URL yang valid</translation>
+<translation id="2806891468525657116">Pintasan sudah ada</translation>
+<translation id="394183848452296464">Tidak dapat membuat pintasan</translation>
 <translation id="7109543803214225826">Pintasan dihapus</translation>
 <translation id="8017679124341497925">Pintasan diedit</translation>
 <translation id="1174073918202301297">Pintasan ditambahkan</translation>
 <translation id="2926085873880284723">Pulihkan pintasan default</translation>
-<translation id="7413455776853560343">Sesuaikan background</translation>
+<translation id="2942581856830209953">Sesuaikan halaman ini</translation>
 <translation id="2187700606737131818">Brave Software Foto</translation>
 <translation id="5801450813341024983">Background Brave</translation>
 <translation id="2800760947029405028">Upload gambar</translation>
 <translation id="8342861492835240085">Pilih koleksi</translation>
-<translation id="6017211263306518045">Pilih Album Brave Software Foto</translation>
+<translation id="1734885380062278369">Pilih album Brave Software Foto</translation>
 <translation id="3132996321662585180">Refresh tiap hari</translation>
 <translation id="9062065967472365419">Beri saya kejutan</translation>
 <translation id="7287411021188441799">Pulihkan background default</translation>
@@ -567,6 +574,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3617891479562106823">Background tidak tersedia. Coba lagi nanti.</translation>
 <translation id="8391712576156218334">Gambar tidak tersedia. Coba lagi nanti.</translation>
 <translation id="1564414980088536597">Gambar ini tidak dapat digunakan. Pilih gambar lain.</translation>
+<translation id="4628948037717959914">Foto</translation>
+<translation id="8033827949643255796">dipilih</translation>
 <translation id="5376169624176189338">Klik untuk mundur, tahan untuk melihat histori</translation>
 <translation id="9103868373786083162">Tekan untuk kembali ke menu konteks guna melihat histori</translation>
 <translation id="2961695502793809356">Klik untuk maju, tahan untuk melihat histori</translation>
@@ -840,6 +849,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2532167245710864499">Sempurnakan Brave dan keamanannya dengan mengirimkan informasi penggunaan dan sistem ke Brave Software</translation>
 <translation id="2709453993673701466">Ingin mengelola sinkronisasi dan personalisasi sebelum diaktifkan? Buka <ph name="BEGIN_LINK"/>Setelan<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Anda dapat menyesuaikan informasi yang dikumpulkan Brave Software di <ph name="BEGIN_LINK"/>Setelan<ph name="END_LINK"/> kapan saja.</translation>
+<translation id="6035247993547372482">Brave Software dapat menggunakan konten di situs yang Anda buka, serta aktivitas browser dan interaksi untuk mempersonalisasi Brave dan layanan Brave Software lainnya seperti Terjemahan, Penelusuran, dan iklan. Anda dapat menyesuaikannya di Setelan.</translation>
 <translation id="741204030948306876">Ya, saya ikut</translation>
 <translation id="8428213095426709021">Setelan</translation>
 <translation id="2497852260688568942">Sinkronisasi dinonaktifkan oleh administrator</translation>
@@ -938,6 +948,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8363142353806532503">Mikrofon diblokir</translation>
 <translation id="2762441749940182211">Kamera diblokir</translation>
 <translation id="5074318175948309511">Halaman ini mungkin perlu dimuat ulang sebelum setelan baru berpengaruh.</translation>
+<translation id="1322046419516468189">Lihat dan kelola sandi tersimpan di <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Akun Brave Software</translation>
 <translation id="3785727820640310185">Sandi yang tersimpan untuk situs ini</translation>
 <translation id="3404065873681873169">Tidak ada sandi yang tersimpan untuk situs ini</translation>
@@ -1388,7 +1399,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6647838571840953560">Saat ini di <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Firmware</translation>
 <translation id="5895138241574237353">Mulai Ulang</translation>
-<translation id="7409233648990234464">Luncurkan Kembali dan Powerwash</translation>
+<translation id="4297219207642690536">Mulai ulang dan setel ulang</translation>
 <translation id="4716483597559580346">Powerwash untuk keamanan tambahan</translation>
 <translation id="4089922565956168950">Upgrade ini menyetel ulang Bravebook dan menghapus data pengguna saat ini.</translation>
 <translation id="5184662919967270437">Memperbarui perangkat</translation>
@@ -1396,6 +1407,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5906655207909574370">Hampir selesai diperbarui! Mulai ulang perangkat untuk menyelesaikan pembaruan.</translation>
 <translation id="5860494867054883682">Memperbarui perangkat ke saluran <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Saluran diubah. Mulai ulang perangkat Anda untuk menerapkan perubahan.</translation>
+<translation id="7133578150266914903">Administrator sedang memulihkan perangkat ini (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Administrator memulihkan perangkat ini. Harap simpan file yang penting, lalu nyalakan ulang. Semua data di perangkat akan dihapus.</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> Anda adalah versi terbaru</translation>
 <translation id="3688526734140524629">Ubah saluran</translation>
 <translation id="6410328738210026208">Ganti saluran dan Powerwash</translation>
@@ -1496,7 +1509,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6902066522699286937">Suara untuk dipratinjau</translation>
 <translation id="304747341537320566">Mesin Ucapan</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Menjalankan fitur, editor, dan IDE Linus di Bravebook Anda.</translation>
 <translation id="6869910261738842136">Hapus Aplikasi Linux untuk Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Setelan Android</translation>
@@ -1537,6 +1549,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8639963783467694461">Setelan Isi-otomatis</translation>
 <translation id="3431019676184503003">Alamat &amp;amp; metode pembayaran</translation>
 <translation id="2512222046227390255">Formulir isi otomatis</translation>
+<translation id="2283340219607151381">Simpan dan isi alamat</translation>
+<translation id="1662550410081243962">Simpan dan isi metode pembayaran</translation>
 <translation id="2903493209154104877">Alamat</translation>
 <translation id="7764225426217299476">Tambahkan alamat</translation>
 <translation id="5595485650161345191">Edit alamat</translation>
@@ -1573,6 +1587,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7930294771522048157">Metode pembayaran yang tersimpan akan muncul di sini</translation>
 <translation id="9124003689441359348">Sandi yang disimpan akan muncul di sini</translation>
 <translation id="4400367121200150367">Situs yang tidak pernah menyimpan sandi akan muncul di sini</translation>
+<translation id="3098842761938485917">Lihat dan kelola sandi tersimpan di <ph name="BEGIN_LINK"/>Akun Brave Software<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Ekspor sandi...</translation>
 <translation id="3900966090527141178">Ekspor sandi</translation>
 <translation id="6914783257214138813">Sandi akan terlihat oleh orang yang dapat melihat file yang diekspor.</translation>
@@ -1963,6 +1978,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4534361985432360439">Mengirimkan alamat web halaman yang ingin Anda buka ke Brave Software</translation>
 <translation id="6545834809683560467">Gunakan layanan prediksi untuk membantu melengkapi penelusuran dan URL yang diketik di kolom URL atau kotak penelusuran peluncur aplikasi</translation>
 <translation id="7704317875155739195">Melengkapi otomatis penelusuran dan URL</translation>
+<translation id="2000419248597011803">Mengirimkan beberapa cookie dan penelusuran dari kolom URL dan kotak penelusuran ke mesin telusur default</translation>
 <translation id="9038649477754266430">Gunakan layanan prediksi agar halaman dimuat dengan lebih cepat</translation>
 <translation id="7981313251711023384">Pramuat halaman agar browsing dan menelusuri lebih cepat</translation>
 <translation id="2468205691404969808">Menggunakan cookie untuk mengingat preferensi, meski Anda tidak membuka halaman tersebut</translation>
@@ -1973,6 +1989,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="490074449735753175">Gunakan layanan web untuk membantu mengoreksi kesalahan ejaan</translation>
 <translation id="3523078749603005179">Pemeriksa ejaan yang lebih cerdas dengan mengirimkan apa yang Anda ketik di browser ke Brave Software</translation>
 <translation id="2564653188463346023">Pemeriksaan ejaan yang disempurnakan</translation>
+<translation id="7469406957790636836">Untuk mengaktifkannya, terlebih dahulu aktifkan fitur periksa ejaan di <ph name="BEGIN_LINK"/>Bahasa dan masukan<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Untuk mengaktifkannya, terlebih dahulu pilih Periksa Ejaan Saat Mengetik di menu Edit</translation>
 <translation id="9079153198295609735">Kirim statistik penggunaan dan laporan kerusakan ke Brave Software secara otomatis</translation>
 <translation id="5941220456342415404">Otomatis kirimkan data diagnostik dan penggunaan ke Brave Software</translation>
 <translation id="918192811481327695">Bantu sempurnakan fitur dan performa Brave</translation>
@@ -2222,6 +2240,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7548737591211512046">Login untuk mendapatkan bookmark, histori, sandi, dan setelan lain di semua perangkat Anda. Anda juga akan otomatis login ke layanan Brave Software.</translation>
 <translation id="2951604498031550705">Perubahan terhadap bookmark, histori, sandi, dan setelan lain sudah tidak disinkronkan ke Akun Brave Software Anda. Namun, data yang sudah ada akan tetap disimpan di Akun Brave Software dan dapat dikelola di <ph name="BEGIN_LINK"/>Brave Software Dasbor<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Tindakan ini akan membuat Anda logout dari akun Brave Software. Perubahan pada bookmark, histori, sandi, dan setelan lainnya tidak akan disinkronkan lagi dengan Akun Brave Software Anda. Namun, data yang sudah ada akan tetap disimpan di Akun Brave Software dan dapat dikelola di <ph name="BEGIN_LINK"/>Brave Software Dasbor<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Tindakan ini akan membuat Anda logout dari Akun Brave Software. Bookmark, histori, sandi, dan lainnya tidak akan disinkronkan lagi.</translation>
 <translation id="8588866096426746242">Tampilkan statistik profil</translation>
 <translation id="5535941515421698170">Tindakan ini juga menghapus data yang sudah ada dari perangkat ini</translation>
 <translation id="7243632151880336635">Hapus dan Keluar</translation>
@@ -2243,13 +2262,16 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3259418918864581163">Kartu kredit dan alamat yang menggunakan Brave Software Pay.</translation>
 <translation id="4439834757335393741">Metode pembayaran dan alamat yang menggunakan Brave Software Pay.</translation>
 <translation id="3268451620468152448">Tab Terbuka</translation>
+<translation id="5241892180459725878">Saran penelusuran Brave Software Drive</translation>
 <translation id="2120297377148151361">Aktivitas dan interaksi</translation>
+<translation id="5833397272224757657">Menggunakan konten di situs yang Anda buka serta aktivitas browser dan interaksi untuk personalisasi</translation>
 <translation id="8135094938656535588">Mengelola data yang disinkronkan pada Brave Software Dasbor</translation>
 <translation id="6596325263575161958">Opsi enkripsi</translation>
 <translation id="2459230470861708651">Enkripsikan sandi yang disinkronkan dengan nama pengguna dan sandi Brave Software Anda</translation>
 <translation id="6383051423892982287">Enkripsikan data yang disinkronkan dengan <ph name="BEGIN_LINK"/>frasa sandi sinkronisasi<ph name="END_LINK"/> Anda sendiri</translation>
 <translation id="4817583816512767754">Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi. Frasa sandi tidak dikirim ke atau disimpan oleh Brave Software. Jika lupa frasa sandi atau ingin mengubah setelan ini, Anda perlu <ph name="BEGIN_LINK"/>menyetel ulang sinkronisasi<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Untuk mengaktifkannya, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph name="END_LINK"/> untuk menghapus frasa sandi sinkronisasi</translation>
 <translation id="988978206646512040">Frasa sandi tidak boleh kosong</translation>
 <translation id="1651008383952180276">Anda harus memasukkan frasa sandi yang sama dua kali</translation>
 <translation id="2136476978468204130">Frasa sandi yang Anda masukkan salah</translation>

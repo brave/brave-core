@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Os Autores do Brave</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Os autores do Brave. Todos os direitos reservados.</translation>
 <translation id="2310890394934209120">O lançamento do SO Brave foi possível devido a <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
+<translation id="858647341154864560">O Brave OS é possível através de <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional, tal como o Linux (Beta).</translation>
 <translation id="5019879183386042809">Definir o Brave como navegador predefinido</translation>
 <translation id="5063987220091207247">O SO Brave não consegue abrir esta página.</translation>
 <translation id="4065288863231444640">Permitir que o Brave seja executado em segundo plano</translation>
@@ -32,6 +33,7 @@ Algumas funcionalidades podem não estar disponíveis. Especifique um diretório
 <translation id="3403365884036456766">O ficheiro de preferências está danificado ou não é válido.
 
 O Brave não consegue recuperar as suas definições.</translation>
+<translation id="5785919770853225148">O Brave vai guardar esta palavra-passe na sua Conta Brave Software. Não tem de a memorizar.</translation>
 <translation id="3343095737966473035">O Brave não é o seu navegador predefinido.</translation>
 <translation id="6715663530666325392">Configure a Sincronização para guardar as suas funcionalidades personalizadas do navegador para a Web e aceder às mesmas a partir do Brave em qualquer computador.</translation>
 <translation id="2708027082363760195">O Brave não inclui o visualizador de PDF que é necessário para que a Pré-visualização da Impressão funcione.</translation>
@@ -120,6 +122,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="82609232232243542">Iniciar sessão no Brave</translation>
 <translation id="8372880274820509128">Para uma segurança adicional, o Brave encripta os seus dados.</translation>
 <translation id="7445061995866044926">Pretende terminar sessão no Brave?</translation>
+<translation id="7453070689008684791">O Brave vai aceder ao seu Drive para fornecer sugestões na barra de endereço.</translation>
 <translation id="7713466009760073734">O SO Brave é apresentado neste idioma</translation>
 <translation id="3518788198614984730">Apresentar o SO Brave neste idioma</translation>
 <translation id="6056473803837713617">Ajude a melhorar o Brave ao comunicar as <ph name="BEGIN_LINK"/>definições atuais<ph name="END_LINK"/></translation>

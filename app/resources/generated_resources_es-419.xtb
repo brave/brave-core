@@ -290,6 +290,7 @@
 <translation id="6398765197997659313">Salir de pantalla completa</translation>
 <translation id="8559694214572302298">Decodificador de imágenes</translation>
 <translation id="8191453843330043793">Herramienta de resolución de proxy V8</translation>
+<translation id="6185617499004995178">Validador del IPP mediante CUPS</translation>
 <translation id="7171242884588191792">Utilidades de archivos de Brave</translation>
 <translation id="3061707000357573562">Aplicar parche al servicio</translation>
 <translation id="3580923162759633716">Servicio de análisis de perfiles</translation>
@@ -480,7 +481,12 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="3190558889382726167">Se guardó la contraseña</translation>
 <translation id="5079950360618752063">Usar la contraseña sugerida</translation>
 <translation id="8084114998886531721">Se guardó la contraseña</translation>
+<translation id="5614553682702429503">¿Quieres guardar la contraseña?</translation>
 <translation id="1405476660552109915">¿Deseas que <ph name="PASSWORD_MANAGER_BRAND"/> guarde tu cuenta para este sitio?</translation>
+<translation id="8756969031206844760">¿Quieres actualizar la contraseña?</translation>
+<translation id="8230134520748321204">¿Quieres guardar la contraseña para <ph name="ORIGIN"/>?</translation>
+<translation id="9040661932550800571">¿Quieres actualizar la contraseña para <ph name="ORIGIN"/>?</translation>
+<translation id="8284000761603848448">Las contraseñas se guardan en tu cuenta de Brave Software para que puedas usarlas en cualquier dispositivo</translation>
 <translation id="8286036467436129157">Iniciar sesión</translation>
 <translation id="8009225694047762179">Administrar contraseñas</translation>
 <translation id="9135262959729602463">Para obtener tus contraseñas en todos los dispositivos, accede a Brave.</translation>
@@ -547,16 +553,18 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Listo</translation>
 <translation id="4416582610654027550">Escribe una URL válida</translation>
+<translation id="2806891468525657116">El acceso directo ya existe</translation>
+<translation id="394183848452296464">No se puede crear el acceso directo</translation>
 <translation id="7109543803214225826">Se quitó el acceso directo</translation>
 <translation id="8017679124341497925">Se editó el acceso directo</translation>
 <translation id="1174073918202301297">Acceso directo agregado</translation>
 <translation id="2926085873880284723">Restablecer accesos directos predeterminados</translation>
-<translation id="7413455776853560343">Personalizar fondo</translation>
+<translation id="2942581856830209953">Personalizar esta página</translation>
 <translation id="2187700606737131818">Brave Software Fotos</translation>
 <translation id="5801450813341024983">Fondos de Brave</translation>
 <translation id="2800760947029405028">Cargar una imagen</translation>
 <translation id="8342861492835240085">Seleccionar una colección</translation>
-<translation id="6017211263306518045">Seleccionar un álbum de Brave Software Fotos</translation>
+<translation id="1734885380062278369">Seleccionar un álbum de Brave Software Fotos</translation>
 <translation id="3132996321662585180">Actualizar todos los días</translation>
 <translation id="9062065967472365419">Sorpréndeme</translation>
 <translation id="7287411021188441799">Restablecer fondo predeterminado</translation>
@@ -566,6 +574,8 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="3617891479562106823">Los fondos no están disponibles. Vuelve a intentarlo más tarde.</translation>
 <translation id="8391712576156218334">La imagen no está disponible. Vuelve a intentarlo más tarde.</translation>
 <translation id="1564414980088536597">No se puede usar esta imagen. Elige otra.</translation>
+<translation id="4628948037717959914">Foto</translation>
+<translation id="8033827949643255796">seleccionados</translation>
 <translation id="5376169624176189338">Haz clic para volver atrás o espera para ver el historial</translation>
 <translation id="9103868373786083162">Presiona para retroceder; usa el menú contextual para consultar el historial</translation>
 <translation id="2961695502793809356">Haz clic para continuar o espera para ver el historial</translation>
@@ -578,6 +588,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="7554791636758816595">Nueva pestaña</translation>
 <translation id="3915280005470252504">Buscar por voz</translation>
 <translation id="3153862085237805241">Guardar tarjeta</translation>
+<translation id="4961000125720751066">Todas tus tarjetas en un solo lugar</translation>
 <translation id="2473195200299095979">Traducir esta página</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">La extensión "<ph name="NAME"/>" hizo zoom en esta página</translation>
@@ -661,6 +672,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="4514610446763173167">Reproduce o pausa el video</translation>
 <translation id="2631120081682787498">¿Realmente quieres cerrar esta pestaña?</translation>
 <translation id="111844081046043029">¿Estás seguro de que deseas abandonar esta página?</translation>
+<translation id="245661998428026871">Se dejará de reproducir el video en modo de pantalla en pantalla.</translation>
 <translation id="2677748264148917807">Abandonar</translation>
 <translation id="2520644704042891903">Esperando el socket disponible…</translation>
 <translation id="1493892686965953381">Esperando <ph name="LOAD_STATE_PARAMETER"/>...</translation>
@@ -837,6 +849,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="2532167245710864499">Para mejorar Brave y su seguridad, envía información a Brave Software sobre el sistema y el uso</translation>
 <translation id="2709453993673701466">¿Deseas administrar la sincronización y la personalización antes de activarlas? Accede a la <ph name="BEGIN_LINK"/>Configuración<ph name="END_LINK"/>.</translation>
 <translation id="2668128414154024727">Puedes personalizar la información que recopila Brave Software en la sección <ph name="BEGIN_LINK"/>Configuración<ph name="END_LINK"/> en cualquier momento.</translation>
+<translation id="6035247993547372482">Es posible que usemos contenido de los sitios que visitas (así como tus interacciones y actividad de navegación) a fin de personalizar Brave y otros servicios de Brave Software, como el Traductor, la Búsqueda y los anuncios. Para cambiar esta acción, visita la sección Configuración.</translation>
 <translation id="741204030948306876">Sí, acepto</translation>
 <translation id="8428213095426709021">Configuración</translation>
 <translation id="2497852260688568942">Tu administrador inhabilitó la sincronización</translation>
@@ -935,6 +948,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="8363142353806532503">Micrófono bloqueado</translation>
 <translation id="2762441749940182211">Cámara bloqueada</translation>
 <translation id="5074318175948309511">Es posible que debas actualizar la página para que se aplique la nueva configuración.</translation>
+<translation id="1322046419516468189">Consulta y administra las contraseñas guardadas en tu <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Cuenta de Brave Software</translation>
 <translation id="3785727820640310185">Se guardaron contraseñas para este sitio</translation>
 <translation id="3404065873681873169">No se guardó ninguna contraseña para este sitio</translation>
@@ -1033,14 +1047,18 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="3202173864863109533">El audio de esta pestaña está silenciado.</translation>
 <translation id="5562781907504170924">Esta pestaña está conectada con un dispositivo Bluetooth.</translation>
 <translation id="5884474295213649357">Esta pestaña está conectada a un dispositivo USB.</translation>
+<translation id="8466417995783206254">Esta pestaña está reproduciendo un video en el modo de pantalla en pantalla.</translation>
+<translation id="6235700927623181151">Esta pestaña está compartiendo el contenido de tu escritorio.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/>: La cámara o el micrófono están grabando</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/>: Se compartió el contenido de la pestaña</translation>
+<translation id="3334632933872291866"><ph name="WINDOW_TITLE"/>: El video se reproduce en modo de pantalla en pantalla</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/>: Reproducción de audio</translation>
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/>: Audio silenciado</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/>: Se conectó un dispositivo Bluetooth</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/>: Se conectó el dispositivo USB</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/>: Error de red</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/>: Falló</translation>
+<translation id="6579705087617859690"><ph name="WINDOW_TITLE"/>: Se comparte el contenido del escritorio</translation>
 <translation id="973473557718930265">Salir</translation>
 <translation id="3590194807845837023">Desbloquear perfil y volver a iniciar</translation>
 <translation id="7624337243375417909">bloqueo de mayúscula desactivado</translation>
@@ -1095,6 +1113,10 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="874689135111202667">{0,plural, =1{¿Deseas cargar un archivo a este sitio?}other{¿Deseas cargar # archivos a este sitio?}}</translation>
 <translation id="1956390763342388273">Esta acción cargará todos los archivos de "<ph name="FOLDER_PATH"/>". Hazlo únicamente si el sitio es de confianza.</translation>
 <translation id="1243314992276662751">Cargar</translation>
+<translation id="2446585455334014596"><ph name="APP_NAME"/> quiere verificar tu identidad</translation>
+<translation id="3738671331307774213">Para proteger tus datos privados, verifica tu identidad</translation>
+<translation id="8435395510592618362">Verificar tu identidad con <ph name="APP_NAME"/></translation>
+<translation id="3854599674806204102">Elige una opción</translation>
 <translation id="7490950320178383728">Usa tu llave de seguridad con Bluetooth</translation>
 <translation id="414599683948988413">Usa tu llave de seguridad con USB</translation>
 <translation id="7851816139220202929">Usa tu llave de seguridad con NFC</translation>
@@ -1378,7 +1400,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6647838571840953560">Actualmente estás en el canal <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">Firmware</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
-<translation id="7409233648990234464">Reiniciar y Powerwash</translation>
+<translation id="4297219207642690536">Reiniciar y restablecer</translation>
 <translation id="4716483597559580346">Powerwash para mejorar la seguridad</translation>
 <translation id="4089922565956168950">Esta actualización restablece tu Bravebook y quita los datos del usuario actual.</translation>
 <translation id="5184662919967270437">Actualizando tu dispositivo</translation>
@@ -1386,6 +1408,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5906655207909574370">El dispositivo está casi actualizado. Reinícialo para completar la actualización.</translation>
 <translation id="5860494867054883682">Actualizando tu dispositivo al canal <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Se cambió el canal. Reinicia el dispositivo para aplicar los cambios.</translation>
+<translation id="7133578150266914903">El administrador está restableciendo este dispositivo (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">El administrador restableció este dispositivo. Antes de reiniciarlo, guarda los archivos importantes, ya que se borrarán todos los datos.</translation>
 <translation id="1871615898038944731">Tu <ph name="DEVICE_TYPE"/> está actualizado</translation>
 <translation id="3688526734140524629">Cambiar canal</translation>
 <translation id="6410328738210026208">Cambiar canal y Powerwash</translation>
@@ -1438,6 +1462,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4305227814872083840">largo (2 s)</translation>
 <translation id="2860150991415616761">muy largo (4 s)</translation>
 <translation id="1330145147221172764">Habilitar el teclado en pantalla</translation>
+<translation id="1800308196794859773">Envía tu voz a Brave Software para habilitar el dictado en cualquier campo de texto.</translation>
 <translation id="8758418656925882523">Habilitar el dictado (escritura por voz)</translation>
 <translation id="7580671184200851182">Reproducir el mismo audio en todos los altavoces (sonido mono)</translation>
 <translation id="1189418886587279221">Permite habilitar las funciones de accesibilidad para que tu dispositivo sea más fácil de usar.</translation>
@@ -1485,7 +1510,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6902066522699286937">Voz de prueba</translation>
 <translation id="304747341537320566">Motores de comentarios de texto a voz</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
-<translation id="6963573437985514722">Ejecuta las herramientas, los editores y los IDE de Linux en tu Bravebook.</translation>
 <translation id="6869910261738842136">Quitar las apps de Linux para la Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Configuración de Android</translation>
@@ -1526,6 +1550,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="8639963783467694461">Configuración de Autocompletar</translation>
 <translation id="3431019676184503003">Direcciones y formas de pago</translation>
 <translation id="2512222046227390255">Autocompletar formularios</translation>
+<translation id="2283340219607151381">Guardar y completar direcciones</translation>
+<translation id="1662550410081243962">Guardar y completar formas de pago</translation>
 <translation id="2903493209154104877">Direcciones</translation>
 <translation id="7764225426217299476">Agregar dirección</translation>
 <translation id="5595485650161345191">Editar dirección</translation>
@@ -1562,6 +1588,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7930294771522048157">Las formas de pago guardadas se mostrarán aquí</translation>
 <translation id="9124003689441359348">Las contraseñas guardadas aparecerán aquí</translation>
 <translation id="4400367121200150367">Aquí aparecerán los sitios que nunca guardan las contraseñas</translation>
+<translation id="3098842761938485917">Ver y administrar las contraseñas guardadas en tu <ph name="BEGIN_LINK"/>cuenta de Brave Software<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Exportar contraseñas…</translation>
 <translation id="3900966090527141178">Exportar contraseñas</translation>
 <translation id="6914783257214138813">Las personas que tengan acceso al archivo exportado podrán ver tus contraseñas.</translation>
@@ -1952,6 +1979,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4534361985432360439">Envía a Brave Software la dirección web de la página a la que intentas acceder</translation>
 <translation id="6545834809683560467">Utilizar un servicio de predicción que ayude a completar las búsquedas y URL que se escriben en la barra de direcciones o en el cuadro de búsqueda del Selector de aplicaciones.</translation>
 <translation id="7704317875155739195">Autocompletar búsquedas y URL</translation>
+<translation id="2000419248597011803">Envía algunas cookies y búsquedas de la barra de direcciones y del cuadro de búsqueda a tu motor de búsqueda predeterminado</translation>
 <translation id="9038649477754266430">Utilizar un servicio de predicción para cargar las páginas más rápido</translation>
 <translation id="7981313251711023384">Cargar previamente las páginas para acelerar la navegación y las búsquedas</translation>
 <translation id="2468205691404969808">Usa cookies para recordar tus preferencias, incluso si no visitas esas páginas</translation>
@@ -1962,6 +1990,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="490074449735753175">Utilizar un servicio web para ayudar a solucionar errores de ortografía</translation>
 <translation id="3523078749603005179">Obtén una corrección ortográfica más inteligente al enviar lo que escribes en el navegador a Brave Software</translation>
 <translation id="2564653188463346023">Corrector ortográfico mejorado</translation>
+<translation id="7469406957790636836">Para activar esta opción, primero activa el corrector ortográfico en <ph name="BEGIN_LINK"/>Idiomas y entradas<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">Para activar esta opción, primero selecciona Comprobar ortografía mientras se escribe, en el menú Editar</translation>
 <translation id="9079153198295609735">Enviar automáticamente estadísticas de uso e informes sobre fallos a Brave Software</translation>
 <translation id="5941220456342415404">Envía a Brave Software datos de uso y diagnóstico automáticamente</translation>
 <translation id="918192811481327695">Ayudar a mejorar las funciones y el rendimiento de Brave</translation>
@@ -2017,6 +2047,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4907306957610201395">Categoría de permiso</translation>
 <translation id="6295158916970320988">Todos los sitios</translation>
 <translation id="7625568159987162309">Ver permisos y datos almacenados de los sitios</translation>
+<translation id="3735740477244556633">Ordenar por</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Anuncios</translation>
 <translation id="5649053991847567735">Descargas automáticas</translation>
@@ -2136,6 +2167,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6742339027238151589">Accesible para secuencia de comandos</translation>
 <translation id="361106536627977100">Datos de Flash</translation>
 <translation id="8557930019681227453">Manifiesto</translation>
+<translation id="7868378670806575181">{NUM_COOKIES,plural, =1{1 cookie}other{# cookies}}</translation>
 <translation id="3866249974567520381">Descripción</translation>
 <translation id="4530494379350999373">Origen</translation>
 <translation id="8195027750202970175">Tamaño en disco</translation>
@@ -2209,6 +2241,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7548737591211512046">Accede para obtener tus favoritos, historial, contraseñas y otras opciones de configuración en todos tus dispositivos. Además, accederás de forma automática a los servicios de Brave Software.</translation>
 <translation id="2951604498031550705">Los cambios en tus favoritos, historial, contraseñas y otras opciones de configuración ya no se sincronizarán con tu cuenta de Brave Software. Sin embargo, tus datos existentes permanecerán almacenados en tu cuenta de Brave Software y se podrán administrar en el <ph name="BEGIN_LINK"/>Panel de control de Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="138229770216285283">Con esta acción, saldrás de tus cuentas de Brave Software. Los cambios en tus favoritos, historial, contraseñas y demás opciones de configuración ya no se sincronizarán con tu cuenta. Sin embargo, los datos existentes permanecerán almacenados allí y se podrán administrar en el <ph name="BEGIN_LINK"/>Panel de control de Brave Software<ph name="END_LINK"/>.</translation>
+<translation id="3169352093514419465">Con esta acción, saldrás de tus cuentas de Brave Software. Ya no se sincronizarán tus favoritos, historial ni contraseñas, entre otros datos.</translation>
 <translation id="8588866096426746242">Mostrar estadísticas del perfil</translation>
 <translation id="5535941515421698170">También quitar tus datos existentes de este dispositivo</translation>
 <translation id="7243632151880336635">Borrar y salir</translation>
@@ -2230,13 +2263,16 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3259418918864581163">Tarjetas de crédito y direcciones con Brave Software Pay</translation>
 <translation id="4439834757335393741">Formas de pago y direcciones con Brave Software Pay.</translation>
 <translation id="3268451620468152448">Pestañas abiertas</translation>
+<translation id="5241892180459725878">Sugerencias de búsqueda de Brave Software Drive</translation>
 <translation id="2120297377148151361">Interacciones y actividad</translation>
+<translation id="5833397272224757657">Usa el contenido de los sitios que visitas, tus interacciones y actividad de navegación para personalizar las opciones</translation>
 <translation id="8135094938656535588">Administrar los datos sincronizados en el Panel de control de Brave Software</translation>
 <translation id="6596325263575161958">Opciones de encriptación</translation>
 <translation id="2459230470861708651">Encriptar las contraseñas sincronizadas con tu contraseña y nombre de usuario de Brave Software</translation>
 <translation id="6383051423892982287">Encriptar los datos sincronizados con tu propia <ph name="BEGIN_LINK"/>frase de contraseña de sincronización<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Solo las personas que tengan tu frase de contraseña pueden leer los datos encriptados. Brave Software no envía ni almacena la frase de contraseña. Si la olvidas o quieres cambiar esta configuración, deberás <ph name="BEGIN_LINK"/>restablecer la sincronización<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">A fin de activar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/> para quitar la frase de contraseña de sincronización</translation>
 <translation id="988978206646512040">No se permite una frase de contraseña vacía</translation>
 <translation id="1651008383952180276">Debes ingresar la misma frase de contraseña dos veces</translation>
 <translation id="2136476978468204130">La frase de contraseña que ingresaste es incorrecta</translation>
@@ -2399,6 +2435,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3088402208262982892">Se desactivó "Mejor juntos"</translation>
 <translation id="2079079131837725321">Desbloquea tu Bravebook con el teléfono. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Conexión instantánea mediante dispositivo portátil</translation>
+<translation id="3059313675706898490">Mensajes Android</translation>
 <translation id="7095175330464035635">Enviar y recibir mensajes de texto en tu Bravebook</translation>
 <translation id="3936335337858561470">Olvidar este dispositivo</translation>
 <translation id="3606712892509067288">Quitar de "Mejor juntos"</translation>
@@ -2429,8 +2466,11 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1607139524282324606">Borrar entrada</translation>
 <translation id="6025215716629925253">Seguimiento de la pila</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;no se muestra 1 línea&amp;gt;}other{&amp;lt;no se muestran $1 líneas&amp;gt;}}</translation>
+<translation id="8389492867173948260">Permitir que esta extensión lea y cambie todos tus datos en los sitios web que visitas:</translation>
 <translation id="407173827865827707">Al hacer clic</translation>
+<translation id="6455264371803474013">En sitios específicos</translation>
 <translation id="4225397296022057997">En todos los sitios</translation>
+<translation id="3729506734996624908">Sitios permitidos</translation>
 <translation id="3732078975418297900">Error en la línea <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Se produjo un error de la línea <ph name="ERROR_LINE_START"/> a la <ph name="ERROR_LINE_END"/></translation>
 <translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>

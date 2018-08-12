@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="4651430425715739110">Upphovsrätt <ph name="YEAR"/> The Brave Authors. Med ensamrätt.</translation>
 <translation id="2310890394934209120">Brave OS fungerar tack vare <ph name="BEGIN_LINK_CROS_OSS"/>program med öppen källkod<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="858647341154864560">Brave OS fungerar tack vare <ph name="BEGIN_LINK_CROS_OSS"/>program med öppen källkod<ph name="END_LINK_CROS_OSS"/>, liksom Linux (beta).</translation>
 <translation id="5019879183386042809">Använd Brave som standardwebbläsare</translation>
 <translation id="5063987220091207247">Det går inte att öppna den här sidan i Brave OS.</translation>
 <translation id="4065288863231444640">Låt Brave köras i bakgrunden</translation>
@@ -34,6 +35,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="3403365884036456766">Inställningsfilen är skadad eller ogiltig.
 
 Brave kan inte återställa dina inställningar.</translation>
+<translation id="5785919770853225148">Det här lösenordet sparas i ditt Brave Software-konto. Du behöver inte komma ihåg det.</translation>
 <translation id="3343095737966473035">Brave är inte din standardwebbläsare</translation>
 <translation id="6715663530666325392">Konfigurera synkronisering för att spara dina webbläsarfunktioner på webben och använda dem i Brave på alla datorer.</translation>
 <translation id="2708027082363760195">Brave har inte det PDF-visningsprogram som krävs för att förhandsgranskning ska fungera.</translation>
@@ -122,6 +124,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="82609232232243542">Logga in i Brave</translation>
 <translation id="8372880274820509128">Din data krypteras i Brave för att öka säkerheten.</translation>
 <translation id="7445061995866044926">Vill du logga ut från Brave?</translation>
+<translation id="7453070689008684791">Brave får åtkomst till din Drive så att du kan få förslag därifrån i adressfältet</translation>
 <translation id="7713466009760073734">Brave OS visas på det här språket</translation>
 <translation id="3518788198614984730">Visa Brave OS på det här språket</translation>
 <translation id="6056473803837713617">Hjälp oss att förbättra Brave genom att rapportera dina <ph name="BEGIN_LINK"/>aktuella inställningar<ph name="END_LINK"/></translation>

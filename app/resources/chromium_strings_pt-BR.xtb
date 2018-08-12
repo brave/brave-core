@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Autores do Brave</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Autores do Brave. Todos os direitos reservados.</translation>
 <translation id="2310890394934209120">O Brave OS tornou-se possível graças a um <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
+<translation id="858647341154864560">O Brave OS tornou-se possível graças a um <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional, como o Linux (Beta).</translation>
 <translation id="5019879183386042809">Tornar o Brave o navegador padrão</translation>
 <translation id="5063987220091207247">O Brave OS não pode abrir essa página.</translation>
 <translation id="4065288863231444640">Permitir a execução do Brave em segundo plano</translation>
@@ -26,6 +27,7 @@
 <translation id="1489465648257900784">Seu perfil não pode ser usado porque é de uma versão mais recente do Brave. Alguns recursos podem não estar disponíveis. Especifique outro diretório de perfil ou use uma versão mais recente do Brave.</translation>
 <translation id="1065672644894730302">Não foi possível ler suas preferências. Alguns recursos podem não estar disponíveis e as alterações nas preferências não serão salvas.</translation>
 <translation id="3403365884036456766">Seu arquivo de preferências foi corrompido ou não é válido. O Brave não conseguiu recuperar suas configurações.</translation>
+<translation id="5785919770853225148">O Brave salvará essa senha na sua Conta do Brave Software. Você não precisará se lembrar dela.</translation>
 <translation id="3343095737966473035">O Brave não é seu navegador padrão</translation>
 <translation id="6715663530666325392">Configure a sincronização para salvar suas características de navegador personalizadas na web e acessá-las do Brave em qualquer computador.</translation>
 <translation id="2708027082363760195">O Brave não inclui o visualizador de PDF que é necessário para que a visualização de impressão funcione.</translation>
@@ -114,6 +116,7 @@
 <translation id="82609232232243542">Fazer login no Brave</translation>
 <translation id="8372880274820509128">Para maior segurança, o Brave criptografará seus dados.</translation>
 <translation id="7445061995866044926">Sair do Brave?</translation>
+<translation id="7453070689008684791">O Brave acessará seu Drive para fazer sugestões na barra de endereço</translation>
 <translation id="7713466009760073734">O Brave OS é exibido neste idioma</translation>
 <translation id="3518788198614984730">Exibir o Brave OS neste idioma</translation>
 <translation id="6056473803837713617">Ajude a melhorar o Brave informando as <ph name="BEGIN_LINK"/>configurações atuais<ph name="END_LINK"/></translation>

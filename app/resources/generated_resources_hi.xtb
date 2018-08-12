@@ -481,7 +481,12 @@
 <translation id="3190558889382726167">पासवर्ड सहेजा गया</translation>
 <translation id="5079950360618752063">सुझाए गए पासवर्ड का इस्तेमाल करें</translation>
 <translation id="8084114998886531721">सहेजा गया पासवर्ड</translation>
+<translation id="5614553682702429503">पासवर्ड सेव करें?</translation>
 <translation id="1405476660552109915">क्या आप चाहते हैं कि <ph name="PASSWORD_MANAGER_BRAND"/> इस साइट के लिए आपका खाता सहेजे?</translation>
+<translation id="8756969031206844760">पासवर्ड अपडेट करें?</translation>
+<translation id="8230134520748321204"><ph name="ORIGIN"/> के लिए पासवर्ड सेव करें?</translation>
+<translation id="9040661932550800571"><ph name="ORIGIN"/> के लिए पासवर्ड अपडेट करें?</translation>
+<translation id="8284000761603848448">पासवर्ड आपके Brave Software खाते में सेव किए जाते हैं ताकि आप किसी भी डिवाइस पर उनका इस्तेमाल कर सकें</translation>
 <translation id="8286036467436129157">प्रवेश करें</translation>
 <translation id="8009225694047762179">पासवर्ड संभालें</translation>
 <translation id="9135262959729602463">अपने सभी डिवाइस पर अपने पासवर्ड पाने के लिए, Brave में साइन इन करें.</translation>
@@ -548,16 +553,18 @@
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">पूर्ण</translation>
 <translation id="4416582610654027550">एक मान्य यूआरएल टाइप करें</translation>
+<translation id="2806891468525657116">शॉर्टकट पहले से मौजूद है</translation>
+<translation id="394183848452296464">शॉर्टकट नहीं बनाए जा सकते</translation>
 <translation id="7109543803214225826">शॉर्टकट हटाया गया</translation>
 <translation id="8017679124341497925">शॉर्टकट में बदलाव किया गया</translation>
 <translation id="1174073918202301297">शॉर्टकट जोड़ा गया</translation>
 <translation id="2926085873880284723">डिफ़ॉल्ट शॉर्टकट बहाल करें</translation>
-<translation id="7413455776853560343">बैकग्राउंड को पसंद के मुताबिक बनाएं</translation>
+<translation id="2942581856830209953">यह पेज पसंद के मुताबिक बनाएं</translation>
 <translation id="2187700606737131818">Brave Software फ़ोटो</translation>
 <translation id="5801450813341024983">Brave बैकग्राउंड</translation>
 <translation id="2800760947029405028">एक इमेज अपलोड करें</translation>
 <translation id="8342861492835240085">कोई संग्रह चुनें</translation>
-<translation id="6017211263306518045">कोई Brave Software फ़ोटो एल्बम चुनें</translation>
+<translation id="1734885380062278369">कोई 'Brave Software फ़ोटो' एल्बम चुनें</translation>
 <translation id="3132996321662585180">हर रोज़ रीफ्रेश करें</translation>
 <translation id="9062065967472365419">कोई भी चुनें</translation>
 <translation id="7287411021188441799">डिफ़ॉल्ट बैकग्राउंड बहाल करें</translation>
@@ -567,6 +574,8 @@
 <translation id="3617891479562106823">बैकग्राउंड उपलब्ध नहीं हैं. बाद में फिर से कोशिश करें.</translation>
 <translation id="8391712576156218334">इमेज उपलब्ध नहीं है. बाद में फिर से कोशिश करें.</translation>
 <translation id="1564414980088536597">इस इमेज का इस्तेमाल नहीं किया जा सकता. कोई अलग इमेज चुनें.</translation>
+<translation id="4628948037717959914">फ़ोटो</translation>
+<translation id="8033827949643255796">चयनित</translation>
 <translation id="5376169624176189338">वापस जाने के लिए क्लिक करें, इतिहास देखने के लिए दबाए रखें</translation>
 <translation id="9103868373786083162">वापस जाने के लिए इसे दबाएं, इतिहास देखने के लिए प्रसंग मेनू पर जाएं</translation>
 <translation id="2961695502793809356">आगे जाने के लिए क्लिक करें, इतिहास देखने के लिए दबाकर रखें</translation>
@@ -840,6 +849,7 @@
 <translation id="2532167245710864499">Brave Software को सिस्टम और इस्तेमाल से जुड़ी जानकारी भेजकर Brave और उसकी सुरक्षा को बेहतर बनाएं</translation>
 <translation id="2709453993673701466">सिंक और मनमुताबिक बनाने की सुविधा के चालू होने से पहले उन्हें प्रबंधित करना चाहते हैं? <ph name="BEGIN_LINK"/>सेटिंग<ph name="END_LINK"/> पर जाएं.</translation>
 <translation id="2668128414154024727">आप किसी भी समय <ph name="BEGIN_LINK"/>सेटिंग<ph name="END_LINK"/> में जाकर यह कस्टमाइज़ कर सकते हैं कि Brave Software कौन सी सामग्री इकट्ठा करेगा.</translation>
+<translation id="6035247993547372482">Brave Software उन साइटों की सामग्री, जिन पर आप जाते हैं, के साथ ही आपकी ब्राउज़र गतिविधि और इंटरैक्शन का इस्तेमाल Brave और दूसरी 'Brave Software सेवाओं', जैसे कि 'अनुवाद', 'सर्च' और विज्ञापनों को आपकी पसंद के मुताबिक बनाने के लिए कर सकता है. आप ‘सेटिंग‘ में जाकर इसे अपनी पसंद के मुताबिक बना सकते हैं.</translation>
 <translation id="741204030948306876">हां मैं सहमत हूं</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
 <translation id="2497852260688568942">सिंक को आपके व्यवस्थापक ने अक्षम कर दिया है</translation>
@@ -938,6 +948,7 @@
 <translation id="8363142353806532503">माइक्रोफ़ोन ब्लॉक किया गया है</translation>
 <translation id="2762441749940182211">कैमरा ब्लॉक किया गया है</translation>
 <translation id="5074318175948309511">नई सेटिंग के प्रभावी होने से पहले इस पृष्‍ठ को रीलोड करने की आवश्‍यकता हो सकती है.</translation>
+<translation id="1322046419516468189">अपने <ph name="SAVED_PASSWORDS_STORE"/> में सेव किए गए पासवर्ड देखें और उन्हें प्रबंधित करें</translation>
 <translation id="5713644099811900409">Brave Software खाता</translation>
 <translation id="3785727820640310185">इस साइट के लिए सेव किए गए पासवर्ड</translation>
 <translation id="3404065873681873169">इस साइट के लिए कोई पासवर्ड सेव नहीं किया गया है</translation>
@@ -1388,7 +1399,7 @@
 <translation id="6647838571840953560">वर्तमान में <ph name="CHANNEL_NAME"/> पर</translation>
 <translation id="2972557485845626008">फ़र्मवेयर</translation>
 <translation id="5895138241574237353">पुन: प्रारंभ करें</translation>
-<translation id="7409233648990234464">रीलॉन्च करें और पावरवॉश करें</translation>
+<translation id="4297219207642690536">रीस्टार्ट करें और रीसेट करें</translation>
 <translation id="4716483597559580346">अतिरिक्त सुरक्षा के लिए Powerwash करें</translation>
 <translation id="4089922565956168950">यह अपग्रेड (बेहतर बनाना) आपका Bravebook रीसेट कर देता है और मौजूदा 'उपयोगकर्ता डेटा' हटा देता है.</translation>
 <translation id="5184662919967270437">आपका डिवाइस अपडेट हो रहा है</translation>
@@ -1396,6 +1407,8 @@
 <translation id="5906655207909574370">लगभग अप टू डेट हो गया है! अपडेट करना पूरा करने के लिए अपना डिवाइस पुन: प्रारंभ करें.</translation>
 <translation id="5860494867054883682">आपका डिवाइस <ph name="CHANNEL_NAME"/> चैनल में अपडेट हो रहा है (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">चैनल बदल दिया गया है. बदलावों का लागू करने के लिए अपने डिवाइस को फिर से प्रारंभ करें.</translation>
+<translation id="7133578150266914903">आपका एडमिन इस डिवाइस को बहाल कर रहा है (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">आपके एडमिन ने यह डिवाइस बहाल कर दिया है. कृपया ज़रूरी फ़ाइलें सेव कर लें, उसके बाद रीस्टार्ट करें. डिवाइस पर मौजूद सारा डेटा मिटा दिया जाएगा.</translation>
 <translation id="1871615898038944731">आपका <ph name="DEVICE_TYPE"/> अप टू डेट है</translation>
 <translation id="3688526734140524629">चैनल बदलें</translation>
 <translation id="6410328738210026208">चैनल बदलें और पावरवॉश करें</translation>
@@ -1496,7 +1509,6 @@
 <translation id="6902066522699286937">वह आवाज़ जिसकी झलक सुननी है</translation>
 <translation id="304747341537320566">बोली इंजन</translation>
 <translation id="1067291318998134776">Linux (बीटा)</translation>
-<translation id="6963573437985514722">अपने Bravebook पर Linux के टूल, संपादक (एडिटर) और IDE चलाएं.</translation>
 <translation id="6869910261738842136">Bravebook के लिए Linux ऐप्लिकेशन हटाएं</translation>
 <translation id="2295473777859797944">Brave Software Play स्टोर</translation>
 <translation id="572155275267014074">Android सेटिंग</translation>
@@ -1537,6 +1549,8 @@
 <translation id="8639963783467694461">ऑटोमैटिक भरना की सेटिंग...</translation>
 <translation id="3431019676184503003">पते और भुगतान के तरीके</translation>
 <translation id="2512222046227390255">फ़ॉर्म अपने आप भरने दें</translation>
+<translation id="2283340219607151381">पतों की जानकारी सेव करें और भरें</translation>
+<translation id="1662550410081243962">भुगतान के तरीके सेव करें और भरें</translation>
 <translation id="2903493209154104877">पते</translation>
 <translation id="7764225426217299476">पता जोड़ें</translation>
 <translation id="5595485650161345191">पता संपादित करें</translation>
@@ -1573,6 +1587,7 @@
 <translation id="7930294771522048157">सेव किए गए भुगतान के तरीके यहां दिखाई देंगे</translation>
 <translation id="9124003689441359348">सहेजे गए पासवर्ड यहां दिखाई देंगे</translation>
 <translation id="4400367121200150367">वे साइटें जो कभी पासवर्ड नहीं सहेजती हैं, यहां दिखाई देंगी</translation>
+<translation id="3098842761938485917">अपने <ph name="BEGIN_LINK"/>Brave Software खाते<ph name="END_LINK"/> में सेव किए गए पासवर्ड देखें और उन्हें प्रबंधित करें</translation>
 <translation id="5620655347161642930">पासवर्ड निर्यात करें...</translation>
 <translation id="3900966090527141178">पासवर्ड निर्यात करें</translation>
 <translation id="6914783257214138813">आपके पासवर्ड, निर्यात की गई फ़ाइल देख पाने वाले सभी व्यक्तियों को दिखाई देंगे.</translation>
@@ -1963,6 +1978,7 @@
 <translation id="4534361985432360439">आप जिस पेज पर जाने की कोशिश कर रहे हैं उसका वेब पता Brave Software को भेजती है</translation>
 <translation id="6545834809683560467">पता बार या ऐप्लिकेशन चलाने के खोज बॉक्स में टाइप किए गए खोज और URL को पूरा करने में मदद के लिए अपने आप अनुमान लगाने की सेवा का इस्तेमाल करें</translation>
 <translation id="7704317875155739195">खोजों और यूआरएल को अपने आप पूरा करें</translation>
+<translation id="2000419248597011803">'पता बार' और 'खोज बॉक्स' की कुछ कुकी और खोजों को आपके डिफ़ॉल्ट खोज इंजन पर भेजा जाता है</translation>
 <translation id="9038649477754266430">अधिक तेज़ी से पेज लोड करने के लिए किसी पूर्वानुमान सेवा का उपयोग करें</translation>
 <translation id="7981313251711023384">ज़्यादा तेज़ी से ब्राउज़ करने और खोजने के लिए पेज पहले से लोड करें</translation>
 <translation id="2468205691404969808">आपकी पसंद याद रखने के लिए कुकी का इस्तेमाल करती है, भले ही आप उन पेजों पर नहीं जाते</translation>
@@ -1973,6 +1989,8 @@
 <translation id="490074449735753175">वर्तनी त्रुटियों के समाधान में सहायता के लिए किसी वेब सेवा का उपयोग करें</translation>
 <translation id="3523078749603005179">आप ब्राउज़र में जो कुछ लिखतेे हैं उसे Brave Software को भेजकर अधिक कुशल वर्तनी जाँच</translation>
 <translation id="2564653188463346023">स्पेलिंग की बेहतर जांच</translation>
+<translation id="7469406957790636836">इसे चालू करने के लिए, पहले <ph name="BEGIN_LINK"/>भाषाएं और इनपुट<ph name="END_LINK"/> में जाकर 'वर्तनी जांच' सुविधा चालू करें</translation>
+<translation id="8699566574894671540">इसे चालू करने के लिए, पहले 'बदलाव करें' मेन्यू में जाकर 'लिखते समय वर्तनी जांचें' चुनें</translation>
 <translation id="9079153198295609735">'इस्तेमाल के आंकड़े' और 'खराबी रिपोर्ट' Brave Software को अपने आप भेजे जाने की अनुमति दें</translation>
 <translation id="5941220456342415404">Brave Software को गड़बड़ी और उपयोग संबंधी डेटा अपने आप भेजें</translation>
 <translation id="918192811481327695">Brave के फ़ीचर और परफ़ॉर्मेंस को बेहतर बनाने में सहायता करें</translation>
@@ -2222,6 +2240,7 @@
 <translation id="7548737591211512046">अपने सभी डिवाइस पर अपने बुकमार्क, इतिहास, पासवर्ड और अन्‍य सेटिंग प्राप्‍त करने के लिए प्रवेश करें. आप अपनी Brave Software सेवाओं में भी अपने आप प्रवेश कर जाएंगे.</translation>
 <translation id="2951604498031550705">आपके बुकमार्क, इतिहास, पासवर्ड और अन्य सेटिंग में किए गए बदलाव अब आपके Brave Software खाते से सिंक नहीं किए जाएंगे. हालांकि, आपका मौजूदा डेटा आपके Brave Software खाते में संग्रहित रहेगा और <ph name="BEGIN_LINK"/>Brave Software डैशबोर्ड<ph name="END_LINK"/> पर प्रबंधित किया जा सकेगा.</translation>
 <translation id="138229770216285283">इससे आप अपने 'Brave Software खातों' से साइन आउट हो जाएंगे. आपके बुकमार्क, इतिहास, पासवर्ड और दूसरी सेटिंग में किए गए बदलाव अब आपके 'Brave Software खाते' से सिंक नहीं किए जाएंगे. हालांकि, आपका मौजूदा डेटा आपके 'Brave Software खाते' में संग्रहित रहेगा और <ph name="BEGIN_LINK"/>Brave Software डैशबोर्ड<ph name="END_LINK"/> पर प्रबंधित किया जा सकेगा.</translation>
+<translation id="3169352093514419465">इससे आप अपने Brave Software खातों से साइन आउट हो जाएंगे. आपके बुकमार्क, इतिहास, पासवर्ड और कई चीज़ें अब सिंक नहीं की जाएंगी.</translation>
 <translation id="8588866096426746242">प्रोफ़ाइल आंकड़े दिखाएं</translation>
 <translation id="5535941515421698170">इस डिवाइस से अपना मौजूदा डेटा भी निकालें</translation>
 <translation id="7243632151880336635">साफ़ करें और प्रस्थान करें</translation>
@@ -2243,13 +2262,16 @@
 <translation id="3259418918864581163">Brave Software Pay का इस्तेमाल करने वाले क्रेडिट कार्ड और पते.</translation>
 <translation id="4439834757335393741">Brave Software Pay का इस्तेमाल करने वाले भुगतान के तरीके और पते</translation>
 <translation id="3268451620468152448">खुले सत्र</translation>
+<translation id="5241892180459725878">'Brave Software डिस्क' के खोज सुझाव</translation>
 <translation id="2120297377148151361">गतिविधि और इंटरैक्शन</translation>
+<translation id="5833397272224757657">आप जिन साइटों पर जाते हैं उनकी सामग्री के साथ ही ब्राउज़र गतिविधि और इंटरैक्शन का इस्तेमाल आपके मनमुताबिक बनाने के लिए करता है</translation>
 <translation id="8135094938656535588">Brave Software डैशबोर्ड पर सिंक किया गया डेटा प्रबंधित करें</translation>
 <translation id="6596325263575161958">सुरक्षित तरीका विकल्प</translation>
 <translation id="2459230470861708651">सिंक किए गए पासवर्ड अपने Brave Software उपयोगकर्ता नाम और पासवर्ड से एन्क्रिप्ट करें</translation>
 <translation id="6383051423892982287">सिंक किए गए डेटा को अपने खुद के <ph name="BEGIN_LINK"/>सिंक पासफ़्रेज़<ph name="END_LINK"/> से एन्क्रिप्ट करें</translation>
 <translation id="4817583816512767754">आपके एन्क्रिप्ट किए गए डेटा को केवल वही व्यक्ति पढ़ सकता है जिसके पास आपका पासफ़्रेज़ है. Brave Software द्वारा पासफ़्रेज़ भेजा या संग्रहित नहीं किया जाता. यदि आप अपना पासफ़्रेज़ भूल जाते हैं या यह सेटिंग बदलना चाहते हैं, तो आपको <ph name="BEGIN_LINK"/>सिंक रीसेट करना<ph name="END_LINK"/> होगा.</translation>
 <translation id="4300305918532693141">यह सेटिंग बदलने के लिए, <ph name="BEGIN_LINK"/>सिंक रीसेट करें<ph name="END_LINK"/></translation>
+<translation id="3873315167136380065">इसे चालू करने के लिए, <ph name="BEGIN_LINK"/>सिंक रीसेट करें<ph name="END_LINK"/> ताकि आपका सिंक करने का लंबा पासवर्ड हटाया जा सके</translation>
 <translation id="988978206646512040">खाली पासफ़्रेज़ की अनुमति नहीं है</translation>
 <translation id="1651008383952180276">आपको एक ही पासफ़्रेज़ दो बार डालना होगा</translation>
 <translation id="2136476978468204130">आपने जो पासफ़्रेज़ डाला है वह गलत है</translation>

@@ -481,7 +481,12 @@
 <translation id="3190558889382726167">บันทึกรหัสผ่านแล้ว</translation>
 <translation id="5079950360618752063">ใช้รหัสผ่านที่แนะนำ</translation>
 <translation id="8084114998886531721">รหัสผ่านที่บันทึกไว้</translation>
+<translation id="5614553682702429503">บันทึกรหัสผ่านไหม</translation>
 <translation id="1405476660552109915">คุณต้องการให้ <ph name="PASSWORD_MANAGER_BRAND"/> บันทึกบัญชีของคุณสำหรับเว็บไซต์นี้ไหม</translation>
+<translation id="8756969031206844760">อัปเดตรหัสผ่านไหม</translation>
+<translation id="8230134520748321204">บันทึกรหัสผ่านสำหรับ <ph name="ORIGIN"/> ไหม</translation>
+<translation id="9040661932550800571">อัปเดตรหัสผ่านสำหรับ <ph name="ORIGIN"/> ไหม</translation>
+<translation id="8284000761603848448">เราจะบันทึกรหัสผ่านไว้ในบัญชี Brave Software เพื่อให้คุณใช้ในอุปกรณ์เครื่องใดก็ได้</translation>
 <translation id="8286036467436129157">ลงชื่อเข้าใช้</translation>
 <translation id="8009225694047762179">จัดการรหัสผ่าน</translation>
 <translation id="9135262959729602463">ลงชื่อเข้าใช้ Brave เพื่อรับรหัสผ่านในอุปกรณ์ทั้งหมดของคุณ</translation>
@@ -548,16 +553,18 @@
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">เสร็จสิ้น</translation>
 <translation id="4416582610654027550">พิมพ์ URL ที่ถูกต้อง</translation>
+<translation id="2806891468525657116">มีทางลัดนี้อยู่แล้ว</translation>
+<translation id="394183848452296464">สร้างทางลัดไม่ได้</translation>
 <translation id="7109543803214225826">นำทางลัดออกแล้ว</translation>
 <translation id="8017679124341497925">แก้ไขทางลัดแล้ว</translation>
 <translation id="1174073918202301297">เพิ่มทางลัดแล้ว</translation>
 <translation id="2926085873880284723">คืนค่าทางลัดเริ่มต้น</translation>
-<translation id="7413455776853560343">ปรับแต่งพื้นหลัง</translation>
+<translation id="2942581856830209953">ปรับแต่งหน้านี้</translation>
 <translation id="2187700606737131818">Brave Software Photos</translation>
 <translation id="5801450813341024983">พื้นหลัง Brave</translation>
 <translation id="2800760947029405028">อัปโหลดภาพ</translation>
 <translation id="8342861492835240085">เลือกคอลเล็กชัน</translation>
-<translation id="6017211263306518045">เลือกอัลบั้ม Brave Software Photos</translation>
+<translation id="1734885380062278369">เลือกอัลบั้ม Brave Software Photos</translation>
 <translation id="3132996321662585180">รีเฟรชทุกวัน</translation>
 <translation id="9062065967472365419">ทำให้ฉันประหลาดใจ</translation>
 <translation id="7287411021188441799">คืนค่าพื้นหลังเริ่มต้น</translation>
@@ -567,6 +574,8 @@
 <translation id="3617891479562106823">พื้นหลังไม่พร้อมใช้งาน โปรดลองอีกครั้งภายหลัง</translation>
 <translation id="8391712576156218334">รูปภาพไม่พร้อมใช้งาน โปรดลองอีกครั้งภายหลัง</translation>
 <translation id="1564414980088536597">ใช้รูปภาพนี้ไม่ได้ เลือกรูปภาพอื่น</translation>
+<translation id="4628948037717959914">รูปภาพ</translation>
+<translation id="8033827949643255796">เลือกแล้ว</translation>
 <translation id="5376169624176189338">คลิกเพื่อย้อนกลับ กดค้างเพื่อดูประวัติการเข้าชม</translation>
 <translation id="9103868373786083162">กดเพื่อย้อนกลับไปที่เมนูตามบริบทเพื่อดูประวัติ</translation>
 <translation id="2961695502793809356">คลิกเพื่อไปข้างหน้า กดค้างเพื่อดูประวัติการเข้าชม</translation>
@@ -840,6 +849,7 @@
 <translation id="2532167245710864499">ปรับปรุง Brave และความปลอดภัยด้วยการส่งข้อมูลระบบและการใช้งานไปยัง Brave Software</translation>
 <translation id="2709453993673701466">หากต้องการจัดการการซิงค์และการปรับเปลี่ยนในแบบของคุณก่อนเปิดใช้งาน ให้ไปที่<ph name="BEGIN_LINK"/>การตั้งค่า<ph name="END_LINK"/></translation>
 <translation id="2668128414154024727">คุณกำหนดข้อมูลที่ Brave Software จะรวบรวมได้ใน<ph name="BEGIN_LINK"/>การตั้งค่า<ph name="END_LINK"/>ได้ทุกเมื่อ</translation>
+<translation id="6035247993547372482">Brave Software อาจใช้เนื้อหาในเว็บไซต์ที่คุณเข้าชม รวมถึงกิจกรรมในเบราว์เซอร์และการโต้ตอบเพื่อปรับ Brave และบริการอื่นๆ ของ Brave Software เช่น แปลภาษา, Search และโฆษณาให้เหมาะกับคุณ คุณปรับแต่งค่านี้ได้ทุกเมื่อในการตั้งค่า</translation>
 <translation id="741204030948306876">ได้สิ ตกลง</translation>
 <translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="2497852260688568942">ผู้ดูแลระบบปิดใช้การซิงค์</translation>
@@ -938,6 +948,7 @@
 <translation id="8363142353806532503">บล็อกไมโครโฟน</translation>
 <translation id="2762441749940182211">บล็อกกล้องถ่ายรูป</translation>
 <translation id="5074318175948309511">อาจต้องโหลดหน้านี้ซ้ำก่อนที่การตั้งค่าใหม่จะมีผล</translation>
+<translation id="1322046419516468189">ดูและจัดการรหัสผ่านที่บันทึกไว้ได้ใน<ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">บัญชี Brave Software</translation>
 <translation id="3785727820640310185">รหัสผ่านที่บันทึกไว้สำหรับเว็บไซต์นี้</translation>
 <translation id="3404065873681873169">ไม่มีรหัสผ่านบันทึกไว้สำหรับเว็บไซต์นี้</translation>
@@ -1388,7 +1399,7 @@
 <translation id="6647838571840953560">ขณะนี้อยู่ที่ช่อง <ph name="CHANNEL_NAME"/></translation>
 <translation id="2972557485845626008">เฟิร์มแวร์</translation>
 <translation id="5895138241574237353">ปิดแล้วเปิดอีกครั้ง</translation>
-<translation id="7409233648990234464">เรียกใช้งานอีกครั้งและ Powerwash</translation>
+<translation id="4297219207642690536">รีสตาร์ทและรีเซ็ต</translation>
 <translation id="4716483597559580346">Powerwash เพื่อเพิ่มความปลอดภัย</translation>
 <translation id="4089922565956168950">การอัปเกรดนี้จะรีเซ็ต Bravebook และนำข้อมูลผู้ใช้ปัจจุบันออก</translation>
 <translation id="5184662919967270437">กำลังอัปเดตอุปกรณ์</translation>
@@ -1396,6 +1407,8 @@
 <translation id="5906655207909574370">การอัปเดตใกล้จะเสร็จเรียบร้อยแล้ว รีสตาร์ทอุปกรณ์เพื่อให้การอัปเดตเสร็จสิ้น</translation>
 <translation id="5860494867054883682">กำลังอัปเดตอุปกรณ์เป็นเวอร์ชัน <ph name="CHANNEL_NAME"/> (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">เปลี่ยนช่องแล้ว รีสตาร์ทอุปกรณ์เพื่อใช้การเปลี่ยนแปลง</translation>
+<translation id="7133578150266914903">ผู้ดูแลระบบกำลังคืนค่าสถานะของอุปกรณ์เครื่องนี้ (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">ผู้ดูแลระบบได้คืนค่าสถานะของอุปกรณ์เครื่องนี้แล้ว โปรดบันทึกไฟล์สำคัญแล้วรีสตาร์ทเครื่อง ข้อมูลทั้งหมดในอุปกรณ์จะถูกลบออกไป</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> ของคุณเป็นเวอร์ชันล่าสุดแล้ว</translation>
 <translation id="3688526734140524629">เปลี่ยนช่อง</translation>
 <translation id="6410328738210026208">เปลี่ยนช่องและ Powerwash</translation>
@@ -1496,7 +1509,6 @@
 <translation id="6902066522699286937">แสดงตัวอย่างเสียง</translation>
 <translation id="304747341537320566">เครื่องมืออ่านออกเสียง</translation>
 <translation id="1067291318998134776">Linux (เบต้า)</translation>
-<translation id="6963573437985514722">เรียกใช้เครื่องมือ ตัวแก้ไข และ IDE ของ Linux ใน Bravebook</translation>
 <translation id="6869910261738842136">นำแอป Linux สำหรับ Bravebook ออก</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">การตั้งค่า Android</translation>
@@ -1537,6 +1549,8 @@
 <translation id="8639963783467694461">การตั้งค่าป้อนอัตโนมัติ</translation>
 <translation id="3431019676184503003">ที่อยู่และวิธีการชำระเงิน</translation>
 <translation id="2512222046227390255">ป้อนฟอร์มอัตโนมัติ</translation>
+<translation id="2283340219607151381">บันทึกและกรอกที่อยู่</translation>
+<translation id="1662550410081243962">บันทึกและกรอกวิธีการชำระเงิน</translation>
 <translation id="2903493209154104877">ที่อยู่</translation>
 <translation id="7764225426217299476">เพิ่มที่อยู่</translation>
 <translation id="5595485650161345191">แก้ไขที่อยู่</translation>
@@ -1573,6 +1587,7 @@
 <translation id="7930294771522048157">วิธีการชำระเงินที่บันทึกไว้จะปรากฏที่นี่</translation>
 <translation id="9124003689441359348">รหัสผ่านที่บันทึกไว้จะแสดงที่นี่</translation>
 <translation id="4400367121200150367">เว็บไซต์ที่ไม่เคยบันทึกรหัสผ่านจะแสดงที่นี่</translation>
+<translation id="3098842761938485917">ดูและจัดการรหัสผ่านที่บันทึกไว้ใน<ph name="BEGIN_LINK"/>บัญชี Brave Software<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">ส่งออกรหัสผ่าน...</translation>
 <translation id="3900966090527141178">ส่งออกรหัสผ่าน</translation>
 <translation id="6914783257214138813">คนที่ดูไฟล์ที่ส่งออกได้จะเห็นรหัสผ่านของคุณ</translation>
@@ -1963,6 +1978,7 @@
 <translation id="4534361985432360439">ส่งที่อยู่เว็บของหน้าที่คุณพยายามเข้าถึงให้กับ Brave Software</translation>
 <translation id="6545834809683560467">ใช้บริการคาดคะเนที่จะช่วยเติมข้อความค้นหาและ URL ที่พิมพ์ลงในแถบที่อยู่เว็บหรือช่องค้นหาของเครื่องเรียกใช้งานแอป</translation>
 <translation id="7704317875155739195">เติมข้อความค้นหาและ URL อัตโนมัติ</translation>
+<translation id="2000419248597011803">ส่งคุกกี้และการค้นหาบางรายการจากแถบที่อยู่และช่องค้นหาไปยังเครื่องมือค้นหาเริ่มต้น</translation>
 <translation id="9038649477754266430">ใช้บริการการคาดคะเนเพื่อโหลดหน้าได้เร็วขึ้น</translation>
 <translation id="7981313251711023384">โหลดหน้าเว็บล่วงหน้าเพื่อให้เรียกดูและค้นหาได้เร็วขึ้น</translation>
 <translation id="2468205691404969808">ใช้คุกกี้เพื่อให้จดจำค่ากำหนดของคุณ แม้ว่าคุณไม่ได้เข้าชมหน้าเว็บเหล่านั้น</translation>
@@ -1973,6 +1989,8 @@
 <translation id="490074449735753175">ใช้บริการเว็บเพื่อช่วยแก้ไขข้อผิดพลาดในการสะกดคำ</translation>
 <translation id="3523078749603005179">การตรวจตัวสะกดที่มีประสิทธิภาพมากขึ้นโดยส่งสิ่งที่คุณพิมพ์ในเบราว์เซอร์ไปยัง Brave Software</translation>
 <translation id="2564653188463346023">การตรวจตัวสะกดที่ได้รับการปรับปรุง</translation>
+<translation id="7469406957790636836">หากจะเปิดการตั้งค่านี้ ก่อนอื่นให้เปิดการตรวจตัวสะกดใน<ph name="BEGIN_LINK"/>ภาษาและการป้อนข้อมูล<ph name="END_LINK"/></translation>
+<translation id="8699566574894671540">หากต้องการเปิดการตั้งค่านี้ ก่อนอื่นให้เลือก "ตรวจสอบตัวสะกดขณะพิมพ์" ในเมนู "แก้ไข"</translation>
 <translation id="9079153198295609735">ส่งสถิติการใช้งานและรายงานข้อขัดข้องไปยัง Brave Software โดยอัตโนมัติ</translation>
 <translation id="5941220456342415404">ส่งข้อมูลการวินิจฉัยและการใช้งานไปยัง Brave Software โดยอัตโนมัติ</translation>
 <translation id="918192811481327695">ช่วยปรับปรุงฟีเจอร์และประสิทธิภาพของ Brave</translation>
@@ -2222,6 +2240,7 @@
 <translation id="7548737591211512046">ลงชื่อเข้าใช้เพื่อรับบุ๊กมาร์ก ประวัติการเข้าชม รหัสผ่าน และการตั้งค่าอื่นๆ ในอุปกรณ์ทุกเครื่องของคุณ ระบบจะลงชื่อเข้าใช้บริการต่างๆ ของ Brave Software ให้คุณโดยอัตโนมัติด้วย</translation>
 <translation id="2951604498031550705">การเปลี่ยนแปลงในบุ๊กมาร์ก ประวัติการเข้าชม รหัสผ่าน และการตั้งค่าอื่นๆ จะไม่ซิงค์กับบัญชี Brave Software อีกต่อไป แต่ข้อมูลที่มีอยู่จะยังจัดเก็บไว้ในบัญชี Brave Software และสามารถจัดการได้ใน<ph name="BEGIN_LINK"/>แดชบอร์ด Brave Software<ph name="END_LINK"/></translation>
 <translation id="138229770216285283">การดำเนินการนี้จะนำคุณออกจากระบบบัญชี Brave Software การเปลี่ยนแปลงในบุ๊กมาร์ก ประวัติการเข้าชม รหัสผ่าน และการตั้งค่าอื่นๆ จะไม่ซิงค์กับบัญชี Brave Software อีกต่อไป แต่ข้อมูลที่มีอยู่จะยังจัดเก็บไว้ในบัญชี Brave Software และจัดการได้ใน <ph name="BEGIN_LINK"/>Brave Software แดชบอร์ด<ph name="END_LINK"/></translation>
+<translation id="3169352093514419465">การดำเนินการนี้จะนำคุณออกจากบัญชี Brave Software บุ๊กมาร์ก ประวัติการเข้าชม รหัสผ่าน และข้อมูลอื่นๆ จะไม่ซิงค์อีกต่อไป</translation>
 <translation id="8588866096426746242">แสดงสถิติของโปรไฟล์</translation>
 <translation id="5535941515421698170">นำข้อมูลที่มีอยู่ของคุณออกจากอุปกรณ์นี้ด้วย</translation>
 <translation id="7243632151880336635">ล้างและออกจากระบบ</translation>
@@ -2243,13 +2262,16 @@
 <translation id="3259418918864581163">ใช้ข้อมูลบัตรเครดิตและที่อยู่จาก Brave Software Pay</translation>
 <translation id="4439834757335393741">วิธีการชำระเงินและที่อยู่จาก Brave Software Pay</translation>
 <translation id="3268451620468152448">แท็บที่เปิดอยู่</translation>
+<translation id="5241892180459725878">คำแนะนำในการค้นหา Brave Software ไดรฟ์</translation>
 <translation id="2120297377148151361">กิจกรรมและการโต้ตอบ</translation>
+<translation id="5833397272224757657">ใช้เนื้อหาในเว็บไซต์ที่คุณเข้าชม รวมถึงกิจกรรมและการโต้ตอบในเบราว์เซอร์เพื่อการปรับเปลี่ยนในแบบของคุณ</translation>
 <translation id="8135094938656535588">จัดการข้อมูลที่ซิงค์ใน Brave Software แดชบอร์ด</translation>
 <translation id="6596325263575161958">ตัวเลือกการเข้ารหัส</translation>
 <translation id="2459230470861708651">เข้ารหัสลับรหัสผ่านที่ซิงค์ด้วยชื่อผู้ใช้และรหัสผ่าน Brave Software ของคุณ</translation>
 <translation id="6383051423892982287">เข้ารหัสลับข้อมูลที่ซิงค์ด้วย<ph name="BEGIN_LINK"/>รหัสผ่านการซิงค์<ph name="END_LINK"/>ของคุณเอง</translation>
 <translation id="4817583816512767754">เฉพาะผู้ที่มีรหัสผ่านของคุณเท่านั้นจึงจะสามารถอ่านข้อมูลที่เข้ารหัสของคุณได้ Brave Software จะไม่ส่งหรือจัดเก็บรหัสผ่านนี้ หากคุณลืมรหัสผ่านหรือต้องการเปลี่ยนการตั้งค่านี้ คุณจะต้อง<ph name="BEGIN_LINK"/>รีเซ็ตการซิงค์<ph name="END_LINK"/></translation>
 <translation id="4300305918532693141">หากต้องการเปลี่ยนการตั้งค่านี้ ให้<ph name="BEGIN_LINK"/>รีเซ็ตการซิงค์<ph name="END_LINK"/></translation>
+<translation id="3873315167136380065">หากต้องการเปิดการตั้งค่า ให้<ph name="BEGIN_LINK"/>รีเซ็ตการซิงค์<ph name="END_LINK"/>เพื่อนำรหัสผ่านการซิงค์ออก</translation>
 <translation id="988978206646512040">ต้องระบุรหัสผ่าน</translation>
 <translation id="1651008383952180276">คุณต้องป้อนรหัสผ่านเดียวกัน 2 ครั้ง</translation>
 <translation id="2136476978468204130">รหัสผ่านที่คุณป้อนไม่ถูกต้อง</translation>

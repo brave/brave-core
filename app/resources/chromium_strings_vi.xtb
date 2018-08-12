@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Tác giả Brave</translation>
 <translation id="4651430425715739110">Bản quyền <ph name="YEAR"/> Tác giả Brave. Mọi quyền được bảo lưu.</translation>
 <translation id="2310890394934209120">Brave OS trở nên khả thi là nhờ các <ph name="BEGIN_LINK_CROS_OSS"/>phần mềm nguồn mở<ph name="END_LINK_CROS_OSS"/> bổ sung.</translation>
+<translation id="858647341154864560">Brave OS có thể hoạt động được là nhờ <ph name="BEGIN_LINK_CROS_OSS"/>phần mềm nguồn mở<ph name="END_LINK_CROS_OSS"/> bổ sung, tương tự như Linux (Beta).</translation>
 <translation id="5019879183386042809">Đặt Brave làm trình duyệt mặc định</translation>
 <translation id="5063987220091207247">Brave OS không thể mở trang này.</translation>
 <translation id="4065288863231444640">Cho phép Brave chạy trong nền</translation>
@@ -32,6 +33,7 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 <translation id="3403365884036456766">Tệp tùy chọn của bạn bị hỏng hoặc không hợp lệ. 
 
 Brave không thể khôi phục cài đặt của bạn.</translation>
+<translation id="5785919770853225148">Brave sẽ lưu mật khẩu này trong Tài khoản Brave Software của bạn. Bạn sẽ không phải nhớ mật khẩu này.</translation>
 <translation id="3343095737966473035">Brave không phải là trình duyệt mặc định của bạn</translation>
 <translation id="6715663530666325392">Thiết lập đồng bộ hóa để lưu các tính năng trình duyệt được cá nhân hóa của bạn vào web và truy cập chúng từ Brave trên bất kỳ máy tính nào.</translation>
 <translation id="2708027082363760195">Brave không bao gồm trình xem PDF được yêu cầu để tính năng xem trước bản in hoạt động.</translation>
@@ -120,6 +122,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="82609232232243542">Đăng nhập vào Brave</translation>
 <translation id="8372880274820509128">Để bảo mật hơn, Brave sẽ mã hóa dữ liệu của bạn.</translation>
 <translation id="7445061995866044926">Đăng xuất khỏi Brave?</translation>
+<translation id="7453070689008684791">Brave sẽ truy cập vào Drive của bạn để đưa ra đề xuất trên thanh địa chỉ</translation>
 <translation id="7713466009760073734">Brave OS được hiển thị bằng ngôn ngữ này</translation>
 <translation id="3518788198614984730">Hiển thị Brave OS bằng ngôn ngữ này</translation>
 <translation id="6056473803837713617">Giúp cải thiện Brave bằng cách báo cáo <ph name="BEGIN_LINK"/>cài đặt hiện tại<ph name="END_LINK"/></translation>

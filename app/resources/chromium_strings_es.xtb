@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Los creadores de Brave</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Los creadores de Brave. Todos los derechos reservados.</translation>
 <translation id="2310890394934209120">Brave OS se ha creado gracias a <ph name="BEGIN_LINK_CROS_OSS"/>software libre<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
+<translation id="858647341154864560">Brave OS está creado con <ph name="BEGIN_LINK_CROS_OSS"/>software de código abierto<ph name="END_LINK_CROS_OSS"/> adicional, como Linux (Beta).</translation>
 <translation id="5019879183386042809">Establecer Brave como navegador predeterminado</translation>
 <translation id="5063987220091207247">Brave OS no puede abrir esta página.</translation>
 <translation id="4065288863231444640">Permitir que Brave se ejecute en segundo plano</translation>
@@ -34,6 +35,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="3403365884036456766">Tu archivo de preferencias está dañado o no es válido.
 
 Brave no puede recuperar tu configuración.</translation>
+<translation id="5785919770853225148">Brave guardará esta contraseña en tu cuenta de Brave Software para que no tengas que recordarla.</translation>
 <translation id="3343095737966473035">Brave no es tu navegador predeterminado</translation>
 <translation id="6715663530666325392">Configura la sincronización para guardar las funciones personalizadas de tu navegador en la Web y acceder a ellas desde Brave en cualquier ordenador.</translation>
 <translation id="2708027082363760195">Brave no incluye el visor de PDF que se necesita para que la vista previa de impresión funcione.</translation>
@@ -122,6 +124,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="82609232232243542">Iniciar sesión en Brave</translation>
 <translation id="8372880274820509128">Para mayor seguridad, Brave cifrará tus datos.</translation>
 <translation id="7445061995866044926">¿Cerrar sesión en Brave?</translation>
+<translation id="7453070689008684791">Brave accederá a tu Drive para mostrarte sugerencias en la barra de direcciones</translation>
 <translation id="7713466009760073734">Brave OS se muestra en este idioma</translation>
 <translation id="3518788198614984730">Mostrar Brave OS en este idioma</translation>
 <translation id="6056473803837713617">Genera un informe de la <ph name="BEGIN_LINK"/>configuración actual<ph name="END_LINK"/> para ayudar a mejorar Brave</translation>

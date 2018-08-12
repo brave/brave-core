@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Die Brave-Autoren</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Die Brave-Autoren. Alle Rechte vorbehalten.</translation>
 <translation id="2310890394934209120">Brave OS wird durch zusätzliche <ph name="BEGIN_LINK_CROS_OSS"/>Open-Source-Software<ph name="END_LINK_CROS_OSS"/> möglich gemacht.</translation>
+<translation id="858647341154864560">Brave OS wird durch zusätzliche <ph name="BEGIN_LINK_CROS_OSS"/>Open-Source-Software<ph name="END_LINK_CROS_OSS"/> möglich gemacht, ebenso wie Linux (Beta).</translation>
 <translation id="5019879183386042809">Brave als Standardbrowser verwenden</translation>
 <translation id="5063987220091207247">Brave OS kann diese Seite nicht öffnen.</translation>
 <translation id="4065288863231444640">Brave im Hintergrund ausführen</translation>
@@ -32,6 +33,7 @@ Einige Funktionen stehen möglicherweise nicht zur Verfügung. Geben Sie bitte e
 <translation id="3403365884036456766">Ihre Einstellungsdatei ist beschädigt oder ungültig.
 
 Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
+<translation id="5785919770853225148">Brave speichert dieses Passwort in Ihrem Brave Software-Konto. Sie müssen es sich also nicht merken.</translation>
 <translation id="3343095737966473035">Brave ist nicht als Ihr Standardbrowser festgelegt</translation>
 <translation id="6715663530666325392">Richten Sie die Synchronisierung ein, um Ihre personalisierten Browserfunktionen online zu speichern und über Brave auf jedem Computer darauf zuzugreifen.</translation>
 <translation id="2708027082363760195">Brave verfügt nicht über den PDF-Viewer, der für die Druckvorschau erforderlich ist.</translation>
@@ -120,6 +122,7 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="82609232232243542">In Brave anmelden</translation>
 <translation id="8372880274820509128">Brave verschlüsselt Ihre Daten zur Erhöhung der Sicherheit.</translation>
 <translation id="7445061995866044926">Von Brave abmelden?</translation>
+<translation id="7453070689008684791">Brave greift auf Brave Software Drive zu, um in der Adressleiste Vorschläge zu machen</translation>
 <translation id="7713466009760073734">Brave OS wird in dieser Sprache angezeigt</translation>
 <translation id="3518788198614984730">Brave OS in dieser Sprache anzeigen</translation>
 <translation id="6056473803837713617">Helfen Sie uns mit Ihrem Feedback zu den <ph name="BEGIN_LINK"/>aktuellen Einstellungen<ph name="END_LINK"/> bei der Verbesserung von Brave</translation>

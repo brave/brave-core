@@ -482,7 +482,12 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3190558889382726167">A jelszó mentése megtörtént</translation>
 <translation id="5079950360618752063">Javasolt jelszó használata</translation>
 <translation id="8084114998886531721">Mentett jelszó</translation>
+<translation id="5614553682702429503">Szeretné elmenteni a jelszót?</translation>
 <translation id="1405476660552109915">Szeretné, hogy a(z) <ph name="PASSWORD_MANAGER_BRAND"/> mentse az ehhez a webhelyhez tartozó fiókot?</translation>
+<translation id="8756969031206844760">Szeretné frissíteni a jelszót?</translation>
+<translation id="8230134520748321204">Szeretné elmenteni a(z) <ph name="ORIGIN"/> jelszavát?</translation>
+<translation id="9040661932550800571">Szeretné frissíteni a(z) <ph name="ORIGIN"/> jelszavát?</translation>
+<translation id="8284000761603848448">A jelszavakat Brave Software-fiókjába mentjük, hogy bármelyik eszközén használhassa őket</translation>
 <translation id="8286036467436129157">Bejelentkezés</translation>
 <translation id="8009225694047762179">Jelszó kezelése</translation>
 <translation id="9135262959729602463">Ha az összes eszközén szeretné elérni könyvjelzőit, jelentkezzen be a Brave-ba.</translation>
@@ -549,16 +554,18 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Kész</translation>
 <translation id="4416582610654027550">Érvényes URL-t írjon be</translation>
+<translation id="2806891468525657116">Ez a billentyűparancs már létezik</translation>
+<translation id="394183848452296464">Nem sikerült billentyűparancsot létrehozni</translation>
 <translation id="7109543803214225826">Billentyűparancs eltávolítva</translation>
 <translation id="8017679124341497925">Billentyűparancs szerkesztve</translation>
 <translation id="1174073918202301297">Parancsikon hozzáadva</translation>
 <translation id="2926085873880284723">Alapértelmezett billentyűparancsok visszaállítása</translation>
-<translation id="7413455776853560343">Háttér személyre szabása</translation>
+<translation id="2942581856830209953">Az oldal személyre szabása</translation>
 <translation id="2187700606737131818">Brave Software Fotók</translation>
 <translation id="5801450813341024983">Brave-hátterek</translation>
 <translation id="2800760947029405028">Kép feltöltése</translation>
 <translation id="8342861492835240085">Válasszon gyűjteményt</translation>
-<translation id="6017211263306518045">Válasszon egy albumot a Brave Software Fotókból</translation>
+<translation id="1734885380062278369">Válasszon Brave Software Fotók-albumot</translation>
 <translation id="3132996321662585180">Frissítés naponta</translation>
 <translation id="9062065967472365419">Lepjen meg</translation>
 <translation id="7287411021188441799">Alapértelmezett háttér visszaállítása</translation>
@@ -568,6 +575,8 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3617891479562106823">A hátterek nem állnak rendelkezésre. Próbálja újra később.</translation>
 <translation id="8391712576156218334">A kép nem hozzáférhető. Próbálja újra később.</translation>
 <translation id="1564414980088536597">Ez a kép nem használható. Válasszon másikat.</translation>
+<translation id="4628948037717959914">Fénykép</translation>
+<translation id="8033827949643255796">kijelölve</translation>
 <translation id="5376169624176189338">Kattintson, ha az előző oldalra szeretne lépni; tartsa lenyomva, ha látni szeretné az előzményeket</translation>
 <translation id="9103868373786083162">Nyomja meg a visszalépéshez, illetve választhatja a helyi menüt az előzmények megtekintéséshez</translation>
 <translation id="2961695502793809356">Kattintson, ha tovább szeretne lépni; tartsa lenyomva, ha látni szeretné az előzményeket</translation>
@@ -841,6 +850,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="2532167245710864499">Ha elküldi a rendszer- és használati adatokat a Brave Software-nak, hozzájárulhat a Brave fejlesztéséhez és a böngésző biztonságának javításához</translation>
 <translation id="2709453993673701466">Áttekinti a szinkronizálási és testreszabási beállításokat, mielőtt bekapcsolja őket? Keresse fel a <ph name="BEGIN_LINK"/>Beállítások<ph name="END_LINK"/> oldalt.</translation>
 <translation id="2668128414154024727">A <ph name="BEGIN_LINK"/>Beállításokban<ph name="END_LINK"/> bármikor személyre szabhatja, hogy milyen adatokat gyűjthet a Brave Software.</translation>
+<translation id="6035247993547372482">A Brave Software felhasználhatja az Ön által felkeresett webhelyeken lévő tartalmakat, a böngészési tevékenységeket és interakciókat a Brave és az egyéb Brave Software-szolgáltatások (például a Fordító, a Keresés és a megjelenő hirdetések) személyre szabásához. Ezt módosíthatja a Beállításokban.</translation>
 <translation id="741204030948306876">Igen, folytatom</translation>
 <translation id="8428213095426709021">Beállítások</translation>
 <translation id="2497852260688568942">A szinkronizálást letiltotta a rendszergazda</translation>
@@ -939,6 +949,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8363142353806532503">Mikrofon letiltva</translation>
 <translation id="2762441749940182211">Kamera letiltva</translation>
 <translation id="5074318175948309511">Előfordulhat, hogy az új beállítások életbe lépéséhez az oldal újratöltése szükséges.</translation>
+<translation id="1322046419516468189">A mentett jelszavakat itt láthatja és kezelheti: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software Fiókjába</translation>
 <translation id="3785727820640310185">A webhelyhez mentett jelszavak</translation>
 <translation id="3404065873681873169">Ehhez a webhelyhez nincsenek mentve jelszavak</translation>
@@ -1389,7 +1400,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6647838571840953560">Jelenleg a(z) <ph name="CHANNEL_NAME"/> csatornán</translation>
 <translation id="2972557485845626008">Firmware</translation>
 <translation id="5895138241574237353">Újraindítás</translation>
-<translation id="7409233648990234464">Újraindítás és Powerwash</translation>
+<translation id="4297219207642690536">Újraindítás és visszaállítás</translation>
 <translation id="4716483597559580346">Powerwash művelet a nagyobb biztonság érdekében</translation>
 <translation id="4089922565956168950">Ez a frissítés visszaállítja a Bravebookot, és eltávolítja a jelenlegi felhasználói adatokat.</translation>
 <translation id="5184662919967270437">Az eszköz frissítése folyamatban van</translation>
@@ -1397,6 +1408,8 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5906655207909574370">Már majdnem naprakész! Indítsa újra az eszközt a frissítés befejezéséhez.</translation>
 <translation id="5860494867054883682">Eszköz frissítése a(z) <ph name="CHANNEL_NAME"/> csatornára (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="5877064549588274448">Módosult a csatorna. Indítsa újra az eszközt a módosítások alkalmazásához.</translation>
+<translation id="7133578150266914903">Az eszköz rendszergazda általi visszaállítása jelenleg folyamatban van (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="9013707997379828817">Eszközét adminisztrátora visszaállította. Mentse a fontos fájlokat, majd indítsa újra az eszközt. Minden tárolt adat törlődni fog.</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/>-eszköze naprakész</translation>
 <translation id="3688526734140524629">Csatornaváltás</translation>
 <translation id="6410328738210026208">Csatorna módosítása és Powerwash</translation>
@@ -1497,7 +1510,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6902066522699286937">Meghallgatni kívánt hang</translation>
 <translation id="304747341537320566">Beszédmotorok</translation>
 <translation id="1067291318998134776">Linux (béta)</translation>
-<translation id="6963573437985514722">Linuxos eszközök, szerkesztők és IDE-szoftverek futtatása a Bravebookon.</translation>
 <translation id="6869910261738842136">A Bravebookra telepített linuxos alkalmazások eltávolítása</translation>
 <translation id="2295473777859797944">Brave Software Play Áruház</translation>
 <translation id="572155275267014074">Android-beállítások</translation>
@@ -1538,6 +1550,8 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8639963783467694461">Automatikus kitöltési beállítások</translation>
 <translation id="3431019676184503003">Címek és fizetési módok</translation>
 <translation id="2512222046227390255">Űrlapok automatikus kitöltése</translation>
+<translation id="2283340219607151381">Címek mentése és betöltése</translation>
+<translation id="1662550410081243962">Fizetési módok mentése és betöltése</translation>
 <translation id="2903493209154104877">Címek</translation>
 <translation id="7764225426217299476">Cím hozzáadása</translation>
 <translation id="5595485650161345191">Cím szerkesztése</translation>
@@ -1574,6 +1588,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="7930294771522048157">Az elmentett fizetési módok itt jelennek meg</translation>
 <translation id="9124003689441359348">A mentett jelszavak itt jelennek meg</translation>
 <translation id="4400367121200150367">Itt jelennek meg azok a webhelyek, amelyeknél letiltotta a jelszavak mentését</translation>
+<translation id="3098842761938485917">Mentett jelszavait megtekintheti és kezelheti <ph name="BEGIN_LINK"/>Brave Software-fiókjában<ph name="END_LINK"/></translation>
 <translation id="5620655347161642930">Jelszavak exportálása…</translation>
 <translation id="3900966090527141178">Jelszavak exportálása</translation>
 <translation id="6914783257214138813">Jelszavai mindenki számára láthatók lesznek, aki hozzáfér az exportált fájlhoz.</translation>
@@ -1964,6 +1979,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="4534361985432360439">Elküldi az elérni kívánt oldal internetcímét a Brave Software-nak</translation>
 <translation id="6545834809683560467">A várható kifejezés szolgáltatás használata a keresések és URL-címek kiegészítésére a címsávban, illetve az alkalmazásindító keresőmezőjében</translation>
 <translation id="7704317875155739195">Keresések és URL-címek automatikus kiegészítése</translation>
+<translation id="2000419248597011803">Bizonyos cookie-kat és kereséseket küld a címsávból és a keresőmezőből az alapértelmezett keresőmotornak</translation>
 <translation id="9038649477754266430">A várható kifejezés szolgáltatás használata az oldalak gyorsabb betöltése érdekében</translation>
 <translation id="7981313251711023384">Oldalak előtöltése a gyorsabb böngészés és keresés érdekében</translation>
 <translation id="2468205691404969808">Cookie-kat használ a preferenciák megjegyzésére még akkor is, ha Ön nem keresi fel azokat az oldalakat</translation>
@@ -1974,6 +1990,8 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="490074449735753175">Internetes szolgáltatás használata a helyesírási hibák kijavítására</translation>
 <translation id="3523078749603005179">Pontosabb helyesírás-ellenőrzés azáltal, hogy a böngészőbe beírt szöveget elküldi a Brave Software szervereinek</translation>
 <translation id="2564653188463346023">Továbbfejlesztett helyesírás-ellenőrzés</translation>
+<translation id="7469406957790636836">Ennek bekapcsolásához először engedélyezze a helyesírás-ellenőrzést a <ph name="BEGIN_LINK"/>Nyelv és bevitel<ph name="END_LINK"/> menüben</translation>
+<translation id="8699566574894671540">Ennek bekapcsolásához először engedélyezze a „Helyesírás-ellenőrzés gépelés közben” funkciót a Szerkesztés menüben</translation>
 <translation id="9079153198295609735">Használati statisztikák és hibajelentések automatikus küldése a Brave Software-nak</translation>
 <translation id="5941220456342415404">Diagnosztikai és használati adatok automatikus elküldése a Brave Software-nak</translation>
 <translation id="918192811481327695">Segítség a Brave funkcióinak és teljesítményének javítása érdekében</translation>
@@ -2224,6 +2242,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="7548737591211512046">Ha bejelentkezik, könyvjelzőit, előzményeit és egyéb beállításait bármilyen eszközről elérheti. Ráadásul automatikusan bejelentkezik a Brave Software-szolgáltatásokba is.</translation>
 <translation id="2951604498031550705">A könyvjelzők, előzmények, jelszavak és egyéb beállítások módosításai nem lesznek szinkronizálva Brave Software-fiókjával. Meglévő adatait azonban továbbra is tárolni fogja Brave Software-fiókja, és azokat a <ph name="BEGIN_LINK"/>Brave Software Irányítópulton<ph name="END_LINK"/> kezelheti.</translation>
 <translation id="138229770216285283">Ezzel kijelentkezik Brave Software-fiókjaiból. A könyvjelzők, előzmények, jelszavak és egyéb beállítások módosításai nem lesznek szinkronizálva Brave Software-fiókjával. Meglévő adatait azonban továbbra is tárolja Brave Software-fiókja, és ezeket az adatokat a <ph name="BEGIN_LINK"/>Brave Software Irányítópulton<ph name="END_LINK"/> kezelheti.</translation>
+<translation id="3169352093514419465">Ezzel kijelentkezik Brave Software-fiókjaiból. Könyvjelzőinek, előzményeinek, jelszavainak és egyéb adatainak szinkronizálása megszűnik.</translation>
 <translation id="8588866096426746242">Profilstatisztikák megjelenítése</translation>
 <translation id="5535941515421698170">Továbbá a meglévő adatok eltávolítása az eszközről</translation>
 <translation id="7243632151880336635">Törlés és kijelentkezés</translation>
@@ -2245,13 +2264,16 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="3259418918864581163">A Brave Software Pay szolgáltatást használó hitelkártyák és címek.</translation>
 <translation id="4439834757335393741">A Brave Software Pay szolgáltatásban használt fizetési módok és címek.</translation>
 <translation id="3268451620468152448">Megnyitott lapok</translation>
+<translation id="5241892180459725878">Brave Software Drive-beli keresési javaslatok</translation>
 <translation id="2120297377148151361">Tevékenység és interakciók</translation>
+<translation id="5833397272224757657">A felkeresett webhelyeken található tartalmak, a böngészőtevékenysége, valamint a böngészőben végzett interakciók felhasználása személyre szabáshoz</translation>
 <translation id="8135094938656535588">Szinkronizált adatok kezelése a Brave Software Irányítópulton</translation>
 <translation id="6596325263575161958">Titkosítási lehetőségek</translation>
 <translation id="2459230470861708651">Szinkronizált jelszavak titkosítása Brave Software-felhasználónevével és -jelszavával</translation>
 <translation id="6383051423892982287">A szinkronizált adatok titkosítása saját <ph name="BEGIN_LINK"/>összetett szinkronizálási jelszóval<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Titkosított adatait csak az olvashatja el, aki rendelkezik összetett jelszavával. Az összetett jelszót a Brave Software nem kapja meg, és nem is tárolja. Ha elfelejtette összetett jelszavát, vagy módosítani szeretné ezt a beállítást, <ph name="BEGIN_LINK"/>alaphelyzetbe kell állítania a szinkronizálást<ph name="END_LINK"/>.</translation>
 <translation id="4300305918532693141">A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa alaphelyzetbe a szinkronizálást<ph name="END_LINK"/>.</translation>
+<translation id="3873315167136380065">Ennek bekapcsolásához <ph name="BEGIN_LINK"/>állítsa alaphelyzetbe a szinkronizálást<ph name="END_LINK"/>, hogy eltávolíthassa az összetett szinkronizálási jelszót</translation>
 <translation id="988978206646512040">Üres összetett jelszó nem engedélyezett</translation>
 <translation id="1651008383952180276">Mindkét alkalommal ugyanazt az összetett jelszót kell megadnia</translation>
 <translation id="2136476978468204130">A megadott összetett jelszó helytelen</translation>

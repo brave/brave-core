@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">Ang Mga May-akda ng Brave</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Ang Mga May-akda ng Brave. Nakalaan ang lahat ng karapatan.</translation>
 <translation id="2310890394934209120">Nagiging posible ang Brave OS sa pamamagitan ng karagdagang <ph name="BEGIN_LINK_CROS_OSS"/>open source na software<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="858647341154864560">Naging posible ang Brave OS, gaya ng Linux (Beta), dahil sa karagdagang <ph name="BEGIN_LINK_CROS_OSS"/>open source na software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="5019879183386042809">Gawing default na browser ang Brave</translation>
 <translation id="5063987220091207247">Hindi mabuksan ng Brave OS ang page na ito.</translation>
 <translation id="4065288863231444640">Hayaang Tumakbo ang Brave sa Background</translation>
@@ -34,6 +35,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="3403365884036456766">Sira o di-wasto ang file ng iyong mga kagustuhan.
 
 Hindi mabawi ng Brave ang iyong mga setting.</translation>
+<translation id="5785919770853225148">Ise-save ng Brave ang password na ito sa iyong Brave Software Account. Hindi mo na ito kailangang tandaan.</translation>
 <translation id="3343095737966473035">Hindi Brave ang iyong default na browser</translation>
 <translation id="6715663530666325392">I-set up ang Pag-sync upang i-save ang iyong personalized na mga tampok ng browser sa web at i-access ang mga iyon mula sa Brave sa anumang computer.</translation>
 <translation id="2708027082363760195">Hindi isinasama ng Brave ang PDF viewer na kinakailangan upang gumana ang Preview ng Pag-print.</translation>
@@ -122,6 +124,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="82609232232243542">Mag-sign in sa Brave</translation>
 <translation id="8372880274820509128">Para sa karagdagang seguridad, ie-encrypt ng Brave ang iyong data.</translation>
 <translation id="7445061995866044926">Mag-sign out sa Brave?</translation>
+<translation id="7453070689008684791">Ia-access ng Brave ang iyong Drive para makapagmungkahi sa address bar</translation>
 <translation id="7713466009760073734">Ipinapakita ang Brave OS sa wikang ito</translation>
 <translation id="3518788198614984730">Ipakita ang Brave OS sa wikang ito</translation>
 <translation id="6056473803837713617">Tulungang pahusayin ang Brave sa pamamagitan ng pag-ulat sa <ph name="BEGIN_LINK"/>mga kasalukuyang setting<ph name="END_LINK"/></translation>
