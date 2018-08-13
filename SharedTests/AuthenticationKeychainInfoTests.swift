@@ -12,14 +12,13 @@ class AuthenticationKeychainInfoTests: XCTestCase {
     func testEncodingAndDecoding() {
         let passcode = "1234"
         let authInfo = AuthenticationKeychainInfo(passcode: passcode)
-        authInfo.updateRequiredPasscodeInterval(.fiveMinutes)
+        authInfo.isPasscodeRequiredImmediately = true
         authInfo.recordValidation()
         authInfo.recordFailedAttempt() // failed attempt should be 1
         authInfo.lockOutUser() //lock out a user so a lockoutInterval is set.
         authInfo.useTouchID = true
 
         let savedInterval = authInfo.lockOutInterval
-        let savedValidation = authInfo.lastPasscodeValidationInterval
 
         KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(authInfo) //Save to disk
         let decodedAuthInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo()! //Fetch from disk
@@ -28,8 +27,7 @@ class AuthenticationKeychainInfoTests: XCTestCase {
         XCTAssertEqual(passcode, decodedAuthInfo.passcode)
         XCTAssertEqual(1, decodedAuthInfo.failedAttempts, "We performed a recordFailedAttempt. This should be 1.")
         XCTAssertTrue(decodedAuthInfo.useTouchID)
-        XCTAssertEqual(savedValidation, decodedAuthInfo.lastPasscodeValidationInterval)
-        XCTAssertEqual(PasscodeInterval.fiveMinutes, decodedAuthInfo.requiredPasscodeInterval)
+        XCTAssertEqual(true, decodedAuthInfo.isPasscodeRequiredImmediately)
     }
 
     func testNilIntervalsArentZero() {

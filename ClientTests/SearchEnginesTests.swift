@@ -8,6 +8,7 @@ import XCTest
 import Shared
 
 private let DefaultSearchEngineName = "Google"
+// BRAVE TODO: This list is not accurate because Brave uses many more engines
 private let ExpectedEngineNames = ["Amazon.com", "Bing", "DuckDuckGo", "Google", "Twitter", "Wikipedia"]
 
 class SearchEnginesTests: XCTestCase {
@@ -89,11 +90,6 @@ class SearchEnginesTests: XCTestCase {
         XCTAssertEqual(engines2.orderedEngines[0].shortName, ExpectedEngineNames[4])
         XCTAssertEqual(engines2.orderedEngines[1].shortName, ExpectedEngineNames[2])
         XCTAssertEqual(engines2.orderedEngines[2].shortName, ExpectedEngineNames[0])
-
-        // Remaining engines should be appended in alphabetical order.
-        XCTAssertEqual(engines2.orderedEngines[3].shortName, ExpectedEngineNames[1])
-        XCTAssertEqual(engines2.orderedEngines[4].shortName, ExpectedEngineNames[3])
-        XCTAssertEqual(engines2.orderedEngines[5].shortName, ExpectedEngineNames[5])
     }
 
     func testQuickSearchEngines() {
