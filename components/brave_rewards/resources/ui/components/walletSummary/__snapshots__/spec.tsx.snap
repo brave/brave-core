@@ -206,7 +206,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               className="c7"
             >
               
-              10.00
+              10.0
             </span>
             <span
               className="c8"
@@ -246,7 +246,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               className="c7"
             >
               
-              10.00
+              10.0
             </span>
             <span
               className="c8"
@@ -286,7 +286,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               className="c10"
             >
               -
-              10.00
+              10.0
             </span>
             <span
               className="c8"
@@ -326,7 +326,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               className="c11"
             >
               -
-              2.00
+              2.0
             </span>
             <span
               className="c8"
@@ -366,7 +366,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               className="c11"
             >
               -
-              19.00
+              19.0
             </span>
             <span
               className="c8"

@@ -66,7 +66,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       return '00.00'
     }
 
-    return tokens.toFixed(2)
+    return tokens.toFixed(1)
   }
 
   generateActions (actions: {icon: string, name: string, action: () => void}[], id?: string) {

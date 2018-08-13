@@ -22,7 +22,7 @@ export default class GrantComplete extends React.PureComponent<Props, {}> {
       <StyledWrapper id={id}>
         <StyledBox>
           <StyledTitle>{getLocale('newTokenGrant')}</StyledTitle>
-          <StyledValue>{amount}</StyledValue>
+          <StyledValue>{amount} BAT</StyledValue>
           <StyledTitle>{getLocale('grantExpire')}</StyledTitle>
           <StyledValue>{date}</StyledValue>
         </StyledBox>

@@ -41,7 +41,7 @@ export default class Tokens extends React.PureComponent<Props, {}> {
       <span id={id}>
         <StyledTokens theme={theme}>
           <StyledTokenValue theme={theme}>
-            {isNegative ? '-' : ''}{toFixed ? value.toFixed(2) : value}
+            {isNegative ? '-' : ''}{toFixed ? value.toFixed(1) : value}
           </StyledTokenValue>
           {
             !hideText
