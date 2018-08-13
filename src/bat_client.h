@@ -24,7 +24,7 @@ class BatClient {
   explicit BatClient(bat_ledger::LedgerImpl* ledger);
   ~BatClient();
 
-  void loadStateCallback(bool success, const std::string& data);
+  void loadState(const std::string& data);
   void registerPersona();
   void requestCredentialsCallback(bool result, const std::string& response);
   void registerPersonaCallback(bool result, const std::string& response);

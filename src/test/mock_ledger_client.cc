@@ -29,7 +29,7 @@ void MockLedgerClient::Shutdown() {
   ledger_.reset();
 }
 
-void MockLedgerClient::OnWalletCreated(ledger::Result result) {
+void MockLedgerClient::OnWalletInitialized(ledger::Result result) {
 }
 
 void MockLedgerClient::OnReconcileComplete(ledger::Result result,

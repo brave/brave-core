@@ -36,7 +36,7 @@ class LEDGER_EXPORT LedgerClient {
 
   // called when the wallet creation has completed
   virtual std::string GenerateGUID() const = 0;
-  virtual void OnWalletCreated(Result result) = 0;
+  virtual void OnWalletInitialized(Result result) = 0;
   virtual void GetWalletProperties() = 0;
   virtual void OnWalletProperties(Result result,
                                   std::unique_ptr<ledger::WalletInfo>) = 0;
