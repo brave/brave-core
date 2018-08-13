@@ -1,4 +1,11 @@
 
+group("brave_sync_lib") {
+  deps = [
+    ":brave_sync_js_lib_bundle",
+    ":brave_crypto_js_lib_bundle",
+  ]
+}
+
 action("brave_sync_js_lib_bundle") {
   script = "//brave/script/build-simple-js-bundle.py"
 

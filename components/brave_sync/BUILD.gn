@@ -56,8 +56,10 @@ action("copy-sync-extension-resources") {
   args = []
   inputs = [
     "//brave/components/brave_sync/extension/background.js",
-    "//brave/vendor/brave-sync/bundles/bundle.js",
-    "//brave/vendor/brave-crypto/browser/crypto.js",
+    #"//brave/vendor/brave-sync/bundles/bundle.js",
+    "$root_gen_dir/brave-sync/bundles/bundle.js",
+    #"//brave/vendor/brave-crypto/browser/crypto.js",
+    "$root_gen_dir/brave-crypto/browser/crypto.js",
   ]
   # Cannot use any `src` directory except `out` as a parent for any output
   outputs = [

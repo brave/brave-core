@@ -28,7 +28,8 @@ std::string ExtractObjectIdFromDict(const base::Value *val);
 std::string ExtractObjectIdFromList(const base::Value *val);
 
 std::string ExtractDeviceIdFromDict(const base::Value *val);
-std::string ExtractIdFieldFromDict(const base::Value *val, const std::string &fileld_name);
+
+std::string ExtractIdFieldFromDictOrList(const base::Value *val, const std::string &fileld_name);
 
 base::Time ExtractTimeFieldFromDict(const base::Value *val, const std::string &time_fileld_name);
 

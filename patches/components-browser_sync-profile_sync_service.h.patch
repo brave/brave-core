@@ -1,16 +1,16 @@
 diff --git a/components/browser_sync/profile_sync_service.h b/components/browser_sync/profile_sync_service.h
-index 63f934732987944e7aace3252c1efa7095ebbce1..4818c513864a4f84277393e4a7827c51d9ad349f 100644
+index d97259718bcabbe417c9e5c91bc6cfd454755020..92e7179fd191352057a6b8b05f2a71b7ee569c49 100644
 --- a/components/browser_sync/profile_sync_service.h
 +++ b/components/browser_sync/profile_sync_service.h
-@@ -45,6 +45,7 @@
+@@ -44,6 +44,7 @@
  #include "components/version_info/version_info.h"
  #include "google_apis/gaia/google_service_auth_error.h"
  #include "url/gurl.h"
 +#include "brave/components/sync/driver/brave_sync_service_base.h"
  
- class ProfileOAuth2TokenService;
  class SigninManagerWrapper;
-@@ -159,7 +160,8 @@ class SyncAuthManager;
+ 
+@@ -157,7 +158,8 @@ class SyncAuthManager;
  //   Once first setup has completed and there are no outstanding
  //   setup-in-progress handles, CanConfigureDataTypes() will return true and
  //   datatype configuration can begin.
