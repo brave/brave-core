@@ -11,8 +11,8 @@ require('emptykit.css')
 
 // Components
 import App from './components/app'
-require('../fonts/muli.css')
-require('../fonts/poppins.css')
+require('../../fonts/muli.css')
+require('../../fonts/poppins.css')
 
 // Utils
 import store from './store'

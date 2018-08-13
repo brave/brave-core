@@ -11,11 +11,11 @@ import { Checkbox, Column, Grid } from 'brave-ui/components'
 import { DisabledContent, Box, TableDonation, List, Tokens } from 'brave-ui/features/rewards'
 
 // Utils
-import { getLocale } from '../../common/locale'
+import { getLocale } from '../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 
 // Assets
-const donate = require('../../img/rewards/donate_disabled.svg')
+const donate = require('../../../img/rewards/donate_disabled.svg')
 
 interface Props extends Rewards.ComponentProps {
 }

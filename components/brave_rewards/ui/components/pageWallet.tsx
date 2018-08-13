@@ -16,14 +16,14 @@ import {
 } from 'brave-ui/features/rewards'
 
 // Utils
-import { getLocale } from '../../common/locale'
+import { getLocale } from '../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import Grant from './grant'
 
 // Assets
-const walletIcon = require('../../img/rewards/wallet_icon.svg')
-const fundsIcon = require('../../img/rewards/funds_icon.svg')
+const walletIcon = require('../../../img/rewards/wallet_icon.svg')
+const fundsIcon = require('../../../img/rewards/funds_icon.svg')
 
 interface State {
   modalBackup: boolean,

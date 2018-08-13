@@ -26,6 +26,7 @@ interface State {
 interface Props extends Rewards.ComponentProps {
 }
 
+// TODO add local when we know what we will get from the server
 class Grant extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
