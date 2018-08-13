@@ -351,8 +351,8 @@ void LedgerImpl::RecoverWallet(const std::string& passPhrase) const {
   bat_client_->recoverWallet(passPhrase);
 }
 
-void LedgerImpl::OnRecoverWallet(bool error, double balance) {
-  ledger_client_->OnRecoverWallet(error ? ledger::Result::ERROR :
+void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance) {
+  ledger_client_->OnRecoverWallet(result ? ledger::Result::ERROR :
                                           ledger::Result::OK,
                                   balance);
 }

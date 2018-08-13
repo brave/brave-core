@@ -86,7 +86,7 @@ class LedgerImpl : public ledger::Ledger,
 
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string& passPhrase) const override;
-  void OnRecoverWallet(bool error, double balance);
+  void OnRecoverWallet(ledger::Result result, double balance);
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
