@@ -84,7 +84,7 @@ class PageWallet extends React.Component<Props, State> {
     console.log('onModalBackupOnSaveFile')
   }
 
-  onModalBackupOnRestore = (key: string) => {
+  onModalBackupOnRestore = (key: string | MouseEvent) => {
     if (typeof key === 'string' && key.length > 0) {
       this.actions.recoverWallet(key)
     }

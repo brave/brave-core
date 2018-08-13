@@ -17,6 +17,7 @@ import {
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
+import { getLocale } from '../../../common/locale'
 
 interface State {
   grantShow: boolean
@@ -61,16 +62,15 @@ class Grant extends React.Component<Props, State> {
     this.actions.onDeletePromotion()
   }
 
-  onSolution = () => {
-    // TODO implement last step
-    console.log('solved')
+  onSolution = (x: number, y: number) => {
+    this.actions.solvePromotionCaptcha(x, y)
   }
 
   onAccept = () => {
     this.actions.getPromotionCaptcha()
   }
 
-  onLater = () => {
+  onDeny = () => {
     // TODO should we delay next fetch?
     this.actions.onDeletePromotion()
   }
@@ -96,7 +96,7 @@ class Grant extends React.Component<Props, State> {
               title={'It’s your lucky day!'}
               text={'Your token grant is on its way.'}
             >
-              <GrantComplete onClose={this.onSuccess} amount={promotion.amount} date={new Date(promotion.expireDate * 1000).toLocaleDateString()} />
+              <GrantComplete onClose={this.onSuccess} amount={promotion.amount} date={new Date(promotion.expireDate).toLocaleDateString()} />
             </GrantWrapper>
             : null
         }
@@ -104,8 +104,8 @@ class Grant extends React.Component<Props, State> {
           !promotion.expireDate && promotion.captcha
             ? <GrantWrapper
               onClose={this.onGrantHide}
-              title={'Almost there…'}
-              text={'Prove that you are human!'}
+              title={promotion.error === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
+              text={getLocale('proveHuman')}
             >
               <GrantCaptcha onSolution={this.onSolution} dropBgImage={promotion.captcha} />
             </GrantWrapper>
@@ -118,7 +118,7 @@ class Grant extends React.Component<Props, State> {
               title={'Good news!'}
               text={`Free ${promotion.amount} BAT have been awarded to you so you can support more publishers.`}
             >
-              <GrantInit onAccept={this.onAccept} onLater={this.onLater} />
+              <GrantInit onAccept={this.onAccept} onDeny={this.onDeny} />
             </GrantWrapper>
             : null
         }

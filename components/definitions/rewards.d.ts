@@ -58,11 +58,17 @@ declare namespace Rewards {
     amount: number
     captcha?: string
     expireDate?: number
-    error?: 'wrongPosition' | 'serverError'
+    error?: 'wrongPosition' | 'serverError' | null
   }
 
   export interface RecoverWallet {
     result: Result
     balance: number
+  }
+
+  export interface PromotionFinish {
+    result: Result,
+    statusCode: number,
+    expirationDate: number
   }
 }
