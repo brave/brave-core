@@ -33,11 +33,15 @@ class Grant extends React.Component<{}, State > {
   }
 
   onGrantShow = () => {
-    this.setState({ grantShow: false, grantStep: 'init' })
+    this.setState({ grantStep: 'init' })
   }
 
   onGrantHide = () => {
     this.setState({ grantStep: '' })
+  }
+
+  onGrantDelete = () => {
+    this.setState({ grantStep: '', grantShow: false })
   }
 
   onGrantStep = (step: Step) => {
@@ -59,7 +63,7 @@ class Grant extends React.Component<{}, State > {
               title={'Good news!'}
               text={'Free 30 BAT have been awarded to you so you can support more publishers.'}
           >
-            <GrantInit onAccept={this.onGrantStep.bind(this, 'captcha')} onLater={this.onGrantHide} />
+            <GrantInit onAccept={this.onGrantStep.bind(this, 'captcha')} onDeny={this.onGrantDelete} />
           </GrantWrapper>
           : null
         }

@@ -48,7 +48,7 @@ storiesOf('Feature Components/Rewards/Grant', module)
         <div style={{ width: '373px', height: '715px', position: 'relative' }}>
           <GrantInit
             onAccept={dummyClick}
-            onLater={dummyClick}
+            onDeny={dummyClick}
           />
         </div>
       )

@@ -102,7 +102,7 @@ exports[`Grant init tests basic tests matches the snapshot 1`] = `
     onClick={undefined}
     size="large"
   >
-    MISSING: maybeLater
+    MISSING: noThankYou
   </div>
 </div>
 `;

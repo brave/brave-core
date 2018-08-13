@@ -11,19 +11,19 @@ import ButtonGhost from '../../../components/buttonsIndicators/buttonGhost'
 export interface Props {
   id?: string
   onAccept: () => void
-  onLater: () => void
+  onDeny: () => void
 }
 
 export default class GrantInit extends React.PureComponent<Props, {}> {
   render () {
-    const { id, onAccept, onLater } = this.props
+    const { id, onAccept, onDeny } = this.props
 
     return (
       <StyledWrapper id={id}>
         <div>
           <ButtonPrimary text={getLocale('accept')} size={'medium'} color={'brand'} onClick={onAccept}/>
         </div>
-        <ButtonGhost text={getLocale('maybeLater')} size={'large'} color={'brand'} onClick={onLater}/>
+        <ButtonGhost text={getLocale('noThankYou')} size={'large'} color={'brand'} onClick={onDeny}/>
       </StyledWrapper>
     )
   }
