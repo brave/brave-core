@@ -13,7 +13,6 @@ const defaultState: Rewards.State = {
   enabledAds: true,
   enabledContribute: true,
   firstLoad: null,
-  wasFunded: false,
   walletCreated: false,
   walletCreateFailed: false,
   contributionMinTime: 8000,
@@ -31,7 +30,8 @@ const defaultState: Rewards.State = {
   connectedWallet: false,
   recoveryKey: '',
   ui: {
-    walletRecoverySuccess: null
+    walletRecoverySuccess: null,
+    emptyWallet: true
   }
 }
 

@@ -30,14 +30,24 @@ class DonationBox extends React.Component<Props, {}> {
   }
 
   donationSettings = () => {
+    const {
+      donationAbilityYT,
+      donationAbilityTwitter,
+      enabledMain
+    } = this.props.rewardsData
+
+    if (!enabledMain) {
+      return null
+    }
+
     return (
       <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>
         <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
           <Checkbox
             title={getLocale('donationAbility')}
             value={{
-              donationAbilityYT: this.props.rewardsData.donationAbilityYT,
-              donationAbilityTwitter: this.props.rewardsData.donationAbilityTwitter
+              donationAbilityYT,
+              donationAbilityTwitter
             }}
             multiple={true}
             onChange={this.onCheckSettingChange}
