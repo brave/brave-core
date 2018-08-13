@@ -43,7 +43,7 @@ class BatClient {
   void walletPropertiesCallback(bool success, const std::string& response);
   void recoverWallet(const std::string& passPhrase);
   void getPromotion(const std::string& lang, const std::string& forPaymentId);
-  void setPromotion(const std::string& promotionId, const std::string& captchaResponse);
+  void setPromotion(const std::string& captchaResponse, const std::string& promotionId);
   void getPromotionCaptcha();
   void getWalletProperties();
 

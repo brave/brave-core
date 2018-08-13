@@ -1240,6 +1240,24 @@ namespace braveledger_bat_helper {
     return !error;
   }
 
+  bool getJSONResponse(const std::string& json, unsigned int& statusCode, std::string& error) {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    //has parser errors or wrong types
+    bool hasError = d.HasParseError();
+    if (hasError == false) {
+      hasError = !(d.HasMember("statusCode") && d["statusCode"].IsNumber() &&
+                d.HasMember("error") && d["error"].IsString());
+    }
+
+    if (hasError == false) {
+      statusCode = d["statusCode"].GetUint();
+      error = d["error"].GetString();
+    }
+    return !hasError;
+  }
+
   std::vector<uint8_t> generateSeed() {
     //std::ostringstream seedStr;
 
