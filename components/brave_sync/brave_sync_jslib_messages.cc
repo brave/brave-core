@@ -73,7 +73,7 @@ void Bookmark::FromValue(const base::Value *bookmark_value) {
   DCHECK(is_folder_value);
   this->isFolder = is_folder_value->GetBool();
 
-  this->parentFolderObjectId = ExtractIdFieldFromDict(bookmark_value, "parentFolderObjectId");
+  this->parentFolderObjectId = ExtractIdFieldFromDictOrList(bookmark_value, "parentFolderObjectId");
 
   const base::Value *hide_in_toolbar_value = bookmark_value->FindKeyOfType("hideInToolbar", base::Value::Type::BOOLEAN);
   if (hide_in_toolbar_value) {

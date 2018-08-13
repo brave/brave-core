@@ -8,7 +8,6 @@ index ad2d4daae3cda93c68f78bb04a45b8fa18b7f3fa..778f9abaaee9ddcba6b5b9defb59d49f
    ARC_APPS_PRIVATE_ON_INSTALLED,
 +  BRAVE_START = 5000,
 +  BRAVE_AD_BLOCKED,
-+  BRAVE_SYNC_BROWSER_TO_BACKGROUND_PAGE,
    // Last entry: Add new entries above, then run:
    // python tools/metrics/histograms/update_extension_histograms.py
    ENUM_BOUNDARY

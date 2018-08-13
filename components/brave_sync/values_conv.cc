@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/values_conv.h"
+#include "base/logging.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
@@ -31,6 +32,26 @@ std::unique_ptr<Value> BraveSyncSettingsToValue(BraveSyncSettings *brave_sync_se
   result->SetKey("sync_configured", Value(brave_sync_settings->sync_configured_));
 
   return result;
+}
+
+std::string ExtractIdFieldFromDict(const base::Value *val, const std::string &fileld_name);
+std::string ExtractIdFieldFromList(const base::Value *val, const std::string &fileld_name);
+
+std::string ExtractIdFieldFromDictOrList(const base::Value *val, const std::string &fileld_name) {
+  CHECK(val);
+  DCHECK(val->is_dict());
+
+  const base::Value *val_field = val->FindKey(fileld_name);
+  LOG(ERROR) << "TAGAB ExtractIdFieldFromDictOrList val_field="<<val_field;
+  DCHECK(val_field);
+
+  if (val_field->is_dict()) {
+    return ExtractIdFieldFromDict(val, fileld_name);
+  } else if (val->is_dict()) {
+    return ExtractIdFieldFromList(val, fileld_name);
+  }
+  NOTREACHED();
+  return "";
 }
 
 std::string ExtractIdFieldFromDict(const base::Value *val, const std::string &fileld_name) {
@@ -132,14 +153,18 @@ jslib::SyncRecord::Action ExtractEnum<jslib::SyncRecord::Action>(const base::Val
   jslib::SyncRecord::Action, jslib::SyncRecord::Action, jslib::SyncRecord::Action);
 
 std::string ExtractObjectIdFromList(const base::Value *val) {
+  return ExtractIdFieldFromList(val, "objectId");
+}
+
+std::string ExtractIdFieldFromList(const base::Value *val, const std::string &fileld_name) {
   CHECK(val);
   DCHECK(val->is_dict());
-  LOG(ERROR) << "TAGAB ExtractObjectId val=" << brave::debug::ToPrintableString(*val);
+  LOG(ERROR) << "TAGAB ExtractIdFieldFromList val=" << brave::debug::ToPrintableString(*val);
   if (!val->is_dict()) {
     return "";
   }
-  const base::Value *p_object_id = val->FindKey("objectId");
-  LOG(ERROR) << "TAGAB ExtractObjectId p_object_data="<<p_object_id;
+  const base::Value *p_object_id = val->FindKey(fileld_name);
+  LOG(ERROR) << "TAGAB ExtractIdFieldFromList p_object_data="<<p_object_id;
   DCHECK(p_object_id);
   if (p_object_id == nullptr) {
     return "";

@@ -14,7 +14,6 @@ def execute_stdout(argv, env=os.environ):
   if is_verbose_mode():
     print ' '.join(argv)
     try:
-      print 'os.getcwd()== ' + os.getcwd()
       subprocess.check_call(argv, env=env)
     except subprocess.CalledProcessError as e:
       print e.output
@@ -33,6 +32,9 @@ def scoped_cwd(path):
   finally:
     os.chdir(cwd)
 
+NPM = 'npm'
+if sys.platform in ['win32', 'cygwin']:
+  NPM += '.cmd'
 
 def main():
   args = parse_args()
@@ -53,11 +55,11 @@ def build_bundle(dir_path, result_src, result_dst, env=None):
   if env is None:
     env = os.environ.copy()
 
-  args = ['yarn', 'install']
+  args = [NPM, 'install']
   with scoped_cwd(dir_path):
     execute_stdout(args, env)
 
-  args = ['yarn', 'run', 'build']
+  args = [NPM, 'run', 'build']
   with scoped_cwd(dir_path):
     execute_stdout(args, env)
 
