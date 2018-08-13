@@ -4,7 +4,6 @@
 
 import * as React from 'react'
 import { Grid, Column } from 'brave-ui/gridSystem'
-import Separator from 'brave-ui/separator'
 import SwitchButton from 'brave-ui/switchButton'
 import UnstyledButton from 'brave-ui/unstyledButton'
 import TextLabel from 'brave-ui/textLabel'
@@ -65,7 +64,7 @@ export default class BraveShieldsHeader extends React.PureComponent<BraveShields
           />
         </Column>
         <Column>
-          <Separator />
+          <hr style={theme.separator} />
         </Column>
         <Column theme={theme.hostnameContent}>
           <TextLabel text={getMessage('shieldsHeaderForSite')} />

@@ -6,7 +6,6 @@ import * as React from 'react'
 import PushButton from 'brave-ui/pushButton'
 import TextLabel from 'brave-ui/textLabel'
 import { Column, Grid } from 'brave-ui/gridSystem'
-import Separator from 'brave-ui/separator'
 import SwitchButton from 'brave-ui/switchButton'
 import { getMessage } from '../../background/api/localeAPI'
 import { NoScriptInfo } from '../../types/other/noScriptInfo'
@@ -52,7 +51,7 @@ export default class NoScript extends React.PureComponent<NoScriptProps, {}> {
       ?
       (
         <div>
-          <Separator />
+          <hr style={theme.separator} />
           <Grid id='noScript' theme={theme.noScript}>
             <Column>
               <TextLabel text={getMessage('noScriptSwitches')} />
