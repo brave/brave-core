@@ -51,6 +51,7 @@ class RewardsServiceImpl : public RewardsService,
   // KeyedService:
   void Shutdown() override;
 
+  void Init();
   void CreateWallet() override;
   void GetWalletProperties() override;
   void GetPromotion(const std::string& lang, const std::string& paymentId) override;
@@ -82,7 +83,7 @@ class RewardsServiceImpl : public RewardsService,
                              bool success);
   void OnPublisherStateLoaded(ledger::LedgerCallbackHandler* handler,
                               const std::string& data);
-  void TriggerOnWalletCreated(int error_code);
+  void TriggerOnWalletInitialized(int error_code);
   void TriggerOnWalletProperties(int error_code,
                                  std::unique_ptr<ledger::WalletInfo> result);
   void TriggerOnPromotion(const ledger::Promo result);
@@ -101,7 +102,7 @@ class RewardsServiceImpl : public RewardsService,
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
-  void OnWalletCreated(ledger::Result result) override;
+  void OnWalletInitialized(ledger::Result result) override;
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnPromotion(ledger::Promo result) override;

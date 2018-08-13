@@ -35,8 +35,7 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
 
  private:
   void HandleImportNowRequested(const base::ListValue* args);
-  void OnWalletCreated();
-  void OnWalletCreateFailed();
+  void OnWalletInitialized(int result_code);
   Browser* GetBrowser();
   DISALLOW_COPY_AND_ASSIGN(WelcomeDOMHandler);
 };
