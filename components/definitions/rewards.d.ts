@@ -3,6 +3,11 @@ declare namespace Rewards {
     rewardsData: State | undefined
   }
 
+  export enum Result {
+    OK = 0,
+    ERROR = 1
+  }
+
   export interface State {
     createdTimestamp: number | null
     enabledMain: boolean
@@ -56,7 +61,7 @@ declare namespace Rewards {
   }
 
   export interface RecoverWallet {
-    error: boolean
+    result: Result
     balance: number
   }
 }

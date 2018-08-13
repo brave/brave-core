@@ -263,8 +263,8 @@ void RewardsServiceImpl::OnPromotionCaptcha(const std::string& image) {
   TriggerOnPromotionCaptcha(image);
 }
 
-void RewardsServiceImpl::OnRecoverWallet(bool error, double balance) {
-  TriggerOnRecoverWallet(error, balance);
+void RewardsServiceImpl::OnRecoverWallet(ledger::Result result, double balance) {
+  TriggerOnRecoverWallet(result, balance);
 }
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
@@ -550,9 +550,9 @@ void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
   return ledger_->RecoverWallet(passPhrase);
 }
 
-void RewardsServiceImpl::TriggerOnRecoverWallet(bool error, double balance) {
+void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result, double balance) {
   for (auto& observer : observers_)
-    observer.OnRecoverWallet(this, error, balance);
+    observer.OnRecoverWallet(this, result, balance);
 }
 
 

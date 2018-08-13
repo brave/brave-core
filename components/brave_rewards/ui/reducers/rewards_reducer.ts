@@ -128,16 +128,16 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_RECOVER_WALLET_DATA:
       {
         state = { ...state }
-        const error = action.payload.properties.error
+        const result = action.payload.properties.result
         const balance = action.payload.properties.balance
         let ui = state.ui
         let walletInfo = state.walletInfo
 
-        if (error) {
-          ui.walletRecoverySuccess = false
-        } else {
-          ui.walletRecoverySuccess = true
+        // TODO NZ check why enum can't be used inside Rewards namespace
+        ui.walletRecoverySuccess = result === 0
+        if (result === 0) {
           walletInfo.balance = balance
+          chrome.send('getWalletPassphrase', [])
         }
 
         state = {

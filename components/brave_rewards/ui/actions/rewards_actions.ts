@@ -54,5 +54,4 @@ export const onRecoverWalletData = (properties: Rewards.RecoverWallet) => action
   properties
 })
 
-
 export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
