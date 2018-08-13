@@ -81,16 +81,11 @@ extension PhotonActionSheetProtocol {
         var items: [PhotonActionSheetItem] = []
 
         if #available(iOS 11, *) {
-            let noImageEnabled = NoImageModeHelper.isActivated(profile.prefs)
-            let noImageMode = PhotonActionSheetItem(title: Strings.AppMenuNoImageMode, iconString: "menu-NoImageMode", isEnabled: noImageEnabled, accessory: .Switch) { action in
-                NoImageModeHelper.toggle(profile: self.profile, tabManager: self.tabManager)
-            }
-
             let trackingProtectionEnabled = ContentBlockerHelper.isTrackingProtectionActive(tabManager: self.tabManager)
             let trackingProtection = PhotonActionSheetItem(title: Strings.TPMenuTitle, iconString: "menu-TrackingProtection", isEnabled: trackingProtectionEnabled, accessory: .Switch) { action in
                 ContentBlockerHelper.toggleTrackingProtectionMode(for: self.profile.prefs, tabManager: self.tabManager)
             }
-            items.append(contentsOf: [trackingProtection, noImageMode])
+            items.append(contentsOf: [trackingProtection])
         }
 
         let nightModeEnabled = NightModeHelper.isActivated(profile.prefs)

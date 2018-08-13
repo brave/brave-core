@@ -889,7 +889,7 @@ class BrowserViewController: UIViewController {
             return
         }
         if #available(iOS 11, *) {
-            if NoImageModeHelper.isActivated(profile.prefs) {
+            if NoImageModeHelper.isActivated {
                 webView.evaluateJavaScript("__firefox__.NoImageMode.setEnabled(true)", completionHandler: nil)
             }
         }
