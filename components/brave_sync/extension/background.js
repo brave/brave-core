@@ -64,8 +64,9 @@ class InjectedObject {
     /////chrome.send('HandleMessage', [message, arg1, arg2, arg3, arg4]);
     chrome.braveSync.backgroundPageToBrowser(message, arg1, arg2, arg3, arg4);
   }
-}
-injectedObject = new InjectedObject()
+};
+
+var injectedObject = new InjectedObject();
 
 function CallJsLib(message, arg1, arg2, arg3, arg4) {
   console.log('brave_sync_lib.js TAGAB CallJsLib ----');
