@@ -68,7 +68,7 @@ action("copy-sync-extension-resources") {
     "$target_gen_dir/brave_sync_extension/crypto.js",
   ]
   public_deps = [
-    "//brave/components/brave_sync_lib:brave_sync_js_lib_bundle",
-    "//brave/components/brave_sync_lib:brave_crypto_js_lib_bundle",
+    "//brave/components/brave_sync/brave_sync_lib:brave_sync_js_lib_bundle",
+    "//brave/components/brave_sync/brave_sync_lib:brave_crypto_js_lib_bundle",
   ]
 }

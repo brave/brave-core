@@ -15,6 +15,7 @@ grit("brave_components_resources_grit") {
     "//brave/components/brave_new_tab_ui",
     "//brave/components/brave_welcome_ui",
     "//brave/vendor/brave-extension",
+    "//brave/components/brave_sync/brave_sync_lib",
     "//brave/components/brave_sync/ui",
   ]
 
