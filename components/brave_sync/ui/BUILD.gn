@@ -1,0 +1,9 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("ui") {
+  inputs = [
+    "../../brave_sync/ui/brave_sync.html",
+    "../../brave_sync/ui/brave_sync.js",
+  ]
+  bundle_name = "brave_sync.bundle.js"
+}
