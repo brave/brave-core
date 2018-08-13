@@ -357,5 +357,12 @@ void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance) {
                                   balance);
 }
 
+void LedgerImpl::SolvePromotionCaptcha(const std::string& solution) const {
+  bat_client_->setPromotion(solution, "");
+}
+
+void LedgerImpl::OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t experationDate) {
+  ledger_client_->OnPromotionFinish(result, statusCode, experationDate);
+}
 
 }  // namespace bat_ledger

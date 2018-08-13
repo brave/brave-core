@@ -982,6 +982,7 @@ void BatClient::getPromotionCallback(bool success, const std::string& response) 
   LOG(ERROR) << "!!!getPromotionCallback == " << response;
 
   if (!success) {
+    // TODO NZ add error handler
     return;
   }
 
@@ -991,13 +992,23 @@ void BatClient::getPromotionCallback(bool success, const std::string& response) 
   ledger_->OnPromotion(properties);
 }
 
-void BatClient::setPromotion(const std::string& promotionId, const std::string& captchaResponse) {
+void BatClient::setPromotion(const std::string& captchaResponse, const std::string& promotionId) {
+  if (promotionId.empty() && state_->promotion_.promotionId_.empty()) {
+    ledger_->OnPromotionFinish(ledger::Result::ERROR, 400, 0);
+    return;
+  }
+
+  std::string promoId = state_->promotion_.promotionId_;
+  if (!promotionId.empty()) {
+    promoId = promotionId;
+  }
+
   std::string keys[2] = {"promotionId", "captchaResponse"};
-  std::string values[2] = {promotionId, captchaResponse};
+  std::string values[2] = {promoId, captchaResponse};
   std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
 
   auto request_id = ledger_->LoadURL(buildURL((std::string)GET_SET_PROMOTION + "/" + state_->walletInfo_.paymentId_, ""),
-    std::vector<std::string>(), payload, "", ledger::URL_METHOD::PUT, &handler_);
+    std::vector<std::string>(), payload, "application/json; charset=utf-8", ledger::URL_METHOD::PUT, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::setPromotionCallback,
                                        this,
@@ -1005,8 +1016,20 @@ void BatClient::setPromotion(const std::string& promotionId, const std::string& 
                                        _2));
 }
 
-void BatClient::setPromotionCallback(bool result, const std::string& response) {
+void BatClient::setPromotionCallback(bool success, const std::string& response) {
   LOG(ERROR) << "!!!setPromotionCallback == " << response;
+
+  std::string error;
+  unsigned int statusCode;
+  braveledger_bat_helper::getJSONResponse(response, statusCode, error);
+
+  if (!success) {
+    ledger_->OnPromotionFinish(ledger::Result::ERROR, statusCode, 0);
+    return;
+  }
+
+  // TODO NZ add actual expiration date when endpoint is updated
+  ledger_->OnPromotionFinish(ledger::Result::OK, statusCode, 2130600234);
 }
 
 void BatClient::getPromotionCaptcha() {
@@ -1024,6 +1047,7 @@ void BatClient::getPromotionCaptchaCallback(bool success, const std::string& res
   LOG(ERROR) << "!!!getPromotionCaptchaCallback";
 
   if (!success) {
+    // TODO NZ Add error handler
     return;
   }
 

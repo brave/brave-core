@@ -84,6 +84,9 @@ class LedgerImpl : public ledger::Ledger,
   void GetPromotionCaptcha() const override;
   void OnPromotionCaptcha(const std::string& image);
 
+  void SolvePromotionCaptcha(const std::string& solution) const override;
+  void OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate);
+
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string& passPhrase) const override;
   void OnRecoverWallet(ledger::Result result, double balance);
