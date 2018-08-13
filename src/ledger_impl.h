@@ -42,6 +42,7 @@ class LedgerImpl : public ledger::Ledger,
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
   std::string GenerateGUID() const;
+  void Initialize() override;
   void Reconcile() override;
   void CreateWallet() override;
 
@@ -72,7 +73,7 @@ class LedgerImpl : public ledger::Ledger,
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler);
 
-  void OnWalletCreated(ledger::Result);
+  void OnWalletInitialized(ledger::Result);
 
   void OnWalletProperties(ledger::Result result,
                           const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
@@ -140,6 +141,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
   std::unique_ptr<braveledger_bat_get_media::BatGetMedia> bat_get_media_;
+  bool initialized_;
 
   URLRequestHandler handler_;
  };

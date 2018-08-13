@@ -50,13 +50,7 @@ std::string BatClient::buildURL(const std::string& path, const std::string& pref
   return url + prefix + path;
 }
 
-void BatClient::loadStateCallback(bool success, const std::string& data) {
-  if (!success) {
-    LOG(ERROR) << "!!!here1";
-    registerPersona();
-    return;
-  }
-
+void BatClient::loadState(const std::string& data) {
   braveledger_bat_helper::CLIENT_STATE_ST state;
   braveledger_bat_helper::loadFromJson(state, data.c_str());
 
@@ -64,7 +58,6 @@ void BatClient::loadStateCallback(bool success, const std::string& data) {
   LOG(ERROR) << "!!!card address == " << state.walletInfo_.addressCARD_ID_;
 
   state_.reset(new braveledger_bat_helper::CLIENT_STATE_ST(state));
-  ledger_->OnWalletCreated(ledger::Result::OK);
 }
 
 void BatClient::registerPersona() {
@@ -159,7 +152,7 @@ void BatClient::registerPersonaCallback(bool result,
                                        const std::string& response) {
   if (!result) {
     // TODO error handling
-    ledger_->OnWalletCreated(ledger::Result::ERROR);
+    ledger_->OnWalletInitialized(ledger::Result::ERROR);
     return;
   }
 
@@ -178,7 +171,7 @@ void BatClient::registerPersonaCallback(bool result,
   state_->reconcileStamp_ = state_->bootStamp_ + state_->days_ * 24 * 60 * 60 * 1000;
 
   saveState();
-  ledger_->OnWalletCreated(ledger::Result::OK);
+  ledger_->OnWalletInitialized(ledger::Result::OK);
 }
 
 void BatClient::setContributionAmount(const double& amount) {
