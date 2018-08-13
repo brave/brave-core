@@ -27,7 +27,7 @@ class RewardsServiceObserver {
   virtual void OnPromotionCaptcha(RewardsService* payment_service,
                                   std::string image) {};
   virtual void OnRecoverWallet(RewardsService* payment_service,
-                               bool error,
+                               unsigned int result,
                                double balance) {};
 };
 

@@ -58,7 +58,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnPromotionCaptcha(brave_rewards::RewardsService* payment_service,
                           std::string image) override;
   void OnRecoverWallet(brave_rewards::RewardsService* payment_service,
-                       bool error,
+                       unsigned int result,
                        double balance) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
@@ -231,11 +231,11 @@ void RewardsDOMHandler::RecoverWallet(const base::ListValue *args) {
 
 void RewardsDOMHandler::OnRecoverWallet(
     brave_rewards::RewardsService* payment_service,
-    bool error,
+    unsigned int result,
     double balance) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     base::DictionaryValue* recover = new base::DictionaryValue();
-    recover->SetBoolean("error", error);
+    recover->SetInteger("result", result);
     recover->SetDouble("balance", balance);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.recoverWalletData", *recover);

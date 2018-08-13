@@ -84,7 +84,9 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalBackupOnRestore = (key: string) => {
-    this.actions.recoverWallet(key)
+    if (typeof key === 'string' && key.length > 0) {
+      this.actions.recoverWallet(key)
+    }
   }
 
   onModalBackupOnImport = () => {
@@ -166,7 +168,7 @@ class PageWallet extends React.Component<Props, State> {
             : <WalletEmpty />
           }
         </WalletWrapper>
-
+        new version
         {
           this.state.modalBackup
             ? <ModalBackupRestore

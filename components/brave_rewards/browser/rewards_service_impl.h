@@ -86,7 +86,7 @@ class RewardsServiceImpl : public RewardsService,
                                  std::unique_ptr<ledger::WalletInfo> result);
   void TriggerOnPromotion(const ledger::Promo result);
   void TriggerOnPromotionCaptcha(const std::string& image);
-  void TriggerOnRecoverWallet(bool error, double balance);
+  void TriggerOnRecoverWallet(ledger::Result result, double balance);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
@@ -104,7 +104,7 @@ class RewardsServiceImpl : public RewardsService,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnPromotion(ledger::Promo result) override;
   void OnPromotionCaptcha(const std::string& image) override;
-  void OnRecoverWallet(bool error, double balance) override;
+  void OnRecoverWallet(ledger::Result result, double balance) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
