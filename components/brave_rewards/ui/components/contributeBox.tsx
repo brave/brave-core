@@ -140,8 +140,13 @@ class ContributeBox extends React.Component<Props, State> {
       contributionMinVisits,
       contributionNonVerified,
       contributionVideos,
-      contributionMonthly
+      contributionMonthly,
+      enabledMain
     } = this.props.rewardsData
+
+    if (!enabledMain) {
+      return null
+    }
 
     return (
       <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>

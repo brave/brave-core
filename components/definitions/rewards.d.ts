@@ -26,10 +26,10 @@ declare namespace Rewards {
     walletInfo: WalletProperties
     connectedWallet: boolean
     recoveryKey: string
-    wasFunded: boolean
     promotion?: Promotion
     ui: {
       walletRecoverySuccess: boolean | null
+      emptyWallet: boolean
     }
   }
 
@@ -58,6 +58,7 @@ declare namespace Rewards {
     amount: number
     captcha?: string
     expireDate?: number
+    error?: 'wrongPosition' | 'serverError'
   }
 
   export interface RecoverWallet {

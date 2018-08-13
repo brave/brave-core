@@ -20,6 +20,7 @@ import { getLocale } from '../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import Grant from './grant'
+import WalletOff from '../../../../node_modules/brave-ui/features/rewards/walletOff'
 
 // Assets
 const walletIcon = require('../../../img/rewards/wallet_icon.svg')
@@ -130,14 +131,14 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   render () {
-    const { connectedWallet, recoveryKey, wasFunded, promotion } = this.props.rewardsData
+    const { connectedWallet, recoveryKey, promotion, enabledMain } = this.props.rewardsData
     const { balance } = this.props.rewardsData.walletInfo
-    const { walletRecoverySuccess } = this.props.rewardsData.ui
+    const { walletRecoverySuccess, emptyWallet } = this.props.rewardsData.ui
 
     return (
       <>
         {
-          promotion && promotion.promotionId
+          enabledMain && promotion && promotion.promotionId
           ? <Grant/>
           : null
         }
@@ -163,12 +164,13 @@ class PageWallet extends React.Component<Props, State> {
           connectedWallet={connectedWallet}
         >
           {
-            wasFunded
-            ? null // TODO NZ <PanelSummary grant={} ads={} contribute={} donation={} tips={} onActivity={} />
-            : <WalletEmpty />
+            enabledMain
+            ? emptyWallet
+              ? <WalletEmpty />
+              : null // TODO NZ <PanelSummary grant={} ads={} contribute={} donation={} tips={} onActivity={} />
+            : <WalletOff/>
           }
         </WalletWrapper>
-        new version
         {
           this.state.modalBackup
             ? <ModalBackupRestore
