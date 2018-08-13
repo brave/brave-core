@@ -39,8 +39,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
  private:
   void HandleCreateWalletRequested(const base::ListValue* args);
-  void OnWalletCreated();
-  void OnWalletCreateFailed();
   void GetWalletProperties(const base::ListValue* args);
   void GetPromotion(const base::ListValue* args);
   void GetPromotionCaptcha(const base::ListValue* args);
@@ -49,7 +47,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void SolvePromotionCaptcha(const base::ListValue* args);
 
   // PaymentServiceObserver implementation
-  void OnWalletCreated(brave_rewards::RewardsService* payment_service,
+  void OnWalletInitialized(brave_rewards::RewardsService* payment_service,
                        int error_code) override;
   void OnWalletProperties(brave_rewards::RewardsService* payment_service,
       int error_code,
@@ -109,38 +107,41 @@ void RewardsDOMHandler::Init() {
 }
 
 void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args) {
-  if (rewards_service_) {
+  if (!rewards_service_)
+    return;
+
+  if (rewards_service_->ready().is_signaled()) {
     rewards_service_->CreateWallet();
   } else {
-    OnWalletCreateFailed();
+    rewards_service_->ready().Post(FROM_HERE,
+        base::Bind(&brave_rewards::RewardsService::CreateWallet,
+            base::Unretained(rewards_service_)));
   }
 }
 
 void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
-  if (rewards_service_) {
+  if (!rewards_service_)
+    return;
+
+  if (rewards_service_->ready().is_signaled()) {
     rewards_service_->GetWalletProperties();
+  } else {
+    rewards_service_->ready().Post(FROM_HERE,
+        base::Bind(&brave_rewards::RewardsService::GetWalletProperties,
+            base::Unretained(rewards_service_)));
   }
 }
 
-void RewardsDOMHandler::OnWalletCreated(
+void RewardsDOMHandler::OnWalletInitialized(
     brave_rewards::RewardsService* payment_service,
     int error_code) {
+  if (0 == (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI))
+    return;
+
   if (error_code == 0)
-    OnWalletCreated();
-  else
-    OnWalletCreateFailed();
-}
-
-void RewardsDOMHandler::OnWalletCreated() {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreated");
-  }
-}
-
-void RewardsDOMHandler::OnWalletCreateFailed() {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  else
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreateFailed");
-  }
 }
 
 void RewardsDOMHandler::OnWalletProperties(

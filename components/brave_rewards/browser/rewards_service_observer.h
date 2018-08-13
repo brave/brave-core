@@ -16,7 +16,7 @@ class RewardsServiceObserver {
  public:
   virtual ~RewardsServiceObserver() {}
 
-  virtual void OnWalletCreated(RewardsService* payment_service,
+  virtual void OnWalletInitialized(RewardsService* payment_service,
                                int error_code) {};
   virtual void OnWalletProperties(
       RewardsService* payment_service,

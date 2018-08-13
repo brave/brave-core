@@ -175,6 +175,10 @@ RewardsServiceImpl::~RewardsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, publisher_info_backend_.release());
 }
 
+void RewardsServiceImpl::Init() {
+  ledger_->Initialize();
+}
+
 void RewardsServiceImpl::CreateWallet() {
   ledger_->CreateWallet();
 }
@@ -246,8 +250,10 @@ void RewardsServiceImpl::Shutdown() {
   RewardsService::Shutdown();
 }
 
-void RewardsServiceImpl::OnWalletCreated(ledger::Result result) {
-  TriggerOnWalletCreated(result);
+void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
+  if (result == ledger::Result::OK)
+    ready_.Signal();
+  TriggerOnWalletInitialized(result);
 }
 
 void RewardsServiceImpl::OnWalletProperties(ledger::Result result,
@@ -485,9 +491,9 @@ void RewardsServiceImpl::RunTask(
                      std::move(task)));
 }
 
-void RewardsServiceImpl::TriggerOnWalletCreated(int error_code) {
+void RewardsServiceImpl::TriggerOnWalletInitialized(int error_code) {
   for (auto& observer : observers_)
-    observer.OnWalletCreated(this, error_code);
+    observer.OnWalletInitialized(this, error_code);
 }
 
 void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,

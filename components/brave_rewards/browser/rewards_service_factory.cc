@@ -43,9 +43,10 @@ RewardsServiceFactory::~RewardsServiceFactory() {
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  std::unique_ptr<RewardsService> brave_rewards_service(
+  std::unique_ptr<RewardsServiceImpl> rewards_service(
       new RewardsServiceImpl(Profile::FromBrowserContext(context)));
-  return brave_rewards_service.release();
+  rewards_service->Init();
+  return rewards_service.release();
 #else
   return NULL;
 #endif
