@@ -19,10 +19,6 @@ class ActivityStreamTests: XCTestCase {
         self.panel = ActivityStreamPanel(profile: profile)
     }
 
-    override func tearDown() {
-        mockPingClient = nil
-    }
-
     func testDeletionOfSingleSuggestedSite() {
         let siteToDelete = panel.defaultTopSites()[0]
 
