@@ -251,7 +251,7 @@ void RewardsServiceImpl::Shutdown() {
 }
 
 void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
-  if (result == ledger::Result::OK)
+  if (!ready_.is_signaled())
     ready_.Signal();
   TriggerOnWalletInitialized(result);
 }
