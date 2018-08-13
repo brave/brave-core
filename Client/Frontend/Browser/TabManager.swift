@@ -114,6 +114,8 @@ class TabManager: NSObject {
         addNavigationDelegate(self)
 
         NotificationCenter.default.addObserver(self, selector: #selector(prefsDidChange), name: UserDefaults.didChangeNotification, object: nil)
+        
+        Preferences.Shields.blockImages.observe(from: self)
     }
 
     func addNavigationDelegate(_ delegate: WKNavigationDelegate) {
@@ -1060,4 +1062,11 @@ extension TabManagerDelegate {
     func tabManager(_ tabManager: TabManager, willRemoveTab tab: Tab) {}
     func tabManagerDidAddTabs(_ tabManager: TabManager) {}
     func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {}
+}
+
+extension TabManager: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        // Update Block images
+        tabs.forEach { $0.noImageMode = Preferences.Shields.blockImages.value }
+    }
 }
