@@ -53,7 +53,7 @@ class BatClient {
   void getPromotionCallback(bool result, const std::string& response);
   void setPromotionCallback(bool result, const std::string& response);
   void recoverWalletPublicKeyCallback(bool result, const std::string& response);
-  void recoverWalletCallback(bool result, const std::string& response);
+  void recoverWalletCallback(bool result, const std::string& response, const std::string& paymentId);
   void prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   void prepareBatchCallback(bool result, const std::string& response);
   void proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof);

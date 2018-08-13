@@ -892,7 +892,7 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
   int result = bip39_mnemonic_to_bytes(nullptr, passPhrase.c_str(), &newSeed.front(), newSeed.size(), &written);
   LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
   if (0 != result || 0 == written) {
-    ledger_->OnRecoverWallet(true, 0);
+    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0);
     return;
   }
   state_->walletInfo_.keyInfoSeed_ = newSeed;
@@ -918,7 +918,7 @@ void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& r
   LOG(ERROR) << "!!!recoverWalletPublicKeyCallback == " << response;
 
   if (!result) {
-    ledger_->OnRecoverWallet(true, 0);
+    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0);
     return;
   }
 
@@ -931,21 +931,23 @@ void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& r
                              std::bind(&BatClient::recoverWalletCallback,
                                        this,
                                        _1,
-                                       _2));
+                                       _2,
+                                       recoveryId));
 }
 
-void BatClient::recoverWalletCallback(bool result, const std::string& response) {
+void BatClient::recoverWalletCallback(bool result, const std::string& response, const std::string& recoveryId) {
   LOG(ERROR) << "!!!recoverWalletCallback == " << response;
 
   if (!result) {
-    ledger_->OnRecoverWallet(true, 0);
+    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0);
     return;
   }
 
   braveledger_bat_helper::getJSONWalletInfo(response, state_->walletInfo_, state_->fee_currency_, state_->fee_amount_, state_->days_);
   braveledger_bat_helper::getJSONRecoverWallet(response, state_->walletProperties_.balance_, state_->walletProperties_.probi_);
+  state_->walletInfo_.paymentId_ = recoveryId;
   saveState();
-  ledger_->OnRecoverWallet(false, state_->walletProperties_.balance_);
+  ledger_->OnRecoverWallet(ledger::Result::OK, state_->walletProperties_.balance_);
 }
 
 void BatClient::getPromotion(const std::string& lang, const std::string& forPaymentId) {
