@@ -52,15 +52,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
       recoveryKey: ''
     }
   }
-
-  componentDidUpdate (prevProps: Props) {
-    if (this.props.success !== prevProps.success) {
-      this.setState({
-        recoveryKey: ''
-      })
-    }
-  }
-
   onFileUpload = (inputFile: React.ChangeEvent<HTMLInputElement>) => {
     const input: HTMLInputElement = inputFile.target
     const self = this
@@ -71,13 +62,13 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
 
     const reader = new FileReader()
     reader.onload = function () {
-      self.props.onRestore((reader.result || '').trim())
+      self.onRestore((reader.result || '').trim())
     }
 
     try {
       reader.readAsText(input.files[0])
     } catch (e) {
-      self.props.onRestore('')
+      self.onRestore('')
     }
   }
 
@@ -87,8 +78,12 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
     })
   }
 
-  onRestore = () => {
-    this.props.onRestore(this.state.recoveryKey)
+  onRestore = (key?: string) => {
+    key = typeof key === 'string' ? key : this.state.recoveryKey
+    this.setState({
+      recoveryKey: ''
+    })
+    this.props.onRestore(key)
   }
 
   render () {
