@@ -11,13 +11,13 @@ import { Checkbox, Grid, Column, Select } from 'brave-ui/components'
 import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens } from 'brave-ui/features/rewards'
 
 // Utils
-import { getLocale } from '../../common/locale'
+import { getLocale } from '../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 
 // Assets
-const contributeDisabledIcon = require('../../img/rewards/contribute_disabled.svg')
-const bartBaker = require('../../img/rewards/temp/bartBaker.jpeg') // TODO temp, remove
+const contributeDisabledIcon = require('../../../img/rewards/contribute_disabled.svg')
+const bartBaker = require('../../../img/rewards/temp/bartBaker.jpeg') // TODO temp, remove
 
 interface State {
   modalContribute: boolean
