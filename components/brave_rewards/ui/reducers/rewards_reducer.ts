@@ -72,6 +72,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
         break
       }
+    case types.SOLVE_PROMOTION_CAPTCHA:
+      if (action.payload.x && action.payload.y) {
+        chrome.send('solvePromotionCaptcha', [JSON.stringify({
+          x: action.payload.x,
+          y: action.payload.y
+        })])
+      }
+      break
     case types.ON_PROMOTION_RESET:
       {
         if (state.promotion) {
@@ -162,6 +170,36 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         }
         break
       }
+    case types.ON_PROMOTION_FINISH:
+      state = { ...state }
+      const properties = action.payload.properties
+      // TODO NZ check why enum can't be used inside Rewards namespace
+      if (properties.result === 0) {
+        if (state.promotion) {
+          let promotion = state.promotion
+          promotion.expireDate = properties.expirationDate
+          promotion.error = null
+
+          state = {
+            ...state,
+            promotion
+          }
+          chrome.send('getWalletProperties', [])
+        }
+      } else {
+        state = { ...state }
+        if (state.promotion) {
+          let promotion = state.promotion
+          promotion.error = 'wrongPosition'
+
+          state = {
+            ...state,
+            promotion
+          }
+        }
+        chrome.send('getPromotionCaptcha', [])
+      }
+      break
   }
 
   if (state !== startingState) {

@@ -46,6 +46,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetPromotionCaptcha(const base::ListValue* args);
   void GetWalletPassphrase(const base::ListValue* args);
   void RecoverWallet(const base::ListValue* args);
+  void SolvePromotionCaptcha(const base::ListValue* args);
 
   // PaymentServiceObserver implementation
   void OnWalletCreated(brave_rewards::RewardsService* payment_service,
@@ -60,6 +61,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnRecoverWallet(brave_rewards::RewardsService* payment_service,
                        unsigned int result,
                        double balance) override;
+  void OnPromotionFinish(brave_rewards::RewardsService* payment_service,
+                       unsigned int result,
+                       unsigned int statusCode,
+                       uint64_t expirationDate) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
@@ -89,6 +94,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("recoverWallet",
                                     base::BindRepeating(&RewardsDOMHandler::RecoverWallet,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("solvePromotionCaptcha",
+                                    base::BindRepeating(&RewardsDOMHandler::SolvePromotionCaptcha,
                                                         base::Unretained(this)));
 }
 
@@ -239,6 +247,29 @@ void RewardsDOMHandler::OnRecoverWallet(
     recover->SetDouble("balance", balance);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.recoverWalletData", *recover);
+  }
+}
+
+void RewardsDOMHandler::SolvePromotionCaptcha(const base::ListValue *args) {
+  if (rewards_service_) {
+    std::string solution;
+    args->GetString(0, &solution);
+    rewards_service_->SolvePromotionCaptcha(solution);
+  }
+}
+
+void RewardsDOMHandler::OnPromotionFinish(
+    brave_rewards::RewardsService* payment_service,
+    unsigned int result,
+    unsigned int statusCode,
+    uint64_t expirationDate) {
+  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    base::DictionaryValue* finish = new base::DictionaryValue();
+    finish->SetInteger("result", result);
+    finish->SetInteger("statusCode", statusCode);
+    finish->SetInteger("expirationDate", expirationDate);
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotionFinish", *finish);
   }
 }
 

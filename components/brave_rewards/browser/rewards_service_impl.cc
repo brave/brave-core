@@ -267,6 +267,10 @@ void RewardsServiceImpl::OnRecoverWallet(ledger::Result result, double balance) 
   TriggerOnRecoverWallet(result, balance);
 }
 
+void RewardsServiceImpl::OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate) {
+  TriggerOnPromotionFinish(result, statusCode, expirationDate);
+}
+
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
                                               const std::string& viewing_id) {
   LOG(ERROR) << "reconcile complete " << viewing_id;
@@ -553,6 +557,15 @@ void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
 void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result, double balance) {
   for (auto& observer : observers_)
     observer.OnRecoverWallet(this, result, balance);
+}
+
+void RewardsServiceImpl::SolvePromotionCaptcha(const std::string& solution) const {
+  return ledger_->SolvePromotionCaptcha(solution);
+}
+
+void RewardsServiceImpl::TriggerOnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate) {
+  for (auto& observer : observers_)
+    observer.OnPromotionFinish(this, result, statusCode, expirationDate);
 }
 
 

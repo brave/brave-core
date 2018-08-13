@@ -224,6 +224,9 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">Enable Tips on Twitter, YouTube, and more, to give tips to posts you ‘Like’.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS" desc="">{{balance}} BAT was recovered and transferred to your Brave wallet.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL" desc="">Please re-enter keys or try different keys.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ALMOST_THERE" desc="">Almost there…</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_PROVE_HUMAN" desc="">Prove that you are human!</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE" desc="">Hmmm…not quite.</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
@@ -254,6 +257,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_MONTH_SEP" desc="">September</message>
       <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
       <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="">Not enough tokens. Please</message>
+      <message name="IDS_BRAVE_UI_OK" desc="">ok</message>
       <message name="IDS_BRAVE_UI_ON" desc="">on</message>
       <message name="IDS_BRAVE_UI_ONE_TIME" desc="">One time</message>
       <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="">One-time Donations/Tips</message>
@@ -321,7 +325,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_GRANTS" desc="">Grants</message>
       <message name="IDS_BRAVE_UI_GRANT_DISCLAIMER" desc="">Unused tokens by the expiration date will be automatically returned to the Brave User Growth Pool.</message>
       <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
-      <message name="IDS_BRAVE_UI_MAYBE_LATER" desc="">Maybe later</message>
+      <message name="IDS_BRAVE_UI_NO_THANK_YOU" desc="">No, thank you</message>
       <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">New token grant is available.</message>
       <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">New Token Grant</message>
       <message name="IDS_BRAVE_UI_OPEN_BALANCE" desc="">Opening Balance</message>

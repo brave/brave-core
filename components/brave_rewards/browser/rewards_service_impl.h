@@ -55,6 +55,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetWalletProperties() override;
   void GetPromotion(const std::string& lang, const std::string& paymentId) override;
   void GetPromotionCaptcha() override;
+  void SolvePromotionCaptcha(const std::string& solution) const override;
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string passPhrase) const override;
   void GetContentSiteList(uint32_t start,
@@ -87,6 +88,7 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnPromotion(const ledger::Promo result);
   void TriggerOnPromotionCaptcha(const std::string& image);
   void TriggerOnRecoverWallet(ledger::Result result, double balance);
+  void TriggerOnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
@@ -107,6 +109,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnRecoverWallet(ledger::Result result, double balance) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
+  void OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
   void SaveLedgerState(const std::string& ledger_state,

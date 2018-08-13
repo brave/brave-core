@@ -36,6 +36,15 @@ export const onPromotionCaptcha = (image: string) => action(types.ON_PROMOTION_C
   image
 })
 
+export const solvePromotionCaptcha = (x: number, y: number) => action(types.SOLVE_PROMOTION_CAPTCHA, {
+  x,
+  y
+})
+
+export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action(types.ON_PROMOTION_FINISH, {
+  properties
+})
+
 export const onResetPromotion = () => action(types.ON_PROMOTION_RESET)
 
 export const onDeletePromotion = () => action(types.ON_PROMOTION_DELETE)

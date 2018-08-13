@@ -29,6 +29,10 @@ class RewardsServiceObserver {
   virtual void OnRecoverWallet(RewardsService* payment_service,
                                unsigned int result,
                                double balance) {};
+  virtual void OnPromotionFinish(RewardsService* payment_service,
+                                 unsigned int result,
+                                 unsigned int statusCode,
+                                 uint64_t expirationDate) {};
 };
 
 }  // namespace brave_rewards
