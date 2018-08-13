@@ -11,6 +11,9 @@
 
 namespace ledger {
 
+VisitData::VisitData():
+    tab_id(0) {}
+
 VisitData::VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
@@ -24,10 +27,10 @@ VisitData::VisitData(const VisitData& data) :
     tld(data.tld),
     domain(data.domain),
     path(data.path),
-    tab_id(data.tab_id),
-    duration(data.duration) {}
+    tab_id(data.tab_id) {}
 
 const PublisherInfo invalid("");
+
 
 PublisherInfo::PublisherInfo(const id_type& publisher_id) :
     id(publisher_id),

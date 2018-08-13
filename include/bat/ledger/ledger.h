@@ -15,16 +15,17 @@
 namespace ledger {
 
 LEDGER_EXPORT struct VisitData {
+  VisitData();
   VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
             uint32_t tab_id);
   VisitData(const VisitData& data);
-  const std::string tld;
-  const std::string domain;
-  const std::string path;
-  const uint32_t tab_id;
-  uint64_t duration;
+  std::string tld;
+  std::string domain;
+  std::string path;
+  uint32_t tab_id;
+  //uint64_t duration;
 };
 
 class LEDGER_EXPORT Ledger {

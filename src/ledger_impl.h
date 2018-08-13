@@ -34,6 +34,8 @@ namespace bat_ledger {
 class LedgerImpl : public ledger::Ledger,
                    public ledger::LedgerCallbackHandler {
  public:
+  typedef std::map<uint32_t, ledger::VisitData>::const_iterator visit_data_iter;
+
   LedgerImpl(ledger::LedgerClient* client);
   ~LedgerImpl() override;
 
@@ -144,6 +146,11 @@ class LedgerImpl : public ledger::Ledger,
   bool initialized_;
 
   URLRequestHandler handler_;
+
+  //ledger::VisitData current_visit_data_;
+  std::map<uint32_t, ledger::VisitData> current_pages_;
+  uint64_t last_tab_active_time_;
+  uint32_t last_shown_tab_id_;
  };
 }  // namespace bat_ledger
 
