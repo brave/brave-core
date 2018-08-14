@@ -51,6 +51,7 @@ void LedgerImpl::OnLoad(const ledger::VisitData& visit_data, const uint64_t& cur
   }
   visit_data_iter iter = current_pages_.find(visit_data.tab_id);
   if (iter != current_pages_.end() && iter->second.domain == visit_data.domain) {
+    DCHECK(iter == current_pages_.end());
     return;
   }
   if (last_shown_tab_id_ == visit_data.tab_id) {
