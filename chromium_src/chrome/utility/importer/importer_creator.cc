@@ -1,6 +1,6 @@
 #include "chrome/utility/importer/importer_creator.h"
 #define CreateImporterByType CreateImporterByType_ChromiumImpl
-#include "../../../../../../chrome/utility/importer/importer_creator.cc"
+#include "../../../../../chrome/utility/importer/importer_creator.cc"
 #undef CreateImporterByType
 
 #include "brave/utility/importer/brave_importer.h"
