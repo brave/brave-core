@@ -12,7 +12,7 @@
 namespace ledger {
 
 VisitData::VisitData():
-    tab_id(0) {}
+    tab_id(-1) {}
 
 VisitData::VisitData(const std::string& _tld,
             const std::string& _domain,
