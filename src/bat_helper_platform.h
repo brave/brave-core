@@ -6,7 +6,7 @@
 #define BRAVELEDGER_BAT_HELPER_PLATFORM_H_
 
 #include <string>
-#if defined CHROMIUM_BUILD
+#if defined(CHROMIUM_BUILD) && !defined(STANDALONE_BUILD)
 #include "base/logging.h"
 #else
 // Chromium debug macros redefined
@@ -17,17 +17,5 @@
 #define DCHECK assert
 #define LOG(LEVEL) std::cerr<< std::endl<< #LEVEL << ": "
 #endif
-
-namespace braveledger_bat_helper {
-
-  void encodeURIComponent(const std::string & instr, std::string & outstr);
-
-  void DecodeURLChars(const std::string& input, std::string& output);
-
-  void getHomeDir(std::string& home);
-
-  void appendPath(const std::string& root, const std::string& leaf, std::string & path);
-
-}  // namespace braveledger_bat_helper
 
 #endif  //BRAVELEDGER_BAT_HELPER_PLATFORM_H_

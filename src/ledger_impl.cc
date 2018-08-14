@@ -112,7 +112,11 @@ void LedgerImpl::OnMediaStop(uint32_t tab_id, const uint64_t& current_time) {
   // TODO
 }
 
-void LedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url) {
+void LedgerImpl::OnXHRLoad(
+    uint32_t tab_id,
+    const std::string& url,
+    const std::map<std::string, std::string>& parts,
+    const uint64_t& current_time) {
   // TODO
   //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad " << url;
 }
@@ -188,6 +192,10 @@ void LedgerImpl::RunTask(LedgerTaskRunnerImpl::Task task) {
   std::unique_ptr<LedgerTaskRunnerImpl> task_runner(
       new LedgerTaskRunnerImpl(task));
   ledger_client_->RunTask(std::move(task_runner));
+}
+
+std::string LedgerImpl::URIEncode(const std::string& value) {
+  return ledger_client_->URIEncode(value);
 }
 
 void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info,
@@ -297,17 +305,18 @@ void LedgerImpl::OnMediaRequest(const std::string& url,
   //LOG(ERROR) << "!!!media url == " << url;
   //LOG(ERROR) << "!!!media urlQuery == " << urlQuery;
   //LOG(ERROR) << "!!!media url type == " << type;
-  std::map<std::string, std::string> parts;
-  std::vector<std::map<std::string, std::string>> twitchParts;
-  if (YOUTUBE_MEDIA_TYPE == type) {
-    braveledger_bat_helper::getUrlQueryParts(urlQuery, parts);
-    processMedia(parts, type);
-  } else if (TWITCH_MEDIA_TYPE == type) {
-    braveledger_bat_helper::getTwitchParts(urlQuery, twitchParts);
-    for (size_t i = 0; i < twitchParts.size(); i++) {
-      processMedia(twitchParts[i], type);
-    }
-  }
+  // TODO(bridiver) - this should move to OnXHRLoad and remove this method
+  // std::map<std::string, std::string> parts;
+  // std::vector<std::map<std::string, std::string>> twitchParts;
+  // if (YOUTUBE_MEDIA_TYPE == type) {
+  //   braveledger_bat_helper::getUrlQueryParts(urlQuery, parts);
+  //   processMedia(parts, type);
+  // } else if (TWITCH_MEDIA_TYPE == type) {
+  //   braveledger_bat_helper::getTwitchParts(urlQuery, twitchParts);
+  //   for (size_t i = 0; i < twitchParts.size(); i++) {
+  //     processMedia(twitchParts[i], type);
+  //   }
+  // }
 }
 
 void LedgerImpl::processMedia(const std::map<std::string, std::string>& parts, const std::string& type) {

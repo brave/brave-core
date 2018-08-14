@@ -33,8 +33,9 @@ bool BatGetMedia::EnsureInitialized() {
 bool BatGetMedia::Init() {
   std::string db_path;
   std::string root;
-  braveledger_bat_helper::getHomeDir(root);
-  braveledger_bat_helper::appendPath(root, MEDIA_CACHE_DB_NAME, db_path);
+  // TODO - do something else with this leveldb stuff
+  // braveledger_bat_helper::getHomeDir(root);
+  // braveledger_bat_helper::appendPath(root, MEDIA_CACHE_DB_NAME, db_path);
 
   leveldb::Options options;
   options.create_if_missing = true;
@@ -96,9 +97,6 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
   }
 
   std::string mediaURL = getMediaURL(mediaId, providerName);
-  std::string mediaURLEncoded;
-  braveledger_bat_helper::encodeURIComponent(mediaURL, mediaURLEncoded);
-
   {
     // TODO(bridiver) - need to find out what is going on with mapCallbacks_
     // it's keyed to the mediaKey, but every lookup just gets the last entry
@@ -109,7 +107,7 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
   }
   if (YOUTUBE_MEDIA_TYPE == providerName) {
     // TODO(bridiver) - this is also an issue because we're making these calls from the IO thread
-    auto request = ledger_->LoadURL((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + mediaURLEncoded,
+    auto request = ledger_->LoadURL((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + ledger_->URIEncode(mediaURL),
       std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
     handler_.AddRequestHandler(std::move(request),
         std::bind(&BatGetMedia::getPublisherFromMediaPropsCallback,
@@ -262,9 +260,9 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, c
     handler_.AddRequestHandler(std::move(request),
         std::bind(&BatGetMedia::getPublisherInfoCallback,
                   this,
-                  duration, 
+                  duration,
                   mediaKey,
-                  providerName, 
+                  providerName,
                   mediaURL,
                   publisherURL,
                   publisherName,

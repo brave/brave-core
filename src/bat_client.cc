@@ -624,9 +624,6 @@ void BatClient::proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF
     braveledger_bat_helper::SURVEYOR_ST surveyor;
     braveledger_bat_helper::loadFromJson(surveyor, batchProof[i].ballot_.prepareBallot_);
 
-    std::string surveyorIdEncoded;
-    braveledger_bat_helper::encodeURIComponent(surveyor.surveyorId_, surveyorIdEncoded);
-
     std::string signatureToSend;
     size_t delimeterPos = surveyor.signature_.find(',');
     if (std::string::npos != delimeterPos && delimeterPos + 1 <= surveyor.signature_.length()) {
