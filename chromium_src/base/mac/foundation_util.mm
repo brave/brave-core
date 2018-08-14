@@ -8,6 +8,26 @@
 #undef BaseBundleID
 #include "components/version_info/channel.h"
 
+#if defined(OFFICIAL_BUILD)
+// This is layer violation because foundation_util is built with base lib.
+// So, only non-component build(official build in our case) should include this
+// header. Otherwise, undefined reference link error will be happened.
+//
+// I think below code will be fine.
+//
+//  #if defined(OFFICIAL_BUILD)
+//    return "org.brave.Brave";
+//  #else
+//    return "org.brave.Brave.development";
+//  #endif
+//
+// because |base_bundle_id| is set before calling BaseBundleID() in non test
+// build and chrome::GetChannel() will always return stable in test build.
+//
+// For safe in non-test build, current seems fine in official build.
+#include "chrome/common/channel_info.h"
+#endif
+
 namespace base {
 namespace mac {
 
