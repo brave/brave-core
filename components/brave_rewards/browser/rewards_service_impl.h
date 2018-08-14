@@ -15,6 +15,7 @@
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "content/public/browser/browser_thread.h"
+#include "extensions/common/one_shot_event.h"
 #include "net/url_request/url_fetcher_delegate.h"
 
 namespace base {
@@ -75,6 +76,7 @@ class RewardsServiceImpl : public RewardsService,
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;
 
+  const extensions::OneShotEvent& ready() const { return ready_; }
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
                           bool success);
   void OnLedgerStateLoaded(ledger::LedgerCallbackHandler* handler,
@@ -149,6 +151,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_info_db_path_;
   std::unique_ptr<PublisherInfoBackend> publisher_info_backend_;
 
+  extensions::OneShotEvent ready_;
   std::map<const net::URLFetcher*, FetchCallback> fetchers_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);

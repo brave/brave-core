@@ -13,7 +13,6 @@
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "extensions/common/one_shot_event.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -33,7 +32,6 @@ class RewardsService : public KeyedService {
   RewardsService();
   ~RewardsService() override;
 
-  const extensions::OneShotEvent& ready() const { return ready_; }
   virtual void CreateWallet() = 0;
   virtual void GetWalletProperties() = 0;
   virtual void GetContentSiteList(uint32_t start,
@@ -59,7 +57,6 @@ class RewardsService : public KeyedService {
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
-  extensions::OneShotEvent ready_;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(RewardsService);

@@ -110,26 +110,14 @@ void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args)
   if (!rewards_service_)
     return;
 
-  if (rewards_service_->ready().is_signaled()) {
-    rewards_service_->CreateWallet();
-  } else {
-    rewards_service_->ready().Post(FROM_HERE,
-        base::Bind(&brave_rewards::RewardsService::CreateWallet,
-            base::Unretained(rewards_service_)));
-  }
+  rewards_service_->CreateWallet();
 }
 
 void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
   if (!rewards_service_)
     return;
 
-  if (rewards_service_->ready().is_signaled()) {
-    rewards_service_->GetWalletProperties();
-  } else {
-    rewards_service_->ready().Post(FROM_HERE,
-        base::Bind(&brave_rewards::RewardsService::GetWalletProperties,
-            base::Unretained(rewards_service_)));
-  }
+  rewards_service_->GetWalletProperties();
 }
 
 void RewardsDOMHandler::OnWalletInitialized(
