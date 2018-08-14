@@ -323,7 +323,7 @@ void RewardsServiceImpl::LoadPublisherState(
 void RewardsServiceImpl::OnPublisherStateLoaded(
     ledger::LedgerCallbackHandler* handler,
     const std::string& data) {
-  handler->OnPublisherStateLoaded(data.empty() ? ledger::Result::ERROR
+  handler->OnPublisherStateLoaded(data.empty() ? ledger::Result::NO_PUBLISHER_STATE
                                                : ledger::Result::OK,
                                   data);
 }
@@ -348,7 +348,7 @@ void RewardsServiceImpl::OnLedgerStateSaved(
     ledger::LedgerCallbackHandler* handler,
     bool success) {
   handler->OnLedgerStateSaved(success ? ledger::Result::OK
-                                      : ledger::Result::ERROR);
+                                      : ledger::Result::NO_LEDGER_STATE);
 }
 
 void RewardsServiceImpl::SavePublisherState(const std::string& publisher_state,
