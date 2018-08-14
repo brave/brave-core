@@ -191,6 +191,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "panelWithdrawFunds",  IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS },
         { "tokens",  IDS_BRAVE_REWARDS_LOCAL_TOKENS },
         { "walletRecoverySuccess",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS },
+        { "walletRestored",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RESTORED },
         { "walletRecoveryFail",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL },
         { "almostThere",  IDS_BRAVE_REWARDS_LOCAL_ALMOST_THERE },
         { "notQuite",  IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE },

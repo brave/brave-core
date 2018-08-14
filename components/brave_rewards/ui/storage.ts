@@ -31,7 +31,9 @@ const defaultState: Rewards.State = {
   recoveryKey: '',
   ui: {
     walletRecoverySuccess: null,
-    emptyWallet: true
+    emptyWallet: true,
+    walletServerProblem: false,
+    modalBackup: false
   }
 }
 
