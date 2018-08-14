@@ -196,6 +196,8 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "almostThere",  IDS_BRAVE_REWARDS_LOCAL_ALMOST_THERE },
         { "notQuite",  IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE },
         { "proveHuman",  IDS_BRAVE_REWARDS_LOCAL_PROVE_HUMAN },
+        { "serverNotResponding",  IDS_BRAVE_REWARDS_LOCAL_SERVER_NOT_RESPONDING },
+        { "uhOh",  IDS_BRAVE_REWARDS_LOCAL_UH_OH },
 
         { "about", IDS_BRAVE_UI_ABOUT },
         { "accept", IDS_BRAVE_UI_ACCEPT },

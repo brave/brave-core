@@ -46,7 +46,7 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletCreateFailed()
   }
 
-  function walletProperties (properties: Rewards.WalletProperties) {
+  function walletProperties (properties: {status: number, wallet: Rewards.WalletProperties}) {
     getActions().onWalletProperties(properties)
   }
 
