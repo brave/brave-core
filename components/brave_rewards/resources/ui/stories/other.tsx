@@ -82,7 +82,7 @@ storiesOf('Feature Components/Rewards/Other', module)
         bg={boolean('Background color', false)}
         color={boolean('Text color', false)}
       >
-        <b>Funds received!</b> 25 tokens are added to your wallet successfully.
+        <b>Funds received!</b> 25 BAT are added to your wallet successfully.
       </Alert>
     )
   })

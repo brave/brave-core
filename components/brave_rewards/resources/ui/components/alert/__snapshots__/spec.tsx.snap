@@ -2,10 +2,7 @@
 
 exports[`Alert tests basic tests matches the snapshot 1`] = `
 .c0 {
-  position: relative;
-  top: 0;
-  left: 0;
-  left: 0;
+  height: auto;
   background: #fff;
   display: -webkit-box;
   display: -webkit-flex;
@@ -18,14 +15,14 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   -webkit-align-content: flex-start;
   -ms-flex-line-pack: start;
   align-content: flex-start;
-  -webkit-flex-wrap: nowrap;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  padding: 15px 38px 15px 19px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  padding: 15px 38px 15px 19px;
   font-family: Poppins,sans-serif;
 }
 

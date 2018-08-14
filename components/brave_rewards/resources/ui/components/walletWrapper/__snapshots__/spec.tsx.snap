@@ -15,7 +15,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   position: relative;
 }
 
-.c2 {
+.c3 {
   font-size: 16px;
   font-weight: 500;
   line-height: 1.38;
@@ -26,11 +26,11 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   color: rgba(255,255,255,0.65);
 }
 
-.c3 {
+.c4 {
   text-align: center;
 }
 
-.c4 {
+.c5 {
   font-size: 36px;
   line-height: 0.61;
   -webkit-letter-spacing: -0.4px;
@@ -41,13 +41,13 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   margin-top: 10px;
 }
 
-.c10 {
+.c11 {
   padding: 11px 25px 19px;
   position: relative;
   background: #f9fbfc;
 }
 
-.c8 {
+.c9 {
   text-align: center;
   font-size: 12px;
   color: #fff;
@@ -63,7 +63,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   padding-bottom: 20px;
 }
 
-.c5 {
+.c6 {
   text-transform: uppercase;
   opacity: 0.66;
   font-family: Muli,sans-serif;
@@ -72,14 +72,15 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   color: #fff;
 }
 
-.c9 {
+.c10 {
   padding: 10px 0;
   position: relative;
   overflow: hidden;
   margin: 0 -21px 0 -19px;
+  z-index: 5;
 }
 
-.c9:before {
+.c10:before {
   content: "";
   position: absolute;
   bottom: -16px;
@@ -90,7 +91,23 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   border: 20px solid #f9fbfc;
 }
 
-.c6 {
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 5;
+}
+
+.c7 {
   display: inline-block;
   overflow: hidden;
   border: 1px solid rgba(184,185,196,1);
@@ -117,7 +134,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   font-weight: 500;
 }
 
-.c7 {
+.c8 {
   display: inline-block;
   vertical-align: bottom;
   margin: 0 0 0 10px;
@@ -132,25 +149,28 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   >
     <div
       className="c2"
+    />
+    <div
+      className="c3"
     >
       MISSING: yourWallet
     </div>
     <div
-      className="c3"
+      className="c4"
     >
       <div
-        className="c4"
+        className="c5"
       >
         00.00
          
         <span
-          className="c5"
+          className="c6"
         >
           BAT
         </span>
       </div>
       <div
-        className="c6"
+        className="c7"
         color="subtle"
         disabled={true}
         icon={
@@ -175,7 +195,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
       >
         MISSING: grants
         <span
-          className="c7"
+          className="c8"
           icon={
             Object {
               "image": <svg
@@ -210,14 +230,14 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
       </div>
     </div>
     <div
-      className="c8"
+      className="c9"
     />
     <div
-      className="c9"
+      className="c10"
     />
   </div>
   <div
-    className="c10"
+    className="c11"
   />
 </div>
 `;

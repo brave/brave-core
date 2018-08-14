@@ -11,7 +11,6 @@ import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewar
 import { DetailRow as TransactionsRow } from '../../../../src/features/rewards/tableTransactions'
 
 import {
-  Alert,
   ModalActivity,
   ModalBackupRestore,
   WalletEmpty,
@@ -229,7 +228,6 @@ class PageWallet extends React.Component<{}, State> {
   }
 
   render () {
-    const showNotification = boolean('Show notification', false)
     const content = select(
       'Content',
       {
@@ -245,7 +243,7 @@ class PageWallet extends React.Component<{}, State> {
       <>
         <WalletWrapper
           tokens={25}
-          converted={'6.0 USD'}
+          converted={'6.00 USD'}
           actions={[
             {
               name: 'Add funds',
@@ -278,13 +276,6 @@ class PageWallet extends React.Component<{}, State> {
           ])}
           connectedWallet={boolean('Connected wallet', false)}
         >
-          {
-            showNotification
-              ? <Alert type={'error'} theme={{ position: 'absolute' }}>
-                <b>Funds received!</b> 25 tokens are added to your wallet successfully.
-              </Alert>
-              : null
-          }
           {
             content === 'empty' ? <WalletEmpty/> : null
           }

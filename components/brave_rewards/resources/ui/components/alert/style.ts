@@ -3,21 +3,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import { Theme } from './index'
-import { setTheme } from '../../../helpers'
 
 export const StyledWrapper = styled.div`
-  position: ${(p: {theme: Theme, bgColor: string}) => setTheme(p.theme, 'position') || 'relative'};
-  top: ${(p: {theme: Theme, bgColor: string}) => setTheme(p.theme, 'top') || 0};
-  left: ${(p: {theme: Theme , bgColor: string}) => setTheme(p.theme, 'left') || 0};
-  left: ${(p: {theme: Theme , bgColor: string}) => setTheme(p.theme, 'left') || 0};
-  background: ${(p: {theme: Theme , bgColor: string}) => p.bgColor};
+  height: ${(p: {fullSize: boolean, bgColor: string}) => p.fullSize ? '100%' : 'auto'};
+  background: ${(p: {fullSize: boolean , bgColor: string}) => p.bgColor};
   display: flex;
   justify-content: flex-start;
   align-content: flex-start;
+  align-items: center;
   flex-wrap: nowrap;
   padding: 15px 38px 15px 19px;
-  align-items: center;
   font-family: Poppins, sans-serif;
 ` as any
 

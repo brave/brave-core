@@ -20,10 +20,13 @@ import {
   StyledGrant,
   StyledActionWrapper,
   StyledBalanceCurrency,
-  StyledCurve
+  StyledCurve,
+  StyledAlert,
+  StyledAlertClose
 } from './style'
 import ButtonSecondary from '../../../components/buttonsIndicators/buttonSecondary/index'
 import { getLocale } from '../../../helpers'
+import Alert, { Type as AlertType } from '../alert'
 
 type Grant = {
   tokens: number,
@@ -41,6 +44,11 @@ export interface Props {
   onSettingsClick?: () => void
   onActivityClick?: () => void
   grants?: Grant[]
+  alert?: {
+    node: React.ReactNode
+    type: AlertType
+    onAlertClose: () => void
+  }
   id?: string
 }
 
@@ -49,6 +57,7 @@ const upholdColorIcon = require('./assets/upholdColor')
 const gearIcon = require('./assets/gear')
 const arrowUpIcon = require('./assets/arrowUp')
 const arrowDownIcon = require('./assets/arrowDown')
+const closeIcon = require('./assets/close')
 
 interface State {
   grantDetails: boolean
@@ -99,7 +108,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       connectedWallet,
       showSecActions,
       grants,
-      onSettingsClick
+      onSettingsClick,
+      alert
     } = this.props
 
     const enabled = this.hasGrants(grants)
@@ -107,6 +117,18 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     return (
       <StyledWrapper id={id}>
         <StyledHeader>
+          <StyledAlert>
+            {
+              alert
+              ? <>
+                <StyledAlertClose onClick={alert.onAlertClose}>{closeIcon}</StyledAlertClose>
+                  <Alert type={alert.type} bg={true}>
+                    {alert.node}
+                </Alert>
+              </>
+              : null
+            }
+          </StyledAlert>
           <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
           {
             showSecActions
@@ -140,7 +162,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               {
                 grants && grants.map((grant: Grant, i: number) => {
                   return <StyledGrant key={`${id}-grant-${i}`}>
-                    <b>{grant.tokens} {getLocale('tokens')}</b> <span>{getLocale('expiresOn')} {grant.expireDate}</span>
+                    <b>{this.formatTokens(grant.tokens)} BAT</b> <span>{getLocale('expiresOn')} {grant.expireDate}</span>
                   </StyledGrant>
                 })
               }

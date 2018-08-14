@@ -3,21 +3,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import * as CSS from 'csstype'
 import { StyledWrapper, StyledContent, StyledClose, StyledIcon } from './style'
 
-export interface Theme {
-  position?: CSS.PositionProperty
-  top?: CSS.TopProperty<1>
-  left?: CSS.LeftProperty<1>
-}
+export type Type = 'error' | 'success' | 'warning'
 
 export interface Props {
-  type: 'error' | 'success' | 'warning'
+  type: Type
   id?: string
   children?: React.ReactNode
   onClose?: () => void
-  theme?: Theme
   color?: boolean
   bg?: boolean
 }
@@ -72,10 +66,10 @@ export default class Alert extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, children, onClose, theme } = this.props
+    const { id, children, onClose } = this.props
 
     return (
-      <StyledWrapper id={id} theme={theme} bgColor={this.bgColor}>
+      <StyledWrapper id={id} bgColor={this.bgColor}>
         <StyledIcon>{this.icon}</StyledIcon>
         <StyledContent color={this.color}>
           {children}

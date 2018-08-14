@@ -142,6 +142,7 @@ export const StyledCurve = styled.div`
     position: relative;
     overflow: hidden;
     margin: 0 -21px 0 -19px;
+    z-index: 5;
 
     :before {
       content: "";
@@ -153,4 +154,24 @@ export const StyledCurve = styled.div`
       border-radius: 100%;
       border: 20px solid #f9fbfc;
     }
+` as any
+
+export const StyledAlert = styled.div`
+    display: flex;
+    align-items: stretch;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 5;
+` as any
+
+export const StyledAlertClose = styled.button`
+    position: absolute;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    top: 16px;
+    right: 16px;
 ` as any
