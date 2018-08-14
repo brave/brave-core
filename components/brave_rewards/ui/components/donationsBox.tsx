@@ -64,7 +64,7 @@ class DonationBox extends React.Component<Props, {}> {
     return (
       <DisabledContent
         image={donate}
-        theme={{ color: '#AC9CCF', boldColor: '#696fdc' }}
+        type={'donation'}
       >
         • {getLocale('donationDisabledText1')}<br/>
         • {getLocale('donationDisabledText2')}
@@ -84,7 +84,7 @@ class DonationBox extends React.Component<Props, {}> {
     return (
       <Box
         title={getLocale('donationTitle')}
-        theme={{ titleColor: '#696FDC' }}
+        type={'donation'}
         description={getLocale('donationDesc')}
         disabledContent={showDisabled ? this.disabledContent() : null}
         settingsChild={this.donationSettings()}
@@ -99,9 +99,7 @@ class DonationBox extends React.Component<Props, {}> {
           rows={donationRows}
           allItems={allSites}
           numItems={numRows}
-          theme={{
-            headerColor: '#696FDC'
-          }}
+          headerColor={true}
         >
           {getLocale('donationVisitSome')}
         </TableDonation>
