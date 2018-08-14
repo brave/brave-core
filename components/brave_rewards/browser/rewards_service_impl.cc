@@ -259,7 +259,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id, const GURL& url) {
   ledger_->OnXHRLoad(tab_id.id(), url.spec(), parts, GetCurrentTimestamp());
 }
 
-std::string RewardsServiceImpl::URIEncode(const std::string value) {
+std::string RewardsServiceImpl::URIEncode(const std::string& value) {
   return net::EscapeQueryParamValue(value, false);
 }
 
