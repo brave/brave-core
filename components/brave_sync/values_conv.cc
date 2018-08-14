@@ -19,7 +19,7 @@ namespace brave_sync {
 
 using base::Value;
 
-std::unique_ptr<Value> BraveSyncSettingsToValue(BraveSyncSettings *brave_sync_settings) {
+std::unique_ptr<Value> BraveSyncSettingsToValue(brave_sync::Settings *brave_sync_settings) {
   CHECK(brave_sync_settings);
   auto result = std::make_unique<Value>(Value::Type::DICTIONARY);
 

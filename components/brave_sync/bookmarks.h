@@ -21,19 +21,19 @@ namespace jslib {
   class SyncRecord;
 }
 namespace storage {
-  class BraveSyncObjMap;
+  class ObjectMap;
 }
-class BraveSyncDataObserver;
-class BraveSyncController;
+
+class Controller;
 class CanSendSyncBookmarks;
 
-class BraveSyncBookmarks : public bookmarks::BookmarkModelObserver {
+class Bookmarks : public bookmarks::BookmarkModelObserver {
 public:
-  BraveSyncBookmarks(CanSendSyncBookmarks *send_bookmarks);
-  ~BraveSyncBookmarks() override;
+  Bookmarks(CanSendSyncBookmarks *send_bookmarks);
+  ~Bookmarks() override;
   void SetBrowser(Browser* browser);
   void SetThisDeviceId(const std::string &device_id);
-  void SetObjMap(storage::BraveSyncObjMap* sync_obj_map);
+  void SetObjectMap(storage::ObjectMap* sync_obj_map);
 
   std::unique_ptr<base::Value> GetResolvedBookmarkValue(
     const std::string &object_id);
@@ -88,12 +88,12 @@ private:
   void PauseObserver();
   void ResumeObserver();
 
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncBookmarks);
+  DISALLOW_COPY_AND_ASSIGN(Bookmarks);
   Browser* browser_;
   bookmarks::BookmarkModel* model_;
   std::string device_id_;
 
-  storage::BraveSyncObjMap* sync_obj_map_;
+  storage::ObjectMap* sync_obj_map_;
   bool observer_is_set_;
 
   CanSendSyncBookmarks *send_bookmarks_;

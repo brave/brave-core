@@ -10,7 +10,7 @@
 #include "brave/components/brave_sync/cansendbookmarks.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
-#include "brave/components/brave_sync/obj_map.h"
+#include "brave/components/brave_sync/object_map.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/values_conv.h"
@@ -25,52 +25,52 @@
 
 namespace brave_sync {
 
-BraveSyncBookmarks::BraveSyncBookmarks(CanSendSyncBookmarks *send_bookmarks) :
+Bookmarks::Bookmarks(CanSendSyncBookmarks *send_bookmarks) :
   browser_(nullptr), model_(nullptr), sync_obj_map_(nullptr),
   observer_is_set_(false), send_bookmarks_(send_bookmarks) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BraveSyncBookmarks CTOR";
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::Bookmarks CTOR";
 }
 
-BraveSyncBookmarks::~BraveSyncBookmarks() {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::~BraveSyncBookmarks DTOR";
+Bookmarks::~Bookmarks() {
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::~Bookmarks DTOR";
   if (model_ && observer_is_set_) {
     model_->RemoveObserver(this);
   }
 }
 
-void BraveSyncBookmarks::SetBrowser(Browser* browser) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::SetBrowser browser="<<browser;
+void Bookmarks::SetBrowser(Browser* browser) {
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SetBrowser browser="<<browser;
   DCHECK(browser != nullptr);
   if (browser_ == nullptr) {
     browser_ = browser;
     model_ = BookmarkModelFactory::GetForBrowserContext(browser_->profile());
-    LOG(ERROR) << "TAGAB BraveSyncBookmarks::SetBrowser model_="<<model_;
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SetBrowser model_="<<model_;
     DCHECK(observer_is_set_ == false);
     model_->AddObserver(this);
     observer_is_set_ = true;
     // per profile
   } else {
-    LOG(ERROR) << "TAGAB BraveSyncBookmarks::SetModel already set browser_="<<browser_;
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SetModel already set browser_="<<browser_;
   }
 }
 
-void BraveSyncBookmarks::SetThisDeviceId(const std::string &device_id) {
+void Bookmarks::SetThisDeviceId(const std::string &device_id) {
   DCHECK(device_id_.empty());
   DCHECK(!device_id.empty());
   device_id_ = device_id;
 }
 
-void BraveSyncBookmarks::SetObjMap(storage::BraveSyncObjMap* sync_obj_map) {
+void Bookmarks::SetObjectMap(storage::ObjectMap* sync_obj_map) {
   DCHECK(sync_obj_map != nullptr);
   DCHECK(sync_obj_map_ == nullptr);
   sync_obj_map_ = sync_obj_map;
 }
 
-std::unique_ptr<base::Value> BraveSyncBookmarks::GetResolvedBookmarkValue(
+std::unique_ptr<base::Value> Bookmarks::GetResolvedBookmarkValue(
   const std::string &object_id) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::GetResolvedBookmarkValue object_id=<"<<object_id<<">";
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue object_id=<"<<object_id<<">";
   std::string local_object_id = sync_obj_map_->GetLocalIdByObjectId(object_id);
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::GetResolvedBookmarkValue local_object_id=<"<<local_object_id<<">";
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue local_object_id=<"<<local_object_id<<">";
   if(local_object_id.empty()) {
     return std::make_unique<base::Value>(base::Value::Type::NONE);
   }
@@ -85,7 +85,7 @@ std::unique_ptr<base::Value> BraveSyncBookmarks::GetResolvedBookmarkValue(
 
   const bookmarks::BookmarkNode* node = bookmarks::GetBookmarkNodeByID(model_, id);
   if (node == nullptr) {
-    LOG(ERROR) << "TAGAB BraveSyncBookmarks::GetResolvedBookmarkValue node not found for local_object_id=<"<<local_object_id<<">";
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue node not found for local_object_id=<"<<local_object_id<<">";
     // Node was removed
     // NOTREACHED() << "means we had not removed (object_id => local_id) pair from objects map";
     // Something gone wrong previously, no obvious way to fix
@@ -98,9 +98,9 @@ std::unique_ptr<base::Value> BraveSyncBookmarks::GetResolvedBookmarkValue(
   return value;
 }
 
-std::unique_ptr<base::Value> BraveSyncBookmarks::BookmarkToValue(const bookmarks::BookmarkNode* node,
+std::unique_ptr<base::Value> Bookmarks::BookmarkToValue(const bookmarks::BookmarkNode* node,
   const std::string &object_id) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkToValue node="<<node;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkToValue node="<<node;
 
   CHECK(!device_id_.empty());
   CHECK(node != nullptr);
@@ -134,7 +134,7 @@ std::unique_ptr<base::Value> BraveSyncBookmarks::BookmarkToValue(const bookmarks
   return value;
 }
 
-std::string BraveSyncBookmarks::GetOrCreateObjectByLocalId(const int64_t &local_id) {
+std::string Bookmarks::GetOrCreateObjectByLocalId(const int64_t &local_id) {
   CHECK(sync_obj_map_);
   const std::string s_local_id = base::Int64ToString(local_id);
   std::string object_id = sync_obj_map_->GetObjectIdByLocalId(s_local_id);
@@ -151,20 +151,20 @@ std::string BraveSyncBookmarks::GetOrCreateObjectByLocalId(const int64_t &local_
   return object_id;
 }
 
-void BraveSyncBookmarks::SaveIdMap(const int64_t &local_id, const std::string &sync_object_id) {
+void Bookmarks::SaveIdMap(const int64_t &local_id, const std::string &sync_object_id) {
   CHECK(sync_obj_map_);
   const std::string s_local_id = base::Int64ToString(local_id);
   sync_obj_map_->SaveObjectId(
         s_local_id,
         "",// order or empty
         sync_object_id);
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::SaveIdMap <"<<s_local_id<<"> ==> <"<<sync_object_id<<">";
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SaveIdMap <"<<s_local_id<<"> ==> <"<<sync_object_id<<">";
 }
 
-void BraveSyncBookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
+void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
   const jslib::Bookmark &sync_bookmark = sync_record.GetBookmark();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::AddBookmark location="<<sync_bookmark.site.location;
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::AddBookmark title="<<sync_bookmark.site.title;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark location="<<sync_bookmark.site.location;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark title="<<sync_bookmark.site.title;
   DCHECK(model_);
   if (model_ == nullptr) {
     return;
@@ -190,8 +190,8 @@ void BraveSyncBookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
       sync_bookmark.site.creationTime, //const base::Time& creation_time,
       nullptr//const BookmarkNode::MetaInfoMap* meta_info
     );
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::AddBookmark added_node="<<added_node;
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::AddBookmark added_node->id()="<<added_node->id();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark added_node="<<added_node;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark added_node->id()="<<added_node->id();
   // TODO, AB: apply these:
   //          sync_bookmark.site.customTitle
   //          sync_bookmark.site.lastAccessedTime
@@ -231,23 +231,23 @@ void BraveSyncBookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
   ResumeObserver();
 }
 
-void BraveSyncBookmarks::PauseObserver() {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::PauseObserver";
+void Bookmarks::PauseObserver() {
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::PauseObserver";
   DCHECK(model_);
   DCHECK(observer_is_set_);
   model_->RemoveObserver(this);
   observer_is_set_ = false;
 }
 
-void BraveSyncBookmarks::ResumeObserver() {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::ResumeObserver";
+void Bookmarks::ResumeObserver() {
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::ResumeObserver";
   DCHECK(model_);
   DCHECK(observer_is_set_ == false);
   model_->AddObserver(this);
   observer_is_set_ = true;
 }
 
-void BraveSyncBookmarks::GetAllBookmarks(std::vector<const bookmarks::BookmarkNode*> &nodes) {
+void Bookmarks::GetAllBookmarks(std::vector<const bookmarks::BookmarkNode*> &nodes) {
   const size_t max_count = 300;
 
   ui::TreeNodeIterator<const bookmarks::BookmarkNode> iterator(model_->root_node());
@@ -262,7 +262,7 @@ void BraveSyncBookmarks::GetAllBookmarks(std::vector<const bookmarks::BookmarkNo
   }
 }
 
-std::unique_ptr<base::Value> BraveSyncBookmarks::NativeBookmarksToSyncLV(const std::vector<const bookmarks::BookmarkNode*> &list,
+std::unique_ptr<base::Value> Bookmarks::NativeBookmarksToSyncLV(const std::vector<const bookmarks::BookmarkNode*> &list,
   int action) {
   LOG(ERROR) << "TAGAB NativeBookmarksToSyncLV:";
   auto result = std::make_unique<base::Value>(base::Value::Type::LIST);
@@ -310,52 +310,52 @@ std::unique_ptr<base::Value> BraveSyncBookmarks::NativeBookmarksToSyncLV(const s
   return result;
 }
 
-void BraveSyncBookmarks::BookmarkModelLoaded(bookmarks::BookmarkModel* model,
+void Bookmarks::BookmarkModelLoaded(bookmarks::BookmarkModel* model,
     bool ids_reassigned) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkModelLoaded";
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkModelLoaded";
 }
 
-void BraveSyncBookmarks::BookmarkNodeMoved(bookmarks::BookmarkModel* model,
+void Bookmarks::BookmarkNodeMoved(bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* old_parent,
     int old_index,
     const bookmarks::BookmarkNode* new_parent,
     int new_index) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeMoved";
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeMoved";
 }
 
-void BraveSyncBookmarks::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
+void Bookmarks::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* parent,
     int index) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded model=" << model;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded model=" << model;
 
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded parent->is_folder()=" << parent->is_folder();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded parent->id()=" << parent->id();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded parent->url().spec()=" << parent->url().spec();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded parent->GetTitle()=" << parent->GetTitle();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded GetBookmarkNodeString(parent->type())=" << GetBookmarkNodeString(parent->type());
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded index=" << index;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded parent->is_folder()=" << parent->is_folder();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded parent->id()=" << parent->id();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded parent->url().spec()=" << parent->url().spec();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded parent->GetTitle()=" << parent->GetTitle();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded GetBookmarkNodeString(parent->type())=" << GetBookmarkNodeString(parent->type());
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded index=" << index;
   const bookmarks::BookmarkNode* node = parent->GetChild(index);
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded node->url().spec()=" << node->url().spec();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded node->GetTitle()=" << node->GetTitle();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded GetBookmarkNodeString(node->type())=" << GetBookmarkNodeString(node->type());
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded node->url().spec()=" << node->url().spec();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded node->GetTitle()=" << node->GetTitle();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded GetBookmarkNodeString(node->type())=" << GetBookmarkNodeString(node->type());
 
   // Send to sync cloud
   send_bookmarks_->CreateUpdateDeleteBookmarks(jslib_const::kActionCreate,
     {node}, false, false);
 }
 
-void BraveSyncBookmarks::BookmarkNodeRemoved(
+void Bookmarks::BookmarkNodeRemoved(
     bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* parent,
     int old_index,
     const bookmarks::BookmarkNode* node,
     const std::set<GURL>& no_longer_bookmarked) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeRemoved model="<<model;
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeRemoved parent->url().spec()="<<parent->url().spec();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeRemoved old_index="<<old_index;
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeRemoved node->url().spec()="<<node->url().spec();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved model="<<model;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved parent->url().spec()="<<parent->url().spec();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved old_index="<<old_index;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved node->url().spec()="<<node->url().spec();
   for (const GURL &url_no_longer_bookmarked : no_longer_bookmarked) {
-    LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeRemoved url_no_longer_bookmarked.spec()="<<url_no_longer_bookmarked.spec();
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved url_no_longer_bookmarked.spec()="<<url_no_longer_bookmarked.spec();
   }
 
   // TODO, AB: what to do with no_longer_bookmarked?
@@ -385,35 +385,35 @@ void BraveSyncBookmarks::BookmarkNodeRemoved(
     {node}, false, false);
 }
 
-void BraveSyncBookmarks::BookmarkNodeChanged(bookmarks::BookmarkModel* model,
+void Bookmarks::BookmarkNodeChanged(bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* node) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeChanged model="<<model;
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeChanged node->url().spec()="<<node->url().spec();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded node->GetTitledUrlNodeTitle()=" << node->GetTitledUrlNodeTitle();
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeAdded node->GetTitle()=" << node->GetTitle();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeChanged model="<<model;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeChanged node->url().spec()="<<node->url().spec();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded node->GetTitledUrlNodeTitle()=" << node->GetTitledUrlNodeTitle();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded node->GetTitle()=" << node->GetTitle();
 
   send_bookmarks_->CreateUpdateDeleteBookmarks(jslib_const::kActionUpdate,
      {node}, false, false);
 }
 
-void BraveSyncBookmarks::BookmarkNodeFaviconChanged(bookmarks::BookmarkModel* model,
+void Bookmarks::BookmarkNodeFaviconChanged(bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* node) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeFaviconChanged model="<<model;
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeFaviconChanged node->url().spec()="<<node->url().spec();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeFaviconChanged model="<<model;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeFaviconChanged node->url().spec()="<<node->url().spec();
 }
 
-void BraveSyncBookmarks::BookmarkNodeChildrenReordered(bookmarks::BookmarkModel* model,
+void Bookmarks::BookmarkNodeChildrenReordered(bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* node) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeChildrenReordered model="<<model;
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkNodeChildrenReordered node->url().spec()="<<node->url().spec();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeChildrenReordered model="<<model;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeChildrenReordered node->url().spec()="<<node->url().spec();
 }
 
-void BraveSyncBookmarks::BookmarkAllUserNodesRemoved(
+void Bookmarks::BookmarkAllUserNodesRemoved(
     bookmarks::BookmarkModel* model,
     const std::set<GURL>& removed_urls) {
-  LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkAllUserNodesRemoved model="<<model;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkAllUserNodesRemoved model="<<model;
   for (const GURL &removed_url : removed_urls) {
-    LOG(ERROR) << "TAGAB BraveSyncBookmarks::BookmarkAllUserNodesRemoved removed_url.spec()="<<removed_url.spec();
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkAllUserNodesRemoved removed_url.spec()="<<removed_url.spec();
   }
 }
 

@@ -6,7 +6,7 @@
 
 namespace brave_sync {
 
-BraveSyncSettings::BraveSyncSettings() :
+Settings::Settings() :
   sync_this_device_(false),
   sync_bookmarks_(false),
   sync_settings_(false),

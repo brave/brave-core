@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
  //#include "brave_sync_worker.h"
-#include "brave/components/brave_sync/obj_map.h"
+#include "brave/components/brave_sync/object_map.h"
 
 #include <string>
 
@@ -22,24 +22,24 @@ static const char DB_FILE_NAME[] = "brave_sync_db";
 leveldb::DB* g_level_db;
 static std::mutex* g_pLevel_db_init_mutex = new std::mutex();
 
-BraveSyncObjMap::BraveSyncObjMap() {
-  LOG(ERROR) << "TAGAB BraveSyncObjMap::BraveSyncObjMap CTOR";
+ObjectMap::ObjectMap() {
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap CTOR";
 }
 
-BraveSyncObjMap::~BraveSyncObjMap() {
-  LOG(ERROR) << "TAGAB BraveSyncObjMap::BraveSyncObjMap DTOR";
+ObjectMap::~ObjectMap() {
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap DTOR";
   Close();
 }
 
 void TraceAll() {
-  LOG(ERROR) << "TAGAB BraveSyncObjMap::TraceAll:-----------------------";
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::TraceAll:-----------------------";
   leveldb::Iterator* it = g_level_db->NewIterator(leveldb::ReadOptions());
   for (it->SeekToFirst(); it->Valid(); it->Next()) {
     LOG(ERROR) << "<" << it->key().ToString() << ">: <" << it->value().ToString() << ">";
   }
   DCHECK(it->status().ok());  // Check for any errors found during the scan
   delete it;
-  LOG(ERROR) << "TAGAB BraveSyncObjMap::TraceAll:^----------------------";
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::TraceAll:^----------------------";
 }
 
 void CreateOpenDatabase() {
@@ -75,7 +75,7 @@ void CreateOpenDatabase() {
   }
 }
 
-std::string BraveSyncObjMap::GetLocalIdByObjectId(const std::string &objectId) {
+std::string ObjectMap::GetLocalIdByObjectId(const std::string &objectId) {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
   if (nullptr == g_level_db) {
@@ -91,7 +91,7 @@ std::string BraveSyncObjMap::GetLocalIdByObjectId(const std::string &objectId) {
   return value;
 }
 
-std::string BraveSyncObjMap::GetObjectIdByLocalId(const std::string &localId) {
+std::string ObjectMap::GetObjectIdByLocalId(const std::string &localId) {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
   if (nullptr == g_level_db) {
@@ -108,15 +108,15 @@ std::string BraveSyncObjMap::GetObjectIdByLocalId(const std::string &localId) {
   return value;
 }
 
-void BraveSyncObjMap::SaveObjectId(
+void ObjectMap::SaveObjectId(
   const std::string &localId,
   const std::string &objectIdJSON, //may be an order or empty
   const std::string &objectId) {
-  LOG(ERROR) << "TAGAB BraveSyncObjMap::SaveObjectId - enter";
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectId - enter";
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
   if (nullptr == g_level_db) {
-    LOG(ERROR) << "TAGAB BraveSyncObjMap::SaveObjectId nullptr == g_level_db ???";
+    LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectId nullptr == g_level_db ???";
     return;
   }
 
@@ -131,10 +131,10 @@ void BraveSyncObjMap::SaveObjectId(
         LOG(ERROR) << "sync level db put error " << db_status.ToString();
       }
   }
-  LOG(ERROR) << "TAGAB BraveSyncObjMap::SaveObjectId - DONE";
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectId - DONE";
 }
 
-void BraveSyncObjMap::DeleteByLocalId(const std::string &localId) {
+void ObjectMap::DeleteByLocalId(const std::string &localId) {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
   if (nullptr == g_level_db) {
@@ -157,7 +157,7 @@ void BraveSyncObjMap::DeleteByLocalId(const std::string &localId) {
   }
 }
 
-void BraveSyncObjMap::Close() {
+void ObjectMap::Close() {
   if (g_level_db) {
       delete g_level_db;
       g_level_db = nullptr;
@@ -168,20 +168,20 @@ void BraveSyncObjMap::Close() {
   }
 }
 
-void BraveSyncObjMap::CloseDBHandle() {
+void ObjectMap::CloseDBHandle() {
   if (g_level_db) {
       delete g_level_db;
       g_level_db = nullptr;
   }
 }
 
-void BraveSyncObjMap::DestroyDB() {
+void ObjectMap::DestroyDB() {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   if (!g_pLevel_db_init_mutex) {
     return;
   }
   std::lock_guard<std::mutex> guard(*g_pLevel_db_init_mutex);
-  LOG(ERROR) << "TAGAB BraveSyncObjMap::ResetObjects";
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ResetObjects";
   CloseDBHandle();
   base::FilePath app_data_path;
   bool success = base::PathService::Get(chrome::DIR_USER_DATA, &app_data_path);
@@ -194,7 +194,7 @@ void BraveSyncObjMap::DestroyDB() {
   }
 }
 
-void BraveSyncObjMap::ResetSync(const std::string& key) {
+void ObjectMap::ResetSync(const std::string& key) {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
   if (nullptr == g_level_db) {

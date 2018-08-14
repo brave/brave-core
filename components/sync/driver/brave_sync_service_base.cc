@@ -26,7 +26,7 @@ BraveSyncServiceBase::BraveSyncServiceBase(
           {
 LOG(ERROR) << "TAGAB: BraveSyncServiceBase::BraveSyncServiceBase CTOR";
 //LOG(ERROR) << base::debug::StackTrace().ToString();
-  brave_sync_controller_ = brave_sync::BraveSyncControllerImpl::GetInstance();
+  brave_sync_controller_ = brave_sync::ControllerImpl::GetInstance();
   //sync_client->GetPrefService()
 }
 
