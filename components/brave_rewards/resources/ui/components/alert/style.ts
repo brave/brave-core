@@ -14,6 +14,7 @@ export const StyledWrapper = styled.div`
   flex-wrap: nowrap;
   padding: 15px 38px 15px 19px;
   font-family: Poppins, sans-serif;
+  width: 100%;
 ` as any
 
 export const StyledIcon = styled.span`

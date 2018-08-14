@@ -24,6 +24,7 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   flex-wrap: nowrap;
   padding: 15px 38px 15px 19px;
   font-family: Poppins,sans-serif;
+  width: 100%;
 }
 
 .c1 {

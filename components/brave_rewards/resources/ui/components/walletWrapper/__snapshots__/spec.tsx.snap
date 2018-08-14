@@ -105,6 +105,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   left: 0;
   height: 100%;
   z-index: 5;
+  width: 100%;
 }
 
 .c7 {

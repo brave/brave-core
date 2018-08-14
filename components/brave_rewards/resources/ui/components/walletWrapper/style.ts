@@ -164,6 +164,7 @@ export const StyledAlert = styled.div`
     left: 0;
     height: 100%;
     z-index: 5;
+    width: 100%;
 ` as any
 
 export const StyledAlertClose = styled.button`

@@ -37,7 +37,7 @@ export const StyledDoneWrapper = styled.div`
 ` as any
 
 export const StyledStatus = styled.div`
-  display: ${(p: Props) => p.success || p.error ? 'block' : 'none'};
+  display: ${(p: Props) => p.error ? 'block' : 'none'};
   margin: -16px 0 16px;
   border-radius: 6px;
   overflow: hidden;

@@ -47,8 +47,8 @@ export interface Props {
   alert?: {
     node: React.ReactNode
     type: AlertType
-    onAlertClose: () => void
-  }
+    onAlertClose?: () => void
+  } | null
   id?: string
 }
 
@@ -121,8 +121,12 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
             {
               alert
               ? <>
-                <StyledAlertClose onClick={alert.onAlertClose}>{closeIcon}</StyledAlertClose>
-                  <Alert type={alert.type} bg={true}>
+                {
+                  alert.onAlertClose
+                  ? <StyledAlertClose onClick={alert.onAlertClose}>{closeIcon}</StyledAlertClose>
+                  : null
+                }
+                <Alert type={alert.type} bg={true}>
                     {alert.node}
                 </Alert>
               </>

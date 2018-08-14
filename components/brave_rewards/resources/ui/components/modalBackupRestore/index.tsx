@@ -32,7 +32,6 @@ export interface Props {
   onSaveFile: (key: string) => void
   onRestore: (key: string) => void
   error?: React.ReactNode
-  success?: React.ReactNode
   id?: string
 }
 
@@ -100,8 +99,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
       onCopy,
       onPrint,
       onSaveFile,
-      error,
-      success
+      error
     } = this.props
 
     return (
@@ -151,18 +149,11 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             <StyledContent>
               {getLocale('rewardsRestoreText2')}
             </StyledContent>
-            <StyledStatus error={error} success={success}>
+            <StyledStatus error={error}>
               {
                 error
                 ? <Alert type={'error'} color={true} bg={true}>
                     {error}
-                </Alert>
-                : null
-              }
-              {
-                success
-                ? <Alert type={'success'} color={true} bg={true}>
-                  {success}
                 </Alert>
                 : null
               }
