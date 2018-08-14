@@ -155,6 +155,10 @@ void GetContentSiteListInternal(
   callback.Run(std::move(site_list), next_record);
 }
 
+time_t GetCurrentTimestamp() {
+  return base::Time::NowFromSystemTime().ToTimeT();
+}
+
 static uint64_t next_id = 1;
 
 }  // namespace
@@ -210,35 +214,36 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
 
   // TODO(bridiver) - add query parts
   ledger::VisitData data(tld, origin.host(), url.path(), tab_id.id());
-  ledger_->OnLoad(data);
+  ledger_->OnLoad(data, GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnUnload(SessionID tab_id) {
-  ledger_->OnUnload(tab_id.id());
+
+  ledger_->OnUnload(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnShow(SessionID tab_id) {
-  ledger_->OnShow(tab_id.id());
+  ledger_->OnShow(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnHide(SessionID tab_id) {
-  ledger_->OnHide(tab_id.id());
+  ledger_->OnHide(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnForeground(SessionID tab_id) {
-  ledger_->OnForeground(tab_id.id());
+  ledger_->OnForeground(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnBackground(SessionID tab_id) {
-  ledger_->OnBackground(tab_id.id());
+  ledger_->OnBackground(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnMediaStart(SessionID tab_id) {
-  ledger_->OnMediaStart(tab_id.id());
+  ledger_->OnMediaStart(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnMediaStop(SessionID tab_id) {
-  ledger_->OnMediaStop(tab_id.id());
+  ledger_->OnMediaStop(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnXHRLoad(SessionID tab_id, const GURL& url) {
