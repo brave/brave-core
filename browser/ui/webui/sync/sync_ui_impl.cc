@@ -5,10 +5,10 @@
 
 #include "content/public/browser/web_ui_message_handler.h"
 
-#include "brave/components/brave_sync/brave_sync_controller.h"
-#include "brave/components/brave_sync/brave_sync_controller_impl.h"
-#include "brave/components/brave_sync/brave_sync_settings.h"
-#include "brave/components/brave_sync/brave_sync_devices.h"
+#include "brave/components/brave_sync/controller.h"
+#include "brave/components/brave_sync/controller_impl.h"
+#include "brave/components/brave_sync/settings.h"
+#include "brave/components/brave_sync/devices.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/value_debug.h"
 

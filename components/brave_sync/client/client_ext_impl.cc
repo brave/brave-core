@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/api/brave_sync/brave_sync_event_router.h"
-#include "brave/components/brave_sync/client/brave_sync_client_ext_impl.h"
+#include "brave/components/brave_sync/client/client_ext_impl.h"
 #include "base/logging.h"
 
 namespace brave_sync {

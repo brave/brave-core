@@ -1,17 +1,17 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave/components/brave_sync/brave_sync_bookmarks.h"
+#include "brave/components/brave_sync/bookmarks.h"
 #include <memory>
 #include <string>
 #include "base/values.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_sync/brave_sync_cansendbookmarks.h"
-#include "brave/components/brave_sync/brave_sync_jslib_const.h"
-#include "brave/components/brave_sync/brave_sync_jslib_messages.h"
-#include "brave/components/brave_sync/brave_sync_obj_map.h"
-#include "brave/components/brave_sync/brave_sync_tools.h"
+#include "brave/components/brave_sync/cansendbookmarks.h"
+#include "brave/components/brave_sync/jslib_const.h"
+#include "brave/components/brave_sync/jslib_messages.h"
+#include "brave/components/brave_sync/obj_map.h"
+#include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"

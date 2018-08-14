@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
  //#include "brave_sync_worker.h"
-#include "brave/components/brave_sync/brave_sync_obj_map.h"
+#include "brave/components/brave_sync/obj_map.h"
 
 #include <string>
 

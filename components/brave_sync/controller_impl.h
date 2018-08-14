@@ -9,9 +9,9 @@
 #include "base/memory/singleton.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "brave/browser/ui/webui/sync/sync_js_layer.h"
-#include "brave/components/brave_sync/brave_sync_controller.h"
-#include "brave/components/brave_sync/brave_sync_cansendbookmarks.h"
-#include "brave/components/brave_sync/client/brave_sync_client.h"
+#include "brave/components/brave_sync/controller.h"
+#include "brave/components/brave_sync/cansendbookmarks.h"
+#include "brave/components/brave_sync/client/client.h"
 
 class Browser;
 class SyncJsLayer;

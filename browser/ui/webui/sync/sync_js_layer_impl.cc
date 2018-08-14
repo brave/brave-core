@@ -4,8 +4,8 @@
 #include "base/values.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
-#include "brave/components/brave_sync/brave_sync_controller.h"
-#include "brave/components/brave_sync/brave_sync_controller_impl.h"
+#include "brave/components/brave_sync/controller.h"
+#include "brave/components/brave_sync/controller_impl.h"
 #include "brave/components/brave_sync/value_debug.h"
 
 SyncJsLayerImpl::SyncJsLayerImpl(content::WebUI* web_ui, const std::string& host,

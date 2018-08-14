@@ -2,18 +2,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_WEB_UI_IMPL_H
-#define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_WEB_UI_IMPL_H
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_EXT_IMPL_H
+#define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_EXT_IMPL_H
 
-#include "brave/components/brave_sync/client/brave_sync_client.h"
+#include "brave/components/brave_sync/client/client.h"
 #include "base/macros.h"
+
+class Profile;
+namespace extensions {
+class BraveSyncEventRouter;
+}
 
 namespace brave_sync {
 
-class BraveSyncClientWebUiImpl : public BraveSyncClient {
+class BraveSyncClientExtImpl : public BraveSyncClient {
 public:
-  BraveSyncClientWebUiImpl();
-  ~BraveSyncClientWebUiImpl() override = default;
+  BraveSyncClientExtImpl();
+  ~BraveSyncClientExtImpl() override;
+
+  void SetProfile(Profile *profile);
 
   // BraveSyncClient overrides
 
@@ -26,11 +33,11 @@ public:
 
   // Browser to BraveSync messages
   void SendBrowserToSync(
-      const std::string &message,
-      const base::Value &arg1,
-      const base::Value &arg2,
-      const base::Value &arg3,
-      const base::Value &arg4) override;
+    const std::string &message,
+    const base::Value &arg1,
+    const base::Value &arg2,
+    const base::Value &arg3,
+    const base::Value &arg4) override;
 
   void SendGotInitDataStr(const std::string &seed, const std::string &device_id, const std::string & config) override;
   void SendFetchSyncRecords(
@@ -46,21 +53,12 @@ public:
   void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) override;
   void SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) override;
 
-  // Temporary from SyncJsLayer
-  void SetupJsLayer(SyncJsLayer *sync_js_layer) override;
-  void RunCommandBV(const std::vector<const base::Value*> &args) override;
-  void RunCommandStr(const std::string &command,
-    const std::string &arg1, const std::string &arg2, const std::string &arg3,
-    const std::string &arg4) override;
-
 private:
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncClientWebUiImpl);
+  DISALLOW_COPY_AND_ASSIGN(BraveSyncClientExtImpl);
   SyncLibToBrowserHandler *handler_;
-
-  // Temporary from SyncJsLayer
-  SyncJsLayer *sync_js_layer_;
+  std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
 };
 
 } // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_WEB_UI_IMPL_H
+#endif // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_EXT_IMPL_H
