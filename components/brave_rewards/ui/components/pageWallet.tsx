@@ -130,7 +130,14 @@ class PageWallet extends React.Component<Props, State> {
 
   walletAlerts = () => {
     const { balance } = this.props.rewardsData.walletInfo
-    const { walletRecoverySuccess } = this.props.rewardsData.ui
+    const { walletRecoverySuccess, walletServerProblem } = this.props.rewardsData.ui
+
+    if (walletServerProblem) {
+      return {
+        node: <><b>{getLocale('uhOh')}</b> {getLocale('serverNotResponding')}</>,
+        type: 'error'
+      }
+    }
 
     if (walletRecoverySuccess) {
       return {

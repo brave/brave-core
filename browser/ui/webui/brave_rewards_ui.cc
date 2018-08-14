@@ -148,37 +148,40 @@ void RewardsDOMHandler::OnWalletProperties(
     brave_rewards::RewardsService* payment_service,
     int error_code,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
-  if (error_code != 0 || !wallet_properties) {
-    // TODO - error handling
-    return;
-  }
 
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    base::DictionaryValue walletInfo;
-    walletInfo.SetDouble("balance", wallet_properties->balance);
-    walletInfo.SetString("probi", wallet_properties->probi);
+    base::DictionaryValue result;
+    result.SetInteger("status", error_code);
+    auto walletInfo = std::make_unique<base::DictionaryValue>();
 
-    auto rates = std::make_unique<base::DictionaryValue>();
-    for (auto const& rate : wallet_properties->rates) {
-      rates->SetDouble(rate.first, rate.second);
+    if (error_code == 0 && wallet_properties) {
+      walletInfo->SetDouble("balance", wallet_properties->balance);
+      walletInfo->SetString("probi", wallet_properties->probi);
+
+      auto rates = std::make_unique<base::DictionaryValue>();
+      for (auto const& rate : wallet_properties->rates) {
+        rates->SetDouble(rate.first, rate.second);
+      }
+      walletInfo->SetDictionary("rates", std::move(rates));
+
+      auto choices = std::make_unique<base::ListValue>();
+      for (double const& choice : wallet_properties->parameters_choices) {
+        choices->AppendDouble(choice);
+      }
+      walletInfo->SetList("choices", std::move(choices));
+
+      auto range = std::make_unique<base::ListValue>();
+      for (double const& value : wallet_properties->parameters_range) {
+        range->AppendDouble(value);
+      }
+      walletInfo->SetList("range", std::move(range));
+
+      // TODO add grants
     }
-    walletInfo.SetDictionary("rates", std::move(rates));
 
-    auto choices = std::make_unique<base::ListValue>();
-    for (double const& choice : wallet_properties->parameters_choices) {
-      choices->AppendDouble(choice);
-    }
-    walletInfo.SetList("choices", std::move(choices));
+    result.SetDictionary("wallet", std::move(walletInfo));
 
-    auto range = std::make_unique<base::ListValue>();
-    for (double const& value : wallet_properties->parameters_range) {
-      range->AppendDouble(value);
-    }
-    walletInfo.SetList("range", std::move(range));
-
-    // TODO add grants
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletProperties", walletInfo);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletProperties", result);
   }
 }
 

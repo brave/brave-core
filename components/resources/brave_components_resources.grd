@@ -228,6 +228,8 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ALMOST_THERE" desc="">Almost there…</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PROVE_HUMAN" desc="">Prove that you are human!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE" desc="">Hmmm…not quite.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_SERVER_NOT_RESPONDING" desc="">The Brave Payments server is not responding. We will fix this as soon as possible.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_UH_OH" desc="">Uh oh!</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
