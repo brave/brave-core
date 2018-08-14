@@ -20,7 +20,9 @@
 #include "brave/components/brave_rewards/browser/publisher_info_backend.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
+#include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "net/base/url_util.h"
 #include "net/url_request/url_fetcher.h"
 #include "url/gurl.h"
 
@@ -247,8 +249,18 @@ void RewardsServiceImpl::OnMediaStop(SessionID tab_id) {
 }
 
 void RewardsServiceImpl::OnXHRLoad(SessionID tab_id, const GURL& url) {
+
+  std::map<std::string, std::string> parts;
+
+  for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
+    parts[it.GetKey()] = it.GetUnescapedValue();
+  }
   // TODO(bridiver) - add query parts
-  ledger_->OnXHRLoad(tab_id.id(), url.spec());
+  ledger_->OnXHRLoad(tab_id.id(), url.spec(), parts, GetCurrentTimestamp());
+}
+
+std::string RewardsServiceImpl::URIEncode(const std::string value) {
+  return net::EscapeQueryParamValue(value, false);
 }
 
 std::string RewardsServiceImpl::GenerateGUID() const {
