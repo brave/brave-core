@@ -24,8 +24,8 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_client_(new BatClient(this)),
     bat_publishers_(new BatPublishers(this)),
     bat_get_media_(new BatGetMedia(this)),
-    last_tab_active_time_(0),
     initialized_(false),
+    last_tab_active_time_(0),
     last_shown_tab_id_(0) {
 }
 
