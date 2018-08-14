@@ -1,0 +1,9 @@
+source_set("themes") {
+  sources = [
+    "theme_properties.cc",
+    "theme_properties.h",
+  ]
+  deps = [
+    "//skia",
+  ]
+}

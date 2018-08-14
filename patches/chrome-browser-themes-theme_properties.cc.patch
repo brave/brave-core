@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/themes/theme_properties.cc b/chrome/browser/themes/theme_properties.cc
+index 135c5029bb1aeeab1be398388db47392069ec0c5..af1105e469f8935f55160f86220a2d38757a450d 100644
+--- a/chrome/browser/themes/theme_properties.cc
++++ b/chrome/browser/themes/theme_properties.cc
+@@ -10,6 +10,7 @@
+ #include "base/optional.h"
+ #include "base/strings/string_split.h"
+ #include "base/strings/string_util.h"
++#include "brave/browser/themes/theme_properties.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/themes/browser_theme_pack.h"
+ #include "ui/base/material_design/material_design_controller.h"
+@@ -290,6 +291,7 @@ color_utils::HSL ThemeProperties::GetDefaultTint(int id, bool incognito) {
+ 
+ // static
+ SkColor ThemeProperties::GetDefaultColor(int id, bool incognito) {
++  MAYBE_OVERRIDE_DEFAULT_COLOR_FOR_BRAVE(id, incognito)
+   const base::Optional<SkColor> color =
+       MaybeGetDefaultColorForNewerMaterialUi(id, incognito);
+   if (color)

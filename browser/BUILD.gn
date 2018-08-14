@@ -67,6 +67,7 @@ source_set("browser_process") {
     "//components/spellcheck/browser",
     "//content/public/browser",
     "//brave/chromium_src:browser",
+    "themes",
   ]
 
   if (is_win && is_official_build) {
