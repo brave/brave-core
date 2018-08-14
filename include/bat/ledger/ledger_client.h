@@ -66,7 +66,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void OnRecoverWallet(Result result, double balance) = 0;
   virtual void OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t experationDate) = 0;
 
-  virtual std::string URIEncode(const std::string value) = 0;
+  virtual std::string URIEncode(const std::string& value) = 0;
 
   virtual std::unique_ptr<ledger::LedgerURLLoader> LoadURL(
       const std::string& url,
