@@ -146,10 +146,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         if (result === 0) {
           walletInfo.balance = balance
           chrome.send('getWalletPassphrase', [])
-
-          if (balance > 0) {
-            ui.emptyWallet = false
-          }
+          ui.emptyWallet = balance <= 0
         }
 
         state = {

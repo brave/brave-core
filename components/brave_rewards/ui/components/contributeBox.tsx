@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import { Checkbox, Grid, Column, Select } from 'brave-ui/components'
-import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens } from 'brave-ui/features/rewards'
+import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, NextContribution } from 'brave-ui/features/rewards'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -108,7 +108,7 @@ class ContributeBox extends React.Component<Props, State> {
     return (
       <DisabledContent
         image={contributeDisabledIcon}
-        theme={{ color: '#ce9ccf', boldColor: '#c16fc2' }}
+        type={'contribute'}
       >
         • {getLocale('contributionDisabledText1')} <br />
         • {getLocale('contributionDisabledText2')}}
@@ -216,7 +216,7 @@ class ContributeBox extends React.Component<Props, State> {
     return (
       <Box
         title={getLocale('contributionTitle')}
-        theme={{ titleColor: '#9F22A1' }}
+        type={'contribute'}
         description={getLocale('contributionDesc')}
         toggle={toggleOn}
         checked={toggleOn ? enabledContribute : false}
@@ -254,17 +254,8 @@ class ContributeBox extends React.Component<Props, State> {
         </List>
         <List
           title={getLocale('contributionNextDate')}
-          theme={{
-            'font-size': '14px',
-            'text-align': 'right',
-            'border-radius': '6px',
-            color: '#4b4c5c',
-            background: '#e9f0ff',
-            display: 'inline-block',
-            padding: '9px 10px 9px 13px'
-          }}
         >
-          July 25th TODO
+          <NextContribution>July 25th TODO</NextContribution>
         </List>
         <List title={getLocale('contributionSites')}>
           {getLocale('total')} &nbsp;<Tokens value={numRows} hideText={true} toFixed={false} />
@@ -278,9 +269,7 @@ class ContributeBox extends React.Component<Props, State> {
           allSites={allSites}
           numSites={numRows}
           onShowAll={this.onModalContributeToggle}
-          theme={{
-            headerColor: '#9F22A1'
-          }}
+          headerColor={true}
         >
           {getLocale('contributionVisitSome')}
         </TableContribute>

@@ -21,7 +21,7 @@ class AdsBox extends React.Component {
     return (
       <DisabledContent
         image={adsDisabledIcon}
-        theme={{ color: '#ceb4e1', boldColor: '#b490cf' }}
+        type={'ads'}
       >
         <h3>{getLocale('adsDisabledText')}</h3>
       </DisabledContent>
@@ -32,7 +32,7 @@ class AdsBox extends React.Component {
     return (
       <Box
         title={getLocale('adsTitle')}
-        theme={{ titleColor: '#C12D7C' }}
+        type={'ads'}
         description={getLocale('adsDesc')}
         toggle={false}
         disabledContent={this.adsDisabled()}
