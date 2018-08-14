@@ -32,7 +32,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   ~BatPublishers() override;
 
-  void loadState(const std::string& data);
+  bool loadState(const std::string& data);
 
   void saveVisit(const ledger::VisitData& visit_data, const uint64_t& duration);
 
