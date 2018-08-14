@@ -44,7 +44,7 @@ void LedgerImpl::CreateWallet() {
   bat_client_->registerPersona();
 }
 
-void LedgerImpl::OnLoad(const ledger::VisitData& visit_data) {
+void LedgerImpl::OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) {
   if (visit_data.domain.empty()) {
     // Skip the same domain name
     return;
@@ -54,59 +54,60 @@ void LedgerImpl::OnLoad(const ledger::VisitData& visit_data) {
     return;
   }
   if (last_shown_tab_id_ == visit_data.tab_id) {
-    last_tab_active_time_ = ledger_client_->GetCurrentTime();
+    last_tab_active_time_ = current_time;
   }
   current_pages_[visit_data.tab_id] = visit_data;
   //LOG(ERROR) << "!!!LedgerImpl::OnLoad tab_id == " << visit_data.tab_id << ", domain == " << visit_data.domain
   //  << ", tld == " << visit_data.tld << ", path == " << visit_data.path;
 }
 
-void LedgerImpl::OnUnload(uint32_t tab_id) {
+void LedgerImpl::OnUnload(uint32_t tab_id, const uint64_t& current_time) {
   //LOG(ERROR) << "!!!LedgerImpl::OnUnload tab_id == " << tab_id;
+  OnHide(tab_id, current_time);
   visit_data_iter iter = current_pages_.find(tab_id);
   if (iter != current_pages_.end()) {
     current_pages_.erase(iter);
   }
 }
 
-void LedgerImpl::OnShow(uint32_t tab_id) {
+void LedgerImpl::OnShow(uint32_t tab_id, const uint64_t& current_time) {
   //LOG(ERROR) << "!!!LedgerImpl::OnShow tab_id == " << tab_id;
-  last_tab_active_time_ = ledger_client_->GetCurrentTime();
+  last_tab_active_time_ = current_time;
   last_shown_tab_id_ = tab_id;
 }
 
-void LedgerImpl::OnHide(uint32_t tab_id) {
+void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
   if (tab_id != last_shown_tab_id_) {
     return;
   }
-  //LOG(ERROR) << "!!!LedgerImpl::OnHide tab_id == " << tab_id << ", time == " << (ledger_client_->GetCurrentTime() - last_tab_active_time_);
   visit_data_iter iter = current_pages_.find(tab_id);
-  if (iter == current_pages_.end()) {
+  if (iter == current_pages_.end() || 0 == last_tab_active_time_) {
     return;
   }
+  //LOG(ERROR) << "!!!LedgerImpl::OnHide tab_id == " << tab_id << ", time == " << (current_time - last_tab_active_time_);
   DCHECK(last_tab_active_time_);
-  bat_publishers_->saveVisit(iter->second, ledger_client_->GetCurrentTime() - last_tab_active_time_);
+  bat_publishers_->saveVisit(iter->second, current_time - last_tab_active_time_);
   last_tab_active_time_ = 0;
 }
 
-void LedgerImpl::OnForeground(uint32_t tab_id) {
+void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {
   // TODO media resources could have been played in the background
   if (last_shown_tab_id_ != tab_id) {
     return;
   }
-  OnShow(tab_id);
+  OnShow(tab_id, current_time);
 }
 
-void LedgerImpl::OnBackground(uint32_t tab_id) {
+void LedgerImpl::OnBackground(uint32_t tab_id, const uint64_t& current_time) {
   // TODO media resources could stay and be active in the background
-  OnHide(tab_id);
+  OnHide(tab_id, current_time);
 }
 
-void LedgerImpl::OnMediaStart(uint32_t tab_id) {
+void LedgerImpl::OnMediaStart(uint32_t tab_id, const uint64_t& current_time) {
   // TODO 
 }
 
-void LedgerImpl::OnMediaStop(uint32_t tab_id) {
+void LedgerImpl::OnMediaStop(uint32_t tab_id, const uint64_t& current_time) {
   // TODO 
 }
 
