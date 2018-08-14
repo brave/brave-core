@@ -14,6 +14,10 @@ namespace ledger {
 LEDGER_EXPORT enum Result {
   OK = 0,
   ERROR = 1,
+  NO_PUBLISHER_STATE = 2,
+  NO_LEDGER_STATE = 3,
+  INVALID_PUBLISHER_STATE = 4,
+  INVALID_LEDGER_STATE = 5,
   // some more useful result codes should go here
 };
 

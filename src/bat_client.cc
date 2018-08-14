@@ -50,14 +50,17 @@ std::string BatClient::buildURL(const std::string& path, const std::string& pref
   return url + prefix + path;
 }
 
-void BatClient::loadState(const std::string& data) {
+bool BatClient::loadState(const std::string& data) {
   braveledger_bat_helper::CLIENT_STATE_ST state;
-  braveledger_bat_helper::loadFromJson(state, data.c_str());
+  if (!braveledger_bat_helper::loadFromJson(state, data.c_str()))
+    return false;
+
 
   LOG(ERROR) << "!!!bat address == " << state.walletInfo_.addressBAT_;
   LOG(ERROR) << "!!!card address == " << state.walletInfo_.addressCARD_ID_;
 
   state_.reset(new braveledger_bat_helper::CLIENT_STATE_ST(state));
+  return true;
 }
 
 void BatClient::registerPersona() {

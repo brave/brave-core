@@ -285,11 +285,14 @@ void BatPublishers::saveState() {
   ledger_->SavePublisherState(data, this);
 }
 
-void BatPublishers::loadState(const std::string& data) {
+bool BatPublishers::loadState(const std::string& data) {
   braveledger_bat_helper::PUBLISHER_STATE_ST state;
-  braveledger_bat_helper::loadFromJson(state, data.c_str());
+  if (!braveledger_bat_helper::loadFromJson(state, data.c_str()))
+    return false;
+
   state_.reset(new braveledger_bat_helper::PUBLISHER_STATE_ST(state));
   calcScoreConsts();
+  return true;
 }
 
 void BatPublishers::OnPublisherStateSaved(ledger::Result result) {

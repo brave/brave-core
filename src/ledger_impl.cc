@@ -33,7 +33,7 @@ LedgerImpl::~LedgerImpl() {
 }
 
 void LedgerImpl::Initialize() {
-  LoadPublisherState(this);
+  LoadLedgerState(this);
 }
 
 void LedgerImpl::CreateWallet() {
@@ -105,15 +105,15 @@ void LedgerImpl::OnBackground(uint32_t tab_id, const uint64_t& current_time) {
 }
 
 void LedgerImpl::OnMediaStart(uint32_t tab_id, const uint64_t& current_time) {
-  // TODO 
+  // TODO
 }
 
 void LedgerImpl::OnMediaStop(uint32_t tab_id, const uint64_t& current_time) {
-  // TODO 
+  // TODO
 }
 
 void LedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url) {
-  // TODO 
+  // TODO
   //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad " << url;
 }
 
@@ -123,10 +123,15 @@ void LedgerImpl::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
 
 void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
                                         const std::string& data) {
-  if (result == ledger::Result::OK)
-    bat_client_->loadState(data);
+  if (result == ledger::Result::OK) {
+    if (!bat_client_->loadState(data)) {
+      OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
+    }
+  } else {
+    OnWalletInitialized(result);
+  }
 
-  OnWalletInitialized(result);
+  LoadPublisherState(this);
 }
 
 void LedgerImpl::LoadPublisherState(ledger::LedgerCallbackHandler* handler) {
@@ -135,13 +140,13 @@ void LedgerImpl::LoadPublisherState(ledger::LedgerCallbackHandler* handler) {
 
 void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
                                         const std::string& data) {
-  if (result != ledger::Result::OK) {
-    OnWalletInitialized(result);
-    return;
+  if (result == ledger::Result::OK) {
+    if (!bat_publishers_->loadState(data)) {
+      result = ledger::Result::INVALID_PUBLISHER_STATE;
+    }
   }
 
-  bat_publishers_->loadState(data);
-  LoadLedgerState(this);
+  OnWalletInitialized(result);
 }
 
 void LedgerImpl::SaveLedgerState(const std::string& data) {
