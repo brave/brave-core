@@ -20,16 +20,16 @@ class PrefRegistrySyncable;
 
 namespace brave_sync {
 
-struct BraveSyncSettings;
+class Settings;
 
 namespace prefs {
 
 //TODO, AB: subclass SyncPrefs components/sync/base/sync_prefs.h ?
-class BraveSyncPrefs {
+class Prefs {
 public:
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-  BraveSyncPrefs(PrefService* pref_service);
+  Prefs(PrefService* pref_service);
 
   std::string GetSeed() const;
   void SetSeed(const std::string& seed);
@@ -55,7 +55,7 @@ public:
   void SetLastFetchTime(const base::Time &time);
   base::Time GetLastFetchTime();
 
-  std::unique_ptr<BraveSyncSettings> GetBraveSyncSettings() const;
+  std::unique_ptr<brave_sync::Settings> GetBraveSyncSettings() const;
 
   void Clear();
 
@@ -63,7 +63,7 @@ private:
   // May be null.
   PrefService* pref_service_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncPrefs);
+  DISALLOW_COPY_AND_ASSIGN(Prefs);
 };
 
 } // namespace prefs

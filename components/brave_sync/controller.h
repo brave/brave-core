@@ -11,12 +11,12 @@ class SyncUI;
 
 namespace brave_sync {
 
-  struct BraveSyncSettings;
+  class Settings;
   class SyncDevices;
 
-  class BraveSyncController {
+  class Controller {
   public:
-    virtual ~BraveSyncController(){};
+    virtual ~Controller() = default;
     virtual void OnSetupSyncHaveCode(const std::string &sync_words,
       const std::string &device_name) = 0;
 
@@ -25,7 +25,7 @@ namespace brave_sync {
     virtual void OnDeleteDevice(const std::string &device_id) = 0;
     virtual void OnResetSync() = 0;
 
-    virtual void GetSettings(BraveSyncSettings &settings) = 0;
+    virtual void GetSettings(brave_sync::Settings &settings) = 0;
     virtual void GetDevices(SyncDevices &devices) = 0;
 
     virtual void GetSyncWords() = 0;

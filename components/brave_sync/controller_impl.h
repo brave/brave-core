@@ -33,40 +33,40 @@ namespace bookmarks {
 namespace brave_sync {
 
 namespace storage {
-  class BraveSyncObjMap;
+  class ObjectMap;
 }
 
 namespace prefs {
-  class BraveSyncPrefs;
+  class Prefs;
 }
 
 class SyncDevices;
-class BraveSyncController;
-struct BraveSyncSettings;
-class BraveSyncBookmarks;
+class Controller;
+class Settings;
+class Bookmarks;
 
-class BraveSyncControllerImpl : public BraveSyncController,
+class ControllerImpl : public Controller,
                             ///public SyncJsLayerResponseReceiver,///
                             public SyncLibToBrowserHandler,
                             public BrowserListObserver,
                             public CanSendSyncBookmarks {
 public:
-  BraveSyncControllerImpl();
-  ~BraveSyncControllerImpl() override;
+  ControllerImpl();
+  ~ControllerImpl() override;
 
-  static BraveSyncControllerImpl* GetInstance();
+  static ControllerImpl* GetInstance();
 
   // BrowserListObserver overrides:
   void OnBrowserAdded(Browser* browser) override;
   void OnBrowserSetLastActive(Browser* browser) override;
 
-  // BraveSyncController messages from UI
+  // Controller messages from UI
   void OnSetupSyncHaveCode(const std::string &sync_words,
     const std::string &device_name) override;
   void OnSetupSyncNewToSync(const std::string &device_name) override;
   void OnDeleteDevice(const std::string &device_id) override;
   void OnResetSync() override;
-  void GetSettings(BraveSyncSettings &settings) override;
+  void GetSettings(brave_sync::Settings &settings) override;
   void GetDevices(SyncDevices &devices) override;
   void GetSyncWords() override;
   std::string GetSeed() override;
@@ -75,8 +75,8 @@ public:
   void SetupUi(SyncUI *sync_ui) override;
 
 private:
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncControllerImpl);
-  friend struct base::DefaultSingletonTraits<BraveSyncControllerImpl>;
+  DISALLOW_COPY_AND_ASSIGN(ControllerImpl);
+  friend struct base::DefaultSingletonTraits<ControllerImpl>;
 
   void LoadJsLibPseudoTab();
 
@@ -208,10 +208,10 @@ private:
   };
   TempStorage temp_storage_;
 
-  std::auto_ptr<brave_sync::prefs::BraveSyncPrefs> sync_prefs_;
-  std::unique_ptr<BraveSyncSettings> settings_;
-  std::unique_ptr<storage::BraveSyncObjMap> sync_obj_map_;
-  std::unique_ptr<BraveSyncBookmarks> bookmarks_;
+  std::auto_ptr<brave_sync::prefs::Prefs> sync_prefs_;
+  std::unique_ptr<brave_sync::Settings> settings_;
+  std::unique_ptr<brave_sync::storage::ObjectMap> sync_obj_map_;
+  std::unique_ptr<brave_sync::Bookmarks> bookmarks_;
   std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
 
   Browser *browser_;

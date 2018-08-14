@@ -8,7 +8,7 @@
 //#include "components/sync/driver/sync_service_base.h"
 
 namespace brave_sync {
-class BraveSyncController;
+class Controller;
 }
 
 namespace syncer {
@@ -26,8 +26,8 @@ class BraveSyncServiceBase
               );
  virtual ~BraveSyncServiceBase();
  private:
-   brave_sync::BraveSyncController* brave_sync_controller_;
-   //std::unique_ptr<BraveSyncController> brave_sync_controller_;
+   brave_sync::Controller* brave_sync_controller_;
+   //std::unique_ptr<Controller> brave_sync_controller_;
 };
 
 }  // namespace syncer

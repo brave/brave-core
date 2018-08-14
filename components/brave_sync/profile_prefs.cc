@@ -15,7 +15,7 @@ namespace brave_sync {
 
 namespace prefs {
 
-void BraveSyncPrefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   LOG(ERROR) << "TAGAB brave_sync::prefs::RegisterProfilePrefs ";
   //LOG(ERROR) << base::debug::StackTrace().ToString();
 
@@ -32,80 +32,80 @@ void BraveSyncPrefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* regi
   registry->RegisterTimePref(kLastFetchTime, base::Time());
 }
 
-BraveSyncPrefs::BraveSyncPrefs(PrefService* pref_service) : pref_service_(pref_service) {
-  LOG(ERROR) << "TAGAB BraveSyncPrefs::BraveSyncPrefs this="<<this;
+Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {
+  LOG(ERROR) << "TAGAB brave_sync::Prefs::Prefs this="<<this;
 
   // use ptr from BraveSyncServiceBase::BraveSyncServiceBase, //sync_client->GetPrefService()
 
   pref_service_ = ProfileManager::GetActiveUserProfile()->GetPrefs();
-  LOG(ERROR) << "TAGAB BraveSyncPrefs::BraveSyncPrefs pref_service_="<<pref_service_;
+  LOG(ERROR) << "TAGAB brave_sync::Prefs::Prefs pref_service_="<<pref_service_;
 }
 
-std::string BraveSyncPrefs::GetSeed() const {
-  LOG(ERROR) << "TAGAB BraveSyncPrefs::GetSeed seed="<<pref_service_->GetString(kSeed);
+std::string Prefs::GetSeed() const {
+  LOG(ERROR) << "TAGAB brave_sync::Prefs::GetSeed seed="<<pref_service_->GetString(kSeed);
   return pref_service_->GetString(kSeed);
 }
 
-void BraveSyncPrefs::SetSeed(const std::string& seed) {
-  LOG(ERROR) << "TAGAB BraveSyncPrefs::SetSeed seed=<"<<seed<<">";
+void Prefs::SetSeed(const std::string& seed) {
+  LOG(ERROR) << "TAGAB brave_sync::Prefs::SetSeed seed=<"<<seed<<">";
   DCHECK(!seed.empty());
   pref_service_->SetString(kSeed, seed);
 }
 
-std::string BraveSyncPrefs::GetThisDeviceId() const {
+std::string Prefs::GetThisDeviceId() const {
   return pref_service_->GetString(kThisDeviceId);
 }
 
-void BraveSyncPrefs::SetThisDeviceId(const std::string& device_id) {
-  LOG(ERROR) << "TAGAB BraveSyncPrefs::SetThisDeviceId device_id=<"<<device_id<<">";
+void Prefs::SetThisDeviceId(const std::string& device_id) {
+  LOG(ERROR) << "TAGAB brave_sync::Prefs::SetThisDeviceId device_id=<"<<device_id<<">";
   DCHECK(!device_id.empty());
   pref_service_->SetString(kThisDeviceId, device_id);
 }
 
-std::string BraveSyncPrefs::GetThisDeviceName() const {
+std::string Prefs::GetThisDeviceName() const {
   return pref_service_->GetString(kThisDeviceName);
 }
 
-void BraveSyncPrefs::SetDeviceName(const std::string& device_name) {
-  LOG(ERROR) << "TAGAB BraveSyncPrefs::SetDeviceName device_name=<"<<device_name<<">";
+void Prefs::SetDeviceName(const std::string& device_name) {
+  LOG(ERROR) << "TAGAB brave_sync::Prefs::SetDeviceName device_name=<"<<device_name<<">";
   DCHECK(!device_name.empty());
   pref_service_->SetString(kThisDeviceName, device_name);
 }
 
-bool BraveSyncPrefs::GetSyncThisDevice() const {
+bool Prefs::GetSyncThisDevice() const {
   return pref_service_->GetBoolean(kSyncThisDeviceEnabled);
 }
 
-void BraveSyncPrefs::SetSyncThisDevice(const bool &sync_this_device) {
+void Prefs::SetSyncThisDevice(const bool &sync_this_device) {
   pref_service_->SetBoolean(kSyncThisDeviceEnabled, sync_this_device);
 }
 
-bool BraveSyncPrefs::GetSyncBookmarksEnabled() const {
+bool Prefs::GetSyncBookmarksEnabled() const {
   return pref_service_->GetBoolean(kSyncBookmarksEnabled);
 }
 
-void BraveSyncPrefs::SetSyncBookmarksEnabled(const bool &sync_bookmarks_enabled) {
+void Prefs::SetSyncBookmarksEnabled(const bool &sync_bookmarks_enabled) {
   pref_service_->SetBoolean(kSyncBookmarksEnabled, sync_bookmarks_enabled);
 }
 
-bool BraveSyncPrefs::GetSyncSiteSettingsEnabled() const {
+bool Prefs::GetSyncSiteSettingsEnabled() const {
   return pref_service_->GetBoolean(kSiteSettingsEnabled);
 }
 
-void BraveSyncPrefs::SetSyncSiteSettingsEnabled(const bool &sync_site_settings_enabled) {
+void Prefs::SetSyncSiteSettingsEnabled(const bool &sync_site_settings_enabled) {
   pref_service_->SetBoolean(kSiteSettingsEnabled, sync_site_settings_enabled);
 }
 
-bool BraveSyncPrefs::GetSyncHistoryEnabled() const {
+bool Prefs::GetSyncHistoryEnabled() const {
   return pref_service_->GetBoolean(kHistoryEnabled);
 }
 
-void BraveSyncPrefs::SetSyncHistoryEnabled(const bool &sync_history_enabled) {
+void Prefs::SetSyncHistoryEnabled(const bool &sync_history_enabled) {
   pref_service_->SetBoolean(kHistoryEnabled, sync_history_enabled);
 }
 
-std::unique_ptr<BraveSyncSettings> BraveSyncPrefs::GetBraveSyncSettings() const {
-  auto settings = std::make_unique<BraveSyncSettings>();
+std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
+  auto settings = std::make_unique<brave_sync::Settings>();
 
   settings->this_device_name_ = GetThisDeviceName();
   settings->sync_this_device_ = GetSyncThisDevice();
@@ -116,23 +116,23 @@ std::unique_ptr<BraveSyncSettings> BraveSyncPrefs::GetBraveSyncSettings() const 
   return settings;
 }
 
-void BraveSyncPrefs::SetLatestRecordTime(const base::Time &time) {
+void Prefs::SetLatestRecordTime(const base::Time &time) {
   pref_service_->SetTime(kLatestRecordTime, time);
 }
 
-base::Time BraveSyncPrefs::GetLatestRecordTime() {
+base::Time Prefs::GetLatestRecordTime() {
   return pref_service_->GetTime(kLatestRecordTime);
 }
 
-void BraveSyncPrefs::SetLastFetchTime(const base::Time &time) {
+void Prefs::SetLastFetchTime(const base::Time &time) {
   pref_service_->SetTime(kLastFetchTime, time);
 }
 
-base::Time BraveSyncPrefs::GetLastFetchTime() {
+base::Time Prefs::GetLastFetchTime() {
   return pref_service_->GetTime(kLastFetchTime);
 }
 
-void BraveSyncPrefs::Clear() {
+void Prefs::Clear() {
   pref_service_->ClearPref(kThisDeviceId);
   pref_service_->ClearPref(kSeed);
   pref_service_->ClearPref(kThisDeviceName);

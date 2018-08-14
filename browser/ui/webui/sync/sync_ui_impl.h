@@ -10,7 +10,7 @@ namespace base {
 }  // namespace base
 
 namespace brave_sync {
-  class BraveSyncController;
+  class Controller;
 } // namespace brave_sync
 
 // The WebUI for chrome://bravesync
@@ -49,7 +49,7 @@ class SyncUIImpl : public BasicUI, //AB: should bot be inherited from BasicUI,
   // this should grab actual data from controller and update the page
   void LoadSyncSettingsView();
 
-  brave_sync::BraveSyncController *sync_controller_;
+  brave_sync::Controller *sync_controller_;
 
   DISALLOW_COPY_AND_ASSIGN(SyncUIImpl);
 };

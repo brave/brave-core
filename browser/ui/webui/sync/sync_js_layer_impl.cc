@@ -17,9 +17,9 @@ SyncJsLayerImpl::SyncJsLayerImpl(content::WebUI* web_ui, const std::string& host
 
    RegisterCallbacks();
 
-   //response_receiver_ = brave_sync::BraveSyncControllerImpl::GetInstance();
-   sync_lib_to_browser_handler_ = brave_sync::BraveSyncControllerImpl::GetInstance();
-   brave_sync::BraveSyncControllerImpl::GetInstance()->SetupJsLayer(this);
+   //response_receiver_ = brave_sync::ControllerImpl::GetInstance();
+   sync_lib_to_browser_handler_ = brave_sync::ControllerImpl::GetInstance();
+   brave_sync::ControllerImpl::GetInstance()->SetupJsLayer(this);
 }
 
 SyncJsLayerImpl::~SyncJsLayerImpl() {

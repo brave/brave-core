@@ -19,7 +19,7 @@ LOG(ERROR) << "TAGAB SyncUIImpl::SyncUIImpl CTOR";
 
   RegisterCallbacks();
 
-  sync_controller_ = static_cast<brave_sync::BraveSyncController*>(brave_sync::BraveSyncControllerImpl::GetInstance());
+  sync_controller_ = static_cast<brave_sync::Controller*>(brave_sync::ControllerImpl::GetInstance());
   sync_controller_->SetupUi(this);
 }
 
@@ -97,7 +97,7 @@ LOG(ERROR) << "SyncUIImpl::OnHaveSyncWords sync_words="<<sync_words;
 
 void SyncUIImpl::LoadSyncSettingsView() {
 LOG(ERROR) << "SyncUIImpl::LoadSyncSettingsView";
-  brave_sync::BraveSyncSettings settings;
+  brave_sync::Settings settings;
   sync_controller_->GetSettings(settings);
 
   brave_sync::SyncDevices devices;

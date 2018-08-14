@@ -9,10 +9,10 @@
 namespace brave_sync {
 namespace storage {
 
-class BraveSyncObjMap {
+class ObjectMap {
 public:
-  BraveSyncObjMap();
-  ~BraveSyncObjMap();
+  ObjectMap();
+  ~ObjectMap();
 
   std::string GetLocalIdByObjectId(const std::string &object_id);
 

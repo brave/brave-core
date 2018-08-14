@@ -20,9 +20,9 @@ namespace bookmarks {
 
 namespace brave_sync {
 
-struct BraveSyncSettings;
+class Settings;
 
-std::unique_ptr<base::Value> BraveSyncSettingsToValue(BraveSyncSettings *brave_sync_settings);
+std::unique_ptr<base::Value> BraveSyncSettingsToValue(brave_sync::Settings *brave_sync_settings);
 
 std::string ExtractObjectIdFromDict(const base::Value *val);
 std::string ExtractObjectIdFromList(const base::Value *val);

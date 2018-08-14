@@ -9,8 +9,9 @@
 
 namespace brave_sync {
 
-struct BraveSyncSettings {
-  BraveSyncSettings();
+class Settings {
+public:
+  Settings();
   std::string this_device_name_;
   bool sync_this_device_;
   bool sync_bookmarks_;

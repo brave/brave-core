@@ -24,7 +24,7 @@ namespace brave {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(registry);
-  brave_sync::prefs::BraveSyncPrefs::RegisterProfilePrefs(registry);
+  brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
 
   RegisterAlternatePrivateSearchEngineProfilePrefs(registry);
 
