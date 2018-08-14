@@ -41,8 +41,8 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   margin-top: 10px;
 }
 
-.c9 {
-  padding: 31px 25px 19px;
+.c10 {
+  padding: 11px 25px 19px;
   position: relative;
   background: #f9fbfc;
 }
@@ -70,6 +70,24 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   font-size: 16px;
   line-height: 0.88;
   color: #fff;
+}
+
+.c9 {
+  padding: 10px 0;
+  position: relative;
+  overflow: hidden;
+  margin: 0 -21px 0 -19px;
+}
+
+.c9:before {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  margin-left: -50%;
+  height: 240px;
+  width: 200%;
+  border-radius: 100%;
+  border: 20px solid #f9fbfc;
 }
 
 .c6 {
@@ -194,9 +212,12 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
     <div
       className="c8"
     />
+    <div
+      className="c9"
+    />
   </div>
   <div
-    className="c9"
+    className="c10"
   />
 </div>
 `;

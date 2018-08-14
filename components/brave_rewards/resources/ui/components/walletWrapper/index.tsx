@@ -19,7 +19,8 @@ import {
   StyledGrantWrapper,
   StyledGrant,
   StyledActionWrapper,
-  StyledBalanceCurrency
+  StyledBalanceCurrency,
+  StyledCurve
 } from './style'
 import ButtonSecondary from '../../../components/buttonsIndicators/buttonSecondary/index'
 import { getLocale } from '../../../helpers'
@@ -149,6 +150,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           <StyledActionWrapper>
             {this.generateActions(actions, id)}
           </StyledActionWrapper>
+          <StyledCurve />
         </StyledHeader>
         <StyledContent>
           {children}

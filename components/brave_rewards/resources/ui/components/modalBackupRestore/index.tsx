@@ -62,7 +62,11 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
 
     const reader = new FileReader()
     reader.onload = function () {
-      self.onRestore((reader.result || '').trim())
+      if (reader.result) {
+        self.onRestore((reader.result.toString() || '').trim())
+      } else {
+        self.onRestore('')
+      }
     }
 
     try {

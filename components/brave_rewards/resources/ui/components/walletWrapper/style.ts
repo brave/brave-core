@@ -45,7 +45,7 @@ export const StyledBalanceTokens = styled.div`
 ` as any
 
 export const StyledContent = styled.div`
-  padding: 31px 25px 19px;
+  padding: 11px 25px 19px;
   position: relative;
   background: #f9fbfc;
 ` as any
@@ -135,4 +135,22 @@ export const StyledBalanceCurrency = styled.span`
   font-size: 16px;
   line-height: 0.88;
   color: #fff;
+` as any
+
+export const StyledCurve = styled.div`
+    padding: 10px 0;
+    position: relative;
+    overflow: hidden;
+    margin: 0 -21px 0 -19px;
+
+    :before {
+      content: "";
+      position: absolute;
+      bottom: -16px;
+      margin-left: -50%;
+      height: 240px;
+      width: 200%;
+      border-radius: 100%;
+      border: 20px solid #f9fbfc;
+    }
 ` as any
