@@ -227,7 +227,11 @@ void BatClient::getWalletProperties() {
      return;
    }
 
-   braveledger_bat_helper::loadFromJson(properties, response);
+   bool ok = braveledger_bat_helper::loadFromJson(properties, response);
+   if (!ok) {
+     ledger_->OnWalletProperties(ledger::Result::ERROR, properties);
+     return;
+   }
    state_->walletProperties_ = properties;
    ledger_->OnWalletProperties(ledger::Result::OK, properties);
  }
