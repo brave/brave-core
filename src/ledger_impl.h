@@ -34,6 +34,8 @@ namespace bat_ledger {
 class LedgerImpl : public ledger::Ledger,
                    public ledger::LedgerCallbackHandler {
  public:
+  typedef std::map<uint32_t, ledger::VisitData>::const_iterator visit_data_iter;
+
   LedgerImpl(ledger::LedgerClient* client);
   ~LedgerImpl() override;
 
@@ -104,14 +106,14 @@ class LedgerImpl : public ledger::Ledger,
   void RunTask(LedgerTaskRunnerImpl::Task task);
 
  private:
-  void OnLoad(const ledger::VisitData& visit_data) override;
-  void OnUnload(uint32_t tab_id) override;
-  void OnShow(uint32_t tab_id) override;
-  void OnHide(uint32_t tab_id) override;
-  void OnForeground(uint32_t tab_id) override;
-  void OnBackground(uint32_t tab_id) override;
-  void OnMediaStart(uint32_t tab_id) override;
-  void OnMediaStop(uint32_t tab_id) override;
+  void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) override;
+  void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnShow(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnHide(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnForeground(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnBackground(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnMediaStart(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnMediaStop(uint32_t tab_id, const uint64_t& current_time) override;
   void OnXHRLoad(uint32_t tab_id, const std::string& url) override;
 
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
@@ -144,6 +146,11 @@ class LedgerImpl : public ledger::Ledger,
   bool initialized_;
 
   URLRequestHandler handler_;
+
+  //ledger::VisitData current_visit_data_;
+  std::map<uint32_t, ledger::VisitData> current_pages_;
+  uint64_t last_tab_active_time_;
+  uint32_t last_shown_tab_id_;
  };
 }  // namespace bat_ledger
 

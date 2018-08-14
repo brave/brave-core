@@ -22,6 +22,8 @@
 #include "static_values.h"
 #include "tweetnacl.h"
 
+//#include "crypto/hkdf.h"
+
 namespace braveledger_bat_helper {
 
   REQUEST_CREDENTIALS_ST::REQUEST_CREDENTIALS_ST() {}
@@ -1278,6 +1280,16 @@ namespace braveledger_bat_helper {
 
     DCHECK(hkdfRes);
     DCHECK(!seed.empty());
+    
+    // We set the key_length to the length of the expected output and then take
+    // the result from the first key, which is the client write key.
+    //const std::string key((char*)&seed[0], seed.size());
+    //const std::string salt((char*)&braveledger_ledger::g_hkdfSalt[0], SALT_LENGTH);
+    //crypto::HKDF hkdf(key, salt, "", SEED_LENGTH, 0, 0);
+
+    //LOG(ERROR) << "hkdf.client_write_key() == " << hkdf.client_write_key().data();
+    //memcpy(&out.front(), hkdf.client_write_key().data(), hkdf.client_write_key().size());
+
     return out;
   }
 

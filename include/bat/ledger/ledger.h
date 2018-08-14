@@ -15,16 +15,16 @@
 namespace ledger {
 
 LEDGER_EXPORT struct VisitData {
+  VisitData();
   VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
             uint32_t tab_id);
   VisitData(const VisitData& data);
-  const std::string tld;
-  const std::string domain;
-  const std::string path;
-  const uint32_t tab_id;
-  uint64_t duration;
+  std::string tld;
+  std::string domain;
+  std::string path;
+  uint32_t tab_id;
 };
 
 class LEDGER_EXPORT Ledger {
@@ -42,14 +42,14 @@ class LEDGER_EXPORT Ledger {
   virtual void CreateWallet() = 0;
   virtual void Reconcile() = 0;
 
-  virtual void OnLoad(const VisitData& visit_data) = 0;
-  virtual void OnUnload(uint32_t tab_id) = 0;
-  virtual void OnShow(uint32_t tab_id) = 0;
-  virtual void OnHide(uint32_t tab_id) = 0;
-  virtual void OnForeground(uint32_t tab_id) = 0;
-  virtual void OnBackground(uint32_t tab_id) = 0;
-  virtual void OnMediaStart(uint32_t tab_id) = 0;
-  virtual void OnMediaStop(uint32_t tab_id) = 0;
+  virtual void OnLoad(const VisitData& visit_data, const uint64_t& current_time) = 0;
+  virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
+  virtual void OnShow(uint32_t tab_id, const uint64_t& current_time) = 0;
+  virtual void OnHide(uint32_t tab_id, const uint64_t& current_time) = 0;
+  virtual void OnForeground(uint32_t tab_id, const uint64_t& current_time) = 0;
+  virtual void OnBackground(uint32_t tab_id, const uint64_t& current_time) = 0;
+  virtual void OnMediaStart(uint32_t tab_id, const uint64_t& current_time) = 0;
+  virtual void OnMediaStop(uint32_t tab_id, const uint64_t& current_time) = 0;
   virtual void OnXHRLoad(uint32_t tab_id, const std::string& url) = 0;
 
   virtual void SetPublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,

@@ -71,17 +71,17 @@ bool ignoreMinTime(const ledger::PublisherInfo::id_type publisher_id) {
   return !getProviderName(publisher_id).empty();
 }
 
-void BatPublishers::saveVisit(const ledger::VisitData& visit_data) {
+void BatPublishers::saveVisit(const ledger::VisitData& visit_data, const uint64_t& duration) {
   const ledger::PublisherInfo::id_type publisher_id =
       getPublisherID(visit_data);
 
   if (!ignoreMinTime(publisher_id) &&
-      visit_data.duration < state_->min_pubslisher_duration_)
+      duration < state_->min_pubslisher_duration_)
     return;
 
   ledger_->GetPublisherInfo(publisher_id,
       std::bind(&BatPublishers::saveVisitInternal, this,
-                    publisher_id, visit_data, _1, _2));
+                    publisher_id, visit_data, duration, _1, _2));
 }
 
 void onVisitSavedDummy(ledger::Result result,
@@ -92,6 +92,7 @@ void onVisitSavedDummy(ledger::Result result,
 void BatPublishers::saveVisitInternal(
     ledger::PublisherInfo::id_type publisher_id,
     ledger::VisitData visit_data,
+    uint64_t duration,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   if (result != ledger::Result::OK) {
@@ -102,9 +103,9 @@ void BatPublishers::saveVisitInternal(
   if (!publisher_info.get())
     publisher_info.reset(new ledger::PublisherInfo(publisher_id));
 
-  publisher_info->duration += visit_data.duration;
+  publisher_info->duration += duration;
   publisher_info->visits += 1;
-  publisher_info->score += concaveScore(visit_data.duration);
+  publisher_info->score += concaveScore(duration);
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
       std::bind(&onVisitSavedDummy, _1, _2));
