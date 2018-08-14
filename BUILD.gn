@@ -65,7 +65,6 @@ source_set("ledger") {
     "src/bat_get_media.h",
     "src/bat_helper.cc",
     "src/bat_helper.h",
-    "src/bat_helper_platform.cc",
     "src/bat_helper_platform.h",
     "src/bat_publishers.cc",
     "src/bat_publishers.h",

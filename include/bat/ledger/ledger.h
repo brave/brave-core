@@ -5,6 +5,7 @@
 #ifndef BAT_LEDGER_LEDGER_H_
 #define BAT_LEDGER_LEDGER_H_
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -50,7 +51,12 @@ class LEDGER_EXPORT Ledger {
   virtual void OnBackground(uint32_t tab_id, const uint64_t& current_time) = 0;
   virtual void OnMediaStart(uint32_t tab_id, const uint64_t& current_time) = 0;
   virtual void OnMediaStop(uint32_t tab_id, const uint64_t& current_time) = 0;
-  virtual void OnXHRLoad(uint32_t tab_id, const std::string& url) = 0;
+  virtual void OnXHRLoad(
+      uint32_t tab_id,
+      const std::string& url,
+      const std::map<std::string, std::string>& parts,
+      const uint64_t& current_time) = 0;
+  virtual std::string URIEncode(const std::string& value) = 0;
 
   virtual void SetPublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;

@@ -104,6 +104,7 @@ class LedgerImpl : public ledger::Ledger,
                            const std::string& viewing_id);
   void RunIOTask(LedgerTaskRunnerImpl::Task task);
   void RunTask(LedgerTaskRunnerImpl::Task task);
+  std::string URIEncode(const std::string& value) override;
 
  private:
   void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) override;
@@ -114,7 +115,11 @@ class LedgerImpl : public ledger::Ledger,
   void OnBackground(uint32_t tab_id, const uint64_t& current_time) override;
   void OnMediaStart(uint32_t tab_id, const uint64_t& current_time) override;
   void OnMediaStop(uint32_t tab_id, const uint64_t& current_time) override;
-  void OnXHRLoad(uint32_t tab_id, const std::string& url) override;
+  void OnXHRLoad(
+      uint32_t tab_id,
+      const std::string& url,
+      const std::map<std::string, std::string>& parts,
+      const uint64_t& current_time) override;
 
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                           ledger::Result result,
