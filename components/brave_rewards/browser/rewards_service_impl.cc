@@ -180,7 +180,13 @@ void RewardsServiceImpl::Init() {
 }
 
 void RewardsServiceImpl::CreateWallet() {
-  ledger_->CreateWallet();
+  if (ready().is_signaled()) {
+    ledger_->CreateWallet();
+  } else {
+    ready().Post(FROM_HERE,
+        base::Bind(&brave_rewards::RewardsService::CreateWallet,
+            base::Unretained(this)));
+  }
 }
 
 void RewardsServiceImpl::GetContentSiteList(
@@ -525,7 +531,13 @@ void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
 }
 
 void RewardsServiceImpl::GetWalletProperties() {
-  ledger_->GetWalletProperties();
+  if (ready().is_signaled()) {
+    ledger_->GetWalletProperties();
+  } else {
+    ready().Post(FROM_HERE,
+        base::Bind(&brave_rewards::RewardsService::GetWalletProperties,
+            base::Unretained(this)));
+  }
 }
 
 void RewardsServiceImpl::GetPromotion(const std::string& lang,

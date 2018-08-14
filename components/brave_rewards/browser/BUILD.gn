@@ -24,8 +24,6 @@ source_set("browser") {
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/sessions",
-    # for one shot event
-    "//extensions/common",
     # for profile.h
     "//components/domain_reliability",
     "//content/public/browser",
@@ -47,6 +45,8 @@ source_set("browser") {
       "//brave/vendor/bat-native-ledger",
       "//net",
       "//url",
+      # for one shot event
+      "//extensions/common",
     ]
   }
 }
