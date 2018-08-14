@@ -4,8 +4,8 @@
 
 #include "brave/components/sync/driver/brave_sync_service_base.h"
 
-//#include "brave/components/brave_sync/brave_sync_controller.h"
-#include "brave/components/brave_sync/brave_sync_controller_impl.h"
+//#include "brave/components/brave_sync/controller.h"
+#include "brave/components/brave_sync/controller_impl.h"
 
 
 namespace syncer {

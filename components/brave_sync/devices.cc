@@ -2,14 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_sync/brave_sync_devices.h"
+#include "brave/components/brave_sync/devices.h"
 
 #include "base/values.h"
 #include "base/json/json_writer.h"
 #include "base/json/json_reader.h"
 #include "base/time/time.h"
 
-#include "brave/components/brave_sync/brave_sync_jslib_const.h"
+#include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/value_debug.h"
 
 namespace brave_sync {

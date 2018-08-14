@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave/components/brave_sync/client/brave_sync_client_web_ui_impl.h"
+#include "brave/components/brave_sync/client/client_web_ui_impl.h"
 #include "base/logging.h"
 #include "brave/browser/ui/webui/sync/sync_js_layer.h"
 

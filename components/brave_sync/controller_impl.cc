@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_sync/brave_sync_controller_impl.h"
+#include "brave/components/brave_sync/controller_impl.h"
 
 #include <sstream>
 
@@ -20,15 +20,15 @@
 #include "brave/browser/extensions/api/brave_sync/brave_sync_event_router.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
-#include "brave/components/brave_sync/brave_sync_bookmarks.h"
-#include "brave/components/brave_sync/brave_sync_devices.h"
-#include "brave/components/brave_sync/brave_sync_profile_prefs.h"
-#include "brave/components/brave_sync/brave_sync_settings.h"
-#include "brave/components/brave_sync/brave_sync_jslib_const.h"
-#include "brave/components/brave_sync/brave_sync_jslib_messages.h"
-#include "brave/components/brave_sync/brave_sync_obj_map.h"
-#include "brave/components/brave_sync/brave_sync_tools.h"
-#include "brave/components/brave_sync/client/brave_sync_client_web_ui_impl.h"
+#include "brave/components/brave_sync/bookmarks.h"
+#include "brave/components/brave_sync/devices.h"
+#include "brave/components/brave_sync/profile_prefs.h"
+#include "brave/components/brave_sync/settings.h"
+#include "brave/components/brave_sync/jslib_const.h"
+#include "brave/components/brave_sync/jslib_messages.h"
+#include "brave/components/brave_sync/obj_map.h"
+#include "brave/components/brave_sync/tools.h"
+#include "brave/components/brave_sync/client/client_web_ui_impl.h"
 #include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/value_debug.h"

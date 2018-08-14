@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave/components/brave_sync/brave_sync_jslib_messages.h"
+#include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "base/logging.h"
 #include "base/values.h"

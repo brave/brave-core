@@ -1,11 +1,11 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave/components/brave_sync/brave_sync_profile_prefs.h"
+#include "brave/components/brave_sync/profile_prefs.h"
 
 #include "base/debug/stack_trace.h"
-#include "brave/components/brave_sync/brave_sync_pref_names.h"
-#include "brave/components/brave_sync/brave_sync_settings.h"
+#include "brave/components/brave_sync/pref_names.h"
+#include "brave/components/brave_sync/settings.h"
 
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
