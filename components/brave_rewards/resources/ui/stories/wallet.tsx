@@ -77,6 +77,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
           contribute={object('Contribute', { color: '#9752CB', tokens: 10, converted: 0.25 })}
           donation={object('Donation', { color: '#4C54D2', tokens: 2, converted: 0.25 })}
           tips={object('Tips', { color: '#4C54D2', tokens: 19, converted: 5.25 })}
+          total={object('Total', { color: '#4C54D2', tokens: 1, converted: 5.25 })}
           onActivity={doNothing}
         />
       </div>

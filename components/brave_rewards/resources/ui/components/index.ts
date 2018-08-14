@@ -32,6 +32,7 @@ import WalletEmpty from './walletEmpty'
 import WalletOff from './walletOff'
 import WalletSummary from './walletSummary'
 import WalletWrapper from './walletWrapper'
+import NextContribution from './nextContribution'
 
 export {
   Alert,
@@ -51,6 +52,7 @@ export {
   ModalActivity,
   ModalBackupRestore,
   ModalContribute,
+  NextContribution,
   Profile,
   SettingsPage,
   SiteBanner,

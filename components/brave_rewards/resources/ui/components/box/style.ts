@@ -3,8 +3,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import { setTheme } from '../../../helpers'
-import { Props } from './index'
+import { Props, Type } from './index'
+
+const colors: Record<Type, string> = {
+  ads: '#C12D7C',
+  contribute: '#9F22A1',
+  donation: '#696FDC'
+}
 
 export const StyledWrapper = styled.div`
   width: 100%;
@@ -49,8 +54,8 @@ export const StyledTitle = styled.div`
   letter-spacing: normal;
   color: ${(p: Props) => {
     if (p.checked === false) return '#838391'
-    return setTheme(p.theme, 'titleColor') || '#4b4c5c'
-  }}
+    return colors[p.type] || '#4b4c5c'
+  }};
 ` as any
 
 export const StyledBreak = styled.div`

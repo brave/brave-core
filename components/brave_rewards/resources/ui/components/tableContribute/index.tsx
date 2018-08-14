@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import * as CSS from 'csstype'
 import {
   StyledText,
   StyledRemove,
@@ -36,15 +35,11 @@ export interface Props {
   showRemove?: boolean
   id?: string
   children?: React.ReactNode
-  theme?: Theme
+  headerColor?: boolean
   rows?: DetailRow[]
   numSites?: number
   allSites?: boolean
   onShowAll?: () => void
-}
-
-interface Theme {
-  headerColor?: CSS.Color
 }
 
 const removeIcon = require('./assets/close')
@@ -61,12 +56,12 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
 
     let theme = {}
 
-    if (this.props.theme && this.props.theme.headerColor) {
+    if (this.props.headerColor) {
       theme = {
         border: 'none',
-        'border-bottom': `1px solid ${this.props.theme.headerColor}`,
+        'border-bottom': `1px solid #9F22A1`,
         padding: '0',
-        color: this.props.theme.headerColor
+        color: '#9F22A1'
       }
     }
 
@@ -117,18 +112,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
             <Tokens
               value={row.token.value}
               converted={row.token.converted}
-              theme={{
-                color: {
-                  tokenNum: '#686978',
-                  token: '#a7acb2',
-                  text: '#a7acb2'
-                },
-                size: {
-                  text: '10px',
-                  token: '12px',
-                  tokenNum: '14px'
-                }
-              }}
+              size={'small'}
             />
           ),
           theme: {

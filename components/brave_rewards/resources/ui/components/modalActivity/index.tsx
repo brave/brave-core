@@ -32,6 +32,7 @@ import TableContribute, { DetailRow as ContributeRow } from '../tableContribute'
 import TableTransactions, { DetailRow as TransactionRow } from '../tableTransactions'
 import Select from '../../../components/formControls/select'
 import ListToken from '../listToken'
+import { Type as TokenType } from '../tokens'
 
 // Utils
 import { getLocale } from '../../../helpers'
@@ -75,13 +76,13 @@ export interface Props {
 }
 
 export default class ModalActivity extends React.PureComponent<Props, {}> {
-  private colors: Record<SummaryType, string> = {
-    deposit: '#9f22a1',
-    grant: '#696fdc',
-    ads: '#696fdc',
-    contribute: '#9752cb',
-    recurring: '#696fdc',
-    donations: '#'
+  private colors: Record<SummaryType, TokenType> = {
+    deposit: 'earnings',
+    grant: 'earnings',
+    ads: 'earnings',
+    contribute: 'contribute',
+    recurring: 'donation',
+    donations: 'donation'
   }
 
   private hasWarnings: boolean = false
@@ -128,11 +129,9 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
           title={title}
           value={item.token.value}
           converted={item.token.converted}
-          theme={{
-            color: item.notPaid ? '#838391' : this.colors[item.type],
-            marginBottom: '0',
-            borderTop: i === 0 ? '1px solid #d0d6dc' : 'none'
-          }}
+          color={item.notPaid ? 'notPaid' : this.colors[item.type]}
+          size={'small'}
+          border={i === 0 ? 'first' : 'default'}
         />
       )
     })
@@ -143,7 +142,8 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
         title={<b>{getLocale('total')}</b>}
         value={this.props.total.value}
         converted={this.props.total.converted}
-        theme={{ color: '#9f22a1', borderBottom: 'none', marginBottom: '0' }}
+        size={'small'}
+        border={'last'}
       />
     )
 
@@ -197,22 +197,16 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
                     title={getLocale('openBalance')}
                     value={openBalance.value}
                     converted={openBalance.converted}
-                    theme={{
-                      color: '#9f22a1',
-                      borderBottom: 'none',
-                      borderTop: 'none'
-                    }}
+                    color={'earnings'}
+                    border={'last'}
                   />
                   <StyledClosing>
                     <ListToken
                       title={<b>{getLocale('closeBalance')}</b>}
                       value={closingBalance.value}
                       converted={closingBalance.converted}
-                      theme={{
-                        color: '#9f22a1',
-                        borderBottom: 'none',
-                        borderTop: 'none'
-                      }}
+                      color={'contribute'}
+                      border={'last'}
                     />
                   </StyledClosing>
                 </StyledBalance>

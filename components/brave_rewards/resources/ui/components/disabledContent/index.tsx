@@ -3,25 +3,21 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import * as CSS from 'csstype'
 import { StyledContent } from './style'
 import { Column, Grid } from '../../../components/layout/gridList'
 
-interface Theme {
-  color?: CSS.Color
-  boldColor?: CSS.Color
-}
+export type Type = 'ads' | 'contribute' | 'donation'
 
 export interface Props {
   children: React.ReactNode
   id?: string
   image?: string
-  theme?: Theme
+  type?: Type
 }
 
 export default class DisabledContent extends React.PureComponent<Props, {}> {
   render () {
-    const { id, image, theme, children } = this.props
+    const { id, image, children, type } = this.props
 
     return (
       <div id={id}>
@@ -30,7 +26,7 @@ export default class DisabledContent extends React.PureComponent<Props, {}> {
             <img src={image} />
           </Column>
           <Column size={2}>
-            <StyledContent theme={theme}>
+            <StyledContent type={type}>
               {children}
             </StyledContent>
           </Column>

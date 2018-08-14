@@ -18,6 +18,7 @@ import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewar
 
 // Utils
 import locale from './fakeLocale'
+import NextContribution from '../../../../src/features/rewards/nextContribution'
 
 // Assets
 const bartBaker = require('../../../assets/img/bartBaker.jpeg')
@@ -122,7 +123,7 @@ class ContributeBox extends React.Component<{}, State> {
     return (
       <DisabledContent
         image={contributeImg}
-        theme={{ color: '#ce9ccf', boldColor: '#c16fc2' }}
+        type={'contribute'}
       >
         • Pay directly for the content you love. <br/>
         • Your <b>monthly allowance</b> gets divided based on your attention metric.
@@ -146,7 +147,7 @@ class ContributeBox extends React.Component<{}, State> {
     return (
       <Box
         title={locale.contributionTitle}
-        theme={{ titleColor: '#9F22A1' }}
+        type={'contribute'}
         description={locale.contributionDesc}
         toggle={true}
         checked={this.state.contributeToggle}
@@ -179,17 +180,8 @@ class ContributeBox extends React.Component<{}, State> {
         </List>
         <List
           title={locale.contributionNextDate}
-          theme={{
-            'font-size': '14px',
-            'text-align': 'right',
-            'border-radius': '6px',
-            color: '#4b4c5c',
-            background: '#e9f0ff',
-            display: 'inline-block',
-            padding: '9px 10px 9px 13px'
-          }}
         >
-          July 25th
+          <NextContribution>July 25th</NextContribution>
         </List>
         <List title={locale.contributionSites}>
           Total &nbsp;<Tokens value={55} hideText={true} toFixed={false}/>
@@ -204,9 +196,7 @@ class ContributeBox extends React.Component<{}, State> {
           allSites={false}
           numSites={55}
           onShowAll={this.onContributeModalOpen.bind(self)}
-          theme={{
-            headerColor: '#9F22A1'
-          }}
+          headerColor={true}
         >
           Please visit some sites
         </TableContribute>

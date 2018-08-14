@@ -4,15 +4,12 @@
 
 import styled from 'styled-components'
 
-export const StyledTHLast = styled.div`
+export const StyledWrapper = styled.div`
+  font-size: 14px;
   text-align: right;
-  padding-right: 14px;
-` as any
-
-export const StyledProvider = styled.span`
-  color: #9e9fab;
-` as any
-
-export const StyledType = styled.div`
-  color: ${(p: {color: string}) => p.color || 'inherit'};
+  border-radius: 6px;
+  color: #4b4c5c;
+  background: #e9f0ff;
+  display: inline-block;
+  padding: 9px 10px 9px 13px;
 ` as any

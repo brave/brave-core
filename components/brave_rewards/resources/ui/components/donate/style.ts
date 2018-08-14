@@ -3,8 +3,33 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import { Theme } from './index'
-import { setTheme } from '../../../helpers'
+import * as CSS from 'csstype'
+import { DonateType, Props } from './index'
+
+interface Theme {
+  paddingBox: CSS.PaddingProperty<1>
+  sendBgColor: CSS.Color
+  disabledSendColor: CSS.Color
+  paddingSend: CSS.PaddingProperty<1>
+  paddingFunds: CSS.PaddingProperty<1>
+}
+
+const theme: Record<DonateType, Theme> = {
+  big: {
+    paddingBox: '0 19px 0 55px',
+    sendBgColor: '#4c54d2',
+    disabledSendColor: '#3e45b2',
+    paddingSend: '16px 19px 16px 55px',
+    paddingFunds: '13px 12px 13px 24px'
+  },
+  small: {
+    paddingBox: '0 0 0 23px',
+    sendBgColor: '#392dd1',
+    disabledSendColor: '#1a22a8',
+    paddingSend: '13px 0 13px 51px',
+    paddingFunds: '13px 0 14px 25px'
+  }
+}
 
 export const StyledWrapper = styled.div`
   position: relative;
@@ -12,7 +37,7 @@ export const StyledWrapper = styled.div`
 ` as any
 
 export const StyledContent = styled.div`
-  padding: ${(p: {theme: Theme}) => setTheme(p.theme, 'paddingBox') || '0'};
+  padding: ${(p: Props) => theme[p.donateType].paddingBox};
 ` as any
 
 export const StyledDonationTitle = styled.div`
@@ -28,12 +53,12 @@ export const StyledDonationTitle = styled.div`
 ` as any
 
 export const StyledSend = styled.div`
-  background: ${(p: {disabled: boolean, theme: Theme}) => setTheme(p.theme, 'sendBgColor') || '#4c54d2'};
+  background: ${(p: {disabled: boolean, donateType: DonateType}) => theme[p.donateType].sendBgColor};
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.2px;
-  color: ${(p: {disabled: boolean, theme: Theme}) => p.disabled ? (setTheme(p.theme, 'disabledSendColor') || '#3e45b2') : '#fff'};
-  padding: ${(p: {disabled: boolean, theme: Theme}) => setTheme(p.theme, 'paddingSend') || '0'};
+  color: ${(p: {disabled: boolean, donateType: DonateType}) => p.disabled ? theme[p.donateType].disabledSendColor : '#fff'};
+  padding: ${(p: {disabled: boolean, donateType: DonateType}) => theme[p.donateType].paddingSend};
   text-transform: uppercase;
 ` as any
 
@@ -49,7 +74,7 @@ export const StyledFunds = styled.div`
   font-weight: 300;
   line-height: 1.69;
   color: #fff;
-  padding: ${(p: {theme: Theme}) => setTheme(p.theme, 'paddingFunds') || '0'};
+  padding: ${(p: {donateType: DonateType}) => theme[p.donateType].paddingFunds};
   background: #1b1d2f;
   display: flex;
   position:absolute;

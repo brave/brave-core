@@ -9,10 +9,13 @@ exports[`Disabled Content tests basic tests matches the snapshot 1`] = `
   color: #4b4c5c;
 }
 
+.c3 b {
+  color: #4b4c5c;
+}
+
 .c3 b,
 .c3 a {
   font-weight: 500;
-  color: #4b4c5c;
 }
 
 .c3 h3 {
@@ -128,6 +131,7 @@ exports[`Disabled Content tests basic tests matches the snapshot 1`] = `
     >
       <div
         className="c3"
+        type={undefined}
       />
     </div>
   </div>

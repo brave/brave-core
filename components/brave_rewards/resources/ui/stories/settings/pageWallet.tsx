@@ -282,11 +282,12 @@ class PageWallet extends React.Component<{}, State> {
           {
             content === 'summary'
               ? <WalletSummary
-                grant={{ color: '#C12D7C', tokens: 10, converted: 0.25 }}
-                ads={{ color: '#C12D7C', tokens: 10, converted: 0.25 }}
-                contribute={{ color: '#9752CB', tokens: 10, converted: 0.25 }}
-                donation={{ color: '#4C54D2', tokens: 2, converted: 0.25 }}
-                tips={{ color: '#4C54D2', tokens: 19, converted: 5.25 }}
+                grant={{ tokens: 10, converted: 0.25 }}
+                ads={{ tokens: 10, converted: 0.25 }}
+                contribute={{ tokens: 10, converted: 0.25 }}
+                donation={{ tokens: 2, converted: 0.25 }}
+                tips={{ tokens: 19, converted: 5.25 }}
+                total={{ tokens: 1, converted: 5.25 }}
                 onActivity={this.onActivity}
               />
               : null

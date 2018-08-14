@@ -15,7 +15,11 @@ import { getLocale } from '../../../helpers'
 
 const activityIcon = require('./assets/activity')
 
-type Token = {color: string, tokens: number, converted: number}
+type Token = {
+  tokens: number,
+  converted: number
+  isNegative?: boolean
+}
 
 export interface Props {
   onActivity: () => void
@@ -24,12 +28,13 @@ export interface Props {
   contribute: Token
   donation?: Token
   tips?: Token
+  total: Token
   id?: string
 }
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
   render () {
-    const { id, grant, ads, contribute, donation, tips, onActivity } = this.props
+    const { id, grant, ads, contribute, donation, tips, onActivity, total } = this.props
     const date = new Date()
     const month = getLocale(`month${date.toLocaleString('en-us', { month: 'short' })}`)
     const year = date.getFullYear()
@@ -44,7 +49,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             ? <ListToken
               value={grant.tokens}
               converted={grant.converted}
-              theme={{ color: grant.color }}
+              color={'earnings'}
               title={getLocale('tokenGrant')}
             />
             : null
@@ -54,7 +59,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             ? <ListToken
               value={ads.tokens}
               converted={ads.converted}
-              theme={{ color: ads.color }}
+              color={'earnings'}
               title={getLocale('earningsAds')}
             />
             : null
@@ -62,7 +67,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           <ListToken
             value={contribute.tokens}
             converted={contribute.converted}
-            theme={{ color: contribute.color }}
+            color={'contribute'}
             title={getLocale('rewardsContribute')}
             isNegative={true}
           />
@@ -71,7 +76,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             ? <ListToken
               value={donation.tokens}
               converted={donation.converted}
-              theme={{ color: donation.color }}
+              color={'donation'}
               title={getLocale('recurringDonations')}
               isNegative={true}
             />
@@ -82,12 +87,19 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             ? <ListToken
               value={tips.tokens}
               converted={tips.converted}
-              theme={{ color: tips.color, borderBottom: 'none' }}
+              color={'donation'}
               title={getLocale('oneTimeDonation')}
               isNegative={true}
             />
             : null
           }
+          <ListToken
+            value={total.tokens}
+            converted={total.converted}
+            border={'last'}
+            title={getLocale('total')}
+            isNegative={total.isNegative || false}
+          />
         </div>
         <StyledActivity onClick={onActivity}>
           <StyledActivityIcon>{activityIcon}</StyledActivityIcon> {getLocale('viewMonthly')}

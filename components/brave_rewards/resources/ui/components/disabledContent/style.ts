@@ -2,21 +2,47 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
-import { setTheme } from '../../../helpers'
-import { Props } from './index'
+import styled, { css } from 'styled-components'
+import { Props, Type } from './index'
 
-export const StyledContent = styled.div`
+const getColors = (type?: Type) => {
+  let color = '#4b4c5c'
+  let boldColor = '#4b4c5c'
+
+  switch (type) {
+    case 'ads':
+      color = '#ceb4e1'
+      boldColor = '#b490cf'
+      break
+    case 'contribute':
+      color = '#ce9ccf'
+      boldColor = '#c16fc2'
+      break
+    case 'donation':
+      color = '#AC9CCF'
+      boldColor = '#696fdc'
+      break
+  }
+
+  return css`
+    color: ${color};
+
+    b {
+      color: ${boldColor};
+    }
+  `
+}
+
+export const StyledContent = styled<Props, 'div'>('div')`
   font-family: Poppins, sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.5;
-  color: ${(p: Props) => setTheme(p.theme, 'color') || '#4b4c5c'};
+  ${(p: Props) => getColors(p.type)};
 
   b,
   a {
     font-weight: 500;
-    color: ${(p: Props) => setTheme(p.theme, 'boldColor') || '#4b4c5c'};
   }
 
   h3 {

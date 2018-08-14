@@ -92,22 +92,20 @@ class DonationsBox extends React.Component {
     return (
       <Box
         title={locale.donationTitle}
-        theme={{ titleColor: '#696FDC' }}
+        type={'donation'}
         description={locale.donationDesc}
         settingsChild={this.donationSettingsChild()}
       >
         <List title={locale.donationTotal}>
-          <Tokens value={21} converted={7}/>
+          <Tokens value={21} converted={7} />
         </List>
         <List title={locale.donationList}>
-          Total &nbsp;<Tokens value={3} hideText={true} toFixed={false}/>
+          Total &nbsp;<Tokens value={3} hideText={true} toFixed={false} />
         </List>
         <TableDonation
           rows={this.donationRows}
           allItems={true}
-          theme={{
-            headerColor: '#696FDC'
-          }}
+          headerColor={true}
         >
           Please visit some sites
         </TableDonation>

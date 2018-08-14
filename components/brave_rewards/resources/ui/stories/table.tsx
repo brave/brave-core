@@ -90,6 +90,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           numSites={number('Number of all sites?', 55)}
           showRowAmount={boolean('Show row amount', false)}
           showRemove={boolean('Show remove action', true)}
+          headerColor={boolean('Colored header', true)}
         >
           Please visit some sites
         </TableContribute>
@@ -120,8 +121,8 @@ storiesOf('Feature Components/Rewards/Table', module)
         },
         type: 'donation',
         contribute: {
-          tokens: 12,
-          converted: 6.2
+          tokens: 12000,
+          converted: 6000.2
         },
         text: 'May 7'
       },
@@ -146,6 +147,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           rows={object('Rows', rows)}
           allItems={boolean('Are this all items?', false)}
           numItems={number('Number of all items?', 55)}
+          headerColor={boolean('Colored header', true)}
         >
           Please visit some sites
         </TableDonation>

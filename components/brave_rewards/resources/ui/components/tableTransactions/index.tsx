@@ -10,7 +10,7 @@ import {
 } from './style'
 import Table, { Row } from '../../../components/dataTables/table/index'
 import { getLocale } from '../../../helpers'
-import Tokens from '../tokens'
+import Tokens, { Type as TokenType } from '../tokens'
 
 export type TransactionType = 'deposit' | 'tipOnLike' | 'donation' | 'contribute' | 'recurringDonation'
 
@@ -30,6 +30,14 @@ export interface Props {
 }
 
 export default class TableTransactions extends React.PureComponent<Props, {}> {
+  private tokenColors: Record<TransactionType, TokenType> = {
+    deposit: 'earnings',
+    tipOnLike: 'donation',
+    donation: 'donation',
+    contribute: 'contribute',
+    recurringDonation: 'donation'
+  }
+
   private colors: Record<TransactionType, string> = {
     deposit: '#9f22a1',
     tipOnLike: '#696fdc',
@@ -90,18 +98,8 @@ export default class TableTransactions extends React.PureComponent<Props, {}> {
                 value={row.amount.value}
                 isNegative={row.amount.isNegative}
                 converted={row.amount.converted}
-                theme={{
-                  color: {
-                    tokenNum: this.colors[row.type] || '#686978',
-                    token: '#686978',
-                    text: '#9E9FAB'
-                  },
-                  size: {
-                    text: '10px',
-                    token: '12px',
-                    tokenNum: '14px'
-                  }
-                }}
+                color={this.tokenColors[row.type]}
+                size={'small'}
               />
             ),
             theme: {

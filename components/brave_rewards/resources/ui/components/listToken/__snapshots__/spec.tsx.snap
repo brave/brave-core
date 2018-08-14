@@ -23,7 +23,6 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-  margin-bottom: 8px;
   font-family: Poppins,sans-serif;
 }
 
@@ -66,13 +65,13 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
 }
 
 .c4 {
-  color: #686978;
-  font-size: 14px;
+  color: #4b4c5c;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .c5 {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
   display: inline-block;
   margin-left: 4px;
@@ -96,12 +95,15 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
       >
         <span
           className="c4"
+          color={undefined}
+          size={undefined}
         >
           
           10.0
         </span>
         <span
           className="c5"
+          size={undefined}
         >
           BAT
         </span>

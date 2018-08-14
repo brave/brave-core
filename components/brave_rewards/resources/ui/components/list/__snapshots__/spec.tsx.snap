@@ -66,10 +66,6 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   />
   <div
     className="c2"
-  >
-    <div
-      className=""
-    />
-  </div>
+  />
 </div>
 `;

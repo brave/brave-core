@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import * as CSS from 'csstype'
 import { StyledType, StyledDate, StyledRemove, StyledRemoveIcon, StyledToggle, StyledRecurringIcon } from './style'
 import Table, { Cell, Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
@@ -37,11 +36,7 @@ export interface Props {
   numItems?: number
   allItems?: boolean
   onClick?: () => void
-  theme?: Theme
-}
-
-interface Theme {
-  headerColor?: CSS.Color
+  headerColor?: boolean
 }
 
 const removeIcon = require('./assets/close')
@@ -107,16 +102,13 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
               <Tokens
                 value={row.contribute.tokens}
                 converted={row.contribute.converted}
-                theme={{
-                  display: 'block',
-                  size: { token: '12px', text: '10px', tokenNum: '14px' },
-                  color: { token: '#686978', text: '#9e9fab' }
-                }}
+                size={'small'}
               />
             ),
             theme: {
               'text-align': 'right',
-              'padding-right': '7px'
+              'padding-right': '7px',
+              'max-width': '40px'
             }
           }
         ]
@@ -127,13 +119,12 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
   get headers (): Cell[] {
     let theme = {}
 
-    if (this.props.theme && this.props.theme.headerColor) {
+    if (this.props.headerColor) {
       theme = {
         border: 'none',
-        'border-bottom': `1px solid ${this.props.theme.headerColor}`,
-        'padding-top': '0',
-        'padding-bottom': '0',
-        color: this.props.theme.headerColor
+        'border-bottom': `1px solid #696FDC`,
+        padding: '0',
+        color: '#696FDC'
       }
     }
 

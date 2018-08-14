@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import * as CSS from 'csstype'
 import { StyledWrapper,
   StyledLeft,
   StyledRight,
@@ -25,14 +24,11 @@ import { getLocale } from '../../../helpers'
 const close = require('./assets/close')
 const settings = require('./assets/settings')
 
-export interface Theme {
-  titleColor: CSS.Color
-}
+export type Type = 'ads' | 'contribute' | 'donation'
 
 export interface Props {
   title: string
   id?: string
-  theme?: Theme
   description?: string
   toggle?: boolean
   checked?: boolean
@@ -40,6 +36,7 @@ export interface Props {
   settingsChild?: React.ReactNode
   disabledContent?: React.ReactNode
   children?: React.ReactNode
+  type: Type
 }
 
 interface State {
@@ -72,7 +69,7 @@ export default class Box extends React.PureComponent<Props, State> {
       settingsChild,
       disabledContent,
       description,
-      theme,
+      type,
       children
     } = this.props
 
@@ -81,7 +78,7 @@ export default class Box extends React.PureComponent<Props, State> {
         <StyledFlip>
           <StyledContentWrapper open={!this.state.settingsOpened}>
             <StyledLeft>
-              <StyledTitle theme={theme} checked={checked}>{title}</StyledTitle>
+              <StyledTitle type={type} checked={checked}>{title}</StyledTitle>
             </StyledLeft>
             <StyledRight>
               {

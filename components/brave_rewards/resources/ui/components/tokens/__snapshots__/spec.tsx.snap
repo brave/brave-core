@@ -5,12 +5,12 @@ exports[`Tokens tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
   font-weight: 300;
   line-height: 1.4;
-  color: #4b4c5c;
+  color: #686978;
   display: inline-block;
 }
 
 .c1 {
-  color: inherit;
+  color: #4b4c5c;
   font-size: 16px;
   font-weight: 500;
 }
@@ -30,12 +30,15 @@ exports[`Tokens tests basic tests matches the snapshot 1`] = `
   >
     <span
       className="c1"
+      color={undefined}
+      size={undefined}
     >
       
       10.0
     </span>
     <span
       className="c2"
+      size={undefined}
     >
       BAT
     </span>

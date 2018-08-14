@@ -7,7 +7,7 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
 }
 
 .c1 {
-  padding: 0;
+  padding: 0 19px 0 55px;
 }
 
 .c2 {
@@ -31,7 +31,7 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0.2px;
   letter-spacing: 0.2px;
   color: #3e45b2;
-  padding: 0;
+  padding: 16px 19px 16px 55px;
   text-transform: uppercase;
 }
 

@@ -18,7 +18,7 @@ class AdsBox extends React.Component {
     return (
       <DisabledContent
         image={adsImg}
-        theme={{ color: '#ceb4e1', boldColor: '#b490cf' }}
+        type={'ads'}
       >
         <h3>Coming soon.</h3>
       </DisabledContent>
@@ -29,7 +29,7 @@ class AdsBox extends React.Component {
     return (
       <Box
         title={locale.adsTitle}
-        theme={{ titleColor: '#C12D7C' }}
+        type={'ads'}
         description={locale.adsDesc}
         toggle={false}
         disabledContent={this.adsDisabled()}

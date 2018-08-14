@@ -31,14 +31,14 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   text-transform: uppercase;
 }
 
-.c13 {
+.c14 {
   font-size: 12px;
   color: #686978;
   margin-top: 26px;
   text-align: center;
 }
 
-.c14 {
+.c15 {
   vertical-align: sub;
   margin-right: 11px;
 }
@@ -65,7 +65,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-  margin-bottom: 8px;
   font-family: Poppins,sans-serif;
 }
 
@@ -91,7 +90,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-  margin-bottom: 8px;
   font-family: Poppins,sans-serif;
 }
 
@@ -134,26 +132,32 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 }
 
 .c7 {
-  color: #C12D7C;
-  font-size: 14px;
+  color: #c12d7c;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .c10 {
-  color: #9752CB;
-  font-size: 14px;
+  color: #9752cb;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .c11 {
-  color: #4C54D2;
-  font-size: 14px;
+  color: #696fdc;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.c13 {
+  color: #4b4c5c;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .c9 {
   color: #9E9FAB;
-  font-size: 10px;
+  font-size: 12px;
   font-family: Muli,sans-serif;
   line-height: 1.29;
   display: inline-block;
@@ -161,7 +165,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 }
 
 .c8 {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
   display: inline-block;
   margin-left: 4px;
@@ -204,18 +208,22 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
           >
             <span
               className="c7"
+              color="earnings"
+              size={undefined}
             >
               
               10.0
             </span>
             <span
               className="c8"
+              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
+            size={undefined}
           >
             0.25
              
@@ -244,18 +252,22 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
           >
             <span
               className="c7"
+              color="earnings"
+              size={undefined}
             >
               
               10.0
             </span>
             <span
               className="c8"
+              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
+            size={undefined}
           >
             0.25
              
@@ -284,18 +296,22 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
           >
             <span
               className="c10"
+              color="contribute"
+              size={undefined}
             >
               -
               10.0
             </span>
             <span
               className="c8"
+              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
+            size={undefined}
           >
             0.25
              
@@ -324,18 +340,22 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
           >
             <span
               className="c11"
+              color="donation"
+              size={undefined}
             >
               -
               2.0
             </span>
             <span
               className="c8"
+              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
+            size={undefined}
           >
             0.25
              
@@ -345,7 +365,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       </div>
     </div>
     <div
-      className="c12"
+      className="c3"
       id={undefined}
     >
       <div
@@ -364,18 +384,66 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
           >
             <span
               className="c11"
+              color="donation"
+              size={undefined}
             >
               -
               19.0
             </span>
             <span
               className="c8"
+              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
+            size={undefined}
+          >
+            5.25
+             
+            USD
+          </span>
+        </span>
+      </div>
+    </div>
+    <div
+      className="c12"
+      id={undefined}
+    >
+      <div
+        className="c4"
+      >
+        MISSING: total
+      </div>
+      <div
+        className="c5"
+      >
+        <span
+          id={undefined}
+        >
+          <span
+            className="c6"
+          >
+            <span
+              className="c13"
+              color={undefined}
+              size={undefined}
+            >
+              
+              19.0
+            </span>
+            <span
+              className="c8"
+              size={undefined}
+            >
+              BAT
+            </span>
+          </span>
+          <span
+            className="c9"
+            size={undefined}
           >
             5.25
              
@@ -386,11 +454,11 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
     </div>
   </div>
   <div
-    className="c13"
+    className="c14"
     onClick={[Function]}
   >
     <span
-      className="c14"
+      className="c15"
     >
       <svg
         height="16"

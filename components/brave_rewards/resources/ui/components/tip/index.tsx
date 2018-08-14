@@ -59,13 +59,6 @@ export default class Tip extends React.PureComponent<Props, {}> {
           onAmountSelection={this.onAmountChange}
           onDonate={this.onDonate}
           donateType={'small'}
-          theme={{
-            sendBgColor: '#392dd1',
-            paddingBox: '0 0 0 23px',
-            paddingSend: '16px 0 16px 51px',
-            paddingFunds: '16px 0 17px 25px',
-            disabledSendColor: '#1a22a8'
-          }}
         >
           <div>
             <StyledAllowText>{getLocale('allowTip')} {provider}</StyledAllowText>

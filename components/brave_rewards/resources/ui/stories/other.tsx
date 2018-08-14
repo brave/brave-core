@@ -48,9 +48,9 @@ storiesOf('Feature Components/Rewards/Other', module)
       <div style={{ width: '595px' }}>
       <Box
         title={text('Title', 'Brave ads')}
-        theme={{ titleColor: '#9752cb' }}
         toggle={boolean('Show toggle', store.state.toggle)}
         checked={boolean('Toggle checked', store.state.checked)}
+        type={select('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'contribute')}
         description={
           text('Description', `Earn tokens by seeing ads on Brave. Ads are matched
           from machine learning and the data temporarily present in your browser without tracking your
@@ -68,7 +68,7 @@ storiesOf('Feature Components/Rewards/Other', module)
     return (
       <DisabledContent
         image={donate}
-        theme={{ color: '#AC9CCF', boldColor: '#696fdc' }}
+        type={'donation'}
       >
         • Donate on the spot as you find gems. <br/>
         • <b>Enable Tips </b> on Twitter, YouTube, and more, to give tips to posts you ‘Like’.
@@ -113,11 +113,7 @@ storiesOf('Feature Components/Rewards/Other', module)
     return (
       <div style={{ background: '#696fdc' }}>
       <Donate
-        theme={{
-          paddingFunds: '14px 12px 16px 24px',
-          paddingSend: '16px 19px 16px 40px',
-          paddingBox: '16px 19px 16px 20px'
-        }}
+        donateType={select('Type', { big: 'big', small: 'small' }, 'small')}
         balance={number('Balance ', 5)}
         donationAmounts={object('Donations', store.state.donationAmount)}
         onDonate={onDonate}
@@ -147,7 +143,8 @@ storiesOf('Feature Components/Rewards/Other', module)
             value={number('Value', 10)}
             converted={number('Converted', 0.25)}
             isNegative={boolean('Is negative', false)}
-            theme={{ color: text('Color', '#9752cb') }}
+            color={select('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
+            size={select('Size', { normal: 'normal', small: 'small' }, 'small')}
           />
         </div>
       )
@@ -159,6 +156,8 @@ storiesOf('Feature Components/Rewards/Other', module)
           converted={number('Converted value', 4)}
           currency={text('Currency', 'USD')}
           isNegative={boolean('Is negative', false)}
+          color={select('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
+          size={select('Size', { normal: 'normal', small: 'small' }, 'small')}
         />
       )
     })

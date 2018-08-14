@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import * as CSS from 'csstype'
 import {
   StyledWrapper,
   StyledContent,
@@ -16,10 +15,12 @@ import {
 } from './style'
 
 import Amount from '../amount/index'
-import { getLocale, setTheme } from '../../../helpers'
+import { getLocale } from '../../../helpers'
 
 const send = require('./assets/send')
 const sadFace = require('./assets/sadFace')
+
+export type DonateType = 'big' | 'small'
 
 type Donation = {tokens: number, converted: number, selected?: boolean}
 
@@ -31,22 +32,13 @@ export interface Props {
   onDonate: (amount: number) => void
   onAmountSelection?: (tokens: number) => void
   id?: string
-  theme?: Theme
-  donateType?: 'big' | 'small'
+  donateType: DonateType
   children?: React.ReactNode
 }
 
 interface State {
   missingFunds: boolean
   amount: number
-}
-
-export interface Theme {
-  paddingSend?: CSS.PaddingProperty<1>
-  paddingFunds?: CSS.PaddingProperty<1>
-  paddingBox?: CSS.PaddingProperty<1>
-  sendBgColor?: CSS.Color
-  disabledSendColor?: CSS.Color
 }
 
 export default class Donate extends React.PureComponent<Props, State> {
@@ -106,15 +98,19 @@ export default class Donate extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id, donationAmounts, actionText, children, theme, title } = this.props
+    const { id, donationAmounts, actionText, children, title } = this.props
     const disabled = this.state.amount === 0
 
     const donateType = this.props.donateType ? this.props.donateType : 'big'
-    const sendColor = disabled ? (setTheme(theme, 'disabledSendColor') || '#3e45b2') : '#a1a8f2'
+    const sendColor = disabled ?
+      donateType === 'small'
+      ? '#1A22A8'
+      : '#3e45b2'
+    : '#a1a8f2'
 
     return (
       <StyledWrapper>
-        <StyledContent id={id} theme={theme}>
+        <StyledContent id={id} donateType={donateType}>
           <StyledDonationTitle>{title}</StyledDonationTitle>
           {
             donationAmounts && donationAmounts.map((donation: Donation) => {
@@ -130,12 +126,12 @@ export default class Donate extends React.PureComponent<Props, State> {
           }
           {children}
         </StyledContent>
-        <StyledSend disabled={disabled} onClick={this.validateDonation()} theme={theme}>
+        <StyledSend disabled={disabled} onClick={this.validateDonation()} donateType={donateType}>
           <StyledIconSend>{send(sendColor)}</StyledIconSend>{actionText}
         </StyledSend>
         {
           this.state.missingFunds
-            ? <StyledFunds theme={theme}>
+            ? <StyledFunds donateType={donateType}>
               <StyledIconFace>{sadFace}</StyledIconFace>
               <StyledFundsText>{getLocale('notEnoughTokens')} <a href='#'>{getLocale('addFunds')}</a>.</StyledFundsText>
             </StyledFunds>
