@@ -15,10 +15,10 @@ class BraveSyncEventRouter;
 
 namespace brave_sync {
 
-class BraveSyncClientExtImpl : public BraveSyncClient {
+class ClientExtImpl : public BraveSyncClient {
 public:
-  BraveSyncClientExtImpl();
-  ~BraveSyncClientExtImpl() override;
+  ClientExtImpl();
+  ~ClientExtImpl() override;
 
   void SetProfile(Profile *profile);
 
@@ -54,7 +54,7 @@ public:
   void SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) override;
 
 private:
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncClientExtImpl);
+  DISALLOW_COPY_AND_ASSIGN(ClientExtImpl);
   SyncLibToBrowserHandler *handler_;
   std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
 };
