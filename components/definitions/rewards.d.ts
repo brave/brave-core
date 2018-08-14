@@ -30,6 +30,8 @@ declare namespace Rewards {
     ui: {
       walletRecoverySuccess: boolean | null
       emptyWallet: boolean
+      walletServerProblem: boolean
+      modalBackup: boolean
     }
   }
 

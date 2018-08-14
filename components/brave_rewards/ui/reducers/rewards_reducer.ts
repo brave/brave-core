@@ -147,6 +147,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
           walletInfo.balance = balance
           chrome.send('getWalletPassphrase', [])
           ui.emptyWallet = balance <= 0
+          ui.modalBackup = false
         }
 
         state = {
@@ -161,6 +162,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         state = { ...state }
         let ui = state.ui
         ui.walletRecoverySuccess = null
+        ui.modalBackup = false
         state = {
           ...state,
           ui
@@ -168,35 +170,57 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
     case types.ON_PROMOTION_FINISH:
-      state = { ...state }
-      const properties = action.payload.properties
-      // TODO NZ check why enum can't be used inside Rewards namespace
-      if (properties.result === 0) {
-        if (state.promotion) {
-          let promotion = state.promotion
-          promotion.expireDate = properties.expirationDate
-          promotion.error = null
-
-          state = {
-            ...state,
-            promotion
-          }
-          chrome.send('getWalletProperties', [])
-        }
-      } else {
+      {
         state = { ...state }
-        if (state.promotion) {
-          let promotion = state.promotion
-          promotion.error = 'wrongPosition'
+        const properties = action.payload.properties
+        // TODO NZ check why enum can't be used inside Rewards namespace
+        if (properties.result === 0) {
+          if (state.promotion) {
+            let promotion = state.promotion
+            promotion.expireDate = properties.expirationDate
+            promotion.error = null
 
-          state = {
-            ...state,
-            promotion
+            state = {
+              ...state,
+              promotion
+            }
+            chrome.send('getWalletProperties', [])
           }
+        } else {
+          state = { ...state }
+          if (state.promotion) {
+            let promotion = state.promotion
+            promotion.error = 'wrongPosition'
+
+            state = {
+              ...state,
+              promotion
+            }
+          }
+          chrome.send('getPromotionCaptcha', [])
         }
-        chrome.send('getPromotionCaptcha', [])
+        break
       }
-      break
+    case types.ON_MODAL_BACKUP_OPEN:
+      {
+        let ui = state.ui
+        ui.modalBackup = true
+        state = {
+          ...state,
+          ui
+        }
+        break
+      }
+    case types.ON_CLEAR_RECOVERY:
+      {
+        let ui = state.ui
+        ui.walletRecoverySuccess = null
+        state = {
+          ...state,
+          ui
+        }
+        break
+      }
   }
 
   if (state !== startingState) {
