@@ -9,7 +9,6 @@ grit("brave_extension_grit") {
     "root_gen_dir=" + rebase_path(root_gen_dir, "."),
   ]
 
-  # output_name = "brave_components_resources_new"
   outputs = [
     "grit/brave_extension.h",
     "grit/brave_extension_resources_map.cc",
@@ -19,7 +18,6 @@ grit("brave_extension_grit") {
 
   deps = [
     "//brave/vendor/brave-extension",
-    "//brave/components/brave_sync:copy-sync-extension-resources",
   ]
 
   output_dir = "$target_gen_dir"

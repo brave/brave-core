@@ -25,4 +25,7 @@
   "brave/components/brave_rewards/resources.grd": {
     "includes": [38000],
   },
+  "brave/components/brave_sync/resources.grd": {
+    "includes": [37000],
+  }
 }

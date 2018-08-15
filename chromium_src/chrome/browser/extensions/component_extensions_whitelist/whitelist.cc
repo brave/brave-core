@@ -33,6 +33,7 @@ namespace extensions {
       // Please keep the list in alphabetical order.
       case IDR_BRAVE_EXTENSON:
       case IDR_BRAVE_REWARDS:
+      case IDR_BRAVE_SYNC_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:
         return true;
     }
