@@ -348,7 +348,7 @@ if (is_mac) {
     info_plist_target = ":brave_app_plist"
 
     extra_substitutions = [
-      "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
+      "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id.$brave_channel",
       "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
       "CHROMIUM_CREATOR=$chrome_mac_creator_code",
     ]
