@@ -6,6 +6,7 @@
 
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/common/channel_info.h"
+#include "components/version_info/channel.h"
 #include "ui/gfx/color_palette.h"
 
 namespace {
