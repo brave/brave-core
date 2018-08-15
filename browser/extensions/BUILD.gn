@@ -38,6 +38,7 @@ source_set("extensions") {
     "//brave/browser/resources:brave_extension_grit",
     "//brave/common/extensions/api",
     "//brave/components/brave_rewards:resources",
+    "//brave/components/brave_sync:resources",
     "//brave/components/brave_webtorrent:resources",
     "//chrome/browser",
     "//content/public/browser",
