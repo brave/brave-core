@@ -39,6 +39,7 @@ source_set("brave_sync") {
     "value_debug.h",
   ]
 
+  # TODO this should be removed when sync apis are moved from brave/browser/extensions
   deps = [
     "//brave/browser/extensions",
   ]
@@ -51,31 +52,11 @@ source_set("brave_sync") {
 grit("resources") {
   source = "resources.grd"
   outputs = [
+    "grit/brave_sync_resources_map.cc",
+    "grit/brave_sync_resources_map.h",
     "grit/brave_sync_resources.h",
     "brave_sync_resources.pak",
   ]
 
-  grit_flags = [
-    "-E",
-    "target_gen_dir=" + rebase_path(target_gen_dir, root_build_dir),
-  ]
-
-  deps = [
-    ":vendor_resources",
-  ]
-
-  resource_ids = "//brave/browser/resources/resource_ids"
-}
-
-copy("vendor_resources") {
-  sources = [
-    "//brave/vendor/brave-crypto/browser/crypto.js",
-    "//brave/vendor/brave-sync/bundles/bundle.js",
-    "extension/background.js",
-    "extension/manifest.json",
-  ]
-
-  outputs = [
-    "$target_gen_dir/{{source_file_part}}",
-  ]
+  resource_ids = ""
 }

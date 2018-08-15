@@ -56,7 +56,7 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
 
   base::FilePath brave_sync_extension_path(FILE_PATH_LITERAL(""));
   brave_sync_extension_path =
-      brave_sync_extension_path.Append(FILE_PATH_LITERAL("brave_sync_extension"));
+      brave_sync_extension_path.Append(FILE_PATH_LITERAL("brave_sync"));
   Add(IDR_BRAVE_SYNC_EXTENSION, brave_sync_extension_path);
 }
 

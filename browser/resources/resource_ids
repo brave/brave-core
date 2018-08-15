@@ -28,4 +28,5 @@
   "brave/components/brave_sync/resources.grd": {
     "includes": [37000],
   }
+  # brave sync 37000
 }
