@@ -63,12 +63,19 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 BraveNewTabUI::~BraveNewTabUI() {
 }
 
-void BraveNewTabUI::CustomizeNewTabWebUIProperties() {
+void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderFrameHost* render_frame_host) {
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
-  auto* web_contents = web_ui()->GetWebContents();
-  if (web_contents) {
-    auto* render_view_host = web_contents->GetRenderViewHost();
+  content::RenderViewHost* render_view_host = nullptr;
+  if (render_frame_host) {
+    render_view_host = render_frame_host->GetRenderViewHost();
+  } else {
+    auto* web_contents = web_ui()->GetWebContents();
+    if (web_contents) {
+      render_view_host = web_contents->GetRenderViewHost();
+    }
+  }
+  if (render_view_host) {
     if (render_view_host) {
       render_view_host->SetWebUIProperty(
           "adsBlockedStat",
@@ -95,13 +102,13 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties() {
 
 void BraveNewTabUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    CustomizeNewTabWebUIProperties();
+    CustomizeNewTabWebUIProperties(render_frame_host);
   }
 }
 
 void BraveNewTabUI::OnPreferenceChanged() {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    CustomizeNewTabWebUIProperties();
+    CustomizeNewTabWebUIProperties(nullptr);
     web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
   }
 }

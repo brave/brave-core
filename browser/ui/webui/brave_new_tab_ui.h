@@ -16,8 +16,8 @@ class BraveNewTabUI : public BasicUI {
   ~BraveNewTabUI() override;
 
  private:
-  void CustomizeNewTabWebUIProperties();
   void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override;
+  void CustomizeNewTabWebUIProperties(content::RenderFrameHost* render_frame_host);
   void OnPreferenceChanged();
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
