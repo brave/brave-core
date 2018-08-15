@@ -110,6 +110,7 @@ source_set("browser") {
     "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser",
     "extensions",
+    "tor",
     "net",
     "permissions",
   ]
