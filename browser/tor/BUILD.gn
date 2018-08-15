@@ -9,10 +9,17 @@ source_set("tor") {
     "tor_profile_service_factory.h",
     "tor_profile_service_impl.cc",
     "tor_profile_service_impl.h",
+    "tor_url_request_interceptor.cc",
+    "tor_url_request_interceptor.h",
   ]
 
   deps = [
-    "//chrome/browser",
+    "//base",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    # for profile.h
+    "//components/domain_reliability",
+    "//content/public/browser",
     "//net",
   ]
 }

@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index b6ba476cbf1fc38f21452f3d64980e6676d7b582..2b88aa54f9d901ae155c62a4cb7d82d6a2b6d6d8 100644
+index b6ba476cbf1fc38f21452f3d64980e6676d7b582..d680b0c15829c221b99689cdc0840835e3ed50c6 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
-@@ -1087,7 +1087,7 @@ void ProfileIOData::Init(
+@@ -26,6 +26,8 @@
+ #include "base/task/post_task.h"
+ #include "base/task/task_traits.h"
+ #include "base/threading/thread_task_runner_handle.h"
++#include "brave/browser/tor/tor_url_request_interceptor.h"
++#include "brave/browser/net/brave_profile_network_delegate.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/chrome_notification_types.h"
+@@ -1087,7 +1089,7 @@ void ProfileIOData::Init(
          std::make_unique<network::URLRequestContextBuilderMojo>();
  
      std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
@@ -11,3 +20,13 @@ index b6ba476cbf1fc38f21452f3d64980e6676d7b582..2b88aa54f9d901ae155c62a4cb7d82d6
  #if BUILDFLAG(ENABLE_EXTENSIONS)
              io_thread_globals->extension_event_router_forwarder.get()));
  #else
+@@ -1157,6 +1159,9 @@ void ProfileIOData::Init(
+       request_interceptors.push_back(
+           std::move(profile_params_->new_tab_page_interceptor));
+     }
++    request_interceptors.push_back(
++      std::make_unique<tor::TorURLRequestInterceptor>(
++        static_cast<Profile*>(profile_params_->profile)));
+ 
+     if (data_reduction_proxy_io_data_.get()) {
+       builder->set_shared_proxy_delegate(
