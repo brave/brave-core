@@ -1,4 +1,6 @@
 import("//build/config/features.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
 
 source_set("brave_sync") {
   sources = [
@@ -46,29 +48,34 @@ source_set("brave_sync") {
   ]
 }
 
-# Somehow 'brave_resources.pak' gets updated just on 2nd build
-# brave-extension/app/manifest.prod.json needs two builds to get
-# 'brave_resources.pak' updated
-# this may be the side effect of using $target_gen_dir when files indeed
-# are copied into //brave/browser/resources/
-action("copy-sync-extension-resources") {
-  script = "//brave/script/copy-sync-extension.py"
-  args = []
-  inputs = [
-    "//brave/components/brave_sync/extension/background.js",
-    #"//brave/vendor/brave-sync/bundles/bundle.js",
-    "$root_gen_dir/brave-sync/bundles/bundle.js",
-    #"//brave/vendor/brave-crypto/browser/crypto.js",
-    "$root_gen_dir/brave-crypto/browser/crypto.js",
-  ]
-  # Cannot use any `src` directory except `out` as a parent for any output
+grit("resources") {
+  source = "resources.grd"
   outputs = [
-    "$target_gen_dir/brave_sync_extension/background.js",
-    "$target_gen_dir/brave_sync_extension/bundle.js",
-    "$target_gen_dir/brave_sync_extension/crypto.js",
+    "grit/brave_sync_resources.h",
+    "brave_sync_resources.pak",
   ]
-  public_deps = [
-    "//brave/components/brave_sync/brave_sync_lib:brave_sync_js_lib_bundle",
-    "//brave/components/brave_sync/brave_sync_lib:brave_crypto_js_lib_bundle",
+
+  grit_flags = [
+    "-E",
+    "target_gen_dir=" + rebase_path(target_gen_dir, root_build_dir),
+  ]
+
+  deps = [
+    ":vendor_resources",
+  ]
+
+  resource_ids = "//brave/browser/resources/resource_ids"
+}
+
+copy("vendor_resources") {
+  sources = [
+    "//brave/vendor/brave-crypto/browser/crypto.js",
+    "//brave/vendor/brave-sync/bundles/bundle.js",
+    "extension/background.js",
+    "extension/manifest.json",
+  ]
+
+  outputs = [
+    "$target_gen_dir/{{source_file_part}}",
   ]
 }

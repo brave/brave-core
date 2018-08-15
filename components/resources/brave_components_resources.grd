@@ -147,7 +147,7 @@
       <include name="IDR_BRAVE_SYNC_QR" file="../../node_modules/qrcode-generator/qrcode.js" type="BINDATA" />
 
       <!-- Sync extension page -->
-      <include name="IDR_BRAVE_SYNC_EXTENSION" file="../brave_sync/extension/manifest.json" type="BINDATA" />
+
       <!-- background.js, bundle.js and crypto.js are in `//brave/browser/resources/brave_extension.grd` -->
 
     </includes>
