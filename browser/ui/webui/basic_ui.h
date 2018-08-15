@@ -12,6 +12,7 @@
 #include "content/public/browser/web_ui_controller.h"
 
 namespace content {
+class RenderViewHost;
 class WebUIDataSource;
 class WebUI;
 }
@@ -21,6 +22,9 @@ class BasicUI : public content::WebUIController {
   BasicUI(content::WebUI* web_ui, const std::string& host,
       const std::string& js_file, int js_resource_id, int html_resource_id);
   ~BasicUI() override;
+
+ protected:
+  content::RenderViewHost* GetRenderViewHost();
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BasicUI);

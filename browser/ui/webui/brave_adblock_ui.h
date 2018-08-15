@@ -16,8 +16,8 @@ class BraveAdblockUI : public BasicUI {
   ~BraveAdblockUI() override;
 
  private:
-  void CustomizeWebUIProperties();
   void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override;
+  void CustomizeWebUIProperties(content::RenderViewHost* render_view_host);
   void OnPreferenceChanged();
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;

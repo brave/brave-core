@@ -13,7 +13,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
@@ -63,52 +62,41 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 BraveNewTabUI::~BraveNewTabUI() {
 }
 
-void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderFrameHost* render_frame_host) {
+void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* render_view_host) {
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
-  content::RenderViewHost* render_view_host = nullptr;
-  if (render_frame_host) {
-    render_view_host = render_frame_host->GetRenderViewHost();
-  } else {
-    auto* web_contents = web_ui()->GetWebContents();
-    if (web_contents) {
-      render_view_host = web_contents->GetRenderViewHost();
-    }
-  }
   if (render_view_host) {
-    if (render_view_host) {
-      render_view_host->SetWebUIProperty(
-          "adsBlockedStat",
-          std::to_string(prefs->GetUint64(kAdsBlocked)));
-      render_view_host->SetWebUIProperty(
-          "trackersBlockedStat",
-          std::to_string(prefs->GetUint64(kTrackersBlocked)));
-      render_view_host->SetWebUIProperty(
-          "javascriptBlockedStat",
-          std::to_string(prefs->GetUint64(kJavascriptBlocked)));
-      render_view_host->SetWebUIProperty(
-          "httpsUpgradesStat",
-          std::to_string(prefs->GetUint64(kHttpsUpgrades)));
-      render_view_host->SetWebUIProperty(
-          "fingerprintingBlockedStat",
-          std::to_string(prefs->GetUint64(kFingerprintingBlocked)));
-      render_view_host->SetWebUIProperty(
-          "useAlternativePrivateSearchEngine",
-          prefs->GetBoolean(kUseAlternatePrivateSearchEngine) ? "true"
-                                                              : "false");
-    }
+    render_view_host->SetWebUIProperty(
+        "adsBlockedStat",
+        std::to_string(prefs->GetUint64(kAdsBlocked)));
+    render_view_host->SetWebUIProperty(
+        "trackersBlockedStat",
+        std::to_string(prefs->GetUint64(kTrackersBlocked)));
+    render_view_host->SetWebUIProperty(
+        "javascriptBlockedStat",
+        std::to_string(prefs->GetUint64(kJavascriptBlocked)));
+    render_view_host->SetWebUIProperty(
+        "httpsUpgradesStat",
+        std::to_string(prefs->GetUint64(kHttpsUpgrades)));
+    render_view_host->SetWebUIProperty(
+        "fingerprintingBlockedStat",
+        std::to_string(prefs->GetUint64(kFingerprintingBlocked)));
+    render_view_host->SetWebUIProperty(
+        "useAlternativePrivateSearchEngine",
+        prefs->GetBoolean(kUseAlternatePrivateSearchEngine) ? "true"
+                                                            : "false");
   }
 }
 
 void BraveNewTabUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    CustomizeNewTabWebUIProperties(render_frame_host);
+    CustomizeNewTabWebUIProperties(render_frame_host->GetRenderViewHost());
   }
 }
 
 void BraveNewTabUI::OnPreferenceChanged() {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    CustomizeNewTabWebUIProperties(nullptr);
+    CustomizeNewTabWebUIProperties(GetRenderViewHost());
     web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
   }
 }
