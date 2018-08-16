@@ -155,7 +155,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
                     className="c9"
                   >
                     <div>
-                      MISSING: rewardsContributeVisited
+                      MISSING: site
                     </div>
                   </th>
                   <th

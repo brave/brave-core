@@ -21,7 +21,7 @@ import {
   StyledActionWrapper,
   StyledBalanceCurrency,
   StyledCurve,
-  StyledAlert,
+  StyledAlertWrapper,
   StyledAlertClose
 } from './style'
 import ButtonSecondary from '../../../components/buttonsIndicators/buttonSecondary/index'
@@ -117,22 +117,20 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     return (
       <StyledWrapper id={id}>
         <StyledHeader>
-          <StyledAlert>
-            {
-              alert
-              ? <>
-                {
-                  alert.onAlertClose
-                  ? <StyledAlertClose onClick={alert.onAlertClose}>{closeIcon}</StyledAlertClose>
-                  : null
-                }
-                <Alert type={alert.type} bg={true}>
-                    {alert.node}
-                </Alert>
-              </>
-              : null
-            }
-          </StyledAlert>
+          {
+            alert
+            ? <StyledAlertWrapper>
+              {
+                alert.onAlertClose
+                ? <StyledAlertClose onClick={alert.onAlertClose}>{closeIcon}</StyledAlertClose>
+                : null
+              }
+              <Alert type={alert.type} bg={true}>
+                  {alert.node}
+              </Alert>
+            </StyledAlertWrapper>
+            : null
+          }
           <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
           {
             showSecActions

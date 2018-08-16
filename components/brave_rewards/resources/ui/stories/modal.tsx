@@ -288,6 +288,14 @@ storiesOf('Feature Components/Rewards/Modal', module)
             }
           },
           {
+            text: 'Deposits',
+            type: 'deposit',
+            token: {
+              value: 10,
+              converted: 5.20
+            }
+          },
+          {
             text: 'Brave Contribute',
             type: 'contribute',
             notPaid: true,
@@ -318,7 +326,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           }
         ]}
         total={{
-          value: 1,
+          value: 11,
           converted: 0.5
         }}
         paymentDay={12}
@@ -327,7 +335,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           converted: 5.20
         }}
         closingBalance={{
-          value: 11,
+          value: 21,
           converted: 5.30
         }}
       />

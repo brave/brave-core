@@ -5,7 +5,7 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 6;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

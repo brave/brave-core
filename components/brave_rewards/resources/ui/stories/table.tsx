@@ -29,8 +29,8 @@ storiesOf('Feature Components/Rewards/Table', module)
   .addDecorator(centered)
   .add('Contribution',() => {
     const header: string[] = [
-      'Site visited',
-      'Attentions'
+      'Site',
+      'Attention'
     ]
 
     const rows: ContributeDetailRow[] = [

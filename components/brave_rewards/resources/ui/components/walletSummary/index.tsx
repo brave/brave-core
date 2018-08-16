@@ -24,6 +24,7 @@ type Token = {
 export interface Props {
   onActivity: () => void
   grant?: Token
+  deposit?: Token
   ads?: Token
   contribute: Token
   donation?: Token
@@ -34,7 +35,7 @@ export interface Props {
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
   render () {
-    const { id, grant, ads, contribute, donation, tips, onActivity, total } = this.props
+    const { id, grant, ads, contribute, donation, tips, onActivity, total, deposit } = this.props
     const date = new Date()
     const month = getLocale(`month${date.toLocaleString('en-us', { month: 'short' })}`)
     const year = date.getFullYear()
@@ -61,6 +62,16 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
               converted={ads.converted}
               color={'earnings'}
               title={getLocale('earningsAds')}
+            />
+            : null
+          }
+          {
+            deposit
+            ? <ListToken
+              value={deposit.tokens}
+              converted={deposit.converted}
+              color={'earnings'}
+              title={getLocale('deposits')}
             />
             : null
           }

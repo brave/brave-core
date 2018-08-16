@@ -284,6 +284,7 @@ class PageWallet extends React.Component<{}, State> {
               ? <WalletSummary
                 grant={{ tokens: 10, converted: 0.25 }}
                 ads={{ tokens: 10, converted: 0.25 }}
+                deposit={{ tokens: 10, converted: 0.25 }}
                 contribute={{ tokens: 10, converted: 0.25 }}
                 donation={{ tokens: 2, converted: 0.25 }}
                 tips={{ tokens: 19, converted: 5.25 }}

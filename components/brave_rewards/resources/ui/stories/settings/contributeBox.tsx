@@ -188,8 +188,8 @@ class ContributeBox extends React.Component<{}, State> {
         </List>
         <TableContribute
           header={[
-            'Site visited',
-            'Attention score',
+            'Site',
+            'Attention',
             ''
           ]}
           rows={this.contributeRows}

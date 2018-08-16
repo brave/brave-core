@@ -130,7 +130,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
 
     return [
       {
-        content: getLocale('siteVisited'),
+        content: getLocale('site'),
         theme
       },
       {

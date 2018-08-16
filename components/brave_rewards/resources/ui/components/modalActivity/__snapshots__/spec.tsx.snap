@@ -400,7 +400,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                       <div
                         className="c19 c18"
                       >
-                        MISSING: tokenAllocation
+                        MISSING: payment
                       </div>
                     </th>
                   </tr>

@@ -17,7 +17,7 @@ export interface Props {
 export default class ModalContribute extends React.PureComponent<Props, {}> {
   get headers () {
     return [
-      getLocale('rewardsContributeVisited'),
+      getLocale('site'),
       getLocale('rewardsContributeAttention')
     ]
   }

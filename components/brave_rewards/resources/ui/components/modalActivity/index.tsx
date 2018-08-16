@@ -91,7 +91,7 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
     return [
       getLocale('rewardsContributeVisited'),
       getLocale('rewardsContributeAttention'),
-      getLocale('tokenAllocation')
+      getLocale('payment')
     ]
   }
 
@@ -132,6 +132,7 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
           color={item.notPaid ? 'notPaid' : this.colors[item.type]}
           size={'small'}
           border={i === 0 ? 'first' : 'default'}
+          isNegative={item.token.isNegative}
         />
       )
     })

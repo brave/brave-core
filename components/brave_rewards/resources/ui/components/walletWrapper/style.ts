@@ -156,7 +156,7 @@ export const StyledCurve = styled.div`
     }
 ` as any
 
-export const StyledAlert = styled.div`
+export const StyledAlertWrapper = styled.div`
     display: flex;
     align-items: stretch;
     position: absolute;

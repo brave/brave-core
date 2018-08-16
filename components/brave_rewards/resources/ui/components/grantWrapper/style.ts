@@ -8,7 +8,7 @@ export const StyledWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 6;
   display: flex;
   align-items: stretch;
   align-content: flex-start;
