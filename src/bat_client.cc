@@ -202,6 +202,10 @@ const std::string& BatClient::getLTCAddress() const {
   return state_->walletInfo_.addressLTC_;
 }
 
+uint64_t BatClient::getReconcileStamp() const {
+  return state_->reconcileStamp_;
+}
+
 void BatClient::getWalletProperties() {
   std::string path = (std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_ + WALLET_PROPERTIES_END;
    auto request_id = ledger_->LoadURL(

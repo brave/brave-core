@@ -64,6 +64,7 @@ class LedgerImpl : public ledger::Ledger,
   const std::string& GetBTCAddress() const override;
   const std::string& GetETHAddress() const override;
   const std::string& GetLTCAddress() const override;
+  uint64_t GetReconcileStamp() const override;
   uint64_t GetPublisherMinVisitTime() const override; // In milliseconds
   unsigned int GetPublisherMinVisits() const override;
   bool GetPublisherAllowNonVerified() const override;

@@ -33,6 +33,7 @@ class BatClient {
   const std::string& getBTCAddress() const;
   const std::string& getETHAddress() const;
   const std::string& getLTCAddress() const;
+  uint64_t getReconcileStamp() const;
   double getContributionAmount() const;
   bool isReadyForReconcile();
   void reconcile(const std::string& viewingId);

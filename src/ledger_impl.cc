@@ -272,6 +272,10 @@ const std::string& LedgerImpl::GetLTCAddress() const {
   return bat_client_->getLTCAddress();
 }
 
+uint64_t LedgerImpl::GetReconcileStamp() const {
+  return bat_client_->getReconcileStamp();
+}
+
 void LedgerImpl::Reconcile() {
   // That function should be triggeres from the main process periodically to make payments
   if (bat_client_->isReadyForReconcile()) {
