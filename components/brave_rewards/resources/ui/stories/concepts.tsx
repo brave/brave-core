@@ -30,7 +30,7 @@ const dummyOptInAction = () => {
 storiesOf('Feature Components/Rewards/Concepts', module)
   .addDecorator(withKnobs)
   .add('Settings Page', () => <Settings />)
-  .add('RewardsWelcome', () => (
+  .add('Welcome Page', () => (
     <WelcomePage
       id={'welcome-page'}
       optInAction={dummyOptInAction}

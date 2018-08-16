@@ -144,6 +144,7 @@ export const StyledBoldParagraph = styled.p`
 
 export const StyledStrong = styled.strong`
   font-weight: 600;
+  padding: 0 5px;
 ` as any
 
 export const StyledAnchor = styled.a`

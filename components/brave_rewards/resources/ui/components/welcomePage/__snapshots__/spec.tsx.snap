@@ -357,6 +357,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 
 .c32 {
   font-weight: 600;
+  padding: 0 5px;
 }
 
 .c14 {
