@@ -30,7 +30,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   padding: 40px 0;
 }
 
-.c29 {
+.c33 {
   display: inline-block;
   overflow: hidden;
   background: #fff;
@@ -40,7 +40,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c30 {
+.c34 {
   text-align: center;
   box-sizing: border-box;
   -webkit-letter-spacing: 0;
@@ -60,15 +60,15 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: #fff;
 }
 
-.c30:hover {
+.c34:hover {
   background: rgba(251,84,43,1);
 }
 
-.c30:active {
+.c34:active {
   background: rgba(251,84,43,0.4);
 }
 
-.c13 {
+.c12 {
   display: inline-block;
   overflow: hidden;
   border: 1px solid rgba(184,185,196,0.9);
@@ -94,55 +94,146 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-weight: 500;
 }
 
-.c13:hover {
+.c12:hover {
   border-color: rgba(184,185,196,1);
 }
 
-.c13:active {
+.c12:active {
   border-color: rgba(184,185,196,0.4);
 }
 
-.c13:hover {
+.c12:hover {
   color: rgba(184,185,196,1);
 }
 
-.c13:active {
+.c12:active {
   color: rgba(184,185,196,0.4);
 }
 
-.c12 {
-  margin: 40px 0px 40px 0px;
+.c22 {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: 0px;
+  padding: 0;
+  margin: 0;
+  max-width: initial;
+  height: initial;
+  color: inherit;
+  background-color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.c23 {
+  box-sizing: border-box;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  grid-column: span 1;
+  -webkit-box-pack: initial;
+  -webkit-justify-content: initial;
+  -ms-flex-pack: initial;
+  justify-content: initial;
+  -webkit-align-items: initial;
+  -webkit-box-align: initial;
+  -ms-flex-align: initial;
+  align-items: initial;
+  background-color: inherit;
+  -webkit-flex-direction: initial;
+  -ms-flex-direction: initial;
+  flex-direction: initial;
+  -webkit-flex-wrap: initial;
+  -ms-flex-wrap: initial;
+  flex-wrap: initial;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.c24 {
+  height: 290px;
+  border-radius: 4px;
+  text-align: center;
+  padding: 31px 15px 15px;
+  background: #fff;
+  max-width: 275px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px 0 rgba(99,105,110,0.12);
+  font-family: Poppins,sans-serif;
+}
+
+.c26 {
+  color: #222326;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+}
+
+.c27 {
+  color: #484B4E;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 22px;
+  font-family: Muli,sans-serif;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+  margin: 10px 0 8px;
 }
 
 .c25 {
+  box-sizing: border-box;
+  display: block;
+  max-width: 100%;
+  margin: 10px auto 20px;
+  height: 80px;
+}
+
+.c11 {
+  margin: 40px 0;
+}
+
+.c29 {
   text-align: center;
 }
 
-.c17 {
-  padding: 15px 0px 40px 0px;
+.c15 {
+  padding: 15px 0 40px;
 }
 
-.c19 {
+.c17 {
   margin: 0 auto;
-  max-width: 675px;
-  padding: 40px 0px;
+  max-width: 692px;
+  padding: 67px 0 13px;
 }
 
 .c4 {
   display: block;
 }
 
-.c18 {
+.c16 {
   display: block;
 }
 
-.c23 {
-  margin: 20px auto 0px auto;
-  max-width: 1000px;
+.c21 {
+  margin: 22px auto 0;
+  max-width: 900px;
 }
 
-.c24 {
-  margin: 80px auto 50px auto;
+.c28 {
+  margin: 83px auto 79px;
   max-width: 500px;
 }
 
@@ -151,22 +242,10 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
-  margin: 0 auto;
-  max-width: 115px;
+  margin: 33px auto 10px;
 }
 
 .c7 {
-  margin: 20px auto 10px auto;
-  width: 115px;
-}
-
-.c16 {
-  margin: 0 auto;
-  color: #999;
-  width: 45px;
-}
-
-.c8 {
   font-size: 38px;
   font-weight: 500;
   color: #FFF;
@@ -175,10 +254,10 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0.16px;
   letter-spacing: 0.16px;
   display: inline-block;
-  margin: 14px 0px 10px 0px;
+  margin: 17px 0 4px;
 }
 
-.c26 {
+.c30 {
   color: #5C58C2;
   font-size: 22px;
   font-weight: normal;
@@ -187,9 +266,10 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0.16px;
   letter-spacing: 0.16px;
   line-height: 28px;
+  margin: 18px 0 0;
 }
 
-.c20 {
+.c18 {
   color: #222326;
   font-size: 28px;
   font-weight: normal;
@@ -199,9 +279,11 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0.2px;
   letter-spacing: 0.2px;
   line-height: 28px;
+  padding: 7px 0 21px;
+  margin: 0;
 }
 
-.c10 {
+.c9 {
   color: #5BC4FE;
   font-size: 22px;
   font-weight: 500;
@@ -211,9 +293,10 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0.16px;
   letter-spacing: 0.16px;
   line-height: 28px;
+  margin: 18px 0 7px;
 }
 
-.c9 {
+.c8 {
   display: inline-block;
   vertical-align: text-top;
   margin-top: -25px;
@@ -223,7 +306,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   opacity: 0.7;
 }
 
-.c11 {
+.c10 {
   font-size: 16px;
   max-width: 375px;
   margin: 0 auto;
@@ -231,15 +314,15 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: #FFF;
 }
 
-.c14 {
+.c13 {
   font-size: 16px;
-  margin: 0px 0px 10px 0px;
+  margin: 0 0 10px;
   line-height: 28px;
   color: #FFF;
   opacity: 0.5;
 }
 
-.c27 {
+.c31 {
   font-size: 16px;
   line-height: 28px;
   color: #484B4E;
@@ -248,9 +331,11 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: 0.16px;
   -ms-letter-spacing: 0.16px;
   letter-spacing: 0.16px;
+  margin: 0;
+  padding: 12px 0 24px;
 }
 
-.c21 {
+.c19 {
   font-size: 16px;
   line-height: 28px;
   color: #484B4E;
@@ -263,18 +348,18 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 0 0 10px;
 }
 
-.c22 {
+.c20 {
   font-weight: 600;
   font-size: 16px;
   color: #484B4E;
-  margin: 0px 0px 60px 0px;
+  margin: 0 0 60px;
 }
 
-.c28 {
+.c32 {
   font-weight: 600;
 }
 
-.c15 {
+.c14 {
   cursor: pointer;
 }
 
@@ -301,40 +386,93 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           <div
             className="c4"
           >
-            <figure
+            <div
               className="c6"
             >
-              <img
-                className="c7"
-                src=""
-              />
-            </figure>
+              <svg
+                height="118"
+                width="124"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+              >
+                <defs>
+                  <path
+                    d="M.155.309H123.95v23.27H.155z"
+                    id="a"
+                  />
+                </defs>
+                <g
+                  fill="none"
+                  fillRule="evenodd"
+                >
+                  <g
+                    opacity="0.477"
+                    transform="translate(0 94)"
+                  >
+                    <mask
+                      fill="#fff"
+                      id="b"
+                    >
+                      <use
+                        xlinkHref="#a"
+                      />
+                    </mask>
+                    <path
+                      d="M93.124 23.509l30.827.07L110.96.31.155.454z"
+                      fill="#28289D"
+                      mask="url(#b)"
+                    />
+                  </g>
+                  <path
+                    d="M56.023 0L56 64.133 112 96z"
+                    fill="#9E1F63"
+                  />
+                  <path
+                    d="M0 96l55.947-31.775L56 0z"
+                    fill="#FB542B"
+                  />
+                  <path
+                    d="M0 96l111-.006L55.61 64z"
+                    fill="#662D91"
+                  />
+                  <path
+                    d="M55.82 38L33 76h46z"
+                    fill="#FFF"
+                  />
+                  <path
+                    d="M55.82 38L33 76h46z"
+                    stroke="#999EA2"
+                    strokeWidth="0.88"
+                  />
+                </g>
+              </svg>
+            </div>
             <h1
-              className="c8"
+              className="c7"
             >
               MISSING: braveRewardsTitle
             </h1>
             <span
-              className="c9"
+              className="c8"
             >
               TM
             </span>
             <h2
-              className="c10"
+              className="c9"
             >
               MISSING: braveRewardsSubTitle
             </h2>
             <p
-              className="c11"
+              className="c10"
             >
               MISSING: braveRewardsDesc
             </p>
           </div>
           <section
-            className="c12"
+            className="c11"
           >
             <div
-              className="c13"
+              className="c12"
               color="subtle"
               onClick={undefined}
               size="large"
@@ -346,46 +484,52 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             className="c4"
           >
             <p
-              className="c14"
+              className="c13"
             >
               MISSING: braveRewardsTeaser
             </p>
             <a
-              className="c15"
+              className="c14"
               onClick={[Function]}
             >
-              <img
-                className="c16"
-                src=""
-              />
+              <svg
+                height="32"
+                width="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12.3 27.8V1.3c0-.8.6-1.3 1.6-1.3.9 0 1.6.5 1.6 1.3v26.5l9.9-9.1c.6-.5 1.6-.5 2.2-.1s.6 1.3.2 1.9L15.9 31.3c-1.1.9-2.8.9-3.8 0L.4 20.5c-.6-.5-.5-1.3.2-1.9.6-.5 1.6-.4 2.2.1l9.5 9.1z"
+                  fill="#bf9fe3"
+                />
+              </svg>
             </a>
           </div>
         </div>
       </div>
       <section
-        className="c17"
+        className="c15"
       >
         <section
-          className="c18"
+          className="c16"
         >
           <div
-            className="c19"
+            className="c17"
           >
             <div
               className="c4"
             >
               <h2
-                className="c20"
+                className="c18"
               >
                 MISSING: whyBraveRewards
               </h2>
               <p
-                className="c21"
+                className="c19"
               >
                 MISSING: whyBraveRewardsDesc
               </p>
               <p
-                className="c22"
+                className="c20"
               >
                 MISSING: whyBraveRewardsBold
               </p>
@@ -394,12 +538,12 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               className="c4"
             >
               <h2
-                className="c20"
+                className="c18"
               >
-                MISSING: whyBraveRewards
+                MISSING: howDoesItWork
               </h2>
               <p
-                className="c21"
+                className="c19"
               >
                 MISSING: howDoesItWorkDesc
               </p>
@@ -407,31 +551,279 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           </div>
         </section>
         <section
-          className="c23"
+          className="c21"
         >
           <section
             id="rewards-info"
-          />
+          >
+            <div
+              className="c22"
+              disabled={false}
+              id={undefined}
+              onClick={undefined}
+            >
+              <div
+                className="c23"
+                id={undefined}
+                onClick={undefined}
+                size={1}
+              >
+                <div
+                  className="c24"
+                >
+                  <figure
+                    className="c25"
+                  >
+                    <svg
+                      height="76"
+                      viewBox="0 0 76 76"
+                      width="76"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                    >
+                      <defs>
+                        <polygon
+                          id="path-1"
+                          points="0 0.000158333333 76 0.000158333333 76 75.9905 0 75.9905"
+                        />
+                      </defs>
+                      <g
+                        fill="none"
+                        fillRule="evenodd"
+                        id="BR-onboarding"
+                      >
+                        <g
+                          id="br-new"
+                          transform="translate(-387 -1371)"
+                        >
+                          <g
+                            id="rewards-landing"
+                            transform="translate(224 215)"
+                          >
+                            <g
+                              id="Group-8"
+                              transform="translate(62 1116)"
+                            >
+                              <g
+                                id="Group-9"
+                                transform="translate(101 40)"
+                              >
+                                <g
+                                  id="premium"
+                                >
+                                  <g
+                                    id="Group-4"
+                                  >
+                                    <mask
+                                      fill="#fff"
+                                      id="mask-2"
+                                    >
+                                      <use
+                                        xlinkHref="#path-1"
+                                      />
+                                    </mask>
+                                    <path
+                                      d="M72.5255333,49.8154667 L57.0899333,65.2536 C54.9980333,67.3538917 52.287525,68.7274333 49.3569333,69.1726667 L38.9576,70.7724667 C38.2563417,70.8798167 37.5479583,70.9334917 36.8384667,70.9333333 L10.1333333,70.9333337 L10.1333333,50.1017333 L15.9752,46.4512 C18.1888583,45.066575 20.747525,44.3327 23.3586,44.3333333 L44.0255333,44.3333333 C45.424725,44.3333333 46.5588667,45.4676333 46.5588667,46.8666667 C46.5588667,48.2658583 45.424725,49.4 44.0255333,49.4 L30.7078,49.4 C27.909575,49.4 25.6411333,51.6684417 25.6411333,54.4666667 C25.6411333,57.26505 27.909575,59.5333333 30.7078,59.5333333 L49.9522667,59.5333333 C51.5449417,59.535075 53.0795083,58.93515 54.2488,57.8537333 L67.9731333,45.1870667 C68.5958583,44.6215 69.4120667,44.3167083 70.2531333,44.3358667 C72.0264667,44.3352333 73.4646083,45.7722667 73.4654,47.5457583 C73.4657167,48.3980667 73.1270417,49.2155417 72.5242667,49.818 L72.5255333,49.8154667 Z M2.53333333,73.4666667 L7.6,73.4666667 L7.6,48.1333333 L2.53333333,48.1333333 L2.53333333,73.4666667 Z M70.1505333,41.8 C68.7065333,41.7973083 67.3149417,42.3402333 66.2542667,43.32 L52.5312,55.9866667 C51.8302583,56.6378917 50.9089167,56.9998417 49.9522667,57 L30.7078,57 C29.3086083,57 28.1744667,55.8658583 28.1744667,54.4666667 C28.1744667,53.0676333 29.3086083,51.9333333 30.7078,51.9333333 L44.0255333,51.9333333 C46.8237583,51.9333333 49.0922,49.66505 49.0922,46.8666667 C49.0922,44.0684417 46.8237583,41.8 44.0255333,41.8 L23.3586,41.8 C20.27205,41.7992083 17.247725,42.6670333 14.6312667,44.3042 L10.1333333,47.12 L10.1333333,45.6 L0,45.6 L0,76 L10.1333333,76 L10.1333333,73.4666667 L36.8384667,73.4666667 C37.6768417,73.4666667 38.51395,73.4027 39.3426667,73.2754 L49.742,71.6756 C53.2055417,71.1500917 56.4089417,69.5268583 58.881,67.0446667 L74.3166,51.6065333 C75.3978583,50.5317667 76.0041167,49.068925 76,47.5443333 C75.9835333,44.3551833 73.38465,41.7832167 70.1955,41.7996833 C70.1804583,41.7996833 70.165575,41.7998417 70.1505333,41.8 Z"
+                                      fill="#FB542B"
+                                      id="Fill-1"
+                                      mask="url(#mask-2)"
+                                    />
+                                    <path
+                                      d="M32.9333333,15.2 C33.4517167,15.2003167 33.91785,14.8846 34.1100667,14.403425 L38,4.67653333 L41.8899333,14.403425 C42.08215,14.8846 42.5482833,15.2003167 43.0666667,15.2 L51.9333333,15.2 L44.84,20.52 C44.424375,20.8316 44.2411833,21.3653417 44.3776667,21.8664667 L47.0566667,31.6894667 L38.8423333,24.3871333 C38.3812667,23.97705 37.691725,23.9588417 37.2096,24.3440667 L28.0668,31.6578 L31.5919333,21.9665333 C31.7824083,21.441975 31.606975,20.8544 31.16,20.52 L24.0666667,15.2 L32.9333333,15.2 Z M28.8888667,21.983 L24.1426667,35.0296667 C23.9035833,35.687225 24.2427333,36.413975 24.9001333,36.6530583 C25.315125,36.80395 25.778725,36.7277917 26.1237333,36.4521333 L37.9556667,26.9850667 L48.5576667,36.4078 C49.0808,36.87235 49.8813333,36.82485 50.3458833,36.301875 C50.6296167,35.9822 50.7331667,35.5410833 50.6210667,35.1284667 L47.0490667,22.0311333 L56.4933333,14.946825 C57.0530417,14.5270833 57.1664083,13.7330417 56.7466667,13.1734917 C56.507425,12.85445 56.1320167,12.6666667 55.7333333,12.6666667 L43.9242,12.6666667 L39.1767333,0.796733333 C38.9169083,0.14725 38.1798667,-0.168783333 37.530225,0.0910416667 C37.2083333,0.219766667 36.9532583,0.474841667 36.8245333,0.796733333 L32.0758,12.6666667 L20.2666667,12.6666667 C19.56715,12.6666667 19,13.2338167 19,13.9333333 C19,14.3320167 19.1877833,14.7075833 19.5066667,14.946825 L28.8888667,21.983 Z"
+                                      fill="#D62BA3"
+                                      id="Fill-3"
+                                      mask="url(#mask-2)"
+                                    />
+                                  </g>
+                                  <polyline
+                                    fill="#9563D4"
+                                    id="Fill-5"
+                                    points="23 4.82841972 24.8284197 3 30 8.17158028 28.1715803 10 23 4.82841972"
+                                  />
+                                  <polyline
+                                    fill="#9563D4"
+                                    id="Fill-6"
+                                    points="45 8.17169968 50.1715803 3 52 4.82830032 46.8284197 10 45 8.17169968"
+                                  />
+                                  <polygon
+                                    fill="#9563D4"
+                                    id="Fill-7"
+                                    points="17 25 24 25 24 23 17 23"
+                                  />
+                                  <polygon
+                                    fill="#9563D4"
+                                    id="Fill-8"
+                                    points="52 25 59 25 59 23 52 23"
+                                  />
+                                  <polygon
+                                    fill="#9563D4"
+                                    id="Fill-9"
+                                    points="36 38 38 38 38 31 36 31"
+                                  />
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                  </figure>
+                  <strong
+                    className="c26"
+                  >
+                    MISSING: turnOnRewardsTitle
+                  </strong>
+                  <p
+                    className="c27"
+                  >
+                    MISSING: turnOnRewardsDesc
+                  </p>
+                </div>
+              </div>
+              <div
+                className="c23"
+                id={undefined}
+                onClick={undefined}
+                size={1}
+              >
+                <div
+                  className="c24"
+                >
+                  <figure
+                    className="c25"
+                  >
+                    <svg
+                      height="80"
+                      width="80"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        fill="none"
+                        fillRule="evenodd"
+                      >
+                        <path
+                          d="M66.126 18.552V2.268c0-.848-.46-1.604-1.216-1.991a2.272 2.272 0 0 0-2.338.147C46.405 11.617 37.124 13.056 30.844 13.056H12.89C5.782 13.056 0 18.846 0 25.965v4.794c0 7.118 5.782 12.908 12.89 12.908h8.618l9.354 22.7a2.255 2.255 0 0 0 2.081 1.403c.294 0 .572-.056.865-.167a2.267 2.267 0 0 0 1.234-2.95l-8.654-20.986h4.438c21.876 0 30.825 11.6 31.23 12.134a2.246 2.246 0 0 0 2.505.812 2.259 2.259 0 0 0 1.546-2.139V38.209a10.083 10.083 0 0 0 7.808-9.83c.037-4.793-3.315-8.813-7.789-9.827zM4.512 30.759v-4.794c0-4.63 3.756-8.391 8.378-8.391h7.88V39.15h-7.88c-4.622 0-8.378-3.762-8.378-8.391zm57.102 18.275c-5.008-4.13-14.842-9.884-30.788-9.884h-5.561V17.574h5.561c6.445 0 15.688-1.328 30.788-11.065v42.525zm4.512-15.583V23.29a5.555 5.555 0 0 1 3.296 5.089c.018 2.25-1.344 4.205-3.296 5.07z"
+                          fill="#FFD8ED"
+                        />
+                        <path
+                          d="M87.665 25.5H78.57c-1.292 0-2.336.95-2.336 2.125 0 1.174 1.044 2.125 2.336 2.125h9.094c1.291 0 2.335-.95 2.335-2.125 0-1.192-1.044-2.125-2.335-2.125zm-12.343-4.547a2.207 2.207 0 0 0 2.044 1.36 2.6 2.6 0 0 0 .807-.14L86.49 19c1.13-.436 1.685-1.674 1.237-2.771-.448-1.1-1.72-1.64-2.85-1.204l-8.317 3.173a2.12 2.12 0 0 0-1.238 2.754zm11.17 16.37l-8.312-3.172c-1.128-.436-2.4.105-2.848 1.203-.448 1.098.107 2.336 1.236 2.771l8.31 3.174c.27.104.539.139.807.139.877 0 1.702-.523 2.042-1.36.448-1.081-.107-2.319-1.235-2.755z"
+                          fill="#F9E7BE"
+                        />
+                        <text
+                          fill="#C12D7C"
+                          fontFamily="Poppins"
+                          fontSize="12"
+                        >
+                          <tspan
+                            fontWeight="600"
+                            x="34"
+                            y="32"
+                          >
+                            Ads
+                          </tspan>
+                        </text>
+                      </g>
+                    </svg>
+                  </figure>
+                  <strong
+                    className="c26"
+                  >
+                    MISSING: braveAdsTitle
+                  </strong>
+                  <p
+                    className="c27"
+                  >
+                    MISSING: braveAdsDesc
+                  </p>
+                </div>
+              </div>
+              <div
+                className="c23"
+                id={undefined}
+                onClick={undefined}
+                size={1}
+              >
+                <div
+                  className="c24"
+                >
+                  <figure
+                    className="c25"
+                  >
+                    <svg
+                      height="69"
+                      width="92"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                    >
+                      <defs>
+                        <path
+                          d="M0 0h91.966v25.796H0z"
+                          id="a"
+                        />
+                      </defs>
+                      <g
+                        fill="none"
+                        fillRule="evenodd"
+                      >
+                        <path
+                          d="M54.368 35.984c-2.804-.341-6.138.225-9.91 1.68a40.153 40.153 0 0 0-5.76 2.783c-1.331-2.094-5.651-11.107-7.234-14.77-.794-1.84-3.432-5.527-6.095-4.5-.616.239-1.087.7-1.358 1.336-.896 2.094.547 5.583.609 5.731 2.085 4.967 7.84 18.416 8.477 19.908.097.227.228.51.38.839.36.78.855 1.851 1.18 2.809.43 1.267.338 1.687.311 1.767a1.182 1.182 0 0 1-.273.15c-1.798.694-5.393-2.672-6.758-4.314-1.246-1.5-3.879-2.289-5.524-1.654-.658.253-1.126.729-1.315 1.337-.273.877.026 1.959.888 3.214l.051.079c1.246 1.947 4.722 6.912 10.085 10.944 3.438 2.584 7.03 4.31 10.677 5.126 4.525 1.013 9.148.628 13.74-1.144 4.927-1.9 7.733-5.59 8.34-10.964.601-5.295-1.187-10.9-2.305-13.771-1.519-3.894-4.28-6.11-8.206-6.586z"
+                          fill="#A1A8F2"
+                        />
+                        <mask
+                          fill="#fff"
+                          id="b"
+                        >
+                          <use
+                            xlinkHref="#a"
+                          />
+                        </mask>
+                        <path
+                          d="M21.092 9.476c-.076 0-.151.003-.224.012l-.82.092v7.178h1.232c1.1 0 2.564-.35 2.564-3.368 0-2.689-1.427-3.914-2.752-3.914zM31.5 9c-1.974 0-2.5 2.2-2.5 3.5 0 1.3.526 3.5 2.5 3.5s2.5-2.2 2.5-3.5c0-1.3-.526-3.5-2.5-3.5zM50 14h2l-1.015-3z"
+                          fill="#696FDC"
+                          mask="url(#b)"
+                        />
+                        <path
+                          d="M79.207.108H12.775C5.719.108 0 5.882 0 13.007c0 7.123 5.719 12.897 12.774 12.897h9.2c-.102-1.116-.034-2.303.406-3.345.479-1.136 1.355-2.001 2.464-2.435a4.534 4.534 0 0 1 1.662-.317c3.629 0 6.247 4.283 6.949 5.933l.07.164h45.683c7.055 0 12.773-5.774 12.773-12.897 0-7.125-5.718-12.899-12.774-12.899zM21.314 18.517c-.306 0-.609-.024-.901-.048-.411-.032-.934-.058-1.256-.02l-1.43.167a.687.687 0 0 1-.755-.577l-.06-.377a.695.695 0 0 1 .61-.798l.686-.067V9.545l-.748-.163a.69.69 0 0 1-.54-.705l.01-.24a.69.69 0 0 1 .793-.654l.227.038c.32.054.65.11.964.11.276 0 .55-.04.865-.088.344-.053.732-.11 1.157-.11 2.96 0 4.797 2.09 4.797 5.458 0 4.634-2.77 5.326-4.42 5.326zm10.056.199c-3.009 0-4.355-2.809-4.355-5.591 0-2.784 1.346-5.592 4.355-5.592 3.008 0 4.354 2.808 4.354 5.592 0 2.782-1.346 5.59-4.354 5.59zM45.44 9.49h-.35v8.334a.687.687 0 0 1-.685.692h-.62a.684.684 0 0 1-.592-.346l-3.821-6.67v5.257h.827c.378 0 .685.31.685.692v.375a.687.687 0 0 1-.685.692H37a.687.687 0 0 1-.684-.692v-.375c0-.382.306-.692.684-.692h.532V9.491H37a.688.688 0 0 1-.684-.69v-.378c0-.381.306-.69.684-.69h1.917c.246 0 .473.132.595.348l3.738 6.609V9.49h-.86a.688.688 0 0 1-.685-.69v-.376c0-.383.307-.692.685-.692h3.05c.378 0 .685.309.685.692V8.8a.688.688 0 0 1-.684.691zm10.676 8.334a.687.687 0 0 1-.684.692H52.66a.687.687 0 0 1-.684-.692v-.375c0-.382.306-.692.684-.692h.548l-.483-1.311h-3.337l-.474 1.311h.57c.377 0 .684.31.684.692v.375a.687.687 0 0 1-.684.692h-2.739a.688.688 0 0 1-.685-.692v-.375c0-.382.306-.692.685-.692h.264l3.378-9.015a.684.684 0 0 1 .636-.447h.003c.282 0 .535.175.638.44l3.5 9.022h.268c.377 0 .684.31.684.692v.375zm9.333-6.453a.688.688 0 0 1-.684.691h-.471a.688.688 0 0 1-.684-.691v-.985c0-.606-.053-.769-.083-.81-.008-.005-.129-.086-.739-.086h-.92v7.266h1.467c.379 0 .685.31.685.693v.375a.688.688 0 0 1-.685.692h-4.776a.688.688 0 0 1-.685-.692v-.375c0-.383.307-.693.685-.693h1.468V9.491h-.92c-.611 0-.732.08-.744.09-.026.037-.078.2-.078.806v.985a.688.688 0 0 1-.684.691h-.471a.688.688 0 0 1-.686-.691V8.423c0-.381.307-.69.686-.69h7.635c.379 0 .684.309.684.69v2.949zm9.629 6.453a.687.687 0 0 1-.684.692h-7.57a.687.687 0 0 1-.684-.692v-.375c0-.382.306-.692.684-.692h.958V9.491h-.958a.688.688 0 0 1-.684-.69v-.378c0-.381.306-.69.684-.69h7.258c.378 0 .684.309.684.69v2.334a.687.687 0 0 1-.684.692h-.472a.687.687 0 0 1-.684-.692v-.154c0-.593-.032-.934-.096-1.014-.017-.015-.15-.098-.84-.098h-2.367v2.307h1.441a.685.685 0 0 1 .673-.564h.471c.379 0 .684.31.684.69v1.671a.687.687 0 0 1-.684.691h-.47a.688.688 0 0 1-.685-.69v-.04h-1.43v3.202h2.662c.953 0 .953 0 .953-1.575v-.04c0-.381.307-.69.685-.69h.47c.38 0 .685.309.685.69v2.682z"
+                          fill="#696FDC"
+                          mask="url(#b)"
+                        />
+                      </g>
+                    </svg>
+                  </figure>
+                  <strong
+                    className="c26"
+                  >
+                    MISSING: braveContributeTitle
+                  </strong>
+                  <p
+                    className="c27"
+                  >
+                    MISSING: braveContributeDesc
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
         </section>
         <section
-          className="c24"
+          className="c28"
         >
           <section
-            className="c25"
+            className="c29"
           >
             <h2
-              className="c26"
+              className="c30"
             >
               MISSING: readyToTakePart
             </h2>
             <p
-              className="c27"
+              className="c31"
             >
               <span>
                 MISSING: readyToTakePartStart
               </span>
               <strong
-                className="c28"
+                className="c32"
               >
                 MISSING: readyToTakePartBold
               </strong>
@@ -440,12 +832,12 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               </span>
             </p>
             <div
-              className="c29"
+              className="c33"
               color="brand"
               onClick={undefined}
             >
               <div
-                className="c30"
+                className="c34"
                 color="brand"
                 disabled={undefined}
               >

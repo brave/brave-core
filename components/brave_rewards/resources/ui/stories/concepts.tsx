@@ -8,9 +8,9 @@ import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean, text, object, number } from '@storybook/addon-knobs'
 
 // Components
-import RewardsWelcome from './welcome'
 import Settings from './settings/settings'
 import { SiteBanner, Tip } from '../../../src/features/rewards'
+import WelcomePage from '../../../src/features/rewards/welcomePage'
 
 const siteBgImage = require('../../assets/img/bg_siteBanner.jpg')
 const siteBgLogo = require('../../assets/img/ddgo_siteBanner.svg')
@@ -30,13 +30,12 @@ const dummyOptInAction = () => {
 storiesOf('Feature Components/Rewards/Concepts', module)
   .addDecorator(withKnobs)
   .add('Settings Page', () => <Settings />)
-  .add('RewardsWelcome', () => {
-    return (
-      <RewardsWelcome
-        optInAction={dummyOptInAction}
-      />
-    )
-  })
+  .add('RewardsWelcome', () => (
+    <WelcomePage
+      id={'welcome-page'}
+      optInAction={dummyOptInAction}
+    />
+  ))
   .add('Site Banner', withState({ donationAmount }, (store) => {
     const onDonate = () => {
       console.log('onDonate')

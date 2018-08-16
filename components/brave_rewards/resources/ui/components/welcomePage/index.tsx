@@ -4,12 +4,12 @@
 
 import * as React from 'react'
 
-// Rewards Components
+// Components
 import Hero from '../hero'
 import SettingsPage from '../settingsPage'
 import ButtonCta from '../../../components/buttonsIndicators/buttonCta'
 import ButtonSecondary from '../../../components/buttonsIndicators/buttonSecondary'
-import { InfoCards, InfoCardProps } from '../infoCards'
+import InfoCards, { InfoCardProps } from '../infoCards'
 
 // Utils
 import { getLocale } from '../../../helpers'
@@ -25,9 +25,7 @@ import {
   StyledInfoContent,
   StyledTakeActionContent,
   StyledBackground,
-  StyledFigure,
   StyledBatLogo,
-  StyledDownArrow,
   StyledH1,
   StyledH2,
   StyledCenterTitle,
@@ -42,32 +40,26 @@ import {
   StyledAnchor
 } from './style'
 
-export interface WelcomePageProps {
+const batImage = require('./assets/bat')
+const arrowImage = require('./assets/arrow')
+const turnOnRewardsImage = require('./assets/turnOnRewards')
+const braveAdsImage = require('./assets/braveAds')
+const braveContributeImage = require('./assets/braveContribute')
+
+export interface Props {
   id?: string
   optInAction: () => void
-  infoItems?: InfoCardProps[]
-  pageImages?: WelcomePageImages
 }
 
-export interface WelcomePageImages {
-  batLogo?: string,
-  downArrow?: string
-}
-
-export interface BackgroundImageProps {
-  src?: string
-}
-
-class WelcomePage extends React.PureComponent<WelcomePageProps, {}> {
+class WelcomePage extends React.PureComponent<Props, {}> {
   private centerTextSection: HTMLDivElement | null
 
-  constructor (props: WelcomePageProps) {
+  constructor (props: Props) {
     super(props)
     this.centerTextSection = null
-    this.scrollToCenter = this.scrollToCenter.bind(this)
   }
 
-  scrollToCenter () {
+  scrollToCenter = () => {
     if (!this.centerTextSection) {
       return
     }
@@ -85,20 +77,13 @@ class WelcomePage extends React.PureComponent<WelcomePageProps, {}> {
     this.centerTextSection = node
   }
 
-  get defaultImages (): WelcomePageImages {
-    return {
-      batLogo: '',
-      downArrow: ''
-    }
-  }
-
-  hero (pageImages: WelcomePageImages) {
+  hero () {
     return (
       <Hero id={'rewards-hero'}>
         <StyledSection>
-          <StyledFigure>
-            <StyledBatLogo src={pageImages.batLogo}/>
-          </StyledFigure>
+          <StyledBatLogo>
+            {batImage}
+          </StyledBatLogo>
           <StyledH1>
             {getLocale('braveRewardsTitle')}
           </StyledH1>
@@ -123,7 +108,7 @@ class WelcomePage extends React.PureComponent<WelcomePageProps, {}> {
             {getLocale('braveRewardsTeaser')}
           </StyledTeaserParagraph>
           <StyledAnchor onClick={this.scrollToCenter}>
-            <StyledDownArrow src={pageImages.downArrow}/>
+            {arrowImage}
           </StyledAnchor>
         </StyledSection>
       </Hero>
@@ -146,7 +131,7 @@ class WelcomePage extends React.PureComponent<WelcomePageProps, {}> {
         </StyledSection>
         <StyledSection>
           <StyledCenterTitle>
-            {getLocale('whyBraveRewards')}
+            {getLocale('howDoesItWork')}
           </StyledCenterTitle>
           <StyledCenterParagraph>
             {getLocale('howDoesItWorkDesc')}
@@ -182,15 +167,34 @@ class WelcomePage extends React.PureComponent<WelcomePageProps, {}> {
     )
   }
 
+  get infoItems (): InfoCardProps[] {
+    return [
+      {
+        title: getLocale('turnOnRewardsTitle'),
+        description: getLocale('turnOnRewardsDesc'),
+        icon: turnOnRewardsImage
+      },
+      {
+        title: getLocale('braveAdsTitle'),
+        description: getLocale('braveAdsDesc'),
+        icon: braveAdsImage
+      },
+      {
+        title: getLocale('braveContributeTitle'),
+        description: getLocale('braveContributeDesc'),
+        icon: braveContributeImage
+      }
+    ]
+  }
+
   render () {
-    const { id, infoItems, pageImages } = this.props
-    const images = pageImages || this.defaultImages
+    const { id } = this.props
 
     return (
       <SettingsPage id={id}>
         <StyledBackground>
           <StyledSection>
-            {this.hero(images)}
+            {this.hero()}
           </StyledSection>
           <StyledCenterSection>
             <StyledCenterInner innerRef={this.refSet}>
@@ -199,7 +203,7 @@ class WelcomePage extends React.PureComponent<WelcomePageProps, {}> {
             <StyledInfoContent>
               <InfoCards
                 id='rewards-info'
-                infoItems={infoItems}
+                infoItems={this.infoItems}
               />
             </StyledInfoContent>
             <StyledTakeActionContent>
@@ -212,6 +216,4 @@ class WelcomePage extends React.PureComponent<WelcomePageProps, {}> {
   }
 }
 
-export {
-  WelcomePage
-}
+export default WelcomePage

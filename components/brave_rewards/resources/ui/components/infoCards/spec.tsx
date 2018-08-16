@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import { InfoCards } from './index'
+import InfoCards from './index'
 
 describe('Info Cards tests', () => {
   const baseComponent = (props?: object) => <InfoCards id='info-cards' {...props} />
