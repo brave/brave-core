@@ -11,6 +11,7 @@ import SettingsPage from './settingsPage'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
+import { WelcomePage } from 'brave-ui/features/rewards'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -30,9 +31,9 @@ export class App extends React.Component<Props, {}> {
       <div id='rewardsPage'>
         {
           !rewardsData.walletCreated && !rewardsData.walletCreateFailed
-          ? <div>
-            <a href='#' onClick={this.onCreateWalletClicked}>Yes I am in! (TODO add an actual page)</a>
-          </div>
+          ? <WelcomePage
+            optInAction={this.onCreateWalletClicked}
+          />
           : null
         }
         {
