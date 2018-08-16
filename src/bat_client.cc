@@ -983,15 +983,22 @@ void BatClient::getPromotion(const std::string& lang, const std::string& forPaym
 void BatClient::getPromotionCallback(bool success, const std::string& response) {
   LOG(ERROR) << "!!!getPromotionCallback == " << response;
 
+  braveledger_bat_helper::PROMOTION_ST properties;
+
   if (!success) {
-    // TODO NZ add error handler
+    ledger_->OnPromotion(ledger::Result::ERROR, properties);
     return;
   }
 
-  braveledger_bat_helper::PROMOTION_ST properties;
-  braveledger_bat_helper::loadFromJson(properties, response);
+  bool ok = braveledger_bat_helper::loadFromJson(properties, response);
+
+  if (!ok) {
+    ledger_->OnPromotion(ledger::Result::ERROR, properties);
+    return;
+  }
+
   state_->promotion_ = properties;
-  ledger_->OnPromotion(properties);
+  ledger_->OnPromotion(ledger::Result::OK, properties);
 }
 
 void BatClient::setPromotion(const std::string& captchaResponse, const std::string& promotionId) {

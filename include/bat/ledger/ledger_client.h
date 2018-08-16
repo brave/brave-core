@@ -60,7 +60,7 @@ class LEDGER_EXPORT LedgerClient {
                                     GetPublisherInfoListCallback callback) = 0;
 
   virtual void GetPromotion(const std::string& lang, const std::string& paymentId) = 0;
-  virtual void OnPromotion(ledger::Promo) = 0;
+  virtual void OnPromotion(ledger::Result result, ledger::Promo) = 0;
   virtual void GetPromotionCaptcha() = 0;
   virtual void OnPromotionCaptcha(const std::string& image) = 0;
   virtual void OnRecoverWallet(Result result, double balance) = 0;

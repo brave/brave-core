@@ -83,7 +83,7 @@ class LedgerImpl : public ledger::Ledger,
   void GetWalletProperties() const override;
 
   void GetPromotion(const std::string& lang, const std::string& paymentId) const override;
-  void OnPromotion(const braveledger_bat_helper::PROMOTION_ST&);
+  void OnPromotion(ledger::Result result, const braveledger_bat_helper::PROMOTION_ST&);
 
   void GetPromotionCaptcha() const override;
   void OnPromotionCaptcha(const std::string& image);

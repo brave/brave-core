@@ -394,13 +394,13 @@ void LedgerImpl::GetPromotion(const std::string& lang,
   bat_client_->getPromotion(lang, payment_id);
 }
 
-void LedgerImpl::OnPromotion(const braveledger_bat_helper::PROMOTION_ST& properties) {
+void LedgerImpl::OnPromotion(ledger::Result result, const braveledger_bat_helper::PROMOTION_ST& properties) {
   ledger::Promo promo;
 
   promo.promotionId = properties.promotionId_;
   promo.amount = properties.amount_;
 
-  ledger_client_->OnPromotion(promo);
+  ledger_client_->OnPromotion(result, promo);
 }
 
 void LedgerImpl::GetPromotionCaptcha() const {
