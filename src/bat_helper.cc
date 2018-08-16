@@ -851,7 +851,7 @@ namespace braveledger_bat_helper {
 
     if (error == false) {
       promotionId_ = d["promotionId"].GetString();
-      amount_ = 30; // TODO NZ get data from the server
+      amount_ = 10; // TODO NZ get data from the server
     }
 
     return !error;
@@ -1256,6 +1256,22 @@ namespace braveledger_bat_helper {
     if (hasError == false) {
       statusCode = d["statusCode"].GetUint();
       error = d["error"].GetString();
+    }
+    return !hasError;
+  }
+
+  bool getJSONGrant(const std::string& json, uint64_t& expiryTime) {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    //has parser errors or wrong types
+    bool hasError = d.HasParseError();
+    if (hasError == false) {
+      hasError = !(d.HasMember("expiryTime") && d["expiryTime"].IsNumber());
+    }
+
+    if (hasError == false) {
+      expiryTime = d["expiryTime"].GetUint();
     }
     return !hasError;
   }

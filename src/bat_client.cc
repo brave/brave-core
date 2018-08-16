@@ -1016,8 +1016,12 @@ void BatClient::setPromotion(const std::string& captchaResponse, const std::stri
   std::string values[2] = {promoId, captchaResponse};
   std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
 
+  // TODO NZ remove when captcha fro brave-core is added
+  std::vector<std::string> headers;
+  headers.push_back("bypass-captcha:8d8830c8-db5b-4652-9032-2fd65454bff0");
+
   auto request_id = ledger_->LoadURL(buildURL((std::string)GET_SET_PROMOTION + "/" + state_->walletInfo_.paymentId_, ""),
-    std::vector<std::string>(), payload, "application/json; charset=utf-8", ledger::URL_METHOD::PUT, &handler_);
+      headers, payload, "application/json; charset=utf-8", ledger::URL_METHOD::PUT, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::setPromotionCallback,
                                        this,
@@ -1037,8 +1041,14 @@ void BatClient::setPromotionCallback(bool success, const std::string& response) 
     return;
   }
 
-  // TODO NZ add actual expiration date when endpoint is updated
-  ledger_->OnPromotionFinish(ledger::Result::OK, statusCode, 2130600234);
+  uint64_t expiryTime;
+  bool ok = braveledger_bat_helper::getJSONGrant(response, expiryTime);
+  if (!ok) {
+    ledger_->OnPromotionFinish(ledger::Result::ERROR, 400, 0);
+    return;
+  }
+
+  ledger_->OnPromotionFinish(ledger::Result::OK, statusCode, expiryTime);
 }
 
 void BatClient::getPromotionCaptcha() {
