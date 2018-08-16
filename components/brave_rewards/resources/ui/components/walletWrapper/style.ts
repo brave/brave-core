@@ -17,6 +17,9 @@ export const StyledWrapper = styled.div`
     url(${panelBg}) no-repeat top left,
     linear-gradient(172deg, #392dd1, rgba(255, 26, 26, 0.53)),
     linear-gradient(#7d7bdc, #7d7bdc);
+  min-height: 715px;
+  display: flex;
+  flex-direction: column;
 ` as any
 
 export const StyledHeader = styled.div`
@@ -48,6 +51,7 @@ export const StyledContent = styled.div`
   padding: 11px 25px 19px;
   position: relative;
   background: #f9fbfc;
+  flex: 1;
 ` as any
 
 export const StyledAction = styled.span`
