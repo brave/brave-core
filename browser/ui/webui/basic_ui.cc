@@ -6,6 +6,7 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -68,4 +69,12 @@ BasicUI::BasicUI(content::WebUI* web_ui,
 }
 
 BasicUI::~BasicUI() {
+}
+
+content::RenderViewHost* BasicUI::GetRenderViewHost() {
+  auto* web_contents = web_ui()->GetWebContents();
+  if (web_contents) {
+    return web_contents->GetRenderViewHost();
+  }
+  return nullptr;
 }

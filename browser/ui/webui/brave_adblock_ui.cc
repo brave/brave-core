@@ -14,7 +14,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
@@ -33,32 +32,28 @@ BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui, const std::string& name)
 BraveAdblockUI::~BraveAdblockUI() {
 }
 
-void BraveAdblockUI::CustomizeWebUIProperties() {
+void BraveAdblockUI::CustomizeWebUIProperties(content::RenderViewHost* render_view_host) {
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
-  auto* web_contents = web_ui()->GetWebContents();
-  if (web_contents) {
-    auto* render_view_host = web_contents->GetRenderViewHost();
-    if (render_view_host) {
-      render_view_host->SetWebUIProperty("adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked)));
-      render_view_host->SetWebUIProperty("regionalAdBlockEnabled",
-          std::to_string(
-            g_brave_browser_process->ad_block_regional_service()->IsInitialized()));
-      render_view_host->SetWebUIProperty("regionalAdBlockTitle",
-          g_brave_browser_process->ad_block_regional_service()->GetTitle());
-    }
+  if (render_view_host) {
+    render_view_host->SetWebUIProperty("adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked)));
+    render_view_host->SetWebUIProperty("regionalAdBlockEnabled",
+        std::to_string(
+          g_brave_browser_process->ad_block_regional_service()->IsInitialized()));
+    render_view_host->SetWebUIProperty("regionalAdBlockTitle",
+        g_brave_browser_process->ad_block_regional_service()->GetTitle());
   }
 }
 
 void BraveAdblockUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    CustomizeWebUIProperties();
+    CustomizeWebUIProperties(render_frame_host->GetRenderViewHost());
   }
 }
 
 void BraveAdblockUI::OnPreferenceChanged() {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    CustomizeWebUIProperties();
+    CustomizeWebUIProperties(GetRenderViewHost());
     web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.statsUpdated");
   }
 }
