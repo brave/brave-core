@@ -29,7 +29,8 @@ class RewardsServiceObserver {
                                   std::string image) {};
   virtual void OnRecoverWallet(RewardsService* payment_service,
                                unsigned int result,
-                               double balance) {};
+                               double balance,
+                               std::vector<brave_rewards::Grant> grants) {};
   virtual void OnPromotionFinish(RewardsService* payment_service,
                                  unsigned int result,
                                  unsigned int statusCode,

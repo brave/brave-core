@@ -160,6 +160,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         state = { ...state }
         const result = action.payload.properties.result
         const balance = action.payload.properties.balance
+        const grants = action.payload.properties.grants
         let ui = state.ui
         let walletInfo = state.walletInfo
 
@@ -167,7 +168,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         ui.walletRecoverySuccess = result === 0
         if (result === 0) {
           walletInfo.balance = balance
-          walletInfo.grants = []
+          walletInfo.grants = grants || []
           chrome.send('getWalletPassphrase', [])
           ui.emptyWallet = balance <= 0
           ui.modalBackup = false
