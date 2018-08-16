@@ -27,6 +27,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.enabledAds = true
       state.enabledContribute = true
       state.createdTimestamp = new Date().getTime()
+      chrome.send('getReconcileStamp', [])
       break
     case types.WALLET_CREATE_FAILED:
       state = { ...state }
@@ -234,6 +235,13 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
           ...state,
           ui
         }
+        break
+      }
+    case types.ON_RECONCILE_STAMP:
+      {
+
+        state = { ...state }
+        state.reconcileStamp = parseInt(action.payload.stamp, 10)
         break
       }
   }

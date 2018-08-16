@@ -29,6 +29,7 @@ const defaultState: Rewards.State = {
   },
   connectedWallet: false,
   recoveryKey: '',
+  reconcileStamp: 0,
   ui: {
     walletRecoverySuccess: null,
     emptyWallet: true,

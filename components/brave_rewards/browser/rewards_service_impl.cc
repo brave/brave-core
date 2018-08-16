@@ -603,5 +603,8 @@ void RewardsServiceImpl::TriggerOnPromotionFinish(ledger::Result result, unsigne
     observer.OnPromotionFinish(this, result, statusCode, expirationDate);
 }
 
+uint64_t RewardsServiceImpl::GetReconcileStamp() const {
+  return ledger_->GetReconcileStamp();
+}
 
 }  // namespace brave_rewards

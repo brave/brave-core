@@ -68,3 +68,7 @@ export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
 export const onModalBackupOpen = () => action(types.ON_MODAL_BACKUP_OPEN)
 
 export const onClearRecovery = () => action(types.ON_CLEAR_RECOVERY)
+
+export const onReconcileStamp = (stamp: number) => action(types.ON_RECONCILE_STAMP, {
+  stamp
+})

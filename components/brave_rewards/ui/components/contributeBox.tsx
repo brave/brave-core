@@ -205,7 +205,8 @@ class ContributeBox extends React.Component<Props, State> {
       enabledMain,
       walletInfo,
       contributionMonthly,
-      enabledContribute
+      enabledContribute,
+      reconcileStamp
     } = this.props.rewardsData
     const toggleOn = !(firstLoad !== false || !enabledMain)
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, walletInfo.rates)
@@ -255,7 +256,7 @@ class ContributeBox extends React.Component<Props, State> {
         <List
           title={getLocale('contributionNextDate')}
         >
-          <NextContribution>July 25th TODO</NextContribution>
+          <NextContribution>{new Date(reconcileStamp).toLocaleDateString()}</NextContribution>
         </List>
         <List title={getLocale('contributionSites')}>
           {getLocale('total')} &nbsp;<Tokens value={numRows} hideText={true} toFixed={false} />

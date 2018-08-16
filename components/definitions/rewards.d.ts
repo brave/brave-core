@@ -27,6 +27,7 @@ declare namespace Rewards {
     connectedWallet: boolean
     recoveryKey: string
     promotion?: Promotion
+    reconcileStamp: number
     ui: {
       walletRecoverySuccess: boolean | null
       emptyWallet: boolean

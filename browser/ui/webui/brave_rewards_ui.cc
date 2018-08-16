@@ -45,6 +45,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetWalletPassphrase(const base::ListValue* args);
   void RecoverWallet(const base::ListValue* args);
   void SolvePromotionCaptcha(const base::ListValue* args);
+  void GetReconcileStamp(const base::ListValue* args);
 
   // PaymentServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* payment_service,
@@ -95,6 +96,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("solvePromotionCaptcha",
                                     base::BindRepeating(&RewardsDOMHandler::SolvePromotionCaptcha,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("getReconcileStamp",
+                                    base::BindRepeating(&RewardsDOMHandler::GetReconcileStamp,
                                                         base::Unretained(this)));
 }
 
@@ -262,6 +266,14 @@ void RewardsDOMHandler::OnPromotionFinish(
     finish->SetInteger("expirationDate", expirationDate);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotionFinish", *finish);
+  }
+}
+
+void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
+  if (rewards_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    std::string stamp = std::to_string(rewards_service_->GetReconcileStamp());
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.reconcileStamp", base::Value(stamp));
   }
 }
 
