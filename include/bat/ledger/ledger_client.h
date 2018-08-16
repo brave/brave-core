@@ -63,7 +63,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void OnPromotion(ledger::Result result, ledger::Promo) = 0;
   virtual void GetPromotionCaptcha() = 0;
   virtual void OnPromotionCaptcha(const std::string& image) = 0;
-  virtual void OnRecoverWallet(Result result, double balance) = 0;
+  virtual void OnRecoverWallet(Result result, double balance, std::vector<ledger::GRANT> grants) = 0;
   virtual void OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t experationDate) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;

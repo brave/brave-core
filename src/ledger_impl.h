@@ -93,7 +93,7 @@ class LedgerImpl : public ledger::Ledger,
 
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string& passPhrase) const override;
-  void OnRecoverWallet(ledger::Result result, double balance);
+  void OnRecoverWallet(ledger::Result result, double balance, std::vector<braveledger_bat_helper::GRANT> grants);
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,

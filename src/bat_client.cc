@@ -894,7 +894,7 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
   int result = bip39_mnemonic_to_bytes(nullptr, passPhrase.c_str(), &newSeed.front(), newSeed.size(), &written);
   LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
   if (0 != result || 0 == written) {
-    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0);
+    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, std::vector<braveledger_bat_helper::GRANT>());
     return;
   }
   state_->walletInfo_.keyInfoSeed_ = newSeed;
@@ -921,7 +921,7 @@ void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& r
   LOG(ERROR) << "!!!recoverWalletPublicKeyCallback == " << response;
 
   if (!result) {
-    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0);
+    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, std::vector<braveledger_bat_helper::GRANT>());
     return;
   }
   std::string recoveryId;
@@ -941,15 +941,15 @@ void BatClient::recoverWalletCallback(bool result, const std::string& response, 
   LOG(ERROR) << "!!!recoverWalletCallback == " << response;
 
   if (!result) {
-    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0);
+    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, std::vector<braveledger_bat_helper::GRANT>());
     return;
   }
 
   braveledger_bat_helper::getJSONWalletInfo(response, state_->walletInfo_, state_->fee_currency_, state_->fee_amount_, state_->days_);
-  braveledger_bat_helper::getJSONRecoverWallet(response, state_->walletProperties_.balance_, state_->walletProperties_.probi_);
+  braveledger_bat_helper::getJSONRecoverWallet(response, state_->walletProperties_.balance_, state_->walletProperties_.probi_, state_->walletProperties_.grants_);
   state_->walletInfo_.paymentId_ = recoveryId;
   saveState();
-  ledger_->OnRecoverWallet(ledger::Result::OK, state_->walletProperties_.balance_);
+  ledger_->OnRecoverWallet(ledger::Result::OK, state_->walletProperties_.balance_, state_->walletProperties_.grants_);
 }
 
 void BatClient::getPromotion(const std::string& lang, const std::string& forPaymentId) {

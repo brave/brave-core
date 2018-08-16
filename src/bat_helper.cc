@@ -1224,7 +1224,7 @@ namespace braveledger_bat_helper {
     return !error;
   }
 
-  bool getJSONRecoverWallet(const std::string& json, double& balance, std::string& probi) {
+  bool getJSONRecoverWallet(const std::string& json, double& balance, std::string& probi, std::vector<GRANT>& grants) {
     rapidjson::Document d;
     d.Parse(json.c_str());
 
@@ -1238,6 +1238,28 @@ namespace braveledger_bat_helper {
     if (false == error) {
       balance = std::stod(d["balance"].GetString());
       probi = d["probi"].GetString();
+
+      if (d.HasMember("grants") && d["grants"].IsArray()) {
+        for (auto &i : d["grants"].GetArray()) {
+          GRANT grant;
+          auto obj = i.GetObject();
+          if (obj.HasMember("probi")) {
+            grant.probi = obj["probi"].GetString();
+          }
+
+          if (obj.HasMember("altcurrency")) {
+            grant.altcurrency = obj["altcurrency"].GetString();
+          }
+
+          if (obj.HasMember("expiryTime")) {
+            grant.expiryTime = obj["expiryTime"].GetUint64();
+          }
+
+          grants.push_back(grant);
+        }
+      } else {
+        grants.clear();
+      }
     }
     return !error;
   }

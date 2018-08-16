@@ -346,7 +346,7 @@ namespace braveledger_bat_helper {
 
   bool getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors);
 
-  bool getJSONRecoverWallet(const std::string& json, double& balance, std::string& probi);
+  bool getJSONRecoverWallet(const std::string& json, double& balance, std::string& probi, std::vector<GRANT>& grants);
 
   bool getJSONResponse(const std::string& json, unsigned int& statusCode, std::string& error);
 
