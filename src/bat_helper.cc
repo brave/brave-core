@@ -802,7 +802,7 @@ namespace braveledger_bat_helper {
 
       parameters_days_ = d["parameters"]["adFree"]["days"].GetUint();
 
-      if (d.HasMember("grants") && d["grants"].IsObject()) {
+      if (d.HasMember("grants") && d["grants"].IsArray()) {
         for (auto &i : d["grants"].GetArray()) {
           GRANT grant;
           auto obj = i.GetObject();
