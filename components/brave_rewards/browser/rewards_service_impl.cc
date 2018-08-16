@@ -292,8 +292,8 @@ void RewardsServiceImpl::OnPromotionCaptcha(const std::string& image) {
   TriggerOnPromotionCaptcha(image);
 }
 
-void RewardsServiceImpl::OnRecoverWallet(ledger::Result result, double balance) {
-  TriggerOnRecoverWallet(result, balance);
+void RewardsServiceImpl::OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GRANT> grants) {
+  TriggerOnRecoverWallet(result, balance, grants);
 }
 
 void RewardsServiceImpl::OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate) {
@@ -589,9 +589,19 @@ void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
   return ledger_->RecoverWallet(passPhrase);
 }
 
-void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result, double balance) {
+void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GRANT> grants) {
+  std::vector<brave_rewards::Grant> newGrants;
+  for (size_t i = 0; i < grants.size(); i ++) {
+    brave_rewards::Grant grant;
+
+    grant.altcurrency = grants[i].altcurrency;
+    grant.probi = grants[i].probi;
+    grant.expiryTime = grants[i].expiryTime;
+
+    newGrants.push_back(grant);
+  }
   for (auto& observer : observers_)
-    observer.OnRecoverWallet(this, result, balance);
+    observer.OnRecoverWallet(this, result, balance, newGrants);
 }
 
 void RewardsServiceImpl::SolvePromotionCaptcha(const std::string& solution) const {

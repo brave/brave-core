@@ -68,6 +68,7 @@ declare namespace Rewards {
   export interface RecoverWallet {
     result: Result
     balance: number
+    grants?: Grant[]
   }
 
   export interface PromotionFinish {
