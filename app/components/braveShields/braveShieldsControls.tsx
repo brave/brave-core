@@ -153,15 +153,6 @@ export default class BraveShieldsControls extends React.Component<BraveShieldsCo
                     onChange={this.onToggleJavaScript}
                   />
                 </Column>
-                <Column>
-                  <SwitchButton
-                    id='blockPhishingMalware'
-                    theme={theme.noUserSelect}
-                    checked={false}
-                    disabled={braveShields === 'block'}
-                    rightText={getMessage('shieldsControlsBlockPhishingMalwareSwitch')}
-                  />
-                </Column>
               </Grid>
               <NoScript
                 blocked={javascript !== 'allow'}
