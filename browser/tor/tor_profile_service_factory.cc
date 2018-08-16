@@ -13,9 +13,6 @@
 // static
 tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
     Profile* profile) {
-  if (profile->IsOffTheRecord())
-    return NULL;
-
   return static_cast<tor::TorProfileService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }

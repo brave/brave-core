@@ -9,6 +9,8 @@ source_set("tor") {
     "tor_profile_service_factory.h",
     "tor_profile_service_impl.cc",
     "tor_profile_service_impl.h",
+    "tor_proxy_config_service.cc",
+    "tor_proxy_config_service.h",
     "tor_url_request_interceptor.cc",
     "tor_url_request_interceptor.h",
   ]

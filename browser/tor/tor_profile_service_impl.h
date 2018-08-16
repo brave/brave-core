@@ -7,6 +7,8 @@
 
 #include "brave/browser/tor/tor_profile_service.h"
 
+#include "brave/browser/tor/tor_proxy_config_service.h"
+
 class Profile;
 
 namespace tor {
@@ -25,9 +27,13 @@ class TorProfileServiceImpl : public TorProfileService {
   void SetNewTorCircuit(const GURL&) override;
   bool UpdateNewTorConfig(const TorConfig&) override;
   int64_t GetTorPid() override;
+
+  void SetProxy(net::ProxyResolutionService*, const GURL&,
+                        bool /* new circuit */) override;
  private:
   Profile* profile_;  // NOT OWNED
-  // TODO: tor proxy map
+  TorConfig tor_config_;
+  TorProxyConfigService::TorProxyMap tor_proxy_map_;
   DISALLOW_COPY_AND_ASSIGN(TorProfileServiceImpl);
 };
 

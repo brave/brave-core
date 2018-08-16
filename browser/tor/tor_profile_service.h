@@ -9,14 +9,17 @@
 #include "base/macros.h"
 #include "base/observer_list.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "net/proxy_resolution/proxy_config.h"
 #include "url/gurl.h"
+
+namespace net {
+class ProxyResolutionService;
+}
 
 namespace tor {
 
 struct TorConfig {
   base::FilePath binary_path;
-  net::ProxyConfig proxy_config;
+  std::string proxy_config;
 };
 
 using TorLaunchCallback =
@@ -34,6 +37,9 @@ class TorProfileService : public KeyedService {
   virtual void SetNewTorCircuit(const GURL&) = 0;
   virtual bool UpdateNewTorConfig(const TorConfig&) = 0;
   virtual int64_t GetTorPid() = 0;
+
+  virtual void SetProxy(net::ProxyResolutionService*, const GURL&,
+                        bool /* new circuit */) = 0;
 
   void AddObserver(TorLauncherServiceObserver* observer);
   void RemoveObserver(TorLauncherServiceObserver* observer);

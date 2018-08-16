@@ -31,6 +31,8 @@ class TorURLRequestInterceptor : public net::URLRequestInterceptor {
       const GURL& location) const override;
 
  private:
+  void SetProxyInternal(net::URLRequest* request) const;
+
   content::BrowserContext* browser_context_; // NOT OWNED
   DISALLOW_COPY_AND_ASSIGN(TorURLRequestInterceptor);
 };
