@@ -323,11 +323,9 @@ class TabTrayController: UIViewController {
         collectionView.register(TabCell.self, forCellWithReuseIdentifier: TabCell.Identifier)
         collectionView.backgroundColor = TabTrayControllerUX.BackgroundColor
 
-        if #available(iOS 11.0, *) {
-            collectionView.dragInteractionEnabled = true
-            collectionView.dragDelegate = tabDataSource
-            collectionView.dropDelegate = tabDataSource
-        }
+        collectionView.dragInteractionEnabled = true
+        collectionView.dragDelegate = tabDataSource
+        collectionView.dropDelegate = tabDataSource
 
         view.addSubview(collectionView)
         view.addSubview(toolbar)

@@ -888,7 +888,7 @@ extension TabManager: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
-        if #available(iOS 11, *), let tab = self[webView], let blocker = tab.contentBlocker as? ContentBlockerHelper {
+        if let tab = self[webView], let blocker = tab.contentBlocker as? ContentBlockerHelper {
             blocker.clearPageStats()
         }
     }
@@ -900,13 +900,11 @@ extension TabManager: WKNavigationDelegate {
         let isNightMode = NightModeAccessors.isNightMode(self.prefs)
         tab.setNightMode(isNightMode)
 
-        if #available(iOS 11, *) {
-            let isNoImageMode = self.prefs.boolForKey(PrefsKeys.KeyNoImageModeStatus) ?? false
-            tab.noImageMode = isNoImageMode
-
-            if let tpHelper = tab.contentBlocker as? ContentBlockerHelper, !tpHelper.isEnabled {
-                webView.evaluateJavaScript("window.__firefox__.TrackingProtectionStats.setEnabled(false, \(UserScriptManager.securityToken))", completionHandler: nil)
-            }
+        let isNoImageMode = self.prefs.boolForKey(PrefsKeys.KeyNoImageModeStatus) ?? false
+        tab.noImageMode = isNoImageMode
+        
+        if let tpHelper = tab.contentBlocker as? ContentBlockerHelper, !tpHelper.isEnabled {
+            webView.evaluateJavaScript("window.__firefox__.TrackingProtectionStats.setEnabled(false, \(UserScriptManager.securityToken))", completionHandler: nil)
         }
     }
 
