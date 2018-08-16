@@ -23,6 +23,7 @@ class RewardsServiceObserver {
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> properties) {};
   virtual void OnPromotion(RewardsService* payment_service,
+                           unsigned int error_code,
                            brave_rewards::Promotion properties) {};
   virtual void OnPromotionCaptcha(RewardsService* payment_service,
                                   std::string image) {};

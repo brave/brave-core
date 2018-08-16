@@ -25,6 +25,10 @@ export const formatConverted = (converted: number, currency: string = 'USD'): st
 }
 
 export const generateContributionMonthly = (list: number[], rates: Record<string, number> | undefined) => {
+  if (!list) {
+    return []
+  }
+
   return list.map((item: number) => {
     return {
       tokens: item,

@@ -54,6 +54,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) override;
   void OnPromotion(brave_rewards::RewardsService* payment_service,
+                   unsigned int error_code,
                    brave_rewards::Promotion result) override;
   void OnPromotionCaptcha(brave_rewards::RewardsService* payment_service,
                           std::string image) override;
@@ -168,7 +169,14 @@ void RewardsDOMHandler::OnWalletProperties(
       }
       walletInfo->SetList("range", std::move(range));
 
-      // TODO add grants
+      auto grants = std::make_unique<base::ListValue>();
+      for (auto const& item : wallet_properties->grants) {
+        auto grant = std::make_unique<base::DictionaryValue>();
+        grant->SetString("probi", item.probi);
+        grant->SetInteger("expiryTime", item.expiryTime);
+        grants->Append(std::move(grant));
+      }
+      walletInfo->SetList("grants", std::move(grants));
     }
 
     result.SetDictionary("wallet", std::move(walletInfo));
@@ -179,11 +187,13 @@ void RewardsDOMHandler::OnWalletProperties(
 
 void RewardsDOMHandler::OnPromotion(
     brave_rewards::RewardsService* payment_service,
-    brave_rewards::Promotion result) {
+    unsigned int result,
+    brave_rewards::Promotion promo) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     base::DictionaryValue* promotion = new base::DictionaryValue();
-    promotion->SetString("promotionId", result.promotionId);
-    promotion->SetDouble("amount", result.amount);
+    promotion->SetInteger("status", result);
+    promotion->SetString("promotionId", promo.promotionId);
+    promotion->SetDouble("amount", promo.amount);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotion", *promotion);
   }

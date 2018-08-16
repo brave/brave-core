@@ -59,6 +59,7 @@ declare namespace Rewards {
   export interface Promotion {
     promotionId: string
     amount: number
+    status?: number
     captcha?: string
     expireDate?: number
     error?: 'wrongPosition' | 'serverError' | null

@@ -90,7 +90,7 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnWalletInitialized(int error_code);
   void TriggerOnWalletProperties(int error_code,
                                  std::unique_ptr<ledger::WalletInfo> result);
-  void TriggerOnPromotion(const ledger::Promo result);
+  void TriggerOnPromotion(ledger::Result result, const ledger::Promo promo);
   void TriggerOnPromotionCaptcha(const std::string& image);
   void TriggerOnRecoverWallet(ledger::Result result, double balance);
   void TriggerOnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate);
@@ -109,7 +109,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnWalletInitialized(ledger::Result result) override;
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
-  void OnPromotion(ledger::Promo result) override;
+  void OnPromotion(ledger::Result result, ledger::Promo promo) override;
   void OnPromotionCaptcha(const std::string& image) override;
   void OnRecoverWallet(ledger::Result result, double balance) override;
   void OnReconcileComplete(ledger::Result result,
