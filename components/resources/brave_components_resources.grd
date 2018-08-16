@@ -198,8 +198,6 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT" desc="">Coming soon.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1" desc="">Pay directly for the content you love.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT2" desc="">Your monthly allowance gets divided based on your attention metric.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITE_VISITED" desc="">Site visited</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ATTENTION" desc="">Attentions</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Please visit some sites</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total donations this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Please do some donations</message>
@@ -275,9 +273,8 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">Thanks for stopping by. We joined Brave’s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="">Your donation is much appreciated and it encourages us to continue to improve our content.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Brave Contribute</message>
-      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Your attention score</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_TEXT1" desc="">You’re currently supporting</message>
-      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_VISITED" desc="">Site visited</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT1" desc="">Do you know that you’ve been paying for the web content with your data for the digital ads? You didn’t have a voice in it and worse, you’re exposed to privacy and security risks.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT2" desc="">Brave Rewards allows you to take control back.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT3" desc="">How does it work?</message>
@@ -302,7 +299,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_SEND_DONATION" desc="">Send my donation</message>
       <message name="IDS_BRAVE_UI_SEND_TIP" desc="">Send my Tip</message>
       <message name="IDS_BRAVE_UI_SETTINGS" desc="">Settings</message>
-      <message name="IDS_BRAVE_UI_SITE_VISITED" desc="">Site visited</message>
+      <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
       <message name="IDS_BRAVE_UI_SITES" desc="">sites</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grant</message>
@@ -322,6 +319,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_DND_CAPTCHA" desc="">Drag and drop the token logo onto the target</message>
       <message name="IDS_BRAVE_UI_DATE" desc="">Date</message>
       <message name="IDS_BRAVE_UI_DEPOSIT" desc="">Deposit</message>
+      <message name="IDS_BRAVE_UI_DEPOSITS" desc="">Deposits</message>
       <message name="IDS_BRAVE_UI_DESCRIPTION" desc="">Description</message>
       <message name="IDS_BRAVE_UI_DONATION" desc="">Donation</message>
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
@@ -333,12 +331,12 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">New Token Grant</message>
       <message name="IDS_BRAVE_UI_OPEN_BALANCE" desc="">Opening Balance</message>
       <message name="IDS_BRAVE_UI_CLOSE_BALANCE" desc="">Closing Balance</message>
+      <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
       <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th day in each month.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_NOT_MADE" desc="">Payment not made.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Brave Contribute and the recurring donations, these payments are skipped for the period.</message>
       <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="">Recurring Donation</message>
-      <message name="IDS_BRAVE_UI_TOKEN_ALLOCATION" desc="">Token Allocation</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
       <message name="IDS_BRAVE_UI_VIEW_MONTHLY" desc="">View Monthly Statement for Details</message>
