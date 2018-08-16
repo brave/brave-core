@@ -262,8 +262,8 @@ class ContributeBox extends React.Component<Props, State> {
         </List>
         <TableContribute
           header={[
-            getLocale('contributionSiteVisited'),
-            getLocale('contributionSiteAttention')
+            getLocale('site'),
+            getLocale('rewardsContributeAttention')
           ]}
           rows={contributeRows}
           allSites={allSites}
