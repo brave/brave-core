@@ -9,7 +9,7 @@ import Hero from '../hero'
 import SettingsPage from '../settingsPage'
 import ButtonCta from '../../../components/buttonsIndicators/buttonCta'
 import ButtonSecondary from '../../../components/buttonsIndicators/buttonSecondary'
-import InfoCards, { InfoCardProps } from '../infoCards'
+import InfoCard, { CardProps } from '../infoCard'
 
 // Utils
 import { getLocale } from '../../../helpers'
@@ -167,7 +167,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
     )
   }
 
-  get infoItems (): InfoCardProps[] {
+  get infoCards (): CardProps[] {
     return [
       {
         title: getLocale('turnOnRewardsTitle'),
@@ -201,9 +201,9 @@ class WelcomePage extends React.PureComponent<Props, {}> {
               {this.centerTextContent}
             </StyledCenterInner>
             <StyledInfoContent>
-              <InfoCards
+              <InfoCard
                 id='rewards-info'
-                infoItems={this.infoItems}
+                cards={this.infoCards}
               />
             </StyledInfoContent>
             <StyledTakeActionContent>

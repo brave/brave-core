@@ -12,28 +12,28 @@ import {
   StyledFigure
 } from './style'
 
-export interface InfoCardProps {
+export interface CardProps {
   title?: string
   description?: string
   icon?: string
 }
 
-export interface InfoCardsProps {
+export interface Props {
   id?: string
-  infoItems?: InfoCardProps[]
+  cards?: CardProps[]
 }
 
-export default class InfoCards extends React.PureComponent<InfoCardsProps, {}> {
+export default class InfoCard extends React.PureComponent<Props, {}> {
   get gridTheme () {
     return {
       gridGap: '0px'
     }
   }
 
-  getCards (items: InfoCardProps[]) {
+  getCards (items: CardProps[]) {
     return (
       <Grid theme={this.gridTheme} columns={items.length}>
-        {items.map((item: InfoCardProps, index: number) => {
+        {items.map((item: CardProps, index: number) => {
           return <Column key={`${index}`} size={1}>
             <StyledInfoCard>
               <StyledFigure>
@@ -49,12 +49,12 @@ export default class InfoCards extends React.PureComponent<InfoCardsProps, {}> {
   }
 
   render () {
-    const { id, infoItems } = this.props
+    const { id, cards } = this.props
     return (
       <section id={id}>
         {
-          infoItems
-          ? this.getCards(infoItems)
+          cards
+          ? this.getCards(cards)
           : null
         }
       </section>

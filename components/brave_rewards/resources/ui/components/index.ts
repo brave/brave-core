@@ -13,12 +13,14 @@ import GrantClaim from './grantClaim'
 import GrantComplete from './grantComplete'
 import GrantInit from './grantInit'
 import GrantWrapper from './grantWrapper'
+import InfoCard from './infoCard'
 import List from './list'
 import ListToken from './listToken'
 import MainToggle from './mainToggle'
 import ModalActivity from './modalActivity'
 import ModalBackupRestore from './modalBackupRestore'
 import ModalContribute from './modalContribute'
+import NextContribution from './nextContribution'
 import Profile from './profile'
 import SettingsPage from './settingsPage'
 import SiteBanner from './siteBanner'
@@ -32,7 +34,7 @@ import WalletEmpty from './walletEmpty'
 import WalletOff from './walletOff'
 import WalletSummary from './walletSummary'
 import WalletWrapper from './walletWrapper'
-import NextContribution from './nextContribution'
+import WelcomePage from './welcomePage'
 
 export {
   Alert,
@@ -46,6 +48,7 @@ export {
   GrantComplete,
   GrantInit,
   GrantWrapper,
+  InfoCard,
   List,
   ListToken,
   MainToggle,
@@ -65,5 +68,6 @@ export {
   WalletEmpty,
   WalletOff,
   WalletSummary,
-  WalletWrapper
+  WalletWrapper,
+  WelcomePage
 }
