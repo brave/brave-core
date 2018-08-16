@@ -15,7 +15,7 @@ export const StyledOptInInnerSection = styled.section`
 ` as any
 
 export const StyledCenterSection = styled.section`
-  padding: 15px 0 40px;
+  padding: 15px 0 0;
 ` as any
 
 export const StyledCenterContent = styled.div`
@@ -38,8 +38,10 @@ export const StyledInfoContent = styled.section`
 ` as any
 
 export const StyledTakeActionContent = styled.section`
-  margin: 83px auto 79px;
+  margin: 0 auto;
+  padding: 64px 0 79px;
   max-width: 500px;
+  display: block;
 ` as any
 
 export const StyledBackground = styled.div`
@@ -117,7 +119,7 @@ export const StyledTeaserParagraph = styled.p`
 
 export const StyledReadyParagraph = styled.p`
   font-size: 16px;
-  line-height: 28px;
+  line-height: 1.75;
   color: #484B4E;
   font-weight: 300;
   letter-spacing: 0.16px;

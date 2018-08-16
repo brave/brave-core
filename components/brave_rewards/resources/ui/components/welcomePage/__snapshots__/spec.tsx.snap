@@ -210,7 +210,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 .c15 {
-  padding: 15px 0 40px;
+  padding: 15px 0 0;
 }
 
 .c17 {
@@ -233,8 +233,10 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 .c28 {
-  margin: 83px auto 79px;
+  margin: 0 auto;
+  padding: 64px 0 79px;
   max-width: 500px;
+  display: block;
 }
 
 .c3 {
@@ -324,7 +326,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 
 .c31 {
   font-size: 16px;
-  line-height: 28px;
+  line-height: 1.75;
   color: #484B4E;
   font-weight: 300;
   -webkit-letter-spacing: 0.16px;
