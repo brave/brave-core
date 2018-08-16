@@ -67,6 +67,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     case types.ON_PROMOTION:
       state = { ...state }
+      // TODO NZ check why enum can't be used inside Rewards namespace
+      if (action.payload.properties.status === 1) {
+        state.promotion = undefined
+        break
+      }
+
       state.promotion = {
         amount: action.payload.properties.amount,
         promotionId: action.payload.properties.promotionId
@@ -193,12 +199,15 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         if (properties.result === 0) {
           if (state.promotion) {
             let promotion = state.promotion
+            let ui = state.ui
             promotion.expireDate = properties.expirationDate
             promotion.error = null
+            ui.emptyWallet = false
 
             state = {
               ...state,
-              promotion
+              promotion,
+              ui
             }
             chrome.send('getWalletProperties', [])
           }

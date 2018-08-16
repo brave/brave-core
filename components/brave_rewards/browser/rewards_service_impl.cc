@@ -284,8 +284,8 @@ void RewardsServiceImpl::OnWalletProperties(ledger::Result result,
   TriggerOnWalletProperties(result, std::move(wallet_info));
 }
 
-void RewardsServiceImpl::OnPromotion(ledger::Promo result) {
-  TriggerOnPromotion(result);
+void RewardsServiceImpl::OnPromotion(ledger::Result result, ledger::Promo promo) {
+  TriggerOnPromotion(result, promo);
 }
 
 void RewardsServiceImpl::OnPromotionCaptcha(const std::string& image) {
@@ -562,14 +562,14 @@ void RewardsServiceImpl::GetPromotion(const std::string& lang,
   ledger_->GetPromotion(lang, payment_id);
 }
 
-void RewardsServiceImpl::TriggerOnPromotion(const ledger::Promo result) {
+void RewardsServiceImpl::TriggerOnPromotion(ledger::Result result, const ledger::Promo promo) {
   brave_rewards::Promotion properties;
 
-  properties.promotionId = result.promotionId;
-  properties.amount = result.amount;
+  properties.promotionId = promo.promotionId;
+  properties.amount = promo.amount;
 
   for (auto& observer : observers_)
-    observer.OnPromotion(this, properties);
+    observer.OnPromotion(this, result, properties);
 }
 
 void RewardsServiceImpl::GetPromotionCaptcha() {
