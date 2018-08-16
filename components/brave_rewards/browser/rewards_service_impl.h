@@ -73,6 +73,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnMediaStop(SessionID tab_id) override;
   void OnXHRLoad(SessionID tab_id, const GURL& url) override;
   std::string URIEncode(const std::string& value) override;
+  uint64_t GetReconcileStamp() const override;
 
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;

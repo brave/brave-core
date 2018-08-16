@@ -70,6 +70,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onPromotionFinish(properties)
   }
 
+  function reconcileStamp (stamp: number) {
+    getActions().onReconcileStamp(stamp)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -79,7 +83,8 @@ window.cr.define('brave_rewards', function () {
     promotionCaptcha,
     walletPassphrase,
     recoverWalletData,
-    promotionFinish
+    promotionFinish,
+    reconcileStamp
   }
 })
 
