@@ -167,6 +167,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         ui.walletRecoverySuccess = result === 0
         if (result === 0) {
           walletInfo.balance = balance
+          walletInfo.grants = []
           chrome.send('getWalletPassphrase', [])
           ui.emptyWallet = balance <= 0
           ui.modalBackup = false
@@ -200,7 +201,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
           if (state.promotion) {
             let promotion = state.promotion
             let ui = state.ui
-            promotion.expireDate = properties.expirationDate
+            promotion.expireDate = properties.expirationDate * 1000
             promotion.error = null
             ui.emptyWallet = false
 
