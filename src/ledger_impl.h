@@ -64,6 +64,7 @@ class LedgerImpl : public ledger::Ledger,
   const std::string& GetBTCAddress() const override;
   const std::string& GetETHAddress() const override;
   const std::string& GetLTCAddress() const override;
+  uint64_t GetReconcileStamp() const override;
   uint64_t GetPublisherMinVisitTime() const override; // In milliseconds
   unsigned int GetPublisherMinVisits() const override;
   bool GetPublisherAllowNonVerified() const override;
@@ -81,18 +82,18 @@ class LedgerImpl : public ledger::Ledger,
                           const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
   void GetWalletProperties() const override;
 
-  void GetPromotion(const std::string& lang, const std::string& paymentId) const override;
-  void OnPromotion(const braveledger_bat_helper::PROMOTION_ST&);
+  void GetGrant(const std::string& lang, const std::string& paymentId) const override;
+  void OnGrant(ledger::Result result, const braveledger_bat_helper::GRANT& grant);
 
-  void GetPromotionCaptcha() const override;
-  void OnPromotionCaptcha(const std::string& image);
+  void GetGrantCaptcha() const override;
+  void OnGrantCaptcha(const std::string& image);
 
-  void SolvePromotionCaptcha(const std::string& solution) const override;
-  void OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate);
+  void SolveGrantCaptcha(const std::string& solution) const override;
+  void OnGrantFinish(ledger::Result result, const braveledger_bat_helper::GRANT& grant);
 
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string& passPhrase) const override;
-  void OnRecoverWallet(ledger::Result result, double balance);
+  void OnRecoverWallet(ledger::Result result, double balance, const std::vector<braveledger_bat_helper::GRANT>& grants);
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,

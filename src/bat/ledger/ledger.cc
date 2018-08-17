@@ -153,10 +153,12 @@ WalletInfo::WalletInfo (const ledger::WalletInfo &info) {
   grants_ = info.grants_;
 }
 
-Promo::Promo () : amount(0) {}
-Promo::~Promo () {}
-Promo::Promo (const ledger::Promo &properties) {
+Grant::Grant () {}
+Grant::~Grant () {}
+Grant::Grant (const ledger::Grant &properties) {
   promotionId = properties.promotionId;
-  amount = properties.amount;
+  expiryTime = properties.expiryTime;
+  probi = properties.probi;
+  altcurrency = properties.altcurrency;
 }
 }
