@@ -16,7 +16,7 @@ namespace brave_rewards {
     std::string altcurrency;
     std::string probi;
     std::string promotionId;
-    unsigned int expiryTime;
+    uint64_t expiryTime;
   };
 
 }  // namespace brave_rewards

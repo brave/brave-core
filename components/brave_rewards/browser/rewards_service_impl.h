@@ -90,10 +90,10 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnWalletInitialized(int error_code);
   void TriggerOnWalletProperties(int error_code,
                                  std::unique_ptr<ledger::WalletInfo> result);
-  void TriggerOnGrant(ledger::Result result, const ledger::Grant grant);
+  void TriggerOnGrant(ledger::Result result, const ledger::Grant& grant);
   void TriggerOnGrantCaptcha(const std::string& image);
-  void TriggerOnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::Grant> grants);
-  void TriggerOnGrantFinish(ledger::Result result, ledger::Grant grant);
+  void TriggerOnRecoverWallet(ledger::Result result, double balance, const std::vector<ledger::Grant>& grants);
+  void TriggerOnGrantFinish(ledger::Result result, const ledger::Grant& grant);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
@@ -109,12 +109,12 @@ class RewardsServiceImpl : public RewardsService,
   void OnWalletInitialized(ledger::Result result) override;
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
-  void OnGrant(ledger::Result result, ledger::Grant grant) override;
+  void OnGrant(ledger::Result result, const ledger::Grant& grant) override;
   void OnGrantCaptcha(const std::string& image) override;
-  void OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::Grant> grants) override;
+  void OnRecoverWallet(ledger::Result result, double balance, const std::vector<ledger::Grant>& grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
-  void OnGrantFinish(ledger::Result result, ledger::Grant grant) override;
+  void OnGrantFinish(ledger::Result result, const ledger::Grant& grant) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
   void SaveLedgerState(const std::string& ledger_state,
