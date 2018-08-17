@@ -12,7 +12,8 @@ import {
   ModalActivity,
   ModalBackupRestore,
   WalletWrapper,
-  WalletEmpty
+  WalletEmpty,
+  WalletSummary
 } from 'brave-ui/features/rewards'
 
 // Utils
@@ -153,9 +154,10 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   render () {
-    const { connectedWallet, recoveryKey, grant, enabledMain } = this.props.rewardsData
-    const { balance } = this.props.rewardsData.walletInfo
+    const { connectedWallet, recoveryKey, grant, enabledMain, contributionMonthly } = this.props.rewardsData
+    const { balance, rates } = this.props.rewardsData.walletInfo
     const { walletRecoverySuccess, emptyWallet, modalBackup } = this.props.rewardsData.ui
+    const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
 
     return (
       <>
@@ -190,7 +192,16 @@ class PageWallet extends React.Component<Props, State> {
             enabledMain
             ? emptyWallet
               ? <WalletEmpty />
-              : null // TODO NZ <PanelSummary grant={} ads={} contribute={} donation={} tips={} onActivity={} />
+              : <WalletSummary
+                total={{
+                  tokens: contributionMonthly,
+                  converted: convertedMonthly
+                }}
+                contribute={{
+                  tokens: contributionMonthly,
+                  converted: convertedMonthly
+                }}
+              />
             : <WalletOff/>
           }
         </WalletWrapper>
