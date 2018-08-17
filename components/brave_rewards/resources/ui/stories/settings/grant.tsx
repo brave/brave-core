@@ -9,14 +9,13 @@ import {
   GrantCaptcha,
   GrantClaim,
   GrantComplete,
-  GrantInit,
   GrantWrapper
 } from '../../../../src/features/rewards'
 
 // Assets
 const captchaDrop = require('../../../assets/img/captchaDrop.png')
 
-type Step = '' | 'init' | 'captcha' | 'complete'
+type Step = '' | 'captcha' | 'complete'
 
 interface State {
   grantShow: boolean
@@ -33,19 +32,19 @@ class Grant extends React.Component<{}, State > {
   }
 
   onGrantShow = () => {
-    this.setState({ grantStep: 'init' })
+    this.setState({ grantStep: 'captcha' })
   }
 
   onGrantHide = () => {
     this.setState({ grantStep: '' })
   }
 
-  onGrantDelete = () => {
-    this.setState({ grantStep: '', grantShow: false })
+  onSolution = () => {
+    this.setState({ grantStep: 'complete' })
   }
 
-  onGrantStep = (step: Step) => {
-    this.setState({ grantStep: step })
+  onComplete = () => {
+    this.setState({ grantStep: '', grantShow: false })
   }
 
   render () {
@@ -57,24 +56,13 @@ class Grant extends React.Component<{}, State > {
           : null
         }
         {
-          this.state.grantStep === 'init'
-          ? <GrantWrapper
-              onClose={this.onGrantHide}
-              title={'Good news!'}
-              text={'Free 30 BAT have been awarded to you so you can support more publishers.'}
-          >
-            <GrantInit onAccept={this.onGrantStep.bind(this, 'captcha')} onDeny={this.onGrantDelete} />
-          </GrantWrapper>
-          : null
-        }
-        {
           this.state.grantStep === 'captcha'
           ? <GrantWrapper
               onClose={this.onGrantHide}
               title={'Almost there…'}
               text={'Prove that you are human!'}
           >
-            <GrantCaptcha onSolution={this.onGrantStep.bind(this, 'complete')} dropBgImage={captchaDrop} />
+            <GrantCaptcha onSolution={this.onSolution} dropBgImage={captchaDrop} />
           </GrantWrapper>
           : null
         }
@@ -85,7 +73,7 @@ class Grant extends React.Component<{}, State > {
             title={'It’s your lucky day!'}
             text={'Your token grant is on its way.'}
           >
-            <GrantComplete onClose={this.onGrantHide} amount={30} date={'8/15/2018'} />
+            <GrantComplete onClose={this.onComplete} amount={30} date={'8/15/2018'} />
           </GrantWrapper>
           : null
         }

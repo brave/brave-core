@@ -10,7 +10,6 @@ import centered from '@storybook/addon-centered/dist'
 // Components
 import GrantClaim from '../../../src/features/rewards/grantClaim'
 import GrantWrapper from '../../../src/features/rewards/grantWrapper'
-import GrantInit from '../../../src/features/rewards/grantInit'
 import GrantCaptcha from '../../../src/features/rewards/grantCaptcha'
 import GrantComplete from '../../../src/features/rewards/grantComplete'
 
@@ -40,16 +39,6 @@ storiesOf('Feature Components/Rewards/Grant', module)
           >
            Content here
           </GrantWrapper>
-        </div>
-      )
-    })
-    .add('Grant init',() => {
-      return (
-        <div style={{ width: '373px', height: '715px', position: 'relative' }}>
-          <GrantInit
-            onAccept={dummyClick}
-            onDeny={dummyClick}
-          />
         </div>
       )
     })

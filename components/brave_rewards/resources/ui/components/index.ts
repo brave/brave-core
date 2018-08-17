@@ -11,7 +11,6 @@ import Donate from './donate'
 import GrantCaptcha from './grantCaptcha'
 import GrantClaim from './grantClaim'
 import GrantComplete from './grantComplete'
-import GrantInit from './grantInit'
 import GrantWrapper from './grantWrapper'
 import InfoCard from './infoCard'
 import List from './list'
@@ -46,7 +45,6 @@ export {
   GrantCaptcha,
   GrantClaim,
   GrantComplete,
-  GrantInit,
   GrantWrapper,
   InfoCard,
   List,
