@@ -198,13 +198,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_GRANT_FINISH:
       {
         state = { ...state }
-        const properties = action.payload.properties
+        const properties: Rewards.Grant = action.payload.properties
         // TODO NZ check why enum can't be used inside Rewards namespace
-        if (properties.result === 0) {
+        if (properties.status === 0) {
           if (state.grant) {
             let grant = state.grant
             let ui = state.ui
             grant.expiryTime = properties.expiryTime * 1000
+            grant.probi = properties.probi
             grant.status = null
             ui.emptyWallet = false
 
