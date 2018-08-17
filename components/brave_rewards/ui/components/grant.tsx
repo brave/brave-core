@@ -18,6 +18,7 @@ import {
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 import { getLocale } from '../../../common/locale'
+import BigNumber from 'bignumber.js'
 
 interface State {
   grantShow: boolean
@@ -51,7 +52,7 @@ class Grant extends React.Component<Props, State> {
     this.setState({
       showWelcome: false
     })
-    this.actions.onResetPromotion()
+    this.actions.onResetGrant()
   }
 
   onSuccess = () => {
@@ -59,27 +60,32 @@ class Grant extends React.Component<Props, State> {
       grantShow: false,
       showWelcome: false
     })
-    this.actions.onDeletePromotion()
+    this.actions.onDeleteGrant()
   }
 
   onSolution = (x: number, y: number) => {
-    this.actions.solvePromotionCaptcha(x, y)
+    this.actions.solveGrantCaptcha(x, y)
   }
 
   onAccept = () => {
-    this.actions.getPromotionCaptcha()
+    this.actions.getGrantCaptcha()
   }
 
   onDeny = () => {
     // TODO should we delay next fetch?
-    this.actions.onDeletePromotion()
+    this.actions.onDeleteGrant()
   }
 
   render () {
-    const { promotion } = this.props.rewardsData
+    const { grant } = this.props.rewardsData
 
-    if (!promotion) {
+    if (!grant) {
       return null
+    }
+
+    let tokens = 0
+    if (grant.probi) {
+      tokens = new BigNumber(grant.probi.toString()).dividedBy('1e18').toNumber()
     }
 
     return (
@@ -90,33 +96,33 @@ class Grant extends React.Component<Props, State> {
             : null
         }
         {
-          promotion.expireDate
+          grant.expiryTime
             ? <GrantWrapper
               onClose={this.onGrantHide}
               title={'It’s your lucky day!'}
               text={'Your token grant is on its way.'}
             >
-              <GrantComplete onClose={this.onSuccess} amount={promotion.amount} date={new Date(promotion.expireDate).toLocaleDateString()} />
+              <GrantComplete onClose={this.onSuccess} amount={tokens} date={new Date(grant.expiryTime).toLocaleDateString()} />
             </GrantWrapper>
             : null
         }
         {
-          !promotion.expireDate && promotion.captcha
+          !grant.expiryTime && grant.captcha
             ? <GrantWrapper
               onClose={this.onGrantHide}
-              title={promotion.error === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
+              title={grant.status === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
               text={getLocale('proveHuman')}
             >
-              <GrantCaptcha onSolution={this.onSolution} dropBgImage={promotion.captcha} />
+              <GrantCaptcha onSolution={this.onSolution} dropBgImage={grant.captcha} />
             </GrantWrapper>
             : null
         }
         {
-          !promotion.expireDate && !promotion.captcha && this.state.showWelcome
+          !grant.expiryTime && !grant.captcha && this.state.showWelcome
             ? <GrantWrapper
               onClose={this.onGrantHide}
               title={'Good news!'}
-              text={`Free ${promotion.amount} BAT have been awarded to you so you can support more publishers.`}
+              text={`Free ${grant.probi} BAT have been awarded to you so you can support more publishers.`}
             >
               <GrantInit onAccept={this.onAccept} onDeny={this.onDeny} />
             </GrantWrapper>

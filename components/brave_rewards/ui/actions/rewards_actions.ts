@@ -24,30 +24,30 @@ export const onWalletProperties = (properties: {status: number, wallet: Rewards.
   properties
 })
 
-export const getPromotion = () => action(types.GET_PROMOTION)
+export const getGrant = () => action(types.GET_PROMOTION)
 
-export const onPromotion = (properties: Rewards.Promotion) => action(types.ON_PROMOTION, {
+export const onGrant = (properties: Rewards.Grant) => action(types.ON_GRANT, {
   properties
 })
 
-export const getPromotionCaptcha = () => action(types.GET_PROMOTION_CAPTCHA)
+export const getGrantCaptcha = () => action(types.GET_PROMOTION_CAPTCHA)
 
-export const onPromotionCaptcha = (image: string) => action(types.ON_PROMOTION_CAPTCHA, {
+export const onGrantCaptcha = (image: string) => action(types.ON_GRANT_CAPTCHA, {
   image
 })
 
-export const solvePromotionCaptcha = (x: number, y: number) => action(types.SOLVE_PROMOTION_CAPTCHA, {
+export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_PROMOTION_CAPTCHA, {
   x,
   y
 })
 
-export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action(types.ON_PROMOTION_FINISH, {
+export const onGrantFinish = (properties: Rewards.GrantFinish) => action(types.ON_GRANT_FINISH, {
   properties
 })
 
-export const onResetPromotion = () => action(types.ON_PROMOTION_RESET)
+export const onResetGrant = () => action(types.ON_GRANT_RESET)
 
-export const onDeletePromotion = () => action(types.ON_PROMOTION_DELETE)
+export const onDeleteGrant = () => action(types.ON_GRANT_DELETE)
 
 export const getWalletPassphrase = () => action(types.GET_WALLLET_PASSPHRASE)
 

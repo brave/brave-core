@@ -40,11 +40,11 @@ class RewardsDOMHandler : public WebUIMessageHandler,
  private:
   void HandleCreateWalletRequested(const base::ListValue* args);
   void GetWalletProperties(const base::ListValue* args);
-  void GetPromotion(const base::ListValue* args);
-  void GetPromotionCaptcha(const base::ListValue* args);
+  void GetGrant(const base::ListValue* args);
+  void GetGrantCaptcha(const base::ListValue* args);
   void GetWalletPassphrase(const base::ListValue* args);
   void RecoverWallet(const base::ListValue* args);
-  void SolvePromotionCaptcha(const base::ListValue* args);
+  void SolveGrantCaptcha(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
 
   // PaymentServiceObserver implementation
@@ -53,19 +53,19 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnWalletProperties(brave_rewards::RewardsService* payment_service,
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) override;
-  void OnPromotion(brave_rewards::RewardsService* payment_service,
+  void OnGrant(brave_rewards::RewardsService* payment_service,
                    unsigned int error_code,
-                   brave_rewards::Promotion result) override;
-  void OnPromotionCaptcha(brave_rewards::RewardsService* payment_service,
+                   brave_rewards::Grant result) override;
+  void OnGrantCaptcha(brave_rewards::RewardsService* payment_service,
                           std::string image) override;
   void OnRecoverWallet(brave_rewards::RewardsService* payment_service,
                        unsigned int result,
                        double balance,
                        std::vector<brave_rewards::Grant> grants) override;
-  void OnPromotionFinish(brave_rewards::RewardsService* payment_service,
+  void OnGrantFinish(brave_rewards::RewardsService* payment_service,
                        unsigned int result,
                        unsigned int statusCode,
-                       uint64_t expirationDate) override;
+                       uint64_t expiryTime) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
@@ -84,11 +84,11 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("getWalletProperties",
       base::BindRepeating(&RewardsDOMHandler::GetWalletProperties,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("getPromotion",
-                                    base::BindRepeating(&RewardsDOMHandler::GetPromotion,
+  web_ui()->RegisterMessageCallback("getGrant",
+                                    base::BindRepeating(&RewardsDOMHandler::GetGrant,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("getPromotionCaptcha",
-                                    base::BindRepeating(&RewardsDOMHandler::GetPromotionCaptcha,
+  web_ui()->RegisterMessageCallback("getGrantCaptcha",
+                                    base::BindRepeating(&RewardsDOMHandler::GetGrantCaptcha,
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("getWalletPassphrase",
                                     base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
@@ -96,8 +96,8 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("recoverWallet",
                                     base::BindRepeating(&RewardsDOMHandler::RecoverWallet,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("solvePromotionCaptcha",
-                                    base::BindRepeating(&RewardsDOMHandler::SolvePromotionCaptcha,
+  web_ui()->RegisterMessageCallback("solveGrantCaptcha",
+                                    base::BindRepeating(&RewardsDOMHandler::SolveGrantCaptcha,
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("getReconcileStamp",
                                     base::BindRepeating(&RewardsDOMHandler::GetReconcileStamp,
@@ -186,31 +186,30 @@ void RewardsDOMHandler::OnWalletProperties(
   }
 }
 
-void RewardsDOMHandler::OnPromotion(
+void RewardsDOMHandler::OnGrant(
     brave_rewards::RewardsService* payment_service,
     unsigned int result,
-    brave_rewards::Promotion promo) {
+    brave_rewards::Grant grant) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-    base::DictionaryValue* promotion = new base::DictionaryValue();
-    promotion->SetInteger("status", result);
-    promotion->SetString("promotionId", promo.promotionId);
-    promotion->SetDouble("amount", promo.amount);
+    base::DictionaryValue* newGrant = new base::DictionaryValue();
+    newGrant->SetInteger("status", result);
+    newGrant->SetString("promotionId", grant.promotionId);
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotion", *promotion);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grant", *newGrant);
   }
 }
 
-void RewardsDOMHandler::GetPromotion(const base::ListValue* args) {
+void RewardsDOMHandler::GetGrant(const base::ListValue* args) {
   if (rewards_service_) {
     std::string lang;
     std::string paymentId;
     args->GetString(0, &lang);
     args->GetString(1, &paymentId);
-    rewards_service_->GetPromotion(lang, paymentId);
+    rewards_service_->GetGrant(lang, paymentId);
   }
 }
 
-void RewardsDOMHandler::OnPromotionCaptcha(
+void RewardsDOMHandler::OnGrantCaptcha(
     brave_rewards::RewardsService* payment_service,
     std::string image) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
@@ -218,13 +217,13 @@ void RewardsDOMHandler::OnPromotionCaptcha(
     base::Value chunkValue;
     base::Base64Encode(image, &encoded_string);
     chunkValue = base::Value(std::move(encoded_string));
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotionCaptcha", chunkValue);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantCaptcha", chunkValue);
   }
 }
 
-void RewardsDOMHandler::GetPromotionCaptcha(const base::ListValue* args) {
+void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
   if (rewards_service_) {
-    rewards_service_->GetPromotionCaptcha();
+    rewards_service_->GetGrantCaptcha();
   }
 }
 
@@ -267,26 +266,26 @@ void RewardsDOMHandler::OnRecoverWallet(
   }
 }
 
-void RewardsDOMHandler::SolvePromotionCaptcha(const base::ListValue *args) {
+void RewardsDOMHandler::SolveGrantCaptcha(const base::ListValue *args) {
   if (rewards_service_) {
     std::string solution;
     args->GetString(0, &solution);
-    rewards_service_->SolvePromotionCaptcha(solution);
+    rewards_service_->SolveGrantCaptcha(solution);
   }
 }
 
-void RewardsDOMHandler::OnPromotionFinish(
+void RewardsDOMHandler::OnGrantFinish(
     brave_rewards::RewardsService* payment_service,
     unsigned int result,
     unsigned int statusCode,
-    uint64_t expirationDate) {
+    uint64_t expiryTime) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     base::DictionaryValue* finish = new base::DictionaryValue();
     finish->SetInteger("result", result);
     finish->SetInteger("statusCode", statusCode);
-    finish->SetInteger("expirationDate", expirationDate);
+    finish->SetInteger("expiryTime", expiryTime);
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotionFinish", *finish);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", *finish);
   }
 }
 

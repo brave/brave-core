@@ -6,7 +6,7 @@
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
 
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
-#include "brave/components/brave_rewards/browser/promotion.h"
+#include "brave/components/brave_rewards/browser/grant.h"
 
 namespace brave_rewards {
 
@@ -22,19 +22,19 @@ class RewardsServiceObserver {
       RewardsService* payment_service,
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> properties) {};
-  virtual void OnPromotion(RewardsService* payment_service,
+  virtual void OnGrant(RewardsService* payment_service,
                            unsigned int error_code,
-                           brave_rewards::Promotion properties) {};
-  virtual void OnPromotionCaptcha(RewardsService* payment_service,
+                           brave_rewards::Grant properties) {};
+  virtual void OnGrantCaptcha(RewardsService* payment_service,
                                   std::string image) {};
   virtual void OnRecoverWallet(RewardsService* payment_service,
                                unsigned int result,
                                double balance,
                                std::vector<brave_rewards::Grant> grants) {};
-  virtual void OnPromotionFinish(RewardsService* payment_service,
+  virtual void OnGrantFinish(RewardsService* payment_service,
                                  unsigned int result,
                                  unsigned int statusCode,
-                                 uint64_t expirationDate) {};
+                                 uint64_t expiryTime) {};
 };
 
 }  // namespace brave_rewards

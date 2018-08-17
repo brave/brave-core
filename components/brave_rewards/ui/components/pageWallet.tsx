@@ -153,14 +153,14 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   render () {
-    const { connectedWallet, recoveryKey, promotion, enabledMain } = this.props.rewardsData
+    const { connectedWallet, recoveryKey, grant, enabledMain } = this.props.rewardsData
     const { balance } = this.props.rewardsData.walletInfo
     const { walletRecoverySuccess, emptyWallet, modalBackup } = this.props.rewardsData.ui
 
     return (
       <>
         {
-          enabledMain && promotion && promotion.promotionId
+          enabledMain && grant && grant.promotionId
           ? <Grant/>
           : null
         }

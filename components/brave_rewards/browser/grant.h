@@ -2,21 +2,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PAYMENTS_PROMOTION_
-#define BRAVE_BROWSER_PAYMENTS_PROMOTION_
+#ifndef BRAVE_BROWSER_PAYMENTS_GRANT_
+#define BRAVE_BROWSER_PAYMENTS_GRANT_
 
 #include <string>
 
 namespace brave_rewards {
-  struct Promotion {
-    Promotion();
-    ~Promotion();
-    Promotion(const Promotion& properties);
+  struct Grant {
+    Grant();
+    ~Grant();
+    Grant(const Grant& properties);
 
+    std::string altcurrency;
+    std::string probi;
     std::string promotionId;
-    double amount;
+    unsigned int expiryTime;
   };
 
 }  // namespace brave_rewards
 
-#endif //BRAVE_BROWSER_PAYMENTS_PROMOTION_
+#endif //BRAVE_BROWSER_PAYMENTS_GRANT_

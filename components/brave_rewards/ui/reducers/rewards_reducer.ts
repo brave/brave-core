@@ -63,32 +63,33 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
     case types.GET_PROMOTION:
-      chrome.send('getPromotion', [])
+      chrome.send('getGrant', [])
       break
-    case types.ON_PROMOTION:
+    case types.ON_GRANT:
       state = { ...state }
       // TODO NZ check why enum can't be used inside Rewards namespace
       if (action.payload.properties.status === 1) {
-        state.promotion = undefined
+        state.grant = undefined
         break
       }
 
-      state.promotion = {
-        amount: action.payload.properties.amount,
-        promotionId: action.payload.properties.promotionId
+      state.grant = {
+        promotionId: action.payload.properties.promotionId,
+        expiryTime: 0,
+        probi: ''
       }
       break
     case types.GET_PROMOTION_CAPTCHA:
-      chrome.send('getPromotionCaptcha', [])
+      chrome.send('getGrantCaptcha', [])
       break
-    case types.ON_PROMOTION_CAPTCHA:
+    case types.ON_GRANT_CAPTCHA:
       {
-        if (state.promotion) {
-          let promotion = state.promotion
-          promotion.captcha = `data:image/jpeg;base64,${action.payload.image}`
+        if (state.grant) {
+          let grant = state.grant
+          grant.captcha = `data:image/jpeg;base64,${action.payload.image}`
           state = {
             ...state,
-            promotion
+            grant
           }
         }
 
@@ -96,32 +97,33 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
     case types.SOLVE_PROMOTION_CAPTCHA:
       if (action.payload.x && action.payload.y) {
-        chrome.send('solvePromotionCaptcha', [JSON.stringify({
+        chrome.send('solveGrantCaptcha', [JSON.stringify({
           x: action.payload.x,
           y: action.payload.y
         })])
       }
       break
-    case types.ON_PROMOTION_RESET:
+    case types.ON_GRANT_RESET:
       {
-        if (state.promotion) {
-          let promotion: Rewards.Promotion = {
-            promotionId: state.promotion.promotionId,
-            amount: state.promotion.amount
+        if (state.grant) {
+          const grant: Rewards.Grant = {
+            promotionId: state.grant.promotionId,
+            probi: '',
+            expiryTime: 0
           }
 
           state = {
             ...state,
-            promotion
+            grant
           }
         }
 
         break
       }
-    case types.ON_PROMOTION_DELETE:
+    case types.ON_GRANT_DELETE:
       {
-        if (state.promotion) {
-          delete state.promotion
+        if (state.grant) {
+          delete state.grant
 
           state = {
             ...state
@@ -193,38 +195,38 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         }
         break
       }
-    case types.ON_PROMOTION_FINISH:
+    case types.ON_GRANT_FINISH:
       {
         state = { ...state }
         const properties = action.payload.properties
         // TODO NZ check why enum can't be used inside Rewards namespace
         if (properties.result === 0) {
-          if (state.promotion) {
-            let promotion = state.promotion
+          if (state.grant) {
+            let grant = state.grant
             let ui = state.ui
-            promotion.expireDate = properties.expirationDate * 1000
-            promotion.error = null
+            grant.expiryTime = properties.expiryTime * 1000
+            grant.status = null
             ui.emptyWallet = false
 
             state = {
               ...state,
-              promotion,
+              grant,
               ui
             }
             chrome.send('getWalletProperties', [])
           }
         } else {
           state = { ...state }
-          if (state.promotion) {
-            let promotion = state.promotion
-            promotion.error = 'wrongPosition'
+          if (state.grant) {
+            let grant = state.grant
+            grant.status = 'wrongPosition'
 
             state = {
               ...state,
-              promotion
+              grant
             }
           }
-          chrome.send('getPromotionCaptcha', [])
+          chrome.send('getGrantCaptcha', [])
         }
         break
       }
