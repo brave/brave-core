@@ -240,10 +240,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         }
         break
       }
-    case types.ON_CLEAR_RECOVERY:
+    case types.ON_CLEAR_ALERT:
       {
         let ui = state.ui
-        ui.walletRecoverySuccess = null
+        ui[action.payload.error] = null
         state = {
           ...state,
           ui

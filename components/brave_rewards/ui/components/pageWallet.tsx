@@ -144,7 +144,7 @@ class PageWallet extends React.Component<Props, State> {
         node: <><b>{getLocale('walletRestored')}</b> {getLocale('walletRecoverySuccess', { balance: balance.toString() })}</>,
         type: 'success',
         onAlertClose: (event: MouseEvent) => {
-          this.actions.onClearRecovery()
+          this.actions.onClearAlert('walletRecoverySuccess')
         }
       }
     }
