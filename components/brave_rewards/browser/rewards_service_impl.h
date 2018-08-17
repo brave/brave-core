@@ -93,7 +93,7 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnGrant(ledger::Result result, const ledger::Grant grant);
   void TriggerOnGrantCaptcha(const std::string& image);
   void TriggerOnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::Grant> grants);
-  void TriggerOnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime);
+  void TriggerOnGrantFinish(ledger::Result result, ledger::Grant grant);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
@@ -114,7 +114,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::Grant> grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
-  void OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime) override;
+  void OnGrantFinish(ledger::Result result, ledger::Grant grant) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
   void SaveLedgerState(const std::string& ledger_state,

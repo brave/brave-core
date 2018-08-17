@@ -33,8 +33,7 @@ class RewardsServiceObserver {
                                std::vector<brave_rewards::Grant> grants) {};
   virtual void OnGrantFinish(RewardsService* payment_service,
                                  unsigned int result,
-                                 unsigned int statusCode,
-                                 uint64_t expiryTime) {};
+                                 brave_rewards::Grant grant) {};
 };
 
 }  // namespace brave_rewards

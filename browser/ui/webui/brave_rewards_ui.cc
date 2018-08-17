@@ -64,8 +64,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                        std::vector<brave_rewards::Grant> grants) override;
   void OnGrantFinish(brave_rewards::RewardsService* payment_service,
                        unsigned int result,
-                       unsigned int statusCode,
-                       uint64_t expiryTime) override;
+                       brave_rewards::Grant grant) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
@@ -277,13 +276,12 @@ void RewardsDOMHandler::SolveGrantCaptcha(const base::ListValue *args) {
 void RewardsDOMHandler::OnGrantFinish(
     brave_rewards::RewardsService* payment_service,
     unsigned int result,
-    unsigned int statusCode,
-    uint64_t expiryTime) {
+    brave_rewards::Grant grant) {
   if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
     base::DictionaryValue* finish = new base::DictionaryValue();
-    finish->SetInteger("result", result);
-    finish->SetInteger("statusCode", statusCode);
-    finish->SetInteger("expiryTime", expiryTime);
+    finish->SetInteger("status", result);
+    finish->SetInteger("expiryTime", grant.expiryTime);
+    finish->SetString("probi", grant.probi);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", *finish);
   }

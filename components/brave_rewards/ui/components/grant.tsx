@@ -80,7 +80,7 @@ class Grant extends React.Component<Props, State> {
         {
           grant.expiryTime
             ? <GrantWrapper
-              onClose={this.onGrantHide}
+              onClose={this.onSuccess}
               title={'It’s your lucky day!'}
               text={'Your token grant is on its way.'}
             >

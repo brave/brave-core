@@ -296,8 +296,8 @@ void RewardsServiceImpl::OnRecoverWallet(ledger::Result result, double balance, 
   TriggerOnRecoverWallet(result, balance, grants);
 }
 
-void RewardsServiceImpl::OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime) {
-  TriggerOnGrantFinish(result, statusCode, expiryTime);
+void RewardsServiceImpl::OnGrantFinish(ledger::Result result, ledger::Grant grant) {
+  TriggerOnGrantFinish(result, grant);
 }
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
@@ -610,9 +610,16 @@ void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution) const {
   return ledger_->SolveGrantCaptcha(solution);
 }
 
-void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime) {
+void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result, ledger::Grant grant) {
+  brave_rewards::Grant properties;
+
+  properties.promotionId = grant.promotionId;
+  properties.altcurrency = grant.altcurrency;
+  properties.probi = grant.probi;
+  properties.expiryTime = grant.expiryTime;
+
   for (auto& observer : observers_)
-    observer.OnGrantFinish(this, result, statusCode, expiryTime);
+    observer.OnGrantFinish(this, result, properties);
 }
 
 uint64_t RewardsServiceImpl::GetReconcileStamp() const {
