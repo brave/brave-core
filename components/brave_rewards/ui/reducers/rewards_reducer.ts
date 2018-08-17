@@ -40,6 +40,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_CLEAR_ALERT:
       {
         let ui = state.ui
+        if (!ui[action.payload.property]) {
+          break
+        }
+
         ui[action.payload.property] = null
         state = {
           ...state,
