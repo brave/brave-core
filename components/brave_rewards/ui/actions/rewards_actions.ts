@@ -24,19 +24,19 @@ export const onWalletProperties = (properties: {status: number, wallet: Rewards.
   properties
 })
 
-export const getGrant = () => action(types.GET_PROMOTION)
+export const getGrant = () => action(types.GET_GRANT)
 
 export const onGrant = (properties: Rewards.Grant) => action(types.ON_GRANT, {
   properties
 })
 
-export const getGrantCaptcha = () => action(types.GET_PROMOTION_CAPTCHA)
+export const getGrantCaptcha = () => action(types.GET_GRANT_CAPTCHA)
 
 export const onGrantCaptcha = (image: string) => action(types.ON_GRANT_CAPTCHA, {
   image
 })
 
-export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_PROMOTION_CAPTCHA, {
+export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GRANT_CAPTCHA, {
   x,
   y
 })

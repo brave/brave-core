@@ -9,7 +9,7 @@ import { types } from '../constants/rewards_types'
 
 const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
-    case types.GET_PROMOTION:
+    case types.GET_GRANT:
       chrome.send('getGrant', [])
       break
     case types.ON_GRANT:
@@ -26,7 +26,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
         probi: ''
       }
       break
-    case types.GET_PROMOTION_CAPTCHA:
+    case types.GET_GRANT_CAPTCHA:
       chrome.send('getGrantCaptcha', [])
       break
     case types.ON_GRANT_CAPTCHA:
@@ -42,7 +42,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
 
         break
       }
-    case types.SOLVE_PROMOTION_CAPTCHA:
+    case types.SOLVE_GRANT_CAPTCHA:
       if (action.payload.x && action.payload.y) {
         chrome.send('solveGrantCaptcha', [JSON.stringify({
           x: action.payload.x,
