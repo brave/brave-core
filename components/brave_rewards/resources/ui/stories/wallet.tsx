@@ -9,12 +9,18 @@ import { withKnobs, object, number, text, boolean } from '@storybook/addon-knobs
 import centered from '@storybook/addon-centered/dist'
 
 // Components
-import { WalletSummary, WalletEmpty, WalletOff, WalletWrapper } from '../../../src/features/rewards'
+import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletWrapper } from '../../../src/features/rewards'
 import { Type } from '../../../src/features/rewards/alert'
 import { WalletAddIcon, WalletImportIcon } from '../../../src/components/icons'
 
+const bartBaker = require('../../assets/img/bartBaker.jpeg')
+
 const doNothing = () => {
   console.log('nothing')
+}
+
+const dummyDonationAction = () => {
+  console.log(dummyDonationAction)
 }
 
 storiesOf('Feature Components/Rewards/Wallet', module)
@@ -86,6 +92,21 @@ storiesOf('Feature Components/Rewards/Wallet', module)
           tips={object('Tips', { tokens: 19, converted: 5.25 })}
           total={object('Total', { tokens: 1, converted: 5.25 })}
           onActivity={doNothing}
+        />
+      </div>
+    )
+  })
+  .add('Panel', () => {
+    return (
+      <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
+        <WalletPanel
+          id={'wallet-panel'}
+          platform={'youtube'}
+          publisherImg={bartBaker}
+          publisherName={'Bart Baker'}
+          isVerified={true}
+          attentionScore={'17'}
+          donationAction={dummyDonationAction}
         />
       </div>
     )

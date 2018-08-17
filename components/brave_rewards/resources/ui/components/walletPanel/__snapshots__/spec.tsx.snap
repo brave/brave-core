@@ -1,0 +1,903 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
+.c1 {
+  display: block;
+}
+
+.c0 {
+  padding: 20px 20px;
+}
+
+.c35 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.57;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  color: #a1a8f2;
+  text-transform: uppercase;
+}
+
+.c13 {
+  margin: 0;
+  font-weight: 500;
+}
+
+.c11 {
+  margin: 0;
+  font-weight: 500;
+}
+
+.c8 {
+  padding: 15px 0px;
+}
+
+.c14 {
+  padding: 5px 0px;
+  border-top: 1px solid #DBDFE3;
+  border-bottom: 1px solid #DBDFE3;
+}
+
+.c15 {
+  display: inline-block;
+  color: #838391;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 26px;
+}
+
+.c33 {
+  display: inline-block;
+  overflow: hidden;
+  background: #fff;
+  font-size: 14px;
+  border-radius: 28px;
+  min-width: 235px;
+  font-family: Poppins,sans-serif;
+}
+
+.c34 {
+  text-align: center;
+  box-sizing: border-box;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-transform: uppercase;
+  padding: 21px 15px;
+  background: rgba(76,84,210,0.9);
+  color: #fff;
+}
+
+.c34:hover {
+  background: rgba(76,84,210,1);
+}
+
+.c34:active {
+  background: rgba(76,84,210,0.4);
+}
+
+.c17 {
+  max-width: 50px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.c16 {
+  max-width: 50px;
+  width: 100%;
+}
+
+.c18 {
+  position: relative;
+  outline: 0;
+  font-family: Poppins,sans-serif;
+}
+
+.c19 {
+  border-radius: 3px;
+  font-size: 14px;
+  color: #686978;
+  background: #fff;
+  width: 100%;
+  padding: 10px 0;
+  border: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c24 {
+  padding-right: 15px;
+  -webkit-flex-basis: 17px;
+  -ms-flex-preferred-size: 17px;
+  flex-basis: 17px;
+}
+
+.c20 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  padding: 0 5px 0 13px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.c25 {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  border-radius: 3px;
+  box-shadow: 0 2px 5px 0 rgba(223,223,232,0.5);
+  background-color: #fff;
+  border: solid 1px #dfdfe8;
+  overflow: hidden;
+  z-index: 2;
+  display: none;
+}
+
+.c26 {
+  font-size: 14px;
+  line-height: 2.57;
+  color: #1b1d2f;
+  position: relative;
+  padding: 0 0 0 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: #e9f0ff;
+}
+
+.c29 {
+  font-size: 14px;
+  line-height: 2.57;
+  color: #1b1d2f;
+  position: relative;
+  padding: 0 0 0 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background: #fff;
+}
+
+.c27 {
+  -webkit-flex-basis: 12px;
+  -ms-flex-preferred-size: 12px;
+  flex-basis: 12px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c28 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  padding: 0 21px 0 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.c30 {
+  position: relative;
+  display: block;
+  width: 30px;
+  height: 18px;
+}
+
+.c31 {
+  background: #A7ACB2;
+  width: 100%;
+  border-radius: 3px;
+  height: 6px;
+  margin-top: 6px;
+}
+
+.c32 {
+  position: relative;
+  z-index: 2;
+  border-radius: 50%;
+  -webkit-transition: 200ms ease-out;
+  transition: 200ms ease-out;
+  background-color: #6D73D2;
+  width: 18px;
+  height: 18px;
+  -webkit-transform: translate(12px,calc(-50% - 4px));
+  -ms-transform: translate(12px,calc(-50% - 4px));
+  transform: translate(12px,calc(-50% - 4px));
+}
+
+.c9 {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(6,1fr);
+  grid-gap: 15px;
+  padding: 0;
+  margin: 0;
+  max-width: initial;
+  height: initial;
+  color: inherit;
+  background-color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.c10 {
+  box-sizing: border-box;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  grid-column: span 5;
+  -webkit-box-pack: initial;
+  -webkit-justify-content: initial;
+  -ms-flex-pack: initial;
+  justify-content: initial;
+  -webkit-align-items: initial;
+  -webkit-box-align: initial;
+  -ms-flex-align: initial;
+  align-items: initial;
+  background-color: inherit;
+  -webkit-flex-direction: initial;
+  -ms-flex-direction: initial;
+  flex-direction: initial;
+  -webkit-flex-wrap: initial;
+  -ms-flex-wrap: initial;
+  flex-wrap: initial;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.c12 {
+  box-sizing: border-box;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  grid-column: span 1;
+  -webkit-box-pack: initial;
+  -webkit-justify-content: initial;
+  -ms-flex-pack: initial;
+  justify-content: initial;
+  -webkit-align-items: initial;
+  -webkit-box-align: initial;
+  -ms-flex-align: initial;
+  align-items: initial;
+  background-color: inherit;
+  -webkit-flex-direction: initial;
+  -ms-flex-direction: initial;
+  flex-direction: initial;
+  -webkit-flex-wrap: initial;
+  -ms-flex-wrap: initial;
+  flex-wrap: initial;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.c21 {
+  font-family: Poppins,sans-serif;
+  font-weight: 300;
+  line-height: 1.4;
+  color: #686978;
+  display: inline-block;
+}
+
+.c22 {
+  color: #696fdc;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.c23 {
+  font-size: 14px;
+  font-weight: 300;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.c2 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  font-family: Poppins,sans-serif;
+}
+
+.c3 {
+  -webkit-flex-basis: 30px;
+  -ms-flex-preferred-size: 30px;
+  flex-basis: 30px;
+  position: relative;
+}
+
+.c4 {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+}
+
+.c5 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: 50%;
+  -ms-flex-preferred-size: 50%;
+  flex-basis: 50%;
+  margin-top: -5px;
+  padding-left: 11px;
+}
+
+.c6 {
+  margin-left: 0;
+}
+
+.c7 {
+  white-space: nowrap;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.22;
+  -webkit-letter-spacing: -0.2px;
+  -moz-letter-spacing: -0.2px;
+  -ms-letter-spacing: -0.2px;
+  letter-spacing: -0.2px;
+  color: #4c54d2;
+}
+
+<div
+  className="c0"
+  id="wallet-panel"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+      id={undefined}
+    >
+      <div
+        className="c3"
+      >
+        <img
+          className="c4"
+          src=""
+          type="big"
+        />
+      </div>
+      <div
+        className="c5"
+        type="big"
+      >
+        <div
+          className="c6"
+          type="big"
+        >
+          <span
+            className="c7"
+            type="big"
+          >
+            Bart Baker
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section
+    className="c8"
+  >
+    <div
+      className="c9"
+      disabled={false}
+      id={undefined}
+      onClick={undefined}
+    >
+      <div
+        className="c10"
+        id={undefined}
+        onClick={undefined}
+        size={5}
+      >
+        <h3
+          className="c11"
+        >
+          MISSING: rewardsContributeAttention
+        </h3>
+      </div>
+      <div
+        className="c12"
+        id={undefined}
+        onClick={undefined}
+        size={1}
+      >
+        <h3
+          className="c13"
+        >
+          %
+        </h3>
+      </div>
+    </div>
+  </section>
+  <section
+    className="c14"
+  >
+    <div
+      className="c1"
+    >
+      <div
+        className="c9"
+        disabled={false}
+        id={undefined}
+        onClick={undefined}
+      >
+        <div
+          className="c10"
+          id={undefined}
+          onClick={undefined}
+          size={5}
+        >
+          <span
+            className="c15"
+          >
+            MISSING: donateMonthly
+          </span>
+        </div>
+        <div
+          className="c12"
+          id={undefined}
+          onClick={undefined}
+          size={1}
+        >
+          <div>
+            <div
+              className="c16"
+              id={undefined}
+            >
+              <div
+                className="c17"
+                id={undefined}
+              >
+                <div
+                  className="c18"
+                  onBlur={[Function]}
+                  tabIndex="0"
+                >
+                  <div
+                    className="c19"
+                    disabled={undefined}
+                    onClick={[Function]}
+                  >
+                    <div
+                      className="c20"
+                    >
+                      <span
+                        id={undefined}
+                      >
+                        <span
+                          className="c21"
+                        >
+                          <span
+                            className="c22"
+                            color="donation"
+                            size={undefined}
+                          >
+                            
+                            5.0
+                          </span>
+                          <span
+                            className="c23"
+                            size={undefined}
+                          >
+                            BAT
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                    <div
+                      className="c24"
+                    >
+                      <svg
+                        height="6"
+                        width="11"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M0 0h2.165l2.837 3.625h.92L8.755 0h2.285L6.283 5.958H4.759z"
+                          fill="#B8B9C4"
+                          fillRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div
+                    className="c25"
+                  >
+                    <div
+                      className="c26"
+                      onClick={[Function]}
+                      selected={true}
+                    >
+                      <div
+                        className="c27"
+                      >
+                        <svg
+                          height="9"
+                          width="12"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0 4.227l1.519-1.551 2.875 2.72L9.534 0l1.614 1.563-1.424 1.453-5.33 5.439z"
+                            fill="#A1A8F2"
+                            fillRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <div
+                        className="c28"
+                      >
+                        <span
+                          id={undefined}
+                        >
+                          <span
+                            className="c21"
+                          >
+                            <span
+                              className="c22"
+                              color="donation"
+                              size={undefined}
+                            >
+                              
+                              5.0
+                            </span>
+                            <span
+                              className="c23"
+                              size={undefined}
+                            >
+                              BAT
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className="c29"
+                      onClick={[Function]}
+                      selected={false}
+                    >
+                      <div
+                        className="c27"
+                      />
+                      <div
+                        className="c28"
+                      >
+                        <span
+                          id={undefined}
+                        >
+                          <span
+                            className="c21"
+                          >
+                            <span
+                              className="c22"
+                              color="donation"
+                              size={undefined}
+                            >
+                              
+                              10.0
+                            </span>
+                            <span
+                              className="c23"
+                              size={undefined}
+                            >
+                              BAT
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className="c29"
+                      onClick={[Function]}
+                      selected={false}
+                    >
+                      <div
+                        className="c27"
+                      />
+                      <div
+                        className="c28"
+                      >
+                        <span
+                          id={undefined}
+                        >
+                          <span
+                            className="c21"
+                          >
+                            <span
+                              className="c22"
+                              color="donation"
+                              size={undefined}
+                            >
+                              
+                              15.0
+                            </span>
+                            <span
+                              className="c23"
+                              size={undefined}
+                            >
+                              BAT
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className="c29"
+                      onClick={[Function]}
+                      selected={false}
+                    >
+                      <div
+                        className="c27"
+                      />
+                      <div
+                        className="c28"
+                      >
+                        <span
+                          id={undefined}
+                        >
+                          <span
+                            className="c21"
+                          >
+                            <span
+                              className="c22"
+                              color="donation"
+                              size={undefined}
+                            >
+                              
+                              20.0
+                            </span>
+                            <span
+                              className="c23"
+                              size={undefined}
+                            >
+                              BAT
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className="c29"
+                      onClick={[Function]}
+                      selected={false}
+                    >
+                      <div
+                        className="c27"
+                      />
+                      <div
+                        className="c28"
+                      >
+                        <span
+                          id={undefined}
+                        >
+                          <span
+                            className="c21"
+                          >
+                            <span
+                              className="c22"
+                              color="donation"
+                              size={undefined}
+                            >
+                              
+                              30.0
+                            </span>
+                            <span
+                              className="c23"
+                              size={undefined}
+                            >
+                              BAT
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className="c29"
+                      onClick={[Function]}
+                      selected={false}
+                    >
+                      <div
+                        className="c27"
+                      />
+                      <div
+                        className="c28"
+                      >
+                        <span
+                          id={undefined}
+                        >
+                          <span
+                            className="c21"
+                          >
+                            <span
+                              className="c22"
+                              color="donation"
+                              size={undefined}
+                            >
+                              
+                              50.0
+                            </span>
+                            <span
+                              className="c23"
+                              size={undefined}
+                            >
+                              BAT
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className="c29"
+                      onClick={[Function]}
+                      selected={false}
+                    >
+                      <div
+                        className="c27"
+                      />
+                      <div
+                        className="c28"
+                      >
+                        <span
+                          id={undefined}
+                        >
+                          <span
+                            className="c21"
+                          >
+                            <span
+                              className="c22"
+                              color="donation"
+                              size={undefined}
+                            >
+                              
+                              100.0
+                            </span>
+                            <span
+                              className="c23"
+                              size={undefined}
+                            >
+                              BAT
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c9"
+        disabled={false}
+        id={undefined}
+        onClick={undefined}
+      >
+        <div
+          className="c10"
+          id={undefined}
+          onClick={undefined}
+          size={5}
+        >
+          <span
+            className="c15"
+          >
+            MISSING: includeInAuto
+          </span>
+        </div>
+        <div
+          className="c12"
+          id={undefined}
+          onClick={undefined}
+          size={1}
+        >
+          <div
+            checked={true}
+            className="c30"
+            disabled={undefined}
+            id={undefined}
+            onClick={[Function]}
+            size="medium"
+          >
+            <div
+              className="c31"
+              size="medium"
+            />
+            <div
+              checked={true}
+              className="c32"
+              size="medium"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div
+    className="c33"
+    color="action"
+    onClick={undefined}
+  >
+    <div
+      className="c34"
+      color="action"
+      disabled={undefined}
+    >
+      MISSING: donateNow
+    </div>
+  </div>
+  <div
+    className="c35"
+  >
+    MISSING: rewardsSummary
+  </div>
+</div>
+`;

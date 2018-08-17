@@ -31,6 +31,7 @@ import Tip from './tip'
 import Tokens from './tokens'
 import WalletEmpty from './walletEmpty'
 import WalletOff from './walletOff'
+import WalletPanel from './walletPanel'
 import WalletSummary from './walletSummary'
 import WalletWrapper from './walletWrapper'
 import WelcomePage from './welcomePage'
@@ -65,6 +66,7 @@ export {
   Tokens,
   WalletEmpty,
   WalletOff,
+  WalletPanel,
   WalletSummary,
   WalletWrapper,
   WelcomePage

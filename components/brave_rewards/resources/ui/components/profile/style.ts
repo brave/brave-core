@@ -113,3 +113,7 @@ export const StyledInlineVerified = styled<{}, 'span'>('span')`
   width: 19px;
   color: #392DD1;
 `
+
+export const StyledSubTitle = styled<{}, 'span'>('span')`
+  margin-top: 5px;
+` as any
