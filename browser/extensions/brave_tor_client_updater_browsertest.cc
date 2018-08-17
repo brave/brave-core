@@ -65,10 +65,24 @@ public:
   }
 
   bool InstallTorClientUpdater() {
+#if defined(OS_WIN)
+    return InstallTorClientUpdater("tor-client-updater-win");
+#elif defined(OS_MACOSX)
+    return InstallTorClientUpdater("tor-client-updater-mac");
+#elif defined(OS_LINUX)
+    return InstallTorClientUpdater("tor-client-updater-linux");
+#else
+    return false;
+#endif
+  }
+
+  bool InstallTorClientUpdater(const std::string& extension_dir) {
     base::FilePath test_data_dir;
     GetTestDataDir(&test_data_dir);
     const extensions::Extension* tor_client_updater =
-        InstallExtension(test_data_dir.AppendASCII("tor-client-updater"), 1);
+        InstallExtension(test_data_dir.AppendASCII("tor-client-updater")
+                             .AppendASCII(extension_dir),
+                         1);
     if (!tor_client_updater)
       return false;
 
@@ -102,7 +116,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientInstalls) {
 
 // Load the Tor client updater extension and verify that we can launch
 // the client.
-IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, DISABLED_TorClientLaunches) {
+IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientLaunches) {
   SetComponentIdAndBase64PublicKeyForTest(
       kTorClientUpdaterComponentTestId,
       kTorClientUpdaterComponentTestBase64PublicKey);
