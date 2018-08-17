@@ -372,7 +372,7 @@ void LedgerImpl::OnWalletProperties(ledger::Result result,
     info->parameters_days_ = properties.parameters_days_;
 
     for (size_t i = 0; i < properties.grants_.size(); i ++) {
-      ledger::GRANT grant;
+      ledger::Grant grant;
 
       grant.altcurrency = properties.grants_[i].altcurrency;
       grant.probi = properties.grants_[i].probi;
@@ -389,26 +389,25 @@ void LedgerImpl::GetWalletProperties() const {
   bat_client_->getWalletProperties();
 }
 
-void LedgerImpl::GetPromotion(const std::string& lang,
+void LedgerImpl::GetGrant(const std::string& lang,
                               const std::string& payment_id) const {
-  bat_client_->getPromotion(lang, payment_id);
+  bat_client_->getGrant(lang, payment_id);
 }
 
-void LedgerImpl::OnPromotion(ledger::Result result, const braveledger_bat_helper::PROMOTION_ST& properties) {
-  ledger::Promo promo;
+void LedgerImpl::OnGrant(ledger::Result result, const braveledger_bat_helper::GRANT& properties) {
+  ledger::Grant grant;
 
-  promo.promotionId = properties.promotionId_;
-  promo.amount = properties.amount_;
+  grant.promotionId = properties.promotionId;
 
-  ledger_client_->OnPromotion(result, promo);
+  ledger_client_->OnGrant(result, grant);
 }
 
-void LedgerImpl::GetPromotionCaptcha() const {
-  bat_client_->getPromotionCaptcha();
+void LedgerImpl::GetGrantCaptcha() const {
+  bat_client_->getGrantCaptcha();
 }
 
-void LedgerImpl::OnPromotionCaptcha(const std::string& image) {
-  ledger_client_->OnPromotionCaptcha(image);
+void LedgerImpl::OnGrantCaptcha(const std::string& image) {
+  ledger_client_->OnGrantCaptcha(image);
 }
 
 std::string LedgerImpl::GetWalletPassphrase() const {
@@ -420,16 +419,16 @@ void LedgerImpl::RecoverWallet(const std::string& passPhrase) const {
 }
 
 void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance, std::vector<braveledger_bat_helper::GRANT> grants) {
-  std::vector<ledger::GRANT> ledgerGrants;
+  std::vector<ledger::Grant> ledgerGrants;
 
   for (size_t i = 0; i < grants.size(); i ++) {
-    ledger::GRANT grant;
+    ledger::Grant tempGrant;
 
-    grant.altcurrency = grants[i].altcurrency;
-    grant.probi = grants[i].probi;
-    grant.expiryTime = grants[i].expiryTime;
+    tempGrant.altcurrency = grants[i].altcurrency;
+    tempGrant.probi = grants[i].probi;
+    tempGrant.expiryTime = grants[i].expiryTime;
 
-    ledgerGrants.push_back(grant);
+    ledgerGrants.push_back(tempGrant);
   }
 
   ledger_client_->OnRecoverWallet(result ? ledger::Result::ERROR :
@@ -438,12 +437,12 @@ void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance, std::vec
                                   ledgerGrants);
 }
 
-void LedgerImpl::SolvePromotionCaptcha(const std::string& solution) const {
-  bat_client_->setPromotion(solution, "");
+void LedgerImpl::SolveGrantCaptcha(const std::string& solution) const {
+  bat_client_->setGrant(solution, "");
 }
 
-void LedgerImpl::OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t experationDate) {
-  ledger_client_->OnPromotionFinish(result, statusCode, experationDate);
+void LedgerImpl::OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t experationDate) {
+  ledger_client_->OnGrantFinish(result, statusCode, experationDate);
 }
 
 }  // namespace bat_ledger

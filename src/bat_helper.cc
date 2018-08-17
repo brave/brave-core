@@ -828,39 +828,52 @@ namespace braveledger_bat_helper {
   }
 
   /////////////////////////////////////////////////////////////////////////////
-  PROMOTION_ST::PROMOTION_ST() : amount_(0) {}
+  GRANT::GRANT() : expiryTime(0) {}
 
-  PROMOTION_ST::~PROMOTION_ST() {}
+  GRANT::~GRANT() {}
 
-  PROMOTION_ST::PROMOTION_ST(const PROMOTION_ST &properties) {
-    promotionId_ = properties.promotionId_;
-    amount_ = properties.amount_;
+  GRANT::GRANT(const GRANT &properties) {
+    promotionId = properties.promotionId;
+    altcurrency = properties.altcurrency;
+    expiryTime = properties.expiryTime;
+    probi = properties.probi;
   }
 
-  bool PROMOTION_ST::loadFromJson(const std::string & json) {
+  bool GRANT::loadFromJson(const std::string & json) {
     rapidjson::Document d;
     d.Parse(json.c_str());
 
     //has parser errors or wrong types
     bool error = d.HasParseError();
-    if (error == false) {
-      error = !(
-          d.HasMember("promotionId") && d["promotionId"].IsString()
-      );
+    if (error == true) {
+      return !error;
     }
 
+    // First grant get
+    error = !(
+        d.HasMember("promotionId") && d["promotionId"].IsString()
+    );
+
     if (error == false) {
-      promotionId_ = d["promotionId"].GetString();
-      amount_ = 10; // TODO NZ get data from the server
+      promotionId = d["promotionId"].GetString();
+      return !error;
+    }
+
+    // On successful grant
+    error = !(
+        d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
+        d.HasMember("expiryTime") && d["expiryTime"].IsNumber() &&
+        d.HasMember("probi") && d["probi"].IsString()
+    );
+
+    if (error == false) {
+      altcurrency = d["altcurrency"].GetString();
+      expiryTime = d["expiryTime"].GetUint64();
+      probi = d["probi"].GetString();
     }
 
     return !error;
   }
-
-  /////////////////////////////////////////////////////////////////////////////
-  GRANT::GRANT() : expiryTime(0) {}
-
-  GRANT::~GRANT() {}
 
   /////////////////////////////////////////////////////////////////////////////
   SURVEYOR_INFO_ST::SURVEYOR_INFO_ST() {}

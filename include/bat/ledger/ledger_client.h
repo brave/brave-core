@@ -15,7 +15,7 @@
 #include "bat/ledger/ledger_url_loader.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
-#include "bat/ledger/promo.h"
+#include "bat/ledger/grant.h"
 
 namespace ledger {
 
@@ -59,12 +59,12 @@ class LEDGER_EXPORT LedgerClient {
                                     PublisherInfoFilter filter,
                                     GetPublisherInfoListCallback callback) = 0;
 
-  virtual void GetPromotion(const std::string& lang, const std::string& paymentId) = 0;
-  virtual void OnPromotion(ledger::Result result, ledger::Promo) = 0;
-  virtual void GetPromotionCaptcha() = 0;
-  virtual void OnPromotionCaptcha(const std::string& image) = 0;
-  virtual void OnRecoverWallet(Result result, double balance, std::vector<ledger::GRANT> grants) = 0;
-  virtual void OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t experationDate) = 0;
+  virtual void GetGrant(const std::string& lang, const std::string& paymentId) = 0;
+  virtual void OnGrant(ledger::Result result, ledger::Grant) = 0;
+  virtual void GetGrantCaptcha() = 0;
+  virtual void OnGrantCaptcha(const std::string& image) = 0;
+  virtual void OnRecoverWallet(Result result, double balance, std::vector<ledger::Grant> grants) = 0;
+  virtual void OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t experationDate) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 

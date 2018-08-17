@@ -43,16 +43,16 @@ class BatClient {
   std::string getWalletPassphrase() const;
   void walletPropertiesCallback(bool success, const std::string& response);
   void recoverWallet(const std::string& passPhrase);
-  void getPromotion(const std::string& lang, const std::string& forPaymentId);
-  void setPromotion(const std::string& captchaResponse, const std::string& promotionId);
-  void getPromotionCaptcha();
+  void getGrant(const std::string& lang, const std::string& forPaymentId);
+  void setGrant(const std::string& captchaResponse, const std::string& promotionId);
+  void getGrantCaptcha();
   void getWalletProperties();
 
  private:
   void saveState();
-  void getPromotionCaptchaCallback(bool result, const std::string& response);
-  void getPromotionCallback(bool result, const std::string& response);
-  void setPromotionCallback(bool result, const std::string& response);
+  void getGrantCaptchaCallback(bool result, const std::string& response);
+  void getGrantCallback(bool result, const std::string& response);
+  void setGrantCallback(bool result, const std::string& response);
   void recoverWalletPublicKeyCallback(bool result, const std::string& response);
   void recoverWalletCallback(bool result, const std::string& response, const std::string& paymentId);
   void prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);

@@ -151,10 +151,14 @@ namespace braveledger_bat_helper {
 
   struct GRANT {
     GRANT();
+    GRANT(const GRANT& properties);
     ~GRANT();
+    //load from json string
+    bool loadFromJson(const std::string & json);
     std::string altcurrency;
     std::string probi;
     uint64_t expiryTime;
+    std::string promotionId;
   };
 
   struct WALLET_PROPERTIES_ST {
@@ -173,19 +177,6 @@ namespace braveledger_bat_helper {
     std::vector<double> parameters_range_;
     unsigned int parameters_days_;
     std::vector<GRANT> grants_;
-  };
-
-
-  struct PROMOTION_ST {
-    PROMOTION_ST();
-    ~PROMOTION_ST();
-    PROMOTION_ST(const PROMOTION_ST& properties);
-
-    //load from json string
-    bool loadFromJson(const std::string & json);
-
-    std::string promotionId_;
-    double amount_ = .0;
   };
 
   struct CLIENT_STATE_ST {
@@ -214,7 +205,7 @@ namespace braveledger_bat_helper {
     std::string ruleset_;
     std::string rulesetV2_;
     std::vector<BATCH_VOTES_ST> batch_;
-    PROMOTION_ST promotion_;
+    GRANT grant_;
   };
 
   struct PUBLISHER_STATE_ST {

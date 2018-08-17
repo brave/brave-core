@@ -82,14 +82,14 @@ class LedgerImpl : public ledger::Ledger,
                           const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
   void GetWalletProperties() const override;
 
-  void GetPromotion(const std::string& lang, const std::string& paymentId) const override;
-  void OnPromotion(ledger::Result result, const braveledger_bat_helper::PROMOTION_ST&);
+  void GetGrant(const std::string& lang, const std::string& paymentId) const override;
+  void OnGrant(ledger::Result result, const braveledger_bat_helper::GRANT&);
 
-  void GetPromotionCaptcha() const override;
-  void OnPromotionCaptcha(const std::string& image);
+  void GetGrantCaptcha() const override;
+  void OnGrantCaptcha(const std::string& image);
 
-  void SolvePromotionCaptcha(const std::string& solution) const override;
-  void OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate);
+  void SolveGrantCaptcha(const std::string& solution) const override;
+  void OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime);
 
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string& passPhrase) const override;

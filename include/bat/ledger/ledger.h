@@ -81,9 +81,9 @@ class LEDGER_EXPORT Ledger {
   virtual bool GetPublisherAllowNonVerified() const = 0;
   virtual double GetContributionAmount() const = 0;
   virtual void GetWalletProperties() const = 0;
-  virtual void GetPromotion(const std::string& lang, const std::string& paymentId) const = 0;
-  virtual void SolvePromotionCaptcha(const std::string& solution) const = 0;
-  virtual void GetPromotionCaptcha() const = 0;
+  virtual void GetGrant(const std::string& lang, const std::string& paymentId) const = 0;
+  virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
+  virtual void GetGrantCaptcha() const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 };
