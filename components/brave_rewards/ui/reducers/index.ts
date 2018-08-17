@@ -6,7 +6,27 @@ import { combineReducers } from 'redux'
 
 // Utils
 import rewardsReducer from './rewards_reducer'
+import walletReducer from './wallet_reducer'
+import grantReducer from './grant_reducer'
+import * as storage from '../storage'
+
+const mergeReducers = (state: Rewards.State | undefined, action: any) => {
+  if (state === undefined) {
+    state = storage.load()
+  }
+  const startingState = state
+
+  state = rewardsReducer(state, action)
+  state = walletReducer(state, action)
+  state = grantReducer(state, action)
+
+  if (state !== startingState) {
+    storage.debouncedSave(state)
+  }
+
+  return state
+}
 
 export default combineReducers<Rewards.ApplicationState>({
-  rewardsData: rewardsReducer
+  rewardsData: mergeReducers
 })
