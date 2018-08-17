@@ -443,10 +443,10 @@ def pull_source_files_from_transifex(source_file_path, filename):
       grd_strings = get_grd_strings(source_file_path)
       for (lang_code, xtb_rel_path) in xtb_files:
         xtb_file_path = os.path.join(base_path, xtb_rel_path)
+        print 'Updating: ', xtb_file_path, lang_code
         xml_content = get_transifex_translation_file_content(filename, lang_code)
         translations = get_strings_dict_from_xml_content(xml_content)
         xtb_content = generate_xtb_content(lang_code, grd_strings, translations)
-        print 'Updated: ', xtb_file_path
         with open(xtb_file_path, mode='w') as f:
           f.write(xtb_content)
   elif ext == '.json':
