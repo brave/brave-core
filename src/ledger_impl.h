@@ -89,7 +89,7 @@ class LedgerImpl : public ledger::Ledger,
   void OnGrantCaptcha(const std::string& image);
 
   void SolveGrantCaptcha(const std::string& solution) const override;
-  void OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime);
+  void OnGrantFinish(ledger::Result result, braveledger_bat_helper::GRANT grant);
 
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string& passPhrase) const override;

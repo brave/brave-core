@@ -1003,7 +1003,8 @@ void BatClient::getGrantCallback(bool success, const std::string& response) {
 
 void BatClient::setGrant(const std::string& captchaResponse, const std::string& promotionId) {
   if (promotionId.empty() && state_->grant_.promotionId.empty()) {
-    ledger_->OnGrantFinish(ledger::Result::ERROR, 400, 0);
+    braveledger_bat_helper::GRANT properties;
+    ledger_->OnGrantFinish(ledger::Result::ERROR, properties);
     return;
   }
 
@@ -1034,21 +1035,28 @@ void BatClient::setGrantCallback(bool success, const std::string& response) {
 
   std::string error;
   unsigned int statusCode;
+  braveledger_bat_helper::GRANT grant;
   braveledger_bat_helper::getJSONResponse(response, statusCode, error);
 
   if (!success) {
-    ledger_->OnGrantFinish(ledger::Result::ERROR, statusCode, 0);
+    if (statusCode == 422) {
+      ledger_->OnGrantFinish(ledger::Result::CAPTCHA_FAILED, grant);
+    } else {
+      ledger_->OnGrantFinish(ledger::Result::ERROR, grant);
+    }
     return;
   }
 
-  uint64_t expiryTime;
-  bool ok = braveledger_bat_helper::getJSONGrant(response, expiryTime);
+  bool ok = braveledger_bat_helper::loadFromJson(grant, response);
   if (!ok) {
-    ledger_->OnGrantFinish(ledger::Result::ERROR, 400, 0);
+    ledger_->OnGrantFinish(ledger::Result::ERROR, grant);
     return;
   }
 
-  ledger_->OnGrantFinish(ledger::Result::OK, statusCode, expiryTime);
+  grant.promotionId = state_->grant_.promotionId;
+  state_->grant_ = grant;
+
+  ledger_->OnGrantFinish(ledger::Result::OK, grant);
 }
 
 void BatClient::getGrantCaptcha() {

@@ -64,7 +64,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void GetGrantCaptcha() = 0;
   virtual void OnGrantCaptcha(const std::string& image) = 0;
   virtual void OnRecoverWallet(Result result, double balance, std::vector<ledger::Grant> grants) = 0;
-  virtual void OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t experationDate) = 0;
+  virtual void OnGrantFinish(ledger::Result result, ledger::Grant grant) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 

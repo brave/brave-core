@@ -441,8 +441,14 @@ void LedgerImpl::SolveGrantCaptcha(const std::string& solution) const {
   bat_client_->setGrant(solution, "");
 }
 
-void LedgerImpl::OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t experationDate) {
-  ledger_client_->OnGrantFinish(result, statusCode, experationDate);
+void LedgerImpl::OnGrantFinish(ledger::Result result, braveledger_bat_helper::GRANT grant) {
+  ledger::Grant newGrant;
+
+  newGrant.altcurrency = grant.altcurrency;
+  newGrant.probi = grant.probi;
+  newGrant.expiryTime = grant.expiryTime;
+
+  ledger_client_->OnGrantFinish(result, newGrant);
 }
 
 }  // namespace bat_ledger
