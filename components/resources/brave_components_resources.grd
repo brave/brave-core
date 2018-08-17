@@ -155,7 +155,7 @@ PrivateSearch with DuckDuckGo</message>
 
       <!-- WebUI welcome page resources -->
       <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE" desc="Welcome message title">Welcome to Brave</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_DESC" desc="Welcome message description">Brave is so much more than a browser. Let\'s show you how to make the most of it</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_DESC" desc="Welcome message description">Brave is so much more than a browser. Let's show you how to make the most of it</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON" desc="Button that moves to the next welcome screen">Let's go</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE" desc="Welcome message title for Brave Rewards">Enable Brave Rewards</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_DESC" desc="Explainer text about Brave Rewards">Setting up Brave Rewards is easy and you start earning blockchain-based tokens which can be used to reward your favorite content creators.</message>
