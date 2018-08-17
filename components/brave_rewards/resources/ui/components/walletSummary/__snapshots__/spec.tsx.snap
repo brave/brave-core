@@ -27,7 +27,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0.4px;
   letter-spacing: 0.4px;
   color: #4c54d2;
-  margin-bottom: 26px;
+  margin: 4px 0 26px;
   text-transform: uppercase;
 }
 

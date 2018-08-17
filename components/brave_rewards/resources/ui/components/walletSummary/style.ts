@@ -24,7 +24,7 @@ export const StyledTitle = styled.div`
   line-height: 0.79;
   letter-spacing: 0.4px;
   color: #4c54d2;
-  margin-bottom: 26px;
+  margin: 4px 0 26px;
   text-transform: uppercase;
 ` as any
 
