@@ -6,6 +6,7 @@
 
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/task_scheduler/post_task.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -41,21 +42,38 @@ base::FilePath BraveTorClientUpdater::GetExecutablePath() const {
 
 void BraveTorClientUpdater::InitExecutablePath(
     const base::FilePath& install_dir) {
+  base::FilePath executable_path;
   base::FileEnumerator traversal(install_dir, false,
                                  base::FileEnumerator::FILES,
                                  FILE_PATH_LITERAL("tor-*"));
   for (base::FilePath current = traversal.Next(); !current.empty();
        current = traversal.Next()) {
     base::FileEnumerator::FileInfo file_info = traversal.GetInfo();
-    if (RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
-                       "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+-brave-\\d+")) {
-      executable_path_ = current;
-      return;
-    }
+    if (!RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
+                        "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+-brave-\\d+"))
+      continue;
+    executable_path = current;
+    break;
   }
 
-  LOG(ERROR) << "Failed to locate Tor client executable in "
-             << install_dir.value().c_str();
+  if (executable_path.empty()) {
+    LOG(ERROR) << "Failed to locate Tor client executable in "
+               << install_dir.value().c_str();
+    return;
+  }
+
+#if defined(OS_POSIX)
+  // Ensure that Tor client executable has appropriate file
+  // permissions, as CRX unzipping does not preserve them.
+  // See https://crbug.com/555011
+  if (!base::SetPosixFilePermissions(executable_path, 0755)) {
+    LOG(ERROR) << "Failed to set executable permission on "
+               << executable_path.value().c_str();
+    return;
+  }
+#endif // defined(OS_POSIX)
+
+  executable_path_ = executable_path;
 }
 
 void BraveTorClientUpdater::OnComponentReady(
