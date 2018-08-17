@@ -22,7 +22,7 @@ type Token = {
 }
 
 export interface Props {
-  onActivity: () => void
+  onActivity?: () => void
   grant?: Token
   deposit?: Token
   ads?: Token
@@ -112,9 +112,13 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             isNegative={total.isNegative || false}
           />
         </div>
-        <StyledActivity onClick={onActivity}>
-          <StyledActivityIcon>{activityIcon}</StyledActivityIcon> {getLocale('viewMonthly')}
-        </StyledActivity>
+        {
+          onActivity
+          ? <StyledActivity onClick={onActivity}>
+            <StyledActivityIcon>{activityIcon}</StyledActivityIcon> {getLocale('viewMonthly')}
+          </StyledActivity>
+          : null
+        }
       </StyledWrapper>
     )
   }
