@@ -8,14 +8,9 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "brave/components/brave_rewards/browser/grant.h"
 
 namespace brave_rewards {
-  struct Grant {
-    std::string altcurrency;
-    std::string probi;
-    unsigned int expiryTime;
-  };
-
   struct WalletProperties {
     WalletProperties();
     ~WalletProperties();

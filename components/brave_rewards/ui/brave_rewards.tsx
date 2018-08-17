@@ -50,12 +50,12 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletProperties(properties)
   }
 
-  function promotion (properties: Rewards.Promotion) {
-    getActions().onPromotion(properties)
+  function grant (properties: Rewards.Grant) {
+    getActions().onGrant(properties)
   }
 
-  function promotionCaptcha (image: string) {
-    getActions().onPromotionCaptcha(image)
+  function grantCaptcha (image: string) {
+    getActions().onGrantCaptcha(image)
   }
 
   function walletPassphrase (pass: string) {
@@ -66,8 +66,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onRecoverWalletData(properties)
   }
 
-  function promotionFinish (properties: Rewards.PromotionFinish) {
-    getActions().onPromotionFinish(properties)
+  function grantFinish (properties: Rewards.GrantFinish) {
+    getActions().onGrantFinish(properties)
   }
 
   function reconcileStamp (stamp: number) {
@@ -79,11 +79,11 @@ window.cr.define('brave_rewards', function () {
     walletCreated,
     walletCreateFailed,
     walletProperties,
-    promotion,
-    promotionCaptcha,
+    grant,
+    grantCaptcha,
     walletPassphrase,
     recoverWalletData,
-    promotionFinish,
+    grantFinish,
     reconcileStamp
   }
 })

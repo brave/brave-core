@@ -1,19 +1,21 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave/components/brave_rewards/browser/promotion.h"
+#include "brave/components/brave_rewards/browser/grant.h"
 
 namespace brave_rewards {
 
-  Promotion::Promotion() :
-      amount(0.0) {
+  Grant::Grant() :
+      expiryTime(0) {
   }
 
-  Promotion::~Promotion() { }
+  Grant::~Grant() { }
 
-  Promotion::Promotion(const Promotion &properties) {
+  Grant::Grant(const Grant &properties) {
+    altcurrency = properties.altcurrency;
+    probi = properties.probi;
     promotionId = properties.promotionId;
-    amount = properties.amount;
+    expiryTime = properties.expiryTime;
   }
 
 }  // namespace brave_rewards

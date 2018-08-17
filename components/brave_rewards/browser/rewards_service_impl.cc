@@ -284,20 +284,20 @@ void RewardsServiceImpl::OnWalletProperties(ledger::Result result,
   TriggerOnWalletProperties(result, std::move(wallet_info));
 }
 
-void RewardsServiceImpl::OnPromotion(ledger::Result result, ledger::Promo promo) {
-  TriggerOnPromotion(result, promo);
+void RewardsServiceImpl::OnGrant(ledger::Result result, ledger::Grant grant) {
+  TriggerOnGrant(result, grant);
 }
 
-void RewardsServiceImpl::OnPromotionCaptcha(const std::string& image) {
-  TriggerOnPromotionCaptcha(image);
+void RewardsServiceImpl::OnGrantCaptcha(const std::string& image) {
+  TriggerOnGrantCaptcha(image);
 }
 
-void RewardsServiceImpl::OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GRANT> grants) {
+void RewardsServiceImpl::OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::Grant> grants) {
   TriggerOnRecoverWallet(result, balance, grants);
 }
 
-void RewardsServiceImpl::OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate) {
-  TriggerOnPromotionFinish(result, statusCode, expirationDate);
+void RewardsServiceImpl::OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime) {
+  TriggerOnGrantFinish(result, statusCode, expiryTime);
 }
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
@@ -557,28 +557,30 @@ void RewardsServiceImpl::GetWalletProperties() {
   }
 }
 
-void RewardsServiceImpl::GetPromotion(const std::string& lang,
+void RewardsServiceImpl::GetGrant(const std::string& lang,
     const std::string& payment_id) {
-  ledger_->GetPromotion(lang, payment_id);
+  ledger_->GetGrant(lang, payment_id);
 }
 
-void RewardsServiceImpl::TriggerOnPromotion(ledger::Result result, const ledger::Promo promo) {
-  brave_rewards::Promotion properties;
+void RewardsServiceImpl::TriggerOnGrant(ledger::Result result, const ledger::Grant grant) {
+  brave_rewards::Grant properties;
 
-  properties.promotionId = promo.promotionId;
-  properties.amount = promo.amount;
+  properties.promotionId = grant.promotionId;
+  properties.altcurrency = grant.altcurrency;
+  properties.probi = grant.probi;
+  properties.expiryTime = grant.expiryTime;
 
   for (auto& observer : observers_)
-    observer.OnPromotion(this, result, properties);
+    observer.OnGrant(this, result, properties);
 }
 
-void RewardsServiceImpl::GetPromotionCaptcha() {
-  ledger_->GetPromotionCaptcha();
+void RewardsServiceImpl::GetGrantCaptcha() {
+  ledger_->GetGrantCaptcha();
 }
 
-void RewardsServiceImpl::TriggerOnPromotionCaptcha(const std::string& image) {
+void RewardsServiceImpl::TriggerOnGrantCaptcha(const std::string& image) {
   for (auto& observer : observers_)
-    observer.OnPromotionCaptcha(this, image);
+    observer.OnGrantCaptcha(this, image);
 }
 
 std::string RewardsServiceImpl::GetWalletPassphrase() const {
@@ -589,7 +591,7 @@ void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
   return ledger_->RecoverWallet(passPhrase);
 }
 
-void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GRANT> grants) {
+void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::Grant> grants) {
   std::vector<brave_rewards::Grant> newGrants;
   for (size_t i = 0; i < grants.size(); i ++) {
     brave_rewards::Grant grant;
@@ -604,13 +606,13 @@ void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result, double ba
     observer.OnRecoverWallet(this, result, balance, newGrants);
 }
 
-void RewardsServiceImpl::SolvePromotionCaptcha(const std::string& solution) const {
-  return ledger_->SolvePromotionCaptcha(solution);
+void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution) const {
+  return ledger_->SolveGrantCaptcha(solution);
 }
 
-void RewardsServiceImpl::TriggerOnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate) {
+void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime) {
   for (auto& observer : observers_)
-    observer.OnPromotionFinish(this, result, statusCode, expirationDate);
+    observer.OnGrantFinish(this, result, statusCode, expiryTime);
 }
 
 uint64_t RewardsServiceImpl::GetReconcileStamp() const {

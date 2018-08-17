@@ -40,7 +40,7 @@ class SettingsPage extends React.Component<Props, {}> {
     }
 
     this.actions.getWalletProperties()
-    this.actions.getPromotion()
+    this.actions.getGrant()
   }
 
   render () {

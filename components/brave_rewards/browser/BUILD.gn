@@ -15,8 +15,8 @@ source_set("browser") {
     "rewards_service_observer.h",
     "wallet_properties.cc",
     "wallet_properties.h",
-    "promotion.cc",
-    "promotion.h",
+    "grant.cc",
+    "grant.h",
   ]
 
   deps = [

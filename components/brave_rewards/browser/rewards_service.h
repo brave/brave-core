@@ -37,9 +37,9 @@ class RewardsService : public KeyedService {
   virtual void GetContentSiteList(uint32_t start,
                                   uint32_t limit,
                                 const GetContentSiteListCallback& callback) = 0;
-  virtual void GetPromotion(const std::string& lang, const std::string& paymentId) = 0;
-  virtual void GetPromotionCaptcha() = 0;
-  virtual void SolvePromotionCaptcha(const std::string& solution) const = 0;
+  virtual void GetGrant(const std::string& lang, const std::string& paymentId) = 0;
+  virtual void GetGrantCaptcha() = 0;
+  virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
   virtual void RecoverWallet(const std::string passPhrase) const = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;

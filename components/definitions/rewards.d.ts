@@ -26,7 +26,7 @@ declare namespace Rewards {
     walletInfo: WalletProperties
     connectedWallet: boolean
     recoveryKey: string
-    promotion?: Promotion
+    grant?: Grant
     reconcileStamp: number
     ui: {
       walletRecoverySuccess: boolean | null
@@ -42,9 +42,12 @@ declare namespace Rewards {
   }
 
   export interface Grant {
-    altcurrency: string
+    promotionId?: string
+    altcurrency?: string
     probi: string
     expiryTime: number
+    captcha?: string
+    status?: 'wrongPosition' | 'serverError' | number | null
   }
 
   export interface WalletProperties {
@@ -56,24 +59,15 @@ declare namespace Rewards {
     grants?: Grant[]
   }
 
-  export interface Promotion {
-    promotionId: string
-    amount: number
-    status?: number
-    captcha?: string
-    expireDate?: number
-    error?: 'wrongPosition' | 'serverError' | null
-  }
-
   export interface RecoverWallet {
     result: Result
     balance: number
     grants?: Grant[]
   }
 
-  export interface PromotionFinish {
+  export interface GrantFinish {
     result: Result,
     statusCode: number,
-    expirationDate: number
+    expiryTime: number
   }
 }

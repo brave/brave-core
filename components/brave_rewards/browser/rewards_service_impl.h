@@ -55,9 +55,9 @@ class RewardsServiceImpl : public RewardsService,
   void Init();
   void CreateWallet() override;
   void GetWalletProperties() override;
-  void GetPromotion(const std::string& lang, const std::string& paymentId) override;
-  void GetPromotionCaptcha() override;
-  void SolvePromotionCaptcha(const std::string& solution) const override;
+  void GetGrant(const std::string& lang, const std::string& paymentId) override;
+  void GetGrantCaptcha() override;
+  void SolveGrantCaptcha(const std::string& solution) const override;
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string passPhrase) const override;
   void GetContentSiteList(uint32_t start,
@@ -90,10 +90,10 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnWalletInitialized(int error_code);
   void TriggerOnWalletProperties(int error_code,
                                  std::unique_ptr<ledger::WalletInfo> result);
-  void TriggerOnPromotion(ledger::Result result, const ledger::Promo promo);
-  void TriggerOnPromotionCaptcha(const std::string& image);
-  void TriggerOnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GRANT> grants);
-  void TriggerOnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate);
+  void TriggerOnGrant(ledger::Result result, const ledger::Grant grant);
+  void TriggerOnGrantCaptcha(const std::string& image);
+  void TriggerOnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::Grant> grants);
+  void TriggerOnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
@@ -109,12 +109,12 @@ class RewardsServiceImpl : public RewardsService,
   void OnWalletInitialized(ledger::Result result) override;
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
-  void OnPromotion(ledger::Result result, ledger::Promo promo) override;
-  void OnPromotionCaptcha(const std::string& image) override;
-  void OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GRANT> grants) override;
+  void OnGrant(ledger::Result result, ledger::Grant grant) override;
+  void OnGrantCaptcha(const std::string& image) override;
+  void OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::Grant> grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
-  void OnPromotionFinish(ledger::Result result, unsigned int statusCode, uint64_t expirationDate) override;
+  void OnGrantFinish(ledger::Result result, unsigned int statusCode, uint64_t expiryTime) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
   void SaveLedgerState(const std::string& ledger_state,
