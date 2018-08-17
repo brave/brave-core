@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index f238c32d45f9c74c2f16b055619c2fb6bc843942..4962814993e84e78136fbe4f48406262625457b0 100644
+index b80010c1db711c793f077f9ddc8b9d2f7d66b346..9f6001c0ec5a5eff3f2d6d608bb3c3986b55652d 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
-@@ -1580,7 +1580,7 @@ int TabStrip::TabToFollowingNewTabButtonSpacing() const {
+@@ -1594,7 +1594,7 @@ int TabStrip::TabToFollowingNewTabButtonSpacing() const {
    // Pre-refresh, there are a variety of hardcoded values.
    const int mode = MD::GetMode();
    DCHECK_LE(mode, 2);
