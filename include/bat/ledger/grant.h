@@ -21,7 +21,7 @@ LEDGER_EXPORT struct Grant {
   std::string altcurrency;
   std::string probi;
   std::string promotionId;
-  unsigned int expiryTime;
+  uint64_t expiryTime;
 };
 
 }  // namespace ledger

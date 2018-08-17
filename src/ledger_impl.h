@@ -83,17 +83,17 @@ class LedgerImpl : public ledger::Ledger,
   void GetWalletProperties() const override;
 
   void GetGrant(const std::string& lang, const std::string& paymentId) const override;
-  void OnGrant(ledger::Result result, const braveledger_bat_helper::GRANT&);
+  void OnGrant(ledger::Result result, const braveledger_bat_helper::GRANT& grant);
 
   void GetGrantCaptcha() const override;
   void OnGrantCaptcha(const std::string& image);
 
   void SolveGrantCaptcha(const std::string& solution) const override;
-  void OnGrantFinish(ledger::Result result, braveledger_bat_helper::GRANT grant);
+  void OnGrantFinish(ledger::Result result, const braveledger_bat_helper::GRANT& grant);
 
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string& passPhrase) const override;
-  void OnRecoverWallet(ledger::Result result, double balance, std::vector<braveledger_bat_helper::GRANT> grants);
+  void OnRecoverWallet(ledger::Result result, double balance, const std::vector<braveledger_bat_helper::GRANT>& grants);
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,

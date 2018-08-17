@@ -60,11 +60,11 @@ class LEDGER_EXPORT LedgerClient {
                                     GetPublisherInfoListCallback callback) = 0;
 
   virtual void GetGrant(const std::string& lang, const std::string& paymentId) = 0;
-  virtual void OnGrant(ledger::Result result, ledger::Grant) = 0;
+  virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
   virtual void GetGrantCaptcha() = 0;
   virtual void OnGrantCaptcha(const std::string& image) = 0;
-  virtual void OnRecoverWallet(Result result, double balance, std::vector<ledger::Grant> grants) = 0;
-  virtual void OnGrantFinish(ledger::Result result, ledger::Grant grant) = 0;
+  virtual void OnRecoverWallet(Result result, double balance, const std::vector<ledger::Grant>& grants) = 0;
+  virtual void OnGrantFinish(ledger::Result result, const ledger::Grant& grant) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 

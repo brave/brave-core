@@ -894,7 +894,8 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
   int result = bip39_mnemonic_to_bytes(nullptr, passPhrase.c_str(), &newSeed.front(), newSeed.size(), &written);
   LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
   if (0 != result || 0 == written) {
-    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, std::vector<braveledger_bat_helper::GRANT>());
+    std::vector<braveledger_bat_helper::GRANT> empty;
+    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, empty);
     return;
   }
   state_->walletInfo_.keyInfoSeed_ = newSeed;
@@ -921,7 +922,8 @@ void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& r
   LOG(ERROR) << "!!!recoverWalletPublicKeyCallback == " << response;
 
   if (!result) {
-    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, std::vector<braveledger_bat_helper::GRANT>());
+    std::vector<braveledger_bat_helper::GRANT> empty;
+    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, empty);
     return;
   }
   std::string recoveryId;
@@ -941,7 +943,8 @@ void BatClient::recoverWalletCallback(bool result, const std::string& response, 
   LOG(ERROR) << "!!!recoverWalletCallback == " << response;
 
   if (!result) {
-    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, std::vector<braveledger_bat_helper::GRANT>());
+    std::vector<braveledger_bat_helper::GRANT> empty;
+    ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, empty);
     return;
   }
 

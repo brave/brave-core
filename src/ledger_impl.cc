@@ -418,7 +418,7 @@ void LedgerImpl::RecoverWallet(const std::string& passPhrase) const {
   bat_client_->recoverWallet(passPhrase);
 }
 
-void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance, std::vector<braveledger_bat_helper::GRANT> grants) {
+void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance, const std::vector<braveledger_bat_helper::GRANT>& grants) {
   std::vector<ledger::Grant> ledgerGrants;
 
   for (size_t i = 0; i < grants.size(); i ++) {
@@ -441,7 +441,7 @@ void LedgerImpl::SolveGrantCaptcha(const std::string& solution) const {
   bat_client_->setGrant(solution, "");
 }
 
-void LedgerImpl::OnGrantFinish(ledger::Result result, braveledger_bat_helper::GRANT grant) {
+void LedgerImpl::OnGrantFinish(ledger::Result result, const braveledger_bat_helper::GRANT& grant) {
   ledger::Grant newGrant;
 
   newGrant.altcurrency = grant.altcurrency;
