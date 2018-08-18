@@ -6,14 +6,14 @@
   </head>
   <body>
 
-    <video width="320" height="240" controls autoplay onplay="playing()" muted>
+    <video width="320" height="240" controls autoplay onplay="onPlay()" muted>
       <source src="autoplay.mp4" type="video/mp4">
     </video>
 
     <div id='status'>Video not playing</div>
 
     <script>
-      function playing () {
+      function onPlay () {
         let status = document.getElementById('status')
         status.textContent = 'Video playing'
         window.playing = true;
@@ -21,7 +21,7 @@
           notifyWhenPlaying();
       }
       function notifyWhenPlaying() {
-        if (playing)
+        if (this.playing)
           window.domAutomationController.send("PLAYING");
         else
           window.notifyBrowser = true;
