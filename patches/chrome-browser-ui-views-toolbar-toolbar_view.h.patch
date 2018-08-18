@@ -1,0 +1,54 @@
+diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
+index b9c5bdac43dc2374daf7649b9b4c8c35066227dd..8d1d9585374e0220ecd99674a1703b62aecc3b14 100644
+--- a/chrome/browser/ui/views/toolbar/toolbar_view.h
++++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
+@@ -42,6 +42,7 @@ class Browser;
+ class HomeButton;
+ class ReloadButton;
+ class ToolbarButton;
++class BraveToolbarView;
+ 
+ namespace bookmarks {
+ class BookmarkBubbleObserver;
+@@ -59,6 +60,7 @@ class ToolbarView : public views::AccessiblePaneView,
+                     public UpgradeObserver,
+                     public ToolbarButtonProvider,
+                     public BrowserRootView::DropTarget {
++ friend class BraveToolbarView;
+  public:
+   // The view class name.
+   static const char kViewClassName[];
+@@ -67,13 +69,13 @@ class ToolbarView : public views::AccessiblePaneView,
+   ~ToolbarView() override;
+ 
+   // Create the contents of the Browser Toolbar.
+-  void Init();
++  virtual void Init();
+ 
+   // Forces the toolbar (and transitively the location bar) to update its
+   // current state.  If |tab| is non-NULL, we're switching (back?) to this tab
+   // and should restore any previous location bar state (such as user editing)
+   // as well.
+-  void Update(content::WebContents* tab);
++  virtual void Update(content::WebContents* tab);
+ 
+   // Clears the current state for |tab|.
+   void ResetTabState(content::WebContents* tab);
+@@ -94,7 +96,7 @@ class ToolbarView : public views::AccessiblePaneView,
+ #endif  // defined(OS_CHROMEOS)
+ 
+   // Shows a bookmark bubble and anchors it appropriately.
+-  void ShowBookmarkBubble(const GURL& url,
++  virtual void ShowBookmarkBubble(const GURL& url,
+                           bool already_bookmarked,
+                           bookmarks::BookmarkBubbleObserver* observer);
+ 
+@@ -204,7 +206,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   // ToolbarView::CalculatePreferredSize() and ToolbarView::GetMinimumSize().
+   // These two functions call through to GetSizeInternal(), passing themselves
+   // as the function pointer |View::*get_size|.
+-  gfx::Size GetSizeInternal(gfx::Size (View::*get_size)() const) const;
++  virtual gfx::Size GetSizeInternal(gfx::Size (View::*get_size)() const) const;
+ 
+   // Given toolbar contents of size |size|, returns the total toolbar size.
+   gfx::Size SizeForContentSize(gfx::Size size) const;
