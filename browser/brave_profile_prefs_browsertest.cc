@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/common/pref_names.h"
+#include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
@@ -33,4 +34,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DisableGoogleServicesByDefa
       browser()->profile()->GetPrefs()->GetBoolean(prefs::kSafeBrowsingExtendedReportingOptInAllowed));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(prefs::kSearchSuggestEnabled));
+  EXPECT_EQ(
+      browser()->profile()->GetPrefs()->GetInteger(prefs::kNetworkPredictionOptions),
+      chrome_browser_net::NETWORK_PREDICTION_NEVER);
+
 }

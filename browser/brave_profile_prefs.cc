@@ -7,6 +7,7 @@
 #include "brave/browser/alternate_private_search_engine_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -45,6 +46,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Disable search suggestion
   registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled, base::Value(false));
+
+  // Disable "Use a prediction service to load pages more quickly"
+  registry->SetDefaultPrefValue(prefs::kNetworkPredictionOptions,
+      base::Value(chrome_browser_net::NETWORK_PREDICTION_NEVER));
 }
 
 }  // namespace brave
