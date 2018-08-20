@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/startup/startup_tab_provider.cc b/chrome/browser/ui/startup/startup_tab_provider.cc
+index 8db8a7e0dc41d02c66fc602de71fca5be2de2b03..e4fd9e7d4f1f94b9b850380e8efd9a190e84cd33 100644
+--- a/chrome/browser/ui/startup/startup_tab_provider.cc
++++ b/chrome/browser/ui/startup/startup_tab_provider.cc
+@@ -196,7 +196,11 @@ StartupTabs StartupTabProviderImpl::GetPostCrashTabs(
+ bool StartupTabProviderImpl::CanShowWelcome(bool is_signin_allowed,
+                                             bool is_supervised_user,
+                                             bool is_force_signin_enabled) {
++#if defined(BRAVE_CHROMIUM_BUILD)
++  return true;
++#else
+   return is_signin_allowed && !is_supervised_user && !is_force_signin_enabled;
++#endif
+ }
+ 
+ // static
