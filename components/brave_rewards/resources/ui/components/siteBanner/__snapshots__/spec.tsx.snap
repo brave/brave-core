@@ -30,6 +30,8 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
+  max-width: 1320px;
+  margin: 0 auto;
 }
 
 .c6 {
@@ -69,7 +71,8 @@ exports[`List tests basic tests matches the snapshot 1`] = `
 
 .c1 {
   position: relative;
-  min-width: 1024px;
+  min-width: 900px;
+  background: #DBE3F3;
 }
 
 .c3 {
@@ -85,6 +88,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   top: 14px;
   right: 17px;
   position: absolute;
+  cursor: pointer;
 }
 
 .c7 {

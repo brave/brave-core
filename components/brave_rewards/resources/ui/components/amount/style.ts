@@ -9,6 +9,7 @@ export const StyledWrapper = styled.div`
   margin-bottom: 8px;
   user-select: none;
   font-family: Poppins, sans-serif;
+  cursor: pointer;
 ` as any
 
 export const StyledAmount = styled.span`

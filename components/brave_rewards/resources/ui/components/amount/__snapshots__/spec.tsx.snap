@@ -8,6 +8,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   -ms-user-select: none;
   user-select: none;
   font-family: Poppins,sans-serif;
+  cursor: pointer;
 }
 
 .c1 {

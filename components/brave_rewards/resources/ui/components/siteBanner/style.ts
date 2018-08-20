@@ -25,6 +25,8 @@ export const StyledContentWrapper = styled.div`
   align-items: stretch;
   align-content: flex-start;
   flex-wrap: nowrap;
+  max-width: 1320px;
+  margin: 0 auto;
 ` as any
 
 export const StyledContent = styled.div`
@@ -45,7 +47,8 @@ export const StyledDonation = styled.div`
 
 export const StyledBanner = styled.div`
   position: relative;
-  min-width: 1024px;
+  min-width: 900px;
+  background: #DBE3F3;
 ` as any
 
 export const StyledBannerImage = styled.div`
@@ -64,6 +67,7 @@ export const StyledClose = styled.div`
   top: 14px;
   right: 17px;
   position: absolute;
+  cursor: pointer;
 ` as any
 
 export const StyledLogoWrapper = styled.div`
