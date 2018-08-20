@@ -89,6 +89,7 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   color: #fff;
   border: none;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 <div

@@ -52,6 +52,10 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
   top: 22px;
   right: 22px;
   position: absolute;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
 .c4 {
@@ -68,7 +72,7 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
   className="c0"
   id="wrapper"
 >
-  <div
+  <button
     className="c1"
     onClick={undefined}
   >
@@ -83,7 +87,7 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
         fillRule="evenodd"
       />
     </svg>
-  </div>
+  </button>
   <div
     className="c2"
   >

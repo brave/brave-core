@@ -107,14 +107,15 @@ export default class Donate extends React.PureComponent<Props, State> {
           <StyledDonationTitle>{title}</StyledDonationTitle>
           {
             donationAmounts && donationAmounts.map((donation: Donation) => {
-              return <Amount
-                key={`${id}-donate-${donation.tokens}`}
-                amount={donation.tokens}
-                selected={donation.tokens === currentAmount}
-                onSelect={this.onAmountChange}
-                converted={donation.converted}
-                type={donateType}
-              />
+              return <div key={`${id}-donate-${donation.tokens}`}>
+                <Amount
+                  amount={donation.tokens}
+                  selected={donation.tokens === currentAmount}
+                  onSelect={this.onAmountChange}
+                  converted={donation.converted}
+                  type={donateType}
+                />
+              </div>
             })
           }
           {children}

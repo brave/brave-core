@@ -8,6 +8,9 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   -ms-user-select: none;
   user-select: none;
   font-family: Poppins,sans-serif;
+  border: none;
+  background: none;
+  padding: 0;
   cursor: pointer;
 }
 
@@ -18,7 +21,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   border: 1px solid rgba(255,255,255,0.35);
   background: transparent;
   vertical-align: baseline;
-  padding: 7px 12px 9px;
+  padding: 7px 12px;
   min-width: 69px;
   font-size: 13px;
   font-weight: 600;
@@ -43,7 +46,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   font-weight: 500;
 }
 
-<div
+<button
   className="c0"
   id="amount"
   onClick={[Function]}
@@ -105,5 +108,5 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
      
     USD
   </span>
-</div>
+</button>
 `;

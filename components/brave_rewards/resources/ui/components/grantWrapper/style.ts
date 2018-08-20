@@ -38,10 +38,14 @@ export const StyledTitle = styled.div`
   color: #fb542b;
 ` as any
 
-export const StyledClose = styled.div`
+export const StyledClose = styled.button`
   top: 22px;
   right: 22px;
   position: absolute;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
 ` as any
 
 export const StyledText = styled.div`

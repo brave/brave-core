@@ -54,8 +54,12 @@ export const StyledContent = styled.div`
   flex: 1;
 ` as any
 
-export const StyledAction = styled.span`
+export const StyledAction = styled.button`
   display: inline-block;
+  background: none;
+  padding: 0;
+  border: none;
+  cursor: pointer;
 ` as any
 
 export const StyledActionIcon = styled.img`
@@ -79,12 +83,15 @@ export const StyledCopyImage = styled.span`
   margin-right: 5px;
 ` as any
 
-export const StyledIconAction = styled.div`
+export const StyledIconAction = styled.button`
   margin-bottom: 17px;
-  cursor:pointer;
   position: absolute;
   top: 21px;
   right: 21px;
+  background: none;
+  padding: 0;
+  border: none;
+  cursor: pointer;
 ` as any
 
 export const StyledBalanceConverted = styled.div`
@@ -173,10 +180,10 @@ export const StyledAlertWrapper = styled.div`
 
 export const StyledAlertClose = styled.button`
     position: absolute;
-    cursor: pointer;
     background: none;
     border: none;
     padding: 0;
     top: 16px;
     right: 16px;
+  cursor: pointer;
 ` as any

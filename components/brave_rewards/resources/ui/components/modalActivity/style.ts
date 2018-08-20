@@ -54,6 +54,7 @@ export const StyledIcon = styled.button`
   margin-right: 35px;
   background: none;
   border: none;
+  cursor: pointer;
 ` as any
 
 export const StyledIconText = styled.div`

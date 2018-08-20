@@ -5,10 +5,13 @@
 import styled from 'styled-components'
 import { Props } from './index'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.button`
   margin-bottom: 8px;
   user-select: none;
   font-family: Poppins, sans-serif;
+  border: none;
+  background: none;
+  padding: 0;
   cursor: pointer;
 ` as any
 
@@ -19,7 +22,7 @@ export const StyledAmount = styled.span`
   border: 1px solid rgba(255, 255, 255, 0.35);
   background: ${(p: Props) => p.selected ? 'rgba(255, 255, 255, 0.35)' : 'transparent'};
   vertical-align: baseline;
-  padding: ${(p: Props) => p.type === 'big' ? '10px 16px 13px' : '7px 12px 9px'};
+  padding: ${(p: Props) => p.type === 'big' ? '10px 16px' : '7px 12px'};
   min-width: ${(p: Props) => p.type === 'big' ? '118px' : '69px'};
   font-size: 13px;
   font-weight: 600;

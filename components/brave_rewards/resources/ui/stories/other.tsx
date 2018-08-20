@@ -205,7 +205,7 @@ storiesOf('Feature Components/Rewards/Other', module)
     .add('Grant claim',() => {
       return (
         <GrantClaim
-          onClick={dummyClick}
+          onClaim={dummyClick}
         />
       )
     })

@@ -33,16 +33,23 @@ export const StyledDate = styled.div`
   color: #b8b9c4;
 ` as any
 
-export const StyledToggle = styled.div`
+export const StyledToggle = styled.button`
   font-family: Poppins, sans-serif;
   font-size: 13px;
   color: #4c54d2;
-  text-align: right;
   text-transform: capitalize;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
 ` as any
 
 export const StyledRecurringIcon = styled.span`
   display: inline-block;
   margin-left: 3px;
   vertical-align: middle;
+` as any
+
+export const StyledToggleWrap = styled.div`
+  text-align: right;
 ` as any

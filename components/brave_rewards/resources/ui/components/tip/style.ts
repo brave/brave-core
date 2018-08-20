@@ -36,8 +36,12 @@ export const StyledAllowText = styled.span`
   color: #fff;
 ` as any
 
-export const StyledClose = styled.div`
+export const StyledClose = styled.button`
   position: absolute;
   top: 16px;
   right: 16px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 ` as any

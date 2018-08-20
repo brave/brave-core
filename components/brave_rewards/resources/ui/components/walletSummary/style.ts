@@ -28,11 +28,16 @@ export const StyledTitle = styled.div`
   text-transform: uppercase;
 ` as any
 
-export const StyledActivity = styled.div`
+export const StyledActivity = styled.button`
   font-size: 12px;
   color: #686978;
   margin-top: 26px;
   text-align: center;
+  padding: 0;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
 ` as any
 
 export const StyledActivityIcon = styled.span`

@@ -36,6 +36,11 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   color: #686978;
   margin-top: 26px;
   text-align: center;
+  padding: 0;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
 }
 
 .c15 {
@@ -453,7 +458,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       </div>
     </div>
   </div>
-  <div
+  <button
     className="c14"
     onClick={[Function]}
   >
@@ -474,6 +479,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
     </span>
      
     MISSING: viewMonthly
-  </div>
+  </button>
 </div>
 `;

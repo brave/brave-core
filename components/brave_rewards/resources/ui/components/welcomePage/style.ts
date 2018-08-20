@@ -149,6 +149,9 @@ export const StyledStrong = styled.strong`
   padding: 0 5px;
 ` as any
 
-export const StyledAnchor = styled.a`
+export const StyledAnchor = styled.button`
+  padding: 0;
+  border: none;
+  background: none;
   cursor: pointer;
 ` as any

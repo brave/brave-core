@@ -53,6 +53,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   margin-right: 35px;
   background: none;
   border: none;
+  cursor: pointer;
 }
 
 .c10 {

@@ -10,18 +10,18 @@ const gift = require('./assets/gift')
 
 export interface Props {
   id?: string
-  onClick: () => void
+  onClaim: () => void
 }
 
 export default class GrantClaim extends React.PureComponent<Props, {}> {
   render () {
-    const { id, onClick } = this.props
+    const { id, onClaim } = this.props
 
     return (
       <StyledWrapper id={id}>
         <StyledIcon>{gift}</StyledIcon>
         <StyledText>{getLocale('newGrant')}</StyledText>
-        <StyledClaim onClick={onClick}>{getLocale('claim')}</StyledClaim>
+        <StyledClaim onClick={onClaim}>{getLocale('claim')}</StyledClaim>
       </StyledWrapper>
     )
   }

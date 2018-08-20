@@ -3,7 +3,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledType, StyledDate, StyledRemove, StyledRemoveIcon, StyledToggle, StyledRecurringIcon } from './style'
+import {
+  StyledType,
+  StyledDate,
+  StyledRemove,
+  StyledRemoveIcon,
+  StyledToggle,
+  StyledRecurringIcon,
+  StyledToggleWrap
+} from './style'
 import Table, { Cell, Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
 import Tokens from '../tokens/index'
@@ -35,7 +43,7 @@ export interface Props {
   rows?: DetailRow[]
   numItems?: number
   allItems?: boolean
-  onClick?: () => void
+  onShowAll?: () => void
   headerColor?: boolean
 }
 
@@ -148,7 +156,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, children, rows, allItems, onClick } = this.props
+    const { id, children, rows, allItems, onShowAll } = this.props
     const numItems = this.props.numItems || 0
     return (
       <div id={id}>
@@ -159,9 +167,11 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
         />
         {
           !allItems && numItems > 0
-          ? <StyledToggle onClick={onClick}>
-              {getLocale('seeAllItems', { numItems })}
-          </StyledToggle>
+          ? <StyledToggleWrap>
+            <StyledToggle onClick={onShowAll}>
+                {getLocale('seeAllItems', { numItems })}
+            </StyledToggle>
+          </StyledToggleWrap>
           : null
         }
       </div>

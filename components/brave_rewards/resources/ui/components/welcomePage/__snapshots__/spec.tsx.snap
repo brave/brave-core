@@ -363,6 +363,9 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 .c14 {
+  padding: 0;
+  border: none;
+  background: none;
   cursor: pointer;
 }
 
@@ -491,7 +494,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             >
               MISSING: braveRewardsTeaser
             </p>
-            <a
+            <button
               className="c14"
               onClick={[Function]}
             >
@@ -505,7 +508,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                   fill="#bf9fe3"
                 />
               </svg>
-            </a>
+            </button>
           </div>
         </div>
       </div>

@@ -52,7 +52,7 @@ export const StyledDonationTitle = styled.div`
   max-width: 167px;
 ` as any
 
-export const StyledSend = styled.div`
+export const StyledSend = styled.button`
   background: ${(p: {disabled: boolean, donateType: DonateType}) => theme[p.donateType].sendBgColor};
   font-size: 13px;
   font-weight: 600;
@@ -60,6 +60,10 @@ export const StyledSend = styled.div`
   color: ${(p: {disabled: boolean, donateType: DonateType}) => p.disabled ? theme[p.donateType].disabledSendColor : '#fff'};
   padding: ${(p: {disabled: boolean, donateType: DonateType}) => theme[p.donateType].paddingSend};
   text-transform: uppercase;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 ` as any
 
 export const StyledIconSend = styled.span`

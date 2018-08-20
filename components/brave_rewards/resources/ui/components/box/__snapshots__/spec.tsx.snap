@@ -89,6 +89,10 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   width: 20px;
   float: none;
   margin-top: 8px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .c8 {
@@ -118,6 +122,10 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   top: 35px;
   width: 13px;
   height: 13px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .c11 {
@@ -182,7 +190,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
       className="c9"
       open={false}
     >
-      <div
+      <button
         className="c10"
         onClick={[Function]}
         open={false}
@@ -198,11 +206,11 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
             fillRule="evenodd"
           />
         </svg>
-      </div>
+      </button>
       <div
         className="c11"
       >
-        <span
+        <button
           className="c12"
         >
           <svg
@@ -220,7 +228,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
               strokeWidth="1.25"
             />
           </svg>
-        </span>
+        </button>
         <span
           className="c13"
         >

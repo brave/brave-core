@@ -12,9 +12,12 @@ export const StyledText = styled.div`
   color: #686978;
 ` as any
 
-export const StyledRemove = styled.span`
+export const StyledRemove = styled.button`
   margin-left: 10px;
-  padding-right: 10px;
+  background: none;
+  border: none;
+  padding: 0 10px 0 0;
+  cursor: pointer;
 ` as any
 
 export const StyledTHOther = styled.div`
@@ -25,10 +28,17 @@ export const StyledTHLast = styled(StyledTHOther)`
   padding-right: 10px;
 ` as any
 
-export const StyledToggle = styled.div`
+export const StyledToggleWrap = styled.div`
+  text-align: right;
+` as any
+
+export const StyledToggle = styled.button`
   font-family: Poppins, sans-serif;
   font-size: 13px;
   color: #4c54d2;
-  text-align: right;
   text-transform: capitalize;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 ` as any

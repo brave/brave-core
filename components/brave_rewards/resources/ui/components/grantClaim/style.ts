@@ -54,4 +54,5 @@ export const StyledClaim = styled.button`
   color: #fff;
   border: none;
   text-transform: uppercase;
+  cursor: pointer;
 ` as any

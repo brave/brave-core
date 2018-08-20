@@ -52,7 +52,7 @@ class Grant extends React.Component<{}, State > {
       <>
         {
           this.state.grantShow
-          ? <GrantClaim onClick={this.onGrantShow}/>
+          ? <GrantClaim onClaim={this.onGrantShow}/>
           : null
         }
         {

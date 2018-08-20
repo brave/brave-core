@@ -73,10 +73,14 @@ export const StyledDescription = styled.div`
   color: #a4aeb8;
 ` as any
 
-export const StyledSettingsIcon = styled.span`
+export const StyledSettingsIcon = styled.button`
   width: 20px;
   float: ${(p: {float: string}) => p.float ? p.float : 'none'};
   margin-top: 8px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 ` as any
 
 export const StyledContent = styled.div`
@@ -92,13 +96,17 @@ export const StyledSettingsWrapper = styled.div`
   flex-basis: ${(p: {open: boolean}) => p.open ? '50%' : '0'};
 ` as any
 
-export const StyledSettingsClose = styled.div`
+export const StyledSettingsClose = styled.button`
   display: ${(p: {open: boolean}) => p.open ? 'block' : 'none'};
   position: absolute;
   right: 35px;
   top: 35px;
   width: 13px;
   height: 13px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 ` as any
 
 export const StyledSettingsTitle = styled.div`

@@ -33,6 +33,10 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
   color: #fff;
   padding: 16px 19px 16px 55px;
   text-transform: uppercase;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
 
 .c4 {
@@ -52,7 +56,7 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
       className="c2"
     />
   </div>
-  <div
+  <button
     className="c3"
     disabled={false}
     onClick={undefined}
@@ -72,6 +76,6 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
         />
       </svg>
     </span>
-  </div>
+  </button>
 </div>
 `;

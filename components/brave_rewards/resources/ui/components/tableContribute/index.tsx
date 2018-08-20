@@ -8,7 +8,8 @@ import {
   StyledRemove,
   StyledToggle,
   StyledTHOther,
-  StyledTHLast
+  StyledTHLast,
+  StyledToggleWrap
 } from './style'
 import Table, { Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
@@ -174,7 +175,9 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
         />
         {
           !allSites && numSites > 0
-          ? <StyledToggle onClick={onShowAll}>{getLocale('seeAllSites', { numSites })}</StyledToggle>
+          ? <StyledToggleWrap>
+              <StyledToggle onClick={onShowAll}>{getLocale('seeAllSites', { numSites })}</StyledToggle>
+            </StyledToggleWrap>
           : null
         }
       </div>

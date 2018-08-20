@@ -67,9 +67,10 @@ export const StyledClose = styled.button`
   top: 14px;
   right: 17px;
   position: absolute;
-  cursor: pointer;
   background: none;
   border: none;
+  padding: 0;
+  cursor: pointer;
 ` as any
 
 export const StyledLogoWrapper = styled.div`

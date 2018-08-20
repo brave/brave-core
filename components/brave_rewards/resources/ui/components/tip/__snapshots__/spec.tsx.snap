@@ -37,6 +37,10 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   position: absolute;
   top: 16px;
   right: 16px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .c3 {
@@ -71,6 +75,10 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   color: #fff;
   padding: 13px 0 13px 51px;
   text-transform: uppercase;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
 
 .c12 {
@@ -115,7 +123,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   className="c0"
   id="tip"
 >
-  <div
+  <button
     className="c1"
     onClick={undefined}
   >
@@ -130,7 +138,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
         fillRule="evenodd"
       />
     </svg>
-  </div>
+  </button>
   <div
     className="c2"
   >
@@ -179,7 +187,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
         </span>
       </div>
     </div>
-    <div
+    <button
       className="c11"
       disabled={false}
       onClick={undefined}
@@ -200,7 +208,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
         </svg>
       </span>
       MISSING: sendTip
-    </div>
+    </button>
   </div>
 </div>
 `;
