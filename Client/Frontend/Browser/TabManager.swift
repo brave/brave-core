@@ -783,15 +783,11 @@ extension TabManager {
             // Since this is a restored tab, reset the URL to be loaded as that will be handled by the SessionRestoreHandler
             tab.url = nil
 
-            // BRAVE TODO: restore favicon
-            /*
-            if let faviconURL = savedTab.favicon.url {
+            if let urlString = savedTab.url, let url = URL(string: urlString), let faviconURL = Domain.getOrCreateForUrl(url, context: DataController.shared.workerContext)?.favicon?.url {
                 let icon = Favicon(url: faviconURL, date: Date())
                 icon.width = 1
                 tab.favicons.append(icon)
             }
-             */
-
             
             // Set the UUID for the tab, asynchronously fetch the UIImage, then store
             // the screenshot in the tab as long as long as a newer one hasn't been taken.
