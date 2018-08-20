@@ -164,7 +164,11 @@ class BrowserViewController: UIViewController {
         tabManager.addDelegate(self)
         tabManager.addNavigationDelegate(self)
         downloadQueue.delegate = self
+        
+        // Observe some user preferences
         Preferences.Privacy.cookieAcceptPolicy.observe(from: self)
+        Preferences.General.tabBarVisibility.observe(from: self)
+        Preferences.Shields.fingerprintingProtection.observe(from: self)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -748,20 +752,32 @@ class BrowserViewController: UIViewController {
     }
     
     func updateTabsBarVisibility() {
-        let isShowing = !tabsBar.view.isHidden
-        let shouldShow = UIApplication.isInPrivateMode ? tabManager.privateTabs.count > 1 : tabManager.normalTabs.count > 1
+        func shouldShowTabBar() -> Bool {
+            let tabCount = tabManager.tabs.count
+            guard let tabBarVisibility = TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value) else {
+                // This should never happen
+                assertionFailure("Invalid tab bar visibility preference: \(Preferences.General.tabBarVisibility.value).")
+                return tabCount > 1
+            }
+            switch tabBarVisibility {
+            case .always:
+                return tabCount > 1
+            case .landscapeOnly:
+                return tabCount > 1 && UIDevice.current.orientation.isLandscape
+            case .never:
+                return false
+            }
+        }
         
-        // FIXME: Without waiting, tabmanager count returns 0, 0.1 delay is enough to make it work properly.
-        // I don't like this approach, there must be a better way.
-        // Maybe changing storage from SQLite to CoreData will change things.
+        let isShowing = !tabsBar.view.isHidden
+        let shouldShow = shouldShowTabBar()
+        
         if isShowing != shouldShow {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                UIView.animate(withDuration: 0.1) {
-                    self.tabsBar.view.isHidden = !shouldShow
-                    self.headerHeightConstraint?.update(offset: UX.UrlBar.height)
-                    self.webViewContainerTopOffset?.update(inset: shouldShow ? 0 : UX.TabsBar.height)
-                    self.view.layoutIfNeeded()
-                }
+            UIView.animate(withDuration: 0.1) {
+                self.tabsBar.view.isHidden = !shouldShow
+                self.headerHeightConstraint?.update(offset: UX.UrlBar.height)
+                self.webViewContainerTopOffset?.update(inset: shouldShow ? 0 : UX.TabsBar.height)
+                self.view.layoutIfNeeded()
             }
         }
     }
@@ -2599,12 +2615,22 @@ extension BrowserViewController: TopSitesDelegate {
 
 extension BrowserViewController: PreferencesObserver {
     func preferencesDidChange(for key: String) {
-        HTTPCookieStorage.shared.updateCookieAcceptPolicy(to: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value))
-        // TODO: Update tab bar visiblity based on `Preferences.tabBarVisibility` once BraveURLBarView is back
-        // TODO: Update fingerprinting protection based on `Preferences.Shields.fingerprintingProtection` once fingerprinting protection is added back
-        if Preferences.Privacy.privateBrowsingOnly.value {
-            switchToPrivacyMode(isPrivate: true)
-            // TODO: Add more logic to `switchToPrivacyMode` once specific Brave Private Browsing logic is added back
+        switch key {
+        case Preferences.Privacy.cookieAcceptPolicy.key:
+            HTTPCookieStorage.shared.updateCookieAcceptPolicy(to: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value))
+        case Preferences.General.tabBarVisibility.key:
+            updateTabsBarVisibility()
+        case Preferences.Privacy.privateBrowsingOnly.key:
+            if Preferences.Privacy.privateBrowsingOnly.value {
+                switchToPrivacyMode(isPrivate: true)
+                // TODO: Add more logic to `switchToPrivacyMode` once specific Brave Private Browsing logic is added back
+            }
+        case Preferences.Shields.fingerprintingProtection.key:
+            // TODO: Update fingerprinting protection based on `Preferences.Shields.fingerprintingProtection` once fingerprinting protection is added back
+            break
+        default:
+            log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
+            break
         }
     }
 }
