@@ -57,17 +57,28 @@ std::string GetGoogleTagServicesPolyfillJS() {
   return base64_output;
 }
 
-bool GetPolyfill(const GURL& gurl, GURL *new_url) {
+bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
+    const GURL& tab_origin, const GURL& gurl, GURL *new_url) {
+  // Polyfills which are related to adblock should only apply when shields are up
+  if (!allow_brave_shields || allow_ads) {
+    return false;
+  }
+
   static URLPattern tag_manager(URLPattern::SCHEME_ALL, kGoogleTagManagerPattern);
   static URLPattern tag_services(URLPattern::SCHEME_ALL, kGoogleTagServicesPattern);
   if (tag_manager.MatchesURL(gurl)) {
     std::string&& data_url = GetGoogleTagManagerPolyfillJS();
     *new_url = GURL(data_url);
-  } else if (tag_services.MatchesURL(gurl)) {
+    return true;
+  }
+
+  if (tag_services.MatchesURL(gurl)) {
     std::string&& data_url = GetGoogleTagServicesPolyfillJS();
     *new_url = GURL(data_url);
+    return true;
   }
-  return net::OK;
+
+  return false;
 }
 
 int OnBeforeURLRequest_SiteHacksWork(
@@ -87,7 +98,15 @@ int OnBeforeURLRequest_SiteHacksWork(
     return net::ERR_ABORTED;
   }
 
-  if (GetPolyfill(url, new_url)) {
+  GURL tab_origin = request->site_for_cookies().GetOrigin();
+  bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
+      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kBraveShields);
+  bool allow_ads = brave_shields::IsAllowContentSettingFromIO(
+      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kAds);
+  if (GetPolyfillForAdBlock(allow_brave_shields, allow_ads,
+        tab_origin, url, new_url)) {
     return net::OK;
   }
 
