@@ -38,6 +38,8 @@ def main():
     elem1.set('preprocess', 'true')
     elem2 = xml_tree.xpath('//structure[@name="IDR_SETTINGS_PASSWORDS_SECTION_HTML"]')[0]
     elem2.set('preprocess', 'true')
+    elem3 = xml_tree.xpath('//structure[@name="IDR_SETTINGS_SITE_SETTINGS_PAGE_HTML"]')[0]
+    elem3.set('preprocess', 'true')
     brave_page_visibility_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_PAGE_VISIBILITY_JS"]'))
     if brave_page_visibility_element_len == 0:
         brave_page_visibility_element = etree.Element('structure')
