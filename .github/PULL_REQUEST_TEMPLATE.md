@@ -16,4 +16,4 @@
 - [ ] New files have MPL-2.0 license header.
 - [ ] Request a security/privacy review as needed.
 - [ ] Adequate test coverage exists to prevent regressions 
-- [ ] Verify test plan is specified in PR before merging the source
+- [ ] Verify test plan is specified in PR before merging to source
