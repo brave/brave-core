@@ -63,11 +63,13 @@ export const StyledBannerImage = styled.div`
   };
 ` as any
 
-export const StyledClose = styled.div`
+export const StyledClose = styled.button`
   top: 14px;
   right: 17px;
   position: absolute;
   cursor: pointer;
+  background: none;
+  border: none;
 ` as any
 
 export const StyledLogoWrapper = styled.div`
@@ -86,6 +88,7 @@ export const StyledLogoText = styled.div`
   letter-spacing: 0;
   line-height: 1;
   text-transform: uppercase;
+  user-select: none;
 ` as any
 
 export const StyledLogoBorder = styled.div`
@@ -165,6 +168,7 @@ export const StyledCenter = styled.div`
   max-width: 1024px;
   padding: 126px 0 0 238px;
   margin: 0 auto;
+  user-select: none;
 ` as any
 
 export const StyledIconRecurringBig = styled.span`

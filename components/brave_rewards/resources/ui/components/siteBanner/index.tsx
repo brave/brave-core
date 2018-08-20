@@ -146,6 +146,12 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     }
   }
 
+  onKeyUp = (e: KeyboardEvent) => {
+    if (e.key.toLowerCase() === 'escape' && this.props.onClose) {
+      this.props.onClose()
+    }
+  }
+
   render () {
     const {
       id,
@@ -165,7 +171,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     } = this.props
 
     return (
-      <StyledWrapper id={id}>
+      <StyledWrapper id={id} onKeyUp={this.onKeyUp} tabIndex='0'>
         <StyledBanner>
           <StyledClose onClick={onClose}>{close}</StyledClose>
           <StyledBannerImage bgImage={bgImage}>

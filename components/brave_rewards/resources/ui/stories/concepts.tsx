@@ -36,7 +36,7 @@ storiesOf('Feature Components/Rewards/Concepts', module)
       optInAction={dummyOptInAction}
     />
   ))
-  .add('Site Banner', withState({ donationAmounts, currentAmount: 5 }, (store) => {
+  .add('Site Banner', withState({ donationAmounts, currentAmount: 5, showBanner: true }, (store) => {
     const onDonate = () => {
       console.log('onDonate')
     }
@@ -45,38 +45,53 @@ storiesOf('Feature Components/Rewards/Concepts', module)
       store.set({ currentAmount: tokens })
     }
 
+    const showBanner = () => {
+      store.set({ showBanner: true })
+    }
+
+    const onClose = () => {
+      store.set({ showBanner: false })
+    }
+
     return (
       <div style={{ background: `url(${siteScreen}) no-repeat top center / cover`, width: '100%', height: '100vh' }}>
-        <SiteBanner
-          domain={text('Domain', 'duckduckgo.com')}
-          title={text('Title', '')}
-          currentDonation={number('Current recurring donation', 0)}
-          balance={number('Balance ', 5)}
-          bgImage={boolean('Show bg image', false) ? siteBgImage : null}
-          logo={boolean('Show logo', false) ? siteBgLogo : null}
-          donationAmounts={object('Donations', store.state.donationAmounts)}
-          theme={{ logoBgColor: text('Logo bg color', '') }}
-          onDonate={onDonate}
-          onAmountSelection={onAmountSelection}
-          currentAmount={store.state.currentAmount}
-          social={[
-            {
-              type: 'twitter',
-              name: '@DuckDuckGo',
-              handler: 'DuckDuckGo'
-            },
-            {
-              type: 'youtube',
-              name: 'duckduckgo',
-              handler: 'UCm_TyecHNHucwF_p4XpeFkQ'
-            },
-            {
-              type: 'twitch',
-              name: 'duckDuckGo',
-              handler: 'duckduckgo'
-            }
-          ]}
-        />
+        <button onClick={showBanner}>Show banner</button>
+        {
+          store.state.showBanner
+          ? <SiteBanner
+            domain={text('Domain', 'duckduckgo.com')}
+            title={text('Title', '')}
+            currentDonation={number('Current recurring donation', 0)}
+            balance={number('Balance ', 5)}
+            bgImage={boolean('Show bg image', false) ? siteBgImage : null}
+            logo={boolean('Show logo', false) ? siteBgLogo : null}
+            donationAmounts={object('Donations', store.state.donationAmounts)}
+            theme={{ logoBgColor: text('Logo bg color', '') }}
+            onDonate={onDonate}
+            onAmountSelection={onAmountSelection}
+            currentAmount={store.state.currentAmount}
+            onClose={onClose}
+            social={[
+              {
+                type: 'twitter',
+                name: '@DuckDuckGo',
+                handler: 'DuckDuckGo'
+              },
+              {
+                type: 'youtube',
+                name: 'duckduckgo',
+                handler: 'UCm_TyecHNHucwF_p4XpeFkQ'
+              },
+              {
+                type: 'twitch',
+                name: 'duckDuckGo',
+                handler: 'duckduckgo'
+              }
+            ]}
+          />
+          : null
+        }
+
       </div>
     )
   }))
