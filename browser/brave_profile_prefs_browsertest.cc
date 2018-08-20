@@ -11,6 +11,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "components/spellcheck/browser/pref_names.h"
+#include "components/sync/base/pref_names.h"
 
 using BraveProfilePrefsBrowserTest = InProcessBrowserTest;
 
@@ -34,6 +35,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DisableGoogleServicesByDefa
       browser()->profile()->GetPrefs()->GetBoolean(prefs::kSafeBrowsingExtendedReportingOptInAllowed));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(prefs::kSearchSuggestEnabled));
+  EXPECT_TRUE(
+      browser()->profile()->GetPrefs()->GetBoolean(syncer::prefs::kSyncManaged));
   EXPECT_EQ(
       browser()->profile()->GetPrefs()->GetInteger(prefs::kNetworkPredictionOptions),
       chrome_browser_net::NETWORK_PREDICTION_NEVER);

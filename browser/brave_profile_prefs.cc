@@ -15,6 +15,7 @@
 #include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "components/signin/core/browser/signin_pref_names.h"
 #include "components/spellcheck/browser/pref_names.h"
+#include "components/sync/base/pref_names.h"
 
 namespace brave {
 
@@ -50,6 +51,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Disable "Use a prediction service to load pages more quickly"
   registry->SetDefaultPrefValue(prefs::kNetworkPredictionOptions,
       base::Value(chrome_browser_net::NETWORK_PREDICTION_NEVER));
+
+  // Make sync managed to dsiable some UI after password saving.
+  registry->SetDefaultPrefValue(syncer::prefs::kSyncManaged, base::Value(true));
 }
 
 }  // namespace brave
