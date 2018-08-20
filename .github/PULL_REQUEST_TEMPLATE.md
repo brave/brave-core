@@ -6,6 +6,7 @@
 - [ ] Ran `git rebase -i` to squash commits (if needed).
 - [ ] Tagged reviewers and labelled the pull request as needed.
 - [ ] Request a security/privacy review as needed.
+- [ ] Add appropriate QA labels (QA/Needed or QA/No-QA-Needed) to include the closed issue in milestone 
 
 ## Test Plan:
 
@@ -14,4 +15,5 @@
 
 - [ ] New files have MPL-2.0 license header.
 - [ ] Request a security/privacy review as needed.
-- [ ] Adequate test coverage exists to prevent regressions
+- [ ] Adequate test coverage exists to prevent regressions 
+- [ ] Verify test plan is specified in PR before merging to source
