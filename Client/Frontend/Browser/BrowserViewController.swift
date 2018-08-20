@@ -755,7 +755,7 @@ class BrowserViewController: UIViewController {
     
     func updateTabsBarVisibility() {
         func shouldShowTabBar() -> Bool {
-            let tabCount = UIApplication.isInPrivateMode ? tabManager.privateTabs.count : tabManager.normalTabs.count
+            let tabCount = tabManager.tabs.count
             guard let tabBarVisibility = TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value) else {
                 // This should never happen
                 assertionFailure("Invalid tab bar visibility preference: \(Preferences.General.tabBarVisibility.value).")
@@ -774,17 +774,12 @@ class BrowserViewController: UIViewController {
         let isShowing = !tabsBar.view.isHidden
         let shouldShow = shouldShowTabBar()
         
-        // FIXME: Without waiting, tabmanager count returns 0, 0.1 delay is enough to make it work properly.
-        // I don't like this approach, there must be a better way.
-        // Maybe changing storage from SQLite to CoreData will change things.
         if isShowing != shouldShow {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                UIView.animate(withDuration: 0.1) {
-                    self.tabsBar.view.isHidden = !shouldShow
-                    self.headerHeightConstraint?.update(offset: UX.UrlBar.height)
-                    self.webViewContainerTopOffset?.update(inset: shouldShow ? 0 : UX.TabsBar.height)
-                    self.view.layoutIfNeeded()
-                }
+            UIView.animate(withDuration: 0.1) {
+                self.tabsBar.view.isHidden = !shouldShow
+                self.headerHeightConstraint?.update(offset: UX.UrlBar.height)
+                self.webViewContainerTopOffset?.update(inset: shouldShow ? 0 : UX.TabsBar.height)
+                self.view.layoutIfNeeded()
             }
         }
     }
