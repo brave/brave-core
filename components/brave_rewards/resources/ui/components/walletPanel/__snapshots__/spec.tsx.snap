@@ -1,24 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
-.c1 {
+.c0 {
   display: block;
 }
 
-.c0 {
-  padding: 20px 20px;
-}
-
-.c35 {
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.57;
-  -webkit-letter-spacing: 0.4px;
-  -moz-letter-spacing: 0.4px;
-  -ms-letter-spacing: 0.4px;
-  letter-spacing: 0.4px;
-  color: #a1a8f2;
-  text-transform: uppercase;
+.c1 {
+  padding: 20px 30px 15px 30px;
 }
 
 .c13 {
@@ -53,19 +41,39 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   line-height: 26px;
 }
 
-.c33 {
-  display: inline-block;
-  overflow: hidden;
-  background: #fff;
-  font-size: 14px;
-  border-radius: 28px;
-  min-width: 235px;
-  font-family: Poppins,sans-serif;
+.c16 {
+  height: 15px;
+  width: 15px;
+  margin-left: 5px;
+  vertical-align: middle;
 }
 
-.c34 {
+.c35 {
+  text-align: center;
+  padding: 15px 0px 0px 0px;
+}
+
+.c31 {
+  margin-top: 4px;
+}
+
+.c36 {
+  display: inline-block;
+  overflow: hidden;
+  border: 1px solid rgba(161,168,242,0.9);
+  color: rgba(161,168,242,0.9);
+  font-size: 14px;
+  border-radius: 24px;
+  width: 100%;
+  padding: 17px 15px;
+  font-size: 12px;
+  padding: 12px 15px;
+  color: #4C54D2;
+  font-weight: 500;
+  text-transform: uppercase;
   text-align: center;
   box-sizing: border-box;
+  font-family: Poppins,sans-serif;
   -webkit-letter-spacing: 0;
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
@@ -77,44 +85,49 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  text-transform: uppercase;
-  padding: 21px 15px;
-  background: rgba(76,84,210,0.9);
-  color: #fff;
 }
 
-.c34:hover {
-  background: rgba(76,84,210,1);
+.c36:hover {
+  border-color: rgba(161,168,242,1);
 }
 
-.c34:active {
-  background: rgba(76,84,210,0.4);
+.c36:active {
+  border-color: rgba(161,168,242,0.4);
 }
 
-.c17 {
-  max-width: 50px;
+.c36:hover {
+  color: rgba(161,168,242,1);
+}
+
+.c36:active {
+  color: rgba(161,168,242,0.4);
+}
+
+.c18 {
+  max-width: 254px;
   width: 100%;
   margin-bottom: 12px;
 }
 
-.c16 {
-  max-width: 50px;
+.c17 {
+  max-width: 254px;
   width: 100%;
+  margin: 3px 0px 0px 0px;
 }
 
-.c18 {
+.c19 {
   position: relative;
   outline: 0;
   font-family: Poppins,sans-serif;
 }
 
-.c19 {
+.c20 {
   border-radius: 3px;
   font-size: 14px;
   color: #686978;
-  background: #fff;
+  background: inherit;
   width: 100%;
-  padding: 10px 0;
+  padding: 0px;
   border: none;
   display: -webkit-box;
   display: -webkit-flex;
@@ -126,14 +139,14 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   align-items: center;
 }
 
-.c24 {
+.c25 {
   padding-right: 15px;
   -webkit-flex-basis: 17px;
   -ms-flex-preferred-size: 17px;
   flex-basis: 17px;
 }
 
-.c20 {
+.c21 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -144,7 +157,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   text-overflow: ellipsis;
 }
 
-.c25 {
+.c26 {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -158,7 +171,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   display: none;
 }
 
-.c26 {
+.c27 {
   font-size: 14px;
   line-height: 2.57;
   color: #1b1d2f;
@@ -171,7 +184,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   background: #e9f0ff;
 }
 
-.c29 {
+.c30 {
   font-size: 14px;
   line-height: 2.57;
   color: #1b1d2f;
@@ -184,7 +197,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   background: #fff;
 }
 
-.c27 {
+.c28 {
   -webkit-flex-basis: 12px;
   -ms-flex-preferred-size: 12px;
   flex-basis: 12px;
@@ -201,7 +214,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   align-items: center;
 }
 
-.c28 {
+.c29 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -212,14 +225,14 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   text-overflow: ellipsis;
 }
 
-.c30 {
+.c32 {
   position: relative;
   display: block;
   width: 30px;
   height: 18px;
 }
 
-.c31 {
+.c33 {
   background: #A7ACB2;
   width: 100%;
   border-radius: 3px;
@@ -227,9 +240,8 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   margin-top: 6px;
 }
 
-.c32 {
+.c34 {
   position: relative;
-  z-index: 2;
   border-radius: 50%;
   -webkit-transition: 200ms ease-out;
   transition: 200ms ease-out;
@@ -316,7 +328,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   color: inherit;
 }
 
-.c21 {
+.c22 {
   font-family: Poppins,sans-serif;
   font-weight: 300;
   line-height: 1.4;
@@ -324,14 +336,14 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   display: inline-block;
 }
 
-.c22 {
+.c23 {
   color: #696fdc;
-  font-size: 16px;
+  font-size: 12;
   font-weight: 500;
 }
 
-.c23 {
-  font-size: 14px;
+.c24 {
+  font-size: 10px;
   font-weight: 300;
   display: inline-block;
   margin-left: 4px;
@@ -404,84 +416,56 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   color: #4c54d2;
 }
 
+.c37 {
+  background: #F6F6FC;
+  display: block;
+  width: 100%;
+  padding: 20px 30px;
+}
+
 <div
   className="c0"
-  id="wallet-panel"
 >
   <div
     className="c1"
+    id="wallet-panel"
   >
     <div
-      className="c2"
-      id={undefined}
+      className="c0"
     >
       <div
-        className="c3"
-      >
-        <img
-          className="c4"
-          src=""
-          type="big"
-        />
-      </div>
-      <div
-        className="c5"
-        type="big"
+        className="c2"
+        id={undefined}
       >
         <div
-          className="c6"
+          className="c3"
+        >
+          <img
+            className="c4"
+            src=""
+            type="big"
+          />
+        </div>
+        <div
+          className="c5"
           type="big"
         >
-          <span
-            className="c7"
+          <div
+            className="c6"
             type="big"
           >
-            Bart Baker
-          </span>
+            <span
+              className="c7"
+              type="big"
+            >
+              Bart Baker
+            </span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <section
-    className="c8"
-  >
-    <div
-      className="c9"
-      disabled={false}
-      id={undefined}
-      onClick={undefined}
-    >
-      <div
-        className="c10"
-        id={undefined}
-        onClick={undefined}
-        size={5}
-      >
-        <h3
-          className="c11"
-        >
-          MISSING: rewardsContributeAttention
-        </h3>
-      </div>
-      <div
-        className="c12"
-        id={undefined}
-        onClick={undefined}
-        size={1}
-      >
-        <h3
-          className="c13"
-        >
-          %
-        </h3>
-      </div>
-    </div>
-  </section>
-  <section
-    className="c14"
-  >
-    <div
-      className="c1"
+    <section
+      className="c8"
     >
       <div
         className="c9"
@@ -495,11 +479,11 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
           onClick={undefined}
           size={5}
         >
-          <span
-            className="c15"
+          <h3
+            className="c11"
           >
-            MISSING: donateMonthly
-          </span>
+            MISSING: rewardsContributeAttention
+          </h3>
         </div>
         <div
           className="c12"
@@ -507,325 +491,379 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
           onClick={undefined}
           size={1}
         >
-          <div>
-            <div
-              className="c16"
-              id={undefined}
+          <h3
+            className="c13"
+          >
+            %
+          </h3>
+        </div>
+      </div>
+    </section>
+    <section
+      className="c14"
+    >
+      <div
+        className="c0"
+      >
+        <div
+          className="c9"
+          disabled={false}
+          id={undefined}
+          onClick={undefined}
+        >
+          <div
+            className="c10"
+            id={undefined}
+            onClick={undefined}
+            size={5}
+          >
+            <span
+              className="c15"
             >
+              MISSING: donateMonthly
+              <span
+                className="c16"
+              >
+                <svg
+                  height="11"
+                  width="12"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10.425 3.106h-.004l-.114-.23C9.277 1.023 7.615 0 5.621 0 2.52 0 0 2.465 0 5.504 0 8.534 2.521 11 5.628 11a5.67 5.67 0 0 0 3.275-1.029.452.452 0 0 0 .107-.64.474.474 0 0 0-.654-.104 4.73 4.73 0 0 1-2.735.856C3.039 10.083.937 8.03.937 5.496c0-2.525 2.102-4.58 4.691-4.58 2.086 0 3.249 1.305 3.845 2.377l.047.096c-.404.278-.67.737-.67 1.257 0 .85.705 1.54 1.575 1.54S12 5.496 12 4.646c0-.851-.705-1.54-1.575-1.54"
+                    fill="#4C54D2"
+                    fillRule="evenodd"
+                  />
+                </svg>
+              </span>
+            </span>
+          </div>
+          <div
+            className="c12"
+            id={undefined}
+            onClick={undefined}
+            size={1}
+          >
+            <div>
               <div
                 className="c17"
                 id={undefined}
               >
                 <div
                   className="c18"
-                  onBlur={[Function]}
-                  tabIndex="0"
+                  id={undefined}
                 >
                   <div
                     className="c19"
-                    disabled={undefined}
-                    onClick={[Function]}
+                    onBlur={[Function]}
+                    tabIndex="0"
                   >
                     <div
                       className="c20"
-                    >
-                      <span
-                        id={undefined}
-                      >
-                        <span
-                          className="c21"
-                        >
-                          <span
-                            className="c22"
-                            color="donation"
-                            size={undefined}
-                          >
-                            
-                            5.0
-                          </span>
-                          <span
-                            className="c23"
-                            size={undefined}
-                          >
-                            BAT
-                          </span>
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      className="c24"
-                    >
-                      <svg
-                        height="6"
-                        width="11"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M0 0h2.165l2.837 3.625h.92L8.755 0h2.285L6.283 5.958H4.759z"
-                          fill="#B8B9C4"
-                          fillRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div
-                    className="c25"
-                  >
-                    <div
-                      className="c26"
+                      disabled={undefined}
                       onClick={[Function]}
-                      selected={true}
                     >
                       <div
-                        className="c27"
-                      >
-                        <svg
-                          height="9"
-                          width="12"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M0 4.227l1.519-1.551 2.875 2.72L9.534 0l1.614 1.563-1.424 1.453-5.33 5.439z"
-                            fill="#A1A8F2"
-                            fillRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        className="c28"
+                        className="c21"
                       >
                         <span
                           id={undefined}
                         >
                           <span
-                            className="c21"
+                            className="c22"
                           >
                             <span
-                              className="c22"
+                              className="c23"
                               color="donation"
-                              size={undefined}
+                              size="mini"
                             >
                               
                               5.0
                             </span>
                             <span
-                              className="c23"
-                              size={undefined}
+                              className="c24"
+                              size="mini"
                             >
                               BAT
                             </span>
                           </span>
                         </span>
                       </div>
-                    </div>
-                    <div
-                      className="c29"
-                      onClick={[Function]}
-                      selected={false}
-                    >
                       <div
-                        className="c27"
-                      />
-                      <div
-                        className="c28"
+                        className="c25"
                       >
-                        <span
-                          id={undefined}
+                        <svg
+                          height="6"
+                          width="11"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          <span
-                            className="c21"
-                          >
-                            <span
-                              className="c22"
-                              color="donation"
-                              size={undefined}
-                            >
-                              
-                              10.0
-                            </span>
-                            <span
-                              className="c23"
-                              size={undefined}
-                            >
-                              BAT
-                            </span>
-                          </span>
-                        </span>
+                          <path
+                            d="M0 0h2.165l2.837 3.625h.92L8.755 0h2.285L6.283 5.958H4.759z"
+                            fill="#B8B9C4"
+                            fillRule="evenodd"
+                          />
+                        </svg>
                       </div>
                     </div>
                     <div
-                      className="c29"
-                      onClick={[Function]}
-                      selected={false}
+                      className="c26"
                     >
                       <div
                         className="c27"
-                      />
-                      <div
-                        className="c28"
+                        onClick={[Function]}
+                        selected={true}
                       >
-                        <span
-                          id={undefined}
+                        <div
+                          className="c28"
+                        >
+                          <svg
+                            height="9"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M0 4.227l1.519-1.551 2.875 2.72L9.534 0l1.614 1.563-1.424 1.453-5.33 5.439z"
+                              fill="#A1A8F2"
+                              fillRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                        <div
+                          className="c29"
                         >
                           <span
-                            className="c21"
+                            id={undefined}
                           >
                             <span
                               className="c22"
-                              color="donation"
-                              size={undefined}
                             >
-                              
-                              15.0
-                            </span>
-                            <span
-                              className="c23"
-                              size={undefined}
-                            >
-                              BAT
+                              <span
+                                className="c23"
+                                color="donation"
+                                size="mini"
+                              >
+                                
+                                5.0
+                              </span>
+                              <span
+                                className="c24"
+                                size="mini"
+                              >
+                                BAT
+                              </span>
                             </span>
                           </span>
-                        </span>
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      className="c29"
-                      onClick={[Function]}
-                      selected={false}
-                    >
                       <div
-                        className="c27"
-                      />
-                      <div
-                        className="c28"
+                        className="c30"
+                        onClick={[Function]}
+                        selected={false}
                       >
-                        <span
-                          id={undefined}
+                        <div
+                          className="c28"
+                        />
+                        <div
+                          className="c29"
                         >
                           <span
-                            className="c21"
+                            id={undefined}
                           >
                             <span
                               className="c22"
-                              color="donation"
-                              size={undefined}
                             >
-                              
-                              20.0
-                            </span>
-                            <span
-                              className="c23"
-                              size={undefined}
-                            >
-                              BAT
+                              <span
+                                className="c23"
+                                color="donation"
+                                size="mini"
+                              >
+                                
+                                10.0
+                              </span>
+                              <span
+                                className="c24"
+                                size="mini"
+                              >
+                                BAT
+                              </span>
                             </span>
                           </span>
-                        </span>
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      className="c29"
-                      onClick={[Function]}
-                      selected={false}
-                    >
                       <div
-                        className="c27"
-                      />
-                      <div
-                        className="c28"
+                        className="c30"
+                        onClick={[Function]}
+                        selected={false}
                       >
-                        <span
-                          id={undefined}
+                        <div
+                          className="c28"
+                        />
+                        <div
+                          className="c29"
                         >
                           <span
-                            className="c21"
+                            id={undefined}
                           >
                             <span
                               className="c22"
-                              color="donation"
-                              size={undefined}
                             >
-                              
-                              30.0
-                            </span>
-                            <span
-                              className="c23"
-                              size={undefined}
-                            >
-                              BAT
+                              <span
+                                className="c23"
+                                color="donation"
+                                size="mini"
+                              >
+                                
+                                15.0
+                              </span>
+                              <span
+                                className="c24"
+                                size="mini"
+                              >
+                                BAT
+                              </span>
                             </span>
                           </span>
-                        </span>
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      className="c29"
-                      onClick={[Function]}
-                      selected={false}
-                    >
                       <div
-                        className="c27"
-                      />
-                      <div
-                        className="c28"
+                        className="c30"
+                        onClick={[Function]}
+                        selected={false}
                       >
-                        <span
-                          id={undefined}
+                        <div
+                          className="c28"
+                        />
+                        <div
+                          className="c29"
                         >
                           <span
-                            className="c21"
+                            id={undefined}
                           >
                             <span
                               className="c22"
-                              color="donation"
-                              size={undefined}
                             >
-                              
-                              50.0
-                            </span>
-                            <span
-                              className="c23"
-                              size={undefined}
-                            >
-                              BAT
+                              <span
+                                className="c23"
+                                color="donation"
+                                size="mini"
+                              >
+                                
+                                20.0
+                              </span>
+                              <span
+                                className="c24"
+                                size="mini"
+                              >
+                                BAT
+                              </span>
                             </span>
                           </span>
-                        </span>
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      className="c29"
-                      onClick={[Function]}
-                      selected={false}
-                    >
                       <div
-                        className="c27"
-                      />
-                      <div
-                        className="c28"
+                        className="c30"
+                        onClick={[Function]}
+                        selected={false}
                       >
-                        <span
-                          id={undefined}
+                        <div
+                          className="c28"
+                        />
+                        <div
+                          className="c29"
                         >
                           <span
-                            className="c21"
+                            id={undefined}
                           >
                             <span
                               className="c22"
-                              color="donation"
-                              size={undefined}
                             >
-                              
-                              100.0
-                            </span>
-                            <span
-                              className="c23"
-                              size={undefined}
-                            >
-                              BAT
+                              <span
+                                className="c23"
+                                color="donation"
+                                size="mini"
+                              >
+                                
+                                30.0
+                              </span>
+                              <span
+                                className="c24"
+                                size="mini"
+                              >
+                                BAT
+                              </span>
                             </span>
                           </span>
-                        </span>
+                        </div>
+                      </div>
+                      <div
+                        className="c30"
+                        onClick={[Function]}
+                        selected={false}
+                      >
+                        <div
+                          className="c28"
+                        />
+                        <div
+                          className="c29"
+                        >
+                          <span
+                            id={undefined}
+                          >
+                            <span
+                              className="c22"
+                            >
+                              <span
+                                className="c23"
+                                color="donation"
+                                size="mini"
+                              >
+                                
+                                50.0
+                              </span>
+                              <span
+                                className="c24"
+                                size="mini"
+                              >
+                                BAT
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        className="c30"
+                        onClick={[Function]}
+                        selected={false}
+                      >
+                        <div
+                          className="c28"
+                        />
+                        <div
+                          className="c29"
+                        >
+                          <span
+                            id={undefined}
+                          >
+                            <span
+                              className="c22"
+                            >
+                              <span
+                                className="c23"
+                                color="donation"
+                                size="mini"
+                              >
+                                
+                                100.0
+                              </span>
+                              <span
+                                className="c24"
+                                size="mini"
+                              >
+                                BAT
+                              </span>
+                            </span>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -834,70 +872,98 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
             </div>
           </div>
         </div>
-      </div>
-      <div
-        className="c9"
-        disabled={false}
-        id={undefined}
-        onClick={undefined}
-      >
         <div
-          className="c10"
+          className="c9"
+          disabled={false}
           id={undefined}
           onClick={undefined}
-          size={5}
-        >
-          <span
-            className="c15"
-          >
-            MISSING: includeInAuto
-          </span>
-        </div>
-        <div
-          className="c12"
-          id={undefined}
-          onClick={undefined}
-          size={1}
         >
           <div
-            checked={true}
-            className="c30"
-            disabled={undefined}
+            className="c10"
             id={undefined}
-            onClick={[Function]}
-            size="medium"
+            onClick={undefined}
+            size={5}
+          >
+            <span
+              className="c15"
+            >
+              MISSING: includeInAuto
+              <span
+                className="c16"
+              >
+                <svg
+                  height="16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    fill="none"
+                    fillRule="evenodd"
+                    transform="translate(1 1)"
+                  >
+                    <circle
+                      cx="7"
+                      cy="7"
+                      r="7"
+                      stroke="#DBDFE3"
+                    />
+                    <path
+                      d="M7.94 10.7c0 .27-.094.499-.281.686a.94.94 0 0 1-.692.28.94.94 0 0 1-.692-.28.94.94 0 0 1-.28-.692.94.94 0 0 1 .28-.692.94.94 0 0 1 .692-.28.94.94 0 0 1 .692.28c.187.187.28.42.28.697zM6.17 8.571L5.963 3.37h1.925L7.68 8.572H6.17z"
+                      fill="#DBDFE3"
+                    />
+                  </g>
+                </svg>
+              </span>
+            </span>
+          </div>
+          <div
+            className="c12"
+            id={undefined}
+            onClick={undefined}
+            size={1}
           >
             <div
               className="c31"
-              size="medium"
-            />
-            <div
-              checked={true}
-              className="c32"
-              size="medium"
-            />
+            >
+              <div
+                checked={true}
+                className="c32"
+                disabled={undefined}
+                id={undefined}
+                onClick={[Function]}
+                size="medium"
+              >
+                <div
+                  className="c33"
+                  size="medium"
+                />
+                <div
+                  checked={true}
+                  className="c34"
+                  size="medium"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <div
-    className="c33"
-    color="action"
-    onClick={undefined}
-  >
+    </section>
     <div
-      className="c34"
-      color="action"
-      disabled={undefined}
+      className="c35"
     >
-      MISSING: donateNow
+      <div
+        className="c36"
+        color="donate"
+        onClick={undefined}
+        size="full"
+      >
+        MISSING: donateNow
+      </div>
     </div>
   </div>
-  <div
-    className="c35"
-  >
-    MISSING: rewardsSummary
-  </div>
+  <section
+    className="c37"
+    id="toggle-tips"
+  />
 </div>
 `;

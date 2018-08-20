@@ -23,6 +23,10 @@ const dummyDonationAction = () => {
   console.log(dummyDonationAction)
 }
 
+const dummyOnToggleTips = () => {
+  console.log(dummyOnToggleTips)
+}
+
 storiesOf('Feature Components/Rewards/Wallet', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
@@ -98,7 +102,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
   })
   .add('Panel', () => {
     return (
-      <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
+      <div style={{ width: '373px', background: '#f9fbfc' }}>
         <WalletPanel
           id={'wallet-panel'}
           platform={'youtube'}
@@ -106,6 +110,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
           publisherName={'Bart Baker'}
           isVerified={true}
           attentionScore={'17'}
+          onToggleTips={dummyOnToggleTips}
           donationAction={dummyDonationAction}
         />
       </div>

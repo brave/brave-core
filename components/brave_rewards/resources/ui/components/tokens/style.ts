@@ -6,6 +6,11 @@ import styled, { css } from 'styled-components'
 import { Props, Size, Type } from './index'
 
 const sizes: Record<Size, {token: string, tokenNum: string, text: string}> = {
+  mini: {
+    text: '8px',
+    token: '10px',
+    tokenNum: '12'
+  },
   small: {
     text: '10px',
     token: '12px',

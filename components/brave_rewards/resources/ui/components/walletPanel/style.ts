@@ -9,16 +9,7 @@ export const StyledWrapper = styled.div`
 ` as any
 
 export const StyledContainer = styled.div`
-  padding: 20px 20px;
-` as any
-
-export const StyledSummary = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.57;
-  letter-spacing: 0.4px;
-  color: #a1a8f2;
-  text-transform: uppercase;
+  padding: 20px 30px 15px 30px;
 ` as any
 
 export const StyledAttentionScore = styled.h3`
@@ -67,4 +58,20 @@ export const StyledDonateText = styled.span`
   font-weight: normal;
   letter-spacing: 0;
   line-height: 26px;
+` as any
+
+export const StyledIcon = styled.span`
+  height: 15px;
+  width: 15px;
+  margin-left: 5px;
+  vertical-align: middle;
+` as any
+
+export const StyledDonateWrapper = styled.div`
+  text-align: center;
+  padding: 15px 0px 0px 0px;
+` as any
+
+export const StyledToggleWrapper = styled.div`
+  margin-top: 4px;
 ` as any

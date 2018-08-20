@@ -20,7 +20,8 @@ import {
   Tokens,
   Profile,
   Amount,
-  PanelWelcome
+  PanelWelcome,
+  ToggleTips
 } from '../../../src/features/rewards'
 import GrantClaim from '../../../src/features/rewards/grantClaim'
 
@@ -29,6 +30,10 @@ const bart = require('../../assets/img/bartBaker.jpeg')
 
 const dummyClick = () => {
   console.log(dummyClick)
+}
+
+const dummyToggle = () => {
+  console.log(dummyToggle)
 }
 
 const donationAmounts = [
@@ -205,5 +210,15 @@ storiesOf('Feature Components/Rewards/Other', module)
             variant={select('Variant', { one: 'One', two: 'Two' }, 'one')}
           />
         </div>
+      )
+    })
+    .add('Toggle Tips', () => {
+      return (
+        <ToggleTips
+          id={'toggle-tips'}
+          onToggleTips={dummyToggle}
+          tipsEnabled={boolean('Selected', false)}
+          provider={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
+        />
       )
     })

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
+.c0 {
+  background: #F6F6FC;
+  display: block;
+  width: 100%;
+  padding: 20px 30px;
+}
+
+<section
+  className="c0"
+  id="toggle-tips"
+/>
+`;

@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { StyledWrapper, StyledTokens, StyledContent, StyledTokenValue, StyledTokenCurrency } from './style'
 
-export type Size = 'small' | 'normal'
+export type Size = 'mini' | 'small' | 'normal'
 export type Type = 'contribute' | 'donation' | 'earnings' | 'default' | 'notPaid'
 
 export interface Props {

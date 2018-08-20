@@ -134,7 +134,6 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
 
 .c14 {
   position: relative;
-  z-index: 2;
   border-radius: 50%;
   -webkit-transition: 200ms ease-out;
   transition: 200ms ease-out;
