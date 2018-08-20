@@ -18,7 +18,7 @@ import theme from './theme'
 import locale from './fakeLocale'
 
 // Images
-const braveLogo = require('../../../assets/img/brave_logo.png')
+const braveLogo = require('../../../assets/img/lion_logo.svg')
 const paymentsImage = require('../../../assets/img/payments.png')
 const importImage = require('../../../assets/img/import.png')
 const shieldsImage = require('../../../assets/img/shields.png')
@@ -226,7 +226,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
           backgroundImage: `url('${background}')`,
           backgroundRepeat: 'repeat-x',
           backgroundSize: 'contain',
-          transition: 'background-position-x 0.6s ease-out',
+          transition: 'background-position-x 1.5s ease-in-out',
           backgroundPositionX: this.backgroundPosition
         }}
       >

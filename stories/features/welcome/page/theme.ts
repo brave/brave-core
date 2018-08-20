@@ -6,7 +6,8 @@ const theme = {
   welcomePage: {
     fontFamily: '"Poppins", sans-serif',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: '-webkit-fill-available'
   },
   waveBackground: {
     height: '-webkit-fill-available',
@@ -15,14 +16,14 @@ const theme = {
   panel: {
     backgroundColor: 'rgba(255,255,255,0.95)',
     maxWidth: '600px',
-    height: '660px',
+    minHeight: '580px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    padding: '60px'
+    padding: '50px 60px'
   },
   braveLogo: {
-    width: '120px'
+    width: '90px'
   },
   paymentsImage: {
     width: '230px'
@@ -31,7 +32,7 @@ const theme = {
     width: '215px'
   },
   shieldsImage: {
-    width: '170px'
+    width: '185px'
   },
   featuresImage: {
     width: '300px'
@@ -40,7 +41,9 @@ const theme = {
     fontFamily: '"Poppins", sans-serif',
     fontSize: '32px',
     color: '#212121',
-    margin: '40px 0 0'
+    margin: '30px 0 0',
+    textAlign: 'center',
+    lineHeight: '44px'
   },
   text: {
     fontFamily: '"Muli", sans-serif',
@@ -67,15 +70,18 @@ const theme = {
     justifyContent: 'center',
     alignItems: 'center',
     flex: '1',
-    marginBottom: '40px'
+    marginBottom: '50px'
   },
   skip: {
     color: '#76777A',
-    textDecoration: 'underline'
+    hoverColor: '#8B8A8E',
+    textDecoration: 'underline',
+    fontWeight: '300'
   },
   footer: {
     gridGap: '0',
-    padding: '0'
+    padding: '0',
+    alignItems: 'center'
   },
   footerColumnLeft: {
     alignItems: 'center',
@@ -96,8 +102,8 @@ const theme = {
     fontSize: '40px'
   },
   bullet: {
-    color: '#7D7D7D',
-    hoverColor: '#FB542B',
+    color: '#76777A',
+    hoverColor: '#8B8A8E',
     padding: '0 7px',
     fontSize: '40px'
   }
