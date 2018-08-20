@@ -22,13 +22,17 @@ const sadFace = require('./assets/sadFace')
 
 export type DonateType = 'big' | 'small'
 
-type Donation = {tokens: number, converted: number, selected?: boolean}
+type Donation = {
+  tokens: number,
+  converted: number
+}
 
 export interface Props {
   actionText: string
   title: string
   balance: number
   donationAmounts: Donation[]
+  currentAmount: number
   onDonate: (amount: number) => void
   onAmountSelection?: (tokens: number) => void
   id?: string
@@ -38,14 +42,12 @@ export interface Props {
 
 interface State {
   missingFunds: boolean
-  amount: number
 }
 
 export default class Donate extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      amount: this.getCurrentAmount(this.props.donationAmounts),
       missingFunds: false
     }
   }
@@ -53,19 +55,11 @@ export default class Donate extends React.PureComponent<Props, State> {
   componentDidUpdate (prevProps: Props) {
     if (
       this.props.balance !== prevProps.balance ||
-      this.props.donationAmounts !== prevProps.donationAmounts
+      this.props.donationAmounts !== prevProps.donationAmounts ||
+      this.props.currentAmount !== prevProps.currentAmount
     ) {
       this.validateAmount(this.props.balance)
     }
-
-    if (this.props.donationAmounts !== prevProps.donationAmounts) {
-      this.setState({ amount: this.getCurrentAmount(this.props.donationAmounts) })
-    }
-  }
-
-  getCurrentAmount (amounts: Donation[]) {
-    const amount = amounts && amounts.find((amount: Donation) => !!amount.selected)
-    return (amount && amount.tokens) || 0
   }
 
   validateDonation = () => {
@@ -74,13 +68,13 @@ export default class Donate extends React.PureComponent<Props, State> {
     }
 
     if (this.props.onDonate) {
-      this.props.onDonate(this.state.amount)
+      this.props.onDonate(this.props.currentAmount)
     }
   }
 
   validateAmount (balance: number, tokens?: number) {
     if (tokens === undefined) {
-      tokens = this.state.amount
+      tokens = this.props.currentAmount
     }
 
     const valid = tokens > balance
@@ -89,7 +83,6 @@ export default class Donate extends React.PureComponent<Props, State> {
   }
 
   onAmountChange = (tokens: number) => {
-    this.setState({ amount: tokens })
     this.validateAmount(this.props.balance, tokens)
 
     if (this.props.onAmountSelection) {
@@ -98,8 +91,8 @@ export default class Donate extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id, donationAmounts, actionText, children, title } = this.props
-    const disabled = this.state.amount === 0
+    const { id, donationAmounts, actionText, children, title, currentAmount } = this.props
+    const disabled = currentAmount === 0
 
     const donateType = this.props.donateType ? this.props.donateType : 'big'
     const sendColor = disabled ?
@@ -117,7 +110,7 @@ export default class Donate extends React.PureComponent<Props, State> {
               return <Amount
                 key={`${id}-donate-${donation.tokens}`}
                 amount={donation.tokens}
-                selected={donation.selected}
+                selected={donation.tokens === currentAmount}
                 onSelect={this.onAmountChange}
                 converted={donation.converted}
                 type={donateType}

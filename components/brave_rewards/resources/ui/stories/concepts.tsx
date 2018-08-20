@@ -17,7 +17,7 @@ const siteBgLogo = require('../../assets/img/ddgo_siteBanner.svg')
 const siteScreen = require('../../assets/img/ddgo_site.png')
 const tipScreen = require('../../assets/img/tip_site.jpg')
 
-const donationAmount = [
+const donationAmounts = [
   { tokens: 1, converted: 0.3, selected: false },
   { tokens: 5, converted: 1.5, selected: false },
   { tokens: 10, converted: 3, selected: false }
@@ -36,16 +36,13 @@ storiesOf('Feature Components/Rewards/Concepts', module)
       optInAction={dummyOptInAction}
     />
   ))
-  .add('Site Banner', withState({ donationAmount }, (store) => {
+  .add('Site Banner', withState({ donationAmounts, currentAmount: 5 }, (store) => {
     const onDonate = () => {
       console.log('onDonate')
     }
+
     const onAmountSelection = (tokens: number) => {
-      const list = store.state.donationAmount.map((item) => {
-        item.selected = item.tokens === tokens
-        return item
-      })
-      store.set({ donationAmount: list })
+      store.set({ currentAmount: tokens })
     }
 
     return (
@@ -57,10 +54,11 @@ storiesOf('Feature Components/Rewards/Concepts', module)
           balance={number('Balance ', 5)}
           bgImage={boolean('Show bg image', false) ? siteBgImage : null}
           logo={boolean('Show logo', false) ? siteBgLogo : null}
-          donationAmounts={object('Donations', store.state.donationAmount)}
+          donationAmounts={object('Donations', store.state.donationAmounts)}
           theme={{ logoBgColor: text('Logo bg color', '') }}
           onDonate={onDonate}
           onAmountSelection={onAmountSelection}
+          currentAmount={store.state.currentAmount}
           social={[
             {
               type: 'twitter',
@@ -82,29 +80,28 @@ storiesOf('Feature Components/Rewards/Concepts', module)
       </div>
     )
   }))
-    .add('Tip', withState({ donationAmount, allow: false }, (store) => {
+    .add('Tip', withState({ donationAmounts, currentAmount: 5, allow: false }, (store) => {
       const onDonate = () => {
         console.log('onDonate')
       }
+
       const onClose = () => {
         console.log('onClose')
       }
+
       const onAllow = (allow: boolean) => {
         store.set({ allow })
       }
+
       const onAmountSelection = (tokens: number) => {
-        const list = store.state.donationAmount.map((item) => {
-          item.selected = item.tokens === tokens
-          return item
-        })
-        store.set({ donationAmount: list })
+        store.set({ currentAmount: tokens })
       }
 
       return (
         <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
         <div style={{ position: 'absolute', bottom: '185px', left: '330px' }}>
           <Tip
-            donationAmounts={object('Donations', store.state.donationAmount)}
+            donationAmounts={object('Donations', store.state.donationAmounts)}
             title={text('Title', 'Bart Baker')}
             allow={boolean('Allow tips', store.state.allow)}
             provider={text('Provider', 'YouTube')}
@@ -113,6 +110,7 @@ storiesOf('Feature Components/Rewards/Concepts', module)
             onClose={onClose}
             onAllow={onAllow}
             onAmountSelection={onAmountSelection}
+            currentAmount={store.state.currentAmount}
           />
         </div>
       </div>

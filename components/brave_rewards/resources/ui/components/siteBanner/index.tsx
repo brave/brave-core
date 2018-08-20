@@ -41,6 +41,7 @@ type Donation = {tokens: number, converted: number, selected?: boolean}
 
 export interface Props {
   balance: number
+  currentAmount: number
   donationAmounts: Donation[]
   onAmountSelection: (tokens: number) => void
   id?: string
@@ -159,7 +160,8 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       donationAmounts,
       domain,
       onAmountSelection,
-      theme
+      theme,
+      currentAmount
     } = this.props
 
     return (
@@ -207,6 +209,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 actionText={getLocale('sendDonation')}
                 onAmountSelection={onAmountSelection}
                 donateType={'big'}
+                currentAmount={currentAmount}
               >
                 <Checkbox
                   value={{ make: this.state.monthly }}

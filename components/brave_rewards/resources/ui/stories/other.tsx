@@ -31,7 +31,7 @@ const dummyClick = () => {
   console.log(dummyClick)
 }
 
-const donationAmount = [
+const donationAmounts = [
   { tokens: 1, converted: 0.3, selected: false },
   { tokens: 5, converted: 1.5, selected: false },
   { tokens: 10, converted: 3, selected: false }
@@ -99,27 +99,26 @@ storiesOf('Feature Components/Rewards/Other', module)
       </div>
     )
   }))
-  .add('Donate', withState({ donationAmount }, (store) => {
+  .add('Donate', withState({ donationAmounts, currentAmount: 5 }, (store) => {
     const onDonate = () => {
       console.log('onDonate')
     }
+
     const onAmountSelection = (tokens: number) => {
-      const list = store.state.donationAmount.map((item) => {
-        item.selected = item.tokens === tokens
-        return item
-      })
-      store.set({ donationAmount: list })
+      store.set({ currentAmount: tokens })
     }
+
     return (
       <div style={{ background: '#696fdc' }}>
       <Donate
         donateType={select('Type', { big: 'big', small: 'small' }, 'small')}
         balance={number('Balance ', 5)}
-        donationAmounts={object('Donations', store.state.donationAmount)}
+        donationAmounts={object('Donations', store.state.donationAmounts)}
         onDonate={onDonate}
         title={'Donation amount'}
         actionText={text('Action text', 'Send my Donation')}
         onAmountSelection={onAmountSelection}
+        currentAmount={number('Current amount', store.state.currentAmount)}
       />
     </div>
     )

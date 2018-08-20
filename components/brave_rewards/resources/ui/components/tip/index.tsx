@@ -14,10 +14,11 @@ export interface Props {
   allow: boolean
   provider: string
   balance: number
+  currentAmount: number
   donationAmounts: Donation[]
+  onAmountSelection?: (tokens: number) => void
   onAllow: (allow: boolean) => void
   onDonate: (amount: number, allow: boolean) => void
-  onAmountSelection?: (tokens: number) => void
   onClose: () => void
   id?: string
   title?: string
@@ -45,7 +46,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, title, balance, donationAmounts, allow, onClose, provider } = this.props
+    const { id, title, balance, donationAmounts, allow, onClose, provider, currentAmount } = this.props
 
     return (
       <StyledWrapper id={id}>
@@ -59,6 +60,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
           onAmountSelection={this.onAmountChange}
           onDonate={this.onDonate}
           donateType={'small'}
+          currentAmount={currentAmount}
         >
           <div>
             <StyledAllowText>{getLocale('allowTip')} {provider}</StyledAllowText>
