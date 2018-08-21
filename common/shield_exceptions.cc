@@ -75,6 +75,25 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
     }
   }
 
+  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns_map = {{
+      GURL("https://www.facebook.com/"), {
+        URLPattern(URLPattern::SCHEME_HTTPS, "https://*.fbcdn.net/*"),
+      }
+    }
+  };
+  std::map<GURL, std::vector<URLPattern> >::iterator i =
+      whitelist_patterns_map.find(firstPartyOrigin);
+  if (i != whitelist_patterns_map.end()) {
+    std::vector<URLPattern> &exceptions = i->second;
+    bool any_match = std::any_of(exceptions.begin(), exceptions.end(),
+        [&subresourceUrl](const URLPattern& pattern) {
+          return pattern.MatchesURL(subresourceUrl);
+        });
+    if (any_match) {
+      return true;
+    }
+  }
+
   // It's preferred to use specific_patterns below when possible
   static std::vector<URLPattern> whitelist_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://use.typekit.net/*"),
