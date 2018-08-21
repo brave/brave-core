@@ -683,7 +683,7 @@ namespace braveledger_bat_helper {
   REPORT_BALANCE_ST::REPORT_BALANCE_ST():
     opening_balance_(.0),
     closing_balance_(.0),
-    grants_avail_(.0),
+    grants_(.0),
     earning_from_ads_(.0),
     auto_contribute_(.0),
     recurring_donation_(.0),
@@ -699,7 +699,7 @@ namespace braveledger_bat_helper {
     if (false == error) {
       error = !(d.HasMember("opening_balance") && d["opening_balance"].IsDouble() &&
         d.HasMember("closing_balance") && d["closing_balance"].IsDouble() &&
-        d.HasMember("grants_avail") && d["grants_avail"].IsDouble() &&
+        d.HasMember("grants") && d["grants"].IsDouble() &&
         d.HasMember("earning_from_ads") && d["earning_from_ads"].IsDouble() &&
         d.HasMember("auto_contribute") && d["auto_contribute"].IsDouble() && 
         d.HasMember("recurring_donation") && d["recurring_donation"].IsDouble() &&
@@ -709,7 +709,7 @@ namespace braveledger_bat_helper {
     if (false == error) {
       opening_balance_ = d["opening_balance"].IsDouble();
       closing_balance_ = d["closing_balance"].IsDouble();
-      grants_avail_ = d["grants_avail"].IsDouble();
+      grants_ = d["grants"].IsDouble();
       earning_from_ads_ = d["earning_from_ads"].IsDouble();
       auto_contribute_ = d["auto_contribute"].IsDouble();
       recurring_donation_ = d["recurring_donation"].IsDouble();
@@ -728,8 +728,8 @@ namespace braveledger_bat_helper {
     writer.String("closing_balance");
     writer.Double(data.closing_balance_);
 
-    writer.String("grants_avail");
-    writer.Double(data.grants_avail_);
+    writer.String("grants");
+    writer.Double(data.grants_);
 
     writer.String("earning_from_ads");
     writer.Double(data.earning_from_ads_);

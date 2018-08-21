@@ -42,20 +42,20 @@ LEDGER_EXPORT struct VisitData {
   std::string local_year;
 };
 
-LEDGER_EXPORT struct PaidData {
-  PaidData();
-  PaidData(const std::string& _domain,
+LEDGER_EXPORT struct PaymentData {
+  PaymentData();
+  PaymentData(const std::string& _domain,
            const double& _value,
-           const int64_t& _date,
+           const int64_t& _timestamp,
            PUBLISHER_CATEGORY _category,
            const std::string& _local_month,
            const std::string& _local_year);
-  PaidData(const PaidData& data);
-  ~PaidData();
+  PaymentData(const PaymentData& data);
+  ~PaymentData();
 
   std::string domain;
   double value;
-  int64_t date;
+  int64_t timestamp;
   PUBLISHER_CATEGORY category;
   std::string local_month;
   std::string local_year;
@@ -77,8 +77,8 @@ class LEDGER_EXPORT Ledger {
   virtual void CreateWallet() = 0;
   virtual void Reconcile() = 0;
 
-  virtual void MakePayment(const PaidData& paid_data) = 0;
-  virtual void AddRecurrentPayment(const std::string& domain_name, const double& value) = 0;
+  virtual void MakePayment(const PaymentData& paid_data) = 0;
+  virtual void AddRecurringPayment(const std::string& domain, const double& value) = 0;
   virtual void OnLoad(const VisitData& visit_data, const uint64_t& current_time) = 0;
   virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
   virtual void OnShow(uint32_t tab_id, const uint64_t& current_time) = 0;
@@ -98,7 +98,7 @@ class LEDGER_EXPORT Ledger {
                                 PublisherInfoCallback callback) = 0;
   virtual void GetPublisherInfo(const std::string& publisher_key,
                                 PublisherInfoCallback callback) = 0;
-  virtual void GetRecurrentDonationPublisherInfo(PublisherInfoCallback callback) = 0;
+  virtual void GetRecurringDonationPublisherInfo(PublisherInfoCallback callback) = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
                                     ledger::PUBLISHER_CATEGORY category,
@@ -126,8 +126,8 @@ class LEDGER_EXPORT Ledger {
   virtual void SolvePromotionCaptcha(const std::string& solution) const = 0;
   virtual void GetPromotionCaptcha() const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
-  virtual void GetBalanceReport(const std::string& year,
-    const std::string& month, ledger::BalanceReportInfo& report_info) const = 0;
+  virtual bool GetBalanceReport(const std::string& year,
+    const std::string& month, ledger::BalanceReportInfo* report_info) const = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 };

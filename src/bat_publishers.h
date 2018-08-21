@@ -36,9 +36,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void saveVisit(const ledger::VisitData& visit_data, const uint64_t& duration);
 
-  void MakePayment(const ledger::PaidData& paid_data);
+  void MakePayment(const ledger::PaymentData& paid_data);
 
-  void AddRecurrentPayment(const std::string& domain_name, const double& value);
+  void AddRecurringPayment(const std::string& domain, const double& value);
 
   void setPublisherMinVisitTime(const uint64_t& duration); // In milliseconds
 
@@ -47,8 +47,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void setPublisherAllowNonVerified(const bool& allow);
   void setBalanceReport(const std::string& year, const std::string& month, 
     const ledger::BalanceReportInfo& report_info);
-  void getBalanceReport(const std::string& year, const std::string& month, 
-    ledger::BalanceReportInfo& report_info);
+  bool getBalanceReport(const std::string& year, const std::string& month, 
+    ledger::BalanceReportInfo* report_info);
 
   uint64_t getPublisherMinVisitTime() const; // In milliseconds
   unsigned int getPublisherMinVisits() const;
@@ -79,13 +79,13 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void makePaymentInternal(
       std::string publisher_key,
-      ledger::PaidData paid_data,
+      ledger::PaymentData paid_data,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
-  void addRecurrentPaymentInternal(
+  void addRecurringPaymentInternal(
       std::string publisher_key,
-      std::string domain_name,
+      std::string domain,
       double value,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);

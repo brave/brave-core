@@ -38,33 +38,33 @@ VisitData::VisitData(const VisitData& data) :
 VisitData::~VisitData() {}
 
 
-PaidData::PaidData():
+PaymentData::PaymentData():
   value(0),
-  date(0),
+  timestamp(0),
   category(PUBLISHER_CATEGORY::TIPPING) {}
 
-PaidData::PaidData(const std::string& _domain,
+PaymentData::PaymentData(const std::string& _domain,
          const double& _value,
-         const int64_t& _date,
+         const int64_t& _timestamp,
          PUBLISHER_CATEGORY _category,
          const std::string& _local_month,
          const std::string& _local_year):
   domain(_domain),
   value(_value),
-  date(_date),
+  timestamp(_timestamp),
   category(_category),
   local_month(_local_month),
   local_year(_local_year) {}
 
-PaidData::PaidData(const PaidData& data):
+PaymentData::PaymentData(const PaymentData& data):
   domain(data.domain),
   value(data.value),
-  date(data.date),
+  timestamp(data.timestamp),
   category(data.category),
   local_month(data.local_month),
   local_year(data.local_year) {}
 
-PaidData::~PaidData() {}
+PaymentData::~PaymentData() {}
 
 
 const PublisherInfo invalid("");
@@ -241,7 +241,7 @@ Promo::Promo (const ledger::Promo &properties) {
 BalanceReportInfo::BalanceReportInfo():
   opening_balance_(.0),
   closing_balance_(.0),
-  grants_avail_(.0),
+  grants_(.0),
   earning_from_ads_(.0),
   auto_contribute_(.0),
   recurring_donation_(.0),

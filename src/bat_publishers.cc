@@ -63,7 +63,7 @@ const ledger::PublisherInfo::id_type getPublisherID(
 }
 
 const ledger::PublisherInfo::id_type getPublisherID(
-    const ledger::PaidData& paid_data) {
+    const ledger::PaymentData& paid_data) {
   return paid_data.domain;
 }
 
@@ -76,13 +76,13 @@ bool ignoreMinTime(const ledger::PublisherInfo::id_type publisher_id) {
   return !getProviderName(publisher_id).empty();
 }
 
-void BatPublishers::AddRecurrentPayment(const std::string& domain_name, const double& value) {
+void BatPublishers::AddRecurringPayment(const std::string& domain, const double& value) {
   ledger_->GetPublisherInfo(RECURRENT_DONATION_KEY,
-    std::bind(&BatPublishers::addRecurrentPaymentInternal, this,
-                  RECURRENT_DONATION_KEY, domain_name, value, _1, _2));
+    std::bind(&BatPublishers::addRecurringPaymentInternal, this,
+                  RECURRENT_DONATION_KEY, domain, value, _1, _2));
 }
 
-void BatPublishers::MakePayment(const ledger::PaidData& paid_data) {
+void BatPublishers::MakePayment(const ledger::PaymentData& paid_data) {
   const ledger::PublisherInfo::id_type publisher_id =
     getPublisherID(paid_data);
 
@@ -124,9 +124,9 @@ void onVisitSavedDummy(ledger::Result result,
   // onPublisherInfoUpdated will always be called by LedgerImpl so do nothing
 }
 
-void BatPublishers::addRecurrentPaymentInternal(
+void BatPublishers::addRecurringPaymentInternal(
       std::string publisher_key,
-      std::string domain_name,
+      std::string domain,
       double value,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info) {
@@ -141,7 +141,7 @@ void BatPublishers::addRecurrentPaymentInternal(
 
   publisher_info->key = publisher_key;
   ledger::ContributionInfo contribution_info(value, 0);
-  contribution_info.publisher = domain_name;
+  contribution_info.publisher = domain;
   publisher_info->contributions.push_back(contribution_info);
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
@@ -150,7 +150,7 @@ void BatPublishers::addRecurrentPaymentInternal(
 
 void BatPublishers::makePaymentInternal(
       std::string publisher_key,
-      ledger::PaidData paid_data,
+      ledger::PaymentData paid_data,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   if (result != ledger::Result::OK) {
@@ -162,7 +162,7 @@ void BatPublishers::makePaymentInternal(
     publisher_info.reset(new ledger::PublisherInfo(getPublisherID(paid_data)));
 
   publisher_info->key = publisher_key;
-  publisher_info->contributions.push_back(ledger::ContributionInfo(paid_data.value, paid_data.date));
+  publisher_info->contributions.push_back(ledger::ContributionInfo(paid_data.value, paid_data.timestamp));
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
       std::bind(&onVisitSavedDummy, _1, _2));
@@ -364,7 +364,7 @@ void BatPublishers::setBalanceReport(const std::string& year,
   braveledger_bat_helper::REPORT_BALANCE_ST report_balance;
   report_balance.opening_balance_ = report_info.opening_balance_;
   report_balance.closing_balance_ = report_info.closing_balance_;
-  report_balance.grants_avail_ = report_info.grants_avail_;
+  report_balance.grants_ = report_info.grants_;
   report_balance.earning_from_ads_ = report_info.earning_from_ads_;
   report_balance.auto_contribute_ = report_info.auto_contribute_;
   report_balance.recurring_donation_ = report_info.recurring_donation_;
@@ -373,21 +373,24 @@ void BatPublishers::setBalanceReport(const std::string& year,
   state_->monthly_balances_[GetBalanceReportName(year, month)] = report_balance;
 }
 
-void BatPublishers::getBalanceReport(const std::string& year,
-    const std::string& month, ledger::BalanceReportInfo& report_info) {
+bool BatPublishers::getBalanceReport(const std::string& year,
+    const std::string& month, ledger::BalanceReportInfo* report_info) {
   std::map<std::string, braveledger_bat_helper::REPORT_BALANCE_ST>::const_iterator iter = 
     state_->monthly_balances_.find(GetBalanceReportName(year, month));
-  if (iter == state_->monthly_balances_.end()) {
-    return;
+  DCHECK(iter != state_->monthly_balances_.end() && report_info);
+  if (iter == state_->monthly_balances_.end() || !report_info) {
+    return false;
   }
 
-  report_info.opening_balance_ = iter->second.opening_balance_;
-  report_info.closing_balance_ = iter->second.closing_balance_;
-  report_info.grants_avail_ = iter->second.grants_avail_;
-  report_info.earning_from_ads_ = iter->second.earning_from_ads_;
-  report_info.auto_contribute_ = iter->second.auto_contribute_;
-  report_info.recurring_donation_ = iter->second.recurring_donation_;
-  report_info.one_time_donation_ = iter->second.one_time_donation_;
+  report_info->opening_balance_ = iter->second.opening_balance_;
+  report_info->closing_balance_ = iter->second.closing_balance_;
+  report_info->grants_ = iter->second.grants_;
+  report_info->earning_from_ads_ = iter->second.earning_from_ads_;
+  report_info->auto_contribute_ = iter->second.auto_contribute_;
+  report_info->recurring_donation_ = iter->second.recurring_donation_;
+  report_info->one_time_donation_ = iter->second.one_time_donation_;
+
+  return true;
 }
 
 void BatPublishers::saveState() {

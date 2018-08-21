@@ -52,7 +52,7 @@ class LedgerImpl : public ledger::Ledger,
                         ledger::PublisherInfoCallback callback) override;
   void GetPublisherInfo(const std::string& publisher_key,
                         ledger::PublisherInfoCallback callback) override;
-  void GetRecurrentDonationPublisherInfo(ledger::PublisherInfoCallback callback) override;
+  void GetRecurringDonationPublisherInfo(ledger::PublisherInfoCallback callback) override;
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             ledger::PublisherInfoFilter filter,
                             ledger::PUBLISHER_CATEGORY category,
@@ -75,8 +75,8 @@ class LedgerImpl : public ledger::Ledger,
   unsigned int GetPublisherMinVisits() const override;
   bool GetPublisherAllowNonVerified() const override;
   double GetContributionAmount() const override;
-  void GetBalanceReport(const std::string& year,
-    const std::string& month, ledger::BalanceReportInfo& report_info) const override;
+  bool GetBalanceReport(const std::string& year,
+    const std::string& month, ledger::BalanceReportInfo* report_info) const override;
 
 
   void SaveLedgerState(const std::string& data);
@@ -117,8 +117,8 @@ class LedgerImpl : public ledger::Ledger,
   std::string URIEncode(const std::string& value) override;
 
  private:
-  void MakePayment(const ledger::PaidData& paid_data) override;
-  void AddRecurrentPayment(const std::string& domain_name, const double& value) override;
+  void MakePayment(const ledger::PaymentData& paid_data) override;
+  void AddRecurringPayment(const std::string& domain_name, const double& value) override;
   void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) override;
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
   void OnShow(uint32_t tab_id, const uint64_t& current_time) override;

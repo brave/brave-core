@@ -16,7 +16,7 @@ LEDGER_EXPORT struct BalanceReportInfo {
 
   double opening_balance_ = .0;
   double closing_balance_ = .0;
-  double grants_avail_ = .0;
+  double grants_ = .0;
   double earning_from_ads_ = .0;
   double auto_contribute_ = .0;
   double recurring_donation_ = .0;

@@ -44,11 +44,11 @@ void LedgerImpl::CreateWallet() {
   bat_client_->registerPersona();
 }
 
-void LedgerImpl::AddRecurrentPayment(const std::string& domain_name, const double& value) {
-  bat_publishers_->AddRecurrentPayment(domain_name, value);
+void LedgerImpl::AddRecurringPayment(const std::string& domain, const double& value) {
+  bat_publishers_->AddRecurringPayment(domain, value);
 }
 
-void LedgerImpl::MakePayment(const ledger::PaidData& paid_data) {
+void LedgerImpl::MakePayment(const ledger::PaymentData& paid_data) {
   bat_publishers_->MakePayment(paid_data);
 }
 
@@ -220,7 +220,7 @@ void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
   callback(result, std::move(info));
 }
 
-void LedgerImpl::GetRecurrentDonationPublisherInfo(ledger::PublisherInfoCallback callback) {
+void LedgerImpl::GetRecurringDonationPublisherInfo(ledger::PublisherInfoCallback callback) {
   ledger_client_->LoadPublisherInfo(RECURRENT_DONATION_KEY, callback);
 }
 
@@ -454,9 +454,9 @@ void LedgerImpl::OnPromotionFinish(ledger::Result result, unsigned int statusCod
   ledger_client_->OnPromotionFinish(result, statusCode, experationDate);
 }
 
-void LedgerImpl::GetBalanceReport(const std::string& year,
-    const std::string& month, ledger::BalanceReportInfo& report_info) const {
-  bat_publishers_->getBalanceReport(year, month, report_info);
+bool LedgerImpl::GetBalanceReport(const std::string& year,
+    const std::string& month, ledger::BalanceReportInfo* report_info) const {
+  return bat_publishers_->getBalanceReport(year, month, report_info);
 }
 
 void LedgerImpl::SetBalanceReport(const std::string& year,
