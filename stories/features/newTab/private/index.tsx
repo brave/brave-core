@@ -15,7 +15,7 @@ import { Heading } from '../../../../src/old/headings/index'
 import Paragraph from '../../../../src/old/paragraph/index'
 import SwitchButton from '../../../../src/old/switchButton/index'
 
-import theme from './theme'
+import customStyle from './theme'
 
 // Assets
 import locale from './fakeLocale'
@@ -29,43 +29,43 @@ const privateTabIcon = require('../../../assets/img/private_tab_pagearea_icon.sv
 class NewPrivateTab extends React.PureComponent {
   render () {
     return (
-      <Page theme={theme.page}>
+      <Page customStyle={customStyle.page}>
         <Grid columns={3}>
           <Column size={2}>
             <DataBlock>
               <DataItem
-                theme={theme.trackersBlocked}
+                customStyle={customStyle.trackersBlocked}
                 description={locale.trackersBlocked}
                 counter={data.trackersBlockedCount}
               />
               <DataItem
-                theme={theme.adsBlocked}
+                customStyle={customStyle.adsBlocked}
                 description={locale.adsBlocked}
                 counter={data.adsBlockedCount}
               />
               <DataItem
-                theme={theme.httpsUpgrades}
+                customStyle={customStyle.httpsUpgrades}
                 description={locale.httpsUpgrades}
                 counter={data.httpsUpgradesCount}
               />
               <DataItem
-                theme={theme.estimatedTime}
+                customStyle={customStyle.estimatedTime}
                 description={locale.estimatedTime}
                 text={locale.minutes}
                 counter={data.estimatedTimeCount}
               />
             </DataBlock>
           </Column>
-          <Column size={1} theme={theme.clockContainer}>
-            <Clock theme={theme.clock} />
+          <Column size={1} customStyle={customStyle.clockContainer}>
+            <Clock customStyle={customStyle.clock} />
           </Column>
         </Grid>
-        <BoxedContent theme={theme.textualContainer}>
-          <MediaContent media={privateTabIcon} theme={theme.media}>
-            <Heading level={1} theme={theme.title} text={locale.title} />
-              <Paragraph theme={theme.text} text={locale.paragraph1} />
-              <Paragraph theme={theme.italicText} text={locale.paragraph2} />
-              <BoxedContent theme={theme.switchContainer}>
+        <BoxedContent customStyle={customStyle.textualContainer}>
+          <MediaContent media={privateTabIcon} customStyle={customStyle.media}>
+            <Heading level={1} customStyle={customStyle.title} text={locale.title} />
+              <Paragraph customStyle={customStyle.text} text={locale.paragraph1} />
+              <Paragraph customStyle={customStyle.italicText} text={locale.paragraph2} />
+              <BoxedContent customStyle={customStyle.switchContainer}>
                 <SwitchButton
                   id='togglePrivateSearchEngine'
                   size='large'
@@ -73,7 +73,7 @@ class NewPrivateTab extends React.PureComponent {
                   rightText={locale.switchLabel}
                 />
               </BoxedContent>
-              <Paragraph theme={theme.text} text={locale.paragraph3} />
+              <Paragraph customStyle={customStyle.text} text={locale.paragraph3} />
           </MediaContent>
         </BoxedContent>
       </Page>
