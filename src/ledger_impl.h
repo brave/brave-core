@@ -50,16 +50,23 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
                         ledger::PublisherInfoCallback callback) override;
-  void GetPublisherInfo(const ledger::PublisherInfo::id_type& publisher_id,
+  void GetPublisherInfo(const std::string& publisher_key,
                         ledger::PublisherInfoCallback callback) override;
+  void GetRecurrentDonationPublisherInfo(ledger::PublisherInfoCallback callback) override;
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             ledger::PublisherInfoFilter filter,
+                            ledger::PUBLISHER_CATEGORY category,
+                            const std::string& month,
+                            const std::string& year,
                             ledger::GetPublisherInfoListCallback callback) override;
 
   void SetPublisherMinVisitTime(uint64_t duration_in_milliseconds) override;
   void SetPublisherMinVisits(unsigned int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
   void SetContributionAmount(double amount) override;
+  void SetBalanceReport(const std::string& year,
+    const std::string& month, const ledger::BalanceReportInfo& report_info) override;
+
   const std::string& GetBATAddress() const override;
   const std::string& GetBTCAddress() const override;
   const std::string& GetETHAddress() const override;
@@ -68,6 +75,9 @@ class LedgerImpl : public ledger::Ledger,
   unsigned int GetPublisherMinVisits() const override;
   bool GetPublisherAllowNonVerified() const override;
   double GetContributionAmount() const override;
+  void GetBalanceReport(const std::string& year,
+    const std::string& month, ledger::BalanceReportInfo& report_info) const override;
+
 
   void SaveLedgerState(const std::string& data);
   void SavePublisherState(const std::string& data,
@@ -107,6 +117,8 @@ class LedgerImpl : public ledger::Ledger,
   std::string URIEncode(const std::string& value) override;
 
  private:
+  void MakePayment(const ledger::PaidData& paid_data) override;
+  void AddRecurrentPayment(const std::string& domain_name, const double& value) override;
   void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) override;
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
   void OnShow(uint32_t tab_id, const uint64_t& current_time) override;

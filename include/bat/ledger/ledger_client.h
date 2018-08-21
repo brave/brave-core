@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "bat/ledger/balance_report_info.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_task_runner.h"
@@ -57,6 +58,7 @@ class LEDGER_EXPORT LedgerClient {
                                 PublisherInfoCallback callback) = 0;
   virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
+                                    const std::vector<std::string>& prefix,
                                     GetPublisherInfoListCallback callback) = 0;
 
   virtual void GetPromotion(const std::string& lang, const std::string& paymentId) = 0;

@@ -45,9 +45,11 @@
 #define MEDIA_CACHE_DB_NAME             "9956db89-9105-420b-9ad4-49348bc536af"
 
 #define YOUTUBE_MEDIA_TYPE              "youtube"
-#define TWITCH_MEDIA_TYPE                "twitch"
-#define YOUTUBE_PROVIDER_NAME            "YouTube"
+#define TWITCH_MEDIA_TYPE               "twitch"
+#define YOUTUBE_PROVIDER_NAME           "YouTube"
 #define YOUTUBE_PROVIDER_URL            "https://www.youtube.com/oembed"
+
+#define RECURRENT_DONATION_KEY          "recurrent_donation"
 
 #define SEED_LENGTH                     32
 #define SALT_LENGTH                     64

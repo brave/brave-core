@@ -36,11 +36,19 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void saveVisit(const ledger::VisitData& visit_data, const uint64_t& duration);
 
+  void MakePayment(const ledger::PaidData& paid_data);
+
+  void AddRecurrentPayment(const std::string& domain_name, const double& value);
+
   void setPublisherMinVisitTime(const uint64_t& duration); // In milliseconds
 
   void setPublisherMinVisits(const unsigned int& visits);
 
   void setPublisherAllowNonVerified(const bool& allow);
+  void setBalanceReport(const std::string& year, const std::string& month, 
+    const ledger::BalanceReportInfo& report_info);
+  void getBalanceReport(const std::string& year, const std::string& month, 
+    ledger::BalanceReportInfo& report_info);
 
   uint64_t getPublisherMinVisitTime() const; // In milliseconds
   unsigned int getPublisherMinVisits() const;
@@ -51,6 +59,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   std::unique_ptr<ledger::PublisherInfo> onPublisherInfoUpdated(
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo>);
+  std::string GetPublisherKey(ledger::PUBLISHER_CATEGORY category, const std::string& year,
+    const std::string& month, const std::string& publisher_id);
+  std::string GetBalanceReportName(const std::string& year,
+    const std::string& month);
 
  private:
   // LedgerCallbackHandler impl
@@ -59,9 +71,22 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool isEligableForContribution(const ledger::PublisherInfo& info);
   bool isVerified(const ledger::PublisherInfo& publisher_id);
   void saveVisitInternal(
-      ledger::PublisherInfo::id_type publisher_id,
+      std::string publisher_key,
       ledger::VisitData visit_data,
       uint64_t duration,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> publisher_info);
+
+  void makePaymentInternal(
+      std::string publisher_key,
+      ledger::PaidData paid_data,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> publisher_info);
+
+  void addRecurrentPaymentInternal(
+      std::string publisher_key,
+      std::string domain_name,
+      double value,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 

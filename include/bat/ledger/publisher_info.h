@@ -6,6 +6,7 @@
 #define BAT_LEDGER_PUBLISHER_INFO_HANDLER_
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/export.h"
 
@@ -19,10 +20,22 @@ LEDGER_EXPORT enum PublisherInfoFilter {
   DEFAULT = UNPINNED & PINNED & INCLUDED,
 };
 
+LEDGER_EXPORT struct ContributionInfo {
+  ContributionInfo() {}
+  ContributionInfo(const double &value_, const uint64_t& date_):
+    value(value_),
+    date(date_) {}
+
+  std::string publisher;  // Filled only for recurrent donations
+  double value;
+  uint64_t date;
+};
+
 LEDGER_EXPORT struct PublisherInfo {
   typedef std::string id_type;
   PublisherInfo(const id_type& publisher_id);
   PublisherInfo(const PublisherInfo& info);
+  ~PublisherInfo();
 
   static const PublisherInfo FromJSON(const std::string& json);
   const std::string ToJSON() const;
@@ -37,6 +50,8 @@ LEDGER_EXPORT struct PublisherInfo {
   uint32_t percent;
   double weight;
   bool excluded;
+  std::string key;
+  std::vector<ContributionInfo> contributions;
 };
 
 using PublisherInfoList = std::vector<const PublisherInfo>;
