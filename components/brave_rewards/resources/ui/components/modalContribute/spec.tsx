@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import ModalContribute from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('ModalContribute tests', () => {
-  const baseComponent = (props?: object) => <ModalContribute id='modal' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><ModalContribute id='modal' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

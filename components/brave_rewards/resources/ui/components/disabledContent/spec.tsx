@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import DisabledContent from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('Disabled Content tests', () => {
-  const baseComponent = (props?: object) => <DisabledContent id='disabled' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><DisabledContent id='disabled' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import Tokens from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('Tokens tests', () => {
-  const baseComponent = (props?: object) => <Tokens id={'tokens'} value={10} />
+  const baseComponent = (props?: object) => <TestThemeProvider><Tokens id={'tokens'} value={10} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

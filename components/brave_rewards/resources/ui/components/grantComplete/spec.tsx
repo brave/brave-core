@@ -2,10 +2,11 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import GrantComplete from './index';
+import GrantComplete from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('Grant complete tests', () => {
-  const baseComponent = (props?: object) => <GrantComplete id='complete' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><GrantComplete id='complete' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

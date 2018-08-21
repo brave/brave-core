@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import InfoCards from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('Info Cards tests', () => {
-  const baseComponent = (props?: object) => <InfoCards id='info-cards' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><InfoCards id='info-cards' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

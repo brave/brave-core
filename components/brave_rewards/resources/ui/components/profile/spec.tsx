@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import Profile from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('Profile tests', () => {
-  const baseComponent = (props?: object) => <Profile id='profile' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><Profile id='profile' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

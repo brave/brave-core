@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import Hero from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('Hero tests', () => {
-  const baseComponent = (props?: object) => <Hero id='test-hero' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><Hero id='test-hero' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

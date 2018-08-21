@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import ControlWrapper from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('ControlWrapper tests', () => {
-  const baseComponent = (props?: object) => <ControlWrapper id='wrapper' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><ControlWrapper id='wrapper' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

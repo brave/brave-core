@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import MainToggle from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('MainToggle tests', () => {
-  const baseComponent = (props?: object) => <MainToggle id='mainToggle' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><MainToggle id='mainToggle' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

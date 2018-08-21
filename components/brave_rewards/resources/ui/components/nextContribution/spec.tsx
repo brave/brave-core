@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import NextContribution from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('NextContribution tests', () => {
-  const baseComponent = (props?: object) => <NextContribution id='next' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><NextContribution id='next' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

@@ -2,10 +2,11 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import GrantCaptcha from './index';
+import GrantCaptcha from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('Grant captcha tests', () => {
-  const baseComponent = (props?: object) => <GrantCaptcha id='captcha' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><GrantCaptcha id='captcha' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

@@ -3,21 +3,26 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import ModalBackupRestore from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('ModalBackupRestore tests', () => {
-  const baseComponent = (props?: object) => <ModalBackupRestore
-    id='modal'
-    activeTabId={'backup'}
-    recoveryKey={''}
-    onClose={() => {}}
-    onCopy={() => {}}
-    onPrint={() => {}}
-    onSaveFile={() => {}}
-    onRestore={() => {}}
-    onImport={() => {}}
-    onTabChange={() => {}}
-    {...props}
-  />
+  const baseComponent = (props?: object) => (
+    <TestThemeProvider>
+      <ModalBackupRestore
+        id='modal'
+        activeTabId={'backup'}
+        recoveryKey={''}
+        onClose={() => {}}
+        onCopy={() => {}}
+        onPrint={() => {}}
+        onSaveFile={() => {}}
+        onRestore={() => {}}
+        onImport={() => {}}
+        onTabChange={() => {}}
+        {...props}
+      />
+    </TestThemeProvider>
+  )
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

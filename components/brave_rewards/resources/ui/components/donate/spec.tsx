@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import Donate from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('Donate tests', () => {
-  const baseComponent = (props?: object) => <Donate id='donate' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><Donate id='donate' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {
