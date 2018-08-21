@@ -2,10 +2,10 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import ToggleTips from './index'
+import WalletSummarySlider from './index'
 
-describe('ToggleTips tests', () => {
-  const baseComponent = (props?: object) => <ToggleTips id='toggle-tips' provider={'youtube'} {...props} />
+describe('WalletSummarySlider tests', () => {
+  const baseComponent = (props?: object) => <WalletSummarySlider id='wallet-slider' {...props} />
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {
@@ -16,7 +16,7 @@ describe('ToggleTips tests', () => {
 
     it('renders the component', () => {
       const wrapper = shallow(baseComponent())
-      const assertion = wrapper.find('#toggle-tips').length
+      const assertion = wrapper.find('#wallet-slider').length
       expect(assertion).toBe(1)
     })
   })

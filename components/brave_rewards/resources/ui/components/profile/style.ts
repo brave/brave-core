@@ -116,4 +116,4 @@ export const StyledInlineVerified = styled<{}, 'span'>('span')`
 
 export const StyledSubTitle = styled<{}, 'span'>('span')`
   margin-top: 5px;
-` as any
+`

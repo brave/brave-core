@@ -9,7 +9,7 @@ import { withKnobs, object, number, text, boolean } from '@storybook/addon-knobs
 import centered from '@storybook/addon-centered/dist'
 
 // Components
-import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletWrapper } from '../../../src/features/rewards'
+import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
 import { Type } from '../../../src/features/rewards/alert'
 import { WalletAddIcon, WalletImportIcon } from '../../../src/components/icons'
 
@@ -17,14 +17,6 @@ const bartBaker = require('../../assets/img/bartBaker.jpeg')
 
 const doNothing = () => {
   console.log('nothing')
-}
-
-const dummyDonationAction = () => {
-  console.log(dummyDonationAction)
-}
-
-const dummyOnToggleTips = () => {
-  console.log(dummyOnToggleTips)
 }
 
 storiesOf('Feature Components/Rewards/Wallet', module)
@@ -108,10 +100,18 @@ storiesOf('Feature Components/Rewards/Wallet', module)
           platform={'youtube'}
           publisherImg={bartBaker}
           publisherName={'Bart Baker'}
+          monthlyAmount={10}
           isVerified={true}
+          tipsEnabled={true}
+          includeInAuto={true}
           attentionScore={'17'}
-          onToggleTips={dummyOnToggleTips}
-          donationAction={dummyDonationAction}
+          donationAmounts={
+            [5, 10, 15, 20, 30, 50, 100]
+          }
+          onToggleTips={doNothing}
+          donationAction={doNothing}
+          onAmountChange={doNothing}
+          onIncludeInAuto={doNothing}
         />
       </div>
     )
@@ -120,6 +120,16 @@ storiesOf('Feature Components/Rewards/Wallet', module)
     return (
       <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
         <WalletOff/>
+      </div>
+    )
+  })
+  .add('Summary Slider', () => {
+    return (
+      <div style={{ width: '373px', padding: '0 25px' }}>
+        <WalletSummarySlider
+          id={'summary-slider'}
+          onToggle={doNothing}
+        />
       </div>
     )
   })

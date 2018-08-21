@@ -32,10 +32,6 @@ const dummyClick = () => {
   console.log(dummyClick)
 }
 
-const dummyToggle = () => {
-  console.log(dummyToggle)
-}
-
 const donationAmounts = [
   { tokens: 1, converted: 0.3, selected: false },
   { tokens: 5, converted: 1.5, selected: false },
@@ -212,13 +208,16 @@ storiesOf('Feature Components/Rewards/Other', module)
         </div>
       )
     })
-    .add('Toggle Tips', () => {
+    .add('Toggle Tips', withState({ tipsEnabled: true }, (store) => {
+      const onToggle = () => {
+        store.set({ tipsEnabled: !store.state.tipsEnabled })
+      }
       return (
         <ToggleTips
           id={'toggle-tips'}
-          onToggleTips={dummyToggle}
-          tipsEnabled={boolean('Selected', false)}
+          onToggleTips={onToggle}
+          tipsEnabled={boolean('Selected', store.state.tipsEnabled)}
           provider={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
         />
       )
-    })
+    }))

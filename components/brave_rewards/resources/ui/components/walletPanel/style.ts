@@ -22,16 +22,6 @@ export const StyledAttentionScoreTitle = styled.h3`
   font-weight: 500;
 ` as any
 
-export const StyledVerified = styled.div`
-  display: block;
-` as any
-
-export const StyledVerifiedIcon = styled.span`
-  height: 15px;
-  width: 13px;
-  vertical-align: bottom;
-` as any
-
 export const StyledScoreWrapper = styled.section`
   padding: 15px 0px;
 ` as any
@@ -40,15 +30,6 @@ export const StyledControlsWrapper = styled.section`
   padding: 5px 0px;
   border-top: 1px solid #DBDFE3;
   border-bottom: 1px solid #DBDFE3;
-` as any
-
-export const StyledVerifiedText = styled.span`
-  color: #9E9FAB;
-  font-size: 12px;
-  font-weight: normal;
-  letter-spacing: 0;
-  line-height: 24px;
-  margin-left: 5px;
 ` as any
 
 export const StyledDonateText = styled.span`
@@ -69,9 +50,13 @@ export const StyledIcon = styled.span`
 
 export const StyledDonateWrapper = styled.div`
   text-align: center;
-  padding: 15px 0px 0px 0px;
+  padding: 15px 0 0;
 ` as any
 
 export const StyledToggleWrapper = styled.div`
   margin-top: 4px;
+` as any
+
+export const StyledSelectWrapper = styled.div`
+  margin: 3px 0px 0px;
 ` as any

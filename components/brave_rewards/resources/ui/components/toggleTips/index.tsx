@@ -55,41 +55,41 @@ export default class ToggleTips extends React.PureComponent<Props, {}> {
   render () {
     const { id, provider, onToggleTips, tipsEnabled } = this.props
 
+    if (!provider) {
+      return null
+    }
+
     return (
       <StyledEnableTipsSection id={id}>
-        {
-          provider
-          ? <StyledEnableTipsInner>
-              <StyledEnableTips>
-                {getLocale('enableTips')}
-              </StyledEnableTips>
-              <StyledText>
-                {getLocale('on')}
-              </StyledText>
-              <StyledProviderImg>
-                {this.getProviderImg(provider)}
-              </StyledProviderImg>
-              <StyledProviderName>
-                {this.getProviderName(provider)}
-              </StyledProviderName>
-              <StyledText>
-                {getLocale('for')}
-              </StyledText>
-              <StyledThumbsUpIcon>
-                {thumbsUpIcon}
-              </StyledThumbsUpIcon>
-              <StyledToggleOuter>
-                <StyledToggleInner>
-                  <Toggle
-                    size={'medium'}
-                    onToggle={onToggleTips}
-                    checked={tipsEnabled}
-                  />
-                </StyledToggleInner>
-              </StyledToggleOuter>
-            </StyledEnableTipsInner>
-          : null
-        }
+        <StyledEnableTipsInner>
+          <StyledEnableTips>
+            {getLocale('enableTips')}
+          </StyledEnableTips>
+          <StyledText>
+            {getLocale('on')}
+          </StyledText>
+          <StyledProviderImg>
+            {this.getProviderImg(provider)}
+          </StyledProviderImg>
+          <StyledProviderName>
+            {this.getProviderName(provider)}
+          </StyledProviderName>
+          <StyledText>
+            {getLocale('for')}
+          </StyledText>
+          <StyledThumbsUpIcon>
+            {thumbsUpIcon}
+          </StyledThumbsUpIcon>
+          <StyledToggleOuter>
+            <StyledToggleInner>
+              <Toggle
+                size={'medium'}
+                onToggle={onToggleTips}
+                checked={tipsEnabled}
+              />
+            </StyledToggleInner>
+          </StyledToggleOuter>
+        </StyledEnableTipsInner>
       </StyledEnableTipsSection>
     )
   }

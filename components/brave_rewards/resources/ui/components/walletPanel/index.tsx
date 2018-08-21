@@ -12,16 +12,14 @@ import {
   StyledWrapper,
   StyledAttentionScore,
   StyledAttentionScoreTitle,
-  StyledVerified,
-  StyledVerifiedIcon,
   StyledContainer,
   StyledScoreWrapper,
   StyledControlsWrapper,
   StyledDonateText,
-  StyledVerifiedText,
   StyledIcon,
   StyledDonateWrapper,
-  StyledToggleWrapper
+  StyledToggleWrapper,
+  StyledSelectWrapper
 } from './style'
 
 // Components
@@ -39,7 +37,6 @@ import ToggleTips from '../toggleTips/index'
 // Assets
 const alertIcon = require('./assets/alert')
 const monthlyIcon = require('./assets/monthly')
-const verifiedIcon = require('./assets/verified')
 
 export interface Props {
   id?: string
@@ -48,58 +45,28 @@ export interface Props {
   publisherName?: string
   isVerified?: boolean
   attentionScore?: string | null
-  donationAction: () => void
-  onToggleTips: () => void
-}
-
-interface State {
   tipsEnabled: boolean
   includeInAuto: boolean
-  monthlyAmount: number | null
+  monthlyAmount: number
+  donationAmounts: number[]
+  donationAction: () => void
+  onToggleTips: () => void
+  onAmountChange: () => void
+  onIncludeInAuto: () => void
 }
 
-export default class WalletPanel extends React.PureComponent<Props, State> {
-  constructor (props: Props) {
-    super(props)
-    this.state = {
-      tipsEnabled: true,
-      includeInAuto: true,
-      monthlyAmount: null
-    }
-  }
-
-  onIncludeInAuto = () => {
-    this.setState({
-      includeInAuto: !this.state.includeInAuto
-    })
-  }
-
-  verifiedSubTitle () {
-    if (!this.props.isVerified) {
-      return null
-    }
-
-    return (
-      <StyledVerified>
-        <StyledVerifiedIcon>
-          {verifiedIcon}
-        </StyledVerifiedIcon>
-        <StyledVerifiedText>
-          {getLocale('verifiedPublisher')}
-        </StyledVerifiedText>
-      </StyledVerified>
-    )
-  }
-
+export default class WalletPanel extends React.PureComponent<Props, {}> {
   publisherInfo () {
+    const publisherTitle = this.props.publisherName || ''
+
     return (
       <StyledWrapper>
         <Profile
           type={'big'}
-          title={'Bart Baker'}
+          title={publisherTitle}
           provider={this.props.platform}
           src={this.props.publisherImg}
-          subTitle={this.verifiedSubTitle()}
+          verified={this.props.isVerified}
         />
       </StyledWrapper>
     )
@@ -109,38 +76,37 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
     return {
       border: 'none',
       padding: '0px',
-      margin: '3px 0px 0px 0px',
       background: 'inherit'
     }
   }
 
   donationDropDown () {
+    const { donationAmounts } = this.props
+    const monthlyAmount = this.props.monthlyAmount || 5
+
+    if (!donationAmounts) {
+      return null
+    }
+
     return (
-      <div>
-        <Select theme={this.getSelectTheme()}>
-          <div data-value='5'>
-            <Tokens value={5} size={'mini'} color={'donation'}/>
-          </div>
-          <div data-value='10'>
-            <Tokens value={10} size={'mini'} color={'donation'}/>
-          </div>
-          <div data-value='15'>
-            <Tokens value={15} size={'mini'} color={'donation'}/>
-          </div>
-          <div data-value='20'>
-            <Tokens value={20} size={'mini'} color={'donation'}/>
-          </div>
-          <div data-value='30'>
-            <Tokens value={30} size={'mini'} color={'donation'}/>
-          </div>
-          <div data-value='50'>
-            <Tokens value={50} size={'mini'} color={'donation'}/>
-          </div>
-          <div data-value='100'>
-            <Tokens value={100} size={'mini'} color={'donation'}/>
-          </div>
+      <StyledSelectWrapper>
+        <Select
+          theme={this.getSelectTheme()}
+          value={monthlyAmount.toString()}
+          onChange={this.props.onAmountChange}
+        >
+          {donationAmounts.map((amount: number, index: number) => {
+            return (
+              <div
+                key={`donationAmount-${index}`}
+                data-value={amount.toString()}
+              >
+                <Tokens value={amount} size={'mini'} color={'donation'}/>
+              </div>
+            )
+          })}
         </Select>
-      </div>
+      </StyledSelectWrapper>
     )
   }
 
@@ -152,7 +118,7 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
             <StyledDonateText>
               {getLocale('donateMonthly')}
               <StyledIcon>
-                {monthlyIcon('#4C54D2')}
+                {monthlyIcon}
               </StyledIcon>
             </StyledDonateText>
           </Column>
@@ -172,10 +138,9 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
           <Column size={1}>
             <StyledToggleWrapper>
               <Toggle
-                highZ={true}
                 size={'medium'}
-                onToggle={this.onIncludeInAuto}
-                checked={this.state.includeInAuto}
+                checked={this.props.includeInAuto}
+                onToggle={this.props.onIncludeInAuto}
               />
             </StyledToggleWrapper>
           </Column>
@@ -185,7 +150,14 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id, platform, onToggleTips, attentionScore, donationAction } = this.props
+    const {
+      id,
+      platform,
+      onToggleTips,
+      attentionScore,
+      tipsEnabled,
+      donationAction
+    } = this.props
 
     return (
       <StyledWrapper>
@@ -210,8 +182,8 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
           </StyledControlsWrapper>
           <StyledDonateWrapper>
             <ButtonSecondary
-              size={'full'}
-              color={'donate'}
+              size={'large'}
+              color={'action'}
               onClick={donationAction}
               text={getLocale('donateNow')}
             />
@@ -221,7 +193,7 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
           id={'toggle-tips'}
           provider={platform}
           onToggleTips={onToggleTips}
-          tipsEnabled={this.state.tipsEnabled}
+          tipsEnabled={tipsEnabled}
         />
       </StyledWrapper>
     )

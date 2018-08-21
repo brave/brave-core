@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
+.c0 {
+  background: #E9EBFF;
+  display: block;
+  width: 100%;
+  padding: 20px 30px;
+}
+
+.c3 {
+  color: #A1A8F2;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.35px;
+  -moz-letter-spacing: 0.35px;
+  -ms-letter-spacing: 0.35px;
+  letter-spacing: 0.35px;
+  line-height: 22px;
+}
+
+.c5 {
+  display: block;
+}
+
+.c1 {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(6,1fr);
+  grid-gap: 15px;
+  padding: 0;
+  margin: 0;
+  max-width: initial;
+  height: initial;
+  color: inherit;
+  background-color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.c2 {
+  box-sizing: border-box;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  grid-column: span 5;
+  -webkit-box-pack: initial;
+  -webkit-justify-content: initial;
+  -ms-flex-pack: initial;
+  justify-content: initial;
+  -webkit-align-items: initial;
+  -webkit-box-align: initial;
+  -ms-flex-align: initial;
+  align-items: initial;
+  background-color: inherit;
+  -webkit-flex-direction: initial;
+  -ms-flex-direction: initial;
+  flex-direction: initial;
+  -webkit-flex-wrap: initial;
+  -ms-flex-wrap: initial;
+  flex-wrap: initial;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.c4 {
+  box-sizing: border-box;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  grid-column: span 1;
+  -webkit-box-pack: initial;
+  -webkit-justify-content: initial;
+  -ms-flex-pack: initial;
+  justify-content: initial;
+  -webkit-align-items: initial;
+  -webkit-box-align: initial;
+  -ms-flex-align: initial;
+  align-items: initial;
+  background-color: inherit;
+  -webkit-flex-direction: initial;
+  -ms-flex-direction: initial;
+  flex-direction: initial;
+  -webkit-flex-wrap: initial;
+  -ms-flex-wrap: initial;
+  flex-wrap: initial;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+<div
+  className="c0"
+  id="wallet-slider"
+  onClick={undefined}
+>
+  <div
+    className="c1"
+    disabled={false}
+    id={undefined}
+    onClick={undefined}
+  >
+    <div
+      className="c2"
+      id={undefined}
+      onClick={undefined}
+      size={5}
+    >
+      <span
+        className="c3"
+      >
+        MISSING: rewardsSummary
+      </span>
+    </div>
+    <div
+      className="c4"
+      id={undefined}
+      onClick={undefined}
+      size={1}
+    >
+      <span
+        className="c5"
+      >
+        <svg
+          height="5"
+          width="8"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
+            fill="#4C54D2"
+            fillRule="evenodd"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+</div>
+`;

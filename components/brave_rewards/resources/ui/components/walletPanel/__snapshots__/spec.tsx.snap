@@ -48,29 +48,24 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   vertical-align: middle;
 }
 
-.c35 {
+.c21 {
   text-align: center;
-  padding: 15px 0px 0px 0px;
+  padding: 15px 0 0;
 }
 
-.c31 {
+.c17 {
   margin-top: 4px;
 }
 
-.c36 {
+.c22 {
   display: inline-block;
   overflow: hidden;
-  border: 1px solid rgba(161,168,242,0.9);
-  color: rgba(161,168,242,0.9);
+  border: 1px solid rgba(76,84,210,0.9);
+  color: rgba(76,84,210,0.9);
   font-size: 14px;
   border-radius: 24px;
-  width: 100%;
+  min-width: 116px;
   padding: 17px 15px;
-  font-size: 12px;
-  padding: 12px 15px;
-  color: #4C54D2;
-  font-weight: 500;
-  text-transform: uppercase;
   text-align: center;
   box-sizing: border-box;
   font-family: Poppins,sans-serif;
@@ -87,152 +82,30 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   user-select: none;
 }
 
-.c36:hover {
-  border-color: rgba(161,168,242,1);
+.c22:hover {
+  border-color: rgba(76,84,210,1);
 }
 
-.c36:active {
-  border-color: rgba(161,168,242,0.4);
+.c22:active {
+  border-color: rgba(76,84,210,0.4);
 }
 
-.c36:hover {
-  color: rgba(161,168,242,1);
+.c22:hover {
+  color: rgba(76,84,210,1);
 }
 
-.c36:active {
-  color: rgba(161,168,242,0.4);
+.c22:active {
+  color: rgba(76,84,210,0.4);
 }
 
 .c18 {
-  max-width: 254px;
-  width: 100%;
-  margin-bottom: 12px;
-}
-
-.c17 {
-  max-width: 254px;
-  width: 100%;
-  margin: 3px 0px 0px 0px;
-}
-
-.c19 {
-  position: relative;
-  outline: 0;
-  font-family: Poppins,sans-serif;
-}
-
-.c20 {
-  border-radius: 3px;
-  font-size: 14px;
-  color: #686978;
-  background: inherit;
-  width: 100%;
-  padding: 0px;
-  border: none;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c25 {
-  padding-right: 15px;
-  -webkit-flex-basis: 17px;
-  -ms-flex-preferred-size: 17px;
-  flex-basis: 17px;
-}
-
-.c21 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  padding: 0 5px 0 13px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.c26 {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  width: 100%;
-  border-radius: 3px;
-  box-shadow: 0 2px 5px 0 rgba(223,223,232,0.5);
-  background-color: #fff;
-  border: solid 1px #dfdfe8;
-  overflow: hidden;
-  z-index: 2;
-  display: none;
-}
-
-.c27 {
-  font-size: 14px;
-  line-height: 2.57;
-  color: #1b1d2f;
-  position: relative;
-  padding: 0 0 0 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  background: #e9f0ff;
-}
-
-.c30 {
-  font-size: 14px;
-  line-height: 2.57;
-  color: #1b1d2f;
-  position: relative;
-  padding: 0 0 0 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  background: #fff;
-}
-
-.c28 {
-  -webkit-flex-basis: 12px;
-  -ms-flex-preferred-size: 12px;
-  flex-basis: 12px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c29 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  padding: 0 21px 0 6px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.c32 {
   position: relative;
   display: block;
   width: 30px;
   height: 18px;
 }
 
-.c33 {
+.c19 {
   background: #A7ACB2;
   width: 100%;
   border-radius: 3px;
@@ -240,17 +113,17 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   margin-top: 6px;
 }
 
-.c34 {
+.c20 {
   position: relative;
   border-radius: 50%;
   -webkit-transition: 200ms ease-out;
   transition: 200ms ease-out;
-  background-color: #6D73D2;
+  background-color: #CDD1D5;
+  -webkit-transform: translate(0,calc(-50% - 4px));
+  -ms-transform: translate(0,calc(-50% - 4px));
+  transform: translate(0,calc(-50% - 4px));
   width: 18px;
   height: 18px;
-  -webkit-transform: translate(12px,calc(-50% - 4px));
-  -ms-transform: translate(12px,calc(-50% - 4px));
-  transform: translate(12px,calc(-50% - 4px));
 }
 
 .c9 {
@@ -328,27 +201,6 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   color: inherit;
 }
 
-.c22 {
-  font-family: Poppins,sans-serif;
-  font-weight: 300;
-  line-height: 1.4;
-  color: #686978;
-  display: inline-block;
-}
-
-.c23 {
-  color: #696fdc;
-  font-size: 12;
-  font-weight: 500;
-}
-
-.c24 {
-  font-size: 10px;
-  font-weight: 300;
-  display: inline-block;
-  margin-left: 4px;
-}
-
 .c2 {
   position: relative;
   display: -webkit-box;
@@ -416,13 +268,6 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   color: #4c54d2;
 }
 
-.c37 {
-  background: #F6F6FC;
-  display: block;
-  width: 100%;
-  padding: 20px 30px;
-}
-
 <div
   className="c0"
 >
@@ -458,7 +303,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
               className="c7"
               type="big"
             >
-              Bart Baker
+              
             </span>
           </div>
         </div>
@@ -543,334 +388,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
             id={undefined}
             onClick={undefined}
             size={1}
-          >
-            <div>
-              <div
-                className="c17"
-                id={undefined}
-              >
-                <div
-                  className="c18"
-                  id={undefined}
-                >
-                  <div
-                    className="c19"
-                    onBlur={[Function]}
-                    tabIndex="0"
-                  >
-                    <div
-                      className="c20"
-                      disabled={undefined}
-                      onClick={[Function]}
-                    >
-                      <div
-                        className="c21"
-                      >
-                        <span
-                          id={undefined}
-                        >
-                          <span
-                            className="c22"
-                          >
-                            <span
-                              className="c23"
-                              color="donation"
-                              size="mini"
-                            >
-                              
-                              5.0
-                            </span>
-                            <span
-                              className="c24"
-                              size="mini"
-                            >
-                              BAT
-                            </span>
-                          </span>
-                        </span>
-                      </div>
-                      <div
-                        className="c25"
-                      >
-                        <svg
-                          height="6"
-                          width="11"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M0 0h2.165l2.837 3.625h.92L8.755 0h2.285L6.283 5.958H4.759z"
-                            fill="#B8B9C4"
-                            fillRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                    <div
-                      className="c26"
-                    >
-                      <div
-                        className="c27"
-                        onClick={[Function]}
-                        selected={true}
-                      >
-                        <div
-                          className="c28"
-                        >
-                          <svg
-                            height="9"
-                            width="12"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M0 4.227l1.519-1.551 2.875 2.72L9.534 0l1.614 1.563-1.424 1.453-5.33 5.439z"
-                              fill="#A1A8F2"
-                              fillRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                        <div
-                          className="c29"
-                        >
-                          <span
-                            id={undefined}
-                          >
-                            <span
-                              className="c22"
-                            >
-                              <span
-                                className="c23"
-                                color="donation"
-                                size="mini"
-                              >
-                                
-                                5.0
-                              </span>
-                              <span
-                                className="c24"
-                                size="mini"
-                              >
-                                BAT
-                              </span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        className="c30"
-                        onClick={[Function]}
-                        selected={false}
-                      >
-                        <div
-                          className="c28"
-                        />
-                        <div
-                          className="c29"
-                        >
-                          <span
-                            id={undefined}
-                          >
-                            <span
-                              className="c22"
-                            >
-                              <span
-                                className="c23"
-                                color="donation"
-                                size="mini"
-                              >
-                                
-                                10.0
-                              </span>
-                              <span
-                                className="c24"
-                                size="mini"
-                              >
-                                BAT
-                              </span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        className="c30"
-                        onClick={[Function]}
-                        selected={false}
-                      >
-                        <div
-                          className="c28"
-                        />
-                        <div
-                          className="c29"
-                        >
-                          <span
-                            id={undefined}
-                          >
-                            <span
-                              className="c22"
-                            >
-                              <span
-                                className="c23"
-                                color="donation"
-                                size="mini"
-                              >
-                                
-                                15.0
-                              </span>
-                              <span
-                                className="c24"
-                                size="mini"
-                              >
-                                BAT
-                              </span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        className="c30"
-                        onClick={[Function]}
-                        selected={false}
-                      >
-                        <div
-                          className="c28"
-                        />
-                        <div
-                          className="c29"
-                        >
-                          <span
-                            id={undefined}
-                          >
-                            <span
-                              className="c22"
-                            >
-                              <span
-                                className="c23"
-                                color="donation"
-                                size="mini"
-                              >
-                                
-                                20.0
-                              </span>
-                              <span
-                                className="c24"
-                                size="mini"
-                              >
-                                BAT
-                              </span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        className="c30"
-                        onClick={[Function]}
-                        selected={false}
-                      >
-                        <div
-                          className="c28"
-                        />
-                        <div
-                          className="c29"
-                        >
-                          <span
-                            id={undefined}
-                          >
-                            <span
-                              className="c22"
-                            >
-                              <span
-                                className="c23"
-                                color="donation"
-                                size="mini"
-                              >
-                                
-                                30.0
-                              </span>
-                              <span
-                                className="c24"
-                                size="mini"
-                              >
-                                BAT
-                              </span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        className="c30"
-                        onClick={[Function]}
-                        selected={false}
-                      >
-                        <div
-                          className="c28"
-                        />
-                        <div
-                          className="c29"
-                        >
-                          <span
-                            id={undefined}
-                          >
-                            <span
-                              className="c22"
-                            >
-                              <span
-                                className="c23"
-                                color="donation"
-                                size="mini"
-                              >
-                                
-                                50.0
-                              </span>
-                              <span
-                                className="c24"
-                                size="mini"
-                              >
-                                BAT
-                              </span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        className="c30"
-                        onClick={[Function]}
-                        selected={false}
-                      >
-                        <div
-                          className="c28"
-                        />
-                        <div
-                          className="c29"
-                        >
-                          <span
-                            id={undefined}
-                          >
-                            <span
-                              className="c22"
-                            >
-                              <span
-                                className="c23"
-                                color="donation"
-                                size="mini"
-                              >
-                                
-                                100.0
-                              </span>
-                              <span
-                                className="c24"
-                                size="mini"
-                              >
-                                BAT
-                              </span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          />
         </div>
         <div
           className="c9"
@@ -923,23 +441,23 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
             size={1}
           >
             <div
-              className="c31"
+              className="c17"
             >
               <div
-                checked={true}
-                className="c32"
+                checked={undefined}
+                className="c18"
                 disabled={undefined}
                 id={undefined}
-                onClick={[Function]}
+                onClick={undefined}
                 size="medium"
               >
                 <div
-                  className="c33"
+                  className="c19"
                   size="medium"
                 />
                 <div
-                  checked={true}
-                  className="c34"
+                  checked={undefined}
+                  className="c20"
                   size="medium"
                 />
               </div>
@@ -949,21 +467,17 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
       </div>
     </section>
     <div
-      className="c35"
+      className="c21"
     >
       <div
-        className="c36"
-        color="donate"
+        className="c22"
+        color="action"
         onClick={undefined}
-        size="full"
+        size="large"
       >
         MISSING: donateNow
       </div>
     </div>
   </div>
-  <section
-    className="c37"
-    id="toggle-tips"
-  />
 </div>
 `;

@@ -34,6 +34,7 @@ import WalletEmpty from './walletEmpty'
 import WalletOff from './walletOff'
 import WalletPanel from './walletPanel'
 import WalletSummary from './walletSummary'
+import WalletSummarySlider from './walletSummarySlider'
 import WalletWrapper from './walletWrapper'
 import WelcomePage from './welcomePage'
 
@@ -70,6 +71,7 @@ export {
   WalletOff,
   WalletPanel,
   WalletSummary,
+  WalletSummarySlider,
   WalletWrapper,
   WelcomePage
 }

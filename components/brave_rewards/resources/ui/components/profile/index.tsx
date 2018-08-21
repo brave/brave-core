@@ -13,8 +13,7 @@ import {
   StyledTitle,
   StyledProvider,
   StyledProviderWrap,
-  StyledInlineVerified,
-  StyledSubTitle
+  StyledInlineVerified
 } from './style'
 import { getLocale } from '../../../helpers'
 import { VerifiedFillIcon } from '../../../components/icons'
@@ -28,7 +27,6 @@ export interface Props {
   type?: 'big' | 'small'
   provider?: Provider
   verified?: boolean
-  subTitle?: React.ReactNode
 }
 
 /*
@@ -56,7 +54,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, type, provider, src, title, verified, subTitle } = this.props
+    const { id, type, provider, src, title, verified } = this.props
 
     return (
       <StyledWrapper id={id}>
@@ -82,13 +80,6 @@ export default class Profile extends React.PureComponent<Props, {}> {
             ? <StyledProviderWrap>
               <StyledInlineVerified><VerifiedFillIcon /></StyledInlineVerified> {getLocale('verifiedPublisher')}
             </StyledProviderWrap>
-            : null
-          }
-          {
-            subTitle
-            ? <StyledSubTitle>
-                {subTitle}
-              </StyledSubTitle>
             : null
           }
         </StyledContent>
