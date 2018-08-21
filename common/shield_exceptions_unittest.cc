@@ -5,12 +5,14 @@
 #include "brave/common/shield_exceptions.h"
 
 
+#include "chrome/browser/devtools/url_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 
 namespace {
 
 typedef testing::Test BraveShieldsExceptionsTest;
 using brave::IsWhitelistedReferrer;
+using brave::IsBlockedResource;
 
 TEST_F(BraveShieldsExceptionsTest, WidevineInstallableURL) {
   std::vector<GURL> urls({
@@ -70,6 +72,14 @@ TEST_F(BraveShieldsExceptionsTest, IsWhitelistedReferrer) {
       GURL("https://use.typekit.net/193")));
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.test.com"),
       GURL("https://cloud.typography.com/199")));
+}
+
+TEST_F(BraveShieldsExceptionsTest, IsBlockedResource) {
+  EXPECT_TRUE(IsBlockedResource(GURL("https://www.lesechos.fr/xtcore.js")));
+  EXPECT_TRUE(IsBlockedResource(GURL("https://*.y8.com/js/sdkloader/outstream.js")));
+  EXPECT_TRUE(IsBlockedResource(GURL(kRemoteFrontendBase)));
+  EXPECT_TRUE(IsBlockedResource(GURL(std::string(kRemoteFrontendBase) + "137")));
+  EXPECT_FALSE(IsBlockedResource(GURL("https://www.brave.com")));
 }
 
 }  // namespace
