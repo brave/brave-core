@@ -13,6 +13,7 @@ action("brave-extension") {
   outputs = [
     "$target_gen_dir/brave_extension/build/background.html",
     "$target_gen_dir/brave_extension/build/js/background.bundle.js",
+    "$target_gen_dir/brave_extension/build/js/content.bundle.js",
     "$target_gen_dir/brave_extension/build/js/braveShieldsPanel.bundle.js",
     "$target_gen_dir/brave_extension/build/braveShieldsPanel.html",
     "$target_gen_dir/brave_extension/build/bravelizer.css",
