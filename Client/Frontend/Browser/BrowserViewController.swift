@@ -1432,8 +1432,7 @@ extension BrowserViewController: URLBarDelegate {
     
     func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView) {
         // BRAVE TODO: Insert shield block stats here
-        guard let url = tabManager.selectedTab?.url else { return }
-        let shields = ShieldsViewController(url: url, shieldBlockStats: nil)
+        let shields = ShieldsViewController(url: tabManager.selectedTab?.url, shieldBlockStats: nil)
         shields.shieldsSettingsChanged = { [unowned self] _ in
             // Reload this tab. This will also trigger an update of the brave icon in `TabLocationView` if
             // the setting changed is the global `.AllOff` shield
