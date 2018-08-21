@@ -17,13 +17,13 @@ struct ShieldBlockedStats {
 
 /// Displays shield settings and shield stats for a given URL
 class ShieldsViewController: UIViewController, PopoverContentComponent {
-    /// The url loaded currently
-    var url: URL {
+    /// The url loaded currently. Update this as the pages url changes
+    var url: URL? {
         didSet {
             updateToggleStatus()
         }
     }
-    /// The blocked stats
+    /// The blocked stats. Update this as the pages block stats change
     var shieldBlockStats: ShieldBlockedStats? {
         didSet {
             updateShieldBlockStats()
@@ -32,13 +32,14 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     
     var shieldsSettingsChanged: ((ShieldsViewController) -> Void)?
     
-    init(url: URL, shieldBlockStats: ShieldBlockedStats?) {
+    /// Create with an initial URL and block stats (or nil if you are not on any web page)
+    init(url: URL?, shieldBlockStats: ShieldBlockedStats?) {
         self.url = url
         self.shieldBlockStats = shieldBlockStats
         
         super.init(nibName: nil, bundle: nil)
         
-        shieldsView.shieldsContainerStackView.hostLabel.text = url.normalizedHost
+        shieldsView.shieldsContainerStackView.hostLabel.text = url?.normalizedHost
         
         updateToggleStatus()
         updateShieldBlockStats()
@@ -56,7 +57,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
                 // Therefore its the only shield we have to give a default value of true
                 view.toggleSwitch.isOn = shield == .AllOff
             }
-            if let host = url.normalizedHost, let shieldState = BraveShieldState.getStateForDomain(host) {
+            if let host = url?.normalizedHost, let shieldState = BraveShieldState.getStateForDomain(host) {
                 // Sets the site-specific setting
                 if var shieldOverrideEnabled = shieldState.isShieldOverrideEnabled(shield) {
                     if shield == .AllOff {
@@ -87,7 +88,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     }
     
     private func updateBraveShieldState(shield: BraveShieldState.Shield, on: Bool) {
-        guard let domain = url.normalizedHost else { return }
+        guard let domain = url?.normalizedHost else { return }
         if shield == .AllOff {
             // Technically we set "all off" when the switch is OFF, unlike all the others
             BraveShieldState.set(forDomain: domain, state: (.AllOff, !on))
@@ -97,11 +98,16 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     }
     
     private func updateGlobalShieldState(_ on: Bool, animated: Bool = false) {
+        // Whether or not shields are available for this URL.
+        let isShieldsAvailable = url?.isLocal == false
+        // If shields aren't available, we don't show the switch and show the "off" state
+        let shieldsEnabled = isShieldsAvailable ? on : false
         let updateBlock = {
-            self.shieldsView.shieldsContainerStackView.isHidden = !on
-            self.shieldsView.shieldsContainerStackView.alpha = on ? 1.0 : 0.0
-            self.shieldsView.overviewStackView.isHidden = on
-            self.shieldsView.overviewStackView.alpha = on ? 0.0 : 1.0
+            self.shieldsView.shieldOverrideControl.isHidden = !isShieldsAvailable
+            self.shieldsView.shieldsContainerStackView.isHidden = !shieldsEnabled
+            self.shieldsView.shieldsContainerStackView.alpha = shieldsEnabled ? 1.0 : 0.0
+            self.shieldsView.overviewStackView.isHidden = shieldsEnabled
+            self.shieldsView.overviewStackView.alpha = shieldsEnabled ? 0.0 : 1.0
         }
         if animated {
             UIView.animate(withDuration: 0.25) {
