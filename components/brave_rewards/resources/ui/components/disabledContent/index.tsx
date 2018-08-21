@@ -21,8 +21,8 @@ export default class DisabledContent extends React.PureComponent<Props, {}> {
 
     return (
       <div id={id}>
-        <Grid columns={3} theme={{ gridGap: '32px', alignItems: 'center' }}>
-          <Column size={1} theme={{ justifyContent: 'flex-end' }}>
+        <Grid columns={3} customStyle={{ gridGap: '32px', alignItems: 'center' }}>
+          <Column size={1} customStyle={{ justifyContent: 'flex-end' }}>
             <img src={image} />
           </Column>
           <Column size={2}>

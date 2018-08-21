@@ -103,7 +103,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
     } = this.props
 
     return (
-      <Modal id={id} onClose={onClose} theme={{ maxWidth: '666px' }}>
+      <Modal id={id} onClose={onClose} customStyle={{ maxWidth: '666px' }}>
         <StyledWrapper>
           <Tabs activeTabId={activeTabId} onChange={onTabChange}>
           <div id={`${id}-backup`} data-key={'backup'} data-title={getLocale('rewardsBackupText1')}>
@@ -112,7 +112,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             </StyledContent>
             <TextArea
               title={getLocale('recoveryKeys')}
-              theme={{ maxWidth: '100%', minHeight: '140px' }}
+              customStyle={{ maxWidth: '100%', minHeight: '140px' }}
               value={backupKey}
               disabled={true}
             />
@@ -173,7 +173,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
                   onChange={this.onFileUpload}
                 />
               </>}
-              theme={{ maxWidth: '100%', minHeight: '140px' }}
+              customStyle={{ maxWidth: '100%', minHeight: '140px' }}
               value={this.state.recoveryKey}
               onChange={this.setRecoveryKey}
             />

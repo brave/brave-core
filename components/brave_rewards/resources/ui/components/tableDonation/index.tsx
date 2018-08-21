@@ -113,7 +113,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
                 size={'small'}
               />
             ),
-            theme: {
+            customStyle: {
               'text-align': 'right',
               'padding-right': '7px',
               'max-width': '40px'
@@ -125,10 +125,10 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
   }
 
   get headers (): Cell[] {
-    let theme = {}
+    let customStyle = {}
 
     if (this.props.headerColor) {
-      theme = {
+      customStyle = {
         border: 'none',
         'border-bottom': `1px solid #696FDC`,
         padding: '0',
@@ -139,18 +139,18 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
     return [
       {
         content: getLocale('site'),
-        theme
+        customStyle
       },
       {
         content: getLocale('type'),
-        theme
+        customStyle
       },
       {
         content: getLocale('tokens'),
-        theme: Object.assign({
+        customStyle: Object.assign({
           'text-align': 'right',
           'padding-right': '7px'
-        }, theme)
+        }, customStyle)
       }
     ]
   }

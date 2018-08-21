@@ -97,8 +97,8 @@ export const StyledLogoBorder = styled.div`
   border-radius: 50%;
   width: 160px;
   height: 160px;
-  background: ${(p: {theme: Theme, padding: boolean}) => setTheme(p.theme, 'logoBgColor') || '#DE4D26'};
-  padding-top: ${(p: {theme: Theme, padding: boolean}) => p.padding ? '35px' : 0};
+  background: ${(p: {customStyle: Theme, padding: boolean}) => setTheme(p.customStyle, 'logoBgColor') || '#DE4D26'};
+  padding-top: ${(p: {customStyle: Theme, padding: boolean}) => p.padding ? '35px' : 0};
   margin: -66px 0 25px;
   overflow: hidden;
 ` as any

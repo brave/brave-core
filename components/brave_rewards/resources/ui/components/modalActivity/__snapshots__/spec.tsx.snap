@@ -69,7 +69,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   padding: 0 50px;
 }
 
-.c22 {
+.c23 {
   max-width: 508px;
   margin-top: 46px;
   font-family: Muli,sans-serif;
@@ -113,7 +113,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   text-transform: none;
 }
 
-.c20 {
+.c21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -128,7 +128,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   padding: 11px 0 32px;
 }
 
-.c21 {
+.c22 {
   margin-left: 8px;
 }
 
@@ -167,11 +167,11 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   max-height: calc(100vh - 100px);
 }
 
-.c18 {
+.c19 {
   text-align: right;
 }
 
-.c19 {
+.c20 {
   padding-right: 10px;
 }
 
@@ -188,6 +188,19 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
 }
 
 .c14 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Poppins,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 2.33;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 9px 0;
+}
+
+.c18 {
   text-transform: uppercase;
   text-align: left;
   font-family: Poppins,sans-serif;
@@ -380,26 +393,26 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                 <thead>
                   <tr>
                     <th
-                      className="c14"
+                      className="c18"
                     >
                       <div>
                         MISSING: rewardsContributeVisited
                       </div>
                     </th>
                     <th
-                      className="c14"
+                      className="c18"
                     >
                       <div
-                        className="c18"
+                        className="c19"
                       >
                         MISSING: rewardsContributeAttention
                       </div>
                     </th>
                     <th
-                      className="c14"
+                      className="c18"
                     >
                       <div
-                        className="c19 c18"
+                        className="c20 c19"
                       >
                         MISSING: payment
                       </div>
@@ -413,7 +426,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
             </div>
           </div>
           <div
-            className="c20"
+            className="c21"
           >
             <svg
               height="16"
@@ -436,14 +449,14 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
             </svg>
              
             <div
-              className="c21"
+              className="c22"
             >
               MISSING: braveVerified
             </div>
           </div>
         </div>
         <div
-          className="c22"
+          className="c23"
         >
           <b>
             MISSING: pleaseNote

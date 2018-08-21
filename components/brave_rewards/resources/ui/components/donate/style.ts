@@ -14,7 +14,7 @@ interface Theme {
   paddingFunds: CSS.PaddingProperty<1>
 }
 
-const theme: Record<DonateType, Theme> = {
+const customStyle: Record<DonateType, Theme> = {
   big: {
     paddingBox: '0 19px 0 55px',
     sendBgColor: '#4c54d2',
@@ -37,7 +37,7 @@ export const StyledWrapper = styled.div`
 ` as any
 
 export const StyledContent = styled.div`
-  padding: ${(p: Props) => theme[p.donateType].paddingBox};
+  padding: ${(p: Props) => customStyle[p.donateType].paddingBox};
 ` as any
 
 export const StyledDonationTitle = styled.div`
@@ -53,12 +53,12 @@ export const StyledDonationTitle = styled.div`
 ` as any
 
 export const StyledSend = styled.button`
-  background: ${(p: {disabled: boolean, donateType: DonateType}) => theme[p.donateType].sendBgColor};
+  background: ${(p: {disabled: boolean, donateType: DonateType}) => customStyle[p.donateType].sendBgColor};
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.2px;
-  color: ${(p: {disabled: boolean, donateType: DonateType}) => p.disabled ? theme[p.donateType].disabledSendColor : '#fff'};
-  padding: ${(p: {disabled: boolean, donateType: DonateType}) => theme[p.donateType].paddingSend};
+  color: ${(p: {disabled: boolean, donateType: DonateType}) => p.disabled ? customStyle[p.donateType].disabledSendColor : '#fff'};
+  padding: ${(p: {disabled: boolean, donateType: DonateType}) => customStyle[p.donateType].paddingSend};
   text-transform: uppercase;
   border: none;
   width: 100%;
@@ -78,7 +78,7 @@ export const StyledFunds = styled.div`
   font-weight: 300;
   line-height: 1.69;
   color: #fff;
-  padding: ${(p: {donateType: DonateType}) => theme[p.donateType].paddingFunds};
+  padding: ${(p: {donateType: DonateType}) => customStyle[p.donateType].paddingFunds};
   background: #1b1d2f;
   display: flex;
   position:absolute;

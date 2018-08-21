@@ -54,7 +54,7 @@ export interface Props {
   children?: React.ReactNode
   onDonate: (amount: number, monthly: boolean) => void
   onClose?: () => void
-  theme?: Theme
+  customStyle?: Theme
 }
 
 export interface Theme {
@@ -166,7 +166,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       donationAmounts,
       domain,
       onAmountSelection,
-      theme,
+      customStyle,
       currentAmount
     } = this.props
 
@@ -182,7 +182,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
           <StyledContentWrapper>
             <StyledContent>
               <StyledLogoWrapper>
-                <StyledLogoBorder padding={!logo} theme={theme}>
+                <StyledLogoBorder padding={!logo} customStyle={customStyle}>
                   {this.getLogo(logo, domain)}
                 </StyledLogoBorder>
                 {this.getSocial(social)}
@@ -220,7 +220,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 <Checkbox
                   value={{ make: this.state.monthly }}
                   onChange={this.onMonthlyChange}
-                  theme={{ checkColor: '#fff', borderColor: '#a1a8f2' }}
+                  customStyle={{ checkColor: '#fff', borderColor: '#a1a8f2' }}
                 >
                   <div data-key='make'>
                     <StyledOption>{getLocale('makeMonthly')}</StyledOption> <StyledIconRecurring>{monthly()}</StyledIconRecurring>

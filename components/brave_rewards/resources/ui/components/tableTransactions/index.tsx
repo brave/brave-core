@@ -102,7 +102,7 @@ export default class TableTransactions extends React.PureComponent<Props, {}> {
                 size={'small'}
               />
             ),
-            theme: {
+            customStyle: {
               'text-align': 'right',
               'padding-right': '14px'
             }

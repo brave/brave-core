@@ -36,8 +36,8 @@ class Settings extends React.PureComponent<{}, State> {
   render () {
     return (
       <SettingsPage>
-        <Grid columns={3} theme={{ gridGap: '32px' }}>
-          <Column size={2} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Grid columns={3} customStyle={{ gridGap: '32px' }}>
+          <Column size={2} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <MainToggle
               onToggle={this.onMainToggle}
               enabled={this.state.mainToggle}
@@ -46,7 +46,7 @@ class Settings extends React.PureComponent<{}, State> {
             <ContributeBox/>
             <DonationsBox/>
           </Column>
-          <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <Grant/>
             <PageWallet/>
           </Column>

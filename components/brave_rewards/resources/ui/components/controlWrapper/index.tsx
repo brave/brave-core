@@ -10,7 +10,7 @@ export interface Props {
   id?: string
   title?: React.ReactNode
   children?: React.ReactNode
-  theme?: Theme
+  customStyle?: Theme
 }
 
 interface Theme {
@@ -19,10 +19,10 @@ interface Theme {
 
 export default class ControlWrapper extends React.PureComponent<Props, {}> {
   render () {
-    const { id, title, children, theme } = this.props
+    const { id, title, children, customStyle } = this.props
 
     return (
-      <StyledWrapper id={id} theme={theme}>
+      <StyledWrapper id={id} customStyle={customStyle}>
         {title ? <StyledTitle>{title}</StyledTitle> : null}
         {children}
       </StyledWrapper>

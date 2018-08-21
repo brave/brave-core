@@ -68,7 +68,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
               <Toggle
                 onToggle={this.onToggle}
                 checked={allow}
-                theme={{ onColor: '#fb542b', offColor: '#fb542b' }}
+                customStyle={{ onColor: '#fb542b', offColor: '#fb542b' }}
                 size={'small'}
               />
             </StyledAllowToggle>

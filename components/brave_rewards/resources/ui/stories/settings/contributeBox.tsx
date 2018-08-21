@@ -49,8 +49,8 @@ class ContributeBox extends React.Component<{}, State> {
   contributeSettingsChild = () => {
     return (
       <>
-        <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>
-            <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
+            <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <Select title={locale.contributionMonthly}>
                 <div data-value='10'><Tokens value={10} converted={4}/></div>
                 <div data-value='20'><Tokens value={20} converted={6}/></div>
@@ -165,7 +165,7 @@ class ContributeBox extends React.Component<{}, State> {
         }
         <List title={locale.contributionMonthly}>
           <Select
-            theme={{
+            customStyle={{
               border: 'none',
               padding: '0',
               arrowPadding: '0',

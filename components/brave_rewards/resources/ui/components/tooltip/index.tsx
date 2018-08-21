@@ -25,7 +25,7 @@ export interface Props {
   content: React.ReactNode
   id?: string
   position?: 'top' | 'bottom' | 'left' | 'right'
-  theme?: Theme
+  customStyle?: Theme
   children?: React.ReactNode
 }
 
@@ -64,15 +64,15 @@ export default class Tooltip extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id, content, children, theme } = this.props
+    const { id, content, children, customStyle } = this.props
 
     let position = this.position
 
     return (
       <StyledWrapper id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
-        <StyledTooltip position={position} theme={theme} open={this.state.open}>
-          <StyledArrow position={position} theme={theme} />
-          <StyledArrowOutline position={position} theme={theme} />
+        <StyledTooltip position={position} customStyle={customStyle} open={this.state.open}>
+          <StyledArrow position={position} customStyle={customStyle} />
+          <StyledArrowOutline position={position} customStyle={customStyle} />
           {content}
         </StyledTooltip>
         {children}

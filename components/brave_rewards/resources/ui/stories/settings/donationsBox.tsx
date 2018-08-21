@@ -71,8 +71,8 @@ class DonationsBox extends React.Component {
   donationSettingsChild = () => {
     return (
       <>
-        <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>
-            <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
+            <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <Checkbox
                 title={'Enable ability to give tips on ‘Like’ posts'}
                 value={{ 'yt': true, 'tw': false, 'inst': false }}

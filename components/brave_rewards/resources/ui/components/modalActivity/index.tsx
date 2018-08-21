@@ -176,7 +176,7 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
                   value={currentMonth}
                   onChange={onMonthChange}
                   title={this.selectTitle}
-                  theme={{
+                  customStyle={{
                     padding: '7px 0',
                     maxWidth: '100%'
                   }}

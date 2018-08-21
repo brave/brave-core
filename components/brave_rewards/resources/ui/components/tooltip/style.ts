@@ -22,7 +22,7 @@ export const StyledArrow = styled.div`
       top: -7px;
       left: calc(50% - 4px);
       border-width: 0 6.5px 8px 6.5px;
-      border-color: transparent transparent ${(p: Props) => p.theme && p.theme.color ? p.theme.color.background : defaultBg} transparent;
+      border-color: transparent transparent ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.background : defaultBg} transparent;
     `
     : ''
   };
@@ -32,7 +32,7 @@ export const StyledArrow = styled.div`
       bottom: -7px;
       left: calc(50% - 4px);
       border-width: 8px 6.5px 0 6.5px;
-      border-color: ${(p: Props) => p.theme && p.theme.color ? p.theme.color.background : defaultBg} transparent transparent transparent;
+      border-color: ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.background : defaultBg} transparent transparent transparent;
     `
     : ''
   };
@@ -42,7 +42,7 @@ export const StyledArrow = styled.div`
       top: 8px;
       right: -7px;
       border-width: 6.5px 0 6.5px 8px;
-      border-color: transparent transparent transparent ${(p: Props) => p.theme && p.theme.color ? p.theme.color.background : defaultBg};
+      border-color: transparent transparent transparent ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.background : defaultBg};
     `
     : ''
   };
@@ -52,7 +52,7 @@ export const StyledArrow = styled.div`
       top: 8px;
       left: -7px;
       border-width: 6.5px 8px 6.5px 0;
-      border-color: transparent ${(p: Props) => p.theme && p.theme.color ? p.theme.color.background : defaultBg} transparent transparent;
+      border-color: transparent ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.background : defaultBg} transparent transparent;
     `
     : ''
   };
@@ -69,7 +69,7 @@ export const StyledArrowOutline = styled.div`
       top: -9px;
       left: calc(50% - 4px);
       border-width: 0 6.5px 8px 6.5px;
-      border-color: transparent transparent ${(p: Props) => p.theme && p.theme.color ? p.theme.color.border : defaultBg} transparent;
+      border-color: transparent transparent ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.border : defaultBg} transparent;
     `
     : ''
   };
@@ -79,7 +79,7 @@ export const StyledArrowOutline = styled.div`
       bottom: -9px;
       left: calc(50% - 4px);
       border-width: 8px 6.5px 0 6.5px;
-      border-color: ${(p: Props) => p.theme && p.theme.color ? p.theme.color.border : defaultBg} transparent transparent transparent;
+      border-color: ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.border : defaultBg} transparent transparent transparent;
     `
     : ''
   };
@@ -89,7 +89,7 @@ export const StyledArrowOutline = styled.div`
       top: 8px;
       right: -9px;
       border-width: 6.5px 0 6.5px 8px;
-      border-color: transparent transparent transparent ${(p: Props) => p.theme && p.theme.color ? p.theme.color.border : defaultBg};
+      border-color: transparent transparent transparent ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.border : defaultBg};
     `
     : ''
   };
@@ -99,7 +99,7 @@ export const StyledArrowOutline = styled.div`
       top: 8px;
       left: -9px;
       border-width: 6.5px 8px 6.5px 0;
-      border-color: transparent ${(p: Props) => p.theme && p.theme.color ? p.theme.color.border : defaultBg} transparent transparent;
+      border-color: transparent ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.border : defaultBg} transparent transparent;
     `
     : ''
   };
@@ -113,17 +113,17 @@ export const StyledTooltip = styled.div`
   font-size: 14px;
   line-height: 1.71;
   letter-spacing: -0.1px;
-  text-align: ${(p: Props) => p.theme && p.theme.align ? p.theme.align : 'center'};
-  padding: ${(p: Props) => p.theme && p.theme.padding ? p.theme.padding : '4px'};
-  width: ${(p: Props) => p.theme && p.theme.width ? p.theme.width : '150px'};
-  box-shadow: ${(p: Props) => p.theme && p.theme.boxShadow ? p.theme.boxShadow : '1px 1px 5px 0 rgba(34, 35, 38, 0.43)'};
-  background: ${(p: Props) => p.theme && p.theme.color ? p.theme.color.background : defaultBg};
-  border: ${(p: Props) => p.theme && p.theme.border ? p.theme.border : `1px solid ${defaultBg}`};
-  color: ${(p: Props) => p.theme && p.theme.color ? p.theme.color.text : '#fff'};
+  text-align: ${(p: Props) => p.customStyle && p.customStyle.align ? p.customStyle.align : 'center'};
+  padding: ${(p: Props) => p.customStyle && p.customStyle.padding ? p.customStyle.padding : '4px'};
+  width: ${(p: Props) => p.customStyle && p.customStyle.width ? p.customStyle.width : '150px'};
+  box-shadow: ${(p: Props) => p.customStyle && p.customStyle.boxShadow ? p.customStyle.boxShadow : '1px 1px 5px 0 rgba(34, 35, 38, 0.43)'};
+  background: ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.background : defaultBg};
+  border: ${(p: Props) => p.customStyle && p.customStyle.border ? p.customStyle.border : `1px solid ${defaultBg}`};
+  color: ${(p: Props) => p.customStyle && p.customStyle.color ? p.customStyle.color.text : '#fff'};
 
   ${(p: Props) => p.position === 'bottom'
     ? css`
-      margin-top: ${(p: Props) => p.theme && p.theme.offSet ? p.theme.offSet : 14}px;
+      margin-top: ${(p: Props) => p.customStyle && p.customStyle.offSet ? p.customStyle.offSet : 14}px;
       top: 100%;
       left: -50%;
     `
@@ -132,7 +132,7 @@ export const StyledTooltip = styled.div`
 
   ${(p: Props) => p.position === 'top'
     ? css`
-      margin-bottom: ${(p: Props) => p.theme && p.theme.offSet ? p.theme.offSet : 14}px;
+      margin-bottom: ${(p: Props) => p.customStyle && p.customStyle.offSet ? p.customStyle.offSet : 14}px;
       bottom: 100%;
       left: -50%;
     `
@@ -141,7 +141,7 @@ export const StyledTooltip = styled.div`
 
   ${(p: Props) => p.position === 'left'
     ? css`
-      margin-right: ${(p: Props) => p.theme && p.theme.offSet ? p.theme.offSet : 14}px;
+      margin-right: ${(p: Props) => p.customStyle && p.customStyle.offSet ? p.customStyle.offSet : 14}px;
       right: 100%;
       top: -50%;
     `
@@ -150,7 +150,7 @@ export const StyledTooltip = styled.div`
 
   ${(p: Props) => p.position === 'right'
     ? css`
-      margin-left: ${(p: Props) => p.theme && p.theme.offSet ? p.theme.offSet : 14}px;
+      margin-left: ${(p: Props) => p.customStyle && p.customStyle.offSet ? p.customStyle.offSet : 14}px;
       left: 100%;
       top: -50%;
     `

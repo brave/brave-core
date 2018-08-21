@@ -7,7 +7,7 @@ import { Props } from './index'
 import { setTheme } from '../../../helpers'
 
 export const StyledWrapper = styled.div`
-  max-width: ${(p: Props) => setTheme(p.theme, 'maxWidth') || '254px'};
+  max-width: ${(p: Props) => setTheme(p.customStyle, 'maxWidth') || '254px'};
   width: 100%;
   margin-bottom: 12px;
 ` as any

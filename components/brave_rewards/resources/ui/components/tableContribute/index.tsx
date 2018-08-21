@@ -55,10 +55,10 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
       header.push('')
     }
 
-    let theme = {}
+    let customStyle = {}
 
     if (this.props.headerColor) {
-      theme = {
+      customStyle = {
         border: 'none',
         'border-bottom': `1px solid #9F22A1`,
         padding: '0',
@@ -73,7 +73,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
         : i === header.length - 1
           ? <StyledTHLast>{item}</StyledTHLast>
           : <StyledTHOther>{item}</StyledTHOther>,
-        theme: theme
+        customStyle
       }
     })
   }
@@ -116,7 +116,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
               size={'small'}
             />
           ),
-          theme: {
+          customStyle: {
             textAlign: 'right',
             paddingRight: '10px'
           }
@@ -128,7 +128,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
           content: (
             <StyledRemove onClick={row.onRemove}>{removeIcon}</StyledRemove>
           ),
-          theme: {
+          customStyle: {
             textAlign: 'right'
           }
         })
@@ -139,7 +139,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
           const remaining = (100 - row.attention) / 1.04
           const attention = row.attention / 1.04
           const diff = remaining + attention
-          cell.theme = {
+          cell.customStyle = {
             background: `linear-gradient(
               to right,
               transparent 0%,
@@ -152,7 +152,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
           }
         } else {
           const remaining = 100 - row.attention
-          cell.theme = {
+          cell.customStyle = {
             background: `linear-gradient(90deg, transparent ${remaining}%, rgba(210, 198, 243, 0.39) ${row.attention}%)`
           }
         }
