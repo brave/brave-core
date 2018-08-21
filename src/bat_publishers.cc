@@ -63,8 +63,8 @@ const ledger::PublisherInfo::id_type getPublisherID(
 }
 
 const ledger::PublisherInfo::id_type getPublisherID(
-    const ledger::PaymentData& paid_data) {
-  return paid_data.domain;
+    const ledger::PaymentData& payment_data) {
+  return payment_data.domain;
 }
 
 std::string getProviderName(const ledger::PublisherInfo::id_type publisher_id) {
@@ -77,20 +77,20 @@ bool ignoreMinTime(const ledger::PublisherInfo::id_type publisher_id) {
 }
 
 void BatPublishers::AddRecurringPayment(const std::string& domain, const double& value) {
-  ledger_->GetPublisherInfo(RECURRENT_DONATION_KEY,
+  ledger_->GetPublisherInfo(RECURRING_DONATION_KEY,
     std::bind(&BatPublishers::addRecurringPaymentInternal, this,
-                  RECURRENT_DONATION_KEY, domain, value, _1, _2));
+                  RECURRING_DONATION_KEY, domain, value, _1, _2));
 }
 
-void BatPublishers::MakePayment(const ledger::PaymentData& paid_data) {
+void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
   const ledger::PublisherInfo::id_type publisher_id =
-    getPublisherID(paid_data);
+    getPublisherID(payment_data);
 
-  std::string publisher_key = GetPublisherKey(paid_data.category,
-    paid_data.local_year, paid_data.local_month, publisher_id);
+  std::string publisher_key = GetPublisherKey(payment_data.category,
+    payment_data.local_year, payment_data.local_month, publisher_id);
   ledger_->GetPublisherInfo(publisher_key,
     std::bind(&BatPublishers::makePaymentInternal, this,
-                  publisher_key, paid_data, _1, _2));
+                  publisher_key, payment_data, _1, _2));
 }
 
 void BatPublishers::saveVisit(const ledger::VisitData& visit_data, const uint64_t& duration) {
@@ -140,6 +140,7 @@ void BatPublishers::addRecurringPaymentInternal(
   }
 
   publisher_info->key = publisher_key;
+  publisher_info->category = ledger::PUBLISHER_CATEGORY::RECURRING_DONATION;
   ledger::ContributionInfo contribution_info(value, 0);
   contribution_info.publisher = domain;
   publisher_info->contributions.push_back(contribution_info);
@@ -150,7 +151,7 @@ void BatPublishers::addRecurringPaymentInternal(
 
 void BatPublishers::makePaymentInternal(
       std::string publisher_key,
-      ledger::PaymentData paid_data,
+      ledger::PaymentData payment_data,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   if (result != ledger::Result::OK) {
@@ -159,10 +160,11 @@ void BatPublishers::makePaymentInternal(
   }
 
   if (!publisher_info.get()) 
-    publisher_info.reset(new ledger::PublisherInfo(getPublisherID(paid_data)));
+    publisher_info.reset(new ledger::PublisherInfo(getPublisherID(payment_data)));
 
   publisher_info->key = publisher_key;
-  publisher_info->contributions.push_back(ledger::ContributionInfo(paid_data.value, paid_data.timestamp));
+  publisher_info->category = payment_data.category;
+  publisher_info->contributions.push_back(ledger::ContributionInfo(payment_data.value, payment_data.timestamp));
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
       std::bind(&onVisitSavedDummy, _1, _2));
@@ -185,6 +187,7 @@ void BatPublishers::saveVisitInternal(
   publisher_info->key = publisher_key;
   publisher_info->duration += duration;
   publisher_info->visits += 1;
+  publisher_info->category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
   publisher_info->score += concaveScore(duration);
 
   ledger_->SetPublisherInfo(std::move(publisher_info),

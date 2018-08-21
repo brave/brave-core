@@ -55,7 +55,7 @@ class LedgerImpl : public ledger::Ledger,
   void GetRecurringDonationPublisherInfo(ledger::PublisherInfoCallback callback) override;
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             ledger::PublisherInfoFilter filter,
-                            ledger::PUBLISHER_CATEGORY category,
+                            int category,
                             const std::string& month,
                             const std::string& year,
                             ledger::GetPublisherInfoListCallback callback) override;
@@ -117,8 +117,8 @@ class LedgerImpl : public ledger::Ledger,
   std::string URIEncode(const std::string& value) override;
 
  private:
-  void MakePayment(const ledger::PaymentData& paid_data) override;
-  void AddRecurringPayment(const std::string& domain_name, const double& value) override;
+  void MakePayment(const ledger::PaymentData& payment_data) override;
+  void AddRecurringPayment(const std::string& domain, const double& value) override;
   void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) override;
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
   void OnShow(uint32_t tab_id, const uint64_t& current_time) override;

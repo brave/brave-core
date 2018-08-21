@@ -48,8 +48,8 @@ void LedgerImpl::AddRecurringPayment(const std::string& domain, const double& va
   bat_publishers_->AddRecurringPayment(domain, value);
 }
 
-void LedgerImpl::MakePayment(const ledger::PaymentData& paid_data) {
-  bat_publishers_->MakePayment(paid_data);
+void LedgerImpl::MakePayment(const ledger::PaymentData& payment_data) {
+  bat_publishers_->MakePayment(payment_data);
 }
 
 void LedgerImpl::OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) {
@@ -221,7 +221,7 @@ void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
 }
 
 void LedgerImpl::GetRecurringDonationPublisherInfo(ledger::PublisherInfoCallback callback) {
-  ledger_client_->LoadPublisherInfo(RECURRENT_DONATION_KEY, callback);
+  ledger_client_->LoadPublisherInfo(RECURRING_DONATION_KEY, callback);
 }
 
 void LedgerImpl::GetPublisherInfo(
@@ -232,18 +232,29 @@ void LedgerImpl::GetPublisherInfo(
 
 void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
                                 ledger::PublisherInfoFilter filter,
-                                ledger::PUBLISHER_CATEGORY category,
+                                int category,
                                 const std::string& month,
                                 const std::string& year,
                                 ledger::GetPublisherInfoListCallback callback) {
   std::vector<std::string> prefix;
-  if (category != ledger::PUBLISHER_CATEGORY::ALL_CATEGORIES) {
-    prefix.push_back(bat_publishers_->GetPublisherKey(category, year, month, ""));
-  } else {
+  if (category & ledger::PUBLISHER_CATEGORY::ALL_CATEGORIES) {
     prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE, year, month, ""));
     prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::TIPPING, year, month, ""));
     prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, year, month, ""));
     prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, year, month, ""));
+  } else {
+    if (category & ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
+      prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE, year, month, ""));
+    }
+    if (category & ledger::PUBLISHER_CATEGORY::TIPPING) {
+      prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::TIPPING, year, month, ""));
+    }
+    if (category & ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+      prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, year, month, ""));
+    }
+    if (category & ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+      prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, year, month, ""));
+    }
   }
   ledger_client_->LoadPublisherInfoList(start, limit, filter,
     prefix, callback);

@@ -78,7 +78,8 @@ PublisherInfo::PublisherInfo(const id_type& publisher_id) :
     pinned(false),
     percent(0u),
     weight(.0),
-    excluded(false) {}
+    excluded(false),
+    category(PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {}
 
 PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     id(info.id),
@@ -90,7 +91,8 @@ PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     weight(info.weight),
     excluded(info.excluded),
     key(info.key),
-    contributions(info.contributions) {}
+    contributions(info.contributions),
+    category(info.category) {}
 
 PublisherInfo::~PublisherInfo() {}
 
@@ -145,6 +147,9 @@ const std::string PublisherInfo::ToJSON() const {
   }
   writer.EndArray();
 
+  writer.String("category");
+  writer.Int(category);
+
   writer.EndObject();
 
   return buffer.GetString();
@@ -181,7 +186,8 @@ const PublisherInfo PublisherInfo::FromJSON(const std::string& json) {
       !d["weight"].IsDouble() ||
       !d["excluded"].IsBool() ||
       !d["key"].IsString() ||
-      !d["contributions"].IsArray()) {
+      !d["contributions"].IsArray() ||
+      !d["category"].IsInt()) {
     return invalid;
   }
 
@@ -209,6 +215,8 @@ const PublisherInfo PublisherInfo::FromJSON(const std::string& json) {
     }
     info.contributions.push_back(contribution_info);
   }
+
+  info.category = (PUBLISHER_CATEGORY)d["category"].GetInt();
 
   return info;
 }

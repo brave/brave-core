@@ -20,6 +20,14 @@ LEDGER_EXPORT enum PublisherInfoFilter {
   DEFAULT = UNPINNED & PINNED & INCLUDED,
 };
 
+LEDGER_EXPORT enum PUBLISHER_CATEGORY {
+  ALL_CATEGORIES = 1 << 0,
+  AUTO_CONTRIBUTE = 1 << 1,
+  TIPPING = 1 << 2,
+  DIRECT_DONATION = 1 << 3,
+  RECURRING_DONATION = 1 << 4
+};
+
 LEDGER_EXPORT struct ContributionInfo {
   ContributionInfo() {}
   ContributionInfo(const double &value_, const uint64_t& date_):
@@ -52,6 +60,7 @@ LEDGER_EXPORT struct PublisherInfo {
   bool excluded;
   std::string key;
   std::vector<ContributionInfo> contributions;
+  PUBLISHER_CATEGORY category;
 };
 
 using PublisherInfoList = std::vector<const PublisherInfo>;

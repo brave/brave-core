@@ -15,14 +15,6 @@
 
 namespace ledger {
 
-LEDGER_EXPORT enum PUBLISHER_CATEGORY {
-  ALL_CATEGORIES = 0,
-  AUTO_CONTRIBUTE = 1,
-  TIPPING = 2,
-  DIRECT_DONATION = 3,
-  RECURRING_DONATION = 4
-};
-
 LEDGER_EXPORT struct VisitData {
   VisitData();
   VisitData(const std::string& _tld,
@@ -77,7 +69,7 @@ class LEDGER_EXPORT Ledger {
   virtual void CreateWallet() = 0;
   virtual void Reconcile() = 0;
 
-  virtual void MakePayment(const PaymentData& paid_data) = 0;
+  virtual void MakePayment(const PaymentData& payment_data) = 0;
   virtual void AddRecurringPayment(const std::string& domain, const double& value) = 0;
   virtual void OnLoad(const VisitData& visit_data, const uint64_t& current_time) = 0;
   virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
@@ -101,7 +93,7 @@ class LEDGER_EXPORT Ledger {
   virtual void GetRecurringDonationPublisherInfo(PublisherInfoCallback callback) = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
-                                    ledger::PUBLISHER_CATEGORY category,
+                                    int category,
                                     const std::string& month,
                                     const std::string& year,
                                     GetPublisherInfoListCallback callback) = 0;
