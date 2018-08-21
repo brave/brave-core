@@ -43,6 +43,7 @@ FilterOption ResourceTypeToFilterOption(content::ResourceType resource_type) {
       filter_option = FOScript;
       break;
     // an image (jpg/gif/png/etc)
+    case content::RESOURCE_TYPE_FAVICON:
     case content::RESOURCE_TYPE_IMAGE:
       filter_option = FOImage;
       break;
@@ -76,8 +77,6 @@ FilterOption ResourceTypeToFilterOption(content::ResourceType resource_type) {
     case content::RESOURCE_TYPE_SHARED_WORKER:
     // an explicitly requested prefetch
     case content::RESOURCE_TYPE_PREFETCH:
-    // a favicon
-    case content::RESOURCE_TYPE_FAVICON:
     // the main resource of a service worker.
     case content::RESOURCE_TYPE_SERVICE_WORKER:
     // a report of Content Security Policy
