@@ -14,7 +14,7 @@ import { PushButton } from '../../../../src/old/v1/pushButton/index'
 import Image from '../../../../src/old/v1/image/index'
 import ArrowRight from '../../../../src/old/v1/icons/arrowRight'
 
-import theme from './theme'
+import customStyle from './theme'
 import locale from './fakeLocale'
 
 // Images
@@ -48,55 +48,55 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get firstScreen () {
     return (
-      <section style={theme.content}>
-        <Image theme={theme.braveLogo} src={braveLogo} />
-        <Heading level={1} theme={theme.title} text={locale.welcome} />
-        <Paragraph theme={theme.text} text={locale.whatIsBrave} />
-        <PushButton color='primary' size='large' theme={theme.mainButton}>{locale.letsGo}</PushButton>
+      <section style={customStyle.content}>
+        <Image customStyle={customStyle.braveLogo} src={braveLogo} />
+        <Heading level={1} customStyle={customStyle.title} text={locale.welcome} />
+        <Paragraph customStyle={customStyle.text} text={locale.whatIsBrave} />
+        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.letsGo}</PushButton>
       </section>
     )
   }
 
   get secondScreen () {
     return (
-      <section style={theme.content}>
-        <Image theme={theme.paymentsImage} src={paymentsImage} />
-        <Heading level={1} theme={theme.title} text={locale.enableBraveRewards} />
-        <Paragraph theme={theme.text} text={locale.setupBraveRewards} />
-        <PushButton color='primary' size='large' theme={theme.mainButton}>{locale.enableRewards}</PushButton>
+      <section style={customStyle.content}>
+        <Image customStyle={customStyle.paymentsImage} src={paymentsImage} />
+        <Heading level={1} customStyle={customStyle.title} text={locale.enableBraveRewards} />
+        <Paragraph customStyle={customStyle.text} text={locale.setupBraveRewards} />
+        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.enableRewards}</PushButton>
       </section>
     )
   }
 
   get thirdScreen () {
     return (
-      <section style={theme.content}>
-        <Image theme={theme.importImage} src={importImage} />
-        <Heading level={1} theme={theme.title} text={locale.importFromAnotherBrowser} />
-        <Paragraph theme={theme.text} text={locale.setupImport} />
-        <PushButton color='primary' size='large' theme={theme.mainButton}>{locale.importNow}</PushButton>
+      <section style={customStyle.content}>
+        <Image customStyle={customStyle.importImage} src={importImage} />
+        <Heading level={1} customStyle={customStyle.title} text={locale.importFromAnotherBrowser} />
+        <Paragraph customStyle={customStyle.text} text={locale.setupImport} />
+        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.importNow}</PushButton>
       </section>
     )
   }
 
   get fourthScreen () {
     return (
-      <section style={theme.content}>
-        <Image theme={theme.shieldsImage} src={shieldsImage} />
-        <Heading level={1} theme={theme.title} text={locale.manageShields} />
-        <Paragraph theme={theme.text} text={locale.adjustProtectionLevel} />
-        <PushButton color='primary' size='large' theme={theme.mainButton}>{locale.shieldSettings}</PushButton>
+      <section style={customStyle.content}>
+        <Image customStyle={customStyle.shieldsImage} src={shieldsImage} />
+        <Heading level={1} customStyle={customStyle.title} text={locale.manageShields} />
+        <Paragraph customStyle={customStyle.text} text={locale.adjustProtectionLevel} />
+        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.shieldSettings}</PushButton>
       </section>
     )
   }
 
   get fifthScreen () {
     return (
-      <section style={theme.content}>
-        <Image theme={theme.featuresImage} src={featuresImage} />
-        <Heading level={1} theme={theme.title} text={locale.customizePreferences} />
-        <Paragraph theme={theme.text} text={locale.configure} />
-        <PushButton color='primary' size='large' theme={theme.mainButton}>{locale.preferences}</PushButton>
+      <section style={customStyle.content}>
+        <Image customStyle={customStyle.featuresImage} src={featuresImage} />
+        <Heading level={1} customStyle={customStyle.title} text={locale.customizePreferences} />
+        <Paragraph customStyle={customStyle.text} text={locale.configure} />
+        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.preferences}</PushButton>
       </section>
     )
   }
@@ -121,23 +121,23 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
   get footer () {
     return (
       <footer>
-        <Grid columns={3} theme={theme.footer}>
-          <Column size={1} theme={theme.footerColumnLeft}>
+        <Grid columns={3} customStyle={customStyle.footer}>
+          <Column size={1} customStyle={customStyle.footerColumnLeft}>
             <UnstyledButton
-              theme={theme.skip}
+              customStyle={customStyle.skip}
               text={locale.skipWelcomeTour}
               onClick={this.onSkipWelcomeTour}
             />
           </Column>
-          <Column size={1} theme={theme.footerColumnCenter}>
+          <Column size={1} customStyle={customStyle.footerColumnCenter}>
             {
               Array.from({ length: this.totalScreensSize }, (v: undefined, k: number) => {
                 return (
                   <UnstyledButton
-                    theme={
+                    customStyle={
                       this.state.currentScreen === k + 1
-                      ? theme.bulletActive
-                      : theme.bullet
+                      ? customStyle.bulletActive
+                      : customStyle.bullet
                     }
                     text='•'
                     key={k}
@@ -146,12 +146,12 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
                 )
               })}
           </Column>
-          <Column size={1} theme={theme.footerColumnRight}>
+          <Column size={1} customStyle={customStyle.footerColumnRight}>
           {
             this.state.currentScreen !== this.totalScreensSize
              ? (
               <PushButton
-                theme={theme.sideButton}
+                customStyle={customStyle.sideButton}
                 color='secondary'
                 onClick={this.onClickNext}
               >
@@ -168,7 +168,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
              )
              : (
               <PushButton
-                theme={theme.sideButton}
+                customStyle={customStyle.sideButton}
                 color='secondary'
                 onClick={this.onClickDone}
               >
@@ -230,8 +230,8 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
           backgroundPositionX: this.backgroundPosition
         }}
       >
-        <Page theme={theme.welcomePage}>
-          <Panel theme={theme.panel}>
+        <Page customStyle={customStyle.welcomePage}>
+          <Panel customStyle={customStyle.panel}>
             {this.currentScreen}
             {this.footer}
           </Panel>
