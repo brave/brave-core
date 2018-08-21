@@ -24,9 +24,9 @@ import {
   StyledAlertWrapper,
   StyledAlertClose
 } from './style'
-import ButtonSecondary from '../../../components/buttonsIndicators/buttonSecondary/index'
 import { getLocale } from '../../../helpers'
 import Alert, { Type as AlertType } from '../alert'
+import { Button } from '../../../components'
 
 type Grant = {
   tokens: number,
@@ -149,13 +149,14 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               ? <StyledBalanceConverted>{converted}</StyledBalanceConverted>
               : null
             }
-            <ButtonSecondary
+            <Button
               text={getLocale('grants')}
               size={'small'}
-              color={'subtle'}
+              type={'subtle'}
+              level={'secondary'}
               onClick={enabled ? this.toggleGrantDetails : undefined}
               disabled={!enabled}
-              icon={{ position: 'right', image: this.state.grantDetails && enabled ? arrowUpIcon : arrowDownIcon }}
+              icon={{ position: 'after', image: this.state.grantDetails && enabled ? arrowUpIcon : arrowDownIcon }}
             />
           </StyledBalance>
           {

@@ -38,40 +38,73 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
 }
 
 .c5 {
-  display: inline-block;
-  overflow: hidden;
-  background: #fff;
-  font-size: 13px;
-  border-radius: 20px;
-  min-width: 104px;
-  font-family: Poppins,sans-serif;
-}
-
-.c6 {
-  text-align: center;
+  --button-main-color: #242536;
+  --button-main-color-hover: #131525;
+  --button-main-color-active: #343546;
+  --button-state-color: var(--button-main-color);
+  --icon-size: 16px;
+  --icon-spacing: 6px;
+  --webkit-appearance: none;
   box-sizing: border-box;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 600;
-  line-height: 1;
+  background: none;
+  border: none;
+  outline: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Poppins,sans-serif;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background: rgba(251,84,43,0.9);
+  font-size: 13px;
+  border-radius: 20px;
+  width: auto;
+  min-width: 104px;
+  padding: 11px 10px;
   color: #fff;
-  padding: 13.5px 10px;
+  background: var(--button-state-color);
 }
 
-.c6:hover {
-  background: rgba(251,84,43,1);
+.c5:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
 }
 
-.c6:active {
-  background: rgba(251,84,43,0.4);
+.c5:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c6 {
+  min-height: var(--icon-size);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  text-transform: none;
+  line-height: 1;
 }
 
 <div
@@ -105,20 +138,20 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   >
     MISSING: grantDisclaimer
   </div>
-  <div
+  <button
     className="c5"
-    color="brand"
     onClick={undefined}
     size="medium"
+    type="default"
   >
     <div
       className="c6"
-      color="brand"
-      disabled={undefined}
+      onClick={undefined}
       size="medium"
+      type="default"
     >
       MISSING: ok
     </div>
-  </div>
+  </button>
 </div>
 `;

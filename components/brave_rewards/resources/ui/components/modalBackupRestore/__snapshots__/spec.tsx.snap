@@ -1,6 +1,126 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
+.c16 {
+  --button-main-color: #C5C5D3;
+  --button-main-color-hover: #A0A1B2;
+  --button-main-color-active: #E9E9F4;
+  --button-state-color: var(--button-main-color);
+  --icon-size: 14px;
+  --icon-spacing: 6px;
+  --webkit-appearance: none;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  outline: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Poppins,sans-serif;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 11px;
+  border-radius: 16px;
+  width: auto;
+  min-width: 88px;
+  padding: 7px 10px;
+  border: 1px solid;
+  color: var(--button-state-color);
+}
+
+.c16:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c16:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c19 {
+  --button-main-color: #242536;
+  --button-main-color-hover: #131525;
+  --button-main-color-active: #343546;
+  --button-state-color: var(--button-main-color);
+  --icon-size: 16px;
+  --icon-spacing: 6px;
+  --webkit-appearance: none;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  outline: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Poppins,sans-serif;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 13px;
+  border-radius: 20px;
+  width: auto;
+  min-width: 104px;
+  padding: 11px 10px;
+  border: 1px solid;
+  color: var(--button-state-color);
+}
+
+.c19:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c19:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c17 {
+  min-height: var(--icon-size);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  text-transform: none;
+  line-height: 1;
+}
+
 .c4 {
   margin-top: 33px;
 }
@@ -16,13 +136,17 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
 
 .c14 {
   text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
-.c14 > div {
+.c15 {
   margin: 0 4px;
 }
 
-.c16 {
+.c18 {
   text-align: center;
   margin-top: 59px;
 }
@@ -147,85 +271,6 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   max-height: calc(100vh - 100px);
 }
 
-.c17 {
-  display: inline-block;
-  overflow: hidden;
-  background: #fff;
-  font-size: 13px;
-  border-radius: 20px;
-  min-width: 104px;
-  font-family: Poppins,sans-serif;
-}
-
-.c18 {
-  text-align: center;
-  box-sizing: border-box;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 600;
-  line-height: 1;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background: rgba(251,84,43,0.9);
-  color: #fff;
-  padding: 13.5px 10px;
-}
-
-.c18:hover {
-  background: rgba(251,84,43,1);
-}
-
-.c18:active {
-  background: rgba(251,84,43,0.4);
-}
-
-.c15 {
-  display: inline-block;
-  overflow: hidden;
-  border: 1px solid rgba(184,185,196,0.9);
-  color: rgba(184,185,196,0.9);
-  font-size: 11px;
-  border-radius: 16px;
-  min-width: 88px;
-  padding: 10.5px 10px;
-  text-align: center;
-  box-sizing: border-box;
-  font-family: Poppins,sans-serif;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 600;
-  line-height: 1;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-weight: 500;
-}
-
-.c15:hover {
-  border-color: rgba(184,185,196,1);
-}
-
-.c15:active {
-  border-color: rgba(184,185,196,0.4);
-}
-
-.c15:hover {
-  color: rgba(184,185,196,1);
-}
-
-.c15:active {
-  color: rgba(184,185,196,0.4);
-}
-
 <div
   className="c0"
   id="modal"
@@ -309,49 +354,70 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
             <div
               className="c14"
             >
-              <div
-                className="c15"
-                color="subtle"
+              <button
+                className="c15 c16"
                 onClick={[Function]}
                 size="small"
-              >
-                MISSING: copy
-              </div>
-              <div
-                className="c15"
-                color="subtle"
-                onClick={[Function]}
-                size="small"
-              >
-                MISSING: print
-              </div>
-              <div
-                className="c15"
-                color="subtle"
-                onClick={[Function]}
-                size="small"
-              >
-                MISSING: saveAsFile
-              </div>
-            </div>
-            <div
-              className="c16"
-            >
-              <div
-                className="c17"
-                color="brand"
-                onClick={[Function]}
-                size="medium"
+                type="subtle"
               >
                 <div
-                  className="c18"
-                  color="brand"
-                  disabled={undefined}
+                  className="c17"
+                  onClick={[Function]}
+                  size="small"
+                  type="subtle"
+                >
+                  MISSING: copy
+                </div>
+              </button>
+              <button
+                className="c15 c16"
+                onClick={[Function]}
+                size="small"
+                type="subtle"
+              >
+                <div
+                  className="c17"
+                  onClick={[Function]}
+                  size="small"
+                  type="subtle"
+                >
+                  MISSING: print
+                </div>
+              </button>
+              <button
+                className="c15 c16"
+                onClick={[Function]}
+                size="small"
+                type="subtle"
+              >
+                <div
+                  className="c17"
+                  onClick={[Function]}
+                  size="small"
+                  type="subtle"
+                >
+                  MISSING: saveAsFile
+                </div>
+              </button>
+            </div>
+            <div
+              className="c18"
+            >
+              <button
+                className="c19"
+                onClick={[Function]}
+                size="medium"
+                type="default"
+              >
+                <div
+                  className="c17"
+                  onClick={[Function]}
                   size="medium"
+                  type="default"
                 >
                   MISSING: done
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         </div>

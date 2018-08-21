@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { StyledWrapper, StyledBox, StyledTitle, StyledValue, StyledText } from './style'
 import { getLocale } from '../../../helpers'
-import ButtonPrimary from '../../../components/buttonsIndicators/buttonPrimary'
+import Button from '../../../components/buttonsIndicators/button'
 
 export interface Props {
   id?: string
@@ -27,7 +27,7 @@ export default class GrantComplete extends React.PureComponent<Props, {}> {
           <StyledValue>{date}</StyledValue>
         </StyledBox>
         <StyledText>{getLocale('grantDisclaimer')}</StyledText>
-        <ButtonPrimary text={getLocale('ok')} size={'medium'} color={'brand'} onClick={onClose}/>
+        <Button text={getLocale('ok')} size={'medium'} brand={'brave'} onClick={onClose}/>
       </StyledWrapper>
     )
   }

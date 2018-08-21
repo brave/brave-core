@@ -7,8 +7,7 @@ import * as React from 'react'
 // Components
 import Hero from '../hero'
 import SettingsPage from '../settingsPage'
-import ButtonCta from '../../../components/buttonsIndicators/buttonCta'
-import ButtonSecondary from '../../../components/buttonsIndicators/buttonSecondary'
+import Button from '../../../components/buttonsIndicators/button'
 import InfoCard, { CardProps } from '../infoCard'
 
 // Utils
@@ -96,9 +95,10 @@ class WelcomePage extends React.PureComponent<Props, {}> {
           </StyledRewardsParagraph>
         </StyledSection>
         <StyledOptInSection>
-          <ButtonSecondary
+          <Button
+            level='secondary'
             size='large'
-            color='subtle'
+            type='subtle'
             text={getLocale('braveRewardsOptInText')}
             onClick={this.props.optInAction}
             data-test-id='optInAction'
@@ -159,9 +159,11 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             {getLocale('readyToTakePartDesc')}
           </span>
         </StyledReadyParagraph>
-        <ButtonCta
+        <Button
+          level={'primary'}
+          size={'call-to-action'}
+          type={'accent'}
           text={getLocale('readyToTakePartOptInText')}
-          color={'brand'}
           onClick={this.props.optInAction}
         />
       </StyledOptInInnerSection>

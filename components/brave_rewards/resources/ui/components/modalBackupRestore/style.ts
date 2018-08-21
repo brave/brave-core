@@ -1,8 +1,9 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-import styled from 'styled-components'
+import { ComponentType } from 'react'
+import styled from '../../../theme'
+import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
 import { Props } from './index'
 
 export const StyledWrapper = styled.div`
@@ -25,11 +26,12 @@ export const StyledImport = styled.label`
 
 export const StyleButtonWrapper = styled.div`
   text-align: center;
-
-  > div {
-    margin: 0 4px;
-  }
+  display: flex;
 ` as any
+
+export const GroupedButton = styled(Button as ComponentType<ButtonProps>)`
+  margin: 0 4px;
+`
 
 export const StyledDoneWrapper = styled.div`
   text-align: center;
@@ -46,8 +48,9 @@ export const StyledStatus = styled.div`
 export const StyledActionsWrapper = styled.div`
   margin-top: 108px;
   text-align: center;
-
-  > div {
-    margin: 0 8px;
-  }
+  display: flex;
 ` as any
+
+export const ActionButton = styled(Button as ComponentType<ButtonProps>)`
+  margin: 0 8px;
+`

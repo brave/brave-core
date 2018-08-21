@@ -49,7 +49,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   margin-top: 10px;
 }
 
-.c10 {
+.c11 {
   padding: 11px 25px 19px;
   position: relative;
   background: #f9fbfc;
@@ -58,7 +58,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   flex: 1;
 }
 
-.c8 {
+.c9 {
   text-align: center;
   font-size: 12px;
   color: #fff;
@@ -83,7 +83,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   color: #fff;
 }
 
-.c9 {
+.c10 {
   padding: 10px 0;
   position: relative;
   overflow: hidden;
@@ -91,7 +91,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   z-index: 5;
 }
 
-.c9:before {
+.c10:before {
   content: "";
   position: absolute;
   bottom: -16px;
@@ -103,36 +103,81 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
-  display: inline-block;
-  overflow: hidden;
-  border: 1px solid rgba(184,185,196,1);
-  opacity: 0.4;
-  color: rgba(184,185,196,1);
-  font-size: 11px;
-  border-radius: 16px;
-  min-width: 88px;
-  padding: 10.5px 10px;
-  text-align: center;
+  --button-main-color: #C5C5D3;
+  --button-main-color-hover: #C5C5D3;
+  --button-main-color-active: #C5C5D3;
+  --button-state-color: var(--button-main-color);
+  --icon-size: 14px;
+  --icon-spacing: 6px;
+  --webkit-appearance: none;
   box-sizing: border-box;
+  background: none;
+  border: none;
+  outline: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   font-family: Poppins,sans-serif;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 600;
-  line-height: 1;
   cursor: default;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  font-weight: 500;
+  font-size: 11px;
+  border-radius: 16px;
+  width: auto;
+  min-width: 88px;
+  padding: 7px 10px;
+  border: 1px solid;
+  color: var(--button-state-color);
+}
+
+.c6:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c6:active:enabled {
+  --button-state-color: var(--button-main-color-active);
 }
 
 .c7 {
-  display: inline-block;
-  vertical-align: bottom;
-  margin: 0 0 0 10px;
+  min-height: var(--icon-size);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  text-transform: none;
+  line-height: 1;
+}
+
+.c8 {
+  display: block;
+  line-height: 0;
+  height: var(--icon-size);
+  width: var(--icon-size);
+  margin: 0 -4px 0 var(--icon-spacing);
 }
 
 <div
@@ -161,9 +206,8 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
           BAT
         </span>
       </div>
-      <div
+      <button
         className="c6"
-        color="subtle"
         disabled={true}
         icon={
           Object {
@@ -179,15 +223,16 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
                 fillRule="evenodd"
               />
             </svg>,
-            "position": "right",
+            "position": "after",
           }
         }
         onClick={undefined}
         size="small"
+        type="subtle"
       >
-        MISSING: grants
-        <span
+        <div
           className="c7"
+          disabled={true}
           icon={
             Object {
               "image": <svg
@@ -202,9 +247,38 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
                   fillRule="evenodd"
                 />
               </svg>,
-              "position": "right",
+              "position": "after",
             }
           }
+          onClick={undefined}
+          size="small"
+          type="subtle"
+        >
+          MISSING: grants
+        </div>
+        <div
+          className="c8"
+          disabled={true}
+          icon={
+            Object {
+              "image": <svg
+                height="5"
+                width="8"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
+                  fill="#FFF"
+                  fillOpacity="0.55"
+                  fillRule="evenodd"
+                />
+              </svg>,
+              "position": "after",
+            }
+          }
+          onClick={undefined}
+          size="small"
+          type="subtle"
         >
           <svg
             height="5"
@@ -218,18 +292,18 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
               fillRule="evenodd"
             />
           </svg>
-        </span>
-      </div>
+        </div>
+      </button>
     </div>
-    <div
-      className="c8"
-    />
     <div
       className="c9"
     />
+    <div
+      className="c10"
+    />
   </div>
   <div
-    className="c10"
+    className="c11"
   />
 </div>
 `;
