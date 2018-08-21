@@ -7,6 +7,8 @@
 /**
  * For rebasing Chromium, see this PR for vim commands:
  * https://github.com/brave/brave-core/pull/155
+ * After rebasing with vim replacing command, please change
+ * kUpgradeHelpCenterBaseURL manually.
  * IMPORTANMT: SCAN MANUALLY TO MAKE SURE NOTHING ELSE NEW IS MISSING!
  */
 
@@ -229,7 +231,7 @@ const char kSyncLearnMoreURL[] =
     "https://community.brave.com";
 
 const char kUpgradeHelpCenterBaseURL[] =
-    "https://community.brave.com";
+    "https://community.brave.com?p=update_error&error=";
 
 #if defined(OS_ANDROID)
 const char kAndroidAppScheme[] = "android-app";
