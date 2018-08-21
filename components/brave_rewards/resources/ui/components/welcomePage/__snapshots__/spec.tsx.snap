@@ -480,6 +480,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             <div
               className="c12"
               color="subtle"
+              data-test-id="optInAction"
               onClick={undefined}
               size="large"
             >

@@ -101,6 +101,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             color='subtle'
             text={getLocale('braveRewardsOptInText')}
             onClick={this.props.optInAction}
+            data-test-id='optInAction'
           />
         </StyledOptInSection>
         <StyledSection>
