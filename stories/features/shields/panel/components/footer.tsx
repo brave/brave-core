@@ -7,21 +7,21 @@ import { Grid, Column } from '../../../../../src/components/layout/gridList'
 import UnstyledButton from '../../../../../src/old/unstyledButton/index'
 import Anchor from '../../../../../src/old/anchor'
 import locale from '../fakeLocale'
-import theme from '../theme'
+import customStyle from '../theme'
 
 class BraveShieldsFooter extends React.PureComponent {
   render () {
     return (
-      <Grid id='braveShieldsFooter' theme={theme.braveShieldsFooter}>
-        <Column size={9} theme={theme.columnStart}>
+      <Grid id='braveShieldsFooter' customStyle={customStyle.braveShieldsFooter}>
+        <Column size={9} customStyle={customStyle.columnStart}>
           <Anchor
-            theme={theme.editLink}
+            customStyle={customStyle.editLink}
             href='chrome://settings'
             target='_blank'
             text={locale.shieldsFooterEditDefault}
           />
         </Column>
-        <Column size={3} theme={theme.columnEnd}>
+        <Column size={3} customStyle={customStyle.columnEnd}>
           <UnstyledButton text={locale.shieldsFooterReload} />
         </Column>
       </Grid>

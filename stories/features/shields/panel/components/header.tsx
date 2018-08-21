@@ -9,7 +9,7 @@ import SwitchButton from '../../../../../src/old/switchButton/index'
 import UnstyledButton from '../../../../../src/old/unstyledButton/index'
 import TextLabel from '../../../../../src/old/textLabel/index'
 import locale from '../fakeLocale'
-import theme from '../theme'
+import customStyle from '../theme'
 
 const doNothing = () => {
   console.log('nothing')
@@ -20,12 +20,12 @@ class BraveShieldsHeader extends React.PureComponent {
     return (
       <Grid
         id='braveShieldsHeader'
-        theme={theme.braveShieldsHeader}
+        customStyle={customStyle.braveShieldsHeader}
       >
-        <Column size={4} theme={theme.columnVerticalCenter}>
-          <TextLabel theme={theme.title} text={locale.shieldsHeaderShieldsToggle} />
+        <Column size={4} customStyle={customStyle.columnVerticalCenter}>
+          <TextLabel customStyle={customStyle.title} text={locale.shieldsHeaderShieldsToggle} />
         </Column>
-        <Column size={6} theme={theme.columnVerticalCenter}>
+        <Column size={6} customStyle={customStyle.columnVerticalCenter}>
           <SwitchButton
             id='shieldsToggle'
             leftText={locale.shieldsHeaderToggleLeftPosition}
@@ -34,9 +34,9 @@ class BraveShieldsHeader extends React.PureComponent {
             onChange={doNothing}
           />
         </Column>
-        <Column size={2} theme={theme.columnVerticalCenterEnd}>
+        <Column size={2} customStyle={customStyle.columnVerticalCenterEnd}>
           <UnstyledButton
-            theme={theme.closeButton}
+            customStyle={customStyle.closeButton}
             text='&times;'
             onClick={doNothing}
           />
@@ -44,9 +44,9 @@ class BraveShieldsHeader extends React.PureComponent {
         <Column>
           <Separator />
         </Column>
-        <Column theme={theme.hostnameContent}>
+        <Column customStyle={customStyle.hostnameContent}>
           <TextLabel text={locale.shieldsHeaderForSite} />
-          <TextLabel theme={theme.hostname} text='Simply Red Fan Club' />
+          <TextLabel customStyle={customStyle.hostname} text='Simply Red Fan Club' />
         </Column>
       </Grid>
     )

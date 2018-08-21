@@ -9,7 +9,7 @@ import SwitchButton from '../../../../../src/old/switchButton'
 import ContentToggleArrow from '../../../../../src/old/contentToggleArrow'
 import BoxedContent from '../../../../../src/old/boxedContent'
 import locale from '../fakeLocale'
-import theme from '../theme'
+import customStyle from '../theme'
 
 const log = (text: string) => {
   console.log(text)
@@ -20,7 +20,7 @@ class BraveShieldsControls extends React.PureComponent {
     return (
       <Grid
         id='braveShieldsControls'
-        theme={theme.braveShieldsControls}
+        customStyle={customStyle.braveShieldsControls}
       >
         <Column>
           <ContentToggleArrow
@@ -29,7 +29,7 @@ class BraveShieldsControls extends React.PureComponent {
             summary={locale.shieldsControlsAdvancedControls}
             onClick={log.bind(this, 'fired onClick')}
           >
-            <BoxedContent theme={theme.braveShieldsControlsContent}>
+            <BoxedContent customStyle={customStyle.braveShieldsControlsContent}>
               <SelectOption
                 disabled={false}
                 titleName={locale.shieldsControlsAdControl}
@@ -54,7 +54,7 @@ class BraveShieldsControls extends React.PureComponent {
                 <option value='block'>{locale.shieldsControlsFingerprintingOptionBlockAll}</option>
                 <option value='allow'>{locale.shieldsControlsFingerprintingOptionAllowAll}</option>
               </SelectOption>
-              <Grid theme={theme.braveShieldsControlsSwitches}>
+              <Grid customStyle={customStyle.braveShieldsControlsSwitches}>
                 <Column>
                   <SwitchButton
                     id='httpsEverywhere'

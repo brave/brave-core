@@ -7,49 +7,49 @@ import { Grid, Column } from '../../../../../src/components/layout/gridList/inde
 import TextLabel from '../../../../../src/old/textLabel/index'
 import data from '../fakeData'
 import locale from '../fakeLocale'
-import theme from '../theme'
+import customStyle from '../theme'
 
 class BraveShieldsStats extends React.PureComponent {
   render () {
     return (
       <Grid
         id='braveShieldsStats'
-        theme={theme.braveShieldsStats}
+        customStyle={customStyle.braveShieldsStats}
         disabled={false}
       >
-        <Column theme={theme.statsNumbers} size={1}>
+        <Column customStyle={customStyle.statsNumbers} size={1}>
           <TextLabel
-            theme={theme.totalAdsTrackersBlockedStat}
+            customStyle={customStyle.totalAdsTrackersBlockedStat}
             text={data.totalAdsTrackersBlocked}
           />
           <TextLabel
-            theme={theme.httpsRedirectedStat}
+            customStyle={customStyle.httpsRedirectedStat}
             text={data.httpsRedirected}
           />
           <TextLabel
-            theme={theme.javascriptBlockedStat}
+            customStyle={customStyle.javascriptBlockedStat}
             text={data.javascriptBlocked}
           />
           <TextLabel
-            theme={theme.fingerprintingBlockedStat}
+            customStyle={customStyle.fingerprintingBlockedStat}
             text={data.fingerprintingBlocked}
           />
         </Column>
-        <Column theme={theme.statsNames} size={11}>
+        <Column customStyle={customStyle.statsNames} size={11}>
           <TextLabel
-            theme={theme.totalAdsTrackersBlockedText}
+            customStyle={customStyle.totalAdsTrackersBlockedText}
             text={locale.shieldsStatsAdsTrackersBlocked}
           />
           <TextLabel
-            theme={theme.httpsRedirectedText}
+            customStyle={customStyle.httpsRedirectedText}
             text={locale.shieldsStatsHttpsUpgrades}
           />
           <TextLabel
-            theme={theme.javascriptBlockedText}
+            customStyle={customStyle.javascriptBlockedText}
             text={locale.shieldsStatsScriptsBlocked}
           />
           <TextLabel
-            theme={theme.fingerprintingBlockedText}
+            customStyle={customStyle.fingerprintingBlockedText}
             text={locale.shieldsFingerPrintingBlocked}
           />
         </Column>
