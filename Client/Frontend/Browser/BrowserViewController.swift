@@ -761,7 +761,7 @@ class BrowserViewController: UIViewController {
             }
             switch tabBarVisibility {
             case .always:
-                return tabCount > 1
+                return tabCount > 1 || UIDevice.current.userInterfaceIdiom == .pad
             case .landscapeOnly:
                 return tabCount > 1 && UIDevice.current.orientation.isLandscape
             case .never:
