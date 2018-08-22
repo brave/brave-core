@@ -30,7 +30,7 @@ private let log = Logger.browserLogger
 // Follow the stack design from http://floriankugler.com/2013/04/02/the-concurrent-core-data-stack/
 
 public class DataController: NSObject {
-    public static let shared = DataController()
+    public static var shared: DataController = DataController()
     
     fileprivate lazy var writeContext: NSManagedObjectContext = {
         let write = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -65,7 +65,7 @@ public class DataController: NSObject {
     fileprivate var managedObjectModel: NSManagedObjectModel!
     fileprivate var persistentStoreCoordinator: NSPersistentStoreCoordinator!
     
-    fileprivate override init() {
+    override init() {
         super.init()
 
        // TransformerUUID.setValueTransformer(transformer: NSValueTransformer?, forName name: String)
@@ -90,12 +90,14 @@ public class DataController: NSObject {
                     NSPersistentStoreFileProtectionKey : FileProtectionType.complete as AnyObject
                 ]
                 
+                let type = AppConstants.IsRunningTest ? NSInMemoryStoreType : NSSQLiteStoreType
+                
                 // Old store URL from old beta, can be removed at some point (thorough migration testing though)
                 var storeURL = docURL.appendingPathComponent("Brave.sqlite")
-                try self.persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
+                try self.persistentStoreCoordinator.addPersistentStore(ofType: type, configurationName: nil, at: storeURL, options: options)
                 
                 storeURL = docURL.appendingPathComponent("Model.sqlite")
-                try self.persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
+                try self.persistentStoreCoordinator.addPersistentStore(ofType: type, configurationName: nil, at: storeURL, options: options)
             }
             catch {
                 fatalError("Error migrating store: \(error)")
@@ -106,7 +108,8 @@ public class DataController: NSObject {
         _ = mainThreadContext
     }
     
-    public static func remove(object: NSManagedObject, context: NSManagedObjectContext = DataController.shared.mainThreadContext) {
+    public static func remove(object: NSManagedObject, context: NSManagedObjectContext? = nil) {
+        let context = context ?? DataController.shared.mainThreadContext
         context.delete(object)
         DataController.saveContext(context: context)
     }
@@ -131,12 +134,12 @@ public class DataController: NSObject {
             do {
                 try context.save()
                 
-                DataController.shared.writeContext.perform {
-                    if !DataController.shared.writeContext.hasChanges {
+                shared.writeContext.perform {
+                    if !shared.writeContext.hasChanges {
                         return
                     }
                     do {
-                        try DataController.shared.writeContext.save()
+                        try shared.writeContext.save()
                     } catch {
                         fatalError("Error saving DB to disk: \(error)")
                     }
@@ -146,14 +149,13 @@ public class DataController: NSObject {
             }
         }
     }
-}
-
-extension NSManagedObjectContext {
-    static var mainThreadContext: NSManagedObjectContext {
+    
+    public static var mainThreadContext: NSManagedObjectContext {
         return DataController.shared.mainThreadContext
     }
     
-    static var workerThreadContext: NSManagedObjectContext {
+    public static var workerThreadContext: NSManagedObjectContext {
         return DataController.shared.workerContext
     }
 }
+

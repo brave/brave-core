@@ -314,7 +314,7 @@ class Tab: NSObject {
         guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
             if let title = url?.absoluteString {
                 return title
-            } else if let tab = TabMO.get(fromId: id, context: DataController.shared.mainThreadContext) {
+            } else if let tab = TabMO.get(fromId: id, context: DataController.mainThreadContext) {
                 return tab.title ?? tab.url ?? ""
             }
             return ""
