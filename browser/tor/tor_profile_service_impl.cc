@@ -34,12 +34,12 @@ int64_t TorProfileServiceImpl::GetTorPid() {return 0;}
 
 void TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
                                      const GURL& url,bool new_circuit) {
-  if (url.host().empty())
+  if (url.host().empty() || tor_config_.empty())
     return;
   BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
                           base::Bind(&TorProxyConfigService::TorSetProxy,
                                      service,
-                                     tor_config_.proxy_config,
+                                     tor_config_.proxy_string(),
                                      url.host(),
                                      &tor_proxy_map_,
                                      new_circuit));

@@ -5,9 +5,9 @@
 #ifndef BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_
 #define BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_
 
-#include "base/files/file_path.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
+#include "brave/common/tor/tor_common.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
 
@@ -16,11 +16,6 @@ class ProxyResolutionService;
 }
 
 namespace tor {
-
-struct TorConfig {
-  base::FilePath binary_path;
-  std::string proxy_config;
-};
 
 using TorLaunchCallback =
     base::Callback<void(bool /* result */, int64_t /* pid */)>;
