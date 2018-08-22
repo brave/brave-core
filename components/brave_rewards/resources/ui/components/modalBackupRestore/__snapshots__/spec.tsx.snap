@@ -151,6 +151,61 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   margin-top: 59px;
 }
 
+.c10 {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.c11 {
+  width: 100%;
+  font-family: Poppins,sans-serif;
+  line-height: normal;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 7px;
+  padding-left: 2px;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  color: #686978;
+}
+
+.c0 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(12,13,33,0.85);
+  z-index: 99;
+  padding: 0 20px;
+  overflow: hidden;
+}
+
+.c1 {
+  max-width: 666px;
+  margin: 52px auto;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.c2 {
+  position: absolute;
+  top: 19px;
+  right: 19px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.c3 {
+  padding: 61px 50px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
 .c5 {
   border-bottom: 1px solid #DFDFE8;
   text-align: center;
@@ -203,8 +258,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   padding: 34px 56px 20px;
 }
 
-.c10 {
-  max-width: 100%;
+.c12 {
   width: 100%;
 }
 
@@ -213,62 +267,17 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   box-sizing: border-box;
   width: 100%;
   font-family: Muli,sans-serif;
-  border: 1px solid #DFDFE8;
+  border: 1px solid #E5E5EA;
+  color: #D1D1DB;
   border-radius: 6px;
   padding: 15px 20px;
   font-size: 16px;
   line-height: 26px;
 }
 
-.c11 {
-  max-width: 100%;
-  width: 100%;
-  margin-bottom: 12px;
-}
-
-.c12 {
-  width: 100%;
-  font-family: Poppins,sans-serif;
-  line-height: normal;
-  font-size: 14px;
-  font-weight: 500;
-  color: #686978;
-  margin-bottom: 6px;
-}
-
-.c0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(12,13,33,0.85);
-  z-index: 99;
-  padding: 0 20px;
-  overflow: hidden;
-}
-
-.c1 {
-  max-width: 666px;
-  margin: 52px auto;
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.c2 {
-  position: absolute;
-  top: 19px;
-  right: 19px;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.c3 {
-  padding: 61px 50px;
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
+.c13:focus {
+  border-color: #A1A8F2;
+  outline: none;
 }
 
 <div
@@ -336,13 +345,15 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
             >
               <div
                 className="c11"
+                disabled={false}
+                type="light"
+              >
+                MISSING: recoveryKeys
+              </div>
+              <div
+                className="c12"
                 id={undefined}
               >
-                <div
-                  className="c12"
-                >
-                  MISSING: recoveryKeys
-                </div>
                 <textarea
                   className="c13"
                   disabled={true}

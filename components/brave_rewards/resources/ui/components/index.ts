@@ -5,7 +5,6 @@
 import Alert from './alert'
 import Amount from './amount'
 import Box from './box'
-import ControlWrapper from './controlWrapper'
 import DisabledContent from './disabledContent'
 import Donate from './donate'
 import GrantCaptcha from './grantCaptcha'
@@ -40,7 +39,6 @@ export {
   Alert,
   Amount,
   Box,
-  ControlWrapper,
   DisabledContent,
   Donate,
   GrantCaptcha,

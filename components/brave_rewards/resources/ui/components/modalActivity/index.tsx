@@ -27,10 +27,9 @@ import {
   StyledIcon,
   StyledClosing
 } from './style'
-import Modal from '../../../components/popupModals/modal/index'
 import TableContribute, { DetailRow as ContributeRow } from '../tableContribute'
 import TableTransactions, { DetailRow as TransactionRow } from '../tableTransactions'
-import Select from '../../../components/formControls/select'
+import { Select, ControlWrapper, Modal } from '../../../components'
 import ListToken from '../listToken'
 import { Type as TokenType } from '../tokens'
 
@@ -172,23 +171,20 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
             <StyledLeft>
               {
                 months
-                ? <Select
-                  value={currentMonth}
-                  onChange={onMonthChange}
-                  title={this.selectTitle}
-                  customStyle={{
-                    padding: '7px 0',
-                    maxWidth: '100%'
-                  }}
-                >
-                  {
-                    Object.keys(months).map((item: string) => {
-                      return <div data-value={item} key={`${id}-monthly-${item}`}>
-                        <StyledSelectOption>{months[item]}</StyledSelectOption>
-                      </div>
-                    })
-                  }
-                </Select>
+                ? <ControlWrapper text={this.selectTitle}>
+                  <Select
+                    value={currentMonth}
+                    onChange={onMonthChange}
+                  >
+                    {
+                      Object.keys(months).map((item: string) => {
+                        return <div data-value={item} key={`${id}-monthly-${item}`}>
+                          <StyledSelectOption>{months[item]}</StyledSelectOption>
+                        </div>
+                      })
+                    }
+                  </Select>
+                </ControlWrapper>
                 : null
               }
               {

@@ -13,7 +13,7 @@ import {
   TableContribute,
   Tokens
 } from '../../../../src/features/rewards'
-import { Column, Grid, Select } from '../../../../src/components'
+import { Column, Grid, Select, ControlWrapper } from '../../../../src/components'
 import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
 
 // Utils
@@ -51,17 +51,21 @@ class ContributeBox extends React.Component<{}, State> {
       <>
         <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
             <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Select title={locale.contributionMonthly}>
-                <div data-value='10'><Tokens value={10} converted={4}/></div>
-                <div data-value='20'><Tokens value={20} converted={6}/></div>
-                <div data-value='40'><Tokens value={40} converted={12}/></div>
-                <div data-value='100'><Tokens value={100} converted={40}/></div>
-              </Select>
-               <Select title={locale.contributionSitesLimit}>
-                <div data-value='0'>{locale.contributionSitesNoLimit}</div>
-                <div data-value='10'>{locale.contributionSitesLimit10}</div>
-                <div data-value='50'>{locale.contributionSitesLimit50}</div>
-              </Select>
+              <ControlWrapper text={locale.contributionMonthly}>
+                <Select>
+                  <div data-value='10'><Tokens value={10} converted={4}/></div>
+                  <div data-value='20'><Tokens value={20} converted={6}/></div>
+                  <div data-value='40'><Tokens value={40} converted={12}/></div>
+                  <div data-value='100'><Tokens value={100} converted={40}/></div>
+                </Select>
+              </ControlWrapper>
+              <ControlWrapper text={locale.contributionSitesLimit}>
+                <Select>
+                  <div data-value='0'>{locale.contributionSitesNoLimit}</div>
+                  <div data-value='10'>{locale.contributionSitesLimit10}</div>
+                  <div data-value='50'>{locale.contributionSitesLimit50}</div>
+                </Select>
+              </ControlWrapper>
             </Column>
           </Grid>
       </>
@@ -164,14 +168,7 @@ class ContributeBox extends React.Component<{}, State> {
             : null
         }
         <List title={locale.contributionMonthly}>
-          <Select
-            customStyle={{
-              border: 'none',
-              padding: '0',
-              arrowPadding: '0',
-              maxWidth: '100%'
-            }}
-          >
+          <Select>
             <div data-value='10'><Tokens value={10} converted={4}/></div>
             <div data-value='20'><Tokens value={20} converted={6}/></div>
             <div data-value='40'><Tokens value={40} converted={12}/></div>

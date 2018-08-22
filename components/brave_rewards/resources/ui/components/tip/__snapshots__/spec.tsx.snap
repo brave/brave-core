@@ -64,7 +64,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   max-width: 167px;
 }
 
-.c11 {
+.c13 {
   background: #392dd1;
   font-size: 13px;
   font-weight: 600;
@@ -81,42 +81,62 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c12 {
+.c14 {
   vertical-align: middle;
   display: inline-block;
   margin-right: 18px;
 }
 
 .c8 {
-  position: relative;
-  display: block;
-  width: 20px;
-  height: 11px;
-}
-
-.c9 {
-  background: #A7ACB2;
-  width: 100%;
-  border-radius: 3px;
-  height: 4px;
-  margin-top: 4.5px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .c10 {
+  position: relative;
+  display: block;
+  height: 16px;
+  width: 28px;
+}
+
+.c11 {
+  background: #A7ACB2;
+  height: 6px;
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.c12 {
   position: relative;
   z-index: 2;
   border-radius: 50%;
   -webkit-transition: 200ms ease-out;
   transition: 200ms ease-out;
-  background-color: #fb542b;
-  -webkit-transform: translate(0,calc(-50% - 4px));
-  -ms-transform: translate(0,calc(-50% - 4px));
-  transform: translate(0,calc(-50% - 4px));
-  width: 11px;
-  height: 11px;
-  -webkit-transform: translate(0,calc(-50% - 2px));
-  -ms-transform: translate(0,calc(-50% - 2px));
-  transform: translate(0,calc(-50% - 2px));
+  width: 16px;
+  height: 16px;
+  -webkit-transform: translate(-1px,calc(-50% - 3px));
+  -ms-transform: translate(-1px,calc(-50% - 3px));
+  transform: translate(-1px,calc(-50% - 3px));
+  background-color: #CDD1D5;
+}
+
+.c9 {
+  color: #838391;
+  font-size: 12px;
+  font-family: Poppins,sans-serif;
+  text-align: right;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin: 0px 8px 0 0;
+  opacity: 1;
+  -webkit-transition: 100ms ease-out;
+  transition: 100ms ease-out;
 }
 
 <div
@@ -167,33 +187,47 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
           className="c7"
         >
           <div
-            checked={undefined}
             className="c8"
-            disabled={undefined}
             id={undefined}
-            onClick={[Function]}
-            size="small"
           >
             <div
-              className="c9"
-              size="small"
-            />
-            <div
               checked={undefined}
-              className="c10"
+              className="c9"
+              disabled={undefined}
               size="small"
-            />
+            >
+              MISSING: off
+            </div>
+            <div
+              className="c10"
+              data-test-id="toggle"
+              onClick={[Function]}
+              size="small"
+            >
+              <div
+                className="c11"
+                disabled={undefined}
+                size="small"
+              />
+              <div
+                checked={undefined}
+                className="c12"
+                disabled={undefined}
+                size="small"
+                type="light"
+              />
+            </div>
           </div>
         </span>
       </div>
     </div>
     <button
-      className="c11"
+      className="c13"
       disabled={false}
       onClick={undefined}
     >
       <span
-        className="c12"
+        className="c14"
       >
         <svg
           height="21"

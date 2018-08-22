@@ -7,7 +7,7 @@ import * as React from 'react'
 // Components
 import { Box, TableDonation, Tokens, List } from '../../../../src/features/rewards'
 import { DetailRow as DonationDetailRow } from '../../../../src/features/rewards/tableDonation'
-import { Column, Grid, Checkbox } from '../../../../src/components'
+import { Column, Grid, Checkbox, ControlWrapper } from '../../../../src/components'
 
 // Utils
 import locale from './fakeLocale'
@@ -73,15 +73,16 @@ class DonationsBox extends React.Component {
       <>
         <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
             <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Checkbox
-                title={'Enable ability to give tips on ‘Like’ posts'}
-                value={{ 'yt': true, 'tw': false, 'inst': false }}
-                multiple={true}
-              >
-                <div data-key='yt'>YouTube</div>
-                <div data-key='tw'>Twitter</div>
-                <div data-key='inst'>Instagram</div>
-              </Checkbox>
+              <ControlWrapper text={'Enable ability to give tips on ‘Like’ posts'}>
+                <Checkbox
+                  value={{ 'yt': true, 'tw': false, 'inst': false }}
+                  multiple={true}
+                >
+                  <div data-key='yt'>YouTube</div>
+                  <div data-key='tw'>Twitter</div>
+                  <div data-key='inst'>Instagram</div>
+                </Checkbox>
+              </ControlWrapper>
             </Column>
           </Grid>
       </>

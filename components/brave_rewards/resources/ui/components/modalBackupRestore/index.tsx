@@ -14,12 +14,10 @@ import {
   GroupedButton,
   ActionButton
 } from './style'
-import Tabs from '../../../components/layout/tabs/index'
-import TextArea from '../../../components/formControls/textarea/index'
-import Modal from '../../../components/popupModals/modal/index'
-import Button from '../../../components/buttonsIndicators/button'
+import { TextArea, Tabs, Modal, Button } from '../../../components'
 import { getLocale } from '../../../helpers'
 import Alert from '../alert'
+import ControlWrapper from '../../../components/formControls/controlWrapper'
 
 export type TabsType = 'backup' | 'restore'
 
@@ -111,12 +109,12 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             <StyledContent>
               {getLocale('rewardsBackupText2')}
             </StyledContent>
-            <TextArea
-              title={getLocale('recoveryKeys')}
-              customStyle={{ maxWidth: '100%', minHeight: '140px' }}
-              value={backupKey}
-              disabled={true}
-            />
+            <ControlWrapper text={getLocale('recoveryKeys')}>
+              <TextArea
+                value={backupKey}
+                disabled={true}
+              />
+            </ControlWrapper>
             <StyleButtonWrapper>
               <GroupedButton
                 text={getLocale('copy')}
@@ -162,25 +160,29 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
                 : null
               }
             </StyledStatus>
-            <TextArea
-              title={<>
-                {getLocale('rewardsRestoreText3')} <StyledImport
-                  htmlFor={'recoverFile'}
-                >
-                  {getLocale('import')}
-                </StyledImport>
-                <input
-                  type='file'
-                  id='recoverFile'
-                  name='recoverFile'
-                  style={{ display: 'none' }}
-                  onChange={this.onFileUpload}
-                />
-              </>}
-              customStyle={{ maxWidth: '100%', minHeight: '140px' }}
-              value={this.state.recoveryKey}
-              onChange={this.setRecoveryKey}
-            />
+            <ControlWrapper
+              text={
+                <>
+                  {getLocale('rewardsRestoreText3')} <StyledImport
+                    htmlFor={'recoverFile'}
+                  >
+                    {getLocale('import')}
+                  </StyledImport>
+                  <input
+                    type='file'
+                    id='recoverFile'
+                    name='recoverFile'
+                    style={{ display: 'none' }}
+                    onChange={this.onFileUpload}
+                  />
+                </>
+              }
+            >
+              <TextArea
+                value={this.state.recoveryKey}
+                onChange={this.setRecoveryKey}
+              />
+            </ControlWrapper>
             <StyledActionsWrapper>
               <ActionButton
                 level={'secondary'}

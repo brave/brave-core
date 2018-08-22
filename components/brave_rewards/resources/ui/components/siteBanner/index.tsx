@@ -220,7 +220,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 <Checkbox
                   value={{ make: this.state.monthly }}
                   onChange={this.onMonthlyChange}
-                  customStyle={{ checkColor: '#fff', borderColor: '#a1a8f2' }}
+                  type={'dark'}
                 >
                   <div data-key='make'>
                     <StyledOption>{getLocale('makeMonthly')}</StyledOption> <StyledIconRecurring>{monthly()}</StyledIconRecurring>

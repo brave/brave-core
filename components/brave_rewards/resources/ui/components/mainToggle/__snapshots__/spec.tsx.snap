@@ -75,14 +75,14 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   vertical-align: text-top;
 }
 
-.c9 {
+.c11 {
   font-size: 22px;
   line-height: 1.27;
   color: #4b4c5c;
   margin-top: 40px;
 }
 
-.c10 {
+.c12 {
   font-family: Muli,sans-serif;
   font-size: 16px;
   font-weight: 300;
@@ -90,39 +90,62 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   color: #838391;
 }
 
-.c8 {
+.c10 {
   -webkit-flex-basis: 100%;
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
 }
 
 .c5 {
-  position: relative;
-  display: block;
-  width: 40px;
-  height: 24px;
-}
-
-.c6 {
-  background: #A7ACB2;
-  width: 100%;
-  border-radius: 3px;
-  height: 8px;
-  margin-top: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .c7 {
+  position: relative;
+  display: block;
+  height: 24px;
+  width: 40px;
+}
+
+.c8 {
+  background: #A7ACB2;
+  height: 8px;
+  margin-top: 8px;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.c9 {
   position: relative;
   z-index: 2;
   border-radius: 50%;
   -webkit-transition: 200ms ease-out;
   transition: 200ms ease-out;
-  background-color: #CDD1D5;
-  -webkit-transform: translate(0,calc(-50% - 4px));
-  -ms-transform: translate(0,calc(-50% - 4px));
-  transform: translate(0,calc(-50% - 4px));
   width: 24px;
   height: 24px;
+  -webkit-transform: translate(-1px,calc(-50% - 4px));
+  -ms-transform: translate(-1px,calc(-50% - 4px));
+  transform: translate(-1px,calc(-50% - 4px));
+  background-color: #CDD1D5;
+}
+
+.c6 {
+  color: #838391;
+  font-size: 14px;
+  font-family: Poppins,sans-serif;
+  text-align: right;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin: 4px 8px 0 0;
+  opacity: 1;
+  -webkit-transition: 100ms ease-out;
+  transition: 100ms ease-out;
 }
 
 <div
@@ -187,34 +210,48 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
     className="c4"
   >
     <div
-      checked={undefined}
       className="c5"
-      disabled={undefined}
       id={undefined}
-      onClick={undefined}
-      size="large"
     >
       <div
-        className="c6"
-        size="large"
-      />
-      <div
         checked={undefined}
-        className="c7"
+        className="c6"
+        disabled={undefined}
         size="large"
-      />
+      >
+        MISSING: off
+      </div>
+      <div
+        className="c7"
+        data-test-id="toggle"
+        onClick={undefined}
+        size="large"
+      >
+        <div
+          className="c8"
+          disabled={undefined}
+          size="large"
+        />
+        <div
+          checked={undefined}
+          className="c9"
+          disabled={undefined}
+          size="large"
+          type="dark"
+        />
+      </div>
     </div>
   </div>
   <div
-    className="c8"
+    className="c10"
   >
     <div
-      className="c9"
+      className="c11"
     >
       MISSING: rewardsWhy
     </div>
     <div
-      className="c10"
+      className="c12"
     >
       MISSING: rewardsOffText1
        
@@ -224,12 +261,12 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
       </b>
     </div>
     <div
-      className="c9"
+      className="c11"
     >
       MISSING: rewardsOffText3
     </div>
     <div
-      className="c10"
+      className="c12"
     >
       MISSING: rewardsOffText4
     </div>
