@@ -164,10 +164,12 @@ extension AdjustIntegration: AdjustDelegate {
     ///
     /// Here we also disable Adjust based on the Send Anonymous Usage Data setting.
 
-    func adjustAttributionChanged(_ attribution: ADJAttribution!) {
+    func adjustAttributionChanged(_ attribution: ADJAttribution?) {
         do {
             Logger.browserLogger.info("Adjust - Saving attribution info to disk")
-            try saveAttribution(attribution)
+            if let attribution = attribution {
+                try saveAttribution(attribution)
+            }
         } catch let error {
             Logger.browserLogger.error("Adjust - Failed to save attribution: \(error)")
         }

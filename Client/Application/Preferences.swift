@@ -92,6 +92,8 @@ extension Preferences {
         static let blockScripts = Option<Bool>(key: "shields.block-scripts", default: false)
         /// Enforces fingerprinting protection on the users session
         static let fingerprintingProtection = Option<Bool>(key: "shields.fingerprinting-protection", default: false)
+        /// Disables image loading in the browser
+        static let blockImages = Option<Bool>(key: "shields.block-images", default: false)
         ///
         static let useRegionAdBlock = Option<Bool>(key: "shields.regional-adblock", default: false)
     }

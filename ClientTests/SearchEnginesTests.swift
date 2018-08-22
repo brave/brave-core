@@ -8,6 +8,7 @@ import XCTest
 import Shared
 
 private let DefaultSearchEngineName = "Google"
+// BRAVE TODO: This list is not accurate because Brave uses many more engines
 private let ExpectedEngineNames = ["Amazon.com", "Bing", "DuckDuckGo", "Google", "Twitter", "Wikipedia"]
 
 class SearchEnginesTests: XCTestCase {
@@ -89,11 +90,6 @@ class SearchEnginesTests: XCTestCase {
         XCTAssertEqual(engines2.orderedEngines[0].shortName, ExpectedEngineNames[4])
         XCTAssertEqual(engines2.orderedEngines[1].shortName, ExpectedEngineNames[2])
         XCTAssertEqual(engines2.orderedEngines[2].shortName, ExpectedEngineNames[0])
-
-        // Remaining engines should be appended in alphabetical order.
-        XCTAssertEqual(engines2.orderedEngines[3].shortName, ExpectedEngineNames[1])
-        XCTAssertEqual(engines2.orderedEngines[4].shortName, ExpectedEngineNames[3])
-        XCTAssertEqual(engines2.orderedEngines[5].shortName, ExpectedEngineNames[5])
     }
 
     func testQuickSearchEngines() {
@@ -153,10 +149,10 @@ class SearchEnginesTests: XCTestCase {
     }
 
     func testUnorderedSearchEngines() {
-        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "zh-TW")).flatMap({$0.shortName}), ["Google", "Bing", "DuckDuckGo", "Wikipedia (zh)"])
-        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "en-CA")).flatMap({$0.shortName}), ["Google", "Bing", "Amazon.com", "DuckDuckGo", "Twitter", "Wikipedia"])
-        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "de-DE")).flatMap({$0.shortName}), ["Google", "Bing", "Amazon.de", "DuckDuckGo", "Qwant", "Twitter", "Wikipedia (de)"])
-        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "en-US")).flatMap({$0.shortName}), ["Google", "Bing", "Amazon.com", "DuckDuckGo", "Twitter", "Wikipedia"])
+        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "zh-TW")).compactMap({$0.shortName}), ["Google", "Bing", "Wikipedia (zh)", "DuckDuckGo", "Github", "Infogalactic", "Qwant", "Semantic Scholar", "Stack Overflow", "StartPage", "Wolfram Alpha", "YouTube"])
+        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "en-CA")).compactMap({$0.shortName}), ["Google", "Amazon.com", "Twitter", "Wikipedia", "Yahoo", "Bing", "DuckDuckGo", "Github", "Infogalactic", "Qwant", "Semantic Scholar", "Stack Overflow", "StartPage", "Wolfram Alpha", "YouTube"])
+        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "de-DE")).compactMap({$0.shortName}), ["Google", "Amazon.de", "Bing", "Twitter", "Wikipedia (de)", "Yahoo", "DuckDuckGo", "Github", "Infogalactic", "Qwant", "Semantic Scholar", "Stack Overflow", "StartPage", "Wolfram Alpha", "YouTube"])
+        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "en-US")).compactMap({$0.shortName}), ["Google", "Amazon.com", "Twitter", "Wikipedia", "Yahoo", "Bing", "DuckDuckGo", "Github", "Infogalactic", "Qwant", "Semantic Scholar", "Stack Overflow", "StartPage", "Wolfram Alpha", "YouTube"])
     }
 
     func testGetOrderedEngines() {

@@ -271,6 +271,7 @@ class SettingsViewController: TableViewController {
                 BoolRow(title: Strings.Block_Phishing_and_Malware, option: Preferences.Shields.blockPhishingAndMalware),
                 BoolRow(title: Strings.Block_Scripts, option: Preferences.Shields.blockScripts),
                 BoolRow(title: Strings.Fingerprinting_Protection, option: Preferences.Shields.fingerprintingProtection),
+                BoolRow(title: Strings.AppMenuNoImageMode, option: Preferences.Shields.blockImages),
             ]
         )
         // TODO: Add regional adblock

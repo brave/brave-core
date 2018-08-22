@@ -7,6 +7,7 @@ import Shared
 import Storage
 import SDWebImage
 import Deferred
+import class Data.FaviconMO
 
 class FaviconHandler {
     static let MaximumFaviconSize = 1 * 1024 * 1024 // 1 MiB file size limit
@@ -29,8 +30,6 @@ class FaviconHandler {
 
         let deferred = Deferred<Maybe<(Favicon, Data?)>>()
         let manager = SDWebImageManager.shared()
-        let url = currentURL.absoluteString
-        let site = Site(url: url, title: "")
         let options: SDWebImageOptions = tab.isPrivate ? SDWebImageOptions([.lowPriority, .cacheMemoryOnly]) : SDWebImageOptions([.lowPriority])
 
         var fetch: SDWebImageOperation? = nil
@@ -42,15 +41,13 @@ class FaviconHandler {
         }
 
         let onSuccess: (Favicon, Data?) -> Void = { [weak tab] (favicon, data) -> Void in
-            tab?.favicons.append(favicon)
-
-            guard !(tab?.isPrivate ?? true), let appDelegate = UIApplication.shared.delegate as? AppDelegate, let profile = appDelegate.profile else {
-                deferred.fill(Maybe(success: (favicon, data)))
-                return
-            }
-
-            profile.favicons.addFavicon(favicon, forSite: site) >>> {
-                deferred.fill(Maybe(success: (favicon, data)))
+            defer { deferred.fill(Maybe(success: (favicon, data))) }
+            
+            guard let tab = tab else { return }
+            
+            tab.favicons.append(favicon)
+            if !tab.isPrivate {
+                FaviconMO.add(favicon, forSiteUrl: currentURL)
             }
         }
 

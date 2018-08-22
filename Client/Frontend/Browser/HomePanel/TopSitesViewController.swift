@@ -211,11 +211,7 @@ class TopSitesViewController: UIViewController {
     // MARK: - Constraints setup
     fileprivate func makeConstraints() {
         collection.snp.makeConstraints { make in
-            if #available(iOS 11.0, *) {
-                make.edges.equalTo(self.view.safeAreaLayoutGuide.snp.edges)
-            } else {
-                make.edges.equalTo(self.view)
-            }
+            make.edges.equalTo(self.view.safeAreaLayoutGuide.snp.edges)
         }
         
         privateTabMessageContainer.snp.makeConstraints { make in
