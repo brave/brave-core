@@ -1,16 +1,8 @@
 diff --git a/net/url_request/url_request_context_builder.cc b/net/url_request/url_request_context_builder.cc
-index 800515a58cfa8546288d961fc9d14ae4676fcb5f..370dad80825d373f9fe1284adeb69e920ba86aa9 100644
+index 800515a58cfa8546288d961fc9d14ae4676fcb5f..c75eec623aa0aff28ed8fd0607af082bc58de768 100644
 --- a/net/url_request/url_request_context_builder.cc
 +++ b/net/url_request/url_request_context_builder.cc
-@@ -14,6 +14,7 @@
- #include "base/single_thread_task_runner.h"
- #include "base/strings/string_util.h"
- #include "base/task_scheduler/post_task.h"
-+#include "brave/net/url_request/magnet_protocol_handler.h"
- #include "net/base/cache_type.h"
- #include "net/base/net_errors.h"
- #include "net/base/network_delegate_impl.h"
-@@ -621,6 +622,8 @@ std::unique_ptr<URLRequestContext> URLRequestContextBuilder::Build() {
+@@ -621,6 +621,8 @@ std::unique_ptr<URLRequestContext> URLRequestContextBuilder::Build() {
    }
  #endif  // !BUILDFLAG(DISABLE_FTP_SUPPORT)
  
