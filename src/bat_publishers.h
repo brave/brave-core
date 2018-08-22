@@ -45,9 +45,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void setPublisherMinVisits(const unsigned int& visits);
 
   void setPublisherAllowNonVerified(const bool& allow);
-  void setBalanceReport(const std::string& year, const std::string& month, 
+  void setBalanceReport(const std::string& year, ledger::PUBLISHER_MONTH month, 
     const ledger::BalanceReportInfo& report_info);
-  bool getBalanceReport(const std::string& year, const std::string& month, 
+  bool getBalanceReport(const std::string& year, ledger::PUBLISHER_MONTH month, 
     ledger::BalanceReportInfo* report_info);
 
   uint64_t getPublisherMinVisitTime() const; // In milliseconds
@@ -60,9 +60,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo>);
   std::string GetPublisherKey(ledger::PUBLISHER_CATEGORY category, const std::string& year,
-    const std::string& month, const std::string& publisher_id);
+    ledger::PUBLISHER_MONTH month, const std::string& publisher_id);
   std::string GetBalanceReportName(const std::string& year,
-    const std::string& month);
+    ledger::PUBLISHER_MONTH month);
 
  private:
   // LedgerCallbackHandler impl

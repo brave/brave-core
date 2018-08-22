@@ -20,12 +20,27 @@ LEDGER_EXPORT enum PUBLISHER_CATEGORY {
   RECURRING_DONATION = 1 << 4
 };
 
+LEDGER_EXPORT enum PUBLISHER_MONTH {
+  JANUARY = 1,
+  FEBRUARY = 2,
+  MARCH = 3,
+  APRIL = 4,
+  MAY = 5,
+  JUNE = 6,
+  JULY = 7,
+  AUGUST = 8,
+  SEPTEMBER = 9,
+  OCTOBER = 10,
+  NOVEMBER = 11,
+  DECEMBER = 12
+};
+
 LEDGER_EXPORT struct PublisherInfoFilter {
   PublisherInfoFilter(int category_, 
-    const std::string& month_, const std::string& year_);
+    PUBLISHER_MONTH month_, const std::string& year_);
 
   int category;
-  std::string month;
+  PUBLISHER_MONTH month;
   std::string year;
 };
 
@@ -62,7 +77,7 @@ LEDGER_EXPORT struct PublisherInfo {
   std::string key;
   std::vector<ContributionInfo> contributions;
   PUBLISHER_CATEGORY category;
-  std::string month;
+  PUBLISHER_MONTH month;
   std::string year;
 };
 

@@ -109,14 +109,14 @@ void BatPublishers::saveVisit(const ledger::VisitData& visit_data, const uint64_
 }
 
 std::string BatPublishers::GetPublisherKey(ledger::PUBLISHER_CATEGORY category, const std::string& year,
-    const std::string& month, const std::string& publisher_id) {
+    ledger::PUBLISHER_MONTH month, const std::string& publisher_id) {
   return std::to_string(category) + "_" +
-    year + "_" + month + "." + publisher_id;
+    year + "_" + std::to_string(month) + "." + publisher_id;
 }
 
 std::string BatPublishers::GetBalanceReportName(const std::string& year,
-    const std::string& month) {
-  return year + "_" + month + "_balance";
+    const ledger::PUBLISHER_MONTH month) {
+  return year + "_" + std::to_string(month) + "_balance";
 }
 
 void onVisitSavedDummy(ledger::Result result,
@@ -367,7 +367,7 @@ bool BatPublishers::isEligableForContribution(const ledger::PublisherInfo& info)
 }
 
 void BatPublishers::setBalanceReport(const std::string& year,
-    const std::string& month, const ledger::BalanceReportInfo& report_info) {
+    ledger::PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) {
   braveledger_bat_helper::REPORT_BALANCE_ST report_balance;
   report_balance.opening_balance_ = report_info.opening_balance_;
   report_balance.closing_balance_ = report_info.closing_balance_;
@@ -381,7 +381,7 @@ void BatPublishers::setBalanceReport(const std::string& year,
 }
 
 bool BatPublishers::getBalanceReport(const std::string& year,
-    const std::string& month, ledger::BalanceReportInfo* report_info) {
+    ledger::PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) {
   std::map<std::string, braveledger_bat_helper::REPORT_BALANCE_ST>::const_iterator iter = 
     state_->monthly_balances_.find(GetBalanceReportName(year, month));
   DCHECK(iter != state_->monthly_balances_.end() && report_info);

@@ -21,7 +21,7 @@ LEDGER_EXPORT struct VisitData {
             const std::string& _domain,
             const std::string& _path,
             uint32_t _tab_id,
-            const std::string& _local_month,
+            PUBLISHER_MONTH _local_month,
             const std::string& _local_year);
   VisitData(const VisitData& data);
   ~VisitData();
@@ -30,7 +30,7 @@ LEDGER_EXPORT struct VisitData {
   std::string domain;
   std::string path;
   uint32_t tab_id;
-  std::string local_month;
+  PUBLISHER_MONTH local_month;
   std::string local_year;
 };
 
@@ -40,7 +40,7 @@ LEDGER_EXPORT struct PaymentData {
            const double& _value,
            const int64_t& _timestamp,
            PUBLISHER_CATEGORY _category,
-           const std::string& _local_month,
+           PUBLISHER_MONTH _local_month,
            const std::string& _local_year);
   PaymentData(const PaymentData& data);
   ~PaymentData();
@@ -49,7 +49,7 @@ LEDGER_EXPORT struct PaymentData {
   double value;
   int64_t timestamp;
   PUBLISHER_CATEGORY category;
-  std::string local_month;
+  PUBLISHER_MONTH local_month;
   std::string local_year;
 };
 
@@ -100,7 +100,7 @@ class LEDGER_EXPORT Ledger {
   virtual void SetPublisherAllowNonVerified(bool allow) = 0;
   virtual void SetContributionAmount(double amount) = 0;
   virtual void SetBalanceReport(const std::string& year,
-    const std::string& month, const ledger::BalanceReportInfo& report_info) = 0;
+    PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) = 0;
 
   virtual const std::string& GetBATAddress() const = 0;
   virtual const std::string& GetBTCAddress() const = 0;
@@ -116,7 +116,7 @@ class LEDGER_EXPORT Ledger {
   virtual void GetPromotionCaptcha() const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
   virtual bool GetBalanceReport(const std::string& year,
-    const std::string& month, ledger::BalanceReportInfo* report_info) const = 0;
+    PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) const = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 };

@@ -471,12 +471,12 @@ void LedgerImpl::OnPromotionFinish(ledger::Result result, unsigned int statusCod
 }
 
 bool LedgerImpl::GetBalanceReport(const std::string& year,
-    const std::string& month, ledger::BalanceReportInfo* report_info) const {
+    ledger::PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) const {
   return bat_publishers_->getBalanceReport(year, month, report_info);
 }
 
 void LedgerImpl::SetBalanceReport(const std::string& year,
-    const std::string& month, const ledger::BalanceReportInfo& report_info) {
+    ledger::PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) {
   bat_publishers_->setBalanceReport(year, month, report_info);
 }
 

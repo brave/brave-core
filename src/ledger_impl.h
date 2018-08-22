@@ -62,7 +62,7 @@ class LedgerImpl : public ledger::Ledger,
   void SetPublisherAllowNonVerified(bool allow) override;
   void SetContributionAmount(double amount) override;
   void SetBalanceReport(const std::string& year,
-    const std::string& month, const ledger::BalanceReportInfo& report_info) override;
+    ledger::PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) override;
 
   const std::string& GetBATAddress() const override;
   const std::string& GetBTCAddress() const override;
@@ -73,7 +73,7 @@ class LedgerImpl : public ledger::Ledger,
   bool GetPublisherAllowNonVerified() const override;
   double GetContributionAmount() const override;
   bool GetBalanceReport(const std::string& year,
-    const std::string& month, ledger::BalanceReportInfo* report_info) const override;
+    ledger::PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) const override;
 
 
   void SaveLedgerState(const std::string& data);

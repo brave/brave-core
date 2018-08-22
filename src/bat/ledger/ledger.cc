@@ -18,7 +18,7 @@ VisitData::VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
             uint32_t _tab_id,
-            const std::string& _local_month,
+            PUBLISHER_MONTH _local_month,
             const std::string& _local_year) :
     tld(_tld),
     domain(_domain),
@@ -47,7 +47,7 @@ PaymentData::PaymentData(const std::string& _domain,
          const double& _value,
          const int64_t& _timestamp,
          PUBLISHER_CATEGORY _category,
-         const std::string& _local_month,
+         PUBLISHER_MONTH _local_month,
          const std::string& _local_year):
   domain(_domain),
   value(_value),
@@ -68,7 +68,7 @@ PaymentData::~PaymentData() {}
 
 
 PublisherInfoFilter::PublisherInfoFilter(int category_, 
-    const std::string& month_, const std::string& year_):
+    PUBLISHER_MONTH month_, const std::string& year_):
   category(PUBLISHER_CATEGORY::ALL_CATEGORIES),
   month(month_),
   year(year_) {}
@@ -160,7 +160,7 @@ const std::string PublisherInfo::ToJSON() const {
   writer.Int(category);
 
   writer.String("month");
-  writer.String(month.c_str());
+  writer.Int(month);
 
   writer.String("year");
   writer.String(year.c_str());
@@ -203,7 +203,7 @@ const PublisherInfo PublisherInfo::FromJSON(const std::string& json) {
       !d["key"].IsString() ||
       !d["contributions"].IsArray() ||
       !d["category"].IsInt() ||
-      !d["month"].IsString() ||
+      !d["month"].IsInt() ||
       !d["year"].IsString()) {
     return invalid;
   }
@@ -234,7 +234,7 @@ const PublisherInfo PublisherInfo::FromJSON(const std::string& json) {
   }
 
   info.category = (PUBLISHER_CATEGORY)d["category"].GetInt();
-  info.month = d["month"].GetString();
+  info.month = (PUBLISHER_MONTH)d["month"].GetInt();
   info.year = d["year"].GetString();
 
   return info;
