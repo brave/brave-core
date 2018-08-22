@@ -1326,8 +1326,10 @@ namespace braveledger_bat_helper {
   std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed) {
     DCHECK(!seed.empty());
     std::vector<uint8_t> out(SEED_LENGTH);
+
+    const uint8_t info[] = {0};
     int hkdfRes = HKDF(&out.front(), SEED_LENGTH, EVP_sha512(), &seed.front(), seed.size(),
-      braveledger_ledger::g_hkdfSalt, SALT_LENGTH, nullptr, 0);
+      braveledger_ledger::g_hkdfSalt, SALT_LENGTH, info, sizeof(info) / sizeof(info[0]));
 
     DCHECK(hkdfRes);
     DCHECK(!seed.empty());
@@ -1553,13 +1555,18 @@ namespace braveledger_bat_helper {
 
     if (succeded) {
       out.resize(size);
-      int numDecBytes = EVP_DecodeBase64(&out.front(), &size, size, (const uint8_t*)in.c_str(), in.length());
+      size_t final_size = 0;
+      int numDecBytes = EVP_DecodeBase64(&out.front(), &final_size, size, (const uint8_t*)in.c_str(), in.length());
       DCHECK(numDecBytes != 0);
-      LOG(ERROR) << "!!!decoded size == " << size;
+      LOG(ERROR) << "!!!decoded size == " << final_size;
 
       if (0 == numDecBytes) {
         succeded = false;
         out.clear();
+      }
+      else if (final_size != size)
+      {
+        out.resize(final_size);
       }
     }
     return succeded;
