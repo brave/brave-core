@@ -76,10 +76,9 @@ bool ignoreMinTime(const ledger::PublisherInfo::id_type publisher_id) {
   return !getProviderName(publisher_id).empty();
 }
 
-void BatPublishers::AddRecurringPayment(const std::string& domain, const double& value) {
-  ledger_->GetPublisherInfo(RECURRING_DONATION_KEY,
-    std::bind(&BatPublishers::addRecurringPaymentInternal, this,
-                  RECURRING_DONATION_KEY, domain, value, _1, _2));
+void BatPublishers::AddRecurringPayment(const std::string& publisher_id, const double& value) {
+  state_->recurring_donation_[publisher_id] = value;
+  saveState();
 }
 
 void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
@@ -122,31 +121,6 @@ std::string BatPublishers::GetBalanceReportName(const std::string& year,
 void onVisitSavedDummy(ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   // onPublisherInfoUpdated will always be called by LedgerImpl so do nothing
-}
-
-void BatPublishers::addRecurringPaymentInternal(
-      std::string publisher_key,
-      std::string domain,
-      double value,
-      ledger::Result result,
-      std::unique_ptr<ledger::PublisherInfo> publisher_info) {
-  if (result != ledger::Result::OK) {
-    // TODO error handling
-    return;
-  }
-
-  if (!publisher_info.get())  {
-    publisher_info.reset(new ledger::PublisherInfo(publisher_key));  
-  }
-
-  publisher_info->key = publisher_key;
-  publisher_info->category = ledger::PUBLISHER_CATEGORY::RECURRING_DONATION;
-  ledger::ContributionInfo contribution_info(value, 0);
-  contribution_info.publisher = domain;
-  publisher_info->contributions.push_back(contribution_info);
-
-  ledger_->SetPublisherInfo(std::move(publisher_info),
-      std::bind(&onVisitSavedDummy, _1, _2));
 }
 
 void BatPublishers::makePaymentInternal(
@@ -258,6 +232,9 @@ bool BatPublishers::getPublisherAllowNonVerified() const {
 
 void BatPublishers::synopsisNormalizer() {
   LOG(ERROR)<<"BatPublishers::synopsisNormalizer";
+  if (publishers_.size() == 0) {
+    return;
+  }
   double totalScores = 0.0;
   for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
     totalScores += iter->second.score_;
@@ -378,6 +355,7 @@ void BatPublishers::setBalanceReport(const std::string& year,
   report_balance.one_time_donation_ = report_info.one_time_donation_;
 
   state_->monthly_balances_[GetBalanceReportName(year, month)] = report_balance;
+  saveState();
 }
 
 bool BatPublishers::getBalanceReport(const std::string& year,
@@ -423,6 +401,19 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
     return;
   }
   synopsisNormalizer();
+}
+
+std::vector<ledger::ContributionInfo> BatPublishers::GetRecurringDonationList() {
+  std::vector<ledger::ContributionInfo> res;
+
+  for (const auto & e : state_->recurring_donation_) {
+    ledger::ContributionInfo info;
+    info.publisher = e.first;
+    info.value = e.second;
+    res.push_back(info);
+  }
+
+  return res;
 }
 
 }  // namespace braveledger_bat_publisher

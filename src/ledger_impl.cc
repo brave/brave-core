@@ -44,8 +44,8 @@ void LedgerImpl::CreateWallet() {
   bat_client_->registerPersona();
 }
 
-void LedgerImpl::AddRecurringPayment(const std::string& domain, const double& value) {
-  bat_publishers_->AddRecurringPayment(domain, value);
+void LedgerImpl::AddRecurringPayment(const std::string& publisher_id, const double& value) {
+  bat_publishers_->AddRecurringPayment(publisher_id, value);
 }
 
 void LedgerImpl::MakePayment(const ledger::PaymentData& payment_data) {
@@ -220,8 +220,8 @@ void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
   callback(result, std::move(info));
 }
 
-void LedgerImpl::GetRecurringDonationPublisherInfo(ledger::PublisherInfoCallback callback) {
-  ledger_client_->LoadPublisherInfo(RECURRING_DONATION_KEY, callback);
+std::vector<ledger::ContributionInfo> LedgerImpl::GetRecurringDonationPublisherInfo() {
+  return bat_publishers_->GetRecurringDonationList();
 }
 
 void LedgerImpl::GetPublisherInfo(

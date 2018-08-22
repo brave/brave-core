@@ -52,7 +52,7 @@ class LedgerImpl : public ledger::Ledger,
                         ledger::PublisherInfoCallback callback) override;
   void GetPublisherInfo(const std::string& publisher_key,
                         ledger::PublisherInfoCallback callback) override;
-  void GetRecurringDonationPublisherInfo(ledger::PublisherInfoCallback callback) override;
+  std::vector<ledger::ContributionInfo> GetRecurringDonationPublisherInfo() override;
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
                             ledger::GetPublisherInfoListCallback callback) override;
@@ -115,7 +115,7 @@ class LedgerImpl : public ledger::Ledger,
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;
-  void AddRecurringPayment(const std::string& domain, const double& value) override;
+  void AddRecurringPayment(const std::string& publisher_id, const double& value) override;
   void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) override;
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
   void OnShow(uint32_t tab_id, const uint64_t& current_time) override;

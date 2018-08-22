@@ -244,6 +244,7 @@ namespace braveledger_bat_helper {
     unsigned int min_visits_ = 1u;
     bool allow_non_verified_ = true;
     std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;
+    std::map<std::string, double> recurring_donation_;
   };
 
   struct PUBLISHER_ST {

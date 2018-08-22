@@ -38,7 +38,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void MakePayment(const ledger::PaymentData& payment_data);
 
-  void AddRecurringPayment(const std::string& domain, const double& value);
+  void AddRecurringPayment(const std::string& publisher_id, const double& value);
 
   void setPublisherMinVisitTime(const uint64_t& duration); // In milliseconds
 
@@ -63,6 +63,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
     ledger::PUBLISHER_MONTH month, const std::string& publisher_id);
   std::string GetBalanceReportName(const std::string& year,
     ledger::PUBLISHER_MONTH month);
+  std::vector<ledger::ContributionInfo> GetRecurringDonationList();
 
  private:
   // LedgerCallbackHandler impl
@@ -80,13 +81,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void makePaymentInternal(
       std::string publisher_key,
       ledger::PaymentData payment_data,
-      ledger::Result result,
-      std::unique_ptr<ledger::PublisherInfo> publisher_info);
-
-  void addRecurringPaymentInternal(
-      std::string publisher_key,
-      std::string domain,
-      double value,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 

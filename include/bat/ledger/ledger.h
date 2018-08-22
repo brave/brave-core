@@ -70,7 +70,7 @@ class LEDGER_EXPORT Ledger {
   virtual void Reconcile() = 0;
 
   virtual void MakePayment(const PaymentData& payment_data) = 0;
-  virtual void AddRecurringPayment(const std::string& domain, const double& value) = 0;
+  virtual void AddRecurringPayment(const std::string& publisher_id, const double& value) = 0;
   virtual void OnLoad(const VisitData& visit_data, const uint64_t& current_time) = 0;
   virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
   virtual void OnShow(uint32_t tab_id, const uint64_t& current_time) = 0;
@@ -90,7 +90,7 @@ class LEDGER_EXPORT Ledger {
                                 PublisherInfoCallback callback) = 0;
   virtual void GetPublisherInfo(const std::string& publisher_key,
                                 PublisherInfoCallback callback) = 0;
-  virtual void GetRecurringDonationPublisherInfo(PublisherInfoCallback callback) = 0;
+  virtual std::vector<ContributionInfo> GetRecurringDonationPublisherInfo() = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
                                     const ledger::PublisherInfoFilter& filter,
                                     GetPublisherInfoListCallback callback) = 0;
