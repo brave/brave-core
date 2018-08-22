@@ -10,6 +10,7 @@
 namespace {
 
 typedef testing::Test BraveShieldsExceptionsTest;
+using brave::IsWhitelistedReferrer;
 
 TEST_F(BraveShieldsExceptionsTest, WidevineInstallableURL) {
   std::vector<GURL> urls({
@@ -39,6 +40,36 @@ TEST_F(BraveShieldsExceptionsTest, NotWidevineInstallableURL) {
       [this](GURL url){
     EXPECT_FALSE(brave::IsWidevineInstallableURL(url));
   });
+}
+
+TEST_F(BraveShieldsExceptionsTest, IsWhitelistedReferrer) {
+  // *.fbcdn.net not allowed on some other URL
+  EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://test.com"),
+        GURL("https://video-zyz1-9.xy.fbcdn.net")));
+  // *.fbcdn.net allowed on Facebook
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.facebook.com"),
+        GURL("https://video-zyz1-9.xy.fbcdn.net")));
+  // Facebook doesn't allow just anything
+  EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://www.facebook.com.com"),
+        GURL("https://test.com")));
+  // Allowed for reddit.com
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.reddit.com/"),
+        GURL("https://www.redditmedia.com/97")));
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.reddit.com/"),
+        GURL("https://cdn.embedly.com/157")));
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.reddit.com/"),
+        GURL("https://imgur.com/179")));
+  // Not allowed for reddit.com
+  EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://www.reddit.com"),
+        GURL("https://test.com")));
+  // Not allowed imgur on another domain
+  EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://www.test.com"),
+        GURL("https://imgur.com/173")));
+  // Fonts allowed anywhere
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.test.com"),
+      GURL("https://use.typekit.net/193")));
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.test.com"),
+      GURL("https://cloud.typography.com/199")));
 }
 
 }  // namespace

@@ -574,6 +574,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="3617891479562106823">Los fondos no están disponibles. Vuelve a intentarlo más tarde.</translation>
 <translation id="8391712576156218334">La imagen no está disponible. Vuelve a intentarlo más tarde.</translation>
 <translation id="1564414980088536597">No se puede usar esta imagen. Elige otra.</translation>
+<translation id="385051799172605136">Volver</translation>
 <translation id="4628948037717959914">Foto</translation>
 <translation id="8033827949643255796">seleccionados</translation>
 <translation id="5376169624176189338">Haz clic para volver atrás o espera para ver el historial</translation>
@@ -838,7 +839,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="6418273007044911016">Los datos que sincronizas en Brave Software y las funciones que usas no cambiarán</translation>
 <translation id="8372733498235009300">Activar la sincronización, la personalización y otros servicios de Brave Software</translation>
 <translation id="8340964510643644301">Puedes personalizar esta opción en la configuración de Brave en cualquier momento</translation>
-<translation id="385051799172605136">Atrás</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Tus favoritos, historial, contraseñas y otras opciones de configuración se sincronizarán con tu cuenta de Brave Software para que puedas usarlos en todos tus dispositivos</translation>
 <translation id="1371301976177520732">Tus favoritos, contraseñas, historial y más en todos tus dispositivos</translation>
@@ -1276,6 +1276,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3930737994424905957">Buscando dispositivos</translation>
 <translation id="5209320130288484488">No se encontraron dispositivos.</translation>
 <translation id="4363771538994847871">No se encontraron destinos de transmisión. ¿Necesitas ayuda?</translation>
+<translation id="8688672835843460752">Disponible</translation>
 <translation id="4271396100647220620">No hay coincidencias</translation>
 <translation id="6972180789171089114">Audio/video</translation>
 <translation id="2541002089857695151">¿Quieres optimizar la transmisión en pantalla completa?</translation>
@@ -1286,6 +1287,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7473891865547856676">No, gracias</translation>
 <translation id="8538358978858059843">¿Quieres habilitar la transmisión de contenido a servicios basados en la nube?</translation>
 <translation id="3856595552313160385">El uso de Hangouts y Cast for Education está regido por la Política de privacidad de Brave Software.</translation>
+<translation id="3435896845095436175">Habilitar</translation>
 <translation id="3700888195348409686">En presentación (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Pantalla <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">El administrador (<ph name="CUSTODIAN_EMAIL"/>) puede revisar el uso y el historial en chrome.com.</translation>
@@ -1313,7 +1315,9 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1316495628809031177">Se pausó la sincronización</translation>
 <translation id="7786207843293321886">Salir de la sesión de invitado</translation>
 <translation id="2329597144923131178">Accede a tu cuenta para ver los favoritos, el historial, las contraseñas y otras opciones de configuración en todos los dispositivos.</translation>
+<translation id="7029809446516969842">Claves</translation>
 <translation id="984275831282074731">Formas de pago</translation>
+<translation id="2903493209154104877">Direccciones</translation>
 <translation id="8883847527783433352">Sincronizar con otra cuenta</translation>
 <translation id="2761898608071930085">Usar otra cuenta</translation>
 <translation id="4235813040357936597">Agregar cuenta para <ph name="PROFILE_NAME"/></translation>
@@ -1510,6 +1514,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6902066522699286937">Voz de prueba</translation>
 <translation id="304747341537320566">Motores de comentarios de texto a voz</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="1834538809763482401">Ejecuta IDE, editores y herramientas de Linux en tu Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Más información&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Quitar las apps de Linux para la Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Configuración de Android</translation>
@@ -1552,7 +1557,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2512222046227390255">Autocompletar formularios</translation>
 <translation id="2283340219607151381">Guardar y completar direcciones</translation>
 <translation id="1662550410081243962">Guardar y completar formas de pago</translation>
-<translation id="2903493209154104877">Direcciones</translation>
 <translation id="7764225426217299476">Agregar dirección</translation>
 <translation id="5595485650161345191">Editar dirección</translation>
 <translation id="6207937957461833379">País/Región</translation>
@@ -1644,7 +1648,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4699172675775169585">Imágenes y archivos almacenados en caché</translation>
 <translation id="1274997165432133392">Cookies y otros datos de sitios</translation>
 <translation id="3838543471119263078">Cookies y otros datos de sitios y de complementos</translation>
-<translation id="7029809446516969842">Contraseñas</translation>
 <translation id="6865313869410766144">Datos del formulario de autocompletar</translation>
 <translation id="177336675152937177">Datos de aplicaciones alojadas</translation>
 <translation id="1718835860248848330">Última hora</translation>
@@ -1700,6 +1703,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5317780077021120954">Guardar</translation>
 <translation id="5696679855467848181">Archivo PPD actualmente en uso: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="5646376287012673985">Ubicación</translation>
 <translation id="7754704193130578113">Pedir ubicación antes de la descarga</translation>
 <translation id="5713072761819014678">Desconectar la cuenta de Brave Software Drive</translation>
 <translation id="486635084936119914">Abre determinados tipos de archivo después de descargarlos</translation>
@@ -2026,7 +2030,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2203682048752833055">El motor de búsqueda que se usa en la <ph name="BEGIN_LINK"/>barra de direcciones<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">Administrar motores de búsqueda</translation>
 <translation id="2862205630718215619">Asistente de Brave Software</translation>
-<translation id="3435896845095436175">Habilitar</translation>
 <translation id="6978121630131642226">Motores de búsqueda</translation>
 <translation id="6410668567036790476">Agregar motor de búsqueda</translation>
 <translation id="1128591060186966949">Editar el motor de búsqueda</translation>
@@ -2396,7 +2399,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6856623341093082836">Configurar y ajustar la precisión de tu pantalla táctil</translation>
 <translation id="4598556348158889687">Administración de almacenamiento</translation>
 <translation id="8868626022555786497">En uso</translation>
-<translation id="8688672835843460752">Disponible</translation>
 <translation id="1082725763867769612">Archivos sin conexión</translation>
 <translation id="7366909168761621528">Datos de navegación</translation>
 <translation id="5568144734023334204">Almacenamiento de Android</translation>

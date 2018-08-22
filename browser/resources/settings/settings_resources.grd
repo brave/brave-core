@@ -335,7 +335,7 @@
       <structure name="IDR_SETTINGS_SITE_SETTINGS_BEHAVIOR_JS" file="site_settings/site_settings_behavior.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_CONSTANTS_JS" file="site_settings/constants.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONSTANTS_HTML" file="site_settings/constants.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_SITE_SETTINGS_PAGE_HTML" file="site_settings_page/site_settings_page.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_SITE_SETTINGS_PAGE_HTML" file="site_settings_page/site_settings_page.html" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_SITE_SETTINGS_PAGE_JS" file="site_settings_page/site_settings_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_SITE_SETTINGS_PREFS_BROWSER_PROXY_HTML" file="site_settings/site_settings_prefs_browser_proxy.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_SITE_SETTINGS_PREFS_BROWSER_PROXY_JS" file="site_settings/site_settings_prefs_browser_proxy.js" preprocess="true" type="chrome_html" />

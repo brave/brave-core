@@ -575,6 +575,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3617891479562106823">Els fons de pantalla no estan disponibles. Torna-ho a provar més tard.</translation>
 <translation id="8391712576156218334">La imatge no està disponible. Torna-ho a provar més tard.</translation>
 <translation id="1564414980088536597">Aquesta imatge no es pot utilitzar. Tria'n una altra.</translation>
+<translation id="385051799172605136">Enrere</translation>
 <translation id="4628948037717959914">Foto</translation>
 <translation id="8033827949643255796">seleccionats</translation>
 <translation id="5376169624176189338">Feu clic per tornar enrere o manteniu premut per veure l'historial</translation>
@@ -839,7 +840,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6418273007044911016">Les dades que sincronitzis a Brave Software i les funcions que utilitzis no canviaran</translation>
 <translation id="8372733498235009300">Activa la sincronització, la personalització i altres serveis de Brave Software</translation>
 <translation id="8340964510643644301">Pots personalitzar aquesta opció en qualsevol moment des de la configuració de Brave</translation>
-<translation id="385051799172605136">Enrere</translation>
 <translation id="3149880132460839085">Sincronització de Brave Software Brave</translation>
 <translation id="3796902758602917951">Les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració se sincronitzaran amb el teu compte de Brave Software, perquè els puguis utilitzar en tots els dispositius</translation>
 <translation id="1371301976177520732">Tindràs les adreces d'interès, les contrasenyes, l'historial i altres elements en tots els dispositius</translation>
@@ -1514,6 +1514,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6902066522699286937">Veu de prova</translation>
 <translation id="304747341537320566">Motors de veu</translation>
 <translation id="1067291318998134776">Linux (versió beta)</translation>
+<translation id="1834538809763482401">Executa les eines, els editors i els IDE de Linux a Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Més informació&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Suprimeix les aplicacions per a Linux de Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Configuració d'Android</translation>

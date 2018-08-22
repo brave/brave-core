@@ -4855,14 +4855,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Open a new tab to browse two sites at once
       </message>
 
-      <!-- NUX Experiment strings -->
-      <if expr="is_win">
-        <!-- Note: Each experiment should add their own message instead of using this default -->
-        <message name="IDS_BOOKMARK_BAR_PROMO_DEFAULT" desc="Default text shown when promoting a bookmark in the bookmark bar.">
-          A bookmark has been added for you
-        </message>
-      </if>
-
       <!-- Browser Hung Plugin Detector -->
       <if expr="is_win">
         <message name="IDS_BROWSER_HANGMONITOR" desc="A plugin on a page has hung">

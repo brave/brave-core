@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/settings/about_page/about_page.html b/chrome/browser/resources/settings/about_page/about_page.html
+index 720a636c74ccd58acdd2749f7eb8d4be1af5c7d3..b761690ee40271f34c878a81e428563cbca3dfad 100644
+--- a/chrome/browser/resources/settings/about_page/about_page.html
++++ b/chrome/browser/resources/settings/about_page/about_page.html
+@@ -132,7 +132,7 @@
+                   </div>
+                   <a hidden$="[[!shouldShowLearnMoreLink_(
+                       currentUpdateStatusEvent_)]]" target="_blank"
+-                      href="https://support.google.com/chrome?p=update_error">
++                      href="https://community.brave.com?p=update_error">
+                     $i18n{learnMore}
+                   </a>
+                 </div>

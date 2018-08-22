@@ -114,6 +114,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kEnableTabAudioMuting);
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
+  command_line.AppendSwitch(switches::kNoPings);
 
   std::stringstream enabled_features;
   enabled_features << features::kEnableEmojiContextMenu.name

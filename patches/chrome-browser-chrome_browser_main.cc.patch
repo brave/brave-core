@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index 6787c04af7d9104926940b54eb1726fd930e2f1f..5125c663c3accaff4b92e54939075332752e361a 100644
+index 331bc5accd56a16da324cc25360786b0b78a8aa7..cc1229861f77d0bf64dc00035e18e827fd2b1331 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -47,6 +47,7 @@
@@ -10,7 +10,7 @@ index 6787c04af7d9104926940b54eb1726fd930e2f1f..5125c663c3accaff4b92e54939075332
  #include "build/build_config.h"
  #include "cc/base/switches.h"
  #include "chrome/browser/about_flags.h"
-@@ -1010,7 +1011,7 @@ int ChromeBrowserMainParts::PreEarlyInitialization() {
+@@ -1009,7 +1010,7 @@ int ChromeBrowserMainParts::PreEarlyInitialization() {
    scoped_refptr<base::SequencedTaskRunner> local_state_task_runner =
        CreateLocalStateTaskRunner();
    browser_process_ =

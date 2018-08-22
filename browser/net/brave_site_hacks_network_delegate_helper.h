@@ -26,6 +26,10 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
 
+
+bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
+    const GURL& tab_origin, const GURL& gurl, GURL *new_url);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_SITE_HACKS_NETWORK_DELEGATE_H_

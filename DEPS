@@ -1,11 +1,11 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/ad-block": "https://github.com/brave/ad-block.git@67a8a19121f40d41e75468b2c26d6bace437ae4f",
+  "vendor/ad-block": "https://github.com/brave/ad-block.git@a4f73962e9d852fbe3f75e3a766deb96f0d9065e",
   "vendor/tracking-protection": "https://github.com/brave/tracking-protection.git@bb6013ff4d0a0191ba93158f2f3b30e7fb18c5f6",
   "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@f86b0a5752545274e32c0dbb654c3592cc131c8a",
   "vendor/bloom-filter-cpp": "https://github.com/brave/bloom-filter-cpp.git@635780bbedff137a6a83ec23871944e22069de5b",
-  "vendor/brave-extension": "https://github.com/brave/brave-extension.git@85aa24a86a9956bac37bba05c8c78b869a2f45f3",
+  "vendor/brave-extension": "https://github.com/brave/brave-extension.git@63363a7438e75e5060ec096b474364e56e01ca35",
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/svn2github/python-patch@a336a458016ced89aba90dfc3f4c8222ae3b1403",
