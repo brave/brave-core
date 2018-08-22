@@ -1,0 +1,14 @@
+diff --git a/extensions/browser/extension_function.cc b/extensions/browser/extension_function.cc
+index 38706e90a709e6a7985d53c0ec2c135b6db86902..a0e874388e1afdd9775e790a5d4844faa174f3fb 100644
+--- a/extensions/browser/extension_function.cc
++++ b/extensions/browser/extension_function.cc
+@@ -500,7 +500,9 @@ UIThreadExtensionFunction::~UIThreadExtensionFunction() {
+   // tricky because checking IsShuttingDown has to be called from the UI thread.
+   extensions::ExtensionsBrowserClient* browser_client =
+       extensions::ExtensionsBrowserClient::Get();
++
+   DCHECK(!browser_client || browser_client->IsShuttingDown() || did_respond() ||
++         !strncmp(name(), "sockets.tcp.connect", 20) || // TO BE REMOVED
+          ignore_all_did_respond_for_testing_do_not_use)
+       << name();
+ }
