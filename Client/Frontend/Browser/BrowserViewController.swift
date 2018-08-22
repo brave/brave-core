@@ -164,7 +164,11 @@ class BrowserViewController: UIViewController {
         tabManager.addDelegate(self)
         tabManager.addNavigationDelegate(self)
         downloadQueue.delegate = self
+        
+        // Observe some user preferences
         Preferences.Privacy.cookieAcceptPolicy.observe(from: self)
+        Preferences.General.tabBarVisibility.observe(from: self)
+        Preferences.Shields.fingerprintingProtection.observe(from: self)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -375,15 +379,13 @@ class BrowserViewController: UIViewController {
 
         // Setup UIDropInteraction to handle dragging and dropping
         // links into the view from other apps.
-        if #available(iOS 11, *) {
-            let dropInteraction = UIDropInteraction(delegate: self)
-            view.addInteraction(dropInteraction)
-        }
+        let dropInteraction = UIDropInteraction(delegate: self)
+        view.addInteraction(dropInteraction)
     }
 
     fileprivate func setupConstraints() {
         header.snp.makeConstraints { make in
-            scrollController.headerTopConstraint = make.top.equalTo(self.topLayoutGuide.snp.bottom).constraint
+            scrollController.headerTopConstraint = make.top.equalTo(view.safeArea.top).constraint
             make.left.right.equalTo(self.view)
             
             if let headerHeightConstraint = headerHeightConstraint {
@@ -414,7 +416,7 @@ class BrowserViewController: UIViewController {
         super.viewDidLayoutSubviews()
         statusBarOverlay.snp.remakeConstraints { make in
             make.top.left.right.equalTo(self.view)
-            make.height.equalTo(self.topLayoutGuide.length)
+            make.bottom.equalTo(view.safeArea.top)
         }
     }
 
@@ -750,20 +752,32 @@ class BrowserViewController: UIViewController {
     }
     
     func updateTabsBarVisibility() {
-        let isShowing = !tabsBar.view.isHidden
-        let shouldShow = UIApplication.isInPrivateMode ? tabManager.privateTabs.count > 1 : tabManager.normalTabs.count > 1
+        func shouldShowTabBar() -> Bool {
+            let tabCount = tabManager.tabs.count
+            guard let tabBarVisibility = TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value) else {
+                // This should never happen
+                assertionFailure("Invalid tab bar visibility preference: \(Preferences.General.tabBarVisibility.value).")
+                return tabCount > 1
+            }
+            switch tabBarVisibility {
+            case .always:
+                return tabCount > 1 || UIDevice.current.userInterfaceIdiom == .pad
+            case .landscapeOnly:
+                return tabCount > 1 && UIDevice.current.orientation.isLandscape
+            case .never:
+                return false
+            }
+        }
         
-        // FIXME: Without waiting, tabmanager count returns 0, 0.1 delay is enough to make it work properly.
-        // I don't like this approach, there must be a better way.
-        // Maybe changing storage from SQLite to CoreData will change things.
+        let isShowing = !tabsBar.view.isHidden
+        let shouldShow = shouldShowTabBar()
+        
         if isShowing != shouldShow {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                UIView.animate(withDuration: 0.1) {
-                    self.tabsBar.view.isHidden = !shouldShow
-                    self.headerHeightConstraint?.update(offset: UX.UrlBar.height)
-                    self.webViewContainerTopOffset?.update(inset: shouldShow ? 0 : UX.TabsBar.height)
-                    self.view.layoutIfNeeded()
-                }
+            UIView.animate(withDuration: 0.1) {
+                self.tabsBar.view.isHidden = !shouldShow
+                self.headerHeightConstraint?.update(offset: UX.UrlBar.height)
+                self.webViewContainerTopOffset?.update(inset: shouldShow ? 0 : UX.TabsBar.height)
+                self.view.layoutIfNeeded()
             }
         }
     }
@@ -888,10 +902,8 @@ class BrowserViewController: UIViewController {
         guard let url = webView.url, url.isWebPage(), !url.isLocal else {
             return
         }
-        if #available(iOS 11, *) {
-            if NoImageModeHelper.isActivated(profile.prefs) {
-                webView.evaluateJavaScript("__firefox__.NoImageMode.setEnabled(true)", completionHandler: nil)
-            }
+        if NoImageModeHelper.isActivated {
+            webView.evaluateJavaScript("__firefox__.NoImageMode.setEnabled(true)", completionHandler: nil)
         }
     }
 
@@ -1259,7 +1271,7 @@ extension BrowserViewController: URLBarDelegate {
     }
 
     func urlBarDidTapShield(_ urlBar: URLBarView, from button: UIButton) {
-        if #available(iOS 11.0, *), let tab = self.tabManager.selectedTab {
+        if let tab = self.tabManager.selectedTab {
             let trackingProtectionMenu = self.getTrackingSubMenu(for: tab)
             guard !trackingProtectionMenu.isEmpty else { return }
             self.presentSheetWith(actions: trackingProtectionMenu, on: self, from: urlBar)
@@ -1319,7 +1331,7 @@ extension BrowserViewController: URLBarDelegate {
         let urlActions = self.getLongPressLocationBarActions(with: urlBar)
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
-        if #available(iOS 11.0, *), let tab = self.tabManager.selectedTab {
+        if let tab = self.tabManager.selectedTab {
             let trackingProtectionMenu = self.getTrackingMenu(for: tab, presentingOn: urlBar)
             self.presentSheetWith(actions: [urlActions, trackingProtectionMenu], on: self, from: urlBar)
         } else {
@@ -1417,6 +1429,25 @@ extension BrowserViewController: URLBarDelegate {
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView) {
         dismissVisibleMenus()
     }
+    
+    func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView) {
+        // BRAVE TODO: Insert shield block stats here
+        let shields = ShieldsViewController(url: tabManager.selectedTab?.url, shieldBlockStats: nil)
+        shields.shieldsSettingsChanged = { [unowned self] _ in
+            // Reload this tab. This will also trigger an update of the brave icon in `TabLocationView` if
+            // the setting changed is the global `.AllOff` shield
+            self.tabManager.selectedTab?.reload()
+            
+            // In 1.6 we "reload" the whole web view state, dumping caches, etc. (reload():BraveWebView.swift:495)
+            // BRAVE TODO: Port over proper tab reloading with Shields
+        }
+        let popover = PopoverController(contentController: shields, contentSizeBehavior: .preferredContentSize)
+        if UIDevice.current.orientation.isPortrait {
+            // Leave some space near the bottom for easier dismissal
+            popover.outerMargins.bottom = 80.0
+        }
+        popover.present(from: urlBar.locationView.shieldsButton, on: self)
+    }
 }
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
@@ -1466,23 +1497,11 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         guard let selectedTab = tabManager.selectedTab else { return }
         
         let homePanel = HomeMenuController(profile: profile, tabState: selectedTab.tabState)
-        homePanel.preferredContentSize = CGSize(width: 320, height: 600.0)
+        homePanel.preferredContentSize = CGSize(width: PopoverController.preferredPopoverWidth, height: 600.0)
         homePanel.delegate = self
         //        homePanel.view.heightAnchor.constraint(equalToConstant: 580.0).isActive = true
         let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
         popover.present(from: button, on: self)
-        return;
-
-        // ensure that any keyboards or spinners are dismissed before presenting the menu
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        var actions: [[PhotonActionSheetItem]] = []
-
-        actions.append(getHomePanelActions())
-        actions.append(getOtherPanelActions(vcDelegate: self))
-        // force a modal if the menu is being displayed in compact split screen
-        let isCompact = traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact
-        let shouldSuppress = isCompact && UIDevice.current.userInterfaceIdiom == .pad
-        presentSheetWith(actions: actions, on: self, from: button, suppressPopover: shouldSuppress)
     }
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -1586,11 +1605,9 @@ extension BrowserViewController: TabDelegate {
         historyStateHelper.delegate = self
         tab.addContentScript(historyStateHelper, name: HistoryStateHelper.name())
 
-        if #available(iOS 11, *) {
-            if let blocker = tab.contentBlocker as? ContentBlockerHelper {
-                blocker.setupTabTrackingProtection()
-                tab.addContentScript(blocker, name: ContentBlockerHelper.name())
-            }
+        if let blocker = tab.contentBlocker as? ContentBlockerHelper {
+            blocker.setupTabTrackingProtection()
+            tab.addContentScript(blocker, name: ContentBlockerHelper.name())
         }
 
         tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name())
@@ -2597,12 +2614,22 @@ extension BrowserViewController: TopSitesDelegate {
 
 extension BrowserViewController: PreferencesObserver {
     func preferencesDidChange(for key: String) {
-        HTTPCookieStorage.shared.updateCookieAcceptPolicy(to: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value))
-        // TODO: Update tab bar visiblity based on `Preferences.tabBarVisibility` once BraveURLBarView is back
-        // TODO: Update fingerprinting protection based on `Preferences.Shields.fingerprintingProtection` once fingerprinting protection is added back
-        if Preferences.Privacy.privateBrowsingOnly.value {
-            switchToPrivacyMode(isPrivate: true)
-            // TODO: Add more logic to `switchToPrivacyMode` once specific Brave Private Browsing logic is added back
+        switch key {
+        case Preferences.Privacy.cookieAcceptPolicy.key:
+            HTTPCookieStorage.shared.updateCookieAcceptPolicy(to: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value))
+        case Preferences.General.tabBarVisibility.key:
+            updateTabsBarVisibility()
+        case Preferences.Privacy.privateBrowsingOnly.key:
+            if Preferences.Privacy.privateBrowsingOnly.value {
+                switchToPrivacyMode(isPrivate: true)
+                // TODO: Add more logic to `switchToPrivacyMode` once specific Brave Private Browsing logic is added back
+            }
+        case Preferences.Shields.fingerprintingProtection.key:
+            // TODO: Update fingerprinting protection based on `Preferences.Shields.fingerprintingProtection` once fingerprinting protection is added back
+            break
+        default:
+            log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
+            break
         }
     }
 }

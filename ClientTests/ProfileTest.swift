@@ -17,12 +17,4 @@ class ProfileTest: XCTestCase {
     func withTestProfile(_ callback: (_ profile: Profile) -> Void) {
         callback(MockProfile())
     }
-
-    func testNewProfileClearsExistingAuthenticationInfo() {
-        let authInfo = AuthenticationKeychainInfo(passcode: "1234")
-        KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(authInfo)
-        XCTAssertNotNil(KeychainWrapper.sharedAppContainerKeychain.authenticationInfo())
-        let _ = BrowserProfile(localName: "my_profile", clear: true)
-        XCTAssertNil(KeychainWrapper.sharedAppContainerKeychain.authenticationInfo())
-    }
 }

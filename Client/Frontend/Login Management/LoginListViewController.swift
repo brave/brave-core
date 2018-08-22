@@ -106,7 +106,7 @@ class LoginListViewController: UIViewController {
         loadingStateView.isHidden = true
 
         searchView.snp.makeConstraints { make in
-            make.top.equalTo(self.topLayoutGuide.snp.bottom)
+            make.top.equalTo(view.safeArea.top)
             make.leading.trailing.equalTo(self.view)
             make.height.equalTo(LoginListUX.SearchHeight)
         }

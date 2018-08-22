@@ -10,6 +10,7 @@ import Deferred
 import SDWebImage
 import Fuzi
 import SwiftyJSON
+import class Data.FaviconMO 
 
 private let log = Logger.browserLogger
 private let queue = DispatchQueue(label: "FaviconFetcher", attributes: DispatchQueue.Attributes.concurrent)
@@ -195,7 +196,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
                     if let img = img {
                         fav.width = Int(img.size.width)
                         fav.height = Int(img.size.height)
-                        profile.favicons.addFavicon(fav, forSite: site)
+                        FaviconMO.add(fav, forSiteUrl: siteUrl)
                     } else {
                         fav.width = 0
                         fav.height = 0

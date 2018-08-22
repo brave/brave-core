@@ -114,6 +114,8 @@ class TabManager: NSObject {
         addNavigationDelegate(self)
 
         NotificationCenter.default.addObserver(self, selector: #selector(prefsDidChange), name: UserDefaults.didChangeNotification, object: nil)
+        
+        Preferences.Shields.blockImages.observe(from: self)
     }
 
     func addNavigationDelegate(_ delegate: WKNavigationDelegate) {
@@ -781,15 +783,11 @@ extension TabManager {
             // Since this is a restored tab, reset the URL to be loaded as that will be handled by the SessionRestoreHandler
             tab.url = nil
 
-            // BRAVE TODO: restore favicon
-            /*
-            if let faviconURL = savedTab.favicon.url {
+            if let urlString = savedTab.url, let url = URL(string: urlString), let faviconURL = Domain.getOrCreateForUrl(url, context: DataController.shared.workerContext)?.favicon?.url {
                 let icon = Favicon(url: faviconURL, date: Date())
                 icon.width = 1
                 tab.favicons.append(icon)
             }
-             */
-
             
             // Set the UUID for the tab, asynchronously fetch the UIImage, then store
             // the screenshot in the tab as long as long as a newer one hasn't been taken.
@@ -886,7 +884,7 @@ extension TabManager: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
-        if #available(iOS 11, *), let tab = self[webView], let blocker = tab.contentBlocker as? ContentBlockerHelper {
+        if let tab = self[webView], let blocker = tab.contentBlocker as? ContentBlockerHelper {
             blocker.clearPageStats()
         }
     }
@@ -898,13 +896,11 @@ extension TabManager: WKNavigationDelegate {
         let isNightMode = NightModeAccessors.isNightMode(self.prefs)
         tab.setNightMode(isNightMode)
 
-        if #available(iOS 11, *) {
-            let isNoImageMode = self.prefs.boolForKey(PrefsKeys.KeyNoImageModeStatus) ?? false
-            tab.noImageMode = isNoImageMode
-
-            if let tpHelper = tab.contentBlocker as? ContentBlockerHelper, !tpHelper.isEnabled {
-                webView.evaluateJavaScript("window.__firefox__.TrackingProtectionStats.setEnabled(false, \(UserScriptManager.securityToken))", completionHandler: nil)
-            }
+        let isNoImageMode = self.prefs.boolForKey(PrefsKeys.KeyNoImageModeStatus) ?? false
+        tab.noImageMode = isNoImageMode
+        
+        if let tpHelper = tab.contentBlocker as? ContentBlockerHelper, !tpHelper.isEnabled {
+            webView.evaluateJavaScript("window.__firefox__.TrackingProtectionStats.setEnabled(false, \(UserScriptManager.securityToken))", completionHandler: nil)
         }
     }
 
@@ -1060,4 +1056,11 @@ extension TabManagerDelegate {
     func tabManager(_ tabManager: TabManager, willRemoveTab tab: Tab) {}
     func tabManagerDidAddTabs(_ tabManager: TabManager) {}
     func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {}
+}
+
+extension TabManager: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        // Update Block images
+        tabs.forEach { $0.noImageMode = Preferences.Shields.blockImages.value }
+    }
 }

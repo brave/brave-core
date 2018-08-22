@@ -30,22 +30,6 @@ private class MockDataObserverDelegate: DataObserverDelegate {
 }
 
 class PanelDataObserversTests: XCTestCase {
-    func testActivityStreamDelegates() {
-        let profile = MockProfile()
-        let observer = ActivityStreamDataObserver(profile: profile)
-        let delegate = MockDataObserverDelegate()
-        observer.delegate = delegate
-
-        NotificationCenter.default.post(name: .FirefoxAccountChanged,
-                                        object: nil)
-        NotificationCenter.default.post(name: .ProfileDidFinishSyncing,
-                                        object: nil)
-        NotificationCenter.default.post(name: .PrivateDataClearedHistory,
-                                        object: nil)
-
-        waitForCondition(timeout: 5) { delegate.didInvalidateCount == 3 &&  delegate.willInvalidateCount == 3 }
-    }
-    
     func testHighlightsCacheInvalidation20Min() {
         let profile = MockProfile()
         let observer = ActivityStreamDataObserver(profile: profile)

@@ -45,6 +45,7 @@ protocol URLBarDelegate: class {
     func urlBarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
     func urlBarDidLongPressPageOptions(_ urlBar: URLBarView, from button: UIButton)
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView)
+    func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView)
 }
 
 class URLBarView: UIView {
@@ -611,6 +612,10 @@ extension URLBarView: TabLocationViewDelegate {
 
     func tabLocationViewDidTapShield(_ tabLocationView: TabLocationView) {
         delegate?.urlBarDidTapShield(self, from: tabLocationView.trackingProtectionButton)
+    }
+    
+    func tabLocationViewDidTapBraveShieldsButton(_ tabLocationView: TabLocationView) {
+        delegate?.urlBarDidTapBraveShieldsButton(self)
     }
 }
 
