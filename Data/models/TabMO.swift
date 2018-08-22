@@ -70,7 +70,7 @@ public class TabMO: NSManagedObject {
     }
     
     /// Creates new tab. If you want to add urls to existing tabs use `update()` method. 
-    public class func create(_ context: NSManagedObjectContext = DataController.shared.mainThreadContext) -> TabMO {
+    public class func create(_ context: NSManagedObjectContext = DataController.mainThreadContext) -> TabMO {
         let tab = TabMO(entity: TabMO.entity(context), insertInto: context)
         // TODO: replace with logic to create sync uuid then buble up new uuid to browser.
         tab.syncUUID = UUID().uuidString
@@ -99,14 +99,14 @@ public class TabMO: NSManagedObject {
     }
     
     public class func preserve(savedTab: SavedTab) {
-        let context = DataController.shared.workerContext
+        let context = DataController.workerThreadContext
         context.perform {
             TabMO.update(with: savedTab.id, tabData: savedTab, context: context)
         }
     }
     
     public class func saveScreenshotUUID(_ uuid: UUID?, tabId: String?) {
-        let context = DataController.shared.mainThreadContext
+        let context = DataController.mainThreadContext
         let tabMO = TabMO.get(fromId: tabId, context: context)
         tabMO?.screenshotUUID = uuid
         DataController.saveContext(context: context)
@@ -114,7 +114,7 @@ public class TabMO: NSManagedObject {
 
     public class func getAll() -> [TabMO] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        let context = DataController.shared.mainThreadContext
+        let context = DataController.mainThreadContext
         
         fetchRequest.entity = TabMO.entity(context)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(TabMO.order), ascending: true)]
@@ -129,7 +129,7 @@ public class TabMO: NSManagedObject {
     
     public class func removeAll() {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        let context = DataController.shared.mainThreadContext
+        let context = DataController.mainThreadContext
         
         fetchRequest.entity = TabMO.entity(context)
         do {

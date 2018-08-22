@@ -36,7 +36,7 @@ public class FaviconMO: NSManagedObject {
     }
 
     public class func add(_ favicon: Favicon, forSiteUrl siteUrl: URL) {
-        let context = DataController.shared.workerContext
+        let context = DataController.workerThreadContext
         context.perform {
             var item = FaviconMO.get(forFaviconUrl: favicon.url, context: context)
             if item == nil {

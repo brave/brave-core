@@ -14,7 +14,7 @@ struct FavoritesHelper {
     static let initPrefsKey = "FavoritesHelperInitPrefsKey"
 
     static func frc() -> NSFetchedResultsController<NSFetchRequestResult> {
-        let context = DataController.shared.mainThreadContext
+        let context = DataController.mainThreadContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
 
         fetchRequest.entity = Bookmark.entity(context: context)
@@ -51,7 +51,7 @@ struct FavoritesHelper {
     }
 
     static func isAlreadyAdded(_ url: URL) -> Bool{
-        return Bookmark.contains(url: url, getFavorites: true, context: DataController.shared.mainThreadContext)
+        return Bookmark.contains(url: url, getFavorites: true, context: DataController.mainThreadContext)
     }
     
     static func fallbackIcon(withLetter letter: String, color: UIColor, andSize iconSize: CGSize) -> UIImage {

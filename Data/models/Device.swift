@@ -9,7 +9,7 @@ import Shared
 class Device: NSManagedObject, Syncable {
     
     // Check if this can be nested inside the method
-    private static var sharedCurrentDevice: Device?
+    static var sharedCurrentDevice: Device?
     
     // Assign on parent model via CD
     @NSManaged var isSynced: Bool
@@ -68,7 +68,7 @@ class Device: NSManagedObject, Syncable {
     static func currentDevice() -> Device? {
         
         if sharedCurrentDevice == nil {
-            let context = DataController.shared.workerContext
+            let context = DataController.workerThreadContext
             // Create device
             let predicate = NSPredicate(format: "isCurrentDevice = YES")
             // Should only ever be one current device!
@@ -87,7 +87,7 @@ class Device: NSManagedObject, Syncable {
     }
     
     class func deleteAll(completionOnMain: ()->()) {
-        let context = DataController.shared.workerContext
+        let context = DataController.workerThreadContext
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
             fetchRequest.entity = Device.entity(context: context)
@@ -109,5 +109,4 @@ class Device: NSManagedObject, Syncable {
             DataController.saveContext(context: context)
         }
     }
-    
 }

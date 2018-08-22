@@ -167,8 +167,8 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     //switch to bookmarks 'tab' in case we're looking at history and tapped the add/remove bookmark button
     onClickPageButton(bookmarksButton)
     
-    if Bookmark.contains(url: url, context: DataController.shared.mainThreadContext) {
-      Bookmark.remove(forUrl: url, context: DataController.shared.mainThreadContext)
+    if Bookmark.contains(url: url, context: DataController.mainThreadContext) {
+      Bookmark.remove(forUrl: url, context: DataController.mainThreadContext)
     } else {
       Bookmark.add(url: url, title: tabState.title, parentFolder: bookmarksController.currentBookmarksPanel().currentFolder)
     }
@@ -253,7 +253,7 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     }
     
     addBookmarkButton.isEnabled = true
-    addBookmarkButton.isSelected = Bookmark.contains(url: url, context: DataController.shared.mainThreadContext)
+    addBookmarkButton.isSelected = Bookmark.contains(url: url, context: DataController.mainThreadContext)
   }
 }
 
