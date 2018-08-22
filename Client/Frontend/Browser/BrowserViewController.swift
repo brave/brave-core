@@ -216,7 +216,7 @@ class BrowserViewController: UIViewController {
             updateURLBarDisplayURL(tab)
             navigationToolbar.updateBackStatus(webView.canGoBack)
             navigationToolbar.updateForwardStatus(webView.canGoForward)
-            navigationToolbar.updateReloadStatus(tab.loading)
+            // TODO: Update reload status on TabLocationView
         }
         
         updateTabsBarVisibility()
@@ -855,9 +855,7 @@ class BrowserViewController: UIViewController {
         case .loading:
             guard let loading = change?[.newKey] as? Bool else { break }
 
-            if webView == tabManager.selectedTab?.webView {
-                navigationToolbar.updateReloadStatus(loading)
-            }
+            // TODO: Update reload status on TabLocationView
 
             if !loading {
                 runScriptsOnWebView(webView)
@@ -1274,14 +1272,6 @@ extension BrowserViewController: URLBarDelegate {
         generator.impactOccurred()
         presentActivityViewController(url, tab: tab, sourceView: button, sourceRect: button.bounds, arrowDirection: .up)
     }
-
-    func urlBarDidTapShield(_ urlBar: URLBarView, from button: UIButton) {
-        if let tab = self.tabManager.selectedTab {
-            let trackingProtectionMenu = self.getTrackingSubMenu(for: tab)
-            guard !trackingProtectionMenu.isEmpty else { return }
-            self.presentSheetWith(actions: trackingProtectionMenu, on: self, from: urlBar)
-        }
-    }
     
     func urlBarDidPressStop(_ urlBar: URLBarView) {
         tabManager.selectedTab?.stop()
@@ -1490,6 +1480,22 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         tabManager.selectedTab?.goForward()
+    }
+    
+    func tabToolbarDidPressShare(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+        guard let url = tabManager.selectedTab?.url else { return }
+        let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            activityController.popoverPresentationController?.sourceView = self.view
+            activityController.popoverPresentationController?.sourceRect = self.view.convert(self.urlBar.shareButton.frame, from: self.urlBar.shareButton.superview)
+            activityController.popoverPresentationController?.permittedArrowDirections = [.up]
+        }
+        self.present(activityController, animated: true)
+    }
+    
+    func tabToolbarDidPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+        tabManager.addTabAndSelect()
+        urlBar.tabLocationViewDidTapLocation(urlBar.locationView)
     }
 
     func tabToolbarDidLongPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -1739,7 +1745,7 @@ extension BrowserViewController: TabManagerDelegate {
 
         updateFindInPageVisibility(visible: false, tab: previous)
 
-        navigationToolbar.updateReloadStatus(selected?.loading ?? false)
+        // TODO: Update reload status on TabLocationView
         navigationToolbar.updateBackStatus(selected?.canGoBack ?? false)
         navigationToolbar.updateForwardStatus(selected?.canGoForward ?? false)
         if !(selected?.webView?.url?.isLocalUtility ?? false) {
@@ -2597,7 +2603,7 @@ extension BrowserViewController: HomeMenuControllerDelegate {
                 let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     activityController.popoverPresentationController?.sourceView = self.view
-                    activityController.popoverPresentationController?.sourceRect = self.view.convert(self.urlBar.menuButton.frame, from: self.urlBar.menuButton.superview)
+                    activityController.popoverPresentationController?.sourceRect = self.view.convert(self.urlBar.shareButton.frame, from: self.urlBar.shareButton.superview)
                     activityController.popoverPresentationController?.permittedArrowDirections = [.up]
                 }
                 self.present(activityController, animated: true)

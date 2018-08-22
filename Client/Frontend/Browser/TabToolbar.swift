@@ -9,15 +9,14 @@ import Shared
 protocol TabToolbarProtocol: class {
     var tabToolbarDelegate: TabToolbarDelegate? { get set }
     var tabsButton: TabsButton { get }
-    var menuButton: ToolbarButton { get }
     var forwardButton: ToolbarButton { get }
     var backButton: ToolbarButton { get }
-    var stopReloadButton: ToolbarButton { get }
+    var shareButton: ToolbarButton { get }
+    var addTabButton: ToolbarButton { get }
     var actionButtons: [Themeable & UIButton] { get }
 
     func updateBackStatus(_ canGoBack: Bool)
     func updateForwardStatus(_ canGoForward: Bool)
-    func updateReloadStatus(_ isLoading: Bool)
     func updatePageStatus(_ isWebPage: Bool)
     func updateTabCount(_ count: Int, animated: Bool)
 }
@@ -27,32 +26,15 @@ protocol TabToolbarDelegate: class {
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton)
-    func tabToolbarDidPressReload(_ tabToolbar: TabToolbarProtocol, button: UIButton)
-    func tabToolbarDidLongPressReload(_ tabToolbar: TabToolbarProtocol, button: UIButton)
-    func tabToolbarDidPressStop(_ tabToolbar: TabToolbarProtocol, button: UIButton)
-    func tabToolbarDidPressMenu(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton)
+    func tabToolbarDidPressShare(_ tabToolbar: TabToolbarProtocol, button: UIButton)
+    func tabToolbarDidPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton)
 }
 
 @objcMembers
 open class TabToolbarHelper: NSObject {
     let toolbar: TabToolbarProtocol
-
-    let ImageReload = UIImage.templateImageNamed("nav-refresh")
-    let ImageStop = UIImage.templateImageNamed("nav-stop")
-
-    var loading: Bool = false {
-        didSet {
-            if loading {
-                toolbar.stopReloadButton.setImage(ImageStop, for: .normal)
-                toolbar.stopReloadButton.accessibilityLabel = NSLocalizedString("Stop", comment: "Accessibility Label for the tab toolbar Stop button")
-            } else {
-                toolbar.stopReloadButton.setImage(ImageReload, for: .normal)
-                toolbar.stopReloadButton.accessibilityLabel = NSLocalizedString("Reload", comment: "Accessibility Label for the tab toolbar Reload button")
-            }
-        }
-    }
 
     fileprivate func setTheme(theme: Theme, forButtons buttons: [Themeable]) {
         buttons.forEach { $0.applyTheme(theme) }
@@ -74,21 +56,18 @@ open class TabToolbarHelper: NSObject {
         toolbar.forwardButton.addGestureRecognizer(longPressGestureForwardButton)
         toolbar.forwardButton.addTarget(self, action: #selector(didClickForward), for: .touchUpInside)
 
-        toolbar.stopReloadButton.setImage(UIImage.templateImageNamed("nav-refresh"), for: .normal)
-        toolbar.stopReloadButton.accessibilityLabel = NSLocalizedString("Reload", comment: "Accessibility Label for the tab toolbar Reload button")
-        let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReload))
-        toolbar.stopReloadButton.addGestureRecognizer(longPressGestureStopReloadButton)
-        toolbar.stopReloadButton.addTarget(self, action: #selector(didClickStopReload), for: .touchUpInside)
-
         toolbar.tabsButton.addTarget(self, action: #selector(didClickTabs), for: .touchUpInside)
         let longPressGestureTabsButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressTabs))
         toolbar.tabsButton.addGestureRecognizer(longPressGestureTabsButton)
+        
+        toolbar.shareButton.setImage(UIImage(named: "nav-share"), for: .normal)
+        toolbar.shareButton.accessibilityLabel = Strings.Share
+        toolbar.shareButton.addTarget(self, action: #selector(didClickShare), for: UIControlEvents.touchUpInside)
+        
+        toolbar.addTabButton.setImage(UIImage(named: "add_tab"), for: .normal)
+        toolbar.addTabButton.accessibilityLabel = Strings.Add_Tab
+        toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControlEvents.touchUpInside)
 
-        toolbar.menuButton.contentMode = .center
-        toolbar.menuButton.setImage(UIImage.templateImageNamed("nav-menu"), for: .normal)
-        toolbar.menuButton.accessibilityLabel = Strings.AppMenuButtonAccessibilityLabel
-        toolbar.menuButton.addTarget(self, action: #selector(didClickMenu), for: .touchUpInside)
-        toolbar.menuButton.accessibilityIdentifier = "TabToolbar.menuButton"
         setTheme(theme: .Normal, forButtons: toolbar.actionButtons)
     }
 
@@ -119,27 +98,13 @@ open class TabToolbarHelper: NSObject {
             toolbar.tabToolbarDelegate?.tabToolbarDidLongPressForward(toolbar, button: toolbar.forwardButton)
         }
     }
-
-    func didClickMenu() {
-        toolbar.tabToolbarDelegate?.tabToolbarDidPressMenu(toolbar, button: toolbar.menuButton)
+    
+    func didClickShare() {
+        toolbar.tabToolbarDelegate?.tabToolbarDidPressShare(toolbar, button: toolbar.shareButton)
     }
-
-    func didClickStopReload() {
-        if loading {
-            toolbar.tabToolbarDelegate?.tabToolbarDidPressStop(toolbar, button: toolbar.stopReloadButton)
-        } else {
-            toolbar.tabToolbarDelegate?.tabToolbarDidPressReload(toolbar, button: toolbar.stopReloadButton)
-        }
-    }
-
-    func didLongPressStopReload(_ recognizer: UILongPressGestureRecognizer) {
-        if recognizer.state == .began && !loading {
-            toolbar.tabToolbarDelegate?.tabToolbarDidLongPressReload(toolbar, button: toolbar.stopReloadButton)
-        }
-    }
-
-    func updateReloadStatus(_ isLoading: Bool) {
-        loading = isLoading
+    
+    func didClickAddTab() {
+        toolbar.tabToolbarDelegate?.tabToolbarDidPressAddTab(toolbar, button: toolbar.shareButton)
     }
 }
 
@@ -195,17 +160,17 @@ class TabToolbar: UIView {
     weak var tabToolbarDelegate: TabToolbarDelegate?
 
     let tabsButton = TabsButton()
-    let menuButton = ToolbarButton()
     let forwardButton = ToolbarButton()
     let backButton = ToolbarButton()
-    let stopReloadButton = ToolbarButton()
+    let shareButton = ToolbarButton()
+    let addTabButton = ToolbarButton()
     let actionButtons: [Themeable & UIButton]
 
     var helper: TabToolbarHelper?
     private let contentView = UIStackView()
 
     fileprivate override init(frame: CGRect) {
-        actionButtons = [backButton, forwardButton, stopReloadButton, tabsButton, menuButton]
+        actionButtons = [backButton, forwardButton, shareButton, addTabButton, tabsButton]
         super.init(frame: frame)
         setupAccessibility()
 
@@ -227,9 +192,9 @@ class TabToolbar: UIView {
     private func setupAccessibility() {
         backButton.accessibilityIdentifier = "TabToolbar.backButton"
         forwardButton.accessibilityIdentifier = "TabToolbar.forwardButton"
-        stopReloadButton.accessibilityIdentifier = "TabToolbar.stopReloadButton"
         tabsButton.accessibilityIdentifier = "TabToolbar.tabsButton"
-        menuButton.accessibilityIdentifier = "TabToolbar.menuButton"
+        shareButton.accessibilityIdentifier = "TabToolbar.shareButton"
+        addTabButton.accessibilityIdentifier = "TabToolbar.addTabButton"
         accessibilityNavigationStyle = .combined
         accessibilityLabel = NSLocalizedString("Navigation Toolbar", comment: "Accessibility label for the navigation toolbar displayed at the bottom of the screen.")
     }
@@ -266,12 +231,8 @@ extension TabToolbar: TabToolbarProtocol {
         forwardButton.isEnabled = canGoForward
     }
 
-    func updateReloadStatus(_ isLoading: Bool) {
-        helper?.updateReloadStatus(isLoading)
-    }
-
     func updatePageStatus(_ isWebPage: Bool) {
-        stopReloadButton.isEnabled = isWebPage
+        shareButton.isEnabled = isWebPage
     }
 
     func updateTabCount(_ count: Int, animated: Bool) {
