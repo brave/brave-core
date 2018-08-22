@@ -2,8 +2,11 @@ source_set("themes") {
   sources = [
     "theme_properties.cc",
     "theme_properties.h",
+    "theme_util.cc",
+    "theme_util.h",
   ]
   deps = [
+    "//net",
     "//skia",
   ]
 }

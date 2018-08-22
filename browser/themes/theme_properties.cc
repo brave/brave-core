@@ -4,10 +4,11 @@
 
 #include "brave/browser/themes/theme_properties.h"
 
+#include "brave/browser/themes/theme_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
-#include "ui/gfx/color_palette.h"
 
 namespace {
 
@@ -70,22 +71,32 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiDevChannel(int id, bool in
 }  // namespace
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito) {
+base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, Profile* profile) {
   if (id == BRAVE_COLOR_FOR_TEST) {
     return SkColorSetRGB(11, 13, 17);
   }
 #if !defined(OFFICIAL_BUILD)
   return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
 #else
-  switch (chrome::GetChannel()) {
-    case version_info::Channel::STABLE:
-    case version_info::Channel::BETA:
+  switch (GetBraveThemeType(profile)) {
+    case BRAVE_THEME_TYPE_DEFAULT:
+      switch (chrome::GetChannel()) {
+        case version_info::Channel::STABLE:
+        case version_info::Channel::BETA:
+          return MaybeGetDefaultColorForBraveUiReleaseChannel(id, incognito);
+        case version_info::Channel::DEV:
+        case version_info::Channel::CANARY:
+        case version_info::Channel::UNKNOWN:
+        default:
+          return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
+      }
+    case BRAVE_THEME_TYPE_LIGHT:
       return MaybeGetDefaultColorForBraveUiReleaseChannel(id, incognito);
-    case version_info::Channel::DEV:
-    case version_info::Channel::CANARY:
-    case version_info::Channel::UNKNOWN:
-    default:
+    case BRAVE_THEME_TYPE_DARK:
       return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
+    default:
+      NOTREACHED();
+
   }
 #endif
   return base::nullopt;

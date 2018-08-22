@@ -8,12 +8,14 @@
 #include "base/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 
+class Profile;
+
 #define BRAVE_COLOR_FOR_TEST 0x7FFFFFFF
 
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito);
+base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, Profile* profile);
 
-#define MAYBE_OVERRIDE_DEFAULT_COLOR_FOR_BRAVE(id, incognito) \
-  const base::Optional<SkColor> braveColor = MaybeGetDefaultColorForBraveUi(id, incognito); \
+#define MAYBE_OVERRIDE_DEFAULT_COLOR_FOR_BRAVE(id, incognito, profile) \
+  const base::Optional<SkColor> braveColor = MaybeGetDefaultColorForBraveUi(id, incognito, profile); \
   if (braveColor) return braveColor.value();
 
 #endif  // BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_

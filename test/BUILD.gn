@@ -170,6 +170,7 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_extension_provider_browsertest.cc",
     "//brave/renderer/brave_content_settings_observer_browsertest.cc",
     "//brave/renderer/brave_content_settings_observer_flash_browsertest.cc",
+    "//brave/browser/themes/brave_theme_type_browsertest.cc",
     "//chrome/browser/extensions/browsertest_util.cc",
     "//chrome/browser/extensions/browsertest_util.h",
     "//chrome/browser/extensions/extension_browsertest.cc",

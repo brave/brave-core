@@ -5,6 +5,7 @@
 #include "brave/browser/brave_profile_prefs.h"
 
 #include "brave/browser/alternate_private_search_engine_util.h"
+#include "brave/browser/themes/theme_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -23,6 +24,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(registry);
 
   RegisterAlternatePrivateSearchEngineProfilePrefs(registry);
+
+  RegisterProfilePrefsForBraveThemeType(registry);
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
 
