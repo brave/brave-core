@@ -2,9 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "forward.png",
-      "language-direction" : "left-to-right",
-      "scale" : "1x"
+      "scale" : "1x",
+      "language-direction" : "left-to-right"
     },
     {
       "idiom" : "universal",
