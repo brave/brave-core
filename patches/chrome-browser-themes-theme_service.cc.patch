@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/themes/theme_service.cc b/chrome/browser/themes/theme_service.cc
+index 655be29bffb9c3c6abc063c255fac06aaa69951d..4d311afc35287b71ee65a8032470828edfb17f09 100644
+--- a/chrome/browser/themes/theme_service.cc
++++ b/chrome/browser/themes/theme_service.cc
+@@ -64,6 +64,10 @@
+ #include "chrome/browser/supervised_user/supervised_user_theme.h"
+ #endif
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++#include "brave/browser/themes/theme_properties.h"
++#endif
++
+ using base::UserMetricsAction;
+ using content::BrowserThread;
+ using extensions::Extension;
+@@ -157,6 +161,9 @@ gfx::ImageSkia* ThemeService::BrowserThemeProvider::GetImageSkiaNamed(
+ }
+ 
+ SkColor ThemeService::BrowserThemeProvider::GetColor(int id) const {
++#if defined(BRAVE_CHROMIUM_BUILD)
++  MAYBE_OVERRIDE_DEFAULT_COLOR_FOR_BRAVE(id, incognito_)
++#endif
+   return theme_service_.GetColor(id, incognito_);
+ }
+ 
