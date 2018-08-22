@@ -1,0 +1,276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
+.c0 {
+  text-align: center;
+  border-radius: 8px;
+  font-family: "Poppins",sans-serif;
+  background: linear-gradient(-211.85275762473051deg,#392DD1 0%,rgba(255,26,26,0.53) 100%) #7D7BDC;
+}
+
+.c1 {
+  margin: 0 auto;
+  display: inline-block;
+  padding: 30px;
+  background: url(test-file-stub) no-repeat top;
+}
+
+.c2 {
+  width: 261px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 300;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+  line-height: 22px;
+  margin: 0 auto;
+  opacity: 0.5;
+}
+
+.c3 {
+  display: block;
+  padding: 20px 0px 15px 0px;
+}
+
+.c4 {
+  color: #FFFFFF;
+  font-size: 28px;
+  font-weight: 400;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+  line-height: 22px;
+  margin: 0;
+  display: inline-block;
+}
+
+.c6 {
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 24px;
+  opacity: 0.5;
+  margin: 20px auto;
+  text-align: center;
+  width: 295px;
+}
+
+.c7 {
+  margin: 0px 0px 40px 0px;
+}
+
+.c10 {
+  color: #73CBFF;
+  font-size: 14px;
+  font-weight: 500;
+  -webkit-letter-spacing: -0.19px;
+  -moz-letter-spacing: -0.19px;
+  -ms-letter-spacing: -0.19px;
+  letter-spacing: -0.19px;
+  line-height: 21px;
+  margin: 0 auto;
+}
+
+.c5 {
+  display: inline-block;
+  vertical-align: text-top;
+  margin-top: -12px;
+  color: #FFF;
+  font-size: 9px;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.c8 {
+  --button-main-color: #C5C5D3;
+  --button-main-color-hover: #A0A1B2;
+  --button-main-color-active: #E9E9F4;
+  --button-state-color: var(--button-main-color);
+  --icon-size: 18px;
+  --icon-spacing: 6px;
+  --webkit-appearance: none;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  outline: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Poppins,sans-serif;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 0 auto;
+  font-size: 14px;
+  border-radius: 24px;
+  width: auto;
+  min-width: 116px;
+  padding: 14px 15px;
+  border: 1px solid;
+  color: var(--button-state-color);
+}
+
+.c8:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c8:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c9 {
+  min-height: var(--icon-size);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  text-transform: none;
+  line-height: 1;
+}
+
+<div
+  className="c0"
+  id="panel-welcome"
+>
+  <div
+    className="c1"
+  >
+    <p
+      className="c2"
+    >
+      MISSING: welcomeHeaderOne
+    </p>
+    <span
+      className="c3"
+    >
+      <svg
+        height="67"
+        width="70"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+      >
+        <defs>
+          <path
+            d="M.087.173h69.885v13.053H.087z"
+            id="a"
+          />
+        </defs>
+        <g
+          fill="none"
+          fillRule="evenodd"
+        >
+          <g
+            opacity=".477"
+            transform="translate(0 52.949)"
+          >
+            <mask
+              fill="#fff"
+              id="b"
+            >
+              <use
+                xlinkHref="#a"
+              />
+            </mask>
+            <path
+              d="M52.57 13.186l17.402.04L62.64.173.087.255z"
+              fill="#28289D"
+              mask="url(#b)"
+            />
+          </g>
+          <path
+            d="M31.423 0l-.013 35.972 31.41 17.874z"
+            fill="#9E1F63"
+          />
+          <path
+            d="M0 53.846l31.38-17.823L31.41 0z"
+            fill="#FB542B"
+          />
+          <path
+            d="M0 53.846l62.82-.003-31.347-17.946z"
+            fill="#662D91"
+          />
+          <path
+            d="M31.757 21.538l-12.91 21.539h26.025z"
+            fill="#FFF"
+          />
+          <path
+            d="M31.757 21.538l-12.91 21.539h26.025z"
+            stroke="#999EA2"
+            stroke-width=".88"
+          />
+        </g>
+      </svg>
+    </span>
+    <h1
+      className="c4"
+    >
+      MISSING: braveRewards
+    </h1>
+    <span
+      className="c5"
+    >
+      TM
+    </span>
+    <p
+      className="c6"
+    >
+      MISSING: welcomeDescOne
+    </p>
+    <div
+      className="c7"
+    >
+      <button
+        className="c8"
+        onClick={undefined}
+        size="large"
+        type="subtle"
+      >
+        <div
+          className="c9"
+          onClick={undefined}
+          size="large"
+          type="subtle"
+        >
+          MISSING: welcomeButtonTextOne
+        </div>
+      </button>
+    </div>
+    <p
+      className="c10"
+    >
+      MISSING: welcomeFooterTextOne
+    </p>
+  </div>
+</div>
+`;

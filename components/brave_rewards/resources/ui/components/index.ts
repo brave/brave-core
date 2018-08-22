@@ -20,6 +20,7 @@ import ModalActivity from './modalActivity'
 import ModalBackupRestore from './modalBackupRestore'
 import ModalContribute from './modalContribute'
 import NextContribution from './nextContribution'
+import PanelWelcome from './panelWelcome'
 import Profile from './profile'
 import SettingsPage from './settingsPage'
 import SiteBanner from './siteBanner'
@@ -54,6 +55,7 @@ export {
   ModalBackupRestore,
   ModalContribute,
   NextContribution,
+  PanelWelcome,
   Profile,
   SettingsPage,
   SiteBanner,

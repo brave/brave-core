@@ -20,7 +20,8 @@ import {
   Tokens,
   Profile,
   Tooltip,
-  Amount
+  Amount,
+  PanelWelcome
 } from '../../../src/features/rewards'
 import GrantClaim from '../../../src/features/rewards/grantClaim'
 
@@ -207,5 +208,15 @@ storiesOf('Feature Components/Rewards/Other', module)
         <GrantClaim
           onClaim={dummyClick}
         />
+      )
+    })
+    .add('Panel Welcome', () => {
+      return (
+        <div style={{ width: '373px', minHeight: '446px' }}>
+          <PanelWelcome
+            optInAction={dummyClick}
+            variant={select('Variant', { one: 'One', two: 'Two' }, 'one')}
+          />
+        </div>
       )
     })
