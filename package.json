@@ -72,7 +72,7 @@
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.ts",
-      "\\.(css)$": "identity-obj-proxy"
+      "\\.(css|less)$": "identity-obj-proxy"
     }
   },
   "devDependencies": {

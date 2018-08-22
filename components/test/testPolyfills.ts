@@ -5,9 +5,16 @@
 import { getMockChrome } from './testData'
 
 (global as any).window = {} as any
+
 (window as any).localStorage = {
   getItem: jest.fn()
 } as any
+
+(window as any).location = {
+  search: '?testTorrentId'
+} as any
+
+(window as any).decodeURIComponent = (any) => 'test'
 
 // This mocks rAF to avoid React console.error
 // while running Jest tests
