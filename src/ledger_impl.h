@@ -54,10 +54,7 @@ class LedgerImpl : public ledger::Ledger,
                         ledger::PublisherInfoCallback callback) override;
   void GetRecurringDonationPublisherInfo(ledger::PublisherInfoCallback callback) override;
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
-                            ledger::PublisherInfoFilter filter,
-                            int category,
-                            const std::string& month,
-                            const std::string& year,
+                            const ledger::PublisherInfoFilter& filter,
                             ledger::GetPublisherInfoListCallback callback) override;
 
   void SetPublisherMinVisitTime(uint64_t duration_in_milliseconds) override;

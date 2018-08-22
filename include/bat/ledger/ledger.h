@@ -92,10 +92,7 @@ class LEDGER_EXPORT Ledger {
                                 PublisherInfoCallback callback) = 0;
   virtual void GetRecurringDonationPublisherInfo(PublisherInfoCallback callback) = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
-                                    PublisherInfoFilter filter,
-                                    int category,
-                                    const std::string& month,
-                                    const std::string& year,
+                                    const ledger::PublisherInfoFilter& filter,
                                     GetPublisherInfoListCallback callback) = 0;
 
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_milliseconds) = 0;

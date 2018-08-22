@@ -67,6 +67,13 @@ PaymentData::PaymentData(const PaymentData& data):
 PaymentData::~PaymentData() {}
 
 
+PublisherInfoFilter::PublisherInfoFilter(int category_, 
+    const std::string& month_, const std::string& year_):
+  category(PUBLISHER_CATEGORY::ALL_CATEGORIES),
+  month(month_),
+  year(year_) {}
+
+
 const PublisherInfo invalid("");
 
 
@@ -92,7 +99,9 @@ PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     excluded(info.excluded),
     key(info.key),
     contributions(info.contributions),
-    category(info.category) {}
+    category(info.category),
+    month(info.month),
+    year(info.year) {}
 
 PublisherInfo::~PublisherInfo() {}
 
@@ -150,12 +159,18 @@ const std::string PublisherInfo::ToJSON() const {
   writer.String("category");
   writer.Int(category);
 
+  writer.String("month");
+  writer.String(month.c_str());
+
+  writer.String("year");
+  writer.String(year.c_str());
+
   writer.EndObject();
 
   return buffer.GetString();
 }
 
-bool PublisherInfo::Matches(PublisherInfoFilter filter) const {
+/*bool PublisherInfo::Matches(PublisherInfoFilter filter) const {
   if (filter == PublisherInfoFilter::ALL)
     return true;
 
@@ -169,7 +184,7 @@ bool PublisherInfo::Matches(PublisherInfoFilter filter) const {
     return false;
 
   return true;
-}
+}*/
 
 // static
 const PublisherInfo PublisherInfo::FromJSON(const std::string& json) {
@@ -187,7 +202,9 @@ const PublisherInfo PublisherInfo::FromJSON(const std::string& json) {
       !d["excluded"].IsBool() ||
       !d["key"].IsString() ||
       !d["contributions"].IsArray() ||
-      !d["category"].IsInt()) {
+      !d["category"].IsInt() ||
+      !d["month"].IsString() ||
+      !d["year"].IsString()) {
     return invalid;
   }
 
@@ -217,6 +234,8 @@ const PublisherInfo PublisherInfo::FromJSON(const std::string& json) {
   }
 
   info.category = (PUBLISHER_CATEGORY)d["category"].GetInt();
+  info.month = d["month"].GetString();
+  info.year = d["year"].GetString();
 
   return info;
 }

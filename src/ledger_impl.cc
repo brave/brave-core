@@ -231,29 +231,34 @@ void LedgerImpl::GetPublisherInfo(
 }
 
 void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
-                                ledger::PublisherInfoFilter filter,
-                                int category,
-                                const std::string& month,
-                                const std::string& year,
+                                const ledger::PublisherInfoFilter& filter,
                                 ledger::GetPublisherInfoListCallback callback) {
   std::vector<std::string> prefix;
-  if (category & ledger::PUBLISHER_CATEGORY::ALL_CATEGORIES) {
-    prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE, year, month, ""));
-    prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::TIPPING, year, month, ""));
-    prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, year, month, ""));
-    prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, year, month, ""));
+  if (filter.category & ledger::PUBLISHER_CATEGORY::ALL_CATEGORIES) {
+    prefix.push_back(bat_publishers_->GetPublisherKey(
+      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE, filter.year, filter.month, ""));
+    prefix.push_back(bat_publishers_->GetPublisherKey(
+      ledger::PUBLISHER_CATEGORY::TIPPING, filter.year, filter.month, ""));
+    prefix.push_back(bat_publishers_->GetPublisherKey(
+      ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, filter.year, filter.month, ""));
+    prefix.push_back(bat_publishers_->GetPublisherKey(
+      ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, filter.year, filter.month, ""));
   } else {
-    if (category & ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
-      prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE, year, month, ""));
+    if (filter.category & ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
+      prefix.push_back(bat_publishers_->GetPublisherKey(
+        ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE, filter.year, filter.month, ""));
     }
-    if (category & ledger::PUBLISHER_CATEGORY::TIPPING) {
-      prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::TIPPING, year, month, ""));
+    if (filter.category & ledger::PUBLISHER_CATEGORY::TIPPING) {
+      prefix.push_back(bat_publishers_->GetPublisherKey(
+        ledger::PUBLISHER_CATEGORY::TIPPING, filter.year, filter.month, ""));
     }
-    if (category & ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
-      prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, year, month, ""));
+    if (filter.category & ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+      prefix.push_back(bat_publishers_->GetPublisherKey(
+        ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, filter.year, filter.month, ""));
     }
-    if (category & ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
-      prefix.push_back(bat_publishers_->GetPublisherKey(ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, year, month, ""));
+    if (filter.category & ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+      prefix.push_back(bat_publishers_->GetPublisherKey(
+        ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, filter.year, filter.month, ""));
     }
   }
   ledger_client_->LoadPublisherInfoList(start, limit, filter,

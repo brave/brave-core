@@ -164,6 +164,8 @@ void BatPublishers::makePaymentInternal(
 
   publisher_info->key = publisher_key;
   publisher_info->category = payment_data.category;
+  publisher_info->month = payment_data.local_month;
+  publisher_info->year = payment_data.local_year;
   publisher_info->contributions.push_back(ledger::ContributionInfo(payment_data.value, payment_data.timestamp));
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
@@ -189,6 +191,8 @@ void BatPublishers::saveVisitInternal(
   publisher_info->visits += 1;
   publisher_info->category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
   publisher_info->score += concaveScore(duration);
+  publisher_info->month = visit_data.local_month;
+  publisher_info->year = visit_data.local_year;
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
       std::bind(&onVisitSavedDummy, _1, _2));
