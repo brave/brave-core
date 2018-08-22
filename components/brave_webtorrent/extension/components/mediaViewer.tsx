@@ -51,16 +51,16 @@ export default class MediaViewer extends React.PureComponent<Props, {}> {
 
     let content
     if (!file || !torrent.serverURL) {
-      content = <div>Loading Media</div>
+      content = <div className='loading'>Loading Media</div>
     } else if (isVideo) {
-      content = <video src={fileURL} autoPlay={true} controls={true} />
+      content = <video id='video' src={fileURL} autoPlay={true} controls={true} />
     } else if (isAudio) {
-      content = <audio src={fileURL} autoPlay={true} controls={true} />
+      content = <audio id='audio' src={fileURL} autoPlay={true} controls={true} />
     } else {
       // For security, sandbox and disallow scripts.
       // We need allow-same-origin so that the iframe can load from
       // http://localhost:...
-      content = <iframe src={fileURL} sandbox='allow-same-origin' />
+      content = <iframe id='other' src={fileURL} sandbox='allow-same-origin' />
     }
 
     return (

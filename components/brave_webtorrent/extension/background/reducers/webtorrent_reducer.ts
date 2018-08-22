@@ -164,7 +164,7 @@ const updateServer = (state: TorrentsState, torrent: Torrent, serverURL: string)
 }
 
 const defaultState: TorrentsState = { currentWindowId: -1, activeTabIds: {}, torrentStateMap: {}, torrentObjMap: {} }
-const webtorrentReducer = (state: TorrentsState = defaultState, action: any) => { // TODO: modify any to be actual action type
+export const webtorrentReducer = (state: TorrentsState = defaultState, action: any) => { // TODO: modify any to be actual action type
   const payload = action.payload
   switch (action.type) {
     case windowTypes.types.WINDOW_CREATED:
@@ -183,7 +183,7 @@ const webtorrentReducer = (state: TorrentsState = defaultState, action: any) => 
       break
     case tabTypes.types.TAB_CREATED:
       if (payload.tab.id && payload.tab.url) {
-        state = tabUpdated(payload.tab, payload.tab.url, state)
+        state = tabUpdated(payload.tab.id, payload.tab.url, state)
       }
       break
     case tabTypes.types.TAB_UPDATED:
@@ -213,5 +213,3 @@ const webtorrentReducer = (state: TorrentsState = defaultState, action: any) => 
 
   return state
 }
-
-export default webtorrentReducer

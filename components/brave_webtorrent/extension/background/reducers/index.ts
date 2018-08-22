@@ -5,7 +5,7 @@
 import { combineReducers } from 'redux'
 
 // Utils
-import webtorrentReducer from './webtorrent_reducer'
+import { webtorrentReducer } from './webtorrent_reducer'
 import { ApplicationState } from '../../constants/webtorrentState'
 
 export default combineReducers<ApplicationState>({
