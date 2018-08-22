@@ -43,13 +43,13 @@ PaymentData::PaymentData():
   timestamp(0),
   category(PUBLISHER_CATEGORY::TIPPING) {}
 
-PaymentData::PaymentData(const std::string& _domain,
+PaymentData::PaymentData(const std::string& _publisher_id,
          const double& _value,
          const int64_t& _timestamp,
          PUBLISHER_CATEGORY _category,
          PUBLISHER_MONTH _local_month,
          const std::string& _local_year):
-  domain(_domain),
+  publisher_id(_publisher_id),
   value(_value),
   timestamp(_timestamp),
   category(_category),
@@ -57,7 +57,7 @@ PaymentData::PaymentData(const std::string& _domain,
   local_year(_local_year) {}
 
 PaymentData::PaymentData(const PaymentData& data):
-  domain(data.domain),
+  publisher_id(data.publisher_id),
   value(data.value),
   timestamp(data.timestamp),
   category(data.category),

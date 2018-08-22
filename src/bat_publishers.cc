@@ -64,7 +64,7 @@ const ledger::PublisherInfo::id_type getPublisherID(
 
 const ledger::PublisherInfo::id_type getPublisherID(
     const ledger::PaymentData& payment_data) {
-  return payment_data.domain;
+  return payment_data.publisher_id;
 }
 
 std::string getProviderName(const ledger::PublisherInfo::id_type publisher_id) {

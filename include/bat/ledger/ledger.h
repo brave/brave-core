@@ -36,7 +36,7 @@ LEDGER_EXPORT struct VisitData {
 
 LEDGER_EXPORT struct PaymentData {
   PaymentData();
-  PaymentData(const std::string& _domain,
+  PaymentData(const std::string& _publisher_id,
            const double& _value,
            const int64_t& _timestamp,
            PUBLISHER_CATEGORY _category,
@@ -45,7 +45,7 @@ LEDGER_EXPORT struct PaymentData {
   PaymentData(const PaymentData& data);
   ~PaymentData();
 
-  std::string domain;
+  std::string publisher_id;
   double value;
   int64_t timestamp;
   PUBLISHER_CATEGORY category;
