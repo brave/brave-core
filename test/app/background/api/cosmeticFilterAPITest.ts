@@ -184,7 +184,8 @@ describe('cosmeticFilterTestSuite', () => {
       })
       cosmeticFilterAPI.applySiteFilters('brave.com')
       assert.deepEqual(this.insertCSSStub.getCall(0).args[0], {
-        code: `${filter} {display: none;}`
+        code: `${filter} {display: none;}`,
+        runAt: 'document_start'
       })
     })
     it('applies multiple filters correctly', function () {
@@ -195,10 +196,12 @@ describe('cosmeticFilterTestSuite', () => {
       })
       cosmeticFilterAPI.applySiteFilters('brave.com')
       assert.deepEqual(this.insertCSSStub.getCall(0).args[0], {
-        code: `${filter} {display: none;}`
+        code: `${filter} {display: none;}`,
+        runAt: 'document_start'
       })
       assert.deepEqual(this.insertCSSStub.getCall(1).args[0], {
-        code: `${filter2} {display: none;}`
+        code: `${filter2} {display: none;}`,
+        runAt: 'document_start'
       })
 
     })

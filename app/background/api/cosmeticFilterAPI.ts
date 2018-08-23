@@ -24,7 +24,8 @@ export const applySiteFilters = (hostname: string) => {
       storeData.cosmeticFilterList[hostname].map((rule: string) => {
         console.log('applying rule', rule)
         chrome.tabs.insertCSS({
-          code: `${rule} {display: none;}`
+          code: `${rule} {display: none;}`,
+          runAt: 'document_start'
         })
       })
     }
