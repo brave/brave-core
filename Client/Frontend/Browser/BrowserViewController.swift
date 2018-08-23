@@ -1509,10 +1509,30 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
     
     func tabToolbarDidPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        tabManager.addTabAndSelect()
-        urlBar.tabLocationViewDidTapLocation(urlBar.locationView)
+        let isPrivate = tabManager.selectedTab?.isPrivate ?? false
+        self.openBlankNewTab(focusLocationField: true, isPrivate: isPrivate)
     }
 
+    func tabToolbarDidLongPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil))
+        if tabManager.selectedTab?.isPrivate == false {
+            let newPrivateTabAction = UIAlertAction(title: Strings.NewPrivateTabTitle, style: .default, handler: { [unowned self] _ in
+                // BRAVE TODO: Add check for DuckDuckGo popup (and based on 1.6, whether the browser lock is enabled?)
+                // before focusing on the url bar
+                self.openBlankNewTab(focusLocationField: true, isPrivate: true)
+            })
+            alertController.addAction(newPrivateTabAction)
+        }
+        alertController.addAction(UIAlertAction(title: Strings.NewTabTitle, style: .default, handler: { [unowned self] _ in
+            let isPrivate = self.tabManager.selectedTab?.isPrivate ?? false
+            self.openBlankNewTab(focusLocationField: true, isPrivate: isPrivate)
+        }))
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+        present(alertController, animated: true)
+    }
+    
     func tabToolbarDidLongPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
@@ -1528,14 +1548,9 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             return
         }
         let controller = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        controller.addAction(UIAlertAction(title: Strings.NewTabTitle, style: .default, handler: { _ in
-            let shouldFocusLocationField = NewTabAccessors.getNewTabPage(self.profile.prefs) == .blankPage
-            self.openBlankNewTab(focusLocationField: shouldFocusLocationField, isPrivate: false)
-        }), accessibilityIdentifier: "toolbarTabButtonLongPress.newTab")
-        controller.addAction(UIAlertAction(title: Strings.NewPrivateTabTitle, style: .default, handler: { _ in
-            let shouldFocusLocationField = NewTabAccessors.getNewTabPage(self.profile.prefs) == .blankPage
-            self.openBlankNewTab(focusLocationField: shouldFocusLocationField, isPrivate: true)
-        }), accessibilityIdentifier: "toolbarTabButtonLongPress.newPrivateTab")
+        controller.addAction(UIAlertAction(title: String(format: Strings.CloseAllTabsTitle, tabManager.tabs.count), style: .destructive, handler: { _ in
+            self.tabManager.removeAll()
+        }), accessibilityIdentifier: "toolbarTabButtonLongPress.closeTab")
         controller.addAction(UIAlertAction(title: Strings.CloseTabTitle, style: .destructive, handler: { _ in
             if let tab = self.tabManager.selectedTab {
                 self.tabManager.removeTab(tab)
