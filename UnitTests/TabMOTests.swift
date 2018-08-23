@@ -16,7 +16,7 @@ class TabMOTests: CoreDataTestCase {
 
     func testCreate() {        
         let object = createAndWait()
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         XCTAssertNotNil(object.syncUUID)
         XCTAssertNotNil(object.imageUrl)
@@ -42,7 +42,7 @@ class TabMOTests: CoreDataTestCase {
         let newUrl = "http://example.com"
         
         var object = createAndWait()
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         XCTAssertNotEqual(object.title, newTitle)
         XCTAssertNotEqual(object.url, newUrl)
@@ -51,14 +51,14 @@ class TabMOTests: CoreDataTestCase {
                                screenshot: UIImage.sampleImage(), history: ["history1", "history2"], historyIndex: 20)
         
         backgroundSaveAndWaitForExpectation {
-            TabMO.preserve(savedTab: tabData)
+            TabMO.update(tabData: tabData)
         }
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         // Need to refresh context here.
-         DataController.mainThreadContext.reset()
+         DataController.viewContext.reset()
         
-        object = try! DataController.mainThreadContext.fetch(fetchRequest).first!
+        object = try! DataController.viewContext.fetch(fetchRequest).first!
         
         XCTAssertNotNil(object.syncUUID)
         XCTAssertNotNil(object.imageUrl)
@@ -82,7 +82,7 @@ class TabMOTests: CoreDataTestCase {
         let wrongId = "999"
         
         var object = createAndWait()
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         XCTAssertNotEqual(object.title, newTitle)
         XCTAssertNotEqual(object.url, newUrl)
@@ -90,15 +90,15 @@ class TabMOTests: CoreDataTestCase {
         let tabData = SavedTab(id: wrongId, title: newTitle, url: newUrl, isSelected: true, order: 10, 
                                screenshot: UIImage.sampleImage(), history: ["history1", "history2"], historyIndex: 20)
         
-        TabMO.preserve(savedTab: tabData)
+        TabMO.update(tabData: tabData)
         // We can't wait for context save here, wrong id is being passed, let's fake it by waiting one second
         sleep(UInt32(1))
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         // Need to refresh context here.
-        DataController.mainThreadContext.reset()
-        object = try! DataController.mainThreadContext.fetch(fetchRequest).first!
+        DataController.viewContext.reset()
+        object = try! DataController.viewContext.fetch(fetchRequest).first!
         
         // Nothing should change
         XCTAssertNotEqual(object.title, newTitle)
@@ -108,12 +108,12 @@ class TabMOTests: CoreDataTestCase {
     func testDelete() {
         let object = createAndWait()
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
-        DataController.remove(object: object)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
+        object.delete()
         
         
         // FIXME: This fails most of the times.
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
     
     func testImageUrl() {
@@ -130,9 +130,9 @@ class TabMOTests: CoreDataTestCase {
         backgroundSaveAndWaitForExpectation {
             TabMO.saveScreenshotUUID(newUUID, tabId: object.syncUUID)
         }
-        DataController.mainThreadContext.reset()
+        DataController.viewContext.reset()
         
-        object = try! DataController.mainThreadContext.fetch(fetchRequest).first!
+        object = try! DataController.viewContext.fetch(fetchRequest).first!
         XCTAssertNotNil(object.screenshotUUID)
     }
     
@@ -143,9 +143,9 @@ class TabMOTests: CoreDataTestCase {
         
         XCTAssertNil(object.screenshotUUID)
         TabMO.saveScreenshotUUID(newUUID, tabId: wrongId)
-        DataController.mainThreadContext.reset()
+        DataController.viewContext.reset()
         
-        object = try! DataController.mainThreadContext.fetch(fetchRequest).first!
+        object = try! DataController.viewContext.fetch(fetchRequest).first!
         XCTAssertNil(object.screenshotUUID)
     }
     
@@ -157,7 +157,7 @@ class TabMOTests: CoreDataTestCase {
         let tabData = SavedTab(id: object.syncUUID!, title: "title", url: "url", isSelected: false, order: Int16(order), 
                                screenshot: nil, history: [], historyIndex: 0)
         backgroundSaveAndWaitForExpectation {
-            TabMO.preserve(savedTab: tabData)
+            TabMO.update(tabData: tabData)
         }
         
     }
@@ -168,7 +168,7 @@ class TabMOTests: CoreDataTestCase {
         createAndUpdate(order: 2)
         
         // Getting all objects and sorting them manually by order
-        let objectsSortedByOrder = try! DataController.mainThreadContext.fetch(fetchRequest).sorted(by: { $0.order < $1.order })
+        let objectsSortedByOrder = try! DataController.viewContext.fetch(fetchRequest).sorted(by: { $0.order < $1.order })
         
         let all = TabMO.getAll()
         XCTAssertEqual(all.count, 3)
@@ -182,7 +182,7 @@ class TabMOTests: CoreDataTestCase {
     }
     
     func testGetFromId() {
-        let context = DataController.mainThreadContext
+        let context = DataController.viewContext
         let wrongId = "999"
         let object = createAndWait()
         
@@ -195,7 +195,7 @@ class TabMOTests: CoreDataTestCase {
             _ = TabMO.create()
         }
         
-        return try! DataController.mainThreadContext.fetch(fetchRequest).first!
+        return try! DataController.viewContext.fetch(fetchRequest).first!
     }
 }
 

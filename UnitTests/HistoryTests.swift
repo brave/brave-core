@@ -18,7 +18,7 @@ class HistoryTests: CoreDataTestCase {
         let url = URL(string: "https://brave.com")!
         
         let object = createAndWait(title: title, url: url)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         XCTAssertEqual(object.title, title)
         XCTAssertEqual(object.url, url.absoluteString)
@@ -30,12 +30,12 @@ class HistoryTests: CoreDataTestCase {
     func testAddTwice() {
         let object = createAndWait()
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         XCTAssertEqual(object.domain!.visits, 1)
         
         let newObject = createAndWait()
         // Should still be one object but with 2 visits recorded.
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         XCTAssertEqual(newObject.domain!.visits, 2)
     }
     
@@ -49,7 +49,7 @@ class HistoryTests: CoreDataTestCase {
         // Wait a moment to make a date difference
         sleep(UInt32(2))
         let secondObject = createAndWait(title: "Second", url: URL(string: "https://brave.com")!)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 2)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
         
         XCTAssertNoThrow(try frc.performFetch())
         
@@ -66,7 +66,7 @@ class HistoryTests: CoreDataTestCase {
         
         _ = createAndWait(title: title, url: url)
         
-        let context = DataController.workerThreadContext
+        let context = DataController.newBackgroundContext()
         
         XCTAssertNil(History.getExisting(wrongUrl, context: context))
         XCTAssertNotNil(History.getExisting(url, context: context))
@@ -74,11 +74,11 @@ class HistoryTests: CoreDataTestCase {
     
     func testRemove() {
         let object = createAndWait()
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
-        object.remove(save: true)
+        object.delete()
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
     
     func testDeleteAll() {
@@ -86,7 +86,7 @@ class HistoryTests: CoreDataTestCase {
         
         createAndWait()
         createAndWait(title: "title", url: URL(string: "https://brave.com")!)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 2)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
         
         History.deleteAll {
             deleteExpectation.fulfill()
@@ -94,7 +94,7 @@ class HistoryTests: CoreDataTestCase {
         
         waitForExpectations(timeout: 1, handler: nil)
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
 
     @discardableResult
@@ -103,6 +103,6 @@ class HistoryTests: CoreDataTestCase {
             History.add(title, url: url)
         }
         
-        return try! DataController.mainThreadContext.fetch(fetchRequest).first!
+        return try! DataController.viewContext.fetch(fetchRequest).first!
     }
 }

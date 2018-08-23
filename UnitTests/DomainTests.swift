@@ -16,18 +16,18 @@ class DomainTests: CoreDataTestCase {
     func testGetOrCreate() {
         let url = URL(string: "http://example.com")!
         let url2 = URL(string: "http://brave.com")!
-        let context = DataController.mainThreadContext
+        let context = DataController.viewContext
         
         XCTAssertNotNil(Domain.getOrCreateForUrl(url, context: context))
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         // Try to add the same domain again, verify no new object is created
         XCTAssertNotNil(Domain.getOrCreateForUrl(url, context: context))
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         // Add another domain, verify that second object is created
         XCTAssertNotNil(Domain.getOrCreateForUrl(url2, context: context))
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 2)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
     }
 
     // BRAVE TODO: Add shields unit tests after they are finished.

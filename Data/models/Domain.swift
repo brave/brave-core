@@ -101,7 +101,7 @@ public final class Domain: NSManagedObject, CRUD {
 //            case .FpProtection: domain?.shield_fpProtection = state.1 as NSNumber?
 //            case .NoScript: domain?.shield_noScript = state.1 as NSNumber?
 //        }
-//        DataController.saveContext(context: context)
+//        DataController.save(context: context)
     }
 
     class func loadShieldsIntoMemory(_ completionOnMain: @escaping ()->()) {
