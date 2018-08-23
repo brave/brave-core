@@ -107,7 +107,7 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
         let urlKeyPath = #keyPath(History.url)
         let predicate = NSPredicate(format: "\(urlKeyPath) == %@", url.absoluteString)
         
-        return first(where: predicate)
+        return first(where: predicate, context: context)
     }
 
     class func frecencyQuery(_ context: NSManagedObjectContext, containing:String? = nil) -> [History] {
