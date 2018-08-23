@@ -1441,7 +1441,7 @@ extension BrowserViewController: URLBarDelegate {
             // Leave some space near the bottom for easier dismissal
             popover.outerMargins.bottom = 80.0
         }
-        popover.present(from: urlBar.locationView.shieldsButton, on: self)
+        popover.present(from: urlBar.shieldsButton, on: self)
     }
     
     func urlBarDidTapMenuButton(_ urlBar: URLBarView) {

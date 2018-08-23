@@ -115,7 +115,7 @@ extension PopoverController {
             super.layoutSubviews()
             
             // Assure the arrow will not be hanging off a corner
-            let clampedArrowXOrigin = min(max(arrowOrigin.x, PopoverUX.cornerRadius), bounds.width - PopoverUX.cornerRadius - PopoverUX.arrowSize.width / 2.0) - PopoverUX.arrowSize.width / 2.0
+            let clampedArrowXOrigin = min(max(arrowOrigin.x, PopoverUX.cornerRadius + 1), bounds.width - PopoverUX.cornerRadius - 1) - PopoverUX.arrowSize.width / 2.0
             
             CATransaction.setDisableActions(true)
             triangleLayer.position = CGPoint(x: clampedArrowXOrigin, y: arrowDirection == .down ? bounds.size.height - PopoverUX.arrowSize.height - 1.0 : 1.0)
