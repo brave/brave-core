@@ -208,16 +208,34 @@ namespace braveledger_bat_helper {
     GRANT grant_;
   };
 
+  struct REPORT_BALANCE_ST {
+    REPORT_BALANCE_ST();
+    ~REPORT_BALANCE_ST();
+
+    bool loadFromJson(const std::string &json);
+
+    double opening_balance_ = .0;
+    double closing_balance_ = .0;
+    double grants_ = .0;
+    double earning_from_ads_ = .0;
+    double auto_contribute_ = .0;
+    double recurring_donation_ = .0;
+    double one_time_donation_ = .0;
+  };
+
   struct PUBLISHER_STATE_ST {
     PUBLISHER_STATE_ST();
+    PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST&);
     ~PUBLISHER_STATE_ST();
 
     //load from json string
-    bool loadFromJson(const std::string & json);
+    bool loadFromJson(const std::string &json);
 
     unsigned int min_pubslisher_duration_ = braveledger_ledger::_default_min_pubslisher_duration;  // In milliseconds
     unsigned int min_visits_ = 1u;
     bool allow_non_verified_ = true;
+    std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;
+    std::map<std::string, double> recurring_donation_;
   };
 
   struct PUBLISHER_ST {

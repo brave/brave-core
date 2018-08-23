@@ -62,6 +62,11 @@ const ledger::PublisherInfo::id_type getPublisherID(
   return visit_data.tld;
 }
 
+const ledger::PublisherInfo::id_type getPublisherID(
+    const ledger::PaymentData& payment_data) {
+  return payment_data.publisher_id;
+}
+
 std::string getProviderName(const ledger::PublisherInfo::id_type publisher_id) {
   // TODO - this is for the media stuff
   return "";
@@ -69,6 +74,22 @@ std::string getProviderName(const ledger::PublisherInfo::id_type publisher_id) {
 
 bool ignoreMinTime(const ledger::PublisherInfo::id_type publisher_id) {
   return !getProviderName(publisher_id).empty();
+}
+
+void BatPublishers::AddRecurringPayment(const std::string& publisher_id, const double& value) {
+  state_->recurring_donation_[publisher_id] = value;
+  saveState();
+}
+
+void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
+  const ledger::PublisherInfo::id_type publisher_id =
+    getPublisherID(payment_data);
+
+  std::string publisher_key = GetPublisherKey(payment_data.category,
+    payment_data.local_year, payment_data.local_month, publisher_id);
+  ledger_->GetPublisherInfo(publisher_key,
+    std::bind(&BatPublishers::makePaymentInternal, this,
+                  publisher_key, payment_data, _1, _2));
 }
 
 void BatPublishers::saveVisit(const ledger::VisitData& visit_data, const uint64_t& duration) {
@@ -79,9 +100,22 @@ void BatPublishers::saveVisit(const ledger::VisitData& visit_data, const uint64_
       duration < state_->min_pubslisher_duration_)
     return;
 
-  ledger_->GetPublisherInfo(publisher_id,
+  std::string publisher_key = GetPublisherKey(ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+    visit_data.local_year, visit_data.local_month, publisher_id);
+  ledger_->GetPublisherInfo(publisher_key,
       std::bind(&BatPublishers::saveVisitInternal, this,
-                    publisher_id, visit_data, duration, _1, _2));
+                    publisher_key, visit_data, duration, _1, _2));
+}
+
+std::string BatPublishers::GetPublisherKey(ledger::PUBLISHER_CATEGORY category, const std::string& year,
+    ledger::PUBLISHER_MONTH month, const std::string& publisher_id) {
+  return std::to_string(category) + "_" +
+    year + "_" + std::to_string(month) + "." + publisher_id;
+}
+
+std::string BatPublishers::GetBalanceReportName(const std::string& year,
+    const ledger::PUBLISHER_MONTH month) {
+  return year + "_" + std::to_string(month) + "_balance";
 }
 
 void onVisitSavedDummy(ledger::Result result,
@@ -89,8 +123,31 @@ void onVisitSavedDummy(ledger::Result result,
   // onPublisherInfoUpdated will always be called by LedgerImpl so do nothing
 }
 
+void BatPublishers::makePaymentInternal(
+      std::string publisher_key,
+      ledger::PaymentData payment_data,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+  if (result != ledger::Result::OK) {
+    // TODO error handling
+    return;
+  }
+
+  if (!publisher_info.get()) 
+    publisher_info.reset(new ledger::PublisherInfo(getPublisherID(payment_data)));
+
+  publisher_info->key = publisher_key;
+  publisher_info->category = payment_data.category;
+  publisher_info->month = payment_data.local_month;
+  publisher_info->year = payment_data.local_year;
+  publisher_info->contributions.push_back(ledger::ContributionInfo(payment_data.value, payment_data.timestamp));
+
+  ledger_->SetPublisherInfo(std::move(publisher_info),
+      std::bind(&onVisitSavedDummy, _1, _2));
+}
+
 void BatPublishers::saveVisitInternal(
-    ledger::PublisherInfo::id_type publisher_id,
+    std::string publisher_key,
     ledger::VisitData visit_data,
     uint64_t duration,
     ledger::Result result,
@@ -100,12 +157,16 @@ void BatPublishers::saveVisitInternal(
     return;
   }
 
-  if (!publisher_info.get())
-    publisher_info.reset(new ledger::PublisherInfo(publisher_id));
+  if (!publisher_info.get()) 
+    publisher_info.reset(new ledger::PublisherInfo(getPublisherID(visit_data)));
 
+  publisher_info->key = publisher_key;
   publisher_info->duration += duration;
   publisher_info->visits += 1;
+  publisher_info->category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
   publisher_info->score += concaveScore(duration);
+  publisher_info->month = visit_data.local_month;
+  publisher_info->year = visit_data.local_year;
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
       std::bind(&onVisitSavedDummy, _1, _2));
@@ -171,6 +232,9 @@ bool BatPublishers::getPublisherAllowNonVerified() const {
 
 void BatPublishers::synopsisNormalizer() {
   LOG(ERROR)<<"BatPublishers::synopsisNormalizer";
+  if (publishers_.size() == 0) {
+    return;
+  }
   double totalScores = 0.0;
   for (std::map<std::string, braveledger_bat_helper::PUBLISHER_ST>::const_iterator iter = publishers_.begin(); iter != publishers_.end(); iter++) {
     totalScores += iter->second.score_;
@@ -279,6 +343,41 @@ bool BatPublishers::isEligableForContribution(const ledger::PublisherInfo& info)
 
 }
 
+void BatPublishers::setBalanceReport(const std::string& year,
+    ledger::PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) {
+  braveledger_bat_helper::REPORT_BALANCE_ST report_balance;
+  report_balance.opening_balance_ = report_info.opening_balance_;
+  report_balance.closing_balance_ = report_info.closing_balance_;
+  report_balance.grants_ = report_info.grants_;
+  report_balance.earning_from_ads_ = report_info.earning_from_ads_;
+  report_balance.auto_contribute_ = report_info.auto_contribute_;
+  report_balance.recurring_donation_ = report_info.recurring_donation_;
+  report_balance.one_time_donation_ = report_info.one_time_donation_;
+
+  state_->monthly_balances_[GetBalanceReportName(year, month)] = report_balance;
+  saveState();
+}
+
+bool BatPublishers::getBalanceReport(const std::string& year,
+    ledger::PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) {
+  std::map<std::string, braveledger_bat_helper::REPORT_BALANCE_ST>::const_iterator iter = 
+    state_->monthly_balances_.find(GetBalanceReportName(year, month));
+  DCHECK(iter != state_->monthly_balances_.end() && report_info);
+  if (iter == state_->monthly_balances_.end() || !report_info) {
+    return false;
+  }
+
+  report_info->opening_balance_ = iter->second.opening_balance_;
+  report_info->closing_balance_ = iter->second.closing_balance_;
+  report_info->grants_ = iter->second.grants_;
+  report_info->earning_from_ads_ = iter->second.earning_from_ads_;
+  report_info->auto_contribute_ = iter->second.auto_contribute_;
+  report_info->recurring_donation_ = iter->second.recurring_donation_;
+  report_info->one_time_donation_ = iter->second.one_time_donation_;
+
+  return true;
+}
+
 void BatPublishers::saveState() {
   std::string data;
   braveledger_bat_helper::saveToJsonString(*state_, data);
@@ -302,6 +401,19 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
     return;
   }
   synopsisNormalizer();
+}
+
+std::vector<ledger::ContributionInfo> BatPublishers::GetRecurringDonationList() {
+  std::vector<ledger::ContributionInfo> res;
+
+  for (const auto & e : state_->recurring_donation_) {
+    ledger::ContributionInfo info;
+    info.publisher = e.first;
+    info.value = e.second;
+    res.push_back(info);
+  }
+
+  return res;
 }
 
 }  // namespace braveledger_bat_publisher

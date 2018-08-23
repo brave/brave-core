@@ -680,14 +680,90 @@ namespace braveledger_bat_helper {
   }
 
   /////////////////////////////////////////////////////////////////////////////
+  REPORT_BALANCE_ST::REPORT_BALANCE_ST():
+    opening_balance_(.0),
+    closing_balance_(.0),
+    grants_(.0),
+    earning_from_ads_(.0),
+    auto_contribute_(.0),
+    recurring_donation_(.0),
+    one_time_donation_(.0) {}
+
+  REPORT_BALANCE_ST::~REPORT_BALANCE_ST() {}
+
+  bool REPORT_BALANCE_ST::loadFromJson(const std::string& json) {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    bool error = d.HasParseError();
+    if (false == error) {
+      error = !(d.HasMember("opening_balance") && d["opening_balance"].IsDouble() &&
+        d.HasMember("closing_balance") && d["closing_balance"].IsDouble() &&
+        d.HasMember("grants") && d["grants"].IsDouble() &&
+        d.HasMember("earning_from_ads") && d["earning_from_ads"].IsDouble() &&
+        d.HasMember("auto_contribute") && d["auto_contribute"].IsDouble() && 
+        d.HasMember("recurring_donation") && d["recurring_donation"].IsDouble() &&
+        d.HasMember("one_time_donation") && d["one_time_donation"].IsDouble());
+    }
+
+    if (false == error) {
+      opening_balance_ = d["opening_balance"].GetDouble();
+      closing_balance_ = d["closing_balance"].GetDouble();
+      grants_ = d["grants"].GetDouble();
+      earning_from_ads_ = d["earning_from_ads"].GetDouble();
+      auto_contribute_ = d["auto_contribute"].GetDouble();
+      recurring_donation_ = d["recurring_donation"].GetDouble();
+      one_time_donation_ = d["one_time_donation"].GetDouble();
+    }
+
+    return !error;
+  }
+
+  void saveToJson(JsonWriter& writer, const REPORT_BALANCE_ST& data) {
+    writer.StartObject();
+
+    writer.String("opening_balance");
+    writer.Double(data.opening_balance_);
+
+    writer.String("closing_balance");
+    writer.Double(data.closing_balance_);
+
+    writer.String("grants");
+    writer.Double(data.grants_);
+
+    writer.String("earning_from_ads");
+    writer.Double(data.earning_from_ads_);
+
+    writer.String("auto_contribute");
+    writer.Double(data.auto_contribute_);
+
+    writer.String("recurring_donation");
+    writer.Double(data.recurring_donation_);
+
+    writer.String("one_time_donation");
+    writer.Double(data.one_time_donation_);
+
+
+    writer.EndObject();
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
   PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
     min_pubslisher_duration_(braveledger_ledger::_default_min_pubslisher_duration),
     min_visits_(1),
     allow_non_verified_(true) {}
 
+  PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
+    min_pubslisher_duration_ = state.min_pubslisher_duration_;
+    min_visits_ = state.min_visits_;
+    allow_non_verified_ = state.allow_non_verified_;
+    monthly_balances_ = state.monthly_balances_;
+    recurring_donation_ = state.recurring_donation_;
+  }
+
   PUBLISHER_STATE_ST::~PUBLISHER_STATE_ST() {}
 
-  bool PUBLISHER_STATE_ST::loadFromJson(const std::string & json) {
+  bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
     rapidjson::Document d;
     d.Parse(json.c_str());
 
@@ -696,13 +772,46 @@ namespace braveledger_bat_helper {
     if (false == error) {
       error = !(d.HasMember("min_pubslisher_duration") && d["min_pubslisher_duration"].IsUint() &&
         d.HasMember("min_visits") && d["min_visits"].IsUint() &&
-        d.HasMember("allow_non_verified") && d["allow_non_verified"].IsBool());
+        d.HasMember("allow_non_verified") && d["allow_non_verified"].IsBool() &&
+        d.HasMember("monthly_balances") && d["monthly_balances"].IsArray() &&
+        d.HasMember("recurring_donation") && d["recurring_donation"].IsArray());
     }
 
     if (false == error) {
       min_pubslisher_duration_ = d["min_pubslisher_duration"].GetUint();
       min_visits_ = d["min_visits"].GetUint();
       allow_non_verified_ = d["allow_non_verified"].GetBool();
+      for (const auto & i : d["monthly_balances"].GetArray()) {
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+
+        rapidjson::Document d1;
+        d1.Parse(sb.GetString());
+
+        rapidjson::Value::ConstMemberIterator itr = d1.MemberBegin();
+        if (itr != d1.MemberEnd()) {
+          rapidjson::StringBuffer sb1;
+          rapidjson::Writer<rapidjson::StringBuffer> writer1(sb1);
+          itr->value.Accept(writer1);
+          REPORT_BALANCE_ST r;
+          r.loadFromJson(sb1.GetString());
+          monthly_balances_.insert(std::make_pair(itr->name.GetString(), r));
+        }
+      }
+      for (const auto & i : d["recurring_donation"].GetArray()) {
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+
+        rapidjson::Document d1;
+        d1.Parse(sb.GetString());
+
+        rapidjson::Value::ConstMemberIterator itr = d1.MemberBegin();
+        if (itr != d1.MemberEnd()) {
+          recurring_donation_.insert(std::make_pair(itr->name.GetString(), itr->value.GetDouble()));
+        }
+      }
     }
 
     return !error;
@@ -719,6 +828,26 @@ namespace braveledger_bat_helper {
 
     writer.String("allow_non_verified");
     writer.Bool(data.allow_non_verified_);
+
+    writer.String("monthly_balances");
+    writer.StartArray();
+    for (auto & p : data.monthly_balances_) {
+      writer.StartObject();
+      writer.String(p.first.c_str());
+      saveToJson(writer, p.second);
+      writer.EndObject();
+    }
+    writer.EndArray();
+
+    writer.String("recurring_donation");
+    writer.StartArray();
+    for (auto & p : data.recurring_donation_) {
+      writer.StartObject();
+      writer.String(p.first.c_str());
+      writer.Double(p.second);
+      writer.EndObject();
+    }
+    writer.EndArray();
 
     writer.EndObject();
   }

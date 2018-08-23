@@ -20,13 +20,39 @@ LEDGER_EXPORT struct VisitData {
   VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
-            uint32_t tab_id);
+            uint32_t _tab_id,
+            PUBLISHER_MONTH _local_month,
+            const std::string& _local_year);
   VisitData(const VisitData& data);
+  ~VisitData();
+
   std::string tld;
   std::string domain;
   std::string path;
   uint32_t tab_id;
+  PUBLISHER_MONTH local_month;
+  std::string local_year;
 };
+
+LEDGER_EXPORT struct PaymentData {
+  PaymentData();
+  PaymentData(const std::string& _publisher_id,
+           const double& _value,
+           const int64_t& _timestamp,
+           PUBLISHER_CATEGORY _category,
+           PUBLISHER_MONTH _local_month,
+           const std::string& _local_year);
+  PaymentData(const PaymentData& data);
+  ~PaymentData();
+
+  std::string publisher_id;
+  double value;
+  int64_t timestamp;
+  PUBLISHER_CATEGORY category;
+  PUBLISHER_MONTH local_month;
+  std::string local_year;
+};
+
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -43,6 +69,8 @@ class LEDGER_EXPORT Ledger {
   virtual void CreateWallet() = 0;
   virtual void Reconcile() = 0;
 
+  virtual void MakePayment(const PaymentData& payment_data) = 0;
+  virtual void AddRecurringPayment(const std::string& publisher_id, const double& value) = 0;
   virtual void OnLoad(const VisitData& visit_data, const uint64_t& current_time) = 0;
   virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
   virtual void OnShow(uint32_t tab_id, const uint64_t& current_time) = 0;
@@ -60,16 +88,19 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;
-  virtual void GetPublisherInfo(const PublisherInfo::id_type& publisher_id,
+  virtual void GetPublisherInfo(const std::string& publisher_key,
                                 PublisherInfoCallback callback) = 0;
+  virtual std::vector<ContributionInfo> GetRecurringDonationPublisherInfo() = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
-                                    PublisherInfoFilter filter,
+                                    const ledger::PublisherInfoFilter& filter,
                                     GetPublisherInfoListCallback callback) = 0;
 
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_milliseconds) = 0;
   virtual void SetPublisherMinVisits(unsigned int visits) = 0;
   virtual void SetPublisherAllowNonVerified(bool allow) = 0;
   virtual void SetContributionAmount(double amount) = 0;
+  virtual void SetBalanceReport(const std::string& year,
+    PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) = 0;
 
   virtual const std::string& GetBATAddress() const = 0;
   virtual const std::string& GetBTCAddress() const = 0;
@@ -85,6 +116,9 @@ class LEDGER_EXPORT Ledger {
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual void GetGrantCaptcha() const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
+  virtual bool GetBalanceReport(const std::string& year,
+    PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) const = 0;
+
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 };
 
