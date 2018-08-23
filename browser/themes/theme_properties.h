@@ -14,8 +14,4 @@ class Profile;
 
 base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, Profile* profile);
 
-#define MAYBE_OVERRIDE_DEFAULT_COLOR_FOR_BRAVE(id, incognito, profile) \
-  const base::Optional<SkColor> braveColor = MaybeGetDefaultColorForBraveUi(id, incognito, profile); \
-  if (braveColor) return braveColor.value();
-
 #endif  // BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_

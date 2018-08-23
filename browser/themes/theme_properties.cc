@@ -4,7 +4,7 @@
 
 #include "brave/browser/themes/theme_properties.h"
 
-#include "brave/browser/themes/theme_util.h"
+#include "brave/browser/themes/brave_theme_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/common/channel_info.h"
@@ -78,8 +78,8 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, P
 #if !defined(OFFICIAL_BUILD)
   return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
 #else
-  switch (GetBraveThemeType(profile)) {
-    case BRAVE_THEME_TYPE_DEFAULT:
+  switch (BraveThemeService::GetBraveThemeType(profile)) {
+    case BraveThemeService::BRAVE_THEME_TYPE_DEFAULT:
       switch (chrome::GetChannel()) {
         case version_info::Channel::STABLE:
         case version_info::Channel::BETA:
@@ -90,9 +90,9 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, P
         default:
           return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
       }
-    case BRAVE_THEME_TYPE_LIGHT:
+    case BraveThemeService::BRAVE_THEME_TYPE_LIGHT:
       return MaybeGetDefaultColorForBraveUiReleaseChannel(id, incognito);
-    case BRAVE_THEME_TYPE_DARK:
+    case BraveThemeService::BRAVE_THEME_TYPE_DARK:
       return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
     default:
       NOTREACHED();
