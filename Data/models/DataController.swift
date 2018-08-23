@@ -21,6 +21,13 @@ public class DataController: NSObject {
         
         let container = NSPersistentContainer(name: modelName, managedObjectModel: mom)
         
+        if AppConstants.IsRunningTest {
+            let description = NSPersistentStoreDescription()
+            description.type = NSInMemoryStoreType
+            
+            container.persistentStoreDescriptions = [description]
+        }
+        
         // Dev note: This completion handler might be misleading: the persistent store is loaded synchronously by default.
         container.loadPersistentStores(completionHandler: { _, error in
             if let error = error {

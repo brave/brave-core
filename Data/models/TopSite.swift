@@ -5,7 +5,7 @@ import CoreData
 import Foundation
 import Shared
 
-class TopSite: NSManagedObject {
+final class TopSite: NSManagedObject, CRUD {
     @NSManaged var title: String?
     @NSManaged var url: String?
     @NSManaged var syncUUID: String?

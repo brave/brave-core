@@ -22,7 +22,7 @@ class DeviceTests: CoreDataTestCase {
         }
         let newDevice = Device.currentDevice()
         
-        XCTAssertEqual(try! DataController.mainThreadContext.fetch(fetchRequest).count, 1)
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
         
         XCTAssertEqual(device, newDevice)
         
@@ -34,23 +34,23 @@ class DeviceTests: CoreDataTestCase {
         }
         
         backgroundSaveAndWaitForExpectation {
-            Device.deleteAll { }
+            Device.deleteAll()
         }
         
-        XCTAssertEqual(try! DataController.mainThreadContext.fetch(fetchRequest).count, 0)
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 0)
        
     }
 
     // MARK: Syncable
     
     func testAddWithSave() {
-        let context = DataController.workerThreadContext
+        let context = DataController.newBackgroundContext()
         backgroundSaveAndWaitForExpectation {
             let result = Device.add(rootObject: nil, save: true, sendToSync: false, context: context) as? Device
             XCTAssertNotNil(result)
         }
         
-        XCTAssertEqual(try! DataController.mainThreadContext.fetch(fetchRequest).count, 1)
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
     }
     
     func testUpdate() {
