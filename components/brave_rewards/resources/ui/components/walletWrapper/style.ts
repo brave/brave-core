@@ -55,8 +55,8 @@ export const StyledBalanceTokens = styled<{}, 'div'>('div')`
   margin-top: 10px;
 `
 
-export const StyledContent = styled<{}, 'div'>('div')`
-  padding: 11px 25px 19px;
+export const StyledContent = styled<{Props}, 'div'>('div')`
+  padding: ${(p: {contentPadding: boolean}) => p.contentPadding ? '11px 25px 19px' : '11px 0px 19px 0px'};
   position: relative;
   background: #f9fbfc;
   flex: 1;

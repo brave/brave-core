@@ -127,6 +127,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
     return (
       <div style={{ width: '373px', padding: '0 25px' }}>
         <WalletSummarySlider
+          title={true}
           id={'summary-slider'}
           onToggle={doNothing}
         />

@@ -2,26 +2,16 @@
 
 exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
 .c0 {
-  background: #E9EBFF;
+  position: absolute;
+  background: inherit;
   display: block;
   width: 100%;
   padding: 20px 30px;
 }
 
-.c3 {
-  color: #A1A8F2;
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 0.35px;
-  -moz-letter-spacing: 0.35px;
-  -ms-letter-spacing: 0.35px;
-  letter-spacing: 0.35px;
-  line-height: 22px;
-}
-
-.c5 {
+.c4 {
   display: block;
+  margin-top: -18px;
 }
 
 .c1 {
@@ -71,7 +61,7 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
   color: inherit;
 }
 
-.c4 {
+.c3 {
   box-sizing: border-box;
   position: relative;
   display: -webkit-box;
@@ -115,21 +105,15 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
       id={undefined}
       onClick={undefined}
       size={5}
-    >
-      <span
-        className="c3"
-      >
-        MISSING: rewardsSummary
-      </span>
-    </div>
+    />
     <div
-      className="c4"
+      className="c3"
       id={undefined}
       onClick={undefined}
       size={1}
     >
       <span
-        className="c5"
+        className="c4"
       >
         <svg
           height="5"

@@ -63,6 +63,7 @@ export interface Props {
     onAlertClose?: () => void
   } | null
   id?: string
+  contentPadding?: boolean
 }
 
 interface State {

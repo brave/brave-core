@@ -11,6 +11,14 @@ export const StyledWrapper = styled.div`
   padding: 20px 30px;
 ` as any
 
+export const StyledNoTitleWrapper = styled.div`
+  position: absolute;
+  background: inherit;
+  display: block;
+  width: 100%;
+  padding: 20px 30px;
+` as any
+
 export const StyledSummaryText = styled.span`
   color: #A1A8F2;
   font-size: 14px;
@@ -22,4 +30,9 @@ export const StyledSummaryText = styled.span`
 
 export const StyledArrowIcon = styled.span`
   display: block;
+` as any
+
+export const StyledNoTitleArrowIcon = styled.span`
+  display: block;
+  margin-top: -18px;
 ` as any
