@@ -10,8 +10,11 @@ source_set("themes") {
 
   deps = [
     "//base",
+    "//brave/common",
+    "//chrome/common",
+    "//components/prefs",
+    "//components/pref_registry",
     "//components/version_info",
-    "//net",
     "//skia",
   ]
 }

@@ -72,9 +72,6 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiDevChannel(int id, bool in
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
 base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, Profile* profile) {
-  if (id == BRAVE_COLOR_FOR_TEST) {
-    return SkColorSetRGB(11, 13, 17);
-  }
 #if !defined(OFFICIAL_BUILD)
   return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
 #else
