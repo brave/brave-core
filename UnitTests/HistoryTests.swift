@@ -33,13 +33,7 @@ class HistoryTests: CoreDataTestCase {
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         XCTAssertEqual(object.domain!.visits, 1)
         
-        let title = "New title"
-        let url: URL = URL(string: "https://example.com")!
-        History.add(title, url: url)
-        
-        sleep(UInt32(2))
-        
-        let newObject = try! DataController.viewContext.fetch(fetchRequest).first!
+        let newObject = createAndWait()
         
         // Should still be one object but with 2 visits recorded.
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
