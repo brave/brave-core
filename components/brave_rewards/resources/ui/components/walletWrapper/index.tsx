@@ -151,7 +151,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
           {
             showSecActions
-            ? <StyledIconAction onClick={onSettingsClick}>
+            ? <StyledIconAction onClick={onSettingsClick} data-test-id='settingsButton'>
               <SettingsAdvancedIcon />
             </StyledIconAction>
             : null

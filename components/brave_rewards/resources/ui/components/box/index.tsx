@@ -35,6 +35,7 @@ export interface Props {
   settingsChild?: React.ReactNode
   disabledContent?: React.ReactNode
   children?: React.ReactNode
+  testId?: string
   type: Type
 }
 
@@ -69,7 +70,8 @@ export default class Box extends React.PureComponent<Props, State> {
       disabledContent,
       description,
       type,
-      children
+      children,
+      testId
     } = this.props
 
     return (
@@ -82,7 +84,7 @@ export default class Box extends React.PureComponent<Props, State> {
             <StyledRight>
               {
                 toggle ?
-                <Toggle onToggle={onToggle} checked={checked} />
+                <Toggle onToggle={onToggle} checked={checked} testId={testId} />
                 : null
               }
             </StyledRight>

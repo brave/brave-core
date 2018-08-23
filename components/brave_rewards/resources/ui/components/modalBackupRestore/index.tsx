@@ -32,6 +32,7 @@ export interface Props {
   onRestore: (key: string) => void
   error?: React.ReactNode
   id?: string
+  testId?: string
 }
 
 interface State {
@@ -98,11 +99,12 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
       onCopy,
       onPrint,
       onSaveFile,
-      error
+      error,
+      testId
     } = this.props
 
     return (
-      <Modal id={id} onClose={onClose} size={'small'}>
+      <Modal id={id} onClose={onClose} size={'small'} testId={testId}>
         <StyledWrapper>
           <Tabs activeTabId={activeTabId} onChange={onTabChange}>
           <div id={`${id}-backup`} data-key={'backup'} data-title={getLocale('rewardsBackupText1')}>

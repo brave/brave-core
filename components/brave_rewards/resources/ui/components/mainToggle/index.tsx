@@ -22,11 +22,12 @@ export interface Props {
   enabled: boolean
   onToggle: () => void
   id?: string
+  testId?: string
 }
 
 export default class MainToggle extends React.PureComponent<Props, {}> {
   render () {
-    const { id, enabled, onToggle } = this.props
+    const { id, enabled, onToggle, testId } = this.props
 
     return (
       <StyledWrapper id={id}>
@@ -39,7 +40,7 @@ export default class MainToggle extends React.PureComponent<Props, {}> {
           </StyledTitle>
         </StyledLeft>
         <StyledRight>
-          <Toggle checked={enabled} onToggle={onToggle} />
+          <Toggle checked={enabled} onToggle={onToggle} testId={testId} />
         </StyledRight>
         {
           !enabled
