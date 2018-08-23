@@ -290,7 +290,7 @@ extension Bookmark {
         let isFolderKeyPath = #keyPath(Bookmark.isFolder)
                 
         let predicate = NSPredicate(format: "\(syncParentDisplayUUIDKeyPath) == %@ AND \(isFolderKeyPath) == %@",  
-                                    searchableUUID, ignoreFolders ? "YES" : "NO")
+                                    searchableUUID, NSNumber(value: ignoreFolders))
         
         return all(where: predicate)
     }

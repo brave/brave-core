@@ -124,26 +124,24 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
     
     public class func deleteAll(_ completionOnMain: @escaping ()->()) {
         let context = DataController.newBackgroundContext()
-        context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-            fetchRequest.entity = History.entity(context)
-            fetchRequest.includesPropertyValues = false
-            do {
-                let results = try context.fetch(fetchRequest)
-                for result in results {
-                    context.delete(result as! NSManagedObject)
-                }
-
-            } catch {
-                let fetchError = error as NSError
-                print(fetchError)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequest.entity = History.entity(context)
+        fetchRequest.includesPropertyValues = false
+        do {
+            let results = try context.fetch(fetchRequest)
+            for result in results {
+                context.delete(result as! NSManagedObject)
             }
-
-            // No save, save in Domain
-
-            Domain.deleteNonBookmarkedAndClearSiteVisits {
-                completionOnMain()
-            }
+            
+        } catch {
+            let fetchError = error as NSError
+            print(fetchError)
+        }
+        
+        // No save, save in Domain
+        
+        Domain.deleteNonBookmarkedAndClearSiteVisits(context: context) {
+            completionOnMain()
         }
     }
 

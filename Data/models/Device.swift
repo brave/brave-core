@@ -38,16 +38,17 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         
         // No guard, let bleed through to allow 'empty' devices (e.g. local)
         let root = root as? SyncDevice
-
         let device = Device(entity: Device.entity(context: context), insertInto: context)
         
-        device.created = root?.syncNativeTimestamp ?? Date()
-        device.syncUUID = root?.objectId ?? SyncCrypto.uniqueSerialBytes(count: 16)
-
-        device.update(syncRecord: root)
-        
-        if save {
-            DataController.save(context: context)
+        context.perform {
+            device.created = root?.syncNativeTimestamp ?? Date()
+            device.syncUUID = root?.objectId ?? SyncCrypto.uniqueSerialBytes(count: 16)
+            
+            device.update(syncRecord: root)
+            
+            if save {
+                DataController.save(context: context)
+            }
         }
         
         return device
