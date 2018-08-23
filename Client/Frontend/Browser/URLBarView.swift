@@ -4,6 +4,7 @@
 
 import Shared
 import SnapKit
+import BraveShared
 
 private struct URLBarViewUX {
     static let TextFieldBorderColor = UIColor.Photon.Grey40
@@ -159,6 +160,16 @@ class URLBarView: UIView {
         $0.addTarget(self, action: #selector(didClickMenu), for: .touchUpInside)
         $0.accessibilityIdentifier = "urlBar-menuButton"
     }
+    
+    lazy var shieldsButton: ToolbarButton = {
+        let button = ToolbarButton()
+        button.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
+        button.addTarget(self, action: #selector(didClickBraveShieldsButton), for: .touchUpInside)
+        button.imageView?.contentMode = .center
+        button.accessibilityLabel = Strings.Brave_Panel
+        button.accessibilityIdentifier = "urlBar-shieldsButton"
+        return button
+    }()
 
     var backButton: ToolbarButton = {
         let backButton = ToolbarButton()
@@ -176,6 +187,17 @@ class URLBarView: UIView {
         set(newURL) {
             locationView.url = newURL
             line.isHidden = newURL?.isAboutHomeURL ?? true
+            refreshShieldsStatus()
+        }
+    }
+    
+    /// Update the shields icon based on whether or not shields are enabled for this site
+    func refreshShieldsStatus() {
+        if let domain = currentURL?.normalizedHost, let state = BraveShieldState.getStateForDomain(domain),
+            let shieldsAllOffOverride = state.isShieldOverrideEnabled(.AllOff), shieldsAllOffOverride {
+            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-off-menu-icon"), for: .normal)
+        } else {
+            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
         }
     }
 
@@ -202,7 +224,7 @@ class URLBarView: UIView {
         locationContainer.addSubview(locationView)
     
         [scrollToTopButton, line, tabsButton, progressBar, cancelButton, showQRScannerButton].forEach { addSubview($0) }
-        [forwardButton, backButton, menuButton, shareButton, locationContainer].forEach { addSubview($0) }
+        [forwardButton, backButton, menuButton, shareButton, shieldsButton, locationContainer].forEach { addSubview($0) }
         
         helper = TabToolbarHelper(toolbar: self)
         setupConstraints()
@@ -307,14 +329,23 @@ class URLBarView: UIView {
                 make.centerY.equalTo(self)
                 make.size.equalTo(URLBarViewUX.ButtonHeight)
             }
+            self.shieldsButton.snp.remakeConstraints { make in
+                if self.toolbarIsShowing {
+                    make.trailing.equalTo(self.shareButton.snp.leading)
+                } else {
+                    make.trailing.equalTo(self)
+                }
+                make.centerY.equalTo(self)
+                make.size.equalTo(URLBarViewUX.ButtonHeight)
+            }
             self.locationContainer.snp.remakeConstraints { make in
                 if self.toolbarIsShowing {
                     // When there's toolbar items on the left, add some padding so it looks better
                     make.leading.equalTo(self.menuButton.snp.trailing).offset(URLBarViewUX.LocationLeftPadding)
-                    make.trailing.equalTo(self.shareButton.snp.leading).offset(-URLBarViewUX.Padding)
+                    make.trailing.equalTo(self.shieldsButton.snp.leading).offset(-URLBarViewUX.LocationLeftPadding)
                 } else {
                     make.leading.equalTo(self.menuButton.snp.trailing)
-                    make.trailing.equalTo(self).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding-1, bottom: 0, right: URLBarViewUX.LocationLeftPadding-1))
+                    make.trailing.equalTo(self.shieldsButton.snp.leading)
                 }
 
                 make.height.equalTo(URLBarViewUX.LocationHeight+2)
@@ -540,6 +571,10 @@ class URLBarView: UIView {
     @objc func didClickMenu() {
         delegate?.urlBarDidTapMenuButton(self)
     }
+    
+    @objc func didClickBraveShieldsButton() {
+        delegate?.urlBarDidTapBraveShieldsButton(self)
+    }
 }
 
 extension URLBarView: TabToolbarProtocol {
@@ -625,10 +660,6 @@ extension URLBarView: TabLocationViewDelegate {
 
     func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView) {
         delegate?.urlBarDidBeginDragInteraction(self)
-    }
-    
-    func tabLocationViewDidTapBraveShieldsButton(_ tabLocationView: TabLocationView) {
-        delegate?.urlBarDidTapBraveShieldsButton(self)
     }
 }
 
