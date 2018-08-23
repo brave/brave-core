@@ -33,7 +33,14 @@ class HistoryTests: CoreDataTestCase {
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         XCTAssertEqual(object.domain!.visits, 1)
         
-        let newObject = createAndWait()
+        let title = "New title"
+        let url: URL = URL(string: "https://example.com")!
+        History.add(title, url: url)
+        
+        sleep(UInt32(2))
+        
+        let newObject = try! DataController.viewContext.fetch(fetchRequest).first!
+        
         // Should still be one object but with 2 visits recorded.
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         XCTAssertEqual(newObject.domain!.visits, 2)
@@ -76,23 +83,31 @@ class HistoryTests: CoreDataTestCase {
         let object = createAndWait()
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
-        object.delete()
+        backgroundSaveAndWaitForExpectation {
+            object.delete()
+        }
         
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
     
     func testDeleteAll() {
-        let deleteExpectation = expectation(description: "delete all")
+        // TODO: This test should be more robust. Deleting history also deletes domain, favicons and
+        // updates visits count.
+        
+        let deleteExpectation = expectation(description: "deleteExpectation")
         
         createAndWait()
         createAndWait(title: "title", url: URL(string: "https://brave.com")!)
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
         
-        History.deleteAll {
-            deleteExpectation.fulfill()
+        backgroundSaveAndWaitForExpectation {
+            History.deleteAll {
+                deleteExpectation.fulfill()
+            }
         }
         
-        waitForExpectations(timeout: 1, handler: nil)
+        
+        wait(for: [deleteExpectation], timeout: 1)
         
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
@@ -103,6 +118,9 @@ class HistoryTests: CoreDataTestCase {
             History.add(title, url: url)
         }
         
-        return try! DataController.viewContext.fetch(fetchRequest).first!
+        let urlKeyPath = #keyPath(History.url)
+        let predicate = NSPredicate(format: "\(urlKeyPath) == %@", url.absoluteString)
+        
+        return History.first(where: predicate)!
     }
 }

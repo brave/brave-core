@@ -109,10 +109,10 @@ class TabMOTests: CoreDataTestCase {
         let object = createAndWait()
         
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
-        object.delete()
+        backgroundSaveAndWaitForExpectation {
+            object.delete()
+        }
         
-        
-        // FIXME: This fails most of the times.
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
     

@@ -81,9 +81,10 @@ class DataControllerTests: CoreDataTestCase {
         let result = try! DataController.viewContext.fetch(fetchRequest)
         XCTAssertEqual(result.count, 1)
         
-        (result.first as! TopSite).delete()
+        backgroundSaveAndWaitForExpectation {
+            (result.first as! TopSite).delete()
+        }
         
-        DataController.viewContext.refreshAllObjects()
         let newResult = try! DataController.viewContext.fetch(fetchRequest)
         
         XCTAssertEqual(newResult.count, 0)

@@ -338,7 +338,6 @@ class BookmarkTests: CoreDataTestCase {
     // MARK: - Delete
     
     func testRemoveByUrl() {
-        let context = DataController.viewContext
         let url = URL(string: "http://brave.com")!
         let wrongUrl = URL(string: "http://wrong.brave.com")!
         
@@ -346,11 +345,13 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         Bookmark.remove(forUrl: wrongUrl)
-        sleep(UInt32(1))
+        sleep(UInt32(0.5))
         
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
-        Bookmark.remove(forUrl: url)
+        backgroundSaveAndWaitForExpectation {
+            Bookmark.remove(forUrl: url)
+        }
         
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
