@@ -1443,6 +1443,21 @@ extension BrowserViewController: URLBarDelegate {
         }
         popover.present(from: urlBar.locationView.shieldsButton, on: self)
     }
+    
+    func urlBarDidTapMenuButton(_ urlBar: URLBarView) {
+        guard let selectedTab = tabManager.selectedTab else { return }
+        
+        let homePanel = HomeMenuController(profile: profile, tabState: selectedTab.tabState)
+        homePanel.preferredContentSize = CGSize(width: PopoverController.preferredPopoverWidth, height: 600.0)
+        homePanel.delegate = self
+        //        homePanel.view.heightAnchor.constraint(equalToConstant: 580.0).isActive = true
+        let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
+        if UIDevice.current.orientation.isPortrait {
+            // Leave some space near the bottom for easier dismissal
+            popover.outerMargins.bottom = 80.0
+        }
+        popover.present(from: urlBar.menuButton, on: self)
+    }
 }
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
@@ -1502,17 +1517,6 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
         showBackForwardList()
-    }
-
-    func tabToolbarDidPressMenu(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        guard let selectedTab = tabManager.selectedTab else { return }
-        
-        let homePanel = HomeMenuController(profile: profile, tabState: selectedTab.tabState)
-        homePanel.preferredContentSize = CGSize(width: PopoverController.preferredPopoverWidth, height: 600.0)
-        homePanel.delegate = self
-        //        homePanel.view.heightAnchor.constraint(equalToConstant: 580.0).isActive = true
-        let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
-        popover.present(from: button, on: self)
     }
 
     func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {

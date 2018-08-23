@@ -45,6 +45,7 @@ protocol URLBarDelegate: class {
     func urlBarDidLongPressPageOptions(_ urlBar: URLBarView, from button: UIButton)
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView)
     func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView)
+    func urlBarDidTapMenuButton(_ urlBar: URLBarView)
 }
 
 class URLBarView: UIView {
@@ -151,6 +152,13 @@ class URLBarView: UIView {
     var forwardButton = ToolbarButton()
     var shareButton = ToolbarButton()
     var addTabButton = ToolbarButton()
+    lazy var menuButton = ToolbarButton().then {
+        $0.contentMode = .center
+        $0.setImage(UIImage.templateImageNamed("nav-menu"), for: .normal)
+        $0.accessibilityLabel = Strings.AppMenuButtonAccessibilityLabel
+        $0.addTarget(self, action: #selector(didClickMenu), for: .touchUpInside)
+        $0.accessibilityIdentifier = "urlBar-menuButton"
+    }
 
     var backButton: ToolbarButton = {
         let backButton = ToolbarButton()
@@ -158,7 +166,7 @@ class URLBarView: UIView {
         return backButton
     }()
 
-    lazy var actionButtons: [Themeable & UIButton] = [self.shareButton, self.tabsButton, self.forwardButton, self.backButton]
+    lazy var actionButtons: [Themeable & UIButton] = [self.shareButton, self.tabsButton, self.forwardButton, self.backButton, self.menuButton]
 
     var currentURL: URL? {
         get {
@@ -194,7 +202,7 @@ class URLBarView: UIView {
         locationContainer.addSubview(locationView)
     
         [scrollToTopButton, line, tabsButton, progressBar, cancelButton, showQRScannerButton].forEach { addSubview($0) }
-        [forwardButton, backButton, shareButton, locationContainer].forEach { addSubview($0) }
+        [forwardButton, backButton, menuButton, shareButton, locationContainer].forEach { addSubview($0) }
         
         helper = TabToolbarHelper(toolbar: self)
         setupConstraints()
@@ -246,6 +254,12 @@ class URLBarView: UIView {
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
         
+        menuButton.snp.makeConstraints { make in
+            make.leading.equalTo(self.forwardButton.snp.trailing)
+            make.centerY.equalTo(self)
+            make.size.equalTo(URLBarViewUX.ButtonHeight)
+        }
+        
         shareButton.snp.makeConstraints { make in
             make.trailing.equalTo(self.tabsButton.snp.leading)
             make.centerY.equalTo(self)
@@ -284,15 +298,23 @@ class URLBarView: UIView {
                 make.edges.equalTo(self.locationView).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding, bottom: 0, right: URLBarViewUX.LocationLeftPadding))
             }
         } else {
+            self.menuButton.snp.remakeConstraints { make in
+                if self.toolbarIsShowing {
+                    make.leading.equalTo(self.forwardButton.snp.trailing)
+                } else {
+                    make.leading.equalTo(self)//.inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding-1, bottom: 0, right: URLBarViewUX.LocationLeftPadding-1))
+                }
+                make.centerY.equalTo(self)
+                make.size.equalTo(URLBarViewUX.ButtonHeight)
+            }
             self.locationContainer.snp.remakeConstraints { make in
                 if self.toolbarIsShowing {
-                    // If we are showing a toolbar, show the text field next to the forward button
-                    make.leading.equalTo(self.forwardButton.snp.trailing).offset(URLBarViewUX.Padding)
+                    // When there's toolbar items on the left, add some padding so it looks better
+                    make.leading.equalTo(self.menuButton.snp.trailing).offset(URLBarViewUX.LocationLeftPadding)
                     make.trailing.equalTo(self.shareButton.snp.leading).offset(-URLBarViewUX.Padding)
-
                 } else {
-                    // Otherwise, left align the location view
-                    make.leading.trailing.equalTo(self).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding-1, bottom: 0, right: URLBarViewUX.LocationLeftPadding-1))
+                    make.leading.equalTo(self.menuButton.snp.trailing)
+                    make.trailing.equalTo(self).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding-1, bottom: 0, right: URLBarViewUX.LocationLeftPadding-1))
                 }
 
                 make.height.equalTo(URLBarViewUX.LocationHeight+2)
@@ -514,6 +536,10 @@ class URLBarView: UIView {
     @objc func tappedScrollToTopArea() {
         delegate?.urlBarDidPressScrollToTop(self)
     }
+    
+    @objc func didClickMenu() {
+        delegate?.urlBarDidTapMenuButton(self)
+    }
 }
 
 extension URLBarView: TabToolbarProtocol {
@@ -541,9 +567,9 @@ extension URLBarView: TabToolbarProtocol {
                 return [locationTextField, cancelButton]
             } else {
                 if toolbarIsShowing {
-                    return [backButton, forwardButton, locationView, shareButton, tabsButton, progressBar]
+                    return [backButton, forwardButton, menuButton, locationView, shareButton, tabsButton, progressBar]
                 } else {
-                    return [locationView, progressBar]
+                    return [menuButton, locationView, progressBar]
                 }
             }
         }
