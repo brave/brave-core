@@ -30,6 +30,7 @@ protocol TabToolbarDelegate: class {
     func tabToolbarDidLongPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidPressShare(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton)
+    func tabToolbarDidLongPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton)
 }
 
 @objcMembers
@@ -67,6 +68,9 @@ open class TabToolbarHelper: NSObject {
         toolbar.addTabButton.setImage(UIImage(named: "add_tab"), for: .normal)
         toolbar.addTabButton.accessibilityLabel = Strings.Add_Tab
         toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControlEvents.touchUpInside)
+        let longPressGestureAddTab = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:)))
+        longPressGestureAddTab.minimumPressDuration = 0.2
+        toolbar.addTabButton.addGestureRecognizer(longPressGestureAddTab)
 
         setTheme(theme: .Normal, forButtons: toolbar.actionButtons)
     }
@@ -105,6 +109,12 @@ open class TabToolbarHelper: NSObject {
     
     func didClickAddTab() {
         toolbar.tabToolbarDelegate?.tabToolbarDidPressAddTab(toolbar, button: toolbar.shareButton)
+    }
+    
+    func didLongPressAddTab(_ longPress: UILongPressGestureRecognizer) {
+        if longPress.state == .began {
+            toolbar.tabToolbarDelegate?.tabToolbarDidLongPressAddTab(toolbar, button: toolbar.shareButton)
+        }
     }
 }
 
