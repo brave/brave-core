@@ -1815,9 +1815,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     fileprivate func updateTabCountUsingTabManager(_ tabManager: TabManager, animated: Bool = true) {
-        // BRAVE TODO: When we port PrivateBrowsing we need to update this to count the number of tabs correctly
-        // in private mode
-        let count = tabManager.tabs.count
+        let count = tabManager.displayedTabsForCurrentPrivateMode.count
         toolbar?.updateTabCount(count, animated: animated)
         urlBar.updateTabCount(count, animated: !urlBar.inOverlayMode)
     }
