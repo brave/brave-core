@@ -172,6 +172,15 @@ class URLBarView: UIView {
         }
     }
 
+    var hasOnlySecureContent: Bool {
+        get {
+            return locationView.hasOnlySecureContent
+        }
+        set {
+            locationView.hasOnlySecureContent = newValue
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()

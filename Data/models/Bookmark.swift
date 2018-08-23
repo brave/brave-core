@@ -172,8 +172,6 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         bk.isFavorite = bookmark?.isFavorite ?? bk.isFavorite
         bk.isFolder = bookmark?.isFolder ?? bk.isFolder
         bk.syncUUID = root?.objectId ?? bk.syncUUID ?? SyncCrypto.uniqueSerialBytes(count: 16)
-        bk.created = site?.creationNativeDate ?? Date()
-        bk.lastVisited = site?.lastAccessedNativeDate ?? Date()
         
         if let location = site?.location, let url = URL(string: location) {
             bk.domain = Domain.getOrCreateForUrl(url, context: context)
@@ -232,8 +230,10 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
 
     public class func reorderBookmarks(frc: NSFetchedResultsController<NSFetchRequestResult>?, sourceIndexPath: IndexPath,
                                 destinationIndexPath: IndexPath) {
-        let dest = frc?.object(at: destinationIndexPath) as! Bookmark
-        let src = frc?.object(at: sourceIndexPath) as! Bookmark
+        guard let frc = frc else { return }
+        
+        let dest = frc.object(at: destinationIndexPath) as! Bookmark
+        let src = frc.object(at: sourceIndexPath) as! Bookmark
         
         if dest === src {
             return
@@ -242,7 +242,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         // Warning, this could be a bottleneck, grabs ALL the bookmarks in the current folder
         // But realistically, with a batch size of 20, and most reads around 1ms, a bottleneck here is an edge case.
         // Optionally: grab the parent folder, and the on a bg thread iterate the bms and update their order. Seems like overkill.
-        var bms = frc?.fetchedObjects as! [Bookmark]
+        var bms = frc.fetchedObjects as! [Bookmark]
         bms.remove(at: bms.index(of: src)!)
         if sourceIndexPath.row > destinationIndexPath.row {
             // insert before
@@ -260,7 +260,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         // If I save while the animation is happening, the rows look screwed up (draw on top of each other).
         // Adding a delay to let animation complete avoids this problem
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
-            DataController.save(context: frc?.managedObjectContext)
+            DataController.save(context: frc.managedObjectContext)
         }
 
     }
@@ -309,7 +309,7 @@ extension Bookmark {
         if let parent = bookmark?.parentFolder {
             predicate = NSPredicate(format: "isFolder == true and parentFolder == %@", parent)
         } else {
-            predicate = NSPredicate(format: "isFolder == true and parentFolder.@count = 0")
+            predicate = NSPredicate(format: "isFolder == true and parentFolder = nil")
         }
         
         return all(where: predicate) ?? []

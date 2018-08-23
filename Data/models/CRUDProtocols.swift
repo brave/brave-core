@@ -111,7 +111,14 @@ public extension Readable where Self: NSManagedObject {
 protocol Fetchable: NSFetchRequestResult {}
 extension Fetchable {
     static func getFetchRequest() -> NSFetchRequest<Self> {
-        return NSFetchRequest<Self>(entityName: String(describing: self))
+        var selfName = String(describing: self)
+        
+        // This is a hack until FaviconMO won't be renamed to Favicon.
+        if selfName.contains("FaviconMO") {
+            selfName = "Favicon"
+        }
+        
+        return NSFetchRequest<Self>(entityName: selfName)
     }
 }
 extension NSManagedObject: Fetchable {}

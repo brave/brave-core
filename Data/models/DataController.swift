@@ -8,7 +8,7 @@ import XCGLogger
 private let log = Logger.browserLogger
 
 public class DataController: NSObject {
-    public static let shared = DataController()
+    public static var shared: DataController = DataController()
     
     private lazy var container: NSPersistentContainer = {
         let modelName = "Model"
@@ -63,3 +63,4 @@ public class DataController: NSObject {
         return backgroundContext
     }
 }
+
