@@ -45,6 +45,8 @@ public final class Domain: NSManagedObject, CRUD {
         fetchRequest.entity = Domain.entity(context)
         fetchRequest.predicate = NSPredicate(format: "url == %@", domainString)
         var result: Domain? = nil
+        
+        
         context.performAndWait {
             do {
                 let results = try context.fetch(fetchRequest) as? [Domain]

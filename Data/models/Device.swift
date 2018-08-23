@@ -9,7 +9,7 @@ import Shared
 public final class Device: NSManagedObject, Syncable, CRUD {
     
     // Check if this can be nested inside the method
-    private static var sharedCurrentDevice: Device?
+    static var sharedCurrentDevice: Device?
     
     // Assign on parent model via CD
     @NSManaged public var isSynced: Bool
@@ -109,5 +109,4 @@ public final class Device: NSManagedObject, Syncable, CRUD {
             DataController.save(context: context)
         }
     }
-    
 }

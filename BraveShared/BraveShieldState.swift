@@ -14,7 +14,7 @@ public struct BraveShieldState {
 //            return
 //        }
 //
-//        let context = DataController.shared.workerContext
+//        let context = DataController.workerThreadContext
 //        context.perform {
 //            Domain.setBraveShield(forDomain: domain, state: state, context: context)
 //        }

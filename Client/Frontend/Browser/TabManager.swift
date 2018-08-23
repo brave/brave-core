@@ -783,7 +783,8 @@ extension TabManager {
             // Since this is a restored tab, reset the URL to be loaded as that will be handled by the SessionRestoreHandler
             tab.url = nil
 
-            if let urlString = savedTab.url, let url = URL(string: urlString), let faviconURL = Domain.getOrCreateForUrl(url, context: DataController.shared.workerContext)?.favicon?.url {
+            if let urlString = savedTab.url, let url = URL(string: urlString),
+                let faviconURL = Domain.getOrCreateForUrl(url, context: DataController.viewContext)?.favicon?.url {
                 let icon = Favicon(url: faviconURL, date: Date())
                 icon.width = 1
                 tab.favicons.append(icon)

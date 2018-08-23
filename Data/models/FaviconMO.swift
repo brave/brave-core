@@ -22,7 +22,7 @@ public final class FaviconMO: NSManagedObject, CRUD {
         let urlKeyPath = #keyPath(FaviconMO.url)
         let predicate = NSPredicate(format: "\(urlKeyPath) == %@", urlString)
         
-        return first(where: predicate)
+        return first(where: predicate, context: context)
     }
 
     public class func add(_ favicon: Favicon, forSiteUrl siteUrl: URL) {
