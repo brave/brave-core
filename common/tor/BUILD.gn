@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//build/config/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 source_set("tor") {
@@ -15,13 +14,13 @@ source_set("tor") {
     "//base",
     "//chrome/common:constants",
     "//url:url",
-    ":tor_mojom_bindings",
   ]
 }
 
 mojom("tor_mojom_bindings") {
   sources = [
     "tor_config.mojom",
+    "tor_launcher.mojom",
   ]
   public_deps = [
     "//mojo/public/mojom/base",

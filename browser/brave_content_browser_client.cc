@@ -4,17 +4,21 @@
 
 #include "brave/browser/brave_content_browser_client.h"
 
+#include "base/bind.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
+#include "chrome/grit/chromium_strings.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/browser_url_handler.h"
+#include "ui/base/l10n/l10n_util.h"
 
 using content::BrowserThread;
 using content::RenderFrameHost;
@@ -171,4 +175,11 @@ bool BraveContentBrowserClient::AllowSetCookie(
       base::BindOnce(&TabSpecificContentSettings::CookieChanged, wc_getter, url,
                      first_party, cookie, !allow));
   return allow;
+}
+
+void BraveContentBrowserClient::RegisterOutOfProcessServices(
+      OutOfProcessServiceMap* services) {
+  ChromeContentBrowserClient::RegisterOutOfProcessServices(services);
+  (*services)[tor::mojom::kTorLauncherServiceName] = base::BindRepeating(
+    l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME);
 }

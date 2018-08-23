@@ -47,6 +47,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const url::Origin& requesting_origin,
       const url::Origin& embedding_origin) override;
 
+  void RegisterOutOfProcessServices(
+      OutOfProcessServiceMap* services) override;
+
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
 };

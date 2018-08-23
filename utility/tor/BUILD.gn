@@ -1,0 +1,26 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//services/service_manager/public/service_manifest.gni")
+
+source_set("tor") {
+  sources = [
+    "tor_launcher_impl.cc",
+    "tor_launcher_impl.h",
+    "tor_launcher_service.cc",
+    "tor_launcher_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common/tor",
+    "//brave/common/tor:tor_mojom_bindings",
+    "//services/service_manager",
+  ]
+}
+
+service_manifest("tor_launcher_manifest") {
+  name = "tor_launcher"
+  source = "tor_launcher_manifest.json"
+}

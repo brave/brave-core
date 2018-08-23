@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/chrome_content_browser_manifest_overlay.json b/chrome/browser/chrome_content_browser_manifest_overlay.json
+index 3425d64746dfd37466b8544e1650f5c60fa20125..7294bcd1e903d3076e048b74603c47cbd5ff2d17 100644
+--- a/chrome/browser/chrome_content_browser_manifest_overlay.json
++++ b/chrome/browser/chrome_content_browser_manifest_overlay.json
+@@ -64,6 +64,7 @@
+         "removable_storage_writer": [ "removable_storage_writer" ],
+         "secure_channel": [ "secure_channel" ],
+         "shortcut_viewer_app": [ "shortcut_viewer" ],
++        "tor_launcher": [ "tor_launcher" ],
+         "ui": [
+           "ime_registrar",
+           "input_device_controller",
