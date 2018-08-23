@@ -1,0 +1,15 @@
+source_set("referrals") {
+  sources = [
+    "brave_referrals_service.cc",
+    "brave_referrals_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/common",
+    "//components/prefs",
+    "//net",
+    "//services/network/public/cpp",
+    "//skia",
+  ]
+}
