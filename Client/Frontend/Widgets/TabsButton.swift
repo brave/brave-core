@@ -141,6 +141,7 @@ class TabsButton: UIButton {
         let currentCount = self.countLabel.text
         let infinity = "\u{221E}"
         let countToBe = (count < 100) ? count.description : infinity
+        countLabel.text = countToBe
 
         // only animate a tab count change if the tab count has actually changed
         if currentCount != count.description || (clonedTabsButton?.countLabel.text ?? count.description) != count.description {
