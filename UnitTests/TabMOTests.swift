@@ -152,9 +152,7 @@ class TabMOTests: CoreDataTestCase {
     private func createAndUpdate(order: Int) {
         let object = createAndWait()
         
-        // There are some threading problems on the old CD stack, need to add small delay here
-        sleep(UInt32(0.25))
-        let tabData = SavedTab(id: object.syncUUID!, title: "title", url: "url", isSelected: false, order: Int16(order), 
+        let tabData = SavedTab(id: object.syncUUID!, title: "title\(order)", url: "url\(order)", isSelected: false, order: Int16(order),
                                screenshot: nil, history: [], historyIndex: 0)
         backgroundSaveAndWaitForExpectation {
             TabMO.update(tabData: tabData)
@@ -170,6 +168,11 @@ class TabMOTests: CoreDataTestCase {
         // Getting all objects and sorting them manually by order
         let objectsSortedByOrder = try! DataController.viewContext.fetch(fetchRequest).sorted(by: { $0.order < $1.order })
         
+        // Verify obbjects were updated with correct order.
+        XCTAssertEqual(objectsSortedByOrder[0].order, 1)
+        XCTAssertEqual(objectsSortedByOrder[1].order, 2)
+        XCTAssertEqual(objectsSortedByOrder[2].order, 3)
+        
         let all = TabMO.getAll()
         XCTAssertEqual(all.count, 3)
         
@@ -177,8 +180,6 @@ class TabMOTests: CoreDataTestCase {
         XCTAssertEqual(all[0].syncUUID, objectsSortedByOrder[0].syncUUID)
         XCTAssertEqual(all[1].syncUUID, objectsSortedByOrder[1].syncUUID)
         XCTAssertEqual(all[2].syncUUID, objectsSortedByOrder[2].syncUUID)
-        
-        // Need to update order of each of our objects
     }
     
     func testGetFromId() {
@@ -191,11 +192,13 @@ class TabMOTests: CoreDataTestCase {
     }
     
     @discardableResult private func createAndWait() -> TabMO {
+        let uuid = UUID().uuidString
+        
         backgroundSaveAndWaitForExpectation {
-            _ = TabMO.create()
+            _ = TabMO.create(uuidString: uuid)
         }
         
-        return try! DataController.viewContext.fetch(fetchRequest).first!
+        return TabMO.get(fromId: uuid, context: DataController.viewContext)!
     }
 }
 
