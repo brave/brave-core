@@ -18,7 +18,7 @@ import * as torrentActions from '../actions/webtorrent_actions'
 import { TorrentState, ApplicationState, getTorrentObj, getTorrentState } from '../constants/webtorrentState'
 
 // Assets
-require('../../../../components/styles/webtorrent.less')
+require('../../../styles/webtorrent.less')
 
 interface Props {
   torrentState: TorrentState

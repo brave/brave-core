@@ -4,7 +4,7 @@
   "manifest_version": 2,
   "description": "Webtorrent extension",
   "background" : {
-    "scripts": ["brave_webtorrent_background.bundle.js"],
+    "scripts": ["extension/out/brave_webtorrent_background.bundle.js"],
     "persistent": true
   },
   "permissions": ["tabs", "windows"],

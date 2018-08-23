@@ -18,5 +18,6 @@ transpile_web_ui("brave_new_tab_ui") {
     "reducers/index.ts",
     "reducers/new_tab_reducer.tsx",
   ]
-  bundle_name = "brave_new_tab.bundle.js"
+
+  bundle_names = ["brave_new_tab.bundle.js"]
 }

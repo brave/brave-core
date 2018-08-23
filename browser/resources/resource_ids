@@ -21,4 +21,5 @@
   "brave/app/theme/brave_unscaled_resources.grd": {
     "includes": [36500],
   },
+  # brave webtorrent 37500
 }

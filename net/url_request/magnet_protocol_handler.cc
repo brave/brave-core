@@ -19,7 +19,7 @@ MagnetProtocolHandler::~MagnetProtocolHandler() {
 
 GURL MagnetProtocolHandler::TranslateURL(const GURL& url) const {
   GURL extension_page_url(
-      "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/brave_webtorrent.html?%s");
+      "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/brave_webtorrent.html?%s");
   std::string translatedSpec(extension_page_url.spec());
   base::ReplaceFirstSubstringAfterOffset(
       &translatedSpec, 0, "%s",

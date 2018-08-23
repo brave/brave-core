@@ -74,7 +74,6 @@
 
       <!-- Browser resrouces -->
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
-      <include name="IDR_BRAVE_WEBTORRENT" file="../../browser/resources/brave_webtorrent/manifest.json" type="BINDATA" />
 
       <!-- WebUI Brave Rewards resources -->
       <include name="IDR_BRAVE_REWARDS_HTML" file="../brave_rewards_ui/brave_rewards.html" type="BINDATA" />

@@ -16,7 +16,7 @@ import { addTorrent, delTorrent, findTorrent } from '../webtorrent'
 
 const isTorrentPage = (url: URL) => {
   const fullpath = url.origin + url.pathname
-  return fullpath === chrome.runtime.getURL('brave_webtorrent.html')
+  return fullpath === chrome.runtime.getURL('extension/brave_webtorrent.html')
 }
 
 const focusedWindowChanged = (windowId: number, state: TorrentsState) => {

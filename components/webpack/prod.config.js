@@ -9,8 +9,8 @@ module.exports = {
     brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
     brave_rewards: path.join(__dirname, '../brave_rewards_ui/brave_rewards'),
     brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome'),
-    brave_webtorrent: path.join(__dirname, '../../browser/resources/brave_webtorrent/brave_webtorrent'),
-    brave_webtorrent_background: path.join(__dirname, '../../browser/resources/brave_webtorrent/background')
+    brave_webtorrent: path.join(__dirname, '../brave_webtorrent/extension/brave_webtorrent'),
+    brave_webtorrent_background: path.join(__dirname, '../brave_webtorrent/extension/background'),
   },
   output: {
     path: process.env.TARGET_GEN_DIR,

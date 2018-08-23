@@ -1,0 +1,43 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("brave_webtorrent") {
+  inputs = [
+    "background.ts",
+    "brave_webtorrent.html",
+    "brave_webtorrent.tsx",
+    "actions/tab_actions.ts",
+    "actions/webtorrent_actions.ts",
+    "actions/window_actions.ts",
+    "background/store.ts",
+    "background/webtorrent.ts",
+    "background/actions/tabActions.ts",
+    "background/actions/webtorrentActions.ts",
+    "background/actions/windowActions.ts",
+    "background/events/tabsEvents.ts",
+    "background/events/torrentEvents.ts",
+    "background/events/webtorrentEvents.ts",
+    "background/events/windowsEvents.ts",
+    "background/reducers/index.ts",
+    "background/reducers/webtorrent_reducer.ts",
+    "components/app.tsx",
+    "components/mediaViewer.tsx",
+    "components/torrentFileList.tsx",
+    "components/torrentStatus.tsx",
+    "components/torrentViewer.tsx",
+    "components/torrentViewerFooter.tsx",
+    "components/torrentViewerHeader.tsx",
+    "constants/tab_types.ts",
+    "constants/theme.ts",
+    "constants/webtorrentState.ts",
+    "constants/webtorrent_types.ts",
+    "constants/window_types.ts"
+  ]
+
+  bundle_names = [
+    "brave_webtorrent.bundle.js",
+    "brave_webtorrent_background.bundle.js"
+  ]
+
+  output_dir =
+    "$root_gen_dir/../../../brave/components/brave_webtorrent/extension/out"
+}

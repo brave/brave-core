@@ -8,6 +8,7 @@
 
 #include "brave/common/extensions/extension_constants.h"
 #include "components/grit/brave_components_resources.h"
+#include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 
 namespace extensions {
 

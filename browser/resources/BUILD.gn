@@ -19,7 +19,6 @@ grit("brave_extension_grit") {
 
   deps = [
     "//brave/vendor/brave-extension",
-    "//brave/browser/resources/brave_webtorrent",
   ]
 
   output_dir = "$target_gen_dir"
