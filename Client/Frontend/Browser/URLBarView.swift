@@ -497,8 +497,7 @@ class URLBarView: UIView {
         forwardButton.isHidden = !toolbarIsShowing
         backButton.isHidden = !toolbarIsShowing
         tabsButton.isHidden = !toolbarIsShowing
-        shareButton.isHighlighted = !toolbarIsShowing
-        shareButton.isHighlighted = !toolbarIsShowing
+        shareButton.isHidden = !toolbarIsShowing
     }
 
     func transitionToOverlay(_ didCancel: Bool = false) {
@@ -509,6 +508,8 @@ class URLBarView: UIView {
         forwardButton.alpha = inOverlayMode ? 0 : 1
         backButton.alpha = inOverlayMode ? 0 : 1
         shareButton.alpha = inOverlayMode ? 0 : 1
+        menuButton.alpha = inOverlayMode ? 0 : 1
+        shieldsButton.alpha = inOverlayMode ? 0 : 1
 
         let borderColor = inOverlayMode ? locationActiveBorderColor : locationBorderColor
         locationContainer.layer.borderColor = borderColor.cgColor
@@ -534,7 +535,7 @@ class URLBarView: UIView {
         forwardButton.isHidden = !toolbarIsShowing || inOverlayMode
         backButton.isHidden = !toolbarIsShowing || inOverlayMode
         tabsButton.isHidden = !toolbarIsShowing || inOverlayMode
-        shareButton.isHighlighted = !toolbarIsShowing || inOverlayMode
+        shareButton.isHidden = !toolbarIsShowing || inOverlayMode
     }
 
     func animateToOverlayState(overlayMode overlay: Bool, didCancel cancel: Bool = false) {
