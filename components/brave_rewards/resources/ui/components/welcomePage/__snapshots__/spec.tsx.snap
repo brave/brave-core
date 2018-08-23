@@ -113,7 +113,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  margin: 0 auto;
   font-size: 14px;
   border-radius: 24px;
   width: auto;

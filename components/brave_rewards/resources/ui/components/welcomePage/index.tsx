@@ -99,7 +99,6 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             level='secondary'
             size='large'
             type='subtle'
-            center={true}
             text={getLocale('braveRewardsOptInText')}
             onClick={this.props.optInAction}
             data-test-id='optInAction'

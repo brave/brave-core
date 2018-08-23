@@ -9,7 +9,7 @@ import { withKnobs, boolean, text, object, number } from '@storybook/addon-knobs
 
 // Components
 import Settings from './settings/settings'
-import { SiteBanner, Tip } from '../../../src/features/rewards'
+import { SiteBanner, Tip, PanelWelcome } from '../../../src/features/rewards'
 import WelcomePage from '../../../src/features/rewards/welcomePage'
 
 const siteBgImage = require('../../assets/img/bg_siteBanner.jpg')
@@ -95,25 +95,25 @@ storiesOf('Feature Components/Rewards/Concepts', module)
       </div>
     )
   }))
-    .add('Tip', withState({ donationAmounts, currentAmount: 5, allow: false }, (store) => {
-      const onDonate = () => {
-        console.log('onDonate')
-      }
+  .add('Tip', withState({ donationAmounts, currentAmount: 5, allow: false }, (store) => {
+    const onDonate = () => {
+      console.log('onDonate')
+    }
 
-      const onClose = () => {
-        console.log('onClose')
-      }
+    const onClose = () => {
+      console.log('onClose')
+    }
 
-      const onAllow = (allow: boolean) => {
-        store.set({ allow })
-      }
+    const onAllow = (allow: boolean) => {
+      store.set({ allow })
+    }
 
-      const onAmountSelection = (tokens: number) => {
-        store.set({ currentAmount: tokens })
-      }
+    const onAmountSelection = (tokens: number) => {
+      store.set({ currentAmount: tokens })
+    }
 
-      return (
-        <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
+    return (
+      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
         <div style={{ position: 'absolute', bottom: '185px', left: '330px' }}>
           <Tip
             donationAmounts={object('Donations', store.state.donationAmounts)}
@@ -129,5 +129,23 @@ storiesOf('Feature Components/Rewards/Concepts', module)
           />
         </div>
       </div>
-      )
-    }))
+    )
+  }))
+  .add('Pre Opt-In', () => {
+    return (
+      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '40px', left: '120px', width: '373px', minHeight: '446px' }}>
+          <PanelWelcome
+            variant={'one'}
+            optInAction={dummyOptInAction}
+          />
+        </div>
+        <div style={{ position: 'absolute', top: '40px', left: '565px', width: '373px', minHeight: '446px' }}>
+          <PanelWelcome
+            variant={'two'}
+            optInAction={dummyOptInAction}
+          />
+        </div>
+      </div>
+    )
+  })

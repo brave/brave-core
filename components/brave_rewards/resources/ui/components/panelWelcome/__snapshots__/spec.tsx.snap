@@ -5,13 +5,13 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   text-align: center;
   border-radius: 8px;
   font-family: "Poppins",sans-serif;
-  background: linear-gradient(-211.85275762473051deg,#392DD1 0%,rgba(255,26,26,0.53) 100%) #7D7BDC;
+  background-image: linear-gradient(140deg,#392DD1 0%,#8E2995 100%);
 }
 
 .c1 {
   margin: 0 auto;
   display: inline-block;
-  padding: 30px;
+  padding: 35px 30px 25px;
   background: url(test-file-stub) no-repeat top;
 }
 
@@ -27,14 +27,18 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   line-height: 22px;
   margin: 0 auto;
   opacity: 0.5;
+  font-family: Muli,sans-serif;
 }
 
 .c3 {
   display: block;
-  padding: 20px 0px 15px 0px;
+  margin: -10px auto 2px;
+  width: 150px;
+  height: 115px;
+  padding: 20px 0 15px;
 }
 
-.c4 {
+.c5 {
   color: #FFFFFF;
   font-size: 28px;
   font-weight: 400;
@@ -47,7 +51,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   display: inline-block;
 }
 
-.c6 {
+.c7 {
   color: #FFFFFF;
   font-size: 16px;
   font-weight: normal;
@@ -57,16 +61,18 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   letter-spacing: 0;
   line-height: 24px;
   opacity: 0.5;
-  margin: 20px auto;
+  margin: 15px auto 23px;
   text-align: center;
-  width: 295px;
+  width: 280px;
+  font-family: Muli,sans-serif;
 }
 
-.c7 {
-  margin: 0px 0px 40px 0px;
+.c8 {
+  margin: 0 auto 35px;
+  display: inline-block;
 }
 
-.c10 {
+.c11 {
   color: #73CBFF;
   font-size: 14px;
   font-weight: 500;
@@ -78,17 +84,23 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   margin: 0 auto;
 }
 
-.c5 {
+.c6 {
   display: inline-block;
   vertical-align: text-top;
-  margin-top: -12px;
+  margin-top: -13px;
   color: #FFF;
   font-size: 9px;
   font-weight: 500;
   opacity: 0.7;
 }
 
-.c8 {
+.c4 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c9 {
   --button-main-color: #C5C5D3;
   --button-main-color-hover: #A0A1B2;
   --button-main-color-active: #E9E9F4;
@@ -121,7 +133,6 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  margin: 0 auto;
   font-size: 14px;
   border-radius: 24px;
   width: auto;
@@ -131,15 +142,15 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   color: var(--button-state-color);
 }
 
-.c8:hover:enabled {
+.c9:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c8:active:enabled {
+.c9:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c9 {
+.c10 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -175,89 +186,61 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
       className="c3"
     >
       <svg
-        height="67"
-        width="70"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
+        aria-hidden="true"
+        className="c4"
+        focusable="false"
+        role={undefined}
+        viewBox="0 0 32 32"
       >
-        <defs>
-          <path
-            d="M.087.173h69.885v13.053H.087z"
-            id="a"
-          />
-        </defs>
         <g
           fill="none"
           fillRule="evenodd"
         >
-          <g
-            opacity=".477"
-            transform="translate(0 52.949)"
-          >
-            <mask
-              fill="#fff"
-              id="b"
-            >
-              <use
-                xlinkHref="#a"
-              />
-            </mask>
-            <path
-              d="M52.57 13.186l17.402.04L62.64.173.087.255z"
-              fill="#28289D"
-              mask="url(#b)"
-            />
-          </g>
           <path
-            d="M31.423 0l-.013 35.972 31.41 17.874z"
+            d="M11.7529 21.0875l3.469-5.945c.174-.298.475-.448.778-.448v-8.695c-.303 0-.604.15-.778.447l-11.098 19.025c-.174.299-.154.635-.006.897l7.608-4.437c-.123-.254-.135-.565.027-.844"
+            fill="#FF5000"
+          />
+          <path
+            d="M16.7783 15.1422l3.469 5.945c.162.28.15.59.027.844l7.608 4.438c.148-.263.167-.599-.006-.898l-11.098-19.024c-.174-.298-.476-.448-.778-.448v8.696c.302 0 .604.149.778.447"
             fill="#9E1F63"
           />
           <path
-            d="M0 53.846l31.38-17.823L31.41 0z"
-            fill="#FB542B"
-          />
-          <path
-            d="M0 53.846l62.82-.003-31.347-17.946z"
+            d="M27.8818 26.3687l-7.607-4.437c-.143.292-.435.511-.807.511h-6.936c-.372 0-.664-.219-.806-.511l-7.608 4.437c.152.267.435.459.785.459h22.195c.349 0 .633-.192.784-.459"
             fill="#662D91"
           />
           <path
-            d="M31.757 21.538l-12.91 21.539h26.025z"
+            d="M11.7256 21.9312c.143.293.435.512.807.512h6.935c.372 0 .664-.219.807-.512.123-.254.135-.564-.028-.844l-3.468-5.945c-.174-.298-.476-.447-.779-.447-.302 0-.604.149-.778.447l-3.469 5.945c-.162.28-.15.59-.027.844"
             fill="#FFF"
-          />
-          <path
-            d="M31.757 21.538l-12.91 21.539h26.025z"
-            stroke="#999EA2"
-            stroke-width=".88"
           />
         </g>
       </svg>
     </span>
     <h1
-      className="c4"
+      className="c5"
     >
       MISSING: braveRewards
     </h1>
     <span
-      className="c5"
+      className="c6"
     >
       TM
     </span>
     <p
-      className="c6"
+      className="c7"
     >
       MISSING: welcomeDescOne
     </p>
     <div
-      className="c7"
+      className="c8"
     >
       <button
-        className="c8"
+        className="c9"
         onClick={undefined}
         size="large"
         type="subtle"
       >
         <div
-          className="c9"
+          className="c10"
           onClick={undefined}
           size="large"
           type="subtle"
@@ -267,7 +250,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
       </button>
     </div>
     <p
-      className="c10"
+      className="c11"
     >
       MISSING: welcomeFooterTextOne
     </p>

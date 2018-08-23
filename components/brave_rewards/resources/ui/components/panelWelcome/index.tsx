@@ -16,6 +16,8 @@ import {
   StyledButtonWrapper,
   StyledTrademark
 } from './style'
+
+import { BatColorIcon } from '../../../components/icons'
 import Button from '../../../components/buttonsIndicators/button'
 
 export type Variant = 'one' | 'two'
@@ -25,8 +27,6 @@ export interface Props {
   variant?: Variant
   optInAction: () => void
 }
-
-const batLogo = require('./assets/bat')
 
 export default class PanelWelcome extends React.PureComponent<Props, {}> {
   get locale () {
@@ -58,7 +58,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
             {getLocale(this.locale.header)}
           </StyledHeaderText>
           <StyledBatLogo>
-            {batLogo}
+            <BatColorIcon/>
           </StyledBatLogo>
           <StyledTitle>
             {getLocale(this.locale.title)}
@@ -71,7 +71,6 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
             <Button
               size='large'
               type='subtle'
-              center={true}
               level='secondary'
               onClick={optInAction}
               text={getLocale(this.locale.button)}
@@ -80,7 +79,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
           <StyledFooterText>
             {getLocale(this.locale.footer)}
           </StyledFooterText>
-      </StyledInnerWrapper>
+        </StyledInnerWrapper>
       </StyledWrapper>
     )
   }
