@@ -53,14 +53,14 @@ export interface TorrentState {
   tabId: number
   torrentId: string
   name?: string | string[]
-  infoHash? : string
-  errorMsg? : string
+  infoHash?: string
+  errorMsg?: string
   ix?: number | number[]
 }
 
 export interface TorrentObj {
   files?: File[]
-  serverURL? : string
+  serverURL?: string
   timeRemaining: number
   downloaded: number
   uploaded: number

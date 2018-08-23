@@ -20,7 +20,7 @@ const isTorrentPage = (url: URL) => {
 }
 
 const focusedWindowChanged = (windowId: number, state: TorrentsState) => {
-  return { ...state, currentWindowId: windowId}
+  return { ...state, currentWindowId: windowId }
 }
 
 const windowRemoved = (windowId: number, state: TorrentsState) => {
@@ -38,8 +38,9 @@ const activeTabChanged = (tabId: number, windowId: number, state: TorrentsState)
 const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
   const { torrentStateMap, torrentObjMap } = state
   const origTorrentState: TorrentState = torrentStateMap[tabId]
-  const origInfoHash =  origTorrentState ? origTorrentState.infoHash : undefined
-  let newTorrentState, newInfoHash
+  const origInfoHash = origTorrentState ? origTorrentState.infoHash : undefined
+  let newTorrentState
+  let newInfoHash
 
   // delete old torrent state
   delete torrentStateMap[tabId] // delete old torrent state
@@ -121,7 +122,7 @@ const stopDownload = (tabId: number, state: TorrentsState) => {
 }
 
 const updateProgress = (state: TorrentsState, torrent: Torrent) => {
-  const { torrentObjMap  } = state
+  const { torrentObjMap } = state
   // don't add a new entry since the download might be stopped already
   if (!torrentObjMap[torrent.infoHash]) {
     return state
@@ -140,13 +141,13 @@ const updateInfo = (state: TorrentsState, torrent: Torrent) => {
   const { torrentStateMap, torrentObjMap } = state
   const { downloaded, uploaded, downloadSpeed, uploadSpeed, progress, ratio,
     numPeers, timeRemaining, infoHash } = torrent
-  let length = 0
-  const files : File[] = torrent.files.map((file) => {
+  let length: number = 0
+  const files: File[] = torrent.files.map((file) => {
     length += file.length
     return { name: file.name, length: file.length }
   })
 
-  const tabClients : Set<number> = new Set<number>()
+  const tabClients: Set<number> = new Set<number>()
   Object.keys(torrentStateMap).filter(
     key => torrentStateMap[key].infoHash === infoHash).map(
       key => {
@@ -167,7 +168,7 @@ const updateServer = (state: TorrentsState, torrent: Torrent, serverURL: string)
   return { ...state, torrentObjMap }
 }
 
-const defaultState : TorrentsState = { currentWindowId: -1, activeTabIds: {}, torrentStateMap: {}, torrentObjMap: {} }
+const defaultState: TorrentsState = { currentWindowId: -1, activeTabIds: {}, torrentStateMap: {}, torrentObjMap: {} }
 const webtorrentReducer = (state: TorrentsState = defaultState, action: any) => { // TODO: modify any to be actual action type
   const payload = action.payload
   switch (action.type) {

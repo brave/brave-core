@@ -11,11 +11,10 @@ import MediaViewer from './mediaViewer'
 import TorrentViewer from './torrentViewer'
 
 // Constants
-import { TorrentObj } from '../constants/webtorrentState'
+import { TorrentObj, TorrentState, ApplicationState, getTorrentObj, getTorrentState } from '../constants/webtorrentState'
 
 // Utils
 import * as torrentActions from '../actions/webtorrent_actions'
-import { TorrentState, ApplicationState, getTorrentObj, getTorrentState } from '../constants/webtorrentState'
 
 // Assets
 require('../../../styles/webtorrent.less')
@@ -27,14 +26,14 @@ interface Props {
 }
 
 export class BraveWebtorrentPage extends React.Component<Props, {}> {
-  render() {
+  render () {
     const { actions, torrentState, torrentObj } = this.props
     const torrentId = decodeURIComponent(window.location.search.substring(1))
 
     // The active tab change might not be propagated here yet, so we might get
     // the old active tabId here which might be a different torrent page or a
     // non-torrent page.
-    if (!torrentState || torrentId != torrentState.torrentId) {
+    if (!torrentState || torrentId !== torrentState.torrentId) {
       return (<div>Loading...</div>)
     }
 
@@ -60,7 +59,7 @@ export class BraveWebtorrentPage extends React.Component<Props, {}> {
 
 export const mapStateToProps = (state: ApplicationState) => {
   return { torrentState: getTorrentState(state.torrentsData),
-           torrentObj: getTorrentObj(state.torrentsData) }
+    torrentObj: getTorrentObj(state.torrentsData) }
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch) => ({

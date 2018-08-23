@@ -8,10 +8,10 @@ import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
 
 let webTorrent: WebTorrent.Instance
-let servers: { [key: string] : any } = { }
+let servers: { [key: string]: any } = { }
 
 export const init = () => {
-  webTorrent = new WebTorrent({tracker: {wrtc: false}})
+  webTorrent = new WebTorrent({ tracker: { wrtc: false } })
   addWebtorrentEvents(webTorrent)
 }
 
@@ -29,11 +29,11 @@ export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string
       // properties. It's safe to cast here because the only possible type of
       // server.address() here is AddressInfo since pipe name (as string) is
       // not supported in chrome-net.
-      const addrInfo = <AddressInfo>server.address()
+      const addrInfo = server.address() as AddressInfo
       servers[torrent.infoHash] = server
       cb('http://' + addrInfo.address + ':' + addrInfo.port.toString())
     })
-  } catch(error) {
+  } catch (error) {
     console.log('server listen error: ', error)
   }
 }
@@ -43,6 +43,10 @@ export const addTorrent = (torrentId: string) => {
   addTorrentEvents(torrentObj)
 }
 
+export const findTorrent = (infoHash: string) => {
+  return webTorrent.torrents.find(torrent => torrent.infoHash === infoHash)
+}
+
 export const delTorrent = (infoHash: string) => {
   const torrent = findTorrent(infoHash)
   if (torrent) torrent.destroy()
@@ -50,8 +54,4 @@ export const delTorrent = (infoHash: string) => {
     servers[infoHash].close()
     delete servers[infoHash]
   }
-}
-
-export const findTorrent = (infoHash: string) => {
-  return webTorrent.torrents.find(torrent => torrent.infoHash === infoHash)
 }

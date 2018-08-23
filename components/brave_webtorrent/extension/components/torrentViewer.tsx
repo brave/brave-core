@@ -23,7 +23,7 @@ interface Props {
 }
 
 export default class TorrentViewer extends React.PureComponent<Props, {}> {
-  render() {
+  render () {
     const { actions, tabId, name, torrentId, torrent, errorMsg } = this.props
 
     return (

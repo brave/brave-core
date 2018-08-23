@@ -35,11 +35,11 @@ export default class TorrentViewerHeader extends React.PureComponent<Props, {}> 
                        : this.props.onStartTorrent(this.props.torrentId, this.props.tabId)
   }
 
-  onCopyClick() {
+  onCopyClick () {
     clipboardCopy(this.props.torrentId)
   }
 
-  render() {
+  render () {
     const { name, torrent } = this.props
     const title = name ? 'Start Torrenting "' + name + '"?'
                        : 'Loading torrent information...'

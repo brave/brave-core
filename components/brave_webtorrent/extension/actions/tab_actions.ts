@@ -14,7 +14,7 @@ export const tabCreated = (tab: chrome.tabs.Tab) => action(types.TAB_CREATED, {
 export const tabUpdated = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) =>
   action(types.TAB_UPDATED, {
     tabId, changeInfo, tab
-})
+  })
 
 export const tabRemoved = (tabId: number) => action(types.TAB_REMOVED, {
   tabId

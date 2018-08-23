@@ -12,16 +12,14 @@ const logger = createLogger({
   collapsed: true
 })
 
-
 const getMiddleware = () => {
-  const args : Middleware[] = []
-    if (process.env.NODE_ENV === `development`) {
+  const args: Middleware[] = []
+  if (process.env.NODE_ENV === `development`) {
     args.push(logger)
   }
 
   return applyMiddleware(...args)
 }
-
 
 const initialState = {}
 const store = createStore(reducers, initialState, getMiddleware())

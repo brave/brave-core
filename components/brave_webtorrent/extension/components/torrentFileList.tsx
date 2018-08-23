@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default class TorrentFileList extends React.PureComponent<Props, {}> {
-  render() {
+  render () {
     const { torrent } = this.props
     if (!torrent || !torrent.files) {
       return (
