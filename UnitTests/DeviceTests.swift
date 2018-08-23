@@ -47,7 +47,7 @@ class DeviceTests: CoreDataTestCase {
         let context = DataController.newBackgroundContext()
         backgroundSaveAndWaitForExpectation {
             let result = Device.add(rootObject: nil, save: true, sendToSync: false, context: context) as? Device
-            XCTAssertNotNil(result)
+             XCTAssertNotNil(result)
         }
         
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)

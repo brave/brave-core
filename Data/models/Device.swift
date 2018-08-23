@@ -40,21 +40,19 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         let root = root as? SyncDevice
         let device = Device(entity: Device.entity(context: context), insertInto: context)
         
-        context.perform {
-            device.created = root?.syncNativeTimestamp ?? Date()
-            device.syncUUID = root?.objectId ?? SyncCrypto.uniqueSerialBytes(count: 16)
-            
-            device.update(syncRecord: root)
-            
-            if save {
-                DataController.save(context: context)
-            }
+        device.created = root?.syncNativeTimestamp ?? Date()
+        device.syncUUID = root?.objectId ?? SyncCrypto.uniqueSerialBytes(count: 16)
+        
+        device.update(syncRecord: root)
+        
+        if save {
+            DataController.save(context: context)
         }
         
         return device
     }
     
-    public class func add(save: Bool = false, context: NSManagedObjectContext) -> Device? {
+    public class func add(save: Bool = true, context: NSManagedObjectContext) -> Device? {
         return add(rootObject: nil, save: save, sendToSync: false, context: context) as? Device
     }
     
@@ -69,20 +67,21 @@ public final class Device: NSManagedObject, Syncable, CRUD {
     public static func currentDevice() -> Device? {
         
         if sharedCurrentDevice == nil {
-            let context = DataController.newBackgroundContext()
-            // Create device
-            let predicate = NSPredicate(format: "isCurrentDevice = YES")
-            // Should only ever be one current device!
-            var localDevice: Device? = get(predicate: predicate, context: context)?.first
-            
-            if localDevice == nil {
-                // Create
-                localDevice = add(context: context)
-                localDevice?.isCurrentDevice = true
-                DataController.save(context: context)
+            let context = DataController.viewContext
+            context.performAndWait {
+                // Create device
+                let predicate = NSPredicate(format: "isCurrentDevice = YES")
+                // Should only ever be one current device!
+                var localDevice: Device? = get(predicate: predicate, context: context)?.first
+                
+                if localDevice == nil {
+                    // Create
+                    localDevice = add(context: context)
+                    localDevice?.isCurrentDevice = true
+                }
+                
+                sharedCurrentDevice = localDevice
             }
-            
-            sharedCurrentDevice = localDevice
         }
         return sharedCurrentDevice
     }

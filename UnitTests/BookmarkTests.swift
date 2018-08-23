@@ -23,28 +23,37 @@ class BookmarkTests: CoreDataTestCase {
         let result1 = createAndWait(url: nil, title: title, customTitle: customTitle)
         
         XCTAssertEqual(result1.displayTitle, customTitle)
-        result1.delete()
+        backgroundSaveAndWaitForExpectation {
+            result1.delete()
+        }
         
         let result2 = createAndWait(url: nil, title: nil, customTitle: customTitle)
         XCTAssertEqual(result2.displayTitle, customTitle)
-        result2.delete()
+        backgroundSaveAndWaitForExpectation {
+            result2.delete()
+        }
         
         // Case 2: Use title if no custom title provided
         let result3 = createAndWait(url: nil, title: title)
         XCTAssertEqual(result3.displayTitle, title)
-        result3.delete()
+        backgroundSaveAndWaitForExpectation {
+            result3.delete()
+        }
         
         // Case 3: Return nil if neither title or custom title provided
         let result4 = createAndWait(url: nil, title: nil)
         XCTAssertNil(result4.displayTitle)
-        result4.delete()
+        backgroundSaveAndWaitForExpectation {
+            result4.delete()
+        }
         
         
         // Case 4: Titles not nil but empty
         let result5 = createAndWait(url: nil, title: title, customTitle: "")
         XCTAssertEqual(result5.displayTitle, title)
-        result5.delete()
-        
+        backgroundSaveAndWaitForExpectation {
+            result5.delete()
+        }
         let result6 = createAndWait(url: nil, title: "", customTitle: "")
         XCTAssertNil(result6.displayTitle)
     }
