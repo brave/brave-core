@@ -22,7 +22,8 @@ import {
   StyledBalanceCurrency,
   StyledCurve,
   StyledAlertWrapper,
-  StyledAlertClose
+  StyledAlertClose,
+  StyleGrantButton
 } from './style'
 import { getLocale } from '../../../helpers'
 import Alert, { Type as AlertType } from '../alert'
@@ -149,15 +150,17 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               ? <StyledBalanceConverted>{converted}</StyledBalanceConverted>
               : null
             }
-            <Button
-              text={getLocale('grants')}
-              size={'small'}
-              type={'subtle'}
-              level={'secondary'}
-              onClick={enabled ? this.toggleGrantDetails : undefined}
-              disabled={!enabled}
-              icon={{ position: 'after', image: this.state.grantDetails && enabled ? arrowUpIcon : arrowDownIcon }}
-            />
+            <StyleGrantButton>
+              <Button
+                text={getLocale('grants')}
+                size={'small'}
+                type={'subtle'}
+                level={'secondary'}
+                onClick={enabled ? this.toggleGrantDetails : undefined}
+                disabled={!enabled}
+                icon={{ position: 'after', image: this.state.grantDetails && enabled ? arrowUpIcon : arrowDownIcon }}
+              />
+            </StyleGrantButton>
           </StyledBalance>
           {
             this.state.grantDetails && enabled

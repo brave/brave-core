@@ -36,7 +36,8 @@ import {
   StyledCenterParagraph,
   StyledBoldParagraph,
   StyledStrong,
-  StyledAnchor
+  StyledAnchor,
+  StyledOptInSecond
 } from './style'
 
 const batImage = require('./assets/bat')
@@ -97,7 +98,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
         <StyledOptInSection>
           <Button
             level='secondary'
-            size='large'
+            size='call-to-action'
             type='subtle'
             text={getLocale('braveRewardsOptInText')}
             onClick={this.props.optInAction}
@@ -159,13 +160,15 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             {getLocale('readyToTakePartDesc')}
           </span>
         </StyledReadyParagraph>
-        <Button
-          level={'primary'}
-          size={'call-to-action'}
-          type={'accent'}
-          text={getLocale('readyToTakePartOptInText')}
-          onClick={this.props.optInAction}
-        />
+        <StyledOptInSecond>
+          <Button
+            level={'primary'}
+            size={'call-to-action'}
+            type={'accent'}
+            text={getLocale('readyToTakePartOptInText')}
+            onClick={this.props.optInAction}
+          />
+        </StyledOptInSecond>
       </StyledOptInInnerSection>
     )
   }

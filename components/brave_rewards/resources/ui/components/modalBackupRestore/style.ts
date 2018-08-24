@@ -25,8 +25,8 @@ export const StyledImport = styled.label`
 ` as any
 
 export const StyleButtonWrapper = styled.div`
-  text-align: center;
   display: flex;
+  justify-content: center;
 ` as any
 
 export const GroupedButton = styled(Button as ComponentType<ButtonProps>)`
@@ -34,7 +34,8 @@ export const GroupedButton = styled(Button as ComponentType<ButtonProps>)`
 `
 
 export const StyledDoneWrapper = styled.div`
-  text-align: center;
+  display: flex;
+  justify-content: center;
   margin-top: 59px;
 ` as any
 
@@ -47,8 +48,8 @@ export const StyledStatus = styled.div`
 
 export const StyledActionsWrapper = styled.div`
   margin-top: 108px;
-  text-align: center;
   display: flex;
+  justify-content: center;
 ` as any
 
 export const ActionButton = styled(Button as ComponentType<ButtonProps>)`

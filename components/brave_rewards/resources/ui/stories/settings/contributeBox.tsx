@@ -168,7 +168,7 @@ class ContributeBox extends React.Component<{}, State> {
             : null
         }
         <List title={locale.contributionMonthly}>
-          <Select>
+          <Select floating={true}>
             <div data-value='10'><Tokens value={10} converted={4}/></div>
             <div data-value='20'><Tokens value={20} converted={6}/></div>
             <div data-value='40'><Tokens value={40} converted={12}/></div>

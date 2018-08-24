@@ -7,7 +7,13 @@ import styled from 'styled-components'
 const centerBackground = require('./assets/centerTextBackground.svg')
 
 export const StyledOptInSection = styled.section`
-  margin: 40px 0;
+  margin: 40px auto;
+  max-width: 303px;
+` as any
+
+export const StyledOptInSecond = styled.section`
+  max-width: 303px;
+  margin: 0 auto;
 ` as any
 
 export const StyledOptInInnerSection = styled.section`

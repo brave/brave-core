@@ -30,7 +30,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   padding: 40px 0;
 }
 
-.c34 {
+.c35 {
   --button-main-color: #FB542B;
   --button-main-color-hover: #F43405;
   --button-main-color-active: #FDBBAA;
@@ -72,11 +72,11 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   background: var(--button-state-color);
 }
 
-.c34:hover:enabled {
+.c35:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c34:active:enabled {
+.c35:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
@@ -114,10 +114,10 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   -ms-user-select: none;
   user-select: none;
   font-size: 14px;
-  border-radius: 24px;
-  width: auto;
-  min-width: 116px;
-  padding: 14px 15px;
+  border-radius: 28px;
+  width: 100%;
+  min-width: 235px;
+  padding: 19px 15px;
   border: 1px solid;
   color: var(--button-state-color);
 }
@@ -131,26 +131,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 .c13 {
-  min-height: var(--icon-size);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  text-align: center;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 600;
-  text-transform: none;
-  line-height: 1;
-}
-
-.c35 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -262,7 +242,13 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 .c11 {
-  margin: 40px 0;
+  margin: 40px auto;
+  max-width: 303px;
+}
+
+.c34 {
+  max-width: 303px;
+  margin: 0 auto;
 }
 
 .c30 {
@@ -540,13 +526,13 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             <button
               className="c12"
               data-test-id="optInAction"
-              size="large"
+              size="call-to-action"
               type="subtle"
             >
               <div
                 className="c13"
                 data-test-id="optInAction"
-                size="large"
+                size="call-to-action"
                 type="subtle"
               >
                 MISSING: braveRewardsOptInText
@@ -896,19 +882,23 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                 MISSING: readyToTakePartDesc
               </span>
             </p>
-            <button
+            <section
               className="c34"
-              size="call-to-action"
-              type="accent"
             >
-              <div
+              <button
                 className="c35"
                 size="call-to-action"
                 type="accent"
               >
-                MISSING: readyToTakePartOptInText
-              </div>
-            </button>
+                <div
+                  className="c13"
+                  size="call-to-action"
+                  type="accent"
+                >
+                  MISSING: readyToTakePartOptInText
+                </div>
+              </button>
+            </section>
           </section>
         </section>
       </section>

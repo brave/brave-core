@@ -27,7 +27,12 @@ export default class GrantComplete extends React.PureComponent<Props, {}> {
           <StyledValue>{date}</StyledValue>
         </StyledBox>
         <StyledText>{getLocale('grantDisclaimer')}</StyledText>
-        <Button text={getLocale('ok')} size={'medium'} brand={'brave'} onClick={onClose}/>
+        <Button
+          text={getLocale('ok')}
+          size={'call-to-action'}
+          type={'accent'}
+          onClick={onClose}
+        />
       </StyledWrapper>
     )
   }

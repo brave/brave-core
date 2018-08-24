@@ -38,6 +38,17 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   text-align: center;
 }
 
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 .c4 {
   font-size: 36px;
   line-height: 0.61;
@@ -49,7 +60,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   margin-top: 10px;
 }
 
-.c11 {
+.c12 {
   padding: 11px 25px 19px;
   position: relative;
   background: #f9fbfc;
@@ -58,7 +69,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   flex: 1;
 }
 
-.c9 {
+.c10 {
   text-align: center;
   font-size: 12px;
   color: #fff;
@@ -83,7 +94,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   color: #fff;
 }
 
-.c10 {
+.c11 {
   padding: 10px 0;
   position: relative;
   overflow: hidden;
@@ -91,7 +102,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   z-index: 5;
 }
 
-.c10:before {
+.c11:before {
   content: "";
   position: absolute;
   bottom: -16px;
@@ -102,7 +113,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   border: 20px solid #f9fbfc;
 }
 
-.c6 {
+.c7 {
   --button-main-color: #C5C5D3;
   --button-main-color-hover: #C5C5D3;
   --button-main-color-active: #C5C5D3;
@@ -144,15 +155,15 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   color: var(--button-state-color);
 }
 
-.c6:hover:enabled {
+.c7:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c6:active:enabled {
+.c7:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c7 {
+.c8 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -172,7 +183,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   line-height: 1;
 }
 
-.c8 {
+.c9 {
   display: block;
   line-height: 0;
   height: var(--icon-size);
@@ -206,30 +217,10 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
           BAT
         </span>
       </div>
-      <button
+      <div
         className="c6"
-        disabled={true}
-        icon={
-          Object {
-            "image": <svg
-              height="5"
-              width="8"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
-                fill="#FFF"
-                fillOpacity="0.55"
-                fillRule="evenodd"
-              />
-            </svg>,
-            "position": "after",
-          }
-        }
-        size="small"
-        type="subtle"
       >
-        <div
+        <button
           className="c7"
           disabled={true}
           icon={
@@ -252,55 +243,79 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
           size="small"
           type="subtle"
         >
-          MISSING: grants
-        </div>
-        <div
-          className="c8"
-          disabled={true}
-          icon={
-            Object {
-              "image": <svg
-                height="5"
-                width="8"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
-                  fill="#FFF"
-                  fillOpacity="0.55"
-                  fillRule="evenodd"
-                />
-              </svg>,
-              "position": "after",
+          <div
+            className="c8"
+            disabled={true}
+            icon={
+              Object {
+                "image": <svg
+                  height="5"
+                  width="8"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
+                    fill="#FFF"
+                    fillOpacity="0.55"
+                    fillRule="evenodd"
+                  />
+                </svg>,
+                "position": "after",
+              }
             }
-          }
-          size="small"
-          type="subtle"
-        >
-          <svg
-            height="5"
-            width="8"
-            xmlns="http://www.w3.org/2000/svg"
+            size="small"
+            type="subtle"
           >
-            <path
-              d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
-              fill="#FFF"
-              fillOpacity="0.55"
-              fillRule="evenodd"
-            />
-          </svg>
-        </div>
-      </button>
+            MISSING: grants
+          </div>
+          <div
+            className="c9"
+            disabled={true}
+            icon={
+              Object {
+                "image": <svg
+                  height="5"
+                  width="8"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
+                    fill="#FFF"
+                    fillOpacity="0.55"
+                    fillRule="evenodd"
+                  />
+                </svg>,
+                "position": "after",
+              }
+            }
+            size="small"
+            type="subtle"
+          >
+            <svg
+              height="5"
+              width="8"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
+                fill="#FFF"
+                fillOpacity="0.55"
+                fillRule="evenodd"
+              />
+            </svg>
+          </div>
+        </button>
+      </div>
     </div>
-    <div
-      className="c9"
-    />
     <div
       className="c10"
     />
+    <div
+      className="c11"
+    />
   </div>
   <div
-    className="c11"
+    className="c12"
   />
 </div>
 `;

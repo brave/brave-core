@@ -19,17 +19,17 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   padding-left: 23px;
 }
 
-.c7 {
+.c8 {
   display: inline-block;
   margin-left: 33px;
   vertical-align: middle;
   padding-top: 2px;
 }
 
-.c6 {
+.c7 {
   opacity: 0.65;
   font-size: 10px;
-  line-height: 3.9;
+  line-height: 1.5;
   color: #fff;
 }
 
@@ -41,6 +41,15 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   background: none;
   padding: 0;
   cursor: pointer;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 160px;
+  margin-bottom: 7px;
 }
 
 .c3 {
@@ -64,7 +73,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   max-width: 167px;
 }
 
-.c13 {
+.c14 {
   background: #392dd1;
   font-size: 13px;
   font-weight: 600;
@@ -81,27 +90,27 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c14 {
+.c15 {
   vertical-align: middle;
   display: inline-block;
   margin-right: 18px;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c10 {
+.c11 {
   position: relative;
   display: block;
   height: 16px;
   width: 28px;
 }
 
-.c11 {
+.c12 {
   background: #A7ACB2;
   height: 6px;
   margin-top: 5px;
@@ -109,7 +118,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   border-radius: 3px;
 }
 
-.c12 {
+.c13 {
   position: relative;
   z-index: 2;
   border-radius: 50%;
@@ -126,7 +135,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   background-color: var(--toggle-bullet-background);
 }
 
-.c9 {
+.c10 {
   color: #838391;
   font-size: 12px;
   font-family: Poppins,sans-serif;
@@ -177,37 +186,39 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
       >
         
       </div>
-      <div>
+      <div
+        className="c6"
+      >
         <span
-          className="c6"
+          className="c7"
         >
           MISSING: allowTip
            
         </span>
         <span
-          className="c7"
+          className="c8"
         >
           <div
-            className="c8"
+            className="c9"
           >
             <div
-              className="c9"
+              className="c10"
               size="small"
             >
               MISSING: off
             </div>
             <div
-              className="c10"
+              className="c11"
               data-test-id="toggle"
               onClick={[Function]}
               size="small"
             >
               <div
-                className="c11"
+                className="c12"
                 size="small"
               />
               <div
-                className="c12"
+                className="c13"
                 size="small"
                 type="light"
               />
@@ -217,11 +228,11 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
       </div>
     </div>
     <button
-      className="c13"
+      className="c14"
       disabled={false}
     >
       <span
-        className="c14"
+        className="c15"
       >
         <svg
           height="21"

@@ -21,7 +21,24 @@ const doNothing = () => {
   console.log('nothing')
 }
 
-class DonationsBox extends React.Component {
+type Check = {yt: boolean, tw: boolean, inst: boolean}
+
+interface State {
+  check: Check
+}
+
+class DonationsBox extends React.Component<{}, State> {
+  constructor (props: {}) {
+    super(props)
+    this.state = {
+      check: {
+        yt: true,
+        tw: false,
+        inst: false
+      }
+    }
+  }
+
   get donationRows (): DonationDetailRow[] {
     return [
       {
@@ -68,6 +85,12 @@ class DonationsBox extends React.Component {
     ]
   }
 
+  onChange = (key: string, selected: boolean, child: React.ReactNode, all: {[key: string]: boolean}) => {
+    this.setState({
+      check: all as Check
+    })
+  }
+
   donationSettingsChild = () => {
     return (
       <>
@@ -75,8 +98,9 @@ class DonationsBox extends React.Component {
             <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <ControlWrapper text={'Enable ability to give tips on ‘Like’ posts'}>
                 <Checkbox
-                  value={{ 'yt': true, 'tw': false, 'inst': false }}
+                  value={this.state.check}
                   multiple={true}
+                  onChange={this.onChange}
                 >
                   <div data-key='yt'>YouTube</div>
                   <div data-key='tw'>Twitter</div>

@@ -39,6 +39,11 @@ export const StyledBalance = styled.div`
   text-align: center;
 ` as any
 
+export const StyleGrantButton = styled.div`
+  display: flex;
+  justify-content: center;
+` as any
+
 export const StyledBalanceTokens = styled.div`
   font-size: 36px;
   line-height: 0.61;

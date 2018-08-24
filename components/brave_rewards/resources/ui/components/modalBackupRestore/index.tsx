@@ -141,8 +141,8 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             <StyledDoneWrapper>
               <Button
                 text={getLocale('done')}
-                level={'secondary'}
                 size={'medium'}
+                type={'accent'}
                 onClick={onClose}
               />
             </StyledDoneWrapper>

@@ -32,7 +32,7 @@ export const StyledAllowToggle = styled.span`
 export const StyledAllowText = styled.span`
   opacity: 0.65;
   font-size: 10px;
-  line-height: 3.9;
+  line-height: 1.5;
   color: #fff;
 ` as any
 
@@ -44,4 +44,10 @@ export const StyledClose = styled.button`
   background: none;
   padding: 0;
   cursor: pointer;
+` as any
+
+export const StyledTipWrapper = styled.div`
+  display: flex;
+  max-width: 160px;
+  margin-bottom: 7px;
 ` as any

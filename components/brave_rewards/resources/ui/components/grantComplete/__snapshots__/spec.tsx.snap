@@ -34,15 +34,15 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   font-size: 14px;
   line-height: 1.29;
   color: #838391;
-  margin: 44px 0 25px;
+  margin: 44px 0 32px;
 }
 
 .c5 {
-  --button-main-color: #242536;
-  --button-main-color-hover: #131525;
-  --button-main-color-active: #343546;
+  --button-main-color: #FB542B;
+  --button-main-color-hover: #F43405;
+  --button-main-color-active: #FDBBAA;
   --button-state-color: var(--button-main-color);
-  --icon-size: 16px;
+  --icon-size: 18px;
   --icon-spacing: 6px;
   --webkit-appearance: none;
   box-sizing: border-box;
@@ -70,11 +70,11 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  font-size: 13px;
-  border-radius: 20px;
-  width: auto;
-  min-width: 104px;
-  padding: 11px 10px;
+  font-size: 14px;
+  border-radius: 28px;
+  width: 100%;
+  min-width: 235px;
+  padding: 19px 15px;
   color: #fff;
   background: var(--button-state-color);
 }
@@ -103,7 +103,7 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0;
   letter-spacing: 0;
   font-weight: 600;
-  text-transform: none;
+  text-transform: uppercase;
   line-height: 1;
 }
 
@@ -140,13 +140,13 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   </div>
   <button
     className="c5"
-    size="medium"
-    type="default"
+    size="call-to-action"
+    type="accent"
   >
     <div
       className="c6"
-      size="medium"
-      type="default"
+      size="call-to-action"
+      type="accent"
     >
       MISSING: ok
     </div>

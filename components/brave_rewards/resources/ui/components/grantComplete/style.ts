@@ -37,5 +37,5 @@ export const StyledText = styled.div`
   font-size: 14px;
   line-height: 1.29;
   color: #838391;
-  margin: 44px 0 25px;
+  margin: 44px 0 32px;
 ` as any

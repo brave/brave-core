@@ -43,6 +43,9 @@ export const StyledContent = styled.div`
 export const StyledDonation = styled.div`
   flex-basis: 336px;
   background: #696fdc;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
 ` as any
 
 export const StyledBanner = styled.div`
