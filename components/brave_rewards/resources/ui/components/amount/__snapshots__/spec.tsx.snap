@@ -49,9 +49,13 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   justify-content: center;
 }
 
-.c4 {
+.c5 {
   font-weight: 400;
   margin-left: 5px;
+}
+
+.c4 {
+  font-weight: 400;
 }
 
 .c2 {
@@ -59,7 +63,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   width: 23px;
 }
 
-.c5 {
+.c6 {
   vertical-align: baseline;
   opacity: 0.4;
   font-size: 10px;
@@ -114,13 +118,18 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
         </g>
       </svg>
     </div>
-    1
-    <div
+    <span
       className="c4"
+    >
+      1
+    </span>
+     
+    <div
+      className="c5"
     />
   </div>
   <div
-    className="c5"
+    className="c6"
     type="small"
   >
     MISSING: about

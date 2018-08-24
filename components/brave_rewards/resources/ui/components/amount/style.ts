@@ -40,6 +40,10 @@ export const StyledTokens = styled<{}, 'div'>('div')`
   margin-left: 5px;
 `
 
+export const StyledNumber = styled.span`
+  font-weight: 400;
+`
+
 export const StyledLogo = styled<{}, 'div'>('div')`
   margin-right: 6px;
   width: 23px;

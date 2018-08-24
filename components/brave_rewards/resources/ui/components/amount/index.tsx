@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledAmount, StyledLogo, StyledConverted, StyledTokens } from './style'
+import { StyledWrapper, StyledAmount, StyledNumber, StyledLogo, StyledConverted, StyledTokens } from './style'
 import { getLocale } from '../../../helpers'
 import { BatColorIcon } from '../../../components/icons'
 
@@ -30,7 +30,7 @@ export default class Amount extends React.PureComponent<Props, {}> {
     return (
       <StyledWrapper id={id} onClick={onSelect.bind(this, amount)}>
         <StyledAmount selected={selected} type={type}>
-          <StyledLogo><BatColorIcon /></StyledLogo>{amount}<StyledTokens>{type === 'big' ? 'tokens' : null}</StyledTokens>
+          <StyledLogo><BatColorIcon /></StyledLogo><StyledNumber>{amount}</StyledNumber> <StyledTokens>{type === 'big' ? 'tokens' : null}</StyledTokens>
         </StyledAmount>
         <StyledConverted selected={selected} type={type}>
           {getLocale('about')} {converted.toFixed(2)} {currency}
