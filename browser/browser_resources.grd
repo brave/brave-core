@@ -76,6 +76,18 @@
         <include name="IDR_ABOUT_DISCARDS_JS" file="resources\discards\discards.js" type="BINDATA" />
         <include name="IDR_ABOUT_DISCARDS_MOJO_JS" file="${root_gen_dir}\chrome\browser\ui\webui\discards\discards.mojom.js" use_base_dir="false" type="BINDATA" />
         <include name="IDR_ABOUT_DISCARDS_LIFECYCLE_UNIT_STATE_MOJO_JS" file="${root_gen_dir}\chrome\browser\resource_coordinator\lifecycle_unit_state.mojom.js" use_base_dir="false" type="BINDATA" />
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_BLE_1X" file="resources\webauthn\ble.png" type="BINDATA" />
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_BLE_NAME_1X" file="resources\webauthn\ble_name.png" type="BINDATA" />
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_BLE_TAP_1X" file="resources\webauthn\ble_tap.png" type="BINDATA" />
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_BLE_PIN_1X" file="resources\webauthn\ble_pin.png" type="BINDATA" />
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_ERROR_BLUETOOTH_1X" file="resources\webauthn\error_bt.png" type="BINDATA" />
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_ERROR_TIMEOUT_1X" file="resources\webauthn\error_timeout.png" type="BINDATA" />
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_PHONE_1X" file="resources\webauthn\phone.png" type="BINDATA" />
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_USB_1X" file="resources\webauthn\usb.png" type="BINDATA" />
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_WELCOME_1X" file="resources\webauthn\welcome.png" type="BINDATA" />
+      </if>
+      <if expr="is_macosx">
+        <include name="IDR_WEBAUTHN_ILLUSTRATION_TOUCHID_1X" file="resources\webauthn\touchid.png" type="BINDATA" />
       </if>
       <if expr="is_win">
         <include name="IDR_ABOUT_CONFLICTS_HTML" file="resources\conflicts\about_conflicts.html" flattenhtml="true" allowexternalscript="true" type="BINDATA" />
@@ -93,6 +105,9 @@
       <if expr="not is_android">
         <include name="IDR_ABOUT_SYS_HTML" file="resources\about_sys\about_sys.html" flattenhtml="true" type="BINDATA" />
       </if>
+      <include name="IDR_ACCESSIBILITY_HTML" file="resources\accessibility\accessibility.html" flattenhtml="true" allowexternalscript="true" compress="gzip" type="BINDATA" />
+      <include name="IDR_ACCESSIBILITY_CSS" file="resources\accessibility\accessibility.css" compress="gzip" type="BINDATA" />
+      <include name="IDR_ACCESSIBILITY_JS" file="resources\accessibility\accessibility.js" flattenhtml="true" compress="gzip" type="BINDATA" />
       <include name="IDR_AD_NETWORK_HASHES" file="resources\ad_networks.dat" type="BINDATA" />
       <include name="IDR_BLUETOOTH_ADAPTER_MOJO_JS" file="${root_gen_dir}\device\bluetooth\public\mojom\adapter.mojom.js" use_base_dir="false" type="BINDATA" compress="gzip" />
       <include name="IDR_BLUETOOTH_DEVICE_MOJO_JS" file="${root_gen_dir}\device\bluetooth\public\mojom\device.mojom.js" use_base_dir="false" type="BINDATA" compress="gzip" />
@@ -141,6 +156,8 @@
       <include name="IDR_DOWNLOAD_INTERNALS_JS" file="resources\download_internals\download_internals.js" type="BINDATA" compress="gzip" />
       <include name="IDR_DOWNLOAD_INTERNALS_BROWSER_PROXY_JS" file="resources\download_internals\download_internals_browser_proxy.js" type="BINDATA" compress="gzip" />
       <include name="IDR_DOWNLOAD_INTERNALS_VISUALS_JS" file="resources\download_internals\download_internals_visuals.js" type="BINDATA" compress="gzip" />
+      <include name="IDR_UKM_INTERNALS_HTML" file="../../components/ukm/debug/ukm_internals.html" flattenhtml="true" allowexternalscript="true" compress="gzip" type="BINDATA" />
+      <include name="IDR_UKM_INTERNALS_JS" file="../../components/ukm/debug/ukm_internals.js" flattenhtml="true" compress="gzip" type="BINDATA" />
       <if expr="not is_android">
         <include name="IDR_MD_DOWNLOADS_1X_INCOGNITO_MARKER_PNG" file="resources\md_downloads\1x\incognito_marker.png" type="BINDATA" />
         <include name="IDR_MD_DOWNLOADS_2X_INCOGNITO_MARKER_PNG" file="resources\md_downloads\2x\incognito_marker.png" type="BINDATA" />
@@ -149,6 +166,7 @@
         <if expr="optimize_webui">
           <then>
             <include name="IDR_MD_DOWNLOADS_VULCANIZED_HTML" file="${root_gen_dir}\chrome\browser\resources\md_downloads\vulcanized.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
+            <include name="IDR_MD_DOWNLOADS_VULCANIZED_P2_HTML" file="${root_gen_dir}\chrome\browser\resources\md_downloads\vulcanized.p2.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
             <include name="IDR_MD_DOWNLOADS_CRISPER_JS" file="${root_gen_dir}\chrome\browser\resources\md_downloads\crisper.js" use_base_dir="false" flattenhtml="true" type="BINDATA" compress="gzip" />
           </then>
           <else>
@@ -201,6 +219,7 @@
         <if expr="optimize_webui">
           <then>
             <include name="IDR_MD_BOOKMARKS_VULCANIZED_HTML" file="${root_gen_dir}\chrome\browser\resources\md_bookmarks\vulcanized.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
+            <include name="IDR_MD_BOOKMARKS_VULCANIZED_P2_HTML" file="${root_gen_dir}\chrome\browser\resources\md_bookmarks\vulcanized.p2.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
             <include name="IDR_MD_BOOKMARKS_CRISPER_JS" file="${root_gen_dir}\chrome\browser\resources\md_bookmarks\crisper.js" use_base_dir="false" flattenhtml="true" type="BINDATA" compress="gzip" />
           </then>
           <else>
@@ -262,8 +281,10 @@
         <if expr="optimize_webui">
           <then>
             <include name="IDR_MD_HISTORY_APP_VULCANIZED_HTML" file="${root_gen_dir}\chrome\browser\resources\md_history\app.vulcanized.html" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" use_base_dir="false" />
+            <include name="IDR_MD_HISTORY_APP_VULCANIZED_P2_HTML" file="${root_gen_dir}\chrome\browser\resources\md_history\app.vulcanized.p2.html" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" use_base_dir="false" />
             <include name="IDR_MD_HISTORY_APP_CRISPER_JS" file="${root_gen_dir}\chrome\browser\resources\md_history\app.crisper.js" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" use_base_dir="false" />
             <include name="IDR_MD_HISTORY_LAZY_LOAD_VULCANIZED_HTML" file="${root_gen_dir}\chrome\browser\resources\md_history\lazy_load.vulcanized.html" allowexternalscript="true" type="BINDATA" compress="gzip" use_base_dir="false" />
+            <include name="IDR_MD_HISTORY_LAZY_LOAD_VULCANIZED_P2_HTML" file="${root_gen_dir}\chrome\browser\resources\md_history\lazy_load.vulcanized.p2.html" allowexternalscript="true" type="BINDATA" compress="gzip" use_base_dir="false" />
             <include name="IDR_MD_HISTORY_LAZY_LOAD_CRISPER_JS" file="${root_gen_dir}\chrome\browser\resources\md_history\lazy_load.crisper.js" allowexternalscript="true" type="BINDATA" compress="gzip" use_base_dir="false" />
           </then>
           <else>
@@ -441,6 +462,7 @@
         <if expr="optimize_webui">
           <then>
             <include name="IDR_BLUETOOTH_PAIRING_DIALOG_VULCANIZED_HTML" file="${root_gen_dir}\chrome\browser\resources\chromeos\bluetooth_pairing_dialog\vulcanized.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
+            <include name="IDR_BLUETOOTH_PAIRING_DIALOG_VULCANIZED_P2_HTML" file="${root_gen_dir}\chrome\browser\resources\chromeos\bluetooth_pairing_dialog\vulcanized.p2.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
             <include name="IDR_BLUETOOTH_PAIRING_DIALOG_CRISPER_JS" file="${root_gen_dir}\chrome\browser\resources\chromeos\bluetooth_pairing_dialog\crisper.js" use_base_dir="false" flattenhtml="true" type="BINDATA" compress="gzip" />
           </then>
           <else>
@@ -469,8 +491,10 @@
         <if expr="optimize_webui">
           <then>
             <include name="IDR_INTERNET_CONFIG_DIALOG_VULCANIZED_HTML" file="${root_gen_dir}\chrome\browser\resources\chromeos\internet_config_dialog\vulcanized.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
+            <include name="IDR_INTERNET_CONFIG_DIALOG_VULCANIZED_P2_HTML" file="${root_gen_dir}\chrome\browser\resources\chromeos\internet_config_dialog\vulcanized.p2.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
             <include name="IDR_INTERNET_CONFIG_DIALOG_CRISPER_JS" file="${root_gen_dir}\chrome\browser\resources\chromeos\internet_config_dialog\crisper.js" use_base_dir="false" flattenhtml="true" type="BINDATA" compress="gzip" />
             <include name="IDR_INTERNET_DETAIL_DIALOG_VULCANIZED_HTML" file="${root_gen_dir}\chrome\browser\resources\chromeos\internet_detail_dialog\vulcanized.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
+            <include name="IDR_INTERNET_DETAIL_DIALOG_VULCANIZED_P2_HTML" file="${root_gen_dir}\chrome\browser\resources\chromeos\internet_detail_dialog\vulcanized.p2.html" use_base_dir="false" flattenhtml="true" allowexternalscript="true" type="BINDATA" compress="gzip" />
             <include name="IDR_INTERNET_DETAIL_DIALOG_CRISPER_JS" file="${root_gen_dir}\chrome\browser\resources\chromeos\internet_detail_dialog\crisper.js" use_base_dir="false" flattenhtml="true" type="BINDATA" compress="gzip" />
           </then>
           <else>
@@ -665,6 +689,9 @@
       </if>
       <if expr="not is_android">
         <include name="IDR_TAB_RANKER_EXAMPLE_PREPROCESSOR_CONFIG_PB" file="resource_coordinator\tab_ranker\example_preprocessor_config.pb" type="BINDATA" />
+      </if>
+      <if expr="chromeos">
+        <include name="IDR_SMART_DIM_EXAMPLE_PREPROCESSOR_CONFIG_PB" file="chromeos\power\ml\smart_dim\example_preprocessor_config.pb" type="BINDATA" />
       </if>
     </includes>
   </release>

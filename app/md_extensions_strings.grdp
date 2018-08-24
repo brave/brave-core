@@ -88,6 +88,10 @@
       =1 {&lt;1 line not shown&gt;}
       other {&lt;$1 lines not shown&gt;}}
   </message>
+  <!-- TODO(devlin): Unify this with IDS_SETTINGS_EDIT. -->
+  <message name="IDS_MD_EXTENSIONS_HOST_PERMISSIONS_EDIT" desc="The label of the button used to edit an extension's access to a given website.">
+    Edit
+  </message>
   <message name="IDS_MD_EXTENSIONS_ITEM_ERRORS" desc="The label of the button to bring the user to the page showing an extension's errors.">
     Errors
   </message>
@@ -178,9 +182,6 @@
   <message name="IDS_MD_EXTENSIONS_ITEM_PERMISSIONS_EMPTY" desc="The text to indicate that an extension does not have any special permissions.">
     This extension requires no special permissions
   </message>
-  <message name="IDS_MD_EXTENSIONS_ITEM_REMOVE" desc="The label of the button to remove an extension.">
-    Remove
-  </message>
   <message name="IDS_MD_EXTENSIONS_ITEM_REMOVE_EXTENSION" desc="The label on the button to remove an extension.">
     Remove extension
   </message>
@@ -264,6 +265,18 @@
   </message>
   <message name="IDS_MD_EXTENSIONS_APPS_TITLE" desc="The text displayed in the sidebar to go to the apps section of the page.">
     Brave Apps
+  </message>
+  <message name="IDS_MD_EXTENSIONS_REMOVE" desc="The generic label for a button to remove an entry.">
+    Remove
+  </message>
+  <message name="IDS_MD_EXTENSIONS_RUNTIME_HOSTS_DIALOG_TITLE" desc="The title of the dialog used to allow a user to add a new site that an extension is allowed to run on.">
+    Add a site
+  </message>
+  <message name="IDS_MD_EXTENSIONS_RUNTIME_HOSTS_DIALOG_INPUT_ERROR" desc="The error message shown to the user when they entered an invalid site address into the input field.">
+    Not a valid web address
+  </message>
+  <message name="IDS_MD_EXTENSIONS_RUNTIME_HOSTS_DIALOG_INPUT_LABEL" desc="The label for the input field where a user enters a new site for an extension to run on.">
+    Site
   </message>
   <message name="IDS_MD_EXTENSIONS_SIDEBAR_EXTENSIONS" desc="The text displayed in the sidebar to go to the extensions section of the page.">
     Extensions
