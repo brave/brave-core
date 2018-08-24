@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 
+#include "chrome/browser/devtools/url_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "url/gurl.h"
 
@@ -31,7 +32,7 @@ bool IsUAWhitelisted(const GURL& gurl) {
     URLPattern(URLPattern::SCHEME_ALL, "https://*.netflix.com/*")
   });
   return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
-      [&gurl](URLPattern pattern){
+      [&gurl](URLPattern pattern) {
         return pattern.MatchesURL(gurl);
       });
 }
@@ -39,10 +40,11 @@ bool IsUAWhitelisted(const GURL& gurl) {
 bool IsBlockedResource(const GURL& gurl) {
   static std::vector<URLPattern> blocked_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://www.lesechos.fr/xtcore.js"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js")
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js"),
+    URLPattern(URLPattern::SCHEME_HTTPS, (std::string(kRemoteFrontendBase) + "*").c_str())
   });
   return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
-      [&gurl](URLPattern pattern){
+      [&gurl](URLPattern pattern) {
         return pattern.MatchesURL(gurl);
       });
 }
@@ -67,7 +69,7 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
     bool is_reddit_embed = std::any_of(
       reddit_embed_patterns.begin(),
       reddit_embed_patterns.end(),
-      [&subresourceUrl](URLPattern pattern){
+      [&subresourceUrl](URLPattern pattern) {
         return pattern.MatchesURL(subresourceUrl);
       });
     if (is_reddit_embed) {
@@ -100,7 +102,7 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
     URLPattern(URLPattern::SCHEME_ALL, "https://cloud.typography.com/*")
   });
   return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
-    [&subresourceUrl](URLPattern pattern){
+    [&subresourceUrl](URLPattern pattern) {
       return pattern.MatchesURL(subresourceUrl);
     });
 }
@@ -133,7 +135,7 @@ bool IsWidevineInstallableURL(const GURL& url) {
     URLPattern(URLPattern::SCHEME_ALL, "http://www.netflix.com:*/*")
   });
   return std::any_of(patterns.begin(), patterns.end(),
-    [&url](URLPattern pattern){
+    [&url](URLPattern pattern) {
       return pattern.MatchesURL(url);
     });
 }
