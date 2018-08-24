@@ -30,7 +30,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiReleaseChannel(int id, boo
     case ThemeProperties::COLOR_TOOLBAR:
     case ThemeProperties::COLOR_DETACHED_BOOKMARK_BAR_BACKGROUND:
     case ThemeProperties::COLOR_CONTROL_BACKGROUND:
-    case ThemeProperties::COLOR_TOOLBAR_BOTTOM_SEPARATOR:
+    case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
       return incognito ? SkColorSetRGB(0x91, 0x95, 0x99) : SkColorSetRGB(0xF6, 0xF7, 0xF9);
     case ThemeProperties::COLOR_TAB_TEXT:
       return SkColorSetRGB(0x22, 0x23, 0x26);
@@ -58,7 +58,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiDevChannel(int id, bool in
     case ThemeProperties::COLOR_TOOLBAR:
     case ThemeProperties::COLOR_DETACHED_BOOKMARK_BAR_BACKGROUND:
     case ThemeProperties::COLOR_CONTROL_BACKGROUND:
-    case ThemeProperties::COLOR_TOOLBAR_BOTTOM_SEPARATOR:
+    case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
       return incognito ? SkColorSetRGB(0x32, 0x33, 0x36) : SkColorSetRGB(0x22, 0x23, 0x26);
     case ThemeProperties::COLOR_TAB_TEXT:
       return SkColorSetRGB(0xF7, 0xF8, 0xF9);
