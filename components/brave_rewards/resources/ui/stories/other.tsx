@@ -81,7 +81,7 @@ storiesOf('Feature Components/Rewards/Other', module)
       <Alert
         type={select('Type', { error: 'error', success: 'success', warning: 'warning' }, 'success')}
         bg={boolean('Background color', false)}
-        color={boolean('Text color', false)}
+        colored={boolean('Text color', false)}
       >
         <b>Funds received!</b> 25 BAT are added to your wallet successfully.
       </Alert>

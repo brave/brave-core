@@ -92,7 +92,6 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
                 title={row.profile.name}
                 provider={row.profile.provider}
                 verified={row.profile.verified}
-                type={'small'}
                 src={row.profile.src}
               />
             )

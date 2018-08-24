@@ -23,13 +23,13 @@ export interface Props {
 export default class Tokens extends React.PureComponent<Props, {}> {
   static defaultProps = {
     size: 'normal',
-    color: 'default'
+    color: 'default',
+    currency: 'USD',
+    toFixed: 'true'
   }
 
   render () {
-    const { id, converted, value, hideText, isNegative, size, color } = this.props
-    const currency = this.props.currency || 'USD'
-    const toFixed = this.props.toFixed === undefined ? true : this.props.toFixed
+    const { id, converted, value, hideText, isNegative, size, color, currency, toFixed } = this.props
 
     return (
       <StyledWrapper id={id} size={size} color={color}>

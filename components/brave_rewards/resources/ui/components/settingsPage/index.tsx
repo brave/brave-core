@@ -7,7 +7,6 @@ import { StyledWrapper, StyleHeader, StyledContent } from './style'
 
 export interface Props {
   id?: string
-  activePageId?: string
   children?: React.ReactNode
 }
 

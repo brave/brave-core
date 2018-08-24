@@ -35,6 +35,10 @@ const verifiedIcon = require('./assets/verified')
   - add fallback image
  */
 export default class Profile extends React.PureComponent<Props, {}> {
+  static defaultProps = {
+    type: 'small'
+  }
+
   getProviderName (provider: Provider) {
     switch (provider) {
       case 'youtube':

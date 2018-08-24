@@ -91,10 +91,9 @@ export default class Donate extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id, donationAmounts, actionText, children, title, currentAmount } = this.props
+    const { id, donationAmounts, actionText, children, title, currentAmount, donateType } = this.props
     const disabled = currentAmount === 0
 
-    const donateType = this.props.donateType ? this.props.donateType : 'big'
     const sendColor = disabled ?
       donateType === 'small'
       ? '#1A22A8'

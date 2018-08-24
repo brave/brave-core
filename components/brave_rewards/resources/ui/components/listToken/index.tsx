@@ -18,6 +18,10 @@ export interface Props {
 }
 
 export default class ListToken extends React.PureComponent<Props, {}> {
+  static defaultProps = {
+    border: 'default'
+  }
+
   render () {
     const { id, title, value, converted, isNegative, size, color, border } = this.props
 

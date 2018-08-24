@@ -66,7 +66,7 @@ storiesOf('Feature Components/Rewards/Concepts', module)
             bgImage={boolean('Show bg image', false) ? siteBgImage : null}
             logo={boolean('Show logo', false) ? siteBgLogo : null}
             donationAmounts={object('Donations', store.state.donationAmounts)}
-            customStyle={{ logoBgColor: text('Logo bg color', '') }}
+            logoBgColor={text('Logo bg color', '')}
             onDonate={onDonate}
             onAmountSelection={onAmountSelection}
             currentAmount={store.state.currentAmount}

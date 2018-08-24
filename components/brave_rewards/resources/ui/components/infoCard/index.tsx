@@ -24,15 +24,9 @@ export interface Props {
 }
 
 export default class InfoCard extends React.PureComponent<Props, {}> {
-  get gridTheme () {
-    return {
-      gridGap: '0'
-    }
-  }
-
   getCards (items: CardProps[]) {
     return (
-      <Grid customStyle={this.gridTheme} columns={items.length}>
+      <Grid customStyle={{ gridGap: '0' }} columns={items.length}>
         {items.map((item: CardProps, index: number) => {
           return <Column key={`${index}`} size={1}>
             <StyledInfoCard>

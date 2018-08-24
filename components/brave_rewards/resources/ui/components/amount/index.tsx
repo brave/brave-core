@@ -19,10 +19,14 @@ export interface Props {
 const logo = require('./assets/logo')
 
 export default class Amount extends React.PureComponent<Props, {}> {
+  static defaultProps = {
+    type: 'small',
+    currency: 'USD',
+    converted: 0
+  }
+
   render () {
-    const { id, onSelect, amount, selected, type } = this.props
-    const converted = this.props.converted || 0
-    const currency = this.props.currency || 'USD'
+    const { id, onSelect, amount, selected, type, converted, currency } = this.props
 
     return (
       <StyledWrapper id={id} onClick={onSelect.bind(this, amount)}>

@@ -6,7 +6,7 @@ import Donate from './index'
 import { TestThemeProvider } from '../../../theme'
 
 describe('Donate tests', () => {
-  const baseComponent = (props?: object) => <TestThemeProvider><Donate id='donate' {...props} /></TestThemeProvider>
+  const baseComponent = (props?: object) => <TestThemeProvider><Donate id='donate' {...props} donateType={'small'} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

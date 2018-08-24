@@ -34,6 +34,10 @@ export interface Props {
 const close = require('./assets/close')
 
 export default class Tip extends React.PureComponent<Props, {}> {
+  static defaultProps = {
+    title: ''
+  }
+
   onDonate = (amount: number) => {
     if (this.props.onDonate) {
       this.props.onDonate(amount, this.props.allow)

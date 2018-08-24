@@ -99,7 +99,6 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
                 title={row.profile.name}
                 provider={row.profile.provider}
                 verified={row.profile.verified}
-                type={'small'}
                 src={row.profile.src}
               />
             )
@@ -158,6 +157,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
   render () {
     const { id, children, rows, allItems, onShowAll } = this.props
     const numItems = this.props.numItems || 0
+
     return (
       <div id={id}>
         <Table
