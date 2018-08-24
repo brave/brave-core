@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<{}, 'div'>('div')`
   font-size: 14px;
   text-align: right;
   border-radius: 6px;
@@ -12,4 +12,4 @@ export const StyledWrapper = styled.div`
   background: #e9f0ff;
   display: inline-block;
   padding: 9px 10px 9px 13px;
-` as any
+`

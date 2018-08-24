@@ -54,11 +54,7 @@ export interface Props {
   children?: React.ReactNode
   onDonate: (amount: number, monthly: boolean) => void
   onClose?: () => void
-  customStyle?: Theme
-}
-
-export interface Theme {
-  logoBgColor: CSS.Color
+  logoBgColor?: CSS.Color
 }
 
 interface State {
@@ -146,7 +142,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     }
   }
 
-  onKeyUp = (e: KeyboardEvent) => {
+  onKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key.toLowerCase() === 'escape' && this.props.onClose) {
       this.props.onClose()
     }
@@ -166,12 +162,12 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       donationAmounts,
       domain,
       onAmountSelection,
-      customStyle,
+      logoBgColor,
       currentAmount
     } = this.props
 
     return (
-      <StyledWrapper id={id} onKeyUp={this.onKeyUp} tabIndex='0'>
+      <StyledWrapper id={id} onKeyUp={this.onKeyUp} tabIndex={0}>
         <StyledBanner>
           <StyledClose onClick={onClose}>{close}</StyledClose>
           <StyledBannerImage bgImage={bgImage}>
@@ -182,7 +178,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
           <StyledContentWrapper>
             <StyledContent>
               <StyledLogoWrapper>
-                <StyledLogoBorder padding={!logo} customStyle={customStyle}>
+                <StyledLogoBorder padding={!logo} bg={logoBgColor}>
                   {this.getLogo(logo, domain)}
                 </StyledLogoBorder>
                 {this.getSocial(social)}

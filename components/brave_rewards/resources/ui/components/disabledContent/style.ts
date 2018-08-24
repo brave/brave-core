@@ -3,13 +3,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled, { css } from 'styled-components'
-import { Props, Type } from './index'
+import { Props } from './index'
 
-const getColors = (type?: Type) => {
+const getColors = (p: Props) => {
   let color = '#4b4c5c'
   let boldColor = '#4b4c5c'
 
-  switch (type) {
+  switch (p.type) {
     case 'ads':
       color = '#ceb4e1'
       boldColor = '#b490cf'
@@ -25,11 +25,8 @@ const getColors = (type?: Type) => {
   }
 
   return css`
-    color: ${color};
-
-    b {
-      color: ${boldColor};
-    }
+    --disabled-content-color: ${color};
+    --disabled-content-bold: ${boldColor};
   `
 }
 
@@ -38,10 +35,12 @@ export const StyledContent = styled<Props, 'div'>('div')`
   font-size: 16px;
   font-weight: 500;
   line-height: 1.5;
-  ${(p: Props) => getColors(p.type)};
+  ${getColors};
+  color: var(--disabled-content-color);
 
   b,
   a {
+    color: var(--disabled-content-bold);
     font-weight: 500;
   }
 
@@ -55,4 +54,4 @@ export const StyledContent = styled<Props, 'div'>('div')`
     line-height: 0.5;
     color: #ceb4e1;
   }
-` as any
+`

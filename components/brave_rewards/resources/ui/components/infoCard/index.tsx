@@ -26,7 +26,7 @@ export interface Props {
 export default class InfoCard extends React.PureComponent<Props, {}> {
   get gridTheme () {
     return {
-      gridGap: '0px'
+      gridGap: '0'
     }
   }
 

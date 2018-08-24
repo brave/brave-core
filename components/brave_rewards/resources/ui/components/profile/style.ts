@@ -5,7 +5,7 @@
 import styled, { css } from 'styled-components'
 import { Props } from './index'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<{}, 'div'>('div')`
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -13,17 +13,17 @@ export const StyledWrapper = styled.div`
   align-content: flex-start;
   flex-wrap: nowrap;
   font-family: Poppins, sans-serif;
-` as any
+`
 
-export const StyledImageWrapper = styled.div`
+export const StyledImageWrapper = styled<{}, 'div'>('div')`
   flex-basis: 30px;
   position: relative;
-` as any
+`
 
-export const StyledImage = styled.img`
+export const StyledImage = styled<Partial<Props>, 'img'>('img')`
   border-radius: 50%;
 
-  ${(p: Props) => p.type === 'big'
+  ${p => p.type === 'big'
     ? css`
       width: 48px;
       height: 48px;
@@ -31,37 +31,37 @@ export const StyledImage = styled.img`
     : ''
   };
 
-  ${(p: Props) => p.type !== 'big'
+  ${p => p.type !== 'big'
     ? css`
       width: 24px;
       height: 24px;
     `
     : ''
   };
-` as any
+`
 
-export const StyledVerified = styled.span`
+export const StyledVerified = styled<{}, 'span'>('span')`
   position: absolute;
   bottom: 2px;
   right: -1px;
-` as any
+`
 
-export const StyledContent = styled.div`
+export const StyledContent = styled<Partial<Props>, 'div'>('div')`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 50%;
   margin-top: -5px;
-  padding-left: ${(p: Props) => p.type === 'big' ? '11px' : 0};
-` as any
+  padding-left: ${p => p.type === 'big' ? '11px' : 0};
+`
 
-export const StyledTitleWrap = styled.div`
-  margin-left: ${(p: Props) => p.type !== 'big' ? '10px' : 0};
-` as any
+export const StyledTitleWrap = styled<Partial<Props>, 'div'>('div')`
+  margin-left: ${p => p.type !== 'big' ? '10px' : 0};
+`
 
-export const StyledTitle = styled.span`
+export const StyledTitle = styled<Partial<Props>, 'span'>('span')`
   white-space: nowrap;
 
-  ${(p: Props) => p.type === 'big'
+  ${p => p.type === 'big'
     ? css`
       font-size: 18px;
       font-weight: 500;
@@ -72,7 +72,7 @@ export const StyledTitle = styled.span`
     : ''
   };
 
-  ${(p: Props) => p.type !== 'big'
+  ${p => p.type !== 'big'
     ? css`
       font-family: Muli, sans-serif;
       font-size: 14px;
@@ -83,13 +83,13 @@ export const StyledTitle = styled.span`
     `
     : ''
   };
-` as any
+`
 
-export const StyledProvider = styled.span`
+export const StyledProvider = styled<Partial<Props>, 'span'>('span')`
   white-space: nowrap;
   padding-left: 5px;
 
-  ${(p: Props) => p.type === 'big'
+  ${p => p.type === 'big'
     ? css`
       font-weight: 300;
       font-size: 18px;
@@ -97,16 +97,16 @@ export const StyledProvider = styled.span`
     : ''
   };
 
-  color: ${(p: Props) => p.type === 'big' ? '#4b4c5c' : '#b8b9c4'};
-` as any
+  color: ${p => p.type === 'big' ? '#4b4c5c' : '#b8b9c4'};
+`
 
-export const StyledProviderWrap = styled.div`
+export const StyledProviderWrap = styled<{}, 'div'>('div')`
   font-size: 13px;
   color: #838391;
   margin-top: 3px;
-` as any
+`
 
-export const StyledInlineVerified = styled.span`
+export const StyledInlineVerified = styled<{}, 'span'>('span')`
   display: inline-block;
   vertical-align: middle;
-` as any
+`

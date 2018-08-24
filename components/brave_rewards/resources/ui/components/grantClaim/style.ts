@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<{}, 'div'>('div')`
   display: flex;
   align-items: stretch;
   align-content: flex-start;
@@ -16,9 +16,9 @@ export const StyledWrapper = styled.div`
   padding-left: 20px;
   margin-bottom: 19px;
   width: 100%;
-` as any
+`
 
-export const StyledIcon = styled.div`
+export const StyledIcon = styled<{}, 'div'>('div')`
   flex-basis: 40px;
   border: solid 1px #ffbbaa;
   margin: 12px 0 0;
@@ -30,9 +30,9 @@ export const StyledIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-` as any
+`
 
-export const StyledText = styled.div`
+export const StyledText = styled<{}, 'div'>('div')`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 70%;
@@ -41,9 +41,9 @@ export const StyledText = styled.div`
   line-height: 1.25;
   color: #fb542b;
   padding: 14px 10px 5px 10px;
-` as any
+`
 
-export const StyledClaim = styled.button`
+export const StyledClaim = styled<{}, 'button'>('button')`
   flex-basis: 90px;
   background-color: #fb542b;
   font-family: Muli, sans-serif;
@@ -55,4 +55,4 @@ export const StyledClaim = styled.button`
   border: none;
   text-transform: uppercase;
   cursor: pointer;
-` as any
+`

@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<{}, 'div'>('div')`
   font-family: Poppins, sans-serif;
   position: relative;
   display: flex;
@@ -18,51 +18,51 @@ export const StyledWrapper = styled.div`
   flex-wrap: wrap;
   padding: 22px 34px 18px;
   margin-bottom: 25px;
-` as any
+`
 
-export const StyledLeft = styled.div`
+export const StyledLeft = styled<{}, 'div'>('div')`
   flex-grow: 1;
   flex-shrink: 1;
   display: flex;
-` as any
+`
 
-export const StyledRight = styled.div`
+export const StyledRight = styled<{}, 'div'>('div')`
   padding: 10px 0 0;
   display: flex;
-` as any
+`
 
-export const StyledTitle = styled.div`
+export const StyledTitle = styled<{}, 'div'>('div')`
   font-size: 28px;
   font-weight: 600;
   letter-spacing: 0.2px;
   color: #4b4c5c;
   margin: 4px 0 0 11px;
-` as any
+`
 
-export const StyledTM = styled.span`
+export const StyledTM = styled<{}, 'span'>('span')`
   font-size: 10px;
   font-weight: 300;
   letter-spacing: 0.2px;
   text-align: center;
   color: #222326;
   vertical-align: text-top;
-` as any
+`
 
-export const StyleTitle = styled.div`
+export const StyleTitle = styled<{}, 'div'>('div')`
   font-size: 22px;
   line-height: 1.27;
   color: #4b4c5c;
   margin-top: 40px;
-` as any
+`
 
-export const StyleText = styled.div`
+export const StyleText = styled<{}, 'div'>('div')`
   font-family: Muli, sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.75;
   color: #838391;
-` as any
+`
 
-export const StyledContent = styled.div`
+export const StyledContent = styled<{}, 'div'>('div')`
   flex-basis: 100%;
-` as any
+`

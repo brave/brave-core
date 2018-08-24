@@ -12,7 +12,7 @@ export interface Props {
   id?: string
   children?: React.ReactNode
   onClose?: () => void
-  color?: boolean
+  colored?: boolean
   bg?: boolean
 }
 
@@ -35,43 +35,13 @@ export default class Alert extends React.PureComponent<Props, {}> {
     return null
   }
 
-  get bgColor () {
-    if (this.props.bg) {
-      switch (this.props.type) {
-        case 'error':
-          return '#FFEEF1'
-        case 'success':
-          return '#E7F6FF'
-        case 'warning':
-          return '#FAF2DE'
-      }
-    }
-
-    return '#fff'
-  }
-
-  get color () {
-    if (this.props.color) {
-      switch (this.props.type) {
-        case 'error':
-          return '#F36980'
-        case 'success':
-          return '#67D79D'
-        case 'warning':
-          return '#FF7900'
-      }
-    }
-
-    return null
-  }
-
   render () {
-    const { id, children, onClose } = this.props
+    const { id, children, onClose, colored, bg, type } = this.props
 
     return (
-      <StyledWrapper id={id} bgColor={this.bgColor}>
+      <StyledWrapper id={id} type={type} bg={bg}>
         <StyledIcon>{this.icon}</StyledIcon>
-        <StyledContent color={this.color}>
+        <StyledContent type={type} colored={colored} >
           {children}
         </StyledContent>
         {

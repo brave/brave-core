@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<{}, 'div'>('div')`
   position: absolute;
   top: 0;
   left: 0;
@@ -20,15 +20,15 @@ export const StyledWrapper = styled.div`
   padding: 0 52px 20px;
   border-radius: 6px;
   height: 100%;
-` as any
+`
 
-export const StyledHeader = styled.div`
+export const StyledHeader = styled<{}, 'div'>('div')`
   text-align: center;
   width: 100%;
   margin: 59px 0;
-` as any
+`
 
-export const StyledTitle = styled.div`
+export const StyledTitle = styled<{}, 'div'>('div')`
   width: 100%;
   font-size: 28px;
   font-weight: 500;
@@ -36,9 +36,9 @@ export const StyledTitle = styled.div`
   letter-spacing: -0.2px;
   text-align: center;
   color: #fb542b;
-` as any
+`
 
-export const StyledClose = styled.button`
+export const StyledClose = styled<{}, 'button'>('button')`
   top: 22px;
   right: 22px;
   position: absolute;
@@ -46,9 +46,9 @@ export const StyledClose = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-` as any
+`
 
-export const StyledText = styled.div`
+export const StyledText = styled<{}, 'div'>('div')`
   width: 100%;
   font-family: Muli, sans-serif;
   font-size: 16px;
@@ -56,4 +56,4 @@ export const StyledText = styled.div`
   line-height: 1.63;
   text-align: center;
   color: #4b4c5c;
-` as any
+`

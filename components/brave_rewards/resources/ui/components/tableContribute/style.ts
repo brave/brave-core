@@ -4,35 +4,35 @@
 
 import styled from 'styled-components'
 
-export const StyledText = styled.div`
+export const StyledText = styled<{}, 'div'>('div')`
   font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1.29;
   text-align: right;
   color: #686978;
-` as any
+`
 
-export const StyledRemove = styled.button`
+export const StyledRemove = styled<{}, 'button'>('button')`
   margin-left: 10px;
   background: none;
   border: none;
   padding: 0 10px 0 0;
   cursor: pointer;
-` as any
+`
 
-export const StyledTHOther = styled.div`
+export const StyledTHOther = styled<{}, 'div'>('div')`
   text-align: right;
-` as any
+`
 
 export const StyledTHLast = styled(StyledTHOther)`
   padding-right: 10px;
-` as any
+`
 
-export const StyledToggleWrap = styled.div`
+export const StyledToggleWrap = styled<{}, 'div'>('div')`
   text-align: right;
-` as any
+`
 
-export const StyledToggle = styled.button`
+export const StyledToggle = styled<{}, 'button'>('button')`
   font-family: Poppins, sans-serif;
   font-size: 13px;
   color: #4c54d2;
@@ -41,4 +41,4 @@ export const StyledToggle = styled.button`
   border: none;
   padding: 0;
   cursor: pointer;
-` as any
+`

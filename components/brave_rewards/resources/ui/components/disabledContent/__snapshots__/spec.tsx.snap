@@ -6,15 +6,14 @@ exports[`Disabled Content tests basic tests matches the snapshot 1`] = `
   font-size: 16px;
   font-weight: 500;
   line-height: 1.5;
-  color: #4b4c5c;
-}
-
-.c3 b {
-  color: #4b4c5c;
+  --disabled-content-color: #4b4c5c;
+  --disabled-content-bold: #4b4c5c;
+  color: var(--disabled-content-color);
 }
 
 .c3 b,
 .c3 a {
+  color: var(--disabled-content-bold);
   font-weight: 500;
 }
 

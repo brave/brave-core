@@ -4,20 +4,20 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<{}, 'div'>('div')`
   background: #f2f4f7;
   min-height: 100vh;
   width: 100%;
   font-family: "Poppins", sans-serif
-` as any
+`
 
-export const StyleHeader = styled.div`
+export const StyleHeader = styled<{}, 'div'>('div')`
   background-image: linear-gradient(267deg, #bf14a2, #f73a1c);
   height: 62px;
-` as any
+`
 
-export const StyledContent = styled.div`
+export const StyledContent = styled<{}, 'div'>('div')`
  max-width: 1000px;
  margin: 0 auto;
  padding: 40px 0;
-` as any
+`

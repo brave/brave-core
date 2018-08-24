@@ -4,24 +4,24 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<{}, 'div'>('div')`
   font-family: Poppins, sans-serif;
-` as any
+`
 
-export const StyledTitle = styled.div`
+export const StyledTitle = styled<{}, 'div'>('div')`
   font-size: 16px;
   font-weight: 600;
   line-height: 2;
   color: #4b4c5c;
-` as any
+`
 
-export const StyledContent = styled.div`
+export const StyledContent = styled<{}, 'div'>('div')`
   font-size: 28px;
   color: #696fdc;
   margin-bottom: 33px;
-` as any
+`
 
-export const StyledNum = styled.span`
+export const StyledNum = styled<{}, 'span'>('span')`
   font-weight: 500;
   color: #0c0d21;
-` as any
+`

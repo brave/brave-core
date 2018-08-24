@@ -3,7 +3,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import { Props, Type } from './index'
+import { Type } from './index'
+
+interface StyleProps {
+  open?: boolean
+  float?: string
+  checked?: boolean
+  type?: Type
+}
 
 const colors: Record<Type, string> = {
   ads: '#C12D7C',
@@ -11,7 +18,7 @@ const colors: Record<Type, string> = {
   donation: '#696FDC'
 }
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   width: 100%;
   position: relative;
   height: auto;
@@ -21,49 +28,49 @@ export const StyledWrapper = styled.div`
   padding: 30px 36px;
   margin-bottom: 28px;
   font-family: Poppins, sans-serif;
-` as any
+`
 
-export const StyledFlip = styled.div`
+export const StyledFlip = styled<StyleProps, 'div'>('div')`
   display: flex;
   width: 200%;
-` as any
+`
 
-export const StyledContentWrapper = styled.div`
+export const StyledContentWrapper = styled<StyleProps, 'div'>('div')`
   display: flex;
-  height: ${(p: {open: boolean}) => p.open ? 'auto' : '0'};
-  flex-basis: ${(p: {open: boolean}) => p.open ? '50%' : '0'};
+  height: ${p => p.open ? 'auto' : '0'};
+  flex-basis: ${p => p.open ? '50%' : '0'};
   flex-wrap: wrap;
   overflow: hidden;
-` as any
+`
 
-export const StyledLeft = styled.div`
+export const StyledLeft = styled<{}, 'div'>('div')`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 50%;
-` as any
+`
 
-export const StyledRight = styled.div`
+export const StyledRight = styled<StyleProps, 'div'>('div')`
   flex-basis: 40px;
-` as any
+`
 
-export const StyledTitle = styled.div`
+export const StyledTitle = styled<StyleProps, 'div'>('div')`
   height: 36px;
   font-size: 22px;
   font-weight: 600;
   line-height: 1.27;
   letter-spacing: normal;
-  color: ${(p: Props) => {
+  color: ${p => {
     if (p.checked === false) return '#838391'
-    return colors[p.type] || '#4b4c5c'
+    return p.type && colors[p.type] || '#4b4c5c'
   }};
-` as any
+`
 
-export const StyledBreak = styled.div`
+export const StyledBreak = styled<{}, 'div'>('div')`
   width: 100%;
   display: block;
-` as any
+`
 
-export const StyledDescription = styled.div`
+export const StyledDescription = styled<{}, 'div'>('div')`
   width: 100%;
   padding-right: 20px;
   font-family: Muli, sans-serif;
@@ -71,33 +78,33 @@ export const StyledDescription = styled.div`
   line-height: 1.29;
   letter-spacing: normal;
   color: #a4aeb8;
-` as any
+`
 
-export const StyledSettingsIcon = styled.button`
+export const StyledSettingsIcon = styled<StyleProps, 'button'>('button')`
   width: 20px;
-  float: ${(p: {float: string}) => p.float ? p.float : 'none'};
+  float: ${p => p.float ? p.float : 'none'};
   margin-top: 8px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
-` as any
+`
 
-export const StyledContent = styled.div`
+export const StyledContent = styled<{}, 'div'>('div')`
   flex-basis: 100%;
   flex-grow: 1;
   margin-top: 25px;
-` as any
+`
 
-export const StyledSettingsWrapper = styled.div`
+export const StyledSettingsWrapper = styled<StyleProps, 'div'>('div')`
   background: #fff;
   overflow: hidden;
-  height: ${(p: {open: boolean}) => p.open ? 'auto' : '0'};
-  flex-basis: ${(p: {open: boolean}) => p.open ? '50%' : '0'};
-` as any
+  height: ${p => p.open ? 'auto' : '0'};
+  flex-basis: ${p => p.open ? '50%' : '0'};
+`
 
-export const StyledSettingsClose = styled.button`
-  display: ${(p: {open: boolean}) => p.open ? 'block' : 'none'};
+export const StyledSettingsClose = styled<StyleProps, 'button'>('button')`
+  display: ${p => p.open ? 'block' : 'none'};
   position: absolute;
   right: 35px;
   top: 35px;
@@ -107,14 +114,14 @@ export const StyledSettingsClose = styled.button`
   background: none;
   padding: 0;
   cursor: pointer;
-` as any
+`
 
-export const StyledSettingsTitle = styled.div`
+export const StyledSettingsTitle = styled<{}, 'div'>('div')`
   text-align: center;
   margin-bottom: 15px;
-` as any
+`
 
-export const StyledSettingsText = styled.span`
+export const StyledSettingsText = styled<{}, 'span'>('span')`
   font-size: 16px;
   font-weight: 600;
   line-height: 1.75;
@@ -123,4 +130,4 @@ export const StyledSettingsText = styled.span`
   top: -4px;
   display: inline-block;
   margin-left: 20px;
-` as any
+`

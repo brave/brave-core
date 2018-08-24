@@ -102,8 +102,8 @@ export default class Donate extends React.PureComponent<Props, State> {
     : '#a1a8f2'
 
     return (
-      <StyledWrapper>
-        <StyledContent id={id} donateType={donateType}>
+      <StyledWrapper donateType={donateType} disabled={disabled}>
+        <StyledContent id={id} >
           <StyledDonationTitle>{title}</StyledDonationTitle>
           {
             donationAmounts && donationAmounts.map((donation: Donation) => {
@@ -120,12 +120,12 @@ export default class Donate extends React.PureComponent<Props, State> {
           }
           {children}
         </StyledContent>
-        <StyledSend disabled={disabled} onClick={this.validateDonation()} donateType={donateType}>
+        <StyledSend onClick={this.validateDonation}>
           <StyledIconSend>{send(sendColor)}</StyledIconSend>{actionText}
         </StyledSend>
         {
           this.state.missingFunds
-            ? <StyledFunds donateType={donateType}>
+            ? <StyledFunds>
               <StyledIconFace>{sadFace}</StyledIconFace>
               <StyledFundsText>{getLocale('notEnoughTokens')} <a href='#'>{getLocale('addFunds')}</a>.</StyledFundsText>
             </StyledFunds>

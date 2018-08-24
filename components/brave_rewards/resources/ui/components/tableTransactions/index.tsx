@@ -38,14 +38,6 @@ export default class TableTransactions extends React.PureComponent<Props, {}> {
     recurringDonation: 'donation'
   }
 
-  private colors: Record<TransactionType, string> = {
-    deposit: '#9f22a1',
-    tipOnLike: '#696fdc',
-    donation: '#696fdc',
-    contribute: '#9752cb',
-    recurringDonation: '#696fdc'
-  }
-
   getHeader = () => {
     const header: string[] = [
       getLocale('date'),
@@ -87,7 +79,7 @@ export default class TableTransactions extends React.PureComponent<Props, {}> {
             content: row.date
           },
           {
-            content: <StyledType color={this.colors[row.type]}>{getLocale(row.type)}</StyledType>
+            content: <StyledType type={row.type}>{getLocale(row.type)}</StyledType>
           },
           {
             content: this.getDescription(row.description)

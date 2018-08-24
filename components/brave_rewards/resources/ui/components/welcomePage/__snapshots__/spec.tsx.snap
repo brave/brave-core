@@ -4,7 +4,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 .c5 {
   text-align: center;
   min-height: 610px;
-  padding: 60px 0px 25px 0px;
+  padding: 60px 0 25px 0;
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
   background: linear-gradient(#392DD1,#8C41DE);
@@ -154,7 +154,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(3,1fr);
-  grid-gap: 0px;
+  grid-gap: 0;
   padding: 0;
   margin: 0;
   max-width: initial;

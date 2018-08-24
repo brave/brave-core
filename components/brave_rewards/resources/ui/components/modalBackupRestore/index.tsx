@@ -154,7 +154,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             <StyledStatus error={error}>
               {
                 error
-                ? <Alert type={'error'} color={true} bg={true}>
+                ? <Alert type={'error'} colored={true} bg={true}>
                     {error}
                 </Alert>
                 : null

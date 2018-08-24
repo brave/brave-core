@@ -12,7 +12,7 @@ export interface Props {
   id?: string
   isWindows?: boolean
   onSolution: (x: number, y: number) => void
-  dropBgImage: React.ReactNode
+  dropBgImage: string
 }
 
 export default class GrantCaptcha extends React.PureComponent<Props, {}> {
@@ -32,7 +32,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
     }
   }
 
-  onCaptchaDrop = (event: MouseEvent) => {
+  onCaptchaDrop = (event: React.DragEvent) => {
     event.preventDefault()
     if (!this.captchaBox) {
       return
@@ -40,8 +40,8 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
 
     const target = this.captchaBox.getBoundingClientRect()
 
-    let x = event.clientX - target.left - this.dndStartPosition.x + (this.dndStartPosition.height / 2)
-    let y = event.clientY - target.top - this.dndStartPosition.y + (this.dndStartPosition.width / 2)
+    let x = event.clientX - target.left - this.dndStartPosition.x + (this.dndStartPosition.width / 2)
+    let y = event.clientY - target.top - this.dndStartPosition.y + (this.dndStartPosition.height / 2)
 
     if (this.props.isWindows) {
       const dpr = window.devicePixelRatio
@@ -49,9 +49,6 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
       x = Math.round(x + factor)
       y = Math.round(y + factor)
     }
-
-    // TODO NZ remove
-    console.log({ x, y })
 
     this.props.onSolution(x, y)
   }
@@ -70,7 +67,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
     }
   }
 
-  preventDefault (event: MouseEvent) {
+  preventDefault (event: React.DragEvent) {
     event.preventDefault()
   }
 
@@ -87,12 +84,12 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
         innerRef={this.refSet}
       >
         <StyledDrag>
-          <StyledImageWrap onDragStart={this.onCaptchaDrag} draggable='true'>
+          <StyledImageWrap onDragStart={this.onCaptchaDrag} draggable={true}>
             <StyledImage src={batLogo} />
           </StyledImageWrap>
           <StyledText>{getLocale('dndCaptcha')}</StyledText>
         </StyledDrag>
-        <StyledDropArea src={dropBgImage} draggable='false' onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
+        <StyledDropArea src={dropBgImage} draggable={false} onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
       </StyledWrapper>
     )
   }

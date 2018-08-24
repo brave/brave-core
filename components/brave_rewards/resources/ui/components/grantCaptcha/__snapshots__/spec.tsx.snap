@@ -59,7 +59,7 @@ exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
   >
     <div
       className="c2"
-      draggable="true"
+      draggable={true}
       onDragStart={[Function]}
     >
       <img
@@ -75,7 +75,7 @@ exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
   </div>
   <img
     className="c5"
-    draggable="false"
+    draggable={false}
     onDragOver={[Function]}
     onDrop={[Function]}
   />

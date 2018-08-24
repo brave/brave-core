@@ -5,30 +5,30 @@
 import styled from 'styled-components'
 import { Props } from './index'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<Partial<Props>, 'div'>('div')`
   position: relative;
   display: flex;
-  border-bottom: ${(p: Props) => p.border === 'last' ? 'none' : '1px solid #d0d6dc'};
-  border-top: ${(p: Props) => p.border === 'first' ? '1px solid #d0d6dc' : 'none'};
+  border-bottom: ${p => p.border === 'last' ? 'none' : '1px solid #d0d6dc'};
+  border-top: ${p => p.border === 'first' ? '1px solid #d0d6dc' : 'none'};
   justify-content: space-between;
   align-items: baseline;
   align-content: flex-start;
   flex-wrap: nowrap;
   font-family: Poppins, sans-serif;
-` as any
+`
 
-export const StyledTitle = styled.div`
+export const StyledTitle = styled<{}, 'div'>('div')`
   font-size: 14px;
   line-height: 2.79;
   color: #4b4c5c;
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 60%;
-` as any
+`
 
-export const StyledContentWrapper = styled.div`
+export const StyledContentWrapper = styled<{}, 'div'>('div')`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 40%;
   text-align: right;
-` as any
+`

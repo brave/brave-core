@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledTokens, StyledContent, StyledTokenValue, StyledTokenCurrency } from './style'
+import { StyledWrapper, StyledTokens, StyledContent, StyledTokenValue, StyledTokenCurrency } from './style'
 
 export type Size = 'small' | 'normal'
 export type Type = 'contribute' | 'donation' | 'earnings' | 'default' | 'notPaid'
@@ -21,31 +21,36 @@ export interface Props {
 }
 
 export default class Tokens extends React.PureComponent<Props, {}> {
+  static defaultProps = {
+    size: 'normal',
+    color: 'default'
+  }
+
   render () {
     const { id, converted, value, hideText, isNegative, size, color } = this.props
     const currency = this.props.currency || 'USD'
     const toFixed = this.props.toFixed === undefined ? true : this.props.toFixed
 
     return (
-      <span id={id}>
+      <StyledWrapper id={id} size={size} color={color}>
         <StyledTokens>
-          <StyledTokenValue size={size} color={color}>
+          <StyledTokenValue>
             {isNegative ? '-' : ''}{toFixed ? value.toFixed(1) : value}
           </StyledTokenValue>
           {
             !hideText
-            ? <StyledTokenCurrency size={size}>BAT</StyledTokenCurrency>
+            ? <StyledTokenCurrency>BAT</StyledTokenCurrency>
             : null
           }
         </StyledTokens>
         {
           converted !== undefined
-          ? <StyledContent size={size}>
+          ? <StyledContent>
             {toFixed ? converted.toFixed(2) : converted} {currency}
           </StyledContent>
           : null
         }
-      </span>
+      </StyledWrapper>
     )
   }
 }

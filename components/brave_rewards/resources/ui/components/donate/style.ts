@@ -2,9 +2,9 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import * as CSS from 'csstype'
-import { DonateType, Props } from './index'
+import { DonateType } from './index'
 
 interface Theme {
   paddingBox: CSS.PaddingProperty<1>
@@ -12,6 +12,11 @@ interface Theme {
   disabledSendColor: CSS.Color
   paddingSend: CSS.PaddingProperty<1>
   paddingFunds: CSS.PaddingProperty<1>
+}
+
+interface StyleProps {
+  disabled: boolean
+  donateType: DonateType
 }
 
 const customStyle: Record<DonateType, Theme> = {
@@ -31,16 +36,29 @@ const customStyle: Record<DonateType, Theme> = {
   }
 }
 
-export const StyledWrapper = styled.div`
+const getStyle = (p: StyleProps) => {
+  const style = customStyle[p.donateType]
+
+  return css`
+    --donate-content-padding: ${style.paddingBox};
+    --donate-send-bg: ${style.sendBgColor};
+    --donate-send-color: ${p.disabled ? style.disabledSendColor : '#fff'};
+    --donate-send-padding: ${style.paddingSend};
+    --donate-funds-padding: ${style.paddingFunds};
+  `
+}
+
+export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   position: relative;
   font-family: Poppins, sans-serif;
-` as any
+  ${getStyle}
+`
 
-export const StyledContent = styled.div`
-  padding: ${(p: Props) => customStyle[p.donateType].paddingBox};
-` as any
+export const StyledContent = styled<{}, 'div'>('div')`
+  padding: var(--donate-content-padding);
+`
 
-export const StyledDonationTitle = styled.div`
+export const StyledDonationTitle = styled<{}, 'div'>('div')`
   font-size: 16px;
   font-weight: 600;
   line-height: 1.75;
@@ -50,35 +68,35 @@ export const StyledDonationTitle = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 167px;
-` as any
+`
 
-export const StyledSend = styled.button`
-  background: ${(p: {disabled: boolean, donateType: DonateType}) => customStyle[p.donateType].sendBgColor};
+export const StyledSend = styled<{}, 'button'>('button')`
+  background: var(--donate-send-bg);
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.2px;
-  color: ${(p: {disabled: boolean, donateType: DonateType}) => p.disabled ? customStyle[p.donateType].disabledSendColor : '#fff'};
-  padding: ${(p: {disabled: boolean, donateType: DonateType}) => customStyle[p.donateType].paddingSend};
+  color: var(--donate-send-color);
+  padding: var(--donate-send-padding);
   text-transform: uppercase;
   border: none;
   width: 100%;
   text-align: left;
   cursor: pointer;
-` as any
+`
 
-export const StyledIconSend = styled.span`
+export const StyledIconSend = styled<{}, 'span'>('span')`
   vertical-align: middle;
   display: inline-block;
   margin-right: 18px;
-` as any
+`
 
-export const StyledFunds = styled.div`
+export const StyledFunds = styled<{}, 'div'>('div')`
   font-family: Muli, sans-serif;
   font-size: 13px;
   font-weight: 300;
   line-height: 1.69;
   color: #fff;
-  padding: ${(p: {donateType: DonateType}) => customStyle[p.donateType].paddingFunds};
+  padding: var(--donate-funds-padding);
   background: #1b1d2f;
   display: flex;
   position:absolute;
@@ -91,14 +109,14 @@ export const StyledFunds = styled.div`
     color: #6cc7fd;
     text-decoration: none;
   }
-` as any
+`
 
-export const StyledIconFace = styled.div`
+export const StyledIconFace = styled<{}, 'div'>('div')`
   flex-basis: 26px;
   margin-right: 9px;
-` as any
+`
 
-export const StyledFundsText = styled.div`
+export const StyledFundsText = styled<{}, 'div'>('div')`
   flex: 1;
   margin-right: 9px;
-` as any
+`

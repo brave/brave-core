@@ -4,7 +4,7 @@ exports[`Hero tests basic tests matches the snapshot 1`] = `
 .c0 {
   text-align: center;
   min-height: 610px;
-  padding: 60px 0px 25px 0px;
+  padding: 60px 0 25px 0;
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
   background: linear-gradient(#392DD1,#8C41DE);

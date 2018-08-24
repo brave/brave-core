@@ -4,85 +4,85 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<{}, 'div'>('div')`
   font-family: Poppins, sans-serif;
-` as any
+`
 
-export const StyledTitle = styled.div`
+export const StyledTitle = styled<{}, 'div'>('div')`
   font-weight: 600;
   color: #4b4c5c;
   font-family: Poppins, sans-serif;
   font-size: 16px;
   line-height: 2;
-` as any
+`
 
-export const StyledSubTitle = styled.span`
+export const StyledSubTitle = styled<{}, 'span'>('span')`
   color: #838391;
   font-weight: normal;
-` as any
+`
 
-export const StyledHeader = styled.div`
+export const StyledHeader = styled<{}, 'div'>('div')`
   display: flex;
   width: 100%;
   justify-content: space-between;
-` as any
+`
 
-export const StyledLeft = styled.div`
+export const StyledLeft = styled<{}, 'div'>('div')`
   flex-basis: 40%;
-` as any
+`
 
-export const StyledRight = styled.div`
+export const StyledRight = styled<{}, 'div'>('div')`
   flex-basis: 378px;
   flex-grow: 0;
   flex-shrink: 1;
   margin-bottom: 45px;
-` as any
+`
 
-export const StyledSelectOption = styled.div`
+export const StyledSelectOption = styled<{}, 'div'>('div')`
   font-size: 28px;
   font-weight: 300;
   color: #696fdc;
-` as any
+`
 
-export const StyledIconWrap = styled.div`
+export const StyledIconWrap = styled<{}, 'div'>('div')`
   margin-bottom: 103px;
   display: flex;
-` as any
+`
 
-export const StyledIcon = styled.button`
+export const StyledIcon = styled<{}, 'button'>('button')`
   display: flex;
   margin-right: 35px;
   background: none;
   border: none;
   cursor: pointer;
-` as any
+`
 
-export const StyledIconText = styled.div`
+export const StyledIconText = styled<{}, 'div'>('div')`
   font-size: 14px;
   line-height: 1.43;
   color: #838391;
   margin-left: 13px;
-` as any
+`
 
-export const StyledBalance = styled.div`
+export const StyledBalance = styled<{}, 'div'>('div')`
   margin-top: 41px;
-` as any
+`
 
-export const StyledTables = styled.div`
+export const StyledTables = styled<{}, 'div'>('div')`
   background-color: #f9f9fd;
   margin: 0 -50px;
   padding: 0 50px;
-` as any
+`
 
-export const StyledWarning = styled.div`
+export const StyledWarning = styled<{}, 'div'>('div')`
   display: flex;
   justify-content: center;
   border-top: 1px solid #ebecf0;
   margin: 0 -50px;
   padding: 17px 50px 0;
-` as any
+`
 
-export const StyledWarningText = styled.div`
+export const StyledWarningText = styled<{}, 'div'>('div')`
   max-width: 508px;
   font-family: Muli, sans-serif;
   font-size: 12px;
@@ -90,9 +90,9 @@ export const StyledWarningText = styled.div`
   line-height: 1.5;
   color: #686978;
   padding-left: 8px;
-` as any
+`
 
-export const StyledNote = styled.div`
+export const StyledNote = styled<{}, 'div'>('div')`
   max-width: 508px;
   margin-top: 46px;
   font-family: Muli, sans-serif;
@@ -100,9 +100,9 @@ export const StyledNote = styled.div`
   font-weight: 300;
   line-height: 1.5;
   color: #686978;
-` as any
+`
 
-export const StyledTableTitle = styled.div`
+export const StyledTableTitle = styled<{}, 'div'>('div')`
   display: flex;
   justify-content: space-between;
   font-size: 14px;
@@ -113,30 +113,30 @@ export const StyledTableTitle = styled.div`
   text-transform: uppercase;
   padding-top: 14px;
   margin-top: 28px;
-` as any
+`
 
-export const StyledTableSubTitle = styled.div`
+export const StyledTableSubTitle = styled<{}, 'div'>('div')`
   font-size: 14px;
   font-weight: 300;
   line-height: 2.79;
   letter-spacing: 0.2px;
   color: #4b4c5c;
   text-transform: none;
-` as any
+`
 
-export const StyledVerified = styled.div`
+export const StyledVerified = styled<{}, 'div'>('div')`
   display: flex;
   font-size: 12px;
   align-items: center;
   line-height: 2;
   color: #9e9fab;
   padding: 11px 0 32px;
-` as any
+`
 
-export const StyledVerifiedText = styled.div`
+export const StyledVerifiedText = styled<{}, 'div'>('div')`
   margin-left: 8px;
-` as any
+`
 
-export const StyledClosing = styled.div`
+export const StyledClosing = styled<{}, 'div'>('div')`
   margin-top: -10px;
-` as any
+`

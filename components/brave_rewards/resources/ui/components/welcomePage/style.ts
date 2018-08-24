@@ -6,77 +6,77 @@ import styled from 'styled-components'
 
 const centerBackground = require('./assets/centerTextBackground.svg')
 
-export const StyledOptInSection = styled.section`
+export const StyledOptInSection = styled<{}, 'section'>('section')`
   margin: 40px auto;
   max-width: 303px;
-` as any
+`
 
-export const StyledOptInSecond = styled.section`
+export const StyledOptInSecond = styled<{}, 'section'>('section')`
   max-width: 303px;
   margin: 0 auto;
-` as any
+`
 
-export const StyledOptInInnerSection = styled.section`
+export const StyledOptInInnerSection = styled<{}, 'section'>('section')`
   text-align: center;
-` as any
+`
 
-export const StyledCenterSection = styled.section`
+export const StyledCenterSection = styled<{}, 'section'>('section')`
   padding: 15px 0 0;
-` as any
+`
 
-export const StyledCenterContent = styled.div`
+export const StyledCenterContent = styled<{}, 'div'>('div')`
   margin: 0 auto;
   max-width: 692px;
   padding: 67px 0 13px;
-` as any
+`
 
-export const StyledSection = styled.div`
+export const StyledSection = styled<{}, 'div'>('div')`
   display: block;
-` as any
+`
 
-export const StyledCenterInner = styled.section`
+export const StyledCenterInner = styled<{}, 'section'>('section')`
   display: block;
-` as any
+`
 
-export const StyledInfoContent = styled.section`
+export const StyledInfoContent = styled<{}, 'section'>('section')`
   margin: 22px auto 0;
   max-width: 900px;
-` as any
+`
 
-export const StyledTakeActionContent = styled.section`
+export const StyledTakeActionContent = styled<{}, 'section'>('section')`
   margin: 0 auto;
   padding: 64px 0 79px;
   max-width: 500px;
   display: block;
-` as any
+`
 
-export const StyledBackground = styled.div`
+export const StyledBackground = styled<{}, 'div'>('div')`
   background: url(${centerBackground}) no-repeat top;
-` as any
+`
 
-export const StyledBatLogo = styled.div`
+export const StyledBatLogo = styled<{}, 'div'>('div')`
   margin: 33px auto 10px;
-` as any
+`
 
-export const StyledH1 = styled.h1`
+export const StyledH1 = styled<{}, 'h1'>('h1')`
   font-size: 38px;
   font-weight: 500;
   color: #FFF;
   letter-spacing: 0.16px;
   display: inline-block;
   margin: 17px 0 4px;
-` as any
+`
 
-export const StyledH2 = styled.h2`
+export const StyledH2 = styled<{}, 'h2'>('h2')`
   color: #5C58C2;
   font-size: 22px;
   font-weight: normal;
   letter-spacing: 0.16px;
   line-height: 28px;
   margin: 18px 0 0;
-` as any
+`
 
-export const StyledCenterTitle = styled.h2`
+export const StyledCenterTitle = styled<{}, 'h2'>('h2')`
   color: #222326;
   font-size: 28px;
   font-weight: normal;
@@ -85,9 +85,9 @@ export const StyledCenterTitle = styled.h2`
   line-height: 28px;
   padding: 7px 0 21px;
   margin: 0;
-` as any
+`
 
-export const StyledSubTitle = styled.h2`
+export const StyledSubTitle = styled<{}, 'h2'>('h2')`
   color: #5BC4FE;
   font-size: 22px;
   font-weight: 500;
@@ -95,9 +95,9 @@ export const StyledSubTitle = styled.h2`
   letter-spacing: 0.16px;
   line-height: 28px;
   margin: 18px 0 7px;
-` as any
+`
 
-export const StyledTrademark = styled.span`
+export const StyledTrademark = styled<{}, 'span'>('span')`
   display: inline-block;
   vertical-align: text-top;
   margin-top: -25px;
@@ -105,25 +105,25 @@ export const StyledTrademark = styled.span`
   font-size: 14px;
   font-weight: 300;
   opacity: 0.7;
-` as any
+`
 
-export const StyledRewardsParagraph = styled.p`
+export const StyledRewardsParagraph = styled<{}, 'p'>('p')`
   font-size: 16px;
   max-width: 375px;
   margin: 0 auto;
   line-height: 28px;
   color: #FFF;
-` as any
+`
 
-export const StyledTeaserParagraph = styled.p`
+export const StyledTeaserParagraph = styled<{}, 'p'>('p')`
   font-size: 16px;
   margin: 0 0 10px;
   line-height: 28px;
   color: #FFF;
   opacity: 0.5;
-` as any
+`
 
-export const StyledReadyParagraph = styled.p`
+export const StyledReadyParagraph = styled<{}, 'p'>('p')`
   font-size: 16px;
   line-height: 1.75;
   color: #484B4E;
@@ -131,9 +131,9 @@ export const StyledReadyParagraph = styled.p`
   letter-spacing: 0.16px;
   margin: 0;
   padding: 12px 0 24px;
-` as any
+`
 
-export const StyledCenterParagraph = styled.p`
+export const StyledCenterParagraph = styled<{}, 'p'>('p')`
   font-size: 16px;
   line-height: 28px;
   color: #484B4E;
@@ -141,23 +141,23 @@ export const StyledCenterParagraph = styled.p`
   letter-spacing: 0.16px;
   max-width: 475px;
   margin: 0 0 10px;
-` as any
+`
 
-export const StyledBoldParagraph = styled.p`
+export const StyledBoldParagraph = styled<{}, 'p'>('p')`
   font-weight: 600;
   font-size: 16px;
   color: #484B4E;
   margin: 0 0 60px;
-` as any
+`
 
-export const StyledStrong = styled.strong`
+export const StyledStrong = styled<{}, 'strong'>('strong')`
   font-weight: 600;
   padding: 0 5px;
-` as any
+`
 
-export const StyledAnchor = styled.button`
+export const StyledAnchor = styled<{}, 'button'>('button')`
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
-` as any
+`

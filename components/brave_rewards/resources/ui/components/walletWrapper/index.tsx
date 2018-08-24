@@ -185,7 +185,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         </StyledContent>
         {
           showCopy
-          ? <StyledCopy connectedWallet={connectedWallet}>
+          ? <StyledCopy connected={connectedWallet}>
               {
                 connectedWallet
                 ? <>
