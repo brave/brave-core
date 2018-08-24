@@ -165,10 +165,12 @@ class TabMOTests: CoreDataTestCase {
         createAndUpdate(order: 3)
         createAndUpdate(order: 2)
         
+        DataController.viewContext.refreshAllObjects()
+        
         // Getting all objects and sorting them manually by order
         let objectsSortedByOrder = try! DataController.viewContext.fetch(fetchRequest).sorted(by: { $0.order < $1.order })
         
-        // Verify obbjects were updated with correct order.
+        // Verify objects were updated with correct order.
         XCTAssertEqual(objectsSortedByOrder[0].order, 1)
         XCTAssertEqual(objectsSortedByOrder[1].order, 2)
         XCTAssertEqual(objectsSortedByOrder[2].order, 3)

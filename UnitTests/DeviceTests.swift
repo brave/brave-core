@@ -44,7 +44,7 @@ class DeviceTests: CoreDataTestCase {
     // MARK: Syncable
     
     func testAddWithSave() {
-        let context = DataController.newBackgroundContext()
+        let context = DataController.viewContext
         backgroundSaveAndWaitForExpectation {
             let device = Device.add(rootObject: nil, save: true, sendToSync: false, context: context) as? Device
             XCTAssertNotNil(device)
