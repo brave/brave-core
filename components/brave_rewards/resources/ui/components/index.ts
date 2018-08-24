@@ -28,7 +28,6 @@ import TableDonation from './tableDonation'
 import TableTransactions from './tableTransactions'
 import Tip from './tip'
 import Tokens from './tokens'
-import Tooltip from './tooltip'
 import WalletEmpty from './walletEmpty'
 import WalletOff from './walletOff'
 import WalletSummary from './walletSummary'
@@ -62,7 +61,6 @@ export {
   TableTransactions,
   Tip,
   Tokens,
-  Tooltip,
   WalletEmpty,
   WalletOff,
   WalletSummary,

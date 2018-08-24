@@ -19,7 +19,6 @@ import {
   ListToken,
   Tokens,
   Profile,
-  Tooltip,
   Amount,
   PanelWelcome
 } from '../../../src/features/rewards'
@@ -172,18 +171,6 @@ storiesOf('Feature Components/Rewards/Other', module)
             src={bart}
           />
         </div>
-      )
-    })
-    .add('Tooltip',() => {
-      return (
-        <Tooltip
-          position={select('Type', { left: 'left', right: 'right', top: 'top', bottom: 'bottom' }, 'bottom')}
-          content={'This is tooltip!'}
-        >
-          <div style={{ border: '1px solid red' }}>
-            I have tooltip
-          </div>
-        </Tooltip>
       )
     })
     .add('Amount', withState({ selected: false }, (store) => {
