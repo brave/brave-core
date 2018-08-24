@@ -37,6 +37,21 @@ json_features("behavior_features") {
   ]
 }
 
+brave_extensions_api_schema_sources = [ "brave_shields.json" ]
+brave_extensions_api_root_namespace = "extensions::api::%(namespace)s"
+brave_extensions_api_schema_include_rules =
+    "//brave/common/extensions/api:extensions::api::%(namespace)s"
+
+brave_extensions_api_deps = [
+  "//chrome/common/extensions/api",
+  "//extensions/common/api",
+  ":api_features",
+  ":permission_features",
+  ":manifest_features",
+  ":behavior_features",
+  ":resources",
+]
+
 grit("resources") {
   source = "brave_api_resources.grd"
   outputs = [
@@ -46,29 +61,32 @@ grit("resources") {
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
-json_schema_api("generated_api") {
-  sources = [
-    "brave_shields.json"
-  ]
-  deps = [
-    "//chrome/common/extensions/api",
-    "//extensions/common/api",
-    ":api_features",
-    ":permission_features",
-    ":manifest_features",
-    ":behavior_features",
-    ":resources",
-  ]
-  root_namespace = "extensions::api::%(namespace)s"
-  schemas = true
+json_schema_api("generated_api_bundles") {
+  sources = brave_extensions_api_schema_sources
+  deps = brave_extensions_api_deps
+  visibility = [ ":api" ]
+  root_namespace = brave_extensions_api_root_namespace
   bundle = true
   bundle_registration = true
   bundle_name = "Brave"
   impl_dir = "//brave/common/extensions/api"
+  schema_include_rules = brave_extensions_api_schema_include_rules
 }
+
+generated_types("generated_api_types") {
+  sources = brave_extensions_api_schema_sources
+  deps = brave_extensions_api_deps
+  visibility = [ ":api" ]
+  configs = [ "//build/config:precompiled_headers" ]
+  root_namespace = brave_extensions_api_root_namespace
+  schema_include_rules = brave_extensions_api_schema_include_rules
+}
+
+# Public Targets
 
 group("api") {
   public_deps = [
-    ":generated_api",
+    ":generated_api_bundles",
+    ":generated_api_types",
   ]
 }
