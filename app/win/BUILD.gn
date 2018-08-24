@@ -19,6 +19,7 @@ action("generate_breakpad_symbols") {
 
   deps = [
     "//third_party/breakpad:dump_syms",
+    "//brave/build/win:copy_pdb",
   ]
 }
 
