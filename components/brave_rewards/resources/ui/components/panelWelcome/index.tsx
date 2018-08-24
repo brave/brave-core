@@ -69,7 +69,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
           </StyledDescText>
           <StyledButtonWrapper>
             <Button
-              size='large'
+              size='call-to-action'
               type='subtle'
               level='secondary'
               onClick={optInAction}

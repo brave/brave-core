@@ -55,6 +55,7 @@ export const StyledIcon = styled<{}, 'button'>('button')`
   background: none;
   border: none;
   cursor: pointer;
+  align-items: center;
 `
 
 export const StyledIconText = styled<{}, 'div'>('div')`
@@ -80,6 +81,7 @@ export const StyledWarning = styled<{}, 'div'>('div')`
   border-top: 1px solid #ebecf0;
   margin: 0 -50px;
   padding: 17px 50px 0;
+  align-items: flex-start;
 `
 
 export const StyledWarningText = styled<{}, 'div'>('div')`
@@ -134,9 +136,30 @@ export const StyledVerified = styled<{}, 'div'>('div')`
 `
 
 export const StyledVerifiedText = styled<{}, 'div'>('div')`
-  margin-left: 8px;
+  margin-left: 5px;
 `
 
 export const StyledClosing = styled<{}, 'div'>('div')`
   margin-top: -10px;
+`
+
+export const StyledActionIcon = styled<{}, 'span'>('span')`
+  color: #A1A8F2;
+  width: 27px;
+`
+
+export const StyledAlertWrapper = styled<{}, 'div'>('div')`
+  color: #E9AB18;
+  width: 20px;
+  margin-left: 3px;
+`
+
+export const StyledWarningWrapper = styled<{}, 'div'>('div')`
+  display: flex;
+`
+
+export const StyledVerifiedIcon = styled<{}, 'div'>('div')`
+  display: flex;
+  color: #392DD1;
+  width: 19px;
 `

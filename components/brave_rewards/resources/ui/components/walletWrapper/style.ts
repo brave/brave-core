@@ -63,18 +63,25 @@ export const StyledContent = styled<{}, 'div'>('div')`
 `
 
 export const StyledAction = styled<{}, 'button'>('button')`
-  display: inline-block;
+  display: flex;
   background: none;
   padding: 0;
   border: none;
   cursor: pointer;
+  align-items: center;
+  color: #A1A8F2;
 `
 
-export const StyledActionIcon = styled<{}, 'img'>('img')`
+export const StyledActionIcon = styled<{}, 'div'>('div')`
   display: inline-block;
-  width: 20px;
-  margin-right: 11px;
+  width: 27px;
+  height: 27px;
+  margin-right: 6px;
   vertical-align: text-bottom;
+`
+
+export const StyledActionText = styled<{}, 'div'>('div')`
+  color: #fff;
 `
 
 export const StyledCopy = styled<StyledProps, 'div'>('div')`
@@ -88,11 +95,12 @@ export const StyledCopy = styled<StyledProps, 'div'>('div')`
 export const StyledCopyImage = styled<{}, 'span'>('span')`
   vertical-align: middle;
   display: inline-block;
-  margin-right: 5px;
+  color: #838391;
+  width: 27px;
+  height: 27px;
 `
 
 export const StyledIconAction = styled<{}, 'button'>('button')`
-  margin-bottom: 17px;
   position: absolute;
   top: 21px;
   right: 21px;
@@ -100,6 +108,9 @@ export const StyledIconAction = styled<{}, 'button'>('button')`
   padding: 0;
   border: none;
   cursor: pointer;
+  color: #A1A8F2;
+  width: 22px;
+  height: 22px;
 `
 
 export const StyledBalanceConverted = styled<{}, 'div'>('div')`
@@ -191,7 +202,10 @@ export const StyledAlertClose = styled<{}, 'button'>('button')`
   background: none;
   border: none;
   padding: 0;
-  top: 16px;
-  right: 16px;
+  top: 11px;
+  right: 11px;
   cursor: pointer;
+  width: 30px;
+  height: 30px;
+  color: #B8B9C4;
 `

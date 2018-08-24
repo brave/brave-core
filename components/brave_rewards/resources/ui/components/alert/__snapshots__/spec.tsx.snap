@@ -36,7 +36,7 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   flex-basis: 40px;
 }
 
-.c2 {
+.c4 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -57,9 +57,19 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   color: var(--alert-content-color);
 }
 
-.c2 b {
+.c4 b {
   font-weight: 600;
   color: var(--alert-content-bold);
+}
+
+.c2 {
+  color: #1BBA6A;
+}
+
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 <div
@@ -70,31 +80,23 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   <span
     className="c1"
   >
-    <svg
-      height="42"
-      width="42"
-      xmlns="http://www.w3.org/2000/svg"
+    <div
+      className="c2"
     >
-      <g
-        fill="none"
-        fillRule="evenodd"
-        transform="translate(1 1)"
+      <svg
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
       >
         <path
-          d="M13 21.045l1.6-1.48 3.166 2.848h1.483L27.48 15l1.49 1.39-9.72 10.117h-.69z"
-          fill="#1BBA6A"
+          d="M28 16c0 6.62628-5.37372 12-12 12-6.62762 0-12-5.37305-12-12S9.37238 4 16 4c6.62628 0 12 5.37372 12 12zm-2 0c0-5.52172-4.47828-10-10-10-5.523 0-10 4.47757-10 10s4.477 10 10 10c5.52172 0 10-4.47828 10-10zm-11.34858 2.89238l5.90398-7.5104c.34132-.43418.97-.50947 1.40418-.16815.43419.34132.50947.97.16815 1.40418l-6.55352 8.33668c-.35339.44954-1.0111.51176-1.44251.13645l-3.78804-3.29542c-.41668-.36249-.46061-.99412-.09812-1.4108.36249-.41668.99413-.4606 1.4108-.09812l2.99508 2.60558z"
         />
-        <circle
-          cx="20"
-          cy="20"
-          r="20"
-          stroke="#67D79D"
-        />
-      </g>
-    </svg>
+      </svg>
+    </div>
   </span>
   <div
-    className="c2"
+    className="c4"
     type="success"
   />
 </div>

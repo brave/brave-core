@@ -68,7 +68,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
 }
 
 .c8 {
-  margin: 0 auto 35px;
+  margin: 0 auto 25px;
   display: inline-block;
 }
 
@@ -134,10 +134,10 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   -ms-user-select: none;
   user-select: none;
   font-size: 14px;
-  border-radius: 24px;
-  width: auto;
-  min-width: 116px;
-  padding: 14px 15px;
+  border-radius: 28px;
+  width: 100%;
+  min-width: 235px;
+  padding: 19px 15px;
   border: 1px solid;
   color: var(--button-state-color);
 }
@@ -166,7 +166,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0;
   letter-spacing: 0;
   font-weight: 600;
-  text-transform: none;
+  text-transform: uppercase;
   line-height: 1;
 }
 
@@ -234,12 +234,12 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
     >
       <button
         className="c9"
-        size="large"
+        size="call-to-action"
         type="subtle"
       >
         <div
           className="c10"
-          size="large"
+          size="call-to-action"
           type="subtle"
         >
           MISSING: welcomeButtonTextOne

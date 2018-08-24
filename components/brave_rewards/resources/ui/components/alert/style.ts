@@ -96,3 +96,15 @@ export const StyledClose = styled<{}, 'div'>('div')`
   right: 14px;
   z-index: 2;
 `
+
+export const StyledError = styled<{}, 'div'>('div')`
+  color: #F43405;
+`
+
+export const StyledSuccess = styled<{}, 'div'>('div')`
+  color: #1BBA6A;
+`
+
+export const StyledWarning = styled<{}, 'div'>('div')`
+  color: #FF7900;
+`

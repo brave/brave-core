@@ -135,11 +135,13 @@ export const StyledText = styled<{}, 'div'>('div')`
 export const StyledRecurring = styled<{}, 'div'>('div')`
   flex-basis: 100%;
   font-size: 14px;
-  line-height: 2;
+  line-height: 1.2;
   color: #9e9fab;
   background: #fff;
   height: 56px;
-  padding: 13px 0 0 45px;
+  padding: 0 0 0 45px;
+  display: flex;
+  align-items: center;
 `
 
 export const StyledRemove = styled<{}, 'span'>('span')`
@@ -147,8 +149,9 @@ export const StyledRemove = styled<{}, 'span'>('span')`
   font-size: 14px;
   line-height: 1.29;
   color: #d1d1db;
-  display: inline-block;
+  display: flex;
   margin-left: 15px;
+  align-items: center;
 `
 
 export const StyledWallet = styled<{}, 'div'>('div')`
@@ -166,6 +169,9 @@ export const StyledTokens = styled<{}, 'span'>('span')`
 export const StyledIconRecurring = styled<{}, 'span'>('span')`
   display: inline-block;
   margin-left: 6px;
+  color: #A1A8F2;
+  width: 17px;
+  height: 17px;
 `
 
 export const StyledOption = styled<{}, 'span'>('span')`
@@ -180,15 +186,16 @@ export const StyledCenter = styled<{}, 'div'>('div')`
 `
 
 export const StyledIconRecurringBig = styled<{}, 'span'>('span')`
-  vertical-align: top;
-  display: inline-block;
   margin-right: 5px;
+  width: 17px;
+  height: 17px;
+  color: #696fdc;
 `
 
 export const StyledIconRemove = styled<{}, 'span'>('span')`
-  vertical-align: middle;
-  display: inline-block;
-  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
 `
 
 export const StyledSocialItem = styled<{}, 'a'>('a')`

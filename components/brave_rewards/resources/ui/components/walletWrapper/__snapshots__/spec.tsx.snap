@@ -60,7 +60,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   margin-top: 10px;
 }
 
-.c12 {
+.c13 {
   padding: 11px 25px 19px;
   position: relative;
   background: #f9fbfc;
@@ -69,7 +69,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   flex: 1;
 }
 
-.c10 {
+.c11 {
   text-align: center;
   font-size: 12px;
   color: #fff;
@@ -94,7 +94,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   color: #fff;
 }
 
-.c11 {
+.c12 {
   padding: 10px 0;
   position: relative;
   overflow: hidden;
@@ -102,7 +102,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   z-index: 5;
 }
 
-.c11:before {
+.c12:before {
   content: "";
   position: absolute;
   bottom: -16px;
@@ -111,6 +111,12 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   width: 200%;
   border-radius: 100%;
   border: 20px solid #f9fbfc;
+}
+
+.c10 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 .c7 {
@@ -225,18 +231,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
           disabled={true}
           icon={
             Object {
-              "image": <svg
-                height="5"
-                width="8"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
-                  fill="#FFF"
-                  fillOpacity="0.55"
-                  fillRule="evenodd"
-                />
-              </svg>,
+              "image": <styled.svg />,
               "position": "after",
             }
           }
@@ -248,18 +243,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
             disabled={true}
             icon={
               Object {
-                "image": <svg
-                  height="5"
-                  width="8"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
-                    fill="#FFF"
-                    fillOpacity="0.55"
-                    fillRule="evenodd"
-                  />
-                </svg>,
+                "image": <styled.svg />,
                 "position": "after",
               }
             }
@@ -273,18 +257,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
             disabled={true}
             icon={
               Object {
-                "image": <svg
-                  height="5"
-                  width="8"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
-                    fill="#FFF"
-                    fillOpacity="0.55"
-                    fillRule="evenodd"
-                  />
-                </svg>,
+                "image": <styled.svg />,
                 "position": "after",
               }
             }
@@ -292,15 +265,13 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
             type="subtle"
           >
             <svg
-              height="5"
-              width="8"
-              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              className="c10"
+              focusable="false"
+              viewBox="0 0 32 32"
             >
               <path
-                d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
-                fill="#FFF"
-                fillOpacity="0.55"
-                fillRule="evenodd"
+                d="M16 17.68292l6.3492-5.44218c.41933-.35942 1.05063-.31086 1.41006.10847.35942.41932.31086 1.05062-.10847 1.41005l-7 6c-.37449.32099-.9271.32099-1.30158 0l-7-6c-.41933-.35943-.46789-.99073-.10847-1.41005.35943-.41933.99073-.46789 1.41005-.10847L16 17.68292z"
               />
             </svg>
           </div>
@@ -308,14 +279,14 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
       </div>
     </div>
     <div
-      className="c10"
+      className="c11"
     />
     <div
-      className="c11"
+      className="c12"
     />
   </div>
   <div
-    className="c12"
+    className="c13"
   />
 </div>
 `;

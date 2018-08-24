@@ -13,8 +13,12 @@ export const StyledRemove = styled<{}, 'div'>('div')`
 `
 
 export const StyledRemoveIcon = styled<{}, 'span'>('span')`
-  vertical-align: text-bottom;
-  width: 9px;
+  vertical-align: middle;
+  color: #DFDFE8;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-left: -4px;
 `
 
 export const StyledType = styled<{}, 'div'>('div')`
@@ -48,6 +52,9 @@ export const StyledRecurringIcon = styled<{}, 'span'>('span')`
   display: inline-block;
   margin-left: 3px;
   vertical-align: middle;
+  color: #696FDC;
+  width: 17px;
+  height: 17px;
 `
 
 export const StyledToggleWrap = styled<{}, 'div'>('div')`

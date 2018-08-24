@@ -57,6 +57,13 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
 }
 
 .c3 {
+  --tokens-value-color: #4b4c5c;
+  --tokens-text-size: 12px;
+  --tokens-token-size: 14px;
+  --tokens-tokenNum-size: 16px;
+}
+
+.c4 {
   font-family: Poppins,sans-serif;
   font-weight: 300;
   line-height: 1.4;
@@ -64,14 +71,14 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
   display: inline-block;
 }
 
-.c4 {
-  color: #4b4c5c;
-  font-size: 16px;
+.c5 {
+  color: var(--tokens-value-color);
+  font-size: var(--tokens-tokenNum-size);
   font-weight: 500;
 }
 
-.c5 {
-  font-size: 14px;
+.c6 {
+  font-size: var(--tokens-token-size);
   font-weight: 300;
   display: inline-block;
   margin-left: 4px;
@@ -87,18 +94,22 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
   <div
     className="c2"
   >
-    <span>
+    <span
+      className="c3"
+      color="default"
+      size="normal"
+    >
       <span
-        className="c3"
+        className="c4"
       >
         <span
-          className="c4"
+          className="c5"
         >
           
           10.0
         </span>
         <span
-          className="c5"
+          className="c6"
         >
           BAT
         </span>

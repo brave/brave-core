@@ -42,8 +42,10 @@ export const StyledImage = styled<Partial<Props>, 'img'>('img')`
 
 export const StyledVerified = styled<{}, 'span'>('span')`
   position: absolute;
-  bottom: 2px;
-  right: -1px;
+  bottom: -1px;
+  right: -3px;
+  width: 19px;
+  color: #392DD1;
 `
 
 export const StyledContent = styled<Partial<Props>, 'div'>('div')`
@@ -103,10 +105,11 @@ export const StyledProvider = styled<Partial<Props>, 'span'>('span')`
 export const StyledProviderWrap = styled<{}, 'div'>('div')`
   font-size: 13px;
   color: #838391;
-  margin-top: 3px;
+  display: flex;
+  align-items: center;
 `
 
 export const StyledInlineVerified = styled<{}, 'span'>('span')`
-  display: inline-block;
-  vertical-align: middle;
+  width: 19px;
+  color: #392DD1;
 `

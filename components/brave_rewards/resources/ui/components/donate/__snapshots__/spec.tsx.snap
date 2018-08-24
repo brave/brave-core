@@ -4,10 +4,15 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
 .c0 {
   position: relative;
   font-family: Poppins,sans-serif;
+  --donate-content-padding: 0 0 0 23px;
+  --donate-send-bg: #392dd1;
+  --donate-send-color: #fff;
+  --donate-send-padding: 13px 0 13px 51px;
+  --donate-funds-padding: 13px 0 14px 25px;
 }
 
 .c1 {
-  padding: 0 19px 0 55px;
+  padding: var(--donate-content-padding);
 }
 
 .c2 {
@@ -23,15 +28,15 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
 }
 
 .c3 {
-  background: #4c54d2;
+  background: var(--donate-send-bg);
   font-size: 13px;
   font-weight: 600;
   -webkit-letter-spacing: 0.2px;
   -moz-letter-spacing: 0.2px;
   -ms-letter-spacing: 0.2px;
   letter-spacing: 0.2px;
-  color: #fff;
-  padding: 16px 19px 16px 55px;
+  color: var(--donate-send-color);
+  padding: var(--donate-send-padding);
   text-transform: uppercase;
   border: none;
   width: 100%;
@@ -47,6 +52,7 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
 
 <div
   className="c0"
+  disabled={false}
 >
   <div
     className="c1"
@@ -58,7 +64,7 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
   </div>
   <button
     className="c3"
-    disabled={false}
+    onClick={[Function]}
   >
     <span
       className="c4"

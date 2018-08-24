@@ -25,22 +25,21 @@ import {
   StyledVerifiedText,
   StyledSelectOption,
   StyledIcon,
-  StyledClosing
+  StyledClosing,
+  StyledActionIcon,
+  StyledAlertWrapper,
+  StyledWarningWrapper,
+  StyledVerifiedIcon
 } from './style'
 import TableContribute, { DetailRow as ContributeRow } from '../tableContribute'
 import TableTransactions, { DetailRow as TransactionRow } from '../tableTransactions'
 import { Select, ControlWrapper, Modal } from '../../../components'
+import { AlertCirlceIcon, DownloadIcon, PrintIcon, VerifiedFillIcon } from '../../../components/icons'
 import ListToken from '../listToken'
 import { Type as TokenType } from '../tokens'
 
 // Utils
 import { getLocale } from '../../../helpers'
-
-// Assets
-const alertIcon = require('./assets/alert')
-const printIcon = require('./assets/print')
-const downloadIcon = require('./assets/download')
-const verifiedIcon = require('./assets/verified')
 
 export interface Token {
   value: number
@@ -116,9 +115,9 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
       if (item.notPaid) {
         this.hasWarnings = true
         title = (
-          <>
-            {title} {alertIcon}
-          </>
+          <StyledWarningWrapper>
+            {title} <StyledAlertWrapper><AlertCirlceIcon /></StyledAlertWrapper>
+          </StyledWarningWrapper>
         )
       }
 
@@ -214,10 +213,16 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
             <StyledRight>
               <StyledIconWrap>
                 <StyledIcon>
-                  {printIcon} <StyledIconText>{getLocale('print')}</StyledIconText>
+                  <StyledActionIcon>
+                    <PrintIcon />
+                  </StyledActionIcon>
+                  <StyledIconText>{getLocale('print')}</StyledIconText>
                 </StyledIcon>
                 <StyledIcon>
-                  {downloadIcon} <StyledIconText>{getLocale('downloadPDF')}</StyledIconText>
+                  <StyledActionIcon>
+                    <DownloadIcon />
+                  </StyledActionIcon>
+                  <StyledIconText>{getLocale('downloadPDF')}</StyledIconText>
                 </StyledIcon>
               </StyledIconWrap>
               {this.getSummaryBox()}
@@ -226,7 +231,9 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
           {
             this.hasWarnings
             ? <StyledWarning>
-                {alertIcon}
+                <StyledAlertWrapper>
+                  <AlertCirlceIcon />
+                </StyledAlertWrapper>
                 <StyledWarningText>
                   <b>{getLocale('paymentNotMade')}</b> {getLocale('paymentWarning')}
                 </StyledWarningText>
@@ -251,7 +258,10 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
               showRowAmount={true}
             />
             <StyledVerified>
-              {verifiedIcon} <StyledVerifiedText>{getLocale('braveVerified')}</StyledVerifiedText>
+              <StyledVerifiedIcon>
+                <VerifiedFillIcon />
+              </StyledVerifiedIcon>
+              <StyledVerifiedText>{getLocale('braveVerified')}</StyledVerifiedText>
             </StyledVerified>
           </StyledTables>
           <StyledNote>

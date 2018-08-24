@@ -30,7 +30,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   padding: 40px 0;
 }
 
-.c35 {
+.c37 {
   --button-main-color: #FB542B;
   --button-main-color-hover: #F43405;
   --button-main-color-active: #FDBBAA;
@@ -72,15 +72,15 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   background: var(--button-state-color);
 }
 
-.c35:hover:enabled {
+.c37:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c35:active:enabled {
+.c37:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c12 {
+.c13 {
   --button-main-color: #C5C5D3;
   --button-main-color-hover: #A0A1B2;
   --button-main-color-active: #E9E9F4;
@@ -122,15 +122,15 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: var(--button-state-color);
 }
 
-.c12:hover:enabled {
+.c13:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c12:active:enabled {
+.c13:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c13 {
+.c14 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -150,7 +150,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   line-height: 1;
 }
 
-.c23 {
+.c25 {
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(3,1fr);
@@ -169,7 +169,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   align-items: flex-start;
 }
 
-.c24 {
+.c26 {
   box-sizing: border-box;
   position: relative;
   display: -webkit-box;
@@ -197,7 +197,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: inherit;
 }
 
-.c25 {
+.c27 {
   height: 290px;
   border-radius: 4px;
   text-align: center;
@@ -209,7 +209,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c27 {
+.c29 {
   color: #222326;
   font-size: 18px;
   font-weight: 500;
@@ -220,7 +220,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   letter-spacing: 0.16px;
 }
 
-.c28 {
+.c30 {
   color: #484B4E;
   font-size: 16px;
   font-weight: 300;
@@ -233,7 +233,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 10px 0 8px;
 }
 
-.c26 {
+.c28 {
   box-sizing: border-box;
   display: block;
   max-width: 100%;
@@ -241,25 +241,25 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   height: 80px;
 }
 
-.c11 {
+.c12 {
   margin: 40px auto;
   max-width: 303px;
 }
 
-.c34 {
+.c36 {
   max-width: 303px;
   margin: 0 auto;
 }
 
-.c30 {
+.c32 {
   text-align: center;
 }
 
-.c16 {
+.c18 {
   padding: 15px 0 0;
 }
 
-.c18 {
+.c20 {
   margin: 0 auto;
   max-width: 692px;
   padding: 67px 0 13px;
@@ -269,16 +269,16 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   display: block;
 }
 
-.c17 {
+.c19 {
   display: block;
 }
 
-.c22 {
+.c24 {
   margin: 22px auto 0;
   max-width: 900px;
 }
 
-.c29 {
+.c31 {
   margin: 0 auto;
   padding: 64px 0 79px;
   max-width: 500px;
@@ -290,10 +290,11 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
-  margin: 33px auto 10px;
+  margin: 5px auto 0;
+  height: 152px;
 }
 
-.c7 {
+.c8 {
   font-size: 38px;
   font-weight: 500;
   color: #FFF;
@@ -305,7 +306,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 17px 0 4px;
 }
 
-.c31 {
+.c33 {
   color: #5C58C2;
   font-size: 22px;
   font-weight: normal;
@@ -317,7 +318,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 18px 0 0;
 }
 
-.c19 {
+.c21 {
   color: #222326;
   font-size: 28px;
   font-weight: normal;
@@ -331,7 +332,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 0;
 }
 
-.c9 {
+.c10 {
   color: #5BC4FE;
   font-size: 22px;
   font-weight: 500;
@@ -344,7 +345,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 18px 0 7px;
 }
 
-.c8 {
+.c9 {
   display: inline-block;
   vertical-align: text-top;
   margin-top: -25px;
@@ -354,7 +355,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   opacity: 0.7;
 }
 
-.c10 {
+.c11 {
   font-size: 16px;
   max-width: 375px;
   margin: 0 auto;
@@ -362,15 +363,15 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: #FFF;
 }
 
-.c14 {
+.c15 {
   font-size: 16px;
-  margin: 0 0 10px;
+  margin: 0 0 5px;
   line-height: 28px;
   color: #FFF;
   opacity: 0.5;
 }
 
-.c32 {
+.c34 {
   font-size: 16px;
   line-height: 1.75;
   color: #484B4E;
@@ -383,7 +384,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   padding: 12px 0 24px;
 }
 
-.c20 {
+.c22 {
   font-size: 16px;
   line-height: 28px;
   color: #484B4E;
@@ -396,23 +397,40 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 0 0 10px;
 }
 
-.c21 {
+.c23 {
   font-weight: 600;
   font-size: 16px;
   color: #484B4E;
   margin: 0 0 60px;
 }
 
-.c33 {
+.c35 {
   font-weight: 600;
   padding: 0 5px;
 }
 
-.c15 {
+.c16 {
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
+  color: #bf9fe3;
+  height: 38px;
+}
+
+.c7 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c17 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 <div
@@ -442,95 +460,66 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               className="c6"
             >
               <svg
-                height="118"
-                width="124"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                className="c7"
+                focusable="false"
+                viewBox="0 0 32 32"
               >
-                <defs>
-                  <path
-                    d="M.155.309H123.95v23.27H.155z"
-                    id="a"
-                  />
-                </defs>
                 <g
                   fill="none"
                   fillRule="evenodd"
                 >
-                  <g
-                    opacity="0.477"
-                    transform="translate(0 94)"
-                  >
-                    <mask
-                      fill="#fff"
-                      id="b"
-                    >
-                      <use
-                        xlinkHref="#a"
-                      />
-                    </mask>
-                    <path
-                      d="M93.124 23.509l30.827.07L110.96.31.155.454z"
-                      fill="#28289D"
-                      mask="url(#b)"
-                    />
-                  </g>
                   <path
-                    d="M56.023 0L56 64.133 112 96z"
+                    d="M11.7529 21.0875l3.469-5.945c.174-.298.475-.448.778-.448v-8.695c-.303 0-.604.15-.778.447l-11.098 19.025c-.174.299-.154.635-.006.897l7.608-4.437c-.123-.254-.135-.565.027-.844"
+                    fill="#FF5000"
+                  />
+                  <path
+                    d="M16.7783 15.1422l3.469 5.945c.162.28.15.59.027.844l7.608 4.438c.148-.263.167-.599-.006-.898l-11.098-19.024c-.174-.298-.476-.448-.778-.448v8.696c.302 0 .604.149.778.447"
                     fill="#9E1F63"
                   />
                   <path
-                    d="M0 96l55.947-31.775L56 0z"
-                    fill="#FB542B"
-                  />
-                  <path
-                    d="M0 96l111-.006L55.61 64z"
+                    d="M27.8818 26.3687l-7.607-4.437c-.143.292-.435.511-.807.511h-6.936c-.372 0-.664-.219-.806-.511l-7.608 4.437c.152.267.435.459.785.459h22.195c.349 0 .633-.192.784-.459"
                     fill="#662D91"
                   />
                   <path
-                    d="M55.82 38L33 76h46z"
+                    d="M11.7256 21.9312c.143.293.435.512.807.512h6.935c.372 0 .664-.219.807-.512.123-.254.135-.564-.028-.844l-3.468-5.945c-.174-.298-.476-.447-.779-.447-.302 0-.604.149-.778.447l-3.469 5.945c-.162.28-.15.59-.027.844"
                     fill="#FFF"
-                  />
-                  <path
-                    d="M55.82 38L33 76h46z"
-                    stroke="#999EA2"
-                    strokeWidth="0.88"
                   />
                 </g>
               </svg>
             </div>
             <h1
-              className="c7"
+              className="c8"
             >
               MISSING: braveRewardsTitle
             </h1>
             <span
-              className="c8"
+              className="c9"
             >
               TM
             </span>
             <h2
-              className="c9"
+              className="c10"
             >
               MISSING: braveRewardsSubTitle
             </h2>
             <p
-              className="c10"
+              className="c11"
             >
               MISSING: braveRewardsDesc
             </p>
           </div>
           <section
-            className="c11"
+            className="c12"
           >
             <button
-              className="c12"
+              className="c13"
               data-test-id="optInAction"
               size="call-to-action"
               type="subtle"
             >
               <div
-                className="c13"
+                className="c14"
                 data-test-id="optInAction"
                 size="call-to-action"
                 type="subtle"
@@ -543,22 +532,22 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             className="c4"
           >
             <p
-              className="c14"
+              className="c15"
             >
               MISSING: braveRewardsTeaser
             </p>
             <button
-              className="c15"
+              className="c16"
               onClick={[Function]}
             >
               <svg
-                height="32"
-                width="28"
-                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                className="c17"
+                focusable="false"
+                viewBox="0 0 32 32"
               >
                 <path
-                  d="M12.3 27.8V1.3c0-.8.6-1.3 1.6-1.3.9 0 1.6.5 1.6 1.3v26.5l9.9-9.1c.6-.5 1.6-.5 2.2-.1s.6 1.3.2 1.9L15.9 31.3c-1.1.9-2.8.9-3.8 0L.4 20.5c-.6-.5-.5-1.3.2-1.9.6-.5 1.6-.4 2.2.1l9.5 9.1z"
-                  fill="#bf9fe3"
+                  d="M7.24134 15H27c.55228 0 1 .44772 1 1s-.44772 1-1 1H7.24134l6.78743 6.26519c.40582.3746.43113 1.00726.05653 1.41308-.3746.40583-1.00725.43114-1.41308.05654l-8.136-7.51c-.71497-.65997-.71497-1.78965 0-2.44962l8.136-7.51c.40583-.3746 1.03848-.34929 1.41308.05654.3746.40582.3493 1.03848-.05653 1.41308L7.24134 15z"
                 />
               </svg>
             </button>
@@ -566,29 +555,29 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
         </div>
       </div>
       <section
-        className="c16"
+        className="c18"
       >
         <section
-          className="c17"
+          className="c19"
         >
           <div
-            className="c18"
+            className="c20"
           >
             <div
               className="c4"
             >
               <h2
-                className="c19"
+                className="c21"
               >
                 MISSING: whyBraveRewards
               </h2>
               <p
-                className="c20"
+                className="c22"
               >
                 MISSING: whyBraveRewardsDesc
               </p>
               <p
-                className="c21"
+                className="c23"
               >
                 MISSING: whyBraveRewardsBold
               </p>
@@ -597,12 +586,12 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               className="c4"
             >
               <h2
-                className="c19"
+                className="c21"
               >
                 MISSING: howDoesItWork
               </h2>
               <p
-                className="c20"
+                className="c22"
               >
                 MISSING: howDoesItWorkDesc
               </p>
@@ -610,24 +599,24 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           </div>
         </section>
         <section
-          className="c22"
+          className="c24"
         >
           <section
             id="rewards-info"
           >
             <div
-              className="c23"
+              className="c25"
               disabled={false}
             >
               <div
-                className="c24"
+                className="c26"
                 size={1}
               >
                 <div
-                  className="c25"
+                  className="c27"
                 >
                   <figure
-                    className="c26"
+                    className="c28"
                   >
                     <svg
                       height="76"
@@ -724,26 +713,26 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                     </svg>
                   </figure>
                   <strong
-                    className="c27"
+                    className="c29"
                   >
                     MISSING: turnOnRewardsTitle
                   </strong>
                   <p
-                    className="c28"
+                    className="c30"
                   >
                     MISSING: turnOnRewardsDesc
                   </p>
                 </div>
               </div>
               <div
-                className="c24"
+                className="c26"
                 size={1}
               >
                 <div
-                  className="c25"
+                  className="c27"
                 >
                   <figure
-                    className="c26"
+                    className="c28"
                   >
                     <svg
                       height="80"
@@ -779,26 +768,26 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                     </svg>
                   </figure>
                   <strong
-                    className="c27"
+                    className="c29"
                   >
                     MISSING: braveAdsTitle
                   </strong>
                   <p
-                    className="c28"
+                    className="c30"
                   >
                     MISSING: braveAdsDesc
                   </p>
                 </div>
               </div>
               <div
-                className="c24"
+                className="c26"
                 size={1}
               >
                 <div
-                  className="c25"
+                  className="c27"
                 >
                   <figure
-                    className="c26"
+                    className="c28"
                   >
                     <svg
                       height="69"
@@ -842,12 +831,12 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                     </svg>
                   </figure>
                   <strong
-                    className="c27"
+                    className="c29"
                   >
                     MISSING: braveContributeTitle
                   </strong>
                   <p
-                    className="c28"
+                    className="c30"
                   >
                     MISSING: braveContributeDesc
                   </p>
@@ -857,24 +846,24 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           </section>
         </section>
         <section
-          className="c29"
+          className="c31"
         >
           <section
-            className="c30"
+            className="c32"
           >
             <h2
-              className="c31"
+              className="c33"
             >
               MISSING: readyToTakePart
             </h2>
             <p
-              className="c32"
+              className="c34"
             >
               <span>
                 MISSING: readyToTakePartStart
               </span>
               <strong
-                className="c33"
+                className="c35"
               >
                 MISSING: readyToTakePartBold
               </strong>
@@ -883,15 +872,15 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               </span>
             </p>
             <section
-              className="c34"
+              className="c36"
             >
               <button
-                className="c35"
+                className="c37"
                 size="call-to-action"
                 type="accent"
               >
                 <div
-                  className="c13"
+                  className="c14"
                   size="call-to-action"
                   type="accent"
                 >

@@ -42,17 +42,26 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
-.c4 {
+.c6 {
   padding: 10px 0 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  height: 66px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
-.c2 {
+.c4 {
   font-size: 28px;
   font-weight: 600;
   -webkit-letter-spacing: 0.2px;
@@ -63,7 +72,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   margin: 4px 0 0 11px;
 }
 
-.c3 {
+.c5 {
   font-size: 10px;
   font-weight: 300;
   -webkit-letter-spacing: 0.2px;
@@ -75,14 +84,14 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   vertical-align: text-top;
 }
 
-.c11 {
+.c13 {
   font-size: 22px;
   line-height: 1.27;
   color: #4b4c5c;
   margin-top: 40px;
 }
 
-.c12 {
+.c14 {
   font-family: Muli,sans-serif;
   font-size: 16px;
   font-weight: 300;
@@ -90,27 +99,32 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   color: #838391;
 }
 
-.c10 {
+.c12 {
   -webkit-flex-basis: 100%;
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
 }
 
-.c5 {
+.c2 {
+  width: 66px;
+  height: 66px;
+}
+
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c7 {
+.c9 {
   position: relative;
   display: block;
   height: 24px;
   width: 40px;
 }
 
-.c8 {
+.c10 {
   background: #A7ACB2;
   height: 8px;
   margin-top: 8px;
@@ -118,7 +132,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   border-radius: 3px;
 }
 
-.c9 {
+.c11 {
   position: relative;
   z-index: 2;
   border-radius: 50%;
@@ -135,7 +149,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   background-color: var(--toggle-bullet-background);
 }
 
-.c6 {
+.c8 {
   color: #838391;
   font-size: 14px;
   font-family: Poppins,sans-serif;
@@ -151,6 +165,12 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   transition: 100ms ease-out;
 }
 
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
 <div
   className="c0"
   id="mainToggle"
@@ -158,80 +178,73 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   <div
     className="c1"
   >
-    <span>
+    <div
+      className="c2"
+    >
       <svg
-        height="48"
-        width="50"
-        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
       >
         <g
           fill="none"
           fillRule="evenodd"
         >
           <path
-            d="M37.55 47.795l12.43.03-5.238-9.696-44.68.06z"
-            fill="#373743"
-            opacity="0.2"
+            d="M11.7529 21.0875l3.469-5.945c.174-.298.475-.448.778-.448v-8.695c-.303 0-.604.15-.778.447l-11.098 19.025c-.174.299-.154.635-.006.897l7.608-4.437c-.123-.254-.135-.565.027-.844"
+            fill="#FF5000"
           />
           <path
-            d="M24.01 0L24 26.054 47 39z"
+            d="M16.7783 15.1422l3.469 5.945c.162.28.15.59.027.844l7.608 4.438c.148-.263.167-.599-.006-.898l-11.098-19.024c-.174-.298-.476-.448-.778-.448v8.696c.302 0 .604.149.778.447"
             fill="#9E1F63"
           />
           <path
-            d="M0 39l22.978-12.909L23 0z"
-            fill="#FB542B"
-          />
-          <path
-            d="M1 39l44-.002L23.044 27z"
+            d="M27.8818 26.3687l-7.607-4.437c-.143.292-.435.511-.807.511h-6.936c-.372 0-.664-.219-.806-.511l-7.608 4.437c.152.267.435.459.785.459h22.195c.349 0 .633-.192.784-.459"
             fill="#662D91"
           />
           <path
-            d="M23.426 16L14 31h19z"
+            d="M11.7256 21.9312c.143.293.435.512.807.512h6.935c.372 0 .664-.219.807-.512.123-.254.135-.564-.028-.844l-3.468-5.945c-.174-.298-.476-.447-.779-.447-.302 0-.604.149-.778.447l-3.469 5.945c-.162.28-.15.59-.027.844"
             fill="#FFF"
-          />
-          <path
-            d="M23.426 16L14 31h19z"
-            stroke="#999EA2"
-            strokeWidth="0.88"
           />
         </g>
       </svg>
-    </span>
+    </div>
     <div
-      className="c2"
+      className="c4"
     >
       MISSING: braveRewards
        
       <span
-        className="c3"
+        className="c5"
       >
         TM
       </span>
     </div>
   </div>
   <div
-    className="c4"
+    className="c6"
   >
     <div
-      className="c5"
+      className="c7"
     >
       <div
-        className="c6"
+        className="c8"
         size="large"
       >
         MISSING: off
       </div>
       <div
-        className="c7"
+        className="c9"
         data-test-id="toggle"
         size="large"
       >
         <div
-          className="c8"
+          className="c10"
           size="large"
         />
         <div
-          className="c9"
+          className="c11"
           size="large"
           type="dark"
         />
@@ -239,15 +252,15 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
     </div>
   </div>
   <div
-    className="c10"
+    className="c12"
   >
     <div
-      className="c11"
+      className="c13"
     >
       MISSING: rewardsWhy
     </div>
     <div
-      className="c12"
+      className="c14"
     >
       MISSING: rewardsOffText1
        
@@ -257,12 +270,12 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
       </b>
     </div>
     <div
-      className="c11"
+      className="c13"
     >
       MISSING: rewardsOffText3
     </div>
     <div
-      className="c12"
+      className="c14"
     >
       MISSING: rewardsOffText4
     </div>

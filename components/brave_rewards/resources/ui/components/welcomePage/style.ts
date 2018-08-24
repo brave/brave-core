@@ -55,7 +55,8 @@ export const StyledBackground = styled<{}, 'div'>('div')`
 `
 
 export const StyledBatLogo = styled<{}, 'div'>('div')`
-  margin: 33px auto 10px;
+  margin: 5px auto 0;
+  height: 152px;
 `
 
 export const StyledH1 = styled<{}, 'h1'>('h1')`
@@ -117,7 +118,7 @@ export const StyledRewardsParagraph = styled<{}, 'p'>('p')`
 
 export const StyledTeaserParagraph = styled<{}, 'p'>('p')`
   font-size: 16px;
-  margin: 0 0 10px;
+  margin: 0 0 5px;
   line-height: 28px;
   color: #FFF;
   opacity: 0.5;
@@ -160,4 +161,6 @@ export const StyledAnchor = styled<{}, 'button'>('button')`
   border: none;
   background: none;
   cursor: pointer;
+  color: #bf9fe3;
+  height: 38px;
 `

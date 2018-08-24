@@ -38,12 +38,15 @@ export const StyledAllowText = styled<{}, 'span'>('span')`
 
 export const StyledClose = styled<{}, 'button'>('button')`
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 12px;
+  right: 12px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
+  color: #DFDFE8;
+  width: 20px;
+  z-index: 2;
 `
 
 export const StyledTipWrapper = styled<{}, 'div'>('div')`

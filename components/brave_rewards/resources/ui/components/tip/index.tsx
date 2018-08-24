@@ -11,9 +11,10 @@ import {
   StyledAllowToggle,
   StyledTipWrapper
 } from './style'
-import Donate from '../donate/index'
-import Toggle from '../../../components/formControls/toggle/index'
+import Donate from '../donate'
+import Toggle from '../../../components/formControls/toggle'
 import { getLocale } from '../../../helpers'
+import { CloseStrokeIcon } from '../../../components/icons'
 
 type Donation = {tokens: number, converted: number, selected?: boolean}
 
@@ -30,8 +31,6 @@ export interface Props {
   id?: string
   title?: string
 }
-
-const close = require('./assets/close')
 
 export default class Tip extends React.PureComponent<Props, {}> {
   static defaultProps = {
@@ -61,7 +60,9 @@ export default class Tip extends React.PureComponent<Props, {}> {
 
     return (
       <StyledWrapper id={id}>
-        <StyledClose onClick={onClose}>{close}</StyledClose>
+        <StyledClose onClick={onClose}>
+          <CloseStrokeIcon />
+        </StyledClose>
         <StyledTitle>Send my tip to</StyledTitle>
         <Donate
           title={title || ''}

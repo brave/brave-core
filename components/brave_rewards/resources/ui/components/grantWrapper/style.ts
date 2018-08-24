@@ -46,6 +46,9 @@ export const StyledClose = styled<{}, 'button'>('button')`
   border: none;
   background: none;
   cursor: pointer;
+  color: #B8B9C4;
+  width: 29px;
+  height: 29px;
 `
 
 export const StyledText = styled<{}, 'div'>('div')`

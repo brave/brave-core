@@ -16,6 +16,7 @@ import {
   StyledInlineVerified
 } from './style'
 import { getLocale } from '../../../helpers'
+import { VerifiedFillIcon } from '../../../components/icons'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch'
 
@@ -27,8 +28,6 @@ export interface Props {
   provider?: Provider
   verified?: boolean
 }
-
-const verifiedIcon = require('./assets/verified')
 
 /*
   TODO
@@ -63,7 +62,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
           <StyledImage src={this.getSrc(src)} type={type} />
           {
             verified && type === 'small'
-            ? <StyledVerified>{verifiedIcon}</StyledVerified>
+            ? <StyledVerified><VerifiedFillIcon /></StyledVerified>
             : null
           }
         </StyledImageWrapper>
@@ -79,7 +78,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
           {
             verified && type === 'big'
             ? <StyledProviderWrap>
-              <StyledInlineVerified>{verifiedIcon}</StyledInlineVerified> {getLocale('verifiedPublisher')}
+              <StyledInlineVerified><VerifiedFillIcon /></StyledInlineVerified> {getLocale('verifiedPublisher')}
             </StyledProviderWrap>
             : null
           }

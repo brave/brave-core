@@ -16,6 +16,7 @@ import Table, { Cell, Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
 import Tokens from '../tokens/index'
 import { getLocale } from '../../../helpers'
+import { CloseStrokeIcon, RefreshIcon } from '../../../components/icons'
 
 interface ProfileCell {
   verified: boolean
@@ -47,9 +48,6 @@ export interface Props {
   headerColor?: boolean
 }
 
-const removeIcon = require('./assets/close')
-const monthlyIcon = require('./assets/monthly')
-
 export default class TableDonation extends React.PureComponent<Props, {}> {
   getTypeContent (row: DetailRow): Cell {
     switch (row.type) {
@@ -57,9 +55,9 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
         return {
           content: (
             <>
-              <StyledType>{getLocale('recurring')} <StyledRecurringIcon>{monthlyIcon}</StyledRecurringIcon></StyledType>
+              <StyledType>{getLocale('recurring')} <StyledRecurringIcon><RefreshIcon /></StyledRecurringIcon></StyledType>
               <StyledRemove onClick={row.onRemove}>
-                <StyledRemoveIcon> {removeIcon} </StyledRemoveIcon>{getLocale('remove')}
+                <StyledRemoveIcon><CloseStrokeIcon /></StyledRemoveIcon>{getLocale('remove')}
               </StyledRemove>
             </>
           )

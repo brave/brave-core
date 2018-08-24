@@ -4,9 +4,9 @@
 
 import * as React from 'react'
 import { StyledWrapper, StyledHeader, StyledTitle, StyledClose, StyledText } from './style'
+import { CloseStrokeIcon } from '../../../components/icons'
 
 const header = require('./assets/header')
-const close = require('./assets/close')
 
 export interface Props {
   id?: string
@@ -22,7 +22,9 @@ export default class GrantWrapper extends React.PureComponent<Props, {}> {
 
     return (
       <StyledWrapper id={id}>
-        <StyledClose onClick={onClose}>{close}</StyledClose>
+        <StyledClose onClick={onClose}>
+          <CloseStrokeIcon />
+        </StyledClose>
         <StyledHeader>{header}</StyledHeader>
         <StyledTitle>{title}</StyledTitle>
         <StyledText>{text}</StyledText>

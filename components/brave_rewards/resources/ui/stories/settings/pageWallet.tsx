@@ -18,14 +18,13 @@ import {
   WalletSummary,
   WalletWrapper
 } from '../../../../src/features/rewards'
+import { WalletAddIcon, WalletImportIcon } from '../../../../src/components/icons'
 
 // Assets
 const bartBaker = require('../../../assets/img/bartBaker.jpeg')
 const buzz = require('../../../assets/img/buzz.jpg')
 const ddgo = require('../../../assets/img/ddgo.jpg')
-const funds = require('../../../assets/img/rewards_funds.svg')
 const guardian = require('../../../assets/img/guardian.jpg')
-const wallet = require('../../../assets/img/rewards_wallet.svg')
 const wiki = require('../../../assets/img/wiki.jpg')
 
 interface State {
@@ -248,12 +247,12 @@ class PageWallet extends React.Component<{}, State> {
             {
               name: 'Add funds',
               action: doNothing,
-              icon: wallet
+              icon: <WalletAddIcon />
             },
             {
               name: 'Withdraw Funds',
               action: doNothing,
-              icon: funds
+              icon: <WalletImportIcon />
             }
           ]}
           onSettingsClick={this.onBackupModalOpen}

@@ -16,9 +16,9 @@ import {
 
 import Amount from '../amount/index'
 import { getLocale } from '../../../helpers'
+import { EmoteSadIcon } from '../../../components/icons'
 
 const send = require('./assets/send')
-const sadFace = require('./assets/sadFace')
 
 export type DonateType = 'big' | 'small'
 
@@ -125,7 +125,9 @@ export default class Donate extends React.PureComponent<Props, State> {
         {
           this.state.missingFunds
             ? <StyledFunds>
-              <StyledIconFace>{sadFace}</StyledIconFace>
+              <StyledIconFace>
+                <EmoteSadIcon />
+              </StyledIconFace>
               <StyledFundsText>{getLocale('notEnoughTokens')} <a href='#'>{getLocale('addFunds')}</a>.</StyledFundsText>
             </StyledFunds>
             : null

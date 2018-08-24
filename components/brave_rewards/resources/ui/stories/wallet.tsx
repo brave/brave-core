@@ -10,10 +10,8 @@ import centered from '@storybook/addon-centered/dist'
 
 // Components
 import { WalletSummary, WalletEmpty, WalletOff, WalletWrapper } from '../../../src/features/rewards'
-
-// Assets
-const wallet = require('../../assets/img/rewards_wallet.svg')
-const funds = require('../../assets/img/rewards_funds.svg')
+import { Type } from '../../../src/features/rewards/alert'
+import { WalletAddIcon, WalletImportIcon } from '../../../src/components/icons'
 
 const doNothing = () => {
   console.log('nothing')
@@ -22,26 +20,33 @@ const doNothing = () => {
 storiesOf('Feature Components/Rewards/Wallet', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
-  .add('Base',() => {
+  .add('Wrapper',() => {
+    const alert = {
+      node: 'Some text',
+      type: 'success' as Type,
+      onAlertClose: doNothing
+    }
+    const showAlert = boolean('Show alert', false)
+
     return (
       <WalletWrapper
+        connectedWallet={boolean('Connected wallet', false)}
+        showCopy={boolean('Show Uphold', false)}
+        showSecActions={boolean('Show secondary actions', true)}
         tokens={number('Tokens', 25)}
         converted={text('Converted', '163230.50 USD')}
         actions={[
           {
             name: 'Add funds',
             action: doNothing,
-            icon: wallet
+            icon: <WalletAddIcon />
           },
           {
             name: 'Withdraw Funds',
             action: doNothing,
-            icon: funds
+            icon: <WalletImportIcon />
           }
         ]}
-        showCopy={boolean('Show Uphold', false)}
-        showSecActions={boolean('Show secondary actions', true)}
-        connectedWallet={boolean('Connected wallet', false)}
         grants={object('Grants', [
           {
             tokens: 8,
@@ -56,6 +61,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
             expireDate: '10/10/2018'
           }
         ])}
+        alert={showAlert ? alert : undefined}
       >
        Some content
       </WalletWrapper>

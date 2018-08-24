@@ -3,7 +3,19 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledContent, StyledClose, StyledIcon } from './style'
+import {
+  StyledWrapper,
+  StyledContent,
+  StyledClose,
+  StyledIcon,
+  StyledError,
+  StyledSuccess,
+  StyledWarning
+} from './style'
+import { AlertCirlceIcon,
+  CheckCircleIcon,
+  CloseCircleIcon,
+  CloseStrokeIcon } from '../../../components/icons'
 
 export type Type = 'error' | 'success' | 'warning'
 
@@ -16,20 +28,27 @@ export interface Props {
   bg?: boolean
 }
 
-const success = require('./assets/success')
-const error = require('./assets/error')
-const close = require('./assets/close')
-const warning = require('./assets/warning')
-
 export default class Alert extends React.PureComponent<Props, {}> {
   get icon () {
     switch (this.props.type) {
       case 'error':
-        return error
+        return (
+          <StyledError>
+            <CloseCircleIcon />
+          </StyledError>
+        )
       case 'success':
-        return success
+        return (
+          <StyledSuccess>
+            <CheckCircleIcon />
+          </StyledSuccess>
+        )
       case 'warning':
-        return warning
+        return (
+          <StyledWarning>
+            <AlertCirlceIcon />
+          </StyledWarning>
+        )
     }
 
     return null
@@ -46,7 +65,9 @@ export default class Alert extends React.PureComponent<Props, {}> {
         </StyledContent>
         {
           onClose
-          ? <StyledClose>{close}</StyledClose>
+          ? <StyledClose>
+            <CloseStrokeIcon />
+          </StyledClose>
           : null
         }
       </StyledWrapper>

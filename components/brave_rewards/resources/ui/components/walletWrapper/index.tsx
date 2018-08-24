@@ -23,11 +23,19 @@ import {
   StyledCurve,
   StyledAlertWrapper,
   StyledAlertClose,
-  StyleGrantButton
+  StyleGrantButton,
+  StyledActionText
 } from './style'
 import { getLocale } from '../../../helpers'
 import Alert, { Type as AlertType } from '../alert'
 import { Button } from '../../../components'
+import {
+  CaratDownIcon,
+  CaratUpIcon,
+  CloseStrokeIcon,
+  SettingsAdvancedIcon,
+  UpholdColorIcon, UpholdSystemIcon
+} from '../../../components/icons'
 
 type Grant = {
   tokens: number,
@@ -37,7 +45,11 @@ type Grant = {
 export interface Props {
   tokens: number
   converted: string | null
-  actions: {icon: string, name: string, action: () => void}[]
+  actions: {
+    icon: React.ReactNode,
+    name: string,
+    action: () => void
+  }[]
   connectedWallet?: boolean
   showCopy?: boolean
   children?: React.ReactNode
@@ -52,13 +64,6 @@ export interface Props {
   } | null
   id?: string
 }
-
-const upholdIcon = require('./assets/uphold')
-const upholdColorIcon = require('./assets/upholdColor')
-const gearIcon = require('./assets/gear')
-const arrowUpIcon = require('./assets/arrowUp')
-const arrowDownIcon = require('./assets/arrowDown')
-const closeIcon = require('./assets/close')
 
 interface State {
   grantDetails: boolean
@@ -80,11 +85,12 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     return tokens.toFixed(1)
   }
 
-  generateActions (actions: {icon: string, name: string, action: () => void}[], id?: string) {
+  generateActions (actions: {icon: React.ReactNode, name: string, action: () => void}[], id?: string) {
     return actions && actions.map((action, i: number) => {
       return (
         <StyledAction key={`${id}-${i}`} onClick={action.action}>
-          <StyledActionIcon src={action.icon} />{action.name}
+          <StyledActionIcon>{action.icon}</StyledActionIcon>
+          <StyledActionText>{action.name}</StyledActionText>
         </StyledAction>
       )
     })
@@ -119,11 +125,13 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       <StyledWrapper id={id}>
         <StyledHeader>
           {
-            alert
+            alert && alert.node
             ? <StyledAlertWrapper>
               {
                 alert.onAlertClose
-                ? <StyledAlertClose onClick={alert.onAlertClose}>{closeIcon}</StyledAlertClose>
+                ? <StyledAlertClose onClick={alert.onAlertClose}>
+                  <CloseStrokeIcon />
+                </StyledAlertClose>
                 : null
               }
               <Alert type={alert.type} bg={true}>
@@ -136,7 +144,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           {
             showSecActions
             ? <StyledIconAction onClick={onSettingsClick}>
-              {gearIcon}
+              <SettingsAdvancedIcon />
             </StyledIconAction>
             : null
           }
@@ -158,7 +166,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                 level={'secondary'}
                 onClick={enabled ? this.toggleGrantDetails : undefined}
                 disabled={!enabled}
-                icon={{ position: 'after', image: this.state.grantDetails && enabled ? arrowUpIcon : arrowDownIcon }}
+                icon={{ position: 'after', image: this.state.grantDetails && enabled ? <CaratUpIcon /> : <CaratDownIcon /> }}
               />
             </StyleGrantButton>
           </StyledBalance>
@@ -189,10 +197,16 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               {
                 connectedWallet
                 ? <>
-                    <StyledCopyImage>{upholdColorIcon}</StyledCopyImage> {getLocale('rewardsPanelText1')} <b>Uphold</b>.
+                  <StyledCopyImage>
+                    <UpholdColorIcon />
+                  </StyledCopyImage>
+                  {getLocale('rewardsPanelText1')} <b>Uphold</b>.
                 </>
                 : <>
-                    <StyledCopyImage>{upholdIcon}</StyledCopyImage> {getLocale('rewardsPanelText2')} <b>Uphold</b>.
+                  <StyledCopyImage>
+                    <UpholdSystemIcon />
+                  </StyledCopyImage>
+                  {getLocale('rewardsPanelText2')} <b>Uphold</b>.
                 </>
               }
           </StyledCopy>

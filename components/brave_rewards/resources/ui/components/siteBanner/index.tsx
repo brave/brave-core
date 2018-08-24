@@ -34,6 +34,7 @@ import {
 import Donate from '../donate/index'
 import Checkbox from '../../../components/formControls/checkbox/index'
 import { getLocale } from '../../../helpers'
+import { RefreshIcon, CloseStrokeIcon } from '../../../components/icons'
 
 type Social = {type: SocialType, name: string, handler: string}
 type SocialType = 'twitter' | 'youtube' | 'twitch'
@@ -60,9 +61,6 @@ export interface Props {
 interface State {
   monthly: boolean
 }
-
-const close = require('./assets/close')
-const monthly = require('./assets/monthly')
 
 export default class SiteBanner extends React.PureComponent<Props, State> {
   constructor (props: Props) {
@@ -190,10 +188,12 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
               {
                 currentDonation && !isNaN(currentDonation) && currentDonation > 0
                 ? <StyledRecurring>
-                  <StyledIconRecurringBig>{monthly('#696fdc')}</StyledIconRecurringBig>
-                  {getLocale('currentDonation', { currentDonation })}
+                  <StyledIconRecurringBig>
+                    <RefreshIcon />
+                  </StyledIconRecurringBig>
+                  <span>{getLocale('currentDonation', { currentDonation })}</span>
                   <StyledRemove>
-                    <StyledIconRemove>{close}</StyledIconRemove>{getLocale('remove')}
+                    <StyledIconRemove><CloseStrokeIcon /></StyledIconRemove>{getLocale('remove')}
                   </StyledRemove>
                 </StyledRecurring>
                 : null
@@ -219,7 +219,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                   type={'dark'}
                 >
                   <div data-key='make'>
-                    <StyledOption>{getLocale('makeMonthly')}</StyledOption> <StyledIconRecurring>{monthly()}</StyledIconRecurring>
+                    <StyledOption>{getLocale('makeMonthly')}</StyledOption> <StyledIconRecurring><RefreshIcon /></StyledIconRecurring>
                   </div>
                 </Checkbox>
               </Donate>

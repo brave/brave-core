@@ -22,13 +22,10 @@ export const StyledDrag = styled<{}, 'div'>('div')`
   justify-content: center;
 `
 
-export const StyledImage = styled<{}, 'img'>('img')`
-  width: 60px;
-`
-
 export const StyledImageWrap = styled<{}, 'div'>('div')`
-  flex-basis: 60px;
+  flex-basis: 80px;
   flex-shrink: 0;
+  margin-top: -15px;
 `
 
 export const StyledText = styled<{}, 'div'>('div')`
@@ -38,5 +35,5 @@ export const StyledText = styled<{}, 'div'>('div')`
   line-height: 1.29;
   color: #686978;
   text-align: left;
-  padding-left: 17px;
+  padding-left: 13px;
 `

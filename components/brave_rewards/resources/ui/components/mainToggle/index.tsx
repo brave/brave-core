@@ -11,12 +11,12 @@ import {
   StyledRight,
   StyleTitle,
   StyleText,
-  StyledContent
+  StyledContent,
+  StyledLogoWrapper
 } from './style'
 import Toggle from '../../../components/formControls/toggle/index'
 import { getLocale } from '../../../helpers'
-
-const logo = require('./assets/bat')
+import { BatColorIcon } from '../../../components/icons'
 
 export interface Props {
   enabled: boolean
@@ -31,7 +31,9 @@ export default class MainToggle extends React.PureComponent<Props, {}> {
     return (
       <StyledWrapper id={id}>
         <StyledLeft>
-          <span>{logo}</span>
+          <StyledLogoWrapper>
+            <BatColorIcon />
+          </StyledLogoWrapper>
           <StyledTitle>
             {getLocale('braveRewards')} <StyledTM>TM</StyledTM>
           </StyledTitle>

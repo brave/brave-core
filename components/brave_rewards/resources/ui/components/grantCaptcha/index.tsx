@@ -3,10 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledDropArea, StyledDrag, StyledImage, StyledText, StyledImageWrap } from './style'
+import { StyledWrapper, StyledDropArea, StyledDrag, StyledText, StyledImageWrap } from './style'
 import { getLocale } from '../../../helpers'
-
-const batLogo = require('./assets/bat.png')
+import { BatColorIcon } from '../../../components/icons'
 
 export interface Props {
   id?: string
@@ -85,7 +84,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
       >
         <StyledDrag>
           <StyledImageWrap onDragStart={this.onCaptchaDrag} draggable={true}>
-            <StyledImage src={batLogo} />
+            <BatColorIcon />
           </StyledImageWrap>
           <StyledText>{getLocale('dndCaptcha')}</StyledText>
         </StyledDrag>

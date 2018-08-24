@@ -51,6 +51,8 @@ export const StyledLeft = styled<{}, 'div'>('div')`
 
 export const StyledRight = styled<StyleProps, 'div'>('div')`
   flex-basis: 40px;
+  justify-content: flex-end;
+  display: flex;
 `
 
 export const StyledTitle = styled<StyleProps, 'div'>('div')`
@@ -81,13 +83,12 @@ export const StyledDescription = styled<{}, 'div'>('div')`
 `
 
 export const StyledSettingsIcon = styled<StyleProps, 'button'>('button')`
-  width: 20px;
-  float: ${p => p.float ? p.float : 'none'};
-  margin-top: 8px;
+  width: 27px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
+  color: #A1A8F2;
 `
 
 export const StyledContent = styled<{}, 'div'>('div')`
@@ -106,28 +107,28 @@ export const StyledSettingsWrapper = styled<StyleProps, 'div'>('div')`
 export const StyledSettingsClose = styled<StyleProps, 'button'>('button')`
   display: ${p => p.open ? 'block' : 'none'};
   position: absolute;
-  right: 35px;
-  top: 35px;
-  width: 13px;
-  height: 13px;
+  right: 29px;
+  top: 29px;
+  width: 21px;
+  height: 21px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
+  color: #DFDFE8;
 `
 
 export const StyledSettingsTitle = styled<{}, 'div'>('div')`
-  text-align: center;
   margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
-export const StyledSettingsText = styled<{}, 'span'>('span')`
+export const StyledSettingsText = styled<{}, 'div'>('div')`
   font-size: 16px;
   font-weight: 600;
   line-height: 1.75;
   color: #4b4c5c;
-  position: relative;
-  top: -4px;
-  display: inline-block;
   margin-left: 20px;
 `

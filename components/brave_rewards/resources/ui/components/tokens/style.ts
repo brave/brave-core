@@ -38,7 +38,7 @@ const getStyle = (p: Partial<Props>) => {
   `
 }
 
-export const StyledWrapper = styled<Partial<Props>, 'div'>('div')`
+export const StyledWrapper = styled<Partial<Props>, 'span'>('span')`
   ${getStyle}
 `
 

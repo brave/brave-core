@@ -41,6 +41,10 @@ export const StyledActivity = styled<{}, 'button'>('button')`
 `
 
 export const StyledActivityIcon = styled<{}, 'span'>('span')`
-  vertical-align: sub;
+  vertical-align: middle;
   margin-right: 11px;
+  width: 22px;
+  height: 24px;
+  color: #A1A8F2;
+  display: inline-block;
 `

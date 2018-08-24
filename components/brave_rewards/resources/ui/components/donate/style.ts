@@ -112,8 +112,8 @@ export const StyledFunds = styled<{}, 'div'>('div')`
 `
 
 export const StyledIconFace = styled<{}, 'div'>('div')`
-  flex-basis: 26px;
-  margin-right: 9px;
+  flex-basis: 32px;
+  margin: -7px 6px 0 0;
 `
 
 export const StyledFundsText = styled<{}, 'div'>('div')`

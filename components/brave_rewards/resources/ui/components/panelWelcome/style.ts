@@ -64,7 +64,7 @@ export const StyledDescText = styled<{}, 'p'>('p')`
 ` as any
 
 export const StyledButtonWrapper = styled<{}, 'div'>('div')`
-  margin: 0 auto 35px;
+  margin: 0 auto 25px;
   display: inline-block;
 ` as any
 

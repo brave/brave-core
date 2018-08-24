@@ -53,6 +53,14 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   -webkit-flex-basis: 40px;
   -ms-flex-preferred-size: 40px;
   flex-basis: 40px;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .c4 {
@@ -85,14 +93,13 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #a4aeb8;
 }
 
-.c12 {
-  width: 20px;
-  float: none;
-  margin-top: 8px;
+.c13 {
+  width: 27px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
+  color: #A1A8F2;
 }
 
 .c8 {
@@ -118,30 +125,51 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
 .c10 {
   display: none;
   position: absolute;
-  right: 35px;
-  top: 35px;
-  width: 13px;
-  height: 13px;
+  right: 29px;
+  top: 29px;
+  width: 21px;
+  height: 21px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
+  color: #DFDFE8;
 }
 
-.c11 {
-  text-align: center;
+.c12 {
   margin-bottom: 15px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
-.c13 {
+.c15 {
   font-size: 16px;
   font-weight: 600;
   line-height: 1.75;
   color: #4b4c5c;
-  position: relative;
-  top: -4px;
-  display: inline-block;
   margin-left: 20px;
+}
+
+.c11 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c14 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 <div
@@ -194,46 +222,41 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
         open={false}
       >
         <svg
-          height="11"
-          width="11"
-          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          className="c11"
+          focusable="false"
+          viewBox="0 0 32 32"
         >
           <path
-            d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
-            fill="#DFDFE8"
-            fillRule="evenodd"
+            d="M15.77817 14.36396l7.07107-7.07107c.39053-.39052 1.0237-.39052 1.41422 0 .39052.39053.39052 1.0237 0 1.41422l-7.07107 7.07106 7.07107 7.07107c.39052.39053.39052 1.0237 0 1.41422-.39053.39052-1.0237.39052-1.41422 0l-7.07107-7.07107-7.07106 7.07107c-.39053.39052-1.0237.39052-1.41422 0-.39052-.39053-.39052-1.0237 0-1.41422l7.07107-7.07107L7.2929 8.70711c-.39052-.39053-.39052-1.0237 0-1.41422.39053-.39052 1.0237-.39052 1.41422 0l7.07106 7.07107z"
           />
         </svg>
       </button>
       <div
-        className="c11"
+        className="c12"
       >
         <button
-          className="c12"
+          className="c13"
         >
           <svg
-            height="20"
-            width="21"
-            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            className="c14"
+            focusable="false"
+            viewBox="0 0 32 32"
           >
             <path
-              d="M12.757 10H1.625M20.375 10h-2.868M17.507 10a2.375 2.375 0 1 0-4.75 0 2.375 2.375 0 0 0 4.75 0zM9.244 3h11.131M1.463 3H4.87M5.494 3a2.375 2.375 0 1 0 4.75 0 2.375 2.375 0 0 0-4.75 0zM6.4 17H1.625M20.375 17H11.15M12.15 17a2.375 2.375 0 1 0-4.749 0 2.375 2.375 0 0 0 4.75 0z"
-              fill="none"
+              d="M21.1997 17c-.551 0-1-.448-1-1s.449-1 1-1c.551 0 1 .448 1 1s-.449 1-1 1m5.8-2h-2.984c-.414-1.162-1.514-2-2.816-2-1.302 0-2.402.838-2.816 2H4.9997c-.552 0-1 .448-1 1s.448 1 1 1h13.384c.415 1.162 1.514 2 2.816 2 1.302 0 2.402-.838 2.816-2h2.984c.553 0 1-.448 1-1s-.447-1-1-1m-16 11c-.551 0-1-.448-1-1s.449-1 1-1c.552 0 1 .448 1 1s-.448 1-1 1m16-2h-13.184c-.414-1.162-1.514-2-2.816-2-1.301 0-2.401.838-2.816 2h-3.184c-.552 0-1 .448-1 1s.448 1 1 1h3.185c.414 1.162 1.514 2 2.815 2 1.302 0 2.402-.838 2.816-2h13.184c.553 0 1-.448 1-1s-.447-1-1-1m-12.8-18c.551 0 1 .448 1 1s-.449 1-1 1c-.551 0-1-.448-1-1s.449-1 1-1m-9.2 2h6.384c.415 1.162 1.514 2 2.816 2 1.302 0 2.402-.838 2.816-2h9.984c.553 0 1-.448 1-1s-.447-1-1-1h-9.984c-.414-1.162-1.514-2-2.816-2-1.302 0-2.402.838-2.816 2h-6.384c-.552 0-1 .448-1 1s.448 1 1 1"
               fillRule="evenodd"
-              stroke="#A1A8F2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.25"
             />
           </svg>
         </button>
-        <span
-          className="c13"
+        <div
+          className="c15"
         >
           test
            
           MISSING: settings
-        </span>
+        </div>
       </div>
     </div>
   </div>

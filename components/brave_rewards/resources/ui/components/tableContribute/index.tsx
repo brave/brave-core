@@ -11,10 +11,11 @@ import {
   StyledTHLast,
   StyledToggleWrap
 } from './style'
-import Table, { Row } from '../../../components/dataTables/table/index'
-import Profile, { Provider } from '../profile/index'
+import Table, { Row } from '../../../components/dataTables/table'
+import Profile, { Provider } from '../profile'
 import { getLocale } from '../../../helpers'
 import Tokens from '../tokens'
+import { CloseStrokeIcon } from '../../../components/icons'
 
 interface ProfileCell {
   verified: boolean
@@ -42,8 +43,6 @@ export interface Props {
   allSites?: boolean
   onShowAll?: () => void
 }
-
-const removeIcon = require('./assets/close')
 
 export default class TableContribute extends React.PureComponent<Props, {}> {
   getHeader = (header: string[]) => {
@@ -125,7 +124,9 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
       if (this.props.showRemove) {
         cell.content.push({
           content: (
-            <StyledRemove onClick={row.onRemove}>{removeIcon}</StyledRemove>
+            <StyledRemove onClick={row.onRemove}>
+              <CloseStrokeIcon />
+            </StyledRemove>
           ),
           customStyle: {
             textAlign: 'right'

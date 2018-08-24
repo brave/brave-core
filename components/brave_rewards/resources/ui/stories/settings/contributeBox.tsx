@@ -186,8 +186,7 @@ class ContributeBox extends React.Component<{}, State> {
         <TableContribute
           header={[
             'Site',
-            'Attention',
-            ''
+            'Attention'
           ]}
           rows={this.contributeRows}
           allSites={false}

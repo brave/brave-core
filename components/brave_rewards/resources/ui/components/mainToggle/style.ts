@@ -24,11 +24,14 @@ export const StyledLeft = styled<{}, 'div'>('div')`
   flex-grow: 1;
   flex-shrink: 1;
   display: flex;
+  align-items: center;
 `
 
 export const StyledRight = styled<{}, 'div'>('div')`
   padding: 10px 0 0;
   display: flex;
+  height: 66px;
+  align-items: center;
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
@@ -65,4 +68,9 @@ export const StyleText = styled<{}, 'div'>('div')`
 
 export const StyledContent = styled<{}, 'div'>('div')`
   flex-basis: 100%;
+`
+
+export const StyledLogoWrapper = styled<{}, 'div'>('div')`
+  width: 66px;
+  height: 66px;
 `

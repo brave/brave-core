@@ -39,9 +39,8 @@ import {
   StyledAnchor,
   StyledOptInSecond
 } from './style'
+import { ArrowDownIcon, BatColorIcon } from '../../../components/icons'
 
-const batImage = require('./assets/bat')
-const arrowImage = require('./assets/arrow')
 const turnOnRewardsImage = require('./assets/turnOnRewards')
 const braveAdsImage = require('./assets/braveAds')
 const braveContributeImage = require('./assets/braveContribute')
@@ -82,7 +81,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
       <Hero id={'rewards-hero'}>
         <StyledSection>
           <StyledBatLogo>
-            {batImage}
+            <BatColorIcon />
           </StyledBatLogo>
           <StyledH1>
             {getLocale('braveRewardsTitle')}
@@ -110,7 +109,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             {getLocale('braveRewardsTeaser')}
           </StyledTeaserParagraph>
           <StyledAnchor onClick={this.scrollToCenter}>
-            {arrowImage}
+            <ArrowDownIcon />
           </StyledAnchor>
         </StyledSection>
       </Hero>

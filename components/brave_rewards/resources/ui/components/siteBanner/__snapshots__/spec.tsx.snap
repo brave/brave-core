@@ -188,6 +188,9 @@ exports[`List tests basic tests matches the snapshot 1`] = `
 .c23 {
   display: inline-block;
   margin-left: 6px;
+  color: #A1A8F2;
+  width: 17px;
+  height: 17px;
 }
 
 .c22 {
@@ -207,10 +210,15 @@ exports[`List tests basic tests matches the snapshot 1`] = `
 .c16 {
   position: relative;
   font-family: Poppins,sans-serif;
+  --donate-content-padding: 0 19px 0 55px;
+  --donate-send-bg: #4c54d2;
+  --donate-send-color: #fff;
+  --donate-send-padding: 16px 19px 16px 55px;
+  --donate-funds-padding: 13px 12px 13px 24px;
 }
 
 .c17 {
-  padding: 0 19px 0 55px;
+  padding: var(--donate-content-padding);
 }
 
 .c18 {
@@ -225,16 +233,16 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   max-width: 167px;
 }
 
-.c24 {
-  background: #4c54d2;
+.c25 {
+  background: var(--donate-send-bg);
   font-size: 13px;
   font-weight: 600;
   -webkit-letter-spacing: 0.2px;
   -moz-letter-spacing: 0.2px;
   -ms-letter-spacing: 0.2px;
   letter-spacing: 0.2px;
-  color: #fff;
-  padding: 16px 19px 16px 55px;
+  color: var(--donate-send-color);
+  padding: var(--donate-send-padding);
   text-transform: uppercase;
   border: none;
   width: 100%;
@@ -242,10 +250,16 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c25 {
+.c26 {
   vertical-align: middle;
   display: inline-block;
   margin-right: 18px;
+}
+
+.c24 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 .c19 {
@@ -302,32 +316,24 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
   letter-spacing: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 <div
   className="c0"
   id="list"
   onKeyUp={[Function]}
-  tabIndex="0"
+  tabIndex={0}
 >
   <div
     className="c1"
   >
     <button
       className="c2"
-    >
-      <svg
-        height="11"
-        width="11"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
-          fill="#DFDFE8"
-          fillRule="evenodd"
-        />
-      </svg>
-    </button>
+    />
     <div
       className="c3"
     >
@@ -391,6 +397,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
         </div>
         <div
           className="c16"
+          disabled={false}
         >
           <div
             className="c17"
@@ -429,14 +436,13 @@ exports[`List tests basic tests matches the snapshot 1`] = `
                     className="c23"
                   >
                     <svg
-                      height="11"
-                      width="12"
-                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      className="c24"
+                      focusable="false"
+                      viewBox="0 0 32 32"
                     >
                       <path
-                        d="M10.425 3.106h-.004l-.114-.23C9.277 1.023 7.615 0 5.621 0 2.52 0 0 2.465 0 5.504 0 8.534 2.521 11 5.628 11a5.67 5.67 0 0 0 3.275-1.029.452.452 0 0 0 .107-.64.474.474 0 0 0-.654-.104 4.73 4.73 0 0 1-2.735.856C3.039 10.083.937 8.03.937 5.496c0-2.525 2.102-4.58 4.691-4.58 2.086 0 3.249 1.305 3.845 2.377l.047.096c-.404.278-.67.737-.67 1.257 0 .85.705 1.54 1.575 1.54S12 5.496 12 4.646c0-.851-.705-1.54-1.575-1.54"
-                        fill="#A1A8F2"
-                        fillRule="evenodd"
+                        d="M23.68134 11.30439C22.08752 8.70199 19.21782 7 16 7c-4.97056 0-9 4.02944-9 9s4.02944 9 9 9c2.50086 0 4.83581-1.02378 6.52498-2.8012.38046-.40034 1.01342-.41646 1.41375-.036.40034.38046.41645 1.01342.036 1.41376C21.91179 25.74727 19.05469 27 16 27 9.92487 27 5 22.07513 5 16S9.92487 5 16 5c4.27936 0 8.05419 2.46205 9.86553 6.12678C27.10091 11.49832 28 12.64424 28 14c0 1.65667-1.34247 3-3.00056 3C23.34247 17 22 15.65667 22 14c0-1.1838.68547-2.2076 1.68134-2.69561z"
                       />
                     </svg>
                   </span>
@@ -445,11 +451,11 @@ exports[`List tests basic tests matches the snapshot 1`] = `
             </div>
           </div>
           <button
-            className="c24"
-            disabled={false}
+            className="c25"
+            onClick={[Function]}
           >
             <span
-              className="c25"
+              className="c26"
             >
               <svg
                 height="21"
