@@ -6,8 +6,8 @@
 
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/common/pref_names.h"
-#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 
@@ -18,17 +18,22 @@ void BraveThemeService::RegisterProfilePrefs(
 }
 
 // static
-int BraveThemeService::GetBraveThemeType(Profile* profile) {
-  return profile->GetPrefs()->GetInteger(kBraveThemeType);
+BraveThemeService::BraveThemeType BraveThemeService::GetBraveThemeType(Profile* profile) {
+  return static_cast<BraveThemeService::BraveThemeType>(
+      profile->GetPrefs()->GetInteger(kBraveThemeType));
 }
 
-// static
-void BraveThemeService::SetBraveThemeType(Profile* profile,
-	                                      BraveThemeType type) {
-  profile->GetPrefs()->SetInteger(kBraveThemeType, type);
+BraveThemeService::BraveThemeService() {}
 
-  static_cast<BraveThemeService*>(ThemeServiceFactory::GetForProfile(profile))
-      ->NotifyThemeChanged();
+BraveThemeService::~BraveThemeService() {}
+
+void BraveThemeService::Init(Profile* profile) {
+  brave_theme_type_pref_.Init(
+      kBraveThemeType,
+      profile->GetPrefs(),
+      base::Bind(&BraveThemeService::OnPreferenceChanged,
+                 base::Unretained(this)));
+  ThemeService::Init(profile);
 }
 
 SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
@@ -38,4 +43,9 @@ SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
       return braveColor.value();
 
   return ThemeService::GetDefaultColor(id, incognito);
+}
+
+void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
+  DCHECK(pref_name == kBraveThemeType);
+  NotifyThemeChanged();
 }

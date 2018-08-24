@@ -6,6 +6,7 @@
 #define BRAVE_BROWSER_THEMES_BRAVE_THEME_SERVICE_H_
 
 #include "chrome/browser/themes/theme_service.h"
+#include "components/prefs/pref_member.h"
 
 namespace user_prefs {
 class PrefRegistrySyncable;
@@ -20,17 +21,23 @@ class BraveThemeService : public ThemeService {
   };
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-  static int GetBraveThemeType(Profile* profile);
-  static void SetBraveThemeType(Profile* profile, BraveThemeType type);
+  static BraveThemeType GetBraveThemeType(Profile* profile);
 
-  BraveThemeService() = default;
-  ~BraveThemeService() override = default;
+  BraveThemeService();
+  ~BraveThemeService() override;
 
+  // ThemeService overrides:
+  void Init(Profile* profile) override;
+  
  protected:
   // ThemeService overrides:
   SkColor GetDefaultColor(int id, bool incognito) const override;
 
  private:
+  void OnPreferenceChanged(const std::string& pref_name);
+
+  IntegerPrefMember brave_theme_type_pref_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveThemeService);
 };
 

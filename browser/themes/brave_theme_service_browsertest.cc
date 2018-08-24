@@ -3,14 +3,22 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/themes/brave_theme_service.h"
+#include "brave/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/ui/browser.h"
+#include "components/prefs/pref_service.h"
 
 using BraveThemeServiceTest = InProcessBrowserTest;
 using BTS = BraveThemeService;
+
+namespace {
+void SetBraveThemeType(Profile* profile, BTS::BraveThemeType type) {
+  profile->GetPrefs()->SetInteger(kBraveThemeType, type);
+}
+}  // namespace
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveThemeChangeTest) {
   Profile* profile = browser()->profile();
@@ -23,7 +31,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveThemeChangeTest) {
   EXPECT_EQ(BTS::BRAVE_THEME_TYPE_DEFAULT, BTS::GetBraveThemeType(profile));
 
   const ui::ThemeProvider& tp = ThemeService::GetThemeProviderForProfile(profile);
-  BTS::SetBraveThemeType(browser()->profile(), BTS::BRAVE_THEME_TYPE_LIGHT);
+  SetBraveThemeType(browser()->profile(), BTS::BRAVE_THEME_TYPE_LIGHT);
   EXPECT_EQ(BTS::BRAVE_THEME_TYPE_LIGHT, BTS::GetBraveThemeType(profile));
 #if defined(OFFICIAL_BUILD)
   EXPECT_EQ(light_frame_color, tp.GetColor(ThemeProperties::COLOR_FRAME));
@@ -32,7 +40,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveThemeChangeTest) {
   EXPECT_EQ(dark_frame_color, tp.GetColor(ThemeProperties::COLOR_FRAME));
 #endif
 
-  BTS::SetBraveThemeType(browser()->profile(), BTS::BRAVE_THEME_TYPE_DARK);
+  SetBraveThemeType(browser()->profile(), BTS::BRAVE_THEME_TYPE_DARK);
   EXPECT_EQ(BTS::BRAVE_THEME_TYPE_DARK, BTS::GetBraveThemeType(profile));
   EXPECT_EQ(dark_frame_color, tp.GetColor(ThemeProperties::COLOR_FRAME));
 }

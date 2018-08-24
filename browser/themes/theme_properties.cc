@@ -5,9 +5,11 @@
 #include "brave/browser/themes/theme_properties.h"
 
 #include "brave/browser/themes/brave_theme_service.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/common/channel_info.h"
+#include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
 
 namespace {
