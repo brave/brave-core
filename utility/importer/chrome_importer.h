@@ -26,7 +26,7 @@ class DictionaryValue;
 }
 
 namespace sql {
-class Connection;
+class Database;
 }
 
 class ChromeImporter : public Importer {
@@ -60,11 +60,11 @@ class ChromeImporter : public Importer {
 
   // Loads the urls associated with the favicons into favicon_map;
   void ImportFaviconURLs(
-    sql::Connection* db,
+    sql::Database* db,
     FaviconMap* favicon_map);
 
   // Loads and reencodes the individual favicons.
-  void LoadFaviconData(sql::Connection* db,
+  void LoadFaviconData(sql::Database* db,
                        const FaviconMap& favicon_map,
                        favicon_base::FaviconUsageDataList* favicons);
 

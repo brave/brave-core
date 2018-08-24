@@ -31,7 +31,7 @@
 #include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_constants.h"
 #include "net/extras/sqlite/sqlite_persistent_cookie_store.h"
-#include "sql/connection.h"
+#include "sql/database.h"
 #include "sql/statement.h"
 #include "url/gurl.h"
 
@@ -104,7 +104,7 @@ void ChromeImporter::ImportHistory() {
   if (!base::PathExists(history_path))
     return;
 
-  sql::Connection db;
+  sql::Database db;
   if (!db.Open(history_path))
     return;
 
@@ -182,7 +182,7 @@ void ChromeImporter::ImportBookmarks() {
   if (!base::PathExists(favicons_path))
     return;
 
-  sql::Connection db;
+  sql::Database db;
   if (!db.Open(favicons_path))
     return;
 
@@ -197,7 +197,7 @@ void ChromeImporter::ImportBookmarks() {
 }
 
 void ChromeImporter::ImportFaviconURLs(
-  sql::Connection* db,
+  sql::Database* db,
   FaviconMap* favicon_map) {
   const char query[] = "SELECT icon_id, page_url FROM icon_mapping;";
   sql::Statement s(db->GetUniqueStatement(query));
@@ -210,7 +210,7 @@ void ChromeImporter::ImportFaviconURLs(
 }
 
 void ChromeImporter::LoadFaviconData(
-    sql::Connection* db,
+    sql::Database* db,
     const FaviconMap& favicon_map,
     favicon_base::FaviconUsageDataList* favicons) {
   const char query[] = "SELECT f.url, fb.image_data "
@@ -397,7 +397,7 @@ void ChromeImporter::ImportCookies() {
   if (!base::PathExists(cookies_path))
     return;
 
-  sql::Connection db;
+  sql::Database db;
   if (!db.Open(cookies_path))
     return;
 
