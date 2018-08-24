@@ -14,7 +14,7 @@
 #import "base/mac/scoped_nsobject.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
-#include "base/task_scheduler/post_task.h"
+#include "base/task/post_task.h"
 #import "brave/browser/mac/su_updater.h"
 #include "brave/browser/update_util.h"
 #include "chrome/common/channel_info.h"

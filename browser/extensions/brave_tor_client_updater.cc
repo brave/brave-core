@@ -7,7 +7,7 @@
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/task_scheduler/post_task.h"
+#include "base/task/post_task.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace extensions {
