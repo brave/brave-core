@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/plugins/chrome_plugin_service_filter.cc b/chrome/browser/plugins/chrome_plugin_service_filter.cc
-index 9f0645f8ae2021d194904b82982d35b0a633fdd9..4447bbd5a0c5a3a8e5230539f6cf4f4b998732a6 100644
+index 3c2de25de6dfbb132e2d3ddb2e7721d0aef09c16..f75c26ab366d874f49e7c2be42ae9f367de9434d 100644
 --- a/chrome/browser/plugins/chrome_plugin_service_filter.cc
 +++ b/chrome/browser/plugins/chrome_plugin_service_filter.cc
 @@ -52,7 +52,7 @@ class ProfileContentSettingObserver : public content_settings::Observer {

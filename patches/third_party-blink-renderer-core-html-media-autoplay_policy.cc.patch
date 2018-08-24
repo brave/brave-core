@@ -1,8 +1,19 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index 70d1323967869929988baea80ead2fb997244ee6..5e495e9dbc234c580429adbf847449acacafd323 100644
+index 3fc7e25e9786857716eed1911e69513aa65017c4..3626b7fc4bda7eddcb2800294e08a5d92f068cf9 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-@@ -343,6 +343,11 @@ bool AutoplayPolicy::IsGestureNeededForPlaybackIfPendingUserGestureIsLocked()
+@@ -148,6 +148,10 @@ bool AutoplayPolicy::DocumentHasUserExceptionFlag(const Document& document) {
+ // static
+ bool AutoplayPolicy::DocumentShouldAutoplayMutedVideos(
+     const Document& document) {
++#if defined(BRAVE_CHROMIUM_BUILD)
++  if (GetAutoplayPolicyForDocument(document) == AutoplayPolicy::Type::kUserGestureRequired)
++   return false;
++#endif
+   return GetAutoplayPolicyForDocument(document) !=
+          AutoplayPolicy::Type::kNoUserGestureRequired;
+ }
+@@ -361,6 +365,11 @@ bool AutoplayPolicy::IsGestureNeededForPlaybackIfPendingUserGestureIsLocked()
    if (element_->GetLoadType() == WebMediaPlayer::kLoadTypeMediaStream)
      return false;
  

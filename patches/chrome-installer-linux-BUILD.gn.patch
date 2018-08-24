@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..78b5a943e9c3020dfd5fca0b52701cd284b013b1 100644
+index 4ac4a301c73841290fac70097e379b786108f831..054b8f885497e760aa06ee9762e6acf1118dda83 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -25,8 +25,8 @@ declare_args() {
+@@ -26,8 +26,8 @@ declare_args() {
  assert(is_linux)
  
  packaging_files_executables = [
@@ -13,7 +13,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..78b5a943e9c3020dfd5fca0b52701cd2
  ]
  packaging_files_shlibs = []
  
-@@ -159,12 +159,17 @@ action("merge_rpm_dependencies") {
+@@ -156,12 +156,17 @@ action("merge_rpm_dependencies") {
  }
  
  action("strip_chrome_binary") {
@@ -32,7 +32,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..78b5a943e9c3020dfd5fca0b52701cd2
    script = "//build/gn_run_binary.py"
    sources = [
      prog_name,
-@@ -246,8 +251,8 @@ copy("common_packaging_files") {
+@@ -243,8 +248,8 @@ copy("common_packaging_files") {
      ]
    } else {
      sources += [
@@ -43,7 +43,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..78b5a943e9c3020dfd5fca0b52701cd2
      ]
    }
  
-@@ -357,6 +362,12 @@ group("installer_deps") {
+@@ -354,6 +359,12 @@ group("installer_deps") {
      "//chrome/browser/resources/media/mei_preload:component",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -56,7 +56,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..78b5a943e9c3020dfd5fca0b52701cd2
    if (enable_nacl) {
      public_deps += [
        "//components/nacl/loader:nacl_helper",
-@@ -386,6 +397,9 @@ group("installer_deps") {
+@@ -379,6 +390,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -66,7 +66,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..78b5a943e9c3020dfd5fca0b52701cd2
  
    if (current_cpu == "x86") {
      # The shell scripts use "ia32" instead of "x86".
-@@ -528,3 +542,6 @@ linux_package("beta") {
+@@ -521,3 +535,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

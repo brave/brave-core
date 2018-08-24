@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index b9c5bdac43dc2374daf7649b9b4c8c35066227dd..8d1d9585374e0220ecd99674a1703b62aecc3b14 100644
+index ae7beb3e5f41f0a01aba682da17053c0c3ee62e4..fb1eb6fa756217f756437a6f62422a9993ad2e25 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -42,6 +42,7 @@ class Browser;
@@ -10,7 +10,7 @@ index b9c5bdac43dc2374daf7649b9b4c8c35066227dd..8d1d9585374e0220ecd99674a1703b62
  
  namespace bookmarks {
  class BookmarkBubbleObserver;
-@@ -59,6 +60,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -63,6 +64,7 @@ class ToolbarView : public views::AccessiblePaneView,
                      public UpgradeObserver,
                      public ToolbarButtonProvider,
                      public BrowserRootView::DropTarget {
@@ -18,7 +18,7 @@ index b9c5bdac43dc2374daf7649b9b4c8c35066227dd..8d1d9585374e0220ecd99674a1703b62
   public:
    // The view class name.
    static const char kViewClassName[];
-@@ -67,13 +69,13 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -71,13 +73,13 @@ class ToolbarView : public views::AccessiblePaneView,
    ~ToolbarView() override;
  
    // Create the contents of the Browser Toolbar.
@@ -34,7 +34,7 @@ index b9c5bdac43dc2374daf7649b9b4c8c35066227dd..8d1d9585374e0220ecd99674a1703b62
  
    // Clears the current state for |tab|.
    void ResetTabState(content::WebContents* tab);
-@@ -94,7 +96,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -98,7 +100,7 @@ class ToolbarView : public views::AccessiblePaneView,
  #endif  // defined(OS_CHROMEOS)
  
    // Shows a bookmark bubble and anchors it appropriately.
@@ -43,7 +43,7 @@ index b9c5bdac43dc2374daf7649b9b4c8c35066227dd..8d1d9585374e0220ecd99674a1703b62
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
  
-@@ -204,7 +206,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -209,7 +211,7 @@ class ToolbarView : public views::AccessiblePaneView,
    // ToolbarView::CalculatePreferredSize() and ToolbarView::GetMinimumSize().
    // These two functions call through to GetSizeInternal(), passing themselves
    // as the function pointer |View::*get_size|.

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index b0d4eb0e0655dff22f46950112768b186ee0a4cf..989a6d169f5810fa2f3c685318235b641da1a379 100644
+index b8232737dbf4dabada561044e522e44c906c53c8..cb55e2b38a40ae9141d30c5dfc27bc27a7bcc497 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -8,6 +8,7 @@
@@ -9,8 +9,8 @@ index b0d4eb0e0655dff22f46950112768b186ee0a4cf..989a6d169f5810fa2f3c685318235b64
 +#include "brave/browser/brave_local_state_prefs.h"
  #include "build/build_config.h"
  #include "chrome/browser/about_flags.h"
- #include "chrome/browser/accessibility/invert_bubble_prefs.h"
-@@ -371,6 +372,7 @@ void RegisterProfilePrefsForMigration(
+ #include "chrome/browser/accessibility/accessibility_ui.h"
+@@ -378,6 +379,7 @@ void RegisterProfilePrefsForMigration(
  
  void RegisterLocalState(PrefRegistrySimple* registry) {
    // Please keep this list alphabetized.

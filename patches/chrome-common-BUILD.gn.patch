@@ -1,8 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 9a21e268447a0ea984101132329073dca486f6ad..b61049b44b8a296fab25e60a1433e98d22b3b313 100644
+index 6d355943715348a94af7df53337a96422a0f95c5..c8d06b7b4f785ede823d28eb256a9cc47c2aea53 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -77,6 +77,7 @@ source_set("channel_info") {
+@@ -78,6 +78,7 @@ source_set("channel_info") {
    if (is_android) {
      public_deps += [ "//components/version_info/android:channel_getter" ]
    }
@@ -10,7 +10,7 @@ index 9a21e268447a0ea984101132329073dca486f6ad..b61049b44b8a296fab25e60a1433e98d
  }
  
  source_set("ini_parser") {
-@@ -538,6 +539,7 @@ static_library("non_code_constants") {
+@@ -542,6 +543,7 @@ static_library("non_code_constants") {
      "//printing/buildflags",
      "//ui/base:ui_features",
    ]

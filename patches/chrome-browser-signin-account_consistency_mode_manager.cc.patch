@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/signin/account_consistency_mode_manager.cc b/chrome/browser/signin/account_consistency_mode_manager.cc
-index 5755bf873113b108569cec4e215b2b112c27a209..05b3e25ffa195ccc6fd41f3665689d3e6a5488f8 100644
+index 8782bc7b8bbe072e6686cf2523abf3d97d6870b1..90d6562eb9ddfcd106f896813925bfe67a9ef69e 100644
 --- a/chrome/browser/signin/account_consistency_mode_manager.cc
 +++ b/chrome/browser/signin/account_consistency_mode_manager.cc
-@@ -216,7 +216,9 @@ void AccountConsistencyModeManager::SetIgnoreMissingOAuthClientForTesting() {
+@@ -212,7 +212,9 @@ void AccountConsistencyModeManager::SetIgnoreMissingOAuthClientForTesting() {
  
  AccountConsistencyMethod
  AccountConsistencyModeManager::GetAccountConsistencyMethod() {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/people_page.html b/chrome/browser/resources/settings/people_page/people_page.html
-index 757d4115cd532d4ea371a68ef2cbfe8d13d90855..bf1b9a9fc091d0468699638c71980440da15822d 100644
+index c3b7bc372c683744be582d87e52c040465195b4c..a7d2895f00f5f78de22f82936f8adaa4985fc105 100644
 --- a/chrome/browser/resources/settings/people_page/people_page.html
 +++ b/chrome/browser/resources/settings/people_page/people_page.html
-@@ -231,9 +231,11 @@
+@@ -232,9 +232,11 @@
  <if expr="not chromeos">
            </template> <!-- if="[[!diceEnabled_]]" -->
  </if>
