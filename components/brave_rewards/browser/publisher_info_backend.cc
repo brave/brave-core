@@ -9,6 +9,7 @@
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
 #include "third_party/leveldatabase/src/include/leveldb/iterator.h"
 #include "third_party/leveldatabase/src/include/leveldb/options.h"
+#include "third_party/leveldatabase/src/include/leveldb/slice.h"
 #include "third_party/leveldatabase/src/include/leveldb/status.h"
 
 namespace brave_rewards {
@@ -52,6 +53,43 @@ bool PublisherInfoBackend::Get(const std::string& lookup,
   return false;
 }
 
+bool PublisherInfoBackend::Search(const std::vector<std::string>& prefixes,
+              uint32_t start, uint32_t limit,
+              std::vector<const std::string>& results) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  bool initialized = EnsureInitialized();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  leveldb::ReadOptions options;
+  std::unique_ptr<leveldb::Iterator> db_it(db_->NewIterator(options));
+
+  uint32_t count = 0;
+  uint32_t position = 0;
+  for (std::vector<const std::string>::const_iterator prefix =
+        prefixes.begin(); prefix != prefixes.end(); ++prefix) {
+
+    auto slice = leveldb::Slice(*prefix);
+    for (db_it->Seek(slice);
+          count < limit && db_it->Valid();
+          db_it->Next()) {
+      if (!db_it->value().starts_with(slice)) {
+        db_it->SeekToLast();
+        continue;
+      }
+      if (position++ < start)
+        continue;
+      else
+        count++;
+      results.push_back(db_it->value().ToString());
+    }
+  }
+
+  return true;
+}
+
 bool PublisherInfoBackend::Load(uint32_t start,
                                 uint32_t limit,
                                 std::vector<const std::string>& results) {
@@ -67,7 +105,6 @@ bool PublisherInfoBackend::Load(uint32_t start,
 
   uint32_t count = 0;
   uint32_t position = 0;
-  std::string json;
   for (db_it->SeekToFirst(); count < limit && db_it->Valid(); db_it->Next()) {
     if (position++ < start)
       continue;
