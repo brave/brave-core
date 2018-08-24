@@ -15,7 +15,6 @@ source_set("channel_info") {
 
 source_set("common") {
   sources = [
-    "brave_override_util.h",
     "brave_paths.cc",
     "brave_paths.h",
     "brave_switches.cc",
