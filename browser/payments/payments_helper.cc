@@ -60,6 +60,7 @@ void PaymentsHelper::DidFinishNavigation(
 
 void PaymentsHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
+    const content::GlobalRequestID& request_id,
     const content::mojom::ResourceLoadInfo& resource_load_info) {
   if (!payments_service_)
     return;

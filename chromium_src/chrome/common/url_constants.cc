@@ -201,9 +201,6 @@ const char kRemoveNonCWSExtensionURL[] =
 const char kResetProfileSettingsLearnMoreURL[] =
     "https://community.brave.com";
 
-const char kSafeSearchSafeParameter[] = "safe=active";
-const char kSafeSearchSsuiParameter[] = "ssui=on";
-
 const char kSettingsSearchHelpURL[] =
 #if defined(OS_CHROMEOS)
     "https://community.brave.com";
