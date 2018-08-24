@@ -161,7 +161,7 @@ PaymentsServiceImpl::PaymentsServiceImpl(Profile* profile) :
     profile_(profile),
     ledger_(ledger::Ledger::CreateInstance(this)),
     file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
-        {base::MayBlock(), base::TaskPriority::BACKGROUND,
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     ledger_state_path_(profile_->GetPath().Append("ledger_state")),
     publisher_state_path_(profile_->GetPath().Append("publisher_state")),

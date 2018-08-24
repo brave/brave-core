@@ -46,7 +46,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
     scoped_refptr<PerformBridge> op = new PerformBridge(target, sel, arg);
     base::PostTaskWithTraits(FROM_HERE,
-                             {base::MayBlock(), base::TaskPriority::BACKGROUND,
+                             {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
                               base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
                              base::Bind(&PerformBridge::Run, op.get()));
   }
