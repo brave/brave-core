@@ -4,10 +4,13 @@
 
 #include "brave/browser/themes/theme_properties.h"
 
+#include "brave/browser/themes/brave_theme_service.h"
+#include "brave/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/common/channel_info.h"
+#include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
-#include "ui/gfx/color_palette.h"
 
 namespace {
 
@@ -70,22 +73,29 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiDevChannel(int id, bool in
 }  // namespace
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito) {
-  if (id == BRAVE_COLOR_FOR_TEST) {
-    return SkColorSetRGB(11, 13, 17);
-  }
+base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, Profile* profile) {
 #if !defined(OFFICIAL_BUILD)
   return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
 #else
-  switch (chrome::GetChannel()) {
-    case version_info::Channel::STABLE:
-    case version_info::Channel::BETA:
+  switch (BraveThemeService::GetBraveThemeType(profile)) {
+    case BraveThemeService::BRAVE_THEME_TYPE_DEFAULT:
+      switch (chrome::GetChannel()) {
+        case version_info::Channel::STABLE:
+        case version_info::Channel::BETA:
+          return MaybeGetDefaultColorForBraveUiReleaseChannel(id, incognito);
+        case version_info::Channel::DEV:
+        case version_info::Channel::CANARY:
+        case version_info::Channel::UNKNOWN:
+        default:
+          return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
+      }
+    case BraveThemeService::BRAVE_THEME_TYPE_LIGHT:
       return MaybeGetDefaultColorForBraveUiReleaseChannel(id, incognito);
-    case version_info::Channel::DEV:
-    case version_info::Channel::CANARY:
-    case version_info::Channel::UNKNOWN:
-    default:
+    case BraveThemeService::BRAVE_THEME_TYPE_DARK:
       return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
+    default:
+      NOTREACHED();
+
   }
 #endif
   return base::nullopt;

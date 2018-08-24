@@ -18,3 +18,4 @@ const char kAdBlockCurrentRegion[] = "brave.ad_block.current_region";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";
 const char kUseAlternatePrivateSearchEngine[] =
     "brave.use_alternate_private_search_engine";
+const char kBraveThemeType[] = "brave.theme.type";
