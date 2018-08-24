@@ -49,6 +49,10 @@ public class DataController: NSObject {
             return
         }
         
+        if context == DataController.viewContext {
+            log.warning("Writing to view context, this should be avoided.")
+        }
+        
         context.perform {
             if !context.hasChanges { return }
             

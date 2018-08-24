@@ -67,21 +67,21 @@ public final class Device: NSManagedObject, Syncable, CRUD {
     public static func currentDevice() -> Device? {
         
         if sharedCurrentDevice == nil {
-            let context = DataController.viewContext
-            context.performAndWait {
-                // Create device
-                let predicate = NSPredicate(format: "isCurrentDevice = YES")
-                // Should only ever be one current device!
-                var localDevice: Device? = get(predicate: predicate, context: context)?.first
-                
-                if localDevice == nil {
-                    // Create
-                    localDevice = add(context: context)
-                    localDevice?.isCurrentDevice = true
-                }
-                
-                sharedCurrentDevice = localDevice
+            var device: Device?
+            
+            let predicate = NSPredicate(format: "isCurrentDevice = YES")
+            
+            let existingDevice = first(where: predicate)
+            
+            if existingDevice != nil {
+                device = existingDevice
+            } else {
+                let newDevice = add(context: DataController.newBackgroundContext())
+                newDevice?.isCurrentDevice = true
+                device = newDevice
             }
+            
+            sharedCurrentDevice = device
         }
         return sharedCurrentDevice
     }
