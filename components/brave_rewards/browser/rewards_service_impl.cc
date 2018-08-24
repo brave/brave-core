@@ -10,7 +10,10 @@
 #include "base/guid.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
+#include "base/i18n/time_formatting.h"
 #include "base/sequenced_task_runner.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task_runner_util.h"
 #include "base/task/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
@@ -52,6 +55,18 @@ class LedgerURLLoaderImpl : public ledger::LedgerURLLoader {
   uint64_t request_id_;
   net::URLFetcher* fetcher_;  // NOT OWNED
 };
+
+ledger::PUBLISHER_MONTH GetPublisherMonth(const base::Time& time) {
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+  return (ledger::PUBLISHER_MONTH)exploded.month;
+}
+
+std::string GetPublisherYear(const base::Time& time) {
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+  return std::to_string(exploded.year);
+}
 
 ContentSite PublisherInfoToContentSite(
     const ledger::PublisherInfo& publisher_info) {
@@ -103,11 +118,12 @@ ledger::PublisherInfoList LoadPublisherInfoListOnFileTaskRunner(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
+    const std::vector<std::string> prefixes,
     PublisherInfoBackend* backend) {
   ledger::PublisherInfoList list;
 
   std::vector<const std::string> results;
-  if (backend && backend->Load(start, limit, results)) {
+  if (backend && backend->Search(prefixes, start, limit, results)) {
     for (std::vector<const std::string>::const_iterator it =
         results.begin(); it != results.end(); ++it) {
       list.push_back(ledger::PublisherInfo::FromJSON(*it));
@@ -198,8 +214,14 @@ void RewardsServiceImpl::CreateWallet() {
 void RewardsServiceImpl::GetContentSiteList(
     uint32_t start, uint32_t limit,
     const GetContentSiteListCallback& callback) {
+  auto now = base::Time::Now();
+  ledger::PublisherInfoFilter filter(
+      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+      GetPublisherMonth(now),
+      GetPublisherYear(now));
+
   ledger_->GetPublisherInfoList(start, limit,
-      ledger::PublisherInfoFilter::DEFAULT,
+      filter,
       std::bind(&GetContentSiteListInternal,
                 start,
                 limit,
@@ -214,8 +236,10 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   if (tld == "")
     return;
 
-  // TODO(bridiver) - add query parts
-  ledger::VisitData data(tld, origin.host(), url.path(), tab_id.id());
+  auto now = base::Time::Now();
+  ledger::VisitData data(tld, origin.host(), url.path(), tab_id.id(),
+      GetPublisherMonth(now),
+      GetPublisherYear(now));
   ledger_->OnLoad(data, GetCurrentTimestamp());
 }
 
@@ -428,10 +452,12 @@ void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
+    const std::vector<std::string>& prefix,
     ledger::GetPublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
                     start, limit, filter,
+                    prefix,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnPublisherInfoListLoaded,
                     AsWeakPtr(),

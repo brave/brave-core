@@ -6,6 +6,7 @@
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_IMPL_
 
 #include <memory>
+#include <string>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/wallet_info.h"
@@ -130,6 +131,7 @@ class RewardsServiceImpl : public RewardsService,
       uint32_t start,
       uint32_t limit,
       ledger::PublisherInfoFilter filter,
+      const std::vector<std::string>& prefix,
       ledger::GetPublisherInfoListCallback callback) override;
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
