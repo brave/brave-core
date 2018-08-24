@@ -112,7 +112,7 @@ public struct BraveUX {
     // LocationBar Private Coloring
     // TODO: Add text coloring
     // See comment for LocationBarBackgroundColor is semi-transparent location bar is desired
-    public static let LocationBarBackgroundColor_PrivateMode = GreyJ
+    public static let LocationBarBackgroundColor_PrivateMode = Black
     public static let LocationContainerBackgroundColor_PrivateMode = LocationBarBackgroundColor_PrivateMode
     
     public static let LocationBarEditModeBackgroundColor_Private = GreyJ
