@@ -34,6 +34,7 @@ class HistoryTests: CoreDataTestCase {
         XCTAssertEqual(object.domain!.visits, 1)
         
         let newObject = createAndWait()
+        DataController.viewContext.refreshAllObjects()
         
         // Should still be one object but with 2 visits recorded.
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
