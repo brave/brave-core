@@ -17,9 +17,6 @@ class ProxyResolutionService;
 
 namespace tor {
 
-using TorLaunchCallback =
-    base::Callback<void(bool /* result */, int64_t /* pid */)>;
-
 class TorLauncherServiceObserver;
 
 class TorProfileService : public KeyedService {
@@ -27,10 +24,10 @@ class TorProfileService : public KeyedService {
   TorProfileService();
   ~TorProfileService() override;
 
-  virtual void LaunchTor(const TorConfig&, const TorLaunchCallback&) = 0;
-  virtual void ReLaunchTor(const TorLaunchCallback&) = 0;
+  virtual void LaunchTor(const TorConfig&) = 0;
+  virtual void ReLaunchTor(const TorConfig&) = 0;
   virtual void SetNewTorCircuit(const GURL&) = 0;
-  virtual bool UpdateNewTorConfig(const TorConfig&) = 0;
+  virtual const TorConfig& GetTorConfig() = 0;
   virtual int64_t GetTorPid() = 0;
 
   virtual void SetProxy(net::ProxyResolutionService*, const GURL&,

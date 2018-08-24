@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <limits>
 
-#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "chrome/common/chrome_paths.h"
 #include "url/third_party/mozilla/url_parse.h"
@@ -43,13 +42,11 @@ TorConfig::TorConfig(base::FilePath& binary_path, std::string& proxy_string)
   DCHECK (!user_data_dir.empty());
   tor_data_path_ = user_data_dir.Append(FILE_PATH_LITERAL("tor"))
     .Append(FILE_PATH_LITERAL("data"));
-  if (!base::DirectoryExists(tor_data_path_))
-    DCHECK(base::CreateDirectory(tor_data_path_));
   tor_watch_path_ = user_data_dir.Append(FILE_PATH_LITERAL("tor"))
     .Append(FILE_PATH_LITERAL("watch"));
-  if (!base::DirectoryExists(tor_watch_path_))
-    DCHECK(base::CreateDirectory(tor_watch_path_));
 }
+
+TorConfig::TorConfig(const TorConfig& that) = default;
 
 TorConfig::~TorConfig() {}
 

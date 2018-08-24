@@ -16,6 +16,7 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/files/file_util.h"
 #include "base/process/kill.h"
 #include "base/process/launch.h"
 #include "base/single_thread_task_runner.h"
@@ -127,6 +128,8 @@ void TorLauncherImpl::Launch(const TorConfig& config,
   args.AppendArg("1");
   base::FilePath tor_data_path = config.tor_data_path();
   if (!tor_data_path.empty()) {
+    if (!base::DirectoryExists(tor_data_path))
+      DCHECK(base::CreateDirectory(tor_data_path));
     args.AppendArg("--DataDirectory");
     args.AppendArgPath(tor_data_path);
     args.AppendArg("--Log");
@@ -137,6 +140,8 @@ void TorLauncherImpl::Launch(const TorConfig& config,
   }
   base::FilePath tor_watch_path = config.tor_watch_path();
   if (!tor_watch_path.empty()) {
+    if (!base::DirectoryExists(tor_watch_path))
+      DCHECK(base::CreateDirectory(tor_watch_path));
     args.AppendArg("--pidfile");
     args.AppendArgPath(tor_watch_path.AppendASCII("tor.pid"));
     args.AppendArg("--controlport");
@@ -214,8 +219,11 @@ void TorLauncherImpl::MonitorChild() {
           } else if (WIFEXITED(status)) {
             LOG(ERROR) << "tor exit (" << WEXITSTATUS(status) << ")";
           }
-          if (crash_handler_callback_)
-            std::move(crash_handler_callback_).Run(pid);
+          if (crash_handler_callback_) {
+            base::ThreadTaskRunnerHandle::Get()->PostTask(
+              FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
+                                        pid));
+          }
         }
       } else {
         // pipes closed
@@ -225,8 +233,9 @@ void TorLauncherImpl::MonitorChild() {
 #elif defined(OS_WIN)
   WaitForSingleObject(tor_process_.Handle(), INFINITE);
   if (crash_handler_callback_)
-    std::move(crash_handler_callback_).
-      Run(base::GetProcId(tor_process_.Handle()));
+    base::ThreadTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
+                                base::GetProcId(tor_process_.Handle())));
 #else
 #error unsupported platforms
 #endif

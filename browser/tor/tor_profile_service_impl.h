@@ -7,6 +7,7 @@
 
 #include "brave/browser/tor/tor_profile_service.h"
 
+#include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/browser/tor/tor_proxy_config_service.h"
 
 class Profile;
@@ -22,17 +23,19 @@ class TorProfileServiceImpl : public TorProfileService {
   void Shutdown() override;
 
   // TorProfileService:
-  void LaunchTor(const TorConfig&, const TorLaunchCallback&) override;
-  void ReLaunchTor(const TorLaunchCallback&) override;
+  void LaunchTor(const TorConfig&) override;
+  void ReLaunchTor(const TorConfig&) override;
   void SetNewTorCircuit(const GURL&) override;
-  bool UpdateNewTorConfig(const TorConfig&) override;
+  const TorConfig& GetTorConfig() override;
   int64_t GetTorPid() override;
 
   void SetProxy(net::ProxyResolutionService*, const GURL&,
                         bool /* new circuit */) override;
+
+  void KillTor();
  private:
   Profile* profile_;  // NOT OWNED
-  TorConfig tor_config_;
+  TorLauncherFactory* tor_launcher_factory_; // Singleton
   TorProxyConfigService::TorProxyMap tor_proxy_map_;
   DISALLOW_COPY_AND_ASSIGN(TorProfileServiceImpl);
 };

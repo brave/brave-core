@@ -12,6 +12,7 @@ class TorLauncherServiceObserver {
   virtual ~TorLauncherServiceObserver() {}
 
   virtual void OnTorCrash(int64_t pid) {};
+  virtual void OnTorLaunched(int64_t pid) {};
   virtual void OnTorLauncherCrash() {};
 };
 

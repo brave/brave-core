@@ -91,7 +91,9 @@ TorProxyConfigService::ConfigAvailability
 }
 
 TorProxyConfigService::TorProxyMap::TorProxyMap() = default;
-TorProxyConfigService::TorProxyMap::~TorProxyMap() = default;
+TorProxyConfigService::TorProxyMap::~TorProxyMap() {
+  timer_.Stop();
+}
 
 // static
 std::string TorProxyConfigService::TorProxyMap::GenerateNewPassword() {

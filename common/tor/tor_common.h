@@ -21,7 +21,8 @@ using TorLauncherCallback = base::Callback<void(TorProcessState, int64_t)>;
 class TorConfig {
  public:
   TorConfig();
-  TorConfig(base::FilePath& binary_path, std::string& proxy_config);
+  explicit TorConfig(base::FilePath& binary_path, std::string& proxy_config);
+  TorConfig(const TorConfig& that);
   ~TorConfig();
 
   bool empty() const;

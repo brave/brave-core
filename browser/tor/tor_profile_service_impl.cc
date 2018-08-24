@@ -17,6 +17,7 @@ TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile) :
     profile_(profile) {
   //TODO: remove it
   LOG(ERROR) << profile_;
+  tor_launcher_factory_ = TorLauncherFactory::GetInstance();
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
@@ -25,25 +26,42 @@ TorProfileServiceImpl::~TorProfileServiceImpl() {
 void TorProfileServiceImpl::Shutdown() {
   TorProfileService::Shutdown();
 }
-void TorProfileServiceImpl::LaunchTor(const TorConfig& config,
-                                      const TorLaunchCallback& callback) {}
-void TorProfileServiceImpl::ReLaunchTor(const TorLaunchCallback& callback) {}
+
+void TorProfileServiceImpl::LaunchTor(const TorConfig& config) {
+  tor_launcher_factory_->LaunchTorProcess(config);
+}
+
+void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
+  tor_launcher_factory_->ReLaunchTorProcess(config);
+}
+
 void TorProfileServiceImpl::SetNewTorCircuit(const GURL& url) {}
-bool TorProfileServiceImpl::UpdateNewTorConfig(const TorConfig& config) { return true;}
-int64_t TorProfileServiceImpl::GetTorPid() {return 0;}
+
+const TorConfig& TorProfileServiceImpl::GetTorConfig() {
+  return tor_launcher_factory_->GetTorConfig();
+}
+
+int64_t TorProfileServiceImpl::GetTorPid() {
+  return tor_launcher_factory_->GetTorPid();
+}
 
 void TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
                                      const GURL& url,bool new_circuit) {
-  if (url.host().empty() || tor_config_.empty())
+  const TorConfig tor_config = tor_launcher_factory_->GetTorConfig();
+  if (url.host().empty() || tor_config.empty())
     return;
   BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
                           base::Bind(&TorProxyConfigService::TorSetProxy,
                                      service,
-                                     tor_config_.proxy_string(),
+                                     tor_config.proxy_string(),
                                      url.host(),
                                      &tor_proxy_map_,
                                      new_circuit));
 
+}
+
+void TorProfileServiceImpl::KillTor() {
+  tor_launcher_factory_->KillTorProcess();
 }
 
 }  // namespace tor

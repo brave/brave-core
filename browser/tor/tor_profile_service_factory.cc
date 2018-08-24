@@ -4,11 +4,16 @@
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
+#include <set>
+
 #include "brave/browser/tor/tor_profile_service_impl.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
+namespace {
+std::set<Profile*> g_profile_set;
+}
 
 // static
 tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
@@ -26,15 +31,17 @@ TorProfileServiceFactory::TorProfileServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "TorProfileService",
           BrowserContextDependencyManager::GetInstance()) {
+      g_profile_set.clear();
 }
 
-TorProfileServiceFactory::~TorProfileServiceFactory() {
-}
+TorProfileServiceFactory::~TorProfileServiceFactory() {}
 
 KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  Profile* profile = Profile::FromBrowserContext(context);
   std::unique_ptr<tor::TorProfileService> tor_profile_service(
-      new tor::TorProfileServiceImpl(Profile::FromBrowserContext(context)));
+      new tor::TorProfileServiceImpl(profile));
+  g_profile_set.emplace(profile);
   return tor_profile_service.release();
 }
 
@@ -53,9 +60,18 @@ bool TorProfileServiceFactory::ServiceIsNULLWhileTesting() const {
 
 void TorProfileServiceFactory::BrowserContextShutdown(
     content::BrowserContext* context) {
-   BrowserContextKeyedServiceFactory::BrowserContextShutdown(context);
+  if (g_profile_set.size() == 1) {
+    auto* service = static_cast<tor::TorProfileServiceImpl*>(
+      TorProfileServiceFactory::GetForProfile(
+        Profile::FromBrowserContext(context)));
+    service->KillTor();
+  }
+  BrowserContextKeyedServiceFactory::BrowserContextShutdown(context);
 }
+
 void TorProfileServiceFactory::BrowserContextDestroyed(
     content::BrowserContext* context) {
-   BrowserContextKeyedServiceFactory::BrowserContextDestroyed(context);
+  Profile* profile = Profile::FromBrowserContext(context);
+  g_profile_set.erase(profile);
+  BrowserContextKeyedServiceFactory::BrowserContextDestroyed(context);
 }
