@@ -255,6 +255,8 @@ class PageWallet extends React.Component<{}, State> {
               icon: <WalletImportIcon />
             }
           ]}
+          compact={false}
+          contentPadding={false}
           onSettingsClick={this.onBackupModalOpen}
           onActivityClick={doNothing}
           showCopy={true}

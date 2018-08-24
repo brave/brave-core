@@ -6,27 +6,37 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c1 {
-  padding: 20px 30px 15px 30px;
+  padding: 25px 30px 15px 30px;
 }
 
 .c13 {
-  margin: 0;
-  font-weight: 500;
+  margin-left: 17px;
+  font-weight: 300;
+  color: #4B4C5C;
+  font-size: 14px;
 }
 
 .c11 {
   margin: 0;
-  font-weight: 500;
+  font-weight: 300;
+  color: #4B4C5C;
+  font-size: 14px;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  margin-left: 10px;
 }
 
 .c8 {
-  padding: 15px 0px;
+  padding: 15px 0px 6px;
 }
 
 .c14 {
   padding: 5px 0px;
   border-top: 1px solid #DBDFE3;
   border-bottom: 1px solid #DBDFE3;
+  min-height: 70px;
 }
 
 .c15 {
@@ -39,91 +49,160 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0;
   letter-spacing: 0;
   line-height: 26px;
+  margin-left: 10px;
 }
 
 .c16 {
-  height: 15px;
   width: 15px;
   margin-left: 5px;
   vertical-align: middle;
 }
 
-.c21 {
+.c25 {
+  width: 120px;
   text-align: center;
   padding: 15px 0 0;
+  margin: 0 auto;
 }
 
-.c17 {
-  margin-top: 4px;
+.c19 {
+  margin-top: 6px;
 }
 
-.c22 {
-  display: inline-block;
-  overflow: hidden;
-  border: 1px solid rgba(76,84,210,0.9);
-  color: rgba(76,84,210,0.9);
-  font-size: 14px;
-  border-radius: 24px;
-  min-width: 116px;
-  padding: 17px 15px;
-  text-align: center;
+.c26 {
+  --button-main-color: #C5C5D3;
+  --button-main-color-hover: #A0A1B2;
+  --button-main-color-active: #E9E9F4;
+  --button-state-color: var(--button-main-color);
+  --icon-size: 18px;
+  --icon-spacing: 6px;
+  --webkit-appearance: none;
   box-sizing: border-box;
+  background: none;
+  border: none;
+  outline: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   font-family: Poppins,sans-serif;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 600;
-  line-height: 1;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 14px;
+  border-radius: 24px;
+  width: auto;
+  min-width: 116px;
+  padding: 14px 15px;
+  border: 1px solid;
+  color: var(--button-state-color);
 }
 
-.c22:hover {
-  border-color: rgba(76,84,210,1);
+.c26:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
 }
 
-.c22:active {
-  border-color: rgba(76,84,210,0.4);
+.c26:active:enabled {
+  --button-state-color: var(--button-main-color-active);
 }
 
-.c22:hover {
-  color: rgba(76,84,210,1);
-}
-
-.c22:active {
-  color: rgba(76,84,210,0.4);
+.c27 {
+  min-height: var(--icon-size);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 600;
+  text-transform: none;
+  line-height: 1;
 }
 
 .c18 {
-  position: relative;
-  display: block;
-  width: 30px;
-  height: 18px;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
-.c19 {
-  background: #A7ACB2;
+.c17 {
   width: 100%;
-  border-radius: 3px;
-  height: 6px;
-  margin-top: 6px;
+  height: 100%;
+  fill: currentColor;
 }
 
 .c20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c22 {
+  position: relative;
+  display: block;
+  height: 16px;
+  width: 28px;
+}
+
+.c23 {
+  background: #A7ACB2;
+  height: 6px;
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.c24 {
   position: relative;
   border-radius: 50%;
   -webkit-transition: 200ms ease-out;
   transition: 200ms ease-out;
-  background-color: #CDD1D5;
-  -webkit-transform: translate(0,calc(-50% - 4px));
-  -ms-transform: translate(0,calc(-50% - 4px));
-  transform: translate(0,calc(-50% - 4px));
-  width: 18px;
-  height: 18px;
+  --toggle-bullet-size: 16px;
+  --toggle-bullet-transform: translate(-1px,calc(-50% - 3px));
+  --toggle-bullet-background: #CDD1D5;
+  width: var(--toggle-bullet-size);
+  height: var(--toggle-bullet-size);
+  -webkit-transform: var(--toggle-bullet-transform);
+  -ms-transform: var(--toggle-bullet-transform);
+  transform: var(--toggle-bullet-transform);
+  background-color: var(--toggle-bullet-background);
+}
+
+.c21 {
+  color: #838391;
+  font-size: 12px;
+  font-family: Poppins,sans-serif;
+  text-align: right;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin: 0px 8px 0 0;
+  opacity: 1;
+  -webkit-transition: 100ms ease-out;
+  transition: 100ms ease-out;
 }
 
 .c9 {
@@ -265,7 +344,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: -0.2px;
   -ms-letter-spacing: -0.2px;
   letter-spacing: -0.2px;
-  color: #4c54d2;
+  color: #4B4C5C;
 }
 
 <div
@@ -280,7 +359,6 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
     >
       <div
         className="c2"
-        id={undefined}
       >
         <div
           className="c3"
@@ -315,32 +393,26 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
       <div
         className="c9"
         disabled={false}
-        id={undefined}
-        onClick={undefined}
       >
         <div
           className="c10"
-          id={undefined}
-          onClick={undefined}
           size={5}
         >
-          <h3
+          <span
             className="c11"
           >
-            MISSING: rewardsContributeAttention
-          </h3>
+            MISSING: rewardsContributeAttentionScore
+          </span>
         </div>
         <div
           className="c12"
-          id={undefined}
-          onClick={undefined}
           size={1}
         >
-          <h3
+          <span
             className="c13"
           >
             %
-          </h3>
+          </span>
         </div>
       </div>
     </section>
@@ -353,113 +425,96 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
         <div
           className="c9"
           disabled={false}
-          id={undefined}
-          onClick={undefined}
         >
           <div
             className="c10"
-            id={undefined}
-            onClick={undefined}
             size={5}
           >
             <span
               className="c15"
             >
               MISSING: donateMonthly
-              <span
-                className="c16"
+            </span>
+            <span
+              className="c16"
+            >
+              <svg
+                aria-hidden="true"
+                className="c17"
+                color="#4C54D2"
+                focusable="false"
+                viewBox="0 0 32 32"
               >
-                <svg
-                  height="11"
-                  width="12"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M10.425 3.106h-.004l-.114-.23C9.277 1.023 7.615 0 5.621 0 2.52 0 0 2.465 0 5.504 0 8.534 2.521 11 5.628 11a5.67 5.67 0 0 0 3.275-1.029.452.452 0 0 0 .107-.64.474.474 0 0 0-.654-.104 4.73 4.73 0 0 1-2.735.856C3.039 10.083.937 8.03.937 5.496c0-2.525 2.102-4.58 4.691-4.58 2.086 0 3.249 1.305 3.845 2.377l.047.096c-.404.278-.67.737-.67 1.257 0 .85.705 1.54 1.575 1.54S12 5.496 12 4.646c0-.851-.705-1.54-1.575-1.54"
-                    fill="#4C54D2"
-                    fillRule="evenodd"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M23.68134 11.30439C22.08752 8.70199 19.21782 7 16 7c-4.97056 0-9 4.02944-9 9s4.02944 9 9 9c2.50086 0 4.83581-1.02378 6.52498-2.8012.38046-.40034 1.01342-.41646 1.41375-.036.40034.38046.41645 1.01342.036 1.41376C21.91179 25.74727 19.05469 27 16 27 9.92487 27 5 22.07513 5 16S9.92487 5 16 5c4.27936 0 8.05419 2.46205 9.86553 6.12678C27.10091 11.49832 28 12.64424 28 14c0 1.65667-1.34247 3-3.00056 3C23.34247 17 22 15.65667 22 14c0-1.1838.68547-2.2076 1.68134-2.69561z"
+                />
+              </svg>
             </span>
           </div>
           <div
             className="c12"
-            id={undefined}
-            onClick={undefined}
             size={1}
           />
         </div>
         <div
           className="c9"
           disabled={false}
-          id={undefined}
-          onClick={undefined}
         >
           <div
             className="c10"
-            id={undefined}
-            onClick={undefined}
             size={5}
           >
             <span
               className="c15"
             >
               MISSING: includeInAuto
-              <span
-                className="c16"
+            </span>
+            <span
+              className="c16"
+            >
+              <svg
+                aria-hidden="true"
+                className="c18"
+                focusable="false"
+                viewBox="0 0 32 32"
               >
-                <svg
-                  height="16"
-                  width="16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g
-                    fill="none"
-                    fillRule="evenodd"
-                    transform="translate(1 1)"
-                  >
-                    <circle
-                      cx="7"
-                      cy="7"
-                      r="7"
-                      stroke="#DBDFE3"
-                    />
-                    <path
-                      d="M7.94 10.7c0 .27-.094.499-.281.686a.94.94 0 0 1-.692.28.94.94 0 0 1-.692-.28.94.94 0 0 1-.28-.692.94.94 0 0 1 .28-.692.94.94 0 0 1 .692-.28.94.94 0 0 1 .692.28c.187.187.28.42.28.697zM6.17 8.571L5.963 3.37h1.925L7.68 8.572H6.17z"
-                      fill="#DBDFE3"
-                    />
-                  </g>
-                </svg>
-              </span>
+                <path
+                  d="M16 28C9.37258 28 4 22.62742 4 16S9.37258 4 16 4s12 5.37258 12 12-5.37258 12-12 12zm0-2c5.52285 0 10-4.47715 10-10S21.52285 6 16 6 6 10.47715 6 16s4.47715 10 10 10zm0-4c-.55228 0-1-.44772-1-1s.44772-1 1-1 1 .44772 1 1-.44772 1-1 1zm-1-11c0-.55228.44772-1 1-1s1 .44772 1 1v6.07107c0 .55228-.44772 1-1 1s-1-.44772-1-1V11z"
+                />
+              </svg>
             </span>
           </div>
           <div
             className="c12"
-            id={undefined}
-            onClick={undefined}
             size={1}
           >
             <div
-              className="c17"
+              className="c19"
             >
               <div
-                checked={undefined}
-                className="c18"
-                disabled={undefined}
-                id={undefined}
-                onClick={undefined}
-                size="medium"
+                className="c20"
               >
                 <div
-                  className="c19"
-                  size="medium"
-                />
+                  className="c21"
+                  size="small"
+                >
+                  MISSING: off
+                </div>
                 <div
-                  checked={undefined}
-                  className="c20"
-                  size="medium"
-                />
+                  className="c22"
+                  data-test-id="toggle"
+                  size="small"
+                >
+                  <div
+                    className="c23"
+                    size="small"
+                  />
+                  <div
+                    className="c24"
+                    size="small"
+                    type="dark"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -467,16 +522,21 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
       </div>
     </section>
     <div
-      className="c21"
+      className="c25"
     >
-      <div
-        className="c22"
-        color="action"
-        onClick={undefined}
+      <button
+        className="c26"
         size="large"
+        type="subtle"
       >
-        MISSING: donateNow
-      </div>
+        <div
+          className="c27"
+          size="large"
+          type="subtle"
+        >
+          MISSING: donateNow
+        </div>
+      </button>
     </div>
   </div>
 </div>

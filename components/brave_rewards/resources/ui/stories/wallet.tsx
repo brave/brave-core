@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, object, number, text, boolean } from '@storybook/addon-knobs'
+import { withKnobs, object, select, number, text, boolean } from '@storybook/addon-knobs'
 // @ts-ignore
 import centered from '@storybook/addon-centered/dist'
 
@@ -32,6 +32,8 @@ storiesOf('Feature Components/Rewards/Wallet', module)
 
     return (
       <WalletWrapper
+        compact={false}
+        contentPadding={false}
         connectedWallet={boolean('Connected wallet', false)}
         showCopy={boolean('Show Uphold', false)}
         showSecActions={boolean('Show secondary actions', true)}
@@ -97,14 +99,14 @@ storiesOf('Feature Components/Rewards/Wallet', module)
       <div style={{ width: '373px', background: '#f9fbfc' }}>
         <WalletPanel
           id={'wallet-panel'}
-          platform={'youtube'}
+          platform={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
           publisherImg={bartBaker}
           publisherName={'Bart Baker'}
-          monthlyAmount={10}
-          isVerified={true}
-          tipsEnabled={true}
-          includeInAuto={true}
-          attentionScore={'17'}
+          monthlyAmount={number('Amount', 10)}
+          isVerified={boolean('Verified', true)}
+          tipsEnabled={boolean('Tips Enabled', true)}
+          includeInAuto={boolean('Include in monthly', true)}
+          attentionScore={'15'}
           donationAmounts={
             [5, 10, 15, 20, 30, 50, 100]
           }
@@ -127,9 +129,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
     return (
       <div style={{ width: '373px', padding: '0 25px' }}>
         <WalletSummarySlider
-          title={true}
           id={'summary-slider'}
-          onToggle={doNothing}
         />
       </div>
     )

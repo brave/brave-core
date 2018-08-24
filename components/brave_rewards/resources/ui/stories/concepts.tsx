@@ -10,6 +10,7 @@ import { withKnobs, boolean, text, object, number } from '@storybook/addon-knobs
 // Components
 import Settings from './settings/settings'
 import { SiteBanner, Tip, PanelWelcome, WalletPanel, WalletSummary, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
+import { BatColorIcon, WalletAddIcon } from '../../../src/components/icons'
 import WelcomePage from '../../../src/features/rewards/welcomePage'
 
 const bartBaker = require('../../assets/img/bartBaker.jpeg')
@@ -17,8 +18,6 @@ const siteBgImage = require('../../assets/img/bg_siteBanner.jpg')
 const siteBgLogo = require('../../assets/img/ddgo_siteBanner.svg')
 const siteScreen = require('../../assets/img/ddgo_site.png')
 const tipScreen = require('../../assets/img/tip_site.jpg')
-const wallet = require('../../assets/img/rewards_wallet.svg')
-const funds = require('../../assets/img/rewards_funds.svg')
 
 const donationAmounts = [
   { tokens: 1, converted: 0.3, selected: false },
@@ -165,46 +164,28 @@ storiesOf('Feature Components/Rewards/Concepts', module)
       store.set({ tipsEnabled: !store.state.tipsEnabled })
     }
 
-    const onToggleSummary = () => {
-      store.set({ showPanel: !store.state.showPanel })
-    }
-
-    const getProp = (show: boolean, prop: string): any => {
-      switch (prop) {
-        case 'opacity':
-          return show ? 1 : 0
-          break
-        case 'overflow':
-          return show ? 'unset' : 'hidden'
-          break
-        case 'height':
-          return show ? '100%' : 0
-        default:
-          return ''
-      }
-    }
-
     return (
       <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
-        <div style={{ position: 'absolute', bottom: '185px', left: '330px' }}>
+        <div style={{ position: 'absolute', bottom: '280px', left: '560px' }}>
           <WalletWrapper
-            contentPadding={!store.state.showPanel}
-            tokens={number('Tokens', 25)}
-            converted={text('Converted', '163230.50 USD')}
+            contentPadding={false}
+            compact={store.state.showPanel}
+            tokens={number('Tokens', 30)}
+            converted={text('Converted', '15.50 USD')}
             actions={[
               {
                 name: 'Add funds',
                 action: doNothing,
-                icon: wallet
+                icon: <WalletAddIcon />
               },
               {
-                name: 'Withdraw Funds',
+                name: 'Rewards Settings',
                 action: doNothing,
-                icon: funds
+                icon: <BatColorIcon />
               }
             ]}
             showCopy={boolean('Show Uphold', false)}
-            showSecActions={boolean('Show secondary actions', true)}
+            showSecActions={false}
             connectedWallet={boolean('Connected wallet', false)}
             grants={object('Grants', [
               {
@@ -221,14 +202,7 @@ storiesOf('Feature Components/Rewards/Concepts', module)
               }
             ])}
           >
-            <div
-              style={{
-                transition: 'visibility 0s, opacity 0.5s linear',
-                overflow: getProp(store.state.showPanel, 'overflow'),
-                opacity: getProp(store.state.showPanel, 'opacity'),
-                height: getProp(store.state.showPanel, 'height')
-              }}
-            >
+            <WalletSummarySlider id={'panel-slider'}>
               <WalletPanel
                 id={'wallet-panel'}
                 platform={'youtube'}
@@ -247,38 +221,18 @@ storiesOf('Feature Components/Rewards/Concepts', module)
                 onAmountChange={doNothing}
                 onIncludeInAuto={onIncludeInAuto}
               />
-              <WalletSummarySlider
-                title={true}
-                id={'panel-slider'}
-                onToggle={onToggleSummary}
-              />
-            </div>
-            <div
-              style={{
-                transition: 'visibility 0s, opacity 0.5s linear',
-                overflow: getProp(!store.state.showPanel, 'overflow'),
-                opacity: getProp(!store.state.showPanel, 'opacity'),
-                height: getProp(!store.state.showPanel, 'height')
-              }}
-            >
-              <WalletSummarySlider
-                title={false}
-                id={'summar-slider'}
-                onToggle={onToggleSummary}
-              />
-              <div style={{ padding: '0px 30px' }}>
+              <div style={{ padding: '0px 30px 0px' }}>
                 <WalletSummary
+                  compact={true}
                   grant={object('Grant', { tokens: 10, converted: 0.25 })}
-                  deposit={object('Deposit', { tokens: 10, converted: 0.25 })}
                   ads={object('Ads', { tokens: 10, converted: 0.25 })}
                   contribute={object('Contribute', { tokens: 10, converted: 0.25 })}
                   donation={object('Donation', { tokens: 2, converted: 0.25 })}
                   tips={object('Tips', { tokens: 19, converted: 5.25 })}
                   total={object('Total', { tokens: 1, converted: 5.25 })}
-                  onActivity={doNothing}
                 />
               </div>
-            </div>
+            </WalletSummarySlider>
           </WalletWrapper>
         </div>
       </div>

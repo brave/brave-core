@@ -3,9 +3,10 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import WalletPanel from './index'
+import { TestThemeProvider } from '../../../theme'
 
 describe('WalletPanel tests', () => {
-  const baseComponent = (props?: object) => <WalletPanel id='wallet-panel' {...props} />
+  const baseComponent = (props?: object) => <TestThemeProvider><WalletPanel id='wallet-panel' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

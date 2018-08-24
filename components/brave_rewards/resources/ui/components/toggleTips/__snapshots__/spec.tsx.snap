@@ -5,7 +5,7 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
   background: #F6F6FC;
   display: block;
   width: 100%;
-  padding: 20px 30px;
+  padding: 10px 30px;
 }
 
 .c1 {
@@ -45,7 +45,7 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
   margin-right: 5px;
 }
 
-.c7 {
+.c8 {
   display: inline-block;
   vertical-align: middle;
   margin-top: 3px;
@@ -53,44 +53,77 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
   text-align: right;
 }
 
-.c8 {
+.c9 {
   float: right;
+  margin-top: 4px;
 }
 
 .c6 {
   width: 20px;
   height: 20px;
   display: inline-block;
-  margin-top: 3px;
+  margin-top: 5px;
   vertical-align: top;
 }
 
-.c9 {
-  position: relative;
-  display: block;
-  width: 30px;
-  height: 18px;
+.c7 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 .c10 {
-  background: #A7ACB2;
-  width: 100%;
-  border-radius: 3px;
-  height: 6px;
-  margin-top: 6px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
-.c11 {
+.c12 {
+  position: relative;
+  display: block;
+  height: 16px;
+  width: 28px;
+}
+
+.c13 {
+  background: #A7ACB2;
+  height: 6px;
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.c14 {
   position: relative;
   border-radius: 50%;
   -webkit-transition: 200ms ease-out;
   transition: 200ms ease-out;
-  background-color: #CDD1D5;
-  -webkit-transform: translate(0,calc(-50% - 4px));
-  -ms-transform: translate(0,calc(-50% - 4px));
-  transform: translate(0,calc(-50% - 4px));
-  width: 18px;
-  height: 18px;
+  --toggle-bullet-size: 16px;
+  --toggle-bullet-transform: translate(-1px,calc(-50% - 3px));
+  --toggle-bullet-background: #CDD1D5;
+  width: var(--toggle-bullet-size);
+  height: var(--toggle-bullet-size);
+  -webkit-transform: var(--toggle-bullet-transform);
+  -ms-transform: var(--toggle-bullet-transform);
+  transform: var(--toggle-bullet-transform);
+  background-color: var(--toggle-bullet-background);
+}
+
+.c11 {
+  color: #838391;
+  font-size: 12px;
+  font-family: Poppins,sans-serif;
+  text-align: right;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin: 0px 8px 0 0;
+  opacity: 1;
+  -webkit-transition: 100ms ease-out;
+  transition: 100ms ease-out;
 }
 
 <section
@@ -149,41 +182,47 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
       className="c6"
     >
       <svg
-        height="20"
+        aria-hidden="true"
+        className="c7"
+        focusable="false"
         viewBox="0 0 32 32"
-        width="20"
-        xmlns="http://www.w3.org/2000/svg"
       >
         <path
           d="M24.7012 25.4531c-.031.281-.34.547-.635.547h-8.066c-.579 0-1.514-.333-1.959-.698l-3.041-2.497v-7.805h2.066c.477 0 .888-.337.981-.804.517-2.593 1.404-6.912 1.58-7.466.13-.409.616-.73 1.107-.73.674 0 1.266.561 1.266 1.2v6.471c-.037.104-.067.212-.067.329 0 .552.448 1 1 1h6.754c.107 0 .193.033.248.095.052.057.074.137.065.214l-1.299 10.144zm-18.701-.453h3v-11h-3v11zm21.427-11.238c-.434-.484-1.068-.762-1.74-.762h-5.687v-5.8c0-1.765-1.465-3.2-3.266-3.2-1.356 0-2.624.894-3.013 2.126-.221.693-1.097 5.001-1.474 6.874h-1.247c0-.552-.447-1-1-1h-5c-.553 0-1 .448-1 1v13c0 .552.447 1 1 1h5c.553 0 1-.448 1-1v-.607l1.773 1.456c.802.656 2.19 1.151 3.227 1.151h8.066c1.325 0 2.478-1.022 2.621-2.31l1.299-10.143c.072-.656-.131-1.306-.559-1.785z"
-          fill="#838391"
           fillRule="evenodd"
         />
       </svg>
     </span>
     <div
-      className="c7"
+      className="c8"
     >
       <div
-        className="c8"
+        className="c9"
       >
         <div
-          checked={undefined}
-          className="c9"
-          disabled={undefined}
-          id={undefined}
-          onClick={undefined}
-          size="medium"
+          className="c10"
         >
           <div
-            className="c10"
-            size="medium"
-          />
-          <div
-            checked={undefined}
             className="c11"
-            size="medium"
-          />
+            size="small"
+          >
+            MISSING: off
+          </div>
+          <div
+            className="c12"
+            data-test-id="toggle"
+            size="small"
+          >
+            <div
+              className="c13"
+              size="small"
+            />
+            <div
+              className="c14"
+              size="small"
+              type="dark"
+            />
+          </div>
         </div>
       </div>
     </div>

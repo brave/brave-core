@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   font-family: Poppins, sans-serif;
-  margin-top: 21px;
+  padding: 14px;
 `
 
 export const StyledSummary = styled<{}, 'div'>('div')`

@@ -28,15 +28,13 @@ import {
   Column,
   Select,
   Toggle,
-  ButtonSecondary
+  Button
 } from '../../../components'
-import { Tokens } from '../'
-import Profile, { Provider } from '../profile/index'
-import ToggleTips from '../toggleTips/index'
 
-// Assets
-const alertIcon = require('./assets/alert')
-const monthlyIcon = require('./assets/monthly')
+import { Tokens } from '../'
+import ToggleTips from '../toggleTips/index'
+import Profile, { Provider } from '../profile/index'
+import { AlertCircleIcon, RefreshIcon } from '../../../components/icons'
 
 export interface Props {
   id?: string
@@ -72,14 +70,6 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
     )
   }
 
-  getSelectTheme () {
-    return {
-      border: 'none',
-      padding: '0px',
-      background: 'inherit'
-    }
-  }
-
   donationDropDown () {
     const { donationAmounts } = this.props
     const monthlyAmount = this.props.monthlyAmount || 5
@@ -91,7 +81,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
     return (
       <StyledSelectWrapper>
         <Select
-          theme={this.getSelectTheme()}
+          floating={true}
           value={monthlyAmount.toString()}
           onChange={this.props.onAmountChange}
         >
@@ -117,10 +107,10 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           <Column size={5}>
             <StyledDonateText>
               {getLocale('donateMonthly')}
-              <StyledIcon>
-                {monthlyIcon}
-              </StyledIcon>
             </StyledDonateText>
+            <StyledIcon>
+              <RefreshIcon color={'#4C54D2'}/>
+            </StyledIcon>
           </Column>
           <Column size={1}>
             {this.donationDropDown()}
@@ -130,15 +120,15 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           <Column size={5}>
             <StyledDonateText>
               {getLocale('includeInAuto')}
-              <StyledIcon>
-                {alertIcon}
-              </StyledIcon>
             </StyledDonateText>
+            <StyledIcon>
+              <AlertCircleIcon/>
+            </StyledIcon>
           </Column>
           <Column size={1}>
             <StyledToggleWrapper>
               <Toggle
-                size={'medium'}
+                size={'small'}
                 checked={this.props.includeInAuto}
                 onToggle={this.props.onIncludeInAuto}
               />
@@ -167,7 +157,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
             <Grid columns={6}>
               <Column size={5}>
                 <StyledAttentionScoreTitle>
-                  {getLocale('rewardsContributeAttention')}
+                  {getLocale('rewardsContributeAttentionScore')}
                 </StyledAttentionScoreTitle>
               </Column>
               <Column size={1}>
@@ -181,9 +171,10 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
             {this.donationControls()}
           </StyledControlsWrapper>
           <StyledDonateWrapper>
-            <ButtonSecondary
+            <Button
               size={'large'}
-              color={'action'}
+              type={'subtle'}
+              level={'secondary'}
               onClick={donationAction}
               text={getLocale('donateNow')}
             />

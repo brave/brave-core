@@ -5,12 +5,14 @@
 import styled from 'styled-components'
 
 interface StyledProps {
-  connected?: boolean
+  connected?: boolean,
+  contentPadding?: boolean,
+  compact?: boolean
 }
 
 const panelBg = require('./assets/panel.svg')
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   border-radius: 6px;
   box-shadow: 0 0 8px 0 rgba(99, 105, 110, 0.12);
   overflow: hidden;
@@ -20,7 +22,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
     url(${panelBg}) no-repeat top left,
     linear-gradient(172deg, #392dd1, rgba(255, 26, 26, 0.53)),
     linear-gradient(#7d7bdc, #7d7bdc);
-  min-height: 715px;
+  min-height: ${p => p.compact ? 'unset' : '715px'};
   display: flex;
   flex-direction: column;
 `
@@ -55,8 +57,8 @@ export const StyledBalanceTokens = styled<{}, 'div'>('div')`
   margin-top: 10px;
 `
 
-export const StyledContent = styled<{Props}, 'div'>('div')`
-  padding: ${(p: {contentPadding: boolean}) => p.contentPadding ? '11px 25px 19px' : '11px 0px 19px 0px'};
+export const StyledContent = styled<StyledProps, 'div'>('div')`
+  padding: ${p => p.contentPadding ? '11px 25px 19px' : '0px'};
   position: relative;
   background: #f9fbfc;
   flex: 1;
@@ -155,7 +157,7 @@ export const StyledActionWrapper = styled<{}, 'div'>('div')`
   display: flex;
   justify-content: space-around;
   margin: 20px 0 0;
-  padding-bottom: 20px;
+  padding-bottom: 3px;
 `
 
 export const StyledBalanceCurrency = styled<{}, 'span'>('span')`

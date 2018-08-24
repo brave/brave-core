@@ -17,6 +17,7 @@ import {
   StyledThumbsUpIcon
 } from './style'
 import { Toggle } from '../../../components'
+import { ThumbsUpIcon } from '../../../components/icons'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch'
 
@@ -27,7 +28,6 @@ export interface Props {
   tipsEnabled?: boolean
 }
 
-const thumbsUpIcon = require('./assets/thumbsUp')
 const youtubeIcon = require('./assets/youtube')
 const twitterIcon = require('./assets/twitter')
 const twitchIcon = require('./assets/twitch')
@@ -78,12 +78,12 @@ export default class ToggleTips extends React.PureComponent<Props, {}> {
             {getLocale('for')}
           </StyledText>
           <StyledThumbsUpIcon>
-            {thumbsUpIcon}
+            <ThumbsUpIcon/>
           </StyledThumbsUpIcon>
           <StyledToggleOuter>
             <StyledToggleInner>
               <Toggle
-                size={'medium'}
+                size={'small'}
                 onToggle={onToggleTips}
                 checked={tipsEnabled}
               />

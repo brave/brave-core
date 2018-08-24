@@ -30,14 +30,16 @@ export interface Props {
   tips?: Token
   total: Token
   id?: string
+  compact?: boolean
 }
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
   render () {
-    const { id, grant, ads, contribute, donation, tips, onActivity, total, deposit } = this.props
+    const { id, grant, ads, contribute, donation, tips, onActivity, total, deposit, compact } = this.props
     const date = new Date()
     const month = getLocale(`month${date.toLocaleString('en-us', { month: 'short' })}`)
     const year = date.getFullYear()
+    const tokenSize = compact ? 'small' : 'normal'
 
     return (
       <StyledWrapper id={id}>
@@ -47,6 +49,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           {
             grant
             ? <ListToken
+              size={tokenSize}
               value={grant.tokens}
               converted={grant.converted}
               color={'earnings'}
@@ -57,6 +60,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           {
             ads
             ? <ListToken
+              size={tokenSize}
               value={ads.tokens}
               converted={ads.converted}
               color={'earnings'}
@@ -67,6 +71,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           {
             deposit
             ? <ListToken
+              size={tokenSize}
               value={deposit.tokens}
               converted={deposit.converted}
               color={'earnings'}
@@ -75,6 +80,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             : null
           }
           <ListToken
+            size={tokenSize}
             value={contribute.tokens}
             converted={contribute.converted}
             color={'contribute'}
@@ -84,6 +90,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           {
             donation
             ? <ListToken
+              size={tokenSize}
               value={donation.tokens}
               converted={donation.converted}
               color={'donation'}
@@ -95,6 +102,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           {
             tips
             ? <ListToken
+              size={tokenSize}
               value={tips.tokens}
               converted={tips.converted}
               color={'donation'}
@@ -104,6 +112,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             : null
           }
           <ListToken
+            size={tokenSize}
             value={total.tokens}
             converted={total.converted}
             border={'last'}

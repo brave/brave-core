@@ -50,7 +50,9 @@ export interface Props {
     name: string,
     action: () => void
   }[]
-  connectedWallet?: boolean
+  connectedWallet: boolean
+  compact: boolean
+  contentPadding: boolean
   showCopy?: boolean
   children?: React.ReactNode
   showSecActions?: boolean
@@ -63,7 +65,6 @@ export interface Props {
     onAlertClose?: () => void
   } | null
   id?: string
-  contentPadding?: boolean
 }
 
 interface State {
@@ -114,6 +115,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       actions,
       showCopy,
       connectedWallet,
+      compact,
+      contentPadding,
       showSecActions,
       grants,
       onSettingsClick,
@@ -123,7 +126,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const enabled = this.hasGrants(grants)
 
     return (
-      <StyledWrapper id={id}>
+      <StyledWrapper
+        id={id}
+        compact={compact}
+      >
         <StyledHeader>
           {
             alert && alert.node
@@ -189,7 +195,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           </StyledActionWrapper>
           <StyledCurve />
         </StyledHeader>
-        <StyledContent>
+        <StyledContent
+          contentPadding={contentPadding}
+        >
           {children}
         </StyledContent>
         {

@@ -4,14 +4,14 @@
 
 import styled from 'styled-components'
 
-export const StyledEnableTipsSection = styled.section`
+export const StyledEnableTipsSection = styled<{}, 'section'>('section')`
   background: #F6F6FC;
   display: block;
   width: 100%;
-  padding: 20px 30px;
+  padding: 10px 30px;
 ` as any
 
-export const StyledEnableTipsInner = styled.div`
+export const StyledEnableTipsInner = styled<{}, 'div'>('div')`
   color: #838391;
   font-size: 14px;
   font-weight: normal;
@@ -19,7 +19,7 @@ export const StyledEnableTipsInner = styled.div`
   line-height: 28px;
 ` as any
 
-export const StyledEnableTips = styled.span`
+export const StyledEnableTips = styled<{}, 'span'>('span')`
   color: #4C54D2;
   font-size: 14px;
   font-weight: 500;
@@ -28,21 +28,21 @@ export const StyledEnableTips = styled.span`
   margin-right: 5px;
 ` as any
 
-export const StyledText = styled.span`
+export const StyledText = styled<{}, 'span'>('span')`
   margin-right: 5px;
 ` as any
 
-export const StyledProviderImg = styled.span`
+export const StyledProviderImg = styled<{}, 'span'>('span')`
   margin-right: 5px;
   vertical-align: middle;
 ` as any
 
-export const StyledProviderName = styled.span`
+export const StyledProviderName = styled<{}, 'span'>('span')`
   font-weight: 600;
   margin-right: 5px;
 ` as any
 
-export const StyledToggleOuter = styled.div`
+export const StyledToggleOuter = styled<{}, 'div'>('div')`
   display: inline-block;
   vertical-align: middle;
   margin-top: 3px;
@@ -50,14 +50,15 @@ export const StyledToggleOuter = styled.div`
   text-align: right;
 ` as any
 
-export const StyledToggleInner = styled.div`
+export const StyledToggleInner = styled<{}, 'div'>('div')`
   float: right;
+  margin-top: 4px;
 ` as any
 
-export const StyledThumbsUpIcon = styled.span`
+export const StyledThumbsUpIcon = styled<{}, 'span'>('span')`
   width: 20px;
   height: 20px;
   display: inline-block;
-  margin-top: 3px;
+  margin-top: 5px;
   vertical-align: top;
 ` as any

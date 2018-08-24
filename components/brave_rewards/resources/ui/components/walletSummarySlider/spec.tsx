@@ -5,7 +5,7 @@ import { create } from 'react-test-renderer'
 import WalletSummarySlider from './index'
 
 describe('WalletSummarySlider tests', () => {
-  const baseComponent = (props?: object) => <WalletSummarySlider id='wallet-slider' {...props} />
+  const baseComponent = (props?: object) => <WalletSummarySlider id='wallet-slider' children={[null, null]} {...props} />
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

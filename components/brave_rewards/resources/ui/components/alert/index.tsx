@@ -12,7 +12,7 @@ import {
   StyledSuccess,
   StyledWarning
 } from './style'
-import { AlertCirlceIcon,
+import { AlertCircleIcon,
   CheckCircleIcon,
   CloseCircleIcon,
   CloseStrokeIcon } from '../../../components/icons'
@@ -46,7 +46,7 @@ export default class Alert extends React.PureComponent<Props, {}> {
       case 'warning':
         return (
           <StyledWarning>
-            <AlertCirlceIcon />
+            <AlertCircleIcon />
           </StyledWarning>
         )
     }

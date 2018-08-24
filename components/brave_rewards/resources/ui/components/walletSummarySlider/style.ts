@@ -4,22 +4,32 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div`
-  background: #E9EBFF;
+interface StyleProps {
+  show?: boolean
+}
+
+export const StyledWrapper = styled<{}, 'div'>('div')`
   display: block;
   width: 100%;
-  padding: 20px 30px;
 ` as any
 
-export const StyledNoTitleWrapper = styled.div`
-  position: absolute;
-  background: inherit;
-  display: block;
+export const StyledTransitionWrapper = styled<StyleProps, 'div'>('div')`
+  height: ${p => p.show ? '100%' : '0'};
+  opacity: ${p => p.show ? '1' : '0'};
+  overflow: ${p => p.show ? 'unset' : 'hidden'};
+  transition: visibility 0.5s, opacity 0.5s linear;
+` as any
+
+export const StyledToggleWrapper = styled<StyleProps, 'div'>('div')`
   width: 100%;
-  padding: 20px 30px;
+  display: block;
+  padding: ${p => p.show ? '20px 30px' : '20px'};
+  top: ${p => p.show ? 'unset' : '12px'};
+  position: ${p => p.show ? 'static' : 'absolute'};
+  background: ${p => p.show ? '#E9EBFF' : 'inherit'};
 ` as any
 
-export const StyledSummaryText = styled.span`
+export const StyledSummaryText = styled<{}, 'span'>('span')`
   color: #A1A8F2;
   font-size: 14px;
   font-weight: 600;
@@ -28,11 +38,10 @@ export const StyledSummaryText = styled.span`
   line-height: 22px;
 ` as any
 
-export const StyledArrowIcon = styled.span`
+export const StyledArrowIcon = styled<StyleProps, 'span'>('span')`
+  width: 25px;
+  height: 25px;
   display: block;
-` as any
-
-export const StyledNoTitleArrowIcon = styled.span`
-  display: block;
-  margin-top: -18px;
+  margin-left: 13px;
+  margin-top: ${p => p.show ? '-2px' : '-23px'};
 ` as any

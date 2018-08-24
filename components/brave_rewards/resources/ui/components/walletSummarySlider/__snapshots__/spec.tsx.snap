@@ -2,19 +2,88 @@
 
 exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
 .c0 {
-  position: absolute;
-  background: inherit;
   display: block;
   width: 100%;
-  padding: 20px 30px;
-}
-
-.c4 {
-  display: block;
-  margin-top: -18px;
 }
 
 .c1 {
+  height: 100%;
+  opacity: 1;
+  overflow: unset;
+  -webkit-transition: visibility 0.5s,opacity 0.5s linear;
+  transition: visibility 0.5s,opacity 0.5s linear;
+}
+
+.c9 {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  -webkit-transition: visibility 0.5s,opacity 0.5s linear;
+  transition: visibility 0.5s,opacity 0.5s linear;
+}
+
+.c2 {
+  width: 100%;
+  display: block;
+  padding: 20px 30px;
+  top: unset;
+  position: static;
+  background: #E9EBFF;
+}
+
+.c10 {
+  width: 100%;
+  display: block;
+  padding: 20px;
+  top: 12px;
+  position: absolute;
+  background: inherit;
+}
+
+.c5 {
+  color: #A1A8F2;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.35px;
+  -moz-letter-spacing: 0.35px;
+  -ms-letter-spacing: 0.35px;
+  letter-spacing: 0.35px;
+  line-height: 22px;
+}
+
+.c7 {
+  width: 25px;
+  height: 25px;
+  display: block;
+  margin-left: 13px;
+  margin-top: -2px;
+}
+
+.c11 {
+  width: 25px;
+  height: 25px;
+  display: block;
+  margin-left: 13px;
+  margin-top: -23px;
+}
+
+.c12 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c8 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.c3 {
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(6,1fr);
@@ -33,7 +102,7 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
   align-items: flex-start;
 }
 
-.c2 {
+.c4 {
   box-sizing: border-box;
   position: relative;
   display: -webkit-box;
@@ -61,7 +130,7 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
   color: inherit;
 }
 
-.c3 {
+.c6 {
   box-sizing: border-box;
   position: relative;
   display: -webkit-box;
@@ -92,41 +161,95 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
 <div
   className="c0"
   id="wallet-slider"
-  onClick={undefined}
 >
   <div
     className="c1"
-    disabled={false}
-    id={undefined}
-    onClick={undefined}
   >
     <div
-      className="c2"
-      id={undefined}
-      onClick={undefined}
-      size={5}
-    />
-    <div
-      className="c3"
-      id={undefined}
-      onClick={undefined}
-      size={1}
+      className="c0"
     >
-      <span
-        className="c4"
+      <div
+        className="c2"
+        onClick={[Function]}
       >
-        <svg
-          height="5"
-          width="8"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          className="c3"
+          disabled={false}
         >
-          <path
-            d="M4 4.56a.558.558 0 0 1-.396-.164L.164.956A.56.56 0 1 1 .957.164L4 3.207 7.044.164a.56.56 0 0 1 .792.792l-3.44 3.44A.557.557 0 0 1 4 4.56z"
-            fill="#4C54D2"
-            fillRule="evenodd"
+          <div
+            className="c4"
+            size={5}
+          >
+            <span
+              className="c5"
+            >
+              MISSING: rewardsSummary
+            </span>
+          </div>
+          <div
+            className="c6"
+            size={1}
+          >
+            <span
+              className="c7"
+            >
+              <svg
+                aria-hidden="true"
+                className="c8"
+                color="#696FDC"
+                focusable="false"
+                viewBox="0 0 32 32"
+              >
+                <path
+                  d="M16 17.68292l6.3492-5.44218c.41933-.35942 1.05063-.31086 1.41006.10847.35942.41932.31086 1.05062-.10847 1.41005l-7 6c-.37449.32099-.9271.32099-1.30158 0l-7-6c-.41933-.35943-.46789-.99073-.10847-1.41005.35943-.41933.99073-.46789 1.41005-.10847L16 17.68292z"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="c9"
+  >
+    <div
+      className="c0"
+    >
+      <div
+        className="c10"
+        onClick={[Function]}
+      >
+        <div
+          className="c3"
+          disabled={false}
+        >
+          <div
+            className="c4"
+            size={5}
           />
-        </svg>
-      </span>
+          <div
+            className="c6"
+            size={1}
+          >
+            <span
+              className="c11"
+            >
+              <svg
+                aria-hidden="true"
+                className="c12"
+                color="#696FDC"
+                focusable="false"
+                viewBox="0 0 32 32"
+              >
+                <path
+                  d="M16 17.68292l6.3492-5.44218c.41933-.35942 1.05063-.31086 1.41006.10847.35942.41932.31086 1.05062-.10847 1.41005l-7 6c-.37449.32099-.9271.32099-1.30158 0l-7-6c-.41933-.35943-.46789-.99073-.10847-1.41005.35943-.41933.99073-.46789 1.41005-.10847L16 17.68292z"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

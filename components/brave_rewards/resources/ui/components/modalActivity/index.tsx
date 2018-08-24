@@ -34,7 +34,7 @@ import {
 import TableContribute, { DetailRow as ContributeRow } from '../tableContribute'
 import TableTransactions, { DetailRow as TransactionRow } from '../tableTransactions'
 import { Select, ControlWrapper, Modal } from '../../../components'
-import { AlertCirlceIcon, DownloadIcon, PrintIcon, VerifiedFillIcon } from '../../../components/icons'
+import { AlertCircleIcon, DownloadIcon, PrintIcon, VerifiedFillIcon } from '../../../components/icons'
 import ListToken from '../listToken'
 import { Type as TokenType } from '../tokens'
 
@@ -116,7 +116,7 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
         this.hasWarnings = true
         title = (
           <StyledWarningWrapper>
-            {title} <StyledAlertWrapper><AlertCirlceIcon /></StyledAlertWrapper>
+            {title} <StyledAlertWrapper><AlertCircleIcon /></StyledAlertWrapper>
           </StyledWarningWrapper>
         )
       }
@@ -232,7 +232,7 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
             this.hasWarnings
             ? <StyledWarning>
                 <StyledAlertWrapper>
-                  <AlertCirlceIcon />
+                  <AlertCircleIcon />
                 </StyledAlertWrapper>
                 <StyledWarningText>
                   <b>{getLocale('paymentNotMade')}</b> {getLocale('paymentWarning')}
