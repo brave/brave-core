@@ -37,7 +37,7 @@ class TabLocationView: UIView {
     var delegate: TabLocationViewDelegate?
     var longPressRecognizer: UILongPressGestureRecognizer!
     var tapRecognizer: UITapGestureRecognizer!
-    private var contentView: UIStackView!
+    var contentView: UIStackView!
     private var tabObservers: TabObservers!
 
     @objc dynamic var baseURLFontColor: UIColor = TabLocationViewUX.BaseURLFontColor {
@@ -317,7 +317,7 @@ extension TabLocationView: AccessibilityActionsSource {
 
 extension TabLocationView: Themeable {
     func applyTheme(_ theme: Theme) {
-        backgroundColor = UIColor.TextField.Background.colorFor(theme)
+        backgroundColor = BraveUX.LocationBarBackgroundColor// UIColor.TextField.Background.colorFor(theme)
         urlTextField.textColor = UIColor.Browser.Tint.colorFor(theme)
         readerModeButton.selectedTintColor = UIColor.TextField.ReaderModeButtonSelected.colorFor(theme)
         readerModeButton.unselectedTintColor = UIColor.TextField.ReaderModeButtonUnselected.colorFor(theme)
