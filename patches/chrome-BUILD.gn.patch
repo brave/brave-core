@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 0c38111c971a58292e922cdcd62317e4d04480a4..5111f0bbb0b6c6c9496ae24c0c9461d86af29add 100644
+index 0c38111c971a58292e922cdcd62317e4d04480a4..68df2821d96e7f36db525e9d98b2f2577ad7ff08 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -181,6 +181,10 @@ if (!is_android && !is_mac) {
@@ -69,6 +69,15 @@ index 0c38111c971a58292e922cdcd62317e4d04480a4..5111f0bbb0b6c6c9496ae24c0c9461d8
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
+@@ -987,7 +1003,7 @@ if (is_win) {
+   # EGL on MacOS can be used in dev builds and on bots for test
+   # related purposes, but it is not yet desired to ship these
+   # libraries with official chrome (http://crbug.com/757974).
+-  bundle_egl_libraries = use_egl && !(is_chrome_branded && is_official_build)
++  bundle_egl_libraries = use_egl && !is_official_build
+ 
+   if (bundle_egl_libraries) {
+     # Add the ANGLE .dylibs in the MODULE_DIR of Chromium.app
 @@ -1195,6 +1211,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
