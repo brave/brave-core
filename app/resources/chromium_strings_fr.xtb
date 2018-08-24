@@ -37,7 +37,6 @@ Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="5785919770853225148">Brave va enregistrer ce mot de passe dans votre compte Brave Software. Vous n'avez pas besoin de le retenir.</translation>
 <translation id="3343095737966473035">Brave n'est pas votre navigateur par défaut</translation>
 <translation id="6715663530666325392">Configurez la synchronisation pour enregistrer sur le Web les fonctionnalités personnalisées de votre navigateur et y accéder à partir de Brave sur n'importe quel ordinateur.</translation>
-<translation id="2708027082363760195">Brave ne comprend pas le lecteur de PDF qui est nécessaire au fonctionnement de l'aperçu avant impression.</translation>
 <translation id="8880183781256147665">Ajout à Brave en cours…</translation>
 <translation id="3561569806301739367">Brave a bloqué <ph name="FILE_NAME"/>, car ce fichier peut être dangereux.</translation>
 <translation id="9067428552314418522">Brave a bloqué ce fichier, car ce dernier est dangereux.</translation>
@@ -85,6 +84,7 @@ Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="3215652305414474626">Elle contrôle également la page qui s'affiche au démarrage de Brave ou lorsque vous cliquez sur le bouton Accueil.</translation>
 <translation id="2433912322225810055">Elle contrôle également la page qui s'affiche au démarrage de Brave ou lorsque vous effectuez une recherche dans l'omnibox.</translation>
 <translation id="2871190378186459992">Découvrez des applications, des jeux, des extensions et des thèmes exceptionnels pour Brave.</translation>
+<translation id="2522086024276534909">Redémarrer Brave OS</translation>
 <translation id="8183252473547465084">Redémarrez Brave OS pour appliquer la mise à jour.</translation>
 <translation id="5895138241574237353">Redémarrer</translation>
 <translation id="5875673934455379806">Réinstaller Brave</translation>

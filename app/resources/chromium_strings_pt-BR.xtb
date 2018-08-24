@@ -30,7 +30,6 @@
 <translation id="5785919770853225148">O Brave salvará essa senha na sua Conta do Brave Software. Você não precisará se lembrar dela.</translation>
 <translation id="3343095737966473035">O Brave não é seu navegador padrão</translation>
 <translation id="6715663530666325392">Configure a sincronização para salvar suas características de navegador personalizadas na web e acessá-las do Brave em qualquer computador.</translation>
-<translation id="2708027082363760195">O Brave não inclui o visualizador de PDF que é necessário para que a visualização de impressão funcione.</translation>
 <translation id="8880183781256147665">Adicionando ao Brave...</translation>
 <translation id="3561569806301739367">O arquivo <ph name="FILE_NAME"/> pode ser perigoso. Por isso ele foi bloqueado pelo Brave.</translation>
 <translation id="9067428552314418522">Esse arquivo é perigoso, por isso ele foi bloqueado pelo Brave.</translation>
@@ -78,6 +77,7 @@
 <translation id="3215652305414474626">Controla também qual página deve ser exibida quando você inicia o Brave ou clica no botão "Página inicial".</translation>
 <translation id="2433912322225810055">Controla também qual página deve ser exibida quando você inicia o Brave ou faz uma pesquisa na Omnibox.</translation>
 <translation id="2871190378186459992">Descubra ótimos aplicativos, jogos, extensões e temas para o Brave.</translation>
+<translation id="2522086024276534909">Reiniciar o Brave OS</translation>
 <translation id="8183252473547465084">É necessário reiniciar o Brave OS para que a atualização seja aplicada.</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
 <translation id="5875673934455379806">Reinstalar o Brave</translation>

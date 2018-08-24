@@ -498,9 +498,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8743864605301774756">Opdateret for én time siden</translation>
 <translation id="5638497698949808140">Opdateret for <ph name="HOURS"/> timer siden</translation>
 <translation id="1329584516321524826">Netop opdateret</translation>
-<translation id="8679788109894721265">Denne side bruger mere end <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Indlæsningen er stoppet</translation>
-<translation id="4280864916190672950">Stop indlæsning</translation>
 <translation id="2724841811573117416">WebRTC-logfiler</translation>
 <translation id="7518150891539970662">WebRTC-logfiler (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-logfil blev registreret <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -587,7 +584,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7554791636758816595">Ny fane</translation>
 <translation id="3915280005470252504">Søg ved at indtale</translation>
 <translation id="3153862085237805241">Gem kortet</translation>
-<translation id="4961000125720751066">Hav dine kort samlet ét sted</translation>
+<translation id="1593926297800505364">Gem betalingsmetode</translation>
 <translation id="2473195200299095979">Oversæt denne side</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Udvidelsen "<ph name="NAME"/>" zoomede ind på denne side.</translation>
@@ -1047,7 +1044,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5562781907504170924">Denne fane er tilsluttet en Bluetooth-enhed.</translation>
 <translation id="5884474295213649357">Denne fane er sluttet til en USB-enhed.</translation>
 <translation id="8466417995783206254">Denne fane afspiller en video i tilstanden med integreret billede.</translation>
-<translation id="6235700927623181151">Denne fane deler indholdet fra dit skrivebord.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kameraet eller mikrofonen optager</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – faneindholdet deles</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – afspiller video i tilstanden med integreret billede</translation>
@@ -1112,35 +1108,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="874689135111202667">{0,plural, =1{Vil du uploade én fil til dette website?}one{Vil du uploade # fil til dette website?}other{Vil du uploade # filer til dette website?}}</translation>
 <translation id="1956390763342388273">Denne handling uploader alle filer fra "<ph name="FOLDER_PATH"/>". Gør kun dette, hvis du har tillid til websitet.</translation>
 <translation id="1243314992276662751">Upload</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> vil bekræfte din identitet</translation>
-<translation id="3738671331307774213">Bekræftelse af din identitet hjælper med at beskytte dine personlige data</translation>
-<translation id="8435395510592618362">Bekræft din identitet med <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Vælg en indstilling</translation>
-<translation id="7490950320178383728">Brug din sikkerhedsnøgle med Bluetooth</translation>
-<translation id="414599683948988413">Brug din sikkerhedsnøgle med USB</translation>
-<translation id="7851816139220202929">Brug din sikkerhedsnøgle med NFC</translation>
-<translation id="5392327114396848796">Brug en indbygget sikkerhedsnøgle</translation>
-<translation id="5104546332954397226">Brug din telefon som sikkerhedsnøgle</translation>
-<translation id="2876441201733326392">Brug USB-sikkerhedsnøgle</translation>
-<translation id="5842053879378944309">Brug USB-sikkerhedsnøgle med <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Tilslut din sikkerhedsnøgle, og aktivér den</translation>
-<translation id="8033958968890501070">Timeout</translation>
-<translation id="7102832101143475489">Der opstod timeout for anmodningen</translation>
-<translation id="3670229581627177274">Slå Bluetooth til</translation>
-<translation id="3880709822663530586">Din sikkerhedsnøgle fungerer kun, når Bluetooth er aktiveret på din enhed</translation>
-<translation id="1183378459020939734">Er du klar til at parre din sikkerhedsnøgle?</translation>
-<translation id="237058345584060620">Par din nøgle med denne enhed, så du kan bruge den til at logge ind på din konto</translation>
-<translation id="1875312262568496299">Start</translation>
-<translation id="3104900172193317662">Tillad, at din sikkerhedsnøgle anvendes</translation>
-<translation id="2492040222276243256">Hold knappen på din sikkerhedsnøgle nede i mindst fem sekunder</translation>
-<translation id="6427415464407526111">Vælg din sikkerhedsnøgle</translation>
-<translation id="2633326789677284179">Find navnet, der står på bagsiden af din nøgle</translation>
-<translation id="5660204307954428567">Par med <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Find den sekscifrede pinkode på bagsiden af nøglen</translation>
-<translation id="1201402288615127009">Næste</translation>
-<translation id="1792161662640298233">Bekræfter din sikkerhedsnøgle</translation>
-<translation id="2321482478556590128">Brug din sikkerhedsnøgle med <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">På de fleste nøgler skal du bare trykke på knappen for at bruge dem</translation>
 <translation id="3785308913036335955">Vis genveje for Apps</translation>
 <translation id="711840821796638741">Vis administrerede bogmærker</translation>
 <translation id="3613134908380545408">Vis <ph name="FOLDER_NAME"/></translation>
@@ -1508,6 +1475,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6902066522699286937">Eksempel på stemme</translation>
 <translation id="304747341537320566">Oplæsningsmaskiner</translation>
 <translation id="1067291318998134776">Linux (beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Kør Linux-værktøjer, -redigeringsværktøjer og -IDE'er på din Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Få flere oplysninger&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Fjern Linux-apps til Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Butik</translation>
@@ -1547,17 +1515,14 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8647834505253004544">Ikke en gyldig webadresse</translation>
 <translation id="2149850907588596975">Adgangskoder og formularer</translation>
 <translation id="8639963783467694461">Indstillinger for AutoFyld</translation>
-<translation id="3431019676184503003">Adresser og betalingsmetoder</translation>
 <translation id="2512222046227390255">Udfyld formularer automatisk</translation>
-<translation id="2283340219607151381">Gem og udfyld adresser</translation>
-<translation id="1662550410081243962">Gem og udfyld betalingsmetoder</translation>
-<translation id="2903493209154104877">Adresser</translation>
 <translation id="7764225426217299476">Tilføj adresse</translation>
 <translation id="5595485650161345191">Rediger adresse</translation>
 <translation id="6207937957461833379">Land/Region</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="5659593005791499971">Mail</translation>
-<translation id="5565871407246142825">Kreditkort</translation>
+<translation id="5762172915276660232">Indstillinger for kreditkort</translation>
+<translation id="4499718683476608392">Aktivér AutoFyld for kreditkort for at udfylde formularer med et enkelt klik</translation>
 <translation id="2448312741937722512">Type</translation>
 <translation id="9064275926664971810">Aktivér AutoFyld for at udfylde formularer med et enkelt klik</translation>
 <translation id="5029568752722684782">Slet kopi</translation>
@@ -1643,7 +1608,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="4699172675775169585">Billeder og filer, der er gemt i cache</translation>
 <translation id="1274997165432133392">Cookies og andre websitedata</translation>
 <translation id="3838543471119263078">Cookies og andre website- og plugindata</translation>
-<translation id="7029809446516969842">Adgangskoder</translation>
 <translation id="6865313869410766144">Formulardata for AutoFyld</translation>
 <translation id="177336675152937177">Hostede appdata</translation>
 <translation id="1718835860248848330">Den seneste time</translation>
@@ -2038,8 +2002,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7136694880210472378">Gør til standard</translation>
 <translation id="102272308210570439">Giv Assistent tilladelse til at anvende det, der vises på skærmen</translation>
 <translation id="8624205858755890468">Giver Brave Software Assistent tilladelse til at vise dig relaterede oplysninger, apps og handlinger.</translation>
-<translation id="178309940312315155">Registrer "Ok Brave Software"</translation>
-<translation id="3476912025629168202">Få adgang til Brave Software-assistenten, hver gang du siger "OK Brave Software", når skærmen er tændt.</translation>
+<translation id="8669919703154928649">Tillad, at Brave Software Assistent viser underretninger</translation>
+<translation id="3430342160185525240">Giver Brave Software Assistent tilladelse til at vise dig underretninger.</translation>
 <translation id="3908743412684152579">Indstillinger for Brave Software Assistent</translation>
 <translation id="4933484234309072027">indlejret på <ph name="URL"/></translation>
 <translation id="8427292751741042100">indlejret på hvilken som helst host</translation>
@@ -2047,6 +2011,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6295158916970320988">Alle websites</translation>
 <translation id="7625568159987162309">Se tilladelser og data, der er gemt på alle websites</translation>
 <translation id="3735740477244556633">Sortér efter</translation>
+<translation id="6503077044568424649">Mest besøgte</translation>
+<translation id="967624055006145463">Lagrede data</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Annoncer</translation>
 <translation id="5649053991847567735">Automatiske downloads</translation>
@@ -2122,7 +2088,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3038675903128704560">Tillad ikke, at websites anvender et plugin til at få adgang til din computer</translation>
 <translation id="857943718398505171">Tilladt (anbefales)</translation>
 <translation id="5000922062037820727">Blokeret (anbefales)</translation>
-<translation id="8116925261070264013">Websites, hvor lyden er slået fra</translation>
 <translation id="8708000541097332489">Ryd ved lukning</translation>
 <translation id="8037357227543935929">Spørg (standardindstilling)</translation>
 <translation id="3427092606871434483">Tillad (standardindstilling)</translation>
@@ -2219,7 +2184,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7311891583377621132">Flyt fingeren en smule for at registrere en anden del af fingeraftrykket</translation>
 <translation id="7345706641791090287">Bekræft din adgangskode</translation>
 <translation id="381202950560906753">Tilføj endnu et</translation>
-<translation id="3625538291267447988">Angiv din adgangskode for at konfigurere Smart Lock</translation>
 <translation id="6658023813581644008">Angiv din adgangskode for at konfigurere Smart Lock til login</translation>
 <translation id="5449551289610225147">Ugyldig adgangskode</translation>
 <translation id="5374359983950678924">Skift billede</translation>
@@ -2259,8 +2223,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2709516037105925701">AutoFyld</translation>
 <translation id="1644574205037202324">Historik</translation>
 <translation id="5117427536932535467">Temaer og baggrunde</translation>
+<translation id="7029809446516969842">Adgangskoder</translation>
 <translation id="3259418918864581163">Kreditkort og adresser fra Brave Software Pay.</translation>
-<translation id="4439834757335393741">Betalingsmetoder og adresser, der bruger Brave Software Pay.</translation>
 <translation id="3268451620468152448">Åbne faner</translation>
 <translation id="5241892180459725878">Brave Software Drev-søgeforslag</translation>
 <translation id="2120297377148151361">Aktivitet og interaktioner</translation>
@@ -2331,6 +2295,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="1114202307280046356">Diamant</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Returtast</translation>
+<translation id="1938351510777341717">Ekstern kommando</translation>
+<translation id="585979798156957858">Ekstern metatast</translation>
 <translation id="4991420928586866460">Brug tasterne på øverste række som funktionstaster</translation>
 <translation id="85486688517848470">Hold tasten Søg nede for at skifte funktion for den øverste række taster</translation>
 <translation id="4400632832271803360">Hold tasten Appliste nede for at skifte funktion for den øverste række taster</translation>
@@ -2432,10 +2398,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2315821125498993513">Der kunne ikke oprettes forbindelse til telefonen. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Better Together er aktiveret</translation>
 <translation id="3088402208262982892">Better Together er deaktiveret</translation>
-<translation id="2079079131837725321">Lås din Bravebook op med din telefon. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/>.</translation>
 <translation id="5430931332414098647">Øjeblikkelig netdeling</translation>
-<translation id="3059313675706898490">Android Beskeder</translation>
-<translation id="7095175330464035635">Send og modtag sms-beskeder fra din Bravebook</translation>
 <translation id="3936335337858561470">Glem denne enhed</translation>
 <translation id="3606712892509067288">Fjern fra Better Together</translation>
 <translation id="7878562273885520351">Din adgangskode kan være kompromitteret</translation>
@@ -2566,7 +2529,9 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6112294629795967147">Tryk for at vælge en anden størrelse</translation>
 <translation id="2453860139492968684">Udfør</translation>
 <translation id="1853692000353488670">Ny inkognitofane</translation>
+<translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="5530766185686772672">Luk inkognitofaner</translation>
+<translation id="6610147964972079463">Luk private faner</translation>
 <translation id="8076492880354921740">Faner</translation>
 <translation id="1049743911850919806">Inkognito</translation>
 </translationbundle>

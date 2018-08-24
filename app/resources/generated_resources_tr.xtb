@@ -500,9 +500,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8743864605301774756">1 saat önce güncellendi</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> sa. önce güncellendi</translation>
 <translation id="1329584516321524826">Az önce güncellendi</translation>
-<translation id="8679788109894721265">Bu sayfa <ph name="MEGABYTES"/> MB'tan fazla veri kullanıyor</translation>
-<translation id="8369547389711988632">Yükleme durduruldu</translation>
-<translation id="4280864916190672950">Yüklemeyi durdur</translation>
 <translation id="2724841811573117416">WebRTC günlükleri</translation>
 <translation id="7518150891539970662">WebRTC günlükleri (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC günlüğü yakalandı: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -589,7 +586,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7554791636758816595">Yeni Sekme</translation>
 <translation id="3915280005470252504">Sese göre ara</translation>
 <translation id="3153862085237805241">Kartı Kaydet</translation>
-<translation id="4961000125720751066">Kartlarınız tek bir yerde tutun</translation>
+<translation id="1593926297800505364">Ödeme yöntemini kaydet</translation>
 <translation id="2473195200299095979">Bu sayfayı çevir</translation>
 <translation id="5408750356094797285">Yakınlaştır: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Bu sayfaya, "<ph name="NAME"/>" uzantısıyla yakınlaştırma yapıldı</translation>
@@ -1049,7 +1046,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="5562781907504170924">Bu sekme bir Bluetooth Cihazına bağlı.</translation>
 <translation id="5884474295213649357">Bu sekme bir USB cihazına bağlı.</translation>
 <translation id="8466417995783206254">Bu sekmede bir video pencere içinde pencere modunda oynatılıyor.</translation>
-<translation id="6235700927623181151">Bu sekme masaüstü içeriğinizi paylaşıyor.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Kamera veya mikrofon kaydediyor</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Sekme içeriği paylaşılıyor</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Video pencere içinde pencere modunda oynatılıyor</translation>
@@ -1114,35 +1110,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="874689135111202667">{0,plural, =1{Bu siteye bir dosya yüklensin mi?}other{Bu siteye # dosya yüklensin mi?}}</translation>
 <translation id="1956390763342388273">Bu işlem, "<ph name="FOLDER_PATH"/>" klasöründeki tüm dosyaları yükleyecek. Bunu yalnızca siteye güveniyorsanız yapın.</translation>
 <translation id="1243314992276662751">Yükle</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> kimliğinizi doğrulamak istiyor</translation>
-<translation id="3738671331307774213">Kimliğinizin doğrulanması gizli verilerinizin korunmasına yardımcı olur</translation>
-<translation id="8435395510592618362"><ph name="APP_NAME"/> ile kimliğinizi doğrulayın</translation>
-<translation id="3854599674806204102">Bir seçenek belirleyin</translation>
-<translation id="7490950320178383728">Güvenlik Anahtarınızı Bluetooth ile kullanın</translation>
-<translation id="414599683948988413">Güvenlik Anahtarınızı USB ile kullanın</translation>
-<translation id="7851816139220202929">Güvenlik Anahtarınızı NFC ile kullanın</translation>
-<translation id="5392327114396848796">Yerleşik bir Güvenlik Anahtarı kullanın</translation>
-<translation id="5104546332954397226">Telefonunuzu Güvenlik Anahtarı olarak kullanın</translation>
-<translation id="2876441201733326392">USB Güvenlik Anahtarını Kullanın</translation>
-<translation id="5842053879378944309">USB Güvenlik Anahtarını <ph name="APP_NAME"/> ile kullanın</translation>
-<translation id="6896398788631624004">Güvenlik Anahtarınızı takın ve etkinleştirin</translation>
-<translation id="8033958968890501070">Zaman aşımı</translation>
-<translation id="7102832101143475489">İstek zaman aşımına uğradı</translation>
-<translation id="3670229581627177274">Bluetooth'u aç</translation>
-<translation id="3880709822663530586">Güvenlik Anahtarınız, yalnızca cihazınızın Bluetooth özelliği açıkken çalışır</translation>
-<translation id="1183378459020939734">Güvenlik Anahtarınızı eşlemeye hazır mısınız?</translation>
-<translation id="237058345584060620">Anahtarınızı hesabınızda oturum açarken kullanabilmeniz için bu cihazla eşleyin</translation>
-<translation id="1875312262568496299">Başla</translation>
-<translation id="3104900172193317662">Güvenlik Anahtarınızın kullanımına izin verin</translation>
-<translation id="2492040222276243256">Güvenlik Anahtarınızın üzerindeki düğmeyi en az 5 saniye süreyle basılı tutun</translation>
-<translation id="6427415464407526111">Güvenlik Anahtarınızı seçin</translation>
-<translation id="2633326789677284179">Anahtarınızın arkasında yazılı olan adı bulun</translation>
-<translation id="5660204307954428567"><ph name="DEVICE_NAME"/> ile eşleyin</translation>
-<translation id="8984872292925913496">Anahtarınızın arkasındaki 6 basamaklı PIN'i bulun</translation>
-<translation id="1201402288615127009">Sonraki</translation>
-<translation id="1792161662640298233">Güvenlik Anahtarınız doğrulanıyor</translation>
-<translation id="2321482478556590128">Güvenlik Anahtarınızı <ph name="APP_NAME"/> ile kullanın</translation>
-<translation id="5292195676005197571">Çoğu anahtarı kullanmak için düğmeye basmanız yeterlidir</translation>
 <translation id="3785308913036335955">Uygulamalar Kısayolunu Göster</translation>
 <translation id="711840821796638741">Yönetilen Yer İşaretlerini Göster</translation>
 <translation id="3613134908380545408"><ph name="FOLDER_NAME"/> Klasörünü Göster</translation>
@@ -1510,6 +1477,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6902066522699286937">Önizlenecek ses</translation>
 <translation id="304747341537320566">Konuşma Motorları</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Bravebook'unuzda Linux araçları, düzenleyicileri ve IDE'lerini çalıştırın. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Daha fazla bilgi&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Bravebook için Linux Uygulamalarını Kaldırın</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
@@ -1549,17 +1517,14 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8647834505253004544">Geçerli bir web adresi değil</translation>
 <translation id="2149850907588596975">Şifreler ve formlar</translation>
 <translation id="8639963783467694461">Otomatik doldurma ayarları</translation>
-<translation id="3431019676184503003">Adresler ve ödeme yöntemleri</translation>
 <translation id="2512222046227390255">Formları otomatik doldurma</translation>
-<translation id="2283340219607151381">Adresleri kaydet ve doldur</translation>
-<translation id="1662550410081243962">Ödeme yöntemlerini kaydet ve doldur</translation>
-<translation id="2903493209154104877">Adresler</translation>
 <translation id="7764225426217299476">Adres ekle</translation>
 <translation id="5595485650161345191">Adresi düzenle</translation>
 <translation id="6207937957461833379">Ülke/Bölge</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="5659593005791499971">E-posta</translation>
-<translation id="5565871407246142825">Kredi kartları</translation>
+<translation id="5762172915276660232">Kredi kartı ayarları</translation>
+<translation id="4499718683476608392">Formları tek bir tıklamayla doldurmak için kredi kartı bilgilerini Otomatik Doldurma özelliğini etkinleştirir</translation>
 <translation id="2448312741937722512">Tür</translation>
 <translation id="9064275926664971810">Formları tek bir tıklamayla doldurmak için Otomatik Doldur özelliğini etkinleştirir</translation>
 <translation id="5029568752722684782">Kopyayı temizle</translation>
@@ -1645,7 +1610,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="4699172675775169585">Önbelleğe alınan resimler ve dosyalar</translation>
 <translation id="1274997165432133392">Çerezler ve diğer site verileri</translation>
 <translation id="3838543471119263078">Çerezler ve diğer site verileriyle eklenti verileri</translation>
-<translation id="7029809446516969842">Şifreler</translation>
 <translation id="6865313869410766144">Form otomatik doldurma verileri</translation>
 <translation id="177336675152937177">Barındırılan uygulama verileri</translation>
 <translation id="1718835860248848330">Son saat</translation>
@@ -2040,8 +2004,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7136694880210472378">Varsayılan yap</translation>
 <translation id="102272308210570439">Asistan'ın ekranınızdakileri kullanmasına izin verin</translation>
 <translation id="8624205858755890468">Asistan'ın ilgili bilgi, uygulama ve işlemleri göstermesini sağlar.</translation>
-<translation id="178309940312315155">"Ok Brave Software" algılaması</translation>
-<translation id="3476912025629168202">Ekranınız açıkken "OK Brave Software" diyerek istediğiniz zaman Asistanınıza erişin.</translation>
+<translation id="8669919703154928649">Asistan'ın bildirim göstermesine izin verin</translation>
+<translation id="3430342160185525240">Asistan'ın bildirimleri göstermesini sağlar.</translation>
 <translation id="3908743412684152579">Brave Software Asistan ayarları</translation>
 <translation id="4933484234309072027"><ph name="URL"/> adresinde yerleşik</translation>
 <translation id="8427292751741042100">herhangi bir ana makinede yerleşik</translation>
@@ -2049,6 +2013,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6295158916970320988">Tüm siteler</translation>
 <translation id="7625568159987162309">İzinleri ve siteler arasında depolanan verileri göster</translation>
 <translation id="3735740477244556633">Sıralama ölçütü</translation>
+<translation id="6503077044568424649">En çok ziyaret edilenler</translation>
+<translation id="967624055006145463">Depolanan veriler</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Reklamlar</translation>
 <translation id="5649053991847567735">Otomatik indirmeler</translation>
@@ -2124,7 +2090,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3038675903128704560">Sitelerin bilgisayarıma erişmek için eklenti kullanmasına izin verme</translation>
 <translation id="857943718398505171">İzin verildi (önerilir)</translation>
 <translation id="5000922062037820727">Engellendi (önerilir)</translation>
-<translation id="8116925261070264013">Ses kapatıldı</translation>
 <translation id="8708000541097332489">Çıkışta temizle</translation>
 <translation id="8037357227543935929">Sor (varsayılan)</translation>
 <translation id="3427092606871434483">İzin ver (varsayılan)</translation>
@@ -2221,7 +2186,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7311891583377621132">Parmak izinizin farklı bir kısmının yakalanması için parmağınızı çok az hareket ettirin</translation>
 <translation id="7345706641791090287">Şifrenizi onaylayın</translation>
 <translation id="381202950560906753">Başka ekle</translation>
-<translation id="3625538291267447988">Smart Lock'u kurmak için şifrenizi girin</translation>
 <translation id="6658023813581644008">Smart Lock ile oturum açma işlevini kurmak için şifrenizi girin</translation>
 <translation id="5449551289610225147">Geçersiz şifre</translation>
 <translation id="5374359983950678924">Resmi değiştir</translation>
@@ -2261,8 +2225,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2709516037105925701">Otomatik doldurma</translation>
 <translation id="1644574205037202324">Geçmiş</translation>
 <translation id="5117427536932535467">Temalar ve Duvar Kağıtları</translation>
+<translation id="7029809446516969842">Şifreler</translation>
 <translation id="3259418918864581163">Brave Software Pay'i kullanan kredi kartları ve adresler.</translation>
-<translation id="4439834757335393741">Brave Software Pay'i kullanan ödeme yöntemleri ve adresler.</translation>
 <translation id="3268451620468152448">Açık Sekmeler</translation>
 <translation id="5241892180459725878">Brave Software Drive arama önerileri</translation>
 <translation id="2120297377148151361">Etkinlik ve etkileşimler</translation>
@@ -2333,6 +2297,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1114202307280046356">Karo</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Geri al tuşu</translation>
+<translation id="1938351510777341717">Harici Komut</translation>
+<translation id="585979798156957858">Harici Meta</translation>
 <translation id="4991420928586866460">Üst satırdaki tuşları işlev tuşları olarak kullan</translation>
 <translation id="85486688517848470">Üst satırdaki tuşların davranışını değiştirmek için Arama tuşunu basılı tutun</translation>
 <translation id="4400632832271803360">Üst satırdaki tuşların davranışını değiştirmek için Başlatıcı tuşunu basılı tutun</translation>
@@ -2434,10 +2400,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2315821125498993513">Telefona bağlanılamadı. <ph name="LINK_BEGIN"/>Daha fazla bilgi.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together özelliği açık</translation>
 <translation id="3088402208262982892">Better Together özelliği kapalı</translation>
-<translation id="2079079131837725321">Bravebook'unuzun kilidini telefonunuzla açın. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Anında Tethering</translation>
-<translation id="3059313675706898490">Android Mesajlar</translation>
-<translation id="7095175330464035635">Bravebook'unuzdan kısa mesaj gönderin ve alın</translation>
 <translation id="3936335337858561470">Bu cihazı unut</translation>
 <translation id="3606712892509067288">Better Together'dan kaldır</translation>
 <translation id="7878562273885520351">Şifrenizin güvenliği ihlal edilmiş olabilir</translation>
@@ -2568,7 +2531,9 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6112294629795967147">Yeniden boyutlandırmak için dokunun</translation>
 <translation id="2453860139492968684">Tamamlandı</translation>
 <translation id="1853692000353488670">Yeni gizli sekme</translation>
+<translation id="6336451774241870485">Yeni gizli sekme</translation>
 <translation id="5530766185686772672">Gizli sekmeleri kapat</translation>
+<translation id="6610147964972079463">Gizli sekmeleri kapat</translation>
 <translation id="8076492880354921740">Sekmeler</translation>
 <translation id="1049743911850919806">Gizli mod</translation>
 </translationbundle>

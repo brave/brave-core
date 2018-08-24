@@ -499,9 +499,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8743864605301774756">Uppdaterad för en timme sedan</translation>
 <translation id="5638497698949808140">Uppdaterat för <ph name="HOURS"/> timmar sedan</translation>
 <translation id="1329584516321524826">Uppdaterades alldeles nyss</translation>
-<translation id="8679788109894721265">Den här sidan använder mer än <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Inläsningen har pausats</translation>
-<translation id="4280864916190672950">Avbryt inläsningen</translation>
 <translation id="2724841811573117416">WebRTC-loggar</translation>
 <translation id="7518150891539970662">WebRTC-loggar (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-logg registrerades <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7554791636758816595">Ny flik</translation>
 <translation id="3915280005470252504">Röstsökning</translation>
 <translation id="3153862085237805241">Spara kortet</translation>
-<translation id="4961000125720751066">Alla kort på ett ställe</translation>
+<translation id="1593926297800505364">Spara betalningsmetod</translation>
 <translation id="2473195200299095979">Översätt den här sidan</translation>
 <translation id="5408750356094797285">Zoomar: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Den här sidan har zoomats in med tillägget <ph name="NAME"/></translation>
@@ -1048,7 +1045,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5562781907504170924">Den här fliken är ansluten till en Bluetooth-enhet.</translation>
 <translation id="5884474295213649357">Den här fliken är ansluten till en USB-enhet.</translation>
 <translation id="8466417995783206254">På den här fliken spelas en video upp i bild-i-bild-läge.</translation>
-<translation id="6235700927623181151">Ditt skrivbord delas på den här fliken.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kameran eller mikrofonen spelar in</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – innehållet på fliken delas</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – video spelas upp bild-i-bild-läge</translation>
@@ -1113,35 +1109,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="874689135111202667">{0,plural, =1{Vill du ladda upp en fil på webbplatsen?}other{Vill du ladda upp # filer på webbplatsen?}}</translation>
 <translation id="1956390763342388273">Alla filer från <ph name="FOLDER_PATH"/> laddas upp. Gör bara detta om du litar på webbplatsen.</translation>
 <translation id="1243314992276662751">Ladda upp</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> vill verifiera din identitet</translation>
-<translation id="3738671331307774213">Skydda privata uppgifter genom att verifiera din identitet</translation>
-<translation id="8435395510592618362">Verifiera din identitet med <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Välj ett alternativ</translation>
-<translation id="7490950320178383728">Använd säkerhetsnyckeln med Bluetooth</translation>
-<translation id="414599683948988413">Använd säkerhetsnyckeln med USB</translation>
-<translation id="7851816139220202929">Använd säkerhetsnyckeln med NFC</translation>
-<translation id="5392327114396848796">Använd en inbyggd säkerhetsnyckel</translation>
-<translation id="5104546332954397226">Använd mobilen som säkerhetsnyckel</translation>
-<translation id="2876441201733326392">Använd USB-säkerhetsnyckeln</translation>
-<translation id="5842053879378944309">Använd USB-säkerhetsnyckeln med <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Sätt i säkerhetsnyckeln och aktivera den</translation>
-<translation id="8033958968890501070">Tidsgränsen överskreds</translation>
-<translation id="7102832101143475489">Begäran tog för lång tid</translation>
-<translation id="3670229581627177274">Aktivera Bluetooth</translation>
-<translation id="3880709822663530586">Säkerhetsnyckeln fungerar bara när Bluetooth har aktiverats på enheten</translation>
-<translation id="1183378459020939734">Vill du parkoppla säkerhetsnyckeln nu?</translation>
-<translation id="237058345584060620">Parkoppla nyckeln till den här enheten så att du kan logga in på ditt konto med den</translation>
-<translation id="1875312262568496299">Börja</translation>
-<translation id="3104900172193317662">Tillåt att säkerhetsnyckeln används</translation>
-<translation id="2492040222276243256">Håll knappen på säkerhetsnyckeln nedtryckt i minst fem sekunder</translation>
-<translation id="6427415464407526111">Välj säkerhetsnyckel</translation>
-<translation id="2633326789677284179">Leta reda på namnet som står på nyckelns baksida</translation>
-<translation id="5660204307954428567">Parkoppla med <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Titta efter den sexsiffriga pinkoden på nyckelns baksida</translation>
-<translation id="1201402288615127009">Nästa</translation>
-<translation id="1792161662640298233">Säkerhetsnyckeln verifieras</translation>
-<translation id="2321482478556590128">Använd säkerhetsnyckeln med <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">På de flesta nycklar trycker du bara på knappen</translation>
 <translation id="3785308913036335955">Visa genväg för appar</translation>
 <translation id="711840821796638741">Visa hanterade bokmärken</translation>
 <translation id="3613134908380545408">Visa <ph name="FOLDER_NAME"/></translation>
@@ -1509,6 +1476,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6902066522699286937">Röst att förhandsgranska</translation>
 <translation id="304747341537320566">Talmotorer</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Kör verktyg, redigerare och IDE:er för Linux på Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Läs mer&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Ta bort Linux-appar för Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Butik</translation>
@@ -1548,17 +1516,14 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8647834505253004544">Webbadressen är inte giltig</translation>
 <translation id="2149850907588596975">Lösenord och formulär</translation>
 <translation id="8639963783467694461">Inställningar för Autofyll</translation>
-<translation id="3431019676184503003">Adresser och betalningsmetoder</translation>
 <translation id="2512222046227390255">Fyll i formulär automatiskt</translation>
-<translation id="2283340219607151381">Spara och fyll i adresser</translation>
-<translation id="1662550410081243962">Spara och fyll i betalningsmetoder</translation>
-<translation id="2903493209154104877">Adresser</translation>
 <translation id="7764225426217299476">Lägg till adress</translation>
 <translation id="5595485650161345191">Redigera adress</translation>
 <translation id="6207937957461833379">Land/region</translation>
 <translation id="4378154925671717803">Mobil</translation>
 <translation id="5659593005791499971">E-post</translation>
-<translation id="5565871407246142825">Kreditkort</translation>
+<translation id="5762172915276660232">Inställningar för kreditkort</translation>
+<translation id="4499718683476608392">Aktivera Autofyll för kreditkort och fyll i formulär med ett enda klick</translation>
 <translation id="2448312741937722512">Typ</translation>
 <translation id="9064275926664971810">Aktivera Autofyll och fyll i formulär med ett enda klick</translation>
 <translation id="5029568752722684782">Ta bort kopia</translation>
@@ -1644,7 +1609,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4699172675775169585">Cachade bilder och filer</translation>
 <translation id="1274997165432133392">Cookies och andra webbplatsdata</translation>
 <translation id="3838543471119263078">Cookies och andra webbplats- och plugindata</translation>
-<translation id="7029809446516969842">Lösenord</translation>
 <translation id="6865313869410766144">Formuläruppgifter för Autofyll</translation>
 <translation id="177336675152937177">Appdata som har en värd</translation>
 <translation id="1718835860248848330">Senaste timmen</translation>
@@ -2039,8 +2003,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7136694880210472378">Ange som standard</translation>
 <translation id="102272308210570439">Låt assistenten använda det som visas på skärmen</translation>
 <translation id="8624205858755890468">Tillåter att assistenten visar relaterade uppgifter, appar och åtgärder.</translation>
-<translation id="178309940312315155">Identifiering av ”Ok Brave Software”</translation>
-<translation id="3476912025629168202">Få tillgång till assistenten när du säger ”Ok Brave Software” och skärmen är aktiverad.</translation>
+<translation id="8669919703154928649">Tillåt assistenten att visa aviseringar</translation>
+<translation id="3430342160185525240">Tillåter att assistenten visar aviseringar.</translation>
 <translation id="3908743412684152579">Inställningar för Brave Software Assistent</translation>
 <translation id="4933484234309072027">inbäddad på <ph name="URL"/></translation>
 <translation id="8427292751741042100">inbäddad på någon värd</translation>
@@ -2048,6 +2012,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6295158916970320988">Alla webbplatser</translation>
 <translation id="7625568159987162309">Visa behörigheter och data som har lagrats på webbplatser</translation>
 <translation id="3735740477244556633">Sortera efter</translation>
+<translation id="6503077044568424649">Mest besökta</translation>
+<translation id="967624055006145463">Sparad data</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Annonser</translation>
 <translation id="5649053991847567735">Automatiska nedladdningar</translation>
@@ -2123,7 +2089,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3038675903128704560">Tillåt inte några webbplatser att använda en plugin för få åtkomst till datorn</translation>
 <translation id="857943718398505171">Tillåten (rekommenderas)</translation>
 <translation id="5000922062037820727">Blockerad (rekommenderas)</translation>
-<translation id="8116925261070264013">Ljudet avstängt</translation>
 <translation id="8708000541097332489">Rensa vid avslut</translation>
 <translation id="8037357227543935929">Fråga (standard)</translation>
 <translation id="3427092606871434483">Tillåt (standard)</translation>
@@ -2220,7 +2185,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7311891583377621132">Flytta fingret något så att en annan del av fingeravtrycket registreras</translation>
 <translation id="7345706641791090287">Bekräfta lösenordet</translation>
 <translation id="381202950560906753">Lägg till ett till</translation>
-<translation id="3625538291267447988">Ange ditt lösenord om du vill konfigurera Smart Lock</translation>
 <translation id="6658023813581644008">Ange ditt lösenord om du vill konfigurera Smart Lock för inloggning</translation>
 <translation id="5449551289610225147">Ogiltigt lösenord</translation>
 <translation id="5374359983950678924">Byt bild</translation>
@@ -2260,8 +2224,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2709516037105925701">Autofyll</translation>
 <translation id="1644574205037202324">Historik</translation>
 <translation id="5117427536932535467">Teman och bakgrunder</translation>
+<translation id="7029809446516969842">Lösenord</translation>
 <translation id="3259418918864581163">Kreditkort och adresser som används med Brave Software Pay.</translation>
-<translation id="4439834757335393741">Betalningsmetoder och adresser som används med Brave Software Pay.</translation>
 <translation id="3268451620468152448">Öppna flikar</translation>
 <translation id="5241892180459725878">Sökförslag från Brave Software Drive</translation>
 <translation id="2120297377148151361">Aktivitet och interaktion</translation>
@@ -2332,6 +2296,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1114202307280046356">Diamant</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backsteg</translation>
+<translation id="1938351510777341717">Extern kommandotangent</translation>
+<translation id="585979798156957858">Extern metatangent</translation>
 <translation id="4991420928586866460">Använd tangenterna på översta raden som funktionstangenter</translation>
 <translation id="85486688517848470">Håll ned söktangenten om du vill ändra funktionen för tangenterna på översta raden</translation>
 <translation id="4400632832271803360">Håll ned starttangenten om du vill ändra hur tangenterna på översta raden fungerar</translation>
@@ -2433,10 +2399,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2315821125498993513">Det gick inte att ansluta till mobilen. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together har aktiverats</translation>
 <translation id="3088402208262982892">Better Together har inaktiverats</translation>
-<translation id="2079079131837725321">Lås upp Chomebook med mobilen. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Direktinternetdelning</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Skicka och ta emot sms på Bravebook</translation>
 <translation id="3936335337858561470">Glöm den här enheten</translation>
 <translation id="3606712892509067288">Ta bort från Better Together</translation>
 <translation id="7878562273885520351">Lösenordet kan vara utsatt för risk</translation>
@@ -2567,7 +2530,9 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6112294629795967147">Ändra storlek genom att trycka</translation>
 <translation id="2453860139492968684">Slutför</translation>
 <translation id="1853692000353488670">Ny inkognitoflik</translation>
+<translation id="6336451774241870485">Ny privat flik</translation>
 <translation id="5530766185686772672">Stäng inkognitoflikar</translation>
+<translation id="6610147964972079463">Stäng privata flikar</translation>
 <translation id="8076492880354921740">Flikar</translation>
 <translation id="1049743911850919806">Inkognito</translation>
 </translationbundle>

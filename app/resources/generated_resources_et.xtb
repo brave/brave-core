@@ -499,9 +499,6 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8743864605301774756">Värskendatud 1 tund tagasi</translation>
 <translation id="5638497698949808140">Värskendatud <ph name="HOURS"/> tundi tagasi</translation>
 <translation id="1329584516321524826">Just värskendatud</translation>
-<translation id="8679788109894721265">Leht kasutab üle <ph name="MEGABYTES"/> MB andmemahtu</translation>
-<translation id="8369547389711988632">Laadimine on katkestatud</translation>
-<translation id="4280864916190672950">Peata laadimine</translation>
 <translation id="2724841811573117416">WebRTC logid</translation>
 <translation id="7518150891539970662">WebRTC logid (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC logi on jäädvustatud: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="7554791636758816595">Uus vaheleht</translation>
 <translation id="3915280005470252504">Häälotsing</translation>
 <translation id="3153862085237805241">Salvesta kaart</translation>
-<translation id="4961000125720751066">Hoidke oma kaarte ühes kohas</translation>
+<translation id="1593926297800505364">Salvestab makseviisi</translation>
 <translation id="2473195200299095979">Selle lehe tõlkimine</translation>
 <translation id="5408750356094797285">Suum: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Seda lehte suumis laiendus „<ph name="NAME"/>”</translation>
@@ -1048,7 +1045,6 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="5562781907504170924">See vaheleht on ühendatud Bluetoothi seadmega.</translation>
 <translation id="5884474295213649357">See vaheleht on ühendatud USB-seadmega.</translation>
 <translation id="8466417995783206254">Vahelehel esitatakse videot režiimis Pilt pildis</translation>
-<translation id="6235700927623181151">See vaheleht jagab teie töölaua sisu.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kaamera või mikrofon salvestab</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – vahelehe sisu on jagatud</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – videot esitatakse režiimis Pilt pildis</translation>
@@ -1113,35 +1109,6 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="874689135111202667">{0,plural, =1{Kas laadida sellele saidile üles üks fail?}other{Kas laadida sellele saidile üles # faili?}}</translation>
 <translation id="1956390763342388273">See laadib üles kõik failid kaustast „<ph name="FOLDER_PATH"/>”. Tehke seda ainult juhul, kui saiti usaldate.</translation>
 <translation id="1243314992276662751">Laadi üles</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> soovib teie identiteedi kinnitada</translation>
-<translation id="3738671331307774213">Teie identiteedi kinnitamine aitab teie privaatseid andmeid kaitsta</translation>
-<translation id="8435395510592618362">Kinnitage oma identiteet rakendusega <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Tehke valik</translation>
-<translation id="7490950320178383728">Kasutage turvavõtit Bluetoothiga</translation>
-<translation id="414599683948988413">Kasutage oma turvavõtit USB-ga</translation>
-<translation id="7851816139220202929">Kasutage turvavõtit NFC-ga</translation>
-<translation id="5392327114396848796">Kasutage sisseehitatud turvavõtit</translation>
-<translation id="5104546332954397226">Kasutage oma telefoni turvavõtmena</translation>
-<translation id="2876441201733326392">Kasutage USB-turvavõtit</translation>
-<translation id="5842053879378944309">Kasutage USB turvavõtit rakendusega <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Ühendage ja aktiveerige turvavõti</translation>
-<translation id="8033958968890501070">Ajalõpp</translation>
-<translation id="7102832101143475489">Taotlus aegus</translation>
-<translation id="3670229581627177274">Lülita Bluetooth sisse</translation>
-<translation id="3880709822663530586">Teie turvavõti töötab ainult siis, kui seadme Bluetooth on sisse lülitatud</translation>
-<translation id="1183378459020939734">Kas olete valmis oma turvavõtme sidumiseks?</translation>
-<translation id="237058345584060620">Siduge oma võti selle seadmega, et saaksite seda kasutada oma kontole sisselogimiseks</translation>
-<translation id="1875312262568496299">Alusta</translation>
-<translation id="3104900172193317662">Turvavõtme kasutamise lubamine</translation>
-<translation id="2492040222276243256">Vajutage ja hoidke turvavõtmel olevat nuppu all vähemalt viis sekundit</translation>
-<translation id="6427415464407526111">Turvavõtme valimine</translation>
-<translation id="2633326789677284179">Otsige üles võtme tagaküljele prinditud nimi</translation>
-<translation id="5660204307954428567">Seadmega <ph name="DEVICE_NAME"/> sidumine</translation>
-<translation id="8984872292925913496">Leidke võtme tagaküljelt kuuekohaline PIN-kood</translation>
-<translation id="1201402288615127009">Edasi</translation>
-<translation id="1792161662640298233">Turvavõtme kinnitamine</translation>
-<translation id="2321482478556590128">Turvavõtme kasutamine rakendusega <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">Enamiku võtmete kasutamiseks vajutage lihtsalt nuppu</translation>
 <translation id="3785308913036335955">Kuva teenuse Apps otsetee</translation>
 <translation id="711840821796638741">Kuva hallatud järjehoidjad</translation>
 <translation id="3613134908380545408">Kuva <ph name="FOLDER_NAME"/></translation>
@@ -1510,6 +1477,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6902066522699286937">Eelvaate hääl</translation>
 <translation id="304747341537320566">Kõnesünteesimootorid</translation>
 <translation id="1067291318998134776">Linux (beetaversioon)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Käitage oma Bravebookis Linuxi tööriistu, redaktoreid ja IDE-sid. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Lisateave&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Linuxi rakenduste eemaldamine Bravebookist</translation>
 <translation id="2295473777859797944">Brave Software Play pood</translation>
@@ -1549,17 +1517,14 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="8647834505253004544">Pole sobiv veebiaadress</translation>
 <translation id="2149850907588596975">Paroolid ja vormid</translation>
 <translation id="8639963783467694461">Automaatse täitmise seaded</translation>
-<translation id="3431019676184503003">Aadressid ja makseviisid</translation>
 <translation id="2512222046227390255">Täida vormid automaatselt</translation>
-<translation id="2283340219607151381">Salvesta ja sisesta aadressid</translation>
-<translation id="1662550410081243962">Salvesta ja sisesta makseviisid</translation>
-<translation id="2903493209154104877">Aadressid</translation>
 <translation id="7764225426217299476">Lisage aadress</translation>
 <translation id="5595485650161345191">Muuda aadressi</translation>
 <translation id="6207937957461833379">Riik/regioon</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="5659593005791499971">Meil</translation>
-<translation id="5565871407246142825">Krediitkaardid</translation>
+<translation id="5762172915276660232">Krediitkaardiseaded</translation>
+<translation id="4499718683476608392">Saate lubada krediitkaardiandmete automaattäite, et täita vormid ühe klikiga</translation>
 <translation id="2448312741937722512">Tüüp</translation>
 <translation id="9064275926664971810">Lubatakse automaattäide, et vorme ühe klikiga täita</translation>
 <translation id="5029568752722684782">Kustuta koopia</translation>
@@ -1645,7 +1610,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="4699172675775169585">Vahemällu salvestatud kujutised ja failid</translation>
 <translation id="1274997165432133392">Küpsised ja muud saidi andmed</translation>
 <translation id="3838543471119263078">Küpsised ja muud saidi ning pistikprogrammi andmed</translation>
-<translation id="7029809446516969842">Paroolid</translation>
 <translation id="6865313869410766144">Automaattäitmise vormiandmed</translation>
 <translation id="177336675152937177">Hostitud rakenduste andmed</translation>
 <translation id="1718835860248848330">Viimase tunni jooksul</translation>
@@ -2040,8 +2004,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7136694880210472378">Muuda vaikevalikuks</translation>
 <translation id="102272308210570439">Luba assistendil kasutada ekraanil kuvatut</translation>
 <translation id="8624205858755890468">Lubab assistendil esitada teile seotud teavet, rakendusi ja toiminguid.</translation>
-<translation id="178309940312315155">Otsetee sõna „Ok Brave Software” tuvastamine</translation>
-<translation id="3476912025629168202">Pääsete assistendile alati juurde, kui ütlete „Ok Brave Software” ja ekraan on sisse lülitatud.</translation>
+<translation id="8669919703154928649">Luba assistendil märguandeid esitada</translation>
+<translation id="3430342160185525240">Võimaldab assistendil teile märguandeid esitada.</translation>
 <translation id="3908743412684152579">Brave Software'i assistendi seaded</translation>
 <translation id="4933484234309072027">manustatud aadressil <ph name="URL"/></translation>
 <translation id="8427292751741042100">manustatud mis tahes hostile</translation>
@@ -2049,6 +2013,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6295158916970320988">Kõik saidid</translation>
 <translation id="7625568159987162309">Kuva load ja mitmel saidil talletatud andmed</translation>
 <translation id="3735740477244556633">Sortimisalus:</translation>
+<translation id="6503077044568424649">Populaarsed</translation>
+<translation id="967624055006145463">Salvestatud andmete maht</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Reklaamid</translation>
 <translation id="5649053991847567735">Automaatsed allalaadimised</translation>
@@ -2124,7 +2090,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="3038675903128704560">Ära luba ühelgi saidil arvutile juurdepääsemiseks kasutada pistikprogrammi</translation>
 <translation id="857943718398505171">Lubatud (soovitatav)</translation>
 <translation id="5000922062037820727">Blokeeritud (soovitatav)</translation>
-<translation id="8116925261070264013">Vaigistatud</translation>
 <translation id="8708000541097332489">Tühjenda väljumisel</translation>
 <translation id="8037357227543935929">Küsi (vaikimisi)</translation>
 <translation id="3427092606871434483">Luba (vaikimisi)</translation>
@@ -2221,7 +2186,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7311891583377621132">Liigutage veidi, et sõrmejälje teine osa jäädvustada</translation>
 <translation id="7345706641791090287">Kinnitage oma parool</translation>
 <translation id="381202950560906753">Lisa veel üks</translation>
-<translation id="3625538291267447988">Smart Locki seadistamiseks sisestage parool</translation>
 <translation id="6658023813581644008">Sisselogimiseks funktsiooni Smart Lock seadistamiseks sisestage oma parool</translation>
 <translation id="5449551289610225147">Vale parool</translation>
 <translation id="5374359983950678924">Muuda pilti</translation>
@@ -2261,8 +2225,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2709516037105925701">Automaatne täitmine</translation>
 <translation id="1644574205037202324">Ajalugu</translation>
 <translation id="5117427536932535467">Teemad ja taustapildid</translation>
+<translation id="7029809446516969842">Paroolid</translation>
 <translation id="3259418918864581163">Krediitkaardid ja aadressid, mis kasutavad teenust Brave Software Pay.</translation>
-<translation id="4439834757335393741">Makseviisid ja aadressid, mis kasutavad teenust Brave Software Pay.</translation>
 <translation id="3268451620468152448">Avatud vahelehed</translation>
 <translation id="5241892180459725878">Brave Software Drive'i otsingusoovitused</translation>
 <translation id="2120297377148151361">Tegevused ja interaktsioonid</translation>
@@ -2333,6 +2297,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="1114202307280046356">Teemant</translation>
 <translation id="89720367119469899">Klahv Escape</translation>
 <translation id="5583640892426849032">Tagasilükkeklahv</translation>
+<translation id="1938351510777341717">Väline Command-klahv</translation>
+<translation id="585979798156957858">Väline metaklahv</translation>
 <translation id="4991420928586866460">Kasuta ülarea klahve funktsiooniklahvidena</translation>
 <translation id="85486688517848470">Ülemise rea klahvide toimingu vahetamiseks hoidke all otsinguklahvi</translation>
 <translation id="4400632832271803360">Ülemise rea klahvide toimingu vahetamiseks hoidke all käivitajaklahvi</translation>
@@ -2434,10 +2400,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2315821125498993513">Telefoniga ei õnnestunud ühendada. <ph name="LINK_BEGIN"/>Vaadake lisateavet.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together on sisse lülitatud</translation>
 <translation id="3088402208262982892">Better Together on välja lülitatud</translation>
-<translation id="2079079131837725321">Avage Bravebook oma telefoniga. <ph name="LINK_BEGIN"/>Vaadake lisateavet.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Automaatne jagamine</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Saatke ja võtke oma Bravebookis vastu tekstisõnumeid</translation>
 <translation id="3936335337858561470">Unusta see seade</translation>
 <translation id="3606712892509067288">Eemalda teenusest Better Together</translation>
 <translation id="7878562273885520351">Teie parool võib olla ohus</translation>
@@ -2568,7 +2531,9 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6112294629795967147">Puudutage suuruse muutmiseks</translation>
 <translation id="2453860139492968684">Valmis</translation>
 <translation id="1853692000353488670">Uus inkognito vaheleht</translation>
+<translation id="6336451774241870485">Uus privaatne vaheleht</translation>
 <translation id="5530766185686772672">Inkognito vahelehtede sulgemine</translation>
+<translation id="6610147964972079463">Sule privaatsed vahelehed</translation>
 <translation id="8076492880354921740">Vahelehed</translation>
 <translation id="1049743911850919806">Inkognito</translation>
 </translationbundle>

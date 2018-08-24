@@ -38,7 +38,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="5785919770853225148">Brave toto heslo uloží do vášho účtu Brave Software. Nebudete si ho musieť pamätať.</translation>
 <translation id="3343095737966473035">Brave nie je váš predvolený prehliadač</translation>
 <translation id="6715663530666325392">Ak chcete uložiť svoje prispôsobené funkcie prehliadača na webe a pristupovať k nim z prehliadača Brave v ktoromkoľvek počítači, nastavte synchronizáciu.</translation>
-<translation id="2708027082363760195">Prehliadač Brave neobsahuje nástroj na zobrazovanie súborov PDF, ktorý je potrebný pre funkciu Ukážka pred tlačou.</translation>
+<translation id="5874882355102994015">Keď vstavaný zobrazovač súborov PDF chýba, Brave Software Brave nemôže zobraziť ukážku pred tlačou.</translation>
 <translation id="8880183781256147665">Pridáva sa do prehliadača Brave...</translation>
 <translation id="3561569806301739367">Súbor <ph name="FILE_NAME"/> môže byť nebezpečný, a preto ho prehliadač Brave zablokoval.</translation>
 <translation id="9067428552314418522">Tento súbor je nebezpečný, a preto ho prehliadač Brave zablokoval.</translation>
@@ -86,6 +86,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="3215652305414474626">Tiež určuje, ktorá stránka sa zobrazí pri spustení prehliadača Brave alebo po kliknutí na tlačidlo Domovská stránka.</translation>
 <translation id="2433912322225810055">Tiež určuje, ktorá stránka sa zobrazí pri spustení prehliadača Brave alebo pri vyhľadávaní pomocou všeobecného poľa.</translation>
 <translation id="2871190378186459992">Objavte skvelé aplikácie, hry, rozšírenia a motívy pre prehliadač Brave.</translation>
+<translation id="2522086024276534909">Reštartovanie systému Brave OS</translation>
 <translation id="8183252473547465084">Ak chcete uplatniť aktualizáciu, musíte reštartovať systém Brave OS.</translation>
 <translation id="5895138241574237353">Reštartovať</translation>
 <translation id="5875673934455379806">Preinštalovať prehliadač Brave</translation>

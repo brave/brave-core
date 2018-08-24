@@ -499,9 +499,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8743864605301774756">Updated 1hr ago</translation>
 <translation id="5638497698949808140">Updated <ph name="HOURS"/>hrs ago</translation>
 <translation id="1329584516321524826">Updated just now</translation>
-<translation id="8679788109894721265">This page uses more than <ph name="MEGABYTES"/>MB</translation>
-<translation id="8369547389711988632">Stopped loading</translation>
-<translation id="4280864916190672950">Stop loading</translation>
+<translation id="224940702122312781">This page will use a lot of data.</translation>
+<translation id="3861241522664181545">Page paused.</translation>
+<translation id="6921709132208495314">Stop using data on this page</translation>
 <translation id="2724841811573117416">WebRTC logs</translation>
 <translation id="7518150891539970662">WebRTC logs (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC log captured <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -550,6 +550,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6363797201514053536">Search Brave Software or type a URL</translation>
 <translation id="6078323886959318429">Add shortcut</translation>
 <translation id="6324916366299863871">Edit shortcut</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Done</translation>
 <translation id="4416582610654027550">Type a valid URL</translation>
@@ -588,7 +589,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7554791636758816595">New Tab</translation>
 <translation id="3915280005470252504">Search by voice</translation>
 <translation id="3153862085237805241">Save Card</translation>
-<translation id="4961000125720751066">Have your cards in one place</translation>
+<translation id="1593926297800505364">Save payment method</translation>
 <translation id="2473195200299095979">Translate this page</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">This page was zoomed by the "<ph name="NAME"/>" extension</translation>
@@ -1048,7 +1049,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5562781907504170924">This tab is connected to a Bluetooth device.</translation>
 <translation id="5884474295213649357">This tab is connected to a USB device.</translation>
 <translation id="8466417995783206254">This tab is playing a video in picture-in-picture mode.</translation>
-<translation id="6235700927623181151">This tab is sharing your desktop content.</translation>
+<translation id="2585724835339714757">This tab is sharing your screen.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – Camera or microphone recording</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – Tab content shared</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – Video playing in picture-in-picture mode</translation>
@@ -1113,35 +1114,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="874689135111202667">{0,plural, =1{Upload one file to this site?}other{Upload # files to this site?}}</translation>
 <translation id="1956390763342388273">This will upload all files from '<ph name="FOLDER_PATH"/>'. Only do this if you trust the site.</translation>
 <translation id="1243314992276662751">Upload</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> wants to verify your identity</translation>
-<translation id="3738671331307774213">Verifying your identity helps protect your private data</translation>
-<translation id="8435395510592618362">Verify your identity with <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Pick an option</translation>
-<translation id="7490950320178383728">Use your Security Key with Bluetooth</translation>
-<translation id="414599683948988413">Use your Security Key with USB</translation>
-<translation id="7851816139220202929">Use your Security Key with NFC</translation>
-<translation id="5392327114396848796">Use a built-in Security Key</translation>
-<translation id="5104546332954397226">Use your phone as a Security Key</translation>
-<translation id="2876441201733326392">Use USB Security Key</translation>
-<translation id="5842053879378944309">Use USB Security Key with <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Plug in your Security Key and activate it</translation>
-<translation id="8033958968890501070">Time out</translation>
-<translation id="7102832101143475489">The request timed out</translation>
-<translation id="3670229581627177274">Turn on Bluetooth</translation>
-<translation id="3880709822663530586">Your security key only works when your device's Bluetooth is on</translation>
-<translation id="1183378459020939734">Ready to pair your security key?</translation>
-<translation id="237058345584060620">Pair your key to this device so that you can use it to sign into your account</translation>
-<translation id="1875312262568496299">Begin</translation>
-<translation id="3104900172193317662">Allow the use of your security key</translation>
-<translation id="2492040222276243256">Press and hold the button on your security key for at least 5 seconds</translation>
-<translation id="6427415464407526111">Select your security key</translation>
-<translation id="2633326789677284179">Find the name printed on the back of your key</translation>
-<translation id="5660204307954428567">Pair with <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Find the 6-digit PIN on the back of your key</translation>
-<translation id="1201402288615127009">Next</translation>
-<translation id="1792161662640298233">Verifying your security key</translation>
-<translation id="2321482478556590128">Use your security key with <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">To use most keys, simply press the button</translation>
 <translation id="3785308913036335955">Show Apps Shortcut</translation>
 <translation id="711840821796638741">Show Managed Bookmarks</translation>
 <translation id="3613134908380545408">Show <ph name="FOLDER_NAME"/></translation>
@@ -1509,6 +1481,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6902066522699286937">Voice to preview</translation>
 <translation id="304747341537320566">Speech Engines</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Run Linux tools, editors and IDEs on your Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Learn more&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Remove Linux Apps for Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
@@ -1548,17 +1521,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8647834505253004544">Not a valid web address</translation>
 <translation id="2149850907588596975">Passwords and forms</translation>
 <translation id="8639963783467694461">Auto-fill settings</translation>
-<translation id="3431019676184503003">Addresses &amp;amp; payment methods</translation>
 <translation id="2512222046227390255">Auto-fill forms</translation>
-<translation id="2283340219607151381">Save and fill addresses</translation>
-<translation id="1662550410081243962">Save and fill payment methods</translation>
-<translation id="2903493209154104877">Addresses</translation>
 <translation id="7764225426217299476">Add address</translation>
 <translation id="5595485650161345191">Edit address</translation>
 <translation id="6207937957461833379">Country/Region</translation>
 <translation id="4378154925671717803">Phone</translation>
 <translation id="5659593005791499971">Email</translation>
-<translation id="5565871407246142825">Credit cards</translation>
+<translation id="5762172915276660232">Credit card settings</translation>
+<translation id="4499718683476608392">Enable credit card Auto-fill to fill in forms in a single click</translation>
 <translation id="2448312741937722512">Types</translation>
 <translation id="9064275926664971810">Enable Autofill to fill out forms in a single click</translation>
 <translation id="5029568752722684782">Clear copy</translation>
@@ -1644,7 +1614,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4699172675775169585">Cached images and files</translation>
 <translation id="1274997165432133392">Cookies and other site data</translation>
 <translation id="3838543471119263078">Cookies and other site and plug-in data</translation>
-<translation id="7029809446516969842">Passwords</translation>
 <translation id="6865313869410766144">Autofill form data</translation>
 <translation id="177336675152937177">Hosted app data</translation>
 <translation id="1718835860248848330">Last hour</translation>
@@ -2039,8 +2008,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7136694880210472378">Make default</translation>
 <translation id="102272308210570439">Let Assistant use what's on your screen</translation>
 <translation id="8624205858755890468">Enables the Assistant to show you related info, apps and actions.</translation>
-<translation id="178309940312315155">'Ok Brave Software' detection</translation>
-<translation id="3476912025629168202">Access your Assistant any time that you say 'Ok Brave Software' when your screen is on.</translation>
+<translation id="4737453247496280552">'Ok Brave Software' detection</translation>
+<translation id="6409553560184414680">Access your Assistant any time that you say 'Ok Brave Software' when your screen is on.</translation>
+<translation id="8669919703154928649">Let Assistant show you notifications</translation>
+<translation id="3430342160185525240">Enables the Assistant to show you notifications.</translation>
 <translation id="3908743412684152579">Brave Software Assistant settings</translation>
 <translation id="4933484234309072027">embedded on <ph name="URL"/></translation>
 <translation id="8427292751741042100">embedded on any host</translation>
@@ -2048,6 +2019,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6295158916970320988">All sites</translation>
 <translation id="7625568159987162309">View permissions and data stored across sites</translation>
 <translation id="3735740477244556633">Sort by</translation>
+<translation id="6503077044568424649">Most visited</translation>
+<translation id="967624055006145463">Data stored</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Ads</translation>
 <translation id="5649053991847567735">Automatic downloads</translation>
@@ -2123,11 +2096,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3038675903128704560">Do not allow any site to use a plug-in to access your computer</translation>
 <translation id="857943718398505171">Allowed (recommended)</translation>
 <translation id="5000922062037820727">Blocked (recommended)</translation>
-<translation id="8116925261070264013">Muted</translation>
 <translation id="8708000541097332489">Clear on exit</translation>
 <translation id="8037357227543935929">Ask (default)</translation>
 <translation id="3427092606871434483">Allow (default)</translation>
+<translation id="4879491255372875719">Automatic (default)</translation>
 <translation id="4312866146174492540">Block (default)</translation>
+<translation id="6979440798594660689">Mute (default)</translation>
 <translation id="2356070529366658676">Ask</translation>
 <translation id="5063480226653192405">Usage</translation>
 <translation id="3006881078666935414">No usage data</translation>
@@ -2159,6 +2133,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2318923050469484167">Current incognito session (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">No sites have been zoomed in or out</translation>
 <translation id="3566721612727112615">No sites added</translation>
+<translation id="8098574385249290065">Let Brave choose when sites can play sound (recommended)</translation>
 <translation id="5763751966069581670">No USB devices found</translation>
 <translation id="8546541260734613940">[*.]sample.co.uk</translation>
 <translation id="7366415735885268578">Add a site</translation>
@@ -2220,7 +2195,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7311891583377621132">Move slightly to capture a different part of the fingerprint</translation>
 <translation id="7345706641791090287">Confirm your password</translation>
 <translation id="381202950560906753">Add another</translation>
-<translation id="3625538291267447988">To set up Smart Lock, enter your password</translation>
 <translation id="6658023813581644008">To set up Smart Lock for sign-in, enter your password</translation>
 <translation id="5449551289610225147">Invalid password</translation>
 <translation id="5374359983950678924">Change picture</translation>
@@ -2260,8 +2234,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2709516037105925701">Auto-fill</translation>
 <translation id="1644574205037202324">History</translation>
 <translation id="5117427536932535467">Themes &amp;amp; Wallpapers</translation>
+<translation id="7029809446516969842">Passwords</translation>
 <translation id="3259418918864581163">Credit cards and addresses using Brave Software Pay.</translation>
-<translation id="4439834757335393741">Payment methods and addresses using Brave Software Pay.</translation>
 <translation id="3268451620468152448">Open Tabs</translation>
 <translation id="5241892180459725878">Brave Software Drive search suggestions</translation>
 <translation id="2120297377148151361">Activity and interactions</translation>
@@ -2332,6 +2306,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1114202307280046356">Diamond</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">External Command</translation>
+<translation id="585979798156957858">External Meta</translation>
 <translation id="4991420928586866460">Treat top-row keys as function keys</translation>
 <translation id="85486688517848470">Hold the Search key to switch the behaviour of the top-row keys</translation>
 <translation id="4400632832271803360">Hold the Launcher key to switch the behaviour of the top-row keys</translation>
@@ -2433,10 +2409,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2315821125498993513">Couldn't connect to phone. <ph name="LINK_BEGIN"/>Find out more.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together is on</translation>
 <translation id="3088402208262982892">Better Together is off</translation>
-<translation id="2079079131837725321">Unlock your Bravebook with your phone. <ph name="LINK_BEGIN"/>Find out more.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant Tethering</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Send and receive text messages from your Bravebook</translation>
 <translation id="3936335337858561470">Forget this device</translation>
 <translation id="3606712892509067288">Remove from Better Together</translation>
 <translation id="7878562273885520351">Your password may be compromised</translation>
@@ -2539,6 +2512,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2202898655984161076">There was a problem while listing printers. Some of your printers may not have registered successfully with <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">The <ph name="CLOUD_PRINT_NAME"/> connector process has crashed. Restart?</translation>
 <translation id="6904655473976120856">Press App button to exit</translation>
+<translation id="79766959863778284">XR Isolated Device Service</translation>
 <translation id="8909833622202089127">Site is tracking your location</translation>
 <translation id="375636864092143889">Site is using your microphone</translation>
 <translation id="310671807099593501">Site is using Bluetooth</translation>
@@ -2567,7 +2541,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6112294629795967147">Touch to resize</translation>
 <translation id="2453860139492968684">Finish</translation>
 <translation id="1853692000353488670">New incognito tab</translation>
+<translation id="6336451774241870485">New private tab</translation>
 <translation id="5530766185686772672">Close incognito tabs</translation>
+<translation id="6610147964972079463">Close private tabs</translation>
 <translation id="8076492880354921740">Tabs</translation>
 <translation id="1049743911850919806">Incognito</translation>
 </translationbundle>

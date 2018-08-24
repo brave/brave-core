@@ -499,9 +499,6 @@
 <translation id="8743864605301774756">1 時間前に更新されました</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> 時間前に更新されました</translation>
 <translation id="1329584516321524826">たった今更新されました</translation>
-<translation id="8679788109894721265">このページは <ph name="MEGABYTES"/> MB を超えるデータを使用しています</translation>
-<translation id="8369547389711988632">読み込みを停止しました</translation>
-<translation id="4280864916190672950">読み込みを停止する</translation>
 <translation id="2724841811573117416">WebRTC ログ</translation>
 <translation id="7518150891539970662">WebRTC ログ（<ph name="WEBRTC_LOG_COUNT"/> 件）</translation>
 <translation id="6592267180249644460">WebRTC ログの記録日時: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@
 <translation id="7554791636758816595">新しいタブ</translation>
 <translation id="3915280005470252504">音声検索</translation>
 <translation id="3153862085237805241">カードを保存</translation>
-<translation id="4961000125720751066">すべてのカードを 1 か所で保管できます</translation>
+<translation id="1593926297800505364">お支払い方法を保存</translation>
 <translation id="2473195200299095979">このページを翻訳</translation>
 <translation id="5408750356094797285">ズーム: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">このページには「<ph name="NAME"/>」拡張機能によるズームが適用されています</translation>
@@ -1048,7 +1045,6 @@
 <translation id="5562781907504170924">このタブは Bluetooth デバイスに接続しています。</translation>
 <translation id="5884474295213649357">このタブは USB デバイスに接続されています。</translation>
 <translation id="8466417995783206254">このタブではピクチャー イン ピクチャー モードで動画を再生しています。</translation>
-<translation id="6235700927623181151">このタブはパソコンのコンテンツを共有しています。</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - カメラまたはマイクで記録中です</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - タブのコンテンツが共有されています</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - ピクチャー イン ピクチャー モードで再生中の動画</translation>
@@ -1113,35 +1109,6 @@
 <translation id="874689135111202667">{0,plural, =1{1 個のファイルをこのサイトにアップロードしますか？}other{# 個のファイルをこのサイトにアップロードしますか？}}</translation>
 <translation id="1956390763342388273">「<ph name="FOLDER_PATH"/>」のすべてのファイルがアップロードされます。この操作は、サイトを信頼できる場合にのみ行ってください。</translation>
 <translation id="1243314992276662751">アップロード</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> が本人確認を求めています</translation>
-<translation id="3738671331307774213">本人確認をすることで、個人データを保護できます</translation>
-<translation id="8435395510592618362"><ph name="APP_NAME"/> で本人確認を行う</translation>
-<translation id="3854599674806204102">オプションを選択してください</translation>
-<translation id="7490950320178383728">Bluetooth でセキュリティ キーを使用する</translation>
-<translation id="414599683948988413">USB でセキュリティ キーを使用する</translation>
-<translation id="7851816139220202929">NFC でセキュリティ キーを使用する</translation>
-<translation id="5392327114396848796">組み込みのセキュリティ キーを使用する</translation>
-<translation id="5104546332954397226">スマートフォンをセキュリティ キーとして使用する</translation>
-<translation id="2876441201733326392">USB セキュリティ キーを使用する</translation>
-<translation id="5842053879378944309">「<ph name="APP_NAME"/>」で USB セキュリティ キーを使用します</translation>
-<translation id="6896398788631624004">セキュリティ キーを差し込み、有効にしてください</translation>
-<translation id="8033958968890501070">タイムアウト</translation>
-<translation id="7102832101143475489">リクエストがタイムアウトになりました</translation>
-<translation id="3670229581627177274">Bluetooth を ON にする</translation>
-<translation id="3880709822663530586">セキュリティ キーは端末の Bluetooth がオンになっている場合にのみ機能します</translation>
-<translation id="1183378459020939734">セキュリティ キーをペア設定する準備はできましたか？</translation>
-<translation id="237058345584060620">アカウントへのログインに使用できるように、キーをこの端末とペア設定します</translation>
-<translation id="1875312262568496299">開始</translation>
-<translation id="3104900172193317662">セキュリティ キーの使用を許可</translation>
-<translation id="2492040222276243256">セキュリティ キーのボタンを 5 秒以上押し続けます</translation>
-<translation id="6427415464407526111">セキュリティ キーの選択</translation>
-<translation id="2633326789677284179">キーの背面に記載されている名前を確認します</translation>
-<translation id="5660204307954428567"><ph name="DEVICE_NAME"/> とのペア設定</translation>
-<translation id="8984872292925913496">キーの背面に記載されている 6 桁の PIN を確認します</translation>
-<translation id="1201402288615127009">次へ</translation>
-<translation id="1792161662640298233">セキュリティ キーの確認中</translation>
-<translation id="2321482478556590128">「<ph name="APP_NAME"/>」でセキュリティ キーを使用</translation>
-<translation id="5292195676005197571">ほとんどのキーはボタンを押すだけで使用できます</translation>
 <translation id="3785308913036335955">アプリのショートカットを表示</translation>
 <translation id="711840821796638741">管理対象のブックマークを表示</translation>
 <translation id="3613134908380545408">「<ph name="FOLDER_NAME"/>」を表示</translation>
@@ -1509,6 +1476,7 @@
 <translation id="6902066522699286937">プレビューする音声</translation>
 <translation id="304747341537320566">読み上げエンジン</translation>
 <translation id="1067291318998134776">Linux（ベータ版）</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Bravebook で Linux のツール、エディタ、IDE を実行します。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;詳細&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Bravebook から Linux アプリを削除する</translation>
 <translation id="2295473777859797944">Brave Software Play ストア</translation>
@@ -1548,17 +1516,14 @@
 <translation id="8647834505253004544">有効なウェブアドレスではありません</translation>
 <translation id="2149850907588596975">パスワードとフォーム</translation>
 <translation id="8639963783467694461">自動入力の設定</translation>
-<translation id="3431019676184503003">住所とお支払い方法</translation>
 <translation id="2512222046227390255">フォームへの自動入力</translation>
-<translation id="2283340219607151381">住所の保存と入力</translation>
-<translation id="1662550410081243962">お支払い方法の保存と入力</translation>
-<translation id="2903493209154104877">住所</translation>
 <translation id="7764225426217299476">住所を追加</translation>
 <translation id="5595485650161345191">住所の編集</translation>
 <translation id="6207937957461833379">国/地域</translation>
 <translation id="4378154925671717803">電話</translation>
 <translation id="5659593005791499971">メール</translation>
-<translation id="5565871407246142825">クレジットカード</translation>
+<translation id="5762172915276660232">クレジット カードの設定</translation>
+<translation id="4499718683476608392">フォームにクレジット カード情報をワンクリックで自動入力できるようにします</translation>
 <translation id="2448312741937722512">種類</translation>
 <translation id="9064275926664971810">フォームにワンクリックで自動入力できるようにします</translation>
 <translation id="5029568752722684782">コピーを消去</translation>
@@ -1644,7 +1609,6 @@
 <translation id="4699172675775169585">キャッシュされた画像とファイル</translation>
 <translation id="1274997165432133392">Cookie と他のサイト データ</translation>
 <translation id="3838543471119263078">Cookie などのサイトデータやプラグイン データ</translation>
-<translation id="7029809446516969842">パスワード</translation>
 <translation id="6865313869410766144">自動入力フォームのデータ</translation>
 <translation id="177336675152937177">ホストされているアプリ データ</translation>
 <translation id="1718835860248848330">1 時間以内</translation>
@@ -2039,8 +2003,8 @@
 <translation id="7136694880210472378">デフォルトに設定</translation>
 <translation id="102272308210570439">アシスタントに画面上のアイテムの使用を許可する</translation>
 <translation id="8624205858755890468">アシスタントによる関連情報、アプリ、操作の案内を有効にします。</translation>
-<translation id="178309940312315155">「OK Brave Software」の検出</translation>
-<translation id="3476912025629168202">画面がオンの状態で「OK Brave Software」と話すといつでもアシスタントにアクセスできます。</translation>
+<translation id="8669919703154928649">アシスタントの通知を許可する</translation>
+<translation id="3430342160185525240">アシスタントの通知を有効にします。</translation>
 <translation id="3908743412684152579">Brave Software アシスタントの設定</translation>
 <translation id="4933484234309072027"><ph name="URL"/> に埋め込まれたページ</translation>
 <translation id="8427292751741042100">ホストに埋め込まれたページ</translation>
@@ -2048,6 +2012,8 @@
 <translation id="6295158916970320988">すべてのサイト</translation>
 <translation id="7625568159987162309">すべてのサイトに保存されている権限とデータを表示</translation>
 <translation id="3735740477244556633">並べ替え</translation>
+<translation id="6503077044568424649">よくアクセスするページ</translation>
+<translation id="967624055006145463">保存データ</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">広告</translation>
 <translation id="5649053991847567735">自動ダウンロード</translation>
@@ -2123,7 +2089,6 @@
 <translation id="3038675903128704560">すべてのサイトに対し、プラグインを使ったパソコンへのアクセスを禁止する</translation>
 <translation id="857943718398505171">許可（推奨）</translation>
 <translation id="5000922062037820727">ブロック（推奨）</translation>
-<translation id="8116925261070264013">ミュート中</translation>
 <translation id="8708000541097332489">終了時に消去</translation>
 <translation id="8037357227543935929">確認（デフォルト）</translation>
 <translation id="3427092606871434483">許可（デフォルト）</translation>
@@ -2220,7 +2185,6 @@
 <translation id="7311891583377621132">指紋の別の部分を登録するため、指を少し移動してください</translation>
 <translation id="7345706641791090287">パスワードを再入力</translation>
 <translation id="381202950560906753">別の指紋を登録</translation>
-<translation id="3625538291267447988">Smart Lock を設定するにはパスワードを入力してください</translation>
 <translation id="6658023813581644008">ログイン用に Smart Lock を設定するには、パスワードを入力してください</translation>
 <translation id="5449551289610225147">パスワードが無効です</translation>
 <translation id="5374359983950678924">画像を変更</translation>
@@ -2260,8 +2224,8 @@
 <translation id="2709516037105925701">自動入力</translation>
 <translation id="1644574205037202324">履歴</translation>
 <translation id="5117427536932535467">テーマと壁紙</translation>
+<translation id="7029809446516969842">パスワード</translation>
 <translation id="3259418918864581163">Brave Software Pay のクレジット カードと住所</translation>
-<translation id="4439834757335393741">Brave Software Pay のお支払い方法と住所。</translation>
 <translation id="3268451620468152448">開いているタブ</translation>
 <translation id="5241892180459725878">Brave Software ドライブの検索候補</translation>
 <translation id="2120297377148151361">アクティビティと操作</translation>
@@ -2332,6 +2296,8 @@
 <translation id="1114202307280046356">ひし形</translation>
 <translation id="89720367119469899">エスケープ</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">外部コマンド</translation>
+<translation id="585979798156957858">外部メタキー</translation>
 <translation id="4991420928586866460">キーボードの最上段のキーをファンクション キーとして使用する</translation>
 <translation id="85486688517848470">キーボードの最上段にあるキーの動作を切り替えるには、検索キーを押したままにします</translation>
 <translation id="4400632832271803360">キーボードの最上段にあるキーの動作を切り替えるには、ランチャー キーを押したままにします</translation>
@@ -2433,10 +2399,7 @@
 <translation id="2315821125498993513">スマートフォンに接続できませんでした。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together がオンになっています</translation>
 <translation id="3088402208262982892">Better Together がオフになっています</translation>
-<translation id="2079079131837725321">スマートフォンで Bravebook のロックを解除します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">インスタント テザリング</translation>
-<translation id="3059313675706898490">Android メッセージ</translation>
-<translation id="7095175330464035635">Bravebook でテキスト メッセージを送受信します</translation>
 <translation id="3936335337858561470">この端末を削除</translation>
 <translation id="3606712892509067288">Better Together から削除</translation>
 <translation id="7878562273885520351">パスワードが不正使用される可能性があります</translation>
@@ -2567,7 +2530,9 @@
 <translation id="6112294629795967147">タップしてサイズを変更</translation>
 <translation id="2453860139492968684">終了</translation>
 <translation id="1853692000353488670">新しいシークレット タブ</translation>
+<translation id="6336451774241870485">新しいプライベート タブ</translation>
 <translation id="5530766185686772672">シークレットタブを閉じる</translation>
+<translation id="6610147964972079463">プライベート タブを閉じる</translation>
 <translation id="8076492880354921740">タブ</translation>
 <translation id="1049743911850919806">シークレット モード</translation>
 </translationbundle>

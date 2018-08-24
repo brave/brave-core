@@ -499,9 +499,6 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="8743864605301774756">Vor einer Stunde aktualisiert</translation>
 <translation id="5638497698949808140">Vor <ph name="HOURS"/> Stunden aktualisiert</translation>
 <translation id="1329584516321524826">Gerade aktualisiert</translation>
-<translation id="8679788109894721265">Diese Seite benötigt mehr als <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Laden abgebrochen</translation>
-<translation id="4280864916190672950">Laden abbrechen</translation>
 <translation id="2724841811573117416">WebRTC-Protokolle</translation>
 <translation id="7518150891539970662">WebRTC-Protokolle (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-Protokoll erfasst am <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="7554791636758816595">Neuer Tab</translation>
 <translation id="3915280005470252504">Sprachsuche verwenden</translation>
 <translation id="3153862085237805241">Karte speichern</translation>
-<translation id="4961000125720751066">Alle Ihre Karten an einem Ort speichern</translation>
+<translation id="1593926297800505364">Zahlungsmethode speichern</translation>
 <translation id="2473195200299095979">Diese Seite übersetzen</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Diese Seite wurde mit der Erweiterung "<ph name="NAME"/>" gezoomt.</translation>
@@ -1048,7 +1045,6 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="5562781907504170924">Dieser Tab ist mit einem Bluetooth-Gerät verbunden.</translation>
 <translation id="5884474295213649357">Dieser Tab ist mit einem USB-Gerät verbunden.</translation>
 <translation id="8466417995783206254">Auf diesem Tab wird ein Video im Bild-im-Bild-Modus abgespielt.</translation>
-<translation id="6235700927623181151">Dieser Tab enthält Ihre Desktopinhalte.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – Kamera oder Mikrofon nimmt auf</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – Tabinhalte geteilt</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – Video wird im Bild-im-Bild-Modus abgespielt</translation>
@@ -1113,35 +1109,6 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="874689135111202667">{0,plural, =1{Soll eine Datei auf diese Website hochgeladen werden?}other{Sollen # Dateien auf diese Website hochgeladen werden?}}</translation>
 <translation id="1956390763342388273">Hierdurch werden alle Dateien aus "<ph name="FOLDER_PATH"/>" hochgeladen. Tun Sie dies nur, wenn Sie die Website als vertrauenswürdig einstufen.</translation>
 <translation id="1243314992276662751">Hochladen</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> möchte Ihre Identität überprüfen</translation>
-<translation id="3738671331307774213">Wenn Ihre Identität überprüft wird, hilft dies, Ihre private Daten zu schützen</translation>
-<translation id="8435395510592618362">Ihre Identität mit <ph name="APP_NAME"/> bestätigen</translation>
-<translation id="3854599674806204102">Wählen Sie eine Option aus</translation>
-<translation id="7490950320178383728">Sicherheitsschlüssel mit Bluetooth verwenden</translation>
-<translation id="414599683948988413">Meinen Sicherheitsschlüssel mit USB verwenden</translation>
-<translation id="7851816139220202929">Sicherheitsschlüssel mit NFC verwenden</translation>
-<translation id="5392327114396848796">Integrierten Sicherheitsschlüssel verwenden</translation>
-<translation id="5104546332954397226">Smartphone als Sicherheitsschlüssel verwenden</translation>
-<translation id="2876441201733326392">USB-Sicherheitsschlüssel verwenden</translation>
-<translation id="5842053879378944309">USB-Sicherheitsschlüssel mit <ph name="APP_NAME"/> verwenden</translation>
-<translation id="6896398788631624004">Sicherheitsschlüssel einstecken und aktivieren</translation>
-<translation id="8033958968890501070">Zeitüberschreitung</translation>
-<translation id="7102832101143475489">Zeitüberschreitung bei der Anfrage</translation>
-<translation id="3670229581627177274">Bluetooth aktivieren</translation>
-<translation id="3880709822663530586">Ihr Sicherheitsschlüssel funktioniert nur, wenn auf Ihrem Gerät Bluetooth aktiviert ist</translation>
-<translation id="1183378459020939734">Bereit zum Koppeln des Sicherheitsschlüssels?</translation>
-<translation id="237058345584060620">Koppeln Sie Ihren Schlüssel mit diesem Gerät, um sich damit in Ihrem Konto anmelden zu können</translation>
-<translation id="1875312262568496299">Starten</translation>
-<translation id="3104900172193317662">Verwendung Ihres Sicherheitsschlüssels zulassen</translation>
-<translation id="2492040222276243256">Halten Sie die Taste auf Ihrem Sicherheitsschlüssel mindestens fünf Sekunden lang gedrückt</translation>
-<translation id="6427415464407526111">Sicherheitsschlüssel auswählen</translation>
-<translation id="2633326789677284179">Den Namen finden Sie auf der Rückseite Ihres Schlüssels</translation>
-<translation id="5660204307954428567">Mit <ph name="DEVICE_NAME"/> koppeln</translation>
-<translation id="8984872292925913496">Sie finden die sechsstellige PIN auf der Rückseite Ihres Schlüssels</translation>
-<translation id="1201402288615127009">Weiter</translation>
-<translation id="1792161662640298233">Sicherheitsschlüssel wird geprüft</translation>
-<translation id="2321482478556590128">Sicherheitsschlüssel mit <ph name="APP_NAME"/> verwenden</translation>
-<translation id="5292195676005197571">Bei den meisten Schlüsseln genügt es, zur Verwendung die Taste drücken</translation>
 <translation id="3785308913036335955">Verknüpfung "Apps" anzeigen</translation>
 <translation id="711840821796638741">Verwaltete Lesezeichen anzeigen</translation>
 <translation id="3613134908380545408">"<ph name="FOLDER_NAME"/>" anzeigen</translation>
@@ -1510,6 +1477,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6902066522699286937">Stimme zum Anhören</translation>
 <translation id="304747341537320566">Sprach-Engines</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Führen Sie auf Ihrem Bravebook Linux-Tools, -Editoren und -IDEs aus. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Weitere Informationen&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Linux-Apps für Bravebook entfernen</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
@@ -1549,17 +1517,14 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8647834505253004544">Keine gültige Webadresse</translation>
 <translation id="2149850907588596975">Passwörter und Formulare</translation>
 <translation id="8639963783467694461">AutoFill-Einstellungen</translation>
-<translation id="3431019676184503003">Adressen und Zahlungsmethoden</translation>
 <translation id="2512222046227390255">Formulare automatisch ausfüllen</translation>
-<translation id="2283340219607151381">Adressen speichern und ausfüllen</translation>
-<translation id="1662550410081243962">Zahlungsmethode speichern und ausfüllen</translation>
-<translation id="2903493209154104877">Adressen</translation>
 <translation id="7764225426217299476">Adresse hinzufügen</translation>
 <translation id="5595485650161345191">Adresse bearbeiten</translation>
 <translation id="6207937957461833379">Land/Region</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="5659593005791499971">E-Mail-Adresse</translation>
-<translation id="5565871407246142825">Kreditkarten</translation>
+<translation id="5762172915276660232">Einstellungen für Kreditkarten</translation>
+<translation id="4499718683476608392">AutoFill für Kreditkarten aktivieren, um Formulare mit nur einem Klick auszufüllen</translation>
 <translation id="2448312741937722512">Art</translation>
 <translation id="9064275926664971810">AutoFill aktivieren, um Webformulare mit nur einem Klick auszufüllen</translation>
 <translation id="5029568752722684782">Kopie löschen</translation>
@@ -1645,7 +1610,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4699172675775169585">Bilder und Dateien im Cache</translation>
 <translation id="1274997165432133392">Cookies und andere Websitedaten</translation>
 <translation id="3838543471119263078">Cookies und andere Website- und Plug-in-Daten</translation>
-<translation id="7029809446516969842">Passwörter</translation>
 <translation id="6865313869410766144">AutoFill-Formulardaten</translation>
 <translation id="177336675152937177">Gehostete App-Daten</translation>
 <translation id="1718835860248848330">Letzte Stunde</translation>
@@ -2040,8 +2004,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7136694880210472378">Als Standard festlegen</translation>
 <translation id="102272308210570439">Bildschirminhalt für Assistant nutzbar machen</translation>
 <translation id="8624205858755890468">Ermöglicht Assistant, Ihnen relevante Informationen, Apps und Aktionen anzuzeigen.</translation>
-<translation id="178309940312315155">"Ok Brave Software"-Erkennung</translation>
-<translation id="3476912025629168202">Bei eingeschaltetem Bildschirm steht Ihnen Brave Software Assistant jederzeit zur Verfügung, wenn Sie "Ok Brave Software" sagen.</translation>
+<translation id="8669919703154928649">Assistant Benachrichtigungen anzeigen lassen</translation>
+<translation id="3430342160185525240">Ermöglicht Assistant, Ihnen Benachrichtigungen zu zeigen.</translation>
 <translation id="3908743412684152579">Brave Software Assistant-Einstellungen</translation>
 <translation id="4933484234309072027">auf <ph name="URL"/> eingebettet</translation>
 <translation id="8427292751741042100">auf beliebigem Host eingebettet</translation>
@@ -2049,6 +2013,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6295158916970320988">Alle Websites</translation>
 <translation id="7625568159987162309">Nach Websites sortierte Berechtigungen und gespeicherte Daten aufrufen</translation>
 <translation id="3735740477244556633">Sortieren nach</translation>
+<translation id="6503077044568424649">Meistbesucht</translation>
+<translation id="967624055006145463">Gespeicherte Daten</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Werbung</translation>
 <translation id="5649053991847567735">Auto-Downloads</translation>
@@ -2124,7 +2090,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3038675903128704560">Verwendung von Plug-ins für den Zugriff auf Ihren Computer für keine Website zulassen</translation>
 <translation id="857943718398505171">Zugelassen (empfohlen)</translation>
 <translation id="5000922062037820727">Blockiert (empfohlen)</translation>
-<translation id="8116925261070264013">Stummgeschaltet</translation>
 <translation id="8708000541097332489">Beim Beenden löschen</translation>
 <translation id="8037357227543935929">Nachfragen (Standardeinstellung)</translation>
 <translation id="3427092606871434483">Zulassen (Standardeinstellung)</translation>
@@ -2221,7 +2186,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7311891583377621132">Bewegen Sie Ihren Finger etwas, um einen anderen Teil des Fingerabdrucks zu erfassen</translation>
 <translation id="7345706641791090287">Passwort bestätigen</translation>
 <translation id="381202950560906753">Weitere hinzufügen</translation>
-<translation id="3625538291267447988">Passwort eingeben, um Smart Lock einzurichten</translation>
 <translation id="6658023813581644008">Passwort eingeben, um Smart Lock für die Anmeldung einzurichten</translation>
 <translation id="5449551289610225147">Ungültiges Passwort</translation>
 <translation id="5374359983950678924">Bild ändern</translation>
@@ -2261,8 +2225,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="2709516037105925701">AutoFill</translation>
 <translation id="1644574205037202324">Verlauf</translation>
 <translation id="5117427536932535467">Designs &amp;amp; Hintergründe</translation>
+<translation id="7029809446516969842">Passwörter</translation>
 <translation id="3259418918864581163">Kreditkarten und Adressen aus Brave Software Pay.</translation>
-<translation id="4439834757335393741">Zahlungsmethoden und Adressen mit Brave Software Pay.</translation>
 <translation id="3268451620468152448">Geöffnete Tabs</translation>
 <translation id="5241892180459725878">Brave Software Drive-Suchvorschläge</translation>
 <translation id="2120297377148151361">Aktivitäten und Interaktionen</translation>
@@ -2333,6 +2297,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="1114202307280046356">Raute</translation>
 <translation id="89720367119469899">Esc-Taste</translation>
 <translation id="5583640892426849032">Rücktaste</translation>
+<translation id="1938351510777341717">Externer Befehl</translation>
+<translation id="585979798156957858">Externe Metataste</translation>
 <translation id="4991420928586866460">Tasten in der obersten Reihe als Funktionstasten behandeln</translation>
 <translation id="85486688517848470">Halten Sie die Suchtaste gedrückt, um die Funktion der Tasten in der obersten Reihe zu ändern</translation>
 <translation id="4400632832271803360">Halten Sie die Taste "Suche" gedrückt, um die Funktion der Tasten in der obersten Reihe zu ändern</translation>
@@ -2434,10 +2400,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="2315821125498993513">Keine Verbindung zum Smartphone möglich. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together ist an</translation>
 <translation id="3088402208262982892">Better Together ist aus</translation>
-<translation id="2079079131837725321">Bravebook mit Ihrem Smartphone entsperren. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant Tethering</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Textnachrichten auf Ihrem Bravebook senden und empfangen</translation>
 <translation id="3936335337858561470">Dieses Gerät entfernen</translation>
 <translation id="3606712892509067288">Aus Better Together entfernen</translation>
 <translation id="7878562273885520351">Ihr Passwort könnte gefährdet sein</translation>
@@ -2568,7 +2531,9 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6112294629795967147">Zum Anpassen der Größe tippen</translation>
 <translation id="2453860139492968684">Fertig</translation>
 <translation id="1853692000353488670">Neuer Inkognito-Tab</translation>
+<translation id="6336451774241870485">Neuer privater Tab</translation>
 <translation id="5530766185686772672">Inkognito-Tabs schließen</translation>
+<translation id="6610147964972079463">Private Tabs schließen</translation>
 <translation id="8076492880354921740">Tabs</translation>
 <translation id="1049743911850919806">Inkognito</translation>
 </translationbundle>

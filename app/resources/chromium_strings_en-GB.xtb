@@ -38,7 +38,7 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="5785919770853225148">Brave will save this password in your Brave Software account. You won’t have to remember it.</translation>
 <translation id="3343095737966473035">Brave isn't your default browser</translation>
 <translation id="6715663530666325392">Set up Sync to save your personalised browser features to the web and access them from Brave on any computer.</translation>
-<translation id="2708027082363760195">Brave does not include the PDF viewer which is required for Print Preview to function.</translation>
+<translation id="5874882355102994015">Brave cannot show the print preview when the built-in PDF viewer is missing.</translation>
 <translation id="8880183781256147665">Adding to Brave ...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> may be dangerous, so Brave has blocked it.</translation>
 <translation id="9067428552314418522">This file is dangerous, so Brave has blocked it.</translation>
@@ -86,6 +86,7 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="3215652305414474626">It also controls what page is shown when you start Brave or click the Home button.</translation>
 <translation id="2433912322225810055">It also controls what page is shown when you start Brave or search from the Omnibox.</translation>
 <translation id="2871190378186459992">Discover great apps, games, extensions and themes for Brave.</translation>
+<translation id="2522086024276534909">Restart Brave OS</translation>
 <translation id="8183252473547465084">Brave OS needs to be restarted to apply the update.</translation>
 <translation id="5895138241574237353">Restart</translation>
 <translation id="5875673934455379806">Reinstall Brave</translation>

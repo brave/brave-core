@@ -496,9 +496,6 @@
 <translation id="8743864605301774756">1ಗಂಟೆಯ ಹಿಂದೆ ಆಪ್‌ಡೇಟ್‌ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/>ಗಂಟೆಗಳ ಹಿಂದೆಯೇ ಅಪ್‌ಡೇಟ್‌ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="1329584516321524826">ಇದೀಗ ಅಪ್‌ಡೇಟ್‌ ಮಾಡಲಾಗಿದೆ</translation>
-<translation id="8679788109894721265">ಈ ಪುಟವು <ph name="MEGABYTES"/>MB ಗಿಂತಲೂ ಹೆಚ್ಚು ಡೇಟಾವನ್ನು ಬಳಸುತ್ತದೆ</translation>
-<translation id="8369547389711988632">ಲೋಡ್ ಮಾಡುವುದನ್ನು ನಿಲ್ಲಿಸಲಾಗಿದೆ</translation>
-<translation id="4280864916190672950">ಲೋಡ್ ಮಾಡುವುದನ್ನು ನಿಲ್ಲಿಸಿ</translation>
 <translation id="2724841811573117416">WebRTC ಲಾಗ್‌ಗಳು</translation>
 <translation id="7518150891539970662">WebRTC ಲಾಗ್‌ಗಳು (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC ಲಾಗ್ ಸೆರೆಹಿಡಿಯಲಾಗಿದೆ <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -585,7 +582,7 @@
 <translation id="7554791636758816595">ಹೊಸ ಟ್ಯಾಬ್</translation>
 <translation id="3915280005470252504">ಧ್ವನಿ ಮೂಲಕ ಹುಡುಕಿ</translation>
 <translation id="3153862085237805241">ಕಾರ್ಡ್‌ ಅನ್ನು ಉಳಿಸಿ</translation>
-<translation id="4961000125720751066">ನಿಮ್ಮ ಕಾರ್ಡ್‌ಗಳನ್ನು ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ ಇರಿಸಿ</translation>
+<translation id="1593926297800505364">ಪಾವತಿ ವಿಧಾನವನ್ನು ಉಳಿಸಿ</translation>
 <translation id="2473195200299095979">ಈ ಪುಟವನ್ನು ಅನುವಾದಿಸಿ</translation>
 <translation id="5408750356094797285">ಝೂಮ್: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">ಈ ಪುಟವನ್ನು "<ph name="NAME"/>" ವಿಸ್ತರಣೆಯಿಂದ  ಝೂಮ್‌ ಮಾಡಲಾಗಿದೆ</translation>
@@ -1045,7 +1042,6 @@
 <translation id="5562781907504170924">ಈ ಟ್ಯಾಬ್ ಅನ್ನು ಬ್ಲೂಟೂತ್‌ ಸಾಧನಕ್ಕೆ ಸಂಪರ್ಕಿಸಲಾಗಿದೆ.</translation>
 <translation id="5884474295213649357">ಈ ಟ್ಯಾಬ್ USB ಸಾಧನಕ್ಕೆ ಸಂಪರ್ಕಗೊಂಡಿದೆ.</translation>
 <translation id="8466417995783206254">ಚಿತ್ರದಲ್ಲಿನ ಚಿತ್ರ ಮೋಡ್‌ನಲ್ಲಿ ಈ ಟ್ಯಾಬ್ ವೀಡಿಯೊವನ್ನು ಪ್ಲೇ ಮಾಡುತ್ತಿದೆ.</translation>
-<translation id="6235700927623181151">ಈ ಟ್ಯಾಬ್ ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್ ವಿಷಯವನ್ನು ಹಂಚಿಕೊಳ್ಳುತ್ತಿದೆ.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - ಕ್ಯಾಮರಾ ಅಥವಾ ಮೈಕ್ರೊಫೋನ್ ರೆಕಾರ್ಡಿಂಗ್</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - ಟ್ಯಾಬ್ ವಿಷಯವನ್ನು ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - ಚಿತ್ರದಲ್ಲಿನ ಚಿತ್ರ ಮೋಡ್‌ನಲ್ಲಿ ವೀಡಿಯೊ ಪ್ಲೇ ಆಗುತ್ತಿದೆ</translation>
@@ -1110,35 +1106,6 @@
 <translation id="874689135111202667">{0,plural, =1{ಈ ಸೈಟ್‌ಗೆ ಒಂದು ಫೈಲ್‌ ಅನ್ನು ಅಪ್‌ಲೋಡ್‌ ಮಾಡಬೇಕೇ?}one{ಈ ಸೈಟ್‌ಗೆ # ಫೈಲ್‌ಗಳನ್ನು ಅಪ್‌ಲೋಡ್‌ ಮಾಡಬೇಕೇ?}other{ಈ ಸೈಟ್‌ಗೆ # ಫೈಲ್‌ಗಳನ್ನು ಅಪ್‌ಲೋಡ್‌ ಮಾಡಬೇಕೇ?}}</translation>
 <translation id="1956390763342388273">ಇದು "<ph name="FOLDER_PATH"/>" ನಿಂದ ಎಲ್ಲ ಫೈಲ್‌ಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ. ಸೈಟ್ ಕುರಿತು ನಿಮಗೆ ನಂಬಿಕೆಯಿದ್ದರೆ ಮಾತ್ರ ಇದನ್ನು ಮಾಡಿ.</translation>
 <translation id="1243314992276662751">ಅಪ್‌ಲೋಡ್</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> ನಿಮ್ಮ ಗುರುತನ್ನು ಪರಿಶೀಲಿಸಲು ಬಯಸುತ್ತದೆ</translation>
-<translation id="3738671331307774213">ನಿಮ್ಮ ಗುರುತನ್ನು ಪರಿಶೀಲಿಸುವುದರಿಂದ ನಿಮ್ಮ ಖಾಸಗಿ ಡೇಟಾವನ್ನು ರಕ್ಷಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ</translation>
-<translation id="8435395510592618362"><ph name="APP_NAME"/> ಮೂಲಕ ನಿಮ್ಮ ಗುರುತನ್ನು ಪರಿಶೀಲಿಸಿ</translation>
-<translation id="3854599674806204102">ಒಂದು ಆಯ್ಕೆಯನ್ನು ಆರಿಸಿ</translation>
-<translation id="7490950320178383728">ಬ್ಲೂಟೂತ್ ಜೊತೆಗೆ ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀ ಬಳಸಿ</translation>
-<translation id="414599683948988413">USB ಜೊತೆಗೆ ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀ ಬಳಸಿ</translation>
-<translation id="7851816139220202929">NFC ಜೊತೆಗೆ ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀ ಬಳಸಿ</translation>
-<translation id="5392327114396848796">ಅಂತರ್ನಿರ್ಮಿತ ಸುರಕ್ಷತಾ ಕೀ ಬಳಸಿ</translation>
-<translation id="5104546332954397226">ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಸುರಕ್ಷತಾ ಕೀ ಎಂಬಂತೆ ಬಳಸಿ</translation>
-<translation id="2876441201733326392">USB ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಬಳಸಿ</translation>
-<translation id="5842053879378944309"><ph name="APP_NAME"/> ಜೊತೆಗೆ ನಿಮ್ಮ USB ಸುರಕ್ಷತಾ ಕೀ ಬಳಸಿ</translation>
-<translation id="6896398788631624004">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀ ಅನ್ನು ಪ್ಲಗ್-ಇನ್ ಮಾಡಿ ಮತ್ತು ಅದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="8033958968890501070">ಅವಧಿ ಮೀರಿದೆ</translation>
-<translation id="7102832101143475489">ವಿನಂತಿಯ ಅವಧಿ ಮೀರಿದೆ</translation>
-<translation id="3670229581627177274">ಬ್ಲೂಟೂತ್ ಆನ್ ಮಾಡಿ</translation>
-<translation id="3880709822663530586">ನಿಮ್ಮ ಸಾಧನದ ಬ್ಲೂಟೂತ್ ಆನ್ ಇದ್ದಾಗ ಮಾತ್ರ ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀ ಕೆಲಸ ಮಾಡುತ್ತದೆ</translation>
-<translation id="1183378459020939734">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಜೋಡಿಸಲು ಸಿದ್ಧರಾಗಿರುವಿರಾ?</translation>
-<translation id="237058345584060620">ನಿಮ್ಮ ಕೀಯನ್ನು ಈ ಸಾಧನಕ್ಕೆ ಜೋಡಿಸುವುದರಿಂದ, ಅದನ್ನು ನಿಮ್ಮ ಖಾತೆಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು ಬಳಸಬಹುದು</translation>
-<translation id="1875312262568496299">ಆರಂಭಿಸಿ</translation>
-<translation id="3104900172193317662">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಬಳಸಲು ಅನುಮತಿಸಿ</translation>
-<translation id="2492040222276243256">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯ ಮೇಲಿನ ಬಟನ್ ಅನ್ನು ಕನಿಷ್ಠ 5 ಸೆಕೆಂಡುಗಳವರೆಗೆ ಒತ್ತಿ ಹಿಡಿದುಕೊಳ್ಳಿ</translation>
-<translation id="6427415464407526111">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
-<translation id="2633326789677284179">ನಿಮ್ಮ ಕೀಯ ಹಿಂಭಾಗದಲ್ಲಿ ಮುದ್ರಿಸಲಾಗಿರುವ ಹೆಸರನ್ನು ಕಂಡುಕೊಳ್ಳಿ</translation>
-<translation id="5660204307954428567"><ph name="DEVICE_NAME"/> ಸಾಧನದೊಂದಿಗೆ ಜೋಡಿಸಿ</translation>
-<translation id="8984872292925913496">ನಿಮ್ಮ ಕೀಯ ಹಿಂಬದಿಯಲ್ಲಿನ 6-ಅಂಕಿಯ ಪಿನ್ ಅನ್ನು ಕಂಡುಕೊಳ್ಳಿ</translation>
-<translation id="1201402288615127009">ಮುಂದೆ</translation>
-<translation id="1792161662640298233">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ</translation>
-<translation id="2321482478556590128"><ph name="APP_NAME"/> ಜೊತೆಗೆ ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀ ಬಳಸಿ</translation>
-<translation id="5292195676005197571">ಹೆಚ್ಚಿನ ಕೀಗಳನ್ನು ಬಳಸಲು, ಕೇವಲ ಬಟನ್ ಅನ್ನು ಒತ್ತಿರಿ</translation>
 <translation id="3785308913036335955">ಅಪ್ಲಿಕೇಶನ್‌ಗಳ ಶಾರ್ಟ್‌ಕಟ್ ತೋರಿಸು</translation>
 <translation id="711840821796638741">ನಿರ್ವಹಿಸಲಾದ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ತೋರಿಸು</translation>
 <translation id="3613134908380545408"><ph name="FOLDER_NAME"/> ತೋರಿಸು</translation>
@@ -1507,6 +1474,7 @@
 <translation id="6902066522699286937">ಪೂರ್ವವೀಕ್ಷಣೆಗಾಗಿ ಧ್ವನಿ</translation>
 <translation id="304747341537320566">ಧ್ವನಿ ಎಂಜಿನ್‌ಗಳು</translation>
 <translation id="1067291318998134776">Linux (ಬೀಟಾ)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">ನಿಮ್ಮ Bravebook ನಲ್ಲಿ Linux ಪರಿಕರಗಳು, ಎಡಿಟರ್‌ಗಳು ಮತ್ತು IDE ಗಳನ್ನು ರನ್ ಮಾಡಿ. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Bravebook ನಿಂದ Linux ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="2295473777859797944">Brave Software Play ಸ್ಟೋರ್</translation>
@@ -1546,17 +1514,14 @@
 <translation id="8647834505253004544">ಇದು ಮಾನ್ಯವಾದ ವೆಬ್‌ ವಿಳಾಸವಲ್ಲ</translation>
 <translation id="2149850907588596975">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಮತ್ತು ಫಾರ್ಮ್‌ಗಳು</translation>
 <translation id="8639963783467694461">ಸ್ವಯಂತುಂಬುವಿಕೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
-<translation id="3431019676184503003">ವಿಳಾಸಗಳು ಮತ್ತು ಪಾವತಿ ವಿಧಾನಗಳು</translation>
 <translation id="2512222046227390255">ಫಾರ್ಮ್‌ಗಳನ್ನು ಸ್ವಯಂಭರ್ತಿ ಮಾಡಿ</translation>
-<translation id="2283340219607151381">ವಿಳಾಸಗಳನ್ನು ಉಳಿಸಿ ಮತ್ತು ಭರ್ತಿ ಮಾಡಿ</translation>
-<translation id="1662550410081243962">ಪಾವತಿ ವಿಧಾನಗಳನ್ನು ಉಳಿಸಿ ಮತ್ತು ಭರ್ತಿ ಮಾಡಿ</translation>
-<translation id="2903493209154104877">ವಿಳಾಸಗಳು</translation>
 <translation id="7764225426217299476">ವಿಳಾಸ ಸೇರಿಸಿ</translation>
 <translation id="5595485650161345191">ವಿಳಾಸ ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="6207937957461833379">ರಾಷ್ಟ್ರ/ಪ್ರದೇಶ</translation>
 <translation id="4378154925671717803">ಫೋನ್</translation>
 <translation id="5659593005791499971">ಇಮೇಲ್</translation>
-<translation id="5565871407246142825">ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್‌ಗಳು</translation>
+<translation id="5762172915276660232">ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
+<translation id="4499718683476608392">ಫಾರ್ಮ್‌ಗಳನ್ನು ಒಂದೇ ಕ್ಲಿಕ್‌ನಲ್ಲಿ ಭರ್ತಿ ಮಾಡಲು, ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್ ಸ್ವಯಂ ಭರ್ತಿ ವೈಶಿಷ್ಟ್ಯವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="2448312741937722512">ಪ್ರಕಾರ</translation>
 <translation id="9064275926664971810">ಒಂದು ಕ್ಲಿಕ್‌ನೊಂದಿಗೆ ವೆಬ್ ಫಾರ್ಮ್‌ಗಳನ್ನು ತುಂಬಲು ಸ್ವಯಂ ತುಂಬುವಿಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="5029568752722684782">ನಕಲು ತೆರವುಗೊಳಿಸು</translation>
@@ -1642,7 +1607,6 @@
 <translation id="4699172675775169585">ಸಂಗ್ರಹಿಸಲಾಗಿರುವ ಚಿತ್ರಗಳು ಮತ್ತು ಫೈಲ್‌ಗಳು</translation>
 <translation id="1274997165432133392">ಕುಕೀಗಳು ಮತ್ತು ಇತರ ಡೇಟಾ</translation>
 <translation id="3838543471119263078">ಕುಕೀಗಳು ಮತ್ತು ಇತರ ಸೈಟ್ ಹಾಗೂ ಪ್ಲಗಿನ್ ಡೇಟಾ</translation>
-<translation id="7029809446516969842">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು</translation>
 <translation id="6865313869410766144">ಸ್ವಯಂತುಂಬುವಿಕೆ ಫಾರ್ಮ್ ಡೇಟಾ</translation>
 <translation id="177336675152937177">ಹೋಸ್ಟ್ ಮಾಡಿರುವ ಅಪ್ಲಿಕೇಶನ್ ಡೇಟಾ</translation>
 <translation id="1718835860248848330">ಕೊನೆಯ ಗಂಟೆ</translation>
@@ -2039,8 +2003,8 @@
 <translation id="7136694880210472378">ಡಿಫಾಲ್ಟ್ ಮಾಡಿ</translation>
 <translation id="102272308210570439">ನಿಮ್ಮ ಪರದೆಯ ಮೇಲಿರುವುದನ್ನು ಸಹಾಯಕವು ಬಳಸಲು ಬಿಡಿ</translation>
 <translation id="8624205858755890468">ಸಂಬಂಧಿತ ಮಾಹಿತಿ, ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ಮತ್ತು ಕ್ರಿಯೆಗಳನ್ನು ನಿಮಗೆ ತೋರಿಸಲು ಸಹಾಯಕವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
-<translation id="178309940312315155">"ಓಕೆ Brave Software" ಪತ್ತೆಹಚ್ಚುವಿಕೆ</translation>
-<translation id="3476912025629168202">ನಿಮ್ಮ ಪರದೆ ಆನ್ ಆಗಿರುವಾಗ, ಯಾವಾಗ ಬೇಕಾದರೂ "ಓಕೆ Brave Software" ಎಂದು ಹೇಳಿ, ನಿಮ್ಮ ಅಸಿಸ್ಟೆಂಟ್‌ಗೆ ಪ್ರವೇಶ ಪಡೆಯಿರಿ.</translation>
+<translation id="8669919703154928649">ನಿಮಗೆ ಅಧಿಸೂಚನೆಗಳನ್ನು ತೋರಿಸಲು ಅಸಿಸ್ಟೆಂಟ್‌ಗೆ ಅನುಮತಿ ನೀಡಿ</translation>
+<translation id="3430342160185525240">ನಿಮಗೆ ಅಧಿಸೂಚನೆಗಳನ್ನು ತೋರಿಸಲು ಅಸಿಸ್ಟೆಂಟ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುತ್ತದೆ.</translation>
 <translation id="3908743412684152579">Brave Software ಸಹಾಯಕ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="4933484234309072027"><ph name="URL"/> ನಲ್ಲಿ ಎಂಬೆಡ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="8427292751741042100">ಯಾವುದೇ ಹೋಸ್ಟ್‌ನಲ್ಲಿ ಎಂಬೆಡ್ ಮಾಡಲಾಗಿದೆ</translation>
@@ -2048,6 +2012,8 @@
 <translation id="6295158916970320988">ಎಲ್ಲಾ ಸೈಟ್‌ಗಳು</translation>
 <translation id="7625568159987162309">ಸೈಟ್‌ಗಳಾದ್ಯಂತ ಸಂಗ್ರಹಿಸಲಾದ ಅನುಮತಿಗಳನ್ನು ಮತ್ತು ಡೇಟಾವನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="3735740477244556633">ಈ ಪ್ರಕಾರ ವಿಂಗಡಿಸಿ</translation>
+<translation id="6503077044568424649">ಅತಿಹೆಚ್ಚು ಬಾರಿ ಸಂದರ್ಶಿಸಿರುವುದು</translation>
+<translation id="967624055006145463">ಸಂಗ್ರಹಣೆ ಮಾಡಿರುವ ಡೇಟಾ</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">ಜಾಹೀರಾತುಗಳು</translation>
 <translation id="5649053991847567735">ಸ್ವಯಂಚಾಲಿತ ಡೌನ್‌ಲೋಡ್‌ಗಳು</translation>
@@ -2123,7 +2089,6 @@
 <translation id="3038675903128704560">ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್ ಪ್ರವೇಶಿಸಲು ಯಾವುದೇ ಸೈಟ್‌ಗಳಿಗೆ ಪ್ಲಗಿನ್ ಬಳಸಲು ಅನುಮತಿಸಬೇಡಿ</translation>
 <translation id="857943718398505171">ಅನುಮತಿಸಲಾಗಿದೆ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)</translation>
 <translation id="5000922062037820727">ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)</translation>
-<translation id="8116925261070264013">ಮ್ಯೂಟ್‌ ಆಗಿರುವುದು</translation>
 <translation id="8708000541097332489">ನಿರ್ಗಮಿಸುವಲ್ಲಿ ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="8037357227543935929">ಕೇಳು (ಡಿಫಾಲ್ಟ್)</translation>
 <translation id="3427092606871434483">ಅನುಮತಿಸಿ (ಡಿಫಾಲ್ಟ್)</translation>
@@ -2221,7 +2186,6 @@
 <translation id="7311891583377621132">ಫಿಂಗರ್‌ ಫ್ರಿಂಟ್‌‌ನ ವಿವಿಧ ಭಾಗಗಳನ್ನು ಸೆರೆಹಿಡಿಯಲು ಬೆರಳನ್ನು ನಿಧಾನವಾಗಿ ಸರಿಸಿ</translation>
 <translation id="7345706641791090287">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಖಚಿತಪಡಿಸಿ</translation>
 <translation id="381202950560906753">ಇನ್ನೊಂದನ್ನು ಸೇರಿಸಿ</translation>
-<translation id="3625538291267447988">Smart Lock ಹೊಂದಿಸಲು, ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</translation>
 <translation id="6658023813581644008">ಸೈನ್ ಇನ್‌ಗಾಗಿ Smart Lock ಹೊಂದಿಸಲು, ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</translation>
 <translation id="5449551289610225147">ಅಮಾನ್ಯ ಪಾಸ್‌ವರ್ಡ್</translation>
 <translation id="5374359983950678924">ಚಿತ್ರವನ್ನು ಬದಲಿಸಿ</translation>
@@ -2261,8 +2225,8 @@
 <translation id="2709516037105925701">ಸ್ವಯಂತುಂಬುವಿಕೆ</translation>
 <translation id="1644574205037202324">ಇತಿಹಾಸ</translation>
 <translation id="5117427536932535467">ಥೀಮ್‌ಗಳು ಮತ್ತು ವಾಲ್‌ಪೇಪರ್‌ಗಳು</translation>
+<translation id="7029809446516969842">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು</translation>
 <translation id="3259418918864581163">Brave Software Pay ಬಳಸುವ ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್‌ಗಳು ಮತ್ತು ವಿಳಾಸಗಳು.</translation>
-<translation id="4439834757335393741">Brave Software Pay ಅನ್ನು ಬಳಸಿಕೊಂಡು ಮಾಡುವ ಪಾವತಿ ವಿಧಾನಗಳು ಮತ್ತು ವಿಳಾಸಗಳು.</translation>
 <translation id="3268451620468152448">ತೆರೆದ ಟ್ಯಾಬ್‌ಗಳು</translation>
 <translation id="5241892180459725878">Brave Software ಡ್ರೈವ್ ಹುಡುಕಾಟ ಸಲಹೆಗಳು</translation>
 <translation id="2120297377148151361">ಚಟುವಟಿಕೆ ಮತ್ತು ಸಂವಹನಗಳು</translation>
@@ -2333,6 +2297,8 @@
 <translation id="1114202307280046356">ವಜ್ರ</translation>
 <translation id="89720367119469899">ಎಸ್ಕೇಪ್</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">ಬಾಹ್ಯ ಕಮಾಂಡ್ ಕೀ</translation>
+<translation id="585979798156957858">ಬಾಹ್ಯ ಮೆಟಾ ಕೀ</translation>
 <translation id="4991420928586866460">ಮೇಲಿನ-ಸಾಲು ಕೀಲಿಗಳನ್ನು ಕಾರ್ಯದ ಕೀಲಿಗಳಂತೆ ಪರಿಗಣಿಸಿ</translation>
 <translation id="85486688517848470">ಮೇಲಿನ-ಸಾಲುಗಳ ಕೀಗಳ ನಡುವಳಿಕೆಯನ್ನು ಬದಲಾಯಿಸಲು ಹುಡುಕಾಟದ ಕೀ ಅನ್ನು ಒತ್ತಿ ಹಿಡಿಯಿರಿ</translation>
 <translation id="4400632832271803360">ಮೇಲಿನ-ಸಾಲುಗಳ ಕೀಗಳ ನಡವಳಿಕೆಯನ್ನು ಬದಲಿಸಲು ಲಾಂಚರ್ ಕೀ ಅನ್ನು ಒತ್ತಿ ಹಿಡಿಯಿರಿ</translation>
@@ -2434,10 +2400,7 @@
 <translation id="2315821125498993513">ಫೋನ್‌ಗೆ ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಇದರ ಬಗ್ಗೆ <ph name="LINK_BEGIN"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together ಆನ್ ಆಗಿದೆ</translation>
 <translation id="3088402208262982892">Better Together ಆಫ್ ಆಗಿದೆ</translation>
-<translation id="2079079131837725321">ನಿಮ್ಮ ಫೋನ್‌‍ನ ಮೂಲಕ ನಿಮ್ಮ Bravebook ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ. ಇದರ ಬಗ್ಗೆ <ph name="LINK_BEGIN"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">ತತ್‌ಕ್ಷಣದ ಟೆಥರಿಂಗ್‌</translation>
-<translation id="3059313675706898490">Android ಸಂದೇಶಗಳು</translation>
-<translation id="7095175330464035635">ನಿಮ್ಮ Bravebook ನಿಂದ ಪಠ್ಯ ಸಂದೇಶಗಳನ್ನು ಕಳುಹಿಸಿ ಮತ್ತು ಸ್ವೀಕರಿಸಿ</translation>
 <translation id="3936335337858561470">ಈ ಸಾಧನವನ್ನು ಮರೆತುಬಿಡಿ</translation>
 <translation id="3606712892509067288">Better Together ನಿಂದ ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="7878562273885520351">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ ಅನ್ನು ಸುಲಭವಾಗಿ ಪತ್ತೆ ಮಾಡಬಹುದು</translation>
@@ -2568,7 +2531,9 @@
 <translation id="6112294629795967147">ಮರುಗಾತ್ರಗೊಳಿಸಲು ಸ್ಪರ್ಶಿಸಿ</translation>
 <translation id="2453860139492968684">ಪೂರ್ಣಗೊಳಿಸು</translation>
 <translation id="1853692000353488670">ಹೊಸ ಅದೃಶ್ಯ ವಿಂಡೋ</translation>
+<translation id="6336451774241870485">ಹೊಸ ಖಾಸಗಿ ಟ್ಯಾಬ್</translation>
 <translation id="5530766185686772672">ಅದೃಶ್ಯ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
+<translation id="6610147964972079463">ಖಾಸಗಿ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
 <translation id="8076492880354921740">ಟ್ಯಾಬ್‌ಗಳು</translation>
 <translation id="1049743911850919806">ಅದೃಶ್ಯ</translation>
 </translationbundle>

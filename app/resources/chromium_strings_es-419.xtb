@@ -30,7 +30,6 @@
 <translation id="5785919770853225148">Brave guardará esta contraseña en tu cuenta de Brave Software, por lo que no tendrás que recordarla.</translation>
 <translation id="3343095737966473035">Brave no es el navegador predeterminado</translation>
 <translation id="6715663530666325392">Configura la sincronización para guardar tus funciones personalizadas del navegador en la Web y para acceder a ellas con Brave desde cualquier equipo.</translation>
-<translation id="2708027082363760195">Brave no incluye el visor de PDF que se requiere para la vista previa de impresión.</translation>
 <translation id="8880183781256147665">Agregar a Brave...</translation>
 <translation id="3561569806301739367">Brave bloqueó <ph name="FILE_NAME"/> porque es posible que sea un archivo peligroso.</translation>
 <translation id="9067428552314418522">Brave bloqueó este archivo porque es peligroso.</translation>
@@ -78,6 +77,7 @@
 <translation id="3215652305414474626">También controla qué página se muestra al iniciar Brave o al hacer clic en el botón de página principal.</translation>
 <translation id="2433912322225810055">También controla qué página se muestra al iniciar Brave o al realizar búsquedas desde el cuadro multifunción.</translation>
 <translation id="2871190378186459992">Descubre aplicaciones, juegos, extensiones y temas increíbles para Brave.</translation>
+<translation id="2522086024276534909">Reiniciar el SO Brave</translation>
 <translation id="8183252473547465084">El Sistema operativo Brave debe reiniciarse para que se aplique la actualización.</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
 <translation id="5875673934455379806">Reinstalar Brave</translation>
