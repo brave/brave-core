@@ -7,17 +7,12 @@ import SnapKit
 import BraveShared
 
 private struct URLBarViewUX {
-    static let TextFieldBorderColor = UIColor.Photon.Grey40
-    static let TextFieldActiveBorderColor = UIColor.Defaults.PaleBlue
-
     static let LocationLeftPadding: CGFloat = 8
     static let Padding: CGFloat = 10
-    static let LocationHeight: CGFloat = 40
+    static let LocationHeight: CGFloat = 34
     static let ButtonHeight: CGFloat = 44
     static let LocationContentOffset: CGFloat = 8
     static let TextFieldCornerRadius: CGFloat = 8
-    static let TextFieldBorderWidth: CGFloat = 1
-    static let TextFieldBorderWidthSelected: CGFloat = 4
     static let ProgressBarHeight: CGFloat = 3
 
     static let TabsButtonRotationOffset: CGFloat = 1.5
@@ -50,22 +45,6 @@ protocol URLBarDelegate: class {
 }
 
 class URLBarView: UIView {
-    // Additional UIAppearance-configurable properties
-    @objc dynamic var locationBorderColor: UIColor = URLBarViewUX.TextFieldBorderColor {
-        didSet {
-            if !inOverlayMode {
-                locationContainer.layer.borderColor = locationBorderColor.cgColor
-            }
-        }
-    }
-    @objc dynamic var locationActiveBorderColor: UIColor = URLBarViewUX.TextFieldActiveBorderColor {
-        didSet {
-            if inOverlayMode {
-                locationContainer.layer.borderColor = locationActiveBorderColor.cgColor
-            }
-        }
-    }
-
     weak var delegate: URLBarDelegate?
     weak var tabToolbarDelegate: TabToolbarDelegate?
     var helper: TabToolbarHelper?
@@ -102,9 +81,6 @@ class URLBarView: UIView {
     lazy var locationContainer: UIView = {
         let locationContainer = TabLocationContainerView()
         locationContainer.translatesAutoresizingMaskIntoConstraints = false
-        locationContainer.layer.shadowColor = self.locationBorderColor.cgColor
-        locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidth
-        locationContainer.layer.borderColor = self.locationBorderColor.cgColor
         locationContainer.backgroundColor = .clear
         return locationContainer
     }()
@@ -305,16 +281,16 @@ class URLBarView: UIView {
         super.updateConstraints()
         if inOverlayMode {
             // In overlay mode, we always show the location view full width
-            self.locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidthSelected
+//            self.locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidthSelected
             self.locationContainer.snp.remakeConstraints { make in
-                let height = URLBarViewUX.LocationHeight + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
+                let height = URLBarViewUX.LocationHeight// + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
                 make.height.equalTo(height)
                 make.trailing.equalTo(self.showQRScannerButton.snp.leading)
                 make.leading.equalTo(self.cancelButton.snp.trailing)
                 make.centerY.equalTo(self)
             }
             self.locationView.snp.remakeConstraints { make in
-                make.edges.equalTo(self.locationContainer).inset(UIEdgeInsets(equalInset: URLBarViewUX.TextFieldBorderWidthSelected))
+                make.edges.equalTo(self.locationContainer)
             }
             self.locationTextField?.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationView).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding, bottom: 0, right: URLBarViewUX.LocationLeftPadding))
@@ -348,12 +324,11 @@ class URLBarView: UIView {
                     make.trailing.equalTo(self.shieldsButton.snp.leading)
                 }
 
-                make.height.equalTo(URLBarViewUX.LocationHeight+2)
+                make.height.equalTo(URLBarViewUX.LocationHeight)
                 make.centerY.equalTo(self)
             }
-            self.locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidth
             self.locationView.snp.remakeConstraints { make in
-                make.edges.equalTo(self.locationContainer).inset(UIEdgeInsets(equalInset: URLBarViewUX.TextFieldBorderWidth))
+                make.edges.equalTo(self.locationContainer)
             }
         }
 
@@ -498,6 +473,7 @@ class URLBarView: UIView {
         backButton.isHidden = !toolbarIsShowing
         tabsButton.isHidden = !toolbarIsShowing
         shareButton.isHidden = !toolbarIsShowing
+        locationView.contentView.isHidden = false
     }
 
     func transitionToOverlay(_ didCancel: Bool = false) {
@@ -510,9 +486,7 @@ class URLBarView: UIView {
         shareButton.alpha = inOverlayMode ? 0 : 1
         menuButton.alpha = inOverlayMode ? 0 : 1
         shieldsButton.alpha = inOverlayMode ? 0 : 1
-
-        let borderColor = inOverlayMode ? locationActiveBorderColor : locationBorderColor
-        locationContainer.layer.borderColor = borderColor.cgColor
+        locationView.contentView.alpha = inOverlayMode ? 0 : 1
 
         if inOverlayMode {
             line.isHidden = inOverlayMode
@@ -536,6 +510,7 @@ class URLBarView: UIView {
         backButton.isHidden = !toolbarIsShowing || inOverlayMode
         tabsButton.isHidden = !toolbarIsShowing || inOverlayMode
         shareButton.isHidden = !toolbarIsShowing || inOverlayMode
+        locationView.contentView.isHidden = inOverlayMode
     }
 
     func animateToOverlayState(overlayMode overlay: Bool, didCancel cancel: Bool = false) {
@@ -718,13 +693,10 @@ extension URLBarView: Themeable {
 
         progressBar.setGradientColors(startColor: UIColor.LoadingBar.Start.colorFor(theme), endColor: UIColor.LoadingBar.End.colorFor(theme))
         currentTheme = theme
-        locationBorderColor = UIColor.URLBar.Border.colorFor(theme).withAlphaComponent(0.3)
-        locationActiveBorderColor = UIColor.URLBar.ActiveBorder.colorFor(theme)
         cancelTintColor = UIColor.Browser.Tint.colorFor(theme)
         showQRButtonTintColor = UIColor.Browser.Tint.colorFor(theme)
-        backgroundColor = UIColor.Browser.Background.colorFor(theme)
+        backgroundColor = theme == .Normal ? BraveUX.ToolbarsBackgroundSolidColor : BraveUX.DarkToolbarsBackgroundSolidColor
         line.backgroundColor = UIColor.Browser.URLBarDivider.colorFor(theme)
-        locationContainer.layer.shadowColor = locationBorderColor.cgColor
     }
 }
 
@@ -733,33 +705,18 @@ extension URLBarView: Themeable {
 class TabLocationContainerView: UIView {
     
     private struct LocationContainerUX {
-        static let CornerRadius: CGFloat = 4
-        static let ShadowRadius: CGFloat = 2
-        static let ShadowOpacity: Float = 1
+        static let CornerRadius: CGFloat = 8.0
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         let layer = self.layer
         layer.cornerRadius = LocationContainerUX.CornerRadius
-        layer.shadowRadius = LocationContainerUX.ShadowRadius
-        layer.shadowOpacity = LocationContainerUX.ShadowOpacity
-        layer.masksToBounds = false
+        layer.masksToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        let layer = self.layer
-        
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-        // the shadow appears 2px off from the view rect
-        let shadowLength: CGFloat = 2
-        let shadowPath = CGRect(x: shadowLength, y: shadowLength, width: layer.frame.width - (shadowLength * 2), height: layer.frame.height - (shadowLength * 2))
-        layer.shadowPath = UIBezierPath(roundedRect: shadowPath, cornerRadius: layer.cornerRadius).cgPath
-        super.layoutSubviews()
     }
 }
 
@@ -829,7 +786,7 @@ class ToolbarTextField: AutocompleteTextField {
 extension ToolbarTextField: Themeable {
 
     func applyTheme(_ theme: Theme) {
-        backgroundColor = UIColor.TextField.Background.colorFor(theme)
+        backgroundColor = .clear
         textColor = UIColor.TextField.TextAndTint.colorFor(theme)
         clearButtonTintColor = textColor
         highlightColor = UIColor.TextField.Highlight.colorFor(theme)

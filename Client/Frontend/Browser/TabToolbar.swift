@@ -5,6 +5,7 @@
 import UIKit
 import SnapKit
 import Shared
+import BraveShared
 
 protocol TabToolbarProtocol: class {
     var tabToolbarDelegate: TabToolbarDelegate? { get set }
@@ -252,7 +253,7 @@ extension TabToolbar: TabToolbarProtocol {
 
 extension TabToolbar: Themeable {
     func applyTheme(_ theme: Theme) {
-        backgroundColor = UIColor.Browser.Background.colorFor(theme)
+        backgroundColor = theme == .Normal ? BraveUX.ToolbarsBackgroundSolidColor : BraveUX.DarkToolbarsBackgroundSolidColor
         helper?.setTheme(theme: theme, forButtons: actionButtons)
     }
 }
