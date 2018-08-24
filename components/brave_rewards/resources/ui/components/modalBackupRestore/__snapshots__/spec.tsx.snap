@@ -168,7 +168,8 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
   letter-spacing: 0;
-  color: #686978;
+  --controlWrapper-label-color: #686978;
+  color: var(--controlWrapper-label-color);
 }
 
 .c0 {

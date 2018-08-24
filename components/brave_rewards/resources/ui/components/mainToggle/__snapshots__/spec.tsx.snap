@@ -124,12 +124,15 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   border-radius: 50%;
   -webkit-transition: 200ms ease-out;
   transition: 200ms ease-out;
-  width: 24px;
-  height: 24px;
-  -webkit-transform: translate(-1px,calc(-50% - 4px));
-  -ms-transform: translate(-1px,calc(-50% - 4px));
-  transform: translate(-1px,calc(-50% - 4px));
-  background-color: #CDD1D5;
+  --toggle-bullet-size: 24px;
+  --toggle-bullet-transform: translate(-1px,calc(-50% - 4px));
+  --toggle-bullet-background: #CDD1D5;
+  width: var(--toggle-bullet-size);
+  height: var(--toggle-bullet-size);
+  -webkit-transform: var(--toggle-bullet-transform);
+  -ms-transform: var(--toggle-bullet-transform);
+  transform: var(--toggle-bullet-transform);
+  background-color: var(--toggle-bullet-background);
 }
 
 .c6 {
