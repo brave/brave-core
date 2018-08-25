@@ -4,13 +4,37 @@
 
 import { isHttpOrHttps } from '../../helpers/urlUtils'
 
+export const shieldsOnIcon = 'img/icon.svg'
+export const shieldsOffIcon = 'img/icon-off.svg'
+
+/**
+ * Initializes the browser action UI
+ */
+export function init () {
+  // Setup badge color
+  chrome.browserAction.setBadgeBackgroundColor({
+    color: [66, 66, 66, 100]
+  })
+  // Initial / default icon
+  chrome.browserAction.setIcon({
+    path: shieldsOnIcon
+  })
+  // By default, icon is disabled,
+  // so that we do not enable the icon in a new tab and then disable it
+  // when the context is not http(s).
+  chrome.browserAction.disable()
+}
+
 /**
  * Sets the badge text
  * @param {string} text - The text to put on the badge
  */
-export const setBadgeText = (text: string) => {
+export const setBadgeText = (tabId: number, text: string) => {
   if (chrome.browserAction) {
-    chrome.browserAction.setBadgeText({ text: String(text) })
+    chrome.browserAction.setBadgeText({
+      tabId,
+      text: String(text)
+    })
   }
 }
 
@@ -18,13 +42,17 @@ export const setBadgeText = (text: string) => {
  * Updates the shields icon based on shields state
  */
 export const setIcon = (url: string, tabId: number, shieldsOn: boolean) => {
-  const shieldsEnabledIcon = 'img/icon-16.png'
-  const shieldsDisabledIcon = 'img/icon-16-disabled.png'
 
+  const actionIsDisabled = !isHttpOrHttps(url)
   if (chrome.browserAction) {
     chrome.browserAction.setIcon({
-      path: shieldsOn && isHttpOrHttps(url) ? shieldsEnabledIcon : shieldsDisabledIcon,
+      path: shieldsOn ? shieldsOnIcon : shieldsOffIcon,
       tabId
     })
+    if (actionIsDisabled) {
+      chrome.browserAction.disable(tabId)
+    } else {
+      chrome.browserAction.enable(tabId)
+    }
   }
 }

@@ -6,8 +6,10 @@ import { combineReducers } from 'redux'
 
 import shieldsPanelReducer from './reducers/shieldsPanelReducer'
 import cosmeticFilterReducer from './reducers/cosmeticFilterReducer'
+import runtimeReducer from './reducers/runtimeReducer'
 
 export default combineReducers({
   shieldsPanel: shieldsPanelReducer,
-  cosmeticFilter: cosmeticFilterReducer
+  cosmeticFilter: cosmeticFilterReducer,
+  runtime: runtimeReducer
 })
