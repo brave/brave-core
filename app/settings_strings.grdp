@@ -436,7 +436,7 @@
       Linux (Beta)
     </message>
     <message name="IDS_SETTINGS_CROSTINI_LABEL" desc="The text associated with the primary section setting.">
-      Linux (Beta)
+      Linux
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
       Run Linux tools, editors, and IDEs on your Bravebook. &lt;a target="_blank" href="<ph name="URL">$1<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
@@ -623,23 +623,14 @@
     Autofill settings
   </message>
   <!-- TODO(https://crbug.com/854562): Rename this to "IDS_SETTINGS_AUTOFILL" once Autofill Home is fully launched. -->
-  <message name="IDS_SETTINGS_AUTOFILL_AUTOFILL_HOME" desc="Name for the addresses and payment methods section used for Autofill Home.">
-    Addresses &amp; payment methods
+  <message name="IDS_SETTINGS_AUTOFILL_AUTOFILL_HOME" desc="Name for the addresses section used for Autofill Home.">
+    Addresses
   </message>
   <message name="IDS_SETTINGS_GOOGLE_PAYMENTS" desc="Label used to differentiate when an address or credit card entry comes from Brave Pay. This should follow the casing of the 'Brave Pay' brand. 'Brave Pay' should not be translated as it is the product name.">
     Brave Pay
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_TOGGLE_LABEL" desc="Label for a toggle that allows users to control whether forms should be autofilled with data such as addresses and credit cards, but not passwords.">
     Autofill forms
-  </message>
-  <message name="IDS_SETTINGS_AUTOFILL_ENABLE_PROFILES_TOGGLE_LABEL" desc="Label for a toggle that allows users to control whether addresses should be saved and forms should be autofilled with them.">
-    Save and fill addresses
-  </message>
-  <message name="IDS_SETTINGS_AUTOFILL_ENABLE_CREDIT_CARDS_TOGGLE_LABEL" desc="Label for a toggle that allows users to control whether credit cards should be saved and forms should be autofilled with it.">
-    Save and fill payment methods
-  </message>
-  <message name="IDS_SETTINGS_AUTOFILL_ADDRESSES_HEADING" desc="Title for the list of addresses that chrome has saved for use in filling in forms.">
-    Addresses
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_ADDRESSES_ADD_TITLE" desc="This is the title for the 'Add address' dialog. This dialog allows a user to create a new address.">
     Add address
@@ -656,12 +647,13 @@
   <message name="IDS_SETTINGS_AUTOFILL_ADDRESSES_EMAIL" desc="This is the label for the field that lets a user modify the email address that will be used when auto-filling forms on the web.">
     Email
   </message>
-  <!-- TODO(https://crbug.com/854562): Remove this string (and use "IDS_SETTINGS_AUTOFILL_PAYMENT_METHODS" instead) once Autofill Home is fully launched. -->
+  <!-- TODO(https://crbug.com/854562): Remove this string once Autofill Home is fully launched. -->
   <message name="IDS_SETTINGS_AUTOFILL_CREDIT_CARD_HEADING" desc="Title for the list of saved passwords that can be used to fill in forms.">
-    Credit cards
+    Credit card settings
   </message>
-  <message name="IDS_SETTINGS_AUTOFILL_PAYMENT_METHODS" desc="Title for the list of saved payment methods that can be used to fill in forms.">
-    Payment methods
+  <!-- TODO(https://crbug.com/854562): Remove this string once Autofill Home is fully launched. -->
+  <message name="IDS_SETTINGS_AUTOFILL_CREDIT_CARD_DETAIL" desc="Description of what toggling the 'Credit card' setting does. Immediately underneath IDS_SETTINGS_AUTOFILL_CREDIT_CARD_HEADING.">
+    Enable credit card Autofill to fill out forms in a single click
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_CREDIT_CARD_TYPE_COLUMN_LABEL" desc="Label for the column containing the type of credit card that is saved. The type is in the format: `Visa ****1234`.">
     Type
@@ -1165,8 +1157,8 @@
   <message name="IDS_SETTINGS_CLEAR_COOKIES_FLASH" desc="Checkbox for deleting Cookies and other site data">
     Cookies and other site and plugin data
   </message>
-  <message name="IDS_SETTINGS_CLEAR_PASSWORDS" desc="Checkbox for deleting Passwords">
-    Passwords
+  <message name="IDS_SETTINGS_CLEAR_PASSWORDS" desc="Checkbox for deleting Passwords and other sign-in data">
+    Passwords and other sign-in data
   </message>
   <message name="IDS_SETTINGS_CLEAR_FORM_DATA" desc="Checkbox for deleting form data saved for Autofill">
     Autofill form data
@@ -2480,6 +2472,12 @@
   <message name="IDS_SETTINGS_WAKE_ON_WIFI_DESCRIPTION" desc="In the settings tab, the text next to the checkbox for enabling quickly reconnecting to known Wi-Fi SSIDs.">
     Keep Wi-Fi on during sleep
   </message>
+  <message name="IDS_SETTINGS_APP_LIST_CONTINUE_READING" desc="In the settings tab, the text next to the checkbox for enabling Continue Reading in Launcher.">
+    Continue Reading
+  </message>
+  <message name="IDS_SETTINGS_APP_LIST_CONTINUE_READING_DESCRIPTION" desc="Secondary, continued explanation of what is Launcher continue reading.">
+    Resume viewing sites from mobile on your Bravebook
+  </message>
   <message name="IDS_SETTINGS_MANAGE_CERTIFICATES" desc="Text for manage certificates button in Privacy options">
     Manage certificates
   </message>
@@ -2646,10 +2644,16 @@
     Enables the Assistant to show you related info, apps, and actions.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD" desc="Title for a toggle that lets the assistant detect hotword.">
-    "OK Brave" detection
+    "Ok Brave" detection
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_DESCRIPTION" desc="Sub label for hotword-enable toggle.">
-    Access your Assistant any time you say "OK Brave" when your screen is on.
+    Access your Assistant any time you say "Ok Brave" when your screen is on.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_NOTIFICATION" desc="Title for a toggle that lets the assistant show you notifications.">
+    Let Assistant show you notifications
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_NOTIFICATION_DESCRIPTION" desc="Sub label for notification-enable toggle.">
+    Enables the Assistant to show you notifications.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_SETTINGS" desc="Title for a button that opens the Brave Assistant app settings.">
     Brave Assistant settings
@@ -2677,6 +2681,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES_SORT" desc="Label on a selection menu to choose the sorting method to display the All Sites list by.">
     Sort by
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES_SORT_METHOD_MOST_VISITED" desc="A selection menu option to sort the All Sites list by the most visited sites.">
+    Most visited
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES_SORT_METHOD_STORAGE" desc="A selection menu option to sort the All Sites list by the sites that use the most disk space.">
+    Data stored
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES_SORT_METHOD_NAME" desc="A selection menu option to sort the All Sites list by the name of the site, which is derived from its URL.">
     Name
@@ -2939,7 +2949,7 @@
     Block
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLOCK_SOUND" desc="Label for add muted sites in site settings.">
-    Muted
+    Mute
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SESSION_ONLY" desc="Label for sites in site settings allowing cookies for the current session only.">
     Clear on exit
@@ -2953,8 +2963,14 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOW_DEFAULT_MENU" desc="Label for the default menu item to allow a permission for a particular site.">
     Allow (default)
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DEFAULT_MENU" desc="Label for the default menu item to automatically control autoplay for a particular site.">
+    Automatic (default)
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLOCK_DEFAULT_MENU" desc="Label for the default menu item to block a permission for a particular site.">
     Block (default)
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MUTE_DEFAULT_MENU" desc="Label for the default menu item to mute sound for a particular site.">
+    Mute (default)
   </message>
   <!-- TODO(https://crbug.com/753173): Consolidate these strings with those used in the Page Info bubble. -->
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOW_MENU" desc="Label for the menu item to allow permission for a particular site.">
@@ -2965,6 +2981,9 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ASK_MENU" desc="Label for the menu item to ask for permission for a particular site.">
     Ask
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MUTE_MENU" desc="Label for the menu item to mute sound for a particular site.">
+    Mute
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_RESET_MENU" desc="Label for the menu item to remove the permission for a particular site (make it ask you again next time).">
     Remove
@@ -3088,6 +3107,9 @@
   </message>
   <message name="IDS_SETTINGS_SITE_NO_SITES_ADDED" desc="Explanation for not showing a list of site exceptions">
     No sites added
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLOCK_AUTOPLAY" desc="A label for a toggle in site settings to block autoplay. If the toggle is on then Brave will block autoplay by default and use an algorithm to determine which sites should still be able to autoplay. If the toggle is off then autoplay will be enabled for all sites.">
+    Let Brave choose when sites can play sound (recommended)
   </message>
 
   <message name="IDS_SETTINGS_NO_USB_DEVICES_FOUND" desc="Explanation for not showing USB devices in site settings.">
@@ -3361,7 +3383,7 @@
       Add another
     </message>
     <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_ENTER_PASSWORD_LOCK" desc="Text above a password input field that tells the user they need to submit their password to configure these settings.">
-      To set up Smart Lock, enter your password
+      To set up screen lock, enter your password
     </message>
     <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_ENTER_PASSWORD_LOGIN_LOCK" desc="Text above a password input field that tells the user they need to submit their password to configure these settings.">
       To set up Smart Lock for sign-in, enter your password
@@ -3563,12 +3585,9 @@
   <message name="IDS_SETTINGS_PASSWORDS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing passwords between multiple browser instances.">
     Passwords
   </message>
+  <!-- TODO(https://crbug.com/854562): Remove this string once Autofill Home is fully launched. -->
   <message name="IDS_SETTINGS_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" desc="Label for the checkbox that controls the Autofill/Payments integration feature.">
     Credit cards and addresses using Brave Pay.
-  </message>
-  <!-- TODO(https://crbug.com/854562): Rename this to "IDS_SETTINGS_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" once Autofill Home is fully launched. -->
-  <message name="IDS_SETTINGS_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL_AUTOFILL_HOME" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home.">
-    Payment methods and addresses using Brave Pay.
   </message>
   <message name="IDS_SETTINGS_OPEN_TABS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing open tabs between multiple browser instances.">
     Open Tabs
@@ -3857,6 +3876,12 @@
     </message>
     <message name="IDS_SETTINGS_KEYBOARD_KEY_DISABLED" desc="In Device Settings, the dropdown list item for a disabled key.">
       Disabled
+    </message>
+    <message name="IDS_SETTINGS_KEYBOARD_KEY_EXTERNAL_COMMAND" desc="In Device Settings, the dropdown list item for the external Command key on Apple keyboards.">
+      External Command
+    </message>
+    <message name="IDS_SETTINGS_KEYBOARD_KEY_EXTERNAL_META" desc="In Device Settings, the dropdown list item for the external Meta key (Search key on BraveOS keyboards, and Windows key on Windows keyboards).">
+      External Meta
     </message>
     <message name="IDS_SETTINGS_KEYBOARD_SEND_FUNCTION_KEYS" desc="In Device Settings, the checkbox label for interpreting the top-row keys as function keys instead.">
       Treat top-row keys as function keys
@@ -4232,16 +4257,16 @@
       Better Together is off
     </message>
     <message name="IDS_SETTINGS_MULTIDEVICE_SMART_LOCK_SUMMARY" desc="Description of for the 'Smart Lock' setting. This feature automatically unlocks the user's Bravebook if their phone is nearby and unlocked.">
-      Unlock your Bravebook with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more.<ph name="LINK_END">&lt;/a&gt;</ph>
+      Unlock your Bravebook with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING" desc="Name of a feature. This feature automatically offers the user to tether to their phone if their Bravebook is offline and their phone supports tethering.">
       Instant Tethering
     </message>
     <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES" desc="Name of a feature. This feature lets the user read and reply to text messages from their Bravebook. New text messages will appear as notifications.">
-      Android Messages
+      Messages
     </message>
     <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES_SUMMARY" desc="Description of for the 'Android Messages' setting. This feature lets the user read and reply to text messages from their Bravebook. New text messages will appear as notifications.">
-      Send and receive text messages from your Bravebook
+      Send and receive text messages from your Bravebook. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_THIS_DEVICE" desc="Header for a clickable menu item that makes the Bravebook forget the user's phone. This means they will no longer have access to multidevice features.">
       Forget this device

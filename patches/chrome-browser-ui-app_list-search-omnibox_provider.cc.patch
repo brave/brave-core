@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/app_list/search/omnibox_provider.cc b/chrome/browser/ui/app_list/search/omnibox_provider.cc
-index 6e0aae5e3874fd3621175434e6335868996e798e..25eda5968661b4fb46af4f64ae43366aa7767752 100644
+index 93a7674e27bad112990ce3ff17408de59fc79949..1669808d792eabb834e2b180abbf50e9a34a5ec5 100644
 --- a/chrome/browser/ui/app_list/search/omnibox_provider.cc
 +++ b/chrome/browser/ui/app_list/search/omnibox_provider.cc
 @@ -5,6 +5,7 @@
@@ -14,8 +14,8 @@ index 6e0aae5e3874fd3621175434e6335868996e798e..25eda5968661b4fb46af4f64ae43366a
                                   AppListControllerDelegate* list_controller)
      : profile_(profile),
        list_controller_(list_controller),
--      controller_(new AutocompleteController(
-+      controller_(new BraveAutocompleteController(
-           base::WrapUnique(new ChromeAutocompleteProviderClient(profile)),
+-      controller_(std::make_unique<AutocompleteController>(
++      controller_(std::make_unique<BraveAutocompleteController>(
+           std::make_unique<ChromeAutocompleteProviderClient>(profile),
            this,
            AutocompleteClassifier::DefaultOmniboxProviders() &

@@ -499,9 +499,6 @@
 <translation id="8743864605301774756">1 小時前更新</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> 小時前更新</translation>
 <translation id="1329584516321524826">剛才更新</translation>
-<translation id="8679788109894721265">這個網頁的數據用量超過 <ph name="MEGABYTES"/>MB</translation>
-<translation id="8369547389711988632">已停止載入</translation>
-<translation id="4280864916190672950">停止載入</translation>
 <translation id="2724841811573117416">WebRTC 記錄</translation>
 <translation id="7518150891539970662">WebRTC 記錄 (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC 記錄擷取時間：<ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@
 <translation id="7554791636758816595">新增分頁</translation>
 <translation id="3915280005470252504">語音搜尋</translation>
 <translation id="3153862085237805241">儲存卡片</translation>
-<translation id="4961000125720751066">集中管理所有卡片</translation>
+<translation id="1593926297800505364">儲存付款方式</translation>
 <translation id="2473195200299095979">翻譯這個網頁</translation>
 <translation id="5408750356094797285">縮放比例：<ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">「<ph name="NAME"/>」擴充功能已調整這個頁面的大小</translation>
@@ -1048,7 +1045,6 @@
 <translation id="5562781907504170924">這個分頁已連線至藍牙裝置。</translation>
 <translation id="5884474295213649357">這個分頁已連上 USB 裝置。</translation>
 <translation id="8466417995783206254">這個分頁正在使用子母畫面模式播放影片。</translation>
-<translation id="6235700927623181151">這個分頁正在分享你的桌面內容。</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - 攝影機或麥克風錄影/錄音中</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - 已分享分頁內容</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - 正在使用子母畫面模式播放影片</translation>
@@ -1113,35 +1109,6 @@
 <translation id="874689135111202667">{0,plural, =1{要將 1 個檔案上傳到這個網站嗎？}other{要將 # 個檔案上傳到這個網站嗎？}}</translation>
 <translation id="1956390763342388273">你即將上傳「<ph name="FOLDER_PATH"/>」中的所有檔案。除非你信任該網站，否則請勿這麼做。</translation>
 <translation id="1243314992276662751">上傳</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> 想驗證你的身分</translation>
-<translation id="3738671331307774213">驗證你的身分有助於確保私人資料安全無虞</translation>
-<translation id="8435395510592618362">向 <ph name="APP_NAME"/> 驗證你的身分</translation>
-<translation id="3854599674806204102">選擇所需選項</translation>
-<translation id="7490950320178383728">透過藍牙使用安全金鑰</translation>
-<translation id="414599683948988413">透過 USB 使用安全金鑰</translation>
-<translation id="7851816139220202929">透過 NFC 使用安全金鑰</translation>
-<translation id="5392327114396848796">使用內建安全金鑰</translation>
-<translation id="5104546332954397226">使用手機做為安全金鑰</translation>
-<translation id="2876441201733326392">使用 USB 安全金鑰</translation>
-<translation id="5842053879378944309">透過「<ph name="APP_NAME"/>」使用 USB 安全金鑰</translation>
-<translation id="6896398788631624004">插入並啟用你的安全金鑰</translation>
-<translation id="8033958968890501070">逾時</translation>
-<translation id="7102832101143475489">要求逾時</translation>
-<translation id="3670229581627177274">開啟藍牙功能</translation>
-<translation id="3880709822663530586">必須開啟裝置的藍牙功能才能使用安全金鑰</translation>
-<translation id="1183378459020939734">準備好配對你的安全金鑰了嗎？</translation>
-<translation id="237058345584060620">將你的金鑰與這個裝置配對，即可透過金鑰登入你的帳戶</translation>
-<translation id="1875312262568496299">開始</translation>
-<translation id="3104900172193317662">允許使用你的安全金鑰</translation>
-<translation id="2492040222276243256">按住安全金鑰上的按鈕至少 5 秒</translation>
-<translation id="6427415464407526111">選取安全金鑰</translation>
-<translation id="2633326789677284179">找出印在金鑰背面的名稱</translation>
-<translation id="5660204307954428567">與「<ph name="DEVICE_NAME"/>」配對</translation>
-<translation id="8984872292925913496">找出金鑰背面的 6 位數 PIN 碼</translation>
-<translation id="1201402288615127009">繼續</translation>
-<translation id="1792161662640298233">正在驗證安全金鑰</translation>
-<translation id="2321482478556590128">透過「<ph name="APP_NAME"/>」使用安全金鑰</translation>
-<translation id="5292195676005197571">只要按下按鈕即可使用大多數的金鑰</translation>
 <translation id="3785308913036335955">顯示應用程式捷徑</translation>
 <translation id="711840821796638741">顯示受管理書籤</translation>
 <translation id="3613134908380545408">顯示「<ph name="FOLDER_NAME"/>」</translation>
@@ -1509,6 +1476,7 @@
 <translation id="6902066522699286937">要預覽的語音</translation>
 <translation id="304747341537320566">語音引擎</translation>
 <translation id="1067291318998134776">Linux (測試版)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">在 Bravebook 上執行 Linux 工具、編輯器和 IDE。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;瞭解詳情&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">移除 Bravebook 的 Linux 應用程式</translation>
 <translation id="2295473777859797944">Brave Software Play 商店</translation>
@@ -1548,17 +1516,14 @@
 <translation id="8647834505253004544">網址無效</translation>
 <translation id="2149850907588596975">密碼和表單</translation>
 <translation id="8639963783467694461">自動填入設定</translation>
-<translation id="3431019676184503003">地址和付款方式</translation>
 <translation id="2512222046227390255">自動填入表單</translation>
-<translation id="2283340219607151381">儲存及填入地址</translation>
-<translation id="1662550410081243962">儲存及填入付款方式</translation>
-<translation id="2903493209154104877">地址</translation>
 <translation id="7764225426217299476">新增地址</translation>
 <translation id="5595485650161345191">編輯地址</translation>
 <translation id="6207937957461833379">國家/地區</translation>
 <translation id="4378154925671717803">電話</translation>
 <translation id="5659593005791499971">電子郵件</translation>
-<translation id="5565871407246142825">信用卡</translation>
+<translation id="5762172915276660232">信用卡設定</translation>
+<translation id="4499718683476608392">啟用信用卡自動填入功能，輕鬆一按即可填妥表單</translation>
 <translation id="2448312741937722512">類型</translation>
 <translation id="9064275926664971810">啟用自動填入功能，輕鬆一按即可填妥表單</translation>
 <translation id="5029568752722684782">清除複本</translation>
@@ -1644,7 +1609,6 @@
 <translation id="4699172675775169585">快取圖片和檔案</translation>
 <translation id="1274997165432133392">Cookie 和其他網站資料</translation>
 <translation id="3838543471119263078">Cookie、其他網站資料和外掛程式資料</translation>
-<translation id="7029809446516969842">密碼</translation>
 <translation id="6865313869410766144">自動填入表單資料</translation>
 <translation id="177336675152937177">代管應用程式資料</translation>
 <translation id="1718835860248848330">過去 1 小時</translation>
@@ -2039,8 +2003,8 @@
 <translation id="7136694880210472378">設為預設</translation>
 <translation id="102272308210570439">允許 Brave Software 助理使用畫面上的內容</translation>
 <translation id="8624205858755890468">允許 Brave Software 助理向你顯示相關資訊、應用程式和操作。</translation>
-<translation id="178309940312315155">「Ok Brave Software」啟動字詞偵測</translation>
-<translation id="3476912025629168202">只要在螢幕開啟狀態下說出「Ok Brave Software」，就能隨時存取 Brave Software 助理。</translation>
+<translation id="8669919703154928649">允許 Brave Software 助理顯示你的通知</translation>
+<translation id="3430342160185525240">允許 Brave Software 助理向你顯示通知。</translation>
 <translation id="3908743412684152579">Brave Software 助理設定</translation>
 <translation id="4933484234309072027">嵌入至 <ph name="URL"/></translation>
 <translation id="8427292751741042100">嵌入任何主機</translation>
@@ -2048,6 +2012,8 @@
 <translation id="6295158916970320988">所有網站</translation>
 <translation id="7625568159987162309">查看各網站的權限及儲存的資料</translation>
 <translation id="3735740477244556633">排序依據</translation>
+<translation id="6503077044568424649">最常造訪</translation>
+<translation id="967624055006145463">已儲存的資料</translation>
 <translation id="2787354132612937472">-</translation>
 <translation id="1919345977826869612">廣告</translation>
 <translation id="5649053991847567735">自動下載</translation>
@@ -2123,7 +2089,6 @@
 <translation id="3038675903128704560">不允許任何網站使用外掛程式存取你的電腦</translation>
 <translation id="857943718398505171">已允許 (建議)</translation>
 <translation id="5000922062037820727">已封鎖 (建議)</translation>
-<translation id="8116925261070264013">已設為靜音</translation>
 <translation id="8708000541097332489">退出時清除</translation>
 <translation id="8037357227543935929">詢問 (預設)</translation>
 <translation id="3427092606871434483">允許 (預設)</translation>
@@ -2220,7 +2185,6 @@
 <translation id="7311891583377621132">請稍微移動手指，讓系統擷取完整指紋</translation>
 <translation id="7345706641791090287">確認您的密碼</translation>
 <translation id="381202950560906753">新增其他指紋</translation>
-<translation id="3625538291267447988">如要設定 Smart Lock，請輸入你的密碼</translation>
 <translation id="6658023813581644008">如要設定使用 Smart Lock 登入，請輸入你的密碼</translation>
 <translation id="5449551289610225147">密碼無效</translation>
 <translation id="5374359983950678924">變更圖片</translation>
@@ -2260,8 +2224,8 @@
 <translation id="2709516037105925701">自動填入</translation>
 <translation id="1644574205037202324">歷史記錄</translation>
 <translation id="5117427536932535467">主題和桌布</translation>
+<translation id="7029809446516969842">密碼</translation>
 <translation id="3259418918864581163">使用 Brave Software Pay 儲存的信用卡和地址資訊。</translation>
-<translation id="4439834757335393741">使用 Brave Software Pay 儲存的付款方式和地址資訊。</translation>
 <translation id="3268451620468152448">開啟的分頁</translation>
 <translation id="5241892180459725878">Brave Software 雲端硬碟搜尋建議</translation>
 <translation id="2120297377148151361">活動與互動行為</translation>
@@ -2332,6 +2296,8 @@
 <translation id="1114202307280046356">菱形鍵</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace 鍵</translation>
+<translation id="1938351510777341717">外部 Command 鍵</translation>
+<translation id="585979798156957858">外部 Meta 鍵</translation>
 <translation id="4991420928586866460">使用最上方一排按鍵做為功能鍵</translation>
 <translation id="85486688517848470">按住搜尋鍵即可切換最上排按鍵的行為</translation>
 <translation id="4400632832271803360">按住啟動器鍵即可切換最上排按鍵的行為</translation>
@@ -2433,10 +2399,7 @@
 <translation id="2315821125498993513">無法與手機連結。<ph name="LINK_BEGIN"/>瞭解詳情。<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together 已啟用</translation>
 <translation id="3088402208262982892">Better Together 已停用</translation>
-<translation id="2079079131837725321">使用你的手機解鎖 Bravebook。<ph name="LINK_BEGIN"/>瞭解詳情。<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">即時網路共用</translation>
-<translation id="3059313675706898490">Android 訊息</translation>
-<translation id="7095175330464035635">透過你的 Bravebook 收發簡訊</translation>
 <translation id="3936335337858561470">移除這部裝置</translation>
 <translation id="3606712892509067288">從 Better Together 移除</translation>
 <translation id="7878562273885520351">你的密碼可能已經外洩</translation>
@@ -2567,7 +2530,9 @@
 <translation id="6112294629795967147">輕觸即可調整大小</translation>
 <translation id="2453860139492968684">結束</translation>
 <translation id="1853692000353488670">新增無痕式分頁</translation>
+<translation id="6336451774241870485">新私密分頁</translation>
 <translation id="5530766185686772672">關閉無痕式分頁</translation>
+<translation id="6610147964972079463">關閉私密分頁</translation>
 <translation id="8076492880354921740">分頁</translation>
 <translation id="1049743911850919806">無痕模式</translation>
 </translationbundle>

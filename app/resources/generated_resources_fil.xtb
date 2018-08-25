@@ -499,9 +499,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8743864605301774756">Na-update 1 oras ang nakalipas</translation>
 <translation id="5638497698949808140">Na-update <ph name="HOURS"/> (na) oras ang nakalipas</translation>
 <translation id="1329584516321524826">Na-update ngayon lang</translation>
-<translation id="8679788109894721265">Gumagamit ang page na ito ng mahigit <ph name="MEGABYTES"/>MB</translation>
-<translation id="8369547389711988632">Inihinto ang pag-load</translation>
-<translation id="4280864916190672950">Huminto sa pag-load</translation>
 <translation id="2724841811573117416">Mga log ng WebRTC</translation>
 <translation id="7518150891539970662">Mga log ng WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Na-capture ang log ng WebRTC noong <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7554791636758816595">Bagong Tab</translation>
 <translation id="3915280005470252504">Maghanap sa pamamagitan ng boses</translation>
 <translation id="3153862085237805241">I-save ang Card</translation>
-<translation id="4961000125720751066">Makita ang iyong mga card sa iisang lugar</translation>
+<translation id="1593926297800505364">I-save ang paraan ng pagbabayad</translation>
 <translation id="2473195200299095979">I-translate ang pahinang ito</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Ang page na ito ay na-zoom sa pamamagitan ng extension ng "<ph name="NAME"/>"</translation>
@@ -1048,7 +1045,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5562781907504170924">Nakakonekta ang tab na ito sa isang Bluetooth Device.</translation>
 <translation id="5884474295213649357">Nakakonekta ang tab na ito sa isang USB device.</translation>
 <translation id="8466417995783206254">Nagpe-play ang tab na ito ng video sa picture-in-picture mode.</translation>
-<translation id="6235700927623181151">Ibinabahagi ng tab na ito ang content ng iyong desktop.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Nagre-record ang camera o mikropono</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Nakabahagi ang content ng tab</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Nagpe-play ang video sa picture-in-picture mode</translation>
@@ -1113,35 +1109,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="874689135111202667">{0,plural, =1{Mag-upload ng isang file sa site na ito?}one{Mag-upload ng # file sa site na ito?}other{Mag-upload ng # na file sa site na ito?}}</translation>
 <translation id="1956390763342388273">Ia-upload nito ang lahat ng file mula sa "<ph name="FOLDER_PATH"/>." Gawin lang ito kung pinagkakatiwalaan mo ang site.</translation>
 <translation id="1243314992276662751">I-upload</translation>
-<translation id="2446585455334014596">Gustong i-verify ng <ph name="APP_NAME"/> ang iyong pagkakakilanlan</translation>
-<translation id="3738671331307774213">Nakakatulong ang pag-verify ng iyong pagkakakilanlan sa pagprotekta sa pribado mong data</translation>
-<translation id="8435395510592618362">I-verify ang iyong pagkakakilanlan gamit ang <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Pumili ng opsyon</translation>
-<translation id="7490950320178383728">Gamitin ang iyong Security Key sa Bluetooth</translation>
-<translation id="414599683948988413">Gamitin ang iyong Security Key sa USB</translation>
-<translation id="7851816139220202929">Gamitin ang iyong Security Key sa NFC</translation>
-<translation id="5392327114396848796">Gumamit ng built-in na Security Key</translation>
-<translation id="5104546332954397226">Gamitin ang iyong telepono bilang Security Key</translation>
-<translation id="2876441201733326392">Gumamit ng USB Security Key</translation>
-<translation id="5842053879378944309">Gamitin ang USB Security Key sa <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">I-plug in ang iyong Security Key at i-activate ito</translation>
-<translation id="8033958968890501070">Time out</translation>
-<translation id="7102832101143475489">Nag-time out ang kahilingan</translation>
-<translation id="3670229581627177274">I-on ang Bluetooth</translation>
-<translation id="3880709822663530586">Gumagana lang ang iyong Security Key kapag naka-on ang Bluetooth ng device mo</translation>
-<translation id="1183378459020939734">Handa ka na bang ipares ang iyong Security Key?</translation>
-<translation id="237058345584060620">Ipares ang iyong key sa device na ito para magamit mo ito sa pag-sign in sa iyong account.</translation>
-<translation id="1875312262568496299">Magsimula</translation>
-<translation id="3104900172193317662">Payagan ang paggamit ng iyong Security Key</translation>
-<translation id="2492040222276243256">Pindutin nang matagal ang button sa iyong Security Key sa loob ng hindi bababa sa 5 segundo</translation>
-<translation id="6427415464407526111">Piliin ang iyong Security Key</translation>
-<translation id="2633326789677284179">Hanapin ang pangalang naka-print sa likod ng iyong key</translation>
-<translation id="5660204307954428567">Ipares sa <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Hanapin ang 6 na digit na PIN sa likod ng iyong key</translation>
-<translation id="1201402288615127009">Susunod</translation>
-<translation id="1792161662640298233">Vine-verify ang iyong Security Key</translation>
-<translation id="2321482478556590128">Gamitin ang iyong Security Key sa <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">Para magamit ang karamihan sa mga key, pindutin lang ang button</translation>
 <translation id="3785308913036335955">Ipakita ang Shortcut ng Apps</translation>
 <translation id="711840821796638741">Ipakita ang Mga Pinamamahalaang Bookmark</translation>
 <translation id="3613134908380545408">Ipakita ang <ph name="FOLDER_NAME"/></translation>
@@ -1509,6 +1476,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6902066522699286937">Boses na ipi-preview</translation>
 <translation id="304747341537320566">Mga Engine sa Pagsasalita</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Magpatakbo ng mga Linux tool, editor, at IDE sa iyong Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Matuto pa&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Alisin ang mga App ng Linux sa Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
@@ -1548,17 +1516,14 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8647834505253004544">Di-wastong email address</translation>
 <translation id="2149850907588596975">Mga password at form</translation>
 <translation id="8639963783467694461">Mga setting ng autofill</translation>
-<translation id="3431019676184503003">Mga address at paraan ng pagbabayad</translation>
 <translation id="2512222046227390255">I-autofill ang mga form</translation>
-<translation id="2283340219607151381">I-save at punan ang mga address</translation>
-<translation id="1662550410081243962">I-save at punan ang mga paraan ng pagbabayad</translation>
-<translation id="2903493209154104877">Mga Address</translation>
 <translation id="7764225426217299476">Magdagdag ng address</translation>
 <translation id="5595485650161345191">Mag-edit ng address</translation>
 <translation id="6207937957461833379">Bansa/Rehiyon</translation>
 <translation id="4378154925671717803">Telepono</translation>
 <translation id="5659593005791499971">Email</translation>
-<translation id="5565871407246142825">Mga credit card</translation>
+<translation id="5762172915276660232">Mga setting ng credit card</translation>
+<translation id="4499718683476608392">Ine-enable ang Autofill ng credit card para mapunan ang mga form sa isang pag-click</translation>
 <translation id="2448312741937722512">Uri</translation>
 <translation id="9064275926664971810">I-enable ang Autofill upang punan ang mga form sa isahang pag-click</translation>
 <translation id="5029568752722684782">I-clear ang kopya</translation>
@@ -1644,7 +1609,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4699172675775169585">Mga naka-cache na larawan at file</translation>
 <translation id="1274997165432133392">Cookies at iba pang data ng site</translation>
 <translation id="3838543471119263078">Cookies at iba pang data ng site at plugin</translation>
-<translation id="7029809446516969842">Mga Password</translation>
 <translation id="6865313869410766144">Data ng form ng autofill</translation>
 <translation id="177336675152937177">Naka-host na data ng app</translation>
 <translation id="1718835860248848330">Huling oras</translation>
@@ -2039,8 +2003,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7136694880210472378">Gawing default</translation>
 <translation id="102272308210570439">Bigyang-daan ang Assistant na gamitin ang nasa screen mo</translation>
 <translation id="8624205858755890468">Binibigyang-daan ang Assistant na magpakita sa iyo ng mga kaugnay na impormasyon, app, at pagkilos.</translation>
-<translation id="178309940312315155">Pagtukoy ng "OK Brave Software"</translation>
-<translation id="3476912025629168202">I-access ang iyong Assistant anumang oras na sasabihin mo ang "OK Brave Software" kapag naka-on ang iyong screen.</translation>
+<translation id="8669919703154928649">Payagan ang Assistant na magpakita sa iyo ng mga notification</translation>
+<translation id="3430342160185525240">Ine-enable ang Assistant na magpakita sa iyo ng mga notification.</translation>
 <translation id="3908743412684152579">Mga setting ng Brave Software Assistant</translation>
 <translation id="4933484234309072027">naka-embed sa <ph name="URL"/></translation>
 <translation id="8427292751741042100">naka-embed sa anumang host</translation>
@@ -2048,6 +2012,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6295158916970320988">Lahat ng site</translation>
 <translation id="7625568159987162309">Tingnan ang mga pahintulot at data na naka-store sa lahat ng site</translation>
 <translation id="3735740477244556633">Pagbukud-bukurin ayon sa</translation>
+<translation id="6503077044568424649">Pinaka-nabisita</translation>
+<translation id="967624055006145463">Naka-store na data</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Mga Ad</translation>
 <translation id="5649053991847567735">Mga awtomatikong pag-download</translation>
@@ -2123,7 +2089,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3038675903128704560">Huwag payagan ang anumang site na gumamit ng plugin upang i-access ang iyong computer</translation>
 <translation id="857943718398505171">Pinapayagan (inirerekomenda)</translation>
 <translation id="5000922062037820727">Naka-block (inirerekomenda)</translation>
-<translation id="8116925261070264013">Naka-mute</translation>
 <translation id="8708000541097332489">I-clear sa paglabas</translation>
 <translation id="8037357227543935929">Magtanong (default)</translation>
 <translation id="3427092606871434483">Payagan (default)</translation>
@@ -2220,7 +2185,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7311891583377621132">Gumalaw nang bahagya upang makunan ang ibang bahagi ng fingerprint</translation>
 <translation id="7345706641791090287">Kumpirmahin ang iyong password</translation>
 <translation id="381202950560906753">Magdagdag ng isa pa</translation>
-<translation id="3625538291267447988">Para ma-set up ang Smart Lock, ilagay ang iyong password</translation>
 <translation id="6658023813581644008">Para i-set up ang Smart Lock para sa pag-sign in, ilagay ang iyong password</translation>
 <translation id="5449551289610225147">Di-wastong password</translation>
 <translation id="5374359983950678924">Palitan ang larawan</translation>
@@ -2260,8 +2224,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2709516037105925701">AutoFill</translation>
 <translation id="1644574205037202324">History</translation>
 <translation id="5117427536932535467">Mga Tema at Wallpaper</translation>
+<translation id="7029809446516969842">Mga Password</translation>
 <translation id="3259418918864581163">Mga credit card at address na gumagamit ng Brave Software Pay.</translation>
-<translation id="4439834757335393741">Mga paraan ng pagbabayad at address gamit ang Brave Software Pay.</translation>
 <translation id="3268451620468152448">Mga Bukas na Tab</translation>
 <translation id="5241892180459725878">Mga suhestyon sa paghahanap sa Brave Software Drive</translation>
 <translation id="2120297377148151361">Aktibidad at mga pakikipag-ugnayan</translation>
@@ -2332,6 +2296,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1114202307280046356">Diamond</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">External na Command</translation>
+<translation id="585979798156957858">External na Meta</translation>
 <translation id="4991420928586866460">Ituring ang mga top-row key bilang mga function key</translation>
 <translation id="85486688517848470">Pindutin nang matagal ang Key sa paghahanap upang palitan ang gawi ng mga key sa itaas na row</translation>
 <translation id="4400632832271803360">Pindutin nang matagal ang key ng Launcher upang mapalitan ang gawi ng mga key sa itaas na row</translation>
@@ -2433,10 +2399,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2315821125498993513">Hindi makakonekta sa telepono. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Naka-on ang Better Together</translation>
 <translation id="3088402208262982892">Naka-off ang Better Together</translation>
-<translation id="2079079131837725321">I-unlock ang iyong Bravebook gamit ang telepono mo. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant na Pag-tether</translation>
-<translation id="3059313675706898490">Mga Android Message</translation>
-<translation id="7095175330464035635">Magpadala at makatanggap ng mga text message mula sa iyong Bravebook</translation>
 <translation id="3936335337858561470">Kalimutan ang device na ito</translation>
 <translation id="3606712892509067288">Alisin sa Better Together</translation>
 <translation id="7878562273885520351">Maaaring makompromismo ang iyong password</translation>
@@ -2567,7 +2530,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6112294629795967147">Pindutin para i-resize</translation>
 <translation id="2453860139492968684">Tapos na</translation>
 <translation id="1853692000353488670">Bagong tab na incognito</translation>
+<translation id="6336451774241870485">Bagong pribadong tab</translation>
 <translation id="5530766185686772672">Isara ang mga tab na incognito</translation>
+<translation id="6610147964972079463">Isara ang mga pribadong tab</translation>
 <translation id="8076492880354921740">Mga Tab</translation>
 <translation id="1049743911850919806">Incognito</translation>
 </translationbundle>

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/cocoa/tabs/tab_view.mm b/chrome/browser/ui/cocoa/tabs/tab_view.mm
-index 58889963095bf779a26678eb7e189ffd149be01f..4d06b5f3e095247f74b70b2f2bf1fa4eaca517d2 100644
+index fc0c94001c243aba3af8ebf23174b08e80f143f5..f0c6fdfbf8bbff42c144cab6648e94fcea012c12 100644
 --- a/chrome/browser/ui/cocoa/tabs/tab_view.mm
 +++ b/chrome/browser/ui/cocoa/tabs/tab_view.mm
-@@ -918,10 +918,11 @@ CGFloat LineWidthFromContext(CGContextRef context) {
+@@ -913,10 +913,11 @@ ui::ThreePartImage& GetStrokeImage(bool active, StrokeType stroke_type) {
               controlPoint1:NSMakePoint(1.805, -0.38)
               controlPoint2:NSMakePoint(2.17, 1.415)];
  

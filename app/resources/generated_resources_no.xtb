@@ -499,9 +499,6 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="8743864605301774756">Oppdatert for 1 t siden</translation>
 <translation id="5638497698949808140">Oppdatert for <ph name="HOURS"/> t siden</translation>
 <translation id="1329584516321524826">Nettopp oppdatert</translation>
-<translation id="8679788109894721265">Denne siden bruker mer enn <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Stoppet innlasting</translation>
-<translation id="4280864916190672950">Stopp innlasting</translation>
 <translation id="2724841811573117416">WebRTC-logger</translation>
 <translation id="7518150891539970662">WebRTC-logger (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-loggen ble lagret <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="7554791636758816595">Ny fane</translation>
 <translation id="3915280005470252504">Søk med tale</translation>
 <translation id="3153862085237805241">Lagre kortet</translation>
-<translation id="4961000125720751066">Ha alle kortene dine på ett sted</translation>
+<translation id="1593926297800505364">Lagre betalingsmåten</translation>
 <translation id="2473195200299095979">Oversett denne siden</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Denne siden ble zoomet inn av utvidelsen «<ph name="NAME"/>»</translation>
@@ -1048,7 +1045,6 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="5562781907504170924">Denne fanen er koblet til en Bluetooth-enhet.</translation>
 <translation id="5884474295213649357">Denne fanen er koblet til en USB-enhet.</translation>
 <translation id="8466417995783206254">Denne fanen spiller av en video i bilde-i-bilde-modus.</translation>
-<translation id="6235700927623181151">Denne fanen deler innholdet på skrivebordet ditt.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kamera- eller mikrofonopptak</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – faneinnholdet er delt</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – videoen spilles av i bilde-i-bilde-modus</translation>
@@ -1113,35 +1109,6 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="874689135111202667">{0,plural, =1{Vil du laste opp en fil til dette nettstedet?}other{Vil du laste opp # filer til dette nettstedet?}}</translation>
 <translation id="1956390763342388273">Dette fører til at alle filer fra «<ph name="FOLDER_PATH"/>» lastes opp. Du bør bare gjøre dette hvis du stoler på nettstedet.</translation>
 <translation id="1243314992276662751">Last opp</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> ønsker å bekrefte identiteten din</translation>
-<translation id="3738671331307774213">Ved å verifisere identiteten din bidrar du til å beskytte de private dataene dine.</translation>
-<translation id="8435395510592618362">Bekreft identiteten din med <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Velg et alternativ</translation>
-<translation id="7490950320178383728">Bruk sikkerhetsnøkkelen din med Bluetooth</translation>
-<translation id="414599683948988413">Bruk sikkerhetsnøkkelen din med USB</translation>
-<translation id="7851816139220202929">Bruk sikkerhetsnøkkelen din med NFC</translation>
-<translation id="5392327114396848796">Bruk en innebygd sikkerhetsnøkkel</translation>
-<translation id="5104546332954397226">Bruk telefonen din som sikkerhetsnøkkel</translation>
-<translation id="2876441201733326392">Bruk USB-sikkerhetsnøkkel</translation>
-<translation id="5842053879378944309">Bruk USB-sikkerhetsnøkkelen med <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Sett inn sikkerhetsnøkkelen og aktivér den</translation>
-<translation id="8033958968890501070">Tidsavbrudd</translation>
-<translation id="7102832101143475489">Forespørselen ble tidsavbrutt</translation>
-<translation id="3670229581627177274">Slå på Bluetooth</translation>
-<translation id="3880709822663530586">Sikkerhetsnøkkelen din fungerer bare når enhetens Bluetooth er på</translation>
-<translation id="1183378459020939734">Er du klar til å koble til sikkerhetsnøkkelen din?</translation>
-<translation id="237058345584060620">Koble nøkkelen din til denne enheten, slik at du kan bruke den til å logge på kontoen din</translation>
-<translation id="1875312262568496299">Start</translation>
-<translation id="3104900172193317662">Tillat bruk av sikkerhetsnøkkelen din</translation>
-<translation id="2492040222276243256">Trykk inn knappen på sikkerhetsnøkkelen i minst fem sekunder</translation>
-<translation id="6427415464407526111">Velg sikkerhetsnøkkelen din</translation>
-<translation id="2633326789677284179">Finn navnet som er trykt på baksiden av nøkkelen din</translation>
-<translation id="5660204307954428567">Koble til <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Finn den sekssifrede PIN-koden på baksiden av nøkkelen din</translation>
-<translation id="1201402288615127009">Neste</translation>
-<translation id="1792161662640298233">Bekrefter sikkerhetsnøkkelen din</translation>
-<translation id="2321482478556590128">Bruk sikkerhetsnøkkelen din med <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">For å bruke de fleste nøkler, bare trykk på knappen</translation>
 <translation id="3785308913036335955">Vis appsnarveien</translation>
 <translation id="711840821796638741">Vis administrerte bokmerker</translation>
 <translation id="3613134908380545408">Vis <ph name="FOLDER_NAME"/></translation>
@@ -1509,6 +1476,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6902066522699286937">Forhåndsutdrag av tekst til tale</translation>
 <translation id="304747341537320566">Talemotorer</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Kjør Linux-verktøy, redigeringsverktøy og IDE-er på Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Finn ut mer&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Fjern Linux-apper for Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Butikk</translation>
@@ -1548,17 +1516,14 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="8647834505253004544">Ikke en gyldig nettadresse</translation>
 <translation id="2149850907588596975">Passord og skjemaer</translation>
 <translation id="8639963783467694461">Innstillinger for autofyll</translation>
-<translation id="3431019676184503003">Adresser og betalingsmåter</translation>
 <translation id="2512222046227390255">Fyll ut skjemaer automatisk</translation>
-<translation id="2283340219607151381">Lagre og fyll inn adresser</translation>
-<translation id="1662550410081243962">Lagre og fyll ut betalingsmåter</translation>
-<translation id="2903493209154104877">Adresser</translation>
 <translation id="7764225426217299476">Legg til adresse</translation>
 <translation id="5595485650161345191">Rediger adresse</translation>
 <translation id="6207937957461833379">Land / region</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="5659593005791499971">E-post</translation>
-<translation id="5565871407246142825">Kredittkort</translation>
+<translation id="5762172915276660232">Innstillinger for kredittkort</translation>
+<translation id="4499718683476608392">Slå på autofyll for kredittkort for å fylle ut skjemaer med ett klikk</translation>
 <translation id="2448312741937722512">Type</translation>
 <translation id="9064275926664971810">Slå på Autofyll for å fylle ut skjemaer ved hjelp av ett enkelt klikk</translation>
 <translation id="5029568752722684782">Slett kopi</translation>
@@ -1644,7 +1609,6 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4699172675775169585">Bufrede bilder og filer</translation>
 <translation id="1274997165432133392">Informasjonskapsler og andre nettstedsdata</translation>
 <translation id="3838543471119263078">Informasjonskapsler og andre nettsteds- og programtilleggsdata</translation>
-<translation id="7029809446516969842">Passord</translation>
 <translation id="6865313869410766144">Skjemadata lagret med autofyll</translation>
 <translation id="177336675152937177">Appdata på vertstjener</translation>
 <translation id="1718835860248848330">Siste time</translation>
@@ -2039,8 +2003,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="7136694880210472378">Bruk som standard</translation>
 <translation id="102272308210570439">La assistenten bruke det som vises på skjermen</translation>
 <translation id="8624205858755890468">Gjør at assistenten kan vise deg relatert informasjon og relaterte apper og handlinger.</translation>
-<translation id="178309940312315155">«Ok Brave Software»-gjenkjennelse</translation>
-<translation id="3476912025629168202">Få tilgang til assistenten din ved å si «Ok Brave Software» når skjermen er på.</translation>
+<translation id="8669919703154928649">La assistenten vise deg varsler</translation>
+<translation id="3430342160185525240">Lar assistenten vise deg varsler.</translation>
 <translation id="3908743412684152579">Innstillinger for Brave Software-assistenten</translation>
 <translation id="4933484234309072027">lagt til på <ph name="URL"/></translation>
 <translation id="8427292751741042100">innebygd på et hvilket som helst nettsted</translation>
@@ -2048,6 +2012,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6295158916970320988">Alle nettsteder</translation>
 <translation id="7625568159987162309">Se tillatelser og data lagret på alle nettsteder</translation>
 <translation id="3735740477244556633">Sortér etter</translation>
+<translation id="6503077044568424649">Mest besøkt</translation>
+<translation id="967624055006145463">Lagrede data</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Annonser</translation>
 <translation id="5649053991847567735">Automatiske nedlastinger</translation>
@@ -2123,7 +2089,6 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="3038675903128704560">Ikke la noen nettsteder bruke programtillegg for å få tilgang til datamaskinen din</translation>
 <translation id="857943718398505171">Tillatt (anbefales)</translation>
 <translation id="5000922062037820727">Blokkert (anbefales)</translation>
-<translation id="8116925261070264013">Kuttet lyd</translation>
 <translation id="8708000541097332489">Fjern ved avslutning</translation>
 <translation id="8037357227543935929">Spør (standard)</translation>
 <translation id="3427092606871434483">Tillat (standard)</translation>
@@ -2220,7 +2185,6 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="7311891583377621132">Flytt litt på fingeren for å registrere en annen del av fingeravtrykket</translation>
 <translation id="7345706641791090287">Bekreft passordet</translation>
 <translation id="381202950560906753">Legg til ett til</translation>
-<translation id="3625538291267447988">Skriv inn passordet ditt for å konfigurere Smart Lock</translation>
 <translation id="6658023813581644008">Skriv inn passordet ditt for å konfigurere Smart Lock</translation>
 <translation id="5449551289610225147">Ugyldig passord</translation>
 <translation id="5374359983950678924">Endre bilde</translation>
@@ -2260,8 +2224,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2709516037105925701">Autofyll</translation>
 <translation id="1644574205037202324">Logg</translation>
 <translation id="5117427536932535467">Temaer og bakgrunner</translation>
+<translation id="7029809446516969842">Passord</translation>
 <translation id="3259418918864581163">Kredittkort og adresser ved bruk av Brave Software Pay.</translation>
-<translation id="4439834757335393741">Betalingsmåter og adresser ved bruk av Brave Software Pay.</translation>
 <translation id="3268451620468152448">Åpne faner</translation>
 <translation id="5241892180459725878">Søkeforslag fra Brave Software Disk</translation>
 <translation id="2120297377148151361">Aktivitet og interaksjoner</translation>
@@ -2332,6 +2296,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="1114202307280046356">Diamant</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Tilbake-tasten</translation>
+<translation id="1938351510777341717">Ekstern kommando</translation>
+<translation id="585979798156957858">Ekstern meta</translation>
 <translation id="4991420928586866460">Behandle taster på øverste rad som funksjonstaster</translation>
 <translation id="85486688517848470">Hold Søk-tasten inne for å endre funksjonene for tastene på øverste rad</translation>
 <translation id="4400632832271803360">Hold Appoversikt-tasten inne for å endre funksjonene for tastene på øverste rad</translation>
@@ -2433,10 +2399,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2315821125498993513">Kunne ikke koble til telefonen. <ph name="LINK_BEGIN"/>Finn ut mer.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Bedre sammen er på</translation>
 <translation id="3088402208262982892">Bedre sammen er av</translation>
-<translation id="2079079131837725321">Lås opp Bravebooken med telefonen. <ph name="LINK_BEGIN"/>Finn ut mer.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Umiddelbar internettdeling</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Send og motta tekstmeldinger fra Bravebooken</translation>
 <translation id="3936335337858561470">Glem denne enheten</translation>
 <translation id="3606712892509067288">Fjern fra Bedre sammen</translation>
 <translation id="7878562273885520351">Passordet ditt kan være kompromittert</translation>
@@ -2567,7 +2530,9 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6112294629795967147">Trykk for å endre størrelsen</translation>
 <translation id="2453860139492968684">Fullfør</translation>
 <translation id="1853692000353488670">Ny inkognitofane</translation>
+<translation id="6336451774241870485">Ny privatfane</translation>
 <translation id="5530766185686772672">Lukk inkognitofaner</translation>
+<translation id="6610147964972079463">Lukk privatfaner</translation>
 <translation id="8076492880354921740">Faner</translation>
 <translation id="1049743911850919806">Inkognito</translation>
 </translationbundle>

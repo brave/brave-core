@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/permissions/permission_manager.h b/chrome/browser/permissions/permission_manager.h
-index beb9cae183d54a1296b6fc38a8a9d89a24566c5e..9633a76f39a64a7db08d4d6017b91984e542a368 100644
+index 223f67e98f95ce3d5c4ff9e69d4894daf992d933..1f5928b4fd2447cc894ae62334ba702662e393dd 100644
 --- a/chrome/browser/permissions/permission_manager.h
 +++ b/chrome/browser/permissions/permission_manager.h
 @@ -120,6 +120,7 @@ class PermissionManager : public KeyedService,

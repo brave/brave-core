@@ -499,9 +499,6 @@
 <translation id="8743864605301774756">1 മണിക്കൂർ മുമ്പ് അപ്‌ഡേറ്റുചെയ്തു</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/>മണിക്കൂർ മുമ്പ് അപ്‌ഡേറ്റുചെയ്തു</translation>
 <translation id="1329584516321524826">ഇപ്പോൾ അപ്ഡേറ്റുചെയ്‌തത്</translation>
-<translation id="8679788109894721265">ഈ പേജ് <ph name="MEGABYTES"/>MB-യിലും കൂടുതൽ ഉപയോഗിക്കുന്നു</translation>
-<translation id="8369547389711988632">ലോഡ് ചെയ്യുന്നത് നിലച്ചു</translation>
-<translation id="4280864916190672950">ലോഡ് ചെയ്യുന്നത് നിർത്തുക</translation>
 <translation id="2724841811573117416">WebRTC ലോഗുകൾ</translation>
 <translation id="7518150891539970662">WebRTC ലോഗുകൾ (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC ലോഗ് <ph name="WEBRTC_LOG_CAPTURE_TIME"/>-ന് ക്യാപ്‌ചർചെയ്‌തു</translation>
@@ -588,7 +585,7 @@
 <translation id="7554791636758816595">പുതിയ ടാബ്</translation>
 <translation id="3915280005470252504">വോയ്‌സ് ഉപയോഗിച്ച് തിരയുക</translation>
 <translation id="3153862085237805241">കാർഡ് സംരക്ഷിക്കുക</translation>
-<translation id="4961000125720751066">നിങ്ങളുടെ കാർഡുകൾ ഒരു സ്ഥലത്ത് സൂക്ഷിക്കൂ</translation>
+<translation id="1593926297800505364">പേയ്മെന്റ് രീതി സംരക്ഷിക്കുക</translation>
 <translation id="2473195200299095979">ഈ പേജ് വിവർത്തനം ചെയ്യുക</translation>
 <translation id="5408750356094797285">സൂം ചെയ്യുക: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">"<ph name="NAME"/>" വിപുലീകരണം ഉപയോഗിച്ച് ഈ പേജ് സൂം ചെയ്‌തു</translation>
@@ -1048,7 +1045,6 @@
 <translation id="5562781907504170924">ഈ ടാബ് ഒരു Bluetooth ഉപകരണവുമായി കണക്‌റ്റുചെയ്‌തിരിക്കുന്നു.</translation>
 <translation id="5884474295213649357">ഈ ടാബ് ഒരു USB ഉപകരണവുമായി കണക്‌റ്റുചെയ്‌തിരിക്കുന്നു.</translation>
 <translation id="8466417995783206254">ചിത്രത്തിനുള്ളിലെ ചിത്രം മോഡിൽ ഈ ടാബ് ഒരു വീഡിയോ പ്ലേ ചെയ്യുന്നു.</translation>
-<translation id="6235700927623181151">ഈ ടാബ് നിങ്ങളുടെ ഡെസ്‌ക്‌ടോപ്പ് ഉള്ളടക്കം പങ്കിടുന്നു.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - ക്യാമറ അല്ലെങ്കിൽ മൈക്രോഫോൺ റെക്കോർഡിംഗ്</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - ടാബ് ഉള്ളടക്കം പങ്കിട്ടു</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - ചിത്രത്തിനുള്ളിലെ ചിത്രം മോഡിൽ വീഡിയോ പ്ലേ ചെയ്യുന്നു</translation>
@@ -1113,35 +1109,6 @@
 <translation id="874689135111202667">{0,plural, =1{ഈ സൈറ്റിലേക്ക് ഒരു ഫയൽ അപ്‌ലോഡ് ചെയ്യണോ?}other{ഈ സൈറ്റിലേക്ക് # ഫയലുകൾ അപ്‌ലോഡ് ചെയ്യണോ?}}</translation>
 <translation id="1956390763342388273">"<ph name="FOLDER_PATH"/>" ഫോൾഡറിൽ നിന്നുള്ള എല്ലാ ഫയലുകളും ഇത് അപ്‌ലോഡ് ചെയ്യും. നിങ്ങൾ സൈറ്റിനെ വിശ്വസിക്കുന്നുവെങ്കിൽ മാത്രം ഇത് ചെയ്യുക.</translation>
 <translation id="1243314992276662751">അപ്‌ലോഡുചെയ്യുക</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/>-ന് നിങ്ങളുടെ ഐഡന്റിറ്റി പരിശോധിച്ച് ഉറപ്പിക്കേണ്ടതുണ്ട്</translation>
-<translation id="3738671331307774213">ഐഡൻ്റിറ്റി പരിശോധിച്ച് ഉറപ്പിക്കുന്നത് നിങ്ങളുടെ സ്വകാര്യ ഡാറ്റ പരിരക്ഷിക്കാൻ സഹായിക്കുന്നു</translation>
-<translation id="8435395510592618362"><ph name="APP_NAME"/> ഉപയോഗിച്ച് നിങ്ങളുടെ ഐഡന്റിറ്റി പരിശോധിച്ച് ഉറപ്പിക്കുക</translation>
-<translation id="3854599674806204102">ഒരു ഓപ്‌ഷൻ തിരഞ്ഞെടുക്കൂ</translation>
-<translation id="7490950320178383728">Bluetooth-നോടൊപ്പം നിങ്ങളുടെ സുരക്ഷാ കീ ഉപയോഗിക്കുക</translation>
-<translation id="414599683948988413">USB-യോടൊപ്പം നിങ്ങളുടെ സുരക്ഷാ കീ ഉപയോഗിക്കുക</translation>
-<translation id="7851816139220202929">NFC-യോടൊപ്പം നിങ്ങളുടെ സുരക്ഷാ കീ ഉപയോഗിക്കുക</translation>
-<translation id="5392327114396848796">ഒരു അന്തർനിർമിത സുരക്ഷാ കീ ഉപയോഗിക്കുക</translation>
-<translation id="5104546332954397226">നിങ്ങളുടെ ഫോൺ ഒരു സുരക്ഷാ കീ ആയി ഉപയോഗിക്കുക</translation>
-<translation id="2876441201733326392">USB സുരക്ഷാ കീ ഉപയോഗിക്കുക</translation>
-<translation id="5842053879378944309"><ph name="APP_NAME"/> എന്നതിനോടൊപ്പം USB സുരക്ഷാ കീ ഉപയോഗിക്കുക</translation>
-<translation id="6896398788631624004">നിങ്ങളുടെ സുരക്ഷാ കീ പ്ലഗ്-ഇൻ ചെയ്‌ത് സജീവമാക്കുക</translation>
-<translation id="8033958968890501070">കാലഹരണപ്പെട്ടു</translation>
-<translation id="7102832101143475489">അഭ്യർത്ഥന കാലഹരണപ്പെട്ടു</translation>
-<translation id="3670229581627177274">Bluetooth ഓണാക്കുക</translation>
-<translation id="3880709822663530586">നിങ്ങളുടെ ഉപകരണത്തിന്റെ Bluetooth ഓണാണെങ്കിൽ മാത്രമേ സുരക്ഷാ കീ പ്രവർത്തിക്കൂ</translation>
-<translation id="1183378459020939734">സുരക്ഷാ കീ ജോടിയാക്കുന്നതിന് നിങ്ങൾ തയ്യാറാണോ?</translation>
-<translation id="237058345584060620">നിങ്ങളുടെ അക്കൗണ്ടിലേക്ക് സൈൻ ഇൻ ചെയ്യാൻ കീ ഉപയോഗിക്കുന്നതിന് ഈ ഉപകരണവുമായി കീ ജോടിയാക്കുക</translation>
-<translation id="1875312262568496299">തുടങ്ങുക</translation>
-<translation id="3104900172193317662">നിങ്ങളുടെ സുരക്ഷാ കീയുടെ ഉപയോഗം അനുവദിക്കുക</translation>
-<translation id="2492040222276243256">നിങ്ങളുടെ സുരക്ഷാ കീയിലെ ബട്ടൺ ചുരുങ്ങിയത് 5 സെക്കൻഡ് അമർത്തിപ്പിടിക്കുക</translation>
-<translation id="6427415464407526111">നിങ്ങളുടെ സുരക്ഷാ കീ തിരഞ്ഞെടുക്കുക</translation>
-<translation id="2633326789677284179">നിങ്ങളുടെ കീയുടെ പിൻവശത്ത് അച്ചടിച്ചിട്ടുള്ള പേര് നോക്കുക</translation>
-<translation id="5660204307954428567"><ph name="DEVICE_NAME"/> എന്ന ഉപകരണവുമായി ജോടിയാക്കുക</translation>
-<translation id="8984872292925913496">നിങ്ങളുടെ കീയുടെ പിൻഭാഗത്ത് 6-അക്ക ഡിജിറ്റ് പിൻ കണ്ടെത്തുക</translation>
-<translation id="1201402288615127009">അടുത്തത്</translation>
-<translation id="1792161662640298233">നിങ്ങളുടെ സുരക്ഷാ കീ പരിശോധിച്ചുറപ്പിക്കുന്നു</translation>
-<translation id="2321482478556590128"><ph name="APP_NAME"/>-നോടൊപ്പം നിങ്ങളുടെ സുരക്ഷാ കീ ഉപയോഗിക്കുക</translation>
-<translation id="5292195676005197571">മിക്ക കീകളും ഉപയോഗിക്കുന്നതിന്, ബട്ടണിൽ അമർത്തിയാൽ മതി</translation>
 <translation id="3785308913036335955">അപ്ലിക്കേഷനുകളുടെ കുറുക്കുവഴി കാണിക്കുക</translation>
 <translation id="711840821796638741">നിയന്ത്രിത ബുക്ക്മാർക്കുകൾ കാണിക്കുക</translation>
 <translation id="3613134908380545408"><ph name="FOLDER_NAME"/> എന്നത് കാണിക്കുക</translation>
@@ -1510,6 +1477,7 @@
 <translation id="6902066522699286937">പ്രിവ്യൂ ചെയ്യുന്നതിനുള്ള ശബ്ദം</translation>
 <translation id="304747341537320566">സ്പീച്ച് എഞ്ചിനുകൾ</translation>
 <translation id="1067291318998134776">Linux (ബീറ്റ)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">നിങ്ങളുടെ Bravebook-ൽ Linux ടൂളുകളും എഡിറ്ററുകളും IDE-കളും റൺ ചെയ്യുക. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;കൂടുതലറിയുക&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Bravebook-നായുള്ള Linux ആപ്പുകൾ നീക്കം ചെയ്യുക</translation>
 <translation id="2295473777859797944">Brave Software Play സ്‌റ്റോർ</translation>
@@ -1549,17 +1517,14 @@
 <translation id="8647834505253004544">ശരിയായ വെബ് വിലാസമല്ല</translation>
 <translation id="2149850907588596975">പാസ്‌വേഡുകളും ഫോമുകളും</translation>
 <translation id="8639963783467694461">ഓട്ടോഫില്‍ ക്രമീകരണങ്ങള്‍</translation>
-<translation id="3431019676184503003">വിലാസങ്ങളും പേയ്മെന്റ് രീതികളും</translation>
 <translation id="2512222046227390255">ഫോമുകൾ ഓട്ടോഫിൽ ചെയ്യുക</translation>
-<translation id="2283340219607151381">വിലാസങ്ങൾ സംരക്ഷിച്ച് സ്വമേധയാ പൂരിപ്പിക്കുക</translation>
-<translation id="1662550410081243962">പേയ്‌മെന്റ് രീതികൾ സംരക്ഷിച്ച് സ്വമേധയാ പൂരിപ്പിക്കുക</translation>
-<translation id="2903493209154104877">വിലാസങ്ങള്‍‌</translation>
 <translation id="7764225426217299476">വിലാസം ചേർക്കുക</translation>
 <translation id="5595485650161345191">വിലാസം എഡിറ്റുചെയ്യുക</translation>
 <translation id="6207937957461833379">രാജ്യം/പ്രവിശ്യ</translation>
 <translation id="4378154925671717803">ഫോൺ</translation>
 <translation id="5659593005791499971">ഇമെയില്‍</translation>
-<translation id="5565871407246142825">ക്രെഡിറ്റ് കാര്‍ഡുകള്‍</translation>
+<translation id="5762172915276660232">ക്രെഡിറ്റ് കാർഡ് ക്രമീകരണം</translation>
+<translation id="4499718683476608392">ഒറ്റ ക്ലിക്കിൽ ഫോമുകൾ പൂരിപ്പിക്കാൻ ക്രെഡിറ്റ് കാർഡിന്റെ സ്വമേധയാ പൂരിപ്പിക്കൽ പ്രവർത്തനക്ഷമമാക്കുക</translation>
 <translation id="2448312741937722512">തരം</translation>
 <translation id="9064275926664971810">ഒരൊറ്റ ക്ലിക്കിലൂടെ ഫോമുകള്‍ പൂരിപ്പിക്കുന്നതിന്, ഓട്ടോഫിൽ പ്രവർത്തനക്ഷമമാക്കുക</translation>
 <translation id="5029568752722684782">പകർപ്പ് മായ്‌ക്കുക</translation>
@@ -2039,8 +2004,8 @@
 <translation id="7136694880210472378">സ്ഥിരസ്ഥിതിയാക്കുക</translation>
 <translation id="102272308210570439">നിങ്ങളുടെ സ്‌ക്രീനിലുള്ളത് ഉപയോഗിക്കാൻ സഹായിയെ അനുവദിക്കുക</translation>
 <translation id="8624205858755890468">ബന്ധപ്പെട്ട വിവരങ്ങളും ആപ്പുകളും പ്രവർത്തനങ്ങളും നിങ്ങളെ കാണിക്കാൻ സഹായിയെ പ്രവർത്തനക്ഷമമാക്കുന്നു.</translation>
-<translation id="178309940312315155">"ഓകെ ഗൂഗിൾ" തിരിച്ചറിയൽ</translation>
-<translation id="3476912025629168202">സ്ക്രീൻ ഓണായിരിക്കുമ്പോൾ, ഏത് സമയത്തും "ഓകെ ഗൂഗിൾ" എന്ന് പറഞ്ഞ് നിങ്ങളുടെ അസിസ്‌റ്റന്റ് ആക്‌സസ് ചെയ്യാം.</translation>
+<translation id="8669919703154928649">നിങ്ങൾക്ക് അറിയിപ്പുകൾ കാണിക്കാൻ അസിസ്‌റ്റന്റിനെ അനുവദിക്കുക</translation>
+<translation id="3430342160185525240">നിങ്ങളെ അറിയിപ്പുകൾ കാണിക്കാൻ അസിസ്‌റ്റന്റിനെ അനുവദിക്കുന്നു.</translation>
 <translation id="3908743412684152579">Brave Software അസിസ്‌റ്റന്റ് ക്രമീകരണം</translation>
 <translation id="4933484234309072027"><ph name="URL"/> ല്‍ ഉള്‍‌ച്ചേര്‍‌ത്തു</translation>
 <translation id="8427292751741042100">എല്ലാ ഹോസ്‌റ്റിലും ഉൾപ്പെടുത്തി</translation>
@@ -2048,6 +2013,8 @@
 <translation id="6295158916970320988">എല്ലാ സൈറ്റുകളും</translation>
 <translation id="7625568159987162309">സൈറ്റുകളിൽ ഉടനീളം സംഭരിച്ചിട്ടുള്ള അനുമതികളും ഡാറ്റയും കാണുക</translation>
 <translation id="3735740477244556633">ഇപ്രകാരം അടുക്കുക</translation>
+<translation id="6503077044568424649">കൂടുതൽ‍ സന്ദര്‍ശിച്ചത്</translation>
+<translation id="967624055006145463">ഡാറ്റ സംഭരിച്ചു</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">പരസ്യങ്ങള്‍</translation>
 <translation id="5649053991847567735">യാന്ത്രിക ഡൗൺലോഡുകൾ</translation>
@@ -2123,7 +2090,6 @@
 <translation id="3038675903128704560">നിങ്ങളുടെ കമ്പ്യൂട്ടർ ആക്‌സസ് ചെയ്യാൻ പ്ലഗിൻ ഉപയോഗിക്കുന്നതിന് ഒരു സൈറ്റിനെയും അനുവദിക്കരുത്</translation>
 <translation id="857943718398505171">അനുവദിച്ചിരിക്കുന്നു (ശുപാർശചെയ്‌തത്)</translation>
 <translation id="5000922062037820727">തടഞ്ഞിരിക്കുന്നു (ശുപാർശചെയ്‌തത്)</translation>
-<translation id="8116925261070264013">മ്യൂട്ടുചെയ്‌തു</translation>
 <translation id="8708000541097332489">പുറത്തുകടക്കുമ്പോൾ മായ്‌ക്കുക</translation>
 <translation id="8037357227543935929">ചോദിക്കുക (ഡിഫോൾട്ട്)</translation>
 <translation id="3427092606871434483">അനുവദിക്കുക (ഡിഫോൾട്ട്)</translation>
@@ -2220,7 +2186,6 @@
 <translation id="7311891583377621132">ഫിംഗർപ്രിന്റിന്റെ മറ്റൊരു ഭാഗം ക്യാപ്‌ചർ ചെയ്യാൻ ‌ചെറുതായി നീക്കുക</translation>
 <translation id="7345706641791090287">പാസ്‌വേഡ് സ്ഥിരീകരിക്കുക</translation>
 <translation id="381202950560906753">മറ്റൊന്ന് ചേർക്കുക</translation>
-<translation id="3625538291267447988">Smart Lock സജ്ജീകരിക്കാൻ, നിങ്ങളുടെ പാസ്‌വേഡ് നൽകുക</translation>
 <translation id="6658023813581644008">സൈൻ ഇൻ ചെയ്യുന്നതിനായി Smart Lock സജ്ജീകരിക്കാൻ, നിങ്ങളുടെ പാസ്‌വേഡ് നൽകുക</translation>
 <translation id="5449551289610225147">പാസ്‌വേഡ് അസാധുവാണ്</translation>
 <translation id="5374359983950678924">ചിത്രം മാറ്റുക</translation>
@@ -2261,7 +2226,6 @@
 <translation id="1644574205037202324">ചരിത്രം</translation>
 <translation id="5117427536932535467">തീമുകളും വാൾപേപ്പറുകളും</translation>
 <translation id="3259418918864581163">Brave Software Pay ഉപയോഗിക്കുന്ന ക്രെഡിറ്റ് കാർഡുകളും വിലാസങ്ങളും.</translation>
-<translation id="4439834757335393741">Brave Software Pay ഉപയോഗിക്കുന്ന വിലാസങ്ങളും പേയ്മെന്റ് രീതികളും.</translation>
 <translation id="3268451620468152448">ഓപ്പൺ ടാബുകൾ</translation>
 <translation id="5241892180459725878">Brave Software ഡ്രൈവ് തിരയൽ നിർദ്ദേശങ്ങൾ</translation>
 <translation id="2120297377148151361">പ്രവർത്തനവും ആശയവിനിമയങ്ങളും</translation>
@@ -2332,6 +2296,8 @@
 <translation id="1114202307280046356">ഡയമണ്ട്</translation>
 <translation id="89720367119469899">എസ്‌കേപ്പ്</translation>
 <translation id="5583640892426849032">ബാക്ക്‌സ്പെയ്‌സ്</translation>
+<translation id="1938351510777341717">എക്‌സ്‌റ്റേണൽ കമാൻഡ്</translation>
+<translation id="585979798156957858">എക്‌സ്‌റ്റേണൽ മെറ്റ</translation>
 <translation id="4991420928586866460">മുകളിലെ-വരി കീകൾ ഫംഗ്‌ഷൻ കീകളായി ഉപയോഗിക്കുക</translation>
 <translation id="85486688517848470">മുകൾ-വരിയിലെ കീകളുടെ പ്രവർത്തനരീതി മാറ്റാൻ 'തിരയൽ' കീ അമർത്തിപ്പിടിക്കുക</translation>
 <translation id="4400632832271803360">മുകൾ-വരിയിലെ കീകളുടെ പ്രവർത്തനരീതി മാറ്റാൻ 'ലോഞ്ചർ' കീ അമർത്തിപ്പിടിക്കുക</translation>
@@ -2433,10 +2399,7 @@
 <translation id="2315821125498993513">ഫോണിലേക്ക് കണക്‌റ്റ് ചെയ്യാനായില്ല. <ph name="LINK_BEGIN"/>കൂടുതലറിയുക.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together ഓണാണ്</translation>
 <translation id="3088402208262982892">'Better Together' ഓഫാണ്</translation>
-<translation id="2079079131837725321">നിങ്ങളുടെ ഫോൺ ഉപയോഗിച്ച് നിങ്ങളുടെ Bravebook അൺലോക്ക് ചെയ്യുക. <ph name="LINK_BEGIN"/>കൂടുതലറിയുക<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">തൽക്ഷണ ടെതറിംഗ്</translation>
-<translation id="3059313675706898490">Android മെസേജ്</translation>
-<translation id="7095175330464035635">നിങ്ങളുടെ Bravebook-ൽ നിന്ന് അക്ഷര സന്ദേശങ്ങൾ അയയ്ക്കുകയും സ്വീകരിക്കുകയും ചെയ്യുക</translation>
 <translation id="3936335337858561470">ഈ ഉപകരണം മറക്കുക</translation>
 <translation id="3606712892509067288">'Better Together'ൽ നിന്ന് നീക്കം ചെയ്യുക</translation>
 <translation id="7878562273885520351">നിങ്ങളുടെ പാസ്‍വേഡ് അപഹരിക്കപ്പെട്ടേക്കാം</translation>
@@ -2567,7 +2530,9 @@
 <translation id="6112294629795967147">വലുപ്പം മാറ്റാൻ സ്പർശിക്കുക</translation>
 <translation id="2453860139492968684">പൂര്‍ത്തിയാക്കുക</translation>
 <translation id="1853692000353488670">പുതിയ ആൾമാറാട്ട ടാബ്</translation>
+<translation id="6336451774241870485">പുതിയ സ്വകാര്യ ടാബ്</translation>
 <translation id="5530766185686772672">ആൾമാറാട്ട ടാബുകൾ അടയ്‌ക്കുക</translation>
+<translation id="6610147964972079463">സ്വകാര്യ ടാബുകൾ അടയ്ക്കുക</translation>
 <translation id="8076492880354921740">ടാബുകള്‍‌</translation>
 <translation id="1049743911850919806">ആള്‍‌മാറാട്ടം</translation>
 </translationbundle>

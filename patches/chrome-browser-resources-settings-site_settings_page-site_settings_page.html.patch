@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-index 92c863fcf9ead0637947b1ed4004ab85d1d23346..9c8f66db21836a5172f909c4cdd28990980e1f46 100644
+index b2894017d199903bb468124871b0a4d1223f923f..84324a86432dc7f47186da91931764d7792c69d7 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-@@ -147,6 +147,25 @@
+@@ -148,6 +148,25 @@
              aria-describedby="notificationsSecondary"></button>
        </paper-icon-button-light>
      </div>
@@ -28,7 +28,7 @@ index 92c863fcf9ead0637947b1ed4004ab85d1d23346..9c8f66db21836a5172f909c4cdd28990
      <div id="javascript" class="settings-box two-line"
          category$="[[ContentSettingsTypes.JAVASCRIPT]]"
          data-route="SITE_SETTINGS_JAVASCRIPT" on-click="onTapNavigate_"
-@@ -241,6 +260,7 @@
+@@ -242,6 +261,7 @@
          </paper-icon-button-light>
        </div>
      </template>
@@ -36,7 +36,7 @@ index 92c863fcf9ead0637947b1ed4004ab85d1d23346..9c8f66db21836a5172f909c4cdd28990
      <div id="background-sync" class="settings-box two-line"
          category$="[[ContentSettingsTypes.BACKGROUND_SYNC]]"
          data-route="SITE_SETTINGS_BACKGROUND_SYNC" on-click="onTapNavigate_"
-@@ -260,6 +280,7 @@
+@@ -261,6 +281,7 @@
              aria-describedby="backgroundSyncSecondary"></button>
        </paper-icon-button-light>
      </div>

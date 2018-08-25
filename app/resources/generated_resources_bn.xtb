@@ -499,9 +499,6 @@
 <translation id="8743864605301774756">১ঘণ্টা আগে আপডেট করা হয়েছে</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/>ঘণ্টা আগে আপডেট করা হয়েছে</translation>
 <translation id="1329584516321524826">এখনই আপডেট করা হয়েছে</translation>
-<translation id="8679788109894721265">এই পৃষ্ঠাটি <ph name="MEGABYTES"/>এমবি এর তুলনায় বেশি ডেটা ব্যবহার করেছে</translation>
-<translation id="8369547389711988632">লোড করা বন্ধ করা হচ্ছে</translation>
-<translation id="4280864916190672950">লোড করা বন্ধ করুন</translation>
 <translation id="2724841811573117416">WebRTC লগগুলি</translation>
 <translation id="7518150891539970662">WebRTC লগগুলি (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460"><ph name="WEBRTC_LOG_CAPTURE_TIME"/> এ WebRTC লগ ক্যাপচার করা হয়েছে</translation>
@@ -588,7 +585,7 @@
 <translation id="7554791636758816595">নতুন ট্যাব</translation>
 <translation id="3915280005470252504">ভয়েস দ্বারা খুঁজুন</translation>
 <translation id="3153862085237805241">কার্ড সেভ করুন</translation>
-<translation id="4961000125720751066">আপনার সমস্ত কার্ড এক জায়গায় করুন</translation>
+<translation id="1593926297800505364">পেমেন্ট পদ্ধতি সেভ করুন</translation>
 <translation id="2473195200299095979">এই পৃষ্ঠাটি অনুবাদ করুন</translation>
 <translation id="5408750356094797285">জুম করুন: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">"<ph name="NAME"/>" এক্সটেনশান দ্বারা এই পৃষ্ঠাটি জুম করা হয়েছে</translation>
@@ -1049,7 +1046,6 @@
 <translation id="5562781907504170924">এই ট্যাবটি একটি ব্লুটুথ ডিভাইসে সংযুক্ত হয়ে আছে।</translation>
 <translation id="5884474295213649357">এই ট্যাব একটি USB ডিভাইসের সাথে সংযুক্ত করা আছে।</translation>
 <translation id="8466417995783206254">এই ট্যাবটি ছবির-মধ্যে-ছবি মোডে ভিডিওটি চালাচ্ছে।</translation>
-<translation id="6235700927623181151">এই ট্যাবটি আপনার ডেস্কটপ কন্টেন্ট শেয়ার করছে।</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - ক্যামেরা বা মাইক্রোফোন রেকর্ডিং</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - ট্যাব সামগ্রী শেয়ার করা হয়েছে</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - ভিডিওটি ছবির-মধ্যে-ছবি মোডে চালানো হচ্ছে</translation>
@@ -1114,35 +1110,6 @@
 <translation id="874689135111202667">{0,plural, =1{এই সাইটে একটি ফাইল আপলোড করবেন?}one{এই সাইটে #টি ফাইল আপলোড করবেন?}other{এই সাইটে #টি ফাইল আপলোড করবেন?}}</translation>
 <translation id="1956390763342388273">এটি ''<ph name="FOLDER_PATH"/>'' থেকে সমস্ত ফাইল আপলোড করবে। আপনি এই সাইটটি বিশ্বাস করে থাকলে তবেই এটি করুন।</translation>
 <translation id="1243314992276662751">আপলোড</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> আপনার পরিচয় যাচাই করতে চায়</translation>
-<translation id="3738671331307774213">আপনার পরিচয় যাচাই করলে তা আপনার ব্যক্তিগত ডেটা রক্ষা করতে সহায়তা করে</translation>
-<translation id="8435395510592618362"><ph name="APP_NAME"/> ব্যবহার করে আপনার পরিচয় যাচাই করুন</translation>
-<translation id="3854599674806204102">একটি বিকল্প বেছে নিন</translation>
-<translation id="7490950320178383728">ব্লুটুথ এর মাধ্যমে আপনার নিরাপত্তা কী ব্যবহার করুন</translation>
-<translation id="414599683948988413">USB এর মাধ্যমে আপনার নিরাপত্তা কী ব্যবহার করুন</translation>
-<translation id="7851816139220202929">NFC এর মাধ্যমে আপনার নিরাপত্তা কী ব্যবহার করুন</translation>
-<translation id="5392327114396848796">একটি বিল্ট-ইন নিরাপত্তা কী ব্যবহার করুন</translation>
-<translation id="5104546332954397226">নিরাপত্তা কী হিসেবে আপনার ফোন ব্যবহার করুন</translation>
-<translation id="2876441201733326392">ইউএসবি নিরাপত্তা কী ব্যবহার করুন</translation>
-<translation id="5842053879378944309"><ph name="APP_NAME"/> এর সাথে ইউএসবি নিরাপত্তা কী ব্যবহার করুন</translation>
-<translation id="6896398788631624004">আপনার নিরাপত্তা কী প্লাগ ইন করুন এবং এটি চালু করুন</translation>
-<translation id="8033958968890501070">সময় শেষ হয়ে গেছে</translation>
-<translation id="7102832101143475489">অনুরোধের সময় শেষ হয়ে গেছে</translation>
-<translation id="3670229581627177274">ব্লুটুথ চালু করুন</translation>
-<translation id="3880709822663530586">আপনার ডিভাইসের ব্লুটুথ চালু থাকলেই কেবলমাত্র নিরাপত্তা কী কাজ করে</translation>
-<translation id="1183378459020939734">আপনি কি আপনার নিরাপত্তা কী পেয়ার করতে প্রস্তুত?</translation>
-<translation id="237058345584060620">এই ডিভাইসের সাথে আপনার কী পেয়ার করুন যাতে আপনার অ্যাকাউন্টে সাইন-ইন করার সময় আপনি এটি ব্যবহার করতে পারেন</translation>
-<translation id="1875312262568496299">শুরু করুন</translation>
-<translation id="3104900172193317662">আপনার নিরাপত্তা কী ব্যবহার করার অনুমতি দিন</translation>
-<translation id="2492040222276243256">অন্তত ৫ সেকেন্ড আপনার 'নিরাপত্তা কী' বোতামটি টিপে ধরে রাখুন</translation>
-<translation id="6427415464407526111">আপনার নিরাপত্তা কী বেছে নিন</translation>
-<translation id="2633326789677284179">আপনার কীয়ের পিছনে প্রিন্ট করা নামটি খুঁজুন</translation>
-<translation id="5660204307954428567"><ph name="DEVICE_NAME"/>-এর সাথে পেয়ার করুন</translation>
-<translation id="8984872292925913496">আপনার কীয়ের পিছনে ৬ সংখ্যার পিনটি খুঁজুন</translation>
-<translation id="1201402288615127009">পরবর্তী</translation>
-<translation id="1792161662640298233">আপনার নিরাপত্তা কী যাচাই করা হচ্ছে</translation>
-<translation id="2321482478556590128"><ph name="APP_NAME"/>-এ আপনার নিরাপত্তা কী ব্যবহার করুন</translation>
-<translation id="5292195676005197571">বেশিরভাগ কী ব্যবহার করতে শুধু বোতামে প্রেস করুন</translation>
 <translation id="3785308913036335955">অ্যাপ্লিকেশানগুলির শর্টকাট দেখান</translation>
 <translation id="711840821796638741">পরিচালিত বুকমার্কগুলি দেখান</translation>
 <translation id="3613134908380545408"><ph name="FOLDER_NAME"/> দেখান</translation>
@@ -1511,6 +1478,7 @@
 <translation id="6902066522699286937">প্রিভিউ করার জন্য ভয়েস</translation>
 <translation id="304747341537320566">ভাষ্য ইঞ্জিন</translation>
 <translation id="1067291318998134776">Linux (বিটা)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">আপনার Bravebook-এ Linux টুল, এডিটর, এবং IDEs চালান৷ &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;আরও জানুন&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Bravebook থেকে Linux অ্যাপ সরিয়ে দিন</translation>
 <translation id="2295473777859797944">Brave Software Play স্টোর</translation>
@@ -1550,17 +1518,14 @@
 <translation id="8647834505253004544">ওয়েব ঠিকানাটি ভুল</translation>
 <translation id="2149850907588596975">পাসওয়ার্ড ও ফর্ম</translation>
 <translation id="8639963783467694461">স্বতঃপূর্ণ সেটিংস</translation>
-<translation id="3431019676184503003">ঠিকানা ও পেমেন্টের পদ্ধতি</translation>
 <translation id="2512222046227390255">ফর্মগুলি স্বতঃপূর্ণ করুন</translation>
-<translation id="2283340219607151381">অ্যাড্রেস পূরণ করে সেভ করুন</translation>
-<translation id="1662550410081243962">পেমেন্টের পদ্ধতিগুলি পূরণ করে সেভ করুন</translation>
-<translation id="2903493209154104877">ঠিকানা</translation>
 <translation id="7764225426217299476">ঠিকানা যোগ করুন</translation>
 <translation id="5595485650161345191">ঠিকানা সম্পাদনা করুন</translation>
 <translation id="6207937957461833379">দেশ/অঞ্চল</translation>
 <translation id="4378154925671717803">ফোন</translation>
 <translation id="5659593005791499971">ইমেল</translation>
-<translation id="5565871407246142825">ক্রেডিট কার্ডসমূহ</translation>
+<translation id="5762172915276660232">ক্রেডিট কার্ড সেটিংস</translation>
+<translation id="4499718683476608392">এক ক্লিকে ফর্মগুলি পূরণ করার জন্য ক্রেডিট কার্ড অটোফিল চালু করুন</translation>
 <translation id="2448312741937722512">প্রকার</translation>
 <translation id="9064275926664971810">এক ক্লিকে ফর্মগুলি পূরণ করার জন্য স্বতঃপূর্ণ সক্ষম করুন</translation>
 <translation id="5029568752722684782">প্রতিলিপি সাফ করুন</translation>
@@ -1646,7 +1611,6 @@
 <translation id="4699172675775169585">ক্যাশেযুক্ত ছবি এবং ফাইলগুলি</translation>
 <translation id="1274997165432133392">কুকিজ এবং অন্য সাইট ডেটা</translation>
 <translation id="3838543471119263078">কুকিজ এবং অন্যান্য সাইট এবং প্লাগ ইন ডেটা</translation>
-<translation id="7029809446516969842">পাসওয়ার্ড</translation>
 <translation id="6865313869410766144">স্বতঃপূর্ণ ফর্ম ডেটা</translation>
 <translation id="177336675152937177">হোস্ট করা অ্যাপ্লিকেশান ডেটা</translation>
 <translation id="1718835860248848330">শেষ ঘণ্টা</translation>
@@ -2041,8 +2005,8 @@
 <translation id="7136694880210472378">ডিফল্ট করুন</translation>
 <translation id="102272308210570439">আপনার স্ক্রিনে যা থাকবে তা সহায়ককে ব্যবহার করার অনুমতি দিন</translation>
 <translation id="8624205858755890468">আপনাকে সম্পর্কিত তথ্য, অ্যাপ এবং অ্যাকশন দেখাতে সহায়ককে সক্ষম করে।</translation>
-<translation id="178309940312315155">"Ok Brave Software" শনাক্তকরণ</translation>
-<translation id="3476912025629168202">আপনার স্ক্রিন চালু থাকাকালীন "OK Brave Software" বলে যেকোনও সময়ে আপনার অ্যাসিস্ট্যান্ট অ্যাক্সেস করুন।</translation>
+<translation id="8669919703154928649">অ্যাসিস্ট্যান্টকে বিজ্ঞপ্তিগুলি দেখাতে দিন</translation>
+<translation id="3430342160185525240">আপনাকে বিজ্ঞপ্তিগুলি দেখানোর জন্য অ্যাসিস্ট্যান্টটি চালু করুন।</translation>
 <translation id="3908743412684152579">Brave Software সহায়ক সেটিংস</translation>
 <translation id="4933484234309072027"><ph name="URL"/>-এ এম্বেড করা হয়েছে</translation>
 <translation id="8427292751741042100">অন্য কোনও হোস্টে এম্বেড করা হয়েছে</translation>
@@ -2050,6 +2014,8 @@
 <translation id="6295158916970320988">সমস্ত সাইট</translation>
 <translation id="7625568159987162309">সমস্ত সাইট জুড়ে অনুমতি এবং স্টোর করা ডেটা দেখুন</translation>
 <translation id="3735740477244556633">এই অনুসারে সাজান</translation>
+<translation id="6503077044568424649">সর্বাধিক দেখা</translation>
+<translation id="967624055006145463">ডেটা স্টোর করা হয়েছে</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">বিজ্ঞাপন</translation>
 <translation id="5649053991847567735">স্বয়ংক্রিয় ডাউনলোডগুলি</translation>
@@ -2125,7 +2091,6 @@
 <translation id="3038675903128704560">আপনার কম্পিউটারটি অ্যাক্সেস করার জন্য কোনো প্ল্যাগ ইন ব্যবহার করতে কোনো সাইটকে মঞ্জুরি দেবেন না</translation>
 <translation id="857943718398505171">অনুমোদিত (প্রস্তাবিত)</translation>
 <translation id="5000922062037820727">অবরুদ্ধ (প্রস্তাবিত)</translation>
-<translation id="8116925261070264013">মিউট করা আছে</translation>
 <translation id="8708000541097332489">প্রস্থানে সাফ করুন</translation>
 <translation id="8037357227543935929">জিজ্ঞাসা করুন (ডিফল্ট)</translation>
 <translation id="3427092606871434483">মঞ্জুরি দিন (ডিফল্ট)</translation>
@@ -2222,7 +2187,6 @@
 <translation id="7311891583377621132">আঙ্গুলের ছাপের বিভিন্ন অংশ ক্যাপচার করতে সেটি এদিক ওদিক সরান</translation>
 <translation id="7345706641791090287">আপনার পাসওয়ার্ড নিশ্চিত করুন</translation>
 <translation id="381202950560906753">আরেকটি জুড়ুন</translation>
-<translation id="3625538291267447988">Smart Lock সেট-আপ করতে আপনার পাসওয়ার্ড লিখুন</translation>
 <translation id="6658023813581644008">সাইন-ইনের জন্য Smart Lock সেট-আপ করতে আপনার পাসওয়ার্ড লিখুন</translation>
 <translation id="5449551289610225147">অবৈধ পাসওয়ার্ড</translation>
 <translation id="5374359983950678924">ছবি পরিবর্তন করুন</translation>
@@ -2262,8 +2226,8 @@
 <translation id="2709516037105925701">স্বয়ংপূরণ</translation>
 <translation id="1644574205037202324">ইতিহাস</translation>
 <translation id="5117427536932535467">থিম ও ওয়ালপেপার</translation>
+<translation id="7029809446516969842">পাসওয়ার্ড</translation>
 <translation id="3259418918864581163">Brave Software Pay ব্যবহার করে এমন ক্রেডিট কার্ড ও ঠিকানা।</translation>
-<translation id="4439834757335393741">Brave Software Pay ব্যবহার করে এমন পেমেন্টের পদ্ধতি এবং ঠিকানাগুলি।</translation>
 <translation id="3268451620468152448">ওপেন ট্যাব</translation>
 <translation id="5241892180459725878">Brave Software ড্রাইভ সার্চ সাজেশন</translation>
 <translation id="2120297377148151361">অ্যাক্টিভিটি এবং ইন্টার‌্যাকশন</translation>
@@ -2334,6 +2298,8 @@
 <translation id="1114202307280046356">ডায়মন্ড</translation>
 <translation id="89720367119469899">অব্যাহতি</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">এক্সটার্নাল কমান্ড</translation>
+<translation id="585979798156957858">এক্সটার্নাল মেটা</translation>
 <translation id="4991420928586866460">উপরের-সারির কীগুলিকে ফাংশন কী হিসেবে ব্যবহার করুন</translation>
 <translation id="85486688517848470">সবথেকে উপরের-সারির কীগুলির আচরণ পরিবর্তন করতে সার্চ কী ধরে থাকুন</translation>
 <translation id="4400632832271803360">সবথেকে উপরের-সারির কীগুলির আচরণ পরিবর্তন করতে লঞ্চার কী ধরে থাকুন</translation>
@@ -2435,10 +2401,7 @@
 <translation id="2315821125498993513">ফোনের সাথে কানেক্ট করা যায়নি। <ph name="LINK_BEGIN"/>আরও জানুন।<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together চালু আছে</translation>
 <translation id="3088402208262982892">Better Together বন্ধ আছে</translation>
-<translation id="2079079131837725321">আপনার ফোন ব্যবহার করে Bravebook আনলক করুন। <ph name="LINK_BEGIN"/>আরও জানুন।<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">ঝটপট টিথারিং</translation>
-<translation id="3059313675706898490">Android মেসেজ</translation>
-<translation id="7095175330464035635">Bravebook থেকে টেক্সট মেসেজ পাঠান ও পান</translation>
 <translation id="3936335337858561470">এই ডিভাইসটি সম্পর্কে ভুলে যান</translation>
 <translation id="3606712892509067288">Better Together থেকে সরিয়ে ফেলুন</translation>
 <translation id="7878562273885520351">আপনার পাসওয়ার্ড অন্য কেউ পরিবর্তন করার চেষ্টা করেছে</translation>
@@ -2569,7 +2532,9 @@
 <translation id="6112294629795967147">সাইজ পরিবর্তন করতে টাচ করুন</translation>
 <translation id="2453860139492968684">সমাপ্ত করুন</translation>
 <translation id="1853692000353488670">নতুন ছদ্মবেশী ট্যাব</translation>
+<translation id="6336451774241870485">নতুন ব্যক্তিগত ট্যাব</translation>
 <translation id="5530766185686772672">ছদ্মবেশী ট্যাবগুলি বন্ধ করুন</translation>
+<translation id="6610147964972079463">ব্যক্তিগত ট্যাব বন্ধ করুন</translation>
 <translation id="8076492880354921740">ট্যাবগুলি</translation>
 <translation id="1049743911850919806">ছদ্মবেশী</translation>
 </translationbundle>

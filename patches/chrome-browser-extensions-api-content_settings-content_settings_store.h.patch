@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/content_settings/content_settings_store.h b/chrome/browser/extensions/api/content_settings/content_settings_store.h
-index 3a9033a4747026713e1016ec07743af0f6081ff5..f28ee9804d8f229004c2c3ec347755f0ab46390e 100644
+index ea311c4b725153133b79e653339b3a822857fff0..6930c297b296893b97ea09713db3f1238bafebeb 100644
 --- a/chrome/browser/extensions/api/content_settings/content_settings_store.h
 +++ b/chrome/browser/extensions/api/content_settings/content_settings_store.h
 @@ -86,7 +86,7 @@ class ContentSettingsStore

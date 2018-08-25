@@ -27,7 +27,7 @@
 #include "net/cookies/cookie_constants.h"
 #include "net/extras/sqlite/cookie_crypto_delegate.h"
 #include "net/extras/sqlite/sqlite_persistent_cookie_store.h"
-#include "sql/connection.h"
+#include "sql/database.h"
 #include "sql/statement.h"
 #include "url/gurl.h"
 
@@ -118,7 +118,7 @@ void BraveImporter::ImportHistory() {
   if (!base::PathExists(history_path))
     return;
 
-  sql::Connection db;
+  sql::Database db;
   if (!db.Open(history_path))
     return;
 

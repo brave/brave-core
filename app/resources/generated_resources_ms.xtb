@@ -500,9 +500,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8743864605301774756">Dikemas kini 1 jam yang lalu</translation>
 <translation id="5638497698949808140">Dikemas kini <ph name="HOURS"/> jam yang lalu</translation>
 <translation id="1329584516321524826">Dikemas kini sebentar tadi</translation>
-<translation id="8679788109894721265">Halaman ini menggunakan lebih <ph name="MEGABYTES"/>MB</translation>
-<translation id="8369547389711988632">Pemuatan dihentikan</translation>
-<translation id="4280864916190672950">Hentikan pemuatan</translation>
 <translation id="2724841811573117416">Log WebRTC</translation>
 <translation id="7518150891539970662">Log WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Log WebRTC dirakam <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -589,7 +586,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7554791636758816595">Tab Baharu</translation>
 <translation id="3915280005470252504">Cari melalui suara</translation>
 <translation id="3153862085237805241">Simpan Kad</translation>
-<translation id="4961000125720751066">Dapatkan kad anda di satu tempat</translation>
+<translation id="1593926297800505364">Simpan kaedah pembayaran</translation>
 <translation id="2473195200299095979">Terjemahkan halaman ini</translation>
 <translation id="5408750356094797285">Zum: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Halaman ini telah dizum oleh pelanjutan "<ph name="NAME"/>"</translation>
@@ -1049,7 +1046,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="5562781907504170924">Tab ini disambungkan ke Peranti Bluetooth.</translation>
 <translation id="5884474295213649357">Tab ini disambungkan ke peranti USB.</translation>
 <translation id="8466417995783206254">Tab ini memainkan video dalam mod gambar dalam gambar.</translation>
-<translation id="6235700927623181151">Tab ini berkongsi kandungan desktop anda.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Kamera atau mikrofon sedang merakam</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Kandungan tab dikongsi</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Video dimainkan dalam mod gambar dalam gambar</translation>
@@ -1114,35 +1110,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="874689135111202667">{0,plural, =1{Muat naik satu fail ke tapak ini?}other{Muat naik # fail ke tapak ini?}}</translation>
 <translation id="1956390763342388273">Tindakan ini akan memuat naik semua fail daripada "<ph name="FOLDER_PATH"/>". Lakukan tindakan ini hanya jika anda mempercayai tapak tersebut.</translation>
 <translation id="1243314992276662751">Muat naik</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> mahu mengesahkan identiti anda</translation>
-<translation id="3738671331307774213">Pengesahan identiti anda membantu melindungi data peribadi anda</translation>
-<translation id="8435395510592618362">Sahkan identiti anda dengan <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Buat pilihan</translation>
-<translation id="7490950320178383728">Gunakan Kunci Keselamatan anda dengan Bluetooth</translation>
-<translation id="414599683948988413">Gunakan Kunci Keselamatan anda dengan USB</translation>
-<translation id="7851816139220202929">Gunakan Kunci Keselamatan anda dengan NFC</translation>
-<translation id="5392327114396848796">Gunakan Kunci Keselamatan terbina dalam</translation>
-<translation id="5104546332954397226">Gunakan telefon anda sebagai Kunci Keselamatan</translation>
-<translation id="2876441201733326392">Gunakan Kunci Keselamatan USB</translation>
-<translation id="5842053879378944309">Gunakan Kunci Keselamatan USB dengan <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Palamkan Kunci Keselamatan anda dan aktifkannya</translation>
-<translation id="8033958968890501070">Tamat masa</translation>
-<translation id="7102832101143475489">Permintaan telah tamat masa</translation>
-<translation id="3670229581627177274">Hidupkan Bluetooth</translation>
-<translation id="3880709822663530586">Kunci Keselamatan anda hanya berfungsi apabila Bluetooth peranti dihidupkan</translation>
-<translation id="1183378459020939734">Bersedia untuk menggandingkan Kunci Keselamatan anda?</translation>
-<translation id="237058345584060620">Gandingkan kunci anda dengan peranti ini supaya anda boleh menggunakan kunci itu untuk log masuk ke akaun anda</translation>
-<translation id="1875312262568496299">Mula</translation>
-<translation id="3104900172193317662">Benarkan penggunaan Kunci Keselamatan anda</translation>
-<translation id="2492040222276243256">Tekan dan tahan butang pada Kunci Keselamatan anda selama sekurang-kurangnya 5 saat</translation>
-<translation id="6427415464407526111">Pilih Kunci Keselamatan anda</translation>
-<translation id="2633326789677284179">Cari nama yang dicetak pada bahagian belakang kunci anda</translation>
-<translation id="5660204307954428567">Gandingkan dengan <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Cari PIN 6 digit di bahagian belakang kunci anda</translation>
-<translation id="1201402288615127009">Seterusnya</translation>
-<translation id="1792161662640298233">Mengesahkan Kunci Keselamatan anda</translation>
-<translation id="2321482478556590128">Gunakan Kunci Keselamatan anda dengan <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">Untuk menggunakan kebanyakan kunci, tekan sahaja butangnya</translation>
 <translation id="3785308913036335955">Paparkan Pintasan Apl</translation>
 <translation id="711840821796638741">Tunjukkan Penanda Halaman Terurus</translation>
 <translation id="3613134908380545408">Tunjukkan <ph name="FOLDER_NAME"/></translation>
@@ -1510,6 +1477,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6902066522699286937">Suara untuk dipratonton</translation>
 <translation id="304747341537320566">Enjin Pertuturan</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Jalankan alatan, editor dan IDE Linux pada Bravebook anda. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Ketahui lebih lanjut&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Alih keluar Apl Linux untuk Bravebook</translation>
 <translation id="2295473777859797944">Gedung Brave Software Play</translation>
@@ -1549,17 +1517,14 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8647834505253004544">Bukan alamat web yang sah</translation>
 <translation id="2149850907588596975">Kata laluan dan borang</translation>
 <translation id="8639963783467694461">Tetapan auto isi</translation>
-<translation id="3431019676184503003">Penerima &amp;amp; kaedah pembayaran</translation>
 <translation id="2512222046227390255">Auto isi borang</translation>
-<translation id="2283340219607151381">Simpan dan lengkapkan alamat</translation>
-<translation id="1662550410081243962">Simpan dan lengkapkan kaedah pembayaran</translation>
-<translation id="2903493209154104877">Alamat</translation>
 <translation id="7764225426217299476">Tambahkan alamat</translation>
 <translation id="5595485650161345191">Edit alamat</translation>
 <translation id="6207937957461833379">Negara/Rantau</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="5659593005791499971">E-mel</translation>
-<translation id="5565871407246142825">Kad kredit</translation>
+<translation id="5762172915276660232">Tetapan kad kredit</translation>
+<translation id="4499718683476608392">Dayakan Autolengkap kad kredit untuk mengisi borang dengan satu klikan</translation>
 <translation id="2448312741937722512">Jenis</translation>
 <translation id="9064275926664971810">Dayakan Autolengkap untuk mengisi borang dengan satu klikan</translation>
 <translation id="5029568752722684782">Hapuskan salinan</translation>
@@ -1645,7 +1610,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4699172675775169585">Imej dan fail dicache</translation>
 <translation id="1274997165432133392">Kuki dan data tapak yang lain</translation>
 <translation id="3838543471119263078">Kuki, data tapak lain dan data pemalam</translation>
-<translation id="7029809446516969842">Kata laluan</translation>
 <translation id="6865313869410766144">Autolengkap data borang</translation>
 <translation id="177336675152937177">Data apl yang dihoskan</translation>
 <translation id="1718835860248848330">Jam terakhir</translation>
@@ -2040,8 +2004,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7136694880210472378">Jadikan lalai</translation>
 <translation id="102272308210570439">Biarkan Pembantu menggunakan apa yang ada pada skrin anda</translation>
 <translation id="8624205858755890468">Mendayakan Pembantu untuk menunjukkan maklumat, apl dan tindakan yang berkaitan kepada anda.</translation>
-<translation id="178309940312315155">Pengesanan "OK Brave Software"</translation>
-<translation id="3476912025629168202">Akses Assistant anda pada bila-bila masa anda menyebut "OK Brave Software" semasa skrin anda dihidupkan.</translation>
+<translation id="8669919703154928649">Benarkan Assistant menunjukkan pemberitahuan kepada anda</translation>
+<translation id="3430342160185525240">Mendayakan Assistant untuk menunjukkan pemberitahuan kepada anda.</translation>
 <translation id="3908743412684152579">Tetapan Brave Software Assistant</translation>
 <translation id="4933484234309072027">terbenam pada <ph name="URL"/></translation>
 <translation id="8427292751741042100">dibenam pada mana-mana hos</translation>
@@ -2049,6 +2013,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6295158916970320988">Semua tapak</translation>
 <translation id="7625568159987162309">Lihat kebenaran dan data yang disimpan pada semua tapak</translation>
 <translation id="3735740477244556633">Isih mengikut</translation>
+<translation id="6503077044568424649">Paling kerap dilawati</translation>
+<translation id="967624055006145463">Data disimpan</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Iklan</translation>
 <translation id="5649053991847567735">Muat turun automatik</translation>
@@ -2124,7 +2090,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3038675903128704560">Jangan benarkan mana-mana tapak menggunakan pemalam untuk mengakses komputer anda</translation>
 <translation id="857943718398505171">Dibenarkan (disyorkan)</translation>
 <translation id="5000922062037820727">Disekat (disyorkan)</translation>
-<translation id="8116925261070264013">Diredam</translation>
 <translation id="8708000541097332489">Kosongkan apabila keluar</translation>
 <translation id="8037357227543935929">Tanya (lalai)</translation>
 <translation id="3427092606871434483">Benarkan (lalai)</translation>
@@ -2221,7 +2186,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7311891583377621132">Bergerak sedikit untuk menangkap bahagian lain cap jari anda</translation>
 <translation id="7345706641791090287">Sahkan kata laluan anda</translation>
 <translation id="381202950560906753">Tambahkan yang lain</translation>
-<translation id="3625538291267447988">Untuk menyediakan Smart Lock, masukkan kata laluan anda</translation>
 <translation id="6658023813581644008">Untuk menyediakan Smart Lock untuk log masuk, masukkan kata laluan anda</translation>
 <translation id="5449551289610225147">Kata laluan tidak sah</translation>
 <translation id="5374359983950678924">Tukar gambar</translation>
@@ -2261,8 +2225,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2709516037105925701">Autoisi</translation>
 <translation id="1644574205037202324">Sejarah</translation>
 <translation id="5117427536932535467">Tema &amp;amp; Kertas Dinding</translation>
+<translation id="7029809446516969842">Kata laluan</translation>
 <translation id="3259418918864581163">Kad kredit dan alamat yang menggunakan Brave Software Pay.</translation>
-<translation id="4439834757335393741">Kaedah pembayaran dan alamat yang menggunakan Brave Software Pay.</translation>
 <translation id="3268451620468152448">Tab Terbuka</translation>
 <translation id="5241892180459725878">Cadangan carian Brave Software Drive</translation>
 <translation id="2120297377148151361">Aktiviti dan interaksi</translation>
@@ -2333,6 +2297,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="1114202307280046356">Berlian</translation>
 <translation id="89720367119469899">Lepas</translation>
 <translation id="5583640892426849032">Undur ruang</translation>
+<translation id="1938351510777341717">Perintah Luaran</translation>
+<translation id="585979798156957858">Meta Luaran</translation>
 <translation id="4991420928586866460">Kendalikan kekunci baris atas sebagai kekunci fungsi</translation>
 <translation id="85486688517848470">Tahan kekunci Cari untuk menukar gelagat kekunci di baris atas</translation>
 <translation id="4400632832271803360">Tekan dan tahan kekunci Launcher untuk menukar gelagat kekunci di baris atas</translation>
@@ -2434,10 +2400,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2315821125498993513">Tidak dapat menyambung ke telefon. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Lebih Baik Bersama dihidupkan</translation>
 <translation id="3088402208262982892">Lebih Baik Bersama dimatikan</translation>
-<translation id="2079079131837725321">Buka kunci Bravebook dengan telefon anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Penambatan Segera</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Hantar dan terima mesej teks daripada Bravebook anda</translation>
 <translation id="3936335337858561470">Lupakan peranti ini</translation>
 <translation id="3606712892509067288">Alih keluar daripada Lebih Baik Bersama</translation>
 <translation id="7878562273885520351">Kata laluan anda mungkin terjejas</translation>
@@ -2568,7 +2531,9 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6112294629795967147">Sentuh untuk mengubah saiz</translation>
 <translation id="2453860139492968684">Selesai</translation>
 <translation id="1853692000353488670">Tab inkognito baharu</translation>
+<translation id="6336451774241870485">Tab peribadi baharu</translation>
 <translation id="5530766185686772672">Tutup tab inkognito</translation>
+<translation id="6610147964972079463">Tutup tab peribadi</translation>
 <translation id="8076492880354921740">Tab</translation>
 <translation id="1049743911850919806">Inkognito</translation>
 </translationbundle>

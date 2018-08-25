@@ -36,7 +36,6 @@
 <translation id="5785919770853225148">このパスワードは Brave Software アカウントに保存されるため、覚えておく必要はありません。</translation>
 <translation id="3343095737966473035">Brave はデフォルトのブラウザとして設定されていません</translation>
 <translation id="6715663530666325392">同期を設定すると、パーソナライズされたブラウザ機能をウェブ上に保存して、どのパソコンの Brave からでも使用できるようになります。</translation>
-<translation id="2708027082363760195">印刷プレビューの表示に必要な PDF ビューアが Brave にインストールされていません。</translation>
 <translation id="8880183781256147665">Brave に追加...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> は危険なファイルの可能性があるため、Brave でブロックしました。</translation>
 <translation id="9067428552314418522">このファイルは危険なファイルであるため、Brave でブロックしました。</translation>
@@ -84,6 +83,7 @@
 <translation id="3215652305414474626">この拡張機能では、Brave の起動時、またはホーム ボタンのクリック時に表示されるページも制御されます。</translation>
 <translation id="2433912322225810055">この拡張機能では、Brave の起動時、またはアドレスバーからの検索時に表示されるページも制御されます。</translation>
 <translation id="2871190378186459992">Brave の優れたアプリ、ゲーム、拡張機能、テーマをぜひご利用ください。</translation>
+<translation id="2522086024276534909">Brave OS を再起動してください</translation>
 <translation id="8183252473547465084">アップデートを適用するには Brave OS を再起動する必要があります。</translation>
 <translation id="5895138241574237353">再起動</translation>
 <translation id="5875673934455379806">Brave を再インストール</translation>

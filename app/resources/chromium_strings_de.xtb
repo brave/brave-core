@@ -36,7 +36,6 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="5785919770853225148">Brave speichert dieses Passwort in Ihrem Brave Software-Konto. Sie müssen es sich also nicht merken.</translation>
 <translation id="3343095737966473035">Brave ist nicht als Ihr Standardbrowser festgelegt</translation>
 <translation id="6715663530666325392">Richten Sie die Synchronisierung ein, um Ihre personalisierten Browserfunktionen online zu speichern und über Brave auf jedem Computer darauf zuzugreifen.</translation>
-<translation id="2708027082363760195">Brave verfügt nicht über den PDF-Viewer, der für die Druckvorschau erforderlich ist.</translation>
 <translation id="8880183781256147665">Wird zu Brave hinzugefügt...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> ist möglicherweise schädlich und wurde daher von Brave blockiert.</translation>
 <translation id="9067428552314418522">Diese Datei ist schädlich und wurde von Brave blockiert.</translation>
@@ -84,6 +83,7 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="3215652305414474626">Die Erweiterung legt auch fest, welche Seite beim Start von Brave angezeigt wird oder wenn Sie auf die Schaltfläche "Startseite" klicken.</translation>
 <translation id="2433912322225810055">Die Erweiterung legt auch fest, welche Seite beim Start von Brave oder bei der Suche über die Omnibox angezeigt wird.</translation>
 <translation id="2871190378186459992">Entdecken Sie tolle Apps, Spiele, Erweiterungen und Designs für Brave.</translation>
+<translation id="2522086024276534909">Brave OS neu starten</translation>
 <translation id="8183252473547465084">Brave OS muss neu gestartet werden, um das Update zu übernehmen.</translation>
 <translation id="5895138241574237353">Neu starten</translation>
 <translation id="5875673934455379806">Brave neu installieren</translation>

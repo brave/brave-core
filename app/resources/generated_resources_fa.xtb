@@ -498,9 +498,6 @@
 <translation id="8743864605301774756">۱ ساعت قبل به‌روز‌رسانی شد</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> ساعت قبل به‌روزرسانی شد</translation>
 <translation id="1329584516321524826">لحظاتی پیش به‌روزرسانی شد</translation>
-<translation id="8679788109894721265">این صفحه بیش از <ph name="MEGABYTES"/> مگابایت مصرف می‌کند</translation>
-<translation id="8369547389711988632">بارگیری متوقف شد</translation>
-<translation id="4280864916190672950">توقف بارگیری</translation>
 <translation id="2724841811573117416">‏گزارش‌های WebRTC</translation>
 <translation id="7518150891539970662">‏گزارش‌های WebRTC ‏(<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">‏زمان ثبت گزارش WebRTC ‏<ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -587,7 +584,7 @@
 <translation id="7554791636758816595">برگهٔ جدید</translation>
 <translation id="3915280005470252504">جستجو با صدا</translation>
 <translation id="3153862085237805241">ذخیره کردن کارت</translation>
-<translation id="4961000125720751066">همه کارت‌هایتان را در یک مکان داشته باشید</translation>
+<translation id="1593926297800505364">ذخیره روش پرداخت</translation>
 <translation id="2473195200299095979">ترجمه این صفحه</translation>
 <translation id="5408750356094797285">بزرگ‌نمایی: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">برنامه افزودنی «<ph name="NAME"/>» این صفحه را بزرگ‌نمایی کرده است</translation>
@@ -1047,7 +1044,6 @@
 <translation id="5562781907504170924">این برگه به دستگاه بلوتوث متصل است.</translation>
 <translation id="5884474295213649357">‏این برگه به دستگاه USB متصل است.</translation>
 <translation id="8466417995783206254">این برگه درحال پخش ویدیو در حالت تصویردرتصویر است.</translation>
-<translation id="6235700927623181151">این برگه درحال هم‌رسانی محتوای میز کارتان است.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - دوربین یا میکروفون درحال ضبط کردن است</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - محتوای برگه به اشتراک گذاشته شده است</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - پخش ویدیو در حالت تصویردرتصویر</translation>
@@ -1112,35 +1108,6 @@
 <translation id="874689135111202667">{0,plural, =1{یک فایل در این سایت بارگذاری شود؟}one{# فایل در این سایت بارگذاری شود؟}other{# فایل در این سایت بارگذاری شود؟}}</translation>
 <translation id="1956390763342388273">با این کار همه فایل‌ها از «<ph name="FOLDER_PATH"/>» بارگذاری خواهد شد. تنها درصورتی که به این سایت اعتماد دارید، این کار را انجام دهید.</translation>
 <translation id="1243314992276662751">بارگذاری</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> می‌خواهد هویتتان را به تأیید برساند</translation>
-<translation id="3738671331307774213">تأیید هویت شما به محافظت از داده‌هایتان کمک می‌کند</translation>
-<translation id="8435395510592618362">هویتتان را با <ph name="APP_NAME"/> تأیید کنید</translation>
-<translation id="3854599674806204102">گزینه‌ای انتخاب کنید</translation>
-<translation id="7490950320178383728">استفاده از کلید امنیتی با بلوتوث</translation>
-<translation id="414599683948988413">‏استفاده از کلید امنیتی با USB</translation>
-<translation id="7851816139220202929">‏استفاده از کلید امنیتی با NFC</translation>
-<translation id="5392327114396848796">استفاده از کلید امنیتی داخلی</translation>
-<translation id="5104546332954397226">استفاده از تلفن به‌عنوان کلید امنیتی</translation>
-<translation id="2876441201733326392">‏استفاده از کلید امنیتی USB</translation>
-<translation id="5842053879378944309">‏استفاده از کلید امنیتی USB با <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">«کلید امنیتی» خود را وصل کنید و آن را فعال کنید</translation>
-<translation id="8033958968890501070">پایان مهلت زمانی</translation>
-<translation id="7102832101143475489">مهلت زمانی درخواست تمام شد</translation>
-<translation id="3670229581627177274">روشن کردن بلوتوث</translation>
-<translation id="3880709822663530586">«کلید امنیتی» فقط وقتی کار می‌کند که بلوتوث دستگاه روشن باشد</translation>
-<translation id="1183378459020939734">آماده‌اید «کلید امنیتی»تان را مرتبط کنید؟</translation>
-<translation id="237058345584060620">کلیدتان را با این دستگاه مرتبط کنید تا بتوانید از آن برای ورود به سیستم حسابتان استفاده کنید</translation>
-<translation id="1875312262568496299">شروع</translation>
-<translation id="3104900172193317662">اجازه استفاده از «کلید امنیتی» شما</translation>
-<translation id="2492040222276243256">دکمه روی «کلید امنیتی» را حداقل ۵ ثانیه فشار دهید و نگه‌دارید</translation>
-<translation id="6427415464407526111">انتخاب کلید امنیتی</translation>
-<translation id="2633326789677284179">نام چاپ‌شده در پشت کلیدتان را پیدا کنید</translation>
-<translation id="5660204307954428567">مرتبط‌سازی با <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">کد پین ۶ رقمی را در پشت کلیدتان پیدا کنید</translation>
-<translation id="1201402288615127009">بعدی</translation>
-<translation id="1792161662640298233">درحال به‌تأیید رساندن کلید امنیتی</translation>
-<translation id="2321482478556590128">استفاده از کلید امنیتی با <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">برای استفاده از اکثر کلیدها، تنها کافی است دکمه را فشار دهید</translation>
 <translation id="3785308913036335955">نمایش میان‌بر «برنامه‌ها»</translation>
 <translation id="711840821796638741">نمایش نشانک‌های مدیریت شده</translation>
 <translation id="3613134908380545408">نشان دادن <ph name="FOLDER_NAME"/></translation>
@@ -1508,6 +1475,7 @@
 <translation id="6902066522699286937">انتخاب صدا برای پیش‌نمایش</translation>
 <translation id="304747341537320566">موتورهای گفتار</translation>
 <translation id="1067291318998134776">‏Linux (بتا)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">‏اجرای ابزارها، ویرایشگرها و محیط‌های یکپارچه توسعه نرم‌افزار (IDEs) ‏Linux در Bravebook.‏ &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;بیشتر بدانید&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">‏حذف برنامه‌های Linux برای Bravebook</translation>
 <translation id="2295473777859797944">‏فروشگاه Brave Software Play</translation>
@@ -1547,17 +1515,14 @@
 <translation id="8647834505253004544">نشانی وب معتبر نیست</translation>
 <translation id="2149850907588596975">گذرواژه‌ها و فرم‌ها</translation>
 <translation id="8639963783467694461">تنظیمات تکمیل خودکار</translation>
-<translation id="3431019676184503003">نشانی‌ها و روش‌های پرداخت</translation>
 <translation id="2512222046227390255">تکمیل خودکار فرم‌ها</translation>
-<translation id="2283340219607151381">ذخیره و تکمیل نشانی</translation>
-<translation id="1662550410081243962">ذخیره و تکمیل روش‌های پرداخت</translation>
-<translation id="2903493209154104877">آدرس‌ها</translation>
 <translation id="7764225426217299476">افزودن آدرس</translation>
 <translation id="5595485650161345191">ویرایش آدرس</translation>
 <translation id="6207937957461833379">کشور/منطقه</translation>
 <translation id="4378154925671717803">تلفن</translation>
 <translation id="5659593005791499971">رایانامه</translation>
-<translation id="5565871407246142825">کارت‌های اعتباری</translation>
+<translation id="5762172915276660232">تنظیمات کارت اعتباری</translation>
+<translation id="4499718683476608392">به تکمیل خودکار کارت اعتباری امکان می‌دهد فرم‌ها را با یک کلیک پر کند</translation>
 <translation id="2448312741937722512">نوع</translation>
 <translation id="9064275926664971810">برای پر کردن فرم‌ها با یک کلیک، «تکمیل خودکار» را فعال کنید</translation>
 <translation id="5029568752722684782">پاک کردن نسخه کپی</translation>
@@ -1643,7 +1608,6 @@
 <translation id="4699172675775169585">تصاویر و فایل‌های قرار گرفته در حافظه پنهان</translation>
 <translation id="1274997165432133392">کوکی‌ها و دیگر داده‌های سایت</translation>
 <translation id="3838543471119263078">کوکی‌ها و داده‌های افزایه و سایت‌های دیگر</translation>
-<translation id="7029809446516969842">گذرواژه‌ها</translation>
 <translation id="6865313869410766144">تکمیل خودکار داده‌های فرم</translation>
 <translation id="177336675152937177">داده های برنامه میزبانی شده</translation>
 <translation id="1718835860248848330">ساعت قبل</translation>
@@ -2038,8 +2002,8 @@
 <translation id="7136694880210472378">پیش‌فرض قرار دادن</translation>
 <translation id="102272308210570439">اجازه دادن به «دستیار» برای استفاده از محتوای روی صفحه‌‌نمایش</translation>
 <translation id="8624205858755890468">«دستیار» را برای نمایش اطلاعات، برنامه‌ها و کنش‌های مرتبط فعال می‌کند.</translation>
-<translation id="178309940312315155">‏تشخیص «OK Brave Software»</translation>
-<translation id="3476912025629168202">‏دسترسی به «دستیار»،‌ هرزمان که هنگام روشن بودن صفحه می‌گویید «OK Brave Software».</translation>
+<translation id="8669919703154928649">به «دستیار» اجازه دهید اعلان نشان دهد</translation>
+<translation id="3430342160185525240">به «دستیار» امکان می‌دهد اعلان نشان دهد.</translation>
 <translation id="3908743412684152579">‏تنظیمات «دستیار Brave Software»</translation>
 <translation id="4933484234309072027">جاسازی شده در <ph name="URL"/></translation>
 <translation id="8427292751741042100">جاسازی‌شده در هر میزبانی</translation>
@@ -2047,6 +2011,8 @@
 <translation id="6295158916970320988">همه سایت‌ها</translation>
 <translation id="7625568159987162309">مشاهده مجوزها و داده‌های ذخیره‌شده در همه سایت‌ها</translation>
 <translation id="3735740477244556633">مرتب کردن براساس</translation>
+<translation id="6503077044568424649">بیشترین موارد بازدید شده</translation>
+<translation id="967624055006145463">داده ذخیره شد</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">آگهی‌ها</translation>
 <translation id="5649053991847567735">بارگیری‌های خودکار</translation>
@@ -2122,7 +2088,6 @@
 <translation id="3038675903128704560">به هیچ سایتی امکان داده نشود برای دسترسی به رایانه‌تان از افزایه استفاده کند</translation>
 <translation id="857943718398505171">مجاز (توصیه می‌شود)</translation>
 <translation id="5000922062037820727">مسدود (توصیه می‌شود)</translation>
-<translation id="8116925261070264013">صامت‌شده</translation>
 <translation id="8708000541097332489">پاک کردن در هنگام خروج</translation>
 <translation id="8037357227543935929">درخواست (پیش‌فرض)</translation>
 <translation id="3427092606871434483">اجازه (پیش‌فرض)</translation>
@@ -2219,7 +2184,6 @@
 <translation id="7311891583377621132">انگشتتان را کمی حرکت دهید تا بخش دیگری از اثرانگشت ثبت شود</translation>
 <translation id="7345706641791090287">گذرواژه‌تان را تأیید کنید</translation>
 <translation id="381202950560906753">افزودن دستگاه دیگر</translation>
-<translation id="3625538291267447988">‏برای راه‌اندازی Smart Lock، گذرواژه‌تان را وارد کنید</translation>
 <translation id="6658023813581644008">‏برای راه‌اندازی Smart Lock جهت ورود به سیستم، گذرواژه‌تان را وارد کنید</translation>
 <translation id="5449551289610225147">گذرواژه نامعتبر است</translation>
 <translation id="5374359983950678924">تغییر عکس</translation>
@@ -2259,8 +2223,8 @@
 <translation id="2709516037105925701">تکمیل خودکار</translation>
 <translation id="1644574205037202324">سابقه</translation>
 <translation id="5117427536932535467">طرح زمینه و کاغذ دیواری</translation>
+<translation id="7029809446516969842">گذرواژه‌ها</translation>
 <translation id="3259418918864581163">‏کارت‌های اعتباری و نشانی‌های مورداستفاده در Brave Software Pay.</translation>
-<translation id="4439834757335393741">‏روش‌های پرداخت و نشانی‌های مورداستفاده در Brave Software Pay.</translation>
 <translation id="3268451620468152448">برگه‌های باز</translation>
 <translation id="5241892180459725878">‏پیشنهادهای جستجوی Brave Software Drive</translation>
 <translation id="2120297377148151361">فعالیت و تعاملات</translation>
@@ -2331,6 +2295,8 @@
 <translation id="1114202307280046356">الماس</translation>
 <translation id="89720367119469899">فرار</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">فرمان خارجی</translation>
+<translation id="585979798156957858">فراداده خارجی</translation>
 <translation id="4991420928586866460">در نظر گرفتن کلیدهای ردیف بالا به عنوان کلیدهای عملکرد</translation>
 <translation id="85486688517848470">برای جابه‌جایی بین رفتار کلیدهای ردیف بالا، کلید جستجو را نگه‌دارید</translation>
 <translation id="4400632832271803360">برای تغییر عملکرد کلیدهای ردیف بالا، کلید «راه‌انداز» را نگه‌دارید</translation>
@@ -2432,10 +2398,7 @@
 <translation id="2315821125498993513">ارتباط با تلفن برقرار نشد. <ph name="LINK_BEGIN"/>بیشتر بدانید.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">‏Better Together روشن است</translation>
 <translation id="3088402208262982892">‏Better Together خاموش است</translation>
-<translation id="2079079131837725321">‏قفل Bravebook را با تلفنتان باز کنید. <ph name="LINK_BEGIN"/>بیشتر بدانید.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">اتصال فوری به اینترنت با تلفن همراه</translation>
-<translation id="3059313675706898490">‏پیام‌های Android</translation>
-<translation id="7095175330464035635">‏ارسال و دریافت پیام نوشتاری در Bravebook</translation>
 <translation id="3936335337858561470">فراموش کردن این دستگاه</translation>
 <translation id="3606712892509067288">‏حذف از Better Together</translation>
 <translation id="7878562273885520351">ممکن است گذرواژه‌تان درمعرض خطر باشد</translation>
@@ -2566,7 +2529,9 @@
 <translation id="6112294629795967147">لمس کردن برای تغییر اندازه</translation>
 <translation id="2453860139492968684">پایان</translation>
 <translation id="1853692000353488670">برگه جدید ناشناس</translation>
+<translation id="6336451774241870485">برگه خصوصی جدید</translation>
 <translation id="5530766185686772672">بستن برگه‌های ناشناس</translation>
+<translation id="6610147964972079463">بستن برگه‌های خصوصی</translation>
 <translation id="8076492880354921740">برگه‌ها</translation>
 <translation id="1049743911850919806">ناشناس</translation>
 </translationbundle>

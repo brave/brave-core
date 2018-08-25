@@ -500,9 +500,6 @@
 <translation id="8743864605301774756">Ажурирано пре 1 сата</translation>
 <translation id="5638497698949808140">Ажурирано пре <ph name="HOURS"/> с</translation>
 <translation id="1329584516321524826">Ажурирано је малопре</translation>
-<translation id="8679788109894721265">Ова страница користи више од <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Учитавање је заустављено</translation>
-<translation id="4280864916190672950">Заустављање учитавања</translation>
 <translation id="2724841811573117416">WebRTC евиденције</translation>
 <translation id="7518150891539970662">WebRTC евиденције (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC евиденција је снимљена <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -589,7 +586,7 @@
 <translation id="7554791636758816595">Нова картица</translation>
 <translation id="3915280005470252504">Претражујте гласом</translation>
 <translation id="3153862085237805241">Сачувај картицу</translation>
-<translation id="4961000125720751066">Све ваше картице на једном месту</translation>
+<translation id="1593926297800505364">Сачувајте начин плаћања</translation>
 <translation id="2473195200299095979">Преведите ову страницу</translation>
 <translation id="5408750356094797285">Зумирајте: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Ову страницу је зумирао додатак „<ph name="NAME"/>“</translation>
@@ -1049,7 +1046,6 @@
 <translation id="5562781907504170924">Ова картица је повезана са Bluetooth уређајем.</translation>
 <translation id="5884474295213649357">Ова картица је повезана са USB уређајем.</translation>
 <translation id="8466417995783206254">Ова картица репродукује видео у режиму слике у слици.</translation>
-<translation id="6235700927623181151">Ова картица дели садржај екрана.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – Камера или микрофон снимају</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – Дели се садржај картице</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – видео се репродукује у режиму слике у слици</translation>
@@ -1114,35 +1110,6 @@
 <translation id="874689135111202667">{0,plural, =1{Желите ли да отпремите једну датотеку на овај сајт?}one{Желите ли да отпремите # датотеку на овај сајт?}few{Желите ли да отпремите # датотеке на овај сајт?}other{Желите ли да отпремите # датотека на овај сајт?}}</translation>
 <translation id="1956390763342388273">Овим ћете отпремити све датотеке из „<ph name="FOLDER_PATH"/>“. Радите ово само ако је сајт поуздан.</translation>
 <translation id="1243314992276662751">Отпреми</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> жели да потврди ваш идентитет</translation>
-<translation id="3738671331307774213">Потврда идентитета помаже у заштити приватних података</translation>
-<translation id="8435395510592618362">Потврдите идентитет помоћу <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Изаберите опцију</translation>
-<translation id="7490950320178383728">Користи безбедносни кључ са Bluetooth-ом</translation>
-<translation id="414599683948988413">Користите безбедносни кључ преко USB-а</translation>
-<translation id="7851816139220202929">Користи безбедносни кључ са NFC-ом</translation>
-<translation id="5392327114396848796">Користите уграђени безбедносни кључ</translation>
-<translation id="5104546332954397226">Користите телефон као безбедносни кључ</translation>
-<translation id="2876441201733326392">Користи USB безбедносни кључ</translation>
-<translation id="5842053879378944309">Користите USB безбедносни кључ са апликацијом <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Прикључите безбедносни кључ и активирајте га</translation>
-<translation id="8033958968890501070">Време је истекло</translation>
-<translation id="7102832101143475489">Захтев је истекао</translation>
-<translation id="3670229581627177274">Укључи Bluetooth</translation>
-<translation id="3880709822663530586">Безбедносни кључ функционише када је Bluetooth уређаја укључен</translation>
-<translation id="1183378459020939734">Да ли сте спремни да упарите безбедносни кључ?</translation>
-<translation id="237058345584060620">Упарите кључ са овим уређајем да бисте га користили за пријављивање на налог</translation>
-<translation id="1875312262568496299">Започни</translation>
-<translation id="3104900172193317662">Дозволите употребу безбедносног кључа</translation>
-<translation id="2492040222276243256">Притисните дугме на безбедносном кључу и задржите га најмање 5 секунди</translation>
-<translation id="6427415464407526111">Изаберите безбедносни кључ</translation>
-<translation id="2633326789677284179">Пронађите одштампани назив на позадини кључа</translation>
-<translation id="5660204307954428567">Упарите са уређајем <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Пронађите 6-цифрени PIN на полеђини кључа</translation>
-<translation id="1201402288615127009">Даље</translation>
-<translation id="1792161662640298233">Безбедносни кључ се верификује</translation>
-<translation id="2321482478556590128">Користите безбедносни кључ са апликацијом <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">Да бисте користили већину кључева, само притисните дугме</translation>
 <translation id="3785308913036335955">Прикажи пречицу за апликације</translation>
 <translation id="711840821796638741">Прикажи управљане обележиваче</translation>
 <translation id="3613134908380545408">Прикажи <ph name="FOLDER_NAME"/></translation>
@@ -1510,6 +1477,7 @@
 <translation id="6902066522699286937">Глас за преглед</translation>
 <translation id="304747341537320566">Механизми говора</translation>
 <translation id="1067291318998134776">Linux (бета)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Покрените Linux алатке, уређиваче и IDE-ове на Bravebook-у. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Сазнајте више&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Уклоните Linux апликације за Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play продавница</translation>
@@ -1549,17 +1517,14 @@
 <translation id="8647834505253004544">Веб-адреса није важећа</translation>
 <translation id="2149850907588596975">Лозинке и обрасци</translation>
 <translation id="8639963783467694461">Подешавања Аутоматског попуњавања</translation>
-<translation id="3431019676184503003">Адресе и начини плаћања</translation>
 <translation id="2512222046227390255">Аутоматски попуњавајте обрасце</translation>
-<translation id="2283340219607151381">Чувај и уноси адресе</translation>
-<translation id="1662550410081243962">Чувај и уноси начине плаћања</translation>
-<translation id="2903493209154104877">Адресе</translation>
 <translation id="7764225426217299476">Додајте адресу</translation>
 <translation id="5595485650161345191">Измена адресе</translation>
 <translation id="6207937957461833379">Земља/регија</translation>
 <translation id="4378154925671717803">Телефон</translation>
 <translation id="5659593005791499971">Имејл</translation>
-<translation id="5565871407246142825">Кредитне картице</translation>
+<translation id="5762172915276660232">Подешавања кредитних картица</translation>
+<translation id="4499718683476608392">Омогућава аутоматско попуњавање образаца подацима о кредитним картицама једним кликом</translation>
 <translation id="2448312741937722512">Тип</translation>
 <translation id="9064275926664971810">Омогућавање аутоматског попуњавања веб-образаца једним кликом</translation>
 <translation id="5029568752722684782">Обриши копију</translation>
@@ -1645,7 +1610,6 @@
 <translation id="4699172675775169585">Кеширане слике и датотеке</translation>
 <translation id="1274997165432133392">Колачићи и други подаци о сајтовима</translation>
 <translation id="3838543471119263078">Колачићи и други подаци о сајтовима и додатним компонентама</translation>
-<translation id="7029809446516969842">Лозинке</translation>
 <translation id="6865313869410766144">Подаци Аутоматског попуњавања за обрасце</translation>
 <translation id="177336675152937177">Подаци хостованих апликација</translation>
 <translation id="1718835860248848330">Последњих сат времена</translation>
@@ -2040,8 +2004,8 @@
 <translation id="7136694880210472378">Постави као подразумевано</translation>
 <translation id="102272308210570439">Дозволите да Помоћник користи оно што је на екрану</translation>
 <translation id="8624205858755890468">Омогућава да Помоћник приказује повезане податке, апликације и радње.</translation>
-<translation id="178309940312315155">Откривање фразе „Oк Brave Software“</translation>
-<translation id="3476912025629168202">Приступајте Помоћнику сваки пут када изговорите „Ок Brave Software“ док је екран активан.</translation>
+<translation id="8669919703154928649">Дозволите Помоћнику да вам приказује обавештења</translation>
+<translation id="3430342160185525240">Омогућава да Помоћник приказује обавештења.</translation>
 <translation id="3908743412684152579">Подешавања Brave Software помоћника</translation>
 <translation id="4933484234309072027">уграђено у сајт <ph name="URL"/></translation>
 <translation id="8427292751741042100">уграђено на било ком хосту</translation>
@@ -2049,6 +2013,8 @@
 <translation id="6295158916970320988">Сви сајтови</translation>
 <translation id="7625568159987162309">Прегледајте дозволе и податке који се чувају на свим сајтовима</translation>
 <translation id="3735740477244556633">Сортирај према</translation>
+<translation id="6503077044568424649">Најпосећенији</translation>
+<translation id="967624055006145463">Сачувани подаци</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Огласи</translation>
 <translation id="5649053991847567735">Аутоматска преузимања</translation>
@@ -2124,7 +2090,6 @@
 <translation id="3038675903128704560">Не дозвољавај ниједном сајту да приступа рачунару помоћу додатне компоненте</translation>
 <translation id="857943718398505171">Дозвољено (препоручено)</translation>
 <translation id="5000922062037820727">Блокирано (препоручено)</translation>
-<translation id="8116925261070264013">Звук је искључен</translation>
 <translation id="8708000541097332489">Обриши при затварању</translation>
 <translation id="8037357227543935929">Питај (подразумевано)</translation>
 <translation id="3427092606871434483">Дозволи (подразумевано)</translation>
@@ -2221,7 +2186,6 @@
 <translation id="7311891583377621132">Мало померите да бисте снимили други део отиска прста</translation>
 <translation id="7345706641791090287">Потврдите лозинку</translation>
 <translation id="381202950560906753">Додај други</translation>
-<translation id="3625538291267447988">Да бисте подесили Smart Lock, унесите лозинку</translation>
 <translation id="6658023813581644008">Да бисте подесили Smart Lock за пријављивање, унесите лозинку</translation>
 <translation id="5449551289610225147">Неважећа лозинка</translation>
 <translation id="5374359983950678924">Промените слику</translation>
@@ -2261,8 +2225,8 @@
 <translation id="2709516037105925701">Аутоматско попуњавање</translation>
 <translation id="1644574205037202324">Историја</translation>
 <translation id="5117427536932535467">Теме и позадине</translation>
+<translation id="7029809446516969842">Лозинке</translation>
 <translation id="3259418918864581163">Кредитне картице и адресе из Brave Software Pay-а.</translation>
-<translation id="4439834757335393741">Начини плаћања и адресе из Brave Software Pay-а.</translation>
 <translation id="3268451620468152448">Отворене картице</translation>
 <translation id="5241892180459725878">Предлози за претрагу Brave Software диска</translation>
 <translation id="2120297377148151361">Активности и интеракције</translation>
@@ -2333,6 +2297,8 @@
 <translation id="1114202307280046356">Дијамант</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">Спољна команда</translation>
+<translation id="585979798156957858">Спољни мета тастер</translation>
 <translation id="4991420928586866460">Третирај тастере из горњег реда као функцијске тастере</translation>
 <translation id="85486688517848470">Задржите тастер за претрагу да бисте променили понашање тастера у горњем реду</translation>
 <translation id="4400632832271803360">Задржите тастер за Покретач да бисте променили понашање тастера у горњем реду</translation>
@@ -2434,10 +2400,7 @@
 <translation id="2315821125498993513">Повезивање са телефоном није успело. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together: укључено</translation>
 <translation id="3088402208262982892">Better Together: искључено</translation>
-<translation id="2079079131837725321">Откључајте Bravebook помоћу телефона. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Тренутно привезивање</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Шаљите и примајте SMS-ове помоћу Bravebook-а</translation>
 <translation id="3936335337858561470">Заборави овај уређај</translation>
 <translation id="3606712892509067288">Уклони из Better Together</translation>
 <translation id="7878562273885520351">Лозинка је можда компромитована</translation>
@@ -2568,7 +2531,9 @@
 <translation id="6112294629795967147">Додирните да бисте променили величину</translation>
 <translation id="2453860139492968684">Заврши</translation>
 <translation id="1853692000353488670">Нова картица без архивирања</translation>
+<translation id="6336451774241870485">Нова приватна картица</translation>
 <translation id="5530766185686772672">Затвори картице без архив.</translation>
+<translation id="6610147964972079463">Затвори приватне картице</translation>
 <translation id="8076492880354921740">Картице</translation>
 <translation id="1049743911850919806">Без архивирања</translation>
 </translationbundle>

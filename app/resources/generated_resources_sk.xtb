@@ -499,9 +499,9 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8743864605301774756">Aktualizované pred 1 hodinou</translation>
 <translation id="5638497698949808140">Aktualizované pred <ph name="HOURS"/> h</translation>
 <translation id="1329584516321524826">Práve aktualizované</translation>
-<translation id="8679788109894721265">Táto stránka využíva viac ako <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Načítavanie sa zastavilo</translation>
-<translation id="4280864916190672950">Zastaviť načítavanie</translation>
+<translation id="224940702122312781">Táto stránka spotrebuje veľké množstvo dát.</translation>
+<translation id="3861241522664181545">Stránka bola pozastavená.</translation>
+<translation id="6921709132208495314">Prestať používať dáta na tejto stránke</translation>
 <translation id="2724841811573117416">Denníky WebRTC</translation>
 <translation id="7518150891539970662">Denníky WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Denník WebRTC zaznamenaný <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -550,6 +550,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6363797201514053536">Vyhľadajte na Googli alebo zadajte webovú adresu</translation>
 <translation id="6078323886959318429">Pridať odkaz</translation>
 <translation id="6324916366299863871">Upraviť skratku</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">Webová adresa</translation>
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="4416582610654027550">Zadajte platnú webovú adresu</translation>
@@ -588,7 +589,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7554791636758816595">Nová karta</translation>
 <translation id="3915280005470252504">Vyhľadávanie podľa hlasu</translation>
 <translation id="3153862085237805241">Uložiť kartu</translation>
-<translation id="4961000125720751066">Všetky karty na jednom mieste</translation>
+<translation id="1593926297800505364">Uložiť spôsob platby</translation>
 <translation id="2473195200299095979">Preložiť túto stránku</translation>
 <translation id="5408750356094797285">Lupa: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Zobrazenie tejto stránky bolo priblížené rozšírením <ph name="NAME"/></translation>
@@ -1048,7 +1049,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5562781907504170924">Táto karta je prepojená so zariadením Bluetooth.</translation>
 <translation id="5884474295213649357">Táto karta je pripojená k zariadeniu USB.</translation>
 <translation id="8466417995783206254">Táto karta prehráva video v režime obraz v obraze.</translation>
-<translation id="6235700927623181151">Táto karta zdieľa obsah vašej pracovnej plochy.</translation>
+<translation id="2585724835339714757">Táto karta zdieľa vašu obrazovku.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – Kamera alebo mikrofón zaznamenáva obsah</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – Bol zdieľaný obsah karty</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – video sa prehráva v režime obraz v obraze</translation>
@@ -1113,35 +1114,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="874689135111202667">{0,plural, =1{Nahrať na tento web jeden súbor?}few{Nahrať na tento web # súbory?}many{Nahrať na tento web # súboru?}other{Nahrať na tento web # súborov?}}</translation>
 <translation id="1956390763342388273">Touto akciou nahráte všetky súbory z priečinka <ph name="FOLDER_PATH"/>. Vykonajte to iba v prípade, že webu dôverujete.</translation>
 <translation id="1243314992276662751">Nahrať</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> chce overiť vašu totožnosť</translation>
-<translation id="3738671331307774213">Overenie totožnosti pomáha chrániť vaše súkromné dáta</translation>
-<translation id="8435395510592618362">Overenie totožnosti pomocou aplikácie <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Vyberte požadovanú možnosť</translation>
-<translation id="7490950320178383728">Používať bezpečnostný kľúč s rozhraním Bluetooth</translation>
-<translation id="414599683948988413">Použiť bezpečnostný kľúč s rozhraním USB</translation>
-<translation id="7851816139220202929">Používať bezpečnostný kľúč s funkciou NFC</translation>
-<translation id="5392327114396848796">Používať integrovaný bezpečnostný kľúč</translation>
-<translation id="5104546332954397226">Používať telefón ako bezpečnostný kľúč</translation>
-<translation id="2876441201733326392">Použitie bezpečnostného kľúča USB</translation>
-<translation id="5842053879378944309">Použitie bezpečnostného kľúča USB s aplikáciou <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Pripojte bezpečnostný kľúč a aktivujte ho</translation>
-<translation id="8033958968890501070">Časový limit vypršal</translation>
-<translation id="7102832101143475489">Platnosť žiadosti vypršala</translation>
-<translation id="3670229581627177274">Zapnúť Bluetooth</translation>
-<translation id="3880709822663530586">Bezpečnostný kľúč funguje iba vtedy, keď je v zariadení zapnuté rozhranie Bluetooth</translation>
-<translation id="1183378459020939734">Chcete spárovať bezpečnostný kľúč?</translation>
-<translation id="237058345584060620">Spárujte kľúč s týmto zariadením, aby ste sa mohli pomocou neho prihlasovať do účtu</translation>
-<translation id="1875312262568496299">Začať</translation>
-<translation id="3104900172193317662">Povolenie použitia bezpečnostného kľúča</translation>
-<translation id="2492040222276243256">Pridržte tlačidlo na bezpečnostnom kľúči aspoň päť sekúnd</translation>
-<translation id="6427415464407526111">Výber bezpečnostného kľúča</translation>
-<translation id="2633326789677284179">Nájdite názov uvedený na zadnej strane kľúča</translation>
-<translation id="5660204307954428567">Párovanie so zariadením <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Šesťmiestny kód PIN nájdete na zadnej strane kľúča</translation>
-<translation id="1201402288615127009">Ďalej</translation>
-<translation id="1792161662640298233">Overuje sa bezpečnostný kľúč</translation>
-<translation id="2321482478556590128">Použitie bezpečnostného kľúča s aplikáciou <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">Väčšinu kľúčov môžete použiť pomocou tlačidla</translation>
 <translation id="3785308913036335955">Zobrazovať odkaz aplikácií</translation>
 <translation id="711840821796638741">Zobraziť spravované záložky</translation>
 <translation id="3613134908380545408">Zobraziť priečinok <ph name="FOLDER_NAME"/></translation>
@@ -1509,6 +1481,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6902066522699286937">Hlas, ktorého ukážku si chcete vypočuť</translation>
 <translation id="304747341537320566">Nástroje hlasovej odozvy</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Spúšťajte v Bravebooku nástroje, editory a prostredia IDE pre Linux. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Ďalšie informácie&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Odstrániť aplikácie Linux pre Bravebook</translation>
 <translation id="2295473777859797944">Obchod Brave Software Play</translation>
@@ -1548,17 +1521,14 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8647834505253004544">Neplatná webová adresa</translation>
 <translation id="2149850907588596975">Heslá a formuláre</translation>
 <translation id="8639963783467694461">Nastavenia automatického dopĺňania</translation>
-<translation id="3431019676184503003">Adresy a spôsoby platby</translation>
 <translation id="2512222046227390255">Automaticky vypĺňať formuláre</translation>
-<translation id="2283340219607151381">Ukladať a dopĺňať adresy</translation>
-<translation id="1662550410081243962">Ukladať a dopĺňať spôsoby platby</translation>
-<translation id="2903493209154104877">Adresy</translation>
 <translation id="7764225426217299476">Pridať adresu</translation>
 <translation id="5595485650161345191">Upraviť adresu</translation>
 <translation id="6207937957461833379">Krajina alebo oblasť</translation>
 <translation id="4378154925671717803">Telefón</translation>
 <translation id="5659593005791499971">E-mail</translation>
-<translation id="5565871407246142825">Kreditné karty</translation>
+<translation id="5762172915276660232">Nastavenia kreditnej karty</translation>
+<translation id="4499718683476608392">Povoľte automatické dopĺňanie kreditných kariet na vypĺňanie formulárov jediným kliknutím</translation>
 <translation id="2448312741937722512">Typ</translation>
 <translation id="9064275926664971810">Zapnúť automatické dopĺňanie a vypĺňať webové formuláre jediným kliknutím</translation>
 <translation id="5029568752722684782">Vymazať kópiu</translation>
@@ -1644,7 +1614,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4699172675775169585">Obrázky a súbory vo vyrovnávacej pamäti</translation>
 <translation id="1274997165432133392">Súbory cookie a ďalšie dáta webov</translation>
 <translation id="3838543471119263078">Súbory cookie a ďalšie dáta webov a doplnkov</translation>
-<translation id="7029809446516969842">Heslá</translation>
 <translation id="6865313869410766144">Dáta automatického dopĺňania formulárov</translation>
 <translation id="177336675152937177">Dáta hostených aplikácií</translation>
 <translation id="1718835860248848330">Posledná hodina</translation>
@@ -2039,8 +2008,10 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7136694880210472378">Nastaviť ako predvolený</translation>
 <translation id="102272308210570439">Umožnite Asistentovi používať obsah na vašej obrazovke</translation>
 <translation id="8624205858755890468">Umožňuje Asistentovi zobraziť vám súvisiace informácie, aplikácie a akcie.</translation>
-<translation id="178309940312315155">Rozpoznanie výrazu „Ok Brave Software“</translation>
-<translation id="3476912025629168202">Keď je zapnutá obrazovka, Asistenta môžete kedykoľvek aktivovať vyslovením výrazu „Ok Brave Software“.</translation>
+<translation id="4737453247496280552">Rozpoznanie výrazu „Ok Brave Software“</translation>
+<translation id="6409553560184414680">Keď je zapnutá obrazovka, Asistenta môžete kedykoľvek aktivovať vyslovením výrazu „Ok Brave Software“.</translation>
+<translation id="8669919703154928649">Povoliť Asistentovi zobrazovať upozornenia</translation>
+<translation id="3430342160185525240">Umožňuje Asistentovi zobraziť vám upozornenia.</translation>
 <translation id="3908743412684152579">Nastavenia Asistenta Brave Software</translation>
 <translation id="4933484234309072027">vložené do <ph name="URL"/></translation>
 <translation id="8427292751741042100">vložené do ľubovoľného webu</translation>
@@ -2048,6 +2019,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6295158916970320988">Všetky stránky</translation>
 <translation id="7625568159987162309">Zobraziť povolenia a dáta uložené na weboch</translation>
 <translation id="3735740477244556633">Zoradiť podľa</translation>
+<translation id="6503077044568424649">Najnavštevovanejšie</translation>
+<translation id="967624055006145463">Uložené dáta</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Reklamy</translation>
 <translation id="5649053991847567735">Automatické sťahovanie</translation>
@@ -2123,11 +2096,12 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3038675903128704560">Nepovoliť žiadnemu webu používať doplnok na prístup do počítača</translation>
 <translation id="857943718398505171">Povolené (odporúčané)</translation>
 <translation id="5000922062037820727">Blokované (odporúčané)</translation>
-<translation id="8116925261070264013">Zvuk bol vypnutý</translation>
 <translation id="8708000541097332489">Vymazať po ukončení</translation>
 <translation id="8037357227543935929">Opýtať sa (predvolené)</translation>
 <translation id="3427092606871434483">Povoliť (predvolené)</translation>
+<translation id="4879491255372875719">Automatické (predvolené)</translation>
 <translation id="4312866146174492540">Blokovať (predvolené)</translation>
+<translation id="6979440798594660689">Ignorovať (predvolené)</translation>
 <translation id="2356070529366658676">Opýtať sa</translation>
 <translation id="5063480226653192405">Použitie</translation>
 <translation id="3006881078666935414">Žiadne údaje o používaní</translation>
@@ -2159,6 +2133,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2318923050469484167">Aktuálna relácia inkognito (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Žiadne weby neboli priblížené ani oddialené</translation>
 <translation id="3566721612727112615">Neboli pridané žiadne weby</translation>
+<translation id="8098574385249290065">Povoľte Chromu vyberať, kedy môžu weby prehrať zvuk (odporúčané)</translation>
 <translation id="5763751966069581670">Nenašli sa žiadne zariadenia USB</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Pridanie webu</translation>
@@ -2220,7 +2195,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7311891583377621132">Zľahka pohýbte, aby sa nasnímala ďalšia časť odtlačku</translation>
 <translation id="7345706641791090287">Potvrdenie hesla</translation>
 <translation id="381202950560906753">Pridať ďalší</translation>
-<translation id="3625538291267447988">Ak chcete nastaviť Smart Lock, zadajte heslo</translation>
 <translation id="6658023813581644008">Ak chcete nastaviť Smart Lock, zadajte heslo</translation>
 <translation id="5449551289610225147">Neplatné heslo</translation>
 <translation id="5374359983950678924">Zmeniť obrázok</translation>
@@ -2260,8 +2234,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2709516037105925701">Automatické dopĺňanie</translation>
 <translation id="1644574205037202324">História</translation>
 <translation id="5117427536932535467">Motívy a tapety</translation>
+<translation id="7029809446516969842">Heslá</translation>
 <translation id="3259418918864581163">Kreditné karty a adresy pomocou služby Brave Software Pay</translation>
-<translation id="4439834757335393741">Spôsoby platby a adresy pomocou Brave Software Pay</translation>
 <translation id="3268451620468152448">Otvorené karty</translation>
 <translation id="5241892180459725878">Návrhy vyhľadávania z Disku Brave Software</translation>
 <translation id="2120297377148151361">Aktivity a interakcie</translation>
@@ -2332,6 +2306,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1114202307280046356">Káro</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">Externý príkaz</translation>
+<translation id="585979798156957858">Externý metakláves</translation>
 <translation id="4991420928586866460">Považovať klávesy v hornom riadku za funkčné klávesy</translation>
 <translation id="85486688517848470">Podržaním klávesa vyhľadávania prepnete správanie klávesov v hornom riadku</translation>
 <translation id="4400632832271803360">Pridržaním klávesa spúšťača prepnete správanie klávesov v hornom riadku</translation>
@@ -2433,10 +2409,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2315821125498993513">K telefónu sa nepodarilo pripojiť. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Funkcia Spoločne ešte lepšie je zapnutá</translation>
 <translation id="3088402208262982892">Funkcia Spoločne ešte lepšie je zapnutá</translation>
-<translation id="2079079131837725321">Odomykajte svoj Bravebook pomocou telefónu. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Dynamický tethering</translation>
-<translation id="3059313675706898490">Správy pre Android</translation>
-<translation id="7095175330464035635">Odosielajte a prijímajte textové správy z Bravebooku</translation>
 <translation id="3936335337858561470">Zabudnúť toto zariadenie</translation>
 <translation id="3606712892509067288">Odstrániť z funkcie Spoločne ešte lepšie</translation>
 <translation id="7878562273885520351">Vaše heslo mohlo byť napadnuté</translation>
@@ -2539,6 +2512,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2202898655984161076">Pri vytváraní zoznamu tlačiarní sa vyskytol problém. Niektoré z vašich tlačiarní možno nie sú v službe <ph name="CLOUD_PRINT_NAME"/> registrované.</translation>
 <translation id="3220586366024592812">Proces konektora <ph name="CLOUD_PRINT_NAME"/> zlyhal. Spustiť znova?</translation>
 <translation id="6904655473976120856">Ukončite pomocou tlačidla Aplikácia</translation>
+<translation id="79766959863778284">Služba oddelených zariadení XR</translation>
 <translation id="8909833622202089127">Web sleduje vašu polohu</translation>
 <translation id="375636864092143889">Web používa váš mikrofón</translation>
 <translation id="310671807099593501">Web používa Bluetooth</translation>
@@ -2567,7 +2541,9 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6112294629795967147">Klepnutím zmeníte veľkosť</translation>
 <translation id="2453860139492968684">Dokončiť</translation>
 <translation id="1853692000353488670">Nová karta inkognito</translation>
+<translation id="6336451774241870485">Nová súkromná karta</translation>
 <translation id="5530766185686772672">Zavrieť karty inkognito</translation>
+<translation id="6610147964972079463">Zavrieť súkromné karty</translation>
 <translation id="8076492880354921740">Karty</translation>
 <translation id="1049743911850919806">Inkognito</translation>
 </translationbundle>

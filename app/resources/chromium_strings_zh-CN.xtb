@@ -36,7 +36,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="5785919770853225148">Brave 会将此密码保存在您的 Brave Software 帐号中，因此您不必记住它。</translation>
 <translation id="3343095737966473035">Brave 不是您的默认浏览器</translation>
 <translation id="6715663530666325392">您可以设置同步以将个性化浏览器功能保存到网上，以便在任意计算机上的 Brave 中使用这些功能。</translation>
-<translation id="2708027082363760195">Brave 未包含运行打印预览所需的 PDF 查看器。</translation>
 <translation id="8880183781256147665">正在添加到 Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> 可能存在危险，因此 Brave 已将其拦截。</translation>
 <translation id="9067428552314418522">此文件存在危险，因此 Brave 已将其拦截。</translation>
@@ -84,6 +83,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="3215652305414474626">它还能够控制您启动Brave或点击“主页”按钮后系统显示的页面。</translation>
 <translation id="2433912322225810055">它还能够控制您启动Brave后或通过多功能框进行搜索时系统显示的页面。</translation>
 <translation id="2871190378186459992">在这里，您可以找到适用于 Brave 的精彩应用、游戏、扩展程序和主题背景。</translation>
+<translation id="2522086024276534909">重启 Brave 操作系统</translation>
 <translation id="8183252473547465084">需要重新启动 Brave 操作系统以应用更新。</translation>
 <translation id="5895138241574237353">重新启动</translation>
 <translation id="5875673934455379806">重新安装Brave</translation>

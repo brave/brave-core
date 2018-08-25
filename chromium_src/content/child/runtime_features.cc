@@ -7,8 +7,6 @@ namespace content {
 void SetRuntimeFeaturesDefaultsAndUpdateFromArgs(
     const base::CommandLine& command_line) {
   SetRuntimeFeaturesDefaultsAndUpdateFromArgs_ChromiumImpl(command_line);
-
-  WebRuntimeFeatures::EnableAutoplayMutedVideos(false);
 }
 
 } // namespace content

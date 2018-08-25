@@ -499,9 +499,6 @@
 <translation id="8743864605301774756">تم التحديث قبل ساعة واحدة</translation>
 <translation id="5638497698949808140">تم التحديث قبل <ph name="HOURS"/>من الساعات</translation>
 <translation id="1329584516321524826">تم التحديث الآن</translation>
-<translation id="8679788109894721265">تستخدم هذه الصفحة مساحة تزيد عن <ph name="MEGABYTES"/>ميغابايت</translation>
-<translation id="8369547389711988632">تم إيقاف التحميل</translation>
-<translation id="4280864916190672950">إيقاف التحميل</translation>
 <translation id="2724841811573117416">‏سجلات WebRTC</translation>
 <translation id="7518150891539970662">‏سجلات WebRTC‏ (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">‏تم التقاط سجلات WebRTC في <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@
 <translation id="7554791636758816595">علامة تبويب جديدة</translation>
 <translation id="3915280005470252504">البحث الصوتي</translation>
 <translation id="3153862085237805241">حفظ البطاقة</translation>
-<translation id="4961000125720751066">يمكنك الاحتفاظ ببطاقاتك في مكانٍ واحد</translation>
+<translation id="1593926297800505364">حفظ طريقة الدفع</translation>
 <translation id="2473195200299095979">ترجم هذه الصفحة</translation>
 <translation id="5408750356094797285">تكبير/تصغير: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">تم تكبير/تصغير هذه الصفحة عبر إضافة "<ph name="NAME"/>"</translation>
@@ -1048,7 +1045,6 @@
 <translation id="5562781907504170924">علامة التبويب هذه متصلة بجهاز بلوتوث.</translation>
 <translation id="5884474295213649357">‏علامة التبويب هذه متصلة بجهاز USB.</translation>
 <translation id="8466417995783206254">تشغِّل علامة التبويب هذه فيديو في وضع "نافذة ضمن نافذة".</translation>
-<translation id="6235700927623181151">تشارك علامة التبويب هذه محتوى سطح المكتب.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - تسجيل الكاميرا أو الميكروفون</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - تمت مشاركة محتوى علامة التبويب</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - جارٍ تشغيل الفيديو في وضع "نافذة ضمن نافذة"</translation>
@@ -1113,35 +1109,6 @@
 <translation id="874689135111202667">{0,plural, =1{هل تريد تحميل ملف واحد إلى هذا الموقع؟}zero{هل تريد تحميل # ملف إلى هذا الموقع؟}two{هل تريد تحميل ملفين (#) إلى هذا الموقع؟}few{هل تريد تحميل # ملفات إلى هذا الموقع؟}many{هل تريد تحميل # ملفًا إلى هذا الموقع؟}other{هل تريد تحميل # ملف إلى هذا الموقع؟}}</translation>
 <translation id="1956390763342388273">سيؤدي ذلك إلى تحميل جميع الملفات من "<ph name="FOLDER_PATH"/>"، يُرجى تجنُّب ذلك إذا لم تكن واثقًا من الموقع.</translation>
 <translation id="1243314992276662751">تحميل</translation>
-<translation id="2446585455334014596">يريد <ph name="APP_NAME"/> إثبات هويتك</translation>
-<translation id="3738671331307774213">يساعد إثبات هويتك في حماية بياناتك الخاصة.</translation>
-<translation id="8435395510592618362">إثبات هويتك من خلال <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">حدِّد خيارًا</translation>
-<translation id="7490950320178383728">استخدام مفتاح الأمان عبر البلوتوث</translation>
-<translation id="414599683948988413">‏استخدام مفتاح الأمان مع USB</translation>
-<translation id="7851816139220202929">‏استخدام مفتاح الأمان عبر NFC</translation>
-<translation id="5392327114396848796">استخدام "مفتاح أمان" مُدمَج</translation>
-<translation id="5104546332954397226">استخدام الهاتف كـ "مفتاح أمان"</translation>
-<translation id="2876441201733326392">‏استخدام مفتاح أمان USB</translation>
-<translation id="5842053879378944309">‏استخدام مفتاح أمان USB مع التطبيق <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">توصيل مفتاح الأمان وتفعيله</translation>
-<translation id="8033958968890501070">انتهاء المهلة</translation>
-<translation id="7102832101143475489">انتهت مهلة الطلب</translation>
-<translation id="3670229581627177274">تشغيل البلوتوث</translation>
-<translation id="3880709822663530586">لا يعمل مفتاح الأمان إلا عند تفعيل البلوتوث على جهازك.</translation>
-<translation id="1183378459020939734">هل أنت مستعد لإقران مفتاح الأمان؟</translation>
-<translation id="237058345584060620">يمكنك إقران مفتاحك بهذا الجهاز حتى تتمكن من استخدامه لتسجيل الدخول إلى حسابك.</translation>
-<translation id="1875312262568496299">البدء</translation>
-<translation id="3104900172193317662">السماح باستخدام مفتاح الأمان</translation>
-<translation id="2492040222276243256">اضغط مع الاستمرار على الزر في مفتاح الأمان لمدة لا تقل عن 5 ثوانٍ.</translation>
-<translation id="6427415464407526111">اختيار مفتاح الأمان</translation>
-<translation id="2633326789677284179">ارجِع إلى الاسم المطبوع على الجزء الخلفي من مفتاحك</translation>
-<translation id="5660204307954428567">الإقران مع <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">ارجِع إلى رقم التعريف الشخصي المكوَّن من 6 أرقام في الجزء الخلفي من المفتاح</translation>
-<translation id="1201402288615127009">التالي</translation>
-<translation id="1792161662640298233">التحقُّق من مفتاح الأمان</translation>
-<translation id="2321482478556590128">استخدام مفتاح الأمان مع <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">لاستخدام معظم المفاتيح، ما عليك سوى الضغط على الزر</translation>
 <translation id="3785308913036335955">إظهار اختصار التطبيقات</translation>
 <translation id="711840821796638741">عرض الإشارات المرجعية المدارة</translation>
 <translation id="3613134908380545408">عرض <ph name="FOLDER_NAME"/></translation>
@@ -1509,6 +1476,7 @@
 <translation id="6902066522699286937">صوت للمعاينة</translation>
 <translation id="304747341537320566">محركات الكلام</translation>
 <translation id="1067291318998134776">‏نظام التشغيل Linux (نسخة تجريبية)</translation>
+<translation id="7911118814695487383">‏نظام التشغيل Linux</translation>
 <translation id="1834538809763482401">‏يمكنك تشغيل أدوات Linux، وأدوات التحرير وبرامج IDE على جهازBravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;مزيد من المعلومات&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">‏إزالة تطبيقات Linux لـ Bravebook</translation>
 <translation id="2295473777859797944">‏متجر Brave Software Play</translation>
@@ -1548,17 +1516,14 @@
 <translation id="8647834505253004544">ليس عنوان ويب صالحًا</translation>
 <translation id="2149850907588596975">كلمات المرور والنماذج</translation>
 <translation id="8639963783467694461">إعدادات الملء التلقائي</translation>
-<translation id="3431019676184503003">العناوين وطرق الدفع</translation>
 <translation id="2512222046227390255">املأ النماذج تلقائيًا</translation>
-<translation id="2283340219607151381">حفظ العناوين وملؤها</translation>
-<translation id="1662550410081243962">حفظ طرق الدفع وملؤها</translation>
-<translation id="2903493209154104877">العناوين</translation>
 <translation id="7764225426217299476">إضافة عنوان</translation>
 <translation id="5595485650161345191">تعديل العنوان</translation>
 <translation id="6207937957461833379">البلد/المنطقة</translation>
 <translation id="4378154925671717803">هاتف</translation>
 <translation id="5659593005791499971">البريد الإلكتروني</translation>
-<translation id="5565871407246142825">بطاقات ائتمان</translation>
+<translation id="5762172915276660232">إعدادات بطاقة الائتمان</translation>
+<translation id="4499718683476608392">تفعيل الملء التلقائي لبطاقة الائتمان لملء النماذج بنقرة واحدة</translation>
 <translation id="2448312741937722512">النوع</translation>
 <translation id="9064275926664971810">تفعيل الملء التلقائي لملء النماذج بنقرة واحدة</translation>
 <translation id="5029568752722684782">محو النسخة</translation>
@@ -1644,7 +1609,6 @@
 <translation id="4699172675775169585">الصور والملفات المخزنة مؤقتًا</translation>
 <translation id="1274997165432133392">ملفات تعريف الارتباط وبيانات الموقع الأخرى</translation>
 <translation id="3838543471119263078">ملفات تعريف الارتباط وبيانات المواقع والمكونات الإضافية الأخرى</translation>
-<translation id="7029809446516969842">كلمات المرور</translation>
 <translation id="6865313869410766144">الملء التلقائي من البيانات</translation>
 <translation id="177336675152937177">بيانات التطبيق المستضافة</translation>
 <translation id="1718835860248848330">آخر ساعة</translation>
@@ -2039,8 +2003,8 @@
 <translation id="7136694880210472378">تعيين كافتراضي</translation>
 <translation id="102272308210570439">السماح للمساعد باستخدام العناصر المتوفرة على الشاشة</translation>
 <translation id="8624205858755890468">يعمل على تفعيل "المساعد" لعرض الإجراءات والتطبيقات والمعلومات ذات الصلة.</translation>
-<translation id="178309940312315155">‏رصْد عبارة "Ok Brave Software"</translation>
-<translation id="3476912025629168202">‏يمكنك الوصول إلى "المُساعِد" في أي وقت تقول فيه "OK Brave Software" عندما تكون شاشتك في وضع التشغيل.</translation>
+<translation id="8669919703154928649">‏السماح لـ "مساعد Brave Software" بعرض الإشعارات</translation>
+<translation id="3430342160185525240">‏يعمل على تفعيل "مساعد Brave Software" لعرض الإشعارات.</translation>
 <translation id="3908743412684152579">‏إعدادات مساعد Brave Software</translation>
 <translation id="4933484234309072027">مضمن في <ph name="URL"/></translation>
 <translation id="8427292751741042100">مضمن في أي مضيف</translation>
@@ -2048,6 +2012,8 @@
 <translation id="6295158916970320988">جميع المواقع</translation>
 <translation id="7625568159987162309">عرض الأذونات والبيانات المُخزَّنة على المواقع</translation>
 <translation id="3735740477244556633">ترتيب بحسب</translation>
+<translation id="6503077044568424649">الأكثر زيارة</translation>
+<translation id="967624055006145463">البيانات المُخزَّنة</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">إعلانات</translation>
 <translation id="5649053991847567735">التنزيلات التلقائية</translation>
@@ -2123,7 +2089,6 @@
 <translation id="3038675903128704560">عدم السماح لأي موقع ويب باستخدام مكوّنات إضافية للوصول إلى جهاز الكمبيوتر</translation>
 <translation id="857943718398505171">مسموح به (موصى به)</translation>
 <translation id="5000922062037820727">محظور  (موصى به)</translation>
-<translation id="8116925261070264013">مواقع الويب التي تم كتم الصوت فيها</translation>
 <translation id="8708000541097332489">محو عند الخروج</translation>
 <translation id="8037357227543935929">الطلب (تلقائي)</translation>
 <translation id="3427092606871434483">السماح (تلقائي)</translation>
@@ -2220,7 +2185,6 @@
 <translation id="7311891583377621132">التحرك قليلاً لالتقاط جزء مختلف من بصمة الإصبع</translation>
 <translation id="7345706641791090287">تأكيد كلمة المرور</translation>
 <translation id="381202950560906753">إضافة بصمة إصبع أخرى</translation>
-<translation id="3625538291267447988">‏لإعداد Smart Lock، يُرجى إدخال كلمة المرور.</translation>
 <translation id="6658023813581644008">‏لإعداد Smart Lock لتسجيل الدخول، يُرجى إدخال كلمة المرور.</translation>
 <translation id="5449551289610225147">كلمة المرور غير صالحة</translation>
 <translation id="5374359983950678924">تغيير صورة</translation>
@@ -2260,8 +2224,8 @@
 <translation id="2709516037105925701">الملء التلقائي</translation>
 <translation id="1644574205037202324">السجل</translation>
 <translation id="5117427536932535467">المظاهر والخلفيات</translation>
+<translation id="7029809446516969842">كلمات المرور</translation>
 <translation id="3259418918864581163">‏بطاقات الائتمان والعناوين باستخدام Brave Software Pay.</translation>
-<translation id="4439834757335393741">‏طرق الدفع والعناوين باستخدام Brave Software Pay.</translation>
 <translation id="3268451620468152448">علامات التبويب المفتوحة</translation>
 <translation id="5241892180459725878">‏إقتراحات بحث Brave Software Drive</translation>
 <translation id="2120297377148151361">النشاط والتفاعلات</translation>
@@ -2332,6 +2296,8 @@
 <translation id="1114202307280046356">معيّن</translation>
 <translation id="89720367119469899">خروج</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">‏مفتاح Command الخارجي</translation>
+<translation id="585979798156957858">‏مفتاح Meta الخارجي</translation>
 <translation id="4991420928586866460">معالجة مفاتيح الصف العلوي باعتبارها مفاتيح الوظائف</translation>
 <translation id="85486688517848470">اضغط على مفتاح البحث باستمرار لتبديل سلوك مفاتيح الصف العلوي</translation>
 <translation id="4400632832271803360">‏اضغط على مفتاح Launcher باستمرار لتبديل سلوك مفاتيح الصف العلوي</translation>
@@ -2433,10 +2399,7 @@
 <translation id="2315821125498993513">تعذَّر الربط مع هاتفك. <ph name="LINK_BEGIN"/>مزيد من المعلومات<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">‏خدمة Better Together مفعّلة</translation>
 <translation id="3088402208262982892">‏خدمة Better Together غير مفعّلة</translation>
-<translation id="2079079131837725321">‏يمكنك إلغاء قفل جهاز Bravebook باستخدام هاتفك.<ph name="LINK_BEGIN"/>مزيد من المعلومات<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">التوصيل الفوري</translation>
-<translation id="3059313675706898490">‏رسائل Android</translation>
-<translation id="7095175330464035635">‏إرسال رسائل نصيّة واستلامها من جهاز Bravebook</translation>
 <translation id="3936335337858561470">عدم تذكُّر هذا الجهاز</translation>
 <translation id="3606712892509067288">‏إزالة من Better Together</translation>
 <translation id="7878562273885520351">من المحتمل أنه تم اختراق كلمة مرورك</translation>
@@ -2567,7 +2530,9 @@
 <translation id="6112294629795967147">اللمس لتغيير الحجم</translation>
 <translation id="2453860139492968684">اكتمل</translation>
 <translation id="1853692000353488670">علامة تبويب جديدة للتصفح المتخفي</translation>
+<translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
 <translation id="5530766185686772672">إغلاق علامات تبويب التصفح المتخفي</translation>
+<translation id="6610147964972079463">إغلاق علامات التبويب الخاصة</translation>
 <translation id="8076492880354921740">علامات التبويب</translation>
 <translation id="1049743911850919806">التصفح المتخفي</translation>
 </translationbundle>

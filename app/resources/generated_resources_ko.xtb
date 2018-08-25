@@ -497,9 +497,6 @@
 <translation id="8743864605301774756">1시간 전에 업데이트되었습니다.</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/>시간 전에 업데이트됨</translation>
 <translation id="1329584516321524826">조금 전 업데이트됨</translation>
-<translation id="8679788109894721265">이 페이지는 <ph name="MEGABYTES"/>MB 이상을 사용합니다.</translation>
-<translation id="8369547389711988632">로드가 중지됨</translation>
-<translation id="4280864916190672950">로드 중지</translation>
 <translation id="2724841811573117416">WebRTC 로그</translation>
 <translation id="7518150891539970662">WebRTC 로그(<ph name="WEBRTC_LOG_COUNT"/>개)</translation>
 <translation id="6592267180249644460">WebRTC 로그 캡처 시간: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -586,7 +583,7 @@
 <translation id="7554791636758816595">새 탭</translation>
 <translation id="3915280005470252504">음성 검색</translation>
 <translation id="3153862085237805241">카드 저장</translation>
-<translation id="4961000125720751066">카드를 한곳에 보관</translation>
+<translation id="1593926297800505364">결제 수단 저장</translation>
 <translation id="2473195200299095979">이 페이지 번역하기</translation>
 <translation id="5408750356094797285">확대/축소: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">이 페이지는 '<ph name="NAME"/>' 확장 프로그램으로 확대/축소되었습니다.</translation>
@@ -1046,7 +1043,6 @@
 <translation id="5562781907504170924">이 탭이 블루투스 기기에 연결되었습니다.</translation>
 <translation id="5884474295213649357">이 탭이 USB 기기에 연결되었습니다.</translation>
 <translation id="8466417995783206254">이 탭에서는 PIP 모드로 동영상이 재생되고 있습니다.</translation>
-<translation id="6235700927623181151">탭에서 데스크톱 콘텐츠를 공유하는 중입니다.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - 카메라 또는 마이크 녹음</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - 탭 콘텐츠 공유됨</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - PIP 모드로 동영상 재생 중</translation>
@@ -1111,35 +1107,6 @@
 <translation id="874689135111202667">{0,plural, =1{파일 1개를 이 사이트에 업로드하시겠습니까?}other{파일 #개를 이 사이트에 업로드하시겠습니까?}}</translation>
 <translation id="1956390763342388273">'<ph name="FOLDER_PATH"/>'의 모든 파일이 업로드됩니다. 사이트를 신뢰할 수 있을 때만 실행하세요.</translation>
 <translation id="1243314992276662751">업로드</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/>에서 귀하의 신원을 확인하려고 합니다</translation>
-<translation id="3738671331307774213">신원을 확인하면 개인 데이터를 보호하는 데 도움이 됩니다.</translation>
-<translation id="8435395510592618362"><ph name="APP_NAME"/>(으)로 신원 확인</translation>
-<translation id="3854599674806204102">옵션을 선택하세요.</translation>
-<translation id="7490950320178383728">블루투스를 통해 보안 키 사용</translation>
-<translation id="414599683948988413">USB를 통해 보안 키 사용</translation>
-<translation id="7851816139220202929">NFC를 통해 보안 키 사용</translation>
-<translation id="5392327114396848796">내장 보안 키 사용</translation>
-<translation id="5104546332954397226">휴대전화를 보안 키로 사용</translation>
-<translation id="2876441201733326392">USB 보안 키 사용</translation>
-<translation id="5842053879378944309"><ph name="APP_NAME"/> 로그인 시 USB 보안 키 사용</translation>
-<translation id="6896398788631624004">보안 키를 꽂고 활성화하세요.</translation>
-<translation id="8033958968890501070">시간 초과</translation>
-<translation id="7102832101143475489">요청 제한 시간 초과</translation>
-<translation id="3670229581627177274">블루투스 켜기</translation>
-<translation id="3880709822663530586">기기의 블루투스가 사용 설정된 경우에만 보안 키가 작동합니다.</translation>
-<translation id="1183378459020939734">보안 키를 페어링할 준비가 되었나요?</translation>
-<translation id="237058345584060620">키를 사용하여 계정에 로그인할 수 있도록 키를 이 기기와 페어링하세요.</translation>
-<translation id="1875312262568496299">시작</translation>
-<translation id="3104900172193317662">보안 키를 사용하도록 허용</translation>
-<translation id="2492040222276243256">보안 키에 있는 버튼을 5초 이상 길게 누르세요.</translation>
-<translation id="6427415464407526111">보안 키 선택</translation>
-<translation id="2633326789677284179">키 뒷면에 인쇄된 이름을 확인하세요.</translation>
-<translation id="5660204307954428567"><ph name="DEVICE_NAME"/>과(와) 페어링</translation>
-<translation id="8984872292925913496">키 뒷면에서 6자리 PIN을 찾으세요.</translation>
-<translation id="1201402288615127009">다음</translation>
-<translation id="1792161662640298233">보안 키를 인증하는 중</translation>
-<translation id="2321482478556590128"><ph name="APP_NAME"/> 앱에서 보안 키 사용</translation>
-<translation id="5292195676005197571">대부분의 키는 버튼을 누르기만 하면 사용할 수 있습니다.</translation>
 <translation id="3785308913036335955">앱 단축키 표시</translation>
 <translation id="711840821796638741">관리 북마크 표시</translation>
 <translation id="3613134908380545408"><ph name="FOLDER_NAME"/> 표시</translation>
@@ -1507,6 +1474,7 @@
 <translation id="6902066522699286937">음성 미리보기</translation>
 <translation id="304747341537320566">음성 엔진</translation>
 <translation id="1067291318998134776">Linux(베타)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Bravebook에서 Linux 도구, 편집기, IDE를 실행하세요. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;자세히 알아보기&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Bravebook용 Linux 앱 삭제</translation>
 <translation id="2295473777859797944">Brave Software Play 스토어</translation>
@@ -1546,17 +1514,14 @@
 <translation id="8647834505253004544">올바른 웹 주소가 아닙니다.</translation>
 <translation id="2149850907588596975">비밀번호 및 양식</translation>
 <translation id="8639963783467694461">자동 완성 설정</translation>
-<translation id="3431019676184503003">주소 및 결제 수단</translation>
 <translation id="2512222046227390255">양식 자동 완성</translation>
-<translation id="2283340219607151381">주소 저장 및 자동 입력</translation>
-<translation id="1662550410081243962">결제 수단 저장 및 자동 입력</translation>
-<translation id="2903493209154104877">주소</translation>
 <translation id="7764225426217299476">주소 추가</translation>
 <translation id="5595485650161345191">주소 수정</translation>
 <translation id="6207937957461833379">국가/지역</translation>
 <translation id="4378154925671717803">전화기</translation>
 <translation id="5659593005791499971">이메일</translation>
-<translation id="5565871407246142825">신용카드</translation>
+<translation id="5762172915276660232">신용카드 설정</translation>
+<translation id="4499718683476608392">신용카드 자동 완성을 사용하여 클릭 한 번으로 양식을 작성합니다.</translation>
 <translation id="2448312741937722512">유형</translation>
 <translation id="9064275926664971810">클릭 한 번으로 양식을 작성하는 자동 완성 사용</translation>
 <translation id="5029568752722684782">사본 지우기</translation>
@@ -1642,7 +1607,6 @@
 <translation id="4699172675775169585">캐시된 이미지 또는 파일</translation>
 <translation id="1274997165432133392">쿠키 및 기타 사이트 데이터</translation>
 <translation id="3838543471119263078">쿠키, 기타 사이트 및 플러그인 데이터</translation>
-<translation id="7029809446516969842">비밀번호</translation>
 <translation id="6865313869410766144">양식 데이터 자동 완성</translation>
 <translation id="177336675152937177">호스팅된 앱 데이터</translation>
 <translation id="1718835860248848330">지난 1시간</translation>
@@ -2037,8 +2001,8 @@
 <translation id="7136694880210472378">기본으로 설정</translation>
 <translation id="102272308210570439">어시스턴트가 화면에 표시된 내용을 사용하도록 허용</translation>
 <translation id="8624205858755890468">어시스턴트를 사용 설정하여 관련된 정보, 앱, 작업을 표시합니다.</translation>
-<translation id="178309940312315155">'Ok Brave Software' 감지</translation>
-<translation id="3476912025629168202">화면이 켜져 있을 때 "Ok Brave Software"이라고 말하면 어시스턴트를 이용할 수 있습니다.</translation>
+<translation id="8669919703154928649">어시스턴트가 알림을 표시하도록 허용</translation>
+<translation id="3430342160185525240">어시스턴트를 사용하여 알림을 표시합니다.</translation>
 <translation id="3908743412684152579">Brave Software 어시스턴트 설정</translation>
 <translation id="4933484234309072027"><ph name="URL"/>에 삽입</translation>
 <translation id="8427292751741042100">모든 호스트에 삽입됨</translation>
@@ -2046,6 +2010,8 @@
 <translation id="6295158916970320988">모든 사이트</translation>
 <translation id="7625568159987162309">사이트 전체에 저장된 권한 및 데이터 보기</translation>
 <translation id="3735740477244556633">정렬 기준</translation>
+<translation id="6503077044568424649">자주 방문한 페이지</translation>
+<translation id="967624055006145463">저장된 데이터</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">광고</translation>
 <translation id="5649053991847567735">자동 다운로드</translation>
@@ -2121,7 +2087,6 @@
 <translation id="3038675903128704560">사이트에서 플러그인을 사용하여 내 컴퓨터에 액세스하도록 허용하지 않음</translation>
 <translation id="857943718398505171">허용(권장)</translation>
 <translation id="5000922062037820727">차단(권장)</translation>
-<translation id="8116925261070264013">음소거됨</translation>
 <translation id="8708000541097332489">종료 시 삭제</translation>
 <translation id="8037357227543935929">요청(기본값)</translation>
 <translation id="3427092606871434483">허용(기본값)</translation>
@@ -2218,7 +2183,6 @@
 <translation id="7311891583377621132">지문의 다른 부분이 인식되도록 손가락을 살짝 움직이세요.</translation>
 <translation id="7345706641791090287">비밀번호 확인</translation>
 <translation id="381202950560906753">다른 지문 추가</translation>
-<translation id="3625538291267447988">Smart Lock을 설정하려면 비밀번호를 입력하세요.</translation>
 <translation id="6658023813581644008">로그인하기 위해 Smart Lock을 설정하려면 비밀번호를 입력하세요.</translation>
 <translation id="5449551289610225147">비밀번호가 잘못되었습니다.</translation>
 <translation id="5374359983950678924">사진 변경</translation>
@@ -2258,8 +2222,8 @@
 <translation id="2709516037105925701">자동 완성</translation>
 <translation id="1644574205037202324">방문 기록</translation>
 <translation id="5117427536932535467">테마와 배경화면</translation>
+<translation id="7029809446516969842">비밀번호</translation>
 <translation id="3259418918864581163">Brave Software Pay에 사용되는 신용카드 및 주소</translation>
-<translation id="4439834757335393741">Brave Software Pay에 사용되는 결제 수단 및 주소</translation>
 <translation id="3268451620468152448">열린 탭</translation>
 <translation id="5241892180459725878">Brave Software 드라이브 검색 추천어</translation>
 <translation id="2120297377148151361">활동 및 상호작용</translation>
@@ -2330,6 +2294,8 @@
 <translation id="1114202307280046356">다이아몬드</translation>
 <translation id="89720367119469899">Esc</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">외부 명령어</translation>
+<translation id="585979798156957858">외부 메타</translation>
 <translation id="4991420928586866460">맨 위 키를 기능 키로 사용</translation>
 <translation id="85486688517848470">맨 위 키의 동작을 전환하려면 검색 키를 길게 누름</translation>
 <translation id="4400632832271803360">맨 윗 줄 키의 동작을 전환하려면 런처 키를 길게 누르세요.</translation>
@@ -2431,10 +2397,7 @@
 <translation id="2315821125498993513">휴대전화에 연결할 수 없습니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together 사용</translation>
 <translation id="3088402208262982892">Better Together 사용 안함</translation>
-<translation id="2079079131837725321">휴대전화로 Bravebook을 잠금 해제하세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">인스턴트 테더링</translation>
-<translation id="3059313675706898490">Android 메시지</translation>
-<translation id="7095175330464035635">Bravebook으로 SMS 보내고 받기</translation>
 <translation id="3936335337858561470">이 기기 지우기</translation>
 <translation id="3606712892509067288">Better Together에서 삭제하기</translation>
 <translation id="7878562273885520351">비밀번호가 도용될 수도 있음</translation>
@@ -2565,7 +2528,9 @@
 <translation id="6112294629795967147">터치하여 크기 조정</translation>
 <translation id="2453860139492968684">완료</translation>
 <translation id="1853692000353488670">새 시크릿 탭</translation>
+<translation id="6336451774241870485">새 비공개 탭</translation>
 <translation id="5530766185686772672">시크릿 탭 닫기</translation>
+<translation id="6610147964972079463">비공개 탭 닫기</translation>
 <translation id="8076492880354921740">탭</translation>
 <translation id="1049743911850919806">시크릿</translation>
 </translationbundle>

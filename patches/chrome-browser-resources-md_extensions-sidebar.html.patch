@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/md_extensions/sidebar.html b/chrome/browser/resources/md_extensions/sidebar.html
-index e243da81060db716852c63a6ce1c2c692f2509d1..785aaf39cd045b93f219d2c9580f17e04ce93fb0 100644
+index 32cfa03491ccab9e56b25750a04c9d21d6bfcc2b..84ed8c3a9a87bff1b852c39b6c2c854f97195302 100644
 --- a/chrome/browser/resources/md_extensions/sidebar.html
 +++ b/chrome/browser/resources/md_extensions/sidebar.html
 @@ -73,6 +73,7 @@

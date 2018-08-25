@@ -498,9 +498,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8743864605301774756">Päivitetty 1 t sitten</translation>
 <translation id="5638497698949808140">Päivitetty <ph name="HOURS"/> t sitten</translation>
 <translation id="1329584516321524826">Päivitetty juuri nyt</translation>
-<translation id="8679788109894721265">Tämä sivu käyttää yli <ph name="MEGABYTES"/> Mt</translation>
-<translation id="8369547389711988632">Lataus pysäytetty</translation>
-<translation id="4280864916190672950">Pysäytä lataus</translation>
 <translation id="2724841811573117416">WebRTC-lokit</translation>
 <translation id="7518150891539970662">WebRTC-lokit (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-loki kaapattiin <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -587,7 +584,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7554791636758816595">Uusi välilehti</translation>
 <translation id="3915280005470252504">Puhehaku</translation>
 <translation id="3153862085237805241">Tallenna kortti</translation>
-<translation id="4961000125720751066">Kortit yhdessä paikassa</translation>
+<translation id="1593926297800505364">Tallenna maksutapa</translation>
 <translation id="2473195200299095979">Käännä tämä sivu</translation>
 <translation id="5408750356094797285">Zoomaus: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Tämän sivun lähensi laajennus <ph name="NAME"/></translation>
@@ -1047,7 +1044,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5562781907504170924">Tämä välilehti on yhdistetty Bluetooth-laitteeseen.</translation>
 <translation id="5884474295213649357">Tämä välilehti on yhdistetty USB-laitteeseen.</translation>
 <translation id="8466417995783206254">Tämä välilehti toistaa videota kuva kuvassa ‑tilassa.</translation>
-<translation id="6235700927623181151">Tämä välilehti jakaa työpöydän sisältöä.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kamera tai mikrofoni tallentaa sisältöä</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – välilehden sisältö jaettu</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – Video toistetaan kuva kuvassa ‑tilassa</translation>
@@ -1112,35 +1108,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="874689135111202667">{0,plural, =1{Ladataanko sivustoon yksi tiedosto?}other{Ladataanko sivustoon # tiedostoa?}}</translation>
 <translation id="1956390763342388273">Kaikki tämän polun (<ph name="FOLDER_PATH"/>) tiedostot ladataan sivustoon. Tee tämä vain luotettavien sivustojen kohdalla.</translation>
 <translation id="1243314992276662751">Lähetä</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> haluaa vahvistaa henkilöllisyytesi</translation>
-<translation id="3738671331307774213">Henkilöllisyyden vahvistaminen auttaa suojaamaan yksityistä dataasi.</translation>
-<translation id="8435395510592618362">Henkilöllisyyden vahvistaminen: <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Valitse vaihtoehto.</translation>
-<translation id="7490950320178383728">Käytä Bluetoothia suojausavaimen kanssa</translation>
-<translation id="414599683948988413">Käytä USB:tä suojausavaimen kanssa</translation>
-<translation id="7851816139220202929">Käytä NFC:tä suojausavaimen kanssa</translation>
-<translation id="5392327114396848796">Käytä sisäänrakennettua suojausavainta</translation>
-<translation id="5104546332954397226">Käytä puhelinta suojausavaimena</translation>
-<translation id="2876441201733326392">Käytä USB-suojausavainta</translation>
-<translation id="5842053879378944309">Käytä USB-suojausavainta sovelluksen <ph name="APP_NAME"/> kanssa</translation>
-<translation id="6896398788631624004">Liitä suojausavain ja aktivoi se</translation>
-<translation id="8033958968890501070">Aikakatkaisu</translation>
-<translation id="7102832101143475489">Pyyntö aikakatkaistiin</translation>
-<translation id="3670229581627177274">Ota Bluetooth käyttöön</translation>
-<translation id="3880709822663530586">Suojausavain toimii vain, kun laitteen Bluetooth-yhteys on käytössä.</translation>
-<translation id="1183378459020939734">Oletko valmis yhdistämään suojausavaimen laitepariksi?</translation>
-<translation id="237058345584060620">Yhdistä tämä laite ja suojausavain laitepariksi, jotta voit käyttää avainta kirjautumiseen.</translation>
-<translation id="1875312262568496299">Aloita</translation>
-<translation id="3104900172193317662">Salli suojausavaimen käyttö</translation>
-<translation id="2492040222276243256">Pidä suojausavaimen painiketta painettuna vähintään viisi sekuntia.</translation>
-<translation id="6427415464407526111">Valitse suojausavain</translation>
-<translation id="2633326789677284179">Katso avaimen nimi sen takaa</translation>
-<translation id="5660204307954428567">Muodosta laitepari: <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Etsi 6-numeroinen PIN-koodi avaimen takaa</translation>
-<translation id="1201402288615127009">Seuraava</translation>
-<translation id="1792161662640298233">Vahvistetaan suojausavainta</translation>
-<translation id="2321482478556590128">Käytä suojausavainta sovelluksen <ph name="APP_NAME"/> kanssa</translation>
-<translation id="5292195676005197571">Voit käyttää useimpia avaimia painamalla painiketta.</translation>
 <translation id="3785308913036335955">Näytä Apps-oikopolku</translation>
 <translation id="711840821796638741">Näytä hallinnoidut kirjanmerkit</translation>
 <translation id="3613134908380545408">Näytä <ph name="FOLDER_NAME"/></translation>
@@ -1508,6 +1475,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6902066522699286937">Esikatselun ääni</translation>
 <translation id="304747341537320566">Puhemoottorit</translation>
 <translation id="1067291318998134776">Linux (beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Käytä Linux-työkaluja, muokkausohjelmia ja integroituja kehitysympäristöjä Bravebookillasi. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Lisätietoja&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Poista Linux-sovellukset Bravebookista</translation>
 <translation id="2295473777859797944">Brave Software Play Kauppa</translation>
@@ -1547,17 +1515,14 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8647834505253004544">Ei kelvollinen verkko-osoite</translation>
 <translation id="2149850907588596975">Salasanat ja lomakkeet</translation>
 <translation id="8639963783467694461">Automaattisen täytön asetukset</translation>
-<translation id="3431019676184503003">Osoitteet ja maksutavat</translation>
 <translation id="2512222046227390255">Täytä lomakkeet automaattisesti</translation>
-<translation id="2283340219607151381">Tallenna ja täytä osoitteet</translation>
-<translation id="1662550410081243962">Tallenna ja täytä maksutavat</translation>
-<translation id="2903493209154104877">Osoitteet</translation>
 <translation id="7764225426217299476">Lisää osoite</translation>
 <translation id="5595485650161345191">Osoitteen muokkaus</translation>
 <translation id="6207937957461833379">Maa/alue</translation>
 <translation id="4378154925671717803">Puhelin</translation>
 <translation id="5659593005791499971">Sähköposti</translation>
-<translation id="5565871407246142825">Luottokortit</translation>
+<translation id="5762172915276660232">Luottokorttiasetukset</translation>
+<translation id="4499718683476608392">Ota luottokorttien automaattinen täyttö käyttöön, niin voit täyttää lomakkeita yhdellä klikkauksella</translation>
 <translation id="2448312741937722512">Tyyppi</translation>
 <translation id="9064275926664971810">Ottamalla automaattisen täytön käyttöön voit täyttää lomakkeet yhdellä klikkauksella.</translation>
 <translation id="5029568752722684782">Poista kopio</translation>
@@ -1643,7 +1608,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="4699172675775169585">Välimuistissa olevat kuvat ja tiedostot</translation>
 <translation id="1274997165432133392">Evästeet ja muut sivuston tiedot</translation>
 <translation id="3838543471119263078">Evästeet ja muut sivuston ja laajennuksien tiedot</translation>
-<translation id="7029809446516969842">Salasanat</translation>
 <translation id="6865313869410766144">Automaattisesti täydennetyt lomaketiedot</translation>
 <translation id="177336675152937177">Isännöidyn sovelluksen tiedot</translation>
 <translation id="1718835860248848330">Viimeinen tunti</translation>
@@ -2038,8 +2002,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7136694880210472378">Aseta oletukseksi</translation>
 <translation id="102272308210570439">Anna Assistantin käyttää näytöllä olevia kohteita</translation>
 <translation id="8624205858755890468">Sallii Assistantin näyttää kohteisiin liittyviä tietoja, sovelluksia ja toimintoja.</translation>
-<translation id="178309940312315155">Ok Brave Software ‑tunnistus</translation>
-<translation id="3476912025629168202">Käytä Assistantia koska vain sanomalla Ok Brave Software, kun näyttö on päällä.</translation>
+<translation id="8669919703154928649">Anna Assistantin näyttää sinulle ilmoituksia</translation>
+<translation id="3430342160185525240">Tämä sallii Assistantin näyttää sinulle ilmoituksia.</translation>
 <translation id="3908743412684152579">Brave Software Assistantin asetukset</translation>
 <translation id="4933484234309072027">upotettu sivustoon <ph name="URL"/></translation>
 <translation id="8427292751741042100">verkkopalveluun upotettu</translation>
@@ -2047,6 +2011,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6295158916970320988">Kaikki sivustot</translation>
 <translation id="7625568159987162309">Näytä kaikki sivustoille tallennetut käyttöoikeudet ja data</translation>
 <translation id="3735740477244556633">Lajitteluperuste</translation>
+<translation id="6503077044568424649">Käydyimmät</translation>
+<translation id="967624055006145463">Tallennettu data</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Mainokset</translation>
 <translation id="5649053991847567735">Automaattiset lataukset</translation>
@@ -2122,7 +2088,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3038675903128704560">Älä anna sivustojen käyttää tietokonettasi laajennuksen avulla.</translation>
 <translation id="857943718398505171">Sallittu (suositus)</translation>
 <translation id="5000922062037820727">Estetty (suositus)</translation>
-<translation id="8116925261070264013">Mykistetty</translation>
 <translation id="8708000541097332489">Tyhjennä poistuttaessa</translation>
 <translation id="8037357227543935929">Kysy (oletus)</translation>
 <translation id="3427092606871434483">Salli (oletus)</translation>
@@ -2219,7 +2184,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7311891583377621132">Liikuta sormeasi hieman, niin sormenjäljen toinen osa tallennetaan.</translation>
 <translation id="7345706641791090287">Vahvista salasanasi</translation>
 <translation id="381202950560906753">Lisää toinen</translation>
-<translation id="3625538291267447988">Syötä salasanasi määrittääksesi Smart Lockin</translation>
 <translation id="6658023813581644008">Syötä salasanasi ottaaksesi Smart Lock ‑kirjautumisen käyttöön</translation>
 <translation id="5449551289610225147">Virheellinen salasana</translation>
 <translation id="5374359983950678924">Vaihda kuva</translation>
@@ -2259,8 +2223,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2709516037105925701">Automaattinen täyttö</translation>
 <translation id="1644574205037202324">Historia</translation>
 <translation id="5117427536932535467">Teemat ja taustakuvat</translation>
+<translation id="7029809446516969842">Salasanat</translation>
 <translation id="3259418918864581163">Luottokortit ja osoitteet Brave Software Paysta</translation>
-<translation id="4439834757335393741">Maksutavat ja osoitteet Brave Software Paysta</translation>
 <translation id="3268451620468152448">Avoimet välilehdet</translation>
 <translation id="5241892180459725878">Brave Software Drive ‑hakuehdotukset</translation>
 <translation id="2120297377148151361">Toiminnot ja vuorovaikutukset</translation>
@@ -2331,6 +2295,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1114202307280046356">Vinoneliö</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Askelpalautin</translation>
+<translation id="1938351510777341717">Ulkoinen Komento-näppäin</translation>
+<translation id="585979798156957858">Ulkoinen Meta-näppäin</translation>
 <translation id="4991420928586866460">Käytä ylärivin näppäimiä toimintanäppäiminä</translation>
 <translation id="85486688517848470">Pidä hakunäppäintä pohjassa, jos haluat vaihtaa ylärivin näppäinten toimintaa.</translation>
 <translation id="4400632832271803360">Pidä Käynnistysohjelma-näppäintä pohjassa, niin voit vaihtaa ylärivin näppäinten toimintaa.</translation>
@@ -2432,10 +2398,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2315821125498993513">Yhteyden muodostaminen puhelimeen epäonnistui. <ph name="LINK_BEGIN"/>Lisätietoja<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together on käytössä</translation>
 <translation id="3088402208262982892">Better Together on pois käytöstä</translation>
-<translation id="2079079131837725321">Avaa Bravebookin lukitus puhelimella. <ph name="LINK_BEGIN"/>Lisätietoja<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Yhteyden pikajakaminen</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Lähetä ja vastaanota tekstiviestejä Bravebookilla</translation>
 <translation id="3936335337858561470">Unohda tämä laite</translation>
 <translation id="3606712892509067288">Poista Better Togetherista</translation>
 <translation id="7878562273885520351">Salasanasi on saattanut vaarantua.</translation>
@@ -2566,7 +2529,9 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6112294629795967147">Muuta kokoa koskettamalla</translation>
 <translation id="2453860139492968684">Valmis</translation>
 <translation id="1853692000353488670">Uusi incognito-välilehti</translation>
+<translation id="6336451774241870485">Uusi yksityinen välilehti</translation>
 <translation id="5530766185686772672">Sulje incognito-välilehdet</translation>
+<translation id="6610147964972079463">Sulje yksityiset välilehdet</translation>
 <translation id="8076492880354921740">Välilehdet</translation>
 <translation id="1049743911850919806">Incognito</translation>
 </translationbundle>

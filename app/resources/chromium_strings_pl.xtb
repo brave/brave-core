@@ -34,7 +34,6 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="5785919770853225148">Brave zapisze to hasło na Twoim koncie Brave Software. Nie musisz go pamiętać.</translation>
 <translation id="3343095737966473035">Brave nie jest domyślną przeglądarką</translation>
 <translation id="6715663530666325392">Skonfiguruj synchronizację, by zapisać w internecie własne funkcje przeglądarki i mieć do nich dostęp w Brave na każdym komputerze.</translation>
-<translation id="2708027082363760195">Brave nie zawiera przeglądarki PDF wymaganej przez podgląd wydruku.</translation>
 <translation id="8880183781256147665">Dodawanie do Brave...</translation>
 <translation id="3561569806301739367">Plik <ph name="FILE_NAME"/> może być niebezpieczny, dlatego został zablokowany przez Brave.</translation>
 <translation id="9067428552314418522">Ten plik jest niebezpieczny, dlatego został zablokowany przez Brave.</translation>
@@ -82,6 +81,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="3215652305414474626">Kontroluje także to, jaka strona wyświetla się po uruchomieniu Brave lub kliknięciu przycisku strony startowej.</translation>
 <translation id="2433912322225810055">Kontroluje także to, jaka strona wyświetla się po uruchomieniu Brave lub wyszukiwaniu w omniboksie.</translation>
 <translation id="2871190378186459992">Odkryj znakomite aplikacje, gry, rozszerzenia i motywy do Brave.</translation>
+<translation id="2522086024276534909">Ponowne uruchomienie Brave OS</translation>
 <translation id="8183252473547465084">Zastosowanie aktualizacji wymaga ponownego uruchomienia systemu operacyjnego Brave.</translation>
 <translation id="5895138241574237353">Uruchom ponownie</translation>
 <translation id="5875673934455379806">Ponownie zainstaluj Brave</translation>
