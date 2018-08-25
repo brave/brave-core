@@ -54,6 +54,10 @@ std::string BraveStatsUpdaterParams::GetWeekOfInstallationParam() const {
   return week_of_installation_;
 }
 
+std::string BraveStatsUpdaterParams::GetReferralCodeParam() const {
+  return referral_promo_code_.empty() ? "none" : referral_promo_code_;
+}
+
 void BraveStatsUpdaterParams::LoadPrefs() {
   last_check_ymd_ = pref_service_->GetString(kLastCheckYMD);
   last_check_woy_ = pref_service_->GetInteger(kLastCheckWOY);
@@ -62,6 +66,7 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   week_of_installation_ = pref_service_->GetString(kWeekOfInstallation);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
+  referral_promo_code_ = pref_service_->GetString(kReferralPromoCode);
 }
 
 void BraveStatsUpdaterParams::SavePrefs() {
