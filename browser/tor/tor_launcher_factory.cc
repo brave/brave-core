@@ -4,6 +4,7 @@
 
 #include "brave/browser/tor/tor_launcher_factory.h"
 
+#include "brave/browser/tor/tor_profile_service_impl.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/service_manager_connection.h"
 #include "services/service_manager/public/cpp/connector.h"
@@ -74,17 +75,24 @@ void TorLauncherFactory::KillTorProcess() {
   tor_launcher_.reset();
 }
 
+void TorLauncherFactory::AddObserver(tor::TorProfileServiceImpl* service) {
+  observers_.AddObserver(service);
+}
+
+void TorLauncherFactory::RemoveObserver(tor::TorProfileServiceImpl* service) {
+  observers_.RemoveObserver(service);
+}
+
 void TorLauncherFactory::OnTorLauncherCrashed() {
   LOG(ERROR) << "Tor Launcher Crashed";
+  for (auto& observer : observers_)
+    observer.NotifyTorLauncherCrashed();
 }
 
 void TorLauncherFactory::OnTorCrashed(int64_t pid) {
   LOG(ERROR) << "Tor Process(" << pid << ") Crashed";
-  // TODO: notify obeserver
-#if 0
-  if (callback_)
-    callback_.Run(tor::TorProcessState::CRASHED, pid);
-#endif
+  for (auto& observer : observers_)
+    observer.NotifyTorCrashed(pid);
 }
 
 void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
@@ -92,13 +100,6 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
     tor_pid_ = pid;
   else
     LOG(ERROR) << "Tor Launching Failed(" << pid <<")";
-  // TODO: notify obeserver
-#if 0
-  if (callback_) {
-    if (result)
-      callback_.Run(tor::TorProcessState::LAUNCH_SUCCEEDED, pid);
-    else
-      callback_.Run(tor::TorProcessState::LAUNCH_FAILED, pid);
-  }
-#endif
+  for (auto& observer : observers_)
+    observer.NotifyTorLaunched(result, pid);
 }

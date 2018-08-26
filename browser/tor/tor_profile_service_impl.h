@@ -33,6 +33,11 @@ class TorProfileServiceImpl : public TorProfileService {
                         bool /* new circuit */) override;
 
   void KillTor();
+
+  // For internal observer
+  void NotifyTorLauncherCrashed();
+  void NotifyTorCrashed(int64_t pid);
+  void NotifyTorLaunched(bool result, int64_t pid);
  private:
   Profile* profile_;  // NOT OWNED
   TorLauncherFactory* tor_launcher_factory_; // Singleton

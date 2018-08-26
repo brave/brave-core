@@ -5,6 +5,7 @@
 #include "brave/browser/tor/tor_profile_service_impl.h"
 
 #include "base/bind.h"
+#include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
@@ -18,9 +19,11 @@ TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile) :
   //TODO: remove it
   LOG(ERROR) << profile_;
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
+  tor_launcher_factory_->AddObserver(this);
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
+  tor_launcher_factory_->RemoveObserver(this);
 }
 
 void TorProfileServiceImpl::Shutdown() {
@@ -63,5 +66,21 @@ void TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
 void TorProfileServiceImpl::KillTor() {
   tor_launcher_factory_->KillTorProcess();
 }
+
+void TorProfileServiceImpl::NotifyTorLauncherCrashed() {
+  for (auto& observer : observers_)
+    observer.OnTorLauncherCrashed();
+}
+
+void TorProfileServiceImpl::NotifyTorCrashed(int64_t pid) {
+  for (auto& observer : observers_)
+    observer.OnTorCrashed(pid);
+}
+
+void TorProfileServiceImpl::NotifyTorLaunched(bool result, int64_t pid) {
+  for (auto& observer : observers_)
+    observer.OnTorLaunched(result, pid);
+}
+
 
 }  // namespace tor

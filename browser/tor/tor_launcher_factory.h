@@ -7,10 +7,14 @@
 
 #include <string>
 
-#include "base/callback.h"
 #include "base/memory/singleton.h"
+#include "base/observer_list.h"
 #include "brave/common/tor/tor_common.h"
 #include "brave/common/tor/tor_launcher.mojom.h"
+
+namespace tor {
+class TorProfileServiceImpl;
+}
 
 class TorLauncherFactory {
  public:
@@ -22,6 +26,8 @@ class TorLauncherFactory {
   const tor::TorConfig& GetTorConfig() const { return config_; }
   int64_t GetTorPid() const { return tor_pid_; }
 
+  void AddObserver(tor::TorProfileServiceImpl* serice);
+  void RemoveObserver(tor::TorProfileServiceImpl* service);
  private:
   friend struct base::DefaultSingletonTraits<TorLauncherFactory>;
 
@@ -39,6 +45,8 @@ class TorLauncherFactory {
   int64_t tor_pid_;
 
   tor::TorConfig config_;
+
+  base::ObserverList<tor::TorProfileServiceImpl> observers_;
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherFactory);
 };

@@ -5,18 +5,9 @@
 #ifndef BRAVE_COMMON_TOR_TOR_COMMON_H_
 #define BRAVE_COMMON_TOR_TOR_COMMON_H_
 
-#include "base/callback.h"
 #include "base/files/file_path.h"
 
 namespace tor {
-
-enum class TorProcessState {
-  LAUNCH_SUCCEEDED,
-  LAUNCH_FAILED,
-  CRASHED
-};
-
-using TorLauncherCallback = base::Callback<void(TorProcessState, int64_t)>;
 
 class TorConfig {
  public:
