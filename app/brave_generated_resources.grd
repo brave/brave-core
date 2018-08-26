@@ -138,6 +138,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BLOCKED_AUTOPLAY_NO_ACTION" desc="Radio button choice to continue blocking a site from autoplay media, displayed in bubble when a page tries to autoplay media.">
         Continue blocking autoplay
       </message>
+      <!-- Appearance -->
+      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
+        Brave Themes
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />

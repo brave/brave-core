@@ -1,0 +1,59 @@
+diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.js b/chrome/browser/resources/settings/appearance_page/appearance_page.js
+index 1c7e3474a595250da00bc9249a047e4e1eae1786..e585821e63703e66c9f06f928ec35713d15f570f 100644
+--- a/chrome/browser/resources/settings/appearance_page/appearance_page.js
++++ b/chrome/browser/resources/settings/appearance_page/appearance_page.js
+@@ -87,6 +87,20 @@ Polymer({
+       ],
+     },
+ 
++    // <if expr="not _google_chrome">
++    braveThemeTypes_: {
++      readOnly: true,
++      type: Array,
++      value: [
++        'Default',
++        'Light',
++        'Dark',
++      ],
++    },
++
++    braveThemeType_: String,
++    // </if>
++
+     /** @private */
+     themeSublabel_: String,
+ 
+@@ -150,6 +164,11 @@ Polymer({
+           this.isWallpaperPolicyControlled_ = isPolicyControlled;
+         });
+     // </if>
++    // <if expr="not _google_chrome">
++    this.browserProxy_.getBraveThemeType().then(theme => {
++      this.braveThemeType_ = theme;
++    });
++    // </if>
+   },
+ 
+   /**
+@@ -323,5 +342,21 @@ Polymer({
+   zoomValuesEqual_: function(zoom1, zoom2) {
+     return Math.abs(zoom1 - zoom2) <= 0.001;
+   },
++
++  // <if expr="not _google_chrome">
++  /**
++   * @param {string} theme1
++   * @param {string} theme2
++   * @return {boolean}
++   * @private
++   */
++  braveThemeTypeEqual_: function(theme1, theme2) {
++    return theme1 === theme2;
++  },
++
++  onBraveThemeTypeChange_: function() {
++    this.browserProxy_.setBraveThemeType(this.$.braveThemeType.value);
++  },
++  // </if>
+ });
+ })();

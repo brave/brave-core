@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html b/chrome/browser/resources/settings/appearance_page/appearance_page.html
+index 720d25d126a118315a08cef90d77d1fc78775254..5072dfc50d1108b2eea75c6079ae144395d5c04b 100644
+--- a/chrome/browser/resources/settings/appearance_page/appearance_page.html
++++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html
+@@ -175,6 +175,20 @@
+             </template>
+           </select>
+         </div>
++<if expr="not _google_chrome">
++        <div class="settings-box">
++          <div class="start">$i18n{appearanceSettingsBraveTheme}</div>
++          <select id="braveThemeType" class="md-select"
++              on-change="onBraveThemeTypeChange_">
++            <template is="dom-repeat" items="[[braveThemeTypes_]]">
++              <option value="[[item]]"
++                  selected="[[braveThemeTypeEqual_(item, braveThemeType_)]]">
++                [[item]]
++              </option>
++            </template>
++          </select>
++        </div>
++</if>
+ <if expr="is_macosx">
+         <settings-toggle-button pref="{{prefs.webkit.webprefs.tabs_to_links}}"
+             label="$i18n{tabsToLinks}">

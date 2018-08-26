@@ -59,6 +59,8 @@ source_set("ui") {
     "webui/brave_webui_source.h",
     "webui/brave_welcome_ui.cc",
     "webui/brave_welcome_ui.h",
+    "webui/settings/brave_appearance_handler.cc",
+    "webui/settings/brave_appearance_handler.h",
   ]
 
   if (is_linux) {

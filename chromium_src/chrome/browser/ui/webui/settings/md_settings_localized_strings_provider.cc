@@ -26,7 +26,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source, Profile* profi
     {"siteSettingsAutoplayAsk",
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK},
     {"siteSettingsAutoplayAskRecommended",
-      IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK_RECOMMENDED}
+      IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK_RECOMMENDED},
+    {"appearanceSettingsBraveTheme",
+      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           arraysize(localized_strings));

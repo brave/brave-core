@@ -4,14 +4,14 @@
 
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 
+#include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 
 BraveMdSettingsUI::BraveMdSettingsUI(content::WebUI* web_ui,
                                      const std::string& host)
     : MdSettingsUI(web_ui) {
-#if defined(BRAVE_CHROMIUM_BUILD)
   web_ui->AddMessageHandler(std::make_unique<settings::MetricsReportingHandler>());
-#endif
+  web_ui->AddMessageHandler(std::make_unique<BraveAppearanceHandler>());
 }
 
 BraveMdSettingsUI::~BraveMdSettingsUI() {

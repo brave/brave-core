@@ -1,0 +1,41 @@
+diff --git a/chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.js b/chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.js
+index c75464dc66ecedd8dbfac47b0dbdb4b6c68fd969..fd62faf174909c5c385277c08bb782bd4127d442 100644
+--- a/chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.js
++++ b/chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.js
+@@ -45,6 +45,17 @@ cr.define('settings', function() {
+      * @return {!Promise<boolean>}
+      */
+     validateStartupPage(url) {}
++
++    // <if expr="not _google_chrome">
++    /**
++     * @return {!Promise<string>}
++     */
++    getBraveThemeType() {}
++    /**
++     * @param {string} theme name.
++     */
++    setBraveThemeType(theme) {}
++    // </if>
+   }
+ 
+   /**
+@@ -105,6 +116,18 @@ cr.define('settings', function() {
+     validateStartupPage(url) {
+       return cr.sendWithPromise('validateStartupPage', url);
+     }
++
++    // <if expr="not _google_chrome">
++    /** @override */
++    getBraveThemeType() {
++      return cr.sendWithPromise('getBraveThemeType');
++    }
++
++    /** @override */
++    setBraveThemeType(theme) {
++      chrome.send('setBraveThemeType', [theme]);
++    }
++    // </if>
+   }
+ 
+   cr.addSingletonGetter(AppearanceBrowserProxyImpl);
