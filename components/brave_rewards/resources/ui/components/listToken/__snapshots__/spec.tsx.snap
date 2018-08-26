@@ -87,23 +87,18 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
   <div
     className="c2"
   >
-    <span
-      id={undefined}
-    >
+    <span>
       <span
         className="c3"
       >
         <span
           className="c4"
-          color={undefined}
-          size={undefined}
         >
           
           10.0
         </span>
         <span
           className="c5"
-          size={undefined}
         >
           BAT
         </span>

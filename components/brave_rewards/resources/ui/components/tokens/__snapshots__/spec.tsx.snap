@@ -30,15 +30,12 @@ exports[`Tokens tests basic tests matches the snapshot 1`] = `
   >
     <span
       className="c1"
-      color={undefined}
-      size={undefined}
     >
       
       10.0
     </span>
     <span
       className="c2"
-      size={undefined}
     >
       BAT
     </span>

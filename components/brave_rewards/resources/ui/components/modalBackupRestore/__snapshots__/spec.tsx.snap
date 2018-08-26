@@ -311,9 +311,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
       <div
         className="c4"
       >
-        <div
-          id={undefined}
-        >
+        <div>
           <div
             className="c5"
           >
@@ -342,7 +340,6 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
             </div>
             <div
               className="c10"
-              id={undefined}
             >
               <div
                 className="c11"
@@ -353,13 +350,10 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               </div>
               <div
                 className="c12"
-                id={undefined}
               >
                 <textarea
                   className="c13"
                   disabled={true}
-                  onChange={undefined}
-                  value={undefined}
                 />
               </div>
             </div>

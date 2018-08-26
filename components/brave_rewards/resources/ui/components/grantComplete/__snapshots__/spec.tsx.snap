@@ -140,13 +140,11 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   </div>
   <button
     className="c5"
-    onClick={undefined}
     size="medium"
     type="default"
   >
     <div
       className="c6"
-      onClick={undefined}
       size="medium"
       type="default"
     >

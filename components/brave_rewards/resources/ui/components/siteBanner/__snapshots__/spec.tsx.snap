@@ -304,7 +304,6 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   >
     <button
       className="c2"
-      onClick={undefined}
     >
       <svg
         height="11"
@@ -384,16 +383,13 @@ exports[`List tests basic tests matches the snapshot 1`] = `
         >
           <div
             className="c17"
-            id={undefined}
           >
             <div
               className="c18"
             >
               MISSING: donationAmount
             </div>
-            <div
-              id={undefined}
-            >
+            <div>
               <div
                 className="c19"
                 onClick={[Function]}
@@ -440,7 +436,6 @@ exports[`List tests basic tests matches the snapshot 1`] = `
           <button
             className="c24"
             disabled={false}
-            onClick={undefined}
           >
             <span
               className="c25"

@@ -148,7 +148,6 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
 >
   <button
     className="c1"
-    onClick={undefined}
   >
     <svg
       height="11"
@@ -172,7 +171,6 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   >
     <div
       className="c4"
-      id={undefined}
     >
       <div
         className="c5"
@@ -191,12 +189,9 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
         >
           <div
             className="c8"
-            id={undefined}
           >
             <div
-              checked={undefined}
               className="c9"
-              disabled={undefined}
               size="small"
             >
               MISSING: off
@@ -209,13 +204,10 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
             >
               <div
                 className="c11"
-                disabled={undefined}
                 size="small"
               />
               <div
-                checked={undefined}
                 className="c12"
-                disabled={undefined}
                 size="small"
                 type="light"
               />
@@ -227,7 +219,6 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
     <button
       className="c13"
       disabled={false}
-      onClick={undefined}
     >
       <span
         className="c14"

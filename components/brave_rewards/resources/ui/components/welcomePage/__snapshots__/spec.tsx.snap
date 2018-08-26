@@ -540,14 +540,12 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             <button
               className="c12"
               data-test-id="optInAction"
-              onClick={undefined}
               size="large"
               type="subtle"
             >
               <div
                 className="c13"
                 data-test-id="optInAction"
-                onClick={undefined}
                 size="large"
                 type="subtle"
               >
@@ -634,13 +632,9 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             <div
               className="c23"
               disabled={false}
-              id={undefined}
-              onClick={undefined}
             >
               <div
                 className="c24"
-                id={undefined}
-                onClick={undefined}
                 size={1}
               >
                 <div
@@ -757,8 +751,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               </div>
               <div
                 className="c24"
-                id={undefined}
-                onClick={undefined}
                 size={1}
               >
                 <div
@@ -814,8 +806,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               </div>
               <div
                 className="c24"
-                id={undefined}
-                onClick={undefined}
                 size={1}
               >
                 <div
@@ -908,13 +898,11 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             </p>
             <button
               className="c34"
-              onClick={undefined}
               size="call-to-action"
               type="accent"
             >
               <div
                 className="c35"
-                onClick={undefined}
                 size="call-to-action"
                 type="accent"
               >

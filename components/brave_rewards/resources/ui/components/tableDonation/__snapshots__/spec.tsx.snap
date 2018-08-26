@@ -44,9 +44,7 @@ exports[`TableDonation tests basic tests matches the snapshot 1`] = `
 <div
   id="table"
 >
-  <div
-    id={undefined}
-  >
+  <div>
     <table
       className="c0"
     >

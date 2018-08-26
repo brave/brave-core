@@ -195,7 +195,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   <div>
     <div
       className="c3"
-      id={undefined}
     >
       <div
         className="c4"
@@ -205,30 +204,25 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       <div
         className="c5"
       >
-        <span
-          id={undefined}
-        >
+        <span>
           <span
             className="c6"
           >
             <span
               className="c7"
               color="earnings"
-              size={undefined}
             >
               
               10.0
             </span>
             <span
               className="c8"
-              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
-            size={undefined}
           >
             0.25
              
@@ -239,7 +233,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
     </div>
     <div
       className="c3"
-      id={undefined}
     >
       <div
         className="c4"
@@ -249,30 +242,25 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       <div
         className="c5"
       >
-        <span
-          id={undefined}
-        >
+        <span>
           <span
             className="c6"
           >
             <span
               className="c7"
               color="earnings"
-              size={undefined}
             >
               
               10.0
             </span>
             <span
               className="c8"
-              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
-            size={undefined}
           >
             0.25
              
@@ -283,7 +271,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
     </div>
     <div
       className="c3"
-      id={undefined}
     >
       <div
         className="c4"
@@ -293,30 +280,25 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       <div
         className="c5"
       >
-        <span
-          id={undefined}
-        >
+        <span>
           <span
             className="c6"
           >
             <span
               className="c10"
               color="contribute"
-              size={undefined}
             >
               -
               10.0
             </span>
             <span
               className="c8"
-              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
-            size={undefined}
           >
             0.25
              
@@ -327,7 +309,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
     </div>
     <div
       className="c3"
-      id={undefined}
     >
       <div
         className="c4"
@@ -337,30 +318,25 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       <div
         className="c5"
       >
-        <span
-          id={undefined}
-        >
+        <span>
           <span
             className="c6"
           >
             <span
               className="c11"
               color="donation"
-              size={undefined}
             >
               -
               2.0
             </span>
             <span
               className="c8"
-              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
-            size={undefined}
           >
             0.25
              
@@ -371,7 +347,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
     </div>
     <div
       className="c3"
-      id={undefined}
     >
       <div
         className="c4"
@@ -381,30 +356,25 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       <div
         className="c5"
       >
-        <span
-          id={undefined}
-        >
+        <span>
           <span
             className="c6"
           >
             <span
               className="c11"
               color="donation"
-              size={undefined}
             >
               -
               19.0
             </span>
             <span
               className="c8"
-              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
-            size={undefined}
           >
             5.25
              
@@ -415,7 +385,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
     </div>
     <div
       className="c12"
-      id={undefined}
     >
       <div
         className="c4"
@@ -425,30 +394,24 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       <div
         className="c5"
       >
-        <span
-          id={undefined}
-        >
+        <span>
           <span
             className="c6"
           >
             <span
               className="c13"
-              color={undefined}
-              size={undefined}
             >
               
               19.0
             </span>
             <span
               className="c8"
-              size={undefined}
             >
               BAT
             </span>
           </span>
           <span
             className="c9"
-            size={undefined}
           >
             5.25
              

@@ -226,7 +226,6 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
             "position": "after",
           }
         }
-        onClick={undefined}
         size="small"
         type="subtle"
       >
@@ -250,7 +249,6 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
               "position": "after",
             }
           }
-          onClick={undefined}
           size="small"
           type="subtle"
         >
@@ -276,7 +274,6 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
               "position": "after",
             }
           }
-          onClick={undefined}
           size="small"
           type="subtle"
         >

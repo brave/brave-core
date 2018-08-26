@@ -59,7 +59,6 @@ exports[`Donate tests basic tests matches the snapshot 1`] = `
   <button
     className="c3"
     disabled={false}
-    onClick={undefined}
   >
     <span
       className="c4"

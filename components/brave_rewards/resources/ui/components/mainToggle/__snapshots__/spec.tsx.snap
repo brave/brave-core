@@ -214,12 +214,9 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   >
     <div
       className="c5"
-      id={undefined}
     >
       <div
-        checked={undefined}
         className="c6"
-        disabled={undefined}
         size="large"
       >
         MISSING: off
@@ -227,18 +224,14 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
       <div
         className="c7"
         data-test-id="toggle"
-        onClick={undefined}
         size="large"
       >
         <div
           className="c8"
-          disabled={undefined}
           size="large"
         />
         <div
-          checked={undefined}
           className="c9"
-          disabled={undefined}
           size="large"
           type="dark"
         />

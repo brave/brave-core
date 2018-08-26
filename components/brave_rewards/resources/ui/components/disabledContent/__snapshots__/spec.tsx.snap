@@ -110,28 +110,19 @@ exports[`Disabled Content tests basic tests matches the snapshot 1`] = `
   <div
     className="c0"
     disabled={false}
-    id={undefined}
-    onClick={undefined}
   >
     <div
       className="c1"
-      id={undefined}
-      onClick={undefined}
       size={1}
     >
-      <img
-        src={undefined}
-      />
+      <img />
     </div>
     <div
       className="c2"
-      id={undefined}
-      onClick={undefined}
       size={2}
     >
       <div
         className="c3"
-        type={undefined}
       />
     </div>
   </div>

@@ -159,9 +159,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
         className="c3"
       >
         <div
-          checked={undefined}
           className="c4"
-          type={undefined}
         >
           test
         </div>

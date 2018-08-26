@@ -228,7 +228,6 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   >
     <div
       className="c2"
-      onClick={undefined}
     >
       <svg
         height="11"
@@ -326,12 +325,8 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
           >
             MISSING: transactions
           </div>
-          <div
-            id={undefined}
-          >
-            <div
-              id={undefined}
-            >
+          <div>
+            <div>
               <table
                 className="c13"
               >
@@ -381,12 +376,8 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
               MISSING: paymentMonthly
             </div>
           </div>
-          <div
-            id={undefined}
-          >
-            <div
-              id={undefined}
-            >
+          <div>
+            <div>
               <table
                 className="c13"
               >

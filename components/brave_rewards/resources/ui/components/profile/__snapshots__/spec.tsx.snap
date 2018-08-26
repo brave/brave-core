@@ -79,20 +79,16 @@ exports[`Profile tests basic tests matches the snapshot 1`] = `
     <img
       className="c2"
       src=""
-      type={undefined}
     />
   </div>
   <div
     className="c3"
-    type={undefined}
   >
     <div
       className="c4"
-      type={undefined}
     >
       <span
         className="c5"
-        type={undefined}
       />
     </div>
   </div>

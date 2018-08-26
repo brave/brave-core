@@ -134,7 +134,6 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   </div>
   <button
     className="c3"
-    onClick={undefined}
   >
     MISSING: claim
   </button>

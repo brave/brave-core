@@ -189,7 +189,6 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
         aria-hidden="true"
         className="c4"
         focusable="false"
-        role={undefined}
         viewBox="0 0 32 32"
       >
         <g
@@ -235,13 +234,11 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
     >
       <button
         className="c9"
-        onClick={undefined}
         size="large"
         type="subtle"
       >
         <div
           className="c10"
-          onClick={undefined}
           size="large"
           type="subtle"
         >

@@ -78,7 +78,6 @@ exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
     draggable="false"
     onDragOver={[Function]}
     onDrop={[Function]}
-    src={undefined}
   />
 </div>
 `;

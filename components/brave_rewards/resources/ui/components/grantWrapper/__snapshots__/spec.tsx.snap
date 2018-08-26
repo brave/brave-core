@@ -74,7 +74,6 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
 >
   <button
     className="c1"
-    onClick={undefined}
   >
     <svg
       height="16"
