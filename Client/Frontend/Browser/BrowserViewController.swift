@@ -216,6 +216,7 @@ class BrowserViewController: UIViewController {
             updateURLBarDisplayURL(tab)
             navigationToolbar.updateBackStatus(webView.canGoBack)
             navigationToolbar.updateForwardStatus(webView.canGoForward)
+            urlBar.locationView.loading = tab.loading
             // TODO: Update reload status on TabLocationView
         }
         
@@ -855,7 +856,9 @@ class BrowserViewController: UIViewController {
         case .loading:
             guard let loading = change?[.newKey] as? Bool else { break }
 
-            // TODO: Update reload status on TabLocationView
+            if webView == tabManager.selectedTab?.webView {
+                urlBar.locationView.loading = loading
+            }
 
             if !loading {
                 runScriptsOnWebView(webView)
@@ -933,7 +936,8 @@ class BrowserViewController: UIViewController {
         urlBar.hasOnlySecureContent = tab.webView?.hasOnlySecureContent ?? false
 
         let isPage = tab.url?.displayURL?.isWebPage() ?? false
-        navigationToolbar.updatePageStatus(isPage)
+        toolbar?.updatePageStatus(isPage)
+        urlBar.updatePageStatus(isPage)
     }
 
     // MARK: Opening New Tabs
@@ -1276,6 +1280,26 @@ extension BrowserViewController: URLBarDelegate {
     func urlBarDidPressStop(_ urlBar: URLBarView) {
         tabManager.selectedTab?.stop()
     }
+    
+    func urlBarDidLongPressReloadButton(_ urlBar: URLBarView, from button: UIButton) {
+        guard let tab = tabManager.selectedTab else { return }
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil))
+        
+        let toggleActionTitle = tab.desktopSite ? Strings.AppMenuViewMobileSiteTitleString : Strings.AppMenuViewDesktopSiteTitleString
+        alert.addAction(UIAlertAction(title: toggleActionTitle, style: .default, handler: { _ in
+            tab.toggleDesktopSite()
+        }))
+        
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            alert.popoverPresentationController?.sourceView = self.view
+            alert.popoverPresentationController?.sourceRect = self.view.convert(button.frame, from: button.superview)
+            alert.popoverPresentationController?.permittedArrowDirections = [.up]
+        }
+        present(alert, animated: true, completion: nil)
+    }
 
     func urlBarDidPressTabs(_ urlBar: URLBarView) {
         showTabTray()
@@ -1486,29 +1510,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         generator.impactOccurred()
         showBackForwardList()
     }
-
-    func tabToolbarDidPressReload(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        tabManager.selectedTab?.reload()
-    }
-
-    func tabToolbarDidLongPressReload(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        guard let tab = tabManager.selectedTab else {
-            return
-        }
-        let urlActions = self.getRefreshLongPressMenu(for: tab)
-        guard !urlActions.isEmpty else {
-            return
-        }
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
-        let shouldSuppress = UIDevice.current.userInterfaceIdiom == .pad
-        presentSheetWith(actions: [urlActions], on: self, from: button, suppressPopover: shouldSuppress)
-    }
-
-    func tabToolbarDidPressStop(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        tabManager.selectedTab?.stop()
-    }
-
+    
     func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         tabManager.selectedTab?.goForward()
     }
@@ -1780,7 +1782,7 @@ extension BrowserViewController: TabManagerDelegate {
 
         updateFindInPageVisibility(visible: false, tab: previous)
 
-        // TODO: Update reload status on TabLocationView
+        urlBar.locationView.loading = selected?.loading ?? false
         navigationToolbar.updateBackStatus(selected?.canGoBack ?? false)
         navigationToolbar.updateForwardStatus(selected?.canGoForward ?? false)
         if !(selected?.webView?.url?.isLocalUtility ?? false) {
