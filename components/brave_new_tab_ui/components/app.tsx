@@ -152,8 +152,8 @@ class NewTabPage extends React.Component<Props, {}> {
                 <Column size={2}>
                   <Stats stats={newTabData.stats}/>
                 </Column>
-                <Column size={1} theme={theme.clockContainer}>
-                  <Clock theme={theme.clock} />
+                <Column size={1} customStyle={theme.clockContainer}>
+                  <Clock customStyle={theme.clock} />
                 </Column>
               </Grid>
             </div>

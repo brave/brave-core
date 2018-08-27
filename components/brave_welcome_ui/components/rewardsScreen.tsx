@@ -20,13 +20,13 @@ export default class RewardsScreen extends React.PureComponent {
   render () {
     return (
       <section style={theme.content}>
-        <Image theme={theme.paymentsImage} src={rewardsImage} />
-        <Heading level={1} theme={theme.title} text={getLocale('enableBraveRewards')} />
-        <Paragraph theme={theme.text} text={getLocale('setupBraveRewards')} />
+        <Image customStyle={theme.paymentsImage} src={rewardsImage} />
+        <Heading level={1} customStyle={theme.title} text={getLocale('enableBraveRewards')} />
+        <Paragraph customStyle={theme.text} text={getLocale('setupBraveRewards')} />
         <PushButtonLink
           color='primary'
           size='large'
-          theme={theme.mainButton}
+          customStyle={theme.mainButton}
           href='chrome://rewards'
         >
           {getLocale('enableRewards')}

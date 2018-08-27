@@ -28,13 +28,13 @@ export default class BraveScreen extends React.PureComponent<Props, {}> {
   render () {
     return (
       <section style={theme.content}>
-        <Image theme={theme.braveLogo} src={braveLogo} />
-        <Heading level={1} theme={theme.title} text={getLocale('welcome')} />
-        <Paragraph theme={theme.text} text={getLocale('whatIsBrave')} />
+        <Image customStyle={theme.braveLogo} src={braveLogo} />
+        <Heading level={1} customStyle={theme.title} text={getLocale('welcome')} />
+        <Paragraph customStyle={theme.text} text={getLocale('whatIsBrave')} />
         <PushButton
           color='primary'
           size='large'
-          theme={theme.mainButton}
+          customStyle={theme.mainButton}
           onClick={this.onClickLetsGo}
         >
           {getLocale('letsGo')}

@@ -19,9 +19,9 @@ export default class ShieldsScreen extends React.PureComponent {
   render () {
     return (
       <section style={theme.content}>
-        <Image theme={theme.shieldsImage} src={shieldsImage} />
-        <Heading level={1} theme={theme.title} text={getLocale('manageShields')} />
-        <Paragraph theme={theme.text} text={getLocale('adjustProtectionLevel')} />
+        <Image customStyle={theme.shieldsImage} src={shieldsImage} />
+        <Heading level={1} customStyle={theme.title} text={getLocale('manageShields')} />
+        <Paragraph customStyle={theme.text} text={getLocale('adjustProtectionLevel')} />
       </section>
     )
   }
