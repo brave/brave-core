@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
-.c4 {
+.c5 {
   font-family: Poppins,sans-serif;
 }
 
-.c5 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,13 +17,13 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   justify-content: space-between;
 }
 
-.c6 {
+.c7 {
   -webkit-flex-basis: 40%;
   -ms-flex-preferred-size: 40%;
   flex-basis: 40%;
 }
 
-.c7 {
+.c8 {
   -webkit-flex-basis: 378px;
   -ms-flex-preferred-size: 378px;
   flex-basis: 378px;
@@ -37,7 +37,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   margin-bottom: 45px;
 }
 
-.c8 {
+.c9 {
   margin-bottom: 103px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -45,7 +45,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   display: flex;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -56,20 +56,20 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c10 {
+.c11 {
   font-size: 14px;
   line-height: 1.43;
   color: #838391;
   margin-left: 13px;
 }
 
-.c11 {
+.c12 {
   background-color: #f9f9fd;
   margin: 0 -50px;
   padding: 0 50px;
 }
 
-.c23 {
+.c24 {
   max-width: 508px;
   margin-top: 46px;
   font-family: Muli,sans-serif;
@@ -79,7 +79,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   color: #686978;
 }
 
-.c12 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -101,7 +101,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   margin-top: 28px;
 }
 
-.c17 {
+.c18 {
   font-size: 14px;
   font-weight: 300;
   line-height: 2.79;
@@ -113,7 +113,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   text-transform: none;
 }
 
-.c21 {
+.c22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -128,59 +128,65 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   padding: 11px 0 32px;
 }
 
-.c22 {
+.c23 {
   margin-left: 8px;
 }
 
-.c19 {
+.c20 {
   text-align: right;
 }
 
-.c20 {
+.c21 {
   padding-right: 10px;
 }
 
-.c16 {
+.c17 {
   text-align: center;
   padding: 30px 0;
   color: #999ea2;
   font-size: 14px;
 }
 
-.c13 {
+.c14 {
   width: 100%;
   margin-bottom: 11px;
 }
 
-.c14 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Poppins,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 2.33;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 9px 0;
-}
-
-.c18 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Poppins,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 2.33;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 9px 0;
-}
-
 .c15 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Poppins,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 2.33;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 9px 0;
+}
+
+.c19 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Poppins,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 2.33;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 9px 0;
+}
+
+.c16 {
   text-align: right;
   padding-right: 14px;
+}
+
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 .c0 {
@@ -208,11 +214,13 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   position: absolute;
   top: 19px;
   right: 19px;
-  padding: 10px;
   cursor: pointer;
+  width: 27px;
+  height: 27px;
+  color: #B8B9C4;
 }
 
-.c3 {
+.c4 {
   padding: 61px 50px;
   overflow-y: auto;
   max-height: calc(100vh - 100px);
@@ -231,37 +239,36 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
       className="c2"
     >
       <svg
-        height="11"
-        width="11"
-        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
       >
         <path
-          d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
-          fill="#DFDFE8"
-          fillRule="evenodd"
+          d="M15.77817 14.36396l7.07107-7.07107c.39053-.39052 1.0237-.39052 1.41422 0 .39052.39053.39052 1.0237 0 1.41422l-7.07107 7.07106 7.07107 7.07107c.39052.39053.39052 1.0237 0 1.41422-.39053.39052-1.0237.39052-1.41422 0l-7.07107-7.07107-7.07106 7.07107c-.39053.39052-1.0237.39052-1.41422 0-.39052-.39053-.39052-1.0237 0-1.41422l7.07107-7.07107L7.2929 8.70711c-.39052-.39053-.39052-1.0237 0-1.41422.39053-.39052 1.0237-.39052 1.41422 0l7.07106 7.07107z"
         />
       </svg>
     </div>
     <div
-      className="c3"
+      className="c4"
     >
       <div
-        className="c4"
+        className="c5"
       >
         <div
-          className="c5"
+          className="c6"
         >
           <div
-            className="c6"
+            className="c7"
           />
           <div
-            className="c7"
+            className="c8"
           >
             <div
-              className="c8"
+              className="c9"
             >
               <button
-                className="c9"
+                className="c10"
               >
                 <svg
                   height="21"
@@ -282,13 +289,13 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                 </svg>
                  
                 <div
-                  className="c10"
+                  className="c11"
                 >
                   MISSING: print
                 </div>
               </button>
               <button
-                className="c9"
+                className="c10"
               >
                 <svg
                   height="17"
@@ -310,7 +317,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                 </svg>
                  
                 <div
-                  className="c10"
+                  className="c11"
                 >
                   MISSING: downloadPDF
                 </div>
@@ -319,40 +326,40 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
           </div>
         </div>
         <div
-          className="c11"
+          className="c12"
         >
           <div
-            className="c12"
+            className="c13"
           >
             MISSING: transactions
           </div>
           <div>
             <div>
               <table
-                className="c13"
+                className="c14"
               >
                 <thead>
                   <tr>
                     <th
-                      className="c14"
+                      className="c15"
                     >
                       MISSING: date
                     </th>
                     <th
-                      className="c14"
+                      className="c15"
                     >
                       MISSING: type
                     </th>
                     <th
-                      className="c14"
+                      className="c15"
                     >
                       MISSING: description
                     </th>
                     <th
-                      className="c14"
+                      className="c15"
                     >
                       <div
-                        className="c15"
+                        className="c16"
                       >
                         MISSING: amount
                       </div>
@@ -361,18 +368,18 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                 </thead>
               </table>
               <div
-                className="c16"
+                className="c17"
               />
             </div>
           </div>
           <div
-            className="c12"
+            className="c13"
           >
             <span>
               MISSING: contributeAllocation
             </span>
             <div
-              className="c17"
+              className="c18"
             >
               MISSING: paymentMonthly
             </div>
@@ -380,31 +387,31 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
           <div>
             <div>
               <table
-                className="c13"
+                className="c14"
               >
                 <thead>
                   <tr>
                     <th
-                      className="c18"
+                      className="c19"
                     >
                       <div>
                         MISSING: rewardsContributeVisited
                       </div>
                     </th>
                     <th
-                      className="c18"
+                      className="c19"
                     >
                       <div
-                        className="c19"
+                        className="c20"
                       >
                         MISSING: rewardsContributeAttention
                       </div>
                     </th>
                     <th
-                      className="c18"
+                      className="c19"
                     >
                       <div
-                        className="c20 c19"
+                        className="c21 c20"
                       >
                         MISSING: payment
                       </div>
@@ -413,12 +420,12 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                 </thead>
               </table>
               <div
-                className="c16"
+                className="c17"
               />
             </div>
           </div>
           <div
-            className="c21"
+            className="c22"
           >
             <svg
               height="16"
@@ -441,14 +448,14 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
             </svg>
              
             <div
-              className="c22"
+              className="c23"
             >
               MISSING: braveVerified
             </div>
           </div>
         </div>
         <div
-          className="c23"
+          className="c24"
         >
           <b>
             MISSING: pleaseNote

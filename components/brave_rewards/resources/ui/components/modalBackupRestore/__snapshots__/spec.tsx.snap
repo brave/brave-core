@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
-.c16 {
+.c17 {
   --button-main-color: #C5C5D3;
   --button-main-color-hover: #A0A1B2;
   --button-main-color-active: #E9E9F4;
@@ -43,15 +43,15 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   color: var(--button-state-color);
 }
 
-.c16:hover:enabled {
+.c17:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c16:active:enabled {
+.c17:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c19 {
+.c20 {
   --button-main-color: #242536;
   --button-main-color-hover: #131525;
   --button-main-color-active: #343546;
@@ -93,15 +93,15 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   color: var(--button-state-color);
 }
 
-.c19:hover:enabled {
+.c20:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c19:active:enabled {
+.c20:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c17 {
+.c18 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -121,11 +121,11 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   line-height: 1;
 }
 
-.c4 {
+.c5 {
   margin-top: 33px;
 }
 
-.c9 {
+.c10 {
   font-family: Muli,sans-serif;
   font-size: 16px;
   font-weight: 300;
@@ -134,7 +134,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   margin-bottom: 39px;
 }
 
-.c14 {
+.c15 {
   text-align: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -142,21 +142,27 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   display: flex;
 }
 
-.c15 {
+.c16 {
   margin: 0 4px;
 }
 
-.c18 {
+.c19 {
   text-align: center;
   margin-top: 59px;
 }
 
-.c10 {
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c11 {
   width: 100%;
   margin-bottom: 12px;
 }
 
-.c11 {
+.c12 {
   width: 100%;
   font-family: Poppins,sans-serif;
   line-height: normal;
@@ -197,23 +203,25 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   position: absolute;
   top: 19px;
   right: 19px;
-  padding: 10px;
   cursor: pointer;
+  width: 27px;
+  height: 27px;
+  color: #B8B9C4;
 }
 
-.c3 {
+.c4 {
   padding: 61px 50px;
   overflow-y: auto;
   max-height: calc(100vh - 100px);
 }
 
-.c5 {
+.c6 {
   border-bottom: 1px solid #DFDFE8;
   text-align: center;
   font-family: Poppins,sans-serif;
 }
 
-.c6 {
+.c7 {
   border-radius: 6px 6px 0 0;
   border: 1px solid #DFDFE8;
   border-bottom: 1px solid #FFF;
@@ -234,7 +242,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   top: 1px;
 }
 
-.c7 {
+.c8 {
   border-radius: 6px 6px 0 0;
   border: 1px solid #DFDFE8;
   border-bottom: 1px solid #DFDFE8;
@@ -255,15 +263,15 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   top: 1px;
 }
 
-.c8 {
+.c9 {
   padding: 34px 56px 20px;
 }
 
-.c12 {
+.c13 {
   width: 100%;
 }
 
-.c13 {
+.c14 {
   min-height: 140px;
   box-sizing: border-box;
   width: 100%;
@@ -276,7 +284,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   line-height: 26px;
 }
 
-.c13:focus {
+.c14:focus {
   border-color: #A1A8F2;
   outline: none;
 }
@@ -295,36 +303,35 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
       onClick={[Function]}
     >
       <svg
-        height="11"
-        width="11"
-        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
       >
         <path
-          d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
-          fill="#DFDFE8"
-          fillRule="evenodd"
+          d="M15.77817 14.36396l7.07107-7.07107c.39053-.39052 1.0237-.39052 1.41422 0 .39052.39053.39052 1.0237 0 1.41422l-7.07107 7.07106 7.07107 7.07107c.39052.39053.39052 1.0237 0 1.41422-.39053.39052-1.0237.39052-1.41422 0l-7.07107-7.07107-7.07106 7.07107c-.39053.39052-1.0237.39052-1.41422 0-.39052-.39053-.39052-1.0237 0-1.41422l7.07107-7.07107L7.2929 8.70711c-.39052-.39053-.39052-1.0237 0-1.41422.39053-.39052 1.0237-.39052 1.41422 0l7.07106 7.07107z"
         />
       </svg>
     </div>
     <div
-      className="c3"
+      className="c4"
     >
       <div
-        className="c4"
+        className="c5"
       >
         <div>
           <div
-            className="c5"
+            className="c6"
           >
             <div
-              className="c6"
+              className="c7"
               onClick={[Function]}
               selected={true}
             >
               MISSING: rewardsBackupText1
             </div>
             <div
-              className="c7"
+              className="c8"
               onClick={[Function]}
               selected={false}
             >
@@ -332,43 +339,43 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
             </div>
           </div>
           <div
-            className="c8"
+            className="c9"
           >
             <div
-              className="c9"
+              className="c10"
             >
               MISSING: rewardsBackupText2
             </div>
             <div
-              className="c10"
+              className="c11"
             >
               <div
-                className="c11"
+                className="c12"
                 disabled={false}
                 type="light"
               >
                 MISSING: recoveryKeys
               </div>
               <div
-                className="c12"
+                className="c13"
               >
                 <textarea
-                  className="c13"
+                  className="c14"
                   disabled={true}
                 />
               </div>
             </div>
             <div
-              className="c14"
+              className="c15"
             >
               <button
-                className="c15 c16"
+                className="c16 c17"
                 onClick={[Function]}
                 size="small"
                 type="subtle"
               >
                 <div
-                  className="c17"
+                  className="c18"
                   onClick={[Function]}
                   size="small"
                   type="subtle"
@@ -377,13 +384,13 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
                 </div>
               </button>
               <button
-                className="c15 c16"
+                className="c16 c17"
                 onClick={[Function]}
                 size="small"
                 type="subtle"
               >
                 <div
-                  className="c17"
+                  className="c18"
                   onClick={[Function]}
                   size="small"
                   type="subtle"
@@ -392,13 +399,13 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
                 </div>
               </button>
               <button
-                className="c15 c16"
+                className="c16 c17"
                 onClick={[Function]}
                 size="small"
                 type="subtle"
               >
                 <div
-                  className="c17"
+                  className="c18"
                   onClick={[Function]}
                   size="small"
                   type="subtle"
@@ -408,16 +415,16 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               </button>
             </div>
             <div
-              className="c18"
+              className="c19"
             >
               <button
-                className="c19"
+                className="c20"
                 onClick={[Function]}
                 size="medium"
                 type="default"
               >
                 <div
-                  className="c17"
+                  className="c18"
                   onClick={[Function]}
                   size="medium"
                   type="default"

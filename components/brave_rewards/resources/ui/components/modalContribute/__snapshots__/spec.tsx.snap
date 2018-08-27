@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
-.c4 {
+.c5 {
   font-family: Poppins,sans-serif;
 }
 
-.c5 {
+.c6 {
   font-size: 16px;
   font-weight: 600;
   line-height: 2;
   color: #4b4c5c;
 }
 
-.c6 {
+.c7 {
   font-size: 28px;
   color: #696fdc;
   margin-bottom: 33px;
 }
 
-.c7 {
+.c8 {
   font-weight: 500;
   color: #0c0d21;
 }
@@ -48,37 +48,45 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
   position: absolute;
   top: 19px;
   right: 19px;
-  padding: 10px;
   cursor: pointer;
+  width: 27px;
+  height: 27px;
+  color: #B8B9C4;
 }
 
-.c3 {
+.c4 {
   padding: 61px 50px;
   overflow-y: auto;
   max-height: calc(100vh - 100px);
 }
 
-.c10 {
-  text-align: right;
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 .c11 {
-  padding-right: 10px;
+  text-align: right;
 }
 
 .c12 {
+  padding-right: 10px;
+}
+
+.c13 {
   text-align: center;
   padding: 30px 0;
   color: #999ea2;
   font-size: 14px;
 }
 
-.c8 {
+.c9 {
   width: 100%;
   margin-bottom: 11px;
 }
 
-.c9 {
+.c10 {
   text-transform: uppercase;
   text-align: left;
   font-family: Poppins,sans-serif;
@@ -104,35 +112,34 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
       className="c2"
     >
       <svg
-        height="11"
-        width="11"
-        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
       >
         <path
-          d="M1.017 11l-.982-.971L4.551 5.48 0 .976.969 0l4.547 4.502L9.923.066l.985.975-4.407 4.436L11 9.932l-.969.977-4.499-4.456z"
-          fill="#DFDFE8"
-          fillRule="evenodd"
+          d="M15.77817 14.36396l7.07107-7.07107c.39053-.39052 1.0237-.39052 1.41422 0 .39052.39053.39052 1.0237 0 1.41422l-7.07107 7.07106 7.07107 7.07107c.39052.39053.39052 1.0237 0 1.41422-.39053.39052-1.0237.39052-1.41422 0l-7.07107-7.07107-7.07106 7.07107c-.39053.39052-1.0237.39052-1.41422 0-.39052-.39053-.39052-1.0237 0-1.41422l7.07107-7.07107L7.2929 8.70711c-.39052-.39053-.39052-1.0237 0-1.41422.39053-.39052 1.0237-.39052 1.41422 0l7.07106 7.07107z"
         />
       </svg>
     </div>
     <div
-      className="c3"
+      className="c4"
     >
       <div
-        className="c4"
+        className="c5"
       >
         <div
-          className="c5"
+          className="c6"
         >
           MISSING: rewardsContribute
         </div>
         <div
-          className="c6"
+          className="c7"
         >
           MISSING: rewardsContributeText1
            
           <span
-            className="c7"
+            className="c8"
           >
             0
           </span>
@@ -143,31 +150,31 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
         <div>
           <div>
             <table
-              className="c8"
+              className="c9"
             >
               <thead>
                 <tr>
                   <th
-                    className="c9"
+                    className="c10"
                   >
                     <div>
                       MISSING: site
                     </div>
                   </th>
                   <th
-                    className="c9"
+                    className="c10"
                   >
                     <div
-                      className="c10"
+                      className="c11"
                     >
                       MISSING: rewardsContributeAttention
                     </div>
                   </th>
                   <th
-                    className="c9"
+                    className="c10"
                   >
                     <div
-                      className="c11 c10"
+                      className="c12 c11"
                     >
                       
                     </div>
@@ -176,7 +183,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
               </thead>
             </table>
             <div
-              className="c12"
+              className="c13"
             />
           </div>
         </div>
