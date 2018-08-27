@@ -6,21 +6,21 @@ import styled from 'styled-components'
 
 const batOutline = require('./assets/batOutline.svg')
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
   border-radius: 8px;
   font-family: "Poppins", sans-serif;
   background-image: linear-gradient(140deg, #392DD1 0%, #8E2995 100%);
 ` as any
 
-export const StyledInnerWrapper = styled.div`
+export const StyledInnerWrapper = styled<{}, 'div'>('div')`
   margin: 0 auto;
   display: inline-block;
   padding: 35px 30px 25px;
   background: url(${batOutline}) no-repeat top;
 ` as any
 
-export const StyledHeaderText = styled.p`
+export const StyledHeaderText = styled<{}, 'p'>('p')`
   width: 261px;
   color: #FFFFFF;
   font-size: 16px;
@@ -32,7 +32,7 @@ export const StyledHeaderText = styled.p`
   font-family: Muli, sans-serif;
 ` as any
 
-export const StyledBatLogo = styled.span`
+export const StyledBatLogo = styled<{}, 'span'>('span')`
   display: block;
   margin: -10px auto 2px;
   width: 150px;
@@ -40,7 +40,7 @@ export const StyledBatLogo = styled.span`
   padding: 20px 0 15px;
 ` as any
 
-export const StyledTitle = styled.h1`
+export const StyledTitle = styled<{}, 'h1'>('h1')`
   color: #FFFFFF;
   font-size: 28px;
   font-weight: 400;
@@ -50,7 +50,7 @@ export const StyledTitle = styled.h1`
   display: inline-block;
 ` as any
 
-export const StyledDescText = styled.p`
+export const StyledDescText = styled<{}, 'p'>('p')`
   color: #FFFFFF;
   font-size: 16px;
   font-weight: normal;
@@ -63,12 +63,12 @@ export const StyledDescText = styled.p`
   font-family: Muli, sans-serif;
 ` as any
 
-export const StyledButtonWrapper = styled.div`
+export const StyledButtonWrapper = styled<{}, 'div'>('div')`
   margin: 0 auto 35px;
   display: inline-block;
 ` as any
 
-export const StyledFooterText = styled.p`
+export const StyledFooterText = styled<{}, 'p'>('p')`
   color: #73CBFF;
   font-size: 14px;
   font-weight: 500;
@@ -77,7 +77,7 @@ export const StyledFooterText = styled.p`
   margin: 0 auto;
 ` as any
 
-export const StyledTrademark = styled.span`
+export const StyledTrademark = styled<{}, 'span'>('span')`
   display: inline-block;
   vertical-align: text-top;
   margin-top: -13px;
