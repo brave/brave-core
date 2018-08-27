@@ -211,6 +211,7 @@ class TabLocationView: UIView {
         contentView.alignment = .center
         contentView.layoutMargins = UIEdgeInsets(top: 0, left: TabLocationViewUX.Spacing, bottom: 0, right: 0)
         contentView.isLayoutMarginsRelativeArrangement = true
+        contentView.insetsLayoutMarginsFromSafeArea = false
         addSubview(contentView)
 
         contentView.snp.makeConstraints { make in
