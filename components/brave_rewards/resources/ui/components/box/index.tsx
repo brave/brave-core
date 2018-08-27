@@ -3,7 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper,
+import {
+  StyledCard,
   StyledLeft,
   StyledRight,
   StyledDescription,
@@ -72,7 +73,7 @@ export default class Box extends React.PureComponent<Props, State> {
     } = this.props
 
     return (
-      <StyledWrapper id={id}>
+      <StyledCard testId={id}>
         <StyledFlip>
           <StyledContentWrapper open={!this.state.settingsOpened}>
             <StyledLeft>
@@ -121,7 +122,7 @@ export default class Box extends React.PureComponent<Props, State> {
             {settingsChild}
           </StyledSettingsWrapper>
         </StyledFlip>
-      </StyledWrapper>
+      </StyledCard>
     )
   }
 }

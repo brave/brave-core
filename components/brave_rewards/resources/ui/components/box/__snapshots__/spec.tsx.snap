@@ -1,19 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Box tests basic tests matches the snapshot 1`] = `
-.c0 {
+.c1 {
+  max-width: 100%;
   width: 100%;
-  position: relative;
-  height: auto;
-  border-radius: 6px;
-  background-color: #fff;
-  box-shadow: 0 0 8px 0 rgba(99,105,110,0.12);
+  min-height: auto;
+  margin: 0;
   padding: 30px 36px;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 0 8px 0 rgba(99,105,110,0.12);
+  font-size: inherit;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.c0 {
   margin-bottom: 28px;
   font-family: Poppins,sans-serif;
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -21,7 +28,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   width: 200%;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -36,7 +43,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   overflow: hidden;
 }
 
-.c3 {
+.c4 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -49,7 +56,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   flex-basis: 50%;
 }
 
-.c5 {
+.c6 {
   -webkit-flex-basis: 40px;
   -ms-flex-preferred-size: 40px;
   flex-basis: 40px;
@@ -63,7 +70,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   display: flex;
 }
 
-.c4 {
+.c5 {
   height: 36px;
   font-size: 22px;
   font-weight: 600;
@@ -75,12 +82,12 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #4b4c5c;
 }
 
-.c6 {
+.c7 {
   width: 100%;
   display: block;
 }
 
-.c7 {
+.c8 {
   width: 100%;
   padding-right: 20px;
   font-family: Muli,sans-serif;
@@ -93,7 +100,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #a4aeb8;
 }
 
-.c13 {
+.c14 {
   width: 27px;
   border: none;
   background: none;
@@ -102,7 +109,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #A1A8F2;
 }
 
-.c8 {
+.c9 {
   -webkit-flex-basis: 100%;
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
@@ -113,7 +120,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   margin-top: 25px;
 }
 
-.c9 {
+.c10 {
   background: #fff;
   overflow: hidden;
   height: 0;
@@ -122,7 +129,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   flex-basis: 0;
 }
 
-.c10 {
+.c11 {
   display: none;
   position: absolute;
   right: 29px;
@@ -136,7 +143,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #DFDFE8;
 }
 
-.c12 {
+.c13 {
   margin-bottom: 15px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -152,7 +159,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   justify-content: center;
 }
 
-.c15 {
+.c16 {
   font-size: 16px;
   font-weight: 600;
   line-height: 1.75;
@@ -160,70 +167,70 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   margin-left: 20px;
 }
 
-.c11 {
+.c12 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.c14 {
+.c15 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
 <div
-  className="c0"
-  id="box"
+  className="c0 c1"
+  data-test-id="box"
 >
   <div
-    className="c1"
+    className="c2"
   >
     <div
-      className="c2"
+      className="c3"
       open={true}
     >
       <div
-        className="c3"
+        className="c4"
       >
         <div
-          className="c4"
+          className="c5"
         >
           test
         </div>
       </div>
       <div
-        className="c5"
+        className="c6"
       />
+      <div
+        className="c7"
+      />
+      <div
+        className="c4"
+      >
+        <div
+          className="c8"
+        />
+      </div>
       <div
         className="c6"
       />
       <div
-        className="c3"
-      >
-        <div
-          className="c7"
-        />
-      </div>
-      <div
-        className="c5"
-      />
-      <div
-        className="c8"
+        className="c9"
       />
     </div>
     <div
-      className="c9"
+      className="c10"
       open={false}
     >
       <button
-        className="c10"
+        className="c11"
         onClick={[Function]}
         open={false}
       >
         <svg
           aria-hidden="true"
-          className="c11"
+          className="c12"
           focusable="false"
           viewBox="0 0 32 32"
         >
@@ -233,14 +240,14 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
         </svg>
       </button>
       <div
-        className="c12"
+        className="c13"
       >
         <button
-          className="c13"
+          className="c14"
         >
           <svg
             aria-hidden="true"
-            className="c14"
+            className="c15"
             focusable="false"
             viewBox="0 0 32 32"
           >
@@ -251,7 +258,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
           </svg>
         </button>
         <div
-          className="c15"
+          className="c16"
         >
           test
            

@@ -4,6 +4,8 @@
 
 import styled from 'styled-components'
 import { Type } from './index'
+import Card, { CardProps } from '../../../components/layout/card'
+import { ComponentType } from 'react'
 
 interface StyleProps {
   open?: boolean
@@ -18,14 +20,7 @@ const colors: Record<Type, string> = {
   donation: '#696FDC'
 }
 
-export const StyledWrapper = styled<StyleProps, 'div'>('div')`
-  width: 100%;
-  position: relative;
-  height: auto;
-  border-radius: 6px;
-  background-color: #fff;
-  box-shadow: 0 0 8px 0 rgba(99, 105, 110, 0.12);
-  padding: 30px 36px;
+export const StyledCard = styled(Card as ComponentType<CardProps>)`
   margin-bottom: 28px;
   font-family: Poppins, sans-serif;
 `
