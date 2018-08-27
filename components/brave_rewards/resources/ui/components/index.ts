@@ -16,6 +16,7 @@ import List from './list'
 import ListToken from './listToken'
 import MainToggle from './mainToggle'
 import ModalActivity from './modalActivity'
+import ModalAddFunds from './modalAddFunds'
 import ModalBackupRestore from './modalBackupRestore'
 import ModalContribute from './modalContribute'
 import NextContribution from './nextContribution'
@@ -49,6 +50,7 @@ export {
   ListToken,
   MainToggle,
   ModalActivity,
+  ModalAddFunds,
   ModalBackupRestore,
   ModalContribute,
   NextContribution,
