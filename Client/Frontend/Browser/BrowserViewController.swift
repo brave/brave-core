@@ -1323,15 +1323,31 @@ extension BrowserViewController: URLBarDelegate {
     }
 
     func urlBarDidLongPressLocation(_ urlBar: URLBarView) {
-        let urlActions = self.getLongPressLocationBarActions(with: urlBar)
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
-        if let tab = self.tabManager.selectedTab {
-            let trackingProtectionMenu = self.getTrackingMenu(for: tab, presentingOn: urlBar)
-            self.presentSheetWith(actions: [urlActions, trackingProtectionMenu], on: self, from: urlBar)
-        } else {
-            self.presentSheetWith(actions: [urlActions], on: self, from: urlBar)
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        for action in locationActionsForURLBar(urlBar) {
+            alert.addAction(action.alertAction(style: .default))
         }
+        
+        alert.addAction(UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil))
+        
+        let setupPopover = { [unowned self] in
+            if let popoverPresentationController = alert.popoverPresentationController {
+                popoverPresentationController.sourceView = urlBar
+                popoverPresentationController.sourceRect = urlBar.frame
+                popoverPresentationController.permittedArrowDirections = .any
+                popoverPresentationController.delegate = self
+            }
+        }
+        
+        setupPopover()
+        
+        if alert.popoverPresentationController != nil {
+            displayedPopoverController = alert
+            updateDisplayedPopoverProperties = setupPopover
+        }
+        
+        self.present(alert, animated: true, completion: nil)
     }
 
     func urlBarDidPressScrollToTop(_ urlBar: URLBarView) {
