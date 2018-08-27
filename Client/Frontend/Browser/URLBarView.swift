@@ -163,7 +163,6 @@ class URLBarView: UIView {
 
         set(newURL) {
             locationView.url = newURL
-            line.isHidden = newURL?.isAboutHomeURL ?? true
             refreshShieldsStatus()
         }
     }
@@ -490,7 +489,6 @@ class URLBarView: UIView {
         locationView.contentView.alpha = inOverlayMode ? 0 : 1
 
         if inOverlayMode {
-            line.isHidden = inOverlayMode
             // Make the editable text field span the entire URL bar, covering the lock and reader icons.
             locationTextField?.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationView)
