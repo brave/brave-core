@@ -42,6 +42,7 @@ protocol URLBarDelegate: class {
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView)
     func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView)
     func urlBarDidTapMenuButton(_ urlBar: URLBarView)
+    func urlBarDidLongPressReloadButton(_ urlBar: URLBarView, from button: UIButton)
 }
 
 class URLBarView: UIView {
@@ -568,6 +569,7 @@ extension URLBarView: TabToolbarProtocol {
     }
 
     func updatePageStatus(_ isWebPage: Bool) {
+        locationView.reloadButton.isEnabled = isWebPage
         shareButton.isEnabled = isWebPage
     }
 
@@ -616,6 +618,10 @@ extension URLBarView: TabLocationViewDelegate {
     
     func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView) {
         delegate?.urlBarDidPressStop(self)
+    }
+    
+    func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton) {
+        delegate?.urlBarDidLongPressReloadButton(self, from: button)
     }
 
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView) {
