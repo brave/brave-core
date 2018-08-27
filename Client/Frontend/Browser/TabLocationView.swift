@@ -144,6 +144,7 @@ class TabLocationView: UIView {
         lockImageView.isAccessibilityElement = true
         lockImageView.contentMode = .center
         lockImageView.accessibilityLabel = NSLocalizedString("Secure connection", comment: "Accessibility label for the lock icon, which is only present if the connection is secure")
+        lockImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return lockImageView
     }()
 
