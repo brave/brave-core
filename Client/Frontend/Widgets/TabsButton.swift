@@ -138,12 +138,13 @@ class TabsButton: UIButton {
     
     func updateTabCount(_ count: Int, animated: Bool = true) {
         let count = max(count, 1)
-        let currentCount = self.countLabel.text
+        // Sometimes tabs count state is held in the cloned tabs button.
+        let currentCount = countLabel.text ?? clonedTabsButton?.countLabel.text
         let infinity = "\u{221E}"
         let countToBe = (count < 100) ? count.description : infinity
 
         // only animate a tab count change if the tab count has actually changed
-        if currentCount != count.description || (clonedTabsButton?.countLabel.text ?? count.description) != count.description {
+        if currentCount != count.description {
             if let _ = self.clonedTabsButton {
                 self.clonedTabsButton?.layer.removeAllAnimations()
                 self.clonedTabsButton?.removeFromSuperview()
