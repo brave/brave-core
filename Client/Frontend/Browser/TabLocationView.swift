@@ -209,7 +209,7 @@ class TabLocationView: UIView {
         contentView = UIStackView(arrangedSubviews: subviews)
         contentView.distribution = .fill
         contentView.alignment = .center
-        contentView.layoutMargins = UIEdgeInsets(top: 0, left: TabLocationViewUX.Spacing * 1.5, bottom: 0, right: 0)
+        contentView.layoutMargins = UIEdgeInsets(top: 0, left: TabLocationViewUX.Spacing, bottom: 0, right: 0)
         contentView.isLayoutMarginsRelativeArrangement = true
         addSubview(contentView)
 
