@@ -102,7 +102,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
     } = this.props
 
     return (
-      <Modal id={id} onClose={onClose} customStyle={{ maxWidth: '666px' }}>
+      <Modal id={id} onClose={onClose} size={'small'}>
         <StyledWrapper>
           <Tabs activeTabId={activeTabId} onChange={onTabChange}>
           <div id={`${id}-backup`} data-key={'backup'} data-title={getLocale('rewardsBackupText1')}>

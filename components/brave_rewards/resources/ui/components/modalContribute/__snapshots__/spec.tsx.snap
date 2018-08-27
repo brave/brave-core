@@ -98,6 +98,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
 >
   <div
     className="c1"
+    size="normal"
   >
     <div
       className="c2"
