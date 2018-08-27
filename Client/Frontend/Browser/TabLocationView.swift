@@ -29,7 +29,7 @@ private struct TabLocationViewUX {
     static let Spacing: CGFloat = 8
     static let StatusIconSize: CGFloat = 18
     static let TPIconSize: CGFloat = 24
-    static let ButtonSize: CGFloat = 44
+    static let ButtonSize = CGSize(width: 44, height: 34.0)
     static let URLBarPadding = 4
 }
 
@@ -192,9 +192,11 @@ class TabLocationView: UIView {
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(self)
         }
+        
+        contentView.setCustomSpacing(TabLocationViewUX.Spacing, after: lockImageView)
+        contentView.setCustomSpacing(TabLocationViewUX.Spacing, after: urlTextField)
 
         lockImageView.snp.makeConstraints { make in
-            make.width.equalTo(TabLocationViewUX.StatusIconSize)
             make.height.equalTo(TabLocationViewUX.ButtonSize)
         }
 
@@ -209,7 +211,8 @@ class TabLocationView: UIView {
         readerModeButton.snp.makeConstraints { make in
             // The reader mode button only has the padding on one side.
             // The buttons "contentHorizontalAlignment" helps make the button still look centered
-            make.size.equalTo(TabLocationViewUX.ButtonSize - 10)
+            make.size.width.equalTo(TabLocationViewUX.ButtonSize.width - 10)
+            make.size.height.equalTo(TabLocationViewUX.ButtonSize.height)
         }
 
         // Setup UIDragInteraction to handle dragging the location
@@ -405,9 +408,5 @@ private class DisplayTextField: UITextField {
 
     fileprivate override var canBecomeFirstResponder: Bool {
         return false
-    }
-
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: TabLocationViewUX.Spacing, dy: 0)
     }
 }
