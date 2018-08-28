@@ -215,7 +215,7 @@ class URLBarView: UIView {
         
         line.snp.makeConstraints { make in
             make.bottom.leading.trailing.equalTo(self)
-            make.height.equalTo(1)
+            make.height.equalTo(1.0 / UIScreen.main.scale)
         }
         
         scrollToTopButton.snp.makeConstraints { make in
