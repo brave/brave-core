@@ -91,7 +91,7 @@ class TabCell: UICollectionViewCell {
         self.titleText.font = DynamicFontHelper.defaultHelper.DefaultSmallFontBold
 
         self.closeButton = UIButton()
-        self.closeButton.setImage(UIImage.templateImageNamed("tab_close"), for: [])
+        self.closeButton.setImage(#imageLiteral(resourceName: "tab_close").template, for: [])
         self.closeButton.imageView?.contentMode = .scaleAspectFit
         self.closeButton.contentMode = .center
         self.closeButton.tintColor = UIColor.Photon.Grey40
@@ -1067,7 +1067,7 @@ class TrayToolbar: UIView {
 
     lazy var addTabButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage.templateImageNamed("nav-add"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "nav-add").template, for: .normal)
         button.accessibilityLabel = NSLocalizedString("Add Tab", comment: "Accessibility label for the Add Tab button in the Tab Tray.")
         button.accessibilityIdentifier = "TabTrayController.addTabButton"
         return button
@@ -1075,7 +1075,7 @@ class TrayToolbar: UIView {
 
     lazy var deleteButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage.templateImageNamed("action_delete"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "action_delete").template, for: .normal)
         button.accessibilityLabel = Strings.TabTrayDeleteMenuButtonAccessibilityLabel
         button.accessibilityIdentifier = "TabTrayController.removeTabsButton"
         return button
