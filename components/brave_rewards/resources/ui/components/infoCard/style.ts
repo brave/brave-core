@@ -41,3 +41,13 @@ export const StyledFigure = styled<{}, 'figure'>('figure')`
   margin: 10px auto 20px;
   height: 80px;
 `
+export const StyledGrid = styled<{}, 'div'>('div')`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+`
+
+export const StyledColumn = styled<{}, 'div'>('div')`
+  padding: 0 10px;
+`

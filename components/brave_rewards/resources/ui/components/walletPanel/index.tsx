@@ -19,13 +19,13 @@ import {
   StyledIcon,
   StyledDonateWrapper,
   StyledToggleWrapper,
-  StyledSelectWrapper
+  StyledSelectWrapper,
+  StyledGrid,
+  StyledColumn
 } from './style'
 
 // Components
 import {
-  Grid,
-  Column,
   Select,
   Toggle,
   Button
@@ -103,29 +103,29 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
   donationControls () {
     return (
       <StyledWrapper>
-        <Grid columns={6}>
-          <Column size={5}>
+        <StyledGrid>
+          <StyledColumn size={'5'}>
             <StyledDonateText>
               {getLocale('donateMonthly')}
             </StyledDonateText>
             <StyledIcon>
               <RefreshIcon color={'#4C54D2'}/>
             </StyledIcon>
-          </Column>
-          <Column size={1}>
+          </StyledColumn>
+          <StyledColumn size={'1'}>
             {this.donationDropDown()}
-          </Column>
-        </Grid>
-        <Grid columns={6}>
-          <Column size={5}>
+          </StyledColumn>
+        </StyledGrid>
+        <StyledGrid>
+          <StyledColumn size={'5'}>
             <StyledDonateText>
               {getLocale('includeInAuto')}
             </StyledDonateText>
             <StyledIcon>
               <AlertCircleIcon/>
             </StyledIcon>
-          </Column>
-          <Column size={1}>
+          </StyledColumn>
+          <StyledColumn size={'1'}>
             <StyledToggleWrapper>
               <Toggle
                 size={'small'}
@@ -133,8 +133,8 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
                 onToggle={this.props.onIncludeInAuto}
               />
             </StyledToggleWrapper>
-          </Column>
-        </Grid>
+          </StyledColumn>
+        </StyledGrid>
       </StyledWrapper>
     )
   }
@@ -154,18 +154,18 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
         <StyledContainer id={id}>
           {this.publisherInfo()}
           <StyledScoreWrapper>
-            <Grid columns={6}>
-              <Column size={5}>
+            <StyledGrid>
+              <StyledColumn size={'5'}>
                 <StyledAttentionScoreTitle>
                   {getLocale('rewardsContributeAttentionScore')}
                 </StyledAttentionScoreTitle>
-              </Column>
-              <Column size={1}>
+              </StyledColumn>
+              <StyledColumn size={'1'}>
                 <StyledAttentionScore>
                   {attentionScore}%
                 </StyledAttentionScore>
-              </Column>
-            </Grid>
+              </StyledColumn>
+            </StyledGrid>
           </StyledScoreWrapper>
           <StyledControlsWrapper>
             {this.donationControls()}

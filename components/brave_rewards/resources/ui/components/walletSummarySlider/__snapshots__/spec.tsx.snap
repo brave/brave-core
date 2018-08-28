@@ -57,7 +57,7 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
   width: 25px;
   height: 25px;
   display: block;
-  margin-left: 13px;
+  margin-left: 32px;
   margin-top: -2px;
   color: #696FDC;
 }
@@ -66,9 +66,35 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
   width: 25px;
   height: 25px;
   display: block;
-  margin-left: 13px;
-  margin-top: -23px;
+  margin-left: 32px;
+  margin-top: -22px;
   color: #696FDC;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.c4 {
+  -webkit-flex: 5 0 0;
+  -ms-flex: 5 0 0;
+  flex: 5 0 0;
+}
+
+.c6 {
+  -webkit-flex: 1 0 0;
+  -ms-flex: 1 0 0;
+  flex: 1 0 0;
 }
 
 .c12 {
@@ -84,81 +110,6 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
-}
-
-.c3 {
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: repeat(6,1fr);
-  grid-gap: 15px;
-  padding: 0;
-  margin: 0;
-  max-width: initial;
-  height: initial;
-  color: inherit;
-  background-color: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-}
-
-.c4 {
-  box-sizing: border-box;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  grid-column: span 5;
-  -webkit-box-pack: initial;
-  -webkit-justify-content: initial;
-  -ms-flex-pack: initial;
-  justify-content: initial;
-  -webkit-align-items: initial;
-  -webkit-box-align: initial;
-  -ms-flex-align: initial;
-  align-items: initial;
-  background-color: inherit;
-  -webkit-flex-direction: initial;
-  -ms-flex-direction: initial;
-  flex-direction: initial;
-  -webkit-flex-wrap: initial;
-  -ms-flex-wrap: initial;
-  flex-wrap: initial;
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-}
-
-.c6 {
-  box-sizing: border-box;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  grid-column: span 1;
-  -webkit-box-pack: initial;
-  -webkit-justify-content: initial;
-  -ms-flex-pack: initial;
-  justify-content: initial;
-  -webkit-align-items: initial;
-  -webkit-box-align: initial;
-  -ms-flex-align: initial;
-  align-items: initial;
-  background-color: inherit;
-  -webkit-flex-direction: initial;
-  -ms-flex-direction: initial;
-  flex-direction: initial;
-  -webkit-flex-wrap: initial;
-  -ms-flex-wrap: initial;
-  flex-wrap: initial;
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
 }
 
 <div
@@ -177,11 +128,10 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
       >
         <div
           className="c3"
-          disabled={false}
         >
           <div
             className="c4"
-            size={5}
+            size="5"
           >
             <span
               className="c5"
@@ -191,7 +141,7 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
           </div>
           <div
             className="c6"
-            size={1}
+            size="1"
           >
             <span
               className="c7"
@@ -224,15 +174,14 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
       >
         <div
           className="c3"
-          disabled={false}
         >
           <div
             className="c4"
-            size={5}
+            size="5"
           />
           <div
             className="c6"
-            size={1}
+            size="1"
           >
             <span
               className="c11"

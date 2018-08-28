@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 interface StyleProps {
   show?: boolean
+  size?: string
 }
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
@@ -43,7 +44,17 @@ export const StyledArrowIcon = styled<StyleProps, 'span'>('span')`
   width: 25px;
   height: 25px;
   display: block;
-  margin-left: 13px;
-  margin-top: ${p => p.show ? '-2px' : '-23px'};
+  margin-left: 32px;
+  margin-top: ${p => p.show ? '-2px' : '-22px'};
   color: #696FDC;
 ` as any
+
+export const StyledGrid = styled<{}, 'div'>('div')`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+`
+
+export const StyledColumn = styled<StyleProps, 'div'>('div')`
+  flex: ${p => p.size} 0 0;
+`

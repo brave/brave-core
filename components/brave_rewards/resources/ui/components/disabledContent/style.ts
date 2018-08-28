@@ -55,3 +55,23 @@ export const StyledContent = styled<Props, 'div'>('div')`
     color: #ceb4e1;
   }
 `
+
+export const StyledGrid = styled<{}, 'div'>('div')`
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: 32px;
+  box-sizing: border-box;
+`
+
+export const StyledOneColumn = styled<{}, 'div'>('div')`
+  display: flex;
+  grid-column: span 1;
+  justify-content: flex-end;
+`
+
+export const StyledTwoColumn = styled<{}, 'div'>('div')`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  grid-column: span 2;
+`

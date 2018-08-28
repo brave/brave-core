@@ -4,12 +4,13 @@
 
 import * as React from 'react'
 
-import { Grid, Column } from '../../../components/layout/gridList'
 import {
   StyledTitle,
   StyledDesc,
   StyledInfoCard,
-  StyledFigure
+  StyledFigure,
+  StyledGrid,
+  StyledColumn
 } from './style'
 
 export interface CardProps {
@@ -26,9 +27,9 @@ export interface Props {
 export default class InfoCard extends React.PureComponent<Props, {}> {
   getCards (items: CardProps[]) {
     return (
-      <Grid customStyle={{ gridGap: '0' }} columns={items.length}>
+      <StyledGrid>
         {items.map((item: CardProps, index: number) => {
-          return <Column key={`${index}`} size={1}>
+          return <StyledColumn key={`${index}`}>
             <StyledInfoCard>
               <StyledFigure>
                 {item.icon}
@@ -36,9 +37,9 @@ export default class InfoCard extends React.PureComponent<Props, {}> {
               <StyledTitle>{item.title}</StyledTitle>
               <StyledDesc>{item.description}</StyledDesc>
             </StyledInfoCard>
-          </Column>
+          </StyledColumn>
         })}
-      </Grid>
+      </StyledGrid>
     )
   }
 

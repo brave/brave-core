@@ -10,10 +10,11 @@ import {
   StyledTransitionWrapper,
   StyledSummaryText,
   StyledToggleWrapper,
-  StyledArrowIcon
+  StyledArrowIcon,
+  StyledGrid,
+  StyledColumn
 } from './style'
 
-import { Grid, Column } from '../../../components'
 import { CaratUpIcon, CaratDownIcon } from '../../../components/icons'
 
 export interface Props {
@@ -55,8 +56,8 @@ export default class WalletSummarySlider extends React.PureComponent<Props, Stat
           show={showTitle}
           onClick={this.togglePanels}
         >
-          <Grid columns={6}>
-            <Column size={5}>
+          <StyledGrid>
+            <StyledColumn size={'5'}>
               {
                 showTitle
                 ? <StyledSummaryText>
@@ -64,8 +65,8 @@ export default class WalletSummarySlider extends React.PureComponent<Props, Stat
                   </StyledSummaryText>
                 : null
               }
-            </Column>
-            <Column size={1}>
+            </StyledColumn>
+            <StyledColumn size={'1'}>
               <StyledArrowIcon show={showTitle}>
                 {
                   showTitle
@@ -73,8 +74,8 @@ export default class WalletSummarySlider extends React.PureComponent<Props, Stat
                   : <CaratDownIcon />
                 }
               </StyledArrowIcon>
-            </Column>
-          </Grid>
+            </StyledColumn>
+          </StyledGrid>
         </StyledToggleWrapper>
         {
           !showTitle

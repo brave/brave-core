@@ -3,8 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledContent } from './style'
-import { Column, Grid } from '../../../components/layout/gridList'
+import {
+  StyledContent,
+  StyledGrid,
+  StyledOneColumn,
+  StyledTwoColumn
+} from './style'
 
 export type Type = 'ads' | 'contribute' | 'donation'
 
@@ -21,16 +25,16 @@ export default class DisabledContent extends React.PureComponent<Props, {}> {
 
     return (
       <div id={id}>
-        <Grid columns={3} customStyle={{ gridGap: '32px', alignItems: 'center' }}>
-          <Column size={1} customStyle={{ justifyContent: 'flex-end' }}>
+        <StyledGrid>
+          <StyledOneColumn>
             <img src={image} />
-          </Column>
-          <Column size={2}>
+          </StyledOneColumn>
+          <StyledTwoColumn>
             <StyledContent type={type}>
               {children}
             </StyledContent>
-          </Column>
-        </Grid>
+          </StyledTwoColumn>
+        </StyledGrid>
       </div>
     )
   }

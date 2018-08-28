@@ -4,6 +4,10 @@
 
 import styled from 'styled-components'
 
+interface StyleProps {
+  size?: string
+}
+
 export const StyledWrapper = styled<{}, 'div'>('div')`
   display: block;
 ` as any
@@ -13,7 +17,7 @@ export const StyledContainer = styled<{}, 'div'>('div')`
 ` as any
 
 export const StyledAttentionScore = styled<{}, 'span'>('span')`
-  margin-left: 17px;
+  margin-left: 30px;
   font-weight: 300;
   color: #4B4C5C;
   font-size: 14px;
@@ -52,6 +56,7 @@ export const StyledDonateText = styled<{}, 'span'>('span')`
 export const StyledIcon = styled<{}, 'span'>('span')`
   width: 15px;
   margin-left: 5px;
+  display: inline-block;
   vertical-align: middle;
 ` as any
 
@@ -67,5 +72,14 @@ export const StyledToggleWrapper = styled<{}, 'div'>('div')`
 
 export const StyledSelectWrapper = styled<{}, 'div'>('div')`
   width: 80px;
-  margin: 4px 0px 0px;
+  margin: 2px 0px 0px;
 ` as any
+
+export const StyledGrid = styled<{}, 'div'>('div')`
+  display: flex;
+  flex-direction: row;
+`
+
+export const StyledColumn = styled<StyleProps, 'div'>('div')`
+  flex: ${p => p.size} 0 0;
+`

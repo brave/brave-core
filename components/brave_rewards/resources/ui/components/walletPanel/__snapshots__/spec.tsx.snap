@@ -10,7 +10,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c13 {
-  margin-left: 17px;
+  margin-left: 30px;
   font-weight: 300;
   color: #4B4C5C;
   font-size: 14px;
@@ -55,6 +55,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 .c16 {
   width: 15px;
   margin-left: 5px;
+  display: inline-block;
   vertical-align: middle;
 }
 
@@ -66,6 +67,28 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 
 .c19 {
   margin-top: 6px;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c10 {
+  -webkit-flex: 5 0 0;
+  -ms-flex: 5 0 0;
+  flex: 5 0 0;
+}
+
+.c12 {
+  -webkit-flex: 1 0 0;
+  -ms-flex: 1 0 0;
+  flex: 1 0 0;
 }
 
 .c26 {
@@ -204,81 +227,6 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   transition: 100ms ease-out;
 }
 
-.c9 {
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: repeat(6,1fr);
-  grid-gap: 15px;
-  padding: 0;
-  margin: 0;
-  max-width: initial;
-  height: initial;
-  color: inherit;
-  background-color: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-}
-
-.c10 {
-  box-sizing: border-box;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  grid-column: span 5;
-  -webkit-box-pack: initial;
-  -webkit-justify-content: initial;
-  -ms-flex-pack: initial;
-  justify-content: initial;
-  -webkit-align-items: initial;
-  -webkit-box-align: initial;
-  -ms-flex-align: initial;
-  align-items: initial;
-  background-color: inherit;
-  -webkit-flex-direction: initial;
-  -ms-flex-direction: initial;
-  flex-direction: initial;
-  -webkit-flex-wrap: initial;
-  -ms-flex-wrap: initial;
-  flex-wrap: initial;
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-}
-
-.c12 {
-  box-sizing: border-box;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  grid-column: span 1;
-  -webkit-box-pack: initial;
-  -webkit-justify-content: initial;
-  -ms-flex-pack: initial;
-  justify-content: initial;
-  -webkit-align-items: initial;
-  -webkit-box-align: initial;
-  -ms-flex-align: initial;
-  align-items: initial;
-  background-color: inherit;
-  -webkit-flex-direction: initial;
-  -ms-flex-direction: initial;
-  flex-direction: initial;
-  -webkit-flex-wrap: initial;
-  -ms-flex-wrap: initial;
-  flex-wrap: initial;
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-}
-
 .c2 {
   position: relative;
   display: -webkit-box;
@@ -391,11 +339,10 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
     >
       <div
         className="c9"
-        disabled={false}
       >
         <div
           className="c10"
-          size={5}
+          size="5"
         >
           <span
             className="c11"
@@ -405,7 +352,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
         </div>
         <div
           className="c12"
-          size={1}
+          size="1"
         >
           <span
             className="c13"
@@ -423,11 +370,10 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
       >
         <div
           className="c9"
-          disabled={false}
         >
           <div
             className="c10"
-            size={5}
+            size="5"
           >
             <span
               className="c15"
@@ -452,16 +398,15 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
           </div>
           <div
             className="c12"
-            size={1}
+            size="1"
           />
         </div>
         <div
           className="c9"
-          disabled={false}
         >
           <div
             className="c10"
-            size={5}
+            size="5"
           >
             <span
               className="c15"
@@ -485,7 +430,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
           </div>
           <div
             className="c12"
-            size={1}
+            size="1"
           >
             <div
               className="c19"

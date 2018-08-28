@@ -150,53 +150,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   line-height: 1;
 }
 
-.c28 {
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  grid-gap: 0;
-  padding: 0;
-  margin: 0;
-  max-width: initial;
-  height: initial;
-  color: inherit;
-  background-color: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-}
-
-.c29 {
-  box-sizing: border-box;
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  grid-column: span 1;
-  -webkit-box-pack: initial;
-  -webkit-justify-content: initial;
-  -ms-flex-pack: initial;
-  justify-content: initial;
-  -webkit-align-items: initial;
-  -webkit-box-align: initial;
-  -ms-flex-align: initial;
-  align-items: initial;
-  background-color: inherit;
-  -webkit-flex-direction: initial;
-  -ms-flex-direction: initial;
-  flex-direction: initial;
-  -webkit-flex-wrap: initial;
-  -ms-flex-wrap: initial;
-  flex-wrap: initial;
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-}
-
 .c30 {
   height: 290px;
   border-radius: 4px;
@@ -239,6 +192,23 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   max-width: 100%;
   margin: 10px auto 20px;
   height: 80px;
+}
+
+.c28 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c29 {
+  padding: 0 10px;
 }
 
 .c9 {
@@ -613,11 +583,9 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           >
             <div
               className="c28"
-              disabled={false}
             >
               <div
                 className="c29"
-                size={1}
               >
                 <div
                   className="c30"
@@ -733,7 +701,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               </div>
               <div
                 className="c29"
-                size={1}
               >
                 <div
                   className="c30"
@@ -788,7 +755,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               </div>
               <div
                 className="c29"
-                size={1}
               >
                 <div
                   className="c30"
