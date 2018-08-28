@@ -1,0 +1,27 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/md_select_css.html">
+<link rel="import" href="brave_appearance_browser_proxy.html">
+<link rel="import" href="../settings_shared_css.html">
+<link rel="import" href="../settings_vars_css.html">
+
+<dom-module id="settings-brave-appearance-page">
+  <template>
+    <style include="settings-shared md-select iron-flex">
+    </style>
+    <div class="settings-box">
+      <div class="start">$i18n{appearanceSettingsBraveTheme}</div>
+      <select id="braveThemeType" class="md-select"
+          on-change="onBraveThemeTypeChange_">
+        <template is="dom-repeat" items="[[braveThemeTypes_]]">
+          <option value="[[item]]"
+              selected="[[braveThemeTypeEqual_(item, braveThemeType_)]]">
+            [[item]]
+          </option>
+        </template>
+      </select>
+    </div>
+  </template>
+  <script src="brave_appearance_page.js"></script>
+</dom-module>

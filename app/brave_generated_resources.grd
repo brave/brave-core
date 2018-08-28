@@ -140,7 +140,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- Appearance -->
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
-        Brave Themes
+        Brave colors
       </message>
     </messages>
     <includes>
