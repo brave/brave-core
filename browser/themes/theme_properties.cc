@@ -14,8 +14,7 @@
 
 namespace {
 
-#if defined(OFFICIAL_BUILD)
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUiReleaseChannel(int id, bool incognito) {
+base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id, bool incognito) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere except active tab
     case ThemeProperties::COLOR_FRAME:
@@ -41,9 +40,8 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiReleaseChannel(int id, boo
       return base::nullopt;
   }
 }
-#endif
 
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUiDevChannel(int id, bool incognito) {
+base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id, bool incognito) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere except active tab
     case ThemeProperties::COLOR_FRAME:
@@ -74,29 +72,25 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiDevChannel(int id, bool in
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
 base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, Profile* profile) {
-#if !defined(OFFICIAL_BUILD)
-  return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
-#else
   switch (BraveThemeService::GetBraveThemeType(profile)) {
     case BraveThemeService::BRAVE_THEME_TYPE_DEFAULT:
       switch (chrome::GetChannel()) {
         case version_info::Channel::STABLE:
         case version_info::Channel::BETA:
-          return MaybeGetDefaultColorForBraveUiReleaseChannel(id, incognito);
+          return MaybeGetDefaultColorForBraveLightUi(id, incognito);
         case version_info::Channel::DEV:
         case version_info::Channel::CANARY:
         case version_info::Channel::UNKNOWN:
         default:
-          return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
+          return MaybeGetDefaultColorForBraveDarkUi(id, incognito);
       }
     case BraveThemeService::BRAVE_THEME_TYPE_LIGHT:
-      return MaybeGetDefaultColorForBraveUiReleaseChannel(id, incognito);
+      return MaybeGetDefaultColorForBraveLightUi(id, incognito);
     case BraveThemeService::BRAVE_THEME_TYPE_DARK:
-      return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
+      return MaybeGetDefaultColorForBraveDarkUi(id, incognito);
     default:
       NOTREACHED();
 
   }
-#endif
   return base::nullopt;
 }

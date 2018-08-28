@@ -22,9 +22,7 @@ void SetBraveThemeType(Profile* profile, BTS::BraveThemeType type) {
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveThemeChangeTest) {
   Profile* profile = browser()->profile();
-#if defined(OFFICIAL_BUILD)
   const SkColor light_frame_color = SkColorSetRGB(0xD8, 0xDE, 0xE1);
-#endif
   const SkColor dark_frame_color = SkColorSetRGB(0x58, 0x5B, 0x5E);
 
   // Check default type is set initially.
@@ -33,12 +31,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveThemeChangeTest) {
   const ui::ThemeProvider& tp = ThemeService::GetThemeProviderForProfile(profile);
   SetBraveThemeType(browser()->profile(), BTS::BRAVE_THEME_TYPE_LIGHT);
   EXPECT_EQ(BTS::BRAVE_THEME_TYPE_LIGHT, BTS::GetBraveThemeType(profile));
-#if defined(OFFICIAL_BUILD)
   EXPECT_EQ(light_frame_color, tp.GetColor(ThemeProperties::COLOR_FRAME));
-#else
-  // Non-official build always uses dark theme.
-  EXPECT_EQ(dark_frame_color, tp.GetColor(ThemeProperties::COLOR_FRAME));
-#endif
 
   SetBraveThemeType(browser()->profile(), BTS::BRAVE_THEME_TYPE_DARK);
   EXPECT_EQ(BTS::BRAVE_THEME_TYPE_DARK, BTS::GetBraveThemeType(profile));
