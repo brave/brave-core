@@ -20,13 +20,13 @@ export default class FeaturesScreen extends React.PureComponent<{}, {}> {
   render () {
     return (
       <section style={theme.content}>
-        <Image theme={theme.featuresImage} src={featuresImage} />
-        <Heading level={1} theme={theme.title} text={getLocale('customizePreferences')} />
-        <Paragraph theme={theme.text} text={getLocale('configure')} />
+        <Image customStyle={theme.featuresImage} src={featuresImage} />
+        <Heading level={1} customStyle={theme.title} text={getLocale('customizePreferences')} />
+        <Paragraph customStyle={theme.text} text={getLocale('configure')} />
         <PushButtonLink
           color='primary'
           size='large'
-          theme={theme.mainButton}
+          customStyle={theme.mainButton}
           href='chrome://settings'
         >
           {getLocale('preferences')}

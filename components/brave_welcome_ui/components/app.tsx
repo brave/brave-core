@@ -72,7 +72,7 @@ export class WelcomePage extends React.Component<Props, {}> {
     return Array.from({ length: this.totalSecondaryScreensSize }, (v, k) => {
       return (
         <UnstyledButton
-          theme={
+          customStyle={
             this.pageIndex === k
               ? theme.bulletActive
               : theme.bullet
@@ -137,7 +137,7 @@ export class WelcomePage extends React.Component<Props, {}> {
   render () {
     return (
       <div id='welcomePage' style={this.backgroundStyle}>
-        <Panel theme={theme.panel}>
+        <Panel customStyle={theme.panel}>
           {this.activeScreen}
           <Footer
             pageIndex={this.pageIndex}
