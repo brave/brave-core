@@ -112,7 +112,8 @@ class TabsBarViewController: UIViewController {
     }
     
     @objc func addTabPressed() {
-        tabManager?.addTabAndSelect()
+        let isPrivate = tabManager?.selectedTab?.isPrivate ?? false
+        tabManager?.addTabAndSelect(isPrivate: isPrivate)
     }
     
     func updateData() {
