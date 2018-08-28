@@ -146,7 +146,9 @@ class TabsBarViewController: UIViewController {
             collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
         case .changed:
             if let gestureView = gesture.view {
-                collectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gestureView))
+                var location = gesture.location(in: gestureView)
+                location.y = gestureView.center.y // Lock y
+                collectionView.updateInteractiveMovementTargetPosition(location)
             }
         case .ended:
             collectionView.endInteractiveMovement()
