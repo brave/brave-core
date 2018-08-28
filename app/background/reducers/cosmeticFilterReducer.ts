@@ -12,7 +12,7 @@ import {
 } from '../api/shieldsAPI'
 import { reloadTab } from '../api/tabsAPI'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
-import { State, Tab } from '../../types/state/shieldsPannelState'
+import { State } from '../../types/state/shieldsPannelState'
 import { Actions } from '../../types/actions/index'
 import * as cosmeticFilterTypes from '../../constants/cosmeticFilterTypes'
 import {
@@ -55,7 +55,11 @@ export default function cosmeticFilterReducer (state: State = {
       }
     case webNavigationTypes.ON_COMMITTED:
       {
-        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const tabData = shieldsPanelState.getActiveTabData(state)
+        if (!tabData) {
+          console.error('Active tab not found')
+          break
+        }
         applySiteFilters(tabData.hostname)
         break
       }
@@ -111,8 +115,9 @@ export default function cosmeticFilterReducer (state: State = {
     case shieldsPanelTypes.SHIELDS_TOGGLED:
       {
         const tabId: number = shieldsPanelState.getActiveTabId(state)
-        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const tabData = shieldsPanelState.getActiveTabData(state)
         if (!tabData) {
+          console.error('Active tab not found')
           break
         }
         setAllowBraveShields(tabData.origin, action.setting)

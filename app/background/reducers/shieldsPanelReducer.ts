@@ -132,8 +132,9 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     case shieldsPanelTypes.SHIELDS_TOGGLED:
       {
         const tabId: number = shieldsPanelState.getActiveTabId(state)
-        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const tabData = shieldsPanelState.getActiveTabData(state)
         if (!tabData) {
+          console.error('Active tab not found')
           break
         }
         setAllowBraveShields(tabData.origin, action.setting)
@@ -152,8 +153,9 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
     case shieldsPanelTypes.HTTPS_EVERYWHERE_TOGGLED:
       {
-        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const tabData = shieldsPanelState.getActiveTabData(state)
         if (!tabData) {
+          console.error('Active tab not found')
           break
         }
 
@@ -171,7 +173,11 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
     case shieldsPanelTypes.JAVASCRIPT_TOGGLED:
       {
-        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const tabData = shieldsPanelState.getActiveTabData(state)
+        if (!tabData) {
+          console.error('Active tab not found')
+          break
+        }
         setAllowJavaScript(tabData.origin, toggleShieldsValue(tabData.javascript))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
@@ -198,9 +204,10 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     case shieldsPanelTypes.BLOCK_ADS_TRACKERS:
       {
         const tabId: number = shieldsPanelState.getActiveTabId(state)
-        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const tabData = shieldsPanelState.getActiveTabData(state)
 
         if (!tabData) {
+          console.error('Active tab not found')
           break
         }
 
@@ -234,7 +241,11 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
     case shieldsPanelTypes.BLOCK_FINGERPRINTING:
       {
-        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const tabData = shieldsPanelState.getActiveTabData(state)
+        if (!tabData) {
+          console.error('Active tab not found')
+          break
+        }
         setAllowFingerprinting(tabData.origin, action.setting)
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
@@ -249,7 +260,11 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
     case shieldsPanelTypes.BLOCK_COOKIES:
       {
-        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const tabData = shieldsPanelState.getActiveTabData(state)
+        if (!tabData) {
+          console.error('Active tab not found')
+          break
+        }
         setAllowCookies(tabData.origin, action.setting)
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
@@ -264,7 +279,11 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
     case shieldsPanelTypes.ALLOW_SCRIPT_ORIGINS_ONCE:
       {
-        const tabData: Tab = shieldsPanelState.getActiveTabData(state)
+        const tabData = shieldsPanelState.getActiveTabData(state)
+        if (!tabData) {
+          console.error('Active tab not found')
+          break
+        }
         setAllowScriptOriginsOnce(action.origins, tabData.id)
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))

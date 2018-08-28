@@ -50,7 +50,7 @@ export interface GetActiveTabId {
 }
 
 export interface GetActiveTabData {
-  (state: State): Tab
+  (state: State): Tab | undefined
 }
 
 export interface UpdateActiveTab {
