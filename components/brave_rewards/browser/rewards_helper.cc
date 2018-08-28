@@ -21,7 +21,7 @@
 
 using content::ResourceType;
 
-DEFINE_WEB_CONTENTS_USER_DATA_KEY(brave_rewards::RewardsHelper);
+// DEFINE_WEB_CONTENTS_USER_DATA_KEY(brave_rewards::RewardsHelper);
 
 namespace brave_rewards {
 
