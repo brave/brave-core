@@ -4,8 +4,13 @@
 
 #include "brave/browser/themes/brave_theme_service.h"
 
+#include <string>
+
+#include "brave/common/brave_switches.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/common/pref_names.h"
+#include "base/command_line.h"
+#include "base/strings/string_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -19,6 +24,18 @@ void BraveThemeService::RegisterProfilePrefs(
 
 // static
 BraveThemeService::BraveThemeType BraveThemeService::GetBraveThemeType(Profile* profile) {
+  // allow override via cli flag
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (command_line.HasSwitch(switches::kUiMode)) {
+    std::string requested_theme_value = command_line.GetSwitchValueASCII(switches::kUiMode);
+    std::string requested_theme_value_lower = base::ToLowerASCII(requested_theme_value);
+    if (requested_theme_value_lower == "light")
+      return BraveThemeService::BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
+    if (requested_theme_value_lower == "light")
+      return BraveThemeService::BraveThemeType::BRAVE_THEME_TYPE_DARK;
+  }
+  // get value from preferences
   return static_cast<BraveThemeService::BraveThemeType>(
       profile->GetPrefs()->GetInteger(kBraveThemeType));
 }

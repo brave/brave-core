@@ -19,6 +19,8 @@ extern const char kDisablePDFJSExtension[];
 
 extern const char kDisableTorClientUpdaterExtension[];
 
+extern const char kUiMode[];
+
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_
