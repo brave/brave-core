@@ -2539,7 +2539,7 @@ extension BrowserViewController: TabTrayDelegate {
 extension BrowserViewController: Themeable {
 
     func applyTheme(_ theme: Theme) {
-        let ui: [Themeable?] = [urlBar, toolbar, readerModeBar]
+        let ui: [Themeable?] = [urlBar, toolbar, readerModeBar, tabsBar]
         ui.forEach { $0?.applyTheme(theme) }
         statusBarOverlay.backgroundColor = urlBar.backgroundColor
         setNeedsStatusBarAppearanceUpdate()
