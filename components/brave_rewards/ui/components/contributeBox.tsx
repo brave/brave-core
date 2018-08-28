@@ -170,9 +170,9 @@ class ContributeBox extends React.Component<Props, State> {
               onChange={this.onSelectSettingChange.bind(this, 'contributionMinTime')}
               value={(contributionMinTime || '').toString()}
             >
-              <div data-value='5000'>{getLocale('contributionTime5')}</div>
-              <div data-value='8000'>{getLocale('contributionTime8')}</div>
-              <div data-value='60000'>{getLocale('contributionTime60')}</div>
+              <div data-value='5'>{getLocale('contributionTime5')}</div>
+              <div data-value='8'>{getLocale('contributionTime8')}</div>
+              <div data-value='60'>{getLocale('contributionTime60')}</div>
             </Select>
           </ControlWrapper>
           <ControlWrapper text={getLocale('contributionMinVisits')}>

@@ -15,7 +15,7 @@ const defaultState: Rewards.State = {
   firstLoad: null,
   walletCreated: false,
   walletCreateFailed: false,
-  contributionMinTime: 8000,
+  contributionMinTime: 8,
   contributionMinVisits: 1,
   contributionMonthly: 10,
   contributionNonVerified: true,

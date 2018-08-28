@@ -24,7 +24,7 @@ describe('rewardsPage component', () => {
           enabledAds: false,
           enabledContribute: false,
           firstLoad: null,
-          contributionMinTime: 8000,
+          contributionMinTime: 8,
           contributionMinVisits: 1,
           contributionMonthly: 10,
           contributionNonVerified: true,
