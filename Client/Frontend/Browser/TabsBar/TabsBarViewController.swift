@@ -6,6 +6,7 @@ import Foundation
 import UIKit
 import SnapKit
 import Shared
+import BraveShared
 
 class TabsBarViewController: UIViewController {
     private let leftOverflowIndicator = CAGradientLayer()
@@ -18,7 +19,7 @@ class TabsBarViewController: UIViewController {
         button.tintColor = UIColor.black
         button.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
-        button.backgroundColor = UIColor(white: 0.0, alpha: 0.075)
+        button.backgroundColor = .clear
         return button
     }()
     
@@ -38,6 +39,8 @@ class TabsBarViewController: UIViewController {
         view.register(TabBarCell.self, forCellWithReuseIdentifier: "TabCell")
         return view
     }()
+    
+    private let bottomLine = UIView()
     
     fileprivate weak var tabManager: TabManager?
     fileprivate var tabList = WeakList<Tab>()
@@ -76,9 +79,17 @@ class TabsBarViewController: UIViewController {
             }
         }
         
+        view.addSubview(bottomLine)
+        
         collectionView.snp.makeConstraints { make in
             make.bottom.top.left.equalTo(view)
             make.right.equalTo(view).inset(UX.TabsBar.buttonWidth)
+        }
+        
+        bottomLine.snp.makeConstraints { make in
+            make.height.equalTo(1.0 / UIScreen.main.scale)
+            make.top.equalTo(view.snp.bottom)
+            make.left.right.equalTo(view)
         }
     }
     
@@ -164,10 +175,6 @@ class TabsBarViewController: UIViewController {
     }
     
     fileprivate func overflowIndicators() {
-        // super lame place to put this, need to find a better solution.
-        plusButton.tintColor = UIApplication.isInPrivateMode ? UIColor.white : UIColor.black
-        collectionView.backgroundColor = UIApplication.isInPrivateMode ? UIColor(white: 0.0, alpha: 0.2) : UIColor(white: 0.0, alpha: 0.075)
-        
         addScrollHint(for: .leftSide, maskLayer: leftOverflowIndicator)
         addScrollHint(for: .rightSide, maskLayer: rightOverflowIndicator)
         
@@ -307,5 +314,14 @@ extension TabsBarViewController: TabManagerDelegate {
     func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
         assert(Thread.current.isMainThread)
         updateData()
+    }
+}
+
+extension TabsBarViewController: Themeable {
+    func applyTheme(_ theme: Theme) {
+        view.backgroundColor = theme == .Private ? BraveUX.Black : BraveUX.GreyB
+        plusButton.tintColor = theme == .Private ? UIColor.white : BraveUX.GreyI
+        collectionView.backgroundColor = view.backgroundColor
+        bottomLine.backgroundColor = theme == .Private ? UIColor(white: 1.0, alpha: 0.2) : UIColor(white: 0.0, alpha: 0.2)
     }
 }
