@@ -11,7 +11,7 @@ class PrivateModeButton: ToggleButton, Themeable {
         super.init(frame: frame)
         accessibilityLabel = PrivateModeStrings.toggleAccessibilityLabel
         accessibilityHint = PrivateModeStrings.toggleAccessibilityHint
-        let maskImage = UIImage(named: "smallPrivateMask")?.withRenderingMode(.alwaysTemplate)
+        let maskImage = #imageLiteral(resourceName: "smallPrivateMask").template
         setImage(maskImage, for: [])
     }
     

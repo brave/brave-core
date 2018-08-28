@@ -64,10 +64,10 @@ class TabLocationView: UIView {
     var loading: Bool = false {
         didSet {
             if loading {
-                reloadButton.setImage(#imageLiteral(resourceName: "nav-stop").withRenderingMode(.alwaysTemplate), for: .normal)
+                reloadButton.setImage(#imageLiteral(resourceName: "nav-stop").template, for: .normal)
                 reloadButton.accessibilityLabel = NSLocalizedString("Stop", comment: "Accessibility Label for the tab toolbar Stop button")
             } else {
-                reloadButton.setImage(#imageLiteral(resourceName: "nav-refresh").withRenderingMode(.alwaysTemplate), for: .normal)
+                reloadButton.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
                 reloadButton.accessibilityLabel = NSLocalizedString("Reload", comment: "Accessibility Label for the tab toolbar Reload button")
             }
         }
@@ -176,7 +176,7 @@ class TabLocationView: UIView {
     lazy var reloadButton = ToolbarButton().then {
         $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
         $0.accessibilityLabel = NSLocalizedString("Reload", comment: "Accessibility Label for the tab toolbar Reload button")
-        $0.setImage(#imageLiteral(resourceName: "nav-refresh").withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
         let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReload(_:)))
         $0.addGestureRecognizer(longPressGestureStopReloadButton)
         $0.addTarget(self, action: #selector(didClickStopReload), for: .touchUpInside)

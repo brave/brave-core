@@ -35,8 +35,8 @@ class QRCodeViewController: UIViewController {
     }()
 
     private var videoPreviewLayer: AVCaptureVideoPreviewLayer?
-    private let scanLine: UIImageView = UIImageView(image: UIImage(named: "qrcode-scanLine"))
-    private let scanBorder: UIImageView = UIImageView(image: UIImage(named: "qrcode-scanBorder"))
+    private let scanLine: UIImageView = UIImageView(image: #imageLiteral(resourceName: "qrcode-scanLine"))
+    private let scanBorder: UIImageView = UIImageView(image: #imageLiteral(resourceName: "qrcode-scanBorder"))
     private lazy var instructionsLabel: UILabel = {
         let label = UILabel()
         label.text = Strings.ScanQRCodeInstructionsLabel
@@ -79,10 +79,10 @@ class QRCodeViewController: UIViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: QRCodeViewControllerUX.navigationBarTitleColor]
 
         // Setup the NavigationItem
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "qrcode-goBack"), style: .plain, target: self, action: #selector(goBack))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "qrcode-goBack"), style: .plain, target: self, action: #selector(goBack))
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.Photon.White100
 
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "qrcode-light"), style: .plain, target: self, action: #selector(openLight))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "qrcode-light"), style: .plain, target: self, action: #selector(openLight))
         if captureDevice.hasTorch {
             self.navigationItem.rightBarButtonItem?.tintColor = UIColor.Photon.White100
         } else {
@@ -186,7 +186,7 @@ class QRCodeViewController: UIViewController {
                 try captureDevice.lockForConfiguration()
                 captureDevice.torchMode = AVCaptureDevice.TorchMode.off
                 captureDevice.unlockForConfiguration()
-                navigationItem.rightBarButtonItem?.image = UIImage(named: "qrcode-light")
+                navigationItem.rightBarButtonItem?.image = #imageLiteral(resourceName: "qrcode-light")
                 navigationItem.rightBarButtonItem?.tintColor = UIColor.Photon.White100
             } catch {
                 print(error)
@@ -196,7 +196,7 @@ class QRCodeViewController: UIViewController {
                 try captureDevice.lockForConfiguration()
                 captureDevice.torchMode = AVCaptureDevice.TorchMode.on
                 captureDevice.unlockForConfiguration()
-                navigationItem.rightBarButtonItem?.image = UIImage(named: "qrcode-isLighting")
+                navigationItem.rightBarButtonItem?.image = #imageLiteral(resourceName: "qrcode-isLighting")
                 navigationItem.rightBarButtonItem?.tintColor = QRCodeViewControllerUX.isLightingNavigationItemColor
             } catch {
                 print(error)

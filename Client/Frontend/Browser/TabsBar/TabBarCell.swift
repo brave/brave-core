@@ -16,7 +16,7 @@ class TabBarCell: UICollectionViewCell {
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(closeTab), for: .touchUpInside)
-        button.setImage(UIImage(named: "close_tab_bar")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "close_tab_bar").template, for: .normal)
         button.tintColor = UIApplication.isInPrivateMode ? UIColor.white : UIColor.black
         // Close button is a bit wider to increase tap area, this aligns the 'X' image closer to the right.
         button.imageEdgeInsets.left = 6

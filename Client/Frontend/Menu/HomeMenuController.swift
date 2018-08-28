@@ -109,22 +109,22 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     
     divider.backgroundColor = BraveUX.ColorForSidebarLineSeparators
     
-    settingsButton.setImage(UIImage(named: "menu-settings")?.withRenderingMode(.alwaysTemplate), for: .normal)
+    settingsButton.setImage(#imageLiteral(resourceName: "menu-settings").template, for: .normal)
     settingsButton.addTarget(self, action: #selector(onClickSettingsButton), for: .touchUpInside)
     settingsButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
     settingsButton.accessibilityLabel = Strings.Settings
     
-    bookmarksButton.setImage(UIImage(named: "menu-bookmark-list")?.withRenderingMode(.alwaysTemplate), for: .normal)
+    bookmarksButton.setImage(#imageLiteral(resourceName: "menu-bookmark-list").template, for: .normal)
     bookmarksButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
     bookmarksButton.accessibilityLabel = Strings.Show_Bookmarks
     
-    historyButton.setImage(UIImage(named: "menu-history")?.withRenderingMode(.alwaysTemplate), for: .normal)
+    historyButton.setImage(#imageLiteral(resourceName: "menu-history").template, for: .normal)
     historyButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
     historyButton.accessibilityLabel = Strings.Show_History
     
     addBookmarkButton.addTarget(self, action: #selector(onClickBookmarksButton), for: .touchUpInside)
-    addBookmarkButton.setImage(UIImage(named: "menu-add-bookmark")?.withRenderingMode(.alwaysTemplate), for: .normal)
-    addBookmarkButton.setImage(UIImage(named: "menu-marked-bookmark")?.withRenderingMode(.alwaysTemplate), for: .selected)
+    addBookmarkButton.setImage(#imageLiteral(resourceName: "menu-add-bookmark").template, for: .normal)
+    addBookmarkButton.setImage(#imageLiteral(resourceName: "menu-marked-bookmark").template, for: .selected)
     addBookmarkButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
     addBookmarkButton.accessibilityLabel = Strings.Add_Bookmark
     

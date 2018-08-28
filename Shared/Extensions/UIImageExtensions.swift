@@ -91,7 +91,7 @@ extension UIImage {
     // this function ensures that.
     //
     // This can be verified with this code:
-    //    let image = UIImage(named: "fxLogo")!
+    //    let image = #imageLiteral(resourceName: "fxLogo")
     //    let data = UIImagePNGRepresentation(image)!
     //    assert(data != UIImagePNGRepresentation(UIImage(data: data)!))
     @available(*, deprecated, message: "use only in testing code")
