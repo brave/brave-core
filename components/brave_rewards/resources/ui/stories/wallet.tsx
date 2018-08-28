@@ -10,7 +10,7 @@ import centered from '@storybook/addon-centered/dist'
 
 // Components
 import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
-import { Type } from '../../../src/features/rewards/alert'
+import { AlertWallet } from '../../../src/features/rewards/walletWrapper'
 import { WalletAddIcon, WalletImportIcon } from '../../../src/components/icons'
 
 const bartBaker = require('../../assets/img/bartBaker.jpeg')
@@ -23,9 +23,9 @@ storiesOf('Feature Components/Rewards/Wallet', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
   .add('Wrapper',() => {
-    const alert = {
+    const alert: AlertWallet = {
       node: 'Some text',
-      type: 'success' as Type,
+      type: 'success',
       onAlertClose: doNothing
     }
     const showAlert = boolean('Show alert', false)
