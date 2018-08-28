@@ -12,10 +12,14 @@
     <includes>
       <include name="IDR_BRAVE_EXTENSON_SHIELDS_BUNDLE_JS" file="brave_extension/js/braveShieldsPanel.bundle.js" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_BACKGROUND_BUNDLE_JS" file="brave_extension/js/background.bundle.js" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_ICON_16_PNG" file="brave_extension/img/icon-16.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_ICON_16_DISABLED_PNG" file="brave_extension/img/icon-16-disabled.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_ICON_48_PNG" file="brave_extension/img/icon-48.png" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSON_ICON_128_PNG" file="brave_extension/img/icon-128.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_16" file="brave_extension/img/icon-16.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_32" file="brave_extension/img/icon-32.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_48" file="brave_extension/img/icon-48.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_64" file="brave_extension/img/icon-64.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_128" file="brave_extension/img/icon-128.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_256" file="brave_extension/img/icon-256.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_SVG" file="brave_extension/img/icon.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON_ICON_OFF_SVG" file="brave_extension/img/icon-off.svg" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_BACKGROUND_HTML" file="brave_extension/background.html" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_EN_US_MESSAGES_JSON" file="brave_extension/_locales/en_US/messages.json" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSON_BRAVE_SHIELDS_HTML" file="brave_extension/braveShieldsPanel.html" type="BINDATA" />
