@@ -6,6 +6,7 @@ import { Reducer } from 'redux'
 
 // Constant
 import { types } from '../constants/rewards_types'
+import {generateQR} from '../utils'
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
@@ -20,6 +21,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state.enabledContribute = true
       state.createdTimestamp = new Date().getTime()
       chrome.send('getReconcileStamp', [])
+      chrome.send('getAddresses', [])
       break
     case types.WALLET_CREATE_FAILED:
       state = { ...state }
@@ -88,6 +90,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
           walletInfo.balance = balance
           walletInfo.grants = grants || []
           chrome.send('getWalletPassphrase', [])
+          chrome.send('getAddresses', [])
           ui.emptyWallet = balance <= 0
           ui.modalBackup = false
         }
@@ -98,6 +101,55 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
           walletInfo
         }
         break
+      }
+    case types.ON_ADDRESSES:
+      {
+        if (!action.payload.addresses) {
+          break
+        }
+
+        state = { ...state }
+        state.addresses = {
+          BAT: {
+            address: action.payload.addresses.BAT,
+            qr: null
+          },
+          BTC: {
+            address: action.payload.addresses.BTC,
+            qr: null
+          },
+          ETH: {
+            address: action.payload.addresses.ETH,
+            qr: null
+          },
+          LTC: {
+            address: action.payload.addresses.LTC,
+            qr: null
+          }
+        }
+        generateQR(action.payload.addresses)
+        break
+      }
+    case types.ON_QR_GENERATED:
+      {
+        const type = action.payload.type
+        if (!type) {
+          break
+        }
+
+        state = { ...state }
+        const addresses = state.addresses
+
+        if (!addresses || !addresses[type] || !addresses[type].address) {
+          break
+        }
+
+        addresses[type].qr = action.payload.image
+
+        state = {
+          ...state,
+          addresses
+        }
       }
   }
 

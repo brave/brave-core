@@ -46,6 +46,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RecoverWallet(const base::ListValue* args);
   void SolveGrantCaptcha(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
+  void GetAddresses(const base::ListValue* args);
 
   // PaymentServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* payment_service,
@@ -100,6 +101,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("getReconcileStamp",
                                     base::BindRepeating(&RewardsDOMHandler::GetReconcileStamp,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("getAddresses",
+                                    base::BindRepeating(&RewardsDOMHandler::GetAddresses,
                                                         base::Unretained(this)));
 }
 
@@ -292,6 +296,20 @@ void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
     std::string stamp = std::to_string(rewards_service_->GetReconcileStamp());
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.reconcileStamp", base::Value(stamp));
+  }
+}
+
+void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
+  if (rewards_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+    std::map<std::string, std::string> addresses = rewards_service_->GetAddresses();
+
+    base::DictionaryValue data;
+    data.SetString("BAT", addresses["BAT"]);
+    data.SetString("BTC", addresses["BTC"]);
+    data.SetString("ETH", addresses["ETH"]);
+    data.SetString("LTC", addresses["LTC"]);
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.addresses", data);
   }
 }
 

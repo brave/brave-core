@@ -13,7 +13,11 @@ declare namespace Rewards {
     CAPTCHA_FAILED = 6
   }
 
+  export type AddressesType = 'BAT' | 'BTC' | 'ETH' | 'LTC'
+  export type Address = { address: string, qr: string | null }
+
   export interface State {
+    addresses?: Record<AddressesType, Address>
     createdTimestamp: number | null
     enabledMain: boolean
     enabledAds: boolean

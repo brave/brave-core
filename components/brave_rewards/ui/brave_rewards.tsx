@@ -5,7 +5,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { initLocale } from 'brave-ui'
 require('emptykit.css')
 
@@ -16,9 +15,9 @@ require('../../fonts/poppins.css')
 
 // Utils
 import store from './store'
-import * as rewardsActions from './actions/rewards_actions'
 import { ThemeProvider } from 'brave-ui/theme'
 import Theme from 'brave-ui/theme/brave-default'
+import { getActions } from './utils'
 
 window.cr.define('brave_rewards', function () {
   'use strict'
@@ -36,10 +35,6 @@ window.cr.define('brave_rewards', function () {
         </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
-  }
-
-  function getActions () {
-    return bindActionCreators(rewardsActions, store.dispatch.bind(store))
   }
 
   function walletCreated () {
@@ -78,6 +73,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onReconcileStamp(stamp)
   }
 
+  function addresses (addresses: Record<string, string>) {
+    getActions().onAddresses(addresses)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -88,7 +87,8 @@ window.cr.define('brave_rewards', function () {
     walletPassphrase,
     recoverWalletData,
     grantFinish,
-    reconcileStamp
+    reconcileStamp,
+    addresses
   }
 })
 

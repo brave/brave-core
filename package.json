@@ -94,7 +94,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-0": "^6.24.1",
-    "brave-ui": "^0.23.1-beta.1",
+    "brave-ui": "^0.23.1-beta.2",
     "csstype": "^2.5.5",
     "css-loader": "^0.28.9",
     "file-loader": "^1.1.6",
@@ -133,6 +133,7 @@
     "clipboard-copy": "^2.0.0",
     "http-node": "^1.2.0",
     "prettier-bytes": "^1.0.4",
+    "qr-image": "^3.2.0",
     "react-chrome-redux": "^1.5.1",
     "throttleit": "^1.0.0",
     "webtorrent": "github:brave/webtorrent#600664249258dd7e893789e991d4cc5f481a7bae"
