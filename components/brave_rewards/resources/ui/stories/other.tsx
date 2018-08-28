@@ -21,8 +21,10 @@ import {
   Profile,
   Amount,
   PanelWelcome,
-  ToggleTips
+  ToggleTips,
+  Tooltip
 } from '../../../src/features/rewards'
+import { BatColorIcon, SettingsIcon, UpholdColorIcon } from '../../../src/components/icons'
 import GrantClaim from '../../../src/features/rewards/grantClaim'
 
 const donate = require('../../assets/img/rewards_donate.svg')
@@ -221,3 +223,49 @@ storiesOf('Feature Components/Rewards/Other', module)
         />
       )
     }))
+    .add('Tooltip', () => {
+      const braveAdsText = <span>Brave Ads Settings</span>
+      const batLogoText = <span>BAT Logo</span>
+      const styledUpholdContent = (
+        <div>
+          <span style={{ fontWeight: 'bold', color: '#4AAF57' }}>
+            Uphold. The Internet of Money.
+          </span>
+        </div>
+      )
+
+      return (
+        <div>
+          <div style={{ position: 'absolute', top: '200px', left: '700px' }}>
+            <Tooltip
+              id={'tooltip-test'}
+              content={braveAdsText}
+            >
+              <div style={{ width: '30px' }}>
+                <SettingsIcon color={'#A1A8F2'}/>
+              </div>
+            </Tooltip>
+          </div>
+          <div style={{ position: 'absolute', top: '280px', left: '685px' }}>
+            <Tooltip
+              id={'tooltip-test'}
+              content={batLogoText}
+            >
+              <div style={{ width: '60px' }}>
+                <BatColorIcon/>
+              </div>
+            </Tooltip>
+          </div>
+          <div style={{ position: 'absolute', top: '390px', left: '670px' }}>
+            <Tooltip
+              id={'tooltip-test'}
+              content={styledUpholdContent}
+            >
+              <div style={{ width: '90px' }}>
+                <UpholdColorIcon/>
+              </div>
+            </Tooltip>
+          </div>
+        </div>
+      )
+    })

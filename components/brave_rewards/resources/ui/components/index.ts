@@ -30,6 +30,7 @@ import TableTransactions from './tableTransactions'
 import Tip from './tip'
 import ToggleTips from './toggleTips'
 import Tokens from './tokens'
+import Tooltip from './tooltip'
 import WalletEmpty from './walletEmpty'
 import WalletOff from './walletOff'
 import WalletPanel from './walletPanel'
@@ -67,6 +68,7 @@ export {
   Tip,
   ToggleTips,
   Tokens,
+  Tooltip,
   WalletEmpty,
   WalletOff,
   WalletPanel,
