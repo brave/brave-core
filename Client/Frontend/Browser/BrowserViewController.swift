@@ -1266,17 +1266,6 @@ extension BrowserViewController: URLBarDelegate {
         }
     }
     
-    func urlBarDidLongPressPageOptions(_ urlBar: URLBarView, from button: UIButton) {
-        guard let tab = tabManager.selectedTab else { return }
-        guard let url = tab.canonicalURL?.displayURL, self.presentedViewController == nil else {
-            return
-        }
-
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
-        presentActivityViewController(url, tab: tab, sourceView: button, sourceRect: button.bounds, arrowDirection: .up)
-    }
-    
     func urlBarDidPressStop(_ urlBar: URLBarView) {
         tabManager.selectedTab?.stop()
     }
