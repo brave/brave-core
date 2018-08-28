@@ -15,17 +15,14 @@ import {
   WalletEmpty,
   WalletSummary
 } from 'brave-ui/features/rewards'
+import { WalletAddIcon, WalletImportIcon } from 'brave-ui/components/icons'
+import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
 
 // Utils
 import { getLocale } from '../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
-import Grant from './grant'
 import WalletOff from '../../../../node_modules/brave-ui/features/rewards/walletOff'
-
-// Assets
-const walletIcon = require('../../../img/rewards/wallet_icon.svg')
-const fundsIcon = require('../../../img/rewards/funds_icon.svg')
 
 interface State {
   modalBackup: boolean,
@@ -129,7 +126,7 @@ class PageWallet extends React.Component<Props, State> {
     console.log('onModalActivityRemove')
   }
 
-  walletAlerts = () => {
+  walletAlerts = (): AlertWallet | null => {
     const { balance } = this.props.rewardsData.walletInfo
     const { walletRecoverySuccess, walletServerProblem } = this.props.rewardsData.ui
 
@@ -144,7 +141,7 @@ class PageWallet extends React.Component<Props, State> {
       return {
         node: <><b>{getLocale('walletRestored')}</b> {getLocale('walletRecoverySuccess', { balance: balance.toString() })}</>,
         type: 'success',
-        onAlertClose: (event: MouseEvent) => {
+        onAlertClose: () => {
           this.actions.onClearAlert('walletRecoverySuccess')
         }
       }
@@ -154,18 +151,13 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   render () {
-    const { connectedWallet, recoveryKey, grant, enabledMain, contributionMonthly } = this.props.rewardsData
+    const { connectedWallet, recoveryKey, enabledMain, contributionMonthly } = this.props.rewardsData
     const { balance, rates } = this.props.rewardsData.walletInfo
     const { walletRecoverySuccess, emptyWallet, modalBackup } = this.props.rewardsData.ui
     const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
 
     return (
       <>
-        {
-          enabledMain && grant && grant.promotionId
-          ? <Grant/>
-          : null
-        }
         <WalletWrapper
           tokens={balance}
           converted={utils.formatConverted(this.getConversion())}
@@ -173,15 +165,16 @@ class PageWallet extends React.Component<Props, State> {
             {
               name: getLocale('panelAddFunds'),
               action: () => { console.log('panelAddFunds') },
-              icon: walletIcon
+              icon: <WalletAddIcon />
             },
             {
               name: getLocale('panelWithdrawFunds'),
               action: () => { console.log('panelWithdrawFunds') },
-              icon: fundsIcon
+              icon: <WalletImportIcon />
             }
           ]}
           onSettingsClick={this.onModalBackupOpen}
+          onActivityClick={this.onModalActivityToggle}
           showCopy={true}
           showSecActions={true}
           grants={this.getGrants()}

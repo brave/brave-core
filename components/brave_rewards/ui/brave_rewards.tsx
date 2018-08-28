@@ -17,6 +17,8 @@ require('../../fonts/poppins.css')
 // Utils
 import store from './store'
 import * as rewardsActions from './actions/rewards_actions'
+import { ThemeProvider } from 'brave-ui/theme'
+import Theme from 'brave-ui/theme/brave-default'
 
 window.cr.define('brave_rewards', function () {
   'use strict'
@@ -29,7 +31,9 @@ window.cr.define('brave_rewards', function () {
 
     render(
       <Provider store={store}>
-        <App />
+        <ThemeProvider theme={Theme}>
+          <App />
+        </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
   }

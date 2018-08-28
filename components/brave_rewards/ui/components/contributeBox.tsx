@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Checkbox, Grid, Column, Select } from 'brave-ui/components'
+import { Checkbox, Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, NextContribution } from 'brave-ui/features/rewards'
 
 // Utils
@@ -149,51 +149,55 @@ class ContributeBox extends React.Component<Props, State> {
     }
 
     return (
-      <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>
-        <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Select
-            title={getLocale('contributionMonthly')}
-            onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-            value={(contributionMonthly || '').toString()}
-          >
-            {
-              monthlyList.map((choice: MonthlyChoice) => {
-                return <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                  <Tokens value={choice.tokens} converted={choice.converted} />
-                </div>
-              })
-            }
-          </Select>
-          <Select
-            title={getLocale('contributionMinTime')}
-            onChange={this.onSelectSettingChange.bind(this, 'contributionMinTime')}
-            value={(contributionMinTime || '').toString()}
-          >
-            <div data-value='5000'>{getLocale('contributionTime5')}</div>
-            <div data-value='8000'>{getLocale('contributionTime8')}</div>
-            <div data-value='60000'>{getLocale('contributionTime60')}</div>
-          </Select>
-          <Select
-            title={getLocale('contributionMinVisits')}
-            onChange={this.onSelectSettingChange.bind(this, 'contributionMinVisits')}
-            value={(contributionMinVisits || '').toString()}
-          >
-            <div data-value='1'>{getLocale('contributionVisit1')}</div>
-            <div data-value='5'>{getLocale('contributionVisit5')}</div>
-            <div data-value='10'>{getLocale('contributionVisit10')}</div>
-          </Select>
-          <Checkbox
-            title={getLocale('contributionAllowed')}
-            value={{
-              contributionNonVerified: contributionNonVerified,
-              contributionVideos: contributionVideos
-            }}
-            multiple={true}
-            onChange={this.onCheckSettingChange}
-          >
-            <div data-key='contributionNonVerified'>{getLocale('contributionNonVerified')}</div>
-            <div data-key='contributionVideos'>{getLocale('contributionVideos')}</div>
-          </Checkbox>
+      <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
+        <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+          <ControlWrapper text={getLocale('contributionMonthly')}>
+            <Select
+              onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
+              value={(contributionMonthly || '').toString()}
+            >
+              {
+                monthlyList.map((choice: MonthlyChoice) => {
+                  return <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
+                    <Tokens value={choice.tokens} converted={choice.converted} />
+                  </div>
+                })
+              }
+            </Select>
+          </ControlWrapper>
+          <ControlWrapper text={getLocale('contributionMinTime')}>
+            <Select
+              onChange={this.onSelectSettingChange.bind(this, 'contributionMinTime')}
+              value={(contributionMinTime || '').toString()}
+            >
+              <div data-value='5000'>{getLocale('contributionTime5')}</div>
+              <div data-value='8000'>{getLocale('contributionTime8')}</div>
+              <div data-value='60000'>{getLocale('contributionTime60')}</div>
+            </Select>
+          </ControlWrapper>
+          <ControlWrapper text={getLocale('contributionMinVisits')}>
+            <Select
+              onChange={this.onSelectSettingChange.bind(this, 'contributionMinVisits')}
+              value={(contributionMinVisits || '').toString()}
+            >
+              <div data-value='1'>{getLocale('contributionVisit1')}</div>
+              <div data-value='5'>{getLocale('contributionVisit5')}</div>
+              <div data-value='10'>{getLocale('contributionVisit10')}</div>
+            </Select>
+          </ControlWrapper>
+          <ControlWrapper text={getLocale('contributionAllowed')}>
+            <Checkbox
+              value={{
+                contributionNonVerified: contributionNonVerified,
+                contributionVideos: contributionVideos
+              }}
+              multiple={true}
+              onChange={this.onCheckSettingChange}
+            >
+              <div data-key='contributionNonVerified'>{getLocale('contributionNonVerified')}</div>
+              <div data-key='contributionVideos'>{getLocale('contributionVideos')}</div>
+            </Checkbox>
+          </ControlWrapper>
         </Column>
       </Grid>
     )
@@ -221,9 +225,9 @@ class ContributeBox extends React.Component<Props, State> {
         description={getLocale('contributionDesc')}
         toggle={toggleOn}
         checked={toggleOn ? enabledContribute : false}
+        settingsChild={this.contributeSettings(monthlyList)}
         disabledContent={this.contributeDisabled()}
         onToggle={this.onToggleContribution}
-        settingsChild={this.contributeSettings(monthlyList)}
       >
         {
           this.state.modalContribute
@@ -235,12 +239,7 @@ class ContributeBox extends React.Component<Props, State> {
         }
         <List title={getLocale('contributionMonthly')}>
           <Select
-            theme={{
-              border: 'none',
-              padding: '0',
-              arrowPadding: '0',
-              maxWidth: '100%'
-            }}
+            floating={true}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
             value={(contributionMonthly || '').toString()}
           >
@@ -253,9 +252,7 @@ class ContributeBox extends React.Component<Props, State> {
             }
           </Select>
         </List>
-        <List
-          title={getLocale('contributionNextDate')}
-        >
+        <List title={getLocale('contributionNextDate')}>
           <NextContribution>{new Date(reconcileStamp).toLocaleDateString()}</NextContribution>
         </List>
         <List title={getLocale('contributionSites')}>

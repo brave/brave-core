@@ -16,6 +16,7 @@ import DonationBox from './donationsBox'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
+import Grant from './grant'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -44,21 +45,26 @@ class SettingsPage extends React.Component<Props, {}> {
   }
 
   render () {
-    const { rewardsData } = this.props
+    const { enabledMain, grant } = this.props.rewardsData
 
     return (
       <Page>
-        <Grid columns={3} theme={{ gridGap: '32px' }}>
-          <Column size={2} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Grid columns={3} customStyle={{ gridGap: '32px' }}>
+          <Column size={2} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <MainToggle
               onToggle={this.onToggle}
-              enabled={rewardsData.enabledMain}
+              enabled={enabledMain}
             />
             <AdsBox />
             <ContributeBox />
             <DonationBox />
           </Column>
-          <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+            {
+              enabledMain && grant && grant.promotionId
+                ? <Grant/>
+                : null
+            }
             <PageWallet />
           </Column>
         </Grid>
