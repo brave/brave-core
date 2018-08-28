@@ -30,7 +30,7 @@ const updateBadgeText = (state: State) => {
   if (tab) {
     const total = tab.adsBlocked + tab.trackersBlocked + tab.javascriptBlocked + tab.fingerprintingBlocked + tab.httpsRedirected
     // do not show any badge if there are no blocked items
-    setBadgeText(total > 0 ? total.toString() : '')
+    setBadgeText(tabId, total > 99 ? '99+' : total > 0 ? total.toString() : '')
   }
 }
 

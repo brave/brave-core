@@ -74,8 +74,11 @@ export const getMockChrome = () => {
       onStartup: new ChromeEvent()
     },
     browserAction: {
-      setBadgeText: function (text: string) {},
-      setIcon: function (icon: string, tabId: number) {}
+      setBadgeBackgroundColor: function (properties: object) {},
+      setBadgeText: function (textProperties: object) {},
+      setIcon: function (iconProperties: object) {},
+      enable: function (tabId?: number) {},
+      disable: function (tabId?: number) {}
     },
     tabs: {
       queryAsync: function () {
@@ -149,6 +152,7 @@ export const initialState = deepFreeze({
     tabs: {},
     windows: {}
   },
+  runtime: {},
   shieldsPanel: {
     currentWindowId: -1,
     tabs: {},

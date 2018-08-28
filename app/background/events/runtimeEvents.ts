@@ -4,8 +4,10 @@
 
 import windowActions from '../actions/windowActions'
 import tabActions from '../actions/tabActions'
+import runtimeActions from '../actions/runtimeActions'
 
 chrome.runtime.onStartup.addListener(() => {
+  runtimeActions.runtimeDidStartup()
   chrome.windows.getAllAsync({ populate: true }).then((windows: chrome.windows.Window[]) => {
     windows.forEach((win: chrome.windows.Window) => {
       windowActions.windowCreated(win)

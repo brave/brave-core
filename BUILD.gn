@@ -17,10 +17,14 @@ action("brave-extension") {
     "$target_gen_dir/brave_extension/build/js/braveShieldsPanel.bundle.js",
     "$target_gen_dir/brave_extension/build/braveShieldsPanel.html",
     "$target_gen_dir/brave_extension/build/bravelizer.css",
-    "$target_gen_dir/brave_extension/build/img/icon-128.png",
     "$target_gen_dir/brave_extension/build/img/icon-16.png",
-    "$target_gen_dir/brave_extension/build/img/icon-16-disabled.png",
+    "$target_gen_dir/brave_extension/build/img/icon-32.png",
     "$target_gen_dir/brave_extension/build/img/icon-48.png",
+    "$target_gen_dir/brave_extension/build/img/icon-64.png",
+    "$target_gen_dir/brave_extension/build/img/icon-128.png",
+    "$target_gen_dir/brave_extension/build/img/icon-256.png",
+    "$target_gen_dir/brave_extension/build/img/icon.svg",
+    "$target_gen_dir/brave_extension/build/img/icon-off.svg",
     "$target_gen_dir/brave_extension/build/_locales/en_US/messages.json",
   ]
 

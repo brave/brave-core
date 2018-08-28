@@ -490,7 +490,7 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
       assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[0], '12')
+      assert.equal(this.spy.getCall(0).args[1], '12')
     })
     it('increments for JS blocking', function () {
       let nextState = shieldsPanelReducer(state, {
