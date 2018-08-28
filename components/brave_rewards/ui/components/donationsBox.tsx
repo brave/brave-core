@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Checkbox, Column, Grid } from 'brave-ui/components'
+import { Checkbox, Column, Grid, ControlWrapper } from 'brave-ui/components'
 import { DisabledContent, Box, TableDonation, List, Tokens } from 'brave-ui/features/rewards'
 
 // Utils
@@ -41,20 +41,21 @@ class DonationBox extends React.Component<Props, {}> {
     }
 
     return (
-      <Grid columns={1} theme={{ maxWidth: '270px', margin: '0 auto' }}>
-        <Column size={1} theme={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Checkbox
-            title={getLocale('donationAbility')}
-            value={{
-              donationAbilityYT,
-              donationAbilityTwitter
-            }}
-            multiple={true}
-            onChange={this.onCheckSettingChange}
-          >
-            <div data-key='donationAbilityYT'>{getLocale('donationAbilityYT')}</div>
-            <div data-key='donationAbilityTwitter'>{getLocale('donationAbilityTwitter')}</div>
-          </Checkbox>
+      <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
+        <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+          <ControlWrapper text={getLocale('donationAbility')}>
+            <Checkbox
+              value={{
+                donationAbilityYT,
+                donationAbilityTwitter
+              }}
+              multiple={true}
+              onChange={this.onCheckSettingChange}
+            >
+              <div data-key='donationAbilityYT'>{getLocale('donationAbilityYT')}</div>
+              <div data-key='donationAbilityTwitter'>{getLocale('donationAbilityTwitter')}</div>
+            </Checkbox>
+          </ControlWrapper>
         </Column>
       </Grid>
     )
@@ -86,8 +87,8 @@ class DonationBox extends React.Component<Props, {}> {
         title={getLocale('donationTitle')}
         type={'donation'}
         description={getLocale('donationDesc')}
-        disabledContent={showDisabled ? this.disabledContent() : null}
         settingsChild={this.donationSettings()}
+        disabledContent={showDisabled ? this.disabledContent() : null}
       >
         <List title={getLocale('donationTotalDonations')}>
           <Tokens value={0} converted={0} />

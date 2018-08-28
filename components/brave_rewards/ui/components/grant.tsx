@@ -74,18 +74,7 @@ class Grant extends React.Component<Props, State> {
       <>
         {
           this.state.grantShow
-            ? <GrantClaim onClick={this.onGrantShow}/>
-            : null
-        }
-        {
-          grant.expiryTime
-            ? <GrantWrapper
-              onClose={this.onSuccess}
-              title={'It’s your lucky day!'}
-              text={'Your token grant is on its way.'}
-            >
-              <GrantComplete onClose={this.onSuccess} amount={tokens} date={new Date(grant.expiryTime).toLocaleDateString()} />
-            </GrantWrapper>
+            ? <GrantClaim onClaim={this.onGrantShow}/>
             : null
         }
         {
@@ -96,6 +85,17 @@ class Grant extends React.Component<Props, State> {
               text={getLocale('proveHuman')}
             >
               <GrantCaptcha onSolution={this.onSolution} dropBgImage={grant.captcha} />
+            </GrantWrapper>
+            : null
+        }
+        {
+          grant.expiryTime
+            ? <GrantWrapper
+              onClose={this.onSuccess}
+              title={'It’s your lucky day!'}
+              text={'Your token grant is on its way.'}
+            >
+              <GrantComplete onClose={this.onSuccess} amount={tokens} date={new Date(grant.expiryTime).toLocaleDateString()} />
             </GrantWrapper>
             : null
         }
