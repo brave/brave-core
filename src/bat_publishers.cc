@@ -44,11 +44,12 @@ BatPublishers::~BatPublishers() {
 }
 
 void BatPublishers::calcScoreConsts() {
+  uint64_t min_duration_ms = state_->min_pubslisher_duration_ * 1000;
   //TODO: check Warning	C4244	'=': conversion from 'double' to 'unsigned int', possible loss of data
-  a_ = 1.0 / (braveledger_ledger::_d * 2.0) - state_->min_pubslisher_duration_;
+  a_ = 1.0 / (braveledger_ledger::_d * 2.0) - min_duration_ms;
   a2_ = a_ * 2;
   a4_ = a2_ * 2;
-  b_ = state_->min_pubslisher_duration_ - a_;
+  b_ = min_duration_ms - a_;
   b2_ = b_ * b_;
 }
 
@@ -203,8 +204,8 @@ std::unique_ptr<ledger::PublisherInfo> BatPublishers::onPublisherInfoUpdated(
   return info;
 }
 
-void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In milliseconds
-  state_->min_pubslisher_duration_ = duration; //TODO: conversion from 'const uint64_t' to 'unsigned int', possible loss of data
+void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In seconds
+  state_->min_pubslisher_duration_ = duration;
   saveState();
 }
 

@@ -40,7 +40,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void AddRecurringPayment(const std::string& publisher_id, const double& value);
 
-  void setPublisherMinVisitTime(const uint64_t& duration); // In milliseconds
+  void setPublisherMinVisitTime(const uint64_t& duration); // In seconds
 
   void setPublisherMinVisits(const unsigned int& visits);
 
