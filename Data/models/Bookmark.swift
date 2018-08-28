@@ -105,6 +105,21 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     }
     
     public func update(customTitle: String?, url: String?, save: Bool = false) {
+        var contextToUpdate: NSManagedObjectContext?
+        
+        // Syncable.update() doesn't save to CD at the moment, we need to use managedObjectContext here.
+        if save == false {
+            contextToUpdate = managedObjectContext
+        // Updated object usually uses view context, all database writes should happen on a background thread
+        // so we need to fetch the object using background context.
+        } else if managedObjectContext?.concurrencyType != .privateQueueConcurrencyType {
+            contextToUpdate = DataController.newBackgroundContext()
+        }
+        
+        guard let bookmarkToUpdate = (try? contextToUpdate?.existingObject(with: objectID)) as? Bookmark,
+            let context = contextToUpdate else {
+                return
+        }
         
         // See if there has been any change
         if self.customTitle == customTitle && self.url == url {
@@ -112,20 +127,20 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         }
         
         if let ct = customTitle, !ct.isEmpty {
-            self.customTitle = customTitle
+            bookmarkToUpdate.customTitle = customTitle
         }
         
         if let u = url, !u.isEmpty {
-            self.url = url
-            if let theURL = URL(string: u), let context = managedObjectContext {
-                domain = Domain.getOrCreateForUrl(theURL, context: context)
+            bookmarkToUpdate.url = url
+            if let theURL = URL(string: u) {
+                bookmarkToUpdate.domain = Domain.getOrCreateForUrl(theURL, context: context)
             } else {
-                domain = nil
+                bookmarkToUpdate.domain = nil
             }
         }
         
         if save {
-            DataController.save(context: self.managedObjectContext)
+            DataController.save(context: context)
         }
         
         if !isFavorite {
