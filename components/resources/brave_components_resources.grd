@@ -131,6 +131,10 @@
       <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="../img/rewards/captcha_bat.png" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_WELCOME_BG" file="../img/rewards/welcome_bg.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_BART_TEMP" file="../img/rewards/temp/bartBaker.jpeg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_BAT" file="../img/rewards/BAT.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_BTC" file="../img/rewards/BTC.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_ETH" file="../img/rewards/ETH.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_LTC" file="../img/rewards/LTC.svg" type="BINDATA" />
 
     </includes>
     <messages fallback_to_english="true">
@@ -236,7 +240,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="">add funds</message>
       <message name="IDS_BRAVE_UI_ADD_FUNDS_FAQ" desc="">the FAQ</message>
       <message name="IDS_BRAVE_UI_ADD_FUNDS_NOTE" desc="">Reminder: The Brave Wallet is unidirectional and BAT flows to publisher sites. For more information about Brave Payments, please visit</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_QR" desc="">QR Code Version</message>
+      <message name="IDS_BRAVE_UI_ADD_FUNDS_QR" desc="">Show QR Code</message>
       <message name="IDS_BRAVE_UI_ADD_FUNDS_TEXT" desc="">Brave makes it easy to transfer funds from your existing crypto-currency wallet to your Brave BAT Wallet.</message>
       <message name="IDS_BRAVE_UI_ADD_FUNDS_TITLE" desc="">Add funds to your Brave wallet</message>
       <message name="IDS_BRAVE_UI_ALLOW_TIP" desc="">Allow tips on</message>

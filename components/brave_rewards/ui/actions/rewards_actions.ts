@@ -74,3 +74,12 @@ export const onClearAlert = (property: string) => action(types.ON_CLEAR_ALERT, {
 export const onReconcileStamp = (stamp: number) => action(types.ON_RECONCILE_STAMP, {
   stamp
 })
+
+export const onAddresses = (addresses: Record<string, string>) => action(types.ON_ADDRESSES, {
+  addresses
+})
+
+export const onQRGenerated = (type: Rewards.AddressesType, image: string) => action(types.ON_QR_GENERATED, {
+  type,
+  image
+})

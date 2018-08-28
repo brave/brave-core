@@ -52,6 +52,7 @@ class RewardsService : public KeyedService {
   virtual void OnMediaStop(SessionID tab_id) = 0;
   virtual void OnXHRLoad(SessionID tab_id, const GURL& url) = 0;
   virtual uint64_t GetReconcileStamp() const = 0;
+  virtual std::map<std::string, std::string> GetAddresses() const = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

@@ -652,4 +652,13 @@ uint64_t RewardsServiceImpl::GetReconcileStamp() const {
   return ledger_->GetReconcileStamp();
 }
 
+std::map<std::string, std::string> RewardsServiceImpl::GetAddresses() const {
+  std::map<std::string, std::string> addresses;
+  addresses.emplace("BAT", ledger_->GetBATAddress());
+  addresses.emplace("BTC", ledger_->GetBTCAddress());
+  addresses.emplace("ETH", ledger_->GetETHAddress());
+  addresses.emplace("LTC", ledger_->GetLTCAddress());
+  return addresses;
+}
+
 }  // namespace brave_rewards

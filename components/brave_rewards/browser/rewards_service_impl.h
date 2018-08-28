@@ -75,6 +75,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnXHRLoad(SessionID tab_id, const GURL& url) override;
   std::string URIEncode(const std::string& value) override;
   uint64_t GetReconcileStamp() const override;
+  std::map<std::string, std::string> GetAddresses() const override;
 
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;
