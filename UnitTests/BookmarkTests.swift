@@ -214,14 +214,18 @@ class BookmarkTests: CoreDataTestCase {
         backgroundSaveAndWaitForExpectation {
             object.update(customTitle: newCustomTitle, url: newUrl, save: true)
         }
+        DataController.viewContext.refreshAllObjects()
+        
         // Let's make sure not any new record was added to DB
         XCTAssertEqual(Bookmark.getAllBookmarks(context: context).count, 1)
         
-        XCTAssertNotEqual(object.displayTitle, customTitle)
-        XCTAssertNotEqual(object.url, url)
+        let newObject = try! DataController.viewContext.fetch(fetchRequest).first!
         
-        XCTAssertEqual(object.displayTitle, newCustomTitle)
-        XCTAssertEqual(object.url, newUrl)
+        XCTAssertNotEqual(newObject.displayTitle, customTitle)
+        XCTAssertNotEqual(newObject.url, url)
+        
+        XCTAssertEqual(newObject.displayTitle, newCustomTitle)
+        XCTAssertEqual(newObject.url, newUrl)
     }
     
     func testUpdateBookmarkNoChanges() {
@@ -256,6 +260,7 @@ class BookmarkTests: CoreDataTestCase {
         backgroundSaveAndWaitForExpectation {
             object.update(customTitle: customTitle, url: badUrl, save: true)
         }
+        DataController.viewContext.refreshAllObjects()
         
         // Let's make sure not any new record was added to DB
         XCTAssertEqual(Bookmark.getAllBookmarks(context: context).count, 1)
@@ -275,6 +280,8 @@ class BookmarkTests: CoreDataTestCase {
         backgroundSaveAndWaitForExpectation {
             object.update(customTitle: newCustomTitle, url: nil, save: true)
         }
+        DataController.viewContext.refreshAllObjects()
+        
         // Let's make sure not any new record was added to DB
         XCTAssertEqual(Bookmark.getAllBookmarks(context: context).count, 1)
         
@@ -409,6 +416,7 @@ class BookmarkTests: CoreDataTestCase {
         
         // No CD autosave, see the method internals.
         object.update(syncRecord: syncBookmark)
+        DataController.viewContext.refreshAllObjects()
         
         XCTAssertEqual(object.title, newTitle)
         XCTAssertEqual(object.url, newUrl)
