@@ -156,4 +156,5 @@ export const StyledAnchor = styled<{}, 'button'>('button')`
   cursor: pointer;
   color: #bf9fe3;
   height: 38px;
+  overflow: hidden;
 `

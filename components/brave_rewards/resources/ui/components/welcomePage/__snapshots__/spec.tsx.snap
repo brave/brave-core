@@ -393,6 +393,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
   color: #bf9fe3;
   height: 38px;
+  overflow: hidden;
 }
 
 .c7 {
