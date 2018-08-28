@@ -223,12 +223,11 @@ extension TabsBarViewController: UICollectionViewDelegateFlowLayout {
         let tabCount = CGFloat(tabList.count())
         
         if tabCount < 1 { return CGSize.zero }
-        if tabCount == 1 { return view.frame.size }
+        if tabCount == 1 { return collectionView.frame.size }
         
-        let newTabButtonWidth = CGFloat(UIDevice.current.userInterfaceIdiom == .pad ? UX.TabsBar.buttonWidth : 0)
         let tabsAndButtonWidth = tabCount * UX.TabsBar.minimumWidth
-        if tabsAndButtonWidth < collectionView.frame.width - newTabButtonWidth {
-            let maxWidth = (collectionView.frame.width - newTabButtonWidth) / tabCount
+        if tabsAndButtonWidth < collectionView.frame.width {
+            let maxWidth = collectionView.frame.width / tabCount
             return CGSize(width: maxWidth, height: view.frame.height)
         }
         
