@@ -35,7 +35,7 @@ class UIImageViewExtensionsTests: XCTestCase {
     }
 
     func testAsyncSetIcon() {
-        let originalImage = UIImage(named: "fxLogo")!
+        let originalImage = #imageLiteral(resourceName: "fxLogo")
 
         WebServer.sharedInstance.registerHandlerForMethod("GET", module: "favicon", resource: "icon") { (request) -> GCDWebServerResponse! in
             return GCDWebServerDataResponse(data: UIImagePNGRepresentation(originalImage)!, contentType: "image/png")

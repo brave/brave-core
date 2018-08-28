@@ -20,7 +20,7 @@ class TabsBarViewController: UIViewController {
     
     private lazy var plusButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "add_tab")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "add_tab").template, for: .normal)
         button.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10)
         button.tintColor = UIColor.black
         button.contentMode = .scaleAspectFit

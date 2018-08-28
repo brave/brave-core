@@ -149,7 +149,7 @@ class ReaderModeStyleViewController: UIViewController {
             make.width.equalTo(ReaderModeStyleViewControllerUX.BrightnessSliderWidth)
         }
 
-        let brightnessMinImageView = UIImageView(image: UIImage(named: "brightnessMin"))
+        let brightnessMinImageView = UIImageView(image: #imageLiteral(resourceName: "brightnessMin"))
         brightnessRow.addSubview(brightnessMinImageView)
 
         brightnessMinImageView.snp.makeConstraints { (make) -> Void in
@@ -157,7 +157,7 @@ class ReaderModeStyleViewController: UIViewController {
             make.right.equalTo(slider.snp.left).offset(-ReaderModeStyleViewControllerUX.BrightnessIconOffset)
         }
 
-        let brightnessMaxImageView = UIImageView(image: UIImage(named: "brightnessMax"))
+        let brightnessMaxImageView = UIImageView(image: #imageLiteral(resourceName: "brightnessMax"))
         brightnessRow.addSubview(brightnessMaxImageView)
 
         brightnessMaxImageView.snp.makeConstraints { (make) -> Void in

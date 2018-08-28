@@ -62,11 +62,11 @@ open class TabToolbarHelper: NSObject {
         let longPressGestureTabsButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressTabs))
         toolbar.tabsButton.addGestureRecognizer(longPressGestureTabsButton)
         
-        toolbar.shareButton.setImage(UIImage(named: "nav-share"), for: .normal)
+        toolbar.shareButton.setImage(#imageLiteral(resourceName: "nav-share"), for: .normal)
         toolbar.shareButton.accessibilityLabel = Strings.Share
         toolbar.shareButton.addTarget(self, action: #selector(didClickShare), for: UIControlEvents.touchUpInside)
         
-        toolbar.addTabButton.setImage(UIImage(named: "add_tab"), for: .normal)
+        toolbar.addTabButton.setImage(#imageLiteral(resourceName: "add_tab"), for: .normal)
         toolbar.addTabButton.accessibilityLabel = Strings.Add_Tab
         toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControlEvents.touchUpInside)
         toolbar.addTabButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:))))

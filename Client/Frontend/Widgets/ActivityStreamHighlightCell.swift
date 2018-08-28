@@ -184,10 +184,10 @@ class ActivityStreamHighlightCell: UICollectionViewCell {
 
         if let bookmarked = site.bookmarked, bookmarked {
             self.descriptionLabel.text = Strings.HighlightBookmarkText
-            self.statusIcon.image = UIImage(named: "context_bookmark")
+            self.statusIcon.image = #imageLiteral(resourceName: "context_bookmark")
         } else {
             self.descriptionLabel.text = Strings.HighlightVistedText
-            self.statusIcon.image = UIImage(named: "context_viewed")
+            self.statusIcon.image = #imageLiteral(resourceName: "context_viewed")
         }
     }
 }

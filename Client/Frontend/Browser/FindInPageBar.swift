@@ -83,14 +83,14 @@ class FindInPageBar: UIView {
         matchCountView.accessibilityIdentifier = "FindInPage.matchCount"
         addSubview(matchCountView)
 
-        previousButton.setImage(UIImage(named: "find_previous"), for: [])
+        previousButton.setImage(#imageLiteral(resourceName: "find_previous"), for: [])
         previousButton.setTitleColor(FindInPageUX.ButtonColor, for: [])
         previousButton.accessibilityLabel = NSLocalizedString("Previous in-page result", tableName: "FindInPage", comment: "Accessibility label for previous result button in Find in Page Toolbar.")
         previousButton.addTarget(self, action: #selector(didFindPrevious), for: .touchUpInside)
         previousButton.accessibilityIdentifier = "FindInPage.find_previous"
         addSubview(previousButton)
 
-        nextButton.setImage(UIImage(named: "find_next"), for: [])
+        nextButton.setImage(#imageLiteral(resourceName: "find_next"), for: [])
         nextButton.setTitleColor(FindInPageUX.ButtonColor, for: [])
         nextButton.accessibilityLabel = NSLocalizedString("Next in-page result", tableName: "FindInPage", comment: "Accessibility label for next result button in Find in Page Toolbar.")
         nextButton.addTarget(self, action: #selector(didFindNext), for: .touchUpInside)
@@ -98,7 +98,7 @@ class FindInPageBar: UIView {
         addSubview(nextButton)
 
         let closeButton = UIButton()
-        closeButton.setImage(UIImage(named: "find_close"), for: [])
+        closeButton.setImage(#imageLiteral(resourceName: "find_close"), for: [])
         closeButton.setTitleColor(FindInPageUX.ButtonColor, for: [])
         closeButton.accessibilityLabel = NSLocalizedString("Done", tableName: "FindInPage", comment: "Done button in Find in Page Toolbar.")
         closeButton.addTarget(self, action: #selector(didPressClose), for: .touchUpInside)

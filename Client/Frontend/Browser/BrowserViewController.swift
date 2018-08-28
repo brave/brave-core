@@ -59,7 +59,7 @@ class BrowserViewController: UIViewController {
 
     lazy fileprivate var customSearchEngineButton: UIButton = {
         let searchButton = UIButton()
-        searchButton.setImage(UIImage(named: "AddSearch")?.withRenderingMode(.alwaysTemplate), for: [])
+        searchButton.setImage(#imageLiteral(resourceName: "AddSearch").template, for: [])
         searchButton.addTarget(self, action: #selector(addCustomSearchEngineForFocusedElement), for: .touchUpInside)
         searchButton.accessibilityIdentifier = "BrowserViewController.customSearchEngineButton"
         return searchButton
