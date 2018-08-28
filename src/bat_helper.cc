@@ -1351,6 +1351,7 @@ namespace braveledger_bat_helper {
     if (false == error) {
       walletInfo.paymentId_ = d["wallet"]["paymentId"].GetString();
       walletInfo.addressBAT_ = d["wallet"]["addresses"]["BAT"].GetString();
+      walletInfo.addressBTC_ = d["wallet"]["addresses"]["BTC"].GetString();
       walletInfo.addressCARD_ID_ = d["wallet"]["addresses"]["CARD_ID"].GetString();
       walletInfo.addressETH_ = d["wallet"]["addresses"]["ETH"].GetString();
       walletInfo.addressLTC_ = d["wallet"]["addresses"]["LTC"].GetString();
