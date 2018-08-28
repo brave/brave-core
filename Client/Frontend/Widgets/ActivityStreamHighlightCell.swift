@@ -80,7 +80,7 @@ class ActivityStreamHighlightCell: UICollectionViewCell {
 
     fileprivate lazy var playLabel: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage.templateImageNamed("play")
+        view.image = #imageLiteral(resourceName: "play").template
         view.tintColor = .white
         view.alpha = 0.97
         view.layer.shadowColor = UIColor.black.cgColor

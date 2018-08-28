@@ -101,7 +101,7 @@ class URLBarView: UIView {
 
     fileprivate lazy var cancelButton: UIButton = {
         let cancelButton = InsetButton()
-        cancelButton.setImage(UIImage.templateImageNamed("goBack"), for: .normal)
+        cancelButton.setImage(#imageLiteral(resourceName: "goBack").template, for: .normal)
         cancelButton.accessibilityIdentifier = "urlBar-cancel"
         cancelButton.addTarget(self, action: #selector(didClickCancel), for: .touchUpInside)
         cancelButton.alpha = 0
@@ -110,7 +110,7 @@ class URLBarView: UIView {
     
     fileprivate lazy var showQRScannerButton: InsetButton = {
         let button = InsetButton()
-        button.setImage(UIImage.templateImageNamed("menu-ScanQRCode"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "menu-ScanQRCode").template, for: .normal)
         button.accessibilityIdentifier = "urlBar-scanQRCode"
         button.clipsToBounds = false
         button.addTarget(self, action: #selector(showQRScanner), for: .touchUpInside)
@@ -131,7 +131,7 @@ class URLBarView: UIView {
     var addTabButton = ToolbarButton()
     lazy var menuButton = ToolbarButton().then {
         $0.contentMode = .center
-        $0.setImage(UIImage.templateImageNamed("nav-menu"), for: .normal)
+        $0.setImage(#imageLiteral(resourceName: "nav-menu").template, for: .normal)
         $0.accessibilityLabel = Strings.AppMenuButtonAccessibilityLabel
         $0.addTarget(self, action: #selector(didClickMenu), for: .touchUpInside)
         $0.accessibilityIdentifier = "urlBar-menuButton"
