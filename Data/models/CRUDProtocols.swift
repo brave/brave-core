@@ -14,7 +14,8 @@ typealias CRUD = Readable & Deletable
 
 public protocol Deletable where Self: NSManagedObject {
     func delete()
-    static func deleteAll(predicate: NSPredicate?)
+    static func deleteAll(predicate: NSPredicate?, context: NSManagedObjectContext,
+                          includesPropertyValues: Bool, save: Bool)
 }
 
 public protocol Readable where Self: NSManagedObject {
@@ -39,10 +40,12 @@ public extension Deletable where Self: NSManagedObject {
         }
     }
     
-    static func deleteAll(predicate: NSPredicate? = nil) {
-        let context = DataController.newBackgroundContext()
+    static func deleteAll(predicate: NSPredicate? = nil,
+                          context: NSManagedObjectContext = DataController.newBackgroundContext(),
+                          includesPropertyValues: Bool = true, save: Bool = true) {
         guard let request = getFetchRequest() as? NSFetchRequest<NSFetchRequestResult> else { return }
         request.predicate = predicate
+        request.includesPropertyValues = includesPropertyValues
         
         do {
             // NSBatchDeleteRequest can't be used for in-memory store we use in tests.
@@ -54,18 +57,13 @@ public extension Deletable where Self: NSManagedObject {
                 }
             } else {
                 let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
-                let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
-                
-                let objectIDArray = result?.result as? [NSManagedObjectID]
-                let changes = [NSDeletedObjectsKey: objectIDArray as Any]
-                
-                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                try context.execute(deleteRequest)
             }
         } catch {
             log.error("Delete all error: \(error)")
         }
         
-        DataController.save(context: context)        
+        if save { DataController.save(context: context) }
     }
 }
 

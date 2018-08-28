@@ -87,26 +87,7 @@ public final class Device: NSManagedObject, Syncable, CRUD {
     }
     
     public class func deleteAll() {
-        let context = DataController.newBackgroundContext()
-        context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-            fetchRequest.entity = Device.entity(context: context)
-            fetchRequest.includesPropertyValues = false
-            do {
-                let results = try context.fetch(fetchRequest)
-                for result in results {
-                    context.delete(result as! NSManagedObject)
-                }
-                
-            } catch {
-                let fetchError = error as NSError
-                print(fetchError)
-            }
-
-            // Destroy handle to local device instance, otherwise it is locally retained and will throw console errors
-            sharedCurrentDevice = nil
-            
-            DataController.save(context: context)
-        }
+        sharedCurrentDevice = nil
+        Device.deleteAll(includesPropertyValues: false)
     }
 }
