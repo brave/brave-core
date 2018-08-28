@@ -95,7 +95,7 @@ class LEDGER_EXPORT Ledger {
                                     const ledger::PublisherInfoFilter& filter,
                                     GetPublisherInfoListCallback callback) = 0;
 
-  virtual void SetPublisherMinVisitTime(uint64_t duration_in_milliseconds) = 0;
+  virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) = 0;
   virtual void SetPublisherMinVisits(unsigned int visits) = 0;
   virtual void SetPublisherAllowNonVerified(bool allow) = 0;
   virtual void SetContributionAmount(double amount) = 0;

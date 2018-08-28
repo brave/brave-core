@@ -231,7 +231,7 @@ namespace braveledger_bat_helper {
     //load from json string
     bool loadFromJson(const std::string &json);
 
-    unsigned int min_pubslisher_duration_ = braveledger_ledger::_default_min_pubslisher_duration;  // In milliseconds
+    uint64_t min_pubslisher_duration_ = braveledger_ledger::_default_min_pubslisher_duration;  // In seconds
     unsigned int min_visits_ = 1u;
     bool allow_non_verified_ = true;
     std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;

@@ -57,7 +57,7 @@ class LedgerImpl : public ledger::Ledger,
                             const ledger::PublisherInfoFilter& filter,
                             ledger::GetPublisherInfoListCallback callback) override;
 
-  void SetPublisherMinVisitTime(uint64_t duration_in_milliseconds) override;
+  void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
   void SetPublisherMinVisits(unsigned int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
   void SetContributionAmount(double amount) override;

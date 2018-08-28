@@ -265,7 +265,7 @@ void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
     prefix, callback);
 }
 
-void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) { // In milliseconds
+void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) { // In seconds
   bat_publishers_->setPublisherMinVisitTime(duration);
 }
 
