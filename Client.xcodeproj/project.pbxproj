@@ -8,17 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		03CCC9181AF05E7300DBF30D /* RelativeDatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */; };
+		0A02BDE521356E09008B5F74 /* CRUDProtocolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A02BDE421356E09008B5F74 /* CRUDProtocolsTests.swift */; };
 		0A4B012020D02EC4004D4011 /* TabsBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B011F20D02EC4004D4011 /* TabsBarViewController.swift */; };
 		0A4B012220D02F26004D4011 /* TabBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012120D02F26004D4011 /* TabBarCell.swift */; };
 		0A4B012420D0321A004D4011 /* UX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012320D0321A004D4011 /* UX.swift */; };
 		0A4CB76920D8178E00A9CF4A /* HomePanelDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4CB76820D8178E00A9CF4A /* HomePanelDelegates.swift */; };
-		0AA4FC392109D685000B173A /* CRUDProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA4FC382109D685000B173A /* CRUDProtocols.swift */; };
 		0A6231F72121F875007B429B /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6231F62121F875007B429B /* CoreDataTestCase.swift */; };
 		0A6231F921221603007B429B /* DataControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6231F821221602007B429B /* DataControllerTests.swift */; };
 		0A6231FB21221815007B429B /* BookmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6231FA21221815007B429B /* BookmarkTests.swift */; };
 		0A6231FD21222E36007B429B /* TabMOTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6231FC21222E36007B429B /* TabMOTests.swift */; };
 		0A6231FF2122EF12007B429B /* DeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6231FE2122EF12007B429B /* DeviceTests.swift */; };
 		0A6232012125DA20007B429B /* HistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6232002125DA20007B429B /* HistoryTests.swift */; };
+		0AA4FC392109D685000B173A /* CRUDProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA4FC382109D685000B173A /* CRUDProtocols.swift */; };
 		0AADC4C820D2A55A00FDE368 /* TopSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4C720D2A55A00FDE368 /* TopSitesViewController.swift */; };
 		0AADC4CA20D2A66E00FDE368 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4C920D2A66E00FDE368 /* FavoriteCell.swift */; };
 		0AADC4D220D2A6A200FDE368 /* FavoritesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4CE20D2A6A200FDE368 /* FavoritesHelper.swift */; };
@@ -885,6 +886,7 @@
 
 /* Begin PBXFileReference section */
 		03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelativeDatesTests.swift; sourceTree = "<group>"; };
+		0A02BDE421356E09008B5F74 /* CRUDProtocolsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDProtocolsTests.swift; sourceTree = "<group>"; };
 		0A4B011F20D02EC4004D4011 /* TabsBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsBarViewController.swift; sourceTree = "<group>"; };
 		0A4B012120D02F26004D4011 /* TabBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCell.swift; sourceTree = "<group>"; };
 		0A4B012320D0321A004D4011 /* UX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UX.swift; sourceTree = "<group>"; };
@@ -1699,6 +1701,7 @@
 				0A6231E72121F761007B429B /* Info.plist */,
 				0AC5791B212AF6C40072F13B /* FaviconMOTests.swift */,
 				0AED05DE212B1B7B00DBDBB8 /* DomainTests.swift */,
+				0A02BDE421356E09008B5F74 /* CRUDProtocolsTests.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -3870,6 +3873,7 @@
 			files = (
 				0AC5791C212AF6C40072F13B /* FaviconMOTests.swift in Sources */,
 				0A6232012125DA20007B429B /* HistoryTests.swift in Sources */,
+				0A02BDE521356E09008B5F74 /* CRUDProtocolsTests.swift in Sources */,
 				0A6231F72121F875007B429B /* CoreDataTestCase.swift in Sources */,
 				0A6231F921221603007B429B /* DataControllerTests.swift in Sources */,
 				0A6231FB21221815007B429B /* BookmarkTests.swift in Sources */,
