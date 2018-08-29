@@ -38,27 +38,29 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
 .c4 {
   margin-right: 5px;
   vertical-align: middle;
+  width: 22px;
+  height: 22px;
+  display: inline-block;
 }
 
-.c5 {
+.c6 {
   font-weight: 600;
   margin-right: 5px;
 }
 
-.c8 {
+.c9 {
   display: inline-block;
   vertical-align: middle;
   margin-top: 3px;
-  min-width: 70px;
   text-align: right;
 }
 
-.c9 {
+.c10 {
   float: right;
   margin-top: 4px;
 }
 
-.c6 {
+.c7 {
   width: 20px;
   height: 20px;
   display: inline-block;
@@ -66,27 +68,33 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
   vertical-align: top;
 }
 
-.c7 {
+.c8 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.c10 {
+.c5 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c12 {
+.c13 {
   position: relative;
   display: block;
   height: 16px;
   width: 28px;
 }
 
-.c13 {
+.c14 {
   background: #A7ACB2;
   height: 6px;
   margin-top: 5px;
@@ -94,7 +102,7 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
   border-radius: 3px;
 }
 
-.c14 {
+.c15 {
   position: relative;
   border-radius: 50%;
   -webkit-transition: 200ms ease-out;
@@ -110,7 +118,7 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
   background-color: var(--toggle-bullet-background);
 }
 
-.c11 {
+.c12 {
   color: #838391;
   font-size: 12px;
   font-family: Poppins,sans-serif;
@@ -146,30 +154,28 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
     <span
       className="c4"
     >
-      <span>
-        <svg
-          height="12"
-          width="16"
-          xmlns="http://www.w3.org/2000/svg"
+      <svg
+        aria-hidden="true"
+        className="c5"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <g
+          fill="none"
         >
-          <g
-            fill="none"
-            fillRule="evenodd"
-          >
-            <path
-              d="M5 2l8 3-8 5z"
-              fill="#FFF"
-            />
-            <path
-              d="M10.43 5.889L6.055 7.975a.176.176 0 0 1-.252-.158V3.513c0-.131.138-.216.255-.157l4.375 2.217a.176.176 0 0 1-.003.316zM12.677 0H3.323A3.323 3.323 0 0 0 0 3.323v4.676a3.323 3.323 0 0 0 3.323 3.323h9.354A3.323 3.323 0 0 0 16 7.999V3.323A3.323 3.323 0 0 0 12.677 0z"
-              fill="#D9292A"
-            />
-          </g>
-        </svg>
-      </span>
+          <path
+            d="M27.476 10.162a3.039 3.039 0 0 0-2.126-2.148C23.487 7.5 15.985 7.5 15.985 7.5s-7.502.016-9.366.53a3.039 3.039 0 0 0-2.126 2.148C4 12.06 4 16 4 16s0 3.939.508 5.838a3.039 3.039 0 0 0 2.126 2.148C8.498 24.5 16 24.5 16 24.5s7.502 0 9.366-.514a3.039 3.039 0 0 0 2.126-2.148C28 19.954 28 16 28 16s-.015-3.939-.524-5.838z"
+            fill="red"
+          />
+          <path
+            d="M14 19.524l6.035-3.512L14 12.5z"
+            fill="#FFF"
+          />
+        </g>
+      </svg>
     </span>
     <span
-      className="c5"
+      className="c6"
     >
       YOUTUBE
     </span>
@@ -179,11 +185,11 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
       MISSING: for
     </span>
     <span
-      className="c6"
+      className="c7"
     >
       <svg
         aria-hidden="true"
-        className="c7"
+        className="c8"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -194,31 +200,31 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
       </svg>
     </span>
     <div
-      className="c8"
+      className="c9"
     >
       <div
-        className="c9"
+        className="c10"
       >
         <div
-          className="c10"
+          className="c11"
         >
           <div
-            className="c11"
+            className="c12"
             size="small"
           >
             MISSING: off
           </div>
           <div
-            className="c12"
+            className="c13"
             data-test-id="toggle"
             size="small"
           >
             <div
-              className="c13"
+              className="c14"
               size="small"
             />
             <div
-              className="c14"
+              className="c15"
               size="small"
               type="dark"
             />

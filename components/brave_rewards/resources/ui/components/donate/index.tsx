@@ -16,9 +16,7 @@ import {
 
 import Amount from '../amount/index'
 import { getLocale } from '../../../helpers'
-import { EmoteSadIcon } from '../../../components/icons'
-
-const send = require('./assets/send')
+import { EmoteSadIcon, SendIcon } from '../../../components/icons'
 
 export type DonateType = 'big' | 'small'
 
@@ -94,12 +92,6 @@ export default class Donate extends React.PureComponent<Props, State> {
     const { id, donationAmounts, actionText, children, title, currentAmount, donateType } = this.props
     const disabled = currentAmount === 0
 
-    const sendColor = disabled ?
-      donateType === 'small'
-      ? '#1A22A8'
-      : '#3e45b2'
-    : '#a1a8f2'
-
     return (
       <StyledWrapper donateType={donateType} disabled={disabled}>
         <StyledContent id={id} >
@@ -120,7 +112,9 @@ export default class Donate extends React.PureComponent<Props, State> {
           {children}
         </StyledContent>
         <StyledSend onClick={this.validateDonation}>
-          <StyledIconSend>{send(sendColor)}</StyledIconSend>{actionText}
+          <StyledIconSend disabled={disabled} donateType={donateType}>
+            <SendIcon />
+          </StyledIconSend>{actionText}
         </StyledSend>
         {
           this.state.missingFunds

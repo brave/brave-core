@@ -16,8 +16,13 @@ import {
   StyledToggleInner,
   StyledThumbsUpIcon
 } from './style'
+import {
+  ThumbsUpIcon,
+  TwitchColorIcon,
+  TwitterColorIcon,
+  YoutubeColorIcon
+} from '../../../components/icons'
 import { Toggle } from '../../../components'
-import { ThumbsUpIcon } from '../../../components/icons'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch'
 
@@ -28,19 +33,15 @@ export interface Props {
   tipsEnabled?: boolean
 }
 
-const youtubeIcon = require('./assets/youtube')
-const twitterIcon = require('./assets/twitter')
-const twitchIcon = require('./assets/twitch')
-
 export default class ToggleTips extends React.PureComponent<Props, {}> {
   getProviderImg (provider: Provider) {
     switch (provider) {
       case 'youtube':
-        return (<span>{youtubeIcon}</span>)
+        return <YoutubeColorIcon />
       case 'twitter':
-        return (<span>{twitterIcon}</span>)
+        return <TwitterColorIcon />
       case 'twitch':
-        return (<span>{twitchIcon}</span>)
+        return <TwitchColorIcon />
     }
   }
 

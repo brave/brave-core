@@ -6,13 +6,10 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-  -webkit-align-content: flex-start;
-  -ms-flex-line-pack: start;
-  align-content: flex-start;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
@@ -26,36 +23,18 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
 }
 
 .c1 {
-  -webkit-flex-basis: 40px;
-  -ms-flex-preferred-size: 40px;
-  flex-basis: 40px;
-  border: solid 1px #ffbbaa;
-  margin: 12px 0 0;
-  border-radius: 50%;
-  height: 40px;
-  width: 40px;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
+  -webkit-flex-basis: 52px;
+  -ms-flex-preferred-size: 52px;
+  flex-basis: 52px;
+  height: 52px;
+  width: 52px;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  color: #FF9868;
 }
 
-.c2 {
+.c3 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -70,13 +49,14 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   font-weight: 500;
   line-height: 1.25;
   color: #fb542b;
-  padding: 14px 10px 5px 10px;
+  padding: 0 10px;
 }
 
-.c3 {
+.c4 {
   -webkit-flex-basis: 90px;
   -ms-flex-preferred-size: 90px;
   flex-basis: 90px;
+  height: 64px;
   background-color: #fb542b;
   font-family: Muli,sans-serif;
   font-size: 12px;
@@ -85,11 +65,16 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: 0.4px;
   -ms-letter-spacing: 0.4px;
   letter-spacing: 0.4px;
-  text-align: center;
   color: #fff;
   border: none;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.c2 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 <div
@@ -100,40 +85,30 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
     className="c1"
   >
     <svg
-      height="19"
-      width="20"
-      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      className="c2"
+      focusable="false"
+      viewBox="0 0 32 32"
     >
-      <g
-        fill="none"
-        fillRule="evenodd"
-      >
+      <defs>
         <path
-          d="M10.625 8.725h8.125v-2.5h-8.125v2.5zm0 8.75H17.5v-7.5h-6.875v7.5zm-8.125 0h6.875v-7.5H2.5v7.5zm-1.25-8.75h8.125v-2.5H1.25v2.5zm4.144-5.19a1.363 1.363 0 0 1 0-1.915c.253-.255.59-.395.947-.395.356 0 .693.14.946.395.843.848 1.68 3.013 1.39 3.314 0 0-.053.041-.232.041-.864 0-2.513-.897-3.051-1.44zm5.928 1.4c-.29-.302.548-2.467 1.39-3.315.508-.508 1.388-.507 1.894 0a1.363 1.363 0 0 1 0 1.915c-.538.543-2.187 1.44-3.051 1.44-.179 0-.231-.04-.232-.04zm7.428.04h-3.955c.284-.193.527-.386.697-.558a2.615 2.615 0 0 0 0-3.678c-.978-.985-2.686-.986-3.666 0-.541.544-1.98 2.758-1.781 4.236h-.09c.197-1.478-1.24-3.692-1.781-4.236-.98-.986-2.688-.985-3.666 0a2.616 2.616 0 0 0-.002 3.678c.171.172.415.365.699.558H1.25c-.689 0-1.25.562-1.25 1.25V9.35c0 .345.28.625.625.625h.625v7.5c0 .69.561 1.25 1.25 1.25h15c.689 0 1.25-.56 1.25-1.25v-7.5h.625c.345 0 .625-.28.625-.625V6.225c0-.688-.561-1.25-1.25-1.25z"
-          fill="#FB542B"
+          d="M13 25.5C6.09644 25.5.5 19.90356.5 13S6.09644.5 13 .5 25.5 6.09644 25.5 13 19.90356 25.5 13 25.5zm0-1c6.35127 0 11.5-5.14873 11.5-11.5S19.35127 1.5 13 1.5 1.5 6.64873 1.5 13 6.64873 24.5 13 24.5zm-4.00018-15C8.68597 9.08217 8.5 8.5628 8.5 8c0-1.38071 1.11929-2.5 2.5-2.5.8178 0 1.54389.39267 2 .99976.45611-.60709 1.1822-.99976 2-.99976 1.38071 0 2.5 1.11929 2.5 2.5 0 .5628-.18597 1.08217-.49982 1.5H19c.27614 0 .5.22386.5.5v3c0 .27614-.22386.5-.5.5h-.5V19c0 .27614-.22386.5-.5.5H8c-.27614 0-.5-.22386-.5-.5v-5.5H7c-.27614 0-.5-.22386-.5-.5v-3c0-.27614.22386-.5.5-.5h1.99982zM11 9.5h1.5V8c0-.82843-.67157-1.5-1.5-1.5S9.5 7.17157 9.5 8s.67157 1.5 1.5 1.5zm2.5 0H15c.82843 0 1.5-.67157 1.5-1.5s-.67157-1.5-1.5-1.5-1.5.67157-1.5 1.5v1.5zm0 1v2h5v-2h-5zm-1 0h-5v2h5v-2zm0 3h-4v5h4v-5zm1 0v5h4v-5h-4z"
+          id="gift"
         />
-        <path
-          d="M2.5 10h6.667v7.5H2.5zM10.833 10H17.5v7.5h-6.667z"
-          fill="#FFF"
-        />
-        <path
-          d="M10.833 5.833h8.333v3.333h-8.333zM.833 5.833h8.333v3.333H.833z"
-          fill="#FF9868"
-        />
-        <path
-          d="M8.333 5c-.555-2.222-1.11-3.333-1.666-3.333-.834 0-1.667.833-.834 1.666 0 .556.834 1.111 2.5 1.667zM11.321 5c.556-2.222 1.112-3.333 1.667-3.333.833 0 1.667.833.833 1.666 0 .556-.833 1.111-2.5 1.667z"
-          fill="#FFF"
-        />
-      </g>
+      </defs>
+      <use
+        transform="translate(3 3)"
+        xlinkHref="#gift"
+      />
     </svg>
   </div>
   <div
-    className="c2"
+    className="c3"
   >
     MISSING: newGrant
   </div>
   <button
-    className="c3"
+    className="c4"
   >
     MISSING: claim
   </button>

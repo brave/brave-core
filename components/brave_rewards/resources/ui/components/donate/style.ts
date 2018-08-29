@@ -24,15 +24,15 @@ const customStyle: Record<DonateType, Theme> = {
     paddingBox: '0 19px 0 55px',
     sendBgColor: '#4c54d2',
     disabledSendColor: '#3e45b2',
-    paddingSend: '16px 19px 16px 55px',
+    paddingSend: '14px 19px 13px 51px',
     paddingFunds: '13px 12px 13px 24px'
   },
   small: {
     paddingBox: '0 0 0 23px',
     sendBgColor: '#392dd1',
     disabledSendColor: '#1a22a8',
-    paddingSend: '13px 0 13px 51px',
-    paddingFunds: '13px 0 14px 25px'
+    paddingSend: '11px 0 10px 47px',
+    paddingFunds: '12px 0 11px 25px'
   }
 }
 
@@ -84,10 +84,13 @@ export const StyledSend = styled<{}, 'button'>('button')`
   cursor: pointer;
 `
 
-export const StyledIconSend = styled<{}, 'span'>('span')`
+export const StyledIconSend = styled<StyleProps, 'span'>('span')`
   vertical-align: middle;
   display: inline-block;
-  margin-right: 18px;
+  margin-right: 15px;
+  color: ${p => p.disabled ? p.donateType === 'small' ? '#1A22A8' : '#3e45b2' : '#a1a8f2'};
+  width: 29px;
+  height: 29px;
 `
 
 export const StyledFunds = styled<{}, 'div'>('div')`

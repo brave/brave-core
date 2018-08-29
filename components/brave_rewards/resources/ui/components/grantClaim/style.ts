@@ -6,8 +6,7 @@ import styled from 'styled-components'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   display: flex;
-  align-items: stretch;
-  align-content: flex-start;
+  align-items: center;
   flex-wrap: nowrap;
   font-family: Poppins, sans-serif;
   border-radius: 6px;
@@ -19,17 +18,11 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
 `
 
 export const StyledIcon = styled<{}, 'div'>('div')`
-  flex-basis: 40px;
-  border: solid 1px #ffbbaa;
-  margin: 12px 0 0;
-  border-radius: 50%;
-  height: 40px;
-  width: 40px;
-  flex-grow: 1;
+  flex-basis: 52px;
+  height: 52px;
+  width: 52px;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #FF9868;
 `
 
 export const StyledText = styled<{}, 'div'>('div')`
@@ -40,17 +33,17 @@ export const StyledText = styled<{}, 'div'>('div')`
   font-weight: 500;
   line-height: 1.25;
   color: #fb542b;
-  padding: 14px 10px 5px 10px;
+  padding: 0 10px;
 `
 
 export const StyledClaim = styled<{}, 'button'>('button')`
   flex-basis: 90px;
+  height: 64px;
   background-color: #fb542b;
   font-family: Muli, sans-serif;
   font-size: 12px;
   line-height: 1.83;
   letter-spacing: 0.4px;
-  text-align: center;
   color: #fff;
   border: none;
   text-transform: uppercase;

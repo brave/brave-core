@@ -5,8 +5,7 @@
 import * as React from 'react'
 import { StyledWrapper, StyledIcon, StyledText, StyledClaim } from './style'
 import { getLocale } from '../../../helpers'
-
-const gift = require('./assets/gift')
+import { GiftIcon } from '../../../components/icons'
 
 export interface Props {
   id?: string
@@ -19,7 +18,9 @@ export default class GrantClaim extends React.PureComponent<Props, {}> {
 
     return (
       <StyledWrapper id={id}>
-        <StyledIcon>{gift}</StyledIcon>
+        <StyledIcon>
+          <GiftIcon />
+        </StyledIcon>
         <StyledText>{getLocale('newGrant')}</StyledText>
         <StyledClaim onClick={onClaim}>{getLocale('claim')}</StyledClaim>
       </StyledWrapper>

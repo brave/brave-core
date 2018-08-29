@@ -34,7 +34,13 @@ import {
 import Donate from '../donate/index'
 import Checkbox from '../../../components/formControls/checkbox/index'
 import { getLocale } from '../../../helpers'
-import { RefreshIcon, CloseStrokeIcon } from '../../../components/icons'
+import {
+  RefreshIcon,
+  CloseStrokeIcon,
+  TwitterColorIcon,
+  YoutubeColorIcon,
+  TwitchColorIcon
+} from '../../../components/icons'
 
 type Social = {type: SocialType, name: string, handler: string}
 type SocialType = 'twitter' | 'youtube' | 'twitch'
@@ -76,17 +82,28 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       : <img src={logo} />
   }
 
-  getSocialLink (item: Social) {
+  getSocialData (item: Social) {
+    let link = ''
+    let logo = null
     switch (item.type) {
       case 'twitter':
-        return `https://twitter.com/${item.handler}`
+        link = `https://twitter.com/${item.handler}`
+        logo = <TwitterColorIcon />
+        break
       case 'youtube':
-        return `https://www.youtube.com/channel/${item.handler}`
+        link = `https://www.youtube.com/channel/${item.handler}`
+        logo = <YoutubeColorIcon />
+        break
       case 'twitch':
-        return `https://www.twitch.tv/${item.handler}`
+        link = `https://www.twitch.tv/${item.handler}`
+        logo = <TwitchColorIcon />
+        break
     }
 
-    return ''
+    return {
+      link,
+      logo
+    }
   }
 
   getSocial = (social?: Social[]) => {
@@ -96,14 +113,16 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
 
     const self = this
     return social.map((item: Social) => {
-      const icon = require(`./assets/${item.type}`)
+      const data = self.getSocialData(item)
       return (
         <StyledSocialItem
           key={`${self.props.id}-social-${item.type}`}
-          href={self.getSocialLink(item)}
+          href={data.link}
           target={'_blank'}
         >
-          <StyledSocialIcon>{icon}</StyledSocialIcon> {item.name || item.handler}
+          <StyledSocialIcon>
+            {data.logo}
+          </StyledSocialIcon> {item.name || item.handler}
         </StyledSocialItem>
       )
     })

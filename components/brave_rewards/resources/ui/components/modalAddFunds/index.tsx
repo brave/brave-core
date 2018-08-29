@@ -19,6 +19,7 @@ import {
 } from './style'
 import Modal from '../../../components/popupModals/modal/index'
 import { getLocale } from '../../../helpers'
+import { BatColorIcon, BitcoinColorIcon, EthereumColorIcon, LitecoinColorIcon } from '../../../components/icons'
 
 export type Type = 'BAT' | 'ETH' | 'BTC' | 'LTC'
 
@@ -34,14 +35,22 @@ export interface Props {
   addresses: Address[]
 }
 
+const icons: Record<Type, React.ReactNode> = {
+  BAT: <BatColorIcon />,
+  ETH: <EthereumColorIcon />,
+  BTC: <BitcoinColorIcon />,
+  LTC: <LitecoinColorIcon />
+}
+
 export default class ModalAddFunds extends React.PureComponent<Props, {}> {
   getAddress = (address: Address) => {
-    const logo = require(`./assets/${address.type}.svg`)
 
     return (
       <StyledAddress>
         <StyledCard>
-          <StyledLogo src={logo} />
+          <StyledLogo>
+            {icons[address.type]}
+          </StyledLogo>
           <StyledAddressTitle>
             {getLocale(`title${address.type}`)}
           </StyledAddressTitle>

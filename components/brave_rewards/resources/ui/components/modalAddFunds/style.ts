@@ -42,7 +42,7 @@ export const StyledAddress = styled<{}, 'div'>('div') `
   padding: 0 15px 30px;
 `
 
-export const StyledLogo = styled<{}, 'img'>('img') `
+export const StyledLogo = styled<{}, 'div'>('div') `
   height: 60px;
   flex-basis: 60px;
   flex-shrink: 0;

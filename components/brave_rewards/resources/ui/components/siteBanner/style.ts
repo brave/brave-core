@@ -211,4 +211,6 @@ export const StyledSocialIcon = styled<{}, 'span'>('span')`
   vertical-align: middle;
   display: inline-block;
   margin-right: 5px;
+  width: 22px;
+  height: 22px;
 `

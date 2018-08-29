@@ -35,6 +35,9 @@ export const StyledText = styled<{}, 'span'>('span')`
 export const StyledProviderImg = styled<{}, 'span'>('span')`
   margin-right: 5px;
   vertical-align: middle;
+  width: 22px;
+  height: 22px;
+  display: inline-block;
 ` as any
 
 export const StyledProviderName = styled<{}, 'span'>('span')`
@@ -46,7 +49,6 @@ export const StyledToggleOuter = styled<{}, 'div'>('div')`
   display: inline-block;
   vertical-align: middle;
   margin-top: 3px;
-  min-width: 70px;
   text-align: right;
 ` as any
 

@@ -18,7 +18,7 @@ import {
   WalletSummary,
   WalletWrapper
 } from '../../../../src/features/rewards'
-import { WalletAddIcon, WalletImportIcon } from '../../../../src/components/icons'
+import { WalletAddIcon, WalletWithdrawIcon } from '../../../../src/components/icons'
 
 // Assets
 const bartBaker = require('../../../assets/img/bartBaker.jpeg')
@@ -252,7 +252,7 @@ class PageWallet extends React.Component<{}, State> {
             {
               name: 'Withdraw Funds',
               action: doNothing,
-              icon: <WalletImportIcon />
+              icon: <WalletWithdrawIcon />
             }
           ]}
           compact={false}
