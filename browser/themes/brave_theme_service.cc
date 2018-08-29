@@ -45,11 +45,14 @@ BraveThemeService::BraveThemeService() {}
 BraveThemeService::~BraveThemeService() {}
 
 void BraveThemeService::Init(Profile* profile) {
-  brave_theme_type_pref_.Init(
+  // In unittest, kBraveThemeType isn't registered.
+  if (profile->GetPrefs()->FindPreference(kBraveThemeType)) {
+    brave_theme_type_pref_.Init(
       kBraveThemeType,
       profile->GetPrefs(),
       base::Bind(&BraveThemeService::OnPreferenceChanged,
                  base::Unretained(this)));
+  }
   ThemeService::Init(profile);
 }
 
