@@ -751,12 +751,14 @@ namespace braveledger_bat_helper {
   PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
     min_pubslisher_duration_(braveledger_ledger::_default_min_pubslisher_duration),
     min_visits_(1),
-    allow_non_verified_(true) {}
+    allow_non_verified_(true),
+    allow_videos_(true) {}
 
   PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
     min_pubslisher_duration_ = state.min_pubslisher_duration_;
     min_visits_ = state.min_visits_;
     allow_non_verified_ = state.allow_non_verified_;
+    allow_videos_ = state.allow_videos_;
     monthly_balances_ = state.monthly_balances_;
     recurring_donation_ = state.recurring_donation_;
   }
@@ -773,6 +775,7 @@ namespace braveledger_bat_helper {
       error = !(d.HasMember("min_pubslisher_duration") && d["min_pubslisher_duration"].IsUint() &&
         d.HasMember("min_visits") && d["min_visits"].IsUint() &&
         d.HasMember("allow_non_verified") && d["allow_non_verified"].IsBool() &&
+        d.HasMember("allow_videos") && d["allow_videos"].IsBool() &&
         d.HasMember("monthly_balances") && d["monthly_balances"].IsArray() &&
         d.HasMember("recurring_donation") && d["recurring_donation"].IsArray());
     }
@@ -781,6 +784,7 @@ namespace braveledger_bat_helper {
       min_pubslisher_duration_ = d["min_pubslisher_duration"].GetUint();
       min_visits_ = d["min_visits"].GetUint();
       allow_non_verified_ = d["allow_non_verified"].GetBool();
+      allow_videos_ = d["allow_videos"].GetBool();
       for (const auto & i : d["monthly_balances"].GetArray()) {
         rapidjson::StringBuffer sb;
         rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
@@ -828,6 +832,9 @@ namespace braveledger_bat_helper {
 
     writer.String("allow_non_verified");
     writer.Bool(data.allow_non_verified_);
+
+    writer.String("allow_videos");
+    writer.Bool(data.allow_videos_);
 
     writer.String("monthly_balances");
     writer.StartArray();

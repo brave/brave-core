@@ -219,6 +219,11 @@ void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
   saveState();
 }
 
+void BatPublishers::setPublisherAllowVideos(const bool& allow) {
+  state_->allow_videos_ = allow;
+  saveState();
+}
+
 uint64_t BatPublishers::getPublisherMinVisitTime() const {
   return state_->min_pubslisher_duration_;
 }
@@ -229,6 +234,10 @@ unsigned int BatPublishers::getPublisherMinVisits() const {
 
 bool BatPublishers::getPublisherAllowNonVerified() const {
   return state_->allow_non_verified_;
+}
+
+bool BatPublishers::getPublisherAllowVideos() const {
+  return state_->allow_videos_;
 }
 
 void BatPublishers::synopsisNormalizer() {

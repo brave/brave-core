@@ -277,6 +277,10 @@ void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
   bat_publishers_->setPublisherAllowNonVerified(allow);
 }
 
+void LedgerImpl::SetPublisherAllowVideos(bool allow) {
+  bat_publishers_->setPublisherAllowVideos(allow);
+}
+
 void LedgerImpl::SetContributionAmount(double amount) {
   bat_client_->setContributionAmount(amount);
 }
@@ -291,6 +295,10 @@ unsigned int LedgerImpl::GetPublisherMinVisits() const {
 
 bool LedgerImpl::GetPublisherAllowNonVerified() const {
   return bat_publishers_->getPublisherAllowNonVerified();
+}
+
+bool LedgerImpl::GetPublisherAllowVideos() const {
+  return bat_publishers_->getPublisherAllowVideos();
 }
 
 double LedgerImpl::GetContributionAmount() const {
