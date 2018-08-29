@@ -343,6 +343,10 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     if (key == "contributionVideos") {
       rewards_service_->SetPublisherAllowVideos(value == "true");
     }
+
+    if (key == "enabledContribute") {
+      rewards_service_->SetAutoContribute(value == "true");
+    }
   }
 }
 

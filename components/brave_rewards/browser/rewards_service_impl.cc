@@ -681,4 +681,8 @@ void RewardsServiceImpl::SetContributionAmount(double amount) const {
   return ledger_->SetContributionAmount(amount);
 }
 
+void RewardsServiceImpl::SetAutoContribute(bool enabled) const {
+  return ledger_->SetAutoContribute(enabled);
+}
+
 }  // namespace brave_rewards
