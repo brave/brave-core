@@ -1,6 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
+.c6 {
+  box-sizing: border-box;
+  font-family: Poppins,sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  font-size: 24px;
+}
+
 .c0 {
   text-align: center;
   border-radius: 8px;
@@ -40,18 +49,13 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
 
 .c5 {
   color: #FFFFFF;
-  font-size: 28px;
   font-weight: 400;
-  -webkit-letter-spacing: 0.16px;
-  -moz-letter-spacing: 0.16px;
-  -ms-letter-spacing: 0.16px;
-  letter-spacing: 0.16px;
   line-height: 22px;
   margin: 0;
   display: inline-block;
 }
 
-.c7 {
+.c8 {
   color: #FFFFFF;
   font-size: 16px;
   font-weight: normal;
@@ -67,12 +71,12 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   font-family: Muli,sans-serif;
 }
 
-.c8 {
+.c9 {
   margin: 0 auto 25px;
   display: inline-block;
 }
 
-.c11 {
+.c12 {
   color: #73CBFF;
   font-size: 14px;
   font-weight: 500;
@@ -84,7 +88,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   margin: 0 auto;
 }
 
-.c6 {
+.c7 {
   display: inline-block;
   vertical-align: text-top;
   margin-top: -13px;
@@ -100,7 +104,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-.c9 {
+.c10 {
   --button-main-color: #C5C5D3;
   --button-main-color-hover: #A0A1B2;
   --button-main-color-active: #E9E9F4;
@@ -142,15 +146,15 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   color: var(--button-state-color);
 }
 
-.c9:hover:enabled {
+.c10:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c9:active:enabled {
+.c10:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c10 {
+.c11 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -214,31 +218,31 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
         </g>
       </svg>
     </span>
-    <h1
-      className="c5"
+    <h4
+      className="c5 c6"
     >
       MISSING: braveRewards
-    </h1>
+    </h4>
     <span
-      className="c6"
+      className="c7"
     >
       TM
     </span>
     <p
-      className="c7"
+      className="c8"
     >
       MISSING: welcomeDescOne
     </p>
     <div
-      className="c8"
+      className="c9"
     >
       <button
-        className="c9"
+        className="c10"
         size="call-to-action"
         type="subtle"
       >
         <div
-          className="c10"
+          className="c11"
           size="call-to-action"
           type="subtle"
         >
@@ -247,7 +251,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
       </button>
     </div>
     <p
-      className="c11"
+      className="c12"
     >
       MISSING: welcomeFooterTextOne
     </p>

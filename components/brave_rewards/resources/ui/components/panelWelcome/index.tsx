@@ -60,7 +60,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
           <StyledBatLogo>
             <BatColorIcon/>
           </StyledBatLogo>
-          <StyledTitle>
+          <StyledTitle level={4}>
             {getLocale(this.locale.title)}
           </StyledTitle>
           <StyledTrademark>TM</StyledTrademark>

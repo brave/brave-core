@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
+import Heading from '../../../components/text/heading'
 
 const batOutline = require('./assets/batOutline.svg')
 
@@ -40,11 +41,9 @@ export const StyledBatLogo = styled<{}, 'span'>('span')`
   padding: 20px 0 15px;
 ` as any
 
-export const StyledTitle = styled<{}, 'h1'>('h1')`
+export const StyledTitle = styled(Heading)`
   color: #FFFFFF;
-  font-size: 28px;
   font-weight: 400;
-  letter-spacing: 0.16px;
   line-height: 22px;
   margin: 0;
   display: inline-block;

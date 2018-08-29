@@ -25,8 +25,8 @@ import {
   StyledTakeActionContent,
   StyledBackground,
   StyledBatLogo,
-  StyledH1,
-  StyledH2,
+  StyledRewardsTitle,
+  StyledActionTitle,
   StyledCenterTitle,
   StyledSubTitle,
   StyledTrademark,
@@ -83,11 +83,11 @@ class WelcomePage extends React.PureComponent<Props, {}> {
           <StyledBatLogo>
             <BatColorIcon />
           </StyledBatLogo>
-          <StyledH1>
+          <StyledRewardsTitle level={2}>
             {getLocale('braveRewardsTitle')}
-          </StyledH1>
+          </StyledRewardsTitle>
           <StyledTrademark>TM</StyledTrademark>
-          <StyledSubTitle>
+          <StyledSubTitle level={4}>
             {getLocale('braveRewardsSubTitle')}
           </StyledSubTitle>
           <StyledRewardsParagraph>
@@ -120,7 +120,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
     return (
       <StyledCenterContent>
         <StyledSection>
-          <StyledCenterTitle>
+          <StyledCenterTitle level={3}>
             {getLocale('whyBraveRewards')}
           </StyledCenterTitle>
           <StyledCenterParagraph>
@@ -131,7 +131,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
           </StyledBoldParagraph>
         </StyledSection>
         <StyledSection>
-          <StyledCenterTitle>
+          <StyledCenterTitle level={3}>
             {getLocale('howDoesItWork')}
           </StyledCenterTitle>
           <StyledCenterParagraph>
@@ -145,9 +145,9 @@ class WelcomePage extends React.PureComponent<Props, {}> {
   get optInContent () {
     return (
       <StyledOptInInnerSection>
-        <StyledH2>
+        <StyledActionTitle level={4}>
           {getLocale('readyToTakePart')}
-        </StyledH2>
+        </StyledActionTitle>
         <StyledReadyParagraph>
           <span>
             {getLocale('readyToTakePartStart')}

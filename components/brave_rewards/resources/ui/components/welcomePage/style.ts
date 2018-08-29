@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
+import Heading from '../../../components/text/heading'
 
 const centerBackground = require('./assets/centerTextBackground.svg')
 
@@ -59,41 +60,33 @@ export const StyledBatLogo = styled<{}, 'div'>('div')`
   height: 152px;
 `
 
-export const StyledH1 = styled<{}, 'h1'>('h1')`
-  font-size: 38px;
+export const StyledRewardsTitle = styled(Heading)`
   font-weight: 500;
   color: #FFF;
-  letter-spacing: 0.16px;
   display: inline-block;
   margin: 17px 0 4px;
 `
 
-export const StyledH2 = styled<{}, 'h2'>('h2')`
+export const StyledActionTitle = styled(Heading)`
   color: #5C58C2;
-  font-size: 22px;
   font-weight: normal;
-  letter-spacing: 0.16px;
   line-height: 28px;
   margin: 18px 0 0;
 `
 
-export const StyledCenterTitle = styled<{}, 'h2'>('h2')`
+export const StyledCenterTitle = styled(Heading)`
   color: #222326;
-  font-size: 28px;
   font-weight: normal;
   text-align: left;
-  letter-spacing: 0.2px;
   line-height: 28px;
   padding: 7px 0 21px;
   margin: 0;
 `
 
-export const StyledSubTitle = styled<{}, 'h2'>('h2')`
+export const StyledSubTitle = styled(Heading)`
   color: #5BC4FE;
-  font-size: 22px;
   font-weight: 500;
   text-align: center;
-  letter-spacing: 0.16px;
   line-height: 28px;
   margin: 18px 0 7px;
 `

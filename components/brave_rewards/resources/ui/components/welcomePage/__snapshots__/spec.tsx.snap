@@ -30,7 +30,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   padding: 40px 0;
 }
 
-.c37 {
+.c40 {
   --button-main-color: #FB542B;
   --button-main-color-hover: #F43405;
   --button-main-color-active: #FDBBAA;
@@ -72,15 +72,15 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   background: var(--button-state-color);
 }
 
-.c37:hover:enabled {
+.c40:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c37:active:enabled {
+.c40:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c13 {
+.c15 {
   --button-main-color: #C5C5D3;
   --button-main-color-hover: #A0A1B2;
   --button-main-color-active: #E9E9F4;
@@ -122,15 +122,15 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: var(--button-state-color);
 }
 
-.c13:hover:enabled {
+.c15:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c13:active:enabled {
+.c15:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c14 {
+.c16 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -150,7 +150,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   line-height: 1;
 }
 
-.c25 {
+.c28 {
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(3,1fr);
@@ -169,7 +169,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   align-items: flex-start;
 }
 
-.c26 {
+.c29 {
   box-sizing: border-box;
   position: relative;
   display: -webkit-box;
@@ -197,7 +197,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: inherit;
 }
 
-.c27 {
+.c30 {
   height: 290px;
   border-radius: 4px;
   text-align: center;
@@ -209,7 +209,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c29 {
+.c32 {
   color: #222326;
   font-size: 18px;
   font-weight: 500;
@@ -220,7 +220,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   letter-spacing: 0.16px;
 }
 
-.c30 {
+.c33 {
   color: #484B4E;
   font-size: 16px;
   font-weight: 300;
@@ -233,7 +233,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 10px 0 8px;
 }
 
-.c28 {
+.c31 {
   box-sizing: border-box;
   display: block;
   max-width: 100%;
@@ -241,25 +241,52 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   height: 80px;
 }
 
+.c9 {
+  box-sizing: border-box;
+  font-family: Poppins,sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  font-size: 40px;
+}
+
+.c24 {
+  box-sizing: border-box;
+  font-family: Poppins,sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  font-size: 32px;
+}
+
 .c12 {
+  box-sizing: border-box;
+  font-family: Poppins,sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  font-size: 24px;
+}
+
+.c14 {
   margin: 40px auto;
   max-width: 303px;
 }
 
-.c36 {
+.c39 {
   max-width: 303px;
   margin: 0 auto;
 }
 
-.c32 {
+.c35 {
   text-align: center;
 }
 
-.c18 {
+.c20 {
   padding: 15px 0 0;
 }
 
-.c20 {
+.c22 {
   margin: 0 auto;
   max-width: 692px;
   padding: 67px 0 13px;
@@ -269,16 +296,16 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   display: block;
 }
 
-.c19 {
+.c21 {
   display: block;
 }
 
-.c24 {
+.c27 {
   margin: 22px auto 0;
   max-width: 900px;
 }
 
-.c31 {
+.c34 {
   margin: 0 auto;
   padding: 64px 0 79px;
   max-width: 500px;
@@ -295,57 +322,37 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 .c8 {
-  font-size: 38px;
   font-weight: 500;
   color: #FFF;
-  -webkit-letter-spacing: 0.16px;
-  -moz-letter-spacing: 0.16px;
-  -ms-letter-spacing: 0.16px;
-  letter-spacing: 0.16px;
   display: inline-block;
   margin: 17px 0 4px;
 }
 
-.c33 {
+.c36 {
   color: #5C58C2;
-  font-size: 22px;
   font-weight: normal;
-  -webkit-letter-spacing: 0.16px;
-  -moz-letter-spacing: 0.16px;
-  -ms-letter-spacing: 0.16px;
-  letter-spacing: 0.16px;
   line-height: 28px;
   margin: 18px 0 0;
 }
 
-.c21 {
+.c23 {
   color: #222326;
-  font-size: 28px;
   font-weight: normal;
   text-align: left;
-  -webkit-letter-spacing: 0.2px;
-  -moz-letter-spacing: 0.2px;
-  -ms-letter-spacing: 0.2px;
-  letter-spacing: 0.2px;
   line-height: 28px;
   padding: 7px 0 21px;
   margin: 0;
 }
 
-.c10 {
+.c11 {
   color: #5BC4FE;
-  font-size: 22px;
   font-weight: 500;
   text-align: center;
-  -webkit-letter-spacing: 0.16px;
-  -moz-letter-spacing: 0.16px;
-  -ms-letter-spacing: 0.16px;
-  letter-spacing: 0.16px;
   line-height: 28px;
   margin: 18px 0 7px;
 }
 
-.c9 {
+.c10 {
   display: inline-block;
   vertical-align: text-top;
   margin-top: -25px;
@@ -355,7 +362,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   opacity: 0.7;
 }
 
-.c11 {
+.c13 {
   font-size: 16px;
   max-width: 375px;
   margin: 0 auto;
@@ -363,7 +370,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: #FFF;
 }
 
-.c15 {
+.c17 {
   font-size: 16px;
   margin: 0 0 5px;
   line-height: 28px;
@@ -371,7 +378,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   opacity: 0.5;
 }
 
-.c34 {
+.c37 {
   font-size: 16px;
   line-height: 1.75;
   color: #484B4E;
@@ -384,7 +391,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   padding: 12px 0 24px;
 }
 
-.c22 {
+.c25 {
   font-size: 16px;
   line-height: 28px;
   color: #484B4E;
@@ -397,19 +404,19 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 0 0 10px;
 }
 
-.c23 {
+.c26 {
   font-weight: 600;
   font-size: 16px;
   color: #484B4E;
   margin: 0 0 60px;
 }
 
-.c35 {
+.c38 {
   font-weight: 600;
   padding: 0 5px;
 }
 
-.c16 {
+.c18 {
   padding: 0;
   border: none;
   background: none;
@@ -424,7 +431,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-.c17 {
+.c19 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -488,38 +495,38 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                 </g>
               </svg>
             </div>
-            <h1
-              className="c8"
+            <h2
+              className="c8 c9"
             >
               MISSING: braveRewardsTitle
-            </h1>
+            </h2>
             <span
-              className="c9"
+              className="c10"
             >
               TM
             </span>
-            <h2
-              className="c10"
+            <h4
+              className="c11 c12"
             >
               MISSING: braveRewardsSubTitle
-            </h2>
+            </h4>
             <p
-              className="c11"
+              className="c13"
             >
               MISSING: braveRewardsDesc
             </p>
           </div>
           <section
-            className="c12"
+            className="c14"
           >
             <button
-              className="c13"
+              className="c15"
               data-test-id="optInAction"
               size="call-to-action"
               type="subtle"
             >
               <div
-                className="c14"
+                className="c16"
                 data-test-id="optInAction"
                 size="call-to-action"
                 type="subtle"
@@ -532,17 +539,17 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             className="c4"
           >
             <p
-              className="c15"
+              className="c17"
             >
               MISSING: braveRewardsTeaser
             </p>
             <button
-              className="c16"
+              className="c18"
               onClick={[Function]}
             >
               <svg
                 aria-hidden="true"
-                className="c17"
+                className="c19"
                 focusable="false"
                 viewBox="0 0 32 32"
               >
@@ -555,29 +562,29 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
         </div>
       </div>
       <section
-        className="c18"
+        className="c20"
       >
         <section
-          className="c19"
+          className="c21"
         >
           <div
-            className="c20"
+            className="c22"
           >
             <div
               className="c4"
             >
-              <h2
-                className="c21"
+              <h3
+                className="c23 c24"
               >
                 MISSING: whyBraveRewards
-              </h2>
+              </h3>
               <p
-                className="c22"
+                className="c25"
               >
                 MISSING: whyBraveRewardsDesc
               </p>
               <p
-                className="c23"
+                className="c26"
               >
                 MISSING: whyBraveRewardsBold
               </p>
@@ -585,13 +592,13 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             <div
               className="c4"
             >
-              <h2
-                className="c21"
+              <h3
+                className="c23 c24"
               >
                 MISSING: howDoesItWork
-              </h2>
+              </h3>
               <p
-                className="c22"
+                className="c25"
               >
                 MISSING: howDoesItWorkDesc
               </p>
@@ -599,24 +606,24 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           </div>
         </section>
         <section
-          className="c24"
+          className="c27"
         >
           <section
             id="rewards-info"
           >
             <div
-              className="c25"
+              className="c28"
               disabled={false}
             >
               <div
-                className="c26"
+                className="c29"
                 size={1}
               >
                 <div
-                  className="c27"
+                  className="c30"
                 >
                   <figure
-                    className="c28"
+                    className="c31"
                   >
                     <svg
                       height="76"
@@ -713,26 +720,26 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                     </svg>
                   </figure>
                   <strong
-                    className="c29"
+                    className="c32"
                   >
                     MISSING: turnOnRewardsTitle
                   </strong>
                   <p
-                    className="c30"
+                    className="c33"
                   >
                     MISSING: turnOnRewardsDesc
                   </p>
                 </div>
               </div>
               <div
-                className="c26"
+                className="c29"
                 size={1}
               >
                 <div
-                  className="c27"
+                  className="c30"
                 >
                   <figure
-                    className="c28"
+                    className="c31"
                   >
                     <svg
                       height="80"
@@ -768,26 +775,26 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                     </svg>
                   </figure>
                   <strong
-                    className="c29"
+                    className="c32"
                   >
                     MISSING: braveAdsTitle
                   </strong>
                   <p
-                    className="c30"
+                    className="c33"
                   >
                     MISSING: braveAdsDesc
                   </p>
                 </div>
               </div>
               <div
-                className="c26"
+                className="c29"
                 size={1}
               >
                 <div
-                  className="c27"
+                  className="c30"
                 >
                   <figure
-                    className="c28"
+                    className="c31"
                   >
                     <svg
                       height="69"
@@ -831,12 +838,12 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                     </svg>
                   </figure>
                   <strong
-                    className="c29"
+                    className="c32"
                   >
                     MISSING: braveContributeTitle
                   </strong>
                   <p
-                    className="c30"
+                    className="c33"
                   >
                     MISSING: braveContributeDesc
                   </p>
@@ -846,24 +853,24 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           </section>
         </section>
         <section
-          className="c31"
+          className="c34"
         >
           <section
-            className="c32"
+            className="c35"
           >
-            <h2
-              className="c33"
+            <h4
+              className="c36 c12"
             >
               MISSING: readyToTakePart
-            </h2>
+            </h4>
             <p
-              className="c34"
+              className="c37"
             >
               <span>
                 MISSING: readyToTakePartStart
               </span>
               <strong
-                className="c35"
+                className="c38"
               >
                 MISSING: readyToTakePartBold
               </strong>
@@ -872,15 +879,15 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               </span>
             </p>
             <section
-              className="c36"
+              className="c39"
             >
               <button
-                className="c37"
+                className="c40"
                 size="call-to-action"
                 type="accent"
               >
                 <div
-                  className="c14"
+                  className="c16"
                   size="call-to-action"
                   type="accent"
                 >
