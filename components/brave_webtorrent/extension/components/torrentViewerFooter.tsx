@@ -38,7 +38,7 @@ export default class TorrentViewerFooter extends React.PureComponent<Props, {}> 
           />
         <Paragraph
           text={privacyNotice}
-          theme={theme.privacyNoticeBody}
+          customStyle={theme.privacyNoticeBody}
         />
         </div>
       )

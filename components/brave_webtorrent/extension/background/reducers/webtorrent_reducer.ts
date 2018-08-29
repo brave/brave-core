@@ -13,6 +13,7 @@ import { File, TorrentState, TorrentsState } from '../../constants/webtorrentSta
 
 // Utils
 import { addTorrent, delTorrent, findTorrent } from '../webtorrent'
+import { getTabData } from '../api/tabs_api'
 
 const focusedWindowChanged = (windowId: number, state: TorrentsState) => {
   return { ...state, currentWindowId: windowId }
@@ -25,9 +26,29 @@ const windowRemoved = (windowId: number, state: TorrentsState) => {
 }
 
 const activeTabChanged = (tabId: number, windowId: number, state: TorrentsState) => {
-  const { activeTabIds } = state
+  const { activeTabIds, torrentStateMap } = state
   activeTabIds[windowId] = tabId
+  if (!torrentStateMap[tabId]) {
+    getTabData(tabId)
+  }
   return { ...state, activeTabIds }
+}
+
+const windowCreated = (window: chrome.windows.Window, state: TorrentsState) => {
+  // update currentWindowId if needed
+  if (window.focused || Object.keys(state.activeTabIds).length === 0) {
+    state = focusedWindowChanged(window.id, state)
+  }
+
+  // update its activeTabId
+  if (window.tabs) {
+    const tab = window.tabs.find((tab: chrome.tabs.Tab) => tab.active)
+    if (tab && tab.id) {
+      state = activeTabChanged(tab.id, window.id, state)
+    }
+  }
+
+  return state
 }
 
 const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
@@ -168,9 +189,7 @@ export const webtorrentReducer = (state: TorrentsState = defaultState, action: a
   const payload = action.payload
   switch (action.type) {
     case windowTypes.types.WINDOW_CREATED:
-      if (payload.window.focused || Object.keys(state.activeTabIds).length === 0) {
-        state = focusedWindowChanged(payload.window.id, state)
-      }
+      state = windowCreated(payload.window, state)
       break
     case windowTypes.types.WINDOW_REMOVED:
       state = windowRemoved(payload.windowId, state)
@@ -179,6 +198,9 @@ export const webtorrentReducer = (state: TorrentsState = defaultState, action: a
       state = focusedWindowChanged(payload.windowId, state)
       break
     case tabTypes.types.ACTIVE_TAB_CHANGED:
+      if (state.currentWindowId === -1) {
+        state = focusedWindowChanged(payload.windowId, state)
+      }
       state = activeTabChanged(payload.tabId, payload.windowId, state)
       break
     case tabTypes.types.TAB_CREATED:
@@ -187,12 +209,26 @@ export const webtorrentReducer = (state: TorrentsState = defaultState, action: a
       }
       break
     case tabTypes.types.TAB_UPDATED:
+      // it's possible to be the first event when browser starts
+      // initialize currentWindowId and its activeTabId if so
+      if (state.currentWindowId === -1) {
+        state = focusedWindowChanged(payload.tab.windowId, state)
+      }
+      if (!state.activeTabIds[state.currentWindowId] && payload.tab.active) {
+        state = activeTabChanged(payload.tab.id, payload.tab.windowId, state)
+      }
+
       if (payload.changeInfo.url) {
         state = tabUpdated(payload.tab.id, payload.changeInfo.url, state)
       }
       break
     case tabTypes.types.TAB_REMOVED:
       state = tabRemoved(payload.tabId, state)
+      break
+    case tabTypes.types.TAB_RETRIEVED:
+      if (payload.tab.id && payload.tab.url) {
+        state = tabUpdated(payload.tab.id, payload.tab.url, state)
+      }
       break
     case torrentTypes.types.WEBTORRENT_PROGRESS_UPDATED:
       state = updateProgress(state, payload.torrent)

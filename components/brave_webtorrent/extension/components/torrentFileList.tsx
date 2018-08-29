@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { Table } from 'brave-ui/components'
-import { Cell, Row } from 'brave-ui/components/dataTables/table/index.tsx'
+import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
 import { Heading } from 'brave-ui/old'
 
 // Constants

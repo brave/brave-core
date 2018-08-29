@@ -7,6 +7,9 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
 
+import Theme from 'brave-ui/theme/brave-default'
+import { ThemeProvider } from 'brave-ui/theme'
+
 // Components
 import App from './components/app'
 
@@ -21,7 +24,9 @@ store.ready().then(
   () => {
     render(
       <Provider store={store}>
-      <App />
+        <ThemeProvider theme={Theme}>
+          <App />
+        </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
   })

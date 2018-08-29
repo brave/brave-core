@@ -3,8 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { init } from './background/webtorrent'
-init()
+import './background/store'
+import './background/events/tabsEvents'
+import './background/events/windowsEvents'
 
-require('./background/store')
-require('./background/events/tabsEvents')
-require('./background/events/windowsEvents')
+init()

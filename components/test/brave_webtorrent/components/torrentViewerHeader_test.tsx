@@ -6,6 +6,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { torrentObj } from '../testData'
 import TorrentViewerHeader from '../../../brave_webtorrent/extension/components/torrentViewerHeader'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('torrentViewerHeader component', () => {
   const startTorrentMock = jest.fn()
@@ -16,25 +17,29 @@ describe('torrentViewerHeader component', () => {
   describe('torrentViewerHeader dumb component', () => {
     it('renders the component with start download button if no torrent object', () => {
       const wrapper = shallow(
-        <TorrentViewerHeader
-          tabId={tabId}
-          torrentId={torrentId}
-          startTorrent={startTorrentMock}
-          stopDownload={stopDownloadMock}
-        />
+        <TestThemeProvider>
+          <TorrentViewerHeader
+            tabId={tabId}
+            torrentId={torrentId}
+            startTorrent={startTorrentMock}
+            stopDownload={stopDownloadMock}
+          />
+        </TestThemeProvider>
       )
       expect(wrapper.html()).toEqual(expect.stringContaining('Start Torrent'))
     })
 
     it('renders the component with stop download button if torrent object is passed', () => {
       const wrapper = shallow(
-        <TorrentViewerHeader
-          tabId={tabId}
-          torrentId={torrentId}
-          torrent={torrentObj}
-          startTorrent={startTorrentMock}
-          stopDownload={stopDownloadMock}
-        />
+        <TestThemeProvider>
+          <TorrentViewerHeader
+            tabId={tabId}
+            torrentId={torrentId}
+            torrent={torrentObj}
+            startTorrent={startTorrentMock}
+            stopDownload={stopDownloadMock}
+          />
+        </TestThemeProvider>
       )
       expect(wrapper.html()).toEqual(expect.stringContaining('Stop Download'))
     })

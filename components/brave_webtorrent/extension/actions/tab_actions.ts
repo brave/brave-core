@@ -23,3 +23,7 @@ export const tabRemoved = (tabId: number) => action(types.TAB_REMOVED, {
 export const activeTabChanged = (tabId: number, windowId: number) => action(types.ACTIVE_TAB_CHANGED, {
   tabId, windowId
 })
+
+export const tabRetrieved = (tab: chrome.tabs.Tab) => action(types.TAB_RETRIEVED, {
+  tab
+})

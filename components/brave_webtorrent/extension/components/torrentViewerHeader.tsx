@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { ButtonPrimary, ButtonSecondary, Column, Grid } from 'brave-ui/components'
+import { Button, Column, Grid } from 'brave-ui/components'
 import { TitleHeading } from 'brave-ui/old'
 
 // Constants
@@ -24,45 +24,45 @@ interface Props {
 }
 
 export default class TorrentViewerHeader extends React.PureComponent<Props, {}> {
-  constructor (props: Props) {
-    super(props)
-    this.onClick = this.onClick.bind(this)
-    this.onCopyClick = this.onCopyClick.bind(this)
+  onClick = () => {
+    this.props.torrent
+      ? this.props.onStopDownload(this.props.tabId)
+      : this.props.onStartTorrent(this.props.torrentId, this.props.tabId)
   }
 
-  onClick () {
-    this.props.torrent ? this.props.onStopDownload(this.props.tabId)
-                       : this.props.onStartTorrent(this.props.torrentId, this.props.tabId)
-  }
-
-  onCopyClick () {
+  onCopyClick = () => {
     clipboardCopy(this.props.torrentId)
   }
 
   render () {
-    const { name, torrent } = this.props
-    const title = name ? 'Start Torrenting "' + name + '"?'
-                       : 'Loading torrent information...'
+    const { torrent } = this.props
+    const name = typeof(this.props.name) === 'object'
+      ? this.props.name[0]
+      : this.props.name
+    const title = torrent
+      ? name
+      : name
+        ? `Start Torrenting ${name}?`
+        : 'Loading torrent information...'
     const mainButtonText = torrent ? 'Stop Download' : 'Start Torrent'
 
     return (
       <Grid>
-        <Column size={9} theme={theme.headerColumnLeft}>
+        <Column size={9} customStyle={theme.headerColumnLeft}>
           <TitleHeading
             text={title}
           />
         </Column>
-        <Column size={3} theme={theme.headerColumnRight}>
-          <ButtonPrimary
+        <Column size={3} customStyle={theme.headerColumnRight}>
+          <Button
+            type='accent'
             text={mainButtonText}
-            color='brand'
-            size='medium'
             onClick={this.onClick}
           />
-          <ButtonSecondary
+          <Button
+            type='accent'
+            level='secondary'
             text='Copy Magnet Link'
-            color='brand'
-            size='medium'
             onClick={this.onCopyClick}
           />
         </Column>

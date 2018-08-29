@@ -74,12 +74,12 @@ describe('webtorrent reducer test', () => {
   })
 
   const tab: chrome.tabs.Tab = {
-    id: 2,
+    id: 0,
     index: 2,
     pinned: false,
     highlighted: false,
     windowId: 0,
-    active: true,
+    active: false,
     incognito: false,
     selected: false
   }
@@ -92,12 +92,27 @@ describe('webtorrent reducer test', () => {
     // TODO: mock ParseTorrent to test tab url case
   })
 
+  const changeInfo = {}
   describe('TAB_UPDATED', () => {
     it('state is unchanged if tab url is not ready', () => {
-      const changeInfo = {}
       const state = webtorrentReducer(torrentsState,
-        tabActions.tabUpdated(tab, changeInfo))
+        tabActions.tabUpdated(tab.id, changeInfo, tab))
       expect(state).toEqual(state)
+    })
+
+    it('update currentWindowID if it is not initialized yet', () => {
+      const stateWithoutWindowId = { ...torrentsState, currentWindowId: -1 }
+      const state = webtorrentReducer(stateWithoutWindowId,
+        tabActions.tabUpdated(tab.id, changeInfo, tab))
+      expect(state).toEqual({ ...stateWithoutWindowId, currentWindowId: 0 })
+    })
+
+    it('update activeTabIds if it is not initialized yet for this window', () => {
+      const stateWithNoActiveTabIds = { ...torrentsState, activeTabIds: {} }
+      const activeTab = { ...tab, active: true }
+      const state = webtorrentReducer(stateWithNoActiveTabIds,
+        tabActions.tabUpdated(activeTab.id, changeInfo, activeTab))
+      expect(state).toEqual({ ...torrentsState, activeTabIds: {0: 0} })
     })
     // TODO: mock ParseTorrent to test tab url case
   })

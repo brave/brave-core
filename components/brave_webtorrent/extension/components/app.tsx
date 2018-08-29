@@ -18,6 +18,8 @@ import * as torrentActions from '../actions/webtorrent_actions'
 
 // Assets
 require('../../../styles/webtorrent.less')
+require('../../../fonts/poppins.css')
+require('../../../fonts/muli.css')
 
 interface Props {
   torrentState: TorrentState
