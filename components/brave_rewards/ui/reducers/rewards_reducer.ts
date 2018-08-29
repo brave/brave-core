@@ -11,8 +11,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
   switch (action.type) {
     case types.ON_SETTING_SAVE:
       state = { ...state }
-      if (action.payload.key) {
-        state[action.payload.key] = action.payload.value
+      const key = action.payload.key
+      const value = action.payload.value
+      if (key) {
+        state[key] = value
+        chrome.send('saveSetting', [key, value.toString()])
       }
       break
     case types.ON_MODAL_BACKUP_CLOSE:

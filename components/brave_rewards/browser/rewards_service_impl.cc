@@ -661,4 +661,20 @@ std::map<std::string, std::string> RewardsServiceImpl::GetAddresses() const {
   return addresses;
 }
 
+void RewardsServiceImpl::SetPublisherMinVisitTime(uint64_t duration_in_seconds) const {
+  return ledger_->SetPublisherMinVisitTime(duration_in_seconds);
+}
+
+void RewardsServiceImpl::SetPublisherMinVisits(unsigned int visits) const {
+  return ledger_->SetPublisherMinVisits(visits);
+}
+
+void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
+  return ledger_->SetPublisherAllowNonVerified(allow);
+}
+
+void RewardsServiceImpl::SetContributionAmount(double amount) const {
+  return ledger_->SetContributionAmount(amount);
+}
+
 }  // namespace brave_rewards

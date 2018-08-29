@@ -144,6 +144,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void RunIOTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
   void RunTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
+  void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
+  void SetPublisherMinVisits(unsigned int visits) const override;
+  void SetPublisherAllowNonVerified(bool allow) const override;
+  void SetContributionAmount(double amount) const override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

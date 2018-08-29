@@ -47,6 +47,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void SolveGrantCaptcha(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
   void GetAddresses(const base::ListValue* args);
+  void SaveSetting(const base::ListValue* args);
 
   // PaymentServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* payment_service,
@@ -104,6 +105,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("getAddresses",
                                     base::BindRepeating(&RewardsDOMHandler::GetAddresses,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("saveSetting",
+                                    base::BindRepeating(&RewardsDOMHandler::SaveSetting,
                                                         base::Unretained(this)));
 }
 
@@ -310,6 +314,31 @@ void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
     data.SetString("LTC", addresses["LTC"]);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.addresses", data);
+  }
+}
+
+void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
+  if (rewards_service_) {
+    std::string key;
+    std::string value;
+    args->GetString(0, &key);
+    args->GetString(1, &value);
+
+    if (key == "contributionMonthly") {
+      rewards_service_->SetContributionAmount(std::stod(value));
+    }
+
+    if (key == "contributionMinTime") {
+      rewards_service_->SetPublisherMinVisitTime(std::stoull(value));
+    }
+
+    if (key == "contributionMinVisits") {
+      rewards_service_->SetPublisherMinVisits(std::stoul(value));
+    }
+
+    if (key == "contributionNonVerified") {
+      rewards_service_->SetPublisherAllowNonVerified(value == "true");
+    }
   }
 }
 

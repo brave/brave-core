@@ -53,6 +53,10 @@ class RewardsService : public KeyedService {
   virtual void OnXHRLoad(SessionID tab_id, const GURL& url) = 0;
   virtual uint64_t GetReconcileStamp() const = 0;
   virtual std::map<std::string, std::string> GetAddresses() const = 0;
+  virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const = 0;
+  virtual void SetPublisherMinVisits(unsigned int visits) const = 0;
+  virtual void SetPublisherAllowNonVerified(bool allow) const = 0;
+  virtual void SetContributionAmount(double amount) const = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
