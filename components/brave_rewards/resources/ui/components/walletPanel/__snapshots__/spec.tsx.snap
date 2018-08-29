@@ -59,7 +59,6 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c25 {
-  width: 120px;
   text-align: center;
   padding: 15px 0 0;
   margin: 0 auto;
@@ -70,9 +69,9 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c26 {
-  --button-main-color: #C5C5D3;
-  --button-main-color-hover: #A0A1B2;
-  --button-main-color-active: #E9E9F4;
+  --button-main-color: #4C54D2;
+  --button-main-color-hover: #392DD1;
+  --button-main-color-active: #AAAFEF;
   --button-state-color: var(--button-main-color);
   --icon-size: 18px;
   --icon-spacing: 6px;
@@ -103,10 +102,10 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   -ms-user-select: none;
   user-select: none;
   font-size: 14px;
-  border-radius: 24px;
-  width: auto;
-  min-width: 116px;
-  padding: 14px 15px;
+  border-radius: 28px;
+  width: 100%;
+  min-width: 235px;
+  padding: 19px 15px;
   border: 1px solid;
   color: var(--button-state-color);
 }
@@ -135,7 +134,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0;
   letter-spacing: 0;
   font-weight: 600;
-  text-transform: none;
+  text-transform: uppercase;
   line-height: 1;
 }
 
@@ -526,13 +525,13 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
     >
       <button
         className="c26"
-        size="large"
-        type="subtle"
+        size="call-to-action"
+        type="accent"
       >
         <div
           className="c27"
-          size="large"
-          type="subtle"
+          size="call-to-action"
+          type="accent"
         >
           MISSING: donateNow
         </div>

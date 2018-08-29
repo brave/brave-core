@@ -56,7 +56,6 @@ export const StyledIcon = styled<{}, 'span'>('span')`
 ` as any
 
 export const StyledDonateWrapper = styled<{}, 'div'>('div')`
-  width: 120px;
   text-align: center;
   padding: 15px 0 0;
   margin: 0 auto;

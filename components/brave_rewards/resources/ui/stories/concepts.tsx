@@ -165,8 +165,8 @@ storiesOf('Feature Components/Rewards/Concepts', module)
     }
 
     return (
-      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
-        <div style={{ position: 'absolute', bottom: '280px', left: '560px' }}>
+      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '100vh', margin: '0 auto', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '50px', left: '560px' }}>
           <WalletWrapper
             contentPadding={false}
             compact={store.state.showPanel}
@@ -221,7 +221,7 @@ storiesOf('Feature Components/Rewards/Concepts', module)
                 onAmountChange={doNothing}
                 onIncludeInAuto={onIncludeInAuto}
               />
-              <div style={{ padding: '0px 30px 0px' }}>
+              <div style={{ padding: '0px 7px 0px' }}>
                 <WalletSummary
                   compact={true}
                   grant={object('Grant', { tokens: 10, converted: 0.25 })}

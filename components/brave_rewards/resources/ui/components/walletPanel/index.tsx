@@ -172,9 +172,10 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           </StyledControlsWrapper>
           <StyledDonateWrapper>
             <Button
-              size={'large'}
-              type={'subtle'}
+              size={'call-to-action'}
+              type={'accent'}
               level={'secondary'}
+              brand={'rewards'}
               onClick={donationAction}
               text={getLocale('donateNow')}
             />

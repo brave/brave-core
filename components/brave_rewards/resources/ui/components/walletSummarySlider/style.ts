@@ -11,6 +11,7 @@ interface StyleProps {
 export const StyledWrapper = styled<{}, 'div'>('div')`
   display: block;
   width: 100%;
+  position: relative;
 ` as any
 
 export const StyledTransitionWrapper = styled<StyleProps, 'div'>('div')`
@@ -44,4 +45,5 @@ export const StyledArrowIcon = styled<StyleProps, 'span'>('span')`
   display: block;
   margin-left: 13px;
   margin-top: ${p => p.show ? '-2px' : '-23px'};
+  color: #696FDC;
 ` as any
