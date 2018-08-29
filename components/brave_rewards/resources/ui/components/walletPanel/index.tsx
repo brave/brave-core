@@ -82,6 +82,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
       <StyledSelectWrapper>
         <Select
           floating={true}
+          showAllContents={true}
           value={monthlyAmount.toString()}
           onChange={this.props.onAmountChange}
         >
@@ -91,7 +92,11 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
                 key={`donationAmount-${index}`}
                 data-value={amount.toString()}
               >
-                <Tokens value={amount} size={'mini'} color={'donation'}/>
+                <Tokens
+                  size={'mini'}
+                  value={amount}
+                  color={'donation'}
+                />
               </div>
             )
           })}
