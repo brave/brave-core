@@ -101,9 +101,12 @@ class URLBarView: UIView {
 
     fileprivate lazy var cancelButton: UIButton = {
         let cancelButton = InsetButton()
-        cancelButton.setImage(#imageLiteral(resourceName: "goBack").template, for: .normal)
+        cancelButton.setTitle(Strings.Cancel, for: .normal)
+        cancelButton.setTitleColor(BraveUX.CancelTextColor, for: .normal)
         cancelButton.accessibilityIdentifier = "urlBar-cancel"
         cancelButton.addTarget(self, action: #selector(didClickCancel), for: .touchUpInside)
+        cancelButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        cancelButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         cancelButton.alpha = 0
         return cancelButton
     }()
@@ -198,7 +201,7 @@ class URLBarView: UIView {
     fileprivate func commonInit() {
         locationContainer.addSubview(locationView)
     
-        [scrollToTopButton, line, tabsButton, progressBar, cancelButton, showQRScannerButton].forEach { addSubview($0) }
+        [scrollToTopButton, line, tabsButton, progressBar, cancelButton/*, showQRScannerButton*/].forEach { addSubview($0) }
         [forwardButton, backButton, menuButton, shareButton, shieldsButton, locationContainer].forEach { addSubview($0) }
         
         helper = TabToolbarHelper(toolbar: self)
@@ -206,9 +209,6 @@ class URLBarView: UIView {
 
         // Make sure we hide any views that shouldn't be showing in non-overlay mode.
         updateViewsForOverlayModeAndToolbarChanges()
-        
-        // BRAVE TODO: I'm not sure if we need it.
-        // locationView.layer.cornerRadius = URLBarViewUX.TextFieldCornerRadius
     }
 
     fileprivate func setupConstraints() {
@@ -232,13 +232,13 @@ class URLBarView: UIView {
         locationView.snp.makeConstraints { make in
             make.edges.equalTo(self.locationContainer)
         }
-
+        
         cancelButton.snp.makeConstraints { make in
-            make.leading.equalTo(self.safeArea.leading)
+            make.trailing.equalTo(self.safeArea.trailing).offset(-URLBarViewUX.Padding)
             make.centerY.equalTo(self.locationContainer)
-            make.size.equalTo(URLBarViewUX.ButtonHeight)
+            make.height.equalTo(URLBarViewUX.ButtonHeight)
         }
-
+        
         backButton.snp.makeConstraints { make in
             make.leading.equalTo(self.safeArea.leading).offset(URLBarViewUX.Padding)
             make.centerY.equalTo(self)
@@ -269,23 +269,29 @@ class URLBarView: UIView {
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
         
+        /*
         showQRScannerButton.snp.makeConstraints { make in
             make.trailing.equalTo(self.safeArea.trailing)
             make.centerY.equalTo(self.locationContainer)
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
+         */
     }
 
     override func updateConstraints() {
         super.updateConstraints()
         if inOverlayMode {
+            self.menuButton.snp.remakeConstraints { make in
+                make.leading.equalTo(self)
+                make.centerY.equalTo(self)
+                make.size.equalTo(URLBarViewUX.ButtonHeight)
+            }
             // In overlay mode, we always show the location view full width
-//            self.locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidthSelected
             self.locationContainer.snp.remakeConstraints { make in
                 let height = URLBarViewUX.LocationHeight// + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
                 make.height.equalTo(height)
-                make.trailing.equalTo(self.showQRScannerButton.snp.leading)
-                make.leading.equalTo(self.cancelButton.snp.trailing)
+                make.trailing.equalTo(self.cancelButton.snp.leading).offset(-URLBarViewUX.Padding)
+                make.leading.equalTo(self.menuButton.snp.trailing)
                 make.centerY.equalTo(self)
             }
             self.locationView.snp.remakeConstraints { make in
@@ -299,7 +305,7 @@ class URLBarView: UIView {
                 if self.toolbarIsShowing {
                     make.leading.equalTo(self.forwardButton.snp.trailing)
                 } else {
-                    make.leading.equalTo(self)//.inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding-1, bottom: 0, right: URLBarViewUX.LocationLeftPadding-1))
+                    make.leading.equalTo(self)
                 }
                 make.centerY.equalTo(self)
                 make.size.equalTo(URLBarViewUX.ButtonHeight)
@@ -483,7 +489,6 @@ class URLBarView: UIView {
         forwardButton.alpha = inOverlayMode ? 0 : 1
         backButton.alpha = inOverlayMode ? 0 : 1
         shareButton.alpha = inOverlayMode ? 0 : 1
-        menuButton.alpha = inOverlayMode ? 0 : 1
         shieldsButton.alpha = inOverlayMode ? 0 : 1
         locationView.contentView.alpha = inOverlayMode ? 0 : 1
 
