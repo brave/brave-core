@@ -67,7 +67,10 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case ThemeProperties::COLOR_BACKGROUND_TAB_TEXT:
       return SkColorSetRGB(0xFF, 0xFF, 0xFF);
     case ThemeProperties::COLOR_LOCATION_BAR_BORDER:
-      return SkColorSetRGB(0x22, 0x22, 0x22);
+      // TODO: Should be location bar background, but location bar has hover
+      // color which we don't have access to here.
+      // Consider increasing height instead.
+      return kDarkToolbar;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
@@ -106,7 +109,10 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
     case ThemeProperties::COLOR_BACKGROUND_TAB_TEXT:
       return SkColorSetRGB(0xFF, 0xFF, 0xFF);
     case ThemeProperties::COLOR_LOCATION_BAR_BORDER:
-      return kPrivateFrame;
+      // TODO: Should be location bar background, but location bar has hover
+      // color which we don't have access to here.
+      // Consider increasing height instead.
+      return kPrivateToolbar;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:

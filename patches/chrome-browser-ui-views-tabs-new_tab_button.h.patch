@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/tabs/new_tab_button.h b/chrome/browser/ui/views/tabs/new_tab_button.h
+index ee40211315f979cfc34a7373195b2179b72429d4..9b3715cfe72390310b277f1ed0361821558da189 100644
+--- a/chrome/browser/ui/views/tabs/new_tab_button.h
++++ b/chrome/browser/ui/views/tabs/new_tab_button.h
+@@ -25,6 +25,7 @@ class NewTabButton : public views::ImageButton,
+                      public views::MaskedTargeterDelegate,
+                      public views::WidgetObserver {
+  public:
++  friend class BraveNewTabButton;
+   NewTabButton(TabStrip* tab_strip, views::ButtonListener* listener);
+   ~NewTabButton() override;
+ 
+@@ -107,7 +108,7 @@ class NewTabButton : public views::ImageButton,
+                  gfx::Canvas* canvas) const;
+ 
+   // Paints a properly sized plus (+) icon into the center of the button.
+-  void PaintPlusIcon(gfx::Canvas* canvas, int offset, int size);
++  virtual void PaintPlusIcon(gfx::Canvas* canvas, int offset, int size);
+ 
+   SkColor GetButtonFillColor(bool opaque) const;
+   SkColor GetIconColor() const;

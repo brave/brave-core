@@ -9,7 +9,7 @@
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
 base::Optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
-  // const int mode = ui::MaterialDesignController::GetMode();
+  const int mode = ui::MaterialDesignController::GetMode();
   // const bool hybrid = mode == ui::MaterialDesignController::MATERIAL_HYBRID;
   // const bool touch_optimized_material =
   //     ui::MaterialDesignController::IsTouchOptimizedUiEnabled();
@@ -19,6 +19,10 @@ base::Optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       // Note: this is likely to be moved in to views/layout_provider.h
       // in a future chromium version.
       return 4;
+    case TAB_HEIGHT: {
+      constexpr int kTabHeight[] = {29, 33, 41, 30, 37};
+      return kTabHeight[mode] + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+    }
     default:
       break;
   }
