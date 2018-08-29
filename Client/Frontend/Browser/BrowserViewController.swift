@@ -328,6 +328,7 @@ class BrowserViewController: UIViewController {
         header.addSubview(urlBar)
         
         tabsBar = TabsBarViewController(tabManager: tabManager)
+        tabsBar.delegate = self
         header.addSubview(tabsBar.view)
         
         view.addSubview(header)
@@ -1580,6 +1581,17 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             backForwardViewController.backForwardTransitionDelegate = BackForwardListAnimator()
             self.present(backForwardViewController, animated: true, completion: nil)
         }
+    }
+}
+
+extension BrowserViewController: TabsBarViewControllerDelegate {
+    func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab) {
+        if tab == tabManager.selectedTab { return }
+        if urlBar.inOverlayMode {
+            // Lose focus
+            urlBar.leaveOverlayMode(didCancel: true)
+        }
+        tabManager.selectTab(tab)
     }
 }
 

@@ -8,9 +8,15 @@ import SnapKit
 import Shared
 import BraveShared
 
+protocol TabsBarViewControllerDelegate: class {
+    func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab)
+}
+
 class TabsBarViewController: UIViewController {
     private let leftOverflowIndicator = CAGradientLayer()
     private let rightOverflowIndicator = CAGradientLayer()
+    
+    weak var delegate: TabsBarViewControllerDelegate?
     
     private lazy var plusButton: UIButton = {
         let button = UIButton()
@@ -219,8 +225,9 @@ extension TabsBarViewController: UIScrollViewDelegate {
 // MARK: - UICollectionViewDelegate
 extension TabsBarViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let tab = tabList[indexPath.row]
-        tabManager?.selectTab(tab)
+        if let tab = tabList[indexPath.row] {
+            delegate?.tabsBarDidSelectTab(self, tab)
+        }
     }
 }
 
