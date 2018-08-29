@@ -10,6 +10,8 @@ source_set("ui") {
     "brave_browser_content_setting_bubble_model_delegate.h",
     "brave_pages.cc",
     "brave_pages.h",
+    "brave_layout_constants.cc",
+    "brave_layout_constants.h",
     "brave_actions/shields_action_view_controller.cc",
     "brave_actions/shields_action_view_controller.h",
     "brave_actions/brave_action_icon_with_badge_image_source.cc",
