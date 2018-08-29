@@ -48,6 +48,48 @@ def main():
         brave_page_visibility_element.set('type', 'chrome_html')
         page_visibility_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_PAGE_VISIBILITY_JS"]')[0]
         page_visibility_element.addprevious(brave_page_visibility_element)
+
+    # Add four resources for brave theme options
+    # Add IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_HTML(brave_appearance_browser_proxy.html)
+    brave_appearance_browser_proxy_html_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_HTML"]'))
+    if brave_appearance_browser_proxy_html_element_len == 0:
+        brave_appearance_browser_proxy_html_element = etree.Element('structure')
+        brave_appearance_browser_proxy_html_element.set('name', 'IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_HTML')
+        brave_appearance_browser_proxy_html_element.set('file', 'brave_appearance_page/brave_appearance_browser_proxy.html')
+        brave_appearance_browser_proxy_html_element.set('type', 'chrome_html')
+        appearance_page_js_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_APPEARANCE_PAGE_JS"]')[0]
+        appearance_page_js_element.addnext(brave_appearance_browser_proxy_html_element)
+    # Add IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS(brave_appearance_browser_proxy.js)
+    brave_appearance_browser_proxy_js_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS"]'))
+    if brave_appearance_browser_proxy_js_element_len == 0:
+        brave_appearance_browser_proxy_js_element = etree.Element('structure')
+        brave_appearance_browser_proxy_js_element.set('name', 'IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS')
+        brave_appearance_browser_proxy_js_element.set('file', 'brave_appearance_page/brave_appearance_browser_proxy.js')
+        brave_appearance_browser_proxy_js_element.set('type', 'chrome_html')
+        brave_appearance_browser_proxy_js_element.set('preprocess', 'true')
+        brave_appearance_browser_proxy_html_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_HTML"]')[0]
+        brave_appearance_browser_proxy_html_element.addnext(brave_appearance_browser_proxy_js_element)
+    # Add IDR_SETTINGS_BRAVE_APPEARANCE_PAGE_HTML(brave_appearance_page.html)
+    brave_appearance_page_html_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_APPEARANCE_PAGE_HTML"]'))
+    if brave_appearance_page_html_element_len == 0:
+        brave_appearance_page_html_element = etree.Element('structure')
+        brave_appearance_page_html_element.set('name', 'IDR_SETTINGS_BRAVE_APPEARANCE_PAGE_HTML')
+        brave_appearance_page_html_element.set('file', 'brave_appearance_page/brave_appearance_page.html')
+        brave_appearance_page_html_element.set('type', 'chrome_html')
+        brave_appearance_page_html_element.set('preprocess', 'true')
+        brave_appearance_page_html_element.set('allowexternalscript', 'true')
+        brave_appearance_browser_proxy_js_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS"]')[0]
+        brave_appearance_browser_proxy_js_element.addnext(brave_appearance_page_html_element)
+    # Add IDR_SETTINGS_BRAVE_APPEARANCE_PAGE_JS(brave_appearance_page.js)
+    brave_appearance_page_js_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_APPEARANCE_PAGE_JS"]'))
+    if brave_appearance_page_js_element_len == 0:
+        brave_appearance_page_js_element = etree.Element('structure')
+        brave_appearance_page_js_element.set('name', 'IDR_SETTINGS_BRAVE_APPEARANCE_PAGE_JS')
+        brave_appearance_page_js_element.set('file', 'brave_appearance_page/brave_appearance_page.js')
+        brave_appearance_page_js_element.set('type', 'chrome_html')
+        brave_appearance_page_js_element.set('preprocess', 'true')
+        brave_appearance_page_html_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS"]')[0]
+        brave_appearance_page_html_element.addnext(brave_appearance_page_js_element)
   if filename == 'browser_resources':
     elem1 = xml_tree.xpath('//include[@name="IDR_MD_HISTORY_SIDE_BAR_HTML"]')[0]
     elem1.set('flattenhtml', 'true')
