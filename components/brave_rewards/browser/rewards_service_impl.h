@@ -105,6 +105,7 @@ class RewardsServiceImpl : public RewardsService,
                                  uint32_t limit,
                                  ledger::GetPublisherInfoListCallback callback,
                                  const ledger::PublisherInfoList& list);
+  void TriggerOnContentSiteUpdated();
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

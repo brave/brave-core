@@ -429,6 +429,8 @@ void RewardsServiceImpl::OnPublisherInfoSaved(
     bool success) {
   callback(success ? ledger::Result::OK
                    : ledger::Result::ERROR, std::move(info));
+
+  TriggerOnContentSiteUpdated();
 }
 
 void RewardsServiceImpl::LoadPublisherInfo(
@@ -683,6 +685,11 @@ void RewardsServiceImpl::SetContributionAmount(double amount) const {
 
 void RewardsServiceImpl::SetAutoContribute(bool enabled) const {
   return ledger_->SetAutoContribute(enabled);
+}
+
+void RewardsServiceImpl::TriggerOnContentSiteUpdated() {
+  for (auto& observer : observers_)
+    observer.OnContentSiteUpdated(this);
 }
 
 }  // namespace brave_rewards

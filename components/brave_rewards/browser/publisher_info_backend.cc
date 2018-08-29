@@ -15,7 +15,9 @@
 namespace brave_rewards {
 
 PublisherInfoBackend::PublisherInfoBackend(const base::FilePath& path) :
-    path_(path) {}
+    path_(path) {
+      DETACH_FROM_SEQUENCE(sequence_checker_);
+    }
 
 PublisherInfoBackend::~PublisherInfoBackend() {}
 

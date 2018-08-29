@@ -34,6 +34,7 @@ class RewardsServiceObserver {
   virtual void OnGrantFinish(RewardsService* payment_service,
                                  unsigned int result,
                                  brave_rewards::Grant grant) {};
+  virtual void OnContentSiteUpdated(RewardsService* payment_service) {};
 };
 
 }  // namespace brave_rewards

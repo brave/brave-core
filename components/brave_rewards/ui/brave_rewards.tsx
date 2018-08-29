@@ -77,6 +77,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onAddresses(addresses)
   }
 
+  function contributeList (list: any) {
+    console.log(list)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -88,7 +92,8 @@ window.cr.define('brave_rewards', function () {
     recoverWalletData,
     grantFinish,
     reconcileStamp,
-    addresses
+    addresses,
+    contributeList
   }
 })
 

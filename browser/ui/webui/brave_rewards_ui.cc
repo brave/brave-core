@@ -48,6 +48,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetReconcileStamp(const base::ListValue* args);
   void GetAddresses(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
+  void OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList>, uint32_t record);
 
   // PaymentServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* payment_service,
@@ -67,6 +68,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGrantFinish(brave_rewards::RewardsService* payment_service,
                        unsigned int result,
                        brave_rewards::Grant grant) override;
+  void OnContentSiteUpdated(brave_rewards::RewardsService* payment_service) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
@@ -317,6 +319,11 @@ void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
   }
 }
 
+void RewardsDOMHandler::OnContentSiteUpdated(brave_rewards::RewardsService* payment_service) {
+  // TODO NZ get the whole list sorted
+  rewards_service_->GetContentSiteList(0, 10, base::Bind(&RewardsDOMHandler::OnGetContentSiteList, base::Unretained(this)));
+}
+
 void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
   if (rewards_service_) {
     std::string key;
@@ -347,6 +354,21 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     if (key == "enabledContribute") {
       rewards_service_->SetAutoContribute(value == "true");
     }
+  }
+}
+
+void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList> list, uint32_t record) {
+  if (rewards_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+//    auto publishers = std::make_unique<base::ListValue>();
+//    for (auto const& item : *list) {
+//      auto publisher = std::make_unique<base::DictionaryValue>();
+//      publisher->SetDouble("percentage", item.percentage);
+//      publisher->SetString("id", item.id);
+//      publishers->Append(std::move(publisher));
+//    }
+
+    //web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributeList", *publishers);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributeList", base::Value('test'));
   }
 }
 
