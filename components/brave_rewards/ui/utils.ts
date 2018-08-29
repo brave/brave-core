@@ -99,14 +99,18 @@ export const getAddresses = (addresses?: Record<Rewards.AddressesType, Rewards.A
     return result
   }
 
-  for (let type in addresses) {
+  const sortedArray = [ 'BTC', 'ETH', 'BAT', 'LTC' ]
+
+  sortedArray.forEach((type: Rewards.AddressesType) => {
     const item: Rewards.Address = addresses[type]
-    result.push({
-      type: type as AddressType,
-      qr: item.qr,
-      address: item.address
-    })
-  }
+    if (item) {
+      result.push({
+        type: type as AddressType,
+        qr: item.qr,
+        address: item.address
+      })
+    }
+  })
 
   return result
 }

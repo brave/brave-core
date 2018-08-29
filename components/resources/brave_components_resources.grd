@@ -270,16 +270,21 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_DND_CAPTCHA" desc="">Drag and drop the token logo onto the target</message>
       <message name="IDS_BRAVE_UI_DONATION" desc="">Donation</message>
       <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="">Donation amount</message>
+      <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">Donate to this site Monthl</message>
+      <message name="IDS_BRAVE_UI_DONATE_NOW" desc="">Donate Now…</message>
       <message name="IDS_BRAVE_UI_DONE" desc="">Done</message>
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
       <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Brave Ads</message>
+      <message name="IDS_BRAVE_UI_ENABLE_TIPS" desc="">Enable Tips</message>
       <message name="IDS_BRAVE_UI_EXPIRES_ON" desc="">expires on</message>
+      <message name="IDS_BRAVE_UI_FOR" desc="">for</message>
       <message name="IDS_BRAVE_UI_GRANT_DISCLAIMER" desc="">Unused tokens by the expiration date will be automatically returned to the Brave User Growth Pool.</message>
       <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
       <message name="IDS_BRAVE_UI_GRANTS" desc="">Grants</message>
       <message name="IDS_BRAVE_UI_HOW_DOES_IT_WORK" desc="">How does it work?</message>
       <message name="IDS_BRAVE_UI_HOW_DOES_IT_WORK_DESC" desc="">Get paid for the ads. And pay directly the favorite content creators at your will. That way, they can grow and continue delivering the content that delights you.</message>
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
+      <message name="IDS_BRAVE_UI_INCLUDE_IN_AUTO" desc="">Include in Brave Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="">Make this monthly</message>
       <message name="IDS_BRAVE_UI_MONTH_APR" desc="">Apr</message>
       <message name="IDS_BRAVE_UI_MONTH_AUG" desc="">August</message>
@@ -327,6 +332,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="">Your donation is much appreciated and it encourages us to continue to improve our content.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Brave Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE" desc="">Your Attention Scor</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_TEXT1" desc="">You’re currently supporting</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT1" desc="">Do you know that you’ve been paying for the web content with your data for the digital ads? You didn’t have a voice in it and worse, you’re exposed to privacy and security risks.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT2" desc="">Brave Rewards allows you to take control back.</message>
@@ -369,6 +375,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
       <message name="IDS_BRAVE_UI_VIEW_MONTHLY" desc="">View Monthly Statement for Details</message>
       <message name="IDS_BRAVE_UI_WALLET_ACTIVITY" desc="">Wallet Activity</message>
+      <message name="IDS_BRAVE_UI_WALLET_ADDRESS" desc="">Wallet Address</message>
       <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="">wallet balance</message>
       <message name="IDS_BRAVE_UI_WELCOME" desc="">Welcome!</message>
       <message name="IDS_BRAVE_UI_WELCOME_BUTTON_TEXT_ONE" desc="">Start Earning Now!</message>
