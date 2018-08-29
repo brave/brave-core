@@ -790,7 +790,7 @@ class ToolbarTextField: AutocompleteTextField {
 extension ToolbarTextField: Themeable {
 
     func applyTheme(_ theme: Theme) {
-        backgroundColor = .clear
+        backgroundColor = theme == .Normal ? BraveUX.LocationBarBackgroundColor : BraveUX.LocationBarBackgroundColor_PrivateMode
         textColor = UIColor.TextField.TextAndTint.colorFor(theme)
         clearButtonTintColor = textColor
         highlightColor = UIColor.TextField.Highlight.colorFor(theme)
