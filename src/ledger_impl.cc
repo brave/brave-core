@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <ctime>
+#include <random>
 
 #include "ledger_impl.h"
 
@@ -177,7 +178,7 @@ void LedgerImpl::SavePublisherState(const std::string& data,
 
 void LedgerImpl::SavePublishersList(const std::string& data,
   ledger::LedgerCallbackHandler* handler) {
-  ledger_client_->SavePublishersList(data, handler);
+  ledger_client_->SavePublishersList(data, this);
 }
 
 std::string LedgerImpl::GenerateGUID() const {
@@ -528,7 +529,12 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
 
 void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& response) {
-  const uint64_t retry_load_pub_list_sec = 300; //retry loading publishers list in 300 seconds if failed
+  std::random_device seeder;
+  const auto seed = seeder.entropy() ? seeder() : time(nullptr);
+  std::mt19937 eng(static_cast<std::mt19937::result_type> (seed));
+  std::uniform_int_distribution <> dist(300, 3600); //retry loading publishers list in 300-3600 seconds if failed
+  const uint64_t retry_load_pub_list_sec = dist(eng);
+
   uint64_t timer_offset{0ull};
 
   if (result && !response.empty()) {
@@ -555,6 +561,11 @@ void LedgerImpl::RefreshPublishersList() {
 
   //start timer
   ledger_client_->SetTimer(start_timer_in, last_pub_load_timer_id_);
+}
+
+void LedgerImpl::OnPublishersListSaved(ledger::Result result) {
+  assert(ledger::Result::OK == result);
+  bat_publishers_->OnPublishersListSaved(result);
 }
 
 }  // namespace bat_ledger

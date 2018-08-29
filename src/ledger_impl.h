@@ -107,6 +107,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void LoadPublishersListCallback(bool result, const std::string& response);
 
+  void OnPublishersListSaved(ledger::Result result) override;
+
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
