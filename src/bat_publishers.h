@@ -53,6 +53,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   uint64_t getPublisherMinVisitTime() const; // In milliseconds
   unsigned int getPublisherMinVisits() const;
   bool getPublisherAllowNonVerified() const;
+  uint64_t getLastPublishersListLoadTimestamp() const;
 
   std::vector<braveledger_bat_helper::WINNERS_ST> winners(const unsigned int& ballots);
 
@@ -64,6 +65,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   std::string GetBalanceReportName(const std::string& year,
     ledger::PUBLISHER_MONTH month);
   std::vector<ledger::ContributionInfo> GetRecurringDonationList();
+
+  void RefreshPublishersList(const std::string & pubs_list);
+
+  void OnPublishersListSaved(ledger::Result result) override;
 
  private:
   // LedgerCallbackHandler impl

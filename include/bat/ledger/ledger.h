@@ -84,6 +84,9 @@ class LEDGER_EXPORT Ledger {
       const std::string& url,
       const std::map<std::string, std::string>& parts,
       const uint64_t& current_time) = 0;
+
+  virtual void OnTimer(uint32_t timer_id) = 0;
+
   virtual std::string URIEncode(const std::string& value) = 0;
 
   virtual void SetPublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,

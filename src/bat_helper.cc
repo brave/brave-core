@@ -773,6 +773,7 @@ namespace braveledger_bat_helper {
       error = !(d.HasMember("min_pubslisher_duration") && d["min_pubslisher_duration"].IsUint() &&
         d.HasMember("min_visits") && d["min_visits"].IsUint() &&
         d.HasMember("allow_non_verified") && d["allow_non_verified"].IsBool() &&
+        d.HasMember("pubs_load_timestamp") && d["pubs_load_timestamp"].IsUint64() &&
         d.HasMember("monthly_balances") && d["monthly_balances"].IsArray() &&
         d.HasMember("recurring_donation") && d["recurring_donation"].IsArray());
     }
@@ -781,6 +782,7 @@ namespace braveledger_bat_helper {
       min_pubslisher_duration_ = d["min_pubslisher_duration"].GetUint();
       min_visits_ = d["min_visits"].GetUint();
       allow_non_verified_ = d["allow_non_verified"].GetBool();
+      pubs_load_timestamp_ = d["pubs_load_timestamp"].GetUint64();
       for (const auto & i : d["monthly_balances"].GetArray()) {
         rapidjson::StringBuffer sb;
         rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
@@ -828,6 +830,9 @@ namespace braveledger_bat_helper {
 
     writer.String("allow_non_verified");
     writer.Bool(data.allow_non_verified_);
+
+    writer.String("pubs_load_timestamp");
+    writer.Uint64(data.pubs_load_timestamp_);
 
     writer.String("monthly_balances");
     writer.StartArray();

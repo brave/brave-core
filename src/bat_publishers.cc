@@ -9,7 +9,6 @@
 
 #include "bat_helper.h"
 #include "ledger_impl.h"
-#include "leveldb/db.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
 
@@ -230,6 +229,10 @@ bool BatPublishers::getPublisherAllowNonVerified() const {
   return state_->allow_non_verified_;
 }
 
+uint64_t BatPublishers::getLastPublishersListLoadTimestamp() const {
+  return state_->pubs_load_timestamp_;
+}
+
 void BatPublishers::synopsisNormalizer() {
   LOG(ERROR)<<"BatPublishers::synopsisNormalizer";
   if (publishers_.size() == 0) {
@@ -414,6 +417,14 @@ std::vector<ledger::ContributionInfo> BatPublishers::GetRecurringDonationList() 
   }
 
   return res;
+}
+
+void BatPublishers::RefreshPublishersList(const std::string & pubs_list) {
+  ledger_->SavePublishersList(pubs_list, this);
+}
+
+void BatPublishers::OnPublishersListSaved(ledger::Result result) {
+  //TODO
 }
 
 }  // namespace braveledger_bat_publisher

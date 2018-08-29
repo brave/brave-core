@@ -81,7 +81,7 @@ LEDGER_EXPORT struct PublisherInfo {
   std::string year;
 };
 
-using PublisherInfoList = std::vector<const PublisherInfo>;
+using PublisherInfoList = std::vector<PublisherInfo>;
 
 }  // namespace ledger
 

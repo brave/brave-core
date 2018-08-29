@@ -234,6 +234,7 @@ namespace braveledger_bat_helper {
     unsigned int min_pubslisher_duration_ = braveledger_ledger::_default_min_pubslisher_duration;  // In milliseconds
     unsigned int min_visits_ = 1u;
     bool allow_non_verified_ = true;
+    uint64_t pubs_load_timestamp_ = 0ull; //last publishers list load timestamp (seconds)
     std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;
     std::map<std::string, double> recurring_donation_;
   };
