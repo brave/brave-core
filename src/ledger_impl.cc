@@ -285,6 +285,10 @@ void LedgerImpl::SetContributionAmount(double amount) {
   bat_client_->setContributionAmount(amount);
 }
 
+void LedgerImpl::SetAutoContribute(bool enabled) {
+  bat_client_->setAutoContribute(enabled);
+}
+
 uint64_t LedgerImpl::GetPublisherMinVisitTime() const {
   return bat_publishers_->getPublisherMinVisitTime();
 }
@@ -303,6 +307,10 @@ bool LedgerImpl::GetPublisherAllowVideos() const {
 
 double LedgerImpl::GetContributionAmount() const {
   return bat_client_->getContributionAmount();
+}
+
+bool LedgerImpl::GetAutoContribute() const {
+  return bat_client_->getAutoContribute();
 }
 
 const std::string& LedgerImpl::GetBATAddress() const {

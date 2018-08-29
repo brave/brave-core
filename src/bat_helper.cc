@@ -502,7 +502,8 @@ namespace braveledger_bat_helper {
     reconcileStamp_(0),
     settings_(AD_FREE_SETTINGS),
     fee_amount_(0),
-    days_(0)  {}
+    days_(0),
+    auto_contribute_(true) {}
 
   CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
     walletInfo_ = other.walletInfo_;
@@ -522,6 +523,7 @@ namespace braveledger_bat_helper {
     ruleset_ = other.ruleset_;
     rulesetV2_ = other.rulesetV2_;
     batch_ = other.batch_;
+    auto_contribute_ = other.auto_contribute_;
   }
 
   CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
@@ -549,7 +551,9 @@ namespace braveledger_bat_helper {
         d.HasMember("ballots") && d["ballots"].IsArray() &&
         d.HasMember("ruleset") && d["ruleset"].IsString() &&
         d.HasMember("rulesetV2") && d["rulesetV2"].IsString() &&
-        d.HasMember("batch") && d["batch"].IsArray() );
+        d.HasMember("batch") && d["batch"].IsArray() &&
+        d.HasMember("auto_contribute") && d["auto_contribute"].IsBool()
+      );
     }
 
     if (false == error) {
@@ -572,6 +576,7 @@ namespace braveledger_bat_helper {
       settings_ = d["settings"].GetString();
       fee_amount_ = d["fee_amount"].GetDouble();
       days_ = d["days"].GetUint();
+      auto_contribute_ = d["auto_contribute"].GetBool();
 
       for (const auto & i : d["transactions"].GetArray()) {
         rapidjson::StringBuffer sb;
@@ -648,6 +653,9 @@ namespace braveledger_bat_helper {
 
     writer.String("days");
     writer.Uint(data.days_);
+
+    writer.String("auto_contribute");
+    writer.Bool(data.auto_contribute_);
 
     writer.String("transactions");
     writer.StartArray();
@@ -742,7 +750,6 @@ namespace braveledger_bat_helper {
 
     writer.String("one_time_donation");
     writer.Double(data.one_time_donation_);
-
 
     writer.EndObject();
   }

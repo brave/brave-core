@@ -62,6 +62,7 @@ class LedgerImpl : public ledger::Ledger,
   void SetPublisherAllowNonVerified(bool allow) override;
   void SetPublisherAllowVideos(bool allow) override;
   void SetContributionAmount(double amount) override;
+  void SetAutoContribute(bool enabled) override;
   void SetBalanceReport(const std::string& year,
     ledger::PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) override;
 
@@ -75,6 +76,7 @@ class LedgerImpl : public ledger::Ledger,
   bool GetPublisherAllowNonVerified() const override;
   bool GetPublisherAllowVideos() const override;
   double GetContributionAmount() const override;
+  bool GetAutoContribute() const override;
   bool GetBalanceReport(const std::string& year,
     ledger::PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) const override;
 

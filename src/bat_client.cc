@@ -186,6 +186,15 @@ double BatClient::getContributionAmount() const {
   return state_->fee_amount_;
 }
 
+void BatClient::setAutoContribute(const bool& enabled) {
+  state_->auto_contribute_ = enabled;
+  saveState();
+}
+
+bool BatClient::getAutoContribute() const {
+  return state_->auto_contribute_;
+}
+
 const std::string& BatClient::getBATAddress() const {
   return state_->walletInfo_.addressBAT_;
 }

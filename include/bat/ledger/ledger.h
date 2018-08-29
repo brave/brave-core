@@ -100,6 +100,7 @@ class LEDGER_EXPORT Ledger {
   virtual void SetPublisherAllowNonVerified(bool allow) = 0;
   virtual void SetPublisherAllowVideos(bool allow) = 0;
   virtual void SetContributionAmount(double amount) = 0;
+  virtual void SetAutoContribute(bool enabled) = 0;
   virtual void SetBalanceReport(const std::string& year,
     PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) = 0;
 
@@ -113,6 +114,7 @@ class LEDGER_EXPORT Ledger {
   virtual bool GetPublisherAllowNonVerified() const = 0;
   virtual bool GetPublisherAllowVideos() const = 0;
   virtual double GetContributionAmount() const = 0;
+  virtual bool GetAutoContribute() const = 0;
   virtual void GetWalletProperties() const = 0;
   virtual void GetGrant(const std::string& lang, const std::string& paymentId) const = 0;
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
