@@ -167,7 +167,20 @@ def get_text_with_editor(name):
 def create_release_draft(repo, tag):
   name = '{0} {1}'.format(release_name(), tag)
   # TODO: Parse release notes from CHANGELOG.md
-  body = '(placeholder)'
+  body = '''*WARNING: Not an official Brave release. Use at your own risk.*
+
+These builds are an in-development early access view into the re-write of the
+Brave Browser for Desktop platforms.
+
+### Linux install instructions
+http://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux
+
+### Windows
+`BraveBrowserDevSetup.exe` will fetch and install the latest available version.
+
+Until we have brave_installer.exe working without the need for adding cmd line
+args it is unlisted in favor of the stub installer above to avoid confusion.'''
+
   data = dict(tag_name=tag, name=name, body=body, draft=True)
 
   release = retry_func(
