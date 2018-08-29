@@ -34,7 +34,8 @@ import {
   CaratUpIcon,
   CloseStrokeIcon,
   SettingsAdvancedIcon,
-  UpholdColorIcon, UpholdSystemIcon
+  UpholdColorIcon,
+  UpholdSystemIcon
 } from '../../../components/icons'
 
 type Grant = {
