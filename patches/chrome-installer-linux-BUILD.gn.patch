@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..e2dc53bcf3ae25bd0c9cb7e129b57794768cbfbd 100644
+index 4ac4a301c73841290fac70097e379b786108f831..054b8f885497e760aa06ee9762e6acf1118dda83 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -25,8 +25,8 @@ declare_args() {
+@@ -26,8 +26,8 @@ declare_args() {
  assert(is_linux)
  
  packaging_files_executables = [
@@ -13,7 +13,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..e2dc53bcf3ae25bd0c9cb7e129b57794
  ]
  packaging_files_shlibs = []
  
-@@ -159,12 +159,17 @@ action("merge_rpm_dependencies") {
+@@ -156,12 +156,17 @@ action("merge_rpm_dependencies") {
  }
  
  action("strip_chrome_binary") {
@@ -32,7 +32,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..e2dc53bcf3ae25bd0c9cb7e129b57794
    script = "//build/gn_run_binary.py"
    sources = [
      prog_name,
-@@ -246,8 +251,8 @@ copy("common_packaging_files") {
+@@ -243,8 +248,8 @@ copy("common_packaging_files") {
      ]
    } else {
      sources += [
@@ -43,21 +43,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..e2dc53bcf3ae25bd0c9cb7e129b57794
      ]
    }
  
-@@ -310,6 +315,13 @@ copy("theme_files") {
-       "$branding_dir_100/product_logo_32_dev.png",
-     ]
-   }
-+  else {
-+    sources += [
-+      "$branding_dir/product_logo_128_beta.png",
-+      "$branding_dir/product_logo_128_dev.png",
-+      "$branding_dir/product_logo_128_development.png",
-+    ]
-+  }
-   outputs = [
-     "$root_out_dir/installer/theme/{{source_file_part}}",
-   ]
-@@ -357,6 +369,12 @@ group("installer_deps") {
+@@ -354,6 +359,12 @@ group("installer_deps") {
      "//chrome/browser/resources/media/mei_preload:component",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -70,7 +56,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..e2dc53bcf3ae25bd0c9cb7e129b57794
    if (enable_nacl) {
      public_deps += [
        "//components/nacl/loader:nacl_helper",
-@@ -386,6 +404,9 @@ group("installer_deps") {
+@@ -379,6 +390,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -80,7 +66,7 @@ index de0836f61cf2b0d167893a52ae37ae4631eaf1d9..e2dc53bcf3ae25bd0c9cb7e129b57794
  
    if (current_cpu == "x86") {
      # The shell scripts use "ia32" instead of "x86".
-@@ -528,3 +549,6 @@ linux_package("beta") {
+@@ -521,3 +535,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }
