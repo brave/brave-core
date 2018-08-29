@@ -277,8 +277,16 @@ void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
   bat_publishers_->setPublisherAllowNonVerified(allow);
 }
 
+void LedgerImpl::SetPublisherAllowVideos(bool allow) {
+  bat_publishers_->setPublisherAllowVideos(allow);
+}
+
 void LedgerImpl::SetContributionAmount(double amount) {
   bat_client_->setContributionAmount(amount);
+}
+
+void LedgerImpl::SetAutoContribute(bool enabled) {
+  bat_client_->setAutoContribute(enabled);
 }
 
 uint64_t LedgerImpl::GetPublisherMinVisitTime() const {
@@ -293,8 +301,16 @@ bool LedgerImpl::GetPublisherAllowNonVerified() const {
   return bat_publishers_->getPublisherAllowNonVerified();
 }
 
+bool LedgerImpl::GetPublisherAllowVideos() const {
+  return bat_publishers_->getPublisherAllowVideos();
+}
+
 double LedgerImpl::GetContributionAmount() const {
   return bat_client_->getContributionAmount();
+}
+
+bool LedgerImpl::GetAutoContribute() const {
+  return bat_client_->getAutoContribute();
 }
 
 const std::string& LedgerImpl::GetBATAddress() const {

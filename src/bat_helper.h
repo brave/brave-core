@@ -206,6 +206,7 @@ namespace braveledger_bat_helper {
     std::string rulesetV2_;
     std::vector<BATCH_VOTES_ST> batch_;
     GRANT grant_;
+    bool auto_contribute_ = true;
   };
 
   struct REPORT_BALANCE_ST {
@@ -234,6 +235,7 @@ namespace braveledger_bat_helper {
     uint64_t min_pubslisher_duration_ = braveledger_ledger::_default_min_pubslisher_duration;  // In seconds
     unsigned int min_visits_ = 1u;
     bool allow_non_verified_ = true;
+    bool allow_videos_ = true;
     std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;
     std::map<std::string, double> recurring_donation_;
   };
@@ -401,4 +403,3 @@ namespace braveledger_bat_helper {
 }  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_
-

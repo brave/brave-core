@@ -60,7 +60,9 @@ class LedgerImpl : public ledger::Ledger,
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
   void SetPublisherMinVisits(unsigned int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
+  void SetPublisherAllowVideos(bool allow) override;
   void SetContributionAmount(double amount) override;
+  void SetAutoContribute(bool enabled) override;
   void SetBalanceReport(const std::string& year,
     ledger::PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) override;
 
@@ -72,7 +74,9 @@ class LedgerImpl : public ledger::Ledger,
   uint64_t GetPublisherMinVisitTime() const override; // In milliseconds
   unsigned int GetPublisherMinVisits() const override;
   bool GetPublisherAllowNonVerified() const override;
+  bool GetPublisherAllowVideos() const override;
   double GetContributionAmount() const override;
+  bool GetAutoContribute() const override;
   bool GetBalanceReport(const std::string& year,
     ledger::PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) const override;
 
