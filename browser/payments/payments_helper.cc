@@ -21,8 +21,6 @@
 
 using content::ResourceType;
 
-DEFINE_WEB_CONTENTS_USER_DATA_KEY(payments::PaymentsHelper);
-
 namespace payments {
 
 PaymentsHelper::PaymentsHelper(content::WebContents* web_contents)
@@ -62,6 +60,7 @@ void PaymentsHelper::DidFinishNavigation(
 
 void PaymentsHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
+    const content::GlobalRequestID& request_id,
     const content::mojom::ResourceLoadInfo& resource_load_info) {
   if (!payments_service_)
     return;

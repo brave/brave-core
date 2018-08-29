@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/importer/firefox_importer.cc b/chrome/utility/importer/firefox_importer.cc
-index e98cc6055ad7f0b5df4b73dacef5972b5efb249b..2d73f100c1da2deec832d223fc85e6d27de0700e 100644
+index da84b878c4817cb0d192aa593c8a08af9beeb62d..d632b59f1956fc33d6b1536364092f06d5653215 100644
 --- a/chrome/utility/importer/firefox_importer.cc
 +++ b/chrome/utility/importer/firefox_importer.cc
 @@ -166,7 +166,6 @@ void FirefoxImporter::StartImport(const importer::SourceProfile& source_profile,

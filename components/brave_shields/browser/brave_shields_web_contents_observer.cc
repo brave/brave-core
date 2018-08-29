@@ -68,9 +68,6 @@ using content::Referrer;
 using content::RenderFrameHost;
 using content::WebContents;
 
-DEFINE_WEB_CONTENTS_USER_DATA_KEY(
-    brave_shields::BraveShieldsWebContentsObserver);
-
 namespace {
 
 WebContents* GetWebContents(

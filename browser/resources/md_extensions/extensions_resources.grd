@@ -53,6 +53,10 @@
       <structure name="IDR_MD_EXTENSIONS_PACK_DIALOG_JS" file="pack_dialog.js" type="chrome_html" />
       <structure name="IDR_MD_EXTENSIONS_PACK_DIALOG_ALERT_HTML" file="pack_dialog_alert.html" type="chrome_html" />
       <structure name="IDR_MD_EXTENSIONS_PACK_DIALOG_ALERT_JS" file="pack_dialog_alert.js" type="chrome_html" />
+      <structure name="IDR_MD_EXTENSIONS_RUNTIME_HOST_PERMISSIONS_HMTL" file="runtime_host_permissions.html" type="chrome_html" />
+      <structure name="IDR_MD_EXTENSIONS_RUNTIME_HOST_PERMISSIONS_JS" file="runtime_host_permissions.js" type="chrome_html" />
+      <structure name="IDR_MD_EXTENSIONS_RUNTIME_HOSTS_DIALOG_HTML" file="runtime_hosts_dialog.html" type="chrome_html" />
+      <structure name="IDR_MD_EXTENSIONS_RUNTIME_HOSTS_DIALOG_JS" file="runtime_hosts_dialog.js" type="chrome_html" />
       <structure name="IDR_MD_EXTENSIONS_SERVICE_HTML" file="service.html" type="chrome_html" />
       <structure name="IDR_MD_EXTENSIONS_SERVICE_JS" file="service.js" type="chrome_html" />
       <structure name="IDR_MD_EXTENSIONS_SHORTCUT_INPUT_HTML" file="shortcut_input.html" type="chrome_html" />

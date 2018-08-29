@@ -17,7 +17,7 @@
 #include "components/autofill/core/common/password_form.h"
 #include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_constants.h"
-#include "sql/connection.h"
+#include "sql/database.h"
 #include "sql/statement.h"
 #include "url/gurl.h"
 
@@ -53,7 +53,7 @@ void FirefoxImporter::ImportCookies() {
     return;
   }
 
-  sql::Connection db;
+  sql::Database db;
   if (!db.Open(file)) {
     return;
   }

@@ -4,15 +4,17 @@
 
 #include "brave/browser/themes/theme_properties.h"
 
+#include "brave/browser/themes/brave_theme_service.h"
+#include "brave/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/common/channel_info.h"
+#include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
-#include "ui/gfx/color_palette.h"
 
 namespace {
 
-#if defined(OFFICIAL_BUILD)
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUiReleaseChannel(int id, bool incognito) {
+base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id, bool incognito) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere except active tab
     case ThemeProperties::COLOR_FRAME:
@@ -27,7 +29,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiReleaseChannel(int id, boo
     case ThemeProperties::COLOR_TOOLBAR:
     case ThemeProperties::COLOR_DETACHED_BOOKMARK_BAR_BACKGROUND:
     case ThemeProperties::COLOR_CONTROL_BACKGROUND:
-    case ThemeProperties::COLOR_TOOLBAR_BOTTOM_SEPARATOR:
+    case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
       return incognito ? SkColorSetRGB(0x91, 0x95, 0x99) : SkColorSetRGB(0xF6, 0xF7, 0xF9);
     case ThemeProperties::COLOR_TAB_TEXT:
       return SkColorSetRGB(0x22, 0x23, 0x26);
@@ -38,9 +40,8 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiReleaseChannel(int id, boo
       return base::nullopt;
   }
 }
-#endif
 
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUiDevChannel(int id, bool incognito) {
+base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id, bool incognito) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere except active tab
     case ThemeProperties::COLOR_FRAME:
@@ -55,7 +56,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiDevChannel(int id, bool in
     case ThemeProperties::COLOR_TOOLBAR:
     case ThemeProperties::COLOR_DETACHED_BOOKMARK_BAR_BACKGROUND:
     case ThemeProperties::COLOR_CONTROL_BACKGROUND:
-    case ThemeProperties::COLOR_TOOLBAR_BOTTOM_SEPARATOR:
+    case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
       return incognito ? SkColorSetRGB(0x32, 0x33, 0x36) : SkColorSetRGB(0x22, 0x23, 0x26);
     case ThemeProperties::COLOR_TAB_TEXT:
       return SkColorSetRGB(0xF7, 0xF8, 0xF9);
@@ -70,23 +71,26 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUiDevChannel(int id, bool in
 }  // namespace
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito) {
-  if (id == BRAVE_COLOR_FOR_TEST) {
-    return SkColorSetRGB(11, 13, 17);
-  }
-#if !defined(OFFICIAL_BUILD)
-  return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
-#else
-  switch (chrome::GetChannel()) {
-    case version_info::Channel::STABLE:
-    case version_info::Channel::BETA:
-      return MaybeGetDefaultColorForBraveUiReleaseChannel(id, incognito);
-    case version_info::Channel::DEV:
-    case version_info::Channel::CANARY:
-    case version_info::Channel::UNKNOWN:
+base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, Profile* profile) {
+  switch (BraveThemeService::GetBraveThemeType(profile)) {
+    case BraveThemeService::BRAVE_THEME_TYPE_DEFAULT:
+      switch (chrome::GetChannel()) {
+        case version_info::Channel::STABLE:
+        case version_info::Channel::BETA:
+          return MaybeGetDefaultColorForBraveLightUi(id, incognito);
+        case version_info::Channel::DEV:
+        case version_info::Channel::CANARY:
+        case version_info::Channel::UNKNOWN:
+        default:
+          return MaybeGetDefaultColorForBraveDarkUi(id, incognito);
+      }
+    case BraveThemeService::BRAVE_THEME_TYPE_LIGHT:
+      return MaybeGetDefaultColorForBraveLightUi(id, incognito);
+    case BraveThemeService::BRAVE_THEME_TYPE_DARK:
+      return MaybeGetDefaultColorForBraveDarkUi(id, incognito);
     default:
-      return MaybeGetDefaultColorForBraveUiDevChannel(id, incognito);
+      NOTREACHED();
+
   }
-#endif
   return base::nullopt;
 }

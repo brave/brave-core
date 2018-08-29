@@ -499,9 +499,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="8743864605301774756">Se actualizó hace 1 h</translation>
 <translation id="5638497698949808140">Se actualizó hace <ph name="HOURS"/> h</translation>
 <translation id="1329584516321524826">Recién actualizada</translation>
-<translation id="8679788109894721265">Esta página usa más de <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Detuviste la carga</translation>
-<translation id="4280864916190672950">Detener la carga</translation>
 <translation id="2724841811573117416">Registros de WebRTC</translation>
 <translation id="7518150891539970662">Registros de WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Fecha y hora de captura de registro de WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -589,7 +586,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="7554791636758816595">Nueva pestaña</translation>
 <translation id="3915280005470252504">Buscar por voz</translation>
 <translation id="3153862085237805241">Guardar tarjeta</translation>
-<translation id="4961000125720751066">Todas tus tarjetas en un solo lugar</translation>
+<translation id="1593926297800505364">Guardar la forma de pago</translation>
 <translation id="2473195200299095979">Traducir esta página</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">La extensión "<ph name="NAME"/>" hizo zoom en esta página</translation>
@@ -1048,7 +1045,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="5562781907504170924">Esta pestaña está conectada con un dispositivo Bluetooth.</translation>
 <translation id="5884474295213649357">Esta pestaña está conectada a un dispositivo USB.</translation>
 <translation id="8466417995783206254">Esta pestaña está reproduciendo un video en el modo de pantalla en pantalla.</translation>
-<translation id="6235700927623181151">Esta pestaña está compartiendo el contenido de tu escritorio.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/>: La cámara o el micrófono están grabando</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/>: Se compartió el contenido de la pestaña</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/>: El video se reproduce en modo de pantalla en pantalla</translation>
@@ -1113,35 +1109,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="874689135111202667">{0,plural, =1{¿Deseas cargar un archivo a este sitio?}other{¿Deseas cargar # archivos a este sitio?}}</translation>
 <translation id="1956390763342388273">Esta acción cargará todos los archivos de "<ph name="FOLDER_PATH"/>". Hazlo únicamente si el sitio es de confianza.</translation>
 <translation id="1243314992276662751">Cargar</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> quiere verificar tu identidad</translation>
-<translation id="3738671331307774213">Para proteger tus datos privados, verifica tu identidad</translation>
-<translation id="8435395510592618362">Verificar tu identidad con <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Elige una opción</translation>
-<translation id="7490950320178383728">Usa tu llave de seguridad con Bluetooth</translation>
-<translation id="414599683948988413">Usa tu llave de seguridad con USB</translation>
-<translation id="7851816139220202929">Usa tu llave de seguridad con NFC</translation>
-<translation id="5392327114396848796">Usa una llave de seguridad incorporada</translation>
-<translation id="5104546332954397226">Usa tu teléfono como llave de seguridad</translation>
-<translation id="2876441201733326392">Usar la llave de seguridad USB</translation>
-<translation id="5842053879378944309">Usar tu llave de seguridad USB con <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Conecta la llave de seguridad y actívala</translation>
-<translation id="8033958968890501070">Se agotó el tiempo de espera</translation>
-<translation id="7102832101143475489">Se agotó el tiempo de espera de la solicitud</translation>
-<translation id="3670229581627177274">Activar Bluetooth</translation>
-<translation id="3880709822663530586">La llave de seguridad solo funciona cuando está activada la conexión Bluetooth de tu dispositivo</translation>
-<translation id="1183378459020939734">¿Estás listo para sincronizar la llave de seguridad?</translation>
-<translation id="237058345584060620">Sincroniza la llave con este dispositivo y podrás usarla para acceder a tu cuenta</translation>
-<translation id="1875312262568496299">Comenzar</translation>
-<translation id="3104900172193317662">Permitir el uso de la llave de seguridad</translation>
-<translation id="2492040222276243256">Mantén presionado el botón de la llave de seguridad durante al menos 5 segundos</translation>
-<translation id="6427415464407526111">Seleccionar la llave de seguridad</translation>
-<translation id="2633326789677284179">Busca el nombre impreso en la parte posterior de la llave</translation>
-<translation id="5660204307954428567">Sincronizar con <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Busca el PIN de seis dígitos que se encuentra en la parte posterior de la llave</translation>
-<translation id="1201402288615127009">Siguiente</translation>
-<translation id="1792161662640298233">Verificando la llave de seguridad</translation>
-<translation id="2321482478556590128">Usar la llave de seguridad con <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">Para usar la mayoría de las llaves, solo debes presionar el botón</translation>
 <translation id="3785308913036335955">Mostrar acceso directo a las aplicaciones</translation>
 <translation id="711840821796638741">Mostrar favoritos administrados</translation>
 <translation id="3613134908380545408">Mostrar <ph name="FOLDER_NAME"/></translation>
@@ -1514,6 +1481,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6902066522699286937">Voz de prueba</translation>
 <translation id="304747341537320566">Motores de comentarios de texto a voz</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Ejecuta IDE, editores y herramientas de Linux en tu Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Más información&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Quitar las apps de Linux para la Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
@@ -1553,16 +1521,14 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="8647834505253004544">No es una dirección web válida</translation>
 <translation id="2149850907588596975">Contraseñas y formularios</translation>
 <translation id="8639963783467694461">Configuración de Autocompletar</translation>
-<translation id="3431019676184503003">Direcciones y formas de pago</translation>
 <translation id="2512222046227390255">Autocompletar formularios</translation>
-<translation id="2283340219607151381">Guardar y completar direcciones</translation>
-<translation id="1662550410081243962">Guardar y completar formas de pago</translation>
 <translation id="7764225426217299476">Agregar dirección</translation>
 <translation id="5595485650161345191">Editar dirección</translation>
 <translation id="6207937957461833379">País/Región</translation>
 <translation id="4378154925671717803">Teléfono</translation>
 <translation id="5659593005791499971">Correo electrónico</translation>
-<translation id="5565871407246142825">Tarjetas de crédito</translation>
+<translation id="5762172915276660232">Configuración de tarjetas de crédito</translation>
+<translation id="4499718683476608392">Habilita Autocompletar datos de tarjetas de crédito para llenar formularios con un solo clic</translation>
 <translation id="2448312741937722512">Tipo</translation>
 <translation id="9064275926664971810">Habilita Autocompletar para llenar formularios con un solo clic</translation>
 <translation id="5029568752722684782">Borrar la copia</translation>
@@ -2042,8 +2008,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7136694880210472378">Configurar como predeterminado</translation>
 <translation id="102272308210570439">Permitir que el Asistente use lo que se muestra en la pantalla</translation>
 <translation id="8624205858755890468">Permite que el Asistente te muestre información relacionada, apps y acciones.</translation>
-<translation id="178309940312315155">Detección de "Ok Brave Software"</translation>
-<translation id="3476912025629168202">Di "Ok Brave Software" con la pantalla activada para acceder al Asistente en cualquier momento.</translation>
+<translation id="8669919703154928649">Permitir que el Asistente te muestre notificaciones</translation>
+<translation id="3430342160185525240">Permite que el Asistente te muestre notificaciones.</translation>
 <translation id="3908743412684152579">Configuración del Asistente de Brave Software</translation>
 <translation id="4933484234309072027">insertado en <ph name="URL"/></translation>
 <translation id="8427292751741042100">incorporada en cualquier host</translation>
@@ -2051,6 +2017,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6295158916970320988">Todos los sitios</translation>
 <translation id="7625568159987162309">Ver permisos y datos almacenados de los sitios</translation>
 <translation id="3735740477244556633">Ordenar por</translation>
+<translation id="6503077044568424649">Más visitados</translation>
+<translation id="967624055006145463">Datos almacenados</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Anuncios</translation>
 <translation id="5649053991847567735">Descargas automáticas</translation>
@@ -2126,7 +2094,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3038675903128704560">No permitir que los sitios usen complementos para acceder a tu computadora</translation>
 <translation id="857943718398505171">Permitido (recomendado)</translation>
 <translation id="5000922062037820727">Bloqueado (recomendado)</translation>
-<translation id="8116925261070264013">Silenciados</translation>
 <translation id="8708000541097332489">Borrar al salir</translation>
 <translation id="8037357227543935929">Preguntar (predeterminado)</translation>
 <translation id="3427092606871434483">Permitir (predeterminado)</translation>
@@ -2223,7 +2190,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7311891583377621132">Mueve el dedo ligeramente para capturar otra parte de la huella digital</translation>
 <translation id="7345706641791090287">Confirma tu contraseña</translation>
 <translation id="381202950560906753">Agregar otra</translation>
-<translation id="3625538291267447988">Para configurar Smart Lock, ingresa tu contraseña</translation>
 <translation id="6658023813581644008">A fin de configurar Smart Lock para acceder a tu cuenta, ingresa tu contraseña</translation>
 <translation id="5449551289610225147">Contraseña no válida</translation>
 <translation id="5374359983950678924">Cambiar imagen</translation>
@@ -2264,7 +2230,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1644574205037202324">Historial</translation>
 <translation id="5117427536932535467">Temas y fondos de pantalla</translation>
 <translation id="3259418918864581163">Tarjetas de crédito y direcciones con Brave Software Pay</translation>
-<translation id="4439834757335393741">Formas de pago y direcciones con Brave Software Pay.</translation>
 <translation id="3268451620468152448">Pestañas abiertas</translation>
 <translation id="5241892180459725878">Sugerencias de búsqueda de Brave Software Drive</translation>
 <translation id="2120297377148151361">Interacciones y actividad</translation>
@@ -2335,6 +2300,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1114202307280046356">Diamante</translation>
 <translation id="89720367119469899">Esc</translation>
 <translation id="5583640892426849032">Tecla de retroceso</translation>
+<translation id="1938351510777341717">Tecla externa Comando</translation>
+<translation id="585979798156957858">Tecla externa Meta</translation>
 <translation id="4991420928586866460">Tratar las teclas de la fila superior como teclas de función</translation>
 <translation id="85486688517848470">Mantén presionada la tecla de búsqueda para cambiar el comportamiento de las teclas en la fila superior</translation>
 <translation id="4400632832271803360">Mantén presionada la tecla de Launcher para cambiar el comportamiento de las teclas en la fila superior</translation>
@@ -2435,10 +2402,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2315821125498993513">No se pudo establecer conexión con el teléfono. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Se activó "Mejor juntos"</translation>
 <translation id="3088402208262982892">Se desactivó "Mejor juntos"</translation>
-<translation id="2079079131837725321">Desbloquea tu Bravebook con el teléfono. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Conexión instantánea mediante dispositivo portátil</translation>
-<translation id="3059313675706898490">Mensajes Android</translation>
-<translation id="7095175330464035635">Enviar y recibir mensajes de texto en tu Bravebook</translation>
 <translation id="3936335337858561470">Olvidar este dispositivo</translation>
 <translation id="3606712892509067288">Quitar de "Mejor juntos"</translation>
 <translation id="7878562273885520351">Es posible que tu contraseña esté en peligro</translation>
@@ -2569,7 +2533,9 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6112294629795967147">Tocar para cambiar el tamaño</translation>
 <translation id="2453860139492968684">Finalizar</translation>
 <translation id="1853692000353488670">Nueva pestaña de incógnito</translation>
+<translation id="6336451774241870485">Nueva pestaña privada</translation>
 <translation id="5530766185686772672">Cerrar pest. de incógnito</translation>
+<translation id="6610147964972079463">Cerrar pestañas privadas</translation>
 <translation id="8076492880354921740">Pestañas</translation>
 <translation id="1049743911850919806">Incógnito</translation>
 </translationbundle>

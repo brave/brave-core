@@ -499,9 +499,6 @@
 <translation id="8743864605301774756">อัปเดตเมื่อ 1 ชั่วโมงที่ผ่านมา</translation>
 <translation id="5638497698949808140">อัปเดตเมื่อ <ph name="HOURS"/> ชั่วโมงที่ผ่านมา</translation>
 <translation id="1329584516321524826">เพิ่งอัปเดตเมื่อครู่นี้</translation>
-<translation id="8679788109894721265">หน้านี้ใช้อินเทอร์เน็ตมากกว่า <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">หยุดโหลดแล้ว</translation>
-<translation id="4280864916190672950">หยุดโหลด</translation>
 <translation id="2724841811573117416">บันทึก WebRTC</translation>
 <translation id="7518150891539970662">บันทึก WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">บันทึก WebRTC ที่จับภาพ <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@
 <translation id="7554791636758816595">แท็บใหม่</translation>
 <translation id="3915280005470252504">ค้นหาด้วยเสียง</translation>
 <translation id="3153862085237805241">บันทึกบัตร</translation>
-<translation id="4961000125720751066">เก็บบัตรทั้งหมดไว้ในที่เดียว</translation>
+<translation id="1593926297800505364">บันทึกวิธีการชำระเงิน</translation>
 <translation id="2473195200299095979">แปลหน้านี้</translation>
 <translation id="5408750356094797285">ซูม: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">หน้านี้ซูมด้วยส่วนขยาย "<ph name="NAME"/>"</translation>
@@ -1048,7 +1045,6 @@
 <translation id="5562781907504170924">แท็บนี้เชื่อมต่อกับอุปกรณ์บลูทูธอยู่</translation>
 <translation id="5884474295213649357">แท็บนี้เชื่อมต่อกับอุปกรณ์ USB อยู่</translation>
 <translation id="8466417995783206254">แท็บนี้กำลังเล่นวิดีโอในโหมดการแสดงภาพซ้อนภาพ</translation>
-<translation id="6235700927623181151">แท็บนี้กำลังแชร์เนื้อหาบนเดสก์ท็อป</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - กำลังบันทึกด้วยกล้องหรือไมโครโฟน</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - แชร์เนื้อหาในแท็บอยู่</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - วิดีโอกำลังเล่นในโหมดการแสดงภาพซ้อนภาพ</translation>
@@ -1113,35 +1109,6 @@
 <translation id="874689135111202667">{0,plural, =1{อัปโหลด 1 ไฟล์ไปยังเว็บไซต์นี้ใช่ไหม}other{อัปโหลด # ไฟล์ไปยังเว็บไซต์นี้ใช่ไหม}}</translation>
 <translation id="1956390763342388273">การดำเนินการนี้จะอัปโหลดไฟล์ทั้งหมดจาก "<ph name="FOLDER_PATH"/>" ดำเนินการนี้เฉพาะในกรณีที่คุณเชื่อถือเว็บไซต์ดังกล่าวเท่านั้น</translation>
 <translation id="1243314992276662751">อัปโหลด</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> ต้องการยืนยันตัวตนของคุณ</translation>
-<translation id="3738671331307774213">การยืนยันตัวตนจะช่วยปกป้องข้อมูลส่วนตัวของคุณ</translation>
-<translation id="8435395510592618362">ยืนยันตัวตนของคุณกับ <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">เลือกตัวเลือก</translation>
-<translation id="7490950320178383728">ใช้กุญแจรักษาความปลอดภัยกับบลูทูธ</translation>
-<translation id="414599683948988413">ใช้กุญแจรักษาความปลอดภัยกับ USB</translation>
-<translation id="7851816139220202929">ใช้กุญแจรักษาความปลอดภัยกับ NFC</translation>
-<translation id="5392327114396848796">ใช้กุญแจรักษาความปลอดภัยในตัว</translation>
-<translation id="5104546332954397226">ใช้โทรศัพท์เป็นกุญแจรักษาความปลอดภัย</translation>
-<translation id="2876441201733326392">ใช้กุญแจรักษาความปลอดภัย USB</translation>
-<translation id="5842053879378944309">ใช้กุญแจรักษาความปลอดภัย USB กับ <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">เสียบกุญแจรักษาความปลอดภัยและเปิดใช้งาน</translation>
-<translation id="8033958968890501070">หมดเวลา</translation>
-<translation id="7102832101143475489">คำขอหมดเวลาแล้ว</translation>
-<translation id="3670229581627177274">เปิดบลูทูธ</translation>
-<translation id="3880709822663530586">คีย์ความปลอดภัยจะทำงานเมื่อบลูทูธของอุปกรณ์เปิดอยู่เท่านั้น</translation>
-<translation id="1183378459020939734">พร้อมจับคู่คีย์ความปลอดภัยไหม</translation>
-<translation id="237058345584060620">จับคู่คีย์กับอุปกรณ์นี้เพื่อให้คุณใช้คีย์ลงชื่อเข้าใช้บัญชีได้</translation>
-<translation id="1875312262568496299">เริ่มต้น</translation>
-<translation id="3104900172193317662">อนุญาตให้ใช้คีย์ความปลอดภัย</translation>
-<translation id="2492040222276243256">กดปุ่มบนคีย์ความปลอดภัยค้างไว้อย่างน้อย 5 วินาที</translation>
-<translation id="6427415464407526111">เลือกคีย์ความปลอดภัย</translation>
-<translation id="2633326789677284179">ค้นหาชื่อที่พิมพ์ไว้ด้านหลังคีย์</translation>
-<translation id="5660204307954428567">จับคู่กับ <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">ค้นหา PIN 6 หลักที่ด้านหลังคีย์</translation>
-<translation id="1201402288615127009">ถัดไป</translation>
-<translation id="1792161662640298233">กำลังยืนยันคีย์ความปลอดภัย</translation>
-<translation id="2321482478556590128">ใช้คีย์ความปลอดภัยกับ <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">ในการใช้คีย์ส่วนใหญ่ ให้แตะปุ่ม</translation>
 <translation id="3785308913036335955">แสดงทางลัดแอป</translation>
 <translation id="711840821796638741">แสดงบุ๊กมาร์กที่มีการจัดการ</translation>
 <translation id="3613134908380545408">แสดง <ph name="FOLDER_NAME"/></translation>
@@ -1509,6 +1476,7 @@
 <translation id="6902066522699286937">แสดงตัวอย่างเสียง</translation>
 <translation id="304747341537320566">เครื่องมืออ่านออกเสียง</translation>
 <translation id="1067291318998134776">Linux (เบต้า)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">เรียกใช้เครื่องมือ ตัวแก้ไข และ IDE สำหรับ Linux ใน Bravebook &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;ดูข้อมูลเพิ่มเติม&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">นำแอป Linux สำหรับ Bravebook ออก</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
@@ -1548,17 +1516,14 @@
 <translation id="8647834505253004544">ไม่ใช่ที่อยู่เว็บที่ถูกต้อง</translation>
 <translation id="2149850907588596975">รหัสผ่านและฟอร์ม</translation>
 <translation id="8639963783467694461">การตั้งค่าป้อนอัตโนมัติ</translation>
-<translation id="3431019676184503003">ที่อยู่และวิธีการชำระเงิน</translation>
 <translation id="2512222046227390255">ป้อนฟอร์มอัตโนมัติ</translation>
-<translation id="2283340219607151381">บันทึกและกรอกที่อยู่</translation>
-<translation id="1662550410081243962">บันทึกและกรอกวิธีการชำระเงิน</translation>
-<translation id="2903493209154104877">ที่อยู่</translation>
 <translation id="7764225426217299476">เพิ่มที่อยู่</translation>
 <translation id="5595485650161345191">แก้ไขที่อยู่</translation>
 <translation id="6207937957461833379">ประเทศ/เขตการปกครอง</translation>
 <translation id="4378154925671717803">โทรศัพท์</translation>
 <translation id="5659593005791499971">อีเมล</translation>
-<translation id="5565871407246142825">บัตรเครดิต</translation>
+<translation id="5762172915276660232">การตั้งค่าบัตรเครดิต</translation>
+<translation id="4499718683476608392">เปิดใช้การป้อนข้อมูลบัตรเครดิตอัตโนมัติเพื่อกรอกฟอร์มด้วยการคลิกเพียงครั้งเดียว</translation>
 <translation id="2448312741937722512">ประเภท</translation>
 <translation id="9064275926664971810">เปิดใช้การป้อนอัตโนมัติเพื่อกรอกฟอร์มด้วยการคลิกเพียงครั้งเดียว</translation>
 <translation id="5029568752722684782">ล้างสำเนา</translation>
@@ -1644,7 +1609,6 @@
 <translation id="4699172675775169585">รูปภาพและไฟล์ในแคช</translation>
 <translation id="1274997165432133392">คุกกี้และข้อมูลอื่นของไซต์</translation>
 <translation id="3838543471119263078">คุกกี้และข้อมูลอื่นๆ ของเว็บไซต์ ตลอดจนข้อมูลปลั๊กอิน</translation>
-<translation id="7029809446516969842">รหัสผ่าน</translation>
 <translation id="6865313869410766144">ข้อมูลฟอร์มที่ป้อนอัตโนมัติ</translation>
 <translation id="177336675152937177">ข้อมูลแอปที่โฮสต์</translation>
 <translation id="1718835860248848330">ชั่วโมงล่าสุด</translation>
@@ -2039,8 +2003,8 @@
 <translation id="7136694880210472378">ทำให้เป็นค่าเริ่มต้น</translation>
 <translation id="102272308210570439">ให้ Assistant ใช้สิ่งที่อยู่ในหน้าจอ</translation>
 <translation id="8624205858755890468">เปิดใช้ Assistant เพื่อแสดงข้อมูล แอป และการดำเนินการต่างๆ ที่เกี่ยวข้อง</translation>
-<translation id="178309940312315155">การตรวจพบ "Ok Brave Software"</translation>
-<translation id="3476912025629168202">เข้าถึง Assistant ได้ทุกเมื่อเพียงพูดว่า "Ok Brave Software" เมื่อหน้าจอเปิดอยู่</translation>
+<translation id="8669919703154928649">อนุญาตให้ Assistant แสดงการแจ้งเตือน</translation>
+<translation id="3430342160185525240">เปิดให้ Assistant แสดงการแจ้งเตือน</translation>
 <translation id="3908743412684152579">การตั้งค่า Brave Software Assistant</translation>
 <translation id="4933484234309072027">ฝังตัวใน <ph name="URL"/></translation>
 <translation id="8427292751741042100">ฝังในโฮสต์ใดก็ได้</translation>
@@ -2048,6 +2012,8 @@
 <translation id="6295158916970320988">ไซต์ทั้งหมด</translation>
 <translation id="7625568159987162309">ดูสิทธิ์และข้อมูลที่จัดเก็บในเว็บไซต์</translation>
 <translation id="3735740477244556633">จัดเรียงตาม</translation>
+<translation id="6503077044568424649">เข้าชมบ่อยสุด</translation>
+<translation id="967624055006145463">ข้อมูลที่จัดเก็บ</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">โฆษณา</translation>
 <translation id="5649053991847567735">การดาวน์โหลดโดยอัตโนมัติ</translation>
@@ -2123,7 +2089,6 @@
 <translation id="3038675903128704560">ไม่อนุญาตให้เว็บไซต์ทั้งหมดใช้ปลั๊กอินเพื่อเข้าถึงคอมพิวเตอร์ของคุณ</translation>
 <translation id="857943718398505171">อนุญาตแล้ว (แนะนำ)</translation>
 <translation id="5000922062037820727">ถูกบล็อก (แนะนำ)</translation>
-<translation id="8116925261070264013">ปิดเสียง</translation>
 <translation id="8708000541097332489">ล้างเมื่อออก</translation>
 <translation id="8037357227543935929">ขอ (ค่าเริ่มต้น)</translation>
 <translation id="3427092606871434483">อนุญาต (ค่าเริ่มต้น)</translation>
@@ -2220,7 +2185,6 @@
 <translation id="7311891583377621132">เลื่อนนิ้วเล็กน้อยเพื่อจับภาพส่วนต่างๆ ของลายนิ้วมือ</translation>
 <translation id="7345706641791090287">ยืนยันรหัสผ่าน</translation>
 <translation id="381202950560906753">เพิ่มลายนิ้วมืออีก</translation>
-<translation id="3625538291267447988">ป้อนรหัสผ่านเพื่อตั้งค่า Smart Lock</translation>
 <translation id="6658023813581644008">ป้อนรหัสผ่านเพื่อตั้งค่า Smart Lock สำหรับการลงชื่อเข้าใช้</translation>
 <translation id="5449551289610225147">รหัสผ่านไม่ถูกต้อง</translation>
 <translation id="5374359983950678924">เปลี่ยนรูปภาพ</translation>
@@ -2260,8 +2224,8 @@
 <translation id="2709516037105925701">ป้อนอัตโนมัติ</translation>
 <translation id="1644574205037202324">ประวัติการเข้าชม</translation>
 <translation id="5117427536932535467">ธีมและวอลเปเปอร์</translation>
+<translation id="7029809446516969842">รหัสผ่าน</translation>
 <translation id="3259418918864581163">ใช้ข้อมูลบัตรเครดิตและที่อยู่จาก Brave Software Pay</translation>
-<translation id="4439834757335393741">วิธีการชำระเงินและที่อยู่จาก Brave Software Pay</translation>
 <translation id="3268451620468152448">แท็บที่เปิดอยู่</translation>
 <translation id="5241892180459725878">คำแนะนำในการค้นหา Brave Software ไดรฟ์</translation>
 <translation id="2120297377148151361">กิจกรรมและการโต้ตอบ</translation>
@@ -2332,6 +2296,8 @@
 <translation id="1114202307280046356">เพชร</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">แป้น Command ภายนอก</translation>
+<translation id="585979798156957858">แป้นเมตาภายนอก</translation>
 <translation id="4991420928586866460">ใช้แป้นแถวบนสุดเป็นแป้นฟังก์ชัน</translation>
 <translation id="85486688517848470">กดแป้น "ค้นหา" ค้างไว้เพื่อเปลี่ยนการทำงานของแป้นแถวบนสุด</translation>
 <translation id="4400632832271803360">กดแป้น "Launcher" ค้างไว้เพื่อเปลี่ยนการทำงานของแป้นแถวบนสุด</translation>
@@ -2433,10 +2399,7 @@
 <translation id="2315821125498993513">เชื่อมต่อกับโทรศัพท์ไม่ได้ <ph name="LINK_BEGIN"/>ดูข้อมูลเพิ่มเติม<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together เปิดอยู่</translation>
 <translation id="3088402208262982892">Better Together ปิดอยู่</translation>
-<translation id="2079079131837725321">ปลดล็อก Bravebook ด้วยโทรศัพท์ <ph name="LINK_BEGIN"/>ดูข้อมูลเพิ่มเติม<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">การเชื่อมต่ออินเทอร์เน็ตผ่านมือถือแบบด่วน</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">ส่งและรับข้อความจาก Bravebook</translation>
 <translation id="3936335337858561470">ไม่จำอุปกรณ์นี้</translation>
 <translation id="3606712892509067288">นำออกจาก Better Together</translation>
 <translation id="7878562273885520351">รหัสผ่านของคุณอาจถูกขโมยได้</translation>
@@ -2567,7 +2530,9 @@
 <translation id="6112294629795967147">แตะเพื่อปรับขนาด</translation>
 <translation id="2453860139492968684">เสร็จสิ้น</translation>
 <translation id="1853692000353488670">แท็บใหม่ที่ไม่ระบุตัวตน</translation>
+<translation id="6336451774241870485">แท็บส่วนตัวใหม่</translation>
 <translation id="5530766185686772672">ปิดแท็บที่ไม่ระบุตัวตน</translation>
+<translation id="6610147964972079463">ปิดแท็บส่วนตัว</translation>
 <translation id="8076492880354921740">แท็บ</translation>
 <translation id="1049743911850919806">โหมดไม่ระบุตัวตน</translation>
 </translationbundle>

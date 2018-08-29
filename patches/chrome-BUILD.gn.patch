@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2d69f1b1f 100644
+index 0c38111c971a58292e922cdcd62317e4d04480a4..68df2821d96e7f36db525e9d98b2f2577ad7ff08 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -181,6 +181,10 @@ if (!is_android && !is_mac) {
@@ -13,7 +13,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
  
          deps += [
            ":chrome_dll",
-@@ -246,6 +250,8 @@ if (!is_android && !is_mac) {
+@@ -247,6 +251,8 @@ if (!is_android && !is_mac) {
            "app/chrome_main.cc",
            "app/chrome_main_delegate.cc",
            "app/chrome_main_delegate.h",
@@ -22,7 +22,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
          ]
  
          deps += [
-@@ -386,6 +392,8 @@ if (is_win) {
+@@ -391,6 +397,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -31,7 +31,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
      ]
  
      output_name = "chrome"
-@@ -492,6 +500,8 @@ if (is_win) {
+@@ -497,6 +505,8 @@ if (is_win) {
          "app/chrome_main.cc",
          "app/chrome_main_delegate.cc",
          "app/chrome_main_delegate.h",
@@ -40,7 +40,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
        ]
  
        configs += [ "//build/config/compiler:wexit_time_destructors" ]
-@@ -611,6 +621,11 @@ if (is_win) {
+@@ -616,6 +626,11 @@ if (is_win) {
      ]
    }
  
@@ -52,7 +52,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
-@@ -647,6 +662,7 @@ if (is_win) {
+@@ -652,6 +667,7 @@ if (is_win) {
                    rebase_path("app/app.exports", root_build_dir) ]
      }
    }
@@ -60,7 +60,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
  
    compiled_action("chrome_app_strings") {
      tool = "//chrome/tools/build/mac:infoplist_strings_tool"
-@@ -676,7 +692,7 @@ if (is_win) {
+@@ -681,7 +697,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -69,7 +69,16 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -1190,6 +1206,8 @@ if (is_win) {
+@@ -987,7 +1003,7 @@ if (is_win) {
+   # EGL on MacOS can be used in dev builds and on bots for test
+   # related purposes, but it is not yet desired to ship these
+   # libraries with official chrome (http://crbug.com/757974).
+-  bundle_egl_libraries = use_egl && !(is_chrome_branded && is_official_build)
++  bundle_egl_libraries = use_egl && !is_official_build
+ 
+   if (bundle_egl_libraries) {
+     # Add the ANGLE .dylibs in the MODULE_DIR of Chromium.app
+@@ -1195,6 +1211,8 @@ if (is_win) {
        "app/chrome_main.cc",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",
@@ -78,7 +87,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
        "app/chrome_main_mac.h",
        "app/chrome_main_mac.mm",
      ]
-@@ -1270,6 +1288,10 @@ if (is_win) {
+@@ -1275,6 +1293,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -89,7 +98,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
  
      ldflags = [
        "-Wl,-install_name,@executable_path/../Versions/$chrome_version_full/$chrome_framework_name.framework/$chrome_framework_name",
-@@ -1421,6 +1443,7 @@ if (is_win) {
+@@ -1426,6 +1448,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -97,7 +106,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
      "//chrome/browser",
      "//chrome/common",
      "//components/sync",
-@@ -1457,6 +1480,7 @@ group("browser_dependencies") {
+@@ -1462,6 +1485,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -105,7 +114,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1478,7 +1502,7 @@ group("child_dependencies") {
+@@ -1483,7 +1507,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -114,7 +123,7 @@ index a47af42a5a5afc1560f11ee0ccfa5fc177745caa..99d56fb9ecaa19e98dce95d970042ec2
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1777,6 +1801,8 @@ if (is_android) {
+@@ -1782,6 +1806,8 @@ if (is_android) {
        "app/android/chrome_main_delegate_android.h",
        "app/chrome_main_delegate.cc",
        "app/chrome_main_delegate.h",

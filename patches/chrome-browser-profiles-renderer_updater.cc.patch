@@ -1,8 +1,8 @@
-diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index 87ae17b73c58108eaf74189e9f6eca4c330ed4d2..1b93d9aad263622edaaa9a4e23eb08360fc26376 100644
---- a/chrome/browser/chrome_content_browser_client.cc
-+++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -854,6 +854,16 @@ void GetGuestViewDefaultContentSettingRules(
+diff --git a/chrome/browser/profiles/renderer_updater.cc b/chrome/browser/profiles/renderer_updater.cc
+index 6200888ca2b3e509c4389813533e4de82db471d8..f37a6a66f009dc5003430c920fc9106b04b7c202 100644
+--- a/chrome/browser/profiles/renderer_updater.cc
++++ b/chrome/browser/profiles/renderer_updater.cc
+@@ -45,6 +45,16 @@ void GetGuestViewDefaultContentSettingRules(
        base::Value::FromUniquePtrValue(
            content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
        std::string(), incognito));
@@ -18,4 +18,4 @@ index 87ae17b73c58108eaf74189e9f6eca4c330ed4d2..1b93d9aad263622edaaa9a4e23eb0836
 +      std::string(), incognito));
  }
  
- AppLoadedInTabSource ClassifyAppLoadedInTabSource(
+ #endif  // BUILDFLAG(ENABLE_EXTENSIONS)

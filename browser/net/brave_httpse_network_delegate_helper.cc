@@ -4,7 +4,7 @@
 
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 
-#include "base/task_scheduler/post_task.h"
+#include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"

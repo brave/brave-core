@@ -37,6 +37,7 @@ class PaymentsHelper : public content::WebContentsObserver,
       content::NavigationHandle* navigation_handle) override;
   void ResourceLoadComplete(
       content::RenderFrameHost* render_frame_host,
+      const content::GlobalRequestID& request_id,
       const content::mojom::ResourceLoadInfo& resource_load_info) override;
   void DidAttachInterstitialPage() override;
   void MediaStartedPlaying(const MediaPlayerInfo& video_type,

@@ -499,9 +499,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8743864605301774756">Aggiornata 1 ora fa</translation>
 <translation id="5638497698949808140">Aggiornata <ph name="HOURS"/> ore fa</translation>
 <translation id="1329584516321524826">Aggiornata adesso</translation>
-<translation id="8679788109894721265">Questa pagina usa più di <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Caricamento interrotto</translation>
-<translation id="4280864916190672950">Interrompi il caricamento</translation>
 <translation id="2724841811573117416">Log WebRTC</translation>
 <translation id="7518150891539970662">Log WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Data/ora acquisizione log WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7554791636758816595">Nuova scheda</translation>
 <translation id="3915280005470252504">Ricerca vocale</translation>
 <translation id="3153862085237805241">Salva carta</translation>
-<translation id="4961000125720751066">Tieni le tue schede in un unico posto</translation>
+<translation id="1593926297800505364">Salva il metodo di pagamento</translation>
 <translation id="2473195200299095979">Traduci questa pagina</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Questa pagina è stata ingrandita con l'estensione "<ph name="NAME"/>"</translation>
@@ -1048,7 +1045,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5562781907504170924">Questa scheda è connessa a un dispositivo Bluetooth.</translation>
 <translation id="5884474295213649357">La scheda è connessa a un dispositivo USB.</translation>
 <translation id="8466417995783206254">In questa scheda è in corso la riproduzione di un video in modalità Picture in picture.</translation>
-<translation id="6235700927623181151">Questa scheda sta condividendo i contenuti del tuo computer.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Registrazione tramite fotocamera o microfono in corso</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Contenuti delle schede condivisi</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Video riprodotto in modalità Picture in picture</translation>
@@ -1113,35 +1109,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="874689135111202667">{0,plural, =1{ Caricare un file in questo sito?}other{Caricare # file in questo sito?}}</translation>
 <translation id="1956390763342388273">Verranno caricati tutti i file da "<ph name="FOLDER_PATH"/>". Esegui questa operazione solo se ritieni il sito affidabile.</translation>
 <translation id="1243314992276662751">Carica</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> vuole verificare la tua identità</translation>
-<translation id="3738671331307774213">La verifica della tua identità aiuta a proteggere i tuoi dati privati</translation>
-<translation id="8435395510592618362">Verifica la tua identità con <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Scegli un'opzione</translation>
-<translation id="7490950320178383728">Utilizza il token di sicurezza con il Bluetooth</translation>
-<translation id="414599683948988413">Utilizza il token di sicurezza con USB</translation>
-<translation id="7851816139220202929">Utilizza il token di sicurezza con NFC</translation>
-<translation id="5392327114396848796">Utilizza un token di sicurezza incorporato</translation>
-<translation id="5104546332954397226">Utilizza il tuo telefono come token di sicurezza</translation>
-<translation id="2876441201733326392">Usa il token di sicurezza USB</translation>
-<translation id="5842053879378944309">Usa il token di sicurezza USB con <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Collega il token di sicurezza e attivalo</translation>
-<translation id="8033958968890501070">Timeout</translation>
-<translation id="7102832101143475489">La richiesta è scaduta</translation>
-<translation id="3670229581627177274">Attiva il Bluetooth</translation>
-<translation id="3880709822663530586">Il tuo token di sicurezza funziona soltanto quando è attivo il Bluetooth del dispositivo</translation>
-<translation id="1183378459020939734">Pronto per accoppiare il tuo token di sicurezza?</translation>
-<translation id="237058345584060620">Accoppia il tuo token a questo dispositivo per poterlo utilizzare per accedere al tuo account.</translation>
-<translation id="1875312262568496299">Inizia</translation>
-<translation id="3104900172193317662">Consenti l'utilizzo del tuo token di sicurezza</translation>
-<translation id="2492040222276243256">Tieni premuto il pulsante del token di sicurezza per almeno cinque secondi</translation>
-<translation id="6427415464407526111">Seleziona il tuo token di sicurezza</translation>
-<translation id="2633326789677284179">Cerca il nome stampato sul retro del tuo token</translation>
-<translation id="5660204307954428567">Accoppia con <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Individua il PIN di sei cifre sul retro del token</translation>
-<translation id="1201402288615127009">Avanti</translation>
-<translation id="1792161662640298233">Verifica del token di sicurezza</translation>
-<translation id="2321482478556590128">Utilizza il token di sicurezza con <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">Per usare la maggior parte dei token basta premere il pulsante</translation>
 <translation id="3785308913036335955">Mostra scorciatoia app</translation>
 <translation id="711840821796638741">Mostra Preferiti gestiti</translation>
 <translation id="3613134908380545408">Mostra <ph name="FOLDER_NAME"/></translation>
@@ -1510,6 +1477,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6902066522699286937">Voce per l'anteprima</translation>
 <translation id="304747341537320566">Motori di riconoscimento vocale</translation>
 <translation id="1067291318998134776">Linux (beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Esegui strumenti, editor e IDE di Linux sul Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Ulteriori informazioni&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Rimuovi app Linux per Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
@@ -1549,17 +1517,14 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8647834505253004544">Indirizzo web non valido</translation>
 <translation id="2149850907588596975">Password e moduli</translation>
 <translation id="8639963783467694461">Impostazioni di Compilazione automatica</translation>
-<translation id="3431019676184503003">Indirizzi e metodi di pagamento</translation>
 <translation id="2512222046227390255">Compilare moduli automaticamente</translation>
-<translation id="2283340219607151381">Salva e compila gli indirizzi</translation>
-<translation id="1662550410081243962">Salva e compila i metodi di pagamento</translation>
-<translation id="2903493209154104877">Indirizzi</translation>
 <translation id="7764225426217299476">Aggiungi indirizzo</translation>
 <translation id="5595485650161345191">Modifica indirizzo</translation>
 <translation id="6207937957461833379">Paese/Regione</translation>
 <translation id="4378154925671717803">Telefono</translation>
 <translation id="5659593005791499971">Email</translation>
-<translation id="5565871407246142825">Carte di credito</translation>
+<translation id="5762172915276660232">Impostazioni per la carta di credito</translation>
+<translation id="4499718683476608392">Attiva la Compilazione automatica per la carta di credito per compilare i moduli con un singolo clic</translation>
 <translation id="2448312741937722512">Tipo</translation>
 <translation id="9064275926664971810">Attiva la funzione Compilazione automatica per compilare i moduli con un singolo clic</translation>
 <translation id="5029568752722684782">Cancella copia</translation>
@@ -2039,8 +2004,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7136694880210472378">Imposta come predefinito</translation>
 <translation id="102272308210570439">Consenti all'assistente di usare i contenuti sullo schermo</translation>
 <translation id="8624205858755890468">Consente all'assistente di mostrarti azioni, app e informazioni correlate.</translation>
-<translation id="178309940312315155">Rilevamento di "Ok Brave Software"</translation>
-<translation id="3476912025629168202">Accedi all'assistente ogni volta che dici "Ok Brave Software" quando lo schermo è attivo.</translation>
+<translation id="8669919703154928649">Consenti all'assistente di mostrarti notifiche</translation>
+<translation id="3430342160185525240">Consente all'assistente di mostrarti le notifiche.</translation>
 <translation id="3908743412684152579">Impostazioni dell'Assistente Brave Software</translation>
 <translation id="4933484234309072027">incorporata su <ph name="URL"/></translation>
 <translation id="8427292751741042100">incorporata su qualsiasi host</translation>
@@ -2048,6 +2013,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6295158916970320988">Tutti i siti</translation>
 <translation id="7625568159987162309">Visualizza le autorizzazioni e i dati memorizzati sui siti</translation>
 <translation id="3735740477244556633">Ordina per</translation>
+<translation id="6503077044568424649">Più visitati</translation>
+<translation id="967624055006145463">Dati memorizzati</translation>
 <translation id="2787354132612937472">-</translation>
 <translation id="1919345977826869612">Annunci</translation>
 <translation id="5649053991847567735">Download automatici</translation>
@@ -2123,7 +2090,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3038675903128704560">Non consentire ai siti di utilizzare un plug-in per accedere al tuo computer</translation>
 <translation id="857943718398505171">Consentita (opzione consigliata)</translation>
 <translation id="5000922062037820727">Bloccata (opzione consigliata)</translation>
-<translation id="8116925261070264013">Con audio disattivato</translation>
 <translation id="8708000541097332489">Cancella all'uscita</translation>
 <translation id="8037357227543935929">Chiedi (predefinita)</translation>
 <translation id="3427092606871434483">Consenti (predefinita)</translation>
@@ -2220,7 +2186,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7311891583377621132">Muovi leggermente il dito per acquisire una parte diversa dell'impronta digitale</translation>
 <translation id="7345706641791090287">Conferma la password</translation>
 <translation id="381202950560906753">Aggiungine un'altra</translation>
-<translation id="3625538291267447988">Inserisci la password per configurare Smart Lock</translation>
 <translation id="6658023813581644008">Inserisci la password per configurare Smart Lock per l'accesso</translation>
 <translation id="5449551289610225147">Password non valida</translation>
 <translation id="5374359983950678924">Cambia immagine</translation>
@@ -2261,7 +2226,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1644574205037202324">Cronologia</translation>
 <translation id="5117427536932535467">Temi e sfondi</translation>
 <translation id="3259418918864581163">Carte di credito e indirizzi che utilizzano Brave Software Pay.</translation>
-<translation id="4439834757335393741">Metodi di pagamento e indirizzi che utilizzano Brave Software Pay.</translation>
 <translation id="3268451620468152448">Schede aperte</translation>
 <translation id="5241892180459725878">Suggerimenti di ricerca di Brave Software Drive</translation>
 <translation id="2120297377148151361">Attività e interazioni</translation>
@@ -2332,6 +2296,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1114202307280046356">Diamante</translation>
 <translation id="89720367119469899">Esc</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">Comando esterno</translation>
+<translation id="585979798156957858">Meta esterno</translation>
 <translation id="4991420928586866460">Considera i tasti della fila superiore come tasti funzione</translation>
 <translation id="85486688517848470">Tieni premuto il tasto per la ricerca per modificare la funzione dei tasti della fila superiore</translation>
 <translation id="4400632832271803360">Tieni premuto il tasto Avvio applicazioni per modificare la funzione dei tasti della fila superiore.</translation>
@@ -2433,10 +2399,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2315821125498993513">Impossibile connettersi al telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Funzione Better Together attiva</translation>
 <translation id="3088402208262982892">Funzione Better Together non attiva</translation>
-<translation id="2079079131837725321">Sblocca il Bravebook con il telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/>.</translation>
 <translation id="5430931332414098647">Tethering istantaneo</translation>
-<translation id="3059313675706898490">Android Messaggi</translation>
-<translation id="7095175330464035635">Invia e ricevi SMS dal Bravebook</translation>
 <translation id="3936335337858561470">Elimina questo dispositivo</translation>
 <translation id="3606712892509067288">Rimuovi da Better Together</translation>
 <translation id="7878562273885520351">La tua password potrebbe essere stata compromessa</translation>
@@ -2567,7 +2530,9 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6112294629795967147">Tocca per ridimensionare</translation>
 <translation id="2453860139492968684">Termina</translation>
 <translation id="1853692000353488670">Nuova scheda in incognito</translation>
+<translation id="6336451774241870485">Nuova scheda privata</translation>
 <translation id="5530766185686772672">Chiudi schede in incognito</translation>
+<translation id="6610147964972079463">Chiudi schede private</translation>
 <translation id="8076492880354921740">Schede</translation>
 <translation id="1049743911850919806">In incognito</translation>
 </translationbundle>

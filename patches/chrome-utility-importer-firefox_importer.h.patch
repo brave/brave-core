@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/importer/firefox_importer.h b/chrome/utility/importer/firefox_importer.h
-index 8c6dafc83d25a697a6ca235faf4e0dc386a8828b..4eab9a1dbf6a72dc5a874bf683ba25be890690bd 100644
+index e08bf86f692cf7013291a39efb109b218154d8a5..ac7b34ab661ac630dfd92eb514e74c0f01c7ba97 100644
 --- a/chrome/utility/importer/firefox_importer.h
 +++ b/chrome/utility/importer/firefox_importer.h
 @@ -41,6 +41,9 @@ class FirefoxImporter : public Importer {

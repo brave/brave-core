@@ -73,22 +73,22 @@ export default class Stats extends React.Component<Props, {}> {
     return (
       <DataBlock>
         <DataItem
-          theme={theme.trackersBlocked}
+          customStyle={theme.trackersBlocked}
           description={getLocale('trackersBlocked')}
           counter={trackedBlockersCount}
         />
         <DataItem
-          theme={theme.adsBlocked}
+          customStyle={theme.adsBlocked}
           description={getLocale('adsBlocked')}
           counter={adblockCount}
         />
         <DataItem
-          theme={theme.httpsUpgrades}
+          customStyle={theme.httpsUpgrades}
           description={getLocale('httpsUpgraded')}
           counter={httpsUpgradedCount}
         />
         <DataItem
-          theme={theme.estimatedTime}
+          customStyle={theme.estimatedTime}
           counter={timeSaved.value}
           text={getLocale(timeSaved.id)}
           description={getLocale('estimatedTimeSaved')}

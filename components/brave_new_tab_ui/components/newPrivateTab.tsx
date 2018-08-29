@@ -45,41 +45,41 @@ export default class NewPrivateTab extends React.PureComponent<Props, {}> {
     }
 
     return (
-      <Page theme={theme.newPrivateTab}>
+      <Page customStyle={theme.newPrivateTab}>
         <Grid columns={3}>
           <Column size={2}>
             <Stats stats={stats} />
           </Column>
-          <Column size={1} theme={theme.clockContainer}>
-            <Clock theme={theme.clock} />
+          <Column size={1} customStyle={theme.clockContainer}>
+            <Clock customStyle={theme.clock} />
           </Column>
         </Grid>
-        <BoxedContent theme={theme.textualContainer}>
-          <MediaContent media={privateTabIcon} theme={theme.media}>
+        <BoxedContent customStyle={theme.textualContainer}>
+          <MediaContent media={privateTabIcon} customStyle={theme.media}>
             <Heading
               level={1}
-              theme={theme.title}
+              customStyle={theme.title}
               text={getLocale('privateNewTabTitle')}
             />
             <Paragraph
-              theme={theme.text}
+              customStyle={theme.text}
               text={getLocale('privateNewTabDisclaimer1')}
             />
             <Paragraph
-              theme={theme.italicText}
+              customStyle={theme.italicText}
               text={getLocale('privateNewTabDisclaimer2')}
             />
-            <BoxedContent theme={theme.switchContainer}>
+            <BoxedContent customStyle={theme.switchContainer}>
               <SwitchButton
                 id='togglePrivateSearchEngine'
                 size='large'
-                theme={theme.switchButton}
+                customStyle={theme.switchButton}
                 checked={useAlternativePrivateSearchEngine}
                 onChange={onChangePrivateSearchEngine}
                 rightText={getLocale('privateNewTabSearchLabel')}
               />
             </BoxedContent>
-            <Paragraph theme={theme.text} text={getLocale('duckduckGoSearchInfo')} />
+            <Paragraph customStyle={theme.text} text={getLocale('duckduckGoSearchInfo')} />
           </MediaContent>
         </BoxedContent>
       </Page>

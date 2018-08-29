@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/md_history/side_bar.html b/chrome/browser/resources/md_history/side_bar.html
-index e49ca4f078d9475cb48d1706480c77457be892a8..d4963cb1fa37e87ae8af01eb6d0cfa0e3e10ebf5 100644
+index c2fbbb2c6753414ec662da319b0cb8a9491b4a92..816add6ce3d66febac372c38983aefd9baaa1103 100644
 --- a/chrome/browser/resources/md_history/side_bar.html
 +++ b/chrome/browser/resources/md_history/side_bar.html
 @@ -96,11 +96,13 @@

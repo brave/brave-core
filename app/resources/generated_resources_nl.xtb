@@ -498,9 +498,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8743864605301774756">1 uur geleden geüpdatet</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> uur geleden geüpdatet</translation>
 <translation id="1329584516321524826">Zojuist geüpdatet</translation>
-<translation id="8679788109894721265">Deze pagina gebruikt meer dan <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Gestopt met laden</translation>
-<translation id="4280864916190672950">Stoppen met laden</translation>
 <translation id="2724841811573117416">WebRTC-logboeken</translation>
 <translation id="7518150891539970662">WebRTC-logboeken (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-logboek vastgelegd op <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -587,7 +584,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7554791636758816595">Nieuw tabblad</translation>
 <translation id="3915280005470252504">Spraakgestuurd zoeken</translation>
 <translation id="3153862085237805241">Kaart opslaan</translation>
-<translation id="4961000125720751066">Al je kaarten bij elkaar</translation>
+<translation id="1593926297800505364">Betaalmethode opslaan</translation>
 <translation id="2473195200299095979">Deze pagina vertalen</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Deze pagina is ingezoomd met de extensie '<ph name="NAME"/>'</translation>
@@ -1047,7 +1044,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5562781907504170924">Dit tabblad is gekoppeld aan een Bluetooth-apparaat.</translation>
 <translation id="5884474295213649357">Dit tabblad is gekoppeld aan een USB-apparaat.</translation>
 <translation id="8466417995783206254">De video op dit tabblad wordt afgespeeld in de scherm-in-scherm-modus.</translation>
-<translation id="6235700927623181151">Dit tabblad deelt de content van je bureaublad.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/>: camera of microfoon neemt op</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/>: content van tabblad gedeeld</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/>: video wordt afgespeeld in de scherm-in-scherm-modus</translation>
@@ -1112,35 +1108,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="874689135111202667">{0,plural, =1{Eén bestand naar deze site uploaden?}other{# bestanden naar deze site uploaden?}}</translation>
 <translation id="1956390763342388273">Hiermee worden alle bestanden in <ph name="FOLDER_PATH"/> geüpload. Doe dit alleen als je de site vertrouwt.</translation>
 <translation id="1243314992276662751">Uploaden</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> wil je identiteit verifiëren</translation>
-<translation id="3738671331307774213">Door je identiteit te verifiëren, blijven je privégegevens beter beschermd</translation>
-<translation id="8435395510592618362">Je identiteit verifiëren met <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Kies een optie</translation>
-<translation id="7490950320178383728">Je beveiligingssleutel gebruiken met Bluetooth</translation>
-<translation id="414599683948988413">Je beveiligingssleutel gebruiken met USB</translation>
-<translation id="7851816139220202929">Je beveiligingssleutel gebruiken met NFC</translation>
-<translation id="5392327114396848796">Gebruik een ingebouwde beveiligingssleutel</translation>
-<translation id="5104546332954397226">Gebruik je telefoon als beveiligingssleutel</translation>
-<translation id="2876441201733326392">USB-beveiligingssleutel gebruiken</translation>
-<translation id="5842053879378944309">USB-beveiligingssleutel gebruiken met <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Sluit je beveiligingssleutel aan en activeer deze</translation>
-<translation id="8033958968890501070">Time-out</translation>
-<translation id="7102832101143475489">Er is een time-out voor het verzoek opgetreden</translation>
-<translation id="3670229581627177274">Bluetooth inschakelen</translation>
-<translation id="3880709822663530586">Je beveiligingssleutel werkt alleen wanneer de Bluetooth-functie van je apparaat is ingeschakeld</translation>
-<translation id="1183378459020939734">Klaar om je beveiligingssleutel te koppelen?</translation>
-<translation id="237058345584060620">Koppel je sleutel met dit apparaat zodat je de sleutel kunt gebruiken om in te loggen op je account</translation>
-<translation id="1875312262568496299">Beginnen</translation>
-<translation id="3104900172193317662">Toestaan dat je beveiligingssleutel wordt gebruikt</translation>
-<translation id="2492040222276243256">Druk de knop op je beveiligingssleutel ten minste vijf seconden in</translation>
-<translation id="6427415464407526111">Je beveiligingssleutel selecteren</translation>
-<translation id="2633326789677284179">Zoek de naam op de achterkant van je sleutel</translation>
-<translation id="5660204307954428567">Koppelen met <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Zoek de pincode van zes cijfers op de achterkant van je sleutel</translation>
-<translation id="1201402288615127009">Volgende</translation>
-<translation id="1792161662640298233">Je beveiligingssleutel verifiëren</translation>
-<translation id="2321482478556590128">Je beveiligingssleutel gebruiken met <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">De meeste beveiligingssleutels hebben een knop waarop je kunt drukken om ze te gebruiken</translation>
 <translation id="3785308913036335955">Snelle link voor apps weergeven</translation>
 <translation id="711840821796638741">Beheerde bladwijzers weergeven</translation>
 <translation id="3613134908380545408"><ph name="FOLDER_NAME"/> weergeven</translation>
@@ -1508,6 +1475,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6902066522699286937">Stem om als voorbeeld te beluisteren</translation>
 <translation id="304747341537320566">Spraakengines</translation>
 <translation id="1067291318998134776">Linux (bèta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Gebruik Linux-tools, editors en IDE's op je Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Meer informatie&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Linux-apps voor Bravebook verwijderen</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
@@ -1547,17 +1515,14 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8647834505253004544">Geen geldig webadres</translation>
 <translation id="2149850907588596975">Wachtwoorden en formulieren</translation>
 <translation id="8639963783467694461">Instellingen voor Automatisch aanvullen</translation>
-<translation id="3431019676184503003">Adressen en betaalmethoden</translation>
 <translation id="2512222046227390255">Formulieren automatisch invullen</translation>
-<translation id="2283340219607151381">Adressen opslaan en invullen</translation>
-<translation id="1662550410081243962">Betaalmethoden toevoegen en invullen</translation>
-<translation id="2903493209154104877">Adressen</translation>
 <translation id="7764225426217299476">Adres toevoegen</translation>
 <translation id="5595485650161345191">Adres bewerken</translation>
 <translation id="6207937957461833379">Land/regio</translation>
 <translation id="4378154925671717803">Telefoon</translation>
 <translation id="5659593005791499971">E-mailadres</translation>
-<translation id="5565871407246142825">Creditcards</translation>
+<translation id="5762172915276660232">Creditcardinstellingen</translation>
+<translation id="4499718683476608392">Automatisch aanvullen van creditcardgegevens inschakelen om formulieren met één klik in te vullen</translation>
 <translation id="2448312741937722512">Type</translation>
 <translation id="9064275926664971810">Automatisch aanvullen inschakelen om formulieren met één klik in te vullen</translation>
 <translation id="5029568752722684782">Kopie wissen</translation>
@@ -1643,7 +1608,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4699172675775169585">Gecachte afbeeldingen en bestanden</translation>
 <translation id="1274997165432133392">Cookies en andere sitegegevens</translation>
 <translation id="3838543471119263078">Cookies en andere site- en plug-ingegevens</translation>
-<translation id="7029809446516969842">Wachtwoorden</translation>
 <translation id="6865313869410766144">Formuliergegevens voor Automatisch aanvullen</translation>
 <translation id="177336675152937177">Gehoste app-gegevens</translation>
 <translation id="1718835860248848330">Afgelopen uur</translation>
@@ -2038,8 +2002,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7136694880210472378">Instellen als standaard</translation>
 <translation id="102272308210570439">De Assistent gebruik laten maken van de content op je scherm</translation>
 <translation id="8624205858755890468">Hiermee kan de Assistent je gerelateerde informatie, apps en acties laten zien.</translation>
-<translation id="178309940312315155">'Oké Brave Software'-detectie</translation>
-<translation id="3476912025629168202">Open de Assistent wanneer je scherm is ingeschakeld door 'Oké Brave Software' te zeggen.</translation>
+<translation id="8669919703154928649">Toestaan dat de Assistent je meldingen laat zien</translation>
+<translation id="3430342160185525240">Hiermee kan de Assistent je meldingen laten zien.</translation>
 <translation id="3908743412684152579">Instellingen van de Brave Software Assistent</translation>
 <translation id="4933484234309072027">ingesloten in <ph name="URL"/></translation>
 <translation id="8427292751741042100">ingesloten in een host</translation>
@@ -2047,6 +2011,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6295158916970320988">Alle sites</translation>
 <translation id="7625568159987162309">Rechten en op sites opgeslagen gegevens bekijken</translation>
 <translation id="3735740477244556633">Sorteren op</translation>
+<translation id="6503077044568424649">Meest bezocht</translation>
+<translation id="967624055006145463">Opgeslagen gegevens</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Advertenties</translation>
 <translation id="5649053991847567735">Automatische downloads</translation>
@@ -2122,7 +2088,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3038675903128704560">Sites niet toestaan een plug-in te gebruiken om toegang te krijgen tot je computer</translation>
 <translation id="857943718398505171">Toegestaan (aanbevolen)</translation>
 <translation id="5000922062037820727">Geblokkeerd (aanbevolen)</translation>
-<translation id="8116925261070264013">Gedempt</translation>
 <translation id="8708000541097332489">Wissen bij het verlaten</translation>
 <translation id="8037357227543935929">Vragen (standaard)</translation>
 <translation id="3427092606871434483">Toestaan (standaard)</translation>
@@ -2219,7 +2184,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7311891583377621132">Beweeg je vinger enigszins om een ander deel van de vingerafdruk vast te leggen</translation>
 <translation id="7345706641791090287">Je wachtwoord bevestigen</translation>
 <translation id="381202950560906753">Nog een toevoegen</translation>
-<translation id="3625538291267447988">Geef je wachtwoord op om Smart Lock in te stellen</translation>
 <translation id="6658023813581644008">Geef je wachtwoord op als je Smart Lock voor inloggen wilt instellen</translation>
 <translation id="5449551289610225147">Ongeldig wachtwoord</translation>
 <translation id="5374359983950678924">Afbeelding wijzigen</translation>
@@ -2259,8 +2223,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2709516037105925701">Automatisch aanvullen</translation>
 <translation id="1644574205037202324">Geschiedenis</translation>
 <translation id="5117427536932535467">Thema's en achtergronden</translation>
+<translation id="7029809446516969842">Wachtwoorden</translation>
 <translation id="3259418918864581163">Creditcards en adressen die Brave Software Pay gebruiken.</translation>
-<translation id="4439834757335393741">Betaalmethoden en adressen die Brave Software Pay gebruiken.</translation>
 <translation id="3268451620468152448">Geopende tabbladen</translation>
 <translation id="5241892180459725878">Zoeksuggesties voor Brave Software Drive</translation>
 <translation id="2120297377148151361">Activiteit en interacties</translation>
@@ -2331,6 +2295,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1114202307280046356">Diamant</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">Externe opdracht</translation>
+<translation id="585979798156957858">Externe meta</translation>
 <translation id="4991420928586866460">Toetsen op de bovenste rij behandelen als functietoetsen</translation>
 <translation id="85486688517848470">Houd de zoektoets ingedrukt om het gedrag van de toetsen in de bovenste rij om te schakelen</translation>
 <translation id="4400632832271803360">Houd de Launcher-toets ingedrukt om het gedrag van de toetsen in de bovenste rij om te schakelen</translation>
@@ -2432,10 +2398,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2315821125498993513">Kan geen verbinding maken met de telefoon. <ph name="LINK_BEGIN"/>Meer informatie.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together is ingeschakeld</translation>
 <translation id="3088402208262982892">Better Together is uitgeschakeld</translation>
-<translation id="2079079131837725321">Ontgrendel je Bravebook met je telefoon. <ph name="LINK_BEGIN"/>Meer informatie.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant-tethering</translation>
-<translation id="3059313675706898490">Android Berichten</translation>
-<translation id="7095175330464035635">Sms'jes verzenden en ontvangen op je Bravebook</translation>
 <translation id="3936335337858561470">Dit apparaat vergeten</translation>
 <translation id="3606712892509067288">Verwijderen uit Better Together</translation>
 <translation id="7878562273885520351">Je wachtwoord is mogelijk gehackt</translation>
@@ -2566,7 +2529,9 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6112294629795967147">Tikken om het formaat aan te passen</translation>
 <translation id="2453860139492968684">Voltooien</translation>
 <translation id="1853692000353488670">Nieuw incognitotabblad</translation>
+<translation id="6336451774241870485">Nieuw privétabblad</translation>
 <translation id="5530766185686772672">Incognitotabbladen sluiten</translation>
+<translation id="6610147964972079463">Privétabbladen sluiten</translation>
 <translation id="8076492880354921740">Tabbladen</translation>
 <translation id="1049743911850919806">Incognito</translation>
 </translationbundle>

@@ -500,9 +500,6 @@
 <translation id="8743864605301774756">Актуализирано преди 1 ч</translation>
 <translation id="5638497698949808140">Актуализирано преди <ph name="HOURS"/> ч</translation>
 <translation id="1329584516321524826">Актуализирано току-що</translation>
-<translation id="8679788109894721265">Тази страница използва над <ph name="MEGABYTES"/> МБ</translation>
-<translation id="8369547389711988632">Спряхте зареждането</translation>
-<translation id="4280864916190672950">Спиране на зареждането</translation>
 <translation id="2724841811573117416">Регистрационни файлове за WebRTC</translation>
 <translation id="7518150891539970662">Регистрационни файлове за WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Записан е регистрационен файл за WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -589,7 +586,7 @@
 <translation id="7554791636758816595">Нов раздел</translation>
 <translation id="3915280005470252504">Търсене с глас</translation>
 <translation id="3153862085237805241">Запазване на картата</translation>
-<translation id="4961000125720751066">Всичките ви карти на едно място</translation>
+<translation id="1593926297800505364">Запазване на начина на плащане</translation>
 <translation id="2473195200299095979">Превод на тази страница</translation>
 <translation id="5408750356094797285">Мащаб: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Мащабът на тази страница бе променен от разширението <ph name="NAME"/></translation>
@@ -1049,7 +1046,6 @@
 <translation id="5562781907504170924">Този раздел е свързан с устройство с Bluetooth.</translation>
 <translation id="5884474295213649357">Този раздел е свързан с USB устройство.</translation>
 <translation id="8466417995783206254">В този раздел се възпроизвежда видеоклип в режим „Картина в картината“.</translation>
-<translation id="6235700927623181151">Този раздел споделя съдържанието на работния ви плот.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – записва се чрез камерата или микрофона</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – съдържанието на раздела се споделя</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – видеоклипът се възпроизвежда в режим „Картина в картината“</translation>
@@ -1114,35 +1110,6 @@
 <translation id="874689135111202667">{0,plural, =1{Искате ли да качите един файл на този сайт?}other{Искате ли да качите # файла на този сайт?}}</translation>
 <translation id="1956390763342388273">Ще бъдат качени всички файлове от „<ph name="FOLDER_PATH"/>“. Продължете само ако смятате сайта за надежден.</translation>
 <translation id="1243314992276662751">Качване</translation>
-<translation id="2446585455334014596"><ph name="APP_NAME"/> иска да потвърди самоличността ви</translation>
-<translation id="3738671331307774213">Потвърждаването на самоличността ви помага за защитата на частните ви данни</translation>
-<translation id="8435395510592618362">Потвърждаване на самоличността ви чрез <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Изберете опция</translation>
-<translation id="7490950320178383728">Използване на ключа ви за сигурност чрез Bluetooth</translation>
-<translation id="414599683948988413">Използване на ключа ви за сигурност чрез USB</translation>
-<translation id="7851816139220202929">Използване на ключа ви за сигурност чрез КБП</translation>
-<translation id="5392327114396848796">Използване на вграден ключ за сигурност</translation>
-<translation id="5104546332954397226">Използване на телефона ви като ключ за сигурност</translation>
-<translation id="2876441201733326392">Използване на USB ключ за сигурност</translation>
-<translation id="5842053879378944309">Използване на USB ключ за сигурност с(ъс) <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Включете ключа си за сигурност и го активирайте</translation>
-<translation id="8033958968890501070">Времето за изчакване изтече</translation>
-<translation id="7102832101143475489">Времето за изчакване на заявката изтече</translation>
-<translation id="3670229581627177274">Включване на Bluetooth</translation>
-<translation id="3880709822663530586">Ключът ви за сигурност работи само когато сте включили Bluetooth на устройството си</translation>
-<translation id="1183378459020939734">Готови ли сте да сдвоите ключа си за сигурност?</translation>
-<translation id="237058345584060620">Сдвоете ключа си с това устройство, за да можете да използвате ключа за вход в профила си</translation>
-<translation id="1875312262568496299">Начало</translation>
-<translation id="3104900172193317662">Разрешаване на използването на ключа ви за сигурност</translation>
-<translation id="2492040222276243256">Натиснете бутона на ключа си за сигурност и го задръжте поне 5 секунди</translation>
-<translation id="6427415464407526111">Избиране на ключ за сигурност</translation>
-<translation id="2633326789677284179">Намерете името, отпечатано на гърба на ключа</translation>
-<translation id="5660204307954428567">Сдвояване с(ъс) <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Намерете шестцифрения ПИН на гърба на ключа си</translation>
-<translation id="1201402288615127009">Напред</translation>
-<translation id="1792161662640298233">Ключът за сигурност се потвърждава</translation>
-<translation id="2321482478556590128">Използване на ключа ви за сигурност с(ъс) <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">За да използвате повечето ключове, трябва само да натиснете бутона</translation>
 <translation id="3785308913036335955">Показване на прекия път към приложенията</translation>
 <translation id="711840821796638741">Показване на управляваните отметки</translation>
 <translation id="3613134908380545408">Показване на „<ph name="FOLDER_NAME"/>“</translation>
@@ -1510,6 +1477,7 @@
 <translation id="6902066522699286937">Глас за изпробване</translation>
 <translation id="304747341537320566">Машини за синтезиран говор</translation>
 <translation id="1067291318998134776">Linux (бета)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Изпълнявайте инструменти, редактори и интегрирани среди за програмиране за Linux на своя Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Научете повече&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Премахване на приложенията за Linux за Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Магазин</translation>
@@ -1549,17 +1517,14 @@
 <translation id="8647834505253004544">Не е валиден уеб адрес</translation>
 <translation id="2149850907588596975">Пароли и формуляри</translation>
 <translation id="8639963783467694461">Настройки за автоматично попълване</translation>
-<translation id="3431019676184503003">Адреси и начини на плащане</translation>
 <translation id="2512222046227390255">Попълвайте автоматично формуляри</translation>
-<translation id="2283340219607151381">Запазване и попълване на адреси</translation>
-<translation id="1662550410081243962">Запазване и попълване на начини на плащане</translation>
-<translation id="2903493209154104877">Адреси</translation>
 <translation id="7764225426217299476">Добавяне на адрес</translation>
 <translation id="5595485650161345191">Редактиране на адреса</translation>
 <translation id="6207937957461833379">Държава/Регион</translation>
 <translation id="4378154925671717803">Телефон</translation>
 <translation id="5659593005791499971">Имейл</translation>
-<translation id="5565871407246142825">Кредитни карти</translation>
+<translation id="5762172915276660232">Настройки за кредитни карти</translation>
+<translation id="4499718683476608392">Активирайте автоматичното попълване на кредитни карти, за да ги въвеждате във формуляри само с едно кликване</translation>
 <translation id="2448312741937722512">Тип</translation>
 <translation id="9064275926664971810">Активиране на автоматичното попълване на формуляри с едно кликване</translation>
 <translation id="5029568752722684782">Изчистване на копието</translation>
@@ -1645,7 +1610,6 @@
 <translation id="4699172675775169585">Кеширани изображения и файлове</translation>
 <translation id="1274997165432133392">„Бисквитки“ и други данни за сайтове</translation>
 <translation id="3838543471119263078">„Бисквитки“ и други данни за сайтове и приставки</translation>
-<translation id="7029809446516969842">Пароли</translation>
 <translation id="6865313869410766144">Данни за автоматично попълване на формуляри</translation>
 <translation id="177336675152937177">Данни на хостваните приложения</translation>
 <translation id="1718835860248848330">Последния час</translation>
@@ -2041,8 +2005,8 @@
 <translation id="7136694880210472378">Задаване като основна</translation>
 <translation id="102272308210570439">Разрешаване на Асистент да използва съдържанието на екрана</translation>
 <translation id="8624205858755890468">Дава възможност на Асистент да ви показва подходящи приложения, информация и действия.</translation>
-<translation id="178309940312315155">Откриване на „Ok Brave Software“</translation>
-<translation id="3476912025629168202">Осъществявайте достъп до Асистент всеки път, когато кажете „Ok Brave Software“ при включен екран.</translation>
+<translation id="8669919703154928649">Позволяване на Асистент да ви показва известия</translation>
+<translation id="3430342160185525240">Дава възможност на Асистент да ви показва известия.</translation>
 <translation id="3908743412684152579">Настройки на Brave Software Асистент</translation>
 <translation id="4933484234309072027">вградена в <ph name="URL"/></translation>
 <translation id="8427292751741042100">вградена в който и да е хост</translation>
@@ -2050,6 +2014,8 @@
 <translation id="6295158916970320988">Всички сайтове</translation>
 <translation id="7625568159987162309">Преглед на разрешенията и данните, съхранявани в сайтовете</translation>
 <translation id="3735740477244556633">Сортиране по</translation>
+<translation id="6503077044568424649">Ползвани</translation>
+<translation id="967624055006145463">Съхранени данни</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Реклами</translation>
 <translation id="5649053991847567735">Автоматични изтегляния</translation>
@@ -2125,7 +2091,6 @@
 <translation id="3038675903128704560">Забраняване на сайтовете да използват приставка за достъп до компютъра ви</translation>
 <translation id="857943718398505171">Разрешено (препоръчително)</translation>
 <translation id="5000922062037820727">Блокирано (препоръчително)</translation>
-<translation id="8116925261070264013">Заглушени</translation>
 <translation id="8708000541097332489">Изчистване при изход</translation>
 <translation id="8037357227543935929">Извеждане на запитване (по подразбиране)</translation>
 <translation id="3427092606871434483">Разрешаване (по подразбиране)</translation>
@@ -2222,7 +2187,6 @@
 <translation id="7311891583377621132">Преместете малко пръста си, за да бъде заснета друга част от отпечатъка</translation>
 <translation id="7345706641791090287">Потвърждаване на паролата</translation>
 <translation id="381202950560906753">Добавяне на друг</translation>
-<translation id="3625538291267447988">За да настроите Smart Lock, въведете паролата си</translation>
 <translation id="6658023813581644008">За да настроите Smart Lock за влизане в профила, въведете паролата си</translation>
 <translation id="5449551289610225147">Паролата е невалидна</translation>
 <translation id="5374359983950678924">Промяна на снимката</translation>
@@ -2262,8 +2226,8 @@
 <translation id="2709516037105925701">Автоматично попълване</translation>
 <translation id="1644574205037202324">История</translation>
 <translation id="5117427536932535467">Теми и тапети</translation>
+<translation id="7029809446516969842">Пароли</translation>
 <translation id="3259418918864581163">Кредитни карти и адреси посредством Brave Software Pay.</translation>
-<translation id="4439834757335393741">Начини на плащане и адреси при използване на Brave Software Pay.</translation>
 <translation id="3268451620468152448">Отворени раздели</translation>
 <translation id="5241892180459725878">Предложения за търсене в Brave Software Диск</translation>
 <translation id="2120297377148151361">Активност и взаимодействия</translation>
@@ -2334,6 +2298,8 @@
 <translation id="1114202307280046356">Ромб</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">Външен клавиш Command</translation>
+<translation id="585979798156957858">Външен клавиш Meta</translation>
 <translation id="4991420928586866460">Третиране на клавишите от най-горния ред като функционални</translation>
 <translation id="85486688517848470">Задръжте клавиша „търсене“, за да промените поведението на клавишите от най-горния ред</translation>
 <translation id="4400632832271803360">Натиснете и задръжте клавиша за стартовия панел, за да промените поведението на клавишите от най-горния ред.</translation>
@@ -2435,10 +2401,7 @@
 <translation id="2315821125498993513">Не можа да се установи връзка с телефона. <ph name="LINK_BEGIN"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Функцията По-добре заедно е включена</translation>
 <translation id="3088402208262982892">Функцията По-добре заедно е изключена</translation>
-<translation id="2079079131837725321">Отключвайте своя Bravebook посредством телефона си. <ph name="LINK_BEGIN"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="5430931332414098647">Незабавен тетъринг</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Изпращайте и получавайте SMS съобщения от своя Bravebook</translation>
 <translation id="3936335337858561470">Забравяне на това устройство</translation>
 <translation id="3606712892509067288">Премахване от По-добре заедно</translation>
 <translation id="7878562273885520351">Възможно е паролата ви да е компрометирана</translation>
@@ -2569,7 +2532,9 @@
 <translation id="6112294629795967147">Докоснете за преоразмеряване</translation>
 <translation id="2453860139492968684">Край</translation>
 <translation id="1853692000353488670">Нов раздел „инкогнито“</translation>
+<translation id="6336451774241870485">Нов раздел в режим на частно сърфиране</translation>
 <translation id="5530766185686772672">Раздели „инкогнито“: Затв.</translation>
+<translation id="6610147964972079463">Частни раздели: Затваряне</translation>
 <translation id="8076492880354921740">Раздели</translation>
 <translation id="1049743911850919806">„Инкогнито“</translation>
 </translationbundle>

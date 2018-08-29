@@ -1,8 +1,8 @@
 diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
-index 7fab20e8173e7938bb790ab56f377cf0576da4a3..588694f95db59b4332615258d3995f986e36d87b 100644
+index 37f6135b22a4472733afa38dbc3bd27ccfb60036..ea00172e369b134f4cd1cd19bf55c2e160d1e12a 100644
 --- a/content/browser/frame_host/navigation_request.cc
 +++ b/content/browser/frame_host/navigation_request.cc
-@@ -1645,6 +1645,29 @@ void NavigationRequest::CommitNavigation() {
+@@ -1651,6 +1651,29 @@ void NavigationRequest::CommitNavigation() {
      }
      associated_site_instance_id_.reset();
    }

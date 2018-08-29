@@ -31,23 +31,23 @@ export default class Footer extends React.PureComponent<Props, {}> {
 
     return (
       <footer>
-        <Grid columns={3} theme={theme.footer}>
-          <Column size={1} theme={theme.footerColumnLeft}>
+        <Grid columns={3} customStyle={theme.footer}>
+          <Column size={1} customStyle={theme.footerColumnLeft}>
             <Anchor
-              theme={theme.skip}
+              customStyle={theme.skip}
               text={getLocale('skipWelcomeTour')}
               href='chrome://newtab'
             />
           </Column>
-          <Column size={1} theme={theme.footerColumnCenter}>
+          <Column size={1} customStyle={theme.footerColumnCenter}>
             {children}
           </Column>
-          <Column size={1} theme={theme.footerColumnRight}>
+          <Column size={1} customStyle={theme.footerColumnRight}>
             {
               pageIndex < totalSecondaryScreensSize - 1
               ? (
                 <PushButton
-                  theme={theme.sideButton}
+                  customStyle={theme.sideButton}
                   color='secondary'
                   onClick={onClickNext}
                 >
@@ -64,7 +64,7 @@ export default class Footer extends React.PureComponent<Props, {}> {
               )
               : (
                 <PushButtonLink
-                  theme={theme.sideButton}
+                  customStyle={theme.sideButton}
                   color='secondary'
                   href='chrome://newtab'
                 >

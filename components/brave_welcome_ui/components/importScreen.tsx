@@ -28,13 +28,13 @@ export default class ImportScreen extends React.PureComponent<Props, {}> {
   render () {
     return (
       <section style={theme.content}>
-        <Image theme={theme.importImage} src={importImage} />
-        <Heading level={1} theme={theme.title} text={getLocale('importFromAnotherBrowser')} />
-        <Paragraph theme={theme.text} text={getLocale('setupImport')} />
+        <Image customStyle={theme.importImage} src={importImage} />
+        <Heading level={1} customStyle={theme.title} text={getLocale('importFromAnotherBrowser')} />
+        <Paragraph customStyle={theme.text} text={getLocale('setupImport')} />
         <PushButton
           color='primary'
           size='large'
-          theme={theme.mainButton}
+          customStyle={theme.mainButton}
           onClick={this.onClickImportNow}
         >
           {getLocale('importNow')}

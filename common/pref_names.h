@@ -18,5 +18,6 @@ extern const char kWeekOfInstallation[];
 extern const char kAdBlockCurrentRegion[];
 extern const char kWidevineOptedIn[];
 extern const char kUseAlternatePrivateSearchEngine[];
+extern const char kBraveThemeType[];
 
-#endif
+#endif  // BRAVE_COMMON_PREF_NAMES_H_

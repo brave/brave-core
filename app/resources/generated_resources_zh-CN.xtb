@@ -499,9 +499,6 @@
 <translation id="8743864605301774756">上次更新时间：1 小时前</translation>
 <translation id="5638497698949808140">上次更新时间：<ph name="HOURS"/> 小时前</translation>
 <translation id="1329584516321524826">上次更新时间：刚才</translation>
-<translation id="8679788109894721265">此网页所耗用的流量已超过 <ph name="MEGABYTES"/>MB</translation>
-<translation id="8369547389711988632">已停止加载</translation>
-<translation id="4280864916190672950">停止加载</translation>
 <translation id="2724841811573117416">WebRTC日志</translation>
 <translation id="7518150891539970662">WebRTC日志（<ph name="WEBRTC_LOG_COUNT"/>个）</translation>
 <translation id="6592267180249644460">WebRTC日志记录时间：<ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -588,7 +585,7 @@
 <translation id="7554791636758816595">新标签页</translation>
 <translation id="3915280005470252504">语音搜索</translation>
 <translation id="3153862085237805241">保存卡片</translation>
-<translation id="4961000125720751066">集中管理您的所有卡片</translation>
+<translation id="1593926297800505364">保存付款方式</translation>
 <translation id="2473195200299095979">翻译此页</translation>
 <translation id="5408750356094797285">缩放比例：<ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">此页面已由“<ph name="NAME"/>”扩展程序缩放</translation>
@@ -1048,7 +1045,6 @@
 <translation id="5562781907504170924">此标签页已连接到蓝牙设备。</translation>
 <translation id="5884474295213649357">此标签页已连接到 USB 设备。</translation>
 <translation id="8466417995783206254">此标签页正在“画中画”模式中播放视频。</translation>
-<translation id="6235700927623181151">此标签页正在分享您的桌面内容。</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - 摄像头或麦克风正在录制/录音</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - 已分享标签页内容</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - 视频正在“画中画”模式中播放</translation>
@@ -1113,35 +1109,6 @@
 <translation id="874689135111202667">{0,plural, =1{将 1 个文件上传到此网站？}other{将 # 个文件上传到此网站？}}</translation>
 <translation id="1956390763342388273">此操作会上传“<ph name="FOLDER_PATH"/>”下的所有文件。请仅在您信任该网站的情况下执行此操作。</translation>
 <translation id="1243314992276662751">上传</translation>
-<translation id="2446585455334014596">“<ph name="APP_NAME"/>”想验证您的身份</translation>
-<translation id="3738671331307774213">验证您的身份有助于保护您的私密数据</translation>
-<translation id="8435395510592618362">通过“<ph name="APP_NAME"/>”验证您的身份</translation>
-<translation id="3854599674806204102">选择一个选项</translation>
-<translation id="7490950320178383728">通过蓝牙使用安全密钥</translation>
-<translation id="414599683948988413">通过 USB 使用安全密钥</translation>
-<translation id="7851816139220202929">通过 NFC 使用安全密钥</translation>
-<translation id="5392327114396848796">使用内置的安全密钥</translation>
-<translation id="5104546332954397226">使用手机作为安全密钥</translation>
-<translation id="2876441201733326392">使用 USB 安全密钥</translation>
-<translation id="5842053879378944309">对<ph name="APP_NAME"/>使用 USB 安全密钥</translation>
-<translation id="6896398788631624004">插入并激活您的安全密钥</translation>
-<translation id="8033958968890501070">已超时</translation>
-<translation id="7102832101143475489">此请求已超时</translation>
-<translation id="3670229581627177274">开启蓝牙</translation>
-<translation id="3880709822663530586">您必须开启设备的蓝牙功能才能使用安全密钥</translation>
-<translation id="1183378459020939734">准备好为您的安全密钥配对了吗？</translation>
-<translation id="237058345584060620">将您的密钥与此设备配对，即可使用该密钥登录您的帐号</translation>
-<translation id="1875312262568496299">开始</translation>
-<translation id="3104900172193317662">允许使用您的安全密钥</translation>
-<translation id="2492040222276243256">按住您的安全密钥上的按钮至少 5 秒钟</translation>
-<translation id="6427415464407526111">选择您的安全密钥</translation>
-<translation id="2633326789677284179">请找到您的密钥背面印有的名称</translation>
-<translation id="5660204307954428567">与“<ph name="DEVICE_NAME"/>”配对</translation>
-<translation id="8984872292925913496">找到您的密钥背面印有的 6 位数 PIN 码</translation>
-<translation id="1201402288615127009">下一步</translation>
-<translation id="1792161662640298233">验证您的安全密钥</translation>
-<translation id="2321482478556590128">对“<ph name="APP_NAME"/>”使用您的安全密钥</translation>
-<translation id="5292195676005197571">只需按下密钥上的按钮即可使用密钥，这适用于大多数密钥</translation>
 <translation id="3785308913036335955">显示应用快捷方式</translation>
 <translation id="711840821796638741">显示托管书签</translation>
 <translation id="3613134908380545408">显示“<ph name="FOLDER_NAME"/>”</translation>
@@ -1509,6 +1476,7 @@
 <translation id="6902066522699286937">要试听的语音</translation>
 <translation id="304747341537320566">语音引擎</translation>
 <translation id="1067291318998134776">Linux（测试版）</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">在 Bravebook 上运行 Linux 工具、编辑器和 IDE。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;了解详情&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">从 Bravebook 中移除 Linux 应用</translation>
 <translation id="2295473777859797944">Brave Software Play 商店</translation>
@@ -1548,17 +1516,14 @@
 <translation id="8647834505253004544">网址无效</translation>
 <translation id="2149850907588596975">密码和表单</translation>
 <translation id="8639963783467694461">自动填充设置</translation>
-<translation id="3431019676184503003">地址和付款方式</translation>
 <translation id="2512222046227390255">自动填充表单</translation>
-<translation id="2283340219607151381">保存并填写地址</translation>
-<translation id="1662550410081243962">保存并填写付款方式</translation>
-<translation id="2903493209154104877">地址</translation>
 <translation id="7764225426217299476">添加地址</translation>
 <translation id="5595485650161345191">修改地址</translation>
 <translation id="6207937957461833379">国家/地区</translation>
 <translation id="4378154925671717803">电话机</translation>
 <translation id="5659593005791499971">电子邮件</translation>
-<translation id="5565871407246142825">信用卡</translation>
+<translation id="5762172915276660232">信用卡设置</translation>
+<translation id="4499718683476608392">启用信用卡自动填充功能后，只需点击一次即可填写表单</translation>
 <translation id="2448312741937722512">类型</translation>
 <translation id="9064275926664971810">启用自动填充功能后，只需点击一次即可填写多个表单</translation>
 <translation id="5029568752722684782">清除副本</translation>
@@ -1644,7 +1609,6 @@
 <translation id="4699172675775169585">缓存的图片和文件</translation>
 <translation id="1274997165432133392">Cookie 及其他网站数据</translation>
 <translation id="3838543471119263078">Cookie 及其他网站数据和插件数据</translation>
-<translation id="7029809446516969842">密码</translation>
 <translation id="6865313869410766144">自动填充表单数据</translation>
 <translation id="177336675152937177">托管应用数据</translation>
 <translation id="1718835860248848330">过去一小时</translation>
@@ -2039,8 +2003,8 @@
 <translation id="7136694880210472378">设为默认搜索引擎</translation>
 <translation id="102272308210570439">允许智能助理使用您屏幕上的内容</translation>
 <translation id="8624205858755890468">允许智能助理向您显示相关的信息、应用和操作。</translation>
-<translation id="178309940312315155">“Ok Brave Software”启动指令检测</translation>
-<translation id="3476912025629168202">当屏幕处于开启状态时，您可以随时访问自己的 Brave Software 助理，只需说“Ok Brave Software”即可。</translation>
+<translation id="8669919703154928649">允许 Brave Software 助理向您显示通知</translation>
+<translation id="3430342160185525240">允许 Brave Software 助理向您显示通知。</translation>
 <translation id="3908743412684152579">Brave Software 智能助理设置</translation>
 <translation id="4933484234309072027">嵌入 <ph name="URL"/></translation>
 <translation id="8427292751741042100">嵌入到任何主机上</translation>
@@ -2048,6 +2012,8 @@
 <translation id="6295158916970320988">所有网站</translation>
 <translation id="7625568159987162309">查看各网站的权限及储存的数据</translation>
 <translation id="3735740477244556633">排序依据</translation>
+<translation id="6503077044568424649">常去网站</translation>
+<translation id="967624055006145463">已存储的数据</translation>
 <translation id="2787354132612937472">-</translation>
 <translation id="1919345977826869612">广告</translation>
 <translation id="5649053991847567735">自动下载项</translation>
@@ -2123,7 +2089,6 @@
 <translation id="3038675903128704560">不允许任何网站使用插件访问您的计算机</translation>
 <translation id="857943718398505171">已允许（推荐）</translation>
 <translation id="5000922062037820727">已阻止（推荐）</translation>
-<translation id="8116925261070264013">已静音的网站</translation>
 <translation id="8708000541097332489">退出时清除</translation>
 <translation id="8037357227543935929">询问（默认）</translation>
 <translation id="3427092606871434483">允许（默认）</translation>
@@ -2220,7 +2185,6 @@
 <translation id="7311891583377621132">请稍微移动一下手指，以便系统记录您指纹的不同部分</translation>
 <translation id="7345706641791090287">确认您的密码</translation>
 <translation id="381202950560906753">添加其他指纹</translation>
-<translation id="3625538291267447988">要设置 Smart Lock，请输入您的密码</translation>
 <translation id="6658023813581644008">要设置 Smart Lock 以用于登录，请输入您的密码</translation>
 <translation id="5449551289610225147">密码无效</translation>
 <translation id="5374359983950678924">更改照片</translation>
@@ -2260,8 +2224,8 @@
 <translation id="2709516037105925701">自动填充</translation>
 <translation id="1644574205037202324">历史记录</translation>
 <translation id="5117427536932535467">主题背景和壁纸</translation>
+<translation id="7029809446516969842">密码</translation>
 <translation id="3259418918864581163">Brave Software Pay 中存储的信用卡和地址信息。</translation>
-<translation id="4439834757335393741">Brave Software Pay 中存储的付款方式和地址信息。</translation>
 <translation id="3268451620468152448">打开的标签页</translation>
 <translation id="5241892180459725878">Brave Software 云端硬盘搜索建议</translation>
 <translation id="2120297377148151361">活动和互动行为</translation>
@@ -2332,6 +2296,8 @@
 <translation id="1114202307280046356">菱形</translation>
 <translation id="89720367119469899">转义</translation>
 <translation id="5583640892426849032">退格</translation>
+<translation id="1938351510777341717">外部命令</translation>
+<translation id="585979798156957858">外部 Meta 键</translation>
 <translation id="4991420928586866460">将顶行键设置为功能键</translation>
 <translation id="85486688517848470">按住搜索键可切换顶行键的行为</translation>
 <translation id="4400632832271803360">按住启动器键可切换顶行键的行为</translation>
@@ -2433,10 +2399,7 @@
 <translation id="2315821125498993513">无法连接到手机。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/>。</translation>
 <translation id="5598551463564921617">已开启 Better Together 功能</translation>
 <translation id="3088402208262982892">Better Together 功能已关闭</translation>
-<translation id="2079079131837725321">利用手机解锁您的 Bravebook。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/>。</translation>
 <translation id="5430931332414098647">即时网络共享</translation>
-<translation id="3059313675706898490">Android 信息</translation>
-<translation id="7095175330464035635">通过您的 Bravebook 收发短信</translation>
 <translation id="3936335337858561470">取消保存此设备</translation>
 <translation id="3606712892509067288">从 Better Together 中移除</translation>
 <translation id="7878562273885520351">您的密码可能会被盗用</translation>
@@ -2567,7 +2530,9 @@
 <translation id="6112294629795967147">触摸即可调整大小</translation>
 <translation id="2453860139492968684">完成</translation>
 <translation id="1853692000353488670">打开新的无痕式标签页</translation>
+<translation id="6336451774241870485">新私密标签页</translation>
 <translation id="5530766185686772672">关闭隐身标签页</translation>
+<translation id="6610147964972079463">关闭私密标签页</translation>
 <translation id="8076492880354921740">标签页</translation>
 <translation id="1049743911850919806">隐身</translation>
 </translationbundle>

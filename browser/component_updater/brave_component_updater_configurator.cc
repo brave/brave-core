@@ -57,7 +57,6 @@ class BraveConfigurator : public update_client::Configurator {
   std::string GetOSLongName() const override;
   std::string ExtraRequestParams() const override;
   std::string GetDownloadPreference() const override;
-  scoped_refptr<net::URLRequestContextGetter> RequestContext() const override;
   scoped_refptr<network::SharedURLLoaderFactory> URLLoaderFactory() const override;
   std::unique_ptr<service_manager::Connector> CreateServiceManagerConnector()
       const override;
@@ -158,11 +157,6 @@ std::string BraveConfigurator::ExtraRequestParams() const {
 
 std::string BraveConfigurator::GetDownloadPreference() const {
   return std::string();
-}
-
-scoped_refptr<net::URLRequestContextGetter>
-BraveConfigurator::RequestContext() const {
-  return g_browser_process->system_request_context();
 }
 
 scoped_refptr<network::SharedURLLoaderFactory>

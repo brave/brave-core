@@ -500,9 +500,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8743864605301774756">Frissítve: 1 órával ezelőtt</translation>
 <translation id="5638497698949808140">Frissítve: <ph name="HOURS"/> órával ezelőtt</translation>
 <translation id="1329584516321524826">Most frissítve</translation>
-<translation id="8679788109894721265">Ez az oldal több mint <ph name="MEGABYTES"/> MB memóriát használ</translation>
-<translation id="8369547389711988632">Leállította a betöltést</translation>
-<translation id="4280864916190672950">Betöltés leállítása</translation>
 <translation id="2724841811573117416">WebRTC-naplók</translation>
 <translation id="7518150891539970662">WebRTC-naplók (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC napló rögzítésének ideje: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -589,7 +586,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="7554791636758816595">Új lap</translation>
 <translation id="3915280005470252504">Hangalapú keresés</translation>
 <translation id="3153862085237805241">Kártya mentése</translation>
-<translation id="4961000125720751066">Az összes kártyája egy helyen</translation>
+<translation id="1593926297800505364">Fizetési mód mentése</translation>
 <translation id="2473195200299095979">Oldal lefordítása</translation>
 <translation id="5408750356094797285">Nagyítás/kicsinyítés: <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Az oldal nagyítását a(z) „<ph name="NAME"/>” bővítmény hajtotta végre</translation>
@@ -1049,7 +1046,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5562781907504170924">Ez a lap Bluetooth-eszközhöz csatlakozik.</translation>
 <translation id="5884474295213649357">Ez a lap USB-eszközhöz csatlakozik.</translation>
 <translation id="8466417995783206254">A videó lejátszása a lapon kép a képben módban történik.</translation>
-<translation id="6235700927623181151">Ez a lap megosztja az asztal tartalmát.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – A kamera vagy a mikrofon felvételt készít</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – Megosztott laptartalom</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – A videó lejátszása kép a képben módban történik</translation>
@@ -1114,35 +1110,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="874689135111202667">{0,plural, =1{Feltölt 1 fájlt erre a webhelyre?}other{Feltölt # fájlt erre a webhelyre?}}</translation>
 <translation id="1956390763342388273">Ezzel feltölti az összes fájlt a(z) „<ph name="FOLDER_PATH"/>” mappából. Csak akkor tegye ezt, ha megbízik a webhelyben.</translation>
 <translation id="1243314992276662751">Feltöltés</translation>
-<translation id="2446585455334014596">A(z) <ph name="APP_NAME"/> ellenőrizni szeretné az Ön személyazonosságát</translation>
-<translation id="3738671331307774213">Személyazonosságának igazolásával segít privát adatainak megvédésében</translation>
-<translation id="8435395510592618362">Igazolja személyazonosságát a(z) <ph name="APP_NAME"/> alkalmazással</translation>
-<translation id="3854599674806204102">Válasszon a lehetőségek közül</translation>
-<translation id="7490950320178383728">A biztonsági hardverkulcs használata Bluetooth-szal</translation>
-<translation id="414599683948988413">A biztonsági hardverkulcs használata USB-vel</translation>
-<translation id="7851816139220202929">A biztonsági hardverkulcs használata NFC-vel</translation>
-<translation id="5392327114396848796">Beépített biztonsági hardverkulcs használata</translation>
-<translation id="5104546332954397226">Telefon használata biztonsági hardverkulcsként</translation>
-<translation id="2876441201733326392">USB-s biztonsági hardverkulcs használata</translation>
-<translation id="5842053879378944309">USB-s biztonsági hardverkulcs használata a következő alkalmazással: <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Helyezze be, majd aktiválja biztonsági hardverkulcsát</translation>
-<translation id="8033958968890501070">Időtúllépés</translation>
-<translation id="7102832101143475489">A kérelem lejárt</translation>
-<translation id="3670229581627177274">Bluetooth bekapcsolása</translation>
-<translation id="3880709822663530586">A Biztonsági hardverkulcs csak akkor működik, ha a Bluetooth be van kapcsolva az eszközön</translation>
-<translation id="1183378459020939734">Készen áll a biztonsági hardverkulcs párosítására?</translation>
-<translation id="237058345584060620">Párosítsa a hardverkulcsot az eszközhöz, így bejelentkezhet fiókjába</translation>
-<translation id="1875312262568496299">Indítás</translation>
-<translation id="3104900172193317662">A biztonsági hardverkulcs használatának engedélyezése</translation>
-<translation id="2492040222276243256">Tartsa nyomva a biztonsági hardverkulcson található gombot legalább 5 másodpercig</translation>
-<translation id="6427415464407526111">Válassza ki a biztonsági hardverkulcsot</translation>
-<translation id="2633326789677284179">Keresse meg a hardverkulcs hátuljára nyomtatott nevet</translation>
-<translation id="5660204307954428567">Párosítás a következővel: <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">A kulcs hátulján található a 6 jegyű PIN-kód</translation>
-<translation id="1201402288615127009">Következő</translation>
-<translation id="1792161662640298233">Biztonsági hardverkulcs ellenőrzése</translation>
-<translation id="2321482478556590128">Biztonsági hardverkulcs használata a következő alkalmazással: <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">A legtöbb kulcs használatához elég megnyomnia a gombot</translation>
 <translation id="3785308913036335955">Alkalmazások gyorsparancs megjelenítése</translation>
 <translation id="711840821796638741">Kezelt könyvjelzők megjelenítése</translation>
 <translation id="3613134908380545408"><ph name="FOLDER_NAME"/> megjelenítése</translation>
@@ -1510,6 +1477,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6902066522699286937">Meghallgatni kívánt hang</translation>
 <translation id="304747341537320566">Beszédmotorok</translation>
 <translation id="1067291318998134776">Linux (béta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Linuxos eszközök, szerkesztők és IDE-szoftverek futtatása a Bravebookon. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;További információ&amp;lt;/a&amp;gt;.</translation>
 <translation id="6869910261738842136">A Bravebookra telepített linuxos alkalmazások eltávolítása</translation>
 <translation id="2295473777859797944">Brave Software Play Áruház</translation>
@@ -1549,17 +1517,14 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8647834505253004544">Érvénytelen internetcím</translation>
 <translation id="2149850907588596975">Jelszavak és űrlapok</translation>
 <translation id="8639963783467694461">Automatikus kitöltési beállítások</translation>
-<translation id="3431019676184503003">Címek és fizetési módok</translation>
 <translation id="2512222046227390255">Űrlapok automatikus kitöltése</translation>
-<translation id="2283340219607151381">Címek mentése és betöltése</translation>
-<translation id="1662550410081243962">Fizetési módok mentése és betöltése</translation>
-<translation id="2903493209154104877">Címek</translation>
 <translation id="7764225426217299476">Cím hozzáadása</translation>
 <translation id="5595485650161345191">Cím szerkesztése</translation>
 <translation id="6207937957461833379">Ország/Régió</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="5659593005791499971">E-mail</translation>
-<translation id="5565871407246142825">Hitelkártyák</translation>
+<translation id="5762172915276660232">A hitelkártyához tartozó beállítások</translation>
+<translation id="4499718683476608392">Használja a hitelkártyaadatokra vonatkozó automatikus kitöltés funkciót, amellyel az űrlapokat egyetlen kattintással kitöltheti</translation>
 <translation id="2448312741937722512">Típus</translation>
 <translation id="9064275926664971810">Használja az Automatikus kitöltést, amellyel az űrlapokat egyetlen kattintással kitöltheti</translation>
 <translation id="5029568752722684782">Példány törlése</translation>
@@ -1645,7 +1610,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="4699172675775169585">A gyorsítótárban szereplő képek és fájlok</translation>
 <translation id="1274997165432133392">Cookie-k és egyéb webhelyadatok</translation>
 <translation id="3838543471119263078">Cookie-k, illetve webhelyek és beépülő modulok egyéb adatai</translation>
-<translation id="7029809446516969842">Jelszavak</translation>
 <translation id="6865313869410766144">Automatikus kitöltési űrlapadatok</translation>
 <translation id="177336675152937177">Tárolt alkalmazás adatai</translation>
 <translation id="1718835860248848330">Az elmúlt órából</translation>
@@ -2041,8 +2005,8 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="7136694880210472378">Legyen alapértelmezett</translation>
 <translation id="102272308210570439">Engedélyezi a Segédnek a képernyőn lévő tartalmak használatát</translation>
 <translation id="8624205858755890468">Engedélyezi a Segédnek a kapcsolódó információk, alkalmazások és műveletek megjelenítését.</translation>
-<translation id="178309940312315155">Az „Ok Brave Software” felismerése</translation>
-<translation id="3476912025629168202">Bármikor hozzáférhet Segédjéhez. Mondja bekapcsolt képernyő mellett azt, hogy „Ok Brave Software”.</translation>
+<translation id="8669919703154928649">Engedélyezheti az Asszisztensnek az értesítések megjelenítését</translation>
+<translation id="3430342160185525240">Engedélyezi a Segédnek, hogy értesítéseket jelenítsen meg Önnek.</translation>
 <translation id="3908743412684152579">Brave Software Segéd-beállítások</translation>
 <translation id="4933484234309072027">be van ágyazva itt: <ph name="URL"/></translation>
 <translation id="8427292751741042100">beágyazva bármilyen más gazdagépen</translation>
@@ -2050,6 +2014,8 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6295158916970320988">Az összes webhely</translation>
 <translation id="7625568159987162309">A webhelyek engedélyeinek és az általuk tárolt adatoknak a megtekintése</translation>
 <translation id="3735740477244556633">Rendezés</translation>
+<translation id="6503077044568424649">Gyakori</translation>
+<translation id="967624055006145463">Tárolt adatok</translation>
 <translation id="2787354132612937472">–</translation>
 <translation id="1919345977826869612">Hirdetések</translation>
 <translation id="5649053991847567735">Automatikus letöltések</translation>
@@ -2125,7 +2091,6 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="3038675903128704560">Ne engedje egyetlen webhelynek sem, hogy beépülő modul segítségével hozzáférjen a számítógéphez</translation>
 <translation id="857943718398505171">Engedélyezve (ajánlott)</translation>
 <translation id="5000922062037820727">Letiltva (ajánlott)</translation>
-<translation id="8116925261070264013">Némítva</translation>
 <translation id="8708000541097332489">Törlés kilépéskor</translation>
 <translation id="8037357227543935929">Kérdezzen rá (alapértelmezés szerint)</translation>
 <translation id="3427092606871434483">Engedélyezés (alapértelmezett)</translation>
@@ -2222,7 +2187,6 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="7311891583377621132">Óvatosan mozgassa ujját az ujjlenyomat újabb részének rögzítéséhez</translation>
 <translation id="7345706641791090287">Erősítse meg a jelszót</translation>
 <translation id="381202950560906753">Még egy hozzáadása</translation>
-<translation id="3625538291267447988">A Smart Lock beállításához adja meg jelszavát</translation>
 <translation id="6658023813581644008">A Smart Lock bejelentkezéshez való beállításához adja meg jelszavát</translation>
 <translation id="5449551289610225147">Érvénytelen jelszó</translation>
 <translation id="5374359983950678924">Kép lecserélése</translation>
@@ -2262,8 +2226,8 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="2709516037105925701">Automatikus kitöltés</translation>
 <translation id="1644574205037202324">Előzmények</translation>
 <translation id="5117427536932535467">Témák és háttérképek</translation>
+<translation id="7029809446516969842">Jelszavak</translation>
 <translation id="3259418918864581163">A Brave Software Pay szolgáltatást használó hitelkártyák és címek.</translation>
-<translation id="4439834757335393741">A Brave Software Pay szolgáltatásban használt fizetési módok és címek.</translation>
 <translation id="3268451620468152448">Megnyitott lapok</translation>
 <translation id="5241892180459725878">Brave Software Drive-beli keresési javaslatok</translation>
 <translation id="2120297377148151361">Tevékenység és interakciók</translation>
@@ -2334,6 +2298,8 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="1114202307280046356">Gyémánt</translation>
 <translation id="89720367119469899">Vezérlő</translation>
 <translation id="5583640892426849032">Backspace</translation>
+<translation id="1938351510777341717">Külső parancs</translation>
+<translation id="585979798156957858">Külső meta</translation>
 <translation id="4991420928586866460">A legfelső sor billentyűi legyenek funkcióbillentyűk</translation>
 <translation id="85486688517848470">A legfelső billentyűsor viselkedésének módosításához tartsa lenyomva a keresőgombot</translation>
 <translation id="4400632832271803360">A legfelső billentyűsor viselkedésének módosításához tartsa lenyomva az Indítót</translation>
@@ -2435,10 +2401,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="2315821125498993513">Nem sikerült kapcsolódni a telefonhoz. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Better Together bekapcsolva</translation>
 <translation id="3088402208262982892">Better Together kikapcsolva</translation>
-<translation id="2079079131837725321">A Bravebook feloldása telefonnal. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
 <translation id="5430931332414098647">Azonnali internetmegosztás</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Szöveges üzenetet küldhet és fogadhat a Bravebookon.</translation>
 <translation id="3936335337858561470">Felejtse el ezt az eszközt</translation>
 <translation id="3606712892509067288">Eltávolítás a Better Together szolgáltatásból</translation>
 <translation id="7878562273885520351">Előfordultat, hogy jelszava már nem biztonságos</translation>
@@ -2569,7 +2532,9 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6112294629795967147">Érintse meg az átméretezéshez</translation>
 <translation id="2453860139492968684">Befejezés</translation>
 <translation id="1853692000353488670">Új inkognitólap</translation>
+<translation id="6336451774241870485">Új privát lap</translation>
 <translation id="5530766185686772672">Inkognitólapok bezárása</translation>
+<translation id="6610147964972079463">Privát lapok bezárása</translation>
 <translation id="8076492880354921740">Lapok</translation>
 <translation id="1049743911850919806">Inkognitómód</translation>
 </translationbundle>

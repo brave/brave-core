@@ -500,9 +500,6 @@
 <translation id="8743864605301774756">Ενημερώθηκε πριν από 1 ώρα</translation>
 <translation id="5638497698949808140">Ενημερώθηκε πριν από <ph name="HOURS"/> ώρες</translation>
 <translation id="1329584516321524826">Ενημερώθηκε μόλις τώρα</translation>
-<translation id="8679788109894721265">Αυτή η σελίδα χρησιμοποιεί περισσότερα από <ph name="MEGABYTES"/> MB</translation>
-<translation id="8369547389711988632">Διακόπηκε η φόρτωση</translation>
-<translation id="4280864916190672950">Διακοπή φόρτωσης</translation>
 <translation id="2724841811573117416">Αρχεία καταγραφής WebRTC</translation>
 <translation id="7518150891539970662">Αρχεία καταγραφής WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Έγινε λήψη αρχείου καταγραφής WebRTC <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
@@ -589,7 +586,7 @@
 <translation id="7554791636758816595">Νέα καρτέλα</translation>
 <translation id="3915280005470252504">Αναζήτηση με φωνή</translation>
 <translation id="3153862085237805241">Αποθήκευση κάρτας</translation>
-<translation id="4961000125720751066">Οι κάρτες σας θα πρέπει να είναι σε ένα σημείο</translation>
+<translation id="1593926297800505364">Αποθήκευση τρόπου πληρωμής</translation>
 <translation id="2473195200299095979">Μετάφραση αυτής της σελίδας</translation>
 <translation id="5408750356094797285">Εστίαση <ph name="PERCENT"/></translation>
 <translation id="6659213950629089752">Έγινε εστίαση σε αυτήν τη σελίδα από την επέκταση "<ph name="NAME"/>"</translation>
@@ -1049,7 +1046,6 @@
 <translation id="5562781907504170924">Αυτή η καρτέλα είναι συνδεδεμένη σε μια συσκευή Bluetooth.</translation>
 <translation id="5884474295213649357">Αυτή η καρτέλα είναι συνδεδεμένη σε μια συσκευή USB.</translation>
 <translation id="8466417995783206254">Αυτή η καρτέλα αναπαράγει κάποιο βίντεο στη λειτουργία picture-in-picture.</translation>
-<translation id="6235700927623181151">Αυτή η καρτέλα μοιράζεται το περιεχόμενο της επιφάνειας εργασίας σας.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Εγγραφή κάμερας ή μικροφώνου</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Το περιεχόμενο της καρτέλας είναι κοινόχρηστο</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Αναπαραγωγή βίντεο στη λειτουργία picture-in-picture</translation>
@@ -1114,35 +1110,6 @@
 <translation id="874689135111202667">{0,plural, =1{Θέλετε να ανεβάσετε ένα αρχείο σε αυτόν τον ιστότοπο;}other{Θέλετε να ανεβάσετε # αρχεία σε αυτόν τον ιστότοπο;}}</translation>
 <translation id="1956390763342388273">Αυτή η ενέργεια θα ανεβάσει όλα τα αρχεία από το φάκελο "<ph name="FOLDER_PATH"/>". Κάντε την ενέργεια μόνο αν εμπιστεύεστε τον ιστότοπο.</translation>
 <translation id="1243314992276662751">Μεταφόρτωση</translation>
-<translation id="2446585455334014596">Η εφαρμογή <ph name="APP_NAME"/> θέλει να επαληθεύσει την ταυτότητά σας</translation>
-<translation id="3738671331307774213">Η επαλήθευση της ταυτότητάς σας συμβάλλει στην προστασία των προσωπικών δεδομένων σας</translation>
-<translation id="8435395510592618362">Επαληθεύστε την ταυτότητά σας με την εφαρμογή <ph name="APP_NAME"/></translation>
-<translation id="3854599674806204102">Ορίστε μια επιλογή</translation>
-<translation id="7490950320178383728">Χρήση του Κλειδιού ασφαλείας σας με Bluetooth</translation>
-<translation id="414599683948988413">Χρήση του Κλειδιού ασφαλείας σας με USB</translation>
-<translation id="7851816139220202929">Χρήση του Κλειδιού ασφαλείας σας με NFC</translation>
-<translation id="5392327114396848796">Χρήση ενσωματωμένου Κλειδιού ασφαλείας</translation>
-<translation id="5104546332954397226">Χρήση του τηλεφώνου σας ως Κλειδιού ασφαλείας</translation>
-<translation id="2876441201733326392">Χρήση Κλειδιού ασφαλείας USB</translation>
-<translation id="5842053879378944309">Χρήση του Κλειδιού ασφαλείας USB με την εφαρμογή <ph name="APP_NAME"/></translation>
-<translation id="6896398788631624004">Συνδέστε το Κλειδί ασφαλείας σας και ενεργοποιήστε το</translation>
-<translation id="8033958968890501070">Λήξη ορίου χρόνου</translation>
-<translation id="7102832101143475489">Το χρονικό όριο αιτήματος έληξε</translation>
-<translation id="3670229581627177274">Ενεργοποίηση Bluetooth</translation>
-<translation id="3880709822663530586">Το Κλειδί ασφαλείας λειτουργεί μόνο όταν το Bluetooth της συσκευής σας είναι ενεργό</translation>
-<translation id="1183378459020939734">Είστε έτοιμοι για τη σύζευξη του Κλειδιού ασφαλείας σας;</translation>
-<translation id="237058345584060620">Δημιουργήστε σύζευξη μεταξύ του κλειδιού σας και αυτής της συσκευής, για να μπορείτε να τη χρησιμοποιήσετε για σύνδεση στον λογαριασμό σας</translation>
-<translation id="1875312262568496299">Έναρξη</translation>
-<translation id="3104900172193317662">Επιτρέψτε τη χρήση του Κλειδιού ασφαλείας σας</translation>
-<translation id="2492040222276243256">Πατήστε παρατεταμένα το κουμπί στο κλειδί ασφαλείας σας για τουλάχιστον 5 δευτερόλεπτα</translation>
-<translation id="6427415464407526111">Επιλέξτε το Κλειδί ασφαλείας σας</translation>
-<translation id="2633326789677284179">Βρείτε το όνομα που αναγράφεται στο πίσω μέρος του κλειδιού σας</translation>
-<translation id="5660204307954428567">Σύζευξη με τη συσκευή <ph name="DEVICE_NAME"/></translation>
-<translation id="8984872292925913496">Βρείτε τον 6ψήφιο αριθμό PIN που βρίσκεται στο πίσω μέρος του κλειδιού σας</translation>
-<translation id="1201402288615127009">Επόμενο</translation>
-<translation id="1792161662640298233">Επαλήθευση του Κλειδιού ασφαλείας σας</translation>
-<translation id="2321482478556590128">Χρήση του Κλειδιού ασφαλείας σας με την εφαρμογή <ph name="APP_NAME"/></translation>
-<translation id="5292195676005197571">Για να χρησιμοποιήσετε τα περισσότερα κλειδιά, απλώς πατήστε το κουμπί</translation>
 <translation id="3785308913036335955">Εμφάνιση συντόμευσης εφαρμογών</translation>
 <translation id="711840821796638741">Εμφάνιση διαχειριζόμενων σελιδοδεικτών</translation>
 <translation id="3613134908380545408">Εμφάνιση <ph name="FOLDER_NAME"/></translation>
@@ -1510,6 +1477,7 @@
 <translation id="6902066522699286937">Φωνή για προεπισκόπηση</translation>
 <translation id="304747341537320566">Μηχανές ομιλίας</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
+<translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Εκτελέστε εργαλεία, προγράμματα επεξεργασίας και IDE Linux στο Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Μάθετε περισσότερα&amp;lt;/a&amp;gt;</translation>
 <translation id="6869910261738842136">Κατάργηση εφαρμογών Linux για Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
@@ -1549,17 +1517,14 @@
 <translation id="8647834505253004544">Μη έγκυρη διεύθυνση ιστού</translation>
 <translation id="2149850907588596975">Κωδικοί πρόσβασης και φόρμες</translation>
 <translation id="8639963783467694461">Ρυθμίσεις αυτόματης συμπλήρωσης</translation>
-<translation id="3431019676184503003">Διευθύνσεις και τρόποι πληρωμής</translation>
 <translation id="2512222046227390255">Συμπληρώστε αυτόματα φόρμες</translation>
-<translation id="2283340219607151381">Αποθήκευση και συμπλήρωση διευθύνσεων</translation>
-<translation id="1662550410081243962">Αποθήκευση και συμπλήρωση τρόπων πληρωμής</translation>
-<translation id="2903493209154104877">Διευθύνσεις</translation>
 <translation id="7764225426217299476">Προσθήκη διεύθυνσης</translation>
 <translation id="5595485650161345191">Επεξεργασία διεύθυνσης</translation>
 <translation id="6207937957461833379">Χώρα/Περιοχή</translation>
 <translation id="4378154925671717803">Τηλέφωνο</translation>
 <translation id="5659593005791499971">Διεύθυνση ηλεκτρονικού ταχυδρομείου</translation>
-<translation id="5565871407246142825">Πιστωτικές κάρτες</translation>
+<translation id="5762172915276660232">Ρυθμίσεις πιστωτικής κάρτας</translation>
+<translation id="4499718683476608392">Ενεργοποίηση Αυτόματης συμπλήρωσης στοιχείων πιστωτικής κάρτας για τη συμπλήρωση φορμών με ένα μόνο κλικ</translation>
 <translation id="2448312741937722512">Τύπος</translation>
 <translation id="9064275926664971810">Ενεργοποίηση Αυτόματης συμπλήρωσης για τη συμπλήρωση φορμών με ένα μόνο κλικ</translation>
 <translation id="5029568752722684782">Διαγραφή αντιγράφου</translation>
@@ -1645,7 +1610,6 @@
 <translation id="4699172675775169585">Εικόνες και αρχεία στην κρυφή μνήμη</translation>
 <translation id="1274997165432133392">Εμφάνιση cookie και άλλων δεδομένων ιστότοπου</translation>
 <translation id="3838543471119263078">Cookie και άλλα δεδομένα ιστότοπου και προσθηκών</translation>
-<translation id="7029809446516969842">Κωδικοί πρόσβασης</translation>
 <translation id="6865313869410766144">Δεδομένα φόρμας αυτόματης συμπλήρωσης</translation>
 <translation id="177336675152937177">Δεδομένα φιλοξενούμενης εφαρμογής</translation>
 <translation id="1718835860248848330">Τελευταία ώρα</translation>
@@ -2040,8 +2004,8 @@
 <translation id="7136694880210472378">Ορισμός ως προεπιλογής</translation>
 <translation id="102272308210570439">Επιτρέψτε στον Βοηθό να χρησιμοποιεί το περιεχόμενο της οθόνης σας</translation>
 <translation id="8624205858755890468">Επιτρέπει στον Βοηθό να σας εμφανίζει σχετικές πληροφορίες, εφαρμογές και ενέργειες.</translation>
-<translation id="178309940312315155">Ανίχνευση "Ok Brave Software"</translation>
-<translation id="3476912025629168202">Μεταβείτε στον Βοηθό σας οποιαδήποτε στιγμή λέγοντας "OK Brave Software" ενώ η οθόνη σας είναι ενεργή.</translation>
+<translation id="8669919703154928649">Επιτρέψτε στον Βοηθό να εμφανίζει ειδοποιήσεις</translation>
+<translation id="3430342160185525240">Επιτρέπει στον Βοηθό να εμφανίζει ειδοποιήσεις.</translation>
 <translation id="3908743412684152579">Ρυθμίσεις του Βοηθού Brave Software</translation>
 <translation id="4933484234309072027">ενσωματωμένο σε <ph name="URL"/></translation>
 <translation id="8427292751741042100">ενσωματωμένο σε οποιονδήποτε κεντρικό υπολογιστή</translation>
@@ -2049,6 +2013,8 @@
 <translation id="6295158916970320988">Όλοι οι ιστότοποι</translation>
 <translation id="7625568159987162309">Δείτε άδειες και δεδομένα που έχουν αποθηκευτεί σε ιστοτόπους</translation>
 <translation id="3735740477244556633">Ταξινόμηση κατά</translation>
+<translation id="6503077044568424649">Πιο δημοφιλή</translation>
+<translation id="967624055006145463">Αποθηκευμένα δεδομένα</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Διαφημίσεις</translation>
 <translation id="5649053991847567735">Αυτόματες λήψεις</translation>
@@ -2124,7 +2090,6 @@
 <translation id="3038675903128704560">Να μην επιτρέπεται σε κανέναν ιστότοπο η χρήση προσθήκης για απόκτηση πρόσβασης στον υπολογιστή σας</translation>
 <translation id="857943718398505171">Επιτρέπεται (συνιστάται)</translation>
 <translation id="5000922062037820727">Αποκλείεται (συνιστάται)</translation>
-<translation id="8116925261070264013">Σε σίγαση</translation>
 <translation id="8708000541097332489">Διαγραφή κατά την έξοδο</translation>
 <translation id="8037357227543935929">Να γίνεται ερώτηση (προεπιλογή)</translation>
 <translation id="3427092606871434483">Να επιτρέπεται (προεπιλογή)</translation>
@@ -2221,7 +2186,6 @@
 <translation id="7311891583377621132">Μετακινήστε ελαφρώς για να αποτυπώσετε ένα διαφορετικό τμήμα του δακτυλικού αποτυπώματος</translation>
 <translation id="7345706641791090287">Επιβεβαιώστε τον κωδικό πρόσβασής σας</translation>
 <translation id="381202950560906753">Προσθήκη άλλης συσκευής</translation>
-<translation id="3625538291267447988">Για να ρυθμίσετε το Smart Lock, εισαγάγετε τον κωδικό πρόσβασής σας</translation>
 <translation id="6658023813581644008">Για να ρυθμίσετε το Smart Lock για σύνδεση, εισαγάγετε τον κωδικό πρόσβασής σας</translation>
 <translation id="5449551289610225147">Μη έγκυρος κωδικός πρόσβασης</translation>
 <translation id="5374359983950678924">Αλλαγή εικόνας</translation>
@@ -2261,8 +2225,8 @@
 <translation id="2709516037105925701">Αυτόματη συμπλήρωση</translation>
 <translation id="1644574205037202324">Ιστορικό</translation>
 <translation id="5117427536932535467">Θέματα και ταπετσαρίες</translation>
+<translation id="7029809446516969842">Κωδικοί πρόσβασης</translation>
 <translation id="3259418918864581163">Πιστωτικές κάρτες και διευθύνσεις που χρησιμοποιούν το Brave Software Pay.</translation>
-<translation id="4439834757335393741">Τρόποι πληρωμής και διευθύνσεις που χρησιμοποιούν το Brave Software Pay.</translation>
 <translation id="3268451620468152448">Ανοικτές καρτέλες</translation>
 <translation id="5241892180459725878">Προτάσεις αναζήτησης Brave Software Drive</translation>
 <translation id="2120297377148151361">Δραστηριότητα και αλληλεπιδράσεις</translation>
@@ -2333,6 +2297,8 @@
 <translation id="1114202307280046356">Εξάγωνο</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Πλήκτρο Backspace</translation>
+<translation id="1938351510777341717">Εξωτερικό πλήκτρο Command</translation>
+<translation id="585979798156957858">Εξωτερικά μεταδεδομένα</translation>
 <translation id="4991420928586866460">Χρήση πλήκτρων πρώτης σειράς ως πλήκτρων ενεργειών</translation>
 <translation id="85486688517848470">Πατήστε παρατεταμένα το πλήκτρο αναζήτησης για να αλλάξετε τη συμπεριφορά των πλήκτρων της επάνω σειράς</translation>
 <translation id="4400632832271803360">Πατήστε παρατεταμένα το πλήκτρο Εφαρμογής εκκίνησης, για να αλλάξετε τη συμπεριφορά των πλήκτρων της επάνω σειράς</translation>
@@ -2434,10 +2400,7 @@
 <translation id="2315821125498993513">Δεν ήταν δυνατή η σύνδεση στο τηλέφωνο. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Η λειτουργία Better Together είναι ενεργή</translation>
 <translation id="3088402208262982892">Η λειτουργία Better Together είναι απενεργοποιημένη</translation>
-<translation id="2079079131837725321">Ξεκλειδώστε το Bravebook με το τηλέφωνό σας. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Άμεση σύνδεση</translation>
-<translation id="3059313675706898490">Android Messages</translation>
-<translation id="7095175330464035635">Στείλτε και λάβετε μηνύματα κειμένου μέσω του Bravebook</translation>
 <translation id="3936335337858561470">Διαγραφή αυτής της συσκευής</translation>
 <translation id="3606712892509067288">Κατάργηση από τη λειτουργία Better Together</translation>
 <translation id="7878562273885520351">Ο κωδικός πρόσβασής σας μπορεί να έχει παραβιαστεί</translation>
@@ -2568,7 +2531,9 @@
 <translation id="6112294629795967147">Αγγίξτε για αλλαγή μεγέθους</translation>
 <translation id="2453860139492968684">Τέλος</translation>
 <translation id="1853692000353488670">Νέα καρτέλα ανώνυμης περιήγησης</translation>
+<translation id="6336451774241870485">Νέα καρτέλα ιδιωτικής περιήγησης</translation>
 <translation id="5530766185686772672">Κλείσιμο καρτ.ανών.περιήγ.</translation>
+<translation id="6610147964972079463">Κλείσιμο ιδιωτικών καρτελών</translation>
 <translation id="8076492880354921740">Καρτέλες</translation>
 <translation id="1049743911850919806">Ανώνυμη περιήγηση</translation>
 </translationbundle>

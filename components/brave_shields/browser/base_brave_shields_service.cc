@@ -15,7 +15,7 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/task_runner_util.h"
-#include "base/task_scheduler/post_task.h"
+#include "base/task/post_task.h"
 #include "base/threading/thread_restrictions.h"
 
 namespace brave_shields {

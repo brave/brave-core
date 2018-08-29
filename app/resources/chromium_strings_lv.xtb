@@ -34,7 +34,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="5785919770853225148">Pārlūks Brave saglabās šo paroli jūsu Brave Software kontā. To nav nepieciešams iegaumēt.</translation>
 <translation id="3343095737966473035">Brave nav jūsu noklusējuma pārlūks.</translation>
 <translation id="6715663530666325392">Iestatiet sinhronizāciju, lai saglabātu savas personalizētās pārlūka funkcijas tīmeklī un piekļūtu tām no Brave jebkurā datorā.</translation>
-<translation id="2708027082363760195">Pārlūka Brave komplektācijā nav PDF skatītāja, kas nepieciešams funkcijas Drukas priekšskatījums darbībai.</translation>
 <translation id="8880183781256147665">Notiek pievienošana pārlūkam Brave...</translation>
 <translation id="3561569806301739367">Fails <ph name="FILE_NAME"/> var būt bīstams, tādēļ Brave to bloķēja.</translation>
 <translation id="9067428552314418522">Šis fails ir bīstams, tāpēc Brave to bloķēja.</translation>
@@ -82,6 +81,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="3215652305414474626">Tas nosaka arī to, kāda lapa tiks rādīta, kad atvērsiet pārlūku Brave vai noklikšķināsiet uz pogas “Sākums”.</translation>
 <translation id="2433912322225810055">Tas nosaka arī to, kāda lapa tiks rādīta, kad atvērsiet pārlūku Brave vai meklēsiet, izmantojot universālo lodziņu.</translation>
 <translation id="2871190378186459992">Atklājiet lieliskas lietotnes, spēles, paplašinājumus un motīvus, ko varat izmantot pārlūkā Brave.</translation>
+<translation id="2522086024276534909">Brave OS restartēšana</translation>
 <translation id="8183252473547465084">Lai lietotu atjauninājumu, operētājsistēma Brave ir jārestartē.</translation>
 <translation id="5895138241574237353">Restartēt</translation>
 <translation id="5875673934455379806">Pārinstalēt Brave</translation>

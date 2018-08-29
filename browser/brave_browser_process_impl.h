@@ -26,7 +26,7 @@ class BraveTorClientUpdater;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
-  BraveBrowserProcessImpl(base::SequencedTaskRunner* local_state_task_runner);
+  BraveBrowserProcessImpl();
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.
