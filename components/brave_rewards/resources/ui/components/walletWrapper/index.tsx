@@ -60,8 +60,8 @@ export interface Props {
   converted: string | null
   actions: ActionWallet[]
   connectedWallet?: boolean
-  compact: boolean
-  contentPadding: boolean
+  compact?: boolean
+  contentPadding?: boolean
   showCopy?: boolean
   children?: React.ReactNode
   showSecActions?: boolean
