@@ -44,8 +44,8 @@ brave_extensions_api_schema_include_rules =
 
 brave_extensions_api_deps = [
   "//chrome/common/extensions/api",
-  "//extensions/browser",
   "//extensions/common/api",
+  "//skia",
   ":api_features",
   ":permission_features",
   ":manifest_features",
