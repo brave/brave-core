@@ -673,6 +673,10 @@ void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
   return ledger_->SetPublisherAllowNonVerified(allow);
 }
 
+void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
+  return ledger_->SetPublisherAllowVideos(allow);
+}
+
 void RewardsServiceImpl::SetContributionAmount(double amount) const {
   return ledger_->SetContributionAmount(amount);
 }

@@ -56,6 +56,7 @@ class RewardsService : public KeyedService {
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const = 0;
   virtual void SetPublisherMinVisits(unsigned int visits) const = 0;
   virtual void SetPublisherAllowNonVerified(bool allow) const = 0;
+  virtual void SetPublisherAllowVideos(bool allow) const = 0;
   virtual void SetContributionAmount(double amount) const = 0;
 
   void AddObserver(RewardsServiceObserver* observer);

@@ -339,6 +339,10 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     if (key == "contributionNonVerified") {
       rewards_service_->SetPublisherAllowNonVerified(value == "true");
     }
+
+    if (key == "contributionVideos") {
+      rewards_service_->SetPublisherAllowVideos(value == "true");
+    }
   }
 }
 

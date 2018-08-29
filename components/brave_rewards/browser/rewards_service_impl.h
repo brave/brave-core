@@ -147,6 +147,7 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
   void SetPublisherMinVisits(unsigned int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
+  void SetPublisherAllowVideos(bool allow) const override;
   void SetContributionAmount(double amount) const override;
 
   // URLFetcherDelegate impl
