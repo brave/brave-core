@@ -225,7 +225,7 @@ void RewardsServiceImpl::GetContentSiteList(
       std::bind(&GetContentSiteListInternal,
                 start,
                 limit,
-                std::cref(callback), _1, _2));
+                callback, _1, _2));
 }
 
 void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
