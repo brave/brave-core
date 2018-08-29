@@ -420,7 +420,7 @@ std::vector<ledger::ContributionInfo> BatPublishers::GetRecurringDonationList() 
 }
 
 void BatPublishers::RefreshPublishersList(const std::string & pubs_list) {
-  ledger_->SavePublishersList(pubs_list, this);
+  ledger_->SavePublishersList(pubs_list);
 }
 
 void BatPublishers::OnPublishersListSaved(ledger::Result result) {

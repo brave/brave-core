@@ -176,8 +176,7 @@ void LedgerImpl::SavePublisherState(const std::string& data,
 }
 
 
-void LedgerImpl::SavePublishersList(const std::string& data,
-  ledger::LedgerCallbackHandler* handler) {
+void LedgerImpl::SavePublishersList(const std::string& data) {
   ledger_client_->SavePublishersList(data, this);
 }
 
