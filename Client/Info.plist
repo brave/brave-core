@@ -29,11 +29,13 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>org.mozilla.Client</string>
+			<string>com.brave.ios</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>firefox</string>
+				<string>brave</string>
 				<string>$(MOZ_INTERNAL_URL_SCHEME)</string>
 			</array>
 		</dict>
