@@ -217,7 +217,6 @@ class BrowserViewController: UIViewController {
             navigationToolbar.updateBackStatus(webView.canGoBack)
             navigationToolbar.updateForwardStatus(webView.canGoForward)
             urlBar.locationView.loading = tab.loading
-            // TODO: Update reload status on TabLocationView
         }
         
         updateTabsBarVisibility()
@@ -1288,7 +1287,7 @@ extension BrowserViewController: URLBarDelegate {
             alert.popoverPresentationController?.sourceRect = self.view.convert(button.frame, from: button.superview)
             alert.popoverPresentationController?.permittedArrowDirections = [.up]
         }
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
     }
 
     func urlBarDidPressTabs(_ urlBar: URLBarView) {
@@ -1361,7 +1360,7 @@ extension BrowserViewController: URLBarDelegate {
             updateDisplayedPopoverProperties = setupPopover
         }
         
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true)
     }
 
     func urlBarDidPressScrollToTop(_ urlBar: URLBarView) {
@@ -1467,10 +1466,6 @@ extension BrowserViewController: URLBarDelegate {
             // BRAVE TODO: Port over proper tab reloading with Shields
         }
         let popover = PopoverController(contentController: shields, contentSizeBehavior: .preferredContentSize)
-        if UIDevice.current.orientation.isPortrait {
-            // Leave some space near the bottom for easier dismissal
-            popover.outerMargins.bottom = 80.0
-        }
         popover.present(from: urlBar.shieldsButton, on: self)
     }
     
@@ -1480,12 +1475,7 @@ extension BrowserViewController: URLBarDelegate {
         let homePanel = HomeMenuController(profile: profile, tabState: selectedTab.tabState)
         homePanel.preferredContentSize = CGSize(width: PopoverController.preferredPopoverWidth, height: 600.0)
         homePanel.delegate = self
-        //        homePanel.view.heightAnchor.constraint(equalToConstant: 580.0).isActive = true
         let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
-        if UIDevice.current.orientation.isPortrait {
-            // Leave some space near the bottom for easier dismissal
-            popover.outerMargins.bottom = 80.0
-        }
         popover.present(from: urlBar.menuButton, on: self)
     }
 }
