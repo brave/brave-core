@@ -38,20 +38,16 @@ if sys.platform in ['win32', 'cygwin']:
 
 def main():
   args = parse_args()
-  build_bundle(args.repo_dir_path, args.result_src, args.result_dst)
+  build_bundle(args.repo_dir_path)
 
 def parse_args():
   parser = argparse.ArgumentParser(description='Build js bundle')
   parser.add_argument('-d', '--repo_dir_path',
                       help='Dir where to make the bundle')
-  parser.add_argument('-s', '--result_src',
-                      help='Relative dir in repo where to take result bundle from')
-  parser.add_argument('-t', '--result_dst',
-                      help='Absolute dir where to copy result to')
   return parser.parse_args()
 
 
-def build_bundle(dir_path, result_src, result_dst, env=None):
+def build_bundle(dir_path, env=None):
   if env is None:
     env = os.environ.copy()
 
@@ -62,16 +58,6 @@ def build_bundle(dir_path, result_src, result_dst, env=None):
   args = [NPM, 'run', 'build']
   with scoped_cwd(dir_path):
     execute_stdout(args, env)
-
-  result_src_file_path = os.path.join(dir_path, result_src);
-  result_dest_file_path = os.path.join(result_dst, result_src)
-
-  try:
-    os.stat(os.path.dirname(result_dest_file_path))
-  except:
-    os.mkdir(os.path.dirname(result_dest_file_path))
-
-  copyfile(result_src_file_path, result_dest_file_path)
 
 if __name__ == '__main__':
   sys.exit(main())
