@@ -43,6 +43,7 @@ declare namespace Rewards {
       walletServerProblem: boolean
       modalBackup: boolean
     }
+    autoContributeList: Publisher[]
   }
 
   export interface ComponentProps {
@@ -78,5 +79,14 @@ declare namespace Rewards {
     result: Result,
     statusCode: number,
     expiryTime: number
+  }
+
+  export interface Publisher {
+    publisherKey: string
+    percentage: number
+    verified: boolean
+    url: string
+    name: string
+    provider: string
   }
 }

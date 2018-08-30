@@ -77,8 +77,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onAddresses(addresses)
   }
 
-  function contributeList (list: any) {
-    console.log(list)
+  function contributeList (list: Rewards.Publisher[]) {
+    getActions().onContributeList(list)
   }
 
   return {

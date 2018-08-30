@@ -359,16 +359,19 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList> list, uint32_t record) {
   if (rewards_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
-//    auto publishers = std::make_unique<base::ListValue>();
-//    for (auto const& item : *list) {
-//      auto publisher = std::make_unique<base::DictionaryValue>();
-//      publisher->SetDouble("percentage", item.percentage);
-//      publisher->SetString("id", item.id);
-//      publishers->Append(std::move(publisher));
-//    }
+    auto publishers = std::make_unique<base::ListValue>();
+    for (auto const& item : *list) {
+      auto publisher = std::make_unique<base::DictionaryValue>();
+      publisher->SetDouble("percentage", item.percentage);
+      publisher->SetString("publisherKey", item.id);
+      publisher->SetString("name", item.id); // TODO NZ implement
+      publisher->SetString("provider", ""); // TODO NZ implement
+      publisher->SetString("url", std::string("https://") + item.id); // TODO NZ implement
+      publisher->SetBoolean("verified", true); // TODO NZ implement
+      publishers->Append(std::move(publisher));
+    }
 
-    //web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributeList", *publishers);
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributeList", base::Value('test'));
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributeList", *publishers);
   }
 }
 

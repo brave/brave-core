@@ -27,5 +27,6 @@ export const enum types {
   ON_RECONCILE_STAMP = '@@rewards/ON_RECONCILE_STAMP',
   GET_ADDRESSES = '@@rewards/GET_ADDRESSES',
   ON_ADDRESSES = '@@rewards/ON_ADDRESSES',
-  ON_QR_GENERATED = '@@rewards/ON_QR_GENERATED'
+  ON_QR_GENERATED = '@@rewards/ON_QR_GENERATED',
+  ON_CONTRIBUTE_LIST = '@@rewards/ON_CONTRIBUTE_LIST'
 }

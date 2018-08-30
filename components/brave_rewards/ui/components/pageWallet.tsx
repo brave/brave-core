@@ -243,6 +243,7 @@ class PageWallet extends React.Component<Props, State> {
                     provider: 'youtube',
                     src: ''
                   },
+                  url: 'https://brave.com',
                   attention: 40,
                   onRemove: this.onModalActivityRemove,
                   token: {

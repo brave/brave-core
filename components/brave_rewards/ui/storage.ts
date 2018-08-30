@@ -35,7 +35,8 @@ const defaultState: Rewards.State = {
     emptyWallet: true,
     walletServerProblem: false,
     modalBackup: false
-  }
+  },
+  autoContributeList: []
 }
 
 const cleanData = (state: Rewards.State) => state

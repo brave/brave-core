@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 // Components
 import { Checkbox, Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, NextContribution } from 'brave-ui/features/rewards'
+import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -39,65 +40,24 @@ class ContributeBox extends React.Component<Props, State> {
     }
   }
 
-  // TODO remove
-  getContributeRows = () => {
-    return [
-      {
+  getContributeRows = (list: Rewards.Publisher[]) => {
+    if (!list) {
+      return []
+    }
+
+    return list.map((item: Rewards.Publisher) => {
+      return {
         profile: {
-          name: 'Bart Baker',
-          verified: true,
-          provider: 'youtube',
+          name: item.name,
+          verified: item.verified,
+          provider: (item.provider ? item.provider : undefined) as Provider,
           src: bartBaker
         },
-        attention: 40,
-        onRemove: () => { console.log('Bar') }
-      },
-      {
-        profile: {
-          name: 'duckduckgo.com',
-          verified: true,
-          src: bartBaker
-        },
-        attention: 20,
-        onRemove: () => { console.log('duckduckgo') }
-      },
-      {
-        profile: {
-          name: 'buzzfeed.com',
-          verified: false,
-          src: bartBaker
-        },
-        attention: 10,
-        onRemove: () => { console.log('buzzfeed') }
-      },
-      {
-        profile: {
-          name: 'theguardian.com',
-          verified: true,
-          src: bartBaker
-        },
-        attention: 5,
-        onRemove: () => { console.log('theguardian') }
-      },
-      {
-        profile: {
-          name: 'wikipedia.org',
-          verified: false,
-          src: bartBaker
-        },
-        attention: 4,
-        onRemove: () => { console.log('wikipedia') }
-      },
-      {
-        profile: {
-          name: 'wikipedia.org',
-          verified: false,
-          src: bartBaker
-        },
-        attention: 1,
-        onRemove: () => { console.log('wikipedia') }
+        url: item.url,
+        attention: item.percentage,
+        onRemove: () => { console.log('remove publisher') }
       }
-    ] as any
+    })
   }
 
   get actions () {
@@ -210,12 +170,14 @@ class ContributeBox extends React.Component<Props, State> {
       walletInfo,
       contributionMonthly,
       enabledContribute,
-      reconcileStamp
+      reconcileStamp,
+      autoContributeList
     } = this.props.rewardsData
     const toggleOn = !(firstLoad !== false || !enabledMain)
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, walletInfo.rates)
-    const contributeRows = this.getContributeRows()
-    const numRows = contributeRows.length
+    const contributeRows = this.getContributeRows(autoContributeList)
+    const topRows = contributeRows.slice(0, 5)
+    const numRows = autoContributeList && autoContributeList.length
     const allSites = !(numRows > 5)
 
     return (
@@ -263,7 +225,7 @@ class ContributeBox extends React.Component<Props, State> {
             getLocale('site'),
             getLocale('rewardsContributeAttention')
           ]}
-          rows={contributeRows}
+          rows={topRows}
           allSites={allSites}
           numSites={numRows}
           onShowAll={this.onModalContributeToggle}

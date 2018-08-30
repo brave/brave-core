@@ -8,6 +8,7 @@ import { combineReducers } from 'redux'
 import rewardsReducer from './rewards_reducer'
 import walletReducer from './wallet_reducer'
 import grantReducer from './grant_reducer'
+import publishersReducer from './publishers_reducer'
 import * as storage from '../storage'
 
 const mergeReducers = (state: Rewards.State | undefined, action: any) => {
@@ -19,6 +20,7 @@ const mergeReducers = (state: Rewards.State | undefined, action: any) => {
   state = rewardsReducer(state, action)
   state = walletReducer(state, action)
   state = grantReducer(state, action)
+  state = publishersReducer(state, action)
 
   if (state !== startingState) {
     storage.debouncedSave(state)

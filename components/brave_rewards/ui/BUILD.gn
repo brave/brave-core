@@ -15,6 +15,7 @@ transpile_web_ui("ui") {
     "constants/rewards_types.ts",
     "reducers/index.ts",
     "reducers/grant_reducer.ts",
+    "reducers/publishers_reducer.ts",
     "reducers/rewards_reducer.ts",
     "reducers/wallet_reducer.ts",
     "storage.ts",
