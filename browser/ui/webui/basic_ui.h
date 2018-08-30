@@ -24,6 +24,7 @@ class BasicUI : public content::WebUIController {
   ~BasicUI() override;
 
  protected:
+  bool IsSafeToSetWebUIProperties() const;
   content::RenderViewHost* GetRenderViewHost();
 
  private:

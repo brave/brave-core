@@ -16,7 +16,6 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "content/public/common/bindings_policy.h"
 
 BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name, kAdblockJS,
@@ -46,13 +45,13 @@ void BraveAdblockUI::CustomizeWebUIProperties(content::RenderViewHost* render_vi
 }
 
 void BraveAdblockUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (IsSafeToSetWebUIProperties()) {
     CustomizeWebUIProperties(render_frame_host->GetRenderViewHost());
   }
 }
 
 void BraveAdblockUI::OnPreferenceChanged() {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (IsSafeToSetWebUIProperties()) {
     CustomizeWebUIProperties(GetRenderViewHost());
     web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.statsUpdated");
   }
