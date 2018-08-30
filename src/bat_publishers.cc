@@ -4,6 +4,7 @@
 
 #include "bat_publishers.h"
 
+#include <ctime>
 #include <cmath>
 #include <algorithm>
 
@@ -209,6 +210,11 @@ void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In m
 
 void BatPublishers::setPublisherMinVisits(const unsigned int& visits) {
   state_->min_visits_ = visits;
+  saveState();
+}
+
+void BatPublishers::setPublishersLastRefreshTimestamp(uint64_t ts) {
+  state_->pubs_load_timestamp_ = ts;
   saveState();
 }
 
@@ -424,7 +430,8 @@ void BatPublishers::RefreshPublishersList(const std::string & pubs_list) {
 }
 
 void BatPublishers::OnPublishersListSaved(ledger::Result result) {
-  //TODO
+  uint64_t ts = (ledger::Result::OK == result) ? std::time(nullptr) : 0ull;
+  setPublishersLastRefreshTimestamp(ts);
 }
 
 }  // namespace braveledger_bat_publisher

@@ -163,7 +163,7 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
   }
 
   OnWalletInitialized(result);
-  RefreshPublishersList();
+  RefreshPublishersList(false);
 }
 
 void LedgerImpl::SaveLedgerState(const std::string& data) {
@@ -514,56 +514,59 @@ void LedgerImpl::SetBalanceReport(const std::string& year,
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
   if (timer_id == last_pub_load_timer_id_) {
-    //download the list
+    last_pub_load_timer_id_ = 0;
 
+    //download the list
     std::string url(PUBLISHERSTAGING_SERVER);
     url += GET_PUBLISHERS_LIST_V1;
     auto url_loader = LoadURL(url, std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
     handler_.AddRequestHandler(std::move(url_loader),
       std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2));
-
   }
 }
 
 
 
 void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& response) {
-  std::random_device seeder;
-  const auto seed = seeder.entropy() ? seeder() : time(nullptr);
-  std::mt19937 eng(static_cast<std::mt19937::result_type> (seed));
-  std::uniform_int_distribution <> dist(300, 3600); //retry loading publishers list in 300-3600 seconds if failed
-  const uint64_t retry_load_pub_list_sec = dist(eng);
-
-  uint64_t timer_offset{0ull};
-
+  bool retryAfterError = true;
   if (result && !response.empty()) {
-    timer_offset = braveledger_ledger::_publishers_list_load_interval;
+    retryAfterError = false;
     bat_publishers_->RefreshPublishersList(response);
   }
-  else {
-    timer_offset = retry_load_pub_list_sec;
-  }
-  ledger_client_->SetTimer(timer_offset, last_pub_load_timer_id_);
+
+  //set timer
+  RefreshPublishersList(retryAfterError);
 }
 
-void LedgerImpl::RefreshPublishersList() {
-  //timer in progress
+void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
+  uint64_t start_timer_in{ 0ull };
+
   if (last_pub_load_timer_id_ != 0) {
+    //timer in progress
     return;
   }
 
-  uint64_t now = std::time(nullptr);
-  uint64_t lastLoadTimestamp = bat_publishers_->getLastPublishersListLoadTimestamp();
-  //check if lastLoadTimestamp doesn't exist or have erroneous value
-  // (start_timer_in == 0) is expected to call callback function immediately
-  uint64_t start_timer_in = (lastLoadTimestamp == 0ull || lastLoadTimestamp > now) ? 0ull : now - lastLoadTimestamp;
+  if (retryAfterError) {
+    std::random_device seeder;
+    const auto seed = seeder.entropy() ? seeder() : time(nullptr);
+    std::mt19937 eng(static_cast<std::mt19937::result_type> (seed));
+    std::uniform_int_distribution <> dist(300, 3600); //retry loading publishers list in 300-3600 seconds if failed
+    start_timer_in = dist(eng);
+  }
+  else {
+    uint64_t now = std::time(nullptr);
+    uint64_t lastLoadTimestamp = bat_publishers_->getLastPublishersListLoadTimestamp();
+
+    //check if lastLoadTimestamp doesn't exist or have erroneous value
+    // (start_timer_in == 0) is expected to call callback function immediately
+    start_timer_in = (lastLoadTimestamp == 0ull || lastLoadTimestamp > now) ? 0ull : now - lastLoadTimestamp;
+  }
 
   //start timer
   ledger_client_->SetTimer(start_timer_in, last_pub_load_timer_id_);
 }
 
 void LedgerImpl::OnPublishersListSaved(ledger::Result result) {
-  assert(ledger::Result::OK == result);
   bat_publishers_->OnPublishersListSaved(result);
 }
 

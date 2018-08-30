@@ -44,6 +44,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setPublisherMinVisits(const unsigned int& visits);
 
+  void setPublishersLastRefreshTimestamp(uint64_t ts);
+
   void setPublisherAllowNonVerified(const bool& allow);
   void setBalanceReport(const std::string& year, ledger::PUBLISHER_MONTH month, 
     const ledger::BalanceReportInfo& report_info);

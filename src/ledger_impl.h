@@ -161,7 +161,7 @@ class LedgerImpl : public ledger::Ledger,
   void OnLedgerStateLoaded(ledger::Result result,
                            const std::string& data) override;
 
-  void RefreshPublishersList();
+  void RefreshPublishersList(bool retryAfterError);
 
 
   ledger::LedgerClient* ledger_client_;
