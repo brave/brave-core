@@ -41,6 +41,10 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
 }
 
 BraveActionsContainer::~BraveActionsContainer() {
+  // Destroy |shields_button_view| before |shields_view_controller|.
+  // Destructor for |ToolbarActionView| tries to access controller instance.
+  shields_button_view_.reset();
+  shields_view_controller_.reset();
 }
 
 void BraveActionsContainer::Init() {
