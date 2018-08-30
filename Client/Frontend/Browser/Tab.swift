@@ -67,7 +67,7 @@ class Tab: NSObject {
 
     var userActivity: NSUserActivity?
 
-    var webView: WKWebView?
+    var webView: BraveWebView?
     var tabDelegate: TabDelegate?
     weak var urlDidChangeDelegate: URLChangeDelegate?     // TODO: generalize this.
     var bars = [SnackBar]()
@@ -192,7 +192,7 @@ class Tab: NSObject {
             configuration!.preferences = WKPreferences()
             configuration!.preferences.javaScriptCanOpenWindowsAutomatically = false
             configuration!.allowsInlineMediaPlayback = true
-            let webView = BraveWebView(frame: .zero, configuration: configuration!)
+            let webView = TabWebView(frame: .zero, configuration: configuration!)
             webView.delegate = self
             configuration = nil
 
@@ -465,7 +465,7 @@ class Tab: NSObject {
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let webView = object as? WKWebView, webView == self.webView,
+        guard let webView = object as? BraveWebView, webView == self.webView,
             let path = keyPath, path == KVOConstants.URL.rawValue else {
             return assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
         }
@@ -552,7 +552,7 @@ private protocol TabWebViewDelegate: class {
     func tabWebView(_ tabWebView: TabWebView, didSelectFindInPageForSelection selection: String)
 }
 
-class TabWebView: WKWebView, MenuHelperInterface {
+class TabWebView: BraveWebView, MenuHelperInterface {
     fileprivate weak var delegate: TabWebViewDelegate?
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
