@@ -12,7 +12,6 @@ import SnapKit
 import XCGLogger
 import Alamofire
 import MobileCoreServices
-import SDWebImage
 import SwiftyJSON
 import Deferred
 import Data
@@ -2441,7 +2440,8 @@ extension BrowserViewController {
         let alert = ThirdPartySearchAlerts.addThirdPartySearchEngine { alert in
             self.customSearchEngineButton.tintColor = UIColor.Photon.Grey50
             self.customSearchEngineButton.isUserInteractionEnabled = false
-            SDWebImageManager.shared().loadImage(with: iconURL, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+
+            WebImageCacheManager.shared.load(from: iconURL) { (image, _, _, _, _) in
                 guard let image = image else {
                     let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
                     self.present(alert, animated: true, completion: nil)

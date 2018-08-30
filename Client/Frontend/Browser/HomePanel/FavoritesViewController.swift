@@ -6,7 +6,6 @@ import UIKit
 import Shared
 import XCGLogger
 import Storage
-import SDWebImage
 import Deferred
 import Data
 
