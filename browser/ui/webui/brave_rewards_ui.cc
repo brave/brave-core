@@ -11,8 +11,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "content/public/common/bindings_policy.h"
-
 
 using content::WebUIMessageHandler;
 
@@ -80,13 +78,13 @@ void RewardsDOMHandler::OnWalletCreated(
 }
 
 void RewardsDOMHandler::OnWalletCreated() {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreated");
   }
 }
 
 void RewardsDOMHandler::OnWalletCreateFailed() {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreateFailed");
   }
 }

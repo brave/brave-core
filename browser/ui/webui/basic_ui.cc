@@ -9,6 +9,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "content/public/common/bindings_policy.h"
 
 using content::WebUIMessageHandler;
 
@@ -77,4 +78,12 @@ content::RenderViewHost* BasicUI::GetRenderViewHost() {
     return web_contents->GetRenderViewHost();
   }
   return nullptr;
+}
+
+bool BasicUI::IsSafeToSetWebUIProperties() const {
+  // Allow `web_ui()->CanCallJavascript()` to be false.
+  // Allow `web_ui()->CanCallJavascript()` to be true if `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) != 0`
+  // Disallow `web_ui()->CanCallJavascript()` to be true if `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) == 0`
+  DCHECK(!web_ui()->CanCallJavascript() || (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI));
+  return web_ui()->CanCallJavascript() && (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI);
 }
