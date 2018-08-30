@@ -168,25 +168,5 @@ void SyncUIImpl::TestClicked(const base::ListValue* args) {
   LOG(ERROR) << "SyncUIImpl::TestClicked v31=" << brave::debug::ToPrintableString(*v31);
   LOG(ERROR) << "SyncUIImpl::TestClicked v32=" << brave::debug::ToPrintableString(*v32);
 
-  auto v4 = CreateBookmarkSyncRecordValue(
-    0,                      // int action,
-    "127, 84, 3, 36, 211",  // const std::string &device_id,
-    "77, 33, 88, 12, 127, 84, 3, 36, 211",// const std::string &object_id,
-    //object data - site
-    "www.www.com",   // const std::string &location,
-    "Title",        // const std::string &title,
-    "CustomTitle",  // const std::string &customTitle,
-    0,      // const uint64_t &lastAccessedTime,
-    0,      // const uint64_t &creationTime,
-    "",     // const std::string &favicon,
-            //object data - bookmark
-    false,  // bool isFolder,
-    "",     // const std::string &parentFolderObjectId,
-            //repeated string fields = 6;
-    false,  // bool hideInToolbar,
-    ""      // const std::string &order
-  );
-  LOG(ERROR) << "SyncUIImpl::TestClicked v4=" << brave::debug::ToPrintableString(*v4);
-
-  web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.testClickedResponse", *v1, *v2, *v3, *v4);
+  web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.testClickedResponse", *v1, *v2, *v3);
 }

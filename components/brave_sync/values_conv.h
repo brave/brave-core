@@ -39,28 +39,18 @@ template <typename TEnum>
 TEnum ExtractEnum(const base::Value *val, const std::string &fileld_name,
   TEnum min, TEnum max, TEnum def);
 
-// see brave-sync/lib/api.proto
+template <typename TEnum>
+TEnum ConvertEnum(const int val, TEnum min, TEnum max, TEnum def);
 
-// exported
-std::unique_ptr<base::Value> CreateBookmarkSyncRecordValue(
-  int action, // kActionCreate/kActionUpdate/kActionDelete 0/1/2
-  const std::string &device_id,
-  const std::string &object_id,
-  //object data - site
-  const std::string &location,
-  const std::string &title,
-  const std::string &customTitle,
-  const uint64_t &lastAccessedTime,
-  const uint64_t &creationTime,
-  const std::string &favicon,
-  //object data - bookmark
-  bool isFolder,
-  const std::string &parentFolderObjectId,
-  //repeated string fields = 6;
-  bool hideInToolbar,
-  const std::string &order
-);
 
+using Uint8Array = std::vector<unsigned char>;
+Uint8Array Uint8ArrayFromSignedCharVec(const std::vector<char> &vec);
+std::string StrFromUint8Array(const Uint8Array &arr);
+std::string StrFromCharArray(const std::vector<char> &vec);
+Uint8Array Uint8ArrayFromIntVec(const std::vector<int> vec);
+Uint8Array Uint8ArrayFromString(const std::string &data_string);
+std::vector<int> IntVecFromString(const std::string &data_string);
+std::vector<char> CharVecFromString(const std::string &data_string);
 std::unique_ptr<base::Value> VecToListValue(const std::vector<char> &v);
 std::unique_ptr<base::Value> BytesListFromString(const std::string &data_string);
 std::unique_ptr<base::Value> SingleIntStrToListValue(const std::string &data_string);
@@ -70,9 +60,6 @@ std::unique_ptr<base::Value> BlobFromSingleIntStr(const std::string &data_string
 
 std::string GetAction(const base::Value &sync_record);
 int GetIntAction(const base::Value &sync_record);
-
-std::string ExtractBookmarkLocation(const base::Value *sync_record);
-std::string ExtractBookmarkTitle(const base::Value *sync_record);
 
 } // namespace brave_sync
 

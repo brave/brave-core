@@ -10,6 +10,7 @@
 #include "brave/components/brave_sync/cansendbookmarks.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
+#include "brave/components/brave_sync/client/client.h"
 #include "brave/components/brave_sync/object_map.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/debug.h"
@@ -66,45 +67,9 @@ void Bookmarks::SetObjectMap(storage::ObjectMap* sync_obj_map) {
   sync_obj_map_ = sync_obj_map;
 }
 
-std::unique_ptr<base::Value> Bookmarks::GetResolvedBookmarkValue(
-  const std::string &object_id) {
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue object_id=<"<<object_id<<">";
-  std::string local_object_id = sync_obj_map_->GetLocalIdByObjectId(object_id);
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue local_object_id=<"<<local_object_id<<">";
-  if(local_object_id.empty()) {
-    return std::make_unique<base::Value>(base::Value::Type::NONE);
-  }
-  CHECK(model_);
 
-  int64_t id = 0;
-  bool convert_result = base::StringToInt64(local_object_id, &id);
-  DCHECK(convert_result);
-  if (!convert_result) {
-    return std::make_unique<base::Value>(base::Value::Type::NONE);
-  }
-
-  const bookmarks::BookmarkNode* node = bookmarks::GetBookmarkNodeByID(model_, id);
-  if (node == nullptr) {
-    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue node not found for local_object_id=<"<<local_object_id<<">";
-    // Node was removed
-    // NOTREACHED() << "means we had not removed (object_id => local_id) pair from objects map";
-    // Something gone wrong previously, no obvious way to fix
-
-    return std::make_unique<base::Value>(base::Value::Type::NONE);
-  }
-
-  std::unique_ptr<base::Value> value = BookmarkToValue(node, object_id);
-
-  return value;
-}
-
-std::unique_ptr<base::Value> Bookmarks::BookmarkToValue(const bookmarks::BookmarkNode* node,
-  const std::string &object_id) {
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkToValue node="<<node;
-
-  CHECK(!device_id_.empty());
-  CHECK(node != nullptr);
-  CHECK(!object_id.empty());
+std::unique_ptr<jslib::Bookmark> Bookmarks::GetFromNode(const bookmarks::BookmarkNode* node) {
+  auto bookmark = std::make_unique<jslib::Bookmark>();
 
   int64_t parent_folder_id = node->parent() ? node->parent()->id() : 0;
   std::string parent_folder_object_sync_id;
@@ -112,26 +77,60 @@ std::unique_ptr<base::Value> Bookmarks::BookmarkToValue(const bookmarks::Bookmar
     parent_folder_object_sync_id = GetOrCreateObjectByLocalId(parent_folder_id);
   }
 
-  std::unique_ptr<base::Value> value = CreateBookmarkSyncRecordValue(
-    jslib_const::kActionCreate,
-    device_id_,
-    object_id,
-    //object data - site
-    node->url().spec(), //const std::string &location,
-    base::UTF16ToUTF8(node->GetTitledUrlNodeTitle()), //const std::string &title,
-    base::UTF16ToUTF8(node->GetTitle()),//const std::string &customTitle,
-    0,//const uint64_t &lastAccessedTime,
-    node->date_added().ToJsTime(), //const uint64_t &creationTime,
-    node->icon_url() ? node->icon_url()->spec() : "",//const std::string &favicon,
-    //object data - bookmark
-    node->is_folder(),//bool isFolder,
-    parent_folder_object_sync_id,   //const std::string &parentFolderObjectId,
-    //repeated string fields = 6;
-    false,//?//bool hideInToolbar,
-    ""//const std::string &order
-  );
 
-  return value;
+  bookmark->site.location = node->url().spec();
+  bookmark->site.title = base::UTF16ToUTF8(node->GetTitledUrlNodeTitle());
+  bookmark->site.customTitle = base::UTF16ToUTF8(node->GetTitle());
+  //bookmark->site.lastAccessedTime = ; ??
+  bookmark->site.creationTime = node->date_added();
+  bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
+
+  bookmark->isFolder = node->is_folder();
+  bookmark->parentFolderObjectId = parent_folder_object_sync_id; // bytes
+
+  //bookmark->hideInToolbar = false; ??
+  bookmark->order = ""; // order should be taken from obj map
+
+  return bookmark;
+}
+
+std::unique_ptr<jslib::SyncRecord> Bookmarks::GetResolvedBookmarkValue2(
+  const std::string &object_id) {
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue2 object_id=<"<<object_id<<">";
+  std::string local_object_id = sync_obj_map_->GetLocalIdByObjectId(object_id);
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue2 local_object_id=<"<<local_object_id<<">";
+  if(local_object_id.empty()) {
+    return nullptr;
+  }
+  CHECK(model_);
+
+  int64_t id = 0;
+  bool convert_result = base::StringToInt64(local_object_id, &id);
+  DCHECK(convert_result);
+  if (!convert_result) {
+    return nullptr;
+  }
+
+  const bookmarks::BookmarkNode* node = bookmarks::GetBookmarkNodeByID(model_, id);
+  if (node == nullptr) {
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue2 node not found for local_object_id=<"<<local_object_id<<">";
+    // Node was removed
+    // NOTREACHED() << "means we had not removed (object_id => local_id) pair from objects map";
+    // Something gone wrong previously, no obvious way to fix
+
+    return nullptr;
+  }
+
+  //std::unique_ptr<base::Value> value = BookmarkToValue(node, object_id);
+  auto record = std::make_unique<jslib::SyncRecord>();
+  record->action = jslib::SyncRecord::Action::CREATE;
+  record->deviceId = device_id_;
+  record->objectId = object_id;
+
+  std::unique_ptr<jslib::Bookmark> bookmark = GetFromNode(node);
+  record->SetBookmark(std::move(bookmark));
+
+  return record;
 }
 
 std::string Bookmarks::GetOrCreateObjectByLocalId(const int64_t &local_id) {
@@ -262,10 +261,10 @@ void Bookmarks::GetAllBookmarks(std::vector<const bookmarks::BookmarkNode*> &nod
   }
 }
 
-std::unique_ptr<base::Value> Bookmarks::NativeBookmarksToSyncLV(const std::vector<const bookmarks::BookmarkNode*> &list,
-  int action) {
+std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
+  const std::vector<const bookmarks::BookmarkNode*> &list, int action) {
   LOG(ERROR) << "TAGAB NativeBookmarksToSyncLV:";
-  auto result = std::make_unique<base::Value>(base::Value::Type::LIST);
+  std::unique_ptr<RecordsList> records = std::make_unique<RecordsList>();
 
   for (const bookmarks::BookmarkNode* node : list) {
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncLV: node=" << node;
@@ -280,34 +279,34 @@ std::unique_ptr<base::Value> Bookmarks::NativeBookmarksToSyncLV(const std::vecto
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncLV: object_id=<" << object_id << ">";
     CHECK(!object_id.empty());
 
-    std::unique_ptr<base::Value> bookmark_sync_record =
-      CreateBookmarkSyncRecordValue(
-        action, // int action, // kActionCreate/kActionUpdate/kActionDelete 0/1/2
-        device_id_,// const std::string &device_id,
-        object_id,// const std::string &object_id,
-        // //object data - site
-        node->url().spec(),//const std::string &location,
-        base::UTF16ToUTF8(node->GetTitledUrlNodeTitle()), //const std::string &title,
-        base::UTF16ToUTF8(node->GetTitle()),//const std::string &customTitle,
-        0,//const uint64_t &lastAccessedTime,
-        node->date_added().ToJsTime(), //const uint64_t &creationTime,
-        node->icon_url() ? node->icon_url()->spec() : "",//const std::string &favicon,
-        // //object data - bookmark
-        node->is_folder(),//bool isFolder,
-        parent_folder_object_sync_id,//const std::string &parentFolderObjectId,
-        // //repeated string fields = 6;
-        false,//?//bool hideInToolbar,
-        ""//const std::string &order
-      );
+    std::unique_ptr<jslib::SyncRecord> record = std::make_unique<jslib::SyncRecord>();
+    record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
+        brave_sync::jslib::SyncRecord::Action::A_MIN,
+        brave_sync::jslib::SyncRecord::Action::A_MAX,
+        brave_sync::jslib::SyncRecord::Action::A_INVALID);
+    record->deviceId = device_id_;
+    record->objectId = object_id;
+    record->objectData = "bookmark";
 
-    std::string extracted = ExtractObjectIdFromList(bookmark_sync_record.get());
-    LOG(ERROR) << "TAGAB NativeBookmarksToSyncLV: extracted=<" << extracted << ">";
-    CHECK(!extracted.empty());
+    std::unique_ptr<jslib::Bookmark> bookmark = std::make_unique<jslib::Bookmark>();
+    bookmark->site.location = node->url().spec();
+    bookmark->site.title = base::UTF16ToUTF8(node->GetTitledUrlNodeTitle());
+    bookmark->site.customTitle = base::UTF16ToUTF8(node->GetTitle());
+    //bookmark->site.lastAccessedTime = ;
+    bookmark->site.creationTime = node->date_added();
+    bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
+    bookmark->isFolder = node->is_folder();
+    bookmark->parentFolderObjectId = parent_folder_object_sync_id;
+    //bookmark->fields = ;
+    //bookmark->hideInToolbar = ;
+    //bookmark->order = ;
+    record->SetBookmark(std::move(bookmark));
 
-    result->GetList().emplace_back(std::move(*bookmark_sync_record));
+    record->syncTimestamp = base::Time::Now();
+    records->emplace_back(std::move(record));
   }
 
-  return result;
+  return records;
 }
 
 void Bookmarks::BookmarkModelLoaded(bookmarks::BookmarkModel* model,

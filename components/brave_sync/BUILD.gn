@@ -4,13 +4,21 @@ import("//tools/grit/repack.gni")
 
 source_set("brave_sync") {
   sources = [
+    "api/brave_sync_api.cc",
+    "api/brave_sync_api.h",
+    "api/brave_sync_event_router.cc",
+    "api/brave_sync_event_router.h",
     "bookmarks.cc",
     "bookmarks.h",
     "client/client.h",
     "client/client_ext_impl.cc",
     "client/client_ext_impl.h",
-    "client/client_web_ui_impl.cc",
-    "client/client_web_ui_impl.h",
+    "client/client_ext_impl_data.cc",
+    "client/client_ext_impl_data.h",
+    "client/client_data.cc",
+    "client/client_data.h",
+    "client/client_factory.cc",
+    "client/client_factory.h",
     "controller.h",
     "controller_impl.cc",
     "controller_impl.h",
@@ -37,11 +45,6 @@ source_set("brave_sync") {
     "values_conv.h",
     "value_debug.cc",
     "value_debug.h",
-  ]
-
-  # TODO this should be removed when sync apis are moved from brave/browser/extensions
-  deps = [
-    "//brave/browser/extensions",
   ]
 
   public_deps = [

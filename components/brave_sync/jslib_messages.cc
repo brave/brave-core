@@ -22,6 +22,16 @@ Site::~Site() {
   ;
 }
 
+std::unique_ptr<Site> Site::Clone(const Site& site) {
+   auto ret_val = std::make_unique<Site>();
+   ret_val->location = site.location;
+   ret_val->title = site.title;
+   ret_val->customTitle = site.customTitle;
+   ret_val->creationTime = site.creationTime;
+   ret_val->favicon = site.favicon;
+   return  ret_val;
+}
+
 void Site::FromValue(const base::Value *site_value) {
   DCHECK(site_value);
   DCHECK(site_value->is_dict());
@@ -59,6 +69,17 @@ Bookmark::Bookmark(const base::Value *value) : isFolder(false), hideInToolbar(fa
 
 Bookmark::~Bookmark() {
   ;
+}
+
+std::unique_ptr<Bookmark> Bookmark::Clone(const Bookmark& bookmark) {
+   auto ret_val = std::make_unique<Bookmark>();
+   ret_val->site = std::move(*Site::Clone(bookmark.site));
+   ret_val->isFolder = bookmark.isFolder;
+   ret_val->parentFolderObjectId = bookmark.parentFolderObjectId;
+   ret_val->fields = bookmark.fields;
+   ret_val->hideInToolbar = bookmark.hideInToolbar;
+   ret_val->order = bookmark.order;
+   return  ret_val;
 }
 
 void Bookmark::FromValue(const base::Value *bookmark_value) {
@@ -108,6 +129,23 @@ SiteSetting::~SiteSetting() {
   ;
 }
 
+std::unique_ptr<SiteSetting> SiteSetting::Clone(const SiteSetting& site_setting) {
+   auto ret_val = std::make_unique<SiteSetting>();
+   ret_val->hostPattern = site_setting.hostPattern;
+   ret_val->zoomLevel = site_setting.zoomLevel;
+   ret_val->shieldsUp = site_setting.shieldsUp;
+   ret_val->adControl = site_setting.adControl;
+   ret_val->cookieControl = site_setting.cookieControl;
+   ret_val->safeBrowsing = site_setting.safeBrowsing;
+   ret_val->noScript = site_setting.noScript;
+   ret_val->httpsEverywhere = site_setting.httpsEverywhere;
+   ret_val->fingerprintingProtection = site_setting.fingerprintingProtection;
+   ret_val->ledgerPayments = site_setting.ledgerPayments;
+   ret_val->ledgerPaymentsShown = site_setting.ledgerPaymentsShown;
+   ret_val->fields = site_setting.fields;
+   return  ret_val;
+}
+
 void SiteSetting::FromValue(const base::Value *site_setting_value) {
   DCHECK(site_setting_value);
   DCHECK(site_setting_value->is_dict());
@@ -147,6 +185,12 @@ Device::~Device() {
   ;
 }
 
+std::unique_ptr<Device> Device::Clone(const Device& device) {
+   auto ret_val = std::make_unique<Device>();
+   ret_val->name = device.name;
+   return  ret_val;
+}
+
 void Device::FromValue(const base::Value *device_value) {
   DCHECK(device_value);
   DCHECK(device_value->is_dict());
@@ -166,6 +210,28 @@ SyncRecord::SyncRecord(const base::Value *value) : action(SyncRecord::Action::A_
 
 SyncRecord::~SyncRecord() {
   ;
+}
+
+std::unique_ptr<SyncRecord> SyncRecord::Clone(const SyncRecord& record) {
+   auto ret_val = std::make_unique<SyncRecord>();
+
+   ret_val->action = record.action;
+   ret_val->deviceId = record.deviceId;
+   ret_val->objectId = record.objectId;
+   ret_val->objectData = record.objectData;
+   if (record.has_bookmark()) {
+     ret_val->SetBookmark(Bookmark::Clone(record.GetBookmark()));
+   } else if (record.has_historysite()) {
+     ret_val->SetHistorySite(Site::Clone(record.GetHistorySite()));
+   } else if (record.has_sitesetting()) {
+     ret_val->SetSiteSetting(SiteSetting::Clone(record.GetSiteSetting()));
+   } else if (record.has_device()) {
+     ret_val->SetDevice(Device::Clone(record.GetDevice()));
+   }
+
+   ret_val->syncTimestamp = record.syncTimestamp;
+
+   return  ret_val;
 }
 
 bool SyncRecord::has_bookmark() const {
@@ -232,6 +298,26 @@ void SyncRecord::FromValue(const base::Value *sync_record) {
   } else {
     NOTREACHED();
   }
+}
+
+void SyncRecord::SetBookmark(std::unique_ptr<Bookmark> bookmark) {
+  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() && !has_device());
+  bookmark_ = std::move(bookmark);
+}
+
+void SyncRecord::SetHistorySite(std::unique_ptr<Site> history_site) {
+  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() && !has_device());
+  history_site_ = std::move(history_site);
+}
+
+void SyncRecord::SetSiteSetting(std::unique_ptr<SiteSetting> site_setting) {
+  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() && !has_device());
+  site_setting_ = std::move(site_setting);
+}
+
+void SyncRecord::SetDevice(std::unique_ptr<Device> device) {
+  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() && !has_device());
+  device_ = std::move(device);
 }
 
 } // jslib

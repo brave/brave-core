@@ -138,17 +138,7 @@
       <!-- WebUI sync resources -->
       <include name="IDR_BRAVE_SYNC_HTML" file="../brave_sync/ui/brave_sync.html" type="BINDATA" />
       <include name="IDR_BRAVE_SYNC_JS" file="${root_gen_dir}/brave/brave_sync.bundle.js" type="BINDATA" use_base_dir="false" />
-
-      <!-- Sync lib resources, remove after moving to extension -->
-      <include name="IDR_BRAVE_SYNC_LIB_HTML" file="../brave_sync/brave_sync_lib/brave_sync_lib.html" type="BINDATA" />
-      <include name="IDR_BRAVE_SYNC_LIB_JS" file="../brave_sync/brave_sync_lib/brave_sync_lib.js" type="BINDATA" />
-      <include name="IDR_BRAVE_SYNC_LIB_JS_BUNDLE" file="$root_gen_dir/brave-sync/bundles/bundle.js" type="BINDATA" use_base_dir="false" />
-      <include name="IDR_BRAVE_SYNC_LIB_JS_CRYPTO" file="$root_gen_dir/brave-crypto/browser/crypto.js" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_SYNC_QR" file="../../node_modules/qrcode-generator/qrcode.js" type="BINDATA" />
-
-      <!-- Sync extension page -->
-
-      <!-- background.js, bundle.js and crypto.js are in `//brave/browser/resources/brave_extension.grd` -->
 
     </includes>
     <messages fallback_to_english="true">

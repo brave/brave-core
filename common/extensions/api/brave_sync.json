@@ -7,8 +7,168 @@
     "namespace": "braveSync",
     "description": "Use the <code>chrome.braveSync</code> API to provide the interaction .",
     "compiler_options": {
-      "implemented_in": "brave/browser/extensions/api/brave_sync/brave_sync_api.h"
+      "implemented_in": "brave/components/brave_sync/api/brave_sync_api.h"
     },
+    "types": [
+      {
+        "id": "Bytes",
+        "type": "array", "items": {"type": "integer", "minimum": 0, "maximum" : 255 }
+      },
+      {
+        "id": "Config",
+        "type": "object",
+        "description": "Config passed to got-init-data",
+        "properties": {
+          "apiVersion" : {
+            "type": "string",
+            "description": "version of API"
+          },
+          "serverUrl" : {
+            "type": "string",
+            "description": "url of the server"
+          },
+          "debug" : {
+            "type": "boolean",
+            "description": "whether sync lib produces debug messages"
+          }
+        }
+      },
+      {
+        "id": "Site",
+        "type": "object",
+        "description": "Represents site entity",
+        "properties": {
+          "location" : {"type" : "string", "description" : "url of site"},
+          "title" : {"type" : "string", "description" : "title of site"},
+          "customTitle" : {"type" : "string", "description" : "custom title of site"},
+          "lastAccessedTime" : {"type" : "number", "description" : "last accessed time"},
+          "creationTime" : {"type" : "number", "description" : "creation time"},
+          "favicon" : {"type" : "string", "description" : "url of favicon"}
+        }
+      },
+      {
+        "id": "Bookmark",
+        "type": "object",
+        "description": "Represents bookmark entity",
+        "properties": {
+          "site" : {"$ref" : "Site"},
+          "isFolder" : {"type": "boolean"},
+          "parentFolderObjectId" : {"type" : "binary", "optional": true},
+          "parentFolderObjectIdStr" : {"type" : "string", "optional": true},
+          "fields" : { "type": "array", "items": {"type": "string" }, "optional": true },
+          "hideInToolbar" : {"type": "boolean", "optional": true},
+          "order" : {"type": "string", "optional": true}
+        }
+      },
+      {
+        "id": "SiteSetting",
+        "type": "object",
+        "description": "Represents site settings",
+        "properties": {
+          "hostPattern" : {"type": "string"},
+          "zoomLevel" : {"type": "number", "optional": true},
+          "shieldsUp" : {"type": "boolean", "optional": true},
+          "adControl" : {"type": "string", "optional": true},
+          "cookieControl" : {"type": "string", "optional": true},
+          "safeBrowsing" : {"type": "boolean", "optional": true},
+          "noScript" : {"type": "boolean", "optional": true},
+          "httpsEverywhere" : {"type": "boolean", "optional": true},
+          "fingerprintingProtection" : {"type": "boolean", "optional": true},
+          "ledgerPayments" : {"type": "boolean", "optional": true},
+          "ledgerPaymentsShown" : {"type": "boolean", "optional": true},
+          "fields" : { "type": "array", "items": {"type": "string" }, "optional": true }
+        }
+      },
+      {
+        "id": "Device",
+        "type": "object",
+        "description": "Represents sync device",
+        "properties": {
+          "name" : {"type": "string"}
+        }
+      },
+      {
+        "id": "SyncRecord2",
+        "type": "object",
+        "description": "Record representing sync entity",
+        "properties": {
+          "action" : {
+            "type": "integer",
+            "description": "action code"
+          },
+          "deviceId" : {
+            "type": "binary",
+            "description": "device id"
+          },
+          "objectId" : {
+            "type": "binary",
+            "description": "object id"
+          },
+          // "deviceIdStr" and "objectIdStr" are workarounf because SyncRecord2::ToValue() somehow gets empty objects `"objectId":{}` '"deviceId":{}'
+          "deviceIdStr" : {
+            "type": "string",
+            "description": "device id",
+            "optional": true
+          },
+          "objectIdStr" : {
+            "type": "string",
+            "description": "object id",
+            "optional": true
+          },
+          "objectData": {
+            "type": "string",
+            "description": "may be bookmark|device|historySite|siteSetting..."
+          },
+          "syncTimestamp": {
+            "type": "number",
+            "description": "time when record was synced",
+            "optional": true
+          },
+          "bookmark" : {
+            "$ref": "Bookmark",
+            "optional": true,
+            "description": "bookmark info"
+          },
+          "historySite" : {
+            "$ref": "Site",
+            "optional": true,
+            "description": "history info"
+          },
+          "siteSetting" : {
+            "$ref": "SiteSetting",
+            "optional": true,
+            "description": "site setting"
+          },
+          "device" : {
+            "$ref": "Device",
+            "optional": true,
+            "description": "synced device info"
+          }
+        },
+        "oneOf": [
+          { "required": [ "bookmark"] },
+          { "required": [ "history_site"] },
+          { "required": [ "site_setting"] },
+          { "required": [ "device"] }
+        ]
+      },
+      {
+        "id": "RecordAndExistingObject",
+        "type": "object",
+        "description": "represents pair of sync record and sync record with existing object",
+        "properties": {
+          "serverRecord" : {
+            "$ref": "SyncRecord2",
+            "description": "original sync record"
+          },
+          "localRecord" : {
+            "$ref": "SyncRecord2",
+            "description": "existing sync record",
+            "optional": true
+          }
+        }
+      }
+    ],
     "events": [
       {
         "name": "onBrowserToBackgroundPage",
@@ -22,31 +182,102 @@
         ]
       },
       {
-        "name": "onBrowserToBackgroundPageRaw",
+        "name": "onGotInitData",
         "type": "function",
-        "description": "Fired when sync lib sends data to browser.",
+        "description": "Browser sends init data to sync js",
+        "parameters": [
+          {
+            "$ref": "Bytes",
+            "name": "seed",
+            "optional": true
+          },
+          {
+            "$ref": "Bytes",
+            "name": "device_id",
+            "optional": true
+          },
+          {
+            "$ref": "Config",
+            "name": "config"
+          }
+        ]
+      },
+      {
+        "name": "onFetchSyncRecords",
+        "type": "function",
+        "description": "ent to fetch sync records after a given start time from the sync server",
+        "parameters": [
+          {
+            "type": "array", "items": {"type": "string"},
+            "name": "categoryNames"
+          },
+          {
+            "type": "number",
+            "name": "startAt"
+          },
+          {
+            "type": "number",
+            "name": "maxRecords"
+          }
+        ]
+      },
+      {
+        "name": "onResolveSyncRecords",
+        "type": "function",
+        "description": "Browser sends resolve records.",
         "parameters": [
           {
             "type": "string",
-            "name": "message"
+            "name": "categoryName"
           },
           {
-            "type": "any",
-            "name": "arg1"
-          },
-          {
-            "type": "any",
-            "name": "arg2"
-          },
-          {
-            "type": "any",
-            "name": "arg3"
-          },
-          {
-            "type": "any",
-            "name": "arg4"
+            "type": "array", "items": {"$ref": "RecordAndExistingObject"},
+            "name": "recordsAndExistingObjects"
           }
         ]
+      },
+      {
+        "name": "onSendSyncRecords",
+        "type": "function",
+        "description": "Browser sends this to the js sync library with the data that needs to be synced.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "categoryName"
+          },
+          {
+            "type": "array", "items": {"$ref": "SyncRecord2"},
+            "name": "records"
+          }
+        ]
+      },
+      {
+        "name": "onNeedSyncWords",
+        "type": "function",
+        "description": "Browser informs js sync library it wants to receive sync words from the seed.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "seed"
+          }
+        ]
+      },
+      {
+        "name": "onNeedBytesFromSyncWords",
+        "type": "function",
+        "description": "Browser informs js sync library it has sync words and wants to get bytes to connect to the sync chain.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "words"
+          }
+        ]
+      },
+      {
+        "name": "onLoadClient",
+        "type": "function",
+        "description": "Browser informs extension page to load js sync library.",
+        "parameters": []
       }
     ],
     "functions": [
@@ -85,6 +316,136 @@
                 "type": "integer"
               }
             ]
+          }
+        ]
+      },
+      {
+        "name": "getInitData",
+        "type": "function",
+        "description": "Emits the version of sync that is currently running",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "syncVersion"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": [
+              {
+                "name": "callback_arg1",
+                "type": "integer"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "syncSetupError",
+        "type": "function",
+        "description": "Indicates that a fatal error occurred during sync setup, meaning that sync is not running",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "error"
+          }
+        ]
+      },
+      {
+        "name": "syncDebug",
+        "type": "function",
+        "description": "Used for debugging in environments where the webview console output is not easily accessible",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "message"
+          }
+        ]
+      },
+      {
+        "name": "syncReady",
+        "type": "function",
+        "description": "Sent when sync has finished initialization",
+        "parameters": []
+      },
+      {
+        "name": "saveInitData",
+        "type": "function",
+        "description": "Browser must save values in persistent storage if non-empty",
+        "parameters": [
+          {
+            "type": "binary",
+            "name": "seed"
+          },
+          {
+            "type": "binary",
+            "name": "device_id"
+          }
+        ]
+      },
+      {
+        "name": "getExistingObjects",
+        "type": "function",
+        "description": "Browser should resolve this records and answer with `resolve-sync-records`",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "category_name"
+          },
+          {
+            "type": "array", "items": {"$ref": "SyncRecord2"},
+            "name": "records"
+          },
+
+          {
+            "type": "number",
+            "name": "last_record_timestamp"
+          },
+          {
+            "type": "boolean",
+            "name": "is_truncated"
+          }
+        ]
+      },
+      {
+        "name": "resolvedSyncRecords",
+        "type": "function",
+        "description": "Browser must update its local values with the resolved sync records",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "category_name"
+          },
+          {
+            "type": "array", "items": {"$ref": "SyncRecord2"},
+            "name": "records"
+          }
+        ]
+      },
+      {
+        "name": "syncWordsPrepared",
+        "type": "function",
+        "description": "Browser gets notified the sync words are ready",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "words"
+          }
+        ]
+      },
+      {
+        "name": "bytesFromSyncWordsPrepared",
+        "type": "function",
+        "description": "Browser gets notified the bytes from sync words are ready",
+        "parameters": [
+          {
+            "type": "binary",
+            "name": "bytes"
+          },
+          {
+            "type": "string",
+            "name": "error_message"
           }
         ]
       }

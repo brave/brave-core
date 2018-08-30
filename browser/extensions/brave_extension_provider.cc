@@ -93,9 +93,7 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
     // Test ID: Brave Tor Client Updater
     "ngicbhhaldfdgmjhilmnleppfpmkgbbk",
     // Test ID: Brave Sync Extension
-    // duplicated in common/extensions/extension_constants.cc
-    // and chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
-    "nomlkjnggnifocmealianaaiobmebgil",
+    brave_sync_extension_id,
   });
   return std::find(vetted_extensions.begin(), vetted_extensions.end(),
       extension->id()) != vetted_extensions.end();
