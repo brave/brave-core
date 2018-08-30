@@ -10,7 +10,8 @@ import {
   StyledRemoveIcon,
   StyledToggle,
   StyledRecurringIcon,
-  StyledToggleWrap
+  StyledToggleWrap,
+  StyledLink
 } from './style'
 import Table, { Cell, Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
@@ -33,6 +34,7 @@ export interface DetailRow {
     tokens: number
     converted: number
   }
+  url: string
   type: DonationType
   text?: string | React.ReactNode
   onRemove?: () => void
@@ -93,12 +95,14 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
         content: [
           {
             content: (
-              <Profile
-                title={row.profile.name}
-                provider={row.profile.provider}
-                verified={row.profile.verified}
-                src={row.profile.src}
-              />
+              <StyledLink href={row.url} target={'_blank'}>
+                <Profile
+                  title={row.profile.name}
+                  provider={row.profile.provider}
+                  verified={row.profile.verified}
+                  src={row.profile.src}
+                />
+              </StyledLink>
             )
           },
           this.getTypeContent(row),

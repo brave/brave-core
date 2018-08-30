@@ -9,7 +9,8 @@ import {
   StyledToggle,
   StyledTHOther,
   StyledTHLast,
-  StyledToggleWrap
+  StyledToggleWrap,
+  StyledLink
 } from './style'
 import Table, { Row } from '../../../components/dataTables/table'
 import Profile, { Provider } from '../profile'
@@ -27,6 +28,7 @@ interface ProfileCell {
 export interface DetailRow {
   profile: ProfileCell
   attention: number
+  url: string
   onRemove?: () => void
   token?: { value: number, converted: number }
 }
@@ -87,12 +89,14 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
         content: [
           {
             content: (
-              <Profile
-                title={row.profile.name}
-                provider={row.profile.provider}
-                verified={row.profile.verified}
-                src={row.profile.src}
-              />
+              <StyledLink href={row.url} target={'_blank'}>
+                <Profile
+                  title={row.profile.name}
+                  provider={row.profile.provider}
+                  verified={row.profile.verified}
+                  src={row.profile.src}
+                />
+              </StyledLink>
             )
           },
           {

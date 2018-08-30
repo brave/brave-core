@@ -41,6 +41,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           provider: 'youtube',
           src: bart
         },
+        url: 'https://brave.com',
         attention: 40,
         onRemove: doNothing
       },
@@ -50,6 +51,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           verified: true,
           src: ddgo
         },
+        url: 'https://brave.com',
         attention: 20,
         onRemove: doNothing
       },
@@ -59,6 +61,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           verified: false,
           src: buzz
         },
+        url: 'https://brave.com',
         attention: 10,
         onRemove: doNothing
       },
@@ -68,6 +71,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           verified: true,
           src: guardian
         },
+        url: 'https://brave.com',
         attention: 5,
         onRemove: doNothing
       },
@@ -77,6 +81,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           verified: false,
           src: wiki
         },
+        url: 'https://brave.com',
         attention: 4,
         onRemove: doNothing
       }
@@ -106,6 +111,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           provider: 'youtube',
           src: bart
         },
+        url: 'https://brave.com',
         type: 'recurring',
         contribute: {
           tokens: 2,
@@ -119,6 +125,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           name: 'theguardian.com',
           src: guardian
         },
+        url: 'https://brave.com',
         type: 'donation',
         contribute: {
           tokens: 12000,
@@ -133,6 +140,7 @@ storiesOf('Feature Components/Rewards/Table', module)
           provider: 'twitter',
           src: eich
         },
+        url: 'https://brave.com',
         type: 'tip',
         contribute: {
           tokens: 7,

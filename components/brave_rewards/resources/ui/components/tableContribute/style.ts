@@ -45,3 +45,7 @@ export const StyledToggle = styled<{}, 'button'>('button')`
   padding: 0;
   cursor: pointer;
 `
+
+export const StyledLink = styled<{}, 'a'>('a')`
+  text-decoration: none;
+`

@@ -81,6 +81,7 @@ class ContributeBox extends React.Component<{}, State> {
           provider: 'youtube',
           src: bartBaker
         },
+        url: 'https://brave.com',
         attention: 40,
         onRemove: doNothing
       },
@@ -90,6 +91,7 @@ class ContributeBox extends React.Component<{}, State> {
           verified: true,
           src: ddgo
         },
+        url: 'https://brave.com',
         attention: 20,
         onRemove: doNothing
       },
@@ -99,6 +101,7 @@ class ContributeBox extends React.Component<{}, State> {
           verified: false,
           src: buzz
         },
+        url: 'https://brave.com',
         attention: 10,
         onRemove: doNothing
       },
@@ -108,6 +111,7 @@ class ContributeBox extends React.Component<{}, State> {
           verified: true,
           src: guardian
         },
+        url: 'https://brave.com',
         attention: 5,
         onRemove: doNothing
       },
@@ -117,6 +121,7 @@ class ContributeBox extends React.Component<{}, State> {
           verified: false,
           src: wiki
         },
+        url: 'https://brave.com',
         attention: 4,
         onRemove: doNothing
       }

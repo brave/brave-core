@@ -60,3 +60,7 @@ export const StyledRecurringIcon = styled<{}, 'span'>('span')`
 export const StyledToggleWrap = styled<{}, 'div'>('div')`
   text-align: right;
 `
+
+export const StyledLink = styled<{}, 'a'>('a')`
+  text-decoration: none;
+`

@@ -48,6 +48,7 @@ class DonationsBox extends React.Component<{}, State> {
           provider: 'youtube',
           src: bartBaker
         },
+        url: 'https://brave.com',
         type: 'recurring',
         contribute: {
           tokens: 2,
@@ -61,6 +62,7 @@ class DonationsBox extends React.Component<{}, State> {
           name: 'theguardian.com',
           src: guardian
         },
+        url: 'https://brave.com',
         type: 'donation',
         contribute: {
           tokens: 12,
@@ -75,6 +77,7 @@ class DonationsBox extends React.Component<{}, State> {
           provider: 'twitter',
           src: eich
         },
+        url: 'https://brave.com',
         type: 'tip',
         contribute: {
           tokens: 7,

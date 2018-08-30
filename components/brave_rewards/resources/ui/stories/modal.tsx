@@ -57,6 +57,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           provider: 'youtube',
           src: bart
         },
+        url: 'https://brave.com',
         attention: 40,
         onRemove: doNothing
       },
@@ -66,6 +67,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           verified: true,
           src: ddgo
         },
+        url: 'https://brave.com',
         attention: 20,
         onRemove: doNothing
       },
@@ -75,6 +77,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           verified: false,
           src: buzz
         },
+        url: 'https://brave.com',
         attention: 10,
         onRemove: doNothing
       },
@@ -84,6 +87,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           verified: true,
           src: guardian
         },
+        url: 'https://brave.com',
         attention: 5,
         onRemove: doNothing
       },
@@ -93,6 +97,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           verified: false,
           src: wiki
         },
+        url: 'https://brave.com',
         attention: 4,
         onRemove: doNothing
       }
@@ -114,6 +119,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           provider: 'youtube',
           src: bart
         },
+        url: 'https://brave.com',
         attention: 40,
         onRemove: doNothing,
         token: {
@@ -127,6 +133,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           verified: true,
           src: ddgo
         },
+        url: 'https://brave.com',
         attention: 20,
         onRemove: doNothing,
         token: {
@@ -140,6 +147,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           verified: false,
           src: buzz
         },
+        url: 'https://brave.com',
         attention: 10,
         onRemove: doNothing,
         token: {
@@ -153,6 +161,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           verified: true,
           src: guardian
         },
+        url: 'https://brave.com',
         attention: 5,
         onRemove: doNothing,
         token: {
@@ -166,6 +175,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
           verified: false,
           src: wiki
         },
+        url: 'https://brave.com',
         attention: 4,
         onRemove: doNothing,
         token: {
