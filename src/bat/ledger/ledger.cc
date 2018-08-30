@@ -5,9 +5,6 @@
 #include "bat/ledger/ledger.h"
 
 #include "ledger_impl.h"
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
 
 namespace ledger {
 
@@ -19,7 +16,7 @@ VisitData::VisitData(const std::string& _tld,
             const std::string& _path,
             uint32_t _tab_id,
             PUBLISHER_MONTH _local_month,
-            const std::string& _local_year) :
+            int _local_year) :
     tld(_tld),
     domain(_domain),
     path(_path),
@@ -48,7 +45,7 @@ PaymentData::PaymentData(const std::string& _publisher_id,
          const int64_t& _timestamp,
          PUBLISHER_CATEGORY _category,
          PUBLISHER_MONTH _local_month,
-         const std::string& _local_year):
+         int _local_year):
   publisher_id(_publisher_id),
   value(_value),
   timestamp(_timestamp),
@@ -66,18 +63,20 @@ PaymentData::PaymentData(const PaymentData& data):
 
 PaymentData::~PaymentData() {}
 
+PublisherInfoFilter::PublisherInfoFilter() :
+    category(PUBLISHER_CATEGORY::ALL_CATEGORIES),
+    month(PUBLISHER_MONTH::ANY),
+    year(-1) {}
+PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
+    id(filter.id),
+    category(filter.category),
+    month(filter.month),
+    year(filter.year) {}
+PublisherInfoFilter::~PublisherInfoFilter() {}
 
-PublisherInfoFilter::PublisherInfoFilter(int category_, 
-    PUBLISHER_MONTH month_, const std::string& year_):
-  category(PUBLISHER_CATEGORY::ALL_CATEGORIES),
-  month(month_),
-  year(year_) {}
-
-
-const PublisherInfo invalid("");
-
-
-PublisherInfo::PublisherInfo(const id_type& publisher_id) :
+PublisherInfo::PublisherInfo(const id_type& publisher_id,
+                             PUBLISHER_MONTH _month,
+                             int _year) :
     id(publisher_id),
     duration(0u),
     score(.0),
@@ -86,7 +85,9 @@ PublisherInfo::PublisherInfo(const id_type& publisher_id) :
     percent(0u),
     weight(.0),
     excluded(false),
-    category(PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {}
+    category(PUBLISHER_CATEGORY::AUTO_CONTRIBUTE),
+    month(_month),
+    year(_year) {}
 
 PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     id(info.id),
@@ -97,148 +98,18 @@ PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     percent(info.percent),
     weight(info.weight),
     excluded(info.excluded),
-    key(info.key),
-    contributions(info.contributions),
     category(info.category),
     month(info.month),
-    year(info.year) {}
+    year(info.year),
+    contributions(info.contributions) {}
 
 PublisherInfo::~PublisherInfo() {}
 
 bool PublisherInfo::is_valid() const {
-  return !id.empty();
+  return !id.empty() && year > 0 && month != PUBLISHER_MONTH::ANY;
 }
 
-const std::string PublisherInfo::ToJSON() const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("id");
-  writer.String(id.c_str());
-
-  writer.String("duration");
-  writer.Uint(duration);
-
-  writer.String("score");
-  writer.Double(score);
-
-  writer.String("visits");
-  writer.Uint(visits);
-
-  writer.String("pinned");
-  writer.Bool(pinned);
-
-  writer.String("percent");
-  writer.Uint(percent);
-
-  writer.String("weight");
-  writer.Double(weight);
-
-  writer.String("excluded");
-  writer.Bool(excluded);
-
-  writer.String("key");
-  writer.String(key.c_str());
-
-  writer.String("contributions");
-  writer.StartArray();
-  for (size_t i = 0; i < contributions.size(); i++) {
-    writer.StartObject();
-    writer.String("publisher");
-    writer.String(contributions[i].publisher.c_str());
-    writer.String("value");
-    writer.Double(contributions[i].value);
-    writer.String("date");
-    writer.Uint64(contributions[i].date);
-    writer.EndObject();
-  }
-  writer.EndArray();
-
-  writer.String("category");
-  writer.Int(category);
-
-  writer.String("month");
-  writer.Int(month);
-
-  writer.String("year");
-  writer.String(year.c_str());
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
-
-/*bool PublisherInfo::Matches(PublisherInfoFilter filter) const {
-  if (filter == PublisherInfoFilter::ALL)
-    return true;
-
-  if ((filter & PublisherInfoFilter::UNPINNED) == 0 && !pinned)
-    return false;
-
-  if ((filter & PublisherInfoFilter::PINNED) == 0 && pinned)
-    return false;
-
-  if ((filter & PublisherInfoFilter::INCLUDED) == 0 && excluded)
-    return false;
-
-  return true;
-}*/
-
-// static
-const PublisherInfo PublisherInfo::FromJSON(const std::string& json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  if (d.HasParseError() ||
-      !d["id"].IsString() ||
-      !d["duration"].IsUint() ||
-      !d["score"].IsDouble() ||
-      !d["visits"].IsUint() ||
-      !d["pinned"].IsBool() ||
-      !d["percent"].IsUint() ||
-      !d["weight"].IsDouble() ||
-      !d["excluded"].IsBool() ||
-      !d["key"].IsString() ||
-      !d["contributions"].IsArray() ||
-      !d["category"].IsInt() ||
-      !d["month"].IsInt() ||
-      !d["year"].IsString()) {
-    return invalid;
-  }
-
-  PublisherInfo info(d["id"].GetString());
-  info.duration = d["duration"].GetUint();
-  info.score = d["score"].GetDouble();
-  info.visits = d["visits"].GetUint();
-  info.pinned = d["pinned"].GetBool();
-  info.percent = d["percent"].GetUint();
-  info.weight = d["weight"].GetDouble();
-  info.excluded = d["excluded"].GetBool();
-  info.key = d["key"].GetString();
-
-  for (const auto & i : d["contributions"].GetArray()) {
-    ContributionInfo contribution_info;
-    auto obj = i.GetObject();
-    if (obj.HasMember("value") && obj["value"].IsDouble()) {
-      contribution_info.value = obj["value"].GetDouble();
-    }
-    if (obj.HasMember("date") && obj["date"].IsUint64()) {
-      contribution_info.date = obj["date"].GetUint64();
-    }
-    if (obj.HasMember("publisher") && obj["publisher"].IsString()) {
-      contribution_info.publisher = obj["publisher"].GetString();
-    }
-    info.contributions.push_back(contribution_info);
-  }
-
-  info.category = (PUBLISHER_CATEGORY)d["category"].GetInt();
-  info.month = (PUBLISHER_MONTH)d["month"].GetInt();
-  info.year = d["year"].GetString();
-
-  return info;
-}
+const PublisherInfo invalid("", PUBLISHER_MONTH::ANY, -1);
 
 // static
 ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {

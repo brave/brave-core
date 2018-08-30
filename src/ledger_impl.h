@@ -50,7 +50,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
                         ledger::PublisherInfoCallback callback) override;
-  void GetPublisherInfo(const std::string& publisher_key,
+  void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
                         ledger::PublisherInfoCallback callback) override;
   std::vector<ledger::ContributionInfo> GetRecurringDonationPublisherInfo() override;
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
@@ -63,8 +63,9 @@ class LedgerImpl : public ledger::Ledger,
   void SetPublisherAllowVideos(bool allow) override;
   void SetContributionAmount(double amount) override;
   void SetAutoContribute(bool enabled) override;
-  void SetBalanceReport(const std::string& year,
-    ledger::PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) override;
+  void SetBalanceReport(ledger::PUBLISHER_MONTH month,
+                        int year,
+                        const ledger::BalanceReportInfo& report_info) override;
 
   const std::string& GetBATAddress() const override;
   const std::string& GetBTCAddress() const override;
@@ -77,9 +78,9 @@ class LedgerImpl : public ledger::Ledger,
   bool GetPublisherAllowVideos() const override;
   double GetContributionAmount() const override;
   bool GetAutoContribute() const override;
-  bool GetBalanceReport(const std::string& year,
-    ledger::PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) const override;
-
+  bool GetBalanceReport(ledger::PUBLISHER_MONTH month,
+                        int year,
+                        ledger::BalanceReportInfo* report_info) const override;
 
   void SaveLedgerState(const std::string& data);
   void SavePublisherState(const std::string& data,

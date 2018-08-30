@@ -19,6 +19,9 @@ LEDGER_EXPORT enum Result {
   INVALID_PUBLISHER_STATE = 4,
   INVALID_LEDGER_STATE = 5,
   CAPTCHA_FAILED = 6,
+
+  TOO_MANY_RESULTS,
+  NOT_FOUND,
   // some more useful result codes should go here
 };
 
