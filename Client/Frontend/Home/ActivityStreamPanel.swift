@@ -6,7 +6,6 @@ import Shared
 import UIKit
 import Deferred
 import Storage
-import SDWebImage
 import XCGLogger
 import SnapKit
 
