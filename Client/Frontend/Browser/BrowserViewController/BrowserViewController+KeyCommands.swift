@@ -58,7 +58,7 @@ extension BrowserViewController {
             return
         }
 
-        let tabs = currentTab.isPrivate ? tabManager.privateTabs : tabManager.normalTabs
+        let tabs = tabManager.tabs(withType: currentTab.type)
         if let index = tabs.index(of: currentTab), index + 1 < tabs.count {
             tabManager.selectTab(tabs[index + 1])
         } else if let firstTab = tabs.first {
@@ -71,7 +71,7 @@ extension BrowserViewController {
             return
         }
 
-        let tabs = currentTab.isPrivate ? tabManager.privateTabs : tabManager.normalTabs
+        let tabs = tabManager.tabs(withType: currentTab.type)
         if let index = tabs.index(of: currentTab), index - 1 < tabs.count && index != 0 {
             tabManager.selectTab(tabs[index - 1])
         } else if let lastTab = tabs.last {

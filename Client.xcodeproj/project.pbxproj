@@ -327,6 +327,7 @@
 		C615FAE5212AC5E000A8168C /* PrivacyProtectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C615FAE4212AC5E000A8168C /* PrivacyProtectionProtocol.swift */; };
 		C615FAED212ACAD200A8168C /* BraveWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C615FAEC212ACAD200A8168C /* BraveWebView.swift */; };
 		C6345ECB2113B3A000CFB983 /* SearchPlugins in Resources */ = {isa = PBXBuildFile; fileRef = C6345ECA2113B3A000CFB983 /* SearchPlugins */; };
+		C6620BBB213BCEC6009FE75A /* TabType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6620BB3213BCEC6009FE75A /* TabType.swift */; };
 		C690C208212FF35100E6EEE9 /* WebImageCacheWithNoPrivacyProtectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C690C207212FF35100E6EEE9 /* WebImageCacheWithNoPrivacyProtectionManager.swift */; };
 		C690C2142130121E00E6EEE9 /* WebImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C690C2132130121E00E6EEE9 /* WebImageCacheManager.swift */; };
 		C6B81B81212D6C1100996084 /* NoPrivacyProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B81B80212D6C1100996084 /* NoPrivacyProtection.swift */; };
@@ -1215,6 +1216,7 @@
 		C615FAE4212AC5E000A8168C /* PrivacyProtectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyProtectionProtocol.swift; sourceTree = "<group>"; };
 		C615FAEC212ACAD200A8168C /* BraveWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWebView.swift; sourceTree = "<group>"; };
 		C6345ECA2113B3A000CFB983 /* SearchPlugins */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SearchPlugins; sourceTree = "<group>"; };
+		C6620BB3213BCEC6009FE75A /* TabType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabType.swift; sourceTree = "<group>"; };
 		C690C207212FF35100E6EEE9 /* WebImageCacheWithNoPrivacyProtectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageCacheWithNoPrivacyProtectionManager.swift; sourceTree = "<group>"; };
 		C690C2132130121E00E6EEE9 /* WebImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageCacheManager.swift; sourceTree = "<group>"; };
 		C6B81B80212D6C1100996084 /* NoPrivacyProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPrivacyProtection.swift; sourceTree = "<group>"; };
@@ -2516,6 +2518,7 @@
 				3BF56D261CDBBE1F00AC4D75 /* SimpleToast.swift */,
 				E68AEDAF1B18F81A00133D99 /* SwipeAnimator.swift */,
 				D3A994961A3686BD008AD1AC /* Tab.swift */,
+				C6620BB3213BCEC6009FE75A /* TabType.swift */,
 				E4CD9F2C1A6DC91200318571 /* TabLocationView.swift */,
 				D3968F241A38FE8500CEFD3B /* TabManager.swift */,
 				7BA0601A1C0F4DE200DFADB6 /* TabPeekViewController.swift */,
@@ -4343,6 +4346,7 @@
 				2C49854E206173C800893DAE /* photon-colors.swift in Sources */,
 				E689C7301E0C7617008BAADB /* NSAttributedStringExtensions.swift in Sources */,
 				D0C95E0E200FD3B200E4E51C /* PrintHelper.swift in Sources */,
+				C6620BBB213BCEC6009FE75A /* TabType.swift in Sources */,
 				E64ED8FA1BC55AE300DAF864 /* UIAlertControllerExtensions.swift in Sources */,
 				A16DC67F20E585D90069C8E1 /* PasscodeSettingsViewController.swift in Sources */,
 				A1D8420320BC44F800BDAFF7 /* PopoverContainerView.swift in Sources */,

@@ -50,7 +50,7 @@ protocol SearchViewControllerDelegate: class {
 class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, LoaderListener {
     var searchDelegate: SearchViewControllerDelegate?
 
-    fileprivate let isPrivate: Bool
+    fileprivate let tabType: TabType
     fileprivate var suggestClient: SearchSuggestClient?
 
     // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
@@ -68,8 +68,8 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
 
     static var userAgent: String?
 
-    init(isPrivate: Bool) {
-        self.isPrivate = isPrivate
+    init(forTabType tabType: TabType) {
+        self.tabType = tabType
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -143,7 +143,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             make.bottom.equalTo(self.view).offset(-keyboardHeight)
         }
     }
-
+    
     var searchEngines: SearchEngines! {
         didSet {
             suggestClient?.cancelPendingRequest()
@@ -152,7 +152,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             querySuggestClient()
 
             // Show the default search engine first.
-            if !isPrivate {
+            if !tabType.isPrivate {
                 let ua = SearchViewController.userAgent ?? "FxSearch"
                 suggestClient = SearchSuggestClient(searchEngine: searchEngines.defaultEngine, userAgent: ua)
             }
@@ -167,7 +167,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
 
         // If we're not showing search suggestions, the default search engine won't be visible
         // at the top of the table. Show it with the others in the bottom search bar.
-        if isPrivate || !searchEngines.shouldShowSearchSuggestions {
+        if tabType.isPrivate || !searchEngines.shouldShowSearchSuggestions {
             engines?.insert(searchEngines.defaultEngine, at: 0)
         }
 
@@ -407,7 +407,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch SearchListSection(rawValue: section)! {
         case .searchSuggestions:
-            return searchEngines.shouldShowSearchSuggestions && !searchQuery.looksLikeAURL() && !isPrivate ? 1 : 0
+            return searchEngines.shouldShowSearchSuggestions && !searchQuery.looksLikeAURL() && !tabType.isPrivate ? 1 : 0
         case .bookmarksAndHistory:
             return data.count
         }

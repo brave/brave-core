@@ -136,9 +136,15 @@ class TabCell: UICollectionViewCell {
         self.title = title
     }
 
-    func setTabSelected(_ isPrivate: Bool) {
-        // This creates a border around a tabcell. Using the shadow craetes a border _outside_ of the tab frame.
-        layer.shadowColor = (isPrivate ? UIConstants.PrivateModePurple : UIConstants.SystemBlueColor).cgColor
+    func setTabSelected(_ tab: Tab) {
+        // This creates a border around a tabcell. Using the shadow creates a border _outside_ of the tab frame.
+        switch Theme.of(tab) {
+        case .regular:
+            layer.shadowColor = UIConstants.SystemBlueColor.cgColor
+        case .private:
+            layer.shadowColor = UIConstants.PrivateModePurple.cgColor
+        }
+ 
         layer.shadowOpacity = 1
         layer.shadowRadius = 0 // A 0 radius creates a solid border instead of a gradient blur
         layer.masksToBounds = false
@@ -248,13 +254,14 @@ class TabTrayController: UIViewController {
     fileprivate(set) internal var privateMode: Bool = false {
         didSet {
             tabDataSource.tabs = tabsToDisplay
-            toolbar.applyTheme(privateMode == true ? .Private : .Normal)
+            toolbar.applyTheme(privateMode ? .private : .regular)
             collectionView?.reloadData()
         }
     }
 
     fileprivate var tabsToDisplay: [Tab] {
-        return self.privateMode ? tabManager.privateTabs : tabManager.normalTabs
+        let tabType: TabType = privateMode ? .private : .regular
+        return tabManager.tabs(withType: tabType)
     }
 
     fileprivate lazy var emptyPrivateTabsView: EmptyPrivateTabsView = {
@@ -478,7 +485,8 @@ class TabTrayController: UIViewController {
     }
 
     fileprivate func privateTabsAreEmpty() -> Bool {
-        return privateMode && tabManager.privateTabs.count == 0
+        let tabs = tabManager.tabs(withType: .private)
+        return privateMode && tabs.isEmpty
     }
 
     func changePrivacyMode(_ isPrivate: Bool) {
@@ -757,9 +765,8 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
         tabCell.delegate = cellDelegate
 
         let tab = tabs[indexPath.item]
-        tabCell.style = tab.isPrivate ? .dark : .light
+
         tabCell.titleText.text = tab.displayTitle
-        tabCell.closeButton.tintColor = tab.isPrivate ? UIColor.Photon.White100 : UIColor.Photon.Grey50
 
         if !tab.displayTitle.isEmpty {
             tabCell.accessibilityLabel = tab.displayTitle
@@ -772,18 +779,19 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
         if let favIcon = tab.displayFavicon, let url = URL(string: favIcon.url) {
             tabCell.favicon.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "defaultFavicon"), options: [], completed: nil)
         } else {
-            let defaultFavicon = #imageLiteral(resourceName: "defaultFavicon")
+            tabCell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
+
             if tab.isPrivate {
-                tabCell.favicon.image = defaultFavicon
                 tabCell.favicon.tintColor = UIColor.Photon.White100
-            } else {
-                tabCell.favicon.image = defaultFavicon
             }
         }
+
         if tab == tabManager.selectedTab {
-            tabCell.setTabSelected(tab.isPrivate)
+            tabCell.setTabSelected(tab)
         }
+
         tabCell.screenshotView.image = tab.screenshot
+
         return tabCell
     }
 
@@ -843,7 +851,7 @@ extension TabManagerDataSource: UICollectionViewDropDelegate {
         isDragging = false
 
         let destinationIndex = destinationIndexPath.item
-        tabManager.moveTab(isPrivate: tab.isPrivate, fromIndex: sourceIndex, toIndex: destinationIndex)
+        tabManager.moveTab(fromIndex: sourceIndex, toIndex: destinationIndex)
         tabs.insert(tabs.remove(at: sourceIndex), at: destinationIndex)
         collectionView.moveItem(at: IndexPath(item: sourceIndex, section: 0), to: destinationIndexPath)
     }
@@ -1115,7 +1123,7 @@ class TrayToolbar: UIView {
             make.size.equalTo(toolbarButtonSize)
         }
 
-        applyTheme(.Normal)
+        applyTheme(.regular)
     }
 
     required init?(coder aDecoder: NSCoder) {

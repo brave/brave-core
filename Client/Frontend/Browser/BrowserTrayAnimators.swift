@@ -24,7 +24,7 @@ private extension TrayToBrowserAnimator {
         guard let selectedTab = bvc.tabManager.selectedTab else { return }
 
         let tabManager = bvc.tabManager
-        let displayedTabs = selectedTab.isPrivate ? tabManager.privateTabs : tabManager.normalTabs
+        let displayedTabs = tabManager.tabs(withType: selectedTab.type)
         guard let expandFromIndex = displayedTabs.index(of: selectedTab) else { return }
 
         bvc.view.frame = transitionContext.finalFrame(for: bvc)
@@ -115,7 +115,7 @@ private extension BrowserToTrayAnimator {
         guard let selectedTab = bvc.tabManager.selectedTab else { return }
 
         let tabManager = bvc.tabManager
-        let displayedTabs = selectedTab.isPrivate ? tabManager.privateTabs : tabManager.normalTabs
+        let displayedTabs = tabManager.tabs(withType: selectedTab.type)
         guard let scrollToIndex = displayedTabs.index(of: selectedTab) else { return }
 
         tabTray.view.frame = transitionContext.finalFrame(for: tabTray)
@@ -304,20 +304,25 @@ private func createTransitionCellFromTab(_ tab: Tab?, withFrame frame: CGRect) -
     cell.screenshotView.image = tab?.screenshot
     cell.titleText.text = tab?.displayTitle
 
-    if let tab = tab, tab.isPrivate {
+    let tabType = TabType.of(tab)
+    
+    switch tabType {
+    case .regular: break
+    case .private:
         cell.style = .dark
     }
 
     if let favIcon = tab?.displayFavicon {
         cell.favicon.sd_setImage(with: URL(string: favIcon.url)!)
     } else {
-        let defaultFavicon = #imageLiteral(resourceName: "defaultFavicon")
-        if tab?.isPrivate ?? false {
-            cell.favicon.image = defaultFavicon
-            cell.favicon.tintColor = (tab?.isPrivate ?? false) ? UIColor.Photon.White100 : UIColor.Photon.Grey60
-        } else {
-            cell.favicon.image = defaultFavicon
+        cell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
+
+        switch tabType {
+        case .regular: break
+        case .private:
+            cell.favicon.tintColor = UIColor.Photon.White100
         }
     }
+
     return cell
 }

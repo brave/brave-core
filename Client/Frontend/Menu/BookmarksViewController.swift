@@ -662,7 +662,7 @@ extension BookmarksViewController {
       actionsForFolder(bookmark).forEach { alert.addAction($0) }
     } else {
       alert.title = bookmark.url?.replacingOccurrences(of: "mailto:", with: "").ellipsize(maxLength: ActionSheetTitleMaxLength)
-      actionsForBookmark(bookmark, currentTabIsPrivate: tabState.isPrivate).forEach { alert.addAction($0) }
+      actionsForBookmark(bookmark, currentTabIsPrivate: tabState.type.isPrivate).forEach { alert.addAction($0) }
     }
     
     let cancelAction = UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil)
