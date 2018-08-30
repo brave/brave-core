@@ -36,5 +36,17 @@ hooks = [
     'name': 'init',
     'pattern': '.',
     'action': ['python', 'src/brave/script/init-brave-extension.py'],
+  },
+  {
+    # Build brave-sync
+    'name': 'build_brave_sync',
+    'pattern': '.',
+    'action': ['python', 'src/brave/script/build-simple-js-bundle.py', '--repo_dir_path', 'src/brave/components/brave_sync/extension/brave-sync'],
+  },
+  {
+    # Build brave-crypto
+    'name': 'build_brave_crypto',
+    'pattern': '.',
+    'action': ['python', 'src/brave/script/build-simple-js-bundle.py', '--repo_dir_path', 'src/brave/components/brave_sync/extension/brave-crypto'],
   }
 ]
