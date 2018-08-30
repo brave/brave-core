@@ -14,18 +14,18 @@ class ShareToBraveViewController: SLComposeServiceViewController {
     }
     
     override func configurationItems() -> [Any]! {
-        guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem], let attachment = inputItems.first?.attachments?.first as? NSItemProvider else {
+        guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem] else {
             return []
         }
         
-        var itemProvider: NSItemProvider?
+        // Reduce all input items down to a single list of item providers
+        let attachments: [NSItemProvider] = inputItems
+            .compactMap { $0.attachments as? [NSItemProvider] }
+            .flatMap { $0 }
+        
         // Look for the first URL the host application is sharing.
         // If there isn't a URL grab the first text item
-        if attachment.isUrl || attachment.isText {
-            itemProvider = attachment
-        }
-        
-        guard let provider = itemProvider else {
+        guard let provider = attachments.first(where: { $0.isUrl }) ?? attachments.first(where: { $0.isText }) else {
             // If no item was processed. Cancel the share action to prevent the extension from locking the host application
             // due to the hidden ViewController.
             cancel()
