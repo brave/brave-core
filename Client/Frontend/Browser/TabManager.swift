@@ -81,7 +81,6 @@ class TabManager: NSObject {
         let configuration = WKWebViewConfiguration()
         configuration.processPool = WKProcessPool()
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = !(self.prefs.boolForKey("blockPopups") ?? true)
-        configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
         return configuration
     }()
 
