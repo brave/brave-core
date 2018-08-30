@@ -39,6 +39,8 @@ source_set("browser") {
       "rewards_helper.h",
       "publisher_info_backend.cc",
       "publisher_info_backend.h",
+      "publisher_info_database.cc",
+      "publisher_info_database.h",
     ]
 
     deps += [

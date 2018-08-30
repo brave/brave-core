@@ -20,7 +20,7 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/wallet_info.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/publisher_info_backend.h"
+#include "brave/components/brave_rewards/browser/publisher_info_database.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "net/base/escape.h"
@@ -62,10 +62,10 @@ ledger::PUBLISHER_MONTH GetPublisherMonth(const base::Time& time) {
   return (ledger::PUBLISHER_MONTH)exploded.month;
 }
 
-std::string GetPublisherYear(const base::Time& time) {
+int GetPublisherYear(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  return std::to_string(exploded.year);
+  return exploded.year;
 }
 
 ContentSite PublisherInfoToContentSite(
@@ -107,8 +107,8 @@ std::string LoadStateOnFileTaskRunner(
 
 bool SavePublisherInfoOnFileTaskRunner(
     const ledger::PublisherInfo publisher_info,
-    PublisherInfoBackend* backend) {
-  if (backend && backend->Put(publisher_info.id, publisher_info.ToJSON()))
+    PublisherInfoDatabase* backend) {
+  if (backend && backend->InsertOrUpdatePublisherInfo(publisher_info))
     return true;
 
   return false;
@@ -118,33 +118,13 @@ ledger::PublisherInfoList LoadPublisherInfoListOnFileTaskRunner(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
-    const std::vector<std::string> prefixes,
-    PublisherInfoBackend* backend) {
+    PublisherInfoDatabase* backend) {
   ledger::PublisherInfoList list;
+  if (!backend)
+    return list;
 
-  std::vector<const std::string> results;
-  if (backend && backend->Search(prefixes, start, limit, results)) {
-    for (std::vector<const std::string>::const_iterator it =
-        results.begin(); it != results.end(); ++it) {
-      list.push_back(ledger::PublisherInfo::FromJSON(*it));
-    }
-  }
-
+  ignore_result(backend->Find(start, limit, filter, &list));
   return list;
-}
-
-std::unique_ptr<ledger::PublisherInfo> LoadPublisherInfoOnFileTaskRunner(
-    const std::string& id,
-    PublisherInfoBackend* backend) {
-  std::unique_ptr<ledger::PublisherInfo> info;
-
-  std::string json;
-  if (backend && backend->Get(id, &json)) {
-    info.reset(
-        new ledger::PublisherInfo(ledger::PublisherInfo::FromJSON(json)));
-  }
-
-  return info;
 }
 
 // `callback` has a WeakPtr so this won't crash if the file finishes
@@ -189,8 +169,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile) :
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     ledger_state_path_(profile_->GetPath().Append("ledger_state")),
     publisher_state_path_(profile_->GetPath().Append("publisher_state")),
-    publisher_info_db_path_(profile->GetPath().Append("publisher_info")),
-    publisher_info_backend_(new PublisherInfoBackend(publisher_info_db_path_)) {
+    publisher_info_db_path_(profile->GetPath().Append("publisher_info_db")),
+    publisher_info_backend_(new PublisherInfoDatabase(publisher_info_db_path_)) {
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -215,10 +195,10 @@ void RewardsServiceImpl::GetContentSiteList(
     uint32_t start, uint32_t limit,
     const GetContentSiteListCallback& callback) {
   auto now = base::Time::Now();
-  ledger::PublisherInfoFilter filter(
-      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-      GetPublisherMonth(now),
-      GetPublisherYear(now));
+  ledger::PublisherInfoFilter filter;
+  filter.category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
+  filter.month = GetPublisherMonth(now);
+  filter.year = GetPublisherYear(now);
 
   ledger_->GetPublisherInfoList(start, limit,
       filter,
@@ -237,9 +217,12 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
     return;
 
   auto now = base::Time::Now();
-  ledger::VisitData data(tld, origin.host(), url.path(), tab_id.id(),
-      GetPublisherMonth(now),
-      GetPublisherYear(now));
+  ledger::VisitData data(tld,
+                         origin.host(),
+                         url.path(),
+                         tab_id.id(),
+                         GetPublisherMonth(now),
+                         GetPublisherYear(now));
   ledger_->OnLoad(data, GetCurrentTimestamp());
 }
 
@@ -434,11 +417,13 @@ void RewardsServiceImpl::OnPublisherInfoSaved(
 }
 
 void RewardsServiceImpl::LoadPublisherInfo(
-    const ledger::PublisherInfo::id_type& publisher_id,
+    ledger::PublisherInfoFilter filter,
     ledger::PublisherInfoCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&LoadPublisherInfoOnFileTaskRunner,
-          publisher_id, publisher_info_backend_.get()),
+      base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
+          // set limit to 2 to make sure there is
+          // only 1 valid result for the filter
+          0, 2, filter, publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnPublisherInfoLoaded,
                      AsWeakPtr(),
                      callback));
@@ -446,20 +431,29 @@ void RewardsServiceImpl::LoadPublisherInfo(
 
 void RewardsServiceImpl::OnPublisherInfoLoaded(
     ledger::PublisherInfoCallback callback,
-    std::unique_ptr<ledger::PublisherInfo> info) {
-  callback(ledger::Result::OK, std::move(info));
+    const ledger::PublisherInfoList list) {
+  if (list.size() == 0) {
+    callback(ledger::Result::NOT_FOUND,
+        std::unique_ptr<ledger::PublisherInfo>());
+    return;
+  } else if (list.size() > 1) {
+    callback(ledger::Result::TOO_MANY_RESULTS,
+        std::unique_ptr<ledger::PublisherInfo>());
+    return;
+  }
+
+  callback(ledger::Result::OK,
+      std::make_unique<ledger::PublisherInfo>(list[0]));
 }
 
 void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
-    const std::vector<std::string>& prefix,
     ledger::GetPublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
                     start, limit, filter,
-                    prefix,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnPublisherInfoListLoaded,
                     AsWeakPtr(),

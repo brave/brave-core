@@ -40,7 +40,7 @@ class Profile;
 
 namespace brave_rewards {
 
-class PublisherInfoBackend;
+class PublisherInfoDatabase;
 
 class RewardsServiceImpl : public RewardsService,
                             public ledger::LedgerClient,
@@ -100,7 +100,7 @@ class RewardsServiceImpl : public RewardsService,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
   void OnPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
-                             std::unique_ptr<ledger::PublisherInfo> info);
+                             const ledger::PublisherInfoList list);
   void OnPublisherInfoListLoaded(uint32_t start,
                                  uint32_t limit,
                                  ledger::GetPublisherInfoListCallback callback,
@@ -127,13 +127,12 @@ class RewardsServiceImpl : public RewardsService,
 
   void SavePublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
                          ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherInfo(const ledger::PublisherInfo::id_type& publisher_id,
+  void LoadPublisherInfo(ledger::PublisherInfoFilter filter,
                          ledger::PublisherInfoCallback callback) override;
   void LoadPublisherInfoList(
       uint32_t start,
       uint32_t limit,
       ledger::PublisherInfoFilter filter,
-      const std::vector<std::string>& prefix,
       ledger::GetPublisherInfoListCallback callback) override;
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
@@ -161,7 +160,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
-  std::unique_ptr<PublisherInfoBackend> publisher_info_backend_;
+  std::unique_ptr<PublisherInfoDatabase> publisher_info_backend_;
 
   extensions::OneShotEvent ready_;
   std::map<const net::URLFetcher*, FetchCallback> fetchers_;
