@@ -281,27 +281,27 @@ class URLBarView: UIView {
     override func updateConstraints() {
         super.updateConstraints()
         if inOverlayMode {
-            self.menuButton.snp.remakeConstraints { make in
+            menuButton.snp.remakeConstraints { make in
                 make.leading.equalTo(self)
                 make.centerY.equalTo(self)
                 make.size.equalTo(URLBarViewUX.ButtonHeight)
             }
             // In overlay mode, we always show the location view full width
-            self.locationContainer.snp.remakeConstraints { make in
+            locationContainer.snp.remakeConstraints { make in
                 let height = URLBarViewUX.LocationHeight// + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
                 make.height.equalTo(height)
                 make.trailing.equalTo(self.cancelButton.snp.leading).offset(-URLBarViewUX.Padding)
                 make.leading.equalTo(self.menuButton.snp.trailing)
                 make.centerY.equalTo(self)
             }
-            self.locationView.snp.remakeConstraints { make in
+            locationView.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationContainer)
             }
-            self.locationTextField?.snp.remakeConstraints { make in
+            locationTextField?.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationView).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding, bottom: 0, right: URLBarViewUX.LocationLeftPadding))
             }
         } else {
-            self.menuButton.snp.remakeConstraints { make in
+            menuButton.snp.remakeConstraints { make in
                 if self.toolbarIsShowing {
                     make.leading.equalTo(self.forwardButton.snp.trailing)
                 } else {
@@ -310,7 +310,7 @@ class URLBarView: UIView {
                 make.centerY.equalTo(self)
                 make.size.equalTo(URLBarViewUX.ButtonHeight)
             }
-            self.shieldsButton.snp.remakeConstraints { make in
+            shieldsButton.snp.remakeConstraints { make in
                 if self.toolbarIsShowing {
                     make.trailing.equalTo(self.shareButton.snp.leading)
                 } else {
@@ -319,7 +319,7 @@ class URLBarView: UIView {
                 make.centerY.equalTo(self)
                 make.size.equalTo(URLBarViewUX.ButtonHeight)
             }
-            self.locationContainer.snp.remakeConstraints { make in
+            locationContainer.snp.remakeConstraints { make in
                 if self.toolbarIsShowing {
                     // When there's toolbar items on the left, add some padding so it looks better
                     make.leading.equalTo(self.menuButton.snp.trailing).offset(URLBarViewUX.LocationLeftPadding)
@@ -332,7 +332,7 @@ class URLBarView: UIView {
                 make.height.equalTo(URLBarViewUX.LocationHeight)
                 make.centerY.equalTo(self)
             }
-            self.locationView.snp.remakeConstraints { make in
+            locationView.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationContainer)
             }
         }
