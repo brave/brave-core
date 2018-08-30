@@ -115,6 +115,9 @@ extension PopoverController {
             super.layoutSubviews()
             
             // Assure the arrow will not be hanging off a corner
+            // 1 is added or removed to the max values to assure the arrow will not peak off the corner radius
+            // due to the arrow itself being offseted by 1 vertically below to ensure you don't see it separate
+            // during rotation
             let clampedArrowXOrigin = min(max(arrowOrigin.x, PopoverUX.cornerRadius + 1), bounds.width - PopoverUX.cornerRadius - 1) - PopoverUX.arrowSize.width / 2.0
             
             CATransaction.setDisableActions(true)
