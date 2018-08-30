@@ -567,7 +567,13 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
 }
 
 void LedgerImpl::OnPublishersListSaved(ledger::Result result) {
-  bat_publishers_->OnPublishersListSaved(result);
+
+  if (ledger::Result::OK == result) {
+    bat_publishers_->OnPublishersListSaved(result);
+  }
+  else {
+    RefreshPublishersList(true);
+  }
 }
 
 }  // namespace bat_ledger
