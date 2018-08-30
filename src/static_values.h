@@ -71,7 +71,7 @@ static const uint8_t g_hkdfSalt[] = {126, 244, 99, 158, 51, 68, 253, 80, 133, 18
   91, 10, 169, 145, 248, 22, 147, 117, 24, 105, 12};
 
 static const double _d = 1.0 / (30.0 * 1000.0);
-static const unsigned int _default_min_pubslisher_duration = 8000;  // In milliseconds
+static const uint64_t _default_min_pubslisher_duration = 8;  // In seconds
 
 static const uint64_t _milliseconds_day = 24 * 60 * 60 * 1000;
 static const uint64_t _milliseconds_hour = 60 * 60 * 1000;

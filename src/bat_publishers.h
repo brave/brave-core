@@ -40,14 +40,15 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void AddRecurringPayment(const std::string& publisher_id, const double& value);
 
-  void setPublisherMinVisitTime(const uint64_t& duration); // In milliseconds
+  void setPublisherMinVisitTime(const uint64_t& duration); // In seconds
 
   void setPublisherMinVisits(const unsigned int& visits);
 
   void setPublishersLastRefreshTimestamp(uint64_t ts);
 
   void setPublisherAllowNonVerified(const bool& allow);
-  void setBalanceReport(const std::string& year, ledger::PUBLISHER_MONTH month, 
+  void setPublisherAllowVideos(const bool& allow);
+  void setBalanceReport(const std::string& year, ledger::PUBLISHER_MONTH month,
     const ledger::BalanceReportInfo& report_info);
   bool getBalanceReport(const std::string& year, ledger::PUBLISHER_MONTH month, 
     ledger::BalanceReportInfo* report_info);
@@ -56,6 +57,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   unsigned int getPublisherMinVisits() const;
   bool getPublisherAllowNonVerified() const;
   uint64_t getLastPublishersListLoadTimestamp() const;
+  bool getPublisherAllowVideos() const;
 
   std::vector<braveledger_bat_helper::WINNERS_ST> winners(const unsigned int& ballots);
 
