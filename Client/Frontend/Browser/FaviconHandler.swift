@@ -46,7 +46,7 @@ class FaviconHandler {
             guard let tab = tab else { return }
             
             tab.favicons.append(favicon)
-            if tab.type == .regular {
+            if !tab.isPrivate {
                 FaviconMO.add(favicon, forSiteUrl: currentURL)
             }
         }
@@ -97,7 +97,7 @@ extension FaviconHandler: TabEventHandler {
         guard let faviconURL = metadata.faviconURL else {
             return
         }
-        
+
         loadFaviconURL(faviconURL, forTab: tab) >>== { (favicon, data) in
             TabEvent.post(.didLoadFavicon(favicon, with: data), for: tab)
         }

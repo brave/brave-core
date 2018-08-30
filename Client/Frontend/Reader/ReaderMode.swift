@@ -288,4 +288,14 @@ class ReaderMode: TabContentScript {
             }
         }
     }
+
+    static func cache(for tab: Tab?) -> ReaderModeCache {
+        switch TabType.of(tab) {
+        case .regular:
+            return DiskReaderModeCache.sharedInstance
+        case .private:
+            return MemoryReaderModeCache.sharedInstance
+        }
+    }
+
 }

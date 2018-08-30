@@ -22,7 +22,7 @@ class PrivateModeButton: ToggleButton, Themeable {
     func applyTheme(_ theme: Theme) {
         tintColor = UIColor.Browser.Tint.colorFor(theme)
         imageView?.tintColor = tintColor
-        isSelected = theme == .Private
+        isSelected = theme.isPrivate
         accessibilityValue = isSelected ? PrivateModeStrings.toggleAccessibilityValueOn : PrivateModeStrings.toggleAccessibilityValueOff
     }
 }

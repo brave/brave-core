@@ -79,8 +79,17 @@ class ContentBlockerHelper {
         if let enabled = isUserEnabled {
             return enabled
         }
-        guard let tab = tab else { return false }
-        return tab.isPrivate ? isEnabledInPrivateBrowsing : isEnabledInNormalBrowsing
+
+        guard let tab = tab else {
+            return false
+        }
+
+        switch tab.type {
+        case .regular:
+            return isEnabledInNormalBrowsing
+        case .private:
+            return isEnabledInPrivateBrowsing
+        }
     }
 
     var status: BlockerStatus {
@@ -389,16 +398,34 @@ extension ContentBlockerHelper {
 extension ContentBlockerHelper {
 
     static func setTrackingProtectionMode(_ enabled: Bool, for prefs: Prefs, with tabManager: TabManager) {
-        guard let isPrivate = tabManager.selectedTab?.isPrivate else { return }
-        let key = isPrivate ? ContentBlockingConfig.Prefs.PrivateBrowsingEnabledKey : ContentBlockingConfig.Prefs.NormalBrowsingEnabledKey
+        guard let selectedTab = tabManager.selectedTab else {
+            return
+        }
+
+        let key: String
+
+        switch selectedTab.type {
+        case .regular:
+            key = ContentBlockingConfig.Prefs.NormalBrowsingEnabledKey
+        case .private:
+            key = ContentBlockingConfig.Prefs.PrivateBrowsingEnabledKey
+        }
+
         prefs.setBool(enabled, forKey: key)
         ContentBlockerHelper.prefsChanged()
     }
 
     static func isTrackingProtectionActive(tabManager: TabManager) -> Bool {
-        guard let blocker = tabManager.selectedTab?.contentBlocker as? ContentBlockerHelper else { return false }
-        let isPrivate = tabManager.selectedTab?.isPrivate ?? false
-        return isPrivate ? blocker.isEnabledInPrivateBrowsing : blocker.isEnabledInNormalBrowsing
+        guard let selectedTab = tabManager.selectedTab, let blocker = selectedTab.contentBlocker as? ContentBlockerHelper else {
+            return false
+        }
+
+        switch selectedTab.type {
+        case .regular:
+            return blocker.isEnabledInNormalBrowsing
+        case .private:
+            return blocker.isEnabledInPrivateBrowsing
+        }
     }
 
     static func toggleTrackingProtectionMode(for prefs: Prefs, tabManager: TabManager) {
