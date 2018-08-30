@@ -69,9 +69,7 @@ open class TabToolbarHelper: NSObject {
         toolbar.addTabButton.setImage(UIImage(named: "add_tab"), for: .normal)
         toolbar.addTabButton.accessibilityLabel = Strings.Add_Tab
         toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControlEvents.touchUpInside)
-        let longPressGestureAddTab = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:)))
-        longPressGestureAddTab.minimumPressDuration = 0.2
-        toolbar.addTabButton.addGestureRecognizer(longPressGestureAddTab)
+        toolbar.addTabButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:))))
 
         setTheme(theme: .Normal, forButtons: toolbar.actionButtons)
     }
