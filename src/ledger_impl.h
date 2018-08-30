@@ -84,6 +84,8 @@ class LedgerImpl : public ledger::Ledger,
   void SaveLedgerState(const std::string& data);
   void SavePublisherState(const std::string& data,
                           ledger::LedgerCallbackHandler* handler);
+  void SavePublishersList(const std::string& data);
+
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler);
 
@@ -105,6 +107,10 @@ class LedgerImpl : public ledger::Ledger,
   std::string GetWalletPassphrase() const override;
   void RecoverWallet(const std::string& passPhrase) const override;
   void OnRecoverWallet(ledger::Result result, double balance, const std::vector<braveledger_bat_helper::GRANT>& grants);
+
+  void LoadPublishersListCallback(bool result, const std::string& response);
+
+  void OnPublishersListSaved(ledger::Result result) override;
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
@@ -135,6 +141,8 @@ class LedgerImpl : public ledger::Ledger,
       const std::map<std::string, std::string>& parts,
       const uint64_t& current_time) override;
 
+  void OnTimer(uint32_t timer_id) override;
+
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                           ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info);
@@ -157,6 +165,8 @@ class LedgerImpl : public ledger::Ledger,
   void OnLedgerStateLoaded(ledger::Result result,
                            const std::string& data) override;
 
+  void RefreshPublishersList(bool retryAfterError);
+
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
@@ -170,6 +180,7 @@ class LedgerImpl : public ledger::Ledger,
   std::map<uint32_t, ledger::VisitData> current_pages_;
   uint64_t last_tab_active_time_;
   uint32_t last_shown_tab_id_;
+  uint32_t last_pub_load_timer_id_;
  };
 }  // namespace bat_ledger
 

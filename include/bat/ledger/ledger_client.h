@@ -52,6 +52,11 @@ class LEDGER_EXPORT LedgerClient {
   virtual void SavePublisherState(const std::string& publisher_state,
                                   LedgerCallbackHandler* handler) = 0;
 
+  virtual void SavePublishersList(const std::string& publisher_state,
+    LedgerCallbackHandler* handler) = 0;
+
+
+
   virtual void SavePublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;
   virtual void LoadPublisherInfo(const PublisherInfo::id_type& publisher_id,
@@ -67,6 +72,10 @@ class LEDGER_EXPORT LedgerClient {
   virtual void OnGrantCaptcha(const std::string& image) = 0;
   virtual void OnRecoverWallet(Result result, double balance, const std::vector<ledger::Grant>& grants) = 0;
   virtual void OnGrantFinish(ledger::Result result, const ledger::Grant& grant) = 0;
+
+  //uint64_t time_offset (input): timer offset in seconds.
+  //uint32_t timer_id (output) : 0 in case of failure
+  virtual void SetTimer(uint64_t time_offset, uint32_t & timer_id) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 

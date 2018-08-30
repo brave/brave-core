@@ -38,6 +38,8 @@ class LEDGER_EXPORT LedgerCallbackHandler {
   virtual void OnURLRequestResponse(uint64_t request_id,
                                     int response_code,
                                     const std::string& response) {};
+
+  virtual void OnPublishersListSaved(Result result) {};
 };
 
 }  // namespace ledger

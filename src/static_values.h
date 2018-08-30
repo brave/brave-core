@@ -11,6 +11,9 @@
 #define LEDGER_PRODUCTION_SERVER        "https://ledger.mercury.basicattentiontoken.org"
 #define BALANCE_STAGING_SERVER          "https://balance-staging.mercury.basicattentiontoken.org"
 #define BALANCE_PRODUCTION_SERVER       "https://balance.mercury.basicattentiontoken.org"
+#define PUBLISHERSTAGING_SERVER         "https://publishers-staging.basicattentiontoken.org"
+
+
 
 #define PREFIX_V2                       "/v2"
 #define PREFIX_V3                       "/v3"
@@ -27,6 +30,7 @@
 #define RECOVER_WALLET                  "/v2/wallet/"
 #define GET_SET_PROMOTION                "/v1/grants"
 #define GET_PROMOTION_CAPTCHA            "/v1/captchas/"
+#define GET_PUBLISHERS_LIST_V1           "/api/v1/public/channels"
 
 #define REGISTRARVK_FIELDNAME           "registrarVK"
 #define VERIFICATION_FIELDNAME          "verification"
@@ -78,6 +82,8 @@ static const unsigned int _twitch_events_array_size = 8;
 // Important: set _twitch_events_array_size as a correct array size when you modify items in _twitch_events
 static const std::string _twitch_events[] = {"buffer-empty", "buffer-refill", "video_end",
   "minute-watched", "video_pause", "player_click_vod_seek", "video-play", "video_error"};
+
+static const uint64_t _publishers_list_load_interval = 48 * 60 * 60; //48 hours in seconds
 
 }  // namespace braveledger_ledger
 

@@ -4,12 +4,12 @@
 
 #include "bat_publishers.h"
 
+#include <ctime>
 #include <cmath>
 #include <algorithm>
 
 #include "bat_helper.h"
 #include "ledger_impl.h"
-#include "leveldb/db.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
 
@@ -214,6 +214,11 @@ void BatPublishers::setPublisherMinVisits(const unsigned int& visits) {
   saveState();
 }
 
+void BatPublishers::setPublishersLastRefreshTimestamp(uint64_t ts) {
+  state_->pubs_load_timestamp_ = ts;
+  saveState();
+}
+
 void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
   state_->allow_non_verified_ = allow;
   saveState();
@@ -234,6 +239,9 @@ unsigned int BatPublishers::getPublisherMinVisits() const {
 
 bool BatPublishers::getPublisherAllowNonVerified() const {
   return state_->allow_non_verified_;
+}
+uint64_t BatPublishers::getLastPublishersListLoadTimestamp() const {
+  return state_->pubs_load_timestamp_;
 }
 
 bool BatPublishers::getPublisherAllowVideos() const {
@@ -424,6 +432,15 @@ std::vector<ledger::ContributionInfo> BatPublishers::GetRecurringDonationList() 
   }
 
   return res;
+}
+
+void BatPublishers::RefreshPublishersList(const std::string & pubs_list) {
+  ledger_->SavePublishersList(pubs_list);
+}
+
+void BatPublishers::OnPublishersListSaved(ledger::Result result) {
+  uint64_t ts = (ledger::Result::OK == result) ? std::time(nullptr) : 0ull;
+  setPublishersLastRefreshTimestamp(ts);
 }
 
 }  // namespace braveledger_bat_publisher
