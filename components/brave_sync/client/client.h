@@ -9,20 +9,18 @@
 #include <vector>
 #include <memory>
 
+#include "components/keyed_service/core/keyed_service.h"
+#include "brave/components/brave_sync/client/client_data.h"
+
 namespace base {
   class Time;
-
-  // Temporary from SyncJsLayer
   class ListValue;
   class Value;
 }
 
-// Temporary from SyncJsLayer
-class SyncJsLayer;
+class Profile;
 
 namespace brave_sync {
-
-typedef std::vector<unsigned char> Uint8Array;
 
 namespace jslib {
   class SyncRecord;
@@ -30,11 +28,18 @@ namespace jslib {
 
 typedef std::unique_ptr<jslib::SyncRecord> SyncRecordPtr;
 typedef std::vector<SyncRecordPtr> RecordsList;
+typedef std::unique_ptr<RecordsList> RecordsListPtr;
 typedef std::pair<SyncRecordPtr, SyncRecordPtr> SyncRecordAndExisting;
-typedef std::vector<SyncRecordAndExisting> SyncRecordAndExistingList;
+typedef std::unique_ptr<SyncRecordAndExisting> SyncRecordAndExistingPtr;
+typedef std::vector<SyncRecordAndExistingPtr> SyncRecordAndExistingList;
+
+
+using Uint8Array = std::vector<unsigned char>;
 
 class SyncLibToBrowserHandler {
 public:
+
+
   virtual ~SyncLibToBrowserHandler() = default;
   virtual void OnMessageFromSyncReceived() = 0;
 
@@ -56,7 +61,8 @@ public:
   virtual void OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) = 0;
   virtual void OnSyncReady() = 0;
   virtual void OnGetExistingObjects(const std::string &category_name,
-    const RecordsList &records, const base::Time &last_record_time_stamp) = 0;
+    const RecordsList &records,
+    const base::Time &last_record_time_stamp, const bool &is_truncated) = 0;
   virtual void OnResolvedSyncRecords(const std::string &category_name,
     const RecordsList &records) = 0;
   virtual void OnDeletedSyncUser() = 0;
@@ -64,29 +70,26 @@ public:
   virtual void OnSaveBookmarksBaseOrder(const std::string &order) = 0;
   virtual void OnSaveBookmarkOrder(const std::string &order,
     const std::string &prev_order, const std::string &next_order) = 0;
-
-  // Temporary from SyncJsLayerResponseReceiver
-  virtual void OnJsLibMessage(const std::string &message, const base::ListValue* args) = 0;
+  virtual void OnSyncWordsPrepared(const std::string &words) = 0;
+  virtual void OnBytesFromSyncWordsPrepared(const Uint8Array &bytes, const std::string &error_message) = 0;
 };
 
-class BraveSyncClient {
+class BraveSyncClient : public KeyedService {
 public:
-  virtual ~BraveSyncClient() = default;
+  ~BraveSyncClient() override = default;
 
   // BraveSync to Browser messages
   virtual void SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) = 0;
+  virtual SyncLibToBrowserHandler *GetSyncToBrowserHandler() = 0;
+
+  virtual void SetProfile(Profile *profile) = 0;
 
   // After this call the library gets loaded and
   // sends SyncLibToBrowserHandler::OnGetInitData and so on
   virtual void LoadClient() = 0;
 
   // Browser to BraveSync messages
-  virtual void SendBrowserToSync(
-      const std::string &message,
-      const base::Value &arg1,
-      const base::Value &arg2,
-      const base::Value &arg3,
-      const base::Value &arg4) = 0;
+
   //GOT_INIT_DATA
   //FETCH_SYNC_RECORDS
   //FETCH_SYNC_DEVICES
@@ -97,7 +100,8 @@ public:
   //GET_BOOKMARKS_BASE_ORDER
   //GET_BOOKMARK_ORDER
 
-  virtual void SendGotInitDataStr(const std::string &seed, const std::string &device_id, const std::string & config) = 0;
+  virtual void SendGotInitData(const Uint8Array &seed, const Uint8Array &device_id,
+    const client_data::Config &config) = 0;
   virtual void SendFetchSyncRecords(
     const std::vector<std::string> &category_names, const base::Time &startAt,
     const int &max_records) = 0;
@@ -111,12 +115,8 @@ public:
   virtual void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) = 0;
   virtual void SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) = 0;
 
-  // Temporary from SyncJsLayer
-  virtual void SetupJsLayer(SyncJsLayer *sync_js_layer) = 0;
-  virtual void RunCommandBV(const std::vector<const base::Value*> &args) = 0;
-  virtual void RunCommandStr(const std::string &command,
-    const std::string &arg1, const std::string &arg2, const std::string &arg3,
-    const std::string &arg4) = 0;
+  virtual void NeedSyncWords(const std::string &seed) = 0;
+  virtual void NeedBytesFromSyncWords(const std::string &words) = 0;
 };
 
 } // namespace brave_sync

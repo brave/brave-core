@@ -75,9 +75,6 @@ source_set("ui") {
     "webui/sync/sync_ui_impl.cc",
     "webui/sync/sync_ui_impl.h",
     "webui/sync/sync_ui.h",
-    "webui/sync/sync_js_layer.h",
-    "webui/sync/sync_js_layer_impl.cc",
-    "webui/sync/sync_js_layer_impl.h",
   ]
 
   if (is_mac || is_win || is_chromeos) {

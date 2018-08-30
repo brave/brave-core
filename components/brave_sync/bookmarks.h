@@ -19,7 +19,11 @@ namespace brave_sync {
 
 namespace jslib {
   class SyncRecord;
+  class Bookmark;
 }
+typedef std::unique_ptr<jslib::SyncRecord> SyncRecordPtr;
+typedef std::vector<SyncRecordPtr> RecordsList;
+
 namespace storage {
   class ObjectMap;
 }
@@ -35,13 +39,14 @@ public:
   void SetThisDeviceId(const std::string &device_id);
   void SetObjectMap(storage::ObjectMap* sync_obj_map);
 
-  std::unique_ptr<base::Value> GetResolvedBookmarkValue(
+  std::unique_ptr<jslib::SyncRecord> GetResolvedBookmarkValue2(
     const std::string &object_id);
 
   void AddBookmark(const jslib::SyncRecord &sync_record);
 
   void GetAllBookmarks(std::vector<const bookmarks::BookmarkNode*> &nodes);
-  std::unique_ptr<base::Value>NativeBookmarksToSyncLV(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
+  //std::unique_ptr<base::Value> NativeBookmarksToSyncLV(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
+  std::unique_ptr<RecordsList> NativeBookmarksToSyncRecords(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
 
   // bookmarks::BookmarkModelObserver overrides
   void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
@@ -80,10 +85,9 @@ public:
       const std::set<GURL>& removed_urls) override;
 
 private:
-  std::unique_ptr<base::Value> BookmarkToValue(const bookmarks::BookmarkNode* node, const std::string &object_id);
-
   std::string GetOrCreateObjectByLocalId(const int64_t &local_id);
   void SaveIdMap(const int64_t &local_id, const std::string &sync_object_id);
+  std::unique_ptr<jslib::Bookmark> GetFromNode(const bookmarks::BookmarkNode* node);
 
   void PauseObserver();
   void ResumeObserver();

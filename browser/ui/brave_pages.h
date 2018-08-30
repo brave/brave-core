@@ -12,7 +12,6 @@ namespace brave {
 void ShowBraveAdblock(Browser* browser);
 void ShowBraveRewards(Browser* browser);
 void ShowBraveSync(Browser* browser);
-void LoadBraveSyncJsLib(Browser* browser);
 
 }  // namespace brave
 

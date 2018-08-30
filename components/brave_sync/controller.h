@@ -31,7 +31,6 @@ namespace brave_sync {
     virtual void GetSyncWords() = 0;
     virtual std::string GetSeed() = 0;
 
-    virtual void SetupJsLayer(SyncJsLayer *sync_js_layer) = 0;
     virtual void SetupUi(SyncUI *sync_ui) = 0;
   };
 

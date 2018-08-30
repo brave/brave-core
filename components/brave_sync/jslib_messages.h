@@ -25,12 +25,13 @@ namespace jslib {
 // 3) even with a depth of a deps "//third_party/protobuf:protobuf_full" there are questions
 //    how to convert json -> protobuf class, not all of fields were converted
 
-
 class Site {
 public:
   Site();
   Site(const base::Value *value);
   ~Site();
+  static std::unique_ptr<Site> Clone(const Site& site);
+
   std::string location;
   std::string title;
   std::string customTitle;
@@ -47,6 +48,8 @@ public:
   Bookmark();
   Bookmark(const base::Value *value);
   ~Bookmark();
+  static std::unique_ptr<Bookmark> Clone(const Bookmark& bookmark);
+
   Site site;
   bool isFolder;
   std::string parentFolderObjectId; // bytes
@@ -62,6 +65,8 @@ public:
   SiteSetting();
   SiteSetting(const base::Value *value);
   ~SiteSetting();
+  static std::unique_ptr<SiteSetting> Clone(const SiteSetting& site_setting);
+
   std::string hostPattern;
   double zoomLevel;
   bool shieldsUp;
@@ -99,6 +104,7 @@ public:
   Device();
   Device(const base::Value *value);
   ~Device();
+  static std::unique_ptr<Device> Clone(const Device& device);
   std::string name;
 private:
   void FromValue(const base::Value *value);
@@ -110,6 +116,9 @@ public:
   SyncRecord();
   SyncRecord(const base::Value *sync_record_value);
   ~SyncRecord();
+
+  static std::unique_ptr<SyncRecord> Clone(const SyncRecord& record);
+
   enum Action {
     A_INVALID = -1,
     CREATE = 0,
@@ -123,6 +132,8 @@ public:
   std::string deviceId; // bytes
   std::string objectId; // bytes
 
+  std::string objectData;
+
   bool has_bookmark() const;
   bool has_historysite() const;
   bool has_sitesetting() const;
@@ -131,6 +142,11 @@ public:
   const Site& GetHistorySite() const;
   const SiteSetting& GetSiteSetting() const;
   const Device& GetDevice() const;
+
+  void SetBookmark(std::unique_ptr<Bookmark> bookmark);
+  void SetHistorySite(std::unique_ptr<Site> history_site);
+  void SetSiteSetting(std::unique_ptr<SiteSetting> site_setting);
+  void SetDevice(std::unique_ptr<Device> device);
 
   base::Time syncTimestamp;
 private:
@@ -142,6 +158,9 @@ private:
   void FromValue(const base::Value *value);
 };
 
+// class SyncResolvedRecord {
+// public:
+// };
 
 } // jslib
 
