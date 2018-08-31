@@ -100,8 +100,8 @@ public struct UIConstants {
 
     static let DefaultPadding: CGFloat = 10
     static let SnackbarButtonHeight: CGFloat = 48
-    static let TopToolbarHeight: CGFloat = 56
-    static var ToolbarHeight: CGFloat = 46
+    static let TopToolbarHeight: CGFloat = 44
+    static var ToolbarHeight: CGFloat = 44
     static var BottomToolbarHeight: CGFloat {
         get {
             let bottomInset: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
