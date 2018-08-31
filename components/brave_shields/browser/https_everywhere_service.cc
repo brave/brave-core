@@ -123,6 +123,7 @@ void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
                         unzipped_level_db_path.AsUTF8Unsafe(),
                         &level_db_);
   if (!status.ok() || !level_db_) {
+    level_db_ = nullptr;
     LOG(ERROR) << "Level db open error "
                << unzipped_level_db_path.value().c_str()
                << ", error: " << status.ToString();
@@ -146,7 +147,7 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     std::string& new_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::AssertBlockingAllowed();
-  if (!IsInitialized() || url->scheme() == url::kHttpsScheme) {
+  if (!IsInitialized() || !level_db_ || url->scheme() == url::kHttpsScheme) {
     return false;
   }
   if (!ShouldHTTPSERedirect(request_identifier)) {
