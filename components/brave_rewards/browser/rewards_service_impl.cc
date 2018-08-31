@@ -493,10 +493,35 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
   if (!content.empty())
     fetcher->SetUploadData(contentType, content);
 
+  if (VLOG_IS_ON(2)) {
+    std::string printMethod;
+    switch (method) {
+      case ledger::URL_METHOD::POST:
+        printMethod = "POST";
+        break;
+      case ledger::URL_METHOD::PUT:
+        printMethod = "PUT";
+        break;
+      default:
+        printMethod = "GET";
+        break;
+    }
+    VLOG(2) << "[ REQUEST ]";
+    VLOG(2) << "> url: " << url;
+    VLOG(2) << "> method: " << printMethod;
+    VLOG(2) << "> content: " << content;
+    VLOG(2) << "> contentType: " << contentType;
+    for (size_t i = 0; i < headers.size(); i++) {
+      VLOG(2) << "> headers: " << headers[i];
+    }
+    VLOG(2) << "[ END REQUEST ]";
+  }
+
   FetchCallback callback = base::Bind(
       &ledger::LedgerCallbackHandler::OnURLRequestResponse,
       base::Unretained(handler),
-      next_id);
+      next_id,
+      url);
   fetchers_[fetcher] = callback;
 
   std::unique_ptr<ledger::LedgerURLLoader> loader(
