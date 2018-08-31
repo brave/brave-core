@@ -29,8 +29,6 @@ source_set("ui") {
     "location_bar/brave_location_bar.h",
     "toolbar/brave_app_menu_model.cc",
     "toolbar/brave_app_menu_model.h",
-    "toolbar/brave_toolbar_actions_model.cc",
-    "toolbar/brave_toolbar_actions_model.h",
     "views/brave_actions/brave_actions_container.cc",
     "views/brave_actions/brave_actions_container.h",
     "views/frame/brave_browser_view.cc",
