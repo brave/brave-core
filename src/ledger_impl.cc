@@ -235,44 +235,15 @@ std::vector<ledger::ContributionInfo> LedgerImpl::GetRecurringDonationPublisherI
 }
 
 void LedgerImpl::GetPublisherInfo(
-    const std::string& publisher_key,
+    const ledger::PublisherInfoFilter& filter,
     ledger::PublisherInfoCallback callback) {
-  ledger_client_->LoadPublisherInfo(publisher_key, callback);
+  ledger_client_->LoadPublisherInfo(filter, callback);
 }
 
 void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
                                 const ledger::PublisherInfoFilter& filter,
                                 ledger::GetPublisherInfoListCallback callback) {
-  std::vector<std::string> prefix;
-  if (filter.category & ledger::PUBLISHER_CATEGORY::ALL_CATEGORIES) {
-    prefix.push_back(bat_publishers_->GetPublisherKey(
-      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE, filter.year, filter.month, ""));
-    prefix.push_back(bat_publishers_->GetPublisherKey(
-      ledger::PUBLISHER_CATEGORY::TIPPING, filter.year, filter.month, ""));
-    prefix.push_back(bat_publishers_->GetPublisherKey(
-      ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, filter.year, filter.month, ""));
-    prefix.push_back(bat_publishers_->GetPublisherKey(
-      ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, filter.year, filter.month, ""));
-  } else {
-    if (filter.category & ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
-      prefix.push_back(bat_publishers_->GetPublisherKey(
-        ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE, filter.year, filter.month, ""));
-    }
-    if (filter.category & ledger::PUBLISHER_CATEGORY::TIPPING) {
-      prefix.push_back(bat_publishers_->GetPublisherKey(
-        ledger::PUBLISHER_CATEGORY::TIPPING, filter.year, filter.month, ""));
-    }
-    if (filter.category & ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
-      prefix.push_back(bat_publishers_->GetPublisherKey(
-        ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, filter.year, filter.month, ""));
-    }
-    if (filter.category & ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
-      prefix.push_back(bat_publishers_->GetPublisherKey(
-        ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, filter.year, filter.month, ""));
-    }
-  }
-  ledger_client_->LoadPublisherInfoList(start, limit, filter,
-    prefix, callback);
+  ledger_client_->LoadPublisherInfoList(start, limit, filter, callback);
 }
 
 void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) { // In seconds
@@ -518,14 +489,16 @@ void LedgerImpl::OnGrantFinish(ledger::Result result, const braveledger_bat_help
   ledger_client_->OnGrantFinish(result, newGrant);
 }
 
-bool LedgerImpl::GetBalanceReport(const std::string& year,
-    ledger::PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) const {
-  return bat_publishers_->getBalanceReport(year, month, report_info);
+bool LedgerImpl::GetBalanceReport(ledger::PUBLISHER_MONTH month,
+                                int year,
+                                ledger::BalanceReportInfo* report_info) const {
+  return bat_publishers_->getBalanceReport(month, year, report_info);
 }
 
-void LedgerImpl::SetBalanceReport(const std::string& year,
-    ledger::PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) {
-  bat_publishers_->setBalanceReport(year, month, report_info);
+void LedgerImpl::SetBalanceReport(ledger::PUBLISHER_MONTH month,
+                                int year,
+                                const ledger::BalanceReportInfo& report_info) {
+  bat_publishers_->setBalanceReport(month, year, report_info);
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {

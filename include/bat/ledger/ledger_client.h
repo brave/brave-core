@@ -59,11 +59,10 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SavePublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;
-  virtual void LoadPublisherInfo(const PublisherInfo::id_type& publisher_id,
+  virtual void LoadPublisherInfo(PublisherInfoFilter filter,
                                 PublisherInfoCallback callback) = 0;
   virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
-                                    const std::vector<std::string>& prefix,
                                     GetPublisherInfoListCallback callback) = 0;
 
   virtual void GetGrant(const std::string& lang, const std::string& paymentId) = 0;

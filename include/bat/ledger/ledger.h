@@ -22,7 +22,7 @@ LEDGER_EXPORT struct VisitData {
             const std::string& _path,
             uint32_t _tab_id,
             PUBLISHER_MONTH _local_month,
-            const std::string& _local_year);
+            int _local_year);
   VisitData(const VisitData& data);
   ~VisitData();
 
@@ -31,7 +31,7 @@ LEDGER_EXPORT struct VisitData {
   std::string path;
   uint32_t tab_id;
   PUBLISHER_MONTH local_month;
-  std::string local_year;
+  int local_year;
 };
 
 LEDGER_EXPORT struct PaymentData {
@@ -41,7 +41,7 @@ LEDGER_EXPORT struct PaymentData {
            const int64_t& _timestamp,
            PUBLISHER_CATEGORY _category,
            PUBLISHER_MONTH _local_month,
-           const std::string& _local_year);
+           int _local_year);
   PaymentData(const PaymentData& data);
   ~PaymentData();
 
@@ -50,7 +50,7 @@ LEDGER_EXPORT struct PaymentData {
   int64_t timestamp;
   PUBLISHER_CATEGORY category;
   PUBLISHER_MONTH local_month;
-  std::string local_year;
+  int local_year;
 };
 
 
@@ -91,7 +91,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;
-  virtual void GetPublisherInfo(const std::string& publisher_key,
+  virtual void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
                                 PublisherInfoCallback callback) = 0;
   virtual std::vector<ContributionInfo> GetRecurringDonationPublisherInfo() = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
@@ -104,8 +104,9 @@ class LEDGER_EXPORT Ledger {
   virtual void SetPublisherAllowVideos(bool allow) = 0;
   virtual void SetContributionAmount(double amount) = 0;
   virtual void SetAutoContribute(bool enabled) = 0;
-  virtual void SetBalanceReport(const std::string& year,
-    PUBLISHER_MONTH month, const ledger::BalanceReportInfo& report_info) = 0;
+  virtual void SetBalanceReport(PUBLISHER_MONTH month,
+                              int year,
+                              const ledger::BalanceReportInfo& report_info) = 0;
 
   virtual const std::string& GetBATAddress() const = 0;
   virtual const std::string& GetBTCAddress() const = 0;
@@ -123,8 +124,9 @@ class LEDGER_EXPORT Ledger {
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual void GetGrantCaptcha() const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
-  virtual bool GetBalanceReport(const std::string& year,
-    PUBLISHER_MONTH month, ledger::BalanceReportInfo* report_info) const = 0;
+  virtual bool GetBalanceReport(PUBLISHER_MONTH month,
+                              int year,
+                              ledger::BalanceReportInfo* report_info) const = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 };

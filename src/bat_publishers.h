@@ -13,6 +13,7 @@
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
+#include "bat/ledger/publisher_info.h"
 #include "bat_helper.h"
 
 namespace bat_ledger {
@@ -48,10 +49,12 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setPublisherAllowNonVerified(const bool& allow);
   void setPublisherAllowVideos(const bool& allow);
-  void setBalanceReport(const std::string& year, ledger::PUBLISHER_MONTH month,
-    const ledger::BalanceReportInfo& report_info);
-  bool getBalanceReport(const std::string& year, ledger::PUBLISHER_MONTH month, 
-    ledger::BalanceReportInfo* report_info);
+  void setBalanceReport(ledger::PUBLISHER_MONTH month,
+                        int year,
+                        const ledger::BalanceReportInfo& report_info);
+  bool getBalanceReport(ledger::PUBLISHER_MONTH month,
+                        int year,
+                        ledger::BalanceReportInfo* report_info);
 
   uint64_t getPublisherMinVisitTime() const; // In milliseconds
   unsigned int getPublisherMinVisits() const;
@@ -64,10 +67,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   std::unique_ptr<ledger::PublisherInfo> onPublisherInfoUpdated(
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo>);
-  std::string GetPublisherKey(ledger::PUBLISHER_CATEGORY category, const std::string& year,
-    ledger::PUBLISHER_MONTH month, const std::string& publisher_id);
-  std::string GetBalanceReportName(const std::string& year,
-    ledger::PUBLISHER_MONTH month);
+  std::string GetBalanceReportName(ledger::PUBLISHER_MONTH month, int year);
   std::vector<ledger::ContributionInfo> GetRecurringDonationList();
 
   void RefreshPublishersList(const std::string & pubs_list);
@@ -75,20 +75,24 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void OnPublishersListSaved(ledger::Result result) override;
 
  private:
+  ledger::PublisherInfoFilter CreatePublisherFilter(
+      const std::string& publisher_id,
+      ledger::PUBLISHER_CATEGORY category,
+      ledger::PUBLISHER_MONTH month,
+      int year);
+
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
 
   bool isEligableForContribution(const ledger::PublisherInfo& info);
-  bool isVerified(const ledger::PublisherInfo& publisher_id);
+  bool isVerified(const ledger::PublisherInfo::id_type& publisher_id);
   void saveVisitInternal(
-      std::string publisher_key,
       ledger::VisitData visit_data,
       uint64_t duration,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
   void makePaymentInternal(
-      std::string publisher_key,
       ledger::PaymentData payment_data,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);

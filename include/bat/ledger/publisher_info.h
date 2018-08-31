@@ -13,14 +13,15 @@
 namespace ledger {
 
 LEDGER_EXPORT enum PUBLISHER_CATEGORY {
-  ALL_CATEGORIES = 1 << 0,
   AUTO_CONTRIBUTE = 1 << 1,
   TIPPING = 1 << 2,
   DIRECT_DONATION = 1 << 3,
-  RECURRING_DONATION = 1 << 4
+  RECURRING_DONATION = 1 << 4,
+  ALL_CATEGORIES = (1 << 5) - 1,
 };
 
 LEDGER_EXPORT enum PUBLISHER_MONTH {
+  ANY = -1,
   JANUARY = 1,
   FEBRUARY = 2,
   MARCH = 3,
@@ -36,12 +37,16 @@ LEDGER_EXPORT enum PUBLISHER_MONTH {
 };
 
 LEDGER_EXPORT struct PublisherInfoFilter {
-  PublisherInfoFilter(int category_, 
-    PUBLISHER_MONTH month_, const std::string& year_);
+  PublisherInfoFilter();
+  PublisherInfoFilter(const PublisherInfoFilter& filter);
+  ~PublisherInfoFilter();
 
+  std::string id;
   int category;
   PUBLISHER_MONTH month;
-  std::string year;
+  int year;
+
+  std::vector<std::pair<std::string, bool>> order_by;
 };
 
 LEDGER_EXPORT struct ContributionInfo {
@@ -57,13 +62,10 @@ LEDGER_EXPORT struct ContributionInfo {
 
 LEDGER_EXPORT struct PublisherInfo {
   typedef std::string id_type;
-  PublisherInfo(const id_type& publisher_id);
+  PublisherInfo(const id_type& publisher_id, PUBLISHER_MONTH month, int year);
   PublisherInfo(const PublisherInfo& info);
   ~PublisherInfo();
 
-  static const PublisherInfo FromJSON(const std::string& json);
-  const std::string ToJSON() const;
-  //bool Matches(PublisherInfoFilter filter) const;
   bool is_valid() const;
 
   const id_type id;
@@ -74,11 +76,11 @@ LEDGER_EXPORT struct PublisherInfo {
   uint32_t percent;
   double weight;
   bool excluded;
-  std::string key;
-  std::vector<ContributionInfo> contributions;
   PUBLISHER_CATEGORY category;
   PUBLISHER_MONTH month;
-  std::string year;
+  int year;
+
+  std::vector<ContributionInfo> contributions;
 };
 
 using PublisherInfoList = std::vector<PublisherInfo>;
