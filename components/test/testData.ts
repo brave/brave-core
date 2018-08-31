@@ -2,10 +2,33 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+export class ChromeEvent {
+  listeners: Array<() => void>
+
+  constructor () {
+    this.listeners = []
+  }
+
+  emit (...args: Array<() => void>) {
+    this.listeners.forEach((cb: () => void) => cb.apply(null, args))
+  }
+
+  addListener (cb: () => void) {
+    this.listeners.push(cb)
+  }
+}
+
 export const getMockChrome = () => {
   return {
     send: () => undefined,
-    getVariableValue: () => undefined
+    getVariableValue: () => undefined,
+    runtime: {
+      onMessage: new ChromeEvent(),
+      onConnect: new ChromeEvent(),
+      onStartup: new ChromeEvent(),
+      onMessageExternal: new ChromeEvent(),
+      onConnectExternal: new ChromeEvent()
+    },
   }
 }
 

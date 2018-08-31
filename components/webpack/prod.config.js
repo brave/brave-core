@@ -8,7 +8,9 @@ module.exports = {
     brave_adblock: path.join(__dirname, '../brave_adblock_ui/brave_adblock'),
     brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
     brave_rewards: path.join(__dirname, '../brave_rewards_ui/brave_rewards'),
-    brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome')
+    brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome'),
+    brave_webtorrent: path.join(__dirname, '../brave_webtorrent/extension/brave_webtorrent'),
+    brave_webtorrent_background: path.join(__dirname, '../brave_webtorrent/extension/background'),
   },
   output: {
     path: process.env.TARGET_GEN_DIR,
@@ -31,7 +33,12 @@ module.exports = {
     })
   ],
   resolve: {
-    extensions: ['.js', '.tsx', '.ts']
+    extensions: ['.js', '.tsx', '.ts', '.json'],
+    alias: {
+      'dgram': 'chrome-dgram',
+      'net': 'chrome-net',
+      'bittorrent-tracker': path.resolve(__dirname, '../../node_modules/bittorrent-tracker')
+    }
   },
   module: {
     rules: [
@@ -64,5 +71,8 @@ module.exports = {
         test: /\.(ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'
       }]
+  },
+  node: {
+    fs: 'empty'
   }
 }

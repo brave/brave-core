@@ -5,6 +5,7 @@
 #include "brave/browser/extensions/brave_component_extension_resource_manager.h"
 
 #include "brave/browser/resources/grit/brave_extension_resources_map.h"
+#include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources_map.h"
 
 namespace extensions {
 
@@ -13,6 +14,10 @@ BraveComponentExtensionResourceManager() {
   AddComponentResourceEntries(
       kBraveExtension,
       kBraveExtensionSize);
+
+  AddComponentResourceEntries(
+      kBraveWebtorrentResources,
+      kBraveWebtorrentResourcesSize);
 }
 
 BraveComponentExtensionResourceManager::

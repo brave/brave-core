@@ -4,12 +4,60 @@
 
 #include <vector>
 
+#include "base/path_service.h"
+#include "brave/browser/brave_content_browser_client.h"
+#include "brave/common/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test_utils.h"
+#include "net/dns/mock_host_resolver.h"
 
-using BraveContentBrowserClientTest = InProcessBrowserTest;
+class BraveContentBrowserClientTest : public InProcessBrowserTest {
+  public:
+    void SetUpOnMainThread() override {
+      InProcessBrowserTest::SetUpOnMainThread();
+
+      content_client_.reset(new ChromeContentClient);
+      content::SetContentClient(content_client_.get());
+      browser_content_client_.reset(new BraveContentBrowserClient());
+      content::SetBrowserClientForTesting(browser_content_client_.get());
+
+      host_resolver()->AddRule("*", "127.0.0.1");
+      content::SetupCrossSiteRedirector(embedded_test_server());
+
+      brave::RegisterPathProvider();
+      base::FilePath test_data_dir;
+      base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+      embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+
+      ASSERT_TRUE(embedded_test_server()->Start());
+
+      url_ = embedded_test_server()->GetURL("a.com", "/magnet.html");
+      magnet_url_ = GURL("magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fbig-buck-bunny.torrent");
+      extension_url_ = GURL("chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/brave_webtorrent.html?magnet%3A%3Fxt%3Durn%3Abtih%3Add8255ecdc7ca55fb0bbf81323d87062db1f6d1c%26dn%3DBig%2BBuck%2BBunny%26tr%3Dudp%253A%252F%252Fexplodie.org%253A6969%26tr%3Dudp%253A%252F%252Ftracker.coppersurfer.tk%253A6969%26tr%3Dudp%253A%252F%252Ftracker.empire-js.us%253A1337%26tr%3Dudp%253A%252F%252Ftracker.leechers-paradise.org%253A6969%26tr%3Dudp%253A%252F%252Ftracker.opentrackr.org%253A1337%26tr%3Dwss%253A%252F%252Ftracker.btorrent.xyz%26tr%3Dwss%253A%252F%252Ftracker.fastcast.nz%26tr%3Dwss%253A%252F%252Ftracker.openwebtorrent.com%26ws%3Dhttps%253A%252F%252Fwebtorrent.io%252Ftorrents%252F%26xs%3Dhttps%253A%252F%252Fwebtorrent.io%252Ftorrents%252Fbig-buck-bunny.torrent");
+    }
+
+    void TearDown() override {
+      browser_content_client_.reset();
+      content_client_.reset();
+    }
+
+    const GURL& url() { return url_; }
+    const GURL& magnet_url() { return magnet_url_; }
+    const GURL& extension_url() { return extension_url_; }
+
+  private:
+    GURL url_;
+    GURL magnet_url_;
+    GURL extension_url_;
+    ContentSettingsPattern top_level_page_pattern_;
+    ContentSettingsPattern empty_pattern_;
+    std::unique_ptr<ChromeContentClient> content_client_;
+    std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
+};
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
   GURL chrome_settings_url("chrome://settings/");
@@ -40,4 +88,33 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
     EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
         url.spec().c_str());
   });
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(WaitForLoadStop(contents));
+  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
+      magnet_url().spec().c_str()) << "URL visible to users should stay as the magnet URL";
+  content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(),
+      extension_url().spec().c_str()) << "Real URL should be extension URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ui_test_utils::NavigateToURL(browser(), url());
+  ASSERT_TRUE(WaitForLoadStop(contents));
+  bool value;
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents, "clickMagnetLink();",
+        &value));
+  EXPECT_TRUE(value);
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
+      magnet_url().spec().c_str()) << "URL visible to users should stay as the magnet URL";
+  content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(),
+      extension_url().spec().c_str()) << "Real URL should be extension URL";
 }

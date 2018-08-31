@@ -48,5 +48,20 @@
     "matches": [
       "chrome://newtab/*"
     ]
-  }]
+  }],
+  "sockets.tcp": {
+    "dependencies": ["manifest:sockets"],
+    "contexts": ["blessed_extension"],
+    "whitelist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423"]
+  },
+  "sockets.tcpServer": {
+    "dependencies": ["manifest:sockets"],
+    "contexts": ["blessed_extension"],
+    "whitelist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423"]
+  },
+  "sockets.udp": {
+    "dependencies": ["manifest:sockets"],
+    "contexts": ["blessed_extension"],
+    "whitelist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423"]
+  }
 }

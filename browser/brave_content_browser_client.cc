@@ -7,6 +7,7 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile_io_data.h"
@@ -80,6 +81,8 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
     content::BrowserURLHandler* handler) {
   // Insert handler for chrome://newtab so that we handle it
   // before anything else can.
+  handler->AddHandlerPair(&webtorrent::HandleMagnetURLRewrite,
+                          content::BrowserURLHandler::null_handler());
   handler->AddHandlerPair(&HandleURLRewrite,
                           &HandleURLReverseRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
@@ -118,6 +121,25 @@ BraveContentBrowserClient::AllowWebBluetooth(
     const url::Origin& requesting_origin,
     const url::Origin& embedding_origin) {
   return content::ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
+}
+
+bool BraveContentBrowserClient::HandleExternalProtocol(
+    const GURL& url,
+    content::ResourceRequestInfo::WebContentsGetter web_contents_getter,
+    int child_id,
+    content::NavigationUIData* navigation_data,
+    bool is_main_frame,
+    ui::PageTransition page_transition,
+    bool has_user_gesture) {
+
+  if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
+        page_transition, has_user_gesture)) {
+    return true;
+  }
+
+  return ChromeContentBrowserClient::HandleExternalProtocol(
+      url, web_contents_getter, child_id, navigation_data, is_main_frame,
+      page_transition, has_user_gesture);
 }
 
 bool BraveContentBrowserClient::AllowSetCookie(
