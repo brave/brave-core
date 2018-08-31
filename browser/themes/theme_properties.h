@@ -7,11 +7,10 @@
 
 #include "base/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
-
-class Profile;
+#include "brave/browser/themes/brave_theme_service.h"
 
 #define BRAVE_COLOR_FOR_TEST 0x7FFFFFFF
 
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, Profile* profile);
+base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, BraveThemeType theme);
 
 #endif  // BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_

@@ -13,8 +13,10 @@
 #include "base/strings/string_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/common/channel_info.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "components/version_info/channel.h"
 
 // static
 void BraveThemeService::RegisterProfilePrefs(
@@ -23,7 +25,8 @@ void BraveThemeService::RegisterProfilePrefs(
 }
 
 // static
-BraveThemeService::BraveThemeType BraveThemeService::GetBraveThemeType(Profile* profile) {
+BraveThemeType BraveThemeService::GetUserPreferredBraveThemeType(
+                                                      Profile* profile) {
   // allow override via cli flag
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
@@ -31,13 +34,35 @@ BraveThemeService::BraveThemeType BraveThemeService::GetBraveThemeType(Profile* 
     std::string requested_theme_value = command_line.GetSwitchValueASCII(switches::kUiMode);
     std::string requested_theme_value_lower = base::ToLowerASCII(requested_theme_value);
     if (requested_theme_value_lower == "light")
-      return BraveThemeService::BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
+      return BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
     if (requested_theme_value_lower == "light")
-      return BraveThemeService::BraveThemeType::BRAVE_THEME_TYPE_DARK;
+      return BraveThemeType::BRAVE_THEME_TYPE_DARK;
   }
   // get value from preferences
-  return static_cast<BraveThemeService::BraveThemeType>(
+  return static_cast<BraveThemeType>(
       profile->GetPrefs()->GetInteger(kBraveThemeType));
+}
+
+// static
+BraveThemeType BraveThemeService::GetActiveBraveThemeType(
+                                                    Profile* profile) {
+  const BraveThemeType preferred_theme =
+                                        GetUserPreferredBraveThemeType(profile);
+  switch (preferred_theme) {
+    case BraveThemeType::BRAVE_THEME_TYPE_DEFAULT:
+      switch (chrome::GetChannel()) {
+        case version_info::Channel::STABLE:
+        case version_info::Channel::BETA:
+          return BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
+        case version_info::Channel::DEV:
+        case version_info::Channel::CANARY:
+        case version_info::Channel::UNKNOWN:
+        default:
+          return BraveThemeType::BRAVE_THEME_TYPE_DARK;
+      }
+    default:
+      return preferred_theme;
+  }
 }
 
 BraveThemeService::BraveThemeService() {}
@@ -56,12 +81,16 @@ void BraveThemeService::Init(Profile* profile) {
   ThemeService::Init(profile);
 }
 
+
+
 SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
-  const base::Optional<SkColor> braveColor =
-      MaybeGetDefaultColorForBraveUi(id, incognito, profile());
+  const BraveThemeType theme = GetActiveBraveThemeType(profile());
+  const base::Optional<SkColor> braveColor = MaybeGetDefaultColorForBraveUi(id, incognito, theme);
   if (braveColor)
       return braveColor.value();
-
+  // make sure we fallback to chrome's dark theme (incognito) for our dark theme
+  if (theme == BraveThemeType::BRAVE_THEME_TYPE_DARK)
+    incognito = true;
   return ThemeService::GetDefaultColor(id, incognito);
 }
 

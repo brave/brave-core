@@ -12,23 +12,24 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }
 
+enum BraveThemeType {
+  BRAVE_THEME_TYPE_DEFAULT,  // Choose theme by channel
+  BRAVE_THEME_TYPE_DARK,     // Use dark theme regardless of channel
+  BRAVE_THEME_TYPE_LIGHT,    // Use light theme regardless of channel
+};
+
 class BraveThemeService : public ThemeService {
  public:
-  enum BraveThemeType {
-    BRAVE_THEME_TYPE_DEFAULT,  // Choose theme by channel
-    BRAVE_THEME_TYPE_DARK,     // Use dark theme regardless of channel
-    BRAVE_THEME_TYPE_LIGHT,    // Use light theme regardless of channel
-  };
-
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-  static BraveThemeType GetBraveThemeType(Profile* profile);
+  static BraveThemeType GetUserPreferredBraveThemeType(Profile* profile);
+  static BraveThemeType GetActiveBraveThemeType(Profile* profile);
 
   BraveThemeService();
   ~BraveThemeService() override;
 
   // ThemeService overrides:
   void Init(Profile* profile) override;
-  
+
  protected:
   // ThemeService overrides:
   SkColor GetDefaultColor(int id, bool incognito) const override;
