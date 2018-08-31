@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model.cc b/chrome/browser/ui/toolbar/toolbar_actions_model.cc
+index 11f6d77d53640898659654d94e1b2b67134ac30f..cb6b760b3b2a010aaa208e91bc6f84990aa794da 100644
+--- a/chrome/browser/ui/toolbar/toolbar_actions_model.cc
++++ b/chrome/browser/ui/toolbar/toolbar_actions_model.cc
+@@ -14,6 +14,7 @@
+ #include "base/single_thread_task_runner.h"
+ #include "base/stl_util.h"
+ #include "base/threading/thread_task_runner_handle.h"
++#include "brave/common/extensions/extension_constants.h"
+ #include "chrome/browser/chrome_notification_types.h"
+ #include "chrome/browser/extensions/extension_action_manager.h"
+ #include "chrome/browser/extensions/extension_message_bubble_controller.h"
+@@ -296,6 +297,11 @@ size_t ToolbarActionsModel::FindNewPositionFromLastKnownGood(
+ 
+ bool ToolbarActionsModel::ShouldAddExtension(
+     const extensions::Extension* extension) {
++  // Don't show the Brave 'extension' in the ToolbarActions extensions area. It
++  // will instead be shown in the BraveActions area.
++  if (extension->id() == brave_extension_id) {
++    return false;
++  }
+   // In incognito mode, don't add any extensions that aren't incognito-enabled.
+   if (profile_->IsOffTheRecord() &&
+       !extensions::util::IsIncognitoEnabled(extension->id(), profile_))
