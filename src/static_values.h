@@ -51,6 +51,7 @@
 #define YOUTUBE_MEDIA_TYPE              "youtube"
 #define TWITCH_MEDIA_TYPE               "twitch"
 #define YOUTUBE_PROVIDER_NAME           "YouTube"
+#define TWITCH_PROVIDER_NAME           	"Twitch"
 #define YOUTUBE_PROVIDER_URL            "https://www.youtube.com/oembed"
 
 #define SEED_LENGTH                     32

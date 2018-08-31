@@ -12,6 +12,7 @@
 #include "bat/ledger/export.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/publisher_info.h"
+#include "bat/ledger/media_publisher_info.h"
 
 namespace ledger {
 
@@ -56,6 +57,8 @@ LEDGER_EXPORT struct PaymentData {
 
 class LEDGER_EXPORT Ledger {
  public:
+  static bool IsMediaLink(const std::string& url, const std::string& first_party_url, const std::string& referrer);
+
   Ledger() = default;
   virtual ~Ledger() = default;
 
@@ -83,7 +86,16 @@ class LEDGER_EXPORT Ledger {
       uint32_t tab_id,
       const std::string& url,
       const std::map<std::string, std::string>& parts,
-      const uint64_t& current_time) = 0;
+      const std::string& first_party_url, 
+      const std::string& referrer,
+      const VisitData& visit_data) = 0;
+
+  virtual void OnPostData(
+      const std::string& url,
+      const std::string& first_party_url, 
+      const std::string& referrer,
+      const std::string& post_data,
+      const VisitData& visit_data) = 0;
 
   virtual void OnTimer(uint32_t timer_id) = 0;
 
@@ -93,6 +105,11 @@ class LEDGER_EXPORT Ledger {
                                 PublisherInfoCallback callback) = 0;
   virtual void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
                                 PublisherInfoCallback callback) = 0;
+  virtual void SetMediaPublisherInfo(const uint64_t& duration, std::unique_ptr<MediaPublisherInfo> media_publisher_info,
+                                const ledger::VisitData& visit_data,
+                                MediaPublisherInfoCallback callback) = 0;
+  virtual void GetMediaPublisherInfo(const std::string& publisher_key,
+                                MediaPublisherInfoCallback callback) = 0;
   virtual std::vector<ContributionInfo> GetRecurringDonationPublisherInfo() = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
                                     const ledger::PublisherInfoFilter& filter,
@@ -129,6 +146,7 @@ class LEDGER_EXPORT Ledger {
                               ledger::BalanceReportInfo* report_info) const = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
+  virtual void SaveMediaVisit(const ledger::VisitData& visit_data, const uint64_t& duration) = 0;
 };
 
 }  // namespace ledger
