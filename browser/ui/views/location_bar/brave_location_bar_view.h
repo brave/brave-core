@@ -8,6 +8,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 
 class BraveActionsContainer;
+enum class OmniboxTint;
 
 // The purposes of this subclass are to:
 // - Add the BraveActionsContainer to the location bar
@@ -21,6 +22,7 @@ class BraveLocationBarView : public LocationBarView {
     gfx::Size CalculatePreferredSize() const override;
   private:
     void UpdateBookmarkStarVisibility() override;
+    OmniboxTint GetTint() override;
     BraveActionsContainer* brave_actions_ = nullptr;
 
     DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
