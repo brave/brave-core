@@ -9,8 +9,8 @@ import MobileCoreServices
 class ShareToBraveViewController: SLComposeServiceViewController {
     
     // TODO: Separate scheme for debug builds, so it can be tested without need to uninstall production app.
-    private func urlScheme(for url: String) -> NSURL? {
-        return NSURL(string: "brave://open-url?url=\(url)")
+    private func urlScheme(for url: String) -> URL? {
+        return URL(string: "brave://open-url?url=\(url)")
     }
     
     override func configurationItems() -> [Any]! {
@@ -33,19 +33,19 @@ class ShareToBraveViewController: SLComposeServiceViewController {
         }
         
         provider.loadItem(of: provider.isUrl ? kUTTypeURL : kUTTypeText) { item, error in
-            var urlItem: NSURL!
+            var urlItem: URL!
             
             // We can get urls from other apps as a kUTTypeText type, for example from Apple's mail.app.
             if let text = item as? String {
-                urlItem = NSURL(string: text)
-            } else if let url = item as? NSURL {
+                urlItem = URL(string: text)
+            } else if let url = item as? URL {
                 urlItem = url
             } else {
                 self.cancel()
                 return
             }
             
-            if let braveUrl = urlItem.encodedUrl.flatMap(self.urlScheme) {
+            if let braveUrl = urlItem.absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics).flatMap(self.urlScheme) {
                 self.handleUrl(braveUrl)
             }
         }
@@ -53,18 +53,18 @@ class ShareToBraveViewController: SLComposeServiceViewController {
         return []
     }
     
-    private func handleUrl(_ url: NSURL) {
+    private func handleUrl(_ url: URL) {
         // From http://stackoverflow.com/questions/24297273/openurl-not-work-in-action-extension
         var responder = self as UIResponder?
         while let strongResponder = responder {
             let selector = #selector(UIApplication.openURL(_:))
             if strongResponder.responds(to: selector) {
-                strongResponder.callSelector(selector, object: url, delay: 0)
+                strongResponder.callSelector(selector, object: url as NSURL, delay: 0)
             }
             responder = strongResponder.next
         }
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(0.1 * Double(NSEC_PER_SEC)))) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.cancel()
         }
     }
@@ -83,24 +83,23 @@ class ShareToBraveViewController: SLComposeServiceViewController {
 }
 
 extension NSItemProvider {
-    var isText: Bool { return hasItemConformingToTypeIdentifier(String(kUTTypeText)) }
-    var isUrl: Bool { return hasItemConformingToTypeIdentifier(String(kUTTypeURL)) }
+    var isText: Bool {
+        return hasItemConformingToTypeIdentifier(String(kUTTypeText))
+    }
+    
+    var isUrl: Bool {
+        return hasItemConformingToTypeIdentifier(String(kUTTypeURL))
+    }
     
     func loadItem(of type: CFString, completion: CompletionHandler?) {
         loadItem(forTypeIdentifier: String(type), options: nil, completionHandler: completion)
     }
 }
 
-extension NSURL {
-    var encodedUrl: String? { return absoluteString?.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.alphanumerics) }
-}
-
 extension NSObject {
     func callSelector(_ selector: Selector, object: AnyObject?, delay: TimeInterval) {
-        let delay = delay * Double(NSEC_PER_SEC)
-        let time = DispatchTime.now() + Double(Int64(delay)) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: time) {
-            Thread.detachNewThreadSelector(selector, toTarget:self, with: object)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            Thread.detachNewThreadSelector(selector, toTarget: self, with: object)
         }
     }
 }
