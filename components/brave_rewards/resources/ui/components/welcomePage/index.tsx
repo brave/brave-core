@@ -37,9 +37,11 @@ import {
   StyledBoldParagraph,
   StyledStrong,
   StyledAnchor,
-  StyledOptInSecond
+  StyledOptInSecond,
+  StyledAlert
 } from './style'
 import { ArrowDownIcon, BatColorIcon } from '../../../components/icons'
+import Alert from '../alert'
 
 const turnOnRewardsImage = require('./assets/turnOnRewards')
 const braveAdsImage = require('./assets/braveAds')
@@ -197,6 +199,13 @@ class WelcomePage extends React.PureComponent<Props, {}> {
 
     return (
       <SettingsPage id={id}>
+        <StyledAlert>
+          {/* Don't translate this section, because it's just a temporary placeholder for dev build  */}
+          <Alert type={'warning'}>
+            <b>Developer preview</b> This is an experimental build meant for testing only. The wallet and
+            created here is a test wallet, and will not be carried over to the release version of Brave.
+          </Alert>
+        </StyledAlert>
         <StyledBackground>
           <StyledSection>
             {this.hero()}
