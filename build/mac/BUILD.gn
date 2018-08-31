@@ -6,7 +6,7 @@ declare_args() {
 }
 
 _packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
-keychain_db = getenv("HOME") + "/Library/Keychains/login.${mac_signing_keychain}-db"
+keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
 
 _target_app_path = "$root_out_dir/signing/$brave_exe"
 
