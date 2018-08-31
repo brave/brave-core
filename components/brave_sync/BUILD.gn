@@ -49,6 +49,7 @@ source_set("brave_sync") {
 
   public_deps = [
     "//content/public/browser",
+    "//brave/common/extensions/api",
   ]
 }
 

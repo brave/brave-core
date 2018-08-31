@@ -8,9 +8,7 @@
 
 #include "base/debug/stack_trace.h"
 #include "base/task_runner.h"
-#include "base/task_scheduler/post_task.h"
-#include "base/task_scheduler/scheduler_worker_pool.h"
-
+#include "base/task/post_task.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
 #include "brave/components/brave_sync/bookmarks.h"
@@ -46,6 +44,9 @@ ControllerImpl::ControllerImpl() :
   sync_initialized_(false),
   timer_(std::make_unique<base::RepeatingTimer>()) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl CTOR";
+  LOG(ERROR) << base::debug::StackTrace().ToString();
+  LOG(ERROR) << "TAGAB ---------------------";
+
 
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
@@ -76,7 +77,7 @@ ControllerImpl::ControllerImpl() :
   // }
 
   task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
-      {base::MayBlock(), base::TaskPriority::BACKGROUND,
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN} );
 
   sync_obj_map_ = std::make_unique<storage::ObjectMap>();
