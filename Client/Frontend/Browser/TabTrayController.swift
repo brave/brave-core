@@ -456,6 +456,7 @@ class TabTrayController: UIViewController {
         } else {
             emptyPrivateTabsView.isHidden = false
             toView = emptyPrivateTabsView
+            openNewTab()
         }
         toView.alpha = 0
         toView.transform = scaleDownTransform
