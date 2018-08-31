@@ -89,12 +89,8 @@ ExtensionFunction::ResponseAction BraveSyncSaveInitDataFunction::Run() {
   LOG(ERROR) << "TAGAB BraveSyncSaveInitDataFunction::Run params->device_id=" << params->device_id.size();
   ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
   sync_client->GetSyncToBrowserHandler()->OnSaveInitData(
-    //::brave_sync::Uint8ArrayFromIntVec(params->seed),
-    //::brave_sync::Uint8ArrayFromIntVec(params->device_id)
-    // params->seed,
-    // params->device_id
-    ::brave_sync::Uint8ArrayFromSignedCharVec(params->seed),
-    ::brave_sync::Uint8ArrayFromSignedCharVec(params->device_id)
+    ::brave_sync::Uint8ArrayFromUnsignedCharVec(params->seed),
+    ::brave_sync::Uint8ArrayFromUnsignedCharVec(params->device_id)
   );
 
   return RespondNow(NoArguments());
@@ -185,7 +181,7 @@ ExtensionFunction::ResponseAction BraveSyncBytesFromSyncWordsPreparedFunction::R
 
   ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
   sync_client->GetSyncToBrowserHandler()->OnBytesFromSyncWordsPrepared(
-    ::brave_sync::Uint8ArrayFromSignedCharVec(params->bytes), params->error_message);
+    ::brave_sync::Uint8ArrayFromUnsignedCharVec(params->bytes), params->error_message);
 
   return RespondNow(NoArguments());
 }

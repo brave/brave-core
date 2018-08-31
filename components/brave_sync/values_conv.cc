@@ -219,6 +219,15 @@ Uint8Array Uint8ArrayFromSignedCharVec(const std::vector<char> &vec) {
   return result;
 }
 
+Uint8Array Uint8ArrayFromUnsignedCharVec(const std::vector<unsigned char> &vec) {
+  Uint8Array result;
+  result.reserve(vec.size());
+  for (size_t i = 0; i < vec.size(); ++i) {
+    result.emplace_back(static_cast<unsigned char>(vec.at(i)));
+  }
+  return result;
+}
+
 std::string StrFromUint8Array(const Uint8Array &arr) {
   std::string result;
   for (size_t i = 0; i < arr.size(); ++i) {
@@ -234,6 +243,17 @@ std::string StrFromCharArray(const std::vector<char> &vec) {
   std::string result;
   for (size_t i = 0; i < vec.size(); ++i) {
     result += base::NumberToString( static_cast<unsigned char>( vec.at(i)));
+    if (i != vec.size() - 1) {
+      result += ", ";
+    }
+  }
+  return result;
+}
+
+std::string StrFromUnsignedCharArray(const std::vector<unsigned char> &vec) {
+  std::string result;
+  for (size_t i = 0; i < vec.size(); ++i) {
+    result += base::NumberToString(vec.at(i));
     if (i != vec.size() - 1) {
       result += ", ";
     }
@@ -306,6 +326,27 @@ std::vector<char> CharVecFromString(const std::string &data_string) {
     CHECK(b);
     CHECK(output >= 0 && output <= 255);
     result.emplace_back(static_cast<char>(output));
+  }
+
+  return result;
+}
+
+std::vector<unsigned char> UCharVecFromString(const std::string &data_string) {
+  std::vector<std::string> splitted = SplitString(
+      data_string,
+      ", ",
+      base::WhitespaceHandling::TRIM_WHITESPACE,
+      base::SplitResult::SPLIT_WANT_NONEMPTY);
+
+  std::vector<unsigned char> result;
+  result.reserve(splitted.size());
+
+  for (size_t i = 0; i < splitted.size(); ++i) {
+    int output = 0;
+    bool b = base::StringToInt(splitted[i], &output);
+    CHECK(b);
+    CHECK(output >= 0 && output <= 255);
+    result.emplace_back(static_cast<unsigned char>(output));
   }
 
   return result;
