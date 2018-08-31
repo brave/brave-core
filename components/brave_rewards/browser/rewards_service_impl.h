@@ -23,11 +23,6 @@ namespace base {
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace ledger {
-class Ledger;
-class LedgerCallbackHandler;
-}  // namespace ledger
-
 namespace leveldb {
 class DB;
 }  // namespace leveldb
@@ -76,6 +71,8 @@ class RewardsServiceImpl : public RewardsService,
   std::string URIEncode(const std::string& value) override;
   uint64_t GetReconcileStamp() const override;
   std::map<std::string, std::string> GetAddresses() const override;
+  void SavePublishersList(const std::string& publisher_state, ledger::LedgerCallbackHandler* handler) override;
+  void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
 
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;

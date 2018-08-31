@@ -19,6 +19,11 @@ namespace content {
 class NavigationHandle;
 }
 
+namespace ledger {
+  class Ledger;
+  class LedgerCallbackHandler;
+}  // namespace ledger
+
 namespace brave_rewards {
 
 class RewardsServiceObserver;
@@ -59,6 +64,8 @@ class RewardsService : public KeyedService {
   virtual void SetPublisherAllowVideos(bool allow) const = 0;
   virtual void SetContributionAmount(double amount) const = 0;
   virtual void SetAutoContribute(bool enabled) const = 0;
+  virtual void SavePublishersList(const std::string& publisher_state, ledger::LedgerCallbackHandler* handler) = 0;
+  virtual void SetTimer(uint64_t time_offset, uint32_t& timer_id) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

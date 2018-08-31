@@ -711,4 +711,13 @@ void RewardsServiceImpl::TriggerOnContentSiteUpdated() {
     observer.OnContentSiteUpdated(this);
 }
 
+void RewardsServiceImpl::SavePublishersList(const std::string& publisher_state, ledger::LedgerCallbackHandler* handler) {
+  // TODO implement
+}
+
+
+void RewardsServiceImpl::SetTimer(uint64_t time_offset, uint32_t& timer_id) {
+  // TODO implement
+}
+
 }  // namespace brave_rewards
