@@ -11,10 +11,11 @@
 #define LEDGER_PRODUCTION_SERVER        "https://ledger.mercury.basicattentiontoken.org"
 #define BALANCE_STAGING_SERVER          "https://balance-staging.mercury.basicattentiontoken.org"
 #define BALANCE_PRODUCTION_SERVER       "https://balance.mercury.basicattentiontoken.org"
-#define PUBLISHERSTAGING_SERVER         "https://publishers-staging.basicattentiontoken.org"
+#define PUBLISHER_STAGING_SERVER        "https://publishers-staging.basicattentiontoken.org"
+#define PUBLISHER_PRODUCTION_SERVER     "https://publishers.basicattentiontoken.org"
 
 
-
+#define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
 #define PREFIX_V3                       "/v3"
 #define REGISTER_PERSONA                "/registrar/persona"
@@ -26,11 +27,10 @@
 #define SURVEYOR_BATCH_VOTING           "/batch/surveyor/voting"
 #define UPDATE_RULES_V1                 "/v1/publisher/ruleset?consequential=true"
 #define UPDATE_RULES_V2                 "/v2/publisher/ruleset?limit=512&excludedOnly=false"
-#define RECOVER_WALLET_PUBLIC_KEY       "/v2/wallet?publicKey="
-#define RECOVER_WALLET                  "/v2/wallet/"
-#define GET_SET_PROMOTION                "/v1/grants"
-#define GET_PROMOTION_CAPTCHA            "/v1/captchas/"
-#define GET_PUBLISHERS_LIST_V1           "/api/v1/public/channels"
+#define RECOVER_WALLET_PUBLIC_KEY       "/wallet?publicKey="
+#define GET_SET_PROMOTION               "/grants"
+#define GET_PROMOTION_CAPTCHA           "/captchas/"
+#define GET_PUBLISHERS_LIST_V1          "/api/v1/public/channels"
 
 #define REGISTRARVK_FIELDNAME           "registrarVK"
 #define VERIFICATION_FIELDNAME          "verification"

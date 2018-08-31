@@ -533,8 +533,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
     last_pub_load_timer_id_ = 0;
 
     //download the list
-    std::string url(PUBLISHERSTAGING_SERVER);
-    url += GET_PUBLISHERS_LIST_V1;
+    std::string url = braveledger_bat_helper::buildURL(GET_PUBLISHERS_LIST_V1, "", braveledger_bat_helper::SERVER_TYPES::PUBLISHER);
     auto url_loader = LoadURL(url, std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
     handler_.AddRequestHandler(std::move(url_loader),
       std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2));

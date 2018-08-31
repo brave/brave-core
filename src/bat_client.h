@@ -79,7 +79,6 @@ class BatClient {
   void viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId);
   void viewingCredentialsCallback(bool result, const std::string& response);
   std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
-  std::string buildURL(const std::string& path, const std::string& prefix, const bool isBalance);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;
