@@ -2,15 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// We want the subclass to inherit from BraveLocationBar, not LocationBar
-#include "chrome/browser/ui/location_bar/location_bar.h"
-#include "brave/browser/ui/location_bar/brave_location_bar.h"
-#define LocationBar BraveLocationBar
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "chrome/browser/ui/views/location_bar/star_view.h"
 
 void BraveLocationBarView::Init() {
   // base method calls Update and Layout
@@ -34,6 +31,12 @@ void BraveLocationBarView::Update(const content::WebContents* contents) {
     brave_actions_->Update();
   }
   LocationBarView::Update(contents);
+}
+
+void BraveLocationBarView::UpdateBookmarkStarVisibility() {
+  if (star_view_) {
+    star_view_->SetVisible(false);
+  }
 }
 
 void BraveLocationBarView::OnChanged() {

@@ -20,6 +20,7 @@ class BraveLocationBarView : public LocationBarView {
     void OnChanged() override;
     gfx::Size CalculatePreferredSize() const override;
   private:
+    void UpdateBookmarkStarVisibility() override;
     BraveActionsContainer* brave_actions_ = nullptr;
 
     DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
