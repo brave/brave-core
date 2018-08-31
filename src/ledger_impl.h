@@ -168,17 +168,8 @@ class LedgerImpl : public ledger::Ledger,
                           ledger::Result result,
                           std::unique_ptr<ledger::MediaPublisherInfo> info);
 
-  /*void processMedia(const std::map<std::string,
-                    std::string>& parts,
-                    const std::string& type);*/
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
-  void OnMediaRequest(const std::string& url,
-                      const std::string& urlQuery,
-                      const std::string& type);
-
-  void OnMediaRequestCallback(uint64_t duration,
-                              const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
 
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,

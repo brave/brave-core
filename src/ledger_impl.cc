@@ -399,60 +399,6 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
   bat_client_->prepareBallots();
 }
 
-void LedgerImpl::OnMediaRequest(const std::string& url,
-                                const std::string& urlQuery,
-                                const std::string& type) {
-  //LOG(ERROR) << "!!!media url == " << url;
-  //LOG(ERROR) << "!!!media urlQuery == " << urlQuery;
-  //LOG(ERROR) << "!!!media url type == " << type;
-  // TODO(bridiver) - this should move to OnXHRLoad and remove this method
-  // std::map<std::string, std::string> parts;
-  // std::vector<std::map<std::string, std::string>> twitchParts;
-  // if (YOUTUBE_MEDIA_TYPE == type) {
-  //   braveledger_bat_helper::getUrlQueryParts(urlQuery, parts);
-  //   processMedia(parts, type);
-  // } else if (TWITCH_MEDIA_TYPE == type) {
-  //   braveledger_bat_helper::getTwitchParts(urlQuery, twitchParts);
-  //   for (size_t i = 0; i < twitchParts.size(); i++) {
-  //     processMedia(twitchParts[i], type);
-  //   }
-  // }
-}
-
-/*void LedgerImpl::processMedia(const std::map<std::string, std::string>& parts, const std::string& type) {
-  std::string mediaId = braveledger_bat_helper::getMediaId(parts, type);
-  LOG(ERROR) << "!!!mediaId == " << mediaId;
-  if (mediaId.empty()) {
-    return;
-  }
-  std::string mediaKey = braveledger_bat_helper::getMediaKey(mediaId, type);
-  LOG(ERROR) << "!!!mediaKey == " << mediaKey;
-  uint64_t duration = 0;
-  braveledger_bat_helper::TWITCH_EVENT_INFO twitchEventInfo;
-  if (YOUTUBE_MEDIA_TYPE == type) {
-    duration = braveledger_bat_helper::getMediaDuration(parts, mediaKey, type);
-    LOG(ERROR) << "!!!duration == " << duration;
-  } else if (TWITCH_MEDIA_TYPE == type) {
-    std::map<std::string, std::string>::const_iterator iter = parts.find("event");
-    if (iter != parts.end()) {
-      twitchEventInfo.event_ = iter->second;
-    }
-    iter = parts.find("time");
-    if (iter != parts.end()) {
-      twitchEventInfo.time_ = iter->second;
-    }
-  }
-
-  braveledger_bat_helper::GetMediaPublisherInfoCallback callback = std::bind(&LedgerImpl::OnMediaRequestCallback, this, _1, _2);
-  auto io_task = std::bind(&BatGetMedia::getPublisherFromMediaProps,
-    bat_get_media_.get(), mediaId, mediaKey, type, duration, twitchEventInfo, callback);
-  RunIOTask(io_task);
-}*/
-
-void LedgerImpl::OnMediaRequestCallback(uint64_t duration, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
-  // SaveVisit(mediaPublisherInfo.publisher_, duration, true);
-}
-
 void LedgerImpl::OnWalletProperties(ledger::Result result,
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
   std::unique_ptr<ledger::WalletInfo> info;
