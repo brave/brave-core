@@ -257,7 +257,6 @@ bool BatPublishers::getPublisherAllowVideos() const {
 }
 
 void BatPublishers::synopsisNormalizer() {
-  LOG(ERROR)<<"BatPublishers::synopsisNormalizer";
   if (publishers_.size() == 0) {
     return;
   }

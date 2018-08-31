@@ -17,11 +17,19 @@ void URLRequestHandler::Clear() {
 }
 
 void URLRequestHandler::OnURLRequestResponse(uint64_t request_id,
+                                            const std::string& url,
                                             int response_code,
                                             const std::string& response) {
   if (!RunRequestHandler(request_id, response_code == 200, response)) {
     LOG(ERROR) << "no request handler found for " << request_id;
     return;
+  }
+
+  if (braveledger_ledger::g_isVerbose) {
+    LOG(ERROR) << "[ RESPONSE ]";
+    LOG(ERROR) << "> url: " << url;
+    LOG(ERROR) << "> response: " << response;
+    LOG(ERROR) << "[ END RESPONSE ]";
   }
 }
 

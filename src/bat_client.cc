@@ -55,10 +55,6 @@ bool BatClient::loadState(const std::string& data) {
   if (!braveledger_bat_helper::loadFromJson(state, data.c_str()))
     return false;
 
-
-  LOG(ERROR) << "!!!bat address == " << state.walletInfo_.addressBAT_;
-  LOG(ERROR) << "!!!card address == " << state.walletInfo_.addressCARD_ID_;
-
   state_.reset(new braveledger_bat_helper::CLIENT_STATE_ST(state));
   return true;
 }
@@ -168,7 +164,6 @@ void BatClient::registerPersonaCallback(bool result,
     free((void*)masterUserToken);
   }
 
-  LOG(ERROR) << "!!!registerPersonaCallback response == " << response;
   braveledger_bat_helper::getJSONWalletInfo(response, state_->walletInfo_, state_->fee_currency_, state_->fee_amount_, state_->days_);
   state_->bootStamp_ = braveledger_bat_helper::currentTime() * 1000;
   state_->reconcileStamp_ = state_->bootStamp_ + state_->days_ * 24 * 60 * 60 * 1000;
@@ -234,9 +229,6 @@ void BatClient::getWalletProperties() {
 
  void BatClient::walletPropertiesCallback(bool success,
                                           const std::string& response) {
-
-   LOG(ERROR) << "!!!walletPropertiesCallback == " << response;
-
    braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
    if (!success) {
       ledger_->OnWalletProperties(ledger::Result::ERROR, properties);
@@ -273,7 +265,6 @@ void BatClient::reconcile(const std::string& viewingId) {
 }
 
 void BatClient::reconcileCallback(bool result, const std::string& response) {
-  LOG(ERROR) << "!!!reconcileCallback response == " + response;
   if (!result) {
     // TODO errors handling
     return;
@@ -300,7 +291,6 @@ void BatClient::currentReconcile() {
 }
 
 void BatClient::currentReconcileCallback(bool result, const std::string& response) {
-  LOG(ERROR) << "!!!currentReconcileCallback response == " << response;
   if (!result) {
     // TODO errors handling
     return;
@@ -364,7 +354,6 @@ void BatClient::currentReconcileCallback(bool result, const std::string& respons
 }
 
 void BatClient::reconcilePayloadCallback(bool result, const std::string& response) {
-  LOG(ERROR) << "!!!response reconcilePayloadCallback == " << response;
   if (!result) {
     // TODO errors handling
     return;
@@ -397,7 +386,6 @@ void BatClient::reconcilePayloadCallback(bool result, const std::string& respons
 }
 
 void BatClient::updateRulesCallback(bool reconcile, bool result, const std::string& response) {
-  LOG(ERROR) << "!!!response updateRulesCallback == " << response;
   if (!result) {
     // TODO errors handling
     return;
@@ -416,7 +404,6 @@ void BatClient::updateRulesCallback(bool reconcile, bool result, const std::stri
 }
 
 void BatClient::updateRulesV2Callback(bool reconcile, bool result, const std::string& response) {
-  LOG(ERROR) << "!!!response updateRulesV2Callback == " << response;
   if (!result) {
     // TODO errors handling
     return;
@@ -442,7 +429,6 @@ void BatClient::registerViewing() {
 }
 
 void BatClient::registerViewingCallback(bool result, const std::string& response) {
-  LOG(ERROR) << "!!!response registerViewingCallback == " << response;
   if (!result) {
     // TODO errors handling
     return;
@@ -878,7 +864,6 @@ std::string BatClient::getWalletPassphrase() const {
     char* words = nullptr;
   int result = bip39_mnemonic_from_bytes(nullptr, &state_->walletInfo_.keyInfoSeed_.front(),
     state_->walletInfo_.keyInfoSeed_.size(), &words);
-  LOG(ERROR) << "!!!getWalletPassphrase result == " << result << ", !!!words == " << words;
   if (0 != result) {
     DCHECK(false);
 
@@ -901,7 +886,9 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
   newSeed.resize(32);
   size_t written = 0;
   int result = bip39_mnemonic_to_bytes(nullptr, passPhrase.c_str(), &newSeed.front(), newSeed.size(), &written);
-  LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
+  if (braveledger_ledger::g_isVerbose) {
+    LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
+  }
   if (0 != result || 0 == written) {
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, empty);
@@ -928,8 +915,6 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
 }
 
 void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& response) {
-  LOG(ERROR) << "!!!recoverWalletPublicKeyCallback == " << response;
-
   if (!result) {
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, empty);
@@ -949,8 +934,6 @@ void BatClient::recoverWalletPublicKeyCallback(bool result, const std::string& r
 }
 
 void BatClient::recoverWalletCallback(bool result, const std::string& response, const std::string& recoveryId) {
-  LOG(ERROR) << "!!!recoverWalletCallback == " << response;
-
   if (!result) {
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::ERROR, 0, empty);
@@ -993,8 +976,6 @@ void BatClient::getGrant(const std::string& lang, const std::string& forPaymentI
 }
 
 void BatClient::getGrantCallback(bool success, const std::string& response) {
-  LOG(ERROR) << "!!!getGrantCallback == " << response;
-
   braveledger_bat_helper::GRANT properties;
 
   if (!success) {
@@ -1043,8 +1024,6 @@ void BatClient::setGrant(const std::string& captchaResponse, const std::string& 
 }
 
 void BatClient::setGrantCallback(bool success, const std::string& response) {
-  LOG(ERROR) << "!!!setGrantCallback == " << response;
-
   std::string error;
   unsigned int statusCode;
   braveledger_bat_helper::GRANT grant;
@@ -1083,8 +1062,6 @@ void BatClient::getGrantCaptcha() {
 }
 
 void BatClient::getGrantCaptchaCallback(bool success, const std::string& response) {
-  LOG(ERROR) << "!!!getGrantCaptchaCallback";
-
   if (!success) {
     // TODO NZ Add error handler
     return;
