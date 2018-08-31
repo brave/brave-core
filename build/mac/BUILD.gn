@@ -2,11 +2,11 @@ import("//brave/build/config.gni")
 
 declare_args() {
   mac_signing_identifier = ""
-  mac_signing_keychain = "keychain"
+  mac_signing_keychain = "login"
 }
 
 _packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
-keychain_db = getenv("HOME") + "/Library/Keychains/signing.${mac_signing_keychain}-db"
+keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
 
 _target_app_path = "$root_out_dir/signing/$brave_exe"
 
