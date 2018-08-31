@@ -38,7 +38,7 @@ json_features("behavior_features") {
   ]
 }
 
-brave_extensions_api_schema_sources = [ "brave_shields.json" ]
+brave_extensions_api_schema_sources = [ "brave_shields.json", "brave_sync.json" ]
 brave_extensions_api_uncompiled_sources = []
 brave_extensions_api_root_namespace = "extensions::api::%(namespace)s"
 brave_extensions_api_schema_include_rules =
