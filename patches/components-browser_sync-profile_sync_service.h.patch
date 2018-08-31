@@ -1,8 +1,8 @@
 diff --git a/components/browser_sync/profile_sync_service.h b/components/browser_sync/profile_sync_service.h
-index d97259718bcabbe417c9e5c91bc6cfd454755020..92e7179fd191352057a6b8b05f2a71b7ee569c49 100644
+index 1eb89ed593897dbc60d79c3e4a992a551fd2c8a9..1f363a730a38bcee461edbbfad5e80c4afda3add 100644
 --- a/components/browser_sync/profile_sync_service.h
 +++ b/components/browser_sync/profile_sync_service.h
-@@ -44,6 +44,7 @@
+@@ -45,6 +45,7 @@
  #include "components/version_info/version_info.h"
  #include "google_apis/gaia/google_service_auth_error.h"
  #include "url/gurl.h"
@@ -10,7 +10,7 @@ index d97259718bcabbe417c9e5c91bc6cfd454755020..92e7179fd191352057a6b8b05f2a71b7
  
  class SigninManagerWrapper;
  
-@@ -157,7 +158,8 @@ class SyncAuthManager;
+@@ -158,7 +159,8 @@ class SyncAuthManager;
  //   Once first setup has completed and there are no outstanding
  //   setup-in-progress handles, CanConfigureDataTypes() will return true and
  //   datatype configuration can begin.
