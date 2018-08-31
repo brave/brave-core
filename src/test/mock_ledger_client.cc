@@ -64,7 +64,7 @@ uint64_t MockLedgerClient::LoadURL(const std::string& url,
                  const std::string& contentType,
                  const ledger::URL_METHOD& method,
                  ledger::LedgerCallbackHandler* handler) {
-  handler->OnURLRequestResponse(next_id, 200, "{}");
+  handler->OnURLRequestResponse(next_id, url, 200, "{}");
   return next_id++;
 }
 

@@ -1708,7 +1708,6 @@ namespace braveledger_bat_helper {
       size_t final_size = 0;
       int numDecBytes = EVP_DecodeBase64(&out.front(), &final_size, size, (const uint8_t*)in.c_str(), in.length());
       DCHECK(numDecBytes != 0);
-      LOG(ERROR) << "!!!decoded size == " << final_size;
 
       if (0 == numDecBytes) {
         succeded = false;

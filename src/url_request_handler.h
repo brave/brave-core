@@ -33,6 +33,7 @@ class URLRequestHandler : public ledger::LedgerCallbackHandler {
  private:
   //  LedgerCallbackHandler impl
   void OnURLRequestResponse(uint64_t request_id,
+                            const std::string& url,
                             int response_code,
                             const std::string& response) override;
 
