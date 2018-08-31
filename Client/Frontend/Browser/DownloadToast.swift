@@ -114,7 +114,7 @@ class DownloadToast: Toast {
         horizontalStackView.alignment = .center
         horizontalStackView.spacing = ButtonToastUX.ToastPadding
 
-        let icon = UIImageView(image: UIImage.templateImageNamed("download"))
+        let icon = UIImageView(image: #imageLiteral(resourceName: "download").template)
         icon.tintColor = UIColor.Photon.White100
         horizontalStackView.addArrangedSubview(icon)
 
@@ -139,7 +139,7 @@ class DownloadToast: Toast {
 
         horizontalStackView.addArrangedSubview(labelStackView)
 
-        let cancel = UIImageView(image: UIImage.templateImageNamed("close-medium"))
+        let cancel = UIImageView(image: #imageLiteral(resourceName: "close-medium").template)
         cancel.tintColor = UIColor.Photon.White100
         cancel.isUserInteractionEnabled = true
         cancel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))

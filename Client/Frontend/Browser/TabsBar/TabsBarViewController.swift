@@ -6,10 +6,17 @@ import Foundation
 import UIKit
 import SnapKit
 import Shared
+import BraveShared
+
+protocol TabsBarViewControllerDelegate: class {
+    func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab)
+}
 
 class TabsBarViewController: UIViewController {
     private let leftOverflowIndicator = CAGradientLayer()
     private let rightOverflowIndicator = CAGradientLayer()
+    
+    weak var delegate: TabsBarViewControllerDelegate?
     
     private lazy var plusButton: UIButton = {
         let button = UIButton()
@@ -18,7 +25,7 @@ class TabsBarViewController: UIViewController {
         button.tintColor = UIColor.black
         button.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
-        button.backgroundColor = UIColor(white: 0.0, alpha: 0.075)
+        button.backgroundColor = .clear
         return button
     }()
     
@@ -38,6 +45,8 @@ class TabsBarViewController: UIViewController {
         view.register(TabBarCell.self, forCellWithReuseIdentifier: "TabCell")
         return view
     }()
+    
+    private let bottomLine = UIView()
     
     fileprivate weak var tabManager: TabManager?
     fileprivate var tabList = WeakList<Tab>()
@@ -76,9 +85,17 @@ class TabsBarViewController: UIViewController {
             }
         }
         
+        view.addSubview(bottomLine)
+        
         collectionView.snp.makeConstraints { make in
             make.bottom.top.left.equalTo(view)
             make.right.equalTo(view).inset(UX.TabsBar.buttonWidth)
+        }
+        
+        bottomLine.snp.makeConstraints { make in
+            make.height.equalTo(1.0 / UIScreen.main.scale)
+            make.top.equalTo(view.snp.bottom)
+            make.left.right.equalTo(view)
         }
     }
     
@@ -112,7 +129,7 @@ class TabsBarViewController: UIViewController {
     }
     
     @objc func addTabPressed() {
-        tabManager?.addTabAndSelect()
+        tabManager?.addTabAndSelect(isPrivate: UIApplication.isInPrivateMode)
     }
     
     func updateData() {
@@ -146,7 +163,9 @@ class TabsBarViewController: UIViewController {
             collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
         case .changed:
             if let gestureView = gesture.view {
-                collectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gestureView))
+                var location = gesture.location(in: gestureView)
+                location.y = gestureView.center.y // Lock y
+                collectionView.updateInteractiveMovementTargetPosition(location)
             }
         case .ended:
             collectionView.endInteractiveMovement()
@@ -161,10 +180,6 @@ class TabsBarViewController: UIViewController {
     }
     
     fileprivate func overflowIndicators() {
-        // super lame place to put this, need to find a better solution.
-        plusButton.tintColor = UIApplication.isInPrivateMode ? UIColor.white : UIColor.black
-        collectionView.backgroundColor = UIApplication.isInPrivateMode ? UIColor(white: 0.0, alpha: 0.2) : UIColor(white: 0.0, alpha: 0.075)
-        
         addScrollHint(for: .leftSide, maskLayer: leftOverflowIndicator)
         addScrollHint(for: .rightSide, maskLayer: rightOverflowIndicator)
         
@@ -209,8 +224,9 @@ extension TabsBarViewController: UIScrollViewDelegate {
 // MARK: - UICollectionViewDelegate
 extension TabsBarViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let tab = tabList[indexPath.row]
-        tabManager?.selectTab(tab)
+        if let tab = tabList[indexPath.row] {
+            delegate?.tabsBarDidSelectTab(self, tab)
+        }
     }
 }
 
@@ -220,12 +236,11 @@ extension TabsBarViewController: UICollectionViewDelegateFlowLayout {
         let tabCount = CGFloat(tabList.count())
         
         if tabCount < 1 { return CGSize.zero }
-        if tabCount == 1 { return view.frame.size }
+        if tabCount == 1 { return collectionView.frame.size }
         
-        let newTabButtonWidth = CGFloat(UIDevice.current.userInterfaceIdiom == .pad ? UX.TabsBar.buttonWidth : 0)
         let tabsAndButtonWidth = tabCount * UX.TabsBar.minimumWidth
-        if tabsAndButtonWidth < collectionView.frame.width - newTabButtonWidth {
-            let maxWidth = (collectionView.frame.width - newTabButtonWidth) / tabCount
+        if tabsAndButtonWidth < collectionView.frame.width {
+            let maxWidth = collectionView.frame.width / tabCount
             return CGSize(width: maxWidth, height: view.frame.height)
         }
         
@@ -305,5 +320,14 @@ extension TabsBarViewController: TabManagerDelegate {
     func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
         assert(Thread.current.isMainThread)
         updateData()
+    }
+}
+
+extension TabsBarViewController: Themeable {
+    func applyTheme(_ theme: Theme) {
+        view.backgroundColor = theme == .Private ? BraveUX.Black : BraveUX.GreyB
+        plusButton.tintColor = theme == .Private ? UIColor.white : BraveUX.GreyI
+        collectionView.backgroundColor = view.backgroundColor
+        bottomLine.backgroundColor = theme == .Private ? UIColor(white: 1.0, alpha: 0.2) : UIColor(white: 0.0, alpha: 0.2)
     }
 }

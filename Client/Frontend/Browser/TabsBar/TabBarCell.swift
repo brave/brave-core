@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveShared
 
 class TabBarCell: UICollectionViewCell {
     
@@ -94,14 +95,14 @@ class TabBarCell: UICollectionViewCell {
                 titleLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)
                 closeButton.isHidden = false
                 titleLabel.textColor = UIApplication.isInPrivateMode ? UIColor.white : UIColor.black
-                backgroundColor = UIApplication.isInPrivateMode ? UX.barsDarkBackgroundSolidColor : UX.barsBackgroundSolidColor
+                backgroundColor = UIApplication.isInPrivateMode ? BraveUX.DarkToolbarsBackgroundSolidColor : BraveUX.ToolbarsBackgroundSolidColor
             }
                 // Prevent swipe and release outside- deselects cell.
             else if currentIndex != tabManager?.currentDisplayedIndex {
                 titleLabel.font = UIFont.systemFont(ofSize: 12)
                 titleLabel.textColor = UIApplication.isInPrivateMode ? UIColor(white: 1.0, alpha: 0.4) : UIColor(white: 0.0, alpha: 0.4)
                 closeButton.isHidden = true
-                backgroundColor = UIApplication.isInPrivateMode ? UIColor.black : UIColor.lightGray
+                backgroundColor = .clear
             }
         }
     }
