@@ -4,11 +4,23 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
-  font-family: Poppins, sans-serif;
-  padding: 14px;
+interface StyleProps {
+  compact?: boolean
+}
+
+const getGradientRule = (gradient: string) => {
+  return `linear-gradient(-180deg, rgba(${gradient},1) 0%, rgba(255,255,255,1) 70%)`
+}
+
+export const StyledWrapper = styled<StyleProps, 'div'>('div')`
+  padding: ${p => p.compact ? '0px 7px 0px' : '0px'};
+  background: ${p => p.compact ? getGradientRule('233, 235, 255') : 'inherit'};
 `
 
+export const StyledInner = styled<StyleProps, 'div'>('div')`
+  padding: 14px;
+  font-family: Poppins, sans-serif;
+`
 export const StyledSummary = styled<{}, 'div'>('div')`
   font-size: 14px;
   font-weight: 600;

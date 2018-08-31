@@ -19,7 +19,6 @@ export const StyledTransitionWrapper = styled<StyleProps, 'div'>('div')`
   height: ${p => p.show ? '100%' : '0'};
   opacity: ${p => p.show ? '1' : '0'};
   overflow: ${p => p.show ? 'unset' : 'hidden'};
-  transition: visibility 0.5s, opacity 0.5s linear;
 ` as any
 
 export const StyledToggleWrapper = styled<StyleProps, 'div'>('div')`

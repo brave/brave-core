@@ -13,7 +13,8 @@ import {
   StyledTitle,
   StyledProvider,
   StyledProviderWrap,
-  StyledInlineVerified
+  StyledInlineVerified,
+  StyledVerifiedText
 } from './style'
 import { getLocale } from '../../../helpers'
 import { VerifiedFillIcon } from '../../../components/icons'
@@ -78,7 +79,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
           {
             verified && type === 'big'
             ? <StyledProviderWrap>
-              <StyledInlineVerified><VerifiedFillIcon /></StyledInlineVerified> {getLocale('verifiedPublisher')}
+              <StyledInlineVerified><VerifiedFillIcon /></StyledInlineVerified> <StyledVerifiedText>{getLocale('verifiedPublisher')}</StyledVerifiedText>
             </StyledProviderWrap>
             : null
           }

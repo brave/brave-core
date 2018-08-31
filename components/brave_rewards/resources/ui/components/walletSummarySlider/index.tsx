@@ -18,7 +18,8 @@ import {
 import { CaratUpIcon, CaratDownIcon } from '../../../components/icons'
 
 export interface Props {
-  id?: string
+  id?: string,
+  onToggle?: () => void
   children?: React.ReactNode[]
 }
 
@@ -42,6 +43,10 @@ export default class WalletSummarySlider extends React.PureComponent<Props, Stat
       panelOneShown: !this.state.panelOneShown,
       panelTwoShown: !this.state.panelTwoShown
     })
+
+    if (this.props.onToggle) {
+      this.props.onToggle()
+    }
   }
 
   getPanel (panel: React.ReactNode, showTitle: boolean = false) {

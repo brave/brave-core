@@ -57,6 +57,7 @@ export const StyledContent = styled<Partial<Props>, 'div'>('div')`
 `
 
 export const StyledTitleWrap = styled<Partial<Props>, 'div'>('div')`
+  margin-top: ${p => p.type === 'big' ? '2px' : 0};
   margin-left: ${p => p.type !== 'big' ? '10px' : 0};
 `
 
@@ -95,6 +96,7 @@ export const StyledProvider = styled<Partial<Props>, 'span'>('span')`
     ? css`
       font-weight: 300;
       font-size: 18px;
+      letter-spacing: -0.2px;
     `
     : ''
   };
@@ -103,14 +105,23 @@ export const StyledProvider = styled<Partial<Props>, 'span'>('span')`
 `
 
 export const StyledProviderWrap = styled<{}, 'div'>('div')`
-  font-size: 13px;
-  color: #838391;
   display: flex;
   align-items: center;
+  margin-bottom: -4px;
+`
+
+export const StyledVerifiedText = styled<{}, 'span'>('span')`
+  font-size: 12px;
+  color: #9E9FAB;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-left: 4px;
 `
 
 export const StyledInlineVerified = styled<{}, 'span'>('span')`
   width: 19px;
+  padding-top: 2px;
+  margin-left: -2px;
   color: #392DD1;
 `
 

@@ -5,6 +5,7 @@
 import * as React from 'react'
 import {
   StyledWrapper,
+  StyledInner,
   StyledTitle,
   StyledSummary,
   StyledActivity,
@@ -35,101 +36,117 @@ export interface Props {
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
   render () {
-    const { id, grant, ads, contribute, donation, tips, onActivity, total, deposit, compact } = this.props
+    const {
+      id,
+      grant,
+      ads,
+      contribute,
+      donation,
+      tips,
+      onActivity,
+      total,
+      deposit,
+      compact
+    } = this.props
     const date = new Date()
     const month = getLocale(`month${date.toLocaleString('en-us', { month: 'short' })}`)
     const year = date.getFullYear()
     const tokenSize = compact ? 'small' : 'normal'
 
     return (
-      <StyledWrapper id={id}>
-        <StyledSummary>{getLocale('rewardsSummary')}</StyledSummary>
-        <StyledTitle>{month} {year}</StyledTitle>
-        <div>
-          {
-            grant
-            ? <ListToken
+      <StyledWrapper
+        id={id}
+        compact={compact}
+      >
+        <StyledInner>
+          <StyledSummary>{getLocale('rewardsSummary')}</StyledSummary>
+          <StyledTitle>{month} {year}</StyledTitle>
+          <div>
+            {
+              grant
+              ? <ListToken
+                size={tokenSize}
+                value={grant.tokens}
+                converted={grant.converted}
+                color={'earnings'}
+                title={getLocale('tokenGrant')}
+              />
+              : null
+            }
+            {
+              ads
+              ? <ListToken
+                size={tokenSize}
+                value={ads.tokens}
+                converted={ads.converted}
+                color={'earnings'}
+                title={getLocale('earningsAds')}
+              />
+              : null
+            }
+            {
+              deposit
+              ? <ListToken
+                size={tokenSize}
+                value={deposit.tokens}
+                converted={deposit.converted}
+                color={'earnings'}
+                title={getLocale('deposits')}
+              />
+              : null
+            }
+            <ListToken
               size={tokenSize}
-              value={grant.tokens}
-              converted={grant.converted}
-              color={'earnings'}
-              title={getLocale('tokenGrant')}
-            />
-            : null
-          }
-          {
-            ads
-            ? <ListToken
-              size={tokenSize}
-              value={ads.tokens}
-              converted={ads.converted}
-              color={'earnings'}
-              title={getLocale('earningsAds')}
-            />
-            : null
-          }
-          {
-            deposit
-            ? <ListToken
-              size={tokenSize}
-              value={deposit.tokens}
-              converted={deposit.converted}
-              color={'earnings'}
-              title={getLocale('deposits')}
-            />
-            : null
-          }
-          <ListToken
-            size={tokenSize}
-            value={contribute.tokens}
-            converted={contribute.converted}
-            color={'contribute'}
-            title={getLocale('rewardsContribute')}
-            isNegative={true}
-          />
-          {
-            donation
-            ? <ListToken
-              size={tokenSize}
-              value={donation.tokens}
-              converted={donation.converted}
-              color={'donation'}
-              title={getLocale('recurringDonations')}
+              value={contribute.tokens}
+              converted={contribute.converted}
+              color={'contribute'}
+              title={getLocale('rewardsContribute')}
               isNegative={true}
             />
-            : null
-          }
-          {
-            tips
-            ? <ListToken
+            {
+              donation
+              ? <ListToken
+                size={tokenSize}
+                value={donation.tokens}
+                converted={donation.converted}
+                color={'donation'}
+                title={getLocale('recurringDonations')}
+                isNegative={true}
+              />
+              : null
+            }
+            {
+              tips
+              ? <ListToken
+                size={tokenSize}
+                value={tips.tokens}
+                converted={tips.converted}
+                color={'donation'}
+                title={getLocale('oneTimeDonation')}
+                isNegative={true}
+              />
+              : null
+            }
+            <ListToken
               size={tokenSize}
-              value={tips.tokens}
-              converted={tips.converted}
-              color={'donation'}
-              title={getLocale('oneTimeDonation')}
-              isNegative={true}
+              value={total.tokens}
+              converted={total.converted}
+              border={'last'}
+              title={getLocale('total')}
+              isNegative={total.isNegative || false}
             />
+          </div>
+          {
+            onActivity
+            ? <StyledActivity onClick={onActivity}>
+              <StyledActivityIcon>
+                <WalletActivityIcon />
+              </StyledActivityIcon>
+              {getLocale('viewMonthly')}
+            </StyledActivity>
             : null
           }
-          <ListToken
-            size={tokenSize}
-            value={total.tokens}
-            converted={total.converted}
-            border={'last'}
-            title={getLocale('total')}
-            isNegative={total.isNegative || false}
-          />
-        </div>
-        {
-          onActivity
-          ? <StyledActivity onClick={onActivity}>
-            <StyledActivityIcon>
-              <WalletActivityIcon />
-            </StyledActivityIcon>
-            {getLocale('viewMonthly')}
-          </StyledActivity>
-          : null
-        }
+        </StyledInner>
       </StyledWrapper>
     )
   }

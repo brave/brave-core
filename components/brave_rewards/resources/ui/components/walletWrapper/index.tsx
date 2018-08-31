@@ -70,6 +70,7 @@ export interface Props {
   grants?: Grant[]
   alert?: AlertWallet | null
   id?: string
+  gradientTop?: string
 }
 
 interface State {
@@ -125,7 +126,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       showSecActions,
       grants,
       onSettingsClick,
-      alert
+      alert,
+      gradientTop
     } = this.props
 
     const enabled = this.hasGrants(grants)
@@ -198,7 +200,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           <StyledActionWrapper>
             {this.generateActions(actions, id)}
           </StyledActionWrapper>
-          <StyledCurve />
+          <StyledCurve background={gradientTop}/>
         </StyledHeader>
         <StyledContent
           contentPadding={contentPadding}

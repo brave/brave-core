@@ -151,9 +151,20 @@ storiesOf('Feature Components/Rewards/Concepts', module)
       </div>
     )
   })
-  .add('Wallet Panel', withState({ showPanel: true, tipsEnabled: true, includeInAuto: true }, (store) => {
+  .add('Wallet Panel', withState({ showSummary: false, tipsEnabled: true, includeInAuto: true }, (store) => {
+    const curveRgb = '233,235,255'
+    const panelRgb = '249,251,252'
+
+    const getGradientColor = () => {
+      return store.state.showSummary ? curveRgb : panelRgb
+    }
+
     const doNothing = () => {
       console.log('do nothing')
+    }
+
+    const onSummaryToggle = () => {
+      store.set({ showSummary: !store.state.showSummary })
     }
 
     const onIncludeInAuto = () => {
@@ -168,8 +179,9 @@ storiesOf('Feature Components/Rewards/Concepts', module)
       <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '100vh', margin: '0 auto', position: 'relative' }}>
         <div style={{ position: 'absolute', top: '50px', left: '560px' }}>
           <WalletWrapper
+            compact={true}
             contentPadding={false}
-            compact={store.state.showPanel}
+            gradientTop={getGradientColor()}
             tokens={number('Tokens', 30)}
             converted={text('Converted', '15.50 USD')}
             actions={[
@@ -202,7 +214,10 @@ storiesOf('Feature Components/Rewards/Concepts', module)
               }
             ])}
           >
-            <WalletSummarySlider id={'panel-slider'}>
+            <WalletSummarySlider
+              id={'panel-slider'}
+              onToggle={onSummaryToggle}
+            >
               <WalletPanel
                 id={'wallet-panel'}
                 platform={'youtube'}
@@ -221,17 +236,15 @@ storiesOf('Feature Components/Rewards/Concepts', module)
                 onAmountChange={doNothing}
                 onIncludeInAuto={onIncludeInAuto}
               />
-              <div style={{ padding: '0px 7px 0px' }}>
-                <WalletSummary
-                  compact={true}
-                  grant={object('Grant', { tokens: 10, converted: 0.25 })}
-                  ads={object('Ads', { tokens: 10, converted: 0.25 })}
-                  contribute={object('Contribute', { tokens: 10, converted: 0.25 })}
-                  donation={object('Donation', { tokens: 2, converted: 0.25 })}
-                  tips={object('Tips', { tokens: 19, converted: 5.25 })}
-                  total={object('Total', { tokens: 1, converted: 5.25 })}
-                />
-              </div>
+              <WalletSummary
+                compact={true}
+                grant={object('Grant', { tokens: 10, converted: 0.25 })}
+                ads={object('Ads', { tokens: 10, converted: 0.25 })}
+                contribute={object('Contribute', { tokens: 10, converted: 0.25 })}
+                donation={object('Donation', { tokens: 2, converted: 0.25 })}
+                tips={object('Tips', { tokens: 19, converted: 5.25 })}
+                total={object('Total', { tokens: 1, converted: 5.25 })}
+              />
             </WalletSummarySlider>
           </WalletWrapper>
         </div>

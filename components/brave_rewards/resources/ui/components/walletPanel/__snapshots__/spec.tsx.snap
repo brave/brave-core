@@ -279,6 +279,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
+  margin-top: 2px;
   margin-left: 0;
 }
 

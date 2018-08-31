@@ -2,11 +2,16 @@
 
 exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 .c0 {
-  font-family: Poppins,sans-serif;
-  padding: 14px;
+  padding: 0px;
+  background: inherit;
 }
 
 .c1 {
+  padding: 14px;
+  font-family: Poppins,sans-serif;
+}
+
+.c2 {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.57;
@@ -18,7 +23,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   text-transform: uppercase;
 }
 
-.c2 {
+.c3 {
   font-size: 28px;
   font-weight: 300;
   line-height: 0.79;
@@ -31,7 +36,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   text-transform: uppercase;
 }
 
-.c15 {
+.c16 {
   font-size: 12px;
   color: #686978;
   margin-top: 26px;
@@ -43,7 +48,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c16 {
+.c17 {
   vertical-align: middle;
   margin-right: 11px;
   width: 22px;
@@ -52,7 +57,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   display: inline-block;
 }
 
-.c3 {
+.c4 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -77,7 +82,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c13 {
+.c14 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -102,7 +107,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c4 {
+.c5 {
   font-size: 14px;
   line-height: 2.79;
   color: #4b4c5c;
@@ -118,7 +123,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   flex-basis: 60%;
 }
 
-.c5 {
+.c6 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -132,35 +137,35 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   text-align: right;
 }
 
-.c6 {
+.c7 {
   --tokens-value-color: #c12d7c;
   --tokens-text-size: 12px;
   --tokens-token-size: 14px;
   --tokens-tokenNum-size: 16px;
 }
 
-.c11 {
+.c12 {
   --tokens-value-color: #9752cb;
   --tokens-text-size: 12px;
   --tokens-token-size: 14px;
   --tokens-tokenNum-size: 16px;
 }
 
-.c12 {
+.c13 {
   --tokens-value-color: #696fdc;
   --tokens-text-size: 12px;
   --tokens-token-size: 14px;
   --tokens-tokenNum-size: 16px;
 }
 
-.c14 {
+.c15 {
   --tokens-value-color: #4b4c5c;
   --tokens-text-size: 12px;
   --tokens-token-size: 14px;
   --tokens-tokenNum-size: 16px;
 }
 
-.c7 {
+.c8 {
   font-family: Poppins,sans-serif;
   font-weight: 300;
   line-height: 1.4;
@@ -168,13 +173,13 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   display: inline-block;
 }
 
-.c8 {
+.c9 {
   color: var(--tokens-value-color);
   font-size: var(--tokens-tokenNum-size);
   font-weight: 500;
 }
 
-.c10 {
+.c11 {
   color: #9E9FAB;
   font-size: var(--tokens-text-size);
   font-family: Muli,sans-serif;
@@ -183,14 +188,14 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   margin-left: 10px;
 }
 
-.c9 {
+.c10 {
   font-size: var(--tokens-token-size);
   font-weight: 300;
   display: inline-block;
   margin-left: 4px;
 }
 
-.c17 {
+.c18 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -203,283 +208,287 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   <div
     className="c1"
   >
-    MISSING: rewardsSummary
-  </div>
-  <div
-    className="c2"
-  >
-    MISSING: monthSep
-     
-    2018
-  </div>
-  <div>
+    <div
+      className="c2"
+    >
+      MISSING: rewardsSummary
+    </div>
     <div
       className="c3"
     >
+      MISSING: monthSep
+       
+      2018
+    </div>
+    <div>
       <div
         className="c4"
       >
-        MISSING: tokenGrant
-      </div>
-      <div
-        className="c5"
-      >
-        <span
+        <div
+          className="c5"
+        >
+          MISSING: tokenGrant
+        </div>
+        <div
           className="c6"
-          color="earnings"
-          size="normal"
         >
           <span
             className="c7"
+            color="earnings"
+            size="normal"
           >
             <span
               className="c8"
             >
-              
-              10.0
+              <span
+                className="c9"
+              >
+                
+                10.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
             </span>
             <span
-              className="c9"
+              className="c11"
             >
-              BAT
+              0.25
+               
+              USD
             </span>
           </span>
-          <span
-            className="c10"
-          >
-            0.25
-             
-            USD
-          </span>
-        </span>
+        </div>
       </div>
-    </div>
-    <div
-      className="c3"
-    >
       <div
         className="c4"
       >
-        MISSING: earningsAds
-      </div>
-      <div
-        className="c5"
-      >
-        <span
+        <div
+          className="c5"
+        >
+          MISSING: earningsAds
+        </div>
+        <div
           className="c6"
-          color="earnings"
-          size="normal"
         >
           <span
             className="c7"
+            color="earnings"
+            size="normal"
           >
             <span
               className="c8"
             >
-              
-              10.0
+              <span
+                className="c9"
+              >
+                
+                10.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
             </span>
             <span
-              className="c9"
+              className="c11"
             >
-              BAT
+              0.25
+               
+              USD
             </span>
           </span>
-          <span
-            className="c10"
-          >
-            0.25
-             
-            USD
-          </span>
-        </span>
+        </div>
       </div>
-    </div>
-    <div
-      className="c3"
-    >
       <div
         className="c4"
       >
-        MISSING: rewardsContribute
-      </div>
-      <div
-        className="c5"
-      >
-        <span
-          className="c11"
-          color="contribute"
-          size="normal"
+        <div
+          className="c5"
+        >
+          MISSING: rewardsContribute
+        </div>
+        <div
+          className="c6"
         >
           <span
-            className="c7"
+            className="c12"
+            color="contribute"
+            size="normal"
           >
             <span
               className="c8"
             >
-              -
-              10.0
+              <span
+                className="c9"
+              >
+                -
+                10.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
             </span>
             <span
-              className="c9"
+              className="c11"
             >
-              BAT
+              0.25
+               
+              USD
             </span>
           </span>
-          <span
-            className="c10"
-          >
-            0.25
-             
-            USD
-          </span>
-        </span>
+        </div>
       </div>
-    </div>
-    <div
-      className="c3"
-    >
       <div
         className="c4"
       >
-        MISSING: recurringDonations
-      </div>
-      <div
-        className="c5"
-      >
-        <span
-          className="c12"
-          color="donation"
-          size="normal"
+        <div
+          className="c5"
+        >
+          MISSING: recurringDonations
+        </div>
+        <div
+          className="c6"
         >
           <span
-            className="c7"
+            className="c13"
+            color="donation"
+            size="normal"
           >
             <span
               className="c8"
             >
-              -
-              2.0
+              <span
+                className="c9"
+              >
+                -
+                2.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
             </span>
             <span
-              className="c9"
+              className="c11"
             >
-              BAT
+              0.25
+               
+              USD
             </span>
           </span>
-          <span
-            className="c10"
-          >
-            0.25
-             
-            USD
-          </span>
-        </span>
+        </div>
       </div>
-    </div>
-    <div
-      className="c3"
-    >
       <div
         className="c4"
       >
-        MISSING: oneTimeDonation
-      </div>
-      <div
-        className="c5"
-      >
-        <span
-          className="c12"
-          color="donation"
-          size="normal"
+        <div
+          className="c5"
+        >
+          MISSING: oneTimeDonation
+        </div>
+        <div
+          className="c6"
         >
           <span
-            className="c7"
+            className="c13"
+            color="donation"
+            size="normal"
           >
             <span
               className="c8"
             >
-              -
-              19.0
+              <span
+                className="c9"
+              >
+                -
+                19.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
             </span>
             <span
-              className="c9"
+              className="c11"
             >
-              BAT
+              5.25
+               
+              USD
             </span>
           </span>
-          <span
-            className="c10"
-          >
-            5.25
-             
-            USD
-          </span>
-        </span>
-      </div>
-    </div>
-    <div
-      className="c13"
-    >
-      <div
-        className="c4"
-      >
-        MISSING: total
+        </div>
       </div>
       <div
-        className="c5"
+        className="c14"
       >
-        <span
-          className="c14"
-          color="default"
-          size="normal"
+        <div
+          className="c5"
+        >
+          MISSING: total
+        </div>
+        <div
+          className="c6"
         >
           <span
-            className="c7"
+            className="c15"
+            color="default"
+            size="normal"
           >
             <span
               className="c8"
             >
-              
-              19.0
+              <span
+                className="c9"
+              >
+                
+                19.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
             </span>
             <span
-              className="c9"
+              className="c11"
             >
-              BAT
+              5.25
+               
+              USD
             </span>
           </span>
-          <span
-            className="c10"
-          >
-            5.25
-             
-            USD
-          </span>
-        </span>
+        </div>
       </div>
     </div>
-  </div>
-  <button
-    className="c15"
-    onClick={[Function]}
-  >
-    <span
+    <button
       className="c16"
+      onClick={[Function]}
     >
-      <svg
-        aria-hidden="true"
+      <span
         className="c17"
-        focusable="false"
-        viewBox="0 0 32 32"
       >
-        <path
-          d="M25.571 6C26.91 6 28 7.101 28 8.455V17c0 .552-.447 1-1 1-.553 0-1-.448-1-1V8.455c0-.247-.196-.455-.429-.455H8.429C8.196 8 8 8.208 8 8.455V12h5.001c.553 0 1 .448 1 1v4c0 .552-.447 1-1 1H8v3.545c0 .247.196.455.429.455H17c.553 0 1 .448 1 1s-.447 1-1 1H8.429C7.09 24 6 22.899 6 21.545V18H5c-.553 0-1-.448-1-1v-4c0-.552.447-1 1-1h1V8.455C6 7.101 7.09 6 8.429 6h17.142zM6 16h6.001v-2H6v2zm16 3c-.553 0-1-.448-1-1s.447-1 1-1h1c.553 0 1 .448 1 1s-.447 1-1 1h-1zm2 5c.553 0 1 .448 1 1s-.447 1-1 1h-2c-.553 0-1-.448-1-1s.447-1 1-1v-2c-.553 0-1-.448-1-1s.447-1 1-1h1c.553 0 1 .448 1 1v3z"
-          fillRule="evenodd"
-        />
-      </svg>
-    </span>
-    MISSING: viewMonthly
-  </button>
+        <svg
+          aria-hidden="true"
+          className="c18"
+          focusable="false"
+          viewBox="0 0 32 32"
+        >
+          <path
+            d="M25.571 6C26.91 6 28 7.101 28 8.455V17c0 .552-.447 1-1 1-.553 0-1-.448-1-1V8.455c0-.247-.196-.455-.429-.455H8.429C8.196 8 8 8.208 8 8.455V12h5.001c.553 0 1 .448 1 1v4c0 .552-.447 1-1 1H8v3.545c0 .247.196.455.429.455H17c.553 0 1 .448 1 1s-.447 1-1 1H8.429C7.09 24 6 22.899 6 21.545V18H5c-.553 0-1-.448-1-1v-4c0-.552.447-1 1-1h1V8.455C6 7.101 7.09 6 8.429 6h17.142zM6 16h6.001v-2H6v2zm16 3c-.553 0-1-.448-1-1s.447-1 1-1h1c.553 0 1 .448 1 1s-.447 1-1 1h-1zm2 5c.553 0 1 .448 1 1s-.447 1-1 1h-2c-.553 0-1-.448-1-1s.447-1 1-1v-2c-.553 0-1-.448-1-1s.447-1 1-1h1c.553 0 1 .448 1 1v3z"
+            fillRule="evenodd"
+          />
+        </svg>
+      </span>
+      MISSING: viewMonthly
+    </button>
+  </div>
 </div>
 `;

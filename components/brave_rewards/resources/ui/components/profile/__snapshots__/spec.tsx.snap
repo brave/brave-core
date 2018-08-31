@@ -53,6 +53,7 @@ exports[`Profile tests basic tests matches the snapshot 1`] = `
 }
 
 .c4 {
+  margin-top: 0;
   margin-left: 10px;
 }
 

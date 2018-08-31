@@ -11,16 +11,12 @@ exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
   height: 100%;
   opacity: 1;
   overflow: unset;
-  -webkit-transition: visibility 0.5s,opacity 0.5s linear;
-  transition: visibility 0.5s,opacity 0.5s linear;
 }
 
 .c9 {
   height: 0;
   opacity: 0;
   overflow: hidden;
-  -webkit-transition: visibility 0.5s,opacity 0.5s linear;
-  transition: visibility 0.5s,opacity 0.5s linear;
 }
 
 .c2 {

@@ -7,13 +7,19 @@ import styled from 'styled-components'
 interface StyledProps {
   connected?: boolean,
   contentPadding?: boolean,
-  compact?: boolean
+  compact?: boolean,
+  background?: string
 }
 
 const panelBg = require('./assets/panel.svg')
 
+const getRGB = (rgbColor: string) => {
+  return `rgb(${rgbColor})`
+}
+
 export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   border-radius: 6px;
+  overflow: hidden;
   box-shadow: 0 0 8px 0 rgba(99, 105, 110, 0.12);
   font-family: Poppins, sans-serif;
   width: 373px;
@@ -168,7 +174,7 @@ export const StyledBalanceCurrency = styled<{}, 'span'>('span')`
   color: #fff;
 `
 
-export const StyledCurve = styled<{}, 'div'>('div')`
+export const StyledCurve = styled<StyledProps, 'div'>('div')`
   padding: 10px 0;
   position: relative;
   overflow: hidden;
@@ -183,7 +189,7 @@ export const StyledCurve = styled<{}, 'div'>('div')`
     height: 240px;
     width: 200%;
     border-radius: 100%;
-    border: 20px solid #f9fbfc;
+    border: 20px solid ${p => p.background ? getRGB(p.background) : '#f9fbfc'};
   }
 `
 
