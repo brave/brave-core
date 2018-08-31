@@ -53,6 +53,28 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
   return net::ERR_IO_PENDING;
 }
 
+int BraveNetworkDelegateBase::OnHeadersReceived(net::URLRequest* request,
+      net::CompletionOnceCallback callback,
+      const net::HttpResponseHeaders* original_response_headers,
+      scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+      GURL* allowed_unsafe_redirect_url) {
+  if (headers_received_callbacks_.empty() || !request) {
+    return ChromeNetworkDelegate::OnHeadersReceived(request,
+        std::move(callback), original_response_headers,
+        override_response_headers, allowed_unsafe_redirect_url);
+  }
+  std::shared_ptr<brave::BraveRequestInfo> ctx(
+      new brave::BraveRequestInfo());
+  callbacks_[request->identifier()] = std::move(callback);
+  ctx->request_identifier = request->identifier();
+  ctx->event_type = brave::kOnHeadersReceived;
+  ctx->original_response_headers = original_response_headers;
+  ctx->override_response_headers = override_response_headers;
+  ctx->allowed_unsafe_redirect_url = allowed_unsafe_redirect_url;
+  RunNextCallback(request, nullptr, ctx);
+  return net::ERR_IO_PENDING;
+}
+
 void BraveNetworkDelegateBase::RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv) {
   std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
       callbacks_.find(request_identifier);
@@ -106,6 +128,23 @@ void BraveNetworkDelegateBase::RunNextCallback(
         break;
       }
     }
+  } else if (ctx->event_type == brave::kOnHeadersReceived) {
+    while(headers_received_callbacks_.size() != ctx->next_url_request_index) {
+      brave::OnHeadersReceivedCallback callback =
+          headers_received_callbacks_[ctx->next_url_request_index++];
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
+              base::Unretained(this), request, new_url, ctx);
+      rv = callback.Run(request, ctx->original_response_headers,
+          ctx->override_response_headers, ctx->allowed_unsafe_redirect_url,
+          next_callback, ctx);
+      if (rv == net::ERR_IO_PENDING) {
+        return;
+      }
+      if (rv == net::ERR_ABORTED) {
+        break;
+      }
+    }
   }
 
   std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
@@ -124,6 +163,10 @@ void BraveNetworkDelegateBase::RunNextCallback(
   } else if (ctx->event_type == brave::kOnBeforeStartTransaction) {
     rv = ChromeNetworkDelegate::OnBeforeStartTransaction(request,
         std::move(wrapped_callback), ctx->headers);
+  } else if (ctx->event_type == brave::kOnHeadersReceived) {
+    rv = ChromeNetworkDelegate::OnHeadersReceived(request,
+        std::move(wrapped_callback), ctx->original_response_headers,
+        ctx->override_response_headers, ctx->allowed_unsafe_redirect_url);
   }
 
   // ChromeNetworkDelegate returns net::ERR_IO_PENDING if an extension is
