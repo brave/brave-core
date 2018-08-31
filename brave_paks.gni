@@ -58,11 +58,13 @@ template("brave_extra_paks") {
       "$root_gen_dir/brave/brave_unscaled_resources.pak",
       "$root_gen_dir/components/brave_components_resources.pak",
       "$target_gen_dir/browser/resources/brave_extension.pak",
+      "$target_gen_dir/components/brave_webtorrent/brave_webtorrent_resources.pak",
     ]
 
     deps = [
       "//brave/app:brave_generated_resources_grit",
       "//brave/app/theme:brave_unscaled_resources",
+      "//brave/components/brave_webtorrent:resources",
       "//brave/components/resources:brave_components_resources_grit",
       "//brave/browser/resources:brave_extension_grit",
       "//brave/common/extensions/api"

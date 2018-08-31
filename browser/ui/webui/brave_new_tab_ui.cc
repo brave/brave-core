@@ -15,7 +15,6 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "content/public/common/bindings_policy.h"
 
 namespace {
 class NewTabDOMHandler : public content::WebUIMessageHandler {
@@ -89,13 +88,13 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
 }
 
 void BraveNewTabUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (IsSafeToSetWebUIProperties()) {
     CustomizeNewTabWebUIProperties(render_frame_host->GetRenderViewHost());
   }
 }
 
 void BraveNewTabUI::OnPreferenceChanged() {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (IsSafeToSetWebUIProperties()) {
     CustomizeNewTabWebUIProperties(GetRenderViewHost());
     web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
   }

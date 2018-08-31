@@ -22,6 +22,7 @@ bool IsWhitelisted(const extensions::Extension* extension) {
   }
   static std::vector<std::string> whitelist({
     brave_extension_id,
+    brave_webtorrent_extension_id,
     pdfjs_extension_id,
     // 1Password
     "aomjjhallfgjeglblehebfpbcfeobpgk",
@@ -126,7 +127,8 @@ bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
 
 bool BraveExtensionProvider::MustRemainInstalled(const Extension* extension,
                                                  base::string16* error) const {
-  return extension->id() == brave_extension_id;
+  return extension->id() == brave_extension_id ||
+    extension->id() == brave_webtorrent_extension_id;
 }
 
 }  // namespace extensions

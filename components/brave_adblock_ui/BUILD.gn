@@ -14,5 +14,5 @@ transpile_web_ui("brave_adblock_ui") {
     "reducers/adblock_reducer.ts",
   ]
 
-  bundle_name = "brave_adblock.bundle.js"
+  bundle_names = ["brave_adblock.bundle.js"]
 }

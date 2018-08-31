@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.h b/chrome/browser/ui/extensions/extension_action_view_controller.h
+index dbef20f1ec8eede60dc4a9aebc93e4a656530f93..68fd9071330c8dea56f4374e17d21f41936539a1 100644
+--- a/chrome/browser/ui/extensions/extension_action_view_controller.h
++++ b/chrome/browser/ui/extensions/extension_action_view_controller.h
+@@ -14,6 +14,7 @@
+ #include "extensions/browser/extension_host_observer.h"
+ #include "ui/gfx/image/image.h"
+ 
++class ShieldsActionViewController;
+ class Browser;
+ class ExtensionAction;
+ class ExtensionActionPlatformDelegate;
+@@ -39,6 +40,7 @@ class ExtensionActionViewController
+       public extensions::ExtensionContextMenuModel::PopupDelegate,
+       public extensions::ExtensionHostObserver {
+  public:
++  friend class ShieldsActionViewController;
+   // The different options for showing a popup.
+   enum PopupShowAction { SHOW_POPUP, SHOW_POPUP_AND_INSPECT };
+ 
+@@ -73,7 +75,7 @@ class ExtensionActionViewController
+   void InspectPopup() override;
+ 
+   // Closes the active popup (whether it was this action's popup or not).
+-  void HideActivePopup();
++  virtual void HideActivePopup();
+ 
+   // Populates |command| with the command associated with |extension|, if one
+   // exists. Returns true if |command| was populated.

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model_factory.cc b/chrome/browser/ui/toolbar/toolbar_actions_model_factory.cc
+index 18f6485bd60149b88b891b959bcf18b502f861e8..78a1162d74e2a43e4e0b123958f1a67f82db824b 100644
+--- a/chrome/browser/ui/toolbar/toolbar_actions_model_factory.cc
++++ b/chrome/browser/ui/toolbar/toolbar_actions_model_factory.cc
+@@ -40,7 +40,7 @@ ToolbarActionsModelFactory::~ToolbarActionsModelFactory() {}
+ 
+ KeyedService* ToolbarActionsModelFactory::BuildServiceInstanceFor(
+     content::BrowserContext* context) const {
+-  return new ToolbarActionsModel(
++  return new BraveToolbarActionsModel(
+       Profile::FromBrowserContext(context),
+       extensions::ExtensionPrefsFactory::GetForBrowserContext(context));
+ }

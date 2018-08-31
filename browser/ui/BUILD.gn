@@ -9,6 +9,10 @@ source_set("ui") {
     "brave_browser_content_setting_bubble_model_delegate.h",
     "brave_pages.cc",
     "brave_pages.h",
+    "brave_actions/shields_action_view_controller.cc",
+    "brave_actions/shields_action_view_controller.h",
+    "brave_actions/brave_action_icon_with_badge_image_source.cc",
+    "brave_actions/brave_action_icon_with_badge_image_source.h",
     "content_settings/brave_autoplay_blocked_image_model.cc",
     "content_settings/brave_autoplay_blocked_image_model.h",
     "content_settings/brave_autoplay_content_setting_bubble_model.cc",
@@ -25,10 +29,16 @@ source_set("ui") {
     "location_bar/brave_location_bar.h",
     "toolbar/brave_app_menu_model.cc",
     "toolbar/brave_app_menu_model.h",
+    "toolbar/brave_toolbar_actions_model.cc",
+    "toolbar/brave_toolbar_actions_model.h",
+    "views/brave_actions/brave_actions_container.cc",
+    "views/brave_actions/brave_actions_container.h",
     "views/frame/brave_browser_view.cc",
     "views/frame/brave_browser_view.h",
     "views/importer/brave_import_lock_dialog_view.cc",
     "views/importer/brave_import_lock_dialog_view.h",
+    "views/location_bar/brave_location_bar_view.cc",
+    "views/location_bar/brave_location_bar_view.h",
     "views/toolbar/bookmark_button.cc",
     "views/toolbar/bookmark_button.h",
     "views/toolbar/brave_toolbar_view.cc",
@@ -68,12 +78,17 @@ source_set("ui") {
   ]
 
   deps = [
+    "//base",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/theme:brave_theme_resources",
     "//brave/browser/payments",
     "//brave/components/resources:brave_components_resources_grit",
     "//chrome/app:command_ids",
+    "//skia",
+    "//ui/accessibility",
+    "//ui/base",
+    "//ui/gfx",
   ]
 
   if (is_win && is_official_build) {

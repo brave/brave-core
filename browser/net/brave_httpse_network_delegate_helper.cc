@@ -81,18 +81,14 @@ int OnBeforeURLRequest_HttpsePreFileWork(
         GetHTTPSURLFromCacheOnly(&request->url(), request->identifier(),
           ctx->new_url_spec)) {
       ctx->request_url = request->url();
-
-      scoped_refptr<base::SequencedTaskRunner> task_runner =
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock(),
-              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-          task_runner->PostTaskAndReply(FROM_HERE,
-        base::Bind(OnBeforeURLRequest_HttpseFileWork,
-            base::Unretained(request), new_url, ctx),
-        base::Bind(base::IgnoreResult(
-            &OnBeforeURLRequest_HttpsePostFileWork),
-            base::Unretained(request),
-            new_url, next_callback, ctx)
-          );
+      g_brave_browser_process->https_everywhere_service()->
+        GetTaskRunner()->PostTaskAndReply(FROM_HERE,
+          base::Bind(OnBeforeURLRequest_HttpseFileWork,
+              base::Unretained(request), new_url, ctx),
+          base::Bind(base::IgnoreResult(
+              &OnBeforeURLRequest_HttpsePostFileWork),
+              base::Unretained(request),
+              new_url, next_callback, ctx));
       return net::ERR_IO_PENDING;
     } else {
       if (!ctx->new_url_spec.empty()) {

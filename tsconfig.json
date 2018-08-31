@@ -5,7 +5,8 @@
     "module": "commonjs",
     "lib": [
       "es6",
-      "dom"
+      "dom",
+      "es7"
     ],
     "target": "es5",
     "allowJs": true,
