@@ -83,6 +83,7 @@ std::string HTTPSEverywhereService::g_https_everywhere_component_base64_public_k
     kHTTPSEverywhereComponentBase64PublicKey);
 
 HTTPSEverywhereService::HTTPSEverywhereService() : level_db_(nullptr) {
+  DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
@@ -103,6 +104,7 @@ bool HTTPSEverywhereService::Init() {
 }
 
 void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::FilePath zip_db_file_path =
       install_dir.AppendASCII(DAT_FILE_VERSION).AppendASCII(DAT_FILE);
   base::FilePath unzipped_level_db_path = zip_db_file_path.RemoveExtension();
@@ -142,6 +144,7 @@ void HTTPSEverywhereService::OnComponentReady(
 bool HTTPSEverywhereService::GetHTTPSURL(
     const GURL* url, const uint64_t& request_identifier,
     std::string& new_url) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::AssertBlockingAllowed();
   if (!IsInitialized() || url->scheme() == url::kHttpsScheme) {
     return false;
@@ -358,8 +361,8 @@ std::string HTTPSEverywhereService::CorrecttoRuleToRE2Engine(
   return correctedto;
 }
 
-void HTTPSEverywhereService::CloseDatabase()
-{
+void HTTPSEverywhereService::CloseDatabase() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (level_db_) {
     delete level_db_;
     level_db_ = nullptr;
