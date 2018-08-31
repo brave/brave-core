@@ -3429,34 +3429,28 @@
 				TargetAttributes = {
 					0A6231E22121F761007B429B = {
 						CreatedOnToolsVersion = 10.0;
-						DevelopmentTeam = 97533VPBBC;
 						ProvisioningStyle = Automatic;
 						TestTargetID = F84B21BD1A090F8100AAB793;
 					};
 					27F443942135E11200296C58 = {
 						CreatedOnToolsVersion = 10.0;
-						DevelopmentTeam = 97533VPBBC;
 						ProvisioningStyle = Automatic;
 					};
 					288A2D851AB8B3260023ABC3 = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 					};
 					2FCAE2191ABB51F800877008 = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 					};
 					2FCAE2231ABB51F800877008 = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 						TestTargetID = F84B21BD1A090F8100AAB793;
 					};
 					390527491C874D35007E0BB7 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -3467,55 +3461,44 @@
 					};
 					3B43E3CF1D95C48D00BBA9DB = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						TestTargetID = F84B21BD1A090F8100AAB793;
 					};
 					3BFE4B061D342FB800DDF53F = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 						TestTargetID = F84B21BD1A090F8100AAB793;
 					};
 					5D1DC51220AC9AF900905E5A = {
-						DevelopmentTeam = 97533VPBBC;
 					};
 					5D1DC51A20AC9AFA00905E5A = {
-						DevelopmentTeam = 97533VPBBC;
 						ProvisioningStyle = Automatic;
 					};
 					5DE7688320B3456C00FF5533 = {
-						DevelopmentTeam = 97533VPBBC;
 					};
 					5DE7688B20B3456E00FF5533 = {
-						DevelopmentTeam = 97533VPBBC;
 						ProvisioningStyle = Automatic;
 					};
 					7BEB64401C7345600092C02E = {
-						DevelopmentTeam = 97533VPBBC;
 						ProvisioningStyle = Automatic;
 					};
 					7BEB644F1C7345990092C02E = {
-						DevelopmentTeam = 97533VPBBC;
 						ProvisioningStyle = Automatic;
 						TestTargetID = F84B21BD1A090F8100AAB793;
 					};
 					D39FA15E1A83E0EC00EE869C = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						TestTargetID = F84B21BD1A090F8100AAB793;
 					};
 					E6F9650B1B2F1CF20034B023 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 					};
 					F84B21BD1A090F8100AAB793 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -3538,7 +3521,6 @@
 					};
 					F84B21D21A090F8100AAB793 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = 97533VPBBC;
 						LastSwiftMigration = 0820;
 						TestTargetID = F84B21BD1A090F8100AAB793;
 					};
