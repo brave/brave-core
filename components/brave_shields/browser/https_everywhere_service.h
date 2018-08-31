@@ -13,6 +13,7 @@
 #include <mutex>
 
 #include "base/files/file_path.h"
+#include "base/sequence_checker.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_recently_used_cache.h"
 #include "content/public/common/resource_type.h"
@@ -89,6 +90,7 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
   HTTPSERecentlyUsedCache<std::string> recently_used_cache_;
   leveldb::DB* level_db_;
 
+  SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(HTTPSEverywhereService);
 };
 
