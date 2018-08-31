@@ -102,7 +102,6 @@ void BatPublishers::saveVisit(const ledger::VisitData& visit_data,
   const ledger::PublisherInfo::id_type publisher_id =
       getPublisherID(visit_data);
 
-    LOG(ERROR) << "!!!BatPublishers::saveVisit publisher_id == " << publisher_id;
   if (!ignoreMinTime(publisher_id) &&
       duration < state_->min_pubslisher_duration_)
     return;
@@ -177,7 +176,7 @@ void BatPublishers::saveVisitInternal(
     publisher_info.reset(new ledger::PublisherInfo(getPublisherID(visit_data),
                                                    visit_data.local_month,
                                                    visit_data.local_year));
-
+  publisher_info->favIconURL = visit_data.favIconURL;
   publisher_info->duration += duration;
   publisher_info->visits += 1;
   publisher_info->category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;

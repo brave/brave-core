@@ -79,6 +79,7 @@ LEDGER_EXPORT struct PublisherInfo {
   PUBLISHER_CATEGORY category;
   PUBLISHER_MONTH month;
   int year;
+  std::string favIconURL;
 
   std::vector<ContributionInfo> contributions;
 };

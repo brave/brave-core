@@ -1235,7 +1235,8 @@ namespace braveledger_bat_helper {
           eventmap[props_field] = "";
 
           const char * channel_field = "channel";
-          if (obj[props_field].HasMember(channel_field)) {
+          if (obj[props_field].HasMember(channel_field) &&
+            obj[props_field][channel_field].IsString()) {
             eventmap[channel_field] = obj[props_field][channel_field].GetString();
           }
 

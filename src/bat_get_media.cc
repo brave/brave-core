@@ -61,14 +61,14 @@ void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts, 
   if (mediaId.empty()) {
     return;
   }
-  LOG(ERROR) << "!!!mediaId == " << mediaId;
+  //LOG(ERROR) << "!!!mediaId == " << mediaId;
   std::string mediaKey = braveledger_bat_helper::getMediaKey(mediaId, type);
-  LOG(ERROR) << "!!!mediaKey == " << mediaKey;
+  //LOG(ERROR) << "!!!mediaKey == " << mediaKey;
   uint64_t duration = 0;
   ledger::TwitchEventInfo twitchEventInfo;
   if (YOUTUBE_MEDIA_TYPE == type) {
     duration = braveledger_bat_helper::getMediaDuration(parts, mediaKey, type);
-    LOG(ERROR) << "!!!duration == " << duration;
+    //LOG(ERROR) << "!!!duration == " << duration;
   } else if (TWITCH_MEDIA_TYPE == type) {
     std::map<std::string, std::string>::const_iterator iter = parts.find("event");
     if (iter != parts.end()) {
@@ -126,18 +126,19 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
         //LOG(ERROR) << "!!!publisher == " << publisherInfo.publisher_;
       }
       media_publisher_info->publisherName_ = media_publisher_info->publisher_;
-      LOG(ERROR) << "!!!publisherName == " << media_publisher_info->publisherName_;
+      //LOG(ERROR) << "!!!publisherName == " << media_publisher_info->publisherName_;
 
       media_publisher_info->twitchEventInfo_ = twitchEventInfo;
       media_publisher_info->twitchEventInfo_.status_ = getTwitchStatus(ledger::TwitchEventInfo(), twitchEventInfo);
 
       uint64_t realDuration = getTwitchDuration(ledger::TwitchEventInfo(), twitchEventInfo);
-      LOG(ERROR) << "!!!realDuration == " << realDuration;
+      //LOG(ERROR) << "!!!realDuration == " << realDuration;
       if (0 == realDuration) {
         return;
       }
       ledger::VisitData updated_visit_data(visit_data);
       updated_visit_data.tld = media_publisher_info->publisherName_ + " on " + TWITCH_PROVIDER_NAME;
+      updated_visit_data.favIconURL = media_publisher_info->favIconURL_;
       ledger_->SetMediaPublisherInfo(realDuration, std::move(media_publisher_info), updated_visit_data,
         std::bind(&onVisitSavedDummy, _1, _2));
     }
@@ -146,11 +147,13 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
     updated_visit_data.tld = media_publisher_info->publisherName_ + " on ";
     if (YOUTUBE_MEDIA_TYPE == providerName) {
       updated_visit_data.tld += YOUTUBE_PROVIDER_NAME;
+      updated_visit_data.favIconURL = media_publisher_info->favIconURL_;
       ledger_->SaveMediaVisit(updated_visit_data, duration);
     } else if (TWITCH_MEDIA_TYPE == providerName) {
       updated_visit_data.tld += TWITCH_PROVIDER_NAME;
+      updated_visit_data.favIconURL = media_publisher_info->favIconURL_;
       uint64_t realDuration = getTwitchDuration(media_publisher_info->twitchEventInfo_, twitchEventInfo);
-      LOG(ERROR) << "!!!realDuration == " << realDuration;
+      //LOG(ERROR) << "!!!realDuration == " << realDuration;
       ledger::TwitchEventInfo oldInfo = media_publisher_info->twitchEventInfo_;
       media_publisher_info->twitchEventInfo_ = twitchEventInfo;
       media_publisher_info->twitchEventInfo_.status_ = getTwitchStatus(oldInfo, twitchEventInfo);
@@ -249,14 +252,14 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
 void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, const std::string& mediaKey,
     const std::string& providerName, const std::string& mediaURL, const ledger::VisitData& visit_data, 
     bool result, const std::string& response) {
-  LOG(ERROR) << "!!!!getPublisherFromMediaPropsCallback response == " << response;
+  //LOG(ERROR) << "!!!!getPublisherFromMediaPropsCallback response == " << response;
   if (YOUTUBE_MEDIA_TYPE == providerName) {
     std::string publisherURL;
     braveledger_bat_helper::getJSONValue("author_url", response, publisherURL);
     std::string publisherName;
     braveledger_bat_helper::getJSONValue("author_name", response, publisherName);
-    LOG(ERROR) << "!!!!publisherURL == " << publisherURL;
-    LOG(ERROR) << "!!!!publisherName == " << publisherName;
+    //LOG(ERROR) << "!!!!publisherURL == " << publisherURL;
+    //LOG(ERROR) << "!!!!publisherName == " << publisherName;
 
     auto request = ledger_->LoadURL(publisherURL,
         std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
@@ -283,17 +286,13 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
     size_t pos = response.find("<div id=\"img-preload\"");
     std::string favIconURL;
     // TODO it doesn't always work on Android
-    LOG(ERROR) << "!!!pos1 == " << pos;
     do {
       if (pos != std::string::npos) {
         pos = response.find("<img src=\"", pos);
-        LOG(ERROR) << "!!!pos2 == " << pos;
         if (pos != std::string::npos) {
           size_t posEnd = response.find("\">", pos);
-          LOG(ERROR) << "!!!posEnd == " << posEnd;
           if (posEnd != std::string::npos) {
             favIconURL = response.substr(pos + 10, posEnd - pos - 10);
-            LOG(ERROR) << "!!!publisher's picture try == " << favIconURL;
           }
         }
       } else {
@@ -310,10 +309,10 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
     std::string publisher = providerName + "#channel:";
     if (pos != std::string::npos && pos < publisherURL.length() - 1) {
       publisher += publisherURL.substr(pos + 1);
-      LOG(ERROR) << "!!!publisher == " << publisher;
+      //LOG(ERROR) << "!!!publisher == " << publisher;
     }
     std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info(new ledger::MediaPublisherInfo(mediaKey));
-    LOG(ERROR) << "!!!publisherName == " << publisherName;
+    //LOG(ERROR) << "!!!publisherName == " << publisherName;
     media_publisher_info->publisherName_ = publisherName;
     media_publisher_info->publisherURL_ = publisherURL;
     media_publisher_info->favIconURL_ = favIconURL;
@@ -322,6 +321,7 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
 
     ledger::VisitData updated_visit_data(visit_data);
     updated_visit_data.tld = publisherName + " on " + YOUTUBE_PROVIDER_NAME;
+    updated_visit_data.favIconURL = media_publisher_info->favIconURL_;
     ledger_->SetMediaPublisherInfo(duration, std::move(media_publisher_info), updated_visit_data,
       std::bind(&onVisitSavedDummy, _1, _2));
   }

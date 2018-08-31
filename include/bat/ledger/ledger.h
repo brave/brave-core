@@ -33,6 +33,7 @@ LEDGER_EXPORT struct VisitData {
   uint32_t tab_id;
   PUBLISHER_MONTH local_month;
   int local_year;
+  std::string favIconURL;
 };
 
 LEDGER_EXPORT struct PaymentData {

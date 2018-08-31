@@ -34,7 +34,8 @@ VisitData::VisitData(const VisitData& data) :
     path(data.path),
     tab_id(data.tab_id),
     local_month(data.local_month),
-    local_year(data.local_year) {}
+    local_year(data.local_year),
+    favIconURL(data.favIconURL) {}
 
 VisitData::~VisitData() {}
 
@@ -105,6 +106,7 @@ PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     category(info.category),
     month(info.month),
     year(info.year),
+    favIconURL(info.favIconURL),
     contributions(info.contributions) {}
 
 PublisherInfo::~PublisherInfo() {}
