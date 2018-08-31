@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // Command to get whitelist ID: echo -n mnojpmjdmbbfmejpflffifhffcmidifd | openssl sha1
+// Same for sync api:           echo -n nomlkjnggnifocmealianaaiobmebgil | openssl sha1
 
 {
   "braveShields": {
@@ -15,7 +16,10 @@
   "braveSync": {
     "channel": "stable",
     "dependencies": [],
-    "contexts": ["blessed_extension"]
+    "contexts": ["blessed_extension"],
+    "whitelist": [
+      "ACA6385EDA662A28A9B48E83A69CA85CB65DA263"
+    ]
   },
   "topSites": [{
     "dependencies": ["permission:topSites"],
