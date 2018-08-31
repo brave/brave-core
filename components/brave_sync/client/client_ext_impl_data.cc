@@ -9,7 +9,6 @@
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/values_conv.h"
 
-
 namespace brave_sync {
 
 void ConvertConfig(const brave_sync::client_data::Config &config,
@@ -75,12 +74,11 @@ std::unique_ptr<brave_sync::jslib::SiteSetting> FromExtSiteSetting(const extensi
 std::unique_ptr<jslib::Bookmark> FromExtBookmark(const extensions::api::brave_sync::Bookmark &ext_bookmark) {
   auto bookmark = std::make_unique<jslib::Bookmark>();
 
-  //FromExtSite(bookmark->site, ext_bookmark.site);
   bookmark->site = std::move(*FromExtSite(ext_bookmark.site));
 
   bookmark->isFolder = ext_bookmark.is_folder;
   if (ext_bookmark.parent_folder_object_id) {
-    bookmark->parentFolderObjectId = StrFromCharArray(*ext_bookmark.parent_folder_object_id);
+    bookmark->parentFolderObjectId = StrFromUnsignedCharArray(*ext_bookmark.parent_folder_object_id);
   }
   if (ext_bookmark.fields) {
     bookmark->fields = *ext_bookmark.fields;
@@ -166,8 +164,8 @@ std::unique_ptr<extensions::api::brave_sync::SyncRecord2> FromLibSyncRecord(cons
   std::unique_ptr<extensions::api::brave_sync::SyncRecord2> ext_record = std::make_unique<extensions::api::brave_sync::SyncRecord2>();
 
   ext_record->action = static_cast<int>(lib_record->action);
-  ext_record->device_id = CharVecFromString(lib_record->deviceId);
-  ext_record->object_id = CharVecFromString(lib_record->objectId);
+  ext_record->device_id = UCharVecFromString(lib_record->deviceId);
+  ext_record->object_id = UCharVecFromString(lib_record->objectId);
 
   // Workaround, because properties device_id and object_id somehow are empty in js code after passing Browser=>Extension
   ext_record->device_id_str.reset(new std::string(lib_record->deviceId));
@@ -189,7 +187,6 @@ std::unique_ptr<extensions::api::brave_sync::SyncRecord2> FromLibSyncRecord(cons
 }
 
 brave_sync::SyncRecordPtr FromExtSyncRecord(const extensions::api::brave_sync::SyncRecord2 &ext_record) {
-//LOG(ERROR) << "" << ext_record.object_id[0];
   brave_sync::SyncRecordPtr record = std::make_unique<brave_sync::jslib::SyncRecord>();
 
   record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(ext_record.action,
@@ -197,8 +194,8 @@ brave_sync::SyncRecordPtr FromExtSyncRecord(const extensions::api::brave_sync::S
     brave_sync::jslib::SyncRecord::Action::A_MAX,
     brave_sync::jslib::SyncRecord::Action::A_INVALID);
 
-  record->deviceId = StrFromCharArray(ext_record.device_id);
-  record->objectId = StrFromCharArray(ext_record.object_id);
+  record->deviceId = StrFromUnsignedCharArray(ext_record.device_id);
+  record->objectId = StrFromUnsignedCharArray(ext_record.object_id);
   record->objectData = ext_record.object_data;
   if (ext_record.sync_timestamp) {
     record->syncTimestamp = base::Time::FromJsTime(*ext_record.sync_timestamp);

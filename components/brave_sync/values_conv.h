@@ -45,12 +45,15 @@ TEnum ConvertEnum(const int val, TEnum min, TEnum max, TEnum def);
 
 using Uint8Array = std::vector<unsigned char>;
 Uint8Array Uint8ArrayFromSignedCharVec(const std::vector<char> &vec);
+Uint8Array Uint8ArrayFromUnsignedCharVec(const std::vector<unsigned char> &vec);
 std::string StrFromUint8Array(const Uint8Array &arr);
 std::string StrFromCharArray(const std::vector<char> &vec);
+std::string StrFromUnsignedCharArray(const std::vector<unsigned char> &vec);
 Uint8Array Uint8ArrayFromIntVec(const std::vector<int> vec);
 Uint8Array Uint8ArrayFromString(const std::string &data_string);
 std::vector<int> IntVecFromString(const std::string &data_string);
 std::vector<char> CharVecFromString(const std::string &data_string);
+std::vector<unsigned char> UCharVecFromString(const std::string &data_string);
 std::unique_ptr<base::Value> VecToListValue(const std::vector<char> &v);
 std::unique_ptr<base::Value> BytesListFromString(const std::string &data_string);
 std::unique_ptr<base::Value> SingleIntStrToListValue(const std::string &data_string);
