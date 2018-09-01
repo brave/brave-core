@@ -520,14 +520,14 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
 
 void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& response) {
-  bool retryAfterError = true;
   if (result && !response.empty()) {
-    retryAfterError = false;
+    //no error so far
     bat_publishers_->RefreshPublishersList(response);
   }
-
-  //set timer
-  RefreshPublishersList(retryAfterError);
+  else {
+    //error: retry downloading again
+    RefreshPublishersList(true);
+  }
 }
 
 void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
@@ -549,9 +549,21 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
     uint64_t now = std::time(nullptr);
     uint64_t lastLoadTimestamp = bat_publishers_->getLastPublishersListLoadTimestamp();
 
-    //check if lastLoadTimestamp doesn't exist or have erroneous value
-    // (start_timer_in == 0) is expected to call callback function immediately
-    start_timer_in = (lastLoadTimestamp == 0ull || lastLoadTimestamp > now) ? 0ull : now - lastLoadTimestamp;
+    //check if lastLoadTimestamp doesn't exist or have erroneous value.
+    //(start_timer_in == 0) is expected to call callback function immediately.
+
+    //time since last succesfull download
+    uint64_t  time_since_last_download = (lastLoadTimestamp == 0ull || lastLoadTimestamp > now) ? 0ull : now - lastLoadTimestamp;
+
+    if (now == lastLoadTimestamp) {
+      start_timer_in = braveledger_ledger::_publishers_list_load_interval;
+    }
+    else if (time_since_last_download > 0 && time_since_last_download < braveledger_ledger::_publishers_list_load_interval) {
+      start_timer_in = braveledger_ledger::_publishers_list_load_interval - time_since_last_download;
+    }
+    else {
+      start_timer_in = 0ull;
+    }
   }
 
   //start timer
@@ -559,13 +571,9 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
 }
 
 void LedgerImpl::OnPublishersListSaved(ledger::Result result) {
-
-  if (ledger::Result::OK == result) {
-    bat_publishers_->OnPublishersListSaved(result);
-  }
-  else {
-    RefreshPublishersList(true);
-  }
+  bool retryAfterError = (ledger::Result::OK == result) ? false : true;
+  bat_publishers_->OnPublishersListSaved(result);
+  RefreshPublishersList(retryAfterError);
 }
 
 }  // namespace bat_ledger
