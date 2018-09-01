@@ -18,7 +18,9 @@ source_set("net") {
     "brave_system_network_delegate.cc",
     "brave_system_network_delegate.h",
     "url_context.cc",
-    "url_context.h"
+    "url_context.h",
+    "//brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.cc",
+    "//brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h",
   ]
   deps = [
     "//brave/browser/safebrowsing",

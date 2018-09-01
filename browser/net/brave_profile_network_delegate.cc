@@ -8,6 +8,7 @@
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h"
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
@@ -37,6 +38,11 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   brave::OnBeforeStartTransactionCallback start_transactions_callback =
       base::Bind(brave::OnBeforeStartTransaction_SiteHacksWork);
   before_start_transaction_callbacks_.push_back(start_transactions_callback);
+
+  brave::OnHeadersReceivedCallback headers_received_callback =
+      base::Bind(
+          webtorrent::OnHeadersReceived_TorrentRedirectWork);
+  headers_received_callbacks_.push_back(headers_received_callback);
 }
 
 BraveProfileNetworkDelegate::~BraveProfileNetworkDelegate() {

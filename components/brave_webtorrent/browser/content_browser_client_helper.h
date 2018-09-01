@@ -29,6 +29,41 @@ static GURL TranslateMagnetURL(const GURL& url) {
   return GURL(translatedSpec);
 }
 
+static GURL TranslateTorrentUIURLReversed(const GURL& url) {
+  return GURL(net::UnescapeURLComponent(
+        url.query(), net::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
+        net::UnescapeRule::PATH_SEPARATORS));
+}
+
+static bool HandleTorrentURLReverseRewrite(GURL* url,
+    content::BrowserContext* browser_context) {
+  if (url->SchemeIs(extensions::kExtensionScheme) &&
+      url->host() == brave_webtorrent_extension_id &&
+      url->ExtractFileName() == "brave_webtorrent.html") {
+    *url =  TranslateTorrentUIURLReversed(*url);
+    return true;
+  }
+
+  return false;
+}
+
+static bool HandleTorrentURLRewrite(GURL* url,
+    content::BrowserContext* browser_context) {
+  // The HTTP/HTTPS URL could be modified later by the network delegate if the
+  // mime type matches or .torrent is in the path.
+  // Handle http and https here for making reverse_on_redirect to be true in
+  // BrowserURLHandlerImpl::RewriteURLIfNecessary to trigger ReverseURLRewrite
+  // for updating the virtual URL.
+  if (url->SchemeIs("http") || url->SchemeIs("https") ||
+      (url->SchemeIs(extensions::kExtensionScheme) &&
+       url->host() == brave_webtorrent_extension_id &&
+       url->ExtractFileName() == "brave_webtorrent.html")) {
+    return true;
+  }
+
+  return false;
+}
+
 static bool IsWebtorrentInstalled(content::BrowserContext* browser_context) {
   extensions::ExtensionRegistry* registry =
     extensions::ExtensionRegistry::Get(browser_context);
