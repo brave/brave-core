@@ -294,7 +294,8 @@ void RewardsServiceImpl::OnWalletProperties(ledger::Result result,
   TriggerOnWalletProperties(result, std::move(wallet_info));
 }
 
-void RewardsServiceImpl::OnGrant(ledger::Result result, const ledger::Grant& grant) {
+void RewardsServiceImpl::OnGrant(ledger::Result result,
+                                 const ledger::Grant& grant) {
   TriggerOnGrant(result, grant);
 }
 
@@ -302,11 +303,14 @@ void RewardsServiceImpl::OnGrantCaptcha(const std::string& image) {
   TriggerOnGrantCaptcha(image);
 }
 
-void RewardsServiceImpl::OnRecoverWallet(ledger::Result result, double balance, const std::vector<ledger::Grant>& grants) {
+void RewardsServiceImpl::OnRecoverWallet(ledger::Result result,
+                                    double balance,
+                                    const std::vector<ledger::Grant>& grants) {
   TriggerOnRecoverWallet(result, balance, grants);
 }
 
-void RewardsServiceImpl::OnGrantFinish(ledger::Result result, const ledger::Grant& grant) {
+void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
+                                       const ledger::Grant& grant) {
   TriggerOnGrantFinish(result, grant);
 }
 
@@ -345,9 +349,10 @@ void RewardsServiceImpl::LoadPublisherState(
 void RewardsServiceImpl::OnPublisherStateLoaded(
     ledger::LedgerCallbackHandler* handler,
     const std::string& data) {
-  handler->OnPublisherStateLoaded(data.empty() ? ledger::Result::NO_PUBLISHER_STATE
-                                               : ledger::Result::OK,
-                                  data);
+  handler->OnPublisherStateLoaded(
+      data.empty() ? ledger::Result::NO_PUBLISHER_STATE
+                   : ledger::Result::OK,
+      data);
 }
 
 void RewardsServiceImpl::SaveLedgerState(const std::string& ledger_state,
@@ -612,7 +617,8 @@ void RewardsServiceImpl::GetGrant(const std::string& lang,
   ledger_->GetGrant(lang, payment_id);
 }
 
-void RewardsServiceImpl::TriggerOnGrant(ledger::Result result, const ledger::Grant& grant) {
+void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
+                                        const ledger::Grant& grant) {
   brave_rewards::Grant properties;
 
   properties.promotionId = grant.promotionId;
@@ -641,7 +647,9 @@ void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
   return ledger_->RecoverWallet(passPhrase);
 }
 
-void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result, double balance, const std::vector<ledger::Grant>& grants) {
+void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result,
+                                                double balance,
+                                    const std::vector<ledger::Grant>& grants) {
   std::vector<brave_rewards::Grant> newGrants;
   for (size_t i = 0; i < grants.size(); i ++) {
     brave_rewards::Grant grant;
@@ -660,7 +668,8 @@ void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution) const {
   return ledger_->SolveGrantCaptcha(solution);
 }
 
-void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result, const ledger::Grant& grant) {
+void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,
+                                              const ledger::Grant& grant) {
   brave_rewards::Grant properties;
 
   properties.promotionId = grant.promotionId;
@@ -685,7 +694,8 @@ std::map<std::string, std::string> RewardsServiceImpl::GetAddresses() const {
   return addresses;
 }
 
-void RewardsServiceImpl::SetPublisherMinVisitTime(uint64_t duration_in_seconds) const {
+void RewardsServiceImpl::SetPublisherMinVisitTime(
+    uint64_t duration_in_seconds) const {
   return ledger_->SetPublisherMinVisitTime(duration_in_seconds);
 }
 

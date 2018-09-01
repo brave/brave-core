@@ -96,7 +96,9 @@ class RewardsServiceImpl : public RewardsService,
                                  std::unique_ptr<ledger::WalletInfo> result);
   void TriggerOnGrant(ledger::Result result, const ledger::Grant& grant);
   void TriggerOnGrantCaptcha(const std::string& image);
-  void TriggerOnRecoverWallet(ledger::Result result, double balance, const std::vector<ledger::Grant>& grants);
+  void TriggerOnRecoverWallet(ledger::Result result,
+                              double balance,
+                              const std::vector<ledger::Grant>& grants);
   void TriggerOnGrantFinish(ledger::Result result, const ledger::Grant& grant);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
@@ -119,7 +121,9 @@ class RewardsServiceImpl : public RewardsService,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnGrant(ledger::Result result, const ledger::Grant& grant) override;
   void OnGrantCaptcha(const std::string& image) override;
-  void OnRecoverWallet(ledger::Result result, double balance, const std::vector<ledger::Grant>& grants) override;
+  void OnRecoverWallet(ledger::Result result,
+                      double balance,
+                      const std::vector<ledger::Grant>& grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
   void OnGrantFinish(ledger::Result result, const ledger::Grant& grant) override;
