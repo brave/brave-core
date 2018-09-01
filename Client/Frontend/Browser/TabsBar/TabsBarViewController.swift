@@ -28,13 +28,13 @@ class TabsBarViewController: UIViewController {
         button.backgroundColor = .clear
         return button
     }()
-
+    
     fileprivate lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-
+        
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.showsHorizontalScrollIndicator = false
         view.bounces = false
@@ -50,35 +50,35 @@ class TabsBarViewController: UIViewController {
     
     fileprivate weak var tabManager: TabManager?
     fileprivate var tabList = WeakList<Tab>()
-
+    
     init(tabManager: TabManager) {
         self.tabManager = tabManager
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tabManager?.addDelegate(self)
-
+        
         // Can't get view.frame inside of lazy property, need to put this code here.
         collectionView.frame = view.frame
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: UX.TabsBar.minimumWidth, height: view.frame.height)
         view.addSubview(collectionView)
-
+        
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(gesture:)))
         longPressGesture.minimumPressDuration = 0.2
         collectionView.addGestureRecognizer(longPressGesture)
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-
+        
         if UIDevice.current.userInterfaceIdiom == .pad {
             view.addSubview(plusButton)
-
+            
             plusButton.snp.makeConstraints { make in
                 make.right.top.bottom.equalTo(view)
                 make.width.equalTo(UX.TabsBar.buttonWidth)
@@ -98,19 +98,19 @@ class TabsBarViewController: UIViewController {
             make.left.right.equalTo(view)
         }
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         // Updating tabs here is especially handy when tabs are reordered from the tab tray.
         updateData()
     }
-
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-
+        
         // ensure the selected tab is visible after rotations
         if let index = tabManager?.currentDisplayedIndex {
             let indexPath = IndexPath(item: index, section: 0)
@@ -118,34 +118,34 @@ class TabsBarViewController: UIViewController {
             // will not overshoot the edges for the bookend tabs
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
         }
-
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.reloadDataAndRestoreSelectedTab()
         }
     }
-
+    
     @objc func orientationChanged() {
         overflowIndicators()
     }
-
+    
     @objc func addTabPressed() {
-        tabManager?.addTabAndSelect(isPrivate: UIApplication.isInPrivateMode)
+        tabManager?.addTabAndSelect(isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
-
+    
     func updateData() {
         tabList = WeakList<Tab>()
-
+        
         tabManager?.displayedTabsForCurrentPrivateMode.forEach {
             tabList.insert($0)
         }
-
+        
         overflowIndicators()
         reloadDataAndRestoreSelectedTab()
     }
-
+    
     func reloadDataAndRestoreSelectedTab() {
         collectionView.reloadData()
-
+        
         if let tabManager = tabManager, let selectedTab = tabManager.selectedTab {
             let selectedIndex = tabList.index(of: selectedTab) ?? 0
             if selectedIndex < tabList.count() {
@@ -153,7 +153,7 @@ class TabsBarViewController: UIViewController {
             }
         }
     }
-
+    
     @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
         switch(gesture.state) {
         case .began:
@@ -173,34 +173,34 @@ class TabsBarViewController: UIViewController {
             collectionView.cancelInteractiveMovement()
         }
     }
-
+    
     private func tabOverflowWidth(_ tabCount: Int) -> CGFloat {
         let overflow = CGFloat(tabCount) * UX.TabsBar.minimumWidth - collectionView.frame.width
         return max(overflow, 0)
     }
-
+    
     fileprivate func overflowIndicators() {
         addScrollHint(for: .leftSide, maskLayer: leftOverflowIndicator)
         addScrollHint(for: .rightSide, maskLayer: rightOverflowIndicator)
-
+        
         let offset = Float(collectionView.contentOffset.x)
         let startFade = Float(30)
         leftOverflowIndicator.opacity = min(1, offset / startFade)
-
+        
         // all the way scrolled right
         let offsetFromRight = collectionView.contentSize.width - CGFloat(offset) - collectionView.frame.width
         rightOverflowIndicator.opacity = min(1, Float(offsetFromRight) / startFade)
     }
-
+    
     private enum HintSide { case leftSide, rightSide }
-
+    
     private func addScrollHint(for side: HintSide, maskLayer: CAGradientLayer) {
         maskLayer.removeFromSuperlayer()
-
-        let barsColor = UIApplication.isInPrivateMode ?
+        
+        let barsColor = PrivateBrowsingManager.shared.isPrivateBrowsing ?
             UX.barsDarkBackgroundSolidColor : UX.barsBackgroundSolidColor
         let colors = [barsColor.withAlphaComponent(0).cgColor, barsColor.cgColor]
-
+        
         let locations = [0.9, 1.0]
         maskLayer.startPoint = CGPoint(x: side == .rightSide ? 0 : 1.0, y: 0.5)
         maskLayer.endPoint = CGPoint(x: side == .rightSide ? 1.0 : 0, y: 0.5)
@@ -234,7 +234,7 @@ extension TabsBarViewController: UICollectionViewDelegate {
 extension TabsBarViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let tabCount = CGFloat(tabList.count())
-
+        
         if tabCount < 1 { return CGSize.zero }
         if tabCount == 1 { return collectionView.frame.size }
         
@@ -243,59 +243,59 @@ extension TabsBarViewController: UICollectionViewDelegateFlowLayout {
             let maxWidth = collectionView.frame.width / tabCount
             return CGSize(width: maxWidth, height: view.frame.height)
         }
-
+        
         return CGSize(width: UX.TabsBar.minimumWidth, height: view.frame.height)
     }
 }
 
 // MARK: - UICollectionViewDataSource
 extension TabsBarViewController: UICollectionViewDataSource {
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tabList.count()
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         return true
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TabCell", for: indexPath) as? TabBarCell
             else { return UICollectionViewCell() }
         guard let tab = tabList[indexPath.row] else { return cell }
-
+        
         cell.tabManager = tabManager
         cell.tab = tab
         cell.titleLabel.text = tab.displayTitle
         cell.currentIndex = indexPath.row
         cell.separatorLineRight.isHidden = (indexPath.row != tabList.count() - 1)
-
+        
         cell.closeTabCallback = { [weak self] tab in
             guard let strongSelf = self, let tabManager = strongSelf.tabManager, let previousIndex = strongSelf.tabList.index(of: tab) else { return }
-
+            
             tabManager.removeTab(tab)
             strongSelf.updateData()
-
+            
             let previousOrNext = max(0, previousIndex - 1)
             tabManager.selectTab(strongSelf.tabList[previousOrNext])
-
+            
             strongSelf.collectionView.selectItem(at: IndexPath(row: previousOrNext, section: 0), animated: true, scrollPosition: .centeredHorizontally)
         }
-
+        
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         guard let manager = tabManager, let fromTab = tabList[sourceIndexPath.row],
             let toTab = tabList[destinationIndexPath.row] else { return }
-
+        
         // Find original from/to index... we need to target the full list not partial.
         guard let from = manager.tabs.index(where: {$0 === fromTab}),
             let to = manager.tabs.index(where: {$0 === toTab}) else { return }
-
+        
         manager.moveTab(fromIndex: from, toIndex: to)
         updateData()
-
+        
         guard let selectedTab = tabList[destinationIndexPath.row] else { return }
         manager.selectTab(selectedTab)
     }
@@ -307,16 +307,16 @@ extension TabsBarViewController: TabManagerDelegate {
         assert(Thread.current.isMainThread)
         updateData()
     }
-
+    
     func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
         updateData()
     }
-
+    
     func tabManager(_ tabManager: TabManager, didRemoveTab tab: Tab) {
         assert(Thread.current.isMainThread)
         updateData()
     }
-
+    
     func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
         assert(Thread.current.isMainThread)
         updateData()

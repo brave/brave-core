@@ -71,7 +71,7 @@ class FavoritesTileDecorator {
             cell.imageView.backgroundColor = website.backgroundColor
             cell.imageView.contentMode = .scaleAspectFit
             cell.imageView.layer.minificationFilter = kCAFilterTrilinear
-            cell.showBorder(!UIApplication.isInPrivateMode)
+            cell.showBorder(!PrivateBrowsingManager.shared.isPrivateBrowsing)
             
             let size = CGSize(width: image.size.width - 6, height: image.size.height - 6)
             cell.imageView.image = image.scale(toSize: size)

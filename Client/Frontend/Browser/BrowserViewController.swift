@@ -1510,13 +1510,13 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
     
     func tabToolbarDidPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        self.openBlankNewTab(focusLocationField: true, isPrivate: UIApplication.isInPrivateMode)
+        self.openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
 
     func tabToolbarDidLongPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil))
-        if !UIApplication.isInPrivateMode {
+        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             let newPrivateTabAction = UIAlertAction(title: Strings.NewPrivateTabTitle, style: .default, handler: { [unowned self] _ in
                 // BRAVE TODO: Add check for DuckDuckGo popup (and based on 1.6, whether the browser lock is enabled?)
                 // before focusing on the url bar
@@ -1525,7 +1525,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             alertController.addAction(newPrivateTabAction)
         }
         alertController.addAction(UIAlertAction(title: Strings.NewTabTitle, style: .default, handler: { [unowned self] _ in
-            self.openBlankNewTab(focusLocationField: true, isPrivate: UIApplication.isInPrivateMode)
+            self.openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
         }))
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
