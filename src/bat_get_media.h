@@ -9,6 +9,7 @@
 #include <map>
 #include <mutex>
 
+#include "bat/ledger/ledger.h"
 #include "bat_helper.h"
 #include "url_request_handler.h"
 
@@ -24,30 +25,34 @@ namespace braveledger_bat_get_media {
 
 class BatGetMedia {
  public:
+  static std::string GetLinkType(const std::string& url, const std::string& first_party_url, const std::string& referrer);
 
   BatGetMedia(bat_ledger::LedgerImpl* ledger);
   ~BatGetMedia();
 
+  void processMedia(const std::map<std::string, std::string>& parts, const std::string& type, const ledger::VisitData& visit_data);
+
   void getPublisherFromMediaProps(const std::string& mediaId, const std::string& mediaKey, const std::string& providerName,
-      uint64_t duration, const braveledger_bat_helper::TWITCH_EVENT_INFO& twitchEventInfo, braveledger_bat_helper::GetMediaPublisherInfoCallback callback);
+      const uint64_t& duration, const ledger::TwitchEventInfo& twitchEventInfo,
+      const ledger::VisitData& visit_data);
 
  private:
-  bool Init();
-  bool EnsureInitialized();
   std::string getMediaURL(const std::string& mediaId, const std::string& providerName);
   void getPublisherFromMediaPropsCallback(const uint64_t& duration, const std::string& mediaKey,
-    const std::string& providerName, const std::string& mediaURL, bool result, const std::string& response);
+    const std::string& providerName, const std::string& mediaURL, const ledger::VisitData& visit_data, 
+    bool result, const std::string& response);
   void getPublisherInfoCallback(const uint64_t& duration, const std::string& mediaKey,
     const std::string& providerName, const std::string& mediaURL, const std::string& publisherURL,
-    const std::string& publisherName, bool result, const std::string& response);
-  void saveMediaPublisherInfo(const std::string& mediaKey, const std::string& stringifiedPublisher);
-  uint64_t getTwitchDuration(const braveledger_bat_helper::TWITCH_EVENT_INFO& oldEventInfo, const braveledger_bat_helper::TWITCH_EVENT_INFO& newEventInfo);
-  std::string getTwitchStatus(const braveledger_bat_helper::TWITCH_EVENT_INFO& oldEventInfo, const braveledger_bat_helper::TWITCH_EVENT_INFO& newEventInfo);
+    const std::string& publisherName, const ledger::VisitData& visit_data, bool result, const std::string& response);
+  uint64_t getTwitchDuration(const ledger::TwitchEventInfo& oldEventInfo, const ledger::TwitchEventInfo& newEventInfo);
+  std::string getTwitchStatus(const ledger::TwitchEventInfo& oldEventInfo, const ledger::TwitchEventInfo& newEventInfo);
+
+  void getPublisherInfoDataCallback(const std::string& mediaId, const std::string& mediaKey, const std::string& providerName,
+      const uint64_t& duration, const ledger::TwitchEventInfo& twitchEventInfo,
+      const ledger::VisitData& visit_data, ledger::Result result,
+      std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<leveldb::DB> level_db_;
-  std::map<std::string, braveledger_bat_helper::GetMediaPublisherInfoCallback> mapCallbacks_;
-  std::mutex callbacks_access_mutex_;
 
   bat_ledger::URLRequestHandler handler_;
 };

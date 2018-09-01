@@ -1235,7 +1235,8 @@ namespace braveledger_bat_helper {
           eventmap[props_field] = "";
 
           const char * channel_field = "channel";
-          if (obj[props_field].HasMember(channel_field)) {
+          if (obj[props_field].HasMember(channel_field) &&
+            obj[props_field][channel_field].IsString()) {
             eventmap[channel_field] = obj[props_field][channel_field].GetString();
           }
 
@@ -1246,7 +1247,7 @@ namespace braveledger_bat_helper {
 
           const char * time_field = "time";
           if (obj[props_field].HasMember(time_field)) {
-            unsigned long long d = obj[props_field][time_field].GetUint64();
+            double d = obj[props_field][time_field].GetDouble();
             eventmap[time_field] = std::to_string(d);
           }
         }
@@ -1749,22 +1750,22 @@ namespace braveledger_bat_helper {
     return time(0);
   }
 
-  // void getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts) {
-  //   size_t pos = query.find("data=");
-  //   if (std::string::npos != pos && query.length() > 5) {
-  //     std::string varValue;
-  //     DecodeURLChars(query.substr(5), varValue);
-  //     std::vector<uint8_t> decoded;
-  //     bool succeded = braveledger_bat_helper::getFromBase64(varValue, decoded);
-  //     if (succeded) {
-  //       decoded.push_back((uint8_t)'\0');
-  //       braveledger_bat_helper::getJSONTwitchProperties((char*)&decoded.front(), parts);
-  //     }
-  //     else{
-  //       LOG(ERROR) << "getTwitchParts failed in getFromBase64";
-  //     }
-  //   }
-  // }
+  void getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts) {
+    size_t pos = query.find("data=");
+    if (std::string::npos != pos && query.length() > 5) {
+      std::string varValue = query.substr(5);
+      //DecodeURLChars(query.substr(5), varValue);
+      std::vector<uint8_t> decoded;
+      bool succeded = braveledger_bat_helper::getFromBase64(varValue, decoded);
+      if (succeded) {
+        decoded.push_back((uint8_t)'\0');
+        braveledger_bat_helper::getJSONTwitchProperties((char*)&decoded.front(), parts);
+      }
+      else{
+        LOG(ERROR) << "getTwitchParts failed in getFromBase64";
+      }
+    }
+  }
 
   std::string getMediaId(const std::map<std::string, std::string>& data, const std::string& type) {
     if (YOUTUBE_MEDIA_TYPE == type) {

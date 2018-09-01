@@ -52,6 +52,12 @@ class LedgerImpl : public ledger::Ledger,
                         ledger::PublisherInfoCallback callback) override;
   void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
                         ledger::PublisherInfoCallback callback) override;
+  void GetMediaPublisherInfo(const std::string& publisher_key,
+                                ledger::MediaPublisherInfoCallback callback) override;
+  void SetMediaPublisherInfo(const uint64_t& duration, 
+                            std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
+                            const ledger::VisitData& visit_data,
+                            ledger::MediaPublisherInfoCallback callback) override;
   std::vector<ledger::ContributionInfo> GetRecurringDonationPublisherInfo() override;
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
@@ -124,6 +130,7 @@ class LedgerImpl : public ledger::Ledger,
   void RunIOTask(LedgerTaskRunnerImpl::Task task);
   void RunTask(LedgerTaskRunnerImpl::Task task);
   std::string URIEncode(const std::string& value) override;
+  void SaveMediaVisit(const ledger::VisitData& visit_data, const uint64_t& duration) override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;
@@ -140,25 +147,29 @@ class LedgerImpl : public ledger::Ledger,
       uint32_t tab_id,
       const std::string& url,
       const std::map<std::string, std::string>& parts,
-      const uint64_t& current_time) override;
+      const std::string& first_party_url, 
+      const std::string& referrer,
+      const ledger::VisitData& visit_data) override;
+  void OnPostData(
+      const std::string& url,
+      const std::string& first_party_url, 
+      const std::string& referrer,
+      const std::string& post_data,
+      const ledger::VisitData& visit_data) override;
 
   void OnTimer(uint32_t timer_id) override;
 
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                           ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info);
+  void OnSetMediaPublisherInfo(const uint64_t& duration,
+                          const ledger::VisitData& visit_data,
+                          ledger::MediaPublisherInfoCallback callback,
+                          ledger::Result result,
+                          std::unique_ptr<ledger::MediaPublisherInfo> info);
 
-  void processMedia(const std::map<std::string,
-                    std::string>& parts,
-                    const std::string& type);
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
-  void OnMediaRequest(const std::string& url,
-                      const std::string& urlQuery,
-                      const std::string& type);
-
-  void OnMediaRequestCallback(uint64_t duration,
-                              const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo);
 
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,

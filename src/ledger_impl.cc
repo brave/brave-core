@@ -128,9 +128,42 @@ void LedgerImpl::OnXHRLoad(
     uint32_t tab_id,
     const std::string& url,
     const std::map<std::string, std::string>& parts,
-    const uint64_t& current_time) {
+    const std::string& first_party_url, 
+    const std::string& referrer,
+    const ledger::VisitData& visit_data) {
   // TODO
-  //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad " << url;
+  //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad first_party_url == " << first_party_url;
+  //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad referrer == " << referrer;
+  std::string type = bat_get_media_->GetLinkType(url, first_party_url, referrer);
+  if (type.empty()) {
+    // It is not a media supported type
+    return;
+  }
+  //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad url == " << url;
+  LOG(ERROR) << "!!!type == " << type;
+  bat_get_media_->processMedia(parts, type, visit_data);
+}
+
+void LedgerImpl::OnPostData(
+      const std::string& url,
+      const std::string& first_party_url, 
+      const std::string& referrer,
+      const std::string& post_data,
+      const ledger::VisitData& visit_data) {
+  std::string type = bat_get_media_->GetLinkType(url, first_party_url, referrer);
+  if (type.empty()) {
+    // It is not a media supported type
+    return;
+  }
+  //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad url == " << url;
+  LOG(ERROR) << "!!!type == " << type;
+  std::vector<std::map<std::string, std::string>> twitchParts;
+  if (TWITCH_MEDIA_TYPE == type) {
+    braveledger_bat_helper::getTwitchParts(post_data, twitchParts);
+    for (size_t i = 0; i < twitchParts.size(); i++) {
+      bat_get_media_->processMedia(twitchParts[i], type, visit_data);
+    }
+  }
 }
 
 void LedgerImpl::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
@@ -220,7 +253,27 @@ void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info,
                                   ledger::PublisherInfoCallback callback) {
   ledger_client_->SavePublisherInfo(std::move(info),
       std::bind(&LedgerImpl::OnSetPublisherInfo, this, callback, _1, _2));
+}
 
+void LedgerImpl::SetMediaPublisherInfo(const uint64_t& duration, 
+                                std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
+                                const ledger::VisitData& visit_data,
+                                ledger::MediaPublisherInfoCallback callback) {
+  ledger_client_->SaveMediaPublisherInfo(std::move(media_publisher_info),
+      std::bind(&LedgerImpl::OnSetMediaPublisherInfo, this, duration, visit_data, callback, _1, _2));
+}
+
+void LedgerImpl::OnSetMediaPublisherInfo(const uint64_t& duration,
+                          const ledger::VisitData& visit_data,
+                          ledger::MediaPublisherInfoCallback callback,
+                          ledger::Result result,
+                          std::unique_ptr<ledger::MediaPublisherInfo> info) {
+  SaveMediaVisit(visit_data, duration);
+  callback(result, std::move(info));
+}
+
+void LedgerImpl::SaveMediaVisit(const ledger::VisitData& visit_data, const uint64_t& duration) {
+  bat_publishers_->saveVisit(visit_data, duration);
 }
 
 void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
@@ -238,6 +291,11 @@ void LedgerImpl::GetPublisherInfo(
     const ledger::PublisherInfoFilter& filter,
     ledger::PublisherInfoCallback callback) {
   ledger_client_->LoadPublisherInfo(filter, callback);
+}
+
+void LedgerImpl::GetMediaPublisherInfo(const std::string& publisher_key,
+                                ledger::MediaPublisherInfoCallback callback) {
+  ledger_client_->LoadMediaPublisherInfo(publisher_key, callback);
 }
 
 void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
@@ -339,60 +397,6 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
   bat_client_->votePublishers(publishers, viewing_id);
   // TODO call prepareBallots by timeouts like in js library
   bat_client_->prepareBallots();
-}
-
-void LedgerImpl::OnMediaRequest(const std::string& url,
-                                const std::string& urlQuery,
-                                const std::string& type) {
-  //LOG(ERROR) << "!!!media url == " << url;
-  //LOG(ERROR) << "!!!media urlQuery == " << urlQuery;
-  //LOG(ERROR) << "!!!media url type == " << type;
-  // TODO(bridiver) - this should move to OnXHRLoad and remove this method
-  // std::map<std::string, std::string> parts;
-  // std::vector<std::map<std::string, std::string>> twitchParts;
-  // if (YOUTUBE_MEDIA_TYPE == type) {
-  //   braveledger_bat_helper::getUrlQueryParts(urlQuery, parts);
-  //   processMedia(parts, type);
-  // } else if (TWITCH_MEDIA_TYPE == type) {
-  //   braveledger_bat_helper::getTwitchParts(urlQuery, twitchParts);
-  //   for (size_t i = 0; i < twitchParts.size(); i++) {
-  //     processMedia(twitchParts[i], type);
-  //   }
-  // }
-}
-
-void LedgerImpl::processMedia(const std::map<std::string, std::string>& parts, const std::string& type) {
-  std::string mediaId = braveledger_bat_helper::getMediaId(parts, type);
-  //LOG(ERROR) << "!!!mediaId == " << mediaId;
-  if (mediaId.empty()) {
-    return;
-  }
-  std::string mediaKey = braveledger_bat_helper::getMediaKey(mediaId, type);
-  //LOG(ERROR) << "!!!mediaKey == " << mediaKey;
-  uint64_t duration = 0;
-  braveledger_bat_helper::TWITCH_EVENT_INFO twitchEventInfo;
-  if (YOUTUBE_MEDIA_TYPE == type) {
-    duration = braveledger_bat_helper::getMediaDuration(parts, mediaKey, type);
-    //LOG(ERROR) << "!!!duration == " << duration;
-  } else if (TWITCH_MEDIA_TYPE == type) {
-    std::map<std::string, std::string>::const_iterator iter = parts.find("event");
-    if (iter != parts.end()) {
-      twitchEventInfo.event_ = iter->second;
-    }
-    iter = parts.find("time");
-    if (iter != parts.end()) {
-      twitchEventInfo.time_ = iter->second;
-    }
-  }
-
-  braveledger_bat_helper::GetMediaPublisherInfoCallback callback = std::bind(&LedgerImpl::OnMediaRequestCallback, this, _1, _2);
-  auto io_task = std::bind(&BatGetMedia::getPublisherFromMediaProps,
-    bat_get_media_.get(), mediaId, mediaKey, type, duration, twitchEventInfo, callback);
-  RunIOTask(io_task);
-}
-
-void LedgerImpl::OnMediaRequestCallback(uint64_t duration, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO& mediaPublisherInfo) {
-  // SaveVisit(mediaPublisherInfo.publisher_, duration, true);
 }
 
 void LedgerImpl::OnWalletProperties(ledger::Result result,

@@ -70,6 +70,11 @@ const ledger::PublisherInfo::id_type getPublisherID(
 
 std::string getProviderName(const ledger::PublisherInfo::id_type publisher_id) {
   // TODO - this is for the media stuff
+  if (publisher_id.find(YOUTUBE_PROVIDER_NAME) != std::string::npos) {
+    return YOUTUBE_PROVIDER_NAME;
+  } else if (publisher_id.find(TWITCH_PROVIDER_NAME) != std::string::npos) {
+    return TWITCH_PROVIDER_NAME;
+  }
   return "";
 }
 
@@ -171,7 +176,7 @@ void BatPublishers::saveVisitInternal(
     publisher_info.reset(new ledger::PublisherInfo(getPublisherID(visit_data),
                                                    visit_data.local_month,
                                                    visit_data.local_year));
-
+  publisher_info->favIconURL = visit_data.favIconURL;
   publisher_info->duration += duration;
   publisher_info->visits += 1;
   publisher_info->category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;

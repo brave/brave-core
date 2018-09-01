@@ -14,6 +14,7 @@
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_task_runner.h"
 #include "bat/ledger/ledger_url_loader.h"
+#include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
 #include "bat/ledger/grant.h"
@@ -28,6 +29,8 @@ LEDGER_EXPORT enum URL_METHOD {
 
 using PublisherInfoCallback = std::function<void(Result,
     std::unique_ptr<PublisherInfo>)>;
+using MediaPublisherInfoCallback = std::function<void(Result,
+    std::unique_ptr<MediaPublisherInfo>)>;
 using GetPublisherInfoListCallback =
     std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
 
@@ -61,6 +64,10 @@ class LEDGER_EXPORT LedgerClient {
                                 PublisherInfoCallback callback) = 0;
   virtual void LoadPublisherInfo(PublisherInfoFilter filter,
                                 PublisherInfoCallback callback) = 0;
+  virtual void LoadMediaPublisherInfo(const std::string& publisher_id,
+                                MediaPublisherInfoCallback callback) = 0;
+  virtual void SaveMediaPublisherInfo(std::unique_ptr<MediaPublisherInfo> media_publisher_info,
+                                MediaPublisherInfoCallback callback) = 0;
   virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
                                     GetPublisherInfoListCallback callback) = 0;

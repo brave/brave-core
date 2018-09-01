@@ -5,6 +5,10 @@
 #include "bat/ledger/ledger.h"
 
 #include "ledger_impl.h"
+#include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
+#include "bat_get_media.h"
 
 namespace ledger {
 
@@ -30,7 +34,8 @@ VisitData::VisitData(const VisitData& data) :
     path(data.path),
     tab_id(data.tab_id),
     local_month(data.local_month),
-    local_year(data.local_year) {}
+    local_year(data.local_year),
+    favIconURL(data.favIconURL) {}
 
 VisitData::~VisitData() {}
 
@@ -101,6 +106,7 @@ PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     category(info.category),
     month(info.month),
     year(info.year),
+    favIconURL(info.favIconURL),
     contributions(info.contributions) {}
 
 PublisherInfo::~PublisherInfo() {}
@@ -110,6 +116,100 @@ bool PublisherInfo::is_valid() const {
 }
 
 const PublisherInfo invalid("", PUBLISHER_MONTH::ANY, -1);
+
+
+TwitchEventInfo::TwitchEventInfo() {}
+
+TwitchEventInfo::TwitchEventInfo(const TwitchEventInfo& info):
+  event_(info.event_),
+  time_(info.time_),
+  status_(info.status_) {}
+
+TwitchEventInfo::~TwitchEventInfo() {}
+
+
+MediaPublisherInfo::MediaPublisherInfo(const std::string& publisher_id):
+  publisher_id_(publisher_id) {}
+
+MediaPublisherInfo::MediaPublisherInfo(const MediaPublisherInfo& info):
+  publisher_id_(info.publisher_id_),
+  publisherName_(info.publisherName_),
+  publisherURL_(info.publisherURL_),
+  favIconURL_(info.favIconURL_),
+  channelName_(info.channelName_),
+  publisher_(info.publisher_),
+  twitchEventInfo_(info.twitchEventInfo_) {}
+
+MediaPublisherInfo::~MediaPublisherInfo() {}
+
+const MediaPublisherInfo MediaPublisherInfo::FromJSON(const std::string& json) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  if (d.HasParseError() ||
+      !d["id"].IsString() ||
+      !d["publisherName"].IsString() ||
+      !d["publisherURL"].IsString() ||
+      !d["favIconURL"].IsString() ||
+      !d["channelName"].IsString() ||
+      !d["publisher"].IsString() ||
+      !d["twitch_event"].IsString() ||
+      !d["twitch_time"].IsString() ||
+      !d["twitch_status"].IsString()) {
+    return MediaPublisherInfo("");
+  }
+
+  MediaPublisherInfo info(d["id"].GetString());
+  info.publisherName_ = d["publisherName"].GetString();
+  info.publisherURL_ = d["publisherURL"].GetString();
+  info.favIconURL_ = d["favIconURL"].GetString();
+  info.channelName_ = d["channelName"].GetString();
+  info.publisher_ = d["publisher"].GetString();
+  info.twitchEventInfo_.event_ = d["twitch_event"].GetString();
+  info.twitchEventInfo_.time_ = d["twitch_time"].GetString();
+  info.twitchEventInfo_.status_ = d["twitch_status"].GetString();
+
+  return info;
+}
+
+const std::string MediaPublisherInfo::ToJSON() const {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("id");
+  writer.String(publisher_id_.c_str());
+
+  writer.String("publisherName");
+  writer.String(publisherName_.c_str());
+
+  writer.String("publisherURL");
+  writer.String(publisherURL_.c_str());
+
+  writer.String("favIconURL");
+  writer.String(favIconURL_.c_str());
+
+  writer.String("channelName");
+  writer.String(channelName_.c_str());
+
+  writer.String("publisher");
+  writer.String(publisher_.c_str());
+
+  writer.String("twitch_event");
+  writer.String(twitchEventInfo_.event_.c_str());
+
+  writer.String("twitch_time");
+  writer.String(twitchEventInfo_.time_.c_str());
+
+  writer.String("twitch_status");
+  writer.String(twitchEventInfo_.status_.c_str());
+
+  writer.EndObject();
+
+  return buffer.GetString();
+}
+
 
 // static
 ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {
@@ -146,4 +246,8 @@ BalanceReportInfo::BalanceReportInfo():
   auto_contribute_(.0),
   recurring_donation_(.0),
   one_time_donation_(.0) {}
+
+bool Ledger::IsMediaLink(const std::string& url, const std::string& first_party_url, const std::string& referrer) {
+  return braveledger_bat_get_media::BatGetMedia::GetLinkType(url, first_party_url, referrer) == TWITCH_MEDIA_TYPE;
+}
 }
