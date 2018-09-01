@@ -340,6 +340,11 @@ namespace braveledger_bat_helper {
     PUBLISHER
   };
 
+  struct SERVER_LIST {
+    bool verified;
+    bool excluded;
+  };
+
   using GetMediaPublisherInfoSignature = void(uint64_t, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&);
   using SaveVisitSignature = void(const std::string&, uint64_t);
   using GetMediaPublisherInfoCallback = std::function<GetMediaPublisherInfoSignature>;
@@ -367,6 +372,8 @@ namespace braveledger_bat_helper {
   bool getJSONRecoverWallet(const std::string& json, double& balance, std::string& probi, std::vector<GRANT>& grants);
 
   bool getJSONResponse(const std::string& json, unsigned int& statusCode, std::string& error);
+
+  bool getJSONServerList(const std::string& json, std::map<std::string, SERVER_LIST>& list);
 
   std::vector<uint8_t> generateSeed();
 

@@ -86,6 +86,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool isEligableForContribution(const ledger::PublisherInfo& info);
   bool isVerified(const ledger::PublisherInfo::id_type& publisher_id);
+  bool isExcluded(const ledger::PublisherInfo::id_type& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded);
   void saveVisitInternal(
       ledger::VisitData visit_data,
       uint64_t duration,
@@ -114,6 +115,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   std::map<std::string, braveledger_bat_helper::PUBLISHER_ST> publishers_;
 
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
+
+  std::unique_ptr<std::map<std::string, braveledger_bat_helper::SERVER_LIST>> server_list_;
 
   unsigned int a_;
 
