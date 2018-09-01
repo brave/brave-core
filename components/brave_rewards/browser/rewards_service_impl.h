@@ -5,6 +5,7 @@
 #ifndef BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_IMPL_
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_IMPL_
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -13,6 +14,7 @@
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
 #include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -22,6 +24,11 @@
 namespace base {
 class SequencedTaskRunner;
 }  // namespace base
+
+namespace ledger {
+class Ledger;
+class LedgerCallbackHandler;
+}  // namespace ledger
 
 namespace leveldb {
 class DB;
@@ -71,8 +78,6 @@ class RewardsServiceImpl : public RewardsService,
   std::string URIEncode(const std::string& value) override;
   uint64_t GetReconcileStamp() const override;
   std::map<std::string, std::string> GetAddresses() const override;
-  void SavePublishersList(const std::string& publisher_state, ledger::LedgerCallbackHandler* handler) override;
-  void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
 
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;
@@ -102,6 +107,9 @@ class RewardsServiceImpl : public RewardsService,
                                  uint32_t limit,
                                  ledger::GetPublisherInfoListCallback callback,
                                  const ledger::PublisherInfoList& list);
+  void OnPublishersListSaved(ledger::LedgerCallbackHandler* handler,
+                             bool success);
+  void OnTimer(uint32_t timer_id);
   void TriggerOnContentSiteUpdated();
 
   // ledger::LedgerClient
@@ -131,6 +139,9 @@ class RewardsServiceImpl : public RewardsService,
       uint32_t limit,
       ledger::PublisherInfoFilter filter,
       ledger::GetPublisherInfoListCallback callback) override;
+  void SavePublishersList(const std::string& publishers_list,
+                          ledger::LedgerCallbackHandler* handler) override;
+  void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
@@ -157,10 +168,14 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
+  const base::FilePath verified_publisher_list_path_;
   std::unique_ptr<PublisherInfoDatabase> publisher_info_backend_;
 
   extensions::OneShotEvent ready_;
   std::map<const net::URLFetcher*, FetchCallback> fetchers_;
+  std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
+
+  uint32_t next_timer_id_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };

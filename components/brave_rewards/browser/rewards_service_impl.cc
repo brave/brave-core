@@ -5,6 +5,7 @@
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 
 #include <functional>
+#include <limits.h>
 
 #include "base/bind.h"
 #include "base/guid.h"
@@ -170,7 +171,9 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile) :
     ledger_state_path_(profile_->GetPath().Append("ledger_state")),
     publisher_state_path_(profile_->GetPath().Append("publisher_state")),
     publisher_info_db_path_(profile->GetPath().Append("publisher_info_db")),
-    publisher_info_backend_(new PublisherInfoDatabase(publisher_info_db_path_)) {
+    verified_publisher_list_path_(profile->GetPath().Append("publishers_list")),
+    publisher_info_backend_(new PublisherInfoDatabase(publisher_info_db_path_)),
+    next_timer_id_(0) {
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -711,13 +714,48 @@ void RewardsServiceImpl::TriggerOnContentSiteUpdated() {
     observer.OnContentSiteUpdated(this);
 }
 
-void RewardsServiceImpl::SavePublishersList(const std::string& publisher_state, ledger::LedgerCallbackHandler* handler) {
-  // TODO implement
+void RewardsServiceImpl::SavePublishersList(const std::string& publishers_list,
+                                      ledger::LedgerCallbackHandler* handler) {
+  base::ImportantFileWriter writer(
+      verified_publisher_list_path_, file_task_runner_);
+
+  writer.RegisterOnNextWriteCallbacks(
+      base::Closure(),
+      base::Bind(
+        &PostWriteCallback,
+        base::Bind(&RewardsServiceImpl::OnPublishersListSaved, AsWeakPtr(),
+            base::Unretained(handler)),
+        base::SequencedTaskRunnerHandle::Get()));
+
+  writer.WriteNow(std::make_unique<std::string>(publishers_list));
 }
 
+void RewardsServiceImpl::OnPublishersListSaved(
+    ledger::LedgerCallbackHandler* handler,
+    bool success) {
+  handler->OnPublishersListSaved(success ? ledger::Result::OK
+                                         : ledger::Result::ERROR);
+}
 
-void RewardsServiceImpl::SetTimer(uint64_t time_offset, uint32_t& timer_id) {
-  // TODO implement
+void RewardsServiceImpl::SetTimer(uint64_t time_offset,
+                                  uint32_t& timer_id) {
+  if (next_timer_id_ == std::numeric_limits<uint32_t>::max())
+    next_timer_id_ = 1;
+  else
+    ++next_timer_id_;
+
+  timer_id = next_timer_id_;
+
+  timers_[next_timer_id_] = std::make_unique<base::OneShotTimer>();
+  timers_[next_timer_id_]->Start(FROM_HERE,
+      base::TimeDelta::FromSeconds(time_offset),
+      base::BindOnce(
+          &RewardsServiceImpl::OnTimer, AsWeakPtr(), next_timer_id_));
+}
+
+void RewardsServiceImpl::OnTimer(uint32_t timer_id) {
+  ledger_->OnTimer(timer_id);
+  timers_.erase(timer_id);
 }
 
 }  // namespace brave_rewards
