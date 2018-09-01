@@ -1837,4 +1837,33 @@ namespace braveledger_bat_helper {
     return duration;
   }
 
+  std::string buildURL(const std::string& path, const std::string& prefix, const SERVER_TYPES& server) {
+    std::string url;
+    switch (server) {
+      case SERVER_TYPES::BALANCE:
+        if (braveledger_ledger::g_isProduction) {
+          url = BALANCE_PRODUCTION_SERVER;
+        } else {
+          url = BALANCE_STAGING_SERVER;
+        }
+        break;
+      case SERVER_TYPES::PUBLISHER:
+        if (braveledger_ledger::g_isProduction) {
+          url = PUBLISHER_PRODUCTION_SERVER;
+        } else {
+          url = PUBLISHER_STAGING_SERVER;
+        }
+        break;
+      default:
+        if (braveledger_ledger::g_isProduction) {
+          url = LEDGER_PRODUCTION_SERVER;
+        } else {
+          url = LEDGER_STAGING_SERVER;
+        }
+        break;
+    }
+
+    return url + prefix + path;
+  }
+
 }  // namespace braveledger_bat_helper

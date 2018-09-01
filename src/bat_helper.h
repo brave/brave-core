@@ -334,6 +334,12 @@ namespace braveledger_bat_helper {
     std::string currency_;
   };
 
+  enum class SERVER_TYPES {
+    LEDGER,
+    BALANCE,
+    PUBLISHER
+  };
+
   using GetMediaPublisherInfoSignature = void(uint64_t, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&);
   using SaveVisitSignature = void(const std::string&, uint64_t);
   using GetMediaPublisherInfoCallback = std::function<GetMediaPublisherInfoSignature>;
@@ -401,6 +407,8 @@ namespace braveledger_bat_helper {
   std::string getMediaKey(const std::string& mediaId, const std::string& type);
 
   uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& mediaKey, const std::string& type);
+
+  std::string buildURL(const std::string& path, const std::string& prefix = "", const SERVER_TYPES& server = SERVER_TYPES::LEDGER);
 }  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_
