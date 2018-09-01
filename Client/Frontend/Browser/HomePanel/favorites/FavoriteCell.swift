@@ -163,7 +163,7 @@ class FavoriteCell: UICollectionViewCell {
         backgroundColor = UIColor.clear
         textLabel.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
         textLabel.textColor = 
-            UIApplication.isInPrivateMode ? UX.Favorites.cellLabelColorPrivate : UX.Favorites.cellLabelColorNormal
+            PrivateBrowsingManager.shared.isPrivateBrowsing ? UX.Favorites.cellLabelColorPrivate : UX.Favorites.cellLabelColorNormal
         imageView.backgroundColor = UIColor.clear
         imageView.image = nil
     }

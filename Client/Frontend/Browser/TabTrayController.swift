@@ -253,6 +253,8 @@ class TabTrayController: UIViewController {
 
     fileprivate(set) internal var privateMode: Bool = false {
         didSet {
+            PrivateBrowsingManager.shared.isPrivateBrowsing = privateMode
+            
             tabDataSource.tabs = tabsToDisplay
             toolbar.applyTheme(privateMode ? .private : .regular)
             collectionView?.reloadData()
