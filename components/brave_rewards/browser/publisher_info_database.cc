@@ -118,7 +118,7 @@ bool PublisherInfoDatabase::CreatePublisherInfoTable() {
       "pinned BOOLEAN DEFAULT 0 NOT NULL,"
       "percent INTEGER DEFAULT 0 NOT NULL,"
       "weight DOUBLE DEFAULT 0 NOT NULL,"
-      "excluded BOOLEAN DEFAULT 0 NOT NULL,"
+      "verified BOOLEAN DEFAULT 0 NOT NULL,"
       "category INTEGER NOT NULL,"
       "month INTEGER NOT NULL,"
       "year INTEGER NOT NULL)");
@@ -138,7 +138,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
       "INSERT OR REPLACE INTO publisher_info "
       "(id, duration, score, pinned, percent, "
-      "weight, excluded, category, month, year) "
+      "weight, verified, category, month, year) "
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"));
 
   statement.BindString(0, info.id);
@@ -147,7 +147,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   statement.BindBool(3, info.pinned);
   statement.BindInt64(4, (int)info.percent);
   statement.BindDouble(5, info.weight);
-  statement.BindBool(6, info.excluded);
+  statement.BindBool(6, info.verified);
   statement.BindInt(7, info.category);
   statement.BindInt(8, info.month);
   statement.BindInt(9, info.year);
@@ -170,7 +170,7 @@ bool PublisherInfoDatabase::Find(int start,
     return false;
 
   std::string query = "SELECT id, duration, score, pinned, percent, "
-      "weight, excluded, category, month, year "
+      "weight, verified, category, month, year "
       "FROM publisher_info "
       "WHERE 1 = 1";
 
@@ -225,7 +225,7 @@ bool PublisherInfoDatabase::Find(int start,
     info.pinned = info_sql.ColumnBool(3);
     info.percent = info_sql.ColumnInt64(4);
     info.weight = info_sql.ColumnDouble(5);
-    info.excluded = info_sql.ColumnBool(6);
+    info.verified = info_sql.ColumnBool(6);
     info.category =
         static_cast<ledger::PUBLISHER_CATEGORY>(info_sql.ColumnInt(7));
 

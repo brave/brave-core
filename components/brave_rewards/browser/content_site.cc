@@ -7,10 +7,8 @@ namespace brave_rewards {
 
 ContentSite::ContentSite(const id_type site_id) :
     id(site_id),
-    score(0),
-    pinned(false),
     percentage(0),
-    excluded(false) {
+    verified(false) {
 }
 
 }  // namespace brave_rewards

@@ -17,10 +17,8 @@ struct ContentSite {
   ContentSite(const id_type site_id);
 
   const id_type id;
-  double score;
-  bool pinned;
   double percentage;
-  bool excluded;
+  bool verified;
 };
 
 typedef std::vector<const ContentSite> ContentSiteList;

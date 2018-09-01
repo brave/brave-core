@@ -72,10 +72,8 @@ int GetPublisherYear(const base::Time& time) {
 ContentSite PublisherInfoToContentSite(
     const ledger::PublisherInfo& publisher_info) {
   ContentSite content_site(publisher_info.id);
-  content_site.score = publisher_info.score;
-  content_site.pinned = publisher_info.pinned;
   content_site.percentage = publisher_info.percent;
-  content_site.excluded = publisher_info.excluded;
+  content_site.verified = publisher_info.verified;
   return content_site;
 }
 

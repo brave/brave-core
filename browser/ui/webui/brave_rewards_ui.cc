@@ -364,10 +364,10 @@ void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::Cont
       auto publisher = std::make_unique<base::DictionaryValue>();
       publisher->SetDouble("percentage", item.percentage);
       publisher->SetString("publisherKey", item.id);
+      publisher->SetBoolean("verified", item.verified);
       publisher->SetString("name", item.id); // TODO NZ implement
       publisher->SetString("provider", ""); // TODO NZ implement
       publisher->SetString("url", std::string("https://") + item.id); // TODO NZ implement
-      publisher->SetBoolean("verified", true); // TODO NZ implement
       publishers->Append(std::move(publisher));
     }
 
