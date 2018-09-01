@@ -65,14 +65,18 @@ void RewardsHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
     const content::GlobalRequestID& request_id,
     const content::mojom::ResourceLoadInfo& resource_load_info) {
-  if (!rewards_service_)
+  if (!rewards_service_ || !render_frame_host)
     return;
 
   if (resource_load_info.resource_type == content::RESOURCE_TYPE_MEDIA ||
       resource_load_info.resource_type == content::RESOURCE_TYPE_XHR ||
       resource_load_info.resource_type == content::RESOURCE_TYPE_IMAGE ||
       resource_load_info.resource_type == content::RESOURCE_TYPE_SCRIPT) {
-    rewards_service_->OnXHRLoad(tab_id_, GURL(resource_load_info.url));
+    rewards_service_->OnXHRLoad(
+        tab_id_,
+        GURL(resource_load_info.url),
+        render_frame_host->GetLastCommittedURL().host(),
+        resource_load_info.referrer.spec());
   }
 }
 

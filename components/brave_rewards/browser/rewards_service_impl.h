@@ -74,10 +74,17 @@ class RewardsServiceImpl : public RewardsService,
   void OnBackground(SessionID tab_id) override;
   void OnMediaStart(SessionID tab_id) override;
   void OnMediaStop(SessionID tab_id) override;
-  void OnXHRLoad(SessionID tab_id, const GURL& url) override;
+  void OnXHRLoad(SessionID tab_id,
+                 const GURL& url,
+                 const std::string& first_party_url,
+                 const std::string& referrer) override;
   std::string URIEncode(const std::string& value) override;
   uint64_t GetReconcileStamp() const override;
   std::map<std::string, std::string> GetAddresses() const override;
+  void LoadMediaPublisherInfo(const std::string& publisher_id,
+                              ledger::MediaPublisherInfoCallback callback) override;
+  void SaveMediaPublisherInfo(std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
+                              ledger::MediaPublisherInfoCallback callback) override;
 
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;

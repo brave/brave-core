@@ -258,15 +258,31 @@ void RewardsServiceImpl::OnMediaStop(SessionID tab_id) {
   ledger_->OnMediaStop(tab_id.id(), GetCurrentTimestamp());
 }
 
-void RewardsServiceImpl::OnXHRLoad(SessionID tab_id, const GURL& url) {
-
+void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
+                                   const GURL& url,
+                                   const std::string& first_party_url,
+                                   const std::string& referrer) {
   std::map<std::string, std::string> parts;
 
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
     parts[it.GetKey()] = it.GetUnescapedValue();
   }
+
+  auto now = base::Time::Now();
+  ledger::VisitData data("", "", url.spec(), tab_id.id(), GetPublisherMonth(now), GetPublisherYear(now));
+
   // TODO(bridiver) - add query parts
-  ledger_->OnXHRLoad(tab_id.id(), url.spec(), parts, GetCurrentTimestamp());
+  ledger_->OnXHRLoad(tab_id.id(), url.spec(), parts, first_party_url, referrer, data);
+}
+
+void RewardsServiceImpl::LoadMediaPublisherInfo(const std::string& publisher_id,
+                                                       ledger::MediaPublisherInfoCallback callback) {
+  // TODO
+}
+
+void RewardsServiceImpl::SaveMediaPublisherInfo(std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
+                                                       ledger::MediaPublisherInfoCallback callback) {
+  // TODO
 }
 
 std::string RewardsServiceImpl::URIEncode(const std::string& value) {
