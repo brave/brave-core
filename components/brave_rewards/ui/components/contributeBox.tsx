@@ -18,7 +18,6 @@ import * as utils from '../utils'
 
 // Assets
 const contributeDisabledIcon = require('../../../img/rewards/contribute_disabled.svg')
-const bartBaker = require('../../../img/rewards/temp/bartBaker.jpeg') // TODO temp, remove
 
 interface State {
   modalContribute: boolean
@@ -51,7 +50,7 @@ class ContributeBox extends React.Component<Props, State> {
           name: item.name,
           verified: item.verified,
           provider: (item.provider ? item.provider : undefined) as Provider,
-          src: bartBaker
+          src: `chrome://favicon/size/48@1x/${item.url}/`
         },
         url: item.url,
         attention: item.percentage,
