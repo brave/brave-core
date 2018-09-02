@@ -52,7 +52,9 @@ class PublisherInfoDatabase {
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
   bool CreateContributionInfoTable();
   bool CreatePublisherInfoTable();
+  bool CreateActivityInfoTable();
   bool CreateContributionInfoIndex();
+  bool CreateActivityInfoIndex();
 
   sql::Database& GetDB();
   sql::MetaTable& GetMetaTable();

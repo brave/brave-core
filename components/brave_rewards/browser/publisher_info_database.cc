@@ -50,10 +50,11 @@ bool PublisherInfoDatabase::Init() {
 
   if (!meta_table_.Init(&db_, GetCurrentVersion(), kCompatibleVersionNumber))
     return false;
-  if (!CreatePublisherInfoTable() || !CreateContributionInfoTable())
+  if (!CreatePublisherInfoTable() || !CreateContributionInfoTable() || !CreateActivityInfoTable())
     return false;
 
   CreateContributionInfoIndex();
+  CreateActivityInfoIndex();
 
   // Version check.
   sql::InitStatus version_status = EnsureCurrentVersion();
@@ -87,7 +88,11 @@ bool PublisherInfoDatabase::CreateContributionInfoTable() {
       "("
       "publisher_id LONGVARCHAR NOT NULL,"
       "value DOUBLE DEFAULT 0 NOT NULL,"
-      "date INTEGER DEFAULT 0 NOT NULL)");
+      "date INTEGER DEFAULT 0 NOT NULL,"
+      "CONSTRAINT fk_contribution_info_publisher_id"
+      "    FOREIGN KEY (publisher_id)"
+      "    REFERENCES publisher_info (publisher_id)"
+      "    ON DELETE CASCADE)");
   return GetDB().Execute(sql.c_str());
 }
 
@@ -112,16 +117,46 @@ bool PublisherInfoDatabase::CreatePublisherInfoTable() {
   sql.append(name);
   sql.append(
       "("
-      "id LONGVARCHAR PRIMARY KEY,"
+      "publisher_id LONGVARCHAR PRIMARY KEY NOT NULL,"
+      "verified BOOLEAN DEFAULT 0 NOT NULL,"
+      "excluded INTEGER DEFAULT 0 NOT NULL)");
+  return GetDB().Execute(sql.c_str());
+}
+
+bool PublisherInfoDatabase::CreateActivityInfoTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const char* name = "activity_info";
+  if (GetDB().DoesTableExist(name))
+    return true;
+
+  // Update InsertOrUpdatePublisherInfo() if you add anything here
+  std::string sql;
+  sql.append("CREATE TABLE ");
+  sql.append(name);
+  sql.append(
+      "("
+      "publisher_id LONGVARCHAR NOT NULL,"
       "duration INTEGER DEFAULT 0 NOT NULL,"
       "score DOUBLE DEFAULT 0 NOT NULL,"
       "percent INTEGER DEFAULT 0 NOT NULL,"
       "weight DOUBLE DEFAULT 0 NOT NULL,"
-      "verified BOOLEAN DEFAULT 0 NOT NULL,"
       "category INTEGER NOT NULL,"
       "month INTEGER NOT NULL,"
-      "year INTEGER NOT NULL)");
+      "year INTEGER NOT NULL,"
+      "CONSTRAINT fk_activity_info_publisher_id"
+      "    FOREIGN KEY (publisher_id)"
+      "    REFERENCES publisher_info (publisher_id)"
+      "    ON DELETE CASCADE)");
   return GetDB().Execute(sql.c_str());
+}
+
+bool PublisherInfoDatabase::CreateActivityInfoIndex() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  return GetDB().Execute(
+      "CREATE INDEX IF NOT EXISTS activity_info_publisher_id_index "
+      "ON activity_info (publisher_id)");
 }
 
 bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
@@ -136,21 +171,37 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
 
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
       "INSERT OR REPLACE INTO publisher_info "
-      "(id, duration, score, percent, "
-      "weight, verified, category, month, year) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"));
+      "(publisher_id, verified, excluded) "
+      "VALUES (?, ?, ?)"));
 
   statement.BindString(0, info.id);
-  statement.BindInt64(1, (int)info.duration);
-  statement.BindDouble(2, info.score);
-  statement.BindInt64(3, (int)info.percent);
-  statement.BindDouble(4, info.weight);
-  statement.BindBool(5, info.verified);
-  statement.BindInt(6, info.category);
-  statement.BindInt(7, info.month);
-  statement.BindInt(8, info.year);
+  statement.BindBool(1, info.verified);
+  statement.BindInt(2, static_cast<int>(info.excluded));
 
-  return statement.Run();
+  if (!statement.Run()) {
+    return false;
+  }
+
+  if (!info.month || !info.year) {
+    return true;
+  }
+
+  sql::Statement statement1(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "INSERT OR REPLACE INTO activity_info "
+      "(publisher_id, duration, score, percent, "
+      "weight, category, month, year) "
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"));
+
+  statement1.BindString(0, info.id);
+  statement1.BindInt64(1, (int)info.duration);
+  statement1.BindDouble(2, info.score);
+  statement1.BindInt64(3, (int)info.percent);
+  statement1.BindDouble(4, info.weight);
+  statement1.BindInt(5, info.category);
+  statement1.BindInt(6, info.month);
+  statement1.BindInt(7, info.year);
+
+  return statement1.Run();
 }
 
 bool PublisherInfoDatabase::Find(int start,
@@ -167,22 +218,23 @@ bool PublisherInfoDatabase::Find(int start,
   if (!initialized)
     return false;
 
-  std::string query = "SELECT id, duration, score, percent, "
-      "weight, verified, category, month, year "
-      "FROM publisher_info "
+  std::string query = "SELECT ai.publisher_id, ai.duration, ai.score, ai.percent, "
+      "ai.weight, pi.verified, pi.excluded, ai.category, ai.month, ai.year "
+      "FROM activity_info AS ai "
+      "INNER JOIN publisher_info AS pi ON ai.publisher_id = pi.publisher_id "
       "WHERE 1 = 1";
 
   if (!filter.id.empty())
-    query += " AND id = ? ";
+    query += " AND ai.publisher_id = ?";
 
   if (filter.category != ledger::PUBLISHER_CATEGORY::ALL_CATEGORIES)
-    query += " AND category = ? ";
+    query += " AND ai.category = ?";
 
   if (filter.month != ledger::PUBLISHER_MONTH::ANY)
-    query += " AND month = ? ";
+    query += " AND ai.month = ?";
 
   if (filter.year > 0)
-    query += " AND year = ? ";
+    query += " AND ai.year = ?";
 
   if (start > 1)
     query += " OFFSET " + std::to_string(start);
@@ -194,6 +246,8 @@ bool PublisherInfoDatabase::Find(int start,
     query += " ORDER BY " + it.first;
     query += (it.second ? "ASC" : "DESC");
   }
+
+  LOG(ERROR) << query;
 
   sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
 
@@ -213,8 +267,8 @@ bool PublisherInfoDatabase::Find(int start,
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
     ledger::PUBLISHER_MONTH month(
-        static_cast<ledger::PUBLISHER_MONTH>(info_sql.ColumnInt(7)));
-    int year(info_sql.ColumnInt(8));
+        static_cast<ledger::PUBLISHER_MONTH>(info_sql.ColumnInt(8)));
+    int year(info_sql.ColumnInt(9));
 
     ledger::PublisherInfo info(id, month, year);
     info.duration = info_sql.ColumnInt64(1);
@@ -223,8 +277,10 @@ bool PublisherInfoDatabase::Find(int start,
     info.percent = info_sql.ColumnInt64(3);
     info.weight = info_sql.ColumnDouble(4);
     info.verified = info_sql.ColumnBool(5);
+
+    info.excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(6));
     info.category =
-        static_cast<ledger::PUBLISHER_CATEGORY>(info_sql.ColumnInt(6));
+        static_cast<ledger::PUBLISHER_CATEGORY>(info_sql.ColumnInt(7));
 
     list->push_back(info);
   }
