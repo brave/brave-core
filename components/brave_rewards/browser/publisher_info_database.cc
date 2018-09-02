@@ -115,7 +115,6 @@ bool PublisherInfoDatabase::CreatePublisherInfoTable() {
       "id LONGVARCHAR PRIMARY KEY,"
       "duration INTEGER DEFAULT 0 NOT NULL,"
       "score DOUBLE DEFAULT 0 NOT NULL,"
-      "pinned BOOLEAN DEFAULT 0 NOT NULL,"
       "percent INTEGER DEFAULT 0 NOT NULL,"
       "weight DOUBLE DEFAULT 0 NOT NULL,"
       "verified BOOLEAN DEFAULT 0 NOT NULL,"
@@ -137,20 +136,19 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
 
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
       "INSERT OR REPLACE INTO publisher_info "
-      "(id, duration, score, pinned, percent, "
+      "(id, duration, score, percent, "
       "weight, verified, category, month, year) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"));
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"));
 
   statement.BindString(0, info.id);
   statement.BindInt64(1, (int)info.duration);
   statement.BindDouble(2, info.score);
-  statement.BindBool(3, info.pinned);
-  statement.BindInt64(4, (int)info.percent);
-  statement.BindDouble(5, info.weight);
-  statement.BindBool(6, info.verified);
-  statement.BindInt(7, info.category);
-  statement.BindInt(8, info.month);
-  statement.BindInt(9, info.year);
+  statement.BindInt64(3, (int)info.percent);
+  statement.BindDouble(4, info.weight);
+  statement.BindBool(5, info.verified);
+  statement.BindInt(6, info.category);
+  statement.BindInt(7, info.month);
+  statement.BindInt(8, info.year);
 
   return statement.Run();
 }
@@ -169,7 +167,7 @@ bool PublisherInfoDatabase::Find(int start,
   if (!initialized)
     return false;
 
-  std::string query = "SELECT id, duration, score, pinned, percent, "
+  std::string query = "SELECT id, duration, score, percent, "
       "weight, verified, category, month, year "
       "FROM publisher_info "
       "WHERE 1 = 1";
@@ -215,19 +213,18 @@ bool PublisherInfoDatabase::Find(int start,
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
     ledger::PUBLISHER_MONTH month(
-        static_cast<ledger::PUBLISHER_MONTH>(info_sql.ColumnInt(8)));
-    int year(info_sql.ColumnInt(9));
+        static_cast<ledger::PUBLISHER_MONTH>(info_sql.ColumnInt(7)));
+    int year(info_sql.ColumnInt(8));
 
     ledger::PublisherInfo info(id, month, year);
     info.duration = info_sql.ColumnInt64(1);
 
     info.score = info_sql.ColumnDouble(2);
-    info.pinned = info_sql.ColumnBool(3);
-    info.percent = info_sql.ColumnInt64(4);
-    info.weight = info_sql.ColumnDouble(5);
-    info.verified = info_sql.ColumnBool(6);
+    info.percent = info_sql.ColumnInt64(3);
+    info.weight = info_sql.ColumnDouble(4);
+    info.verified = info_sql.ColumnBool(5);
     info.category =
-        static_cast<ledger::PUBLISHER_CATEGORY>(info_sql.ColumnInt(7));
+        static_cast<ledger::PUBLISHER_CATEGORY>(info_sql.ColumnInt(6));
 
     list->push_back(info);
   }
