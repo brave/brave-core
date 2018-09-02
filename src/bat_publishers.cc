@@ -291,7 +291,6 @@ void BatPublishers::synopsisNormalizer() {
     }
     roundoffs.push_back(roundoff);
     totalPercents += percents[percents.size() - 1];
-    // TODO make pinned, unpinned publishers
     weights.push_back((double)iter->second.score_ / (double)publishers_.size() * 100.0);
   }
   while (totalPercents != 100) {

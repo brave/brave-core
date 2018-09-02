@@ -78,7 +78,6 @@ LEDGER_EXPORT struct PublisherInfo {
   uint64_t duration;
   double score;
   uint32_t visits;
-  bool pinned;
   uint32_t percent;
   double weight;
   PUBLISHER_EXCLUDE excluded;
