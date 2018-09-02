@@ -138,7 +138,7 @@ void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
 void RewardsDOMHandler::OnWalletInitialized(
     brave_rewards::RewardsService* payment_service,
     int error_code) {
-  if (0 == (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI))
+  if (!web_ui()->CanCallJavascript())
     return;
 
   if (error_code == 0)
@@ -152,7 +152,7 @@ void RewardsDOMHandler::OnWalletProperties(
     int error_code,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
 
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue result;
     result.SetInteger("status", error_code);
     auto walletInfo = std::make_unique<base::DictionaryValue>();
@@ -199,7 +199,7 @@ void RewardsDOMHandler::OnGrant(
     brave_rewards::RewardsService* payment_service,
     unsigned int result,
     brave_rewards::Grant grant) {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue* newGrant = new base::DictionaryValue();
     newGrant->SetInteger("status", result);
     newGrant->SetString("promotionId", grant.promotionId);
@@ -221,7 +221,7 @@ void RewardsDOMHandler::GetGrant(const base::ListValue* args) {
 void RewardsDOMHandler::OnGrantCaptcha(
     brave_rewards::RewardsService* payment_service,
     std::string image) {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (web_ui()->CanCallJavascript()) {
     std::string encoded_string;
     base::Value chunkValue;
     base::Base64Encode(image, &encoded_string);
@@ -237,7 +237,7 @@ void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
-  if (rewards_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (rewards_service_ && web_ui()->CanCallJavascript()) {
     std::string pass = rewards_service_->GetWalletPassphrase();
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletPassphrase", base::Value(pass));
@@ -257,7 +257,7 @@ void RewardsDOMHandler::OnRecoverWallet(
     unsigned int result,
     double balance,
     std::vector<brave_rewards::Grant> grants) {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue* recover = new base::DictionaryValue();
     recover->SetInteger("result", result);
     recover->SetDouble("balance", balance);
@@ -287,7 +287,7 @@ void RewardsDOMHandler::OnGrantFinish(
     brave_rewards::RewardsService* payment_service,
     unsigned int result,
     brave_rewards::Grant grant) {
-  if (0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue* finish = new base::DictionaryValue();
     finish->SetInteger("status", result);
     finish->SetInteger("expiryTime", grant.expiryTime);
@@ -298,7 +298,7 @@ void RewardsDOMHandler::OnGrantFinish(
 }
 
 void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
-  if (rewards_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (rewards_service_ && web_ui()->CanCallJavascript()) {
     std::string stamp = std::to_string(rewards_service_->GetReconcileStamp());
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.reconcileStamp", base::Value(stamp));
@@ -306,7 +306,7 @@ void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
-  if (rewards_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (rewards_service_ && web_ui()->CanCallJavascript()) {
     std::map<std::string, std::string> addresses = rewards_service_->GetAddresses();
 
     base::DictionaryValue data;
@@ -358,7 +358,7 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList> list, uint32_t record) {
-  if (rewards_service_ && 0 != (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI)) {
+  if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : *list) {
       auto publisher = std::make_unique<base::DictionaryValue>();
