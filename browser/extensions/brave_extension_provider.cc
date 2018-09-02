@@ -16,10 +16,12 @@
 namespace {
 
 bool IsBlacklisted(const extensions::Extension* extension) {
-  // TODO: This will be a hardcoded list for now, but in the
-  // future we should control a list of blacklisted extensions
-  // which updates server side, similar to ad-block DAT files.
-  return false;
+  // This is a hardcoded list of extensions to block.
+  // Typically instead you can just use the brave/go-updater to list
+  // a blacklisted extension that you want to block for existing clients.
+  // mlklomjnahgiddgfdgjhibinlfibfffc is used for tests, it corresponds to
+  // brave/test/data/should-be-blocked-extension
+  return extension->id() == "mlklomjnahgiddgfdgjhibinlfibfffc";
 }
 
 }  // namespace
