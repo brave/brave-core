@@ -759,12 +759,14 @@ namespace braveledger_bat_helper {
     min_pubslisher_duration_(braveledger_ledger::_default_min_pubslisher_duration),
     min_visits_(1),
     allow_non_verified_(true),
+    pubs_load_timestamp_ (0ull),
     allow_videos_(true) {}
 
   PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
     min_pubslisher_duration_ = state.min_pubslisher_duration_;
     min_visits_ = state.min_visits_;
     allow_non_verified_ = state.allow_non_verified_;
+    pubs_load_timestamp_ = state.pubs_load_timestamp_;
     allow_videos_ = state.allow_videos_;
     monthly_balances_ = state.monthly_balances_;
     recurring_donation_ = state.recurring_donation_;
