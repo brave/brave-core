@@ -21,6 +21,10 @@ class NavigationHandle;
 
 namespace brave_rewards {
 
+bool IsMediaLink(const GURL& url,
+                 const GURL& first_party_url,
+                 const GURL& referrer);
+
 class RewardsServiceObserver;
 
 using GetContentSiteListCallback =
@@ -52,8 +56,14 @@ class RewardsService : public KeyedService {
   virtual void OnMediaStop(SessionID tab_id) = 0;
   virtual void OnXHRLoad(SessionID tab_id,
                          const GURL& url,
-                         const std::string& first_party_url,
-                         const std::string& referrer) = 0;
+                         const GURL& first_party_url,
+                         const GURL& referrer) = 0;
+  virtual void OnPostData(SessionID tab_id,
+                          const GURL& url,
+                          const GURL& first_party_url,
+                          const GURL& referrer,
+                          const std::string& post_data) = 0;
+
   virtual uint64_t GetReconcileStamp() const = 0;
   virtual std::map<std::string, std::string> GetAddresses() const = 0;
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const = 0;

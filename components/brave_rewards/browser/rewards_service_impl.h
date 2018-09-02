@@ -76,15 +76,22 @@ class RewardsServiceImpl : public RewardsService,
   void OnMediaStop(SessionID tab_id) override;
   void OnXHRLoad(SessionID tab_id,
                  const GURL& url,
-                 const std::string& first_party_url,
-                 const std::string& referrer) override;
+                 const GURL& first_party_url,
+                 const GURL& referrer) override;
+  void OnPostData(SessionID tab_id,
+                  const GURL& url,
+                  const GURL& first_party_url,
+                  const GURL& referrer,
+                  const std::string& post_data) override;
   std::string URIEncode(const std::string& value) override;
   uint64_t GetReconcileStamp() const override;
   std::map<std::string, std::string> GetAddresses() const override;
-  void LoadMediaPublisherInfo(const std::string& publisher_id,
-                              ledger::MediaPublisherInfoCallback callback) override;
-  void SaveMediaPublisherInfo(std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
-                              ledger::MediaPublisherInfoCallback callback) override;
+  void LoadMediaPublisherInfo(
+      const std::string& publisher_id,
+      ledger::MediaPublisherInfoCallback callback) override;
+  void SaveMediaPublisherInfo(
+      std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
+      ledger::MediaPublisherInfoCallback callback) override;
 
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;
@@ -133,7 +140,8 @@ class RewardsServiceImpl : public RewardsService,
                       const std::vector<ledger::Grant>& grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
-  void OnGrantFinish(ledger::Result result, const ledger::Grant& grant) override;
+  void OnGrantFinish(ledger::Result result,
+                     const ledger::Grant& grant) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
   void SaveLedgerState(const std::string& ledger_state,

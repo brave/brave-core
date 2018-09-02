@@ -4,9 +4,18 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 
 #include "base/logging.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 
 namespace brave_rewards {
+
+#if !BUILDFLAG(BRAVE_REWARDS_ENABLED)
+bool IsMediaLink(const GURL& url,
+                 const GURL& first_party_url,
+                 const content::Referrer& referrer) {
+  return false;
+}
+#endif
 
 RewardsService::RewardsService() {
 }

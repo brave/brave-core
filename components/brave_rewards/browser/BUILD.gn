@@ -17,6 +17,8 @@ source_set("browser") {
     "wallet_properties.h",
     "grant.cc",
     "grant.h",
+    "net/network_delegate_helper.cc",
+    "net/network_delegate_helper.h",
   ]
 
   deps = [
@@ -27,6 +29,7 @@ source_set("browser") {
     # for profile.h
     "//components/domain_reliability",
     "//content/public/browser",
+    "//content/public/common",
     "//services/network/public/mojom",
     "//third_party/leveldatabase",
   ]

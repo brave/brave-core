@@ -6,6 +6,7 @@
 
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
+#include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 
 BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
     extensions::EventRouterForwarder* event_router) :
@@ -18,6 +19,9 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   callback =
       base::Bind(
           brave::OnBeforeURLRequest_HttpsePreFileWork);
+  before_url_request_callbacks_.push_back(callback);
+
+  callback = base::Bind(brave_rewards::OnBeforeURLRequest);
   before_url_request_callbacks_.push_back(callback);
 
   brave::OnBeforeStartTransactionCallback start_transactions_callback =

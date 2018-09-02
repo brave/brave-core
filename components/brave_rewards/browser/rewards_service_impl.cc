@@ -29,6 +29,8 @@
 #include "net/base/url_util.h"
 #include "net/url_request/url_fetcher.h"
 #include "url/gurl.h"
+#include "url/url_canon_stdstring.h"
+
 
 using namespace net::registry_controlled_domains;
 using namespace std::placeholders;
@@ -160,6 +162,14 @@ static uint64_t next_id = 1;
 
 }  // namespace
 
+bool IsMediaLink(const GURL& url,
+                 const GURL& first_party_url,
+                 const GURL& referrer) {
+  return ledger::Ledger::IsMediaLink(url.spec(),
+                                     first_party_url.spec(),
+                                     referrer.spec());
+}
+
 RewardsServiceImpl::RewardsServiceImpl(Profile* profile) :
     profile_(profile),
     ledger_(ledger::Ledger::CreateInstance(this)),
@@ -256,10 +266,42 @@ void RewardsServiceImpl::OnMediaStop(SessionID tab_id) {
   ledger_->OnMediaStop(tab_id.id(), GetCurrentTimestamp());
 }
 
+void RewardsServiceImpl::OnPostData(SessionID tab_id,
+                                    const GURL& url,
+                                    const GURL& first_party_url,
+                                    const GURL& referrer,
+                                    const std::string& post_data) {
+  std::string output;
+  url::RawCanonOutputW<1024> canonOutput;
+  url::DecodeURLEscapeSequences(post_data.c_str(),
+                                post_data.length(),
+                                &canonOutput);
+  output = base::UTF16ToUTF8(base::StringPiece16(canonOutput.data(),
+                                                 canonOutput.length()));
+
+  if (output.empty())
+    return;
+
+  auto now = base::Time::Now();
+  ledger::VisitData visit_data(
+      "",
+      "",
+      url.spec(),
+      tab_id.id(),
+      GetPublisherMonth(now),
+      GetPublisherYear(now));
+
+  ledger_->OnPostData(url.spec(),
+                      first_party_url.spec(),
+                      referrer.spec(),
+                      output,
+                      visit_data);
+}
+
 void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
                                    const GURL& url,
-                                   const std::string& first_party_url,
-                                   const std::string& referrer) {
+                                   const GURL& first_party_url,
+                                   const GURL& referrer) {
   std::map<std::string, std::string> parts;
 
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
@@ -267,19 +309,26 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
   }
 
   auto now = base::Time::Now();
-  ledger::VisitData data("", "", url.spec(), tab_id.id(), GetPublisherMonth(now), GetPublisherYear(now));
+  ledger::VisitData data("", "", url.spec(), tab_id.id(),
+                         GetPublisherMonth(now), GetPublisherYear(now));
 
-  // TODO(bridiver) - add query parts
-  ledger_->OnXHRLoad(tab_id.id(), url.spec(), parts, first_party_url, referrer, data);
+  ledger_->OnXHRLoad(tab_id.id(),
+                     url.spec(),
+                     parts,
+                     first_party_url.spec(),
+                     referrer.spec(),
+                     data);
 }
 
-void RewardsServiceImpl::LoadMediaPublisherInfo(const std::string& publisher_id,
-                                                       ledger::MediaPublisherInfoCallback callback) {
+void RewardsServiceImpl::LoadMediaPublisherInfo(
+    const std::string& publisher_id,
+    ledger::MediaPublisherInfoCallback callback) {
   // TODO
 }
 
-void RewardsServiceImpl::SaveMediaPublisherInfo(std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
-                                                       ledger::MediaPublisherInfoCallback callback) {
+void RewardsServiceImpl::SaveMediaPublisherInfo(
+    std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
+    ledger::MediaPublisherInfoCallback callback) {
   // TODO
 }
 

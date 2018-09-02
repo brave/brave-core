@@ -75,8 +75,8 @@ void RewardsHelper::ResourceLoadComplete(
     rewards_service_->OnXHRLoad(
         tab_id_,
         GURL(resource_load_info.url),
-        render_frame_host->GetLastCommittedURL().host(),
-        resource_load_info.referrer.spec());
+        web_contents()->GetURL(),
+        resource_load_info.referrer);
   }
 }
 
