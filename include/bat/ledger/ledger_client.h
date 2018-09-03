@@ -57,6 +57,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SavePublishersList(const std::string& publisher_state,
     LedgerCallbackHandler* handler) = 0;
+  virtual void LoadPublisherList(LedgerCallbackHandler* handler) = 0;
 
 
 

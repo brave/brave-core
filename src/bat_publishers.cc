@@ -484,18 +484,23 @@ std::vector<ledger::ContributionInfo> BatPublishers::GetRecurringDonationList() 
 
 void BatPublishers::RefreshPublishersList(const std::string& json) {
   ledger_->SavePublishersList(json);
-
-  std::map<std::string, braveledger_bat_helper::SERVER_LIST> list;
-  bool success = braveledger_bat_helper::getJSONServerList(json, list);
-
-  if (success) {
-    server_list_ = std::map<std::string, braveledger_bat_helper::SERVER_LIST>(list);
-  }
+  loadPublisherList(json);
 }
 
 void BatPublishers::OnPublishersListSaved(ledger::Result result) {
   uint64_t ts = (ledger::Result::OK == result) ? std::time(nullptr) : 0ull;
   setPublishersLastRefreshTimestamp(ts);
+}
+
+bool BatPublishers::loadPublisherList(const std::string& data) {
+  std::map<std::string, braveledger_bat_helper::SERVER_LIST> list;
+  bool success = braveledger_bat_helper::getJSONServerList(data, list);
+
+  if (success) {
+    server_list_ = std::map<std::string, braveledger_bat_helper::SERVER_LIST>(list);
+  }
+
+  return success;
 }
 
 }  // namespace braveledger_bat_publisher

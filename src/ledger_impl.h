@@ -95,6 +95,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler);
+  void LoadPublisherList(ledger::LedgerCallbackHandler* handler);
 
   void OnWalletInitialized(ledger::Result);
 
@@ -178,6 +179,9 @@ class LedgerImpl : public ledger::Ledger,
                            const std::string& data) override;
 
   void RefreshPublishersList(bool retryAfterError);
+
+  void OnPublisherListLoaded(ledger::Result result,
+                             const std::string& data) override;
 
 
   ledger::LedgerClient* ledger_client_;

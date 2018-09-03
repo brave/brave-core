@@ -19,6 +19,7 @@ LEDGER_EXPORT enum Result {
   INVALID_PUBLISHER_STATE = 4,
   INVALID_LEDGER_STATE = 5,
   CAPTCHA_FAILED = 6,
+  NO_PUBLISHER_LIST = 7,
 
   TOO_MANY_RESULTS,
   NOT_FOUND,
@@ -44,6 +45,9 @@ class LEDGER_EXPORT LedgerCallbackHandler {
                                     const std::string& response) {};
 
   virtual void OnPublishersListSaved(Result result) {};
+
+  virtual void OnPublisherListLoaded(Result result,
+                                      const std::string& data) {};
 };
 
 }  // namespace ledger
