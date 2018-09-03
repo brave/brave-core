@@ -74,6 +74,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void OnPublishersListSaved(ledger::Result result) override;
 
+  bool loadPublisherList(const std::string& data);
+
  private:
   ledger::PublisherInfoFilter CreatePublisherFilter(
       const std::string& publisher_id,

@@ -196,7 +196,7 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
   }
 
   OnWalletInitialized(result);
-  RefreshPublishersList(false);
+  LoadPublisherList(this);
 }
 
 void LedgerImpl::SaveLedgerState(const std::string& data) {
@@ -211,6 +211,19 @@ void LedgerImpl::SavePublisherState(const std::string& data,
 
 void LedgerImpl::SavePublishersList(const std::string& data) {
   ledger_client_->SavePublishersList(data, this);
+}
+
+void LedgerImpl::LoadPublisherList(ledger::LedgerCallbackHandler* handler) {
+  ledger_client_->LoadPublisherList(handler);
+}
+
+void LedgerImpl::OnPublisherListLoaded(ledger::Result result,
+                                       const std::string& data) {
+  if (result == ledger::Result::OK) {
+    bat_publishers_->loadPublisherList(data);
+  }
+
+  RefreshPublishersList(false);
 }
 
 std::string LedgerImpl::GenerateGUID() const {
