@@ -25,8 +25,6 @@ source_set("ui") {
     "content_settings/brave_widevine_blocked_image_model.h",
     "content_settings/brave_widevine_content_setting_bubble_model.cc",
     "content_settings/brave_widevine_content_setting_bubble_model.h",
-    "location_bar/brave_location_bar.cc",
-    "location_bar/brave_location_bar.h",
     "toolbar/brave_app_menu_model.cc",
     "toolbar/brave_app_menu_model.h",
     "toolbar/brave_toolbar_actions_model.cc",
