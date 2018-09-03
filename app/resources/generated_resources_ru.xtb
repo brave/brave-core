@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">В этом меню можно удалить данные о работе в браузере</translation>
 <translation id="6040143037577758943">Закрыть</translation>
 <translation id="5379268888377976432">Отменить удаление</translation>
-<translation id="6463795194797719782">&amp;amp;Изменить</translation>
+<translation id="6463795194797719782">&amp;Изменить</translation>
 <translation id="8131740175452115882">Подтвердить</translation>
 <translation id="4394049700291259645">Отключить</translation>
 <translation id="8496717697661868878">Запустить подключаемый модуль</translation>
@@ -35,30 +35,30 @@
 <translation id="8642947597466641025">Увеличить размер шрифта</translation>
 <translation id="7134098520442464001">Уменьшить размер текста</translation>
 <translation id="4508765956121923607">Исходный код страницы</translation>
-<translation id="4792711294155034829">Сообщить о &amp;amp;проблеме...</translation>
+<translation id="4792711294155034829">Сообщить о &amp;проблеме...</translation>
 <translation id="5112577000029535889">Инструменты разработчика</translation>
-<translation id="5184063094292164363">Консоль &amp;amp;JavaScript</translation>
-<translation id="7056526158851679338">&amp;amp;Проверка устройств</translation>
+<translation id="5184063094292164363">Консоль &amp;JavaScript</translation>
+<translation id="7056526158851679338">&amp;Проверка устройств</translation>
 <translation id="48838266408104654">Диспетчер задач</translation>
-<translation id="6277518330158259200">С&amp;amp;делать снимок экрана</translation>
+<translation id="6277518330158259200">С&amp;делать снимок экрана</translation>
 <translation id="5288678174502918605">Открыть закрытую вкладку</translation>
 <translation id="2731392572903530958">Открыть закрытое окно</translation>
 <translation id="7607274158153386860">Запросить версию сайта для планшетных ПК</translation>
-<translation id="4408599188496843485">&amp;amp;Справка</translation>
+<translation id="4408599188496843485">&amp;Справка</translation>
 <translation id="3855676282923585394">Импорт закладок и настроек...</translation>
-<translation id="4821935166599369261">&amp;amp;Сбор данных включен</translation>
+<translation id="4821935166599369261">&amp;Сбор данных включен</translation>
 <translation id="3827774300009121996">Полноэкранный режим</translation>
 <translation id="3616741288025931835">Очистить данные просмотров...</translation>
-<translation id="7861215335140947162">&amp;amp;Загрузки</translation>
+<translation id="7861215335140947162">&amp;Загрузки</translation>
 <translation id="862542460444371744">Расширения</translation>
-<translation id="8925458182817574960">&amp;amp;Настройки</translation>
-<translation id="9147392381910171771">&amp;amp;Параметры</translation>
-<translation id="1618268899808219593">Справочный &amp;amp;центр</translation>
+<translation id="8925458182817574960">&amp;Настройки</translation>
+<translation id="9147392381910171771">&amp;Параметры</translation>
+<translation id="1618268899808219593">Справочный &amp;центр</translation>
 <translation id="7324297612904500502">Форум бета-версии</translation>
-<translation id="7199158086730159431">&amp;amp;Справка</translation>
-<translation id="630065524203833229">В&amp;amp;ыход</translation>
+<translation id="7199158086730159431">&amp;Справка</translation>
+<translation id="630065524203833229">В&amp;ыход</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">&amp;amp;Изменить поисковые системы...</translation>
+<translation id="5702898740348134351">&amp;Изменить поисковые системы...</translation>
 <translation id="2454247629720664989">Ключевое слово</translation>
 <translation id="5327248766486351172">Название</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (по умолчанию)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">Удалить все</translation>
 <translation id="750509436279396091">Открыть папку скачанных файлов</translation>
 <translation id="2902312830803030883">Другие действия</translation>
-<translation id="3612673635130633812">Скачано с помощью расширения &amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;</translation>
+<translation id="3612673635130633812">Скачано с помощью расширения &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="7909969815743704077">Скачано в режиме инкогнито</translation>
 <translation id="8028803902702117856">Скачивание файла <ph name="FILE_NAME"/> (<ph name="SIZE"/>)</translation>
 <translation id="4644818355646995778">Скачивание: <ph name="PERCENT_REMAINING"/></translation>
@@ -195,7 +195,7 @@
 <translation id="2101225219012730419">Версия:</translation>
 <translation id="8678933587484842200">Как запустить это приложение?</translation>
 <translation id="397105322502079400">Вычисление…</translation>
-<translation id="2352662711729498748">&amp;lt; 1 МБ</translation>
+<translation id="2352662711729498748">&lt; 1 МБ</translation>
 <translation id="8941173171815156065">Отозвать разрешение "<ph name="PERMISSION"/>"</translation>
 <translation id="741906494724992817">Приложению не требуются особые разрешения.</translation>
 <translation id="1616206807336925449">Расширению не требуются особые разрешения.</translation>
@@ -533,8 +533,8 @@
 <translation id="3011284594919057757">О платформе Flash</translation>
 <translation id="1962233722219655970">На этой странице используется приложение Native Client, не поддерживаемое вашим компьютером.</translation>
 <translation id="4453946976636652378">Введите поисковый запрос в <ph name="SEARCH_ENGINE_NAME"/> или укажите URL</translation>
-<translation id="5731247495086897348">Вс&amp;amp;тавить из буфера и перейти</translation>
-<translation id="8425755597197517046">Вст&amp;amp;авить из буфера и найти</translation>
+<translation id="5731247495086897348">Вс&amp;тавить из буфера и перейти</translation>
+<translation id="8425755597197517046">Вст&amp;авить из буфера и найти</translation>
 <translation id="6151323131516309312">Нажмите <ph name="SEARCH_KEY"/> для поиска на <ph name="SITE_NAME"/></translation>
 <translation id="3449839693241009168">Нажмите <ph name="SEARCH_KEY"/> для отправки команд в <ph name="EXTENSION_NAME"/></translation>
 <translation id="6659594942844771486">Вкладка</translation>
@@ -571,6 +571,7 @@
 <translation id="3617891479562106823">Фоновые изображения недоступны. Повторите попытку позже.</translation>
 <translation id="8391712576156218334">Фоновое изображение недоступно. Повторите попытку позже.</translation>
 <translation id="1564414980088536597">Это изображение использовать нельзя. Выберите другое.</translation>
+<translation id="385051799172605136">Назад</translation>
 <translation id="4628948037717959914">Фото</translation>
 <translation id="8033827949643255796">Выделено.</translation>
 <translation id="5376169624176189338">Нажмите, чтобы вернуться. Удерживайте, чтобы просмотреть историю.</translation>
@@ -773,7 +774,7 @@
 <translation id="8539727552378197395">Нет (HttpOnly)</translation>
 <translation id="4615586811063744755">файлы cookie не выбраны</translation>
 <translation id="5765780083710877561">Описание:</translation>
-<translation id="2422426094670600218">&amp;lt;без имени&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;без имени&gt;</translation>
 <translation id="6708242697268981054">Расположение:</translation>
 <translation id="6492313032770352219">Объем на диске:</translation>
 <translation id="3459774175445953971">Изменен:</translation>
@@ -835,13 +836,12 @@
 <translation id="6418273007044911016">Данные, которые синхронизируются с серверами Brave Software, и используемые вами функции останутся без изменений</translation>
 <translation id="8372733498235009300">Включить синхронизацию, персонализацию и другие сервисы Brave Software</translation>
 <translation id="8340964510643644301">Выбрать нужные вам параметры можно будет в настройках Brave в любое время</translation>
-<translation id="385051799172605136">Назад</translation>
 <translation id="3149880132460839085">Синхронизация Brave</translation>
 <translation id="3796902758602917951">Пароли, закладки, история и другие параметры будут синхронизированы с аккаунтом Brave Software, чтобы у вас был доступ к ним на любом устройстве.</translation>
-<translation id="1371301976177520732">Вы можете синхронизировать закладки, пароли, историю и другие данные на всех ваших устройствах.</translation>
+<translation id="1371301976177520732">Синхронизируйте закладки, пароли, историю и другие данные на всех ваших устройствах.</translation>
 <translation id="3111958038206230539">Персонализировать сервисы Brave Software</translation>
 <translation id="295992419959320001">Brave Software может использовать историю просмотров для персонализации Поиска, Рекламы и других сервисов.</translation>
-<translation id="4800091108248587380">Персонализированные сервисы Brave Software, например Brave Software Pay</translation>
+<translation id="4800091108248587380">Пользуйтесь персонализированными сервисами Brave Software, например Brave Software Pay.</translation>
 <translation id="3070156078150543526">Brave Software может использовать историю просмотров для персонализации Поиска и других сервисов.</translation>
 <translation id="2532167245710864499">Отправляйте системную и диагностическую информацию в Brave Software, чтобы сделать Brave ещё лучше и безопаснее.</translation>
 <translation id="2709453993673701466">Хотите изменить параметры синхронизации и персонализации до того, как они вступят в силу? Перейдите в <ph name="BEGIN_LINK"/>Настройки<ph name="END_LINK"/>.</translation>
@@ -887,7 +887,7 @@
 <translation id="7004499039102548441">Недавние вкладки</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 вкладка}one{# вкладка}few{# вкладки}many{# вкладок}other{# вкладки}}</translation>
 <translation id="4547659257713117923">Нет вкладок с других устройств</translation>
-<translation id="4756388243121344051">&amp;amp;История</translation>
+<translation id="4756388243121344051">&amp;История</translation>
 <translation id="9026731007018893674">Без названия</translation>
 <translation id="9218430445555521422">Сделать браузером по умолчанию</translation>
 <translation id="281133045296806353">В текущем сеансе браузера создано новое окно.</translation>
@@ -909,7 +909,7 @@
 <translation id="4242533952199664413">Открыть настройки</translation>
 <translation id="3752582316358263300">ОК...</translation>
 <translation id="7117247127439884114">Войти снова</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041">С сайта <ph name="SITE"/> поступил запрос на отправку уведомлений.</translation>
 <translation id="7221855153210829124">Показ уведомлений</translation>
@@ -1067,7 +1067,7 @@
 <translation id="8736288397686080465">Этот сайт был обновлен в фоновом режиме</translation>
 <translation id="6945221475159498467">Выбрать</translation>
 <translation id="4130199216115862831">Журнал устройства</translation>
-<translation id="6231881193380278751">Добавьте в URL параметр запроса для автоматического обновления страницы: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">Добавьте в URL параметр запроса для автоматического обновления страницы: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Обновить</translation>
 <translation id="1260240842868558614">Показать:</translation>
 <translation id="1165039591588034296">Ошибка</translation>
@@ -1112,22 +1112,22 @@
 <translation id="3785308913036335955">Отображение ярлыков приложений</translation>
 <translation id="711840821796638741">Показать управляемые закладки</translation>
 <translation id="3613134908380545408">Показать папку "<ph name="FOLDER_NAME"/>"</translation>
-<translation id="2805756323405976993">Сервисы</translation>
+<translation id="2805756323405976993">Приложения</translation>
 <translation id="2367972762794486313">Показать сервисы</translation>
-<translation id="6466988389784393586">&amp;amp;Открыть все закладки</translation>
-<translation id="6804671422566312077">Открыть все закладки в &amp;amp;новом окне</translation>
-<translation id="3011362742078013760">Открыть все закладки в режиме &amp;amp;инкогнито</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{&amp;amp;Открыть все}=1{&amp;amp;Открыть закладку}one{&amp;amp;Открыть все (#)}few{&amp;amp;Открыть все (#)}many{&amp;amp;Открыть все (#)}other{&amp;amp;Открыть все (#)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{Открыть все в &amp;amp;новом окне}=1{Открыть в &amp;amp;новом окне}one{Открыть все (#) в &amp;amp;новом окне}few{Открыть все (#) в &amp;amp;новом окне}many{Открыть все (#) в &amp;amp;новом окне}other{Открыть все (#) в &amp;amp;новом окне}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Открыть все в &amp;amp;режиме инкогнито}=1{Открыть в &amp;amp;режиме инкогнито}one{Открыть все (#) в &amp;amp;режиме инкогнито}few{Открыть все (#) в &amp;amp;режиме инкогнито}many{Открыть все (#) в &amp;amp;режиме инкогнито}other{Открыть все (#) в &amp;amp;режиме инкогнито}}</translation>
-<translation id="9024127637873500333">&amp;amp;Открыть в новой вкладке</translation>
-<translation id="665061930738760572">Открыть в &amp;amp;новом окне</translation>
-<translation id="37613671848467444">Открыть в режиме &amp;amp;инкогнито</translation>
-<translation id="6702639462873609204">&amp;amp;Изменить</translation>
-<translation id="3088325635286126843">&amp;amp;Переименовать</translation>
-<translation id="5329858601952122676">&amp;amp;Удалить</translation>
-<translation id="8824701697284169214">Добавить &amp;amp;страницу</translation>
-<translation id="2489918096470125693">Добавить &amp;amp;папку</translation>
+<translation id="6466988389784393586">&amp;Открыть все закладки</translation>
+<translation id="6804671422566312077">Открыть все закладки в &amp;новом окне</translation>
+<translation id="3011362742078013760">Открыть все закладки в режиме &amp;инкогнито</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{&amp;Открыть все}=1{&amp;Открыть закладку}one{&amp;Открыть все (#)}few{&amp;Открыть все (#)}many{&amp;Открыть все (#)}other{&amp;Открыть все (#)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{Открыть все в &amp;новом окне}=1{Открыть в &amp;новом окне}one{Открыть все (#) в &amp;новом окне}few{Открыть все (#) в &amp;новом окне}many{Открыть все (#) в &amp;новом окне}other{Открыть все (#) в &amp;новом окне}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{Открыть все в &amp;режиме инкогнито}=1{Открыть в &amp;режиме инкогнито}one{Открыть все (#) в &amp;режиме инкогнито}few{Открыть все (#) в &amp;режиме инкогнито}many{Открыть все (#) в &amp;режиме инкогнито}other{Открыть все (#) в &amp;режиме инкогнито}}</translation>
+<translation id="9024127637873500333">&amp;Открыть в новой вкладке</translation>
+<translation id="665061930738760572">Открыть в &amp;новом окне</translation>
+<translation id="37613671848467444">Открыть в режиме &amp;инкогнито</translation>
+<translation id="6702639462873609204">&amp;Изменить</translation>
+<translation id="3088325635286126843">&amp;Переименовать</translation>
+<translation id="5329858601952122676">&amp;Удалить</translation>
+<translation id="8824701697284169214">Добавить &amp;страницу</translation>
+<translation id="2489918096470125693">Добавить &amp;папку</translation>
 <translation id="2897878306272793870">Вы действительно хотите открыть столько вкладок (<ph name="TAB_COUNT"/>)?</translation>
 <translation id="4430369329743628066">Закладка добавлена</translation>
 <translation id="6404511346730675251">Изменить закладку</translation>
@@ -1142,7 +1142,7 @@
 <translation id="971774202801778802">URL закладки</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{В папке есть закладка. Все равно удалить ее?}one{В папке есть # закладка. Все равно удалить ее?}few{В папке есть # закладки. Все равно удалить ее?}many{В папке есть # закладок. Все равно удалить ее?}other{В папке есть # закладки. Все равно удалить ее?}}</translation>
 <translation id="5857090052475505287">Новая папка</translation>
-<translation id="6455894534188563617">&amp;amp;Новая папка</translation>
+<translation id="6455894534188563617">&amp;Новая папка</translation>
 <translation id="1015318665228971643">Изменение названия папки</translation>
 <translation id="5449588825071916739">Добавить все вкладки в закладки</translation>
 <translation id="5528368756083817449">Диспетчер закладок</translation>
@@ -1191,13 +1191,13 @@
 <translation id="6757101664402245801">URL скопирован</translation>
 <translation id="5488093641312826914">Объект "<ph name="COPIED_ITEM_NAME"/>" скопирован</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{Скопирован 1 объект}one{Скопирован # объект}few{Скопировано # объекта}many{Скопировано # объектов}other{Скопировано # объекта}}</translation>
-<translation id="9115675100829699941">&amp;amp;Закладки</translation>
+<translation id="9115675100829699941">&amp;Закладки</translation>
 <translation id="1047726139967079566">Добавить страницу в закладки…</translation>
 <translation id="6949306908218145636">Добавить все вкладки в закладки…</translation>
 <translation id="4422347585044846479">Изменить эту закладку</translation>
 <translation id="6005695835120147974">Медиамаршрутизатор</translation>
 <translation id="7787308148023287649">Показывать на другом экране</translation>
-<translation id="7710568461918838723">&amp;amp;Трансляция...</translation>
+<translation id="7710568461918838723">&amp;Трансляция...</translation>
 <translation id="8970203673128054105">Просмотреть список режимов трансляции</translation>
 <translation id="1277908057200820621">Просмотреть список устройств</translation>
 <translation id="2847759467426165163">Выберите устройство</translation>
@@ -1242,6 +1242,7 @@
 <translation id="3930737994424905957">Поиск устройств…</translation>
 <translation id="5209320130288484488">Устройства не найдены</translation>
 <translation id="4363771538994847871">Нет устройств для трансляции. Нужна помощь?</translation>
+<translation id="8688672835843460752">Свободно</translation>
 <translation id="4271396100647220620">Ничего не найдено</translation>
 <translation id="6972180789171089114">Аудио/видео</translation>
 <translation id="2541002089857695151">Оптимизировать трансляцию в полноэкранном режиме?</translation>
@@ -1252,6 +1253,7 @@
 <translation id="7473891865547856676">Пропустить</translation>
 <translation id="8538358978858059843">Включить трансляцию в облачные сервисы?</translation>
 <translation id="3856595552313160385">Использование Hangouts и Cast for Education регулируется Политикой конфиденциальности Brave Software.</translation>
+<translation id="3435896845095436175">Включить</translation>
 <translation id="3700888195348409686">Показ на другом экране (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Экран <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">Менеджер (<ph name="CUSTODIAN_EMAIL"/>) может просмотреть историю работы в браузере на сайте chrome.com.</translation>
@@ -1279,7 +1281,9 @@
 <translation id="1316495628809031177">Синхронизация приостановлена.</translation>
 <translation id="7786207843293321886">Выйти из гостевого режима</translation>
 <translation id="2329597144923131178">Войдите, чтобы синхронизировать закладки, пароли, историю и т. д. на всех устройствах.</translation>
+<translation id="7029809446516969842">Пароли</translation>
 <translation id="984275831282074731">Способы оплаты</translation>
+<translation id="2903493209154104877">Адреса</translation>
 <translation id="8883847527783433352">Синхронизировать с другим аккаунтом</translation>
 <translation id="2761898608071930085">Использовать другой аккаунт</translation>
 <translation id="4235813040357936597">Добавить аккаунт в профиль <ph name="PROFILE_NAME"/></translation>
@@ -1477,11 +1481,11 @@
 <translation id="304747341537320566">Синтезаторы речи</translation>
 <translation id="1067291318998134776">Linux (бета)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Запускайте инструменты, редакторы и интегрированные среды разработки Linux на устройстве Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Подробнее…&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">Запускайте инструменты, редакторы и интегрированные среды разработки Linux на устройстве Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Подробнее…&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Удалить приложения Linux с устройства Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play</translation>
 <translation id="572155275267014074">Настройки Android</translation>
-<translation id="4767209642168463274">Устанавливайте приложения и игры из Brave Software Play на устройство Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Подробнее…&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">Устанавливайте приложения и игры из Brave Software Play на устройство Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Подробнее…&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Управление настройками Android</translation>
 <translation id="4074367893748481070">Удалить Brave Software Play Маркет</translation>
 <translation id="2792290659606763004">Удалить приложения для Android?</translation>
@@ -1806,11 +1810,11 @@
 <translation id="7696063401938172191">На устройстве <ph name="PHONE_NAME"/>:</translation>
 <translation id="3423463006624419153">На устройствах <ph name="PHONE_NAME_1"/> и <ph name="PHONE_NAME_2"/>:</translation>
 <translation id="6997707937646349884">На ваших устройствах:</translation>
-<translation id="7531779363494549572">Откройте настройки устройства и выберите "Приложения и уведомления &amp;gt; Уведомления".</translation>
-<translation id="6921033294337262045">Нажмите "Уведомления приложений &amp;gt; Сервисы Brave Software Play".</translation>
+<translation id="7531779363494549572">Откройте настройки устройства и выберите "Приложения и уведомления &gt; Уведомления".</translation>
+<translation id="6921033294337262045">Нажмите "Уведомления приложений &gt; Сервисы Brave Software Play".</translation>
 <translation id="5624710179837914896">Включите сервисы Brave Software Play.</translation>
 <translation id="2705736684557713153">Прокрутите экран вниз и включите мгновенную точку доступа. Если этой функции нет, значит она настроена.</translation>
-<translation id="3604048165392640554">Мобильное подключение отсутствует. Включите мгновенную точку доступа на других устройствах и повторите попытку. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Подробнее…&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">Мобильное подключение отсутствует. Включите мгновенную точку доступа на других устройствах и повторите попытку. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Подробнее…&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Подключиться к новой точке доступа?</translation>
 <translation id="6514010653036109809">Доступное устройство:</translation>
 <translation id="2075474481720804517">Батарея заряжена на <ph name="BATTERY_PERCENTAGE"/>%</translation>
@@ -1940,16 +1944,16 @@
 <translation id="9042893549633094279">Конфиденциальность и безопасность</translation>
 <translation id="654233263479157500">Использовать веб-службу для разрешения проблем, связанных с навигацией</translation>
 <translation id="6697492270171225480">Предлагать варианты, если страница, которую вы пытаетесь открыть, не найдена</translation>
-<translation id="4534361985432360439">Отправлять в Brave Software адреса веб-страниц, которые вы пытаетесь открыть.</translation>
+<translation id="4534361985432360439">Отправлять в Brave Software адреса веб-страниц, которые вы пытаетесь открыть</translation>
 <translation id="6545834809683560467">Показывать подсказки при вводе поисковых запросов и URL</translation>
 <translation id="7704317875155739195">Заполнять поисковые запросы и URL автоматически</translation>
 <translation id="2000419248597011803">Отправлять некоторые файлы cookie и поисковые запросы из адресной строки в поисковую систему по умолчанию</translation>
 <translation id="9038649477754266430">Использовать подсказки для ускорения загрузки страниц</translation>
-<translation id="7981313251711023384">Разрешить предварительную настройку страниц для повышения скорости работы и поиска</translation>
+<translation id="7981313251711023384">Разрешить предзагрузку страниц для повышения скорости работы браузера и поиска</translation>
 <translation id="2468205691404969808">Использовать файлы cookie, чтобы запомнить ваши предпочтения, даже если вы не открываете эти страницы</translation>
 <translation id="1641113438599504367">Безопасный просмотр</translation>
 <translation id="773905249182896430">Защищать устройство от опасных сайтов</translation>
-<translation id="8983677657449185470">Помогите улучшить режим Безопасного просмотра</translation>
+<translation id="8983677657449185470">Помогать улучшить режим Безопасного просмотра</translation>
 <translation id="199861668945335092">Отправлять системную информацию и содержимое страниц в Brave Software</translation>
 <translation id="490074449735753175">Использовать веб-службу для проверки правописания</translation>
 <translation id="3523078749603005179">Интеллектуальная технология проверки правописания, при которой текст, введенный в браузере, отправляется на серверы Brave Software</translation>
@@ -1958,8 +1962,8 @@
 <translation id="8699566574894671540">Чтобы включить эту настройку, выберите в меню "Изменить" функцию "Проверять правописание при наборе текста".</translation>
 <translation id="9079153198295609735">Автоматически отправлять в Brave Software статистику использования и отчеты о сбоях</translation>
 <translation id="5941220456342415404">Автоматически отправлять статистику использования и данные диагностики в Brave Software</translation>
-<translation id="918192811481327695">Помогите улучшить Brave и его функции</translation>
-<translation id="8438566539970814960">Улучшить поиск и просмотр страниц</translation>
+<translation id="918192811481327695">Помогать повышать производительность Brave и улучшать функции</translation>
+<translation id="8438566539970814960">Помогать улучшить просмотр страниц и поиск</translation>
 <translation id="284843628681142937">Отправлять URL посещенных страниц в Brave Software</translation>
 <translation id="8791534160414513928">Отправлять запрет на отслеживание для исходящего трафика</translation>
 <translation id="5299109548848736476">Запрет отслеживания</translation>
@@ -1970,13 +1974,12 @@
 <translation id="7075625805486468288">Управление настройками и сертификатами HTTPS/SSL</translation>
 <translation id="8871974300055371298">Настройки контента</translation>
 <translation id="2476578072172137802">Настройки сайта</translation>
-<translation id="8018313076035239964">Выберите, какие данные отправлять сайтам и какой контент показывать на веб-страницах</translation>
+<translation id="8018313076035239964">Выбрать, какие данные отправлять сайтам и какой контент показывать на веб-страницах</translation>
 <translation id="5487521232677179737">Удалить данные</translation>
 <translation id="3151562827395986343">Удалить файлы cookie и данные сайтов, очистить историю и кеш</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> (<ph name="COUNT"/>)</translation>
 <translation id="3407837288045706722">Остальные настройки конфиденциальности, безопасности и сбора данных вы можете найти в разделе <ph name="BEGIN_LINK"/>Синхронизация и персонализация<ph name="END_LINK"/>.</translation>
 <translation id="7222718784508482526">Остальные настройки конфиденциальности, безопасности и сбора данных вы можете найти в разделе <ph name="BEGIN_LINK"/>Синхронизация сервисов Brave Software<ph name="END_LINK"/>.</translation>
-<translation id="6438234780621650381">Сброс настроек</translation>
 <translation id="5293170712604732402">Восстановление настроек по умолчанию</translation>
 <translation id="892706138619340876">Некоторые настройки были сброшены</translation>
 <translation id="2334029754052191847">Некоторые настройки Brave недавно были изменены посторонней программой. Браузер восстановил их значения по умолчанию.</translation>
@@ -1990,7 +1993,6 @@
 <translation id="2203682048752833055">Поисковая система, используемая в <ph name="BEGIN_LINK"/>адресной строке<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">Управление поисковыми системами</translation>
 <translation id="2862205630718215619">Brave Software Ассистент</translation>
-<translation id="3435896845095436175">Включить</translation>
 <translation id="6978121630131642226">Поисковые системы</translation>
 <translation id="6410668567036790476">Добавить поисковую систему</translation>
 <translation id="1128591060186966949">Изменить поисковую систему</translation>
@@ -2210,9 +2212,9 @@
 <translation id="5535941515421698170">Удалить данные с этого устройства</translation>
 <translation id="7243632151880336635">Стереть данные и выйти</translation>
 <translation id="6406506848690869874">Синхронизация...</translation>
-<translation id="1397854323885047133">Синхронизировать и настроить</translation>
+<translation id="1397854323885047133">Настройки синхронизации и персонализации</translation>
 <translation id="1136155683023653803">Пароли, история и закладки синхронизируются с вашим аккаунтом Brave Software.</translation>
-<translation id="3267417306184901318">Данные о работе в браузере и о ваших действиях, синхронизированные с аккаунтом Brave Software</translation>
+<translation id="3267417306184901318">Данные о работе в браузере и ваших действиях, связанных с аккаунтом Brave Software</translation>
 <translation id="1123187597739372905">Открыть настройки синхронизации</translation>
 <translation id="8420510748452002155">Неперсонализированные сервисы</translation>
 <translation id="2055016640093734678">Показать настройки сервисов Brave Software</translation>
@@ -2224,7 +2226,6 @@
 <translation id="2709516037105925701">Автозаполнение</translation>
 <translation id="1644574205037202324">История</translation>
 <translation id="5117427536932535467">Темы и обои</translation>
-<translation id="7029809446516969842">Пароли</translation>
 <translation id="3259418918864581163">Кредитные карты и адреса из Brave Software Pay</translation>
 <translation id="3268451620468152448">Вкладки</translation>
 <translation id="5241892180459725878">Автозаполнение при поиске на Brave Software Диске</translation>
@@ -2245,7 +2246,7 @@
 <translation id="7772032839648071052">Подтвердите кодовую фразу</translation>
 <translation id="2653659639078652383">Отправить</translation>
 <translation id="2608770217409477136">Использовать настройки по умолчанию</translation>
-<translation id="4882831918239250449">Выберите параметры истории просмотров для персонализации Поиска, рекламы и т. д.</translation>
+<translation id="4882831918239250449">Использование данных о посещенных страницах для персонализации Поиска, рекламы и т. д.</translation>
 <translation id="5833726373896279253">Изменять данные настройки может только владелец:</translation>
 <translation id="1926339101652878330">Эти настройки определяются корпоративной политикой. За дополнительными сведениями обратитесь к своему системному администратору.</translation>
 <translation id="7299337219131431707">Разрешить просмотр в гостевом режиме</translation>
@@ -2362,7 +2363,6 @@
 <translation id="6856623341093082836">Настроить точность сенсорного экрана</translation>
 <translation id="4598556348158889687">Управление хранилищем</translation>
 <translation id="8868626022555786497">Занято</translation>
-<translation id="8688672835843460752">Свободно</translation>
 <translation id="1082725763867769612">Скачанные файлы</translation>
 <translation id="7366909168761621528">Данные о работе в браузере</translation>
 <translation id="5568144734023334204">Хранилище Android</translation>
@@ -2428,7 +2428,7 @@
 <translation id="3264582393905923483">Контекст</translation>
 <translation id="1607139524282324606">Очистить запись</translation>
 <translation id="6025215716629925253">Трассировка стека</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 строка скрыта&amp;gt;}one{&amp;lt;$1 строка скрыта&amp;gt;}few{&amp;lt;$1 строки скрыто&amp;gt;}many{&amp;lt;$1 строк скрыто&amp;gt;}other{&amp;lt;$1 строки скрыто&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 строка скрыта&gt;}one{&lt;$1 строка скрыта&gt;}few{&lt;$1 строки скрыто&gt;}many{&lt;$1 строк скрыто&gt;}other{&lt;$1 строки скрыто&gt;}}</translation>
 <translation id="8389492867173948260">Разрешить расширению просмотр и изменение ваших данных на посещаемых сайтах</translation>
 <translation id="407173827865827707">При нажатии</translation>
 <translation id="6455264371803474013">На выбранных сайтах</translation>
@@ -2436,7 +2436,7 @@
 <translation id="3729506734996624908">Разрешенные сайты</translation>
 <translation id="3732078975418297900">Ошибка в строке <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Ошибка в строках <ph name="ERROR_LINE_START"/>–<ph name="ERROR_LINE_END"/></translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;Идентификатор:&amp;lt;/span&amp;gt; <ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;Идентификатор:&lt;/span&gt; <ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Отладка страниц</translation>
 <translation id="181577467034453336">Ещё <ph name="NUMBER_OF_VIEWS"/></translation>
 <translation id="2450849356604136918">нет активных режимов просмотра.</translation>

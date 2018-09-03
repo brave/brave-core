@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">Pode limpar os dados de navegação a partir deste menu</translation>
 <translation id="6040143037577758943">Fechar</translation>
 <translation id="5379268888377976432">Anular Eliminação</translation>
-<translation id="6463795194797719782">&amp;amp;Editar</translation>
+<translation id="6463795194797719782">&amp;Editar</translation>
 <translation id="8131740175452115882">Confirmar</translation>
 <translation id="4394049700291259645">Desactivar</translation>
 <translation id="8496717697661868878">Executar este plug-in</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">Mover a janela para <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">Aumentar o tamanho do texto</translation>
 <translation id="7134098520442464001">Diminuir o tamanho do texto</translation>
-<translation id="4508765956121923607">Ver &amp;amp;Origem</translation>
-<translation id="4792711294155034829">&amp;amp;Comunicar um problema...</translation>
-<translation id="5112577000029535889">Ferramentas &amp;amp;do programador</translation>
-<translation id="5184063094292164363">Consola de &amp;amp;JavaScript</translation>
-<translation id="7056526158851679338">&amp;amp;Inspecionar dispositivos</translation>
-<translation id="48838266408104654">Gestor de &amp;amp;Tarefas</translation>
-<translation id="6277518330158259200">C&amp;amp;riar captura de ecrã</translation>
-<translation id="5288678174502918605">Voltar a Abrir o S&amp;amp;eparador Fechado</translation>
-<translation id="2731392572903530958">Voltar a Abrir a Jan&amp;amp;ela Fechada</translation>
+<translation id="4508765956121923607">Ver &amp;Origem</translation>
+<translation id="4792711294155034829">&amp;Comunicar um problema...</translation>
+<translation id="5112577000029535889">Ferramentas &amp;do programador</translation>
+<translation id="5184063094292164363">Consola de &amp;JavaScript</translation>
+<translation id="7056526158851679338">&amp;Inspecionar dispositivos</translation>
+<translation id="48838266408104654">Gestor de &amp;Tarefas</translation>
+<translation id="6277518330158259200">C&amp;riar captura de ecrã</translation>
+<translation id="5288678174502918605">Voltar a Abrir o S&amp;eparador Fechado</translation>
+<translation id="2731392572903530958">Voltar a Abrir a Jan&amp;ela Fechada</translation>
 <translation id="7607274158153386860">Solicitar Website para tablets</translation>
-<translation id="4408599188496843485">A&amp;amp;juda</translation>
+<translation id="4408599188496843485">A&amp;juda</translation>
 <translation id="3855676282923585394">Importar marcadores e definições...</translation>
-<translation id="4821935166599369261">Criação de &amp;amp;perfis ativada</translation>
-<translation id="3827774300009121996">&amp;amp;Ecrã inteiro</translation>
-<translation id="3616741288025931835">&amp;amp;Limpar Dados de Navegação...</translation>
-<translation id="7861215335140947162">&amp;amp;Transferências</translation>
-<translation id="862542460444371744">&amp;amp;Extensões</translation>
-<translation id="8925458182817574960">&amp;amp;Definições</translation>
-<translation id="9147392381910171771">&amp;amp;Opções</translation>
-<translation id="1618268899808219593">C&amp;amp;entro de Ajuda</translation>
+<translation id="4821935166599369261">Criação de &amp;perfis ativada</translation>
+<translation id="3827774300009121996">&amp;Ecrã inteiro</translation>
+<translation id="3616741288025931835">&amp;Limpar Dados de Navegação...</translation>
+<translation id="7861215335140947162">&amp;Transferências</translation>
+<translation id="862542460444371744">&amp;Extensões</translation>
+<translation id="8925458182817574960">&amp;Definições</translation>
+<translation id="9147392381910171771">&amp;Opções</translation>
+<translation id="1618268899808219593">C&amp;entro de Ajuda</translation>
 <translation id="7324297612904500502">Fórum da versão beta</translation>
-<translation id="7199158086730159431">Obter a&amp;amp;juda</translation>
-<translation id="630065524203833229">&amp;amp;Sair</translation>
+<translation id="7199158086730159431">Obter a&amp;juda</translation>
+<translation id="630065524203833229">&amp;Sair</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">&amp;amp;Editar motores de pesquisa...</translation>
+<translation id="5702898740348134351">&amp;Editar motores de pesquisa...</translation>
 <translation id="2454247629720664989">Palavra-chave:</translation>
 <translation id="5327248766486351172">Nome</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (Predefinição)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">Limpar tudo</translation>
 <translation id="750509436279396091">Abrir a pasta de transferências</translation>
 <translation id="2902312830803030883">Mais ações</translation>
-<translation id="3612673635130633812">Transferido por &amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;</translation>
+<translation id="3612673635130633812">Transferido por &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="7909969815743704077">Transferido em modo de navegação anónima</translation>
 <translation id="8028803902702117856">A transferir <ph name="SIZE"/>… <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">A transferir… <ph name="PERCENT_REMAINING"/></translation>
@@ -195,7 +195,7 @@
 <translation id="2101225219012730419">Versão:</translation>
 <translation id="8678933587484842200">Como pretende que esta aplicação seja iniciada?</translation>
 <translation id="397105322502079400">A calcular...</translation>
-<translation id="2352662711729498748">&amp;lt;1 MB</translation>
+<translation id="2352662711729498748">&lt;1 MB</translation>
 <translation id="8941173171815156065">Revogar a autorização "<ph name="PERMISSION"/>"</translation>
 <translation id="741906494724992817">Esta aplicação não necessita de permissões especiais.</translation>
 <translation id="1616206807336925449">Esta extensão não requer autorizações especiais.</translation>
@@ -534,8 +534,8 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3011284594919057757">Acerca do Flash</translation>
 <translation id="1962233722219655970">Esta página utiliza uma aplicação Native Client que não funciona no computador.</translation>
 <translation id="4453946976636652378">Procurar no <ph name="SEARCH_ENGINE_NAME"/> ou introduzir um URL</translation>
-<translation id="5731247495086897348">Co&amp;amp;lar e ir</translation>
-<translation id="8425755597197517046">Colar e pesqui&amp;amp;sar</translation>
+<translation id="5731247495086897348">Co&amp;lar e ir</translation>
+<translation id="8425755597197517046">Colar e pesqui&amp;sar</translation>
 <translation id="6151323131516309312">Prima <ph name="SEARCH_KEY"/> para pesquisar no <ph name="SITE_NAME"/></translation>
 <translation id="3449839693241009168">Prima <ph name="SEARCH_KEY"/> para enviar comandos para <ph name="EXTENSION_NAME"/></translation>
 <translation id="6659594942844771486">Tab</translation>
@@ -572,6 +572,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3617891479562106823">Os fundos não estão disponíveis. Tente novamente mais tarde.</translation>
 <translation id="8391712576156218334">A imagem não está disponível. Tente novamente mais tarde.</translation>
 <translation id="1564414980088536597">Não é possível utilizar esta imagem. Utilize uma imagem diferente.</translation>
+<translation id="385051799172605136">Anterior</translation>
 <translation id="4628948037717959914">Fotografia</translation>
 <translation id="8033827949643255796">selecionado</translation>
 <translation id="5376169624176189338">Clique para retroceder, mantenha premido para ver o histórico</translation>
@@ -774,7 +775,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8539727552378197395">Não (HttpOnly)</translation>
 <translation id="4615586811063744755">nenhum cookie selecionado</translation>
 <translation id="5765780083710877561">Descrição:</translation>
-<translation id="2422426094670600218">&amp;lt;sem nome&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;sem nome&gt;</translation>
 <translation id="6708242697268981054">Origem:</translation>
 <translation id="6492313032770352219">Tamanho no disco:</translation>
 <translation id="3459774175445953971">Última modificação:</translation>
@@ -836,7 +837,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6418273007044911016">Os dados que sincroniza com o Brave Software e as funcionalidades que utiliza não serão alterados.</translation>
 <translation id="8372733498235009300">Ativar a sincronização, a personalização e outros serviços Brave Software</translation>
 <translation id="8340964510643644301">Pode personalizar em qualquer altura nas Definições do Brave</translation>
-<translation id="385051799172605136">Anterior</translation>
 <translation id="3149880132460839085">Sincronização do Brave Software Brave</translation>
 <translation id="3796902758602917951">Os marcadores, o histórico, as palavras-passe e outras definições são sincronizados com a sua Conta Brave Software para que os possa utilizar em todos os dispositivos</translation>
 <translation id="1371301976177520732">Os seus marcadores, palavras-passe, histórico e muito mais em todos os seus dispositivos.</translation>
@@ -888,7 +888,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7004499039102548441">Separadores recentes</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 separador}other{# separadores}}</translation>
 <translation id="4547659257713117923">Sem separadores de outros dispositivos</translation>
-<translation id="4756388243121344051">&amp;amp;Histórico</translation>
+<translation id="4756388243121344051">&amp;Histórico</translation>
 <translation id="9026731007018893674">transferir</translation>
 <translation id="9218430445555521422">Definir como predefinição</translation>
 <translation id="281133045296806353">Nova janela criada na sessão de browser existente</translation>
@@ -910,7 +910,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="4242533952199664413">Abrir definições</translation>
 <translation id="3752582316358263300">OK...</translation>
 <translation id="7117247127439884114">Iniciar Sessão Novamente...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> pretende enviar-lhe notificações.</translation>
 <translation id="7221855153210829124">Mostrar notificações</translation>
@@ -1068,7 +1068,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8736288397686080465">Este site foi atualizado em segundo plano.</translation>
 <translation id="6945221475159498467">Selecionar</translation>
 <translation id="4130199216115862831">Registo do dispositivo</translation>
-<translation id="6231881193380278751">Adicione um parâmetro de consulta no URL para atualizar automaticamente a página: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">Adicione um parâmetro de consulta no URL para atualizar automaticamente a página: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Atualizar</translation>
 <translation id="1260240842868558614">Mostrar:</translation>
 <translation id="1165039591588034296">Erro</translation>
@@ -1115,20 +1115,20 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3613134908380545408">Mostrar <ph name="FOLDER_NAME"/></translation>
 <translation id="2805756323405976993">Aplicações</translation>
 <translation id="2367972762794486313">Mostrar aplicações</translation>
-<translation id="6466988389784393586">&amp;amp;Abrir Todos os Marcadores</translation>
-<translation id="6804671422566312077">Abrir Todos os Marcadores numa &amp;amp;Nova Janela</translation>
-<translation id="3011362742078013760">Abrir Todos os Marcadores na Janela de &amp;amp;Navegação Anónima</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{&amp;amp;Abrir todos}=1{&amp;amp;Abrir marcador}other{&amp;amp;Abrir todos (#)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{Abrir todos numa &amp;amp;nova janela}=1{Abrir numa &amp;amp;nova janela}other{Abrir todos (#) numa &amp;amp;nova janela}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Abrir todos numa janela de &amp;amp;navegação anónima}=1{Abrir numa janela de &amp;amp;navegação anónima}other{Abrir todos (#) numa janela de &amp;amp;navegação anónima}}</translation>
-<translation id="9024127637873500333">&amp;amp;Abrir num novo separador</translation>
-<translation id="665061930738760572">Abrir numa &amp;amp;Nova Janela</translation>
-<translation id="37613671848467444">Abrir na Janela de &amp;amp;Navegação Anónima</translation>
-<translation id="6702639462873609204">&amp;amp;Editar...</translation>
-<translation id="3088325635286126843">&amp;amp;Mudar o nome...</translation>
-<translation id="5329858601952122676">E&amp;amp;liminar</translation>
-<translation id="8824701697284169214">Adicionar Pá&amp;amp;gina...</translation>
-<translation id="2489918096470125693">Adicionar &amp;amp;Pasta...</translation>
+<translation id="6466988389784393586">&amp;Abrir Todos os Marcadores</translation>
+<translation id="6804671422566312077">Abrir Todos os Marcadores numa &amp;Nova Janela</translation>
+<translation id="3011362742078013760">Abrir Todos os Marcadores na Janela de &amp;Navegação Anónima</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{&amp;Abrir todos}=1{&amp;Abrir marcador}other{&amp;Abrir todos (#)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{Abrir todos numa &amp;nova janela}=1{Abrir numa &amp;nova janela}other{Abrir todos (#) numa &amp;nova janela}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{Abrir todos numa janela de &amp;navegação anónima}=1{Abrir numa janela de &amp;navegação anónima}other{Abrir todos (#) numa janela de &amp;navegação anónima}}</translation>
+<translation id="9024127637873500333">&amp;Abrir num novo separador</translation>
+<translation id="665061930738760572">Abrir numa &amp;Nova Janela</translation>
+<translation id="37613671848467444">Abrir na Janela de &amp;Navegação Anónima</translation>
+<translation id="6702639462873609204">&amp;Editar...</translation>
+<translation id="3088325635286126843">&amp;Mudar o nome...</translation>
+<translation id="5329858601952122676">E&amp;liminar</translation>
+<translation id="8824701697284169214">Adicionar Pá&amp;gina...</translation>
+<translation id="2489918096470125693">Adicionar &amp;Pasta...</translation>
 <translation id="2897878306272793870">Tem a certeza de que pretende abrir <ph name="TAB_COUNT"/> separadores?</translation>
 <translation id="4430369329743628066">Marcador adicionado</translation>
 <translation id="6404511346730675251">Editar marcador</translation>
@@ -1143,12 +1143,12 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="971774202801778802">URL do marcador</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{Esta pasta contém um marcador. Tem a certeza de que pretende eliminá-la?}other{Esta pasta contém # marcadores. Tem a certeza de que pretende eliminá-la?}}</translation>
 <translation id="5857090052475505287">Nova pasta</translation>
-<translation id="6455894534188563617">&amp;amp;Nova pasta</translation>
+<translation id="6455894534188563617">&amp;Nova pasta</translation>
 <translation id="1015318665228971643">Editar nome da pasta</translation>
 <translation id="5449588825071916739">Adicionar Todos os Separadores aos Marcadores</translation>
 <translation id="5528368756083817449">Gestor de marcadores</translation>
 <translation id="3828029223314399057">Pesquisar marcadores</translation>
-<translation id="5111692334209731439">&amp;amp;Gestor de Marcadores</translation>
+<translation id="5111692334209731439">&amp;Gestor de Marcadores</translation>
 <translation id="6973630695168034713">Pastas</translation>
 <translation id="5496587651328244253">Organizar</translation>
 <translation id="1936157145127842922">Mostrar na pasta</translation>
@@ -1192,13 +1192,13 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6757101664402245801">URL copiado</translation>
 <translation id="5488093641312826914">"<ph name="COPIED_ITEM_NAME"/>" copiado</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 item copiado}other{# itens copiados}}</translation>
-<translation id="9115675100829699941">&amp;amp;Marcadores</translation>
+<translation id="9115675100829699941">&amp;Marcadores</translation>
 <translation id="1047726139967079566">Marcar esta página...</translation>
 <translation id="6949306908218145636">Adicionar Páginas Abertas aos Marcadores...</translation>
 <translation id="4422347585044846479">Editar marcador para esta página</translation>
 <translation id="6005695835120147974">Media Router</translation>
 <translation id="7787308148023287649">Apresentar noutro ecrã</translation>
-<translation id="7710568461918838723">&amp;amp;Transmitir…</translation>
+<translation id="7710568461918838723">&amp;Transmitir…</translation>
 <translation id="8970203673128054105">Ver lista do modo de transmissão</translation>
 <translation id="1277908057200820621">Ver lista de dispositivos</translation>
 <translation id="2847759467426165163">Transmitir para</translation>
@@ -1243,6 +1243,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3930737994424905957">A procurar dispositivos…</translation>
 <translation id="5209320130288484488">Não foram encontrados aparelhos</translation>
 <translation id="4363771538994847871">Não foi encontrado nenhum destino do Cast. Precisa de ajuda?</translation>
+<translation id="8688672835843460752">Disponível</translation>
 <translation id="4271396100647220620">Sem correspondências</translation>
 <translation id="6972180789171089114">Áudio/Vídeo</translation>
 <translation id="2541002089857695151">Pretende otimizar a transmissão de ecrã inteiro?</translation>
@@ -1253,6 +1254,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7473891865547856676">Não, obrigado</translation>
 <translation id="8538358978858059843">Pretende ativar os serviços na nuvem para o Cast?</translation>
 <translation id="3856595552313160385">A utilização do Hangouts e do Cast for Education é regida pela Política de Privacidade da Brave Software.</translation>
+<translation id="3435896845095436175">Ativar</translation>
 <translation id="3700888195348409686">A apresentar (<ph name="PAGE_ORIGIN"/>)…</translation>
 <translation id="5285635972691565180">Ecrã <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">A utilização e o histórico podem ser consultados pelo gestor (<ph name="CUSTODIAN_EMAIL"/>) em chrome.com.</translation>
@@ -1280,7 +1282,9 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="1316495628809031177">A sincronização está em pausa.</translation>
 <translation id="7786207843293321886">Sair da Sessão de Convidado</translation>
 <translation id="2329597144923131178">Inicie sessão para aceder aos marcadores, ao histórico, às palavras-passe e a outras definições em todos os dispositivos.</translation>
+<translation id="7029809446516969842">Palavras-passe</translation>
 <translation id="984275831282074731">Métodos de pagamento</translation>
+<translation id="2903493209154104877">Endereços</translation>
 <translation id="8883847527783433352">Sincronizar com outra conta</translation>
 <translation id="2761898608071930085">Utilizar outra conta</translation>
 <translation id="4235813040357936597">Adicionar conta para <ph name="PROFILE_NAME"/></translation>
@@ -1478,20 +1482,20 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="304747341537320566">Motores de voz</translation>
 <translation id="1067291318998134776">Linux (beta)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Execute ferramentas, editores e IDEs de Linux no seu Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Saiba mais&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">Execute ferramentas, editores e IDEs de Linux no seu Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Remover aplicações do Linux do Bravebook</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Definições do Android</translation>
-<translation id="4767209642168463274">Instale aplicações e jogos do Brave Software Play no Bravebook. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Saiba mais&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">Instale aplicações e jogos do Brave Software Play no Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Gerir as preferências do Android</translation>
 <translation id="4074367893748481070">Remover a Brave Software Play Store</translation>
-<translation id="2792290659606763004">Remover aplicações Android?</translation>
+<translation id="2792290659606763004">Remover aplicações para Android?</translation>
 <translation id="4607779957365311067">As aplicações que transferiu do Brave Software Play são eliminadas deste Bravebook.
       <ph name="LINE_BREAKS1"/>
       O conteúdo que comprou, como filmes, programas de TV, música, livros ou outras compras na aplicação, também pode ser eliminado.
       <ph name="LINE_BREAKS2"/>
       Isto não afeta as aplicações ou o conteúdo noutros dispositivos.</translation>
-<translation id="492299503953721473">Remover aplicações Android</translation>
+<translation id="492299503953721473">Remover aplicações para Android</translation>
 <translation id="7566118625369982896">Gerir links para aplicações do Brave Software Play</translation>
 <translation id="2433507940547922241">Aspeto</translation>
 <translation id="1177863135347784049">Personalizado</translation>
@@ -1807,11 +1811,11 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7696063401938172191">No seu "<ph name="PHONE_NAME"/>":</translation>
 <translation id="3423463006624419153">No "<ph name="PHONE_NAME_1"/>" e no "<ph name="PHONE_NAME_2"/>":</translation>
 <translation id="6997707937646349884">Nos seus dispositivos:</translation>
-<translation id="7531779363494549572">Aceda a Definições &amp;gt; Aplicações e notificações &amp;gt; Notificações.</translation>
-<translation id="6921033294337262045">Toque em Notificações da aplicação &amp;gt; Serviços do Brave Software Play.</translation>
+<translation id="7531779363494549572">Aceda a Definições &gt; Aplicações e notificações &gt; Notificações.</translation>
+<translation id="6921033294337262045">Toque em Notificações da aplicação &gt; Serviços do Brave Software Play.</translation>
 <translation id="5624710179837914896">Ative os Serviços do Brave Software Play.</translation>
 <translation id="2705736684557713153">Desloque-se até à parte inferior do ecrã e ative a Ligação via telemóvel instantânea, se for apresentada. Caso contrário, está pronto para começar.</translation>
-<translation id="3604048165392640554">Nenhuma ligação móvel encontrada. Ative a ligação via telemóvel instantânea nos seus outros dispositivos e tente novamente. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Saiba mais&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">Nenhuma ligação móvel encontrada. Ative a ligação via telemóvel instantânea nos seus outros dispositivos e tente novamente. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Pretende ligar à nova zona Wi-Fi?</translation>
 <translation id="6514010653036109809">Dispositivo disponível:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% de bateria</translation>
@@ -1977,7 +1981,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Para obter mais definições relacionadas com privacidade, segurança e recolha de dados, consulte <ph name="BEGIN_LINK"/>Sincronização e personalização<ph name="END_LINK"/>.</translation>
 <translation id="7222718784508482526">Para obter mais definições relacionadas com privacidade, segurança e recolha de dados, consulte <ph name="BEGIN_LINK"/>Sincronização e serviços Brave Software<ph name="END_LINK"/>.</translation>
-<translation id="6438234780621650381">Repor definições</translation>
 <translation id="5293170712604732402">Repor as predefinições originais das definições</translation>
 <translation id="892706138619340876">Algumas definições foram repostas</translation>
 <translation id="2334029754052191847">O Brave detetou que algumas das suas definições foram danificadas por outro programa e repôs as respetivas predefinições originais.</translation>
@@ -1991,7 +1994,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="2203682048752833055">Motor de pesquisa utilizado na <ph name="BEGIN_LINK"/>barra de endereço<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">Gerir motores de pesquisa</translation>
 <translation id="2862205630718215619">Assistente Brave Software</translation>
-<translation id="3435896845095436175">Ativar</translation>
 <translation id="6978121630131642226">Motores de pesquisa</translation>
 <translation id="6410668567036790476">Adicionar motor de pesquisa</translation>
 <translation id="1128591060186966949">Editar motor de pesquisa</translation>
@@ -2225,7 +2227,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="2709516037105925701">Preenchimento automático</translation>
 <translation id="1644574205037202324">Histórico</translation>
 <translation id="5117427536932535467">Temas e imagens de fundo</translation>
-<translation id="7029809446516969842">Palavras-passe</translation>
 <translation id="3259418918864581163">Cartões de crédito e endereços com o Brave Software Pay.</translation>
 <translation id="3268451620468152448">Abrir Separadores</translation>
 <translation id="5241892180459725878">Sugestões de pesquisa do Brave Software Drive</translation>
@@ -2363,7 +2364,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6856623341093082836">Configurar e ajustar a precisão do ecrã tátil</translation>
 <translation id="4598556348158889687">Gestão de armazenamento</translation>
 <translation id="8868626022555786497">Em utilização</translation>
-<translation id="8688672835843460752">Disponível</translation>
 <translation id="1082725763867769612">Ficheiros offline</translation>
 <translation id="7366909168761621528">Dados de navegação</translation>
 <translation id="5568144734023334204">Armazenamento Android</translation>
@@ -2429,7 +2429,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3264582393905923483">Contexto</translation>
 <translation id="1607139524282324606">Limpar entrada</translation>
 <translation id="6025215716629925253">Rastreio de pilha</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 linha não apresentada&amp;gt;}other{&amp;lt;$1 linhas não apresentadas&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linha não apresentada&gt;}other{&lt;$1 linhas não apresentadas&gt;}}</translation>
 <translation id="8389492867173948260">Permitir que esta extensão leia e altere todos os dados nos Websites que visita:</translation>
 <translation id="407173827865827707">Ao clicar</translation>
 <translation id="6455264371803474013">Em sites específicos</translation>
@@ -2437,7 +2437,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3729506734996624908">Sites permitidos</translation>
 <translation id="3732078975418297900">Erro na linha <ph name="ERROR_LINE"/>.</translation>
 <translation id="9063208415146866933">Erro da linha <ph name="ERROR_LINE_START"/> até <ph name="ERROR_LINE_END"/>.</translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Inspecionar vistas</translation>
 <translation id="181577467034453336">Mais <ph name="NUMBER_OF_VIEWS"/>…</translation>
 <translation id="2450849356604136918">Sem vistas ativas</translation>

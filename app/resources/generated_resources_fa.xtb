@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">می‌توانید داده‌های مرور را از این منو پاک کنید</translation>
 <translation id="6040143037577758943">بستن</translation>
 <translation id="5379268888377976432">واگرد حذف</translation>
-<translation id="6463795194797719782">&amp;amp;ویرایش</translation>
+<translation id="6463795194797719782">&amp;ویرایش</translation>
 <translation id="8131740175452115882">تأیید</translation>
 <translation id="4394049700291259645">غیر فعال کردن</translation>
 <translation id="8496717697661868878">اجرای این افزایه</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">انتقال پنجره به <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">طولانی تر کردن متن</translation>
 <translation id="7134098520442464001">متن را کوتاهتر کنید</translation>
-<translation id="4508765956121923607">مشاهده م&amp;amp;نبع</translation>
-<translation id="4792711294155034829">&amp;amp;گزارش یک مشکل...</translation>
-<translation id="5112577000029535889">ابزارهای &amp;amp;برنامه نویس</translation>
-<translation id="5184063094292164363">کنسول &amp;amp;جاوا اسکریپت</translation>
-<translation id="7056526158851679338">&amp;amp;بازرسی دستگاه‌ها</translation>
-<translation id="48838266408104654">مدیر &amp;amp;فعالیت ها</translation>
+<translation id="4508765956121923607">مشاهده م&amp;نبع</translation>
+<translation id="4792711294155034829">&amp;گزارش یک مشکل...</translation>
+<translation id="5112577000029535889">ابزارهای &amp;برنامه نویس</translation>
+<translation id="5184063094292164363">کنسول &amp;جاوا اسکریپت</translation>
+<translation id="7056526158851679338">&amp;بازرسی دستگاه‌ها</translation>
+<translation id="48838266408104654">مدیر &amp;فعالیت ها</translation>
 <translation id="6277518330158259200">گرفتن عکس صفحه‌نمایش</translation>
-<translation id="5288678174502918605">با&amp;amp;ز کردن مجدد برگه بسته</translation>
-<translation id="2731392572903530958">با&amp;amp;ز کردن مجدد پنجره بسته</translation>
+<translation id="5288678174502918605">با&amp;ز کردن مجدد برگه بسته</translation>
+<translation id="2731392572903530958">با&amp;ز کردن مجدد پنجره بسته</translation>
 <translation id="7607274158153386860">درخواست سایت رایانه لوحی</translation>
-<translation id="4408599188496843485">را&amp;amp;هنما</translation>
+<translation id="4408599188496843485">را&amp;هنما</translation>
 <translation id="3855676282923585394">وارد کردن نشانک‌ها و تنظیمات...</translation>
-<translation id="4821935166599369261">&amp;amp;ایجاد نمایه فعال شد</translation>
-<translation id="3827774300009121996">&amp;amp;تمام صفحه</translation>
-<translation id="3616741288025931835">&amp;amp;پاک کردن داده‌های مرور...</translation>
-<translation id="7861215335140947162">&amp;amp;فایلهای بارگیری‌شده</translation>
-<translation id="862542460444371744">&amp;amp;برنامه های افزودنی</translation>
-<translation id="8925458182817574960">&amp;amp;تنظیمات</translation>
-<translation id="9147392381910171771">&amp;amp;گزینه‌ها</translation>
-<translation id="1618268899808219593">مرکز را&amp;amp;هنمایی</translation>
+<translation id="4821935166599369261">&amp;ایجاد نمایه فعال شد</translation>
+<translation id="3827774300009121996">&amp;تمام صفحه</translation>
+<translation id="3616741288025931835">&amp;پاک کردن داده‌های مرور...</translation>
+<translation id="7861215335140947162">&amp;فایلهای بارگیری‌شده</translation>
+<translation id="862542460444371744">&amp;برنامه های افزودنی</translation>
+<translation id="8925458182817574960">&amp;تنظیمات</translation>
+<translation id="9147392381910171771">&amp;گزینه‌ها</translation>
+<translation id="1618268899808219593">مرکز را&amp;هنمایی</translation>
 <translation id="7324297612904500502">تالار گفتمان بتا</translation>
 <translation id="7199158086730159431">دریافت راهنمایی</translation>
-<translation id="630065524203833229">&amp;amp;خروج</translation>
+<translation id="630065524203833229">&amp;خروج</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">&amp;amp;ویرایش موتورهای جستجو...</translation>
+<translation id="5702898740348134351">&amp;ویرایش موتورهای جستجو...</translation>
 <translation id="2454247629720664989">کلمه کلیدی</translation>
 <translation id="5327248766486351172">نام</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (پیش‌فرض)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">پاک کردن همه</translation>
 <translation id="750509436279396091">باز کردن پوشه بارگیری‌ها</translation>
 <translation id="2902312830803030883">کنش‌های بیشتر</translation>
-<translation id="3612673635130633812">‏بارگیری‌شده توسط &amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;</translation>
+<translation id="3612673635130633812">‏بارگیری‌شده توسط &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="7909969815743704077">دانلود‌شده در ناشناس</translation>
 <translation id="8028803902702117856">درحال بارگیری <ph name="SIZE"/>، <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">درحال بارگیری، <ph name="PERCENT_REMAINING"/></translation>
@@ -532,8 +532,8 @@
 <translation id="3011284594919057757">‏درباره Flash</translation>
 <translation id="1962233722219655970">‏این صفحه از برنامه Native Client استفاده می‌کند که روی رایانه شما کار نمی‌کند.</translation>
 <translation id="4453946976636652378">جستجوی <ph name="SEARCH_ENGINE_NAME"/> یا تایپ نشانی وب</translation>
-<translation id="5731247495086897348">جا&amp;amp;گذاری و رفتن</translation>
-<translation id="8425755597197517046">جا&amp;amp;گذاری و جستجو</translation>
+<translation id="5731247495086897348">جا&amp;گذاری و رفتن</translation>
+<translation id="8425755597197517046">جا&amp;گذاری و جستجو</translation>
 <translation id="6151323131516309312"><ph name="SEARCH_KEY"/> را فشار دهید تا <ph name="SITE_NAME"/> جستجو شود</translation>
 <translation id="3449839693241009168"><ph name="SEARCH_KEY"/> را فشار دهید تا فرمانها به <ph name="EXTENSION_NAME"/> ارسال شود</translation>
 <translation id="6659594942844771486">Tab</translation>
@@ -570,6 +570,7 @@
 <translation id="3617891479562106823">پس‌زمینه‌ها دردسترس نیست. بعداً دوباره امتحان کنید.</translation>
 <translation id="8391712576156218334">تصویر دردسترس نیست. بعداً دوباره امتحان کنید.</translation>
 <translation id="1564414980088536597">از این تصویر نمی‌توان استفاده کرد. تصویر دیگری انتخاب کنید.</translation>
+<translation id="385051799172605136">بازگشت</translation>
 <translation id="4628948037717959914">عکس</translation>
 <translation id="8033827949643255796">انتخاب شد</translation>
 <translation id="5376169624176189338">برای برگشت به عقب کلیک کنید، برای دیدن سابقه نگه دارید</translation>
@@ -772,7 +773,7 @@
 <translation id="8539727552378197395">‏نه (فقط Http)</translation>
 <translation id="4615586811063744755">کوکی‌ای انتخاب نشده است</translation>
 <translation id="5765780083710877561">توضیح:</translation>
-<translation id="2422426094670600218">&amp;lt;unnamed&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;unnamed&gt;</translation>
 <translation id="6708242697268981054">مبدأ:</translation>
 <translation id="6492313032770352219">اندازه روی دیسک:</translation>
 <translation id="3459774175445953971">آخرین تغییر:</translation>
@@ -834,7 +835,6 @@
 <translation id="6418273007044911016">‏داده‌هایی که با Brave Software همگام‌سازی می‌کنید و قابلیت‌هایی که استفاده می‌کنید تغییر نخواهد کرد.</translation>
 <translation id="8372733498235009300">‏روشن کردن همگام‌سازی، شخصی‌سازی و سرویس‌های دیگر Brave Software</translation>
 <translation id="8340964510643644301">‏هرزمان بخواهید می‌توانید این گزینه را در «تنظیمات Brave» سفارشی کنید</translation>
-<translation id="385051799172605136">بازگشت</translation>
 <translation id="3149880132460839085">‏همگام‌سازی Brave</translation>
 <translation id="3796902758602917951">‏نشانک‌ها، سابقه، گذرواژه‌ها و سایر تنظیمات در حساب Brave Software شما همگام‌سازی می‌شوند تا بتوانید از آن‌ها در همه دستگاه‌هایتان استفاده کنید.</translation>
 <translation id="1371301976177520732">در همه دستگاه‌هایتان می‌توانید به نشانک‌ها، سابقه و موارد دیگر دسترسی داشته باشید</translation>
@@ -886,7 +886,7 @@
 <translation id="7004499039102548441">برگه‌های جدید</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{‏۱ برگه}one{‏# برگه}other{‏# برگه}}</translation>
 <translation id="4547659257713117923">برگه‌ای از دیگر دستگاه‌ها وجود ندارد</translation>
-<translation id="4756388243121344051">&amp;amp;سابقه</translation>
+<translation id="4756388243121344051">&amp;سابقه</translation>
 <translation id="9026731007018893674">بارگیری</translation>
 <translation id="9218430445555521422">تنظیم به‌عنوان پیش‌فرض</translation>
 <translation id="281133045296806353">پنجرهٔ جدید ایجاد شده در جلسه مرورگر فعلی.</translation>
@@ -908,7 +908,7 @@
 <translation id="4242533952199664413">باز کردن تنظیمات</translation>
 <translation id="3752582316358263300">تأیید...</translation>
 <translation id="7117247127439884114">ورود مجدد به سیستم...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> می‌خواهد برایتان اعلان  ارسال کند</translation>
 <translation id="7221855153210829124">نمایش اعلان‌ها</translation>
@@ -978,7 +978,7 @@
 <translation id="1036982837258183574">برای خروج از حالت تمام صفحه |<ph name="ACCELERATOR"/>| را فشار دهید</translation>
 <translation id="6279183038361895380">برای نمایش نشان‌گر |<ph name="ACCELERATOR"/>| را فشار دهید</translation>
 <translation id="6049004884579590341">برای خروج از حالت تمام صفحه، |<ph name="ACCELERATOR"/>| را فشار دهید و نگه‌دارید</translation>
-<translation id="901834265349196618">رایانامه</translation>
+<translation id="901834265349196618">ایمیل</translation>
 <translation id="3714633008798122362">تقویم وب</translation>
 <translation id="2436186046335138073">به <ph name="HANDLER_HOSTNAME"/> امکان داده شود همه پیوندهای <ph name="PROTOCOL"/> را باز کند؟</translation>
 <translation id="2350796302381711542">به <ph name="HANDLER_HOSTNAME"/> امکان داده شود همه پیوندهای <ph name="PROTOCOL"/> را به جای <ph name="REPLACED_HANDLER_TITLE"/> باز کند؟</translation>
@@ -1066,7 +1066,7 @@
 <translation id="8736288397686080465">این سایت در پس‌زمینه به‌روزرسانی شده است.</translation>
 <translation id="6945221475159498467">انتخاب</translation>
 <translation id="4130199216115862831">گزارش دستگاه</translation>
-<translation id="6231881193380278751">‏افزودن پارامتر جستار در نشانی وب برای بازخوانی خودکار صفحه: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">‏افزودن پارامتر جستار در نشانی وب برای بازخوانی خودکار صفحه: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">بازخوانی</translation>
 <translation id="1260240842868558614">نمایش:</translation>
 <translation id="1165039591588034296">خطا</translation>
@@ -1113,20 +1113,20 @@
 <translation id="3613134908380545408">نشان دادن <ph name="FOLDER_NAME"/></translation>
 <translation id="2805756323405976993">برنامه‌ها</translation>
 <translation id="2367972762794486313">نمایش برنامه‌ها</translation>
-<translation id="6466988389784393586">&amp;amp;باز کردن همه نشانک‌ها</translation>
-<translation id="6804671422566312077">باز کردن همه نشانک‌ها در &amp;amp;پنجره جدید</translation>
-<translation id="3011362742078013760">باز کردن همه نشانک‌ها در &amp;amp;پنجره حالت ناشناس</translation>
+<translation id="6466988389784393586">&amp;باز کردن همه نشانک‌ها</translation>
+<translation id="6804671422566312077">باز کردن همه نشانک‌ها در &amp;پنجره جدید</translation>
+<translation id="3011362742078013760">باز کردن همه نشانک‌ها در &amp;پنجره حالت ناشناس</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{باز کردن همه}=1{باز کردن نشانک}one{باز کردن همه (#)}other{باز کردن همه (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{باز کردن همه در پنجره جدید}=1{باز کردن در پنجره جدید}one{باز کردن همه (#) در پنجره جدید}other{باز کردن همه (#) در پنجره جدید}}</translation>
 <translation id="4857506433977877623">{COUNT,plural, =0{باز کردن همه در پنجره ناشناس}=1{باز کردن در پنجره ناشناس}one{باز کردن همه (#) در پنجره ناشناس}other{باز کردن همه (#) در پنجره ناشناس}}</translation>
-<translation id="9024127637873500333">باز کردن در &amp;amp;برگه جدید</translation>
-<translation id="665061930738760572">باز کردن در پنجره &amp;amp;جدید</translation>
-<translation id="37613671848467444">باز کردن در پنجره &amp;amp;ناشناس</translation>
-<translation id="6702639462873609204">&amp;amp;ویرایش...</translation>
-<translation id="3088325635286126843">&amp;amp;تغییر‌نام...</translation>
-<translation id="5329858601952122676">&amp;amp;حذف</translation>
-<translation id="8824701697284169214">افزودن &amp;amp;صفحه...</translation>
-<translation id="2489918096470125693">افزودن &amp;amp;پوشه...</translation>
+<translation id="9024127637873500333">باز کردن در &amp;برگه جدید</translation>
+<translation id="665061930738760572">باز کردن در پنجره &amp;جدید</translation>
+<translation id="37613671848467444">باز کردن در پنجره &amp;ناشناس</translation>
+<translation id="6702639462873609204">&amp;ویرایش...</translation>
+<translation id="3088325635286126843">&amp;تغییر‌نام...</translation>
+<translation id="5329858601952122676">&amp;حذف</translation>
+<translation id="8824701697284169214">افزودن &amp;صفحه...</translation>
+<translation id="2489918096470125693">افزودن &amp;پوشه...</translation>
 <translation id="2897878306272793870">آیا می‌خواهید برگه‌های <ph name="TAB_COUNT"/> باز شوند؟</translation>
 <translation id="4430369329743628066">نشانک اضافه شد</translation>
 <translation id="6404511346730675251">ویرایش نشانک</translation>
@@ -1141,12 +1141,12 @@
 <translation id="971774202801778802">نشانی وب نشانک</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{این پوشه حاوی نشانک است. مطمئنید که می‌خواهید آن را حذف کنید؟}one{این پوشه حاوی # نشانک است. مطمئنید که می‌خواهید آن را حذف کنید؟}other{این پوشه حاوی # نشانک است. مطمئنید که می‌خواهید آن را حذف کنید؟}}</translation>
 <translation id="5857090052475505287">پوشهٔ جدید</translation>
-<translation id="6455894534188563617">پوشه &amp;amp;جدید</translation>
+<translation id="6455894534188563617">پوشه &amp;جدید</translation>
 <translation id="1015318665228971643">ویرایش نام پوشه</translation>
 <translation id="5449588825071916739">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="5528368756083817449">مدیر نشانک</translation>
 <translation id="3828029223314399057">جستجوی نشانک‌ها</translation>
-<translation id="5111692334209731439">مدیر &amp;amp;نشانک</translation>
+<translation id="5111692334209731439">مدیر &amp;نشانک</translation>
 <translation id="6973630695168034713">پوشه‌ها</translation>
 <translation id="5496587651328244253">سازماندهی</translation>
 <translation id="1936157145127842922">نمایش در پوشه</translation>
@@ -1190,13 +1190,13 @@
 <translation id="6757101664402245801">نشانی اینترنتی کپی شد</translation>
 <translation id="5488093641312826914">«<ph name="COPIED_ITEM_NAME"/>» کپی شد</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{۱ مورد کپی شد}one{# مورد کپی شد}other{# مورد کپی شد}}</translation>
-<translation id="9115675100829699941">&amp;amp;نشانک ها</translation>
+<translation id="9115675100829699941">&amp;نشانک ها</translation>
 <translation id="1047726139967079566">نشانک گذاری این صفحه...</translation>
 <translation id="6949306908218145636">نشانک‌گذاری صفحه‌های باز...</translation>
 <translation id="4422347585044846479">ویرایش نشانک برای این صفحه</translation>
 <translation id="6005695835120147974">رهیاب رسانه</translation>
 <translation id="7787308148023287649">نمایش در صفحه دیگر</translation>
-<translation id="7710568461918838723">&amp;amp;ارسال محتوا…</translation>
+<translation id="7710568461918838723">&amp;ارسال محتوا…</translation>
 <translation id="8970203673128054105">مشاهده فهرست حالت ارسال محتوا</translation>
 <translation id="1277908057200820621">مشاهده فهرست دستگاه</translation>
 <translation id="2847759467426165163">فرستادن به</translation>
@@ -1241,6 +1241,7 @@
 <translation id="3930737994424905957">درحال جستجوی دستگاه‌ها</translation>
 <translation id="5209320130288484488">دستگاهی یافت نشد</translation>
 <translation id="4363771538994847871">هیچ مقصدی برای ارسال محتوا پیدا نشد. نیاز به راهنمایی دارید؟</translation>
+<translation id="8688672835843460752">دردسترس</translation>
 <translation id="4271396100647220620">مورد منطبقی وجود ندارد</translation>
 <translation id="6972180789171089114">صوتی/تصویری</translation>
 <translation id="2541002089857695151">ارسال محتوای تمام‌صفحه بهینه‌سازی شود؟</translation>
@@ -1251,6 +1252,7 @@
 <translation id="7473891865547856676">نه متشکرم</translation>
 <translation id="8538358978858059843">‏سرویس‌های ابری برای Cast فعال شود؟</translation>
 <translation id="3856595552313160385">‏استفاده از Hangouts و Cast for Education تحت کنترل «خط‌مشی رازداری Brave Software» است.</translation>
+<translation id="3435896845095436175">فعال کردن</translation>
 <translation id="3700888195348409686">درحال ارائه (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">نمایشگر <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">‏استفاده و سابقه می‌تواند توسط مدیر (<ph name="CUSTODIAN_EMAIL"/>) در chrome.com بازدید شود.</translation>
@@ -1278,7 +1280,9 @@
 <translation id="1316495628809031177">همگام‌سازی موقتاً متوقف شده است</translation>
 <translation id="7786207843293321886">خروج مهمان</translation>
 <translation id="2329597144923131178">برای دریافت نشانک‌ها، سابقه، گذرواژه‌ها و سایر تنظیماتتان در همه دستگاه‌ها، وارد سیستم شوید.</translation>
+<translation id="7029809446516969842">گذرواژه‌ها</translation>
 <translation id="984275831282074731">روش‌های پرداخت</translation>
+<translation id="2903493209154104877">آدرس‌ها</translation>
 <translation id="8883847527783433352">همگام‌سازی با حسابی دیگر</translation>
 <translation id="2761898608071930085">استفاده از حسابی دیگر</translation>
 <translation id="4235813040357936597">افزودن حساب برای <ph name="PROFILE_NAME"/></translation>
@@ -1348,7 +1352,7 @@
 <translation id="1468571364034902819">نمی‌توان از این نمایه استفاده کرد</translation>
 <translation id="2261323523305321874">سرپرستتان تغییری در کل سیستم داده است که برخی نمایه‌های قدیمی را غیرفعال کرده است.</translation>
 <translation id="2684004000387153598">برای ادامه، روی «تأیید» کلیک کنید و سپس برای ایجاد نمایه‌ای جدید برای نشانی رایانامه‌تان، روی «افزودن شخص» کلیک کنید.</translation>
-<translation id="7683373461016844951">برای ادامه، روی «تأیید» کلیک کنید و سپس برای ایجاد نمایه‌ای جدید برای نشانی رایانامه‌ <ph name="DOMAIN"/> خود، روی «افزودن شخص» کلیک کنید.</translation>
+<translation id="7683373461016844951">برای ادامه، روی «تأیید» کلیک کنید و سپس برای ایجاد نمایه‌ای جدید برای نشانی ایمیل‌ <ph name="DOMAIN"/> خود، روی «افزودن شخص» کلیک کنید.</translation>
 <translation id="8650543407998814195">هرچند دیگر نمی‌توانید به نمایه قدیمی‌تان دسترسی داشته باشید اما همچنان می‌توانید آن را حذف کنید.</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">برخی از تنظیمات متعلق به <ph name="PRIMARY_EMAIL"/> با شما به اشتراک گذاشته می‌شود. این تنظیمات وقتی از ورود چندگانه به سیستم استفاده شود، فقط در حساب شما اعمال می‌شود.</translation>
@@ -1448,11 +1452,11 @@
 <translation id="2218019600945559112">موشواره و صفحه لمسی</translation>
 <translation id="1530838837447122178">باز کردن تنظیمات موشواره و صفحه لمسی دستگاه</translation>
 <translation id="2075959085554270910">به شما امکان می‌دهد «کلیک با یک ضربه» و «کشیدن با ضربه زدن» را فعال/غیرفعال کنید</translation>
-<translation id="3060379269883947824">فعال کردن «انتخاب کنید تا بتوانید صحبت کنید»</translation>
+<translation id="3060379269883947824">فعال کردن «انتخاب برای شنیدن»</translation>
 <translation id="9066773882585798925">بلند خوانده شدن نوشتار</translation>
-<translation id="7844553762889824470">‏آنچه را می‌خواهید بشنوید برجسته کنید، سپس «جستجو + S» را فشار دهید. همچنین می‌توانید کلید «جستجو» را فشار دهید و نگه دارید یا در کنار تصویر نمایه‌تان روی نماد «انتخاب کنید تا بتوانید صحبت کنید» ضربه بزنید تا قسمتی را انتخاب کنید.</translation>
+<translation id="7844553762889824470">‏آنچه را می‌خواهید بشنوید برجسته کنید، سپس «جستجو + S» را فشار دهید. همچنین می‌توانید کلید «جستجو» را فشار دهید و نگه دارید یا در کنار تصویر نمایه‌تان روی نماد «انتخاب برای شنیدن» ضربه بزنید تا قسمتی را انتخاب کنید.</translation>
 <translation id="5957987129450536192">در کنار تصویر نمایه‌تان روی نماد «انتخاب برای شنیدن» ضربه بزنید، سپس آنچه را می‌خواهید بشنوید انتخاب کنید.</translation>
-<translation id="8902667442496790482">باز کردن تنظیمات «انتخاب کنید تا بتوانید صحبت کنید»</translation>
+<translation id="8902667442496790482">باز کردن تنظیمات «انتخاب برای شنیدن»</translation>
 <translation id="3819752733757735746">دسترسی سوئیچ (رایانه را فقط با یک یا دو سوئیچ کنترل کنید)</translation>
 <translation id="1932026958134051332">گزینه‌های دسترسی سوئیچ</translation>
 <translation id="9066782832737749352">تبدیل نوشتار به‌ گفتار</translation>
@@ -1476,11 +1480,11 @@
 <translation id="304747341537320566">موتورهای گفتار</translation>
 <translation id="1067291318998134776">‏Linux (بتا)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">‏اجرای ابزارها، ویرایشگرها و محیط‌های یکپارچه توسعه نرم‌افزار (IDEs) ‏Linux در Bravebook.‏ &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;بیشتر بدانید&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">‏اجرای ابزارها، ویرایشگرها و محیط‌های یکپارچه توسعه نرم‌افزار (IDEs) ‏Linux در Bravebook.‏ &lt;a target="_blank" href="<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
 <translation id="6869910261738842136">‏حذف برنامه‌های Linux برای Bravebook</translation>
 <translation id="2295473777859797944">‏فروشگاه Brave Software Play</translation>
 <translation id="572155275267014074">‏تنظیمات Android</translation>
-<translation id="4767209642168463274">‏نصب برنامه‌ها و بازی‌‌ها از Brave Software Play در Bravebook‏. &amp;lt;a target="_blank" href="‏<ph name="URL"/>"&amp;gt;بیشتر بدانید&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">‏نصب برنامه‌ها و بازی‌‌ها از Brave Software Play در Bravebook‏. &lt;a target="_blank" href="‏<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
 <translation id="2966937470348689686">‏مدیریت تنظیمات برگزیده Android</translation>
 <translation id="4074367893748481070">‏برداشتن «فروشگاه Brave Software Play»</translation>
 <translation id="2792290659606763004">‏برنامه‌های Android حذف شوند؟</translation>
@@ -1520,7 +1524,7 @@
 <translation id="5595485650161345191">ویرایش آدرس</translation>
 <translation id="6207937957461833379">کشور/منطقه</translation>
 <translation id="4378154925671717803">تلفن</translation>
-<translation id="5659593005791499971">رایانامه</translation>
+<translation id="5659593005791499971">ایمیل</translation>
 <translation id="5762172915276660232">تنظیمات کارت اعتباری</translation>
 <translation id="4499718683476608392">به تکمیل خودکار کارت اعتباری امکان می‌دهد فرم‌ها را با یک کلیک پر کند</translation>
 <translation id="2448312741937722512">نوع</translation>
@@ -1805,11 +1809,11 @@
 <translation id="7696063401938172191">در «<ph name="PHONE_NAME"/>»:</translation>
 <translation id="3423463006624419153">در «<ph name="PHONE_NAME_1"/>» و «<ph name="PHONE_NAME_2"/>»:</translation>
 <translation id="6997707937646349884">در دستگاه‌های شما:</translation>
-<translation id="7531779363494549572">به «تنظیمات &amp;gt; برنامه‌ها و اعلان‌ها &amp;gt; اعلان‌ها» بروید.</translation>
-<translation id="6921033294337262045">‏روی «اعلان‌های برنامه &amp;gt; خدمات Brave Software Play» ضربه بزنید.</translation>
+<translation id="7531779363494549572">به «تنظیمات &gt; برنامه‌ها و اعلان‌ها &gt; اعلان‌ها» بروید.</translation>
+<translation id="6921033294337262045">‏روی «اعلان‌های برنامه &gt; خدمات Brave Software Play» ضربه بزنید.</translation>
 <translation id="5624710179837914896">‏«خدمات Brave Software Play» را روشن کنید.</translation>
 <translation id="2705736684557713153">به پایین صفحه نمایش پیمایش کنید و اگر «اتصال فوری به اینترنت با تلفن همراه» نمایان شد، آن را روشن کنید. اگر نمایان نشد، همه چیز آماده است.</translation>
-<translation id="3604048165392640554">‏اتصال داده شبکه همراهی پیدا نشد. «اتصال فوری به اینترنت با تلفن همراه» را در دستگاه‌های دیگرتان روشن کنید و دوباره امتحان کنید. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;بیشتر بدانید&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">‏اتصال داده شبکه همراهی پیدا نشد. «اتصال فوری به اینترنت با تلفن همراه» را در دستگاه‌های دیگرتان روشن کنید و دوباره امتحان کنید. &lt;a target="_blank" href="<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
 <translation id="7240339475467890413">به نقطه اتصال جدید متصل شود؟</translation>
 <translation id="6514010653036109809">دستگاه دردسترس:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>٪ باتری</translation>
@@ -1975,7 +1979,6 @@
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">برای تنظیمات بیشتر مرتبط با حریم خصوصی، امنیت و جمع‌آوری داده، <ph name="BEGIN_LINK"/>همگام‌سازی و شخصی‌سازی<ph name="END_LINK"/> را ببینید</translation>
 <translation id="7222718784508482526">‏برای تنظیمات بیشتر مرتبط با حریم خصوصی، امنیت و جمع‌آوری داده‌ها، <ph name="BEGIN_LINK"/>همگام‌سازی و سرویس‌های Brave Software<ph name="END_LINK"/> را ببینید</translation>
-<translation id="6438234780621650381">بازنشانی تنظیمات</translation>
 <translation id="5293170712604732402">بازنشانی تنظیمات به پیش‌فرض‌های اولیه آن‌ها</translation>
 <translation id="892706138619340876">برخی تنظیمات بازنشانی شدند</translation>
 <translation id="2334029754052191847">‏Brave تشخیص داد که برنامه دیگری برخی از تنظیمات شما را خراب کرده است و این تنظیمات را به پیش‌فرض‌های اولیه آن‌ها بازنشانی کرد.</translation>
@@ -1989,7 +1992,6 @@
 <translation id="2203682048752833055">موتور جستجوی مورداستفاده در <ph name="BEGIN_LINK"/>نوار نشانی<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">مدیریت موتورهای جستجو</translation>
 <translation id="2862205630718215619">‏دستیار Brave Software</translation>
-<translation id="3435896845095436175">فعال کردن</translation>
 <translation id="6978121630131642226">موتورهای جستجو</translation>
 <translation id="6410668567036790476">افزودن موتور جستجو</translation>
 <translation id="1128591060186966949">ویرایش موتور جستجو</translation>
@@ -2223,7 +2225,6 @@
 <translation id="2709516037105925701">تکمیل خودکار</translation>
 <translation id="1644574205037202324">سابقه</translation>
 <translation id="5117427536932535467">طرح زمینه و کاغذ دیواری</translation>
-<translation id="7029809446516969842">گذرواژه‌ها</translation>
 <translation id="3259418918864581163">‏کارت‌های اعتباری و نشانی‌های مورداستفاده در Brave Software Pay.</translation>
 <translation id="3268451620468152448">برگه‌های باز</translation>
 <translation id="5241892180459725878">‏پیشنهادهای جستجوی Brave Software Drive</translation>
@@ -2292,7 +2293,7 @@
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
-<translation id="1114202307280046356">الماس</translation>
+<translation id="1114202307280046356">الماسی</translation>
 <translation id="89720367119469899">فرار</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">فرمان خارجی</translation>
@@ -2361,7 +2362,6 @@
 <translation id="6856623341093082836">راه‌اندازی و تنظیم دقت صفحه لمسی</translation>
 <translation id="4598556348158889687">مدیریت فضای ذخیره‌سازی</translation>
 <translation id="8868626022555786497">درحال استفاده</translation>
-<translation id="8688672835843460752">دردسترس</translation>
 <translation id="1082725763867769612">فایل‌های آفلاین</translation>
 <translation id="7366909168761621528">داده‌های مرور</translation>
 <translation id="5568144734023334204">‏فضای ذخیره‌سازی Android</translation>
@@ -2427,7 +2427,7 @@
 <translation id="3264582393905923483">زمینه</translation>
 <translation id="1607139524282324606">پاک کردن ورودی</translation>
 <translation id="6025215716629925253">ردیابی پشته‌ای</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;۱ خط نشان داده نمی‌شود&amp;gt;}one{&amp;lt;$1 خط نشان داده نمی‌شود&amp;gt;}other{&amp;lt;$1 خط نشان داده نمی‌شود&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;۱ خط نشان داده نمی‌شود&gt;}one{&lt;$1 خط نشان داده نمی‌شود&gt;}other{&lt;$1 خط نشان داده نمی‌شود&gt;}}</translation>
 <translation id="8389492867173948260">به این افزونه اجازه دهید همه داده‌هایتان را در وب‌سایت‌هایی که بازدید می‌کنید بخواند و تغییر دهد:</translation>
 <translation id="407173827865827707">با کلیک</translation>
 <translation id="6455264371803474013">در سایت‌هایی خاص</translation>
@@ -2435,7 +2435,7 @@
 <translation id="3729506734996624908">سایت‌های مجاز</translation>
 <translation id="3732078975418297900">خطا در خط <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">خطا از خط <ph name="ERROR_LINE_START"/> تا <ph name="ERROR_LINE_END"/></translation>
-<translation id="1890674179660343635">‏&amp;lt;span&amp;gt;شناسه: &amp;lt;/span&amp;gt;‏<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">‏&lt;span&gt;شناسه: &lt;/span&gt;‏<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">بازرسی بازدیدها</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> مورد دیگر…</translation>
 <translation id="2450849356604136918">هیچ نمای فعالی وجود ندارد</translation>

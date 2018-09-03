@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">您可以使用此菜单清除浏览数据</translation>
 <translation id="6040143037577758943">关闭</translation>
 <translation id="5379268888377976432">撤消删除操作</translation>
-<translation id="6463795194797719782">修改(&amp;amp;E)</translation>
+<translation id="6463795194797719782">修改(&amp;E)</translation>
 <translation id="8131740175452115882">确认</translation>
 <translation id="4394049700291259645">停用</translation>
 <translation id="8496717697661868878">运行此插件</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">将窗口移至<ph name="USER_NAME"/>(<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">放大文字</translation>
 <translation id="7134098520442464001">缩小文字</translation>
-<translation id="4508765956121923607">显示源代码(&amp;amp;O)</translation>
-<translation id="4792711294155034829">报告问题(&amp;amp;R)...</translation>
-<translation id="5112577000029535889">开发者工具(&amp;amp;D)</translation>
-<translation id="5184063094292164363">JavaScript 控制台(&amp;amp;J)</translation>
-<translation id="7056526158851679338">检查设备(&amp;amp;I)</translation>
-<translation id="48838266408104654">任务管理器(&amp;amp;T)</translation>
-<translation id="6277518330158259200">屏幕截图(&amp;amp;A)</translation>
-<translation id="5288678174502918605">重新打开关闭的标签页(&amp;amp;E)</translation>
-<translation id="2731392572903530958">重新打开关闭的窗口(&amp;amp;E)</translation>
+<translation id="4508765956121923607">显示源代码(&amp;O)</translation>
+<translation id="4792711294155034829">报告问题(&amp;R)...</translation>
+<translation id="5112577000029535889">开发者工具(&amp;D)</translation>
+<translation id="5184063094292164363">JavaScript 控制台(&amp;J)</translation>
+<translation id="7056526158851679338">检查设备(&amp;I)</translation>
+<translation id="48838266408104654">任务管理器(&amp;T)</translation>
+<translation id="6277518330158259200">屏幕截图(&amp;A)</translation>
+<translation id="5288678174502918605">重新打开关闭的标签页(&amp;E)</translation>
+<translation id="2731392572903530958">重新打开关闭的窗口(&amp;E)</translation>
 <translation id="7607274158153386860">请求平板电脑网站</translation>
-<translation id="4408599188496843485">帮助(&amp;amp;E)</translation>
+<translation id="4408599188496843485">帮助(&amp;E)</translation>
 <translation id="3855676282923585394">导入书签和设置...</translation>
-<translation id="4821935166599369261">分析已启用(&amp;amp;P)</translation>
-<translation id="3827774300009121996">全屏幕(&amp;amp;F)</translation>
-<translation id="3616741288025931835">清除浏览数据(&amp;amp;C)...</translation>
-<translation id="7861215335140947162">下载内容(&amp;amp;D)</translation>
-<translation id="862542460444371744">扩展程序(&amp;amp;E)</translation>
-<translation id="8925458182817574960">设置(&amp;amp;S)</translation>
-<translation id="9147392381910171771">选项(&amp;amp;O)</translation>
-<translation id="1618268899808219593">帮助中心(&amp;amp;E)</translation>
+<translation id="4821935166599369261">分析已启用(&amp;P)</translation>
+<translation id="3827774300009121996">全屏幕(&amp;F)</translation>
+<translation id="3616741288025931835">清除浏览数据(&amp;C)...</translation>
+<translation id="7861215335140947162">下载内容(&amp;D)</translation>
+<translation id="862542460444371744">扩展程序(&amp;E)</translation>
+<translation id="8925458182817574960">设置(&amp;S)</translation>
+<translation id="9147392381910171771">选项(&amp;O)</translation>
+<translation id="1618268899808219593">帮助中心(&amp;E)</translation>
 <translation id="7324297612904500502">Brave（测试版）论坛</translation>
-<translation id="7199158086730159431">获取帮助(&amp;amp;E)</translation>
-<translation id="630065524203833229">退出(&amp;amp;X)</translation>
+<translation id="7199158086730159431">获取帮助(&amp;E)</translation>
+<translation id="630065524203833229">退出(&amp;X)</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">修改搜索引擎(&amp;amp;E)...</translation>
+<translation id="5702898740348134351">修改搜索引擎(&amp;E)...</translation>
 <translation id="2454247629720664989">关键字</translation>
 <translation id="5327248766486351172">名称</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/>（默认）</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">全部清除</translation>
 <translation id="750509436279396091">打开下载内容文件夹</translation>
 <translation id="2902312830803030883">更多操作</translation>
-<translation id="3612673635130633812">由&amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;下载</translation>
+<translation id="3612673635130633812">由&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;下载</translation>
 <translation id="7909969815743704077">已在隐身模式下进行下载</translation>
 <translation id="8028803902702117856">正在下载“<ph name="FILE_NAME"/>”，大小为 <ph name="SIZE"/></translation>
 <translation id="4644818355646995778">正在下载，<ph name="PERCENT_REMAINING"/></translation>
@@ -195,7 +195,7 @@
 <translation id="2101225219012730419">版本：</translation>
 <translation id="8678933587484842200">您希望通过何种方式启动此应用？</translation>
 <translation id="397105322502079400">正在计算...</translation>
-<translation id="2352662711729498748">&amp;lt; 1MB</translation>
+<translation id="2352662711729498748">&lt; 1MB</translation>
 <translation id="8941173171815156065">撤消“<ph name="PERMISSION"/>”权限</translation>
 <translation id="741906494724992817">此应用不需要任何特殊权限。</translation>
 <translation id="1616206807336925449">此扩展程序无需任何特殊权限。</translation>
@@ -533,8 +533,8 @@
 <translation id="3011284594919057757">关于 Flash</translation>
 <translation id="1962233722219655970">此页使用了您的计算机不支持的 Native Client 应用。</translation>
 <translation id="4453946976636652378">在<ph name="SEARCH_ENGINE_NAME"/>中搜索，或者输入一个网址</translation>
-<translation id="5731247495086897348">粘贴并转到(&amp;amp;S)</translation>
-<translation id="8425755597197517046">粘贴并搜索(&amp;amp;S)</translation>
+<translation id="5731247495086897348">粘贴并转到(&amp;S)</translation>
+<translation id="8425755597197517046">粘贴并搜索(&amp;S)</translation>
 <translation id="6151323131516309312">按 <ph name="SEARCH_KEY"/> 可通过 <ph name="SITE_NAME"/> 进行搜索</translation>
 <translation id="3449839693241009168">按 <ph name="SEARCH_KEY"/> 可向<ph name="EXTENSION_NAME"/>发送命令</translation>
 <translation id="6659594942844771486">Tab</translation>
@@ -571,6 +571,7 @@
 <translation id="3617891479562106823">背景不可用。请稍后重试。</translation>
 <translation id="8391712576156218334">图片不可用。请稍后重试。</translation>
 <translation id="1564414980088536597">无法使用此图片。请另选一张图片。</translation>
+<translation id="385051799172605136">后退</translation>
 <translation id="4628948037717959914">照片</translation>
 <translation id="8033827949643255796">已选中</translation>
 <translation id="5376169624176189338">点击可后退，按住可查看历史记录</translation>
@@ -773,7 +774,7 @@
 <translation id="8539727552378197395">否（仅 Http）</translation>
 <translation id="4615586811063744755">未选择任何 Cookie</translation>
 <translation id="5765780083710877561">说明：</translation>
-<translation id="2422426094670600218">&amp;lt;未命名&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;未命名&gt;</translation>
 <translation id="6708242697268981054">来源：</translation>
 <translation id="6492313032770352219">磁盘大小：</translation>
 <translation id="3459774175445953971">最后修改日期：</translation>
@@ -832,10 +833,9 @@
 <translation id="184568702928428857">Brave 中控制同步、个性化和其他 Brave Software 服务的设置已发生更改。这可能会影响您的当前设置。</translation>
 <translation id="4192273449750167573">在下一个屏幕上查看您的设置</translation>
 <translation id="685040365210406336">不做任何更改</translation>
-<translation id="6418273007044911016">您同步到 Brave Software 中的数据和您使用的功能将保持不变</translation>
+<translation id="6418273007044911016">您同步到 Brave Software 的数据和您使用的功能不会改变</translation>
 <translation id="8372733498235009300">开启同步、个性化和其他 Brave Software 服务</translation>
 <translation id="8340964510643644301">您可以随时在 Brave 设置中自定义此设置</translation>
-<translation id="385051799172605136">后退</translation>
 <translation id="3149880132460839085">Brave 浏览器同步</translation>
 <translation id="3796902758602917951">您的书签、历史记录、密码及其他设置均将同步到您的 Brave Software 帐号，以便您在自己的任意设备上使用</translation>
 <translation id="1371301976177520732">在您的所有设备上都能访问您的书签、密码、历史记录等信息</translation>
@@ -843,11 +843,11 @@
 <translation id="295992419959320001">Brave Software 可能会利用您的浏览记录为您提供个性化的 Brave Software 搜索、广告和其他 Brave Software 服务</translation>
 <translation id="4800091108248587380">个性化的 Brave Software 服务（例如 Brave Software Pay）</translation>
 <translation id="3070156078150543526">Brave Software 可能会使用您的浏览记录对 Brave Software 搜索和其他 Brave Software 服务进行个性化设置</translation>
-<translation id="2532167245710864499">通过将系统信息和使用情况信息发送给 Brave Software 来改进 Brave 并提高其安全性</translation>
+<translation id="2532167245710864499">将系统信息和使用情况信息发送给 Brave Software，帮助改进 Brave 并提高其安全性</translation>
 <translation id="2709453993673701466">想在启用同步和个性化之前管理这些功能？请访问<ph name="BEGIN_LINK"/>设置<ph name="END_LINK"/>。</translation>
 <translation id="2668128414154024727">您可以随时在<ph name="BEGIN_LINK"/>设置<ph name="END_LINK"/>中自定义 Brave Software 可以收集哪些信息。</translation>
 <translation id="6035247993547372482">Brave Software 可能会根据您访问的网站上的内容以及您在浏览中的活动和互动行为，为您提供个性化的 Brave 体验和其他 Brave Software 服务体验（例如翻译、搜索和广告）。您可以在“设置”中自定义此设置。</translation>
-<translation id="741204030948306876">确认</translation>
+<translation id="741204030948306876">立即启用</translation>
 <translation id="8428213095426709021">设置</translation>
 <translation id="2497852260688568942">您的管理员已停用同步</translation>
 <translation id="562935524653278697">您的管理员已停止同步您的书签、历史记录、密码及其他设置。</translation>
@@ -887,7 +887,7 @@
 <translation id="7004499039102548441">最近打开的标签页</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 个标签页}other{# 个标签页}}</translation>
 <translation id="4547659257713117923">没有从其他设备打开的标签页</translation>
-<translation id="4756388243121344051">历史记录(&amp;amp;H)</translation>
+<translation id="4756388243121344051">历史记录(&amp;H)</translation>
 <translation id="9026731007018893674">下载</translation>
 <translation id="9218430445555521422">设为默认浏览器</translation>
 <translation id="281133045296806353">已在现有的浏览器会话中创建新的窗口。</translation>
@@ -909,7 +909,7 @@
 <translation id="4242533952199664413">打开“设置”</translation>
 <translation id="3752582316358263300">确定...</translation>
 <translation id="7117247127439884114">重新登录...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> 想向您发送通知</translation>
 <translation id="7221855153210829124">显示通知</translation>
@@ -1067,7 +1067,7 @@
 <translation id="8736288397686080465">此网站已在后台更新。</translation>
 <translation id="6945221475159498467">选择</translation>
 <translation id="4130199216115862831">设备日志</translation>
-<translation id="6231881193380278751">在网址中添加查询参数可自动刷新相应网页：chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">在网址中添加查询参数可自动刷新相应网页：chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">刷新</translation>
 <translation id="1260240842868558614">显示：</translation>
 <translation id="1165039591588034296">错误</translation>
@@ -1114,20 +1114,20 @@
 <translation id="3613134908380545408">显示“<ph name="FOLDER_NAME"/>”</translation>
 <translation id="2805756323405976993">应用</translation>
 <translation id="2367972762794486313">显示应用</translation>
-<translation id="6466988389784393586">打开所有书签(&amp;amp;O)</translation>
-<translation id="6804671422566312077">在新窗口中打开所有书签(&amp;amp;N)</translation>
-<translation id="3011362742078013760">在隐身窗口中打开所有书签(&amp;amp;I)</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{全部打开(&amp;amp;O)}=1{打开 1 个网址(&amp;amp;O)}other{打开全部（# 个）网址(&amp;amp;O)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{在新窗口中打开全部网址(&amp;amp;N)}=1{在新窗口中打开 1 个网址(&amp;amp;N)}other{在新窗口中打开全部（# 个）网址(&amp;amp;N)}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{在无痕式窗口中打开全部网址(&amp;amp;I)}=1{在无痕式窗口中打开 1 个网址(&amp;amp;I)}other{在无痕式窗口中打开全部（# 个）网址(&amp;amp;I)}}</translation>
-<translation id="9024127637873500333">在新标签页中打开(&amp;amp;O)</translation>
-<translation id="665061930738760572">在新窗口中打开(&amp;amp;N)</translation>
-<translation id="37613671848467444">在隐身窗口中打开(&amp;amp;I)</translation>
-<translation id="6702639462873609204">修改(&amp;amp;E)...</translation>
-<translation id="3088325635286126843">重命名(&amp;amp;R)...</translation>
-<translation id="5329858601952122676">删除(&amp;amp;D)</translation>
-<translation id="8824701697284169214">添加网页(&amp;amp;G)...</translation>
-<translation id="2489918096470125693">添加文件夹(&amp;amp;F)...</translation>
+<translation id="6466988389784393586">打开所有书签(&amp;O)</translation>
+<translation id="6804671422566312077">在新窗口中打开所有书签(&amp;N)</translation>
+<translation id="3011362742078013760">在隐身窗口中打开所有书签(&amp;I)</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{全部打开(&amp;O)}=1{打开 1 个网址(&amp;O)}other{打开全部（# 个）网址(&amp;O)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{在新窗口中打开全部网址(&amp;N)}=1{在新窗口中打开 1 个网址(&amp;N)}other{在新窗口中打开全部（# 个）网址(&amp;N)}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{在无痕式窗口中打开全部网址(&amp;I)}=1{在无痕式窗口中打开 1 个网址(&amp;I)}other{在无痕式窗口中打开全部（# 个）网址(&amp;I)}}</translation>
+<translation id="9024127637873500333">在新标签页中打开(&amp;O)</translation>
+<translation id="665061930738760572">在新窗口中打开(&amp;N)</translation>
+<translation id="37613671848467444">在隐身窗口中打开(&amp;I)</translation>
+<translation id="6702639462873609204">修改(&amp;E)...</translation>
+<translation id="3088325635286126843">重命名(&amp;R)...</translation>
+<translation id="5329858601952122676">删除(&amp;D)</translation>
+<translation id="8824701697284169214">添加网页(&amp;G)...</translation>
+<translation id="2489918096470125693">添加文件夹(&amp;F)...</translation>
 <translation id="2897878306272793870">是否确实要打开 <ph name="TAB_COUNT"/> 个标签页？</translation>
 <translation id="4430369329743628066">已添加书签</translation>
 <translation id="6404511346730675251">修改书签</translation>
@@ -1142,12 +1142,12 @@
 <translation id="971774202801778802">书签网址</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{此文件夹包含 1 个书签。确定要删除此文件夹吗？}other{此文件夹包含 # 个书签。确定要删除此文件夹吗？}}</translation>
 <translation id="5857090052475505287">新文件夹</translation>
-<translation id="6455894534188563617">新建文件夹(&amp;amp;N)</translation>
+<translation id="6455894534188563617">新建文件夹(&amp;N)</translation>
 <translation id="1015318665228971643">修改文件夹名称</translation>
 <translation id="5449588825071916739">为所有标签页添加书签</translation>
 <translation id="5528368756083817449">书签管理器</translation>
 <translation id="3828029223314399057">搜索书签</translation>
-<translation id="5111692334209731439">书签管理器(&amp;amp;B)</translation>
+<translation id="5111692334209731439">书签管理器(&amp;B)</translation>
 <translation id="6973630695168034713">文件夹</translation>
 <translation id="5496587651328244253">整理</translation>
 <translation id="1936157145127842922">在文件夹中显示</translation>
@@ -1191,13 +1191,13 @@
 <translation id="6757101664402245801">网址已复制</translation>
 <translation id="5488093641312826914">已复制“<ph name="COPIED_ITEM_NAME"/>”</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{已复制 1 项}other{已复制 # 项}}</translation>
-<translation id="9115675100829699941">书签(&amp;amp;B)</translation>
+<translation id="9115675100829699941">书签(&amp;B)</translation>
 <translation id="1047726139967079566">为此页添加书签...</translation>
 <translation id="6949306908218145636">为打开的网页添加书签…</translation>
 <translation id="4422347585044846479">修改此页的书签</translation>
 <translation id="6005695835120147974">媒体路由器</translation>
 <translation id="7787308148023287649">在其他屏幕上显示</translation>
-<translation id="7710568461918838723">投射(&amp;amp;C)…</translation>
+<translation id="7710568461918838723">投射(&amp;C)…</translation>
 <translation id="8970203673128054105">查看投射模式列表</translation>
 <translation id="1277908057200820621">查看设备列表</translation>
 <translation id="2847759467426165163">投射到</translation>
@@ -1242,6 +1242,7 @@
 <translation id="3930737994424905957">正在搜索设备</translation>
 <translation id="5209320130288484488">未找到任何设备</translation>
 <translation id="4363771538994847871">找不到投射目标。需要帮助吗？</translation>
+<translation id="8688672835843460752">可用</translation>
 <translation id="4271396100647220620">找不到相符的结果</translation>
 <translation id="6972180789171089114">音频/视频</translation>
 <translation id="2541002089857695151">优化全屏投射？</translation>
@@ -1252,6 +1253,7 @@
 <translation id="7473891865547856676">不，谢谢</translation>
 <translation id="8538358978858059843">允许投射到云服务？</translation>
 <translation id="3856595552313160385">使用环聊和 Cast for Education 时须遵守《Brave Software 隐私权政策》。</translation>
+<translation id="3435896845095436175">启用</translation>
 <translation id="3700888195348409686">展示中 (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">显示屏 <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">管理员(<ph name="CUSTODIAN_EMAIL"/>)可在chrome.com上查看使用情况和历史记录。</translation>
@@ -1279,7 +1281,9 @@
 <translation id="1316495628809031177">同步已暂停</translation>
 <translation id="7786207843293321886">退出访客模式</translation>
 <translation id="2329597144923131178">登录后可获取您所有设备上保存的书签、历史记录、密码和其他设置。</translation>
+<translation id="7029809446516969842">密码</translation>
 <translation id="984275831282074731">付款方式</translation>
+<translation id="2903493209154104877">地址</translation>
 <translation id="8883847527783433352">同步到另一帐号中</translation>
 <translation id="2761898608071930085">使用另一帐号</translation>
 <translation id="4235813040357936597">为<ph name="PROFILE_NAME"/>添加帐号</translation>
@@ -1477,11 +1481,11 @@
 <translation id="304747341537320566">语音引擎</translation>
 <translation id="1067291318998134776">Linux（测试版）</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">在 Bravebook 上运行 Linux 工具、编辑器和 IDE。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;了解详情&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">在 Bravebook 上运行 Linux 工具、编辑器和 IDE。&lt;a target="_blank" href="<ph name="URL"/>"&gt;了解详情&lt;/a&gt;</translation>
 <translation id="6869910261738842136">从 Bravebook 中移除 Linux 应用</translation>
 <translation id="2295473777859797944">Brave Software Play 商店</translation>
 <translation id="572155275267014074">Android 设置</translation>
-<translation id="4767209642168463274">在 Bravebook 上安装从 Brave Software Play 下载的应用和游戏。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;了解详情&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">在 Bravebook 上安装从 Brave Software Play 下载的应用和游戏。&lt;a target="_blank" href="<ph name="URL"/>"&gt;了解详情&lt;/a&gt;</translation>
 <translation id="2966937470348689686">管理 Android 偏好设置</translation>
 <translation id="4074367893748481070">移除 Brave Software Play 商店</translation>
 <translation id="2792290659606763004">要移除 Android 应用吗？</translation>
@@ -1806,11 +1810,11 @@
 <translation id="7696063401938172191">在您的“<ph name="PHONE_NAME"/>”上：</translation>
 <translation id="3423463006624419153">在您的“<ph name="PHONE_NAME_1"/>”和“<ph name="PHONE_NAME_2"/>”上：</translation>
 <translation id="6997707937646349884">在您的设备上：</translation>
-<translation id="7531779363494549572">依次转到“设置”&amp;gt;“应用和通知”&amp;gt;“通知”。</translation>
-<translation id="6921033294337262045">依次点按“应用通知”&amp;gt;“Brave Software Play 服务”。</translation>
+<translation id="7531779363494549572">依次转到“设置”&gt;“应用和通知”&gt;“通知”。</translation>
+<translation id="6921033294337262045">依次点按“应用通知”&gt;“Brave Software Play 服务”。</translation>
 <translation id="5624710179837914896">开启 Brave Software Play 服务。</translation>
 <translation id="2705736684557713153">滚动到屏幕底部，如果看到“即时网络共享”，请将其开启。如果未看到该功能，则表示您已设置完毕。</translation>
-<translation id="3604048165392640554">未找到任何移动网络连接。请在您的其他设备上打开即时网络共享，然后重试。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;了解详情&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">未找到任何移动网络连接。请在您的其他设备上打开即时网络共享，然后重试。&lt;a target="_blank" href="<ph name="URL"/>"&gt;了解详情&lt;/a&gt;</translation>
 <translation id="7240339475467890413">要连接到新的热点吗？</translation>
 <translation id="6514010653036109809">可用的设备：</translation>
 <translation id="2075474481720804517">电池电量：<ph name="BATTERY_PERCENTAGE"/>%</translation>
@@ -1976,7 +1980,6 @@
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/> 项</translation>
 <translation id="3407837288045706722">要了解更多与隐私、安全和数据收集相关的设置，请参阅<ph name="BEGIN_LINK"/>同步和个性化<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">若想了解更多与隐私、安全和数据收集相关的设置，请参阅<ph name="BEGIN_LINK"/>同步功能和 Brave Software 服务<ph name="END_LINK"/></translation>
-<translation id="6438234780621650381">重置设置</translation>
 <translation id="5293170712604732402">将设置还原为原始默认设置</translation>
 <translation id="892706138619340876">部分设置已重置</translation>
 <translation id="2334029754052191847">Brave检测到您的部分设置被其他程序篡改了，因此已将这些设置重置为原始默认设置。</translation>
@@ -1990,7 +1993,6 @@
 <translation id="2203682048752833055"><ph name="BEGIN_LINK"/>地址栏<ph name="END_LINK"/>中使用的搜索引擎</translation>
 <translation id="1432581352905426595">管理搜索引擎</translation>
 <translation id="2862205630718215619">Brave Software 智能助理</translation>
-<translation id="3435896845095436175">启用</translation>
 <translation id="6978121630131642226">搜索引擎</translation>
 <translation id="6410668567036790476">添加搜索引擎</translation>
 <translation id="1128591060186966949">修改搜索引擎</translation>
@@ -2224,7 +2226,6 @@
 <translation id="2709516037105925701">自动填充</translation>
 <translation id="1644574205037202324">历史记录</translation>
 <translation id="5117427536932535467">主题背景和壁纸</translation>
-<translation id="7029809446516969842">密码</translation>
 <translation id="3259418918864581163">Brave Software Pay 中存储的信用卡和地址信息。</translation>
 <translation id="3268451620468152448">打开的标签页</translation>
 <translation id="5241892180459725878">Brave Software 云端硬盘搜索建议</translation>
@@ -2362,7 +2363,6 @@
 <translation id="6856623341093082836">设置和调整您的触摸屏的精确度</translation>
 <translation id="4598556348158889687">存储空间管理</translation>
 <translation id="8868626022555786497">已使用</translation>
-<translation id="8688672835843460752">可用</translation>
 <translation id="1082725763867769612">离线文件</translation>
 <translation id="7366909168761621528">浏览数据</translation>
 <translation id="5568144734023334204">Android 存储空间</translation>
@@ -2428,7 +2428,7 @@
 <translation id="3264582393905923483">上下文</translation>
 <translation id="1607139524282324606">清除此条目</translation>
 <translation id="6025215716629925253">堆叠追踪</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;有 1 行代码未显示出来&amp;gt;}other{&amp;lt;有 $1 行代码未显示出来&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;有 1 行代码未显示出来&gt;}other{&lt;有 $1 行代码未显示出来&gt;}}</translation>
 <translation id="8389492867173948260">允许此扩展程序读取和更改您在所访问的网站上留存的所有数据：</translation>
 <translation id="407173827865827707">点击时</translation>
 <translation id="6455264371803474013">在特定网站上</translation>
@@ -2436,7 +2436,7 @@
 <translation id="3729506734996624908">允许的网站</translation>
 <translation id="3732078975418297900">第 <ph name="ERROR_LINE"/> 行存在错误</translation>
 <translation id="9063208415146866933">第 <ph name="ERROR_LINE_START"/> 行到第 <ph name="ERROR_LINE_END"/> 行存在错误</translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID：&amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID：&lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">查看视图</translation>
 <translation id="181577467034453336">另外还有 <ph name="NUMBER_OF_VIEWS"/> 个…</translation>
 <translation id="2450849356604136918">没有正在运行的视图</translation>

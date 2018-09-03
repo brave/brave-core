@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">Anda boleh mengosongkan data semakan imbas anda daripada menu ini</translation>
 <translation id="6040143037577758943">Tutup</translation>
 <translation id="5379268888377976432">Buat Asal Pemadaman</translation>
-<translation id="6463795194797719782">&amp;amp;Edit</translation>
+<translation id="6463795194797719782">&amp;Edit</translation>
 <translation id="8131740175452115882">Sahkan</translation>
 <translation id="4394049700291259645">Lumpuhkan</translation>
 <translation id="8496717697661868878">Jalankan Pemalam Ini</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">Alihkan tetingkap ke <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">Jadikan Teks Lebih Besar</translation>
 <translation id="7134098520442464001">Jadikan Teks Lebih Kecil</translation>
-<translation id="4508765956121923607">Paparkan S&amp;amp;umber</translation>
-<translation id="4792711294155034829">&amp;amp;Laporkan Isu...</translation>
-<translation id="5112577000029535889">&amp;amp;Alat Pembangun</translation>
-<translation id="5184063094292164363">&amp;amp;Konsol JavaScript</translation>
-<translation id="7056526158851679338">&amp;amp;Periksa Peranti</translation>
-<translation id="48838266408104654">&amp;amp;Pengurus Tugas</translation>
-<translation id="6277518330158259200">A&amp;amp;mbil Tangkapan Skrin</translation>
-<translation id="5288678174502918605">B&amp;amp;uka Semula Tab Yang Ditutup</translation>
-<translation id="2731392572903530958">B&amp;amp;uka Semula Tetingkap Yang Ditutup</translation>
+<translation id="4508765956121923607">Paparkan S&amp;umber</translation>
+<translation id="4792711294155034829">&amp;Laporkan Isu...</translation>
+<translation id="5112577000029535889">&amp;Alat Pembangun</translation>
+<translation id="5184063094292164363">&amp;Konsol JavaScript</translation>
+<translation id="7056526158851679338">&amp;Periksa Peranti</translation>
+<translation id="48838266408104654">&amp;Pengurus Tugas</translation>
+<translation id="6277518330158259200">A&amp;mbil Tangkapan Skrin</translation>
+<translation id="5288678174502918605">B&amp;uka Semula Tab Yang Ditutup</translation>
+<translation id="2731392572903530958">B&amp;uka Semula Tetingkap Yang Ditutup</translation>
 <translation id="7607274158153386860">Minta tapak tablet</translation>
-<translation id="4408599188496843485">B&amp;amp;antuan</translation>
+<translation id="4408599188496843485">B&amp;antuan</translation>
 <translation id="3855676282923585394">Import Penanda Halaman dan Tetapan...</translation>
-<translation id="4821935166599369261">&amp;amp;Pemprofilan Didayakan</translation>
-<translation id="3827774300009121996">&amp;amp;Skrin Penuh</translation>
-<translation id="3616741288025931835">&amp;amp;Kosongkan Data Menyemak Imbas...</translation>
-<translation id="7861215335140947162">&amp;amp;Muat turun</translation>
-<translation id="862542460444371744">&amp;amp;Sambungan</translation>
-<translation id="8925458182817574960">&amp;amp;Tetapan</translation>
-<translation id="9147392381910171771">&amp;amp;Pilihan</translation>
-<translation id="1618268899808219593">P&amp;amp;usat Bantuan</translation>
+<translation id="4821935166599369261">&amp;Pemprofilan Didayakan</translation>
+<translation id="3827774300009121996">&amp;Skrin Penuh</translation>
+<translation id="3616741288025931835">&amp;Kosongkan Data Menyemak Imbas...</translation>
+<translation id="7861215335140947162">&amp;Muat turun</translation>
+<translation id="862542460444371744">&amp;Sambungan</translation>
+<translation id="8925458182817574960">&amp;Tetapan</translation>
+<translation id="9147392381910171771">&amp;Pilihan</translation>
+<translation id="1618268899808219593">P&amp;usat Bantuan</translation>
 <translation id="7324297612904500502">Forum Beta</translation>
-<translation id="7199158086730159431">Dapatkan B&amp;amp;antuan</translation>
-<translation id="630065524203833229">K&amp;amp;eluar</translation>
+<translation id="7199158086730159431">Dapatkan B&amp;antuan</translation>
+<translation id="630065524203833229">K&amp;eluar</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">&amp;amp;Edit Enjin Carian...</translation>
+<translation id="5702898740348134351">&amp;Edit Enjin Carian...</translation>
 <translation id="2454247629720664989">Kata kunci</translation>
 <translation id="5327248766486351172">Nama</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (Lalai)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">Kosongkan semua</translation>
 <translation id="750509436279396091">Buka folder muat turun</translation>
 <translation id="2902312830803030883">Lagi tindakan</translation>
-<translation id="3612673635130633812">Dimuat turun oleh &amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;</translation>
+<translation id="3612673635130633812">Dimuat turun oleh &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="7909969815743704077">Dimuat turun dalam Inkognito</translation>
 <translation id="8028803902702117856">Memuat turun <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Memuat turun, <ph name="PERCENT_REMAINING"/></translation>
@@ -195,7 +195,7 @@
 <translation id="2101225219012730419">Versi:</translation>
 <translation id="8678933587484842200">Bagaimanakah anda mahu apl ini dilancarkan?</translation>
 <translation id="397105322502079400">Mengira...</translation>
-<translation id="2352662711729498748">&amp;lt;1 MB</translation>
+<translation id="2352662711729498748">&lt;1 MB</translation>
 <translation id="8941173171815156065">Tarik balik kebenaran '<ph name="PERMISSION"/>'</translation>
 <translation id="741906494724992817">Apl ini tidak memerlukan kebenaran khas.</translation>
 <translation id="1616206807336925449">Sambungan ini tidak memerlukan kebenaran khas.</translation>
@@ -534,8 +534,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3011284594919057757">Mengenai Flash</translation>
 <translation id="1962233722219655970">Halaman ini menggunakan aplikasi Native Client yang tidak berfungsi pada komputer anda.</translation>
 <translation id="4453946976636652378">Cari <ph name="SEARCH_ENGINE_NAME"/> atau taipkan URL</translation>
-<translation id="5731247495086897348">Ta&amp;amp;mpal dan Pergi</translation>
-<translation id="8425755597197517046">Ta&amp;amp;mpal dan Cari</translation>
+<translation id="5731247495086897348">Ta&amp;mpal dan Pergi</translation>
+<translation id="8425755597197517046">Ta&amp;mpal dan Cari</translation>
 <translation id="6151323131516309312">Tekan <ph name="SEARCH_KEY"/> untuk mencari <ph name="SITE_NAME"/></translation>
 <translation id="3449839693241009168">Tekan <ph name="SEARCH_KEY"/> untuk menghantar perintah kepada <ph name="EXTENSION_NAME"/></translation>
 <translation id="6659594942844771486">Tab</translation>
@@ -572,6 +572,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3617891479562106823">Latar belakang tidak tersedia. Cuba lagi nanti.</translation>
 <translation id="8391712576156218334">Imej tidak tersedia. Cuba sebentar lagi.</translation>
 <translation id="1564414980088536597">Imej ini tidak boleh digunakan. Pilih imej yang lain.</translation>
+<translation id="385051799172605136">Kembali</translation>
 <translation id="4628948037717959914">Foto</translation>
 <translation id="8033827949643255796">dipilih</translation>
 <translation id="5376169624176189338">Klik untuk kembali, tahan untuk lihat sejarah</translation>
@@ -774,7 +775,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8539727552378197395">Tidak (HttpOnly)</translation>
 <translation id="4615586811063744755">tiada kuki dipilih</translation>
 <translation id="5765780083710877561">Huraian:</translation>
-<translation id="2422426094670600218">&amp;lt;tiada nama&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;tiada nama&gt;</translation>
 <translation id="6708242697268981054">Asal:</translation>
 <translation id="6492313032770352219">Saiz pada cakera:</translation>
 <translation id="3459774175445953971">Terakhir diubah suai:</translation>
@@ -836,7 +837,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6418273007044911016">Data yang anda segerakkan ke Brave Software dan ciri yang anda gunakan tidak akan berubah</translation>
 <translation id="8372733498235009300">Hidupkan penyegerakan, pemperibadian dan perkhidmatan Brave Software yang lain</translation>
 <translation id="8340964510643644301">Anda boleh menyesuaikan pilihan ini pada bila-bila masa dalam Tetapan Brave</translation>
-<translation id="385051799172605136">Kembali</translation>
 <translation id="3149880132460839085">Penyegerakan Brave</translation>
 <translation id="3796902758602917951">Penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan disegerakkan ke Akaun Brave Software supaya anda dapat menggunakannya pada semua peranti anda</translation>
 <translation id="1371301976177520732">Penanda halaman, kata laluan, sejarah dan pelbagai lagi item anda pada semua peranti anda</translation>
@@ -888,7 +888,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7004499039102548441">Tab Terbaharu</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 Tab}other{# Tab}}</translation>
 <translation id="4547659257713117923">Tiada Tab daripada Peranti Lain</translation>
-<translation id="4756388243121344051">&amp;amp;Sejarah</translation>
+<translation id="4756388243121344051">&amp;Sejarah</translation>
 <translation id="9026731007018893674">muat turun</translation>
 <translation id="9218430445555521422">Tetapkan sebagai lalai</translation>
 <translation id="281133045296806353">Mencipta tetingkap baharu dalam sesi penyemak imbas yang sedia ada.</translation>
@@ -910,7 +910,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4242533952199664413">Buka tetapan</translation>
 <translation id="3752582316358263300">OK...</translation>
 <translation id="7117247127439884114">Log masuk Semula...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> mahu menghantar pemberitahuan kepada anda</translation>
 <translation id="7221855153210829124">Tunjukkan pemberitahuan</translation>
@@ -1068,7 +1068,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8736288397686080465">Tapak ini dikemas kini di latar belakang.</translation>
 <translation id="6945221475159498467">Pilih</translation>
 <translation id="4130199216115862831">Log Peranti</translation>
-<translation id="6231881193380278751">Tambahkan param pertanyaan dalam URL untuk automuat semula halaman: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">Tambahkan param pertanyaan dalam URL untuk automuat semula halaman: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Muat semula</translation>
 <translation id="1260240842868558614">Papar:</translation>
 <translation id="1165039591588034296">Ralat</translation>
@@ -1115,20 +1115,20 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3613134908380545408">Tunjukkan <ph name="FOLDER_NAME"/></translation>
 <translation id="2805756323405976993">Apl</translation>
 <translation id="2367972762794486313">Paparkan apl</translation>
-<translation id="6466988389784393586">&amp;amp;Buka Semua Penanda Halaman</translation>
-<translation id="6804671422566312077">Buka Semua Penanda Halaman dalam Tetingkap &amp;amp;Baharu</translation>
-<translation id="3011362742078013760">Buka Semua Penanda Halaman dalam Tetingkap &amp;amp;Inkognito</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{&amp;amp;Buka Semua}=1{&amp;amp;Buka Penanda Halaman}other{&amp;amp;Buka Semua (#)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{Buka Semua dalam Tetingkap &amp;amp;Baharu}=1{Buka dalam Tetingkap &amp;amp;Baharu}other{Buka Semua (#) dalam Tetingkap &amp;amp;Baharu}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Buka Semua dalam Tetingkap &amp;amp;Inkognito}=1{Buka dalam Tetingkap &amp;amp;Inkognito}other{Buka Semua (#) dalam Tetingkap &amp;amp;Inkognito}}</translation>
-<translation id="9024127637873500333">&amp;amp;Buka dalam Tab Baharu</translation>
-<translation id="665061930738760572">Buka dalam &amp;amp;Tetingkap Baharu</translation>
-<translation id="37613671848467444">Buka dalam Tetingkap &amp;amp;Inkognito</translation>
-<translation id="6702639462873609204">&amp;amp;Edit...</translation>
-<translation id="3088325635286126843">&amp;amp;Namakan semula...</translation>
-<translation id="5329858601952122676">&amp;amp;Padam</translation>
-<translation id="8824701697284169214">Tambah Ha&amp;amp;laman...</translation>
-<translation id="2489918096470125693">Tambah &amp;amp;Folder...</translation>
+<translation id="6466988389784393586">&amp;Buka Semua Penanda Halaman</translation>
+<translation id="6804671422566312077">Buka Semua Penanda Halaman dalam Tetingkap &amp;Baharu</translation>
+<translation id="3011362742078013760">Buka Semua Penanda Halaman dalam Tetingkap &amp;Inkognito</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{&amp;Buka Semua}=1{&amp;Buka Penanda Halaman}other{&amp;Buka Semua (#)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{Buka Semua dalam Tetingkap &amp;Baharu}=1{Buka dalam Tetingkap &amp;Baharu}other{Buka Semua (#) dalam Tetingkap &amp;Baharu}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{Buka Semua dalam Tetingkap &amp;Inkognito}=1{Buka dalam Tetingkap &amp;Inkognito}other{Buka Semua (#) dalam Tetingkap &amp;Inkognito}}</translation>
+<translation id="9024127637873500333">&amp;Buka dalam Tab Baharu</translation>
+<translation id="665061930738760572">Buka dalam &amp;Tetingkap Baharu</translation>
+<translation id="37613671848467444">Buka dalam Tetingkap &amp;Inkognito</translation>
+<translation id="6702639462873609204">&amp;Edit...</translation>
+<translation id="3088325635286126843">&amp;Namakan semula...</translation>
+<translation id="5329858601952122676">&amp;Padam</translation>
+<translation id="8824701697284169214">Tambah Ha&amp;laman...</translation>
+<translation id="2489918096470125693">Tambah &amp;Folder...</translation>
 <translation id="2897878306272793870">Adakah anda pasti anda mahu buka tab <ph name="TAB_COUNT"/>?</translation>
 <translation id="4430369329743628066">Penanda halaman ditambahkan</translation>
 <translation id="6404511346730675251">Edit penanda halaman</translation>
@@ -1143,12 +1143,12 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="971774202801778802">URL Penanda Halaman</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{Folder ini mengandungi penanda halaman. Adakah anda pasti mahu memadamnya?}other{Folder ini mengandungi # penanda halaman. Adakah anda pasti mahu memadamnya?}}</translation>
 <translation id="5857090052475505287">Folder Baharu</translation>
-<translation id="6455894534188563617">&amp;amp;Folder Baharu</translation>
+<translation id="6455894534188563617">&amp;Folder Baharu</translation>
 <translation id="1015318665228971643">Edit Nama Folder</translation>
 <translation id="5449588825071916739">Tanda Halaman Semua Tab</translation>
 <translation id="5528368756083817449">Pengurus Penanda Halaman</translation>
 <translation id="3828029223314399057">Cari penanda halaman</translation>
-<translation id="5111692334209731439">&amp;amp;Pengurus Penanda Halaman</translation>
+<translation id="5111692334209731439">&amp;Pengurus Penanda Halaman</translation>
 <translation id="6973630695168034713">Folder</translation>
 <translation id="5496587651328244253">Atur</translation>
 <translation id="1936157145127842922">Paparkan dalam Folder</translation>
@@ -1192,13 +1192,13 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6757101664402245801">URL disalin</translation>
 <translation id="5488093641312826914">'<ph name="COPIED_ITEM_NAME"/>' disalin</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 item disalin}other{# item disalin}}</translation>
-<translation id="9115675100829699941">&amp;amp;Bookmarks</translation>
+<translation id="9115675100829699941">&amp;Bookmarks</translation>
 <translation id="1047726139967079566">Tanda Halaman Ini...</translation>
 <translation id="6949306908218145636">Tandakan Halaman Terbuka...</translation>
 <translation id="4422347585044846479">Edit penanda halaman untuk halaman ini</translation>
 <translation id="6005695835120147974">Penghala Media</translation>
 <translation id="7787308148023287649">Paparkan pada skrin lain</translation>
-<translation id="7710568461918838723">&amp;amp;Cast...</translation>
+<translation id="7710568461918838723">&amp;Cast...</translation>
 <translation id="8970203673128054105">Lihat senarai mod hantar</translation>
 <translation id="1277908057200820621">Lihat senarai peranti</translation>
 <translation id="2847759467426165163">Hantar ke</translation>
@@ -1243,6 +1243,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3930737994424905957">Mencari peranti</translation>
 <translation id="5209320130288484488">Tiada peranti ditemui</translation>
 <translation id="4363771538994847871">Tiada destinasi Cast ditemui. Perlukan bantuan?</translation>
+<translation id="8688672835843460752">Tersedia</translation>
 <translation id="4271396100647220620">Tiada padanan</translation>
 <translation id="6972180789171089114">Audio/Video</translation>
 <translation id="2541002089857695151">Optimumkan penghantaran skrin penuh?</translation>
@@ -1253,6 +1254,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7473891865547856676">Tidak, Terima Kasih</translation>
 <translation id="8538358978858059843">Dayakan perkhidmatan awan untuk Cast?</translation>
 <translation id="3856595552313160385">Penggunaan Hangouts and Cast for Education dikawal oleh Dasar Privasi Brave Software.</translation>
+<translation id="3435896845095436175">Dayakan</translation>
 <translation id="3700888195348409686">Mempersembahkan (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Paparkan <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">Penggunaan dan sejarah boleh dikaji semula oleh (<ph name="CUSTODIAN_EMAIL"/>) pengurus pada chrome.com.</translation>
@@ -1280,7 +1282,9 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="1316495628809031177">Penyegerakan dijeda</translation>
 <translation id="7786207843293321886">Keluar dari Tetamu</translation>
 <translation id="2329597144923131178">Log masuk untuk mendapatkan penanda halaman, sejarah, kata laluan dan tetapan lain pada semua peranti anda.</translation>
+<translation id="7029809446516969842">Kata laluan</translation>
 <translation id="984275831282074731">Kaedah pembayaran</translation>
+<translation id="2903493209154104877">Alamat</translation>
 <translation id="8883847527783433352">Segerakkan ke Akaun Lain</translation>
 <translation id="2761898608071930085">Gunakan Akaun Lain</translation>
 <translation id="4235813040357936597">Tambah akaun untuk <ph name="PROFILE_NAME"/></translation>
@@ -1429,7 +1433,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4305227814872083840">panjang (2s)</translation>
 <translation id="2860150991415616761">sangat lama (4s)</translation>
 <translation id="1330145147221172764">Dayakan papan kekunci pada skrin</translation>
-<translation id="1800308196794859773">Hantar suara anda kepada Brave Software untuk membenarkan pengimlakan dalam mana-mana medan teks.</translation>
+<translation id="1800308196794859773">Hantar suara anda kepada Brave Software untuk membolehkan pengimlakan dalam mana-mana medan teks.</translation>
 <translation id="8758418656925882523">Dayakan imlak (cakap untuk menaip)</translation>
 <translation id="7580671184200851182">Mainkan audio yang sama melalui semua pembesar suara (audio mono)</translation>
 <translation id="1189418886587279221">Dayakan ciri kebolehcapaian untuk menjadikan peranti anda lebih mudah digunakan.</translation>
@@ -1478,11 +1482,11 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="304747341537320566">Enjin Pertuturan</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Jalankan alatan, editor dan IDE Linux pada Bravebook anda. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Ketahui lebih lanjut&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">Jalankan alatan, editor dan IDE Linux pada Bravebook anda. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Alih keluar Apl Linux untuk Bravebook</translation>
 <translation id="2295473777859797944">Gedung Brave Software Play</translation>
 <translation id="572155275267014074">Tetapan Android</translation>
-<translation id="4767209642168463274">Pasang apl dan permainan daripada Brave Software Play pada Bravebook anda. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Ketahui lebih lanjut&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">Pasang apl dan permainan daripada Brave Software Play pada Bravebook anda. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Urus pilihan Android</translation>
 <translation id="4074367893748481070">Alih keluar Gedung Brave Software Play</translation>
 <translation id="2792290659606763004">Alih keluar apl Android?</translation>
@@ -1807,11 +1811,11 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7696063401938172191">Pada '<ph name="PHONE_NAME"/>' anda:</translation>
 <translation id="3423463006624419153">Pada '<ph name="PHONE_NAME_1"/>' dan '<ph name="PHONE_NAME_2"/>' anda:</translation>
 <translation id="6997707937646349884">Pada peranti anda:</translation>
-<translation id="7531779363494549572">Pergi ke Tetapan &amp;gt; Apl &amp;amp; pemberitahuan &amp;gt; Pemberitahuan.</translation>
-<translation id="6921033294337262045">Ketik Pemberitahuan apl &amp;gt; Perkhidmatan Brave Software Play.</translation>
+<translation id="7531779363494549572">Pergi ke Tetapan &gt; Apl &amp; pemberitahuan &gt; Pemberitahuan.</translation>
+<translation id="6921033294337262045">Ketik Pemberitahuan apl &gt; Perkhidmatan Brave Software Play.</translation>
 <translation id="5624710179837914896">Hidupkan perkhidmatan Brave Software Play.</translation>
 <translation id="2705736684557713153">Tatal ke bahagian bawah skrin dan hidupkan Penambatan Segera jika dipaparkan. Jika tidak dipaparkan, itu menunjukkan anda sudah menghidupkannya.</translation>
-<translation id="3604048165392640554">Tiada sambungan mudah alih ditemui. Hidupkan Penambatan Segera pada peranti anda yang lain dan cuba lagi. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Ketahui lebih lanjut&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">Tiada sambungan mudah alih ditemui. Hidupkan Penambatan Segera pada peranti anda yang lain dan cuba lagi. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Sambungkan ke tempat liputan baharu?</translation>
 <translation id="6514010653036109809">Peranti yang tersedia:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% Bateri</translation>
@@ -1977,7 +1981,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Untuk mendapatkan lebih banyak tetapan yang berkaitan dengan privasi, keselamatan dan pengumpulan data, lihat <ph name="BEGIN_LINK"/>Penyegerakan dan pemperibadian<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Untuk mendapatkan lebih banyak tetapan yang berkaitan dengan privasi, keselamatan dan pengumpulan data, lihat <ph name="BEGIN_LINK"/>Penyegerakan dan perkhidmatan Brave Software<ph name="END_LINK"/></translation>
-<translation id="6438234780621650381">Tetapkan semula tetapan</translation>
 <translation id="5293170712604732402">Pulihkan tetapan kepada lalai asal.</translation>
 <translation id="892706138619340876">Beberapa tetapan telah ditetapkan semula</translation>
 <translation id="2334029754052191847">Brave mengesan bahawa sesetengah tetapan anda telah terganggu oleh program lain dan menetapkannya semula kepada tetapan lalainya yang asal.</translation>
@@ -1991,7 +1994,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2203682048752833055">Enjin carian yang digunakan dalam <ph name="BEGIN_LINK"/>bar alamat<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">Urus enjin carian</translation>
 <translation id="2862205630718215619">Brave Software Assistant</translation>
-<translation id="3435896845095436175">Dayakan</translation>
 <translation id="6978121630131642226">Enjin Carian</translation>
 <translation id="6410668567036790476">Tambah enjin carian</translation>
 <translation id="1128591060186966949">Edit enjin carian</translation>
@@ -2224,8 +2226,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4684427112815847243">Segerakkan semua</translation>
 <translation id="2709516037105925701">Autoisi</translation>
 <translation id="1644574205037202324">Sejarah</translation>
-<translation id="5117427536932535467">Tema &amp;amp; Kertas Dinding</translation>
-<translation id="7029809446516969842">Kata laluan</translation>
+<translation id="5117427536932535467">Tema &amp; Kertas Dinding</translation>
 <translation id="3259418918864581163">Kad kredit dan alamat yang menggunakan Brave Software Pay.</translation>
 <translation id="3268451620468152448">Tab Terbuka</translation>
 <translation id="5241892180459725878">Cadangan carian Brave Software Drive</translation>
@@ -2363,7 +2364,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6856623341093082836">Sediakan dan laras ketepatan skrin sentuh anda</translation>
 <translation id="4598556348158889687">Pengurusan storan</translation>
 <translation id="8868626022555786497">Sedang digunakan</translation>
-<translation id="8688672835843460752">Tersedia</translation>
 <translation id="1082725763867769612">Fail luar talian</translation>
 <translation id="7366909168761621528">Data penyemakan imbas</translation>
 <translation id="5568144734023334204">Storan Android</translation>
@@ -2429,15 +2429,15 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3264582393905923483">Konteks</translation>
 <translation id="1607139524282324606">Kosongkan masukan</translation>
 <translation id="6025215716629925253">Pengesanan Susunan</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 baris tidak ditunjukkan&amp;gt;}other{&amp;lt;$1 baris tidak ditunjukkan&amp;gt;}}</translation>
-<translation id="8389492867173948260">Benarkan sambungan ini membaca dan mengubah semua data anda pada tapak web yang anda lawati:</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 baris tidak ditunjukkan&gt;}other{&lt;$1 baris tidak ditunjukkan&gt;}}</translation>
+<translation id="8389492867173948260">Benarkan sambungan ini membaca dan mengubah semua data anda di tapak web yang anda lawati:</translation>
 <translation id="407173827865827707">Apabila diklik</translation>
-<translation id="6455264371803474013">Pada tapak web tertentu</translation>
+<translation id="6455264371803474013">Di tapak web tertentu</translation>
 <translation id="4225397296022057997">Di semua tapak</translation>
 <translation id="3729506734996624908">Tapak yang dibenarkan</translation>
 <translation id="3732078975418297900">Ralat pada baris <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Ralat daripada baris <ph name="ERROR_LINE_START"/> hingga <ph name="ERROR_LINE_END"/></translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Periksa paparan</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> lagi...</translation>
 <translation id="2450849356604136918">Tiada paparan aktif</translation>

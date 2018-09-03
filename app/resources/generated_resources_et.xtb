@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">Selles menüüs saate kustutada oma sirvimisandmed</translation>
 <translation id="6040143037577758943">Sulge</translation>
 <translation id="5379268888377976432">Võta kustutamine tagasi</translation>
-<translation id="6463795194797719782">&amp;amp;Muuda</translation>
+<translation id="6463795194797719782">&amp;Muuda</translation>
 <translation id="8131740175452115882">Kinnita</translation>
 <translation id="4394049700291259645">Keela</translation>
 <translation id="8496717697661868878">Käita pistikprogramm</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">Teisalda aken kasutaja <ph name="USER_NAME"/> töölauale (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">Saate teksti suurendada</translation>
 <translation id="7134098520442464001">Saate teksti suurust vähendada.</translation>
-<translation id="4508765956121923607">Vaata a&amp;amp;llikat</translation>
-<translation id="4792711294155034829">&amp;amp;Teata probleemist ...</translation>
-<translation id="5112577000029535889">Arenda&amp;amp;ja tööriistad</translation>
-<translation id="5184063094292164363">&amp;amp;JavaScripti konsool</translation>
-<translation id="7056526158851679338">&amp;amp;Seadmete kontrollimine</translation>
-<translation id="48838266408104654">Tegumihal&amp;amp;dur</translation>
-<translation id="6277518330158259200">J&amp;amp;äädvusta ekraanipilt</translation>
-<translation id="5288678174502918605">Ava suletud vaheleht &amp;amp;uuesti</translation>
-<translation id="2731392572903530958">A&amp;amp;va suletud aken uuesti</translation>
+<translation id="4508765956121923607">Vaata a&amp;llikat</translation>
+<translation id="4792711294155034829">&amp;Teata probleemist ...</translation>
+<translation id="5112577000029535889">Arenda&amp;ja tööriistad</translation>
+<translation id="5184063094292164363">&amp;JavaScripti konsool</translation>
+<translation id="7056526158851679338">&amp;Seadmete kontrollimine</translation>
+<translation id="48838266408104654">Tegumihal&amp;dur</translation>
+<translation id="6277518330158259200">J&amp;äädvusta ekraanipilt</translation>
+<translation id="5288678174502918605">Ava suletud vaheleht &amp;uuesti</translation>
+<translation id="2731392572903530958">A&amp;va suletud aken uuesti</translation>
 <translation id="7607274158153386860">Taotle tahvelarvutile mõeldud saiti</translation>
-<translation id="4408599188496843485">A&amp;amp;bi</translation>
+<translation id="4408599188496843485">A&amp;bi</translation>
 <translation id="3855676282923585394">Impordi järjehoidjad ja seaded...</translation>
-<translation id="4821935166599369261">&amp;amp;Profileerimine lubatud</translation>
-<translation id="3827774300009121996">&amp;amp;Täisekraan</translation>
-<translation id="3616741288025931835">Kustuta sirvi&amp;amp;mise andmed...</translation>
-<translation id="7861215335140947162">&amp;amp;Allalaadimised</translation>
-<translation id="862542460444371744">&amp;amp;Laiendused</translation>
-<translation id="8925458182817574960">&amp;amp;Seaded</translation>
-<translation id="9147392381910171771">&amp;amp;Valikud</translation>
-<translation id="1618268899808219593">A&amp;amp;bikeskus</translation>
+<translation id="4821935166599369261">&amp;Profileerimine lubatud</translation>
+<translation id="3827774300009121996">&amp;Täisekraan</translation>
+<translation id="3616741288025931835">Kustuta sirvi&amp;mise andmed...</translation>
+<translation id="7861215335140947162">&amp;Allalaadimised</translation>
+<translation id="862542460444371744">&amp;Laiendused</translation>
+<translation id="8925458182817574960">&amp;Seaded</translation>
+<translation id="9147392381910171771">&amp;Valikud</translation>
+<translation id="1618268899808219593">A&amp;bikeskus</translation>
 <translation id="7324297612904500502">Beeta foorum</translation>
-<translation id="7199158086730159431">A&amp;amp;bi hankimine</translation>
-<translation id="630065524203833229">V&amp;amp;älju</translation>
+<translation id="7199158086730159431">A&amp;bi hankimine</translation>
+<translation id="630065524203833229">V&amp;älju</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">&amp;amp;Muuda otsingumootoreid...</translation>
+<translation id="5702898740348134351">&amp;Muuda otsingumootoreid...</translation>
 <translation id="2454247629720664989">Märksõna</translation>
 <translation id="5327248766486351172">Nimi</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (vaikimisi)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">Tühjenda kõik</translation>
 <translation id="750509436279396091">Ava allalaaditud failide kaust</translation>
 <translation id="2902312830803030883">Veel toiminguid</translation>
-<translation id="3612673635130633812">Laadis alla &amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;</translation>
+<translation id="3612673635130633812">Laadis alla &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="7909969815743704077">Alla laaditud inkognito režiimis</translation>
 <translation id="8028803902702117856">Allalaadimine: <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Allalaadimine, <ph name="PERCENT_REMAINING"/></translation>
@@ -195,7 +195,7 @@
 <translation id="2101225219012730419">Versioon:</translation>
 <translation id="8678933587484842200">Kuidas soovite selle rakenduse käivitada?</translation>
 <translation id="397105322502079400">Arvutamine ...</translation>
-<translation id="2352662711729498748">&amp;lt; 1 MB</translation>
+<translation id="2352662711729498748">&lt; 1 MB</translation>
 <translation id="8941173171815156065">Tühista luba „<ph name="PERMISSION"/>”</translation>
 <translation id="741906494724992817">See rakendus ei nõua erilubasid.</translation>
 <translation id="1616206807336925449">Selle laienduse jaoks pole erilube vaja.</translation>
@@ -533,8 +533,8 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="3011284594919057757">Teave Flashi kohta</translation>
 <translation id="1962233722219655970">Leht kasutab omakliendi rakendust, mis ei tööta teie arvutis.</translation>
 <translation id="4453946976636652378">Otsige teenusega <ph name="SEARCH_ENGINE_NAME"/> või sisestage URL</translation>
-<translation id="5731247495086897348">Kl&amp;amp;eebi ja mine</translation>
-<translation id="8425755597197517046">Kl&amp;amp;eebi ja otsi</translation>
+<translation id="5731247495086897348">Kl&amp;eebi ja mine</translation>
+<translation id="8425755597197517046">Kl&amp;eebi ja otsi</translation>
 <translation id="6151323131516309312">Vajutage <ph name="SEARCH_KEY"/>, et otsida <ph name="SITE_NAME"/>-st</translation>
 <translation id="3449839693241009168">Vajutage nuppu <ph name="SEARCH_KEY"/>, et saata käsud teenusesse <ph name="EXTENSION_NAME"/></translation>
 <translation id="6659594942844771486">Vaheleht</translation>
@@ -571,6 +571,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="3617891479562106823">Taustad pole saadaval. Proovige hiljem uuesti</translation>
 <translation id="8391712576156218334">Pilt pole saadaval. Proovige hiljem uuesti.</translation>
 <translation id="1564414980088536597">Seda pilti ei saa kasutada. Valige teine pilt.</translation>
+<translation id="385051799172605136">Tagasi</translation>
 <translation id="4628948037717959914">Foto</translation>
 <translation id="8033827949643255796">valitud</translation>
 <translation id="5376169624176189338">Klõpsake tagasi minemiseks, hoidke all ajaloo kuvamiseks</translation>
@@ -773,7 +774,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8539727552378197395">Ei (ainult HTTP)</translation>
 <translation id="4615586811063744755">ühtki küpsisefaili ei ole valitud</translation>
 <translation id="5765780083710877561">Kirjeldus:</translation>
-<translation id="2422426094670600218">&amp;lt;nimeta&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;nimeta&gt;</translation>
 <translation id="6708242697268981054">Päritolu:</translation>
 <translation id="6492313032770352219">Maht kettal:</translation>
 <translation id="3459774175445953971">Viimati muudetud:</translation>
@@ -835,7 +836,6 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="6418273007044911016">Brave Software'iga sünkroonitavad andmed ja teie kasutatavad funktsioonid ei muutu</translation>
 <translation id="8372733498235009300">Sünkroonimise, isikupärastamise ja muude Brave Software'i teenuste sisselülitamine</translation>
 <translation id="8340964510643644301">Seda saate Brave'i seadetes igal ajal kohandada</translation>
-<translation id="385051799172605136">Tagasi</translation>
 <translation id="3149880132460839085">Brave'i sünkroonimine</translation>
 <translation id="3796902758602917951">Teie järjehoidjad, ajalugu, paroolid ja muud seaded sünkroonitakse teie Brave Software'i kontoga, et saaksite neid kasutada kõigis oma seadmetes</translation>
 <translation id="1371301976177520732">Teie järjehoidjad, paroolid, ajalugu ja muu kõigis teie seadmetes</translation>
@@ -887,7 +887,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="7004499039102548441">Hiljutised vahelehed</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 vaheleht}other{# vahelehte}}</translation>
 <translation id="4547659257713117923">Muudest seadmetest pärinevaid vahelehti ei ole</translation>
-<translation id="4756388243121344051">&amp;amp;Ajalugu</translation>
+<translation id="4756388243121344051">&amp;Ajalugu</translation>
 <translation id="9026731007018893674">Allalaaditud fail</translation>
 <translation id="9218430445555521422">Seadista vaikebrauseriks</translation>
 <translation id="281133045296806353">Olemasoleva brauseri seansi ajal loodi uus aken.</translation>
@@ -909,7 +909,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="4242533952199664413">Ava seaded</translation>
 <translation id="3752582316358263300">OK...</translation>
 <translation id="7117247127439884114">Logi uuesti sisse ...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> soovib teile saata märguandeid</translation>
 <translation id="7221855153210829124">märguandeid näidata</translation>
@@ -1067,7 +1067,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8736288397686080465">Saiti värskendati taustal.</translation>
 <translation id="6945221475159498467">Vali</translation>
 <translation id="4130199216115862831">Seadme logi</translation>
-<translation id="6231881193380278751">Lehe automaatseks värskendamiseks lisage päringu parameeter URL-i: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">Lehe automaatseks värskendamiseks lisage päringu parameeter URL-i: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Värskenda</translation>
 <translation id="1260240842868558614">Näita:</translation>
 <translation id="1165039591588034296">Viga</translation>
@@ -1114,20 +1114,20 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="3613134908380545408">Kuva <ph name="FOLDER_NAME"/></translation>
 <translation id="2805756323405976993">Rakendused</translation>
 <translation id="2367972762794486313">Rakenduste kuvamine</translation>
-<translation id="6466988389784393586">&amp;amp;Ava kõik järjehoidjad</translation>
-<translation id="6804671422566312077">Ava kõik järjehoidjad &amp;amp;uues aknas</translation>
-<translation id="3011362742078013760">Ava kõik järjehoidjad &amp;amp;inkognito aknas</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{&amp;amp;Ava kõik}=1{&amp;amp;Ava järjehoidja}other{&amp;amp;Ava kõik (#)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{Ava kõik &amp;amp;uues aknas}=1{Ava &amp;amp;uues aknas}other{Ava kõik (#) &amp;amp;uues aknas}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Ava kõik &amp;amp;inkognito aknas}=1{Ava &amp;amp;inkognito aknas}other{Ava kõik (#) &amp;amp;inkognito aknas}}</translation>
-<translation id="9024127637873500333">&amp;amp;Ava uuel vahelehel</translation>
-<translation id="665061930738760572">Ava &amp;amp;uues aknas</translation>
-<translation id="37613671848467444">&amp;amp;Ava inkognito aknas</translation>
-<translation id="6702639462873609204">&amp;amp;Muuda ...</translation>
-<translation id="3088325635286126843">&amp;amp;Nimeta ümber ...</translation>
-<translation id="5329858601952122676">&amp;amp;Kustuta</translation>
-<translation id="8824701697284169214">Lisa &amp;amp;leht ...</translation>
-<translation id="2489918096470125693">Lisa &amp;amp;kaust ...</translation>
+<translation id="6466988389784393586">&amp;Ava kõik järjehoidjad</translation>
+<translation id="6804671422566312077">Ava kõik järjehoidjad &amp;uues aknas</translation>
+<translation id="3011362742078013760">Ava kõik järjehoidjad &amp;inkognito aknas</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{&amp;Ava kõik}=1{&amp;Ava järjehoidja}other{&amp;Ava kõik (#)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{Ava kõik &amp;uues aknas}=1{Ava &amp;uues aknas}other{Ava kõik (#) &amp;uues aknas}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{Ava kõik &amp;inkognito aknas}=1{Ava &amp;inkognito aknas}other{Ava kõik (#) &amp;inkognito aknas}}</translation>
+<translation id="9024127637873500333">&amp;Ava uuel vahelehel</translation>
+<translation id="665061930738760572">Ava &amp;uues aknas</translation>
+<translation id="37613671848467444">&amp;Ava inkognito aknas</translation>
+<translation id="6702639462873609204">&amp;Muuda ...</translation>
+<translation id="3088325635286126843">&amp;Nimeta ümber ...</translation>
+<translation id="5329858601952122676">&amp;Kustuta</translation>
+<translation id="8824701697284169214">Lisa &amp;leht ...</translation>
+<translation id="2489918096470125693">Lisa &amp;kaust ...</translation>
 <translation id="2897878306272793870">Kas te soovite kindlasti avada <ph name="TAB_COUNT"/> vahekaarti?</translation>
 <translation id="4430369329743628066">Järjehoidja on lisatud</translation>
 <translation id="6404511346730675251">Muuda järjehoidjat</translation>
@@ -1142,12 +1142,12 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="971774202801778802">Järjehoidja URL</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{Kaust sisaldab järjehoidjat. Kas soovite kindlasti selle kustutada?}other{Kaust sisaldab # järjehoidjat. Kas soovite kindlasti selle kustutada?}}</translation>
 <translation id="5857090052475505287">Uus kaust</translation>
-<translation id="6455894534188563617">&amp;amp;Uus kaust</translation>
+<translation id="6455894534188563617">&amp;Uus kaust</translation>
 <translation id="1015318665228971643">Kausta nime muutmine</translation>
 <translation id="5449588825071916739">Kõikide vahelehtede järjehoidjatesse lisamine</translation>
 <translation id="5528368756083817449">Järjehoidjate haldur</translation>
 <translation id="3828029223314399057">Otsi jäjehoidjaid</translation>
-<translation id="5111692334209731439">&amp;amp;Järjehoidjate haldur</translation>
+<translation id="5111692334209731439">&amp;Järjehoidjate haldur</translation>
 <translation id="6973630695168034713">Kaustad</translation>
 <translation id="5496587651328244253">Korraldamine</translation>
 <translation id="1936157145127842922">Kuva kaustas</translation>
@@ -1174,7 +1174,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="5101042277149003567">Ava kõik järjehoidjad</translation>
 <translation id="7007648447224463482">Ava kõik uues aknas</translation>
 <translation id="4508051413094283164">Kõik avatakse inkognito aknas</translation>
-<translation id="4195643157523330669">Ava uuel &amp;amp;vahelehel</translation>
+<translation id="4195643157523330669">Ava uuel &amp;vahelehel</translation>
 <translation id="2979639724566107830">Ava uues aknas</translation>
 <translation id="1134009406053225289">Ava inkogonito aknas</translation>
 <translation id="1173894706177603556">Muuda nime</translation>
@@ -1191,13 +1191,13 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="6757101664402245801">URL on kopeeritud</translation>
 <translation id="5488093641312826914">„<ph name="COPIED_ITEM_NAME"/>” on kopeeritud</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 üksus on kopeeritud}other{# üksust on kopeeritud}}</translation>
-<translation id="9115675100829699941">&amp;amp;Järjehoidjad</translation>
+<translation id="9115675100829699941">&amp;Järjehoidjad</translation>
 <translation id="1047726139967079566">Lisa selle lehe järjehoidja...</translation>
 <translation id="6949306908218145636">Lisa avatud lehed järjehoidjasse ...</translation>
 <translation id="4422347585044846479">Muuda selle lehekülje järjehoidjat</translation>
 <translation id="6005695835120147974">Meedia marsruuter</translation>
 <translation id="7787308148023287649">Kuvage teisel ekraanil</translation>
-<translation id="7710568461918838723">&amp;amp;Ülekandmine …</translation>
+<translation id="7710568461918838723">&amp;Ülekandmine …</translation>
 <translation id="8970203673128054105">Kuva ülekandmise režiimi loend</translation>
 <translation id="1277908057200820621">Kuva seadmete loend</translation>
 <translation id="2847759467426165163">Ülekandmine seadmesse</translation>
@@ -1243,6 +1243,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="3930737994424905957">Seadmete otsimine</translation>
 <translation id="5209320130288484488">Seadmeid ei leitud</translation>
 <translation id="4363771538994847871">Ülekande sihtkohti ei leitud. Kas vajate abi?</translation>
+<translation id="8688672835843460752">Saadaval</translation>
 <translation id="4271396100647220620">Vasted puuduvad</translation>
 <translation id="6972180789171089114">Heli/video</translation>
 <translation id="2541002089857695151">Kas optimeerida täisekraanil ülekandmiseks?</translation>
@@ -1253,6 +1254,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7473891865547856676">Tänan, ei</translation>
 <translation id="8538358978858059843">Kas lubada ülekandmise jaoks pilveteenused?</translation>
 <translation id="3856595552313160385">Hangoutsi ja Cast for Educationi kasutamisel kehtivad Brave Software'i privaatsuseeskirjad.</translation>
+<translation id="3435896845095436175">Luba</translation>
 <translation id="3700888195348409686">Esitlemine (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Kuva <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">Haldur (<ph name="CUSTODIAN_EMAIL"/>) saab kasutamise ja ajaloo üle vaadata aadressil chrome.com.</translation>
@@ -1280,7 +1282,9 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="1316495628809031177">Sünkroonimine on peatatud</translation>
 <translation id="7786207843293321886">Välju külastajaseansist</translation>
 <translation id="2329597144923131178">Logige sisse, et tuua kõikidesse seadmetesse järjehoidjad, ajalugu, paroolid ja muud seaded.</translation>
+<translation id="7029809446516969842">Paroolid</translation>
 <translation id="984275831282074731">Makseviisid</translation>
+<translation id="2903493209154104877">Aadressid</translation>
 <translation id="8883847527783433352">Sünkrooni muu kontoga</translation>
 <translation id="2761898608071930085">Kasuta muud kontot</translation>
 <translation id="4235813040357936597">Lisa konto profiilile <ph name="PROFILE_NAME"/></translation>
@@ -1478,11 +1482,11 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="304747341537320566">Kõnesünteesimootorid</translation>
 <translation id="1067291318998134776">Linux (beetaversioon)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Käitage oma Bravebookis Linuxi tööriistu, redaktoreid ja IDE-sid. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Lisateave&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">Käitage oma Bravebookis Linuxi tööriistu, redaktoreid ja IDE-sid. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lisateave&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Linuxi rakenduste eemaldamine Bravebookist</translation>
 <translation id="2295473777859797944">Brave Software Play pood</translation>
 <translation id="572155275267014074">Androidi seaded</translation>
-<translation id="4767209642168463274">Installige rakendused ja mängud Brave Software Playst oma Bravebooki. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Lisateave&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">Installige rakendused ja mängud Brave Software Playst oma Bravebooki. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lisateave&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Androidi eelistuste haldamine</translation>
 <translation id="4074367893748481070">Brave Software Play poe eemaldamine</translation>
 <translation id="2792290659606763004">Kas soovite Androidi rakendused eemaldada?</translation>
@@ -1807,11 +1811,11 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7696063401938172191">Teie seadmes <ph name="PHONE_NAME"/>:</translation>
 <translation id="3423463006624419153">Teie seadmetes <ph name="PHONE_NAME_1"/> ja <ph name="PHONE_NAME_2"/>:</translation>
 <translation id="6997707937646349884">Teie seadmetes:</translation>
-<translation id="7531779363494549572">Avage jaotis Seaded &amp;gt; Rakendused ja märguanded &amp;gt; Märguanded.</translation>
-<translation id="6921033294337262045">Puudutage valikuid Rakenduse märguanded &amp;gt; Brave Software Play teenused.</translation>
+<translation id="7531779363494549572">Avage jaotis Seaded &gt; Rakendused ja märguanded &gt; Märguanded.</translation>
+<translation id="6921033294337262045">Puudutage valikuid Rakenduse märguanded &gt; Brave Software Play teenused.</translation>
 <translation id="5624710179837914896">Lülitage sisse Brave Software Play teenused.</translation>
 <translation id="2705736684557713153">Kerige ekraani alaossa ja lülitage sisse automaatne jagamine, kui see kuvatakse. Muidu ei ole teil vaja rohkem midagi teha.</translation>
-<translation id="3604048165392640554">Mobiilsideühendust ei leitud. Lülitage teistes seadmetes sisse automaatne jagamine ja proovige uuesti. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Lisateave&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">Mobiilsideühendust ei leitud. Lülitage teistes seadmetes sisse automaatne jagamine ja proovige uuesti. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lisateave&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Kas luua ühendus uue levialaga?</translation>
 <translation id="6514010653036109809">Saadaolev seade:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% akut</translation>
@@ -1977,7 +1981,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Privaatsuse, turvalisuse ning andmete kogumisega seotud lisaseadete nägemiseks avage jaotis <ph name="BEGIN_LINK"/>Sünkroonimine ja isikupärastamine<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Privaatsuse, turvalisuse ning andmete kogumisega seotud lisaseadete nägemiseks avage valik <ph name="BEGIN_LINK"/>Sünkroonimine ja Brave Software'i teenused<ph name="END_LINK"/></translation>
-<translation id="6438234780621650381">Seadete lähtestamine</translation>
 <translation id="5293170712604732402">Seadete taastamine algsetele vaikevalikutele</translation>
 <translation id="892706138619340876">Mõned seaded lähtestati</translation>
 <translation id="2334029754052191847">Brave tuvastas, et teine programm rikkus teie seadeid, ja lähtestas need algsetele vaikevalikutele.</translation>
@@ -1991,7 +1994,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2203682048752833055"><ph name="BEGIN_LINK"/>Aadressiribal<ph name="END_LINK"/> kasutatud otsingumootor</translation>
 <translation id="1432581352905426595">Halda otsingumootoreid</translation>
 <translation id="2862205630718215619">Brave Software'i assistent</translation>
-<translation id="3435896845095436175">Luba</translation>
 <translation id="6978121630131642226">Otsingumootorid</translation>
 <translation id="6410668567036790476">Otsingumootori lisamine</translation>
 <translation id="1128591060186966949">Otsingumootori muutmine</translation>
@@ -2225,7 +2227,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2709516037105925701">Automaatne täitmine</translation>
 <translation id="1644574205037202324">Ajalugu</translation>
 <translation id="5117427536932535467">Teemad ja taustapildid</translation>
-<translation id="7029809446516969842">Paroolid</translation>
 <translation id="3259418918864581163">Krediitkaardid ja aadressid, mis kasutavad teenust Brave Software Pay.</translation>
 <translation id="3268451620468152448">Avatud vahelehed</translation>
 <translation id="5241892180459725878">Brave Software Drive'i otsingusoovitused</translation>
@@ -2363,7 +2364,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6856623341093082836">Seadistage puuteekraan ja kohandage selle täpsust</translation>
 <translation id="4598556348158889687">Salvestusruumi haldus</translation>
 <translation id="8868626022555786497">Kasutusel</translation>
-<translation id="8688672835843460752">Saadaval</translation>
 <translation id="1082725763867769612">Võrguühenduseta failid</translation>
 <translation id="7366909168761621528">Sirvimisandmed</translation>
 <translation id="5568144734023334204">Androidi salvestusruum</translation>
@@ -2429,7 +2429,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="3264582393905923483">Kontekst</translation>
 <translation id="1607139524282324606">Kustuta sisestus</translation>
 <translation id="6025215716629925253">Virna jälg</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 rida pole kuvatud&amp;gt;}other{&amp;lt;$1 rida pole kuvatud&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 rida pole kuvatud&gt;}other{&lt;$1 rida pole kuvatud&gt;}}</translation>
 <translation id="8389492867173948260">Lubage sellel laiendusel lugeda ja muuta külastatavate veebisaitide andmeid:</translation>
 <translation id="407173827865827707">Klõpsamisel</translation>
 <translation id="6455264371803474013">Konkreetsetel saitidel</translation>
@@ -2437,7 +2437,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="3729506734996624908">Lubatud saidid</translation>
 <translation id="3732078975418297900">Viga real <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Viga ridadel <ph name="ERROR_LINE_START"/> kuni <ph name="ERROR_LINE_END"/></translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Uurige vaatamisi</translation>
 <translation id="181577467034453336">Veel <ph name="NUMBER_OF_VIEWS"/> …</translation>
 <translation id="2450849356604136918">Aktiivsed kuvad puuduvad</translation>

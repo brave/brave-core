@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">이 메뉴에서 인터넷 사용 기록을 삭제할 수 있습니다.</translation>
 <translation id="6040143037577758943">닫기</translation>
 <translation id="5379268888377976432">삭제 실행취소</translation>
-<translation id="6463795194797719782">편집(&amp;amp;E)</translation>
+<translation id="6463795194797719782">편집(&amp;E)</translation>
 <translation id="8131740175452115882">확인</translation>
 <translation id="4394049700291259645">사용 중지</translation>
 <translation id="8496717697661868878">이 플러그인 실행</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">창을 <ph name="USER_NAME"/>(<ph name="USER_EMAIL"/>)님에게로 이동</translation>
 <translation id="8642947597466641025">텍스트 확대</translation>
 <translation id="7134098520442464001">텍스트 축소</translation>
-<translation id="4508765956121923607">소스 보기(&amp;amp;O)</translation>
-<translation id="4792711294155034829">문제 신고(&amp;amp;R)...</translation>
-<translation id="5112577000029535889">개발자 도구(&amp;amp;D)</translation>
-<translation id="5184063094292164363">자바스크립트 콘솔(&amp;amp;J)</translation>
-<translation id="7056526158851679338">기기 검사(&amp;amp;I)</translation>
-<translation id="48838266408104654">작업 관리자(&amp;amp;T)</translation>
-<translation id="6277518330158259200">스크린샷 캡쳐하기(&amp;amp;A)</translation>
-<translation id="5288678174502918605">닫은 탭 다시 열기(&amp;amp;E)</translation>
-<translation id="2731392572903530958">닫은 창 다시 열기(&amp;amp;E)</translation>
+<translation id="4508765956121923607">소스 보기(&amp;O)</translation>
+<translation id="4792711294155034829">문제 신고(&amp;R)...</translation>
+<translation id="5112577000029535889">개발자 도구(&amp;D)</translation>
+<translation id="5184063094292164363">자바스크립트 콘솔(&amp;J)</translation>
+<translation id="7056526158851679338">기기 검사(&amp;I)</translation>
+<translation id="48838266408104654">작업 관리자(&amp;T)</translation>
+<translation id="6277518330158259200">스크린샷 캡쳐하기(&amp;A)</translation>
+<translation id="5288678174502918605">닫은 탭 다시 열기(&amp;E)</translation>
+<translation id="2731392572903530958">닫은 창 다시 열기(&amp;E)</translation>
 <translation id="7607274158153386860">태블릿 사이트 요청</translation>
-<translation id="4408599188496843485">도움말(&amp;amp;E)</translation>
+<translation id="4408599188496843485">도움말(&amp;E)</translation>
 <translation id="3855676282923585394">북마크 및 설정 가져오기...</translation>
-<translation id="4821935166599369261">프로파일링 사용(&amp;amp;P)</translation>
-<translation id="3827774300009121996">전체화면(&amp;amp;F)</translation>
-<translation id="3616741288025931835">인터넷 사용 기록 삭제(&amp;amp;C)...</translation>
-<translation id="7861215335140947162">다운로드(&amp;amp;D)</translation>
-<translation id="862542460444371744">확장 프로그램(&amp;amp;E)</translation>
-<translation id="8925458182817574960">설정(&amp;amp;S)</translation>
-<translation id="9147392381910171771">옵션(&amp;amp;O)</translation>
+<translation id="4821935166599369261">프로파일링 사용(&amp;P)</translation>
+<translation id="3827774300009121996">전체화면(&amp;F)</translation>
+<translation id="3616741288025931835">인터넷 사용 기록 삭제(&amp;C)...</translation>
+<translation id="7861215335140947162">다운로드(&amp;D)</translation>
+<translation id="862542460444371744">확장 프로그램(&amp;E)</translation>
+<translation id="8925458182817574960">설정(&amp;S)</translation>
+<translation id="9147392381910171771">옵션(&amp;O)</translation>
 <translation id="1618268899808219593">고객센터(H)</translation>
 <translation id="7324297612904500502">베타 포럼</translation>
 <translation id="7199158086730159431">도움말 보기</translation>
-<translation id="630065524203833229">종료(&amp;amp;X)</translation>
+<translation id="630065524203833229">종료(&amp;X)</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">검색 엔진 변경(&amp;amp;E)...</translation>
+<translation id="5702898740348134351">검색 엔진 변경(&amp;E)...</translation>
 <translation id="2454247629720664989">키워드</translation>
 <translation id="5327248766486351172">이름</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/>(기본)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">모두 삭제</translation>
 <translation id="750509436279396091">다운로드 폴더 열기</translation>
 <translation id="2902312830803030883">추가 작업</translation>
-<translation id="3612673635130633812">&amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;에서 다운로드함</translation>
+<translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;에서 다운로드함</translation>
 <translation id="7909969815743704077">시크릿 모드에서 다운로드됨</translation>
 <translation id="8028803902702117856"><ph name="SIZE"/> 다운로드 중, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">다운로드 중, <ph name="PERCENT_REMAINING"/></translation>
@@ -531,8 +531,8 @@
 <translation id="3011284594919057757">Flash 정보</translation>
 <translation id="1962233722219655970">이 페이지에서 사용자 컴퓨터에서 작동하지 않는 Native Client 앱을 사용합니다.</translation>
 <translation id="4453946976636652378"><ph name="SEARCH_ENGINE_NAME"/>에서 검색하거나 URL을 입력하세요.</translation>
-<translation id="5731247495086897348">붙여넣어 바로가기(&amp;amp;S)</translation>
-<translation id="8425755597197517046">붙여넣어 검색하기(&amp;amp;S)</translation>
+<translation id="5731247495086897348">붙여넣어 바로가기(&amp;S)</translation>
+<translation id="8425755597197517046">붙여넣어 검색하기(&amp;S)</translation>
 <translation id="6151323131516309312"><ph name="SEARCH_KEY"/>을(를) 눌러 <ph name="SITE_NAME"/> 검색</translation>
 <translation id="3449839693241009168"><ph name="SEARCH_KEY"/> 키를 눌러 <ph name="EXTENSION_NAME"/>에 명령 보내기</translation>
 <translation id="6659594942844771486">탭</translation>
@@ -569,6 +569,7 @@
 <translation id="3617891479562106823">배경을 사용할 수 없습니다. 나중에 다시 시도하세요.</translation>
 <translation id="8391712576156218334">이미지를 사용할 수 없습니다. 나중에 다시 시도하세요.</translation>
 <translation id="1564414980088536597">이 이미지는 사용할 수 없습니다. 다른 이미지를 선택하세요.</translation>
+<translation id="385051799172605136">뒤로</translation>
 <translation id="4628948037717959914">사진</translation>
 <translation id="8033827949643255796">선택됨</translation>
 <translation id="5376169624176189338">클릭하면 이전 페이지로 가고 누르고 있으면 방문 기록이 나타납니다.</translation>
@@ -771,7 +772,7 @@
 <translation id="8539727552378197395">허용 안함(Http만)</translation>
 <translation id="4615586811063744755">선택된 쿠키 없음</translation>
 <translation id="5765780083710877561">설명:</translation>
-<translation id="2422426094670600218">&amp;lt;unnamed&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;unnamed&gt;</translation>
 <translation id="6708242697268981054">출처:</translation>
 <translation id="6492313032770352219">디스크 크기:</translation>
 <translation id="3459774175445953971">최종 수정 날짜:</translation>
@@ -823,7 +824,7 @@
 <translation id="6860427144121307915">탭에서 열기</translation>
 <translation id="3074037959626057712">로그인하고 동기화를 사용 설정함</translation>
 <translation id="6264422956566238156">동기화가 사용 설정됨</translation>
-<translation id="9125982323641182972">Brave에서 스마트한 Brave Software 사용</translation>
+<translation id="9125982323641182972">Brave Software로 Brave을 더욱 스마트하게</translation>
 <translation id="7988117629517051942">더욱 스마트한 Brave Software을 사용하세요</translation>
 <translation id="5596627076506792578">옵션 더보기</translation>
 <translation id="4419556793104466535">동기화, 맞춤설정 등 관리</translation>
@@ -833,15 +834,14 @@
 <translation id="6418273007044911016">Brave Software에 동기화하는 데이터 및 사용하는 기능은 변경되지 않습니다.</translation>
 <translation id="8372733498235009300">동기화, 맞춤설정 및 기타 Brave Software 서비스 사용 설정</translation>
 <translation id="8340964510643644301">Brave 설정에서 언제든지 맞춤설정할 수 있습니다.</translation>
-<translation id="385051799172605136">뒤로</translation>
 <translation id="3149880132460839085">크롬 동기화</translation>
 <translation id="3796902758602917951">북마크, 방문 기록, 비밀번호, 기타 설정이 Brave Software 계정에 동기화되므로 모든 기기에서 사용할 수 있습니다.</translation>
-<translation id="1371301976177520732">모든 기기의 북마크, 비밀번호, 방문 기록 등</translation>
+<translation id="1371301976177520732">북마크, 비밀번호, 방문 기록 등을 모든 기기에 동기화</translation>
 <translation id="3111958038206230539">Brave Software 서비스 맞춤설정</translation>
 <translation id="295992419959320001">Brave Software에서 검색, 광고 및 다른 Brave Software 서비스를 맞춤설정하기 위하여 내 인터넷 사용 기록을 사용할 수 있습니다.</translation>
 <translation id="4800091108248587380">Brave Software Pay와 같은 맞춤형 Brave Software 서비스</translation>
 <translation id="3070156078150543526">검색 및 다른 Brave Software 서비스를 맞춤설정하기 위하여 Brave Software에서 인터넷 사용 기록을 사용할 수 있습니다.</translation>
-<translation id="2532167245710864499">시스템 정보와 사용 기록을 Brave Software에 전송하여 Brave 및 보안을 개선합니다.</translation>
+<translation id="2532167245710864499">시스템 정보와 사용 기록을 Brave Software에 전송하여 Brave 및 보안 개선</translation>
 <translation id="2709453993673701466">동기화 및 맞춤설정을 관리한 다음 사용 설정하시겠습니까? <ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>으로 이동하세요.</translation>
 <translation id="2668128414154024727"><ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>에서 언제든지 Brave Software에서 수집하는 정보를 맞춤설정할 수 있습니다.</translation>
 <translation id="6035247993547372482">Brave Software에서 Brave을 비롯한 번역, Brave Software 검색과 같은 기타 Brave Software 서비스 및 광고를 맞춤설정하기 위해 사용자가 방문한 사이트의 콘텐츠, 브라우저 활동 및 상호작용 기록을 사용할 수 있습니다. 이는 설정에서 변경할 수 있습니다.</translation>
@@ -885,7 +885,7 @@
 <translation id="7004499039102548441">최근 탭</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{탭 1개}other{탭 #개}}</translation>
 <translation id="4547659257713117923">다른 기기의 탭 없음</translation>
-<translation id="4756388243121344051">방문 기록(&amp;amp;H)</translation>
+<translation id="4756388243121344051">방문 기록(&amp;H)</translation>
 <translation id="9026731007018893674">다운로드</translation>
 <translation id="9218430445555521422">기본 브라우저로 설정</translation>
 <translation id="281133045296806353">기존 브라우저 세션에 새 창을 생성했습니다.</translation>
@@ -907,7 +907,7 @@
 <translation id="4242533952199664413">설정 열기</translation>
 <translation id="3752582316358263300">확인...</translation>
 <translation id="7117247127439884114">다시 로그인...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/>에서 알림을 보내려고 합니다.</translation>
 <translation id="7221855153210829124">알림 표시</translation>
@@ -1065,7 +1065,7 @@
 <translation id="8736288397686080465">이 사이트는 백그라운드에서 업데이트되었습니다.</translation>
 <translation id="6945221475159498467">선택</translation>
 <translation id="4130199216115862831">기기 로그</translation>
-<translation id="6231881193380278751">검색어 매개변수를 URL에 추가하여 다음 페이지를 자동으로 새로고침하세요. chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">검색어 매개변수를 URL에 추가하여 다음 페이지를 자동으로 새로고침하세요. chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">새로고침</translation>
 <translation id="1260240842868558614">보기:</translation>
 <translation id="1165039591588034296">오류</translation>
@@ -1112,20 +1112,20 @@
 <translation id="3613134908380545408"><ph name="FOLDER_NAME"/> 표시</translation>
 <translation id="2805756323405976993">앱</translation>
 <translation id="2367972762794486313">앱 표시</translation>
-<translation id="6466988389784393586">모든 북마크 열기(&amp;amp;O)</translation>
-<translation id="6804671422566312077">모든 북마크를 새 창에서 열기(&amp;amp;N)</translation>
-<translation id="3011362742078013760">모든 북마크를 시크릿 창에서 열기(&amp;amp;I)</translation>
+<translation id="6466988389784393586">모든 북마크 열기(&amp;O)</translation>
+<translation id="6804671422566312077">모든 북마크를 새 창에서 열기(&amp;N)</translation>
+<translation id="3011362742078013760">모든 북마크를 시크릿 창에서 열기(&amp;I)</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{모두 열기(O)}=1{북마크 열기(O)}other{#개 모두 열기(O)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{모두 새 창에서 열기(N)}=1{새 창에서 열기(N)}other{#개 모두 새 창에서 열기(N)}}</translation>
 <translation id="4857506433977877623">{COUNT,plural, =0{시크릿 창에서 모두 열기(I)}=1{시크릿 창에서 열기(I)}other{시크릿 창에서 #개 모두 열기(I)}}</translation>
-<translation id="9024127637873500333">새 탭에서 열기(&amp;amp;O)</translation>
-<translation id="665061930738760572">새 창에서 열기(&amp;amp;N)</translation>
-<translation id="37613671848467444">시크릿 창에서 열기(&amp;amp;I)</translation>
-<translation id="6702639462873609204">수정(&amp;amp;E)...</translation>
-<translation id="3088325635286126843">이름 바꾸기(&amp;amp;R)...</translation>
-<translation id="5329858601952122676">삭제(&amp;amp;D)</translation>
-<translation id="8824701697284169214">페이지 추가(&amp;amp;G)...</translation>
-<translation id="2489918096470125693">폴더 추가(&amp;amp;F)...</translation>
+<translation id="9024127637873500333">새 탭에서 열기(&amp;O)</translation>
+<translation id="665061930738760572">새 창에서 열기(&amp;N)</translation>
+<translation id="37613671848467444">시크릿 창에서 열기(&amp;I)</translation>
+<translation id="6702639462873609204">수정(&amp;E)...</translation>
+<translation id="3088325635286126843">이름 바꾸기(&amp;R)...</translation>
+<translation id="5329858601952122676">삭제(&amp;D)</translation>
+<translation id="8824701697284169214">페이지 추가(&amp;G)...</translation>
+<translation id="2489918096470125693">폴더 추가(&amp;F)...</translation>
 <translation id="2897878306272793870"><ph name="TAB_COUNT"/>개 탭을 여시겠습니까?</translation>
 <translation id="4430369329743628066">북마크 추가됨</translation>
 <translation id="6404511346730675251">북마크 수정</translation>
@@ -1140,12 +1140,12 @@
 <translation id="971774202801778802">북마크 URL</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{폴더에 북마크가 있습니다. 삭제하시겠습니까?}other{폴더에 #개의 북마크가 있습니다. 삭제하시겠습니까?}}</translation>
 <translation id="5857090052475505287">새 폴더</translation>
-<translation id="6455894534188563617">새 폴더(&amp;amp;N)</translation>
+<translation id="6455894534188563617">새 폴더(&amp;N)</translation>
 <translation id="1015318665228971643">폴더 이름 수정</translation>
 <translation id="5449588825071916739">모든 탭 북마크</translation>
 <translation id="5528368756083817449">북마크 관리자</translation>
 <translation id="3828029223314399057">북마크 검색</translation>
-<translation id="5111692334209731439">북마크 관리자(&amp;amp;B)</translation>
+<translation id="5111692334209731439">북마크 관리자(&amp;B)</translation>
 <translation id="6973630695168034713">폴더</translation>
 <translation id="5496587651328244253">정리</translation>
 <translation id="1936157145127842922">폴더 열기</translation>
@@ -1189,13 +1189,13 @@
 <translation id="6757101664402245801">URL을 복사했습니다</translation>
 <translation id="5488093641312826914">'<ph name="COPIED_ITEM_NAME"/>'이(가) 복사됨</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{항목 1개가 복사됨}other{항목 #개가 복사됨}}</translation>
-<translation id="9115675100829699941">북마크(&amp;amp;B)</translation>
+<translation id="9115675100829699941">북마크(&amp;B)</translation>
 <translation id="1047726139967079566">현재 페이지를 북마크에 추가...</translation>
 <translation id="6949306908218145636">열린 페이지를 북마크에 추가...</translation>
 <translation id="4422347585044846479">이 페이지에 대한 북마크 편집</translation>
 <translation id="6005695835120147974">미디어 라우터</translation>
 <translation id="7787308148023287649">다른 화면에 표시</translation>
-<translation id="7710568461918838723">전송(&amp;amp;C)...</translation>
+<translation id="7710568461918838723">전송(&amp;C)...</translation>
 <translation id="8970203673128054105">전송 모드 목록 보기</translation>
 <translation id="1277908057200820621">기기 목록 보기</translation>
 <translation id="2847759467426165163">전송할 기기</translation>
@@ -1240,6 +1240,7 @@
 <translation id="3930737994424905957">기기 검색 중</translation>
 <translation id="5209320130288484488">기기를 찾을 수 없음</translation>
 <translation id="4363771538994847871">전송 대상을 찾을 수 없습니다. 도움이 필요하세요?</translation>
+<translation id="8688672835843460752">사용 가능</translation>
 <translation id="4271396100647220620">일치하는 항목이 없습니다.</translation>
 <translation id="6972180789171089114">오디오/비디오</translation>
 <translation id="2541002089857695151">전체화면 전송을 최적화하시겠습니까?</translation>
@@ -1250,6 +1251,7 @@
 <translation id="7473891865547856676">건너뛰기</translation>
 <translation id="8538358978858059843">Cast에 클라우드 서비스를 사용하시겠습니까?</translation>
 <translation id="3856595552313160385">행아웃 및 교육용 Cast 사용에는 Brave Software 개인정보처리방침이 적용됩니다.</translation>
+<translation id="3435896845095436175">사용</translation>
 <translation id="3700888195348409686">표시 중(<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180"><ph name="DISPLAY_ID"/> 표시</translation>
 <translation id="4707302005824653064">chrome.com 페이지에서 관리자(<ph name="CUSTODIAN_EMAIL"/>)가 이용 및 방문 기록을 조회할 수 있습니다.</translation>
@@ -1277,7 +1279,9 @@
 <translation id="1316495628809031177">동기화 일시중지됨</translation>
 <translation id="7786207843293321886">게스트 세션 종료</translation>
 <translation id="2329597144923131178">로그인하면 모든 기기에서 북마크, 방문 기록, 비밀번호, 기타 설정을 사용할 수 있습니다.</translation>
+<translation id="7029809446516969842">비밀번호</translation>
 <translation id="984275831282074731">결제 수단</translation>
+<translation id="2903493209154104877">주소</translation>
 <translation id="8883847527783433352">다른 계정에 동기화</translation>
 <translation id="2761898608071930085">다른 계정 사용</translation>
 <translation id="4235813040357936597"><ph name="PROFILE_NAME"/>에 계정 추가</translation>
@@ -1475,11 +1479,11 @@
 <translation id="304747341537320566">음성 엔진</translation>
 <translation id="1067291318998134776">Linux(베타)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Bravebook에서 Linux 도구, 편집기, IDE를 실행하세요. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;자세히 알아보기&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">Bravebook에서 Linux 도구, 편집기, IDE를 실행하세요. &lt;a target="_blank" href="<ph name="URL"/>"&gt;자세히 알아보기&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Bravebook용 Linux 앱 삭제</translation>
 <translation id="2295473777859797944">Brave Software Play 스토어</translation>
 <translation id="572155275267014074">Android 설정</translation>
-<translation id="4767209642168463274">Bravebook에 Brave Software Play의 앱 및 게임을 설치합니다. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;자세히 알아보기&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">Bravebook에 Brave Software Play의 앱 및 게임을 설치합니다. &lt;a target="_blank" href="<ph name="URL"/>"&gt;자세히 알아보기&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Android 환경설정 관리</translation>
 <translation id="4074367893748481070">Brave Software Play 스토어 삭제</translation>
 <translation id="2792290659606763004">Android 앱을 삭제하시겠습니까?</translation>
@@ -1804,11 +1808,11 @@
 <translation id="7696063401938172191">'<ph name="PHONE_NAME"/>'에서 다음과 같이 설정하세요.</translation>
 <translation id="3423463006624419153">'<ph name="PHONE_NAME_1"/>' 및 '<ph name="PHONE_NAME_2"/>'에서 다음과 같이 설정하세요.</translation>
 <translation id="6997707937646349884">기기에서 다음과 같이 설정하세요.</translation>
-<translation id="7531779363494549572">설정 &amp;gt; 앱 및 알림 &amp;gt; 알림으로 이동합니다.</translation>
-<translation id="6921033294337262045">앱 알림 &amp;gt; Brave Software Play 서비스를 탭합니다.</translation>
+<translation id="7531779363494549572">설정 &gt; 앱 및 알림 &gt; 알림으로 이동합니다.</translation>
+<translation id="6921033294337262045">앱 알림 &gt; Brave Software Play 서비스를 탭합니다.</translation>
 <translation id="5624710179837914896">Brave Software Play 서비스를 사용 설정합니다.</translation>
 <translation id="2705736684557713153">화면 하단으로 스크롤하여 인스턴트 테더링이 표시되면 사용 설정합니다. 표시되지 않으면 설정이 완료된 것입니다.</translation>
-<translation id="3604048165392640554">모바일 연결을 찾을 수 없습니다. 다른 기기에서 인스턴트 테더링을 사용 설정한 다음 다시 시도하세요. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;자세히 알아보기&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">모바일 연결을 찾을 수 없습니다. 다른 기기에서 인스턴트 테더링을 사용 설정한 다음 다시 시도하세요. &lt;a target="_blank" href="<ph name="URL"/>"&gt;자세히 알아보기&lt;/a&gt;</translation>
 <translation id="7240339475467890413">새 핫스팟에 연결하시겠습니까?</translation>
 <translation id="6514010653036109809">사용할 수 있는 기기:</translation>
 <translation id="2075474481720804517">배터리 <ph name="BATTERY_PERCENTAGE"/>% 남음</translation>
@@ -1943,7 +1947,7 @@
 <translation id="7704317875155739195">검색어 및 URL 자동 완성</translation>
 <translation id="2000419248597011803">검색주소창 및 검색창의 검색어 및 일부 쿠키를 기본 검색엔진에 전송</translation>
 <translation id="9038649477754266430">빠른 페이지 로드를 위해 예상 검색어 서비스 사용</translation>
-<translation id="7981313251711023384">더 빠른 인터넷 사용과 검색을 위해 페이지 새로고침</translation>
+<translation id="7981313251711023384">더 빠른 인터넷 사용과 검색을 위해 페이지 미리 로드</translation>
 <translation id="2468205691404969808">페이지를 방문하지 않더라도 쿠키를 통해 환경설정 저장</translation>
 <translation id="1641113438599504367">세이프 브라우징</translation>
 <translation id="773905249182896430">위험한 사이트로부터 사용자와 기기 보호</translation>
@@ -1959,7 +1963,7 @@
 <translation id="918192811481327695">Brave의 기능 및 성능 개선에 참여</translation>
 <translation id="8438566539970814960">검색 및 탐색 기능 개선</translation>
 <translation id="284843628681142937">방문한 페이지의 URL을 Brave Software에 전송</translation>
-<translation id="8791534160414513928">탐색 트래픽으로 ‘추적 안함’ 요청 전송</translation>
+<translation id="8791534160414513928">탐색 트래픽과 함께 ‘추적 안함’ 요청 전송</translation>
 <translation id="5299109548848736476">추적 안함</translation>
 <translation id="5282733140964383898">'추적 안함'을 사용 설정하면 요청이 탐색 트래픽에 포함됩니다. 웹사이트가 요청에 응답하는지와 요청이 어떻게 해석되는가에 따라 결과가 달라집니다. 예를 들어, 어떤 웹사이트는 사용자의 웹사이트 방문 기록과 관계없는 광고를 표시하는 방식으로 요청에 응답할 수 있습니다. 이 설정을 사용해도 대부분의 웹사이트에서는 보안을 강화하거나 웹사이트에서 콘텐츠, 서비스, 광고 및 추천 정보를 제공하거나 보고서 통계를 생성하는 등의 목적으로 사용자의 인터넷 사용 기록을 수집하고 사용됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">인증 액세스 서비스 사용</translation>
@@ -1974,7 +1978,6 @@
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/>개</translation>
 <translation id="3407837288045706722">개인정보 보호, 보안, 데이터 수집에 관한 설정을 더 보려면 <ph name="BEGIN_LINK"/>동기화 및 맞춤설정<ph name="END_LINK"/>을 참조하세요.</translation>
 <translation id="7222718784508482526">개인정보 보호, 보안, 데이터 수집에 관한 설정을 더 보려면 <ph name="BEGIN_LINK"/>동기화 및 Brave Software 서비스<ph name="END_LINK"/>를 참조하세요.</translation>
-<translation id="6438234780621650381">설정 초기화</translation>
 <translation id="5293170712604732402">설정을 기본값으로 복원</translation>
 <translation id="892706138619340876">일부 설정이 재설정됨</translation>
 <translation id="2334029754052191847">Brave에서 다른 프로그램이 브라우저 설정을 일부 손상시키고 원래 기본값으로 재설정했음을 감지했습니다.</translation>
@@ -1988,7 +1991,6 @@
 <translation id="2203682048752833055"><ph name="BEGIN_LINK"/>주소 표시줄<ph name="END_LINK"/>에서 사용되는 검색 엔진입니다.</translation>
 <translation id="1432581352905426595">검색엔진 관리</translation>
 <translation id="2862205630718215619">Brave Software 어시스턴트</translation>
-<translation id="3435896845095436175">사용</translation>
 <translation id="6978121630131642226">검색엔진</translation>
 <translation id="6410668567036790476">검색 엔진 추가</translation>
 <translation id="1128591060186966949">검색 엔진 수정</translation>
@@ -2210,7 +2212,7 @@
 <translation id="6406506848690869874">동기화</translation>
 <translation id="1397854323885047133">동기화 및 맞춤설정</translation>
 <translation id="1136155683023653803">비밀번호, 북마크, 방문 기록 등이 계정에 동기화됩니다.</translation>
-<translation id="3267417306184901318">Brave Software 계정에 동기화된 인터넷 사용 기록 및 활동입니다.</translation>
+<translation id="3267417306184901318">Brave Software 계정에 동기화되는 인터넷 사용 기록 및 활동</translation>
 <translation id="1123187597739372905">동기화 설정 표시</translation>
 <translation id="8420510748452002155">맞춤설정되지 않은 서비스</translation>
 <translation id="2055016640093734678">Brave Software 서비스 설정 표시</translation>
@@ -2222,7 +2224,6 @@
 <translation id="2709516037105925701">자동 완성</translation>
 <translation id="1644574205037202324">방문 기록</translation>
 <translation id="5117427536932535467">테마와 배경화면</translation>
-<translation id="7029809446516969842">비밀번호</translation>
 <translation id="3259418918864581163">Brave Software Pay에 사용되는 신용카드 및 주소</translation>
 <translation id="3268451620468152448">열린 탭</translation>
 <translation id="5241892180459725878">Brave Software 드라이브 검색 추천어</translation>
@@ -2360,7 +2361,6 @@
 <translation id="6856623341093082836">터치스크린 설정 및 정확도 조정</translation>
 <translation id="4598556348158889687">저장용량 관리</translation>
 <translation id="8868626022555786497">사용 중</translation>
-<translation id="8688672835843460752">사용 가능</translation>
 <translation id="1082725763867769612">오프라인 파일</translation>
 <translation id="7366909168761621528">인터넷 사용정보</translation>
 <translation id="5568144734023334204">Android 저장용량</translation>
@@ -2426,7 +2426,7 @@
 <translation id="3264582393905923483">컨텍스트</translation>
 <translation id="1607139524282324606">항목 삭제</translation>
 <translation id="6025215716629925253">스택 추적</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1줄이 표시되지 않음&amp;gt;}other{&amp;lt;$1줄이 표시되지 않음&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1줄이 표시되지 않음&gt;}other{&lt;$1줄이 표시되지 않음&gt;}}</translation>
 <translation id="8389492867173948260">이 확장 프로그램이 내가 방문하는 다음 웹사이트의 모든 데이터를 읽고 변경하도록 허용합니다.</translation>
 <translation id="407173827865827707">클릭 시</translation>
 <translation id="6455264371803474013">특정 사이트에서</translation>
@@ -2434,7 +2434,7 @@
 <translation id="3729506734996624908">허용된 사이트</translation>
 <translation id="3732078975418297900"><ph name="ERROR_LINE"/>행에 오류가 있음</translation>
 <translation id="9063208415146866933"><ph name="ERROR_LINE_START"/>행부터 <ph name="ERROR_LINE_END"/>행까지에 오류가 있음</translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">뷰 검사</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/>개 더보기...</translation>
 <translation id="2450849356604136918">활성화된 뷰 없음</translation>

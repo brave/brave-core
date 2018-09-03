@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">このメニューで閲覧データを削除できます</translation>
 <translation id="6040143037577758943">閉じる</translation>
 <translation id="5379268888377976432">削除を取り消す</translation>
-<translation id="6463795194797719782">編集(&amp;amp;E)</translation>
+<translation id="6463795194797719782">編集(&amp;E)</translation>
 <translation id="8131740175452115882">確認</translation>
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="8496717697661868878">このプラグインを実行する</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820"><ph name="USER_NAME"/>（<ph name="USER_EMAIL"/>）にウィンドウを移動</translation>
 <translation id="8642947597466641025">テキストを拡大する</translation>
 <translation id="7134098520442464001">テキストを縮小する</translation>
-<translation id="4508765956121923607">ソースを表示(&amp;amp;O)</translation>
-<translation id="4792711294155034829">問題の報告(&amp;amp;R)...</translation>
-<translation id="5112577000029535889">デベロッパー ツール(&amp;amp;D)</translation>
-<translation id="5184063094292164363">JavaScript コンソール(&amp;amp;J)</translation>
-<translation id="7056526158851679338">デバイスを検証(&amp;amp;I)</translation>
-<translation id="48838266408104654">タスク マネージャ(&amp;amp;T)</translation>
-<translation id="6277518330158259200">スクリーンショットを撮る(&amp;amp;A)</translation>
-<translation id="5288678174502918605">閉じたタブを開く(&amp;amp;E)</translation>
-<translation id="2731392572903530958">閉じたウインドウを開く(&amp;amp;E)</translation>
+<translation id="4508765956121923607">ソースを表示(&amp;O)</translation>
+<translation id="4792711294155034829">問題の報告(&amp;R)...</translation>
+<translation id="5112577000029535889">デベロッパー ツール(&amp;D)</translation>
+<translation id="5184063094292164363">JavaScript コンソール(&amp;J)</translation>
+<translation id="7056526158851679338">デバイスを検証(&amp;I)</translation>
+<translation id="48838266408104654">タスク マネージャ(&amp;T)</translation>
+<translation id="6277518330158259200">スクリーンショットを撮る(&amp;A)</translation>
+<translation id="5288678174502918605">閉じたタブを開く(&amp;E)</translation>
+<translation id="2731392572903530958">閉じたウインドウを開く(&amp;E)</translation>
 <translation id="7607274158153386860">タブレット サイトのリクエスト</translation>
-<translation id="4408599188496843485">ヘルプ(&amp;amp;H)</translation>
+<translation id="4408599188496843485">ヘルプ(&amp;H)</translation>
 <translation id="3855676282923585394">ブックマークと設定をインポート...</translation>
-<translation id="4821935166599369261">プロファイル記録の開始(&amp;amp;P)</translation>
-<translation id="3827774300009121996">全画面表示(&amp;amp;F)</translation>
-<translation id="3616741288025931835">閲覧履歴を消去(&amp;amp;C)...</translation>
-<translation id="7861215335140947162">ダウンロード(&amp;amp;D)</translation>
-<translation id="862542460444371744">拡張機能(&amp;amp;E)</translation>
-<translation id="8925458182817574960">設定(&amp;amp;S)</translation>
-<translation id="9147392381910171771">オプション(&amp;amp;O)</translation>
-<translation id="1618268899808219593">ヘルプセンター(&amp;amp;E)</translation>
+<translation id="4821935166599369261">プロファイル記録の開始(&amp;P)</translation>
+<translation id="3827774300009121996">全画面表示(&amp;F)</translation>
+<translation id="3616741288025931835">閲覧履歴を消去(&amp;C)...</translation>
+<translation id="7861215335140947162">ダウンロード(&amp;D)</translation>
+<translation id="862542460444371744">拡張機能(&amp;E)</translation>
+<translation id="8925458182817574960">設定(&amp;S)</translation>
+<translation id="9147392381910171771">オプション(&amp;O)</translation>
+<translation id="1618268899808219593">ヘルプセンター(&amp;E)</translation>
 <translation id="7324297612904500502">ベータ版フォーラム</translation>
-<translation id="7199158086730159431">ヘルプ(&amp;amp;E)</translation>
-<translation id="630065524203833229">終了(&amp;amp;X)</translation>
+<translation id="7199158086730159431">ヘルプ(&amp;E)</translation>
+<translation id="630065524203833229">終了(&amp;X)</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">検索エンジンの編集(&amp;amp;E)...</translation>
+<translation id="5702898740348134351">検索エンジンの編集(&amp;E)...</translation>
 <translation id="2454247629720664989">キーワード</translation>
 <translation id="5327248766486351172">名前</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (既定)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">すべてクリア</translation>
 <translation id="750509436279396091">ダウンロード フォルダを開く</translation>
 <translation id="2902312830803030883">その他の操作</translation>
-<translation id="3612673635130633812">&amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt; によりダウンロードされました</translation>
+<translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; によりダウンロードされました</translation>
 <translation id="7909969815743704077">シークレット モードでダウンロード</translation>
 <translation id="8028803902702117856"><ph name="FILE_NAME"/> をダウンロードしています。<ph name="SIZE"/> 完了</translation>
 <translation id="4644818355646995778">ダウンロードしています。<ph name="PERCENT_REMAINING"/></translation>
@@ -533,8 +533,8 @@
 <translation id="3011284594919057757">Flash について</translation>
 <translation id="1962233722219655970">このページは、お使いのパソコンでは動作しないネイティブ クライアント アプリを使用しています。</translation>
 <translation id="4453946976636652378"><ph name="SEARCH_ENGINE_NAME"/> で検索するか、URL を入力してください</translation>
-<translation id="5731247495086897348">貼り付けて実行(&amp;amp;S)</translation>
-<translation id="8425755597197517046">貼り付けて検索(&amp;amp;S)</translation>
+<translation id="5731247495086897348">貼り付けて実行(&amp;S)</translation>
+<translation id="8425755597197517046">貼り付けて検索(&amp;S)</translation>
 <translation id="6151323131516309312"><ph name="SEARCH_KEY"/> を押して <ph name="SITE_NAME"/> を検索</translation>
 <translation id="3449839693241009168"><ph name="SEARCH_KEY"/> を押すと <ph name="EXTENSION_NAME"/> にコマンドが送信されます</translation>
 <translation id="6659594942844771486">Tab</translation>
@@ -571,6 +571,7 @@
 <translation id="3617891479562106823">背景を利用できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="8391712576156218334">画像を利用できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="1564414980088536597">この画像は使用できません。別の画像を選択してください。</translation>
+<translation id="385051799172605136">戻る</translation>
 <translation id="4628948037717959914">写真</translation>
 <translation id="8033827949643255796">選択しました</translation>
 <translation id="5376169624176189338">クリックすると前に戻ります。押したまま待つと履歴が表示されます。</translation>
@@ -773,7 +774,7 @@
 <translation id="8539727552378197395">いいえ（HTTP のみ）</translation>
 <translation id="4615586811063744755">Cookie が選択されていません</translation>
 <translation id="5765780083710877561">説明:</translation>
-<translation id="2422426094670600218">&amp;lt;名前なし&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;名前なし&gt;</translation>
 <translation id="6708242697268981054">保存元:</translation>
 <translation id="6492313032770352219">ディスク上のサイズ:</translation>
 <translation id="3459774175445953971">最終更新日:</translation>
@@ -830,18 +831,17 @@
 <translation id="5596627076506792578">その他のオプション</translation>
 <translation id="4419556793104466535">同期、カスタマイズ、その他の管理</translation>
 <translation id="184568702928428857">Brave で同期、カスタマイズ、その他の Brave Software サービスを管理する設定を変更しました。これにより、現在の設定に影響が生じる可能性があります。</translation>
-<translation id="4192273449750167573">次の画面で設定を確認</translation>
+<translation id="4192273449750167573">次の画面で設定を確認する</translation>
 <translation id="685040365210406336">変更を行わない</translation>
 <translation id="6418273007044911016">Brave Software に同期しているデータと使用している機能は変更されません</translation>
 <translation id="8372733498235009300">同期、カスタマイズ、その他の Brave Software サービスを有効にする</translation>
 <translation id="8340964510643644301">この設定は Brave の [設定] ページでいつでもカスタマイズできます</translation>
-<translation id="385051799172605136">戻る</translation>
 <translation id="3149880132460839085">Brave の同期</translation>
 <translation id="3796902758602917951">ブックマーク、履歴、パスワード、その他の設定が Brave Software アカウントに同期され、どの端末でも利用できるようになります</translation>
 <translation id="1371301976177520732">すべての端末で同じブックマーク、パスワード、その他の設定を使用できます</translation>
 <translation id="3111958038206230539">Brave Software サービスのカスタマイズ</translation>
 <translation id="295992419959320001">検索、広告、その他の Brave Software サービスをカスタマイズする目的で、Brave Software が閲覧履歴を使用することがあります</translation>
-<translation id="4800091108248587380">カスタマイズされる Brave Software サービス（Brave Software Pay など）</translation>
+<translation id="4800091108248587380">カスタマイズされた Brave Software サービス（Brave Software Pay など）を利用できます</translation>
 <translation id="3070156078150543526">検索やその他の Brave Software サービスをカスタマイズする目的で、Brave Software が閲覧履歴を使用することがあります</translation>
 <translation id="2532167245710864499">システムと使用状況に関する情報が Brave Software に送信され、Brave とそのセキュリティの向上に役立てられます</translation>
 <translation id="2709453993673701466">同期とパーソナライズを有効にする前に管理するには、[<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] に移動します。</translation>
@@ -887,7 +887,7 @@
 <translation id="7004499039102548441">最近使ったタブ</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 個のタブ}other{# 個のタブ}}</translation>
 <translation id="4547659257713117923">他のデバイスからのタブはありません</translation>
-<translation id="4756388243121344051">履歴(&amp;amp;H)</translation>
+<translation id="4756388243121344051">履歴(&amp;H)</translation>
 <translation id="9026731007018893674">ダウンロード</translation>
 <translation id="9218430445555521422">デフォルトとして設定</translation>
 <translation id="281133045296806353">既存のブラウザ セッションに新しいウィンドウが作成されました。</translation>
@@ -909,7 +909,7 @@
 <translation id="4242533952199664413">設定を開く</translation>
 <translation id="3752582316358263300">OK...</translation>
 <translation id="7117247127439884114">もう一度ログインする...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> が通知を送信しようとしています。</translation>
 <translation id="7221855153210829124">通知の表示</translation>
@@ -1067,7 +1067,7 @@
 <translation id="8736288397686080465">このサイトはバックグラウンドで更新されました。</translation>
 <translation id="6945221475159498467">選択</translation>
 <translation id="4130199216115862831">デバイスログ</translation>
-<translation id="6231881193380278751">ページを自動更新するには URL にクエリ パラメータを追加します: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">ページを自動更新するには URL にクエリ パラメータを追加します: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">更新</translation>
 <translation id="1260240842868558614">表示:</translation>
 <translation id="1165039591588034296">エラー</translation>
@@ -1114,20 +1114,20 @@
 <translation id="3613134908380545408">「<ph name="FOLDER_NAME"/>」を表示</translation>
 <translation id="2805756323405976993">アプリ</translation>
 <translation id="2367972762794486313">アプリを表示</translation>
-<translation id="6466988389784393586">すべてのブックマークを開く(&amp;amp;O)</translation>
-<translation id="6804671422566312077">すべてのブックマークを新しいウィンドウで開く(&amp;amp;N)</translation>
-<translation id="3011362742078013760">すべてのブックマークをシークレット ウィンドウで開く(&amp;amp;I)</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{すべてを開く(&amp;amp;O)}=1{ブックマークを開く(&amp;amp;O)}other{すべて（# 件）を開く(&amp;amp;O)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{すべてを新しいウィンドウで開く(&amp;amp;N)}=1{新しいウィンドウで開く(&amp;amp;N)}other{すべて（# 件）を新しいウィンドウで開く(&amp;amp;N)}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{すべてをシークレット ウィンドウで開く(&amp;amp;I)}=1{シークレット ウィンドウで開く(&amp;amp;I)}other{すべて（# 件）をシークレット ウィンドウで開く(&amp;amp;I)}}</translation>
-<translation id="9024127637873500333">新しいタブで開く(&amp;amp;O)</translation>
-<translation id="665061930738760572">新しいウィンドウで開く(&amp;amp;N)</translation>
-<translation id="37613671848467444">シークレット ウィンドウで開く(&amp;amp;I)</translation>
-<translation id="6702639462873609204">編集(&amp;amp;E)...</translation>
-<translation id="3088325635286126843">名前を変更(&amp;amp;R)...</translation>
-<translation id="5329858601952122676">削除(&amp;amp;D)</translation>
-<translation id="8824701697284169214">ページを追加(&amp;amp;G)...</translation>
-<translation id="2489918096470125693">フォルダを追加(&amp;amp;F)...</translation>
+<translation id="6466988389784393586">すべてのブックマークを開く(&amp;O)</translation>
+<translation id="6804671422566312077">すべてのブックマークを新しいウィンドウで開く(&amp;N)</translation>
+<translation id="3011362742078013760">すべてのブックマークをシークレット ウィンドウで開く(&amp;I)</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{すべてを開く(&amp;O)}=1{ブックマークを開く(&amp;O)}other{すべて（# 件）を開く(&amp;O)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{すべてを新しいウィンドウで開く(&amp;N)}=1{新しいウィンドウで開く(&amp;N)}other{すべて（# 件）を新しいウィンドウで開く(&amp;N)}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{すべてをシークレット ウィンドウで開く(&amp;I)}=1{シークレット ウィンドウで開く(&amp;I)}other{すべて（# 件）をシークレット ウィンドウで開く(&amp;I)}}</translation>
+<translation id="9024127637873500333">新しいタブで開く(&amp;O)</translation>
+<translation id="665061930738760572">新しいウィンドウで開く(&amp;N)</translation>
+<translation id="37613671848467444">シークレット ウィンドウで開く(&amp;I)</translation>
+<translation id="6702639462873609204">編集(&amp;E)...</translation>
+<translation id="3088325635286126843">名前を変更(&amp;R)...</translation>
+<translation id="5329858601952122676">削除(&amp;D)</translation>
+<translation id="8824701697284169214">ページを追加(&amp;G)...</translation>
+<translation id="2489918096470125693">フォルダを追加(&amp;F)...</translation>
 <translation id="2897878306272793870"><ph name="TAB_COUNT"/> 個のタブが開きます。本当によろしいですか？</translation>
 <translation id="4430369329743628066">ブックマークを追加しました</translation>
 <translation id="6404511346730675251">ブックマークを編集</translation>
@@ -1142,12 +1142,12 @@
 <translation id="971774202801778802">ブックマーク URL</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{このフォルダにはブックマークが含まれています。削除してもよろしいですか？}other{このフォルダには # 件のブックマークが含まれています。削除してもよろしいですか？}}</translation>
 <translation id="5857090052475505287">新しいフォルダ</translation>
-<translation id="6455894534188563617">新しいフォルダ(&amp;amp;N)</translation>
+<translation id="6455894534188563617">新しいフォルダ(&amp;N)</translation>
 <translation id="1015318665228971643">フォルダ名の編集</translation>
 <translation id="5449588825071916739">すべてのタブをブックマークに追加する</translation>
 <translation id="5528368756083817449">ブックマーク マネージャ</translation>
 <translation id="3828029223314399057">ブックマークを検索</translation>
-<translation id="5111692334209731439">ブックマーク マネージャ(&amp;amp;B)</translation>
+<translation id="5111692334209731439">ブックマーク マネージャ(&amp;B)</translation>
 <translation id="6973630695168034713">フォルダ</translation>
 <translation id="5496587651328244253">管理</translation>
 <translation id="1936157145127842922">フォルダで表示</translation>
@@ -1191,13 +1191,13 @@
 <translation id="6757101664402245801">URL がコピーされました</translation>
 <translation id="5488093641312826914">「<ph name="COPIED_ITEM_NAME"/>」がコピーされました</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 個のアイテムがコピーされました}other{# 個のアイテムがコピーされました}}</translation>
-<translation id="9115675100829699941">ブックマーク(&amp;amp;B)</translation>
+<translation id="9115675100829699941">ブックマーク(&amp;B)</translation>
 <translation id="1047726139967079566">ブックマークに追加...</translation>
 <translation id="6949306908218145636">開いているページをブックマーク...</translation>
 <translation id="4422347585044846479">このページのブックマークを編集します</translation>
 <translation id="6005695835120147974">メディア ルーター</translation>
 <translation id="7787308148023287649">別の画面で表示</translation>
-<translation id="7710568461918838723">キャスト(&amp;amp;C)...</translation>
+<translation id="7710568461918838723">キャスト(&amp;C)...</translation>
 <translation id="8970203673128054105">キャストモード リストを表示</translation>
 <translation id="1277908057200820621">デバイスリストを表示</translation>
 <translation id="2847759467426165163">キャストするデバイス:</translation>
@@ -1242,6 +1242,7 @@
 <translation id="3930737994424905957">デバイスを検索しています</translation>
 <translation id="5209320130288484488">デバイスが見つかりませんでした</translation>
 <translation id="4363771538994847871">キャスト先が見つかりません。ヘルプを表示しますか？</translation>
+<translation id="8688672835843460752">使用可能</translation>
 <translation id="4271396100647220620">一致する結果は見つかりませんでした</translation>
 <translation id="6972180789171089114">音声または動画</translation>
 <translation id="2541002089857695151">全画面キャストを最適化しますか？</translation>
@@ -1252,6 +1253,7 @@
 <translation id="7473891865547856676">スキップ</translation>
 <translation id="8538358978858059843">クラウド サービスへのキャストを有効にしますか？</translation>
 <translation id="3856595552313160385">ハングアウトと Cast for Education のご利用には、Brave Software プライバシー ポリシーが適用されます。</translation>
+<translation id="3435896845095436175">有効にする</translation>
 <translation id="3700888195348409686">表示中（<ph name="PAGE_ORIGIN"/>）</translation>
 <translation id="5285635972691565180">ディスプレイ <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">管理者（<ph name="CUSTODIAN_EMAIL"/>）は chrome.com で利用状況や履歴を確認できます。</translation>
@@ -1279,7 +1281,9 @@
 <translation id="1316495628809031177">同期は一時停止中です</translation>
 <translation id="7786207843293321886">ゲスト セッションを終了</translation>
 <translation id="2329597144923131178">ログインすると、お使いのどのデバイスでも同じブックマーク、履歴、パスワード、その他の設定を利用できるようになります。</translation>
+<translation id="7029809446516969842">パスワード</translation>
 <translation id="984275831282074731">お支払い方法</translation>
+<translation id="2903493209154104877">住所</translation>
 <translation id="8883847527783433352">別のアカウントに同期</translation>
 <translation id="2761898608071930085">別のアカウントを使用</translation>
 <translation id="4235813040357936597"><ph name="PROFILE_NAME"/> のアカウントを追加</translation>
@@ -1477,11 +1481,11 @@
 <translation id="304747341537320566">読み上げエンジン</translation>
 <translation id="1067291318998134776">Linux（ベータ版）</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Bravebook で Linux のツール、エディタ、IDE を実行します。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;詳細&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">Bravebook で Linux のツール、エディタ、IDE を実行します。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Bravebook から Linux アプリを削除する</translation>
 <translation id="2295473777859797944">Brave Software Play ストア</translation>
 <translation id="572155275267014074">Android 設定</translation>
-<translation id="4767209642168463274">Brave Software Play のアプリとゲームを Bravebook にインストールします。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;詳細&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">Brave Software Play のアプリとゲームを Bravebook にインストールします。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Android 設定を管理</translation>
 <translation id="4074367893748481070">Brave Software Play ストアを削除</translation>
 <translation id="2792290659606763004">Android アプリを削除しますか？</translation>
@@ -1529,7 +1533,7 @@
 <translation id="5029568752722684782">コピーを消去</translation>
 <translation id="2154484045852737596">カードを編集</translation>
 <translation id="5087580092889165836">カードを追加</translation>
-<translation id="4807098396393229769">名義人名</translation>
+<translation id="4807098396393229769">カード名義人（半角英文字）</translation>
 <translation id="2612676031748830579">カード番号</translation>
 <translation id="869891660844655955">有効期限</translation>
 <translation id="1149401351239820326">有効期限（月）</translation>
@@ -1806,11 +1810,11 @@
 <translation id="7696063401938172191">「<ph name="PHONE_NAME"/>」で次の操作を行います。</translation>
 <translation id="3423463006624419153">「<ph name="PHONE_NAME_1"/>」と「<ph name="PHONE_NAME_2"/>」で次の操作を行います。</translation>
 <translation id="6997707937646349884">端末で次の操作を行います。</translation>
-<translation id="7531779363494549572">[設定] &amp;gt; [アプリと通知] &amp;gt; [通知] の順に選択します。</translation>
-<translation id="6921033294337262045">[アプリの通知] &amp;gt; [Brave Software Play 開発者サービス] の順にタップします。</translation>
+<translation id="7531779363494549572">[設定] &gt; [アプリと通知] &gt; [通知] の順に選択します。</translation>
+<translation id="6921033294337262045">[アプリの通知] &gt; [Brave Software Play 開発者サービス] の順にタップします。</translation>
 <translation id="5624710179837914896">Brave Software Play 開発者サービスを有効にします。</translation>
 <translation id="2705736684557713153">画面の一番下までスクロールし、[インスタント テザリング] が表示される場合は有効にします。表示されない場合は、設定が完了しています。</translation>
-<translation id="3604048165392640554">モバイル接続が見つかりませんでした。他の端末でインスタント テザリングをオンにしてもう一度お試しください。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;詳細&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">モバイル接続が見つかりませんでした。他の端末でインスタント テザリングをオンにしてもう一度お試しください。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
 <translation id="7240339475467890413">新しいアクセス ポイントに接続しますか？</translation>
 <translation id="6514010653036109809">接続可能な端末:</translation>
 <translation id="2075474481720804517">バッテリー残量: <ph name="BATTERY_PERCENTAGE"/>%</translation>
@@ -1939,7 +1943,7 @@
 <translation id="3312424061798279731">有効な言語</translation>
 <translation id="9042893549633094279">プライバシーとセキュリティ</translation>
 <translation id="654233263479157500">ウェブ サービスを使用してナビゲーション エラーの解決を支援する</translation>
-<translation id="6697492270171225480">ページが見つからない場合に類似のページを候補として表示します</translation>
+<translation id="6697492270171225480">ページが見つからない場合に類似のページを候補として表示する</translation>
 <translation id="4534361985432360439">アクセスしようとしているページのウェブアドレスを Brave Software に送信します</translation>
 <translation id="6545834809683560467">予測サービスを使用して、アドレスバーまたはアプリ ランチャーの検索ボックスに入力した検索キーワードや URL を補完する</translation>
 <translation id="7704317875155739195">検索語句や URL をオートコンプリートする</translation>
@@ -1950,13 +1954,13 @@
 <translation id="1641113438599504367">セーフ ブラウジング</translation>
 <translation id="773905249182896430">危険なサイトからユーザーと端末を保護します</translation>
 <translation id="8983677657449185470">セーフ ブラウジングの改善に協力する</translation>
-<translation id="199861668945335092">一部のシステム情報とページのコンテンツを Brave Software に送信する</translation>
+<translation id="199861668945335092">一部のシステム情報とページのコンテンツを Brave Software に送信します</translation>
 <translation id="490074449735753175">ウェブ サービスを使用してスペル ミスの解決を支援する</translation>
 <translation id="3523078749603005179">ユーザーがブラウザに入力した内容を Brave Software に送信し、高度なスペルチェックを行います</translation>
 <translation id="2564653188463346023">拡張スペルチェック</translation>
 <translation id="7469406957790636836">この機能をオンにするには、まず [<ph name="BEGIN_LINK"/>言語と入力<ph name="END_LINK"/>] でスペルチェックを有効にします</translation>
 <translation id="8699566574894671540">この機能をオンにするには、まず [編集] メニューの [入力中にスペルチェック] を選択します</translation>
-<translation id="9079153198295609735">使用統計データと障害レポートを Brave Software に自動送信する</translation>
+<translation id="9079153198295609735">使用統計データと障害レポートを Brave Software に自動送信します</translation>
 <translation id="5941220456342415404">診断と使用状況のデータを Brave Software に自動送信する</translation>
 <translation id="918192811481327695">Brave の機能と動作の改善に協力する</translation>
 <translation id="8438566539970814960">検索とブラウジングを改善する</translation>
@@ -1976,7 +1980,6 @@
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">プライバシー、セキュリティ、データ収集に関連するその他の設定については、<ph name="BEGIN_LINK"/>同期とカスタマイズ<ph name="END_LINK"/>をご覧ください</translation>
 <translation id="7222718784508482526">プライバシー、セキュリティ、データ収集に関連するその他の設定については、<ph name="BEGIN_LINK"/>同期と Brave Software サービス<ph name="END_LINK"/>をご覧ください</translation>
-<translation id="6438234780621650381">設定のリセット</translation>
 <translation id="5293170712604732402">設定を元の既定値に戻します</translation>
 <translation id="892706138619340876">一部の設定がリセットされました</translation>
 <translation id="2334029754052191847">設定の一部が別のプログラムによって変更されていたため、元のデフォルト設定に戻しました。</translation>
@@ -1990,7 +1993,6 @@
 <translation id="2203682048752833055"><ph name="BEGIN_LINK"/>アドレスバー<ph name="END_LINK"/>で使用される検索エンジンです</translation>
 <translation id="1432581352905426595">検索エンジンの管理</translation>
 <translation id="2862205630718215619">Brave Software アシスタント</translation>
-<translation id="3435896845095436175">有効にする</translation>
 <translation id="6978121630131642226">検索エンジン</translation>
 <translation id="6410668567036790476">検索エンジンの追加</translation>
 <translation id="1128591060186966949">検索エンジンの編集</translation>
@@ -2216,7 +2218,7 @@
 <translation id="1123187597739372905">同期設定を表示</translation>
 <translation id="8420510748452002155">カスタマイズされないサービス</translation>
 <translation id="2055016640093734678">Brave Software サービスの設定を表示</translation>
-<translation id="7956662517480676674">同期サービスと Brave Software サービス</translation>
+<translation id="7956662517480676674">同期と Brave Software サービス</translation>
 <translation id="2453021845418314664">同期の詳細設定</translation>
 <translation id="2731700343119398978">お待ちください...</translation>
 <translation id="7529411698175791732">インターネット接続を確認してください。問題が解消しない場合は、ログアウトして再度ログインしてみてください。</translation>
@@ -2224,7 +2226,6 @@
 <translation id="2709516037105925701">自動入力</translation>
 <translation id="1644574205037202324">履歴</translation>
 <translation id="5117427536932535467">テーマと壁紙</translation>
-<translation id="7029809446516969842">パスワード</translation>
 <translation id="3259418918864581163">Brave Software Pay のクレジット カードと住所</translation>
 <translation id="3268451620468152448">開いているタブ</translation>
 <translation id="5241892180459725878">Brave Software ドライブの検索候補</translation>
@@ -2362,7 +2363,6 @@
 <translation id="6856623341093082836">タッチスクリーンをを設定し、精度を調整します</translation>
 <translation id="4598556348158889687">ストレージ管理</translation>
 <translation id="8868626022555786497">使用中</translation>
-<translation id="8688672835843460752">使用可能</translation>
 <translation id="1082725763867769612">オフライン ファイル</translation>
 <translation id="7366909168761621528">閲覧履歴データ</translation>
 <translation id="5568144734023334204">Android のストレージ</translation>
@@ -2428,7 +2428,7 @@
 <translation id="3264582393905923483">コンテキスト</translation>
 <translation id="1607139524282324606">エラー項目を消去</translation>
 <translation id="6025215716629925253">スタック トレース</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 行が非表示です&amp;gt;}other{&amp;lt;$1 行が非表示です&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 行が非表示です&gt;}other{&lt;$1 行が非表示です&gt;}}</translation>
 <translation id="8389492867173948260">アクセスしたウェブサイト上にある自分の全データの読み取りと変更をこの拡張機能に許可します。</translation>
 <translation id="407173827865827707">クリックされた場合のみ</translation>
 <translation id="6455264371803474013">特定のサイト</translation>
@@ -2436,7 +2436,7 @@
 <translation id="3729506734996624908">許可したサイト</translation>
 <translation id="3732078975418297900"><ph name="ERROR_LINE"/> 行目にエラーがあります</translation>
 <translation id="9063208415146866933"><ph name="ERROR_LINE_START"/>～<ph name="ERROR_LINE_END"/> 行目にエラーがあります</translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">ビューを検証</translation>
 <translation id="181577467034453336">他 <ph name="NUMBER_OF_VIEWS"/> 件...</translation>
 <translation id="2450849356604136918">アクティブ ビューなし</translation>

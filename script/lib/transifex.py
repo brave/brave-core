@@ -246,7 +246,7 @@ def generate_xtb_content(lang_code, grd_strings, translations):
       translationbundle_tag.append(create_xtb_format_translation_tag(fingerprint, translation))
 
   xml_string = lxml.etree.tostring(translationbundle_tag)
-  xml_string = HTMLParser.HTMLParser().unescape(xml_string.encode('utf-8')).replace('&', '&amp;').encode('utf-8')
+  xml_string = HTMLParser.HTMLParser().unescape(xml_string.encode('utf-8')).encode('utf-8')
   xml_string = '<?xml version="1.0" ?>\n<!DOCTYPE translationbundle>\n' + xml_string
   return xml_string
 
