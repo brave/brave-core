@@ -28,7 +28,7 @@ describe('braveShieldsPanelReducer', () => {
     , initialState.shieldsPanel)
   })
 
-  describe('ON_BEFORE_NAVIGATION', function () {
+  describe('ON_COMMITTED', function () {
     before(function () {
       this.spy = sinon.spy(shieldsPanelState, 'resetBlockingStats')
       this.resetNoScriptInfoSpy = sinon.spy(shieldsPanelState, 'resetNoScriptInfo')
@@ -46,7 +46,7 @@ describe('braveShieldsPanelReducer', () => {
     })
     it('calls resetBlockingStats when isMainFrame is true', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
@@ -56,7 +56,7 @@ describe('braveShieldsPanelReducer', () => {
     })
     it('does not call resetBlockingStats when isMainFrame is false', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
@@ -65,7 +65,7 @@ describe('braveShieldsPanelReducer', () => {
     })
     it('calls resetNoScriptInfo when isMainFrame is true', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
@@ -76,7 +76,7 @@ describe('braveShieldsPanelReducer', () => {
     })
     it('does not call resetNoScriptInfo when isMainFrame is false', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
@@ -85,7 +85,7 @@ describe('braveShieldsPanelReducer', () => {
     })
     it('calls resetBlockingResources when isMainFrame is true', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
@@ -95,7 +95,7 @@ describe('braveShieldsPanelReducer', () => {
     })
     it('does not call resetBlockingResources when isMainFrame is false', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: false

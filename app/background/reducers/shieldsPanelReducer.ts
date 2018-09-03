@@ -65,7 +65,7 @@ const updateActiveTab = (state: State, windowId: number, tabId: number): State =
 
 export default function shieldsPanelReducer (state: State = { tabs: {}, windows: {}, currentWindowId: -1 }, action: Actions) {
   switch (action.type) {
-    case webNavigationTypes.ON_BEFORE_NAVIGATION:
+    case webNavigationTypes.ON_COMMITTED:
       {
         if (action.isMainFrame) {
           state = shieldsPanelState.resetBlockingStats(state, action.tabId)

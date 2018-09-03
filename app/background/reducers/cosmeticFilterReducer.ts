@@ -45,20 +45,17 @@ export default function cosmeticFilterReducer (state: State = {
   currentWindowId: -1 },
   action: Actions) {
   switch (action.type) {
-    case webNavigationTypes.ON_BEFORE_NAVIGATION:
-      {
-        if (action.isMainFrame) {
-          state = shieldsPanelState.resetBlockingStats(state, action.tabId)
-          state = shieldsPanelState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
-        }
-        break
-      }
     case webNavigationTypes.ON_COMMITTED:
       {
         const tabData = shieldsPanelState.getActiveTabData(state)
         if (!tabData) {
           console.error('Active tab not found')
           break
+        }
+        if (action.isMainFrame) {
+          state = shieldsPanelState.resetBlockingStats(state, action.tabId)
+          state = shieldsPanelState.resetBlockingResources(state, action.tabId)
+          state = shieldsPanelState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
         }
         applySiteFilters(tabData.hostname)
         break

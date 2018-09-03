@@ -28,7 +28,7 @@ describe('cosmeticFilterReducer', () => {
     assert.deepEqual(
       shieldsPanelReducer(undefined, actions.blockAdsTrackers('allow')), initialState.cosmeticFilter)
   })
-  describe('ON_BEFORE_NAVIGATION', function () {
+  describe('ON_COMMITTED', function () {
     before(function () {
       this.spy = sinon.spy(shieldsPanelState, 'resetBlockingStats')
       this.resetNoScriptInfoSpy = sinon.spy(shieldsPanelState, 'resetNoScriptInfo')
@@ -46,7 +46,7 @@ describe('cosmeticFilterReducer', () => {
     })
     it('calls resetBlockingStats when isMainFrame is true', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
@@ -56,7 +56,7 @@ describe('cosmeticFilterReducer', () => {
     })
     it('does not call resetBlockingStats when isMainFrame is false', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
@@ -65,7 +65,7 @@ describe('cosmeticFilterReducer', () => {
     })
     it('calls resetNoScriptInfo when isMainFrame is true', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
@@ -76,7 +76,7 @@ describe('cosmeticFilterReducer', () => {
     })
     it('does not call resetNoScriptInfo when isMainFrame is false', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
@@ -85,7 +85,7 @@ describe('cosmeticFilterReducer', () => {
     })
     it('calls resetBlockingResources when isMainFrame is true', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
@@ -95,72 +95,7 @@ describe('cosmeticFilterReducer', () => {
     })
     it('does not call resetBlockingResources when isMainFrame is false', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
-        tabId: this.tabId,
-        url: 'https://www.brave.com',
-        isMainFrame: false
-      })
-      assert.equal(this.spy.notCalled, true)
-    })
-  })
-  describe('ON_COMMITTED', function () {
-    before(function () {
-      this.spy = sinon.spy(shieldsPanelState, 'resetBlockingStats')
-      this.resetNoScriptInfoSpy = sinon.spy(shieldsPanelState, 'resetNoScriptInfo')
-      this.resetBlockingResourcesSpy = sinon.spy(shieldsPanelState, 'resetBlockingResources')
-      this.tabId = 1
-    })
-    after(function () {
-      this.spy.restore()
-      this.resetNoScriptInfoSpy.restore()
-      this.resetBlockingResourcesSpy.restore()
-    })
-    afterEach(function () {
-      this.spy.reset()
-      this.resetNoScriptInfoSpy.reset()
-    })
-    it('does not call resetBlockingStats when isMainFrame is false', function () {
-      shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
-        tabId: this.tabId,
-        url: 'https://www.brave.com',
-        isMainFrame: false
-      })
-      assert.equal(this.spy.notCalled, true)
-    })
-    it('calls resetNoScriptInfo when isMainFrame is true', function () {
-      shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
-        tabId: this.tabId,
-        url: 'https://www.brave.com',
-        isMainFrame: true
-      })
-      assert.equal(this.resetNoScriptInfoSpy.calledOnce, true)
-      assert.equal(this.resetNoScriptInfoSpy.getCall(0).args[1], this.tabId)
-      assert.equal(this.resetNoScriptInfoSpy.getCall(0).args[2], 'https://www.brave.com')
-    })
-    it('does not call resetNoScriptInfo when isMainFrame is false', function () {
-      shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
-        tabId: this.tabId,
-        url: 'https://www.brave.com',
-        isMainFrame: false
-      })
-      assert.equal(this.resetNoScriptInfoSpy.notCalled, true)
-    })
-    it('calls resetBlockingResources when isMainFrame is true', function () {
-      shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
-        tabId: this.tabId,
-        url: 'https://www.brave.com',
-        isMainFrame: true
-      })
-      assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[1], this.tabId)
-    })
-    it('does not call resetBlockingResources when isMainFrame is false', function () {
-      shieldsPanelReducer(initialState.shieldsPanel, {
-        type: webNavigationTypes.ON_BEFORE_NAVIGATION,
+        type: webNavigationTypes.ON_COMMITTED,
         tabId: this.tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
