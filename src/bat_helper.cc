@@ -1464,6 +1464,29 @@ namespace braveledger_bat_helper {
     return !hasError;
   }
 
+  bool getJSONServerList(const std::string& json, std::map<std::string, SERVER_LIST>& list) {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    bool hasError = d.HasParseError();
+    if (hasError == false) {
+      hasError = !d.IsArray();
+    }
+
+    list = {};
+
+    if (hasError == false) {
+      for (auto &i : d.GetArray()) {
+        SERVER_LIST item;
+        item.verified = i[1].GetBool();
+        item.excluded = i[2].GetBool();
+        list.emplace(i[0].GetString(), item);
+      }
+    }
+
+    return !hasError;
+  }
+
   std::vector<uint8_t> generateSeed() {
     //std::ostringstream seedStr;
 
@@ -1867,5 +1890,4 @@ namespace braveledger_bat_helper {
 
     return url + prefix + path;
   }
-
 }  // namespace braveledger_bat_helper

@@ -36,6 +36,12 @@ LEDGER_EXPORT enum PUBLISHER_MONTH {
   DECEMBER = 12
 };
 
+LEDGER_EXPORT enum PUBLISHER_EXCLUDE {
+  DEFAULT = 0,
+  EXCLUDED = 1,
+  INCLUDED = 2
+};
+
 LEDGER_EXPORT struct PublisherInfoFilter {
   PublisherInfoFilter();
   PublisherInfoFilter(const PublisherInfoFilter& filter);
@@ -72,14 +78,14 @@ LEDGER_EXPORT struct PublisherInfo {
   uint64_t duration;
   double score;
   uint32_t visits;
-  bool pinned;
   uint32_t percent;
   double weight;
-  bool excluded;
+  PUBLISHER_EXCLUDE excluded;
   PUBLISHER_CATEGORY category;
   PUBLISHER_MONTH month;
   int year;
   std::string favIconURL;
+  bool verified;
 
   std::vector<ContributionInfo> contributions;
 };
