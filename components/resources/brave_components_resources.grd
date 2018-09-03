@@ -250,7 +250,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Set budget and browse normally. Your favorite sites get paid automatically.</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Brave Contribute</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
-      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="">Earn tokens for your attention to ads and pay it forward to support content creators you value!</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="">Earn tokens for viewing privacy-respecting ads, and pay it forward by supporting content creators you love!</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_OPT_IN_TEXT" desc="">Yes, I'm In!</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_SUB_TITLE" desc="">Get Rewarded for Browsing!</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_TEASER" desc="">How it works...</message>
