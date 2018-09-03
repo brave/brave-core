@@ -116,7 +116,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
 
-  std::unique_ptr<std::map<std::string, braveledger_bat_helper::SERVER_LIST>> server_list_;
+  std::map<std::string, braveledger_bat_helper::SERVER_LIST> server_list_;
 
   unsigned int a_;
 
