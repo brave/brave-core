@@ -133,6 +133,8 @@ class RewardsServiceImpl : public RewardsService,
                              bool success);
   void OnTimer(uint32_t timer_id);
   void TriggerOnContentSiteUpdated();
+  void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
+                             const std::string& data);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -167,6 +169,7 @@ class RewardsServiceImpl : public RewardsService,
   void SavePublishersList(const std::string& publishers_list,
                           ledger::LedgerCallbackHandler* handler) override;
   void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
+  void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
 
   std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
@@ -193,7 +196,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
-  const base::FilePath verified_publisher_list_path_;
+  const base::FilePath publisher_list_path_;
   std::unique_ptr<PublisherInfoDatabase> publisher_info_backend_;
 
   extensions::OneShotEvent ready_;
