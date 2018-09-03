@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.h b/chrome/browser/ui/views/profiles/profile_chooser_view.h
+index d9214627c0a5aff53879d4bbb0a483ba2d350d4b..1e6c924b38f5ca4e5415b3c12c1febdbb893a60a 100644
+--- a/chrome/browser/ui/views/profiles/profile_chooser_view.h
++++ b/chrome/browser/ui/views/profiles/profile_chooser_view.h
+@@ -144,6 +144,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
+   views::View* CreateOptionsView(bool display_lock, AvatarMenu* avatar_menu);
+   views::View* CreateSupervisedUserDisclaimerView();
+   views::View* CreateAutofillHomeView();
++  void AddTorButton(views::GridLayout* layout);
+ 
+   // Account Management view for the profile |avatar_item|.
+   views::View* CreateCurrentProfileAccountsView(
+@@ -219,6 +220,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
+   // Action buttons.
+   views::LabelButton* first_profile_button_;
+   views::LabelButton* guest_profile_button_;
++  views::LabelButton* tor_profile_button_;
+   views::LabelButton* users_button_;
+   views::LabelButton* go_incognito_button_;
+   views::LabelButton* lock_button_;

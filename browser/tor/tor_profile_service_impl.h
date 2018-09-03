@@ -25,12 +25,12 @@ class TorProfileServiceImpl : public TorProfileService {
   // TorProfileService:
   void LaunchTor(const TorConfig&) override;
   void ReLaunchTor(const TorConfig&) override;
-  void SetNewTorCircuit(const GURL&) override;
+  void SetNewTorCircuit(const GURL& request_url) override;
   const TorConfig& GetTorConfig() override;
   int64_t GetTorPid() override;
 
-  void SetProxy(net::ProxyResolutionService*, const GURL&,
-                        bool /* new circuit */) override;
+  void SetProxy(net::ProxyResolutionService*, const GURL& request_url,
+                bool new_circuit) override;
 
   void KillTor();
 

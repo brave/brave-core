@@ -50,6 +50,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   void RegisterOutOfProcessServices(
       OutOfProcessServiceMap* services) override;
 
+  std::unique_ptr<content::NavigationUIData> GetNavigationUIData(
+      content::NavigationHandle* navigation_handle) override;
+
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
 };

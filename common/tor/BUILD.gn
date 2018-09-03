@@ -1,13 +1,13 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
-
 import("//mojo/public/tools/bindings/mojom.gni")
 
 source_set("tor") {
   sources = [
+    "pref_names.cc",
+    "pref_names.h",
     "tor_common.cc",
     "tor_common.h",
+    "tor_constants.cc",
+    "tor_constants.h",
   ]
 
   deps = [

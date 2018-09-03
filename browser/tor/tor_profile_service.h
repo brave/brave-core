@@ -15,6 +15,11 @@ namespace net {
 class ProxyResolutionService;
 }
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
+
 namespace tor {
 
 class TorLauncherServiceObserver;
@@ -24,14 +29,16 @@ class TorProfileService : public KeyedService {
   TorProfileService();
   ~TorProfileService() override;
 
+  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+
   virtual void LaunchTor(const TorConfig&) = 0;
   virtual void ReLaunchTor(const TorConfig&) = 0;
-  virtual void SetNewTorCircuit(const GURL&) = 0;
+  virtual void SetNewTorCircuit(const GURL& request_url) = 0;
   virtual const TorConfig& GetTorConfig() = 0;
   virtual int64_t GetTorPid() = 0;
 
-  virtual void SetProxy(net::ProxyResolutionService*, const GURL&,
-                        bool /* new circuit */) = 0;
+  virtual void SetProxy(net::ProxyResolutionService*, const GURL&  request_url,
+                        bool new_circuit) = 0;
 
   void AddObserver(TorLauncherServiceObserver* observer);
   void RemoveObserver(TorLauncherServiceObserver* observer);

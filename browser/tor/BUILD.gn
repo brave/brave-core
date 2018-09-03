@@ -1,7 +1,3 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
-
 source_set("tor") {
   sources = [
     "tor_launcher_factory.cc",
@@ -15,8 +11,6 @@ source_set("tor") {
     "tor_profile_service_impl.h",
     "tor_proxy_config_service.cc",
     "tor_proxy_config_service.h",
-    "tor_url_request_interceptor.cc",
-    "tor_url_request_interceptor.h",
   ]
 
   deps = [

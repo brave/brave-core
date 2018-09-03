@@ -6,18 +6,22 @@
 
 #include "base/bind.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
+#include "brave/browser/renderer_host/brave_navigation_ui_data.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/grit/chromium_strings.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/browser_url_handler.h"
+#include "content/public/browser/navigation_handle.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using content::BrowserThread;
@@ -182,4 +186,18 @@ void BraveContentBrowserClient::RegisterOutOfProcessServices(
   ChromeContentBrowserClient::RegisterOutOfProcessServices(services);
   (*services)[tor::mojom::kTorLauncherServiceName] = base::BindRepeating(
     l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME);
+}
+
+std::unique_ptr<content::NavigationUIData>
+BraveContentBrowserClient::GetNavigationUIData(
+      content::NavigationHandle* navigation_handle) {
+  std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
+    std::make_unique<BraveNavigationUIData>(navigation_handle);
+  Profile* profile =
+    Profile::FromBrowserContext(navigation_handle->GetWebContents()
+                                ->GetBrowserContext());
+  TorProfileServiceFactory::SetTorNavigationUIData(profile,
+                                                   navigation_ui_data.get());
+  return std::move(navigation_ui_data);
+
 }

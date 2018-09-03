@@ -8,6 +8,7 @@
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/site_instance.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 
 using content::BrowserThread;
@@ -38,7 +39,7 @@ void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
   tor_launcher_factory_->ReLaunchTorProcess(config);
 }
 
-void TorProfileServiceImpl::SetNewTorCircuit(const GURL& url) {}
+void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url) {}
 
 const TorConfig& TorProfileServiceImpl::GetTorConfig() {
   return tor_launcher_factory_->GetTorConfig();
@@ -49,8 +50,10 @@ int64_t TorProfileServiceImpl::GetTorPid() {
 }
 
 void TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
-                                     const GURL& url,bool new_circuit) {
+                                     const GURL& request_url,bool new_circuit) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   const TorConfig tor_config = tor_launcher_factory_->GetTorConfig();
+  GURL url = content::SiteInstance::GetSiteForURL(profile_, request_url);
   if (url.host().empty() || tor_config.empty())
     return;
   BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
@@ -60,7 +63,6 @@ void TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
                                      url.host(),
                                      &tor_proxy_map_,
                                      new_circuit));
-
 }
 
 void TorProfileServiceImpl::KillTor() {

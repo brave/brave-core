@@ -7,9 +7,12 @@
 #include <set>
 
 #include "brave/browser/tor/tor_profile_service_impl.h"
+#include "brave/browser/renderer_host/brave_navigation_ui_data.h"
+#include "brave/common/tor/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/prefs/pref_service.h"
 
 namespace {
 std::set<Profile*> g_profile_set;
@@ -32,6 +35,15 @@ TorProfileServiceFactory::TorProfileServiceFactory()
           "TorProfileService",
           BrowserContextDependencyManager::GetInstance()) {
       g_profile_set.clear();
+}
+
+//static
+void TorProfileServiceFactory::SetTorNavigationUIData(
+    Profile* profile, BraveNavigationUIData* data) {
+  bool use_tor = profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor);
+  if (!use_tor)
+    return;
+  data->SetTorProfileService(GetForProfile(profile));
 }
 
 TorProfileServiceFactory::~TorProfileServiceFactory() {}

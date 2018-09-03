@@ -5,8 +5,6 @@
 #include "brave/browser/profile_creation_monitor.h"
 
 #include "brave/browser/alternate_private_search_engine_controller.h"
-#include "brave/browser/tor/tor_profile_service.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/notification_service.h"
@@ -27,15 +25,6 @@ void ProfileCreationMonitor::Observe(
       Profile* profile = content::Source<Profile>(source).ptr();
       if (profile->GetProfileType() == Profile::INCOGNITO_PROFILE)
         AlternatePrivateSearchEngineController::Create(profile);
-      //TODO: move to proper place
-      tor::TorProfileService* tor_profile_service =
-        TorProfileServiceFactory::GetForProfile(profile);
-      if (tor_profile_service->GetTorPid() < 0) {
-        base::FilePath path("/usr/local/bin/tor");
-        std::string proxy("socks5://127.0.0.1:9050");
-        tor::TorConfig config(path, proxy);
-        tor_profile_service->LaunchTor(config);
-      }
       break;
     }
     default:

@@ -5,6 +5,9 @@
 #include "brave/browser/tor/tor_profile_service.h"
 
 #include "brave/browser/tor/tor_launcher_service_observer.h"
+#include "brave/common/tor/pref_names.h"
+#include "components/pref_registry/pref_registry_syncable.h"
+
 
 namespace tor {
 
@@ -12,6 +15,12 @@ TorProfileService::TorProfileService() {
 }
 
 TorProfileService::~TorProfileService() {
+}
+
+//static
+void TorProfileService::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterBooleanPref(tor::prefs::kProfileUsingTor, false);
 }
 
 void TorProfileService::AddObserver(TorLauncherServiceObserver* observer) {

@@ -140,6 +140,9 @@
     <message name="IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a guest window.">
       Open Guest window
     </message>
+    <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a tor window.">
+      Open Tor window
+    </message>
     <message name="IDS_PROFILES_CLOSE_ALL_WINDOWS_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile.">
       Close all your windows
     </message>
@@ -165,6 +168,9 @@
     </message>
     <message name="IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a guest window.">
       Open Guest Window
+    </message>
+    <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a tor window.">
+      Open Tor Window
     </message>
     <message name="IDS_PROFILES_CLOSE_ALL_WINDOWS_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile.">
       Close All Your Windows

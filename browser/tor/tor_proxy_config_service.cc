@@ -66,12 +66,14 @@ TorProxyConfigService::TorProxyConfigService(
 
 TorProxyConfigService::~TorProxyConfigService() {}
 
+// static
 void TorProxyConfigService::TorSetProxy(
     net::ProxyResolutionService* service,
     const std::string& tor_proxy,
     const std::string& site_url,
     TorProxyMap* tor_proxy_map,
     bool new_password) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   if (!service)
     return;
   if (new_password && tor_proxy_map)
