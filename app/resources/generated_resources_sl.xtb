@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">Podatke o brskanju lahko izbrišete v tem meniju</translation>
 <translation id="6040143037577758943">Zapri</translation>
 <translation id="5379268888377976432">Razveljavi brisanje</translation>
-<translation id="6463795194797719782">&amp;amp;Urejanje</translation>
+<translation id="6463795194797719782">&amp;Urejanje</translation>
 <translation id="8131740175452115882">Potrdi</translation>
 <translation id="4394049700291259645">Onemogoči</translation>
 <translation id="8496717697661868878">Zaženi ta vtičnik</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">Premakni okno uporabniku <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">Povečaj besedilo</translation>
 <translation id="7134098520442464001">Pomanjšaj besedilo</translation>
-<translation id="4508765956121923607">Prikaz &amp;amp;izvorne kode</translation>
-<translation id="4792711294155034829">&amp;amp;Prijavite težavo ...</translation>
-<translation id="5112577000029535889">&amp;amp;Orodja za razvijalce</translation>
-<translation id="5184063094292164363">Konzola &amp;amp;JavaScript</translation>
-<translation id="7056526158851679338">&amp;amp;Pregled naprav</translation>
-<translation id="48838266408104654">&amp;amp;Upravitelj opravil</translation>
-<translation id="6277518330158259200">N&amp;amp;aredi posnetek zaslona</translation>
-<translation id="5288678174502918605">&amp;amp;Znova odpri zaprt zavihek</translation>
-<translation id="2731392572903530958">&amp;amp;Znova odpri zaprto okno</translation>
+<translation id="4508765956121923607">Prikaz &amp;izvorne kode</translation>
+<translation id="4792711294155034829">&amp;Prijavite težavo ...</translation>
+<translation id="5112577000029535889">&amp;Orodja za razvijalce</translation>
+<translation id="5184063094292164363">Konzola &amp;JavaScript</translation>
+<translation id="7056526158851679338">&amp;Pregled naprav</translation>
+<translation id="48838266408104654">&amp;Upravitelj opravil</translation>
+<translation id="6277518330158259200">N&amp;aredi posnetek zaslona</translation>
+<translation id="5288678174502918605">&amp;Znova odpri zaprt zavihek</translation>
+<translation id="2731392572903530958">&amp;Znova odpri zaprto okno</translation>
 <translation id="7607274158153386860">Zahtevaj spletno mesto za tablični računalnik</translation>
-<translation id="4408599188496843485">&amp;amp;Pomoč</translation>
+<translation id="4408599188496843485">&amp;Pomoč</translation>
 <translation id="3855676282923585394">Uvoz zaznamkov in nastavitev ...</translation>
-<translation id="4821935166599369261">&amp;amp;Profiliranje je omogočeno</translation>
-<translation id="3827774300009121996">&amp;amp;Celozaslonsko</translation>
-<translation id="3616741288025931835">&amp;amp;Izbriši podatke brskanja ...</translation>
-<translation id="7861215335140947162">&amp;amp;Prenosi</translation>
-<translation id="862542460444371744">&amp;amp;Razširitve</translation>
-<translation id="8925458182817574960">&amp;amp;Nastavitve</translation>
-<translation id="9147392381910171771">&amp;amp;Možnosti</translation>
+<translation id="4821935166599369261">&amp;Profiliranje je omogočeno</translation>
+<translation id="3827774300009121996">&amp;Celozaslonsko</translation>
+<translation id="3616741288025931835">&amp;Izbriši podatke brskanja ...</translation>
+<translation id="7861215335140947162">&amp;Prenosi</translation>
+<translation id="862542460444371744">&amp;Razširitve</translation>
+<translation id="8925458182817574960">&amp;Nastavitve</translation>
+<translation id="9147392381910171771">&amp;Možnosti</translation>
 <translation id="1618268899808219593">Center za pomoč</translation>
 <translation id="7324297612904500502">Forum za beto</translation>
 <translation id="7199158086730159431">Pomoč</translation>
-<translation id="630065524203833229">I&amp;amp;zhod</translation>
+<translation id="630065524203833229">I&amp;zhod</translation>
 <translation id="3705722231355495246">–</translation>
-<translation id="5702898740348134351">&amp;amp;Urejanje iskalnikov ...</translation>
+<translation id="5702898740348134351">&amp;Urejanje iskalnikov ...</translation>
 <translation id="2454247629720664989">Ključna beseda</translation>
 <translation id="5327248766486351172">Ime</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (privzeto)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">Izbriši vse</translation>
 <translation id="750509436279396091">Odpiranje mape s prenosi</translation>
 <translation id="2902312830803030883">Več dejanj</translation>
-<translation id="3612673635130633812">Prenesla razširitev &amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;</translation>
+<translation id="3612673635130633812">Prenesla razširitev &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="7909969815743704077">Preneseno v načinu brez beleženja zgodovine</translation>
 <translation id="8028803902702117856">Prenašanje <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Prenašanje, <ph name="PERCENT_REMAINING"/></translation>
@@ -195,7 +195,7 @@
 <translation id="2101225219012730419">Različica:</translation>
 <translation id="8678933587484842200">Kako želite, da se zažene ta aplikacija?</translation>
 <translation id="397105322502079400">Izračunavanje …</translation>
-<translation id="2352662711729498748">&amp;lt; 1 MB</translation>
+<translation id="2352662711729498748">&lt; 1 MB</translation>
 <translation id="8941173171815156065">Preklic dovoljenja »<ph name="PERMISSION"/>«</translation>
 <translation id="741906494724992817">Ta aplikacija ne zahteva posebnih dovoljenj.</translation>
 <translation id="1616206807336925449">Za to razširitev so potrebna posebna dovoljenja.</translation>
@@ -534,8 +534,8 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3011284594919057757">O programu Flash</translation>
 <translation id="1962233722219655970">Ta stran uporablja aplikacijo s tehnologijo Native Client, ki ne deluje v vašem računalniku.</translation>
 <translation id="4453946976636652378">Uporabite <ph name="SEARCH_ENGINE_NAME"/> za iskanje ali vnesite URL</translation>
-<translation id="5731247495086897348">&amp;amp;Prilepi in nadaljuj</translation>
-<translation id="8425755597197517046">&amp;amp;Prilepi in išči</translation>
+<translation id="5731247495086897348">&amp;Prilepi in nadaljuj</translation>
+<translation id="8425755597197517046">&amp;Prilepi in išči</translation>
 <translation id="6151323131516309312">Pritisnite <ph name="SEARCH_KEY"/> za iskanje v <ph name="SITE_NAME"/></translation>
 <translation id="3449839693241009168">Pritisnite <ph name="SEARCH_KEY"/>, če želite poslati ukaze v <ph name="EXTENSION_NAME"/></translation>
 <translation id="6659594942844771486">Tabulator</translation>
@@ -572,6 +572,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3617891479562106823">Ozadja niso na voljo. Poskusite znova pozneje.</translation>
 <translation id="8391712576156218334">Slika ni na voljo. Poskusite znova pozneje.</translation>
 <translation id="1564414980088536597">Te slike ni mogoče uporabiti. Izberite drugo sliko.</translation>
+<translation id="385051799172605136">Nazaj</translation>
 <translation id="4628948037717959914">Fotografija</translation>
 <translation id="8033827949643255796">izbrani</translation>
 <translation id="5376169624176189338">Kliknite, če se želite vrniti nazaj, za ogled zgodovine pa zadržite</translation>
@@ -774,7 +775,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="8539727552378197395">Ne (samo http)</translation>
 <translation id="4615586811063744755">ni izbranih piškotkov</translation>
 <translation id="5765780083710877561">Opis:</translation>
-<translation id="2422426094670600218">&amp;lt;neimenovano&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;neimenovano&gt;</translation>
 <translation id="6708242697268981054">Izvor:</translation>
 <translation id="6492313032770352219">Velikost na disku:</translation>
 <translation id="3459774175445953971">Zadnja sprememba:</translation>
@@ -836,7 +837,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6418273007044911016">Podatki, ki jih sinhronizirate z Googlom, in funkcije, ki jih uporabljate, se ne bodo spremenili</translation>
 <translation id="8372733498235009300">Vklop sinhronizacije, prilagajanja in drugih Googlovih storitev</translation>
 <translation id="8340964510643644301">To je mogoče kadar koli prilagoditi v Chromovih nastavitvah</translation>
-<translation id="385051799172605136">Nazaj</translation>
 <translation id="3149880132460839085">Sinhronizacija za Brave</translation>
 <translation id="3796902758602917951">Vaši zaznamki, zgodovina, gesla in druge nastavitve bodo sinhronizirani z Brave Software Računom, tako da jih boste lahko uporabljali v vseh svojih napravah.</translation>
 <translation id="1371301976177520732">Zaznamki, gesla, zgodovina in drugi podatki v vseh vaših napravah</translation>
@@ -888,7 +888,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="7004499039102548441">Nedavni zavihki</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 zavihek}one{# zavihek}two{# zavihka}few{# zavihki}other{# zavihkov}}</translation>
 <translation id="4547659257713117923">Ni zavihkov iz drugih naprav</translation>
-<translation id="4756388243121344051">&amp;amp;Zgodovina</translation>
+<translation id="4756388243121344051">&amp;Zgodovina</translation>
 <translation id="9026731007018893674">prenos</translation>
 <translation id="9218430445555521422">Nastavi za privzeti brskalnik</translation>
 <translation id="281133045296806353">Ustvarjeno je novo okno v obstoječi seji brskalnika.</translation>
@@ -910,7 +910,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="4242533952199664413">Odpri nastavitve</translation>
 <translation id="3752582316358263300">V redu ...</translation>
 <translation id="7117247127439884114">Prijavite se znova ...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> vam želi pošiljati obvestila</translation>
 <translation id="7221855153210829124">Pokaži obvestila</translation>
@@ -1068,7 +1068,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="8736288397686080465">To spletno mesto je bilo posodobljeno v ozadju.</translation>
 <translation id="6945221475159498467">Izberi</translation>
 <translation id="4130199216115862831">Dnevnik naprave</translation>
-<translation id="6231881193380278751">Če želite, da se stran samodejno osveži, v URL-ju dodajte parameter iskalne poizvedbe: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">Če želite, da se stran samodejno osveži, v URL-ju dodajte parameter iskalne poizvedbe: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Osveži</translation>
 <translation id="1260240842868558614">Prikaži:</translation>
 <translation id="1165039591588034296">Napaka</translation>
@@ -1115,20 +1115,20 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3613134908380545408">Pokaži <ph name="FOLDER_NAME"/></translation>
 <translation id="2805756323405976993">Aplikacije</translation>
 <translation id="2367972762794486313">Pokaži aplikacije</translation>
-<translation id="6466988389784393586">&amp;amp;Odpri vse zaznamke</translation>
-<translation id="6804671422566312077">Vse zaznamke odpri v &amp;amp;novem oknu</translation>
-<translation id="3011362742078013760">Vse zaznamke odpri v &amp;amp;oknu brez beleženja zgodovine</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{&amp;amp;Odpiranje vseh}=1{&amp;amp;Odpiranje zaznamka}one{&amp;amp;Odpiranje vseh (#)}two{&amp;amp;Odpiranje vseh (#)}few{&amp;amp;Odpiranje vseh (#)}other{&amp;amp;Odpiranje vseh (#)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{Odpiranje vseh v &amp;amp;novem oknu}=1{Odpiranje v &amp;amp;novem oknu}one{Odpiranje vseh (#) v &amp;amp;novem oknu}two{Odpiranje vseh (#) v &amp;amp;novem oknu}few{Odpiranje vseh (#) v &amp;amp;novem oknu}other{Odpiranje vseh (#) v &amp;amp;novem oknu}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Odpiranje vseh v &amp;amp;oknu brez beleženja zgodovine}=1{Odpiranje v &amp;amp;oknu brez beleženja zgodovine}one{Odpiranje vseh (#) v &amp;amp;oknu brez beleženja zgodovine}two{Odpiranje vseh (#) v &amp;amp;oknu brez beleženja zgodovine}few{Odpiranje vseh (#) v &amp;amp;oknu brez beleženja zgodovine}other{Odpiranje vseh (#) v &amp;amp;oknu brez beleženja zgodovine}}</translation>
-<translation id="9024127637873500333">&amp;amp;Odpri v novem zavihku</translation>
-<translation id="665061930738760572">Odpri v &amp;amp;novem oknu</translation>
-<translation id="37613671848467444">Odpri v oknu &amp;amp;brez beleženja zgodovine</translation>
-<translation id="6702639462873609204">&amp;amp;Uredi ...</translation>
-<translation id="3088325635286126843">&amp;amp;Preimenuj ...</translation>
-<translation id="5329858601952122676">&amp;amp;Izbriši</translation>
-<translation id="8824701697284169214">Dodaj str&amp;amp;an ...</translation>
-<translation id="2489918096470125693">Dodaj &amp;amp;mapo ...</translation>
+<translation id="6466988389784393586">&amp;Odpri vse zaznamke</translation>
+<translation id="6804671422566312077">Vse zaznamke odpri v &amp;novem oknu</translation>
+<translation id="3011362742078013760">Vse zaznamke odpri v &amp;oknu brez beleženja zgodovine</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{&amp;Odpiranje vseh}=1{&amp;Odpiranje zaznamka}one{&amp;Odpiranje vseh (#)}two{&amp;Odpiranje vseh (#)}few{&amp;Odpiranje vseh (#)}other{&amp;Odpiranje vseh (#)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{Odpiranje vseh v &amp;novem oknu}=1{Odpiranje v &amp;novem oknu}one{Odpiranje vseh (#) v &amp;novem oknu}two{Odpiranje vseh (#) v &amp;novem oknu}few{Odpiranje vseh (#) v &amp;novem oknu}other{Odpiranje vseh (#) v &amp;novem oknu}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{Odpiranje vseh v &amp;oknu brez beleženja zgodovine}=1{Odpiranje v &amp;oknu brez beleženja zgodovine}one{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}two{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}few{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}other{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}}</translation>
+<translation id="9024127637873500333">&amp;Odpri v novem zavihku</translation>
+<translation id="665061930738760572">Odpri v &amp;novem oknu</translation>
+<translation id="37613671848467444">Odpri v oknu &amp;brez beleženja zgodovine</translation>
+<translation id="6702639462873609204">&amp;Uredi ...</translation>
+<translation id="3088325635286126843">&amp;Preimenuj ...</translation>
+<translation id="5329858601952122676">&amp;Izbriši</translation>
+<translation id="8824701697284169214">Dodaj str&amp;an ...</translation>
+<translation id="2489918096470125693">Dodaj &amp;mapo ...</translation>
 <translation id="2897878306272793870">Ali ste prepričani, da želite odpreti naslednje število zavihkov: <ph name="TAB_COUNT"/></translation>
 <translation id="4430369329743628066">Zaznamek dodan</translation>
 <translation id="6404511346730675251">Uredi zaznamek</translation>
@@ -1143,12 +1143,12 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="971774202801778802">URL zaznamka</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{Ta mapa vsebuje zaznamek. Ali ste prepričani, da jo želite izbrisati?}one{Ta mapa vsebuje # zaznamek. Ali ste prepričani, da jo želite izbrisati?}two{Ta mapa vsebuje # zaznamka. Ali ste prepričani, da jo želite izbrisati?}few{Ta mapa vsebuje # zaznamke. Ali ste prepričani, da jo želite izbrisati?}other{Ta mapa vsebuje # zaznamkov. Ali ste prepričani, da jo želite izbrisati?}}</translation>
 <translation id="5857090052475505287">Nova mapa</translation>
-<translation id="6455894534188563617">&amp;amp;Nova mapa</translation>
+<translation id="6455894534188563617">&amp;Nova mapa</translation>
 <translation id="1015318665228971643">Urejanje imena mape</translation>
 <translation id="5449588825071916739">Dodaj vse zavihke med zaznamke</translation>
 <translation id="5528368756083817449">Upravitelj zaznamkov</translation>
 <translation id="3828029223314399057">Išči po zaznamkih</translation>
-<translation id="5111692334209731439">&amp;amp;Upravitelj zaznamkov</translation>
+<translation id="5111692334209731439">&amp;Upravitelj zaznamkov</translation>
 <translation id="6973630695168034713">Mape</translation>
 <translation id="5496587651328244253">Urejanje</translation>
 <translation id="1936157145127842922">Pokaži v mapi</translation>
@@ -1192,13 +1192,13 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6757101664402245801">URL je kopiran</translation>
 <translation id="5488093641312826914">Element »<ph name="COPIED_ITEM_NAME"/>« je kopiran</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 kopiran element}one{# kopiran element}two{# kopirana elementa}few{# kopirani elementi}other{# kopiranih elementov}}</translation>
-<translation id="9115675100829699941">&amp;amp;Zaznamki</translation>
+<translation id="9115675100829699941">&amp;Zaznamki</translation>
 <translation id="1047726139967079566">Zaznamek za to stran ...</translation>
 <translation id="6949306908218145636">Ustvarjanje zaznamkov za odprte strani ...</translation>
 <translation id="4422347585044846479">Uredite zaznamek za to stran</translation>
 <translation id="6005695835120147974">Predstavnostni usmerjevalnik</translation>
 <translation id="7787308148023287649">Prikaz na drugem zaslonu</translation>
-<translation id="7710568461918838723">&amp;amp;Predvajanje ...</translation>
+<translation id="7710568461918838723">&amp;Predvajanje ...</translation>
 <translation id="8970203673128054105">Ogled seznama načinov predvajanja</translation>
 <translation id="1277908057200820621">Ogled seznama naprav</translation>
 <translation id="2847759467426165163">Predvajanje v napravi</translation>
@@ -1243,6 +1243,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3930737994424905957">Iskanje naprav</translation>
 <translation id="5209320130288484488">Najti ni mogoče nobene naprave</translation>
 <translation id="4363771538994847871">Ni ciljev za predvajanje. Potrebujete pomoč?</translation>
+<translation id="8688672835843460752">Na voljo</translation>
 <translation id="4271396100647220620">Ni ujemanj</translation>
 <translation id="6972180789171089114">Zvok/video</translation>
 <translation id="2541002089857695151">Želite optimizirati celozaslonsko predvajanje?</translation>
@@ -1253,6 +1254,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="7473891865547856676">Ne, hvala</translation>
 <translation id="8538358978858059843">Želite omogočiti oblačne storitve za Brave Software Cast?</translation>
 <translation id="3856595552313160385">Uporabo aplikacije Hangouts in razširitve Cast for Education ureja Googlov pravilnik o zasebnosti.</translation>
+<translation id="3435896845095436175">Omogoči</translation>
 <translation id="3700888195348409686">Predstavljanje (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Zaslon <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">Upravitelj (<ph name="CUSTODIAN_EMAIL"/>) lahko na chrome.com pregleduje uporabo in zgodovino.</translation>
@@ -1280,7 +1282,9 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="1316495628809031177">Sinhronizacija je zaustavljena</translation>
 <translation id="7786207843293321886">Zapusti sejo gosta</translation>
 <translation id="2329597144923131178">Prijavite se, da boste lahko dostopali do zaznamkov, zgodovine, gesel in drugih nastavitev v vseh napravah.</translation>
+<translation id="7029809446516969842">Gesla</translation>
 <translation id="984275831282074731">Plačilna sredstva</translation>
+<translation id="2903493209154104877">Naslovi</translation>
 <translation id="8883847527783433352">Sinhroniziraj z drugim računom</translation>
 <translation id="2761898608071930085">Uporabi drug račun</translation>
 <translation id="4235813040357936597">Dodaj račun za <ph name="PROFILE_NAME"/></translation>
@@ -1478,11 +1482,11 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="304747341537320566">Mehanizmi za govor</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Izvajanje orodij, urejevalnikov in vdelanih orodij za razvoj programske opreme (IDE) za Linux v Bravebooku. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Več o tem&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">Izvajanje orodij, urejevalnikov in vdelanih orodij za razvoj programske opreme (IDE) za Linux v Bravebooku. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Več o tem&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Odstranjevanje aplikacij za Linux za Bravebook</translation>
 <translation id="2295473777859797944">Trgovina Brave Software Play</translation>
 <translation id="572155275267014074">Nastavitve za Android</translation>
-<translation id="4767209642168463274">Namestite aplikacije in igre iz Googla Play v Bravebooku. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Več o tem&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">Namestite aplikacije in igre iz Googla Play v Bravebooku. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Več o tem&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Upravljanje nastavitev Androida</translation>
 <translation id="4074367893748481070">Odstranitev Trgovine Brave Software Play</translation>
 <translation id="2792290659606763004">Želite odstraniti aplikacije za Android?</translation>
@@ -1807,11 +1811,11 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="7696063401938172191">V telefonu »<ph name="PHONE_NAME"/>«:</translation>
 <translation id="3423463006624419153">V telefonu »<ph name="PHONE_NAME_1"/>« in »<ph name="PHONE_NAME_2"/>«:</translation>
 <translation id="6997707937646349884">V vaših napravah:</translation>
-<translation id="7531779363494549572">Odprite »Nastavitve &amp;gt; Aplikacije in obvestila &amp;gt; Obvestila«.</translation>
-<translation id="6921033294337262045">Dotaknite se »Obvestila aplikacije &amp;gt; Storitve Brave Software Play«.</translation>
+<translation id="7531779363494549572">Odprite »Nastavitve &gt; Aplikacije in obvestila &gt; Obvestila«.</translation>
+<translation id="6921033294337262045">Dotaknite se »Obvestila aplikacije &gt; Storitve Brave Software Play«.</translation>
 <translation id="5624710179837914896">Vklopite storitve Brave Software Play</translation>
 <translation id="2705736684557713153">Pomaknite se na dno zaslona in vklopite takojšnjo povezavo z internetom prek mobilnega telefona, če se ta možnost pojavi. Če se ne, ste pripravljeni.</translation>
-<translation id="3604048165392640554">Mobilne povezave ni bilo mogoče najti. V drugih napravah vklopite takojšnjo povezavo z internetom prek mobilnega telefona in poskusite znova. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Več o tem&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">Mobilne povezave ni bilo mogoče najti. V drugih napravah vklopite takojšnjo povezavo z internetom prek mobilnega telefona in poskusite znova. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Več o tem&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Se želite povezati z novo dostopno točko?</translation>
 <translation id="6514010653036109809">Razpoložljiva naprava:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/> % energije akumulatorja</translation>
@@ -1977,7 +1981,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Če vas zanima več nastavitev, povezanih z zasebnostjo, varnostjo in zbiranjem podatkov, si oglejte razdelek <ph name="BEGIN_LINK"/>Sinhronizacija in prilagajanje<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Če vas zanima več nastavitev, povezanih z zasebnostjo, varnostjo in zbiranjem podatkov, si oglejte razdelek <ph name="BEGIN_LINK"/>Sinhronizacija in Googlove storitve<ph name="END_LINK"/></translation>
-<translation id="6438234780621650381">Ponastavitev nastavitev</translation>
 <translation id="5293170712604732402">Ponastavitev nastavitev na privzete nastavitve</translation>
 <translation id="892706138619340876">Nekatere nastavitve so bile ponastavljene</translation>
 <translation id="2334029754052191847">Brave je zaznal, da je drug program spremenil nastavitve, in jih ponastavil na prvotne privzete nastavitve.</translation>
@@ -1991,7 +1994,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="2203682048752833055">Iskalnik, uporabljen v <ph name="BEGIN_LINK"/>naslovni vrstici<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">Upravljanje iskalnikov</translation>
 <translation id="2862205630718215619">Pomočnik Brave Software</translation>
-<translation id="3435896845095436175">Omogoči</translation>
 <translation id="6978121630131642226">Iskalniki</translation>
 <translation id="6410668567036790476">Dodajanje iskalnika</translation>
 <translation id="1128591060186966949">Urejanje iskalnika</translation>
@@ -2225,7 +2227,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="2709516037105925701">Samodejno izpolnjevanje</translation>
 <translation id="1644574205037202324">Zgodovina</translation>
 <translation id="5117427536932535467">Teme in ozadja</translation>
-<translation id="7029809446516969842">Gesla</translation>
 <translation id="3259418918864581163">Kreditne kartice in naslovi z Googlom Play.</translation>
 <translation id="3268451620468152448">Odprti zavihki</translation>
 <translation id="5241892180459725878">Predlogi za iskanje v Googlu Drive</translation>
@@ -2363,7 +2364,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6856623341093082836">Nastavitev in prilagajanje natančnosti zaslona na dotik</translation>
 <translation id="4598556348158889687">Upravljanje shrambe</translation>
 <translation id="8868626022555786497">V uporabi</translation>
-<translation id="8688672835843460752">Na voljo</translation>
 <translation id="1082725763867769612">Datoteke brez povezave</translation>
 <translation id="7366909168761621528">Podatki brskanja</translation>
 <translation id="5568144734023334204">Shranjeni podatki za Android</translation>
@@ -2429,7 +2429,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3264582393905923483">Kontekst</translation>
 <translation id="1607139524282324606">Izbris vnosa</translation>
 <translation id="6025215716629925253">Sledenje sklada</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 vrstica ni prikazana&amp;gt;}one{&amp;lt;$1 vrstica ni prikazana&amp;gt;}two{&amp;lt;$1 vrstici nista prikazani&amp;gt;}few{&amp;lt;$1 vrstice niso prikazane&amp;gt;}other{&amp;lt;$1 vrstic ni prikazanih&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 vrstica ni prikazana&gt;}one{&lt;$1 vrstica ni prikazana&gt;}two{&lt;$1 vrstici nista prikazani&gt;}few{&lt;$1 vrstice niso prikazane&gt;}other{&lt;$1 vrstic ni prikazanih&gt;}}</translation>
 <translation id="8389492867173948260">Omogočite to razširitev za branje in spreminjanje vseh podatkov na spletnih mestih, ki jih obiščete:</translation>
 <translation id="407173827865827707">Ob kliku</translation>
 <translation id="6455264371803474013">Na določenih spletnih mestih</translation>
@@ -2437,7 +2437,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3729506734996624908">Dovoljena spletna mesta</translation>
 <translation id="3732078975418297900">Napaka v vrstici <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Napaka od vrstice <ph name="ERROR_LINE_START"/> do <ph name="ERROR_LINE_END"/></translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Pregled pogledov</translation>
 <translation id="181577467034453336">Še <ph name="NUMBER_OF_VIEWS"/> ...</translation>
 <translation id="2450849356604136918">Ni aktivnih pogledov</translation>

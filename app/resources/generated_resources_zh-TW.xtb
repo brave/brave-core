@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">你可以使用這個選單清除瀏覽資料</translation>
 <translation id="6040143037577758943">關閉</translation>
 <translation id="5379268888377976432">復原刪除</translation>
-<translation id="6463795194797719782">編輯(&amp;amp;E)</translation>
+<translation id="6463795194797719782">編輯(&amp;E)</translation>
 <translation id="8131740175452115882">確認</translation>
 <translation id="4394049700291259645">停用</translation>
 <translation id="8496717697661868878">執行這個外掛程式</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">將視窗傳送給 <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">放大文字</translation>
 <translation id="7134098520442464001">縮小文字</translation>
-<translation id="4508765956121923607">檢視原始碼(&amp;amp;O)</translation>
-<translation id="4792711294155034829">回報問題(&amp;amp;R)...</translation>
-<translation id="5112577000029535889">開發人員工具(&amp;amp;D)</translation>
-<translation id="5184063094292164363">JavaScript 控制台(&amp;amp;J)</translation>
-<translation id="7056526158851679338">檢查裝置 (&amp;amp;I)</translation>
-<translation id="48838266408104654">工作管理員(&amp;amp;T)</translation>
-<translation id="6277518330158259200">擷取螢幕畫面(&amp;amp;A)</translation>
-<translation id="5288678174502918605">重新開啟先前關閉的分頁(&amp;amp;E)</translation>
-<translation id="2731392572903530958">重新開啟先前關閉的視窗(&amp;amp;E)</translation>
+<translation id="4508765956121923607">檢視原始碼(&amp;O)</translation>
+<translation id="4792711294155034829">回報問題(&amp;R)...</translation>
+<translation id="5112577000029535889">開發人員工具(&amp;D)</translation>
+<translation id="5184063094292164363">JavaScript 控制台(&amp;J)</translation>
+<translation id="7056526158851679338">檢查裝置 (&amp;I)</translation>
+<translation id="48838266408104654">工作管理員(&amp;T)</translation>
+<translation id="6277518330158259200">擷取螢幕畫面(&amp;A)</translation>
+<translation id="5288678174502918605">重新開啟先前關閉的分頁(&amp;E)</translation>
+<translation id="2731392572903530958">重新開啟先前關閉的視窗(&amp;E)</translation>
 <translation id="7607274158153386860">要求顯示平板電腦版網站</translation>
-<translation id="4408599188496843485">說明(&amp;amp;E)</translation>
+<translation id="4408599188496843485">說明(&amp;E)</translation>
 <translation id="3855676282923585394">匯入書籤和設定...</translation>
-<translation id="4821935166599369261">分析已啟用(&amp;amp;P)</translation>
-<translation id="3827774300009121996">全螢幕(&amp;amp;F)</translation>
-<translation id="3616741288025931835">清除瀏覽資料(&amp;amp;C)...</translation>
-<translation id="7861215335140947162">下載(&amp;amp;D)</translation>
-<translation id="862542460444371744">擴充功能(&amp;amp;E)</translation>
-<translation id="8925458182817574960">設定(&amp;amp;S)</translation>
-<translation id="9147392381910171771">選項 (&amp;amp;O)</translation>
-<translation id="1618268899808219593">說明中心(&amp;amp;E)</translation>
+<translation id="4821935166599369261">分析已啟用(&amp;P)</translation>
+<translation id="3827774300009121996">全螢幕(&amp;F)</translation>
+<translation id="3616741288025931835">清除瀏覽資料(&amp;C)...</translation>
+<translation id="7861215335140947162">下載(&amp;D)</translation>
+<translation id="862542460444371744">擴充功能(&amp;E)</translation>
+<translation id="8925458182817574960">設定(&amp;S)</translation>
+<translation id="9147392381910171771">選項 (&amp;O)</translation>
+<translation id="1618268899808219593">說明中心(&amp;E)</translation>
 <translation id="7324297612904500502">測試版論壇</translation>
-<translation id="7199158086730159431">取得說明(&amp;amp;E)</translation>
-<translation id="630065524203833229">結束(&amp;amp;X)</translation>
+<translation id="7199158086730159431">取得說明(&amp;E)</translation>
+<translation id="630065524203833229">結束(&amp;X)</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">編輯搜尋引擎(&amp;amp;E)...</translation>
+<translation id="5702898740348134351">編輯搜尋引擎(&amp;E)...</translation>
 <translation id="2454247629720664989">關鍵字</translation>
 <translation id="5327248766486351172">名稱</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (預設)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">全部清除</translation>
 <translation id="750509436279396091">開啟下載內容資料夾</translation>
 <translation id="2902312830803030883">更多動作</translation>
-<translation id="3612673635130633812">「&amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;」下載了這個檔案</translation>
+<translation id="3612673635130633812">「&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;」下載了這個檔案</translation>
 <translation id="7909969815743704077">已在無痕模式中下載</translation>
 <translation id="8028803902702117856">正在下載 <ph name="FILE_NAME"/>，檔案大小為 <ph name="SIZE"/></translation>
 <translation id="4644818355646995778">下載中，<ph name="PERCENT_REMAINING"/></translation>
@@ -195,7 +195,7 @@
 <translation id="2101225219012730419">版本：</translation>
 <translation id="8678933587484842200">你希望如何啟動這個應用程式？</translation>
 <translation id="397105322502079400">計算中…</translation>
-<translation id="2352662711729498748">&amp;lt; 1 MB</translation>
+<translation id="2352662711729498748">&lt; 1 MB</translation>
 <translation id="8941173171815156065">撤銷「<ph name="PERMISSION"/>」權限</translation>
 <translation id="741906494724992817">這個應用程式不需要任何特殊權限。</translation>
 <translation id="1616206807336925449">這個擴充功能不需要特殊權限。</translation>
@@ -533,8 +533,8 @@
 <translation id="3011284594919057757">關於 Flash</translation>
 <translation id="1962233722219655970">這個網頁使用無法在你電腦上運行的 Native Client 應用程式。</translation>
 <translation id="4453946976636652378">執行 <ph name="SEARCH_ENGINE_NAME"/> 搜尋或輸入網址</translation>
-<translation id="5731247495086897348">貼上並前往(&amp;amp;S)</translation>
-<translation id="8425755597197517046">貼上並搜尋(&amp;amp;S)</translation>
+<translation id="5731247495086897348">貼上並前往(&amp;S)</translation>
+<translation id="8425755597197517046">貼上並搜尋(&amp;S)</translation>
 <translation id="6151323131516309312">按一下 <ph name="SEARCH_KEY"/> 以搜尋 <ph name="SITE_NAME"/></translation>
 <translation id="3449839693241009168">按下「<ph name="SEARCH_KEY"/>」即可將指令傳送給 <ph name="EXTENSION_NAME"/></translation>
 <translation id="6659594942844771486">Tab</translation>
@@ -571,6 +571,7 @@
 <translation id="3617891479562106823">目前無法存取背景，請稍後再試。</translation>
 <translation id="8391712576156218334">目前無法存取圖片，請稍後再試。</translation>
 <translation id="1564414980088536597">無法使用這張圖片，請選擇其他圖片。</translation>
+<translation id="385051799172605136">返回</translation>
 <translation id="4628948037717959914">相片</translation>
 <translation id="8033827949643255796">已選取</translation>
 <translation id="5376169624176189338">按一下回上一頁，按住可查看記錄</translation>
@@ -773,7 +774,7 @@
 <translation id="8539727552378197395">否 (限 Http)</translation>
 <translation id="4615586811063744755">未選取任何 Cookie</translation>
 <translation id="5765780083710877561">說明：</translation>
-<translation id="2422426094670600218">&amp;lt;未命名&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;未命名&gt;</translation>
 <translation id="6708242697268981054">來源：</translation>
 <translation id="6492313032770352219">磁碟大小：</translation>
 <translation id="3459774175445953971">最後修改日期：</translation>
@@ -835,7 +836,6 @@
 <translation id="6418273007044911016">同步處理至 Brave Software 的資料和你所使用的功能不會有所改變</translation>
 <translation id="8372733498235009300">啟用同步處理、個人化功能和其他 Brave Software 服務</translation>
 <translation id="8340964510643644301">你隨時可在 Brave 設定中自訂這項設定</translation>
-<translation id="385051799172605136">返回</translation>
 <translation id="3149880132460839085">Brave Software Brave 同步功能</translation>
 <translation id="3796902758602917951">您的書籤、歷史記錄、密碼和其他設定都會在您的 Brave Software 帳戶中保持同步，讓您在所有個人裝置上使用。</translation>
 <translation id="1371301976177520732">使用任何裝置均可取得自己的書籤、密碼、歷史記錄及其他設定</translation>
@@ -887,7 +887,7 @@
 <translation id="7004499039102548441">最近開啟的分頁</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 個分頁}other{# 個分頁}}</translation>
 <translation id="4547659257713117923">沒有在其他裝置上開啟的分頁</translation>
-<translation id="4756388243121344051">記錄(&amp;amp;H)</translation>
+<translation id="4756388243121344051">記錄(&amp;H)</translation>
 <translation id="9026731007018893674">下載</translation>
 <translation id="9218430445555521422">設定為預設瀏覽器</translation>
 <translation id="281133045296806353">已在目前的瀏覽器工作階段開啟新視窗。</translation>
@@ -909,7 +909,7 @@
 <translation id="4242533952199664413">開啟設定</translation>
 <translation id="3752582316358263300">確定...</translation>
 <translation id="7117247127439884114">重新登入...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> 要求傳送通知給你</translation>
 <translation id="7221855153210829124">顯示通知</translation>
@@ -1067,7 +1067,7 @@
 <translation id="8736288397686080465">這個網站已在背景更新。</translation>
 <translation id="6945221475159498467">選取</translation>
 <translation id="4130199216115862831">裝置記錄</translation>
-<translation id="6231881193380278751">在網址中加入查詢間距的參數，設定自動重新整理網頁的時間：chrome://device-log/?refresh=&amp;lt;秒數&amp;gt;</translation>
+<translation id="6231881193380278751">在網址中加入查詢間距的參數，設定自動重新整理網頁的時間：chrome://device-log/?refresh=&lt;秒數&gt;</translation>
 <translation id="7180611975245234373">重新整理</translation>
 <translation id="1260240842868558614">顯示：</translation>
 <translation id="1165039591588034296">錯誤</translation>
@@ -1114,20 +1114,20 @@
 <translation id="3613134908380545408">顯示「<ph name="FOLDER_NAME"/>」</translation>
 <translation id="2805756323405976993">應用程式</translation>
 <translation id="2367972762794486313">顯示應用程式</translation>
-<translation id="6466988389784393586">開啟所有書籤(&amp;amp;O)</translation>
-<translation id="6804671422566312077">在新視窗中開啟所有書籤(&amp;amp;N)</translation>
-<translation id="3011362742078013760">在無痕式視窗中開啟所有書籤(&amp;amp;I)</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{開啟所有書籤(&amp;amp;O)}=1{開啟書籤(&amp;amp;O)}other{開啟全部 # 個書籤(&amp;amp;O)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{在新視窗中開啟所有書籤(&amp;amp;N)}=1{在新視窗中開啟(&amp;amp;N)}other{在新視窗中開啟全部 # 個書籤(&amp;amp;N)}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{在無痕式視窗中開啟所有書籤(&amp;amp;I)}=1{在無痕式視窗中開啟(&amp;amp;I)}other{在無痕式視窗中開啟全部 # 個書籤(&amp;amp;I)}}</translation>
-<translation id="9024127637873500333">在新分頁中開啟(&amp;amp;O)</translation>
-<translation id="665061930738760572">在新視窗中開啟(&amp;amp;N)</translation>
-<translation id="37613671848467444">在無痕式視窗中開啟(&amp;amp;I)</translation>
-<translation id="6702639462873609204">編輯(&amp;amp;E)...</translation>
-<translation id="3088325635286126843">重新命名(&amp;amp;R)...</translation>
-<translation id="5329858601952122676">刪除(&amp;amp;D)</translation>
-<translation id="8824701697284169214">新增網頁(&amp;amp;G)...</translation>
-<translation id="2489918096470125693">新增資料夾(&amp;amp;F)...</translation>
+<translation id="6466988389784393586">開啟所有書籤(&amp;O)</translation>
+<translation id="6804671422566312077">在新視窗中開啟所有書籤(&amp;N)</translation>
+<translation id="3011362742078013760">在無痕式視窗中開啟所有書籤(&amp;I)</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{開啟所有書籤(&amp;O)}=1{開啟書籤(&amp;O)}other{開啟全部 # 個書籤(&amp;O)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{在新視窗中開啟所有書籤(&amp;N)}=1{在新視窗中開啟(&amp;N)}other{在新視窗中開啟全部 # 個書籤(&amp;N)}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{在無痕式視窗中開啟所有書籤(&amp;I)}=1{在無痕式視窗中開啟(&amp;I)}other{在無痕式視窗中開啟全部 # 個書籤(&amp;I)}}</translation>
+<translation id="9024127637873500333">在新分頁中開啟(&amp;O)</translation>
+<translation id="665061930738760572">在新視窗中開啟(&amp;N)</translation>
+<translation id="37613671848467444">在無痕式視窗中開啟(&amp;I)</translation>
+<translation id="6702639462873609204">編輯(&amp;E)...</translation>
+<translation id="3088325635286126843">重新命名(&amp;R)...</translation>
+<translation id="5329858601952122676">刪除(&amp;D)</translation>
+<translation id="8824701697284169214">新增網頁(&amp;G)...</translation>
+<translation id="2489918096470125693">新增資料夾(&amp;F)...</translation>
 <translation id="2897878306272793870">你確定要開啟 <ph name="TAB_COUNT"/> 分頁嗎？</translation>
 <translation id="4430369329743628066">已新增書籤</translation>
 <translation id="6404511346730675251">編輯書籤</translation>
@@ -1142,12 +1142,12 @@
 <translation id="971774202801778802">書籤網址</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{這個資料夾內含 1 個書籤。您確定要刪除該書籤嗎？}other{這個資料夾內含 # 個書籤。您確定要刪除這些書籤嗎？}}</translation>
 <translation id="5857090052475505287">新資料夾</translation>
-<translation id="6455894534188563617">新增資料夾(&amp;amp;N)</translation>
+<translation id="6455894534188563617">新增資料夾(&amp;N)</translation>
 <translation id="1015318665228971643">編輯資料夾名稱</translation>
 <translation id="5449588825071916739">將所有分頁加入書籤</translation>
 <translation id="5528368756083817449">書籤管理員</translation>
 <translation id="3828029223314399057">搜尋書籤</translation>
-<translation id="5111692334209731439">書籤管理員(&amp;amp;B)</translation>
+<translation id="5111692334209731439">書籤管理員(&amp;B)</translation>
 <translation id="6973630695168034713">資料夾</translation>
 <translation id="5496587651328244253">整理</translation>
 <translation id="1936157145127842922">在資料夾中顯示</translation>
@@ -1191,13 +1191,13 @@
 <translation id="6757101664402245801">已複製網址</translation>
 <translation id="5488093641312826914">已複製「<ph name="COPIED_ITEM_NAME"/>」</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{已複製 1 個項目}other{已複製 # 個項目}}</translation>
-<translation id="9115675100829699941">書籤(&amp;amp;B)</translation>
+<translation id="9115675100829699941">書籤(&amp;B)</translation>
 <translation id="1047726139967079566">把此頁加入書籤...</translation>
 <translation id="6949306908218145636">將開啟的網頁加入書籤...</translation>
 <translation id="4422347585044846479">編輯此網頁的書籤</translation>
 <translation id="6005695835120147974">媒體路由器</translation>
 <translation id="7787308148023287649">在其他螢幕上顯示</translation>
-<translation id="7710568461918838723">投放(&amp;amp;C)...</translation>
+<translation id="7710568461918838723">投放(&amp;C)...</translation>
 <translation id="8970203673128054105">查看投放模式清單</translation>
 <translation id="1277908057200820621">查看裝置清單</translation>
 <translation id="2847759467426165163">投放至</translation>
@@ -1242,6 +1242,7 @@
 <translation id="3930737994424905957">正在尋找裝置</translation>
 <translation id="5209320130288484488">找不到裝置</translation>
 <translation id="4363771538994847871">找不到 Cast 目的地。需要協助嗎？</translation>
+<translation id="8688672835843460752">可用空間</translation>
 <translation id="4271396100647220620">找不到相符的項目</translation>
 <translation id="6972180789171089114">音效/影片</translation>
 <translation id="2541002089857695151">要讓全螢幕投放最佳化嗎？</translation>
@@ -1252,6 +1253,7 @@
 <translation id="7473891865547856676">不用了，謝謝</translation>
 <translation id="8538358978858059843">要啟用 Cast 雲端服務嗎？</translation>
 <translation id="3856595552313160385">Hangouts 和 Cast for Education 的相關使用行為受到《Brave Software 隱私權政策》所規範。</translation>
+<translation id="3435896845095436175">啟用</translation>
 <translation id="3700888195348409686">展示中 (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">螢幕 <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">管理員 (<ph name="CUSTODIAN_EMAIL"/>) 可以在 chrome.com 瞭解這名使用者的使用情形和記錄。</translation>
@@ -1279,7 +1281,9 @@
 <translation id="1316495628809031177">已暫停同步處理</translation>
 <translation id="7786207843293321886">結束訪客工作階段</translation>
 <translation id="2329597144923131178">登入後，即可從您使用的任何裝置取得自己的書籤、歷史記錄、密碼和其他設定。</translation>
+<translation id="7029809446516969842">密碼</translation>
 <translation id="984275831282074731">付款方式</translation>
+<translation id="2903493209154104877">地址</translation>
 <translation id="8883847527783433352">同步到其他帳戶</translation>
 <translation id="2761898608071930085">使用其他帳戶</translation>
 <translation id="4235813040357936597">為<ph name="PROFILE_NAME"/>新增帳戶</translation>
@@ -1477,11 +1481,11 @@
 <translation id="304747341537320566">語音引擎</translation>
 <translation id="1067291318998134776">Linux (測試版)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">在 Bravebook 上執行 Linux 工具、編輯器和 IDE。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;瞭解詳情&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">在 Bravebook 上執行 Linux 工具、編輯器和 IDE。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
 <translation id="6869910261738842136">移除 Bravebook 的 Linux 應用程式</translation>
 <translation id="2295473777859797944">Brave Software Play 商店</translation>
 <translation id="572155275267014074">Android 設定</translation>
-<translation id="4767209642168463274">在 Bravebook 上安裝來自 Brave Software Play 的應用程式和遊戲。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;瞭解詳情&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">在 Bravebook 上安裝來自 Brave Software Play 的應用程式和遊戲。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
 <translation id="2966937470348689686">管理 Android 偏好設定</translation>
 <translation id="4074367893748481070">移除 Brave Software Play 商店</translation>
 <translation id="2792290659606763004">要移除 Android 應用程式嗎？</translation>
@@ -1806,11 +1810,11 @@
 <translation id="7696063401938172191">在你的「<ph name="PHONE_NAME"/>」上：</translation>
 <translation id="3423463006624419153">在你的「<ph name="PHONE_NAME_1"/>」和「<ph name="PHONE_NAME_2"/>」上：</translation>
 <translation id="6997707937646349884">在你的裝置上：</translation>
-<translation id="7531779363494549572">依序輕觸 [設定] &amp;gt; [應用程式和通知] &amp;gt; [通知]。</translation>
-<translation id="6921033294337262045">依序輕觸 [應用程式通知] &amp;gt; [Brave Software Play 服務]。</translation>
+<translation id="7531779363494549572">依序輕觸 [設定] &gt; [應用程式和通知] &gt; [通知]。</translation>
+<translation id="6921033294337262045">依序輕觸 [應用程式通知] &gt; [Brave Software Play 服務]。</translation>
 <translation id="5624710179837914896">開啟 Brave Software Play 服務。</translation>
 <translation id="2705736684557713153">捲動至畫面底部，如果看到 [即時網路共用]，請開啟這項功能；如果沒有看到，代表你已完成設定。</translation>
-<translation id="3604048165392640554">找不到行動數據連線。請開啟其他裝置的即時網路共用功能，然後再試一次。&amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;瞭解詳情&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">找不到行動數據連線。請開啟其他裝置的即時網路共用功能，然後再試一次。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
 <translation id="7240339475467890413">確定要連線至新的無線基地台嗎？</translation>
 <translation id="6514010653036109809">可用的裝置：</translation>
 <translation id="2075474481720804517">電量：<ph name="BATTERY_PERCENTAGE"/>%</translation>
@@ -1976,7 +1980,6 @@
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">如需更多與隱私權、安全性和資料收集相關的設定，請參閱<ph name="BEGIN_LINK"/>同步處理和個人化<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">如需更多隱私權、安全性和資料收集的相關設定，請參閱<ph name="BEGIN_LINK"/>同步處理和 Brave Software 服務<ph name="END_LINK"/></translation>
-<translation id="6438234780621650381">重設設定</translation>
 <translation id="5293170712604732402">將設定還原成原始預設值</translation>
 <translation id="892706138619340876">部分設定已重設</translation>
 <translation id="2334029754052191847">Brave 偵測到另一個程式竄改了部分瀏覽器設定，現已將這些設定重設為原始預設值。</translation>
@@ -1990,7 +1993,6 @@
 <translation id="2203682048752833055"><ph name="BEGIN_LINK"/>網址列<ph name="END_LINK"/>中使用的搜尋引擎</translation>
 <translation id="1432581352905426595">管理搜尋引擎</translation>
 <translation id="2862205630718215619">Brave Software 助理</translation>
-<translation id="3435896845095436175">啟用</translation>
 <translation id="6978121630131642226">搜尋引擎</translation>
 <translation id="6410668567036790476">新增搜尋引擎</translation>
 <translation id="1128591060186966949">編輯搜尋引擎</translation>
@@ -2224,7 +2226,6 @@
 <translation id="2709516037105925701">自動填入</translation>
 <translation id="1644574205037202324">歷史記錄</translation>
 <translation id="5117427536932535467">主題和桌布</translation>
-<translation id="7029809446516969842">密碼</translation>
 <translation id="3259418918864581163">使用 Brave Software Pay 儲存的信用卡和地址資訊。</translation>
 <translation id="3268451620468152448">開啟的分頁</translation>
 <translation id="5241892180459725878">Brave Software 雲端硬碟搜尋建議</translation>
@@ -2362,7 +2363,6 @@
 <translation id="6856623341093082836">設定及調整觸控螢幕精確度</translation>
 <translation id="4598556348158889687">儲存空間管理</translation>
 <translation id="8868626022555786497">已使用的空間</translation>
-<translation id="8688672835843460752">可用空間</translation>
 <translation id="1082725763867769612">離線檔案</translation>
 <translation id="7366909168761621528">瀏覽資料</translation>
 <translation id="5568144734023334204">Android 儲存空間</translation>
@@ -2428,7 +2428,7 @@
 <translation id="3264582393905923483">內容</translation>
 <translation id="1607139524282324606">清除項目</translation>
 <translation id="6025215716629925253">堆疊追蹤</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;還有 1 行未顯示&amp;gt;}other{&amp;lt;還有 $1 行未顯示&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;還有 1 行未顯示&gt;}other{&lt;還有 $1 行未顯示&gt;}}</translation>
 <translation id="8389492867173948260">允許這個擴充功能讀取及變更你在造訪過的網站留下的所有資料：</translation>
 <translation id="407173827865827707">點擊時</translation>
 <translation id="6455264371803474013">在特定網站上</translation>
@@ -2436,7 +2436,7 @@
 <translation id="3729506734996624908">允許的網站</translation>
 <translation id="3732078975418297900">第 <ph name="ERROR_LINE"/> 行有錯誤</translation>
 <translation id="9063208415146866933">第 <ph name="ERROR_LINE_START"/> 至第 <ph name="ERROR_LINE_END"/> 行有錯誤</translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID：&amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID：&lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">查看檢視模式</translation>
 <translation id="181577467034453336">還有 <ph name="NUMBER_OF_VIEWS"/> 個畫面...</translation>
 <translation id="2450849356604136918">沒有運作中的檢視畫面</translation>

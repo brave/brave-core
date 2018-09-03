@@ -18,7 +18,7 @@
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> – The Brave Authors. Med enerett.</translation>
 <translation id="2310890394934209120">Brave OS er gjort mulig av ytterligere <ph name="BEGIN_LINK_CROS_OSS"/>åpen kilde-programvare<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="858647341154864560">Brave OS muliggjøres av <ph name="BEGIN_LINK_CROS_OSS"/>tilleggsprogramvare med åpen kildekode<ph name="END_LINK_CROS_OSS"/>, som Linux(Beta).</translation>
+<translation id="858647341154864560">Brave OS er basert på <ph name="BEGIN_LINK_CROS_OSS"/>tilleggsprogramvare med åpen kildekode<ph name="END_LINK_CROS_OSS"/>, i likhet med Linux (beta).</translation>
 <translation id="5019879183386042809">Gjør Brave til standard nettleser</translation>
 <translation id="5063987220091207247">Brave OS kan ikke åpne denne siden.</translation>
 <translation id="4065288863231444640">La Brave kjøre i bakgrunnen</translation>
@@ -54,9 +54,9 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="6078442581074612226">I Brave</translation>
 <translation id="8148611988012584308">Tilpass og kontrollér Brave</translation>
 <translation id="5849446944780602366">Tilpass og kontrollér Brave. Oppdatering er tilgjengelig.</translation>
-<translation id="9071554113102421877">&amp;amp;Åpne i Brave</translation>
-<translation id="1421502046520299169">Om &amp;amp;Brave OS</translation>
-<translation id="2534623228451928732">Oppdater &amp;amp;Brave OS</translation>
+<translation id="9071554113102421877">&amp;Åpne i Brave</translation>
+<translation id="1421502046520299169">Om &amp;Brave OS</translation>
+<translation id="2534623228451928732">Oppdater &amp;Brave OS</translation>
 <translation id="3360368475735266712">Logg på for å synkronisere og gi Brave et personlig preg på alle enhetene dine</translation>
 <translation id="5477319665405831211">Synkroniser og gi Brave et personlig preg på alle enhetene dine</translation>
 <translation id="4934157190377700991">Du er logget på Brave</translation>
@@ -122,7 +122,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="82609232232243542">Logg på Brave</translation>
 <translation id="8372880274820509128">Brave krypterer dataene dine for å øke sikkerheten.</translation>
 <translation id="7445061995866044926">Vil du logge av Brave?</translation>
-<translation id="7453070689008684791">Brave vil få tilgang til disken din for å kunne gi deg forslag i adressefeltet</translation>
+<translation id="7453070689008684791">Brave får tilgang til Disk-lagringen din for å kunne gi deg forslag i adressefeltet</translation>
 <translation id="7713466009760073734">Brave OS vises på dette språket</translation>
 <translation id="3518788198614984730">Vis Brave OS på dette språket</translation>
 <translation id="6056473803837713617">Bidra til å gjøre Brave bedre ved å rapportere de <ph name="BEGIN_LINK"/>nåværende innstillingene<ph name="END_LINK"/></translation>

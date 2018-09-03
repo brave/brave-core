@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">Z této nabídky lze vymazat údaje o prohlížení</translation>
 <translation id="6040143037577758943">Zavřít</translation>
 <translation id="5379268888377976432">Vrátit smazání</translation>
-<translation id="6463795194797719782">&amp;amp;Upravit</translation>
+<translation id="6463795194797719782">&amp;Upravit</translation>
 <translation id="8131740175452115882">Potvrdit</translation>
 <translation id="4394049700291259645">Deaktivovat</translation>
 <translation id="8496717697661868878">Spustit plugin</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">Přesunout okno k uživateli <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">Zvětšit text</translation>
 <translation id="7134098520442464001">Zmenšit text</translation>
-<translation id="4508765956121923607">Z&amp;amp;obrazit zdrojový kód</translation>
-<translation id="4792711294155034829">&amp;amp;Nahlásit problém...</translation>
-<translation id="5112577000029535889">&amp;amp;Nástroje pro vývojáře</translation>
-<translation id="5184063094292164363">Konzole &amp;amp;JavaScriptu</translation>
-<translation id="7056526158851679338">&amp;amp;Zkontrolovat zařízení</translation>
-<translation id="48838266408104654">&amp;amp;Správce úloh</translation>
-<translation id="6277518330158259200">&amp;amp;Pořídit snímek obrazovky</translation>
-<translation id="5288678174502918605">Znovu ot&amp;amp;evřít zavřenou kartu</translation>
-<translation id="2731392572903530958">Znovu ot&amp;amp;evřít zavřené okno</translation>
+<translation id="4508765956121923607">Z&amp;obrazit zdrojový kód</translation>
+<translation id="4792711294155034829">&amp;Nahlásit problém...</translation>
+<translation id="5112577000029535889">&amp;Nástroje pro vývojáře</translation>
+<translation id="5184063094292164363">Konzole &amp;JavaScriptu</translation>
+<translation id="7056526158851679338">&amp;Zkontrolovat zařízení</translation>
+<translation id="48838266408104654">&amp;Správce úloh</translation>
+<translation id="6277518330158259200">&amp;Pořídit snímek obrazovky</translation>
+<translation id="5288678174502918605">Znovu ot&amp;evřít zavřenou kartu</translation>
+<translation id="2731392572903530958">Znovu ot&amp;evřít zavřené okno</translation>
 <translation id="7607274158153386860">Požadovat stránky pro tablety</translation>
-<translation id="4408599188496843485">&amp;amp;Nápověda</translation>
+<translation id="4408599188496843485">&amp;Nápověda</translation>
 <translation id="3855676282923585394">Importovat záložky a nastavení...</translation>
-<translation id="4821935166599369261">&amp;amp;Profilování povoleno</translation>
-<translation id="3827774300009121996">&amp;amp;Celá obrazovka</translation>
-<translation id="3616741288025931835">&amp;amp;Smazat údaje o prohlížení...</translation>
-<translation id="7861215335140947162">&amp;amp;Stažené soubory</translation>
-<translation id="862542460444371744">Rozšíř&amp;amp;ení</translation>
-<translation id="8925458182817574960">&amp;amp;Nastavení</translation>
-<translation id="9147392381910171771">&amp;amp;Možnosti</translation>
-<translation id="1618268899808219593">C&amp;amp;entrum nápovědy</translation>
+<translation id="4821935166599369261">&amp;Profilování povoleno</translation>
+<translation id="3827774300009121996">&amp;Celá obrazovka</translation>
+<translation id="3616741288025931835">&amp;Smazat údaje o prohlížení...</translation>
+<translation id="7861215335140947162">&amp;Stažené soubory</translation>
+<translation id="862542460444371744">Rozšíř&amp;ení</translation>
+<translation id="8925458182817574960">&amp;Nastavení</translation>
+<translation id="9147392381910171771">&amp;Možnosti</translation>
+<translation id="1618268899808219593">C&amp;entrum nápovědy</translation>
 <translation id="7324297612904500502">Fórum beta</translation>
 <translation id="7199158086730159431">Zobrazit nápovědu</translation>
 <translation id="630065524203833229">Konec</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">Upravit vyhl&amp;amp;edávače...</translation>
+<translation id="5702898740348134351">Upravit vyhl&amp;edávače...</translation>
 <translation id="2454247629720664989">Klíčové slovo</translation>
 <translation id="5327248766486351172">Název</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (Předvolba)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">Vymazat vše</translation>
 <translation id="750509436279396091">Otevřít složku stažených souborů</translation>
 <translation id="2902312830803030883">Další akce</translation>
-<translation id="3612673635130633812">Staženo pomocí rozšíření &amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt;</translation>
+<translation id="3612673635130633812">Staženo pomocí rozšíření &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="7909969815743704077">Staženo v anonymním režimu</translation>
 <translation id="8028803902702117856">Stahování souboru <ph name="FILE_NAME"/> – <ph name="SIZE"/></translation>
 <translation id="4644818355646995778">Stahování: <ph name="PERCENT_REMAINING"/></translation>
@@ -195,7 +195,7 @@
 <translation id="2101225219012730419">Verze:</translation>
 <translation id="8678933587484842200">Jak tuto aplikaci chcete spouštět?</translation>
 <translation id="397105322502079400">Probíhá výpočet…</translation>
-<translation id="2352662711729498748">&amp;lt; 1 MB</translation>
+<translation id="2352662711729498748">&lt; 1 MB</translation>
 <translation id="8941173171815156065">Odebrat oprávnění <ph name="PERMISSION"/></translation>
 <translation id="741906494724992817">Tato aplikace nevyžaduje žádná speciální oprávnění.</translation>
 <translation id="1616206807336925449">Toto rozšíření vyžaduje speciální oprávnění.</translation>
@@ -532,8 +532,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3011284594919057757">O formátu Flash</translation>
 <translation id="1962233722219655970">Tato stránka používá aplikaci nativního klienta, která ve vašem počítači nefunguje.</translation>
 <translation id="4453946976636652378">Zadejte dotaz pro vyhledávač <ph name="SEARCH_ENGINE_NAME"/> nebo adresu URL</translation>
-<translation id="5731247495086897348">&amp;amp;Vložit a přejít</translation>
-<translation id="8425755597197517046">Vl&amp;amp;ožit a vyhledat</translation>
+<translation id="5731247495086897348">&amp;Vložit a přejít</translation>
+<translation id="8425755597197517046">Vl&amp;ožit a vyhledat</translation>
 <translation id="6151323131516309312">Stiskněte <ph name="SEARCH_KEY"/> pro vyhledávání <ph name="SITE_NAME"/></translation>
 <translation id="3449839693241009168">Stiskem klávesy <ph name="SEARCH_KEY"/> odešlete příkazy pro rozšíření <ph name="EXTENSION_NAME"/></translation>
 <translation id="6659594942844771486">Karta</translation>
@@ -570,6 +570,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3617891479562106823">Pozadí nejsou k dispozici. Zkuste to znovu později.</translation>
 <translation id="8391712576156218334">Vybraný obrázek není k dispozici. Zkuste to znovu později.</translation>
 <translation id="1564414980088536597">Tento obrázek nelze použít. Vyberte jiný obrázek.</translation>
+<translation id="385051799172605136">Zpět</translation>
 <translation id="4628948037717959914">Fotka</translation>
 <translation id="8033827949643255796">vybráno</translation>
 <translation id="5376169624176189338">Kliknutím se vrátíte zpět, přidržením se zobrazí historie</translation>
@@ -772,7 +773,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8539727552378197395">Ne (HttpOnly)</translation>
 <translation id="4615586811063744755">není vybrán žádný soubor cookie</translation>
 <translation id="5765780083710877561">Popis:</translation>
-<translation id="2422426094670600218">&amp;lt;bez názvu&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;bez názvu&gt;</translation>
 <translation id="6708242697268981054">Původ:</translation>
 <translation id="6492313032770352219">Velikost na disku:</translation>
 <translation id="3459774175445953971">Naposledy upraveno:</translation>
@@ -834,7 +835,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6418273007044911016">Data synchronizovaná do Googlu ani používané funkce se nezmění</translation>
 <translation id="8372733498235009300">Zapnout synchronizaci, personalizaci a další služby Brave Software</translation>
 <translation id="8340964510643644301">Toto nastavení můžete kdykoliv upravit v nastavení Chromu</translation>
-<translation id="385051799172605136">Zpět</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Vaše záložky, historie, hesla a další nastavení budou synchronizována do účtu Brave Software, abyste je mohli používat ve všech svých zařízeních.</translation>
 <translation id="1371301976177520732">Záložky, historii a další údaje budete mít na všech svých zařízeních</translation>
@@ -908,7 +908,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4242533952199664413">Otevřít Nastavení</translation>
 <translation id="3752582316358263300">OK...</translation>
 <translation id="7117247127439884114">Znovu přihlásit...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> vám chce zasílat oznámení</translation>
 <translation id="7221855153210829124">Zobrazovat oznámení</translation>
@@ -1066,7 +1066,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8736288397686080465">Tento web byl na pozadí aktualizován.</translation>
 <translation id="6945221475159498467">Vybrat</translation>
 <translation id="4130199216115862831">Protokol zařízení</translation>
-<translation id="6231881193380278751">Přidejte do adresy URL parametr dotazu pro automatickou aktualizaci stránky: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">Přidejte do adresy URL parametr dotazu pro automatickou aktualizaci stránky: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Obnovit</translation>
 <translation id="1260240842868558614">Zobrazit:</translation>
 <translation id="1165039591588034296">Chyba</translation>
@@ -1113,20 +1113,20 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3613134908380545408">Zobrazit <ph name="FOLDER_NAME"/></translation>
 <translation id="2805756323405976993">Aplikace</translation>
 <translation id="2367972762794486313">Zobrazit aplikace</translation>
-<translation id="6466988389784393586">&amp;amp;Otevřít všechny záložky</translation>
-<translation id="6804671422566312077">Otevřít všechny záložky v &amp;amp;novém okně</translation>
-<translation id="3011362742078013760">Otevřít všechny záložky v &amp;amp;anonymním okně</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{&amp;amp;Otevřít vše}=1{&amp;amp;Otevřít záložku}few{&amp;amp;Otevřít vše (#)}many{&amp;amp;Otevřít vše (#)}other{&amp;amp;Otevřít vše (#)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{Otevřít vše v &amp;amp;novém okně}=1{Otevřít v &amp;amp;novém okně}few{Otevřít vše (#) v &amp;amp;novém okně}many{Otevřít vše (#) v &amp;amp;novém okně}other{Otevřít vše (#) v &amp;amp;novém okně}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Otevřít vše v &amp;amp;anonymním okně}=1{Otevřít v &amp;amp;anonymním okně}few{Otevřít vše (#) v &amp;amp;anonymním okně}many{Otevřít vše (#) v &amp;amp;anonymním okně}other{Otevřít vše (#) v &amp;amp;anonymním okně}}</translation>
-<translation id="9024127637873500333">&amp;amp;Otevřít v nové kartě</translation>
-<translation id="665061930738760572">Otevřít v &amp;amp;novém okně</translation>
-<translation id="37613671848467444">Otevřít v &amp;amp;anonymním okně</translation>
-<translation id="6702639462873609204">&amp;amp;Upravit...</translation>
-<translation id="3088325635286126843">&amp;amp;Přejmenovat...</translation>
-<translation id="5329858601952122676">&amp;amp;Smazat</translation>
-<translation id="8824701697284169214">Přidat strá&amp;amp;nku...</translation>
-<translation id="2489918096470125693">Přidat &amp;amp;složku...</translation>
+<translation id="6466988389784393586">&amp;Otevřít všechny záložky</translation>
+<translation id="6804671422566312077">Otevřít všechny záložky v &amp;novém okně</translation>
+<translation id="3011362742078013760">Otevřít všechny záložky v &amp;anonymním okně</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{&amp;Otevřít vše}=1{&amp;Otevřít záložku}few{&amp;Otevřít vše (#)}many{&amp;Otevřít vše (#)}other{&amp;Otevřít vše (#)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{Otevřít vše v &amp;novém okně}=1{Otevřít v &amp;novém okně}few{Otevřít vše (#) v &amp;novém okně}many{Otevřít vše (#) v &amp;novém okně}other{Otevřít vše (#) v &amp;novém okně}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{Otevřít vše v &amp;anonymním okně}=1{Otevřít v &amp;anonymním okně}few{Otevřít vše (#) v &amp;anonymním okně}many{Otevřít vše (#) v &amp;anonymním okně}other{Otevřít vše (#) v &amp;anonymním okně}}</translation>
+<translation id="9024127637873500333">&amp;Otevřít v nové kartě</translation>
+<translation id="665061930738760572">Otevřít v &amp;novém okně</translation>
+<translation id="37613671848467444">Otevřít v &amp;anonymním okně</translation>
+<translation id="6702639462873609204">&amp;Upravit...</translation>
+<translation id="3088325635286126843">&amp;Přejmenovat...</translation>
+<translation id="5329858601952122676">&amp;Smazat</translation>
+<translation id="8824701697284169214">Přidat strá&amp;nku...</translation>
+<translation id="2489918096470125693">Přidat &amp;složku...</translation>
 <translation id="2897878306272793870">Určitě chcete otevřít <ph name="TAB_COUNT"/> karty (karet)?</translation>
 <translation id="4430369329743628066">Byla přidána záložka</translation>
 <translation id="6404511346730675251">Upravit záložku</translation>
@@ -1141,12 +1141,12 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="971774202801778802">Adresa URL záložky</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{Tato složka obsahuje jednu záložku. Opravdu ji chcete smazat?}few{Tato složka obsahuje # záložky. Opravdu ji chcete smazat?}many{Tato složka obsahuje # záložky. Opravdu ji chcete smazat?}other{Tato složka obsahuje # záložek. Opravdu ji chcete smazat?}}</translation>
 <translation id="5857090052475505287">Nová složka</translation>
-<translation id="6455894534188563617">&amp;amp;Nová složka</translation>
+<translation id="6455894534188563617">&amp;Nová složka</translation>
 <translation id="1015318665228971643">Upravit název složky</translation>
 <translation id="5449588825071916739">Přidat do záložek všechny karty</translation>
 <translation id="5528368756083817449">Správce záložek</translation>
 <translation id="3828029223314399057">Hledat v záložkách</translation>
-<translation id="5111692334209731439">&amp;amp;Správce záložek</translation>
+<translation id="5111692334209731439">&amp;Správce záložek</translation>
 <translation id="6973630695168034713">Složky</translation>
 <translation id="5496587651328244253">Uspořádat</translation>
 <translation id="1936157145127842922">Zobrazit ve složce</translation>
@@ -1190,13 +1190,13 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6757101664402245801">Adresa URL byla zkopírována</translation>
 <translation id="5488093641312826914">Položka „<ph name="COPIED_ITEM_NAME"/>“ byla zkopírována</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{Byla zkopírována 1 položka}few{Byly zkopírovány # položky}many{Bylo zkopírováno # položky}other{Bylo zkopírováno # položek}}</translation>
-<translation id="9115675100829699941">&amp;amp;Záložky</translation>
+<translation id="9115675100829699941">&amp;Záložky</translation>
 <translation id="1047726139967079566">Přidat stránku do záložek...</translation>
 <translation id="6949306908218145636">Přidat do záložek otevřené stránky...</translation>
 <translation id="4422347585044846479">Upravit záložku pro tuto stránku</translation>
 <translation id="6005695835120147974">Směrovač médií</translation>
 <translation id="7787308148023287649">Zobrazit na jiné obrazovce</translation>
-<translation id="7710568461918838723">&amp;amp;Odeslat...</translation>
+<translation id="7710568461918838723">&amp;Odeslat...</translation>
 <translation id="8970203673128054105">Zobrazit seznam režimů odesílání</translation>
 <translation id="1277908057200820621">Zobrazit seznam zařízení</translation>
 <translation id="2847759467426165163">Odesílat do</translation>
@@ -1241,6 +1241,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3930737994424905957">Vyhledávání zařízení</translation>
 <translation id="5209320130288484488">Nebyla nalezena žádná zařízení</translation>
 <translation id="4363771538994847871">Nebyly nalezeny žádné cíle odesílání. Potřebujete pomoci?</translation>
+<translation id="8688672835843460752">Dostupné</translation>
 <translation id="4271396100647220620">Žádné shody</translation>
 <translation id="6972180789171089114">Zvuk/video</translation>
 <translation id="2541002089857695151">Optimalizovat odesílání celé obrazovky?</translation>
@@ -1251,6 +1252,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7473891865547856676">Ne, děkuji</translation>
 <translation id="8538358978858059843">Povolit pro Cast cloudové služby?</translation>
 <translation id="3856595552313160385">Použití služeb Hangouts a Cast for Education se řídí zásadami ochrany soukromí společnosti Brave Software.</translation>
+<translation id="3435896845095436175">Aktivovat</translation>
 <translation id="3700888195348409686">Probíhá prezentace (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Obrazovka <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">Využití a historii může zkontrolovat správce (<ph name="CUSTODIAN_EMAIL"/>) na webu chrome.com.</translation>
@@ -1278,7 +1280,9 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1316495628809031177">Synchronizace je pozastavena</translation>
 <translation id="7786207843293321886">Odhlásit hosta</translation>
 <translation id="2329597144923131178">Přihlaste se a synchronizujte záložky, historii, hesla a další nastavení do všech svých zařízení.</translation>
+<translation id="7029809446516969842">Hesla</translation>
 <translation id="984275831282074731">Platební metody</translation>
+<translation id="2903493209154104877">Adresy</translation>
 <translation id="8883847527783433352">Synchronizovat do jiného účtu</translation>
 <translation id="2761898608071930085">Použít jiný účet</translation>
 <translation id="4235813040357936597">Přidat účet pro profil <ph name="PROFILE_NAME"/></translation>
@@ -1476,11 +1480,11 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="304747341537320566">Moduly převodu textu na řeč</translation>
 <translation id="1067291318998134776">Linux (beta)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Spouštějte v Bravebooku nástroje, editory a prostředí IDE pro Linux. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Další informace&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">Spouštějte v Bravebooku nástroje, editory a prostředí IDE pro Linux. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Další informace&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Odstranit linuxové aplikace pro Bravebook</translation>
 <translation id="2295473777859797944">Obchod Brave Software Play</translation>
 <translation id="572155275267014074">Nastavení zařízení Android</translation>
-<translation id="4767209642168463274">Instalujte do svého Bravebooku aplikace a hry z Brave Software Play. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Další informace&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">Instalujte do svého Bravebooku aplikace a hry z Brave Software Play. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Další informace&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Spravovat nastavení aplikací Android</translation>
 <translation id="4074367893748481070">Odstranit Obchod Brave Software Play</translation>
 <translation id="2792290659606763004">Odstranit aplikace Android?</translation>
@@ -1805,11 +1809,11 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7696063401938172191">Na telefonu <ph name="PHONE_NAME"/>:</translation>
 <translation id="3423463006624419153">V telefonu <ph name="PHONE_NAME_1"/> a <ph name="PHONE_NAME_2"/>:</translation>
 <translation id="6997707937646349884">Ve vašich zařízeních:</translation>
-<translation id="7531779363494549572">Přejděte na Nastavení &amp;gt; Aplikace a oznámení &amp;gt; Oznámení</translation>
-<translation id="6921033294337262045">Klepněte na Oznámení z aplikací &amp;gt; Služby Brave Software Play.</translation>
+<translation id="7531779363494549572">Přejděte na Nastavení &gt; Aplikace a oznámení &gt; Oznámení</translation>
+<translation id="6921033294337262045">Klepněte na Oznámení z aplikací &gt; Služby Brave Software Play.</translation>
 <translation id="5624710179837914896">Zapněte Služby Brave Software Play.</translation>
 <translation id="2705736684557713153">Přejděte do dolní části obrazovky. Pokud se zobrazí možnost Dynamický tethering, zapněte ji. Pokud se nezobrazí, vše je nastaveno.</translation>
-<translation id="3604048165392640554">Nebylo nalezeno žádné mobilní připojení. Zapněte na svých dalších zařízeních dynamický tethering a zkuste to znovu. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Další informace&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">Nebylo nalezeno žádné mobilní připojení. Zapněte na svých dalších zařízeních dynamický tethering a zkuste to znovu. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Další informace&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Připojit k novému hotspotu?</translation>
 <translation id="6514010653036109809">Dostupné zařízení:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/> % baterie</translation>
@@ -1975,7 +1979,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Další nastavení související s ochranou soukromí, zabezpečením a shromažďováním dat naleznete v části <ph name="BEGIN_LINK"/>Synchronizace a personalizace<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Další nastavení související s ochranou soukromí, zabezpečením a shromažďováním dat naleznete v části <ph name="BEGIN_LINK"/>Synchronizace a služby Brave Software<ph name="END_LINK"/></translation>
-<translation id="6438234780621650381">Reset nastavení</translation>
 <translation id="5293170712604732402">Obnovit nastavení na původní výchozí hodnoty</translation>
 <translation id="892706138619340876">Některá nastavení byla obnovena</translation>
 <translation id="2334029754052191847">Prohlížeč Brave zjistil, že některá z vašich nastavení byla upravena jiným programem, a obnovil je na původní výchozí hodnoty.</translation>
@@ -1989,7 +1992,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2203682048752833055">Vyhledávač používaný v <ph name="BEGIN_LINK"/>adresním řádku<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">Spravovat vyhledávače</translation>
 <translation id="2862205630718215619">Asistent Brave Software</translation>
-<translation id="3435896845095436175">Aktivovat</translation>
 <translation id="6978121630131642226">Vyhledávače</translation>
 <translation id="6410668567036790476">Přidat vyhledávač</translation>
 <translation id="1128591060186966949">Úprava vyhledávače</translation>
@@ -2223,7 +2225,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2709516037105925701">Automatické vyplňování</translation>
 <translation id="1644574205037202324">Historie</translation>
 <translation id="5117427536932535467">Motivy a tapety</translation>
-<translation id="7029809446516969842">Hesla</translation>
 <translation id="3259418918864581163">Platební karty a adresy pomocí služby Brave Software Pay</translation>
 <translation id="3268451620468152448">Otevřené karty</translation>
 <translation id="5241892180459725878">Návrhy vyhledávacích dotazů z Disku Brave Software</translation>
@@ -2361,7 +2362,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6856623341093082836">Nastavit a upravit přesnost dotykové obrazovky</translation>
 <translation id="4598556348158889687">Správa úložiště</translation>
 <translation id="8868626022555786497">Používáno</translation>
-<translation id="8688672835843460752">Dostupné</translation>
 <translation id="1082725763867769612">Soubory offline</translation>
 <translation id="7366909168761621528">Údaje o prohlížení</translation>
 <translation id="5568144734023334204">Úložiště Android</translation>
@@ -2427,7 +2427,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3264582393905923483">Kontext</translation>
 <translation id="1607139524282324606">Vymazat položku</translation>
 <translation id="6025215716629925253">Trasování zásobníku</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 řádek není zobrazen&amp;gt;}few{&amp;lt;$1 řádky nejsou zobrazeny&amp;gt;}many{&amp;lt;$1 řádku není zobrazeno&amp;gt;}other{&amp;lt;$1 řádků není zobrazeno&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 řádek není zobrazen&gt;}few{&lt;$1 řádky nejsou zobrazeny&gt;}many{&lt;$1 řádku není zobrazeno&gt;}other{&lt;$1 řádků není zobrazeno&gt;}}</translation>
 <translation id="8389492867173948260">Povolit tomuto rozšíření číst a měnit všechna vaše data na navštívených webech:</translation>
 <translation id="407173827865827707">Při kliknutí</translation>
 <translation id="6455264371803474013">Na konkrétních webech</translation>
@@ -2435,7 +2435,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3729506734996624908">Povolené weby</translation>
 <translation id="3732078975418297900">Chyba na řádku <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Chyba na řádku <ph name="ERROR_LINE_START"/> až <ph name="ERROR_LINE_END"/></translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;ID: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Zkontrolovat zobrazení</translation>
 <translation id="181577467034453336">Ještě <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="2450849356604136918">Žádná aktivní zobrazení</translation>

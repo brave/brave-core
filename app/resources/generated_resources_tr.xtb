@@ -25,7 +25,7 @@
 <translation id="6351063337294363751">Bu menüyü kullanarak tarama verilerinizi temizleyebilirsiniz</translation>
 <translation id="6040143037577758943">Kapat</translation>
 <translation id="5379268888377976432">Silme işlemini geri al</translation>
-<translation id="6463795194797719782">&amp;amp;Düzenle</translation>
+<translation id="6463795194797719782">&amp;Düzenle</translation>
 <translation id="8131740175452115882">Onayla</translation>
 <translation id="4394049700291259645">Devre dışı bırak</translation>
 <translation id="8496717697661868878">Bu Eklentiyi Çalıştır</translation>
@@ -34,31 +34,31 @@
 <translation id="4109135793348361820">Pencereyi <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>) kullanıcısına taşı</translation>
 <translation id="8642947597466641025">Metni Büyüt</translation>
 <translation id="7134098520442464001">Metni Küçült</translation>
-<translation id="4508765956121923607">Ka&amp;amp;ynağı Görüntüle</translation>
-<translation id="4792711294155034829">&amp;amp;Sorun Bildirin...</translation>
-<translation id="5112577000029535889">&amp;amp;Geliştirici Araçları</translation>
-<translation id="5184063094292164363">&amp;amp;JavaScript Konsolu</translation>
-<translation id="7056526158851679338">&amp;amp;Cihazları Denetle</translation>
-<translation id="48838266408104654">&amp;amp;Görev Yöneticisi</translation>
-<translation id="6277518330158259200">Ekr&amp;amp;an Görüntüsü Al</translation>
-<translation id="5288678174502918605">Kapatılan Sekmeyi T&amp;amp;ekrar Aç</translation>
-<translation id="2731392572903530958">Kapatılan Pencereyi T&amp;amp;ekrar Aç</translation>
+<translation id="4508765956121923607">Ka&amp;ynağı Görüntüle</translation>
+<translation id="4792711294155034829">&amp;Sorun Bildirin...</translation>
+<translation id="5112577000029535889">&amp;Geliştirici Araçları</translation>
+<translation id="5184063094292164363">&amp;JavaScript Konsolu</translation>
+<translation id="7056526158851679338">&amp;Cihazları Denetle</translation>
+<translation id="48838266408104654">&amp;Görev Yöneticisi</translation>
+<translation id="6277518330158259200">Ekr&amp;an Görüntüsü Al</translation>
+<translation id="5288678174502918605">Kapatılan Sekmeyi T&amp;ekrar Aç</translation>
+<translation id="2731392572903530958">Kapatılan Pencereyi T&amp;ekrar Aç</translation>
 <translation id="7607274158153386860">Tablet sitesi isteğinde bulun</translation>
-<translation id="4408599188496843485">Yar&amp;amp;dım</translation>
+<translation id="4408599188496843485">Yar&amp;dım</translation>
 <translation id="3855676282923585394">Yer İşaretlerini ve Ayarları İçe Aktar...</translation>
-<translation id="4821935166599369261">&amp;amp;Profil Oluşturma Etkin</translation>
-<translation id="3827774300009121996">&amp;amp;Tam Ekran</translation>
-<translation id="3616741288025931835">Tarama Verilerini &amp;amp;Temizle...</translation>
-<translation id="7861215335140947162">&amp;amp;İndirilenler</translation>
-<translation id="862542460444371744">&amp;amp;Uzantılar</translation>
-<translation id="8925458182817574960">&amp;amp;Ayarlar</translation>
-<translation id="9147392381910171771">&amp;amp;Seçenekler</translation>
-<translation id="1618268899808219593">Y&amp;amp;ardım Merkezi</translation>
+<translation id="4821935166599369261">&amp;Profil Oluşturma Etkin</translation>
+<translation id="3827774300009121996">&amp;Tam Ekran</translation>
+<translation id="3616741288025931835">Tarama Verilerini &amp;Temizle...</translation>
+<translation id="7861215335140947162">&amp;İndirilenler</translation>
+<translation id="862542460444371744">&amp;Uzantılar</translation>
+<translation id="8925458182817574960">&amp;Ayarlar</translation>
+<translation id="9147392381910171771">&amp;Seçenekler</translation>
+<translation id="1618268899808219593">Y&amp;ardım Merkezi</translation>
 <translation id="7324297612904500502">Beta Forumu</translation>
-<translation id="7199158086730159431">&amp;amp;Yardım Al</translation>
-<translation id="630065524203833229">Çı&amp;amp;kış</translation>
+<translation id="7199158086730159431">&amp;Yardım Al</translation>
+<translation id="630065524203833229">Çı&amp;kış</translation>
 <translation id="3705722231355495246">-</translation>
-<translation id="5702898740348134351">&amp;amp;Arama Motorlarını Düzenle...</translation>
+<translation id="5702898740348134351">&amp;Arama Motorlarını Düzenle...</translation>
 <translation id="2454247629720664989">Anahtar kelime</translation>
 <translation id="5327248766486351172">Ad</translation>
 <translation id="7893393459573308604"><ph name="ENGINE_NAME"/> (Varsayılan)</translation>
@@ -162,7 +162,7 @@
 <translation id="119944043368869598">Tümünü temizle</translation>
 <translation id="750509436279396091">İndirilenler klasörünü aç</translation>
 <translation id="2902312830803030883">Diğer işlemler</translation>
-<translation id="3612673635130633812">&amp;lt;a href="<ph name="URL"/>"&amp;gt;<ph name="EXTENSION"/>&amp;lt;/a&amp;gt; tarafından indirildi</translation>
+<translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; tarafından indirildi</translation>
 <translation id="7909969815743704077">Gizli modda indirildi</translation>
 <translation id="8028803902702117856">İndiriliyor <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">İndiriliyor, <ph name="PERCENT_REMAINING"/></translation>
@@ -195,7 +195,7 @@
 <translation id="2101225219012730419">Sürüm:</translation>
 <translation id="8678933587484842200">Bu uygulamanın nasıl başlatılmasını istersiniz?</translation>
 <translation id="397105322502079400">Hesaplanııyor...</translation>
-<translation id="2352662711729498748">&amp;lt; 1 MB</translation>
+<translation id="2352662711729498748">&lt; 1 MB</translation>
 <translation id="8941173171815156065">"<ph name="PERMISSION"/>" iznini kaldır</translation>
 <translation id="741906494724992817">Bu uygulama özel bir izin gerektirmiyor.</translation>
 <translation id="1616206807336925449">Bu uzantı herhangi bir özel izin gerektirmiyor.</translation>
@@ -534,8 +534,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3011284594919057757">Flash hakkında</translation>
 <translation id="1962233722219655970">Bu sayfada, bilgisayarınızda çalışmayan bir Native Client uygulaması kullanılmaktadır.</translation>
 <translation id="4453946976636652378"><ph name="SEARCH_ENGINE_NAME"/> üzerinde arayın veya bir URL yazın</translation>
-<translation id="5731247495086897348">Ya&amp;amp;pıştır ve Git</translation>
-<translation id="8425755597197517046">Ya&amp;amp;pıştır ve Ara</translation>
+<translation id="5731247495086897348">Ya&amp;pıştır ve Git</translation>
+<translation id="8425755597197517046">Ya&amp;pıştır ve Ara</translation>
 <translation id="6151323131516309312"><ph name="SITE_NAME"/> sitesinde arama yapmak için <ph name="SEARCH_KEY"/> düğmesine basın</translation>
 <translation id="3449839693241009168">Komutları <ph name="EXTENSION_NAME"/> uygulamasına göndermek için <ph name="SEARCH_KEY"/> tuşuna basın</translation>
 <translation id="6659594942844771486">Sekme</translation>
@@ -572,6 +572,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3617891479562106823">Arka planlar kullanılamıyor. Daha sonra tekrar deneyin.</translation>
 <translation id="8391712576156218334">Görüntü kullanılamıyor. Daha sonra tekrar deneyin.</translation>
 <translation id="1564414980088536597">Bu resim kullanılamaz. Farklı bir resim seçin.</translation>
+<translation id="385051799172605136">Geri</translation>
 <translation id="4628948037717959914">Fotoğraf</translation>
 <translation id="8033827949643255796">seçildi</translation>
 <translation id="5376169624176189338">Geri dönmek için tıkla, geçmişi görmek için tıklayıp tut</translation>
@@ -774,7 +775,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8539727552378197395">Hayır (HttpOnly)</translation>
 <translation id="4615586811063744755">çerez seçilmedi</translation>
 <translation id="5765780083710877561">Açıklama:</translation>
-<translation id="2422426094670600218">&amp;lt;adsız&amp;gt;</translation>
+<translation id="2422426094670600218">&lt;adsız&gt;</translation>
 <translation id="6708242697268981054">Kaynak:</translation>
 <translation id="6492313032770352219">Disk üzerindeki boyut:</translation>
 <translation id="3459774175445953971">Son değiştirildiği tarih:</translation>
@@ -826,23 +827,22 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6860427144121307915">Sekmede aç</translation>
 <translation id="3074037959626057712">Oturum açtınız ve Senkronizasyonu etkinleştirdiniz</translation>
 <translation id="6264422956566238156">Senkronizasyonu açtınız</translation>
-<translation id="9125982323641182972">Brave'da Brave Software'ın akıllı yaklaşımını elde edin</translation>
-<translation id="7988117629517051942">Brave Software'ın akıllı yaklaşımından daha fazla yararlanın</translation>
+<translation id="9125982323641182972">Brave Software zekası Brave'da</translation>
+<translation id="7988117629517051942">Brave Software zekasından daha fazla yararlanın</translation>
 <translation id="5596627076506792578">Diğer seçenekler</translation>
 <translation id="4419556793104466535">Senkronizasyon, kişiselleştirme ve daha fazla özelliği kontrol edin</translation>
 <translation id="184568702928428857">Brave'da senkronizasyon, kişiselleştirme ve diğer Brave Software hizmetlerini kontrol eden ayarlar değişti. Bu durum geçerli ayarlarınızı etkileyebilir.</translation>
-<translation id="4192273449750167573">Bir sonraki ekranda ayarlarınızı gözden geçirin</translation>
-<translation id="685040365210406336">Değişiklik yapma</translation>
+<translation id="4192273449750167573">Bir sonraki ekranda ayarları gözden geçir</translation>
+<translation id="685040365210406336">Herhangi bir değişiklik yapma</translation>
 <translation id="6418273007044911016">Brave Software ile senkronize ettiğiniz veriler ve kullandığınız özellikler değişmez</translation>
 <translation id="8372733498235009300">Senkronizasyon, kişiselleştirme ve diğer Brave Software hizmetlerini aç</translation>
 <translation id="8340964510643644301">Bunu istediğiniz zaman Brave Ayarlarından özelleştirebilirsiniz</translation>
-<translation id="385051799172605136">Geri</translation>
 <translation id="3149880132460839085">Brave Senkronizasyonu</translation>
 <translation id="3796902758602917951">Yer işaretleriniz, geçmişiniz, şifreleriniz ve diğer ayarlarınız tüm cihazlarınızda kullanabilmeniz için Brave Software Hesabınızla senkronize edilecek</translation>
-<translation id="1371301976177520732">Tüm cihazlarınızdaki yer işaretleriniz, şifreleriniz, geçmişiniz ve diğer öğeler</translation>
+<translation id="1371301976177520732">Yer işaretleriniz, şifreleriniz, geçmişiniz ve daha fazlası tüm cihazlarınızda sizi bekliyor</translation>
 <translation id="3111958038206230539">Brave Software hizmetlerini kişiselleştirme</translation>
 <translation id="295992419959320001">Brave Software; Arama, reklamlar ve diğer Brave Software hizmetlerini kişiselleştirmek için tarama geçmişinizi kullanabilir</translation>
-<translation id="4800091108248587380">Brave Software Pay gibi kişiselleştirilmiş Brave Software hizmetleri</translation>
+<translation id="4800091108248587380">Brave Software Pay gibi kişiselleştirilmiş Brave Software hizmetlerinden yararlanın</translation>
 <translation id="3070156078150543526">Brave Software, Arama ve diğer Brave Software hizmetlerini kişiselleştirmek için tarama geçmişinizi kullanabilir</translation>
 <translation id="2532167245710864499">Brave Software'a sistem ve kullanım bilgilerini göndererek Brave'u ve güvenliğini iyileştirin</translation>
 <translation id="2709453993673701466">Senkronizasyonu ve kişiselleştirmeyi açılmadan önce yönetmek ister misiniz? <ph name="BEGIN_LINK"/>Ayarlar<ph name="END_LINK"/>'ı ziyaret edin.</translation>
@@ -888,7 +888,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7004499039102548441">Son Sekmeler</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 Sekme}other{# Sekme}}</translation>
 <translation id="4547659257713117923">Diğer Cihazlardan Sekme Yok</translation>
-<translation id="4756388243121344051">&amp;amp;Geçmiş</translation>
+<translation id="4756388243121344051">&amp;Geçmiş</translation>
 <translation id="9026731007018893674">indir</translation>
 <translation id="9218430445555521422">Varsayılan olarak ayarla</translation>
 <translation id="281133045296806353">Mevcut tarayıcı oturumunda yeni pencere oluşturuldu.</translation>
@@ -910,7 +910,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="4242533952199664413">Ayarları aç</translation>
 <translation id="3752582316358263300">Tamam...</translation>
 <translation id="7117247127439884114">Tekrar Oturum Açın...</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;amp;url=%s</translation>
+<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> size bildirim göndermek istiyor</translation>
 <translation id="7221855153210829124">Bildirimleri gösterme</translation>
@@ -1068,7 +1068,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8736288397686080465">Bu site arka planda güncellendi.</translation>
 <translation id="6945221475159498467">Seç</translation>
 <translation id="4130199216115862831">Cihaz Günlüğü</translation>
-<translation id="6231881193380278751">Sayfayı otomatik yenilemek için URL'ye bir sorgu parametresi ekleyin: chrome://device-log/?refresh=&amp;lt;sec&amp;gt;</translation>
+<translation id="6231881193380278751">Sayfayı otomatik yenilemek için URL'ye bir sorgu parametresi ekleyin: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Yenile</translation>
 <translation id="1260240842868558614">Göster:</translation>
 <translation id="1165039591588034296">Hata</translation>
@@ -1115,20 +1115,20 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3613134908380545408"><ph name="FOLDER_NAME"/> Klasörünü Göster</translation>
 <translation id="2805756323405976993">Uygulamalar</translation>
 <translation id="2367972762794486313">Uygulamaları göster</translation>
-<translation id="6466988389784393586">Tüm Yer İşaretlerini &amp;amp;Aç</translation>
-<translation id="6804671422566312077">Tüm Yer İşaretlerini &amp;amp;Yeni Pencerede Aç</translation>
-<translation id="3011362742078013760">Tüm Yer İşaretlerini &amp;amp;Gizli Pencerede Aç</translation>
-<translation id="3799201711591988491">{COUNT,plural, =0{Tümünü &amp;amp;Aç}=1{Yer İşaretini &amp;amp;Aç}other{Tümünü &amp;amp;Aç (#)}}</translation>
-<translation id="7433692219247014412">{COUNT,plural, =0{Tümünü &amp;amp;Yeni Pencerede Aç}=1{&amp;amp;Yeni Pencerede Aç}other{Tümünü (#) &amp;amp;Yeni Pencerede Aç}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Tümünü &amp;amp;Gizli Pencerede Aç}=1{&amp;amp;Gizli Pencerede Aç}other{Tümünü (#) &amp;amp;Gizli Pencerede Aç}}</translation>
-<translation id="9024127637873500333">&amp;amp;Yeni Sekmede Aç</translation>
-<translation id="665061930738760572">&amp;amp;Yeni Pencerede Aç</translation>
-<translation id="37613671848467444">&amp;amp;Gizli Pencerede Aç</translation>
-<translation id="6702639462873609204">&amp;amp;Düzenle...</translation>
-<translation id="3088325635286126843">&amp;amp;Yeniden adlandır…</translation>
-<translation id="5329858601952122676">&amp;amp;Sil</translation>
-<translation id="8824701697284169214">Say&amp;amp;fa Ekle...</translation>
-<translation id="2489918096470125693">&amp;amp;Klasör Ekle...</translation>
+<translation id="6466988389784393586">Tüm Yer İşaretlerini &amp;Aç</translation>
+<translation id="6804671422566312077">Tüm Yer İşaretlerini &amp;Yeni Pencerede Aç</translation>
+<translation id="3011362742078013760">Tüm Yer İşaretlerini &amp;Gizli Pencerede Aç</translation>
+<translation id="3799201711591988491">{COUNT,plural, =0{Tümünü &amp;Aç}=1{Yer İşaretini &amp;Aç}other{Tümünü &amp;Aç (#)}}</translation>
+<translation id="7433692219247014412">{COUNT,plural, =0{Tümünü &amp;Yeni Pencerede Aç}=1{&amp;Yeni Pencerede Aç}other{Tümünü (#) &amp;Yeni Pencerede Aç}}</translation>
+<translation id="4857506433977877623">{COUNT,plural, =0{Tümünü &amp;Gizli Pencerede Aç}=1{&amp;Gizli Pencerede Aç}other{Tümünü (#) &amp;Gizli Pencerede Aç}}</translation>
+<translation id="9024127637873500333">&amp;Yeni Sekmede Aç</translation>
+<translation id="665061930738760572">&amp;Yeni Pencerede Aç</translation>
+<translation id="37613671848467444">&amp;Gizli Pencerede Aç</translation>
+<translation id="6702639462873609204">&amp;Düzenle...</translation>
+<translation id="3088325635286126843">&amp;Yeniden adlandır…</translation>
+<translation id="5329858601952122676">&amp;Sil</translation>
+<translation id="8824701697284169214">Say&amp;fa Ekle...</translation>
+<translation id="2489918096470125693">&amp;Klasör Ekle...</translation>
 <translation id="2897878306272793870"><ph name="TAB_COUNT"/> sekmeyi açmak istediğinizden emin misiniz?</translation>
 <translation id="4430369329743628066">Yer işareti eklendi</translation>
 <translation id="6404511346730675251">Yer işaretini düzenle</translation>
@@ -1143,12 +1143,12 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="971774202801778802">Yer işareti URL'si</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{Bu klasör bir yer işareti içeriyor. Silmek istediğinizden emin misiniz?}other{Bu klasör # yer işareti içeriyor. Silmek istediğinizden emin misiniz?}}</translation>
 <translation id="5857090052475505287">Yeni Klasör</translation>
-<translation id="6455894534188563617">&amp;amp;Yeni Klasör</translation>
+<translation id="6455894534188563617">&amp;Yeni Klasör</translation>
 <translation id="1015318665228971643">Klasör Adını Düzenle</translation>
 <translation id="5449588825071916739">Tüm Sekmelere Yer İşareti Koy</translation>
 <translation id="5528368756083817449">Yer İşareti Yöneticisi</translation>
 <translation id="3828029223314399057">Yer işaretlerinde ara</translation>
-<translation id="5111692334209731439">&amp;amp;Yer İşareti Yöneticisi</translation>
+<translation id="5111692334209731439">&amp;Yer İşareti Yöneticisi</translation>
 <translation id="6973630695168034713">Klasörler</translation>
 <translation id="5496587651328244253">Düzenle</translation>
 <translation id="1936157145127842922">Klasörde Göster</translation>
@@ -1192,13 +1192,13 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6757101664402245801">URL kopyalandı</translation>
 <translation id="5488093641312826914">"<ph name="COPIED_ITEM_NAME"/>" kopyalandı</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 öğe kopyalandı}other{# öğe kopyalandı}}</translation>
-<translation id="9115675100829699941">&amp;amp;Yer İşaretleri</translation>
+<translation id="9115675100829699941">&amp;Yer İşaretleri</translation>
 <translation id="1047726139967079566">Bu Sayfaya Yer İşareti Koy...</translation>
 <translation id="6949306908218145636">Açık Sayfalara Yer İşareti Koy...</translation>
 <translation id="4422347585044846479">Bu sayfanın yer işaretini düzenle</translation>
 <translation id="6005695835120147974">Medya Yönlendiricisi</translation>
 <translation id="7787308148023287649">Başka bir ekranda görüntüle</translation>
-<translation id="7710568461918838723">&amp;amp;Yayınla...</translation>
+<translation id="7710568461918838723">&amp;Yayınla...</translation>
 <translation id="8970203673128054105">Yayın modu listesini görüntüle</translation>
 <translation id="1277908057200820621">Cihaz listesini görüntüle</translation>
 <translation id="2847759467426165163">Şuraya yayınla</translation>
@@ -1243,6 +1243,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3930737994424905957">Cihazlar aranıyor</translation>
 <translation id="5209320130288484488">Cihaz bulunamadı</translation>
 <translation id="4363771538994847871">Hiç Yayınlama hedefi bulunamadı. Yardıma ihtiyacınız var mı?</translation>
+<translation id="8688672835843460752">Kullanılabilir</translation>
 <translation id="4271396100647220620">Eşleşme yok</translation>
 <translation id="6972180789171089114">Ses/Video</translation>
 <translation id="2541002089857695151">Tam ekran yayınlama optimize edilsin mi?</translation>
@@ -1253,6 +1254,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7473891865547856676">Hayır, Teşekkürler</translation>
 <translation id="8538358978858059843">Cast için bulut hizmetleri etkinleştirilsin mi?</translation>
 <translation id="3856595552313160385">Hangouts ve Cast for Education'ın kullanımı Brave Software Gizlilik Politikası'na tabidir.</translation>
+<translation id="3435896845095436175">Etkinleştir</translation>
 <translation id="3700888195348409686">(<ph name="PAGE_ORIGIN"/>) gösteriliyor</translation>
 <translation id="5285635972691565180">Ekran <ph name="DISPLAY_ID"/></translation>
 <translation id="4707302005824653064">Kullanım ve geçmiş bilgileri, yönetici tarafından (<ph name="CUSTODIAN_EMAIL"/>) chrome.com adresinden incelenebilir.</translation>
@@ -1280,7 +1282,9 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1316495628809031177">Senkronizasyon duraklatıldı</translation>
 <translation id="7786207843293321886">Misafir oturumundan çık</translation>
 <translation id="2329597144923131178">Yer işaretlerinize, geçmişinize ve diğer ayarlarınıza tüm cihazlarınızdan erişmek için oturum açın.</translation>
+<translation id="7029809446516969842">Şifreler</translation>
 <translation id="984275831282074731">Ödeme yöntemleri</translation>
+<translation id="2903493209154104877">Adresler</translation>
 <translation id="8883847527783433352">Başka bir Hesapla Senkronize Et</translation>
 <translation id="2761898608071930085">Başka Bir Hesap Kullan</translation>
 <translation id="4235813040357936597"><ph name="PROFILE_NAME"/> için hesap ekle</translation>
@@ -1478,11 +1482,11 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="304747341537320566">Konuşma Motorları</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Bravebook'unuzda Linux araçları, düzenleyicileri ve IDE'lerini çalıştırın. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Daha fazla bilgi&amp;lt;/a&amp;gt;</translation>
+<translation id="1834538809763482401">Bravebook'unuzda Linux araçları, düzenleyicileri ve IDE'lerini çalıştırın. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Daha fazla bilgi&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Bravebook için Linux Uygulamalarını Kaldırın</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Android ayarları</translation>
-<translation id="4767209642168463274">Bravebook'unuza Brave Software Play'den uygulama ve oyunlar yükleyin. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Daha fazla bilgi&amp;lt;/a&amp;gt;</translation>
+<translation id="4767209642168463274">Bravebook'unuza Brave Software Play'den uygulama ve oyunlar yükleyin. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Daha fazla bilgi&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Android tercihlerini yönet</translation>
 <translation id="4074367893748481070">Brave Software Play Store'u kaldır</translation>
 <translation id="2792290659606763004">Android uygulamaları kaldırılsın mı?</translation>
@@ -1807,11 +1811,11 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7696063401938172191">"<ph name="PHONE_NAME"/>" telefonunuzda:</translation>
 <translation id="3423463006624419153">"<ph name="PHONE_NAME_1"/>" ve "<ph name="PHONE_NAME_2"/>" telefonlarınızda:</translation>
 <translation id="6997707937646349884">Cihazlarınızda:</translation>
-<translation id="7531779363494549572">Ayarlar &amp;gt; Uygulamalar ve bildirimler &amp;gt; Bildirimler'e gidin.</translation>
-<translation id="6921033294337262045">Uygulama bildirimleri &amp;gt; Brave Software Play hizmetlerine dokunun.</translation>
+<translation id="7531779363494549572">Ayarlar &gt; Uygulamalar ve bildirimler &gt; Bildirimler'e gidin.</translation>
+<translation id="6921033294337262045">Uygulama bildirimleri &gt; Brave Software Play hizmetlerine dokunun.</translation>
 <translation id="5624710179837914896">Brave Software Play hizmetlerini açın.</translation>
 <translation id="2705736684557713153">Ekranın alt kısmına gidin ve görüntülenirse Anında Tethering'i açın. Görüntülenmiyorsa her şey hazırdır.</translation>
-<translation id="3604048165392640554">Mobil bağlantı bulunamadı. Diğer cihazlarınızda Anında Tethering'i açın ve tekrar deneyin. &amp;lt;a target="_blank" href="<ph name="URL"/>"&amp;gt;Daha fazla bilgi&amp;lt;/a&amp;gt;</translation>
+<translation id="3604048165392640554">Mobil bağlantı bulunamadı. Diğer cihazlarınızda Anında Tethering'i açın ve tekrar deneyin. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Daha fazla bilgi&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Yeni hotspot'a bağlanılsın mı?</translation>
 <translation id="6514010653036109809">Kullanılabilir cihaz:</translation>
 <translation id="2075474481720804517">%<ph name="BATTERY_PERCENTAGE"/> Pil</translation>
@@ -1977,7 +1981,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Gizlilik, güvenlik ve veri toplamayla ilgili daha fazla ayar için <ph name="BEGIN_LINK"/>Senkronizasyon ve kişiselleştirme<ph name="END_LINK"/> konusuna bakın.</translation>
 <translation id="7222718784508482526">Gizlilik, güvenlik ve veri toplamayla ilgili daha fazla ayar için <ph name="BEGIN_LINK"/>Senkronizasyon ve Brave Software hizmetleri<ph name="END_LINK"/> konusuna bakın</translation>
-<translation id="6438234780621650381">Ayarları sıfırlayın</translation>
 <translation id="5293170712604732402">Ayarları orijinal varsayılan değerlerine geri yükleyin</translation>
 <translation id="892706138619340876">Bazı ayarlar sıfırlandı</translation>
 <translation id="2334029754052191847">Brave, bazı ayarlarınızın başka bir program tarafından bozulduğunu algıladı ve onları orijinal varsayılan değerlerine sıfırladı.</translation>
@@ -1991,7 +1994,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2203682048752833055"><ph name="BEGIN_LINK"/>Adres çubuğunda<ph name="END_LINK"/> kullanılan arama motoru</translation>
 <translation id="1432581352905426595">Arama motorlarını yönet</translation>
 <translation id="2862205630718215619">Brave Software Asistan</translation>
-<translation id="3435896845095436175">Etkinleştir</translation>
 <translation id="6978121630131642226">Arama Motorları</translation>
 <translation id="6410668567036790476">Arama motoru ekleyin</translation>
 <translation id="1128591060186966949">Arama motorunu düzenleyin</translation>
@@ -2133,7 +2135,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6742339027238151589">Komut dosyasınca erişilebilir</translation>
 <translation id="361106536627977100">Flash verileri</translation>
 <translation id="8557930019681227453">Manifest</translation>
-<translation id="7868378670806575181">{NUM_COOKIES,plural, =1{1 çerez}other{# çerezler}}</translation>
+<translation id="7868378670806575181">{NUM_COOKIES,plural, =1{1 çerez}other{# çerez}}</translation>
 <translation id="3866249974567520381">Açıklama</translation>
 <translation id="4530494379350999373">Kaynak</translation>
 <translation id="8195027750202970175">Diskteki boyut</translation>
@@ -2225,7 +2227,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2709516037105925701">Otomatik doldurma</translation>
 <translation id="1644574205037202324">Geçmiş</translation>
 <translation id="5117427536932535467">Temalar ve Duvar Kağıtları</translation>
-<translation id="7029809446516969842">Şifreler</translation>
 <translation id="3259418918864581163">Brave Software Pay'i kullanan kredi kartları ve adresler.</translation>
 <translation id="3268451620468152448">Açık Sekmeler</translation>
 <translation id="5241892180459725878">Brave Software Drive arama önerileri</translation>
@@ -2363,7 +2364,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6856623341093082836">Dokunmatik ekranınızı kurun ve doğruluğunu ayarlayın</translation>
 <translation id="4598556348158889687">Depolama alanı yönetimi</translation>
 <translation id="8868626022555786497">Kullanımda</translation>
-<translation id="8688672835843460752">Kullanılabilir</translation>
 <translation id="1082725763867769612">Çevrimdışı dosyalar</translation>
 <translation id="7366909168761621528">Göz atma verileri</translation>
 <translation id="5568144734023334204">Android depolama alanı</translation>
@@ -2429,7 +2429,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3264582393905923483">Bağlam</translation>
 <translation id="1607139524282324606">Girişi temizle</translation>
 <translation id="6025215716629925253">Yığın İzleme</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&amp;lt;1 satır gösterilmiyor&amp;gt;}other{&amp;lt;$1 satır gösterilmiyor&amp;gt;}}</translation>
+<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 satır gösterilmiyor&gt;}other{&lt;$1 satır gösterilmiyor&gt;}}</translation>
 <translation id="8389492867173948260">Bu uzantının ziyaret ettiğiniz web sitelerindeki tüm verilerinizi okuması ve değiştirmesine izin verin:</translation>
 <translation id="407173827865827707">Tıklandığında</translation>
 <translation id="6455264371803474013">Belirli sitelerde</translation>
@@ -2437,7 +2437,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3729506734996624908">İzin verilen siteler</translation>
 <translation id="3732078975418297900"><ph name="ERROR_LINE"/>. satırda hata</translation>
 <translation id="9063208415146866933"><ph name="ERROR_LINE_START"/>. ila <ph name="ERROR_LINE_END"/>. satır arasında hata</translation>
-<translation id="1890674179660343635">&amp;lt;span&amp;gt;Kimlik: &amp;lt;/span&amp;gt;<ph name="EXTENSION_ID"/></translation>
+<translation id="1890674179660343635">&lt;span&gt;Kimlik: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Görünümleri incele</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> görüntüleme daha...</translation>
 <translation id="2450849356604136918">Etkin görünüm yok</translation>
