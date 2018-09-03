@@ -142,7 +142,11 @@ MediaPublisherInfo::MediaPublisherInfo(const MediaPublisherInfo& info):
 
 MediaPublisherInfo::~MediaPublisherInfo() {}
 
-const MediaPublisherInfo MediaPublisherInfo::FromJSON(const std::string& json) {
+// static
+std::unique_ptr<MediaPublisherInfo> MediaPublisherInfo::FromJSON(
+    const std::string& json) {
+  std::unique_ptr<MediaPublisherInfo> info;
+
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -156,18 +160,18 @@ const MediaPublisherInfo MediaPublisherInfo::FromJSON(const std::string& json) {
       !d["twitch_event"].IsString() ||
       !d["twitch_time"].IsString() ||
       !d["twitch_status"].IsString()) {
-    return MediaPublisherInfo("");
+    return info;
   }
 
-  MediaPublisherInfo info(d["id"].GetString());
-  info.publisherName_ = d["publisherName"].GetString();
-  info.publisherURL_ = d["publisherURL"].GetString();
-  info.favIconURL_ = d["favIconURL"].GetString();
-  info.channelName_ = d["channelName"].GetString();
-  info.publisher_ = d["publisher"].GetString();
-  info.twitchEventInfo_.event_ = d["twitch_event"].GetString();
-  info.twitchEventInfo_.time_ = d["twitch_time"].GetString();
-  info.twitchEventInfo_.status_ = d["twitch_status"].GetString();
+  info = std::make_unique<MediaPublisherInfo>(d["id"].GetString());
+  info->publisherName_ = d["publisherName"].GetString();
+  info->publisherURL_ = d["publisherURL"].GetString();
+  info->favIconURL_ = d["favIconURL"].GetString();
+  info->channelName_ = d["channelName"].GetString();
+  info->publisher_ = d["publisher"].GetString();
+  info->twitchEventInfo_.event_ = d["twitch_event"].GetString();
+  info->twitchEventInfo_.time_ = d["twitch_time"].GetString();
+  info->twitchEventInfo_.status_ = d["twitch_status"].GetString();
 
   return info;
 }

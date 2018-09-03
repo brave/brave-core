@@ -37,7 +37,7 @@ namespace braveledger_bat_publishers {
 BatPublishers::BatPublishers(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   state_(new braveledger_bat_helper::PUBLISHER_STATE_ST),
-  server_list_(std::make_unique<std::map<std::string, braveledger_bat_helper::SERVER_LIST>>()) {
+  server_list_(std::map<std::string, braveledger_bat_helper::SERVER_LIST>()) {
   calcScoreConsts();
 }
 
@@ -365,23 +365,33 @@ std::vector<braveledger_bat_helper::PUBLISHER_ST> BatPublishers::topN() {
 }
 
 bool BatPublishers::isVerified(const ledger::PublisherInfo::id_type& publisher_id) {
-  if (!server_list_ || server_list_->empty()) {
+  if (server_list_.empty()) {
     return false;
   }
 
-  const braveledger_bat_helper::SERVER_LIST values = server_list_->find(publisher_id)->second;
+  auto result = server_list_.find(publisher_id);
+
+  if (result == server_list_.end()) {
+    return false;
+  }
+
+  const braveledger_bat_helper::SERVER_LIST values = result->second;
 
   return values.verified;
 }
 
 bool BatPublishers::isExcluded(const ledger::PublisherInfo::id_type& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded) {
-  if (excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED ||
-      !server_list_ ||
-      server_list_->empty()) {
+  if (excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED || server_list_.empty()) {
     return false;
   }
 
-  const braveledger_bat_helper::SERVER_LIST values = server_list_->find(publisher_id)->second;
+  auto result = server_list_.find(publisher_id);
+
+  if (result == server_list_.end()) {
+    return false;
+  }
+
+  const braveledger_bat_helper::SERVER_LIST values = result->second;
 
   return excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED || values.excluded;
 }
@@ -479,7 +489,7 @@ void BatPublishers::RefreshPublishersList(const std::string& json) {
   bool success = braveledger_bat_helper::getJSONServerList(json, list);
 
   if (success) {
-    server_list_ = std::make_unique<std::map<std::string, braveledger_bat_helper::SERVER_LIST>>(list);
+    server_list_ = std::map<std::string, braveledger_bat_helper::SERVER_LIST>(list);
   }
 }
 
