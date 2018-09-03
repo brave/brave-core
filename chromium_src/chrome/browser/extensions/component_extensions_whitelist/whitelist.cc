@@ -9,6 +9,7 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/grit/brave_rewards_resources.h"
+#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 
 namespace extensions {
@@ -43,4 +44,3 @@ namespace extensions {
   }
 
 }  // namespace extensions
-
