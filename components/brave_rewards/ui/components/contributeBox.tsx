@@ -189,6 +189,7 @@ class ContributeBox extends React.Component<Props, State> {
         settingsChild={this.contributeSettings(monthlyList)}
         disabledContent={this.contributeDisabled()}
         onToggle={this.onToggleContribution}
+        testId={'autoContribution'}
       >
         {
           this.state.modalContribute
