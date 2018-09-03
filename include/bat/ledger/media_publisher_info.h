@@ -10,21 +10,21 @@
 namespace ledger {
 
 LEDGER_EXPORT struct TwitchEventInfo {
-    TwitchEventInfo();
-    TwitchEventInfo(const TwitchEventInfo&);
-    ~TwitchEventInfo();
+  TwitchEventInfo();
+  TwitchEventInfo(const TwitchEventInfo&);
+  ~TwitchEventInfo();
 
-    std::string event_;
-    std::string time_;
-    std::string status_;
-  };
+  std::string event_;
+  std::string time_;
+  std::string status_;
+};
 
 LEDGER_EXPORT struct MediaPublisherInfo {
   MediaPublisherInfo(const std::string& publisher_id);
   MediaPublisherInfo(const MediaPublisherInfo& info);
   ~MediaPublisherInfo();
 
-  static const MediaPublisherInfo FromJSON(const std::string& json);
+  static std::unique_ptr<MediaPublisherInfo> FromJSON(const std::string& json);
   const std::string ToJSON() const;
 
   std::string publisher_id_;
