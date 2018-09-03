@@ -5,5 +5,5 @@ transpile_web_ui("ui") {
     "../../brave_sync/ui/brave_sync.html",
     "../../brave_sync/ui/brave_sync.js",
   ]
-  bundle_name = "brave_sync.bundle.js"
+  bundle_names = ["brave_sync.bundle.js"]
 }
