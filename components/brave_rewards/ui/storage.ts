@@ -7,7 +7,7 @@ import { debounce } from '../../common/debounce'
 
 const keyName = 'rewards-data'
 
-const defaultState: Rewards.State = {
+export const defaultState: Rewards.State = {
   createdTimestamp: null,
   enabledMain: false,
   enabledAds: true,

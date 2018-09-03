@@ -3,20 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const qr = require('qr-image')
-import { bindActionCreators } from 'redux'
-import { Address, Type as AddressType } from 'brave-ui/features/rewards/modalAddFunds'
+import { Address } from 'brave-ui/features/rewards/modalAddFunds'
 
-import store from './store'
-import * as rewardsActions from './actions/rewards_actions'
+export let actions: any = null
 
-let actions: any
-export const getActions = () => {
-  if (actions) {
-    return actions
-  }
-  actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
-  return actions
-}
+export const getActions = () => actions
+export const setActions = (newActions: any) => actions = newActions
 
 export const convertBalance = (tokens: number, rates: Record<string, number> | undefined, currency: string = 'USD'): number => {
   if (tokens === 0 || !rates || !rates[currency]) {
@@ -80,7 +72,9 @@ export const generateQR = (addresses: Record<Rewards.AddressesType, string>) => 
         })
         .on('end', () => {
           const qrImage = 'data:image/png;base64,' + Buffer.concat(chunks).toString('base64')
-          getActions().onQRGenerated(type, qrImage)
+          if (actions) {
+            actions.onQRGenerated(type, qrImage)
+          }
         })
     } catch (ex) {
       console.error('qr.imageSync (for url ' + url + ') error: ' + ex.toString())
@@ -105,7 +99,7 @@ export const getAddresses = (addresses?: Record<Rewards.AddressesType, Rewards.A
     const item: Rewards.Address = addresses[type]
     if (item) {
       result.push({
-        type: type as AddressType,
+        type,
         qr: item.qr,
         address: item.address
       })

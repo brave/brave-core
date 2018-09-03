@@ -6,7 +6,7 @@ import { Reducer } from 'redux'
 
 // Constant
 import { types } from '../constants/rewards_types'
-import {generateQR} from '../utils'
+import { generateQR } from '../utils'
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
