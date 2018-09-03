@@ -28,6 +28,7 @@ class SequencedTaskRunner;
 namespace ledger {
 class Ledger;
 class LedgerCallbackHandler;
+struct LedgerMediaPublisherInfo;
 }  // namespace ledger
 
 namespace leveldb {
@@ -119,6 +120,11 @@ class RewardsServiceImpl : public RewardsService,
                             bool success);
   void OnPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
                              const ledger::PublisherInfoList list);
+  void OnMediaPublisherInfoSaved(ledger::MediaPublisherInfoCallback callback,
+                            std::unique_ptr<ledger::MediaPublisherInfo> info,
+                            bool success);
+  void OnMediaPublisherInfoLoaded(ledger::MediaPublisherInfoCallback callback,
+                             std::unique_ptr<ledger::MediaPublisherInfo> info);
   void OnPublisherInfoListLoaded(uint32_t start,
                                  uint32_t limit,
                                  ledger::GetPublisherInfoListCallback callback,

@@ -11,6 +11,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
+#include "bat/ledger/media_publisher_info.h"
 #include "build/build_config.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -44,13 +45,17 @@ bool PublisherInfoDatabase::Init() {
   if (!db_.Open(db_path_))
     return false;
 
+  // TODO - add error delegate
   sql::Transaction committer(&db_);
   if (!committer.Begin())
     return false;
 
   if (!meta_table_.Init(&db_, GetCurrentVersion(), kCompatibleVersionNumber))
     return false;
-  if (!CreatePublisherInfoTable() || !CreateContributionInfoTable() || !CreateActivityInfoTable())
+  if (!CreatePublisherInfoTable() ||
+      !CreateContributionInfoTable() ||
+      !CreateActivityInfoTable() ||
+      !CreateMediaPublisherInfoTable())
     return false;
 
   CreateContributionInfoIndex();
@@ -79,8 +84,8 @@ bool PublisherInfoDatabase::CreateContributionInfoTable() {
   if (GetDB().DoesTableExist(name))
     return true;
 
-  // Note: revise implementation for InsertOrUpdateRowByID() if you add any
-  // new constraints to the schema.
+  // Note: revise implementation for InsertOrUpdatePublisherInfo() if you add
+  // any new constraints to the schema.
   std::string sql;
   sql.append("CREATE TABLE ");
   sql.append(name);
@@ -159,6 +164,32 @@ bool PublisherInfoDatabase::CreateActivityInfoIndex() {
       "ON activity_info (publisher_id)");
 }
 
+bool PublisherInfoDatabase::CreateMediaPublisherInfoTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const char* name = "media_publisher_info";
+  if (GetDB().DoesTableExist(name))
+    return true;
+
+  // Update InsertOrUpdateMediaPublisherInfo() if you add anything here
+  std::string sql;
+  sql.append("CREATE TABLE ");
+  sql.append(name);
+  sql.append(
+      "("
+      "publisher_id LONGVARCHAR PRIMARY KEY NOT NULL,"
+      // just store the raw json because this is just a 1 to 1 mapping
+      // and we don't need to sort or filter
+      "data TEXT NOT NULL,"
+      // schema version for serialized json data
+      "schema_version INTEGER DEFAULT 1 NOT NULL,"
+      "CONSTRAINT fk_media_publisher_info_publisher_id"
+      "    FOREIGN KEY (publisher_id)"
+      "    REFERENCES publisher_info (publisher_id)"
+      "    ON DELETE CASCADE)");
+  return GetDB().Execute(sql.c_str());
+}
+
 bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
     const ledger::PublisherInfo& info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -169,16 +200,17 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   if (!initialized)
     return false;
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO publisher_info "
-      "(publisher_id, verified, excluded) "
-      "VALUES (?, ?, ?)"));
+  sql::Statement publisher_info_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+          "INSERT OR REPLACE INTO publisher_info "
+          "(publisher_id, verified, excluded) "
+          "VALUES (?, ?, ?)"));
 
-  statement.BindString(0, info.id);
-  statement.BindBool(1, info.verified);
-  statement.BindInt(2, static_cast<int>(info.excluded));
+  publisher_info_statement.BindString(0, info.id);
+  publisher_info_statement.BindBool(1, info.verified);
+  publisher_info_statement.BindInt(2, static_cast<int>(info.excluded));
 
-  if (!statement.Run()) {
+  if (!publisher_info_statement.Run()) {
     return false;
   }
 
@@ -186,22 +218,65 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
     return true;
   }
 
-  sql::Statement statement1(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO activity_info "
-      "(publisher_id, duration, score, percent, "
-      "weight, category, month, year) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"));
+  sql::Statement activity_info_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+          "INSERT OR REPLACE INTO activity_info "
+          "(publisher_id, duration, score, percent, "
+          "weight, category, month, year) "
+          "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"));
 
-  statement1.BindString(0, info.id);
-  statement1.BindInt64(1, (int)info.duration);
-  statement1.BindDouble(2, info.score);
-  statement1.BindInt64(3, (int)info.percent);
-  statement1.BindDouble(4, info.weight);
-  statement1.BindInt(5, info.category);
-  statement1.BindInt(6, info.month);
-  statement1.BindInt(7, info.year);
+  activity_info_statement.BindString(0, info.id);
+  activity_info_statement.BindInt64(1, (int)info.duration);
+  activity_info_statement.BindDouble(2, info.score);
+  activity_info_statement.BindInt64(3, (int)info.percent);
+  activity_info_statement.BindDouble(4, info.weight);
+  activity_info_statement.BindInt(5, info.category);
+  activity_info_statement.BindInt(6, info.month);
+  activity_info_statement.BindInt(7, info.year);
 
-  return statement1.Run();
+  return activity_info_statement.Run();
+}
+
+bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
+    const ledger::MediaPublisherInfo& info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "INSERT OR REPLACE INTO media_publisher_info "
+      "(publisher_id, data) "
+      "VALUES (?, ?)"));
+
+  statement.BindString(0, info.publisher_id_);
+  statement.BindString(1, info.ToJSON());
+
+  return statement.Run();
+}
+
+std::unique_ptr<ledger::MediaPublisherInfo>
+PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& publisher_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  std::unique_ptr<ledger::MediaPublisherInfo> info;
+
+  if (!initialized)
+    return info;
+
+  sql::Statement info_sql(
+      db_.GetUniqueStatement("SELECT data FROM media_publisher_info"));
+
+  if (info_sql.Step()) {
+     info = ledger::MediaPublisherInfo::FromJSON(info_sql.ColumnString(0));
+  }
+  return info;
 }
 
 bool PublisherInfoDatabase::Find(int start,
@@ -246,8 +321,6 @@ bool PublisherInfoDatabase::Find(int start,
     query += " ORDER BY " + it.first;
     query += (it.second ? "ASC" : "DESC");
   }
-
-  LOG(ERROR) << query;
 
   sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
 

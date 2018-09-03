@@ -5,6 +5,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
 
+#include <memory>
 #include <stddef.h>
 
 #include "base/compiler_specific.h"
@@ -17,6 +18,10 @@
 #include "sql/database.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
+
+namespace ledger {
+struct MediaPublisherInfo;
+}
 
 namespace brave_rewards {
 
@@ -32,10 +37,14 @@ class PublisherInfoDatabase {
   }
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
+  bool InsertOrUpdateMediaPublisherInfo(const ledger::MediaPublisherInfo& info);
+
   bool Find(int start,
             int limit,
             const ledger::PublisherInfoFilter& filter,
             ledger::PublisherInfoList* list);
+  std::unique_ptr<ledger::MediaPublisherInfo> GetMediaPublisherInfo(
+      const std::string& publisher_id);
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();
@@ -52,6 +61,7 @@ class PublisherInfoDatabase {
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
   bool CreateContributionInfoTable();
   bool CreatePublisherInfoTable();
+  bool CreateMediaPublisherInfoTable();
   bool CreateActivityInfoTable();
   bool CreateContributionInfoIndex();
   bool CreateActivityInfoIndex();

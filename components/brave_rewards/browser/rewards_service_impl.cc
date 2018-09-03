@@ -19,6 +19,8 @@
 #include "base/task/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/media_publisher_info.h"
+#include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
@@ -104,6 +106,27 @@ std::string LoadStateOnFileTaskRunner(
     return std::string();
   }
   return data;
+}
+
+bool SaveMediaPublisherInfoOnFileTaskRunner(
+    ledger::MediaPublisherInfo publisher_info,
+    PublisherInfoDatabase* backend) {
+  if (backend && backend->InsertOrUpdateMediaPublisherInfo(publisher_info))
+    return true;
+
+  return false;
+}
+
+std::unique_ptr<ledger::MediaPublisherInfo>
+LoadMediaPublisherInfoListOnFileTaskRunner(
+    const std::string publisher_id,
+    PublisherInfoDatabase* backend) {
+  std::unique_ptr<ledger::MediaPublisherInfo> info;
+  if (!backend)
+    return info;
+
+  info = backend->GetMediaPublisherInfo(publisher_id);
+  return info;
 }
 
 bool SavePublisherInfoOnFileTaskRunner(
@@ -323,13 +346,46 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
 void RewardsServiceImpl::LoadMediaPublisherInfo(
     const std::string& publisher_id,
     ledger::MediaPublisherInfoCallback callback) {
-  // TODO
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&LoadMediaPublisherInfoListOnFileTaskRunner,
+          publisher_id, publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnMediaPublisherInfoLoaded,
+                     AsWeakPtr(),
+                     callback));
+}
+
+void RewardsServiceImpl::OnMediaPublisherInfoLoaded(
+    ledger::MediaPublisherInfoCallback callback,
+    std::unique_ptr<ledger::MediaPublisherInfo> info) {
+  if (!info) {
+    callback(ledger::Result::NOT_FOUND, std::move(info));
+    return;
+  }
+
+  callback(ledger::Result::OK, std::move(info));
 }
 
 void RewardsServiceImpl::SaveMediaPublisherInfo(
     std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
     ledger::MediaPublisherInfoCallback callback) {
-  // TODO
+base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&SaveMediaPublisherInfoOnFileTaskRunner,
+                    *media_publisher_info,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnMediaPublisherInfoSaved,
+                     AsWeakPtr(),
+                     callback,
+                     base::Passed(std::move(media_publisher_info))));
+}
+
+void RewardsServiceImpl::OnMediaPublisherInfoSaved(
+    ledger::MediaPublisherInfoCallback callback,
+    std::unique_ptr<ledger::MediaPublisherInfo> info,
+    bool success) {
+  callback(success ? ledger::Result::OK
+                   : ledger::Result::ERROR, std::move(info));
+
+  TriggerOnContentSiteUpdated();
 }
 
 std::string RewardsServiceImpl::URIEncode(const std::string& value) {
