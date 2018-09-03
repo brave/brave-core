@@ -233,6 +233,7 @@ void RewardsServiceImpl::GetContentSiteList(
   filter.category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
   filter.month = GetPublisherMonth(now);
   filter.year = GetPublisherYear(now);
+  filter.order_by.push_back(std::pair<std::string, bool>("percent", false));
 
   ledger_->GetPublisherInfoList(start, limit,
       filter,
