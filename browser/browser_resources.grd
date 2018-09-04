@@ -39,8 +39,8 @@
         <structure name="IDR_OOBE_ENROLLMENT_CSS" file="resources\chromeos\login\oobe_screen_oauth_enrollment.css" flattenhtml="true" type="chrome_html" />
         <structure name="IDR_OOBE_ENROLLMENT_JS" file="resources\chromeos\login\oobe_screen_oauth_enrollment.js" flattenhtml="true" type="chrome_html" />
         <structure name="IDR_KEYBOARD_UTILS_JS" file="resources\chromeos\keyboard\keyboard_utils.js" flattenhtml="true" type="chrome_html" />
-        <structure name="IDR_CHROMEOS_DISCOVER_HTML" file="resources\chromeos\login\discover\discover_app.html" flattenhtml="true" type="chrome_html" />
-        <structure name="IDR_CHROMEOS_DISCOVER_JS" file="resources\chromeos\login\discover\discover_app.js" flattenhtml="true" type="chrome_html" />
+        <structure name="IDR_CHROMEOS_DISCOVER_APP_HTML" file="resources\chromeos\login\discover\discover_app.html" flattenhtml="true" type="chrome_html" />
+        <structure name="IDR_CHROMEOS_DISCOVER_APP_JS" file="resources\chromeos\login\discover\discover_app.js" flattenhtml="true" type="chrome_html" />
         <structure name="IDR_CUSTOM_ELEMENTS_OOBE_HTML" file="resources\chromeos\login\custom_elements_oobe.html" flattenhtml="true" type="chrome_html" />
         <structure name="IDR_CUSTOM_ELEMENTS_OOBE_JS" file="resources\chromeos\login\custom_elements_oobe.js" flattenhtml="true" type="chrome_html" />
         <structure name="IDR_CUSTOM_ELEMENTS_LOCK_HTML" file="resources\chromeos\login\custom_elements_lock.html" flattenhtml="true" type="chrome_html" />
@@ -76,18 +76,6 @@
         <include name="IDR_ABOUT_DISCARDS_JS" file="resources\discards\discards.js" type="BINDATA" />
         <include name="IDR_ABOUT_DISCARDS_MOJO_JS" file="${root_gen_dir}\chrome\browser\ui\webui\discards\discards.mojom.js" use_base_dir="false" type="BINDATA" />
         <include name="IDR_ABOUT_DISCARDS_LIFECYCLE_UNIT_STATE_MOJO_JS" file="${root_gen_dir}\chrome\browser\resource_coordinator\lifecycle_unit_state.mojom.js" use_base_dir="false" type="BINDATA" />
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_BLE_1X" file="resources\webauthn\ble.png" type="BINDATA" />
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_BLE_NAME_1X" file="resources\webauthn\ble_name.png" type="BINDATA" />
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_BLE_TAP_1X" file="resources\webauthn\ble_tap.png" type="BINDATA" />
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_BLE_PIN_1X" file="resources\webauthn\ble_pin.png" type="BINDATA" />
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_ERROR_BLUETOOTH_1X" file="resources\webauthn\error_bt.png" type="BINDATA" />
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_ERROR_TIMEOUT_1X" file="resources\webauthn\error_timeout.png" type="BINDATA" />
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_PHONE_1X" file="resources\webauthn\phone.png" type="BINDATA" />
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_USB_1X" file="resources\webauthn\usb.png" type="BINDATA" />
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_WELCOME_1X" file="resources\webauthn\welcome.png" type="BINDATA" />
-      </if>
-      <if expr="is_macosx">
-        <include name="IDR_WEBAUTHN_ILLUSTRATION_TOUCHID_1X" file="resources\webauthn\touchid.png" type="BINDATA" />
       </if>
       <if expr="is_win">
         <include name="IDR_ABOUT_CONFLICTS_HTML" file="resources\conflicts\about_conflicts.html" flattenhtml="true" allowexternalscript="true" type="BINDATA" />

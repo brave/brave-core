@@ -138,6 +138,8 @@
       <structure name="IDR_SETTINGS_CONTROLS_CHECKBOX_JS" file="controls/settings_checkbox.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_DROPDOWN_MENU_HTML" file="controls/settings_dropdown_menu.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_DROPDOWN_MENU_JS" file="controls/settings_dropdown_menu.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_PASSWORD_PROMPT_DIALOG_JS" file="controls/password_prompt_dialog.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_CONTROLS_PASSWORD_PROMPT_DIALOG_HTML" file="controls/password_prompt_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_CONTROLS_PREF_CONTROL_BEHAVIOR_HTML" file="controls/pref_control_behavior.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_PREF_CONTROL_BEHAVIOR_JS" file="controls/pref_control_behavior.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_CONTROLS_RADIO_GROUP_HTML" file="controls/settings_radio_group.html" type="chrome_html" />
@@ -430,6 +432,8 @@
         <structure name="IDR_SETTINGS_MULTIDEVICE_BROWSER_PROXY_JS" file="multidevice_page/multidevice_browser_proxy.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_MULTIDEVICE_CONSTANTS_HTML" file="multidevice_page/multidevice_constants.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_MULTIDEVICE_CONSTANTS_JS" file="multidevice_page/multidevice_constants.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_FEATURE_BEHAVIOR_HTML" file="multidevice_page/multidevice_feature_behavior.html" type="chrome_html" />
+        <structure name="IDR_SETTINGS_MULTIDEVICE_FEATURE_BEHAVIOR_JS" file="multidevice_page/multidevice_feature_behavior.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_MULTIDEVICE_FEATURE_ITEM_HTML" file="multidevice_page/multidevice_feature_item.html" type="chrome_html" />
         <structure name="IDR_SETTINGS_MULTIDEVICE_FEATURE_ITEM_JS" file="multidevice_page/multidevice_feature_item.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_MULTIDEVICE_FEATURE_TOGGLE_HTML" file="multidevice_page/multidevice_feature_toggle.html" type="chrome_html" />
@@ -462,8 +466,8 @@
         <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_BROWSER_PROXY_HTML" file="people_page/easy_unlock_browser_proxy.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
         <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_TURN_OFF_DIALOG_JS" file="people_page/easy_unlock_turn_off_dialog.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_PEOPLE_EASY_UNLOCK_TURN_OFF_DIALOG_HTML" file="people_page/easy_unlock_turn_off_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-        <structure name="IDR_SETTINGS_PEOPLE_PASSWORD_PROMPT_DIALOG_JS" file="people_page/password_prompt_dialog.js" type="chrome_html" />
-        <structure name="IDR_SETTINGS_PEOPLE_PASSWORD_PROMPT_DIALOG_HTML" file="people_page/password_prompt_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_PASSWORD_PROMPT_DIALOG_JS" file="people_page/lock_screen_password_prompt_dialog.js" type="chrome_html" />
+        <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_PASSWORD_PROMPT_DIALOG_HTML" file="people_page/lock_screen_password_prompt_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
         <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_JS" file="people_page/lock_screen.js" type="chrome_html" />
         <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_HTML" file="people_page/lock_screen.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
         <structure name="IDR_SETTINGS_PEOPLE_LOCK_SCREEN_CONSTANTS_JS" file="people_page/lock_screen_constants.js" type="chrome_html" />
