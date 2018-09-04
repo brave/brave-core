@@ -53,25 +53,25 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList>, uint32_t record);
   void GetBalanceReports(const base::ListValue* args);
 
-  // PaymentServiceObserver implementation
-  void OnWalletInitialized(brave_rewards::RewardsService* payment_service,
+  // RewardsServiceObserver implementation
+  void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                        int error_code) override;
-  void OnWalletProperties(brave_rewards::RewardsService* payment_service,
+  void OnWalletProperties(brave_rewards::RewardsService* rewards_service,
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) override;
-  void OnGrant(brave_rewards::RewardsService* payment_service,
+  void OnGrant(brave_rewards::RewardsService* rewards_service,
                    unsigned int error_code,
                    brave_rewards::Grant result) override;
-  void OnGrantCaptcha(brave_rewards::RewardsService* payment_service,
+  void OnGrantCaptcha(brave_rewards::RewardsService* rewards_service,
                           std::string image) override;
-  void OnRecoverWallet(brave_rewards::RewardsService* payment_service,
+  void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
                        double balance,
                        std::vector<brave_rewards::Grant> grants) override;
-  void OnGrantFinish(brave_rewards::RewardsService* payment_service,
+  void OnGrantFinish(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
                        brave_rewards::Grant grant) override;
-  void OnContentSiteUpdated(brave_rewards::RewardsService* payment_service) override;
+  void OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
@@ -169,7 +169,7 @@ void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnWalletInitialized(
-    brave_rewards::RewardsService* payment_service,
+    brave_rewards::RewardsService* rewards_service,
     int error_code) {
   if (!web_ui()->CanCallJavascript())
     return;
@@ -181,7 +181,7 @@ void RewardsDOMHandler::OnWalletInitialized(
 }
 
 void RewardsDOMHandler::OnWalletProperties(
-    brave_rewards::RewardsService* payment_service,
+    brave_rewards::RewardsService* rewards_service,
     int error_code,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
 
@@ -229,7 +229,7 @@ void RewardsDOMHandler::OnWalletProperties(
 }
 
 void RewardsDOMHandler::OnGrant(
-    brave_rewards::RewardsService* payment_service,
+    brave_rewards::RewardsService* rewards_service,
     unsigned int result,
     brave_rewards::Grant grant) {
   if (web_ui()->CanCallJavascript()) {
@@ -252,7 +252,7 @@ void RewardsDOMHandler::GetGrant(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnGrantCaptcha(
-    brave_rewards::RewardsService* payment_service,
+    brave_rewards::RewardsService* rewards_service,
     std::string image) {
   if (web_ui()->CanCallJavascript()) {
     std::string encoded_string;
@@ -286,7 +286,7 @@ void RewardsDOMHandler::RecoverWallet(const base::ListValue *args) {
 }
 
 void RewardsDOMHandler::OnRecoverWallet(
-    brave_rewards::RewardsService* payment_service,
+    brave_rewards::RewardsService* rewards_service,
     unsigned int result,
     double balance,
     std::vector<brave_rewards::Grant> grants) {
@@ -317,7 +317,7 @@ void RewardsDOMHandler::SolveGrantCaptcha(const base::ListValue *args) {
 }
 
 void RewardsDOMHandler::OnGrantFinish(
-    brave_rewards::RewardsService* payment_service,
+    brave_rewards::RewardsService* rewards_service,
     unsigned int result,
     brave_rewards::Grant grant) {
   if (web_ui()->CanCallJavascript()) {
@@ -353,7 +353,7 @@ void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
   }
 }
 
-void RewardsDOMHandler::OnContentSiteUpdated(brave_rewards::RewardsService* payment_service) {
+void RewardsDOMHandler::OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) {
   // TODO NZ get the whole list sorted
   rewards_service_->GetContentSiteList(0, 10, base::Bind(&RewardsDOMHandler::OnGetContentSiteList, base::Unretained(this)));
 }

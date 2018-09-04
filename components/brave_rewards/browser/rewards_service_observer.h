@@ -16,25 +16,25 @@ class RewardsServiceObserver {
  public:
   virtual ~RewardsServiceObserver() {}
 
-  virtual void OnWalletInitialized(RewardsService* payment_service,
+  virtual void OnWalletInitialized(RewardsService* rewards_service,
                                int error_code) {};
   virtual void OnWalletProperties(
-      RewardsService* payment_service,
+      RewardsService* rewards_service,
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> properties) {};
-  virtual void OnGrant(RewardsService* payment_service,
+  virtual void OnGrant(RewardsService* rewards_service,
                            unsigned int error_code,
                            brave_rewards::Grant properties) {};
-  virtual void OnGrantCaptcha(RewardsService* payment_service,
+  virtual void OnGrantCaptcha(RewardsService* rewards_service,
                                   std::string image) {};
-  virtual void OnRecoverWallet(RewardsService* payment_service,
+  virtual void OnRecoverWallet(RewardsService* rewards_service,
                                unsigned int result,
                                double balance,
                                std::vector<brave_rewards::Grant> grants) {};
-  virtual void OnGrantFinish(RewardsService* payment_service,
+  virtual void OnGrantFinish(RewardsService* rewards_service,
                                  unsigned int result,
                                  brave_rewards::Grant grant) {};
-  virtual void OnContentSiteUpdated(RewardsService* payment_service) {};
+  virtual void OnContentSiteUpdated(RewardsService* rewards_service) {};
 };
 
 }  // namespace brave_rewards
