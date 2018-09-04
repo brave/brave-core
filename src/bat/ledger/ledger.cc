@@ -18,27 +18,35 @@ bool is_verbose = true;
 VisitData::VisitData():
     tab_id(-1) {}
 
-VisitData::VisitData(const std::string& _tld,
-            const std::string& _domain,
+VisitData::VisitData(const std::string& _domain,
             const std::string& _path,
             uint32_t _tab_id,
             PUBLISHER_MONTH _local_month,
-            int _local_year) :
-    tld(_tld),
+            int _local_year,
+            const std::string& _name,
+            const std::string& _url,
+            const std::string& _provider,
+            const std::string& _favicon_url) :
     domain(_domain),
     path(_path),
     tab_id(_tab_id),
     local_month(_local_month),
-    local_year(_local_year) {}
+    local_year(_local_year),
+    name(_name),
+    url(_url),
+    provider(_provider),
+    favicon_url(_favicon_url) {}
 
 VisitData::VisitData(const VisitData& data) :
-    tld(data.tld),
     domain(data.domain),
     path(data.path),
     tab_id(data.tab_id),
     local_month(data.local_month),
     local_year(data.local_year),
-    favIconURL(data.favIconURL) {}
+    name(data.name),
+    url(data.url),
+    provider(data.provider),
+    favicon_url(data.favicon_url) {}
 
 VisitData::~VisitData() {}
 
@@ -95,7 +103,11 @@ PublisherInfo::PublisherInfo(const id_type& publisher_id,
     category(PUBLISHER_CATEGORY::AUTO_CONTRIBUTE),
     month(_month),
     year(_year),
-    verified(false) {}
+    verified(false),
+    name(""),
+    url(""),
+    provider(""),
+    favicon_url("") {}
 
 PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     id(info.id),
@@ -108,8 +120,11 @@ PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     category(info.category),
     month(info.month),
     year(info.year),
-    favIconURL(info.favIconURL),
     verified(info.verified),
+    name(info.name),
+    url(info.url),
+    provider(info.provider),
+    favicon_url(info.favicon_url),
     contributions(info.contributions) {}
 
 PublisherInfo::~PublisherInfo() {}

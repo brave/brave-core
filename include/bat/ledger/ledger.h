@@ -26,7 +26,11 @@ LEDGER_EXPORT struct VisitData {
             const std::string& _path,
             uint32_t _tab_id,
             PUBLISHER_MONTH _local_month,
-            int _local_year);
+            int _local_year,
+            const std::string& name,
+            const std::string& url,
+            const std::string& provider,
+            const std::string& favicon_url);
   VisitData(const VisitData& data);
   ~VisitData();
 
@@ -36,7 +40,10 @@ LEDGER_EXPORT struct VisitData {
   uint32_t tab_id;
   PUBLISHER_MONTH local_month;
   int local_year;
-  std::string favIconURL;
+  std::string name;
+  std::string url;
+  std::string provider;
+  std::string favicon_url;
 };
 
 LEDGER_EXPORT struct PaymentData {

@@ -138,20 +138,27 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
       }
       ledger::VisitData updated_visit_data(visit_data);
       updated_visit_data.tld = media_publisher_info->publisherName_ + " on " + TWITCH_PROVIDER_NAME;
-      updated_visit_data.favIconURL = media_publisher_info->favIconURL_;
+      updated_visit_data.favicon_url = media_publisher_info->favIconURL_;
+      updated_visit_data.provider = TWITCH_PROVIDER_NAME;
+      updated_visit_data.name = media_publisher_info->publisherName_;
+      updated_visit_data.url = media_publisher_info->publisherURL_;
       ledger_->SetMediaPublisherInfo(realDuration, std::move(media_publisher_info), updated_visit_data,
         std::bind(&onVisitSavedDummy, _1, _2));
     }
   } else {
     ledger::VisitData updated_visit_data(visit_data);
     updated_visit_data.tld = media_publisher_info->publisherName_ + " on ";
+    updated_visit_data.name = media_publisher_info->publisherName_;
+    updated_visit_data.url = media_publisher_info->publisherURL_;
     if (YOUTUBE_MEDIA_TYPE == providerName) {
       updated_visit_data.tld += YOUTUBE_PROVIDER_NAME;
-      updated_visit_data.favIconURL = media_publisher_info->favIconURL_;
+      updated_visit_data.provider = YOUTUBE_PROVIDER_NAME;
+      updated_visit_data.favicon_url = media_publisher_info->favIconURL_;
       ledger_->SaveMediaVisit(updated_visit_data, duration);
     } else if (TWITCH_MEDIA_TYPE == providerName) {
       updated_visit_data.tld += TWITCH_PROVIDER_NAME;
-      updated_visit_data.favIconURL = media_publisher_info->favIconURL_;
+      updated_visit_data.provider = TWITCH_PROVIDER_NAME;
+      updated_visit_data.favicon_url = media_publisher_info->favIconURL_;
       uint64_t realDuration = getTwitchDuration(media_publisher_info->twitchEventInfo_, twitchEventInfo);
       //LOG(ERROR) << "!!!realDuration == " << realDuration;
       ledger::TwitchEventInfo oldInfo = media_publisher_info->twitchEventInfo_;
@@ -321,7 +328,11 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
 
     ledger::VisitData updated_visit_data(visit_data);
     updated_visit_data.tld = publisherName + " on " + YOUTUBE_PROVIDER_NAME;
-    updated_visit_data.favIconURL = media_publisher_info->favIconURL_;
+    updated_visit_data.favicon_url = media_publisher_info->favIconURL_;
+    updated_visit_data.provider = YOUTUBE_PROVIDER_NAME;
+    updated_visit_data.name = media_publisher_info->publisherName_;
+    updated_visit_data.url = media_publisher_info->publisherURL_;
+
     ledger_->SetMediaPublisherInfo(duration, std::move(media_publisher_info), updated_visit_data,
       std::bind(&onVisitSavedDummy, _1, _2));
   }

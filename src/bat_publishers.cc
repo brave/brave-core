@@ -183,7 +183,10 @@ void BatPublishers::saveVisitInternal(
   }
 
 
-  publisher_info->favIconURL = visit_data.favIconURL;
+  publisher_info->favicon_url = visit_data.favicon_url;
+  publisher_info->name = visit_data.name;
+  publisher_info->provider = visit_data.provider;
+  publisher_info->url = visit_data.url;
   publisher_info->duration += duration;
   publisher_info->visits += 1;
   publisher_info->category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;

@@ -1853,7 +1853,7 @@ namespace braveledger_bat_helper {
           tempST >> st;
           tempTime = et - st;
         }
-        duration = (uint64_t)(tempTime * 1000.0);
+        duration = (uint64_t)tempTime;
       }
     } else if (TWITCH_MEDIA_TYPE == type) {
       // We set the correct duration for twitch in BatGetMedia class
