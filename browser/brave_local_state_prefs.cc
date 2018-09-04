@@ -13,9 +13,11 @@ namespace brave {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   RegisterPrefsForBraveStatsUpdater(registry);
+#if defined(OS_MACOSX)
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
       base::Value(false));
+#endif
 }
 
 }  // namespace brave
