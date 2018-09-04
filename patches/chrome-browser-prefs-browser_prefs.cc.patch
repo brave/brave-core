@@ -1,20 +1,12 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index b8232737dbf4dabada561044e522e44c906c53c8..cb55e2b38a40ae9141d30c5dfc27bc27a7bcc497 100644
+index b8232737dbf4dabada561044e522e44c906c53c8..8bef715a4e713238d814f45e9563f2dc81638e69 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -8,6 +8,7 @@
- 
- #include "base/metrics/histogram_macros.h"
- #include "base/trace_event/trace_event.h"
-+#include "brave/browser/brave_local_state_prefs.h"
- #include "build/build_config.h"
- #include "chrome/browser/about_flags.h"
- #include "chrome/browser/accessibility/accessibility_ui.h"
-@@ -378,6 +379,7 @@ void RegisterProfilePrefsForMigration(
- 
- void RegisterLocalState(PrefRegistrySimple* registry) {
-   // Please keep this list alphabetized.
+@@ -513,6 +513,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+ #if defined(TOOLKIT_VIEWS)
+   RegisterBrowserViewLocalPrefs(registry);
+ #endif
 +  brave::RegisterLocalStatePrefs(registry);
-   browser_shutdown::RegisterPrefs(registry);
-   BrowserProcessImpl::RegisterPrefs(registry);
-   ChromeContentBrowserClient::RegisterLocalStatePrefs(registry);
+ }
+ 
+ // Register prefs applicable to all profiles.
