@@ -133,7 +133,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
 std::string BatPublishers::GetBalanceReportName(
     const ledger::PUBLISHER_MONTH month,
     int year) {
-  return std::to_string(year) + "_" + std::to_string(month) + "_balance";
+  return std::to_string(year) + "_" + std::to_string(month);
 }
 
 void onVisitSavedDummy(ledger::Result result,
@@ -426,11 +426,22 @@ void BatPublishers::setBalanceReport(ledger::PUBLISHER_MONTH month,
 bool BatPublishers::getBalanceReport(ledger::PUBLISHER_MONTH month,
                                      int year,
                                      ledger::BalanceReportInfo* report_info) {
+  std::string name = GetBalanceReportName(month, year);
   std::map<std::string, braveledger_bat_helper::REPORT_BALANCE_ST>::const_iterator iter =
-    state_->monthly_balances_.find(GetBalanceReportName(month, year));
-  DCHECK(iter != state_->monthly_balances_.end() && report_info);
-  if (iter == state_->monthly_balances_.end() || !report_info) {
+    state_->monthly_balances_.find(name);
+  if (!report_info) {
     return false;
+  }
+
+  if (iter == state_->monthly_balances_.end()) {
+    ledger::BalanceReportInfo new_report_info;
+    setBalanceReport(month, year, new_report_info);
+    bool successGet = getBalanceReport(month, year, report_info);
+    if (successGet) {
+      iter = state_->monthly_balances_.find(name);
+    } else {
+      return false;
+    }
   }
 
   report_info->opening_balance_ = iter->second.opening_balance_;
@@ -442,6 +453,25 @@ bool BatPublishers::getBalanceReport(ledger::PUBLISHER_MONTH month,
   report_info->one_time_donation_ = iter->second.one_time_donation_;
 
   return true;
+}
+
+std::map<std::string, ledger::BalanceReportInfo> BatPublishers::getAllBalanceReports() {
+  std::map<std::string, ledger::BalanceReportInfo> newReports;
+  for (auto const& report : state_->monthly_balances_) {
+    ledger::BalanceReportInfo newReport;
+    const braveledger_bat_helper::REPORT_BALANCE_ST oldReport = report.second;
+    newReport.opening_balance_ = oldReport.opening_balance_;
+    newReport.closing_balance_ = oldReport.closing_balance_;
+    newReport.grants_ = oldReport.grants_;
+    newReport.earning_from_ads_ = oldReport.earning_from_ads_;
+    newReport.auto_contribute_ = oldReport.auto_contribute_;
+    newReport.recurring_donation_ = oldReport.recurring_donation_;
+    newReport.one_time_donation_ = oldReport.one_time_donation_;
+
+    newReports[report.first] = newReport;
+  }
+
+  return newReports;
 }
 
 void BatPublishers::saveState() {

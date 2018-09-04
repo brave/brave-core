@@ -87,6 +87,7 @@ class LedgerImpl : public ledger::Ledger,
   bool GetBalanceReport(ledger::PUBLISHER_MONTH month,
                         int year,
                         ledger::BalanceReportInfo* report_info) const override;
+  std::map<std::string, ledger::BalanceReportInfo> GetAllBalanceReports() const override;
 
   void SaveLedgerState(const std::string& data);
   void SavePublisherState(const std::string& data,

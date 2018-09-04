@@ -512,6 +512,10 @@ bool LedgerImpl::GetBalanceReport(ledger::PUBLISHER_MONTH month,
   return bat_publishers_->getBalanceReport(month, year, report_info);
 }
 
+std::map<std::string, ledger::BalanceReportInfo> LedgerImpl::GetAllBalanceReports() const {
+  return bat_publishers_->getAllBalanceReports();
+}
+
 void LedgerImpl::SetBalanceReport(ledger::PUBLISHER_MONTH month,
                                 int year,
                                 const ledger::BalanceReportInfo& report_info) {
