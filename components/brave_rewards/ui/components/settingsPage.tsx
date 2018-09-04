@@ -54,6 +54,7 @@ class SettingsPage extends React.Component<Props, {}> {
             <MainToggle
               onToggle={this.onToggle}
               enabled={enabledMain}
+              testId={'enableMain'}
             />
             <AdsBox />
             <ContributeBox />
