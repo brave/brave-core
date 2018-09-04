@@ -37,6 +37,7 @@ declare namespace Rewards {
     recoveryKey: string
     grant?: Grant
     reconcileStamp: number
+    reports: Record<string, Report>
     ui: {
       walletRecoverySuccess: boolean | null
       emptyWallet: boolean
@@ -88,5 +89,16 @@ declare namespace Rewards {
     url: string
     name: string
     provider: string
+  }
+
+  export interface Report {
+    ads: number
+    closing: number
+    contribute: number
+    donations: number
+    grants: number
+    oneTime: number
+    opening: number
+    total?: number
   }
 }

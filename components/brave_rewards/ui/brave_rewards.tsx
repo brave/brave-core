@@ -93,6 +93,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onContributeList(list)
   }
 
+  function balanceReports (reports: Record<string, Rewards.Report>) {
+    getActions().onBalanceReports(reports)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -105,7 +109,8 @@ window.cr.define('brave_rewards', function () {
     grantFinish,
     reconcileStamp,
     addresses,
-    contributeList
+    contributeList,
+    balanceReports
   }
 })
 

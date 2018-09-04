@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/balance_report.h"
 
 #include <functional>
 #include <limits.h>
@@ -431,6 +432,11 @@ void RewardsServiceImpl::OnRecoverWallet(ledger::Result result,
 
 void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
                                        const ledger::Grant& grant) {
+  ledger::BalanceReportInfo report_info;
+  auto now = base::Time::Now();
+  ledger_->GetBalanceReport(GetPublisherMonth(now), GetPublisherYear(now), &report_info);
+  report_info.grants_ += 10.0; // TODO NZ convert probi to
+  ledger_->SetBalanceReport(GetPublisherMonth(now), GetPublisherYear(now), report_info);
   TriggerOnGrantFinish(result, grant);
 }
 
@@ -904,6 +910,27 @@ void RewardsServiceImpl::OnPublisherListLoaded(
       data.empty() ? ledger::Result::NO_PUBLISHER_LIST
                    : ledger::Result::OK,
       data);
+}
+
+std::map<std::string, brave_rewards::BalanceReport> RewardsServiceImpl::GetAllBalanceReports() {
+  std::map<std::string, ledger::BalanceReportInfo> reports = ledger_->GetAllBalanceReports();
+
+  std::map<std::string, brave_rewards::BalanceReport> newReports;
+  for (auto const& report : reports) {
+    brave_rewards::BalanceReport newReport;
+    const ledger::BalanceReportInfo oldReport = report.second;
+    newReport.opening_balance = oldReport.opening_balance_;
+    newReport.closing_balance = oldReport.closing_balance_;
+    newReport.grants = oldReport.grants_;
+    newReport.earning_from_ads = oldReport.earning_from_ads_;
+    newReport.auto_contribute = oldReport.auto_contribute_;
+    newReport.recurring_donation = oldReport.recurring_donation_;
+    newReport.one_time_donation = oldReport.one_time_donation_;
+
+    newReports[report.first] = newReport;
+  }
+
+  return newReports;
 }
 
 }  // namespace brave_rewards

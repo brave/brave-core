@@ -6,6 +6,8 @@ source_set("browser") {
   ]
 
   sources = [
+    "balance_report.cc",
+    "balance_report.h",
     "content_site.cc",
     "content_site.h",
     "rewards_service.cc",

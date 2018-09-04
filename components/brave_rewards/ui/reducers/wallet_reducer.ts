@@ -150,6 +150,13 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
           ...state,
           addresses
         }
+        break
+      }
+    case types.ON_BALANCE_REPORTS:
+      {
+        state = { ...state }
+        state.reports = action.payload.reports
+        break
       }
   }
 

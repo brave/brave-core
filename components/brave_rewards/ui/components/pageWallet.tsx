@@ -159,11 +159,77 @@ class PageWallet extends React.Component<Props, State> {
     return null
   }
 
-  render () {
-    const { connectedWallet, recoveryKey, enabledMain, contributionMonthly, addresses } = this.props.rewardsData
-    const { balance, rates } = this.props.rewardsData.walletInfo
-    const { walletRecoverySuccess, emptyWallet, modalBackup } = this.props.rewardsData.ui
+  getWalletSummary = () => {
+
+    const { contributionMonthly, walletInfo, reports } = this.props.rewardsData
+    const { rates } = walletInfo
     const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
+    let total = contributionMonthly * -1
+
+    let props = {
+      contribute: {
+        tokens: contributionMonthly,
+        converted: convertedMonthly
+      },
+      total: {
+        tokens: contributionMonthly,
+        converted: convertedMonthly
+      }
+    }
+
+    const currentTime = new Date()
+    const reportKey = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
+    const report: Rewards.Report = reports[reportKey]
+    if (report) {
+      if (report.ads) {
+        props['ads'] = {
+          tokens: report.ads,
+          converted: utils.convertBalance(report.ads, rates)
+        }
+
+        total += report.ads
+      }
+
+      if (report.donations) {
+        props['donation'] = {
+          tokens: report.donations,
+          converted: utils.convertBalance(report.donations, rates)
+        }
+
+        total -= report.donations
+      }
+
+      if (report.grants) {
+        props['grant'] = {
+          tokens: report.grants,
+          converted: utils.convertBalance(report.grants, rates)
+        }
+
+        total += report.grants
+      }
+
+      if (report.oneTime) {
+        props['tips'] = {
+          tokens: report.oneTime,
+          converted: utils.convertBalance(report.oneTime, rates)
+        }
+
+        total -= report.oneTime
+      }
+
+      props['total'] = {
+        tokens: total,
+        converted: utils.convertBalance(total, rates)
+      }
+    }
+
+    return props
+  }
+
+  render () {
+    const { connectedWallet, recoveryKey, enabledMain, addresses, walletInfo, ui } = this.props.rewardsData
+    const { balance } = walletInfo
+    const { walletRecoverySuccess, emptyWallet, modalBackup } = ui
     const addressArray = utils.getAddresses(addresses)
 
     return (
@@ -195,16 +261,7 @@ class PageWallet extends React.Component<Props, State> {
             enabledMain
             ? emptyWallet
               ? <WalletEmpty />
-              : <WalletSummary
-                total={{
-                  tokens: contributionMonthly,
-                  converted: convertedMonthly
-                }}
-                contribute={{
-                  tokens: contributionMonthly,
-                  converted: convertedMonthly
-                }}
-              />
+              : <WalletSummary {...this.getWalletSummary()}/>
             : <WalletOff/>
           }
         </WalletWrapper>

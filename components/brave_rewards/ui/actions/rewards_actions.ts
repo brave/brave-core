@@ -87,3 +87,7 @@ export const onQRGenerated = (type: Rewards.AddressesType, image: string) => act
 export const onContributeList = (list: Rewards.Publisher[]) => action(types.ON_CONTRIBUTE_LIST, {
   list
 })
+
+export const onBalanceReports = (reports: Record<string, Rewards.Report>) => action(types.ON_BALANCE_REPORTS, {
+  reports
+})

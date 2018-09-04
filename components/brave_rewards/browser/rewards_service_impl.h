@@ -20,6 +20,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "extensions/common/one_shot_event.h"
 #include "net/url_request/url_fetcher_delegate.h"
+#include "brave/components/brave_rewards/browser/balance_report.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -93,6 +94,7 @@ class RewardsServiceImpl : public RewardsService,
   void SaveMediaPublisherInfo(
       std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
       ledger::MediaPublisherInfoCallback callback) override;
+  std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() override;
 
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;

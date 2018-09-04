@@ -8,6 +8,7 @@
 
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/common/webui_url_constants.h"
@@ -38,6 +39,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RegisterMessages() override;
 
  private:
+  void GetAllBalanceReports();
   void HandleCreateWalletRequested(const base::ListValue* args);
   void GetWalletProperties(const base::ListValue* args);
   void GetGrant(const base::ListValue* args);
@@ -49,6 +51,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetAddresses(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
   void OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList>, uint32_t record);
+  void GetBalanceReports(const base::ListValue* args);
 
   // PaymentServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* payment_service,
@@ -111,6 +114,9 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("saveSetting",
                                     base::BindRepeating(&RewardsDOMHandler::SaveSetting,
                                                         base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("getBalanceReports",
+                                    base::BindRepeating(&RewardsDOMHandler::GetBalanceReports,
+                                                        base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
@@ -119,6 +125,33 @@ void RewardsDOMHandler::Init() {
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service_)
     rewards_service_->AddObserver(this);
+}
+
+void RewardsDOMHandler::GetAllBalanceReports() {
+  if (rewards_service_ && web_ui()->CanCallJavascript()) {
+    std::map<std::string, brave_rewards::BalanceReport> reports = rewards_service_->GetAllBalanceReports();
+
+    if (reports.empty()) {
+      return;
+    }
+
+    base::DictionaryValue newReports;
+
+    for (auto const& report : reports) {
+      const brave_rewards::BalanceReport oldReport = report.second;
+      auto newReport = std::make_unique<base::DictionaryValue>();
+      newReport->SetDouble("opening", oldReport.opening_balance);
+      newReport->SetDouble("closing", oldReport.closing_balance);
+      newReport->SetDouble("grants", oldReport.grants);
+      newReport->SetDouble("ads", oldReport.earning_from_ads);
+      newReport->SetDouble("contribute", oldReport.auto_contribute);
+      newReport->SetDouble("donations", oldReport.recurring_donation);
+      newReport->SetDouble("oneTime", oldReport.one_time_donation);
+      newReports.SetDictionary(report.first, std::move(newReport));
+    }
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.balanceReports", newReports);
+  }
 }
 
 void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args) {
@@ -294,6 +327,7 @@ void RewardsDOMHandler::OnGrantFinish(
     finish->SetString("probi", grant.probi);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", *finish);
+    GetAllBalanceReports();
   }
 }
 
@@ -373,6 +407,11 @@ void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::Cont
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributeList", *publishers);
   }
+}
+
+
+void RewardsDOMHandler::GetBalanceReports(const base::ListValue* args) {
+  GetAllBalanceReports();
 }
 
 }  // namespace

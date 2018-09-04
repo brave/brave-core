@@ -28,5 +28,6 @@ export const enum types {
   GET_ADDRESSES = '@@rewards/GET_ADDRESSES',
   ON_ADDRESSES = '@@rewards/ON_ADDRESSES',
   ON_QR_GENERATED = '@@rewards/ON_QR_GENERATED',
-  ON_CONTRIBUTE_LIST = '@@rewards/ON_CONTRIBUTE_LIST'
+  ON_CONTRIBUTE_LIST = '@@rewards/ON_CONTRIBUTE_LIST',
+  ON_BALANCE_REPORTS = '@@rewards/ON_BALANCE_REPORTS'
 }
