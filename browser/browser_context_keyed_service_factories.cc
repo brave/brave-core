@@ -4,12 +4,12 @@
 
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
-#include "brave/browser/payments/payments_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
-  PaymentsServiceFactory::GetInstance();
+  brave_rewards::RewardsServiceFactory::GetInstance();
 }
 
 }  // namespace brave

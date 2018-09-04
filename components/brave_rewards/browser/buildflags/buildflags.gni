@@ -1,0 +1,6 @@
+import("//build/config/features.gni")
+
+declare_args() {
+  # anonize doesn't currently build on windows
+  brave_rewards_enabled = is_mac || is_linux
+}

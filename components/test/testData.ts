@@ -32,20 +32,32 @@ export const getMockChrome = () => {
   }
 }
 
-export const welcomeInitialState = {
+export const welcomeInitialState: Welcome.ApplicationState = {
   welcomeData: {
     pageIndex: 0
   }
 }
 
-export const rewardsInitialState = {
+export const rewardsInitialState: Rewards.ApplicationState = {
   rewardsData: {
     walletCreated: false,
-    walletCreateFailed: false
+    walletCreateFailed: false,
+    createdTimestamp: null,
+    enabledMain: false,
+    enabledAds: false,
+    enabledContribute: false,
+    firstLoad: null,
+    contributionMinTime: 8,
+    contributionMinVisits: 1,
+    contributionMonthly: 10,
+    contributionNonVerified: true,
+    contributionVideos: true,
+    donationAbilityYT: true,
+    donationAbilityTwitter: true
   }
 }
 
-export const adblockInitialState = {
+export const adblockInitialState: AdBlock.ApplicationState = {
   adblockData: {
     stats: {
       numBlocked: 0,

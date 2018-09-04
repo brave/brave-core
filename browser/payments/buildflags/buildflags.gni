@@ -1,6 +1,0 @@
-import("//build/config/features.gni")
-
-declare_args() {
-  # anonize doesn't currently build on windows
-  brave_payments_enabled = is_mac || is_linux
-}

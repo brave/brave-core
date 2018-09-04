@@ -72,7 +72,7 @@
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
 
       <!-- WebUI Brave Rewards resources -->
-      <include name="IDR_BRAVE_REWARDS_HTML" file="../brave_rewards_ui/brave_rewards.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_HTML" file="../brave_rewards/ui/brave_rewards.html" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_JS" file="${root_gen_dir}/brave/brave_rewards.bundle.js" type="BINDATA" use_base_dir="false" />
 
       <!-- WebUI adblock resources -->
@@ -119,6 +119,19 @@
       <include name="IDR_BRAVE_NEW_TAB_BACKGROUND19" file="../img/newtab/Phoyoserge_VeniseSunset.jpg" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_BACKGROUND20" file="../img/newtab/Phoyoserge_Yosemite.jpg" type="BINDATA" />
 
+      <!-- WebUI rewards resources -->
+      <include name="IDR_BRAVE_REWARDS_IMG_ADS_DISABLED" file="../img/rewards/ads_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_CONTRIBUTE_DISABLED" file="../img/rewards/contribute_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_DONATE_DISABLED" file="../img/rewards/donate_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_WALLET_BG" file="../img/rewards/wallet_bg.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="../img/rewards/captcha_bat.png" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_WELCOME_BG" file="../img/rewards/welcome_bg.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_BART_TEMP" file="../img/rewards/temp/bartBaker.jpeg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_BAT" file="../img/rewards/BAT.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_BTC" file="../img/rewards/BTC.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_ETH" file="../img/rewards/ETH.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_LTC" file="../img/rewards/LTC.svg" type="BINDATA" />
+
     </includes>
     <messages fallback_to_english="true">
       <!-- WebUI newtab resources -->
@@ -143,6 +156,7 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DUCKDUCKGO_SEARCH_INFO" desc="Displays info about DuckDuckGo searches in private new tab.">With private search, Brave will use DuckDuckGo to answer your searches while you are in this private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_TOGGLE_LABEL" desc="Displays the toggle label for switching private search to DuckDuckGo.">
 PrivateSearch with DuckDuckGo</message>
+
       <!-- WebUI adblock resources -->
       <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total Ads Blocked:</message>
       <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED_TITLE" desc="Title for if geographic regional ad-blocking is enabled">Regional Ad Block:</message>
@@ -168,6 +182,210 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON" desc="Button to skip the welcome tour and go to the new tab page">Skip welcome tour</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON" desc="Button to move to the next slide of the welcome tour">Next</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>
+
+      <!-- WebUI rewards resources -->
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Ads</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn tokens by seeing ads on Brave. Ads are matched from machine learning and the data temporarily present in your browser without tracking your information or sending it outside.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Brave Contribute</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">A simple way to support content creators. Set monthly allowance and browse normally. Your favorite sites (content sites only) receive your contributions automatically. You can exclude sites from funding here.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY" desc="">Monthly budget</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES" desc="">Supported sites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Direct Donations</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Donate to sites as you browse or give tips to posts when you ‘Like’ them. You can also make the donation recurring monthly so you can support the site continuously. All accessed from the address bar.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_LIST" desc="">List of donations</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT" desc="">Coming soon.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1" desc="">Pay directly for the content you love.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT2" desc="">Your monthly allowance gets divided based on your attention metric.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Please visit some sites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total donations this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Please do some donations</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="">Add Funds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS" desc="">Manage Funds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_TOKENS" desc="">tokens</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME" desc="">Minimum page time before logging a visit</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS" desc="">Minimum visits for publisher relevancy</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOWED" desc="">What should be allowed?</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_NON_VERIFIED" desc="">Allow contribution to non-verified sites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_VIDEOS" desc="">Allow contribution to videos</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1" desc="">1 visit</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5" desc="">5 visits</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_10" desc="">10 visits</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_5" desc="">5 seconds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_8" desc="">8 seconds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60" desc="">1 minute</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Enable ability to give tips on ‘Like’ posts</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_YT" desc="">YouTube</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW" desc="">Twitter</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT1" desc="">Donate on the spot as you find gems.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">Enable Tips on Twitter, YouTube, and more, to give tips to posts you ‘Like’.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS" desc="">{{balance}} BAT was recovered. Your wallet key has been verified and loaded successfully.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RESTORED" desc="">Wallet restored!</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL" desc="">Please re-enter keys or try different keys.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ALMOST_THERE" desc="">Almost there…</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_PROVE_HUMAN" desc="">Prove that you are human!</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE" desc="">Hmmm…not quite.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_SERVER_NOT_RESPONDING" desc="">The Brave Payments server is not responding. We will fix this as soon as possible.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_UH_OH" desc="">Uh oh!</message>
+
+      <!-- WebUI brave ui resources -->
+      <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
+      <message name="IDS_BRAVE_UI_ACCEPT" desc="">Accept</message>
+      <message name="IDS_BRAVE_UI_ACTIVITY_COPY" desc="">©2016 –2018 Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</message>
+      <message name="IDS_BRAVE_UI_ACTIVITY_NOTE" desc="">To protect your privacy, this Brave Rewards statement is not saved, recorded or logged anywhere other than on your device (this computer). It cannot be retrieved from Brave in the event of data loss on your device.</message>
+      <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="">add funds</message>
+      <message name="IDS_BRAVE_UI_ADD_FUNDS_FAQ" desc="">the FAQ</message>
+      <message name="IDS_BRAVE_UI_ADD_FUNDS_NOTE" desc="">Reminder: The Brave Wallet is unidirectional and BAT flows to publisher sites. For more information about Brave Payments, please visit</message>
+      <message name="IDS_BRAVE_UI_ADD_FUNDS_QR" desc="">Show QR Code</message>
+      <message name="IDS_BRAVE_UI_ADD_FUNDS_TEXT" desc="">Brave makes it easy to transfer funds from your existing crypto-currency wallet to your Brave BAT Wallet.</message>
+      <message name="IDS_BRAVE_UI_ADD_FUNDS_TITLE" desc="">Add funds to your Brave wallet</message>
+      <message name="IDS_BRAVE_UI_ALLOW_TIP" desc="">Allow tips on</message>
+      <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC" desc="">No action required. Just collect tokens. Your data is safe with our Shields.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Brave Ads</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Set budget and browse normally. Your favorite sites get paid automatically.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Brave Contribute</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="">Earn tokens for viewing privacy-respecting ads, and pay it forward by supporting content creators you love!</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_OPT_IN_TEXT" desc="">Yes, I'm In!</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_SUB_TITLE" desc="">Get Rewarded for Browsing!</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_TEASER" desc="">How it works...</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_TITLE" desc="">Brave Rewards</message>
+      <message name="IDS_BRAVE_UI_BRAVE_VERIFIED" desc="">Brave Verified Publishers</message>
+      <message name="IDS_BRAVE_UI_CANCEL" desc="">Cancel</message>
+      <message name="IDS_BRAVE_UI_CLAIM" desc="">Claim</message>
+      <message name="IDS_BRAVE_UI_CLOSE_BALANCE" desc="">Closing Balance</message>
+      <message name="IDS_BRAVE_UI_CONTRIBUTE" desc="">Contribute</message>
+      <message name="IDS_BRAVE_UI_CONTRIBUTE_ALLOCATION" desc="">Brave Contribute Allocation</message>
+      <message name="IDS_BRAVE_UI_COPY" desc="">Copy</message>
+      <message name="IDS_BRAVE_UI_CURRENT_DONATION" desc="">You’re currently donating {{currentDonation}} BAT to this site every month.</message>
+      <message name="IDS_BRAVE_UI_DATE" desc="">Date</message>
+      <message name="IDS_BRAVE_UI_DEPOSIT" desc="">Deposit</message>
+      <message name="IDS_BRAVE_UI_DEPOSITS" desc="">Deposits</message>
+      <message name="IDS_BRAVE_UI_DESCRIPTION" desc="">Description</message>
+      <message name="IDS_BRAVE_UI_DND_CAPTCHA" desc="">Drag and drop the token logo onto the target</message>
+      <message name="IDS_BRAVE_UI_DONATION" desc="">Donation</message>
+      <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="">Donation amount</message>
+      <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">Donate to this site Monthl</message>
+      <message name="IDS_BRAVE_UI_DONATE_NOW" desc="">Donate Now…</message>
+      <message name="IDS_BRAVE_UI_DONE" desc="">Done</message>
+      <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
+      <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Brave Ads</message>
+      <message name="IDS_BRAVE_UI_ENABLE_TIPS" desc="">Enable Tips</message>
+      <message name="IDS_BRAVE_UI_EXPIRES_ON" desc="">expires on</message>
+      <message name="IDS_BRAVE_UI_FOR" desc="">for</message>
+      <message name="IDS_BRAVE_UI_GRANT_DISCLAIMER" desc="">Unused tokens by the expiration date will be automatically returned to the Brave User Growth Pool.</message>
+      <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
+      <message name="IDS_BRAVE_UI_GRANTS" desc="">Grants</message>
+      <message name="IDS_BRAVE_UI_HOW_DOES_IT_WORK" desc="">How does it work?</message>
+      <message name="IDS_BRAVE_UI_HOW_DOES_IT_WORK_DESC" desc="">Get paid for the ads. And pay directly the favorite content creators at your will. That way, they can grow and continue delivering the content that delights you.</message>
+      <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
+      <message name="IDS_BRAVE_UI_INCLUDE_IN_AUTO" desc="">Include in Brave Auto-Contribute</message>
+      <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="">Make this monthly</message>
+      <message name="IDS_BRAVE_UI_MONTH_APR" desc="">Apr</message>
+      <message name="IDS_BRAVE_UI_MONTH_AUG" desc="">August</message>
+      <message name="IDS_BRAVE_UI_MONTH_DEC" desc="">December</message>
+      <message name="IDS_BRAVE_UI_MONTH_FEB" desc="">February</message>
+      <message name="IDS_BRAVE_UI_MONTH_JAN" desc="">January</message>
+      <message name="IDS_BRAVE_UI_MONTH_JUL" desc="">July</message>
+      <message name="IDS_BRAVE_UI_MONTH_JUN" desc="">June</message>
+      <message name="IDS_BRAVE_UI_MONTH_MAR" desc="">March</message>
+      <message name="IDS_BRAVE_UI_MONTH_MAY" desc="">May</message>
+      <message name="IDS_BRAVE_UI_MONTH_NOV" desc="">November</message>
+      <message name="IDS_BRAVE_UI_MONTH_OCT" desc="">October</message>
+      <message name="IDS_BRAVE_UI_MONTH_SEP" desc="">September</message>
+      <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">New token grant is available.</message>
+      <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">New Token Grant</message>
+      <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
+      <message name="IDS_BRAVE_UI_NO_THANK_YOU" desc="">No, thank you</message>
+      <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="">Not enough tokens. Please</message>
+      <message name="IDS_BRAVE_UI_OFF" desc="">off</message>
+      <message name="IDS_BRAVE_UI_OK" desc="">ok</message>
+      <message name="IDS_BRAVE_UI_ON" desc="">on</message>
+      <message name="IDS_BRAVE_UI_ONE_TIME" desc="">One time</message>
+      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="">One-time Donations/Tips</message>
+      <message name="IDS_BRAVE_UI_OPEN_BALANCE" desc="">Opening Balance</message>
+      <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th day in each month.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_NOT_MADE" desc="">Payment not made.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Brave Contribute and the recurring donations, these payments are skipped for the period.</message>
+      <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
+      <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
+      <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART" desc="">Ready to take active part in the change?</message>
+      <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART_BOLD" desc="">5 free tokens</message>
+      <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART_DESC" desc=""> in your wallet — our gift to you as a welcome! Access to many premium paid content will be available in the near future.</message>
+      <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART_OPT_IN_TEXT" desc="">Yes I'm Ready</message>
+      <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART_START" desc="">You can start with the</message>
+      <message name="IDS_BRAVE_UI_RECOVERY_KEYS" desc="">Recovery Key</message>
+      <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
+      <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="">Recurring Donation</message>
+      <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Recurring Donations</message>
+      <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
+      <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1" desc="">Backup your Wallet</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Keep this anonymized recovery key for your Brave wallet in the safe place in case you lose access to this browser. Your funds are safe as long as you keep this recovery key either on a paper or in a device with preferably no internet connection.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">Thanks for stopping by. We joined Brave’s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="">Your donation is much appreciated and it encourages us to continue to improve our content.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Brave Contribute</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE" desc="">Your Attention Scor</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_TEXT1" desc="">You’re currently supporting</message>
+      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT1" desc="">Do you know that you’ve been paying for the web content with your data for the digital ads? You didn’t have a voice in it and worse, you’re exposed to privacy and security risks.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT2" desc="">Brave Rewards allows you to take control back.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT3" desc="">How does it work?</message>
+      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT4" desc="">Your attention is valuable. Get paid for the ads. And pay directly the favorite content creators at your will. That way, they can grow and continue delivering the content that delights you.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT1" desc="">Sadly, no tokens yet.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT2" desc="">3 ways to fill your wallet:</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT3" desc="">You can add funds.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT4" desc="">You can earn tokens from Brave Ads.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT5" desc="">Occasionally, you will also received token grants from Brave. So keep an eye out for the alert!</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT1" desc="">Get Rewarded for Browsing!</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT2" desc="">Earn tokens for your attention to ads and pay it forward to support content creators you value!</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT1" desc="">Add, withdraw and manage funds at</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT2" desc="">Brave wallet is managed by</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT1" desc="">Restore your Wallet</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Enter the recovery key to restore your Brave wallet. Make sure that the current wallet doesn’t have any balance or is backed up safely. Restoring a wallet replaces the current wallet and you will loose any balance if you don’t back up its recovery key.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3" desc="">Enter your recovery key or</message>
+      <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
+      <message name="IDS_BRAVE_UI_REWARDS_WHY" desc="">Why Brave Rewards…</message>
+      <message name="IDS_BRAVE_UI_SAVE_AS_FILE" desc="">Save as File</message>
+      <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all {{numItems}} items</message>
+      <message name="IDS_BRAVE_UI_SEE_ALL_SITES" desc="">See all {{numSites}} sites</message>
+      <message name="IDS_BRAVE_UI_SEND_DONATION" desc="">Send my donation</message>
+      <message name="IDS_BRAVE_UI_SEND_TIP" desc="">Send my Tip</message>
+      <message name="IDS_BRAVE_UI_SETTINGS" desc="">Settings</message>
+      <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
+      <message name="IDS_BRAVE_UI_SITES" desc="">sites</message>
+      <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
+      <message name="IDS_BRAVE_UI_TITLE_BAT" desc="">Basic Attention token (BAT)</message>
+      <message name="IDS_BRAVE_UI_TITLE_BTC" desc="">BitCoin (BTC)</message>
+      <message name="IDS_BRAVE_UI_TITLE_ETH" desc="">Etherium (ETH)</message>
+      <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">Lite Coin (LTC)</message>
+      <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grant</message>
+      <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
+      <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
+      <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both Brave Ads and Brave Contribute. You can always opt out each any time.</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Turn on Rewards</message>
+      <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
+      <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
+      <message name="IDS_BRAVE_UI_VIEW_MONTHLY" desc="">View Monthly Statement for Details</message>
+      <message name="IDS_BRAVE_UI_WALLET_ACTIVITY" desc="">Wallet Activity</message>
+      <message name="IDS_BRAVE_UI_WALLET_ADDRESS" desc="">Wallet Address</message>
+      <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="">wallet balance</message>
+      <message name="IDS_BRAVE_UI_WELCOME" desc="">Welcome!</message>
+      <message name="IDS_BRAVE_UI_WELCOME_BUTTON_TEXT_ONE" desc="">Start Earning Now!</message>
+      <message name="IDS_BRAVE_UI_WELCOME_BUTTON_TEXT_TWO" desc="">Join Rewards</message>
+      <message name="IDS_BRAVE_UI_WELCOME_DESC_ONE" desc="">You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.</message>
+      <message name="IDS_BRAVE_UI_WELCOME_DESC_TWO" desc="">Earn tokens for watching Ads and pay it forward to your favorite content creators.</message>
+      <message name="IDS_BRAVE_UI_WELCOME_FOOTER_TEXT_ONE" desc="">Check out what’s improved</message>
+      <message name="IDS_BRAVE_UI_WELCOME_FOOTER_TEXT_TWO" desc="">Learn More</message>
+      <message name="IDS_BRAVE_UI_WELCOME_HEADER_ONE" desc="">Brave Payments is now Brave Rewards with many upgrades.</message>
+      <message name="IDS_BRAVE_UI_WELCOME_HEADER_TWO" desc="">You are about to start a very Brave way to browse the web.</message>
+      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS" desc="">Why Brave Rewards...</message>
+      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_BOLD" desc="">Brave Rewards allows you to take control back.</message>
+      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC" desc="">Do you know that you've been paying for the web content with your data for the digital ads? You didn't have a voice in it and worse, you're exposed to privacy and security risks</message>
+      <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="">Your wallet</message>
     </messages>
   </release>
 </grit>

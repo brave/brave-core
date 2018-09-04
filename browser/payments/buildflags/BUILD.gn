@@ -1,9 +1,0 @@
-import("//build/buildflag_header.gni")
-import("//brave/browser/payments/buildflags/buildflags.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [
-    "BRAVE_PAYMENTS_ENABLED=$brave_payments_enabled",
-  ]
-}

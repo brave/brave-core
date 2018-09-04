@@ -7,7 +7,7 @@ module.exports = {
   entry: {
     brave_adblock: path.join(__dirname, '../brave_adblock_ui/brave_adblock'),
     brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
-    brave_rewards: path.join(__dirname, '../brave_rewards_ui/brave_rewards'),
+    brave_rewards: path.join(__dirname, '../brave_rewards/ui/brave_rewards'),
     brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome'),
     brave_webtorrent: path.join(__dirname, '../brave_webtorrent/extension/brave_webtorrent'),
     brave_webtorrent_background: path.join(__dirname, '../brave_webtorrent/extension/background'),
@@ -57,7 +57,7 @@ module.exports = {
         loader: 'url-loader?limit=13000&minetype=application/font-woff'
       },
       {
-        test: /\.(ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(ttf|eot|svg|png|jpg|jpeg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'
       }]
   },

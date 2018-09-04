@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 declare namespace chrome {
-  function getVariableValue (stat: string): string
+  function getVariableValue (variable: string): string
+  function setVariableValue (variable: string, value: any): void
   function send (stat: string, args?: any[]): void
 }

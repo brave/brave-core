@@ -69,6 +69,10 @@ void BraveNetworkDelegateBase::RunNextCallback(
     return;
   }
 
+  if (request->status().status() == net::URLRequestStatus::CANCELED) {
+    return;
+  }
+
   // Continue processing callbacks until we hit one that returns PENDING
   int rv = net::OK;
 
