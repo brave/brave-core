@@ -7,6 +7,10 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 
+#if !BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "content/public/common/referrer.h"
+#endif
+
 namespace brave_rewards {
 
 #if !BUILDFLAG(BRAVE_REWARDS_ENABLED)
