@@ -63,15 +63,26 @@ grit("resources") {
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
-json_schema_api("generated_api_bundles") {
+function_registration("generated_api_registration") {
+  sources = brave_extensions_api_schema_sources
+  impl_dir = "//brave/common/extensions/api/"
+  bundle_name = "Brave"
+  root_namespace = brave_extensions_api_root_namespace
+
+  deps = [
+    "//extensions/common",
+  ]
+
+  visibility = [ ":api" ]
+}
+
+
+generated_json_strings("generated_api_json_strings") {
   sources = brave_extensions_api_schema_sources
   deps = brave_extensions_api_deps
   visibility = [ ":api" ]
   root_namespace = brave_extensions_api_root_namespace
-  bundle = true
-  bundle_registration = true
   bundle_name = "Brave"
-  impl_dir = "//brave/common/extensions/api"
   schema_include_rules = brave_extensions_api_schema_include_rules
 }
 
@@ -88,7 +99,8 @@ generated_types("generated_api_types") {
 
 group("api") {
   public_deps = [
-    ":generated_api_bundles",
+    ":generated_api_json_strings",
+    ":generated_api_registration",
     ":generated_api_types",
   ]
 }
