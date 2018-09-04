@@ -107,15 +107,14 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void calcScoreConsts();
 
-  void synopsisNormalizer();
+  void synopsisNormalizer(const ledger::PublisherInfo& info);
+  void synopsisNormalizerInternal(const ledger::PublisherInfoList& list, uint32_t /* next_record */);
 
   bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
   std::vector<braveledger_bat_helper::PUBLISHER_ST> topN();
-
-  std::map<std::string, braveledger_bat_helper::PUBLISHER_ST> publishers_;
 
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
 
