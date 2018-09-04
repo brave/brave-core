@@ -29,9 +29,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
 
-  // Turn off super annoying 'Hold to quit'
-  registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled, base::Value(false));
-
   // No sign into Brave functionality
   registry->SetDefaultPrefValue(prefs::kSigninAllowed, base::Value(false));
 
