@@ -5,10 +5,23 @@
 
 namespace brave_rewards {
 
-ContentSite::ContentSite(const id_type site_id) :
-    id(site_id),
-    percentage(0),
-    verified(false) {
-}
+  ContentSite::ContentSite() : percentage(0) {}
+
+  ContentSite::ContentSite(const id_type site_id) :
+      id(site_id),
+      percentage(0),
+      verified(false) {
+  }
+
+  ContentSite::~ContentSite() {}
+
+  ContentSite::ContentSite(const ContentSite &properties) {
+    percentage = properties.percentage;
+    verified = properties.verified;
+    name = properties.name;
+    favicon_url = properties.favicon_url;
+    url = properties.url;
+    provider = properties.provider;
+  }
 
 }  // namespace brave_rewards

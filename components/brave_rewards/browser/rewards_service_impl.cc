@@ -79,6 +79,10 @@ ContentSite PublisherInfoToContentSite(
   ContentSite content_site(publisher_info.id);
   content_site.percentage = publisher_info.percent;
   content_site.verified = publisher_info.verified;
+  content_site.name = publisher_info.name;
+  content_site.url = publisher_info.url;
+  content_site.provider = publisher_info.provider;
+  content_site.favicon_url = publisher_info.favicon_url;
   return content_site;
 }
 
@@ -271,7 +275,11 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
                          url.path(),
                          tab_id.id(),
                          GetPublisherMonth(now),
-                         GetPublisherYear(now));
+                         GetPublisherYear(now),
+                         tld,
+                         origin.spec(),
+                         "",
+                         "");
   ledger_->OnLoad(data, GetCurrentTimestamp());
 }
 
@@ -327,7 +335,11 @@ void RewardsServiceImpl::OnPostData(SessionID tab_id,
       url.spec(),
       tab_id.id(),
       GetPublisherMonth(now),
-      GetPublisherYear(now));
+      GetPublisherYear(now),
+      "",
+      "",
+      "",
+      "");
 
   ledger_->OnPostData(url.spec(),
                       first_party_url.spec(),
@@ -348,7 +360,8 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
 
   auto now = base::Time::Now();
   ledger::VisitData data("", "", url.spec(), tab_id.id(),
-                         GetPublisherMonth(now), GetPublisherYear(now));
+                         GetPublisherMonth(now), GetPublisherYear(now),
+                         "", "", "", "");
 
   ledger_->OnXHRLoad(tab_id.id(),
                      url.spec(),
