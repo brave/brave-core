@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_text_content_element.cc b/third_party/blink/renderer/core/svg/svg_text_content_element.cc
-index 42871653d9427965e0f961fd3116debd8eeb6dbc..b715f6aa014ffe1aa755d22180a2c4f6a8a84b6a 100644
+index c342f76ee7e07e7cf89fab4a7c6c81c430b54aa3..de4f3d725eb91492d2b322f07c51d13e81313149 100644
 --- a/third_party/blink/renderer/core/svg/svg_text_content_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_text_content_element.cc
 @@ -20,6 +20,7 @@

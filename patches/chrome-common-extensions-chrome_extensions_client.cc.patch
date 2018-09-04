@@ -1,55 +1,20 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 3fe09247acdc974806a2f35c1a4a1339746af1b1..8c19b388e22ebf5c20b47081a1278fca200adbdb 100644
+index 254dc0ab4d12b359bbe9fea03f2cb17dadce0050..786c8391539cdaa8542e7256cbb6e4876f9f29fc 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
 @@ -13,6 +13,7 @@
  #include "base/metrics/histogram_macros.h"
  #include "base/strings/string_util.h"
  #include "base/values.h"
-+#include "brave/common/extensions/api/generated_includes.h"
++#include "brave/common/extensions/brave_extensions_api_provider.h"
  #include "chrome/common/chrome_content_client.h"
  #include "chrome/common/chrome_switches.h"
- #include "chrome/common/extensions/api/api_features.h"
-@@ -162,12 +163,15 @@ std::unique_ptr<FeatureProvider> ChromeExtensionsClient::CreateFeatureProvider(
-   if (name == "api") {
-     AddCoreAPIFeatures(provider.get());
-     AddChromeAPIFeatures(provider.get());
-+    AddBraveAPIFeatures(provider.get());
-   } else if (name == "manifest") {
-     AddCoreManifestFeatures(provider.get());
-     AddChromeManifestFeatures(provider.get());
-+    AddBraveManifestFeatures(provider.get());
-   } else if (name == "permission") {
-     AddCorePermissionFeatures(provider.get());
-     AddChromePermissionFeatures(provider.get());
-+    AddBravePermissionFeatures(provider.get());
-   } else if (name == "behavior") {
-     // Note: There are no chrome-specific behavior features.
-     AddCoreBehaviorFeatures(provider.get());
-@@ -183,6 +187,7 @@ ChromeExtensionsClient::CreateAPIFeatureSource() const {
-       new JSONFeatureProviderSource("api"));
-   source->LoadJSON(IDR_EXTENSION_API_FEATURES);
-   source->LoadJSON(IDR_CHROME_EXTENSION_API_FEATURES);
-+  source->LoadJSON(IDR_BRAVE_EXTENSION_API_FEATURES);
-   return source;
- }
+ #include "chrome/common/extensions/api/extension_action/action_info.h"
+@@ -80,6 +81,7 @@ ChromeChannelForHistogram GetChromeChannelForHistogram(
+ }  // namespace
  
-@@ -260,7 +265,8 @@ bool ChromeExtensionsClient::IsScriptableURL(
- bool ChromeExtensionsClient::IsAPISchemaGenerated(
-     const std::string& name) const {
-   // Test from most common to least common.
--  return api::ChromeGeneratedSchemas::IsGenerated(name) ||
-+  return api::BraveGeneratedSchemas::IsGenerated(name) ||
-+         api::ChromeGeneratedSchemas::IsGenerated(name) ||
-          api::GeneratedSchemas::IsGenerated(name);
- }
- 
-@@ -270,6 +276,8 @@ base::StringPiece ChromeExtensionsClient::GetAPISchema(
-   base::StringPiece chrome_schema = api::ChromeGeneratedSchemas::Get(name);
-   if (!chrome_schema.empty())
-     return chrome_schema;
-+  if (api::BraveGeneratedSchemas::IsGenerated(name))
-+    return api::BraveGeneratedSchemas::Get(name);
- 
-   return api::GeneratedSchemas::Get(name);
+ ChromeExtensionsClient::ChromeExtensionsClient() {
++  AddAPIProvider(std::make_unique<BraveExtensionsAPIProvider>());
+   AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());
+   AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());
  }

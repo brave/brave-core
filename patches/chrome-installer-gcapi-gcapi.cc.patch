@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/gcapi/gcapi.cc b/chrome/installer/gcapi/gcapi.cc
-index 532e905ac66cd2f0ce05d18f3de786699450fa57..d5fe86ce200dc888678e02f4887ee91df7c51186 100644
+index acf3e803f80f8530b891a8bb0fd30d34eae0279b..99f9ab2bbfa50738c692c195b7279916724d890e 100644
 --- a/chrome/installer/gcapi/gcapi.cc
 +++ b/chrome/installer/gcapi/gcapi.cc
 @@ -56,6 +56,16 @@ using base::win::ScopedHandle;

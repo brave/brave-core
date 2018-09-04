@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/libgtkui/gtk_util.cc b/chrome/browser/ui/libgtkui/gtk_util.cc
-index 39bf49c7b1116a187902aeb5e75c3934479ce5bd..9c28e4696dc57d04d99097125646be0453579c8b 100644
+index e0c0dbf14df18071b53c93de11e388c501138043..fe89723160c7a846728cd1c793c4254548f4c313 100644
 --- a/chrome/browser/ui/libgtkui/gtk_util.cc
 +++ b/chrome/browser/ui/libgtkui/gtk_util.cc
-@@ -131,7 +131,7 @@ std::string GetDesktopName(base::Environment* env) {
+@@ -132,7 +132,7 @@ std::string GetDesktopName(base::Environment* env) {
    std::string name;
    if (env->GetVar("CHROME_DESKTOP", &name) && !name.empty())
      return name;
