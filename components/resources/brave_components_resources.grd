@@ -68,10 +68,6 @@
       <include name="IDR_BRAVE_COMMON_FONT_AWESOME_3" file="${root_gen_dir}/brave/b06871f281fee6b241d60582ae9369b9.ttf" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
 
-      <!-- Fonts: Poppins -->
-      <include name="IDT_BRAVE_TEXT_FONT_POPPINS_200_NORMAL_DEVANAGARI" file="${root_gen_dir}/brave/1ff8e6c958ca4fa6d8e8680f32cddd0d.woff2" type="BINDATA" use_base_dir="false" />
-      <include name="IDT_BRAVE_TEXT_FONT_POPPINS_400_NORMAL_DEVANAGARI" file="${root_gen_dir}/brave/8a06c170adbf19e0dffcbe868719e6ce.woff2" type="BINDATA" use_base_dir="false" />
-
       <!-- Browser resrouces -->
       <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
 
