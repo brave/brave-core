@@ -16,6 +16,13 @@ class BraveCrashpadClient {
                            const std::string& url,
                            const std::map<std::string, std::string>& annotations,
                            const std::vector<std::string>& arguments);
+  static bool StartHandlerForClient(const base::FilePath& handler,
+                                    const base::FilePath& database,
+                                    const base::FilePath& metrics_dir,
+                                    const std::string& url,
+                                    const std::map<std::string, std::string>& annotations,
+                                    const std::vector<std::string>& arguments,
+                                    int socket);
 };
 
 } // namespace crashpad
@@ -51,6 +58,20 @@ bool BraveCrashpadClient::StartHandlerAtCrash(
   return crash_reporter::GetCrashpadClient().StartHandlerAtCrash(
       handler, database, metrics_dir,
       "https://laptop-updates.brave.com/1/bc-crashes", annotations, arguments);
+}
+
+// static
+bool BraveCrashpadClient::StartHandlerForClient(
+    const base::FilePath& handler,
+    const base::FilePath& database,
+    const base::FilePath& metrics_dir,
+    const std::string& url,
+    const std::map<std::string, std::string>& annotations,
+    const std::vector<std::string>& arguments,
+    int socket) {
+  return crash_reporter::GetCrashpadClient().StartHandlerForClient(
+    handler, database, metrics_dir, "https://laptop-updates.brave.com/1/bc-crashes",
+    annotations, arguments, socket);
 }
 
 } // namespace crashpad
