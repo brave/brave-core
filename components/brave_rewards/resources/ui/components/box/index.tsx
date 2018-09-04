@@ -19,6 +19,7 @@ import {
   StyledContentWrapper,
   StyledFlip
 } from './style'
+import { Tooltip } from '../'
 import Toggle from '../../../components/formControls/toggle/index'
 import { getLocale } from '../../../helpers'
 import { CloseStrokeIcon, SettingsIcon } from '../../../components/icons'
@@ -97,9 +98,14 @@ export default class Box extends React.PureComponent<Props, State> {
             <StyledRight>
               {
                 settingsChild && ((toggle && checked) || !toggle) ?
-                <StyledSettingsIcon float={'right'} onClick={this.settingsClick}>
-                  <SettingsIcon />
-                </StyledSettingsIcon>
+                <Tooltip
+                  id={'brave-ads-tip'}
+                  content={getLocale('adsTooltipTitle')}
+                >
+                  <StyledSettingsIcon float={'right'} onClick={this.settingsClick}>
+                    <SettingsIcon />
+                  </StyledSettingsIcon>
+                </Tooltip>
                 : null
               }
             </StyledRight>

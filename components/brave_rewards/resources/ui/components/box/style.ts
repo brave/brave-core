@@ -35,7 +35,6 @@ export const StyledContentWrapper = styled<StyleProps, 'div'>('div')`
   height: ${p => p.open ? 'auto' : '0'};
   flex-basis: ${p => p.open ? '50%' : '0'};
   flex-wrap: wrap;
-  overflow: hidden;
 `
 
 export const StyledLeft = styled<{}, 'div'>('div')`
@@ -48,6 +47,7 @@ export const StyledRight = styled<StyleProps, 'div'>('div')`
   flex-basis: 40px;
   justify-content: flex-end;
   display: flex;
+  max-height: 30px;
 `
 
 export const StyledTitle = styled<StyleProps, 'div'>('div')`

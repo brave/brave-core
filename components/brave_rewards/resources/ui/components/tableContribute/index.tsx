@@ -15,7 +15,7 @@ import {
 import Table, { Row } from '../../../components/dataTables/table'
 import Profile, { Provider } from '../profile'
 import { getLocale } from '../../../helpers'
-import Tokens from '../tokens'
+import { Tokens } from '../'
 import { CloseStrokeIcon } from '../../../components/icons'
 
 interface ProfileCell {

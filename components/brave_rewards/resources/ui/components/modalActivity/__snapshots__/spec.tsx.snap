@@ -220,11 +220,6 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-.c19 {
-  text-align: right;
-  padding-right: 14px;
-}
-
 .c0 {
   position: fixed;
   top: 0;
@@ -260,6 +255,11 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
   padding: 61px 50px;
   overflow-y: auto;
   max-height: calc(100vh - 100px);
+}
+
+.c19 {
+  text-align: right;
+  padding-right: 14px;
 }
 
 <div
