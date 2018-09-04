@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">উইন্ডো হিসাবে খুলুন</translation>
 <translation id="91568222606626347">শর্টকাট তৈরি করুন...</translation>
 <translation id="3627879631695760395"><ph name="APP"/> ইনস্টল করুন...</translation>
+<translation id="8288032458496410887"><ph name="APP"/> আনইনস্টল করুন...</translation>
 <translation id="4057896668975954729">দোকানে দেখুন</translation>
 <translation id="4316850752623536204">ডেভেলপার ওয়েবসাইট</translation>
 <translation id="4289540628985791613">ওভারভিউ</translation>
@@ -292,6 +293,7 @@
 <translation id="8559694214572302298">ছবি সঙ্কেতমোচক</translation>
 <translation id="8191453843330043793">V8 প্রক্সি সমাধানকারী</translation>
 <translation id="6185617499004995178">CUPS IPP যাচাইকারী</translation>
+<translation id="3077708072777965506">Brave OS ইনপুট পদ্ধতি</translation>
 <translation id="7171242884588191792">Brave ফাইল ইউটিলিটি</translation>
 <translation id="3061707000357573562">প্যাচ পরিষেবা</translation>
 <translation id="3580923162759633716">প্রোফাইলিং পরিষেবা</translation>
@@ -499,8 +501,10 @@
 <translation id="8743864605301774756">১ঘণ্টা আগে আপডেট করা হয়েছে</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/>ঘণ্টা আগে আপডেট করা হয়েছে</translation>
 <translation id="1329584516321524826">এখনই আপডেট করা হয়েছে</translation>
+<translation id="224940702122312781">এই পৃষ্ঠাটি প্রচুর ডেটা ব্যবহার করবে।</translation>
+<translation id="3861241522664181545">পৃষ্ঠাতে লোড করা থামানো হয়েছে।</translation>
+<translation id="6921709132208495314">এই পৃষ্ঠাটিতে ডেটা ব্যবহার করা বন্ধ করুন</translation>
 <translation id="2724841811573117416">WebRTC লগগুলি</translation>
-<translation id="7518150891539970662">WebRTC লগগুলি (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460"><ph name="WEBRTC_LOG_CAPTURE_TIME"/> এ WebRTC লগ ক্যাপচার করা হয়েছে</translation>
 <translation id="4093955363990068916">স্থানীয় ফাইল:</translation>
 <translation id="2071393345806050157">কোনো স্থানীয় লগ ফাইল নেই।</translation>
@@ -508,7 +512,6 @@
 <translation id="5946591249682680882">আইডি অভিযোগ করুন <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">ফাইল বাগ</translation>
 <translation id="1188807932851744811">লগ আপলোড করা হয়নি।</translation>
-<translation id="3925247638945319984">আপনার কোনো সাম্প্রতিক ক্যাপচার করা WebRTC লগ নেই।</translation>
 <translation id="2076269580855484719">এই প্লাগইনটি লুকান</translation>
 <translation id="2129825002735785149">প্ল্যাগ ইন আপডেট করুন</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> কে এন্টারপ্রাইজ নীতি দ্বারা অবরুদ্ধ করা হয়েছে</translation>
@@ -547,6 +550,7 @@
 <translation id="6363797201514053536">Brave Software-এ সার্চ করুন অথবা URL টাইপ করুন</translation>
 <translation id="6078323886959318429">শর্টকাট যোগ করুন</translation>
 <translation id="6324916366299863871">শর্টকার্ট এডিট করুন</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">হয়ে গেছে</translation>
 <translation id="4416582610654027550">একটি সঠিক URL লিখুন</translation>
@@ -1046,6 +1050,7 @@
 <translation id="5562781907504170924">এই ট্যাবটি একটি ব্লুটুথ ডিভাইসে সংযুক্ত হয়ে আছে।</translation>
 <translation id="5884474295213649357">এই ট্যাব একটি USB ডিভাইসের সাথে সংযুক্ত করা আছে।</translation>
 <translation id="8466417995783206254">এই ট্যাবটি ছবির-মধ্যে-ছবি মোডে ভিডিওটি চালাচ্ছে।</translation>
+<translation id="2585724835339714757">এই ট্যাবটি আপনার স্ক্রিন শেয়ার করছে।</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - ক্যামেরা বা মাইক্রোফোন রেকর্ডিং</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - ট্যাব সামগ্রী শেয়ার করা হয়েছে</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - ভিডিওটি ছবির-মধ্যে-ছবি মোডে চালানো হচ্ছে</translation>
@@ -1522,7 +1527,6 @@
 <translation id="8647834505253004544">ওয়েব ঠিকানাটি ভুল</translation>
 <translation id="2149850907588596975">পাসওয়ার্ড ও ফর্ম</translation>
 <translation id="8639963783467694461">স্বতঃপূর্ণ সেটিংস</translation>
-<translation id="2512222046227390255">ফর্মগুলি স্বতঃপূর্ণ করুন</translation>
 <translation id="7764225426217299476">ঠিকানা যোগ করুন</translation>
 <translation id="5595485650161345191">ঠিকানা সম্পাদনা করুন</translation>
 <translation id="6207937957461833379">দেশ/অঞ্চল</translation>
@@ -1604,6 +1608,7 @@
 <translation id="577322787686508614">"<ph name="DEVICE_NAME"/>" এ পড়ার ক্রিয়াকলাপ অনুমোদিত নয়।</translation>
 <translation id="3141917231319778873">এতে পাঠানো অনুরোধটি সমর্থিত নয়: "<ph name="DEVICE_NAME"/>"।</translation>
 <translation id="6122875415561139701">"<ph name="DEVICE_NAME"/>" এ লেখার ক্রিয়াকলাপ অনুমোদিত নয়।</translation>
+<translation id="439266289085815679"><ph name="USER_EMAIL"/> এর মাধ্যমে ব্লুটুথ কনফিগারেশনটি নিয়ন্ত্রিত হয়।</translation>
 <translation id="784934925303690534">সময় সীমা</translation>
 <translation id="2496180316473517155">ব্রাউজিং ইতিহাস</translation>
 <translation id="8662811608048051533">বেশিরভাগ সাইট থেকে আপনাকে সাইন-আউট করিয়ে দেয়।</translation>
@@ -1615,6 +1620,7 @@
 <translation id="4699172675775169585">ক্যাশেযুক্ত ছবি এবং ফাইলগুলি</translation>
 <translation id="1274997165432133392">কুকিজ এবং অন্য সাইট ডেটা</translation>
 <translation id="3838543471119263078">কুকিজ এবং অন্যান্য সাইট এবং প্লাগ ইন ডেটা</translation>
+<translation id="369489984217678710">পাসওয়ার্ড এবং অন্যান্য সাইন-ইন ডেটা</translation>
 <translation id="6865313869410766144">স্বতঃপূর্ণ ফর্ম ডেটা</translation>
 <translation id="177336675152937177">হোস্ট করা অ্যাপ্লিকেশান ডেটা</translation>
 <translation id="1718835860248848330">শেষ ঘণ্টা</translation>
@@ -1972,6 +1978,8 @@
 <translation id="5282733140964383898">‘ট্র্যাক করবেন না’ সক্ষম করার মানে হল যে আপনার ব্রাউজিং ট্রাফিকের সাথে একটি অনুরোধ অন্তর্ভুক্ত করা হবে। একটি ওয়েবসাইট অনুরোধটিতে সাড়া দেবে কিনা এবং কিভাবে অনুরোধটিকে ব্যাখ্যা করে তার উপর যেকোনো ফল নির্ভর করে। উদাহরণস্বরূপ, কিছু ওয়েবসাইট আপনার পরিদর্শন করা অন্যান্য ওয়েবসাইটগুলির উপর ভিত্তি না করে বিজ্ঞাপনগুলি দেখানোর মাধ্যমে এই অনুরোধটিতে প্রতিক্রিয়া জানাতে পারে। এমনও অনেক ওয়েবসাইট রয়েছে যা তা সত্বেও আপনার ব্রাউজিং ডেটা সংগ্রহ এবং ব্যবহার করবে - উদাহরণস্বরূপ, তাদের ওয়েবসাইটগুলির নিরাপত্তা ব্যবস্থার উন্নতি ঘটাতে, সামগ্রী, পরিষেবা, বিজ্ঞাপন এবং প্রস্তাবগুলি সরবরাহ করতে এবং প্রতিবেদনের পরিসংখ্যান তৈরি করতে। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">যাচাইকৃত অ্যাক্সেস সক্ষম করুন</translation>
 <translation id="5557991081552967863">নিষ্ক্রিয় থাকাকালীন ওয়াই-ফাই চালু রাখুন</translation>
+<translation id="8562084399541316921">পড়তে থাকুন</translation>
+<translation id="6201926614538916789">মোবাইল থেকে আপনার Bravebook-এ সাইটগুলি আবার দেখা শুরু করুন</translation>
 <translation id="1521442365706402292">শংসাপত্রগুলি পরিচালনা করুন</translation>
 <translation id="7075625805486468288">HTTPS/SSL শংসাপত্র এবং সেটিংস পরিচালনা করুন</translation>
 <translation id="8871974300055371298">সামগ্রী সেটিংস</translation>
@@ -2007,6 +2015,8 @@
 <translation id="7136694880210472378">ডিফল্ট করুন</translation>
 <translation id="102272308210570439">আপনার স্ক্রিনে যা থাকবে তা সহায়ককে ব্যবহার করার অনুমতি দিন</translation>
 <translation id="8624205858755890468">আপনাকে সম্পর্কিত তথ্য, অ্যাপ এবং অ্যাকশন দেখাতে সহায়ককে সক্ষম করে।</translation>
+<translation id="4737453247496280552">"Ok Brave Software" শনাক্তকরণ</translation>
+<translation id="6409553560184414680">আপনার স্ক্রিন চালু থাকাকালীন "OK Brave Software" বলে যেকোনও সময়ে আপনার অ্যাসিস্ট্যান্ট অ্যাক্সেস করুন।</translation>
 <translation id="8669919703154928649">অ্যাসিস্ট্যান্টকে বিজ্ঞপ্তিগুলি দেখাতে দিন</translation>
 <translation id="3430342160185525240">আপনাকে বিজ্ঞপ্তিগুলি দেখানোর জন্য অ্যাসিস্ট্যান্টটি চালু করুন।</translation>
 <translation id="3908743412684152579">Brave Software সহায়ক সেটিংস</translation>
@@ -2096,7 +2106,9 @@
 <translation id="8708000541097332489">প্রস্থানে সাফ করুন</translation>
 <translation id="8037357227543935929">জিজ্ঞাসা করুন (ডিফল্ট)</translation>
 <translation id="3427092606871434483">মঞ্জুরি দিন (ডিফল্ট)</translation>
+<translation id="4879491255372875719">অটোমেটিক (ডিফল্ট)</translation>
 <translation id="4312866146174492540">অবরুদ্ধ করুন (ডিফল্ট)</translation>
+<translation id="6979440798594660689">মিউট (ডিফল্ট)</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="5063480226653192405">ব্যবহার</translation>
 <translation id="3006881078666935414">কোনও ব্যবহারের ডেটা নেই</translation>
@@ -2128,6 +2140,7 @@
 <translation id="2318923050469484167">বর্তমান ছদ্মবেশী সেশন (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">কোনো সাইটের জুম বাড়ানো বা কমানো হয়নি</translation>
 <translation id="3566721612727112615">কোনো সাইট যোগ করা হয়নি</translation>
+<translation id="8098574385249290065">সাইটটি কখন সাউন্ড চালাতে পারবে তা Brave-কে বেছে নিতে দিন (প্রস্তাবিত)</translation>
 <translation id="5763751966069581670">কোনও USB ডিভাইস খুঁজে পাওয়া যায়নি</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">একটি সাইট যোগ করুন</translation>
@@ -2171,25 +2184,20 @@
 <translation id="4562155214028662640">আঙ্গুলের ছাপ যোগ করুন</translation>
 <translation id="1719312230114180055">দ্রষ্টব্য: আপনার আঙ্গুলের ছাপ একটি শক্তিশালী প্যাটার্ন বা পিন এর চাইতে কম নিরাপদ হতে পারে।</translation>
 <translation id="1927632033341042996">আঙ্গুল <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">আঙ্গুলের ছাপ দিয়ে আনলক সক্ষম করুন</translation>
 <translation id="7665369617277396874">অ্যাকাউন্ট যোগ করুন</translation>
 <translation id="3422989461909154470">অ্যাপ এবং ওয়েবসাইটগুলি থেকে আপনার সাইন-ইন করা সমস্ত Brave Software অ্যাকাউন্টগুলি এখানে পরিচালনা করা যেতে পারে।</translation>
 <translation id="1987317783729300807">অ্যাকাউন্টসমূহ</translation>
 <translation id="8418661265246754237">Brave Software অ্যাকাউন্ট</translation>
-<translation id="2107494551712864447">একটি আঙ্গুলের ছাপ যোগ করুন</translation>
-<translation id="6388771388956873507">আপনার ডিভাইসে আঙ্গুলের ছাপ নেওয়ার সেন্সরটি খুঁজে নিয়ে সেটিকে আপনার আঙুল দিয়ে স্পর্শ করুন</translation>
-<translation id="9170397650136757332">এবার আপনার আঙ্গুলের ছাপের সমস্ত অংশ ক্যাপচার করতে আপনার আঙ্গুল সামান্য সরান</translation>
-<translation id="161707228174452095">আঙ্গুলের ছাপ যোগ করা হয়েছে!</translation>
-<translation id="4576537685267142337">আঙ্গুল তুলুন, তারপরে আবার সেন্সরে স্পর্শ করুন</translation>
-<translation id="494660967831069720">আংশিক ডেটা</translation>
-<translation id="3064410671692449875">অপর্যাপ্ত ডেটা</translation>
-<translation id="2532026602297547439">সেন্সর অপরিষ্কার</translation>
-<translation id="8642267168767642381">আঙ্গুল খুব ধীরে সরানো হয়েছে</translation>
-<translation id="2039623879703305659">আঙ্গুল অতি দ্রুত সরানো হয়েছে</translation>
-<translation id="7311891583377621132">আঙ্গুলের ছাপের বিভিন্ন অংশ ক্যাপচার করতে সেটি এদিক ওদিক সরান</translation>
+<translation id="1059855432287631118">আঙুলের ছাপ রেজিস্টার করুন</translation>
+<translation id="878068003854005405">শুরু করা যাক। আপনার আঙুলটি সেন্সরের ওপর রাখুন।</translation>
+<translation id="7189965711416741966">আঙ্গুলের ছাপ যোগ করা হয়েছে।</translation>
+<translation id="9220820413868316583">তুলে নিন এবং আবার চেষ্টা করুন।</translation>
+<translation id="4534661889221639075">আবার চেষ্টা করুন।</translation>
+<translation id="3645372836428131288">আঙ্গুলের ছাপের বিভিন্ন অংশ ক্যাপচার করতে একটু এদিক-ওদিক সরান</translation>
 <translation id="7345706641791090287">আপনার পাসওয়ার্ড নিশ্চিত করুন</translation>
 <translation id="381202950560906753">আরেকটি জুড়ুন</translation>
-<translation id="6658023813581644008">সাইন-ইনের জন্য Smart Lock সেট-আপ করতে আপনার পাসওয়ার্ড লিখুন</translation>
+<translation id="6968288415730398122">স্ক্রিন লক কনফিগার করতে আপনার পাসওয়ার্ড লিখুন</translation>
+<translation id="4103091233824664032">স্ক্রিন লক এবং সাইন-ইন কনফিগার করার জন্য আপনার পাসওয়ার্ড লিখুন</translation>
 <translation id="5449551289610225147">অবৈধ পাসওয়ার্ড</translation>
 <translation id="5374359983950678924">ছবি পরিবর্তন করুন</translation>
 <translation id="6984299437918708277">সাইন-ইন স্ক্রীনে আপনার অ্যাকাউন্টের জন্য প্রদর্শন করাতে একটি ছবি বেছে নিন</translation>
@@ -2218,7 +2226,7 @@
 <translation id="1136155683023653803">পাসওয়ার্ড, বুকমার্ক, ইতিহাস এবং আরও অনেক কিছু আপনার অ্যাকাউন্টে সিঙ্ক করা হয়েছে</translation>
 <translation id="3267417306184901318">আপনার ব্রাউজ করা ডেটা ও অ্যাক্টিভিটি আপনার Brave Software অ্যাকাউন্টের সাথে সিঙ্ক করা আছে</translation>
 <translation id="1123187597739372905">সিঙ্ক সেটিংস দেখুন</translation>
-<translation id="8420510748452002155">ব্যক্তিগতকৃত নয় এমন পরিষেবাগুলি</translation>
+<translation id="5428209950370661546">Brave Software-এর অন্যান্য পরিষেবা</translation>
 <translation id="2055016640093734678">Brave Software পরিষেবার সেটিংস দেখুন</translation>
 <translation id="7956662517480676674">সিঙ্ক এবং Brave Software পরিষেবাগুলি</translation>
 <translation id="2453021845418314664">উন্নত সিঙ্ক সেটিংস</translation>
@@ -2401,9 +2409,14 @@
 <translation id="2315821125498993513">ফোনের সাথে কানেক্ট করা যায়নি। <ph name="LINK_BEGIN"/>আরও জানুন।<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together চালু আছে</translation>
 <translation id="3088402208262982892">Better Together বন্ধ আছে</translation>
+<translation id="7179187931092694802">আপনার ফোন ব্যবহার করে Bravebook আনলক করুন। <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">ঝটপট টিথারিং</translation>
+<translation id="4746351372139058112">বার্তাগুলি</translation>
+<translation id="2248072377758660530">Bravebook থেকে টেক্সট মেসেজ পাঠান ও পান। <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">এই ডিভাইসটি সম্পর্কে ভুলে যান</translation>
 <translation id="3606712892509067288">Better Together থেকে সরিয়ে ফেলুন</translation>
+<translation id="5078490485380754244">ডিভাইসটি ভুলে যান</translation>
+<translation id="8072033737676488034">আপনার ফোনটি সরিয়ে দিন এবং Better Together বন্ধ করুন</translation>
 <translation id="7878562273885520351">আপনার পাসওয়ার্ড অন্য কেউ পরিবর্তন করার চেষ্টা করেছে</translation>
 <translation id="6582421931165117398">আপনার ব্যক্তিগত তথ্য রক্ষা করতে, এখনই এখনই আপনার পাসওয়ার্ড পরিবর্তন করুন। আপনার পাসওয়ার্ড পরিবর্তন করার আগে, আপনাকে সাইন ইন করতে বলা হবে।</translation>
 <translation id="1089439967362294234">পাসওয়ার্ড পরিবর্তন করুন</translation>
@@ -2504,6 +2517,7 @@
 <translation id="2202898655984161076">মুদ্রকগুলি তালিকাকরণে একটি সমস্যা ছিল৷ আপনার মুদ্রকগুলির মধ্যে কয়েকটি সফলভাবে <ph name="CLOUD_PRINT_NAME"/>তে নিবন্ধীকৃত নাও থাকতে পারে৷</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> সংযোগকারী প্রক্রিয়া ক্র্যাশ হয়েছে৷ পুর্নসূচনা করবেন?</translation>
 <translation id="6904655473976120856">বেরিয়ে আসতে অ্যাপ বোতাম টিপুন করুন</translation>
+<translation id="79766959863778284">XR আইসোলেটেড ডিভাইস পরিষেবা</translation>
 <translation id="8909833622202089127">সাইটটি আপনার লোকেশন ট্র্যাক করছে</translation>
 <translation id="375636864092143889">সাইটটি আপনার মাইক্রোফোন ব্যবহার করছে</translation>
 <translation id="310671807099593501">সাইটটি ব্লুটুথ ব্যবহার করছে</translation>

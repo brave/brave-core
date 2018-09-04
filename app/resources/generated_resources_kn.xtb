@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">ವಿಂಡೊ ಅಂತೆ ತೆರೆಯಿರಿ</translation>
 <translation id="91568222606626347">ಶಾರ್ಟ್‌ಕಟ್‌ ರಚಿಸಿ...</translation>
 <translation id="3627879631695760395"><ph name="APP"/> ಅನ್ನು ಇನ್‌ಸ್ಟಾಲ್‌ ಮಾಡಿ...</translation>
+<translation id="8288032458496410887"><ph name="APP"/> ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ...</translation>
 <translation id="4057896668975954729">ಸ್ಟೋರ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
 <translation id="4316850752623536204">ಡೆವಲಪರ್ ವೆಬ್‌ಸೈಟ್</translation>
 <translation id="4289540628985791613">ಅವಲೋಕನ</translation>
@@ -292,6 +293,7 @@
 <translation id="8559694214572302298">ಚಿತ್ರ ಡಿಕೋಡರ್</translation>
 <translation id="8191453843330043793">V8 ಪ್ರಾಕ್ಸಿ ಪರಿಹಾರಕ</translation>
 <translation id="6185617499004995178">CUPS IPP ಮೌಲ್ಯಮಾಪಕ</translation>
+<translation id="3077708072777965506">Brave OS ಇನ್‌ಪುಟ್ ವಿಧಾನ</translation>
 <translation id="7171242884588191792">Brave ಫೈಲ್‌ ಸೌಲಭ್ಯಗಳು</translation>
 <translation id="3061707000357573562">ಪ್ಯಾಚ್ ಸೇವೆ</translation>
 <translation id="3580923162759633716">ಪ್ರೊಫೈಲಿಂಗ್ ಸೇವೆ</translation>
@@ -496,8 +498,10 @@
 <translation id="8743864605301774756">1ಗಂಟೆಯ ಹಿಂದೆ ಆಪ್‌ಡೇಟ್‌ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/>ಗಂಟೆಗಳ ಹಿಂದೆಯೇ ಅಪ್‌ಡೇಟ್‌ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="1329584516321524826">ಇದೀಗ ಅಪ್‌ಡೇಟ್‌ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="224940702122312781">ಈ ಪುಟವು ಅಧಿಕ ಡೇಟಾವನ್ನು ಬಳಸುತ್ತದೆ.</translation>
+<translation id="3861241522664181545">ಪುಟ ಲೋಡ್ ಮಾಡುವುದನ್ನು ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ.</translation>
+<translation id="6921709132208495314">ಈ ಪುಟಕ್ಕಾಗಿ ಡೇಟಾ ಬಳಸುವುದನ್ನು ನಿಲ್ಲಿಸಿ</translation>
 <translation id="2724841811573117416">WebRTC ಲಾಗ್‌ಗಳು</translation>
-<translation id="7518150891539970662">WebRTC ಲಾಗ್‌ಗಳು (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC ಲಾಗ್ ಸೆರೆಹಿಡಿಯಲಾಗಿದೆ <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">ಸ್ಥಳೀಯ ಫೈಲ್:</translation>
 <translation id="2071393345806050157">ಯಾವುದೇ ಸ್ಥಳೀಯ ಲಾಗ್ ಫೈಲ್ ಇಲ್ಲ.</translation>
@@ -505,7 +509,6 @@
 <translation id="5946591249682680882">ವರದಿ ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">ಫೈಲ್ ಬಗ್</translation>
 <translation id="1188807932851744811">ಲಾಗ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿಲ್ಲ.</translation>
-<translation id="3925247638945319984">ನಿಮ್ಮಲ್ಲಿ ಇತ್ತೀಚೆಗೆ ಅಪ್‌ಲೋಡ್‌ ಆಗಿರುವ WebRTC ಲಾಗ್‌ಗಳು ಇಲ್ಲ.</translation>
 <translation id="2076269580855484719">ಈ ಪ್ಲಗ್‌ಇನ್ ಅನ್ನು ಮರೆಮಾಡು</translation>
 <translation id="2129825002735785149">ಪ್ಲಗಿನ್‌ ಅಪ್‌ಡೇಟ್‌ ಮಾಡಿ</translation>
 <translation id="9088234649737575428">ಎಂಟರ್‌ಪ್ರೈಸ್ ನೀತಿಗಳಿಂದ <ph name="PLUGIN_NAME"/> ಅನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
@@ -544,6 +547,7 @@
 <translation id="6363797201514053536">Brave Software ಹುಡುಕಾಟ ಮಾಡಿ ಅಥವಾ URL ಟೈಪ್ ಮಾಡಿ</translation>
 <translation id="6078323886959318429">ಶಾರ್ಟ್‌ಕಟ್ ಸೇರಿಸಿ</translation>
 <translation id="6324916366299863871">ಶಾರ್ಟ್‌ಕಟ್ ಎಡಿಟ್ ಮಾಡಿ</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">ಮುಗಿದಿದೆ</translation>
 <translation id="4416582610654027550">ಮಾನ್ಯವಾದ URL ಟೈಪ್ ಮಾಡಿ</translation>
@@ -1042,6 +1046,7 @@
 <translation id="5562781907504170924">ಈ ಟ್ಯಾಬ್ ಅನ್ನು ಬ್ಲೂಟೂತ್‌ ಸಾಧನಕ್ಕೆ ಸಂಪರ್ಕಿಸಲಾಗಿದೆ.</translation>
 <translation id="5884474295213649357">ಈ ಟ್ಯಾಬ್ USB ಸಾಧನಕ್ಕೆ ಸಂಪರ್ಕಗೊಂಡಿದೆ.</translation>
 <translation id="8466417995783206254">ಚಿತ್ರದಲ್ಲಿನ ಚಿತ್ರ ಮೋಡ್‌ನಲ್ಲಿ ಈ ಟ್ಯಾಬ್ ವೀಡಿಯೊವನ್ನು ಪ್ಲೇ ಮಾಡುತ್ತಿದೆ.</translation>
+<translation id="2585724835339714757">ಈ ಟ್ಯಾಬ್, ನಿಮ್ಮ ಪರದೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳುತ್ತಿದೆ.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - ಕ್ಯಾಮರಾ ಅಥವಾ ಮೈಕ್ರೊಫೋನ್ ರೆಕಾರ್ಡಿಂಗ್</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - ಟ್ಯಾಬ್ ವಿಷಯವನ್ನು ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - ಚಿತ್ರದಲ್ಲಿನ ಚಿತ್ರ ಮೋಡ್‌ನಲ್ಲಿ ವೀಡಿಯೊ ಪ್ಲೇ ಆಗುತ್ತಿದೆ</translation>
@@ -1518,7 +1523,6 @@
 <translation id="8647834505253004544">ಇದು ಮಾನ್ಯವಾದ ವೆಬ್‌ ವಿಳಾಸವಲ್ಲ</translation>
 <translation id="2149850907588596975">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಮತ್ತು ಫಾರ್ಮ್‌ಗಳು</translation>
 <translation id="8639963783467694461">ಸ್ವಯಂತುಂಬುವಿಕೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
-<translation id="2512222046227390255">ಫಾರ್ಮ್‌ಗಳನ್ನು ಸ್ವಯಂಭರ್ತಿ ಮಾಡಿ</translation>
 <translation id="7764225426217299476">ವಿಳಾಸ ಸೇರಿಸಿ</translation>
 <translation id="5595485650161345191">ವಿಳಾಸ ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="6207937957461833379">ರಾಷ್ಟ್ರ/ಪ್ರದೇಶ</translation>
@@ -1600,6 +1604,7 @@
 <translation id="577322787686508614">ಈ ಸಾಧನದಲ್ಲಿ ಓದುವಿಕೆ ಕಾರ್ಯಾಚರಣೆಯನ್ನು ಅನುಮತಿಸಲಾಗಿಲ್ಲ: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">ನೀಡಿರುವ ವಿನಂತಿಯನ್ನು ಈ ಸಾಧನಕ್ಕೆ ಬೆಂಬಲಿಸಲಾಗುವುದಿಲ್ಲ: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">ಈ ಸಾಧನದಲ್ಲಿ ಬರೆಯುವಿಕೆ ಕಾರ್ಯಾಚರಣೆಯನ್ನು ಅನುಮತಿಸಲಾಗಿಲ್ಲ: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679"><ph name="USER_EMAIL"/> ಮೂಲಕ ಬ್ಲೂಟೂತ್ ಕಾನ್ಫಿಗರೇಶನ್ ಅನ್ನು ನಿಯಂತ್ರಿಸಲಾಗುತ್ತಿದೆ.</translation>
 <translation id="784934925303690534">ಸಮಯ ವ್ಯಾಪ್ತಿ</translation>
 <translation id="2496180316473517155">ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸ</translation>
 <translation id="8662811608048051533">ಹೆಚ್ಚಿನ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಂದ ಸೈನ್‌ ಔಟ್‌ ಮಾಡುತ್ತದೆ.</translation>
@@ -1611,6 +1616,7 @@
 <translation id="4699172675775169585">ಸಂಗ್ರಹಿಸಲಾಗಿರುವ ಚಿತ್ರಗಳು ಮತ್ತು ಫೈಲ್‌ಗಳು</translation>
 <translation id="1274997165432133392">ಕುಕೀಗಳು ಮತ್ತು ಇತರ ಡೇಟಾ</translation>
 <translation id="3838543471119263078">ಕುಕೀಗಳು ಮತ್ತು ಇತರ ಸೈಟ್ ಹಾಗೂ ಪ್ಲಗಿನ್ ಡೇಟಾ</translation>
+<translation id="369489984217678710">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಮತ್ತು ಇತರ ಸೈನ್-ಇನ್ ಡೇಟಾ</translation>
 <translation id="6865313869410766144">ಸ್ವಯಂತುಂಬುವಿಕೆ ಫಾರ್ಮ್ ಡೇಟಾ</translation>
 <translation id="177336675152937177">ಹೋಸ್ಟ್ ಮಾಡಿರುವ ಅಪ್ಲಿಕೇಶನ್ ಡೇಟಾ</translation>
 <translation id="1718835860248848330">ಕೊನೆಯ ಗಂಟೆ</translation>
@@ -1970,6 +1976,8 @@
 <translation id="5282733140964383898">‘ಟ್ರ್ಯಾಕ್ ಮಾಡಬೇಡಿ’ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುವುದೆಂದರೆ ವಿನಂತಿಯನ್ನು ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ದಟ್ಟಣೆಯೊಂದಿಗೆ ಸೇರಿಸುವುದು ಎಂದರ್ಥ. ಎಫೆಕ್ಟ್‌ , ವೆಬ್‌ಸೈಟ್ ವಿನಂತಿಗೆ ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತದೆಯೇ ಇಲ್ಲವೇ ಮತ್ತು ವಿನಂತಿಯನ್ನು ಹೇಗೆ ಅರ್ಥೈಸಲಾಗುತ್ತದೆ ಎಂಬುದನ್ನು ಅವಲಂಬಿಸಿರುತ್ತದೆ. ಉದಾಹರಣೆಗೆ, ಕೆಲವು ವೆಬ್‌ಸೈಟ್‌ಗಳು, ನೀವು ಭೇಟಿ ನೀಡುವ ಇತರ ವೆಬ್‌ಸೈಟ್‌ಗಳನ್ನು ಆಧರಿಸದಿರುವ ಜಾಹೀರಾತುಗಳನ್ನು ನಿಮಗೆ ಪ್ರದರ್ಶಿಸುವ ಮೂಲಕ ಈ ವಿನಂತಿಗೆ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ನೀಡಬಹುದು. ಹಲವು ವೆಬ್‌ಸೈಟ್‌ಗಳು ಈಗಲೂ ಸಹ ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸುತ್ತವೆ ಮತ್ತು ಬಳಸುತ್ತವೆ - ಉದಾಹರಣೆಗೆ ಭದ್ರತೆಯನ್ನು ಸುಧಾರಿಸಲು, ತಮ್ಮ ವೆಬ್‌ಸೈಟ್‌ಗಳಲ್ಲಿ ವಿಷಯಗಳು, ಸೇವೆಗಳು, ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಶಿಫಾರಸುಗಳನ್ನು ಒದಗಿಸಲು, ಮತ್ತು ವರದಿ ಅಂಕಿಅಂಶಗಳನ್ನು ಸೃಷ್ಟಿಸಲು. <ph name="BEGIN_LINK"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">ಪರಿಶೀಲಿಸಿದ ಪ್ರವೇಶವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="5557991081552967863">ನಿದ್ರೆ ಸಮಯದಲ್ಲಿ ವೈ-ಫೈ ಆನ್ ಇರಿಸಿ</translation>
+<translation id="8562084399541316921">ಓದುವುದನ್ನು ಮುಂದುವರಿಸಿ</translation>
+<translation id="6201926614538916789">ನಿಮ್ಮ Bravebook ನಲ್ಲಿ ಮೊಬೈಲ್‌ನಿಂದ ಸೈಟ್‌ಗಳನ್ನು ನೋಡುವುದನ್ನು ಪುನರಾರಂಭಿಸಿ</translation>
 <translation id="1521442365706402292">ಪ್ರಮಾಣಪತ್ರಗಳನ್ನು ನಿರ್ವಹಿಸಿ</translation>
 <translation id="7075625805486468288">HTTPS/SSL ಪ್ರಮಾಣಪತ್ರಗಳು ಮತ್ತು ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ನಿರ್ವಹಿಸಿ</translation>
 <translation id="8871974300055371298">ವಿಷಯ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
@@ -2005,6 +2013,8 @@
 <translation id="7136694880210472378">ಡಿಫಾಲ್ಟ್ ಮಾಡಿ</translation>
 <translation id="102272308210570439">ನಿಮ್ಮ ಪರದೆಯ ಮೇಲಿರುವುದನ್ನು ಸಹಾಯಕವು ಬಳಸಲು ಬಿಡಿ</translation>
 <translation id="8624205858755890468">ಸಂಬಂಧಿತ ಮಾಹಿತಿ, ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ಮತ್ತು ಕ್ರಿಯೆಗಳನ್ನು ನಿಮಗೆ ತೋರಿಸಲು ಸಹಾಯಕವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
+<translation id="4737453247496280552">"Ok Brave Software" ಪತ್ತೆಹಚ್ಚುವಿಕೆ</translation>
+<translation id="6409553560184414680">ನಿಮ್ಮ ಪರದೆ ಆನ್ ಆಗಿರುವಾಗ, ಯಾವಾಗ ಬೇಕಾದರೂ "Ok Brave Software" ಎಂದು ಹೇಳಿ, ನಿಮ್ಮ ಅಸಿಸ್ಟೆಂಟ್‌ಗೆ ಪ್ರವೇಶ ಪಡೆಯಿರಿ.</translation>
 <translation id="8669919703154928649">ನಿಮಗೆ ಅಧಿಸೂಚನೆಗಳನ್ನು ತೋರಿಸಲು ಅಸಿಸ್ಟೆಂಟ್‌ಗೆ ಅನುಮತಿ ನೀಡಿ</translation>
 <translation id="3430342160185525240">ನಿಮಗೆ ಅಧಿಸೂಚನೆಗಳನ್ನು ತೋರಿಸಲು ಅಸಿಸ್ಟೆಂಟ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುತ್ತದೆ.</translation>
 <translation id="3908743412684152579">Brave Software ಸಹಾಯಕ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
@@ -2094,7 +2104,9 @@
 <translation id="8708000541097332489">ನಿರ್ಗಮಿಸುವಲ್ಲಿ ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="8037357227543935929">ಕೇಳು (ಡಿಫಾಲ್ಟ್)</translation>
 <translation id="3427092606871434483">ಅನುಮತಿಸಿ (ಡಿಫಾಲ್ಟ್)</translation>
+<translation id="4879491255372875719">ಸ್ವಯಂಚಾಲಿತ (ಡಿಫಾಲ್ಟ್)</translation>
 <translation id="4312866146174492540">ನಿರ್ಬಂಧಿಸು (ಡಿಫಾಲ್ಟ್)</translation>
+<translation id="6979440798594660689">ಮ್ಯೂಟ್ (ಡಿಫಾಲ್ಟ್)</translation>
 <translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="5063480226653192405">ಬಳಕೆ</translation>
 <translation id="3006881078666935414">ಯಾವುದೇ ಬಳಕೆ ಡೇಟಾ ಇಲ್ಲ</translation>
@@ -2127,6 +2139,7 @@
 <translation id="2318923050469484167">ಪ್ರಸ್ತುತ ಅದೃಶ್ಯ ಸೆಶನ್ (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">ಯಾವುದೇ ಸೈಟ್‌ಗಳನ್ನು ಝೂಮ್ ಇನ್ ಅಥವಾ ಝೂಮ್ ಔಟ್ ಮಾಡಲಾಗಿಲ್ಲ</translation>
 <translation id="3566721612727112615">ಯಾವುದೇ ಸೈಟ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ</translation>
+<translation id="8098574385249290065">ಯಾವ ಸೈಟ್‌ಗಳು ಧ್ವನಿಯನ್ನು ಪ್ಲೇ ಮಾಡಬೇಕು ಎಂಬುದನ್ನು Brave ಆಯ್ಕೆ ಮಾಡಲಿ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)</translation>
 <translation id="5763751966069581670">ಯಾವುದೇ USB ಸಾಧನಗಳು ಕಂಡುಬಂದಿಲ್ಲ</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">ಸೈಟ್ ಸೇರಿಸಿ</translation>
@@ -2170,25 +2183,20 @@
 <translation id="4562155214028662640">ಫಿಂಗರ್‌‌ಫ್ರಿಂಟ್‌  ಸೇರಿಸಿ</translation>
 <translation id="1719312230114180055">ಗಮನಿಸಿ: ಬಲವಾದ ಪ್ಯಾಟರ್ನ್ ಅಥವಾ ಪಿನ್‌ಗಿಂತ ನಿಮ್ಮ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಕಡಿಮೆ ಸುರಕ್ಷಿತವಾಗಿರಬಹುದು.</translation>
 <translation id="1927632033341042996">ಫಿಂಗರ್ <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">ಬೆರಳಚ್ಚು ಅನ್‌ಲಾಕ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="7665369617277396874">ಖಾತೆಯನ್ನು ಸೇರಿಸು</translation>
 <translation id="3422989461909154470">ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ಮತ್ತು ವೆಬ್‌ಸೈಟ್‌ಗಳ ಮೂಲಕ ನೀವು ಸೈನ್ ಇನ್ ಮಾಡಿದ Brave Software ಖಾತೆಗಳನ್ನು ಇಲ್ಲಿ ನಿರ್ವಹಿಸಬಹುದು.</translation>
 <translation id="1987317783729300807">ಖಾತೆಗಳು</translation>
 <translation id="8418661265246754237">Brave Software ಖಾತೆಗಳು</translation>
-<translation id="2107494551712864447">ಬೆರಳಚ್ಚು ಸೇರಿಸಿ</translation>
-<translation id="6388771388956873507">ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಸೆನ್ಸರ್‌ ಅನ್ನು ಹುಡುಕಿ ಮತ್ತು ಅದನ್ನು ಬೆರಳಿನಿಂದ ಸ್ಪರ್ಶಿಸಿ</translation>
-<translation id="9170397650136757332">ನಿಮ್ಮ ಫಿಂಗರ್‌ ಫ್ರಿಂಟ್‌‌ನ ಎಲ್ಲಾ ವಿವಿಧ ಭಾಗಗಳನ್ನು ಸೆರೆಹಿಡಿಯಲು ಇದೀಗ ನಿಮ್ಮ ಬೆರಳನ್ನು ನಿಧಾನವಾಗಿ ಸರಿಸಿ</translation>
-<translation id="161707228174452095">ಬೆರಳಚ್ಚು ಸೇರಿಸಲಾಗಿದೆ!</translation>
-<translation id="4576537685267142337">ಎಡ ಬೆರಳು, ನಂತರ ಮತ್ತೊಮ್ಮೆ ಸಂವೇದಕವನ್ನು ಸ್ಪರ್ಶಿಸಿ</translation>
-<translation id="494660967831069720">ಭಾಗಶಃ ಡೇಟಾ</translation>
-<translation id="3064410671692449875">ಸಾಕಷ್ಟು ಡೇಟಾ ಇಲ್ಲ</translation>
-<translation id="2532026602297547439">ಸಂವೇದಕ ಕೊಳೆಯಾಗಿದೆ</translation>
-<translation id="8642267168767642381">ಬೆರಳನ್ನು ತೀರಾ ನಿಧಾನ ಸರಿಸಲಾಗಿದೆ</translation>
-<translation id="2039623879703305659">ಬೆರಳನ್ನು ತೀರಾ ತ್ವರಿತವಾಗಿ ಸರಿಸಲಾಗಿದೆ</translation>
-<translation id="7311891583377621132">ಫಿಂಗರ್‌ ಫ್ರಿಂಟ್‌‌ನ ವಿವಿಧ ಭಾಗಗಳನ್ನು ಸೆರೆಹಿಡಿಯಲು ಬೆರಳನ್ನು ನಿಧಾನವಾಗಿ ಸರಿಸಿ</translation>
+<translation id="1059855432287631118">ಫಿಂಗರ್‌ಪ್ರಿಂಟ್‌ ಅನ್ನು ನೋಂದಾಯಿಸಲಾಗುತ್ತಿದೆ</translation>
+<translation id="878068003854005405">ಪ್ರಾರಂಭಿಸೋಣ. ಸೆನ್ಸರ್‌ನ ಮೇಲೆ ನಿಮ್ಮ ಬೆರಳನ್ನು ಇರಿಸಿ.</translation>
+<translation id="7189965711416741966">ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಸೇರಿಸಲಾಗಿದೆ.</translation>
+<translation id="9220820413868316583">ಬೆರಳನ್ನು ಸರಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="4534661889221639075">ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="3645372836428131288">ಫಿಂಗರ್‌‌ಪ್ರಿಂಟ್‌‌ನ ಬೇರೊಂದು ಭಾಗವನ್ನು ಸೆರೆಹಿಡಿಯಲು ಬೆರಳನ್ನು ನಿಧಾನವಾಗಿ ಸರಿಸಿ.</translation>
 <translation id="7345706641791090287">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಖಚಿತಪಡಿಸಿ</translation>
 <translation id="381202950560906753">ಇನ್ನೊಂದನ್ನು ಸೇರಿಸಿ</translation>
-<translation id="6658023813581644008">ಸೈನ್ ಇನ್‌ಗಾಗಿ Smart Lock ಹೊಂದಿಸಲು, ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</translation>
+<translation id="6968288415730398122">ಸ್ಕ್ರೀನ್ ಲಾಕ್ ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</translation>
+<translation id="4103091233824664032">ಸ್ಕ್ರೀನ್ ಲಾಕ್ ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ ಮತ್ತು ಸೈನ್‌ ಇನ್‌ ಮಾಡಿ</translation>
 <translation id="5449551289610225147">ಅಮಾನ್ಯ ಪಾಸ್‌ವರ್ಡ್</translation>
 <translation id="5374359983950678924">ಚಿತ್ರವನ್ನು ಬದಲಿಸಿ</translation>
 <translation id="6984299437918708277">ಸೈನ್-ಇನ್ ಪರದೆಯಲ್ಲಿ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರದರ್ಶಿಸಲು ಚಿತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
@@ -2217,7 +2225,7 @@
 <translation id="1136155683023653803">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು, ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು, ಇತಿಹಾಸ, ಮತ್ತು ಇನ್ನಷ್ಟನ್ನು ನಿಮ್ಮ ಖಾತೆಗೆ ಸಿಂಕ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="3267417306184901318">ನಿಮ್ಮ Brave Software ಖಾತೆಗೆ ಸಿಂಕ್ ಮಾಡಲಾದ ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಡೇಟಾ ಮತ್ತು ಚಟುವಟಿಕೆ</translation>
 <translation id="1123187597739372905">ಸಿಂಕ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
-<translation id="8420510748452002155">ವೈಯಕ್ತಿಕವಲ್ಲದ ಸೇವೆಗಳು</translation>
+<translation id="5428209950370661546">ಇತರ Brave Software ಸೇವೆಗಳು</translation>
 <translation id="2055016640093734678">Brave Software ಸೇವೆಗಳ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="7956662517480676674">ಸಿಂಕ್ ಮತ್ತು Brave Software ಸೇವೆಗಳು</translation>
 <translation id="2453021845418314664">ಸುಧಾರಿತ ಸಿಂಕ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
@@ -2400,9 +2408,14 @@
 <translation id="2315821125498993513">ಫೋನ್‌ಗೆ ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಇದರ ಬಗ್ಗೆ <ph name="LINK_BEGIN"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together ಆನ್ ಆಗಿದೆ</translation>
 <translation id="3088402208262982892">Better Together ಆಫ್ ಆಗಿದೆ</translation>
+<translation id="7179187931092694802">ನಿಮ್ಮ ಫೋನ್‌‍ನ ಮೂಲಕ ನಿಮ್ಮ Bravebook ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ. <ph name="LINK_BEGIN"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">ತತ್‌ಕ್ಷಣದ ಟೆಥರಿಂಗ್‌</translation>
+<translation id="4746351372139058112">ಸಂದೇಶಗಳು</translation>
+<translation id="2248072377758660530">ನಿಮ್ಮ Bravebook ನಿಂದ ಪಠ್ಯ ಸಂದೇಶಗಳನ್ನು ಕಳುಹಿಸಿ ಮತ್ತು ಸ್ವೀಕರಿಸಿ. <ph name="LINK_BEGIN"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">ಈ ಸಾಧನವನ್ನು ಮರೆತುಬಿಡಿ</translation>
 <translation id="3606712892509067288">Better Together ನಿಂದ ತೆಗೆದುಹಾಕಿ</translation>
+<translation id="5078490485380754244">ಸಾಧನವನ್ನು ಮರೆತುಬಿಡಿ</translation>
+<translation id="8072033737676488034">ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ತೆಗೆದುಹಾಕಿ ಮತ್ತು Better Together ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="7878562273885520351">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ ಅನ್ನು ಸುಲಭವಾಗಿ ಪತ್ತೆ ಮಾಡಬಹುದು</translation>
 <translation id="6582421931165117398">ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯನ್ನು ಸಂರಕ್ಷಿಸಲು, ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಇದೀಗ ಬದಲಾಯಿಸಿ. ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ ಬದಲಾಯಿಸುವ ಮೊದಲು, ಸೈನ್‌ ಇನ್‌ ಮಾಡಲು ನಿಮ್ಮನ್ನು ಕೇಳಲಾಗುತ್ತದೆ.</translation>
 <translation id="1089439967362294234">ಪಾಸ್‌ವರ್ಡ್ ಬದಲಾಯಿಸಿ</translation>
@@ -2503,6 +2516,7 @@
 <translation id="2202898655984161076">ಪ್ರಿಂಟರ್‌ಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡುವಲ್ಲಿ ಸಮಸ್ಯೆ ಉಂಟಾಗಿದೆ. ನಿಮ್ಮ ಕೆಲವು ಪ್ರಿಂಟರ್‌ಗಳು <ph name="CLOUD_PRINT_NAME"/> ನೊಂದಿಗೆ ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಣಿ ಹೊಂದದೆ ಇರಬಹುದು.</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> ಕನೆಕ್ಟರ್ ಪ್ರಕ್ರಿಯೆಯು ಕ್ರ‍್ಯಾಶ್‌ ಆಗಿದೆ. ಮರುಪ್ರಾರಂಭಿಸುವುದೆ?</translation>
 <translation id="6904655473976120856">ನಿರ್ಗಮಿಸಲು ಅಪ್ಲಿಕೇಶನ್ ಬಟನ್‌ ಅನ್ನು ಒತ್ತಿ</translation>
+<translation id="79766959863778284">XR ಪ್ರತ್ಯೇಕ ಸಾಧನ ಸೇವೆ</translation>
 <translation id="8909833622202089127">ನಿಮ್ಮ ಸ್ಧಳವನ್ನು ಸೈಟ್‌ ಟ್ರ್ಯಾಕ್ ಮಾಡುತ್ತಿದೆ</translation>
 <translation id="375636864092143889">ನಿಮ್ಮ ಮೈಕ್ರೊಫೋನ್ ಅನ್ನು ಸೈಟ್‌ ಬಳಸುತ್ತಿದೆ</translation>
 <translation id="310671807099593501">ಬ್ಲೂಟೂತ್ ಅನ್ನು ಸೈಟ್‌ ಬಳಸುತ್ತಿದೆ</translation>
