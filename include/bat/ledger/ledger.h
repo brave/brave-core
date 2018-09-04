@@ -145,6 +145,7 @@ class LEDGER_EXPORT Ledger {
   virtual bool GetBalanceReport(PUBLISHER_MONTH month,
                               int year,
                               ledger::BalanceReportInfo* report_info) const = 0;
+  virtual std::map<std::string, ledger::BalanceReportInfo> GetAllBalanceReports() const = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
   virtual void SaveMediaVisit(const ledger::VisitData& visit_data, const uint64_t& duration) = 0;
