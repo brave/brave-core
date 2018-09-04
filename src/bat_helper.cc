@@ -18,6 +18,7 @@
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
 
+#include "bat/ledger/ledger.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
 #include "tweetnacl.h"
@@ -709,7 +710,7 @@ namespace braveledger_bat_helper {
         d.HasMember("closing_balance") && d["closing_balance"].IsDouble() &&
         d.HasMember("grants") && d["grants"].IsDouble() &&
         d.HasMember("earning_from_ads") && d["earning_from_ads"].IsDouble() &&
-        d.HasMember("auto_contribute") && d["auto_contribute"].IsDouble() && 
+        d.HasMember("auto_contribute") && d["auto_contribute"].IsDouble() &&
         d.HasMember("recurring_donation") && d["recurring_donation"].IsDouble() &&
         d.HasMember("one_time_donation") && d["one_time_donation"].IsDouble());
     }
@@ -844,7 +845,7 @@ namespace braveledger_bat_helper {
 
     writer.String("allow_non_verified");
     writer.Bool(data.allow_non_verified_);
-    
+
     writer.String("pubs_load_timestamp");
     writer.Uint64(data.pubs_load_timestamp_);
 
@@ -1866,21 +1867,21 @@ namespace braveledger_bat_helper {
     std::string url;
     switch (server) {
       case SERVER_TYPES::BALANCE:
-        if (braveledger_ledger::g_isProduction) {
+        if (ledger::is_production) {
           url = BALANCE_PRODUCTION_SERVER;
         } else {
           url = BALANCE_STAGING_SERVER;
         }
         break;
       case SERVER_TYPES::PUBLISHER:
-        if (braveledger_ledger::g_isProduction) {
+        if (ledger::is_production) {
           url = PUBLISHER_PRODUCTION_SERVER;
         } else {
           url = PUBLISHER_STAGING_SERVER;
         }
         break;
       default:
-        if (braveledger_ledger::g_isProduction) {
+        if (ledger::is_production) {
           url = LEDGER_PRODUCTION_SERVER;
         } else {
           url = LEDGER_STAGING_SERVER;

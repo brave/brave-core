@@ -16,6 +16,9 @@
 
 namespace ledger {
 
+extern bool is_production;
+extern bool is_verbose;
+
 LEDGER_EXPORT struct VisitData {
   VisitData();
   VisitData(const std::string& _tld,
@@ -87,13 +90,13 @@ class LEDGER_EXPORT Ledger {
       uint32_t tab_id,
       const std::string& url,
       const std::map<std::string, std::string>& parts,
-      const std::string& first_party_url, 
+      const std::string& first_party_url,
       const std::string& referrer,
       const VisitData& visit_data) = 0;
 
   virtual void OnPostData(
       const std::string& url,
-      const std::string& first_party_url, 
+      const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
       const VisitData& visit_data) = 0;

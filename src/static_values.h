@@ -64,9 +64,6 @@
 
 namespace braveledger_ledger {
 
-// TODO NZ we need to define this variabled via flags that we set in the client that is using this lib
-static const bool g_isProduction = true;
-static const bool g_isVerbose = true;
 static const uint8_t g_hkdfSalt[] = {126, 244, 99, 158, 51, 68, 253, 80, 133, 183, 51, 180, 77,
   62, 74, 252, 62, 106, 96, 125, 241, 110, 134, 87, 190, 208,
   158, 84, 125, 69, 246, 207, 162, 247, 107, 172, 37, 34, 53,
