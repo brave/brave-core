@@ -867,7 +867,7 @@ void BatClient::recoverWallet(const std::string& passPhrase) {
   newSeed.resize(32);
   size_t written = 0;
   int result = bip39_mnemonic_to_bytes(nullptr, passPhrase.c_str(), &newSeed.front(), newSeed.size(), &written);
-  if (braveledger_ledger::g_isVerbose) {
+  if (ledger::is_verbose) {
     LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
   }
   if (0 != result || 0 == written) {

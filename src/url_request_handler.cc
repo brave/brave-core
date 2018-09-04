@@ -4,6 +4,8 @@
 
 #include "url_request_handler.h"
 
+#include "bat/ledger/ledger.h"
+
 namespace bat_ledger {
 
 URLRequestHandler::URLRequestHandler() {}
@@ -25,7 +27,7 @@ void URLRequestHandler::OnURLRequestResponse(uint64_t request_id,
     return;
   }
 
-  if (braveledger_ledger::g_isVerbose) {
+  if (ledger::is_verbose) {
     LOG(ERROR) << "[ RESPONSE ]";
     LOG(ERROR) << "> url: " << url;
     LOG(ERROR) << "> response: " << response;

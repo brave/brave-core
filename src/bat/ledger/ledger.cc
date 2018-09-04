@@ -12,6 +12,9 @@
 
 namespace ledger {
 
+bool is_production = true;
+bool is_verbose = true;
+
 VisitData::VisitData():
     tab_id(-1) {}
 
