@@ -206,6 +206,19 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile) :
     publisher_list_path_(profile->GetPath().Append("publishers_list")),
     publisher_info_backend_(new PublisherInfoDatabase(publisher_info_db_path_)),
     next_timer_id_(0) {
+// TODO(bridiver) - production/verbose should
+// also be controllable by command line flags
+#if defined(IS_OFFICIAL_BUILD)
+ledger::is_production = true;
+#else
+ledger::is_production = false;
+#endif
+
+#if defined(NDEBUG)
+ledger::is_verbose = false;
+#else
+ledger::is_verbose = true;
+#endif
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
