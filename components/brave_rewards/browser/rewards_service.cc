@@ -10,11 +10,12 @@
 namespace brave_rewards {
 
 #if !BUILDFLAG(BRAVE_REWARDS_ENABLED)
-bool IsMediaLink(const GURL& url,
-                 const GURL& first_party_url,
-                 const content::Referrer& referrer) {
-  return false;
-}
+  #include "content/public/common/referrer.h"
+  bool IsMediaLink(const GURL& url,
+                   const GURL& first_party_url,
+                   const content::Referrer& referrer) {
+    return false;
+  }
 #endif
 
 RewardsService::RewardsService() {
