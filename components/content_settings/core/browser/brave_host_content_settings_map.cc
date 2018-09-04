@@ -11,9 +11,10 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
     PrefService* prefs,
     bool is_incognito_profile,
     bool is_guest_profile,
-    bool store_last_modified)
+    bool store_last_modified,
+    bool migrate_requesting_and_top_level_origin_settings)
     : HostContentSettingsMap(prefs, is_incognito_profile, is_guest_profile,
-        store_last_modified) {
+        store_last_modified, migrate_requesting_and_top_level_origin_settings) {
   InitializeFingerprintingContentSetting();
   InitializeReferrerContentSetting();
   InitializeCookieContentSetting();

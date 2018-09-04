@@ -39,6 +39,7 @@ json_features("behavior_features") {
 }
 
 brave_extensions_api_schema_sources = [ "brave_shields.json" ]
+brave_extensions_api_uncompiled_sources = []
 brave_extensions_api_root_namespace = "extensions::api::%(namespace)s"
 brave_extensions_api_schema_include_rules =
     "//brave/common/extensions/api:extensions::api::%(namespace)s"
@@ -78,21 +79,27 @@ function_registration("generated_api_registration") {
 
 
 generated_json_strings("generated_api_json_strings") {
-  sources = brave_extensions_api_schema_sources
-  deps = brave_extensions_api_deps
-  visibility = [ ":api" ]
-  root_namespace = brave_extensions_api_root_namespace
+  sources = brave_extensions_api_schema_sources +
+            brave_extensions_api_uncompiled_sources
+
+  configs = [ "//build/config:precompiled_headers" ]
   bundle_name = "Brave"
   schema_include_rules = brave_extensions_api_schema_include_rules
+
+  root_namespace = brave_extensions_api_root_namespace
+  deps = brave_extensions_api_deps
+
+  visibility = [ ":api" ]
 }
 
 generated_types("generated_api_types") {
   sources = brave_extensions_api_schema_sources
+  configs = [ "//build/config:precompiled_headers" ]
+  schema_include_rules = brave_extensions_api_schema_include_rules
+
+  root_namespace = brave_extensions_api_root_namespace
   deps = brave_extensions_api_deps
   visibility = [ ":api" ]
-  configs = [ "//build/config:precompiled_headers" ]
-  root_namespace = brave_extensions_api_root_namespace
-  schema_include_rules = brave_extensions_api_schema_include_rules
 }
 
 # Public Targets

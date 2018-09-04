@@ -1,6 +1,6 @@
-// Copyright 2014 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
@@ -12,9 +12,9 @@ namespace brave_rewards {
 
 class RewardsService;
 
-class RewardsServiceObserver {
+class RewardsServiceObserver : public base::CheckedObserver {
  public:
-  virtual ~RewardsServiceObserver() {}
+  ~RewardsServiceObserver() override {}
 
   virtual void OnWalletInitialized(RewardsService* rewards_service,
                                int error_code) {};
