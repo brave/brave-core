@@ -108,7 +108,7 @@ class LoginTableViewCell: UITableViewCell {
 
     fileprivate var customIndentView = UIView()
 
-    fileprivate var customCheckmarkIcon = UIImageView(image: UIImage(named: "loginUnselected"))
+    fileprivate var customCheckmarkIcon = UIImageView(image: #imageLiteral(resourceName: "loginUnselected"))
 
     /// Override the default accessibility label since it won't include the description by default
     /// since it's a UITextField acting as a label.
@@ -328,7 +328,7 @@ class LoginTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        customCheckmarkIcon.image = UIImage(named: selected ? "loginSelected" : "loginUnselected")
+        customCheckmarkIcon.image = selected ? #imageLiteral(resourceName: "loginSelected") : #imageLiteral(resourceName: "loginUnselected")
     }
 }
 
@@ -358,7 +358,7 @@ extension LoginTableViewCell {
     func updateCellWithLogin(_ login: LoginData) {
         descriptionLabel.text = login.hostname
         highlightedLabel.text = login.username
-        iconImageView.image = UIImage(named: "faviconFox")
+        iconImageView.image = #imageLiteral(resourceName: "faviconFox")
     }
 }
 

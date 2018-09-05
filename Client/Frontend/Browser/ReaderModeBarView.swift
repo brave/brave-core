@@ -25,8 +25,8 @@ enum ReaderModeBarButtonType {
     }
 
     fileprivate var image: UIImage? {
-        let image = UIImage(named: imageName)
-        image?.accessibilityLabel = localizedDescription
+        let image = UIImage(imageLiteralResourceName: imageName)
+        image.accessibilityLabel = localizedDescription
         return image
     }
 }

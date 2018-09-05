@@ -37,7 +37,7 @@ class TopSiteItemCell: UICollectionViewCell {
 
     lazy var pinImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage.templateImageNamed("pin_small")
+        imageView.image = #imageLiteral(resourceName: "pin_small").template
         imageView.tintColor = TopSiteCellUX.PinColor
         return imageView
     }()

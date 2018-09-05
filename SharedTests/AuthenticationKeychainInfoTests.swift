@@ -8,7 +8,9 @@ import XCTest
 import SwiftKeychainWrapper
 
 class AuthenticationKeychainInfoTests: XCTestCase {
-
+    
+    /*
+    
     func testEncodingAndDecoding() {
         let passcode = "1234"
         let authInfo = AuthenticationKeychainInfo(passcode: passcode)
@@ -39,5 +41,5 @@ class AuthenticationKeychainInfoTests: XCTestCase {
 
         XCTAssertNil(decodedAuthInfo.lockOutInterval, "The lockoutInterval was never used. It should be nil")
     }
-
+    */
 }

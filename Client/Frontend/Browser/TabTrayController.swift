@@ -91,7 +91,7 @@ class TabCell: UICollectionViewCell {
         self.titleText.font = DynamicFontHelper.defaultHelper.DefaultSmallFontBold
 
         self.closeButton = UIButton()
-        self.closeButton.setImage(UIImage.templateImageNamed("tab_close"), for: [])
+        self.closeButton.setImage(#imageLiteral(resourceName: "tab_close").template, for: [])
         self.closeButton.imageView?.contentMode = .scaleAspectFit
         self.closeButton.contentMode = .center
         self.closeButton.tintColor = UIColor.Photon.Grey40
@@ -456,6 +456,7 @@ class TabTrayController: UIViewController {
         } else {
             emptyPrivateTabsView.isHidden = false
             toView = emptyPrivateTabsView
+            openNewTab()
         }
         toView.alpha = 0
         toView.transform = scaleDownTransform
@@ -769,9 +770,9 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
         tabCell.accessibilityHint = NSLocalizedString("Swipe right or left with three fingers to close the tab.", comment: "Accessibility hint for tab tray's displayed tab.")
 
         if let favIcon = tab.displayFavicon, let url = URL(string: favIcon.url) {
-            tabCell.favicon.sd_setImage(with: url, placeholderImage: UIImage(named: "defaultFavicon"), options: [], completed: nil)
+            tabCell.favicon.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "defaultFavicon"), options: [], completed: nil)
         } else {
-            let defaultFavicon = UIImage(named: "defaultFavicon")
+            let defaultFavicon = #imageLiteral(resourceName: "defaultFavicon")
             if tab.isPrivate {
                 tabCell.favicon.image = defaultFavicon
                 tabCell.favicon.tintColor = UIColor.Photon.White100
@@ -964,7 +965,7 @@ fileprivate class EmptyPrivateTabsView: UIView {
     }()
 
     fileprivate var iconImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "largePrivateMask"))
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "largePrivateMask"))
         return imageView
     }()
 
@@ -1067,7 +1068,7 @@ class TrayToolbar: UIView {
 
     lazy var addTabButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage.templateImageNamed("nav-add"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "nav-add").template, for: .normal)
         button.accessibilityLabel = NSLocalizedString("Add Tab", comment: "Accessibility label for the Add Tab button in the Tab Tray.")
         button.accessibilityIdentifier = "TabTrayController.addTabButton"
         return button
@@ -1075,7 +1076,7 @@ class TrayToolbar: UIView {
 
     lazy var deleteButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage.templateImageNamed("action_delete"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "action_delete").template, for: .normal)
         button.accessibilityLabel = Strings.TabTrayDeleteMenuButtonAccessibilityLabel
         button.accessibilityIdentifier = "TabTrayController.removeTabsButton"
         return button

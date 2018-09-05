@@ -80,7 +80,7 @@ class ActivityStreamHighlightCell: UICollectionViewCell {
 
     fileprivate lazy var playLabel: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage.templateImageNamed("play")
+        view.image = #imageLiteral(resourceName: "play").template
         view.tintColor = .white
         view.alpha = 0.97
         view.layer.shadowColor = UIColor.black.cgColor
@@ -184,10 +184,10 @@ class ActivityStreamHighlightCell: UICollectionViewCell {
 
         if let bookmarked = site.bookmarked, bookmarked {
             self.descriptionLabel.text = Strings.HighlightBookmarkText
-            self.statusIcon.image = UIImage(named: "context_bookmark")
+            self.statusIcon.image = #imageLiteral(resourceName: "context_bookmark")
         } else {
             self.descriptionLabel.text = Strings.HighlightVistedText
-            self.statusIcon.image = UIImage(named: "context_viewed")
+            self.statusIcon.image = #imageLiteral(resourceName: "context_viewed")
         }
     }
 }

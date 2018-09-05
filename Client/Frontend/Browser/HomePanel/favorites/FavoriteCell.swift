@@ -84,7 +84,7 @@ class FavoriteCell: UICollectionViewCell {
     
     let editButton = UIButton().then {
         $0.isExclusiveTouch = true
-        let removeButtonImage = UIImage(named: "edit-small")?.withRenderingMode(.alwaysTemplate)
+        let removeButtonImage = #imageLiteral(resourceName: "edit-small").template
         $0.setImage(removeButtonImage, for: .normal)
         $0.addTarget(self, action: #selector(FavoriteCell.editButtonTapped), for: UIControlEvents.touchUpInside)
         $0.accessibilityLabel = Strings.Edit_Bookmark

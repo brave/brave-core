@@ -56,13 +56,13 @@ class SearchInputView: UIView {
     }()
 
     lazy var searchIcon: UIImageView = {
-        return UIImageView(image: UIImage(named: "quickSearch"))
+        return UIImageView(image: #imageLiteral(resourceName: "quickSearch"))
     }()
 
     fileprivate lazy var closeButton: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(tappedClose), for: .touchUpInside)
-        button.setImage(UIImage(named: "clear"), for: [])
+        button.setImage(#imageLiteral(resourceName: "clear"), for: [])
         button.accessibilityLabel = NSLocalizedString("Clear Search", tableName: "LoginManager",
             comment: "Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode")
         return button
