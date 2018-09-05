@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 static_library("brave_test_support_unit") {
@@ -163,7 +164,6 @@ test("brave_browser_tests") {
     "//brave/browser/ui/webui/brave_new_tab_ui_browsertest.cc",
     "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
     "//brave/common/brave_channel_info_browsertest.cc",
-    "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
     "//brave/components/brave_shields/browser/ad_block_service_browsertest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_service_browsertest.cc",
     "//brave/components/brave_shields/browser/tracking_protection_service_browsertest.cc",
@@ -180,6 +180,12 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/updater/extension_cache_fake.cc",
     "//chrome/browser/extensions/updater/extension_cache_fake.h",
   ]
+
+  if (brave_rewards_enabled) {
+    sources += [
+      "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
+    ]
+  }
 
   # API tests
   sources += [
