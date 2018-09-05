@@ -16,33 +16,33 @@
 
 namespace {
 void SetBraveThemeTypePref(Profile* profile,
-                           BraveThemeService::BraveThemeType type) {
+                           BraveThemeType type) {
   profile->GetPrefs()->SetInteger(kBraveThemeType, type);
 }
 
-BraveThemeService::BraveThemeType GetBraveThemeTypeFromString(
+BraveThemeType GetBraveThemeTypeFromString(
     base::StringPiece theme) {
   if (theme == "Default")
-    return BraveThemeService::BRAVE_THEME_TYPE_DEFAULT;
+    return BraveThemeType::BRAVE_THEME_TYPE_DEFAULT;
 
   if (theme == "Light")
-    return BraveThemeService::BRAVE_THEME_TYPE_LIGHT;
+    return BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
 
   if (theme == "Dark")
-    return BraveThemeService::BRAVE_THEME_TYPE_DARK;
+    return BraveThemeType::BRAVE_THEME_TYPE_DARK;
 
   NOTREACHED();
-  return BraveThemeService::BRAVE_THEME_TYPE_DEFAULT;
+  return BraveThemeType::BRAVE_THEME_TYPE_DEFAULT;
 }
 
 std::string GetStringFromBraveThemeType(
-    BraveThemeService::BraveThemeType theme) {
+    BraveThemeType theme) {
   switch (theme) {
-    case BraveThemeService::BRAVE_THEME_TYPE_DEFAULT:
+    case BraveThemeType::BRAVE_THEME_TYPE_DEFAULT:
       return "Default";
-    case BraveThemeService::BRAVE_THEME_TYPE_LIGHT:
+    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
       return "Light";
-    case BraveThemeService::BRAVE_THEME_TYPE_DARK:
+    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
       return "Dark";
     default:
       NOTREACHED();
@@ -80,5 +80,5 @@ void BraveAppearanceHandler::GetBraveThemeType(const base::ListValue* args) {
   ResolveJavascriptCallback(
       args->GetList()[0].Clone(),
       base::Value(GetStringFromBraveThemeType(
-          BraveThemeService::GetBraveThemeType(profile_))));
+          BraveThemeService::GetUserPreferredBraveThemeType(profile_))));
 }

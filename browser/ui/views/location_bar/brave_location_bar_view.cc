@@ -4,12 +4,19 @@
 
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
+#include "brave/browser/themes/brave_theme_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/location_bar/star_view.h"
+#include "components/version_info/channel.h"
 
 void BraveLocationBarView::Init() {
+  // LocationBarView (original) GetTint is called from ctor,
+  // which will not use our overriden function, so call it again here.
+  tint_ = GetTint();
   // base method calls Update and Layout
   LocationBarView::Init();
   // brave action buttons
@@ -62,9 +69,29 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   return min_size;
 }
 
+OmniboxTint BraveLocationBarView::GetTint() {
+  // Match the user-selectable brave theme, even if there is a theme extension
+  // installed, allowing non-extension-themeable elements to fit in better with
+  // a theme extension.
+  if (profile()->GetProfileType() == Profile::INCOGNITO_PROFILE) {
+    return OmniboxTint::PRIVATE; // special extra enum value
+  }
+  // TODO: BraveThemeService can have a simpler get dark / light function
+  switch (BraveThemeService::GetActiveBraveThemeType(profile())) {
+    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
+      return OmniboxTint::LIGHT;
+    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
+      return OmniboxTint::DARK;
+    default:
+      NOTREACHED();
+      return OmniboxTint::LIGHT;
+  }
+}
+
 // Provide base class implementation for Update override that has been added to
 // header via a patch. This should never be called as the only instantiated
 // implementation should be our |BraveLocationBarView|.
 void LocationBarView::Layout() {
   Layout(nullptr);
 }
+
