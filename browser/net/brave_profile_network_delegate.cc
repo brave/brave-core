@@ -4,7 +4,6 @@
 
 #include "brave/browser/net/brave_profile_network_delegate.h"
 
-#include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
@@ -18,19 +17,18 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   before_url_request_callbacks_.push_back(callback);
 
   callback =
-      base::Bind(brave::OnBeforeURLRequest_HttpsePreFileWork);
-  before_url_request_callbacks_.push_back(callback);
-
-  callback =
-      base::Bind(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
+      base::Bind(
+          brave::OnBeforeURLRequest_HttpsePreFileWork);
   before_url_request_callbacks_.push_back(callback);
 
   callback = base::Bind(brave_rewards::OnBeforeURLRequest);
   before_url_request_callbacks_.push_back(callback);
 
   brave::OnBeforeStartTransactionCallback start_transactions_callback =
-      base::Bind(brave::OnBeforeStartTransaction_SiteHacksWork);
+      base::Bind(
+          brave::OnBeforeStartTransaction_SiteHacksWork);
   before_start_transaction_callbacks_.push_back(start_transactions_callback);
+
 }
 
 BraveProfileNetworkDelegate::~BraveProfileNetworkDelegate() {

@@ -5,8 +5,10 @@
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
 
 #include "brave/common/network_constants.h"
+#include "components/component_updater/component_updater_url_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
+
 
 namespace brave {
 
