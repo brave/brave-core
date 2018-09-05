@@ -78,8 +78,6 @@ void LedgerImpl::OnLoad(const ledger::VisitData& visit_data, const uint64_t& cur
     last_tab_active_time_ = current_time;
   }
   current_pages_[visit_data.tab_id] = visit_data;
-  //LOG(ERROR) << "!!!LedgerImpl::OnLoad tab_id == " << visit_data.tab_id << ", domain == " << visit_data.domain
-  //  << ", tld == " << visit_data.tld << ", path == " << visit_data.path;
 }
 
 void LedgerImpl::OnUnload(uint32_t tab_id, const uint64_t& current_time) {
@@ -107,7 +105,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
   }
   //LOG(ERROR) << "!!!LedgerImpl::OnHide tab_id == " << tab_id << ", time == " << (current_time - last_tab_active_time_);
   DCHECK(last_tab_active_time_);
-  bat_publishers_->saveVisit(iter->second, current_time - last_tab_active_time_);
+  bat_publishers_->saveVisit(iter->second.tld, iter->second, current_time - last_tab_active_time_);
   last_tab_active_time_ = 0;
 }
 
@@ -139,16 +137,11 @@ void LedgerImpl::OnXHRLoad(
     const std::string& first_party_url,
     const std::string& referrer,
     const ledger::VisitData& visit_data) {
-  // TODO
-  //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad first_party_url == " << first_party_url;
-  //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad referrer == " << referrer;
   std::string type = bat_get_media_->GetLinkType(url, first_party_url, referrer);
   if (type.empty()) {
     // It is not a media supported type
     return;
   }
-  //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad url == " << url;
-  LOG(ERROR) << "!!!type == " << type;
   bat_get_media_->processMedia(parts, type, visit_data);
 }
 
@@ -282,25 +275,15 @@ void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info,
       std::bind(&LedgerImpl::OnSetPublisherInfo, this, callback, _1, _2));
 }
 
-void LedgerImpl::SetMediaPublisherInfo(const uint64_t& duration,
-                                std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
-                                const ledger::VisitData& visit_data,
-                                ledger::MediaPublisherInfoCallback callback) {
-  ledger_client_->SaveMediaPublisherInfo(std::move(media_publisher_info),
-      std::bind(&LedgerImpl::OnSetMediaPublisherInfo, this, duration, visit_data, callback, _1, _2));
+void LedgerImpl::SetMediaPublisherInfo(const std::string& media_key,
+                                const std::string& publisher_id) {
+  if (!media_key.empty() && !publisher_id.empty()) {
+    ledger_client_->SaveMediaPublisherInfo(media_key, publisher_id);
+  }
 }
 
-void LedgerImpl::OnSetMediaPublisherInfo(const uint64_t& duration,
-                          const ledger::VisitData& visit_data,
-                          ledger::MediaPublisherInfoCallback callback,
-                          ledger::Result result,
-                          std::unique_ptr<ledger::MediaPublisherInfo> info) {
-  SaveMediaVisit(visit_data, duration);
-  callback(result, std::move(info));
-}
-
-void LedgerImpl::SaveMediaVisit(const ledger::VisitData& visit_data, const uint64_t& duration) {
-  bat_publishers_->saveVisit(visit_data, duration);
+void LedgerImpl::SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) {
+  bat_publishers_->saveVisit(publisher_id, visit_data, duration);
 }
 
 void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
@@ -320,9 +303,9 @@ void LedgerImpl::GetPublisherInfo(
   ledger_client_->LoadPublisherInfo(filter, callback);
 }
 
-void LedgerImpl::GetMediaPublisherInfo(const std::string& publisher_key,
-                                ledger::MediaPublisherInfoCallback callback) {
-  ledger_client_->LoadMediaPublisherInfo(publisher_key, callback);
+void LedgerImpl::GetMediaPublisherInfo(const std::string& media_key,
+                                ledger::PublisherInfoCallback callback) {
+  ledger_client_->LoadMediaPublisherInfo(media_key, callback);
 }
 
 void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,

@@ -6,6 +6,7 @@
 #define BAT_LEDGER_MEDIA_PUBLISHER_INFO_HANDLER_
 
 #include "bat/ledger/export.h"
+#include "bat/ledger/publisher_info.h"
 
 namespace ledger {
 
@@ -17,23 +18,6 @@ LEDGER_EXPORT struct TwitchEventInfo {
   std::string event_;
   std::string time_;
   std::string status_;
-};
-
-LEDGER_EXPORT struct MediaPublisherInfo {
-  MediaPublisherInfo(const std::string& publisher_id);
-  MediaPublisherInfo(const MediaPublisherInfo& info);
-  ~MediaPublisherInfo();
-
-  static std::unique_ptr<MediaPublisherInfo> FromJSON(const std::string& json);
-  const std::string ToJSON() const;
-
-  std::string publisher_id_;
-  std::string publisherName_;
-  std::string publisherURL_;
-  std::string favIconURL_;
-  std::string channelName_;
-  std::string publisher_;
-  TwitchEventInfo twitchEventInfo_;
 };
 
 }  // namespace ledger

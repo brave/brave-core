@@ -26,7 +26,11 @@ LEDGER_EXPORT struct VisitData {
             const std::string& _path,
             uint32_t _tab_id,
             PUBLISHER_MONTH _local_month,
-            int _local_year);
+            int _local_year,
+            const std::string& name,
+            const std::string& url,
+            const std::string& provider,
+            const std::string& favicon_url);
   VisitData(const VisitData& data);
   ~VisitData();
 
@@ -36,7 +40,10 @@ LEDGER_EXPORT struct VisitData {
   uint32_t tab_id;
   PUBLISHER_MONTH local_month;
   int local_year;
-  std::string favIconURL;
+  std::string name;
+  std::string url;
+  std::string provider;
+  std::string favicon_url;
 };
 
 LEDGER_EXPORT struct PaymentData {
@@ -110,11 +117,10 @@ class LEDGER_EXPORT Ledger {
                                 PublisherInfoCallback callback) = 0;
   virtual void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
                                 PublisherInfoCallback callback) = 0;
-  virtual void SetMediaPublisherInfo(const uint64_t& duration, std::unique_ptr<MediaPublisherInfo> media_publisher_info,
-                                const ledger::VisitData& visit_data,
-                                MediaPublisherInfoCallback callback) = 0;
-  virtual void GetMediaPublisherInfo(const std::string& publisher_key,
-                                MediaPublisherInfoCallback callback) = 0;
+  virtual void SetMediaPublisherInfo(const std::string& media_key,
+                                const std::string& publisher_id) = 0;
+  virtual void GetMediaPublisherInfo(const std::string& media_key,
+                                PublisherInfoCallback callback) = 0;
   virtual std::vector<ContributionInfo> GetRecurringDonationPublisherInfo() = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
                                     const ledger::PublisherInfoFilter& filter,
@@ -152,7 +158,7 @@ class LEDGER_EXPORT Ledger {
   virtual std::map<std::string, ledger::BalanceReportInfo> GetAllBalanceReports() const = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
-  virtual void SaveMediaVisit(const ledger::VisitData& visit_data, const uint64_t& duration) = 0;
+  virtual void SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) = 0;
 };
 
 }  // namespace ledger

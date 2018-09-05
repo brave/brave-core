@@ -23,13 +23,21 @@ VisitData::VisitData(const std::string& _tld,
             const std::string& _path,
             uint32_t _tab_id,
             PUBLISHER_MONTH _local_month,
-            int _local_year) :
+            int _local_year,
+            const std::string& _name,
+            const std::string& _url,
+            const std::string& _provider,
+            const std::string& _favicon_url) :
     tld(_tld),
     domain(_domain),
     path(_path),
     tab_id(_tab_id),
     local_month(_local_month),
-    local_year(_local_year) {}
+    local_year(_local_year),
+    name(_name),
+    url(_url),
+    provider(_provider),
+    favicon_url(_favicon_url) {}
 
 VisitData::VisitData(const VisitData& data) :
     tld(data.tld),
@@ -38,7 +46,10 @@ VisitData::VisitData(const VisitData& data) :
     tab_id(data.tab_id),
     local_month(data.local_month),
     local_year(data.local_year),
-    favIconURL(data.favIconURL) {}
+    name(data.name),
+    url(data.url),
+    provider(data.provider),
+    favicon_url(data.favicon_url) {}
 
 VisitData::~VisitData() {}
 
@@ -82,7 +93,21 @@ PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     year(filter.year) {}
 PublisherInfoFilter::~PublisherInfoFilter() {}
 
-PublisherInfo::PublisherInfo(const id_type& publisher_id,
+PublisherInfo::PublisherInfo() :
+    duration(0u),
+    score(.0),
+    visits(0u),
+    percent(0u),
+    weight(.0),
+    excluded(PUBLISHER_EXCLUDE::DEFAULT),
+    category(PUBLISHER_CATEGORY::AUTO_CONTRIBUTE),
+    verified(false),
+    name(""),
+    url(""),
+    provider(""),
+    favicon_url("") {}
+
+PublisherInfo::PublisherInfo(const std::string& publisher_id,
                              PUBLISHER_MONTH _month,
                              int _year) :
     id(publisher_id),
@@ -95,7 +120,11 @@ PublisherInfo::PublisherInfo(const id_type& publisher_id,
     category(PUBLISHER_CATEGORY::AUTO_CONTRIBUTE),
     month(_month),
     year(_year),
-    verified(false) {}
+    verified(false),
+    name(""),
+    url(""),
+    provider(""),
+    favicon_url("") {}
 
 PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     id(info.id),
@@ -108,8 +137,11 @@ PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     category(info.category),
     month(info.month),
     year(info.year),
-    favIconURL(info.favIconURL),
     verified(info.verified),
+    name(info.name),
+    url(info.url),
+    provider(info.provider),
+    favicon_url(info.favicon_url),
     contributions(info.contributions) {}
 
 PublisherInfo::~PublisherInfo() {}
@@ -129,93 +161,6 @@ TwitchEventInfo::TwitchEventInfo(const TwitchEventInfo& info):
   status_(info.status_) {}
 
 TwitchEventInfo::~TwitchEventInfo() {}
-
-
-MediaPublisherInfo::MediaPublisherInfo(const std::string& publisher_id):
-  publisher_id_(publisher_id) {}
-
-MediaPublisherInfo::MediaPublisherInfo(const MediaPublisherInfo& info):
-  publisher_id_(info.publisher_id_),
-  publisherName_(info.publisherName_),
-  publisherURL_(info.publisherURL_),
-  favIconURL_(info.favIconURL_),
-  channelName_(info.channelName_),
-  publisher_(info.publisher_),
-  twitchEventInfo_(info.twitchEventInfo_) {}
-
-MediaPublisherInfo::~MediaPublisherInfo() {}
-
-// static
-std::unique_ptr<MediaPublisherInfo> MediaPublisherInfo::FromJSON(
-    const std::string& json) {
-  std::unique_ptr<MediaPublisherInfo> info;
-
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  if (d.HasParseError() ||
-      !d["id"].IsString() ||
-      !d["publisherName"].IsString() ||
-      !d["publisherURL"].IsString() ||
-      !d["favIconURL"].IsString() ||
-      !d["channelName"].IsString() ||
-      !d["publisher"].IsString() ||
-      !d["twitch_event"].IsString() ||
-      !d["twitch_time"].IsString() ||
-      !d["twitch_status"].IsString()) {
-    return info;
-  }
-
-  info = std::make_unique<MediaPublisherInfo>(d["id"].GetString());
-  info->publisherName_ = d["publisherName"].GetString();
-  info->publisherURL_ = d["publisherURL"].GetString();
-  info->favIconURL_ = d["favIconURL"].GetString();
-  info->channelName_ = d["channelName"].GetString();
-  info->publisher_ = d["publisher"].GetString();
-  info->twitchEventInfo_.event_ = d["twitch_event"].GetString();
-  info->twitchEventInfo_.time_ = d["twitch_time"].GetString();
-  info->twitchEventInfo_.status_ = d["twitch_status"].GetString();
-
-  return info;
-}
-
-const std::string MediaPublisherInfo::ToJSON() const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("id");
-  writer.String(publisher_id_.c_str());
-
-  writer.String("publisherName");
-  writer.String(publisherName_.c_str());
-
-  writer.String("publisherURL");
-  writer.String(publisherURL_.c_str());
-
-  writer.String("favIconURL");
-  writer.String(favIconURL_.c_str());
-
-  writer.String("channelName");
-  writer.String(channelName_.c_str());
-
-  writer.String("publisher");
-  writer.String(publisher_.c_str());
-
-  writer.String("twitch_event");
-  writer.String(twitchEventInfo_.event_.c_str());
-
-  writer.String("twitch_time");
-  writer.String(twitchEventInfo_.time_.c_str());
-
-  writer.String("twitch_status");
-  writer.String(twitchEventInfo_.status_.c_str());
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
 
 
 // static
