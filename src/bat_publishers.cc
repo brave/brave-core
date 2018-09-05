@@ -59,7 +59,7 @@ double BatPublishers::concaveScore(const uint64_t& duration) {
   return (std::sqrt(b2_ + a4_ * duration) - b_) / (double)a2_;
 }
 
-std::string getProviderName(const ledger::PublisherInfo::id_type publisher_id) {
+std::string getProviderName(const std::string publisher_id) {
   // TODO - this is for the media stuff
   if (publisher_id.find(YOUTUBE_PROVIDER_NAME) != std::string::npos) {
     return YOUTUBE_PROVIDER_NAME;
@@ -69,7 +69,7 @@ std::string getProviderName(const ledger::PublisherInfo::id_type publisher_id) {
   return "";
 }
 
-bool ignoreMinTime(const ledger::PublisherInfo::id_type publisher_id) {
+bool ignoreMinTime(const std::string publisher_id) {
   return !getProviderName(publisher_id).empty();
 }
 
@@ -88,11 +88,11 @@ void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
           payment_data, _1, _2));
 }
 
-void BatPublishers::saveVisit(ledger::PublisherInfo::id_type publisher_id,
+void BatPublishers::saveVisit(const std::string& publisher_id,
                               const ledger::VisitData& visit_data,
                               const uint64_t& duration) {
-  if (!ignoreMinTime(publisher_id) &&
-      duration < state_->min_pubslisher_duration_)
+  if (publisher_id.empty() || (!ignoreMinTime(publisher_id) &&
+      duration < state_->min_pubslisher_duration_))
     return;
 
   auto filter = CreatePublisherFilter(publisher_id,
@@ -151,7 +151,7 @@ void BatPublishers::makePaymentInternal(
 }
 
 void BatPublishers::saveVisitInternal(
-    ledger::PublisherInfo::id_type publisher_id,
+    std::string publisher_id,
     ledger::VisitData visit_data,
     uint64_t duration,
     ledger::Result result,
@@ -363,7 +363,7 @@ std::vector<braveledger_bat_helper::PUBLISHER_ST> BatPublishers::topN() {
   return res;
 }
 
-bool BatPublishers::isVerified(const ledger::PublisherInfo::id_type& publisher_id) {
+bool BatPublishers::isVerified(const std::string& publisher_id) {
   if (server_list_.empty()) {
     return false;
   }
@@ -379,7 +379,7 @@ bool BatPublishers::isVerified(const ledger::PublisherInfo::id_type& publisher_i
   return values.verified;
 }
 
-bool BatPublishers::isExcluded(const ledger::PublisherInfo::id_type& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded) {
+bool BatPublishers::isExcluded(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded) {
   if (excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED || server_list_.empty()) {
     return false;
   }

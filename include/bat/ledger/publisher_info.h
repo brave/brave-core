@@ -67,14 +67,14 @@ LEDGER_EXPORT struct ContributionInfo {
 };
 
 LEDGER_EXPORT struct PublisherInfo {
-  typedef std::string id_type;
-  PublisherInfo(const id_type& publisher_id, PUBLISHER_MONTH month, int year);
+  PublisherInfo();
+  PublisherInfo(const std::string& publisher_id, PUBLISHER_MONTH month, int year);
   PublisherInfo(const PublisherInfo& info);
   ~PublisherInfo();
 
   bool is_valid() const;
 
-  const id_type id;
+  std::string id;
   uint64_t duration;
   double score;
   uint32_t visits;

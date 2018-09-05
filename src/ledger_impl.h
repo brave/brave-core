@@ -52,12 +52,10 @@ class LedgerImpl : public ledger::Ledger,
                         ledger::PublisherInfoCallback callback) override;
   void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
                         ledger::PublisherInfoCallback callback) override;
-  void GetMediaPublisherInfo(const std::string& publisher_key,
+  void GetMediaPublisherInfo(const std::string& media_key,
                                 ledger::MediaPublisherInfoCallback callback) override;
-  void SetMediaPublisherInfo(const uint64_t& duration,
-                            std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
-                            const ledger::VisitData& visit_data,
-                            ledger::MediaPublisherInfoCallback callback) override;
+  void SetMediaPublisherInfo(const std::string& media_key,
+                            const std::string& publisher_id) override;
   std::vector<ledger::ContributionInfo> GetRecurringDonationPublisherInfo() override;
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
@@ -132,7 +130,7 @@ class LedgerImpl : public ledger::Ledger,
   void RunIOTask(LedgerTaskRunnerImpl::Task task);
   void RunTask(LedgerTaskRunnerImpl::Task task);
   std::string URIEncode(const std::string& value) override;
-  void SaveMediaVisit(const ledger::PublisherInfo::id_type publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) override;
+  void SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;
@@ -164,11 +162,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                           ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info);
-  void OnSetMediaPublisherInfo(const uint64_t& duration,
-                          const ledger::VisitData& visit_data,
-                          ledger::MediaPublisherInfoCallback callback,
-                          ledger::Result result,
-                          std::unique_ptr<ledger::MediaPublisherInfo> info);
 
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);

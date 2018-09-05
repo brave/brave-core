@@ -117,10 +117,9 @@ class LEDGER_EXPORT Ledger {
                                 PublisherInfoCallback callback) = 0;
   virtual void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
                                 PublisherInfoCallback callback) = 0;
-  virtual void SetMediaPublisherInfo(const uint64_t& duration, std::unique_ptr<MediaPublisherInfo> media_publisher_info,
-                                const ledger::VisitData& visit_data,
-                                MediaPublisherInfoCallback callback) = 0;
-  virtual void GetMediaPublisherInfo(const std::string& publisher_key,
+  virtual void SetMediaPublisherInfo(const std::string& media_key,
+                                const std::string& publisher_id) = 0;
+  virtual void GetMediaPublisherInfo(const std::string& media_key,
                                 MediaPublisherInfoCallback callback) = 0;
   virtual std::vector<ContributionInfo> GetRecurringDonationPublisherInfo() = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
@@ -159,7 +158,7 @@ class LEDGER_EXPORT Ledger {
   virtual std::map<std::string, ledger::BalanceReportInfo> GetAllBalanceReports() const = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
-  virtual void SaveMediaVisit(const ledger::PublisherInfo::id_type publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) = 0;
+  virtual void SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) = 0;
 };
 
 }  // namespace ledger

@@ -20,22 +20,6 @@ LEDGER_EXPORT struct TwitchEventInfo {
   std::string status_;
 };
 
-LEDGER_EXPORT struct MediaPublisherInfo {
-  MediaPublisherInfo(const std::string& publisher_id);
-  MediaPublisherInfo(const MediaPublisherInfo& info);
-  ~MediaPublisherInfo();
-
-  static std::unique_ptr<MediaPublisherInfo> FromJSON(const std::string& json);
-  const std::string ToJSON() const;
-
-  PublisherInfo::id_type publisher_id_;
-  std::string publisherName_; // what is this diff then channel name
-  std::string publisherURL_;
-  std::string favIconURL_;
-  std::string channelName_;
-  TwitchEventInfo twitchEventInfo_;
-};
-
 }  // namespace ledger
 
 #endif  // BAT_LEDGER_MEDIA_PUBLISHER_INFO_HANDLER_
