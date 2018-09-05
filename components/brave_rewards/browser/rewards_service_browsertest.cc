@@ -67,6 +67,9 @@ void BraveURLFetcher::DetermineURLResponsePath(std::string url) {
   } else if (url.find(braveledger_bat_helper::buildURL(GET_SET_PROMOTION,
     PREFIX_V1, braveledger_bat_helper::SERVER_TYPES::LEDGER)) == 0) {
     SetResponseString(brave_test_resp::grant_);
+  } else if (url.find(braveledger_bat_helper::buildURL(GET_PUBLISHERS_LIST_V1,
+    "", braveledger_bat_helper::SERVER_TYPES::PUBLISHER)) == 0) {
+    SetResponseString("[]");
   }
 }
 
@@ -74,7 +77,7 @@ BraveURLFetcher::BraveURLFetcher(bool success,
   const GURL& url,
   const std::string& results,
   net::URLFetcher::RequestType request_type,
-  net::URLFetcherDelegate* d) 
+  net::URLFetcherDelegate* d)
   : net::TestURLFetcher(0, url, d) {
   set_url(url);
   set_status(net::URLRequestStatus(net::URLRequestStatus::SUCCESS, 0));
@@ -87,7 +90,7 @@ BraveURLFetcher::~BraveURLFetcher() = default;
 void BraveURLFetcher::Start() {
   base::ThreadTaskRunnerHandle::Get()->PostTask(
       FROM_HERE,
-      base::BindOnce(&BraveURLFetcher::RunDelegate, 
+      base::BindOnce(&BraveURLFetcher::RunDelegate,
       weak_factory_.GetWeakPtr()));
 }
 
@@ -133,48 +136,61 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool EnableRewards() {
+  void EnableRewards() {
     // Load rewards page
     ui_test_utils::NavigateToURL(browser(), rewards_url());
     WaitForLoadStop(contents());
-    // inject fake URLFetcher objects.
-    MockURLFetcherFactory<brave_net::BraveURLFetcher> factory;
     //opt in and create wallet to enable rewards
-    bool result;
-    return ExecuteScriptAndExtractBool(contents(), 
-      "document.querySelector(\"[data-test-id='optInAction']\").click();"
+    bool result = false;
+    ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
+        "document.querySelector(\"[data-test-id='optInAction']\").click()",
+        &result));
+    ASSERT_TRUE(result);
+
+    result = false;
+    ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
+      "var count = 10;"
       "var interval = setInterval(function() {"
-      "if (document.querySelector(\"[data-test-id2='enableMain']\") != null) {"
-        "clearInterval(interval);"
-        "domAutomationController.send(true);"
-      "}"
-    "}, 1000);", &result);
+      "  if (count == 0) {"
+      "    clearInterval(interval);"
+      "    domAutomationController.send(false);"
+      "  } else {"
+      "    count -= 1;"
+      "  }"
+      "  if (document.querySelector(\"[data-test-id2='enableMain']\")) {"
+      "    clearInterval(interval);"
+      "    domAutomationController.send(true);"
+      "  }"
+      "}, 500);", &result));
+    ASSERT_TRUE(result);
   }
+
+  MockURLFetcherFactory<brave_net::BraveURLFetcher> factory;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
   // Enable Rewards
   EnableRewards();
-  EXPECT_STREQ(contents()->GetLastCommittedURL().spec().c_str(), 
+  EXPECT_STREQ(contents()->GetLastCommittedURL().spec().c_str(),
     rewards_url().spec().c_str());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
   // Enable Rewards
   EnableRewards();
-  
+
   // Toggle rewards off
-  bool result;
+  bool result = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
-    "document.querySelector(\"[data-test-id2='enableMain']\").click();"
-    "domAutomationController.send(true);", &result));
+      "document.querySelector(\"[data-test-id2='enableMain']\").click()",
+      &result));
   EXPECT_TRUE(result);
 
   // Toggle rewards back on
-  bool enableResult;
+  bool enableResult = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
-    "document.querySelector(\"[data-test-id2='enableMain']\").click();"
-    "domAutomationController.send(true);", &enableResult));
+      "document.querySelector(\"[data-test-id2='enableMain']\").click()",
+      &enableResult));
   EXPECT_TRUE(enableResult);
 }
 
@@ -186,41 +202,54 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
   EXPECT_TRUE(WaitForLoadStop(contents()));
 
   // toggle auto contribute off
-  bool result;
+  bool result = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
+    "var count = 10;"
     "var interval = setInterval(function() {"
-      "if (document.querySelector(\"[data-test-id2='autoContribution']\")"
-        " != null) {"
-        "document.querySelector(\"[data-test-id2='autoContribution']\").click();"
-        "clearInterval(interval);"
-        "domAutomationController.send(true);"
-      "}"
-    "}, 1000);", &result));
+    "  if (count == 0) {"
+    "    clearInterval(interval);"
+    "    domAutomationController.send(false);"
+    "  } else {"
+    "    count -= 1;"
+    "  }"
+    "  if (document.querySelector(\"[data-test-id2='autoContribution']\")) {"
+    "    document.querySelector(\"[data-test-id2='autoContribution']\").click();"
+    "    clearInterval(interval);"
+    "    domAutomationController.send(true);"
+    "  }"
+    "}, 500);", &result));
   EXPECT_TRUE(result);
 
   // toggle auto contribute back on
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
-    "document.querySelector(\"[data-test-id2='autoContribution']\").click();"
-    "domAutomationController.send(true);", &result));
+      "document.querySelector(\"[data-test-id2='autoContribution']\").click()",
+      &result));
   EXPECT_TRUE(result);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
   EnableRewards();
 
-  bool result;  
+  bool result = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
-    "document.querySelector(\"[data-test-id='settingsButton']\").click();"
-    "domAutomationController.send(true);", &result));
+      "document.querySelector(\"[data-test-id='settingsButton']\").click()",
+      &result));
   EXPECT_TRUE(result);
 
-  bool modalResult;
+  bool modalResult = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
+    "var count = 10;"
     "var interval = setInterval(function() {"
-      "if (document.getElementById('modal') != null) {"
-        "clearInterval(interval);"
-        "domAutomationController.send(true);"
-      "}"
-    "}, 1000);", &modalResult));
+    "  if (count == 0) {"
+    "    clearInterval(interval);"
+    "    domAutomationController.send(false);"
+    "  } else {"
+    "    count -= 1;"
+    "  }"
+    "  if (document.getElementById('modal')) {"
+    "    clearInterval(interval);"
+    "    domAutomationController.send(true);"
+    "  }"
+    "}, 500);", &modalResult));
   EXPECT_TRUE(modalResult);
 }
