@@ -5,7 +5,7 @@ console.log("in chrome.runtime.onInstalled 001");
 chrome.runtime.onStartup.addListener(function() {
   console.log("in chrome.runtime.onStartup");
   var arg1 = 142;
-  chrome.braveSync.backgroundPageToBrowser("message", arg1, 143, 144, 145, function(callback_arg1) {
+  chrome.braveSync.backgroundPageToBrowser("message", function(callback_arg1) {
     console.log("in chrome.runtime.onStartup 002-4 backgroundPageToBrowser callback callback_arg1=", callback_arg1);
   });
   console.log("in chrome.runtime.onStartup 002-5");
@@ -99,6 +99,9 @@ chrome.runtime.onStartup.addListener(function() {
     LoadJsLibScript();
   });
 
+  console.log("will call chrome.braveSync.extensionLoaded()");
+  chrome.braveSync.extensionLoaded();
+  console.log("done call chrome.braveSync.extensionLoaded()");
 });
 
 chrome.runtime.onInstalled.addListener(function() {

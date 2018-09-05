@@ -6,17 +6,21 @@
 
 #include <string>
 
+#include "components/keyed_service/core/keyed_service.h"
+
 class SyncJsLayer;
 class SyncUI;
+
+class Profile;
 
 namespace brave_sync {
 
   class Settings;
   class SyncDevices;
 
-  class Controller {
+  class Controller : public KeyedService {
   public:
-    virtual ~Controller() = default;
+    ~Controller() override = default;
     virtual void OnSetupSyncHaveCode(const std::string &sync_words,
       const std::string &device_name) = 0;
 
@@ -32,6 +36,8 @@ namespace brave_sync {
     virtual std::string GetSeed() = 0;
 
     virtual void SetupUi(SyncUI *sync_ui) = 0;
+
+    //virtual void SetProfile(Profile *profile) = 0;
   };
 
 } // namespace brave_sync

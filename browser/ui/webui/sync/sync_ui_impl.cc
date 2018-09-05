@@ -4,6 +4,7 @@
 #include "base/values.h"
 
 #include "content/public/browser/web_ui_message_handler.h"
+#include "content/public/browser/web_contents.h"
 
 #include "brave/components/brave_sync/controller.h"
 #include "brave/components/brave_sync/controller_impl.h"
@@ -11,6 +12,8 @@
 #include "brave/components/brave_sync/devices.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/value_debug.h"
+#include "brave/components/brave_sync/controller_factory.h"
+
 
 SyncUIImpl::SyncUIImpl(content::WebUI* web_ui, const std::string& host,
     const std::string& js_file, int js_resource_id, int html_resource_id)
@@ -19,7 +22,10 @@ LOG(ERROR) << "TAGAB SyncUIImpl::SyncUIImpl CTOR";
 
   RegisterCallbacks();
 
-  sync_controller_ = static_cast<brave_sync::Controller*>(brave_sync::ControllerImpl::GetInstance());
+  sync_controller_ =::brave_sync::ControllerFactory::GetForBrowserContext(
+    web_ui->GetWebContents()->GetBrowserContext()
+  );
+
   sync_controller_->SetupUi(this);
 }
 

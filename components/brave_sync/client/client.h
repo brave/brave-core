@@ -82,8 +82,6 @@ public:
   virtual void SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) = 0;
   virtual SyncLibToBrowserHandler *GetSyncToBrowserHandler() = 0;
 
-  virtual void SetProfile(Profile *profile) = 0;
-
   // After this call the library gets loaded and
   // sends SyncLibToBrowserHandler::OnGetInitData and so on
   virtual void LoadClient() = 0;
@@ -117,6 +115,9 @@ public:
 
   virtual void NeedSyncWords(const std::string &seed) = 0;
   virtual void NeedBytesFromSyncWords(const std::string &words) = 0;
+
+  // Semi-private method
+  virtual void ExtensionStartupComplete() = 0;
 };
 
 } // namespace brave_sync

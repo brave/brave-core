@@ -45,28 +45,13 @@ KeyedService* BraveSyncClientFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   Profile* profile = Profile::FromBrowserContext(context);
 
-  BraveSyncClient *brave_sync_client = new brave_sync::ClientExtImpl();
-  brave_sync_client->SetProfile(profile);
+  BraveSyncClient *brave_sync_client = new brave_sync::ClientExtImpl(profile);
 
   return brave_sync_client;
-
-  // BookmarkModel* bookmark_model =
-  //     new BookmarkModel(std::make_unique<ChromeBookmarkClient>(
-  //         profile, ManagedBookmarkServiceFactory::GetForProfile(profile),
-  //         BookmarkSyncServiceFactory::GetForProfile(profile)));
-  // bookmark_model->Load(profile->GetPrefs(), profile->GetPath(),
-  //                      StartupTaskRunnerServiceFactory::GetForProfile(profile)
-  //                          ->GetBookmarkTaskRunner(),
-  //                      content::BrowserThread::GetTaskRunnerForThread(
-  //                          content::BrowserThread::UI));
-  // BookmarkUndoServiceFactory::GetForProfile(profile)->Start(bookmark_model);
-  //
-  // return bookmark_model;
 }
 
 void BraveSyncClientFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  // move here brave_sync::prefs::Prefs::RegisterProfilePrefs
 }
 
 content::BrowserContext* BraveSyncClientFactory::GetBrowserContextToUse(

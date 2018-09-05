@@ -8,7 +8,7 @@
 #include "base/values.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
 
-class Browser;
+class Profile;
 
 namespace bookmarks {
   class BookmarkModel;
@@ -35,7 +35,7 @@ class Bookmarks : public bookmarks::BookmarkModelObserver {
 public:
   Bookmarks(CanSendSyncBookmarks *send_bookmarks);
   ~Bookmarks() override;
-  void SetBrowser(Browser* browser);
+  void SetProfile(Profile *profile);
   void SetThisDeviceId(const std::string &device_id);
   void SetObjectMap(storage::ObjectMap* sync_obj_map);
 
@@ -45,7 +45,6 @@ public:
   void AddBookmark(const jslib::SyncRecord &sync_record);
 
   void GetAllBookmarks(std::vector<const bookmarks::BookmarkNode*> &nodes);
-  //std::unique_ptr<base::Value> NativeBookmarksToSyncLV(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
   std::unique_ptr<RecordsList> NativeBookmarksToSyncRecords(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
 
   // bookmarks::BookmarkModelObserver overrides
@@ -93,7 +92,7 @@ private:
   void ResumeObserver();
 
   DISALLOW_COPY_AND_ASSIGN(Bookmarks);
-  Browser* browser_;
+  Profile *profile_;
   bookmarks::BookmarkModel* model_;
   std::string device_id_;
 

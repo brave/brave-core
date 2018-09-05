@@ -5,13 +5,21 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_OBJ_MAP_H_
 
 #include <string>
+#include <memory>
+#include <mutex> // TODO, AB: not good, remove and modify threading
+
+class Profile;
+
+namespace leveldb {
+  class DB;
+}
 
 namespace brave_sync {
 namespace storage {
 
 class ObjectMap {
 public:
-  ObjectMap();
+  ObjectMap(Profile *profile);
   ~ObjectMap();
 
   std::string GetLocalIdByObjectId(const std::string &object_id);
@@ -27,6 +35,14 @@ public:
   void CloseDBHandle();
   void ResetSync(const std::string& key);
   void DestroyDB();
+
+private:
+  void CreateOpenDatabase();
+  void TraceAll();
+
+  Profile *profile_;
+  std::unique_ptr<leveldb::DB> level_db_;
+  std::unique_ptr<std::mutex> level_db_init_mutex_;
 };
 
 } // namespace storage

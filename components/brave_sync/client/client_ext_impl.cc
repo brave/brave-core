@@ -4,27 +4,26 @@
 
 #include "brave/components/brave_sync/client/client_ext_impl.h"
 
-#include "brave/components/brave_sync/api/brave_sync_event_router.h"
-#include "brave/common/extensions/api/brave_sync.h"
-#include "brave/components/brave_sync/client/client_ext_impl_data.h"
 #include "base/logging.h"
-#include "extensions/browser/extension_registry.h"
+#include "brave/components/brave_sync/api/brave_sync_event_router.h"
+#include "brave/components/brave_sync/client/client_ext_impl_data.h"
+#include "brave/common/extensions/api/brave_sync.h"
 #include "chrome/browser/profiles/profile.h"
-
+#include "extensions/browser/extension_registry.h"
 
 namespace brave_sync {
 
-ClientExtImpl::ClientExtImpl() : handler_(nullptr), profile_(nullptr)/*, loaded_(false)*/ {
-  ;
+ClientExtImpl::ClientExtImpl(Profile *profile) : handler_(nullptr),
+  profile_(nullptr), startup_complete_(false), set_load_pending_(false) {
+  SetProfile(profile);
 }
 
 ClientExtImpl::~ClientExtImpl() {
-  if (profile_) {
-    //extensions::ExtensionRegistry::Get(profile_)->RemoveObserver(this);
-    // ^ crashes with FATAL:dependency_manager.cc(108)] Check failed: false. Attempted to access a context that was ShutDown(). This is most likely a heap smasher in progress. After KeyedService::Shutdown() completes, your service MUST NOT refer to depended services again.
-    profile_ = nullptr;
+  LOG(ERROR) << "TAGAB ClientExtImpl::~ClientExtImpl";
+}
 
-  }
+void ClientExtImpl::Shutdown() {
+  LOG(ERROR) << "TAGAB ClientExtImpl::Shutdown";
 }
 
 void ClientExtImpl::SetProfile(Profile *profile) {
@@ -32,6 +31,7 @@ void ClientExtImpl::SetProfile(Profile *profile) {
   DCHECK(profile);
   if (profile_ == profile) {
     LOG(WARNING) << "TAGAB ClientExtImpl::SetProfile profile already set";
+    DCHECK(false);
     return;
   }
 
@@ -45,31 +45,16 @@ void ClientExtImpl::SetProfile(Profile *profile) {
   if (!profile_) {
     profile_ = profile;
   }
-
-  extensions::ExtensionRegistry::Get(profile_)->AddObserver(this);
 }
 
-// extensions::ExtensionRegistryObserver implementations.
-void ClientExtImpl::OnExtensionInstalled(content::BrowserContext* browser_context,
-    const extensions::Extension* extension,
-    bool is_update) {
-  ;
-}
-
-void ClientExtImpl::OnExtensionUnloaded(content::BrowserContext* browser_context,
-    const extensions::Extension* extension,
-    extensions::UnloadedExtensionReason reason) {
-  ;
-}
-void ClientExtImpl::OnExtensionUninstalled(content::BrowserContext* browser_context,
-    const extensions::Extension* extension,
-    extensions::UninstallReason reason) {
-  ;
-}
-
-void ClientExtImpl::OnExtensionLoaded(content::BrowserContext* browser_context,
-    const extensions::Extension* extension) {
-  LOG(ERROR) << "TAGAB ClientExtImpl::OnExtensionLoaded extension->id()=" << extension->id();
+void ClientExtImpl::ExtensionStartupComplete() {
+  LOG(WARNING) << "TAGAB ClientExtImpl::ExtensionStartupComplete";
+  DCHECK(!startup_complete_);
+  startup_complete_ = true;
+  if (set_load_pending_) {
+    LOG(WARNING) << "TAGAB ClientExtImpl::ExtensionStartupComplete loading pending";
+    brave_sync_event_router_->LoadClient();
+  }
 }
 
 void ClientExtImpl::SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) {
@@ -85,14 +70,16 @@ SyncLibToBrowserHandler *ClientExtImpl::GetSyncToBrowserHandler() {
 
 void ClientExtImpl::LoadClient() {
   LOG(ERROR) << "TAGAB ClientExtImpl::LoadClient";
-  // if (loaded_) {
-  //   LOG(ERROR) << "TAGAB ClientExtImpl::LoadClient ALREADY LOADED";
-  //   return;
-  // }
-
   LOG(ERROR) << "TAGAB ClientExtImpl::LoadClient WILL DO LOAD";
-  brave_sync_event_router_->LoadClient();
-//  loaded_ = true;
+  if (startup_complete_) {
+    LOG(ERROR) << "TAGAB ClientExtImpl::LoadClient WILL DO LOAD RIGHT HERE";
+    brave_sync_event_router_->LoadClient();
+  } else {
+    LOG(ERROR) << "TAGAB ClientExtImpl::LoadClient WILL DO LOAD PENDING";
+    DCHECK(!set_load_pending_);
+    set_load_pending_ = true;
+    // Not happy with this, but extensions::ExtensionRegistryObserver approach does not work
+  }
 }
 
 void ClientExtImpl::SendGotInitData(const Uint8Array &seed, const Uint8Array &device_id,
