@@ -1891,4 +1891,15 @@ namespace braveledger_bat_helper {
 
     return url + prefix + path;
   }
+
+  std::vector<std::string> split(const std::string& s, char delim) {
+      std::stringstream ss(s);
+      std::string item;
+      std::vector<std::string> result;
+      while (getline(ss, item, delim)) {
+          result.push_back(item);
+      }
+
+      return result;
+  }
 }  // namespace braveledger_bat_helper

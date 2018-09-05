@@ -59,7 +59,7 @@ double BatPublishers::concaveScore(const uint64_t& duration) {
   return (std::sqrt(b2_ + a4_ * duration) - b_) / (double)a2_;
 }
 
-std::string getProviderName(const std::string publisher_id) {
+std::string getProviderName(const std::string& publisher_id) {
   // TODO - this is for the media stuff
   if (publisher_id.find(YOUTUBE_PROVIDER_NAME) != std::string::npos) {
     return YOUTUBE_PROVIDER_NAME;
@@ -69,7 +69,7 @@ std::string getProviderName(const std::string publisher_id) {
   return "";
 }
 
-bool ignoreMinTime(const std::string publisher_id) {
+bool ignoreMinTime(const std::string& publisher_id) {
   return !getProviderName(publisher_id).empty();
 }
 

@@ -95,8 +95,14 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
     return;
   }
 
+  std::vector<std::string> split = braveledger_bat_helper::split(mediaId, '_');
+  std::string new_media_id = mediaId;
+  if (!split.empty()) {
+    new_media_id = split[0];
+  }
+
   if (!publisher_info.get()) {
-    std::string mediaURL = getMediaURL(mediaId, providerName);
+    std::string mediaURL = getMediaURL(new_media_id, providerName);
     if (YOUTUBE_MEDIA_TYPE == providerName) {
       auto request = ledger_->LoadURL((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + ledger_->URIEncode(mediaURL),
         std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
@@ -111,12 +117,12 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
           _1,
           _2));
     } else if (TWITCH_MEDIA_TYPE == providerName) {
-      const std::string mediaUrl = getMediaURL(mediaId, providerName);
+      const std::string mediaUrl = getMediaURL(new_media_id, providerName);
       std::unique_ptr<ledger::PublisherInfo> new_publisher_info(new ledger::PublisherInfo());
       new_publisher_info->favicon_url = "";
       new_publisher_info->url = mediaUrl + "/videos";
-      std::string id = providerName + "#author:" + mediaId;
-      new_publisher_info->name = mediaId;
+      std::string id = providerName + "#author:" + new_media_id;
+      new_publisher_info->name = new_media_id;
       new_publisher_info->id = id;
 
       ledger::TwitchEventInfo oldEvent;
@@ -129,7 +135,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
       newEvent.status_ = getTwitchStatus(oldEvent, newEvent);
 
       uint64_t realDuration = getTwitchDuration(oldEvent, newEvent);
-      twitchEvents.emplace(media_key, newEvent);
+      twitchEvents[media_key] = newEvent;
 
       if (realDuration == 0) {
         return;
@@ -166,7 +172,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
       newEvent.status_ = getTwitchStatus(oldEvent, newEvent);
 
       uint64_t realDuration = getTwitchDuration(oldEvent, newEvent);
-      twitchEvents.emplace(media_key, newEvent);
+      twitchEvents[media_key] = newEvent;
 
       std::string id = publisher_info->id;
       ledger_->SaveMediaVisit(id, updated_visit_data, realDuration);

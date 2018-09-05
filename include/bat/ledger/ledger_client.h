@@ -29,8 +29,6 @@ LEDGER_EXPORT enum URL_METHOD {
 
 using PublisherInfoCallback = std::function<void(Result,
     std::unique_ptr<PublisherInfo>)>;
-using MediaPublisherInfoCallback = std::function<void(Result,
-    std::unique_ptr<PublisherInfo>)>;
 using GetPublisherInfoListCallback =
     std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
 
@@ -66,7 +64,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void LoadPublisherInfo(PublisherInfoFilter filter,
                                 PublisherInfoCallback callback) = 0;
   virtual void LoadMediaPublisherInfo(const std::string& media_key,
-                                MediaPublisherInfoCallback callback) = 0;
+                                PublisherInfoCallback callback) = 0;
   virtual void SaveMediaPublisherInfo(const std::string& media_key,
                                 const std::string& publisher_id) = 0;
   virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,

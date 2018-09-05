@@ -304,7 +304,7 @@ void LedgerImpl::GetPublisherInfo(
 }
 
 void LedgerImpl::GetMediaPublisherInfo(const std::string& media_key,
-                                ledger::MediaPublisherInfoCallback callback) {
+                                ledger::PublisherInfoCallback callback) {
   ledger_client_->LoadMediaPublisherInfo(media_key, callback);
 }
 

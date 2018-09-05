@@ -345,9 +345,7 @@ namespace braveledger_bat_helper {
     bool excluded;
   };
 
-  using GetMediaPublisherInfoSignature = void(uint64_t, const braveledger_bat_helper::MEDIA_PUBLISHER_INFO&);
   using SaveVisitSignature = void(const std::string&, uint64_t);
-  using GetMediaPublisherInfoCallback = std::function<GetMediaPublisherInfoSignature>;
   using SaveVisitCallback = std::function<SaveVisitSignature>;
 
   bool getJSONValue(const std::string& fieldName, const std::string& json, std::string & value);
@@ -416,6 +414,8 @@ namespace braveledger_bat_helper {
   uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& media_key, const std::string& type);
 
   std::string buildURL(const std::string& path, const std::string& prefix = "", const SERVER_TYPES& server = SERVER_TYPES::LEDGER);
+
+  std::vector<std::string> split(const std::string& s, char delim);
 }  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_
