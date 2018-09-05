@@ -7,7 +7,7 @@ namespace brave_rewards {
 
   ContentSite::ContentSite() : percentage(0) {}
 
-  ContentSite::ContentSite(const id_type site_id) :
+  ContentSite::ContentSite(const std::string& site_id) :
       id(site_id),
       percentage(0),
       verified(false) {

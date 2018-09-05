@@ -89,11 +89,9 @@ class RewardsServiceImpl : public RewardsService,
   uint64_t GetReconcileStamp() const override;
   std::map<std::string, std::string> GetAddresses() const override;
   void LoadMediaPublisherInfo(
-      const std::string& publisher_id,
-      ledger::MediaPublisherInfoCallback callback) override;
-  void SaveMediaPublisherInfo(
-      std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
-      ledger::MediaPublisherInfoCallback callback) override;
+      const std::string& media_key,
+      ledger::PublisherInfoCallback callback) override;
+  void SaveMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id) override;
   std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() override;
 
  private:
@@ -122,11 +120,9 @@ class RewardsServiceImpl : public RewardsService,
                             bool success);
   void OnPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
                              const ledger::PublisherInfoList list);
-  void OnMediaPublisherInfoSaved(ledger::MediaPublisherInfoCallback callback,
-                            std::unique_ptr<ledger::MediaPublisherInfo> info,
-                            bool success);
-  void OnMediaPublisherInfoLoaded(ledger::MediaPublisherInfoCallback callback,
-                             std::unique_ptr<ledger::MediaPublisherInfo> info);
+  void OnMediaPublisherInfoSaved(bool success);
+  void OnMediaPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
+                             std::unique_ptr<ledger::PublisherInfo> info);
   void OnPublisherInfoListLoaded(uint32_t start,
                                  uint32_t limit,
                                  ledger::GetPublisherInfoListCallback callback,

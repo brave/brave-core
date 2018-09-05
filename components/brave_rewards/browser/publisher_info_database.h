@@ -19,10 +19,6 @@
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 
-namespace ledger {
-struct MediaPublisherInfo;
-}
-
 namespace brave_rewards {
 
 class PublisherInfoDatabase {
@@ -37,14 +33,14 @@ class PublisherInfoDatabase {
   }
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
-  bool InsertOrUpdateMediaPublisherInfo(const ledger::MediaPublisherInfo& info);
+  bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id);
 
   bool Find(int start,
             int limit,
             const ledger::PublisherInfoFilter& filter,
             ledger::PublisherInfoList* list);
-  std::unique_ptr<ledger::MediaPublisherInfo> GetMediaPublisherInfo(
-      const std::string& publisher_id);
+  std::unique_ptr<ledger::PublisherInfo> GetMediaPublisherInfo(
+      const std::string& media_key);
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();

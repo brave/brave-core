@@ -13,13 +13,12 @@
 namespace brave_rewards {
 
 struct ContentSite {
-  typedef std::string id_type;
   ContentSite();
-  ContentSite(const id_type site_id);
+  ContentSite(const std::string& site_id);
   ContentSite(const ContentSite& properties);
   ~ContentSite();
 
-  const id_type id;
+  std::string id;
   double percentage;
   bool verified;
   std::string name;

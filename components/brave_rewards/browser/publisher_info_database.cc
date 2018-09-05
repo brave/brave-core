@@ -181,12 +181,8 @@ bool PublisherInfoDatabase::CreateMediaPublisherInfoTable() {
   sql.append(name);
   sql.append(
       "("
-      "publisher_id LONGVARCHAR PRIMARY KEY NOT NULL,"
-      // just store the raw json because this is just a 1 to 1 mapping
-      // and we don't need to sort or filter
-      "data TEXT NOT NULL,"
-      // schema version for serialized json data
-      "schema_version INTEGER DEFAULT 1 NOT NULL,"
+      "media_key TEXT NOT NULL PRIMARY KEY UNIQUE,"
+      "publisher_id LONGVARCHAR NOT NULL,"
       "CONSTRAINT fk_media_publisher_info_publisher_id"
       "    FOREIGN KEY (publisher_id)"
       "    REFERENCES publisher_info (publisher_id)"
@@ -278,7 +274,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
 }
 
 bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
-    const ledger::MediaPublisherInfo& info) {
+    const std::string& media_key, const std::string& publisher_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -289,34 +285,41 @@ bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
 
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
       "INSERT OR REPLACE INTO media_publisher_info "
-      "(publisher_id, data) "
+      "(media_key, publisher_id) "
       "VALUES (?, ?)"));
 
-  statement.BindString(0, info.publisher_id_);
-  statement.BindString(1, info.ToJSON());
+  statement.BindString(0, media_key);
+  statement.BindString(1, publisher_id);
 
   return statement.Run();
 }
 
-std::unique_ptr<ledger::MediaPublisherInfo>
-PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& publisher_id) {
+std::unique_ptr<ledger::PublisherInfo>
+PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);
 
-  std::unique_ptr<ledger::MediaPublisherInfo> info;
+  std::unique_ptr<ledger::PublisherInfo> info;
 
   if (!initialized)
     return info;
 
   sql::Statement info_sql(
-      db_.GetUniqueStatement("SELECT data FROM media_publisher_info WHERE publisher_id=?"));
+      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon "
+                             "FROM media_publisher_info as mpi "
+                             "INNER JOIN publisher_info AS pi ON mpi.publisher_id = pi.publisher_id "
+                             "WHERE mpi.media_key=?"));
 
-  info_sql.BindString(0, publisher_id);
+  info_sql.BindString(0, media_key);
 
   if (info_sql.Step()) {
-     info = ledger::MediaPublisherInfo::FromJSON(info_sql.ColumnString(0));
+    info.reset(new ledger::PublisherInfo());
+    info->id = info_sql.ColumnString(0);
+    info->name = info_sql.ColumnString(1);
+    info->url = info_sql.ColumnString(2);
+    info->favicon_url = info_sql.ColumnString(3);
   }
   return info;
 }
