@@ -35,6 +35,8 @@ const wchar_t kBinariesPathName[] = L"";
 const wchar_t kBinariesPathName[] = L"Brave Binaries";
 #endif
 
+const char kSafeBrowsingName[] = "chromium";
+
 #if defined(OFFICIAL_BUILD)
 // Regarding to install switch, use same value in
 // chrome/installer/mini_installer/configuration.cc
