@@ -89,6 +89,7 @@ declare namespace Rewards {
     url: string
     name: string
     provider: string
+    favIcon: string
   }
 
   export interface Report {

@@ -399,9 +399,10 @@ void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::Cont
       publisher->SetDouble("percentage", item.percentage);
       publisher->SetString("publisherKey", item.id);
       publisher->SetBoolean("verified", item.verified);
-      publisher->SetString("name", item.id); // TODO NZ implement
-      publisher->SetString("provider", ""); // TODO NZ implement
-      publisher->SetString("url", std::string("https://") + item.id); // TODO NZ implement
+      publisher->SetString("name", item.name);
+      publisher->SetString("provider", item.provider);
+      publisher->SetString("url", item.url);
+      publisher->SetString("favIcon", item.favicon_url);
       publishers->Append(std::move(publisher));
     }
 

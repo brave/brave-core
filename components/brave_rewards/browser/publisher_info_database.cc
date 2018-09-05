@@ -122,9 +122,13 @@ bool PublisherInfoDatabase::CreatePublisherInfoTable() {
   sql.append(name);
   sql.append(
       "("
-      "publisher_id LONGVARCHAR PRIMARY KEY NOT NULL,"
+      "publisher_id LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
       "verified BOOLEAN DEFAULT 0 NOT NULL,"
-      "excluded INTEGER DEFAULT 0 NOT NULL)");
+      "excluded INTEGER DEFAULT 0 NOT NULL,"
+      "name TEXT NOT NULL,"
+      "favIcon TEXT NOT NULL,"
+      "url TEXT NOT NULL,"
+      "provider TEXT NOT NULL)");
   return GetDB().Execute(sql.c_str());
 }
 
@@ -177,12 +181,8 @@ bool PublisherInfoDatabase::CreateMediaPublisherInfoTable() {
   sql.append(name);
   sql.append(
       "("
-      "publisher_id LONGVARCHAR PRIMARY KEY NOT NULL,"
-      // just store the raw json because this is just a 1 to 1 mapping
-      // and we don't need to sort or filter
-      "data TEXT NOT NULL,"
-      // schema version for serialized json data
-      "schema_version INTEGER DEFAULT 1 NOT NULL,"
+      "media_key TEXT NOT NULL PRIMARY KEY UNIQUE,"
+      "publisher_id LONGVARCHAR NOT NULL,"
       "CONSTRAINT fk_media_publisher_info_publisher_id"
       "    FOREIGN KEY (publisher_id)"
       "    REFERENCES publisher_info (publisher_id)"
@@ -203,12 +203,17 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   sql::Statement publisher_info_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE,
           "INSERT OR REPLACE INTO publisher_info "
-          "(publisher_id, verified, excluded) "
-          "VALUES (?, ?, ?)"));
+          "(publisher_id, verified, excluded, "
+          "name, url, provider, favIcon) "
+          "VALUES (?, ?, ?, ?, ?, ?, ?)"));
 
   publisher_info_statement.BindString(0, info.id);
   publisher_info_statement.BindBool(1, info.verified);
   publisher_info_statement.BindInt(2, static_cast<int>(info.excluded));
+  publisher_info_statement.BindString(3, info.name);
+  publisher_info_statement.BindString(4, info.url);
+  publisher_info_statement.BindString(5, info.provider);
+  publisher_info_statement.BindString(6, info.favicon_url);
 
   if (!publisher_info_statement.Run()) {
     return false;
@@ -218,27 +223,58 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
     return true;
   }
 
-  sql::Statement activity_info_statement(
+  sql::Statement activity_get(
+      db_.GetUniqueStatement("SELECT publisher_id FROM activity_info WHERE "
+                             "publisher_id=? AND category=? "
+                             "AND month=? AND year=?"));
+
+  activity_get.BindString(0, info.id);
+  activity_get.BindInt(1, info.category);
+  activity_get.BindInt(2, info.month);
+  activity_get.BindInt(3, info.year);
+
+  if (activity_get.Step()) {
+    sql::Statement activity_info_update(
       GetDB().GetCachedStatement(SQL_FROM_HERE,
-          "INSERT OR REPLACE INTO activity_info "
-          "(publisher_id, duration, score, percent, "
-          "weight, category, month, year) "
-          "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"));
+          "UPDATE activity_info SET "
+          "duration=?, score=?, percent=?, "
+          "weight=? WHERE "
+          "publisher_id=? AND category=? "
+          "AND month=? AND year=?"));
 
-  activity_info_statement.BindString(0, info.id);
-  activity_info_statement.BindInt64(1, (int)info.duration);
-  activity_info_statement.BindDouble(2, info.score);
-  activity_info_statement.BindInt64(3, (int)info.percent);
-  activity_info_statement.BindDouble(4, info.weight);
-  activity_info_statement.BindInt(5, info.category);
-  activity_info_statement.BindInt(6, info.month);
-  activity_info_statement.BindInt(7, info.year);
+    activity_info_update.BindInt64(0, (int)info.duration);
+    activity_info_update.BindDouble(1, info.score);
+    activity_info_update.BindInt64(2, (int)info.percent);
+    activity_info_update.BindDouble(3, info.weight);
+    activity_info_update.BindString(4, info.id);
+    activity_info_update.BindInt(5, info.category);
+    activity_info_update.BindInt(6, info.month);
+    activity_info_update.BindInt(7, info.year);
 
-  return activity_info_statement.Run();
+    return activity_info_update.Run();
+  }
+
+  sql::Statement activity_info_insert(
+    GetDB().GetCachedStatement(SQL_FROM_HERE,
+        "INSERT INTO activity_info "
+        "(publisher_id, duration, score, percent, "
+        "weight, category, month, year) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"));
+
+  activity_info_insert.BindString(0, info.id);
+  activity_info_insert.BindInt64(1, (int)info.duration);
+  activity_info_insert.BindDouble(2, info.score);
+  activity_info_insert.BindInt64(3, (int)info.percent);
+  activity_info_insert.BindDouble(4, info.weight);
+  activity_info_insert.BindInt(5, info.category);
+  activity_info_insert.BindInt(6, info.month);
+  activity_info_insert.BindInt(7, info.year);
+
+  return activity_info_insert.Run();
 }
 
 bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
-    const ledger::MediaPublisherInfo& info) {
+    const std::string& media_key, const std::string& publisher_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -249,32 +285,41 @@ bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
 
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
       "INSERT OR REPLACE INTO media_publisher_info "
-      "(publisher_id, data) "
+      "(media_key, publisher_id) "
       "VALUES (?, ?)"));
 
-  statement.BindString(0, info.publisher_id_);
-  statement.BindString(1, info.ToJSON());
+  statement.BindString(0, media_key);
+  statement.BindString(1, publisher_id);
 
   return statement.Run();
 }
 
-std::unique_ptr<ledger::MediaPublisherInfo>
-PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& publisher_id) {
+std::unique_ptr<ledger::PublisherInfo>
+PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);
 
-  std::unique_ptr<ledger::MediaPublisherInfo> info;
+  std::unique_ptr<ledger::PublisherInfo> info;
 
   if (!initialized)
     return info;
 
   sql::Statement info_sql(
-      db_.GetUniqueStatement("SELECT data FROM media_publisher_info"));
+      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon "
+                             "FROM media_publisher_info as mpi "
+                             "INNER JOIN publisher_info AS pi ON mpi.publisher_id = pi.publisher_id "
+                             "WHERE mpi.media_key=?"));
+
+  info_sql.BindString(0, media_key);
 
   if (info_sql.Step()) {
-     info = ledger::MediaPublisherInfo::FromJSON(info_sql.ColumnString(0));
+    info.reset(new ledger::PublisherInfo());
+    info->id = info_sql.ColumnString(0);
+    info->name = info_sql.ColumnString(1);
+    info->url = info_sql.ColumnString(2);
+    info->favicon_url = info_sql.ColumnString(3);
   }
   return info;
 }
@@ -294,7 +339,8 @@ bool PublisherInfoDatabase::Find(int start,
     return false;
 
   std::string query = "SELECT ai.publisher_id, ai.duration, ai.score, ai.percent, "
-      "ai.weight, pi.verified, pi.excluded, ai.category, ai.month, ai.year "
+      "ai.weight, pi.verified, pi.excluded, ai.category, ai.month, ai.year, pi.name, "
+      "pi.url, pi.provider, pi.favIcon "
       "FROM activity_info AS ai "
       "INNER JOIN publisher_info AS pi ON ai.publisher_id = pi.publisher_id "
       "WHERE 1 = 1";
@@ -350,6 +396,10 @@ bool PublisherInfoDatabase::Find(int start,
     info.percent = info_sql.ColumnInt64(3);
     info.weight = info_sql.ColumnDouble(4);
     info.verified = info_sql.ColumnBool(5);
+    info.name = info_sql.ColumnString(10);
+    info.url = info_sql.ColumnString(11);
+    info.provider = info_sql.ColumnString(12);
+    info.favicon_url = info_sql.ColumnString(13);
 
     info.excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(6));
     info.category =

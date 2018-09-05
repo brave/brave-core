@@ -45,9 +45,14 @@ class ContributeBox extends React.Component<Props, State> {
     }
 
     return list.map((item: Rewards.Publisher) => {
+      let name = item.name
+      if (item.provider) {
+        name = `${name} ${getLocale('on')} ${item.provider}`
+      }
+
       return {
         profile: {
-          name: item.name,
+          name,
           verified: item.verified,
           provider: (item.provider ? item.provider : undefined) as Provider,
           src: `chrome://favicon/size/48@1x/${item.url}/`

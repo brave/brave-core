@@ -79,6 +79,10 @@ ContentSite PublisherInfoToContentSite(
   ContentSite content_site(publisher_info.id);
   content_site.percentage = publisher_info.percent;
   content_site.verified = publisher_info.verified;
+  content_site.name = publisher_info.name;
+  content_site.url = publisher_info.url;
+  content_site.provider = publisher_info.provider;
+  content_site.favicon_url = publisher_info.favicon_url;
   return content_site;
 }
 
@@ -110,23 +114,24 @@ std::string LoadStateOnFileTaskRunner(
 }
 
 bool SaveMediaPublisherInfoOnFileTaskRunner(
-    ledger::MediaPublisherInfo publisher_info,
+    const std::string& media_key,
+    const std::string& publisher_id,
     PublisherInfoDatabase* backend) {
-  if (backend && backend->InsertOrUpdateMediaPublisherInfo(publisher_info))
+  if (backend && backend->InsertOrUpdateMediaPublisherInfo(media_key, publisher_id))
     return true;
 
   return false;
 }
 
-std::unique_ptr<ledger::MediaPublisherInfo>
+std::unique_ptr<ledger::PublisherInfo>
 LoadMediaPublisherInfoListOnFileTaskRunner(
-    const std::string publisher_id,
+    const std::string media_key,
     PublisherInfoDatabase* backend) {
-  std::unique_ptr<ledger::MediaPublisherInfo> info;
+  std::unique_ptr<ledger::PublisherInfo> info;
   if (!backend)
     return info;
 
-  info = backend->GetMediaPublisherInfo(publisher_id);
+  info = backend->GetMediaPublisherInfo(media_key);
   return info;
 }
 
@@ -271,7 +276,11 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
                          url.path(),
                          tab_id.id(),
                          GetPublisherMonth(now),
-                         GetPublisherYear(now));
+                         GetPublisherYear(now),
+                         tld,
+                         origin.spec(),
+                         "",
+                         "");
   ledger_->OnLoad(data, GetCurrentTimestamp());
 }
 
@@ -327,7 +336,11 @@ void RewardsServiceImpl::OnPostData(SessionID tab_id,
       url.spec(),
       tab_id.id(),
       GetPublisherMonth(now),
-      GetPublisherYear(now));
+      GetPublisherYear(now),
+      "",
+      "",
+      "",
+      "");
 
   ledger_->OnPostData(url.spec(),
                       first_party_url.spec(),
@@ -348,7 +361,8 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
 
   auto now = base::Time::Now();
   ledger::VisitData data("", "", url.spec(), tab_id.id(),
-                         GetPublisherMonth(now), GetPublisherYear(now));
+                         GetPublisherMonth(now), GetPublisherYear(now),
+                         "", "", "", "");
 
   ledger_->OnXHRLoad(tab_id.id(),
                      url.spec(),
@@ -359,19 +373,19 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
 }
 
 void RewardsServiceImpl::LoadMediaPublisherInfo(
-    const std::string& publisher_id,
-    ledger::MediaPublisherInfoCallback callback) {
+    const std::string& media_key,
+    ledger::PublisherInfoCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadMediaPublisherInfoListOnFileTaskRunner,
-          publisher_id, publisher_info_backend_.get()),
+          media_key, publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnMediaPublisherInfoLoaded,
                      AsWeakPtr(),
                      callback));
 }
 
 void RewardsServiceImpl::OnMediaPublisherInfoLoaded(
-    ledger::MediaPublisherInfoCallback callback,
-    std::unique_ptr<ledger::MediaPublisherInfo> info) {
+    ledger::PublisherInfoCallback callback,
+    std::unique_ptr<ledger::PublisherInfo> info) {
   if (!info) {
     callback(ledger::Result::NOT_FOUND, std::move(info));
     return;
@@ -381,26 +395,21 @@ void RewardsServiceImpl::OnMediaPublisherInfoLoaded(
 }
 
 void RewardsServiceImpl::SaveMediaPublisherInfo(
-    std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
-    ledger::MediaPublisherInfoCallback callback) {
+    const std::string& media_key,
+    const std::string& publisher_id) {
 base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&SaveMediaPublisherInfoOnFileTaskRunner,
-                    *media_publisher_info,
+                    media_key,
+                    publisher_id,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnMediaPublisherInfoSaved,
-                     AsWeakPtr(),
-                     callback,
-                     base::Passed(std::move(media_publisher_info))));
+                     AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnMediaPublisherInfoSaved(
-    ledger::MediaPublisherInfoCallback callback,
-    std::unique_ptr<ledger::MediaPublisherInfo> info,
-    bool success) {
-  callback(success ? ledger::Result::OK
-                   : ledger::Result::ERROR, std::move(info));
-
-  TriggerOnContentSiteUpdated();
+void RewardsServiceImpl::OnMediaPublisherInfoSaved(bool success) {
+  if (!success) {
+    VLOG(1) << "Error in OnMediaPublisherInfoSaved";
+  }
 }
 
 std::string RewardsServiceImpl::URIEncode(const std::string& value) {
