@@ -27,7 +27,7 @@
 namespace brave_sync {
 
 Bookmarks::Bookmarks(CanSendSyncBookmarks *send_bookmarks) :
-  browser_(nullptr), model_(nullptr), sync_obj_map_(nullptr),
+  profile_(nullptr), model_(nullptr), sync_obj_map_(nullptr),
   observer_is_set_(false), send_bookmarks_(send_bookmarks) {
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::Bookmarks CTOR";
 }
@@ -39,19 +39,20 @@ Bookmarks::~Bookmarks() {
   }
 }
 
-void Bookmarks::SetBrowser(Browser* browser) {
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SetBrowser browser="<<browser;
-  DCHECK(browser != nullptr);
-  if (browser_ == nullptr) {
-    browser_ = browser;
-    model_ = BookmarkModelFactory::GetForBrowserContext(browser_->profile());
-    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SetBrowser model_="<<model_;
+void Bookmarks::SetProfile(Profile *profile) {
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SetProfile profile="<<profile;
+  DCHECK(profile != nullptr);
+  if (profile_ == nullptr) {
+    model_ = BookmarkModelFactory::GetForBrowserContext(profile);
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SetProfile model_="<<model_;
     DCHECK(observer_is_set_ == false);
     model_->AddObserver(this);
     observer_is_set_ = true;
     // per profile
+    profile_ = profile;
   } else {
-    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SetModel already set browser_="<<browser_;
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SetProfile already set profile_="<<profile_;
+    DCHECK(false);
   }
 }
 

@@ -7,7 +7,6 @@
 
 #include "base/macros.h"
 #include "base/memory/singleton.h"
-#include "chrome/browser/ui/browser_list_observer.h"
 #include "brave/components/brave_sync/controller.h"
 #include "brave/components/brave_sync/cansendbookmarks.h"
 #include "brave/components/brave_sync/client/client.h"
@@ -45,17 +44,13 @@ class Bookmarks;
 
 class ControllerImpl : public Controller,
                        public SyncLibToBrowserHandler,
-                       public BrowserListObserver,
                        public CanSendSyncBookmarks {
 public:
-  ControllerImpl();
+  ControllerImpl(Profile *profile);
   ~ControllerImpl() override;
 
-  static ControllerImpl* GetInstance();
-
-  // BrowserListObserver overrides:
-  void OnBrowserAdded(Browser* browser) override;
-  void OnBrowserSetLastActive(Browser* browser) override;
+  // KeyedService overrides
+  void Shutdown() override;
 
   // Controller messages from UI
   void OnSetupSyncHaveCode(const std::string &sync_words,
@@ -72,6 +67,8 @@ public:
 private:
   DISALLOW_COPY_AND_ASSIGN(ControllerImpl);
   friend struct base::DefaultSingletonTraits<ControllerImpl>;
+
+  void SetProfile(Profile *profile);
 
   void InitJsLib(const bool &setup_new_sync);
 
@@ -98,21 +95,16 @@ private:
   void OnSyncWordsPrepared(const std::string &words) override;
   void OnBytesFromSyncWordsPrepared(const Uint8Array &bytes, const std::string &error_message) override;
 
-
-
   void OnResolvedPreferences(const RecordsList &records);
   void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
   //^ these are used
 
-
   void RequestSyncData();
   void FetchSyncRecords(const bool &bookmarks, const bool &history,
     const bool &preferences, int64_t start_at, int max_records);
 
-
   SyncRecordPtr PrepareResolvedDevice2(const std::string &object_id);
-
 
   SyncRecordAndExistingList PrepareResolvedResponse(
     const std::string &category_name,
@@ -188,7 +180,7 @@ private:
   std::unique_ptr<brave_sync::storage::ObjectMap> sync_obj_map_;
   std::unique_ptr<brave_sync::Bookmarks> bookmarks_;
 
-  Browser *browser_;
+  Profile *profile_;
 
   bool seen_get_init_data_ = false;
 

@@ -32,12 +32,13 @@ void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterTimePref(kLastFetchTime, base::Time());
 }
 
-Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {
+Prefs::Prefs(Profile* profile) : pref_service_(nullptr) {
+  DCHECK(profile);
   LOG(ERROR) << "TAGAB brave_sync::Prefs::Prefs this="<<this;
+  LOG(ERROR) << "TAGAB brave_sync::Prefs::Prefs profile="<<profile;
 
-  // use ptr from BraveSyncServiceBase::BraveSyncServiceBase, //sync_client->GetPrefService()
+  pref_service_ = profile->GetPrefs();
 
-  pref_service_ = ProfileManager::GetActiveUserProfile()->GetPrefs();
   LOG(ERROR) << "TAGAB brave_sync::Prefs::Prefs pref_service_="<<pref_service_;
 }
 

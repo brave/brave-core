@@ -20,6 +20,8 @@ source_set("brave_sync") {
     "client/client_factory.cc",
     "client/client_factory.h",
     "controller.h",
+    "controller_factory.h",
+    "controller_factory.cc",
     "controller_impl.cc",
     "controller_impl.h",
     "cansendbookmarks.h",

@@ -9,6 +9,7 @@
 #include "base/macros.h"
 
 class PrefService;
+class Profile;
 
 namespace base {
   class Time;
@@ -29,7 +30,7 @@ class Prefs {
 public:
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-  Prefs(PrefService* pref_service);
+  Prefs(Profile *profile);
 
   std::string GetSeed() const;
   void SetSeed(const std::string& seed);

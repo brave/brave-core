@@ -11,6 +11,7 @@
 #include "base/path_service.h"
 #include "base/threading/thread.h"
 #include "base/threading/thread_restrictions.h" // TODO, AB: remove and use Task with sequence checker
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
 
@@ -19,11 +20,13 @@ namespace storage {
 
 static const char DB_FILE_NAME[] = "brave_sync_db";
 
-leveldb::DB* g_level_db;
-static std::mutex* g_pLevel_db_init_mutex = new std::mutex();
+ObjectMap::ObjectMap(Profile *profile) : profile_(nullptr) {
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap CTOR profile="<<profile;
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap CTOR profile->GetPath()="<<profile->GetPath();
 
-ObjectMap::ObjectMap() {
-  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap CTOR";
+  DCHECK(profile);
+  profile_ = profile;
+  level_db_init_mutex_.reset(new std::mutex());
 }
 
 ObjectMap::~ObjectMap() {
@@ -31,9 +34,9 @@ ObjectMap::~ObjectMap() {
   Close();
 }
 
-void TraceAll() {
+void ObjectMap::TraceAll() {
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::TraceAll:-----------------------";
-  leveldb::Iterator* it = g_level_db->NewIterator(leveldb::ReadOptions());
+  leveldb::Iterator* it = level_db_->NewIterator(leveldb::ReadOptions());
   for (it->SeekToFirst(); it->Valid(); it->Next()) {
     LOG(ERROR) << "<" << it->key().ToString() << ">: <" << it->value().ToString() << ">";
   }
@@ -42,48 +45,45 @@ void TraceAll() {
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::TraceAll:^----------------------";
 }
 
-void CreateOpenDatabase() {
-  if (!g_pLevel_db_init_mutex) {
+void ObjectMap::CreateOpenDatabase() {
+  if (!level_db_init_mutex_) {
     return;
   }
-  std::lock_guard<std::mutex> guard(*g_pLevel_db_init_mutex);
+  std::lock_guard<std::mutex> guard(*level_db_init_mutex_);
 
-  if (nullptr == g_level_db) {
-    base::FilePath app_data_path;
-    bool success = base::PathService::Get(chrome::DIR_USER_DATA, &app_data_path);
-    CHECK(success);
-    LOG(ERROR) << "TAGAB CreateOpenDatabase success=" << success;
-    LOG(ERROR) << "TAGAB CreateOpenDatabase app_data_path=" << app_data_path;
+  if (nullptr == level_db_) {
+    DCHECK(profile_);
 
-    base::FilePath dbFilePath = app_data_path.Append(DB_FILE_NAME);
-    LOG(ERROR) << "TAGAB CreateOpenDatabase dbFilePath=" << dbFilePath;
+    base::FilePath dbFilePath = profile_->GetPath().Append(DB_FILE_NAME);
+    LOG(ERROR) << "TAGAB ObjectMap::CreateOpenDatabase dbFilePath=" << dbFilePath;
     leveldb::Options options;
     options.create_if_missing = true;
-    leveldb::Status status = leveldb::DB::Open(options, dbFilePath.value().c_str(), &g_level_db);
-    LOG(ERROR) << "TAGAB CreateOpenDatabase status=" << status.ToString();
-    if (!status.ok() || !g_level_db) {
-        if (g_level_db) {
-            delete g_level_db;
-            g_level_db = nullptr;
-        }
+    leveldb::DB *level_db_raw = nullptr;
+    leveldb::Status status = leveldb::DB::Open(options, dbFilePath.value().c_str(), &level_db_raw);
+    LOG(ERROR) << "TAGAB ObjectMap::CreateOpenDatabase status=" << status.ToString();
+    if (!status.ok() || !level_db_raw) {
+      if (level_db_raw) {
+        delete level_db_raw;
+      }
 
-        LOG(ERROR) << "sync level db open error " << DB_FILE_NAME;
-        return;
+      LOG(ERROR) << "sync level db open error " << DB_FILE_NAME;
+      return;
     }
+    level_db_.reset(level_db_raw);
     LOG(ERROR) << "TAGAB DB opened";
-    ///TraceAll();
+    //TraceAll();
   }
 }
 
 std::string ObjectMap::GetLocalIdByObjectId(const std::string &objectId) {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
-  if (nullptr == g_level_db) {
+  if (nullptr == level_db_) {
       return "";
   }
 
   std::string value;
-  leveldb::Status db_status = g_level_db->Get(leveldb::ReadOptions(), objectId, &value);
+  leveldb::Status db_status = level_db_->Get(leveldb::ReadOptions(), objectId, &value);
   if (!db_status.ok()) {
     LOG(ERROR) << "sync level db get error " << db_status.ToString();
   }
@@ -94,12 +94,12 @@ std::string ObjectMap::GetLocalIdByObjectId(const std::string &objectId) {
 std::string ObjectMap::GetObjectIdByLocalId(const std::string &localId) {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
-  if (nullptr == g_level_db) {
+  if (nullptr == level_db_) {
       return "";
   }
 
   std::string value;
-  leveldb::Status db_status = g_level_db->Get(leveldb::ReadOptions(), localId, &value);
+  leveldb::Status db_status = level_db_->Get(leveldb::ReadOptions(), localId, &value);
 
   if (!db_status.ok()) {
     LOG(ERROR) << "sync level db get error " << db_status.ToString();
@@ -115,18 +115,18 @@ void ObjectMap::SaveObjectId(
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectId - enter";
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
-  if (nullptr == g_level_db) {
-    LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectId nullptr == g_level_db ???";
+  if (nullptr == level_db_) {
+    LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectId nullptr == level_db_ ???";
     return;
   }
 
-  leveldb::Status db_status = g_level_db->Put(leveldb::WriteOptions(), localId, objectIdJSON);
+  leveldb::Status db_status = level_db_->Put(leveldb::WriteOptions(), localId, objectIdJSON);
   if (!db_status.ok()) {
     LOG(ERROR) << "sync level db put error " << db_status.ToString();
   }
 
   if (0 != objectId.size()) {
-      db_status = g_level_db->Put(leveldb::WriteOptions(), objectId, localId);
+      db_status = level_db_->Put(leveldb::WriteOptions(), objectId, localId);
       if (!db_status.ok()) {
         LOG(ERROR) << "sync level db put error " << db_status.ToString();
       }
@@ -137,50 +137,41 @@ void ObjectMap::SaveObjectId(
 void ObjectMap::DeleteByLocalId(const std::string &localId) {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
-  if (nullptr == g_level_db) {
+  if (nullptr == level_db_) {
       return;
   }
 
   std::string value;
-  leveldb::Status db_status = g_level_db->Get(leveldb::ReadOptions(), localId, &value);
+  leveldb::Status db_status = level_db_->Get(leveldb::ReadOptions(), localId, &value);
   if (!db_status.ok()) {
     LOG(ERROR) << "sync level db get error " << db_status.ToString();
   }
 
-  db_status = g_level_db->Delete(leveldb::WriteOptions(), localId);
+  db_status = level_db_->Delete(leveldb::WriteOptions(), localId);
   if (!db_status.ok()) {
     LOG(ERROR) << "sync level db delete error " << db_status.ToString();
   }
-  db_status = g_level_db->Delete(leveldb::WriteOptions(), value);
+  db_status = level_db_->Delete(leveldb::WriteOptions(), value);
   if (!db_status.ok()) {
     LOG(ERROR) << "sync level db delete error " << db_status.ToString();
   }
 }
 
 void ObjectMap::Close() {
-  if (g_level_db) {
-      delete g_level_db;
-      g_level_db = nullptr;
-  }
-  if (g_pLevel_db_init_mutex) {
-      delete g_pLevel_db_init_mutex;
-      g_pLevel_db_init_mutex = nullptr;
-  }
+  level_db_.reset();
+  level_db_init_mutex_.reset();
 }
 
 void ObjectMap::CloseDBHandle() {
-  if (g_level_db) {
-      delete g_level_db;
-      g_level_db = nullptr;
-  }
+  level_db_.reset();
 }
 
 void ObjectMap::DestroyDB() {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
-  if (!g_pLevel_db_init_mutex) {
+  if (!level_db_init_mutex_) {
     return;
   }
-  std::lock_guard<std::mutex> guard(*g_pLevel_db_init_mutex);
+  std::lock_guard<std::mutex> guard(*level_db_init_mutex_);
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ResetObjects";
   CloseDBHandle();
   base::FilePath app_data_path;
@@ -197,10 +188,10 @@ void ObjectMap::DestroyDB() {
 void ObjectMap::ResetSync(const std::string& key) {
   base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
-  if (nullptr == g_level_db) {
+  if (nullptr == level_db_) {
       return;
   }
-  g_level_db->Delete(leveldb::WriteOptions(), key);
+  level_db_->Delete(leveldb::WriteOptions(), key);
 }
 
 } // namespace storage

@@ -282,29 +282,19 @@
     ],
     "functions": [
       {
+        "name": "extensionLoaded",
+        "type": "function",
+        "description": "Notifies extension has been loaded",
+        "parameters": []
+      },
+      {
         "name": "backgroundPageToBrowser",
         "type": "function",
-        "description": "Sends integer to brave_sync api",
+        "description": "Sends message to brave_sync api",
         "parameters": [
           {
             "type": "string",
             "name": "message"
-          },
-          {
-            "type": "any",
-            "name": "arg1"
-          },
-          {
-            "type": "any",
-            "name": "arg2"
-          },
-          {
-            "type": "any",
-            "name": "arg3"
-          },
-          {
-            "type": "any",
-            "name": "arg4"
           },
           {
             "type": "function",

@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_sync/client/client.h"
 #include "base/macros.h"
-#include "extensions/browser/extension_registry_observer.h"
 
 class Profile;
 namespace extensions {
@@ -16,27 +15,15 @@ class BraveSyncEventRouter;
 
 namespace brave_sync {
 
-class ClientExtImpl : public BraveSyncClient,
-                      public extensions::ExtensionRegistryObserver {
+class ClientExtImpl : public BraveSyncClient/*,
+                      public extensions::ExtensionRegistryObserver */{
 public:
-  ClientExtImpl();
+  ClientExtImpl(Profile *profile);
   ~ClientExtImpl() override;
 
-  void SetProfile(Profile *profile) override;
+  void Shutdown() override;
 
-  // extensions::ExtensionRegistryObserver implementations.
-  void OnExtensionInstalled(content::BrowserContext* browser_context,
-                            const extensions::Extension* extension,
-                            bool is_update) override;
-  void OnExtensionUnloaded(content::BrowserContext* browser_context,
-                           const extensions::Extension* extension,
-                           extensions::UnloadedExtensionReason reason) override;
-  void OnExtensionUninstalled(content::BrowserContext* browser_context,
-                              const extensions::Extension* extension,
-                              extensions::UninstallReason reason) override;
-  void OnExtensionLoaded(content::BrowserContext* browser_context,
-                         const extensions::Extension* extension) override;
-
+  void ExtensionStartupComplete() override;
   // BraveSyncClient overrides
 
   // BraveSync to Browser messages
@@ -66,11 +53,15 @@ public:
   void NeedBytesFromSyncWords(const std::string &words) override;
 
 private:
+  void SetProfile(Profile *profile);
+
   DISALLOW_COPY_AND_ASSIGN(ClientExtImpl);
   SyncLibToBrowserHandler *handler_;
   std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
   Profile *profile_;
-  ///bool loaded_;
+
+  bool startup_complete_;
+  bool set_load_pending_;
 };
 
 } // namespace brave_sync

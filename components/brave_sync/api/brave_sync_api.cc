@@ -10,6 +10,7 @@
 #include "brave/components/brave_sync/client/client_factory.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/jslib_messages.h"
+#include "brave/components/brave_sync/controller_factory.h"
 
 namespace extensions {
 namespace api {
@@ -21,7 +22,7 @@ ExtensionFunction::ResponseAction BraveSyncBackgroundPageToBrowserFunction::Run(
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   LOG(ERROR) << "TAGAB BraveSyncBackgroundPageToBrowserFunction::Run params->message=" << params->message;
-  LOG(ERROR) << "TAGAB BraveSyncBackgroundPageToBrowserFunction::Run params->arg1=" << params->arg1;
+
   // if (error) {
   //   return RespondNow(Error(error));
   // }
@@ -35,11 +36,6 @@ ExtensionFunction::ResponseAction BraveSyncGetInitDataFunction::Run() {
   std::unique_ptr<brave_sync::GetInitData::Params> params(
       brave_sync::GetInitData::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  LOG(ERROR) << "TAGAB BraveSyncGetInitDataFunction::Run this->browser_context()=" << this->browser_context();
-
-  // BookmarkModel* model =
-  //     BookmarkModelFactory::GetForBrowserContext(GetProfile());
 
   LOG(ERROR) << "TAGAB BraveSyncGetInitDataFunction::Run params->sync_version=" << params->sync_version;
   // if (error) {
@@ -182,6 +178,20 @@ ExtensionFunction::ResponseAction BraveSyncBytesFromSyncWordsPreparedFunction::R
   ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
   sync_client->GetSyncToBrowserHandler()->OnBytesFromSyncWordsPrepared(
     ::brave_sync::Uint8ArrayFromUnsignedCharVec(params->bytes), params->error_message);
+
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction BraveSyncExtensionLoadedFunction::Run() {
+  LOG(ERROR) << "TAGAB BraveSyncExtensionLoadedFunction::Run";
+
+  // Usually this is the earlier point of initialization
+  ::brave_sync::Controller* brave_sync_controller = ::brave_sync::ControllerFactory::GetForBrowserContext(browser_context());
+  LOG(ERROR) << "TAGAB BraveSyncExtensionLoadedFunction::Run brave_sync_controller="<<brave_sync_controller;
+
+  // Also inform sync client extension started
+  ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
+  sync_client->ExtensionStartupComplete();
 
   return RespondNow(NoArguments());
 }

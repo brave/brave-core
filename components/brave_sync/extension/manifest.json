@@ -1,5 +1,5 @@
 {
-   "name":"Brave Sync Extension",
+   "name":"Brave Sync",
    "description":"Extension to keep running Brave-Sync-Js lib",
    "permissions": ["storage"],
    "version":"1.0",
