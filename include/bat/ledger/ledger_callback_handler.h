@@ -23,6 +23,9 @@ LEDGER_EXPORT enum Result {
 
   TOO_MANY_RESULTS,
   NOT_FOUND,
+
+  REGISTRATION_VERIFICATION_FAILED,
+  BAD_REGISTRATION_RESPONSE,
   // some more useful result codes should go here
 };
 
