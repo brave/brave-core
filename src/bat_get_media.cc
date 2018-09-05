@@ -221,7 +221,7 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
   }
 
   if (newEventInfo.event_ == "video-play") {  // Start event
-    return TWITCH_MINIMUM_SECONDS * 1000;
+    return TWITCH_MINIMUM_SECONDS;
   }
 
   // TODO: check if converted properly
@@ -262,7 +262,7 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
     time = TWITCH_MAXIMUM_SECONDS_CHUNK;
   }
 
-  return (uint64_t)(time * 1000.0);
+  return (uint64_t)time;
 }
 
 void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, const std::string& media_key,
