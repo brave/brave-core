@@ -7,6 +7,7 @@ import Amount from './amount'
 import Box from './box'
 import DisabledContent from './disabledContent'
 import Donate from './donate'
+import DonationOverlay from './donationOverlay'
 import GrantCaptcha from './grantCaptcha'
 import GrantClaim from './grantClaim'
 import GrantComplete from './grantComplete'
@@ -44,6 +45,7 @@ export {
   Amount,
   Box,
   DisabledContent,
+  DonationOverlay,
   Donate,
   GrantCaptcha,
   GrantClaim,

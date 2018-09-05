@@ -22,13 +22,15 @@ import {
   Amount,
   PanelWelcome,
   ToggleTips,
-  Tooltip
+  Tooltip,
+  DonationOverlay
 } from '../../../src/features/rewards'
 import { BatColorIcon, SettingsIcon, UpholdColorIcon } from '../../../src/components/icons'
 import GrantClaim from '../../../src/features/rewards/grantClaim'
 
 const donate = require('../../assets/img/rewards_donate.svg')
 const bart = require('../../assets/img/bartBaker.jpeg')
+const tipScreen = require('../../assets/img/tip_site.jpg')
 
 const dummyClick = () => {
   console.log(dummyClick)
@@ -269,3 +271,22 @@ storiesOf('Feature Components/Rewards/Other', module)
         </div>
       )
     })
+    .add('Donation Overlay', withState({ displayed: true }, (store) => {
+      const onOverlayClose = () => {
+        store.set({ displayed: false })
+      }
+
+      return (
+        <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '100vh', margin: '0 auto', position: 'relative' }}>
+          {
+            store.state.displayed
+            ? <DonationOverlay
+                siteImg={bart}
+                onClose={onOverlayClose}
+                success={boolean('Success', true)}
+            />
+            : null
+          }
+        </div>
+      )
+    }))

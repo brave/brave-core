@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(12,13,33,0.85);
+  font-family: "Poppins",sans-serif;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c8 {
+  color: #D1D1DB;
+  font-size: 38px;
+  font-weight: 600;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 28px;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-top: 220px;
+}
+
+.c2 {
+  display: block;
+}
+
+.c4 {
+  -webkit-flex: 1 0 0;
+  -ms-flex: 1 0 0;
+  flex: 1 0 0;
+  margin-top: -25px;
+}
+
+.c7 {
+  -webkit-flex: 9 0 0;
+  -ms-flex: 9 0 0;
+  flex: 9 0 0;
+  padding-top: 10px;
+  margin-right: -10px;
+}
+
+.c5 {
+  width: 90px;
+  height: 90px;
+  padding: 0 20px;
+  border-radius: 50%;
+  margin-right: 25px;
+  background-repeat: no-repeat;
+  background-size: 90px;
+  background-image: url();
+}
+
+.c6 {
+  position: relative;
+  top: 0;
+  left: -20px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 5px solid #ffffff;
+}
+
+.c9 {
+  margin-top: 245px;
+  padding-left: 5px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c10 {
+  width: 55px;
+  color: #E2052A;
+  display: block;
+  cursor: pointer;
+  margin-bottom: 40px;
+}
+
+.c12 {
+  color: #FFFFFF;
+  font-size: 28px;
+  font-weight: 600;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 28px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.c13 {
+  color: #FFFFFF;
+  font-size: 16px;
+  font-family: "Muli",sans-serif;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 28px;
+  display: block;
+  text-align: center;
+  width: 249px;
+}
+
+.c11 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+    id="donationoverlay"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        <span
+          className="c4"
+        >
+          <div
+            className="c5"
+          >
+            <div
+              className="c6"
+            />
+          </div>
+        </span>
+        <div
+          className="c7"
+        >
+          <span
+            className="c8"
+          >
+            MISSING: thankYou
+          </span>
+        </div>
+      </div>
+      <div
+        className="c9"
+      >
+        <span
+          className="c10"
+        >
+          <svg
+            aria-hidden="true"
+            className="c11"
+            focusable="false"
+            viewBox="0 0 32 32"
+          >
+            <path
+              d="M16 14.58579l3.2929-3.2929c.39052-.39052 1.02368-.39052 1.4142 0 .39053.39053.39053 1.0237 0 1.41422L17.41422 16l3.2929 3.2929c.39052.39052.39052 1.02368 0 1.4142-.39053.39053-1.0237.39053-1.41422 0L16 17.41422l-3.2929 3.2929c-.39052.39052-1.02368.39052-1.4142 0-.39053-.39053-.39053-1.0237 0-1.41422L14.58578 16l-3.2929-3.2929c-.39052-.39052-.39052-1.02368 0-1.4142.39053-.39053 1.0237-.39053 1.41422 0L16 14.58578zM28 16c0 6.62695-5.37338 12-12 12-6.62795 0-12-5.37238-12-12C4 9.37172 9.37172 4 16 4c6.62695 0 12 5.37238 12 12zm-2 0c0-5.523-4.47757-10-10-10-5.52372 0-10 4.47628-10 10 0 5.52307 4.47664 10 10 10 5.52207 0 10-4.47764 10-10z"
+            />
+          </svg>
+        </span>
+        <span
+          className="c12"
+        >
+          MISSING: uhOh
+        </span>
+        <span
+          className="c13"
+        >
+          MISSING: donationFailureMsg
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
