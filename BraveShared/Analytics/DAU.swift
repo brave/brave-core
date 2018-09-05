@@ -40,7 +40,7 @@ struct DAU {
         log.debug("send ping to server, url: \(fullUrl)")
         
         guard let url = URL(string: fullUrl) else {
-            if !BraveUX.IsRelease {
+            if !AppConstants.BuildChannel.isRelease {
 //                BraveApp.showErrorAlert(title: "Debug", error: "failed stats update")
             }
             return
@@ -97,7 +97,7 @@ struct DAU {
     }
     
     var channelParam: String {
-        return "&channel=\(BraveUX.IsRelease ? "stable" : "beta")"
+        return "&channel=\(AppConstants.BuildChannel.isRelease ? "stable" : "beta")"
     }
     
     var versionParam: String {
@@ -144,7 +144,7 @@ struct DAU {
             return "&daily=\(daily)&weekly=\(weekly)&monthly=\(monthly)"
         }
         
-        if isFirstLaunch/* || kIsDevelomentBuild*/ {
+        if isFirstLaunch || AppConstants.BuildChannel == .developer {
             return dauParams(true, true, true)
         }
         
