@@ -39,8 +39,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 
         let button = imageButton.button
 
-        button.setImage(UIImage(named: "new_tab_button_normal")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.setImage(UIImage(named: "new_tab_button_highlight")?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+        button.setImage(#imageLiteral(resourceName: "new_tab_button_normal").template, for: .normal)
+        button.setImage(#imageLiteral(resourceName: "new_tab_button_highlight").template, for: .highlighted)
 
         let label = imageButton.label
         label.font = UIFont.systemFont(ofSize: TodayUX.imageButtonTextSize)
@@ -55,8 +55,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         imageButton.label.text = TodayStrings.NewPrivateTabButtonLabel
 
         let button = imageButton.button
-        button.setImage(UIImage(named: "new_private_tab_button_normal"), for: .normal)
-        button.setImage(UIImage(named: "new_private_tab_button_highlight"), for: .highlighted)
+        button.setImage(#imageLiteral(resourceName: "new_private_tab_button_normal"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "new_private_tab_button_highlight"), for: .highlighted)
 
         let label = imageButton.label
         label.tintColor = TodayUX.privateBrowsingColor
@@ -76,7 +76,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         button.setBackgroundColor(UIColor.clear, forState: .normal)
         button.setBackgroundColor(TodayUX.backgroundHightlightColor, forState: .highlighted)
 
-        button.setImage(UIImage(named: "copy_link_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "copy_link_icon").template, for: .normal)
 
         button.label.font = UIFont.systemFont(ofSize: TodayUX.labelTextSize)
         button.subtitleLabel.font = UIFont.systemFont(ofSize: TodayUX.linkTextSize)

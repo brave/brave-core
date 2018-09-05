@@ -4,19 +4,15 @@
 
 import Shared
 import SnapKit
+import BraveShared
 
 private struct URLBarViewUX {
-    static let TextFieldBorderColor = UIColor.Photon.Grey40
-    static let TextFieldActiveBorderColor = UIColor.Defaults.PaleBlue
-
     static let LocationLeftPadding: CGFloat = 8
     static let Padding: CGFloat = 10
-    static let LocationHeight: CGFloat = 40
+    static let LocationHeight: CGFloat = 34
     static let ButtonHeight: CGFloat = 44
     static let LocationContentOffset: CGFloat = 8
     static let TextFieldCornerRadius: CGFloat = 8
-    static let TextFieldBorderWidth: CGFloat = 1
-    static let TextFieldBorderWidthSelected: CGFloat = 4
     static let ProgressBarHeight: CGFloat = 3
 
     static let TabsButtonRotationOffset: CGFloat = 1.5
@@ -36,35 +32,19 @@ protocol URLBarDelegate: class {
     func urlBarDidLongPressLocation(_ urlBar: URLBarView)
     func urlBarDidPressQRButton(_ urlBar: URLBarView)
     func urlBarDidPressPageOptions(_ urlBar: URLBarView, from button: UIButton)
-    func urlBarDidTapShield(_ urlBar: URLBarView, from button: UIButton)
     func urlBarLocationAccessibilityActions(_ urlBar: URLBarView) -> [UIAccessibilityCustomAction]?
     func urlBarDidPressScrollToTop(_ urlBar: URLBarView)
     func urlBar(_ urlBar: URLBarView, didEnterText text: String)
     func urlBar(_ urlBar: URLBarView, didSubmitText text: String)
     // Returns either (search query, true) or (url, false).
     func urlBarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
-    func urlBarDidLongPressPageOptions(_ urlBar: URLBarView, from button: UIButton)
     func urlBarDidBeginDragInteraction(_ urlBar: URLBarView)
     func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView)
+    func urlBarDidTapMenuButton(_ urlBar: URLBarView)
+    func urlBarDidLongPressReloadButton(_ urlBar: URLBarView, from button: UIButton)
 }
 
 class URLBarView: UIView {
-    // Additional UIAppearance-configurable properties
-    @objc dynamic var locationBorderColor: UIColor = URLBarViewUX.TextFieldBorderColor {
-        didSet {
-            if !inOverlayMode {
-                locationContainer.layer.borderColor = locationBorderColor.cgColor
-            }
-        }
-    }
-    @objc dynamic var locationActiveBorderColor: UIColor = URLBarViewUX.TextFieldActiveBorderColor {
-        didSet {
-            if inOverlayMode {
-                locationContainer.layer.borderColor = locationActiveBorderColor.cgColor
-            }
-        }
-    }
-
     weak var delegate: URLBarDelegate?
     weak var tabToolbarDelegate: TabToolbarDelegate?
     var helper: TabToolbarHelper?
@@ -101,9 +81,6 @@ class URLBarView: UIView {
     lazy var locationContainer: UIView = {
         let locationContainer = TabLocationContainerView()
         locationContainer.translatesAutoresizingMaskIntoConstraints = false
-        locationContainer.layer.shadowColor = self.locationBorderColor.cgColor
-        locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidth
-        locationContainer.layer.borderColor = self.locationBorderColor.cgColor
         locationContainer.backgroundColor = .clear
         return locationContainer
     }()
@@ -124,16 +101,19 @@ class URLBarView: UIView {
 
     fileprivate lazy var cancelButton: UIButton = {
         let cancelButton = InsetButton()
-        cancelButton.setImage(UIImage.templateImageNamed("goBack"), for: .normal)
+        cancelButton.setTitle(Strings.Cancel, for: .normal)
+        cancelButton.setTitleColor(BraveUX.CancelTextColor, for: .normal)
         cancelButton.accessibilityIdentifier = "urlBar-cancel"
         cancelButton.addTarget(self, action: #selector(didClickCancel), for: .touchUpInside)
+        cancelButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        cancelButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         cancelButton.alpha = 0
         return cancelButton
     }()
     
     fileprivate lazy var showQRScannerButton: InsetButton = {
         let button = InsetButton()
-        button.setImage(UIImage.templateImageNamed("menu-ScanQRCode"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "menu-ScanQRCode").template, for: .normal)
         button.accessibilityIdentifier = "urlBar-scanQRCode"
         button.clipsToBounds = false
         button.addTarget(self, action: #selector(showQRScanner), for: .touchUpInside)
@@ -148,10 +128,27 @@ class URLBarView: UIView {
         return button
     }()
 
-    var menuButton = ToolbarButton()
     var bookmarkButton = ToolbarButton()
     var forwardButton = ToolbarButton()
-    var stopReloadButton = ToolbarButton()
+    var shareButton = ToolbarButton()
+    var addTabButton = ToolbarButton()
+    lazy var menuButton = ToolbarButton().then {
+        $0.contentMode = .center
+        $0.setImage(#imageLiteral(resourceName: "nav-menu").template, for: .normal)
+        $0.accessibilityLabel = Strings.AppMenuButtonAccessibilityLabel
+        $0.addTarget(self, action: #selector(didClickMenu), for: .touchUpInside)
+        $0.accessibilityIdentifier = "urlBar-menuButton"
+    }
+    
+    lazy var shieldsButton: ToolbarButton = {
+        let button = ToolbarButton()
+        button.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
+        button.addTarget(self, action: #selector(didClickBraveShieldsButton), for: .touchUpInside)
+        button.imageView?.contentMode = .center
+        button.accessibilityLabel = Strings.Brave_Panel
+        button.accessibilityIdentifier = "urlBar-shieldsButton"
+        return button
+    }()
 
     var backButton: ToolbarButton = {
         let backButton = ToolbarButton()
@@ -159,7 +156,7 @@ class URLBarView: UIView {
         return backButton
     }()
 
-    lazy var actionButtons: [Themeable & UIButton] = [self.tabsButton, self.menuButton, self.forwardButton, self.backButton, self.stopReloadButton]
+    lazy var actionButtons: [Themeable & UIButton] = [self.shareButton, self.tabsButton, self.forwardButton, self.backButton, self.menuButton]
 
     var currentURL: URL? {
         get {
@@ -168,7 +165,17 @@ class URLBarView: UIView {
 
         set(newURL) {
             locationView.url = newURL
-            line.isHidden = newURL?.isAboutHomeURL ?? true
+            refreshShieldsStatus()
+        }
+    }
+    
+    /// Update the shields icon based on whether or not shields are enabled for this site
+    func refreshShieldsStatus() {
+        if let domain = currentURL?.normalizedHost, let state = BraveShieldState.getStateForDomain(domain),
+            let shieldsAllOffOverride = state.isShieldOverrideEnabled(.AllOff), shieldsAllOffOverride {
+            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-off-menu-icon"), for: .normal)
+        } else {
+            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
         }
     }
 
@@ -194,24 +201,21 @@ class URLBarView: UIView {
     fileprivate func commonInit() {
         locationContainer.addSubview(locationView)
     
-        [scrollToTopButton, line, tabsButton, progressBar, cancelButton, showQRScannerButton].forEach { addSubview($0) }
-        [menuButton, forwardButton, backButton, stopReloadButton, locationContainer].forEach { addSubview($0) }
+        [scrollToTopButton, line, tabsButton, progressBar, cancelButton/*, showQRScannerButton*/].forEach { addSubview($0) }
+        [forwardButton, backButton, menuButton, shareButton, shieldsButton, locationContainer].forEach { addSubview($0) }
         
         helper = TabToolbarHelper(toolbar: self)
         setupConstraints()
 
         // Make sure we hide any views that shouldn't be showing in non-overlay mode.
         updateViewsForOverlayModeAndToolbarChanges()
-        
-        // BRAVE TODO: I'm not sure if we need it.
-        // locationView.layer.cornerRadius = URLBarViewUX.TextFieldCornerRadius
     }
 
     fileprivate func setupConstraints() {
         
         line.snp.makeConstraints { make in
             make.bottom.leading.trailing.equalTo(self)
-            make.height.equalTo(1)
+            make.height.equalTo(1.0 / UIScreen.main.scale)
         }
         
         scrollToTopButton.snp.makeConstraints { make in
@@ -228,13 +232,13 @@ class URLBarView: UIView {
         locationView.snp.makeConstraints { make in
             make.edges.equalTo(self.locationContainer)
         }
-
+        
         cancelButton.snp.makeConstraints { make in
-            make.leading.equalTo(self.safeArea.leading)
+            make.trailing.equalTo(self.safeArea.trailing).offset(-URLBarViewUX.Padding)
             make.centerY.equalTo(self.locationContainer)
-            make.size.equalTo(URLBarViewUX.ButtonHeight)
+            make.height.equalTo(URLBarViewUX.ButtonHeight)
         }
-
+        
         backButton.snp.makeConstraints { make in
             make.leading.equalTo(self.safeArea.leading).offset(URLBarViewUX.Padding)
             make.centerY.equalTo(self)
@@ -246,68 +250,90 @@ class URLBarView: UIView {
             make.centerY.equalTo(self)
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
-
-        stopReloadButton.snp.makeConstraints { make in
+        
+        menuButton.snp.makeConstraints { make in
             make.leading.equalTo(self.forwardButton.snp.trailing)
             make.centerY.equalTo(self)
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
-
-        menuButton.snp.makeConstraints { make in
-            make.trailing.equalTo(self.safeArea.trailing).offset(-URLBarViewUX.Padding)
+        
+        shareButton.snp.makeConstraints { make in
+            make.trailing.equalTo(self.tabsButton.snp.leading)
             make.centerY.equalTo(self)
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
         
         tabsButton.snp.makeConstraints { make in
-            make.trailing.equalTo(self.menuButton.snp.leading)
+            make.trailing.equalTo(self.safeArea.trailing).offset(-URLBarViewUX.Padding)
             make.centerY.equalTo(self)
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
         
+        /*
         showQRScannerButton.snp.makeConstraints { make in
             make.trailing.equalTo(self.safeArea.trailing)
             make.centerY.equalTo(self.locationContainer)
             make.size.equalTo(URLBarViewUX.ButtonHeight)
         }
+         */
     }
 
     override func updateConstraints() {
         super.updateConstraints()
         if inOverlayMode {
+            menuButton.snp.remakeConstraints { make in
+                make.leading.equalTo(self)
+                make.centerY.equalTo(self)
+                make.size.equalTo(URLBarViewUX.ButtonHeight)
+            }
             // In overlay mode, we always show the location view full width
-            self.locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidthSelected
-            self.locationContainer.snp.remakeConstraints { make in
-                let height = URLBarViewUX.LocationHeight + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
+            locationContainer.snp.remakeConstraints { make in
+                let height = URLBarViewUX.LocationHeight// + (URLBarViewUX.TextFieldBorderWidthSelected * 2)
                 make.height.equalTo(height)
-                make.trailing.equalTo(self.showQRScannerButton.snp.leading)
-                make.leading.equalTo(self.cancelButton.snp.trailing)
+                make.trailing.equalTo(self.cancelButton.snp.leading).offset(-URLBarViewUX.Padding)
+                make.leading.equalTo(self.menuButton.snp.trailing)
                 make.centerY.equalTo(self)
             }
-            self.locationView.snp.remakeConstraints { make in
-                make.edges.equalTo(self.locationContainer).inset(UIEdgeInsets(equalInset: URLBarViewUX.TextFieldBorderWidthSelected))
+            locationView.snp.remakeConstraints { make in
+                make.edges.equalTo(self.locationContainer)
             }
-            self.locationTextField?.snp.remakeConstraints { make in
+            locationTextField?.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationView).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding, bottom: 0, right: URLBarViewUX.LocationLeftPadding))
             }
         } else {
-            self.locationContainer.snp.remakeConstraints { make in
+            menuButton.snp.remakeConstraints { make in
                 if self.toolbarIsShowing {
-                    // If we are showing a toolbar, show the text field next to the forward button
-                    make.leading.equalTo(self.stopReloadButton.snp.trailing).offset(URLBarViewUX.Padding)
-                    make.trailing.equalTo(self.tabsButton.snp.leading).offset(-URLBarViewUX.Padding)
-
+                    make.leading.equalTo(self.forwardButton.snp.trailing)
                 } else {
-                    // Otherwise, left align the location view
-                    make.leading.trailing.equalTo(self).inset(UIEdgeInsets(top: 0, left: URLBarViewUX.LocationLeftPadding-1, bottom: 0, right: URLBarViewUX.LocationLeftPadding-1))
+                    make.leading.equalTo(self)
+                }
+                make.centerY.equalTo(self)
+                make.size.equalTo(URLBarViewUX.ButtonHeight)
+            }
+            shieldsButton.snp.remakeConstraints { make in
+                if self.toolbarIsShowing {
+                    make.trailing.equalTo(self.shareButton.snp.leading)
+                } else {
+                    make.trailing.equalTo(self)
+                }
+                make.centerY.equalTo(self)
+                make.size.equalTo(URLBarViewUX.ButtonHeight)
+            }
+            locationContainer.snp.remakeConstraints { make in
+                if self.toolbarIsShowing {
+                    // When there's toolbar items on the left, add some padding so it looks better
+                    make.leading.equalTo(self.menuButton.snp.trailing).offset(URLBarViewUX.LocationLeftPadding)
+                    make.trailing.equalTo(self.shieldsButton.snp.leading).offset(-URLBarViewUX.LocationLeftPadding)
+                } else {
+                    make.leading.equalTo(self.menuButton.snp.trailing)
+                    make.trailing.equalTo(self.shieldsButton.snp.leading)
                 }
 
-                make.height.equalTo(URLBarViewUX.LocationHeight+2)
+                make.height.equalTo(URLBarViewUX.LocationHeight)
                 make.centerY.equalTo(self)
             }
-            self.locationContainer.layer.borderWidth = URLBarViewUX.TextFieldBorderWidth
-            self.locationView.snp.remakeConstraints { make in
-                make.edges.equalTo(self.locationContainer).inset(UIEdgeInsets(equalInset: URLBarViewUX.TextFieldBorderWidth))
+            locationView.snp.remakeConstraints { make in
+                make.edges.equalTo(self.locationContainer)
             }
         }
 
@@ -448,11 +474,11 @@ class URLBarView: UIView {
         cancelButton.isHidden = false
         showQRScannerButton.isHidden = false
         progressBar.isHidden = false
-        menuButton.isHidden = !toolbarIsShowing
         forwardButton.isHidden = !toolbarIsShowing
         backButton.isHidden = !toolbarIsShowing
         tabsButton.isHidden = !toolbarIsShowing
-        stopReloadButton.isHidden = !toolbarIsShowing
+        shareButton.isHidden = !toolbarIsShowing
+        locationView.contentView.isHidden = false
     }
 
     func transitionToOverlay(_ didCancel: Bool = false) {
@@ -460,16 +486,13 @@ class URLBarView: UIView {
         showQRScannerButton.alpha = inOverlayMode ? 1 : 0
         progressBar.alpha = inOverlayMode || didCancel ? 0 : 1
         tabsButton.alpha = inOverlayMode ? 0 : 1
-        menuButton.alpha = inOverlayMode ? 0 : 1
         forwardButton.alpha = inOverlayMode ? 0 : 1
         backButton.alpha = inOverlayMode ? 0 : 1
-        stopReloadButton.alpha = inOverlayMode ? 0 : 1
-
-        let borderColor = inOverlayMode ? locationActiveBorderColor : locationBorderColor
-        locationContainer.layer.borderColor = borderColor.cgColor
+        shareButton.alpha = inOverlayMode ? 0 : 1
+        shieldsButton.alpha = inOverlayMode ? 0 : 1
+        locationView.contentView.alpha = inOverlayMode ? 0 : 1
 
         if inOverlayMode {
-            line.isHidden = inOverlayMode
             // Make the editable text field span the entire URL bar, covering the lock and reader icons.
             locationTextField?.snp.remakeConstraints { make in
                 make.edges.equalTo(self.locationView)
@@ -486,11 +509,11 @@ class URLBarView: UIView {
         cancelButton.isHidden = !inOverlayMode
         showQRScannerButton.isHidden = !inOverlayMode
         progressBar.isHidden = inOverlayMode
-        menuButton.isHidden = !toolbarIsShowing || inOverlayMode
         forwardButton.isHidden = !toolbarIsShowing || inOverlayMode
         backButton.isHidden = !toolbarIsShowing || inOverlayMode
         tabsButton.isHidden = !toolbarIsShowing || inOverlayMode
-        stopReloadButton.isHidden = !toolbarIsShowing || inOverlayMode
+        shareButton.isHidden = !toolbarIsShowing || inOverlayMode
+        locationView.contentView.isHidden = inOverlayMode
     }
 
     func animateToOverlayState(overlayMode overlay: Bool, didCancel cancel: Bool = false) {
@@ -523,6 +546,14 @@ class URLBarView: UIView {
     @objc func tappedScrollToTopArea() {
         delegate?.urlBarDidPressScrollToTop(self)
     }
+    
+    @objc func didClickMenu() {
+        delegate?.urlBarDidTapMenuButton(self)
+    }
+    
+    @objc func didClickBraveShieldsButton() {
+        delegate?.urlBarDidTapBraveShieldsButton(self)
+    }
 }
 
 extension URLBarView: TabToolbarProtocol {
@@ -539,17 +570,9 @@ extension URLBarView: TabToolbarProtocol {
         tabsButton.updateTabCount(count, animated: animated)
     }
 
-    func updateReloadStatus(_ isLoading: Bool) {
-        helper?.updateReloadStatus(isLoading)
-        if isLoading {
-            stopReloadButton.setImage(helper?.ImageStop, for: .normal)
-        } else {
-            stopReloadButton.setImage(helper?.ImageReload, for: .normal)
-        }
-    }
-
     func updatePageStatus(_ isWebPage: Bool) {
-        stopReloadButton.isEnabled = isWebPage
+        locationView.reloadButton.isEnabled = isWebPage
+        shareButton.isEnabled = isWebPage
     }
 
     var access: [Any]? {
@@ -559,9 +582,9 @@ extension URLBarView: TabToolbarProtocol {
                 return [locationTextField, cancelButton]
             } else {
                 if toolbarIsShowing {
-                    return [backButton, forwardButton, stopReloadButton, locationView, tabsButton, menuButton, progressBar]
+                    return [backButton, forwardButton, menuButton, locationView, shareButton, tabsButton, progressBar]
                 } else {
-                    return [locationView, progressBar]
+                    return [menuButton, locationView, progressBar]
                 }
             }
         }
@@ -598,6 +621,10 @@ extension URLBarView: TabLocationViewDelegate {
     func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView) {
         delegate?.urlBarDidPressStop(self)
     }
+    
+    func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton) {
+        delegate?.urlBarDidLongPressReloadButton(self, from: button)
+    }
 
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView) {
         delegate?.urlBarDidPressReaderMode(self)
@@ -606,10 +633,6 @@ extension URLBarView: TabLocationViewDelegate {
     func tabLocationViewDidTapPageOptions(_ tabLocationView: TabLocationView, from button: UIButton) {
         delegate?.urlBarDidPressPageOptions(self, from: tabLocationView.pageOptionsButton)
     }
-    
-    func tabLocationViewDidLongPressPageOptions(_ tabLocationView: TabLocationView) {
-        delegate?.urlBarDidLongPressPageOptions(self, from: tabLocationView.pageOptionsButton)
-    }
 
     func tabLocationViewLocationAccessibilityActions(_ tabLocationView: TabLocationView) -> [UIAccessibilityCustomAction]? {
         return delegate?.urlBarLocationAccessibilityActions(self)
@@ -617,14 +640,6 @@ extension URLBarView: TabLocationViewDelegate {
 
     func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView) {
         delegate?.urlBarDidBeginDragInteraction(self)
-    }
-
-    func tabLocationViewDidTapShield(_ tabLocationView: TabLocationView) {
-        delegate?.urlBarDidTapShield(self, from: tabLocationView.trackingProtectionButton)
-    }
-    
-    func tabLocationViewDidTapBraveShieldsButton(_ tabLocationView: TabLocationView) {
-        delegate?.urlBarDidTapBraveShieldsButton(self)
     }
 }
 
@@ -682,13 +697,10 @@ extension URLBarView: Themeable {
 
         progressBar.setGradientColors(startColor: UIColor.LoadingBar.Start.colorFor(theme), endColor: UIColor.LoadingBar.End.colorFor(theme))
         currentTheme = theme
-        locationBorderColor = UIColor.URLBar.Border.colorFor(theme).withAlphaComponent(0.3)
-        locationActiveBorderColor = UIColor.URLBar.ActiveBorder.colorFor(theme)
         cancelTintColor = UIColor.Browser.Tint.colorFor(theme)
         showQRButtonTintColor = UIColor.Browser.Tint.colorFor(theme)
-        backgroundColor = UIColor.Browser.Background.colorFor(theme)
+        backgroundColor = theme == .Normal ? BraveUX.ToolbarsBackgroundSolidColor : BraveUX.DarkToolbarsBackgroundSolidColor
         line.backgroundColor = UIColor.Browser.URLBarDivider.colorFor(theme)
-        locationContainer.layer.shadowColor = locationBorderColor.cgColor
     }
 }
 
@@ -697,33 +709,18 @@ extension URLBarView: Themeable {
 class TabLocationContainerView: UIView {
     
     private struct LocationContainerUX {
-        static let CornerRadius: CGFloat = 4
-        static let ShadowRadius: CGFloat = 2
-        static let ShadowOpacity: Float = 1
+        static let CornerRadius: CGFloat = 8.0
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         let layer = self.layer
         layer.cornerRadius = LocationContainerUX.CornerRadius
-        layer.shadowRadius = LocationContainerUX.ShadowRadius
-        layer.shadowOpacity = LocationContainerUX.ShadowOpacity
-        layer.masksToBounds = false
+        layer.masksToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        let layer = self.layer
-        
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-        // the shadow appears 2px off from the view rect
-        let shadowLength: CGFloat = 2
-        let shadowPath = CGRect(x: shadowLength, y: shadowLength, width: layer.frame.width - (shadowLength * 2), height: layer.frame.height - (shadowLength * 2))
-        layer.shadowPath = UIBezierPath(roundedRect: shadowPath, cornerRadius: layer.cornerRadius).cgPath
-        super.layoutSubviews()
     }
 }
 
@@ -793,7 +790,7 @@ class ToolbarTextField: AutocompleteTextField {
 extension ToolbarTextField: Themeable {
 
     func applyTheme(_ theme: Theme) {
-        backgroundColor = UIColor.TextField.Background.colorFor(theme)
+        backgroundColor = theme == .Normal ? BraveUX.LocationBarBackgroundColor : BraveUX.LocationBarBackgroundColor_PrivateMode
         textColor = UIColor.TextField.TextAndTint.colorFor(theme)
         clearButtonTintColor = textColor
         highlightColor = UIColor.TextField.Highlight.colorFor(theme)

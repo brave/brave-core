@@ -224,12 +224,12 @@ class BookmarksViewController: SiteTableViewController, HomePanel {
     
     items.append(UIBarButtonItem.fixedSpace(5))
     
-    addFolderButton = UIBarButtonItem(image: UIImage(named: "bookmarks_newfolder_icon")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(onAddBookmarksFolderButton))
+    addFolderButton = UIBarButtonItem(image: #imageLiteral(resourceName: "bookmarks_newfolder_icon").template, style: .plain, target: self, action: #selector(onAddBookmarksFolderButton))
     items.append(addFolderButton!)
     
     items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
     
-    editBookmarksButton = UIBarButtonItem(image: UIImage(named: "edit")?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(onEditBookmarksButton))
+    editBookmarksButton = UIBarButtonItem(image: #imageLiteral(resourceName: "edit").template, style: .plain, target: self, action: #selector(onEditBookmarksButton))
     items.append(editBookmarksButton)
     items.append(UIBarButtonItem.fixedSpace(5))
     
@@ -379,7 +379,7 @@ class BookmarksViewController: SiteTableViewController, HomePanel {
       cell.textLabel?.font = UIFont.systemFont(ofSize: fontSize)
       cell.accessoryType = .none
     } else {
-      configCell(image: UIImage(named: "bookmarks_folder_hollow"))
+      configCell(image: #imageLiteral(resourceName: "bookmarks_folder_hollow"))
       cell.textLabel?.font = UIFont.boldSystemFont(ofSize: fontSize)
       cell.accessoryType = .disclosureIndicator
       if let twoLineCell = cell as? TwoLineTableViewCell {

@@ -11,7 +11,7 @@ class PrivateModeButton: ToggleButton, Themeable {
         super.init(frame: frame)
         accessibilityLabel = PrivateModeStrings.toggleAccessibilityLabel
         accessibilityHint = PrivateModeStrings.toggleAccessibilityHint
-        let maskImage = UIImage(named: "smallPrivateMask")?.withRenderingMode(.alwaysTemplate)
+        let maskImage = #imageLiteral(resourceName: "smallPrivateMask").template
         setImage(maskImage, for: [])
     }
     
@@ -30,7 +30,7 @@ class PrivateModeButton: ToggleButton, Themeable {
 extension UIButton {
     static func newTabButton() -> UIButton {
         let newTab = UIButton()
-        newTab.setImage(UIImage.templateImageNamed("quick_action_new_tab"), for: .normal)
+        newTab.setImage(#imageLiteral(resourceName: "quick_action_new_tab").template, for: .normal)
         newTab.accessibilityLabel = NSLocalizedString("New Tab", comment: "Accessibility label for the New Tab button in the tab toolbar.")
         return newTab
     }

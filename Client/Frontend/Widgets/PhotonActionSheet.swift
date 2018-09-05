@@ -550,7 +550,7 @@ private class PhotonActionSheetCell: UITableViewCell {
     }()
 
     lazy var toggleSwitch: UIImageView = {
-        let toggle = UIImageView(image: UIImage(named: "menu-Toggle-Off"))
+        let toggle = UIImageView(image: #imageLiteral(resourceName: "menu-Toggle-Off"))
         toggle.contentMode = .scaleAspectFit
         return toggle
     }()
@@ -563,7 +563,7 @@ private class PhotonActionSheetCell: UITableViewCell {
     }()
 
     lazy var disclosureIndicator: UIImageView = {
-        let disclosureIndicator = UIImageView(image: UIImage(named: "menu-Disclosure"))
+        let disclosureIndicator = UIImageView(image: #imageLiteral(resourceName: "menu-Disclosure"))
         disclosureIndicator.contentMode = .scaleAspectFit
         disclosureIndicator.layer.cornerRadius = PhotonActionSheetCellUX.CornerRadius
         disclosureIndicator.setContentHuggingPriority(.required, for: .horizontal)
@@ -637,7 +637,8 @@ private class PhotonActionSheetCell: UITableViewCell {
         accessibilityLabel = action.title
         selectionStyle = action.handler != nil ? .default : .none
 
-        if let iconName = action.iconString, let image = UIImage(named: iconName)?.withRenderingMode(.alwaysTemplate) {
+        if let iconName = action.iconString {
+            let image = UIImage(imageLiteralResourceName: iconName).template
             statusIcon.sd_setImage(with: action.iconURL, placeholderImage: image, options: []) { (img, err, _, _) in
                 if let img = img {
                     self.statusIcon.image = img.createScaled(PhotonActionSheetUX.IconSize)
@@ -677,7 +678,7 @@ private class PhotonActionSheetCell: UITableViewCell {
         case .Disclosure:
             stackView.addArrangedSubview(disclosureIndicator)
         case .Switch:
-            let image = action.isEnabled ? UIImage(named: "menu-Toggle-On") : UIImage(named: "menu-Toggle-Off")
+            let image = action.isEnabled ? #imageLiteral(resourceName: "menu-Toggle-On") : #imageLiteral(resourceName: "menu-Toggle-Off")
             toggleSwitch.isAccessibilityElement = true
             toggleSwitch.accessibilityIdentifier = action.isEnabled ? "enabled" : "disabled"
             toggleSwitch.image = image

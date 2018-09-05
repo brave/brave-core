@@ -61,9 +61,10 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return scaledImage!
     }
-
-    public static func templateImageNamed(_ name: String) -> UIImage? {
-        return UIImage(named: name)?.withRenderingMode(.alwaysTemplate)
+    
+    /// Return a UIImage which will always render as a template
+    public var template: UIImage {
+        return withRenderingMode(.alwaysTemplate)
     }
     
     public func scale(toSize size: CGSize) -> UIImage {
@@ -90,7 +91,7 @@ extension UIImage {
     // this function ensures that.
     //
     // This can be verified with this code:
-    //    let image = UIImage(named: "fxLogo")!
+    //    let image = #imageLiteral(resourceName: "fxLogo")
     //    let data = UIImagePNGRepresentation(image)!
     //    assert(data != UIImagePNGRepresentation(UIImage(data: data)!))
     @available(*, deprecated, message: "use only in testing code")

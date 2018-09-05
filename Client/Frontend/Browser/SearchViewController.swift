@@ -21,7 +21,6 @@ private struct SearchViewControllerUX {
     static let EngineButtonWidth = EngineButtonHeight * 1.4
     static let EngineButtonBackgroundColor = UIColor.clear.cgColor
 
-    static let SearchImage = "search"
     static let SearchEngineTopBorderWidth = 0.5
     static let SearchImageHeight: Float = 44
     static let SearchImageWidth: Float = 24
@@ -60,7 +59,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
     fileprivate let searchEngineScrollViewContent = UIView()
 
     fileprivate lazy var bookmarkedBadge: UIImage = {
-        return UIImage(named: "bookmarked_passive")!
+        return #imageLiteral(resourceName: "bookmarked_passive")
     }()
 
     // Cell for the suggestion flow layout. Since heightForHeaderInSection is called *before*
@@ -200,7 +199,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
 
         //search settings icon
         let searchButton = UIButton()
-        searchButton.setImage(UIImage(named: "quickSearch"), for: [])
+        searchButton.setImage(#imageLiteral(resourceName: "quickSearch"), for: [])
         searchButton.imageView?.contentMode = .center
         searchButton.layer.backgroundColor = SearchViewControllerUX.EngineButtonBackgroundColor
         searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
@@ -576,8 +575,7 @@ fileprivate class SuggestionCell: UITableViewCell {
 
                 // If this is the first image, add the search icon.
                 if container.subviews.isEmpty {
-                    let image = UIImage(named: SearchViewControllerUX.SearchImage)
-                    button.setImage(image, for: [])
+                    button.setImage(#imageLiteral(resourceName: "search"), for: [])
                     if UIApplication.shared.userInterfaceLayoutDirection == .leftToRight {
                         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
                     } else {

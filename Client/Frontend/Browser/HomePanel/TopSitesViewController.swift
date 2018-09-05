@@ -82,7 +82,7 @@ class TopSitesViewController: UIViewController {
         $0.addTarget(self, action: #selector(showPrivateTabInfo), for: .touchUpInside)
     }
     
-    private let ddgLogo = UIImageView(image: UIImage(named: "duckduckgo"))
+    private let ddgLogo = UIImageView(image: #imageLiteral(resourceName: "duckduckgo"))
     
     private let ddgLabel = UILabel().then {
         $0.numberOfLines = 0

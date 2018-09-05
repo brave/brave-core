@@ -50,6 +50,16 @@ class PopoverController: UIViewController {
     /// Outer margins around the presented popover to the edge of the screen (or safe area)
     var outerMargins = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
     
+    /// Whether or not to automatically add a margins when the popover is presented so the user can dismiss it more
+    /// easily.
+    ///
+    /// Currently this only adds a bottom-margin for portrait presentations where the popover is being presented
+    /// from the top of the screen
+    var addsConvenientDismissalMargins = true
+    
+    /// The amount of space to add for convenient dismissals
+    private let convenientDismissalMargin: CGFloat = 80.0
+    
     /// The distance from the popover arrow to the origin view
     var arrowDistance: CGFloat = -5.0
     
@@ -206,6 +216,11 @@ class PopoverController: UIViewController {
             containerView.arrowDirection = direction
         }
         
+        let isPortrait = UIDevice.current.orientation.isPortrait
+        if addsConvenientDismissalMargins && isPortrait && containerView.arrowDirection == .up && outerMargins.bottom < convenientDismissalMargin {
+            outerMargins.bottom = convenientDismissalMargin
+        }
+        
         let constrainedWidth = viewController.view.bounds.width - outerMargins.left - outerMargins.right
         let contentSize: CGSize
         
@@ -347,8 +362,8 @@ extension PopoverController: BasicAnimationControllerDelegate {
         contentController.view.frame = CGRect(origin: .zero, size: popoverContext.presentedSize)
         
         containerView.snp.makeConstraints {
-            $0.left.greaterThanOrEqualTo(viewController.view.snp.left).offset(outerMargins.left)
-            $0.right.lessThanOrEqualTo(viewController.view.snp.right).offset(-outerMargins.right)
+            $0.left.greaterThanOrEqualTo(viewController.view.safeArea.left).offset(outerMargins.left)
+            $0.right.lessThanOrEqualTo(viewController.view.safeArea.right).offset(-outerMargins.right)
         }
         
         let centerX = containerView.centerXAnchor.constraint(equalTo: popoverContext.originView.centerXAnchor)
