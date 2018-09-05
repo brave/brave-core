@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 254dc0ab4d12b359bbe9fea03f2cb17dadce0050..786c8391539cdaa8542e7256cbb6e4876f9f29fc 100644
+index 254dc0ab4d12b359bbe9fea03f2cb17dadce0050..bbfb8cd408ef9989695e4baf58bc4a0272ba8a0d 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
 @@ -13,6 +13,7 @@
@@ -10,11 +10,11 @@ index 254dc0ab4d12b359bbe9fea03f2cb17dadce0050..786c8391539cdaa8542e7256cbb6e487
  #include "chrome/common/chrome_content_client.h"
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/api/extension_action/action_info.h"
-@@ -80,6 +81,7 @@ ChromeChannelForHistogram GetChromeChannelForHistogram(
- }  // namespace
- 
+@@ -82,6 +83,7 @@ ChromeChannelForHistogram GetChromeChannelForHistogram(
  ChromeExtensionsClient::ChromeExtensionsClient() {
-+  AddAPIProvider(std::make_unique<BraveExtensionsAPIProvider>());
    AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());
    AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());
++  AddAPIProvider(std::make_unique<BraveExtensionsAPIProvider>());
  }
+ 
+ ChromeExtensionsClient::~ChromeExtensionsClient() {
