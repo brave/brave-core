@@ -22,10 +22,10 @@ index 4383c826c43588aa8fc0819b8a7669364815d2d9..69db6f7afbd00ca7f208c5e0c5778be3
 -identifier \"com.google.Chrome.beta\" or \
 -identifier \"com.google.Chrome.dev\" or \
 -identifier \"com.google.Chrome.canary\") \
-+(identifier \"org.brave.Brave\" or \
-+identifier \"org.brave.Brave.beta\" or \
-+identifier \"org.brave.Brave.dev\" or \
-+identifier \"org.brave.Brave.nightly\") \
++(identifier \"com.brave.Browser\" or \
++identifier \"com.brave.Browser.beta\" or \
++identifier \"com.brave.Browser.dev\" or \
++identifier \"com.brave.Browser.nightly\") \
  ${requirement_suffix} \
  "
  
