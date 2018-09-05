@@ -276,27 +276,27 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
     const std::string& providerName, const std::string& mediaURL, const std::string& publisherURL,
     const std::string& publisherName, const ledger::VisitData& visit_data, bool success, const std::string& response) {
   if (success && YOUTUBE_MEDIA_TYPE == providerName) {
-    size_t pos = response.find("<div id=\"img-preload\"");
     std::string favIconURL;
-    // TODO it doesn't always work on Android
-    do {
-      if (pos != std::string::npos) {
-        pos = response.find("<img src=\"", pos);
-        if (pos != std::string::npos) {
-          size_t posEnd = response.find("\">", pos);
-          if (posEnd != std::string::npos) {
-            favIconURL = response.substr(pos + 10, posEnd - pos - 10);
-          }
-        }
-      } else {
-        break;
-      }
-      pos++;
-      if (pos > response.length() - 1) {
-        pos = std::string::npos;
-      }
-    } while (favIconURL.find("photo.jpg") == std::string::npos);
-    LOG(ERROR) << "publisher's picture URL == " << favIconURL;
+//    size_t pos = response.find("<div id=\"img-preload\"");
+//
+//    do {
+//      if (pos != std::string::npos) {
+//        pos = response.find("<img src=\"", pos);
+//        if (pos != std::string::npos) {
+//          size_t posEnd = response.find("\">", pos);
+//          if (posEnd != std::string::npos) {
+//            favIconURL = response.substr(pos + 10, posEnd - pos - 10);
+//          }
+//        }
+//      } else {
+//        break;
+//      }
+//      pos++;
+//      if (pos > response.length() - 1) {
+//        pos = std::string::npos;
+//      }
+//    } while (favIconURL.find("photo.jpg") == std::string::npos);
+//    LOG(ERROR) << "publisher's picture URL == " << favIconURL;
     std::string mediaURL = publisherURL + "/videos";
     pos = publisherURL.rfind("/");
     std::string publisher_id = providerName + "#channel:";
