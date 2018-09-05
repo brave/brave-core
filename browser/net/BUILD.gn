@@ -3,6 +3,8 @@ import("//build/config/features.gni")
 source_set("net") {
   configs += [ "//brave/build/geolocation" ]
   sources = [
+    "brave_common_static_redirect_network_delegate_helper.cc",
+    "brave_common_static_redirect_network_delegate_helper.h",
     "brave_network_delegate_base.cc",
     "brave_network_delegate_base.h",
     "brave_httpse_network_delegate_helper.cc",

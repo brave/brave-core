@@ -12,7 +12,6 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "base/version.h"
-#include "brave/common/network_constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -39,8 +38,7 @@ namespace {
 class BraveConfigurator : public update_client::Configurator {
  public:
   BraveConfigurator(const base::CommandLine* cmdline,
-                    PrefService* pref_service,
-                    bool use_brave_server);
+                    PrefService* pref_service);
 
   // update_client::Configurator overrides.
   int InitialDelay() const override;
@@ -75,7 +73,6 @@ class BraveConfigurator : public update_client::Configurator {
 
   ConfiguratorImpl configurator_impl_;
   PrefService* pref_service_;  // This member is not owned by this class.
-  bool use_brave_server_;
 
   ~BraveConfigurator() override {}
 };
@@ -85,22 +82,14 @@ class BraveConfigurator : public update_client::Configurator {
 // a custom message signing protocol and it does not depend on using HTTPS.
 BraveConfigurator::BraveConfigurator(
     const base::CommandLine* cmdline,
-    PrefService* pref_service,
-    bool use_brave_server)
+    PrefService* pref_service)
     : configurator_impl_(ComponentUpdaterCommandLineConfigPolicy(cmdline), false),
-      pref_service_(pref_service),
-      use_brave_server_(use_brave_server) {
+      pref_service_(pref_service) {
   DCHECK(pref_service_);
 }
 
 int BraveConfigurator::InitialDelay() const {
-  if (use_brave_server_) {
-    return configurator_impl_.InitialDelay();
-  }
-  // This just makes it so as soon as the Google component update
-  // is used it checks for Widevine, which is currently the only
-  // place we use it.
-  return 10;
+  return configurator_impl_.InitialDelay();
 }
 
 int BraveConfigurator::NextCheckDelay() const {
@@ -116,10 +105,6 @@ int BraveConfigurator::UpdateDelay() const {
 }
 
 std::vector<GURL> BraveConfigurator::UpdateUrl() const {
-  if (use_brave_server_) {
-    return std::vector<GURL>
-        {GURL(kBraveUpdatesExtensionsEndpoint)};
-  }
   return configurator_impl_.UpdateUrl();
 }
 
@@ -190,10 +175,7 @@ bool BraveConfigurator::EnabledBackgroundDownloader() const {
 }
 
 bool BraveConfigurator::EnabledCupSigning() const {
-  if (use_brave_server_) {
-    return false;
-  }
-  return configurator_impl_.EnabledCupSigning();
+  return false;
 }
 
 PrefService* BraveConfigurator::GetPrefService() const {
@@ -228,9 +210,8 @@ void RegisterPrefsForBraveComponentUpdaterConfigurator(
 scoped_refptr<update_client::Configurator>
 MakeBraveComponentUpdaterConfigurator(
     const base::CommandLine* cmdline,
-    PrefService* pref_service,
-    bool use_brave_server) {
-  return base::MakeRefCounted<BraveConfigurator>(cmdline, pref_service, use_brave_server);
+    PrefService* pref_service) {
+  return base::MakeRefCounted<BraveConfigurator>(cmdline, pref_service);
 }
 
 }  // namespace component_updater

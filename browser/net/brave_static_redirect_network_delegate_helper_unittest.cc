@@ -110,4 +110,25 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
   EXPECT_EQ(ret, net::OK);
 }
 
+
+TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyComponentUpdaterURL) {
+  net::TestDelegate test_delegate;
+  std::string query_string("?foo=bar");
+  GURL url(std::string(component_updater::kUpdaterDefaultUrl) + query_string);
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                             TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo>
+      before_url_context(new brave::BraveRequestInfo());
+  brave::ResponseCallback callback;
+  GURL new_url;
+  GURL expected_url(std::string(kBraveUpdatesExtensionsEndpoint + query_string));
+  int ret =
+      OnBeforeURLRequest_StaticRedirectWork(request.get(), &new_url, callback,
+                                            before_url_context);
+  EXPECT_EQ(new_url, expected_url);
+  EXPECT_EQ(ret, net::OK);
+}
+
+
 }  // namespace

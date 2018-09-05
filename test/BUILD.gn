@@ -31,6 +31,7 @@ test("brave_unit_tests") {
     "//brave/browser/autoplay/autoplay_permission_context_unittest.cc",
     "//brave/browser/brave_resources_util_unittest.cc",
     "//brave/browser/brave_stats_updater_unittest.cc",
+    "//brave/browser/net/brave_common_static_redirect_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",

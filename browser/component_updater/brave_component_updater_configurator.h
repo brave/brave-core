@@ -31,8 +31,7 @@ void RegisterPrefsForBraveComponentUpdaterConfigurator(
 scoped_refptr<update_client::Configurator>
 MakeBraveComponentUpdaterConfigurator(
     const base::CommandLine* cmdline,
-    PrefService* pref_service,
-    bool use_brave_server);
+    PrefService* pref_service);
 
 }  // namespace component_updater
 
