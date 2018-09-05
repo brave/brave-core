@@ -1,4 +1,5 @@
 import("//tools/grit/grit_rule.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 
 grit("brave_components_resources_grit") {
   source = "brave_components_resources.grd"
@@ -12,9 +13,14 @@ grit("brave_components_resources_grit") {
   deps = [
     "//brave/components/brave_adblock_ui",
     "//brave/components/brave_new_tab_ui",
-    "//brave/components/brave_rewards/ui",
     "//brave/components/brave_welcome_ui",
   ]
+
+  if (brave_rewards_enabled) {
+    deps += [
+      "//brave/components/brave_rewards/ui",
+    ]
+  }
   grit_flags = [
     "-E",
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),

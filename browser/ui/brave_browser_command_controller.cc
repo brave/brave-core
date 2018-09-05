@@ -6,6 +6,7 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
@@ -69,7 +70,9 @@ bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
 }
 
 void BraveBrowserCommandController::InitBraveCommandState() {
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   UpdateCommandForBraveRewards();
+#endif
   UpdateCommandForBraveAdblock();
 }
 

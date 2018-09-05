@@ -1,4 +1,5 @@
 import("//build/config/features.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//chrome/common/features.gni")
 
 source_set("ui") {
@@ -49,8 +50,6 @@ source_set("ui") {
     "webui/brave_md_settings_ui.h",
     "webui/brave_new_tab_ui.cc",
     "webui/brave_new_tab_ui.h",
-    "webui/brave_rewards_ui.cc",
-    "webui/brave_rewards_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
@@ -97,5 +96,15 @@ source_set("ui") {
       "//chrome/browser/ui/webui/help/version_updater_win.h",
     ]
     deps += [ "//google_update" ]
+  }
+
+  if (brave_rewards_enabled) {
+    sources += [
+      "webui/brave_rewards_ui.cc",
+      "webui/brave_rewards_ui.h",
+    ]
+    deps += [
+      "//brave/components/brave_rewards/browser",
+    ]
   }
 }

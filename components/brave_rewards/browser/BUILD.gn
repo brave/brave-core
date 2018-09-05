@@ -19,8 +19,6 @@ source_set("browser") {
     "wallet_properties.h",
     "grant.cc",
     "grant.h",
-    "net/network_delegate_helper.cc",
-    "net/network_delegate_helper.h",
   ]
 
   deps = [
@@ -38,6 +36,8 @@ source_set("browser") {
 
   if (brave_rewards_enabled) {
     sources += [
+      "net/network_delegate_helper.cc",
+      "net/network_delegate_helper.h",
       "rewards_service_impl.cc",
       "rewards_service_impl.h",
       "rewards_helper.cc",
