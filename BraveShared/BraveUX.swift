@@ -1,8 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-public struct BraveUX {
-    public static let IsRelease = Bundle.main.bundleIdentifier == "com.brave.ios.browser"
-    
+public struct BraveUX {    
     public static let BraveCommunityURL = URL(string: "https://community.brave.com/")!
     public static let BravePrivacyURL = URL(string: "https://brave.com/privacy/")!
     public static let BraveTermsOfUseURL = URL(string: "https://www.brave.com/terms_of_use")!
