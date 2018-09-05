@@ -18,7 +18,8 @@ bool is_verbose = true;
 VisitData::VisitData():
     tab_id(-1) {}
 
-VisitData::VisitData(const std::string& _domain,
+VisitData::VisitData(const std::string& _tld,
+            const std::string& _domain,
             const std::string& _path,
             uint32_t _tab_id,
             PUBLISHER_MONTH _local_month,
@@ -27,6 +28,7 @@ VisitData::VisitData(const std::string& _domain,
             const std::string& _url,
             const std::string& _provider,
             const std::string& _favicon_url) :
+    tld(_tld),
     domain(_domain),
     path(_path),
     tab_id(_tab_id),
@@ -38,6 +40,7 @@ VisitData::VisitData(const std::string& _domain,
     favicon_url(_favicon_url) {}
 
 VisitData::VisitData(const VisitData& data) :
+    tld(data.tld),
     domain(data.domain),
     path(data.path),
     tab_id(data.tab_id),
@@ -155,7 +158,6 @@ MediaPublisherInfo::MediaPublisherInfo(const MediaPublisherInfo& info):
   publisherURL_(info.publisherURL_),
   favIconURL_(info.favIconURL_),
   channelName_(info.channelName_),
-  publisher_(info.publisher_),
   twitchEventInfo_(info.twitchEventInfo_) {}
 
 MediaPublisherInfo::~MediaPublisherInfo() {}
@@ -186,7 +188,6 @@ std::unique_ptr<MediaPublisherInfo> MediaPublisherInfo::FromJSON(
   info->publisherURL_ = d["publisherURL"].GetString();
   info->favIconURL_ = d["favIconURL"].GetString();
   info->channelName_ = d["channelName"].GetString();
-  info->publisher_ = d["publisher"].GetString();
   info->twitchEventInfo_.event_ = d["twitch_event"].GetString();
   info->twitchEventInfo_.time_ = d["twitch_time"].GetString();
   info->twitchEventInfo_.status_ = d["twitch_status"].GetString();
@@ -214,9 +215,6 @@ const std::string MediaPublisherInfo::ToJSON() const {
 
   writer.String("channelName");
   writer.String(channelName_.c_str());
-
-  writer.String("publisher");
-  writer.String(publisher_.c_str());
 
   writer.String("twitch_event");
   writer.String(twitchEventInfo_.event_.c_str());

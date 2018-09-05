@@ -1108,7 +1108,7 @@ namespace braveledger_bat_helper {
     publisherURL_(mediaPublisherInfo.publisherURL_),
     favIconURL_(mediaPublisherInfo.favIconURL_),
     channelName_(mediaPublisherInfo.channelName_),
-    publisher_(mediaPublisherInfo.publisher_),
+    publisher_id_(mediaPublisherInfo.publisher_id_),
     twitchEventInfo_(mediaPublisherInfo.twitchEventInfo_) {}
 
   MEDIA_PUBLISHER_INFO::~MEDIA_PUBLISHER_INFO() {}
@@ -1125,7 +1125,7 @@ namespace braveledger_bat_helper {
         d.HasMember("publisherURL") && d["publisherURL"].IsString() &&
         d.HasMember("favIconURL") && d["favIconURL"].IsString() &&
         d.HasMember("channelName") && d["channelName"].IsString() &&
-        d.HasMember("publisher") && d["publisher"].IsString() &&
+        d.HasMember("publisherId") && d["publisherId"].IsString() &&
         d.HasMember("twitch_event") && d["twitch_event"].IsString() &&
         d.HasMember("twitch_time") && d["twitch_time"].IsString() &&
         d.HasMember("twitch_status") && d["twitch_status"].IsString());
@@ -1136,7 +1136,7 @@ namespace braveledger_bat_helper {
       publisherURL_ = d["publisherURL"].GetString();
       favIconURL_ = d["favIconURL"].GetString();
       channelName_ = d["channelName"].GetString();
-      publisher_ = d["publisher"].GetString();
+      publisher_id_ = d["publisherId"].GetString();
       twitchEventInfo_.event_ = d["twitch_event"].GetString();
       twitchEventInfo_.time_ = d["twitch_time"].GetString();
       twitchEventInfo_.status_ = d["twitch_status"].GetString();
@@ -1159,8 +1159,8 @@ namespace braveledger_bat_helper {
     writer.String("channelName");
     writer.String(data.channelName_.c_str());
 
-    writer.String("publisher");
-    writer.String(data.publisher_.c_str());
+    writer.String("publisherId");
+    writer.String(data.publisher_id_.c_str());
 
     writer.String("twitch_event");
     writer.String(data.twitchEventInfo_.event_.c_str());

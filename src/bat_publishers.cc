@@ -59,16 +59,6 @@ double BatPublishers::concaveScore(const uint64_t& duration) {
   return (std::sqrt(b2_ + a4_ * duration) - b_) / (double)a2_;
 }
 
-const ledger::PublisherInfo::id_type getPublisherID(
-    const ledger::VisitData& visit_data) {
-  return visit_data.tld;
-}
-
-const ledger::PublisherInfo::id_type getPublisherID(
-    const ledger::PaymentData& payment_data) {
-  return payment_data.publisher_id;
-}
-
 std::string getProviderName(const ledger::PublisherInfo::id_type publisher_id) {
   // TODO - this is for the media stuff
   if (publisher_id.find(YOUTUBE_PROVIDER_NAME) != std::string::npos) {
@@ -89,7 +79,7 @@ void BatPublishers::AddRecurringPayment(const std::string& publisher_id, const d
 }
 
 void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
-  auto filter = CreatePublisherFilter(getPublisherID(payment_data),
+  auto filter = CreatePublisherFilter(payment_data.publisher_id,
                                       payment_data.category,
                                       payment_data.local_month,
                                       payment_data.local_year);
@@ -98,11 +88,9 @@ void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
           payment_data, _1, _2));
 }
 
-void BatPublishers::saveVisit(const ledger::VisitData& visit_data,
+void BatPublishers::saveVisit(ledger::PublisherInfo::id_type publisher_id,
+                              const ledger::VisitData& visit_data,
                               const uint64_t& duration) {
-  const ledger::PublisherInfo::id_type publisher_id =
-      getPublisherID(visit_data);
-
   if (!ignoreMinTime(publisher_id) &&
       duration < state_->min_pubslisher_duration_)
     return;
@@ -113,7 +101,7 @@ void BatPublishers::saveVisit(const ledger::VisitData& visit_data,
       visit_data.local_year);
   ledger_->GetPublisherInfo(filter,
       std::bind(&BatPublishers::saveVisitInternal, this,
-          visit_data, duration, _1, _2));
+          publisher_id, visit_data, duration, _1, _2));
 }
 
 ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
@@ -151,7 +139,7 @@ void BatPublishers::makePaymentInternal(
   }
 
   if (!publisher_info.get())
-    publisher_info.reset(new ledger::PublisherInfo(getPublisherID(payment_data),
+    publisher_info.reset(new ledger::PublisherInfo(payment_data.publisher_id,
                                                    payment_data.local_month,
                                                    payment_data.local_year));
   publisher_info->category = payment_data.category;
@@ -163,6 +151,7 @@ void BatPublishers::makePaymentInternal(
 }
 
 void BatPublishers::saveVisitInternal(
+    ledger::PublisherInfo::id_type publisher_id,
     ledger::VisitData visit_data,
     uint64_t duration,
     ledger::Result result,
@@ -174,7 +163,7 @@ void BatPublishers::saveVisitInternal(
   }
 
   if (!publisher_info.get())
-    publisher_info.reset(new ledger::PublisherInfo(getPublisherID(visit_data),
+    publisher_info.reset(new ledger::PublisherInfo(publisher_id,
                                                    visit_data.local_month,
                                                    visit_data.local_year));
 

@@ -119,13 +119,13 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
       media_publisher_info->favIconURL_ = "";
       media_publisher_info->channelName_ = getMediaURL(mediaId, providerName);
       media_publisher_info->publisherURL_ = media_publisher_info->channelName_ + "/videos";
-      media_publisher_info->publisher_ = providerName + "#author:";
+      media_publisher_info->publisher_id_ = providerName + "#author:";
       size_t pos = media_publisher_info->channelName_.rfind("/");
       if (pos != std::string::npos && pos < media_publisher_info->channelName_.length() - 1) {
-        media_publisher_info->publisher_ += media_publisher_info->channelName_.substr(pos + 1);
+        media_publisher_info->publisher_id_ += media_publisher_info->channelName_.substr(pos + 1);
         //LOG(ERROR) << "!!!publisher == " << publisherInfo.publisher_;
       }
-      media_publisher_info->publisherName_ = media_publisher_info->publisher_;
+      media_publisher_info->publisherName_ = media_publisher_info->publisher_id_;
       //LOG(ERROR) << "!!!publisherName == " << media_publisher_info->publisherName_;
 
       media_publisher_info->twitchEventInfo_ = twitchEventInfo;
@@ -137,7 +137,6 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
         return;
       }
       ledger::VisitData updated_visit_data(visit_data);
-      updated_visit_data.tld = media_publisher_info->publisherName_ + " on " + TWITCH_PROVIDER_NAME;
       updated_visit_data.favicon_url = media_publisher_info->favIconURL_;
       updated_visit_data.provider = TWITCH_PROVIDER_NAME;
       updated_visit_data.name = media_publisher_info->publisherName_;
@@ -147,16 +146,13 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
     }
   } else {
     ledger::VisitData updated_visit_data(visit_data);
-    updated_visit_data.tld = media_publisher_info->publisherName_ + " on ";
     updated_visit_data.name = media_publisher_info->publisherName_;
     updated_visit_data.url = media_publisher_info->publisherURL_;
     if (YOUTUBE_MEDIA_TYPE == providerName) {
-      updated_visit_data.tld += YOUTUBE_PROVIDER_NAME;
       updated_visit_data.provider = YOUTUBE_PROVIDER_NAME;
       updated_visit_data.favicon_url = media_publisher_info->favIconURL_;
-      ledger_->SaveMediaVisit(updated_visit_data, duration);
+      ledger_->SaveMediaVisit(media_publisher_info->publisher_id_, updated_visit_data, duration);
     } else if (TWITCH_MEDIA_TYPE == providerName) {
-      updated_visit_data.tld += TWITCH_PROVIDER_NAME;
       updated_visit_data.provider = TWITCH_PROVIDER_NAME;
       updated_visit_data.favicon_url = media_publisher_info->favIconURL_;
       uint64_t realDuration = getTwitchDuration(media_publisher_info->twitchEventInfo_, twitchEventInfo);
@@ -313,21 +309,18 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
     LOG(ERROR) << "publisher's picture URL == " << favIconURL;
     std::string channelName = publisherURL + "/videos";
     pos = publisherURL.rfind("/");
-    std::string publisher = providerName + "#channel:";
+    std::string publisher_id = providerName + "#channel:";
     if (pos != std::string::npos && pos < publisherURL.length() - 1) {
-      publisher += publisherURL.substr(pos + 1);
-      //LOG(ERROR) << "!!!publisher == " << publisher;
+      publisher_id += publisherURL.substr(pos + 1);
     }
     std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info(new ledger::MediaPublisherInfo(mediaKey));
-    //LOG(ERROR) << "!!!publisherName == " << publisherName;
     media_publisher_info->publisherName_ = publisherName;
     media_publisher_info->publisherURL_ = publisherURL;
     media_publisher_info->favIconURL_ = favIconURL;
     media_publisher_info->channelName_ = channelName;
-    media_publisher_info->publisher_ = publisher;
+    media_publisher_info->publisher_id_ = publisher_id;
 
     ledger::VisitData updated_visit_data(visit_data);
-    updated_visit_data.tld = publisherName + " on " + YOUTUBE_PROVIDER_NAME;
     updated_visit_data.favicon_url = media_publisher_info->favIconURL_;
     updated_visit_data.provider = YOUTUBE_PROVIDER_NAME;
     updated_visit_data.name = media_publisher_info->publisherName_;

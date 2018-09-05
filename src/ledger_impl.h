@@ -132,7 +132,7 @@ class LedgerImpl : public ledger::Ledger,
   void RunIOTask(LedgerTaskRunnerImpl::Task task);
   void RunTask(LedgerTaskRunnerImpl::Task task);
   std::string URIEncode(const std::string& value) override;
-  void SaveMediaVisit(const ledger::VisitData& visit_data, const uint64_t& duration) override;
+  void SaveMediaVisit(const ledger::PublisherInfo::id_type publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

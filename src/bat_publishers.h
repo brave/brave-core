@@ -35,7 +35,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool loadState(const std::string& data);
 
-  void saveVisit(const ledger::VisitData& visit_data, const uint64_t& duration);
+  void saveVisit(ledger::PublisherInfo::id_type publisher_id,
+                 const ledger::VisitData& visit_data,
+                 const uint64_t& duration);
 
   void MakePayment(const ledger::PaymentData& payment_data);
 
@@ -91,6 +93,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool isVerified(const ledger::PublisherInfo::id_type& publisher_id);
   bool isExcluded(const ledger::PublisherInfo::id_type& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded);
   void saveVisitInternal(
+      ledger::PublisherInfo::id_type publisher_id,
       ledger::VisitData visit_data,
       uint64_t duration,
       ledger::Result result,

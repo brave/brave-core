@@ -306,7 +306,7 @@ namespace braveledger_bat_helper {
     std::string publisherURL_;
     std::string favIconURL_;
     std::string channelName_;
-    std::string publisher_;
+    std::string publisher_id_;
     TWITCH_EVENT_INFO twitchEventInfo_;
   };
 

@@ -159,7 +159,7 @@ class LEDGER_EXPORT Ledger {
   virtual std::map<std::string, ledger::BalanceReportInfo> GetAllBalanceReports() const = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
-  virtual void SaveMediaVisit(const ledger::VisitData& visit_data, const uint64_t& duration) = 0;
+  virtual void SaveMediaVisit(const ledger::PublisherInfo::id_type publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) = 0;
 };
 
 }  // namespace ledger

@@ -78,8 +78,6 @@ void LedgerImpl::OnLoad(const ledger::VisitData& visit_data, const uint64_t& cur
     last_tab_active_time_ = current_time;
   }
   current_pages_[visit_data.tab_id] = visit_data;
-  //LOG(ERROR) << "!!!LedgerImpl::OnLoad tab_id == " << visit_data.tab_id << ", domain == " << visit_data.domain
-  //  << ", tld == " << visit_data.tld << ", path == " << visit_data.path;
 }
 
 void LedgerImpl::OnUnload(uint32_t tab_id, const uint64_t& current_time) {
@@ -107,7 +105,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
   }
   //LOG(ERROR) << "!!!LedgerImpl::OnHide tab_id == " << tab_id << ", time == " << (current_time - last_tab_active_time_);
   DCHECK(last_tab_active_time_);
-  bat_publishers_->saveVisit(iter->second, current_time - last_tab_active_time_);
+  bat_publishers_->saveVisit(iter->second.tld, iter->second, current_time - last_tab_active_time_);
   last_tab_active_time_ = 0;
 }
 
@@ -295,12 +293,12 @@ void LedgerImpl::OnSetMediaPublisherInfo(const uint64_t& duration,
                           ledger::MediaPublisherInfoCallback callback,
                           ledger::Result result,
                           std::unique_ptr<ledger::MediaPublisherInfo> info) {
-  SaveMediaVisit(visit_data, duration);
+  SaveMediaVisit(info->publisher_id_, visit_data, duration);
   callback(result, std::move(info));
 }
 
-void LedgerImpl::SaveMediaVisit(const ledger::VisitData& visit_data, const uint64_t& duration) {
-  bat_publishers_->saveVisit(visit_data, duration);
+void LedgerImpl::SaveMediaVisit(const ledger::PublisherInfo::id_type publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) {
+  bat_publishers_->saveVisit(publisher_id, visit_data, duration);
 }
 
 void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
