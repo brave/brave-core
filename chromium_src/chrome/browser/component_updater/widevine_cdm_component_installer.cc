@@ -21,7 +21,7 @@ void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
       prefs->GetBoolean(kWidevineOptedIn);
   if (widevine_opted_in) {
     RegisterWidevineCdmComponent_ChromiumImpl(
-        g_brave_browser_process->google_component_updater());
+        g_brave_browser_process->component_updater());
   }
 }
 

@@ -15,12 +15,21 @@
 
 namespace {
 
-bool IsWhitelisted(const extensions::Extension* extension) {
-  // Allow PWAs to run
-  if (extension->GetType() == extensions::Manifest::TYPE_HOSTED_APP) {
-    return true;
-  }
-  static std::vector<std::string> whitelist({
+bool IsBlacklisted(const extensions::Extension* extension) {
+  // This is a hardcoded list of extensions to block.
+  // Typically instead you can just use the brave/go-updater to list
+  // a blacklisted extension that you want to block for existing clients.
+  // mlklomjnahgiddgfdgjhibinlfibfffc is used for tests, it corresponds to
+  // brave/test/data/should-be-blocked-extension
+  return extension->id() == "mlklomjnahgiddgfdgjhibinlfibfffc";
+}
+
+}  // namespace
+
+namespace extensions {
+
+bool BraveExtensionProvider::IsVetted(const Extension* extension) {
+  static std::vector<std::string> vetted_extensions({
     brave_extension_id,
     brave_webtorrent_extension_id,
     pdfjs_extension_id,
@@ -83,13 +92,9 @@ bool IsWhitelisted(const extensions::Extension* extension) {
     // Test ID: Brave Tor Client Updater
     "ngicbhhaldfdgmjhilmnleppfpmkgbbk"
   });
-  return std::find(whitelist.begin(), whitelist.end(),
-      extension->id()) != whitelist.end();
+  return std::find(vetted_extensions.begin(), vetted_extensions.end(),
+      extension->id()) != vetted_extensions.end();
 }
-
-}  // namespace
-
-namespace extensions {
 
 BraveExtensionProvider::BraveExtensionProvider() {
 }
@@ -108,7 +113,7 @@ std::string BraveExtensionProvider::GetDebugPolicyProviderName() const {
 
 bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
                                          base::string16* error) const {
-  if (!IsWhitelisted(extension)) {
+  if (IsBlacklisted(extension)) {
     if (error) {
       *error =
         l10n_util::GetStringFUTF16(IDS_EXTENSION_CANT_INSTALL_ON_BRAVE,

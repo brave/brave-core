@@ -18,6 +18,7 @@ class BraveExtensionProvider : public ManagementPolicy::Provider {
                    base::string16* error) const override;
   bool MustRemainInstalled(const Extension* extension,
                            base::string16* error) const override;
+  static bool IsVetted(const extensions::Extension* extension);
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionProvider);
 };
