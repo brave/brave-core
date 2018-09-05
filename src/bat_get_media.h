@@ -55,6 +55,8 @@ class BatGetMedia {
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
   bat_ledger::URLRequestHandler handler_;
+
+  std::map<std::string, ledger::TwitchEventInfo> twitchEvents;
 };
 
 }  // namespace braveledger_bat_get_media

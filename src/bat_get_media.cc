@@ -119,15 +119,22 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
       new_publisher_info->name = mediaId;
       new_publisher_info->id = id;
 
-      // TODO add
-//      new_publisher_info->twitchEventInfo_ = twitchEventInfo;
-//      new_publisher_info->twitchEventInfo_.status_ = getTwitchStatus(ledger::TwitchEventInfo(), twitchEventInfo);
+      ledger::TwitchEventInfo oldEvent;
+      std::map<std::string, ledger::TwitchEventInfo>::const_iterator iter = twitchEvents.find(media_key);
+      if (iter != twitchEvents.end()) {
+        oldEvent = iter->second;
+      }
 
-      //uint64_t realDuration = getTwitchDuration(ledger::TwitchEventInfo(), twitchEventInfo);
-      uint64_t realDuration = 20;
+      ledger::TwitchEventInfo newEvent(twitchEventInfo);
+      newEvent.status_ = getTwitchStatus(oldEvent, newEvent);
+
+      uint64_t realDuration = getTwitchDuration(oldEvent, newEvent);
+      twitchEvents.emplace(media_key, newEvent);
+
       if (realDuration == 0) {
         return;
       }
+
       ledger::VisitData updated_visit_data(visit_data);
       updated_visit_data.favicon_url = new_publisher_info->favicon_url;
       updated_visit_data.provider = TWITCH_PROVIDER_NAME;
@@ -148,13 +155,19 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
     } else if (TWITCH_MEDIA_TYPE == providerName) {
       updated_visit_data.provider = TWITCH_PROVIDER_NAME;
       updated_visit_data.favicon_url = publisher_info->url;
-      // TODO NZ Add
-      // uint64_t realDuration = getTwitchDuration(publisher_info->twitchEventInfo_, twitchEventInfo);
-//      ledger::TwitchEventInfo oldInfo = publisher_info->twitchEventInfo_;
-//      media_publisher_info->twitchEventInfo_ = twitchEventInfo;
-//      media_publisher_info->twitchEventInfo_.status_ = getTwitchStatus(oldInfo, twitchEventInfo);
 
-      uint64_t realDuration = 20;
+      ledger::TwitchEventInfo oldEvent;
+      std::map<std::string, ledger::TwitchEventInfo>::const_iterator iter = twitchEvents.find(media_key);
+      if (iter != twitchEvents.end()) {
+        oldEvent = iter->second;
+      }
+
+      ledger::TwitchEventInfo newEvent(twitchEventInfo);
+      newEvent.status_ = getTwitchStatus(oldEvent, newEvent);
+
+      uint64_t realDuration = getTwitchDuration(oldEvent, newEvent);
+      twitchEvents.emplace(media_key, newEvent);
+
       std::string id = publisher_info->id;
       ledger_->SaveMediaVisit(id, updated_visit_data, realDuration);
     }
@@ -298,7 +311,7 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
 //    } while (favIconURL.find("photo.jpg") == std::string::npos);
 //    LOG(ERROR) << "publisher's picture URL == " << favIconURL;
     std::string mediaURL = publisherURL + "/videos";
-    pos = publisherURL.rfind("/");
+    size_t pos = publisherURL.rfind("/");
     std::string publisher_id = providerName + "#channel:";
     if (pos != std::string::npos && pos < publisherURL.length() - 1) {
       publisher_id += publisherURL.substr(pos + 1);
