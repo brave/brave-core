@@ -73,7 +73,8 @@ class LEDGER_EXPORT Ledger {
   static Ledger* CreateInstance(LedgerClient* client);
 
   virtual void Initialize() = 0;
-  virtual void CreateWallet() = 0;
+  // returns false if wallet initialization is already in progress
+  virtual bool CreateWallet() = 0;
   virtual void Reconcile() = 0;
 
   virtual void MakePayment(const PaymentData& payment_data) = 0;

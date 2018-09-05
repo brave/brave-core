@@ -46,7 +46,7 @@ class LedgerImpl : public ledger::Ledger,
   std::string GenerateGUID() const;
   void Initialize() override;
   void Reconcile() override;
-  void CreateWallet() override;
+  bool CreateWallet() override;
 
   void SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
                         ledger::PublisherInfoCallback callback) override;
@@ -54,7 +54,7 @@ class LedgerImpl : public ledger::Ledger,
                         ledger::PublisherInfoCallback callback) override;
   void GetMediaPublisherInfo(const std::string& publisher_key,
                                 ledger::MediaPublisherInfoCallback callback) override;
-  void SetMediaPublisherInfo(const uint64_t& duration, 
+  void SetMediaPublisherInfo(const uint64_t& duration,
                             std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
                             const ledger::VisitData& visit_data,
                             ledger::MediaPublisherInfoCallback callback) override;
@@ -149,12 +149,12 @@ class LedgerImpl : public ledger::Ledger,
       uint32_t tab_id,
       const std::string& url,
       const std::map<std::string, std::string>& parts,
-      const std::string& first_party_url, 
+      const std::string& first_party_url,
       const std::string& referrer,
       const ledger::VisitData& visit_data) override;
   void OnPostData(
       const std::string& url,
-      const std::string& first_party_url, 
+      const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
       const ledger::VisitData& visit_data) override;
@@ -190,6 +190,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
   std::unique_ptr<braveledger_bat_get_media::BatGetMedia> bat_get_media_;
   bool initialized_;
+  bool initializing_;
 
   URLRequestHandler handler_;
 

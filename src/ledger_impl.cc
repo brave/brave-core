@@ -28,6 +28,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_publishers_(new BatPublishers(this)),
     bat_get_media_(new BatGetMedia(this)),
     initialized_(false),
+    initializing_(false),
     last_tab_active_time_(0),
     last_shown_tab_id_(-1),
     last_pub_load_timer_id_ (0u){
@@ -37,15 +38,22 @@ LedgerImpl::~LedgerImpl() {
 }
 
 void LedgerImpl::Initialize() {
+  DCHECK(!initializing_);
+  initializing_ = true;
   LoadLedgerState(this);
 }
 
-void LedgerImpl::CreateWallet() {
+bool LedgerImpl::CreateWallet() {
+  if (initializing_)
+    return false;
+
+  initializing_ = true;
   if (initialized_) {
     OnWalletInitialized(ledger::Result::ERROR);
-    return;
+    return false;
   }
   bat_client_->registerPersona();
+  return true;
 }
 
 void LedgerImpl::AddRecurringPayment(const std::string& publisher_id, const double& value) {
@@ -128,7 +136,7 @@ void LedgerImpl::OnXHRLoad(
     uint32_t tab_id,
     const std::string& url,
     const std::map<std::string, std::string>& parts,
-    const std::string& first_party_url, 
+    const std::string& first_party_url,
     const std::string& referrer,
     const ledger::VisitData& visit_data) {
   // TODO
@@ -146,7 +154,7 @@ void LedgerImpl::OnXHRLoad(
 
 void LedgerImpl::OnPostData(
       const std::string& url,
-      const std::string& first_party_url, 
+      const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
       const ledger::VisitData& visit_data) {
@@ -174,10 +182,13 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
                                         const std::string& data) {
   if (result == ledger::Result::OK) {
     if (!bat_client_->loadState(data)) {
-      OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
+      result = ledger::Result::INVALID_LEDGER_STATE;
     }
-  } else {
+  }
+
+  if (result == ledger::Result::OK) {
     OnWalletInitialized(result);
+    return;
   }
 
   LoadPublisherState(this);
@@ -196,7 +207,6 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
   }
 
   OnWalletInitialized(result);
-  LoadPublisherList(this);
 }
 
 void LedgerImpl::SaveLedgerState(const std::string& data) {
@@ -231,9 +241,13 @@ std::string LedgerImpl::GenerateGUID() const {
 }
 
 void LedgerImpl::OnWalletInitialized(ledger::Result result) {
-  if (result == ledger::Result::OK)
-    initialized_ = true;
+  initializing_ = false;
   ledger_client_->OnWalletInitialized(result);
+
+  if (result == ledger::Result::OK) {
+    initialized_ = true;
+    RefreshPublishersList(false);
+  }
 }
 
 std::unique_ptr<ledger::LedgerURLLoader> LedgerImpl::LoadURL(const std::string& url,
@@ -268,7 +282,7 @@ void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info,
       std::bind(&LedgerImpl::OnSetPublisherInfo, this, callback, _1, _2));
 }
 
-void LedgerImpl::SetMediaPublisherInfo(const uint64_t& duration, 
+void LedgerImpl::SetMediaPublisherInfo(const uint64_t& duration,
                                 std::unique_ptr<ledger::MediaPublisherInfo> media_publisher_info,
                                 const ledger::VisitData& visit_data,
                                 ledger::MediaPublisherInfoCallback callback) {

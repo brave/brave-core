@@ -54,7 +54,7 @@ void BatClient::registerPersona() {
 void BatClient::requestCredentialsCallback(bool result, const std::string& response) {
   //LOG(ERROR) << "!!!response == " << response;
   if (!result) {
-    // TODO errors handling
+    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
   if (state_->personaId_.empty()) {
@@ -65,10 +65,17 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
   state_->userId_.erase(std::remove(state_->userId_.begin(), state_->userId_.end(), '-'), state_->userId_.end());
   state_->userId_.erase(12, 1);
 
-  braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME, response, state_->registrarVK_);
+  if (!braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME, response, state_->registrarVK_)) {
+    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
+    return;
+  }
   DCHECK(!state_->registrarVK_.empty());
   std::string proof = getAnonizeProof(state_->registrarVK_, state_->userId_, state_->preFlight_);
 
+  if (proof.empty()) {
+    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
+    return;
+  }
   state_->walletInfo_.keyInfoSeed_ = braveledger_bat_helper::generateSeed();
   std::vector<uint8_t> secretKey = braveledger_bat_helper::getHKDF(state_->walletInfo_.keyInfoSeed_);
   std::vector<uint8_t> publicKey;
@@ -115,15 +122,17 @@ std::string BatClient::getAnonizeProof(const std::string& registrarVK, const std
   if (nullptr != cred) {
     preFlight = cred;
     free((void*)cred);
+  } else {
+    return "";
   }
-  DCHECK(!preFlight.empty());
   const char* proofTemp = registerUserMessage(preFlight.c_str(), registrarVK.c_str());
   std::string proof;
   if (nullptr != proofTemp) {
     proof = proofTemp;
     free((void*)proofTemp);
+  } else {
+    return "";
   }
-  DCHECK(!proof.empty());
 
   return proof;
 }
@@ -131,8 +140,7 @@ std::string BatClient::getAnonizeProof(const std::string& registrarVK, const std
 void BatClient::registerPersonaCallback(bool result,
                                        const std::string& response) {
   if (!result) {
-    // TODO error handling
-    ledger_->OnWalletInitialized(ledger::Result::ERROR);
+    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
 
@@ -151,12 +159,15 @@ void BatClient::registerPersonaCallback(bool result,
     return;
   }
 
-  braveledger_bat_helper::getJSONWalletInfo(response, state_->walletInfo_, state_->fee_currency_, state_->fee_amount_, state_->days_);
+  if (!braveledger_bat_helper::getJSONWalletInfo(response, state_->walletInfo_, state_->fee_currency_, state_->fee_amount_, state_->days_)) {
+    ledger_->OnWalletInitialized(ledger::Result::REGISTRATION_VERIFICATION_FAILED);
+    return;
+  }
   state_->bootStamp_ = braveledger_bat_helper::currentTime() * 1000;
   state_->reconcileStamp_ = state_->bootStamp_ + state_->days_ * 24 * 60 * 60 * 1000;
 
-  saveState();
   ledger_->OnWalletInitialized(ledger::Result::OK);
+  saveState();
 }
 
 void BatClient::setContributionAmount(const double& amount) {
