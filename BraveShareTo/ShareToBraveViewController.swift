@@ -57,7 +57,7 @@ class ShareToBraveViewController: SLComposeServiceViewController {
         // From http://stackoverflow.com/questions/24297273/openurl-not-work-in-action-extension
         var responder = self as UIResponder?
         while let strongResponder = responder {
-            let selector = #selector(UIApplication.openURL(_:))
+            let selector = sel_registerName("openURL:")
             if strongResponder.responds(to: selector) {
                 strongResponder.callSelector(selector, object: url as NSURL, delay: 0)
             }
