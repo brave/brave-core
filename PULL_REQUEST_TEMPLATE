@@ -7,12 +7,13 @@ List any dependencies that are required for this change.
 
 ## Pull Request Checklist
 
+- [ ] My patch has gone through review and I have addressed review comments
 - [ ] My patch has a standard commit message that looks like `Fix #123: This fixes the shattered coffee cup!`
 
-- [ ] I have made any necesasry changes to the *Unit Tests*, covering new or changed functionality
-- [ ] I have run *Unit Tests* locally, and they are all passing
+- [ ] I have updated the *Unit Tests* to cover new or changed functionality
+- [ ] I have updated the *UI Tests* to cover new or changed functionality
+- [ ] I have marked the bug with `[needsuplift]`
 - [ ] I have made sure that localizable strings use `NSLocalizableString()`
-- [ ] I have verified changes work on: iPad, iPhone, and iPhone X
 
 ## Screenshots
 
