@@ -226,6 +226,7 @@
 		5D1DC57320AE005400905E5A /* SyncSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1DC56920AE005400905E5A /* SyncSite.swift */; };
 		5D1DC57420AE005400905E5A /* ios-sync.js in Resources */ = {isa = PBXBuildFile; fileRef = 5D1DC56A20AE005400905E5A /* ios-sync.js */; };
 		5D6DDEF3214003A6001FF0AE /* DAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEE6214003A6001FF0AE /* DAU.swift */; };
+		5D6DDEFE2141B6A1001FF0AE /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEF62141B6A0001FF0AE /* Preferences.swift */; };
 		5DE7688D20B3456E00FF5533 /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; };
 		5DE7689420B3456E00FF5533 /* BraveSharedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE7689320B3456E00FF5533 /* BraveSharedTests.swift */; };
 		5DE7689620B3456E00FF5533 /* BraveShared.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DE7688620B3456D00FF5533 /* BraveShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -288,7 +289,7 @@
 		7BF5A1EA1B41640500EA9DD8 /* SyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5A1E91B41640500EA9DD8 /* SyncQueue.swift */; };
 		7BF5A1EE1B429B3100EA9DD8 /* SyncCommandsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5A1ED1B429B3100EA9DD8 /* SyncCommandsTests.swift */; };
 		A104E199210A384400D2323E /* ShieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A104E198210A384400D2323E /* ShieldsViewController.swift */; };
-		A134B88A20DA98BB00A581D0 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134B88920DA98BB00A581D0 /* Preferences.swift */; };
+		A134B88A20DA98BB00A581D0 /* ClientPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134B88920DA98BB00A581D0 /* ClientPreferences.swift */; };
 		A13AC72520EC12360040D4BB /* Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13AC72420EC12360040D4BB /* Migration.swift */; };
 		A1510DA120E409E9008BF1F4 /* URLCacheExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */; };
 		A1510DAA20E425EA008BF1F4 /* BraveWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1510DA920E425EA008BF1F4 /* BraveWebView.swift */; };
@@ -1116,6 +1117,7 @@
 		5D1DC56920AE005400905E5A /* SyncSite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncSite.swift; sourceTree = "<group>"; };
 		5D1DC56A20AE005400905E5A /* ios-sync.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "ios-sync.js"; sourceTree = "<group>"; };
 		5D6DDEE6214003A6001FF0AE /* DAU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DAU.swift; sourceTree = "<group>"; };
+		5D6DDEF62141B6A0001FF0AE /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		5DE7687120B3417A00FF5533 /* SharedExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedExtensions.swift; sourceTree = "<group>"; };
 		5DE7687C20B342E600FF5533 /* BraveStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveStrings.swift; sourceTree = "<group>"; };
 		5DE7688420B3456C00FF5533 /* BraveShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraveShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1175,7 +1177,7 @@
 		7BF5A1E91B41640500EA9DD8 /* SyncQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncQueue.swift; sourceTree = "<group>"; };
 		7BF5A1ED1B429B3100EA9DD8 /* SyncCommandsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncCommandsTests.swift; sourceTree = "<group>"; };
 		A104E198210A384400D2323E /* ShieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsViewController.swift; sourceTree = "<group>"; };
-		A134B88920DA98BB00A581D0 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		A134B88920DA98BB00A581D0 /* ClientPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPreferences.swift; sourceTree = "<group>"; };
 		A13AC72420EC12360040D4BB /* Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migration.swift; sourceTree = "<group>"; };
 		A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLCacheExtensions.swift; sourceTree = "<group>"; };
 		A1510DA920E425EA008BF1F4 /* BraveWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWebView.swift; sourceTree = "<group>"; };
@@ -2118,6 +2120,7 @@
 			children = (
 				5D6DDEDF214003A6001FF0AE /* Analytics */,
 				5DE768AA20B346B700FF5533 /* BraveShieldState.swift */,
+				5D6DDEF62141B6A0001FF0AE /* Preferences.swift */,
 				5DE7687C20B342E600FF5533 /* BraveStrings.swift */,
 				5DE7687120B3417A00FF5533 /* SharedExtensions.swift */,
 				5DE768A820B3461200FF5533 /* BraveUX.swift */,
@@ -2891,7 +2894,7 @@
 				E6639F171BF11E17002D0853 /* Settings.bundle */,
 				7BEFC67F1BFF68C30059C952 /* QuickActions.swift */,
 				D8EFFA0B1FF5B1FA001D3A09 /* NavigationRouter.swift */,
-				A134B88920DA98BB00A581D0 /* Preferences.swift */,
+				A134B88920DA98BB00A581D0 /* ClientPreferences.swift */,
 				A13AC72420EC12360040D4BB /* Migration.swift */,
 			);
 			path = Application;
@@ -4129,6 +4132,7 @@
 				5DE768AE20B443E500FF5533 /* JSONSerializationExtensions.swift in Sources */,
 				5DE768AB20B346B800FF5533 /* BraveShieldState.swift in Sources */,
 				A1510DA120E409E9008BF1F4 /* URLCacheExtensions.swift in Sources */,
+				5D6DDEFE2141B6A1001FF0AE /* Preferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4368,7 +4372,7 @@
 				D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */,
 				D3C744CD1A687D6C004CE85D /* URIFixup.swift in Sources */,
 				E4A961181AC041C40069AD6F /* ReadabilityService.swift in Sources */,
-				A134B88A20DA98BB00A581D0 /* Preferences.swift in Sources */,
+				A134B88A20DA98BB00A581D0 /* ClientPreferences.swift in Sources */,
 				D3BE7B261B054D4400641031 /* main.swift in Sources */,
 				EB8A0A77206ABCE000A9859A /* WebPagesForTesting.swift in Sources */,
 				0BA1E02E1B046F1E007675AF /* ErrorPageHelper.swift in Sources */,
